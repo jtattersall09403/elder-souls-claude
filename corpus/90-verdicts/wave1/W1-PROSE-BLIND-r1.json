@@ -1,563 +1,576 @@
 {
-  "schema_version": 1,
-  "piece_id": "w1-prose-blind-in-world-prose-and-npc-voice",
-  "piece_title": "W1-PROSE-BLIND \u2014 the blind judgement on our in-world prose (RI-MTH03 executed on the W1-PROSE-TICS packs)",
-  "subsystem_paths": [
-    "dialogue.prose",
-    "dialogue.voice",
-    "books.content",
-    "quests.journal",
-    "process.critic.discipline",
-    "process.verdict.format"
+ "schema_version": 1,
+ "piece_id": "w1-prose-blind-in-world-prose-and-npc-voice",
+ "piece_title": "W1-PROSE-BLIND — the blind judgement on our in-world prose (RI-MTH03 executed on the W1-PROSE-TICS packs)",
+ "subsystem_paths": [
+  "dialogue.prose",
+  "dialogue.voice",
+  "books.content",
+  "quests.journal",
+  "process.critic.discipline",
+  "process.verdict.format"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "judge-prose-packs-r1",
+  "role": "judge.blind.prose",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T16:30:00Z",
+  "finished_at": "2026-08-07T17:35:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": false,
+  "note": "Fresh context. Built neither pack. Read orchestration/status/W1-PROSE-TICS.json and W1-LIBRARY-r2.json for pack locations before answering — those contain aggregate rule statistics but NO per-trial mapping. reports/prose-tics/W1-PROSE-TICS-report.md was never opened, before or after."
+ },
+ "build": {
+  "commit_sha": "d750b6c",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "harness_commands": [
+   {
+    "command": "node tools/prose/spoken-register.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "SR-01 0.762 / SR-05 0.748 / SR-08 0.700 / BLIND-GAP +0.014; ours 2987 lines 62226 w"
+   },
+   {
+    "command": "node tools/prose/judge-fragment-openers.mjs --self-test",
+    "exit_code": 0,
+    "stdout_artifact": "SELF-TEST 7/7 pass"
+   },
+   {
+    "command": "node tools/prose/judge-fragment-openers.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "Which ours 2.02/10k vs ref 0.17 = 12.17x; rewrite AFTER 12.44/10k; And rewrite AFTER 60.65 vs corpus 12.39 vs ref 27.47"
+   }
   ],
-  "wave": 1,
-  "critic": {
-    "run_id": "judge-prose-packs-r1",
-    "role": "judge.blind.prose",
-    "model": "claude-opus-5",
-    "started_at": "2026-08-07T16:30:00Z",
-    "finished_at": "2026-08-07T17:35:00Z",
-    "conflict_of_interest": false,
-    "saw_builder_notes_before_blind": false,
-    "note": "Fresh context. Built neither pack. Read orchestration/status/W1-PROSE-TICS.json and W1-LIBRARY-r2.json for pack locations before answering \u2014 those contain aggregate rule statistics but NO per-trial mapping. reports/prose-tics/W1-PROSE-TICS-report.md was never opened, before or after."
-  },
-  "build": {
-    "commit_sha": "d750b6c",
-    "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "harness_commands": [
-      {
-        "command": "node tools/prose/spoken-register.mjs",
-        "exit_code": 0,
-        "stdout_artifact": "SR-01 0.762 / SR-05 0.748 / SR-08 0.700 / BLIND-GAP +0.014; ours 2987 lines 62226 w"
-      },
-      {
-        "command": "node tools/prose/judge-fragment-openers.mjs --self-test",
-        "exit_code": 0,
-        "stdout_artifact": "SELF-TEST 7/7 pass"
-      },
-      {
-        "command": "node tools/prose/judge-fragment-openers.mjs",
-        "exit_code": 0,
-        "stdout_artifact": "Which ours 2.02/10k vs ref 0.17 = 12.17x; rewrite AFTER 12.44/10k; And rewrite AFTER 60.65 vs corpus 12.39 vs ref 27.47"
-      }
+  "no_browser_used": true,
+  "depends_on": [
+   "game/data/books",
+   "game/data/dialogue",
+   "game/data/items",
+   "game/data/npcs",
+   "game/data/quests",
+   "game/data/weapons",
+   "game/data/world",
+   "tools/prose/judge-fragment-openers.mjs",
+   "tools/prose/spoken-register.mjs",
+   "tools/prose/tic-detector.mjs"
+  ],
+  "depends_on_note": "derived from 3 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
+ },
+ "sampling_rule_declared_before_sampling": {
+  "declared_in": "orchestration/status/judge-prose-packs.json",
+  "declared_at": "before the first artifact was opened",
+  "rule": [
+   "answer ALL 20 trials in directory order, no cherry-picking",
+   "open no *.reveal/ file and no builder report until all 20 answer.md exist",
+   "rewrites: first 10 + last 10 records of the largest rewrite file (positional, not taste)",
+   "post-sweep quests: list topic files mechanically, read the largest by info count in full, plus EVERY info containing 'eleven'",
+   "martial library: completeness check only, judge nothing unfinished"
+  ],
+  "followed": true
+ },
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-MTH03",
+   "status": "answered-and-revealed",
+   "pack_ids": [
+    "reports/packs/prose-tics-r2",
+    "reports/packs/prose-tics-voice-r2"
+   ],
+   "seeds": [
+    20260807,
+    20260808
+   ],
+   "trials_total": 20,
+   "trials_correct": 20,
+   "accuracy": 1,
+   "p_under_chance": 9.5367e-7,
+   "outcome": "picked-ours-in-all-20-BUT-the-question-form-makes-that-the-correct-answer",
+   "question_form": "provenance ('which is the imitation?'), not RI-MTH03 sec D's quality question",
+   "question_form_consequence": "RI-MTH03 sec E rows picked-reference/picked-ours are not both reachable; the 'if the critic picks ours, distrust the critic' rule is inoperative; M5 second pass is n/a. 20/20 measures DISTINGUISHABILITY, not inferiority.",
+   "answers_written_before_reveal": true,
+   "leak_audit": {
+    "performed": true,
+    "result": "FAIL",
+    "what": "RI-MTH03 sec B text stripping was never applied: zero [REDACTED] tokens in any of the 40 pack files. Un-stripped UESP wiki residue present on the reference side (|OBlink=, |SRlink=, MWlink=Morrowind:, blanked year fields).",
+    "measured": "A rule counting Tamriel setting proper nouns + template residue, choosing the side with fewer as ours, scores 17/20 with 3 ties = 17/17 on every decidable trial, without reading a word.",
+    "clean_subset": [
+     "prose-tics-r2/t10-dialogue",
+     "prose-tics-r2/t12-journal",
+     "prose-tics-voice-r2/t05-dialogue"
     ],
-    "no_browser_used": true
-  },
-  "sampling_rule_declared_before_sampling": {
-    "declared_in": "orchestration/status/judge-prose-packs.json",
-    "declared_at": "before the first artifact was opened",
-    "rule": [
-      "answer ALL 20 trials in directory order, no cherry-picking",
-      "open no *.reveal/ file and no builder report until all 20 answer.md exist",
-      "rewrites: first 10 + last 10 records of the largest rewrite file (positional, not taste)",
-      "post-sweep quests: list topic files mechanically, read the largest by info count in full, plus EVERY info containing 'eleven'",
-      "martial library: completeness check only, judge nothing unfinished"
-    ],
-    "followed": true
-  },
-  "blind_comparisons": [
+    "clean_subset_accuracy": "3/3, p=0.125",
+    "remedy": "build-r2-packs.mjs must map both sides' setting proper nouns through one substitution table per trial ([PLACE-1], [RACE-1]) before writing the pack.",
+    "consequence": "Per RI-MTH03 M6 no blind TEXT result from wave 1 is fully trusted until the stripping is amended and one pack re-judged."
+   },
+   "trials": [
     {
-      "ref_item": "RI-MTH03",
-      "status": "answered-and-revealed",
-      "pack_ids": [
-        "reports/packs/prose-tics-r2",
-        "reports/packs/prose-tics-voice-r2"
-      ],
-      "seeds": [
-        20260807,
-        20260808
-      ],
-      "trials_total": 20,
-      "trials_correct": 20,
-      "accuracy": 1.0,
-      "p_under_chance": 9.5367e-07,
-      "outcome": "picked-ours-in-all-20-BUT-the-question-form-makes-that-the-correct-answer",
-      "question_form": "provenance ('which is the imitation?'), not RI-MTH03 sec D's quality question",
-      "question_form_consequence": "RI-MTH03 sec E rows picked-reference/picked-ours are not both reachable; the 'if the critic picks ours, distrust the critic' rule is inoperative; M5 second pass is n/a. 20/20 measures DISTINGUISHABILITY, not inferiority.",
-      "answers_written_before_reveal": true,
-      "leak_audit": {
-        "performed": true,
-        "result": "FAIL",
-        "what": "RI-MTH03 sec B text stripping was never applied: zero [REDACTED] tokens in any of the 40 pack files. Un-stripped UESP wiki residue present on the reference side (|OBlink=, |SRlink=, MWlink=Morrowind:, blanked year fields).",
-        "measured": "A rule counting Tamriel setting proper nouns + template residue, choosing the side with fewer as ours, scores 17/20 with 3 ties = 17/17 on every decidable trial, without reading a word.",
-        "clean_subset": [
-          "prose-tics-r2/t10-dialogue",
-          "prose-tics-r2/t12-journal",
-          "prose-tics-voice-r2/t05-dialogue"
-        ],
-        "clean_subset_accuracy": "3/3, p=0.125",
-        "remedy": "build-r2-packs.mjs must map both sides' setting proper nouns through one substitution table per trial ([PLACE-1], [RACE-1]) before writing the pack.",
-        "consequence": "Per RI-MTH03 M6 no blind TEXT result from wave 1 is fully trusted until the stripping is amended and one pack re-judged."
-      },
-      "trials": [
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t01-books",
-          "register": "books",
-          "seed": 20260807,
-          "blind_pick": "A",
-          "confidence": "high",
-          "reveal_ours": "A",
-          "correct": true,
-          "answer_sha256": "4db80afe437109e49efc85d708b845d5fdb90a90994a3ae25949b5aaac6f87a3",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t02-books",
-          "register": "books",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "7ed0302bbc93ed405f3bc75b14539052dc6b8f4d438b2d483dce310886462375",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t03-books",
-          "register": "books",
-          "seed": 20260807,
-          "blind_pick": "A",
-          "confidence": "high",
-          "reveal_ours": "A",
-          "correct": true,
-          "answer_sha256": "49ebb6accbbe06ef64426ac854fd6b99b21483f606be1a27418a944f70b9701d",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t04-books",
-          "register": "books",
-          "seed": 20260807,
-          "blind_pick": "A",
-          "confidence": "high",
-          "reveal_ours": "A",
-          "correct": true,
-          "answer_sha256": "312b0547f330a877dcad4e351807cac46690879844b126cb94e1c45c9d2f7fdd",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t05-books",
-          "register": "books",
-          "seed": 20260807,
-          "blind_pick": "A",
-          "confidence": "high",
-          "reveal_ours": "A",
-          "correct": true,
-          "answer_sha256": "f489c01c46502f5ed2ac5aad650700993c06c6bf9e129cf5abfebe4113832bc8",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t06-dialogue",
-          "register": "dialogue",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "fb88a17897fbca20e2d9e6093c619a3867bbf38ad135fc6ec8f83017dca05865",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t07-dialogue",
-          "register": "dialogue",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "34c5e8165e5cc569f8168d819e1f2f75aa29eda5e78d7933c842db361b5459fd",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t08-dialogue",
-          "register": "dialogue",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "medium",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "6f255d907fe693fd48bc4ec98934b8bb7c85f0cfa15b9f6da7ba27096a08a3ea",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t09-dialogue",
-          "register": "dialogue",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "a1fda21e3fe90cb6456ec19b47f9a4ba798f359e33557a294686095667684efe",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t10-dialogue",
-          "register": "dialogue",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "b22640ba167d73c1ef2bb2e5b0b14914eb555c9a9a6e5c5ca334afa1786c0dc8",
-          "name_channel_clean": true
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t11-journal",
-          "register": "journal",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "c839c2b3c9905a973813eca4a2d22e115c217c1f720b9c81f759705f2498f6c5",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t12-journal",
-          "register": "journal",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "96be128ce50b7b3fdf37af35f507b0869dfc5562e4bb07664737dfe3b7651261",
-          "name_channel_clean": true
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t13-journal",
-          "register": "journal",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "d75408a2edbe53b394224456d5d89f0b407eeab6dacabc19e8f9b0772a5bdc4d",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t14-journal",
-          "register": "journal",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "2865817f23c966c4e053f9055da5d217c125d893afb2c8e27c2243f6198d3203",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-r2",
-          "trial": "r2-t15-journal",
-          "register": "journal",
-          "seed": 20260807,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "7f371987dee937c572fabd717819b83461c0b711870b35c7a5a6fbec90606df5",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-voice-r2",
-          "trial": "voice-t01-dialogue",
-          "register": "dialogue",
-          "seed": 20260808,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "a9c073bf7debcc3fb67fc9fbe46f8311888c4bcfccd0f88271930420b9ab9901",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-voice-r2",
-          "trial": "voice-t02-dialogue",
-          "register": "dialogue",
-          "seed": 20260808,
-          "blind_pick": "A",
-          "confidence": "high",
-          "reveal_ours": "A",
-          "correct": true,
-          "answer_sha256": "128841166db164601fabd20cf2125ec8f3696ba97f53b10bcef1d30994ba2ef2",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-voice-r2",
-          "trial": "voice-t03-dialogue",
-          "register": "dialogue",
-          "seed": 20260808,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "75d80c77919f8b44746a734a4a8075c89cedd3a4af24854e5119e502cec7bae4",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-voice-r2",
-          "trial": "voice-t04-dialogue",
-          "register": "dialogue",
-          "seed": 20260808,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "7650c8d9bd0025c3862b4755ec5f596f466931111982d994061689c59b99ea6e",
-          "name_channel_clean": false
-        },
-        {
-          "pack": "prose-tics-voice-r2",
-          "trial": "voice-t05-dialogue",
-          "register": "dialogue",
-          "seed": 20260808,
-          "blind_pick": "B",
-          "confidence": "high",
-          "reveal_ours": "B",
-          "correct": true,
-          "answer_sha256": "f0d5be8c4fe460c7e32e518504bbf42d5e8bbca84694e95568e3754091870661",
-          "name_channel_clean": true
-        }
-      ]
+     "pack": "prose-tics-r2",
+     "trial": "r2-t01-books",
+     "register": "books",
+     "seed": 20260807,
+     "blind_pick": "A",
+     "confidence": "high",
+     "reveal_ours": "A",
+     "correct": true,
+     "answer_sha256": "4db80afe437109e49efc85d708b845d5fdb90a90994a3ae25949b5aaac6f87a3",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t02-books",
+     "register": "books",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "7ed0302bbc93ed405f3bc75b14539052dc6b8f4d438b2d483dce310886462375",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t03-books",
+     "register": "books",
+     "seed": 20260807,
+     "blind_pick": "A",
+     "confidence": "high",
+     "reveal_ours": "A",
+     "correct": true,
+     "answer_sha256": "49ebb6accbbe06ef64426ac854fd6b99b21483f606be1a27418a944f70b9701d",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t04-books",
+     "register": "books",
+     "seed": 20260807,
+     "blind_pick": "A",
+     "confidence": "high",
+     "reveal_ours": "A",
+     "correct": true,
+     "answer_sha256": "312b0547f330a877dcad4e351807cac46690879844b126cb94e1c45c9d2f7fdd",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t05-books",
+     "register": "books",
+     "seed": 20260807,
+     "blind_pick": "A",
+     "confidence": "high",
+     "reveal_ours": "A",
+     "correct": true,
+     "answer_sha256": "f489c01c46502f5ed2ac5aad650700993c06c6bf9e129cf5abfebe4113832bc8",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t06-dialogue",
+     "register": "dialogue",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "fb88a17897fbca20e2d9e6093c619a3867bbf38ad135fc6ec8f83017dca05865",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t07-dialogue",
+     "register": "dialogue",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "34c5e8165e5cc569f8168d819e1f2f75aa29eda5e78d7933c842db361b5459fd",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t08-dialogue",
+     "register": "dialogue",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "medium",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "6f255d907fe693fd48bc4ec98934b8bb7c85f0cfa15b9f6da7ba27096a08a3ea",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t09-dialogue",
+     "register": "dialogue",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "a1fda21e3fe90cb6456ec19b47f9a4ba798f359e33557a294686095667684efe",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t10-dialogue",
+     "register": "dialogue",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "b22640ba167d73c1ef2bb2e5b0b14914eb555c9a9a6e5c5ca334afa1786c0dc8",
+     "name_channel_clean": true
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t11-journal",
+     "register": "journal",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "c839c2b3c9905a973813eca4a2d22e115c217c1f720b9c81f759705f2498f6c5",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t12-journal",
+     "register": "journal",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "96be128ce50b7b3fdf37af35f507b0869dfc5562e4bb07664737dfe3b7651261",
+     "name_channel_clean": true
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t13-journal",
+     "register": "journal",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "d75408a2edbe53b394224456d5d89f0b407eeab6dacabc19e8f9b0772a5bdc4d",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t14-journal",
+     "register": "journal",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "2865817f23c966c4e053f9055da5d217c125d893afb2c8e27c2243f6198d3203",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-r2",
+     "trial": "r2-t15-journal",
+     "register": "journal",
+     "seed": 20260807,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "7f371987dee937c572fabd717819b83461c0b711870b35c7a5a6fbec90606df5",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-voice-r2",
+     "trial": "voice-t01-dialogue",
+     "register": "dialogue",
+     "seed": 20260808,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "a9c073bf7debcc3fb67fc9fbe46f8311888c4bcfccd0f88271930420b9ab9901",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-voice-r2",
+     "trial": "voice-t02-dialogue",
+     "register": "dialogue",
+     "seed": 20260808,
+     "blind_pick": "A",
+     "confidence": "high",
+     "reveal_ours": "A",
+     "correct": true,
+     "answer_sha256": "128841166db164601fabd20cf2125ec8f3696ba97f53b10bcef1d30994ba2ef2",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-voice-r2",
+     "trial": "voice-t03-dialogue",
+     "register": "dialogue",
+     "seed": 20260808,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "75d80c77919f8b44746a734a4a8075c89cedd3a4af24854e5119e502cec7bae4",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-voice-r2",
+     "trial": "voice-t04-dialogue",
+     "register": "dialogue",
+     "seed": 20260808,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "7650c8d9bd0025c3862b4755ec5f596f466931111982d994061689c59b99ea6e",
+     "name_channel_clean": false
+    },
+    {
+     "pack": "prose-tics-voice-r2",
+     "trial": "voice-t05-dialogue",
+     "register": "dialogue",
+     "seed": 20260808,
+     "blind_pick": "B",
+     "confidence": "high",
+     "reveal_ours": "B",
+     "correct": true,
+     "answer_sha256": "f0d5be8c4fe460c7e32e518504bbf42d5e8bbca84694e95568e3754091870661",
+     "name_channel_clean": true
     }
-  ],
-  "tells": [
-    {
-      "id": "TELL-1",
-      "name": "nobody asks the player anything",
-      "kind": "reader-level, countable, contraction-blind",
-      "measured": "Across the 10 blind dialogue trials: 4 question marks on our side, 76 on the reference's; 0 exclamation marks on ours, 3 on theirs. A rule 'the side with fewer question marks is ours' scores 9/10 with one tie. Live corpus SR-05 24.43 vs 158.83 per 10k = 0.2x.",
-      "quote_ours": "The muster is on the board and it is short again. Orders? / What. This one is working. If you have business, state it.",
-      "quote_ref": "Are you naturally unpleasant? Or do you have to work at it? Because you seem to have a gift for making enemies. / Are you okay? You don't look well...",
-      "why_no_regex_fixes_it": "Asking a question means writing a character who wants something from the player."
-    },
-    {
-      "id": "TELL-2",
-      "name": "every line lands; nothing is allowed to be flat",
-      "kind": "reader-level, invisible to every metric in the corpus",
-      "measured": "Sampled 55-utility.json (34 topics / 102 infos): four consecutive topics, four punchlines. The same closing-reversal shape appears in all three registers across the blind pack.",
-      "quote_ours": "That is not a mistake, dry-one. A mistake happens once. / We are the cuttings, friend. / Nine bands on this river. Six will feed you. Two will take your boat. One will do both and be offended if you mention it.",
-      "quote_ref": "He's a bookworm. Try a bookseller. / It's white and wet. What more can I tell you? / Nothing there but a big rock. Don't know why anyone cares about it.",
-      "why_it_matters": "Morrowind's flat lines are what make its good lines land. 102 punchlines in a row read the same as none. This is what an LLM does when it is trying: optimise every sentence locally and never write a dull one."
-    },
-    {
-      "id": "TELL-3",
-      "name": "repetition of the wrong kind",
-      "kind": "structural",
-      "measured": "Morrowind repeats WHOLE LINES because NPCs share topics (t07-dialogue: the Mossanon reply 3x verbatim, 45 words). We repeat FRAGMENTS IN SHUFFLED PAIRINGS (t10-dialogue: 'Paper. It burns.' x5, 'One of the drowned ones, then.' x5, 'Something with dry feet.' x4, recombined against different partners). Our journal repeats generic boilerplate: 'There is more than one way at this...' twice in one bundle.",
-      "why_it_matters": "A database repeat reads as a shared topic. A fragment recombination reads as a slot machine."
-    }
-  ],
-  "rewrite_judgement": {
-    "verdict": "a real pass that left one new fingerprint \u2014 NOT 'the same fingerprint in a hat', and not clean either",
-    "reads_as": "a person talking, in the mouth; the improvement is genuine",
-    "sample_rule": "first 10 + last 10 records of dialogue-05-voice-topics.jsonl (57 records), positional",
-    "operations_found": [
-      "contract every negation",
-      "split the and-chain at its commas",
-      "promote the trailing 'which is X' clause to a sentence fragment"
-    ],
-    "architecture_unchanged": "the and-chain with an epigrammatic tail is still there; it has been punctuated into pieces, not rewritten",
-    "the_defence_that_stands": "SR-08 (sentence-initial And/But/So) is contraction-BLIND and moved 7.57 -> 26.68 per 10k. A find-and-replace cannot move a contraction-blind rule.",
-    "the_new_tic": {
-      "construction": "sentence-initial 'Which' fragment",
-      "ours": "0.94 per 10k (7 genuine fragments in 74,269 words)",
-      "morrowind": "0.086 per 10k (16 in 1.87M words, and 12 of the 16 are one repeated line about not stealing ebony)",
-      "ratio": "11x corpus-wide; 73x within the rewritten lines alone (12.44 vs 0.17 per 10k raw)",
-      "examples": [
-        "Which is comforting, in a way I can't explain.",
-        "Which isn't like her at all.",
-        "Which is either an accident or the point.",
-        "Which is deliberate."
-      ],
-      "severity": "young tic, absolute count 7 \u2014 not yet an 'eleven', but it arrived THROUGH the fix"
-    },
-    "the_seam": {
-      "what": "the pass over-applied on the lines it touched and the corpus is now bimodal",
-      "sentence_initial_And_per_10k": {
-        "rewritten_lines": 60.65,
-        "our_whole_dialogue": 12.39,
-        "morrowind": 27.47
-      },
-      "contractions_per_10k": {
-        "greetings.json_fixed_at_source": 463.7,
-        "morrowind": 327.8,
-        "50-factions.json_authored_after_the_pass": 25.1,
-        "pre_pass_corpus_baseline": 16.68
-      },
-      "why_it_matters": "greetings.json overshoots the reference by 1.4x while post-pass files sit at the pre-pass baseline. A player crossing from a rewritten line to an untouched one crosses a register boundary, and a seam reads worse than a uniform offset."
-    }
+   ]
+  }
+ ],
+ "tells": [
+  {
+   "id": "TELL-1",
+   "name": "nobody asks the player anything",
+   "kind": "reader-level, countable, contraction-blind",
+   "measured": "Across the 10 blind dialogue trials: 4 question marks on our side, 76 on the reference's; 0 exclamation marks on ours, 3 on theirs. A rule 'the side with fewer question marks is ours' scores 9/10 with one tie. Live corpus SR-05 24.43 vs 158.83 per 10k = 0.2x.",
+   "quote_ours": "The muster is on the board and it is short again. Orders? / What. This one is working. If you have business, state it.",
+   "quote_ref": "Are you naturally unpleasant? Or do you have to work at it? Because you seem to have a gift for making enemies. / Are you okay? You don't look well...",
+   "why_no_regex_fixes_it": "Asking a question means writing a character who wants something from the player."
   },
-  "post_sweep_material": {
-    "files": [
-      "game/data/dialogue/topics/55-utility.json (34 topics / 102 infos)",
-      "game/data/dialogue/topics/50-factions.json (41/106)",
-      "game/data/dialogue/topics/writ-house.json"
-    ],
-    "verdict": "the SAME problem, at full strength, in material written hours after it was diagnosed and fixed elsewhere \u2014 and in one respect worse",
-    "measured_per_10k": {
-      "negations": {
-        "55-utility": 194.1,
-        "50-factions": 167.9,
-        "morrowind": 21.4
-      },
-      "contractions": {
-        "55-utility": 62.9,
-        "50-factions": 25.1,
-        "morrowind": 327.8
-      },
-      "question_marks": {
-        "55-utility": 2.7,
-        "50-factions": 2.5,
-        "morrowind": 158.8
-      },
-      "exclamation_marks": {
-        "55-utility": 0.0,
-        "50-factions": 0.0,
-        "morrowind": 21.3
-      }
-    },
-    "eleven": "back as FILLER, not plot arithmetic. The builder's defence (every residual eleven is a number a player can count) held for the swept files and does NOT hold here: 'eleven years ago', 'Eleven years of leases', 'eleven chairs of wear on the floor', 'asked her eleven times', 'watched for eleven years', 'written eleven of them this year', 'firing it for eleven years'. None is countable. The load-bearing ones (four hundred and eleven; eleven gold a week) are also present and are fine.",
-    "conclusion": "This is no longer a prose problem. It is a missing CI check. -body forms went 2 -> 216 the same way. A constraint fixed once and not enforced by a check that RUNS decays within hours on a busy tree."
+  {
+   "id": "TELL-2",
+   "name": "every line lands; nothing is allowed to be flat",
+   "kind": "reader-level, invisible to every metric in the corpus",
+   "measured": "Sampled 55-utility.json (34 topics / 102 infos): four consecutive topics, four punchlines. The same closing-reversal shape appears in all three registers across the blind pack.",
+   "quote_ours": "That is not a mistake, dry-one. A mistake happens once. / We are the cuttings, friend. / Nine bands on this river. Six will feed you. Two will take your boat. One will do both and be offended if you mention it.",
+   "quote_ref": "He's a bookworm. Try a bookseller. / It's white and wet. What more can I tell you? / Nothing there but a big rock. Don't know why anyone cares about it.",
+   "why_it_matters": "Morrowind's flat lines are what make its good lines land. 102 punchlines in a row read the same as none. This is what an LLM does when it is trying: optimise every sentence locally and never write a dull one."
   },
-  "not_judged": [
-    {
-      "what": "the martial library (~42 books on weapons)",
-      "why": "orchestration/status/W1-LIBRARY-MARTIAL.json reports state=writing, 3 files on disk (17,711 w), next_step = write file 4. Per my declared sampling rule I judged nothing unfinished.",
-      "recommendation": "It is the next pack, and the right one: the first large body of prose written after both diagnoses, hence the only clean test of whether the findings changed the writing rather than the numbers. Build it with the sec 2 name-substitution fix and ask the QUALITY question."
-    }
+  {
+   "id": "TELL-3",
+   "name": "repetition of the wrong kind",
+   "kind": "structural",
+   "measured": "Morrowind repeats WHOLE LINES because NPCs share topics (t07-dialogue: the Mossanon reply 3x verbatim, 45 words). We repeat FRAGMENTS IN SHUFFLED PAIRINGS (t10-dialogue: 'Paper. It burns.' x5, 'One of the drowned ones, then.' x5, 'Something with dry feet.' x4, recombined against different partners). Our journal repeats generic boilerplate: 'There is more than one way at this...' twice in one bundle.",
+   "why_it_matters": "A database repeat reads as a shared topic. A fragment recombination reads as a slot machine."
+  }
+ ],
+ "rewrite_judgement": {
+  "verdict": "a real pass that left one new fingerprint — NOT 'the same fingerprint in a hat', and not clean either",
+  "reads_as": "a person talking, in the mouth; the improvement is genuine",
+  "sample_rule": "first 10 + last 10 records of dialogue-05-voice-topics.jsonl (57 records), positional",
+  "operations_found": [
+   "contract every negation",
+   "split the and-chain at its commas",
+   "promote the trailing 'which is X' clause to a sentence fragment"
   ],
-  "score": {
-    "overall_0_10": 6,
-    "pass_threshold": 7.0,
-    "aggregation": "RI-MTH03 percentage of applicable points: 14/16 = 87.5%; ladder anchors 75%->4, 88%->6, 100%->8",
-    "points": {
-      "pack_built_by_tool": 2,
-      "reveal_key_outside_pack": 2,
-      "answer_before_reveal_hashed": 3,
-      "pick_no_hedging": 2,
-      "three_plus_evidence_bullets": 2,
-      "weakest_point_present": 1,
-      "reveal_outcome_recorded": 2,
-      "second_pass_when_ours": "n/a - question form makes it unreachable",
-      "leak_audit": 0
-    },
-    "band_label": "below bar \u2014 the blind result is admissible but the process defect is recorded",
-    "confidence": "high"
+  "architecture_unchanged": "the and-chain with an epigrammatic tail is still there; it has been punctuated into pieces, not rewritten",
+  "the_defence_that_stands": "SR-08 (sentence-initial And/But/So) is contraction-BLIND and moved 7.57 -> 26.68 per 10k. A find-and-replace cannot move a contraction-blind rule.",
+  "the_new_tic": {
+   "construction": "sentence-initial 'Which' fragment",
+   "ours": "0.94 per 10k (7 genuine fragments in 74,269 words)",
+   "morrowind": "0.086 per 10k (16 in 1.87M words, and 12 of the 16 are one repeated line about not stealing ebony)",
+   "ratio": "11x corpus-wide; 73x within the rewritten lines alone (12.44 vs 0.17 per 10k raw)",
+   "examples": [
+    "Which is comforting, in a way I can't explain.",
+    "Which isn't like her at all.",
+    "Which is either an accident or the point.",
+    "Which is deliberate."
+   ],
+   "severity": "young tic, absolute count 7 — not yet an 'eleven', but it arrived THROUGH the fix"
   },
-  "status": "BELOW BAR",
-  "status_reasons": [
-    "20/20 blind accuracy: our prose is trivially identifiable by a reader, at every length, in every register.",
-    "The RI-MTH03 sec B text stripping was never applied, so a name-counting rule scores 17/17 on decidable trials without reading. The leak audit fails and costs 2 points.",
-    "The packs ask a provenance question, not sec D's quality question, so the protocol's sharpest signal ('if the critic picks ours, distrust the critic') could not fire.",
-    "Everything else in the protocol was executed correctly: tool-built packs, sibling reveal, hashed answers before reveal, no hedging, 5-7 evidence bullets and a non-trivial WEAKEST POINT on all 20."
+  "the_seam": {
+   "what": "the pass over-applied on the lines it touched and the corpus is now bimodal",
+   "sentence_initial_And_per_10k": {
+    "rewritten_lines": 60.65,
+    "our_whole_dialogue": 12.39,
+    "morrowind": 27.47
+   },
+   "contractions_per_10k": {
+    "greetings.json_fixed_at_source": 463.7,
+    "morrowind": 327.8,
+    "50-factions.json_authored_after_the_pass": 25.1,
+    "pre_pass_corpus_baseline": 16.68
+   },
+   "why_it_matters": "greetings.json overshoots the reference by 1.4x while post-pass files sit at the pre-pass baseline. A player crossing from a rewritten line to an untouched one crosses a register boundary, and a seam reads worse than a uniform offset."
+  }
+ },
+ "post_sweep_material": {
+  "files": [
+   "game/data/dialogue/topics/55-utility.json (34 topics / 102 infos)",
+   "game/data/dialogue/topics/50-factions.json (41/106)",
+   "game/data/dialogue/topics/writ-house.json"
   ],
-  "biggest_gap": {
-    "gap_id": "GAP-PROSE-01",
-    "subsystem_path": "dialogue.voice",
-    "what": "Our characters do not address the player. Questions at 0.2x the reference, exclamations at 0.6x, first person at 0.5x, and every line closes on an epigram instead of a want. The world is narrated AT the player by 300 speakers who share one wit and none of whom is curious about them.",
-    "why_it_matters": "Every other finding is downstream of it. The 'eleven' filler, the 'Which' fragments and the punchline uniformity are all symptoms of prose optimised sentence-by-sentence rather than written for a person who wants something. It is also the only tell that no find-and-replace can touch, and the one a reader finds in four lines.",
-    "evidence": [
-      "10 blind dialogue trials: 4 question marks ours vs 76 reference; 0 exclamations ours vs 3.",
-      "A one-token rule 'fewer question marks = ours' scores 9/10 with one tie \u2014 stronger than 'eleven' ever was and contraction-blind.",
-      "SR-05 live: 24.43 vs 158.83 per 10k = 0.2x, essentially unmoved by the 180-line pass (19.26 -> 24.99 -> 24.43).",
-      "55-utility.json and 50-factions.json, both authored AFTER the pass: 2.7 and 2.5 question marks per 10k, zero exclamations across 7,648 words."
-    ],
-    "severity": "high",
-    "remedy": [
-      "GATE IT. check-content.mjs: per dialogue file, question marks >= 40 per 10k and -body forms = 0. Loud warning now, hard fail from wave 2. Without a check that RUNS, section 5 happens again within hours \u2014 it already has, twice.",
-      "FIX THE PACK BEFORE THE NEXT JUDGEMENT. Name-substitute both sides in build-r2-packs.mjs; switch to RI-MTH03 sec D's quality question. One afternoon of tool work, no writing.",
-      "AUTHORING, NOT FIND-AND-REPLACE. For every topic with three infos, one info must be the NPC asking the player something and reacting to what they are. This is the only fix for TELL-1 and TELL-2 and it is the work the martial library should be doing now.",
-      "DO NOT push SR-01 further. The builder is right that the residue lives in keepers, archivists and the court, calibrated formal on purpose. Moving it means making the game worse to move a number."
-    ]
+  "verdict": "the SAME problem, at full strength, in material written hours after it was diagnosed and fixed elsewhere — and in one respect worse",
+  "measured_per_10k": {
+   "negations": {
+    "55-utility": 194.1,
+    "50-factions": 167.9,
+    "morrowind": 21.4
+   },
+   "contractions": {
+    "55-utility": 62.9,
+    "50-factions": 25.1,
+    "morrowind": 327.8
+   },
+   "question_marks": {
+    "55-utility": 2.7,
+    "50-factions": 2.5,
+    "morrowind": 158.8
+   },
+   "exclamation_marks": {
+    "55-utility": 0,
+    "50-factions": 0,
+    "morrowind": 21.3
+   }
   },
-  "secondary_observations": [
-    {
-      "id": "SO-1",
-      "what": "The question form is a protocol bug worth fixing corpus-wide. RI-MTH03 sec D lists the quality question for text/dialogue; both packs substituted a provenance question. A provenance question cannot ever produce sec E's 'picked-ours' outcome, so it silently disables M5 and the CORPUS-CONTRACT sec 6 rule. Amend RI-MTH03 to say the pack builder MUST use the sec D question for its kind, or record the substitution and why."
-    },
-    {
-      "id": "SO-2",
-      "what": "On the five books trials I judged our side to be the better piece of writing four times, and said so in the answers before the reveal. The prose is not placeholder and it is often stronger than the reference; it is simply identifiable. A verdict that reported only '20/20' would misinform the owner."
-    },
-    {
-      "id": "SO-3",
-      "what": "greetings.json now runs 463.7 contractions per 10k against Morrowind's 327.8 \u2014 a 1.4x OVERSHOOT. Fixing a generator at source is high leverage and easy to overrun; it needs the same two-sided band a metric target does, not a one-sided 'more is better'."
-    },
-    {
-      "id": "SO-4",
-      "what": "t08-dialogue was the only medium-confidence call, and its WEAKEST POINT names why: 'You came back. They do not come back. Shut the door.' and 'You again. Good. Sit.' are ours, and they are as alive as anything on the reference side. The writing can do it when it decides to; it decides to about twice in 280 words."
-    }
-  ],
-  "corpus_extended": [],
-  "method_deviations": [
-    {
-      "ref_item": "RI-MTH03",
-      "deviation": "Wrote tools/prose/judge-fragment-openers.mjs mid-run.",
-      "why": "No existing tool measures sentence-initial fragment openers, which is the only way to test whether the 180 rewrites traded one tell for another \u2014 the brief's explicit question. --self-test passes 7/7 including two mutations: a relative-clause -> fragment conversion MUST raise the Which count (it does), and a contraction swap MUST NOT move any opener count (it does not).",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "RI-MTH03",
-      "deviation": "Read orchestration/status/W1-PROSE-TICS.json and W1-LIBRARY-r2.json before answering the packs, as the brief directed, to locate the packs.",
-      "why": "Those files carry aggregate rule statistics but NO per-trial mapping. reports/prose-tics/W1-PROSE-TICS-report.md was never opened at any point, so nothing in the tells or the rewrite judgement restates the builder's own conclusions.",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "RI-MTH03",
-      "deviation": "M5 second pass not performed.",
-      "why": "The question form (provenance, not quality) makes 'the blind pick is ours' the CORRECT answer rather than a win, so M5's harsher-lens re-run has nothing to test. Excluded from the denominator.",
-      "affects_scores": false
-    }
-  ],
-  "path_to_ten": [
-    {
-      "from": 6,
-      "to": 7,
-      "step": "Fix the leak: substitute setting proper nouns on both sides in build-r2-packs.mjs, rebuild, re-judge one pack with a fresh agent. Restores the leak-audit points and makes every blind TEXT result in wave 1 trustworthy.",
-      "cost": "an afternoon of tool work; nothing to write"
-    },
-    {
-      "from": 7,
-      "to": 8,
-      "step": "Ask the QUALITY question, not the provenance question, so RI-MTH03 sec E's picked-ours row is reachable and 'are we worse?' gets an answer instead of 'are we different?'. Judge the martial library with it.",
-      "cost": "one pack rebuild; one fresh judge"
-    },
-    {
-      "from": 8,
-      "to": 9,
-      "step": "Land the question gate in check-content.mjs and bring one whole register \u2014 greetings, or the 34 post-sweep utility topics \u2014 to >= 40 question marks per 10k BY AUTHORING, not by punctuation. Remove the Which-fragment tic while doing it, and flatten the bimodality so rewritten and untouched lines sit in the same band.",
-      "cost": "real writing, about a day per register"
-    },
-    {
-      "from": 9,
-      "to": 10,
-      "step": "The reader test, not the metric: rebuild the pack with the fix and hand a fresh judge the clean-subset trials only. Below 60% accuracy is the only number that means our prose is no longer identifiable, and no statistic in the corpus can substitute for it.",
-      "cost": "everything above, plus the courage to run it and publish a bad result"
-    }
-  ],
-  "self_audit": {
-    "judged_output_not_source": true,
-    "ran_every_assigned_method": true,
-    "blind_done_where_required": true,
-    "answered_before_unblinding": true,
-    "named_exactly_one_gap": true,
-    "remedy_is_buildable": true,
-    "no_prose_edited": true,
-    "no_browser_used": true,
-    "self_audit_note": "I built neither pack and had no hand in the writing I judged, which is the condition the round-1 library verdict failed. All 20 answer.md files existed and were hashed before mapping.json was opened; the hashes are in this file and re-checkable with sha256sum. I did edit files inside the pack directories \u2014 the answer.md files RI-MTH03 M2 requires \u2014 and nothing else. I edited no prose anywhere in game/data. The one thing I cannot prove is that the sec 2 name leak did not influence me; I flagged it in the t01 answer before the reveal and my evidence bullets cite prose features throughout, but the honest number is the 3/3 clean subset, not the 20/20."
+  "eleven": "back as FILLER, not plot arithmetic. The builder's defence (every residual eleven is a number a player can count) held for the swept files and does NOT hold here: 'eleven years ago', 'Eleven years of leases', 'eleven chairs of wear on the floor', 'asked her eleven times', 'watched for eleven years', 'written eleven of them this year', 'firing it for eleven years'. None is countable. The load-bearing ones (four hundred and eleven; eleven gold a week) are also present and are fine.",
+  "conclusion": "This is no longer a prose problem. It is a missing CI check. -body forms went 2 -> 216 the same way. A constraint fixed once and not enforced by a check that RUNS decays within hours on a busy tree."
+ },
+ "not_judged": [
+  {
+   "what": "the martial library (~42 books on weapons)",
+   "why": "orchestration/status/W1-LIBRARY-MARTIAL.json reports state=writing, 3 files on disk (17,711 w), next_step = write file 4. Per my declared sampling rule I judged nothing unfinished.",
+   "recommendation": "It is the next pack, and the right one: the first large body of prose written after both diagnoses, hence the only clean test of whether the findings changed the writing rather than the numbers. Build it with the sec 2 name-substitution fix and ask the QUALITY question."
+  }
+ ],
+ "score": {
+  "overall_0_10": 6,
+  "pass_threshold": 7,
+  "aggregation": "RI-MTH03 percentage of applicable points: 14/16 = 87.5%; ladder anchors 75%->4, 88%->6, 100%->8",
+  "points": {
+   "pack_built_by_tool": 2,
+   "reveal_key_outside_pack": 2,
+   "answer_before_reveal_hashed": 3,
+   "pick_no_hedging": 2,
+   "three_plus_evidence_bullets": 2,
+   "weakest_point_present": 1,
+   "reveal_outcome_recorded": 2,
+   "second_pass_when_ours": "n/a - question form makes it unreachable",
+   "leak_audit": 0
   },
-  "notes": "Full prose verdict, quotations and evidence: corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md. Answers with their evidence bullets are in each trial's answer.md inside the two pack directories."
+  "band_label": "below bar — the blind result is admissible but the process defect is recorded",
+  "confidence": "high"
+ },
+ "status": "BELOW BAR",
+ "status_reasons": [
+  "20/20 blind accuracy: our prose is trivially identifiable by a reader, at every length, in every register.",
+  "The RI-MTH03 sec B text stripping was never applied, so a name-counting rule scores 17/17 on decidable trials without reading. The leak audit fails and costs 2 points.",
+  "The packs ask a provenance question, not sec D's quality question, so the protocol's sharpest signal ('if the critic picks ours, distrust the critic') could not fire.",
+  "Everything else in the protocol was executed correctly: tool-built packs, sibling reveal, hashed answers before reveal, no hedging, 5-7 evidence bullets and a non-trivial WEAKEST POINT on all 20."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-PROSE-01",
+  "subsystem_path": "dialogue.voice",
+  "what": "Our characters do not address the player. Questions at 0.2x the reference, exclamations at 0.6x, first person at 0.5x, and every line closes on an epigram instead of a want. The world is narrated AT the player by 300 speakers who share one wit and none of whom is curious about them.",
+  "why_it_matters": "Every other finding is downstream of it. The 'eleven' filler, the 'Which' fragments and the punchline uniformity are all symptoms of prose optimised sentence-by-sentence rather than written for a person who wants something. It is also the only tell that no find-and-replace can touch, and the one a reader finds in four lines.",
+  "evidence": [
+   "10 blind dialogue trials: 4 question marks ours vs 76 reference; 0 exclamations ours vs 3.",
+   "A one-token rule 'fewer question marks = ours' scores 9/10 with one tie — stronger than 'eleven' ever was and contraction-blind.",
+   "SR-05 live: 24.43 vs 158.83 per 10k = 0.2x, essentially unmoved by the 180-line pass (19.26 -> 24.99 -> 24.43).",
+   "55-utility.json and 50-factions.json, both authored AFTER the pass: 2.7 and 2.5 question marks per 10k, zero exclamations across 7,648 words."
+  ],
+  "severity": "high",
+  "remedy": [
+   "GATE IT. check-content.mjs: per dialogue file, question marks >= 40 per 10k and -body forms = 0. Loud warning now, hard fail from wave 2. Without a check that RUNS, section 5 happens again within hours — it already has, twice.",
+   "FIX THE PACK BEFORE THE NEXT JUDGEMENT. Name-substitute both sides in build-r2-packs.mjs; switch to RI-MTH03 sec D's quality question. One afternoon of tool work, no writing.",
+   "AUTHORING, NOT FIND-AND-REPLACE. For every topic with three infos, one info must be the NPC asking the player something and reacting to what they are. This is the only fix for TELL-1 and TELL-2 and it is the work the martial library should be doing now.",
+   "DO NOT push SR-01 further. The builder is right that the residue lives in keepers, archivists and the court, calibrated formal on purpose. Moving it means making the game worse to move a number."
+  ]
+ },
+ "secondary_observations": [
+  {
+   "id": "SO-1",
+   "what": "The question form is a protocol bug worth fixing corpus-wide. RI-MTH03 sec D lists the quality question for text/dialogue; both packs substituted a provenance question. A provenance question cannot ever produce sec E's 'picked-ours' outcome, so it silently disables M5 and the CORPUS-CONTRACT sec 6 rule. Amend RI-MTH03 to say the pack builder MUST use the sec D question for its kind, or record the substitution and why."
+  },
+  {
+   "id": "SO-2",
+   "what": "On the five books trials I judged our side to be the better piece of writing four times, and said so in the answers before the reveal. The prose is not placeholder and it is often stronger than the reference; it is simply identifiable. A verdict that reported only '20/20' would misinform the owner."
+  },
+  {
+   "id": "SO-3",
+   "what": "greetings.json now runs 463.7 contractions per 10k against Morrowind's 327.8 — a 1.4x OVERSHOOT. Fixing a generator at source is high leverage and easy to overrun; it needs the same two-sided band a metric target does, not a one-sided 'more is better'."
+  },
+  {
+   "id": "SO-4",
+   "what": "t08-dialogue was the only medium-confidence call, and its WEAKEST POINT names why: 'You came back. They do not come back. Shut the door.' and 'You again. Good. Sit.' are ours, and they are as alive as anything on the reference side. The writing can do it when it decides to; it decides to about twice in 280 words."
+  }
+ ],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "ref_item": "RI-MTH03",
+   "deviation": "Wrote tools/prose/judge-fragment-openers.mjs mid-run.",
+   "why": "No existing tool measures sentence-initial fragment openers, which is the only way to test whether the 180 rewrites traded one tell for another — the brief's explicit question. --self-test passes 7/7 including two mutations: a relative-clause -> fragment conversion MUST raise the Which count (it does), and a contraction swap MUST NOT move any opener count (it does not).",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-MTH03",
+   "deviation": "Read orchestration/status/W1-PROSE-TICS.json and W1-LIBRARY-r2.json before answering the packs, as the brief directed, to locate the packs.",
+   "why": "Those files carry aggregate rule statistics but NO per-trial mapping. reports/prose-tics/W1-PROSE-TICS-report.md was never opened at any point, so nothing in the tells or the rewrite judgement restates the builder's own conclusions.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-MTH03",
+   "deviation": "M5 second pass not performed.",
+   "why": "The question form (provenance, not quality) makes 'the blind pick is ours' the CORRECT answer rather than a win, so M5's harsher-lens re-run has nothing to test. Excluded from the denominator.",
+   "affects_scores": false
+  }
+ ],
+ "path_to_ten": [
+  {
+   "from": 6,
+   "to": 7,
+   "step": "Fix the leak: substitute setting proper nouns on both sides in build-r2-packs.mjs, rebuild, re-judge one pack with a fresh agent. Restores the leak-audit points and makes every blind TEXT result in wave 1 trustworthy.",
+   "cost": "an afternoon of tool work; nothing to write"
+  },
+  {
+   "from": 7,
+   "to": 8,
+   "step": "Ask the QUALITY question, not the provenance question, so RI-MTH03 sec E's picked-ours row is reachable and 'are we worse?' gets an answer instead of 'are we different?'. Judge the martial library with it.",
+   "cost": "one pack rebuild; one fresh judge"
+  },
+  {
+   "from": 8,
+   "to": 9,
+   "step": "Land the question gate in check-content.mjs and bring one whole register — greetings, or the 34 post-sweep utility topics — to >= 40 question marks per 10k BY AUTHORING, not by punctuation. Remove the Which-fragment tic while doing it, and flatten the bimodality so rewritten and untouched lines sit in the same band.",
+   "cost": "real writing, about a day per register"
+  },
+  {
+   "from": 9,
+   "to": 10,
+   "step": "The reader test, not the metric: rebuild the pack with the fix and hand a fresh judge the clean-subset trials only. Below 60% accuracy is the only number that means our prose is no longer identifiable, and no statistic in the corpus can substitute for it.",
+   "cost": "everything above, plus the courage to run it and publish a bad result"
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": true,
+  "blind_done_where_required": true,
+  "answered_before_unblinding": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_prose_edited": true,
+  "no_browser_used": true,
+  "self_audit_note": "I built neither pack and had no hand in the writing I judged, which is the condition the round-1 library verdict failed. All 20 answer.md files existed and were hashed before mapping.json was opened; the hashes are in this file and re-checkable with sha256sum. I did edit files inside the pack directories — the answer.md files RI-MTH03 M2 requires — and nothing else. I edited no prose anywhere in game/data. The one thing I cannot prove is that the sec 2 name leak did not influence me; I flagged it in the t01 answer before the reveal and my evidence bullets cite prose features throughout, but the honest number is the 3/3 clean subset, not the 20/20."
+ },
+ "notes": "Full prose verdict, quotations and evidence: corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md. Answers with their evidence bullets are in each trial's answer.md inside the two pack directories."
 }

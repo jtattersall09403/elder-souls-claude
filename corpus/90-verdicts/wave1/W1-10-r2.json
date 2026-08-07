@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "piece_id": "W1-10-r2",
- "piece_title": "Weapon movesets and the answer matrix \u2014 round 2",
+ "piece_title": "Weapon movesets and the answer matrix — round 2",
  "subsystem_paths": [
   "weapon.moveset.slots",
   "weapon.moveset.schema",
@@ -56,7 +56,35 @@
    "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json",
    "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.mjs corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json",
    "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blindpack.mjs"
-  ]
+  ],
+  "depends_on": [
+   "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
+   "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
+   "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
+   "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
+   "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+   "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ari-tdv-ils.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blindpack.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption2.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach-browser.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.mjs",
+   "game/data/combat/movesets",
+   "game/data/combat/movesets/ssw_garrison_sword.json",
+   "game/data/weapons/clip-registry.json"
+  ],
+  "depends_on_note": "derived from 16 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
  },
  "bifurcation": {
   "axis": "not-visual",
@@ -253,7 +281,7 @@
     "M1 sub-probe C: the reachable band is not contiguous on 11 weapons across three classes (S26)"
    ],
    "how_we_lose_hits": [
-    "#4 reach as a declared number rather than a consequence of the bone chain \u2014 HIT"
+    "#4 reach as a declared number rather than a consequence of the bone chain — HIT"
    ],
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json",
@@ -262,7 +290,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-fingerprint.json"
    ],
    "why_not_ten": "A hard fail: eleven weapons across SPR, HLB and AXE have an interior hole in their reachable band, and the arc and reach columns the fingerprint is built from are declared values the rig does not produce (24 of 28 arcs outside tolerance, HLB reach out by 1.42 m).",
-   "path_to_ten": "Extend the weapon hit capsule from the grip to the tip rather than only over the outer hitbox_span_m (game/data/weapons/classes.json \u2014 SPR 0.70 m on a 2.70 m capsule is the direct cause), or give the S26 body corridor the same span; then re-run the C1/C2/C3 sweep and require contiguous == true and reach_min_m <= 0.60 on all 14 classes. Re-derive arc_sweep_deg in game/data/combat/movesets/*.json from the measured rig track instead of authoring it independently, target +/-10 degrees.",
+   "path_to_ten": "Extend the weapon hit capsule from the grip to the tip rather than only over the outer hitbox_span_m (game/data/weapons/classes.json — SPR 0.70 m on a 2.70 m capsule is the direct cause), or give the S26 body corridor the same span; then re-run the C1/C2/C3 sweep and require contiguous == true and reach_min_m <= 0.60 on all 14 classes. Re-derive arc_sweep_deg in game/data/combat/movesets/*.json from the measured rig track instead of authoring it independently, target +/-10 degrees.",
    "ten_by_wave": 2
   },
   {
@@ -291,7 +319,7 @@
     {
      "id": "M6",
      "result": "fail",
-     "value": "runtime-generated motion-only blind pack: grouping 10 of 12 correct \u2014 T4 (GHM) and T5 (TSW) exchanged. Four valid within-group behavioural differences named against a floor of three",
+     "value": "runtime-generated motion-only blind pack: grouping 10 of 12 correct — T4 (GHM) and T5 (TSW) exchanged. Four valid within-group behavioural differences named against a floor of three",
      "threshold": "exactly correct grouping plus >= 3 nameable within-group differences",
      "hard_fail": false,
      "evidence": [
@@ -308,7 +336,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md"
    ],
    "why_not_ten": "The mandatory clustering blind test scores 10 of 12 when the pack is generated at runtime from motion alone: a thrusting sword and a great hammer were not separable on one trace each.",
-   "path_to_ten": "Widen the motion separation between the chain-2 heavy classes and the thrusting classes \u2014 the discriminating axes in the pack were tip vertical range and lateral/radial ratio, and GHM and TSW overlap on both. Target: a runtime motion-only M6 pack grouped 12 of 12.",
+   "path_to_ten": "Widen the motion separation between the chain-2 heavy classes and the thrusting classes — the discriminating axes in the pack were tip vertical range and lateral/radial ratio, and GHM and TSW overlap on both. Target: a runtime motion-only M6 pack grouped 12 of 12.",
    "ten_by_wave": 2
   },
   {
@@ -326,7 +354,7 @@
     {
      "id": "M1",
      "result": "pass",
-     "value": "CFS_live 1.0000 \u2014 20 of 20 contextual instances resolve to their own slot id, their own clip id AND their own frame triple. 0 fallback, 0 absent",
+     "value": "CFS_live 1.0000 — 20 of 20 contextual instances resolve to their own slot id, their own clip id AND their own frame triple. 0 fallback, 0 absent",
      "threshold": "CFS == 1.00",
      "hard_fail": false,
      "evidence": [
@@ -375,12 +403,12 @@
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json"
      ],
-     "note": "Correct by RI-WPN06 C \u2014 shield.bash belongs to the offhand \u2014 but it means a fifth of the headline CFS is measuring the shield rather than the moveset. Reported, not scored as a failure."
+     "note": "Correct by RI-WPN06 C — shield.bash belongs to the offhand — but it means a fifth of the headline CFS is measuring the shield rather than the moveset. Reported, not scored as a failure."
     }
    ],
    "hard_fails": [],
    "how_we_lose_hits": [
-    "#9 M5 skipped as too expensive \u2014 HIT, for the second round running"
+    "#9 M5 skipped as too expensive — HIT, for the second round running"
    ],
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json",
@@ -388,7 +416,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json"
    ],
    "why_not_ten": "M5, the only quality bar among the contextual checks, is unmeasurable for want of the enemy fixtures it needs, and scores 0 fail-closed.",
-   "path_to_ten": "Build the M5 fixture set \u2014 one encounter per contextual slot in which that slot is measurably the best answer \u2014 and run it. Target: every one of the ten contextual slots superior in at least one scripted situation.",
+   "path_to_ten": "Build the M5 fixture set — one encounter per contextual slot in which that slot is measurably the best answer — and run it. Target: every one of the ten contextual slots superior in at least one scripted situation.",
    "ten_by_wave": 2,
    "justification": "CFS_live 1.0000 measured with my own instrument, one run per (weapon, state, frame k) across five enclosing states and four weight tiers: corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json, independently re-measured off the shipping game's per-frame trace in corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json, and the airborne row swept 51 frames in both node and browser in corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-airborne.json. Round 1's 0.0000 with 20 of 20 fallbacks is closed on evidence I produced, not on the builder's."
   },
@@ -424,7 +452,7 @@
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json"
      ],
-     "note": "materialMultiplier() is imported by exactly one file in the tree: game/src/harness/weapons.js \u2014 the harness. 0 of 14 enemy statblocks declares a material."
+     "note": "materialMultiplier() is imported by exactly one file in the tree: game/src/harness/weapons.js — the harness. 0 of 14 enemy statblocks declares a material."
     },
     {
      "id": "M6",
@@ -448,7 +476,7 @@
       "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-motion.json",
       "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json"
      ],
-     "note": "Round 1 reported 'recovery arc exceeds active arc in 7 of 14 movesets'. It is now 21 of 28 clips \u2014 the defect got wider, not narrower. A pose teleport > 1.0 m is an E.2 hard fail."
+     "note": "Round 1 reported 'recovery arc exceeds active arc in 7 of 14 movesets'. It is now 21 of 28 clips — the defect got wider, not narrower. A pose teleport > 1.0 m is an E.2 hard fail."
     }
    ],
    "hard_fails": [
@@ -456,8 +484,8 @@
     "E.2: a 1.026 m single-frame pose teleport on whp_hide_lash r1.1"
    ],
    "how_we_lose_hits": [
-    "#7 no hitstop \u2014 partially: hitstop exists but only on flesh",
-    "#8 materials never authored \u2014 inverted: materials ARE authored and are never read"
+    "#7 no hitstop — partially: hitstop exists but only on flesh",
+    "#8 materials never authored — inverted: materials ARE authored and are never read"
    ],
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
@@ -543,7 +571,7 @@
    "why_not_ten": "M5 is unmeasurable: the O2 dual-wield configuration equips but no off-hand attack was driven to a landed hit, so off.r1.1 / off.r1.2 / off.r2 are declared-only.",
    "path_to_ten": "Drive the three offhand configurations in wpn-loadout-o1/o2/o3 to landed hits and report the off-hand slots' observed clips and frames.",
    "ten_by_wave": 2,
-   "justification": "TDV median 0.8333 over the 12 mirrored slots under RI-WPN06 \u00a7B's own disjunction, no weapon at 0, every melee class carrying at least two two-hand-exclusive slots and 6 of 14 changing chain length with grip: corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json. Confirmed as motion rather than bookkeeping by driving both stances and measuring maximum tip-path divergence of 0.40 m (dagger r1.1) to 3.05 m (UGS r2) in the same artifact. BLOCK_SUCCESS and the full shield taxonomy verified live in corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json."
+   "justification": "TDV median 0.8333 over the 12 mirrored slots under RI-WPN06 §B's own disjunction, no weapon at 0, every melee class carrying at least two two-hand-exclusive slots and 6 of 14 changing chain length with grip: corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-tdv-ils2.json. Confirmed as motion rather than bookkeeping by driving both stances and measuring maximum tip-path divergence of 0.40 m (dagger r1.1) to 3.05 m (UGS r2) in the same artifact. BLOCK_SUCCESS and the full shield taxonomy verified live in corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json."
   }
  ],
  "artifacts": [
@@ -728,10 +756,10 @@
    "assignment_seed": 20260806,
    "blind_pick": "none",
    "blind_rationale": "PICK, recorded in corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-blind-PICKS.md before the key was opened: G1={T2,T6,T7,T12} G2={T1,T4,T9,T11} G3={T3,T5,T8,T10}. G1 separates on peak tip speed 77.5-79.5 m/s against 26.9-40.4, maximum tip radius 2.38-2.78 m against 1.38-1.72, tip vertical range 2.86-3.70 m. The remaining eight split on tip vertical range against lateral/radial ratio, and I recorded at the time that the margin was one trace wide.",
-   "reveal": "SPR={T2,T6,T7,T12} TSW={T1,T5,T9,T11} GHM={T3,T4,T8,T10}. Grouping 10 of 12 \u2014 T4 (GHM) and T5 (TSW) exchanged. SPR recovered exactly; TSW and GHM did not separate. Four of my six named within-group differences are valid within-class pairs, against a floor of three; the two invalid ones are the pairs straddling the swap.",
+   "reveal": "SPR={T2,T6,T7,T12} TSW={T1,T5,T9,T11} GHM={T3,T4,T8,T10}. Grouping 10 of 12 — T4 (GHM) and T5 (TSW) exchanged. SPR recovered exactly; TSW and GHM did not separate. Four of my six named within-group differences are valid within-class pairs, against a floor of three; the two invalid ones are the pairs straddling the swap.",
    "picked": "reference",
    "rerun_triggered": false,
-   "not_possible_reason": "This item's blind protocol is a discrimination test on our own artifacts \u2014 group twelve of our traces, or describe three of our fighting styles \u2014 not an ours-versus-reference pair. There is no reference side to pick, so blind_pick is 'none'. The result is recorded as a measurement (10 of 12 grouped for RI-WPN03 M6, three styles named for RI-WPN02) and the RI-WPN03 result is scored as a FAIL.",
+   "not_possible_reason": "This item's blind protocol is a discrimination test on our own artifacts — group twelve of our traces, or describe three of our fighting styles — not an ours-versus-reference pair. There is no reference side to pick, so blind_pick is 'none'. The result is recorded as a measurement (10 of 12 grouped for RI-WPN03 M6, three styles named for RI-WPN02) and the RI-WPN03 result is scored as a FAIL.",
    "note": "Pack GENERATED AT RUNTIME through setLoadout() plus one input script, carrying player position, yaw, weapon socket world positions, target hp and the input stream and nothing else, per WEAPON-CRITIC 6 as amended by BAR-CRITIQUE-W1-10-R1 R6. Round 1's static pack scored 'exactly correct'; the same test on motion alone does not."
   },
   {
@@ -745,11 +773,11 @@
    ],
    "assignment_seed": 20260806,
    "blind_pick": "none",
-   "blind_rationale": "A: reach 1.46 m, lateral/radial 0.98, 3 hits at a 98 f cadence, most ground covered \u2014 circle close and sweep flat and often. B: reach 2.48 m, peak tip 71.8 m/s, biggest vertical range, least ground covered \u2014 stand still and hold a lane from outside the others' reach. C: shortest reach 1.37 m and the highest peak tip speed in the pack, 81.6 m/s, over the smallest vertical range \u2014 mass through a short arc; get inside and hit once.",
+   "blind_rationale": "A: reach 1.46 m, lateral/radial 0.98, 3 hits at a 98 f cadence, most ground covered — circle close and sweep flat and often. B: reach 2.48 m, peak tip 71.8 m/s, biggest vertical range, least ground covered — stand still and hold a lane from outside the others' reach. C: shortest reach 1.37 m and the highest peak tip speed in the pack, 81.6 m/s, over the smallest vertical range — mass through a short arc; get inside and hit once.",
    "reveal": "A = csw_naga_sickle (CSW), B = hlb_garrison_bill (HLB), C = mce_bog_iron_mace (MCE). Three classes, three nameable styles, from motion alone. PASS.",
    "picked": "reference",
    "rerun_triggered": false,
-   "not_possible_reason": "This item's blind protocol is a discrimination test on our own artifacts \u2014 group twelve of our traces, or describe three of our fighting styles \u2014 not an ours-versus-reference pair. There is no reference side to pick, so blind_pick is 'none'. The result is recorded as a measurement (10 of 12 grouped for RI-WPN03 M6, three styles named for RI-WPN02) and the RI-WPN03 result is scored as a FAIL.",
+   "not_possible_reason": "This item's blind protocol is a discrimination test on our own artifacts — group twelve of our traces, or describe three of our fighting styles — not an ours-versus-reference pair. There is no reference side to pick, so blind_pick is 'none'. The result is recorded as a measurement (10 of 12 grouped for RI-WPN03 M6, three styles named for RI-WPN02) and the RI-WPN03 result is scored as a FAIL.",
    "note": "Also runtime-generated and design-column-free. This half of the blind protocol survives the amended standard."
   }
  ],
@@ -817,7 +845,7 @@
     {
      "id": "C1",
      "result": "fail",
-     "note": "This area's declared seam crossing is RI-WPN05 B's material system \u2014 a lore fact that is also a combat answer. It is authored on the weapon side (8 materials, per-damage-type multipliers, class bypass, deterministic deflection) and it is read by nothing. 0 of 14 enemy statblocks in game/data/combat/enemies/ declares a material, and setting every material multiplier to 0.01 changes damage by 0."
+     "note": "This area's declared seam crossing is RI-WPN05 B's material system — a lore fact that is also a combat answer. It is authored on the weapon side (8 materials, per-damage-type multipliers, class bypass, deterministic deflection) and it is read by nothing. 0 of 14 enemy statblocks in game/data/combat/enemies/ declares a material, and setting every material multiplier to 0.01 changes damage by 0."
     }
    ],
    "evidence": [
@@ -838,15 +866,15 @@
    "RI-WPN05": 1,
    "RI-WPN06": 1
   },
-  "band_label": "Wrong shape in two places that matter \u2014 the movesets now reach the game and behave as declared in the slot dimension, and the two dimensions the player feels through the hitbox and through impact are still not connected to anything.",
+  "band_label": "Wrong shape in two places that matter — the movesets now reach the game and behave as declared in the slot dimension, and the two dimensions the player feels through the hitbox and through impact are still not connected to anything.",
   "confidence": "high"
  },
  "status": "FAIL",
  "status_reasons": [
-  "HARD FAIL, RI-WPN02 M1 sub-probe C / ARBITRATION S26: the reachable band is not contiguous. Eleven weapons across SPR, HLB and AXE have an interior dead band \u2014 spr_drowned_harpoon cannot hit a stationary target between 1.30 m and 1.60 m. Confirmed in node and in the browser with identical vectors. SCORING 1.1 caps the item at 2 and the aggregation is min.",
-  "HARD FAIL, RI-WPN05 M1/M2/M6 under the CONSUMPTION check: the impact and material model has no world-side consumer. Five of six perturbations of the hitstop grid, the material multipliers, the knockback table and the deflection multiplier are INERT; only the flesh column is read, hard-coded at game/src/combat/moves.js:166; and materialMultiplier / deflects / knockbackFor / victimHitstopFor are imported by exactly one file in the tree \u2014 the harness.",
+  "HARD FAIL, RI-WPN02 M1 sub-probe C / ARBITRATION S26: the reachable band is not contiguous. Eleven weapons across SPR, HLB and AXE have an interior dead band — spr_drowned_harpoon cannot hit a stationary target between 1.30 m and 1.60 m. Confirmed in node and in the browser with identical vectors. SCORING 1.1 caps the item at 2 and the aggregation is min.",
+  "HARD FAIL, RI-WPN05 M1/M2/M6 under the CONSUMPTION check: the impact and material model has no world-side consumer. Five of six perturbations of the hitstop grid, the material multipliers, the knockback table and the deflection multiplier are INERT; only the flesh column is read, hard-coded at game/src/combat/moves.js:166; and materialMultiplier / deflects / knockbackFor / victimHitstopFor are imported by exactly one file in the tree — the harness.",
   "HARD FAIL, RI-WPN05 E.2: whp_hide_lash r1.1 displaces a weapon socket 1.026 m in a single frame, which E.2 makes a pose teleport.",
-  "FAIL, RI-WPN02 M3: 24 of 28 driven clips are outside the +/-10 degree arc tolerance, measured three ways. Thrusting classes do not thrust on the rig \u2014 TSW r1.1 declares 6.5 degrees and sweeps 69.6.",
+  "FAIL, RI-WPN02 M3: 24 of 28 driven clips are outside the +/-10 degree arc tolerance, measured three ways. Thrusting classes do not thrust on the rig — TSW r1.1 declares 6.5 degrees and sweeps 69.6.",
   "FAIL, RI-WPN02 M2 on the observed column: D_min 1.3934 against a 1.6 bar, and 10 of 15 classes have a neighbour closer than 1.6 against a requirement of at most 2.",
   "FAIL, RI-WPN03 M6: the mandatory clustering blind test scores 10 of 12 when the pack is generated at runtime from motion alone.",
   "AR-3 fail / seam_sterile: this area's only declared seam crossing is authored and unread.",
@@ -855,8 +883,8 @@
  "biggest_gap": {
   "gap_id": "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
   "subsystem_path": "weapon.feel.material",
-  "what": "The RI-WPN05 impact and material model is a data island, exactly as the 87 movesets were in round 1. Five of six perturbations of the shipped tables change nothing in the fight: setting every non-flesh cell of the 5x7 attacker hitstop grid to 99 f, setting every material damage multiplier to 0.01, setting every knockback value to 9 m, and setting the deflection multiplier to 20x all produce a byte-identical fight (dmg 118, hit at frame 32, hitstop held 3 frames). Only the flesh column is read, and it is read from a hard-coded `.flesh` lookup at game/src/combat/moves.js:166. MovesetLibrary.materialMultiplier, .deflects, .knockbackFor and .victimHitstopFor are imported by exactly one file in the repository \u2014 game/src/harness/weapons.js, the harness. And there is nothing for them to apply to: 0 of the 14 enemy statblocks in game/data/combat/enemies/ declares a material at all. The hard-coded lookup is game/src/combat/moves.js:166 \u2014 `hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[moveset.weight_tier] || {}).flesh || 6` \u2014 and a grep for materialMultiplier|deflects|knockbackFor|victimHitstopFor across game/src/ returns only game/src/harness/weapons.js.",
-  "why_it_matters": "This is round 1's verdict repeating itself one layer down, and it is invisible for the same reason: the builder fixed the half of the piece the round-1 gap named and the impact half was never examined, so every probe that reads the library reports a healthy 5x7 grid. From the player's chair a mace, an axe and a spear hit a stone golem, a chitin-shelled beast and a Hist-bonded plant creature with identical feedback \u2014 same hitstop, same knockback, no deflection, no damage-type advantage. The material system is also this area's ONLY seam crossing under AR-3: a lore fact (root-golems are stone, the Hist-bonded are plant) that is supposed to be a combat answer a merchant can sell you. Unread, the crossing does not exist, and the weapon area becomes internally excellent and externally sterile.",
+  "what": "The RI-WPN05 impact and material model is a data island, exactly as the 87 movesets were in round 1. Five of six perturbations of the shipped tables change nothing in the fight: setting every non-flesh cell of the 5x7 attacker hitstop grid to 99 f, setting every material damage multiplier to 0.01, setting every knockback value to 9 m, and setting the deflection multiplier to 20x all produce a byte-identical fight (dmg 118, hit at frame 32, hitstop held 3 frames). Only the flesh column is read, and it is read from a hard-coded `.flesh` lookup at game/src/combat/moves.js:166. MovesetLibrary.materialMultiplier, .deflects, .knockbackFor and .victimHitstopFor are imported by exactly one file in the repository — game/src/harness/weapons.js, the harness. And there is nothing for them to apply to: 0 of the 14 enemy statblocks in game/data/combat/enemies/ declares a material at all. The hard-coded lookup is game/src/combat/moves.js:166 — `hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[moveset.weight_tier] || {}).flesh || 6` — and a grep for materialMultiplier|deflects|knockbackFor|victimHitstopFor across game/src/ returns only game/src/harness/weapons.js.",
+  "why_it_matters": "This is round 1's verdict repeating itself one layer down, and it is invisible for the same reason: the builder fixed the half of the piece the round-1 gap named and the impact half was never examined, so every probe that reads the library reports a healthy 5x7 grid. From the player's chair a mace, an axe and a spear hit a stone golem, a chitin-shelled beast and a Hist-bonded plant creature with identical feedback — same hitstop, same knockback, no deflection, no damage-type advantage. The material system is also this area's ONLY seam crossing under AR-3: a lore fact (root-golems are stone, the Hist-bonded are plant) that is supposed to be a combat answer a merchant can sell you. Unread, the crossing does not exist, and the weapon area becomes internally excellent and externally sterile.",
   "evidence": [
    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
    "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json"
@@ -865,10 +893,10 @@
   "remedy": {
    "action": "Make the fight read the material at hit time, and give it a material to read.",
    "targets": [
-    "game/data/combat/enemies/*.json \u2014 add a `material` (one of flesh, chitin, stone, metal, plant, water, wood) to all 14 statblocks; the lore assignment is already written down in RI-WPN05 B.",
-    "game/src/combat/resolve.js \u2014 at the frame a hit resolves, look the victim's material up and call MovesetLibrary.hitstopFor / victimHitstopFor / knockbackFor / materialMultiplier / deflects, instead of consuming the pre-baked move.hitstop_frames.",
-    "game/src/combat/moves.js:165-166 \u2014 stop collapsing the per-slot hitstop table to its flesh column; pass hitstop_f_table through to the resolver, which currently stores it and never reads it.",
-    "game/src/sim/record.js \u2014 expose the resolved material and the resolved hitstop on the impact record so the grid is observable rather than inferred."
+    "game/data/combat/enemies/*.json — add a `material` (one of flesh, chitin, stone, metal, plant, water, wood) to all 14 statblocks; the lore assignment is already written down in RI-WPN05 B.",
+    "game/src/combat/resolve.js — at the frame a hit resolves, look the victim's material up and call MovesetLibrary.hitstopFor / victimHitstopFor / knockbackFor / materialMultiplier / deflects, instead of consuming the pre-baked move.hitstop_frames.",
+    "game/src/combat/moves.js:165-166 — stop collapsing the per-slot hitstop table to its flesh column; pass hitstop_f_table through to the resolver, which currently stores it and never reads it.",
+    "game/src/sim/record.js — expose the resolved material and the resolved hitstop on the impact record so the grid is observable rather than inferred."
    ],
    "acceptance": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs reports 6 of 6 CONSUMED; the 5x7 attacker hitstop grid is recoverable from traces against seven material-carrying dummies with every cell differing from the flesh column where RI-WPN05 A says it should; ILS >= 0.80 on the observed column; and AR-3 seam_sterile becomes false with a driven demonstration (a mace beating a stone enemy that a rapier cannot).",
    "ref_item": "RI-WPN05",
@@ -877,7 +905,7 @@
  },
  "secondary_observations": [
   {
-   "what": "The interior dead bands are attributable to this piece, and the W1-09 round-3 builder's attribution is correct. The gap moves with root_dz_m (0 -> none, 0.20 -> [0.95,1.45], 0.575 -> [1.30,1.60], 0.80 -> [1.50,1.70], 1.20 -> none) and with the clip's capsule_length_m, both W1-10-owned. The mechanism is game/data/weapons/classes.json's hitbox_span_m: SPR declares 0.70 m of hit volume on a 2.70 m capsule, so only the outer quarter of the shaft can damage, and a target standing in the shaft band is inside the blade and outside the S26 body corridor. It is not confined to spear and halberd \u2014 axe_bog_cleaver has one too, and the same span values are why AXE, GHM, HLB, MCE and SPR all fail reach_min_m <= 0.60.",
+   "what": "The interior dead bands are attributable to this piece, and the W1-09 round-3 builder's attribution is correct. The gap moves with root_dz_m (0 -> none, 0.20 -> [0.95,1.45], 0.575 -> [1.30,1.60], 0.80 -> [1.50,1.70], 1.20 -> none) and with the clip's capsule_length_m, both W1-10-owned. The mechanism is game/data/weapons/classes.json's hitbox_span_m: SPR declares 0.70 m of hit volume on a 2.70 m capsule, so only the outer quarter of the shaft can damage, and a target standing in the shaft band is inside the blade and outside the S26 body corridor. It is not confined to spear and halberd — axe_bog_cleaver has one too, and the same span values are why AXE, GHM, HLB, MCE and SPR all fail reach_min_m <= 0.60.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-gap-attribution.json",
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
@@ -885,14 +913,14 @@
    "subsystem_path": "weapon.class.reach"
   },
   {
-   "what": "Declared reach is not the reach the game produces, and the fingerprint is built on the declared column. HLB declares 2.865 m and its blade reaches 1.45 m; CGS declares 2.75 and reaches 1.40; TSW declares 2.087 and reaches 0.95; GSW 2.741 -> 1.75; UGS 3.033 -> 2.35. The tolerance is +/-0.10 m. Measured melee blade-reach spread is 1.90 m against a required 2.5, and threat_m spread 2.05 m against a required 3.0 \u2014 both PASS on the declared numbers and FAIL on the measured ones.",
+   "what": "Declared reach is not the reach the game produces, and the fingerprint is built on the declared column. HLB declares 2.865 m and its blade reaches 1.45 m; CGS declares 2.75 and reaches 1.40; TSW declares 2.087 and reaches 0.95; GSW 2.741 -> 1.75; UGS 3.033 -> 2.35. The tolerance is +/-0.10 m. Measured melee blade-reach spread is 1.90 m against a required 2.5, and threat_m spread 2.05 m against a required 3.0 — both PASS on the declared numbers and FAIL on the measured ones.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-reach.json"
    ],
    "subsystem_path": "weapon.class.reach"
   },
   {
-   "what": "Round 1 observed 'recovery arc exceeds active arc in 7 of 14 movesets'. It is now 21 of 28 driven clips, and in several cases by a wide margin \u2014 MCE r1.1 sweeps 114 degrees while its hitbox is live and 330 after it switches off; UGS r2 sweeps 130 active and 341 in recovery. The visible swing and the damaging window have come apart, which is a legibility defect a player reads as a hit that should have landed.",
+   "what": "Round 1 observed 'recovery arc exceeds active arc in 7 of 14 movesets'. It is now 21 of 28 driven clips, and in several cases by a wide margin — MCE r1.1 sweeps 114 degrees while its hitbox is live and 330 after it switches off; UGS r2 sweeps 130 active and 341 in recovery. The visible swing and the damaging window have come apart, which is a legibility defect a player reads as a hit that should have landed.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-arc.json"
    ],
@@ -921,7 +949,7 @@
    "subsystem_path": "weapon.context.aerial"
   },
   {
-   "what": "Four of the twenty CFS instances \u2014 the whole BLOCK row \u2014 resolve to shield.bash playing shield_bash_medium, byte-identically on all four probe weapons. That is correct under RI-WPN06 C, because shield.bash belongs to the offhand, but it means a fifth of the headline contextual score is measuring the shield rather than the weapon. Worth a companion clause in RI-WPN04.",
+   "what": "Four of the twenty CFS instances — the whole BLOCK row — resolve to shield.bash playing shield_bash_medium, byte-identically on all four probe weapons. That is correct under RI-WPN06 C, because shield.bash belongs to the offhand, but it means a fifth of the headline contextual score is measuring the shield rather than the weapon. Worth a companion clause in RI-WPN04.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-wgrid.json"
    ],
@@ -935,7 +963,7 @@
    "subsystem_path": "weapon.class.reach"
   },
   {
-   "what": "getBuildInfo().piece still reads 'W1-09 \u2014 combat core' and version '0.2.0-w1-09'. The build stamp was not advanced in round 1 and has not been advanced in round 2.",
+   "what": "getBuildInfo().piece still reads 'W1-09 — combat core' and version '0.2.0-w1-09'. The build stamp was not advanced in round 1 and has not been advanced in round 2.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-browser.json"
    ],
@@ -985,7 +1013,7 @@
   },
   {
    "what": "Most measurement was taken through tools/lib/combat-node.mjs rather than the browser.",
-   "why": "Speed \u2014 the reach sweep alone is 2 716 fights. Parity was verified first, not assumed: 51 of 51 airborne cells, 16 of 16 contextual clip lengths and the six browser reach vectors all agree exactly. Every headline finding was re-confirmed in headless Chromium."
+   "why": "Speed — the reach sweep alone is 2 716 fights. Parity was verified first, not assumed: 51 of 51 airborne cells, 16 of 16 contextual clip lengths and the six browser reach vectors all agree exactly. Every headline finding was re-confirmed in headless Chromium."
   },
   {
    "what": "ILS is reported under a uniqueness reading rather than RI-WPN05 F's literal text.",
@@ -1036,7 +1064,7 @@
  "self_audit": {
   "found_a_gap": true,
   "escalation_ladder_applied": true,
-  "notes": "Ladder rungs used, in order. (1) Ran the seven headline numbers with my own instruments and found CFS_live, equipped_ok, ARI, TDV, Dg_min and the moveset CONSUMPTION check all genuinely passing \u2014 round 2's headline claims survive independent measurement. (2) Changed the sample, per WEAPON-CRITIC 8's known good rung: went to the classes with the largest lunges and the smallest hit spans rather than the ones the probes demo, which is where the S26 contiguity hard fail was. (3) Stopped trusting the declared column and measured arc, reach and root off the rig, which is where 24 of 28 arc mismatches and the 1.42 m halberd reach error were. (4) Re-ran the round-1 gap's own detector one layer down \u2014 asked which OTHER model in this piece is imported only by the harness \u2014 which is where the biggest gap was. Two builder-authored instruments (tools/weapons/verify-frames.mjs and tools/harness/wpn-census-live.mjs) were deliberately never executed; every number in this verdict comes from a tool written for this review or from the game itself.",
+  "notes": "Ladder rungs used, in order. (1) Ran the seven headline numbers with my own instruments and found CFS_live, equipped_ok, ARI, TDV, Dg_min and the moveset CONSUMPTION check all genuinely passing — round 2's headline claims survive independent measurement. (2) Changed the sample, per WEAPON-CRITIC 8's known good rung: went to the classes with the largest lunges and the smallest hit spans rather than the ones the probes demo, which is where the S26 contiguity hard fail was. (3) Stopped trusting the declared column and measured arc, reach and root off the rig, which is where 24 of 28 arc mismatches and the 1.42 m halberd reach error were. (4) Re-ran the round-1 gap's own detector one layer down — asked which OTHER model in this piece is imported only by the harness — which is where the biggest gap was. Two builder-authored instruments (tools/weapons/verify-frames.mjs and tools/harness/wpn-census-live.mjs) were deliberately never executed; every number in this verdict comes from a tool written for this review or from the game itself.",
   "instruments_written": 12,
   "builder_tools_used": [],
   "judged_output_not_source": true,
@@ -1046,7 +1074,7 @@
   "remedy_is_buildable": true,
   "no_banned_reasoning_used": true,
   "escalation_ladder_used_if_gap_seemed_small": true,
-  "self_audit_note": "ran_every_assigned_method is FALSE and this is why. Four methods were not run and each is recorded as a check with result 'unmeasurable', scored 0 fail-closed per CRITIC-DOCTRINE \u00a77.3 rather than skipped: RI-WPN04 M5 (situational superiority \u2014 no fixture set exists in which a contextual slot can be shown to be the right answer; unrun in round 1 too, and BAR-CRITIQUE-W1-10-R1 \u00a7H2 names it as the one quality bar in this area that has never been run); RI-WPN06 M5 (the O2 dual-wield configuration equips but was not driven to a landed off-hand hit); RI-WPN03 M3's SEP (the F87 fingerprint was not recomputed under the amended D5, and round 1's 1.4469 is not carried over because BAR-CRITIQUE-W1-10-R1 \u00a7R1 shows it was read off a reach column with 85% of its discrimination normalised away \u2014 reported as NOT RUN rather than as a stale number); and RI-WPN07's RVS plus RI-WPN03 \u00a7D.3's Chg_min, both of which are items created by the concurrent bar-critic pass DURING this review and after the build was made \u2014 recorded as wave-2 debts per the orchestrator's instruction not to retro-penalise. None of the four affects the verdict, which is decided by three hard fails that were measured: S26 contiguity, the impact/material model's absent consumer, and the E.2 pose teleport. The verdict is provisional to that extent and the four gaps are named so a successor runs them rather than rediscovers them."
+  "self_audit_note": "ran_every_assigned_method is FALSE and this is why. Four methods were not run and each is recorded as a check with result 'unmeasurable', scored 0 fail-closed per CRITIC-DOCTRINE §7.3 rather than skipped: RI-WPN04 M5 (situational superiority — no fixture set exists in which a contextual slot can be shown to be the right answer; unrun in round 1 too, and BAR-CRITIQUE-W1-10-R1 §H2 names it as the one quality bar in this area that has never been run); RI-WPN06 M5 (the O2 dual-wield configuration equips but was not driven to a landed off-hand hit); RI-WPN03 M3's SEP (the F87 fingerprint was not recomputed under the amended D5, and round 1's 1.4469 is not carried over because BAR-CRITIQUE-W1-10-R1 §R1 shows it was read off a reach column with 85% of its discrimination normalised away — reported as NOT RUN rather than as a stale number); and RI-WPN07's RVS plus RI-WPN03 §D.3's Chg_min, both of which are items created by the concurrent bar-critic pass DURING this review and after the build was made — recorded as wave-2 debts per the orchestrator's instruction not to retro-penalise. None of the four affects the verdict, which is decided by three hard fails that were measured: S26 contiguity, the impact/material model's absent consumer, and the E.2 pose teleport. The verdict is provisional to that extent and the four gaps are named so a successor runs them rather than rediscovers them."
  },
  "notes": {
   "seam_sterile": true,
@@ -1083,12 +1111,12 @@
     "observed": null,
     "pass": ">= 1.4",
     "hard_fail": "< 1.0",
-    "verdict": "NOT RUN \u2014 the F87 fingerprint was not recomputed under the amended D5; recorded as an incomplete number rather than carried over from round 1's 1.4469, which BAR-CRITIQUE-W1-10-R1 R1 shows was read off a broken reach column",
+    "verdict": "NOT RUN — the F87 fingerprint was not recomputed under the amended D5; recorded as an incomplete number rather than carried over from round 1's 1.4469, which BAR-CRITIQUE-W1-10-R1 R1 shows was read off a broken reach column",
     "artifact": ""
    },
    "CFS": {
-    "declared": 1.0,
-    "observed": 1.0,
+    "declared": 1,
+    "observed": 1,
     "pass": "= 1.00",
     "hard_fail": "< 1.00",
     "verdict": "PASS",
@@ -1105,10 +1133,10 @@
    },
    "ILS": {
     "declared": 0.7143,
-    "observed": 0.0,
+    "observed": 0,
     "pass": ">= 0.80",
     "hard_fail": "< 0.40",
-    "verdict": "HARD FAIL \u2014 unmeasurable => 0; the fight reads one cell of the 35",
+    "verdict": "HARD FAIL — unmeasurable => 0; the fight reads one cell of the 35",
     "artifact": "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json"
    },
    "Chg_min": {
@@ -1116,7 +1144,7 @@
     "observed": null,
     "pass": ">= 0.15",
     "hard_fail": "none in wave 1",
-    "verdict": "NOT RUN \u2014 the item was created during this review",
+    "verdict": "NOT RUN — the item was created during this review",
     "artifact": ""
    },
    "RVS": {
@@ -1124,25 +1152,25 @@
     "observed": null,
     "pass": ">= 0.70",
     "hard_fail": "< 0.40",
-    "verdict": "NOT RUN \u2014 RI-WPN07 was created during this review; recorded as a wave-2 debt, not scored",
+    "verdict": "NOT RUN — RI-WPN07 was created during this review; recorded as a wave-2 debt, not scored",
     "artifact": ""
    }
   },
   "bar_pressure": {
-   "q1_is_a_passing_score_the_thing_the_user_asked_for": "Not yet, and the honest answer changed shape this round. Taken at random, hlb_saltcutter differs from its class baseline by a longer sweep and a 0.495 m lunge \u2014 and a player cannot feel either, because the halberd's blade reaches 1.45 m against a declared 2.865 and has a hole in the middle of the band. The user asked for weapons that are subtly unique in the hand. The roster IS subtly unique on paper and the two channels through which a player would feel it \u2014 where the weapon reaches, and what it feels like when it lands \u2014 are the two that are broken. The bar is right; it is now measuring the right thing for the first time, which is why the score fell rather than rose.",
+   "q1_is_a_passing_score_the_thing_the_user_asked_for": "Not yet, and the honest answer changed shape this round. Taken at random, hlb_saltcutter differs from its class baseline by a longer sweep and a 0.495 m lunge — and a player cannot feel either, because the halberd's blade reaches 1.45 m against a declared 2.865 and has a hole in the middle of the band. The user asked for weapons that are subtly unique in the hand. The roster IS subtly unique on paper and the two channels through which a player would feel it — where the weapon reaches, and what it feels like when it lands — are the two that are broken. The bar is right; it is now measuring the right thing for the first time, which is why the score fell rather than rose.",
    "q2_which_threshold_does_no_work": "SEP. Its within-class ceiling is dominated by whichever pair of same-class weapons happens to share the most clips, and the SHARE cap already bounds that from above, so SEP is largely a restatement of ARI with a different denominator. It has never been the deciding number in either round. Proposed replacement: report SEP over the OBSERVED F87 only, and add a companion floor on the second-nearest between-class distance so one well-separated pair cannot carry it.",
-   "q3_which_threshold_is_gameable_and_how_cheaply": "arc_sweep_deg, and this round proves it is not hypothetical \u2014 it is already wrong. D6 and G3 are read from a declared JSON field that 24 of 28 clips do not honour, so `sed -i 's/\"arc_sweep_deg\": 19/\"arc_sweep_deg\": 340/'` across the SPR movesets would move D_min, Dg_min and the M5 shape census without changing a frame of animation. The companion check is already written for reach and must be extended: RI-WPN02 M3 must read arc from the hitbox records, never from the declaration, exactly as M1-C now reads reach. That is my concrete proposed amendment.",
+   "q3_which_threshold_is_gameable_and_how_cheaply": "arc_sweep_deg, and this round proves it is not hypothetical — it is already wrong. D6 and G3 are read from a declared JSON field that 24 of 28 clips do not honour, so `sed -i 's/\"arc_sweep_deg\": 19/\"arc_sweep_deg\": 340/'` across the SPR movesets would move D_min, Dg_min and the M5 shape census without changing a frame of animation. The companion check is already written for reach and must be extended: RI-WPN02 M3 must read arc from the hitbox records, never from the declaration, exactly as M1-C now reads reach. That is my concrete proposed amendment.",
    "q4_the_tenth_hour_version": "A player ten hours in complains that swings that visually connect do not damage. Nothing in the seven numbers asks how often a swing at a stationary target at ordinary spacing lands, and the blind pack answered it by accident: 0 to 4 hits from about ten scripted attacks per trace, and two of twelve traces landing nothing at all. Proposed new measure, `CR` (connect rate): the fraction of scripted r1.1 presses that damage a stationary dummy placed at the class's own declared reach minus 0.20 m. Floor 0.95. It is one line of harness work and it would have failed this build in round 1.",
-   "q5_is_the_roster_the_right_size": "Yes, and more confidently than round 1 could say it. ARI 0.4533 sits mid-band under the amended floor, the share histogram tops out at four, and the runtime motion-only blind pack \u2014 a far harder test than round 1's \u2014 still separated one class of three perfectly and named four real within-class behavioural differences. The remedy is not fewer weapons. It is the same weapons with hit volumes that match their blades and impact that reads the thing it hits.",
+   "q5_is_the_roster_the_right_size": "Yes, and more confidently than round 1 could say it. ARI 0.4533 sits mid-band under the amended floor, the share histogram tops out at four, and the runtime motion-only blind pack — a far harder test than round 1's — still separated one class of three perfectly and named four real within-class behavioural differences. The remedy is not fewer weapons. It is the same weapons with hit volumes that match their blades and impact that reads the thing it hits.",
    "proposed_amendment": {
     "item": "RI-WPN02",
     "section": "D, dimension table, row D6",
-    "replacement_text": "D6 `arc_sweep_deg` \u2014 total angular travel of the hitbox capsule's midpoint about the player's Y axis across the ACTIVE window, **measured from the hitbox records of a driven attack and never read from the moveset declaration**, computed with a near-axis guard (frames whose horizontal radius from the root is below 0.20 m are excluded) and cross-checked against the tip's angular travel; where the two estimators differ by more than 15 degrees the slot is reported as unmeasurable rather than scored. The same discipline S26 imposes on reach applies here: a geometry dimension inferred from a declared value is not a measurement. **FAIL** if more than 2 of the 14 melee class baselines' `r1.1` arcs differ from their declaration by more than 10 degrees \u2014 this build measures 24 of 28 driven clips outside tolerance while the declared column passes every check."
+    "replacement_text": "D6 `arc_sweep_deg` — total angular travel of the hitbox capsule's midpoint about the player's Y axis across the ACTIVE window, **measured from the hitbox records of a driven attack and never read from the moveset declaration**, computed with a near-axis guard (frames whose horizontal radius from the root is below 0.20 m are excluded) and cross-checked against the tip's angular travel; where the two estimators differ by more than 15 degrees the slot is reported as unmeasurable rather than scored. The same discipline S26 imposes on reach applies here: a geometry dimension inferred from a declared value is not a measurement. **FAIL** if more than 2 of the 14 melee class baselines' `r1.1` arcs differ from their declaration by more than 10 degrees — this build measures 24 of 28 driven clips outside tolerance while the declared column passes every check."
    },
    "second_proposed_amendment": {
     "item": "RI-WPN05",
     "section": "F",
-    "replacement_text": "`ILS` is computed over the 35 cells by requiring that each cell's observable triple (attacker_hitstop, camera_shake_peak, knockback_m) be **unique across the grid**; a cell whose triple is shared with any other cell is not recovered. The previous wording specified a nearest-neighbour classifier, which over 35 distinct points recovers zero by construction and made the headline number unrunnable as written. `ILS` is scored on the OBSERVED grid only \u2014 a grid computed by calling the library rather than by reading it out of a trace against a material-carrying target is `unmeasurable => 0`."
+    "replacement_text": "`ILS` is computed over the 35 cells by requiring that each cell's observable triple (attacker_hitstop, camera_shake_peak, knockback_m) be **unique across the grid**; a cell whose triple is shared with any other cell is not recovered. The previous wording specified a nearest-neighbour classifier, which over 35 distinct points recovers zero by construction and made the headline number unrunnable as written. `ILS` is scored on the OBSERVED grid only — a grid computed by calling the library rather than by reading it out of a trace against a material-carrying target is `unmeasurable => 0`."
    }
   },
   "sampling": {

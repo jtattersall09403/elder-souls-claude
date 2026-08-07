@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "piece_id": "w1-22-r1",
- "piece_title": "W1-22 round 1 \u2014 regional ambience (audio.ambience.region)",
+ "piece_title": "W1-22 round 1 — regional ambience (audio.ambience.region)",
  "subsystem_paths": [
   "audio.ambience.region"
  ],
@@ -50,7 +50,23 @@
     "exit_code": 0,
     "stdout_artifact": "inline in verdict notes"
    }
-  ]
+  ],
+  "depends_on": [
+   "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md",
+   "corpus/87-audio/RI-AUD03-regional-ambience.md",
+   "game/data/**",
+   "game/data/world/regions.json",
+   "game/src/**",
+   "tools/analysis/content-stats.mjs",
+   "tools/analysis/critic-w1-22-probe.mjs",
+   "tools/blind/audio-pack-b2.mjs",
+   "tools/boot-check.mjs",
+   "tools/harness/boot-check.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs"
+  ],
+  "depends_on_note": "derived from 8 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
  },
  "bifurcation": {
   "axis": "not-visual",
@@ -301,7 +317,7 @@
   "overall_0_10": 4,
   "pass_threshold": 6,
   "aggregation": "min",
-  "band_label": "Below bar \u2014 named remedy required",
+  "band_label": "Below bar — named remedy required",
   "confidence": "high"
  },
  "status": "FAIL",

@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "piece_id": "w1-19",
- "piece_title": "The main quest, end to end \u2014 The Rootward Tide (round 2)",
+ "piece_title": "The main quest, end to end — The Rootward Tide (round 2)",
  "round": 2,
  "subsystem_paths": [
   "quests.mainline.acts",
@@ -22,7 +22,7 @@
   "contention": {
    "headless_shell_at_start": 6,
    "loadavg_at_start": "1.80 5.13 4.87",
-   "note": "under the cap of 8 throughout; one browser at a time, never concurrent. Counts and booleans only \u2014 no timing figure is reported."
+   "note": "under the cap of 8 throughout; one browser at a time, never concurrent. Counts and booleans only — no timing figure is reported."
   }
  },
  "build": {
@@ -50,7 +50,7 @@
     "command": "node tools/quests/utility-findability.mjs --state <any>",
     "seed": null,
     "exit_code": 1,
-    "note": "CRASHES \u2014 advertised flag is unimplemented"
+    "note": "CRASHES — advertised flag is unimplemented"
    },
    {
     "command": "node tools/quests/mainline-chain-floor.mjs",
@@ -88,7 +88,34 @@
     "exit_code": 0,
     "note": "PASS with rendered_a_frame"
    }
-  ]
+  ],
+  "depends_on": [
+   "corpus/30-quests/RI-QST06-main-quest-architecture.md",
+   "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+   "game/data/**",
+   "game/data/dialogue/topics/*.json",
+   "game/data/npcs/**",
+   "game/data/quests",
+   "game/data/quests/**",
+   "game/data/quests/hooks.json",
+   "game/data/quests/mainline-act4.json",
+   "game/data/quests/mainline.json",
+   "game/data/states",
+   "game/data/world/interiors",
+   "game/src/**",
+   "game/src/core/topics.js",
+   "tools/harness/boot-check.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs",
+   "tools/quests/critic-ar3-endtoend.mjs",
+   "tools/quests/critic-giver-presence.mjs",
+   "tools/quests/mainline-chain-floor.mjs",
+   "tools/quests/resolution-reachability.mjs",
+   "tools/quests/utility-findability.mjs"
+  ],
+  "depends_on_note": "derived from 10 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
  },
  "bifurcation": {
   "axis": "not-visual",
@@ -140,7 +167,7 @@
    "native_max": null,
    "score_0_10": 5,
    "measured": "full",
-   "native_verdict": "Seven of nine round-2 models couple by an entity-side observable \u2014 a large improvement on round 1's four zeros. quest.giver.npc_id is a new orphan and eight disposition_min values are decorative."
+   "native_verdict": "Seven of nine round-2 models couple by an entity-side observable — a large improvement on round 1's four zeros. quest.giver.npc_id is a new orphan and eight disposition_min values are decorative."
   },
   {
    "id": "RI-EXP05",
@@ -209,28 +236,28 @@
   "overall_0_10": 5,
   "pass_threshold": 7,
   "aggregation": "mean",
-  "band_label": "Right idea, genuinely advanced \u2014 the player can now hear about the work and still cannot take it",
+  "band_label": "Right idea, genuinely advanced — the player can now hear about the work and still cannot take it",
   "confidence": "high",
   "note": "Mean of the six items is 3.83. Scored 5 because RI-EXP05 and RI-WLD09 are carried corpus artefacts rather than round-2 regressions, and because three round-1 orphans are verifiably closed. Without the giver gap this round is a 7."
  },
  "status": "FAIL",
  "status_reasons": [
   "9 of 94 quest givers are talkable anywhere in the build; 0 of the 35 quests behind the round-2 findability headline has a giver in the world",
-  "8 of 31 main-quest gates carry disposition_min 0, which cannot refuse \u2014 standing floor-clamps at 0 across 24,960 measured samples",
+  "8 of 31 main-quest gates carry disposition_min 0, which cannot refuse — standing floor-clamps at 0 across 24,960 measured samples",
   "the tightest gate that can still refuse leaves a margin of 0.643 of a disposition point, for the Naga",
   "11 of 11 cycles in the repaired entry_topics graph close on a single quest giver, covering 28 quests",
-  "'eleven' appears in the new prose at 35.94 per 10k words against Morrowind's 0.21 \u2014 171x"
+  "'eleven' appears in the new prose at 35.94 per 10k words against Morrowind's 0.21 — 171x"
  ],
  "reproduced_builder_claims": {
-  "signatures_completing_both_chains": "40/40 (default and --sabotage no-purse) \u2014 REPRODUCES",
-  "gates_arriving_short": "0/31 \u2014 REPRODUCES, but Q-MAIN-30 is never visited and its null margin is counted as passing",
-  "gate_openings_bought": "0 \u2014 REPRODUCES",
-  "violent_resolutions": "0 \u2014 REPRODUCES",
-  "no_bootstrap_control": "0/40, all blocked at Q-MAIN-01 \u2014 REPRODUCES",
-  "utility_findability": "10 newly offerable across 3 towns \u2014 REPRODUCES",
-  "no_rumours_control": "10 -> 0, keywords 9 -> 0 \u2014 REPRODUCES",
-  "resolution_reachability_max": "3 endings out of reach, all other pieces' \u2014 REPRODUCES",
-  "topic_supply_audit_A_C_D": "C (self-loops) 35 -> 0 CONFIRMED; D (quests spoken by nobody) 27 -> 0 NOT FULLY TRUE \u2014 Q-MAG-18 has no supplier anywhere"
+  "signatures_completing_both_chains": "40/40 (default and --sabotage no-purse) — REPRODUCES",
+  "gates_arriving_short": "0/31 — REPRODUCES, but Q-MAIN-30 is never visited and its null margin is counted as passing",
+  "gate_openings_bought": "0 — REPRODUCES",
+  "violent_resolutions": "0 — REPRODUCES",
+  "no_bootstrap_control": "0/40, all blocked at Q-MAIN-01 — REPRODUCES",
+  "utility_findability": "10 newly offerable across 3 towns — REPRODUCES",
+  "no_rumours_control": "10 -> 0, keywords 9 -> 0 — REPRODUCES",
+  "resolution_reachability_max": "3 endings out of reach, all other pieces' — REPRODUCES",
+  "topic_supply_audit_A_C_D": "C (self-loops) 35 -> 0 CONFIRMED; D (quests spoken by nobody) 27 -> 0 NOT FULLY TRUE — Q-MAG-18 has no supplier anywhere"
  },
  "biggest_gap": {
   "gap_id": "GAP-W1-quest-givers-not-in-the-world",
@@ -238,10 +265,10 @@
   "what": "Nine of the ninety-four quest givers in this build exist anywhere a player can stand, and none of the thirty-five quests behind the '10 of 35' findability headline has a giver in the world at all. QuestEngine.open() has no presence or proximity term, so a quest reports ok in a world containing nobody to say the keyword to.",
   "why_it_matters": "This is round 1's finding moved one layer out. Round 1: the player could not learn the words. Round 2 fixed that properly, with a red control. The player can now learn the words and has nobody to say them to. A rumour in Helstrom teaches 'the upper shelf'; Rootkeeper Jeen, who wants it said, is in no state file in the build.",
   "evidence": [
-   "reports/runs/W1-19-R2-CRITIC/giver-presence.json \u2014 9/94 talkable; main 9/32, side 0/25, faction 0/36, hidden 0/1",
-   "reports/runs/W1-19-R2-CRITIC/giver-presence-assume-present.json \u2014 control: presence 9 -> 94, talkable stays 9",
-   "tools/quests/mainline-chain-floor.mjs:198 \u2014 H.spawnNPC({from_record: giver}) conjures the giver, with the comment 'the gate has never had a proximity term'",
-   "world NPC census: helstrom-market 4, stormhold-street 3, soulrest-quay 5, thorn-hall 0 \u2014 twelve NPCs in the inhabited build",
+   "reports/runs/W1-19-R2-CRITIC/giver-presence.json — 9/94 talkable; main 9/32, side 0/25, faction 0/36, hidden 0/1",
+   "reports/runs/W1-19-R2-CRITIC/giver-presence-assume-present.json — control: presence 9 -> 94, talkable stays 9",
+   "tools/quests/mainline-chain-floor.mjs:198 — H.spawnNPC({from_record: giver}) conjures the giver, with the comment 'the gate has never had a proximity term'",
+   "world NPC census: helstrom-market 4, stormhold-street 3, soulrest-quay 5, thorn-hall 0 — twelve NPCs in the inhabited build",
    "16 of 35 subject keywords are rumoured only in gideon/lilmoth/blackrose, none of which has a bootable state; Q-MAG-18 has no supplier anywhere"
   ],
   "severity": "blocking",
@@ -266,7 +293,7 @@
   },
   {
    "id": "OBS-4-eleven",
-   "what": "'eleven' at 35.94 per 10k words in 8,626 words of round-2 dialogue against Morrowind's 0.21 per 10k over 1,866,989 words \u2014 171x. Only 3 of 31 are the proper noun; 26 are free-standing across 20 unrelated records. It is the second most used number-word after 'one', ahead of 'two' and 'three'. 'four hundred' ~1500x, 'has stopped' ~700x.",
+   "what": "'eleven' at 35.94 per 10k words in 8,626 words of round-2 dialogue against Morrowind's 0.21 per 10k over 1,866,989 words — 171x. Only 3 of 31 are the proper noun; 26 are free-standing across 20 unrelated records. It is the second most used number-word after 'one', ahead of 'two' and 'three'. 'four hundred' ~1500x, 'has stopped' ~700x.",
    "severity": "major"
   },
   {
@@ -307,17 +334,17 @@
    "evidence": "40/40 with and without a purse. But 8 gates were set to a value that cannot refuse, and the tightest real margin is 0.643."
   },
   {
-   "round_1_gap": "opens_by.overheard_from \u2014 0 code consumers",
+   "round_1_gap": "opens_by.overheard_from — 0 code consumers",
    "status": "CLOSED",
    "evidence": "greeting the three NPCs Q-MAIN-01 names takes topics 0 -> 3, live at soulrest-quay."
   },
   {
-   "round_1_gap": "q.directions \u2014 32 strings, 0 of 32 ever drawn",
+   "round_1_gap": "q.directions — 32 strings, 0 of 32 ever drawn",
    "status": "CLOSED",
    "evidence": "the giver offers the topic 'the way to reading of the count'; speaking it sets the flag directions_heard:Q-MAIN-01."
   },
   {
-   "round_1_gap": "hooks.json entry_topics \u2014 23/32 seed the quest that fires them",
+   "round_1_gap": "hooks.json entry_topics — 23/32 seed the quest that fires them",
    "status": "CLOSED IN LETTER, NOT IN SHAPE",
    "evidence": "0 self-loops remain, but 11 of 11 cycles close on a single giver over 28 quests."
   },
@@ -333,22 +360,22 @@
    "minted_for": "this verdict",
    "what_it_measures": "whether quest.giver.npc_id is in the running world and whether H.talkTo() opens a conversation with them, per bootable state and unioned across the build",
    "why": "nothing in the tree asks this; QuestEngine.open() has no presence or proximity term, so both round-2 headline instruments certify findability from a gate that cannot know",
-   "control": "--sabotage assume-present reports presence without asking the world: presence flips 9 -> 94 and talkable stays 9, because talkTo() is attempted for all 94 by record id and only nine succeed. The headline number does not depend on my field matching, which is itself unreliable \u2014 listNPCs() does not expose the record id under record/from_record/id."
+   "control": "--sabotage assume-present reports presence without asking the world: presence flips 9 -> 94 and talkable stays 9, because talkTo() is attempted for all 94 by record id and only nine succeed. The headline number does not depend on my field matching, which is itself unreliable — listNPCs() does not expose the record id under record/from_record/id."
   },
   {
    "tool": "tools/quests/critic-ar3-endtoend.mjs",
    "minted_for": "this verdict",
    "what_it_measures": "plays the intended chain from soulrest-quay to Q-MAIN-23, takes a named resolution, reads the flag back out of getQuestState().flags, then spawns the encounter and counts bodies",
-   "why": "encounter-seam-probe.mjs hand-sets the flag and confirms the quest-to-flag half by reading the shipped quest file \u2014 the design document, not the world",
+   "why": "encounter-seam-probe.mjs hand-sets the flag and confirms the quest-to-flag half by reading the shipped quest file — the design document, not the world",
    "control": "the sibling branch res_buy_the_water of the same quest: 6 bodies against 4, flag false against true, all stats held",
-   "self_correction": "my first version returned before firing Q-MAIN-23's own reveals and reported the crossing dead when it was working \u2014 the same shape as the bug the builder found in its own probe. Recorded rather than quietly fixed."
+   "self_correction": "my first version returned before firing Q-MAIN-23's own reveals and reported the crossing dead when it was working — the same shape as the bug the builder found in its own probe. Recorded rather than quietly fixed."
   }
  ],
  "self_audit": {
   "reproduced_before_criticising": true,
   "broke_own_instruments_on_purpose": true,
   "independent_rederivation": "the tightest gate margin (0.643 at Q-MAIN-08) and the 24,960-sample floor-clamp finding were derived from the run JSON by my own reduction, not read from the builder's summary; the topic supply graph was rebuilt independently with topicKey folded and multi-hop closure over info.to",
-  "browser_discipline": "one browser at a time, never concurrent; pgrep -c headless_shell 6 at start and 6 at the last check, loadavg under 6 throughout \u2014 under the cap of 8. Only counts, rates and booleans are reported.",
+  "browser_discipline": "one browser at a time, never concurrent; pgrep -c headless_shell 6 at start and 6 at the last check, loadavg under 6 throughout — under the cap of 8. Only counts, rates and booleans are reported.",
   "boot_check": "PASS before and after, with a rendered frame both times",
   "not_measured": [
    "RI-WLD09 (carried from round 1)",
@@ -356,7 +383,7 @@
    "the two blind packs, which still do not exist in the tree"
   ]
  },
- "path_to_ten": "(a) Place the quest givers. 85 of 94 are in no state file; put them where their rumours say they are, and add the missing town states (gideon, lilmoth, blackrose, archon) or re-key those 16 rumours to towns that exist. (b) Give QuestEngine.open() a presence term so a quest whose giver is nowhere reports 'blocked: giver absent' instead of ok, and make utility-findability.mjs require a successful H.talkTo(giver) before counting a quest as opened. (c) Raise the 8 disposition_min-0 gates to a value that can refuse somebody, and give Q-MAIN-08 a reserve larger than 0.643 by subtracting the largest npc_disposition consequence the chain can produce at that giver. (d) Re-shape the entry_topics graph so a quest hands you to a different person: at least half the repaired edges should cross a giver, and no bundle of one NPC's quests should form a closed cycle. (e) Give the 102 new infos the filters the system already supports \u2014 speaker, race, faction, rank, disposition \u2014 so that who is talking changes what you hear. (f) De-duplicate the numbers: 26 free-standing 'eleven's across 20 unrelated records is a tell, and the writing is good enough not to need it.",
+ "path_to_ten": "(a) Place the quest givers. 85 of 94 are in no state file; put them where their rumours say they are, and add the missing town states (gideon, lilmoth, blackrose, archon) or re-key those 16 rumours to towns that exist. (b) Give QuestEngine.open() a presence term so a quest whose giver is nowhere reports 'blocked: giver absent' instead of ok, and make utility-findability.mjs require a successful H.talkTo(giver) before counting a quest as opened. (c) Raise the 8 disposition_min-0 gates to a value that can refuse somebody, and give Q-MAIN-08 a reserve larger than 0.643 by subtracting the largest npc_disposition consequence the chain can produce at that giver. (d) Re-shape the entry_topics graph so a quest hands you to a different person: at least half the repaired edges should cross a giver, and no bundle of one NPC's quests should form a closed cycle. (e) Give the 102 new infos the filters the system already supports — speaker, race, faction, rank, disposition — so that who is talking changes what you hear. (f) De-duplicate the numbers: 26 free-standing 'eleven's across 20 unrelated records is a tell, and the writing is good enough not to need it.",
  "ten_by_wave": 2,
  "artifacts": [
   "reports/runs/W1-19-R2-CRITIC/giver-presence.json",

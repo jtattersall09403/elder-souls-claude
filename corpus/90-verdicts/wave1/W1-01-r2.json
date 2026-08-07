@@ -1,1509 +1,1558 @@
 {
-  "schema_version": 1,
-  "piece_id": "w1-01-r2",
-  "piece_title": "World shape and the traversal budget \u2014 round 2",
-  "subsystem_paths": [
-    "world.terrain.form",
-    "world.map.scale",
-    "world.traversal.time",
-    "world.traversal.locomotion",
-    "world.verticality.layout",
-    "world.region.identity",
-    "world.region.gating"
+ "schema_version": 1,
+ "piece_id": "w1-01-r2",
+ "piece_title": "World shape and the traversal budget — round 2",
+ "subsystem_paths": [
+  "world.terrain.form",
+  "world.map.scale",
+  "world.traversal.time",
+  "world.traversal.locomotion",
+  "world.verticality.layout",
+  "world.region.identity",
+  "world.region.gating"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-01-r2-world-b4e2",
+  "role": "critic.world",
+  "started_at": "2026-08-06T20:20:00Z",
+  "finished_at": "2026-08-06T21:35:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": false
+ },
+ "build": {
+  "commit_sha": "b17121cb1e9a0d8f4e8bb0a3b7c0e6a0e3a3f0aa",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "harness_commands": [
+   {
+    "command": "node tools/world/road-water-audit.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/crossing.mjs --route crossing --speed walk --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/scale-audit.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/region-axes.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-cutfill.mjs",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-road.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-shots.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-loco.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-misc.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-travel.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-b13.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-dispersion.mjs",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-structure.mjs",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/world/critic-w1-01-r2-hazfire.mjs",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01.json",
+    "exit_code": 1,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/round1-void-proof.txt"
+   }
   ],
-  "wave": 1,
-  "critic": {
-    "run_id": "crit-w1-01-r2-world-b4e2",
-    "role": "critic.world",
-    "started_at": "2026-08-06T20:20:00Z",
-    "finished_at": "2026-08-06T21:35:00Z",
-    "conflict_of_interest": false,
-    "saw_builder_notes_before_blind": false
-  },
-  "build": {
-    "commit_sha": "b17121cb1e9a0d8f4e8bb0a3b7c0e6a0e3a3f0aa",
-    "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "harness_commands": [
-      {
-        "command": "node tools/world/road-water-audit.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/crossing.mjs --route crossing --speed walk --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/scale-audit.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/region-axes.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-cutfill.mjs",
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-road.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-shots.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-loco.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-misc.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-travel.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-b13.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-dispersion.mjs",
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-structure.mjs",
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/world/critic-w1-01-r2-hazfire.mjs",
-        "seed": 1337,
-        "exit_code": 0
-      },
-      {
-        "command": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01.json",
-        "exit_code": 1,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/round1-void-proof.txt"
-      }
-    ]
-  },
-  "bifurcation": {
-    "axis": "art-direction",
-    "declared_before_citation": true,
-    "art_refs": [
-      "RI-WLD04"
-    ],
-    "fidelity_refs": [],
-    "note": "Declared before any image was opened. Every visual judgement here is a DECISIONS question \u2014 whether a region owns a palette, a silhouette, a prop vocabulary and a named feature \u2014 not a rendering question. The only reference images cited are Morrowind's own region screenshots at corpus/70-visual/refs/morrowind/REF-A21-regions/ (39 files, MANIFEST metrics_valid_for: [\"art-direction\"], pixel_metrics_valid: false for all 39, which is exactly the flag that permits their use here and forbids their use for fidelity). No modern AAA screenshot is cited anywhere and no fidelity claim is made. Two fidelity-flavoured observations (textureMB 0, no contact shadows) are recorded in secondary_observations as observations only and carry no score."
-  },
-  "reference_items": [
+  "depends_on": [
+   "corpus/10-combat/RI-AI05-roster-archetypes.md",
+   "corpus/15-camera/RI-CAM02-free-camera-and-movement-mapping.md",
+   "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
+   "corpus/20-progression/RI-PRG07-equip-load-encumbrance.md",
+   "corpus/50-world/RI-TRV01-transport-network.md",
+   "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+   "corpus/50-world/RI-WLD04-region-identity.md",
+   "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+   "corpus/50-world/RI-WLD10-the-water-model.md",
+   "corpus/50-world/RI-WLD11-environmental-hazards.md",
+   "game/data/**",
+   "game/data/audio/ambience",
+   "game/data/world/*.json",
+   "game/data/world/hazards.json",
+   "game/data/world/regions.json",
+   "game/data/world/roads.json",
+   "game/data/world/signatures.json",
+   "game/data/world/terrain.json",
+   "game/data/world/traversal.json",
+   "game/data/world/water.json",
+   "game/src/**",
+   "game/src/world/arrangement.js",
+   "game/src/world/field.js",
+   "game/src/world/groundskin.js",
+   "game/src/world/microrelief.js",
+   "game/src/world/noise.js",
+   "game/src/world/signature.js",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs",
+   "tools/verdict-validate.mjs",
+   "tools/world/critic-w1-01-r2-b13.mjs",
+   "tools/world/critic-w1-01-r2-cutfill.mjs",
+   "tools/world/critic-w1-01-r2-dispersion.mjs",
+   "tools/world/critic-w1-01-r2-hazfire.mjs",
+   "tools/world/critic-w1-01-r2-loco.mjs",
+   "tools/world/critic-w1-01-r2-misc.mjs",
+   "tools/world/critic-w1-01-r2-props.mjs",
+   "tools/world/critic-w1-01-r2-road.mjs",
+   "tools/world/critic-w1-01-r2-shots.mjs",
+   "tools/world/critic-w1-01-r2-structure.mjs",
+   "tools/world/critic-w1-01-r2-travel.mjs",
+   "tools/world/crossing.mjs",
+   "tools/world/region-axes.mjs",
+   "tools/world/road-water-audit.mjs",
+   "tools/world/scale-audit.mjs"
+  ],
+  "depends_on_note": "derived from 25 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
+ },
+ "bifurcation": {
+  "axis": "art-direction",
+  "declared_before_citation": true,
+  "art_refs": [
+   "RI-WLD04"
+  ],
+  "fidelity_refs": [],
+  "note": "Declared before any image was opened. Every visual judgement here is a DECISIONS question — whether a region owns a palette, a silhouette, a prop vocabulary and a named feature — not a rendering question. The only reference images cited are Morrowind's own region screenshots at corpus/70-visual/refs/morrowind/REF-A21-regions/ (39 files, MANIFEST metrics_valid_for: [\"art-direction\"], pixel_metrics_valid: false for all 39, which is exactly the flag that permits their use here and forbids their use for fidelity). No modern AAA screenshot is cited anywhere and no fidelity claim is made. Two fidelity-flavoured observations (textureMB 0, no contact shadows) are recorded in secondary_observations as observations only and carry no score."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WLD01",
+   "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-10 band; 10 = M1-M5 all pass AND crossing 55-60 min AND land 14-15 km2 AND every settlement within 30 m",
+   "native_score": 9,
+   "native_max": 10,
+   "native_verdict": "meets the bar on every stated check; the item still has no clause for road gradient",
+   "score_0_10": 7,
+   "measured": "full",
+   "justification": "The round-1 gap is closed and I recomputed the closure from the terrain rather than from the shipped report. corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json: 0 leg/phase offences over 4 tide phases x 10 legs; the only wet leg is the declared tideway lilmoth-archon (max 0.976 m at LOW/RISING/FALLING, 1.456 m at HIGH). corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json re-measures THE CROSSING through the running capsule at 55.356 min / 6642.1 m / mean 1.9998 m/s with 0.009% of 33,213 samples below 1.6 m/s. corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json reproduces M1 (8 settlements at 0.00 m, 14.31 km2), M4 (worst leg 2.14%) and M5 (7.83 min).",
+   "why_not_ten": "The fix was bought with earthworks the item does not measure. My own cut/fill probe (critic-road-cutfill.json, WorldField with and without setRoads, 3 m sub-sampling) gives a tallest embankment of 17.52 m on stormhold-helstrom at (2240.3,1340.2) and a deepest cutting of 3.62 m at (2113.9,1218.6) — the latter above scale-audit's own <=3.5 m pass bar, which reads 3.0 m only because it samples at the 12 m road points. And the road's own longitudinal gradient reaches 1.637 (58.6 deg: a 19.63 m rise over an 11.99 m run) on stormhold-helstrom, leg 1 of THE CROSSING, with 638 m of trunk above 30% grade and 2,231 m above 12%. roads.json declares 21 'deck_spans' totalling 2,494 m, 11 of them 'viaduct' up to 16 m tall, and grep finds deck_spans read nowhere in game/src — the viaducts are labels, and the built world is an earth berm (shot-embankment-stormhold-helstrom-air.png).",
+   "path_to_ten": "Add M2c-ROAD-GRADE to tools/world/scale-audit.mjs: no trunk segment may exceed 0.12 grade except a declared 'stair' or 'switchback' class, measured on the same 3 m sub-sampling as M2b, and assert scale-audit's cut/fill check at 3 m rather than at road points. Then either re-solve the deck in tools/world/build-roads.mjs so no fill exceeds 4 m, or emit the 21 deck_spans as real geometry that game/src/render reads, so a 16 m viaduct is a structure the player walks over rather than a hill the terrain grew.",
+   "ten_by_wave": 2,
+   "checks": [
     {
-      "id": "RI-WLD01",
-      "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
-      "side": "morrowind",
-      "kind": "number",
-      "native_scale": "0-10 band; 10 = M1-M5 all pass AND crossing 55-60 min AND land 14-15 km2 AND every settlement within 30 m",
-      "native_score": 9,
-      "native_max": 10,
-      "native_verdict": "meets the bar on every stated check; the item still has no clause for road gradient",
-      "score_0_10": 7,
-      "measured": "full",
-      "justification": "The round-1 gap is closed and I recomputed the closure from the terrain rather than from the shipped report. corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json: 0 leg/phase offences over 4 tide phases x 10 legs; the only wet leg is the declared tideway lilmoth-archon (max 0.976 m at LOW/RISING/FALLING, 1.456 m at HIGH). corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json re-measures THE CROSSING through the running capsule at 55.356 min / 6642.1 m / mean 1.9998 m/s with 0.009% of 33,213 samples below 1.6 m/s. corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json reproduces M1 (8 settlements at 0.00 m, 14.31 km2), M4 (worst leg 2.14%) and M5 (7.83 min).",
-      "why_not_ten": "The fix was bought with earthworks the item does not measure. My own cut/fill probe (critic-road-cutfill.json, WorldField with and without setRoads, 3 m sub-sampling) gives a tallest embankment of 17.52 m on stormhold-helstrom at (2240.3,1340.2) and a deepest cutting of 3.62 m at (2113.9,1218.6) \u2014 the latter above scale-audit's own <=3.5 m pass bar, which reads 3.0 m only because it samples at the 12 m road points. And the road's own longitudinal gradient reaches 1.637 (58.6 deg: a 19.63 m rise over an 11.99 m run) on stormhold-helstrom, leg 1 of THE CROSSING, with 638 m of trunk above 30% grade and 2,231 m above 12%. roads.json declares 21 'deck_spans' totalling 2,494 m, 11 of them 'viaduct' up to 16 m tall, and grep finds deck_spans read nowhere in game/src \u2014 the viaducts are labels, and the built world is an earth berm (shot-embankment-stormhold-helstrom-air.png).",
-      "path_to_ten": "Add M2c-ROAD-GRADE to tools/world/scale-audit.mjs: no trunk segment may exceed 0.12 grade except a declared 'stair' or 'switchback' class, measured on the same 3 m sub-sampling as M2b, and assert scale-audit's cut/fill check at 3 m rather than at road points. Then either re-solve the deck in tools/world/build-roads.mjs so no fill exceeds 4 m, or emit the 21 deck_spans as real geometry that game/src/render reads, so a 16 m viaduct is a structure the player walks over rather than a hill the terrain grew.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "M1-BOUNDS",
-          "result": "pass",
-          "value": "4825 x 5540 m",
-          "threshold": "4825 x 5540 +/-25",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M1-SETTLEMENTS",
-          "result": "pass",
-          "value": "worst offset 0.00 m over 8",
-          "threshold": "<=60 m pass; 30 m for the 10 band",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M1-LAND-AREA",
-          "result": "pass",
-          "value": "14.31 km2",
-          "threshold": "13.0-16.0",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M2-TIME",
-          "result": "pass",
-          "value": "55.356 min",
-          "threshold": "52-65",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json"
-          ]
-        },
-        {
-          "id": "M2-DISTANCE",
-          "result": "pass",
-          "value": "6642.1 m integrated",
-          "threshold": "6300-7600",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json"
-          ]
-        },
-        {
-          "id": "M3-SPEED-HONESTY",
-          "result": "pass",
-          "value": "0.009% of 33213 samples below 1.6 m/s; mean 1.9998",
-          "threshold": "<=8% below 1.6",
-          "note": "S17 holds, and holds after the re-route: the hour is 6,642 m of road walked at 2.0 m/s, not friction. Independently confirmed off-road: dry FIRM ground realises 2.0000 m/s (critic-loco-probe.json L3).",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
-          ]
-        },
-        {
-          "id": "M4-LEG-TIMES",
-          "result": "pass",
-          "value": "worst leg deviation 2.14% (soulrest-blackrose)",
-          "threshold": "<=20% pass, >40% fail",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M5-HABITATION-GAP",
-          "result": "pass",
-          "value": "7.83 min",
-          "threshold": "<=9.0 pass, >12 fail",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M2b-ROAD-ABOVE-WATER",
-          "result": "pass",
-          "value": "0 leg/phase offences over 4 tide phases x 10 legs; deepest non-tideway trunk point 0.000 m",
-          "threshold": "0 offences (check added by verdict W1-01 \u00a78)",
-          "note": "Recomputed by me from game/src/world/field.js with the road corridor attached, at 3 m sub-sampling, not read out of reports/road-water.json.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json"
-          ]
-        },
-        {
-          "id": "M2-ROAD-CUT-AND-FILL",
-          "result": "marginal",
-          "value": "shipped tool: cut 3.0 m / fill 16.0 m. My 3 m sub-sampling: cut 3.62 m / fill 17.52 m",
-          "threshold": "cut <=3.5, fill <=20",
-          "note": "The cut check passes at the tool's own sampling rate and fails at 3 m. The instrument's resolution is what decides the result, which is the same shape of defect as the one this check was written to catch.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M2c-ROAD-GRADE",
-          "result": "fail",
-          "value": "max grade 1.637 (58.6 deg) on stormhold-helstrom at (2104.44,1235.65); 638 m of trunk above 0.30; 2,231 m above 0.12",
-          "threshold": "check does not exist in RI-WLD01 \u2014 proposed by this verdict",
-          "note": "Not an RI-WLD01 check. Recorded because the item has no clause a 58-degree road would trip, exactly as it had none for a drowned one.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-ramp-58deg-side.png"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json"
-      ]
+     "id": "M1-BOUNDS",
+     "result": "pass",
+     "value": "4825 x 5540 m",
+     "threshold": "4825 x 5540 +/-25",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
     },
     {
-      "id": "RI-WLD04",
-      "path": "corpus/50-world/RI-WLD04-region-identity.md",
-      "side": "morrowind",
-      "kind": "image",
-      "native_scale": "0-10 band on M17 (blind region identification), gated by M18/M19/M20/M21",
-      "native_score": 3,
-      "native_max": 10,
-      "native_verdict": "between the item's band 2 ('regions differ mainly by tint and fog') and band 4 ('two or three are interchangeable')",
-      "score_0_10": 3,
-      "measured": "partial",
-      "why_not_ten": "M17 is a HUMAN test and this is the first round in which it could be taken, because the pack is now honestly shuffled. On 8 of the 39 brightest frames I scored 4/8 (m17-blind-answers-critic-r2.json, written before the reveal) against a pass bar of >=33/39 (85%) and a fail floor of <28/39 (72%). Three of the four misses are the same miss: frames 023, 042 and 050 are the STONE WASTES ('glassed salt crust', glass_thorn, whale_bone_frame, salt_block_wall, crater_rim) and I called all three Marauder's Coast, because what is rendered is a khaki flat under a white fog band with no glass, no bone frame and no crater. The fourth is frame-017, the DEEP MARSHES ('violet-black silt and voriplasm margin', corpse_lily, drowned_tree, drowned_xanmeer_tooth, green fever-fog), rendered as a bright green lawn with ball-canopy trees. M19 is 0/13: every region's ONLY-HERE element (welkynd_pillar x34, petrified_bole x400, rock_flute_spire x14, glassed_crater x16, beached_hull_house x12 ...) is an integer literal in tools/world/build-regions.mjs and not one instance is placed \u2014 the live scene has entitiesLive 0 in all thirteen regions and the whole province renders with textureMB 0 and 17 materials. M20 is 0 (audioMB 0). M21 is 0 (no roster placed). M18 passes at the >=6 bar with three pairs at exactly 6, and five of its nine declared axes \u2014 fauna, architecture, audio, weather, hazard \u2014 are DROPPED rather than measured, which is an honest statement that they are not implemented.",
-      "path_to_ten": "(a) Give each region a second and third prop class beyond the shared canopy+under+rock lattice, and place its ONLY-HERE element as real instances at the declared counts, so M19 reads 13/13 with >=8 instances in-region and 0 elsewhere. (b) Ship the five dropped M18 axes as measurable properties: an architecture mesh set, a fauna set, an ambient bed, a weather state machine and a firing hazard per region. (c) Re-run M17 with a fresh judge on the full 117-frame pack and clear >=33/39 by day and >=27/39 at night. (d) Close the night pass specifically: ours_night leave-one-out is 33.3% (raw descriptor) and 25.6% once exposure is removed, against M17 step 6's explicit >=70%.",
-      "ten_by_wave": 3,
-      "checks": [
-        {
-          "id": "M17-PACK-INTEGRITY",
-          "result": "pass",
-          "value": "117 frames, 39/39/39 day/night/worst, 9 per region, shuffle seed 20260806, Spearman(frame index, region rank) = -0.0051 recomputed by me, adjacent same-region pairs 8 vs 8.9 expected by chance, permutation is a true permutation of 0..116, 0 duplicate image hashes, night mean luma 15.0 vs day 80.0",
-          "threshold": "shuffled, 117 frames, night and worst-weather passes shipped",
-          "note": "Round 1's finding on this instrument is CLOSED. Every claim the pack makes about itself reproduces when recomputed from the shipped PNGs.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json"
-          ]
-        },
-        {
-          "id": "M17-DAY",
-          "result": "fail",
-          "value": "4/8 = 50% on a partial human read",
-          "threshold": ">=33/39 (85%) pass; <28/39 (72%) fail",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-023.png",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-050.png",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png"
-          ]
-        },
-        {
-          "id": "M17-NIGHT",
-          "result": "fail",
-          "value": "machine analogue leave-one-out 33.3% (raw) / 25.6% (exposure removed)",
-          "threshold": ">=70% required",
-          "note": "The night pass exists for the first time and it fails the item's own explicit night bar by more than half. This is the true content of the pooled Fisher 1.005.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json"
-          ]
-        },
-        {
-          "id": "A7-INTER-REGION-DISPERSION",
-          "result": "pass",
-          "value": "matched design (9 regions x 3 images, 200 random draws, identical chance): ours_day Fisher 3.087 +/-0.322, LOO 77.5%; morrowind Fisher 1.614 +/-0.113, LOO 24.2%",
-          "threshold": "ours at least as dispersed as Morrowind's own regions on the same instrument",
-          "note": "The like-for-like comparison the shipped headline never had. Ours_pooled (1.536 +/-0.312) is statistically indistinguishable from Morrowind (1.614 +/-0.113) \u2014 the 'below Morrowind' reading survives only if our night frames are pooled and Morrowind's are not.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json"
-          ]
-        },
-        {
-          "id": "A7-INSTRUMENT-VALIDITY",
-          "result": "fail",
-          "value": "with colour and exposure removed (6x4 Sobel edge density + luminance layout) ours_day LOO falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77; Morrowind falls 25.6% -> 17.9%",
-          "threshold": "the descriptor should measure region identity, not tint",
-          "note": "About two-thirds of our measured separability is carried by colour alone, which is why the machine reads 74.4% where a human reads 50%. RI-WLD04's own 'How we lose' names this: 'Palette without material \u2014 getting the hex values right and applying them as a colour grade over the same ground texture.'",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json"
-          ]
-        },
-        {
-          "id": "M18",
-          "result": "pass",
-          "value": "78 pairs, minimum 6 axes differing (blackwood/eastern-rootlands, clay-moor/stone-wastes, deep-marshes/stone-wastes all at exactly 6)",
-          "threshold": ">=6 every pair pass, <=3 fail",
-          "note": "Round 1's finding is CLOSED: eight of nine axes are no longer string comparisons. Seven read built geometry, two read rendered pixels, and fauna/architecture/audio/weather/hazard are DROPPED rather than scored \u2014 an honest declaration that five of the item's nine axes do not exist in the build.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json"
-          ]
-        },
-        {
-          "id": "M19",
-          "result": "fail",
-          "value": "0 of 13 ONLY-HERE elements placed; entitiesLive 0 in all 13 regions; textureMB 0, atlasCount 0, 17 materials for the whole 14.31 km2 province; every region uses the identical prop schema canopy+under+rock",
-          "threshold": ">=8 instances in its own region, 0 elsewhere, for each of 13",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
-          ]
-        },
-        {
-          "id": "M20",
-          "result": "unmeasurable",
-          "value": "audioMB 0 \u2014 there is no audio",
-          "threshold": ">=26/39",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        },
-        {
-          "id": "M21",
-          "result": "unmeasurable",
-          "value": "entitiesLive 0 at all 13 region centroids",
-          "threshold": "tier 1 survives ... tier 5 dies in <15 s",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        }
-      ],
-      "how_we_lose_hits": [
-        "Regions that differ only in fog colour / palette without material",
-        "ONLY-HERE assets not present at all",
-        "Silent regions",
-        "Night forgotten"
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-      ]
+     "id": "M1-SETTLEMENTS",
+     "result": "pass",
+     "value": "worst offset 0.00 m over 8",
+     "threshold": "<=60 m pass; 30 m for the 10 band",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
     },
     {
-      "id": "RI-WLD07",
-      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
-      "side": "morrowind",
-      "kind": "number",
-      "native_scale": "M36 rows (7) + interior census + landmark silhouette + climbable-feature count",
-      "native_score": "6 of 7 M36 rows pass; ROAD-RELIEF fails; interiors 2 of 250; verticality is not a constraint on movement",
-      "native_max": null,
-      "native_verdict": "below bar \u2014 named remedy required",
-      "score_0_10": 3,
-      "measured": "partial",
-      "why_not_ten": "The province has 466 m of vertical range (-41.8 to +424.2) and none of it constrains anything, because THERE IS NO MAXIMUM WALKABLE SLOPE. critic-loco-probe.json L1: holding the walk stick straight uphill on a 70.63 deg face climbs 10.28 m in 5 s; on a 66.20 deg face, 16.76 m; state never leaves WALK, stamina 120->120, HP 620->620. The province's own passability model \u2014 the S9-NO-FENCES flood fill in scale-audit.mjs \u2014 calls slope > 40 deg impassable, so two instruments in this piece disagree by 30 degrees and neither was asked to reconcile. L2: dropped from 150 m above ground the player arrives at 620/620 HP having never left state WALK. The Salt Hills' 'snow visible on unreachable peaks' is reachable, and every cliff in Valus Ridge is a ramp. M36-ROAD-RELIEF is 27.3% against a 30% target (fail floor 12).",
-      "path_to_ten": "Declare a walkable-slope ceiling in game/src/combat/player.js and enforce it against field.slopeAt: above 40 deg the capsule slides rather than climbs, and above ~55 deg it is not traversable at all. Re-run S9-NO-FENCES with the capsule rather than a flood fill and report the two numbers together. Then run RI-WLD07's 12-high-point landmark-silhouette check and the >=120 climbable-features count, which have still never been run, and route trunk metreage through Valus Ridge / Salt Hills / Stone Forest to clear 30% relief without carving marsh.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "M36-ELEVATION-RANGE",
-          "result": "pass",
-          "value": "-41.8 .. 424.2 m = 466.0 m",
-          "threshold": "-40..+420 target, fail < 150",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M36-VALUS",
-          "result": "pass",
-          "value": "424.2 m",
-          "threshold": ">=380",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M36-MEAN-SLOPE",
-          "result": "pass",
-          "value": "8.61 deg",
-          "threshold": "6-14",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "M36-ROAD-RELIEF",
-          "result": "fail",
-          "value": "27.3%",
-          "threshold": ">=30 target, fail < 12",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        },
-        {
-          "id": "MAX-WALKABLE-SLOPE",
-          "result": "fail",
-          "value": "70.63 deg walked uphill at full stick, 10.28 m climbed in 5 s, state WALK, stamina and HP unchanged",
-          "threshold": "check does not exist in RI-WLD07 \u2014 proposed by this verdict; the piece's own flood fill uses 40 deg",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
-          ]
-        },
-        {
-          "id": "FALL",
-          "result": "fail",
-          "value": "dropped 5 / 20 / 60 / 150 m above ground: HP 620->620 in every case, state WALK before and after, no airborne state",
-          "threshold": "check does not exist here; recorded as negative evidence",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
-          ]
-        },
-        {
-          "id": "INTERIORS",
-          "result": "fail",
-          "value": "2 interiors",
-          "threshold": "250",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        },
-        {
-          "id": "LANDMARK-SILHOUETTE / CLIMBABLE-FEATURE COUNT",
-          "result": "unmeasurable",
-          "value": "never run \u2014 no instrument exists",
-          "threshold": "12 high points / >=120 climbable features",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
-      ]
+     "id": "M1-LAND-AREA",
+     "result": "pass",
+     "value": "14.31 km2",
+     "threshold": "13.0-16.0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
     },
     {
-      "id": "RI-WLD10",
-      "path": "corpus/50-world/RI-WLD10-the-water-model.md",
-      "side": "neutral",
-      "kind": "number",
-      "native_scale": "0-100 weighted (M47-M56)",
-      "native_score": 55,
-      "native_max": 100,
-      "native_verdict": "below bar \u2014 named remedy required",
-      "score_0_10": 5,
-      "measured": "partial",
-      "why_not_ten": "Round 1 found water completely inert; it is not any more, and that half is measured: critic-loco-probe.json L3 gives 2.0000 m/s on dry FIRM, 1.8664 in W1 (0.181 m, SUCK), 1.8632 on dry SUCK, 1.7000 in W2 (0.437 m, SILT) and 1.1000 in W5 (8.28 m) \u2014 1.1 being the declared swim speed. But S25's other half is missing entirely. critic-misc-probe.json H3: sixty seconds (3,600 frames) standing in 8.28 m of water returns HP 620->620, stamina 120->120 and state WALK. There is no SWIM state, no breath clock, no drowning, and no stamina charge for standing in water, which S25 requires in terms. The player walks the floor of a lake indefinitely, at 1.1 m/s, in the WALK animation.",
-      "path_to_ten": "Land the rest of the ladder in game/src/combat/player.js: a SWIM state above W4 with a breath clock (40-60 s to first damage per RI-WLD10), a stamina drain while any part of the capsule is submerged above knee, MIRED at six footfalls on SUCK, and denial (not degradation) of sprint and roll above knee depth per S25. Acceptance: 3,600 frames in W5 ends with HP < 620 and stamina < 120 and state == SWIM; W3 walk measures exactly 1.30 m/s.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "M47-WATER-CENSUS",
-          "result": "pass",
-          "value": "per-body surfaces, not a global plane; tide moves; tideway inverts 0.85 m LOW -> 1.45 m HIGH",
-          "threshold": "not a boolean, not one global plane",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json"
-          ]
-        },
-        {
-          "id": "M49-BAND-SPEEDS",
-          "result": "marginal",
-          "value": "W0 2.0000, W1 1.8664, W2 1.7000, W5 1.1000 m/s; W3 not sampled",
-          "threshold": "W3 walk exactly 1.30 m/s",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
-          ]
-        },
-        {
-          "id": "M50-BREATH",
-          "result": "fail",
-          "value": "3,600 frames at depth 8.28 m: HP 620->620, state WALK",
-          "threshold": "breath clock 40-60 s then damage",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-          ]
-        },
-        {
-          "id": "M51-STAMINA-IN-WATER (S25)",
-          "result": "fail",
-          "value": "stamina 120->120 over 60 s standing in W5",
-          "threshold": "stamina charged for standing in it",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-          ]
-        },
-        {
-          "id": "M52-MIRED",
-          "result": "fail",
-          "value": "300 frames on SUCK: no MIRED state, stamina unchanged",
-          "threshold": "MIRED at six footfalls on SUCK",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
-          ]
-        },
-        {
-          "id": "M54-TIDE-AMPLITUDE",
-          "result": "pass",
-          "value": "0.00 m outside tidal regions; tideway 0.976 -> 1.456 m across phases",
-          "threshold": "exactly 0 outside tidal regions",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-      ]
+     "id": "M2-TIME",
+     "result": "pass",
+     "value": "55.356 min",
+     "threshold": "52-65",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json"
+     ]
     },
     {
-      "id": "RI-WLD11",
-      "path": "corpus/50-world/RI-WLD11-environmental-hazards.md",
-      "side": "morrowind",
-      "kind": "number",
-      "native_scale": "0-100 weighted (M57-M63)",
-      "native_score": 30,
-      "native_max": 100,
-      "native_verdict": "we lose",
-      "score_0_10": 2,
-      "measured": "full",
-      "why_not_ten": "Nineteen hazards are declared in game/data/world/hazards.json with tells, lead times, damage kinds and counters, and NOT ONE FIRES. critic-hazard-fire.json: sixty seconds of standing at each of the thirteen region centroids, no input, tide LOW, noon \u2014 HP 620->620 and stamina 120->120 in all thirteen, including Crimson Coast and Marauder's Coast where the player is standing in W5 water, the Stone Wastes whose salt-storm declares chip damage over time, and the Deep Marshes whose voriplasm is the province's signature killer. M58 (tell >=2.0 s and >=15 m before damage), M59 (>=80 s to death, <=6.0 s escape), M60 (>=2 working counters each) and M61-M62 are all unmeasurable because there is nothing to measure.",
-      "path_to_ten": "Wire the hazard table to a per-frame region tick in game/src/sim/: on entering a hazard's region, emit a hazard_tell event on the declared channels at the declared lead_s and range_m, then apply the declared damage kind on a clock. Acceptance: a 60 s stand at each of the thirteen region centroids ends with HP < 620 in the >=1 damaging regions, with a tell event logged >=2.0 s and >=15 m before the first damage frame, and each hazard escapable in <=6.0 s by at least two of its declared counters.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "M57-CENSUS",
-          "result": "pass",
-          "value": "19 hazards, 13 signature + 6 shared, each with class, tell, damage, counters",
-          "threshold": ">=13 signature hazards",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
-          ]
-        },
-        {
-          "id": "M58-TELL",
-          "result": "fail",
-          "value": "0 tell events in 13 x 60 s",
-          "threshold": ">=2.0 s and >=15 m before damage",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
-          ]
-        },
-        {
-          "id": "M59-LETHALITY",
-          "result": "fail",
-          "value": "HP 620->620 in 13 of 13 regions after 60 s",
-          "threshold": ">=80 s to death, <=6.0 s escape",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
-          ]
-        },
-        {
-          "id": "M60-COUNTERS",
-          "result": "unmeasurable",
-          "value": "no hazard fires, so no counter can be shown to work",
-          "threshold": ">=2 working counters each",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
-      ]
+     "id": "M2-DISTANCE",
+     "result": "pass",
+     "value": "6642.1 m integrated",
+     "threshold": "6300-7600",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json"
+     ]
     },
     {
-      "id": "RI-CAM02",
-      "path": "corpus/15-camera/RI-CAM02-free-camera-and-movement-mapping.md",
-      "side": "souls",
-      "kind": "trace",
-      "native_scale": "0-100 (M1-M7)",
-      "native_score": 5,
-      "native_max": 100,
-      "native_verdict": "we lose",
-      "score_0_10": 1,
-      "measured": "partial",
-      "why_not_ten": "I ran none of RI-CAM02's seven methods this round and I score the item on that basis, fail-closed, rather than inheriting round 1's numbers. The only camera evidence I produced is ar2-b1-hud-exploring.png (S18 third-person body present and rendered from behind) and a documented API constraint I hit as an instrument bug: __HARNESS.camera(pose) accepts only {pos, look, fov, mode} and silently ignores a {yaw, pitch, arm} pose while leaving a frozen override in place, so six of my first-pass frames were captured from one stale camera position (shot-embankment-stormhold-helstrom.png and shot-embankment-side-on.png are the two I kept as the demonstration). A pose API that half-applies is how a critic ends up citing six identical frames as six viewpoints.",
-      "path_to_ten": "With W1-06: expose yaw/pitch/arm on __HARNESS.camera(pose) or throw on an unrecognised pose key rather than accepting it, expose camera yaw on getCameraRig() so M5 is measurable, and run M1-M7 with a spring-arm collision trace. Acceptance: camera({yaw,pitch,arm}) either moves the camera or throws, and RI-CAM02 M1-M7 all produce numbers.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "S18-THIRD-PERSON",
-          "result": "pass",
-          "value": "player body rendered from behind in the exploring frame",
-          "threshold": "third person at all times",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png"
-          ]
-        },
-        {
-          "id": "M1-M7",
-          "result": "unmeasurable",
-          "value": "not run this round",
-          "threshold": "RI-CAM02 M1-M7",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json"
-      ]
+     "id": "M3-SPEED-HONESTY",
+     "result": "pass",
+     "value": "0.009% of 33213 samples below 1.6 m/s; mean 1.9998",
+     "threshold": "<=8% below 1.6",
+     "note": "S17 holds, and holds after the re-route: the hour is 6,642 m of road walked at 2.0 m/s, not friction. Independently confirmed off-road: dry FIRM ground realises 2.0000 m/s (critic-loco-probe.json L3).",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
+     ]
     },
     {
-      "id": "RI-AI05",
-      "path": "corpus/10-combat/RI-AI05-roster-archetypes.md",
-      "side": "souls",
-      "kind": "structure",
-      "native_scale": "0-44",
-      "native_score": 2,
-      "native_max": 44,
-      "native_verdict": "loses outright",
-      "score_0_10": 1,
-      "measured": "full",
-      "why_not_ten": "danger_tier 1-5 exists as an integer on all thirteen regions in regions.json and nothing reads it, because there is nothing to read it for: getWorldStats reports entitiesLive 0, and listEntities() returns 0 at all thirteen region centroids. S9 lethality gating is a column in a table.",
-      "path_to_ten": "With W1-09/W1-14: place the roster per region against the shipped danger_tier, emit the placement dump M3 needs, and run M21's tier-by-tier survival probe. Acceptance: listEntities() is non-empty in 13 of 13 regions and RI-WLD04 M21's survival ladder measures tier 1 survives ... tier 5 dies in < 15 s.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "M3-REGION-MIX",
-          "result": "fail",
-          "value": "entitiesLive 0 in 13 of 13 regions",
-          "threshold": "a per-region roster exists",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-      ]
+     "id": "M4-LEG-TIMES",
+     "result": "pass",
+     "value": "worst leg deviation 2.14% (soulrest-blackrose)",
+     "threshold": "<=20% pass, >40% fail",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
     },
     {
-      "id": "RI-PRG06",
-      "path": "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
-      "side": "souls",
-      "kind": "number",
-      "native_scale": "min-over-axes",
-      "native_score": 0,
-      "native_max": 10,
-      "native_verdict": "we lose",
-      "score_0_10": 1,
-      "measured": "partial",
-      "why_not_ten": "Same cause as RI-AI05: no roster is placed in the province, so seven of the item's eight axes have no population to measure. The S9 axis (no level-scaling anywhere in world data) passes on negative evidence \u2014 nothing in terrain, water, hazard, road or region data reads player level.",
-      "path_to_ten": "With W1-09/W1-14: place the roster, then re-measure all eight axes. Acceptance: min-over-axes returns a number rather than an absence.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "S9-NO-LEVEL-SCALING",
-          "result": "pass",
-          "value": "no world value reads player level",
-          "threshold": "zero level-scaling",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        },
-        {
-          "id": "AXES-1-4,6-8",
-          "result": "unmeasurable",
-          "value": "no roster placed",
-          "threshold": "RI-PRG06 axes",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-      ]
+     "id": "M5-HABITATION-GAP",
+     "result": "pass",
+     "value": "7.83 min",
+     "threshold": "<=9.0 pass, >12 fail",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
     },
     {
-      "id": "RI-PRG07",
-      "path": "corpus/20-progression/RI-PRG07-equip-load-encumbrance.md",
-      "side": "morrowind",
-      "kind": "number",
-      "native_scale": "min-over-axes",
-      "native_score": 6,
-      "native_max": 10,
-      "native_verdict": "meets the bar on the burden axis; the in-fight-inertness assertion is untested",
-      "score_0_10": 6,
-      "measured": "partial",
-      "why_not_ten": "The world-side burden ladder now exists and is measured: critic-misc-probe.json H2 sweeps seven ratios and gets UNBURDENED 1.0x at 0.10 and 0.45 (2.0000 m/s), LADEN 0.9x at 0.69 and 0.85 (1.8000 m/s), OVERLADEN 0.72x with sprint disabled at 0.95 (1.4400 m/s) and IMMOBILE 0x at 1.01 and 1.20 (0.0000 m/s), with fatigue_drain_mult 1.4 at LADEN. Round 1's stated remedy \u2014 three transitions at 0.60/0.85/1.00 with movement exactly 0 above 1.00 \u2014 is met on the world side. What is not shown is S23's other half: that these extra tiers have NO in-fight effect whatsoever. I ran no fight, so the isolation is unverified.",
-      "path_to_ten": "Run the same burden sweep inside COMBAT and assert that roll i-frames, roll distance and recovery are identical at every ratio, since RI-CMB01 owns everything the tier does inside the fight (S23). Acceptance: seven burden ratios x an identical roll trace, byte-identical frame data.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "BURDEN-TIERS",
-          "result": "pass",
-          "value": "0.60/0.85/1.00 transitions; 1.0/0.9/0.72/0 move multipliers; sprint false at OVERLADEN; 0.0000 m/s above 1.00",
-          "threshold": "three transitions, movement exactly 0 above 1.00",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-          ]
-        },
-        {
-          "id": "S23-IN-FIGHT-INERT",
-          "result": "unmeasurable",
-          "value": "no fight run in this piece",
-          "threshold": "zero in-fight effect",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-      ]
+     "id": "M2b-ROAD-ABOVE-WATER",
+     "result": "pass",
+     "value": "0 leg/phase offences over 4 tide phases x 10 legs; deepest non-tideway trunk point 0.000 m",
+     "threshold": "0 offences (check added by verdict W1-01 §8)",
+     "note": "Recomputed by me from game/src/world/field.js with the road corridor attached, at 3 m sub-sampling, not read out of reports/road-water.json.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json"
+     ]
     },
     {
-      "id": "RI-TRV01",
-      "path": "corpus/50-world/RI-TRV01-transport-network.md",
-      "side": "morrowind",
-      "kind": "structure",
-      "native_scale": "0-24 (M1-M12)",
-      "native_score": 12,
-      "native_max": 24,
-      "native_verdict": "M1 passes outright; M2-M12 not run",
-      "score_0_10": 6,
-      "measured": "partial",
-      "why_not_ten": "M1 passes and passes well. critic-b13-travel.json: 5 modes, 26 stations, 68 services, 17 lines, 7 quays; all five modalities BOARD from a settlement station, pay in gold (rootway 15, barge 12, poler 15, packet 58, rootspeak 38, gold 5000 -> 4862 across five rides), physically move the player 713-2,666 m along a route, and arrive 14 m from the destination station's own marker. The walked-it-once gate is real and refuses in fiction: 68 of 68 services refused at a fresh start with 'You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.', and after I walked four legs 39 became purchasable and 29 stayed refused. What is missing is that I ran only M1 of twelve \u2014 no fare-model check, no schedule, no in-world clock advance assertion, no station-anatomy check, no guild-guide gating.",
-      "path_to_ten": "Run RI-TRV01 M2-M12 with W1-05. Acceptance: all twelve methods produce numbers, and the in-world clock advances by the service's declared game_min on every ride.",
-      "ten_by_wave": 2,
-      "checks": [
-        {
-          "id": "M1-NETWORK-EXISTS",
-          "result": "pass",
-          "value": "5 modes / 26 stations / 68 services / 17 lines; all 5 modes board and ride",
-          "threshold": ">=5 modes, >=26 stations, >=60 services",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
-          ]
-        },
-        {
-          "id": "S7-WALKED-IT-ONCE",
-          "result": "pass",
-          "value": "68/68 refused before walking; 39 purchasable / 29 still refused after walking 4 legs",
-          "threshold": "you must have walked there once",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
-          ]
-        },
-        {
-          "id": "S7-ARRIVES-AT-A-STATION",
-          "result": "pass",
-          "value": "14.0 m from the destination station marker on all five rides",
-          "threshold": "drops you at a station, not at your objective",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
-          ]
-        },
-        {
-          "id": "M2-M12",
-          "result": "unmeasurable",
-          "value": "not run this round",
-          "threshold": "RI-TRV01 M2-M12",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-travel-probe.json"
-      ]
+     "id": "M2-ROAD-CUT-AND-FILL",
+     "result": "marginal",
+     "value": "shipped tool: cut 3.0 m / fill 16.0 m. My 3 m sub-sampling: cut 3.62 m / fill 17.52 m",
+     "threshold": "cut <=3.5, fill <=20",
+     "note": "The cut check passes at the tool's own sampling rate and fails at 3 m. The instrument's resolution is what decides the result, which is the same shape of defect as the one this check was written to catch.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
+    },
+    {
+     "id": "M2c-ROAD-GRADE",
+     "result": "fail",
+     "value": "max grade 1.637 (58.6 deg) on stormhold-helstrom at (2104.44,1235.65); 638 m of trunk above 0.30; 2,231 m above 0.12",
+     "threshold": "check does not exist in RI-WLD01 — proposed by this verdict",
+     "note": "Not an RI-WLD01 check. Recorded because the item has no clause a 58-degree road would trip, exactly as it had none for a drowned one.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-ramp-58deg-side.png"
+     ]
     }
-  ],
-  "artifacts": [
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
-      "kind": "report",
-      "produced_by": "node tools/world/road-water-audit.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
-      "note": "M2b re-run by me over the built field with the road corridor attached, 3 m sub-sampling, 4 tide phases x 10 legs."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shipped-road-water.json",
-      "kind": "report",
-      "produced_by": "cp reports/road-water.json (the shipped report, copied so this verdict does not cite a transient path)",
-      "note": "Round 1's process defect: verdicts must copy every cited artifact into their own directory."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
-      "kind": "report",
-      "produced_by": "node tools/world/critic-w1-01-r2-cutfill.mjs",
-      "seed": null
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
-      "kind": "trace",
-      "produced_by": "node tools/world/crossing.mjs --route crossing --speed walk",
-      "seed": 1337,
-      "duration_s": 3321.3
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
-      "kind": "report",
-      "produced_by": "node tools/world/scale-audit.mjs"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
-      "kind": "report",
-      "produced_by": "node tools/world/region-axes.mjs"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-probe.json",
-      "kind": "trace",
-      "produced_by": "node tools/world/critic-w1-01-r2-road.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json",
-      "kind": "trace",
-      "produced_by": "node tools/world/critic-w1-01-r2-loco.mjs",
-      "seed": 1337,
-      "note": "L1 uphill slope sweep, L2 fall from 5/20/60/150 m, L3 water band speeds, L4 first travel attempt."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json",
-      "kind": "trace",
-      "produced_by": "node tools/world/critic-w1-01-r2-misc.mjs",
-      "seed": 1337,
-      "note": "H2 burden sweep, H3 60 s breath test in W5."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json",
-      "kind": "negative-evidence",
-      "produced_by": "node tools/world/critic-w1-01-r2-hazfire.mjs",
-      "seed": 1337,
-      "duration_s": 780
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
-      "kind": "negative-evidence",
-      "produced_by": "node tools/world/critic-w1-01-r2-props.mjs",
-      "seed": 1337,
-      "note": "getWorldStats/getProvinceStats plus a live scene-graph census attempt at all 13 region centroids. The scene graph is not reachable from the page (found_scene false everywhere), which is itself recorded; textureMB 0 / atlasCount 0 / entitiesLive 0 come from getWorldStats."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-travel-probe.json",
-      "kind": "report",
-      "produced_by": "node tools/world/critic-w1-01-r2-travel.mjs",
-      "seed": 1337,
-      "note": "The refusal half: 68 of 68 services refuse before any leg is walked."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
-      "kind": "trace",
-      "produced_by": "node tools/world/critic-w1-01-r2-b13.mjs",
-      "seed": 1337,
-      "note": "The boarding half: four legs walked, then all five modalities boarded, paid and ridden."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
-      "kind": "report",
-      "produced_by": "node tools/world/critic-w1-01-r2-dispersion.mjs",
-      "source": "mixed",
-      "note": "Three descriptors x eight designs over ours (117) and Morrowind REF-A21-regions (39), including a matched 9-regions-x-3-images design over 200 random draws on both sides."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
-      "kind": "report",
-      "produced_by": "node tools/world/critic-w1-01-r2-structure.mjs",
-      "source": "mixed"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shipped-critic-visual-dispersion.json",
-      "kind": "report",
-      "produced_by": "cp reports/critic-visual-dispersion.json",
-      "source": "mixed",
-      "note": "The shipped run whose headline Fisher 1.005 this verdict resolves."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
-      "kind": "blind-pack",
-      "produced_by": "written to disk before ANSWERS.json's per-frame labels were read; revealed afterwards by script",
-      "source": "blind-pack",
-      "assignment_seed": 20260806
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json",
-      "kind": "blind-pack",
-      "produced_by": "node tools/world/critic-w1-01-r2-cutfill.mjs (pack statistics recomputed inline; see PACK-AUDIT.json for the values)",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-023.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Stone Wastes, day, salt_storm",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied into this verdict's artifacts",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Stone Wastes, worst, salt_storm",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-050.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Stone Wastes, worst, salt_storm",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-083.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Marauder's Coast, worst, sea_fog",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Deep Marshes, day, still",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-067.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; The Hive, day, still",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-075.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; Valus Ridge, day, clear",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-102.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "pack frame; The Clay Moor, day, heat_shimmer",
-      "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
-      "source": "blind-pack"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/REGIONS.txt",
-      "kind": "text-excerpt",
-      "produced_by": "reports/region-shots/REGIONS.txt, copied \u2014 the descriptor columns handed to the judge"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/README-JUDGE.txt",
-      "kind": "text-excerpt",
-      "produced_by": "reports/region-shots/README-JUDGE.txt, copied"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/SUPERSEDED-PACK.md",
-      "kind": "text-excerpt",
-      "produced_by": "reports/region-shots/SUPERSEDED-PACK.md, copied \u2014 the build's own record that it voided round 1's two cited frames"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json",
-      "kind": "report",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "note": "Camera poses, ground heights and water readings for every frame below."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom-air.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (2300.3, 198.74, 1400.2) looking at (2240.3, 164.74, 1340.2), fov 55, 12:00, clear, tide LOW; The Stone Forest, ground_y 158.74, slope 36.92 deg",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom-eye.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (2265.3, 161.74, 1340.2) looking at (2240.3, 160.34, 1340.2), fov 55, 12:00, clear",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-ramp-58deg-side.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (2134.4, 260.7, 1260.7) looking at (2104.4, 250.7, 1235.7), fov 55, 12:00, clear; Valus Ridge, ground_y 248.70, slope 38.96 deg",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-old-drowned-point-2182-2214.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (2222.5, 182.48, 2254.6) looking at (2182.5, 161.48, 2214.6), fov 55, 12:00, clear; the round-1 drowned point, now depth 0.000 m at ground_y 157.48",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (2734.5, 26.58, 4855.3) looking at (2689.5, 4.58, 4810.3), fov 55, 12:00, clear; Western Rootlands, the 13.7 m 'viaduct'",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth-eye.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (2707.5, 4.08, 4810.3) looking at (2689.5, 3.18, 4810.3), fov 55, 12:00, clear",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (3464.7, 9.43, 3683.0) looking at (3444.7, 2.93, 3663.0), fov 55, 12:00, clear, tide LOW; Eastern Rootlands, depth 0.181 m W1, surface_y 1.611",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-helstrom-gideon-fill.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "eye (1643.7, 49.4, 2867.2) looking at (1603.7, 30.4, 2827.2), fov 55, 12:00, clear; Blackwood, the 8.8 m fill",
-      "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "FROZEN OVERRIDE \u2014 kept as the evidence for the RI-CAM02 finding that camera({yaw,pitch,arm}) is silently ignored",
-      "produced_by": "node tools/world/critic-w1-01-r2-road.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-side-on.png",
-      "kind": "screenshot",
-      "resolution": "1280x720",
-      "camera_pose": "FROZEN OVERRIDE \u2014 the same camera as the frame above despite a 25 m teleport and a different requested pose",
-      "produced_by": "node tools/world/critic-w1-01-r2-road.mjs",
-      "seed": 1337
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png",
-      "kind": "screenshot",
-      "resolution": "320x180",
-      "camera_pose": "gameplay camera, Lilmoth (2766.5, 5011), 12:00, UI visible, exploring state",
-      "produced_by": "node tools/world/critic-w1-01-r2-misc.mjs",
-      "seed": 1337,
-      "note": "AR-2 B1 negative evidence: no arrow, pin, waypoint, compass or distance readout."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/round1-void-proof.txt",
-      "kind": "log",
-      "produced_by": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01.json"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/RESTORED-thorn.json.txt",
-      "kind": "text-excerpt",
-      "produced_by": "git show 65275dc^:game/data/dialogue/topics/thorn.json \u2014 the file W1-18 deleted without updating game/data/index.json, restored temporarily so the harness could boot and deleted again afterwards"
-    }
-  ],
-  "blind_comparisons": [
-    {
-      "ref_item": "RI-WLD04",
-      "status": "done",
-      "question": "Given the thirteen region names and their ground / flora / architecture / climate descriptor columns, and nothing else, which region is each unlabelled frame?",
-      "pack_artifacts": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json"
-      ],
-      "assignment_seed": 20260806,
-      "blind_pick": "none",
-      "blind_rationale": "M17 is a self-identification test, not a two-sided A/B, so blind_pick is 'none'. I judged 8 frames chosen by luminance computed from the pixels, wrote the calls and my reasons to disk, then revealed by script: 4/8. Two of the four correct calls (Clay Moor's fired red pan, Valus Ridge's limestone scree and thorn pine) came from something the region owns; one (The Hive) was a palette guess that happened to land. Three of the four misses are one miss: frames 023, 042 and 050 are the Stone Wastes and I called all three Marauder's Coast, because a glassed salt crust with whale-bone frames and a crater rim renders as a khaki flat under a white fog band. The fourth is the Deep Marshes rendered as a green lawn.",
-      "picked": "none",
-      "rerun_triggered": true,
-      "rerun": {
-        "harsher_lens": "Because the machine analogue disagreed with the human read (74.4% against 50%), I rebuilt the instrument three ways rather than accepting either number: raw 4x4 CIELAB, the same with per-image exposure removed, and chroma-only. Then I built the matched design the shipped comparison never had \u2014 9 regions x 3 images, 200 random draws, on both populations, so region count, images per region and chance level are identical.",
-        "additional_measurement": "A structure-only descriptor: 6x4 Sobel edge density plus 6x4 luminance layout, z-scored per image, so colour and exposure carry nothing. Ours_day LOO falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77; Morrowind falls 25.6% -> 17.9%. Roughly two-thirds of our measured region separability is colour.",
-        "artifacts": [
-          "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
-          "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json"
-        ],
-        "result": "inconclusive",
-        "item_capped_at_8": false
-      },
-      "reveal": {
-        "A": "ours",
-        "B": "ours"
-      }
-    }
-  ],
-  "arbitration": {
-    "ar1": {
-      "status": "not_applicable",
-      "not_applicable_reason": "No fight occurs in this piece and entitiesLive is 0 in all thirteen regions, so A1-A5, A8 and A10 have no encounter to run against. A6, A7 and A9 were run anyway and pass.",
-      "checks": [
-        {
-          "id": "A6",
-          "result": "pass",
-          "observed": "No world value \u2014 terrain, water, hazard, road, region, travel fare \u2014 reads player level. Same coordinates resampled in a new session return identical values.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        },
-        {
-          "id": "A7",
-          "result": "pass",
-          "observed": "No homing or instant turn observed in 4 s of held stick along the steep road segment; the capsule turns at a bounded rate.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-probe.json"
-          ]
-        },
-        {
-          "id": "A9",
-          "result": "pass",
-          "observed": "3,600 frames of walking and 3,600 frames of standing in W5 water: stamina 120 -> 120. No Fatigue-shaped drain couples locomotion to the stamina bar.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
-          ]
-        },
-        {
-          "id": "A1",
-          "result": "not_run",
-          "not_run_reason": "no fight in this piece"
-        },
-        {
-          "id": "A2",
-          "result": "not_run",
-          "not_run_reason": "no fight in this piece"
-        },
-        {
-          "id": "A3",
-          "result": "not_run",
-          "not_run_reason": "no fight in this piece"
-        },
-        {
-          "id": "A4",
-          "result": "not_run",
-          "not_run_reason": "no enemy exists to attack"
-        },
-        {
-          "id": "A5",
-          "result": "not_run",
-          "not_run_reason": "no fight in this piece"
-        },
-        {
-          "id": "A8",
-          "result": "not_run",
-          "not_run_reason": "no fight in this piece"
-        },
-        {
-          "id": "A10",
-          "result": "not_run",
-          "not_run_reason": "no COMBAT state can be entered \u2014 entitiesLive 0"
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-      ]
-    },
-    "ar2": {
-      "status": "pass",
-      "checks": [
-        {
-          "id": "B1",
-          "result": "pass",
-          "observed": "ar2-b1-hud-exploring.png, Lilmoth, 12:00, exploring, UI visible: no arrow, pin, waypoint, compass, distance readout or edge indicator anywhere in the frame.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png"
-          ]
-        },
-        {
-          "id": "B2",
-          "result": "pass",
-          "observed": "The travel network is not a map-pin menu. Every service refuses unless its road has been walked ('You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.'), costs gold, moves the player along a real route at a mode-specific speed, and ends 14 m from a station marker rather than at any objective. 29 of 68 services were still refused after four legs were walked.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-travel-probe.json"
-          ]
-        },
-        {
-          "id": "B4",
-          "result": "pass",
-          "observed": "pois.json, hazards.json, water.json, roads.json, regions.json and the travel files are authored enumerations. No procedural drop table anywhere in world data.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        },
-        {
-          "id": "B5",
-          "result": "pass",
-          "observed": "Every fare is denominated in gold: 15 / 12 / 15 / 58 / 38, and the player's gold falls 5000 -> 4862 across five rides. No price anywhere in souls.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
-          ]
-        },
-        {
-          "id": "B8",
-          "result": "pass",
-          "observed": "Same as A6 \u2014 nothing in the world, including travel fares, reads player level.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
-          ]
-        },
-        {
-          "id": "B13",
-          "result": "pass",
-          "observed": "CLOSES ROUND 1's AR-2 FAIL. game/data/world/travel/ exists; getTravelNetwork() reports 5 modes, 26 stations, 68 services, 17 lines, 7 quays. From Stormhold, Lilmoth and Helstrom I boarded rootway, barge, poler, packet and rootspeak, paid in gold, rode, and arrived 14.0 m from the destination station's own marker in all five cases, having moved 848 / 713 / 713 / 2147 / 2666 m along the service's route.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
-          ]
-        },
-        {
-          "id": "B3",
-          "result": "not_run",
-          "not_run_reason": "no dialogue surface in this piece"
-        },
-        {
-          "id": "B6",
-          "result": "not_run",
-          "not_run_reason": "no item descriptions or books in this piece"
-        },
-        {
-          "id": "B7",
-          "result": "not_run",
-          "not_run_reason": "no quest reachable in this piece"
-        },
-        {
-          "id": "B9",
-          "result": "not_run",
-          "not_run_reason": "no NPC placed in the province"
-        },
-        {
-          "id": "B10",
-          "result": "not_run",
-          "not_run_reason": "no quest or faction state in this piece"
-        },
-        {
-          "id": "B11",
-          "result": "not_run",
-          "not_run_reason": "no rumour surface in this piece"
-        },
-        {
-          "id": "B12",
-          "result": "not_run",
-          "not_run_reason": "entitiesLive 0 \u2014 no encounter of any class exists to exit non-violently"
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png"
-      ]
-    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json"
+   ]
   },
-  "score": {
-    "overall_0_10": 3.5,
-    "pass_threshold": 7.0,
-    "aggregation": "mean",
-    "band_label": "Skeleton \u2014 the right structure with almost nothing in it",
-    "confidence": "high"
-  },
-  "status": "FAIL",
-  "status_reasons": [
-    "below_threshold: 3.5 against the wave-1 gate of 7.0",
-    "RI-WLD04 M19 fails outright: 0 of 13 ONLY-HERE elements placed",
-    "RI-WLD11: 19 declared hazards, 0 fire in 13 x 60 s",
-    "AR-1 and AR-2 both clear; the failure is entirely on the ladder"
-  ],
-  "biggest_gap": {
-    "gap_id": "GAP-W1-world-region-identity-is-a-tint",
-    "subsystem_path": "world.region.identity",
-    "what": "All thirteen regions are the same three primitives \u2014 canopy, under, rock \u2014 recoloured, and not one of the thirteen declared ONLY-HERE elements exists in the world. Every region in game/data/world/regions.json carries the identical prop schema `canopy+under+rock`, drawing on seven shared canopy shapes and five shared under shapes; the whole 14.31 km2 province renders with textureMB 0, atlasCount 0, 17 materials and 8 programs. `only_here: {id, instances}` \u2014 welkynd_pillar x34, petrified_bole x400, rock_flute_spire x14, glassed_crater x16, beached_hull_house x12 and nine more \u2014 is an integer literal in tools/world/build-regions.mjs and nothing places an instance, so RI-WLD04 M19 measures 0 of 13. Five of M18's nine axes (fauna, architecture, audio, weather, hazard) are DROPPED rather than measured, which is the same statement in the instrument's own words. The consequence is measurable two ways. A human taking M17 on the now-honest pack scores 4/8 against a pass bar of 85%, and three of the four misses are one miss: frames 023, 042 and 050 are the Stone Wastes \u2014 'glassed salt crust', glass_thorn, whale_bone_frame, salt_block_wall, crater_rim \u2014 and all three read as Marauder's Coast, because what is rendered is a khaki flat under a white fog band. And with colour and exposure removed from the machine descriptor, leave-one-out identification falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77: about two-thirds of the measured region separability is carried by tint alone, which is RI-WLD04's own named way to lose.",
-    "why_it_matters": "S24 rules that thirteen regions must each read as a different place and that an implementation where everything is one terrain with a recoloured fog has failed regardless of how good the terrain is \u2014 and a player walking the 6.6 km crossing passes through five regions that differ in ground colour and in nothing they can name.",
-    "evidence": [
+  {
+   "id": "RI-WLD04",
+   "path": "corpus/50-world/RI-WLD04-region-identity.md",
+   "side": "morrowind",
+   "kind": "image",
+   "native_scale": "0-10 band on M17 (blind region identification), gated by M18/M19/M20/M21",
+   "native_score": 3,
+   "native_max": 10,
+   "native_verdict": "between the item's band 2 ('regions differ mainly by tint and fog') and band 4 ('two or three are interchangeable')",
+   "score_0_10": 3,
+   "measured": "partial",
+   "why_not_ten": "M17 is a HUMAN test and this is the first round in which it could be taken, because the pack is now honestly shuffled. On 8 of the 39 brightest frames I scored 4/8 (m17-blind-answers-critic-r2.json, written before the reveal) against a pass bar of >=33/39 (85%) and a fail floor of <28/39 (72%). Three of the four misses are the same miss: frames 023, 042 and 050 are the STONE WASTES ('glassed salt crust', glass_thorn, whale_bone_frame, salt_block_wall, crater_rim) and I called all three Marauder's Coast, because what is rendered is a khaki flat under a white fog band with no glass, no bone frame and no crater. The fourth is frame-017, the DEEP MARSHES ('violet-black silt and voriplasm margin', corpse_lily, drowned_tree, drowned_xanmeer_tooth, green fever-fog), rendered as a bright green lawn with ball-canopy trees. M19 is 0/13: every region's ONLY-HERE element (welkynd_pillar x34, petrified_bole x400, rock_flute_spire x14, glassed_crater x16, beached_hull_house x12 ...) is an integer literal in tools/world/build-regions.mjs and not one instance is placed — the live scene has entitiesLive 0 in all thirteen regions and the whole province renders with textureMB 0 and 17 materials. M20 is 0 (audioMB 0). M21 is 0 (no roster placed). M18 passes at the >=6 bar with three pairs at exactly 6, and five of its nine declared axes — fauna, architecture, audio, weather, hazard — are DROPPED rather than measured, which is an honest statement that they are not implemented.",
+   "path_to_ten": "(a) Give each region a second and third prop class beyond the shared canopy+under+rock lattice, and place its ONLY-HERE element as real instances at the declared counts, so M19 reads 13/13 with >=8 instances in-region and 0 elsewhere. (b) Ship the five dropped M18 axes as measurable properties: an architecture mesh set, a fauna set, an ambient bed, a weather state machine and a firing hazard per region. (c) Re-run M17 with a fresh judge on the full 117-frame pack and clear >=33/39 by day and >=27/39 at night. (d) Close the night pass specifically: ours_night leave-one-out is 33.3% (raw descriptor) and 25.6% once exposure is removed, against M17 step 6's explicit >=70%.",
+   "ten_by_wave": 3,
+   "checks": [
+    {
+     "id": "M17-PACK-INTEGRITY",
+     "result": "pass",
+     "value": "117 frames, 39/39/39 day/night/worst, 9 per region, shuffle seed 20260806, Spearman(frame index, region rank) = -0.0051 recomputed by me, adjacent same-region pairs 8 vs 8.9 expected by chance, permutation is a true permutation of 0..116, 0 duplicate image hashes, night mean luma 15.0 vs day 80.0",
+     "threshold": "shuffled, 117 frames, night and worst-weather passes shipped",
+     "note": "Round 1's finding on this instrument is CLOSED. Every claim the pack makes about itself reproduces when recomputed from the shipped PNGs.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json"
+     ]
+    },
+    {
+     "id": "M17-DAY",
+     "result": "fail",
+     "value": "4/8 = 50% on a partial human read",
+     "threshold": ">=33/39 (85%) pass; <28/39 (72%) fail",
+     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
       "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-023.png",
       "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
       "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-050.png",
-      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png"
+     ]
+    },
+    {
+     "id": "M17-NIGHT",
+     "result": "fail",
+     "value": "machine analogue leave-one-out 33.3% (raw) / 25.6% (exposure removed)",
+     "threshold": ">=70% required",
+     "note": "The night pass exists for the first time and it fails the item's own explicit night bar by more than half. This is the true content of the pooled Fisher 1.005.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json"
+     ]
+    },
+    {
+     "id": "A7-INTER-REGION-DISPERSION",
+     "result": "pass",
+     "value": "matched design (9 regions x 3 images, 200 random draws, identical chance): ours_day Fisher 3.087 +/-0.322, LOO 77.5%; morrowind Fisher 1.614 +/-0.113, LOO 24.2%",
+     "threshold": "ours at least as dispersed as Morrowind's own regions on the same instrument",
+     "note": "The like-for-like comparison the shipped headline never had. Ours_pooled (1.536 +/-0.312) is statistically indistinguishable from Morrowind (1.614 +/-0.113) — the 'below Morrowind' reading survives only if our night frames are pooled and Morrowind's are not.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json"
+     ]
+    },
+    {
+     "id": "A7-INSTRUMENT-VALIDITY",
+     "result": "fail",
+     "value": "with colour and exposure removed (6x4 Sobel edge density + luminance layout) ours_day LOO falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77; Morrowind falls 25.6% -> 17.9%",
+     "threshold": "the descriptor should measure region identity, not tint",
+     "note": "About two-thirds of our measured separability is carried by colour alone, which is why the machine reads 74.4% where a human reads 50%. RI-WLD04's own 'How we lose' names this: 'Palette without material — getting the hex values right and applying them as a colour grade over the same ground texture.'",
+     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json"
+     ]
+    },
+    {
+     "id": "M18",
+     "result": "pass",
+     "value": "78 pairs, minimum 6 axes differing (blackwood/eastern-rootlands, clay-moor/stone-wastes, deep-marshes/stone-wastes all at exactly 6)",
+     "threshold": ">=6 every pair pass, <=3 fail",
+     "note": "Round 1's finding is CLOSED: eight of nine axes are no longer string comparisons. Seven read built geometry, two read rendered pixels, and fauna/architecture/audio/weather/hazard are DROPPED rather than scored — an honest declaration that five of the item's nine axes do not exist in the build.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json"
+     ]
+    },
+    {
+     "id": "M19",
+     "result": "fail",
+     "value": "0 of 13 ONLY-HERE elements placed; entitiesLive 0 in all 13 regions; textureMB 0, atlasCount 0, 17 materials for the whole 14.31 km2 province; every region uses the identical prop schema canopy+under+rock",
+     "threshold": ">=8 instances in its own region, 0 elsewhere, for each of 13",
+     "hard_fail": false,
+     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png"
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
+     ]
+    },
+    {
+     "id": "M20",
+     "result": "unmeasurable",
+     "value": "audioMB 0 — there is no audio",
+     "threshold": ">=26/39",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    },
+    {
+     "id": "M21",
+     "result": "unmeasurable",
+     "value": "entitiesLive 0 at all 13 region centroids",
+     "threshold": "tier 1 survives ... tier 5 dies in <15 s",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    }
+   ],
+   "how_we_lose_hits": [
+    "Regions that differ only in fog colour / palette without material",
+    "ONLY-HERE assets not present at all",
+    "Silent regions",
+    "Night forgotten"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+   ]
+  },
+  {
+   "id": "RI-WLD07",
+   "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "M36 rows (7) + interior census + landmark silhouette + climbable-feature count",
+   "native_score": "6 of 7 M36 rows pass; ROAD-RELIEF fails; interiors 2 of 250; verticality is not a constraint on movement",
+   "native_max": null,
+   "native_verdict": "below bar — named remedy required",
+   "score_0_10": 3,
+   "measured": "partial",
+   "why_not_ten": "The province has 466 m of vertical range (-41.8 to +424.2) and none of it constrains anything, because THERE IS NO MAXIMUM WALKABLE SLOPE. critic-loco-probe.json L1: holding the walk stick straight uphill on a 70.63 deg face climbs 10.28 m in 5 s; on a 66.20 deg face, 16.76 m; state never leaves WALK, stamina 120->120, HP 620->620. The province's own passability model — the S9-NO-FENCES flood fill in scale-audit.mjs — calls slope > 40 deg impassable, so two instruments in this piece disagree by 30 degrees and neither was asked to reconcile. L2: dropped from 150 m above ground the player arrives at 620/620 HP having never left state WALK. The Salt Hills' 'snow visible on unreachable peaks' is reachable, and every cliff in Valus Ridge is a ramp. M36-ROAD-RELIEF is 27.3% against a 30% target (fail floor 12).",
+   "path_to_ten": "Declare a walkable-slope ceiling in game/src/combat/player.js and enforce it against field.slopeAt: above 40 deg the capsule slides rather than climbs, and above ~55 deg it is not traversable at all. Re-run S9-NO-FENCES with the capsule rather than a flood fill and report the two numbers together. Then run RI-WLD07's 12-high-point landmark-silhouette check and the >=120 climbable-features count, which have still never been run, and route trunk metreage through Valus Ridge / Salt Hills / Stone Forest to clear 30% relief without carving marsh.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "M36-ELEVATION-RANGE",
+     "result": "pass",
+     "value": "-41.8 .. 424.2 m = 466.0 m",
+     "threshold": "-40..+420 target, fail < 150",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
+    },
+    {
+     "id": "M36-VALUS",
+     "result": "pass",
+     "value": "424.2 m",
+     "threshold": ">=380",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
+    },
+    {
+     "id": "M36-MEAN-SLOPE",
+     "result": "pass",
+     "value": "8.61 deg",
+     "threshold": "6-14",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
+    },
+    {
+     "id": "M36-ROAD-RELIEF",
+     "result": "fail",
+     "value": "27.3%",
+     "threshold": ">=30 target, fail < 12",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
+    },
+    {
+     "id": "MAX-WALKABLE-SLOPE",
+     "result": "fail",
+     "value": "70.63 deg walked uphill at full stick, 10.28 m climbed in 5 s, state WALK, stamina and HP unchanged",
+     "threshold": "check does not exist in RI-WLD07 — proposed by this verdict; the piece's own flood fill uses 40 deg",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
+     ]
+    },
+    {
+     "id": "FALL",
+     "result": "fail",
+     "value": "dropped 5 / 20 / 60 / 150 m above ground: HP 620->620 in every case, state WALK before and after, no airborne state",
+     "threshold": "check does not exist here; recorded as negative evidence",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
+     ]
+    },
+    {
+     "id": "INTERIORS",
+     "result": "fail",
+     "value": "2 interiors",
+     "threshold": "250",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    },
+    {
+     "id": "LANDMARK-SILHOUETTE / CLIMBABLE-FEATURE COUNT",
+     "result": "unmeasurable",
+     "value": "never run — no instrument exists",
+     "threshold": "12 high points / >=120 climbable features",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json"
+   ]
+  },
+  {
+   "id": "RI-WLD10",
+   "path": "corpus/50-world/RI-WLD10-the-water-model.md",
+   "side": "neutral",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M47-M56)",
+   "native_score": 55,
+   "native_max": 100,
+   "native_verdict": "below bar — named remedy required",
+   "score_0_10": 5,
+   "measured": "partial",
+   "why_not_ten": "Round 1 found water completely inert; it is not any more, and that half is measured: critic-loco-probe.json L3 gives 2.0000 m/s on dry FIRM, 1.8664 in W1 (0.181 m, SUCK), 1.8632 on dry SUCK, 1.7000 in W2 (0.437 m, SILT) and 1.1000 in W5 (8.28 m) — 1.1 being the declared swim speed. But S25's other half is missing entirely. critic-misc-probe.json H3: sixty seconds (3,600 frames) standing in 8.28 m of water returns HP 620->620, stamina 120->120 and state WALK. There is no SWIM state, no breath clock, no drowning, and no stamina charge for standing in water, which S25 requires in terms. The player walks the floor of a lake indefinitely, at 1.1 m/s, in the WALK animation.",
+   "path_to_ten": "Land the rest of the ladder in game/src/combat/player.js: a SWIM state above W4 with a breath clock (40-60 s to first damage per RI-WLD10), a stamina drain while any part of the capsule is submerged above knee, MIRED at six footfalls on SUCK, and denial (not degradation) of sprint and roll above knee depth per S25. Acceptance: 3,600 frames in W5 ends with HP < 620 and stamina < 120 and state == SWIM; W3 walk measures exactly 1.30 m/s.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "M47-WATER-CENSUS",
+     "result": "pass",
+     "value": "per-body surfaces, not a global plane; tide moves; tideway inverts 0.85 m LOW -> 1.45 m HIGH",
+     "threshold": "not a boolean, not one global plane",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json"
+     ]
+    },
+    {
+     "id": "M49-BAND-SPEEDS",
+     "result": "marginal",
+     "value": "W0 2.0000, W1 1.8664, W2 1.7000, W5 1.1000 m/s; W3 not sampled",
+     "threshold": "W3 walk exactly 1.30 m/s",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
+     ]
+    },
+    {
+     "id": "M50-BREATH",
+     "result": "fail",
+     "value": "3,600 frames at depth 8.28 m: HP 620->620, state WALK",
+     "threshold": "breath clock 40-60 s then damage",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+     ]
+    },
+    {
+     "id": "M51-STAMINA-IN-WATER (S25)",
+     "result": "fail",
+     "value": "stamina 120->120 over 60 s standing in W5",
+     "threshold": "stamina charged for standing in it",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+     ]
+    },
+    {
+     "id": "M52-MIRED",
+     "result": "fail",
+     "value": "300 frames on SUCK: no MIRED state, stamina unchanged",
+     "threshold": "MIRED at six footfalls on SUCK",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
+     ]
+    },
+    {
+     "id": "M54-TIDE-AMPLITUDE",
+     "result": "pass",
+     "value": "0.00 m outside tidal regions; tideway 0.976 -> 1.456 m across phases",
+     "threshold": "exactly 0 outside tidal regions",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+   ]
+  },
+  {
+   "id": "RI-WLD11",
+   "path": "corpus/50-world/RI-WLD11-environmental-hazards.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-100 weighted (M57-M63)",
+   "native_score": 30,
+   "native_max": 100,
+   "native_verdict": "we lose",
+   "score_0_10": 2,
+   "measured": "full",
+   "why_not_ten": "Nineteen hazards are declared in game/data/world/hazards.json with tells, lead times, damage kinds and counters, and NOT ONE FIRES. critic-hazard-fire.json: sixty seconds of standing at each of the thirteen region centroids, no input, tide LOW, noon — HP 620->620 and stamina 120->120 in all thirteen, including Crimson Coast and Marauder's Coast where the player is standing in W5 water, the Stone Wastes whose salt-storm declares chip damage over time, and the Deep Marshes whose voriplasm is the province's signature killer. M58 (tell >=2.0 s and >=15 m before damage), M59 (>=80 s to death, <=6.0 s escape), M60 (>=2 working counters each) and M61-M62 are all unmeasurable because there is nothing to measure.",
+   "path_to_ten": "Wire the hazard table to a per-frame region tick in game/src/sim/: on entering a hazard's region, emit a hazard_tell event on the declared channels at the declared lead_s and range_m, then apply the declared damage kind on a clock. Acceptance: a 60 s stand at each of the thirteen region centroids ends with HP < 620 in the >=1 damaging regions, with a tell event logged >=2.0 s and >=15 m before the first damage frame, and each hazard escapable in <=6.0 s by at least two of its declared counters.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "M57-CENSUS",
+     "result": "pass",
+     "value": "19 hazards, 13 signature + 6 shared, each with class, tell, damage, counters",
+     "threshold": ">=13 signature hazards",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
+     ]
+    },
+    {
+     "id": "M58-TELL",
+     "result": "fail",
+     "value": "0 tell events in 13 x 60 s",
+     "threshold": ">=2.0 s and >=15 m before damage",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
+     ]
+    },
+    {
+     "id": "M59-LETHALITY",
+     "result": "fail",
+     "value": "HP 620->620 in 13 of 13 regions after 60 s",
+     "threshold": ">=80 s to death, <=6.0 s escape",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
+     ]
+    },
+    {
+     "id": "M60-COUNTERS",
+     "result": "unmeasurable",
+     "value": "no hazard fires, so no counter can be shown to work",
+     "threshold": ">=2 working counters each",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json"
+   ]
+  },
+  {
+   "id": "RI-CAM02",
+   "path": "corpus/15-camera/RI-CAM02-free-camera-and-movement-mapping.md",
+   "side": "souls",
+   "kind": "trace",
+   "native_scale": "0-100 (M1-M7)",
+   "native_score": 5,
+   "native_max": 100,
+   "native_verdict": "we lose",
+   "score_0_10": 1,
+   "measured": "partial",
+   "why_not_ten": "I ran none of RI-CAM02's seven methods this round and I score the item on that basis, fail-closed, rather than inheriting round 1's numbers. The only camera evidence I produced is ar2-b1-hud-exploring.png (S18 third-person body present and rendered from behind) and a documented API constraint I hit as an instrument bug: __HARNESS.camera(pose) accepts only {pos, look, fov, mode} and silently ignores a {yaw, pitch, arm} pose while leaving a frozen override in place, so six of my first-pass frames were captured from one stale camera position (shot-embankment-stormhold-helstrom.png and shot-embankment-side-on.png are the two I kept as the demonstration). A pose API that half-applies is how a critic ends up citing six identical frames as six viewpoints.",
+   "path_to_ten": "With W1-06: expose yaw/pitch/arm on __HARNESS.camera(pose) or throw on an unrecognised pose key rather than accepting it, expose camera yaw on getCameraRig() so M5 is measurable, and run M1-M7 with a spring-arm collision trace. Acceptance: camera({yaw,pitch,arm}) either moves the camera or throws, and RI-CAM02 M1-M7 all produce numbers.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "S18-THIRD-PERSON",
+     "result": "pass",
+     "value": "player body rendered from behind in the exploring frame",
+     "threshold": "third person at all times",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png"
+     ]
+    },
+    {
+     "id": "M1-M7",
+     "result": "unmeasurable",
+     "value": "not run this round",
+     "threshold": "RI-CAM02 M1-M7",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json"
+   ]
+  },
+  {
+   "id": "RI-AI05",
+   "path": "corpus/10-combat/RI-AI05-roster-archetypes.md",
+   "side": "souls",
+   "kind": "structure",
+   "native_scale": "0-44",
+   "native_score": 2,
+   "native_max": 44,
+   "native_verdict": "loses outright",
+   "score_0_10": 1,
+   "measured": "full",
+   "why_not_ten": "danger_tier 1-5 exists as an integer on all thirteen regions in regions.json and nothing reads it, because there is nothing to read it for: getWorldStats reports entitiesLive 0, and listEntities() returns 0 at all thirteen region centroids. S9 lethality gating is a column in a table.",
+   "path_to_ten": "With W1-09/W1-14: place the roster per region against the shipped danger_tier, emit the placement dump M3 needs, and run M21's tier-by-tier survival probe. Acceptance: listEntities() is non-empty in 13 of 13 regions and RI-WLD04 M21's survival ladder measures tier 1 survives ... tier 5 dies in < 15 s.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "M3-REGION-MIX",
+     "result": "fail",
+     "value": "entitiesLive 0 in 13 of 13 regions",
+     "threshold": "a per-region roster exists",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+   ]
+  },
+  {
+   "id": "RI-PRG06",
+   "path": "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "min-over-axes",
+   "native_score": 0,
+   "native_max": 10,
+   "native_verdict": "we lose",
+   "score_0_10": 1,
+   "measured": "partial",
+   "why_not_ten": "Same cause as RI-AI05: no roster is placed in the province, so seven of the item's eight axes have no population to measure. The S9 axis (no level-scaling anywhere in world data) passes on negative evidence — nothing in terrain, water, hazard, road or region data reads player level.",
+   "path_to_ten": "With W1-09/W1-14: place the roster, then re-measure all eight axes. Acceptance: min-over-axes returns a number rather than an absence.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "S9-NO-LEVEL-SCALING",
+     "result": "pass",
+     "value": "no world value reads player level",
+     "threshold": "zero level-scaling",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    },
+    {
+     "id": "AXES-1-4,6-8",
+     "result": "unmeasurable",
+     "value": "no roster placed",
+     "threshold": "RI-PRG06 axes",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+   ]
+  },
+  {
+   "id": "RI-PRG07",
+   "path": "corpus/20-progression/RI-PRG07-equip-load-encumbrance.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "min-over-axes",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "meets the bar on the burden axis; the in-fight-inertness assertion is untested",
+   "score_0_10": 6,
+   "measured": "partial",
+   "why_not_ten": "The world-side burden ladder now exists and is measured: critic-misc-probe.json H2 sweeps seven ratios and gets UNBURDENED 1.0x at 0.10 and 0.45 (2.0000 m/s), LADEN 0.9x at 0.69 and 0.85 (1.8000 m/s), OVERLADEN 0.72x with sprint disabled at 0.95 (1.4400 m/s) and IMMOBILE 0x at 1.01 and 1.20 (0.0000 m/s), with fatigue_drain_mult 1.4 at LADEN. Round 1's stated remedy — three transitions at 0.60/0.85/1.00 with movement exactly 0 above 1.00 — is met on the world side. What is not shown is S23's other half: that these extra tiers have NO in-fight effect whatsoever. I ran no fight, so the isolation is unverified.",
+   "path_to_ten": "Run the same burden sweep inside COMBAT and assert that roll i-frames, roll distance and recovery are identical at every ratio, since RI-CMB01 owns everything the tier does inside the fight (S23). Acceptance: seven burden ratios x an identical roll trace, byte-identical frame data.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "BURDEN-TIERS",
+     "result": "pass",
+     "value": "0.60/0.85/1.00 transitions; 1.0/0.9/0.72/0 move multipliers; sprint false at OVERLADEN; 0.0000 m/s above 1.00",
+     "threshold": "three transitions, movement exactly 0 above 1.00",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+     ]
+    },
+    {
+     "id": "S23-IN-FIGHT-INERT",
+     "result": "unmeasurable",
+     "value": "no fight run in this piece",
+     "threshold": "zero in-fight effect",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+   ]
+  },
+  {
+   "id": "RI-TRV01",
+   "path": "corpus/50-world/RI-TRV01-transport-network.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "0-24 (M1-M12)",
+   "native_score": 12,
+   "native_max": 24,
+   "native_verdict": "M1 passes outright; M2-M12 not run",
+   "score_0_10": 6,
+   "measured": "partial",
+   "why_not_ten": "M1 passes and passes well. critic-b13-travel.json: 5 modes, 26 stations, 68 services, 17 lines, 7 quays; all five modalities BOARD from a settlement station, pay in gold (rootway 15, barge 12, poler 15, packet 58, rootspeak 38, gold 5000 -> 4862 across five rides), physically move the player 713-2,666 m along a route, and arrive 14 m from the destination station's own marker. The walked-it-once gate is real and refuses in fiction: 68 of 68 services refused at a fresh start with 'You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.', and after I walked four legs 39 became purchasable and 29 stayed refused. What is missing is that I ran only M1 of twelve — no fare-model check, no schedule, no in-world clock advance assertion, no station-anatomy check, no guild-guide gating.",
+   "path_to_ten": "Run RI-TRV01 M2-M12 with W1-05. Acceptance: all twelve methods produce numbers, and the in-world clock advances by the service's declared game_min on every ride.",
+   "ten_by_wave": 2,
+   "checks": [
+    {
+     "id": "M1-NETWORK-EXISTS",
+     "result": "pass",
+     "value": "5 modes / 26 stations / 68 services / 17 lines; all 5 modes board and ride",
+     "threshold": ">=5 modes, >=26 stations, >=60 services",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
+     ]
+    },
+    {
+     "id": "S7-WALKED-IT-ONCE",
+     "result": "pass",
+     "value": "68/68 refused before walking; 39 purchasable / 29 still refused after walking 4 legs",
+     "threshold": "you must have walked there once",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
+     ]
+    },
+    {
+     "id": "S7-ARRIVES-AT-A-STATION",
+     "result": "pass",
+     "value": "14.0 m from the destination station marker on all five rides",
+     "threshold": "drops you at a station, not at your objective",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
+     ]
+    },
+    {
+     "id": "M2-M12",
+     "result": "unmeasurable",
+     "value": "not run this round",
+     "threshold": "RI-TRV01 M2-M12",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-travel-probe.json"
+   ]
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
+   "kind": "report",
+   "produced_by": "node tools/world/road-water-audit.mjs --out corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
+   "note": "M2b re-run by me over the built field with the road corridor attached, 3 m sub-sampling, 4 tide phases x 10 legs."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shipped-road-water.json",
+   "kind": "report",
+   "produced_by": "cp reports/road-water.json (the shipped report, copied so this verdict does not cite a transient path)",
+   "note": "Round 1's process defect: verdicts must copy every cited artifact into their own directory."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
+   "kind": "report",
+   "produced_by": "node tools/world/critic-w1-01-r2-cutfill.mjs",
+   "seed": null
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
+   "kind": "trace",
+   "produced_by": "node tools/world/crossing.mjs --route crossing --speed walk",
+   "seed": 1337,
+   "duration_s": 3321.3
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
+   "kind": "report",
+   "produced_by": "node tools/world/scale-audit.mjs"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
+   "kind": "report",
+   "produced_by": "node tools/world/region-axes.mjs"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-probe.json",
+   "kind": "trace",
+   "produced_by": "node tools/world/critic-w1-01-r2-road.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json",
+   "kind": "trace",
+   "produced_by": "node tools/world/critic-w1-01-r2-loco.mjs",
+   "seed": 1337,
+   "note": "L1 uphill slope sweep, L2 fall from 5/20/60/150 m, L3 water band speeds, L4 first travel attempt."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json",
+   "kind": "trace",
+   "produced_by": "node tools/world/critic-w1-01-r2-misc.mjs",
+   "seed": 1337,
+   "note": "H2 burden sweep, H3 60 s breath test in W5."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-hazard-fire.json",
+   "kind": "negative-evidence",
+   "produced_by": "node tools/world/critic-w1-01-r2-hazfire.mjs",
+   "seed": 1337,
+   "duration_s": 780
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
+   "kind": "negative-evidence",
+   "produced_by": "node tools/world/critic-w1-01-r2-props.mjs",
+   "seed": 1337,
+   "note": "getWorldStats/getProvinceStats plus a live scene-graph census attempt at all 13 region centroids. The scene graph is not reachable from the page (found_scene false everywhere), which is itself recorded; textureMB 0 / atlasCount 0 / entitiesLive 0 come from getWorldStats."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-travel-probe.json",
+   "kind": "report",
+   "produced_by": "node tools/world/critic-w1-01-r2-travel.mjs",
+   "seed": 1337,
+   "note": "The refusal half: 68 of 68 services refuse before any leg is walked."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
+   "kind": "trace",
+   "produced_by": "node tools/world/critic-w1-01-r2-b13.mjs",
+   "seed": 1337,
+   "note": "The boarding half: four legs walked, then all five modalities boarded, paid and ridden."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
+   "kind": "report",
+   "produced_by": "node tools/world/critic-w1-01-r2-dispersion.mjs",
+   "source": "mixed",
+   "note": "Three descriptors x eight designs over ours (117) and Morrowind REF-A21-regions (39), including a matched 9-regions-x-3-images design over 200 random draws on both sides."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
+   "kind": "report",
+   "produced_by": "node tools/world/critic-w1-01-r2-structure.mjs",
+   "source": "mixed"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shipped-critic-visual-dispersion.json",
+   "kind": "report",
+   "produced_by": "cp reports/critic-visual-dispersion.json",
+   "source": "mixed",
+   "note": "The shipped run whose headline Fisher 1.005 this verdict resolves."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
+   "kind": "blind-pack",
+   "produced_by": "written to disk before ANSWERS.json's per-frame labels were read; revealed afterwards by script",
+   "source": "blind-pack",
+   "assignment_seed": 20260806
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json",
+   "kind": "blind-pack",
+   "produced_by": "node tools/world/critic-w1-01-r2-cutfill.mjs (pack statistics recomputed inline; see PACK-AUDIT.json for the values)",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-023.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Stone Wastes, day, salt_storm",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied into this verdict's artifacts",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Stone Wastes, worst, salt_storm",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-050.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Stone Wastes, worst, salt_storm",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-083.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Marauder's Coast, worst, sea_fog",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; eye 1.7 m, FOV 70, random yaw; Deep Marshes, day, still",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-067.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; The Hive, day, still",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-075.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; Valus Ridge, day, clear",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-102.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "pack frame; The Clay Moor, day, heat_shimmer",
+   "produced_by": "reports/region-shots (elder-souls/region-shots@2), copied",
+   "source": "blind-pack"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/REGIONS.txt",
+   "kind": "text-excerpt",
+   "produced_by": "reports/region-shots/REGIONS.txt, copied — the descriptor columns handed to the judge"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/README-JUDGE.txt",
+   "kind": "text-excerpt",
+   "produced_by": "reports/region-shots/README-JUDGE.txt, copied"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/SUPERSEDED-PACK.md",
+   "kind": "text-excerpt",
+   "produced_by": "reports/region-shots/SUPERSEDED-PACK.md, copied — the build's own record that it voided round 1's two cited frames"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json",
+   "kind": "report",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "note": "Camera poses, ground heights and water readings for every frame below."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom-air.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (2300.3, 198.74, 1400.2) looking at (2240.3, 164.74, 1340.2), fov 55, 12:00, clear, tide LOW; The Stone Forest, ground_y 158.74, slope 36.92 deg",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom-eye.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (2265.3, 161.74, 1340.2) looking at (2240.3, 160.34, 1340.2), fov 55, 12:00, clear",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-ramp-58deg-side.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (2134.4, 260.7, 1260.7) looking at (2104.4, 250.7, 1235.7), fov 55, 12:00, clear; Valus Ridge, ground_y 248.70, slope 38.96 deg",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-old-drowned-point-2182-2214.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (2222.5, 182.48, 2254.6) looking at (2182.5, 161.48, 2214.6), fov 55, 12:00, clear; the round-1 drowned point, now depth 0.000 m at ground_y 157.48",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (2734.5, 26.58, 4855.3) looking at (2689.5, 4.58, 4810.3), fov 55, 12:00, clear; Western Rootlands, the 13.7 m 'viaduct'",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth-eye.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (2707.5, 4.08, 4810.3) looking at (2689.5, 3.18, 4810.3), fov 55, 12:00, clear",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (3464.7, 9.43, 3683.0) looking at (3444.7, 2.93, 3663.0), fov 55, 12:00, clear, tide LOW; Eastern Rootlands, depth 0.181 m W1, surface_y 1.611",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-helstrom-gideon-fill.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "eye (1643.7, 49.4, 2867.2) looking at (1603.7, 30.4, 2827.2), fov 55, 12:00, clear; Blackwood, the 8.8 m fill",
+   "produced_by": "node tools/world/critic-w1-01-r2-shots.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "FROZEN OVERRIDE — kept as the evidence for the RI-CAM02 finding that camera({yaw,pitch,arm}) is silently ignored",
+   "produced_by": "node tools/world/critic-w1-01-r2-road.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-side-on.png",
+   "kind": "screenshot",
+   "resolution": "1280x720",
+   "camera_pose": "FROZEN OVERRIDE — the same camera as the frame above despite a 25 m teleport and a different requested pose",
+   "produced_by": "node tools/world/critic-w1-01-r2-road.mjs",
+   "seed": 1337
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png",
+   "kind": "screenshot",
+   "resolution": "320x180",
+   "camera_pose": "gameplay camera, Lilmoth (2766.5, 5011), 12:00, UI visible, exploring state",
+   "produced_by": "node tools/world/critic-w1-01-r2-misc.mjs",
+   "seed": 1337,
+   "note": "AR-2 B1 negative evidence: no arrow, pin, waypoint, compass or distance readout."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/round1-void-proof.txt",
+   "kind": "log",
+   "produced_by": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01.json"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-01-r2/RESTORED-thorn.json.txt",
+   "kind": "text-excerpt",
+   "produced_by": "git show 65275dc^:game/data/dialogue/topics/thorn.json — the file W1-18 deleted without updating game/data/index.json, restored temporarily so the harness could boot and deleted again afterwards"
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-WLD04",
+   "status": "done",
+   "question": "Given the thirteen region names and their ground / flora / architecture / climate descriptor columns, and nothing else, which region is each unlabelled frame?",
+   "pack_artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/PACK-AUDIT.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json"
+   ],
+   "assignment_seed": 20260806,
+   "blind_pick": "none",
+   "blind_rationale": "M17 is a self-identification test, not a two-sided A/B, so blind_pick is 'none'. I judged 8 frames chosen by luminance computed from the pixels, wrote the calls and my reasons to disk, then revealed by script: 4/8. Two of the four correct calls (Clay Moor's fired red pan, Valus Ridge's limestone scree and thorn pine) came from something the region owns; one (The Hive) was a palette guess that happened to land. Three of the four misses are one miss: frames 023, 042 and 050 are the Stone Wastes and I called all three Marauder's Coast, because a glassed salt crust with whale-bone frames and a crater rim renders as a khaki flat under a white fog band. The fourth is the Deep Marshes rendered as a green lawn.",
+   "picked": "none",
+   "rerun_triggered": true,
+   "rerun": {
+    "harsher_lens": "Because the machine analogue disagreed with the human read (74.4% against 50%), I rebuilt the instrument three ways rather than accepting either number: raw 4x4 CIELAB, the same with per-image exposure removed, and chroma-only. Then I built the matched design the shipped comparison never had — 9 regions x 3 images, 200 random draws, on both populations, so region count, images per region and chance level are identical.",
+    "additional_measurement": "A structure-only descriptor: 6x4 Sobel edge density plus 6x4 luminance layout, z-scored per image, so colour and exposure carry nothing. Ours_day LOO falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77; Morrowind falls 25.6% -> 17.9%. Roughly two-thirds of our measured region separability is colour.",
+    "artifacts": [
+     "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
+     "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json"
     ],
-    "severity": "blocking",
-    "remedy": {
-      "action": "Place the ONLY-HERE elements as real instances, and give each region at least one prop class that no other region has. Concretely: (1) extend the region prop schema in tools/world/build-regions.mjs and game/src/world/province.js beyond `canopy+under+rock` with a fourth slot `signature`, carrying its own mesh generator per region \u2014 a welkynd pillar for Blackwood, a rock-flute spire for Valus Ridge, a whale-bone frame and crater rim for the Stone Wastes, a beached hull house and tide pole for Marauder's Coast, a drowned xanmeer tooth and corpse lily for the Deep Marshes, a stilt row and tideway marker for the Eastern Rootlands; (2) place them at the counts regions.json already declares, from the same seeded lattice the existing props use, so the number in the table becomes the number in the world; (3) add a `signature_silhouette` axis and an `architecture_placed` axis to tools/world/region-axes.mjs, computed from placed instances rather than from a table row, and un-drop `architecture`; (4) give the ground more than one material \u2014 at present textureMB is 0, so albedo is a per-region constant and RI-WLD04's 'albedo must come from different materials, not a LUT' cannot be satisfied at all.",
-      "targets": [
-        "tools/world/build-regions.mjs",
-        "game/src/world/province.js",
-        "game/src/render/scene.js",
-        "game/data/world/regions.json",
-        "tools/world/region-axes.mjs"
-      ],
-      "acceptance": "RI-WLD04 M19 reads 13/13: each region's ONLY-HERE element is queryable in the running world at >=8 instances inside its own region and 0 instances in every other region. AND the structure-only re-measurement (critic-structure-only.json, colour and exposure removed) rises from 30.8% to >=55% leave-one-out on the 39 day frames, so region identity survives having the tint taken away. AND M18 measures >=7 axes on every one of the 78 pairs with `architecture` un-dropped and computed from placed instances.",
-      "ref_item": "RI-WLD04",
-      "estimated_size": "L"
+    "result": "inconclusive",
+    "item_capped_at_8": false
+   },
+   "reveal": {
+    "A": "ours",
+    "B": "ours"
+   }
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "not_applicable_reason": "No fight occurs in this piece and entitiesLive is 0 in all thirteen regions, so A1-A5, A8 and A10 have no encounter to run against. A6, A7 and A9 were run anyway and pass.",
+   "checks": [
+    {
+     "id": "A6",
+     "result": "pass",
+     "observed": "No world value — terrain, water, hazard, road, region, travel fare — reads player level. Same coordinates resampled in a new session return identical values.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
+    },
+    {
+     "id": "A7",
+     "result": "pass",
+     "observed": "No homing or instant turn observed in 4 s of held stick along the steep road segment; the capsule turns at a bounded rate.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-probe.json"
+     ]
+    },
+    {
+     "id": "A9",
+     "result": "pass",
+     "observed": "3,600 frames of walking and 3,600 frames of standing in W5 water: stamina 120 -> 120. No Fatigue-shaped drain couples locomotion to the stamina bar.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-misc-probe.json"
+     ]
+    },
+    {
+     "id": "A1",
+     "result": "not_run",
+     "not_run_reason": "no fight in this piece"
+    },
+    {
+     "id": "A2",
+     "result": "not_run",
+     "not_run_reason": "no fight in this piece"
+    },
+    {
+     "id": "A3",
+     "result": "not_run",
+     "not_run_reason": "no fight in this piece"
+    },
+    {
+     "id": "A4",
+     "result": "not_run",
+     "not_run_reason": "no enemy exists to attack"
+    },
+    {
+     "id": "A5",
+     "result": "not_run",
+     "not_run_reason": "no fight in this piece"
+    },
+    {
+     "id": "A8",
+     "result": "not_run",
+     "not_run_reason": "no fight in this piece"
+    },
+    {
+     "id": "A10",
+     "result": "not_run",
+     "not_run_reason": "no COMBAT state can be entered — entitiesLive 0"
     }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+   ]
   },
-  "secondary_observations": [
+  "ar2": {
+   "status": "pass",
+   "checks": [
     {
-      "what": "THE BUILD DOES NOT BOOT. game/data/index.json lists dialogue/topics/thorn.json; commit 65275dc (W1-18) deleted that file and did not update the manifest, so Engine._boot throws 'data file missing: dialogue/topics/thorn.json (404)' and every harness command in the repository fails at ready(). I restored the file from 65275dc^ into the worktree to take any measurement at all, and deleted it again before finishing, so the tree is as I found it. This belongs to W1-18, not to W1-01, but it means every reports/*.json in the tree was produced against a build that no longer starts, and no wave-1 verdict can be reproduced today without the same workaround. A manifest/disk consistency check belongs in tools/corpus-index.mjs --check or in a pre-commit hook. FIXED MID-SESSION BY ANOTHER AGENT: commit d86fc4a ('round-2 critic artifacts (W1-01-r2, W1-09-r2); restore dialogue topic thorn.json') restored the file while I was writing this verdict, and game/data/index.json now lists 306 files with 0 missing. The finding stands as a record of the state the build was in when every measurement above was taken, and as the reason a manifest/disk consistency check belongs in tools/corpus-index.mjs --check: nothing in the repository would have caught this, and it was found by a critic tripping over it.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/RESTORED-thorn.json.txt"
-      ],
-      "subsystem_path": "platform.determinism.harness"
+     "id": "B1",
+     "result": "pass",
+     "observed": "ar2-b1-hud-exploring.png, Lilmoth, 12:00, exploring, UI visible: no arrow, pin, waypoint, compass, distance readout or edge indicator anywhere in the frame.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png"
+     ]
     },
     {
-      "what": "The road fix is an earthwork wearing a viaduct's name. roads.json declares 21 deck_spans totalling 2,494 m, eleven of them kind 'viaduct' up to 16 m tall on stormhold-helstrom and three 'causeway over water' on blackrose-lilmoth; grep across game/src finds deck_spans read nowhere. In the built world the deck is produced by _applyRoads blending the ground toward the deck height over hw..3.2*hw, so a 16 m viaduct is a 16 m ridge of the same material as the hillside. 2,537 of my sampled shoulder points exceed 40 degrees, peaking at 70.6 degrees at (2286.3, 1360.9). shot-embankment-stormhold-helstrom-air.png shows what it looks like: a smooth grey berm through The Stone Forest with no road surface, no parapet, no structure and no track.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom-air.png",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth.png"
-      ],
-      "subsystem_path": "world.terrain.form"
+     "id": "B2",
+     "result": "pass",
+     "observed": "The travel network is not a map-pin menu. Every service refuses unless its road has been walked ('You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed.'), costs gold, moves the player along a real route at a mode-specific speed, and ends 14 m from a station marker rather than at any objective. 29 of 68 services were still refused after four legs were walked.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-travel-probe.json"
+     ]
     },
     {
-      "what": "The player can walk off a 29.22 m drop and take nothing. critic-road-probe.json R2 at the 17.5 m fill on stormhold-helstrom: walking east 20 m descends 29.22 m onto a 66.2 degree face, state WALK throughout, HP 620 -> 620. So the embankment is not a fence \u2014 but only because nothing about height costs anything.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-probe.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
-      ],
-      "subsystem_path": "world.traversal.locomotion"
+     "id": "B4",
+     "result": "pass",
+     "observed": "pois.json, hazards.json, water.json, roads.json, regions.json and the travel files are authored enumerations. No procedural drop table anywhere in world data.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
     },
     {
-      "what": "FIDELITY OBSERVATION, carrying no score and cited against no reference: getWorldStats reports textureMB 0, atlasCount 0, 17 materials, 8 programs, 1 shadow light, 0 skinned meshes for the whole province. Every surface in every frame I captured is a flat-shaded constant colour. This is recorded here rather than scored because this verdict's declared bifurcation axis is art-direction; a fidelity verdict against corpus/70-visual/refs/modern/ is RI-VIS03's and RI-VIS04's job, not mine.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth-eye.png"
-      ],
-      "subsystem_path": "world.region.identity"
+     "id": "B5",
+     "result": "pass",
+     "observed": "Every fare is denominated in gold: 15 / 12 / 15 / 58 / 38, and the player's gold falls 5000 -> 4862 across five rides. No price anywhere in souls.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
+     ]
     },
     {
-      "what": "__HARNESS.camera(pose) accepts an unrecognised pose object and silently freezes the camera instead of throwing. camera({yaw, pitch, arm}) matches no branch, so `cur` is taken from the live rig and written back as an override; every later call then reads `cur` from that override, and six frames captured across 25-500 m of teleporting came out from one position. HARNESS.md R7 says every method either does the thing or throws. This one does neither.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom.png",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-side-on.png"
-      ],
-      "subsystem_path": "camera.rig.thirdperson"
+     "id": "B8",
+     "result": "pass",
+     "observed": "Same as A6 — nothing in the world, including travel fares, reads player level.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json"
+     ]
     },
     {
-      "what": "Standing water is rendered as an untextured flat polygon with no shoreline, no specular and no depth cue. shot-tideway-lilmoth-archon.png is taken standing in 0.181 m of water (surface_y 1.611 over ground_y 1.430, band W1, substrate SUCK) in the Eastern Rootlands and no water is visible in the frame at all; blind-frames/frame-042.png shows the other case, where 8 m of water reads as a flat grey hexagon lying on the mud. Since S25 makes depth readable off the player's own silhouette, water the player cannot see is a seam problem as well as a rendering one.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json"
-      ],
-      "subsystem_path": "world.region.identity"
+     "id": "B13",
+     "result": "pass",
+     "observed": "CLOSES ROUND 1's AR-2 FAIL. game/data/world/travel/ exists; getTravelNetwork() reports 5 modes, 26 stations, 68 services, 17 lines, 7 quays. From Stormhold, Lilmoth and Helstrom I boarded rootway, barge, poler, packet and rootspeak, paid in gold, rode, and arrived 14.0 m from the destination station's own marker in all five cases, having moved 848 / 713 / 713 / 2147 / 2666 m along the service's route.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json"
+     ]
+    },
+    {
+     "id": "B3",
+     "result": "not_run",
+     "not_run_reason": "no dialogue surface in this piece"
+    },
+    {
+     "id": "B6",
+     "result": "not_run",
+     "not_run_reason": "no item descriptions or books in this piece"
+    },
+    {
+     "id": "B7",
+     "result": "not_run",
+     "not_run_reason": "no quest reachable in this piece"
+    },
+    {
+     "id": "B9",
+     "result": "not_run",
+     "not_run_reason": "no NPC placed in the province"
+    },
+    {
+     "id": "B10",
+     "result": "not_run",
+     "not_run_reason": "no quest or faction state in this piece"
+    },
+    {
+     "id": "B11",
+     "result": "not_run",
+     "not_run_reason": "no rumour surface in this piece"
+    },
+    {
+     "id": "B12",
+     "result": "not_run",
+     "not_run_reason": "entitiesLive 0 — no encounter of any class exists to exit non-violently"
     }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-b13-travel.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/ar2-b1-hud-exploring.png"
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 3.5,
+  "pass_threshold": 7,
+  "aggregation": "mean",
+  "band_label": "Skeleton — the right structure with almost nothing in it",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "below_threshold: 3.5 against the wave-1 gate of 7.0",
+  "RI-WLD04 M19 fails outright: 0 of 13 ONLY-HERE elements placed",
+  "RI-WLD11: 19 declared hazards, 0 fire in 13 x 60 s",
+  "AR-1 and AR-2 both clear; the failure is entirely on the ladder"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-world-region-identity-is-a-tint",
+  "subsystem_path": "world.region.identity",
+  "what": "All thirteen regions are the same three primitives — canopy, under, rock — recoloured, and not one of the thirteen declared ONLY-HERE elements exists in the world. Every region in game/data/world/regions.json carries the identical prop schema `canopy+under+rock`, drawing on seven shared canopy shapes and five shared under shapes; the whole 14.31 km2 province renders with textureMB 0, atlasCount 0, 17 materials and 8 programs. `only_here: {id, instances}` — welkynd_pillar x34, petrified_bole x400, rock_flute_spire x14, glassed_crater x16, beached_hull_house x12 and nine more — is an integer literal in tools/world/build-regions.mjs and nothing places an instance, so RI-WLD04 M19 measures 0 of 13. Five of M18's nine axes (fauna, architecture, audio, weather, hazard) are DROPPED rather than measured, which is the same statement in the instrument's own words. The consequence is measurable two ways. A human taking M17 on the now-honest pack scores 4/8 against a pass bar of 85%, and three of the four misses are one miss: frames 023, 042 and 050 are the Stone Wastes — 'glassed salt crust', glass_thorn, whale_bone_frame, salt_block_wall, crater_rim — and all three read as Marauder's Coast, because what is rendered is a khaki flat under a white fog band. And with colour and exposure removed from the machine descriptor, leave-one-out identification falls 74.4% -> 30.8% and Fisher 3.10 -> 1.77: about two-thirds of the measured region separability is carried by tint alone, which is RI-WLD04's own named way to lose.",
+  "why_it_matters": "S24 rules that thirteen regions must each read as a different place and that an implementation where everything is one terrain with a recoloured fog has failed regardless of how good the terrain is — and a player walking the 6.6 km crossing passes through five regions that differ in ground colour and in nothing they can name.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/m17-blind-answers-critic-r2.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-023.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-050.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-017.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-structure-only.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-dispersion-likeforlike.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-region-axes.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png"
   ],
-  "gap_closure": [
-    {
-      "gap_id": "GAP-W1-world-trunk-road-below-the-waterline",
-      "status": "closed",
-      "measured_value": "0 leg/phase offences over 4 tide phases x 10 legs; deepest non-tideway trunk point 0.000 m; crossing re-measures 55.356 min / 6642.1 m / mean 1.9998 m/s",
-      "acceptance_restated": "scale-audit.mjs reports 0 m of trunk road above W2 on all legs except lilmoth-archon, at RISING/HIGH/FALLING/LOW; lilmoth-archon keeps its declared <=0.85 m at LOW and >=1.40 m at HIGH; and crossing.mjs re-measures the crossing inside 52-65 min / 6,300-7,600 m on the re-routed network.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-old-drowned-point-2182-2214.png"
-      ],
-      "closed_by_builder_of_fix": false,
-      "note": "Closed on the acceptance condition as written, and recomputed from the terrain rather than from reports/road-water.json \u2014 I built two WorldField instances, one with the road corridor and one without, and sub-sampled all ten legs at 3 m. The round-1 point (2182.52, 2214.63) now returns depth 0.000 m at ground_y 157.48. The tideway inverts exactly as declared (0.976 m at LOW, 1.456 m at HIGH). Two riders on the closure, neither of which reopens the gap: the acceptance said nothing about HOW the road was to be lifted, and it was lifted with up to 17.52 m of earth fill and a 1.637 (58.6 degree) longitudinal grade on THE CROSSING's first leg; and lilmoth-archon's declared LOW depth is 0.976 m rather than the 0.85 m in the acceptance string, which is within its W3 band and is a re-route, not a regression. Both are carried forward on RI-WLD01 as why_not_ten with a proposed M2c-ROAD-GRADE check."
-    }
-  ],
-  "corpus_extended": [
-    {
-      "id": "RI-WLD01",
-      "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
-      "area": "50-world",
-      "judges": [
-        "world.terrain.form",
-        "world.traversal.time"
-      ],
-      "reason": "corpus_hole",
-      "what": "RI-WLD01 has no clause requiring a road to have a road's gradient. Its 'How we lose' list catches friction-cheating, sinuosity-forgetting, ocean bloat and (since round 1) drowned roads, and it cannot see a trunk leg that rises 19.63 m over an 11.99 m run. Proposed check M2c \u2014 ROAD GRADE: no trunk segment above 0.12 grade except a declared 'stair' or 'switchback' class, sub-sampled at 3 m, all ten legs. Also proposed: M2-ROAD-CUT-AND-FILL must sub-sample at 3 m rather than at the 12 m road points, because at road-point resolution it reads 3.0 m where the terrain is 3.62 m \u2014 the check's own sampling rate is currently what decides its result."
-    },
-    {
-      "id": "RI-WLD04",
-      "path": "corpus/50-world/RI-WLD04-region-identity.md",
-      "area": "50-world",
-      "judges": [
-        "world.region.identity"
-      ],
-      "reason": "sharper_discriminator",
-      "what": "The machine analogue of M17 that this project has been using \u2014 a 4x4 grid of mean CIELAB \u2014 is satisfied by a per-region colour grade, which is the item's own named way to lose. It reads 74.4% where a human judge reads 50% on the same frames. Proposed: the analogue must be reported alongside a STRUCTURE-ONLY control in which colour and exposure carry nothing (z-scored Sobel edge density plus luminance layout), and the item's pass condition on the analogue must be stated on the control, not on the colour descriptor. Second proposal: A7's comparison against Morrowind must be run on a MATCHED design \u2014 equal region count, equal images per region, equal chance level, averaged over random draws \u2014 because ours-13x9 against Morrowind-9x4.33 is not a comparison, and because pooling three lighting conditions on our side and none on theirs is what produced the Fisher 1.005 headline."
-    },
-    {
-      "id": "RI-WLD07",
-      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
-      "area": "50-world",
-      "judges": [
-        "world.verticality.layout"
-      ],
-      "reason": "corpus_hole",
-      "what": "RI-WLD07 measures how much vertical range the province HAS and never asks whether any of it constrains movement. There is no maximum-walkable-slope check anywhere in the corpus, and the build walks 70.63 degrees at full speed while its own S9-NO-FENCES flood fill calls 40 degrees impassable. Proposed check: MAX-WALKABLE-SLOPE \u2014 hold the walk stick uphill at the ten steepest in-region points and assert horizontal progress falls to zero above a declared ceiling, and require S9-NO-FENCES to be re-run with the capsule so the two instruments agree."
-    }
-  ],
-  "method_deviations": [
-    {
-      "what": "Restored game/data/dialogue/topics/thorn.json from 65275dc^ into the worktree for the duration of the run, and deleted it afterwards.",
-      "why": "The game does not boot without it: game/data/index.json lists the file, W1-18 deleted it, and Engine._boot throws before ready() returns. No harness measurement of any kind is possible in this tree otherwise. The file is dialogue content and cannot affect terrain, water, roads, locomotion, region props or travel. Commit d86fc4a restored the file permanently later in the same session, so the worktree state I created and reverted is now the tree's own state.",
-      "affects_scores": false
-    },
-    {
-      "what": "M17 was taken on 8 frames rather than 39.",
-      "why": "The full human read of 117 frames was not affordable inside this run's budget. The 8 were chosen by mean luminance computed from the pixels, not from ANSWERS.json, so they are the bright (day and worst-weather) end of the pack. The score is reported as 4/8 = 50% and is NOT extrapolated to a /39 figure; RI-WLD04's ladder placement rests on it together with M19's 0/13, M20's and M21's zeroes, and the structure-only control.",
-      "affects_scores": true
-    },
-    {
-      "what": "frame-001 is excluded from the blind read.",
-      "why": "Before judging I ran the shuffle audit over ANSWERS.json and its output printed shots[0] to my terminal, revealing frame-001 = crimson-coast. Declared rather than concealed; no other frame label was displayed, and region labels were otherwise consumed only programmatically.",
-      "affects_scores": false
-    },
-    {
-      "what": "RI-CAM02's M1-M7 were not run.",
-      "why": "Budget was spent on this piece's own subsystem paths. The item is scored 1 fail-closed on that basis rather than inheriting round 1's numbers.",
-      "affects_scores": true
-    },
-    {
-      "what": "RI-TRV01's M2-M12 were not run; only M1 plus the S7 gate checks.",
-      "why": "The transport network is W1-05's piece; it is on this verdict's list only because round 1's item set included it. M1 is measured in full and the item is scored partial.",
-      "affects_scores": true
-    },
-    {
-      "what": "The live scene-graph census in critic-props-census.json returned found_scene false in all thirteen regions.",
-      "why": "No global handle to the three.js scene is exposed on window. The prop-vocabulary finding therefore rests on getWorldStats (textureMB 0, atlasCount 0, 17 materials, entitiesLive 0), on the captured frames, and on the region data \u2014 the third of which is a source read, declared in source_reads.",
-      "affects_scores": false
-    }
-  ],
-  "arbitration_questions": [
-    {
-      "question": "Does S17 ('the hour comes from distance, never from slow walking') permit off-road substrate and water bands to reduce walk speed?",
-      "souls_side": "Walk speed is a Souls-side property tuned for combat spacing at 2.0 m/s and S17 says it may not be lowered to inflate traversal time; the build now realises 1.8632 m/s on dry SUCK and 1.7000 m/s in W2, which is a 6.8-15% reduction with no water involved in the first case.",
-      "morrowind_side": "S25 makes water a genuine tactical terrain that costs something to be in, and RI-WLD10's band ladder specifies exact speeds per band; a marsh where mud costs nothing is not a marsh. The crossing itself measures mean 1.9998 m/s, so no part of the canonical hour is bought with friction.",
-      "proposed_seam_id": "S17b"
-    }
-  ],
-  "source_reads": [
-    {
-      "path": "game/src/world/field.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read _applyRoads and waterSurfaceAt AFTER measuring the 17.52 m fill and the 40-70 degree shoulders from output, to make the remedy concrete: the deck is a smoothstep blend of the ground toward the deck height over hw..3.2*hw, which is why a declared viaduct is built as an embankment."
-    },
-    {
-      "path": "game/data/world/regions.json",
-      "purpose": "quote-written-content",
-      "note": "The thirteen regions' props schema and only_here declarations are authored data and are the artifact: every region is `props: {canopy, under, rock}` and every only_here is `{id, instances}` with no placement."
-    },
-    {
-      "path": "tools/world/build-regions.mjs",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Located the thirteen only_here instance counts as integer literals (lines 50-218) after measuring 0 placed instances from output."
-    },
-    {
-      "path": "game/src/engine.js",
-      "purpose": "locate-harness",
-      "note": "Located the camera(pose) contract and the boardTravel/travelRide entry points so the probes could drive them."
-    },
-    {
-      "path": "game/data/index.json",
-      "purpose": "locate-harness",
-      "note": "Diffed the manifest against disk to find the one missing file that stops the build booting."
-    }
-  ],
-  "self_audit": {
-    "judged_output_not_source": true,
-    "ran_every_assigned_method": false,
-    "blind_done_where_required": true,
-    "named_exactly_one_gap": true,
-    "remedy_is_buildable": true,
-    "no_banned_reasoning_used": true,
-    "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "ran_every_assigned_method is FALSE and the reasons are in method_deviations: RI-CAM02 M1-M7, RI-TRV01 M2-M12, RI-WLD04's full 39-frame M17 and RI-WLD10 M53/M55/M56 were not run. Every one of them is scored fail-closed or partial in the harsher direction, never omitted and never averaged away. Escalation ladder, all five rungs: (1) ZOOM \u2014 re-sampled the road at 3 m instead of at its 12 m points, which turned a passing cut check into a failing one, and z-scored the visual descriptor per cell instead of taking a pooled Fisher; (2) CHANGE THE SAMPLE \u2014 took the region frames the pack's own luminance said were brightest rather than the first thirteen, and probed the ugliest legs rather than the crossing; (3) STRESS \u2014 walked uphill at 70 degrees, dropped from 150 m, stood 60 s in 8 m of water and 60 s in all thirteen hazard regions, swept burden to 120%; (4) SECOND-ORDER PROPERTY \u2014 not 'do the regions differ' but 'do they differ when you take the colour away', which is where the 74.4% became 30.8%; (5) FIRST MINUTE AND TENTH HOUR \u2014 the first minute is a green lawn that is meant to be the Deep Marshes, the tenth hour is a province where nothing you can name belongs to anywhere."
+  "severity": "blocking",
+  "remedy": {
+   "action": "Place the ONLY-HERE elements as real instances, and give each region at least one prop class that no other region has. Concretely: (1) extend the region prop schema in tools/world/build-regions.mjs and game/src/world/province.js beyond `canopy+under+rock` with a fourth slot `signature`, carrying its own mesh generator per region — a welkynd pillar for Blackwood, a rock-flute spire for Valus Ridge, a whale-bone frame and crater rim for the Stone Wastes, a beached hull house and tide pole for Marauder's Coast, a drowned xanmeer tooth and corpse lily for the Deep Marshes, a stilt row and tideway marker for the Eastern Rootlands; (2) place them at the counts regions.json already declares, from the same seeded lattice the existing props use, so the number in the table becomes the number in the world; (3) add a `signature_silhouette` axis and an `architecture_placed` axis to tools/world/region-axes.mjs, computed from placed instances rather than from a table row, and un-drop `architecture`; (4) give the ground more than one material — at present textureMB is 0, so albedo is a per-region constant and RI-WLD04's 'albedo must come from different materials, not a LUT' cannot be satisfied at all.",
+   "targets": [
+    "tools/world/build-regions.mjs",
+    "game/src/world/province.js",
+    "game/src/render/scene.js",
+    "game/data/world/regions.json",
+    "tools/world/region-axes.mjs"
+   ],
+   "acceptance": "RI-WLD04 M19 reads 13/13: each region's ONLY-HERE element is queryable in the running world at >=8 instances inside its own region and 0 instances in every other region. AND the structure-only re-measurement (critic-structure-only.json, colour and exposure removed) rises from 30.8% to >=55% leave-one-out on the 39 day frames, so region identity survives having the tint taken away. AND M18 measures >=7 axes on every one of the 78 pairs with `architecture` un-dropped and computed from placed instances.",
+   "ref_item": "RI-WLD04",
+   "estimated_size": "L"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "THE BUILD DOES NOT BOOT. game/data/index.json lists dialogue/topics/thorn.json; commit 65275dc (W1-18) deleted that file and did not update the manifest, so Engine._boot throws 'data file missing: dialogue/topics/thorn.json (404)' and every harness command in the repository fails at ready(). I restored the file from 65275dc^ into the worktree to take any measurement at all, and deleted it again before finishing, so the tree is as I found it. This belongs to W1-18, not to W1-01, but it means every reports/*.json in the tree was produced against a build that no longer starts, and no wave-1 verdict can be reproduced today without the same workaround. A manifest/disk consistency check belongs in tools/corpus-index.mjs --check or in a pre-commit hook. FIXED MID-SESSION BY ANOTHER AGENT: commit d86fc4a ('round-2 critic artifacts (W1-01-r2, W1-09-r2); restore dialogue topic thorn.json') restored the file while I was writing this verdict, and game/data/index.json now lists 306 files with 0 missing. The finding stands as a record of the state the build was in when every measurement above was taken, and as the reason a manifest/disk consistency check belongs in tools/corpus-index.mjs --check: nothing in the repository would have caught this, and it was found by a critic tripping over it.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/RESTORED-thorn.json.txt"
+   ],
+   "subsystem_path": "platform.determinism.harness"
   },
-  "notes": "ORDERING. I read no prior verdict, no builder status file and no gap-ledger entry until after every raw measurement in this document existed on disk. The one exception is deliberate and is the assignment itself: I was told in my brief that round 1 had found a drowned road and an unshuffled pack, so the first two things I measured were the road-water audit and the pack's shuffle statistics. I did not read corpus/90-verdicts/wave1/W1-01.md's per-item scores until the numbers above were written.\n\nROUND 1 IS VOID, AND MOST OF IT SURVIVES ANYWAY. `node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01.json` fails with two errors: reports/region-shots/frame-01.png and frame-39.png do not exist, because the pack was rebuilt. That is a formal VOID under CRITIC-DOCTRINE \u00a71.2 and it is a process defect on round 1's side, not on the remediation's: a verdict must copy every artifact it cites into its own directory, and round 1 cited two at transient reports/ paths. I have copied every frame I cite. What the void does NOT do is unmake round 1's findings, and I re-tested them independently rather than inheriting them. Surviving on my own evidence: the crossing is a real walk at an honest speed (re-measured, 55.356 min, mean 1.9998 m/s); the M18 axes were config reads (the rebuilt tool now names its sources and drops five axes rather than scoring them, which is an admission); the blind pack was unshuffled (the rebuilt pack is shuffled, and I recomputed its statistics); the road ran under water (fixed, and I recomputed the fix from the terrain). Not surviving: round 1's 8/10 on RI-WLD01, because the remedy introduced a 58.6-degree grade; and its 5/10 on RI-WLD04, because it never took M17 on an honest pack and never ran M19.\n\nTHE FISHER 3.01 -> 1.005 QUESTION, RESOLVED. Both readings offered to me are wrong, and the honest answer is a third thing.\n\n(1) The two runs are NOT comparable, and I can say exactly why. The 1.005 pools day, night and worst-weather frames into one class per region. Doing that doubles intra-region scatter (32.24 -> 64.25) and collapses inter-centroid distance (99.95 -> 64.58), because a region's centroid becomes the average of a bright frame and a dark one. Split by condition, the SAME instrument on the SAME shipped file reads ours_day Fisher 3.10 / LOO 74.4%, ours_worst 3.53 / 82.0%, ours_night 1.99 / 33.3%. Against round 1's 3.01 / 66.7% on 39 day frames, the day world got BETTER, not worse.\n\n(2) But 'not like-for-like' is not a defence, so I built the like-for-like myself. Morrowind's set is 9 regions x 4.33 images at chance 11.1%; ours is 13 x 9 at chance 7.7%; those Fishers were never comparable either. Matched design \u2014 9 regions, 3 images each, 200 random draws, both populations, identical chance: ours_day 3.087 +/- 0.322 with LOO 77.5%; Morrowind 1.614 +/- 0.113 with LOO 24.2%. A7 passes, decisively. And ours_pooled comes out at 1.536 +/- 0.312, which is statistically indistinguishable from Morrowind's 1.614 +/- 0.113 \u2014 so the 'we are below Morrowind' reading survives only if our night frames are pooled and theirs are not. Morrowind's own frames are not single-condition either (mean L 35.7 +/- 14.6, min 5.5), but they are 39 opportunistic screenshots, not a deliberate one-third night sample.\n\n(3) The bad number is real, it is just not the one on the label. What the pooled Fisher is actually reporting is that the night pass \u2014 shipped for the first time \u2014 fails RI-WLD04 M17 step 6's explicit bar of >=70% night accuracy, at 33.3% raw and 25.6% once exposure is removed. 'A region that is only identifiable in clear daylight is half-built' is the item's own sentence and it is the finding. Nothing about the day world regressed; a half of the world that had never been measured was measured and it failed.\n\n(4) And the instrument is measuring the wrong thing anyway, which is the part neither reading anticipated. A 4x4 grid of mean CIELAB is satisfied by a colour grade. When I strip colour and exposure entirely and keep only silhouette and composition, ours_day falls from 74.4% to 30.8% while Morrowind falls from 25.6% to 17.9% \u2014 two-thirds of our separability is tint. That is why the machine says 74.4% and a human taking the same test says 50%, and it is why the biggest gap in this verdict is region identity rather than the road.\n\nTHE ROAD FIX HOLDS, WITH A COST. Zero offences over four tide phases and ten legs, recomputed by me from the terrain; the round-1 point at (2182.52, 2214.63) is dry land at 157.48 m; the crossing re-measures at 55.356 min / 6,642.1 m with mean 1.9998 m/s, so the hour still comes from distance and the route was not broken by the re-route. It did not simply raise the road and leave a wall \u2014 the player can walk off the embankment in all four directions \u2014 but it did raise the road: 17.52 m of fill at the worst point, 2,537 sampled shoulder points above 40 degrees, and a 58.6-degree longitudinal grade on THE CROSSING's first leg, with 21 'deck_spans' that exist only as JSON.\n\nAR-3 \u2014 SEAM STERILITY: NOT STERILE. Three boundary-crossing interactions were observed firing. (a) The tide gates a road: lilmoth-archon measures 0.976 m at LOW and 1.456 m at HIGH, a Morrowind world-clock property deciding whether a Souls-side traversal exists, measured by me at all four phases. (b) The travel network gates on a Souls-side act: you cannot buy passage over a road you have not walked, and I watched 68 refusals become 39 purchases by walking four legs. (c) S18's third-person body is load-bearing for S25: the depth bands the water model now enforces (1.87 / 1.70 / 1.10 m/s) are meant to be read off the player's silhouette against the waterline, and the silhouette is there. A fourth is named and does not fire: danger_tier 1-5 on all thirteen regions, with entitiesLive 0.\n\nSCORE MOVEMENT, FLAGGED PER SCORING.md \u00a74. RI-TRV01 moves 0 -> 6 and RI-PRG07 moves 1 -> 6 in one wave. Both are >= 3 and both are therefore suspect by rule. I verified both with artifacts rather than reports: five modalities boarded, paid and rode with the player's gold falling 5000 -> 4862 (critic-b13-travel.json), and seven burden ratios swept with movement multipliers 1.0/0.9/0.72/0 measured off the capsule's realised speed (critic-misc-probe.json). These are real improvements, not method changes. RI-WLD04 moves 5 -> 3 in the other direction, and that IS a method change: round 1 could not take M17 because the pack was unshuffled, and it never ran M19. The regions did not get worse; the measurement got honest.\n\nPIECE DECOMPOSITION, unchanged since round 1 and worth restating. Four of the ten assigned items (RI-CAM02, RI-AI05, RI-PRG06, RI-TRV01) judge camera rigs, enemy rosters, souls curves and transport that docs/PLAN.md assigns to W1-05, W1-06, W1-09 and W1-14. Restricted to the four items whose primary subject is a path this piece owns \u2014 RI-WLD01, RI-WLD04, RI-WLD07, RI-WLD10 \u2014 the mean is 4.5. That is a defect in the decomposition, not a defence of the piece, and the 3.5 stands."
+  {
+   "what": "The road fix is an earthwork wearing a viaduct's name. roads.json declares 21 deck_spans totalling 2,494 m, eleven of them kind 'viaduct' up to 16 m tall on stormhold-helstrom and three 'causeway over water' on blackrose-lilmoth; grep across game/src finds deck_spans read nowhere. In the built world the deck is produced by _applyRoads blending the ground toward the deck height over hw..3.2*hw, so a 16 m viaduct is a 16 m ridge of the same material as the hillside. 2,537 of my sampled shoulder points exceed 40 degrees, peaking at 70.6 degrees at (2286.3, 1360.9). shot-embankment-stormhold-helstrom-air.png shows what it looks like: a smooth grey berm through The Stone Forest with no road surface, no parapet, no structure and no track.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom-air.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth.png"
+   ],
+   "subsystem_path": "world.terrain.form"
+  },
+  {
+   "what": "The player can walk off a 29.22 m drop and take nothing. critic-road-probe.json R2 at the 17.5 m fill on stormhold-helstrom: walking east 20 m descends 29.22 m onto a 66.2 degree face, state WALK throughout, HP 620 -> 620. So the embankment is not a fence — but only because nothing about height costs anything.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-probe.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-loco-probe.json"
+   ],
+   "subsystem_path": "world.traversal.locomotion"
+  },
+  {
+   "what": "FIDELITY OBSERVATION, carrying no score and cited against no reference: getWorldStats reports textureMB 0, atlasCount 0, 17 materials, 8 programs, 1 shadow light, 0 skinned meshes for the whole province. Every surface in every frame I captured is a flat-shaded constant colour. This is recorded here rather than scored because this verdict's declared bifurcation axis is art-direction; a fidelity verdict against corpus/70-visual/refs/modern/ is RI-VIS03's and RI-VIS04's job, not mine.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-props-census.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-viaduct-blackrose-lilmoth-eye.png"
+   ],
+   "subsystem_path": "world.region.identity"
+  },
+  {
+   "what": "__HARNESS.camera(pose) accepts an unrecognised pose object and silently freezes the camera instead of throwing. camera({yaw, pitch, arm}) matches no branch, so `cur` is taken from the live rig and written back as an override; every later call then reads `cur` from that override, and six frames captured across 25-500 m of teleporting came out from one position. HARNESS.md R7 says every method either does the thing or throws. This one does neither.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-stormhold-helstrom.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-embankment-side-on.png"
+   ],
+   "subsystem_path": "camera.rig.thirdperson"
+  },
+  {
+   "what": "Standing water is rendered as an untextured flat polygon with no shoreline, no specular and no depth cue. shot-tideway-lilmoth-archon.png is taken standing in 0.181 m of water (surface_y 1.611 over ground_y 1.430, band W1, substrate SUCK) in the Eastern Rootlands and no water is visible in the frame at all; blind-frames/frame-042.png shows the other case, where 8 m of water reads as a flat grey hexagon lying on the mud. Since S25 makes depth readable off the player's own silhouette, water the player cannot see is a seam problem as well as a rendering one.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-tideway-lilmoth-archon.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/blind-frames/frame-042.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-shots.json"
+   ],
+   "subsystem_path": "world.region.identity"
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-world-trunk-road-below-the-waterline",
+   "status": "closed",
+   "measured_value": "0 leg/phase offences over 4 tide phases x 10 legs; deepest non-tideway trunk point 0.000 m; crossing re-measures 55.356 min / 6642.1 m / mean 1.9998 m/s",
+   "acceptance_restated": "scale-audit.mjs reports 0 m of trunk road above W2 on all legs except lilmoth-archon, at RISING/HIGH/FALLING/LOW; lilmoth-archon keeps its declared <=0.85 m at LOW and >=1.40 m at HIGH; and crossing.mjs re-measures the crossing inside 52-65 min / 6,300-7,600 m on the re-routed network.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-water.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-crossing-walk.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-scale-audit.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/critic-road-cutfill.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-r2/shot-old-drowned-point-2182-2214.png"
+   ],
+   "closed_by_builder_of_fix": false,
+   "note": "Closed on the acceptance condition as written, and recomputed from the terrain rather than from reports/road-water.json — I built two WorldField instances, one with the road corridor and one without, and sub-sampled all ten legs at 3 m. The round-1 point (2182.52, 2214.63) now returns depth 0.000 m at ground_y 157.48. The tideway inverts exactly as declared (0.976 m at LOW, 1.456 m at HIGH). Two riders on the closure, neither of which reopens the gap: the acceptance said nothing about HOW the road was to be lifted, and it was lifted with up to 17.52 m of earth fill and a 1.637 (58.6 degree) longitudinal grade on THE CROSSING's first leg; and lilmoth-archon's declared LOW depth is 0.976 m rather than the 0.85 m in the acceptance string, which is within its W3 band and is a re-route, not a regression. Both are carried forward on RI-WLD01 as why_not_ten with a proposed M2c-ROAD-GRADE check."
+  }
+ ],
+ "corpus_extended": [
+  {
+   "id": "RI-WLD01",
+   "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+   "area": "50-world",
+   "judges": [
+    "world.terrain.form",
+    "world.traversal.time"
+   ],
+   "reason": "corpus_hole",
+   "what": "RI-WLD01 has no clause requiring a road to have a road's gradient. Its 'How we lose' list catches friction-cheating, sinuosity-forgetting, ocean bloat and (since round 1) drowned roads, and it cannot see a trunk leg that rises 19.63 m over an 11.99 m run. Proposed check M2c — ROAD GRADE: no trunk segment above 0.12 grade except a declared 'stair' or 'switchback' class, sub-sampled at 3 m, all ten legs. Also proposed: M2-ROAD-CUT-AND-FILL must sub-sample at 3 m rather than at the 12 m road points, because at road-point resolution it reads 3.0 m where the terrain is 3.62 m — the check's own sampling rate is currently what decides its result."
+  },
+  {
+   "id": "RI-WLD04",
+   "path": "corpus/50-world/RI-WLD04-region-identity.md",
+   "area": "50-world",
+   "judges": [
+    "world.region.identity"
+   ],
+   "reason": "sharper_discriminator",
+   "what": "The machine analogue of M17 that this project has been using — a 4x4 grid of mean CIELAB — is satisfied by a per-region colour grade, which is the item's own named way to lose. It reads 74.4% where a human judge reads 50% on the same frames. Proposed: the analogue must be reported alongside a STRUCTURE-ONLY control in which colour and exposure carry nothing (z-scored Sobel edge density plus luminance layout), and the item's pass condition on the analogue must be stated on the control, not on the colour descriptor. Second proposal: A7's comparison against Morrowind must be run on a MATCHED design — equal region count, equal images per region, equal chance level, averaged over random draws — because ours-13x9 against Morrowind-9x4.33 is not a comparison, and because pooling three lighting conditions on our side and none on theirs is what produced the Fisher 1.005 headline."
+  },
+  {
+   "id": "RI-WLD07",
+   "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+   "area": "50-world",
+   "judges": [
+    "world.verticality.layout"
+   ],
+   "reason": "corpus_hole",
+   "what": "RI-WLD07 measures how much vertical range the province HAS and never asks whether any of it constrains movement. There is no maximum-walkable-slope check anywhere in the corpus, and the build walks 70.63 degrees at full speed while its own S9-NO-FENCES flood fill calls 40 degrees impassable. Proposed check: MAX-WALKABLE-SLOPE — hold the walk stick uphill at the ten steepest in-region points and assert horizontal progress falls to zero above a declared ceiling, and require S9-NO-FENCES to be re-run with the capsule so the two instruments agree."
+  }
+ ],
+ "method_deviations": [
+  {
+   "what": "Restored game/data/dialogue/topics/thorn.json from 65275dc^ into the worktree for the duration of the run, and deleted it afterwards.",
+   "why": "The game does not boot without it: game/data/index.json lists the file, W1-18 deleted it, and Engine._boot throws before ready() returns. No harness measurement of any kind is possible in this tree otherwise. The file is dialogue content and cannot affect terrain, water, roads, locomotion, region props or travel. Commit d86fc4a restored the file permanently later in the same session, so the worktree state I created and reverted is now the tree's own state.",
+   "affects_scores": false
+  },
+  {
+   "what": "M17 was taken on 8 frames rather than 39.",
+   "why": "The full human read of 117 frames was not affordable inside this run's budget. The 8 were chosen by mean luminance computed from the pixels, not from ANSWERS.json, so they are the bright (day and worst-weather) end of the pack. The score is reported as 4/8 = 50% and is NOT extrapolated to a /39 figure; RI-WLD04's ladder placement rests on it together with M19's 0/13, M20's and M21's zeroes, and the structure-only control.",
+   "affects_scores": true
+  },
+  {
+   "what": "frame-001 is excluded from the blind read.",
+   "why": "Before judging I ran the shuffle audit over ANSWERS.json and its output printed shots[0] to my terminal, revealing frame-001 = crimson-coast. Declared rather than concealed; no other frame label was displayed, and region labels were otherwise consumed only programmatically.",
+   "affects_scores": false
+  },
+  {
+   "what": "RI-CAM02's M1-M7 were not run.",
+   "why": "Budget was spent on this piece's own subsystem paths. The item is scored 1 fail-closed on that basis rather than inheriting round 1's numbers.",
+   "affects_scores": true
+  },
+  {
+   "what": "RI-TRV01's M2-M12 were not run; only M1 plus the S7 gate checks.",
+   "why": "The transport network is W1-05's piece; it is on this verdict's list only because round 1's item set included it. M1 is measured in full and the item is scored partial.",
+   "affects_scores": true
+  },
+  {
+   "what": "The live scene-graph census in critic-props-census.json returned found_scene false in all thirteen regions.",
+   "why": "No global handle to the three.js scene is exposed on window. The prop-vocabulary finding therefore rests on getWorldStats (textureMB 0, atlasCount 0, 17 materials, entitiesLive 0), on the captured frames, and on the region data — the third of which is a source read, declared in source_reads.",
+   "affects_scores": false
+  }
+ ],
+ "arbitration_questions": [
+  {
+   "question": "Does S17 ('the hour comes from distance, never from slow walking') permit off-road substrate and water bands to reduce walk speed?",
+   "souls_side": "Walk speed is a Souls-side property tuned for combat spacing at 2.0 m/s and S17 says it may not be lowered to inflate traversal time; the build now realises 1.8632 m/s on dry SUCK and 1.7000 m/s in W2, which is a 6.8-15% reduction with no water involved in the first case.",
+   "morrowind_side": "S25 makes water a genuine tactical terrain that costs something to be in, and RI-WLD10's band ladder specifies exact speeds per band; a marsh where mud costs nothing is not a marsh. The crossing itself measures mean 1.9998 m/s, so no part of the canonical hour is bought with friction.",
+   "proposed_seam_id": "S17b"
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/world/field.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read _applyRoads and waterSurfaceAt AFTER measuring the 17.52 m fill and the 40-70 degree shoulders from output, to make the remedy concrete: the deck is a smoothstep blend of the ground toward the deck height over hw..3.2*hw, which is why a declared viaduct is built as an embankment."
+  },
+  {
+   "path": "game/data/world/regions.json",
+   "purpose": "quote-written-content",
+   "note": "The thirteen regions' props schema and only_here declarations are authored data and are the artifact: every region is `props: {canopy, under, rock}` and every only_here is `{id, instances}` with no placement."
+  },
+  {
+   "path": "tools/world/build-regions.mjs",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Located the thirteen only_here instance counts as integer literals (lines 50-218) after measuring 0 placed instances from output."
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "locate-harness",
+   "note": "Located the camera(pose) contract and the boardTravel/travelRide entry points so the probes could drive them."
+  },
+  {
+   "path": "game/data/index.json",
+   "purpose": "locate-harness",
+   "note": "Diffed the manifest against disk to find the one missing file that stops the build booting."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and the reasons are in method_deviations: RI-CAM02 M1-M7, RI-TRV01 M2-M12, RI-WLD04's full 39-frame M17 and RI-WLD10 M53/M55/M56 were not run. Every one of them is scored fail-closed or partial in the harsher direction, never omitted and never averaged away. Escalation ladder, all five rungs: (1) ZOOM — re-sampled the road at 3 m instead of at its 12 m points, which turned a passing cut check into a failing one, and z-scored the visual descriptor per cell instead of taking a pooled Fisher; (2) CHANGE THE SAMPLE — took the region frames the pack's own luminance said were brightest rather than the first thirteen, and probed the ugliest legs rather than the crossing; (3) STRESS — walked uphill at 70 degrees, dropped from 150 m, stood 60 s in 8 m of water and 60 s in all thirteen hazard regions, swept burden to 120%; (4) SECOND-ORDER PROPERTY — not 'do the regions differ' but 'do they differ when you take the colour away', which is where the 74.4% became 30.8%; (5) FIRST MINUTE AND TENTH HOUR — the first minute is a green lawn that is meant to be the Deep Marshes, the tenth hour is a province where nothing you can name belongs to anywhere."
+ },
+ "notes": "ORDERING. I read no prior verdict, no builder status file and no gap-ledger entry until after every raw measurement in this document existed on disk. The one exception is deliberate and is the assignment itself: I was told in my brief that round 1 had found a drowned road and an unshuffled pack, so the first two things I measured were the road-water audit and the pack's shuffle statistics. I did not read corpus/90-verdicts/wave1/W1-01.md's per-item scores until the numbers above were written.\n\nROUND 1 IS VOID, AND MOST OF IT SURVIVES ANYWAY. `node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01.json` fails with two errors: reports/region-shots/frame-01.png and frame-39.png do not exist, because the pack was rebuilt. That is a formal VOID under CRITIC-DOCTRINE §1.2 and it is a process defect on round 1's side, not on the remediation's: a verdict must copy every artifact it cites into its own directory, and round 1 cited two at transient reports/ paths. I have copied every frame I cite. What the void does NOT do is unmake round 1's findings, and I re-tested them independently rather than inheriting them. Surviving on my own evidence: the crossing is a real walk at an honest speed (re-measured, 55.356 min, mean 1.9998 m/s); the M18 axes were config reads (the rebuilt tool now names its sources and drops five axes rather than scoring them, which is an admission); the blind pack was unshuffled (the rebuilt pack is shuffled, and I recomputed its statistics); the road ran under water (fixed, and I recomputed the fix from the terrain). Not surviving: round 1's 8/10 on RI-WLD01, because the remedy introduced a 58.6-degree grade; and its 5/10 on RI-WLD04, because it never took M17 on an honest pack and never ran M19.\n\nTHE FISHER 3.01 -> 1.005 QUESTION, RESOLVED. Both readings offered to me are wrong, and the honest answer is a third thing.\n\n(1) The two runs are NOT comparable, and I can say exactly why. The 1.005 pools day, night and worst-weather frames into one class per region. Doing that doubles intra-region scatter (32.24 -> 64.25) and collapses inter-centroid distance (99.95 -> 64.58), because a region's centroid becomes the average of a bright frame and a dark one. Split by condition, the SAME instrument on the SAME shipped file reads ours_day Fisher 3.10 / LOO 74.4%, ours_worst 3.53 / 82.0%, ours_night 1.99 / 33.3%. Against round 1's 3.01 / 66.7% on 39 day frames, the day world got BETTER, not worse.\n\n(2) But 'not like-for-like' is not a defence, so I built the like-for-like myself. Morrowind's set is 9 regions x 4.33 images at chance 11.1%; ours is 13 x 9 at chance 7.7%; those Fishers were never comparable either. Matched design — 9 regions, 3 images each, 200 random draws, both populations, identical chance: ours_day 3.087 +/- 0.322 with LOO 77.5%; Morrowind 1.614 +/- 0.113 with LOO 24.2%. A7 passes, decisively. And ours_pooled comes out at 1.536 +/- 0.312, which is statistically indistinguishable from Morrowind's 1.614 +/- 0.113 — so the 'we are below Morrowind' reading survives only if our night frames are pooled and theirs are not. Morrowind's own frames are not single-condition either (mean L 35.7 +/- 14.6, min 5.5), but they are 39 opportunistic screenshots, not a deliberate one-third night sample.\n\n(3) The bad number is real, it is just not the one on the label. What the pooled Fisher is actually reporting is that the night pass — shipped for the first time — fails RI-WLD04 M17 step 6's explicit bar of >=70% night accuracy, at 33.3% raw and 25.6% once exposure is removed. 'A region that is only identifiable in clear daylight is half-built' is the item's own sentence and it is the finding. Nothing about the day world regressed; a half of the world that had never been measured was measured and it failed.\n\n(4) And the instrument is measuring the wrong thing anyway, which is the part neither reading anticipated. A 4x4 grid of mean CIELAB is satisfied by a colour grade. When I strip colour and exposure entirely and keep only silhouette and composition, ours_day falls from 74.4% to 30.8% while Morrowind falls from 25.6% to 17.9% — two-thirds of our separability is tint. That is why the machine says 74.4% and a human taking the same test says 50%, and it is why the biggest gap in this verdict is region identity rather than the road.\n\nTHE ROAD FIX HOLDS, WITH A COST. Zero offences over four tide phases and ten legs, recomputed by me from the terrain; the round-1 point at (2182.52, 2214.63) is dry land at 157.48 m; the crossing re-measures at 55.356 min / 6,642.1 m with mean 1.9998 m/s, so the hour still comes from distance and the route was not broken by the re-route. It did not simply raise the road and leave a wall — the player can walk off the embankment in all four directions — but it did raise the road: 17.52 m of fill at the worst point, 2,537 sampled shoulder points above 40 degrees, and a 58.6-degree longitudinal grade on THE CROSSING's first leg, with 21 'deck_spans' that exist only as JSON.\n\nAR-3 — SEAM STERILITY: NOT STERILE. Three boundary-crossing interactions were observed firing. (a) The tide gates a road: lilmoth-archon measures 0.976 m at LOW and 1.456 m at HIGH, a Morrowind world-clock property deciding whether a Souls-side traversal exists, measured by me at all four phases. (b) The travel network gates on a Souls-side act: you cannot buy passage over a road you have not walked, and I watched 68 refusals become 39 purchases by walking four legs. (c) S18's third-person body is load-bearing for S25: the depth bands the water model now enforces (1.87 / 1.70 / 1.10 m/s) are meant to be read off the player's silhouette against the waterline, and the silhouette is there. A fourth is named and does not fire: danger_tier 1-5 on all thirteen regions, with entitiesLive 0.\n\nSCORE MOVEMENT, FLAGGED PER SCORING.md §4. RI-TRV01 moves 0 -> 6 and RI-PRG07 moves 1 -> 6 in one wave. Both are >= 3 and both are therefore suspect by rule. I verified both with artifacts rather than reports: five modalities boarded, paid and rode with the player's gold falling 5000 -> 4862 (critic-b13-travel.json), and seven burden ratios swept with movement multipliers 1.0/0.9/0.72/0 measured off the capsule's realised speed (critic-misc-probe.json). These are real improvements, not method changes. RI-WLD04 moves 5 -> 3 in the other direction, and that IS a method change: round 1 could not take M17 because the pack was unshuffled, and it never ran M19. The regions did not get worse; the measurement got honest.\n\nPIECE DECOMPOSITION, unchanged since round 1 and worth restating. Four of the ten assigned items (RI-CAM02, RI-AI05, RI-PRG06, RI-TRV01) judge camera rigs, enemy rosters, souls curves and transport that docs/PLAN.md assigns to W1-05, W1-06, W1-09 and W1-14. Restricted to the four items whose primary subject is a path this piece owns — RI-WLD01, RI-WLD04, RI-WLD07, RI-WLD10 — the mean is 4.5. That is a defect in the decomposition, not a defence of the piece, and the 3.5 stands."
 }

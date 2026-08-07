@@ -1,0 +1,34 @@
+{
+  "task_id": "ownership-registry",
+  "brief": "build tools/ownership.mjs, the file-ownership registry, plus the RULES.md rule 16 convention and TICK.md dispatcher check",
+  "started": "2026-08-07",
+  "state": "complete",
+  "outputs_expected": [
+    "tools/ownership.mjs",
+    "orchestration/RULES.md (rule 16, files_touched/files_claimed/redundant_with shape)",
+    "orchestration/TICK.md (§3a, dispatcher check)"
+  ],
+  "outputs_written": [
+    "tools/ownership.mjs",
+    "orchestration/RULES.md",
+    "orchestration/TICK.md",
+    "orchestration/INDEX.md (regenerated, not hand-edited)"
+  ],
+  "files_touched": [
+    "tools/ownership.mjs",
+    "orchestration/RULES.md",
+    "orchestration/TICK.md",
+    "orchestration/INDEX.md"
+  ],
+  "files_claimed": [],
+  "findings": [
+    "Ran for real against today's 19 live pieces: 0 conflicts, 0 declared redundancy, 19/19 declare nothing. That last number IS the finding — nobody has adopted files_touched/files_claimed yet because the fields did not exist until this task, so the registry currently reports the exact invisibility gap the brief describes. It will start finding real conflicts only once agents start declaring.",
+    "tools/gen-index.mjs ALREADY read `j.files_touched || j.files || []` before this task — the field name was anticipated in the generator but never in the convention or any status file, which is why every 'files' column in INDEX.md's in-flight table reads '—'.",
+    "Decision made explicit in the tool's header: ADVISORY, not enforced. Argued against tools/check-quests.mjs's precedent — that gate works because a dangling quest reference is structurally verifiable against the shipped tree; an ownership claim is self-reported and decays normally (an agent finishes a file and does not always go back to clear files_claimed). Wiring --conflicts into boot-check or pre-commit would let one stale, unverifiable claim turn the gate red for every agent on the box — the same four-times-paid failure check-quests.mjs itself documents fixing, reintroduced one level up. --conflicts exits non-zero only for a dispatcher to check BY CHOICE.",
+    "redundant_with is deliberately asymmetric-tolerant (declaring from either side is enough) so a second independent critic never has to coordinate with the first before starting — coordination overhead there would itself discourage the second look the project depends on.",
+    "Self-test (5 cases) writes REAL status files to a temp dir and drives the actual loadRecords()/analyse() path, not a reimplementation. Verified it actually goes red by deliberately breaking isDeclaredRedundant() and re-running — 2 of 5 cases failed as expected, exit 1.",
+    "orchestration/INDEX.md was regenerated (via node tools/gen-index.mjs) so the new tool is discoverable, but it is a generated file and this run did not hand-edit it."
+  ],
+  "next_step": "none — done. A natural follow-up for a later piece: once a few live agents actually populate files_touched/files_claimed, re-run node tools/ownership.mjs for real and see whether it catches a genuine collision before it happens.",
+  "notes_for_successor": "Do not wire --conflicts into tools/boot-check.mjs or .githooks/pre-commit — see the ADVISORY, NOT ENFORCED section in tools/ownership.mjs's header for the argued reason. If that judgement is ever revisited, it should be because the convention has demonstrated low staleness in practice, not by default."
+}

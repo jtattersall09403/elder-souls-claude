@@ -1,275 +1,592 @@
 {
-  "schema_version": 1,
-  "piece_id": "w1-library-books-and-the-reading-surface",
-  "piece_title": "W1-LIBRARY — the in-world library and the book reader (RI-LOR03 + RI-UIX05)",
-  "subsystem_paths": [
-    "books.content",
-    "books.length",
-    "books.taxonomy",
-    "lore.canon",
-    "ui.menu.books",
-    "ui.readables",
-    "quests.lorehooks"
+ "schema_version": 1,
+ "piece_id": "w1-library-books-and-the-reading-surface",
+ "piece_title": "W1-LIBRARY — the in-world library and the book reader (RI-LOR03 + RI-UIX05)",
+ "subsystem_paths": [
+  "books.content",
+  "books.length",
+  "books.taxonomy",
+  "lore.canon",
+  "ui.menu.books",
+  "ui.readables",
+  "quests.lorehooks"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-library-r1",
+  "role": "critic.lore.ui",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T12:58:00Z",
+  "finished_at": "2026-08-07T13:40:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "4c904020",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/boot-check.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers. (run before and after every engine measurement)"
+   },
+   {
+    "command": "node tools/harness/critic-w1-library-consume.mjs --out reports/critic-w1-library-consume.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-library-pages.mjs --out reports/critic-w1-library-pages.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-library-seam.mjs --out reports/critic-w1-library-seam.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json"
+   },
+   {
+    "command": "python3 tools/uesp/mw-book-stats.py --dump <scratch>/mwbooks",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/mw-book-stats.json"
+   },
+   {
+    "command": "python3 corpus/80-methods/book-stats.py game/data/books/",
+    "exit_code": 0,
+    "stdout_artifact": "reports/book-stats.json — 13/13 PASS"
+   },
+   {
+    "command": "node tools/analysis/book-budget.mjs --corroborate --pagination",
+    "exit_code": 0,
+    "stdout_artifact": "reports/book-budget.json — 15/15 PASS"
+   },
+   {
+    "command": "python3 corpus/80-methods/book-stats.py <deranged-corpus>",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json — 13/13 PASS on a corpus with every text swapped"
+   },
+   {
+    "command": "node tools/analysis/book-budget.mjs --books <deranged-corpus> --corroborate --pagination",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json — 15/15 PASS on a corpus with every text swapped"
+   },
+   {
+    "command": "node tools/blind/make-pair.mjs --kind text --item RI-LOR03 --seed 1101|1102|1103|1104",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t{1,3,4,7}/"
+   },
+   {
+    "command": "python3 corpus/80-methods/opacity-audit.py --leak-scan",
+    "exit_code": 0,
+    "stdout_artifact": "CLEAN, 2607 strings scanned"
+   }
   ],
-  "wave": 1,
-  "critic": {
-    "run_id": "crit-w1-library-r1",
-    "role": "critic.lore.ui",
-    "model": "claude-opus-5",
-    "started_at": "2026-08-07T12:58:00Z",
-    "finished_at": "2026-08-07T13:40:00Z",
-    "conflict_of_interest": false,
-    "saw_builder_notes_before_blind": true
-  },
-  "build": {
-    "commit_sha": "4c904020",
-    "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "harness_commands": [
-      { "command": "node tools/harness/boot-check.mjs", "exit_code": 0, "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers. (run before and after every engine measurement)" },
-      { "command": "node tools/harness/critic-w1-library-consume.mjs --out reports/critic-w1-library-consume.json", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json" },
-      { "command": "node tools/harness/critic-w1-library-pages.mjs --out reports/critic-w1-library-pages.json", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json" },
-      { "command": "node tools/harness/critic-w1-library-seam.mjs --out reports/critic-w1-library-seam.json", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json" },
-      { "command": "python3 tools/uesp/mw-book-stats.py --dump <scratch>/mwbooks", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/mw-book-stats.json" },
-      { "command": "python3 corpus/80-methods/book-stats.py game/data/books/", "exit_code": 0, "stdout_artifact": "reports/book-stats.json — 13/13 PASS" },
-      { "command": "node tools/analysis/book-budget.mjs --corroborate --pagination", "exit_code": 0, "stdout_artifact": "reports/book-budget.json — 15/15 PASS" },
-      { "command": "python3 corpus/80-methods/book-stats.py <deranged-corpus>", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json — 13/13 PASS on a corpus with every text swapped" },
-      { "command": "node tools/analysis/book-budget.mjs --books <deranged-corpus> --corroborate --pagination", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json — 15/15 PASS on a corpus with every text swapped" },
-      { "command": "node tools/blind/make-pair.mjs --kind text --item RI-LOR03 --seed 1101|1102|1103|1104", "exit_code": 0, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t{1,3,4,7}/" },
-      { "command": "python3 corpus/80-methods/opacity-audit.py --leak-scan", "exit_code": 0, "stdout_artifact": "CLEAN, 2607 strings scanned" }
-    ]
-  },
-  "bifurcation": {
-    "axis": "not-visual",
-    "declared_before_citation": true,
-    "note": "Neither item is judged on fidelity or art direction. RI-UIX05 explicitly assigns typeface, ink colour and page material to RI-UIX06 as ART (P09) and glyph sharpness to RI-UIX06 as FIDELITY (F17/F18), and keeps only LAYOUT CORRECTNESS for itself. No screenshot is cited anywhere in this verdict. RI-LOR03 is text-only."
-  },
-  "reference_items": [
-    {
-      "id": "RI-LOR03",
-      "path": "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
-      "side": "morrowind",
-      "kind": "text",
-      "native_scale": "0-5 band",
-      "native_score": 3,
-      "native_max": 5,
-      "native_verdict": "Below bar — remedy required. Separates from Morrowind's corpus at better than chance and the tell is nameable, which is the item's band 2/3 boundary; held at 3 because the tell is a single lexical habit rather than the uniform-expository voice band 2 describes, and because the author-voice test passes 13/13.",
-      "score_0_10": 6,
-      "measured": "full",
-      "checks": [
-        {
-          "id": "step1-length-distribution",
-          "result": "pass",
-          "value": "65 texts, 37,819 words; p10 113, p25 223, median 609, p75 797, p90 1264, max 1512; 3 multi-volume series; 16.9% under 150 words",
-          "threshold": "median >= 350, p90 >= 1200, >= 3 series, <= 20% under 150 words",
-          "note": "Independently recounted and confirmed to the word. p90 PASSES ONLY ON THE TOOL'S PERCENTILE CONVENTION: book-stats.py's pct() is a floor-index estimator giving 1264; linear interpolation (numpy / statistics.quantiles default) gives 1134.8, which FAILS the 1200 bar. The corpus is inside this row by choice of estimator, not by margin.",
-          "evidence": ["reports/book-stats.json", "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/mw-book-stats.json"]
-        },
-        {
-          "id": "step2-blind-pair",
-          "result": "fail",
-          "value": "Pre-registered one-token rule identifies ours 4/4 across four mechanically-built packs; corpus-wide it sorts 65 ours from 241 real Morrowind books at 92.5% accuracy (majority-class baseline 78.8%); length-matched 90-1550 words, ours 49/62 vs Morrowind 4/197. TELL: the word 'eleven' — 49 of our 65 books (75.4%), 120 occurrences, 31.73 per 10k words, against 7 of Morrowind's 241 books (2.9%), 7 occurrences, 0.38 per 10k words. An 84x per-word rate.",
-          "threshold": "fail if the critic sorts ours into a distinct cluster at better than chance; record the tell",
-          "note": "RI-MTH03 M2's fresh-agent requirement could not be met — this critic built the packs and no fresh-judge channel exists in this harness — so the blind JUDGEMENT is recorded void and the packs are left on disk for a round-2 judge. The separability FINDING does not depend on blinding: it is a measured corpus statistic. M6 leak audit performed and found a hole (wikitext drop-cap damage on the Morrowind side of pack t4).",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t1", "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t3", "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t4", "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t7", "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/PRE-REGISTERED-RULE.md"]
-        },
-        {
-          "id": "step3-author-voice",
-          "result": "pass",
-          "value": "13 of 13 sampled books have an answer to who wrote this / what they want / what they are wrong about. Sample rule fixed in advance: every fifth book id in alphabetical order.",
-          "threshold": "fail if >= 3 of 12 have no 'wrong about' answer",
-          "note": "No omniscient-narrator contamination anywhere in the sample. Two books whose `unreliability` field is null (crate-tally, ledger-leaf) still have clear answers from the prose itself.",
-          "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-r1.md#2"]
-        },
-        {
-          "id": "step4-contradiction-census",
-          "result": "marginal",
-          "value": "24 declared pairs, 33 books in the pair graph, 6 of 6 disputed registry facts with both sides in the library, 0 dangling references. 23 of 24 pairs are genuine disagreements on a named fact and several are excellent. ONE IS NOT: a-progress-ii <-> pilots-chart-book has 5.36% shared 7-grams and states the SAME landmark order, the SAME left ear and the SAME distances; all three errors declared in a-progress-ii's wrong_on_purpose field are absent from the prose, and the third ('puts Lilmoth's harbour crane at Archon') is contradicted by game/data/dialogue/rumours.json:75, which ships an archon-crane rumour.",
-          "threshold": ">= 8 pairs; no disputed fact may name a book that was never written",
-          "note": "book-stats.py S4a compares a count of BOOKS against a bar RI-LOR03 states in PAIRS; label and value disagree, immaterial at 24. The wrong_on_purpose register (8 books, bar >= 6) is never checked against the text — see method_deviations and the tool mutation.",
-          "evidence": ["reports/book-stats.json", "game/data/books/a-progress-through-the-southern-marsh.json", "game/data/books/interface-readables.json"]
-        },
-        { "id": "step5-quest-hint-ratio", "result": "pass", "value": "0.0% of books quote a quest objective (78 objectives scanned)", "threshold": "<= 10%", "note": "The softer imperative-hint scan reports one hit — 'march-marker' in on-the-tally-stones, a boundary stone RI-WLD06 §3 requires the world to have. A true false positive, but the builder's '0 marker hits' claim is true of book-budget's scanner and not of book-stats'.", "evidence": ["reports/book-stats.json"] },
-        { "id": "step6-register-variance", "result": "marginal", "value": "mean-sentence-length IQR 6.15 words", "threshold": ">= 6 to pass; >= 10 for the item's band-5", "note": "Passes by 0.15 words on the same floor-index estimator that decides p90. Band 5 requires >= 10 and is not reached.", "evidence": ["reports/book-stats.json"] },
-        { "id": "step7-argonian-authorship", "result": "pass", "value": "19 declared", "threshold": ">= 14, fail below 10", "note": "SELF-DECLARED AND UNVERIFIED. Setting argonian_authored: true on all 65 books without touching a single byline makes this check report 65 and pass harder. Nothing compares the flag to the name on the book.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json"] }
-      ]
-    },
-    {
-      "id": "RI-UIX05",
-      "path": "corpus/86-ui/RI-UIX05-books-and-readable-text.md",
-      "side": "morrowind",
-      "kind": "number",
-      "native_scale": "checks passed / 10",
-      "native_score": 2,
-      "native_max": 10,
-      "native_verdict": "Loses outright (<= 6 checks) — ceiling 4. Two of ten checks determined passing, two determined failing, six run by nobody and scored unmeasurable => 0.",
-      "score_0_10": 3,
-      "measured": "partial",
-      "checks": [
-        { "id": "K1", "result": "fail", "value": "median 126 (in band), p90 153 (in band), p10 62.3 (BELOW 80). 324 pages over 65 books, measured in the engine. 13 books end on a page under 25 words including a 3-word page (the-counting-rhyme) and a 7-word page (prayer-strips-tideway-shrine).", "threshold": "median 120-180, p90 <= 240, p10 >= 80", "note": "The builder claims p10 >= 80 is unsatisfiable as written. NOT PROVEN. Simulating a last-page balancing pass over the SAME page counts — which §A B8 (orphan/widow control) already requires and which this item owns — lifts p10 to 82.3 with p90 152.7, both in band; median falls to 119, one word under the floor, recoverable by raising page capacity, which currently runs at median 126 against an observed max of 172. No amendment is warranted.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"] },
-        { "id": "K2", "result": "unmeasurable", "value": null, "threshold": "line length 45-75 chars, leading 1.35-1.65, size >= 18px, at three resolutions", "not_run_reason": "Run by nobody. tools/analysis/text-metrics.mjs has never been pointed at the reading screen and the builder did not claim it. Scored unmeasurable => 0 rather than borrowed.", "evidence": [] },
-        { "id": "K3", "result": "unmeasurable", "value": null, "threshold": "ink/page contrast >= 7.0:1", "not_run_reason": "Run by nobody; requires a PNG sample of the reading screen at 1080p.", "evidence": [] },
-        { "id": "K4", "result": "pass", "value": "324 discrete pages across 65 books; no scrolling container; getUIState().book carries {id, page, pages, words_per_page, metrics}", "threshold": "1-2 pages per spread, count visible; scrolling text box is a hard fail (T7)", "note": "T7 is clear — pagination is real arithmetic in game/src/ui/screens/text.js over the vector glyph tables, and page-per-book memory exists (UISystem.bookPages). Whether the current/total count is DRAWN was not verified; passed on T7 and B6 alone.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"] },
-        { "id": "K5", "result": "unmeasurable", "value": null, "threshold": "open same-frame, 1 input per turn, next page rendered within 6 frames", "not_run_reason": "Run by nobody. Not claimed by the builder.", "evidence": [] },
-        { "id": "K6", "result": "unmeasurable", "value": null, "threshold": "closing and reopening returns to the page you were on, persisted in the save", "not_run_reason": "Run by nobody. UISystem.bookPages exists in memory; whether it survives saveState/loadState was not tested.", "evidence": [] },
-        { "id": "K7", "result": "unmeasurable", "value": null, "threshold": "frame delta 0 out of combat, 120/120 in combat", "not_run_reason": "Run by nobody.", "evidence": [] },
-        { "id": "K8", "result": "pass", "value": "0 hits R1-R8. No codex, no summary, no 'you have learned' extraction, no read/unread marking, no map pin, no see-also annotation between the 24 contradicting pairs. map_exists: false on the reading screen.", "threshold": "0 hits; R2/R4/R8 are hard fails", "note": "R3's PERMITTED EXCEPTION is separately not implemented — see K9 and the biggest gap. The builder reworded three books to avoid a false R1 hit on in-fiction prose ('PREFACE, WHICH THE READER WILL SKIP'); §C's scan should be scoped to element KINDS, not page text, or the next library trips it again.", "evidence": ["reports/book-budget.json"] },
-        { "id": "K9", "result": "fail", "value": "All six §D rows in band ON DISK: 37,819 total words; ratio 30.72 (bar >= 15); 92.3% corroborated (bar >= 60); 28 contradicting (bar >= 8); 13 prose directions (bar >= 12); 17 readable-before-the-quest (bar >= 10). IN THE RUNNING WORLD the last row is 0: reading the book changes nothing.", "threshold": "all six rows in band; ratio < 4 is a hard fail", "note": "The item says of that row: 'this row owns whether the reading surface is connected to anything.' book-budget.mjs measures it by matching JSON keys between game/data/books and game/data/quests and never asks the engine. Under ARBITRATION §3 CONSUMPTION a model with no demonstrated consumer is unmeasurable => 0, so this check fails on its own decisive row. Ratio hard fail is clear at 30.72.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json", "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json", "tools/analysis/book-budget.mjs"] },
-        { "id": "K10", "result": "unmeasurable", "value": null, "threshold": "art-neutralised layout blind pair; judge answers 'a book' rather than 'a box of text'", "not_run_reason": "Requires a fresh judge and art-neutralised page renders. The same fresh-agent channel that voids RI-LOR03 step 2's protocol blocks this. Round-2 work.", "evidence": [] }
-      ]
-    }
+  "depends_on": [
+   "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
+   "corpus/80-methods/book-stats.py",
+   "corpus/80-methods/opacity-audit.py",
+   "corpus/86-ui/RI-UIX05-books-and-readable-text.md",
+   "game/data/**",
+   "game/data/books",
+   "game/data/books/**",
+   "game/data/dialogue",
+   "game/data/items",
+   "game/data/progression/skills.json",
+   "game/data/quests",
+   "game/src/**",
+   "game/src/ui/screens/text.js",
+   "tools/analysis/book-budget.mjs",
+   "tools/blind/make-pair.mjs",
+   "tools/harness/boot-check.mjs",
+   "tools/harness/critic-w1-library-consume.mjs",
+   "tools/harness/critic-w1-library-pages.mjs",
+   "tools/harness/critic-w1-library-seam.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs",
+   "tools/uesp/mw-book-stats.py"
   ],
-  "artifacts": [
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/mw-book-stats.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/PRE-REGISTERED-RULE.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t1",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t3",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t4",
-    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t7"
-  ],
-  "blind_comparisons": [
+  "depends_on_note": "derived from 12 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Neither item is judged on fidelity or art direction. RI-UIX05 explicitly assigns typeface, ink colour and page material to RI-UIX06 as ART (P09) and glyph sharpness to RI-UIX06 as FIDELITY (F17/F18), and keeps only LAYOUT CORRECTNESS for itself. No screenshot is cited anywhere in this verdict. RI-LOR03 is text-only."
+ },
+ "reference_items": [
+  {
+   "id": "RI-LOR03",
+   "path": "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
+   "side": "morrowind",
+   "kind": "text",
+   "native_scale": "0-5 band",
+   "native_score": 3,
+   "native_max": 5,
+   "native_verdict": "Below bar — remedy required. Separates from Morrowind's corpus at better than chance and the tell is nameable, which is the item's band 2/3 boundary; held at 3 because the tell is a single lexical habit rather than the uniform-expository voice band 2 describes, and because the author-voice test passes 13/13.",
+   "score_0_10": 6,
+   "measured": "full",
+   "checks": [
     {
-      "ref_item": "RI-LOR03",
-      "status": "void",
-      "pack_ids": ["RI-LOR03-t1", "RI-LOR03-t3", "RI-LOR03-t4", "RI-LOR03-t7"],
-      "seeds": [1101, 1102, 1103, 1104],
-      "blind_pick": ["A", "A", "B", "A"],
-      "confidence": "high",
-      "reveal": ["A=ours", "A=ours", "B=ours", "A=ours"],
-      "outcome": "picked-reference (the rule was asked which side is the shipped game and named the reference 4/4)",
-      "answer_sha256": ["8c36ceffe9cccb90b5cf7f706e76c8d7", "98535776dadcf2ef9ee36745cd84af36", "fe994e48f0d5d72df56e3623024df830", "4cf5b1303d831318670591efcf4d3c2d"],
-      "void_reason": "RI-MTH03 M2 requires a judge with no knowledge of which side is which. This critic assembled the packs, so a self-judgement would be 'How we lose #1 — the critic peeks' and the result is recorded void rather than discounted. No fresh-agent channel is available to a critic in this harness. The packs are left intact on disk for a round-2 fresh judge; the reveal keys are siblings, not children.",
-      "substitute_method": "A pre-registered arithmetic rule (SHA-256 03d5ac49b50499c08448b141c70a05de1ddcb5dbaeafd8b7f2835717d279d786, written and hashed before any mapping.json was opened): the side with the higher /\\beleven\\b/i rate per 1000 words is the imitation. Its output cannot be influenced by what the critic knows. 4/4 correct; 'eleven' occurs zero times in all four Morrowind references.",
-      "leak_audit": "Performed (M6, once this wave) and found a hole: the Morrowind side of pack t4 begins 'othing is more revolting to enslaved by that derivativ moon-sugar' — wikitext drop-cap damage from the extraction. Extraction damage is a provenance channel our texts cannot have. Any future text pack drawn from corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz must repair or truncate the first sentence."
+     "id": "step1-length-distribution",
+     "result": "pass",
+     "value": "65 texts, 37,819 words; p10 113, p25 223, median 609, p75 797, p90 1264, max 1512; 3 multi-volume series; 16.9% under 150 words",
+     "threshold": "median >= 350, p90 >= 1200, >= 3 series, <= 20% under 150 words",
+     "note": "Independently recounted and confirmed to the word. p90 PASSES ONLY ON THE TOOL'S PERCENTILE CONVENTION: book-stats.py's pct() is a floor-index estimator giving 1264; linear interpolation (numpy / statistics.quantiles default) gives 1134.8, which FAILS the 1200 bar. The corpus is inside this row by choice of estimator, not by margin.",
+     "evidence": [
+      "reports/book-stats.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/mw-book-stats.json"
+     ]
     },
     {
-      "ref_item": "RI-UIX05",
-      "status": "not_run",
-      "not_possible_reason": "Step 8's art-neutralised layout pair needs rendered page images with typeface and page art neutralised to a common style, plus a fresh judge. Both are round-2 work; K10 is scored unmeasurable => 0 rather than argued."
-    }
-  ],
-  "arbitration": {
-    "ar1": {
-      "status": "not_applicable",
-      "checks": [
-        { "id": "A-scope", "result": "not_applicable", "not_run_reason": "Neither item touches combat. Books are outside the fight by ARBITRATION §1 ('Lore': unreliable in-world books, contradictory accounts). No frame number, hitbox, stamina cost or enemy behaviour is in scope." }
-      ]
+     "id": "step2-blind-pair",
+     "result": "fail",
+     "value": "Pre-registered one-token rule identifies ours 4/4 across four mechanically-built packs; corpus-wide it sorts 65 ours from 241 real Morrowind books at 92.5% accuracy (majority-class baseline 78.8%); length-matched 90-1550 words, ours 49/62 vs Morrowind 4/197. TELL: the word 'eleven' — 49 of our 65 books (75.4%), 120 occurrences, 31.73 per 10k words, against 7 of Morrowind's 241 books (2.9%), 7 occurrences, 0.38 per 10k words. An 84x per-word rate.",
+     "threshold": "fail if the critic sorts ours into a distinct cluster at better than chance; record the tell",
+     "note": "RI-MTH03 M2's fresh-agent requirement could not be met — this critic built the packs and no fresh-judge channel exists in this harness — so the blind JUDGEMENT is recorded void and the packs are left on disk for a round-2 judge. The separability FINDING does not depend on blinding: it is a measured corpus statistic. M6 leak audit performed and found a hole (wikitext drop-cap damage on the Morrowind side of pack t4).",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t1",
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t3",
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t4",
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t7",
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/PRE-REGISTERED-RULE.md"
+     ]
     },
-    "ar2": {
-      "status": "pass",
-      "checks": [
-        { "id": "B-quest-hint-ratio", "result": "pass", "observed": "0.0% of 65 books quote any of 78 scanned quest objectives. Books are the secondary lore vector; dialogue is primary. RI-LOR03's automatic-fail clause (>10%) is clear by the whole margin.", "evidence": ["reports/book-stats.json"] },
-        { "id": "B-markers", "result": "pass", "observed": "0 marker/objective/map/compass/waypoint/pin/coordinate hits in book text (book-budget S8). The one soft hit in book-stats is 'march-marker' in on-the-tally-stones — a boundary stone RI-WLD06 §3 requires the world to have, and the surveyor's whole error is calling it one. S8 and R4 are clear; map_exists false on the reading screen (S30).", "evidence": ["reports/book-budget.json", "reports/book-stats.json"] },
-        { "id": "B-item-descriptions-as-lore", "result": "pass", "observed": "Book words / item description words = 30.72 (37,819 / 1,231). The displaced lore weight is in books, which is exactly where AR-2 wants it. RI-UIX05's own provenance warning — that a ratio passes trivially if item descriptions are simply absent — is checked: the absolute book word count is 37,819, well above RI-LOR03's 40-book floor.", "evidence": ["reports/book-budget.json"] },
-        { "id": "B-codex", "result": "pass", "observed": "No codex, compendium, summary, 'you have learned' extraction, read/unread marking or collection percentage anywhere in getUIState() in mode 'book'. R2/R6 clear.", "evidence": ["reports/book-budget.json"] },
-        { "id": "B-no-book-is-corrected", "result": "pass", "observed": "24 contradicting pairs and no UI element anywhere links, annotates or adjudicates any of them. R8 / RI-LOR06 §1.2 upheld.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"] }
-      ]
+    {
+     "id": "step3-author-voice",
+     "result": "pass",
+     "value": "13 of 13 sampled books have an answer to who wrote this / what they want / what they are wrong about. Sample rule fixed in advance: every fifth book id in alphabetical order.",
+     "threshold": "fail if >= 3 of 12 have no 'wrong about' answer",
+     "note": "No omniscient-narrator contamination anywhere in the sample. Two books whose `unreliability` field is null (crate-tally, ledger-leaf) still have clear answers from the prose itself.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/W1-LIBRARY-r1.md#2"
+     ]
     },
-    "ar3": {
-      "status": "sterile",
-      "seam_sterile": true,
-      "justification": "RI-UIX05 §Seam declares the piece 'Not sterile' on the strength of R3's exception: reading a book adds a dialogue topic, and under S13 a topic can be a parley key that ends a fight without a corpse. Measured in the running engine, that crossing does not exist. 60 of 65 books declare topics_taught (116 distinct topics); `topics_taught` is read by no file in game/src/; opening all 60 in the engine leaves topicsKnown as []. The second declared crossing — a book unlocking a non-violent quest resolution through requires.knowledge — is equally dead (see CONSUMPTION). The piece therefore carries ZERO boundary-crossing interactions and is reported as sterile rather than failed, per ARBITRATION §3."
+    {
+     "id": "step4-contradiction-census",
+     "result": "marginal",
+     "value": "24 declared pairs, 33 books in the pair graph, 6 of 6 disputed registry facts with both sides in the library, 0 dangling references. 23 of 24 pairs are genuine disagreements on a named fact and several are excellent. ONE IS NOT: a-progress-ii <-> pilots-chart-book has 5.36% shared 7-grams and states the SAME landmark order, the SAME left ear and the SAME distances; all three errors declared in a-progress-ii's wrong_on_purpose field are absent from the prose, and the third ('puts Lilmoth's harbour crane at Archon') is contradicted by game/data/dialogue/rumours.json:75, which ships an archon-crane rumour.",
+     "threshold": ">= 8 pairs; no disputed fact may name a book that was never written",
+     "note": "book-stats.py S4a compares a count of BOOKS against a bar RI-LOR03 states in PAIRS; label and value disagree, immaterial at 24. The wrong_on_purpose register (8 books, bar >= 6) is never checked against the text — see method_deviations and the tool mutation.",
+     "evidence": [
+      "reports/book-stats.json",
+      "game/data/books/a-progress-through-the-southern-marsh.json",
+      "game/data/books/interface-readables.json"
+     ]
     },
-    "consumption": {
-      "status": "fail",
-      "models_shipped": ["game/data/books/**.knowledge_key (4 keyed books)", "game/data/books/**.topics_taught (60 books, 116 topics)"],
-      "world_side_consumer": "NONE for either. `knowledge_key` is read only by tools/analysis/book-budget.mjs:307 (the builder's own instrument) and by a statistics counter at game/src/engine.js:5536. `topics_taught` is read by nothing at all.",
-      "demonstration": "Drove all three knowledge-gated non-violent resolutions in a real browser. Book opens (6 pages each, confirmed via getUIState().book); questResolutions() returns byte-identical `why` arrays before and after reading — 'you have not learned book_the_court_and_the_tide' / 'book_the_rootless_egg' / 'book_the_sap_and_the_knife'. questReveal(quest, key) throws 'no reveal <key>' because ctx.knowledge (game/src/sim/quest/machine.js:142) unions only per-quest `know:` flags, whose sole writer is reveal() at :321, which requires the id be listed in that quest's deceit.revealed_by — where none of the three appears in any quest file. Opened all 60 topic-teaching books: topicsKnown [] before, [] after, 0 gained.",
-      "verdict": "unmeasurable => 0 for both models. From the player's chair, a book that unlocks nothing and a book that does not exist are the same thing."
+    {
+     "id": "step5-quest-hint-ratio",
+     "result": "pass",
+     "value": "0.0% of books quote a quest objective (78 objectives scanned)",
+     "threshold": "<= 10%",
+     "note": "The softer imperative-hint scan reports one hit — 'march-marker' in on-the-tally-stones, a boundary stone RI-WLD06 §3 requires the world to have. A true false positive, but the builder's '0 marker hits' claim is true of book-budget's scanner and not of book-stats'.",
+     "evidence": [
+      "reports/book-stats.json"
+     ]
+    },
+    {
+     "id": "step6-register-variance",
+     "result": "marginal",
+     "value": "mean-sentence-length IQR 6.15 words",
+     "threshold": ">= 6 to pass; >= 10 for the item's band-5",
+     "note": "Passes by 0.15 words on the same floor-index estimator that decides p90. Band 5 requires >= 10 and is not reached.",
+     "evidence": [
+      "reports/book-stats.json"
+     ]
+    },
+    {
+     "id": "step7-argonian-authorship",
+     "result": "pass",
+     "value": "19 declared",
+     "threshold": ">= 14, fail below 10",
+     "note": "SELF-DECLARED AND UNVERIFIED. Setting argonian_authored: true on all 65 books without touching a single byline makes this check report 65 and pass harder. Nothing compares the flag to the name on the book.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json"
+     ]
     }
+   ]
   },
-  "score": {
-    "overall_0_10": 3,
-    "pass_threshold": 7,
-    "aggregation": "min over the two items (RI-LOR03 ladder 6, RI-UIX05 ladder 3)",
-    "band_label": "FAIL — loses outright on the reading surface; the content item is below bar with a named, cheap remedy",
-    "confidence": "high"
-  },
-  "status": "fail",
-  "status_reasons": [
-    "below_wave_1_gate:7.0",
-    "consumption_zero:RI-UIX05 knowledge_key and topics_taught both read by no engine code; 0/3 knowledge-gated resolutions reachable, 0/116 topics delivered",
-    "seam_sterile:RI-UIX05 declares R3's exception as its only crossing and the crossing is not implemented",
-    "check_fail:RI-UIX05/K1 words-per-page p10 62.3 against a bar of 80, with a 3-word page in the shipped corpus",
-    "check_fail:RI-UIX05/K9 the row that owns connectedness reports 17 on disk and 0 in the world",
-    "check_fail:RI-LOR03/step2 corpus separates from Morrowind's at 92.5% by one token; the tell is named",
-    "unmeasurable:RI-UIX05/K2,K3,K5,K6,K7,K10 run by nobody on this build",
-    "instrument_defect:both new tools pass 28/28 on a corpus with every book's text swapped with another book's",
-    "corpus_debt:game/data/world/opacity.json still absent, 24-mystery register unverifiable (RI-WLD09 §B1, not this builder's)"
-  ],
-  "biggest_gap": {
-    "gap_id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
-    "subsystem_path": "ui.readables",
-    "what": "37,819 words in 65 texts open 65/65 in the engine across 324 pages, and the only thing a player can do with any of it is read it. Both mechanical consumers the two items name are dead code. (1) `book.knowledge_key` is read by no file in game/src/; the three non-violent quest resolutions that gate on those keys — Q-SOUL-02 res_seal, Q-LILM-01 res_rootkeepers, Q-DEEP-01 res_broker — are unreachable by any route in the shipped build, and the engine reports the identical refusal before and after the book has been opened and read to the last page. (2) `book.topics_taught` (60 books, 116 topics) is read by nothing; opening all 60 in the engine leaves topicsKnown empty. That field is RI-UIX05 R3's permitted exception and the item's entire declared AR-3 seam crossing.",
-    "why_it_matters": "RI-UIX05 §D's last row exists, in the item's own words, because 'a player who read the right book three regions ago knows a name, and a name is a parley key (S13) or a topic (R3's exception) ... this row owns whether the reading surface is connected to anything.' It reports 17 by reading JSON and 0 by asking the game. Three of the build's non-violent exits are closed, which pushes against the >=45% non-combat resolution bar; and the piece's only route across the Souls/Morrowind seam does not exist. ARBITRATION §3 CONSUMPTION is explicit that a model with no demonstrated consumer scores 0 exactly as a missing model does, because from the player's chair they are the same thing.",
-    "evidence": [
-      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json — control and treatment `why` arrays byte-identical for all three cases",
-      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json — 60 books opened, 116 topics declared, 0 gained",
-      "game/src/sim/quest/machine.js:142 — ctx.knowledge is built only from per-quest `know:` flags",
-      "game/src/sim/quest/machine.js:321 — reveal() is the sole writer and throws unless the id is in deceit.revealed_by",
-      "grep: `knowledge_key` appears in game/src/ only at engine.js:5536, inside a statistics counter",
-      "grep: `topics_taught` appears nowhere in game/src/"
-    ],
-    "severity": "critical",
-    "remedy": {
-      "summary": "Fire one callback from the book-open path into the quest engine, so that reading a book writes what the book says it teaches.",
-      "steps": [
-        "In game/src/ui/system.js, in the open('book', {id}) branch that already resolves the book record (around line 129), on FIRST open of a given book id call a new questEngine.readBook(bookRecord).",
-        "readBook(): for each t in book.topics_taught, append through game/src/sim/quest/topic-supply.js's fold-safe appender into sim.quest.topicsKnown — that module exists and is already the correct door, and it dedupes on the folded key.",
-        "readBook(): if book.knowledge_key is set, add it to a new sim.quest.booksRead Set, and union that Set into ctx.knowledge at game/src/sim/quest/machine.js:142. One line at each site; no quest data changes.",
-        "Add sim.quest.booksRead to the save manifest, or a load silently closes the doors again (this is the W1-SAVE lesson: audit the live world after the load, not the bytes).",
-        "Guard against R3/R4: a topic is a NAME, never a destination. Nothing may be written to the journal, no marker may be created, and RI-UIX02's quest-state differential must show no on-screen change outside the book."
-      ],
-      "acceptance_test": "node tools/harness/critic-w1-library-consume.mjs must report available:false in the control and available:true (or a `why` array that no longer contains 'you have not learned book_*') after reading, for all three cases; node tools/harness/critic-w1-library-seam.mjs must report a non-empty topics_gained_by_reading_every_book. Both probes exist and both currently go red.",
-      "owner_item": "RI-UIX05",
-      "estimated_size": "small — two call sites and a save field"
+  {
+   "id": "RI-UIX05",
+   "path": "corpus/86-ui/RI-UIX05-books-and-readable-text.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "checks passed / 10",
+   "native_score": 2,
+   "native_max": 10,
+   "native_verdict": "Loses outright (<= 6 checks) — ceiling 4. Two of ten checks determined passing, two determined failing, six run by nobody and scored unmeasurable => 0.",
+   "score_0_10": 3,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "K1",
+     "result": "fail",
+     "value": "median 126 (in band), p90 153 (in band), p10 62.3 (BELOW 80). 324 pages over 65 books, measured in the engine. 13 books end on a page under 25 words including a 3-word page (the-counting-rhyme) and a 7-word page (prayer-strips-tideway-shrine).",
+     "threshold": "median 120-180, p90 <= 240, p10 >= 80",
+     "note": "The builder claims p10 >= 80 is unsatisfiable as written. NOT PROVEN. Simulating a last-page balancing pass over the SAME page counts — which §A B8 (orphan/widow control) already requires and which this item owns — lifts p10 to 82.3 with p90 152.7, both in band; median falls to 119, one word under the floor, recoverable by raising page capacity, which currently runs at median 126 against an observed max of 172. No amendment is warranted.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"
+     ]
+    },
+    {
+     "id": "K2",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "line length 45-75 chars, leading 1.35-1.65, size >= 18px, at three resolutions",
+     "not_run_reason": "Run by nobody. tools/analysis/text-metrics.mjs has never been pointed at the reading screen and the builder did not claim it. Scored unmeasurable => 0 rather than borrowed.",
+     "evidence": []
+    },
+    {
+     "id": "K3",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "ink/page contrast >= 7.0:1",
+     "not_run_reason": "Run by nobody; requires a PNG sample of the reading screen at 1080p.",
+     "evidence": []
+    },
+    {
+     "id": "K4",
+     "result": "pass",
+     "value": "324 discrete pages across 65 books; no scrolling container; getUIState().book carries {id, page, pages, words_per_page, metrics}",
+     "threshold": "1-2 pages per spread, count visible; scrolling text box is a hard fail (T7)",
+     "note": "T7 is clear — pagination is real arithmetic in game/src/ui/screens/text.js over the vector glyph tables, and page-per-book memory exists (UISystem.bookPages). Whether the current/total count is DRAWN was not verified; passed on T7 and B6 alone.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"
+     ]
+    },
+    {
+     "id": "K5",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "open same-frame, 1 input per turn, next page rendered within 6 frames",
+     "not_run_reason": "Run by nobody. Not claimed by the builder.",
+     "evidence": []
+    },
+    {
+     "id": "K6",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "closing and reopening returns to the page you were on, persisted in the save",
+     "not_run_reason": "Run by nobody. UISystem.bookPages exists in memory; whether it survives saveState/loadState was not tested.",
+     "evidence": []
+    },
+    {
+     "id": "K7",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "frame delta 0 out of combat, 120/120 in combat",
+     "not_run_reason": "Run by nobody.",
+     "evidence": []
+    },
+    {
+     "id": "K8",
+     "result": "pass",
+     "value": "0 hits R1-R8. No codex, no summary, no 'you have learned' extraction, no read/unread marking, no map pin, no see-also annotation between the 24 contradicting pairs. map_exists: false on the reading screen.",
+     "threshold": "0 hits; R2/R4/R8 are hard fails",
+     "note": "R3's PERMITTED EXCEPTION is separately not implemented — see K9 and the biggest gap. The builder reworded three books to avoid a false R1 hit on in-fiction prose ('PREFACE, WHICH THE READER WILL SKIP'); §C's scan should be scoped to element KINDS, not page text, or the next library trips it again.",
+     "evidence": [
+      "reports/book-budget.json"
+     ]
+    },
+    {
+     "id": "K9",
+     "result": "fail",
+     "value": "All six §D rows in band ON DISK: 37,819 total words; ratio 30.72 (bar >= 15); 92.3% corroborated (bar >= 60); 28 contradicting (bar >= 8); 13 prose directions (bar >= 12); 17 readable-before-the-quest (bar >= 10). IN THE RUNNING WORLD the last row is 0: reading the book changes nothing.",
+     "threshold": "all six rows in band; ratio < 4 is a hard fail",
+     "note": "The item says of that row: 'this row owns whether the reading surface is connected to anything.' book-budget.mjs measures it by matching JSON keys between game/data/books and game/data/quests and never asks the engine. Under ARBITRATION §3 CONSUMPTION a model with no demonstrated consumer is unmeasurable => 0, so this check fails on its own decisive row. Ratio hard fail is clear at 30.72.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json",
+      "tools/analysis/book-budget.mjs"
+     ]
+    },
+    {
+     "id": "K10",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "art-neutralised layout blind pair; judge answers 'a book' rather than 'a box of text'",
+     "not_run_reason": "Requires a fresh judge and art-neutralised page renders. The same fresh-agent channel that voids RI-LOR03 step 2's protocol blocks this. Round-2 work.",
+     "evidence": []
     }
+   ]
+  }
+ ],
+ "artifacts": [
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/mw-book-stats.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/tool-mutations.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/PRE-REGISTERED-RULE.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t1",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t3",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t4",
+  "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t7"
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-LOR03",
+   "status": "void",
+   "pack_ids": [
+    "RI-LOR03-t1",
+    "RI-LOR03-t3",
+    "RI-LOR03-t4",
+    "RI-LOR03-t7"
+   ],
+   "seeds": [
+    1101,
+    1102,
+    1103,
+    1104
+   ],
+   "blind_pick": [
+    "A",
+    "A",
+    "B",
+    "A"
+   ],
+   "confidence": "high",
+   "reveal": [
+    "A=ours",
+    "A=ours",
+    "B=ours",
+    "A=ours"
+   ],
+   "outcome": "picked-reference (the rule was asked which side is the shipped game and named the reference 4/4)",
+   "answer_sha256": [
+    "8c36ceffe9cccb90b5cf7f706e76c8d7",
+    "98535776dadcf2ef9ee36745cd84af36",
+    "fe994e48f0d5d72df56e3623024df830",
+    "4cf5b1303d831318670591efcf4d3c2d"
+   ],
+   "void_reason": "RI-MTH03 M2 requires a judge with no knowledge of which side is which. This critic assembled the packs, so a self-judgement would be 'How we lose #1 — the critic peeks' and the result is recorded void rather than discounted. No fresh-agent channel is available to a critic in this harness. The packs are left intact on disk for a round-2 fresh judge; the reveal keys are siblings, not children.",
+   "substitute_method": "A pre-registered arithmetic rule (SHA-256 03d5ac49b50499c08448b141c70a05de1ddcb5dbaeafd8b7f2835717d279d786, written and hashed before any mapping.json was opened): the side with the higher /\\beleven\\b/i rate per 1000 words is the imitation. Its output cannot be influenced by what the critic knows. 4/4 correct; 'eleven' occurs zero times in all four Morrowind references.",
+   "leak_audit": "Performed (M6, once this wave) and found a hole: the Morrowind side of pack t4 begins 'othing is more revolting to enslaved by that derivativ moon-sugar' — wikitext drop-cap damage from the extraction. Extraction damage is a provenance channel our texts cannot have. Any future text pack drawn from corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz must repair or truncate the first sentence."
   },
-  "secondary_observations": [
-    { "id": "OBS-1", "what": "THE TELL IS ONE WORD. 'eleven' appears in 49 of our 65 books (75.4%), 120 times, 31.73 per 10k words. In 241 real Morrowind/Tribunal/Bloodmoon books it appears in 7 (2.9%), 7 times, 0.38 per 10k words — an 84x per-word rate. It is in an Imperial surveyor's expense claim, an Argonian keeper's leave book, a children's counting rhyme, a toll receipt and a Bravil romance alike. 'nineteen years' appears in two unrelated books as the length of a career. The remedy is a lexical de-duplication pass over the numerals, not a rewrite; the prose itself is excellent." },
-    { "id": "OBS-2", "what": "RI-LOR03 §1 IS NOW MEASURABLE AND SHOULD BE AMENDED. tools/uesp/mw-book-stats.py recovers 241 shipped Morrowind/Tribunal/Bloodmoon books with full text from the vendored UESP extract. Measured against the recalled table: median 535 vs ~520 (good), p90 1673 vs ~1700 (good), max 4090 vs ~4500 (good), mean 770 vs ~700 (good) — but p10 165 vs ~90, p25 299 vs ~210 and p75 1125 vs ~960 are all materially low, and Morrowind's real short tail is 8.7% under 150 words against our 16.9%. The item's own provenance note asks for exactly this amendment, keeping the old figures struck through." },
-    { "id": "OBS-3", "what": "ONE OF THE 24 CONTRADICTION PAIRS IS A NEAR-COPY OF ITS PARTNER. a-progress-ii and pilots-chart-book share 5.36% of their 7-grams and give the SAME landmark order, the SAME left ear and the SAME distances. All three errors declared in a-progress-ii's wrong_on_purpose field are absent from the prose, and the third is contradicted by the game's own dialogue (game/data/dialogue/rumours.json:75 ships an archon-crane). The joke — a plagiarist who reversed his direction and did not notice — is in the metadata and not in the book. a-progress-iii, by contrast, genuinely contains its declared errors (snow in Thornmarsh, a hatching at noon, a doorway on the fourth terrace)." },
-    { "id": "OBS-4", "what": "K1 IS NOT UNSATISFIABLE AND NO AMENDMENT IS WARRANTED. p10 >= 80 fails at 62.3 because 13 books end on a page under 25 words, including a 3-word page. A last-page balancing pass — §A B8's own orphan/widow requirement — over the same page counts lifts p10 to 82.3 with p90 152.7. The residual (median 119 against a 120 floor) is recovered by raising page capacity, which runs at median 126 against an observed max of 172." },
-    { "id": "OBS-5", "what": "p90 = 1264 PASSES ONLY ON THE TOOL'S PERCENTILE CONVENTION. book-stats.py's pct() uses a floor-index estimator; linear interpolation (numpy's and statistics.quantiles' default) gives 1134.8 against a 1200 bar. The same estimator decides step 6's IQR, which passes at 6.15 against a bar of 6.0. Two of the item's rows are inside their bars by a choice of estimator." },
-    { "id": "OBS-6", "what": "SIX OF RI-UIX05'S TEN CHECKS HAVE BEEN RUN BY NOBODY. K2 (line length, leading, size at three resolutions), K3 (contrast), K5 (open and turn latency), K6 (T5 persistence across save/load), K7 (pause rule in and out of combat) and K10 (art-neutralised layout blind pair). tools/analysis/text-metrics.mjs has never been pointed at the reading screen. This is not the library builder's debt but it is why the item cannot be closed." },
-    { "id": "OBS-7", "what": "RI-UIX05 §C's PROHIBITION SCAN SHOULD BE SCOPED TO ELEMENT KINDS, NOT PAGE TEXT. The builder reworded three books because their prose contained the words 'summary' and 'skip' — 'PREFACE, WHICH THE READER WILL SKIP' is a joke in a book, not a UI affordance. Rewording fiction to satisfy a UI scanner is the wrong direction of causation and the next library will hit it again. Step 6 should read getUIState().elements[].kind, not .text." },
-    { "id": "OBS-8", "what": "book-stats.py S4a compares a count of BOOKS (33) against contradiction_pairs_min, which RI-LOR03 states as >= 8 PAIRS. The label and the value disagree and the check is looser than the item. Immaterial at 24 pairs; a defect nonetheless." },
-    { "id": "OBS-9", "what": "WHAT IS GENUINELY GOOD AND MUST SURVIVE A FIX: eight book ids that shipped quests already required and that did not exist are now written; three sealed-mystery evidence books exist and --leak-scan is CLEAN over 2,607 strings (re-run by this critic); CF-D004 and CF-D006 had no in-world source anywhere in the game and now have both sides; an id collision on what-the-water-took was caught, which would have made one of two books silently unreachable through the engine's Map. The --compare argument really does parse RI-LOR03's own tables rather than decorate the command line. Sentence for sentence the library is better than the corpus it imitates." }
-  ],
-  "gap_closure": [
-    { "gap_id": "K9-book-item-word-ratio", "claimed_by_builder": "1.57 -> 30.72 against a bar of >= 15", "verified": true, "note": "The ratio is real and the denominator is confirmed (1,231 words of item `description` across 44 records). But K9 is a six-row check and it fails on the row the item itself calls decisive: books readable before the quest that references them reports 17 on disk and 0 in the running world. The headline number moved and the check did not pass." }
-  ],
-  "corpus_extended": [],
-  "method_deviations": [
-    { "ref_item": "RI-LOR03", "deviation": "Wrote tools/uesp/mw-book-stats.py — extracts and measures Morrowind's own book corpus (241 texts with recoverable full text out of 483 shipped {{Game Book}} pages) from corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz, reports the length distribution under two percentile conventions, dumps one plaintext file per book for blind packs, and counts numeral-token frequencies for the one-author test.", "why": "RI-LOR03 §1 is provenance: canonical-recall and its own provenance note invites re-measurement if anyone can extract the game's BOOK records. Nobody had. Without it there is no reference distribution to compare ours against and no baseline for the numeral tic, which is the finding that decides step 2.", "affects_scores": true },
-    { "ref_item": "RI-LOR03", "deviation": "Ran RI-LOR03 step 2 with a PRE-REGISTERED ARITHMETIC RULE in place of a human judgement, and recorded the blind protocol itself as void.", "why": "RI-MTH03 M2 requires a judge with no knowledge of which side is which; this critic built the packs and no fresh-agent channel exists here. A self-judgement would be RI-MTH03 'How we lose #1' with extra steps. The rule was written and SHA-256'd before any mapping.json was opened, has no free parameters, and its output cannot be influenced by what the critic knows. Packs left on disk for a round-2 judge.", "affects_scores": true },
-    { "ref_item": "RI-UIX05", "deviation": "Wrote three engine probes: critic-w1-library-consume.mjs (the three knowledge-gated resolutions, with a matched unread control), critic-w1-library-pages.mjs (all 65 books opened, page counts and words-per-page over every page, reported both including and excluding each book's final page), critic-w1-library-seam.mjs (all 60 topic-teaching books opened, topicsKnown before and after).", "why": "RI-UIX05 method step 2 requires opening every book via openMenu('book', id) and reading getUIState().book.pages, which no shipped tool did; and ARBITRATION §3's CONSUMPTION rule requires perturbing the model and observing an entity change behaviour, which no shipped tool does for books at all. Each probe carries its own control so a null result is distinguishable from a broken instrument — the consume probe's control is the unread run, and the seam probe's control is topicsKnown before any book is opened.", "affects_scores": true },
-    { "ref_item": "RI-LOR03", "deviation": "Broke both of the builder's new tools with mutations they do not run: (a) a derangement of the corpus that swaps every book's text with another book's while leaving every other field in place, (b) setting argonian_authored: true on all 65 books without touching a byline. Neither tool goes red on either.", "why": "TOOL-LOOP rule 3 q2. Both tools' own --self-test mutations perturb exactly the field the check reads, which makes them tautologies. The derangement is the mutation that distinguishes a check on the register from a check on the writing, and RI-LOR03 is an item about writing.", "affects_scores": true },
-    { "ref_item": "RI-UIX05", "deviation": "K2, K3, K5, K6, K7 and K10 were run by nobody — not by the builder and not by this critic — and are scored unmeasurable => 0 rather than argued from structure or borrowed from the content item.", "why": "The item is explicit: 'Unimplemented scores 0 ... a critic must not borrow RI-LOR03's score to cover it.' These six need a PNG sample of the reading screen at three resolutions, a frame-accurate input trace, a save/load round trip and an art-neutralised blind pair. They are the round-2 measurement list and they depress this score for a reason that is partly the corpus's rather than the builder's.", "affects_scores": true }
-  ],
-  "arbitration_questions": [],
-  "source_reads": [
-    "corpus/00-doctrine/ARBITRATION.md — S8 and §3's CONSUMPTION rule, read before any measurement",
-    "orchestration/AGENT-PROTOCOL.md, orchestration/TOOL-LOOP.md — binding process",
-    "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md — M1-M6 and the §E outcome table",
-    "corpus/60-lore/RI-LOR03-in-world-book-structure.md, corpus/86-ui/RI-UIX05-books-and-readable-text.md",
-    "game/src/sim/quest/machine.js, game/src/sim/quest/gate.js — read AFTER the engine measurement, to diagnose why the treatment and control were identical, not to establish the fact",
-    "game/src/ui/system.js, game/src/ui/screens/text.js — read after measuring 324 pages, to locate the remedy's call site",
-    "corpus/80-methods/book-stats.py, tools/analysis/book-budget.mjs — read to design mutations the self-tests do not run",
-    "13 books read end to end, sampled by a rule fixed in advance; 4 Morrowind books read end to end for comparison"
-  ],
-  "self_audit": {
-    "judged_output_not_source": true,
-    "ran_every_assigned_method": false,
-    "blind_done_where_required": false,
-    "named_exactly_one_gap": true,
-    "remedy_is_buildable": true,
-    "no_banned_reasoning_used": true,
-    "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "`ran_every_assigned_method` is false and the exceptions are named: RI-UIX05 K2, K3, K5, K6, K7 and K10 were run by nobody and are scored unmeasurable => 0. `blind_done_where_required` is false and this is the honest entry — RI-MTH03 M2 cannot be satisfied by a critic that assembled its own packs, so the blind JUDGEMENT is void and the separability finding rests on a pre-registered arithmetic rule plus a corpus-wide measurement, both of which are stated as such and neither of which is presented as a blind result. Every engine number was taken in a real browser at 320x240 with setRenderRate(0), with boot-check PASS before and after; loadavg was 2.18-12.77 and the one reading taken at 12.77 (the seam probe) is a boolean over an empty set, not a timing, so the load does not distort it. No source file was read to establish a fact: the consumption failure was measured first and traced afterwards, and the trace is offered as the remedy's address rather than as the evidence. The claim I attacked hardest and could not break is the writing itself — I read thirteen books end to end looking for the omniscient narrator RI-LOR03 exists to catch and did not find it, and I have said so at length rather than burying it under the failure."
+  {
+   "ref_item": "RI-UIX05",
+   "status": "not_run",
+   "not_possible_reason": "Step 8's art-neutralised layout pair needs rendered page images with typeface and page art neutralised to a common style, plus a fresh judge. Both are round-2 work; K10 is scored unmeasurable => 0 rather than argued."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "checks": [
+    {
+     "id": "A-scope",
+     "result": "not_applicable",
+     "not_run_reason": "Neither item touches combat. Books are outside the fight by ARBITRATION §1 ('Lore': unreliable in-world books, contradictory accounts). No frame number, hitbox, stamina cost or enemy behaviour is in scope."
+    }
+   ]
   },
-  "notes": "Nothing was committed. Three probes and one analysis tool were added to the working tree (tools/harness/critic-w1-library-{consume,pages,seam}.mjs, tools/uesp/mw-book-stats.py) along with four blind packs under reports/packs/ and their sibling reveal directories. The tree was being modified by other agents concurrently; the commit sha recorded is HEAD at the time of the engine runs."
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B-quest-hint-ratio",
+     "result": "pass",
+     "observed": "0.0% of 65 books quote any of 78 scanned quest objectives. Books are the secondary lore vector; dialogue is primary. RI-LOR03's automatic-fail clause (>10%) is clear by the whole margin.",
+     "evidence": [
+      "reports/book-stats.json"
+     ]
+    },
+    {
+     "id": "B-markers",
+     "result": "pass",
+     "observed": "0 marker/objective/map/compass/waypoint/pin/coordinate hits in book text (book-budget S8). The one soft hit in book-stats is 'march-marker' in on-the-tally-stones — a boundary stone RI-WLD06 §3 requires the world to have, and the surveyor's whole error is calling it one. S8 and R4 are clear; map_exists false on the reading screen (S30).",
+     "evidence": [
+      "reports/book-budget.json",
+      "reports/book-stats.json"
+     ]
+    },
+    {
+     "id": "B-item-descriptions-as-lore",
+     "result": "pass",
+     "observed": "Book words / item description words = 30.72 (37,819 / 1,231). The displaced lore weight is in books, which is exactly where AR-2 wants it. RI-UIX05's own provenance warning — that a ratio passes trivially if item descriptions are simply absent — is checked: the absolute book word count is 37,819, well above RI-LOR03's 40-book floor.",
+     "evidence": [
+      "reports/book-budget.json"
+     ]
+    },
+    {
+     "id": "B-codex",
+     "result": "pass",
+     "observed": "No codex, compendium, summary, 'you have learned' extraction, read/unread marking or collection percentage anywhere in getUIState() in mode 'book'. R2/R6 clear.",
+     "evidence": [
+      "reports/book-budget.json"
+     ]
+    },
+    {
+     "id": "B-no-book-is-corrected",
+     "result": "pass",
+     "observed": "24 contradicting pairs and no UI element anywhere links, annotates or adjudicates any of them. R8 / RI-LOR06 §1.2 upheld.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-pages.json"
+     ]
+    }
+   ]
+  },
+  "ar3": {
+   "status": "sterile",
+   "seam_sterile": true,
+   "justification": "RI-UIX05 §Seam declares the piece 'Not sterile' on the strength of R3's exception: reading a book adds a dialogue topic, and under S13 a topic can be a parley key that ends a fight without a corpse. Measured in the running engine, that crossing does not exist. 60 of 65 books declare topics_taught (116 distinct topics); `topics_taught` is read by no file in game/src/; opening all 60 in the engine leaves topicsKnown as []. The second declared crossing — a book unlocking a non-violent quest resolution through requires.knowledge — is equally dead (see CONSUMPTION). The piece therefore carries ZERO boundary-crossing interactions and is reported as sterile rather than failed, per ARBITRATION §3."
+  },
+  "consumption": {
+   "status": "fail",
+   "models_shipped": [
+    "game/data/books/**.knowledge_key (4 keyed books)",
+    "game/data/books/**.topics_taught (60 books, 116 topics)"
+   ],
+   "world_side_consumer": "NONE for either. `knowledge_key` is read only by tools/analysis/book-budget.mjs:307 (the builder's own instrument) and by a statistics counter at game/src/engine.js:5536. `topics_taught` is read by nothing at all.",
+   "demonstration": "Drove all three knowledge-gated non-violent resolutions in a real browser. Book opens (6 pages each, confirmed via getUIState().book); questResolutions() returns byte-identical `why` arrays before and after reading — 'you have not learned book_the_court_and_the_tide' / 'book_the_rootless_egg' / 'book_the_sap_and_the_knife'. questReveal(quest, key) throws 'no reveal <key>' because ctx.knowledge (game/src/sim/quest/machine.js:142) unions only per-quest `know:` flags, whose sole writer is reveal() at :321, which requires the id be listed in that quest's deceit.revealed_by — where none of the three appears in any quest file. Opened all 60 topic-teaching books: topicsKnown [] before, [] after, 0 gained.",
+   "verdict": "unmeasurable => 0 for both models. From the player's chair, a book that unlocks nothing and a book that does not exist are the same thing."
+  }
+ },
+ "score": {
+  "overall_0_10": 3,
+  "pass_threshold": 7,
+  "aggregation": "min over the two items (RI-LOR03 ladder 6, RI-UIX05 ladder 3)",
+  "band_label": "FAIL — loses outright on the reading surface; the content item is below bar with a named, cheap remedy",
+  "confidence": "high"
+ },
+ "status": "fail",
+ "status_reasons": [
+  "below_wave_1_gate:7.0",
+  "consumption_zero:RI-UIX05 knowledge_key and topics_taught both read by no engine code; 0/3 knowledge-gated resolutions reachable, 0/116 topics delivered",
+  "seam_sterile:RI-UIX05 declares R3's exception as its only crossing and the crossing is not implemented",
+  "check_fail:RI-UIX05/K1 words-per-page p10 62.3 against a bar of 80, with a 3-word page in the shipped corpus",
+  "check_fail:RI-UIX05/K9 the row that owns connectedness reports 17 on disk and 0 in the world",
+  "check_fail:RI-LOR03/step2 corpus separates from Morrowind's at 92.5% by one token; the tell is named",
+  "unmeasurable:RI-UIX05/K2,K3,K5,K6,K7,K10 run by nobody on this build",
+  "instrument_defect:both new tools pass 28/28 on a corpus with every book's text swapped with another book's",
+  "corpus_debt:game/data/world/opacity.json still absent, 24-mystery register unverifiable (RI-WLD09 §B1, not this builder's)"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
+  "subsystem_path": "ui.readables",
+  "what": "37,819 words in 65 texts open 65/65 in the engine across 324 pages, and the only thing a player can do with any of it is read it. Both mechanical consumers the two items name are dead code. (1) `book.knowledge_key` is read by no file in game/src/; the three non-violent quest resolutions that gate on those keys — Q-SOUL-02 res_seal, Q-LILM-01 res_rootkeepers, Q-DEEP-01 res_broker — are unreachable by any route in the shipped build, and the engine reports the identical refusal before and after the book has been opened and read to the last page. (2) `book.topics_taught` (60 books, 116 topics) is read by nothing; opening all 60 in the engine leaves topicsKnown empty. That field is RI-UIX05 R3's permitted exception and the item's entire declared AR-3 seam crossing.",
+  "why_it_matters": "RI-UIX05 §D's last row exists, in the item's own words, because 'a player who read the right book three regions ago knows a name, and a name is a parley key (S13) or a topic (R3's exception) ... this row owns whether the reading surface is connected to anything.' It reports 17 by reading JSON and 0 by asking the game. Three of the build's non-violent exits are closed, which pushes against the >=45% non-combat resolution bar; and the piece's only route across the Souls/Morrowind seam does not exist. ARBITRATION §3 CONSUMPTION is explicit that a model with no demonstrated consumer scores 0 exactly as a missing model does, because from the player's chair they are the same thing.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json — control and treatment `why` arrays byte-identical for all three cases",
+   "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json — 60 books opened, 116 topics declared, 0 gained",
+   "game/src/sim/quest/machine.js:142 — ctx.knowledge is built only from per-quest `know:` flags",
+   "game/src/sim/quest/machine.js:321 — reveal() is the sole writer and throws unless the id is in deceit.revealed_by",
+   "grep: `knowledge_key` appears in game/src/ only at engine.js:5536, inside a statistics counter",
+   "grep: `topics_taught` appears nowhere in game/src/"
+  ],
+  "severity": "critical",
+  "remedy": {
+   "summary": "Fire one callback from the book-open path into the quest engine, so that reading a book writes what the book says it teaches.",
+   "steps": [
+    "In game/src/ui/system.js, in the open('book', {id}) branch that already resolves the book record (around line 129), on FIRST open of a given book id call a new questEngine.readBook(bookRecord).",
+    "readBook(): for each t in book.topics_taught, append through game/src/sim/quest/topic-supply.js's fold-safe appender into sim.quest.topicsKnown — that module exists and is already the correct door, and it dedupes on the folded key.",
+    "readBook(): if book.knowledge_key is set, add it to a new sim.quest.booksRead Set, and union that Set into ctx.knowledge at game/src/sim/quest/machine.js:142. One line at each site; no quest data changes.",
+    "Add sim.quest.booksRead to the save manifest, or a load silently closes the doors again (this is the W1-SAVE lesson: audit the live world after the load, not the bytes).",
+    "Guard against R3/R4: a topic is a NAME, never a destination. Nothing may be written to the journal, no marker may be created, and RI-UIX02's quest-state differential must show no on-screen change outside the book."
+   ],
+   "acceptance_test": "node tools/harness/critic-w1-library-consume.mjs must report available:false in the control and available:true (or a `why` array that no longer contains 'you have not learned book_*') after reading, for all three cases; node tools/harness/critic-w1-library-seam.mjs must report a non-empty topics_gained_by_reading_every_book. Both probes exist and both currently go red.",
+   "owner_item": "RI-UIX05",
+   "estimated_size": "small — two call sites and a save field"
+  }
+ },
+ "secondary_observations": [
+  {
+   "id": "OBS-1",
+   "what": "THE TELL IS ONE WORD. 'eleven' appears in 49 of our 65 books (75.4%), 120 times, 31.73 per 10k words. In 241 real Morrowind/Tribunal/Bloodmoon books it appears in 7 (2.9%), 7 times, 0.38 per 10k words — an 84x per-word rate. It is in an Imperial surveyor's expense claim, an Argonian keeper's leave book, a children's counting rhyme, a toll receipt and a Bravil romance alike. 'nineteen years' appears in two unrelated books as the length of a career. The remedy is a lexical de-duplication pass over the numerals, not a rewrite; the prose itself is excellent."
+  },
+  {
+   "id": "OBS-2",
+   "what": "RI-LOR03 §1 IS NOW MEASURABLE AND SHOULD BE AMENDED. tools/uesp/mw-book-stats.py recovers 241 shipped Morrowind/Tribunal/Bloodmoon books with full text from the vendored UESP extract. Measured against the recalled table: median 535 vs ~520 (good), p90 1673 vs ~1700 (good), max 4090 vs ~4500 (good), mean 770 vs ~700 (good) — but p10 165 vs ~90, p25 299 vs ~210 and p75 1125 vs ~960 are all materially low, and Morrowind's real short tail is 8.7% under 150 words against our 16.9%. The item's own provenance note asks for exactly this amendment, keeping the old figures struck through."
+  },
+  {
+   "id": "OBS-3",
+   "what": "ONE OF THE 24 CONTRADICTION PAIRS IS A NEAR-COPY OF ITS PARTNER. a-progress-ii and pilots-chart-book share 5.36% of their 7-grams and give the SAME landmark order, the SAME left ear and the SAME distances. All three errors declared in a-progress-ii's wrong_on_purpose field are absent from the prose, and the third is contradicted by the game's own dialogue (game/data/dialogue/rumours.json:75 ships an archon-crane). The joke — a plagiarist who reversed his direction and did not notice — is in the metadata and not in the book. a-progress-iii, by contrast, genuinely contains its declared errors (snow in Thornmarsh, a hatching at noon, a doorway on the fourth terrace)."
+  },
+  {
+   "id": "OBS-4",
+   "what": "K1 IS NOT UNSATISFIABLE AND NO AMENDMENT IS WARRANTED. p10 >= 80 fails at 62.3 because 13 books end on a page under 25 words, including a 3-word page. A last-page balancing pass — §A B8's own orphan/widow requirement — over the same page counts lifts p10 to 82.3 with p90 152.7. The residual (median 119 against a 120 floor) is recovered by raising page capacity, which runs at median 126 against an observed max of 172."
+  },
+  {
+   "id": "OBS-5",
+   "what": "p90 = 1264 PASSES ONLY ON THE TOOL'S PERCENTILE CONVENTION. book-stats.py's pct() uses a floor-index estimator; linear interpolation (numpy's and statistics.quantiles' default) gives 1134.8 against a 1200 bar. The same estimator decides step 6's IQR, which passes at 6.15 against a bar of 6.0. Two of the item's rows are inside their bars by a choice of estimator."
+  },
+  {
+   "id": "OBS-6",
+   "what": "SIX OF RI-UIX05'S TEN CHECKS HAVE BEEN RUN BY NOBODY. K2 (line length, leading, size at three resolutions), K3 (contrast), K5 (open and turn latency), K6 (T5 persistence across save/load), K7 (pause rule in and out of combat) and K10 (art-neutralised layout blind pair). tools/analysis/text-metrics.mjs has never been pointed at the reading screen. This is not the library builder's debt but it is why the item cannot be closed."
+  },
+  {
+   "id": "OBS-7",
+   "what": "RI-UIX05 §C's PROHIBITION SCAN SHOULD BE SCOPED TO ELEMENT KINDS, NOT PAGE TEXT. The builder reworded three books because their prose contained the words 'summary' and 'skip' — 'PREFACE, WHICH THE READER WILL SKIP' is a joke in a book, not a UI affordance. Rewording fiction to satisfy a UI scanner is the wrong direction of causation and the next library will hit it again. Step 6 should read getUIState().elements[].kind, not .text."
+  },
+  {
+   "id": "OBS-8",
+   "what": "book-stats.py S4a compares a count of BOOKS (33) against contradiction_pairs_min, which RI-LOR03 states as >= 8 PAIRS. The label and the value disagree and the check is looser than the item. Immaterial at 24 pairs; a defect nonetheless."
+  },
+  {
+   "id": "OBS-9",
+   "what": "WHAT IS GENUINELY GOOD AND MUST SURVIVE A FIX: eight book ids that shipped quests already required and that did not exist are now written; three sealed-mystery evidence books exist and --leak-scan is CLEAN over 2,607 strings (re-run by this critic); CF-D004 and CF-D006 had no in-world source anywhere in the game and now have both sides; an id collision on what-the-water-took was caught, which would have made one of two books silently unreachable through the engine's Map. The --compare argument really does parse RI-LOR03's own tables rather than decorate the command line. Sentence for sentence the library is better than the corpus it imitates."
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "K9-book-item-word-ratio",
+   "claimed_by_builder": "1.57 -> 30.72 against a bar of >= 15",
+   "verified": true,
+   "note": "The ratio is real and the denominator is confirmed (1,231 words of item `description` across 44 records). But K9 is a six-row check and it fails on the row the item itself calls decisive: books readable before the quest that references them reports 17 on disk and 0 in the running world. The headline number moved and the check did not pass."
+  }
+ ],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "ref_item": "RI-LOR03",
+   "deviation": "Wrote tools/uesp/mw-book-stats.py — extracts and measures Morrowind's own book corpus (241 texts with recoverable full text out of 483 shipped {{Game Book}} pages) from corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz, reports the length distribution under two percentile conventions, dumps one plaintext file per book for blind packs, and counts numeral-token frequencies for the one-author test.",
+   "why": "RI-LOR03 §1 is provenance: canonical-recall and its own provenance note invites re-measurement if anyone can extract the game's BOOK records. Nobody had. Without it there is no reference distribution to compare ours against and no baseline for the numeral tic, which is the finding that decides step 2.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-LOR03",
+   "deviation": "Ran RI-LOR03 step 2 with a PRE-REGISTERED ARITHMETIC RULE in place of a human judgement, and recorded the blind protocol itself as void.",
+   "why": "RI-MTH03 M2 requires a judge with no knowledge of which side is which; this critic built the packs and no fresh-agent channel exists here. A self-judgement would be RI-MTH03 'How we lose #1' with extra steps. The rule was written and SHA-256'd before any mapping.json was opened, has no free parameters, and its output cannot be influenced by what the critic knows. Packs left on disk for a round-2 judge.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-UIX05",
+   "deviation": "Wrote three engine probes: critic-w1-library-consume.mjs (the three knowledge-gated resolutions, with a matched unread control), critic-w1-library-pages.mjs (all 65 books opened, page counts and words-per-page over every page, reported both including and excluding each book's final page), critic-w1-library-seam.mjs (all 60 topic-teaching books opened, topicsKnown before and after).",
+   "why": "RI-UIX05 method step 2 requires opening every book via openMenu('book', id) and reading getUIState().book.pages, which no shipped tool did; and ARBITRATION §3's CONSUMPTION rule requires perturbing the model and observing an entity change behaviour, which no shipped tool does for books at all. Each probe carries its own control so a null result is distinguishable from a broken instrument — the consume probe's control is the unread run, and the seam probe's control is topicsKnown before any book is opened.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-LOR03",
+   "deviation": "Broke both of the builder's new tools with mutations they do not run: (a) a derangement of the corpus that swaps every book's text with another book's while leaving every other field in place, (b) setting argonian_authored: true on all 65 books without touching a byline. Neither tool goes red on either.",
+   "why": "TOOL-LOOP rule 3 q2. Both tools' own --self-test mutations perturb exactly the field the check reads, which makes them tautologies. The derangement is the mutation that distinguishes a check on the register from a check on the writing, and RI-LOR03 is an item about writing.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-UIX05",
+   "deviation": "K2, K3, K5, K6, K7 and K10 were run by nobody — not by the builder and not by this critic — and are scored unmeasurable => 0 rather than argued from structure or borrowed from the content item.",
+   "why": "The item is explicit: 'Unimplemented scores 0 ... a critic must not borrow RI-LOR03's score to cover it.' These six need a PNG sample of the reading screen at three resolutions, a frame-accurate input trace, a save/load round trip and an art-neutralised blind pair. They are the round-2 measurement list and they depress this score for a reason that is partly the corpus's rather than the builder's.",
+   "affects_scores": true
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  "corpus/00-doctrine/ARBITRATION.md — S8 and §3's CONSUMPTION rule, read before any measurement",
+  "orchestration/AGENT-PROTOCOL.md, orchestration/TOOL-LOOP.md — binding process",
+  "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md — M1-M6 and the §E outcome table",
+  "corpus/60-lore/RI-LOR03-in-world-book-structure.md, corpus/86-ui/RI-UIX05-books-and-readable-text.md",
+  "game/src/sim/quest/machine.js, game/src/sim/quest/gate.js — read AFTER the engine measurement, to diagnose why the treatment and control were identical, not to establish the fact",
+  "game/src/ui/system.js, game/src/ui/screens/text.js — read after measuring 324 pages, to locate the remedy's call site",
+  "corpus/80-methods/book-stats.py, tools/analysis/book-budget.mjs — read to design mutations the self-tests do not run",
+  "13 books read end to end, sampled by a rule fixed in advance; 4 Morrowind books read end to end for comparison"
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "`ran_every_assigned_method` is false and the exceptions are named: RI-UIX05 K2, K3, K5, K6, K7 and K10 were run by nobody and are scored unmeasurable => 0. `blind_done_where_required` is false and this is the honest entry — RI-MTH03 M2 cannot be satisfied by a critic that assembled its own packs, so the blind JUDGEMENT is void and the separability finding rests on a pre-registered arithmetic rule plus a corpus-wide measurement, both of which are stated as such and neither of which is presented as a blind result. Every engine number was taken in a real browser at 320x240 with setRenderRate(0), with boot-check PASS before and after; loadavg was 2.18-12.77 and the one reading taken at 12.77 (the seam probe) is a boolean over an empty set, not a timing, so the load does not distort it. No source file was read to establish a fact: the consumption failure was measured first and traced afterwards, and the trace is offered as the remedy's address rather than as the evidence. The claim I attacked hardest and could not break is the writing itself — I read thirteen books end to end looking for the omniscient narrator RI-LOR03 exists to catch and did not find it, and I have said so at length rather than burying it under the failure."
+ },
+ "notes": "Nothing was committed. Three probes and one analysis tool were added to the working tree (tools/harness/critic-w1-library-{consume,pages,seam}.mjs, tools/uesp/mw-book-stats.py) along with four blind packs under reports/packs/ and their sibling reveal directories. The tree was being modified by other agents concurrently; the commit sha recorded is HEAD at the time of the engine runs."
 }

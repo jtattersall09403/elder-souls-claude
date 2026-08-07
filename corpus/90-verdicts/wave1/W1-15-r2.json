@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "piece_id": "w1-15",
- "piece_title": "Stealth, theft, crime and justice \u2014 round 2",
+ "piece_title": "Stealth, theft, crime and justice — round 2",
  "subsystem_paths": [
   "stealth.detection.model",
   "stealth.sneak.state",
@@ -30,7 +30,7 @@
   "finished_at": "2026-08-07T01:10:00Z",
   "conflict_of_interest": false,
   "saw_builder_notes_before_blind": true,
-  "instrument_independence": "Every number below came from corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-*.mjs, written by this critic from the reference items. tools/harness/w1-15-coupling.mjs \u2014 the builder's own grader for its own headline figure \u2014 was never run."
+  "instrument_independence": "Every number below came from corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-*.mjs, written by this critic from the reference items. tools/harness/w1-15-coupling.mjs — the builder's own grader for its own headline figure — was never run."
  },
  "build": {
   "commit_sha": "7e7993d",
@@ -92,7 +92,38 @@
     "seed": "n/a",
     "exit_code": 0
    }
-  ]
+  ],
+  "depends_on": [
+   "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+   "corpus/23-stealth-crime/RI-CRM02-faction-crime-and-writs.md",
+   "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
+   "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+   "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+   "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-fence.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-pickpocket.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress2.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-world.mjs",
+   "game/data/**",
+   "game/data/combat/enemies/**",
+   "game/data/quests/**",
+   "game/data/stealth/detection.json",
+   "game/data/world/property/**",
+   "game/src/**",
+   "game/src/sim/entities.js",
+   "game/src/sim/step.js",
+   "tools/harness/smoke.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs"
+  ],
+  "depends_on_note": "derived from 14 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
  },
  "bifurcation": {
   "axis": "not-visual",
@@ -109,14 +140,14 @@
    "kind": "number",
    "measured": "partial",
    "native_scale": "min-over-axes across 10 axes; failure threshold: any axis below 6; OPENER-PURITY, BOSS-BYPASS and NO-METER binary",
-   "native_score": "0 / 10 \u2014 min-over-axes. Bypass 0 (the province is not built). Formula fidelity would score 9, Sound 8, Civilians 8, NO-METER 10; Search 4 and Quest load 4 are this piece's own.",
+   "native_score": "0 / 10 — min-over-axes. Bypass 0 (the province is not built). Formula fidelity would score 9, Sound 8, Civilians 8, NO-METER 10; Search 4 and Quest load 4 are this piece's own.",
    "native_verdict": "we lose (min-over-axes: Bypass 0, owned by W1-01/W1-03/W1-12; Search 4 because S-1 never runs; Quest load 4)",
    "score_0_10": 0,
    "checks": [
     {
      "id": "formula-fidelity",
      "result": "pass",
-     "detail": "RI-STL01 \u00a72's five worked rows, measured by the critic's own instrument against the running world: 1.0167 / 3.95 / 8.45 / 26.65 / 26.65 s against the item's 1.03 / 3.94 / 8.5 / 26.7 / 26.7 s. Worst error 1.29%. Both clamps fire (V=1.30 row 1, V=0.05 rows 4 and 5). Round 1 measured 0.500 s for every row.",
+     "detail": "RI-STL01 §2's five worked rows, measured by the critic's own instrument against the running world: 1.0167 / 3.95 / 8.45 / 26.65 / 26.65 s against the item's 1.03 / 3.94 / 8.5 / 26.7 / 26.7 s. Worst error 1.29%. Both clamps fire (V=1.30 row 1, V=0.05 rows 4 and 5). Round 1 measured 0.500 s for every row.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
      ]
@@ -124,7 +155,7 @@
     {
      "id": "coupling-V-to-alert",
      "result": "pass",
-     "detail": "RI-MTH07 \u00a7B on the pair the item's \u00a7C used: V 1.30 -> 0.050, predicted 1.03 -> 26.7 s, observed 1.0167 -> 26.65 s, coupling |26.65-1.0167| / |26.7-1.03| = 0.9986. Round 1 was 0.00. Null control at 30 m: alert 0.0000 over 600 f.",
+     "detail": "RI-MTH07 §B on the pair the item's §C used: V 1.30 -> 0.050, predicted 1.03 -> 26.7 s, observed 1.0167 -> 26.65 s, coupling |26.65-1.0167| / |26.7-1.03| = 0.9986. Round 1 was 0.00. Null control at 30 m: alert 0.0000 over 600 f.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
      ]
@@ -132,7 +163,7 @@
     {
      "id": "inputs-independently-live",
      "result": "pass",
-     "detail": "The brief's converse test. Each term of V and each geometric term varied ALONE, measured fill compared against 150\u00b7V\u00b7(1\u2212d/R)\u00b7cone: L (0.04/0.35/1.00), M (still/walk/sprint), S (5/100), E (light/medium/heavy/overloaded), A (cover), d (2 / 8 / 14 / 15.9 m -> 44.28 / 25.30 / 6.33 / 0.316 per s, ratio 0.5001 constant) and bearing (0 / 40 / 57 / 70 / 170 deg). Distance is a separate live term, not folded into V. Bearing 57 deg fills at 3.3589/s against 3.36 predicted (the 0.35 peripheral scale) and holds at exactly 70. Bearing 70 and 170 fill 0.0000 \u2014 the archetype's own 120 deg statblock cone correctly governs over detection.json's 200 deg peripheral arc.",
+     "detail": "The brief's converse test. Each term of V and each geometric term varied ALONE, measured fill compared against 150·V·(1−d/R)·cone: L (0.04/0.35/1.00), M (still/walk/sprint), S (5/100), E (light/medium/heavy/overloaded), A (cover), d (2 / 8 / 14 / 15.9 m -> 44.28 / 25.30 / 6.33 / 0.316 per s, ratio 0.5001 constant) and bearing (0 / 40 / 57 / 70 / 170 deg). Distance is a separate live term, not folded into V. Bearing 57 deg fills at 3.3589/s against 3.36 predicted (the 0.35 peripheral scale) and holds at exactly 70. Bearing 70 and 170 fill 0.0000 — the archetype's own 120 deg statblock cone correctly governs over detection.json's 200 deg peripheral arc.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-world.json"
@@ -141,7 +172,7 @@
     {
      "id": "light-exponent",
      "result": "pass",
-     "detail": "The critic derived gamma = 1.36 independently from the item's own table before finding it already filed. RI-STL01 \u00a72 states L^0.7 and publishes five rows that 0.7 cannot produce; row 4 is annotated '(clamped)' and is 0.0733 at 0.7, so the item's own annotation is false at its own stated exponent. The build is right and the item is wrong. AMENDMENT-W1-15-01 \u00a71 accepted.",
+     "detail": "The critic derived gamma = 1.36 independently from the item's own table before finding it already filed. RI-STL01 §2 states L^0.7 and publishes five rows that 0.7 cannot produce; row 4 is annotated '(clamped)' and is 0.0733 at 0.7, so the item's own annotation is false at its own stated exponent. The build is right and the item is wrong. AMENDMENT-W1-15-01 §1 accepted.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
      ]
@@ -149,7 +180,7 @@
     {
      "id": "sound",
      "result": "partial",
-     "detail": "\u00a74's LEFT column reproduces exactly: sprint 36.309 m against 36.2, walk 15.55 against 15.5, crouch 6.48 against 6.5. Its RIGHT column does not and cannot: the item's figures are a flat 0.393-0.400 of r_base while E_sound(light) x S_sound(100) x surface(mud) = 0.75 x 0.50 x 0.70 = 0.2625, giving 3.675 / 1.575 / 0.656 against the item's 5.5 / 2.4 / 1.0. The build implements the stated formula. THIS IS A THIRD ARITHMETIC DEFECT IN RI-STL01 AND NEITHER ROUND FILED IT.",
+     "detail": "§4's LEFT column reproduces exactly: sprint 36.309 m against 36.2, walk 15.55 against 15.5, crouch 6.48 against 6.5. Its RIGHT column does not and cannot: the item's figures are a flat 0.393-0.400 of r_base while E_sound(light) x S_sound(100) x surface(mud) = 0.75 x 0.50 x 0.70 = 0.2625, giving 3.675 / 1.575 / 0.656 against the item's 5.5 / 2.4 / 1.0. The build implements the stated formula. THIS IS A THIRD ARITHMETIC DEFECT IN RI-STL01 AND NEITHER ROUND FILED IT.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
@@ -199,7 +230,7 @@
     {
      "id": "search-S1-plausible-set",
      "result": "fail",
-     "detail": "`plan: []` and `visited: []` in 4 of 4 placements, including volumes placed behind the searcher, beyond the LKP, and beside the searcher. plausibleSet() vetoes any volume whose LKP-to-volume segment crosses the searcher's own cone, and the searcher is by construction looking AT the LKP, which sits at bearing 0 from it \u2014 so every sampled point near the LKP end of every segment is inside the cone. RI-STL01 \u00a77 S-1's headline behaviour, 'it checks WHERE YOU COULD HAVE GONE, not random points', never runs. The search is a walk to the LKP followed by a radial sweep.",
+     "detail": "`plan: []` and `visited: []` in 4 of 4 placements, including volumes placed behind the searcher, beyond the LKP, and beside the searcher. plausibleSet() vetoes any volume whose LKP-to-volume segment crosses the searcher's own cone, and the searcher is by construction looking AT the LKP, which sits at bearing 0 from it — so every sampled point near the LKP end of every segment is inside the cone. RI-STL01 §7 S-1's headline behaviour, 'it checks WHERE YOU COULD HAVE GONE, not random points', never runs. The search is a walk to the LKP followed by a radial sweep.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json"
@@ -225,7 +256,7 @@
     {
      "id": "bypass-census",
      "result": "fail",
-     "detail": "\u00a79 requires 13 overworld routes, 8 Souls-loop dungeons and 82 caves. None exists \u2014 the province is owned by W1-01/W1-03/W1-12. Scored 0 fail-closed, not credited, and recorded as a cross-piece debt. This is the axis that carries the item's min.",
+     "detail": "§9 requires 13 overworld routes, 8 Souls-loop dungeons and 82 caves. None exists — the province is owned by W1-01/W1-03/W1-12. Scored 0 fail-closed, not credited, and recorded as a cross-piece debt. This is the axis that carries the item's min.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
      ]
@@ -233,7 +264,7 @@
     {
      "id": "quest-load",
      "result": "fail",
-     "detail": "\u00a79's SNEAK-QUESTS floor is 22 quests carrying a sneak resolution; the shipped tree has 7, and RI-STL01's own 0-band is '< 10'. Under AMENDMENT-W1-15-01 \u00a76's ratio reading (>= 12% of the shipped tree) 7/33 = 21.2% passes \u2014 but the amendment's own supporting table quotes 13 quests / 39.4% / VERB-SPREAD 24.7%, and none of those three figures is true at HEAD.",
+     "detail": "§9's SNEAK-QUESTS floor is 22 quests carrying a sneak resolution; the shipped tree has 7, and RI-STL01's own 0-band is '< 10'. Under AMENDMENT-W1-15-01 §6's ratio reading (>= 12% of the shipped tree) 7/33 = 21.2% passes — but the amendment's own supporting table quotes 13 quests / 39.4% / VERB-SPREAD 24.7%, and none of those three figures is true at HEAD.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json"
@@ -249,7 +280,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json",
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json"
    ],
-   "why_not_ten": "Two axes this piece cannot own are 0 (the bypass census needs a province that does not exist), one axis it does own is broken (S-1's plausible set never runs \u2014 plan empty in 4 of 4 placements), and the sneak quest load is 7 against a floor of 22 (10 in the item's own 0-band).",
+   "why_not_ten": "Two axes this piece cannot own are 0 (the bypass census needs a province that does not exist), one axis it does own is broken (S-1's plausible set never runs — plan empty in 4 of 4 placements), and the sneak quest load is 7 against a floor of 22 (10 in the item's own 0-band).",
    "path_to_ten": "(1) Make S-1 reachable: exclude the LKP end of the segment from crossesCone (skip samples within the cone-origin's own sight of the LKP, or test the VOLUME's bearing rather than the whole segment), then assert plan.length >= 1 and visited.length >= 1 in a scenario with three volumes within 8 m. (2) Take the bypass census as a joint deliverable with W1-01/W1-03/W1-12 once the province lands. (3) Author sneak resolutions to >= 12% of the tree and re-measure with H.questVerbCensus() after every co-committed regeneration of a shared quest file.",
    "ten_by_wave": 3
   },
@@ -260,8 +291,8 @@
    "kind": "number",
    "measured": "partial",
    "native_scale": "min-over-axes across 9 axes; failure threshold: any axis below 6; lock determinism binary",
-   "native_score": "4 / 10 \u2014 min-over-axes. Lock determinism 10, Ownership enforcement 8, Pickpocket 8, Trespass 8, Fencing 8; Lock skill expression 4 (tier 1 is empty and a starting character is locked out of the entire minigame).",
-   "native_verdict": "below bar \u2014 named remedy required",
+   "native_score": "4 / 10 — min-over-axes. Lock determinism 10, Ownership enforcement 8, Pickpocket 8, Trespass 8, Fencing 8; Lock skill expression 4 (tier 1 is empty and a starting character is locked out of the entire minigame).",
+   "native_verdict": "below bar — named remedy required",
    "score_0_10": 4,
    "checks": [
     {
@@ -275,7 +306,7 @@
     {
      "id": "authored-angles",
      "result": "pass",
-     "detail": "719 ward angles over 235 locks, 120 distinct values, chi-square 226.1 on 35 df against a 49.8 critical value \u2014 recomputed by the critic from game/data/world/property/*.json, not read off the builder's report. Identical to round 1: no regression.",
+     "detail": "719 ward angles over 235 locks, 120 distinct values, chi-square 226.1 on 35 df against a 49.8 critical value — recomputed by the critic from game/data/world/property/*.json, not read off the builder's report. Identical to round 1: no regression.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
      ]
@@ -309,7 +340,7 @@
     {
      "id": "fencing",
      "result": "pass",
-     "detail": "fence.lilmoth.rot-hookline buys an 11 g stolen item at multiplier 0.43631 for 5 g, sets laundered_by and laundered_at_f, and the laundering persists into the save. A unique 900 g item quotes at 0.271 with a delayed_bounty of 450 g in 3 days. The fence ROSTER is not reachable through the harness \u2014 getCrimeState() omits it and fenceQuote throws \u2014 so the ids can only be got from the data file.",
+     "detail": "fence.lilmoth.rot-hookline buys an 11 g stolen item at multiplier 0.43631 for 5 g, sets laundered_by and laundered_at_f, and the laundering persists into the save. A unique 900 g item quotes at 0.271 with a delayed_bounty of 450 g in 3 days. The fence ROSTER is not reachable through the harness — getCrimeState() omits it and fenceQuote throws — so the ids can only be got from the data file.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-fence.json"
      ]
@@ -351,14 +382,14 @@
    "kind": "number",
    "measured": "partial",
    "native_scale": "min-over-axes across 12 axes; failure threshold: any axis below 6; persistence, S10 handling and mid-fight accrual binary",
-   "native_score": "3 / 10 \u2014 min-over-axes. Witness model 9, Report chain 8, Arrest 8, Schedule 8, Mid-fight accrual 8; Guard ladder 3 (band 3 cannot attack and its surrender is free).",
+   "native_score": "3 / 10 — min-over-axes. Witness model 9, Report chain 8, Arrest 8, Schedule 8, Mid-fight accrual 8; Guard ladder 3 (band 3 cannot attack and its surrender is free).",
    "native_verdict": "we lose (guard-ladder axis below its 6 floor: the band-3 guard neither attacks nor charges anything for the surrender)",
    "score_0_10": 3,
    "checks": [
     {
      "id": "witness-derived",
      "result": "pass",
-     "detail": "Round 1's headline failure, closed. ZERO addWitness() calls anywhere in this probe. takeObject() on a placed object with a civilian 3 m away derives observed_by ['cw'] with observed_by_source 'derived_from_the_world', creates crime 1, witness cw identified, and a pending report \u2014 and witness_checks explains the guard's exclusion in words ('120.0 m beyond 1.4 x R (25.2 m)').",
+     "detail": "Round 1's headline failure, closed. ZERO addWitness() calls anywhere in this probe. takeObject() on a placed object with a civilian 3 m away derives observed_by ['cw'] with observed_by_source 'derived_from_the_world', creates crime 1, witness cw identified, and a pending report — and witness_checks explains the guard's exclusion in words ('120.0 m beyond 1.4 x R (25.2 m)').",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json"
      ]
@@ -398,7 +429,7 @@
     {
      "id": "guard-ladder-band-3-cannot-attack",
      "result": "fail",
-     "detail": "guard_legion declares ai 'hold_ground', and combat/enemy.js runs a scripted action only when stat.ai === 'scripted'. An AGGRO guard_legion held at 2.0 m for 900 frames deals 0 damage, emits no HIT, and never leaves REPOSITION. RI-CRM01 \u00a74's band 3 is the string 'attack_on_sight' with no attack behind it.",
+     "detail": "guard_legion declares ai 'hold_ground', and combat/enemy.js runs a scripted action only when stat.ai === 'scripted'. An AGGRO guard_legion held at 2.0 m for 900 frames deals 0 damage, emits no HIT, and never leaves REPOSITION. RI-CRM01 §4's band 3 is the string 'attack_on_sight' with no attack behind it.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json"
      ]
@@ -406,7 +437,7 @@
     {
      "id": "surrender-parley-is-free",
      "result": "fail",
-     "detail": "guard_legion's parley declares gold_price 0 with base_disposition 35, and combat/parley.js's GOLD ground passes on gold >= price AND disposition >= 20. Measured: an aggro'd band-3 guard at 3 m YIELDS at full HP (520/520) on one `interact` press, with the player's purse at 0, stamina 120 -> 120, imperial bounty 3000 -> 3000 and jail null. The 17-crime schedule, the three arrest answers and the jail ledger are all correct and all discardable by one button. The mechanism is right \u2014 inf_trash (gold_price 180) REFUSES cold and ACCEPTS only after learnTopic('the-drowned-ford') \u2014 so it is the datum that is wrong.",
+     "detail": "guard_legion's parley declares gold_price 0 with base_disposition 35, and combat/parley.js's GOLD ground passes on gold >= price AND disposition >= 20. Measured: an aggro'd band-3 guard at 3 m YIELDS at full HP (520/520) on one `interact` press, with the player's purse at 0, stamina 120 -> 120, imperial bounty 3000 -> 3000 and jail null. The 17-crime schedule, the three arrest answers and the jail ledger are all correct and all discardable by one button. The mechanism is right — inf_trash (gold_price 180) REFUSES cold and ACCEPTS only after learnTopic('the-drowned-ford') — so it is the datum that is wrong.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json",
@@ -438,7 +469,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json",
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json"
    ],
-   "why_not_ten": "The guard ladder resolves to a guard that cannot attack and a surrender that costs nothing and clears nothing, so every other axis in this item \u2014 the schedule, the report chain, the arrest, the jail \u2014 is reachable but not binding.",
+   "why_not_ten": "The guard ladder resolves to a guard that cannot attack and a surrender that costs nothing and clears nothing, so every other axis in this item — the schedule, the report chain, the arrest, the jail — is reachable but not binding.",
    "path_to_ten": "Set guard_legion.parley.gold_price to the live imperial bounty (or a fixed >= 200 g) and require disposition >= 40 as the yield ground already does; route an accepted guard surrender into arrestTopics()/answerArrest() so the three answers fire and the bounty is paid, served or refused; and give guard_legion an AI that swings (ai 'scripted' with a scenario, or W1-12's behaviour once it lands).",
    "ten_by_wave": 2
   },
@@ -449,7 +480,7 @@
    "kind": "number",
    "measured": "partial",
    "native_scale": "min-over-axes across 11 axes; jurisdictional legality, parley, mid-fight accrual and AR-3 encounter axes binary",
-   "native_score": "2 / 10 \u2014 min-over-axes. Mid-fight accrual + yield 6 (the YIELDED state exists and works); parley coverage, the AR-3 encounter flip, writs, hunters and interception are unmeasurable in this build.",
+   "native_score": "2 / 10 — min-over-axes. Mid-fight accrual + yield 6 (the YIELDED state exists and works); parley coverage, the AR-3 encounter flip, writs, hunters and interception are unmeasurable in this build.",
    "native_verdict": "we lose (parley coverage and the AR-3 encounter flip unmeasurable; the yield that does exist is unpriced)",
    "score_0_10": 2,
    "checks": [
@@ -464,7 +495,7 @@
     {
      "id": "parley-grounds",
      "result": "partial",
-     "detail": "NAME, FACTION, GOLD and YIELD are all implemented as deterministic threshold tests with no die, and NAME demonstrably works: inf_trash cold -> refused; the same fight after learnTopic('the-drowned-ford') -> YIELDED. But ctx.world.gold is wired to nothing \u2014 getCombatState().world_knowledge.gold reads 0 with 400 g in getStealthState() and 405 g in progression after a fence sale \u2014 so the GOLD ground is unusable when priced and unconditional when priced 0. There are at least four gold accumulators in this build (sim.stealth.p.gold, sim.progression.gold, engine.magic.gold, ctx.world.gold) against seam S15's 'gold is the only currency'.",
+     "detail": "NAME, FACTION, GOLD and YIELD are all implemented as deterministic threshold tests with no die, and NAME demonstrably works: inf_trash cold -> refused; the same fight after learnTopic('the-drowned-ford') -> YIELDED. But ctx.world.gold is wired to nothing — getCombatState().world_knowledge.gold reads 0 with 400 g in getStealthState() and 405 g in progression after a fence sale — so the GOLD ground is unusable when priced and unconditional when priced 0. There are at least four gold accumulators in this build (sim.stealth.p.gold, sim.progression.gold, engine.magic.gold, ctx.world.gold) against seam S15's 'gold is the only currency'.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json",
@@ -474,7 +505,7 @@
     {
      "id": "parley-coverage",
      "result": "fail",
-     "detail": "3 of 14 enemy statblocks carry a parley. cst_sap_speaker is a CASTER \u2014 a speaking thing \u2014 with parley null, which S13 calls a defect; it belongs to W1-09/W1-14 rather than here, and is recorded as a cross-piece observation. The 27/27 census this item asks for has no roster to run against.",
+     "detail": "3 of 14 enemy statblocks carry a parley. cst_sap_speaker is a CASTER — a speaking thing — with parley null, which S13 calls a defect; it belongs to W1-09/W1-14 rather than here, and is recorded as a cross-piece observation. The 27/27 census this item asks for has no roster to run against.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
      ]
@@ -503,7 +534,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json",
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
    ],
-   "why_not_ten": "Writs, hunters, interception and the encounter flip have no runtime; the one axis that is live \u2014 the yield \u2014 is reachable for free against the piece's own guard.",
+   "why_not_ten": "Writs, hunters, interception and the encounter flip have no runtime; the one axis that is live — the yield — is reachable for free against the piece's own guard.",
    "path_to_ten": "Wire ctx.world.gold to the single authoritative purse and delete the other three accumulators; price every parley GOLD ground above zero; then run the 27/27 parley census and the >= 8-camp encounter flip once W1-12 ships encounters.",
    "ten_by_wave": 3
   },
@@ -514,8 +545,8 @@
    "kind": "number",
    "measured": "partial",
    "native_scale": "bands on PACIFIST-ALL / NONVIOLENT-OPTION / VERB-SPREAD / per-verb minimums; hard fails include VERB-SPREAD > 40%",
-   "native_score": "3 / 10 \u2014 the round-1 hard fail is closed (VERB-SPREAD 42.1% -> 27.3%, cap 40%), but only 1 of the 5 verbs meets its own minimum and the denominator is 33 of ~180",
-   "native_verdict": "below bar \u2014 named remedy required (hard fail cleared)",
+   "native_score": "3 / 10 — the round-1 hard fail is closed (VERB-SPREAD 42.1% -> 27.3%, cap 40%), but only 1 of the 5 verbs meets its own minimum and the denominator is 33 of ~180",
+   "native_verdict": "below bar — named remedy required (hard fail cleared)",
    "score_0_10": 3,
    "checks": [
     {
@@ -530,7 +561,7 @@
     {
      "id": "the-twelve-authored-routes",
      "result": "fail",
-     "detail": "The builder reports 'sneak 6 -> 13 quests, steal 3 -> 8, VERB-SPREAD 24.7%'. Those three figures are exactly reproducible at 4a5f13f^ and none is reproducible at HEAD (7 / 5 / 27.3%). Commit 4a5f13f \u2014 the commit whose own message claims them \u2014 touched only game/data/quests/magic-utility.json, net -179/+5, and its diff DELETES six `sneak` and three `steal` resolutions by id (q_mag_03__sneak, q_mag_05__steal, q_mag_11__sneak, q_mag_13__steal, mag_the_hollow_count__sneak, q_mag_16__sneak, mag_the_far_exit__sneak, q_mag_21__sneak, q_mag_24__steal). Only 5 `added_by: W1-15-r2` markers survive, all in blackmarsh-*.json. Nine of the twelve routes were destroyed by a co-committed regeneration of W1-14's generated quest file before the commit landed.",
+     "detail": "The builder reports 'sneak 6 -> 13 quests, steal 3 -> 8, VERB-SPREAD 24.7%'. Those three figures are exactly reproducible at 4a5f13f^ and none is reproducible at HEAD (7 / 5 / 27.3%). Commit 4a5f13f — the commit whose own message claims them — touched only game/data/quests/magic-utility.json, net -179/+5, and its diff DELETES six `sneak` and three `steal` resolutions by id (q_mag_03__sneak, q_mag_05__steal, q_mag_11__sneak, q_mag_13__steal, mag_the_hollow_count__sneak, q_mag_16__sneak, mag_the_far_exit__sneak, q_mag_21__sneak, q_mag_24__steal). Only 5 `added_by: W1-15-r2` markers survive, all in blackmarsh-*.json. Nine of the twelve routes were destroyed by a co-committed regeneration of W1-14's generated quest file before the commit landed.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json"
@@ -539,7 +570,7 @@
     {
      "id": "per-verb-minimums",
      "result": "fail",
-     "detail": "\u00a7C minimums against HEAD: persuade+intimidate 12 vs 12 (met); bribe 8 vs 4; sneak 10 vs 7; steal 10 vs 5; lore_knowledge 10 vs 6. One of five verbs at its minimum, which is below even the item's 7-8 band ('four of five verbs at minimum'). No verb is at 0, so the hard fail does not fire.",
+     "detail": "§C minimums against HEAD: persuade+intimidate 12 vs 12 (met); bribe 8 vs 4; sneak 10 vs 7; steal 10 vs 5; lore_knowledge 10 vs 6. One of five verbs at its minimum, which is below even the item's 7-8 band ('four of five verbs at minimum'). No verb is at 0, so the hard fail does not fire.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
@@ -568,7 +599,7 @@
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
    ],
    "why_not_ten": "Four of the five verbs are below their minimum, nine of the twelve routes this round claims are not in the tree, and the live ten-quest verification has no runtime to run against.",
-   "path_to_ten": "Re-author the nine deleted routes in a file W1-15 owns rather than in W1-14's generated magic-utility.json, and add a boot-time or CI assertion that H.questVerbCensus().quests_with_sneak never falls below its previous value \u2014 a regeneration that silently deletes another piece's content is the failure this round actually suffered.",
+   "path_to_ten": "Re-author the nine deleted routes in a file W1-15 owns rather than in W1-14's generated magic-utility.json, and add a boot-time or CI assertion that H.questVerbCensus().quests_with_sneak never falls below its previous value — a regeneration that silently deletes another piece's content is the failure this round actually suffered.",
    "ten_by_wave": 3
   },
   {
@@ -578,7 +609,7 @@
    "kind": "structure",
    "measured": "full",
    "native_scale": "min-over-axes: consumer named / coupling measured / hand-feed audit / instrumentation honesty",
-   "native_score": "6 / 10 \u2014 min-over-axes. Consumer named 10, coupling measured 10 (all models in [0.95, 1.05], every control clean), instrumentation honesty 9; hand-feed audit 6.",
+   "native_score": "6 / 10 — min-over-axes. Consumer named 10, coupling measured 10 (all models in [0.95, 1.05], every control clean), instrumentation honesty 9; hand-feed audit 6.",
    "native_verdict": "meets the bar on the axis it was written for; the hand-feed audit sits at its floor",
    "score_0_10": 6,
    "justification": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json and kritik-consume.json: seven models, each with a named world-side consumer and an entity-side observable, measured by an instrument the builder did not write, every one in [0.95, 1.05], and four independent null controls (30 m beyond R; rear arc with zero sound radius; a theft with no observer; a theft observed by a blind civilian) all clean.",
@@ -644,7 +675,7 @@
     {
      "id": "hand-feed-audit",
      "result": "partial",
-     "detail": "takeObject's observedBy and setStealthState's inCover both still accept injected world facts, and both now demonstrate the derived path and flag which was used (observed_by_source, in_cover_source, inCoverForced). pickpocketBegin() still requires {dist, bearingDeg, targetCivState, moving, crouched} to be supplied and there is no world-driven path to it \u2014 the critic could not reach a pickpocket by placing an NPC and standing behind it. That is the axis's 6 floor, not its 10.",
+     "detail": "takeObject's observedBy and setStealthState's inCover both still accept injected world facts, and both now demonstrate the derived path and flag which was used (observed_by_source, in_cover_source, inCoverForced). pickpocketBegin() still requires {dist, bearingDeg, targetCivState, moving, crouched} to be supplied and there is no world-driven path to it — the critic could not reach a pickpocket by placing an NPC and standing behind it. That is the axis's 6 floor, not its 10.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-pickpocket.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json"
@@ -705,7 +736,7 @@
     {
      "id": "A3-no-level-scaling-or-distance-check",
      "result": "pass",
-     "detail": "Fill rate is 150\u00b7V\u00b7(1\u2212d/R)\u00b7cone with the archetype's own radius and cone; no term reads the player's level. The rear arc and the statblock cone both fill 0.0000, so the meter is not a proximity check.",
+     "detail": "Fill rate is 150·V·(1−d/R)·cone with the archetype's own radius and cone; no term reads the player's level. The rear arc and the statblock cone both fill 0.0000, so the meter is not a proximity check.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-world.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
@@ -725,7 +756,7 @@
     {
      "id": "B1-no-stealth-hud",
      "result": "pass",
-     "detail": "getStealthState().hud_elements = 0 in every run in every artifact here. RI-STL01 \u00a73's only permitted feedback is diegetic and there is no visibility bar, eye icon or hidden/detected word.",
+     "detail": "getStealthState().hud_elements = 0 in every run in every artifact here. RI-STL01 §3's only permitted feedback is diegetic and there is no visibility bar, eye icon or hidden/detected word.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json",
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json"
@@ -762,7 +793,7 @@
     {
      "id": "C1-lore-fact-ends-a-fight",
      "result": "pass",
-     "detail": "An aggro'd inf_trash at 2.5 m refuses the parley cold and YIELDS after learnTopic('the-drowned-ford') \u2014 a Morrowind topic learned outside the fight deciding, at 60 Hz, inside it, whether a hostile can be resolved without a corpse.",
+     "detail": "An aggro'd inf_trash at 2.5 m refuses the parley cold and YIELDS after learnTopic('the-drowned-ford') — a Morrowind topic learned outside the fight deciding, at 60 Hz, inside it, whether a hostile can be resolved without a corpse.",
      "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json"
      ]
@@ -792,7 +823,7 @@
   },
   "consumption": {
    "status": "pass",
-   "detail": "Seven models, each with a named world-side consumer and an entity-side observable, each perturbed by this critic's own instrument, each with a null control. See RI-MTH07 above. Round 1's four orphans (V, the sound radius, the witness predicate, the search) are all now consumed; one model \u2014 plausibleSet() \u2014 is consumed but always returns the empty set, which is the same thing from the player's chair.",
+   "detail": "Seven models, each with a named world-side consumer and an entity-side observable, each perturbed by this critic's own instrument, each with a null control. See RI-MTH07 above. Round 1's four orphans (V, the sound radius, the witness predicate, the search) are all now consumed; one model — plausibleSet() — is consumed but always returns the empty set, which is the same thing from the player's chair.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json",
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json",
@@ -811,61 +842,61 @@
   {
    "model": "soundRadiusFor / r_effective",
    "consumer": "perception.js::perceiveInto hearing branch -> e.alert",
-   "coupling": 1.0,
+   "coupling": 1,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
   },
   {
    "model": "losClear / occlusion",
    "consumer": "perceiveInto, gating sight and attenuating hearing",
-   "coupling": 1.0,
+   "coupling": 1,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json"
   },
   {
    "model": "deriveInCover / A",
    "consumer": "stepPerception at 10 Hz -> p.inCover -> V",
-   "coupling": 1.0,
+   "coupling": 1,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json"
   },
   {
    "model": "witness predicate",
    "consumer": "deriveWitnesses on the crime frame -> pending reports -> bounty",
-   "coupling": 1.0,
+   "coupling": 1,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json"
   },
   {
    "model": "stolen registry",
    "consumer": "takeObject -> inventory + save + fenceSell",
-   "coupling": 1.0,
+   "coupling": 1,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json"
   },
   {
    "model": "getGuardBand",
    "consumer": "stepGuards -> guard_band event + entity alert on channel `bounty`",
-   "coupling": 1.0,
+   "coupling": 1,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json"
   },
   {
    "model": "plausibleSet (S-1)",
-   "consumer": "Search.plan / Search.targetAt \u2014 called every search, returns [] every time",
-   "coupling": 0.0,
+   "consumer": "Search.plan / Search.targetAt — called every search, returns [] every time",
+   "coupling": 0,
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json"
   }
  ],
  "score": {
-  "overall_0_10": 3.0,
-  "pass_threshold": 7.0,
+  "overall_0_10": 3,
+  "pass_threshold": 7,
   "aggregation": "mean",
-  "band_label": "Skeleton \u2014 the models are now genuinely consumed by the world, and the enforcement they feed is a free win",
+  "band_label": "Skeleton — the models are now genuinely consumed by the world, and the enforcement they feed is a free win",
   "confidence": "high",
-  "note": "The mean is dragged by RI-STL01's min-over-axes rule, whose minimum is the \u00a79 bypass census \u2014 an axis that needs a province W1-01/W1-03/W1-12 own and that does not exist. The detection sub-axis of the same item measures 9. A reader who takes 3.0 as 'barely moved from 2' will be wrong about the round: the headline coupling went 0.00 -> 0.9986 and survives an independent instrument."
+  "note": "The mean is dragged by RI-STL01's min-over-axes rule, whose minimum is the §9 bypass census — an axis that needs a province W1-01/W1-03/W1-12 own and that does not exist. The detection sub-axis of the same item measures 9. A reader who takes 3.0 as 'barely moved from 2' will be wrong about the round: the headline coupling went 0.00 -> 0.9986 and survives an independent instrument."
  },
  "status": "FAIL",
  "biggest_gap": {
   "gap_id": "GAP-W1-crime-enforcement-is-a-free-win",
   "subsystem_path": "crime.guard.response",
   "severity": "blocking",
-  "what": "The only guard in the build cannot attack and surrenders for nothing: guard_legion declares ai 'hold_ground' (combat/enemy.js only runs an action for ai === 'scripted', so an AGGRO guard held at 2.0 m for 900 frames deals 0 damage and never leaves REPOSITION) and its parley declares gold_price 0 against base_disposition 35, which makes combat/parley.js's GOLD ground unconditional \u2014 so one `interact` press yields a band-3 attack-on-sight guard at full HP for 0 gold and 0 stamina, leaving the imperial bounty at 3000 and jail null.",
-  "why_it_matters": "Everything else this piece built downstream of a crime \u2014 the 17-crime schedule, the derived witness, the five report routes, the three-band ladder, the three arrest answers, the jail ledger, S6 persistence \u2014 is correct, measured and reachable, and all of it is discarded by a single button press against an enemy that could not have hurt you anyway. From the player's chair crime has no consequence, which is the exact failure RI-CRM01 exists to prevent and the exact shape RI-MTH07 warns about one level up: the model is computed, consumed, and then thrown away by the interaction that resolves it. It also makes ARBITRATION S13's non-lethal exit meaningless as a design object \u2014 a parley that always succeeds is not a choice, and the round-1 finding that the guard ladder was 'a function of a number setBounty() wrote' is only half closed: the band is now real behaviour, and the behaviour is nothing.",
+  "what": "The only guard in the build cannot attack and surrenders for nothing: guard_legion declares ai 'hold_ground' (combat/enemy.js only runs an action for ai === 'scripted', so an AGGRO guard held at 2.0 m for 900 frames deals 0 damage and never leaves REPOSITION) and its parley declares gold_price 0 against base_disposition 35, which makes combat/parley.js's GOLD ground unconditional — so one `interact` press yields a band-3 attack-on-sight guard at full HP for 0 gold and 0 stamina, leaving the imperial bounty at 3000 and jail null.",
+  "why_it_matters": "Everything else this piece built downstream of a crime — the 17-crime schedule, the derived witness, the five report routes, the three-band ladder, the three arrest answers, the jail ledger, S6 persistence — is correct, measured and reachable, and all of it is discarded by a single button press against an enemy that could not have hurt you anyway. From the player's chair crime has no consequence, which is the exact failure RI-CRM01 exists to prevent and the exact shape RI-MTH07 warns about one level up: the model is computed, consumed, and then thrown away by the interaction that resolves it. It also makes ARBITRATION S13's non-lethal exit meaningless as a design object — a parley that always succeeds is not a choice, and the round-1 finding that the guard ladder was 'a function of a number setBounty() wrote' is only half closed: the band is now real behaviour, and the behaviour is nothing.",
   "evidence": [
    "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-crime.json",
    "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json",
@@ -874,7 +905,7 @@
    "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
   ],
   "remedy": {
-   "action": "In game/data/combat/enemies/guard_legion.json set parley.gold_price to a live figure (the current imperial bounty, or a fixed value >= 200 g) and raise the GOLD ground's disposition requirement for guards to 40 so a cold surrender fails; in game/src/combat/player.js::_resolveParley route an accepted surrender against a guard into engine.arrestTopics()/answerArrest() so the three answers fire and the bounty is paid, served or refused rather than left standing; and give guard_legion an AI that swings \u2014 ai 'scripted' with a scenario file today, W1-12's behaviour when it lands.",
+   "action": "In game/data/combat/enemies/guard_legion.json set parley.gold_price to a live figure (the current imperial bounty, or a fixed value >= 200 g) and raise the GOLD ground's disposition requirement for guards to 40 so a cold surrender fails; in game/src/combat/player.js::_resolveParley route an accepted surrender against a guard into engine.arrestTopics()/answerArrest() so the three answers fire and the bounty is paid, served or refused rather than left standing; and give guard_legion an AI that swings — ai 'scripted' with a scenario file today, W1-12's behaviour when it lands.",
    "acceptance": "A probe that (a) sets imperial bounty to 3000, spawns guard_legion at 2.0 m and steps 900 frames records >= 1 HIT event against the player; (b) presses `interact` with 0 gold and records PARLEY_REFUSE, not YIELDED; (c) presses `interact` with gold >= the quoted price and records YIELDED followed by a bounty of 0 and a non-null jail ledger entry, or a serve/resist branch; and (d) shows getCrimeState().bounty.imperial changing across the interaction in every accepted case.",
    "targets": [
     "game/data/combat/enemies/guard_legion.json",
@@ -911,7 +942,7 @@
    "gap_id": "GAP-W1-no-tier-1-locks-and-no-on-ramp",
    "subsystem_path": "stealth.lock.picking",
    "severity": "major",
-   "what": "0 tier-1 locks over 235 placed, and lockGate() offers a Security 5 / Agility 20 starting character tier 1 only \u2014 so a new character cannot open a single lock anywhere. The deferral reasoning (regenerating an 1,878-object tree while other builders are in it) is defensible as process; the consequence is that the ward-collar is unreachable in play.",
+   "what": "0 tier-1 locks over 235 placed, and lockGate() offers a Security 5 / Agility 20 starting character tier 1 only — so a new character cannot open a single lock anywhere. The deferral reasoning (regenerating an 1,878-object tree while other builders are in it) is defensible as process; the consequence is that the ward-collar is unreachable in play.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json",
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress2.json"
@@ -940,7 +971,7 @@
  ],
  "cross_piece_debts": [
   {
-   "debt": "RI-STL01 \u00a79's bypass census \u2014 13 overworld routes, 8 Souls-loop dungeons, 82 caves",
+   "debt": "RI-STL01 §9's bypass census — 13 overworld routes, 8 Souls-loop dungeons, 82 caves",
    "owners": [
     "W1-01",
     "W1-03",
@@ -959,7 +990,7 @@
    "note": "Quest progression does not exist at this commit."
   },
   {
-   "debt": "S13 parley coverage across the enemy roster \u2014 cst_sap_speaker is a CASTER with parley null",
+   "debt": "S13 parley coverage across the enemy roster — cst_sap_speaker is a CASTER with parley null",
    "owners": [
     "W1-09",
     "W1-14"
@@ -970,28 +1001,28 @@
  ],
  "amendments_assessed": [
   {
-   "id": "AMENDMENT-W1-15-01 \u00a71 \u2014 the light exponent",
+   "id": "AMENDMENT-W1-15-01 §1 — the light exponent",
    "assessment": "ACCEPT. The critic derived gamma = 1.36 independently from the item's own worked table before reading the amendment. Row 4's '(clamped)' annotation is false at the item's stated 0.7, which is decisive. This is a builder correcting the standard, not easing it: gamma > 1 makes darkness matter MORE, which is the harder direction."
   },
   {
-   "id": "AMENDMENT-W1-15-01 \u00a75 \u2014 RI-AI01 \u00a7B vs RI-STL01 \u00a72's base fill rate (100/s vs 75/s at 0.5R)",
+   "id": "AMENDMENT-W1-15-01 §5 — RI-AI01 §B vs RI-STL01 §2's base fill rate (100/s vs 75/s at 0.5R)",
    "assessment": "ACCEPT. The two items genuinely differ by a third at exactly the distance both work an example at. The build picks the one with an assertable method behind it and records the choice as data with the counterfactual stated ('set it the other way and RI-STL01 method 2's five rows fail instead'). That is the right way to surface an RI-MTH05 coherence defect. The corpus owner still has to pick."
   },
   {
-   "id": "AMENDMENT-W1-15-01 \u00a76 \u2014 SNEAK-QUESTS as a ratio",
-   "assessment": "ACCEPT IN PRINCIPLE, REJECT THE SUPPORTING TABLE. The reasoning is sound and does not lower a bar: the item annotates >= 22 as '~12% of ~180', and 22 of 33 would be 67% of every quest in the game, which breaches RI-QST05's spread cap it was written to respect. But the table quotes 13 sneak / 8 steal / VERB-SPREAD 24.7%, and at HEAD the figures are 7 / 5 / 27.3%. The amendment must be re-filed with the tree's actual numbers. Under the ratio reading 7/33 = 21.2% still clears 12%; under RI-QST05 \u00a7C's own per-verb minimum of 10 quests it does not."
+   "id": "AMENDMENT-W1-15-01 §6 — SNEAK-QUESTS as a ratio",
+   "assessment": "ACCEPT IN PRINCIPLE, REJECT THE SUPPORTING TABLE. The reasoning is sound and does not lower a bar: the item annotates >= 22 as '~12% of ~180', and 22 of 33 would be 67% of every quest in the game, which breaches RI-QST05's spread cap it was written to respect. But the table quotes 13 sneak / 8 steal / VERB-SPREAD 24.7%, and at HEAD the figures are 7 / 5 / 27.3%. The amendment must be re-filed with the tree's actual numbers. Under the ratio reading 7/33 = 21.2% still clears 12%; under RI-QST05 §C's own per-verb minimum of 10 quests it does not."
   },
   {
-   "id": "AMENDMENT-W1-15-01 \u00a77 \u2014 RI-STL01 method 6's two S-2 assertions contradict each other",
-   "assessment": "ACCEPT. The arithmetic is checkable and correct: 4.0 s to the LKP + 2.0 s dwell + 9.0 s of cover volumes + 9.5 s out to 19 m is 24.5 s against a 12.0 s window at S17's 2.0 m/s. The band-as-reacquire-radius reading is also the reading \u00a77's own prose supports ('a player who hides at 10 m and holds still is FOUND'). Note the irony the amendment does not: the S-1 leg it prices into the 24.5 s never actually runs, because plausibleSet() always returns []."
+   "id": "AMENDMENT-W1-15-01 §7 — RI-STL01 method 6's two S-2 assertions contradict each other",
+   "assessment": "ACCEPT. The arithmetic is checkable and correct: 4.0 s to the LKP + 2.0 s dwell + 9.0 s of cover volumes + 9.5 s out to 19 m is 24.5 s against a 12.0 s window at S17's 2.0 m/s. The band-as-reacquire-radius reading is also the reading §7's own prose supports ('a player who hides at 10 m and holds still is FOUND'). Note the irony the amendment does not: the S-1 leg it prices into the 24.5 s never actually runs, because plausibleSet() always returns []."
   },
   {
-   "id": "NEW, filed by this critic \u2014 RI-STL01 \u00a74's sound table right-hand column",
-   "assessment": "A THIRD arithmetic defect in the same item, filed by neither round. \u00a74's LEFT column reproduces exactly from \u00a74's own formula and constants (36.31 / 15.55 / 6.48 against 36.2 / 15.5 / 6.5). Its RIGHT column ('Sneak 100, light, mud') is a flat 0.393-0.400 of r_base while E_sound(light) x S_sound(100) x surface(mud) = 0.2625, giving 3.675 / 1.575 / 0.656 against the published 5.5 / 2.4 / 1.0. Either the table or one of the three constants is wrong. The build implements the formula."
+   "id": "NEW, filed by this critic — RI-STL01 §4's sound table right-hand column",
+   "assessment": "A THIRD arithmetic defect in the same item, filed by neither round. §4's LEFT column reproduces exactly from §4's own formula and constants (36.31 / 15.55 / 6.48 against 36.2 / 15.5 / 6.5). Its RIGHT column ('Sneak 100, light, mud') is a flat 0.393-0.400 of r_base while E_sound(light) x S_sound(100) x surface(mud) = 0.2625, giving 3.675 / 1.575 / 0.656 against the published 5.5 / 2.4 / 1.0. Either the table or one of the three constants is wrong. The build implements the formula."
   }
  ],
  "regression_check": {
-  "verdict": "CLEAN \u2014 every round-1 pass re-measured and none has regressed",
+  "verdict": "CLEAN — every round-1 pass re-measured and none has regressed",
   "rows": [
    {
     "what": "719 authored ward angles, chi-square vs uniform",
@@ -1028,12 +1059,12 @@
  "corpus_extended": [
   {
    "path": "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
-   "what": "\u00a74's sound table right-hand column is not reproducible from \u00a74's own formula and constants. Filed as a new arithmetic defect alongside the amendment's \u00a71 and \u00a75.",
+   "what": "§4's sound table right-hand column is not reproducible from §4's own formula and constants. Filed as a new arithmetic defect alongside the amendment's §1 and §5.",
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
   },
   {
    "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
-   "what": "A fourth shape of the failure, not in \u00a7A's table: the ORPHANED-BY-GEOMETRY model. plausibleSet() has a named consumer, is called every search, and returns the empty set every time because a precondition can never be satisfied. Coupling measured against its output is 1 and the behaviour still does not exist. \u00a7A's three shapes are all wiring failures; this one is a wiring success with a dead precondition, and only a probe that asserts the output is NON-EMPTY catches it.",
+   "what": "A fourth shape of the failure, not in §A's table: the ORPHANED-BY-GEOMETRY model. plausibleSet() has a named consumer, is called every search, and returns the empty set every time because a precondition can never be satisfied. Coupling measured against its output is 1 and the behaviour still does not exist. §A's three shapes are all wiring failures; this one is a wiring success with a dead precondition, and only a probe that asserts the output is NON-EMPTY catches it.",
    "evidence": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-final.json"
   },
   {
@@ -1081,7 +1112,7 @@
    "gap_id": "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
    "status": "closed",
    "closed_by_builder_of_fix": false,
-   "detail": "Round 1 measured enemy visibility-to-alert coupling at 0.00. This critic, with an instrument it wrote itself from RI-STL01 and never running the builder's tools/harness/w1-15-coupling.mjs, measures 0.9986 on the same pair, reproduces all five of RI-STL01 \u00a72's worked rows within 1.29%, and confirms every term of V and every geometric term is independently live. Four null controls are clean. Round 1's other three orphans \u2014 the sound radius, the witness predicate and the search \u2014 are all now consumed and demonstrated with controls.",
+   "detail": "Round 1 measured enemy visibility-to-alert coupling at 0.00. This critic, with an instrument it wrote itself from RI-STL01 and never running the builder's tools/harness/w1-15-coupling.mjs, measures 0.9986 on the same pair, reproduces all five of RI-STL01 §2's worked rows within 1.29%, and confirms every term of V and every geometric term is independently live. Four null controls are clean. Round 1's other three orphans — the sound radius, the witness predicate and the search — are all now consumed and demonstrated with controls.",
    "evidence": [
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json",
     "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-world.json",
@@ -1098,14 +1129,14 @@
   "remedy_is_buildable": true,
   "no_banned_reasoning_used": true,
   "escalation_ladder_used_if_gap_seemed_small": true,
-  "self_audit_note": "ran_every_assigned_method is false and deliberately so. RI-STL01 \u00a79's bypass census, RI-QST05's live ten-quest playthrough, RI-CRM01's S10 corpse-evidence and jail-timer methods, RI-CRM02's writ, hunter and interception methods and RI-STL02's economy axis have no runtime or no world to run against at this commit; each is scored 0 fail-closed or recorded as a cross-piece debt rather than waved through. Two measurements in this critic's own first pass were wrong and are recorded as such in the artifacts rather than deleted: a rear-arc test taken through setEntityPos (which ignores opts.yaw) and a pickpocket drive with absolute queueInputs frames (which never fired). Both were re-taken correctly and both re-takes are in the artifact set."
+  "self_audit_note": "ran_every_assigned_method is false and deliberately so. RI-STL01 §9's bypass census, RI-QST05's live ten-quest playthrough, RI-CRM01's S10 corpse-evidence and jail-timer methods, RI-CRM02's writ, hunter and interception methods and RI-STL02's economy axis have no runtime or no world to run against at this commit; each is scored 0 fail-closed or recorded as a cross-piece debt rather than waved through. Two measurements in this critic's own first pass were wrong and are recorded as such in the artifacts rather than deleted: a rear-arc test taken through setEntityPos (which ignores opts.yaw) and a pickpocket drive with absolute queueInputs frames (which never fired). Both were re-taken correctly and both re-takes are in the artifact set."
  },
  "artifacts": [
   {
    "path": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.mjs",
    "kind": "log",
    "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.mjs --json corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json",
-   "note": "the critic's own detection instrument, written from RI-STL01 \u00a72/\u00a73/\u00a74, not from tools/harness/w1-15-coupling.mjs"
+   "note": "the critic's own detection instrument, written from RI-STL01 §2/§3/§4, not from tools/harness/w1-15-coupling.mjs"
   },
   {
    "path": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-perception.json",
@@ -1208,7 +1239,7 @@
    "path": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json",
    "kind": "report",
    "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.mjs",
-   "note": "lock tiers, ward chi-square, RI-STL01 \u00a74's unreproducible sound column, the quest-route archaeology, the dead perception model"
+   "note": "lock tiers, ward chi-square, RI-STL01 §4's unreproducible sound column, the quest-route archaeology, the dead perception model"
   }
  ]
 }

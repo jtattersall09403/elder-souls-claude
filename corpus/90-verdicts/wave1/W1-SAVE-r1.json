@@ -1,652 +1,669 @@
 {
-  "schema_version": 1,
-  "piece_id": "W1-SAVE-r1",
-  "piece_title": "Save and load — the wave-1 repair, judged against RI-JRN05",
-  "subsystem_paths": [
-    "journey.save.roundtrip",
-    "platform.save.persistence",
-    "platform.save.storage"
+ "schema_version": 1,
+ "piece_id": "W1-SAVE-r1",
+ "piece_title": "Save and load — the wave-1 repair, judged against RI-JRN05",
+ "subsystem_paths": [
+  "journey.save.roundtrip",
+  "platform.save.persistence",
+  "platform.save.storage"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-save-r1-live-audit",
+  "role": "critic.platform",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T09:20:00Z",
+  "finished_at": "2026-08-07T11:05:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": false
+ },
+ "build": {
+  "commit_sha": "b27373f",
+  "branch": "main",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/boot-check.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers."
+   },
+   {
+    "command": "node tools/journey/save-live-audit.mjs --scenarios idle,mid-swing-hitactive,mid-cast,mid-parry,mid-death,mid-menu,at-hearth,mid-crime,deep-water-drowning --seeds 4711,1337,90210,2147483647,7,101,31337,555,12345,777 --settle 60",
+    "exit_code": 20,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+   },
+   {
+    "command": "node tools/harness/save-consume-critic.mjs --seeds 4711",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
+   },
+   {
+    "command": "node tools/harness/save-break-critic.mjs --seed 4711",
+    "exit_code": 20,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
+   },
+   {
+    "command": "node tools/harness/save-break.mjs --seeds 4711 --out reports/runs/W1-SAVE-BREAK-RECHECK",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-builder-rerun-by-critic.json"
+   }
   ],
-  "wave": 1,
-  "critic": {
-    "run_id": "crit-w1-save-r1-live-audit",
-    "role": "critic.platform",
-    "model": "claude-opus-5",
-    "started_at": "2026-08-07T09:20:00Z",
-    "finished_at": "2026-08-07T11:05:00Z",
-    "conflict_of_interest": false,
-    "saw_builder_notes_before_blind": false
-  },
-  "build": {
-    "commit_sha": "b27373f",
-    "branch": "main",
-    "harness_commands": [
-      {
-        "command": "node tools/harness/boot-check.mjs",
-        "exit_code": 0,
-        "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers."
-      },
-      {
-        "command": "node tools/journey/save-live-audit.mjs --scenarios idle,mid-swing-hitactive,mid-cast,mid-parry,mid-death,mid-menu,at-hearth,mid-crime,deep-water-drowning --seeds 4711,1337,90210,2147483647,7,101,31337,555,12345,777 --settle 60",
-        "exit_code": 20,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-      },
-      {
-        "command": "node tools/harness/save-consume-critic.mjs --seeds 4711",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
-      },
-      {
-        "command": "node tools/harness/save-break-critic.mjs --seed 4711",
-        "exit_code": 20,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
-      },
-      {
-        "command": "node tools/harness/save-break.mjs --seeds 4711 --out reports/runs/W1-SAVE-BREAK-RECHECK",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-builder-rerun-by-critic.json"
-      }
-    ]
-  },
-  "bifurcation": {
-    "axis": "not-visual",
-    "declared_before_citation": true,
-    "note": "RI-JRN05 is blind_pair: no by its own text — correctness is binary and no blind judge can prefer one state diff to another. No visual reference is cited anywhere in this verdict."
-  },
-  "reference_items": [
-    {
-      "id": "RI-JRN05",
-      "path": "corpus/88-journeys/RI-JRN05-save-and-load.md",
-      "side": "morrowind",
-      "kind": "structure",
-      "native_scale": "0–100 weighted (round trip 40, completeness 20, hostility 22, backend 10, behaviour 8) + hard fails capping the item at 2",
-      "native_score": 2,
-      "native_max": 100,
-      "native_verdict": "HARD FAIL — HF1 triggered (M1 round-trip hash mismatch). Only a perfect 100 meets this item's bar; a triggered hard fail caps it at 2 regardless of the other blocks.",
-      "score_0_10": 2,
-      "measured": "partial",
-      "checks": [
-        {
-          "id": "M1",
-          "result": "fail",
-          "value": "24 of 36 death-window trials mismatch; 10 of 10 seeds mismatch on the mid-death scenario; 0 of 90 mismatches on the nine non-death scenarios",
-          "threshold": "h0 === h1 for 5/5. Hard fail: any mismatch.",
-          "hard_fail": true,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ],
-          "note": "Two distinct causes, both found with the BUILDER'S OWN instrument (__HARNESS.saveRoundTrip()), so they are not an artefact of my tooling. (a) pose.camera_death_frames_ago: a save taken 3–150 frames into the death sequence writes e.g. 119; restoreCameraRig() (game/src/save/state.js:741) computes deathFrame = f - 119 with f = 0 after the frame reset, giving -119; the serialiser (state.js:356) then maps every negative deathFrame to the -1 'never died' sentinel, so the re-save writes -1. Reproduced on arena_flat, default, sv1-midquest and sv5-journal-bloodstain, at 3/10/40/100/150 frames after death. (b) fight.player.pendingReaction.move.clip: a save taken on the exact frame of the killing blow serialises the pending reaction's move reference as {\"__move\":\"stagger_medium\"} and the load resolves it to null — the same wrong-key move-reference class the repair fixed for pose.move and did not fix for the reaction nested inside pendingReaction. 4 of 4 states."
-        },
-        {
-          "id": "M2",
-          "result": "fail",
-          "value": "non-empty on 24 of 36 death-window trials; empty on all 90 non-death live-audit trials",
-          "threshold": "diff empty",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
-          ],
-          "note": "Diff reported verbatim in the artifact and in the .md."
-        },
-        {
-          "id": "M3",
-          "result": "partial",
-          "value": "hash equal on 4/4 states across a real page reload through IndexedDB (arena_flat, sv1-midquest, sv5-journal-bloodstain, stormhold-street); but stormhold-street's 600 spendable gold is 0 after the cold reload, with the hash still equal",
-          "threshold": "equals h0 for 5/5",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ],
-          "note": "M3 was not run by the builder at all — tools/journey/state-diff.mjs is entirely warm-path. Run here: writeSave(slot) -> page.reload() -> ready() -> readSave(slot) -> getStateHash(). backend indexeddb, listSaveSlots honest, save_read emitted with degraded:false. The hash passes and the purse does not, which is the point of the gap below."
-        },
-        {
-          "id": "M4",
-          "result": "marginal",
-          "value": "set difference empty both ways on every trial run, but the check is structurally unable to see the defect: fight.player, fight.player_ctl, crime.bounty, crime.zones, world.capture and 15 others are declared rules.dynamic_containers and are therefore LEAVES for the set difference",
-          "threshold": "0 keys either way",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
-          ],
-          "note": "Falsified directly: with progression.gold and fight.loadout.gold blanked out of the blob by a monkey-patch, M4 stayed empty in both directions, M1 stayed equal, getDurableFieldCensus() stayed ok — and the player's purse changed. See save-break-critic.json break 'no-gold', detected_by_any_shipped_instrument: false."
-        },
-        {
-          "id": "M5",
-          "result": "fail",
-          "value": "post-load trace diverges on the death window (events[].time_dead_frames, control 54 vs loaded 30); identical on 90/90 non-death live-audit trials over 60-frame windows",
-          "threshold": "identical for 5/5. Hard fail: any divergence.",
-          "hard_fail": true,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ],
-          "note": "M5 is additionally shown to be BLIND to the two largest defects here: the trace carries neither combat.world.gold nor engine.magic.fall, so the 600-gold loss and the mid-air fall reset both produce byte-identical traces."
-        },
-        {
-          "id": "M6",
-          "result": "unmeasurable",
-          "value": "no SV2 half-cleared-dungeon fixture ships; game/data/states/ has sv1 and sv5 only",
-          "threshold": "6/6",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json"
-          ],
-          "note": "The 38 shipped state names were enumerated from E.data.states; there is no sv2, sv3 or sv4."
-        },
-        {
-          "id": "M7",
-          "result": "unmeasurable",
-          "value": "no SV5 recovery run performed by this critic; RI-JRN06 owns the semantics",
-          "threshold": "exact",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
-          ]
-        },
-        {
-          "id": "M8",
-          "result": "fail",
-          "value": "crime state does not survive intact: crime.witnesses[0].eid changes undefined -> null on 10/10 seeds, and crime.crimes[0].frame is restored unrebased (raw 4 carried across a load that reset the frame to 0)",
-          "threshold": "4/4 + control match",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ],
-          "note": "The unrebased ledger stamps are declared in game/data/save-manifest.json declared_incomplete and assigned to W1-15; measured here rather than taken on trust. Confirmed by the tool's own stale-stamp classifier, which compares each numeric leaf twice (absolute and frame-relative) instead of maintaining an exclusion list."
-        },
-        {
-          "id": "M9",
-          "result": "unmeasurable",
-          "value": "journal integrity not independently hashed by this critic",
-          "threshold": "exact",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ],
-          "note": "The M3 cold reload did carry sv5-journal-bloodstain's 42 journal entries through a page reload with an equal hash, which is evidence but not the M9 measurement."
-        },
-        {
-          "id": "M10",
-          "result": "pass",
-          "value": "getStorageInfo().backend === 'indexeddb'; slot record 11448–21206 bytes; save_read emitted",
-          "threshold": "indexeddb, localStorage <= 1024 bytes",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ],
-          "note": "The localStorage byte audit was not run by this critic; backend attestation and a real IDB round trip through a page reload were."
-        },
-        {
-          "id": "M11",
-          "result": "unmeasurable",
-          "value": "CR1 kill-during-write not run",
-          "threshold": "15/15",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ]
-        },
-        {
-          "id": "M12",
-          "result": "partial",
-          "value": "CR4/CR5 verified by reading the refusal path: SAVE_SCHEMA_VERSION 2, applySave throws a legible line for both future and past schemas before mutating anything (game/src/save/state.js:477-492). CR2/CR3/CR12 not run.",
-          "threshold": "5/5 detected, 0 silent partial loads",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ],
-          "note": "The schema bump is real and the refusal is before any mutation, so the HF3 risk the builder claimed to close is closed on the paths I read. It was read as diagnose-after-demonstrating, after the cold reload demonstrated the load path."
-        },
-        {
-          "id": "M13",
-          "result": "unmeasurable",
-          "value": "CR6–CR10 not run",
-          "threshold": "5/5",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ]
-        },
-        {
-          "id": "M14",
-          "result": "unmeasurable",
-          "value": "export/import path exists (exportSave/importSave); CR11 export-wipe-import not run",
-          "threshold": "empty diff",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ]
-        },
-        {
-          "id": "M15",
-          "result": "unmeasurable",
-          "value": "sim-thread stall not measured",
-          "threshold": "0 dropped sim frames",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ]
-        },
-        {
-          "id": "M16",
-          "result": "partial",
-          "value": "endgame-200q ships and saves; measured canonical sizes 11.4 KB (arena_flat) to 21.2 KB (sv5, 42 journal entries), far inside the 4 MB budget; the 48 MB origin total was not measured",
-          "threshold": "<= 4 MB / 1.5 MB / 48 MB",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ]
-        },
-        {
-          "id": "M17",
-          "result": "pass",
-          "value": "listSaveSlots() after a page reload returned exactly the one slot written, with the correct generation, byte count and header, and readSave on it succeeded",
-          "threshold": "no offered slot that errors",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ],
-          "note": "Only the positive half was run; the out-of-band deletion half of M17 was not."
-        },
-        {
-          "id": "M18",
-          "result": "unmeasurable",
-          "value": "autosave policy not measured",
-          "threshold": "fires on rest/stage/region, never in COMBAT",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-          ]
-        },
-        {
-          "id": "M19",
-          "result": "unmeasurable",
-          "value": "second-death bloodstain rule not measured",
-          "threshold": "exact",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
-          ]
-        },
-        {
-          "id": "CONSUMPTION",
-          "result": "fail",
-          "value": "coupling 0 on progression.gold: the manifest field has a writer and a reader and the number a player can SPEND is held elsewhere and is dropped by every load",
-          "threshold": "every model has a demonstrated world-side consumer; coupling 0 scores the dimension 0",
-          "hard_fail": false,
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
-          ],
-          "note": "Perturbation with the null control: blanking progression.gold + fight.loadout.gold out of the blob produced EXACTLY the same world as leaving them alone (600 -> 0 either way), on stormhold-street. That is the definition of coupling 0."
-        }
-      ],
-      "hard_fails": [
-        "HF1 — round-trip hash mismatch (M1), 24 of 36 death-window trials and 10 of 10 seeds on the mid-death scenario",
-        "HF1 (M5 clause) — post-load trace divergence in the death window (events[].time_dead_frames 54 vs 30)"
-      ],
-      "how_we_lose_hits": [
-        "#7 the manifest is written after the code — progression.gold was added to the manifest against sim.progression.gold, which is the register nothing spends from; the spendable purse is combat.world.gold and stealth.p.gold and neither has a save writer",
-        "#14 the diff is run on a state that does not exercise the thing — the builder's single pre-roll (spawn two inf_trash, aggro, walk, swing, roll) is applied identically to all 38 states and never dies, never falls, never holds money"
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-probe-province-scenarios.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep.log"
-      ],
-      "why_not_ten": "M1 mismatches on 24 of 36 saves taken inside the death sequence, on all four states tested including two of the item's own SV fixtures, and a plain warm or cold round trip destroys 600 spendable gold on 3 of the 38 shipped named states while every shipped instrument reports clean. The item's own band table makes only a native 100 the bar and a triggered hard fail caps it at 2.",
-      "path_to_ten": "Three named repairs, all small. (1) Stop the -1 sentinel colliding with a rebased death frame: carry camera.deathFrame as an explicit {active:boolean, frames_ago:int} pair, or clamp at restore rather than at serialise, so save->load->save is a fixed point at every point of the death window; add a mid-death pre-roll to tools/journey/state-diff.mjs so the check can fail. (2) Resolve nested move references the same way pose.move is resolved — fight.*.pendingReaction.move must go through the same slot-id lookup. (3) Make sim.progression.gold the single authority for the purse: have Engine.setGold, parley applyAccept, travelRide and the fence write back to it, or serialise combat.world.gold directly; then extend getDurableFieldCensus()'s shot() to walk engine.combat.world, engine.crime, engine.travel and sim._traversal so a register with no writer cannot round-trip clean again.",
-      "ten_by_wave": 2
-    }
+  "depends_on": [
+   "corpus/88-journeys/RI-JRN05-save-and-load.md",
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-consume-critic.mjs",
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-live-audit.mjs",
+   "game/data/**",
+   "game/src/**",
+   "tools/harness/boot-check.mjs",
+   "tools/harness/save-break-critic.mjs",
+   "tools/harness/save-break.mjs",
+   "tools/harness/save-consume-critic.mjs",
+   "tools/journey/save-live-audit.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs"
   ],
-  "artifacts": [
+  "depends_on_note": "derived from 11 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "RI-JRN05 is blind_pair: no by its own text — correctness is binary and no blind judge can prefer one state diff to another. No visual reference is cited anywhere in this verdict."
+ },
+ "reference_items": [
+  {
+   "id": "RI-JRN05",
+   "path": "corpus/88-journeys/RI-JRN05-save-and-load.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "0–100 weighted (round trip 40, completeness 20, hostility 22, backend 10, behaviour 8) + hard fails capping the item at 2",
+   "native_score": 2,
+   "native_max": 100,
+   "native_verdict": "HARD FAIL — HF1 triggered (M1 round-trip hash mismatch). Only a perfect 100 meets this item's bar; a triggered hard fail caps it at 2 regardless of the other blocks.",
+   "score_0_10": 2,
+   "measured": "partial",
+   "checks": [
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/save-live-audit.mjs --scenarios idle,mid-swing-hitactive,mid-cast,mid-parry,mid-death,mid-menu,at-hearth,mid-crime,deep-water-drowning --seeds 4711,1337,90210,2147483647,7,101,31337,555,12345,777 --settle 60 --out reports/runs/W1-SAVE-LIVE-sweep",
-      "seed": "4711,1337,90210,2147483647,7,101,31337,555,12345,777",
-      "source": "ours",
-      "note": "90 trials. 69 clean, 20 defect, 1 unmeasurable (its own pre-roll did not reproduce, which the tool reports rather than counting as a save defect). Zero page errors."
+     "id": "M1",
+     "result": "fail",
+     "value": "24 of 36 death-window trials mismatch; 10 of 10 seeds mismatch on the mid-death scenario; 0 of 90 mismatches on the nine non-death scenarios",
+     "threshold": "h0 === h1 for 5/5. Hard fail: any mismatch.",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ],
+     "note": "Two distinct causes, both found with the BUILDER'S OWN instrument (__HARNESS.saveRoundTrip()), so they are not an artefact of my tooling. (a) pose.camera_death_frames_ago: a save taken 3–150 frames into the death sequence writes e.g. 119; restoreCameraRig() (game/src/save/state.js:741) computes deathFrame = f - 119 with f = 0 after the frame reset, giving -119; the serialiser (state.js:356) then maps every negative deathFrame to the -1 'never died' sentinel, so the re-save writes -1. Reproduced on arena_flat, default, sv1-midquest and sv5-journal-bloodstain, at 3/10/40/100/150 frames after death. (b) fight.player.pendingReaction.move.clip: a save taken on the exact frame of the killing blow serialises the pending reaction's move reference as {\"__move\":\"stagger_medium\"} and the load resolves it to null — the same wrong-key move-reference class the repair fixed for pose.move and did not fix for the reaction nested inside pendingReaction. 4 of 4 states."
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/save-consume-critic.mjs --seeds 4711 --out reports/runs/W1-SAVE-CONSUME-CRITIC",
-      "seed": 4711,
-      "source": "ours",
-      "note": "P3 is the M1 death sweep run through the BUILDER'S OWN __HARNESS.saveRoundTrip(): 24 of 36 mismatch. P2 is the mid-air save. P4 is the identity-value audit."
+     "id": "M2",
+     "result": "fail",
+     "value": "non-empty on 24 of 36 death-window trials; empty on all 90 non-death live-audit trials",
+     "threshold": "diff empty",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
+     ],
+     "note": "Diff reported verbatim in the artifact and in the .md."
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/save-break-critic.mjs --seed 4711 --out reports/runs/W1-SAVE-BREAK-CRITIC",
-      "seed": 4711,
-      "source": "ours",
-      "note": "Four breaks the builder's own falsifier does not contain, each asking WHICH SHIPPED INSTRUMENT NOTICES. 'no-gold' is BLIND to M1, M2, M4 and the census while changing the live world. The baseline itself already loses the gold."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
-      "kind": "report",
-      "produced_by": "scratch probe driving __HARNESS over every key of E.data.states: load, step 6, read combat.world.gold / magic.gold / sim.progression.gold / sim.stealth.p.gold, saveRoundTrip(), re-read",
-      "seed": 4711,
-      "source": "ours",
-      "note": "3 of 38 shipped states lose 600 gold on a plain round trip with M1 equal: helstrom-market, rootlands-well-graph, stormhold-street."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json",
-      "kind": "report",
-      "produced_by": "scratch probe: writeSave -> playwright page.reload() -> ready -> listSaveSlots -> readSave -> getStateHash (M3); and the mid-air save with the two arms run in both orders at three seeds",
-      "seed": "4711,1337,90210",
-      "source": "ours",
-      "note": "M3 hash equal 4/4. Fall: 6/6 arms — a save taken mid-air lands DEAD (hp 0) where the identical unsaved fall lands ALIVE (hp 620)."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
-      "kind": "report",
-      "produced_by": "scratch probe: reach 40 m of water, save, perturb sim._traversal by hand, load the blob, compare",
-      "seed": 4711,
-      "source": "ours",
-      "note": "NEGATIVE EVIDENCE FOR THE BUILDER: the traversal restore is real (breath 3.25 -> 60, mire 0.77 -> 0, slide 4.5 -> 0). Also records that breath_s never leaves 60 and submerged never becomes true after 3,000 frames in 40 m of water."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-probe-province-scenarios.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/save-live-audit.mjs --scenarios in-water,mid-fall,at-hearth,mid-crime,mid-travel --seeds 4711 --settle 60",
-      "seed": 4711,
-      "source": "ours",
-      "note": "Three of five province scenarios reported UNMEASURABLE by the tool's own reproducibility control — the pre-roll does not reproduce inside one page. Kept because that is itself a finding about scenario contamination, and because it shows the tool refuses to convict on a control it cannot reproduce."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep.log",
-      "kind": "log",
-      "produced_by": "stdout of the 90-trial sweep",
-      "seed": "ten seeds",
-      "source": "ours"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-live-audit.mjs",
-      "kind": "report",
-      "produced_by": "written by this critic; canonical copy at tools/journey/save-live-audit.mjs",
-      "source": "ours",
-      "note": "The independent instrument. Never reads the save blob."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-consume-critic.mjs",
-      "kind": "report",
-      "produced_by": "written by this critic; canonical copy at tools/harness/save-consume-critic.mjs",
-      "source": "ours"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs",
-      "kind": "report",
-      "produced_by": "written by this critic; canonical copy at tools/harness/save-break-critic.mjs",
-      "source": "ours"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-builder-rerun-by-critic.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/save-break.mjs --seeds 4711 --out reports/runs/W1-SAVE-BREAK-RECHECK — the BUILDER'S falsifier, re-run unmodified by this critic",
-      "seed": 4711,
-      "source": "ours",
-      "note": "8/8, baseline_clean true, every break applied. The three that 'failed to take' in the builder's round 2 (creation-terms, no-body-grid, no-stamp-rebase) all genuinely take in their rewritten form, verified here in a single run rather than across two."
-    }
-  ],
-  "blind_comparisons": [],
-  "arbitration": {
-    "ar1": {
-      "status": "pass",
-      "checks": [
-        {
-          "id": "A1",
-          "result": "pass",
-          "observed": "Nothing Morrowind-flavoured was found inside the fight by the save path. The load rebuilds the fight from fight.loadout and restores each body field-for-field; no to-hit roll, no dice damage, no level scaling is introduced anywhere on the save or load path.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ]
-        },
-        {
-          "id": "A5",
-          "result": "pass",
-          "observed": "No mid-fight pause is introduced by a save: on mid-swing-hitactive and mid-parry, 10/10 seeds each, the loaded arm's 60-frame trace is byte-identical to the never-saved control, including the active-window and hitstop frames.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-      ]
-    },
-    "ar2": {
-      "status": "fail",
-      "checks": [
-        {
-          "id": "B-S6",
-          "result": "fail",
-          "observed": "ARBITRATION S6 gives Morrowind the save semantics and requires that quest state, journal, faction standing and world flags persist untouched through a death. Two separate S6 failures were measured, both on the death transition. (1) A save taken inside the death window does not round-trip at all: pose.camera_death_frames_ago collapses to the -1 'never died' sentinel, so which death you are in is destroyed by the save — 24 of 36 trials, 4 of 4 states. (2) The death runtime's own timers are restored unrebased: death.controllable_at stays at 161 while the frame resets to 0, so a player who reloads 137 frames into a death waits the full 161 again, on 10 of 10 seeds.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ]
-        },
-        {
-          "id": "B-ARB1-nonlethal-exit",
-          "result": "fail",
-          "observed": "ARBITRATION §1 (as amended) gives Morrowind the right to yield, parley or BRIBE inside a fight, and game/src/combat/parley.js:97 tests that ground as (world.gold || 0) >= enemy.parley.gold_price. On helstrom-market, rootlands-well-graph and stormhold-street, world.gold is 600 before a save and 0 after — so an inf_trash (gold_price 180) can be bought off before the load and cannot be after, with no other state changed. A Morrowind exit from a Souls fight is deleted by a save/load, which is Morrowind losing ground inside the fight.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ]
-        },
-        {
-          "id": "B13-travel",
-          "result": "fail",
-          "observed": "getTravelState().gold reads the same destroyed register: 600 -> 0 on 10 of 10 seeds on stormhold-street, so a fare a player could afford before a save is refused after it.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ]
-        },
-        {
-          "id": "B-markers",
-          "result": "pass",
-          "observed": "No objective marker, bonfire warp, procedural loot or soul-currency purchase is introduced by the save path.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-          ]
-        }
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json"
-      ]
-    }
-  },
-  "score": {
-    "overall_0_10": 2,
-    "pass_threshold": 7,
-    "aggregation": "min",
-    "band_label": "Wrong shape — capped by a triggered hard fail (SCORING §1.1)",
-    "confidence": "high"
-  },
-  "status": "FAIL",
-  "status_reasons": [
-    "hard_fail:RI-JRN05/HF1",
-    "ar2_fail",
-    "consumption_coupling_zero:progression.gold",
-    "ar3_crossing_present"
-  ],
-  "biggest_gap": {
-    "gap_id": "GAP-W1-save-purse-has-no-writer",
-    "subsystem_path": "journey.save.roundtrip",
-    "what": "The gold a player can actually spend is held in `combat.world.gold` (rebuilt by `Engine._buildCombat`) and `sim.stealth.p.gold`, and neither is ever written back into `sim.progression.gold` — the only gold register the save carries. On 3 of the 38 shipped named states (helstrom-market, rootlands-well-graph, stormhold-street) a plain save/load destroys 600 gold, on 10 of 10 seeds, and it survives a real cold reload through IndexedDB as well. Every shipped instrument reports clean while it happens: M1 hash equal, M2 diff empty, M4 set difference empty both ways, `getDurableFieldCensus().ok` true, and the M5 trace byte-identical. Falsified with the null control — blanking `progression.gold` and `fight.loadout.gold` out of the blob produces exactly the same world as leaving them alone, which is CONSUMPTION coupling 0 on a field this very repair added to the manifest.",
-    "why_it_matters": "A player who walks into Helstrom market with 600 gold, saves, and comes back a week later has been robbed of it, and the bribe that ARBITRATION §1 guarantees as a non-lethal exit from a fight is refused for want of money they still believe they have.",
-    "evidence": [
-      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
+     "id": "M3",
+     "result": "partial",
+     "value": "hash equal on 4/4 states across a real page reload through IndexedDB (arena_flat, sv1-midquest, sv5-journal-bloodstain, stormhold-street); but stormhold-street's 600 spendable gold is 0 after the cold reload, with the hash still equal",
+     "threshold": "equals h0 for 5/5",
+     "hard_fail": false,
+     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-    ],
-    "severity": "blocking",
-    "remedy": {
-      "action": "Make one register the authority for the purse and give the save that register, then widen the census so the class of defect cannot recur. (a) In `game/src/engine.js`, have `setGold`, `combat/parley.js applyAccept` (`world.gold -= spent`), `travelRide` (`world.gold -= fare`), `fenceSell`/`bribeWitness` (`stealth.p.gold`) and the capture path all write through to `sim.progression.gold`, and have `_buildCombat` read only from it — or, if the three registers must stay, serialise `combat.world.gold` and `sim.stealth.p.gold` as their own manifest paths under Progression with the same rebase discipline the rest of the group uses. (b) Extend `Engine.getDurableFieldCensus()`'s `shot()` to clone `this.combat.world`, `this.travel`, `this.crime`/`sim.stealth`, `this.conversation` and `sim._traversal` — it currently walks a declared subset and its own comment warns that 'a census that walks a subset of the simulation is an instrument that certifies a subset'. (c) Add a save point with money in it to `tools/journey/state-diff.mjs`'s pre-roll, so the sweep can fail.",
-      "targets": [
-        "game/src/engine.js (_buildCombat, setGold, travelRide, getDurableFieldCensus)",
-        "game/src/combat/parley.js (applyAccept)",
-        "game/src/save/state.js (Progression group writers)",
-        "game/src/save/fight.js (loadout.gold)",
-        "game/data/save-manifest.json (Progression group)",
-        "tools/journey/state-diff.mjs (pre-roll)"
-      ],
-      "acceptance": "On helstrom-market, rootlands-well-graph and stormhold-street, at ten seeds: `getTravelState().gold` and `getCombatState().world_knowledge.gold` are unchanged across `saveRoundTrip()` AND across a `writeSave` + page reload + `readSave`; and `node tools/harness/save-break-critic.mjs` reports `no-gold` as `detected_by_any_shipped_instrument: true` — that is, blanking the purse out of the blob now makes at least one of M1, M4 or the census go red.",
-      "ref_item": "RI-JRN05"
+     ],
+     "note": "M3 was not run by the builder at all — tools/journey/state-diff.mjs is entirely warm-path. Run here: writeSave(slot) -> page.reload() -> ready() -> readSave(slot) -> getStateHash(). backend indexeddb, listSaveSlots honest, save_read emitted with degraded:false. The hash passes and the purse does not, which is the point of the gap below."
+    },
+    {
+     "id": "M4",
+     "result": "marginal",
+     "value": "set difference empty both ways on every trial run, but the check is structurally unable to see the defect: fight.player, fight.player_ctl, crime.bounty, crime.zones, world.capture and 15 others are declared rules.dynamic_containers and are therefore LEAVES for the set difference",
+     "threshold": "0 keys either way",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
+     ],
+     "note": "Falsified directly: with progression.gold and fight.loadout.gold blanked out of the blob by a monkey-patch, M4 stayed empty in both directions, M1 stayed equal, getDurableFieldCensus() stayed ok — and the player's purse changed. See save-break-critic.json break 'no-gold', detected_by_any_shipped_instrument: false."
+    },
+    {
+     "id": "M5",
+     "result": "fail",
+     "value": "post-load trace diverges on the death window (events[].time_dead_frames, control 54 vs loaded 30); identical on 90/90 non-death live-audit trials over 60-frame windows",
+     "threshold": "identical for 5/5. Hard fail: any divergence.",
+     "hard_fail": true,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ],
+     "note": "M5 is additionally shown to be BLIND to the two largest defects here: the trace carries neither combat.world.gold nor engine.magic.fall, so the 600-gold loss and the mid-air fall reset both produce byte-identical traces."
+    },
+    {
+     "id": "M6",
+     "result": "unmeasurable",
+     "value": "no SV2 half-cleared-dungeon fixture ships; game/data/states/ has sv1 and sv5 only",
+     "threshold": "6/6",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json"
+     ],
+     "note": "The 38 shipped state names were enumerated from E.data.states; there is no sv2, sv3 or sv4."
+    },
+    {
+     "id": "M7",
+     "result": "unmeasurable",
+     "value": "no SV5 recovery run performed by this critic; RI-JRN06 owns the semantics",
+     "threshold": "exact",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
+     ]
+    },
+    {
+     "id": "M8",
+     "result": "fail",
+     "value": "crime state does not survive intact: crime.witnesses[0].eid changes undefined -> null on 10/10 seeds, and crime.crimes[0].frame is restored unrebased (raw 4 carried across a load that reset the frame to 0)",
+     "threshold": "4/4 + control match",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ],
+     "note": "The unrebased ledger stamps are declared in game/data/save-manifest.json declared_incomplete and assigned to W1-15; measured here rather than taken on trust. Confirmed by the tool's own stale-stamp classifier, which compares each numeric leaf twice (absolute and frame-relative) instead of maintaining an exclusion list."
+    },
+    {
+     "id": "M9",
+     "result": "unmeasurable",
+     "value": "journal integrity not independently hashed by this critic",
+     "threshold": "exact",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ],
+     "note": "The M3 cold reload did carry sv5-journal-bloodstain's 42 journal entries through a page reload with an equal hash, which is evidence but not the M9 measurement."
+    },
+    {
+     "id": "M10",
+     "result": "pass",
+     "value": "getStorageInfo().backend === 'indexeddb'; slot record 11448–21206 bytes; save_read emitted",
+     "threshold": "indexeddb, localStorage <= 1024 bytes",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ],
+     "note": "The localStorage byte audit was not run by this critic; backend attestation and a real IDB round trip through a page reload were."
+    },
+    {
+     "id": "M11",
+     "result": "unmeasurable",
+     "value": "CR1 kill-during-write not run",
+     "threshold": "15/15",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ]
+    },
+    {
+     "id": "M12",
+     "result": "partial",
+     "value": "CR4/CR5 verified by reading the refusal path: SAVE_SCHEMA_VERSION 2, applySave throws a legible line for both future and past schemas before mutating anything (game/src/save/state.js:477-492). CR2/CR3/CR12 not run.",
+     "threshold": "5/5 detected, 0 silent partial loads",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ],
+     "note": "The schema bump is real and the refusal is before any mutation, so the HF3 risk the builder claimed to close is closed on the paths I read. It was read as diagnose-after-demonstrating, after the cold reload demonstrated the load path."
+    },
+    {
+     "id": "M13",
+     "result": "unmeasurable",
+     "value": "CR6–CR10 not run",
+     "threshold": "5/5",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ]
+    },
+    {
+     "id": "M14",
+     "result": "unmeasurable",
+     "value": "export/import path exists (exportSave/importSave); CR11 export-wipe-import not run",
+     "threshold": "empty diff",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ]
+    },
+    {
+     "id": "M15",
+     "result": "unmeasurable",
+     "value": "sim-thread stall not measured",
+     "threshold": "0 dropped sim frames",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ]
+    },
+    {
+     "id": "M16",
+     "result": "partial",
+     "value": "endgame-200q ships and saves; measured canonical sizes 11.4 KB (arena_flat) to 21.2 KB (sv5, 42 journal entries), far inside the 4 MB budget; the 48 MB origin total was not measured",
+     "threshold": "<= 4 MB / 1.5 MB / 48 MB",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ]
+    },
+    {
+     "id": "M17",
+     "result": "pass",
+     "value": "listSaveSlots() after a page reload returned exactly the one slot written, with the correct generation, byte count and header, and readSave on it succeeded",
+     "threshold": "no offered slot that errors",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ],
+     "note": "Only the positive half was run; the out-of-band deletion half of M17 was not."
+    },
+    {
+     "id": "M18",
+     "result": "unmeasurable",
+     "value": "autosave policy not measured",
+     "threshold": "fires on rest/stage/region, never in COMBAT",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+     ]
+    },
+    {
+     "id": "M19",
+     "result": "unmeasurable",
+     "value": "second-death bloodstain rule not measured",
+     "threshold": "exact",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
+     ]
+    },
+    {
+     "id": "CONSUMPTION",
+     "result": "fail",
+     "value": "coupling 0 on progression.gold: the manifest field has a writer and a reader and the number a player can SPEND is held elsewhere and is dropped by every load",
+     "threshold": "every model has a demonstrated world-side consumer; coupling 0 scores the dimension 0",
+     "hard_fail": false,
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
+     ],
+     "note": "Perturbation with the null control: blanking progression.gold + fight.loadout.gold out of the blob produced EXACTLY the same world as leaving them alone (600 -> 0 either way), on stormhold-street. That is the definition of coupling 0."
     }
+   ],
+   "hard_fails": [
+    "HF1 — round-trip hash mismatch (M1), 24 of 36 death-window trials and 10 of 10 seeds on the mid-death scenario",
+    "HF1 (M5 clause) — post-load trace divergence in the death window (events[].time_dead_frames 54 vs 30)"
+   ],
+   "how_we_lose_hits": [
+    "#7 the manifest is written after the code — progression.gold was added to the manifest against sim.progression.gold, which is the register nothing spends from; the spendable purse is combat.world.gold and stealth.p.gold and neither has a save writer",
+    "#14 the diff is run on a state that does not exercise the thing — the builder's single pre-roll (spawn two inf_trash, aggro, walk, swing, roll) is applied identically to all 38 states and never dies, never falls, never holds money"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-probe-province-scenarios.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep.log"
+   ],
+   "why_not_ten": "M1 mismatches on 24 of 36 saves taken inside the death sequence, on all four states tested including two of the item's own SV fixtures, and a plain warm or cold round trip destroys 600 spendable gold on 3 of the 38 shipped named states while every shipped instrument reports clean. The item's own band table makes only a native 100 the bar and a triggered hard fail caps it at 2.",
+   "path_to_ten": "Three named repairs, all small. (1) Stop the -1 sentinel colliding with a rebased death frame: carry camera.deathFrame as an explicit {active:boolean, frames_ago:int} pair, or clamp at restore rather than at serialise, so save->load->save is a fixed point at every point of the death window; add a mid-death pre-roll to tools/journey/state-diff.mjs so the check can fail. (2) Resolve nested move references the same way pose.move is resolved — fight.*.pendingReaction.move must go through the same slot-id lookup. (3) Make sim.progression.gold the single authority for the purse: have Engine.setGold, parley applyAccept, travelRide and the fence write back to it, or serialise combat.world.gold directly; then extend getDurableFieldCensus()'s shot() to walk engine.combat.world, engine.crime, engine.travel and sim._traversal so a register with no writer cannot round-trip clean again.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/save-live-audit.mjs --scenarios idle,mid-swing-hitactive,mid-cast,mid-parry,mid-death,mid-menu,at-hearth,mid-crime,deep-water-drowning --seeds 4711,1337,90210,2147483647,7,101,31337,555,12345,777 --settle 60 --out reports/runs/W1-SAVE-LIVE-sweep",
+   "seed": "4711,1337,90210,2147483647,7,101,31337,555,12345,777",
+   "source": "ours",
+   "note": "90 trials. 69 clean, 20 defect, 1 unmeasurable (its own pre-roll did not reproduce, which the tool reports rather than counting as a save defect). Zero page errors."
   },
-  "secondary_observations": [
-    {
-      "what": "The builder's own falsifier verifies: re-running `tools/harness/save-break.mjs` unmodified gives 8/8 with `baseline_clean: true` and `applied: true` on every break, in ONE run rather than the two the builder needed. The three breaks it reported as 'failing to take' in round 2 — creation-terms (blanked two arrays already empty on a state with no character), no-body-grid (nudged 1e-9, three orders below the 6-dp grid) and no-stamp-rebase (guarded on an already-expired stamp) — all take in their rewritten form. The rewrites are honest: each names why the first version could not have taken, and creation-terms carries its own observer because blanking a field in the blob makes save == load == blanked and the round-trip diff can never see it. I found no break that had been rewritten to make itself pass.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-builder-rerun-by-critic.json"
-      ],
-      "subsystem_path": "journey.save.roundtrip"
-    },
-    {
-      "what": "A save taken in mid-air is lethal. Falling 40 m from `default`, the never-saved control lands at hp 620 and the arm that saved and loaded mid-fall lands at hp 0 — dead — because `Engine._buildCombat` constructs a fresh MagicSystem on every load and `magic.airborne`, `magic.fall.velMps` and `magic.peakY` are a second fall model that is not on the manifest at all. Reproduced 6/6 across three seeds with the two arms run in both orders. The manifest's Traversal group carries `airborne`, `vy` and `apex_y`; the model that actually resolves the landing does not.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-      ],
-      "subsystem_path": "journey.save.roundtrip"
-    },
-    {
-      "what": "The death surface restarts on every load. `death.controllable_at` (161) and `death.death_frame` / `death.deaths[].frame` / `death.last_damage_frame` (11) are restored raw while `loadState()` resets the frame to 0, so `surface_frames_left` goes 137 -> 161 on 10 of 10 seeds. The Death state group on the manifest is one path — `death.bloodstain` — and the death runtime is not in the save; it only appears to survive a warm load because nothing clears it, which is why a cold reload is a different test.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-      ],
-      "subsystem_path": "journey.save.roundtrip"
-    },
-    {
-      "what": "The manifest's `rules.dynamic_containers` list exempts 20 paths from M4's set difference by declaring them leaves, and five of them are the repair's own additions (`fight.player`, `fight.player_ctl`, `crime.bounty`, `crime.zones`, `world.capture`, `progression.sap_taint`). That is not falsification — the note declares it and points at the census — but it does mean the set difference the item calls its completeness check does not look inside the combat body at all, and the census that is supposed to cover it walks `sim.*` and the bodies and not `engine.combat.world`, `engine.crime`, `engine.travel`, `engine.conversation` or `sim._traversal`. The purse fell into exactly that hole.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
-      ],
-      "subsystem_path": "platform.save.persistence"
-    },
-    {
-      "what": "Two of the identity-valued declarations cannot be driven off their identity by anything a player can do, so they round-trip perfectly and carry nothing. `traversal.breath_s` stays at 60.0 and `traversal.submerged` stays false after 3,000 frames of swimming in 40.3 m of water in band W5 — the character floats and never dives — so the repair's headline claim that 'a save taken drowning reloaded with a full lungful' describes a state the build cannot reach. `player.burdenRatio` stayed 0 under `setEquipLoad(30)` because it is recomputed from inventory weight every step by `_recomputeBurden()`, making it derived rather than durable. Both are harmless today and both are places a false pass will live.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
-      ],
-      "subsystem_path": "journey.save.roundtrip"
-    },
-    {
-      "what": "NEGATIVE EVIDENCE, recorded because the repair deserves it. The traversal restore is real: with breath perturbed to 3.25, mire to 0.77, slide to 4.5 and vy to -12.5 by hand, loading the blob put all four back exactly. The nine non-death scenarios came back clean on all ten seeds — including mid-cast, mid-parry and a save taken inside an active hitbox window, which the builder's own pre-roll does not reach — with 1,239 to 1,530 live-world leaves compared per trial and zero differing. M3, which the builder never ran, passes on four states across a real page reload through IndexedDB.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
-      ],
-      "subsystem_path": "journey.save.roundtrip"
-    },
-    {
-      "what": "`loadState('<named state>')` does not reset every live subsystem, so a scenario inherits the one before it inside a single page. Three of five province scenarios (in-water, mid-fall, mid-travel) failed my instrument's own reproducibility control — two identical pre-rolls, no save and no load between them, produced different player positions and, in one case, a live player in one arm and a corpse in the other. This is the same contamination family the repair itself found and closed for `sim.captured`; it is not closed for the fall model or the traversal. It also means any critic running two arms in one page on a province state is measuring contamination unless it checks.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-probe-province-scenarios.json"
-      ],
-      "subsystem_path": "platform.save.persistence"
-    }
-  ],
-  "gap_closure": [
-    {
-      "gap_id": "GAP-W1-platform-save-drops-entity-prev-state",
-      "status": "closed",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
-      ],
-      "measured_value": "entities[].prev_state present in the save and identical across the round trip on 90/90 trials; the 60-frame post-load trace is byte-identical to the never-saved control on all nine non-death scenarios at ten seeds",
-      "acceptance_restated": "the field is in the save and the post-load trace does not diverge",
-      "closed_by_builder_of_fix": false
-    }
-  ],
-  "corpus_extended": [],
-  "method_deviations": [
-    {
-      "ref_item": "RI-JRN05",
-      "deviation": "Wrote and used `tools/journey/save-live-audit.mjs` instead of `tools/journey/state-diff.mjs` as the primary round-trip instrument.",
-      "why": "state-diff.mjs was written by the agent whose repair it grades, and every one of its headline checks (M1, M2, M4) is taken on the save BLOB — M1 is a fixed-point test on the serialiser, so a field written to the blob and never read back still passes whenever it re-serialises to the value that was saved. The new tool never reads the blob: it observes the world through ~30 public harness getters, in two arms (control vs save+load) plus a two-run reproducibility control, and classifies every numeric leaf twice (absolute and frame-relative) so a stamp restored unrebased is reported rather than excluded by a list. It also uses pre-rolls the builder's single pre-roll does not reach: mid-cast, mid-parry, mid-death, mid-menu, mid-travel, in water, mid-fall, at a hearth, mid-crime-hunt. Its two declared exclusions (`first_input`/`first_control`, and `.const.`/`.budget.`/`.declared` data constants) are in the report file with their reasons.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "RI-JRN05",
-      "deviation": "Wrote and used `tools/harness/save-consume-critic.mjs` alongside, not instead of, the builder's `tools/harness/save-consume.mjs`.",
-      "why": "TOOL-LOOP rule 3 and the tool critic's standing finding: a self-test written by the same hand proves less than an independent falsification. Its P3 probe deliberately runs the BUILDER'S OWN `__HARNESS.saveRoundTrip()` so the 24-of-36 M1 failure cannot be blamed on my instrument.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "RI-JRN05",
-      "deviation": "Wrote and used `tools/harness/save-break-critic.mjs` — four breaks the builder's eight-break falsifier does not contain, each asking not only whether the failure returns but which of the build's own shipped instruments notices.",
-      "why": "A repair whose deletion no shipped instrument can see is a repair nobody can regress-test, and a manifest row whose deletion changes nothing is accommodation rather than agreement (RI-JRN05 'How we lose' #7 and #8). This is what found the purse.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "RI-JRN05",
-      "deviation": "M11, M13, M14, M15, M18, M19, M6, M7, M9 not run; M12, M16, M17 run in part.",
-      "why": "Wall clock on a four-core box shared with other agents. Every one is recorded `unmeasurable` and fail-closed rather than assumed, per SCORING §1.1. They do not change the item's score, which is already capped at 2 by HF1.",
-      "affects_scores": false
-    }
-  ],
-  "arbitration_questions": [],
-  "source_reads": [
-    {
-      "path": "game/src/harness/api.js",
-      "purpose": "locate-harness"
-    },
-    {
-      "path": "game/src/engine.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "read only after the mid-death M1 mismatch, the gold loss and the mid-air fall had been demonstrated through the harness, to name the line to fix"
-    },
-    {
-      "path": "game/src/save/state.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "lines 340-362 and 725-760: the camera_death_frames_ago sentinel collision"
-    },
-    {
-      "path": "game/src/save/fight.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "line 183: fight.loadout.gold is written from sim.progression.gold, not from the purse"
-    },
-    {
-      "path": "game/src/combat/parley.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "line 97: the GOLD ground of the non-lethal exit reads world.gold"
-    },
-    {
-      "path": "game/data/save-manifest.json",
-      "purpose": "quote-written-content"
-    },
-    {
-      "path": "tools/journey/state-diff.mjs",
-      "purpose": "locate-harness",
-      "note": "to establish what the builder's instrument measures before writing one that does not"
-    },
-    {
-      "path": "tools/harness/save-break.mjs",
-      "purpose": "locate-harness"
-    }
-  ],
-  "self_audit": {
-    "judged_output_not_source": true,
-    "ran_every_assigned_method": false,
-    "blind_done_where_required": true,
-    "named_exactly_one_gap": true,
-    "remedy_is_buildable": true,
-    "no_banned_reasoning_used": true,
-    "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "Nine of the item's nineteen methods were not run and are recorded `unmeasurable`, fail-closed, in `method_deviations` and in the checks array; the reason is wall clock on a shared four-core box, not a judgement that they would pass. Every claim in this verdict was demonstrated through the harness before any source file was opened, and the two biggest ones were reproduced with the builder's own instrument. `blind_done_where_required` is true because RI-JRN05 declares `blind_pair: no` in its own front matter."
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/save-consume-critic.mjs --seeds 4711 --out reports/runs/W1-SAVE-CONSUME-CRITIC",
+   "seed": 4711,
+   "source": "ours",
+   "note": "P3 is the M1 death sweep run through the BUILDER'S OWN __HARNESS.saveRoundTrip(): 24 of 36 mismatch. P2 is the mid-air save. P4 is the identity-value audit."
   },
-  "notes": "AR-3 (seam sterility): NOT sterile. This piece carries at least three live crossings, and two of them are where it fails. `combat/parley.js` reads a WORLD register (`world.gold`) to decide whether a Souls fight has a Morrowind exit; `crime.zones` and the guard search read a world ledger into enemy behaviour; and the fight's loadout is restored from the same blob that carries the journal. `seam_sterile: false`. The AR-2 failure above is a seam failure in the strict sense: the Morrowind half's money is destroyed by the save and the consequence lands inside the Souls fight.\n\nOn the builder's headline claim: 76/76 does NOT survive. The number is real for what it measured — I could not break the nine non-death scenarios at ten seeds — but the sweep it comes from applies ONE pre-roll to all 38 states, and that pre-roll never dies, never falls and never holds money. Widening the seeds from two to ten changed nothing; widening the MOMENT changed everything. Two seeds was not the weakness here; one pre-roll was.\n\nOn W1-00 and W1-00-r2: both scored RI-JRN05 at 2 with HF1 triggered, and both predate this repair. This verdict re-scores the item at 2 with HF1 triggered again, for a different cause. The repair is substantial and much of it is real — see the negative-evidence observation — but the item's band admits nothing below a perfect round trip, and the round trip is not perfect.\n\nBUILD STATE. Measured against the working tree at commit b27373f with other agents' uncommitted edits present. `git diff` over `game/src/engine.js`, `game/src/save/**`, `game/data/save-manifest.json` and `tools/journey/state-diff.mjs` at the end of the run showed a single change, +125 lines in `engine.js`, all of it W1-07 round 4's quest-offer disposition model — nothing on the save or load path. `node tools/harness/boot-check.mjs` passed before measuring and the 90-trial sweep recorded zero page errors."
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/save-break-critic.mjs --seed 4711 --out reports/runs/W1-SAVE-BREAK-CRITIC",
+   "seed": 4711,
+   "source": "ours",
+   "note": "Four breaks the builder's own falsifier does not contain, each asking WHICH SHIPPED INSTRUMENT NOTICES. 'no-gold' is BLIND to M1, M2, M4 and the census while changing the live world. The baseline itself already loses the gold."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
+   "kind": "report",
+   "produced_by": "scratch probe driving __HARNESS over every key of E.data.states: load, step 6, read combat.world.gold / magic.gold / sim.progression.gold / sim.stealth.p.gold, saveRoundTrip(), re-read",
+   "seed": 4711,
+   "source": "ours",
+   "note": "3 of 38 shipped states lose 600 gold on a plain round trip with M1 equal: helstrom-market, rootlands-well-graph, stormhold-street."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json",
+   "kind": "report",
+   "produced_by": "scratch probe: writeSave -> playwright page.reload() -> ready -> listSaveSlots -> readSave -> getStateHash (M3); and the mid-air save with the two arms run in both orders at three seeds",
+   "seed": "4711,1337,90210",
+   "source": "ours",
+   "note": "M3 hash equal 4/4. Fall: 6/6 arms — a save taken mid-air lands DEAD (hp 0) where the identical unsaved fall lands ALIVE (hp 620)."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
+   "kind": "report",
+   "produced_by": "scratch probe: reach 40 m of water, save, perturb sim._traversal by hand, load the blob, compare",
+   "seed": 4711,
+   "source": "ours",
+   "note": "NEGATIVE EVIDENCE FOR THE BUILDER: the traversal restore is real (breath 3.25 -> 60, mire 0.77 -> 0, slide 4.5 -> 0). Also records that breath_s never leaves 60 and submerged never becomes true after 3,000 frames in 40 m of water."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-probe-province-scenarios.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/save-live-audit.mjs --scenarios in-water,mid-fall,at-hearth,mid-crime,mid-travel --seeds 4711 --settle 60",
+   "seed": 4711,
+   "source": "ours",
+   "note": "Three of five province scenarios reported UNMEASURABLE by the tool's own reproducibility control — the pre-roll does not reproduce inside one page. Kept because that is itself a finding about scenario contamination, and because it shows the tool refuses to convict on a control it cannot reproduce."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep.log",
+   "kind": "log",
+   "produced_by": "stdout of the 90-trial sweep",
+   "seed": "ten seeds",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-live-audit.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic; canonical copy at tools/journey/save-live-audit.mjs",
+   "source": "ours",
+   "note": "The independent instrument. Never reads the save blob."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-consume-critic.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic; canonical copy at tools/harness/save-consume-critic.mjs",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic; canonical copy at tools/harness/save-break-critic.mjs",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-builder-rerun-by-critic.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/save-break.mjs --seeds 4711 --out reports/runs/W1-SAVE-BREAK-RECHECK — the BUILDER'S falsifier, re-run unmodified by this critic",
+   "seed": 4711,
+   "source": "ours",
+   "note": "8/8, baseline_clean true, every break applied. The three that 'failed to take' in the builder's round 2 (creation-terms, no-body-grid, no-stamp-rebase) all genuinely take in their rewritten form, verified here in a single run rather than across two."
+  }
+ ],
+ "blind_comparisons": [],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "observed": "Nothing Morrowind-flavoured was found inside the fight by the save path. The load rebuilds the fight from fight.loadout and restores each body field-for-field; no to-hit roll, no dice damage, no level scaling is introduced anywhere on the save or load path.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ]
+    },
+    {
+     "id": "A5",
+     "result": "pass",
+     "observed": "No mid-fight pause is introduced by a save: on mid-swing-hitactive and mid-parry, 10/10 seeds each, the loaded arm's 60-frame trace is byte-identical to the never-saved control, including the active-window and hitstop frames.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+   ]
+  },
+  "ar2": {
+   "status": "fail",
+   "checks": [
+    {
+     "id": "B-S6",
+     "result": "fail",
+     "observed": "ARBITRATION S6 gives Morrowind the save semantics and requires that quest state, journal, faction standing and world flags persist untouched through a death. Two separate S6 failures were measured, both on the death transition. (1) A save taken inside the death window does not round-trip at all: pose.camera_death_frames_ago collapses to the -1 'never died' sentinel, so which death you are in is destroyed by the save — 24 of 36 trials, 4 of 4 states. (2) The death runtime's own timers are restored unrebased: death.controllable_at stays at 161 while the frame resets to 0, so a player who reloads 137 frames into a death waits the full 161 again, on 10 of 10 seeds.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ]
+    },
+    {
+     "id": "B-ARB1-nonlethal-exit",
+     "result": "fail",
+     "observed": "ARBITRATION §1 (as amended) gives Morrowind the right to yield, parley or BRIBE inside a fight, and game/src/combat/parley.js:97 tests that ground as (world.gold || 0) >= enemy.parley.gold_price. On helstrom-market, rootlands-well-graph and stormhold-street, world.gold is 600 before a save and 0 after — so an inf_trash (gold_price 180) can be bought off before the load and cannot be after, with no other state changed. A Morrowind exit from a Souls fight is deleted by a save/load, which is Morrowind losing ground inside the fight.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ]
+    },
+    {
+     "id": "B13-travel",
+     "result": "fail",
+     "observed": "getTravelState().gold reads the same destroyed register: 600 -> 0 on 10 of 10 seeds on stormhold-street, so a fare a player could afford before a save is refused after it.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ]
+    },
+    {
+     "id": "B-markers",
+     "result": "pass",
+     "observed": "No objective marker, bonfire warp, procedural loot or soul-currency purchase is introduced by the save path.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json"
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 2,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "Wrong shape — capped by a triggered hard fail (SCORING §1.1)",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "hard_fail:RI-JRN05/HF1",
+  "ar2_fail",
+  "consumption_coupling_zero:progression.gold",
+  "ar3_crossing_present"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-save-purse-has-no-writer",
+  "subsystem_path": "journey.save.roundtrip",
+  "what": "The gold a player can actually spend is held in `combat.world.gold` (rebuilt by `Engine._buildCombat`) and `sim.stealth.p.gold`, and neither is ever written back into `sim.progression.gold` — the only gold register the save carries. On 3 of the 38 shipped named states (helstrom-market, rootlands-well-graph, stormhold-street) a plain save/load destroys 600 gold, on 10 of 10 seeds, and it survives a real cold reload through IndexedDB as well. Every shipped instrument reports clean while it happens: M1 hash equal, M2 diff empty, M4 set difference empty both ways, `getDurableFieldCensus().ok` true, and the M5 trace byte-identical. Falsified with the null control — blanking `progression.gold` and `fight.loadout.gold` out of the blob produces exactly the same world as leaving them alone, which is CONSUMPTION coupling 0 on a field this very repair added to the manifest.",
+  "why_it_matters": "A player who walks into Helstrom market with 600 gold, saves, and comes back a week later has been robbed of it, and the bribe that ARBITRATION §1 guarantees as a non-lethal exit from a fight is refused for want of money they still believe they have.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Make one register the authority for the purse and give the save that register, then widen the census so the class of defect cannot recur. (a) In `game/src/engine.js`, have `setGold`, `combat/parley.js applyAccept` (`world.gold -= spent`), `travelRide` (`world.gold -= fare`), `fenceSell`/`bribeWitness` (`stealth.p.gold`) and the capture path all write through to `sim.progression.gold`, and have `_buildCombat` read only from it — or, if the three registers must stay, serialise `combat.world.gold` and `sim.stealth.p.gold` as their own manifest paths under Progression with the same rebase discipline the rest of the group uses. (b) Extend `Engine.getDurableFieldCensus()`'s `shot()` to clone `this.combat.world`, `this.travel`, `this.crime`/`sim.stealth`, `this.conversation` and `sim._traversal` — it currently walks a declared subset and its own comment warns that 'a census that walks a subset of the simulation is an instrument that certifies a subset'. (c) Add a save point with money in it to `tools/journey/state-diff.mjs`'s pre-roll, so the sweep can fail.",
+   "targets": [
+    "game/src/engine.js (_buildCombat, setGold, travelRide, getDurableFieldCensus)",
+    "game/src/combat/parley.js (applyAccept)",
+    "game/src/save/state.js (Progression group writers)",
+    "game/src/save/fight.js (loadout.gold)",
+    "game/data/save-manifest.json (Progression group)",
+    "tools/journey/state-diff.mjs (pre-roll)"
+   ],
+   "acceptance": "On helstrom-market, rootlands-well-graph and stormhold-street, at ten seeds: `getTravelState().gold` and `getCombatState().world_knowledge.gold` are unchanged across `saveRoundTrip()` AND across a `writeSave` + page reload + `readSave`; and `node tools/harness/save-break-critic.mjs` reports `no-gold` as `detected_by_any_shipped_instrument: true` — that is, blanking the purse out of the blob now makes at least one of M1, M4 or the census go red.",
+   "ref_item": "RI-JRN05"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "The builder's own falsifier verifies: re-running `tools/harness/save-break.mjs` unmodified gives 8/8 with `baseline_clean: true` and `applied: true` on every break, in ONE run rather than the two the builder needed. The three breaks it reported as 'failing to take' in round 2 — creation-terms (blanked two arrays already empty on a state with no character), no-body-grid (nudged 1e-9, three orders below the 6-dp grid) and no-stamp-rebase (guarded on an already-expired stamp) — all take in their rewritten form. The rewrites are honest: each names why the first version could not have taken, and creation-terms carries its own observer because blanking a field in the blob makes save == load == blanked and the round-trip diff can never see it. I found no break that had been rewritten to make itself pass.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-builder-rerun-by-critic.json"
+   ],
+   "subsystem_path": "journey.save.roundtrip"
+  },
+  {
+   "what": "A save taken in mid-air is lethal. Falling 40 m from `default`, the never-saved control lands at hp 620 and the arm that saved and loaded mid-fall lands at hp 0 — dead — because `Engine._buildCombat` constructs a fresh MagicSystem on every load and `magic.airborne`, `magic.fall.velMps` and `magic.peakY` are a second fall model that is not on the manifest at all. Reproduced 6/6 across three seeds with the two arms run in both orders. The manifest's Traversal group carries `airborne`, `vy` and `apex_y`; the model that actually resolves the landing does not.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+   ],
+   "subsystem_path": "journey.save.roundtrip"
+  },
+  {
+   "what": "The death surface restarts on every load. `death.controllable_at` (161) and `death.death_frame` / `death.deaths[].frame` / `death.last_damage_frame` (11) are restored raw while `loadState()` resets the frame to 0, so `surface_frames_left` goes 137 -> 161 on 10 of 10 seeds. The Death state group on the manifest is one path — `death.bloodstain` — and the death runtime is not in the save; it only appears to survive a warm load because nothing clears it, which is why a cold reload is a different test.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+   ],
+   "subsystem_path": "journey.save.roundtrip"
+  },
+  {
+   "what": "The manifest's `rules.dynamic_containers` list exempts 20 paths from M4's set difference by declaring them leaves, and five of them are the repair's own additions (`fight.player`, `fight.player_ctl`, `crime.bounty`, `crime.zones`, `world.capture`, `progression.sap_taint`). That is not falsification — the note declares it and points at the census — but it does mean the set difference the item calls its completeness check does not look inside the combat body at all, and the census that is supposed to cover it walks `sim.*` and the bodies and not `engine.combat.world`, `engine.crime`, `engine.travel`, `engine.conversation` or `sim._traversal`. The purse fell into exactly that hole.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json"
+   ],
+   "subsystem_path": "platform.save.persistence"
+  },
+  {
+   "what": "Two of the identity-valued declarations cannot be driven off their identity by anything a player can do, so they round-trip perfectly and carry nothing. `traversal.breath_s` stays at 60.0 and `traversal.submerged` stays false after 3,000 frames of swimming in 40.3 m of water in band W5 — the character floats and never dives — so the repair's headline claim that 'a save taken drowning reloaded with a full lungful' describes a state the build cannot reach. `player.burdenRatio` stayed 0 under `setEquipLoad(30)` because it is recomputed from inventory weight every step by `_recomputeBurden()`, making it derived rather than durable. Both are harmless today and both are places a false pass will live.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-consume-critic.json"
+   ],
+   "subsystem_path": "journey.save.roundtrip"
+  },
+  {
+   "what": "NEGATIVE EVIDENCE, recorded because the repair deserves it. The traversal restore is real: with breath perturbed to 3.25, mire to 0.77, slide to 4.5 and vy to -12.5 by hand, loading the blob put all four back exactly. The nine non-death scenarios came back clean on all ten seeds — including mid-cast, mid-parry and a save taken inside an active hitbox window, which the builder's own pre-roll does not reach — with 1,239 to 1,530 live-world leaves compared per trial and zero differing. M3, which the builder never ran, passes on four states across a real page reload through IndexedDB.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/traversal-restore-perturb-then-load.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+   ],
+   "subsystem_path": "journey.save.roundtrip"
+  },
+  {
+   "what": "`loadState('<named state>')` does not reset every live subsystem, so a scenario inherits the one before it inside a single page. Three of five province scenarios (in-water, mid-fall, mid-travel) failed my instrument's own reproducibility control — two identical pre-rolls, no save and no load between them, produced different player positions and, in one case, a live player in one arm and a corpse in the other. This is the same contamination family the repair itself found and closed for `sim.captured`; it is not closed for the fall model or the traversal. It also means any critic running two arms in one page on a province state is measuring contamination unless it checks.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-probe-province-scenarios.json"
+   ],
+   "subsystem_path": "platform.save.persistence"
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-platform-save-drops-entity-prev-state",
+   "status": "closed",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json"
+   ],
+   "measured_value": "entities[].prev_state present in the save and identical across the round trip on 90/90 trials; the 60-frame post-load trace is byte-identical to the never-saved control on all nine non-death scenarios at ten seeds",
+   "acceptance_restated": "the field is in the save and the post-load trace does not diverge",
+   "closed_by_builder_of_fix": false
+  }
+ ],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "ref_item": "RI-JRN05",
+   "deviation": "Wrote and used `tools/journey/save-live-audit.mjs` instead of `tools/journey/state-diff.mjs` as the primary round-trip instrument.",
+   "why": "state-diff.mjs was written by the agent whose repair it grades, and every one of its headline checks (M1, M2, M4) is taken on the save BLOB — M1 is a fixed-point test on the serialiser, so a field written to the blob and never read back still passes whenever it re-serialises to the value that was saved. The new tool never reads the blob: it observes the world through ~30 public harness getters, in two arms (control vs save+load) plus a two-run reproducibility control, and classifies every numeric leaf twice (absolute and frame-relative) so a stamp restored unrebased is reported rather than excluded by a list. It also uses pre-rolls the builder's single pre-roll does not reach: mid-cast, mid-parry, mid-death, mid-menu, mid-travel, in water, mid-fall, at a hearth, mid-crime-hunt. Its two declared exclusions (`first_input`/`first_control`, and `.const.`/`.budget.`/`.declared` data constants) are in the report file with their reasons.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-JRN05",
+   "deviation": "Wrote and used `tools/harness/save-consume-critic.mjs` alongside, not instead of, the builder's `tools/harness/save-consume.mjs`.",
+   "why": "TOOL-LOOP rule 3 and the tool critic's standing finding: a self-test written by the same hand proves less than an independent falsification. Its P3 probe deliberately runs the BUILDER'S OWN `__HARNESS.saveRoundTrip()` so the 24-of-36 M1 failure cannot be blamed on my instrument.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-JRN05",
+   "deviation": "Wrote and used `tools/harness/save-break-critic.mjs` — four breaks the builder's eight-break falsifier does not contain, each asking not only whether the failure returns but which of the build's own shipped instruments notices.",
+   "why": "A repair whose deletion no shipped instrument can see is a repair nobody can regress-test, and a manifest row whose deletion changes nothing is accommodation rather than agreement (RI-JRN05 'How we lose' #7 and #8). This is what found the purse.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-JRN05",
+   "deviation": "M11, M13, M14, M15, M18, M19, M6, M7, M9 not run; M12, M16, M17 run in part.",
+   "why": "Wall clock on a four-core box shared with other agents. Every one is recorded `unmeasurable` and fail-closed rather than assumed, per SCORING §1.1. They do not change the item's score, which is already capped at 2 by HF1.",
+   "affects_scores": false
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  {
+   "path": "game/src/harness/api.js",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "read only after the mid-death M1 mismatch, the gold loss and the mid-air fall had been demonstrated through the harness, to name the line to fix"
+  },
+  {
+   "path": "game/src/save/state.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "lines 340-362 and 725-760: the camera_death_frames_ago sentinel collision"
+  },
+  {
+   "path": "game/src/save/fight.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "line 183: fight.loadout.gold is written from sim.progression.gold, not from the purse"
+  },
+  {
+   "path": "game/src/combat/parley.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "line 97: the GOLD ground of the non-lethal exit reads world.gold"
+  },
+  {
+   "path": "game/data/save-manifest.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "tools/journey/state-diff.mjs",
+   "purpose": "locate-harness",
+   "note": "to establish what the builder's instrument measures before writing one that does not"
+  },
+  {
+   "path": "tools/harness/save-break.mjs",
+   "purpose": "locate-harness"
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "Nine of the item's nineteen methods were not run and are recorded `unmeasurable`, fail-closed, in `method_deviations` and in the checks array; the reason is wall clock on a shared four-core box, not a judgement that they would pass. Every claim in this verdict was demonstrated through the harness before any source file was opened, and the two biggest ones were reproduced with the builder's own instrument. `blind_done_where_required` is true because RI-JRN05 declares `blind_pair: no` in its own front matter."
+ },
+ "notes": "AR-3 (seam sterility): NOT sterile. This piece carries at least three live crossings, and two of them are where it fails. `combat/parley.js` reads a WORLD register (`world.gold`) to decide whether a Souls fight has a Morrowind exit; `crime.zones` and the guard search read a world ledger into enemy behaviour; and the fight's loadout is restored from the same blob that carries the journal. `seam_sterile: false`. The AR-2 failure above is a seam failure in the strict sense: the Morrowind half's money is destroyed by the save and the consequence lands inside the Souls fight.\n\nOn the builder's headline claim: 76/76 does NOT survive. The number is real for what it measured — I could not break the nine non-death scenarios at ten seeds — but the sweep it comes from applies ONE pre-roll to all 38 states, and that pre-roll never dies, never falls and never holds money. Widening the seeds from two to ten changed nothing; widening the MOMENT changed everything. Two seeds was not the weakness here; one pre-roll was.\n\nOn W1-00 and W1-00-r2: both scored RI-JRN05 at 2 with HF1 triggered, and both predate this repair. This verdict re-scores the item at 2 with HF1 triggered again, for a different cause. The repair is substantial and much of it is real — see the negative-evidence observation — but the item's band admits nothing below a perfect round trip, and the round trip is not perfect.\n\nBUILD STATE. Measured against the working tree at commit b27373f with other agents' uncommitted edits present. `git diff` over `game/src/engine.js`, `game/src/save/**`, `game/data/save-manifest.json` and `tools/journey/state-diff.mjs` at the end of the run showed a single change, +125 lines in `engine.js`, all of it W1-07 round 4's quest-offer disposition model — nothing on the save or load path. `node tools/harness/boot-check.mjs` passed before measuring and the 90-trial sweep recorded zero page errors."
 }

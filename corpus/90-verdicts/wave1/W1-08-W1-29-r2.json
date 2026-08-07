@@ -1,491 +1,505 @@
 {
-  "schema_version": 1,
-  "piece_id": "w1-08-w1-29-r2",
-  "piece_title": "W1-08 / W1-29 round 2 \u2014 desktop controls, mobile, touch and the attached gamepad",
-  "subsystem_paths": [
-    "input.action.set",
-    "input.desktop.keyboard",
-    "input.desktop.pointerlock",
-    "input.rebinding.model",
-    "input.discoverability",
-    "input.modality.parity",
-    "input.gamepad.mapping",
-    "input.gamepad.analog",
-    "input.gamepad.lifecycle",
-    "input.touch.fallback",
-    "platform.mobile.viewport",
-    "combat.input.latency"
+ "schema_version": 1,
+ "piece_id": "w1-08-w1-29-r2",
+ "piece_title": "W1-08 / W1-29 round 2 — desktop controls, mobile, touch and the attached gamepad",
+ "subsystem_paths": [
+  "input.action.set",
+  "input.desktop.keyboard",
+  "input.desktop.pointerlock",
+  "input.rebinding.model",
+  "input.discoverability",
+  "input.modality.parity",
+  "input.gamepad.mapping",
+  "input.gamepad.analog",
+  "input.gamepad.lifecycle",
+  "input.touch.fallback",
+  "platform.mobile.viewport",
+  "combat.input.latency"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-08-29-r2",
+  "role": "critic.platform",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T16:38:00Z",
+  "finished_at": "2026-08-07T17:35:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "dcf1d36",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "measured_on": "a pinned git worktree at dcf1d36, NOT the working tree — see status_reasons/broken_working_tree and method_deviations[0]",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/boot-check.mjs   (in /home/user/elder-souls-claude, the working tree)",
+    "exit_code": 12,
+    "stdout_artifact": "ok:false, rendered_a_frame:false — first 'event type weather_change is not in the closed vocabulary', then 'TypeError: this._stepAmbience is not a function'. A sibling's uncommitted W1-22 audio edit to game/src/engine.js: a call site that landed before its method. NOT this piece's defect, and it voids any measurement taken against that tree."
+   },
+   {
+    "command": "node tools/harness/boot-check.mjs   (pinned worktree at dcf1d36) — run before and after all work",
+    "exit_code": 0,
+    "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers"
+   },
+   {
+    "command": "node tools/harness/critic-w1-08-r2-probe.mjs   (mine; one browser)",
+    "exit_code": 0,
+    "stdout_artifact": "out/critic-probe.json — first ablation pass, DISCARDED for an unstable null control; superseded by probe2"
+   },
+   {
+    "command": "node tools/harness/critic-w1-08-r2-probe2.mjs   (mine; one browser)",
+    "exit_code": 0,
+    "stdout_artifact": "out/probe2.json — clean ablation with both null controls stable, register sweep re-implemented, M-K20 broken on purpose, gamepad legs, S35 suppression"
+   },
+   {
+    "command": "node tools/harness/critic-w1-08-r2-probe3.mjs   (mine; one browser)",
+    "exit_code": 0,
+    "stdout_artifact": "out/probe3.json — CONSUMPTION on all eleven touch controls plus two null controls; the stuck-calibration escape question"
+   },
+   {
+    "command": "node tools/harness/critic-w1-08-r2-probe4.mjs   (mine; one browser)",
+    "exit_code": 0,
+    "stdout_artifact": "out/probe4.json — M-P20 re-derived at the item's own configuration: dialogue 7.00, journal 5.06, book 5.06 CSS px against a floor of 18; HUD 3.97"
+   },
+   {
+    "command": "node tools/journey/input-checks.mjs --self-test   (pinned tree, load 20-22, 26 concurrent browsers)",
+    "exit_code": 0,
+    "stdout_artifact": "out/selftest.log — re-run because the artifact the builder's report cites carries an EMPTY, errored self_test block"
+   },
+   {
+    "command": "for id in M-K8 M-K9 M-K20 M-K21 M-K22 M-N1 M-N2 M-N3 M-N5 M-N7 M-P14 M-P20 M-P24 M-P25; do grep -c \"'$id'\" tools/journey/input-checks.mjs; done",
+    "exit_code": 0,
+    "stdout_artifact": "3 3 2 3 4 4 4 4 4 4 4 5 2 3 — all fourteen >= 2, each a real function body plus a --self-test perturbation leg"
+   },
+   {
+    "command": "grep -rn 'min_text_css_px' tools/ game/src",
+    "exit_code": 0,
+    "stdout_artifact": "exactly one consumer in the tree (M-P20), which excludes every hud.* rect by construction — so the HUD's type size is measured by nothing"
+   }
   ],
-  "wave": 1,
-  "critic": {
-    "run_id": "crit-w1-08-29-r2",
-    "role": "critic.platform",
-    "model": "claude-opus-5",
-    "started_at": "2026-08-07T16:38:00Z",
-    "finished_at": "2026-08-07T17:35:00Z",
-    "conflict_of_interest": false,
-    "saw_builder_notes_before_blind": true
+  "depends_on": [
+   "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+   "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+   "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/critic-w1-08-r2-probe2.mjs",
+   "game/data/**",
+   "game/src/**",
+   "tools/harness/boot-check.mjs",
+   "tools/journey/gamepad-shim.mjs",
+   "tools/journey/input-checks.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs"
+  ],
+  "depends_on_note": "derived from 7 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Declared before any citation. The PNGs, framebuffer hashes and pixel-diff percentages cited here are used ONLY as presence/absence evidence for RI-MTH07 coupling — 'did this pixel buffer change at a fixed sim frame, and is the picture non-blank' — and never to judge fidelity or art direction. The blankness statistics (distinct colours, luma sigma) are a guard against citing an empty frame, not an aesthetic claim. No fidelity or art-direction claim is made anywhere in this verdict."
+ },
+ "reference_items": [
+  {
+   "id": "RI-JRN03",
+   "path": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+   "side": "neutral",
+   "kind": "number",
+   "native_scale": "0-100 weighted over six blocks, plus ten hard fails that cap at 2 (## Scoring)",
+   "native_score": 87,
+   "native_max": 100,
+   "native_verdict": "Below bar — named remedy required (70-89)",
+   "score_0_10": 6,
+   "measured": "partial",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
+    "reports/journeys/input-checks-r2/checks.json"
+   ],
+   "why_not_ten": "10 points (M-N1/N2/N3/N5/N7) are the naive pass, which this piece may not run — it needs a JC-03N fleet agent under enforced isolation — so the item is capped at 90 by a dependency outside the builder's control and the 'Meets the bar' band is one point from arithmetically unreachable. A further 3 points are withheld from the discoverability block: the rendered-text register is now real and complete (all three surfaces instrumented, all three draw paths, 150 entries across eleven states) but every entry is on the `menus` surface — by_surface {menus: 150}, dialogue 0, title 0 — including in barge-hold/opening and after an explicit titleShow(). `complete` is derived from instrumentation, not observation, so HF5's forbidden-string search is gated over the HUD and menus and never over a line of dialogue, and classify()'s whole PROSE_SURFACES branch is dead code in practice.",
+   "path_to_ten": "(1) Publish `surfaces_with_entries` beside `surfaces_instrumented` in getRenderedText(), and make the instruction budget's own sweep enter a census node — it already knows how, M-P20's dialogue leg does exactly `censusBegin({}); censusEnter()` — so at least one dialogue string is in scope and the prose branch can fire. (2) Commission the JC-03N naive pass; without it this item cannot reach its top band."
   },
-  "build": {
-    "commit_sha": "dcf1d36",
-    "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "measured_on": "a pinned git worktree at dcf1d36, NOT the working tree \u2014 see status_reasons/broken_working_tree and method_deviations[0]",
-    "harness_commands": [
-      {
-        "command": "node tools/harness/boot-check.mjs   (in /home/user/elder-souls-claude, the working tree)",
-        "exit_code": 12,
-        "stdout_artifact": "ok:false, rendered_a_frame:false \u2014 first 'event type weather_change is not in the closed vocabulary', then 'TypeError: this._stepAmbience is not a function'. A sibling's uncommitted W1-22 audio edit to game/src/engine.js: a call site that landed before its method. NOT this piece's defect, and it voids any measurement taken against that tree."
-      },
-      {
-        "command": "node tools/harness/boot-check.mjs   (pinned worktree at dcf1d36) \u2014 run before and after all work",
-        "exit_code": 0,
-        "stdout_artifact": "boot-check: PASS \u2014 the engine constructed and the harness answers"
-      },
-      {
-        "command": "node tools/harness/critic-w1-08-r2-probe.mjs   (mine; one browser)",
-        "exit_code": 0,
-        "stdout_artifact": "out/critic-probe.json \u2014 first ablation pass, DISCARDED for an unstable null control; superseded by probe2"
-      },
-      {
-        "command": "node tools/harness/critic-w1-08-r2-probe2.mjs   (mine; one browser)",
-        "exit_code": 0,
-        "stdout_artifact": "out/probe2.json \u2014 clean ablation with both null controls stable, register sweep re-implemented, M-K20 broken on purpose, gamepad legs, S35 suppression"
-      },
-      {
-        "command": "node tools/harness/critic-w1-08-r2-probe3.mjs   (mine; one browser)",
-        "exit_code": 0,
-        "stdout_artifact": "out/probe3.json \u2014 CONSUMPTION on all eleven touch controls plus two null controls; the stuck-calibration escape question"
-      },
-      {
-        "command": "node tools/harness/critic-w1-08-r2-probe4.mjs   (mine; one browser)",
-        "exit_code": 0,
-        "stdout_artifact": "out/probe4.json \u2014 M-P20 re-derived at the item's own configuration: dialogue 7.00, journal 5.06, book 5.06 CSS px against a floor of 18; HUD 3.97"
-      },
-      {
-        "command": "node tools/journey/input-checks.mjs --self-test   (pinned tree, load 20-22, 26 concurrent browsers)",
-        "exit_code": 0,
-        "stdout_artifact": "out/selftest.log \u2014 re-run because the artifact the builder's report cites carries an EMPTY, errored self_test block"
-      },
-      {
-        "command": "for id in M-K8 M-K9 M-K20 M-K21 M-K22 M-N1 M-N2 M-N3 M-N5 M-N7 M-P14 M-P20 M-P24 M-P25; do grep -c \"'$id'\" tools/journey/input-checks.mjs; done",
-        "exit_code": 0,
-        "stdout_artifact": "3 3 2 3 4 4 4 4 4 4 4 5 2 3 \u2014 all fourteen >= 2, each a real function body plus a --self-test perturbation leg"
-      },
-      {
-        "command": "grep -rn 'min_text_css_px' tools/ game/src",
-        "exit_code": 0,
-        "stdout_artifact": "exactly one consumer in the tree (M-P20), which excludes every hud.* rect by construction \u2014 so the HUD's type size is measured by nothing"
-      }
-    ]
+  {
+   "id": "RI-JRN04",
+   "path": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+   "side": "neutral",
+   "kind": "number",
+   "native_scale": "0-100 weighted over seven blocks, plus eight hard fails that cap at 2 (## Scoring)",
+   "native_score": 81,
+   "native_max": 100,
+   "native_verdict": "Below bar — named remedy required (70-89)",
+   "score_0_10": 6,
+   "measured": "partial",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe4.json",
+    "docs/shots/2026-08-07-w1-29-critic-handheld-controls-drawn.png",
+    "docs/shots/2026-08-07-w1-29-critic-handheld-fix-deleted.png"
+   ],
+   "why_not_ten": "M-P15 (4) scores 0: a calibration begun on an unrecognised pad survives that pad's disconnect — _dropPad() never clears this.calibration and it never times out — so the next pad to arrive, including a mapping:'standard' one, produces NO action at all on any index, has its presses eaten as the stranger's calibration answers, and ends up carrying the stranger's permutation (index 0 -> roll, index 5 -> lock_on). The Lifecycle block loses 7 of 17 for the same reason: its entire subject is not losing the player and this loses the pad permanently. M-P20 (2) scores 0 at 0 of 3 surfaces against the floor. M-P25 (2) scores 0 — it is an exception, not a measurement, in the only artifact. 4 points are the naive pass, which this piece may not run.",
+   "path_to_ten": "(1) One line in game/src/input/gamepad.js _dropPad(): `if (st && this.calibration && !this.calibration.done) this.calibration = null;` — I applied it in the page and the same sequence then gives calibrating:false after the unplug and interact/light on the standard pad's indices 0 and 5; delete-the-fix reproduces the defect exactly. (2) A --self-test leg that begins a calibration, disconnects mid-sequence, connects a standard pad and asserts index 0 fires `interact`; and M-P15 extended to run its sequence a second time with a disconnect at prompt 3. (3) A minimum type size for the handheld profile — all three H10 surfaces are at 28-39% of the floor, not just the dialogue speaker header. (4) Commission the JC-04N naive pass."
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "reports/journeys/input-checks-r2/checks.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/input-checks.mjs --self-test (builder, round 2)",
+   "source": "theirs",
+   "note": "DISTRUSTED AS THE EVIDENCE IT IS CITED AS. The builder's report §6 calls this 'the last complete pass' and §3b.5 attributes '15/16 legs red, 50/61 pass, 3 FAIL' to that run. The file on disk contains counts {total:60, pass:47, fail:0, unmeasurable:13}, self_test {legs:[], vacuous:[], error:'page.evaluate: Target page, context or browser has been closed'}, and M-P20/M-P25 as exceptions rather than measurements. The killed run overwrote the good one. The report is candid that a run was pkill'ed; the provenance failure is that the surviving file is nonetheless offered as the evidence. I re-ran --self-test myself rather than score the claim on its report."
   },
-  "bifurcation": {
-    "axis": "not-visual",
-    "declared_before_citation": true,
-    "note": "Declared before any citation. The PNGs, framebuffer hashes and pixel-diff percentages cited here are used ONLY as presence/absence evidence for RI-MTH07 coupling \u2014 'did this pixel buffer change at a fixed sim frame, and is the picture non-blank' \u2014 and never to judge fidelity or art direction. The blankness statistics (distinct colours, luma sigma) are a guard against citing an empty frame, not an aesthetic claim. No fidelity or art-direction claim is made anywhere in this verdict."
+  {
+   "path": "reports/journeys/input-checks-r2-padrebind/checks.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/input-checks.mjs --group pad,rebind (builder, round 2)",
+   "source": "theirs",
+   "note": "TRUSTED. 20/20, and the before/after pair with checks-before-calibration-fix.json is the right shape for a build fix: same tool, same groups, one line of gamepad.js between them. M-K18 and M-P23 carry the repaired checks' published preconditions, which is what makes them readable."
   },
-  "reference_items": [
-    {
-      "id": "RI-JRN03",
-      "path": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
-      "side": "neutral",
-      "kind": "number",
-      "native_scale": "0-100 weighted over six blocks, plus ten hard fails that cap at 2 (## Scoring)",
-      "native_score": 87,
-      "native_max": 100,
-      "native_verdict": "Below bar \u2014 named remedy required (70-89)",
-      "score_0_10": 6,
-      "measured": "partial",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
-        "reports/journeys/input-checks-r2/checks.json"
-      ],
-      "why_not_ten": "10 points (M-N1/N2/N3/N5/N7) are the naive pass, which this piece may not run \u2014 it needs a JC-03N fleet agent under enforced isolation \u2014 so the item is capped at 90 by a dependency outside the builder's control and the 'Meets the bar' band is one point from arithmetically unreachable. A further 3 points are withheld from the discoverability block: the rendered-text register is now real and complete (all three surfaces instrumented, all three draw paths, 150 entries across eleven states) but every entry is on the `menus` surface \u2014 by_surface {menus: 150}, dialogue 0, title 0 \u2014 including in barge-hold/opening and after an explicit titleShow(). `complete` is derived from instrumentation, not observation, so HF5's forbidden-string search is gated over the HUD and menus and never over a line of dialogue, and classify()'s whole PROSE_SURFACES branch is dead code in practice.",
-      "path_to_ten": "(1) Publish `surfaces_with_entries` beside `surfaces_instrumented` in getRenderedText(), and make the instruction budget's own sweep enter a census node \u2014 it already knows how, M-P20's dialogue leg does exactly `censusBegin({}); censusEnter()` \u2014 so at least one dialogue string is in scope and the prose branch can fire. (2) Commission the JC-03N naive pass; without it this item cannot reach its top band."
-    },
-    {
-      "id": "RI-JRN04",
-      "path": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
-      "side": "neutral",
-      "kind": "number",
-      "native_scale": "0-100 weighted over seven blocks, plus eight hard fails that cap at 2 (## Scoring)",
-      "native_score": 81,
-      "native_max": 100,
-      "native_verdict": "Below bar \u2014 named remedy required (70-89)",
-      "score_0_10": 6,
-      "measured": "partial",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe3.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe4.json",
-        "docs/shots/2026-08-07-w1-29-critic-handheld-controls-drawn.png",
-        "docs/shots/2026-08-07-w1-29-critic-handheld-fix-deleted.png"
-      ],
-      "why_not_ten": "M-P15 (4) scores 0: a calibration begun on an unrecognised pad survives that pad's disconnect \u2014 _dropPad() never clears this.calibration and it never times out \u2014 so the next pad to arrive, including a mapping:'standard' one, produces NO action at all on any index, has its presses eaten as the stranger's calibration answers, and ends up carrying the stranger's permutation (index 0 -> roll, index 5 -> lock_on). The Lifecycle block loses 7 of 17 for the same reason: its entire subject is not losing the player and this loses the pad permanently. M-P20 (2) scores 0 at 0 of 3 surfaces against the floor. M-P25 (2) scores 0 \u2014 it is an exception, not a measurement, in the only artifact. 4 points are the naive pass, which this piece may not run.",
-      "path_to_ten": "(1) One line in game/src/input/gamepad.js _dropPad(): `if (st && this.calibration && !this.calibration.done) this.calibration = null;` \u2014 I applied it in the page and the same sequence then gives calibrating:false after the unplug and interact/light on the standard pad's indices 0 and 5; delete-the-fix reproduces the defect exactly. (2) A --self-test leg that begins a calibration, disconnects mid-sequence, connects a standard pad and asserts index 0 fires `interact`; and M-P15 extended to run its sequence a second time with a disconnect at prompt 3. (3) A minimum type size for the handheld profile \u2014 all three H10 surfaces are at 28-39% of the floor, not just the dialogue speaker header. (4) Commission the JC-04N naive pass."
-    }
-  ],
-  "artifacts": [
-    {
-      "path": "reports/journeys/input-checks-r2/checks.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/input-checks.mjs --self-test (builder, round 2)",
-      "source": "theirs",
-      "note": "DISTRUSTED AS THE EVIDENCE IT IS CITED AS. The builder's report \u00a76 calls this 'the last complete pass' and \u00a73b.5 attributes '15/16 legs red, 50/61 pass, 3 FAIL' to that run. The file on disk contains counts {total:60, pass:47, fail:0, unmeasurable:13}, self_test {legs:[], vacuous:[], error:'page.evaluate: Target page, context or browser has been closed'}, and M-P20/M-P25 as exceptions rather than measurements. The killed run overwrote the good one. The report is candid that a run was pkill'ed; the provenance failure is that the surviving file is nonetheless offered as the evidence. I re-ran --self-test myself rather than score the claim on its report."
-    },
-    {
-      "path": "reports/journeys/input-checks-r2-padrebind/checks.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/input-checks.mjs --group pad,rebind (builder, round 2)",
-      "source": "theirs",
-      "note": "TRUSTED. 20/20, and the before/after pair with checks-before-calibration-fix.json is the right shape for a build fix: same tool, same groups, one line of gamepad.js between them. M-K18 and M-P23 carry the repaired checks' published preconditions, which is what makes them readable."
-    },
-    {
-      "path": "docs/shots/2026-08-07-w1-29-critic-handheld-controls-drawn.png",
-      "kind": "screenshot",
-      "produced_by": "tools/harness/critic-w1-08-r2-probe2.mjs (mine), pinned sim frame 24, 844x390 handheld, my own browser",
-      "source": "ours",
-      "note": "Eleven marks in a thumb arc, no text on any of them. Blankness test run and passed: 409 distinct colours, luma sigma 28.196. Taken with my own browser rather than tools/capture/ because the capture service has no device-class parameter \u2014 declared under method_deviations.",
-      "camera_pose": {
-        "mode": "third",
-        "yaw_deg": 0,
-        "pitch_deg": 0,
-        "fov": 70,
-        "note": "the shipped default third-person rig at arena_flat; sim frame PINNED at 24 and identical in every arm"
-      },
-      "resolution": "844x390 CSS px, dpr 1 (the RI-JRN04 phone viewport)"
-    },
-    {
-      "path": "docs/shots/2026-08-07-w1-29-critic-handheld-fix-deleted.png",
-      "kind": "screenshot",
-      "produced_by": "same probe, same pinned frame, with Engine._uiCtx().touch/.rotate severed",
-      "source": "ours",
-      "note": "Round 1's defect reproduced on demand: empty glass on a phone. md5 identical to the desktop arm.",
-      "camera_pose": {
-        "mode": "third",
-        "yaw_deg": 0,
-        "pitch_deg": 0,
-        "fov": 70,
-        "note": "the shipped default third-person rig at arena_flat; sim frame PINNED at 24 and identical in every arm"
-      },
-      "resolution": "844x390 CSS px, dpr 1 (the RI-JRN04 phone viewport)"
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-08-r2-probe2.mjs (mine, one browser, pinned worktree at dcf1d36)",
-      "source": "ours",
-      "note": "The clean ablation (both null controls byte-identical to their own arm; delete-the-fix returns handheld to exactly the desktop hash), the eleven-state rendered-text sweep re-implemented by me, M-K20 broken on purpose through the shipped uiToast path, the gamepad legs, and the S35 screen-suppression measurement."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe3.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-08-r2-probe3.mjs (mine, one browser)",
-      "source": "ours",
-      "note": "CONSUMPTION: all eleven touch controls driven at the coordinates the layout model publishes, each with its own edge and its own world-side effect, plus two null controls (a still thumb: 0.0000 m; dead glass: no edges). Also the stuck-calibration escape question \u2014 touch stays live, so HF10 is not triggered."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe4.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-08-r2-probe4.mjs (mine, one browser)",
-      "source": "ours",
-      "note": "M-P20 re-derived at the item's own configuration (844x390 logical, dpr 2, 1688x780 backing store): dialogue 7.00, journal 5.06, book 5.06 CSS px against a floor of 18, and the excluded HUD at 3.97."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/critic-probe.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-08-r2-probe.mjs (mine)",
-      "source": "ours",
-      "note": "DISCARDED AND SUPERSEDED, kept deliberately. Its ablation stepped a frame between arms so no null control was stable, and it forced touch on with setTouchEnabled(true) so the overlay drew on the desktop arm too. Published because it is exactly the confound that would let a later round claim the opposite result in either direction."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
-      "kind": "log",
-      "produced_by": "node tools/journey/input-checks.mjs --self-test (mine, pinned tree at dcf1d36, loadavg 20-22 with 26 concurrent browsers)",
-      "source": "ours",
-      "note": "Re-run because the artifact the builder's report cites carries an empty, errored self_test block. It reached the viewport group and STALLED there under contention \u2014 the failure mode the round-2 builder measured and warned about ('does not complete at all at load 15-20'), reproduced. Every check it did reach is quoted in the verdict; the 15/16 self-test leg count is therefore recorded as UNCONFIRMED rather than accepted or denied."
-    },
-    {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/critic-w1-08-r2-probe2.mjs",
-      "kind": "text-excerpt",
-      "produced_by": "written by this critic",
-      "source": "ours",
-      "note": "The probe source, so a successor can see the predicates are mine and re-run them. probe.mjs, probe3.mjs and probe4.mjs sit beside it."
-    }
-  ],
-  "source_reads": [
-    {
-      "path": "game/src/input/gamepad.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read AFTER re-deriving the builder's fix by measurement. The read is what located the residual: `this.calibration` carries no pad id, `_beginCalibration()` is triggered from `_adoptPad()`, and `_dropPad()` never clears it. The hypothesis was then confirmed in the running browser before it was written down."
-    },
-    {
-      "path": "game/src/render/text-register.js",
-      "purpose": "locate-harness",
-      "note": "To establish that the register is fed by the DRAW CALL and covers the vector glyph path, not a second copy of the layout's intentions."
-    },
-    {
-      "path": "tools/journey/input-checks.mjs",
-      "purpose": "locate-harness",
-      "note": "To confirm the fourteen ids are function bodies rather than mentions, and to read M-P20's HUD-exclusion rationale before judging it. I re-implemented the register sweep and M-P20 myself rather than calling window.__IC."
-    },
-    {
-      "path": "game/src/input/real.js",
-      "purpose": "locate-harness",
-      "note": "To find the SHIPPED touch-enable gate (applyDeviceClass) after discovering that my first ablation had forced it with setTouchEnabled() and thereby drawn the overlay on the desktop arm too."
-    }
-  ],
-  "blind_comparisons": [],
-  "arbitration": {
-    "ar1": {
-      "status": "pass",
-      "checks": [
-        {
-          "id": "A1",
-          "result": "pass",
-          "observed": "No roll-to-hit or dice mechanic in the input path. Every action resolves deterministically from an edge; M-K23 gives p100 = 1 frame over 200 inputs with 0 never consumed, which is incompatible with a probabilistic gate. Re-observed in my own --self-test run, not carried over from round 1.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
-          ]
-        },
-        {
-          "id": "A4",
-          "result": "pass",
-          "observed": "No pause mid-fight. M-P12 disconnects the pad during play and the sim advances 301 frames with 0 modal surfaces \u2014 seam S14 upheld on the exact case the item predicts (a telescopic USB-C pad jogging loose). Noted with some irony: that same disconnect, taken during calibration rather than during play, is the biggest gap in this verdict.",
-          "evidence": [
-            "reports/journeys/input-checks-r2/checks.json"
-          ]
-        },
-        {
-          "id": "A6",
-          "result": "pass",
-          "observed": "No input-driven animation cancel. M-K6/M-K7 release held actions within 1 frame of blur and visibilitychange while recording displacement_after_commitment_m = 0.0000 \u2014 the committed state finishes and only then does the release take effect.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
-          ]
-        },
-        {
-          "id": "A9",
-          "result": "pass",
-          "observed": "S33 applied rather than used as cover: M-K24 reports pipeline_drops 0 over 10 000 inputs beside aggregate_droppedInputs 9487, in separate counters, summed in neither direction. A press lost in transport is zero; a press refused by a combat window is the combat system working.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
-          ]
-        }
-      ]
-    },
-    "ar2": {
-      "status": "pass",
-      "checks": [
-        {
-          "id": "B1",
-          "result": "pass",
-          "observed": "S35 reconciled correctly. There is a map and it is a menu screen; the action set stays closed at sixteen so no `map` action was invented. Measured on 844x390 handheld: world 11 controls, map ['__drawer'], journal ['__drawer'], inventory 11 (correctly not suppressed \u2014 you act in an inventory), world restored to 11. Eleven combat marks across a chart of the coast would have been an objective marker arrived at from the other side; they are not there. The drawer, which carries `menu`, stays, so a touch-only player can still close the screen.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json"
-          ]
-        },
-        {
-          "id": "B2",
-          "result": "pass",
-          "observed": "Every refusal is in fiction and none is a control legend. Ctrl+W and F5 are refused with 'The bindings hold. That hand belongs to the window, not to you.' The calibration prompts are 'Swing.', 'Get out of the way.', 'Take it on the shield.', 'Stop and think.' \u2014 an instruction to the character, not to the hand. No control name appears on any of the eleven drawn marks.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
-            "docs/shots/2026-08-07-w1-29-critic-handheld-controls-drawn.png"
-          ]
-        },
-        {
-          "id": "B3",
-          "result": "pass",
-          "observed": "The instruction budget is respected in the drawn frame, not only in the model: DS1's zero tutorial budget is met and DS2's sanctioned alternative is now actually shipped \u2014 10 inscriptions across 5 states, 4 before the first meaningful choice, every DS4 verb covered, none addressing the player.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
-          ]
-        }
-      ]
-    },
-    "ar3": {
-      "status": "not-sterile-but-thin",
-      "seam_sterile": false,
-      "observed": "One real crossing, unchanged from round 1 and not inflated: the input layer refuses presses the combat model rejects and keeps that refusal in a counter distinct from transport loss, so a Morrowind-side window refusing a Souls-side press is observable rather than conflated with a dropped input. Nothing this round widened it. Recorded as thin.",
-      "justification": "This is an input piece and is legitimately mostly internal, but a build with input as its only seam crossing is exactly the sterility RI-CMP01 governs. Not a fail; reported."
-    },
-    "consumption": {
-      "status": "pass",
-      "models": [
-        {
-          "model": "the touch overlay draw path (game/src/ui/touch-overlay.js via Engine._uiCtx)",
-          "world_side_consumer": "UISystem.build() -> the composited framebuffer",
-          "coupling": 1,
-          "demonstration": "Sim frame pinned at 24 and never stepped between arms; touch enabled by device class through the shipped applyDeviceClass() path. Both null controls byte-identical to their own arm. Severing _uiCtx().touch/.rotate returns the handheld framebuffer to EXACTLY the desktop hash (0.000% of pixels differing); restoring it returns 4.702%. Round 1's coupling_zero on M-P16/M-P17/M-P21/M-P22 is discharged."
-        },
-        {
-          "model": "the touch input model (TouchInput.layout(), which feeds BOTH the drawing and the hit test)",
-          "world_side_consumer": "sim.player \u2014 combat state, stamina and position",
-          "coupling": 1,
-          "demonstration": "All eleven controls driven at the coordinates the layout itself publishes. roll -> BACKSTEP, -14 stamina, 2.211 m; light -> ATK_STARTUP, -20; heavy -> ATK_STARTUP, -34; jump -> JUMP_AIR, -18, 0.349 m; parry -> PARRY_ACTIVE, -22; use_item -> HEAL_STARTUP. The floating stick moves the player 3.2533 m with 0.0000 m of drift after release. NULL CONTROLS: a thumb held still in the same place moves the player 0.0000 m; a tap on dead glass produces no edges at all."
-        },
-        {
-          "model": "the input profile document (game/data/input/profiles.json)",
-          "world_side_consumer": "GamepadRouter._applyButtons / the compiled keyboard map",
-          "coupling": 1,
-          "demonstration": "perturbInput() edits the document as the running game holds it and the change reaches the world on the next poll \u2014 every consumer reads the document rather than a copy taken at boot. Independently, the calibration permutation I taught an unrecognised pad changed which action a raw index produced in the running world, which is the same property observed from the defect side."
-        }
-      ]
-    },
-    "notes": "S32 respected: the raw 0.14 deadzone is owned here as a device property and nothing in this verdict claims anything about the response curve above it, which belongs to RI-CAM02."
+  {
+   "path": "docs/shots/2026-08-07-w1-29-critic-handheld-controls-drawn.png",
+   "kind": "screenshot",
+   "produced_by": "tools/harness/critic-w1-08-r2-probe2.mjs (mine), pinned sim frame 24, 844x390 handheld, my own browser",
+   "source": "ours",
+   "note": "Eleven marks in a thumb arc, no text on any of them. Blankness test run and passed: 409 distinct colours, luma sigma 28.196. Taken with my own browser rather than tools/capture/ because the capture service has no device-class parameter — declared under method_deviations.",
+   "camera_pose": {
+    "mode": "third",
+    "yaw_deg": 0,
+    "pitch_deg": 0,
+    "fov": 70,
+    "note": "the shipped default third-person rig at arena_flat; sim frame PINNED at 24 and identical in every arm"
+   },
+   "resolution": "844x390 CSS px, dpr 1 (the RI-JRN04 phone viewport)"
   },
-  "score": {
-    "overall_0_10": 6,
-    "pass_threshold": 7,
-    "aggregation": "min",
-    "band_label": "Below bar \u2014 named remedy required",
-    "confidence": "high",
-    "weights": {
-      "RI-JRN03": 1,
-      "RI-JRN04": 1
-    }
+  {
+   "path": "docs/shots/2026-08-07-w1-29-critic-handheld-fix-deleted.png",
+   "kind": "screenshot",
+   "produced_by": "same probe, same pinned frame, with Engine._uiCtx().touch/.rotate severed",
+   "source": "ours",
+   "note": "Round 1's defect reproduced on demand: empty glass on a phone. md5 identical to the desktop arm.",
+   "camera_pose": {
+    "mode": "third",
+    "yaw_deg": 0,
+    "pitch_deg": 0,
+    "fov": 70,
+    "note": "the shipped default third-person rig at arena_flat; sim frame PINNED at 24 and identical in every arm"
+   },
+   "resolution": "844x390 CSS px, dpr 1 (the RI-JRN04 phone viewport)"
   },
-  "status": "FAIL",
-  "status_reasons": [
-    "below_wave_gate:6.0_of_7.0",
-    "calibration_outlives_its_pad:RI-JRN04/M-P15",
-    "type_below_floor_all_surfaces:RI-JRN04/M-P20",
-    "unmeasured_surface_reports_complete:RI-JRN03/M-K20-dialogue",
-    "exception_not_measurement:RI-JRN04/M-P25",
-    "missing_artifact_for_headline_claim:self_test_legs",
-    "ungated_hard_fail:RI-JRN03/HF10",
-    "corpus_debt:naive_pass_caps_RI-JRN03_at_90_and_RI-JRN04_at_96",
-    "corpus_debt:RI-JRN04/H10_does_not_cover_the_HUD",
-    "unverified_on_hardware:gamesir-x2s-type-c",
-    "broken_working_tree:sibling_W1-22_stepAmbience_call_site_before_method"
-  ],
-  "biggest_gap": {
-    "gap_id": "GAP-W1-input-calibration-outlives-its-pad-on-disconnect",
-    "subsystem_path": "input.gamepad.lifecycle",
-    "severity": "major",
-    "what": "Round 2's build fix guards the COMPLETED calibration by pad id \u2014 `const perm = this.calibrationResult && this.calibrationResult.id === st.id ? ... : null` \u2014 and I re-derived it: calibrate a stranger through all six prompts, unplug, plug in a standard pad, and index 0 fires `interact` and index 5 fires `light`. Correct. But nothing guards the calibration IN PROGRESS. `this.calibration` is instance state with no pad id on it, `_beginCalibration()` is triggered from `_adoptPad()`, `_dropPad()` never clears it, and it never times out. `poll()` then runs `_calibrationPoll(st)` against whatever pad is currently active. Measured on dcf1d36 with my own driver: answer 2 of 6 prompts on an unrecognised pad, unplug it (n_pads 0) -> `calibrating: true`, prompt still 3/6; plug in a mapping:'standard' pad -> indices 0, 1, 2 and 3 ALL produce NOTHING, a completely dead pad; those four presses are consumed as the stranger's calibration answers and the prompt advances 3/6 -> 5/6; finishing the sequence writes result_id 'Xbox 360 Controller (XInput STANDARD GAMEPAD)' carrying the stranger's permutation, after which index 0 fires `roll`, index 4 `menu` and index 5 `lock_on`; after 600 further frames it is still calibrating.",
-    "why_it_matters": "This is the same player-visible symptom the round's own commit message claims to have fixed \u2014 'Calibrate one gamepad and the next one you plug in fires the wrong buttons' \u2014 reached by an ordinary route instead of an exotic one. The owner plugs a GameSir X2s in its DualSense-like HID mode, the game correctly starts the six-prompt calibration, and the USB-C connector jogs loose. That is not a hypothetical: it is the exact scenario M-P12 was written for and passes on. They re-seat it or reach for a normal pad, and the pad is dead with an in-fiction prompt on screen that never goes away. On a phone, index 0 is the only index there ever is. The round's one build fix and its one repaired instrument were pointed at the same route into the same defect and neither was asked what else could get there \u2014 M-P15 only ever calibrates and never disconnects.",
-    "not_a_hard_fail_because": "I checked rather than assumed whether this is HF10 / M-N5's 'unrecoverable loss of control'. It is not: with the calibration stuck I read the touch layout and drove it, all sixteen actions are still reachable and `light` still fires, so on a handheld the glass stays live. RI-JRN04 HF2 ('a scrambled map, or a refusal to run, on a mapping !== standard device') produces both consequences here and the non-standard device is the cause, but the device the scrambled map appears ON is the standard one, so the gate's literal subject is not met and I have not applied it. An arbiter reading HF2 by purpose rather than wording should cap RI-JRN04 at 2, and I would not argue.",
-    "remedy": {
-      "action": "game/src/input/gamepad.js, in _dropPad() after `this.pads.delete(idx)`: `if (st && this.calibration && !this.calibration.done) this.calibration = null;` \u2014 a calibration belongs to the pad it was begun on, exactly as the completed result now does. I applied this in the page and re-ran the identical sequence: `calibrating: false` after the unplug, and the standard pad's index 0 fires `interact` and index 5 fires `light`. Delete-the-fix reproduces the defect exactly, in both directions.",
-      "targets": [
-        "game/src/input/gamepad.js",
-        "tools/journey/input-checks.mjs"
-      ],
-      "acceptance": "A --self-test leg that begins a calibration, disconnects the pad mid-sequence, connects a mapping:'standard' pad and asserts index 0 fires `interact` \u2014 and that the leg goes red when the one line is removed. Plus M-P15 extended to run its sequence a second time with a disconnect at prompt 3, reporting the action the pad really fired when it is not `interact`, which is the property the repaired M-K18/M-P23 already have."
-    },
-    "evidence": [
-      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe3.json"
-    ]
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-08-r2-probe2.mjs (mine, one browser, pinned worktree at dcf1d36)",
+   "source": "ours",
+   "note": "The clean ablation (both null controls byte-identical to their own arm; delete-the-fix returns handheld to exactly the desktop hash), the eleven-state rendered-text sweep re-implemented by me, M-K20 broken on purpose through the shipped uiToast path, the gamepad legs, and the S35 screen-suppression measurement."
   },
-  "secondary_observations": [
-    {
-      "id": "SO-1",
-      "what": "M-P20 is red on ALL THREE of H10's surfaces, not one. Re-derived independently at the item's own configuration (844x390 logical, dpr 2, 1688x780 backing store): dialogue 7.00 CSS px ('JEEH-EI'), journal 5.06 ('The Company Man'), book 5.06 ('1-2 of 7'), against a floor of 18. The builder's report names only the 7 px dialogue speaker header, which is the LEAST severe of the three; journal and book body text is at 28% of the floor.",
-      "severity": "major",
-      "note": "The builder flagged rather than softened its own threshold, which is right, and the defect is real. The criticism is of the selection, not the honesty."
-    },
-    {
-      "id": "SO-2",
-      "what": "The HUD's type size is measured by nothing. `grep -rn min_text_css_px` finds exactly one consumer in the tree \u2014 M-P20 \u2014 and M-P20 excludes every `hud.*` rect by construction, correctly, because H10 names three surfaces and the HUD is not one. At the same configuration the smallest HUD run is 3.97 CSS px ('LIGHT'). The one surface that is on a phone screen 100% of the time has no legibility check.",
-      "severity": "moderate",
-      "note": "Filed as corpus_debt against RI-JRN04's H10, not as a charge against this builder. The exclusion is documented and reasoned in the check's own comment, which names 'LIGHT, 11 units' explicitly."
-    },
-    {
-      "id": "SO-3",
-      "what": "The rendered-text register reports `complete: true` on surfaces it has never seen a string from. Across the eleven-state sweep: 150 entries, all of them `menus`; `dialogue` 0 and `title` 0, including in barge-hold/opening and after an explicit titleShow(). `complete` is derived from INSTRUMENTATION, not observation.",
-      "severity": "moderate",
-      "note": "This is round 1's defect one order smaller and in the same shape. Remedy: publish `surfaces_with_entries` beside `surfaces_instrumented`, and have the instruction budget's sweep enter a census node so a dialogue string is in scope \u2014 M-P20's dialogue leg already shows how."
-    },
-    {
-      "id": "SO-4",
-      "what": "The whole left half of a phone screen is empty. The stick is floating by design ('the stick originates wherever the thumb lands', which is the right engineering choice for a device whose size is unknown) and the eleven drawn marks are all in the right-hand thumb arc, so there is no drawn affordance for movement anywhere.",
-      "severity": "minor",
-      "note": "Not scored \u2014 the item does not require a drawn stick, and drawing a fixed rosette would be worse. Recorded because \u00a7F's mechanism is that what the player can see, they can try, and this is the most likely thing a naive pass will find first. The naive pass has still not been run."
-    },
-    {
-      "id": "SO-5",
-      "what": "The working tree does not boot. `node tools/harness/boot-check.mjs` exits 12 with 'TypeError: this._stepAmbience is not a function' \u2014 a sibling's uncommitted W1-22 edit put a call site in Engine._afterStep() before the method existed. This is the third time in this project that a call site has landed ahead of its method and the second time in two rounds that it has cost a measurement pass wall clock.",
-      "severity": "moderate",
-      "note": "Not this piece's defect and it does not affect this piece's score. Reported because an orchestrator reading only per-piece verdicts will not otherwise see that the shared tree is red, and because the previous round's builder lost a complete self-test pass to exactly this ('Engine._boot: SoulsSystem is not defined')."
-    },
-    {
-      "id": "SO-6",
-      "what": "M-K22's repair is the right kind and is worth protecting. Round 1's substring matcher fired on sixteen ordinary Argonian names ('Waits-For-Salt the Shorter' -> 'rt'). The two token classes now have separate matchers, `-` is a word boundary, and the check reports `unmeasurable` if its own three-hit/three-miss lexicon control fails rather than grading with a broken lexicon. It enumerated 195 prompt strings in my run.",
-      "severity": "none",
-      "note": "A check that fires on nothing real trains its reader to ignore it, which is the mirror image of a check that cannot fire at all. Both halves are now handled."
-    }
-  ],
-  "method_deviations": [
-    {
-      "ref_item": "both",
-      "deviation": "Every measurement was taken on a pinned git worktree at commit dcf1d36 in the scratchpad, with tools/node_modules symlinked, rather than on /home/user/elder-souls-claude.",
-      "why": "The working tree does not boot: boot-check exits 12 with 'TypeError: this._stepAmbience is not a function' from a sibling's uncommitted W1-22 audio edit. A build that constructs and renders no frame voids every browser measurement taken against it. dcf1d36 is the newest commit containing all of round 2's work that passes boot-check, and it excludes the sibling's uncommitted edits by construction.",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "both",
-      "deviation": "I wrote four probes of my own (tools/harness/critic-w1-08-r2-probe.mjs, -probe2, -probe3, -probe4) and re-implemented the register sweep and M-P20's method rather than calling the builder's window.__IC helpers.",
-      "why": "TOOL-LOOP rule 3 and the brief: a critic must be able to say the predicate is its own. Re-implementing M-P20 is what surfaced that journal and book are worse than dialogue, which calling mp20() would have reported as a single boolean.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "RI-JRN04",
-      "deviation": "The handheld screenshots were taken with my own browser rather than through tools/capture/.",
-      "why": "The capture service's request schema has no device-class parameter (protocol.mjs: viewpoint, state, seed, place, pose, camera, ...), so it cannot produce a handheld frame at all. I was holding a browser for the stepping legs regardless and reused it, per the one-browser rule. pgrep -c headless_shell was 0 at launch.",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "RI-JRN04",
-      "deviation": "My first ablation pass (out/critic-probe.json) is DISCARDED and superseded by probe2. It stepped one sim frame between arms, so the null control was not stable \u2014 every arm had a different framebuffer hash \u2014 and it forced touch on with setTouchEnabled(true), which drew the overlay on the DESKTOP arm too and would have supported the opposite conclusion.",
-      "why": "Recorded rather than deleted because it is exactly how a later round could claim a false result in either direction. The replacement pins the frame, never steps between arms, and lets device class drive touch through the shipped applyDeviceClass() path.",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "RI-JRN04",
-      "deviation": "My first CONSUMPTION leg is DISCARDED. It read `control.id` / `control.cx` / `control.cy`; the layout records are `{action, x, y, r}`. Every coordinate was undefined, every press landed nowhere, and the empty edge list read precisely like 'the overlay consumes nothing'.",
-      "why": "The most dangerous near-miss in this run and the one a successor most needs. It was caught only because the same run's touchLayout() dump showed the real field names. The replacement drives the coordinates the layout model itself publishes and carries two null controls.",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "both",
-      "deviation": "The naive passes (RI-JRN03 M-N1/N2/N3/N5/N7 and RI-JRN04 M-N1/N3/N5) were not run by me, and must not be.",
-      "why": "They are a fresh-agent procedure under enforced isolation and require a JC-03N/JC-04N fleet agent. The tool correctly reports them `unmeasurable` with the transcript schema and the command rather than performing them for itself. Scored 0 fail-closed and named in path_to_ten.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "both",
-      "deviation": "Contention. pgrep -c headless_shell was 0 and loadavg 11.6 at the start and rose to 26 browsers at loadavg 20-22 by the end as siblings came up. I launched one browser per probe and reused it across all legs of that probe.",
-      "why": "Required by AGENT-PROTOCOL. Every figure in this verdict is a count, a colour, a hash, a pixel-diff percentage or a boolean; none is a timing, and none is load-sensitive. Where the builder's own numbers are timings I have not re-derived them and have not disputed them.",
-      "affects_scores": false
-    }
-  ],
-  "arbitration_questions": [
-    {
-      "question": "Does RI-JRN04 HF2 fire on a scrambled map that appears on a mapping:'standard' device as a direct consequence of a mapping !== 'standard' device having been present?",
-      "why_it_matters": "HF2 reads 'a scrambled map, or a refusal to run, on a mapping !== standard device'. The defect in \u00a77 produces both listed consequences and the non-standard device is the cause, but the device that ends up scrambled is the standard one. Read literally the gate does not fire and RI-JRN04 scores 81; read by purpose it fires and RI-JRN04 caps at 2, which would take the piece to 2/10. I have taken the literal reading so as not to stretch a gate, exactly as round 1 declined to claim an HF5 it had not driven \u2014 but the difference between 6 and 2 should be a ruling and not a critic's discretion.",
-      "my_provisional_answer": "Literal reading; not applied. Recorded so an arbiter can overrule cheaply."
-    }
-  ],
-  "corpus_extended": [
-    {
-      "item": "RI-JRN04",
-      "what": "H10's legibility floor covers dialogue, journal and book, and nothing anywhere covers the HUD. On the item's own phone configuration the HUD's smallest run is 3.97 CSS px against a floor of 18, and it is the one surface a player looks at for the whole session.",
-      "proposal": "Add a fourth surface to H10, or a separate M-P2x, measuring the smallest run inside the declared hud.* rects at the same configuration and against the same floor. M-P20 already computes it \u2014 my probe reports it from the same data in the same pass \u2014 so this costs the instrument nothing."
-    }
-  ],
-  "self_audit": {
-    "judged_output_not_source": true,
-    "ran_every_assigned_method": false,
-    "blind_done_where_required": true,
-    "named_exactly_one_gap": true,
-    "remedy_is_buildable": true,
-    "no_banned_reasoning_used": true,
-    "escalation_ladder_used_if_gap_seemed_small": true,
-    "broke_what_i_measured_on_purpose": true,
-    "self_audit_note": "ran_every_assigned_method is FALSE and this is the honest record: AR-1, AR-2, AR-3 and CONSUMPTION were all run first-hand, but the naive passes were not and must not be by me. On judged_output_not_source: in every case the measurement came first \u2014 the ablation before game/src/ui/touch-overlay.js was opened, the gamepad sequence in the browser before game/src/input/gamepad.js was read for the cause, M-P20 re-derived before mp20()'s implementation was read. The one exception is honest and stated: I read _dropPad() and _applyButtons() and FORMED the disconnect hypothesis from the code, then confirmed it in the running browser before writing it down, and applied and removed the fix in the page in both directions. On breaking what I measured: M-K20 was driven red through the shipped uiToast path; the overlay was ablated by severing _uiCtx and restored; the touch consumption legs carry two null controls (a still thumb and dead glass) that both produce nothing; the gamepad fix was applied and removed with the same sequence run either side. Two of my own probes produced results I discarded rather than published \u2014 an unstable null control and an undefined-coordinate press that read exactly like a coupling-zero \u2014 and both are in method_deviations because either would have been a false finding. Neither item carries blind_pair: yes, so no blind pack was owed."
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe3.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-08-r2-probe3.mjs (mine, one browser)",
+   "source": "ours",
+   "note": "CONSUMPTION: all eleven touch controls driven at the coordinates the layout model publishes, each with its own edge and its own world-side effect, plus two null controls (a still thumb: 0.0000 m; dead glass: no edges). Also the stuck-calibration escape question — touch stays live, so HF10 is not triggered."
   },
-  "notes": "Round 1 scored 5/10 and its summary was 'the controls exist, work, are correctly laid out, and are drawn nowhere'. That is no longer true and the change is real: I photographed the controls, the ablation is clean in both directions with two stable null controls, every one of the eleven moves the world against two silent null controls, the rendered-text register is fed by the draw call across all three surfaces and goes red when I draw a forbidden string through the shipped toast, and all fourteen previously-absent check ids are function bodies with perturbation legs. The round also found and fixed a real build defect on its own, correctly, and proved it by delete-the-fix. It still fails, for one reason above all: the fix and the repaired instrument were both aimed at one route into a defect that has two, and the second route is a cable jogging loose."
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe4.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-08-r2-probe4.mjs (mine, one browser)",
+   "source": "ours",
+   "note": "M-P20 re-derived at the item's own configuration (844x390 logical, dpr 2, 1688x780 backing store): dialogue 7.00, journal 5.06, book 5.06 CSS px against a floor of 18, and the excluded HUD at 3.97."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/critic-probe.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-08-r2-probe.mjs (mine)",
+   "source": "ours",
+   "note": "DISCARDED AND SUPERSEDED, kept deliberately. Its ablation stepped a frame between arms so no null control was stable, and it forced touch on with setTouchEnabled(true) so the overlay drew on the desktop arm too. Published because it is exactly the confound that would let a later round claim the opposite result in either direction."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
+   "kind": "log",
+   "produced_by": "node tools/journey/input-checks.mjs --self-test (mine, pinned tree at dcf1d36, loadavg 20-22 with 26 concurrent browsers)",
+   "source": "ours",
+   "note": "Re-run because the artifact the builder's report cites carries an empty, errored self_test block. It reached the viewport group and STALLED there under contention — the failure mode the round-2 builder measured and warned about ('does not complete at all at load 15-20'), reproduced. Every check it did reach is quoted in the verdict; the 15/16 self-test leg count is therefore recorded as UNCONFIRMED rather than accepted or denied."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/critic-w1-08-r2-probe2.mjs",
+   "kind": "text-excerpt",
+   "produced_by": "written by this critic",
+   "source": "ours",
+   "note": "The probe source, so a successor can see the predicates are mine and re-run them. probe.mjs, probe3.mjs and probe4.mjs sit beside it."
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/input/gamepad.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read AFTER re-deriving the builder's fix by measurement. The read is what located the residual: `this.calibration` carries no pad id, `_beginCalibration()` is triggered from `_adoptPad()`, and `_dropPad()` never clears it. The hypothesis was then confirmed in the running browser before it was written down."
+  },
+  {
+   "path": "game/src/render/text-register.js",
+   "purpose": "locate-harness",
+   "note": "To establish that the register is fed by the DRAW CALL and covers the vector glyph path, not a second copy of the layout's intentions."
+  },
+  {
+   "path": "tools/journey/input-checks.mjs",
+   "purpose": "locate-harness",
+   "note": "To confirm the fourteen ids are function bodies rather than mentions, and to read M-P20's HUD-exclusion rationale before judging it. I re-implemented the register sweep and M-P20 myself rather than calling window.__IC."
+  },
+  {
+   "path": "game/src/input/real.js",
+   "purpose": "locate-harness",
+   "note": "To find the SHIPPED touch-enable gate (applyDeviceClass) after discovering that my first ablation had forced it with setTouchEnabled() and thereby drawn the overlay on the desktop arm too."
+  }
+ ],
+ "blind_comparisons": [],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "observed": "No roll-to-hit or dice mechanic in the input path. Every action resolves deterministically from an edge; M-K23 gives p100 = 1 frame over 200 inputs with 0 never consumed, which is incompatible with a probabilistic gate. Re-observed in my own --self-test run, not carried over from round 1.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
+     ]
+    },
+    {
+     "id": "A4",
+     "result": "pass",
+     "observed": "No pause mid-fight. M-P12 disconnects the pad during play and the sim advances 301 frames with 0 modal surfaces — seam S14 upheld on the exact case the item predicts (a telescopic USB-C pad jogging loose). Noted with some irony: that same disconnect, taken during calibration rather than during play, is the biggest gap in this verdict.",
+     "evidence": [
+      "reports/journeys/input-checks-r2/checks.json"
+     ]
+    },
+    {
+     "id": "A6",
+     "result": "pass",
+     "observed": "No input-driven animation cancel. M-K6/M-K7 release held actions within 1 frame of blur and visibilitychange while recording displacement_after_commitment_m = 0.0000 — the committed state finishes and only then does the release take effect.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
+     ]
+    },
+    {
+     "id": "A9",
+     "result": "pass",
+     "observed": "S33 applied rather than used as cover: M-K24 reports pipeline_drops 0 over 10 000 inputs beside aggregate_droppedInputs 9487, in separate counters, summed in neither direction. A press lost in transport is zero; a press refused by a combat window is the combat system working.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
+     ]
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "pass",
+     "observed": "S35 reconciled correctly. There is a map and it is a menu screen; the action set stays closed at sixteen so no `map` action was invented. Measured on 844x390 handheld: world 11 controls, map ['__drawer'], journal ['__drawer'], inventory 11 (correctly not suppressed — you act in an inventory), world restored to 11. Eleven combat marks across a chart of the coast would have been an objective marker arrived at from the other side; they are not there. The drawer, which carries `menu`, stays, so a touch-only player can still close the screen.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json"
+     ]
+    },
+    {
+     "id": "B2",
+     "result": "pass",
+     "observed": "Every refusal is in fiction and none is a control legend. Ctrl+W and F5 are refused with 'The bindings hold. That hand belongs to the window, not to you.' The calibration prompts are 'Swing.', 'Get out of the way.', 'Take it on the shield.', 'Stop and think.' — an instruction to the character, not to the hand. No control name appears on any of the eleven drawn marks.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
+      "docs/shots/2026-08-07-w1-29-critic-handheld-controls-drawn.png"
+     ]
+    },
+    {
+     "id": "B3",
+     "result": "pass",
+     "observed": "The instruction budget is respected in the drawn frame, not only in the model: DS1's zero tutorial budget is met and DS2's sanctioned alternative is now actually shipped — 10 inscriptions across 5 states, 4 before the first meaningful choice, every DS4 verb covered, none addressing the player.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log"
+     ]
+    }
+   ]
+  },
+  "ar3": {
+   "status": "not-sterile-but-thin",
+   "seam_sterile": false,
+   "observed": "One real crossing, unchanged from round 1 and not inflated: the input layer refuses presses the combat model rejects and keeps that refusal in a counter distinct from transport loss, so a Morrowind-side window refusing a Souls-side press is observable rather than conflated with a dropped input. Nothing this round widened it. Recorded as thin.",
+   "justification": "This is an input piece and is legitimately mostly internal, but a build with input as its only seam crossing is exactly the sterility RI-CMP01 governs. Not a fail; reported."
+  },
+  "consumption": {
+   "status": "pass",
+   "models": [
+    {
+     "model": "the touch overlay draw path (game/src/ui/touch-overlay.js via Engine._uiCtx)",
+     "world_side_consumer": "UISystem.build() -> the composited framebuffer",
+     "coupling": 1,
+     "demonstration": "Sim frame pinned at 24 and never stepped between arms; touch enabled by device class through the shipped applyDeviceClass() path. Both null controls byte-identical to their own arm. Severing _uiCtx().touch/.rotate returns the handheld framebuffer to EXACTLY the desktop hash (0.000% of pixels differing); restoring it returns 4.702%. Round 1's coupling_zero on M-P16/M-P17/M-P21/M-P22 is discharged."
+    },
+    {
+     "model": "the touch input model (TouchInput.layout(), which feeds BOTH the drawing and the hit test)",
+     "world_side_consumer": "sim.player — combat state, stamina and position",
+     "coupling": 1,
+     "demonstration": "All eleven controls driven at the coordinates the layout itself publishes. roll -> BACKSTEP, -14 stamina, 2.211 m; light -> ATK_STARTUP, -20; heavy -> ATK_STARTUP, -34; jump -> JUMP_AIR, -18, 0.349 m; parry -> PARRY_ACTIVE, -22; use_item -> HEAL_STARTUP. The floating stick moves the player 3.2533 m with 0.0000 m of drift after release. NULL CONTROLS: a thumb held still in the same place moves the player 0.0000 m; a tap on dead glass produces no edges at all."
+    },
+    {
+     "model": "the input profile document (game/data/input/profiles.json)",
+     "world_side_consumer": "GamepadRouter._applyButtons / the compiled keyboard map",
+     "coupling": 1,
+     "demonstration": "perturbInput() edits the document as the running game holds it and the change reaches the world on the next poll — every consumer reads the document rather than a copy taken at boot. Independently, the calibration permutation I taught an unrecognised pad changed which action a raw index produced in the running world, which is the same property observed from the defect side."
+    }
+   ]
+  },
+  "notes": "S32 respected: the raw 0.14 deadzone is owned here as a device property and nothing in this verdict claims anything about the response curve above it, which belongs to RI-CAM02."
+ },
+ "score": {
+  "overall_0_10": 6,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "Below bar — named remedy required",
+  "confidence": "high",
+  "weights": {
+   "RI-JRN03": 1,
+   "RI-JRN04": 1
+  }
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "below_wave_gate:6.0_of_7.0",
+  "calibration_outlives_its_pad:RI-JRN04/M-P15",
+  "type_below_floor_all_surfaces:RI-JRN04/M-P20",
+  "unmeasured_surface_reports_complete:RI-JRN03/M-K20-dialogue",
+  "exception_not_measurement:RI-JRN04/M-P25",
+  "missing_artifact_for_headline_claim:self_test_legs",
+  "ungated_hard_fail:RI-JRN03/HF10",
+  "corpus_debt:naive_pass_caps_RI-JRN03_at_90_and_RI-JRN04_at_96",
+  "corpus_debt:RI-JRN04/H10_does_not_cover_the_HUD",
+  "unverified_on_hardware:gamesir-x2s-type-c",
+  "broken_working_tree:sibling_W1-22_stepAmbience_call_site_before_method"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-input-calibration-outlives-its-pad-on-disconnect",
+  "subsystem_path": "input.gamepad.lifecycle",
+  "severity": "major",
+  "what": "Round 2's build fix guards the COMPLETED calibration by pad id — `const perm = this.calibrationResult && this.calibrationResult.id === st.id ? ... : null` — and I re-derived it: calibrate a stranger through all six prompts, unplug, plug in a standard pad, and index 0 fires `interact` and index 5 fires `light`. Correct. But nothing guards the calibration IN PROGRESS. `this.calibration` is instance state with no pad id on it, `_beginCalibration()` is triggered from `_adoptPad()`, `_dropPad()` never clears it, and it never times out. `poll()` then runs `_calibrationPoll(st)` against whatever pad is currently active. Measured on dcf1d36 with my own driver: answer 2 of 6 prompts on an unrecognised pad, unplug it (n_pads 0) -> `calibrating: true`, prompt still 3/6; plug in a mapping:'standard' pad -> indices 0, 1, 2 and 3 ALL produce NOTHING, a completely dead pad; those four presses are consumed as the stranger's calibration answers and the prompt advances 3/6 -> 5/6; finishing the sequence writes result_id 'Xbox 360 Controller (XInput STANDARD GAMEPAD)' carrying the stranger's permutation, after which index 0 fires `roll`, index 4 `menu` and index 5 `lock_on`; after 600 further frames it is still calibrating.",
+  "why_it_matters": "This is the same player-visible symptom the round's own commit message claims to have fixed — 'Calibrate one gamepad and the next one you plug in fires the wrong buttons' — reached by an ordinary route instead of an exotic one. The owner plugs a GameSir X2s in its DualSense-like HID mode, the game correctly starts the six-prompt calibration, and the USB-C connector jogs loose. That is not a hypothetical: it is the exact scenario M-P12 was written for and passes on. They re-seat it or reach for a normal pad, and the pad is dead with an in-fiction prompt on screen that never goes away. On a phone, index 0 is the only index there ever is. The round's one build fix and its one repaired instrument were pointed at the same route into the same defect and neither was asked what else could get there — M-P15 only ever calibrates and never disconnects.",
+  "not_a_hard_fail_because": "I checked rather than assumed whether this is HF10 / M-N5's 'unrecoverable loss of control'. It is not: with the calibration stuck I read the touch layout and drove it, all sixteen actions are still reachable and `light` still fires, so on a handheld the glass stays live. RI-JRN04 HF2 ('a scrambled map, or a refusal to run, on a mapping !== standard device') produces both consequences here and the non-standard device is the cause, but the device the scrambled map appears ON is the standard one, so the gate's literal subject is not met and I have not applied it. An arbiter reading HF2 by purpose rather than wording should cap RI-JRN04 at 2, and I would not argue.",
+  "remedy": {
+   "action": "game/src/input/gamepad.js, in _dropPad() after `this.pads.delete(idx)`: `if (st && this.calibration && !this.calibration.done) this.calibration = null;` — a calibration belongs to the pad it was begun on, exactly as the completed result now does. I applied this in the page and re-ran the identical sequence: `calibrating: false` after the unplug, and the standard pad's index 0 fires `interact` and index 5 fires `light`. Delete-the-fix reproduces the defect exactly, in both directions.",
+   "targets": [
+    "game/src/input/gamepad.js",
+    "tools/journey/input-checks.mjs"
+   ],
+   "acceptance": "A --self-test leg that begins a calibration, disconnects the pad mid-sequence, connects a mapping:'standard' pad and asserts index 0 fires `interact` — and that the leg goes red when the one line is removed. Plus M-P15 extended to run its sequence a second time with a disconnect at prompt 3, reporting the action the pad really fired when it is not `interact`, which is the property the repaired M-K18/M-P23 already have."
+  },
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe2.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/probe3.json"
+  ]
+ },
+ "secondary_observations": [
+  {
+   "id": "SO-1",
+   "what": "M-P20 is red on ALL THREE of H10's surfaces, not one. Re-derived independently at the item's own configuration (844x390 logical, dpr 2, 1688x780 backing store): dialogue 7.00 CSS px ('JEEH-EI'), journal 5.06 ('The Company Man'), book 5.06 ('1-2 of 7'), against a floor of 18. The builder's report names only the 7 px dialogue speaker header, which is the LEAST severe of the three; journal and book body text is at 28% of the floor.",
+   "severity": "major",
+   "note": "The builder flagged rather than softened its own threshold, which is right, and the defect is real. The criticism is of the selection, not the honesty."
+  },
+  {
+   "id": "SO-2",
+   "what": "The HUD's type size is measured by nothing. `grep -rn min_text_css_px` finds exactly one consumer in the tree — M-P20 — and M-P20 excludes every `hud.*` rect by construction, correctly, because H10 names three surfaces and the HUD is not one. At the same configuration the smallest HUD run is 3.97 CSS px ('LIGHT'). The one surface that is on a phone screen 100% of the time has no legibility check.",
+   "severity": "moderate",
+   "note": "Filed as corpus_debt against RI-JRN04's H10, not as a charge against this builder. The exclusion is documented and reasoned in the check's own comment, which names 'LIGHT, 11 units' explicitly."
+  },
+  {
+   "id": "SO-3",
+   "what": "The rendered-text register reports `complete: true` on surfaces it has never seen a string from. Across the eleven-state sweep: 150 entries, all of them `menus`; `dialogue` 0 and `title` 0, including in barge-hold/opening and after an explicit titleShow(). `complete` is derived from INSTRUMENTATION, not observation.",
+   "severity": "moderate",
+   "note": "This is round 1's defect one order smaller and in the same shape. Remedy: publish `surfaces_with_entries` beside `surfaces_instrumented`, and have the instruction budget's sweep enter a census node so a dialogue string is in scope — M-P20's dialogue leg already shows how."
+  },
+  {
+   "id": "SO-4",
+   "what": "The whole left half of a phone screen is empty. The stick is floating by design ('the stick originates wherever the thumb lands', which is the right engineering choice for a device whose size is unknown) and the eleven drawn marks are all in the right-hand thumb arc, so there is no drawn affordance for movement anywhere.",
+   "severity": "minor",
+   "note": "Not scored — the item does not require a drawn stick, and drawing a fixed rosette would be worse. Recorded because §F's mechanism is that what the player can see, they can try, and this is the most likely thing a naive pass will find first. The naive pass has still not been run."
+  },
+  {
+   "id": "SO-5",
+   "what": "The working tree does not boot. `node tools/harness/boot-check.mjs` exits 12 with 'TypeError: this._stepAmbience is not a function' — a sibling's uncommitted W1-22 edit put a call site in Engine._afterStep() before the method existed. This is the third time in this project that a call site has landed ahead of its method and the second time in two rounds that it has cost a measurement pass wall clock.",
+   "severity": "moderate",
+   "note": "Not this piece's defect and it does not affect this piece's score. Reported because an orchestrator reading only per-piece verdicts will not otherwise see that the shared tree is red, and because the previous round's builder lost a complete self-test pass to exactly this ('Engine._boot: SoulsSystem is not defined')."
+  },
+  {
+   "id": "SO-6",
+   "what": "M-K22's repair is the right kind and is worth protecting. Round 1's substring matcher fired on sixteen ordinary Argonian names ('Waits-For-Salt the Shorter' -> 'rt'). The two token classes now have separate matchers, `-` is a word boundary, and the check reports `unmeasurable` if its own three-hit/three-miss lexicon control fails rather than grading with a broken lexicon. It enumerated 195 prompt strings in my run.",
+   "severity": "none",
+   "note": "A check that fires on nothing real trains its reader to ignore it, which is the mirror image of a check that cannot fire at all. Both halves are now handled."
+  }
+ ],
+ "method_deviations": [
+  {
+   "ref_item": "both",
+   "deviation": "Every measurement was taken on a pinned git worktree at commit dcf1d36 in the scratchpad, with tools/node_modules symlinked, rather than on /home/user/elder-souls-claude.",
+   "why": "The working tree does not boot: boot-check exits 12 with 'TypeError: this._stepAmbience is not a function' from a sibling's uncommitted W1-22 audio edit. A build that constructs and renders no frame voids every browser measurement taken against it. dcf1d36 is the newest commit containing all of round 2's work that passes boot-check, and it excludes the sibling's uncommitted edits by construction.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "both",
+   "deviation": "I wrote four probes of my own (tools/harness/critic-w1-08-r2-probe.mjs, -probe2, -probe3, -probe4) and re-implemented the register sweep and M-P20's method rather than calling the builder's window.__IC helpers.",
+   "why": "TOOL-LOOP rule 3 and the brief: a critic must be able to say the predicate is its own. Re-implementing M-P20 is what surfaced that journal and book are worse than dialogue, which calling mp20() would have reported as a single boolean.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-JRN04",
+   "deviation": "The handheld screenshots were taken with my own browser rather than through tools/capture/.",
+   "why": "The capture service's request schema has no device-class parameter (protocol.mjs: viewpoint, state, seed, place, pose, camera, ...), so it cannot produce a handheld frame at all. I was holding a browser for the stepping legs regardless and reused it, per the one-browser rule. pgrep -c headless_shell was 0 at launch.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-JRN04",
+   "deviation": "My first ablation pass (out/critic-probe.json) is DISCARDED and superseded by probe2. It stepped one sim frame between arms, so the null control was not stable — every arm had a different framebuffer hash — and it forced touch on with setTouchEnabled(true), which drew the overlay on the DESKTOP arm too and would have supported the opposite conclusion.",
+   "why": "Recorded rather than deleted because it is exactly how a later round could claim a false result in either direction. The replacement pins the frame, never steps between arms, and lets device class drive touch through the shipped applyDeviceClass() path.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-JRN04",
+   "deviation": "My first CONSUMPTION leg is DISCARDED. It read `control.id` / `control.cx` / `control.cy`; the layout records are `{action, x, y, r}`. Every coordinate was undefined, every press landed nowhere, and the empty edge list read precisely like 'the overlay consumes nothing'.",
+   "why": "The most dangerous near-miss in this run and the one a successor most needs. It was caught only because the same run's touchLayout() dump showed the real field names. The replacement drives the coordinates the layout model itself publishes and carries two null controls.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "both",
+   "deviation": "The naive passes (RI-JRN03 M-N1/N2/N3/N5/N7 and RI-JRN04 M-N1/N3/N5) were not run by me, and must not be.",
+   "why": "They are a fresh-agent procedure under enforced isolation and require a JC-03N/JC-04N fleet agent. The tool correctly reports them `unmeasurable` with the transcript schema and the command rather than performing them for itself. Scored 0 fail-closed and named in path_to_ten.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "both",
+   "deviation": "Contention. pgrep -c headless_shell was 0 and loadavg 11.6 at the start and rose to 26 browsers at loadavg 20-22 by the end as siblings came up. I launched one browser per probe and reused it across all legs of that probe.",
+   "why": "Required by AGENT-PROTOCOL. Every figure in this verdict is a count, a colour, a hash, a pixel-diff percentage or a boolean; none is a timing, and none is load-sensitive. Where the builder's own numbers are timings I have not re-derived them and have not disputed them.",
+   "affects_scores": false
+  }
+ ],
+ "arbitration_questions": [
+  {
+   "question": "Does RI-JRN04 HF2 fire on a scrambled map that appears on a mapping:'standard' device as a direct consequence of a mapping !== 'standard' device having been present?",
+   "why_it_matters": "HF2 reads 'a scrambled map, or a refusal to run, on a mapping !== standard device'. The defect in §7 produces both listed consequences and the non-standard device is the cause, but the device that ends up scrambled is the standard one. Read literally the gate does not fire and RI-JRN04 scores 81; read by purpose it fires and RI-JRN04 caps at 2, which would take the piece to 2/10. I have taken the literal reading so as not to stretch a gate, exactly as round 1 declined to claim an HF5 it had not driven — but the difference between 6 and 2 should be a ruling and not a critic's discretion.",
+   "my_provisional_answer": "Literal reading; not applied. Recorded so an arbiter can overrule cheaply."
+  }
+ ],
+ "corpus_extended": [
+  {
+   "item": "RI-JRN04",
+   "what": "H10's legibility floor covers dialogue, journal and book, and nothing anywhere covers the HUD. On the item's own phone configuration the HUD's smallest run is 3.97 CSS px against a floor of 18, and it is the one surface a player looks at for the whole session.",
+   "proposal": "Add a fourth surface to H10, or a separate M-P2x, measuring the smallest run inside the declared hud.* rects at the same configuration and against the same floor. M-P20 already computes it — my probe reports it from the same data in the same pass — so this costs the instrument nothing."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "broke_what_i_measured_on_purpose": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and this is the honest record: AR-1, AR-2, AR-3 and CONSUMPTION were all run first-hand, but the naive passes were not and must not be by me. On judged_output_not_source: in every case the measurement came first — the ablation before game/src/ui/touch-overlay.js was opened, the gamepad sequence in the browser before game/src/input/gamepad.js was read for the cause, M-P20 re-derived before mp20()'s implementation was read. The one exception is honest and stated: I read _dropPad() and _applyButtons() and FORMED the disconnect hypothesis from the code, then confirmed it in the running browser before writing it down, and applied and removed the fix in the page in both directions. On breaking what I measured: M-K20 was driven red through the shipped uiToast path; the overlay was ablated by severing _uiCtx and restored; the touch consumption legs carry two null controls (a still thumb and dead glass) that both produce nothing; the gamepad fix was applied and removed with the same sequence run either side. Two of my own probes produced results I discarded rather than published — an unstable null control and an undefined-coordinate press that read exactly like a coupling-zero — and both are in method_deviations because either would have been a false finding. Neither item carries blind_pair: yes, so no blind pack was owed."
+ },
+ "notes": "Round 1 scored 5/10 and its summary was 'the controls exist, work, are correctly laid out, and are drawn nowhere'. That is no longer true and the change is real: I photographed the controls, the ablation is clean in both directions with two stable null controls, every one of the eleven moves the world against two silent null controls, the rendered-text register is fed by the draw call across all three surfaces and goes red when I draw a forbidden string through the shipped toast, and all fourteen previously-absent check ids are function bodies with perturbation legs. The round also found and fixed a real build defect on its own, correctly, and proved it by delete-the-fix. It still fails, for one reason above all: the fix and the repaired instrument were both aimed at one route into a defect that has two, and the second route is a cable jogging loose."
 }

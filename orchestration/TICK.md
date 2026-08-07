@@ -96,6 +96,33 @@ discipline means not paying twice for the same work — never paying less for th
 **Every dispatch is one builder or one critic, never both in the same agent.** No builder ever
 checks its own homework.
 
+### 3a. Check who is already in the area before you add a thirteenth agent
+
+Before dispatching into a file or directory another live piece might also be touching, run:
+
+```
+node tools/ownership.mjs --for <path>          # who is in this file right now
+node tools/ownership.mjs --conflicts           # every undeclared overlap among live pieces
+```
+
+`--conflicts` exits non-zero when two live pieces claim the same file and neither has declared the
+other in `redundant_with` (RULES.md rule 16). Two pieces attacking the same file on purpose — a
+second critic, a competing hypothesis — are not a conflict and are not what this catches; an
+**undeclared** overlap is one agent about to overwrite another's in-flight work without either
+knowing, which is the exact failure this registry exists to make visible before it happens instead
+of after.
+
+If the answer is noisy — the area you were about to dispatch into already has an undeclared
+claimant, or several live pieces have declared nothing at all near it — **prefer dispatching the
+next agent into an unclaimed area instead.** There is nearly always one: §4 below exists precisely
+because decomposing a piece into its authoring half and its verification half almost always frees
+up something nobody else is standing in. Do not read a clean `--conflicts` as proof the area is
+actually clear, either — most live pieces today declare nothing (`node tools/ownership.mjs` shows
+the count), so silence is the registry's blind spot, not a green light. This tool is advisory, not
+a gate: it informs where you dispatch next, and it is never wired into `boot-check` or the
+pre-commit hook — see `tools/ownership.mjs`'s header for why a self-reported, unverifiable claim
+must not be allowed to turn red for everybody the way `tools/check-quests.mjs` used to.
+
 ## 4. Ask the question the owner keeps asking
 
 *What else could be running right now that is not?* Write the answer down even when it is "nothing"

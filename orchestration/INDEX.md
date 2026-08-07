@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `de4756c`: 442 tools, 153 reference
+so it cannot drift. Generated at `703d846`: 444 tools, 153 reference
 items, 19 pieces in flight.
 
 Its purpose is to stop 19+ concurrent agents each paying separately to discover the
@@ -37,7 +37,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 17
+### `tools/` — 19
 
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
@@ -50,11 +50,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gap-ledger.mjs` — **no header comment**
 - `tools/gen-index.mjs` — regenerate orchestration/INDEX.md, the one page an agent reads to orient.
 - `tools/orchestrate.mjs` — Dispatch registry + resume planner.
+- `tools/ownership.mjs` — the file-ownership registry: who is touching what, right now.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
+- `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
 ### `tools/analysis/` — 32

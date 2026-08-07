@@ -30,7 +30,11 @@
    "node /tmp/.../scratchpad/mkanswer.mjs",
    "sha256sum reports/w1-22-critic/b2/answer.md"
   ],
-  "note": "No browser launched, no clip rendered. The pack already existed at reports/w1-22-critic/b2. pgrep -c headless_shell read 30 with loadavg 20.28 at start and 12.35 at finish, far above the AGENT-PROTOCOL cap of ~8; re-rendering would have been wasteful and unreliable. Every figure reported is a ratio, count or level computed from a frozen artifact, so contention distorts none of them. No timing figure is reported."
+  "note": "No browser launched, no clip rendered. The pack already existed at reports/w1-22-critic/b2. pgrep -c headless_shell read 30 with loadavg 20.28 at start and 12.35 at finish, far above the AGENT-PROTOCOL cap of ~8; re-rendering would have been wasteful and unreliable. Every figure reported is a ratio, count or level computed from a frozen artifact, so contention distorts none of them. No timing figure is reported.",
+  "depends_on": [
+   "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md"
+  ],
+  "depends_on_note": "derived from 0 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
  },
  "bifurcation": {
   "axis": "not-visual",
@@ -59,7 +63,11 @@
   "seconds_per_clip": 20,
   "sample_rate": 16000,
   "built_at": "2026-08-07T18:29:48.164Z",
-  "strata": { "hard": 12, "random": 12, "catch": 8 },
+  "strata": {
+   "hard": 12,
+   "random": 12,
+   "catch": 8
+  },
   "regions_in_pack": 13,
   "region_pairs_possible": 78,
   "distinct_clips": 24,
@@ -82,33 +90,69 @@
  "results": {
   "overall_correct": 32,
   "overall_trials": 32,
-  "overall_accuracy": 1.0,
-  "separation": 1.0,
+  "overall_accuracy": 1,
+  "separation": 1,
   "separation_n": "24/24",
-  "false_different_rate": 0.0,
+  "false_different_rate": 0,
   "false_different_n": "0/8",
   "false_different_bar": 0.25,
   "admissible": true,
   "by_stratum": {
-   "hard": { "correct": 12, "n": 12 },
-   "random": { "correct": 12, "n": 12 },
-   "catch": { "correct": 8, "n": 8 }
+   "hard": {
+    "correct": 12,
+    "n": 12
+   },
+   "random": {
+    "correct": 12,
+    "n": 12
+   },
+   "catch": {
+    "correct": 8,
+    "n": 8
+   }
   },
   "hedged_or_declined": 0,
   "unanswerable": 0,
-  "called_same": ["T02", "T04", "T12", "T17", "T19", "T21", "T25", "T30"],
+  "called_same": [
+   "T02",
+   "T04",
+   "T12",
+   "T17",
+   "T19",
+   "T21",
+   "T25",
+   "T30"
+  ],
   "wrong_trials": []
  },
  "separation_margin": {
   "note": "Three metrics, two of them chosen before the reveal, produce the identical partition.",
-  "mad_db_same_range": [0.14, 0.95],
-  "mad_db_different_range": [4.39, 35.76],
+  "mad_db_same_range": [
+   0.14,
+   0.95
+  ],
+  "mad_db_different_range": [
+   4.39,
+   35.76
+  ],
   "mad_db_gap_ratio": 4.6,
-  "cosine_same_range": [0.00001, 0.00105],
-  "cosine_different_range": [0.15185, 0.89745],
+  "cosine_same_range": [
+   0.00001,
+   0.00105
+  ],
+  "cosine_different_range": [
+   0.15185,
+   0.89745
+  ],
   "cosine_gap_ratio": 145,
-  "pack_proxy_catch_range": [0.0, 0.001],
-  "pack_proxy_hard_range": [0.1659, 0.3896],
+  "pack_proxy_catch_range": [
+   0,
+   0.001
+  ],
+  "pack_proxy_hard_range": [
+   0.1659,
+   0.3896
+  ],
   "pack_proxy_gap_ratio": 166,
   "threshold_insensitivity": "Any threshold between 1.0 and 4.3 dB yields the identical 32/32 partition."
  },
@@ -211,15 +255,60 @@
  "protocol_score": {
   "against": "RI-MTH03 Scoring",
   "checks": [
-   { "check": "Pack built by a tool, not hand-assembled", "points": 2, "awarded": 1, "why": "Tool-built, then hand-edited post-build; see AUDB2-F8" },
-   { "check": "Reveal key outside the pack directory", "points": 2, "awarded": 2, "why": "b2.reveal/ is a sibling, not a child" },
-   { "check": "answer.md written before reveal, hash recorded", "points": 3, "awarded": 3, "why": "Hashed at 18:49:20Z; reveal opened after" },
-   { "check": "Answer is SAME or DIFFERENT, no hedging, no refusal", "points": 2, "awarded": 2, "why": "32/32 answered, none hedged or declined" },
-   { "check": "At least 3 specific, checkable evidence items", "points": 2, "awarded": 2, "why": "Every trial line in answer.md carries band, centroid and correlation figures" },
-   { "check": "WEAKEST POINT present and non-trivial", "points": 1, "awarded": 1, "why": "Section 9 of the markdown" },
-   { "check": "Reveal outcome recorded", "points": 2, "awarded": 2, "why": "Full per-trial table and stratum breakdown" },
-   { "check": "Second pass when the pick was ours", "points": 0, "awarded": 0, "why": "n/a - excluded from denominator; a SAME/DIFFERENT design has no 'ours' side" },
-   { "check": "Leak audit performed", "points": 2, "awarded": 2, "why": "Author's, plus this independent one finding three further leaks" }
+   {
+    "check": "Pack built by a tool, not hand-assembled",
+    "points": 2,
+    "awarded": 1,
+    "why": "Tool-built, then hand-edited post-build; see AUDB2-F8"
+   },
+   {
+    "check": "Reveal key outside the pack directory",
+    "points": 2,
+    "awarded": 2,
+    "why": "b2.reveal/ is a sibling, not a child"
+   },
+   {
+    "check": "answer.md written before reveal, hash recorded",
+    "points": 3,
+    "awarded": 3,
+    "why": "Hashed at 18:49:20Z; reveal opened after"
+   },
+   {
+    "check": "Answer is SAME or DIFFERENT, no hedging, no refusal",
+    "points": 2,
+    "awarded": 2,
+    "why": "32/32 answered, none hedged or declined"
+   },
+   {
+    "check": "At least 3 specific, checkable evidence items",
+    "points": 2,
+    "awarded": 2,
+    "why": "Every trial line in answer.md carries band, centroid and correlation figures"
+   },
+   {
+    "check": "WEAKEST POINT present and non-trivial",
+    "points": 1,
+    "awarded": 1,
+    "why": "Section 9 of the markdown"
+   },
+   {
+    "check": "Reveal outcome recorded",
+    "points": 2,
+    "awarded": 2,
+    "why": "Full per-trial table and stratum breakdown"
+   },
+   {
+    "check": "Second pass when the pick was ours",
+    "points": 0,
+    "awarded": 0,
+    "why": "n/a - excluded from denominator; a SAME/DIFFERENT design has no 'ours' side"
+   },
+   {
+    "check": "Leak audit performed",
+    "points": 2,
+    "awarded": 2,
+    "why": "Author's, plus this independent one finding three further leaks"
+   }
   ],
   "applicable_points": 16,
   "awarded_points": 15,

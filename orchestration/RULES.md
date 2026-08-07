@@ -54,7 +54,13 @@ right now). Between these two you should not need to go looking for anything.
     throws inside the fixed step and kills every stepping probe in the project — while boot-check
     stays green, because boot does not step. Add names additively.
 16. **Read the status files of agents near your files before you write**, and record which files
-    you touch in your own. `INDEX.md` lists what is in flight.
+    you touch in your own: `files_touched` (paths already written) and `files_claimed` (paths you
+    expect to write next) — plain arrays of repo-relative paths, nothing heavier; a path ending in
+    `/` claims a whole directory. `INDEX.md` lists what is in flight; `node tools/ownership.mjs
+    --conflicts` reports two live pieces that claim the same file without saying why. If the
+    overlap is deliberate — a second critic, a competing hypothesis, the project's whole method —
+    declare it with `"redundant_with": ["<other task_id>"]` instead of leaving it to read as a
+    collision; a declared pair is never reported as a conflict.
 17. **A delete-the-fix on a shared tree must check the git index**, not just the file. A
     neighbour's `git add -A` has staged a temporary deletion before now.
 

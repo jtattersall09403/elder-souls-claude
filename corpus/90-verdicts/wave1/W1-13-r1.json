@@ -1,857 +1,902 @@
 {
-  "schema_version": 1,
-  "piece_id": "w1-13-death-and-the-hearth-loop",
-  "piece_title": "W1-13 — death, recovery and the hearth loop (RI-JRN06 + RI-PRG04)",
-  "subsystem_paths": [
-    "journey.death.recovery",
-    "combat.death.corpserun",
-    "combat.death.worldreset",
-    "progression.bonfire.function",
-    "progression.bonfire.placement"
+ "schema_version": 1,
+ "piece_id": "w1-13-death-and-the-hearth-loop",
+ "piece_title": "W1-13 — death, recovery and the hearth loop (RI-JRN06 + RI-PRG04)",
+ "subsystem_paths": [
+  "journey.death.recovery",
+  "combat.death.corpserun",
+  "combat.death.worldreset",
+  "progression.bonfire.function",
+  "progression.bonfire.placement"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-13-r1-death-hearth",
+  "role": "critic.combat",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T11:55:00Z",
+  "finished_at": "2026-08-07T12:50:22Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": false
+ },
+ "build": {
+  "commit_sha": "0a8a4d0f747df8d99cc2c55481141f579bcdd09d",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/boot-check.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers."
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-a.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json",
+    "exit_code": 1,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-b.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-c.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-d.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-e.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-f.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json"
+   },
+   {
+    "command": "node tools/journey/state-diff.mjs --mode across-death --in reports/journeys/w1-13-jrn06",
+    "exit_code": 1,
+    "seed": "4711,1337,90210,2147483647",
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
+   }
   ],
-  "wave": 1,
-  "critic": {
-    "run_id": "crit-w1-13-r1-death-hearth",
-    "role": "critic.combat",
-    "model": "claude-opus-5",
-    "started_at": "2026-08-07T11:55:00Z",
-    "finished_at": "2026-08-07T12:50:22Z",
-    "conflict_of_interest": false,
-    "saw_builder_notes_before_blind": false
-  },
-  "build": {
-    "commit_sha": "0a8a4d0f747df8d99cc2c55481141f579bcdd09d",
-    "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "harness_commands": [
-      {
-        "command": "node tools/harness/boot-check.mjs",
-        "exit_code": 0,
-        "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers."
-      },
-      {
-        "command": "node tools/harness/critic-w1-13-a.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json",
-        "exit_code": 1,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json"
-      },
-      {
-        "command": "node tools/harness/critic-w1-13-b.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json"
-      },
-      {
-        "command": "node tools/harness/critic-w1-13-c.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-      },
-      {
-        "command": "node tools/harness/critic-w1-13-d.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-      },
-      {
-        "command": "node tools/harness/critic-w1-13-e.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json"
-      },
-      {
-        "command": "node tools/harness/critic-w1-13-f.mjs --out corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
-        "exit_code": 0,
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json"
-      },
-      {
-        "command": "node tools/journey/state-diff.mjs --mode across-death --in reports/journeys/w1-13-jrn06",
-        "exit_code": 1,
-        "seed": "4711,1337,90210,2147483647",
-        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
-      }
-    ]
-  },
-  "bifurcation": {
-    "axis": "not-visual",
-    "declared_before_citation": true,
-    "note": "RI-JRN06 blind_pair: no — the loop is Souls' outright (seam S6, ARBITRATION §1). The two pixel measurements cited here (the death surface's warm-ink count, the bloom's visibility) are presence tests against a control, not fidelity comparisons, and no reference image was consulted. No placed capture is cited for any arrival claim (S34(b)); the run back in `walked-loop.json` was walked by the capsule."
-  },
-  "reference_items": [
-    {
-      "id": "RI-JRN06",
-      "path": "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
-      "side": "souls",
-      "kind": "structure",
-      "native_scale": "0-100 weighted (Nothing is lost 34 / The stain behaves 24 / Not softened 18 / Run back is play 14 / Legible and fast 10)",
-      "native_score": 76,
-      "native_max": 100,
-      "native_verdict": "Below bar — named remedy required (75–91)",
-      "score_0_10": 6,
-      "measured": "partial",
-      "checks": [
-        {
-          "id": "M-D1",
-          "result": "pass",
-          "value": "12/12 banked==held, 12/12 held==stored, 8/8 stored==returned (critic's own run, doubled deaths INCLUDED)",
-          "threshold": "all three exactly equal, 20/20",
-          "note": "Verified independently over 12 deaths of which 4 were doubled. The builder's own instrument reports 14/14, not 20/20, because tools/journey/jrn06-death.mjs:313 does `rows.filter(r => !r.second_death)` — which drops the two legs that ARE checkable on a doubled death (banked==held, held==stored) along with the third that is not. Six of the builder's twenty deaths therefore had no conservation check at all. The critic's run closes that hole and finds no discrepancy.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-          ]
-        },
-        {
-          "id": "M-D2",
-          "result": "marginal",
-          "value": "builder: max offset 0.000 m over 20, placement_rule 'death_point' 20/20. Critic's first WALKED death: 80.0 m relocation.",
-          "threshold": "<= 2.0 m, 20/20; 0 stains inside geometry or in the air",
-          "note": "The builder's 0.000 m is an artefact of the scenario, not a property of the build: all twenty deaths were reached by `teleport` onto flat standable ground, so `placeStain()`'s 2.0 m clamp, its fall/hazard branch and its D4 march were never exercised by that session. One death taken at the end of a real 217 m walk landed at y = -0.41 (not standable), and the bloom relocated 80.0 m along the bearing to the well. That is D4 behaving correctly, and it is also proof that the headline offset number describes the probe.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-          ]
-        },
-        {
-          "id": "M-D3",
-          "result": "pass",
-          "value": "relocation fired 14.5 m (builder, RN5) and 80.0 m (critic, walked); souls recoverable in both",
-          "threshold": "path exists; stain reachable; souls recoverable. Hard fail: an unreachable stain",
-          "note": "HF7 not triggered. One degenerate found and reported under M-D2/secondary: at EXACTLY the fog-gate centre the push-out divides by `Math.hypot(0,0) || 1` and the bloom stays at the centre while the record still reads `placement_rule: outside_fog_gate`. At 0.001 m off centre it correctly pushes to 29 m. Measure-zero today, and the arenas do not reseal in this build, so it is a latent defect rather than an unreachable stain.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-          ]
-        },
-        {
-          "id": "M-D4",
-          "result": "marginal",
-          "value": "108 non-death-volatile paths moved across a death on 4/4 seeds — ALL 108 are fight.player.rig.*",
-          "threshold": "diff otherwise empty for all 5 scenarios. Hard fail: any non-death-volatile field changed",
-          "hard_fail": false,
-          "note": "The substance passes and the instrument has gone stale. Re-running the builder's own `state-diff.mjs --mode across-death` on HEAD reports 0/4 clean where the builder reported 8/8, and every one of the 108 offending paths is the PLAYER'S OWN ANIMATION RIG (`fight.player.rig.last_rx[]` x6, `last_ry[]` x1, `hurt_prev[][][]` x23 per seed) — bone rotations and previous-pose hurtboxes belonging to a body that died in one place and stood up in another. Zero quest stages, journal entries, faction numbers, dispositions, topics, crime records, world mutations or NPC-death registers moved. HF2 is NOT triggered. What did happen is that another piece added `fight.*` to the save after the builder's run, and the builder's DEATH_VOLATILE list (jrn06-death.mjs:29) names `pose.` but not `fight.player.rig.`, so the check now cries wolf. The builder's cited 8/8 is not reproducible on HEAD and must not be carried forward as-is.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
-          ]
-        },
-        {
-          "id": "M-D5",
-          "result": "fail",
-          "value": "6 of the 6 never_respawn_entity_flags have NO world-side producer; coupling 0",
-          "threshold": "100% of ordinary enemies respawned; 0 named NPCs, quest actors or merchants respawned",
-          "hard_fail": false,
-          "note": "CONSUMPTION failure, scored 0 fail-closed per RI-JRN06's CONSUMPTION §3 and RI-MTH07 §B. `game/data/world/respawn.json` declares the six flags and states their producer in words: \"Set per SPAWN (engine.spawn(id, x, z, {named: true}))\". `engine.spawn()` reads only `opts.as` and `opts.yaw` and copies none of them. Measured: an ordinary entity spawned with `{named:true}`, `{merchant:true}`, `{questActor:true}`, `{trainer:true}`, `{boss:true}` or `{unique:true}` through that documented route was classified `respawns: true` and STOOD BACK UP after both a hearth rest and a player death, on both triggers, 6/6. The same flags set through `__HARNESS.setEntityNamed()` — a harness verb with no in-game counterpart, and the one the builder's own M-D5 fixture uses — are honoured 6/6. That is RI-MTH07 §A's orphan predicate exactly, and RI-MTH07's method 3 (the hand-feed audit) is the check it fails. HF3 is NOT triggered, because the shipped province's default state contains ZERO entities and every real merchant, trainer and quest-giver lives in `sim.npcs`, which no respawn path iterates — so today there is no named actor for the broken flag to fail to protect. The guarantee currently holds structurally and by statblock id (`champion_hist_marked`, `cst_sap_speaker`), not by the classifier branch the builder demonstrated.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json"
-          ]
-        },
-        {
-          "id": "M-D6",
-          "result": "marginal",
-          "value": "named fixture stays dead across rest and death 2/2 — but only when the flag is hand-fed",
-          "threshold": "still dead; quests.failure.severed intact",
-          "note": "Passes on the fixture. Inherits M-D5's defect: the only route by which a world actor could carry the flag does not work.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json"
-          ]
-        },
-        {
-          "id": "M-D7",
-          "result": "unmeasurable",
-          "value": null,
-          "threshold": "merchant gold pool unchanged across a death (progression.merchant.barter)",
-          "note": "Not run by the builder — it is absent from the run's own `m_jrn06_summary.checks` list, which carries 18 of the 19 checks and names neither M-D7 nor M-D13. Unmeasurable ⇒ 0, fail-closed (SCORING §1.1). The structural argument (merchants are `sim.npcs`, which respawn never touches) is good but is an argument, not a measurement.",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "M-D8",
-          "result": "pass",
-          "value": "exactly 1 bloom at every instant; 6/6 (builder) and 4/4 (critic) doubles destroyed the first; 0 retrieved",
-          "threshold": "exactly 1 stain globally at all times; hard fail on two stains or any retrieval",
-          "note": "Attacked directly: two further lethal hits landed on the corpse while the surface was up did NOT create a second bloom or increment the death count (`observe()` returns early while `active`). The single-stain rule is structural — `sim.quest.death.bloodstain` is one field, not a list — and the builder is right to say so rather than fake a break.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-          ]
-        },
-        {
-          "id": "M-D9",
-          "result": "pass",
-          "value": "0 forbidden strings over 3 deaths; 0 numerals on the surface; 0 retrieval items in the running inventory",
-          "threshold": "0 hits, 0 such items. Hard fail: any",
-          "note": "HF5 clear. The only strings drawn across the death are '5', 'LIGHT', 'spark_dart' and 'YOU WENT DOWN'. The three data files matching the compensation vocabulary (quests/blackmarsh-coast, magic-utility, mainline-act3) are quest prose containing the word 'retrieve'; none is an item that restores a lost bloom. Confirmed. The build also publishes its own enumeration (`getDeathState().compensation`) rather than promising, which is the right shape for this check.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        },
-        {
-          "id": "M-D10",
-          "result": "pass",
-          "value": "0 frames between the last hit's active window and HP reaching 0, 20/20",
-          "threshold": "<= 12 frames, 20/20",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "M-D11",
-          "result": "pass",
-          "value": "2.500 s surface; skipped 2 frames after an input on its first rendered frame; 19,877 warm ink px vs 162 alive",
-          "threshold": "<= 3.0 s; gone within 30 frames of an input; 0 statistics or tips. Hard fail: unskippable",
-          "note": "HF8 clear. The 124x pixel swing (162 alive -> 20,097 up -> 176 skipped) is the right kind of evidence: it distinguishes a string that is DRAWN from RI-JRN06's own fourth shape, orphan text.",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json",
-            "reports/runs/W1-13-CONSUME/consumption.json"
-          ]
-        },
-        {
-          "id": "M-D12",
-          "result": "pass",
-          "value": "median and p95 both 150 f = 2.500 s",
-          "threshold": "median <= 4.0 s, p95 <= 6.0 s",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "M-D13",
-          "result": "marginal",
-          "value": "R1 median 2.746 min PASS; R2 p95 3.973 min PASS; R3 UNMEASURED; R4 UNMEASURED",
-          "threshold": "R1 1.5–3.0 min, R2 <= 4.0 min, R3 1–4 encounters, R4 ratio 0.30–0.60",
-          "note": "Two of four met and measured honestly by a walked capsule; two unmeasurable for want of systems this piece does not own. R3 needs a placed hostile roster (`combat.encounter.placement`, W1-12) and the shipped province's default state contains zero entities; R4 needs shortcut geometry (W1-01/W1-02) and `sim.world.shortcutsOpened` is a saved register with no shortcut anywhere in the world to open. The builder declared both rather than reporting 0, which is correct — R3 = 0 is the failure the check exists to catch and reporting it would have been a fabricated hit. Scored 4 of 9: R1/R2 credited, R3/R4 fail-closed at 0, neither charged nor credited to this builder. Critic's own walked loop reproduced the shape at a shorter range (46.1 m / 0.613 min).",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06-runback/journey.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        },
-        {
-          "id": "M-D14",
-          "result": "pass",
-          "value": "visible 8/8 at 12 m in daylight and 8/8 at 6 m in the dark; 1,078 bloom px vs 195 with the camera turned away",
-          "threshold": "8/8 and 8/8",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "M-D15",
-          "result": "pass",
-          "value": "5/5 credited under all five conditions; 5/5 refused at 2.6 m; 0 cases consumed-without-credit",
-          "threshold": "souls returned in 5/5; hard fail on an interruptible recovery that consumes the stain",
-          "note": "HF9 clear, and structurally so: recovery is one frame with the credit and the clear adjacent, so there is no window to be knocked out of.",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "M-D16",
-          "result": "fail",
-          "value": "survives rest / region change / named-state load / blob restore / IndexedDB round trip; DESTROYED by a save taken while the death surface is up (4,200 -> 0, 2 of 2 routes)",
-          "threshold": "stain present at the same position with the same souls after a quit and a browser restart",
-          "note": "The check as the item words it passes; the transition next to it does not. Measured: rest, bank 4,200, die, take a save WHILE THE SURFACE IS UP, reload the page (a real browser restart), Continue. The bloom is restored holding 4,200 — and so is HP = 0, while `DeathSystem`'s in-flight state (`active`, `deathFrame`, `controllableAt`) is not saved and is fresh. On the very next frame `observe()` sees `hp <= 0` and calls `die()` a second time with `soulsHeld = 0`, which sets `prev` to the 4,200 bloom, increments `stains_lost_to_second_death` and overwrites it with a 0-soul bloom. 4,200 souls destroyed by a load, with no second death and nothing the player did. The same happens on a same-session `loadState(blob)`. The matched control — an identical save taken AFTER the respawn, same restart, same audit — returns all 4,200. D17 says the stain survives quits, reloads and a browser restart 'until recovered or replaced'; it was neither.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json"
-          ]
-        },
-        {
-          "id": "M-D17",
-          "result": "marginal",
-          "value": "6/20 = 0.30",
-          "threshold": "0.10 <= rate <= 0.35",
-          "note": "Inside the band, but produced by a scripted `i % 3 === 2` rule rather than by an agent losing a fight, so the number measures the script's arithmetic and not the loop's difficulty. The item asks for an 'agent-driven session'.",
-          "evidence": [
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "M-D18",
-          "result": "pass",
-          "value": "0 stations are hearths (was 5 before the builder's 90 m keep-out); hearth menu destinations []; 26 stations and 68 travel services present",
-          "threshold": "0 routes ending at or within 60 s of the death point. Hard fail: a 'return to death location' affordance",
-          "note": "HF6 clear, and the S7 axis is satisfied in BOTH directions, which is what the wave-0 amendment to RI-PRG04 requires: the transport network exists and is thick, AND no part of it lands on a well.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        },
-        {
-          "id": "M-D19",
-          "result": "pass",
-          "value": "markers 0; map_exists false; 0 of 6 HUD elements world-anchored",
-          "threshold": "0 markers, arrows, minimap or compass pointing at the stain",
-          "note": "Re-run by the critic on the frames after a real death. AR-2 clear. The count is over `getUIState().elements[].worldAnchor` and `.markers`, which is a count over the HUD model rather than a grep for the word 'marker' — the right instrument.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        }
-      ],
-      "hard_fails": [],
-      "how_we_lose_hits": [
-        "#2 — 'The bloodstain is a spawned prefab with no persistence... the player quits mid-run-back and loses 4,200 souls to a save system, not to a mistake.' Arrived through a different door: the bloom IS persistent, and a save taken mid-death makes the load re-kill the player and destroy it.",
-        "#6 — 'The run back is empty.' R3 is unmeasured rather than 0, but the shipped province's default state contains zero entities, so the corpse run is currently a walk down an empty corridor in fact if not yet in measurement."
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json",
-        "reports/journeys/w1-13-jrn06/journey.json",
-        "reports/journeys/w1-13-jrn06-runback/journey.json"
-      ],
-      "why_not_ten": "M-D5 scores 0 fail-closed: six of the seven never-respawn routes in `respawn.json` have no world-side producer, because `engine.spawn()` ignores the flag options the data file names as their source, and the builder's proof went through `setEntityNamed()`, a harness verb. M-D16 fails: a save taken while the death surface is up destroys 4,200 souls on load (2/2 routes) against a clean control. M-D7 was never run. M-D2's 0.000 m offset describes twenty teleported deaths on flat ground, and the first walked death relocated 80 m. M-D13's R3 and R4 are unmeasurable for want of a hostile roster and shortcut geometry.",
-      "path_to_ten": "1. Copy the six never-respawn flags off `opts` in `engine.spawn()` (three lines) and add a world-produced fixture to M-D5 so the classifier is exercised without `setEntityNamed()`; keep the harness verb for negative controls only. 2. Make a load reconcile a restored `hp <= 0`: in `engine.loadState(blob)`, if the save carries a dead player, re-enter the death surface rather than letting `observe()` fire a fresh `die()` — persist `DeathSystem.{active, deathFrame, controllableAt}` in the save, or clamp HP to 1 and re-open the surface without touching the bloom. Acceptance is `critic-w1-13-a.mjs` returning 4,200 recoverable on all three trials. 3. Run M-D7. 4. Re-drive M-D2 from walked deaths so the clamp, the fall branch and the D4 march each fire at least once, and fix `_inferCause()` so a fall death reports `fall` (traversal sets state to DEATH before `_deathTick` runs, so the branch is currently unreachable and `'drown'` is dead code). 5. Extend `DEATH_VOLATILE` to cover `fight.player.rig.` so the across-death diff stops crying wolf. 6. R3/R4 open against W1-12 and W1-01/W1-02 respectively.",
-      "ten_by_wave": 2
-    },
-    {
-      "id": "RI-PRG04",
-      "path": "corpus/20-progression/RI-PRG04-hearth-and-death.md",
-      "side": "souls",
-      "kind": "structure",
-      "native_scale": "0-10 per axis over 8 axes, min-over-axes; failure threshold: any axis below 6",
-      "native_score": 4,
-      "native_max": 10,
-      "native_verdict": "Failure threshold triggered — Rest effects below 6 (min-over-axes). The min is taken over the item's EIGHT SCORING AXES, not over its ten comparison methods, and the three non-passing checks do not map 1:1 onto axes. M1-rest-effects IS an axis and is the binding one: one of its ten rows (levelling at a hearth) is unreachable, so the axis is below 6 and min-over-axes sets the item to 4. M7-bloodstain-edge-cases is one of three methods feeding the Death-loop axis (M4, M5, M7); M4 and M5 are exact and the axis's own 6-floor is 'method 4 and 5 exact', so that axis sits at 6 and does not drive the min. M9 and M10 are the sole methods behind the Death-cost and Flask-purity axes and both are corpus_debt under RI-MTH06 §E.2 — M9 is arithmetic over RI-PRG06's soul budget owned by W1-16 and declared unrun by the builder, and M10 names two items ('Sap-bud', 'Heart-resin') that no longer exist under those names because RI-CMB08's shipped flask data calls them 'Hist Seed' and 'Sap Amber'. Neither absence is this build's, both are filed as debt and an arbitration question, and neither is allowed to drive the min to 0.",
-      "score_0_10": 4,
-      "measured": "partial",
-      "checks": [
-        {
-          "id": "M1-rest-effects",
-          "result": "fail",
-          "value": "9 of 10 rows correct; LEVEL UP unreachable at every sapwell in the province",
-          "threshold": "all 10 rows correct, named NPCs untouched",
-          "note": "The axis's own words: 'Level up — spend souls, +1 attribute per level, RI-PRG01 curve. THE ONLY PLACE LEVELLING IS POSSIBLE.' Measured live at three wells (archon, lilmoth, gideon): the hearth registry itself reports `standing_at: hearth-<id>` and the player has just rested there, and `openMenu('levelup')` is REFUSED with \"the level-up screen exists at a HEARTH only (RI-UIX03 L1)\". With `setAtHearth(true)` — a harness override with no in-game counterpart — it OPENS. The cause: `game/src/engine.js:2011` computes the gate as `!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)) || !!this.sim._uiForceHearth`, and `HearthSystem` (game/src/sim/hearth.js) defines `list/get/count/nearest/at/gateAt/menu` and NOT `atHearth`. The first disjunct is `undefined` at every well; the only writer of the second is the harness. Everything else on the row list is correct and measured: HP 620, 5 flask charges, Focus refilled (and refused for THE DRY WELL, seam S27), rest clamp reset, enemies respawned, clock 12:00 -> 18:00, sap taint raised, disease advanced one stage, no teleport.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json"
-          ]
-        },
-        {
-          "id": "M2-S7",
-          "result": "pass",
-          "value": "26 stations, 68 travel services; hearth menu destinations []; 0 stations within 90 m of a hearth",
-          "threshold": "network present AND every warp path inside the transport module; automatic fail in both directions",
-          "note": "Two-directional as the wave-0 amendment requires. The builder found and fixed its own violation here (5 of 29 wells sat within 5 m of a travel station) and turned the keep-out into an asserted placement rule rather than a one-off correction.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-            "game/data/world/hearths.json"
-          ]
-        },
-        {
-          "id": "M3-spacing",
-          "result": "pass",
-          "value": "29 wells; min pair 2.10 min; consecutive critical-path 3.07–3.98 min, mean 3.51; worst time-to-nearest 10.42 min over 22,068 walkable cells; fog gates at 84.0 s and 85.8 s",
-          "threshold": "mean 3.2–3.8, no pair < 2.0 min, no point > 11.0 min, every fog gate 60–110 s, count 24–32",
-          "note": "All nine rules inside their bands. Placement is Dijkstra over a seconds-per-metre field derived from the traversal rules, not hand-eyeballed, and the two fog-gate distances and the station keep-out were spot-checked live against the shipped registry. The critic did NOT re-run the Dijkstra field independently; the assertions are checked and the method is sound, so this is accepted with that stated.",
-          "evidence": [
-            "game/data/world/hearths.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        },
-        {
-          "id": "M4-single-death",
-          "result": "pass",
-          "value": "N banked, N in the bloom, N returned, 12/12; respawn at the LAST RESTED well (3,478 m and two regions apart across two trials); clock did not advance on death",
-          "threshold": "exact",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-            "reports/runs/W1-13-CONSUME/consumption.json"
-          ]
-        },
-        {
-          "id": "M5-double-death",
-          "result": "pass",
-          "value": "exactly one bloom holding M; N unrecoverable by any route; 4/4 doubles",
-          "threshold": "exact",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-          ]
-        },
-        {
-          "id": "M6-persistence",
-          "result": "pass",
-          "value": "0 quest, journal, faction, disposition, topic, crime or world-mutation paths change across a death, 4/4 seeds",
-          "threshold": "every state change survives, byte-identical (S6)",
-          "note": "See RI-JRN06 M-D4 for the 108 animation-rig paths that are not this.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
-          ]
-        },
-        {
-          "id": "M7-bloodstain-edge-cases",
-          "result": "fail",
-          "value": "1 of 3 cases correct",
-          "threshold": "stain outside the fog gate, at the last grounded position, and relocated toward the hearth — souls recoverable in all three",
-          "note": "Sealed/one-way relocation works (80.0 m march, souls recovered). The other two do not. (a) Boss arena: at exactly the gate centre the bloom stays at the centre while the record reads `outside_fog_gate`; correct at any non-zero offset. (b) Falling: the last-grounded rule NEVER FIRES. A real 90 m fall death was recorded with `cause: 'combat'` and `placement_rule: 'death_point'`, because `traversal.js:401` sets the player state to DEATH on the landing frame and `_inferCause()` only returns 'fall' while the state is FALL. `placeStain()`'s `cause === 'drown'` branch is unreachable by any path — `_inferCause()` can only ever return 'fall', 'hazard' or 'combat'. Souls were recoverable in every case tested, so this is a placement defect, not a destruction one.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        },
-        {
-          "id": "M8-clock-consequence",
-          "result": "marginal",
-          "value": "clock advances 6 h on a rest and 0 h on a death; sky luminance 64.66 at 17:00 -> 10.17 at 23:00, unchanged by a death",
-          "threshold": "clock reads 23:00, night roster active, merchants closed, timed quests consumed 6 h",
-          "note": "The clock and its drawn consequence are measured and coupled. The night roster swap and the merchant-hours consequence were not measured by anyone; they belong to RI-PRG06 and RI-PRG05 rosters that are not placed.",
-          "evidence": [
-            "reports/runs/W1-13-CONSUME/consumption.json"
-          ]
-        },
-        {
-          "id": "M9-death-cost-sim",
-          "result": "unmeasurable",
-          "value": null,
-          "threshold": "total permanent soul loss 9–15% of the world budget; retention within 3 points of 0.88",
-          "note": "Not run, and correctly declared by the builder as arithmetic over RI-PRG06's soul budget owned by W1-16 (progression.souls.economy). Recorded as corpus_debt, NOT charged against this piece — the task's rule and CRITIC-DOCTRINE's: a dimension blocked only by a missing system is debt against the corpus.",
-          "evidence": [
-            "orchestration/status/W1-13.json"
-          ]
-        },
-        {
-          "id": "M10-flask-purity",
-          "result": "unmeasurable",
-          "value": "the two items RI-PRG04 §4 names do not exist under those names",
-          "threshold": "Sap-bud and Heart-resin in zero merchant inventories, no gold or soul price",
-          "note": "A corpus collision, not a build defect. `game/data/combat/flask.json` is RI-CMB08's and ships 'Hist Seed' and 'Sap Amber' with 5 starting / 15 maximum charges against RI-PRG04 §4's 'Sap-bud' and 'Heart-resin' at 4 / 12. Neither analogue appears in any merchant inventory and `refilled_by_gold_or_merchants: false` is declared, so the INTENT of the axis holds; the axis as written cannot be executed until the two items are reconciled. Filed as an arbitration/corpus question, not scored against W1-13.",
-          "evidence": [
-            "game/data/combat/flask.json"
-          ]
-        }
-      ],
-      "hard_fails": [],
-      "how_we_lose_hits": [
-        "Not the predicted ones. RI-PRG04's own 'How we lose' list anticipates dense wells, warp between wells, a cut clock consequence, added death costs, quest rollback, a forgiving bloodstain, an unfair bloodstain, expensive boss retries and shop-bought flask upgrades. Nine of nine avoided. The failure is a tenth the item did not predict: the hearth's LEVELLING affordance is gated on a predicate the hearth system does not implement, so the checkpoint heals, refills, respawns and re-sites you and cannot take your souls."
-      ],
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-        "game/data/world/hearths.json",
-        "reports/runs/W1-13-CONSUME/consumption.json"
-      ],
-      "why_not_ten": "min-over-axes: the Rest-effects axis is below 6 because one of its ten binding rows — 'Level up ... the only place levelling is possible' — is unreachable at every one of the 29 shipped sapwells, measured live and separated from a probe artefact by a working override control. M7 is 1 of 3: the fall/last-grounded rule never fires because `_inferCause()` cannot return 'fall' for a fall death, and the fog-gate push-out degenerates at the arena centre. A respawn also leaves the body sliding: at 3 of 6 wells the player is 5.09–22.27 m off the basin 220 frames after respawning, against a matched no-death control that moves 0.00 m at all six.",
-      "path_to_ten": "1. Add `atHearth(sim)` to `HearthSystem` — `return !!this.at(sim.player.pos[0], sim.player.pos[2])` — so the gate `game/src/ui/system.js` has been calling since W1-21 landed resolves against the well registry instead of `undefined`. Acceptance: `critic-w1-13-f.mjs` reports `levelup_reachable: true` at all three wells with no `setAtHearth()` call anywhere in the probe, and `_spendSouls()` fires from a well and nowhere else. 2. Set the death cause from the traversal event rather than inferring it from a state the traversal has already overwritten: have `traversal.js` stamp `sim.player.deathCause = 'fall' | 'drown'` alongside the `fall_death` / `drowned` events, and read that first in `_inferCause()`. Acceptance: a scripted 90 m fall reports `placement_rule: 'last_grounded'` and the bloom sits on the ledge, not the floor. 3. Guard the fog-gate push-out against a zero bearing (fall back to any fixed bearing when `hypot(dx,dz) < 1e-6`). 4. Call `traversal.reset()` in `DeathSystem.respawn()` as `teleport()` already does, so the body does not arrive at the well carrying the velocity and slide state of the place it died. Acceptance: `critic-w1-13-e.mjs` reports 6/6 wells within the interact radius at 220 frames. 5. M9 and M10 open against W1-16 and the RI-PRG04/RI-CMB08 flask reconciliation.",
-      "ten_by_wave": 2
-    }
+  "depends_on": [
+   "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+   "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+   "game/data/**",
+   "game/data/crime/fences.json",
+   "game/data/states/sv5-journal-bloodstain.json",
+   "game/data/world/hearths.json",
+   "game/data/world/pois.json",
+   "game/data/world/regions.json",
+   "game/data/world/respawn.json",
+   "game/data/world/roads.json",
+   "game/data/world/terrain.json",
+   "game/data/world/travel/stations.json",
+   "game/data/world/traversal.json",
+   "game/data/world/water.json",
+   "game/src/**",
+   "game/src/save/state.js",
+   "game/src/sim/events.js",
+   "game/src/sim/record.js",
+   "game/src/ui/system.js",
+   "game/src/world/field.js",
+   "game/src/world/groundskin.js",
+   "game/src/world/microrelief.js",
+   "game/src/world/noise.js",
+   "tools/harness/boot-check.mjs",
+   "tools/harness/critic-w1-13-a.mjs",
+   "tools/harness/critic-w1-13-b.mjs",
+   "tools/harness/critic-w1-13-c.mjs",
+   "tools/harness/critic-w1-13-d.mjs",
+   "tools/harness/critic-w1-13-e.mjs",
+   "tools/harness/critic-w1-13-f.mjs",
+   "tools/harness/w1-13-consume.mjs",
+   "tools/journey/gamepad-shim.mjs",
+   "tools/journey/journey-run.mjs",
+   "tools/journey/jrn06-death.mjs",
+   "tools/journey/state-diff.mjs",
+   "tools/journey/world-runs-gate.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/gamedata.mjs",
+   "tools/lib/serve.mjs",
+   "tools/lib/trace-schema.mjs",
+   "tools/world/build-hearths.mjs"
   ],
-  "artifacts": [
+  "depends_on_note": "derived from 23 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "RI-JRN06 blind_pair: no — the loop is Souls' outright (seam S6, ARBITRATION §1). The two pixel measurements cited here (the death surface's warm-ink count, the bloom's visibility) are presence tests against a control, not fidelity comparisons, and no reference image was consulted. No placed capture is cited for any arrival claim (S34(b)); the run back in `walked-loop.json` was walked by the capsule."
+ },
+ "reference_items": [
+  {
+   "id": "RI-JRN06",
+   "path": "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+   "side": "souls",
+   "kind": "structure",
+   "native_scale": "0-100 weighted (Nothing is lost 34 / The stain behaves 24 / Not softened 18 / Run back is play 14 / Legible and fast 10)",
+   "native_score": 76,
+   "native_max": 100,
+   "native_verdict": "Below bar — named remedy required (75–91)",
+   "score_0_10": 6,
+   "measured": "partial",
+   "checks": [
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-13-a.mjs --out <path>",
-      "note": "Three trials plus a matched control. Every assertion reads the LIVE world after the load (getDeathState / getPlayerStats), never the blob."
+     "id": "M-D1",
+     "result": "pass",
+     "value": "12/12 banked==held, 12/12 held==stored, 8/8 stored==returned (critic's own run, doubled deaths INCLUDED)",
+     "threshold": "all three exactly equal, 20/20",
+     "note": "Verified independently over 12 deaths of which 4 were doubled. The builder's own instrument reports 14/14, not 20/20, because tools/journey/jrn06-death.mjs:313 does `rows.filter(r => !r.second_death)` — which drops the two legs that ARE checkable on a doubled death (banked==held, held==stored) along with the third that is not. Six of the builder's twenty deaths therefore had no conservation check at all. The critic's run closes that hole and finds no discrepancy.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+     ]
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-13-b.mjs --out <path>",
-      "note": "Six soul-loss attacks and the S5 roster attacked on both triggers (rest and death) and through both flag routes (spawn opts vs the harness verb)."
+     "id": "M-D2",
+     "result": "marginal",
+     "value": "builder: max offset 0.000 m over 20, placement_rule 'death_point' 20/20. Critic's first WALKED death: 80.0 m relocation.",
+     "threshold": "<= 2.0 m, 20/20; 0 stains inside geometry or in the air",
+     "note": "The builder's 0.000 m is an artefact of the scenario, not a property of the build: all twenty deaths were reached by `teleport` onto flat standable ground, so `placeStain()`'s 2.0 m clamp, its fall/hazard branch and its D4 march were never exercised by that session. One death taken at the end of a real 217 m walk landed at y = -0.41 (not standable), and the bloom relocated 80.0 m along the bearing to the well. That is D4 behaving correctly, and it is also proof that the headline offset number describes the probe.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+     ]
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-13-c.mjs --out <path>",
-      "note": "A real fall death, a fog-gate death, and 12 deaths of conservation with the doubled rows INCLUDED rather than filtered."
+     "id": "M-D3",
+     "result": "pass",
+     "value": "relocation fired 14.5 m (builder, RN5) and 80.0 m (critic, walked); souls recoverable in both",
+     "threshold": "path exists; stain reachable; souls recoverable. Hard fail: an unreachable stain",
+     "note": "HF7 not triggered. One degenerate found and reported under M-D2/secondary: at EXACTLY the fog-gate centre the push-out divides by `Math.hypot(0,0) || 1` and the bloom stays at the centre while the record still reads `placement_rule: outside_fog_gate`. At 0.001 m off centre it correctly pushes to 29 m. Measure-zero today, and the arenas do not reseal in this build, so it is a latent defect rather than an unreachable stain.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+     ]
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-13-d.mjs --out <path>",
-      "seed": 1337,
-      "note": "S34(b) arrival evidence: 217 m walked out, died, respawned, 46.1 m walked back by the capsule, 4,200 recovered. No teleport in either leg. No placed capture is cited for any arrival claim in this verdict."
+     "id": "M-D4",
+     "result": "marginal",
+     "value": "108 non-death-volatile paths moved across a death on 4/4 seeds — ALL 108 are fight.player.rig.*",
+     "threshold": "diff otherwise empty for all 5 scenarios. Hard fail: any non-death-volatile field changed",
+     "hard_fail": false,
+     "note": "The substance passes and the instrument has gone stale. Re-running the builder's own `state-diff.mjs --mode across-death` on HEAD reports 0/4 clean where the builder reported 8/8, and every one of the 108 offending paths is the PLAYER'S OWN ANIMATION RIG (`fight.player.rig.last_rx[]` x6, `last_ry[]` x1, `hurt_prev[][][]` x23 per seed) — bone rotations and previous-pose hurtboxes belonging to a body that died in one place and stood up in another. Zero quest stages, journal entries, faction numbers, dispositions, topics, crime records, world mutations or NPC-death registers moved. HF2 is NOT triggered. What did happen is that another piece added `fight.*` to the save after the builder's run, and the builder's DEATH_VOLATILE list (jrn06-death.mjs:29) names `pose.` but not `fight.player.rig.`, so the check now cries wolf. The builder's cited 8/8 is not reproducible on HEAD and must not be carried forward as-is.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
+     ]
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-13-e.mjs --out <path>",
-      "note": "Six wells, position sampled from the respawn frame outward, each with a matched no-death control at the same well for the same frames."
+     "id": "M-D5",
+     "result": "fail",
+     "value": "6 of the 6 never_respawn_entity_flags have NO world-side producer; coupling 0",
+     "threshold": "100% of ordinary enemies respawned; 0 named NPCs, quest actors or merchants respawned",
+     "hard_fail": false,
+     "note": "CONSUMPTION failure, scored 0 fail-closed per RI-JRN06's CONSUMPTION §3 and RI-MTH07 §B. `game/data/world/respawn.json` declares the six flags and states their producer in words: \"Set per SPAWN (engine.spawn(id, x, z, {named: true}))\". `engine.spawn()` reads only `opts.as` and `opts.yaw` and copies none of them. Measured: an ordinary entity spawned with `{named:true}`, `{merchant:true}`, `{questActor:true}`, `{trainer:true}`, `{boss:true}` or `{unique:true}` through that documented route was classified `respawns: true` and STOOD BACK UP after both a hearth rest and a player death, on both triggers, 6/6. The same flags set through `__HARNESS.setEntityNamed()` — a harness verb with no in-game counterpart, and the one the builder's own M-D5 fixture uses — are honoured 6/6. That is RI-MTH07 §A's orphan predicate exactly, and RI-MTH07's method 3 (the hand-feed audit) is the check it fails. HF3 is NOT triggered, because the shipped province's default state contains ZERO entities and every real merchant, trainer and quest-giver lives in `sim.npcs`, which no respawn path iterates — so today there is no named actor for the broken flag to fail to protect. The guarantee currently holds structurally and by statblock id (`champion_hist_marked`, `cst_sap_speaker`), not by the classifier branch the builder demonstrated.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json"
+     ]
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/critic-w1-13-f.mjs --out <path>",
-      "note": "Three wells refused, the setAtHearth() override opened — so the null answer is a statement about the gate and not about the probe."
+     "id": "M-D6",
+     "result": "marginal",
+     "value": "named fixture stays dead across rest and death 2/2 — but only when the flag is hand-fed",
+     "threshold": "still dead; quests.failure.severed intact",
+     "note": "Passes on the fixture. Inherits M-D5's defect: the only route by which a world actor could carry the flag does not work.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json"
+     ]
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/state-diff.mjs --mode across-death --in reports/journeys/w1-13-jrn06 --out <path>",
-      "seed": "4711,1337,90210,2147483647",
-      "note": "The builder's own instrument, re-run by the critic on HEAD. 0/4 clean where the builder reported 8/8; all 108 offending paths are fight.player.rig.*."
+     "id": "M-D7",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "merchant gold pool unchanged across a death (progression.merchant.barter)",
+     "note": "Not run by the builder — it is absent from the run's own `m_jrn06_summary.checks` list, which carries 18 of the 19 checks and names neither M-D7 nor M-D13. Unmeasurable ⇒ 0, fail-closed (SCORING §1.1). The structural argument (merchants are `sim.npcs`, which respawn never touches) is good but is an argument, not a measurement.",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
     },
     {
-      "path": "reports/journeys/w1-13-jrn06/journey.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/journey-run.mjs --journey jrn06-death --seed 4711 --deaths 20 (builder)",
-      "seed": 4711,
-      "note": "The builder's own 20-death session. Cited for M-D10/11/12/14/15/17 and inspected for M-D1's filtered rows and the absent M-D7/M-D13 entries."
+     "id": "M-D8",
+     "result": "pass",
+     "value": "exactly 1 bloom at every instant; 6/6 (builder) and 4/4 (critic) doubles destroyed the first; 0 retrieved",
+     "threshold": "exactly 1 stain globally at all times; hard fail on two stains or any retrieval",
+     "note": "Attacked directly: two further lethal hits landed on the corpse while the surface was up did NOT create a second bloom or increment the death count (`observe()` returns early while `active`). The single-stain rule is structural — `sim.quest.death.bloodstain` is one field, not a list — and the builder is right to say so rather than fake a break.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+     ]
     },
     {
-      "path": "reports/journeys/w1-13-jrn06-runback/journey.json",
-      "kind": "report",
-      "produced_by": "node tools/journey/jrn06-death.mjs run-back (builder)",
-      "note": "Builder's three walked run-back trials. Walked by the capsule; admissible under S34(b)."
-    },
-    {
-      "path": "reports/runs/W1-13-CONSUME/consumption.json",
-      "kind": "report",
-      "produced_by": "node tools/harness/w1-13-consume.mjs (builder)",
-      "note": "The builder's RI-MTH07 run, 7/7 coupled. Audited rather than accepted — see world_coupling in the .md."
-    },
-    {
-      "path": "tools/harness/critic-w1-13-a.mjs",
-      "kind": "log",
-      "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
-    },
-    {
-      "path": "tools/harness/critic-w1-13-b.mjs",
-      "kind": "log",
-      "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
-    },
-    {
-      "path": "tools/harness/critic-w1-13-c.mjs",
-      "kind": "log",
-      "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
-    },
-    {
-      "path": "tools/harness/critic-w1-13-d.mjs",
-      "kind": "log",
-      "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
-    },
-    {
-      "path": "tools/harness/critic-w1-13-e.mjs",
-      "kind": "log",
-      "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
-    },
-    {
-      "path": "tools/harness/critic-w1-13-f.mjs",
-      "kind": "log",
-      "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
-    },
-    {
-      "path": "game/data/world/hearths.json",
-      "kind": "report",
-      "produced_by": "node tools/world/build-hearths.mjs (builder); read by this critic and spot-checked live against listHearths() in walked-loop.json",
-      "source": "ours",
-      "note": "The shipped 29-well registry with its measured spacing rules and the RI-PRG04 §5 table discrepancy the builder filed. Cited as authored data, not as source."
-    },
-    {
-      "path": "game/data/combat/flask.json",
-      "kind": "text-excerpt",
-      "produced_by": "authored by RI-CMB08's builder; quoted by this critic for the item-name and charge-count collision with RI-PRG04 §4",
-      "source": "ours"
-    },
-    {
-      "path": "orchestration/status/W1-13.json",
-      "kind": "log",
-      "produced_by": "written by the W1-13 builder; cited for its own declaration that RI-PRG04 method 9 was not run and why",
-      "source": "ours"
-    },
-    {
-      "path": "orchestration/amendments/AM-W1-13-01-prg04-spacing-table-superseded.md",
-      "kind": "report",
-      "produced_by": "written by this critic; files the RI-PRG04 §5 discrepancy on a corpus surface rather than inside the data file that caused it",
-      "source": "ours"
-    }
-  ],
-  "blind_comparisons": [
-    {
-      "ref_item": "RI-JRN06",
-      "status": "not_possible",
-      "not_possible_reason": "RI-JRN06 declares blind_pair: no. The loop is Souls' outright under seam S6 and ARBITRATION §1; there is nothing to compare against Morrowind, and comparing our corpse run to Dark Souls' as unlabeled artifacts would compare level design rather than this loop. The item says so itself."
-    },
-    {
-      "ref_item": "RI-PRG04",
-      "status": "not_possible",
-      "not_possible_reason": "RI-PRG04 declares blind_pair: no."
-    }
-  ],
-  "arbitration": {
-    "ar1": {
-      "status": "pass",
-      "checks": [
-        {
-          "id": "A-death-compensation",
-          "result": "pass",
-          "observed": "0 forbidden strings across 3 deaths; 0 numerals on the death surface; 0 retrieval items in the running inventory; the build publishes its own compensation enumeration (loss_toast false, retrieval_item null, insurance null, reduced_death_penalty_option false, partial_recovery false, grace_period_frames 0). The single softening instinct RI-JRN06 exists to catch is absent.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-            "reports/journeys/w1-13-jrn06/journey.json"
-          ]
-        },
-        {
-          "id": "A6",
-          "result": "not_applicable",
-          "not_run_reason": "No enemy statblock is touched by this piece; respawn restores hp to hpMax and the spawn anchor and reads no character level."
-        },
-        {
-          "id": "A-morrowind-forgiveness-in-the-loop",
-          "result": "pass",
-          "observed": "No grace period, no partial carry-over, no timer on the bloom, no second stain. A second death destroys the first at the instant the second is created, and no API in the build can retrieve it — verified structurally (one field, not a list) and by four scripted doubles.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-          ]
-        }
-      ]
-    },
-    "ar2": {
-      "status": "pass",
-      "checks": [
-        {
-          "id": "B1",
-          "result": "pass",
-          "observed": "0 markers, map_exists false, 0 of 6 HUD elements world-anchored, measured on the frames after a real death rather than by grepping for the word 'marker'.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-          ]
-        },
-        {
-          "id": "B2",
-          "result": "pass",
-          "observed": "The hearth menu exposes `destinations: []` and HearthSystem has no method that takes a hearth id and moves the player. 26 travel stations and 68 services exist and none is within 90 m of a well, so S7 is satisfied in both directions rather than by the absence of a network.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-            "game/data/world/hearths.json"
-          ]
-        },
-        {
-          "id": "B10",
-          "result": "pass",
-          "observed": "Quest stages, journal, faction rank, disposition, bounty, witnesses, topics known, world mutations and named-NPC deaths all survive a death unchanged, on 4 seeds. The 108 paths that do move are the player's own animation rig.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
-          ]
-        },
-        {
-          "id": "B5",
-          "result": "fail",
-          "observed": "Not the usual direction, and reported here because the check is where it surfaces. S15 says souls level you and ONLY level you; nothing in this build prices anything in souls, so the leak B5 hunts is absent. But the only sink souls have — the hearth level-up screen — is unreachable at all 29 wells (see RI-PRG04 M1), so souls in this build currently buy nothing at all. That is not a Souls-convention leak into the world and is NOT scored as an AR-2 failure; it is recorded against B5 because B5 is the probe that asks what souls can be exchanged for. Judged as a defect, per seam S26.",
-          "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json"
-          ]
-        }
-      ]
-    }
-  },
-  "score": {
-    "overall_0_10": 4,
-    "pass_threshold": 7,
-    "aggregation": "min",
-    "band_label": "Recognisable but wrong",
-    "confidence": "high"
-  },
-  "status": "FAIL",
-  "status_reasons": [
-    "below_wave_1_gate:7.0",
-    "consumption_coupling_zero:RI-JRN06/M-D5 never_respawn_entity_flags",
-    "min_over_axes:RI-PRG04 rest-effects axis below 6 (levelling unreachable at every hearth)",
-    "check_fail:RI-JRN06/M-D16 mid-death save destroys the bloom",
-    "unmeasurable:RI-JRN06/M-D7 merchant gold pool never run",
-    "corpus_debt:RI-PRG04/M9 death-cost sim (W1-16), RI-PRG04/M10 flask purity (RI-PRG04 vs RI-CMB08 item-name collision)",
-    "corpus_debt:RI-JRN06/R3 encounters on the run back (W1-12), R4 shortcut ratio (W1-01/W1-02)"
-  ],
-  "biggest_gap": {
-    "gap_id": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
-    "subsystem_path": "progression.bonfire.function",
-    "what": "The level-up screen — which RI-PRG04 §1 makes the hearth's defining affordance and calls 'THE ONLY PLACE LEVELLING IS POSSIBLE' — cannot be opened at any of the 29 shipped sapwells. Measured at hearth-archon, hearth-lilmoth and hearth-gideon: standing on the basin, with the hearth registry itself reporting `standing_at: hearth-<id>` and immediately after a successful `restAt()`, `openMenu('levelup')` is REFUSED 3/3 with \"the level-up screen exists at a HEARTH only (RI-UIX03 L1)\"; with the harness override `setAtHearth(true)` — which has no in-game counterpart — the same call OPENS 1/1. The gate at game/src/engine.js:2011 is `!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)) || !!this.sim._uiForceHearth`, and HearthSystem (game/src/sim/hearth.js) defines list/get/count/nearest/at/gateAt/menu and no `atHearth`. The first disjunct is `undefined` at every well in the province and the only writer of the second is `__HARNESS.setAtHearth()`. `_spendSouls()` is reachable from exactly one producer (game/src/ui/system.js:322, inside `case 'levelup'`), so souls have no sink anywhere in the running build.",
-    "why_it_matters": "The player banks souls, risks them, dies, walks back and recovers exactly 4,200 of them — and then cannot spend one, which makes the entire death economy this piece implements so carefully a loop with nothing at the end of it.",
-    "evidence": [
-      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
+     "id": "M-D9",
+     "result": "pass",
+     "value": "0 forbidden strings over 3 deaths; 0 numerals on the surface; 0 retrieval items in the running inventory",
+     "threshold": "0 hits, 0 such items. Hard fail: any",
+     "note": "HF5 clear. The only strings drawn across the death are '5', 'LIGHT', 'spark_dart' and 'YOU WENT DOWN'. The three data files matching the compensation vocabulary (quests/blackmarsh-coast, magic-utility, mainline-act3) are quest prose containing the word 'retrieve'; none is an item that restores a lost bloom. Confirmed. The build also publishes its own enumeration (`getDeathState().compensation`) rather than promising, which is the right shape for this check.",
+     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-    ],
-    "severity": "blocking",
-    "remedy": {
-      "action": "Add the missing predicate to the hearth registry that already answers the question. In game/src/sim/hearth.js, add to HearthSystem: `atHearth(sim) { return !!this.at(sim.player.pos[0], sim.player.pos[2]); }` — `at(x, z)` already exists and already tests each well's own `interact_radius_m`, and `listHearths().standing_at` is built from it, so the registry is right and only the method name the UI calls is missing. Then demote `sim._uiForceHearth` to a declared test override: keep it (arena scenarios need it) but have `setAtHearth()` set a flag that `getUIState()` reports, so a probe that leans on it is visible in its own output. While in this file, note the same shape elsewhere: `game/data/world/respawn.json` names `engine.spawn(id, x, z, {named: true})` as the producer of the six never-respawn flags and `engine.spawn()` copies only `opts.as` and `opts.yaw` — fix that in the same pass (three lines) so the S5 classifier has a world-side writer and is not reachable only through `setEntityNamed()`.",
-      "targets": [
-        "game/src/sim/hearth.js",
-        "game/src/engine.js",
-        "game/src/ui/system.js",
-        "game/data/world/respawn.json",
-        "tools/harness/critic-w1-13-f.mjs",
-        "tools/journey/jrn06-death.mjs"
-      ],
-      "acceptance": "`node tools/harness/critic-w1-13-f.mjs` reports `levelup_reachable: true` at all three wells with NO `setAtHearth()` call anywhere in the probe, and `false` when the player is teleported 50 m off the basin; a `level_up` trace event fires from a well and from nowhere else in the province; and `soulsHeld` falls by exactly `soulsToNextLevel()` with `level` rising by 1. Separately, `node tools/harness/critic-w1-13-b.mjs` reports `flags_honoured_via_spawn_opts` listing all six flags (it currently lists none) and `protected_that_stood_back_up: []` on both the rest and the death trigger (it currently lists six).",
-      "ref_item": "RI-PRG04",
-      "estimated_size": "S"
+     ]
+    },
+    {
+     "id": "M-D10",
+     "result": "pass",
+     "value": "0 frames between the last hit's active window and HP reaching 0, 20/20",
+     "threshold": "<= 12 frames, 20/20",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
+    },
+    {
+     "id": "M-D11",
+     "result": "pass",
+     "value": "2.500 s surface; skipped 2 frames after an input on its first rendered frame; 19,877 warm ink px vs 162 alive",
+     "threshold": "<= 3.0 s; gone within 30 frames of an input; 0 statistics or tips. Hard fail: unskippable",
+     "note": "HF8 clear. The 124x pixel swing (162 alive -> 20,097 up -> 176 skipped) is the right kind of evidence: it distinguishes a string that is DRAWN from RI-JRN06's own fourth shape, orphan text.",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json",
+      "reports/runs/W1-13-CONSUME/consumption.json"
+     ]
+    },
+    {
+     "id": "M-D12",
+     "result": "pass",
+     "value": "median and p95 both 150 f = 2.500 s",
+     "threshold": "median <= 4.0 s, p95 <= 6.0 s",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
+    },
+    {
+     "id": "M-D13",
+     "result": "marginal",
+     "value": "R1 median 2.746 min PASS; R2 p95 3.973 min PASS; R3 UNMEASURED; R4 UNMEASURED",
+     "threshold": "R1 1.5–3.0 min, R2 <= 4.0 min, R3 1–4 encounters, R4 ratio 0.30–0.60",
+     "note": "Two of four met and measured honestly by a walked capsule; two unmeasurable for want of systems this piece does not own. R3 needs a placed hostile roster (`combat.encounter.placement`, W1-12) and the shipped province's default state contains zero entities; R4 needs shortcut geometry (W1-01/W1-02) and `sim.world.shortcutsOpened` is a saved register with no shortcut anywhere in the world to open. The builder declared both rather than reporting 0, which is correct — R3 = 0 is the failure the check exists to catch and reporting it would have been a fabricated hit. Scored 4 of 9: R1/R2 credited, R3/R4 fail-closed at 0, neither charged nor credited to this builder. Critic's own walked loop reproduced the shape at a shorter range (46.1 m / 0.613 min).",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06-runback/journey.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+     ]
+    },
+    {
+     "id": "M-D14",
+     "result": "pass",
+     "value": "visible 8/8 at 12 m in daylight and 8/8 at 6 m in the dark; 1,078 bloom px vs 195 with the camera turned away",
+     "threshold": "8/8 and 8/8",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
+    },
+    {
+     "id": "M-D15",
+     "result": "pass",
+     "value": "5/5 credited under all five conditions; 5/5 refused at 2.6 m; 0 cases consumed-without-credit",
+     "threshold": "souls returned in 5/5; hard fail on an interruptible recovery that consumes the stain",
+     "note": "HF9 clear, and structurally so: recovery is one frame with the credit and the clear adjacent, so there is no window to be knocked out of.",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
+    },
+    {
+     "id": "M-D16",
+     "result": "fail",
+     "value": "survives rest / region change / named-state load / blob restore / IndexedDB round trip; DESTROYED by a save taken while the death surface is up (4,200 -> 0, 2 of 2 routes)",
+     "threshold": "stain present at the same position with the same souls after a quit and a browser restart",
+     "note": "The check as the item words it passes; the transition next to it does not. Measured: rest, bank 4,200, die, take a save WHILE THE SURFACE IS UP, reload the page (a real browser restart), Continue. The bloom is restored holding 4,200 — and so is HP = 0, while `DeathSystem`'s in-flight state (`active`, `deathFrame`, `controllableAt`) is not saved and is fresh. On the very next frame `observe()` sees `hp <= 0` and calls `die()` a second time with `soulsHeld = 0`, which sets `prev` to the 4,200 bloom, increments `stains_lost_to_second_death` and overwrites it with a 0-soul bloom. 4,200 souls destroyed by a load, with no second death and nothing the player did. The same happens on a same-session `loadState(blob)`. The matched control — an identical save taken AFTER the respawn, same restart, same audit — returns all 4,200. D17 says the stain survives quits, reloads and a browser restart 'until recovered or replaced'; it was neither.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json"
+     ]
+    },
+    {
+     "id": "M-D17",
+     "result": "marginal",
+     "value": "6/20 = 0.30",
+     "threshold": "0.10 <= rate <= 0.35",
+     "note": "Inside the band, but produced by a scripted `i % 3 === 2` rule rather than by an agent losing a fight, so the number measures the script's arithmetic and not the loop's difficulty. The item asks for an 'agent-driven session'.",
+     "evidence": [
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
+    },
+    {
+     "id": "M-D18",
+     "result": "pass",
+     "value": "0 stations are hearths (was 5 before the builder's 90 m keep-out); hearth menu destinations []; 26 stations and 68 travel services present",
+     "threshold": "0 routes ending at or within 60 s of the death point. Hard fail: a 'return to death location' affordance",
+     "note": "HF6 clear, and the S7 axis is satisfied in BOTH directions, which is what the wave-0 amendment to RI-PRG04 requires: the transport network exists and is thick, AND no part of it lands on a well.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+     ]
+    },
+    {
+     "id": "M-D19",
+     "result": "pass",
+     "value": "markers 0; map_exists false; 0 of 6 HUD elements world-anchored",
+     "threshold": "0 markers, arrows, minimap or compass pointing at the stain",
+     "note": "Re-run by the critic on the frames after a real death. AR-2 clear. The count is over `getUIState().elements[].worldAnchor` and `.markers`, which is a count over the HUD model rather than a grep for the word 'marker' — the right instrument.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+     ]
     }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "#2 — 'The bloodstain is a spawned prefab with no persistence... the player quits mid-run-back and loses 4,200 souls to a save system, not to a mistake.' Arrived through a different door: the bloom IS persistent, and a save taken mid-death makes the load re-kill the player and destroy it.",
+    "#6 — 'The run back is empty.' R3 is unmeasured rather than 0, but the shipped province's default state contains zero entities, so the corpse run is currently a walk down an empty corridor in fact if not yet in measurement."
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json",
+    "reports/journeys/w1-13-jrn06/journey.json",
+    "reports/journeys/w1-13-jrn06-runback/journey.json"
+   ],
+   "why_not_ten": "M-D5 scores 0 fail-closed: six of the seven never-respawn routes in `respawn.json` have no world-side producer, because `engine.spawn()` ignores the flag options the data file names as their source, and the builder's proof went through `setEntityNamed()`, a harness verb. M-D16 fails: a save taken while the death surface is up destroys 4,200 souls on load (2/2 routes) against a clean control. M-D7 was never run. M-D2's 0.000 m offset describes twenty teleported deaths on flat ground, and the first walked death relocated 80 m. M-D13's R3 and R4 are unmeasurable for want of a hostile roster and shortcut geometry.",
+   "path_to_ten": "1. Copy the six never-respawn flags off `opts` in `engine.spawn()` (three lines) and add a world-produced fixture to M-D5 so the classifier is exercised without `setEntityNamed()`; keep the harness verb for negative controls only. 2. Make a load reconcile a restored `hp <= 0`: in `engine.loadState(blob)`, if the save carries a dead player, re-enter the death surface rather than letting `observe()` fire a fresh `die()` — persist `DeathSystem.{active, deathFrame, controllableAt}` in the save, or clamp HP to 1 and re-open the surface without touching the bloom. Acceptance is `critic-w1-13-a.mjs` returning 4,200 recoverable on all three trials. 3. Run M-D7. 4. Re-drive M-D2 from walked deaths so the clamp, the fall branch and the D4 march each fire at least once, and fix `_inferCause()` so a fall death reports `fall` (traversal sets state to DEATH before `_deathTick` runs, so the branch is currently unreachable and `'drown'` is dead code). 5. Extend `DEATH_VOLATILE` to cover `fight.player.rig.` so the across-death diff stops crying wolf. 6. R3/R4 open against W1-12 and W1-01/W1-02 respectively.",
+   "ten_by_wave": 2
   },
-  "secondary_observations": [
+  {
+   "id": "RI-PRG04",
+   "path": "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+   "side": "souls",
+   "kind": "structure",
+   "native_scale": "0-10 per axis over 8 axes, min-over-axes; failure threshold: any axis below 6",
+   "native_score": 4,
+   "native_max": 10,
+   "native_verdict": "Failure threshold triggered — Rest effects below 6 (min-over-axes). The min is taken over the item's EIGHT SCORING AXES, not over its ten comparison methods, and the three non-passing checks do not map 1:1 onto axes. M1-rest-effects IS an axis and is the binding one: one of its ten rows (levelling at a hearth) is unreachable, so the axis is below 6 and min-over-axes sets the item to 4. M7-bloodstain-edge-cases is one of three methods feeding the Death-loop axis (M4, M5, M7); M4 and M5 are exact and the axis's own 6-floor is 'method 4 and 5 exact', so that axis sits at 6 and does not drive the min. M9 and M10 are the sole methods behind the Death-cost and Flask-purity axes and both are corpus_debt under RI-MTH06 §E.2 — M9 is arithmetic over RI-PRG06's soul budget owned by W1-16 and declared unrun by the builder, and M10 names two items ('Sap-bud', 'Heart-resin') that no longer exist under those names because RI-CMB08's shipped flask data calls them 'Hist Seed' and 'Sap Amber'. Neither absence is this build's, both are filed as debt and an arbitration question, and neither is allowed to drive the min to 0.",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
     {
-      "what": "A save taken while the death surface is up destroys the bloom on load. 4,200 souls in, 0 recoverable, on both the browser-restart route and the same-session loadState route; the matched control (an identical save taken after the respawn) returns all 4,200. Mechanism: the save carries `death.bloodstain` and `character.hp = 0`, DeathSystem's in-flight state is not durable, and on the first frame after the load `observe()` sees `hp <= 0` and fires a fresh `die()` with `soulsHeld = 0`, which takes the D16 second-death branch against a death that never happened. Not player-reachable today — nothing in the shipping game calls `writeSave()` — but it arms the moment autosave or save-on-rest lands, and it is RI-JRN06 'How we lose' #2 wearing a different face. Second in severity only to the named gap and would have been the gap if a player could reach it.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json"
-      ],
-      "subsystem_path": "combat.death.corpserun"
+     "id": "M1-rest-effects",
+     "result": "fail",
+     "value": "9 of 10 rows correct; LEVEL UP unreachable at every sapwell in the province",
+     "threshold": "all 10 rows correct, named NPCs untouched",
+     "note": "The axis's own words: 'Level up — spend souls, +1 attribute per level, RI-PRG01 curve. THE ONLY PLACE LEVELLING IS POSSIBLE.' Measured live at three wells (archon, lilmoth, gideon): the hearth registry itself reports `standing_at: hearth-<id>` and the player has just rested there, and `openMenu('levelup')` is REFUSED with \"the level-up screen exists at a HEARTH only (RI-UIX03 L1)\". With `setAtHearth(true)` — a harness override with no in-game counterpart — it OPENS. The cause: `game/src/engine.js:2011` computes the gate as `!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)) || !!this.sim._uiForceHearth`, and `HearthSystem` (game/src/sim/hearth.js) defines `list/get/count/nearest/at/gateAt/menu` and NOT `atHearth`. The first disjunct is `undefined` at every well; the only writer of the second is the harness. Everything else on the row list is correct and measured: HP 620, 5 flask charges, Focus refilled (and refused for THE DRY WELL, seam S27), rest clamp reset, enemies respawned, clock 12:00 -> 18:00, sap taint raised, disease advanced one stage, no teleport.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json"
+     ]
     },
     {
-      "what": "A respawn leaves the body sliding. At 3 of 6 wells the player is 5.09 m, 19.09 m and 22.27 m from the basin 220 frames after respawning, against a matched no-death control that stands at the same wells for the same frames and moves 0.00 m at all six. On the respawn frame itself the offset is 0.00 m at all six, so this is not the placement — `DeathSystem.respawn()` writes the position but never calls `traversal.reset()`, which `teleport()` does, so the body arrives at the well carrying the velocity and slide state of wherever it died. In the walked loop this carried the player 89.4 m TOWARD the death point before the run back began, silently shortening it. It also means D6's 'they are standing at the HEARTH' is true for one frame.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
-      ],
-      "subsystem_path": "progression.bonfire.function"
+     "id": "M2-S7",
+     "result": "pass",
+     "value": "26 stations, 68 travel services; hearth menu destinations []; 0 stations within 90 m of a hearth",
+     "threshold": "network present AND every warp path inside the transport module; automatic fail in both directions",
+     "note": "Two-directional as the wave-0 amendment requires. The builder found and fixed its own violation here (5 of 29 wells sat within 5 m of a travel station) and turned the keep-out into an asserted placement rule rather than a one-off correction.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+      "game/data/world/hearths.json"
+     ]
     },
     {
-      "what": "Death is free when no respawn point resolves. With `hearth_last_rested` null, a death moves the body 0.00 m and the bloom lands at the player's feet, so 4,200 souls are back within five frames and the run back is nothing. `_seedStartingHearth()` guards the named-state path but is NOT called on the `loadState(blob)` path, so any save carrying a null respawn point loads into a world where dying costs nothing. The builder measured this and used it as the CONSUMPTION null control for hearths.json — reading a fail-open path as a clean control rather than as a missing floor. `DeathSystem.respawn()` should fall back to the nearest well rather than to nothing; the same null also skips D4's relocation march entirely, which is the shape that destroys souls rather than refunding them.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
-        "reports/runs/W1-13-CONSUME/consumption.json"
-      ],
-      "subsystem_path": "combat.death.corpserun"
+     "id": "M3-spacing",
+     "result": "pass",
+     "value": "29 wells; min pair 2.10 min; consecutive critical-path 3.07–3.98 min, mean 3.51; worst time-to-nearest 10.42 min over 22,068 walkable cells; fog gates at 84.0 s and 85.8 s",
+     "threshold": "mean 3.2–3.8, no pair < 2.0 min, no point > 11.0 min, every fog gate 60–110 s, count 24–32",
+     "note": "All nine rules inside their bands. Placement is Dijkstra over a seconds-per-metre field derived from the traversal rules, not hand-eyeballed, and the two fog-gate distances and the station keep-out were spot-checked live against the shipped registry. The critic did NOT re-run the Dijkstra field independently; the assertions are checked and the method is sound, so this is accepted with that stated.",
+     "evidence": [
+      "game/data/world/hearths.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+     ]
     },
     {
-      "what": "`killPlayer(cause)`'s argument is discarded. `_deathTick()` calls `death.observe(sim, combat, bus)` with no opts, so `opts.cause` has no supplier anywhere in the build and the cause is always inferred. Combined with `_inferCause()` never returning 'fall' (traversal sets the state to DEATH on the landing frame) and never returning 'drown' at all, two of `placeStain()`'s four branches are unreachable and a harness verb advertises a parameter it ignores — TOOL-LOOP rule 3 q5, a flag that lies, which is a defect the builder correctly criticised elsewhere in the same session.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
-      ],
-      "subsystem_path": "combat.death.corpserun"
+     "id": "M4-single-death",
+     "result": "pass",
+     "value": "N banked, N in the bloom, N returned, 12/12; respawn at the LAST RESTED well (3,478 m and two regions apart across two trials); clock did not advance on death",
+     "threshold": "exact",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+      "reports/runs/W1-13-CONSUME/consumption.json"
+     ]
     },
     {
-      "what": "RI-JRN06's M-D1 filters the rows it cannot fully check instead of checking the legs it can. `rows.filter(r => !r.second_death)` drops six of twenty deaths entirely, so 'souls conservation 20/20' is measured 14/14 and six deaths' banked==held and held==stored were never asserted. The item's own text says 20/20 and hard-fails on any discrepancy. Verified independently over 12 deaths with the doubles included: no discrepancy — the number is right and the instrument is not.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
-        "reports/journeys/w1-13-jrn06/journey.json"
-      ],
-      "subsystem_path": "journey.death.recovery"
+     "id": "M5-double-death",
+     "result": "pass",
+     "value": "exactly one bloom holding M; N unrecoverable by any route; 4/4 doubles",
+     "threshold": "exact",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+     ]
     },
     {
-      "what": "The RI-PRG04 §5 table discrepancy is correctly RULED and inadequately FILED. RI-PRG04's own provenance note settles it: 'the spacing RULES are the binding part; the counts are derived and should move if the map says so', so the built world (56.91 min crossing, 13 regions, 29 wells) is authoritative over the declared 95 min / 6 regions / 28 wells, and the builder was right to file rather than bend the placement. But the filing lives inside `game/data/world/hearths.json.ri_prg04_table_discrepancy` — the artifact the placement produced — and reaches neither `corpus/90-verdicts/GAP-LEDGER` nor `orchestration/amendments/`. A reader of RI-PRG04 §5 still sees 28/95/6 with nothing pointing at the measurement that supersedes them. RI-JRN06 says this item 'must file, not resolve'; filing means the corpus's filing surfaces.",
-      "evidence": [
-        "game/data/world/hearths.json",
-        "corpus/20-progression/RI-PRG04-hearth-and-death.md"
-      ],
-      "subsystem_path": "progression.bonfire.placement"
+     "id": "M6-persistence",
+     "result": "pass",
+     "value": "0 quest, journal, faction, disposition, topic, crime or world-mutation paths change across a death, 4/4 seeds",
+     "threshold": "every state change survives, byte-identical (S6)",
+     "note": "See RI-JRN06 M-D4 for the 108 animation-rig paths that are not this.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
+     ]
     },
     {
-      "what": "The builder's across-death diff no longer reproduces. `state-diff.mjs --mode across-death` reports 0/4 clean on HEAD where the builder reported 8/8, entirely because another piece added `fight.*` to the save and the builder's DEATH_VOLATILE list names `pose.` but not `fight.player.rig.`. The S6 conclusion is unaffected — all 108 offending paths are bone rotations and previous-pose hurtboxes — but a cited 8/8 that a critic cannot reproduce is exactly the instrument decay RI-MTH07 §D was written about, and the list needs one line.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
-      ],
-      "subsystem_path": "journey.save.roundtrip"
+     "id": "M7-bloodstain-edge-cases",
+     "result": "fail",
+     "value": "1 of 3 cases correct",
+     "threshold": "stain outside the fog gate, at the last grounded position, and relocated toward the hearth — souls recoverable in all three",
+     "note": "Sealed/one-way relocation works (80.0 m march, souls recovered). The other two do not. (a) Boss arena: at exactly the gate centre the bloom stays at the centre while the record reads `outside_fog_gate`; correct at any non-zero offset. (b) Falling: the last-grounded rule NEVER FIRES. A real 90 m fall death was recorded with `cause: 'combat'` and `placement_rule: 'death_point'`, because `traversal.js:401` sets the player state to DEATH on the landing frame and `_inferCause()` only returns 'fall' while the state is FALL. `placeStain()`'s `cause === 'drown'` branch is unreachable by any path — `_inferCause()` can only ever return 'fall', 'hazard' or 'combat'. Souls were recoverable in every case tested, so this is a placement defect, not a destruction one.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+     ]
     },
     {
-      "what": "Things this piece got right that a harsher reading should not erase. The loop works end to end when walked: 217 m out, die, respawn at the last rested well, 46.1 m back by the capsule, exactly 4,200 recovered on arrival, with no teleport in either leg. The death surface is DRAWN and proved so by a 124x warm-ink swing against an alive control rather than asserted. The single-stain rule is structural rather than enforced. S7 holds in both directions. Nine of nine of RI-PRG04's own predicted failure modes were avoided. And the builder found, fixed and reported five defects in its own probes and one cross-piece regression (birthsign powers and drawbacks not surviving a load, which had silently deleted THE DRY WELL's entire drawback) rather than shipping the passing number.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
-        "reports/runs/W1-13-CONSUME/consumption.json",
-        "orchestration/status/W1-13.json"
-      ],
-      "subsystem_path": "journey.death.recovery"
+     "id": "M8-clock-consequence",
+     "result": "marginal",
+     "value": "clock advances 6 h on a rest and 0 h on a death; sky luminance 64.66 at 17:00 -> 10.17 at 23:00, unchanged by a death",
+     "threshold": "clock reads 23:00, night roster active, merchants closed, timed quests consumed 6 h",
+     "note": "The clock and its drawn consequence are measured and coupled. The night roster swap and the merchant-hours consequence were not measured by anyone; they belong to RI-PRG06 and RI-PRG05 rosters that are not placed.",
+     "evidence": [
+      "reports/runs/W1-13-CONSUME/consumption.json"
+     ]
+    },
+    {
+     "id": "M9-death-cost-sim",
+     "result": "unmeasurable",
+     "value": null,
+     "threshold": "total permanent soul loss 9–15% of the world budget; retention within 3 points of 0.88",
+     "note": "Not run, and correctly declared by the builder as arithmetic over RI-PRG06's soul budget owned by W1-16 (progression.souls.economy). Recorded as corpus_debt, NOT charged against this piece — the task's rule and CRITIC-DOCTRINE's: a dimension blocked only by a missing system is debt against the corpus.",
+     "evidence": [
+      "orchestration/status/W1-13.json"
+     ]
+    },
+    {
+     "id": "M10-flask-purity",
+     "result": "unmeasurable",
+     "value": "the two items RI-PRG04 §4 names do not exist under those names",
+     "threshold": "Sap-bud and Heart-resin in zero merchant inventories, no gold or soul price",
+     "note": "A corpus collision, not a build defect. `game/data/combat/flask.json` is RI-CMB08's and ships 'Hist Seed' and 'Sap Amber' with 5 starting / 15 maximum charges against RI-PRG04 §4's 'Sap-bud' and 'Heart-resin' at 4 / 12. Neither analogue appears in any merchant inventory and `refilled_by_gold_or_merchants: false` is declared, so the INTENT of the axis holds; the axis as written cannot be executed until the two items are reconciled. Filed as an arbitration/corpus question, not scored against W1-13.",
+     "evidence": [
+      "game/data/combat/flask.json"
+     ]
     }
-  ],
-  "gap_closure": [],
-  "corpus_extended": [
-    {
-      "id": "AM-W1-13-01",
-      "path": "orchestration/amendments/AM-W1-13-01-prg04-spacing-table-superseded.md",
-      "area": "20-progression",
-      "judges": [
-        "progression.bonfire.placement"
-      ],
-      "reason": "corpus_hole",
-      "note": "RI-JRN06 binds this piece to FILE the RI-PRG04 §5 disagreement rather than resolve it. The builder ruled it correctly (RI-PRG04's own provenance note makes the counts derived and the spacing RULES binding, so the built 56.91 min / 13 regions / 29 wells supersede the declared 95 / 6 / 28) but filed it inside game/data/world/hearths.json, where a reader of RI-PRG04 §5 will never see it. This amendment puts the filing on a corpus surface, restates the ruling, and records that NO spacing rule is loosened by it — the 11-minute ceiling stays where it is and the build beats it by 35 seconds.",
-      "index_regenerated": false
-    }
-  ],
-  "method_deviations": [
-    {
-      "ref_item": "RI-JRN06",
-      "deviation": "Six probes were written by this critic under orchestration/TOOL-LOOP.md rule 1 and are cited as evidence: critic-w1-13-a.mjs (a save taken mid-death, audited on the live world after the load), -b.mjs (six soul-loss attacks; the S5 roster on both triggers and both flag routes), -c.mjs (a real fall death, a fog-gate death, and conservation with the doubled rows included), -d.mjs (the loop walked end to end; the fog-gate rule at five offsets; M-D18/M-D19 re-run), -e.mjs (respawn drift at six wells with a matched no-death control), -f.mjs (whether the level-up screen opens at a sapwell, with a working override as the control).",
-      "why": "RI-JRN06's method measures the bloom's survival across a save taken at REST (M-D16) and does not measure a save taken mid-death; it measures placement over deaths the probe teleports to; and nothing in the corpus asks whether the hearth's own level-up affordance is reachable. Each probe carries its own control so a null result is distinguishable from a broken instrument, and each was checked against TOOL-LOOP rule 3 q2 by confirming it goes red on a real break.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "RI-JRN06",
-      "deviation": "M-D7 (merchant gold pool) was not run by the builder and was not run by this critic either; it is scored unmeasurable ⇒ 0 rather than argued from structure.",
-      "why": "The structural argument — merchants live in sim.npcs, which no respawn path iterates — is sound and is why the risk is low, but SCORING §1.1 is explicit that unmeasurable is 0 and not 'obviously fine'. It is cheap to run and belongs in round 2.",
-      "affects_scores": true
-    },
-    {
-      "ref_item": "RI-PRG04",
-      "deviation": "M3's spacing audit was accepted from the builder's Dijkstra run rather than independently re-computed; the nine rule assertions were checked and the two fog-gate distances, the station keep-out and the well registry were spot-checked against the live world.",
-      "why": "Re-running a Dijkstra field over 22,068 walkable cells is a whole-session job and the method is sound and reproducible from tools/world/build-hearths.mjs. Stated here so a reader knows which number is the critic's and which is the builder's.",
-      "affects_scores": false
-    },
-    {
-      "ref_item": "RI-PRG04",
-      "deviation": "M9 (death-cost sim) and M10 (flask purity) are recorded as corpus_debt rather than scored 0 against this piece.",
-      "why": "M9 is arithmetic over RI-PRG06's soul budget owned by W1-16 and the builder declared it. M10 names two items ('Sap-bud', 'Heart-resin') that the build ships under RI-CMB08's names with different charge counts, which is a corpus collision between two items rather than a defect in this build. Neither absence is this builder's, and charging for it would be the failure CRITIC-DOCTRINE and RI-MTH07's 'the consumer is the next piece' note both warn about.",
-      "affects_scores": true
-    }
-  ],
-  "arbitration_questions": [
-    {
-      "question": "RI-PRG04 §4 and RI-CMB08's game/data/combat/flask.json describe the same flask with different items and different numbers: 'Sap-bud'/'Heart-resin' at 4 starting / 12 maximum charges against 'Hist Seed'/'Sap Amber' at 5 / 15. RI-PRG04 method 10 asserts on the first pair of names and therefore cannot be executed against the build at all. Which item owns the flask's item names and charge counts, and does the RI-PRG04 flask-purity axis re-target onto the shipped names or does the data re-target onto RI-PRG04's?",
-      "souls_side": "RI-CMB08 owns the flask's frames and is the item the build was written against; its data file is live, coupled and measured, and 5/15 is the DS1/DS3 blend it declares explicitly under orchestrator ruling R5.",
-      "morrowind_side": "Not a Morrowind/Souls collision — it is an intra-Souls ownership collision between two reference items, which is why it is filed here rather than resolved by this critic. RI-PRG04 §4 is binding text with a purity axis hanging off it, and an axis that names items the world does not contain is unexecutable rather than merely wrong."
-    }
-  ],
-  "source_reads": [
-    {
-      "path": "game/src/sim/death.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read after measuring the mid-death soul loss, the fall-death placement rule and the respawn drift, to name the mechanism in each remedy."
-    },
-    {
-      "path": "game/src/sim/hearth.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read after openMenu('levelup') was refused at three wells, to find which method the gate calls and confirm HearthSystem does not define it."
-    },
-    {
-      "path": "game/src/engine.js",
-      "purpose": "locate-harness",
-      "note": "Located the harness verbs (killPlayer, getDeathState, recoverBloodstain, listHearths, hearthRest, walkPath, setAtHearth) and, after the level-up refusal was measured, the atHearth expression at :2011."
-    },
-    {
-      "path": "game/src/harness/api.js",
-      "purpose": "locate-harness"
-    },
-    {
-      "path": "game/src/ui/system.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read after the refusal to find the three ctx.atHearth gates and the single producer of the `level` action."
-    },
-    {
-      "path": "game/src/save/state.js",
-      "purpose": "locate-harness",
-      "note": "Located the blob's field names (character.souls_held, progression.hearth_last_rested, death.bloodstain) so the probes could bank souls and set a respawn point through the save path."
-    },
-    {
-      "path": "game/src/sim/traversal.js",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read after a real fall death reported cause 'combat', to find that the state is set to DEATH on the landing frame."
-    },
-    {
-      "path": "tools/journey/jrn06-death.mjs",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read to audit the builder's own instruments after the 14/14-vs-20/20 discrepancy showed in its output: the M-D1 filter, the DEATH_VOLATILE list, and the setEntityNamed fixture."
-    },
-    {
-      "path": "tools/harness/w1-13-consume.mjs",
-      "purpose": "diagnose-after-demonstrating",
-      "note": "Read alongside consumption.json to check the CONSUMPTION enumeration's granularity."
-    },
-    {
-      "path": "game/data/world/respawn.json",
-      "purpose": "quote-written-content",
-      "note": "Quoted for its own declaration of the flags' producer, which the measurement then contradicted."
-    },
-    {
-      "path": "game/data/world/hearths.json",
-      "purpose": "quote-written-content",
-      "note": "Quoted for the measured spacing rules and the RI-PRG04 table discrepancy filing."
-    },
-    {
-      "path": "game/data/combat/flask.json",
-      "purpose": "quote-written-content",
-      "note": "Quoted for the flask item-name and charge-count collision with RI-PRG04 §4."
-    }
-  ],
-  "self_audit": {
-    "judged_output_not_source": true,
-    "ran_every_assigned_method": false,
-    "blind_done_where_required": true,
-    "named_exactly_one_gap": true,
-    "remedy_is_buildable": true,
-    "no_banned_reasoning_used": true,
-    "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "`ran_every_assigned_method` is false and the exceptions are named rather than hidden: RI-JRN06 M-D7 was run by nobody and is scored unmeasurable ⇒ 0; RI-PRG04 M9 and M10 are recorded as corpus_debt against W1-16 and against the RI-PRG04/RI-CMB08 flask collision respectively; RI-PRG04 M3's Dijkstra field was accepted from the builder's run with its assertions checked and the fog gates, station keep-out and registry spot-checked live, rather than independently recomputed; and RI-JRN06 M-D13's R3 and R4 are unmeasurable for want of a placed hostile roster and shortcut geometry that this piece does not own. Every other check in both items was executed against the running build in a real browser at commit 0a8a4d0. No source file was read to establish a fact — each entry in source_reads is either harness location or diagnosis after a measurement had already been taken. No placed capture is cited for any arrival claim: the run back in walked-loop.json was walked by the capsule end to end (S34(b)). The three claims the builder made that this critic attacked hardest were all attacked with matched controls, and two of them survived: souls conservation is exact when the doubled rows are put back in, the single-stain rule is structural, and the named-NPC guarantee holds today for a reason other than the one demonstrated."
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "Not the predicted ones. RI-PRG04's own 'How we lose' list anticipates dense wells, warp between wells, a cut clock consequence, added death costs, quest rollback, a forgiving bloodstain, an unfair bloodstain, expensive boss retries and shop-bought flask upgrades. Nine of nine avoided. The failure is a tenth the item did not predict: the hearth's LEVELLING affordance is gated on a predicate the hearth system does not implement, so the checkpoint heals, refills, respawns and re-sites you and cannot take your souls."
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+    "game/data/world/hearths.json",
+    "reports/runs/W1-13-CONSUME/consumption.json"
+   ],
+   "why_not_ten": "min-over-axes: the Rest-effects axis is below 6 because one of its ten binding rows — 'Level up ... the only place levelling is possible' — is unreachable at every one of the 29 shipped sapwells, measured live and separated from a probe artefact by a working override control. M7 is 1 of 3: the fall/last-grounded rule never fires because `_inferCause()` cannot return 'fall' for a fall death, and the fog-gate push-out degenerates at the arena centre. A respawn also leaves the body sliding: at 3 of 6 wells the player is 5.09–22.27 m off the basin 220 frames after respawning, against a matched no-death control that moves 0.00 m at all six.",
+   "path_to_ten": "1. Add `atHearth(sim)` to `HearthSystem` — `return !!this.at(sim.player.pos[0], sim.player.pos[2])` — so the gate `game/src/ui/system.js` has been calling since W1-21 landed resolves against the well registry instead of `undefined`. Acceptance: `critic-w1-13-f.mjs` reports `levelup_reachable: true` at all three wells with no `setAtHearth()` call anywhere in the probe, and `_spendSouls()` fires from a well and nowhere else. 2. Set the death cause from the traversal event rather than inferring it from a state the traversal has already overwritten: have `traversal.js` stamp `sim.player.deathCause = 'fall' | 'drown'` alongside the `fall_death` / `drowned` events, and read that first in `_inferCause()`. Acceptance: a scripted 90 m fall reports `placement_rule: 'last_grounded'` and the bloom sits on the ledge, not the floor. 3. Guard the fog-gate push-out against a zero bearing (fall back to any fixed bearing when `hypot(dx,dz) < 1e-6`). 4. Call `traversal.reset()` in `DeathSystem.respawn()` as `teleport()` already does, so the body does not arrive at the well carrying the velocity and slide state of the place it died. Acceptance: `critic-w1-13-e.mjs` reports 6/6 wells within the interact radius at 220 frames. 5. M9 and M10 open against W1-16 and the RI-PRG04/RI-CMB08 flask reconciliation.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-13-a.mjs --out <path>",
+   "note": "Three trials plus a matched control. Every assertion reads the LIVE world after the load (getDeathState / getPlayerStats), never the blob."
   },
-  "notes": "The death loop this piece built is better than its score. It works end to end when walked, it conserves souls exactly, it keeps one bloom, it draws its surface, it softens nothing, it warps nowhere and it points no arrow — and the builder found and fixed five defects in its own instruments and one cross-piece regression rather than shipping the passing number. The score is 4 because RI-PRG04 aggregates min-over-axes and one binding row of its rest-effects axis is unreachable in the shipped world: the hearth cannot level you, because the gate calls `HearthSystem.atHearth()` and `HearthSystem` has no such method. Everything the loop protects has nowhere to go. That is one method body away from fixed, and so is the S5 flag producer beside it."
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-13-b.mjs --out <path>",
+   "note": "Six soul-loss attacks and the S5 roster attacked on both triggers (rest and death) and through both flag routes (spawn opts vs the harness verb)."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-13-c.mjs --out <path>",
+   "note": "A real fall death, a fog-gate death, and 12 deaths of conservation with the doubled rows INCLUDED rather than filtered."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-13-d.mjs --out <path>",
+   "seed": 1337,
+   "note": "S34(b) arrival evidence: 217 m walked out, died, respawned, 46.1 m walked back by the capsule, 4,200 recovered. No teleport in either leg. No placed capture is cited for any arrival claim in this verdict."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-13-e.mjs --out <path>",
+   "note": "Six wells, position sampled from the respawn frame outward, each with a matched no-death control at the same well for the same frames."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/critic-w1-13-f.mjs --out <path>",
+   "note": "Three wells refused, the setAtHearth() override opened — so the null answer is a statement about the gate and not about the probe."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/state-diff.mjs --mode across-death --in reports/journeys/w1-13-jrn06 --out <path>",
+   "seed": "4711,1337,90210,2147483647",
+   "note": "The builder's own instrument, re-run by the critic on HEAD. 0/4 clean where the builder reported 8/8; all 108 offending paths are fight.player.rig.*."
+  },
+  {
+   "path": "reports/journeys/w1-13-jrn06/journey.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/journey-run.mjs --journey jrn06-death --seed 4711 --deaths 20 (builder)",
+   "seed": 4711,
+   "note": "The builder's own 20-death session. Cited for M-D10/11/12/14/15/17 and inspected for M-D1's filtered rows and the absent M-D7/M-D13 entries."
+  },
+  {
+   "path": "reports/journeys/w1-13-jrn06-runback/journey.json",
+   "kind": "report",
+   "produced_by": "node tools/journey/jrn06-death.mjs run-back (builder)",
+   "note": "Builder's three walked run-back trials. Walked by the capsule; admissible under S34(b)."
+  },
+  {
+   "path": "reports/runs/W1-13-CONSUME/consumption.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/w1-13-consume.mjs (builder)",
+   "note": "The builder's RI-MTH07 run, 7/7 coupled. Audited rather than accepted — see world_coupling in the .md."
+  },
+  {
+   "path": "tools/harness/critic-w1-13-a.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
+  },
+  {
+   "path": "tools/harness/critic-w1-13-b.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
+  },
+  {
+   "path": "tools/harness/critic-w1-13-c.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
+  },
+  {
+   "path": "tools/harness/critic-w1-13-d.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
+  },
+  {
+   "path": "tools/harness/critic-w1-13-e.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
+  },
+  {
+   "path": "tools/harness/critic-w1-13-f.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic under TOOL-LOOP rule 1; declared in method_deviations"
+  },
+  {
+   "path": "game/data/world/hearths.json",
+   "kind": "report",
+   "produced_by": "node tools/world/build-hearths.mjs (builder); read by this critic and spot-checked live against listHearths() in walked-loop.json",
+   "source": "ours",
+   "note": "The shipped 29-well registry with its measured spacing rules and the RI-PRG04 §5 table discrepancy the builder filed. Cited as authored data, not as source."
+  },
+  {
+   "path": "game/data/combat/flask.json",
+   "kind": "text-excerpt",
+   "produced_by": "authored by RI-CMB08's builder; quoted by this critic for the item-name and charge-count collision with RI-PRG04 §4",
+   "source": "ours"
+  },
+  {
+   "path": "orchestration/status/W1-13.json",
+   "kind": "log",
+   "produced_by": "written by the W1-13 builder; cited for its own declaration that RI-PRG04 method 9 was not run and why",
+   "source": "ours"
+  },
+  {
+   "path": "orchestration/amendments/AM-W1-13-01-prg04-spacing-table-superseded.md",
+   "kind": "report",
+   "produced_by": "written by this critic; files the RI-PRG04 §5 discrepancy on a corpus surface rather than inside the data file that caused it",
+   "source": "ours"
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-JRN06",
+   "status": "not_possible",
+   "not_possible_reason": "RI-JRN06 declares blind_pair: no. The loop is Souls' outright under seam S6 and ARBITRATION §1; there is nothing to compare against Morrowind, and comparing our corpse run to Dark Souls' as unlabeled artifacts would compare level design rather than this loop. The item says so itself."
+  },
+  {
+   "ref_item": "RI-PRG04",
+   "status": "not_possible",
+   "not_possible_reason": "RI-PRG04 declares blind_pair: no."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A-death-compensation",
+     "result": "pass",
+     "observed": "0 forbidden strings across 3 deaths; 0 numerals on the death surface; 0 retrieval items in the running inventory; the build publishes its own compensation enumeration (loss_toast false, retrieval_item null, insurance null, reduced_death_penalty_option false, partial_recovery false, grace_period_frames 0). The single softening instinct RI-JRN06 exists to catch is absent.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+      "reports/journeys/w1-13-jrn06/journey.json"
+     ]
+    },
+    {
+     "id": "A6",
+     "result": "not_applicable",
+     "not_run_reason": "No enemy statblock is touched by this piece; respawn restores hp to hpMax and the spawn anchor and reads no character level."
+    },
+    {
+     "id": "A-morrowind-forgiveness-in-the-loop",
+     "result": "pass",
+     "observed": "No grace period, no partial carry-over, no timer on the bloom, no second stain. A second death destroys the first at the instant the second is created, and no API in the build can retrieve it — verified structurally (one field, not a list) and by four scripted doubles.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+     ]
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "pass",
+     "observed": "0 markers, map_exists false, 0 of 6 HUD elements world-anchored, measured on the frames after a real death rather than by grepping for the word 'marker'.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+     ]
+    },
+    {
+     "id": "B2",
+     "result": "pass",
+     "observed": "The hearth menu exposes `destinations: []` and HearthSystem has no method that takes a hearth id and moves the player. 26 travel stations and 68 services exist and none is within 90 m of a well, so S7 is satisfied in both directions rather than by the absence of a network.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+      "game/data/world/hearths.json"
+     ]
+    },
+    {
+     "id": "B10",
+     "result": "pass",
+     "observed": "Quest stages, journal, faction rank, disposition, bounty, witnesses, topics known, world mutations and named-NPC deaths all survive a death unchanged, on 4 seeds. The 108 paths that do move are the player's own animation rig.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
+     ]
+    },
+    {
+     "id": "B5",
+     "result": "fail",
+     "observed": "Not the usual direction, and reported here because the check is where it surfaces. S15 says souls level you and ONLY level you; nothing in this build prices anything in souls, so the leak B5 hunts is absent. But the only sink souls have — the hearth level-up screen — is unreachable at all 29 wells (see RI-PRG04 M1), so souls in this build currently buy nothing at all. That is not a Souls-convention leak into the world and is NOT scored as an AR-2 failure; it is recorded against B5 because B5 is the probe that asks what souls can be exchanged for. Judged as a defect, per seam S26.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json"
+     ]
+    }
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 4,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "Recognisable but wrong",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "below_wave_1_gate:7.0",
+  "consumption_coupling_zero:RI-JRN06/M-D5 never_respawn_entity_flags",
+  "min_over_axes:RI-PRG04 rest-effects axis below 6 (levelling unreachable at every hearth)",
+  "check_fail:RI-JRN06/M-D16 mid-death save destroys the bloom",
+  "unmeasurable:RI-JRN06/M-D7 merchant gold pool never run",
+  "corpus_debt:RI-PRG04/M9 death-cost sim (W1-16), RI-PRG04/M10 flask purity (RI-PRG04 vs RI-CMB08 item-name collision)",
+  "corpus_debt:RI-JRN06/R3 encounters on the run back (W1-12), R4 shortcut ratio (W1-01/W1-02)"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
+  "subsystem_path": "progression.bonfire.function",
+  "what": "The level-up screen — which RI-PRG04 §1 makes the hearth's defining affordance and calls 'THE ONLY PLACE LEVELLING IS POSSIBLE' — cannot be opened at any of the 29 shipped sapwells. Measured at hearth-archon, hearth-lilmoth and hearth-gideon: standing on the basin, with the hearth registry itself reporting `standing_at: hearth-<id>` and immediately after a successful `restAt()`, `openMenu('levelup')` is REFUSED 3/3 with \"the level-up screen exists at a HEARTH only (RI-UIX03 L1)\"; with the harness override `setAtHearth(true)` — which has no in-game counterpart — the same call OPENS 1/1. The gate at game/src/engine.js:2011 is `!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)) || !!this.sim._uiForceHearth`, and HearthSystem (game/src/sim/hearth.js) defines list/get/count/nearest/at/gateAt/menu and no `atHearth`. The first disjunct is `undefined` at every well in the province and the only writer of the second is `__HARNESS.setAtHearth()`. `_spendSouls()` is reachable from exactly one producer (game/src/ui/system.js:322, inside `case 'levelup'`), so souls have no sink anywhere in the running build.",
+  "why_it_matters": "The player banks souls, risks them, dies, walks back and recovers exactly 4,200 of them — and then cannot spend one, which makes the entire death economy this piece implements so carefully a loop with nothing at the end of it.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Add the missing predicate to the hearth registry that already answers the question. In game/src/sim/hearth.js, add to HearthSystem: `atHearth(sim) { return !!this.at(sim.player.pos[0], sim.player.pos[2]); }` — `at(x, z)` already exists and already tests each well's own `interact_radius_m`, and `listHearths().standing_at` is built from it, so the registry is right and only the method name the UI calls is missing. Then demote `sim._uiForceHearth` to a declared test override: keep it (arena scenarios need it) but have `setAtHearth()` set a flag that `getUIState()` reports, so a probe that leans on it is visible in its own output. While in this file, note the same shape elsewhere: `game/data/world/respawn.json` names `engine.spawn(id, x, z, {named: true})` as the producer of the six never-respawn flags and `engine.spawn()` copies only `opts.as` and `opts.yaw` — fix that in the same pass (three lines) so the S5 classifier has a world-side writer and is not reachable only through `setEntityNamed()`.",
+   "targets": [
+    "game/src/sim/hearth.js",
+    "game/src/engine.js",
+    "game/src/ui/system.js",
+    "game/data/world/respawn.json",
+    "tools/harness/critic-w1-13-f.mjs",
+    "tools/journey/jrn06-death.mjs"
+   ],
+   "acceptance": "`node tools/harness/critic-w1-13-f.mjs` reports `levelup_reachable: true` at all three wells with NO `setAtHearth()` call anywhere in the probe, and `false` when the player is teleported 50 m off the basin; a `level_up` trace event fires from a well and from nowhere else in the province; and `soulsHeld` falls by exactly `soulsToNextLevel()` with `level` rising by 1. Separately, `node tools/harness/critic-w1-13-b.mjs` reports `flags_honoured_via_spawn_opts` listing all six flags (it currently lists none) and `protected_that_stood_back_up: []` on both the rest and the death trigger (it currently lists six).",
+   "ref_item": "RI-PRG04",
+   "estimated_size": "S"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "A save taken while the death surface is up destroys the bloom on load. 4,200 souls in, 0 recoverable, on both the browser-restart route and the same-session loadState route; the matched control (an identical save taken after the respawn) returns all 4,200. Mechanism: the save carries `death.bloodstain` and `character.hp = 0`, DeathSystem's in-flight state is not durable, and on the first frame after the load `observe()` sees `hp <= 0` and fires a fresh `die()` with `soulsHeld = 0`, which takes the D16 second-death branch against a death that never happened. Not player-reachable today — nothing in the shipping game calls `writeSave()` — but it arms the moment autosave or save-on-rest lands, and it is RI-JRN06 'How we lose' #2 wearing a different face. Second in severity only to the named gap and would have been the gap if a player could reach it.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/mid-death-save.json"
+   ],
+   "subsystem_path": "combat.death.corpserun"
+  },
+  {
+   "what": "A respawn leaves the body sliding. At 3 of 6 wells the player is 5.09 m, 19.09 m and 22.27 m from the basin 220 frames after respawning, against a matched no-death control that stands at the same wells for the same frames and moves 0.00 m at all six. On the respawn frame itself the offset is 0.00 m at all six, so this is not the placement — `DeathSystem.respawn()` writes the position but never calls `traversal.reset()`, which `teleport()` does, so the body arrives at the well carrying the velocity and slide state of wherever it died. In the walked loop this carried the player 89.4 m TOWARD the death point before the run back began, silently shortening it. It also means D6's 'they are standing at the HEARTH' is true for one frame.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/respawn-drift.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+   ],
+   "subsystem_path": "progression.bonfire.function"
+  },
+  {
+   "what": "Death is free when no respawn point resolves. With `hearth_last_rested` null, a death moves the body 0.00 m and the bloom lands at the player's feet, so 4,200 souls are back within five frames and the run back is nothing. `_seedStartingHearth()` guards the named-state path but is NOT called on the `loadState(blob)` path, so any save carrying a null respawn point loads into a world where dying costs nothing. The builder measured this and used it as the CONSUMPTION null control for hearths.json — reading a fail-open path as a clean control rather than as a missing floor. `DeathSystem.respawn()` should fall back to the nearest well rather than to nothing; the same null also skips D4's relocation march entirely, which is the shape that destroys souls rather than refunding them.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/soul-loss-and-s5.json",
+    "reports/runs/W1-13-CONSUME/consumption.json"
+   ],
+   "subsystem_path": "combat.death.corpserun"
+  },
+  {
+   "what": "`killPlayer(cause)`'s argument is discarded. `_deathTick()` calls `death.observe(sim, combat, bus)` with no opts, so `opts.cause` has no supplier anywhere in the build and the cause is always inferred. Combined with `_inferCause()` never returning 'fall' (traversal sets the state to DEATH on the landing frame) and never returning 'drown' at all, two of `placeStain()`'s four branches are unreachable and a harness verb advertises a parameter it ignores — TOOL-LOOP rule 3 q5, a flag that lies, which is a defect the builder correctly criticised elsewhere in the same session.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json"
+   ],
+   "subsystem_path": "combat.death.corpserun"
+  },
+  {
+   "what": "RI-JRN06's M-D1 filters the rows it cannot fully check instead of checking the legs it can. `rows.filter(r => !r.second_death)` drops six of twenty deaths entirely, so 'souls conservation 20/20' is measured 14/14 and six deaths' banked==held and held==stored were never asserted. The item's own text says 20/20 and hard-fails on any discrepancy. Verified independently over 12 deaths with the doubles included: no discrepancy — the number is right and the instrument is not.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/placement-and-conservation.json",
+    "reports/journeys/w1-13-jrn06/journey.json"
+   ],
+   "subsystem_path": "journey.death.recovery"
+  },
+  {
+   "what": "The RI-PRG04 §5 table discrepancy is correctly RULED and inadequately FILED. RI-PRG04's own provenance note settles it: 'the spacing RULES are the binding part; the counts are derived and should move if the map says so', so the built world (56.91 min crossing, 13 regions, 29 wells) is authoritative over the declared 95 min / 6 regions / 28 wells, and the builder was right to file rather than bend the placement. But the filing lives inside `game/data/world/hearths.json.ri_prg04_table_discrepancy` — the artifact the placement produced — and reaches neither `corpus/90-verdicts/GAP-LEDGER` nor `orchestration/amendments/`. A reader of RI-PRG04 §5 still sees 28/95/6 with nothing pointing at the measurement that supersedes them. RI-JRN06 says this item 'must file, not resolve'; filing means the corpus's filing surfaces.",
+   "evidence": [
+    "game/data/world/hearths.json",
+    "corpus/20-progression/RI-PRG04-hearth-and-death.md"
+   ],
+   "subsystem_path": "progression.bonfire.placement"
+  },
+  {
+   "what": "The builder's across-death diff no longer reproduces. `state-diff.mjs --mode across-death` reports 0/4 clean on HEAD where the builder reported 8/8, entirely because another piece added `fight.*` to the save and the builder's DEATH_VOLATILE list names `pose.` but not `fight.player.rig.`. The S6 conclusion is unaffected — all 108 offending paths are bone rotations and previous-pose hurtboxes — but a cited 8/8 that a critic cannot reproduce is exactly the instrument decay RI-MTH07 §D was written about, and the list needs one line.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/across-death-diff.json"
+   ],
+   "subsystem_path": "journey.save.roundtrip"
+  },
+  {
+   "what": "Things this piece got right that a harsher reading should not erase. The loop works end to end when walked: 217 m out, die, respawn at the last rested well, 46.1 m back by the capsule, exactly 4,200 recovered on arrival, with no teleport in either leg. The death surface is DRAWN and proved so by a 124x warm-ink swing against an alive control rather than asserted. The single-stain rule is structural rather than enforced. S7 holds in both directions. Nine of nine of RI-PRG04's own predicted failure modes were avoided. And the builder found, fixed and reported five defects in its own probes and one cross-piece regression (birthsign powers and drawbacks not surviving a load, which had silently deleted THE DRY WELL's entire drawback) rather than shipping the passing number.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json",
+    "reports/runs/W1-13-CONSUME/consumption.json",
+    "orchestration/status/W1-13.json"
+   ],
+   "subsystem_path": "journey.death.recovery"
+  }
+ ],
+ "gap_closure": [],
+ "corpus_extended": [
+  {
+   "id": "AM-W1-13-01",
+   "path": "orchestration/amendments/AM-W1-13-01-prg04-spacing-table-superseded.md",
+   "area": "20-progression",
+   "judges": [
+    "progression.bonfire.placement"
+   ],
+   "reason": "corpus_hole",
+   "note": "RI-JRN06 binds this piece to FILE the RI-PRG04 §5 disagreement rather than resolve it. The builder ruled it correctly (RI-PRG04's own provenance note makes the counts derived and the spacing RULES binding, so the built 56.91 min / 13 regions / 29 wells supersede the declared 95 / 6 / 28) but filed it inside game/data/world/hearths.json, where a reader of RI-PRG04 §5 will never see it. This amendment puts the filing on a corpus surface, restates the ruling, and records that NO spacing rule is loosened by it — the 11-minute ceiling stays where it is and the build beats it by 35 seconds.",
+   "index_regenerated": false
+  }
+ ],
+ "method_deviations": [
+  {
+   "ref_item": "RI-JRN06",
+   "deviation": "Six probes were written by this critic under orchestration/TOOL-LOOP.md rule 1 and are cited as evidence: critic-w1-13-a.mjs (a save taken mid-death, audited on the live world after the load), -b.mjs (six soul-loss attacks; the S5 roster on both triggers and both flag routes), -c.mjs (a real fall death, a fog-gate death, and conservation with the doubled rows included), -d.mjs (the loop walked end to end; the fog-gate rule at five offsets; M-D18/M-D19 re-run), -e.mjs (respawn drift at six wells with a matched no-death control), -f.mjs (whether the level-up screen opens at a sapwell, with a working override as the control).",
+   "why": "RI-JRN06's method measures the bloom's survival across a save taken at REST (M-D16) and does not measure a save taken mid-death; it measures placement over deaths the probe teleports to; and nothing in the corpus asks whether the hearth's own level-up affordance is reachable. Each probe carries its own control so a null result is distinguishable from a broken instrument, and each was checked against TOOL-LOOP rule 3 q2 by confirming it goes red on a real break.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-JRN06",
+   "deviation": "M-D7 (merchant gold pool) was not run by the builder and was not run by this critic either; it is scored unmeasurable ⇒ 0 rather than argued from structure.",
+   "why": "The structural argument — merchants live in sim.npcs, which no respawn path iterates — is sound and is why the risk is low, but SCORING §1.1 is explicit that unmeasurable is 0 and not 'obviously fine'. It is cheap to run and belongs in round 2.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-PRG04",
+   "deviation": "M3's spacing audit was accepted from the builder's Dijkstra run rather than independently re-computed; the nine rule assertions were checked and the two fog-gate distances, the station keep-out and the well registry were spot-checked against the live world.",
+   "why": "Re-running a Dijkstra field over 22,068 walkable cells is a whole-session job and the method is sound and reproducible from tools/world/build-hearths.mjs. Stated here so a reader knows which number is the critic's and which is the builder's.",
+   "affects_scores": false
+  },
+  {
+   "ref_item": "RI-PRG04",
+   "deviation": "M9 (death-cost sim) and M10 (flask purity) are recorded as corpus_debt rather than scored 0 against this piece.",
+   "why": "M9 is arithmetic over RI-PRG06's soul budget owned by W1-16 and the builder declared it. M10 names two items ('Sap-bud', 'Heart-resin') that the build ships under RI-CMB08's names with different charge counts, which is a corpus collision between two items rather than a defect in this build. Neither absence is this builder's, and charging for it would be the failure CRITIC-DOCTRINE and RI-MTH07's 'the consumer is the next piece' note both warn about.",
+   "affects_scores": true
+  }
+ ],
+ "arbitration_questions": [
+  {
+   "question": "RI-PRG04 §4 and RI-CMB08's game/data/combat/flask.json describe the same flask with different items and different numbers: 'Sap-bud'/'Heart-resin' at 4 starting / 12 maximum charges against 'Hist Seed'/'Sap Amber' at 5 / 15. RI-PRG04 method 10 asserts on the first pair of names and therefore cannot be executed against the build at all. Which item owns the flask's item names and charge counts, and does the RI-PRG04 flask-purity axis re-target onto the shipped names or does the data re-target onto RI-PRG04's?",
+   "souls_side": "RI-CMB08 owns the flask's frames and is the item the build was written against; its data file is live, coupled and measured, and 5/15 is the DS1/DS3 blend it declares explicitly under orchestrator ruling R5.",
+   "morrowind_side": "Not a Morrowind/Souls collision — it is an intra-Souls ownership collision between two reference items, which is why it is filed here rather than resolved by this critic. RI-PRG04 §4 is binding text with a purity axis hanging off it, and an axis that names items the world does not contain is unexecutable rather than merely wrong."
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/sim/death.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after measuring the mid-death soul loss, the fall-death placement rule and the respawn drift, to name the mechanism in each remedy."
+  },
+  {
+   "path": "game/src/sim/hearth.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after openMenu('levelup') was refused at three wells, to find which method the gate calls and confirm HearthSystem does not define it."
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "locate-harness",
+   "note": "Located the harness verbs (killPlayer, getDeathState, recoverBloodstain, listHearths, hearthRest, walkPath, setAtHearth) and, after the level-up refusal was measured, the atHearth expression at :2011."
+  },
+  {
+   "path": "game/src/harness/api.js",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/src/ui/system.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after the refusal to find the three ctx.atHearth gates and the single producer of the `level` action."
+  },
+  {
+   "path": "game/src/save/state.js",
+   "purpose": "locate-harness",
+   "note": "Located the blob's field names (character.souls_held, progression.hearth_last_rested, death.bloodstain) so the probes could bank souls and set a respawn point through the save path."
+  },
+  {
+   "path": "game/src/sim/traversal.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after a real fall death reported cause 'combat', to find that the state is set to DEATH on the landing frame."
+  },
+  {
+   "path": "tools/journey/jrn06-death.mjs",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read to audit the builder's own instruments after the 14/14-vs-20/20 discrepancy showed in its output: the M-D1 filter, the DEATH_VOLATILE list, and the setEntityNamed fixture."
+  },
+  {
+   "path": "tools/harness/w1-13-consume.mjs",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read alongside consumption.json to check the CONSUMPTION enumeration's granularity."
+  },
+  {
+   "path": "game/data/world/respawn.json",
+   "purpose": "quote-written-content",
+   "note": "Quoted for its own declaration of the flags' producer, which the measurement then contradicted."
+  },
+  {
+   "path": "game/data/world/hearths.json",
+   "purpose": "quote-written-content",
+   "note": "Quoted for the measured spacing rules and the RI-PRG04 table discrepancy filing."
+  },
+  {
+   "path": "game/data/combat/flask.json",
+   "purpose": "quote-written-content",
+   "note": "Quoted for the flask item-name and charge-count collision with RI-PRG04 §4."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "`ran_every_assigned_method` is false and the exceptions are named rather than hidden: RI-JRN06 M-D7 was run by nobody and is scored unmeasurable ⇒ 0; RI-PRG04 M9 and M10 are recorded as corpus_debt against W1-16 and against the RI-PRG04/RI-CMB08 flask collision respectively; RI-PRG04 M3's Dijkstra field was accepted from the builder's run with its assertions checked and the fog gates, station keep-out and registry spot-checked live, rather than independently recomputed; and RI-JRN06 M-D13's R3 and R4 are unmeasurable for want of a placed hostile roster and shortcut geometry that this piece does not own. Every other check in both items was executed against the running build in a real browser at commit 0a8a4d0. No source file was read to establish a fact — each entry in source_reads is either harness location or diagnosis after a measurement had already been taken. No placed capture is cited for any arrival claim: the run back in walked-loop.json was walked by the capsule end to end (S34(b)). The three claims the builder made that this critic attacked hardest were all attacked with matched controls, and two of them survived: souls conservation is exact when the doubled rows are put back in, the single-stain rule is structural, and the named-NPC guarantee holds today for a reason other than the one demonstrated."
+ },
+ "notes": "The death loop this piece built is better than its score. It works end to end when walked, it conserves souls exactly, it keeps one bloom, it draws its surface, it softens nothing, it warps nowhere and it points no arrow — and the builder found and fixed five defects in its own instruments and one cross-piece regression rather than shipping the passing number. The score is 4 because RI-PRG04 aggregates min-over-axes and one binding row of its rest-effects axis is unreachable in the shipped world: the hearth cannot level you, because the gate calls `HearthSystem.atHearth()` and `HearthSystem` has no such method. Everything the loop protects has nowhere to go. That is one method body away from fixed, and so is the S5 flag producer beside it."
 }

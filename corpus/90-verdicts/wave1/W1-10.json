@@ -85,7 +85,37 @@
     "seed": 20260806,
     "exit": 0
    }
-  ]
+  ],
+  "depends_on": [
+   "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
+   "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
+   "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
+   "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
+   "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+   "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
+   "game/data/**",
+   "game/data/combat/encounters.json",
+   "game/data/combat/movesets",
+   "game/data/combat/placement.json",
+   "game/data/dialogue/topics/thorn.json",
+   "game/data/world/encounters.json",
+   "game/src/**",
+   "game/src/harness/weapons.js",
+   "tools/harness/critic-w1-10-blind.mjs",
+   "tools/harness/critic-w1-10-launch.mjs",
+   "tools/harness/critic-w1-10-static.mjs",
+   "tools/harness/critic-w1-10a.mjs",
+   "tools/harness/critic-w1-10b.mjs",
+   "tools/harness/critic-w1-10c.mjs",
+   "tools/harness/critic-w1-10d.mjs",
+   "tools/harness/critic-w1-10e.mjs",
+   "tools/harness/critic-w1-10f.mjs",
+   "tools/harness/critic-w1-10g.mjs",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/lib/serve.mjs"
+  ],
+  "depends_on_note": "derived from 13 probe/lib file(s) actually read (reference_items[].path, the scripts in build.harness_commands / artifacts[], their one-hop imports, and the documented whole-tree contract of tools/lib/browser.mjs, gamedata.mjs and combat-node.mjs where reached)"
  },
  "bifurcation": {
   "axis": "not-visual",
@@ -440,7 +470,7 @@
     {
      "id": "M1",
      "result": "fail",
-     "value": 0.0,
+     "value": 0,
      "threshold": "CFS == 1.00",
      "hard_fail": true,
      "evidence": [
