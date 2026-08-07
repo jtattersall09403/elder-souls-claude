@@ -21,10 +21,13 @@
 //   * `questOpen` — whether THIS character could have been OFFERED this quest is the offer gate's
 //     question and belongs to `mainline-findability.mjs`; several of these quests sit behind a
 //     faction ladder. What is measured here is what TALKING does to a quest that is under way.
-//   * `spawnNPC` — only in the `--spawn` mode, and only when the named person is not already in
-//     the world. It is declared on every artifact and the run says which people were conjured.
-//     `talkTo` throws on somebody who is not there, and 15 of the person-channel sources are not
-//     in `game/data/npcs/**` at all; that absence is REPORTED by the audit, not papered over.
+//   * `populateSettlement` / `populateSite` — WALKING INTO THE TOWN THE PERSON LIVES IN. This is
+//     the world's own call, the same one `travelToGiver` makes and the same one crossing a town
+//     boundary makes; the settlement each person belongs to is read out of their own record in
+//     `game/data/npcs/**`, never chosen. NOBODY IS SPAWNED FROM NOTHING: a source with no
+//     settlement and no post is left absent and the case is SKIPPED, because `talkTo` throws on
+//     somebody who is not in the world and that absence is the honest answer. 15 of the
+//     person-channel sources are not in `game/data/npcs/**` at all; the audit lists them.
 //
 // THE CONTROLS (RULES.md rule 4 — a probe that cannot fail is worse than no probe):
 //   1. WRONG PERSON. Talk to somebody who is not the declared source. Nothing may be learned.
@@ -79,9 +82,14 @@ for (const f of fs.readdirSync(QDIR).filter((x) => x.endsWith('.json'))) {
   for (const q of (j.quests || [])) quests.push(q);
 }
 const npcIds = new Set();
+const npcPlace = new Map();   // id -> { settlement } | { site } | null, straight off the record
 for (const f of fs.readdirSync(path.join(ROOT, 'game/data/npcs')).filter((x) => x.endsWith('.json'))) {
   const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/npcs', f), 'utf8'));
-  for (const n of (Array.isArray(j) ? j : (j.npcs || j.entries || []))) if (n && n.id) npcIds.add(n.id);
+  for (const n of (Array.isArray(j) ? j : (j.npcs || j.entries || []))) {
+    if (!n || !n.id) continue;
+    npcIds.add(n.id);
+    npcPlace.set(n.id, n.settlement ? { settlement: n.settlement } : ((n.post && n.post.site) ? { site: n.post.site } : null));
+  }
 }
 
 // Candidates: a quest with a person-channel reveal that (a) some resolution demands, (b) names a

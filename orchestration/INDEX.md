@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `0672d9a`: 479 tools, 153 reference
-items, 26 pieces in flight.
+so it cannot drift. Generated at `f3b6764`: 479 tools, 153 reference
+items, 27 pieces in flight.
 
-Its purpose is to stop 26+ concurrent agents each paying separately to discover the
+Its purpose is to stop 27+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -757,6 +757,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-06-r3` | in_progress | 1) read engine.js camera()/projectPoint(), sim/camera.js project()/viewBasis()/basisAt() t | — |
 | `W1-13-r4` | starting | read corpus/90-verdicts/wave1/W1-13-r3.md and prior status files | — |
 | `critic-w1-13-r3` | done | none — verdict delivered | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-23-r2` | ? | none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a | `corpus/60-lore/data/canon-facts.json` `game/data/lore/canon.json` `game/data/dialogue/topics/40-race-gated.json` `game/data/dialogue/topics/70-disputes.json` `game/data/factions/argonian-tribes.json` `tools/lore/build-canon.mjs` |

@@ -1,0 +1,27 @@
+{
+  "task_id": "W1-06-r3",
+  "brief": "camera, round 3 -- fix engine.projectPoint() being blind to every posed camera (W1-13-r3.md path_to_ten #3): engine.camera({pos, look}) never writes c.yaw/c.pitch, so projectNDC()/project() build the view basis from whatever yaw the follow rig last solved (observed pinned at 15 deg on all bearings), and 0 of 96 W1-13-r3 bloom-sight rows reported on_screen:true including 0 of 58 rows independently scored visible from the pixels.",
+  "started": "2026-08-07",
+  "state": "in_progress",
+  "redundant_with": ["W1-06", "W1-06-r2"],
+  "note_on_redundancy": "same piece, third status file in the chain (W1-06.json successor-3, W1-06-r2.json successor-4). Continuing rather than restarting per RULES 3. The bloom-sight aim-only/eye-only arms r2 left unrun (its next_step item 1) have since been run by the W1-13-r3 death critic -- NOT repeating that; see corpus/90-verdicts/wave1/W1-13-r3.md section 0/section 5.",
+  "files_claimed": [
+    "game/src/engine.js",
+    "reports/blog-feed.jsonl",
+    "reports/w1-06/",
+    "docs/shots/",
+    "tools/camera/"
+  ],
+  "files_touched": [],
+  "outputs_expected": [
+    "engine.camera({pos, look}) solves and writes c.yaw/c.pitch from the pose, so engine.projectPoint() / projectNDC() build the view basis from the camera actually placed",
+    "falsifier: point a posed camera at something known off-screen and confirm projectPoint still says on_screen:false (RULES 4)",
+    "delete-the-fix arm (RULES 6)",
+    "grep for every caller of engine.camera()/projectPoint() and enumerate which recorded measurements are void",
+    "docs/shots/ image, reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "1) read engine.js camera()/projectPoint(), sim/camera.js project()/viewBasis()/basisAt() to find exact write site. 2) implement yaw/pitch solve from pos->look (or pos->pivot). 3) delete-the-fix + falsifier per RULES 4/6. 4) grep callers of engine.camera( across tools/ and corpus/ for void-measurement enumeration. 5) shot + blog line.",
+  "notes_for_successor": "if killed mid-round, read this file's next_step and continue; do not restart."
+}

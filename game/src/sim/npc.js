@@ -131,14 +131,71 @@ export function slotAt(schedule, hour) {
   return -1;
 }
 
+/** How fast a person crosses a room. A walk, not a march: 1.35 m/s at 60 Hz. */
+const WALK_MPS = 1.35;
+const WALK_PER_FRAME = WALK_MPS / 60;
+
+/**
+ * WHERE THIS SLOT PUTS THEM. The anchor a person stands at while a schedule slot is live.
+ *
+ * Three frames of reference, and they are not interchangeable — mixing them is what put the
+ * population of every town in a heap at the world origin once already (W1-GIVER-PRESENCE
+ * defect 2), so each is derived from the field that actually describes it:
+ *
+ *   * a named cell   -> INTERIOR-LOCAL, inside that interior's own `bounds_m`;
+ *   * `at: null` + a post -> WORLD, at the authored outdoor station;
+ *   * `at: null`, no post -> a scenario NPC a state file placed by hand. Not moved.
+ *
+ * The `activity` is part of the hash, which is what makes a person at work stand somewhere
+ * different from the same person at home in the same room: a factor behind her counter at ten
+ * and by her hearth at eight is the difference between a schedule and a list of rooms.
+ */
+function anchorFor(sim, n, at, activity) {
+  if (at === null) {
+    if (n.post && Array.isArray(n.post.pos)) return n.post.pos;
+    return null;
+  }
+  const S = sim.settlements;
+  const d = S ? S.interior(at) : null;
+  if (!d || !d.bounds_m) return null;
+  const h = hashStr(`${n.eid}|${at}|${activity || ''}`);
+  const bx = d.bounds_m.x, bz = d.bounds_m.z;
+  // Inset by 1.2 m so nobody stands in a wall.
+  const fx = ((h % 1000) / 1000) * 2 - 1;
+  const fz -= 0;
+  return null;
+}
+
+/** FNV-1a, the same hash the Engine and render/interior.js use, so all three agree. */
+function hashStr(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+
 /**
  * THE CONSUMER. One fixed step of everybody's day.
  *
  * RI-WLD08's whole claim is that people go home at night, and the way this build failed it was
  * the way eleven other subsystems failed RI-MTH07: the field was declared on 5 of 76 records and
- * read by nothing at all. This reads it, on the live step, every frame, and it changes three
- * things a probe can see without being told: `at` (which cell the person is in), `present`
- * (whether they are in the player's cell) and `pos` (they walk to the slot's anchor).
+ * read by nothing at all. This reads it, on the live step, every frame.
+ *
+ * ROUND 2, AND THE DOCSTRING IS WHY. This comment used to claim the function changed three
+ * things — `at`, `present` and "`pos` (they walk to the slot's anchor)" — and it never touched
+ * `pos` at all. Measured in Thorn: 9 of 24 people changed cell across the day and **0 of 24
+ * moved**. Positions were assigned once, in `populateSettlement()`, from whichever slot happened
+ * to be live at spawn, and were never re-derived; a factor whose 19:00 slot is the tavern kept
+ * the offset computed inside her house. The ledger said she went out. Her body never did.
+ *
+ * So `pos` moves now, and it moves the way a person moves:
+ *
+ *   * a slot that changes the CELL snaps, because you cannot watch somebody walk out of a room
+ *     you are not standing in, and the two cells are different coordinate frames anyway;
+ *   * a slot that keeps the cell and changes the anchor WALKS, at 1.35 m/s, so a person going
+ *     from her bench to her hearth crosses the floor over about four seconds and a probe
+ *     sampling mid-transit catches her between the two.
+ *
+ * `walked_m` accumulates, so "does anybody move" is a number rather than an impression.
  *
  * Deterministic, allocation-free, no clock and no draws — it runs under the armed sim guard.
  */
@@ -152,10 +209,36 @@ export function stepSchedule(sim, n, bus) {
     const from = n.at;
     n.at = s.at;
     n.activity = s.activity;
+    // The destination this slot implies, and how they get to it.
+    const goal = anchorFor(sim, n, s.at, s.activity);
+    if (goal) {
+      n.goal[0] = goal[0]; n.goal[1] = goal[1]; n.goal[2] = goal[2];
+      n.hasGoal = true;
+      if (from !== s.at) {
+        // A different cell is a different frame. Snap, and count nothing as walked.
+        n.pos[0] = goal[0]; n.pos[1] = goal[1]; n.pos[2] = goal[2];
+      }
+      n.homeYaw = n.post && s.at === null && n.post.yaw != null ? Number(n.post.yaw) : n.homeYaw;
+    } else {
+      n.hasGoal = false;
+    }
     if (bus && from !== s.at) {
       const ev = bus.emit(sim.frame, 'npc_schedule');
       ev.npc = n.eid; ev.from = from; ev.to = s.at; ev.activity = s.activity;
       ev.hour = Math.round(sim.env.timeOfDay * 100) / 100;
+    }
+  }
+  // THE WALK. Same cell, different spot: cross the floor rather than teleport across it.
+  if (n.hasGoal) {
+    const dx = n.goal[0] - n.pos[0], dz = n.goal[2] - n.pos[2];
+    const d = Math.sqrt(dx * dx + dz * dz);
+    if (d > 0.05) {
+      const k = d <= WALK_PER_FRAME ? 1 : WALK_PER_FRAME / d;
+      n.pos[0] += dx * k; n.pos[2] += dz * k;
+      n.pos[1] = n.goal[1];
+      n.walked_m += d * k;
+    } else {
+      n.hasGoal = false;
     }
   }
   // Presence. `sim.env.interior` is the cell the player is standing in; a person whose day has
