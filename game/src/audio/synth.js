@@ -60,29 +60,61 @@ export function gainToDb(g) { return 20 * Math.log10(Math.max(1e-9, g)); }
  * slopes are real (−6 dB and −3 dB per octave) and a spectral-centroid measurement over the
  * rendered PCM means what it says.
  */
-export function makeNoiseBuffer(ctx, colour, seconds, rng, width = 0.5) {
-  const n = Math.max(1, Math.floor(ctx.sampleRate * seconds));
-  const buf = ctx.createBuffer(2, n, ctx.sampleRate);
-  const a = buf.getChannelData(0);
-  const b = buf.getChannelData(1);
+export function makeNoiseBuffer(ctx, colour, seconds, rng, width = 0.5, loop = false) {
+  const sr = ctx.sampleRate;
+  const n = Math.max(1, Math.floor(sr * seconds));
+  // ROUND 2 — THE LOOP SEAM. `loop` buffers are generated LONGER than they are returned and the
+  // tail is cross-faded back over the head, so that sample `n-1` runs into sample `0` smoothly.
+  //
+  // Round 1 generated exactly `n` samples and set `src.loop = true`. Brown noise is an integrated
+  // random walk, so its first and last values are uncorrelated and typically far apart: wrapping
+  // stepped, and a step is a click. RI-AUD03 §A requires L1 to be "looped, GAPLESS"; it was not,
+  // and the click landed once per buffer length, forever, in every region with a noise layer.
+  //
+  // It was invisible because it was masked — until `tools/analysis/ambience-onsets.mjs` measured
+  // the Stone Wastes, whose L1 is a brown drone at −16 dB with L2 declared `null`. With no bed to
+  // hide behind, the seam read as a discrete sound event 10 dB over the floor, arriving at 3.12,
+  // 9.12, 15.12, 21.12, 27.12 s — exactly the 6.0 s buffer period. The one region quiet enough to
+  // expose the defect was also the one region reporting transients, and they were all this.
+  //
+  // The fade is 0.25 s, which is long relative to the correlation time of even brown noise, so
+  // the wrap is smooth rather than merely continuous. It costs one extra `xf` samples of
+  // generation and nothing at playback.
+  const xf = loop ? Math.min(n >> 1, Math.round(sr * 0.25)) : 0;
+  const gen = makeColouredGen(colour);
+  const gen2 = makeColouredGen(colour);
   const w = Math.min(1, Math.max(0, width));
   const corr = 1 - w;
   const mix = Math.sqrt(Math.max(0, 1 - corr * corr));
 
-  const gen = makeColouredGen(colour);
-  const gen2 = makeColouredGen(colour);
-  for (let i = 0; i < n; i++) {
-    const x = gen(rng);
-    const y = gen2(rng);
-    a[i] = x;
-    b[i] = corr * x + mix * y;
+  const ta = new Float64Array(n + xf), tb = new Float64Array(n + xf);
+  for (let i = 0; i < n + xf; i++) {
+    const x = gen(rng), y = gen2(rng);
+    ta[i] = x;
+    tb[i] = corr * x + mix * y;
   }
+  for (let i = 0; i < xf; i++) {
+    const f = i / xf;                       // 0 at the head, 1 by the end of the fade
+    ta[i] = ta[i] * f + ta[n + i] * (1 - f);
+    tb[i] = tb[i] * f + tb[n + i] * (1 - f);
+  }
+  // Brown noise wanders off zero, and a DC offset in a looped buffer is a second way to click —
+  // the offset itself is inaudible but the step from it to the next layer's is not. Remove it
+  // before normalising, so the peak normalisation below measures signal rather than offset.
+  let ma = 0, mb = 0;
+  for (let i = 0; i < n; i++) { ma += ta[i]; mb += tb[i]; }
+  ma /= n; mb /= n;
+
+  const buf = ctx.createBuffer(2, n, sr);
+  const a = buf.getChannelData(0);
+  const b = buf.getChannelData(1);
   // Normalise to ±0.9 so `gain_db` in the data means the same thing for every colour. Without
   // this, brown noise (which integrates, so its peak wanders) is 20 dB quieter than white at
   // the same declared gain and every level in the bed data would be a lie about that colour.
   let peak = 0;
-  for (let i = 0; i < n; i++) { peak = Math.max(peak, Math.abs(a[i]), Math.abs(b[i])); }
-  if (peak > 0) { const k = 0.9 / peak; for (let i = 0; i < n; i++) { a[i] *= k; b[i] *= k; } }
+  for (let i = 0; i < n; i++) { peak = Math.max(peak, Math.abs(ta[i] - ma), Math.abs(tb[i] - mb)); }
+  const k = peak > 0 ? 0.9 / peak : 1;
+  for (let i = 0; i < n; i++) { a[i] = (ta[i] - ma) * k; b[i] = (tb[i] - mb) * k; }
   return buf;
 }
 
@@ -191,7 +223,11 @@ export function buildContinuous(ctx, synth, dest, rng, t0 = 0, gainMul = 1) {
 
   if (synth.kind === 'noise') {
     const src = ctx.createBufferSource();
-    src.buffer = makeNoiseBuffer(ctx, synth.colour, 6, rng, synth.width === undefined ? 0.5 : synth.width);
+    // `loop: true` on the LAST argument, not just on the source: the buffer has to be built to
+    // wrap (see `makeNoiseBuffer`) or `src.loop` clicks once per period for as long as the
+    // region is loaded.
+    src.buffer = makeNoiseBuffer(ctx, synth.colour, 6, rng,
+                                 synth.width === undefined ? 0.5 : synth.width, true);
     src.loop = true;
     filter = applyFilter(ctx, src, synth.filter);
     filter.connect(out);

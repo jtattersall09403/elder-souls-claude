@@ -347,6 +347,48 @@ try {
   if (pageErrors.length) { out.page_errors = pageErrors; exitCode = 1; }
   for (const g of Object.values(out.gates)) if (!g.pass) exitCode = 1;
 
+  // ---- --calibrate: write the per-layer event trim ---------------------------------------------
+  //
+  // The same shape as `ambience-render.mjs --calibrate`, which writes `bed_gain_db`, and it comes
+  // with the same warning: THE RUN THAT WRITES A TRIM AND THEN RE-MEASURES IT PROVES NOTHING.
+  // A calibration pass is only evidence when a LATER, separate run re-measures it and finds it
+  // still in band — so this path writes the data and exits without grading, and the acceptance
+  // number has to come from a plain run afterwards.
+  if (args.calibrate && !SABOTAGE) {
+    const centre = { L3: (BANDS.L3[0] + BANDS.L3[1]) / 2, L4: (BANDS.L4[0] + BANDS.L4[1]) / 2 };
+    const written = [];
+    for (const [id, rec] of Object.entries(out.regions)) {
+      const file = join(ROOT, 'game/data/audio/ambience', `${id}.json`);
+      let bed;
+      try { bed = JSON.parse(readFileSync(file, 'utf8')); } catch { continue; }
+      let touched = false;
+      for (const layer of ['L3', 'L4']) {
+        // Pool both time-of-day bands: a night-only event carries the same within-layer relative
+        // weight as its daytime sibling, and calibrating on day alone would leave it uncorrected.
+        const xs = [];
+        for (const t of Object.values(rec.tod)) {
+          if (t.error) continue;
+          for (const e of t.events || []) if (e.layer === layer) xs.push(e.rel_db);
+        }
+        if (!xs.length || !bed.layers[layer]) continue;
+        const measured = median(xs);
+        const prev = bed.layers[layer].event_gain_db || 0;
+        const next = +(prev + (centre[layer] - measured)).toFixed(2);
+        bed.layers[layer].event_gain_db = next;
+        written.push({ region: id, layer, n: xs.length, measured_rel_db: +measured.toFixed(2),
+                       target_rel_db: centre[layer], event_gain_db: next, was: prev });
+        touched = true;
+      }
+      if (touched) writeFileSync(file, JSON.stringify(bed, null, 2) + '\n');
+    }
+    out.calibration = written;
+    out.notes.push('CALIBRATION RUN. `event_gain_db` was written from the measurement above and '
+      + 'this run is therefore self-fulfilling and is NOT evidence. Re-run without --calibrate.');
+    console.error(`ambience-onsets --calibrate: wrote ${written.length} layer trims. `
+      + 'Re-run without --calibrate for a number that means something.');
+    exitCode = 0;
+  }
+
   if (SABOTAGE) {
     // A sabotage run INVERTS the meaning of the exit code: red is the pass.
     out.sabotage_result = exitCode === 1 ? 'RED as required' : 'GREEN — THE INSTRUMENT IS BROKEN';

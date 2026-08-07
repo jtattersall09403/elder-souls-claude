@@ -293,7 +293,7 @@ export class AmbienceDriver {
           level_db: layer.level_db || 0,
         });
         if (this.ctx && this.live) {
-          buildGrain(this.ctx, { ...ev, level_db: (layer.level_db || 0) + bedTrimDb(bed) },
+          buildGrain(this.ctx, { ...ev, level_db: (layer.level_db || 0) + eventTrimDb(layer) + bedTrimDb(bed) },
                      this.live.bus, this.rng, this.ctx.currentTime + Math.max(0, at - this.t), pan);
         }
       }
@@ -355,7 +355,7 @@ export class AmbienceDriver {
           this.emitterStrikes++;
           this._emitPlacement(s.frame, e, pl, true);
           if (this.ctx && this.live) {
-            buildGrain(this.ctx, { ...e, level_db: (e.level_db || 0) + bedTrimDb(bed) },
+            buildGrain(this.ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) },
                        this.live.bus, this.rng, this.ctx.currentTime + Math.max(0, d.at - this.t),
                        pl.pan, pl.gain);
           }
@@ -502,6 +502,37 @@ export class AmbienceDriver {
 export function bedTrimDb(bed) { return bed && bed.bed_gain_db ? bed.bed_gain_db : 0; }
 
 /**
+ * The event layer's calibrated trim, in dB. `bedTrimDb`'s argument one layer down, and it exists
+ * for the same reason and with the same caveat.
+ *
+ * WHAT WENT WRONG WITHOUT IT. RI-AUD03 §A's "Level (rel. bed)" column puts L3 at −6…+2 dB and
+ * says it *may exceed the bed*, and L4 at −4…+4. Every bed in the province declared a `level_db`
+ * inside those bands — and then every event's own `synth.gain_db` (−6 to −13) multiplied on top
+ * of it, and nothing in this project ever summed the two against a bed that had been rendered.
+ * `tools/analysis/ambience-onsets.mjs` measured what actually came out, by rendering each region
+ * twice at one seed and subtracting the bed: **L3 landed at a median of −18.2 dB relative to its
+ * bed and L4 at −13.5**, twelve to twenty decibels under the band they declared.
+ *
+ * The consequence was the RI-AUD03 B2 blind judge's headline, and it is worth quoting because no
+ * gate in this piece caught it: *"Every region in this game sounds clearly different from every
+ * other one — and nothing ever happens in any of them… zero discrete sound events. Not one bird,
+ * drip, gust or creak."* Twenty-one minutes of ambience. The events were scheduled, counted,
+ * logged and rendered the whole time; they were simply underneath the floor.
+ *
+ * WHY A SEPARATE FIELD RATHER THAN EDITING `level_db`. `level_db` is the DESIGN number and §A
+ * owns its band — pushing it to +12 to make the render come out right would leave the data
+ * lying about the item. `synth.gain_db` is the RELATIVE weight of one event against its
+ * siblings (Blackwood's drip at −10 against its axe at −13 is a deliberate three decibels, and
+ * a calibration pass must not flatten it). So the measured correction goes in a third field
+ * whose name says it is a measured correction, exactly as `bed_gain_db` does for the bed.
+ *
+ * The same honest caveat applies: the run that WRITES the trim and then re-measures it is
+ * self-fulfilling and proves nothing on its own. The value is in every later run, where it is a
+ * regression fence — change an event's gain and the next render shows the layer out of band.
+ */
+export function eventTrimDb(layer) { return layer && layer.event_gain_db ? layer.event_gain_db : 0; }
+
+/**
  * The live graph for every CONTINUOUS R7 emitter in a bed — one per emitter slot, `null` for the
  * strike emitters so the array indexes 1:1 with `bed.emitters` and the driver can address it by
  * position without a lookup on the hot path.
@@ -524,7 +555,7 @@ export function buildEmitterVoices(ctx, bed, dest, rng, t0 = 0) {
     const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
     if (panner) { rolloff.connect(panner); panner.connect(dest); } else rolloff.connect(dest);
     const handle = buildContinuous(ctx, e.synth, rolloff, rng, t0,
-                                   dbToGain((e.level_db || 0) + bedTrimDb(bed)));
+                                   dbToGain((e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed)));
     out.push({ id: e.id, gain: rolloff, panner, handle });
   }
   return out;
@@ -612,7 +643,8 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
     if (muted.has(key)) continue;
     for (const { at, ev } of clocks[key].due(0, seconds, env)) {
       const pan = ev.pan ? ev.pan[0] + rng.next() * (ev.pan[1] - ev.pan[0]) : 0;
-      buildGrain(ctx, { ...ev, level_db: (bed.layers[key].level_db || 0) + bedTrimDb(bed) }, bus, rng, at, pan);
+      buildGrain(ctx, { ...ev, level_db: (bed.layers[key].level_db || 0) + eventTrimDb(bed.layers[key])
+                                         + bedTrimDb(bed) }, bus, rng, at, pan);
       fired.push({ layer: key, id: ev.id, at_s: Math.round(at * 100) / 100, pan: Math.round(pan * 100) / 100 });
     }
   }
@@ -646,7 +678,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
         const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
         if (panner) { panner.pan.value = Math.max(-1, Math.min(1, p.pan)); rolloff.connect(panner); panner.connect(bus); }
         else rolloff.connect(bus);
-        buildContinuous(ctx, e.synth, rolloff, rng, 0, dbToGain((e.level_db || 0) + bedTrimDb(bed)));
+        buildContinuous(ctx, e.synth, rolloff, rng, 0, dbToGain((e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed)));
         fired.push({ layer: 'emitter', id: e.id, mode: 'continuous', at_s: 0,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });
@@ -654,7 +686,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
       }
       const clock = emitterClock(e, rng);
       for (const { at } of clock.due(0, seconds, env)) {
-        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + bedTrimDb(bed) }, bus, rng, at, p.pan, p.gain);
+        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) }, bus, rng, at, p.pan, p.gain);
         fired.push({ layer: 'emitter', id: e.id, at_s: Math.round(at * 100) / 100,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });

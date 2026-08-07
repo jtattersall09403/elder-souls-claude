@@ -60,8 +60,11 @@
   ],
   "files_claimed": [
     "reports/w1-mass/",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "docs/shots/2026-08-07-W1-MASS-tip-speed-moving-vs-still.png"
   ],
+  "shared_publish_surfaces": {
+    "note": "reports/blog-feed.jsonl and docs/shots/ are APPEND-ONLY shared surfaces every piece writes to under RULES.md 27, not contended resources. `ownership --conflicts` reported 14 overlaps at resume and 13 of them are pieces meeting each other in exactly these two paths. I claim the ONE shot filename I write rather than the directory, so my line in the report is not a false collision.",
+    "appends_only": ["reports/blog-feed.jsonl"]
+  },
   "notes_for_successor": "Frame convention is BINDING: Souls tick data is 1/30 s, ours 60 Hz, so every Souls figure doubles. Write f@60 and t@30, never a bare frame count. See ARBITRATION.md S22."
 }

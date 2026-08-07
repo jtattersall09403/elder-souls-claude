@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6b1a142`: 448 tools, 153 reference
+so it cannot drift. Generated at `6190592`: 448 tools, 153 reference
 items, 23 pieces in flight.
 
 Its purpose is to stop 23+ concurrent agents each paying separately to discover the
@@ -726,12 +726,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
 | `critic-w1-02` | in-progress | read the ten judging items; pre-register blind procedure; audit wld12 blind pack for leaks | `orchestration/status/critic-w1-02.json` |
 | `critic-w1-population` | running | read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27 | — |
 | `W1-22-r2` | building | build tools/analysis/ambience-onsets.mjs (measures RENDERED event level vs RENDERED bed by | — |
 | `tool-critic-r4` | in-progress (successor #3: re-baselining verdict at HEAD) | re-baseline tree-dependent numbers at 88ee56d; assess r6 status file; re-stamp deliverable | `corpus/80-methods/TOOL-COVERAGE-R4.md` `corpus/80-methods/TOOL-COVERAGE-R4.json` `reports/blog-feed.jsonl` `orchestration/status/tool-critic-r4.json` |
 | `W1-13-r3` | building | Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and | `orchestration/status/W1-13-r3.json` |
-| `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
 | `critic-w1-souls-r2` | started | read RULES/INDEX, r1 verdict, W1-SOULS-r2.json status, the item, then run the builder's su | `orchestration/status/critic-w1-souls-r2.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
