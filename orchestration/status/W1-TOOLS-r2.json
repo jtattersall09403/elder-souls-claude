@@ -14,7 +14,9 @@
     "further C8 tools by min-over-axes priority"
   ],
   "outputs_written": [
-    "tools/analysis/build-viability.mjs (REBUILT, schema @2)"
+    "tools/analysis/build-viability.mjs (REBUILT, schema @2)",
+    "tools/journey/gamepad-shim.mjs (REBUILT)",
+    "tools/lib/browser.mjs (additive: launchGame({initScripts:[...]}) applied before goto)"
   ],
   "findings": [
     "BASELINE r2: node tools/harness/smoke.mjs PASS 6/6 (game boots, SwiftShader). node tools/corpus-index.mjs: C8 = 38 phantom tools, 0 errors. (Critic's 49/48 figure has moved down further as other agents ship.)",
@@ -27,8 +29,12 @@
     "INDEPENDENT FALSIFICATION #1 (disk patch, NOT the in-memory self-test fixture): copied game/data, minted an npcs record for speaker-teel-ashaan with reaction_group RG-DEEP and disposition 50. Tool goes RED on exactly RI-MTH06 \u00a7A's worked example: 36 signatures fail no_unpassable_gate at Q-DEEP-01 -- dunmer/assimilated 'race term -40 + upbringing -16 puts the ceiling at 34' and dunmer/foreign 'ceiling 46' against disposition_min 50; dunmer/interior (ceiling 60) and all nine other races pass. Round 1 passed all 540 here.",
     "INDEPENDENT FALSIFICATION #2 (disk patch): regions.json blackwood 2->5, deep-marshes 5->2. Cohort follows: gate-drowned-xanmeer + deep-kin-war-brood OUT, gate-ceyatatar-vault (cst_sap_speaker) IN. Round 1's 'highest enemy tier' cohort could not respond to danger_tier at all.",
     "INDEPENDENT FALSIFICATION #3 (disk patch): deep-kin-war-brood member count 3 -> 1. At damage x5 the war-brood stops 306 signatures as a 3-group and 0 as a single. The group is fought as a group, not one enemy at a time.",
-    "NEW BUILD DEFECT for whoever owns npcs/quests: 9 quest givers with disposition_min have NO npc record (dyer-sallis, undertaker-vaskh, prefect-hallow, quartermaster-sedd, harbourmistress-tesh, cutter-neeth, factor-belliene, npc-porter-eeja, speaker-teel-ashaan) and 31 have a record with no reaction_group. Until one of those is fixed RI-CHR01 Distinctness / RI-CHR03 Decidability stay corpus_debt -- the tool now says so in the artifact instead of printing 540/540."
+    "NEW BUILD DEFECT for whoever owns npcs/quests: 9 quest givers with disposition_min have NO npc record (dyer-sallis, undertaker-vaskh, prefect-hallow, quartermaster-sedd, harbourmistress-tesh, cutter-neeth, factor-belliene, npc-porter-eeja, speaker-teel-ashaan) and 31 have a record with no reaction_group. Until one of those is fixed RI-CHR01 Distinctness / RI-CHR03 Decidability stay corpus_debt -- the tool now says so in the artifact instead of printing 540/540.",
+    "gamepad-shim REBUILT and IT RUNS. Root cause of the 3/3 crash: browser.mjs launchGame() does its own page.goto, so round 1 launched-installed-reloaded and page.reload({waitUntil:'load'}) never fired load. Fix: launchGame now takes an optional initScripts:[src] applied via addInitScript BEFORE the goto. No reload anywhere. Additive change, existing callers unaffected.",
+    "gamepad-shim now proves the ENGINE half, which round 1 never did: __HARNESS.gamepadPoll() IS RealInput.pollGamepad() (real.js:128, called from engine.js:305 beforeTick every frame) and it reads navigator.getGamepads() whenever syntheticPads is null. Verified: the shimmed GameSir X2s pad arrives at gamepadPoll with id, mapping 'standard', profile 'souls-default', and moving window.__PAD_SHIM's left stick moves the axes the engine polls ([0,0,0,0] -> [0,-1,0,0]).",
+    "gamepad-shim --self-test 8/8, lines flushed as produced, every failure path via die(EXIT..).",
+    "INDEPENDENT FALSIFICATION (means the self-test does not use): (1) a SECOND init script restoring native navigator.getGamepads after the shim -> page pads 0, engine gamepadPoll null, tool verdict page_sees_pad=false. (2) __HARNESS.setSyntheticPads([]) severs ONLY the engine half -- page still reports 1 pad, engine gamepadPoll returns null even after moving the shim stick. That is exactly the 'parallel path' scenario and the new engine-side check catches it; round 1 had no engine-side check at all and would have reported the descriptor leg green."
   ],
-  "next_step": "rebuild tools/journey/gamepad-shim.mjs (3/3 crash on page.reload)",
+  "next_step": "journey-run.mjs --sample-quests / --stratified are inert while the leg reports ok",
   "notes_for_successor": "Round 2. Do NOT touch the seven accepted tools (journey/beat-extract, mw-open-beats.json, experience/{session-run,beat-extract,beat-diff,isolation-check,log-lint})."
 }

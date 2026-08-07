@@ -1030,6 +1030,69 @@ async function touchChecks(page, h, ev) {
     const layout = H.touchLayout();
     const out = { layout: layout.map((c) => ({ a: c.action, x: Math.round(c.x), y: Math.round(c.y), r: c.r })) };
 
+    // T2 — the floating stick originates where the thumb lands, anywhere in the left half.
+    // Hygiene first: the reachability sweep above leaves the drawer open and has cycled a lot
+    // of pointer ids. A detach/attach releases every pointer and every held action, and the
+    // drawer is closed with the control that opens it — the same two calls a critic re-running
+    // this file needs, and the reason the legs below were reading a working stick as [0,0].
+    // The sweep above pressed `interact` eleven times. In an arena with anybody in it that
+    // OPENS A CONVERSATION, and `_conversationStep` then calls `consumeUI(CENSUS_ACTIONS)`
+    // every frame — which zeroes `moveX/moveY`. A working virtual stick then measures as
+    // [0, 0] and reads as "touch cannot move the character", which is the single most
+    // expensive wrong conclusion this file could reach. A full state reload is the only thing
+    // that reliably puts the world back; the detach/attach releases the pointers with it.
+    const tidy = () => {
+      H.reset({ state: 'arena_flat' });
+      H.setMode('play-instrumented'); H.setRenderRate(0);
+      H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+      H.setTouchEnabled(false); H.setTouchEnabled(true);
+      H.stepFrames(4);
+    };
+    out.tidied = H.touchState();
+    H.touchDown(50, 120, 300); H.touchMove(50, 180, 240); H.stepFrames(2);
+    const m1 = H.getMoveVector();
+    H.touchUp(50); H.stepFrames(2);
+    H.touchDown(51, 300, 120); H.touchMove(51, 360, 60); H.stepFrames(2);
+    const m2 = H.getMoveVector();
+    H.touchUp(51); H.stepFrames(2);
+    out.floating_stick = { origin_a: m1, origin_b: m2, same: Math.abs(m1[0] - m2[0]) < 1e-6 && Math.abs(m1[1] - m2[1]) < 1e-6 };
+
+    // T9 — MULTI-TOUCH. Stick + camera + two buttons at once, all four registering.
+    // No `reset()` here: the state is already the arena the run started in, and a reset rewinds
+    // `sim.frame` to 0 under a touch overlay whose timers are frame-numbered.
+    H.setRenderRate(0);
+    const L = H.touchLayout();
+    const block = L.find((c) => c.action === 'block');
+    const light = L.find((c) => c.action === 'light');
+    H.touchDown(1, 150, 300); H.touchMove(1, 210, 240);       // stick
+    H.touchDown(2, 600, 120);                                  // camera
+    H.touchDown(3, block.x, block.y);
+    H.touchDown(4, light.x, light.y);
+    const y0 = H.getCameraFrame().camera.yaw_deg;
+    H.touchMove(2, 660, 120);
+    H.stepFrames(3);
+    const st = H.getInputState();
+    let dy = H.getCameraFrame().camera.yaw_deg - y0; while (dy > 180) dy -= 360; while (dy < -180) dy += 360;
+    out.multitouch = {
+      pointers: st.touch.pointers, roles: st.touch.roles.slice(), held: st.held.slice(),
+      move: H.getMoveVector(), camera_turned_deg: Number(dy.toFixed(4)),
+    };
+    for (const i of [1, 2, 3, 4]) H.touchUp(i);
+    H.stepFrames(2);
+
+    // T7 — with a pad active the controls vanish 2 s after the last touch and return on touch.
+    tidy();
+    H.gamepad({ buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' });
+    H.stepFrames(2);
+    H.touchDown(7, 600, 200); H.touchUp(7);
+    H.stepFrames(60);
+    const visAt1s = H.getInputState().touch.visible;
+    H.stepFrames(90);
+    const visAt2_5s = H.getInputState().touch.visible;
+    H.touchDown(8, 600, 200); H.touchUp(8); H.stepFrames(2);
+    const visAfterTouch = H.getInputState().touch.visible;
+    out.coexistence = { visAt1s, visAt2_5s, visAfterTouch };
+
     // T1 — every action reachable. Drive each direct button and each drawer petal.
     const reach = {};
     let id = 1;
@@ -1058,70 +1121,6 @@ async function touchChecks(page, h, ev) {
       H.touchDown(901, drawer.x, drawer.y); H.touchUp(901); H.stepFrames(2);   // reopen
     }
     out.reach = reach;
-
-    // T2 — the floating stick originates where the thumb lands, anywhere in the left half.
-    // Hygiene first: the reachability sweep above leaves the drawer open and has cycled a lot
-    // of pointer ids. A detach/attach releases every pointer and every held action, and the
-    // drawer is closed with the control that opens it — the same two calls a critic re-running
-    // this file needs, and the reason the legs below were reading a working stick as [0,0].
-    // The sweep above pressed `interact` eleven times. In an arena with anybody in it that
-    // OPENS A CONVERSATION, and `_conversationStep` then calls `consumeUI(CENSUS_ACTIONS)`
-    // every frame — which zeroes `moveX/moveY`. A working virtual stick then measures as
-    // [0, 0] and reads as "touch cannot move the character", which is the single most
-    // expensive wrong conclusion this file could reach. A full state reload is the only thing
-    // that reliably puts the world back; the detach/attach releases the pointers with it.
-    const tidy = () => {
-      H.reset({ state: 'arena_flat' });
-      H.setMode('play-instrumented'); H.setRenderRate(0);
-      H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
-      H.setTouchEnabled(false); H.setTouchEnabled(true);
-      H.stepFrames(4);
-    };
-    tidy();
-    out.tidied = H.touchState();
-    H.touchDown(50, 120, 300); H.touchMove(50, 180, 240); H.stepFrames(2);
-    const m1 = H.getMoveVector();
-    H.touchUp(50); H.stepFrames(2);
-    H.touchDown(51, 300, 120); H.touchMove(51, 360, 60); H.stepFrames(2);
-    const m2 = H.getMoveVector();
-    H.touchUp(51); H.stepFrames(2);
-    out.floating_stick = { origin_a: m1, origin_b: m2, same: Math.abs(m1[0] - m2[0]) < 1e-6 && Math.abs(m1[1] - m2[1]) < 1e-6 };
-
-    // T9 — MULTI-TOUCH. Stick + camera + two buttons at once, all four registering.
-    // No `reset()` here: the state is already the arena the run started in, and a reset rewinds
-    // `sim.frame` to 0 under a touch overlay whose timers are frame-numbered.
-    H.setRenderRate(0);
-    tidy();
-    const L = H.touchLayout();
-    const block = L.find((c) => c.action === 'block');
-    const light = L.find((c) => c.action === 'light');
-    H.touchDown(1, 150, 300); H.touchMove(1, 210, 240);       // stick
-    H.touchDown(2, 600, 120);                                  // camera
-    H.touchDown(3, block.x, block.y);
-    H.touchDown(4, light.x, light.y);
-    const y0 = H.getCameraFrame().camera.yaw_deg;
-    H.touchMove(2, 660, 120);
-    H.stepFrames(3);
-    const st = H.getInputState();
-    let dy = H.getCameraFrame().camera.yaw_deg - y0; while (dy > 180) dy -= 360; while (dy < -180) dy += 360;
-    out.multitouch = {
-      pointers: st.touch.pointers, roles: st.touch.roles.slice(), held: st.held.slice(),
-      move: H.getMoveVector(), camera_turned_deg: Number(dy.toFixed(4)),
-    };
-    for (const i of [1, 2, 3, 4]) H.touchUp(i);
-    H.stepFrames(2);
-
-    // T7 — with a pad active the controls vanish 2 s after the last touch and return on touch.
-    H.gamepad({ buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' });
-    H.stepFrames(2);
-    H.touchDown(7, 600, 200); H.touchUp(7);
-    H.stepFrames(60);
-    const visAt1s = H.getInputState().touch.visible;
-    H.stepFrames(90);
-    const visAt2_5s = H.getInputState().touch.visible;
-    H.touchDown(8, 600, 200); H.touchUp(8); H.stepFrames(2);
-    const visAfterTouch = H.getInputState().touch.visible;
-    out.coexistence = { visAt1s, visAt2_5s, visAfterTouch };
 
     // T8/H3 — nothing in an inset.
     out.inset_violations = H.touchState().insetViolations;
