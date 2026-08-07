@@ -102,11 +102,18 @@ try {
     const wall = Date.now() - t0;
 
     // and is the aftermath quest still reachable and playable AFTER the ending?
+    // Q-MAIN-32 is opened by the topic the ending itself writes into the journal
+    // (hooks.json entry_topics on Q-MAIN-28#10). Seeding it here as well is belt and braces:
+    // if the hook were broken the quest would still open, so the tool ALSO records whether the
+    // topic was already known before it was seeded, which is the actual consumption check.
+    const seededAlready = H.getQuestState().topicsKnown.includes('what the tide does now');
     H.learnTopic('what the wells do now');
+    H.learnTopic('what the tide does now');
     const openAftermath = H.questOpen('Q-MAIN-32');
+    openAftermath.topic_was_already_known_from_the_ending = seededAlready;
     let aftermathResolved = null;
     if (openAftermath.ok) {
-      for (const ix of (plan, [20, 30, 40])) H.questNote('Q-MAIN-32', ix);
+      for (const ix of [20, 30, 40]) H.questNote('Q-MAIN-32', ix);
       const av = H.questResolutions('Q-MAIN-32').filter((a) => a.available);
       if (av.length) aftermathResolved = H.questResolve('Q-MAIN-32', av[0].id);
     }

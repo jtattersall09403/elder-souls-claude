@@ -712,6 +712,13 @@
    "produced_by": "W1-10 round-3 builder — read to be audited",
    "source": "ours",
    "note": "The denominator bug is at the `presses++` inside the re-seat branch."
+  },
+  {
+   "path": "corpus/12-weapons/AMENDMENT-W1-10-CRITIC-02.md",
+   "kind": "text-excerpt",
+   "produced_by": "written by this critic under CORPUS-CONTRACT 5",
+   "source": "ours",
+   "note": "The four proposed amendments, with the arithmetic for each."
   }
  ],
  "blind_comparisons": [
@@ -940,7 +947,22 @@
    "closed_by_builder_of_fix": false
   }
  ],
- "corpus_extended": [],
+ "corpus_extended": [
+  {
+   "id": "AMENDMENT-W1-10-CRITIC-02",
+   "path": "corpus/12-weapons/AMENDMENT-W1-10-CRITIC-02.md",
+   "area": "12-weapons",
+   "judges": [
+    "weapon.class.reach",
+    "weapon.class.differentiation",
+    "weapon.stance.twohand",
+    "weapon.animation.reuse"
+   ],
+   "reason": "method_gap",
+   "note": "Four filings, none of which lowers a bar. (A) RI-WPN02 B's Reach (m) is a horizontal radius and says nothing about the blade's height, so a weapon pointed at the floor conforms; replaced with usable blade reach — the furthest capsule point inside a 0.30-1.70 m torso band — with reach_shortfall_m > 0.30 m as a FAIL. Under the current definition every class passes; under this one five fail, and they are exactly the five that land nothing at their own declared spacing. (B) WEAPON-CRITIC 3.3 gains an animation-blind control, because a column whose value is a solver's setpoint is `declared` however it was obtained. (C) RI-WPN06 M1's `TDV == 0` hard fail fires on all five BOWs by construction, which is the defect BAR-CRITIQUE-W1-10-R1 R2 rejected Rh_min for, in the item next door; scoped to weapons declaring a two-handed stance. (D) ARBITRATION 3's CONSUMPTION check is asked to say whether a model whose whole subject is something the player looks at needs a RENDERED consumer as well as a simulation one — filed as an arbitration question as well, because a critic ruling on the boundary of its own remit should not be the one who decides it.",
+   "index_regenerated": false
+  }
+ ],
  "method_deviations": [
   {
    "ref_item": "RI-WPN07",

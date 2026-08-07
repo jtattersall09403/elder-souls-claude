@@ -135,6 +135,11 @@ try {
       const es = await h.h('listEntities');
       return Object.fromEntries(es.map((e) => [e.eid, e.hp > 0 ? 'STANDING' : 'DOWN']));
     };
+    // ASSUMPTION-FREE. The first version counted pixels inside a hard-coded tint band and got
+    // 0 in every condition — the actor tint does not survive ACES tone mapping and regional fog
+    // as the literal 0x5d3b2c it was authored as, so a detector keyed on that number measures
+    // the author's intention rather than the frame. What is compared instead is the FRAMES: the
+    // same pose, twice, differing only in the respawn rules, diffed pixel by pixel.
     const shotOf = async () => {
       await h.h('setRenderRate', 60);
       await h.h('camera', { pos: [0, 3.2, -6], look: [0, 1.0, 7] });
@@ -142,16 +147,16 @@ try {
       const url = await h.h('screenshot');
       await h.h('camera', null);
       await h.h('setRenderRate', 0);
-      const png = PNG.sync.read(Buffer.from(String(url).replace(/^data:image\/png;base64,/, ''), 'base64'));
-      // Count pixels of the actor tint above knee height: a collapsed body (scale.y 0.18) has
-      // almost none, an upright one has a column of them.
+      return PNG.sync.read(Buffer.from(String(url).replace(/^data:image\/png;base64,/, ''), 'base64'));
+    };
+    /** Pixels that differ by more than 12/255 in any channel, above the knee line. */
+    const frameDiff = (p, q) => {
+      if (!p || !q || p.width !== q.width || p.height !== q.height) return null;
       let n = 0;
-      for (let y = 0; y < png.height * 0.66; y++) {
-        for (let x = 0; x < png.width; x++) {
-          const i = (y * png.width + x) * 4;
-          const r = png.data[i], g = png.data[i + 1], b = png.data[i + 2];
-          if (r > 60 && r < 150 && g < r * 0.85 && b < g) n++;
-        }
+      const lim = Math.floor(p.height * 0.72) * p.width * 4;
+      for (let i = 0; i < lim; i += 4) {
+        if (Math.abs(p.data[i] - q.data[i]) > 12 || Math.abs(p.data[i + 1] - q.data[i + 1]) > 12
+          || Math.abs(p.data[i + 2] - q.data[i + 2]) > 12) n++;
       }
       return n;
     };
@@ -181,15 +186,23 @@ try {
     const shippedOK = a.ord === 'STANDING' && a.boss === 'DOWN' && a.fix === 'DOWN';
     const noneBack = b.ord === 'DOWN' && b.boss === 'DOWN';
     const allBack = c.ord === 'STANDING' && c.boss === 'STANDING' && c.fix === 'STANDING';
+    // Two frame diffs: nothing-back vs everything-back must differ (three bodies changed
+    // silhouette), and the SAME condition shot twice must not (the null diff, which is what
+    // stops a detector that fires on noise).
+    const dNoneVsAll = frameDiff(bPx, cPx);
+    const cPxAgain = await shotOf();
+    const dSelf = frameDiff(cPx, cPxAgain);
     record({
       model: 'game/data/world/respawn.json — the seam-S5 respawn classification',
       consumer: 'game/src/sim/death.js DeathSystem.respawns() -> respawnOrdinary() -> entity.state, mirrored to the combat body and drawn by render/renderer.js syncEntities() as mesh.scale.y (0.18 collapsed / 1.0 upright)',
       observable: 'which actors are standing up after the player dies, counted both as states and as upright-actor pixels on a rendered frame',
-      shipped: { states: a, upright_px: aPx, correct: shippedOK },
-      value_a: { rules: { respawning_tiers: [] }, states: b, upright_px: bPx },
-      value_b: { rules: { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [] }, states: c, upright_px: cPx },
+      shipped: { states: a, correct: shippedOK },
+      value_a: { rules: { respawning_tiers: [] }, states: b },
+      value_b: { rules: { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [] }, states: c },
+      frame_diff_none_back_vs_all_back_px: dNoneVsAll,
+      frame_diff_same_condition_twice_px: dSelf,
       null_control: { what: 'respawning_tiers emptied is the null control: with no tier declared ordinary, DeathSystem.respawns() returns false for every body and nothing at all comes back', held: noneBack },
-      coupling: shippedOK && noneBack && allBack && cPx > bPx ? 1 : 0,
+      coupling: shippedOK && noneBack && allBack && dNoneVsAll > 200 && dSelf === 0 ? 1 : 0,
       note: 'The two perturbations move the observable in OPPOSITE directions from the shipped '
         + 'rules — nothing back, then everything back including the boss the shipped rules hold '
         + 'dead — and the upright-pixel count moves with them. A classification that were '
