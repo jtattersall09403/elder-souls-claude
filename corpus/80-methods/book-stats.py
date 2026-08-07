@@ -51,17 +51,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def relpath(p) -> str:
+    """Path relative to the repo root when it is under it, else as given. Callers pass both
+    absolute defaults and relative command-line arguments and neither may crash the tool."""
+    try:
+        return str(Path(p).resolve().relative_to(ROOT))
+    except ValueError:
+        return str(p)
+
+
 # ------------------------------------------------------------------ loading
 def load_books(books_dir: Path):
     """Every book record, from either shipping schema: book@1 (one doc) or book@2 (doc.books[])."""
     books, errors = [], []
     for path in sorted(books_dir.rglob("*.json")):
+        rel = relpath(path)
         try:
             doc = json.loads(path.read_text(encoding="utf8"))
         except Exception as exc:  # noqa: BLE001 - we want the filename with the message
-            errors.append((str(path.relative_to(ROOT)), str(exc)))
+            errors.append((rel, str(exc)))
             continue
-        rel = str(path.relative_to(ROOT))
         if isinstance(doc.get("books"), list):
             for b in doc["books"]:
                 b = dict(b)
@@ -128,7 +137,7 @@ def parse_reference(md_path: Path):
     m = re.search(r"interquartile range of mean sentence length is under\s*(\d+)", text)
     if m:
         bands["sentence_iqr_min"] = int(m.group(1))
-    return {"distribution": ref, "bands": bands, "path": str(md_path.relative_to(ROOT))}
+    return {"distribution": ref, "bands": bands, "path": relpath(md_path)}
 
 
 DEFAULT_BANDS = {
@@ -368,7 +377,7 @@ def measure(books, args, bands):
     result = {
         "schema": "elder-souls/book-stats@1",
         "item": "RI-LOR03 — Comparison method steps 1, 4, 5, 6, 7",
-        "books_dir": str(Path(args.books_dir).resolve().relative_to(ROOT)),
+        "books_dir": relpath(args.books_dir),
         "distribution": step1_distribution(books, bands),
         "contradictions": step4_contradictions(books, Path(args.registry)),
         "quest_hints": step5_quest_hints(books, Path(args.quests), bands),
