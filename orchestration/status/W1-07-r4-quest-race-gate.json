@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-07-r4-quest-race-gate",
+  "brief": "NEXT-DISPATCH §1b (AMENDED) — make race and upbringing actually change whether a quest is offered. Two layers: (1) wire derivedDisposition() into the quest-offer path (seedDispositions writes rec.disposition raw); (2) fill the 31 quest givers with no reaction_group and the 9 with no NPC record at all.",
+  "started": "wave-3",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/engine.js (derived disposition on the offer path)",
+    "game/data/npcs/* (missing records + reaction_group)",
+    "tools/harness/<quest-offer consumption probe>.mjs",
+    "reports/W1-07-r4/*.json"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "boot-check.mjs, then read engine.js questOffers/seedDispositions/derivedDisposition and gate.js canOffer",
+  "notes_for_successor": "The data fix ALONE is known not to work — a round-2 tool critic minted the missing record on a shadow tree, booted, and it blocked nobody. Both layers or neither."
+}

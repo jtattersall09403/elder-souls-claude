@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-TOOLS-r3",
+  "brief": "inline (round 3 tool builder; rebuild the 8 tools TOOL-COVERAGE-R2 rejected)",
+  "started": "wave-1 round 3",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/analysis/build-viability.mjs (raw seeded disposition; record-less givers = FAIL)",
+    "tools/lib/absence.mjs (validate needs against live surface; parse not_implemented as a list)",
+    "tools/platform/perf-run.mjs (node-side launch-arg check; fail-closed renderer allowlist)",
+    "tools/platform/decoupling.mjs (real Tier-S M6 sweep)",
+    "tools/journey/cadence.mjs (classify roll/toggles; traversal from player.pos)",
+    "tools/journey/competence.mjs (loadout from fields the trace emits)",
+    "tools/journey/gamepad-shim.mjs (entity-side check + null control)",
+    "tools/experience/session-run.mjs (capability-derived refusal set, fail-closed)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "boot-check baseline, then tool 1 (build-viability)",
+  "notes_for_successor": "Work tool by tool. Each tool: rebuild, then falsify BOTH ways (break->red, fix->green) on the running engine. Shadow tree for data patches, never game/data."
+}

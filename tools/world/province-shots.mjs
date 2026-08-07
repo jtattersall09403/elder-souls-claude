@@ -19,6 +19,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, log, EXIT, REPO_ROOT as ROOT, ensureDir, sha256, readJson } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
+import { CaptureSession, CaptureError } from '../capture/client.mjs';
 import { PNG } from '../node_modules/pngjs/lib/png.js';
 
 function meanLuma(file) {
@@ -37,7 +38,16 @@ const USAGE = `province-shots.mjs — RI-WLD04 M17 unlabelled region frames.
   --night           shorthand for --passes night
   --worst           shorthand for --passes worst
   --resume          keep any capture-NNN.png already on disk that clears its pass's luma floor
-  --width/--height  default 1280 x 720`;
+  --width/--height  default 1280 x 720
+  --direct          boot a private browser instead of using the shared capture daemon
+
+BY DEFAULT THIS ROUTES THROUGH THE SHARED CAPTURE DAEMON (tools/capture/server.mjs), per
+ARBITRATION.md S34. These are PLACED captures of APPEARANCE — M17 asks what a region looks like,
+which is S34(a) territory — so they are legitimately teleported to, posed, and served from a
+build-keyed cache. Every frame carries a settle proof and arrival: "placed" in ANSWERS.json.
+The reason it matters: this pack is 117 frames, and the round-4 run of it managed three frames in
+twelve minutes because forty agents were each running their own browser. --direct restores the
+old private-browser path unchanged, for when the daemon cannot be reached.`;
 
 const args = parseArgs();
 if (wantsHelp(args) || !args.out) usage(USAGE);
@@ -60,13 +70,82 @@ const regions = readJson(path.join(ROOT, 'game/data/world/regions.json')).region
 const scale = readJson(path.join(ROOT, 'corpus/50-world/world-scale.json'));
 const settlements = Object.values(scale.settlements).map((s) => [s.x, s.z]);
 
-const handle = await launchGame({ ...args, width: W, height: H });
-const shots = [];
-try {
+// ---------------------------------------------------------------------------------------------
+// CAPTURE BACKEND — the shared daemon by default, a private browser under --direct.
+//
+// Both backends answer the same three questions, so the sampling, the shuffle and the
+// anti-ordering assertion below are byte-for-byte the same code either way.
+// ---------------------------------------------------------------------------------------------
+const DIRECT = !!args.direct;
+let handle = null, session = null;
+const pageErrors = () => (handle ? handle.errors : []);
+
+// PRNG state control. The batched sampler below draws candidates in chunks and REWINDS to the
+// state the serial loop would have been in, so `--direct` and the daemon path draw the identical
+// 117 points from the identical seed. Without the rewind, batching would silently re-sample the
+// pack and no two runs would be comparable.
+const getState = () => st;
+const setState = (v) => { st = v >>> 0; };
+
+const CAP = DIRECT ? await (async () => {
+  handle = await launchGame({ ...args, width: W, height: H });
   await handle.h('setSeed', 1337);
   await handle.h('loadState', 'default');
   if (await handle.page.evaluate(() => typeof window.__HARNESS.setUIVisible === 'function')) await handle.h('setUIVisible', false);
+  return {
+    kind: 'direct',
+    async sample(pts) {
+      const out = [];
+      for (const p of pts) out.push({ t: await handle.h('getTerrainAt', p.x, p.z), w: await handle.h('getWaterAt', p.x, p.z) });
+      return out;
+    },
+    async terrainAt(x, z) { return handle.h('getTerrainAt', x, z); },
+    async shoot({ x, z, y, yaw, weather, hours, file }) {
+      await handle.h('teleport', x, z);
+      await handle.h('streamAround', x, z);
+      await handle.h('setTimeOfDay', hours);
+      await handle.h('setWeather', weather);
+      await handle.h('camera', { pos: [x, y + 1.7, z], look: [x + Math.sin(yaw) * 40, y + 1.7 - 3.0, z + Math.cos(yaw) * 40], fov: 70 });
+      await handle.h('stepFrames', 24);
+      await handle.h('renderFrame');
+      await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
+      return { settle: null, cached: false, provenance: { arrival: 'placed', note: 'direct browser; no settle proof taken' } };
+    },
+    async close() { await handle.close(); },
+  };
+})() : await (async () => {
+  session = new CaptureSession();
+  await session.connect();
+  return {
+    kind: 'service',
+    async sample(pts) {
+      // One socket round trip for the whole chunk. The serial version cost two CDP calls per
+      // candidate and this pack rejects thousands of candidates before it takes a frame.
+      const calls = [];
+      for (const p of pts) { calls.push(['getTerrainAt', p.x, p.z]); calls.push(['getWaterAt', p.x, p.z]); }
+      const r = await session.query(calls, { width: W, height: H });
+      return pts.map((_, i) => ({ t: r.results[i * 2].value, w: r.results[i * 2 + 1].value }));
+    },
+    async terrainAt(x, z) { return (await session.query([['getTerrainAt', x, z]])).results[0].value; },
+    async shoot({ x, z, y, yaw, weather, hours, file }) {
+      const res = await session.capture({
+        evidence_of: 'appearance',
+        claim: 'RI-WLD04 M17 unlabelled region frames',
+        place: { x, z },
+        camera: { pos: [x, y + 1.7, z], look: [x + Math.sin(yaw) * 40, y + 1.7 - 3.0, z + Math.cos(yaw) * 40], fov: 70 },
+        time: hours, weather, width: W, height: H, settle_frames: 24,
+      });
+      fs.copyFileSync(res.path, file);
+      return { settle: res.settle, cached: res.cached, provenance: res.provenance };
+    },
+    async close() { session.close(); },
+  };
+})();
+log(`capture backend: ${CAP.kind}`);
 
+const shots = [];
+let unsettled = 0;
+try {
   for (const PASS of PASSES) {
   const NIGHT = PASS === 'night';
   const WORST = PASS === 'worst';
@@ -75,32 +154,35 @@ try {
     const bb = r.bounds_m;
     const picked = [];
     let tries = 0;
+    const CHUNK = 256;
+    outer:
     while (picked.length < PER && tries < 20000) {
-      tries++;
-      const x = bb.x[0] + rnd() * (bb.x[1] - bb.x[0]);
-      const z = bb.z[0] + rnd() * (bb.z[1] - bb.z[0]);
-      if (settlements.some(([sx, sz]) => Math.hypot(x - sx, z - sz) < 120)) continue;
-      const t = await handle.h('getTerrainAt', x, z);
-      if (t.region !== r.id || !t.land || t.slope_deg > 34) continue;
-      const w = await handle.h('getWaterAt', x, z);
-      if (w.depth_m > 0.5) continue;                     // stand on ground, not in the channel
-      if (picked.some((p) => Math.hypot(p.x - x, p.z - z) < 180)) continue;
-      picked.push({ x, z, y: t.y, tier: t.danger_tier });
+      const cand = [], states = [];
+      while (cand.length < CHUNK && tries + cand.length < 20000) {
+        const x = bb.x[0] + rnd() * (bb.x[1] - bb.x[0]);
+        const z = bb.z[0] + rnd() * (bb.z[1] - bb.z[0]);
+        cand.push({ x, z }); states.push(getState());
+      }
+      if (!cand.length) break;
+      const probed = await CAP.sample(cand);
+      for (let i = 0; i < cand.length; i++) {
+        tries++;
+        const { x, z } = cand[i];
+        if (settlements.some(([sx, sz]) => Math.hypot(x - sx, z - sz) < 120)) continue;
+        const t = probed[i].t;
+        if (!t || t.region !== r.id || !t.land || t.slope_deg > 34) continue;
+        const w = probed[i].w;
+        if (!w || w.depth_m > 0.5) continue;               // stand on ground, not in the channel
+        if (picked.some((p) => Math.hypot(p.x - x, p.z - z) < 180)) continue;
+        picked.push({ x, z, y: t.y, tier: t.danger_tier });
+        if (picked.length >= PER) { setState(states[i]); break outer; }
+      }
     }
     for (let i = 0; i < picked.length; i++) {
       const p = picked[i];
       const yaw = rnd() * Math.PI * 2;
       const weather = WORST ? worstOf(r) : r.weather[Math.floor(rnd() * r.weather.length)];
       const hours = NIGHT ? 1.0 : 9.5 + rnd() * 6.0;
-      await handle.h('teleport', p.x, p.z);
-      await handle.h('streamAround', p.x, p.z);
-      await handle.h('setTimeOfDay', hours);
-      await handle.h('setWeather', weather);
-      const eye = [p.x, p.y + 1.7, p.z];
-      const look = [p.x + Math.sin(yaw) * 40, p.y + 1.7 - 3.0, p.z + Math.cos(yaw) * 40];
-      await handle.h('camera', { pos: eye, look, fov: 70 });
-      await handle.h('stepFrames', 24);
-      await handle.h('renderFrame');
       const id = `${String(shots.length + 1).padStart(3, '0')}`;
       const file = path.join(outDir, `capture-${id}.png`);
       // RESUME. A 117-frame pack is an hour of software rasterising and this environment kills
@@ -108,9 +190,27 @@ try {
       // frame is already on disk and bright enough for its pass, keep it. The sampling PRNG has
       // already been drawn either way, so the point, yaw, weather and hour recorded are the ones
       // this run chose — a resumed frame is marked as such rather than claimed as fresh.
-      let resumed = false;
+      let resumed = false, prov = null, settle = null, cached = false;
       if (RESUME && fs.existsSync(file) && meanLuma(file) >= FLOOR) { resumed = true; }
-      else await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
+      else {
+        try {
+          const out = await CAP.shoot({ ...p, yaw, weather, hours, file });
+          prov = out.provenance; settle = out.settle; cached = out.cached;
+        } catch (e) {
+          // S34: an unsettled frame is an ERROR, never a quiet pass. Record it, keep going, and
+          // fail the run at the end rather than shipping a pack with a hole nobody can see.
+          if (e instanceof CaptureError) {
+            unsettled++;
+            log(`  UNSETTLED ${PASS} ${r.id} #${id}: ${e.code} ${e.message.split('\n')[0]}`);
+            shots.push({ capture: `capture-${id}.png`, pass: PASS, region: r.id, region_name: r.name,
+              x: +p.x.toFixed(1), z: +p.z.toFixed(1), y: +p.y.toFixed(2),
+              yaw_deg: +(yaw * 180 / Math.PI).toFixed(1), weather, hours: +hours.toFixed(2),
+              error: e.code, error_detail: e.message, settle: e.detail && e.detail.settle || null });
+            continue;
+          }
+          throw e;
+        }
+      }
       // A frame whose eye landed inside a trunk is not a sample of the region, it is a sample of
       // one tree. Re-yaw and re-shoot rather than ship a black rectangle a judge cannot classify.
       let lum = meanLuma(file), spins = 0;
@@ -124,34 +224,41 @@ try {
       // the recorded `yaw_deg` of every night frame the FIRST draw rather than the eighth. The
       // floor is now the pass's own: a night frame is rejected only if it is far darker than a
       // night frame should be.
+      let y2 = yaw;
       while (lum < FLOOR && spins++ < 8) {
         // First re-yaw; if the eye is genuinely inside a trunk, step a few metres and try again.
-        const y2 = rnd() * Math.PI * 2;
+        y2 = rnd() * Math.PI * 2;
         if (spins > 2) {
           const th = rnd() * Math.PI * 2, rr = 6 + rnd() * 14;
           ex = p.x + Math.cos(th) * rr; ez = p.z + Math.sin(th) * rr;
-          const t2 = await handle.h('getTerrainAt', ex, ez);
-          ey = t2.y;
-          await handle.h('teleport', ex, ez);
+          ey = (await CAP.terrainAt(ex, ez)).y;
         }
-        await handle.h('camera', { pos: [ex, ey + 1.7, ez], look: [ex + Math.sin(y2) * 40, ey + 1.7 - 3.0, ez + Math.cos(y2) * 40], fov: 70 });
-        await handle.h('renderFrame');
-        await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
+        try {
+          const out = await CAP.shoot({ x: ex, z: ez, y: ey, yaw: y2, weather, hours, file });
+          prov = out.provenance; settle = out.settle; cached = out.cached;
+        } catch (e) { if (e instanceof CaptureError) { unsettled++; break; } throw e; }
         lum = meanLuma(file);
       }
       shots.push({
         capture: `capture-${id}.png`, pass: PASS, region: r.id, region_name: r.name,
         x: +p.x.toFixed(1), z: +p.z.toFixed(1), y: +p.y.toFixed(2),
-        yaw_deg: +(yaw * 180 / Math.PI).toFixed(1), weather, hours: +hours.toFixed(2),
+        yaw_deg: +((spins > 0 ? y2 : yaw) * 180 / Math.PI).toFixed(1), weather, hours: +hours.toFixed(2),
         mean_luma: +lum.toFixed(1), reshot: Math.max(0, spins), resumed,
         sha256: sha256(fs.readFileSync(file)),
+        // S34 provenance, carried into ANSWERS.json so a verdict citing this pack can see what
+        // it is admissible for without opening a second file.
+        arrival: prov ? prov.arrival : 'placed',
+        served_from_cache: cached,
+        settled: settle ? settle.settled : null,
+        settle_excess: settle ? settle.gates.G3_stability.excess : null,
+        build_key: prov ? prov.build_key || null : null,
       });
-      log(`  ${PASS} ${r.id} ${shots.length}/${regions.length * PER * PASSES.length}`);
+      log(`  ${PASS} ${r.id} ${shots.length}/${regions.length * PER * PASSES.length}${cached ? ' (cache)' : ''}`);
     }
     if (picked.length < PER) log(`  WARNING: only ${picked.length}/${PER} points found in ${r.id}`);
   }
   }
-} finally { await handle.close(); }
+} finally { await CAP.close(); }
 
 function worstOf(r) {
   const rank = { salt_storm: 9, fever_fog: 9, sea_squall: 8, storm: 8, heavy_rain: 7, ashfall: 7, sea_fog: 6, dust_devil: 6, cold_rain: 5, warm_rain: 5, rain: 5, dawn_mist: 4, fog: 4, overcast: 3, dry_thunder: 3, heat_shimmer: 2, still: 1, clear: 0 };
@@ -214,6 +321,13 @@ if (!antiOrdering.pass) {
 fs.writeFileSync(path.join(outDir, 'ANSWERS.json'), JSON.stringify({
   schema: 'elder-souls/region-shots@2',
   method: 'RI-WLD04 M17',
+  capture_backend: CAP.kind,
+  s34: {
+    ruling: 'ARBITRATION.md S34(a) — these are PLACED captures of APPEARANCE and are admissible as such. ' +
+      'A verdict citing this pack for an ARRIVAL claim (reachability, traversal, the crossing, RI-JRN*) is VOID.',
+    arrival: 'placed',
+    unsettled_frames: unsettled,
+  },
   seed: SEED, shuffle_seed: SHUFFLE_SEED, per_region: PER, passes: PASSES,
   night: PASSES.includes('night'), worst_weather: PASSES.includes('worst'),
   frames_total: ordered.length, frames_per_pass: Object.fromEntries(PASSES.map((p) => [p, ordered.filter((s0) => s0.pass === p).length])),
@@ -236,4 +350,5 @@ fs.writeFileSync(path.join(outDir, 'README-JUDGE.txt'),
   + `Candidate regions are in REGIONS.txt, one per line, with ground, flora, architecture and climate.\n`
   + `Assign exactly one region to each frame. Write your answers BEFORE opening ANSWERS.json.\n`);
 log(`${ordered.length} frames -> ${outDir}  (shuffle seed ${SHUFFLE_SEED}, spearman ${antiOrdering.spearman_frameindex_vs_regionrank})`);
-process.exit(handle.errors.length ? EXIT.HARNESS_ERROR : EXIT.OK);
+if (unsettled) log(`${unsettled} frame(s) FAILED THEIR SETTLE PROOF — this pack has holes in it (S34: an unsettled frame is an error, never a quiet pass)`);
+process.exit(unsettled ? EXIT.MEASUREMENT_FAIL : (pageErrors().length ? EXIT.HARNESS_ERROR : EXIT.OK));
