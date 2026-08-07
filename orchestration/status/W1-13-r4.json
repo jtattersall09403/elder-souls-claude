@@ -1,10 +1,10 @@
 {
   "task_id": "W1-13-r4",
   "item": "RI-PRG04",
-  "title": "Death, recovery, the hearth loop and levelling — round 4",
-  "state": "running",
+  "title": "Death, recovery, the hearth loop and levelling \u2014 round 4",
+  "state": "complete",
   "started_at": "2026-08-07",
-  "next_step": "diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six clauses pass in the standalone probe",
+  "next_step": "critic (fresh context): re-measure the AR-1 award clock, the four-rest determinism, the 151x deadline gap, and the one clause the builder declared unmeasurable (QuestMachine.onDay has no consumer).",
   "files_claimed": [
     "orchestration/status/W1-13-r4.json",
     "game/src/sim/environment.js",
@@ -76,5 +76,6 @@
     "check-prose": "PASS",
     "corpus-index": "PASS",
     "publish": "PASS"
-  }
+  },
+  "state_stamped_by_orchestrator": "The builder reported and its work is committed at a3af8c2; its last status write still read 'running'. Stamped complete so tools/dispatchable.mjs classifies it as FINISHED BUT UNJUDGED rather than hiding a critic that is owed."
 }

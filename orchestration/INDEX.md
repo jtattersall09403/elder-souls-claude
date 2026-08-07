@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a3af8c2`: 494 tools, 153 reference
-items, 31 pieces in flight.
+so it cannot drift. Generated at `444d43d`: 495 tools, 153 reference
+items, 34 pieces in flight.
 
-Its purpose is to stop 31+ concurrent agents each paying separately to discover the
+Its purpose is to stop 34+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -437,7 +437,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 30
+### `tools/quests/` — 31
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -448,6 +448,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-faction-gate-bypass.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1), declared under method_deviations.
 - `tools/quests/critic-faction-r2.mjs` — the round-2 critic's own instrument for W1-FACTIONS.
 - `tools/quests/critic-giver-presence.mjs` — written for the W1-19 round-2 VERDICT.
+- `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
 - `tools/quests/faction-probe.mjs` — the CONSUMPTION probe for the faction questlines (RI-MTH07, ARBITRATION §3).
 - `tools/quests/faction-seam-probe.mjs` — W1-FACTIONS round 2.
@@ -775,14 +776,17 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-13-r4` | running | read RULES/INDEX/ARBITRATION §3/W1-13-r3.md; then reproduce the delete-the-fix arm on the  | `orchestration/status/critic-w1-13-r4.json` |
+| `W1-READABLES` | building | browser proof (tools/quests/document-route-world.mjs) when the box drops under ~8 headless | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/books/the-books-in-evidence.json` `game/data/books/the-drowned-tally.json` |
+| `critic-w1-map` | in_progress | read RULES/INDEX/S35, then builder status, then attack A-F | `orchestration/status/critic-w1-map.json` |
+| `W1-04-r3` | starting | read RULES/INDEX (done), read W1-04-r2.json handoff, verdict, province.js, interior.js | — |
+| `critic-w1-04-r2` | in_progress | read INDEX.md, ARBITRATION §3, builder status W1-04-r2.json; then axis A (getDrawnInterior | `orchestration/status/critic-w1-04-r2.json` |
+| `critic-w1-22-r2` | running | 3) detector refusal + AMENDMENT item A arithmetic; 2) build harder blind pack and spawn fr | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
 | `W1-15-r3` | in_progress | in progress: fixing shop-hours defect C in tools/world/build-settlements.mjs, then defect  | — |
 | `W1-12` | building | Survey written. Build game/data/combat/ai.json + game/src/combat/ai.js (RI-AI01 state mach | `orchestration/status/W1-12.json` |
 | `W1-21-r2` | starting | read RULES.md (done), INDEX.md, W1-21-r1.md verdict, W1-13-r4.json §5, NEXT-DISPATCH.md §P | — |
-| `W1-13-r4` | running | diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six  | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
 | `W1-16` | surveying | read game/src/sim/state.js, engine.js (setGold/getGold/setAttributes/getDerivedStats/getSk | — |
-| `critic-w1-22-r2` | running | read RULES, INDEX, r1 verdict, blind judge verdict, W1-22-r3 status | `orchestration/status/critic-w1-22-r2.json` |
 | `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
-| `W1-READABLES` | building | write the mechanism, then the documents | `orchestration/status/W1-READABLES.json` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
 | `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |
 | `W1-18-r2` | done | hand to a critic. NOT DONE and not faked: 73 demanded reveals still have no route. The mai | `orchestration/status/W1-18-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/sim/quest/machine.js` `game/src/engine.js` `game/data/quests/faction-imperial-assize.json` `game/data/quests/faction-wet-ledger.json` |
