@@ -45,6 +45,7 @@ import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { OpacityRegister } from './world/opacity.js';
 import { Traversal } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
+import { Discovery } from './sim/discovery.js';
 import { SaveStore } from './save/store.js';
 import { buildSave, applySave, applySaveMagic, restoreCameraRig, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
 import { loadActor, saveActor } from './save/fight.js';
@@ -85,7 +86,7 @@ const WRIT_WINDOW = 9;
 const SIGN_REACH_M = 2.6;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
 import { topicKey } from './core/topics.js';
-import { buildOverheardIndex, buildDirectionsIndex, RumourBook, learnTopics } from './sim/quest/topic-supply.js';
+import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics } from './sim/quest/topic-supply.js';
 import { makeNPC } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
@@ -273,6 +274,24 @@ export class Engine {
     // `game/data/npcs/pop-*.json` are exactly what `topics_taught` was: a field on disk that
     // no entity in the running world is built from.
     this.sim.populate = (sid) => this.populateSettlement(sid);
+    // THE AUTHORITATIVE BODY MOVE, and the reason it has to exist.
+    //
+    // `useDoor()` originally wrote the spawn straight into `sim.player.pos`, which is the
+    // WRONG COPY. `combat-bridge.mirror()` copies `combat.player.pos` into `sim.player.pos` at
+    // the top of every step (the comment in `_settleWorld` says so in as many words), so a
+    // door taken on frame N was silently undone on frame N+1: measured, the body went to the
+    // declared interior spawn [0, 0, 6.6] and was back at the exterior [2766.5, 0, 5011] one
+    // step later. Doors did not work at all, and nothing was red — `sim.env.interior` was set
+    // correctly the whole time, so every census-shaped check passed while the player never
+    // actually went anywhere.
+    //
+    // That is AGENT-PROTOCOL failure mode 1 exactly: two parallel copies of one piece of state,
+    // and the system writing to the one nobody reads. `Engine.teleport()` already knew the
+    // answer — write the body, clear its interpolation, and drop the traversal state that
+    // belongs to where you WERE — so this is that, minus the province streaming and the camera
+    // settle, both of which are unsafe inside the armed step and both of which resolve on their
+    // own later in the same frame.
+    this.sim.placeBody = (x, y, z) => this._placeBody(x, y, z);
     this.death = new DeathSystem(this.data.respawn, this.hearths, {
       // "Standable" is the same predicate the capsule's own locomotion uses: the province
       // heightfield, the max walkable slope from traversal.json, and water no deeper than the
@@ -301,6 +320,21 @@ export class Engine {
     // be a stretch of signed road with nothing standing on it until the player walked away and
     // came back.
     if (this.data.signposts) this.field.setSignposts(this.data.signposts);
+    // W1-MAP / ARBITRATION S35. What the player has seen of the province and where they have
+    // stood. Hung on the SIM, not just on the engine, because `sim/step.js` drives it and a
+    // system only the engine can see is a system the fixed step cannot run — the same reason
+    // `sim.settlements` is hung there twenty lines above.
+    //
+    // The player object and `sim.env` are CAPTURED here and never passed again: `observe()`
+    // takes no arguments, which is the whole of the "a quest cannot place a marker" guarantee.
+    // See game/src/sim/discovery.js's header and AMENDMENT-W1-MAP-01 §3b.
+    this.sim.discovery = new Discovery({
+      field: this.field,
+      player: this.sim.player,
+      env: this.sim.env,
+      doc: this.data.mapUI || {},
+      pois: this.data.pois,
+    });
     this.renderer.setWorld(this.field, this.data.roads);
     // W1-13: the renderer draws the wells and the bloom off the same registry the simulation
     // respawns you at. One source, so a well you can see is a well you can rest at.
@@ -335,6 +369,20 @@ export class Engine {
     // that a census answer arrives through the same latched input a swing does (RI-JRN01 O17).
     this.censusSurface = new CensusSurface(this.data.character);
     this.sim.censusDriver = (input) => (this._censusStep ? this._censusStep(input) : null);
+    // W1-26 round 2. The opening cannot be walked out of half-finished. Once O6 gave the player
+    // sixty seconds of body before the first question, `interact` at the companionway became a
+    // way to leave the hold with the scene still paused in it — and nothing brings you back, so
+    // the character is never created and the game is unfinishable from the first minute.
+    // The rule is the scene's, not the door's, so it lives here: while a creation is running,
+    // the cell THE CURRENT NODE IS SET IN holds its door. The place comes from the graph
+    // (`node.place`), so a scene that later opens somewhere else needs no code change, and the
+    // refusal carries words rather than being a door that silently does nothing.
+    this.sim.doorVeto = (interiorId) => {
+      if (!this.census || this.census.done) return null;
+      const st = this.census.state();
+      if (st.done || !st.place || st.place !== interiorId) return null;
+      return 'The hatch is barred until you are written down.';
+    };
     // W1-07 round 3: the world-side reader for greetings.json and the race-gated topics.
     // The topic index is built once over every dialogue/topics/*.json in the tree, so a
     // topic added by another piece is speakable the moment it is indexed.
@@ -591,6 +639,7 @@ export class Engine {
     this.censusPlace = null;
     for (const n of patch.npcs || []) this.spawnNPC(n);
     for (const o of patch.props || []) this.spawnProp(o);
+    this._spawnInscriptions(name);
     // W1-13 r2: a state file's `spawn:` block may declare the six S5 classification flags, so
     // "a quest places an ordinary archetype as a named actor" is expressible in DATA and not
     // only through a harness call. Round 1 dropped everything but `as` on the floor.
@@ -1371,6 +1420,81 @@ export class Engine {
     return o;
   }
 
+  /**
+   * RI-JRN03 §F — put the state's inscriptions into it.
+   *
+   * WHY THIS EXISTS. DS1 forbids, for the whole game, every mechanism a game normally uses to
+   * teach a control: pop-ups, modals, toasts, banners, control legends, help overlays. DS2 then
+   * names the single thing that is allowed instead — "a physical entity with a position,
+   * readable via `interact`, written in-fiction by someone who was there". Round 2's M-K21 swept
+   * eight named states and found **zero** readable entities, so the build had taken DS1's
+   * prohibition and shipped none of DS2's remedy: a game that may not tell you anything and does
+   * not show you anything either.
+   *
+   * The census could not catch that on its own, and that is worth saying out loud, because it is
+   * the shape this project keeps finding. All three of M-K21's thresholds are UPPER bounds —
+   * `<= 6`, `<= 14`, `100% within 8 m` — and an empty world satisfies every one of them, the
+   * last one vacuously. A build with no inscriptions at all scores full marks unless the check
+   * refuses the vacuous pass explicitly, which is why `mk21()` does.
+   *
+   * An inscription is a PROP and not a new entity kind: it goes through `spawnProp()`, carries a
+   * `readable` record, and is `takeable: false` because you cannot pocket a hatch frame. That
+   * makes it visible to `listEntities()`, to `_censusStep`'s `interact` reach test and to the
+   * save round trip without any of them learning a new type.
+   *
+   * @param {string} stateName the named state just applied
+   */
+  _spawnInscriptions(stateName) {
+    const doc = this.data.inscriptions;
+    if (!doc || !Array.isArray(doc.inscriptions)) return 0;
+    // The budget is checked ONCE, on the first state applied, and it THROWS. DS2's two caps are
+    // the whole reason §F is a budget and not a licence, and a data file that quietly slips over
+    // them would turn the one sanctioned teaching mechanism into the tutorial DS1 forbids. A
+    // boot that fails loudly is the cheap failure; a game that teaches its way past HF5 is not.
+    if (!this._inscriptionBudgetChecked) {
+      this._inscriptionBudgetChecked = true;
+      const all = doc.inscriptions;
+      const early = all.filter((i) => i.before_first_choice).length;
+      const b = doc.budget || {};
+      if (all.length > (b.whole_game_max || 14)) {
+        throw new Error(`inscriptions.json: ${all.length} inscriptions exceeds RI-JRN03 DS2's whole-game budget of ${b.whole_game_max || 14}`);
+      }
+      if (early > (b.before_first_choice_max || 6)) {
+        throw new Error(`inscriptions.json: ${early} inscriptions marked before_first_choice exceeds DS2's budget of ${b.before_first_choice_max || 6}`);
+      }
+    }
+    let n = 0;
+    for (const ins of doc.inscriptions) {
+      if (ins.state !== stateName) continue;
+      this.spawnProp({
+        eid: ins.eid,
+        name: ins.name,
+        pos: ins.pos,
+        yaw: ins.yaw,
+        material: ins.material,
+        shape: ins.shape || 'flat',
+        // You read it where it is. DS2's "physical entity with a position" is the whole point:
+        // an inscription you could carry away is a note, and a note is a tutorial with a
+        // different noun.
+        takeable: false,
+        // `reach_m` is the register `_censusStep` tests when `interact` is pressed. It is the
+        // prop default rather than something wider, so an inscription is read by standing at it.
+        readable: {
+          teaches: ins.teaches,
+          text: ins.text,
+          before_first_choice: !!ins.before_first_choice,
+          // DS3 is a DISTANCE threshold, so the situation the verb is for has to be a position
+          // and not a sentence. Carried through to `listEntities()` so M-K21 can measure the
+          // distance rather than assume it — round 2's first draft treated an absent distance as
+          // "within range", which is a threshold that cannot be failed.
+          situation: ins.situation ? { what: ins.situation.what, pos: ins.situation.pos } : null,
+        },
+      });
+      n++;
+    }
+    return n;
+  }
+
   clearProps() { this.sim.props.length = 0; return true; }
 
   /** Pick it up. Emits `item`, exactly as the writ does when it is handed over the desk. */
@@ -1549,6 +1673,12 @@ export class Engine {
     this.overheardIndex = buildOverheardIndex(defs);
     this.directionsIndex = buildDirectionsIndex(defs);
     this.rumourBook = new RumourBook(this.data.rumours);
+    // W1-05. The roads out of wherever this person lives. Kept apart from `directionsIndex`
+    // above because the two answer different questions: that one tells you where the thing you
+    // were SENT to is, and says nothing to a player with an empty journal. Seam S35 gives the
+    // map only ground already walked, so it is blank ahead of a first journey and this is what
+    // is left. See `sim/quest/topic-supply.js#RoadBook`.
+    this.roadBook = new RoadBook(this.data.roadDirections);
     this.conversation.setSupply({
       // The way there — offered only once the quest is OPEN, because directions to a place you
       // have not been sent to are not directions, they are a spoiler.
@@ -1562,13 +1692,19 @@ export class Engine {
       // What the town is saying. Keyed to the settlement the speaker belongs to, so Thorn and
       // Stormhold do not gossip in the same words (RI-DLG02), and race-gated so the square does
       // not say the same sentence to a Saxhleel and to a Dunmer.
+      // The way OUT of here, offered to anybody, gated on nothing. This is the half of wayfinding
+      // that owes nothing to the quest book: you do not have to have been sent to Gideon to ask
+      // a legionary in Helstrom which way it is. Only routes leading out of the speaker's own
+      // settlement are returned — a man in Lilmoth has no directions to the Stormhold road, and
+      // `dialogue/topics/60-roads.json` is what he says instead.
+      roadsFor: (npc) => this.roadBook.forNpc(npc, this.sim.env && this.sim.env.settlement),
       rumourFor: (npc, player, nth) => {
         const settlement = npc.settlement || (npc.record && npc.record.settlement) || this.sim.env.settlement || null;
         const r = this.rumourBook.pick(settlement, player, npc.eid, nth);
         return r ? { ...r, id: 'latest rumours', rumour_id: r.id || null } : null;
       },
     });
-    return { overheard: this.overheardIndex.size, directions: this.directionsIndex.size, rumours: this.rumourBook.size };
+    return { overheard: this.overheardIndex.size, directions: this.directionsIndex.size, rumours: this.rumourBook.size, roads: this.roadBook.size };
   }
 
   /**
@@ -2471,6 +2607,9 @@ export class Engine {
       levels: (this.data.progression && this.data.progression.levels) || null,
     });
     this.ui.onBookOpened = (b) => this._readBook(b);
+    // ...and the reading position, which lives in the save rather than on the UI. See
+    // `_bindReadingPosition`, which re-points it after every reset and state load.
+    this._bindReadingPosition();
     this.renderer.uiBuild = (force) => this.ui.build(this._uiCtx(), force);
     // Inside the fixed step, through the same latch a swing arrives on (sim/step.js runs it
     // right after `censusDriver`). A menu press is therefore frame-exact and scriptable.
@@ -2497,11 +2636,50 @@ export class Engine {
    * the gate is the conjunction: `enabled` is set by L9/H2 from the pointer media query (never
    * from the gamepad list), and `visible` is T7's 2-second fade while a pad is active.
    */
+  /**
+   * SEAM S35 — the reading screens, and what the thumb ring may be drawn over.
+   *
+   * The overlay is deliberately drawn AFTER the screens and outside `beginScreen()`, because
+   * opening the inventory on a phone must dim the inventory and not the controls you close it
+   * with. That is right for the inventory. It is wrong for a screen you are meant to READ.
+   *
+   * S35 (2026-08-07) overrules S30: there is now a map, and it is defined by what it refuses —
+   * "a record of where you have been and what you have found… never an instruction about where
+   * to go." Eleven combat marks painted across a chart of the coast is the same offence as a
+   * marker on it, arrived at from the other side: it is furniture put on the map by a system
+   * that has no business there, and on an 844×390 phone the ring covers a quarter of it.
+   *
+   * It is also a discoverability defect independent of the map, and that is the part that makes
+   * this an input ruling rather than a taste one. `UISystem.step()` consumes the action set
+   * while a full-screen surface is open, so a blade drawn over an open book is a control that
+   * **cannot do anything if pressed**. `RI-JRN03` §F's whole mechanism is that what the player
+   * can see, they can try; a picture of a control that is inert when pressed teaches the
+   * opposite of the thing it is drawn to teach.
+   *
+   * So the ring is suppressed on the READING screens — the map, the journal and a book — and
+   * kept everywhere else. `menu` lives in the drawer and the drawer stays, so the way back out
+   * is always on the glass: suppressing the controls that do nothing must never suppress the one
+   * that does. `M-P21`'s sixteen-action reachability is measured in the world and is untouched.
+   */
+  _touchScreenSuppression() {
+    // `UISystem.mode` is the surface that is up ('world' when none is). There is no separate
+    // `screen` field — checked rather than assumed, because a helper that reads an accessor
+    // nobody implements returns `undefined`, suppresses nothing, and looks exactly like a
+    // working rule from the outside.
+    const READING = ['map', 'journal', 'book'];
+    const s = this.ui ? String(this.ui.mode || '') : '';
+    return READING.indexOf(s) >= 0 ? s : null;
+  }
+
   _touchOverlayModel() {
     if (!this.real || !this.real.touch) return null;
     const t = this.real.touch;
+    const reading = this._touchScreenSuppression();
     return {
-      shown: !!(t.enabled && t.visible),
+      shown: !!(t.enabled && t.visible) && !reading,
+      // Named rather than merely absent, so a critic reading `controls_drawn: 0` on a phone can
+      // tell "S35 suppressed it here" from "the round-1 defect is back".
+      suppressed_by_screen: reading,
       enabled: !!t.enabled,
       controls: t.layout(),
       stick: { ...t.stick },
@@ -2509,6 +2687,25 @@ export class Engine {
       viewport: { w: t.viewport.w, h: t.viewport.h },
       insets: { ...t.insets },
     };
+  }
+
+  /**
+   * W1-MAP: place id -> its record, for the one thing the map screen needs from `pois.json`
+   * that the discovery model does not carry — the display name. Built once.
+   *
+   * It is a name lookup and nothing else: the map asks it what a place is CALLED, never where
+   * one is. Positions come from the discovery model, which refuses to answer for a place the
+   * player has not stood in (`Discovery.placePos`), so this map being complete does not make
+   * the drawn map complete.
+   */
+  _mapPoiNames() {
+    if (!this._mapPoiIndex) {
+      this._mapPoiIndex = new Map();
+      for (const p of ((this.data.pois && this.data.pois.pois) || [])) {
+        this._mapPoiIndex.set(p.id, { name: p.name, kind: p.kind });
+      }
+    }
+    return this._mapPoiIndex;
   }
 
   /** The read-only view of the world the interface draws from. Assembled fresh, never cached. */
@@ -2562,6 +2759,21 @@ export class Engine {
       atHearthOverridden: !!this.sim._uiForceHearth,
       atHearthId: this.hearths ? ((this.hearths.at(this.sim.player.pos[0], this.sim.player.pos[2]) || {}).id || null) : null,
       hearthName: prog.hearthLastRested || null,
+      // W1-MAP / ARBITRATION S35. Everything the map screen is allowed to know, assembled here
+      // so that the screen's argument is a closed list rather than a door onto the engine.
+      //
+      // `sim.quest` IS DELIBERATELY ABSENT and must stay absent. The map cannot render an
+      // objective marker because nothing in what it is handed knows an objective exists — which
+      // is the same technique `_hudModel` uses to keep quest state off the HUD, applied to the
+      // one screen where a marker would actually be tempting.
+      map: this.sim.discovery ? {
+        discovery: this.sim.discovery,               // readers only; its mutators take no args
+        field: this.field,
+        regions: (this.data.regions && this.data.regions.regions) || [],
+        pois: this._mapPoiNames(),
+        doc: this.data.mapUI || {},
+        regionName: (this.field.regionAt(this.sim.player.pos[0], this.sim.player.pos[2]) || {}).name || null,
+      } : null,
       player: p,
       estusMax: (cb && cb.estusMax) || 5,
       slots: {
@@ -2870,7 +3082,14 @@ export class Engine {
     return { book: b.id, first, topics_learned: learned, knowledge: b.knowledge_key || null };
   }
 
-  /** RI-UIX03's `openMenu(name)` / `closeMenu()`. `map` is refused, with the reason. */
+  /**
+   * RI-UIX03's `openMenu(name)` / `closeMenu()`.
+   *
+   * `minimap` and `worldmap` are refused with the reason. `map` opens (ARBITRATION S35) and
+   * **takes no arguments** — `openMenu('map', {place: 'stormhold'})` throws rather than being
+   * quietly ignored, because a silently-ignored argument looks to the next caller exactly like
+   * a feature that has not been wired up yet.
+   */
   openMenu(name, opts) {
     // `UISystem.open()` fires `onBookOpened` -> `_readBook()`. It is deliberately NOT done here:
     // this wrapper is the harness door, and a player reads through `UISystem._confirm()`, which
@@ -4234,6 +4453,37 @@ export class Engine {
     return true;
   }
 
+  /**
+   * Move the body, authoritatively, from inside the fixed step.
+   *
+   * Distinct from `teleport()`: no province streaming request and no camera settle, because both
+   * are unsafe under the armed determinism guard and both resolve later in the same frame anyway
+   * (`stepCamera` is step 5). Everything else is teleport's list, and it is teleport's list
+   * because that is the one place in this build that already knew `sim.player.pos` is a mirror.
+   *
+   * `y` is taken as given rather than snapped to the province: an interior floor is a plane and
+   * `groundAt()` would drag the body to the heightfield under the building.
+   */
+  _placeBody(x, y, z) {
+    const p = this.sim.player;
+    p.pos[0] = Number(x); p.pos[1] = Number(y); p.pos[2] = Number(z);
+    if (p.vel) { p.vel[0] = 0; p.vel[1] = 0; p.vel[2] = 0; }
+    this._prevX = p.pos[0]; this._prevZ = p.pos[2];
+    // The mire counter, the fall in progress and the breath clock belong to where the body WAS.
+    if (this.traversal) this.traversal.reset();
+    if (this.hazards) this.hazards.reset();
+    const b = this.combat && this.combat.player;
+    if (b) {
+      b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
+      if (b.vel) { b.vel[0] = 0; b.vel[1] = 0; b.vel[2] = 0; }
+      // Without this the capsule interpolates across the doorway and the renderer draws the
+      // player streaking from the street to the hearth.
+      b.hasPrev = false;
+      if (typeof b.evaluateRig === 'function') b.evaluateRig(0);
+    }
+    return [p.pos[0], p.pos[1], p.pos[2]];
+  }
+
   teleport(x, z, opts = {}) {
     const p = this.sim.player;
     p.pos[0] = Number(x);
@@ -4731,6 +4981,13 @@ export class Engine {
       // to the BODY (one per weapon), so that is what is handed over.
       const moveTable = (this.combat && this.combat.player && this.combat.player.moves) || {};
       const r = applySave(this.sim, arg, moveTable, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
+      // RI-UIX05 T5. `applySave` calls `sim.reset()`, which replaces `sim.quest` WHOLESALE —
+      // the same hazard `_rebindQuestRuntime` exists for on the named-state path, and the blob
+      // path had no equivalent. Without this line the reading position was restored correctly
+      // into the new quest state while `UISystem.bookPages` went on holding the discarded one,
+      // and the probe measured a book that had been left on spread 29 reopening at 1 after a
+      // load, with `dialogue.book_pages` present and correct in the blob the whole time.
+      this._bindReadingPosition();
       this._applyCell();
       // THE FIGHT. `applySave` restores `sim.*`, which is a VIEW of the combat bodies
       // (sim/combat-bridge.js). Rebuilding the fight from the save's own loadout and pushing
@@ -5543,7 +5800,27 @@ export class Engine {
    * game/src/sim/quest/journal.js exists to make structurally impossible to break.
    */
   /** Re-point the quest runtime at the live `sim.quest` after a state load. */
+  /**
+   * RI-UIX05 T5. Point the reading surface at the CURRENT quest state's reading position.
+   *
+   * The position is SIM state, not UI state, and this is the one line that ties the two
+   * together. Binding by reference rather than copying is what makes `reset()` clear it: the UI
+   * writes through the same object `saveState()` reads, so there is exactly one reading
+   * position and no opportunity for the two to drift. It must be re-run after ANYTHING that
+   * calls `SimState.reset()`, because that replaces `sim.quest` wholesale — which is both
+   * entry points to a load, and is why this is a method rather than a line.
+   *
+   * Before it existed, `UISystem.bookPages` was a plain object on the UI system: it survived a
+   * reset (the probe measured `a-progress-iii` reopening at spread 29 in a freshly reset run,
+   * i.e. one character's reading carried into the next) and it was in no save blob at all.
+   */
+  _bindReadingPosition() {
+    if (this.ui) this.ui.bookPages = this.sim.quest.bookPages;
+    return this.ui ? this.ui.bookPages : null;
+  }
+
   _rebindQuestRuntime() {
+    this._bindReadingPosition();
     if (!this.questEngine) return null;
     this.questEngine.sim = this.sim;
     this.questEngine.journal = new Journal(this.sim.quest.journal);
@@ -6646,6 +6923,20 @@ async function loadData(onBytes) {
     // Consumed by `world/field.js#setSignposts` -> `world/province.js#_signposts` (drawn) and by
     // `Engine.signRead()` (read).
     else if (entry.path === 'world/signposts.json') out.signposts = doc;
+    // W1-08 round 2. RI-JRN03 §F DS2 — the ONLY sanctioned way this game may teach a verb,
+    // because DS1 sets the tutorial budget at zero for the whole game. Needs its own branch for
+    // the reason the comment above gives: a `world/*.json` that matches no branch here is
+    // fetched, counted in the byte total, and then dropped, which is indistinguishable from
+    // shipping nothing — and shipping nothing is exactly what M-K21 measured on this build
+    // (0 readable entities across 8 named states). Consumed by `applyNamedState()` below, which
+    // spawns each into the state it names, and read back by `listEntities().readable`.
+    else if (entry.path === 'world/inscriptions.json') out.inscriptions = doc;
+    // W1-05. RI-WLD06 L3, the spoken direction. Same branch discipline as `world/signposts.json`
+    // above and for the same reason: `bucketFor` only claims `dialogue/topics/`, so a
+    // `dialogue/*.json` that matches nothing here is fetched, counted in the byte total, and
+    // dropped — which is exactly how `dialogue/persuasion-gmst.json` spent a round being loaded
+    // and unreadable. Consumed by `sim/quest/topic-supply.js#RoadBook` via `_installTopicSupply`.
+    else if (entry.path === 'dialogue/road-directions.json') out.roadDirections = doc;
     else if (entry.path === 'world/signatures.json') out.signatures = doc;
     else if (entry.path === 'world/traversal.json') out.traversal = doc;
     else if (entry.path.startsWith('world/travel/')) {
@@ -6666,6 +6957,12 @@ async function loadData(onBytes) {
     // dropped on the floor, which is exactly how `dialogue/persuasion-gmst.json` and
     // `dialogue/faction-reactions.json` spent a round being loaded and unreadable.
     else if (entry.path === 'world/opacity.json') out.opacity = doc;
+    // W1-MAP. The discovery map's numbers. It MUST have a branch here for the reason the
+    // `world/opacity.json` comment above gives: a data file that matches no branch is fetched,
+    // counted in the byte total, and then dropped, which is indistinguishable from shipping
+    // nothing. Consumed by `sim/discovery.js` (the reveal radius and the standing radii) and by
+    // `ui/screens/map.js` (the palette and the local span).
+    else if (entry.path === 'ui/map.json') out.mapUI = doc;
     else if (entry.path === 'input/profiles.json') out.inputProfiles = doc;
     else if (entry.path === 'input/pad-quirks.json') out.padQuirks = doc;
     else if (entry.path === 'camera/cells.json') out.cameraCells = doc;

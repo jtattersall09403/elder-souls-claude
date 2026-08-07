@@ -59,9 +59,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import os from 'node:os';
 import { parseArgs, wantsHelp, usage, writeJson, log, die, EXIT, REPO_ROOT, REPORTS_DIR, ensureDir } from '../lib/cli.mjs';
 import { launchGame, requireMethods } from '../lib/browser.mjs';
-import { loadScenario } from '../lib/scenario.mjs';
+import { loadScenario, SCENARIO_DIR } from '../lib/scenario.mjs';
 
 const USAGE = `
 decoupling.mjs — RI-PLT01 M6 (sim/render decoupling) + M7 (frame-rate independence). Tier-S.
@@ -116,15 +117,150 @@ const M6_ASKS_FOR = 3600;
 // RI-PLT01 M6 names scenario F3, "boss arena, 1 boss, active fight". Detected, not assumed: if
 // somebody authors F3 (TOOL-COVERAGE-R3 Referral 1 rules that they should), this goes true on its
 // own and the deviation clears without this file being edited.
-const scenarioIsF3 = (() => {
-  if (/^f3\b/i.test(SCENARIO_ID)) return true;
+//
+// =================================================================================================
+// ROUND 4, SUCCESSOR PASS — THE DETECTOR IS THE GATE, AND THE FIRST ONE WAS DEFEATED BY A RENAME.
+//
+// The gate my predecessor installed makes `pass` false until the run meets M6's own terms. That
+// gate is only as good as `scenarioIsF3`, and the first version of it was this:
+//
+//     if (/^f3\b/i.test(SCENARIO_ID)) return true;
+//     const roles = JSON.stringify(s).toLowerCase();
+//     return /"f3"|boss_arena|\bboss\b/.test(roles) && /champion|boss/.test(roles);
+//
+// DEMONSTRATED, not reasoned about: I copied `cmb-duel-infantry.json` — one `inf_trash` on
+// `arena_flat` — changed NOTHING but the `id` and `title` strings to say "f3-boss-arena" and
+// "boss ... champion", and the detector returned **true** on a file that spawns a trash mob on
+// flat ground. The first line is worse still: `--scenario f3-anything` returns true WITHOUT THE
+// FILE BEING READ AT ALL.
+//
+// That is the exact defect TOOL-COVERAGE-R3 charged `build-viability` with — an anchor that
+// matches the LABEL rather than the THING — sitting underneath the one number this rebuild
+// exists to protect. A gate that a rename turns off is worse than no gate, because it reports
+// `scenario_as_specified: true` and hands back the green that round 3 removed.
+//
+// So F3-ness is now decided by WHAT THE SCENARIO ACTUALLY SPAWNS, read from shipped content:
+//
+//   * every `{op:'spawn'}` in the scenario is resolved to its statblock under
+//     `game/data/combat/enemies/<id>.json`;
+//   * an id with no statblock is NOT a boss (a scenario cannot conjure one by naming it);
+//   * a spawn counts as a boss only if a WORLD-SIDE AUTHORITY says so — either the statblock
+//     itself declares `boss: true`, or a fog gate in `game/data/world/hearths.json` names it as
+//     that gate's boss. These are authorities (1) and (2) from `game/data/world/respawn.json`'s
+//     own note on who classifies an entity; the tool does not invent a third;
+//   * "1 boss" means EXACTLY ONE boss spawn and NO non-boss combatants — a boss plus four adds
+//     is F4, not F3;
+//   * "active fight" means the scenario actually presses attacks: at least one `tap` of
+//     `light`/`heavy`/`parry` in `inputs`. `cmb-spacing-hold` aggros an enemy and never swings,
+//     and a scenario where nobody fights is not an active fight whatever it is called.
+//
+// None of these can be satisfied by editing a title. `--f3-scenario-override` is deliberately
+// NOT offered: an escape hatch on a gate is the gate.
+//
+// The LIVE half is `confirmBossPresent()` below — the statblock is the design document, and
+// RI-MTH07 binds. The classifier picks the scenario; the running world is asked whether the boss
+// is actually in the fight, and a scenario whose boss never appears is refused.
+// =================================================================================================
+const ENEMY_DIR = path.join(REPO_ROOT, 'game', 'data', 'combat', 'enemies');
+const HEARTHS_JSON = path.join(REPO_ROOT, 'game', 'data', 'world', 'hearths.json');
+const ATTACK_TAPS = new Set(['light', 'heavy', 'parry']);
+
+/** Statblock ids that a fog gate in the shipped world map calls its boss. Authority (2). */
+function gateNamedBosses() {
+  const out = new Set();
   try {
-    const s = loadScenario(SCENARIO_ID);
-    // A boss arena is one boss-tier combatant in a fight. Read from the scenario, not asserted.
-    const roles = JSON.stringify(s).toLowerCase();
-    return /"f3"|boss_arena|\bboss\b/.test(roles) && /champion|boss/.test(roles);
-  } catch { return false; }
-})();
+    const walk = (n) => {
+      if (!n || typeof n !== 'object') return;
+      if (Array.isArray(n)) { n.forEach(walk); return; }
+      if (typeof n.boss === 'string' && n.boss) out.add(n.boss);
+      Object.values(n).forEach(walk);
+    };
+    walk(JSON.parse(fs.readFileSync(HEARTHS_JSON, 'utf8')));
+  } catch { /* no map, no authority — the statblock is then the only one */ }
+  return out;
+}
+
+/**
+ * Classify a scenario against F3's three terms, from shipped content only.
+ * Exported shape so `--self-test` (and a critic) can run it with no browser.
+ */
+export function classifyF3(scenarioId) {
+  const reasons = [];
+  // Resolve BEFORE calling loadScenario: on an unknown name it calls `die()`, which is
+  // `process.exit`, not a throw — so a try/catch around it does not catch it, it kills the
+  // caller. A classifier that cannot be asked about a file that does not exist is a classifier
+  // a self-test cannot falsify.
+  const direct = path.resolve(String(scenarioId));
+  const byName = path.join(SCENARIO_DIR, String(scenarioId) + '.json');
+  const resolved = (fs.existsSync(direct) && direct.endsWith('.json')) ? direct
+    : fs.existsSync(byName) ? byName : null;
+  if (!resolved) {
+    return {
+      is_f3: false, spawns: [], attack_inputs: 0,
+      reasons: [`no scenario file for "${scenarioId}" — a NAME is not a scenario. F3-ness is ` +
+        'decided from what a file spawns, so an absent file can never be F3.'],
+    };
+  }
+  let s;
+  try { s = loadScenario(resolved); }
+  catch (e) { return { is_f3: false, reasons: [`scenario could not be loaded: ${e.message}`], spawns: [] }; }
+
+  const gateBosses = gateNamedBosses();
+  const spawns = (s.setup || []).filter((o) => o && o.op === 'spawn').map((sp) => {
+    const f = path.join(ENEMY_DIR, String(sp.id) + '.json');
+    let block = null;
+    try { block = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { /* absent */ }
+    const byStatblock = !!(block && block.boss === true);
+    const byGate = gateBosses.has(String(sp.id));
+    return {
+      id: sp.id,
+      statblock_exists: !!block,
+      tier: block ? (block.tier ?? null) : null,
+      hp: block ? (block.hp ?? null) : null,
+      boss: byStatblock || byGate,
+      boss_authority: byStatblock ? 'statblock declares boss:true'
+        : byGate ? 'a fog gate in hearths.json names it as that gate boss' : null,
+    };
+  });
+
+  const bosses = spawns.filter((x) => x.boss);
+  const adds = spawns.filter((x) => !x.boss);
+  if (bosses.length !== 1) {
+    reasons.push(`F3 is "1 boss"; this scenario spawns ${bosses.length} boss-classified ` +
+      `combatant(s) out of ${spawns.length} spawn(s)` +
+      (spawns.length ? ` [${spawns.map((x) => `${x.id}:${x.boss ? 'boss' : 'not-boss'}`).join(', ')}]` : ''));
+  }
+  if (adds.length > 0) {
+    reasons.push(`F3 is a boss ALONE; this scenario also spawns ${adds.length} non-boss ` +
+      `combatant(s) [${adds.map((x) => x.id).join(', ')}] — a boss with adds is F4`);
+  }
+  // THE SHAPE, read from the normaliser rather than from the file on disk. `loadScenario()` runs
+  // `normaliseInputs()`, which DESUGARS `{f, tap:'light'}` into `{f, press:['light'], ...}` and
+  // deletes `tap` entirely (tools/lib/scenario.mjs:71-82). My first version of this check read
+  // `i.tap` — the authored shape — and therefore reported "never presses an attack" for
+  // `cmb-duel-infantry`, which taps light nineteen times. It only surfaced because the control
+  // said no when it should have said yes: this is the same field-shape defect class R3 charged
+  // four tools with, committed in the code written to fix it. A gate that always refuses is worth
+  // no more than one that always agrees.
+  const attacks = (s.inputs || []).reduce(
+    (n, i) => n + ((i && Array.isArray(i.press) ? i.press : []).filter((b) => ATTACK_TAPS.has(String(b))).length), 0);
+  if (attacks === 0) {
+    reasons.push('F3 is an ACTIVE fight; this scenario never presses an attack ' +
+      `(no ${[...ATTACK_TAPS].join('/')} in any normalised \`inputs[].press\`)`);
+  }
+
+  return {
+    is_f3: reasons.length === 0,
+    reasons,
+    spawns,
+    attack_inputs: attacks,
+    decided_from: 'shipped statblocks under game/data/combat/enemies + fog-gate boss names in ' +
+      'game/data/world/hearths.json — NOT from the scenario id or title',
+  };
+}
+
+const f3Class = classifyF3(SCENARIO_ID);
+const scenarioIsF3 = f3Class.is_f3;
 
 // ---------------------------------------------------------------------------------------------
 // The injected failure. It runs IN THE PAGE, above the harness, and makes the SIMULATION depend
@@ -384,7 +520,15 @@ function judge(rows, opts = {}) {
 // ---------------------------------------------------------------------------------------------
 // --self-test. Both directions, on the running engine, in one command.
 // ---------------------------------------------------------------------------------------------
-if (args['self-test']) {
+// ROUND 4, SUCCESSOR PASS — the file is now IMPORTABLE. `import { classifyF3 } from ...` used to
+// launch a browser and run a full 600-step sweep as a side effect of the import, so the exported
+// classifier could not actually be exercised by anyone but this file. That is TOOL-COVERAGE-R3's
+// complaint about journey-run in another form: an "exported" check nobody can call is an inline
+// expression with a longer name. `ES_DECOUPLING_IMPORT_ONLY=1` gives a critic the classifier with
+// no engine, no page and no measurement.
+const IMPORT_ONLY = process.env.ES_DECOUPLING_IMPORT_ONLY === '1';
+
+if (!IMPORT_ONLY && args['self-test']) {
   let failed = 0;
   // Flush as produced. TOOL-COVERAGE-R3 §6: "--self-test did not complete in two attempts — once
   // crashing with `Target page ... has been closed` at load 19, once still unfinished after ~28
@@ -419,6 +563,96 @@ if (args['self-test']) {
   });
   const invariantRows = [synth(300, 300, 'aaa', 60), synth(300, 300, 'aaa', 0)];
   const brokenRows = [synth(300, 300, 'aaa', 60), synth(301, 300, 'bbb', 0)];
+
+  // ===========================================================================================
+  // PART 0 — THE GATE'S OWN DETECTOR. Browser-free, and it is the load-bearing part.
+  //
+  // The verdict gate below is only worth what `scenarioIsF3` is worth. The round-4 predecessor's
+  // first detector was a regex over the scenario's own text plus `if (/^f3\b/i.test(id)) return
+  // true` — so `--scenario f3-anything` reported "as specified" WITHOUT READING THE FILE, and a
+  // copy of `cmb-duel-infantry` with two strings changed reported as a boss arena. These cases
+  // are written from real files on disk so they keep working when the content changes.
+  // ===========================================================================================
+  const stDir = fs.mkdtempSync(path.join(os.tmpdir(), 'es-decoupling-f3-'));
+  const writeCase = (name, obj) => {
+    const p = path.join(stDir, name + '.json');
+    fs.writeFileSync(p, JSON.stringify(obj, null, 2));
+    return p;
+  };
+  const rawDuel = JSON.parse(fs.readFileSync(
+    path.join(REPO_ROOT, 'tools', 'harness', 'scenarios', 'cmb-duel-infantry.json'), 'utf8'));
+
+  // (a) THE LIAR: byte-identical to the shipped trash duel except for `id` and `title`.
+  const liar = writeCase('liar', {
+    ...rawDuel, id: 'f3-boss-arena',
+    title: 'F3: boss arena, 1 boss, active fight. (champion)',
+  });
+  const cLiar = classifyF3(liar);
+  ok('R4-SUCC: a trash duel RENAMED "f3-boss-arena" is NOT accepted as F3',
+    cLiar.is_f3 === false && cLiar.spawns.every((s) => s.boss === false),
+    'same arena_flat, same inf_trash spawn, same inputs — ONLY the id and title changed. The ' +
+    'round-4 predecessor\'s regex detector returned TRUE on exactly this file, which would have ' +
+    'reported scenario_as_specified:true and handed back the pass:true that round 3 removed. ' +
+    `reasons: ${JSON.stringify(cLiar.reasons)}`);
+
+  // (b) The bare-name shortcut, which used to short-circuit before the file was opened.
+  const cBareName = classifyF3('f3-this-file-does-not-exist');
+  ok('R4-SUCC: `--scenario f3-<anything>` does not pass on its NAME alone',
+    cBareName.is_f3 === false,
+    'the predecessor\'s first line was `if (/^f3\\b/i.test(SCENARIO_ID)) return true` — a verdict ' +
+    `reached without the file being read. now: ${JSON.stringify(cBareName.reasons)}`);
+
+  // (c) POSITIVE CONTROL. A gate that can never say yes is worth no more than one that always
+  //     does — this loop has already made the "cannot pass" mistake twice (TOOL-COVERAGE-R2).
+  const f3Real = writeCase('f3-real', {
+    ...rawDuel, id: 'f3-candidate',
+    setup: [{ op: 'teleport', x: 0, z: 0 },
+      { op: 'spawn', id: 'champion_hist_marked', x: 0, z: 7, as: 'e0' },
+      { op: 'lockOn', target: 'e0' }],
+  });
+  const cF3 = classifyF3(f3Real);
+  ok('R4-SUCC: POSITIVE CONTROL — a real boss, alone, in a real fight IS accepted as F3',
+    cF3.is_f3 === true && cF3.spawns.length === 1 && cF3.spawns[0].boss === true,
+    `champion_hist_marked (tier=${cF3.spawns[0] && cF3.spawns[0].tier}, hp=` +
+    `${cF3.spawns[0] && cF3.spawns[0].hp}) accepted via "${cF3.spawns[0] && cF3.spawns[0].boss_authority}". ` +
+    'The deviation clears on its own the day somebody authors F3 — this file needs no edit.');
+
+  // (d) A boss WITH ADDS is F4, not F3.
+  const cF4 = classifyF3(writeCase('f4', {
+    ...rawDuel,
+    setup: [{ op: 'spawn', id: 'champion_hist_marked', x: 0, z: 7, as: 'e0' },
+      { op: 'spawn', id: 'inf_trash', x: 3, z: 7, as: 'e1' }],
+  }));
+  ok('R4-SUCC: a boss WITH ADDS is refused — that is F4, and M6 names F3',
+    cF4.is_f3 === false && cF4.spawns.filter((s) => s.boss).length === 1,
+    `reasons: ${JSON.stringify(cF4.reasons)}`);
+
+  // (e) "Active fight" is a real term, checked against the NORMALISED input shape.
+  const cIdle = classifyF3(writeCase('idle-boss', {
+    ...rawDuel, inputs: [{ f: 0, move: [0, 1] }],
+    setup: [{ op: 'spawn', id: 'champion_hist_marked', x: 0, z: 7, as: 'e0' }],
+  }));
+  ok('R4-SUCC: a boss nobody FIGHTS is refused — F3 is an "active fight"',
+    cIdle.is_f3 === false && cIdle.attack_inputs === 0 &&
+    cIdle.reasons.some((r) => /active fight/i.test(r)),
+    'walking at a boss for 60 s is not the fight M6 names.');
+
+  // (f) THE SHAPE GUARD, and the reason it exists. `loadScenario()` DESUGARS `{f, tap:'light'}`
+  //     into `{f, press:['light']}` and deletes `tap`. My first version of the attack check read
+  //     `i.tap` and reported "never presses an attack" for a scenario that taps light 19 times —
+  //     the same field-shape defect class R3 charged four tools with, committed in the code
+  //     written to fix it, and caught only because the control said no when it should say yes.
+  const cDuel = classifyF3('cmb-duel-infantry');
+  ok('R4-SUCC: the ATTACK check reads the NORMALISED input shape, not the authored sugar',
+    cDuel.attack_inputs > 0 && !cDuel.reasons.some((r) => /active fight/i.test(r)),
+    `cmb-duel-infantry: attack_inputs=${cDuel.attack_inputs} counted from inputs[].press. ` +
+    'Reading `i.tap` — the key the file on disk uses — counts 0, because normaliseInputs ' +
+    '(tools/lib/scenario.mjs:71-82) has already removed it.');
+  ok('R4-SUCC: and the SHIPPED default scenario is still honestly refused as not-F3',
+    cDuel.is_f3 === false && f3Class.is_f3 === false,
+    'cmb-duel-infantry spawns one inf_trash (tier=trash) — the substitution TOOL-COVERAGE-R3 ' +
+    'Referral 1 charges to CONTENT stands, and `pass` stays gated until F3 is authored.');
+  fs.rmSync(stDir, { recursive: true, force: true });
 
   // The shipped artifact of record, reconstructed: 300 steps, substituted scenario, pass:true.
   const short = judge(invariantRows, { simFrames: 300, scenarioIsF3: false });
@@ -508,6 +742,11 @@ if (args['self-test']) {
 // ---------------------------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------------------------
+if (IMPORT_ONLY) {
+  // Imported for `classifyF3`. Nothing is measured, no browser is launched, and — the point —
+  // no artifact is written, so a critic exercising the classifier cannot overwrite the figure
+  // of record as a side effect of checking it.
+} else {
 const { scenario, rows } = await sweep(!!args['break-decoupling']);
 const verdict = judge(rows);
 const allPass = Object.values(verdict).every((v) => v.pass);
@@ -545,6 +784,11 @@ const report = {
   // so a consumer scanning the artifact cannot miss them. TOOL-COVERAGE-R3 §6.
   meets_item_duration: SIM_FRAMES >= M6_ASKS_FOR,
   scenario_as_specified: scenarioIsF3,
+  // ROUND 4 SUCCESSOR — WHY it is or is not F3, in the artifact, with the evidence. A boolean a
+  // reader has to take on trust is how the previous detector went three files without anyone
+  // noticing it could be flipped by editing a title. `decided_from` names the authorities, and
+  // `spawns` shows the statblock each spawn resolved to and which authority called it a boss.
+  scenario_classification: f3Class,
   rates: RATES,
   cadence: CADENCE,
   broken_on_purpose: !!args['break-decoupling'],
@@ -599,3 +843,4 @@ process.stdout.write(
   `production scheduler would pass this sweep.\n`);
 log(`wrote ${path.relative(REPO_ROOT, outPath)}`);
 process.exit(allPass ? 0 : 1);
+}

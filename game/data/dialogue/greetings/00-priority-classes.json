@@ -27,7 +27,7 @@
     { "id": "g1-bounty-mid", "class": 1, "a": "legionary", "bounty_min": 200, "x": "Halt. You owe the Office a fine. Pay it here or pay it in a cell.", "to": ["the-sanction", "the-gate-fee"] },
     { "id": "g1-bloodprice", "class": 1, "a": "rootkeeper", "flag": "blood_price_open", "x": "You are carrying a death that has not been put down, and you are standing at a well, and one of those two things is going to have to change before I will speak to you further.", "to": ["the-blood-price", "the-arbiters"] },
 
-    { "id": "g2-disease", "class": 2, "a": "mudborn", "flag": "player_diseased", "x": "You have got the fever on you, dry-one, I can see it in the eye, and I am not going to move away from you because nobody moved away from me, but you want the bone-setter and you want her today.", "to": ["the-marsh-fever", "the-physicians"] },
+    { "id": "g2-disease", "class": 2, "a": "mudborn", "flag": "player_diseased", "x": "You have got the fever on you, dry-one, I can see it in the eye, and I am not going to move away from you because that was not done for me, but you want the bone-setter and you want her today.", "to": ["the-marsh-fever", "the-physicians"] },
     { "id": "g2-expelled", "class": 2, "a": "legionary", "f": "ninth-cohort", "flag": "expelled_from_my_faction", "x": "You were one of ours. You are not now. Nothing to say to you, citizen.", "to": [] },
     { "id": "g3-yielded", "class": 3, "flag": "has_yielded_to_player", "a": "legionary", "x": "You. I put my blade down in front of you and I have had to live in this town since. State your business and go.", "to": [] },
     { "id": "g3-yielded-warm", "class": 3, "flag": "has_yielded_to_player", "a": "sapcutter", "d": 50, "x": "The one who let this one walk away. Friend, this one has not forgotten. Ask.", "to": ["latest-rumors"] },
@@ -37,7 +37,7 @@
     { "id": "g4-mq-early", "class": 4, "j": ["mq", ">=", 10], "nj": ["mq", ">=", 30], "a": "sapcutter", "d": 30, "x": "This one heard you were asking about wells. Friend, be careful who hears that.", "to": ["the-quiet-wells"] },
 
     { "id": "g5-caller-waiting", "class": 5, "actor": "naheesh-tul", "j": ["mq", ">=", 20], "x": "You are late, and I am old, and only one of those is going to correct itself. Sit down on the floor. It carries sound.", "to": ["the-listening-floor", "the-thinning"] },
-    { "id": "g5-quest-giver", "class": 5, "actor": "an-deesei", "j": ["q-lung-wage", ">=", 10], "x": "You came back. Nobody comes back. Shut the door.", "to": ["the-lung-wage", "the-yard-office"] },
+    { "id": "g5-quest-giver", "class": 5, "actor": "an-deesei", "j": ["q-lung-wage", ">=", 10], "x": "You came back. They do not come back. Shut the door.", "to": ["the-lung-wage", "the-yard-office"] },
 
     { "id": "g6-faction-cohort", "class": 6, "f": "ninth-cohort", "pf": "ninth-cohort", "pr": 3, "x": "Sir. Or ma'am. The muster is on the board and it is short again. Orders?", "to": ["the-muster-board", "duties"] },
     { "id": "g6-faction-ledger", "class": 6, "f": "wet-ledger", "pf": "wet-ledger", "pr": 2, "a": "sapcutter", "x": "One of ours. Friend, the room is yours. The book is not.", "to": ["the-wet-ledger", "services"] },

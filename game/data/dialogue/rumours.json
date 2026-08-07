@@ -19,7 +19,7 @@
     ],
     "stormhold": [
       "The Legion has not been paid since Sun's Height and the customs house knows it.",
-      "There is a milestone on the pass road that gives a distance to a place nobody can find.",
+      "There is a milestone on the pass road that gives a distance to a place that cannot be found.",
       {
         "id": "stormhold-tally",
         "x": "There is a mortuary town down the coast that has missed a reading of the Drowned Tally for the first time in four hundred years, and the prefect has been sent three letters about it and answered none.",
@@ -27,14 +27,14 @@
       },
       {
         "id": "stormhold-boxes",
-        "x": "Eleven boxes came off an imperial bond at Archon and got to Soulrest weighing what an empty box weighs. That is a customs matter and nobody wants it to be a customs matter.",
+        "x": "Eleven boxes came off an imperial bond at Archon and got to Soulrest weighing what an empty box weighs. That is a customs matter and the customs house would rather it were not.",
         "adds_topics": ["the-empty-boxes", "the-gem-shipping"]
       }
     ],
     "soulrest": [
       {
         "id": "soulrest-tally",
-        "x": "The Undersexton has been asking after somebody off the customs bench who can count and cannot be leaned on. Her name is Rell and she takes the reading room after noon.",
+        "x": "The Undersexton has been asking after a hand off the customs bench who can count and cannot be leaned on. Her name is Rell and she takes the reading room after noon.",
         "adds_topics": ["the-drowned-tally", "the-drowned-court"]
       },
       {
@@ -68,7 +68,7 @@
     "archon": [
       {
         "id": "archon-tally",
-        "x": "The Court's reading is late and the Salt Factor has not stopped smiling about it since Second Seed. Somebody down there is going to come and ask him for water.",
+        "x": "The Court's reading is late and the Salt Factor has not stopped smiling about it since Second Seed. One of them down there is going to come and ask him for water.",
         "adds_topics": ["the-drowned-tally", "the-salt-factor"]
       },
       {
@@ -80,7 +80,7 @@
     "blackrose": [
       {
         "id": "blackrose-tally",
-        "x": "The yards send their dead down to Soulrest with everybody else's and the Drowned Tally has not been read this year, so nobody's been told where they are.",
+        "x": "The yards send their dead down to Soulrest with the rest and the Drowned Tally has not been read this year, so no word has come back about where they are.",
         "adds_topics": ["the-drowned-tally", "the-cutting-yard"]
       },
       {
@@ -146,7 +146,7 @@
           "naga"
         ]
       },
-      "x": "They will smile at you in the square and count you out of the town at the gate. Somebody keeps a tally."
+      "x": "They will smile at you in the square and count you out of the town at the gate. A tally gets kept."
     },
     {
       "settlement": "stormhold",
@@ -155,7 +155,7 @@
           "imperial"
         ]
       },
-      "x": "The customs house has not sent a return to Cyrodiil in three quarters and nobody in the cohort has mentioned it."
+      "x": "The customs house has not sent a return to Cyrodiil in three quarters and the cohort has not mentioned it."
     },
     {
       "settlement": "stormhold",
@@ -280,7 +280,7 @@
           "naga"
         ]
       },
-      "x": "Nobody off a barge leaves Tidewrack the same shape they arrived, and the Office writes the new shape down."
+      "x": "What comes off a barge does not leave Tidewrack the same shape it arrived, and the Office writes the new shape down."
     },
     {
       "id": "soulrest-tally-marshborn",
@@ -293,14 +293,14 @@
       "id": "soulrest-tally-outlander",
       "settlement": "soulrest",
       "forbids": { "race": ["saxhleel", "naga"] },
-      "x": "They will not hire one of their own onto the Drowned Tally this year. That is why there is work here for somebody like you and it is not a compliment.",
+      "x": "They will not hire one of their own onto the Drowned Tally this year. That is why there is work here for a hand like yours and it is not a compliment.",
       "adds_topics": ["the-drowned-tally", "the-drowned-court"]
     },
     {
       "id": "gideon-tally-marshborn",
       "settlement": "gideon",
       "requires": { "race": ["saxhleel", "naga"] },
-      "x": "The porter on the quay is one of ours and he has been down the crypt road this season, which nobody does in this season. Ask him about the tally and let him decide.",
+      "x": "The porter on the quay is one of ours and he has been down the crypt road this season, which is not done in this season. Ask him about the tally and let him decide.",
       "adds_topics": ["the-drowned-tally", "the-crypt-road"]
     },
     {

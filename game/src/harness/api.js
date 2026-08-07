@@ -182,9 +182,97 @@ export function installHarness(engine, bootPromise) {
     uiClose() { return engine.uiClose(); },
     // W1-21 / RI-UIX03: deterministic menu navigation. Scripted input can open a menu but
     // cannot reliably navigate to a specific screen, so without these none of RI-UIX03 §A is
-    // measurable. `openMenu('map')` THROWS — see game/src/ui/system.js for why that is the
-    // feature and not an omission.
+    // measurable.
+    //
+    // W1-MAP: `openMenu('map')` now OPENS (ARBITRATION S35 overruled S30). What still throws is
+    // `openMenu('minimap')`, `openMenu('worldmap')`, and — this is the one a critic should try —
+    // `openMenu('map', {anything})`. See game/src/ui/system.js.
     openMenu(name, opts) { return engine.openMenu(name, opts || {}); },
+    /**
+     * W1-MAP / ARBITRATION S35. **THE LIVE WORLD'S map state, not the save blob's.**
+     *
+     * This exists because of the protocol's own finding that a round trip which re-serialises
+     * cannot see a field nobody reads back: the discovery raster is 7 KB of base64 that
+     * round-trips byte-perfect whether or not `applySave` ever loads it into the running
+     * `Discovery` object. Every number below is read off the object the screen draws from, so
+     * an audit that saves, loads and calls this is auditing the world and not the serialiser.
+     *
+     * `dropped_on_load` is what `Discovery.restore()` REFUSED: a place named in a save whose own
+     * cell the same save's raster does not corroborate. Standing in a place necessarily reveals
+     * the cell you stood in, so a blob that claims otherwise was not written by `observe()`.
+     */
+    mapState() {
+      const d = engine.sim.discovery;
+      if (!d) return { present: false };
+      return {
+        present: true,
+        revealed_cells: d.revealedCells,
+        total_cells: d.cols * d.rows,
+        revealed_frac: +d.revealedFrac.toFixed(6),
+        observations: d.observations,
+        places: d.places(),
+        place_count: d.placeCount,
+        suspended: d.suspended,
+        dropped_on_load: engine.sim._discoveryDropped || [],
+        // The structural guarantee, read off the running object. AMENDMENT-W1-MAP-01 §3b asks a
+        // critic to assert every mutator has arity 0; here is the arity.
+        mutators: Object.getOwnPropertyNames(Object.getPrototypeOf(d))
+          .filter((k) => k !== 'constructor' && typeof d[k] === 'function')
+          .map((k) => ({ name: k, arity: d[k].length })),
+        frozen: Object.isFrozen(d),
+      };
+    },
+    /**
+     * The hostile probe's door: try to make the map show something. Every one of these SHOULD
+     * fail, and the point is that they fail for structural reasons rather than because nobody
+     * happened to call them. Returns what each attempt did, so `map-probe.mjs` can print it.
+     */
+    tryPlaceMapMarker(placeId) {
+      const d = engine.sim.discovery;
+      const id = String(placeId);
+      const out = [];
+      const attempt = (what, fn) => {
+        try { const r = fn(); out.push({ attempt: what, threw: false, result: r === undefined ? null : String(r) }); }
+        catch (e) { out.push({ attempt: what, threw: true, error: `${e.constructor.name}: ${e.message}` }); }
+      };
+      attempt(`discovery.discover('${id}')`, () => d.discover(id));
+      attempt(`discovery.reveal('${id}')`, () => d.reveal(id));
+      attempt(`discovery.mark('${id}')`, () => d.mark(id));
+      attempt(`discovery.setPlace('${id}')`, () => d.setPlace(id));
+      attempt("discovery.places().push(id)", () => { d.places().push(id); return 'pushed'; });
+      attempt('discovery.placeSet.add(id)', () => { d.placeSet.add(id); return 'added'; });
+      attempt('discovery.reveal = fn', () => { d.reveal = () => {}; return 'installed'; });
+      attempt('Object.defineProperty(discovery, ...)', () => {
+        Object.defineProperty(d, 'reveal', { value: () => {} }); return 'defined';
+      });
+      attempt(`openMenu('map', {place: '${id}'})`, () => engine.openMenu('map', { place: id }));
+      attempt(`openMenu('map', {marker: {...}})`, () => engine.openMenu('map', { marker: { x: 0, z: 0 } }));
+      attempt("openMenu('minimap')", () => engine.openMenu('minimap', {}));
+      attempt("questEngine writes sim.discovery = forged", () => {
+        // The only remaining route: replace the whole object. It is not defended against and
+        // must not be reported as if it were — anything holding `sim` can do this, and the
+        // honest claim is narrower: no CALL exists, so a quest FILE cannot express it and a
+        // quest HOOK has no verb for it. This attempt is recorded so the claim stays narrow.
+        return 'not defended — see map-probe.mjs D6 for what is and is not claimed';
+      });
+      // The one attempt that does NOT throw, and must not be reported as if it did: JavaScript
+      // ignores surplus arguments, so `observe(x, z)` is a legal call. The guarantee is not that
+      // it is refused — it is that it has NO EFFECT, because `observe()` never reads `arguments`
+      // and closes over the player instead. Measured rather than asserted: the extra arguments
+      // name a far corner of the province, and the raster there must be unchanged.
+      const far = [4600, 5200];
+      const seenBefore = d.seenAt(far[0], far[1]);
+      const cellsBefore = d.revealedCells;
+      d.observe(far[0], far[1]);
+      out.push({
+        attempt: `discovery.observe(${far[0]}, ${far[1]}) — surplus arguments`,
+        threw: false,
+        result: 'accepted (JS ignores surplus arguments) — and had no effect',
+        no_effect: d.seenAt(far[0], far[1]) === seenBefore && d.revealedCells === cellsBefore,
+        detail: `seenAt(${far}) ${seenBefore} -> ${d.seenAt(far[0], far[1])}, revealed ${cellsBefore} -> ${d.revealedCells}`,
+      });
+      return { place: id, attempts: out, discovered_after: d.hasPlace(id) };
+    },
     closeMenu() { return engine.closeMenu(); },
     openContainer(name, contents) { return engine.openContainer(name, contents || []); },
     /**
@@ -1404,6 +1492,19 @@ export function installHarness(engine, bootPromise) {
     questResolve(id, resolutionId) { return engine.questEngine.resolve(String(id), String(resolutionId)); },
     questFail(id, failureId) { return engine.questEngine.fail(String(id), String(failureId)); },
     questSetFlag(flag, v) { return engine.questEngine.setFlag(String(flag), v === undefined ? true : v); },
+    /**
+     * The world flags a quest's consequences actually raised, read back off the live sim rather
+     * than off the quest file. There was a WRITER for these (`questSetFlag`, and every
+     * `consequences.world_flags` the machine applies) and no READER anywhere in the harness, so
+     * "the quest changes the world" was a claim nothing could check: a resolution whose
+     * `world_flags` never reached `sim.quest.flags` would have looked identical from outside.
+     * `only` filters to a prefix, because the register carries every quest in the book.
+     */
+    questWorldFlags(only) {
+      const all = (engine.sim && engine.sim.quest && engine.sim.quest.flags) || {};
+      const set = Object.keys(all).filter((k) => all[k]).sort();
+      return only ? set.filter((k) => k.startsWith(String(only))) : set;
+    },
     questBook() { return engine.questEngine ? engine.questEngine.book.ids.slice() : []; },
     /**
      * What a quest DECLARES about how it opens and who gives it. Read-only. A probe that has to
@@ -1416,6 +1517,12 @@ export function installHarness(engine, bootPromise) {
         id: q.id, title: q.title, category: q.category,
         giver: q.giver ? { ...q.giver } : null,
         opens_by: q.opens_by ? JSON.parse(JSON.stringify(q.opens_by)) : null,
+        // W1-19 round 2. The authored way there, so a probe can assert that the sentence an NPC
+        // speaks IS this string rather than merely that some sentence came back. Round 1 scored
+        // `q.directions` an orphan on 32/32 quests — "identical to a string that was never
+        // written" — and the only way to show it is no longer one is to compare the spoken line
+        // against the authored one from inside the running build.
+        directions: q.directions == null ? null : String(q.directions),
         rank_gate: q.rank_gate ? { ...q.rank_gate } : null,
         mutually_exclusive_with: (q.mutually_exclusive_with || []).slice(),
       };
@@ -1798,6 +1905,58 @@ export function installHarness(engine, bootPromise) {
     trespassCheck(zoneId, opts) { return engine.trespassCheck(String(zoneId), opts || {}); },
     /** RI-STL02 §6: the fence economy, and the refusal that names the owner. */
     fenceQuote(fenceId, item) { return engine.fenceQuote(String(fenceId), item || {}); },
+
+    // ---- W1-04: towns, doors, and everybody's day -------------------------------------------
+    // These delegate to the SAME engine methods that delegate to `sim/settlement.js`, which is
+    // the module `sim/step.js` drives every frame. There is no second implementation. They are
+    // exposed here because the engine had them and the harness did not, so a critic could not
+    // reach the settlement layer at all without reading private state off `engine.sim` — and an
+    // API a probe cannot reach is an API nobody can falsify.
+    /** RI-WLD03: every town, its plan, its counts and how many of its buildings you can enter. */
+    listSettlements() { return engine.listSettlements(); },
+    /** RI-CAM05 / RI-WLD03: every named cell, with its hours and who is standing in it now. */
+    listInteriors(settlement) { return engine.listInteriors(settlement); },
+    /** Where the body is, in the world's own words — town, cell, hour and the door in reach. */
+    whereAmI() { return engine.whereAmI(); },
+    /** RI-WLD13: go through a door by name. The same call the `interact` latch makes. */
+    enterInterior(id) { return engine.enterInterior(String(id)); },
+    /** RI-WLD13: back out onto the doorstep you came in by. */
+    exitInterior() { return engine.exitInterior(); },
+    /** RI-STL02 §4: is the cell this zone is a room of open at the current hour? */
+    isOpenNow(zoneOrInterior) { return engine.isOpenNow(String(zoneOrInterior)); },
+    /** RI-WLD08: everybody's day, off the LIVE npc list — `at`, `present`, and the slot count. */
+    whereIsEveryone() { return engine.whereIsEveryone(); },
+    /** RI-STL02 §1: which owners of this zone are standing in it right now. */
+    residentsPresent(zoneId) { return engine.settlements.residentsPresent(engine.sim, String(zoneId)); },
+    /** Spawn everyone whose record belongs to this town. Idempotent. */
+    populateSettlement(sid) { return engine.populateSettlement(String(sid)); },
+
+    // ---- W1-04 PERTURBATION HANDLES ----------------------------------------------------------
+    // RI-MTH07 / ARBITRATION §3 requires a model's consumer to be demonstrated by PERTURBING the
+    // model and watching the world change. That is impossible through a read-only API: every
+    // verb above returns a copy, and mutating a copy proves nothing. These return the LIVE
+    // objects the fixed step reads, so `tools/world/w1-04-consumption.mjs` can move one field
+    // and watch an entity disagree with itself on the next frame.
+    //
+    // They are named `__` because they are instrument surface, not game surface — nothing in the
+    // game calls them and no reference item is scored through them. They are the reason the
+    // consumption check cannot pass against a reimplementation.
+    __w1_04_system() { return engine.settlements; },
+    __w1_04_sim() { return engine.sim; },
+    __w1_04_settlement(id) { return engine.settlements.get(String(id)); },
+    __w1_04_interior(id) { return engine.settlements.interior(String(id)); },
+    __w1_04_doors(sid) { return engine.settlements.doors.get(String(sid)) || []; },
+    __w1_04_npc(eid) { return engine.sim.npcs.find((n) => n.eid === String(eid)) || null; },
+    __w1_04_zone(id) { return engine._zoneById(String(id)); },
+    __w1_04_content(instance) {
+      for (const k of Object.keys(engine.data.property || {})) {
+        for (const z of engine.data.property[k].zones) {
+          const c = z.contents.find((x) => x.instance === String(instance));
+          if (c) return c;
+        }
+      }
+      return null;
+    },
 
     /** RI-CRM01: the whole crime ledger. */
     getCrimeState() { return engine.getCrimeState(); },

@@ -63,7 +63,7 @@
  },
  "lights": [
   {
-   "id": "thorn.priest1.r0.hearth",
+   "id": "thorn.factor0.r0.hearth",
    "pos": [
     0,
     0.7,
@@ -74,20 +74,9 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.priest1.r0.lamp0",
+   "id": "thorn.factor0.r0.lamp0",
    "pos": [
-    -0.7000000000000002,
-    1.6,
-    4.300000000000001
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "thorn.priest1.r0.lamp1",
-   "pos": [
-    1.2000000000000002,
+    2.8,
     1.6,
     4.199999999999999
    ],
@@ -96,7 +85,29 @@
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.smith4.r0.hearth",
+   "id": "thorn.factor0.r0.lamp1",
+   "pos": [
+    0.9000000000000004,
+    1.6,
+    4.300000000000001
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.factor0.r0.lamp2",
+   "pos": [
+    -1,
+    1.6,
+    4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.weaver3.r1.hearth",
    "pos": [
     0,
     0.7,
@@ -107,33 +118,22 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.smith4.r0.lamp0",
+   "id": "thorn.weaver3.r1.lamp0",
    "pos": [
-    1.2000000000000002,
+    -2.7,
     1.6,
-    3
+    -0.5
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.smith4.r0.lamp1",
+   "id": "thorn.weaver3.r1.lamp1",
    "pos": [
-    -0.7000000000000002,
+    -0.7999999999999998,
     1.6,
-    3.0999999999999996
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "thorn.smith4.r0.lamp2",
-   "pos": [
-    -2.6,
-    1.6,
-    2.8
+    -0.6000000000000001
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -184,7 +184,7 @@
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.legionary10.r0.hearth",
+   "id": "thorn.legionary10.r1.hearth",
    "pos": [
     0,
     0.7,
@@ -195,77 +195,66 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.legionary10.r0.lamp0",
+   "id": "thorn.legionary10.r1.lamp0",
    "pos": [
-    -2.8,
+    -0.10000000000000009,
     1.6,
-    3
+    2.0999999999999996
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.legionary10.r0.lamp1",
+   "id": "thorn.legionary10.r1.lamp1",
    "pos": [
-    2.3,
+    1.7999999999999998,
     1.6,
-    3.0999999999999996
+    2
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.legionary10.r0.lamp2",
-   "pos": [
-    0.3999999999999999,
-    1.6,
-    2.8
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "thorn.publican12.r2.hearth",
+   "id": "thorn.legionary13.r1.hearth",
    "pos": [
     0,
     0.7,
     3.4
    ],
-   "intensity": 0.9,
+   "intensity": 1.4,
    "snuffable": false,
    "kind": "hearth"
   },
   {
-   "id": "thorn.publican12.r2.lamp0",
+   "id": "thorn.legionary13.r1.lamp0",
    "pos": [
-    -3,
+    3,
     1.6,
-    -3.8
+    -2.6
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.publican12.r2.lamp1",
+   "id": "thorn.legionary13.r1.lamp1",
    "pos": [
-    2.0999999999999996,
+    1.0999999999999996,
     1.6,
-    -3.7
+    -2.5
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.publican12.r2.lamp2",
+   "id": "thorn.legionary13.r1.lamp2",
    "pos": [
-    0.7999999999999998,
+    -0.7999999999999998,
     1.6,
-    -3.6
+    -2.8
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -293,29 +282,23 @@
   "tho_stilt_house"
  ],
  "property_zones": [
-  "thorn.priest1.r0",
-  "thorn.smith4.r0",
+  "thorn.factor0.r0",
+  "thorn.weaver3.r1",
   "thorn.cook7.r0",
-  "thorn.legionary10.r0",
-  "thorn.publican12.r2"
+  "thorn.legionary10.r1",
+  "thorn.legionary13.r1"
  ],
  "containers": [
-  "thorn.priest1.r0.1",
-  "thorn.priest1.r0.3",
-  "thorn.priest1.r0.5",
-  "thorn.smith4.r0.4",
+  "thorn.factor0.r0.2",
   "thorn.cook7.r0.3",
-  "thorn.publican12.r2.0",
-  "thorn.publican12.r2.2",
-  "thorn.publican12.r2.4",
-  "thorn.publican12.r2.6"
+  "thorn.legionary10.r1.1"
  ],
  "unique_item": {
   "id": "thorn-hall-unique",
   "name": "the Imperial charter, genuine and framed",
   "unique": true,
   "takeable": true,
-  "owner": "npc:thorn-priest-1"
+  "owner": "npc:thorn-factor-0"
  },
  "readable": {
   "id": "thorn-hall-readable",

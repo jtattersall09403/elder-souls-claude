@@ -262,6 +262,11 @@ const SETTLEMENTS = [
       { slug: 'thorn-apothecary', name: 'The Needle Apothecary', kind: 'shop', service: 'alchemist', faction: null, unique_item: 'a salve for thorn-wound that works', readable: 'On Thorn-Wound' },
       { slug: 'thorn-sapwell', name: 'The Thorn Sapwell', kind: 'shrine', service: 'bonfire', faction: 'rootkeepers', unique_item: 'a sap-tap the king is not allowed to touch', readable: 'Who May Tap' },
       { slug: 'thorn-rootpost', name: 'The Thorn Rootpost', kind: 'travel', service: 'travel', faction: 'rootkeepers', unique_item: 'the leg to Archon, closed at high tide', readable: 'Fares, Thorn' },
+      // W1-04: `warden-eshi` has stood a 06:00–20:00 watch at `thorn-gate` since her record was
+      // written, and `thorn-gate` did not exist. The schedule was pointing at nothing. Her hours
+      // are the gatehouse's hours, which is why this entry states them rather than taking the
+      // shop default — walk up at 21:00 and the door refuses you, because she has gone to the hall.
+      { slug: 'thorn-gate', name: 'The Thorn Gate', kind: 'gate', service: null, faction: null, open_h: 6, close_h: 20, unique_item: 'the warden’s name-book, every traveller since the charter', readable: 'Who Passes Thorn' },
     ],
     sealed: [
       { slug: 'thorn-north-lean', name: 'The North Lean', reason: 'the thorn grew through the roof and the family moved into the hall; the thicket has closed over the door', told_by: 'cook' },
@@ -312,6 +317,7 @@ const PROPS = {
   hall: ['high_seat', 'long_table', 'bench_row', 'brazier_iron', 'banner_wall', 'weapon_rack', 'chest_large', 'hearth_open', 'lamp_hanging', 'floor_rush', 'charter_frame', 'drinking_horn', 'stair_narrow', 'shield_wall'],
   prison: ['cell_grate', 'bunk_plank', 'chain_ring', 'slop_bucket', 'key_rail', 'lamp_caged', 'guard_desk', 'irons_set', 'water_butt', 'lime_bucket', 'door_iron', 'bench_stone', 'tally_scratch', 'gaol_book'],
   travel: ['fare_board', 'root_socket', 'bench_wait', 'baggage_rail', 'ledger_stand', 'lamp_hanging', 'water_butt', 'rope_coil', 'tally_brass', 'stool_low', 'notice_board', 'map_table', 'sack_row', 'lantern_signal'],
+  gate: ['toll_bar', 'warden_desk', 'key_rail', 'spear_rack', 'brazier_iron', 'watch_stool', 'tally_board', 'rope_coil', 'lamp_hanging', 'water_butt', 'cloak_hook', 'gate_winch', 'name_book', 'bench_wait'],
 };
 
 // AUTHORED: the plan functions. Each is the geometric statement of its settlement's power_reading.
@@ -520,8 +526,10 @@ for (const s of SETTLEMENTS) {
       anchor: c.kind === 'prison' ? 'interior_cold' : 'interior_firelit',
       // The hours this place keeps. Consumed by sim/settlement.js: outside them, a shop is a
       // trespass and its door is locked.
-      open_h: c.kind === 'tavern' ? 6 : c.kind === 'dwelling' ? 0 : 8,
-      close_h: c.kind === 'tavern' ? 26 : c.kind === 'dwelling' ? 24 : 19,
+      // A civic entry may state its own hours when the kind default is wrong for it — a manned
+      // gatehouse keeps its warden's hours, not a shop's.
+      open_h: c.open_h !== undefined ? c.open_h : (c.kind === 'tavern' ? 6 : c.kind === 'dwelling' ? 0 : 8),
+      close_h: c.close_h !== undefined ? c.close_h : (c.kind === 'tavern' ? 26 : c.kind === 'dwelling' ? 24 : 19),
     };
     fs.writeFileSync(path.join(INT_OUT, `${c.slug}.json`), JSON.stringify(doc, null, 1) + '\n');
     interiorIds.push(c.slug);

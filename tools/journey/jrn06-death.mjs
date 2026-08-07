@@ -23,6 +23,7 @@
 'use strict';
 
 import { PNG } from 'pngjs';
+import { log } from '../lib/cli.mjs';
 
 const WALK_MPS = 2.0;
 
@@ -173,13 +174,74 @@ export async function runJrn06(h, args, led, ctx = {}) {
   const scenarios = String(args.scenario || 'RN1,RN2,RN3,RN4,RN5').split(',').map((s) => s.trim()).filter(Boolean);
   const nDeaths = Math.max(1, Number(args.deaths || 20));
   const out = { scenarios, deaths_requested: nDeaths, checks: {} };
-  const put = (id, what, value) => { out.checks[id] = value; led.ok(id, what, value); };
+  // ROUND 2: a row whose own `pass` is false used to go into the ledger as `measured` and print
+  // as `[OK]`, exactly like a row that passed. On the run that exposed the paused-world defect
+  // above, ten of nineteen rows carried `pass: false` and the console printed `[OK]` on every
+  // one of them; the only place the failures appeared was inside the summary's `checks` map,
+  // which nobody reads first. `measured` is an honest status for the LEDGER — the check was
+  // taken — but the log line is what a human sees, so it now says which it was.
+  const put = (id, what, value) => {
+    out.checks[id] = value;
+    if (value && value.pass === false) out.failed = (out.failed || []).concat(id);
+    led.ok(id, what, value);
+    if (value && value.pass === false) log(`FAIL ${id} — ${what}`);
+  };
 
   const caps = await h.hOpt('getDeathState');
   if (!caps || !caps.present) {
     led.unmeasurable('m_jrn06', 'the death loop', 'window.__HARNESS.getDeathState() is absent or reports no death system: RI-JRN06 is unmeasurable and scores 0, fail-closed', 'W1-13');
     out.unmeasurable = true;
     return out;
+  }
+
+  // ---- IS THE WORLD ACTUALLY RUNNING? -------------------------------------------------------
+  //
+  // ROUND 2, and this cost the round a whole journey run before it was found. Everything below
+  // measures a death, and a death is `damagePlayer` followed by `stepFrames`. If the simulation
+  // is not advancing, that sequence produces NOTHING — no death, no surface, no bloodstain, no
+  // record — and every check downstream reports a clean, quiet, entirely fictional result. The
+  // run that found this returned twenty rows with `stain_souls: null`, `damage_frame: 0` and
+  // `surface_up_on_next_frame: false`, and the console printed `[OK]` nineteen times.
+  //
+  // THE MECHANISM, measured rather than guessed:
+  //   * `Engine._step()` returns early while a UI screen is open outside combat. That is S14
+  //     and it is correct — "outside a fight, in a menu, the simulation does not advance".
+  //   * `loadState()` DOES NOT CLOSE AN OPEN SCREEN. Verified directly: open the sheet, load
+  //     `arena_flat`, and the mode is still `sheet` and `stepFrames(5)` advances 0 frames.
+  //   * so one screen left open by an earlier leg of `journey-run.mjs` freezes every block of
+  //     this file, and no `loadState` in it can recover.
+  //
+  // So: close whatever is up, then PROVE the world moves by stepping it and watching the frame
+  // counter, and refuse to measure if it does not. A journey that cannot fail is worse than no
+  // journey (AGENT-PROTOCOL), and this one could not.
+  const runs = await (async () => {
+    const before = await h.h('getUIState');
+    if (before.mode && before.mode !== 'world') await h.h('closeMenu').catch(() => {});
+    const after = await h.h('getUIState');
+    // `getFrame()` returns a NUMBER (`engine.sim.frame`), while `stepFrames()` returns
+    // `{frame, t_ms}`. Reading `.frame` off the former gives `undefined`, and `undefined -
+    // undefined` is `NaN`, which is not equal to 5 — so the first version of this gate refused
+    // to measure a world that was running perfectly well. Both shapes are accepted here.
+    const frameOf = (r) => (typeof r === 'number' ? r : (r && typeof r.frame === 'number' ? r.frame : NaN));
+    const f0 = frameOf(await h.h('getFrame'));
+    await h.h('stepFrames', 5);
+    const f1 = frameOf(await h.h('getFrame'));
+    return { ui_mode_on_entry: before.mode, ui_mode_after_close: after.mode, frame_before: f0, frame_after: f1, advanced: f1 - f0 };
+  })();
+  out.world_runs_on_entry = runs;
+  if (runs.advanced !== 5) {
+    led.unmeasurable('m_jrn06', 'the death loop',
+      `the simulation is not advancing: stepFrames(5) moved sim.frame by ${runs.advanced}, with the UI in `
+      + `mode ${JSON.stringify(runs.ui_mode_after_close)} after a closeMenu(). Every check in RI-JRN06 drives a `
+      + 'death with damagePlayer + stepFrames, so on a stopped world they would all report a quiet, false pass. '
+      + 'Refusing to measure. S14 stops the world while a screen is open outside combat, and loadState() does '
+      + 'not close one, so a screen opened by an earlier journey leg freezes this whole item.', 'W1-13');
+    out.unmeasurable = true;
+    return out;
+  }
+  if (runs.ui_mode_on_entry && runs.ui_mode_on_entry !== 'world') {
+    out.warning_screen_was_open_on_entry = runs.ui_mode_on_entry;
+    led.ok('m_jrn06_entry_screen_closed', 'a screen was open when RI-JRN06 began and was closed before measuring', runs);
   }
 
   // ---- M-D5 / M-D6: respawn SCOPE, and it is the check the whole item turns on -------------
@@ -260,6 +322,137 @@ export async function runJrn06(h, args, led, ctx = {}) {
       menu_destinations: rest.menu ? rest.menu.destinations : null,
       s7_pass: !!rest.menu && Array.isArray(rest.menu.destinations) && rest.menu.destinations.length === 0,
     });
+  }
+
+  // ---- M-D7: sell to a merchant, die, respawn — the trade survives -------------------------
+  //
+  // ROUND 2. The round-1 verdict scored this **0, never run**: the check simply was not in this
+  // file. It is worth 2 of the "Nothing is lost" block's 34 and it is the only one of the five
+  // that touches money.
+  //
+  // WHAT THE ITEM ASKS FOR AND WHAT THIS BUILD HAS. M-D7 names `progression.merchant.barter`.
+  // That path does not exist in this build and no shipped verb decrements a merchant's purse —
+  // `game/data/crime/fences.json` gives every fence a `gold_pool` and `engine.fenceSell()` moves
+  // gold into the PLAYER's purse without taking it out of the fence's. So "the pool is unchanged
+  // across a death" is true of a number that is a **constant**, and asserting it would be exactly
+  // the probe that cannot fail this file's header warns about. It is therefore reported below as
+  // `pool_is_vacuous: true` and is NOT what the row passes on.
+  //
+  // What the row passes on is the half of the transaction this build really does mutate, which is
+  // also the half a player would notice: the gold that changed hands, the laundered registry row,
+  // the inventory row's `stolen` flag, and the world record's `stolen_from`. All four are written
+  // by `fenceSell` through the shipping path, all four are in the save, and all four CAN move —
+  // the falsifiability control at the end of this block moves one of them on purpose.
+  {
+    await h.h('loadState', 'default');
+    await h.h('setRenderRate', 0);
+    const list = await h.h('listHearths');
+    const hearth = list.hearths.find((x) => x.kind === 'settlement') || list.hearths[0];
+    await h.h('teleport', hearth.pos[0], hearth.pos[2]);
+    await h.h('stepFrames', 2);
+    await h.h('restAt', hearth.id);
+
+    // A real placed object in a real zone, taken through the shipping verb, then sold through it.
+    // The instance id is an ADDRESS read out of game/data/world/property/**; every observation
+    // below is of the running world.
+    const CANDIDATES = [
+      ['lilmoth.factor0.r0.0', 'fence.lilmoth.rot-hookline'],
+      ['lilmoth.factor0.r0.1', 'fence.lilmoth.rot-hookline'],
+      ['lilmoth.factor0.r1.2', 'fence.lilmoth.rot-veek'],
+      ['lilmoth.factor0.r0.3', 'fence.lilmoth.rot-veek'],
+    ];
+    let sale = null, attempts = [];
+    for (const [instance, fenceId] of CANDIDATES) {
+      let took = null, sold = null, err = null;
+      try {
+        took = await h.h('takeObject', instance, {});
+        sold = await h.h('fenceSell', fenceId, instance);
+      } catch (e) { err = String(e && e.message || e); }
+      attempts.push({ instance, fence: fenceId, registered: !!(took && took.stolen_from), sold: !!(sold && sold.sold), refused: sold && !sold.buys ? sold.reason || 'refused' : null, error: err });
+      if (sold && sold.sold) { sale = { instance, fenceId, price_g: sold.price_g, gold_after_sale: sold.gold }; break; }
+    }
+
+    const readTrade = async () => {
+      const cs = await h.h('getCrimeState');
+      const blob = await h.h('saveState');
+      const reg = Array.isArray(cs.stolen_registry) ? cs.stolen_registry : [];
+      return {
+        // The fence's purse and the spell-merchant's purse are DIFFERENT NUMBERS in this build
+        // (`sim.stealth.p.gold` vs `sim.progression.gold`); both are read so that a death cannot
+        // move one behind the other's back.
+        fence_purse_gold: cs.gold,
+        progression_gold: blob.progression ? blob.progression.gold : null,
+        laundered_rows: reg.filter((s) => s && s.laundered_by).length,
+        laundered_by: reg.filter((s) => s && s.laundered_by).map((s) => `${s.instance}@${s.laundered_by}`).sort(),
+        stolen_registry_len: reg.length,
+        save_stolen_registry: JSON.stringify(((blob.crime || {}).stolen_registry) || []),
+        bounty: JSON.stringify(cs.bounty || {}),
+        inventory_len: (blob.inventory || []).length,
+      };
+    };
+
+    let d7 = { sale_made: !!sale, attempts };
+    if (sale) {
+      const before = await readTrade();
+      // out to a death site, die, come back up
+      await h.h('teleport', hearth.pos[0] + 55, hearth.pos[2] + 25);
+      await h.h('stepFrames', 4);
+      const deathsBefore = (await h.h('getDeathState')).deaths_this_session;
+      await h.h('damagePlayer', 100000, { stagger: false });
+      await h.h('stepFrames', 1);
+      const onSurface = await h.h('getDeathState');
+      await h.h('stepFrames', 220);
+      const deathState = await h.h('getDeathState');
+      const after = await readTrade();
+      const moved = Object.keys(before).filter((k) => JSON.stringify(before[k]) !== JSON.stringify(after[k]));
+      // "Nothing moved" is only a fact about the death if there WAS a death. On a stopped world
+      // — see the entry gate at the top of this file — `damagePlayer` kills nobody and every
+      // observable trivially holds still, which would make this row pass while measuring nothing.
+      const died = deathState.deaths_this_session === deathsBefore + 1;
+
+      // FALSIFIABILITY, in the row itself: a probe that only ever watches a number stay still
+      // cannot tell "nothing moved it" from "nothing could have". Sell a SECOND item and confirm
+      // the same four observables do move — so the equality above is a fact about the death and
+      // not about the instrument.
+      let control = null;
+      const second = CANDIDATES.find(([i]) => i !== sale.instance);
+      if (second) {
+        try {
+          await h.h('takeObject', second[0], {});
+          const s2 = await h.h('fenceSell', second[1], second[0]);
+          const afterSecond = await readTrade();
+          control = {
+            second_sale: !!(s2 && s2.sold),
+            moved_by_a_sale: Object.keys(after).filter((k) => JSON.stringify(after[k]) !== JSON.stringify(afterSecond[k])),
+            gold_before: after.gold, gold_after: afterSecond.gold,
+          };
+        } catch (e) { control = { error: String(e && e.message || e) }; }
+      }
+
+      d7 = {
+        ...d7,
+        sale,
+        before, after,
+        the_death_happened: died,
+        deaths_this_session: [deathsBefore, deathState.deaths_this_session],
+        surface_went_up: onSurface.surface_active,
+        respawned_at: deathState.last_respawn ? deathState.last_respawn.at : null,
+        moved_across_the_death: moved,
+        control_a_real_sale_moves_them: control,
+        pool_is_vacuous: true,
+        _pool_note: 'RI-JRN06 M-D7 names `progression.merchant.barter`. This build has no such path '
+          + 'and no shipped verb decrements a merchant purse: every fence in game/data/crime/fences.json '
+          + 'carries a `gold_pool` and engine.fenceSell() never touches it. "Pool unchanged" is therefore '
+          + 'trivially true of a constant and is NOT what this row passes on. Filed as an orphan model '
+          + 'under RI-MTH07 §A — a number the data supplies that nothing in the world reads or writes.',
+        pass: died && moved.length === 0 && !!(control && control.moved_by_a_sale && control.moved_by_a_sale.length > 0),
+      };
+    } else {
+      d7.pass = false;
+      d7.unmeasurable = 'no fence in the shipped world would buy any of the four candidate objects, '
+        + 'so no transaction could be made to survive a death. Reported as a failure to measure, not a pass.';
+    }
+    put('m_d7_merchant_state_survives_death', 'M-D7 a completed sale survives a death', d7);
   }
 
   // ---- M-D1 / M-D2 / M-D8 / M-D10 / M-D12 / M-D17: the 20-death session --------------------
@@ -360,9 +553,16 @@ export async function runJrn06(h, args, led, ctx = {}) {
     const mismatches = [...bankedLeg, ...storedLeg, ...returnLeg];
     put('m_d1_souls_conservation', 'M-D1 souls held == souls stored == souls returned', {
       trials: rows.length,
-      trials_banked_eq_held: rows.length,
-      trials_held_eq_stored: rows.length,
-      trials_stored_eq_returned: conserved.length,
+      // ROUND 2: these three were `rows.length`, `rows.length`, `conserved.length` — CONSTANTS.
+      // So a run in which every single row failed the `held == stored` leg still reported
+      // "trials_held_eq_stored: 20" beside "mismatches_held_eq_stored: 20", and the first number
+      // is the one a reader takes. They are counts of rows that actually AGREED now.
+      trials_banked_eq_held: rows.length - bankedLeg.length,
+      trials_held_eq_stored: rows.length - storedLeg.length,
+      trials_stored_eq_returned: conserved.length - returnLeg.length,
+      population_banked_eq_held: rows.length,
+      population_held_eq_stored: rows.length,
+      population_stored_eq_returned: conserved.length,
       doubled_deaths_excluded_from_return_leg_only: rows.length - conserved.length,
       _why: 'A second death destroys the first bloom (D16), so `stored == returned` is void for a '
         + 'doubled death and the other two legs are not. Round 1 dropped the whole row and '
@@ -524,7 +724,12 @@ export async function runJrn06(h, args, led, ctx = {}) {
       await h.h('stepFrames', 1);
       await h.h('stepFrames', 200);
       const d = await h.h('getDeathState');
-      const rec = d.deaths[d.deaths.length - 1];
+      // ROUND 2: this was `d.deaths[d.deaths.length - 1].placement_rule` and it threw
+      // `Cannot read properties of undefined` on a run where the death did not register,
+      // taking the WHOLE journey down with it and losing eighteen checks that had already
+      // passed. A probe must be able to report "the thing I came to measure did not happen";
+      // crashing is the one outcome that tells the reader nothing.
+      const rec = d.deaths.length ? d.deaths[d.deaths.length - 1] : null;
       const st = d.bloodstain;
       // recoverable?
       let credited = null;
@@ -537,7 +742,9 @@ export async function runJrn06(h, args, led, ctx = {}) {
       const solid = st ? await h.hOpt('getWaterAt', st.pos[0], st.pos[2]) : null;
       rn5 = {
         found_unstandable_site: true, site: deep,
-        placement_rule: rec.placement_rule, relocated_m: rec.relocated_m,
+        death_registered: !!rec,
+        death_state_when_no_record: rec ? null : { surface_active: d.surface_active, deaths_this_session: d.deaths_this_session, cause: d.cause, souls_held: d.souls_held, last_respawn: d.last_respawn },
+        placement_rule: rec ? rec.placement_rule : null, relocated_m: rec ? rec.relocated_m : null,
         stain_pos: st ? st.pos : null,
         stain_water_depth_m: solid ? solid.depth_m : null,
         stain_exists: !!st,
@@ -547,7 +754,7 @@ export async function runJrn06(h, args, led, ctx = {}) {
     }
     put('m_d3_unreachable_relocation', 'M-D3 / RN5 / D4 geometry never destroys souls', {
       ...rn5,
-      pass: !!rn5.stain_exists && rn5.recoverable === true,
+      pass: !!rn5.stain_exists && rn5.recoverable === true && rn5.death_registered !== false,
       hard_fail_HF7: rn5.found_unstandable_site && !rn5.stain_exists,
       note: rn5.found_unstandable_site ? null
         : 'No point within 400 m of the settlement well has water deeper than 2.2 m, so the '

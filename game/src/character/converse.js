@@ -292,6 +292,17 @@ export class Conversation {
       for (const d of this.supply.directionsFor(npc.eid) || []) {
         this.extra.push({ id: d.id, text: d.id, gated: false, kind: 'directions', quest: d.quest, x: d.text });
       }
+      // W1-05 — the roads out of this town. Not about a subject either, and not gated on the
+      // journal: a player who has been sent nowhere still has to be able to reach Gideon, and
+      // under seam S35 the map shows only ground already walked, so it cannot tell them. Pushed
+      // as its own topic and spoken VERBATIM out of `dialogue/road-directions.json`, for the same
+      // reason `q.directions` is — a direction composed from route metadata is a route
+      // description, and nobody talks like one.
+      if (typeof this.supply.roadsFor === 'function') {
+        for (const d of this.supply.roadsFor(npc) || []) {
+          this.extra.push({ id: d.id, text: d.id, gated: false, kind: 'road-directions', x: d.text, route: d.route, truth: d.truth });
+        }
+      }
       const r = this.supply.rumourFor(npc, this.player, nth || 0);
       if (r) this.extra.push({ id: r.id, text: r.id, gated: !!(r.requires || r.forbids), kind: 'rumour', x: r.x, to: r.adds_topics || [] });
     }
@@ -329,7 +340,11 @@ export class Conversation {
     // quest metadata is `RI-DLG05`'s "How we lose" and the rule does not stop at the journal.
     const ex = (this.extra || []).find((e) => topicKey(e.id) === topicKey(topicId));
     if (ex) {
-      this.said = { topic: ex.id, actor: this.npc.actor || null, text: ex.x, gated: ex.gated, source: ex.kind, to: ex.to || [], quest: ex.quest || null };
+      // `route` identifies WHICH row of `road-directions.json` was spoken, so a probe can look the
+      // answer up and check it. Its `truth` field is deliberately NOT carried here: whether a
+      // direction is a lie is something the world tells you by contradicting it, never something
+      // the conversation state hands over.
+      this.said = { topic: ex.id, actor: this.npc.actor || null, text: ex.x, gated: ex.gated, source: ex.kind, to: ex.to || [], quest: ex.quest || null, route: ex.route || null };
       return this.said;
     }
     // The conversation's own filter context wins: it carries the derived disposition and the

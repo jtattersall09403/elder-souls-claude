@@ -40,7 +40,7 @@
           "text": "Say nothing."
         }
       },
-      "on_answer": "%HatchName. I will not say it again where they can hear it, and neither will you, and one day somebody will say it to you and you will know what they are.",
+      "on_answer": "%HatchName. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are.",
       "on_refusal": "No. That is right. I should not have asked and you should not have said. I will remember that you did not.",
       "next": "hold.out"
     },
@@ -89,7 +89,7 @@
         },
         "imperial": {
           "wrong": "Breton",
-          "line": "Breton. — No. Imperial. It is the vowels; the Office has never taught anybody here the difference and I have given up asking."
+          "line": "Breton. — No. Imperial. It is the vowels; the Office has never taught a clerk here the difference and I have given up asking."
         },
         "nord": {
           "wrong": "Orsimer",
@@ -101,7 +101,7 @@
         },
         "redguard": {
           "wrong": "Nord",
-          "line": "Nord. — No. Redguard. I am sorry. It has been a long list and everybody tall is a Nord by the afternoon."
+          "line": "Nord. — No. Redguard. I am sorry. It has been a long list and every tall man is a Nord by the afternoon."
         },
         "khajiit": {
           "wrong": "Bosmer",
@@ -194,7 +194,7 @@
             "race": "dunmer",
             "upbringing": "interior"
           },
-          "line": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man. So it is true. Somebody's raid went badly and somebody's kin did not do the obvious thing with what was left of it. You will be hated in Helstrom by people who will feed you first.",
+          "line": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man. So it is true. A raid went badly and the kin who found what was left did not do the obvious thing with it. You will be hated in Helstrom by people who will feed you first.",
           "sets_flag": "raised-by-the-marsh"
         },
         {
@@ -280,7 +280,7 @@
       "speaker": "warden-scribe-tuleeh-ma",
       "place": "writ-house",
       "beat": "B03",
-      "line": "Then say the words and I will write the words. The Office will not know what they mean and neither will I, and in a year somebody in a market will say them back to you.",
+      "line": "Then say the words and I will write the words. The Office will not know what they mean and neither will I, and in a year a stranger in a market will say them back to you.",
       "sets": "class_custom_name",
       "input": {
         "kind": "text",
@@ -359,7 +359,7 @@
         "count": 10
       },
       "on_match_named_class": "That is a %ClassName. That is exactly a %ClassName. I have written eleven of them this year and not one of them said the word to me first.",
-      "on_nearest_named_class": "%ClassName. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one nearest to what you just told me. %ClassName. You will hear it said back to you and you will not like it the first time.",
+      "on_nearest_named_class": "%ClassName. Not to the letter — none are, and the ones who are worry me — but of the words I am allowed to write, that is the one nearest to what you just told me. %ClassName. You will hear it said back to you and you will not like it the first time.",
       "on_no_match": "I do not have a word for that. I am going to write what you told me and let the next person along argue with it.",
       "next": "writ.class-verdict"
     },
@@ -380,7 +380,7 @@
       },
       "next": "writ.birthsign",
       "route_lines": {
-        "named": "%ClassName, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it and nobody in Gideon will have to think about it. Not everybody gets that. Most of what walks in here has to be rounded.",
+        "named": "%ClassName, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it and no clerk in Gideon will have to think about it. Not all get that. Most of what walks in here has to be rounded.",
         "custom": "%ClassName. There is no box for that, so I have cut one, and in a year a factor in Lilmoth will read it off your case and have no idea what it means and will have to ask you. That is the best outcome available from this desk."
       },
       "note": "RI-CHR01 §4 calls the naming 'the moment the route is for', and the round-1 verdict is that the game 'never tells you what you are': fourteen classes computed, all fourteen reachable, the right one 96.25% of the time, and NAMED_line drawn 0% of the time with a coupling of 0. The cause was structural. The naming lines — on_match_named_class and its two siblings — were pushed into `spoken`, which is the one thing on the panel the height cap was allowed to sacrifice, and it sacrificed them at every node they appeared at. A line that matters is a node's own `line`, which is never sacrificed, on a beat the player closes themselves. That is also exactly what Morrowind does with it: Socucius Ergalla says the word, you press on. All three routes pass through here, so the moment does not belong to the questionnaire alone."
@@ -426,7 +426,7 @@
       "speaker": "warden-scribe-tuleeh-ma",
       "place": "writ-house",
       "beat": "B03",
-      "line": "%PCName. %Race. %Upbringing. %ClassName. %Birthsign. — Reed-case, stamped, and it is the only thing in this province that says you are a person rather than a shape somebody saw. Do not lose it. The door behind me is the one you want.",
+      "line": "%PCName. %Race. %Upbringing. %ClassName. %Birthsign. — Reed-case, stamped, and it is the only thing in this province that says you are a person rather than a shape that was seen. Do not lose it. The door behind me is the one you want.",
       "grants_item": "stamped-writ",
       "terminates_creation": true,
       "input": {
@@ -449,7 +449,7 @@
         "band": "friendly",
         "player_race_class": "saxhleel",
         "lines": [
-          "You came up out of the same water we did. Sit down, you are dripping on the floor and nobody minds.",
+          "You came up out of the same water we did. Sit down, you are dripping on the floor and it does not matter.",
           "Root and river. Say what you need."
         ]
       },
@@ -459,7 +459,7 @@
         "player_race_class": "dunmer",
         "lines": [
           "Warmblood. You are standing in a village that counts its children every morning because of your House.",
-          "There is nothing here you can buy and nobody here who will take your hand.",
+          "There is nothing here you can buy and none here who will take your hand.",
           "Walk back the way you came while the light is still on the path."
         ]
       },
@@ -487,7 +487,7 @@
         "player_race_class": "saxhleel",
         "lines": [
           "Stock walks itself into the yard now. Saves the nets.",
-          "Whose are you? Somebody's. Everything with scales out here is somebody's."
+          "Whose are you? You are owned. Everything with scales out here is owned."
         ]
       },
       {
@@ -525,7 +525,7 @@
           "saxhleel"
         ],
         "speaker_group": "RG-DRES",
-        "text": "You are marked already? Show me. — Ah. Somebody's, then. Move along, I do not poach."
+        "text": "You are marked already? Show me. — Ah. Owned, then. Move along, I do not poach."
       },
       {
         "to_race": [

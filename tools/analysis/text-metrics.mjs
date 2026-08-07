@@ -49,6 +49,13 @@ const BANDS = {
 
 const RUN = path.join(RUNS_DIR, String(args.out || 'TEXT-METRICS'));
 const SCALES = String(args.scales || '1280x720,1920x1080').split(',').map((s) => s.split('x').map(Number));
+// W1-LIBRARY round 2. RI-UIX05 step 1 asks for THREE resolutions and names a three-book fixture
+// ("a ~120-word note, a ~520-word median book, and a ~2,000-word volume"); step 2 asks for the
+// whole corpus and says nothing about resolution. Without this flag the only way to run step 1
+// was 65 books x 3 scales = 195 renders, one of which is a 4K canvas readback, and the tool was
+// therefore never run at all — which is why K2 and K3 reached the round-1 verdict unmeasured.
+// `--books a,b,c` runs the fixture; omitting it runs the corpus, as before.
+const ONLY = args.books ? new Set(String(args.books).split(',').map((s) => s.trim()).filter(Boolean)) : null;
 
 function decode(u) { return PNG.sync.read(Buffer.from(u.split(',')[1], 'base64')); }
 function srgbToLin(c) { const v = c / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
@@ -84,6 +91,11 @@ for (const f of fs.readdirSync(path.join(process.cwd(), 'game/data/books'))) {
   const doc = JSON.parse(fs.readFileSync(path.join('game/data/books', f), 'utf8'));
   if (Array.isArray(doc.books)) for (const b of doc.books) books.push(b.id);
   else if (doc.id) books.push(doc.id);
+}
+if (ONLY) {
+  const missing = [...ONLY].filter((id) => !books.includes(id));
+  if (missing.length) { console.error(`text-metrics: --books names ${missing.join(', ')}, not in game/data/books/`); process.exit(2); }
+  books.length = 0; books.push(...ONLY);
 }
 
 const out = {

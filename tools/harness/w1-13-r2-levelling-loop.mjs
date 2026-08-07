@@ -51,7 +51,13 @@ const tryOpen = (h, name) => h.page.evaluate(async (n) => {
 }, name);
 
 try {
-  handle = await launchGame({ ...args, width: 320, height: 240 });
+  // 320x240 unless a picture is being taken: a stepping loop that renders is the most expensive
+  // thing on this box (AGENT-PROTOCOL), and this one steps tens of thousands of frames.
+  handle = await launchGame({
+    ...args,
+    width: args.shot ? Number(args.width || 1280) : 320,
+    height: args.shot ? Number(args.height || 720) : 240,
+  });
   const h = handle;
   await h.h('setRenderRate', 0);
 
@@ -125,6 +131,35 @@ try {
     const opened = await tryOpen(h, 'levelup');
     const uiOpen = await h.h('getUIState');
     rec.open = { ...opened, mode: uiOpen.mode, reachable: uiOpen.mode === 'levelup' };
+
+    // ---- 4a. THE PHOTOGRAPH, optional and only at the first well.
+    //
+    // `--shot <path>` renders the open level-up screen. It is taken HERE, between the open and
+    // the spend, because this is the frame the round-1 verdict says did not exist: the screen
+    // `RI-PRG04` §1 calls "the only place levelling is possible", standing on a sapwell basin
+    // the body WALKED to, with 4,200 souls in the purse. It goes through this probe's own
+    // browser rather than `tools/capture/` because the capture daemon has no walking mode and
+    // no way to open a menu — and because what is being photographed is the end of a stepped
+    // sequence, not the appearance of a place.
+    //
+    // Render is off for the whole run (`setRenderRate(0)`); it is turned on for this one frame
+    // and turned straight back off, so the cost is one frame and not the run.
+    if (args.shot && !out.shot && uiOpen.mode === 'levelup') {
+      await h.h('setRenderRate', 60);
+      await h.h('stepFrames', 2);
+      await h.page.screenshot({ path: String(args.shot) });
+      await h.h('setRenderRate', 0);
+      out.shot = {
+        path: String(args.shot), well: id,
+        arrival: 'walked', walked_m: rec.walk.path_m, walk_frames: rec.walk.frames,
+        souls_in_purse: rec.before.souls, level: rec.before.level,
+        used_setAtHearth: out.used_setAtHearth,
+        _admissibility: 'Evidence of a UI SURFACE existing and being legible at a sapwell. The '
+          + 'walked arrival is evidenced by rec.walk in this file (walkPath, ordinary locomotion), '
+          + 'not by the picture; a photograph is never evidence of arrival (ARBITRATION S34(b)).',
+      };
+      log(`shot: ${args.shot}`);
+    }
 
     // ---- 4. SPEND, through the real input path (arm, then confirm — RI-UIX03 L6).
     if (uiOpen.mode === 'levelup') {

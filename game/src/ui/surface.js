@@ -51,6 +51,16 @@ export const KINDS = new Set([
   // carries `text: null` by construction — a labelled touch control is a control legend and
   // is RI-JRN03 DS1's hard fail drawn sixteen times.
   'touch_button', 'touch_stick', 'rotate_illustration',
+  // W1-MAP / ARBITRATION S35. The three things the map screen is allowed to be made of, and
+  // deliberately NOT named `map`, `map_pin` or `minimap` — those stay in FORBIDDEN_KINDS below
+  // and this build still emits none of them, so a census that greps the RI-UIX01 §B names reads
+  // 0 after the map exists exactly as it did before. An implementation that had to widen the
+  // forbidden list in order to draw its map would be telling on itself.
+  //
+  // There is no fourth kind and there must not be. A route, a marker, an objective or a
+  // distance readout has no kind it could be declared under, and `el()` throws on an undeclared
+  // kind — so the way this screen would acquire a pin is a deliberate edit to this list.
+  'map_terrain', 'map_place', 'map_player',
 ]);
 
 /**

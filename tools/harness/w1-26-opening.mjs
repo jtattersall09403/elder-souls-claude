@@ -168,6 +168,34 @@ try {
   // A — §0.1(a). The accessor, NAMED and DEMONSTRATED, before either grep is reported.
   // ======================================================================================
   say('A — the rendered-text accessor (RI-JRN01 §0.1(a))');
+  // RED TEAM. The round-1 verdict's headline was that a scored check was a grep over zero
+  // strings recorded as a pass, and its remedy was "make the probe exit non-zero when its M9
+  // grep searches zero strings". A remedy nobody has watched fail is a claim. `--red-team=<mode>`
+  // sabotages the instrument in the page, in the one way each mode names, so that the probe's
+  // RED-ness is a thing you can run rather than a thing I assert:
+  //   empty  — getRenderedText() returns an empty non-dialogue domain. Must trip "searched ZERO".
+  //   blind  — a surface is declared and never instrumented. Must trip the §0.1(a) blind clause.
+  //   plant  — an imperative HUD string is drawn through the real vector path. Must fire HF3.
+  // A red-team run that PASSES is itself a failure, and is reported as one.
+  const redTeam = args['red-team'] ? String(args['red-team']) : null;
+  if (redTeam) {
+    say(`RED TEAM: '${redTeam}' — the probe is expected to FAIL. A pass here means the instrument cannot go red.`);
+    await handle.page.evaluate((mode) => {
+      const H = window.__HARNESS;
+      if (mode === 'empty') {
+        const real = H.getRenderedText;
+        H.getRenderedText = (o) => {
+          const r = real.call(H, o);
+          const notDialogue = o && (o.notSurface || (o.surface && o.surface.indexOf('dialogue') < 0));
+          return notDialogue ? { ...r, distinct: [], rows: [], summary: { ...(r.summary || {}), distinct: 0 } } : r;
+        };
+      } else if (mode === 'blind') {
+        window.__ENGINE.renderer.textRegister.declare('a-surface-nobody-wrapped', 'red-team: declared, never instrumented');
+      } else if (mode === 'plant') {
+        H.__redTeamPlant = () => H.drawOnMenus('Press E to speak to Jeeh-Ei');
+      }
+    }, redTeam);
+  }
   const acc = await handle.page.evaluate(async () => {
     const H = window.__HARNESS;
     // The two obvious instruments, measured so the report can say why they are not used.
@@ -246,6 +274,9 @@ try {
       H.stepFrames(2);
     }
     H.renderFrame();
+    // `--red-team=plant` puts an imperative HUD string on the surface through the real vector
+    // draw path, after the walk and before the read, exactly where a regression would put one.
+    if (typeof H.__redTeamPlant === 'function') H.__redTeamPlant();
     const all = H.getRenderedText();
     // M9 greps strings rendered OUTSIDE a dialogue/journal/book surface.
     const nonDialogue = H.getRenderedText({ notSurface: ['dialogue'] });
@@ -628,6 +659,16 @@ try {
 out.verdict = out.hard_fails.length ? 'HARD FAIL' : out.failures.length ? 'FAIL' : 'PASS';
 say('');
 say(`w1-26-opening: ${out.passes.length} pass, ${out.failures.length} fail, ${out.hard_fails.length} hard fail -> ${out.verdict}`);
+const red = out.hard_fails.length || out.failures.length;
+// Under `--red-team` the expected outcome is INVERTED: the sabotage must produce a failure. A
+// green run means the instrument cannot see the thing it is scored on, which is the round-1
+// defect itself, so it exits non-zero and says which mode slipped past.
+if (redTeam) {
+  out.red_team = { mode: redTeam, went_red: !!red, verdict: red ? 'INSTRUMENT WENT RED (good)' : 'INSTRUMENT STAYED GREEN UNDER SABOTAGE (bad)' };
+  say(`RED TEAM '${redTeam}': ${out.red_team.verdict}`);
+  writeJson(jsonPath, out);
+  process.exit(red ? 0 : 1);
+}
 writeJson(jsonPath, out);
 log(`wrote ${path.relative(REPO_ROOT, jsonPath)}`);
-process.exit(out.hard_fails.length || out.failures.length ? 1 : 0);
+process.exit(red ? 1 : 0);

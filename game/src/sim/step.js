@@ -23,6 +23,7 @@ import { stepEncounters } from '../character/encounter.js';
 import { stepNPCs } from './npc.js';
 import { stepSettlement } from './settlement.js';
 import { stepSkillUse } from '../character/skilluse.js';
+import { stepDiscovery } from './discovery.js';
 
 /**
  * S29 / seam S19. The frame the world last did violence. Read off the event bus so it cannot
@@ -143,6 +144,15 @@ export function stepOnce(sim, input, combat, bus) {
     // reads a post-physics position exactly as RI-CAM01 §A requires, and the vertical spring
     // is never reset mid-route the way a per-frame teleport would reset it.
     if (sim.route) stepRoute(sim);
+    // W1-MAP / ARBITRATION S35. Where the player has been. Inside the fixed step and AFTER
+    // physics and the route, so it records the position the frame's record reports rather than
+    // the position the frame started at — a probe that steps to a place and reads the map must
+    // see the same coordinate in both. It is the last thing before the camera because it reads
+    // the body and writes nothing the body can see.
+    //
+    // Allocation-free, RNG-free and clock-free, which is what makes it safe under the armed
+    // determinism guard. It repaints the raster only when the body crosses a terrain cell.
+    stepDiscovery(sim);
     stepCamera(sim);
     // The state the frame ends in must be a state the save can hold exactly (RI-JRN05 §C
     // rule 3 vs HF1 — see sim/state.js quantiseSaveGrid). Allocation-free.

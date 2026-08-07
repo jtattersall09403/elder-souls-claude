@@ -148,6 +148,11 @@ export function buildSave(sim, build) {
       // reading had opened, and — because the previous recorder was an Engine-level Set that no
       // blob mentioned — every existing round-trip check reported clean while it did so.
       books_read: [...sim.quest.booksRead].sort(),
+      // RI-UIX05 T5: "closing and reopening a book returns to the page you were on, per book,
+      // PERSISTED IN THE SAVE". It was not, and the omission had two halves: a load lost the
+      // place, and `reset()` did not clear it, so one character's reading position opened the
+      // next character's book. Key-sorted like every other map here.
+      book_pages: sortedMap(sim.quest.bookPages),
       dispositions: sortedMap(sim.quest.dispositions),
     },
     factions: sortedMap(sim.quest.factions),
@@ -172,6 +177,16 @@ export function buildSave(sim, build) {
       // save: reloading into a differently generated fen would move the ground under the
       // player's saved position. `null` for an authored cell, which generates nothing.
       gen_seed: sim.worldSeed === undefined ? null : sim.worldSeed,
+      // W1-MAP / ARBITRATION S35. The map. Durable because a map that forgets where you have
+      // been on every reload is not a record of anything — and it is written here AND read back
+      // into the live `Discovery` object below, because the protocol's warning applies to this
+      // field harder than to most: the raster is 7 KB of base64 that round-trips byte-perfect
+      // whether or not anything ever loads it into the running world. `map-probe.mjs` audits
+      // `Engine.mapState()` after the load, not this blob.
+      //
+      // `null` when the sim has no discovery model at all (an arena fixture with no province),
+      // which `applySave` reads as "leave the model alone" rather than as "wipe it".
+      discovery: sim.discovery ? sim.discovery.serialise() : null,
       containers_emptied: [...sim.world.containersEmptied].sort(),
       doors_unlocked: [...sim.world.doorsUnlocked].sort(),
       shortcuts_opened: [...sim.world.shortcutsOpened].sort(),
@@ -608,6 +623,11 @@ export function applySave(sim, blob, moves, statFor) {
   sim.quest.journal = blob.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text }));
   sim.quest.topicsKnown = [...blob.dialogue.topics_known];
   sim.quest.booksRead = [...(blob.dialogue.books_read || [])];
+  // Mutate in place rather than reassign: `UISystem.bookPages` holds this exact object by
+  // reference (Engine._rebindQuestRuntime), and swapping it here would leave the reading
+  // surface writing into a detached copy — the same detached-array bug the journal had.
+  for (const k of Object.keys(sim.quest.bookPages)) delete sim.quest.bookPages[k];
+  Object.assign(sim.quest.bookPages, blob.dialogue.book_pages || {});
   sim.quest.dispositions = { ...blob.dialogue.dispositions };
   sim.quest.factions = deepCopy(blob.factions);
   sim.quest.crime.bounty = { ...blob.crime.bounty };
@@ -632,6 +652,14 @@ export function applySave(sim, blob, moves, statFor) {
   }
 
   sim.worldSeed = blob.world.gen_seed === undefined ? null : blob.world.gen_seed;
+  // W1-MAP: read BACK, into the live model. `Discovery.restore()` validates as it goes — a
+  // place named in the blob whose own cell the blob's raster does not corroborate is DROPPED,
+  // because standing in a place necessarily reveals the cell you stood in, so a save that
+  // claims otherwise was not written by `observe()`. The dropped list is kept on the sim so a
+  // probe can read it rather than being told it happened.
+  if (sim.discovery && blob.world.discovery !== undefined) {
+    sim._discoveryDropped = sim.discovery.restore(blob.world.discovery).dropped;
+  }
   sim.world.containersEmptied = [...blob.world.containers_emptied];
   sim.world.doorsUnlocked = [...blob.world.doors_unlocked];
   sim.world.shortcutsOpened = [...blob.world.shortcuts_opened];

@@ -13,7 +13,22 @@
     "docs/shots/*.png early + explored",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/00-doctrine/AMENDMENT-W1-MAP-01.md",
+    "game/data/ui/map.json",
+    "game/src/sim/discovery.js",
+    "game/src/ui/screens/map.js",
+    "game/src/ui/system.js (map mode, NEVER_ADJACENT, _mapModel, state().map)",
+    "game/src/ui/surface.js (3 new kinds)",
+    "game/src/engine.js (Discovery construction, ui/map.json load branch, _uiCtx.map, _mapPoiNames)",
+    "game/src/sim/step.js (stepDiscovery)",
+    "game/src/save/state.js (world.discovery write+readback)",
+    "game/data/save-manifest.json (world.discovery declared)",
+    "game/src/harness/api.js (mapState, tryPlaceMapMarker)",
+    "game/data/index.json (regenerated, 500 files)",
+    "tools/harness/map-probe.mjs",
+    "tools/harness/map-shots.mjs"
+  ],
   "findings": [
     "ARBITRATION S30 struck, S35 rules: map permitted, records where you HAVE BEEN; every marker prohibition kept. S35 explicitly says whoever builds it owns the RI-UIX04 JU8 amendment.",
     "RI-UIX04 JU8 = 'No map anywhere (Q7)': pass = `map` unreachable AND non-existent; hard fail = a map exists. Q7 row in \u00a7B is 'Any map, minimap, or map page in or reachable from the journal'. Scoring note: Q3/Q6/Q7 hits trigger AR-2.",
@@ -27,8 +42,19 @@
     "ui/surface.js FORBIDDEN_KINDS already contains 'map','map_pin','quest_marker','waypoint','minimap','objective_tracker'. Do NOT add 'map' as an element kind \u2014 add new kinds (map_terrain/map_place/map_player/map_local) so the forbidden-kind census still reads 0.",
     "UISurface.el(rec, draw) is the ONLY drawing path and it CLIPS to the declared rect \u2014 you cannot draw undeclared. So the map's census and its pixels cannot disagree.",
     "pois.json: 42 places with pos[] and kind. terrain.json `sites` carry r_flat / r_falloff \u2014 the WORLD's own definition of each place's extent, so 'personally stood in' = inside the site's own radius, non-arbitrary and drawn from world data.",
-    "terrain grid 193x222 @ 25 m => 42,846 cells; a discovery bitset is 5,356 bytes / ~7.1 KB base64 \u2014 cheap enough to save verbatim."
+    "terrain grid 193x222 @ 25 m => 42,846 cells; a discovery bitset is 5,356 bytes / ~7.1 KB base64 \u2014 cheap enough to save verbatim.",
+    "Load was 34.58 at the point the authoring phase finished \u2014 browser numbers taken after this must say so.",
+    "check-data 500/500 clean and check-quests 94 quests clean after all source changes.",
+    "map-probe 26/26 clean at load ~22. Self-tests: --break discovery turned C1/C4/L1 red, --break radius turned C1 red, both correct first time.",
+    "The --break world self-test CAUGHT A REAL DEFECT IN MY OWN PROBE, twice. (1) the break only recoloured regions.json, which is not a disconnection at all \u2014 fixed to sever ui._mapModel.cellHex. (2) C3 then still passed on a 92-in-5.9M antialiasing difference because the assertion was strict !==; fixed to require a >5% channel move (real change is ~32%, break is ~0.002%).",
+    "D1 originally asserted observe(x,z) THROWS. It does not \u2014 JS ignores surplus arguments. The honest guarantee is NO EFFECT, now measured as D1b (seenAt at the named far coordinate is unchanged).",
+    "BUG FOUND AND FIXED IN MY OWN SCREEN: the player chevron pointed exactly BACKWARDS. toScreen maps world +Z onto screen +y without flipping, so the body-local -> screen rotation must NOT negate the y term; the first version had a . Plausible-looking until you turn around.",
+    "Load reached 49.1 during the verification phase (four cores). Every number this piece reports is a count or a boolean, not a timing, so it is not distorted \u2014 but the wall clock of the capture pass was.",
+    "BUG FOUND AND FIXED IN MY OWN SCREEN: the player chevron pointed exactly BACKWARDS. toScreen maps world +Z onto screen +y without flipping, so the body-local to screen rotation must NOT negate the y term; the first version had a '* -1'. Plausible-looking until you turn around.",
+    "Load reached 49.1 during the verification phase (four cores). Every number this piece reports is a count or a boolean, not a timing, so it is not distorted - but the wall clock of the capture pass was.",
+    "map-probe clean run 29/29 at the point S11 was added; S11 itself failed FIRST TIME and correctly - queueInputs `f` is RELATIVE to the call (pipeline.js stores scriptBase=frame), so `f: getFrame()+1` scheduled the press thousands of frames out. A check that catches its own driver is the one you want.",
+    "tools/capture arrival gate REFUSED my first declaration: evidence_of must be an exact token of a closed vocabulary and 'menu-appearance' is not one. 'menu' is. The gate is real and it fired on a builder acting in good faith."
   ],
-  "next_step": "write corpus/00-doctrine/AMENDMENT-W1-MAP-01.md, then sim/discovery.js",
+  "next_step": "shots landing, then blog line + final gate run",
   "notes_for_successor": "Decision taken: roads are NOT drawn on the map. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is the first thing a hostile critic will call a line. Wayfinding stays with signposts (already in the world)."
 }

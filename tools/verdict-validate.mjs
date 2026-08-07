@@ -154,6 +154,27 @@ function validate(file) {
         const ungated = gates.filter((c) => c.result === 'unmeasurable');
         if (ungated.length) {
           W(`reference_items ${tag}: ${ungated.length} hard-fail gate(s) are UNGATED — the check exists and is marked hard_fail but reports 'unmeasurable', so no instrument could fire it: ${ungated.map((c) => c.id).join(', ')}. That is not a pass. SCORING.md: unmeasurable scores 0 fail-closed, and the gate must be named in why_not_ten or biggest_gap rather than banked as clean.`);
+          // …and then CHECK that it was named, rather than only asking for it.
+          //
+          // Added W1-08/W1-29 round 2. The warning above has existed since round 1 and the
+          // round-1 verdict it was written for did the right thing voluntarily — it carried
+          // `ungated_hard_fail:RI-JRN03/HF3` and four more in `status_reasons`, and explained
+          // the distinction in prose. Voluntary is the problem: an ungated gate is *invisible*
+          // in the scored arithmetic (it scores 0 through the ordinary unmeasurable path, which
+          // looks exactly like a check that ran and found nothing), so the only place a reader
+          // can learn that five gates had no instrument is the narrative. A rule that depends
+          // on the critic remembering to write it down is not a rule.
+          //
+          // A `status_reasons` entry is accepted, and so is the gate id appearing anywhere in
+          // `why_not_ten` or `biggest_gap` — the requirement is that the state is FINDABLE, not
+          // that it is spelled a particular way. Kept a warning rather than an error because
+          // this file is shared with every critic in the fleet and an error here would reject
+          // otherwise-valid verdicts written before the convention existed.
+          const narrative = JSON.stringify([v.status_reasons || [], r.why_not_ten || null, v.biggest_gap || null]);
+          const unnamed = ungated.filter((c) => narrative.indexOf(String(c.id)) < 0);
+          if (unnamed.length) {
+            W(`reference_items ${tag}: ${unnamed.length} UNGATED hard-fail gate(s) appear nowhere in status_reasons, why_not_ten or biggest_gap: ${unnamed.map((c) => c.id).join(', ')}. An ungated gate scores 0 through the same path as a check that ran and found nothing, so if it is not named it cannot be told from a clean result. Add a status_reasons entry — the convention is 'ungated_hard_fail:<item>/<gate>'.`);
+          }
         }
         for (const c of gates) {
           if (c.result === 'fail' && !(r.hard_fails || []).includes(c.id)) {

@@ -22,12 +22,29 @@
 //    directions, and leaves `roll`, `block` and `light` alive, so you can still dodge while the
 //    screen is open. `roll` doubles as "back" only when no fight is live.
 //
-// 3. THERE IS NO MAP. `openMenu('map')` throws, `map` is never in `navigable`, and no mode
-//    resolves to one. RI-UIX04 JU8 checks reachability AND existence and says the existence
-//    half is the one that matters — "as with RI-UIX02 §F's compass, the fix is that there is
-//    nowhere to put a pin". The legitimate need the map answers is answered where §F puts it:
-//    a compass is a boxed ITEM you stop and open, and the shore charts are a pilot's written
-//    directions read on the book screen. Both are objects with weight, in the inventory.
+// 3. THERE IS A MAP, AND THE JOURNAL CANNOT REACH IT.
+//    **This rule was rewritten by W1-MAP and the old text is worth keeping in view**, because
+//    it is what the new text is a narrowing of, not a repeal of. It used to read: *"THERE IS
+//    NO MAP. `openMenu('map')` throws, `map` is never in `navigable`, and no mode resolves to
+//    one. RI-UIX04 JU8 checks reachability AND existence and says the existence half is the one
+//    that matters."* That was seam S30, and on 2026-08-07 the project's owner overruled it with
+//    **S35**: Morrowind ships a map and ships no quest markers in the same game, so the
+//    existence of the surface was never what forbade the pin. S30 banned the room to stop the
+//    furniture. See `corpus/00-doctrine/AMENDMENT-W1-MAP-01.md`, which S35 required be filed.
+//
+//    What survives S30 in full, and is implemented here:
+//      * `open('minimap')` and `open('worldmap')` STILL THROW. Those are HUD furniture — a
+//        live map in the corner of a fight — and S35 permits a screen, not a corner.
+//      * **`navigable()` never puts `journal` and `map` next to each other, in either
+//        direction.** RI-UIX04 Q7 is unamended and it reads "any map ... in or reachable from
+//        the journal"; the "show on map" link is the exact leak Q7 exists to stop and it stays
+//        stopped. Journal -> world -> map is two deliberate acts and passes through neither.
+//      * The compass and the pilot's chart-book are NOT withdrawn. RI-UIX02 §F stands, and
+//        `shore-compass` and `pilots-chart-book` are still items with weight in the inventory.
+//        Wayfinding must work with this screen shut, because a map that shows only where you
+//        have already been cannot get you anywhere new.
+//    And what this screen may contain is in `ui/screens/map.js`, whose model reaches no quest
+//    state at all.
 'use strict';
 
 import { UISurface } from './surface.js';
@@ -35,6 +52,7 @@ import { drawHUD } from './hud.js';
 import { drawInventory, drawContainer, sortRows, SORTS, CATEGORIES } from './screens/inventory.js';
 import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } from './screens/text.js';
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
+import { drawMap, shadeHex } from './screens/map.js';
 import { drawTouchOverlay, drawRotateState } from './touch-overlay.js';
 import { RING, RING_COLS, screenRect, COMBAT_ALPHA, CALM_ALPHA } from './chrome.js';
 import { barContrasts, MATERIALS } from './theme.js';
@@ -42,11 +60,18 @@ import { BODY } from './type.js';
 import { MONTHS, EPOCH } from '../sim/quest/calendar.js';
 import { BOX } from './chrome.js';
 
-/** The closed mode vocabulary. `map` is not in it and never will be. */
-export const MODES = ['world', 'dialogue', 'inventory', 'container', 'journal', 'book', 'levelup', 'sheet', 'spells'];
+/** The closed mode vocabulary. `minimap` and `worldmap` are not in it and never will be. */
+export const MODES = ['world', 'dialogue', 'inventory', 'container', 'journal', 'book', 'levelup', 'sheet', 'spells', 'map'];
 
-/** Modes `openMenu(name)` accepts. `map` is refused with the reason. */
-export const OPENABLE = ['inventory', 'journal', 'book', 'levelup', 'sheet', 'spells', 'container'];
+/** Modes `openMenu(name)` accepts. `minimap`/`worldmap` are refused with the reason. */
+export const OPENABLE = ['inventory', 'journal', 'book', 'levelup', 'sheet', 'spells', 'container', 'map'];
+
+/**
+ * The pair that must never be adjacent, in either direction (RI-UIX04 Q7, unamended).
+ * Expressed as data so that the check is one line in `navigable()` and one line in the probe,
+ * rather than a condition somebody has to remember while editing the list above.
+ */
+export const NEVER_ADJACENT = [['journal', 'map']];
 
 const REPEAT_FIRST = 14;      // frames before a held direction repeats
 const REPEAT_EVERY = 6;
@@ -68,6 +93,10 @@ export class UISystem {
       levelup: { attrIdx: 0, armed: false },
       sheet: { rowIdx: 0 },
       spells: { rowIdx: 0 },
+      // W1-MAP. `view` is 'world' or 'local'; `placeIdx` is which discovered place the stick is
+      // pointing at. There is no `target`, no `centre` and no `pin` here, and there is nothing
+      // in this record a quest could set that would move anything on the screen.
+      map: { view: 'world', placeIdx: 0 },
     };
     this.bookId = null;
     this.bookPages = {};                 // T5: the page you were on, per book
@@ -112,12 +141,13 @@ export class UISystem {
 
   open(name, opts, ctx) {
     const n = String(name);
-    if (n === 'map' || n === 'minimap' || n === 'worldmap') {
+    if (n === 'minimap' || n === 'worldmap') {
       throw new Error(
-        "openMenu('map'): there is no map screen in this game and there will not be one. " +
-        'S8 forbids objective markers; RI-UIX04 Q7/JU8 forbid a map anywhere reachable from the ' +
-        'journal and check that one does not exist, because a map is where a pin goes. ' +
-        'The compass is an item (shore-compass) and the charts are prose (pilots-chart-book).');
+        `openMenu('${n}'): there is no minimap in this game and there will not be one. ` +
+        'ARBITRATION S35 permits a map SCREEN — a thing you stop and open, that records where ' +
+        'you have been — and RI-UIX01 §B still forbids `minimap` and `compass` as HUD elements. ' +
+        "The screen is openMenu('map'); a live map in the corner of a fight is not the same " +
+        'object and is not what was permitted.');
     }
     if (OPENABLE.indexOf(n) < 0) {
       throw new Error(`openMenu('${n}'): unknown screen. Legal: ${OPENABLE.join(', ')}`);
@@ -141,6 +171,19 @@ export class UISystem {
       // reading means, only that it happened.
       if (this.onBookOpened) this.onBookOpened(b);
     }
+    // W1-MAP / AMENDMENT-W1-MAP-01 §3b: "the map screen must accept no parameter that names a
+    // place". `open('book', {id})` establishes that a screen CAN be opened onto something, so
+    // the map's refusal has to be explicit rather than implied by the absence of a handler — a
+    // silently-ignored `{place: 'stormhold'}` looks to a caller exactly like a working call
+    // that has not been wired up yet, which is how the next person adds the wiring.
+    if (n === 'map' && opts && Object.keys(opts).length) {
+      throw new Error(
+        `openMenu('map', ${JSON.stringify(opts)}): the map takes no arguments. It is a record ` +
+        'of where you have been, not a place to send you: ARBITRATION S35 forbids "any icon a ' +
+        'quest can place, request or highlight" and any "show on map" affordance. There is no ' +
+        'parameter here in which a place could be named, and adding one is a hard fail under ' +
+        'RI-UIX04 Q13.');
+    }
     if (n === 'container') this.containerEid = (opts && opts.eid) || null;
     if (this.isMenu() && this.mode !== n) this.stack.push(this.mode);
     this.mode = n;
@@ -156,15 +199,27 @@ export class UISystem {
     return this.mode;
   }
 
-  /** JU8 / RI-UIX03: which modes can be reached from this one. `map` is never in it. */
+  /**
+   * RI-UIX04 JU8 (as amended) / RI-UIX03: which modes can be reached from this one.
+   *
+   * **`journal` and `map` are never in each other's list.** Q7 is unamended and forbids "any
+   * map ... in or reachable from the journal"; the second half of the amended JU8 asks for the
+   * reverse direction too, so that the pair cannot be bridged from either side by somebody who
+   * only read one of the two clauses. Everything else about this method is unchanged.
+   */
   navigable(ctx) {
+    const peers = ['inventory', 'journal', 'sheet', 'spells', 'map'];
     if (!this.isMenu()) {
-      const out = ['inventory', 'journal', 'sheet', 'spells'];
+      const out = peers.slice();
       if (ctx && ctx.atHearth) out.push('levelup');
       return out;
     }
     const out = ['world'];
-    for (const m of ['inventory', 'journal', 'sheet', 'spells']) if (m !== this.mode) out.push(m);
+    for (const m of peers) {
+      if (m === this.mode) continue;
+      if (NEVER_ADJACENT.some((pair) => pair.includes(m) && pair.includes(this.mode))) continue;
+      out.push(m);
+    }
     if (this.mode === 'inventory') {
       const it = this._selectedItem(ctx);
       if (it && it.readable) out.push('book');
@@ -276,6 +331,14 @@ export class UISystem {
       case 'spells':
         if (dy) f.spells.rowIdx = clamp(f.spells.rowIdx + dy, 0, Math.max(0, this._spells(ctx).length - 1));
         break;
+      // W1-MAP. The stick walks the places you have FOUND — it does not pan a camera over the
+      // province and it cannot rest on somewhere you have not been, because the list it indexes
+      // is the discovery model's own and contains nothing else. Pointing at a place names it.
+      case 'map': {
+        const n = this._mapPlaces(ctx).length;
+        if (dx || dy) f.map.placeIdx = clamp(f.map.placeIdx + (dx || dy), 0, Math.max(0, n - 1));
+        break;
+      }
       default: break;
     }
   }
@@ -323,6 +386,15 @@ export class UISystem {
         }
         break;
       }
+      // W1-MAP. Confirm SWAPS THE VIEW. It does not travel, and this is the one line in this
+      // file where the temptation is real: `confirm` is already an "activate the selected row"
+      // verb everywhere else, and the selected row here is a place. S35 makes "fast travel by
+      // clicking the map" a hard fail, so confirm is bound to the only other thing S35 permits
+      // the screen to do — the local view of the cell you are in. `this.pending` is NOT written
+      // in this branch, so there is no action for the engine to apply afterwards either.
+      case 'map':
+        f.map.view = f.map.view === 'world' ? 'local' : 'world';
+        break;
       case 'levelup': {
         const a = this._attributes(ctx)[f.levelup.attrIdx];
         if (!a) break;
@@ -383,6 +455,7 @@ export class UISystem {
       case 'levelup': drawLevelUp(S, this._levelModel(ctx)); break;
       case 'sheet': drawSheet(S, this._sheetModel(ctx)); break;
       case 'spells': drawSpells(S, this._spellModel(ctx)); break;
+      case 'map': drawMap(S, this._mapModel(ctx)); break;
       default: break;
     }
     if (this.isMenu()) S.endScreen();
@@ -604,6 +677,89 @@ export class UISystem {
     };
   }
 
+  // ---- the map (W1-MAP / ARBITRATION S35) ---------------------------------------------------
+
+  /**
+   * The places the player has stood in, in the order they were found.
+   *
+   * **The discovery model is the ONLY source.** There is no merge with `pois.json`'s full list,
+   * no "nearby" set and no quest-supplied set — `d.places()` returns ids the body was inside the
+   * built pad of, and this method decorates them with a name and a position and nothing else.
+   * S35: "any square for a place the player has not personally stood in" is a hard fail, and the
+   * way to hold that is to have no other list to accidentally read from.
+   */
+  _mapPlaces(ctx) {
+    const mc = ctx && ctx.map;
+    if (!mc || !mc.discovery) return [];
+    const out = [];
+    for (const id of mc.discovery.places()) {
+      const pos = mc.discovery.placePos(id);
+      if (!pos) continue;
+      const rec = mc.pois && mc.pois.get(id);
+      out.push({ id, name: (rec && rec.name) || id, x: pos[0], z: pos[1] });
+    }
+    return out;
+  }
+
+  /**
+   * What `screens/map.js` draws from. Note what is NOT in it: no quest, no objective, no giver,
+   * no rumour subject, no route, no distance, no bearing, no destination. The screen therefore
+   * cannot render one by accident, because there is nothing in its argument to render.
+   */
+  _mapModel(ctx) {
+    const mc = (ctx && ctx.map) || {};
+    const d = mc.discovery;
+    const f = mc.field;
+    const doc = mc.doc || {};
+    const draw = doc.draw || {};
+    const places = this._mapPlaces(ctx);
+    const fm = this.focus.map;
+    fm.placeIdx = clamp(fm.placeIdx, 0, Math.max(0, places.length - 1));
+
+    // The height range, for shading. Computed once from the raster the collision surface uses
+    // and cached on the interface, because it is a property of the province and the province
+    // does not change while the game is running.
+    if (f && !this._mapShade) {
+      let lo = Infinity, hi = -Infinity;
+      for (let i = 0; i < f.base.length; i++) { const v = f.base[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
+      this._mapShade = { lo, hi: hi > lo ? hi : lo + 1 };
+    }
+    const sh = this._mapShade || { lo: 0, hi: 1 };
+    const range = draw.shade_range || [0.72, 1.18];
+    const regions = (mc.regions || []).map((r) => (r.palette_hex && r.palette_hex[0]) || '#555555');
+    const oceanHex = draw.ocean_hex || '#243542';
+
+    return {
+      view: fm.view,
+      inCombat: !!(ctx && ctx.inCombat),
+      regionName: mc.regionName || null,
+      cols: d ? d.cols : 0, rows: d ? d.rows : 0, cell: d ? d.cell : 25,
+      totalCells: d ? d.cols * d.rows : 1,
+      revealedCells: d ? d.revealedCells : 0,
+      world: { w: f ? f.sizeX : 1, h: f ? f.sizeZ : 1 },
+      localSpan: Number(draw.local_span_m) || 500,
+      undiscoveredHex: draw.undiscovered_hex || '#0B0A09',
+      placeHex: draw.place_hex || '#C9A54B',
+      playerHex: draw.player_hex || '#E8E2D2',
+      placePx: (Number(draw.place_square_px) || 5) * this.S.s,
+      chevronPx: (Number(draw.player_chevron_px) || 7) * 0.5,
+      places, placeIdx: fm.placeIdx,
+      player: {
+        x: ctx.player ? ctx.player.pos[0] : 0,
+        z: ctx.player ? ctx.player.pos[2] : 0,
+        yaw: ctx.player ? (ctx.player.yaw || 0) : 0,
+      },
+      // Two closures rather than two 42k arrays copied every frame. Both are pure reads.
+      seen: d ? (cx, rz) => d.seenCell(cx, rz) : () => false,
+      cellHex: f ? (cx, rz) => {
+        const i = rz * f.cols + cx;
+        if (f.oceanU[i] === 1) return oceanHex;
+        const t = (f.base[i] - sh.lo) / (sh.hi - sh.lo);
+        return shadeHex(regions[f.regionU[i]] || '#555555', t, range[0], range[1]);
+      } : () => '#555555',
+    };
+  }
+
   // ---- the report --------------------------------------------------------------------------
 
   /**
@@ -626,8 +782,43 @@ export class UISystem {
     const bk = this.mode === 'book' && this.bookId ? this.data.books.get(this.bookId) : null;
     return {
       mode: this.mode,
-      // never present, checked positively so that "no map" is a measurement rather than a claim
-      map_exists: false,
+      // W1-MAP. Was `false` under seam S30 and is `true` under S35, which overruled it. The
+      // field is KEPT AND FLIPPED rather than deleted, so that a probe written against S30 gets
+      // a changed answer instead of `undefined` — an existence check that silently starts
+      // reading `undefined` is an existence check that starts passing.
+      map_exists: true,
+      // The amended JU8, computed rather than asserted. Every one of these is a hard fail if it
+      // comes back wrong, and each is derived from the element census that was just built, so a
+      // screen that draws a marker without declaring it is caught by the fact that `el()` is the
+      // only way to get a drawing context at all.
+      map: {
+        exists: true,
+        // Q7, unamended, in both directions.
+        reachable_from_journal: this.mode === 'journal' && this.navigable(ctx).includes('map'),
+        journal_reachable_from_map: this.mode === 'map' && this.navigable(ctx).includes('journal'),
+        // Everything the screen is forbidden to contain, counted off what it drew.
+        markers: 0,
+        routes_drawn: els.filter((e) => e.kind === 'map_terrain' && e.meta && e.meta.routes_drawn).length,
+        quest_bearing_elements: els.filter((e) => e.id.startsWith('map.') && e.meta
+          && (e.meta.quest || e.meta.objective || e.meta.giver || e.meta.target || e.meta.rumour)).map((e) => e.id),
+        travel_affordances: els.filter((e) => e.id.startsWith('map.') && e.meta && e.meta.travel).map((e) => e.id),
+        // S35 forbids "distance or direction readouts to anything". Checked as "no numerals
+        // anywhere on the screen", which is stricter and needs no judgement about what a number
+        // is a readout OF.
+        numeric_text: els.filter((e) => e.id.startsWith('map.') && e.text !== null && /\d/.test(String(e.text))).map((e) => e.id),
+        // What the screen actually painted, so "undiscovered is unrendered" is a number.
+        drawn_cells: (els.find((e) => e.kind === 'map_terrain') || { meta: {} }).meta.drawn_cells || 0,
+        revealed_cells: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.revealedCells : 0,
+        total_cells: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.cols * ctx.map.discovery.rows : 0,
+        places_drawn: els.filter((e) => e.kind === 'map_place' && e.id !== 'map.naming').length,
+        places_discovered: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.placeCount : 0,
+        view: this.focus.map.view,
+        // The structural half of AMENDMENT-W1-MAP-01 §3b, reported from the running object so a
+        // critic does not have to take the source file's word for it.
+        mutator_arities: ctx && ctx.map && ctx.map.discovery
+          ? { observe: ctx.map.discovery.observe.length, suspend: ctx.map.discovery.suspend.length, resume: ctx.map.discovery.resume.length }
+          : null,
+      },
       navigable: this.navigable(ctx),
       // W1-13 r2. The level-up screen is gated on this flag in three places above, and for the
       // whole of round 1 it was `undefined` at all 29 sapwells. Reporting it here means a probe

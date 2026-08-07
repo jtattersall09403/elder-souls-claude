@@ -1,0 +1,296 @@
+{
+  "tool": "tools/world/wayfind-journey.mjs",
+  "owner": "W1-05",
+  "question": "With the map shut — S35 gives it only ground already walked — can a walker who knows nothing but the NAME of the place get there on the road and the posts alone?",
+  "from": "Thorn",
+  "to": "Helstrom",
+  "phase_a": {
+    "arrived": false,
+    "lost": null,
+    "chain": [
+      "thorn",
+      "stormhold",
+      "helstrom"
+    ],
+    "hops": [
+      {
+        "from": "Thorn",
+        "to": "Stormhold",
+        "arrived": true,
+        "planned_m": 3550.3,
+        "signs_read": 6,
+        "left_town_on_deg": 104,
+        "exits_available": 2,
+        "lost": null
+      },
+      {
+        "from": "Stormhold",
+        "to": "Helstrom",
+        "arrived": false,
+        "planned_m": 12896.1,
+        "signs_read": 7,
+        "left_town_on_deg": 148,
+        "exits_available": 2,
+        "lost": null
+      }
+    ],
+    "failed_hop": "Stormhold->Helstrom",
+    "signs_read": 13,
+    "decisions": [
+      {
+        "hop": "Thorn->Stormhold",
+        "at_step": 38,
+        "sign": "sign-approach-archon-thorn-to",
+        "took": "Archon",
+        "bearing_deg": 182.8,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Thorn->Stormhold",
+        "at_step": 202,
+        "sign": "sign-way-way-archon-thorn-6",
+        "took": "Archon",
+        "bearing_deg": 186,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Thorn->Stormhold",
+        "at_step": 497,
+        "sign": "sign-approach-stormhold-thorn-to",
+        "took": "Stormhold",
+        "bearing_deg": 274.9,
+        "turned_deg": 4.9
+      },
+      {
+        "hop": "Thorn->Stormhold",
+        "at_step": 631,
+        "sign": "sign-way-way-stormhold-thorn-1",
+        "took": "Stormhold",
+        "bearing_deg": 281.5,
+        "turned_deg": 32.4
+      },
+      {
+        "hop": "Thorn->Stormhold",
+        "at_step": 1002,
+        "sign": "sign-way-way-stormhold-thorn-0",
+        "took": "Stormhold",
+        "bearing_deg": 268.7,
+        "turned_deg": 87.8
+      },
+      {
+        "hop": "Thorn->Stormhold",
+        "at_step": 1137,
+        "sign": "sign-approach-stormhold-thorn-from",
+        "took": "Stormhold",
+        "bearing_deg": 274.4,
+        "turned_deg": 17.7
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 41,
+        "sign": "sign-approach-stormhold-helstrom-from",
+        "took": "Helstrom",
+        "bearing_deg": 179.7,
+        "turned_deg": 28.7
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 2083,
+        "sign": "sign-approach-stormhold-thorn-from",
+        "took": "Thorn",
+        "bearing_deg": 93.3,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 2218,
+        "sign": "sign-way-way-stormhold-thorn-0",
+        "took": "Thorn",
+        "bearing_deg": 95.5,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 2589,
+        "sign": "sign-way-way-stormhold-thorn-1",
+        "took": "Thorn",
+        "bearing_deg": 69,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 2724,
+        "sign": "sign-approach-stormhold-thorn-to",
+        "took": "Thorn",
+        "bearing_deg": 76.8,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 2817,
+        "sign": "sign-approach-archon-thorn-to",
+        "took": "Archon",
+        "bearing_deg": 182.8,
+        "note": "destination not named; kept to the only road going my way"
+      },
+      {
+        "hop": "Stormhold->Helstrom",
+        "at_step": 2981,
+        "sign": "sign-way-way-archon-thorn-6",
+        "took": "Archon",
+        "bearing_deg": 186,
+        "note": "destination not named; kept to the only road going my way"
+      }
+    ],
+    "signs": [
+      {
+        "id": "sign-approach-archon-thorn-to",
+        "kind": "approach",
+        "at_m": 114,
+        "style": "knife-marks",
+        "legible": "glyph",
+        "arms": [
+          "Archon south",
+          "Thorn north-west"
+        ]
+      },
+      {
+        "id": "sign-way-way-archon-thorn-6",
+        "kind": "waystation",
+        "at_m": 606,
+        "style": "knife-marks",
+        "legible": "glyph",
+        "arms": [
+          "Thorn north-west",
+          "Archon south"
+        ]
+      },
+      {
+        "id": "sign-approach-stormhold-thorn-to",
+        "kind": "approach",
+        "at_m": 1491,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Stormhold west",
+          "Thorn east"
+        ]
+      },
+      {
+        "id": "sign-way-way-stormhold-thorn-1",
+        "kind": "waystation",
+        "at_m": 1893,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Thorn east",
+          "Stormhold west"
+        ]
+      },
+      {
+        "id": "sign-way-way-stormhold-thorn-0",
+        "kind": "waystation",
+        "at_m": 3006,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Stormhold west",
+          "Thorn east"
+        ]
+      },
+      {
+        "id": "sign-approach-stormhold-thorn-from",
+        "kind": "approach",
+        "at_m": 3411,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Thorn east",
+          "Stormhold west"
+        ]
+      },
+      {
+        "id": "sign-approach-stormhold-helstrom-from",
+        "kind": "approach",
+        "at_m": 123,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Helstrom south",
+          "Stormhold north-west"
+        ]
+      },
+      {
+        "id": "sign-approach-stormhold-thorn-from",
+        "kind": "approach",
+        "at_m": 6249,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Thorn east",
+          "Stormhold west"
+        ]
+      },
+      {
+        "id": "sign-way-way-stormhold-thorn-0",
+        "kind": "waystation",
+        "at_m": 6654,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Stormhold west",
+          "Thorn east"
+        ]
+      },
+      {
+        "id": "sign-way-way-stormhold-thorn-1",
+        "kind": "waystation",
+        "at_m": 7767,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Thorn east",
+          "Stormhold west"
+        ]
+      },
+      {
+        "id": "sign-approach-stormhold-thorn-to",
+        "kind": "approach",
+        "at_m": 8172,
+        "style": "painted-board",
+        "legible": "letters",
+        "arms": [
+          "Stormhold west",
+          "Thorn east"
+        ]
+      },
+      {
+        "id": "sign-approach-archon-thorn-to",
+        "kind": "approach",
+        "at_m": 8451,
+        "style": "knife-marks",
+        "legible": "glyph",
+        "arms": [
+          "Archon south",
+          "Thorn north-west"
+        ]
+      },
+      {
+        "id": "sign-way-way-archon-thorn-6",
+        "kind": "waystation",
+        "at_m": 8943,
+        "style": "knife-marks",
+        "legible": "glyph",
+        "arms": [
+          "Thorn north-west",
+          "Archon south"
+        ]
+      }
+    ]
+  },
+  "ablation_signposts_removed": {
+    "note": "The same walker with field.nearestSign() stubbed to null. If this still arrives, the signposts were decoration and phase A proved nothing.",
+    "arrived": false,
+    "lost": null
+  }
+}

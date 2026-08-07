@@ -733,7 +733,23 @@ const LONG = ['Thorn', 'Stormhold', 'Helstrom', 'Blackrose', 'Soulrest'];
 const routeOf = (names) => {
   let m = 0;
   for (let i = 0; i + 1 < names.length; i++) m += legAt(names[i], names[i + 1]);
-  return { settlements: names, legs: names.slice(0, -1).map((n, i) => `${n}-${names[i + 1]}`.toLowerCase()), metres: +m.toFixed(1), walk_min: +(m / 2 / 60).toFixed(2), jog_min: +(m / 3.2 / 60).toFixed(2) };
+  // W1-05. The leg ids are RESOLVED against the built legs, not composed from the settlement
+  // names. Composing them assumed the leg was authored in the same direction the route walks it,
+  // and for THE LONG WAY it was not: the route starts Thorn -> Stormhold and the leg is
+  // `stormhold-thorn`, so `long_way.legs[0]` was `thorn-stormhold` and resolved to nothing.
+  // Nothing broke, because `Engine.walkRoute` resolves legs by SETTLEMENT PAIR and never reads
+  // this array — which is exactly why it sat there wrong. `build-hearths.mjs` DOES walk
+  // `named_routes.crossing.legs` by id, and only escaped because the crossing happens to be
+  // authored in its walking direction. A field that is right by luck is a trap set for whoever
+  // reads it next.
+  const legIds = [];
+  for (let i = 0; i + 1 < names.length; i++) {
+    const a = names[i], b = names[i + 1];
+    const leg = legs.find((l) => (l.from === a && l.to === b) || (l.from === b && l.to === a));
+    if (!leg) throw new Error(`routeOf: no built leg between ${a} and ${b}`);
+    legIds.push(leg.id);
+  }
+  return { settlements: names, legs: legIds, metres: +m.toFixed(1), walk_min: +(m / 2 / 60).toFixed(2), jog_min: +(m / 3.2 / 60).toFixed(2) };
 };
 
 const doc = {

@@ -34,14 +34,14 @@
     { "id": "the-root-golem", "infos": [
       { "a": "rootkeeper", "d": 30, "x": "It is not a creature and it is not a made thing, supplicant; it is a piece of a root that has been asked to stand up, and it is put down again when the asking stops, and the asking is not always ours.", "to": ["the-great-hist", "the-marsh-creatures"] } ] },
     { "id": "the-crab-boil", "infos": [
-      { "a": "mudborn", "d": 10, "x": "Everybody's pot on one fire at the turn of the season, dry-one, and a person with nothing can put in a handful of weed and take out a bowl and nobody says anything, and that is the best law this province has.", "to": ["the-mire-crab", "the-marsh-food"] } ] },
+      { "a": "mudborn", "d": 10, "x": "Every pot on one fire at the turn of the season, dry-one, and a person with nothing can put in a handful of weed and take out a bowl and not a word is said, and that is the best law this province has.", "to": ["the-mire-crab", "the-marsh-food"] } ] },
     { "id": "the-marsh-food", "infos": [
       { "a": "sapcutter", "x": "Crab, eel, root-bread, salt fish. Friend, and rice where the Empire got the fields in.", "to": ["the-crab-boil", "the-root-bread", "gideon"] } ] },
     { "id": "the-root-bread", "infos": [
       { "a": "mudborn", "d": 10, "x": "It is grey and it is heavy and it does not go off for a week, dry-one, and I have been given it in nine settlements and it has been the same bread in all nine, which is comforting in a way I cannot explain.", "to": ["the-marsh-food"] } ] },
     { "id": "the-blight-storms", "infos": [
       { "a": "legionary", "x": "Off the Morrowind border. Four a year. Shut the gate. Do not breathe it.", "to": ["the-border-road", "the-ash-cough"] },
-      { "a": "archivist", "x": "The storms are Morrowind's and arrive here diminished, which the Office records as a meteorological nuisance and which the border villages record as the reason nobody plants on the north slope any more.", "to": ["the-ash-cough", "the-border-road"] } ] },
+      { "a": "archivist", "x": "The storms are Morrowind's and arrive here diminished, which the Office records as a meteorological nuisance and which the border villages record as the reason the north slope is not planted any more.", "to": ["the-ash-cough", "the-border-road"] } ] },
     { "id": "the-ash-cough", "infos": [
       { "a": "mudborn", "d": 10, "x": "It is not the vat cough and it is not the fever, dry-one, it is a third thing that comes off the border and goes when the wind changes, and the physicians treat all three the same way, which is to say not at all.", "to": ["the-blight-storms", "the-physicians", "the-vat-cough"] } ] },
     { "id": "the-wet-season", "infos": [
@@ -59,7 +59,7 @@
     { "id": "the-egg-tending", "infos": [
       { "a": "rootkeeper", "d": 25, "x": "A clutch is tended by whoever is nearest and belongs to no one, and an outsider hears that as neglect until they notice that a thing which belongs to no one cannot be sold.", "to": ["the-hatchery", "the-naming", "the-covenant"] } ] },
     { "id": "the-marsh-fever", "infos": [
-      { "a": "mudborn", "d": 10, "x": "Not the great fever, the ordinary one, dry-one, and everybody has had it twice and nobody counts it, and it takes one child in six and nobody counts that either.", "to": ["the-fever-year", "the-physicians"] } ] },
+      { "a": "mudborn", "d": 10, "x": "Not the great fever, the ordinary one, dry-one, and we have all had it twice and it is not counted, and it takes one child in six and that is not counted either.", "to": ["the-fever-year", "the-physicians"] } ] },
     { "id": "the-sap-draught", "infos": [
       { "a": "rootkeeper", "d": 40, "x": "It is given to the dying and to the newly named and to no one else, and what it does is not healing, supplicant, it is that the tree is asked to hold something for a while.", "to": ["hist-sap", "the-covenant", "the-holding"] } ] },
     { "id": "the-holding", "infos": [
@@ -73,17 +73,17 @@
     { "id": "the-marsh-magic", "infos": [
       { "a": "archivist", "x": "There is no guild here and the Office has never been able to establish who instructs whom, which is not evidence of an absence of practitioners but of a training arrangement that does not resemble a school.", "to": ["the-sap-draught", "the-holding", "the-hedge-teachers"] } ] },
     { "id": "the-hedge-teachers", "infos": [
-      { "a": "mudborn", "d": 10, "x": "There is a woman on the Clay Moor who will teach anybody anything for a week's food, dry-one, and there is a man at Lilmoth who will teach nobody anything for any money, and between them that is all the instruction in the province.", "to": ["the-marsh-magic", "the-clay-moor", "lilmoth"] } ] },
+      { "a": "mudborn", "d": 10, "x": "There is a woman on the Clay Moor who will teach a stranger anything for a week's food, dry-one, and there is a man at Lilmoth who will not teach at any price, and between them that is all the instruction in the province.", "to": ["the-marsh-magic", "the-clay-moor", "lilmoth"] } ] },
     { "id": "the-old-imperial-forts", "infos": [
-      { "a": "legionary", "x": "Eleven built. Three garrisoned. The rest are stone and frogs.", "to": ["the-ninth-cohort", "the-drowned-road"] } ] },
+      { "a": "legionary", "x": "Fourteen built. Three garrisoned. The rest are stone and frogs.", "to": ["the-ninth-cohort", "the-drowned-road"] } ] },
     { "id": "the-milestones", "infos": [
       { "a": "archivist", "x": "Imperial milestones survive along the southern trunk and give distances to a place that is not on any current map, which is generally taken as a corruption of a name and which I now believe is a settlement that was removed from the register rather than from the ground.", "to": ["the-drowned-road", "the-unfinished-survey", "the-removed-name"] } ] },
     { "id": "the-removed-name", "quest": "q-removed-name", "infos": [
-      { "a": "archivist", "d": 55, "x": "The name has been struck from the register in the same hand throughout, on eleven separate sheets, which is not an erasure by a clerk correcting an error but an instruction being carried out, and instructions of that kind are minuted somewhere.", "to": ["the-milestones", "the-office-annexe", "the-catalogue"], "q": true, "res": { "journal": ["q-removed-name", 10] } } ] },
+      { "a": "archivist", "d": 55, "x": "The name has been struck from the register in the same hand throughout, on thirty separate sheets, which is not an erasure by a clerk correcting an error but an instruction being carried out, and instructions of that kind are minuted somewhere.", "to": ["the-milestones", "the-office-annexe", "the-catalogue"], "q": true, "res": { "journal": ["q-removed-name", 10] } } ] },
     { "id": "the-strider-analogue", "infos": [
       { "a": "sapcutter", "x": "The great crabs on the coast road. Six passengers. Friend, slow, but you arrive dry.", "to": ["the-cart-roads", "the-fare"] } ] },
     { "id": "the-fare", "infos": [
-      { "a": "legionary", "x": "Fixed by the Office. Posted at the station. Nobody charges the posted fare.", "to": ["the-strider-analogue", "the-provincial-office"] } ] },
+      { "a": "legionary", "x": "Fixed by the Office. Posted at the station. The posted fare is not what you pay.", "to": ["the-strider-analogue", "the-provincial-office"] } ] },
     { "id": "the-guild-guides", "infos": [
       { "a": "archivist", "d": 30, "x": "Members of certain houses are moved between certain halls by an arrangement which the Office declines to describe and taxes at a flat rate, and the flat rate is the only reason anyone outside those houses knows the arrangement exists.", "to": ["the-provincial-office", "the-strider-analogue"] } ] },
     { "id": "the-mark-and-recall", "infos": [
@@ -97,7 +97,7 @@
       { "a": "sapcutter", "x": "Drakes here, septims north, shells in the deep marsh. Friend, this one takes all three and prefers the first.", "to": ["the-cart-roads", "the-deep-marshes"] } ] },
     { "id": "the-outlander-question", "infos": [
       { "a": "rootkeeper", "d": 20, "x": "A stranger is not unwelcome, supplicant, a stranger is unplaced, and the entire difficulty is that the Empire has never understood that those are different problems and has spent two centuries apologising for the wrong one.", "to": ["the-covenant", "the-imperial-claim", "the-lukiul"] },
-      { "a": "sapcutter", "x": "Everybody is from somewhere. Friend, this one has been to most of them.", "to": ["the-lukiul"] } ] },
+      { "a": "sapcutter", "x": "All of us are from somewhere. Friend, this one has been to most of them.", "to": ["the-lukiul"] } ] },
     { "id": "the-lukiul", "infos": [
       { "a": "archivist", "x": "The word is generally translated assimilated and is more nearly rendered salted, and it is applied by interior Argonians to coastal ones with a precision and a cruelty that the Imperial ear entirely fails to register.", "to": ["the-outlander-question", "the-deep-kin", "jel"] },
       { "a": "mudborn", "d": 10, "x": "I have been called it and I have called other people it, dry-one, and the second time was worse and I have not done it since.", "to": ["the-outlander-question"] } ] },
@@ -110,9 +110,9 @@
     { "id": "the-marauders-coast", "infos": [
       { "a": "sapcutter", "x": "No cart goes. No boat stops. Friend, that is the whole entry.", "to": ["the-naga-bands", "the-thirteen-regions"] } ] },
     { "id": "the-hive", "infos": [
-      { "a": "archivist", "x": "The region is named for a structure nobody has surveyed and everybody describes identically, which is unusual: independent accounts of an unsurveyed thing normally diverge, and these do not.", "to": ["the-thirteen-regions", "the-unfinished-survey"] } ] },
+      { "a": "archivist", "x": "The region is named for a structure that has never been surveyed and that every account describes identically, which is unusual: independent accounts of an unsurveyed thing normally diverge, and these do not.", "to": ["the-thirteen-regions", "the-unfinished-survey"] } ] },
     { "id": "the-valus-ridge", "infos": [
-      { "a": "legionary", "x": "Mountains. Snow, even. Nobody believes it until they see it.", "to": ["the-thirteen-regions", "the-border-road"] } ] },
+      { "a": "legionary", "x": "Mountains. Snow, even. It is not believed until it is seen.", "to": ["the-thirteen-regions", "the-border-road"] } ] },
     { "id": "topal-bay", "infos": [
       { "a": "sapcutter", "x": "West water. Warm. Full of boats. Friend, that is where the money comes in.", "to": ["the-thirteen-regions", "lilmoth"] } ] },
     { "id": "the-padomaic", "infos": [
@@ -131,30 +131,30 @@
       { "a": "legionary", "x": "Fourth bell in the garrison towns. Off the street. No exceptions, citizen.", "to": ["the-night-watch", "the-sanction"] },
       { "a": "mudborn", "d": 10, "x": "A curfew is a law about beds, dry-one, and it is enforced hardest on the people who do not have one, which is either an accident or the point and I have stopped asking which.", "to": ["the-night-watch"] } ] },
     { "id": "the-fishing-rights", "infos": [
-      { "a": "sapcutter", "x": "Above the tide line, somebody's. Below it, nobody's. Friend, the fish are below it.", "to": ["tide-law", "the-fish-market"] } ] },
+      { "a": "sapcutter", "x": "Above the tide line it has an owner. Below it, none. Friend, the fish are below it.", "to": ["tide-law", "the-fish-market"] } ] },
     { "id": "the-ferrymen", "infos": [
       { "a": "sapcutter", "x": "At every ford that has no boards. Friend, they set the price when you are halfway across.", "to": ["the-weeping-ford", "the-river-boats"] } ] },
     { "id": "the-drowned-chapel", "infos": [
-      { "a": "archivist", "x": "An Imperial chapel of the first colonial period, now standing in four feet of water, still consecrated, and used by nobody except the swimmers, who are not of that faith and have never explained why they go in.", "to": ["the-drowned-quarter", "the-swimmers", "lilmoth"] } ] },
+      { "a": "archivist", "x": "An Imperial chapel of the first colonial period, now standing in four feet of water, still consecrated, and used by none except the swimmers, who are not of that faith and have never explained why they go in.", "to": ["the-drowned-quarter", "the-swimmers", "lilmoth"] } ] },
     { "id": "the-bell-that-rings", "infos": [
-      { "a": "mudborn", "cell": "lilmoth", "d": 15, "x": "The chapel down there still has its bell and it goes at the spring tide, dry-one, and the Cohort says it is the current, and I have listened to a current for eleven years and it does not keep time.", "to": ["the-drowned-chapel", "the-swimmers", "the-bad-dreams"] } ] },
+      { "a": "mudborn", "cell": "lilmoth", "d": 15, "x": "The chapel down there still has its bell and it goes at the spring tide, dry-one, and the Cohort says it is the current, and I have listened to a current for thirty years and it does not keep time.", "to": ["the-drowned-chapel", "the-swimmers", "the-bad-dreams"] } ] },
     { "id": "the-tribunal-question", "infos": [
-      { "a": "magister", "d": 25, "x": "If you are asking whether the living gods of Morrowind are worshipped in this province, provincial, the answer is that they are worshipped by four hundred Dunmer in six estates and by nobody else, and that this has never troubled them.", "to": ["house-dres", "the-covenant"] } ] },
+      { "a": "magister", "d": 25, "x": "If you are asking whether the living gods of Morrowind are worshipped in this province, provincial, the answer is that they are worshipped by four hundred Dunmer in six estates and by none else, and that this has never troubled them.", "to": ["house-dres", "the-covenant"] } ] },
     { "id": "the-nine-here", "infos": [
       { "a": "archivist", "x": "Chapels at Gideon, Stormhold and Blackrose, and attendance figures that the Imperial Cult reports as encouraging and that anyone who has stood at the back of one would report differently.", "to": ["the-chapel-of-akatosh", "the-imperial-claim"] } ] },
     { "id": "the-marsh-burial", "infos": [
-      { "a": "rootkeeper", "d": 25, "x": "The body is returned to the ground the well is in, and where there is no well there is now an argument, and the argument at Soulrest has been running for two generations and has been settled by everybody separately.", "to": ["the-old-ground", "the-covenant", "soulrest"] } ] },
+      { "a": "rootkeeper", "d": 25, "x": "The body is returned to the ground the well is in, and where there is no well there is now an argument, and the argument at Soulrest has been running for two generations and has been settled by each house separately.", "to": ["the-old-ground", "the-covenant", "soulrest"] } ] },
     { "id": "the-drums", "infos": [
       { "a": "sapcutter", "d": 20, "x": "Heard at night from the interior. Not signals. Friend, this one asked once and was told they were counting.", "to": ["the-deep-marshes", "the-deep-kin", "the-listening-floor"] } ] },
     { "id": "the-marsh-lights", "infos": [
-      { "a": "mudborn", "d": 10, "x": "Green, low, over the water, and every child is told they are gas and every adult still stops walking when one crosses the path, dry-one, and I have never met anybody who could tell me why they stop.", "to": ["the-boards", "the-deep-marshes"] } ] },
+      { "a": "mudborn", "d": 10, "x": "Green, low, over the water, and every child is told they are gas and every adult still stops walking when one crosses the path, dry-one, and I have never met a soul who could tell me why they stop.", "to": ["the-boards", "the-deep-marshes"] } ] },
     { "id": "the-first-tide", "infos": [
       { "a": "rootkeeper", "d": 30, "x": "Once a year the water comes further than it should and everything below the mark is given up without argument, and it is the one day in the calendar when the coast keeps the covenant without being asked.", "to": ["tide-law", "the-covenant", "the-flood-marks"] } ] },
     { "id": "the-count-of-hands", "infos": [
-      { "a": "rootkeeper", "d": 35, "x": "A keeper counts what a well has given and what it has been given, in hands, and the two columns are read aloud at the year's end in front of everybody who drew from it, and a village where the columns do not meet knows exactly whose fault it is.", "to": ["the-sapwells", "the-covenant", "the-quiet-wells"] } ] },
+      { "a": "rootkeeper", "d": 35, "x": "A keeper counts what a well has given and what it has been given, in hands, and the two columns are read aloud at the year's end in front of all who drew from it, and a village where the columns do not meet knows exactly whose fault it is.", "to": ["the-sapwells", "the-covenant", "the-quiet-wells"] } ] },
     { "id": "the-thin-years", "infos": [
       { "a": "sapcutter", "d": 20, "x": "Six years of less sap every year. Friend, this one is not a keeper and even this one can count.", "to": ["the-quiet-wells", "the-thinning", "the-count-of-hands"] } ] },
     { "id": "the-empty-nets", "infos": [
-      { "a": "mudborn", "d": 10, "x": "The fish went first and nobody made anything of it because fish move, dry-one, and then the wells started and now people are putting the two together and going quiet about it.", "to": ["the-quiet-wells", "the-fish-market", "the-bad-dreams"] } ] }
+      { "a": "mudborn", "d": 10, "x": "The fish went first and nothing was made of it because fish move, dry-one, and then the wells started and now people are putting the two together and going quiet about it.", "to": ["the-quiet-wells", "the-fish-market", "the-bad-dreams"] } ] }
   ]
 }

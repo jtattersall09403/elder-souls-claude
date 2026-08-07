@@ -217,11 +217,81 @@ if (MODE === 'across-death') {
     if (inDir && fsExists(path.join(inDir, 'journey.json'))) {
       rep.cross_check = { journey_run: path.join(inDir, 'journey.json'), note: 'RI-JRN06 M-D4 is also computed inside journey-run; the two must agree.' };
     }
+
+    // ---- THE EXCLUSION LIST MUST STILL BE ABLE TO GO RED -----------------------------------
+    //
+    // ROUND 2 added eleven names to `DEATH_VOLATILE` — the player's own animation phase, weapon
+    // sockets, stagger and actionability — because round 1's list named `pose.` but not the
+    // `fight.*` block another piece had since added to the save, and 108 bone rotations were
+    // being reported as seam-S6 violations. Widening an exclusion list is the single easiest way
+    // to turn a red instrument green while changing nothing, so the widening is not allowed to
+    // stand on the author's word: this control moves a path that is NOT in the list, in the same
+    // window, and the run fails if the diff does not notice.
+    //
+    // The mutation is a bounty and a faction rank — a crime record and a standing, two of the
+    // exact things HF2 exists to protect and neither of them anywhere near the group.
+    {
+      const t = await handle.page.evaluate(async () => {
+        const H = window.__HARNESS;
+        H.setRenderRate(0);
+        H.loadState('default');
+        const hs = H.listHearths();
+        const hr = hs.hearths.find((x) => x.kind === 'settlement') || hs.hearths[0];
+        H.teleport(hr.pos[0], hr.pos[2]); H.stepFrames(2);
+        H.restAt(hr.id);
+        const b0 = H.saveState();
+        b0.character.souls_held = 4200;
+        b0.crime.bounty = { legion: 500 };
+        b0.factions = Object.assign({}, b0.factions, { legion: { rank: 3, expelled: false } });
+        H.restoreState(b0);
+        H.teleport(hr.pos[0] + 55, hr.pos[2] + 22); H.stepFrames(6);
+        const before = JSON.parse(JSON.stringify(H.saveState()));
+        H.damagePlayer(1e6, { stagger: false });
+        H.stepFrames(1);
+        // THE BREAK: something a death must never touch, moved WHILE the surface is up.
+        //
+        // The bounty is perturbed at `crime.ledger`, NOT at `crime.bounty`. The first attempt
+        // moved `crime.bounty` and the diff did not see it — correctly: `crime.bounty` is a
+        // PROJECTION that `sim.stealth.mirrorToSave()` rewrites from the ledger every frame, so
+        // a hand-edit there is overwritten within one step and the control was measuring its own
+        // mistake rather than the instrument. The ledger is the source and it survives.
+        const mid = H.saveState();
+        if (mid.crime.ledger) mid.crime.ledger.bounty = { imperial: 4000, settlement: {}, interior: 0 };
+        mid.factions = Object.assign({}, mid.factions, { legion: { rank: 0, expelled: true } });
+        mid.character.hp = 0;
+        H.restoreState(mid);
+        H.stepFrames(220);
+        const after = JSON.parse(JSON.stringify(H.saveState()));
+        return { before, after };
+      });
+      const A = flat(t.before, '', {}), B = flat(t.after, '', {});
+      const isVol = (p) => DEATH_VOLATILE.some((v) => p === v || p.startsWith(v + '.') || p.startsWith(v + '[') || (v.endsWith('.') && p.startsWith(v)));
+      const offend = [];
+      for (const k of new Set([...Object.keys(A), ...Object.keys(B)])) {
+        if (JSON.stringify(A[k]) === JSON.stringify(B[k])) continue;
+        if (!isVol(k)) offend.push({ path: k.replace(/\[\d+\]/g, '[]'), before: A[k] ?? null, after: B[k] ?? null });
+      }
+      const sawBounty = offend.some((o) => o.path.startsWith('crime.bounty'));
+      const sawFaction = offend.some((o) => o.path.startsWith('factions'));
+      rep.falsifiability = {
+        what: 'a bounty and a faction rank moved across the death on purpose; neither is in DEATH_VOLATILE',
+        non_volatile_paths_seen: offend.length,
+        saw_the_bounty: sawBounty,
+        saw_the_faction: sawFaction,
+        sample: offend.slice(0, 8),
+        instrument_goes_red: sawBounty && sawFaction,
+      };
+      log(`${rep.falsifiability.instrument_goes_red ? 'RED  ' : 'GREEN'} falsifiability control — ${offend.length} non-volatile paths seen (bounty ${sawBounty}, faction ${sawFaction})`);
+    }
   } finally {
     rep.page_errors = handle.errors;
     await handle.close();
   }
-  rep.pass = rep.trials.every((t) => t.pass) && rep.page_errors.length === 0;
+  // A green run is only worth reading if the control went red. An exclusion list that swallows
+  // a bounty and a faction rank is not an instrument, and this run must not exit 0 pretending
+  // otherwise.
+  rep.pass = rep.trials.every((t) => t.pass) && rep.page_errors.length === 0
+    && !!(rep.falsifiability && rep.falsifiability.instrument_goes_red);
   writeJson(path.join(outDir, 'state-diff-across-death.json'), rep);
   if (args.json) process.stdout.write(JSON.stringify(rep, null, 2) + '\n');
   else process.stdout.write(path.join(outDir, 'state-diff-across-death.json') + '\n');

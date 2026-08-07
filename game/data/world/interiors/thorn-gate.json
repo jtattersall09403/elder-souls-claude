@@ -1,0 +1,279 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "thorn-gate",
+ "name": "The Thorn Gate",
+ "settlement": "thorn",
+ "cell_kind": "named",
+ "interior_kind": "gate",
+ "service": null,
+ "faction": null,
+ "exterior_door": [
+  3813.14,
+  13.31,
+  867.6
+ ],
+ "continuity": {
+  "building": "thorn-gate",
+  "building_offset_m": [
+   -6.86,
+   0,
+   8.6
+  ],
+  "building_yaw_deg": 141.4,
+  "exterior_footprint_m": [
+   14.8,
+   16.8
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   7.2
+  ],
+  "exterior_spawn": [
+   3813.14,
+   13.31,
+   869.4
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -7.4,
+   7.4
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -8.4,
+   8.4
+  ]
+ },
+ "floor_area_m2": 248.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.36
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "thorn.weaver3.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.weaver3.r0.lamp0",
+   "pos": [
+    1,
+    1.6,
+    3.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.weaver3.r0.lamp1",
+   "pos": [
+    -0.8999999999999999,
+    1.6,
+    3.6999999999999993
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.weaver3.r0.lamp2",
+   "pos": [
+    -2.8,
+    1.6,
+    3.4000000000000004
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook6.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.cook6.r1.lamp0",
+   "pos": [
+    0,
+    1.6,
+    2.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook6.r1.lamp1",
+   "pos": [
+    -1.9,
+    1.6,
+    2.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook6.r1.lamp2",
+   "pos": [
+    -3.2,
+    1.6,
+    2.4000000000000004
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.legionary10.r0.lamp0",
+   "pos": [
+    -2.8,
+    1.6,
+    3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r0.lamp1",
+   "pos": [
+    2.3,
+    1.6,
+    3.0999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r0.lamp2",
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    2.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary13.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.legionary13.r0.lamp0",
+   "pos": [
+    -1.5,
+    1.6,
+    1.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary13.r0.lamp1",
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    1.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "toll_bar",
+  "warden_desk",
+  "key_rail",
+  "spear_rack",
+  "brazier_iron",
+  "watch_stool",
+  "tally_board",
+  "rope_coil",
+  "lamp_hanging",
+  "water_butt",
+  "cloak_hook",
+  "gate_winch",
+  "name_book",
+  "bench_wait",
+  "tho_rotted_hall",
+  "tho_thorn_thatch",
+  "tho_lean_to",
+  "tho_stilt_house"
+ ],
+ "property_zones": [
+  "thorn.weaver3.r0",
+  "thorn.cook6.r1",
+  "thorn.legionary10.r0",
+  "thorn.legionary13.r0"
+ ],
+ "containers": [
+  "thorn.weaver3.r0.0",
+  "thorn.weaver3.r0.4",
+  "thorn.cook6.r1.1",
+  "thorn.cook6.r1.3",
+  "thorn.cook6.r1.5"
+ ],
+ "unique_item": {
+  "id": "thorn-gate-unique",
+  "name": "the warden’s name-book, every traveller since the charter",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:thorn-weaver-3"
+ },
+ "readable": {
+  "id": "thorn-gate-readable",
+  "title": "Who Passes Thorn"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 20
+}

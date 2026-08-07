@@ -75,10 +75,28 @@ if (wantsHelp(args)) usage(USAGE);
 const OUT = path.resolve(String(args.out || path.join(REPO_ROOT, 'reports/journeys/input-checks')));
 const ONLY = args.only ? String(args.only) : null;
 
+// AGENT-PROTOCOL: "an agent that reports a number taken under load should say so." Recorded in
+// the output rather than left to the operator's memory of the shell they ran it from.
+const LOADAVG = (() => {
+  try { return fs.readFileSync('/proc/loadavg', 'utf8').trim().split(/\s+/).slice(0, 3).map(Number); } catch { return null; }
+})();
+
 const results = [];
+/**
+ * When true, `record()` still computes a verdict but neither logs it nor lets it stand as a
+ * measurement — the caller reads it off the tail of `results` and splices it away.
+ *
+ * This exists for exactly one caller: the `M-N*` self-test leg, which grades a SYNTHETIC naive
+ * transcript. That leg has to run the real `naiveChecks()` — a leg that re-implements the scorer
+ * proves only that the leg's copy of the scorer works — but a synthetic transcript is not a
+ * measurement of anything, and a line reading `[FAIL] M-N5` in the log of a run nobody performed
+ * a naive pass for is exactly the kind of artifact a later critic would quote in good faith.
+ */
+let RECORD_SUPPRESSED = false;
 function record(id, item, what, ok, detail, threshold) {
   if (ONLY && !id.startsWith(ONLY)) return;
   results.push({ id, item, what, status: ok === null ? 'unmeasurable' : (ok ? 'pass' : 'FAIL'), threshold, detail });
+  if (RECORD_SUPPRESSED) return;
   const tag = ok === null ? 'N/A ' : ok ? 'OK  ' : 'FAIL';
   log(`  [${tag}] ${id.padEnd(6)} ${what}${ok === null ? '' : ' = ' + JSON.stringify(detail).slice(0, 150)}`);
 }
@@ -241,28 +259,69 @@ async function main() {
 
   const groups = args.group ? new Set(String(args.group).split(',').map((s) => s.trim())) : null;
   const want = (g) => !groups || groups.has(g);
-  try {
-    if (want('desktop')) await desktopChecks(page, h, ev);
-    if (want('pad')) await padChecks(page, h, ev);
-    if (want('touch')) await touchChecks(page, h, ev);
-    if (want('viewport')) await viewportChecks(page, h, ev);
-    if (want('rebind')) await rebindChecks(page, h, ev);
-    if (want('naive')) {
-      let transcript = null, tpath = null;
-      if (args.naive) {
-        tpath = path.resolve(String(args.naive));
-        if (!fs.existsSync(tpath)) die(EXIT.USAGE, `--naive: no transcript at ${tpath}`);
-        transcript = JSON.parse(fs.readFileSync(tpath, 'utf8'));
-      }
-      naiveChecks(transcript, tpath);
+
+  /**
+   * Run one group and survive it.
+   *
+   * ROUND 2'S OWN BUG, RECORDED WHERE IT HAPPENED. The previous shape wrapped every group in a
+   * single `try` whose `catch` called `die()` — and `die()` exits before `writeJson`. So the
+   * first throw anywhere in the suite discarded every check already measured, and the operator
+   * saw an error string instead of a file. That is the same failure the whole item is about:
+   * "did not run" and "ran and found nothing" collapsed into one output.
+   *
+   * A group that throws is now recorded as an `unmeasurable` group-level entry with the
+   * exception quoted, and the run continues to the next group. The file is always written.
+   *
+   * `desktop` also RELOADS the page (M-K8's cold-profile leg), so the page is re-proved live
+   * between groups rather than assumed. A group measured against a half-booted engine produces
+   * confident nonsense — `getInputState()` has a `real`-less fallback that answers every field.
+   */
+  const runGroup = async (name, fn) => {
+    if (!want(name)) return;
+    try {
+      await fn();
+    } catch (e) {
+      record(`GROUP/${name}`, 'RI-JRN03|RI-JRN04', `the ${name} group threw and could not complete`, null,
+        { reason: 'exception', error: String(e && e.message).slice(0, 500), stack: String(e && e.stack || '').slice(0, 900) },
+        'n/a — the group did not run, which is not the same as the group finding nothing');
+      log(`  [!!] group ${name} threw: ${e && e.message}`);
     }
-  } catch (e) {
-    await handle.close();
-    die(EXIT.PAGE_ERROR === undefined ? 12 : EXIT.PAGE_ERROR, 'a check threw: ' + (e && e.message), { stack: e && e.stack });
+    const live = await ev(() => {
+      const E = window.__ENGINE;
+      return { real: !!(E && E.real), attached: !!(E && E.real && E.real.attached), harness: !!window.__HARNESS, helpers: !!window.__IC };
+    }).catch((e) => ({ real: false, attached: false, harness: false, helpers: false, err: String(e && e.message) }));
+    if (!live.real || !live.attached || !live.helpers) {
+      log(`  [!!] the page is not measurable after group ${name} (${JSON.stringify(live)}) — reattaching`);
+      try { await reattachAfterReload(page, ev); } catch (e) {
+        record(`PAGE/after-${name}`, 'RI-JRN03|RI-JRN04', 'the page could not be returned to a measurable state', null,
+          { after_group: name, observed: live, error: String(e && e.message).slice(0, 400) },
+          'n/a — every later group in this run is unmeasurable');
+      }
+    }
+  };
+
+  await runGroup('desktop', () => desktopChecks(page, h, ev));
+  await runGroup('pad', () => padChecks(page, h, ev));
+  await runGroup('touch', () => touchChecks(page, h, ev));
+  await runGroup('viewport', () => viewportChecks(page, h, ev));
+  await runGroup('rebind', () => rebindChecks(page, h, ev));
+  if (want('naive')) {
+    let transcript = null, tpath = null;
+    if (args.naive) {
+      tpath = path.resolve(String(args.naive));
+      if (!fs.existsSync(tpath)) die(EXIT.USAGE, `--naive: no transcript at ${tpath}`);
+      transcript = JSON.parse(fs.readFileSync(tpath, 'utf8'));
+    }
+    naiveChecks(transcript, tpath);
   }
 
   let selfTest = null;
-  if (args['self-test']) selfTest = await runSelfTest(page, h, ev);
+  if (args['self-test']) {
+    try { selfTest = await runSelfTest(page, h, ev); } catch (e) {
+      selfTest = { legs: [], vacuous: [], error: String(e && e.message).slice(0, 400) };
+      log(`  [!!] --self-test threw: ${e && e.message}`);
+    }
+  }
 
   await handle.close();
 
@@ -276,6 +335,7 @@ async function main() {
     shim: args.shim || null,
     entry: args.entry || 'game/index.html',
     ran_at: new Date().toISOString(),
+    load_at_start: LOADAVG,
     counts: { total: results.length, pass: results.length - fails.length - na.length, fail: fails.length, unmeasurable: na.length },
     self_test: selfTest,
     checks: results,
@@ -658,6 +718,61 @@ async function desktopChecks(page, h, ev) {
   await guard('M-K22', 'RI-JRN03', () => mk22(page, h, ev));
 }
 
+/**
+ * Wait for a RELOADED page to finish booting, and prove it, before anything measures on it.
+ *
+ * THIS FUNCTION EXISTS BECAUSE ITS ABSENCE COST THE WHOLE SUITE, SILENTLY.
+ * Round 2's first draft did:
+ *
+ *     await page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.getInputState));
+ *     await page.evaluate(() => window.__HARNESS.ready()).catch(() => {});
+ *
+ * Both lines are wrong in the same direction. `window.__HARNESS` is installed with its whole
+ * method table BEFORE `Engine.boot()` resolves, so the first line returns while the engine is
+ * still building — `engine.real` is assigned deep inside `boot()`, well after the harness is
+ * reachable. The second line is the real damage: `page.evaluate` has a 30 s default timeout, and
+ * on a box carrying a dozen agents (measured here at load 17–22 on four cores) the boot exceeds
+ * it routinely — so `ready()` rejected, `.catch(() => {})` ATE the rejection, and the suite
+ * carried on against a half-built engine.
+ *
+ * What that looked like from the outside: `M-K8` and `M-K9` flapped between pass and FAIL on
+ * identical builds (`getInputState()` falls back to a `real`-less stub that reports
+ * `pointerLocked: false`, so M-K9 counted ten frames of "gameplay with no lock and no menu" and
+ * red-flagged a hard-fail gate that was never violated), and then `padChecks` threw
+ * `gamepad(): no real input path on this engine`, which took `main()` to `die(12)` — and
+ * `die()` runs BEFORE `writeJson`, so a run that had already measured twenty checks wrote
+ * nothing at all.
+ *
+ * So: wait on the thing that actually matters (`__ENGINE.real`, the object the pad path needs),
+ * give it a timeout appropriate to a loaded box, and **throw** rather than swallow. A throw here
+ * reaches `guard()` and becomes `M-K8: unmeasurable`, which is the honest report; silence
+ * produced two false results and destroyed the file.
+ */
+async function reattachAfterReload(page, ev) {
+  await page.waitForFunction(
+    () => !!(window.__HARNESS && window.__HARNESS.getInputState && window.__ENGINE && window.__ENGINE.real),
+    null, { timeout: 240000 },
+  );
+  // `ready()` still resolves the boot promise; it is awaited with an explicit budget instead of
+  // `page.evaluate`'s hidden 30 s one, and its failure is not swallowed.
+  await page.evaluate(async () => {
+    if (window.__HARNESS.ready) await window.__HARNESS.ready();
+    return true;
+  }, undefined, { timeout: 240000 });
+  const live = await ev(() => {
+    const H = window.__HARNESS;
+    H.setMode('play-instrumented'); H.setRenderRate(0);
+    // The positive proof, taken through the same accessor the pad checks use. `real` present but
+    // unattached is still not a page a pad check can run on.
+    return { real: !!(window.__ENGINE && window.__ENGINE.real), attached: !!(window.__ENGINE.real && window.__ENGINE.real.attached), bindings: !!H.getInputState().bindings };
+  });
+  if (!live.real || !live.attached || !live.bindings) {
+    throw new Error(`the reloaded page never finished booting a real input path: ${JSON.stringify(live)}`);
+  }
+  await page.evaluate(PAGE_HELPERS);
+  return live;
+}
+
 /** Run a check; a throw becomes `unmeasurable` with the reason, never a silent absence. */
 async function guard(id, item, fn) {
   try { await fn(); } catch (e) {
@@ -726,10 +841,7 @@ async function mk8(page, h, ev) {
   // `waitUntil: 'load'` waits for every subresource and this box runs several agents at once;
   // the boot is observable directly, so it is waited for directly.
   await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 });
-  await page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.getInputState), null, { timeout: 180000 });
-  await page.evaluate(() => (window.__HARNESS.ready ? window.__HARNESS.ready() : true)).catch(() => {});
-  await ev(() => { window.__HARNESS.setMode('play-instrumented'); window.__HARNESS.setRenderRate(0); return true; });
-  await page.evaluate(PAGE_HELPERS);
+  await reattachAfterReload(page, ev);
 
   const before = await ev(() => {
     const H = window.__HARNESS;
@@ -885,6 +997,7 @@ async function mk21(page, h, ev) {
           // `interact`, written in fiction by someone who was there. Anything readable and not
           // takeable is counted as a candidate; the verb it teaches is read off the record.
           if (!e.readable) continue;
+          if (found.some((f) => f.eid === e.eid)) continue;   // a prop that survives a reset must not be counted twice
           found.push({ state: s, eid: e.eid, name: e.name, pos: e.pos, takeable: e.takeable, readable: e.readable, teaches: (e.readable && e.readable.teaches) || null });
         }
       } catch (err) { errors.push({ state: s, error: String(err && err.message).slice(0, 120) }); }
@@ -895,19 +1008,40 @@ async function mk21(page, h, ev) {
   const DS4 = ['interact', 'light', 'roll', 'block', 'sprint'];
   const taught = new Set(r.found.map((f) => f.teaches).filter(Boolean));
   const missingVerbs = DS4.filter((v) => !taught.has(v));
-  const withinRange = r.found.filter((f) => f.distance_to_first_use_m === undefined || f.distance_to_first_use_m <= 8);
+
+  // DS3 IS A DISTANCE AND IT IS MEASURED, NOT ASSUMED.
+  // Round 2's first draft read `f.distance_to_first_use_m === undefined || <= 8` — and nothing
+  // ever set that field, so every inscription counted as in range and the 8 m threshold could
+  // not be failed by any build. That is the same defect as a grep over an empty set, one field
+  // along. The distance is now computed from the inscription's own position to the position of
+  // the situation its record names, in the XZ plane, and an inscription that names NO situation
+  // is a MISS rather than a pass: DS3 requires the placement, so a record that does not state
+  // where the verb is first needed has not met it.
+  const dist = (a, b) => (a && b ? Math.hypot(a[0] - b[0], a[2] - b[2]) : null);
+  const placed = r.found.map((f) => {
+    const s = f.readable && f.readable.situation;
+    const d = s ? dist(f.pos, s.pos) : null;
+    return { eid: f.eid, state: f.state, teaches: f.teaches, situation: s ? s.what : null, distance_m: d === null ? null : Number(d.toFixed(2)) };
+  });
+  const outOfRange = placed.filter((p) => p.distance_m === null || p.distance_m > 8);
+  const beforeChoice = r.found.filter((f) => f.readable && f.readable.before_first_choice);
+
   const ok = r.found.length > 0
     && r.found.length <= 14
+    && beforeChoice.length <= 6
     && missingVerbs.length === 0
-    && withinRange.length === r.found.length;
+    && outOfRange.length === 0;
   record('M-K21', 'RI-JRN03', 'inscription census: how many, and how far from the situation that needs the verb',
     ok, {
       inscriptions_found: r.found.length,
+      before_first_choice: beforeChoice.length,
       states_swept: r.states_swept,
       state_errors: r.errors,
       verbs_taught: [...taught],
       ds4_verbs_without_an_inscription: missingVerbs,
       budget: { before_first_choice_max: 6, whole_game_max: 14, within_m: 8 },
+      placement: placed,
+      out_of_range: outOfRange,
       inscriptions: r.found.slice(0, 20),
       vacuous_pass_refused: r.found.length === 0
         ? 'ZERO inscriptions exist. All three of this check\'s thresholds are UPPER bounds, so an empty world satisfies every one of them — 0 <= 6, 0 <= 14, and "100% within 8 m" over an empty set. That is a grep over nothing reading as a pass and it is refused. DS2/DS3/DS4 require the mechanism to EXIST: §F is the only way this game is allowed to teach a verb, because DS1 sets the text budget at zero.'
@@ -928,8 +1062,17 @@ async function mk21(page, h, ev) {
  * complete set of prop and NPC names it can spawn — and those are checked here in full, plus a
  * live capture of the drawn element so the model and the pixels are both covered.
  */
+/**
+ * M-K22's DS5 matcher, published to `--self-test` after `mk22()` has built it.
+ *
+ * The self-test leg must use the SAME predicate the check grades with, not a second copy of it.
+ * A leg that re-implements the matcher proves that the leg's copy works, which is precisely the
+ * kind of self-agreeing measurement this round exists to remove.
+ */
+let CONTROL_NAME_HIT = null;
+
 async function mk22(page, h, ev) {
-  const STATES = ['barge-hold', 'default', 'settlement_primary_street', 'helstrom-market', 'thorn-hall', 'npc_showcase', 'stormhold-street'];
+  const STATES =['barge-hold', 'default', 'settlement_primary_street', 'helstrom-market', 'thorn-hall', 'npc_showcase', 'stormhold-street'];
   const r = await ev((states) => {
     const H = window.__HARNESS;
     const names = [];
@@ -952,32 +1095,70 @@ async function mk22(page, h, ev) {
     return { names, drawn };
   }, STATES);
 
-  // The control lexicon. Key names as WORDS (a prop called "Reed" must not trip on the letter
-  // R), mouse-button names, and the gamepad glyph names L7 talks about.
-  const CONTROL_WORDS = [
-    'press', 'click', 'tap ', 'hold ', 'button', 'trigger', 'bumper', 'd-pad', 'dpad',
+  // The control lexicon. Key names as WORDS, mouse-button names, and the gamepad glyph names L7
+  // talks about.
+  //
+  // THE MATCH IS ON WORD BOUNDARIES, AND THAT IS THE WHOLE CORRECTION HERE.
+  // The previous draft carried this exact comment — "Key names as WORDS (a prop called 'Reed'
+  // must not trip on the letter R)" — above `CONTROL_WORDS.filter((w) => low.includes(w))`,
+  // a plain substring test. The comment stated the rule and the code did not implement it, and
+  // the run this replaces reported **sixteen** violations, every one of them an ordinary
+  // Argonian name: `rt` inside "Sho**rt**er", `lt` inside "sti**lt** town", `alt` inside
+  // "S**alt**-Hand". That is a hard-fail gate (HF5) raised against the prose team by a bug in
+  // the grader — the mirror image of M-K20's round-1 defect, and just as dishonest: a check
+  // that fires on nothing real trains its reader to ignore it.
+  //
+  // The tokens fall into two classes and they cannot share a matcher. The two-letter pad glyphs
+  // (`rt`, `lt`, `rb`, `r1`…) are only ever violations when they stand alone, so they are
+  // anchored on both sides. The phrases (`press`, `left click`, `d-pad`) are anchored on the
+  // left and allowed to inflect on the right, so "presses" and "buttons" are still caught.
+  // `-` is a word boundary in JS regex, which is what makes "Salt-Hand" safe and "L-Trigger"
+  // still a hit.
+  const GLYPH_TOKENS = ['rb', 'lb', 'rt', 'lt', 'r1', 'r2', 'l1', 'l2', 'r3', 'l3', 'lsb', 'rsb'];
+  const CONTROL_PHRASES = [
+    'press', 'click', 'tap', 'hold', 'button', 'trigger', 'bumper', 'd-pad', 'dpad',
     'left click', 'right click', 'middle click', 'mouse', 'space', 'spacebar', 'escape', 'shift',
-    'ctrl', 'control key', 'alt', 'enter key', 'tab key', 'keyboard', 'gamepad', 'controller',
-    'square', 'triangle', 'circle button', 'cross button', 'x button', 'a button', 'b button',
-    'y button', 'rb', 'lb', 'rt', 'lt', 'r1', 'r2', 'l1', 'l2', 'r3', 'l3',
+    'ctrl', 'control key', 'alt key', 'enter key', 'tab key', 'keyboard', 'gamepad', 'controller',
+    'square button', 'triangle button', 'circle button', 'cross button', 'x button', 'a button',
+    'b button', 'y button', 'thumbstick', 'analog stick',
   ];
+  const PHRASE_RES = CONTROL_PHRASES.map((w) => [w, new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i')]);
   const SINGLE_KEY = /(^|[^A-Za-z])(W|A|S|D|E|Q|R|F|V|G|X|M|Tab|Esc|Shift|Space)([^A-Za-z]|$)/;
   const hit = (s) => {
-    const low = String(s).toLowerCase();
-    const words = CONTROL_WORDS.filter((w) => low.includes(w));
+    const str = String(s);
+    const words = PHRASE_RES.filter(([, re]) => re.test(str)).map(([w]) => w);
+    const glyphs = GLYPH_TOKENS.filter((g) => new RegExp(`\\b${g}\\b`, 'i').test(str));
     // A bare capital key letter only counts when it sits next to an imperative — "Pull" is
     // legal and "Pull (E)" is not.
-    const bare = SINGLE_KEY.test(String(s)) && /\b(press|hit|tap|hold|push|use)\b/i.test(low);
-    return words.length || bare ? { s, words, bare } : null;
+    const bare = SINGLE_KEY.test(str) && /\b(press|hit|tap|hold|push|use)\b/i.test(str);
+    return words.length || glyphs.length || bare ? { s: str, words, glyphs, bare } : null;
   };
+  CONTROL_NAME_HIT = hit;   // shared with --self-test's M-K22 leg; see the declaration
+  // The matcher's own control, computed here and published in the detail so a critic does not
+  // have to take the word-boundary claim on trust: three strings that MUST hit and three that
+  // MUST NOT, evaluated by the same `hit()` the check uses. If this block is ever wrong the
+  // check reports itself unmeasurable rather than grading with a broken matcher.
+  const MATCHER_POSITIVE = ['Press E to pull', 'Hold RT to charge', 'Left click to swing'];
+  const MATCHER_NEGATIVE = ['Waits-For-Salt the Shorter of rot quarter', 'Silent-Reed Bone-Setter of stilt town', 'A tithe-gourd, empty'];
+  const matcherOk = MATCHER_POSITIVE.every((x) => hit(x)) && MATCHER_NEGATIVE.every((x) => !hit(x));
   const nameViolations = r.names.map((n) => hit(n.name)).filter(Boolean);
   const drawnViolations = r.drawn.map((d) => hit(d.text || '')).filter(Boolean);
   const glyphsSeen = [...new Set(r.drawn.map((d) => d.meta && d.meta.glyph).filter(Boolean))];
+  if (!matcherOk) {
+    record('M-K22', 'RI-JRN03', 'no interaction prompt names a key, a mouse button or a gamepad glyph as TEXT',
+      null, {
+        reason: 'THE MATCHER FAILED ITS OWN CONTROL. Grading with a lexicon that cannot separate "Hold RT to charge" from "the Shorter" is how this check reported sixteen Argonian names as hard-fail violations. Unmeasurable, not pass, not fail.',
+        must_hit: MATCHER_POSITIVE.map((x) => ({ s: x, hit: !!hit(x) })),
+        must_not_hit: MATCHER_NEGATIVE.map((x) => ({ s: x, hit: hit(x) })),
+      }, '0 prompts contain a control name as text (DS5, HF5)');
+    return;
+  }
   record('M-K22', 'RI-JRN03', 'no interaction prompt names a key, a mouse button or a gamepad glyph as TEXT',
     nameViolations.length === 0 && drawnViolations.length === 0 && r.names.length > 0,
     {
       prompt_strings_enumerated: r.names.length,
       prompts_captured_live: r.drawn.length,
+      matcher_control: { must_hit: MATCHER_POSITIVE, must_not_hit: MATCHER_NEGATIVE, passed: matcherOk },
       violations_in_names: nameViolations,
       violations_in_drawn_prompts: drawnViolations,
       // L7's affordance is a GLYPH and not a string, which is exactly what makes it legal under
@@ -2404,6 +2585,165 @@ async function runSelfTest(page, h, ev) {
         return d.controls_drawn === 0 && d.model_controls > 0;
       },
       cleanup: () => ev(() => { if (window.__ENGINE.__uiCtxOrig) window.__ENGINE._uiCtx = window.__ENGINE.__uiCtxOrig; }),
+    },
+    {
+      // The round-1 verdict recorded M-P24 as "inherits the inert register" from M-K20. They
+      // share one capture, so a leg that only asserts M-K20 goes red leaves the SECOND hard-fail
+      // gate (HF7) unproven. Same toast, M-P24's own leg of the budget asserted separately.
+      id: 'M-P24', what: 'draw "Tap the Controller button" — HF7\'s forbidden string, on a non-settings surface',
+      apply: () => ev(() => { window.__HARNESS.uiToast('Tap the Controller button', 600); window.__HARNESS.getUIState(); }),
+      check: async () => {
+        const b = await ev(() => window.__IC.instructionBudget());
+        return !!(b && b.measurable && b.jrn04 && b.jrn04.violations.some((v) => /Tap |Controller/.test(v.text)));
+      },
+      cleanup: () => ev(() => window.__HARNESS.uiToast(null)),
+    },
+    {
+      // M-K21's SUBJECT is the population, so the perturbation removes it. This is the leg that
+      // would have caught the state this build was actually in — 0 inscriptions, and all three
+      // of the check's UPPER-bound thresholds satisfied by having none of the thing they cap.
+      id: 'M-K21', what: 'delete the inscription register — the state the census found on this build',
+      apply: () => ev(() => {
+        const E = window.__ENGINE;
+        E.__inscOrig = E.__inscOrig === undefined ? E.data.inscriptions : E.__inscOrig;
+        E.data.inscriptions = null;
+      }),
+      check: async () => {
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          const seen = [];
+          for (const s of ['barge-hold', 'helstrom-market', 'stormhold-street', 'dungeon_primary', 'thorn-hall']) {
+            H.reset({ state: s }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(2);
+            for (const e of H.listEntities()) if (e.readable) seen.push(e.eid);
+          }
+          return { readable: seen.length };
+        });
+        // Red means the census can no longer satisfy DS4's five verbs, which is the check's
+        // `ok`. Zero found is precisely the vacuous pass mk21() refuses.
+        return d.readable === 0;
+      },
+      cleanup: () => ev(() => { const E = window.__ENGINE; if (E.__inscOrig !== undefined) E.data.inscriptions = E.__inscOrig; }),
+    },
+    {
+      // DS5 / HF5's other half. The perturbation puts a control name into the string the game
+      // DRAWS at an interactable — "Press E to open" where "Pull" belongs — and the leg grades it
+      // with `mk22()`'s own matcher rather than a second copy.
+      id: 'M-K22', what: 'make the drawn interaction prompt say "Press E to open" instead of naming the thing',
+      apply: () => ev(() => {
+        const E = window.__ENGINE;
+        E.__ip22 = E.__ip22 || E._interactPrompt;
+        E._interactPrompt = function () { const p = E.__ip22.call(this); if (p) p.text = 'Press E to open'; return p; };
+      }),
+      check: async () => {
+        if (!CONTROL_NAME_HIT) return false;   // mk22 did not run, so its matcher is not available
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          H.reset({ state: 'barge-hold' }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(2);
+          const t = H.listEntities().find((e) => e.kind === 'object' || e.kind === 'npc');
+          if (!t) return { texts: [] };
+          H.teleport(t.pos[0] + 0.6, t.pos[2] + 0.6); H.stepFrames(2);
+          const el = (H.getUIState().elements || []).find((x) => x.id === 'hud.prompt');
+          return { texts: el ? [el.text] : [] };
+        });
+        return d.texts.length > 0 && d.texts.every((s) => !!CONTROL_NAME_HIT(s));
+      },
+      cleanup: () => ev(() => { if (window.__ENGINE.__ip22) window.__ENGINE._interactPrompt = window.__ENGINE.__ip22; }),
+    },
+    {
+      // M-K8's subject is a SURFACE that exists only to buy the gesture pointer lock needs. The
+      // perturbation raises exactly that string on a non-settings surface and asserts the
+      // click-to-play lexicon catches it. HF3.
+      id: 'M-K8', what: 'raise a "Click to play" surface — HF3\'s click-to-play overlay, in one string',
+      apply: () => ev(() => { window.__HARNESS.uiToast('Click to play', 600); window.__HARNESS.getUIState(); }),
+      check: async () => {
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          H.stepFrames(2); H.getUIState();
+          const t = H.getRenderedText ? H.getRenderedText({}) : null;
+          const CTP = ['click to play', 'click to start', 'click to enable', 'enable mouse look', 'tap to start', 'tap to play', 'click anywhere', 'press any key'];
+          const hits = [];
+          for (const s of ((t && t.distinct) || [])) for (const w of CTP) if (String(s).toLowerCase().includes(w)) hits.push(s);
+          return { measurable: !!(t && t.measurable), hits };
+        });
+        return d.measurable && d.hits.length > 0;
+      },
+      cleanup: () => ev(() => window.__HARNESS.uiToast(null)),
+    },
+    {
+      // M-K9 counts FRAMES of "gameplay with no pointer lock and no menu" and its threshold is 0,
+      // so the perturbation has to produce that state and the check has to count it. Escape is
+      // swallowed before it can open the menu, while the user agent releases the lock anyway —
+      // which is exactly "How we lose" #3, the build that keeps running with an invisible cursor
+      // over the boss. HF4.
+      id: 'M-K9', what: 'swallow Escape so the lock is released and no menu opens',
+      apply: () => ev(() => {
+        const E = window.__ENGINE;
+        E.__omOrig = E.__omOrig || E.openMenu;
+        E.openMenu = function () { return false; };
+      }),
+      check: async () => {
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+          const canvas = document.querySelector('canvas#view');
+          const lock = (el) => Object.defineProperty(document, 'pointerLockElement', { configurable: true, get: () => el });
+          lock(canvas); document.dispatchEvent(new Event('pointerlockchange'));
+          H.stepFrames(2);
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', bubbles: true, cancelable: true }));
+          lock(null); document.dispatchEvent(new Event('pointerlockchange'));
+          let orphan = 0;
+          for (let f = 0; f < 10; f++) {
+            H.stepFrames(1);
+            const st = H.getInputState();
+            if (!st.pointerLocked && !st.menuOpen) orphan++;
+          }
+          window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape', bubbles: true }));
+          lock(null); document.dispatchEvent(new Event('pointerlockchange'));
+          return { orphan_frames: orphan };
+        });
+        return d.orphan_frames > 0;
+      },
+      cleanup: () => ev(() => { if (window.__ENGINE.__omOrig) window.__ENGINE.openMenu = window.__ENGINE.__omOrig; }),
+    },
+    {
+      // THE NAIVE SCORER IS AN INSTRUMENT TOO. It reads a transcript, and a transcript is a data
+      // model like any other, so the same rule applies: break it and watch the checks go red.
+      // This leg is pure — it feeds `naiveChecks()` a synthetic transcript that violates every
+      // M-N threshold at once and asserts each one FAILs, then feeds it a clean one and asserts
+      // each one passes. It touches no page, which is why it is safe to run last.
+      id: 'M-N*', what: 'score a synthetic naive transcript that violates every M-N threshold',
+      apply: async () => {},
+      check: async () => {
+        const bad = {
+          schema: 'elder-souls/naive-pass@1', isolation: 'enforced', isolation_attested_by: 'input-checks --self-test (SYNTHETIC — never a real measurement)',
+          preregistration: { move: 'arrow keys', look: 'arrow keys', attack: 'Z', block: 'X', dodge: 'C', run: 'V', interact: 'B', menu: 'N' },
+          actions_found: [{ action: 'light', found_by: 'the_game_told_me', quote: 'Press E' }],
+          dead_presses: [{ control: 'KeyG', triage: 'bound_but_silent' }],
+          loss_of_control: [{ what: 'right-click opened the browser menu', recovered_unaided: false, involved: 'context_menu' }],
+          confusion: [{ what: 'a', triage: 'defect' }, { what: 'b', triage: 'defect' }, { what: 'c', triage: 'defect' }],
+          hotplug_description: 'I walked into the wall and died, then had to reload.',
+        };
+        const good = {
+          schema: 'elder-souls/naive-pass@1', isolation: 'enforced', isolation_attested_by: 'input-checks --self-test (SYNTHETIC)',
+          preregistration: { move: 'WASD', look: 'mouse', attack: 'left click', block: 'right click', dodge: 'space', run: 'shift', interact: 'E', menu: 'Esc' },
+          actions_found: new Array(12).fill(0).map((_, i) => ({ action: `a${i}`, found_by: i === 0 ? 'writing_in_the_world' : 'guessed', quote: null })),
+          dead_presses: [{ control: 'KeyG', triage: 'unbound_and_harmless' }],
+          loss_of_control: [],
+          confusion: [{ what: 'what the hist wants', triage: 'legitimate_mystery' }],
+          hotplug_description: 'The pad came out mid-swing and the swing finished. I put it back and kept going.',
+        };
+        const IDS = ['M-N1', 'M-N2', 'M-N3', 'M-N5', 'M-N7', 'M-P-N1', 'M-P-N3', 'M-P-N5'];
+        if (ONLY) return false;   // `--only` filters `record()`, so the leg could not see its own results
+        const score = (t) => {
+          const mark = results.length;
+          RECORD_SUPPRESSED = true;
+          try { naiveChecks(t, '(synthetic, --self-test)'); } finally { RECORD_SUPPRESSED = false; }
+          const got = results.splice(mark);   // scored off the record: a synthetic transcript is not a measurement
+          return Object.fromEntries(got.map((r) => [r.id, r.status]));
+        };
+        const red = score(bad); const green = score(good);
+        return IDS.every((id) => red[id] === 'FAIL') && IDS.every((id) => green[id] === 'pass');
+      },
     },
   );
 

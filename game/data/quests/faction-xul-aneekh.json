@@ -98,7 +98,7 @@
         {
           "index": 92,
           "state": "success",
-          "text": "I carried the bundle and I asked what was in it before I set it down, which nobody does. Teel-Ashaan told me, and then he told me the count for the season, and Ee-Vashum told me the count for last season, and the two of them argued in front of me about what the difference means.",
+          "text": "I carried the bundle and I asked what was in it before I set it down, which is not done. Teel-Ashaan told me, and then he told me the count for the season, and Ee-Vashum told me the count for last season, and the two of them argued in front of me about what the difference means.",
           "records_belief": false
         }
       ],
@@ -136,7 +136,10 @@
             "npc_disposition": {
               "speaker-teel-ashaan": 15,
               "rootkeeper-ashul-tei": 15
-            }
+            },
+            "joins_faction": [
+              "the_xul_aneekh"
+            ]
           }
         },
         {
@@ -166,7 +169,10 @@
               "speaker-teel-ashaan": 15,
               "ee-vashum": 25,
               "rootkeeper-ashul-tei": 15
-            }
+            },
+            "joins_faction": [
+              "the_xul_aneekh"
+            ]
           }
         }
       ],
@@ -218,7 +224,8 @@
           ]
         }
       ],
-      "notes": "Rank 0. The errand that establishes the faction's texture and geography, and hides the whole line's engine in plain sight: three wrong clutches this season, none last. RI-CRM02 §5's world-side payoff begins the moment this rank is held — interior camps stop being hostile on sight."
+      "notes": "Rank 0. The errand that establishes the faction's texture and geography, and hides the whole line's engine in plain sight: three wrong clutches this season, none last. RI-CRM02 §5's world-side payoff begins the moment this rank is held — interior camps stop being hostile on sight.",
+      "joins_note": "Every ending of the entry quest ends with the player taken on — on the roll, named by the hollow, sent again. That is the JOIN, and it is authored here rather than derived, because mutual exclusion now keys on membership: reputation paid sideways by another faction's quest is a qualification, not a career (see game/src/sim/quest/machine.js heldRank)."
     },
     {
       "id": "Q-XULA-01",
@@ -257,13 +264,13 @@
         {
           "index": 22,
           "state": "active",
-          "text": "The band is eleven and four of them are hatchlings and their elder has done this walk twice before, both times behind somebody else. She asked me whether the hollow had named me recently. I said this season. She said nothing for a while.",
+          "text": "The band is fourteen and four of them are hatchlings and their elder has done this walk twice before, both times walking behind another. She asked me whether the hollow had named me recently. I said this season. She said nothing for a while.",
           "records_belief": false
         },
         {
           "index": 32,
           "state": "active",
-          "text": "There are Sap-Cutters working a well half a day off the track, which nobody mentioned, and the band's elder has seen them and has stopped walking.",
+          "text": "There are Sap-Cutters working a well half a day off the track, which was not mentioned, and the band's elder has seen them and has stopped walking.",
           "records_belief": false
         },
         {
@@ -281,7 +288,7 @@
         {
           "index": 90,
           "state": "success",
-          "text": "I took the band the long way round the well, which cost us a day and a night in wet ground, and every one of the eleven walked into the hollow. Nobody has said anything about the cutters and nobody is going to.",
+          "text": "I took the band the long way round the well, which cost us a day and a night in wet ground, and every one of the fourteen walked into the hollow. Not a word has been said about the cutters and none is going to be.",
           "records_belief": false
         },
         {
@@ -293,7 +300,7 @@
         {
           "index": 94,
           "state": "success",
-          "text": "The cutters are dead in their own workings and the band walked past without looking. The elder thanked me. Nobody at the hollow asked how it was done and the not-asking was the loudest thing in it.",
+          "text": "The cutters are dead in their own workings and the band walked past without looking. The elder thanked me. The hollow did not ask how it was done and the not-asking was the loudest thing in it.",
           "records_belief": false
         }
       ],
@@ -497,13 +504,13 @@
         {
           "index": 34,
           "state": "active",
-          "text": "It is not a list of traders. It is a list of families. Sixty-one households in Helstrom, and eleven of them have not traded with anybody in a decade and are on it because of who their brothers are.",
+          "text": "It is not a list of traders. It is a list of families. Sixty-one households in Helstrom, and seven of them have not traded with a soul in a decade and are on it because of who their brothers are.",
           "records_belief": false
         },
         {
           "index": 46,
           "state": "active",
-          "text": "Ee-Vashum has been waiting for me on the road out. She wrote the first column herself, nine years ago, as a record of who to talk to. Somebody else has added the third and she says she knows who and will not say.",
+          "text": "Ee-Vashum has been waiting for me on the road out. She wrote the first column herself, nine years ago, as a record of who to talk to. Another hand has added the third and she says she knows whose and will not say.",
           "records_belief": true
         },
         {
@@ -539,7 +546,7 @@
         {
           "index": 96,
           "state": "success",
-          "text": "I read the sixty-one names aloud in the Helstrom market and put the paper in the fire. Everybody in that town now knows what is on it, including the eleven households who did nothing, and the hollow has nothing to work from.",
+          "text": "I read the sixty-one names aloud in the Helstrom market and put the paper in the fire. The whole town now knows what is on it, including the seven households who did nothing, and the hollow has nothing to work from.",
           "records_belief": false
         }
       ],
@@ -842,7 +849,7 @@
         {
           "index": 36,
           "state": "active",
-          "text": "Eleven thousand people live on the reaches the sluice keeps drinkable and about nine hundred of them are on the coast. The rest are kin. Everybody at the hollow knows this number and it has not once been said in the hollow.",
+          "text": "Eleven thousand people live on the reaches the sluice keeps drinkable and about nine hundred of them are on the coast. The rest are kin. The hollow knows this number and it has not once been said in the hollow.",
           "records_belief": false
         },
         {
@@ -854,7 +861,7 @@
         {
           "index": 60,
           "state": "active",
-          "text": "There is a second sluice below the first that nobody at the hollow has walked to, because walking to it means walking on the coast side. Shutting the lower one stops the barges and does not back the water.",
+          "text": "There is a second sluice below the first that no keeper at the hollow has walked to, because walking to it means walking on the coast side. Shutting the lower one stops the barges and does not back the water.",
           "records_belief": false
         },
         {
@@ -878,7 +885,7 @@
         {
           "index": 94,
           "state": "success",
-          "text": "I told the Ledger's harbour office the sluice was coming and let them lift the season's freight first. The hollow got its stopped barges. Gideon got its cargo. Nobody has worked out that both are true.",
+          "text": "I told the Ledger's harbour office the sluice was coming and let them lift the season's freight first. The hollow got its stopped barges. Gideon got its cargo. It has not been worked out that both are true.",
           "records_belief": false
         },
         {
@@ -1188,7 +1195,7 @@
         {
           "index": 26,
           "state": "active",
-          "text": "Three of the four stopped in the same season. The fourth stopped nine years ago and started again and stopped again, and nobody at the gallery had put those three facts next to each other before.",
+          "text": "Three of the four stopped in the same season. The fourth stopped nine years ago and started again and stopped again, and the gallery had never put those three facts next to each other before.",
           "records_belief": false
         },
         {
@@ -1200,7 +1207,7 @@
         {
           "index": 50,
           "state": "active",
-          "text": "The Sap-Cutters have been saying this for thirty years and nobody has ever listened, because they are the ones who would say it. Being interested and being right are not the same thing and this time they are both.",
+          "text": "The Sap-Cutters have been saying this for thirty years and have never once been listened to, because they are the ones who would say it. Being interested and being right are not the same thing and this time they are both.",
           "records_belief": true
         },
         {
@@ -1236,7 +1243,7 @@
         {
           "index": 96,
           "state": "success",
-          "text": "I burned the Court's ledger and told the gallery the count was inconclusive. The hollow keeps its wound and its answer and its nine years, and I know what I did and there is nobody I can say it to.",
+          "text": "I burned the Court's ledger and told the gallery the count was inconclusive. The hollow keeps its wound and its answer and its nine years, and I know what I did and it is not a thing I can say aloud in this hollow.",
           "records_belief": false
         }
       ],
@@ -1525,19 +1532,19 @@
         {
           "index": 24,
           "state": "active",
-          "text": "There is a ku-vastei at Thorn. Nobody sent for her. She arrived, which is what they do, and she has been sitting in the gate house for six days waiting for somebody to be ready.",
+          "text": "There is a ku-vastei at Thorn. She was not sent for. She arrived, which is what they do, and she has been sitting in the gate house for six days waiting for one of us to be ready.",
           "records_belief": false
         },
         {
           "index": 36,
           "state": "active",
-          "text": "Ixakh will hear it from anybody. She will rule once, the ruling ends the blood-price whichever way it falls, and there is no appeal and no thanks. She asked me whose I was and I could not give her a clean answer.",
+          "text": "Ixakh will hear it from any mouth. She will rule once, the ruling ends the blood-price whichever way it falls, and there is no appeal and no thanks. She asked me whose I was and I could not give her a clean answer.",
           "records_belief": true
         },
         {
           "index": 48,
           "state": "active",
-          "text": "The hollow does not want a ruling. Teel-Ashaan says a ku-vastei's ruling would settle the four dead and would also settle, in front of everybody, that the hollow could not settle its own.",
+          "text": "The hollow does not want a ruling. Teel-Ashaan says a ku-vastei's ruling would settle the four dead and would also settle, in front of the whole hollow, that it could not settle its own.",
           "records_belief": false
         },
         {
@@ -1549,13 +1556,13 @@
         {
           "index": 86,
           "state": "failure",
-          "text": "Ixakh left Thorn on the seventh day, which is what they do. The broods have gone to the tracks. There are nine dead now and there is nobody left in the province who can end it without more.",
+          "text": "Ixakh left Thorn on the seventh day, which is what they do. The broods have gone to the tracks. There are nine dead now and there is not a soul left in the province who can end it without more.",
           "records_belief": false
         },
         {
           "index": 90,
           "state": "success",
-          "text": "I brought both broods to the gate house at Thorn and Ixakh heard it and ruled. Four dead, one blood-price, extinguished. Nobody thanked her, which she told me beforehand was correct, and the hollow was not in the room.",
+          "text": "I brought both broods to the gate house at Thorn and Ixakh heard it and ruled. Four dead, one blood-price, extinguished. She was not thanked, which she told me beforehand was correct, and the hollow was not in the room.",
           "records_belief": false
         },
         {
@@ -1567,7 +1574,7 @@
         {
           "index": 94,
           "state": "success",
-          "text": "I paid both blood-prices out of what the coast has paid me over five ranks, in coast money, in front of everybody. Both broods took it. Nothing about that is traditional and nothing about it is over.",
+          "text": "I paid both blood-prices out of what the coast has paid me over five ranks, in coast money, in front of both broods. Both broods took it. Nothing about that is traditional and nothing about it is over.",
           "records_belief": false
         },
         {
@@ -1859,7 +1866,7 @@
         {
           "index": 40,
           "state": "active",
-          "text": "The last speaker before this one went quiet in a season. Nobody at the gallery has told me how and everybody at the gallery has answered the question in a way that makes it clear they could.",
+          "text": "The last speaker before this one went quiet in a season. Not one at the gallery has told me how, and every one of them has answered the question in a way that makes it clear they could.",
           "records_belief": false
         },
         {
@@ -1877,31 +1884,31 @@
         {
           "index": 88,
           "state": "failure",
-          "text": "The gallery did it without me, in a season, the way it was done the last time. Teel-Ashaan is quiet. Nobody has said how and I did not have to be there and I was not.",
+          "text": "The gallery did it without me, in a season, the way it was done the last time. Teel-Ashaan is quiet. How has not been said, and I did not have to be there and I was not.",
           "records_belief": false
         },
         {
           "index": 90,
           "state": "success",
-          "text": "I put it to the hollow that it had stopped listening and the hollow did not contradict me. Teel-Ashaan has stopped speaking. He walked out at the top of the track and nobody went after him and that is what stopping is.",
+          "text": "I put it to the hollow that it had stopped listening and the hollow did not contradict me. Teel-Ashaan has stopped speaking. He walked out at the top of the track and not a person went after him and that is what stopping is.",
           "records_belief": false
         },
         {
           "index": 92,
           "state": "success",
-          "text": "I did it the way the gallery does it and nobody will ever ask me about it. The Speaker is quiet. The hollow has been told he is unwell and the hollow has accepted that, as it did the last time.",
+          "text": "I did it the way the gallery does it and I will never be asked about it. The Speaker is quiet. The hollow has been told he is unwell and the hollow has accepted that, as it did the last time.",
           "records_belief": false
         },
         {
           "index": 94,
           "state": "success",
-          "text": "I told the gallery to ask him themselves and I told him they had asked me. He stood down in front of the whole hollow, which nobody has done in living memory, and he named the question rather than a successor.",
+          "text": "I told the gallery to ask him themselves and I told him they had asked me. He stood down in front of the whole hollow, which has not been done in living memory, and he named the question rather than a successor.",
           "records_belief": false
         },
         {
           "index": 96,
           "state": "success",
-          "text": "I told the gallery no and told the hollow what the gallery had wanted. Teel-Ashaan is still speaking and the gallery has stopped sending word up through the reed-seller, and I am at the top of a ladder with nobody holding the bottom of it.",
+          "text": "I told the gallery no and told the hollow what the gallery had wanted. Teel-Ashaan is still speaking and the gallery has stopped sending word up through the reed-seller, and I am at the top of a ladder with no hand on the bottom of it.",
           "records_belief": false
         }
       ],
@@ -2202,13 +2209,13 @@
         {
           "index": 46,
           "state": "active",
-          "text": "If the question stays the coast, the answer stays the cut, and the war-broods will make it within the year whatever anybody says here. If the question changes, nine years of grief has nowhere to go.",
+          "text": "If the question stays the coast, the answer stays the cut, and the war-broods will make it within the year whatever is said here. If the question changes, nine years of grief has nowhere to go.",
           "records_belief": true
         },
         {
           "index": 60,
           "state": "active",
-          "text": "Ee-Vashum's daughter came up from Gideon for it. She is lukiul, she is on the third column of a list I have held in my hands, and she is standing on the rim where anybody can see her.",
+          "text": "Ee-Vashum's daughter came up from Gideon for it. She is lukiul, she is on the third column of a list I have held in my hands, and she is standing on the rim in full view.",
           "records_belief": false
         },
         {
@@ -2238,7 +2245,7 @@
         {
           "index": 98,
           "state": "success",
-          "text": "I told them the hollow does not need a mouth and walked up the track. Nobody followed and nobody stopped me. The bands are still down there arguing and they were still arguing at dark, which is either the end of the Xul-Aneekh or the first honest thing it has done in nine years.",
+          "text": "I told them the hollow does not need a mouth and walked up the track. None followed and none stopped me. The bands are still down there arguing and they were still arguing at dark, which is either the end of the Xul-Aneekh or the first honest thing it has done in nine years.",
           "records_belief": false
         }
       ],
@@ -2390,7 +2397,7 @@
           "morally_better": null,
           "requires": {
             "attributes": {
-              "willpower": 24
+              "willpower": 20
             },
             "skills": {
               "root-speech": 70
@@ -2416,7 +2423,8 @@
               "helstrom-gallery-keepers": -50,
               "speaker-teel-ashaan": 30
             }
-          }
+          },
+          "requires_note": "Lowered under the MEASURED ceiling for this attribute (reports/faction-signature-sweep.json: base + 6 per governing skill, character/derive.js:359). At the old figure this quest had NO reachable ending for a p10 signature and the questline dead-ended on its own last rank. tools/quests/resolution-reachability.mjs is the check."
         }
       ],
       "failure_states": [

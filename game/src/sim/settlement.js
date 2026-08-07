@@ -169,15 +169,66 @@ export function stepSettlement(sim, input, bus) {
   // ---- 2. doors ------------------------------------------------------------------------------
   // The reach is recomputed every frame whether or not `interact` is down, because `sim.door` is
   // what a prompt renders off and a prompt that only appears on the frame you press is no prompt.
+  // W1-26 round 2. The way OUT is a place, exactly as the way in is. This line used to read
+  // `dist_m: 0` unconditionally, which meant that anywhere inside any interior — the far corner
+  // of a shop, the middle of a barge hold — the door was under your hand, and the `interact`
+  // latch below took it. Measured in the opening: the player presses `interact` to talk to the
+  // woman who is eight metres away, the census's own reach gate correctly declines, the press
+  // falls through to here, and the body is placed on the Tidewrack dock 3.9 km away with the
+  // scene still paused in a hold it can never get back to. The scene could not be finished, and
+  // the probe reported `dist_to_her: 0.272` while it happened because the census measures the
+  // speaker in the hold's own frame.
+  //
+  // The inside face of the door is `continuity.interior_spawn` — the same object's other end,
+  // the arithmetic RI-WLD13 already relies on — so the out-door is offered within the same
+  // `DOOR_REACH_M` the in-door uses. All 115 interiors in `game/data/world/interiors/**` declare
+  // it; the `!inFace` arm is fail-OPEN on purpose, because an interior that somehow shipped
+  // without one must not become a room the player cannot leave.
+  let outDoor = null;
+  if (sim.env.interior) {
+    const rec = S.interior(sim.env.interior);
+    const inFace = rec && rec.continuity && rec.continuity.interior_spawn;
+    const dist = inFace ? Math.hypot(p[0] - inFace[0], p[2] - inFace[2]) : 0;
+    if (!inFace || dist <= DOOR_REACH_M) {
+      outDoor = { building: sim.env.interior, interior: sim.env.interior, way: 'out', dist_m: Math.round(dist * 100) / 100 };
+    }
+  }
   sim.door = sim.env.interior
-    ? { building: sim.env.interior, interior: sim.env.interior, way: 'out', dist_m: 0 }
+    ? outDoor
     : (sim.env.settlement ? Object.assign({ way: 'in' }, S.doorAt(sim.env.settlement, p[0], p[2]) || {}) : null);
   if (sim.door && !sim.door.interior) sim.door = null;
 
   if (!input || !input.pressedName || !input.pressedName('interact')) return;
   if (!sim.door) return;
-  if (sim.door.way === 'in') useDoor(sim, sim.door.interior, bus);
-  else leaveInterior(sim, bus);
+  if (sim.door.way === 'in') { useDoor(sim, sim.door.interior, bus); return; }
+  // A scene that is still running can hold the door. `sim.doorVeto` is an Engine-installed hook
+  // of the same family as `sim.censusDriver`, `sim.populate` and `sim.placeBody`: this module
+  // must not know what a census is, and the opening must not be escapable half-finished. It
+  // returns a REASON or null, and a refusal is an event with words in it, never a silent nothing
+  // — the same shape `useDoor` already uses for a shop that is shut.
+  const veto = typeof sim.doorVeto === 'function' ? sim.doorVeto(sim.env.interior) : null;
+  if (veto) {
+    if (bus) { const ev = bus.emit(sim.frame, 'door_refused'); ev.interior = sim.env.interior; ev.reason = veto; ev.way = 'out'; }
+    return;
+  }
+  leaveInterior(sim, bus);
+}
+
+/**
+ * Put the body somewhere, through the authoritative path.
+ *
+ * `sim.player.pos` IS NOT THE PLAYER POSITION. It is a mirror: `combat-bridge.mirror()` copies
+ * `combat.player.pos` into it at the top of every step. This module used to write the mirror,
+ * which meant a door taken on frame N was undone on frame N+1 — measured, the body reached the
+ * declared interior spawn and was back outside one step later, while `sim.env.interior` stayed
+ * set the whole time so nothing looked wrong. `sim.placeBody` is installed by the Engine (which
+ * owns `combat`) and moves the real body; the mirror write below is the fallback for the bare
+ * sim harnesses that have no combat rig at all, and it is honest only there.
+ */
+function placeBody(sim, at) {
+  if (typeof sim.placeBody === 'function') { sim.placeBody(at[0], at[1], at[2]); return; }
+  sim.player.pos[0] = at[0]; sim.player.pos[1] = at[1]; sim.player.pos[2] = at[2];
+  if (sim.player.vel) { sim.player.vel[0] = 0; sim.player.vel[1] = 0; sim.player.vel[2] = 0; }
 }
 
 /**
@@ -198,8 +249,7 @@ export function useDoor(sim, interiorId, bus) {
   const spawn = (d.continuity && d.continuity.interior_spawn) || [0, 0, 0];
   sim.env.interior = interiorId;
   sim.env.settlement = d.settlement;
-  sim.player.pos[0] = spawn[0]; sim.player.pos[1] = spawn[1]; sim.player.pos[2] = spawn[2];
-  if (sim.player.vel) { sim.player.vel[0] = 0; sim.player.vel[1] = 0; sim.player.vel[2] = 0; }
+  placeBody(sim, spawn);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_enter');
     ev.interior = interiorId; ev.settlement = d.settlement; ev.name = d.name;
@@ -216,8 +266,7 @@ export function leaveInterior(sim, bus) {
   if (!d) { sim.env.interior = null; return { left: true, interior: id, pos: null }; }
   const out = (d.continuity && d.continuity.exterior_spawn) || d.exterior_door || [0, 0, 0];
   sim.env.interior = null;
-  sim.player.pos[0] = out[0]; sim.player.pos[1] = out[1]; sim.player.pos[2] = out[2];
-  if (sim.player.vel) { sim.player.vel[0] = 0; sim.player.vel[1] = 0; sim.player.vel[2] = 0; }
+  placeBody(sim, out);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_exit');
     ev.interior = id; ev.settlement = d.settlement; ev.pos = [out[0], out[1], out[2]];

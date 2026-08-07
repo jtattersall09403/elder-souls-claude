@@ -58,7 +58,32 @@ try {
   }, { RACES, UPBRINGINGS, CLASSES });
 
   const ok = rows.filter((r) => !r.error);
-  const report = { tool: 'faction-signature-sweep', signatures: ok.length, errors: rows.length - ok.length, attribute_ids: Object.keys(ok[0].attributes).sort(), per_faction: [] };
+  const report = { tool: 'faction-signature-sweep', signatures: ok.length, errors: rows.length - ok.length, attribute_ids: Object.keys(ok[0].attributes).sort(), per_attribute: {}, per_faction: [] };
+
+  // ---- PER-ATTRIBUTE CEILINGS -----------------------------------------------------------------
+  // A `resolutions[].requires.attributes` demand has exactly the same failure mode as a rank
+  // gate's, and nothing was checking it. `Q-XULA-08` — the Xul-Aneekh's own rank-7 quest — asked
+  // 24 WILLPOWER on three of its four endings. Willpower is governed by `warding` and `veiling`
+  // and nothing else, so it is worth base + 12 and no more, and a saxhleel/lukiul/ledger-hand
+  // starting at 10 tops out at 22 with both skills at 90. The line's ceiling quest had no
+  // reachable ending for that character and the probe walked into it at rank 7.
+  //
+  // So the ceiling every attribute actually has is measured here and written down: what a
+  // signature starts with, plus 6 for each skill in the game whose use raises it.
+  const skillsDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/progression/skills.json'), 'utf8'));
+  const governedCount = {};
+  for (const s of skillsDoc.skills) governedCount[s.governing] = (governedCount[s.governing] || 0) + 1;
+  const POINTS_PER_SKILL = 6;   // 15/30/45/60/75/90 — character/derive.js:359
+  for (const a of report.attribute_ids) {
+    const vals = ok.map((r) => r.attributes[a] || 0).sort((x, y) => x - y);
+    const st = { min: vals[0], p10: vals[Math.floor(vals.length * 0.1)], median: vals[Math.floor(vals.length / 2)], max: vals[vals.length - 1] };
+    const g = governedCount[a] || 0;
+    report.per_attribute[a] = {
+      at_creation: st,
+      skills_that_raise_it: g,
+      reachable_ceiling: { from_p10: st.p10 + POINTS_PER_SKILL * g, from_median: st.median + POINTS_PER_SKILL * g, from_max: st.max + POINTS_PER_SKILL * g },
+    };
+  }
 
   for (const f of gates.factions) {
     const attrBest = [], s1 = [], s2 = [];

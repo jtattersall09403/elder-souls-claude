@@ -130,6 +130,42 @@ The three carried lines are chosen so that **no two of them can be finished in o
 | **X3** mediated escape | all three pairs | — | Every X2 quest has ≥ 2 resolutions and at least one does **not** populate `consequences.locks`. The escape is always a named dissenter's alternate, never a menu | `RI-QST03` §C X3 |
 | **X5** rank ceiling | any two compatible memberships | rank 5 | Ranks 6–7 require sole allegiance, asked for explicitly in dialogue | `RI-QST03` §C X5 |
 
+### 4a. What counts as "you are one of them" — a rule that had to be corrected in the engine
+
+`RI-QST03` §C X1 says the lock lands *"permanently, at join time"*, and the engine was reading
+those four words wrongly. `QuestEngine.context()` computed
+
+```js
+held = Math.max(derivedRank[f], member ? 1 : 0)
+```
+
+so a **derived** rank alone closed every rival. Derived rank asks for reputation, an attribute and
+a skill — and reputation is paid sideways all over this book. `Q-ASSZ-04 res_hide_vell` pays the
+Drowned Court **20** for hiding a witness *on the Assize's own instructions*. Driving the Assize
+line through `questOffers()` from a cold start, that single favour derived Drowned Court rank 1,
+and the Assize then refused **its own rank-5 quest**:
+
+> *"The Imperial Assize will not deal with you: you are The Drowned Court."*
+
+Four of nine quests on the line went unreachable, to a player who had never joined the Drowned
+Court and had done the favour because the Assize told them to.
+
+**The rule, restated:** a rank closes a rival only where the player actually **joined** —
+`consequences.joins_faction`, an authored act with a scene around it. Reputation without
+membership is a *qualification*: it is what makes you eligible to join, and nothing more.
+`heldRank()` in `game/src/sim/quest/machine.js` is the one place that decides this.
+
+This immediately exposed the other half: **nothing in the faction book ever joined a faction.**
+`joins_faction` appeared in exactly one file in the whole tree (`mainline-act4.json`). Every
+ending of each line's entry quest — `Q-LEDG-00`, `Q-ASSZ-00`, `Q-XULA-00`, seven resolutions —
+now carries it, which is correct on its own terms: every one of those endings already ends with
+the player taken on ("on the roll of the Assize", "the hollow has named the player", "the Ledger
+has a runner it can send again"). The join was in the prose and not in the data.
+
+**Measured after both changes**, `tools/quests/faction-probe.mjs`, all three lines, live:
+joining the rival closes the line, and the refusal a giver speaks names who you chose instead —
+*"The Xul-Aneekh will not deal with you: you are The Imperial Assize."*
+
 **The consequence, stated as a number a critic can check:** a greedy single save can reach at
 most **one** of the three carried lines past rank 3, so the reachable fraction of the three
 lines' quests is bounded well under `RI-QST03`'s 60%.
@@ -206,46 +242,108 @@ collapses from 10 to **3**.
 ### 5.4 The corrected ladder
 
 `RI-QST03` §B's format is kept **verbatim** — reputation, one of two favoured attributes, two
-distinct favoured skills the player chooses, and a world state. Only the numbers move, and only
-to values §B's own reasoning supports and the measurement above permits.
+distinct favoured skills the player chooses, and a world state. Only the numbers move.
 
-| Rank | Rank name | Faction rep | Primary attr | Favoured skill #1 | Favoured skill #2 | World state |
-|---:|---|---:|---:|---:|---:|---|
-| 0 | *(joining rank)* | 0 | — | — | — | — |
-| 1 | | 10 | **12** | 20 | — | — |
-| 2 | | 22 | **14** | 25 | 10 | — |
-| 3 | | 36 | **16** | 32 | 15 | — |
-| 4 | | 52 | **18** | 40 | 20 | — |
-| 5 | | 70 | **20** | 50 | 25 | a faction-specific holding, shrine or debt |
-| 6 | | 90 | **22** | 60 | 30 | a `politics` quest resolved in the faction's favour |
-| 7 | | 112 | **24** | 70 | 35 | the incumbent's seat vacant by the player's action |
+| Rank | Faction rep | Favoured skill #1 | Favoured skill #2 | World state |
+|---:|---:|---:|---:|---|
+| 0 | 0 | — | — | — |
+| 1 | 10 | 20 | — | — |
+| 2 | 22 | 25 | 10 | — |
+| 3 | 36 | 32 | 15 | — |
+| 4 | 52 | 40 | 20 | — |
+| 5 | 70 | 50 | 25 | a faction-specific holding, shrine or debt |
+| 6 | 90 | 60 | 30 | a `politics` quest resolved in the faction's favour |
+| 7 | 112 | 70 | 35 | the incumbent's seat vacant by the player's action |
 
-- **Reputation, skill #1 and skill #2 columns are `RI-QST03` §B unchanged.** Skill 70 at rank 7
-  sits inside §A's observed Morrowind ceiling of 70–80 and inside our own cap of 100.
-- **The attribute column is lowered from §B's 22→34 to 12→24**, because §B's numbers were written
-  against Morrowind's level-up attribute multipliers and `ARBITRATION` S2 deleted those. This is
-  the number the brief's own warning is about, so it is set with a **declared margin rather than
-  a clamp**: the generator now refuses to emit a ladder whose rank-7 attribute demand is not at
-  least **4 under** the reachable ceiling of that faction's best favoured attribute. Against the
-  worst-governed attribute in the roster (ceiling 31) that is 24 + 4 ≤ 31, with 7 to spare; the
-  Wet Ledger's agility line has 31 to spare. Rank 1 at 12 sits at the *median* of the measured
-  creation distribution, so roughly half of all signatures hold rank 1 the moment they join and
-  the rest need two attribute points — which is the Morrowind feel: rank 1 is a door, not a wall.
-- **Rank 7 is a build statement, not a grind.** A character who favoured the faction's attribute
-  at creation (measured max 19) needs +5 to reach 24 — one favoured skill taken to 90. A
-  character who favoured against it starts near 3–6 and cannot get there at all, which is exactly
-  what `RI-QST03`'s bar means by *"you cannot lead the assassins with a heavy-armour brawler's
-  sheet, and the game says so in numbers before you fail."*
-- **`intelligence` becomes `intellect` everywhere**, and the generator gains an assertion against
-  `progression/attributes.json` so the class of defect cannot recur.
-- **No rank references level, souls, gold or a quest counter.** `gate.js assertNoLevelGate()`
-  throws at construction if one ever does.
-- **Favoured-skill coherence:** no two factions share more than 3 favoured skills
-  (`RI-QST03` method 3), asserted in the generator. It fired immediately: `deep_kin` and
-  `the_drowned_court` shipped **six identical favoured skills** — the same build statement under
-  two names — and `the_dockhands` and `the_imperial_assize` shared four. Four sets were re-cut;
-  the three carried lines now share at most **3** (Ledger ∩ Assize = speechcraft, mercantile,
-  security) and the interior line shares at most **2** with either.
+**Reputation and both skill columns are `RI-QST03` §B unchanged.** Skill 70 at rank 7 sits inside
+§A's observed Morrowind ceiling of 70–80 and inside our own cap of 100.
+
+**The attribute column is not in that table, because it is no longer one row of numbers.**
+
+#### The first correction was still a best case, and the live line found it
+
+Round one lowered §B's shared attribute column from 25→75 to 12→24 and asserted the top was
+reachable. The assertion compared the rank-7 literal against `creation MAX (19) + 6 per governed
+skill in the whole game`: the single best sheet of 240, grinding skills the ladder never grades.
+It passed. Then `tools/quests/faction-probe.mjs` drove the Wet Ledger through `questOffers()`
+from a cold start and the **derived rank stopped at 3 of 7** — at reputation 112, which *is* the
+rank-7 demand — because agility had reached 16 against a demand of 24. **Three of nine quests on
+the line were reachable.** This is the brief's own warning arriving on schedule: a gate clamped
+against a best case shuts for real characters.
+
+#### The arithmetic nobody had done
+
+An attribute rises by exactly one route: **+1 each time a governed skill crosses a multiple of
+15** (`character/derive.js:359`). Nothing else in this build moves one — `ARBITRATION` S2 deleted
+Morrowind's level-up multipliers and put nothing in their place.
+
+So take the two skills **the ladder itself grades** from a median starting sheet to the rank-7
+demands, 70 and 35. That crosses **four** multiples of 15. A whole faction ladder, played to its
+ceiling, pays **+4 attribute** — while the spread between signatures at creation is **6 to 19**.
+
+> **The attribute term cannot carry a rank ladder in this build.** Reputation runs 0 → 112 and
+> the skill columns 20 → 70; both scale by an order of magnitude more than the attribute the same
+> work earns. Any attribute demand large enough to discriminate between builds is larger than the
+> ladder's own work pays for, and therefore locks players out for a reason they cannot act on.
+
+#### What the column asks for now
+
+Per faction, derived rather than declared:
+
+```
+attribute(R) = p10 creation favoured attribute
+             + multiples of 15 the rank's OWN skill_1/skill_2 demands cross
+               from that faction's median starting sheet
+             - margin (2)
+```
+
+Both inputs are **read from `reports/faction-signature-sweep.json`**, a live sweep of the shipped
+character builder over 240 signatures, so the generator cannot drift from the sheet. A rank never
+asks for an attribute point the rank's own work has not paid for, and leaves 2 points of room on
+top. The emitted columns:
+
+| Faction | favoured attrs | r1 | r2 | r3 | r4 | r5 | r6 | r7 |
+|---|---|--:|--:|--:|--:|--:|--:|--:|
+| `the_wet_ledger` | agility / personality | 8 | 8 | 9 | 9 | 10 | 12 | 12 |
+| `the_imperial_assize` | personality / intellect | 4 | 4 | 5 | 5 | 6 | 8 | 8 |
+| `the_xul_aneekh` | willpower / intellect | 8 | 8 | 9 | 9 | 10 | 11 | 11 |
+| `deep_kin`, `the_rootkeepers`, `the_ixtu_vakh`, `the_dockhands` | — | 8 | 8 | 9 | 9 | 10 | 11 | 11 |
+| `the_drowned_court` | willpower / endurance | 9 | 9 | 10 | 10 | 11 | 12 | 12 |
+
+The Assize's column is the lowest because its favoured attributes are `personality` and
+`intellect`, whose **p10 creation value is 6** — a nord salt-blade who decides to become a lawyer
+really does start from nothing. That is honest, and it is deliberately preferred to the
+alternative, which is a number that reads impressively and shuts the line.
+
+**These are small numbers and that is the finding, not a shortcut.** The gating work is done by
+the two columns that can do it. If a later round wants the attribute term to bite, the change
+belongs in `character/derive.js` — more governed skills per attribute, or a second earning route
+— not in this table.
+
+#### Resolutions have the same failure mode, and it was unguarded
+
+A `resolutions[].requires.attributes` demand is the same kind of number as a rank gate's, and
+nothing was checking it. Measured per-attribute ceilings (`base + 6 per governing skill`, p10
+sheet): **agility 45, strength 23, willpower 22, personality 18, intellect 18, hist-bond 16,
+speed 16, endurance 15, vigour 12, luck 11** — luck is raised by no skill in the game at all.
+
+Two quests on these lines had **no reachable ending whatsoever**, both at a line ceiling:
+
+* `Q-ASSZ-06` asked **personality 20** on all three endings (ceiling 18);
+* `Q-XULA-08` — the Xul-Aneekh's last quest — asked **willpower 24** on three of four (ceiling 22).
+
+Both are lowered to sit 2 under the ceiling. The instrument is
+`tools/quests/resolution-reachability.mjs`, which fails the build if any quest has no reachable
+ending, and reports (without failing) endings that are out of reach for a given sheet — those are
+builds the player did not take, which is the point of having four endings. It finds **19** such
+endings across the whole book, five of which are on quests this piece does not own.
+
+**Other corrections kept from round one:** `intelligence` → `intellect` everywhere, with a
+generator assertion against `progression/attributes.json`; no rank references level, souls, gold
+or a quest counter (`gate.js assertNoLevelGate()` throws at construction); and no two factions
+share more than 3 favoured skills (`RI-QST03` method 3), which fired immediately — `deep_kin` and
+`the_drowned_court` shipped **six identical favoured skills** and `the_dockhands` and
+`the_imperial_assize` shared four. The three carried lines now share at most 3.
 
 ### 5.5 The duplicate faction
 
@@ -342,3 +440,47 @@ NPC these lines introduce ships with `id`, `actor`, `race`, `class`, `faction`,
 | `RI-QST03` expulsion / readmission | implemented per tier | **not implemented** | §D's expulsion tiers have no data file and no code path. Declared as an open gap, not papered over |
 | `RI-CRM02` writ quests | 27 sanctioned-murder quests | **0 authored here** | The Assize line's rank-5 quest issues a Warrant of Attainder as a quest object, which is the hook; the other 26 are unwritten |
 | Fold `deep_kin` into `the_xul_aneekh` | one body, one id | **not done** | Would orphan `Q-MAG-07`, another piece's quest. Recorded for the coherence pass |
+
+---
+
+## 9. CONSUMPTION — the world-side consumer of each model, and how it was shown
+
+`RI-MTH07`, mandatory under `ARBITRATION.md` §3. Four models ship here. For each: the consumer
+that reads it in `game/src/`, and the perturbation that made an offer appear or disappear.
+
+| Model | World-side consumer | Perturbation, and what changed |
+|---|---|---|
+| `game/data/quests/faction-*.json` | `QuestBook` → `QuestEngine.offers()` | The line is walked from a cold start. At rank 0 the only refusal is *"the topic 'the wet ledger' has not come up yet"*; 9/9 quests become offerable by playing, and 0/9 are offered before it |
+| `faction-gates.json` rank ladders | `FactionGates` → `QuestEngine.context()` → `gate.js canOffer()` | Zeroing faction reputation moves the **derived** rank 7 → 0 and closes the standing offer. Rank is never set by the probe; it is always read back |
+| `faction-gates.json` exclusivity | `QuestEngine.context()` rivalry derivation → `ctx.locked` → `canOffer()` | Joining the rival closes the line and the giver speaks a reason naming who you chose instead |
+| `consequences.world_flags` | `QuestEngine._applyConsequences()` → `sim.quest.flags` | Read back through the new `questWorldFlags()`. 34–38 flags per line are set that the probe never wrote — i.e. raised by the resolutions themselves |
+
+**Instrument:** `tools/quests/faction-probe.mjs`, one real browser, `setRenderRate(0)`, 320×240.
+It walks with only what a player can get: a topic somebody said out loud, reputation the quests
+award, skills raised through `grantSkillUse()` (never `setSkills`), gold, and the reveals a quest
+declares. **It never sets an attribute** — every attribute point the character ends with was
+earned by a governed skill crossing a multiple of 15, and the probe reports which crossings.
+
+**Result, all three carried lines: 11/11 checks, exit 0.**
+
+| Check | the_wet_ledger | the_imperial_assize | the_xul_aneekh |
+|---|---|---|---|
+| quests offerable from a cold start | 0 / 9 | 0 / 9 | 0 / 9 |
+| quests offerable after playing | **9 / 9** | **9 / 9** | **9 / 9** |
+| top derived rank | 7 (The Ledger) | 7 (Legate of the Assize) | 7 (Xul-Aneekh) |
+| resolutions taken requiring violence | **0 / 16** | **0 / 17** | **0 / 16** |
+| world flags raised by the resolutions | 38 | 37 | 38 |
+| joining the rival closes the line | yes | yes | yes |
+
+The line can be walked end to end without killing anybody. That is a property of the content —
+every quest on all three lines has at least one `violence_required: false` ending — and the probe
+prefers those endings deliberately so that the property is tested rather than assumed.
+
+**A note on what the probe used to do.** Its first version picked `resolutions.find(available)`
+and called `resolve`. Resolutions carry their own `requires`, so every rank-3-and-up quest
+refused silently and the line reported "requires Q-LEDG-03 first" eight times over — a defect in
+the instrument that looked exactly like a defect in the ladder. It also read requirements off
+`questDef()`, which is a deliberately trimmed view carrying neither `requires` nor
+`consequences`, and so read `{}` for everything and reported `res_kill_her` as non-violent. Both
+are fixed and both are commented at the site. **Confirm the instrument can see the thing before
+trusting what it says about it.**

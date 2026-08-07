@@ -2,7 +2,7 @@
   "task_id": "W1-FACTIONS",
   "brief": "faction questline builder — roster, ranks with real requirements, 3+ questlines to a rank ceiling, mutual exclusion, topic ids that exist",
   "started": "wave-1",
-  "state": "verifying",
+  "state": "complete",
   "outputs_expected": [
     "corpus/30-quests/FACTION-ROSTER-DESIGN.md",
     "game/data/progression/factions.json (expanded)",
@@ -26,7 +26,13 @@
     "game/src/sim/quest/gate.js (legible lockout)",
     "game/src/harness/api.js (factionGates())",
     "game/data/index.json",
-    "reports/quest-resolution-baseline.json"
+    "reports/quest-resolution-baseline.json",
+    "tools/quests/resolution-reachability.mjs",
+    "reports/faction-signature-sweep.json",
+    "reports/faction-probe-the_wet_ledger.json",
+    "reports/faction-probe-the_imperial_assize.json",
+    "reports/faction-probe-the_xul_aneekh.json",
+    "game/src/harness/api.js (questWorldFlags)"
   ],
   "findings": [
     "game/data/progression/factions.json (2 factions, house-dres/shadowscale-order) is a WAVE-0 SKELETON and is NOT the ladder of record. tools/lib/gamedata.mjs:90-97 says so explicitly and returns it separately under .skeleton.",
@@ -46,8 +52,16 @@
     "26 DANGLING RESOLUTION-LEVEL QUEST REFERENCES across the shipped book (Q-ARCH-01, Q-BLAK-01, Q-DEEP-01, Q-DOCK-01, Q-LILM-01, Q-SAP-01, Q-SOUL-02, Q-STRM-01 all lock or unlock quests that do not exist). QuestBook._check validates only TOP-LEVEL consequences.unlocks/locks, so none of them is visible at boot. Q-LEDG-04 was one of the 26 and is now written.",
     "FactionGates.closedBy() — the ENTIRE X1/X4/X2 mutual-exclusion model — had NO CONSUMER anywhere in game/src/. machine.js initialised rivalry_locked:[] on every standing row and never wrote it. A player could hold rank 7 in the Wet Ledger and rank 7 in the Assize that exists to hang it, in one save. QuestEngine.context() is now the reader; the lock lands in ctx.locked and canOffer() speaks a reason.",
     "topic-supply audit over the whole tree: 34 quest topics EXIST NOWHERE in dialogue/topics/**, and 35 hooks.json entry_topics rows are still SELF-LOOPS (W1-19 repaired only the Q-MAIN rows). None of the 34 or 35 is on the three carried lines. Tool: tools/quests/topic-supply-audit.mjs.",
-    "BLOCKING, ANOTHER AGENT: game/data/npcs/pop-*.json (8 files, written 13:51) declare reaction_group RG-COMMON, which is not in progression/race-reactions.json. derivedDisposition() THROWS on it, out of QuestEngine.dispositionView() -> context() -> offers(). questOffers() is dead for the whole build while those files are on disk. 182 records affected."
+    "BLOCKING, ANOTHER AGENT: game/data/npcs/pop-*.json (8 files, written 13:51) declare reaction_group RG-COMMON, which is not in progression/race-reactions.json. derivedDisposition() THROWS on it, out of QuestEngine.dispositionView() -> context() -> offers(). questOffers() is dead for the whole build while those files are on disk. 182 records affected.",
+    "MEASURED, all three lines, live: faction-probe now PASSES 11/11 on the_wet_ledger, the_imperial_assize and the_xul_aneekh — 9/9 quests each offerable from a COLD START through questOffers(), rank 0 -> 7 derived, walked entirely NON-VIOLENTLY, 34-38 world flags raised by the resolutions themselves.",
+    "THE LADDER CLAMPED AT RANK 3 OF 7. The shared attribute column [_,12..24] was asserted reachable against ATTR_AT_CREATION_MAX=19 (the best of 240 signatures) + 6 per governed skill grinding every skill to 90 — a best case twice over. Driven live, the Wet Ledger reached reputation 112 (the rank-7 demand) and stopped at DERIVED RANK 3, because agility had only reached 16 against a demand of 24. 3 of 9 quests reachable.",
+    "THE ARITHMETIC NOBODY HAD DONE: taking the two skills the ladder ITSELF grades from a median sheet to the rank-7 demands (70/35) crosses at most FOUR multiples of 15, so a whole faction ladder pays +4 attribute — while the spread between signatures at creation is 6 to 19. The attribute term cannot carry a rank ladder in this build; reputation (0->112) and the skill columns (20->70) do. The column is now derived per faction from reports/faction-signature-sweep.json.",
+    "MUTUAL EXCLUSION FIRED ON REPUTATION, NOT MEMBERSHIP. machine.js used held = max(derived rank, member?1:0). Q-ASSZ-04 res_hide_vell pays the Drowned Court 20 for hiding a witness — on the Assize s own instructions — which derived Drowned Court rank 1 and made the ASSIZE refuse its own rank-5 quest: \"will not deal with you: you are The Drowned Court\". 4 of 9 quests unreachable. heldRank() now requires an authored joins_faction.",
+    "NOTHING IN THE FACTION BOOK EVER JOINED A FACTION. joins_faction appeared in exactly one file in the tree (mainline-act4.json). Every ending of each entry quest (Q-LEDG-00, Q-ASSZ-00, Q-XULA-00) now carries it — 7 resolutions — so joining is an authored act with a scene around it and the exclusion has something real to key on.",
+    "TWO DEAD-END QUESTS, both at a line ceiling: Q-ASSZ-06 asked personality 20 on all three endings and Q-XULA-08 asked willpower 24 on three of four. MEASURED per-attribute ceilings (base + 6 per governing skill, 240 signatures): personality 18 / willpower 22 / hist-bond 16 / intellect 18 from a p10 sheet. Both quests had NO reachable ending. Lowered to 16 and 20. Instrument: tools/quests/resolution-reachability.mjs.",
+    "The same audit finds 19 further out-of-reach endings across the book that are NOT dead ends (a build the player did not take), including pre-existing Q-MAIN-08 personality 40, Q-MAIN-13 willpower 35, Q-MAIN-23 personality 45, Q-MAG-10 strength 45, Q-BLAK-01 personality 45 — every one of them above the max-sheet ceiling for that attribute. Not mine; reported.",
+    "game/src/harness/api.js had a WRITER for world flags (questSetFlag) and NO READER. \"The quest changes the world\" was unverifiable from outside. questWorldFlags() added."
   ],
-  "next_step": "successor (container restart #2): RG-COMMON alias is IN and questOffers is live again. check-quests now reports the ONE remaining defect — Q-ASSZ-08/Q-LEDG-08/Q-XULA-08 seed no topic (RI-DLG05 A.3). Fix: 3 entry_topics rows + 3 topic bodies. Then faction-probe, boot-check, blog line.",
-  "notes_for_successor": "All three questlines (8/9/8) are ON DISK and complete. check-data PASS, check-content PASS (295 resolutions), check-quests FAILS on exactly the 3 ceiling quests being mute."
+  "next_step": "none — all expected outputs exist and every gate is clean. A critic should re-run: node tools/quests/faction-probe.mjs --line <the_wet_ledger|the_imperial_assize|the_xul_aneekh>.",
+  "notes_for_successor": "DO NOT regenerate hooks.json (tools/analysis/gen-quest-hooks.mjs re-introduces the self-loop defect). faction-gates.json IS generated — tools/analysis/gen-faction-gates.mjs, and its attribute column now READS reports/faction-signature-sweep.json, so re-run the sweep (a browser run) before regenerating gates or it will throw. Open gaps declared in FACTION-ROSTER-DESIGN.md section 8: 9 quests per line against a bar of 24-28; RI-QST03 section D expulsion/readmission has no data file and no code path; 26 of RI-CRM02s 27 writ quests unwritten; deep_kin is still a separate id from the_xul_aneekh (folding it would orphan Q-MAG-07). Also NOT mine and still open: 34 quest topics elsewhere in the tree have no body anywhere (tools/quests/topic-supply-audit.mjs), 35 hooks.json entry_topics rows are self-loops, and 5 out-of-reach resolution endings sit on Q-MAIN-08/13/23, Q-MAG-10 and Q-BLAK-01 (tools/quests/resolution-reachability.mjs)."
 }

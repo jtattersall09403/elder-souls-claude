@@ -159,6 +159,35 @@ export const EVENT_TYPES = new Set([
   //                     which band a guard who can see you is in, whether their weapon is drawn,
   //                     and which parley is open. Round 1 had no guard to emit it.
   'report_route', 'guard_band',
+  // ---- W1-04 NPC schedules, vocabulary amendment landed 2026-08-07 by W1-26 round 2 ---------
+  // HARNESS.md §5, the same "closed vocabulary, EXTENSIBLE BY AMENDMENT" clause every block
+  // above cites. `sim/npc.js stepSchedule()` emits both of these — `npc_schedule` when a
+  // person's day moves them to a new `at`, `npc_presence` when that changes whether they are in
+  // the room with the player — and NEITHER was ever added here. So the guard below did exactly
+  // what it was built to do and threw, and it threw INSIDE the fixed step: any probe that
+  // stepped frames in a cell where one scheduled person's `present` flipped died with
+  // "event type 'npc_presence' is not in the closed vocabulary". Boot does not step, so
+  // `boot-check` was green the whole time and the breakage was invisible until something walked.
+  // The emit landed without its vocabulary entry — the mirror image of a fail-closed assertion
+  // landing before its data, and the same class of defect: half a feature, loud at the wrong end.
+  // Adding the names is the additive repair; removing another piece's emit would not be.
+  'npc_schedule', 'npc_presence',
+  // Found by the same audit, which is the point of doing one rather than fixing crashes one at a
+  // time: a scan of every guarded `bus.emit()` call site in `game/src` against this set found
+  // SIX more names that no amendment ever carried. Each is a live throw inside the fixed step,
+  // waiting for the frame the player does the thing.
+  //   `settlement_enter`/`settlement_exit`  sim/settlement.js:163 — emitted through a ternary,
+  //       which is why a literal-argument grep does not see them and why the audit had to
+  //       evaluate the names rather than match them.
+  //   `door_refused`, `interior_enter`, `interior_exit`  sim/settlement.js:195/204/222 — every
+  //       doorway in the game. The opening walks through one to get from the barge hold to the
+  //       writ house.
+  //   `census_refused`  engine.js:2200 — W1-26's own, and the worst of them: it is emitted from
+  //       the CATCH arm of `_censusApplyPending()`, so a player who answered the opening in a way
+  //       the census rejects got a second throw out of the handler written to absorb the first.
+  //       The scene's error path was itself the error.
+  'settlement_enter', 'settlement_exit', 'door_refused', 'interior_enter', 'interior_exit',
+  'census_refused',
 ]);
 
 const POOL_SIZE = 128;

@@ -69,7 +69,7 @@ const ADDRESS = {
   },
   'RG-LUKIUL': {
     saxhleel: 'Cousin — you have the accent of somewhere.',
-    naga: 'Cousin, of a kind, and everybody here will say so slowly.',
+    naga: 'Cousin, of a kind, and this town will say so slowly.',
     dunmer: 'We have had your people through here before.',
     imperial: 'You will want the ledger side of town.',
     'other-foreign': 'You are a long way from wherever that is.',
@@ -132,10 +132,10 @@ const ADDRESS = {
   },
   'RG-OUTLAW': {
     saxhleel: 'Local knowledge. That is worth something.',
-    naga: 'Nobody looks for one of those, which is worth more.',
-    dunmer: 'You will be wanting to be somebody else for a while.',
+    naga: 'A pair of eyes does not go looking for one of those, which is worth more.',
+    dunmer: 'You will be wanting a different name for a while.',
     imperial: 'You have the walk of a man with a rank he lost.',
-    'other-foreign': 'You are nobody here. Congratulations.',
+    'other-foreign': 'You have no standing here at all. Congratulations.',
   },
 };
 
@@ -144,7 +144,7 @@ const ADDRESS = {
 // ---------------------------------------------------------------------------------------
 const STANCE = {
   'RG-DEEP': {
-    hostile: ['Go back the way the water came in.', 'We are the People of the Root. You are not.', 'Nothing here is yours, including the air.', 'Turn around before somebody makes it a story.', 'The Hist has not said your name and neither will we.'],
+    hostile: ['Go back the way the water came in.', 'We are the People of the Root. You are not.', 'Nothing here is yours, including the air.', 'Turn around before this becomes a story.', 'The Hist has not said your name and neither will we.'],
     cold: ['Say what you came to say.', 'We do not sell and we do not guide.', 'Stand where we can see the whole of you.', 'The village is not open. The path around it is.', 'Speak, and then be somewhere else.'],
     neutral: ['You are standing in it. Say what you want.', 'We are not unfriendly. We are busy.', 'Ask, and if it is not root-business you may get an answer.', 'The water is high. Keep to the boards.', 'What.'],
     warm: ['There is dry floor by the fire.', 'Eat something before you talk. It goes better.', 'Ask. This one will answer if it can.', 'You have been walking. Sit.', 'The village knows you came in. That is not a bad thing.'],
@@ -155,19 +155,19 @@ const STANCE = {
     cold: ['This one keeps the tree. That is all this one does.', 'State it and go; the tree is listening and it is tiring.', 'You may stand there. Not further.', 'Nothing is sold at a sapwell.', 'Ask a short question.'],
     neutral: ['The tree is well. That is usually the question.', 'You may rest here. Rest is not the same as staying.', 'Speak. This one has time and the tree has more.', 'Keep your voice down. It carries into the wood.', 'The grove is open. The heartwood is not.'],
     warm: ['Sit at the root. It is warm on that side.', 'This one will speak with you. The tree does not mind.', 'You may drink. Once, and not deeply.', 'Ask about the sap and this one will not stop talking.', 'You have the smell of a long road. Sit.'],
-    friendly: ['The tree knows your step now. So does this one.', 'Come to the heartwood. It is not a small thing to be asked.', 'Drink, and let it take as long as it takes.', 'This one has kept the tree eleven years and has invited four people in. You are the fifth.', 'Whatever you want to know about the root, ask it, and this one will answer until the light goes.'],
+    friendly: ['The tree knows your step now. So does this one.', 'Come to the heartwood. It is not a small thing to be asked.', 'Drink, and let it take as long as it takes.', 'This one has kept the tree forty years and has invited four people in. You are the fifth.', 'Whatever you want to know about the root, ask it, and this one will answer until the light goes.'],
   },
   'RG-LUKIUL': {
     hostile: ['We do not want the trouble you carry.', 'This is a working town and you are not working.', 'Nothing here needs you.', 'Go and be strange somewhere with a bigger market.', 'We have enough people looking at us sideways.'],
     cold: ['State your business at the boards, not at me.', 'We keep the roads open. That is our whole contribution.', 'You want the ledger house.', 'Buy or move.', 'We are not a stop.'],
-    neutral: ['You want something. Everybody does.', 'Say it once and I will tell you who to ask.', 'The road is that way and the water is the other.', 'We trade. That is what this is.', 'Mind the boards; the third one from the end is rotten.'],
-    warm: ['There is beer, and it is not good, but it is cold.', 'Ask around. People here answer.', 'You look like you have paid for things honestly. That is rare.', 'Sit on the boards; nobody minds.', 'If you need a bed, the third house does not overcharge.'],
+    neutral: ['You want something. They all do.', 'Say it once and I will tell you who to ask.', 'The road is that way and the water is the other.', 'We trade. That is what this is.', 'Mind the boards; the third one from the end is rotten.'],
+    warm: ['There is beer, and it is not good, but it is cold.', 'Ask around. People here answer.', 'You look like you have paid for things honestly. That is rare.', 'Sit on the boards; they are there to be sat on.', 'If you need a bed, the third house does not overcharge.'],
     friendly: ['You are welcome here and the beer is on the boards.', 'Anything you want to know about this stretch of water, ask me.', 'We were saying good things about you, which does not happen twice.', 'Stay as long as you like. We have the room and the roof holds.', 'You have done right by this town. It remembers, badly, but it remembers.'],
   },
   'RG-NAGA': {
     hostile: ['The water is ours. All of it.', 'You are standing on a bank that has a price.', 'Nothing walks through here without being noticed and charged.', 'Get off the river.', 'We have eaten better company.'],
     cold: ['State it from where you are.', 'We do not come up the bank for conversation.', 'The crossing is not free and neither is the talk.', 'Say your piece to the water and we will hear it.', 'You are on the wrong side.'],
-    neutral: ['You want across. Everybody wants across.', 'Speak. The river is patient and we are not.', 'We can take you. We can take your things separately.', 'What is it worth to you.', 'Talk. It is a long river.'],
+    neutral: ['You want across. They all want across.', 'Speak. The river is patient and we are not.', 'We can take you. We can take your things separately.', 'What is it worth to you.', 'Talk. It is a long river.'],
     warm: ['Come down to the boat. It is drier than it looks.', 'We will take you across and not count it twice.', 'Ask. The river tells us things.', 'Sit on the bank. The current does the work.', 'You have not lied to us yet. That is a start.'],
     friendly: ['The boat is yours when you want it.', 'Kin-price. Do not tell the others.', 'We will carry you and whatever you are carrying and ask nothing about either.', 'The band knows your name and says it correctly, which is more than the towns manage.', 'Whatever the river knows, you may know.'],
   },
@@ -175,8 +175,8 @@ const STANCE = {
     hostile: ['Your paper is wrong and so are you.', 'There is nothing I can do for you and I would not.', 'Stand aside. There are people here with correct documents.', 'That name is on a list and it is not the good list.', 'Come back when you have something I can stamp without lying.'],
     cold: ['Two hundred and fifty, and it is once.', 'The queue is behind you.', 'Documents, or nothing.', 'I do not answer questions. I answer forms.', 'That is not my window.'],
     neutral: ['Yes. What.', 'If it is an amendment it is a fee. If it is anything else it is a wait.', 'I can look it up. It will take as long as it takes.', 'Say the whole thing once rather than half of it three times.', 'Papers on the desk, please.'],
-    warm: ['I can move you up the list. Once.', 'Ask. I have been here eleven years and I remember most of it.', 'That is a reasonable question and I will give you the real answer.', 'Sit. I will find it.', 'I will write it the way you said it, not the way the form wants it.'],
-    friendly: ['I will write what you tell me and I will not ask again.', 'There is a copy of your file and there is now not a copy of your file.', 'Anything in this office, ask me. Anything in the next office, do not ask me in writing.', 'You have been decent to a clerk. Nobody is decent to a clerk.', 'Whatever you need stamped, it is stamped.'],
+    warm: ['I can move you up the list. Once.', 'Ask. I have been here twenty years and I remember most of it.', 'That is a reasonable question and I will give you the real answer.', 'Sit. I will find it.', 'I will write it the way you said it, not the way the form wants it.'],
+    friendly: ['I will write what you tell me and I will not ask again.', 'There is a copy of your file and there is now not a copy of your file.', 'Anything in this office, ask me. Anything in the next office, do not ask me in writing.', 'You have been decent to a clerk. Clerks do not get decency.', 'Whatever you need stamped, it is stamped.'],
   },
   'RG-EMPIRE': {
     hostile: ['Move along or be moved.', 'You are a matter for the watch and I am the watch.', 'I have a description and you match too much of it.', 'This is Imperial ground. Behave as though it were.', 'One more word and it is a night in the cells.'],
@@ -197,7 +197,7 @@ const STANCE = {
     cold: ['Contract business only.', 'The Company is not recruiting today.', 'Take it to the factor.', 'Say it in one line.', 'We are working.'],
     neutral: ['Company business. What is yours?', 'We are hiring for the north road, if you can hold a line.', 'Ask, but the contract terms are the contract terms.', 'You look like work. Are you work?', 'Say what you want.'],
     warm: ['Sit with us. The pay talk is better sitting.', 'The Company can use you and will say so plainly.', 'Ask about the contract. All of it, not the pretty half.', 'There is stew. It is Company stew, so lower your expectations.', 'You have not lied to us yet.'],
-    friendly: ['You are on the books whether you signed or not.', 'Anything the Company knows about this stretch, you can have.', 'Full share, and nobody will argue it.', 'We told the factor about you and he wrote it down, which is how they say thank you.', 'Whatever you need, and no paper.'],
+    friendly: ['You are on the books whether you signed or not.', 'Anything the Company knows about this stretch, you can have.', 'Full share, and there will be no argument about it.', 'We told the factor about you and he wrote it down, which is how they say thank you.', 'Whatever you need, and no paper.'],
   },
   'RG-VAKH': {
     hostile: ['The water took the wrong ones and left you.', 'You are dry and that is an offence.', 'Go and drown somewhere that is not ours.', 'We know what you did on the bank.', 'Nothing here forgives.'],
@@ -214,18 +214,18 @@ const STANCE = {
     friendly: ['The court knows you and welcomes you.', 'Your petition is granted before you finish it.', 'You may speak in the hall without an appointment.', 'The court remembers what you did and it will keep remembering.', 'Come to the high table.'],
   },
   'RG-TOWN': {
-    hostile: ['We want none of it.', 'Nobody here will sell to you.', 'Take it out of the square.', 'You have brought a smell in with you.', 'Move on, quickly.'],
+    hostile: ['We want none of it.', 'You will not be sold to here.', 'Take it out of the square.', 'You have brought a smell in with you.', 'Move on, quickly.'],
     cold: ['Buying or asking? Only one is free.', 'We keep out of things.', 'The inn is that way and it is full.', 'Say it and I will get back to the stall.', 'We are not a town for stopping in.'],
     neutral: ['Something you need?', 'Prices are on the board.', 'Ask. If I know it, you can have it.', 'It is a small place. There is not much to tell.', 'Mind the wagons.'],
-    warm: ['There is a bed at the inn and I will say a word for you.', 'Sit down, you are letting the heat out.', 'Ask anybody here, they will answer you straight.', 'Take the second stall; he does not water the drink.', 'You have been decent in the square. It gets noticed.'],
+    warm: ['There is a bed at the inn and I will say a word for you.', 'Sit down, you are letting the heat out.', 'Ask around here, you will get a straight answer.', 'Take the second stall; he does not water the drink.', 'You have been decent in the square. It gets noticed.'],
     friendly: ['This town owes you and knows it.', 'Whatever is on the stall, take it and settle later.', 'Ask me anything about this place and I will tell you the true version.', 'The whole square talks about you and it is all good.', 'You have a bed here whenever you want one.'],
   },
   'RG-OUTLAW': {
     hostile: ['You talked. We know you talked.', 'There is nothing here and there never was.', 'Walk away and keep walking.', 'You are a witness and we do not keep those.', 'Wrong cellar.'],
     cold: ['Who sent you.', 'We do not know you.', 'Say the word or say nothing.', 'You are standing in the doorway.', 'Nothing is for sale.'],
     neutral: ['You want something moved or something forgotten.', 'Speak quietly and quickly.', 'We can do most things. Most.', 'What is it worth.', 'Money first, questions after.'],
-    warm: ['Sit at the back. Nobody looks at the back.', 'We can find you a door.', 'Ask. If it can be got, it can be got.', 'You pay on time. That is the whole friendship.', 'There is a bed under the floor if it comes to that.'],
-    friendly: ['Your name never comes up here and it never will.', 'Anything we have, and no price this time.', 'The fence will see you first, before anybody.', 'We would put a knife in somebody for you and you have not even asked.', 'Whatever the cellar knows, you know.'],
+    warm: ['Sit at the back. The back does not get looked at.', 'We can find you a door.', 'Ask. If it can be got, it can be got.', 'You pay on time. That is the whole friendship.', 'There is a bed under the floor if it comes to that.'],
+    friendly: ['Your name never comes up here and it never will.', 'Anything we have, and no price this time.', 'The fence will see you first, ahead of the queue.', 'We would put a knife in a man for you and you have not even asked.', 'Whatever the cellar knows, you know.'],
   },
 };
 

@@ -67,7 +67,7 @@
         {
           "index": 20,
           "state": "active",
-          "text": "The Archon bond clerk took the bond, read it standing up, and asked me whether I had come by the coast road or the water. I said the road. He wrote that down, which nobody has ever done to me before.",
+          "text": "The Archon bond clerk took the bond, read it standing up, and asked me whether I had come by the coast road or the water. I said the road. He wrote that down, which has never been done to me before.",
           "records_belief": false
         },
         {
@@ -137,7 +137,10 @@
             ],
             "npc_disposition": {
               "factor-belliene": 10
-            }
+            },
+            "joins_faction": [
+              "the_wet_ledger"
+            ]
           }
         },
         {
@@ -168,7 +171,10 @@
             ],
             "npc_disposition": {
               "factor-belliene": 10
-            }
+            },
+            "joins_faction": [
+              "the_wet_ledger"
+            ]
           }
         },
         {
@@ -199,7 +205,10 @@
             ],
             "npc_disposition": {
               "factor-belliene": -10
-            }
+            },
+            "joins_faction": [
+              "the_wet_ledger"
+            ]
           }
         }
       ],
@@ -250,7 +259,8 @@
           ]
         }
       ],
-      "notes": "Rank 0. RI-QST01: an errand that establishes the faction's texture and geography and grants no discretion beyond the route. The one thing it hides is the shape of the whole line — a hull paid to sit still at Archon — and a player who breaks the seal at rank 0 carries that fact for six more quests before anyone confirms it."
+      "notes": "Rank 0. RI-QST01: an errand that establishes the faction's texture and geography and grants no discretion beyond the route. The one thing it hides is the shape of the whole line — a hull paid to sit still at Archon — and a player who breaks the seal at rank 0 carries that fact for six more quests before anyone confirms it.",
+      "joins_note": "Every ending of the entry quest ends with the player taken on — on the roll, named by the hollow, sent again. That is the JOIN, and it is authored here rather than derived, because mutual exclusion now keys on membership: reputation paid sideways by another faction's quest is a qualification, not a career (see game/src/sim/quest/machine.js heldRank)."
     },
     {
       "id": "Q-LEDG-02",
@@ -299,13 +309,13 @@
         {
           "index": 20,
           "state": "active",
-          "text": "The caster has made weights for the Gideon gate eleven times in four years and every order was for a single stone, never a pair. He keeps the orders. He keeps them because nobody has ever asked him not to.",
+          "text": "The caster has made weights for the Gideon gate seven times in four years and every order was for a single stone, never a pair. He keeps the orders. He keeps them because he has never been asked not to.",
           "records_belief": false
         },
         {
           "index": 30,
           "state": "active",
-          "text": "Four of the eleven orders are signed by Ravano's own hand. He was a notary's boy before he was a clerk and he writes his S the way the court taught him, and there is no mistaking it.",
+          "text": "Four of the seven orders are signed by Ravano's own hand. He was a notary's boy before he was a clerk and he writes his S the way the court taught him, and there is no mistaking it.",
           "records_belief": false
         },
         {
@@ -317,13 +327,13 @@
         {
           "index": 78,
           "state": "failure",
-          "text": "The caster's shop burned in the night with the orders in it. The Ledger paid for a new shutter. Nobody has said anything about the rest.",
+          "text": "The caster's shop burned in the night with the orders in it. The Ledger paid for a new shutter. Not a word has been said about the rest.",
           "records_belief": false
         },
         {
           "index": 90,
           "state": "success",
-          "text": "I gave Ravano the eleven orders and said nothing about the four in his hand. He thanked me and paid me and has not met my eye since, which is a kind of wage.",
+          "text": "I gave Ravano the seven orders and said nothing about the four in his hand. He thanked me and paid me and has not met my eye since, which is a kind of wage.",
           "records_belief": false
         },
         {
@@ -589,7 +599,7 @@
         {
           "index": 74,
           "state": "failure",
-          "text": "The crane crew found the board up. They did not find me. They have moved the box and nobody on that quay will say where, and Eeja walks the other way now.",
+          "text": "The crane crew found the board up. They did not find me. They have moved the box and not a soul on that quay will say where, and Eeja walks the other way now.",
           "records_belief": false
         },
         {
@@ -910,7 +920,7 @@
         {
           "index": 32,
           "state": "active",
-          "text": "Every return signed for the eighth chair since the winter before last has the Archon water-call in it. Nine days at anchor, four barrels of water, and a hold nobody weighs on the way out.",
+          "text": "Every return signed for the eighth chair since the winter before last has the Archon water-call in it. Nine days at anchor, four barrels of water, and a hold that goes unweighed on the way out.",
           "records_belief": false
         },
         {
@@ -922,7 +932,7 @@
         {
           "index": 52,
           "state": "active",
-          "text": "Wuleen-Kus asked me what I thought the eleven gold a week had been paying for. He did not say it unkindly. He has been waiting nine years for somebody inside to get this far.",
+          "text": "Wuleen-Kus asked me what I thought the eleven gold a week had been paying for. He did not say it unkindly. He has been waiting nine years for a man inside to get this far.",
           "records_belief": false
         },
         {
@@ -1262,7 +1272,7 @@
         {
           "index": 24,
           "state": "active",
-          "text": "The captain is a Nord called Skara and she stopped taking it because she counted. Eleven water-calls this year, four barrels each, and a hull that leaves a hand and a half lower than it came in.",
+          "text": "The captain is a Nord called Skara and she stopped taking it because she counted. Sixteen water-calls this year, four barrels each, and a hull that leaves a hand and a half lower than it came in.",
           "records_belief": false
         },
         {
@@ -1600,7 +1610,7 @@
         {
           "index": 26,
           "state": "active",
-          "text": "Four seats decide it. Sath votes with whoever holds the strongroom. Vaneth votes for Archon staying a harbour. Tesh has not voted in nine years and is entitled to. Belliene votes last and everybody knows why.",
+          "text": "Four seats decide it. Sath votes with whoever holds the strongroom. Vaneth votes for Archon staying a harbour. Tesh has not voted in nine years and is entitled to. Belliene votes last and the reason is not a secret.",
           "records_belief": true
         },
         {
@@ -1612,7 +1622,7 @@
         {
           "index": 54,
           "state": "active",
-          "text": "Wuleen-Kus says there is a fifth vote nobody counts, which is the wharf's, and that the wharf has never once been asked. He says it is not a complaint. He says it is arithmetic.",
+          "text": "Wuleen-Kus says there is a fifth vote that goes uncounted, which is the wharf's, and that the wharf has never once been asked. He says it is not a complaint. He says it is arithmetic.",
           "records_belief": false
         },
         {
@@ -1636,7 +1646,7 @@
         {
           "index": 94,
           "state": "success",
-          "text": "I brought the wharf into the room. Eeja stood at the end of the table and said the eleven gold a week out loud and nobody could answer him, and the vote went shut by one, and it was his.",
+          "text": "I brought the wharf into the room. Eeja stood at the end of the table and said the eleven gold a week out loud and not one of them could answer him, and the vote went shut by one, and it was his.",
           "records_belief": false
         },
         {
@@ -1932,7 +1942,7 @@
         {
           "index": 10,
           "state": "active",
-          "text": "Sath says the first chair has held the Ledger for nineteen years and is now the reason the Ledger cannot move, and that the table would like this dealt with by somebody who is not at the table. She did not say by whom. She said by somebody.",
+          "text": "Sath says the first chair has held the Ledger for nineteen years and is now the reason the Ledger cannot move, and that the table would like this dealt with from outside the table. She did not say by whom. She said only: from outside.",
           "records_belief": true
         },
         {
@@ -1962,13 +1972,13 @@
         {
           "index": 84,
           "state": "failure",
-          "text": "Somebody else went to the house on the rise. She is on the Soulrest tally under a name that is not hers and the table has already voted the chair filled, and it did not vote for me.",
+          "text": "Another hand went to the house on the rise. She is on the Soulrest tally under a name that is not hers and the table has already voted the chair filled, and it did not vote for me.",
           "records_belief": false
         },
         {
           "index": 90,
           "state": "success",
-          "text": "It was done at the hour before the second bell in a walled garden with one door. The table has the chair it wanted emptied. Nobody has said the word out loud to me and nobody is going to.",
+          "text": "It was done at the hour before the second bell in a walled garden with one door. The table has the chair it wanted emptied. The word has not been said out loud to me and it is not going to be.",
           "records_belief": false
         },
         {
@@ -2257,13 +2267,13 @@
         {
           "index": 10,
           "state": "active",
-          "text": "The chair is empty and the table has asked me to sit in it. Tesh says nobody has been asked in nineteen years, which means nobody has ever had to decide what to do on the first day.",
+          "text": "The chair is empty and the table has asked me to sit in it. Tesh says the chair has not been offered in nineteen years, which means the first day has never had to be decided.",
           "records_belief": true
         },
         {
           "index": 30,
           "state": "active",
-          "text": "The Ledger holds eleven of the Governor's debts, four toll gates, the Lilmoth bond room and a chair at Archon it will not name. All of it is one signature away from being something else.",
+          "text": "The Ledger holds seven of the Governor's debts, four toll gates, the Lilmoth bond room and a chair at Archon it will not name. All of it is one signature away from being something else.",
           "records_belief": false
         },
         {
@@ -2275,7 +2285,7 @@
         {
           "index": 60,
           "state": "active",
-          "text": "There is no version of this where nobody loses. Shutting Archon starves a town. Keeping it fills a hold. Dissolving the Ledger hands the tolls to a Governor who has not left his compound in two years.",
+          "text": "There is no version of this that costs nothing. Shutting Archon starves a town. Keeping it fills a hold. Dissolving the Ledger hands the tolls to a Governor who has not left his compound in two years.",
           "records_belief": true
         },
         {

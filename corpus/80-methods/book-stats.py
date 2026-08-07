@@ -43,6 +43,7 @@ import argparse
 import json
 import math
 import os
+import random
 import re
 import statistics
 import sys
@@ -88,10 +89,31 @@ def words(text: str):
 
 
 def pct(sorted_vals, p):
+    """Linear interpolation between order statistics — numpy's default and
+    `statistics.quantiles(method='inclusive')`.
+
+    W1-LIBRARY ROUND 2, and this is a number that moved because the estimator was wrong rather
+    than because the corpus changed. This function used to be `sorted_vals[int(p * n)]`, a
+    floor-index estimator, and the round-1 critic caught it deciding a check: the p90 of our book
+    lengths read **1,316 words against a 1,200 bar on the floor index and 1,167 under linear
+    interpolation**, so `S1b` passed by choice of convention and not by margin. The corpus had a
+    hole between 944 and 1,316 words and the floor index stepped straight over it.
+
+    Two estimators disagreeing by 150 words on 65 samples is what a small n does; the fix is to
+    pick the one everyone else's tooling uses so the number can be checked by anybody with numpy,
+    not to pick the flattering one. `S6`'s IQR is computed through here too and also moved.
+    """
     if not sorted_vals:
         return 0
-    i = min(len(sorted_vals) - 1, int(p * len(sorted_vals)))
-    return sorted_vals[i]
+    n = len(sorted_vals)
+    if n == 1:
+        return sorted_vals[0]
+    k = (n - 1) * p
+    lo = int(k)
+    hi = min(lo + 1, n - 1)
+    frac = k - lo
+    v = sorted_vals[lo] + (sorted_vals[hi] - sorted_vals[lo]) * frac
+    return round(v, 1) if isinstance(v, float) and v != int(v) else int(v)
 
 
 # ------------------------------------------------------------------ the reference item
@@ -380,6 +402,125 @@ def step7_authorship(books):
     return {"argonian_authored": len(declared), "books": declared, "undeclared_field": undeclared}
 
 
+# ------------------------------------------------------------------ step 8: does the metadata
+# ------------------------------------------------------------------ describe THIS book's prose?
+#
+# W1-LIBRARY ROUND 2, and the whole of this section exists because of one mutation the round-1
+# critic ran and neither tool imagined:
+#
+#   > "My mutation, which neither imagined: derange the text. Every book's `text` is swapped with
+#   >  another book's (seed 4242, no fixed points). Every other field stays exactly where it is.
+#   >  28 of 28 checks green on a corpus where the prose has been shuffled."
+#
+# Every check above steps 1-7 aggregates over the corpus — total words, the length distribution,
+# the count of `contradicts[]` edges, the sentence-length IQR — and every one of those aggregates
+# is INVARIANT under a permutation of the texts. The tools could measure the register and could
+# not measure the writing, which is what RI-LOR03 is for. A second mutation made the point from
+# the other side: `argonian_authored: true` on all 65 books, no byline touched, and S7 went from
+# 19 to 65 and PASSED HARDER, because it counts a self-declared boolean and nothing looks at the
+# name on the book.
+#
+# The three checks below are the ones that bind a field to the prose beside it, so they are the
+# three that a deranged corpus turns red. Measured on the shipped corpus and on the derangement:
+#
+#   S8  book anchors >=1 declared topic in its own prose      75.0%  ->  10.0%
+#   S9  contradiction pair where both texts engage the subject 88.2% ->  29.4%
+#   S10 books flagged Argonian whose byline is Tamrielic          0  ->     30
+#
+# S8 is not decoration: `topics_taught` is read by the engine now (`Engine._readBook`), so a book
+# that declares a topic its prose never names teaches the player a word that is not in the book.
+
+_STOP = {"the", "a", "an", "of", "and", "or", "in", "on", "at", "to", "for", "by",
+         "is", "are", "was", "were", "it", "its", "this", "that", "with", "from", "as", "not", "no"}
+_TITLES = (r"(?:Serjo|Sexton|Undersexton|Magistra|Tribune|Prefect|Serjeant|Sister|Brother|"
+           r"Captain|Legate|Master|Mistress|Lady|Lord)")
+
+
+def _norm(s):
+    return re.sub(r"[^a-z0-9]+", " ", (s or "").lower())
+
+
+def _stem(w):
+    """Crude singular/plural fold. `the-xanmeers` should match prose that says "xanmeer"."""
+    return w[:-1] if len(w) > 4 and w.endswith("s") else w
+
+
+def _slug_terms(slug):
+    return [_stem(w) for w in _norm(str(slug).replace("-", " ")).split() if w not in _STOP]
+
+
+def step8_metadata_vs_prose(books):
+    """Bind `topics_taught`, `contradicts[].on` and `argonian_authored` to the text beside them."""
+    # --- S8: a declared topic anchored in the book's OWN prose --------------------------------
+    topic_rows, anchored_books, topic_books = [], 0, 0
+    for b in books:
+        topics = b.get("topics_taught") or []
+        if not topics:
+            continue
+        topic_books += 1
+        bag = {_stem(w) for w in _norm(b.get("text", "")).split()}
+        hits = [t for t in topics if _slug_terms(t) and all(w in bag for w in _slug_terms(t))]
+        if hits:
+            anchored_books += 1
+        else:
+            topic_rows.append({"book": b["id"], "topics": topics})
+    topic_pct = round(100.0 * anchored_books / topic_books, 1) if topic_books else 0.0
+
+    # --- S9: both sides of a declared pair engage the subject the pair is declared ON ----------
+    by_id = {b["id"]: b for b in books}
+    pair_rows, engaged, edges = [], 0, 0
+    for b in books:
+        for c in b.get("contradicts") or []:
+            other = by_id.get((c or {}).get("book"))
+            subject = (c or {}).get("on")
+            if not other or not subject:
+                continue
+            terms = [w for w in _norm(subject).split() if w not in _STOP and len(w) > 3]
+            if not terms:
+                continue
+            edges += 1
+            mine, theirs = _norm(b.get("text", "")), _norm(other.get("text", ""))
+            shared = [t for t in terms if t in mine and t in theirs]
+            if shared:
+                engaged += 1
+            else:
+                pair_rows.append({"from": b["id"], "to": other["id"], "on": subject, "terms": terms})
+    pair_pct = round(100.0 * engaged / edges, 1) if edges else 0.0
+
+    # --- S10: the flag against the name on the book -------------------------------------------
+    def names(author):
+        s = author or ""
+        argonian = re.findall(r"\b[A-Z][a-z]+(?:-(?:[A-Za-z][a-z]*))+\b", s)
+        # "of Cheydinhal" / "of Mournhold" is a PLACE, and reading it as a surname would make
+        # every Imperial byline look like two names. Strip it, and strip the honorifics, before
+        # looking for a Tamrielic given-name/family-name pair.
+        t = re.sub(r"\bof\s+(?:the\s+)?(?:[A-Z][a-z]+(?:[- ][A-Z][a-z]+)*)", " ", s)
+        t = re.sub(r"\b" + _TITLES + r"\b", " ", t)
+        tamrielic = [x for x in re.findall(r"\b[A-Z][a-z]{2,}\s+[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?\b", t)
+                     if "-" not in x]
+        return argonian, tamrielic
+
+    contradicted, corroborated, unflagged = [], 0, []
+    for b in books:
+        argonian, tamrielic = names(b.get("author"))
+        flagged = bool(b.get("argonian_authored"))
+        if flagged and argonian:
+            corroborated += 1
+        elif flagged and tamrielic:
+            contradicted.append({"book": b["id"], "author": b.get("author"), "reads_as": tamrielic})
+        elif not flagged and argonian:
+            unflagged.append({"book": b["id"], "author": b.get("author"), "reads_as": argonian})
+
+    return {
+        "topic_anchor": {"books_declaring_topics": topic_books, "books_anchoring_one": anchored_books,
+                         "pct": topic_pct, "unanchored": topic_rows},
+        "pair_subject": {"edges": edges, "both_engage": engaged, "pct": pair_pct, "misses": pair_rows},
+        "byline": {"flagged_and_named_argonian": corroborated,
+                   "flagged_but_byline_is_tamrielic": contradicted,
+                   "argonian_byline_not_flagged": unflagged},
+    }
+
+
 # ------------------------------------------------------------------ checks
 def run_checks(result, bands):
     d = result["distribution"]
@@ -416,6 +557,17 @@ def run_checks(result, bands):
         result["register"]["mean_sentence_words"]["iqr"] >= bands["sentence_iqr_min"])
     add("S7", "books authored by Argonians", result["authorship"]["argonian_authored"],
         f">= {bands['argonian_min']}", result["authorship"]["argonian_authored"] >= bands["argonian_min"])
+
+    # W1-LIBRARY round 2 — the three checks that read the PROSE and not the register. See
+    # `step8_metadata_vs_prose` for why they exist and what a deranged corpus does to them.
+    p = result["prose_vs_metadata"]
+    add("S8", "books anchoring >=1 declared topic in their own prose (%)",
+        p["topic_anchor"]["pct"], ">= 60", p["topic_anchor"]["pct"] >= 60)
+    add("S9", "declared contradiction edges whose subject BOTH texts engage (%)",
+        p["pair_subject"]["pct"], ">= 75", p["pair_subject"]["pct"] >= 75)
+    add("S10", "books flagged Argonian whose byline names a Tamrielic author",
+        len(p["byline"]["flagged_but_byline_is_tamrielic"]), "== 0",
+        not p["byline"]["flagged_but_byline_is_tamrielic"])
     return checks
 
 
@@ -429,6 +581,7 @@ def measure(books, args, bands):
         "quest_hints": step5_quest_hints(books, Path(args.quests), bands),
         "register": step6_register(books),
         "authorship": step7_authorship(books),
+        "prose_vs_metadata": step8_metadata_vs_prose(books),
     }
     result["checks"] = run_checks(result, bands)
     return result
@@ -460,7 +613,36 @@ def self_test(books, args, bands):
             out.append(b)
         return out
 
+    def derange(bs, seed=4242):
+        """The round-1 critic's mutation, adopted verbatim as a permanent self-test.
+
+        Swap every book's `text` with another book's — a derangement, so no book keeps its own
+        prose — and change NOTHING else. Author, taxon, `argonian_authored`, `contradicts[]`,
+        `wrong_on_purpose`, `knowledge_key` and `topics_taught` all stay exactly where they are.
+        Afterwards every declared contradiction points at prose that says something else, every
+        book wrong-on-purpose is wrong about nothing, and an Argonian keeper's byline sits on an
+        Imperial recruitment pamphlet. This corpus scored 28/28 across both tools.
+
+        It is the one mutation that leaves every corpus-level aggregate untouched, which is why
+        it is the one worth keeping: any check it cannot turn red is a check that is not reading
+        the books.
+        """
+        rng = random.Random(seed)
+        n = len(bs)
+        if n < 2:
+            return [dict(b) for b in bs]
+        while True:
+            order = list(range(n))
+            rng.shuffle(order)
+            if all(order[i] != i for i in range(n)):
+                break
+        return [{**bs[i], "text": bs[order[i]].get("text", "")} for i in range(n)]
+
     mutations = [
+        ("swap every book's text with another book's (derangement, seed 4242)", derange, "S8"),
+        ("swap every book's text with another book's (derangement, seed 4242)", derange, "S9"),
+        ("flag all 65 books Argonian without touching one byline",
+         lambda bs: [{**b, "argonian_authored": True} for b in bs], "S10"),
         ("flatten every book to 120 words", flatten, "S1b"),
         ("drop every contradicts[]", lambda bs: [{**b, "contradicts": []} for b in bs], "S4a"),
         ("point a contradiction at nothing",

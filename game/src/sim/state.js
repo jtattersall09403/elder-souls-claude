@@ -242,6 +242,15 @@ export function makeQuestState() {
     // three non-violent `lore_knowledge` resolutions reachable. Serialised as
     // `dialogue.books_read` (game/data/save-manifest.json, Dialogue group, id-sorted).
     booksRead: [],
+    // W1-LIBRARY round 2 — RI-UIX05 T5, and the same bug one layer up. The page you were on
+    // lived in `UISystem.bookPages`, a plain object on the UI system, and the round-2 probe
+    // measured what that costs: after turning to spread 29 of `a-progress-iii`, calling
+    // `reset()` and reopening, the book STILL OPENED AT 29 — one character's reading position
+    // carried into the next run — and `saveState()` contained no book page anywhere, so a real
+    // reload lost it entirely. T5's wording is "returns to the page you were on, per book,
+    // PERSISTED IN THE SAVE", and the last three words were the half nobody had tested.
+    // Book id -> zero-based SPREAD index. Serialised as `dialogue.book_pages`.
+    bookPages: {},
     dispositions: {},
     factions: {},
     crime: { bounty: {}, witnesses: [], stolen: [], hunting: [] },

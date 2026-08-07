@@ -1590,6 +1590,49 @@ function report(records, fixture) {
     if (!unpassable.has(s.gate)) unpassable.set(s.gate, { gate: s.gate, npc_id: s.npc_id, quest: s.quest, why: s.why, signatures: 0 });
     unpassable.get(s.gate).signatures++;
   }
+
+  // ===============================================================================================
+  // ROUND 4, SUCCESSOR PASS — THE ROLL-UP WAS BLIND TO EVERY GATE KIND BUT ONE.
+  //
+  // Observed on this tree, not reasoned about: the walk reports `viable 0 / 540`, every single
+  // signature stopped at
+  //     {"quest":"Q-ASSZ-08","gate":"offer","why":"the_imperial_assize reputation 100/112"}
+  // and the artifact ALSO reports `unpassable_gates.quests_blocked: 0`, `gates: []`, and the
+  // operator-facing "BUILD FAIL — N quests carry a gate no signature can pass" banner NEVER
+  // FIRES, because that banner is `if (rep.unpassable_gates.quests_blocked)`.
+  //
+  // Both halves of the old roll-up only ever see DISPOSITION gates: `unpassable` above skips
+  // anything not flagged `race_invariant` (false for every stop under the `derived` model), and
+  // `allUnpassable` below iterates `quests.filter(q => q.giver.disposition_min != null)`. The
+  // gate actually blocking one hundred percent of the grid is a REPUTATION gate, so it is
+  // invisible to both.
+  //
+  // That is the defect this whole round exists to remove, in the tool the round was opened over:
+  // a summary field that reads 0 while the walk underneath it says 540. It is the same shape as
+  // R3's finding that `--cross-check` said "rows_compared: 240, 0 disagreements" when every row
+  // was `agrees: null` and nothing was compared.
+  //
+  // So: an EMPIRICAL roll-up, over the stops the walk actually recorded, of whatever kind. A gate
+  // that stopped every signature in the grid is a gate no signature can pass — that is a fact
+  // about the walk, and it needs no model, no gate-kind allow-list and no per-kind ceiling
+  // arithmetic to establish.
+  // ===============================================================================================
+  const stopKey = (s) => `${s.quest} ${s.stage == null ? '' : s.stage} ${s.gate} ${s.why}`;
+  const stopCensus = new Map();
+  for (const r of records) {
+    const s = r.stopped_at;
+    if (!s) continue;
+    if (!stopCensus.has(stopKey(s))) {
+      stopCensus.set(stopKey(s), {
+        quest: s.quest, stage: s.stage ?? null, gate: s.gate, why: s.why,
+        npc_id: s.npc_id ?? null, signatures: 0,
+      });
+    }
+    stopCensus.get(stopKey(s)).signatures++;
+  }
+  const stopsAll = [...stopCensus.values()].sort((a, b) => b.signatures - a.signatures);
+  const blocksEverySignature = records.length > 0
+    ? stopsAll.filter((x) => x.signatures === records.length) : [];
   // Every quest carrying such a gate, not merely the first one each signature stopped at.
   // Unpassable = no signature in the whole grid can clear it. Under the `raw` model that is
   // signature-independent; under `derived` it is a maximum over the 10x3x3 race/upbringing/sign
@@ -1716,6 +1759,25 @@ function report(records, fixture) {
       signatures_affected: allUnpassable.length ? records.length : 0,
       gates: allUnpassable,
       first_stop_histogram: [...unpassable.values()],
+      // ROUND 4 SUCCESSOR — the scope of the three fields above, stated where a consumer reads
+      // them rather than inferred. They are DISPOSITION-ONLY. `quests_blocked: 0` does NOT mean
+      // the build has no unpassable gate; read `stops_blocking_every_signature`.
+      scope: 'DISPOSITION GATES ONLY — computed over quests carrying giver.disposition_min. A ' +
+             'reputation, item, flag or topic gate that stops the entire grid does not appear ' +
+             'in these three fields. See `stops_blocking_every_signature`, which is empirical ' +
+             'and gate-kind agnostic.',
+    },
+    // ROUND 4 SUCCESSOR — the empirical roll-up, over the stops the walk actually recorded.
+    // Gate-kind agnostic by construction, so it cannot go blind the way the block above did.
+    stops_blocking_every_signature: {
+      note: `Distinct first-stops observed across all ${records.length} signatures, and the ` +
+            'subset that stopped EVERY one of them. A gate that stopped every signature in the ' +
+            'grid is a gate no signature can pass — established from the walk, with no model ' +
+            'and no per-gate-kind arithmetic.',
+      count: blocksEverySignature.length,
+      gates: blocksEverySignature,
+      all_first_stops: stopsAll.slice(0, 40),
+      distinct_first_stops: stopsAll.length,
     },
     race_distinctness: raceDistinctness,
     counterfactual_race_gate_note:
@@ -1800,13 +1862,48 @@ function selfTest() {
   const fxUnseed = { unseed_givers: true };
   const unseeded = walkAll(fxUnseed);
   const unseededRep = report(unseeded, fxUnseed);
-  ok('RED: unseed every giver (the record-less state) and the gate goes red, as FAIL not unmeasurable',
-    nFail(unseeded, 'no_unpassable_gate') > nFail(base, 'no_unpassable_gate')
-    && unseeded.filter((r) => r.unmeasurable).length === 0,
+  // ===============================================================================================
+  // ROUND 4, SUCCESSOR PASS — THIS RED CONTROL ASSERTED ON A SATURATED COUNTER, AND ON THIS TREE
+  // IT WENT RED FOR THE WRONG REASON.
+  //
+  // As written it required `nFail(unseeded) > nFail(base)` on `no_unpassable_gate`. That counter
+  // is 540 of 540 on the current build — every signature is already stopped, by a REPUTATION gate
+  // in Q-ASSZ-08 that has nothing to do with giver disposition — so no perturbation of the
+  // DISPOSITION register can ever push it higher, and the check reported FAIL while the tool was
+  // working correctly.
+  //
+  // The fix is NOT to relax it. A perturbation that changes nothing must still fail. It is to
+  // assert on the population the perturbation actually acts on — the set of givers whose
+  // disposition bar stops at least one signature — which has headroom whatever else the build is
+  // doing, and to require the DIRECTION as well as the movement. The saturated counter is still
+  // reported, and the saturation itself is now asserted as a separate, named fact so that a
+  // future reader is not left wondering why the number did not move.
+  // ===============================================================================================
+  const baseBlocked = blockedGivers(base);
+  const unseededBlocked = blockedGivers(unseeded);
+  const grew = [...unseededBlocked].filter((g) => !baseBlocked.has(g));
+  ok('RED: unseed every giver (the record-less state) and the disposition gate goes red, as FAIL not unmeasurable',
+    unseededBlocked.size > baseBlocked.size
+    && grew.length > 0
+    && [...baseBlocked].every((g) => unseededBlocked.has(g))
+    && unseeded.filter((r) => r.unmeasurable).length === 0
+    && nFail(unseeded, 'no_unpassable_gate') >= nFail(base, 'no_unpassable_gate'),
+    `givers whose disposition bar stops at least one signature: ${baseBlocked.size} -> ` +
+    `${unseededBlocked.size} (NEW: ${grew.slice(0, 6).join(', ')}); ` +
+    `${unseeded.filter((r) => r.unmeasurable).length} unmeasurable; ` +
     `no_unpassable_gate FAIL ${nFail(base, 'no_unpassable_gate')} -> ${nFail(unseeded, 'no_unpassable_gate')} ` +
-    `of ${base.length}; givers stopping at least one signature ${blockedGivers(base).size} -> ` +
-    `${blockedGivers(unseeded).size}; ${unseeded.filter((r) => r.unmeasurable).length} unmeasurable; ` +
-    `${unseededRep.unpassable_gates.quests_blocked} unpassable for EVERY signature`);
+    `of ${base.length}`);
+
+  ok('R4-SUCC: and the reason the signature counter did NOT move is stated, not shrugged off',
+    nFail(base, 'no_unpassable_gate') < base.length
+    || (baseReport.stops_blocking_every_signature.count > 0
+        && baseReport.stops_blocking_every_signature.gates.every((g) => g.gate !== 'disposition')),
+    nFail(base, 'no_unpassable_gate') === base.length
+      ? `the counter is SATURATED at ${base.length}/${base.length} on this build: ` +
+        `${baseReport.stops_blocking_every_signature.gates.map((g) => `${g.quest}[${g.gate}] ${g.why}`).join('; ')}` +
+        ' — a non-disposition gate stops the whole grid, so no disposition perturbation can raise it. ' +
+        'That is a BUILD failure, and the check above therefore measures the giver population instead.'
+      : `not saturated (${nFail(base, 'no_unpassable_gate')}/${base.length}), so the counter has headroom`);
 
   ok('RED is PARTIAL at the gate level: some givers block, not all — so the bar is compared',
     blockedGivers(unseeded).size > 0
@@ -2499,6 +2596,28 @@ if (!QUIET) {
     process.stdout.write(
       `  RACE-INVARIANT: the build never applies derivedDisposition() to the quest path, so this ` +
       `is a BUILD failure charged to game/src+game/data, not corpus_debt.\n`);
+  }
+  // ROUND 4 SUCCESSOR — the banner above is disposition-only, so on this tree it printed nothing
+  // while every one of the 540 signatures was stopped dead at a REPUTATION gate. A build failure
+  // that the summary does not name is a build failure nobody reads.
+  if (rep.stops_blocking_every_signature.count) {
+    process.stdout.write(
+      `  BUILD FAIL — ${rep.stops_blocking_every_signature.count} gate(s) stopped ALL ` +
+      `${records.length} signatures. No character anyone can build gets past this:\n`);
+    for (const g of rep.stops_blocking_every_signature.gates) {
+      process.stdout.write(`    ${g.quest}${g.stage == null ? '' : ' @' + g.stage} [${g.gate}] — ${g.why}\n`);
+    }
+    process.stdout.write(
+      `  This roll-up is GATE-KIND AGNOSTIC and empirical. \`unpassable_gates\` above covers ` +
+      `disposition bars only and reported ${rep.unpassable_gates.quests_blocked}.\n`);
+  } else if (rep.viable === 0 && records.length > 0) {
+    // Belt and braces: zero viable signatures with nothing named is the state the tool must
+    // never sit in silently again.
+    process.stdout.write(
+      `  NOTE — 0/${records.length} viable but no single gate stops every signature; the ` +
+      `blockage is distributed. Top first-stops: ` +
+      `${rep.stops_blocking_every_signature.all_first_stops.slice(0, 3)
+        .map((s) => `${s.quest}[${s.gate}] x${s.signatures}`).join(', ')}\n`);
   }
 
   const fails = records.filter((r) => !r.viable);

@@ -16,6 +16,14 @@
 //      fixed, frame-side observable, plus a null control.
 //   O  O6. Does the body move, how many seconds of it are available before the first
 //      character-defining question, and is that question GATED on the player or on the clock.
+//   W  CAN THE SCENE BE WALKED OUT OF? Added by round 2's successor. O6 handed the player a body
+//      before the first question, and a body can leave: `interact` anywhere inside any interior
+//      used to take the way OUT, so a press aimed at the woman eight metres away put the body on
+//      a dock 3.9 km from a paused scene it could never resume. A STILL probe cannot see this.
+//   C  CONSUMPTION (`RI-MTH07` §B, mandatory under `ARBITRATION` §3). The opening is played
+//      twice, differing in ONE answer the player gives, and an ENTITY in the world is then asked
+//      what it does — greeting cell, band, topics offered — with a null control on a field the
+//      reaction matrix must not read.
 //   K  DELETE-THE-FIX. Every repair in this round is removed from a live copy and the failure is
 //      confirmed to return. `RI-MTH07`, and the standing rule that a builder must break its own
 //      instrument before trusting it.
@@ -599,6 +607,206 @@ try {
     }
     return r;
   });
+  // ================================= W — can the scene be walked out of half-finished? ========
+  // ROUND 2's successor. O6 gave the player sixty seconds of body before the first question, and
+  // a body can leave. Measured at HEAD before this section existed: pressing `interact` to talk
+  // to her from eight metres away fell through the census's (correct) reach refusal into
+  // `stepSettlement`'s door latch, which offered the way OUT of every interior at `dist_m: 0`
+  // from anywhere in the room — and put the body on the Tidewrack dock, 3.9 km from a hold the
+  // paused scene can never be resumed in. The scene probe called it `dist_to_her: 0.272` the
+  // whole time, because the census measures its speaker in the hold's own frame. A STILL probe
+  // cannot see this; only a walked one can.
+  say('\n== W — the opening cannot be walked out of, and the way out is a place ==');
+  out.checks.escape = await h.page.evaluate(async () => {
+    const H = window.__HARNESS, E = window.__ENGINE;
+    await H.setRenderRate(0); await H.setSeed(1337);
+    const drive = async (deleteFix) => {
+      await H.loadState('barge-hold');
+      await H.censusBegin({ race: 'saxhleel' });
+      const restore = deleteFix ? deleteFix() : null;
+      const script = [];
+      for (let i = 0; i < 3660; i++) { const t = i / 60; script.push({ f: i, move: [Math.sin(t * 0.7) * 0.8, Math.cos(t * 0.5) * 0.8] }); }
+      H.queueInputs(script); H.stepFrames(3660);          // 61 s of being a body, then go and talk
+      for (let a = 0; a < 40 && E.census.paused; a++) {
+        const p = E.sim.player.pos;
+        const who = E.sim.findNPC(E.census.state().speaker);
+        const tgt = who ? who.pos : [-2, 0, 2.6];
+        const yaw = (H.getPlayerStats().yaw || 0) * Math.PI / 180;
+        const dx = tgt[0] - p[0], dz = tgt[2] - p[2];
+        const fx = Math.sin(yaw), fz = Math.cos(yaw);
+        const fwd = dx * fx + dz * fz, str = dx * fz - dz * fx;
+        const n = Math.max(1e-6, Math.hypot(fwd, str));
+        const step = [];
+        for (let i = 0; i < 30; i++) step.push({ f: i, move: [str / n, fwd / n] });
+        step.push({ f: 31, press: ['interact'] }, { f: 32, release: ['interact'] });
+        H.queueInputs(step); H.stepFrames(40);
+      }
+      const st = H.getCensusState();
+      const p = E.sim.player.pos;
+      const row = {
+        node: st.node, paused: !!st.paused, asks: st.input ? st.input.kind : null,
+        interior: E.sim.env.interior,
+        // The number the census reports, and the number the WORLD reports, side by side. They
+        // disagreed by 3.9 km and only one of them was ever printed.
+        census_dist_m: st.speaker_entity ? st.speaker_entity.dist_m : null,
+        world_dist_m: (() => { const w = E.sim.findNPC('jeeh-ei'); return w ? +Math.hypot(w.pos[0] - p[0], w.pos[2] - p[2]).toFixed(3) : null; })(),
+      };
+      if (restore) restore();
+      return row;
+    };
+    const r = { with_fix: await drive(null) };
+    // DELETE THE FIX, both halves at once: strip the inside-door face (so the out-door is in
+    // reach from anywhere again) and unhook the scene's veto.
+    r.fix_deleted = await drive(() => {
+      const real = E.settlements.interior.bind(E.settlements);
+      E.settlements.interior = (id) => { const rec = real(id); return rec ? { ...rec, continuity: { ...(rec.continuity || {}), interior_spawn: null } } : rec; };
+      const veto = E.sim.doorVeto; E.sim.doorVeto = null;
+      return () => { E.settlements.interior = real; E.sim.doorVeto = veto; };
+    });
+    // And the door still WORKS as a door: stand on the inside face and it opens.
+    await H.loadState('barge-hold');
+    await H.censusBegin({ race: 'saxhleel' });
+    E.sim.doorVeto = null;                       // the scene's hold released, as it is when done
+    const face = E.settlements.interior('barge-hold').continuity.interior_spawn;
+    E.sim.placeBody(face[0], face[1], face[2]);
+    H.stepFrames(2);
+    r.door_in_reach_at_its_own_face = E.sim.door ? { way: E.sim.door.way, dist_m: E.sim.door.dist_m } : null;
+    H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(6);
+    r.door_opens_from_its_face = E.sim.env.interior === null;
+    return r;
+  });
+  {
+    const W = out.checks.escape;
+    say(`  with the fix:  ${JSON.stringify(W.with_fix)}`);
+    say(`  fix deleted:   ${JSON.stringify(W.fix_deleted)}`);
+    say(`  the door at its own inside face: ${JSON.stringify(W.door_in_reach_at_its_own_face)} opens=${W.door_opens_from_its_face}`);
+    if (W.with_fix.paused || W.with_fix.interior !== 'barge-hold') {
+      hard('W-ESCAPE', `after 61 s of body the scene could not be resumed: node=${W.with_fix.node} interior=${W.with_fix.interior}`);
+    } else pass(`61 s of body, then walk over and talk: the scene resumes at ${W.with_fix.node}, still in the hold`);
+    if (W.fix_deleted.paused && W.fix_deleted.interior === null) {
+      pass(`deleting the fix brings it back: paused at ${W.fix_deleted.node}, ${W.fix_deleted.world_dist_m} m from her, outside every interior`);
+    } else fail('deleting the out-door reach gate did NOT bring the escape back — the fix may not be what is doing the work');
+    if (W.door_opens_from_its_face) pass('the way out is still a door: standing on its inside face, interact leaves the hold');
+    else fail('the out-door no longer opens from its own inside face — the reach gate is too tight');
+    const cd = W.fix_deleted.census_dist_m, wd = W.fix_deleted.world_dist_m;
+    if (cd != null && wd != null && Math.abs(cd - wd) > 1) {
+      say(`  NOTE  in the broken run the census reports ${cd} m to her and the world reports ${wd} m. ` +
+          'That gap is why a probe that never walked reported this scene as passing.');
+    }
+  }
+
+  // ============================ C — CONSUMPTION: does the world read what you answered? =======
+  // `RI-MTH07` §B, mandatory under ARBITRATION §3. The model this piece ships is the census
+  // output. Naming a consumer inside the scene is not enough — the scene is the thing being
+  // judged. So: play the opening TWICE, changing exactly ONE answer the player gives with their
+  // own hands (`writ.upbringing`), and then read an ENTITY: what a person in the world says when
+  // you walk up to them, which cell of `greetings.json` it came out of, and what they will
+  // discuss with you. Null control: two runs differing only in the hatch-name — a field the
+  // reaction matrix must not read — must give byte-identical entity behaviour.
+  say('\n== C — CONSUMPTION: the answers you give are read by somebody in the world ==');
+  out.checks.consumption = await h.page.evaluate(async () => {
+    const H = window.__HARNESS, E = window.__ENGINE;
+    await H.setRenderRate(0); await H.setSeed(1337);
+    // Walk the whole creation, answering it, and hand back what a person in the world then does.
+    const play = async ({ upbringing, hatchName }) => {
+      await H.loadState('barge-hold');
+      await H.censusBegin({ race: 'saxhleel' });
+      E.sim.doorVeto = E.sim.doorVeto;                  // (left installed; we never touch a door)
+      let qi = 0;
+      for (let guard = 0; guard < 200; guard++) {
+        const st = H.getCensusState();
+        if (st.done) break;
+        if (st.paused) { H.censusEnter(st.resume_by); continue; }
+        const inp = st.input;
+        if (!inp) { H.censusAnswer(null); continue; }
+        let v;
+        if (inp.kind === 'text') v = st.node === 'hold.hatch-name' ? hatchName : 'Keeps-The-Tally';
+        else if (inp.kind === 'pick') v = (inp.options || []).slice(0, inp.count || 2).map((x) => x.id);
+        else if (inp.kind === 'questionnaire') { const os = inp.options || []; v = os[qi % os.length].id; qi++; }
+        else if (st.node === 'writ.class-routes') v = 'questionnaire';
+        else if (st.node === 'writ.upbringing') v = upbringing;
+        else v = (inp.options && inp.options[0]) ? inp.options[0].id : null;
+        H.censusAnswer(v);
+      }
+      const ch = H.getCharacter();
+      // Now go and be looked at. `talkTo` is the world-side reader: sim/dialogue/disposition.js
+      // derives this person's regard from the race AND UPBRINGING the scene just wrote, and
+      // sim/quest/topic-supply.js filters what they will discuss with you.
+      const target = E.sim.npcs.find((n) => n.eid !== 'jeeh-ei' && n.reaction_group) || E.sim.npcs.find((n) => n.reaction_group);
+      // FOUND BY THE NULL CONTROL, which is what a null control is for. `Engine._greetCount` —
+      // the "how many times have you walked up to me" counter that stops a person repeating
+      // their first sentence — is NOT cleared by `loadState`, so the second play of the opening
+      // in the same page draws the SECOND line of the same greeting cell and two identical
+      // characters appear to be greeted differently. The cell, the key, the band, the
+      // disposition and the topics were identical throughout; only the rotation moved. Cleared
+      // here so that everything the comparison reads is a function of the answers alone.
+      if (E._greetCount && typeof E._greetCount.clear === 'function') E._greetCount.clear();
+      const said = target ? H.talkTo(target.eid) : null;
+      const disp = target ? H.npcDisposition(target.eid) : null;
+      if (said) H.conversationClose();
+      return {
+        answered: { upbringing: ch.upbringing, hatch_name: ch.hatch_name, race: ch.race, class: ch.class_id },
+        npc: target ? target.eid : null,
+        // THE ENTITY-SIDE OBSERVABLES. Not the formula — what the person did.
+        greeting_line: said ? said.greeting : null,
+        greeting_cell: said ? said.greeting_cell : null,
+        // [reaction_group, disposition_band, player_race_class] — the key the world looked you
+        // up under. This is the census's answer arriving at a stranger's eyes.
+        greeting_key: said ? said.greeting_key : null,
+        band: disp ? disp.band : null,
+        disposition: disp ? disp.disposition : null,
+        topics_offered: said && said.topics ? said.topics.map((t) => t.id).sort() : null,
+        // the model's own prediction, for the coupling denominator
+        predicted_upbringing_term: disp && disp.term ? disp.term.upbringing : null,
+      };
+    };
+    const a = await play({ upbringing: 'interior', hatchName: 'Silence-Under-Salt' });
+    const b = await play({ upbringing: 'foreign-born', hatchName: 'Silence-Under-Salt' });
+    const nullA = await play({ upbringing: 'interior', hatchName: 'Silence-Under-Salt' });
+    const nullB = await play({ upbringing: 'interior', hatchName: 'Reeds-In-The-Doorway' });
+    const num = Math.abs((b.disposition ?? 0) - (a.disposition ?? 0));
+    const den = Math.abs((b.predicted_upbringing_term ?? 0) - (a.predicted_upbringing_term ?? 0));
+    return {
+      a, b, nullA, nullB,
+      consumer: 'sim/dialogue/disposition.js derivedDisposition() via Engine.talkTo() -> character/converse.js greeting cell; sim/quest/topic-supply.js topicsFor() -> what that person will discuss',
+      coupling: den > 0 ? +(num / den).toFixed(4) : null,
+      // The entity-side half, stated separately because `disposition` above is still a number a
+      // harness call computes. `greeting_key[1]` is the band THE WORLD looked you up under when
+      // this person opened their mouth — chosen inside `character/converse.js`, not by us. If the
+      // scene's answer never reached the room, both runs come back on the same key and this is 0.
+      band_model_says: [a.band, b.band],
+      band_world_used: [a.greeting_key ? a.greeting_key[1] : null, b.greeting_key ? b.greeting_key[1] : null],
+      coupling_entity_side: (a.greeting_key && b.greeting_key)
+        ? ((a.greeting_key[1] !== b.greeting_key[1] && a.greeting_key[1] === a.band && b.greeting_key[1] === b.band) ? 1 : 0)
+        : null,
+      greeting_changed: a.greeting_line !== b.greeting_line || a.greeting_cell !== b.greeting_cell,
+      band_or_disp_changed: a.band !== b.band || a.disposition !== b.disposition,
+      null_identical: nullA.greeting_line === nullB.greeting_line
+        && nullA.greeting_cell === nullB.greeting_cell
+        && JSON.stringify(nullA.greeting_key) === JSON.stringify(nullB.greeting_key)
+        && nullA.band === nullB.band
+        && nullA.disposition === nullB.disposition
+        && JSON.stringify(nullA.topics_offered) === JSON.stringify(nullB.topics_offered),
+    };
+  });
+  {
+    const C = out.checks.consumption;
+    say(`  consumer: ${C.consumer}`);
+    say(`  A upbringing=${C.a.answered.upbringing} -> ${C.a.npc} disposition ${C.a.disposition} (${C.a.band}) cell ${C.a.greeting_cell}`);
+    say(`  B upbringing=${C.b.answered.upbringing} -> ${C.b.npc} disposition ${C.b.disposition} (${C.b.band}) cell ${C.b.greeting_cell}`);
+    say(`  A said: "${String(C.a.greeting_line).slice(0, 78)}"`);
+    say(`  B said: "${String(C.b.greeting_line).slice(0, 78)}"`);
+    say(`  band the model says ${JSON.stringify(C.band_model_says)}; band the WORLD looked her up under ${JSON.stringify(C.band_world_used)}`);
+    say(`  coupling ${C.coupling} (entity-side ${C.coupling_entity_side})   null control identical: ${C.null_identical}`);
+    if (C.coupling_entity_side !== 1) {
+      hard('C-ORPHAN', `the world did not look the player up under the band the census produced: model ${JSON.stringify(C.band_model_says)} vs world ${JSON.stringify(C.band_world_used)}`);
+    } else if (C.band_or_disp_changed || C.greeting_changed) {
+      pass(`one answer in the opening changed what a person in the world does (coupling ${C.coupling}, entity-side ${C.coupling_entity_side})`);
+    } else hard('C-ORPHAN', 'changing an answer the player gives in the opening changed NOTHING an entity does — the census model is an orphan (RI-MTH07 §B)');
+    if (C.null_identical) pass('null control: changing only the hatch-name changes nothing the entity does');
+    else fail('null control FAILED: a field the reaction matrix does not read still moved the entity — the difference above may be an artefact');
+  }
+
   const K = out.checks.delete_the_fix;
   for (const [k, v] of Object.entries(K)) {
     say(`  ${k}: ${JSON.stringify(v)}`);

@@ -218,13 +218,13 @@
    "faction": "rootkeepers"
   },
   {
-   "id": "thorn-house-0",
-   "name": "Ocheeva of the Boards's house",
+   "id": "thorn-gate",
+   "name": "The Thorn Gate",
    "kind": "interior",
-   "building_kind": "dwelling",
-   "interior": "thorn-house-0",
+   "building_kind": "gate",
+   "interior": "thorn-gate",
    "enterable": true,
-   "quarter": "rotted-hall",
+   "quarter": "the-boards",
    "offset_m": [
     -6.86,
     0,
@@ -237,7 +237,7 @@
     867.6
    ],
    "service": null,
-   "faction": "wet-ledger"
+   "faction": null
   },
   {
    "id": "thorn-north-lean",
@@ -373,7 +373,7 @@
   "thorn-apothecary",
   "thorn-sapwell",
   "thorn-rootpost",
-  "thorn-house-0"
+  "thorn-gate"
  ],
  "generated_by": "tools/world/build-settlements.mjs"
 }

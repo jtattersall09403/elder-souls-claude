@@ -1,6 +1,6 @@
 {
   "$schema": "elder-souls/viewpoints@1",
-  "note": "W1-01 PROVINCE viewpoint set, APPENDED per HARNESS.md \u00a76 (\"viewpoints may be added by amendment\"). It does not touch tools/harness/viewpoints.json: the twelve canonical poses are absolute and sit within 130 m of the world origin, the world origin is 250 m out in the Topal Bay, and changing a pose invalidates every cross-wave comparison that used it. Those twelve keep shooting W1-00's origin neighbourhood (the `showcase` cell, reached by the state `showcase_patch` and by every anchor state that sets `env.showcase`); these shoot the province. Capture with tools/world/province-shots.mjs, which teleports, streams the tiles in, and poses the camera directly.",
+  "note": "W1-01 PROVINCE viewpoint set, APPENDED per HARNESS.md §6 (\"viewpoints may be added by amendment\"). It does not touch tools/harness/viewpoints.json: the twelve canonical poses are absolute and sit within 130 m of the world origin, the world origin is 250 m out in the Topal Bay, and changing a pose invalidates every cross-wave comparison that used it. Those twelve keep shooting W1-00's origin neighbourhood (the `showcase` cell, reached by the state `showcase_patch` and by every anchor state that sets `env.showcase`); these shoot the province. Capture with tools/world/province-shots.mjs, which teleports, streams the tiles in, and poses the camera directly.  W1-05 RECONCILIATION (wave 1): every viewpoint here carried `anchor: \"region_<name>\"` and not one of those thirteen states exists in game/data/states. That was not merely an unused field — tools/harness/shot.mjs:107 and shoot.mjs:157 both do `v.state || v.anchor` and hand it to loadState, where hOpt swallows the failure. So a shot taken through either tool loaded nothing, kept whatever state was already resident, and was then labelled with the anchor it had NOT been taken at. A silently wrong label on a picture is worse than a missing one, because a missing one gets fixed. The field is renamed to `region`, which is what it always meant: it is the `id` of a region in game/data/world/regions.json, and all thirteen resolve, and nothing loads it. Positioning is and always was `province.teleport`, honoured by tools/world/province-shots.mjs. If a per-region anchor state is ever authored, add `state:` alongside — do not put it back in `anchor`.",
   "capture": {
     "width": 1920,
     "height": 1080,
@@ -14,9 +14,8 @@
     {
       "id": "VPP-blackwood",
       "set": "province",
-      "anchor": "region_blackwood",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Blackwood at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Blackwood at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "heavy_rain"
@@ -34,14 +33,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "blackwood"
     },
     {
       "id": "VPP-clay-moor",
       "set": "province",
-      "anchor": "region_clay_moor",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: The Clay Moor at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: The Clay Moor at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "dust_devil"
@@ -59,14 +58,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "clay-moor"
     },
     {
       "id": "VPP-crimson-coast",
       "set": "province",
-      "anchor": "region_crimson_coast",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Crimson Coast at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Crimson Coast at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "sea_squall"
@@ -84,14 +83,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "crimson-coast"
     },
     {
       "id": "VPP-deep-marshes",
       "set": "province",
-      "anchor": "region_deep_marshes",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: The Deep Marshes at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: The Deep Marshes at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "fever_fog"
@@ -109,14 +108,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "deep-marshes"
     },
     {
       "id": "VPP-eastern-rootlands",
       "set": "province",
-      "anchor": "region_eastern_rootlands",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Eastern Rootlands at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Eastern Rootlands at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "warm_rain"
@@ -134,14 +133,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "eastern-rootlands"
     },
     {
       "id": "VPP-hive",
       "set": "province",
-      "anchor": "region_hive",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: The Hive at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: The Hive at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "still"
@@ -159,14 +158,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "hive"
     },
     {
       "id": "VPP-marauders-coast",
       "set": "province",
-      "anchor": "region_marauders_coast",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Marauder's Coast at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Marauder's Coast at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "sea_fog"
@@ -184,14 +183,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "marauders-coast"
     },
     {
       "id": "VPP-salt-hills",
       "set": "province",
-      "anchor": "region_salt_hills",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: The Salt Hills at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: The Salt Hills at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "clear"
@@ -209,14 +208,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "salt-hills"
     },
     {
       "id": "VPP-stone-forest",
       "set": "province",
-      "anchor": "region_stone_forest",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: The Stone Forest at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: The Stone Forest at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "clear"
@@ -234,14 +233,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "stone-forest"
     },
     {
       "id": "VPP-stone-wastes",
       "set": "province",
-      "anchor": "region_stone_wastes",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Stone Wastes at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Stone Wastes at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "salt_storm"
@@ -259,14 +258,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "stone-wastes"
     },
     {
       "id": "VPP-thornmarsh",
       "set": "province",
-      "anchor": "region_thornmarsh",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Thornmarsh at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Thornmarsh at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "ashfall"
@@ -284,14 +283,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "thornmarsh"
     },
     {
       "id": "VPP-valus-ridge",
       "set": "province",
-      "anchor": "region_valus_ridge",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Valus Ridge at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Valus Ridge at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "cold_rain"
@@ -309,14 +308,14 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "valus-ridge"
     },
     {
       "id": "VPP-western-rootlands",
       "set": "province",
-      "anchor": "region_western_rootlands",
       "purpose": "art-direction",
-      "note": "RI-WLD04 S24: Western Rootlands at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md \u00a76\u2019s twelve; no canonical pose is changed.",
+      "note": "RI-WLD04 S24: Western Rootlands at its own label position, eye height, no HUD. This set is APPENDED to HARNESS.md §6’s twelve; no canonical pose is changed.",
       "world": {
         "timeOfDay": 11,
         "weather": "warm_rain"
@@ -334,7 +333,8 @@
         "saturation",
         "flatShading",
         "rmsContrast"
-      ]
+      ],
+      "region": "western-rootlands"
     },
     {
       "id": "VPP-vista-valus",

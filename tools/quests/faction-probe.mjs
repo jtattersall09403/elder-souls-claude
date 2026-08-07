@@ -21,8 +21,18 @@
 //
 // Run: node tools/quests/faction-probe.mjs [--line the_wet_ledger] [--out report.json]
 
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, writeJson } from '../lib/cli.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+// attribute -> the skills whose use raises it. READ from the file the engine reads.
+const GOVERNS = {};
+for (const s of JSON.parse(fs.readFileSync(ROOT + '/game/data/progression/skills.json', 'utf8')).skills) {
+  (GOVERNS[s.governing] = GOVERNS[s.governing] || []).push(s.id);
+}
 
 const USAGE = `
 faction-probe.mjs — drive a faction questline through the live offer gate from a cold start.
@@ -55,7 +65,7 @@ try {
   page.on('pageerror', (e) => out.failures.push(`pageerror: ${String(e).slice(0, 200)}`));
   await page.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
 
-  const r = await page.evaluate(({ LINE, RIVAL }) => {
+  const r = await page.evaluate(({ LINE, RIVAL, GOVERNS }) => {
     const H = window.__HARNESS;
     H.setRenderRate(0);
     const res = {};
@@ -110,8 +120,108 @@ try {
       raiseLog.push({ skill, to: H.getSkills()[skill], target, uses, rests, attributes_earned: moved });
     }
 
+    // The only route an attribute has in this build. GOVERNS comes in from
+    // `game/data/progression/skills.json` — the same file the engine loads — rather than being
+    // restated here, because a restated attribute list is how `intelligence` (not an attribute
+    // in this game; the sheet says `intellect`) survived in three faction ladders.
+    function raiseAttribute(attr, want) {
+      const owned = (GOVERNS[attr] || []).filter((s) => USE_FOR[s]);
+      if (!owned.length) { raiseLog.push({ attribute: attr, refused: `no usable skill governs ${attr}` }); return; }
+      let guard = 0;
+      const stuck = new Set();
+      while ((H.getPlayerStats().attributes[attr] || 0) < want && guard++ < 40) {
+        const cur = H.getSkills();
+        // Only skills that still HAVE a next multiple of 15 under the cap, and that have not
+        // already refused to move. The first version took the single cheapest crossing and
+        // `break`-ed the moment that one skill passed 90 — so willpower stopped at 17 with
+        // `warding` maxed at 90 and `veiling` still sitting at 15, five crossings unspent, and
+        // the Xul-Aneekh's ceiling quest reported unreachable when it was two skills away.
+        const live = owned.filter((s) => !stuck.has(s) && (Math.floor((cur[s] || 0) / 15) + 1) * 15 <= 100);
+        if (!live.length) break;
+        const pick = live.slice().sort((a, b) => (((15 - ((cur[a] || 0) % 15)) - (15 - ((cur[b] || 0) % 15)))))[0];
+        const next = (Math.floor((cur[pick] || 0) / 15) + 1) * 15;
+        raise(pick, next);
+        if ((H.getSkills()[pick] || 0) < next) stuck.add(pick);   // that skill will not move; try another
+      }
+    }
+
     const defs = {};
     for (const id of H.questBook()) defs[id] = H.questDef(id);
+
+    // ---- FINISHING A QUEST THE WAY A PLAYER FINISHES ONE -----------------------------------
+    // The first version of this probe picked `resolutions.find(available) || resolutions[0]` and
+    // called resolve. Every rank-3-and-up quest on the line refused, silently, because a
+    // resolution carries its OWN `requires` — sneak 32 AND security 32, or speechcraft 32, or
+    // 1100 gold — and the probe had only ever raised the skills the RANK GATE named. So the
+    // chain never completed and eight of nine quests reported "requires Q-LEDG-03 first". That
+    // is not the ladder's defect; it was the probe grinding for the door and not for the work.
+    //
+    // A player picks a resolution and then goes and becomes able to do it. So does this: it
+    // takes the CHEAPEST unmet resolution, prefers a NON-VIOLENT one, and pays for it with the
+    // same two things play has — skill use through `grantSkillUse` (never `setSkills`), and
+    // gold. Attributes are still never set; they rise only where a governed skill crosses 15.
+    // `questDef()` is a DELIBERATELY trimmed view — id, giver, opens_by, rank_gate — and carries
+    // neither `resolutions[].requires` nor `consequences`. Reading requirements off it silently
+    // produced `{}` for every resolution, so this probe's first version raised nothing, paid
+    // nothing, and then reported the line unwalkable and `res_kill_her` non-violent. The
+    // authoritative readers are `questResolutions()` (availability + why) and
+    // `questResolutionRequirements()` (the actual demand, including `requires_knowing`).
+    const resolveLog = [];
+    const probeSetFlags = new Set();
+    const setFlag = (f) => { probeSetFlags.add(f); return H.questSetFlag(f, true); };
+    function needOf(qid, rid) { try { return H.questResolutionRequirements(qid, rid); } catch (e) { return {}; } }
+    function cost(need) {
+      return Object.values(need.skills || {}).reduce((a, b) => a + b, 0)
+        + Object.values(need.attributes || {}).reduce((a, b) => a + b, 0) * 10
+        + (need.gold || 0) / 100
+        + (need.requires_knowing || []).length;   // a reveal is cheap but not free
+    }
+    function finish(id) {
+      const rows = H.questResolutions(id) || [];
+      if (!rows.length) { resolveLog.push({ quest: id, refused: 'the book offers no resolutions' }); return null; }
+      const needs = new Map(rows.map((r) => [r.id, needOf(id, r.id)]));
+      // Prefer, in order: a resolution already available; one that needs no violence; the
+      // cheapest to become able to do. A player who does not want to kill anybody plays exactly
+      // this way, so a line that can only be finished with a sword shows up as P9 going red.
+      const rank = (row) => (row.available ? 0 : 1000)
+        + (row.violence_required || needs.get(row.id).violence_required ? 10000 : 0)
+        + cost(needs.get(row.id));
+      const order = rows.slice().sort((a, b) => rank(a) - rank(b));
+      for (const row of order) {
+        const need = needs.get(row.id) || {};
+        // (i) the SHEET, paid for by use — never `setSkills`, never a set attribute.
+        for (const [sk, lvl] of Object.entries(need.skills || {})) if ((H.getSkills()[sk] || 0) < lvl) raise(sk, lvl);
+        // (ia) an ATTRIBUTE a resolution asks for is still never written. It is bought the only
+        //      way this build sells one: push a skill the attribute GOVERNS past its next
+        //      multiple of 15 and take the +1 (`character/derive.js:359`). Without this,
+        //      `Q-ASSZ-06 res_lease_stands` — "personality 16/20", the Assize's own non-violent
+        //      exit at rank 5 — was unreachable and the line dead-ended one quest short of its
+        //      ceiling, on an attribute that was four skill-crossings away the whole time.
+        for (const [at, want] of Object.entries(need.attributes || {})) raiseAttribute(at, want);
+        // (ii) the PURSE.
+        if (need.gold && H.getGold() < need.gold) H.setGold(need.gold);
+        // (iii) the THINGS YOU FOUND OUT. `requires_knowing` names reveals the quest declares
+        //       under `revealed_by` — a ledger you read, a rival who talked, a porter you asked.
+        //       Without these, four of nine Wet Ledger quests had no reachable resolution and the
+        //       line dead-ended at rank 3 for reasons that had nothing to do with the ladder.
+        for (const rev of need.requires_knowing || []) { try { H.questReveal(id, rev); } catch (e) { /* not revealable here */ } }
+        const after = (H.questResolutions(id) || []).find((x) => x.id === row.id);
+        if (!after || !after.available) continue;
+        const done = H.questResolve(id, row.id);
+        resolveLog.push({
+          quest: id, resolution: row.id, method: need.method,
+          violence_required: !!(row.violence_required || need.violence_required),
+          paid_for: Object.keys(need).filter((k) => k !== 'method' && k !== 'journal_index' && k !== 'violence_required'),
+        });
+        return done && (done.resolution || row.id);
+      }
+      // Re-read, so the refusal reports the sheet AS IT IS NOW rather than as it was before the
+      // probe spent 300 skill-uses on it. The stale copy said "willpower 10/24" about a
+      // character that was standing at 17 by then, which sent the diagnosis to the wrong place.
+      const nowRows = H.questResolutions(id) || [];
+      resolveLog.push({ quest: id, refused: 'no resolution became available', why: nowRows.map((x) => ({ id: x.id, why: x.why })) });
+      return null;
+    }
     const inLine = (id) => defs[id] && defs[id].rank_gate && defs[id].rank_gate.faction === LINE;
     const line = Object.values(defs).filter((d) => d.rank_gate && d.rank_gate.faction === LINE)
       .sort((a, b) => (a.rank_gate.min_rank - b.rank_gate.min_rank) || a.id.localeCompare(b.id));
@@ -134,9 +244,7 @@ try {
       for (const pq of (d.opens_by && d.opens_by.prerequisite_quests) || []) {
         try {
           H.questOpen(pq);
-          const rs = H.questResolutions(pq) || [];
-          const pick = rs.find((x) => x.available) || rs[0];
-          if (pick) H.questResolve(pq, pick.id || pick.resolution || pick);
+          finish(pq);
         } catch (e) { /* already closed, or opened another way */ }
       }
       // (c) THE SHEET AND THE STANDING, to whatever the LADDER asks for — read out of the
@@ -152,7 +260,7 @@ try {
             const best = (t.what || []).slice().sort((a, b) => (cur[b] || 0) - (cur[a] || 0));
             raise(best[t.kind === 'skill_1' ? 0 : 1], t.need);
           }
-          if (!t.met && t.kind === 'world_state') H.questSetFlag(t.what, true);
+          if (!t.met && t.kind === 'world_state') setFlag(t.what);
           // The attribute term is NEVER set. It rises only where `raise()` above made a
           // governed skill cross a multiple of 15, which is the one route the game has.
         }
@@ -174,16 +282,23 @@ try {
         offerable: !!(o && o.offerable), why: (o && o.why) || [],
         derived_rank: row.derived_rank, reputation: row.reputation,
       });
-      if (o && o.offerable) {
+      // THE LAST QUEST ON THE LINE IS LEFT STANDING, DELIBERATELY. The perturbations below ask
+      // "what closes when I break the model", and once every quest on the line is resolved there
+      // is nothing left for them to close — the first run of this probe reported "closed 0
+      // offers" against a lockout that was working perfectly, purely because the walk had
+      // consumed its own evidence. So the ceiling quest is brought to offerable and held there,
+      // perturbed against, and only then taken.
+      const isLast = d === line[line.length - 1];
+      if (o && o.offerable && !isLast) {
         try {
           H.questOpen(d.id);
-          const rs = H.questResolutions(d.id) || [];
-          const pick = rs.find((x) => x.available) || rs[0];
-          if (pick) walk[walk.length - 1].resolved = H.questResolve(d.id, pick.id || pick.resolution || pick).resolution;
+          walk[walk.length - 1].resolved = finish(d.id);
         } catch (e) { walk[walk.length - 1].resolve_error = String(e).slice(0, 200); }
       }
     }
     res.steps = walk;
+    res.resolutions = resolveLog;
+    res.held_open_for_perturbation = line[line.length - 1].id;
     res.skill_raises = raiseLog;
     res.attrs_end = H.getPlayerStats().attributes;
     res.skills_end = H.getSkills();
@@ -201,7 +316,13 @@ try {
 
     // ---- PERTURBATION 2: break the EXCLUSIVITY. Join the rival and watch the line close. ----
     const lineBefore = H.questOffers().filter((o) => inLine(o.id) && o.offerable).map((o) => o.id);
-    H.setFactionStanding(RIVAL, { member: true, reputation: 40 });
+    // Reputation 112 and not 40. The exclusivity table has two shapes: `enemy_pairs`, which
+    // close at ANY rank, and `earned`, which close only at a declared rank — the Assize closes
+    // the Xul-Aneekh at rank 4, needing reputation 52. Joining at 40 derived rank 3 and the
+    // lockout correctly did not fire, which the probe then reported as the model having no
+    // consumer. A perturbation that does not reach the threshold it is testing measures nothing.
+    // 112 is the rank-7 reputation, so every declared exclusion is in scope.
+    H.setFactionStanding(RIVAL, { member: true, reputation: 112 });
     const g2 = H.factionGates();
     const lineAfter = H.questOffers().filter((o) => inLine(o.id) && o.offerable).map((o) => o.id);
     const refusals = H.questOffers().filter((o) => inLine(o.id) && !o.offerable).map((o) => ({ id: o.id, why: o.why }));
@@ -215,8 +336,29 @@ try {
       quests_locked_by_rivalry: (g2.quests_locked_by_rivalry || []).length,
     };
     H.setFactionStanding(RIVAL, { member: false, reputation: 0 });
+
+    // ---- AND NOW TAKE THE CEILING QUEST, so the line is actually finished. -------------------
+    const top = line[line.length - 1];
+    const topOffer = H.questOffers().find((x) => x.id === top.id);
+    if (topOffer && topOffer.offerable) {
+      try { H.questOpen(top.id); res.ceiling_resolved = finish(top.id); }
+      catch (e) { res.ceiling_error = String(e).slice(0, 200); }
+    }
+    const st = walk.find((s) => s.id === top.id); if (st) st.resolved = res.ceiling_resolved;
+
+    // ---- THE CONSEQUENCE, READ OFF THE LIVE WORLD -------------------------------------------
+    // Not off the quest file. `questWorldFlags()` reads `sim.quest.flags`, which is what the
+    // machine wrote when each resolution was applied. A line that raises no flag has changed
+    // nothing about the world it is set in, whatever its journal says.
+    res.world_flags_now = H.questWorldFlags();
+    res.flags_the_probe_set_itself = [...probeSetFlags].sort();
+    // The flags that are up which the probe never wrote. Those are the ones the RESOLUTIONS
+    // raised, and they are the only honest evidence that finishing a quest changed the world
+    // rather than a journal. A check that counted every set flag would pass on the three the
+    // probe pokes in to clear the rank-5/6/7 world_state terms.
+    res.flags_raised_by_the_quests = res.world_flags_now.filter((f) => !probeSetFlags.has(f));
     return res;
-  }, { LINE, RIVAL });
+  }, { LINE, RIVAL, GOVERNS });
 
   out.measured = r;
   say(`\nline: ${(r.line_ids || []).join(' ')}`);
@@ -237,6 +379,15 @@ try {
     `joining ${RIVAL} closed ${(r.perturb_exclusion.closed || []).length} ${LINE} offers; ${RIVAL} closes ${JSON.stringify(r.perturb_exclusion.rival_closes)}`);
   check('P7_lockout_is_legible', !!r.perturb_exclusion.example_refusal,
     `the refusal a giver would speak: ${JSON.stringify(r.perturb_exclusion.example_refusal)}`);
+  const taken = (r.resolutions || []).filter((x) => x.resolution);
+  const nonviolent = taken.filter((x) => !x.violence_required);
+  check('P9_the_line_can_be_walked_without_killing', taken.length > 0 && nonviolent.length === taken.length,
+    `${nonviolent.length}/${taken.length} resolutions the walk actually took required no violence: ${taken.map((x) => `${x.quest}:${x.resolution}${x.violence_required ? '(VIOLENT)' : ''}`).join(' ')}`);
+  check('P10_the_world_changed', (r.flags_raised_by_the_quests || []).length > 0,
+    `${(r.flags_raised_by_the_quests || []).length} world flag(s) are set in sim.quest.flags that the probe never wrote — i.e. raised by the resolutions themselves: ${(r.flags_raised_by_the_quests || []).join(', ') || 'NONE — the line is a journal and nothing else'} (the probe poked in ${(r.flags_the_probe_set_itself || []).join(', ') || 'nothing'} to clear rank world_state terms)`);
+  const refused = (r.resolutions || []).filter((x) => x.refused);
+  check('P11_every_quest_taken_could_be_finished', refused.length === 0,
+    refused.length ? `${refused.length} quest(s) had no reachable resolution: ${refused.map((x) => x.quest).join(', ')}` : `all ${taken.length} quests opened on the walk reached a resolution`);
 
   out.ok = out.failures.length === 0;
   if (args.out) writeJson(args.out, out);

@@ -27,7 +27,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 0, "min_reputation": 0 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 0,
+        "min_reputation": 0
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "assizer-corvo",
@@ -37,7 +41,11 @@
       },
       "opens_by": {
         "topic": "the assize",
-        "overheard_from": ["soulrest-customs-clerk", "stormhold-gate-guard", "clerk-avelia-doren"]
+        "overheard_from": [
+          "soulrest-customs-clerk",
+          "stormhold-gate-guard",
+          "clerk-avelia-doren"
+        ]
       },
       "task_kind": "errand",
       "stakes": 2,
@@ -46,7 +54,7 @@
         {
           "index": 4,
           "state": "active",
-          "text": "The customs clerk at Soulrest said the Assize is always short a hand in Second Seed and that anybody who can carry paper without reading it will do.",
+          "text": "The customs clerk at Soulrest said the Assize is always short a hand in Second Seed and that a pair of hands that can carry paper without reading it will do.",
           "records_belief": false
         },
         {
@@ -91,7 +99,10 @@
           "id": "br_the_pair",
           "at_journal_index": 20,
           "condition": "The player has noticed the two books differ and has a morning alone with both",
-          "leads_to": ["res_carry_clean", "res_copy_the_four"],
+          "leads_to": [
+            "res_carry_clean",
+            "res_copy_the_four"
+          ],
           "irreversible": false
         }
       ],
@@ -104,11 +115,22 @@
           "outcome": "The player is on the roll of the Assize and has noticed something they cannot yet name. The office notices nothing at all, which is the office working correctly.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_copy_the_four"],
+          "exclusive_with": [
+            "res_copy_the_four"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 10 },
-            "world_flags": ["assize_clerk_named"],
-            "npc_disposition": { "assizer-corvo": 12 }
+            "faction_reputation": {
+              "the_imperial_assize": 10
+            },
+            "world_flags": [
+              "assize_clerk_named"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 12
+            },
+            "joins_faction": [
+              "the_imperial_assize"
+            ]
           }
         },
         {
@@ -118,12 +140,28 @@
           "journal_index": 92,
           "outcome": "The player is on the roll and holds four transcribed lease chits nobody knows exist. Every quest in this line for the next four ranks is easier because of it and one of them is only reachable because of it.",
           "morally_better": null,
-          "requires": { "skills": { "security": 20 } },
-          "exclusive_with": ["res_carry_clean"],
+          "requires": {
+            "skills": {
+              "security": 20
+            }
+          },
+          "exclusive_with": [
+            "res_carry_clean"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 10 },
-            "world_flags": ["assize_clerk_named", "player_holds_four_lease_chits"],
-            "npc_disposition": { "assizer-corvo": 12 }
+            "faction_reputation": {
+              "the_imperial_assize": 10
+            },
+            "world_flags": [
+              "assize_clerk_named",
+              "player_holds_four_lease_chits"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 12
+            },
+            "joins_faction": [
+              "the_imperial_assize"
+            ]
           }
         }
       ],
@@ -140,18 +178,39 @@
       "can_fail": true,
       "deceit": null,
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 10 },
-        "world_flags": ["assize_clerk_named"],
-        "unlocks": ["Q-ASSZ-01"]
+        "faction_reputation": {
+          "the_imperial_assize": 10
+        },
+        "world_flags": [
+          "assize_clerk_named"
+        ],
+        "unlocks": [
+          "Q-ASSZ-01"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 90 },
-        { "type": "access", "unique_named": true, "id": "acc_assize_court_room", "name": "the court room behind the Provincial compound" },
-        { "type": "information", "unique_named": true, "id": "topic_the_toll_book", "name": "the toll book" }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 90
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_assize_court_room",
+          "name": "the court room behind the Provincial compound"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_toll_book",
+          "name": "the toll book"
+        }
       ],
-      "notes": "Rank 0. RI-QST01: errands establish texture and geography. The texture here is that the Assize is a filing system, and the whole line's corruption is visible on the first morning as a one-entry discrepancy nobody has ever been paid to look at."
+      "notes": "Rank 0. RI-QST01: errands establish texture and geography. The texture here is that the Assize is a filing system, and the whole line's corruption is visible on the first morning as a one-entry discrepancy nobody has ever been paid to look at.",
+      "joins_note": "Every ending of the entry quest ends with the player taken on — on the roll, named by the hollow, sent again. That is the JOIN, and it is authored here rather than derived, because mutual exclusion now keys on membership: reputation paid sideways by another faction's quest is a qualification, not a career (see game/src/sim/quest/machine.js heldRank)."
     },
     {
       "id": "Q-ASSZ-01",
@@ -159,7 +218,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 1, "min_reputation": 10 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 1,
+        "min_reputation": 10
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "clerk-avelia-doren",
@@ -169,7 +232,9 @@
       },
       "opens_by": {
         "topic": "the toll book",
-        "prerequisite_quests": ["Q-ASSZ-00"]
+        "prerequisite_quests": [
+          "Q-ASSZ-00"
+        ]
       },
       "task_kind": "retrieval",
       "stakes": 3,
@@ -196,7 +261,7 @@
         {
           "index": 48,
           "state": "active",
-          "text": "Vell drinks at the Blackrose inn and has the volume. She says she took it because it was going to be corrected and she wanted a copy of what it said before somebody made it say something else.",
+          "text": "Vell drinks at the Blackrose inn and has the volume. She says she took it because it was going to be corrected and she wanted a copy of what it said before it was made to say something else.",
           "records_belief": false
         },
         {
@@ -229,7 +294,12 @@
           "id": "br_fourth_volume",
           "at_journal_index": 48,
           "condition": "The player has found the struck-off notary and she is holding the volume",
-          "leads_to": ["res_bring_it_in", "res_read_first", "res_leave_it_with_her", "rev_vell"],
+          "leads_to": [
+            "res_bring_it_in",
+            "res_read_first",
+            "res_leave_it_with_her",
+            "rev_vell"
+          ],
           "irreversible": false
         }
       ],
@@ -241,12 +311,26 @@
           "journal_index": 90,
           "outcome": "The volume returns to the under-room and the return goes to Cyrodiil complete. Nothing in it is read by anyone who did not already know what it said.",
           "morally_better": null,
-          "requires": { "skills": { "speechcraft": 20 } },
-          "exclusive_with": ["res_read_first", "res_leave_it_with_her"],
+          "requires": {
+            "skills": {
+              "speechcraft": 20
+            }
+          },
+          "exclusive_with": [
+            "res_read_first",
+            "res_leave_it_with_her"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 12 },
-            "world_flags": ["assize_fourth_volume_returned"],
-            "npc_disposition": { "clerk-avelia-doren": 20, "notary-sedda-vell": -15 }
+            "faction_reputation": {
+              "the_imperial_assize": 12
+            },
+            "world_flags": [
+              "assize_fourth_volume_returned"
+            ],
+            "npc_disposition": {
+              "clerk-avelia-doren": 20,
+              "notary-sedda-vell": -15
+            }
           }
         },
         {
@@ -256,13 +340,30 @@
           "journal_index": 92,
           "outcome": "The player reads forty years of Archon in one sitting and then hands the book in. The office gets its volume. The player gets the shape of the thing the office is for.",
           "morally_better": null,
-          "requires": { "attributes": { "intellect": 12 } },
-          "requires_knowing": ["rev_vell"],
-          "exclusive_with": ["res_bring_it_in", "res_leave_it_with_her"],
+          "requires": {
+            "attributes": {
+              "intellect": 12
+            }
+          },
+          "requires_knowing": [
+            "rev_vell"
+          ],
+          "exclusive_with": [
+            "res_bring_it_in",
+            "res_leave_it_with_her"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 12 },
-            "world_flags": ["assize_fourth_volume_returned", "player_read_the_archon_entries"],
-            "npc_disposition": { "clerk-avelia-doren": 20, "notary-sedda-vell": 25 }
+            "faction_reputation": {
+              "the_imperial_assize": 12
+            },
+            "world_flags": [
+              "assize_fourth_volume_returned",
+              "player_read_the_archon_entries"
+            ],
+            "npc_disposition": {
+              "clerk-avelia-doren": 20,
+              "notary-sedda-vell": 25
+            }
           }
         },
         {
@@ -272,13 +373,28 @@
           "journal_index": 94,
           "outcome": "The volume stays out of the office and the office writes the word it uses for that. Doren knows the player lied and files it anyway, which tells the player more about the Assize than the book would have.",
           "morally_better": true,
-          "requires": { "disposition": 40 },
-          "requires_knowing": ["rev_vell"],
-          "exclusive_with": ["res_bring_it_in", "res_read_first"],
+          "requires": {
+            "disposition": 40
+          },
+          "requires_knowing": [
+            "rev_vell"
+          ],
+          "exclusive_with": [
+            "res_bring_it_in",
+            "res_read_first"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": -6 },
-            "world_flags": ["assize_fourth_volume_outside", "vell_trusts_the_player"],
-            "npc_disposition": { "notary-sedda-vell": 45, "clerk-avelia-doren": -10 }
+            "faction_reputation": {
+              "the_imperial_assize": -6
+            },
+            "world_flags": [
+              "assize_fourth_volume_outside",
+              "vell_trusts_the_player"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": 45,
+              "clerk-avelia-doren": -10
+            }
           }
         }
       ],
@@ -294,27 +410,64 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D12"],
+        "patterns": [
+          "D3",
+          "D12"
+        ],
         "stated_objective": "Fetch four toll volumes for a routine return to Cyrodiil",
         "actual_objective": "The same thing, honestly asked. What is not honest is the office's habit of correcting a volume before it is read",
         "truth": "The fourth volume is the only one that records the Dres hulls at Archon, and it was signed out eleven years ago by the notary the office struck off.",
         "revealed_by": [
-          { "id": "rev_signout", "channel": "ledger", "source": "item_assize_signout_book", "before_point_of_no_return": true },
-          { "id": "rev_vell", "channel": "rival_npc", "source": "notary-sedda-vell", "before_point_of_no_return": true }
+          {
+            "id": "rev_signout",
+            "channel": "ledger",
+            "source": "item_assize_signout_book",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vell",
+            "channel": "rival_npc",
+            "source": "notary-sedda-vell",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 12 },
-        "world_flags": ["assize_fourth_volume_settled"],
-        "unlocks": ["Q-ASSZ-02"]
+        "faction_reputation": {
+          "the_imperial_assize": 12
+        },
+        "world_flags": [
+          "assize_fourth_volume_settled"
+        ],
+        "unlocks": [
+          "Q-ASSZ-02"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 180 },
-        { "type": "information", "unique_named": true, "id": "topic_the_lease_roll", "name": "the lease roll" },
-        { "type": "ally", "unique_named": true, "id": "notary-sedda-vell", "name": "Sedda Vell, struck off", "on_resolution": ["res_read_first", "res_leave_it_with_her"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 180
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_lease_roll",
+          "name": "the lease roll"
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "notary-sedda-vell",
+          "name": "Sedda Vell, struck off",
+          "on_resolution": [
+            "res_read_first",
+            "res_leave_it_with_her"
+          ]
+        }
       ],
       "notes": "Rank 1. The dissenter arrives here rather than at rank 4, because the Assize's rot is a filing habit rather than a person and it needs somebody to point at it early. Vell's reveal is cited by two of the three resolutions' requires_knowing, so she unlocks branches rather than merely having opinions (RI-QST02 D3's test)."
     },
@@ -324,7 +477,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 2, "min_reputation": 22 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 2,
+        "min_reputation": 22
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "assizer-corvo",
@@ -334,8 +491,12 @@
       },
       "opens_by": {
         "topic": "the lease roll",
-        "prerequisite_quests": ["Q-ASSZ-01"],
-        "prerequisite_topics": ["the toll book"]
+        "prerequisite_quests": [
+          "Q-ASSZ-01"
+        ],
+        "prerequisite_topics": [
+          "the toll book"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 5,
@@ -401,7 +562,12 @@
           "id": "br_audit",
           "at_journal_index": 32,
           "condition": "The player has the roll, the returns, and has noticed both are written at Blackrose",
-          "leads_to": ["res_file_exact", "res_second_finding", "res_take_to_vell", "rev_vell_daybooks"],
+          "leads_to": [
+            "res_file_exact",
+            "res_second_finding",
+            "res_take_to_vell",
+            "rev_vell_daybooks"
+          ],
           "irreversible": false
         }
       ],
@@ -414,11 +580,24 @@
           "outcome": "The audit clears. The lease continues. The player is now, in the only sense the record cares about, the person who checked.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_second_finding", "res_take_to_vell"],
+          "exclusive_with": [
+            "res_second_finding",
+            "res_take_to_vell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 16, "house_dres": 8, "the_xul_aneekh": -10 },
-            "world_flags": ["assize_lease_audit_clean", "player_signed_the_lease_audit"],
-            "npc_disposition": { "assizer-corvo": 20, "prefect-hallow": 20 }
+            "faction_reputation": {
+              "the_imperial_assize": 16,
+              "house_dres": 8,
+              "the_xul_aneekh": -10
+            },
+            "world_flags": [
+              "assize_lease_audit_clean",
+              "player_signed_the_lease_audit"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 20,
+              "prefect-hallow": 20
+            }
           }
         },
         {
@@ -428,12 +607,29 @@
           "journal_index": 92,
           "outcome": "The renewal clause is written down inside the Assize, where it can be found later by somebody who goes looking. Corvo files it in the drawer and tells the player he means it, which is the most honest thing anyone in this office says to them.",
           "morally_better": null,
-          "requires": { "attributes": { "intellect": 14 }, "skills": { "speechcraft": 25 } },
-          "exclusive_with": ["res_file_exact", "res_take_to_vell"],
+          "requires": {
+            "attributes": {
+              "intellect": 14
+            },
+            "skills": {
+              "speechcraft": 25
+            }
+          },
+          "exclusive_with": [
+            "res_file_exact",
+            "res_take_to_vell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 14 },
-            "world_flags": ["assize_lease_audit_clean", "assize_renewal_finding_filed"],
-            "npc_disposition": { "assizer-corvo": 10 }
+            "faction_reputation": {
+              "the_imperial_assize": 14
+            },
+            "world_flags": [
+              "assize_lease_audit_clean",
+              "assize_renewal_finding_filed"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 10
+            }
           }
         },
         {
@@ -443,13 +639,30 @@
           "journal_index": 94,
           "outcome": "Two hundred and nine names come out of a struck-off notary's day-books and into the player's hands. The Assize's audit still clears, because nobody told the Assize.",
           "morally_better": true,
-          "requires": { "disposition": 45 },
-          "requires_knowing": ["rev_vell_daybooks"],
-          "exclusive_with": ["res_file_exact", "res_second_finding"],
+          "requires": {
+            "disposition": 45
+          },
+          "requires_knowing": [
+            "rev_vell_daybooks"
+          ],
+          "exclusive_with": [
+            "res_file_exact",
+            "res_second_finding"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 6, "the_xul_aneekh": 12, "house_dres": -15 },
-            "world_flags": ["assize_lease_audit_clean", "player_holds_the_two_hundred_and_nine"],
-            "npc_disposition": { "notary-sedda-vell": 40, "prefect-hallow": -20 }
+            "faction_reputation": {
+              "the_imperial_assize": 6,
+              "the_xul_aneekh": 12,
+              "house_dres": -15
+            },
+            "world_flags": [
+              "assize_lease_audit_clean",
+              "player_holds_the_two_hundred_and_nine"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": 40,
+              "prefect-hallow": -20
+            }
           }
         }
       ],
@@ -465,28 +678,71 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D3", "D5"],
+        "patterns": [
+          "D1",
+          "D3",
+          "D5"
+        ],
         "stated_objective": "Reconcile the Blackrose lease roll against the customs returns",
         "actual_objective": "Produce a fourth clean audit, by a route that has produced three, so that the lease has been checked again",
         "truth": "The roll and the returns are both written at Blackrose in the same hand, so the audit cannot find anything, and the renewal clause has no upper number in it.",
         "revealed_by": [
-          { "id": "rev_same_hand", "channel": "ledger", "source": "item_blackrose_lease_roll", "before_point_of_no_return": true },
-          { "id": "rev_vell_daybooks", "channel": "rival_npc", "source": "notary-sedda-vell", "before_point_of_no_return": true },
-          { "id": "rev_gang", "channel": "talk_to_target", "source": "blackrose-yard-hands", "before_point_of_no_return": true }
+          {
+            "id": "rev_same_hand",
+            "channel": "ledger",
+            "source": "item_blackrose_lease_roll",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vell_daybooks",
+            "channel": "rival_npc",
+            "source": "notary-sedda-vell",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_gang",
+            "channel": "talk_to_target",
+            "source": "blackrose-yard-hands",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 14, "house_dres": 0 },
-        "world_flags": ["assize_lease_audited_again"],
-        "unlocks": ["Q-ASSZ-03"]
+        "faction_reputation": {
+          "the_imperial_assize": 14,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "assize_lease_audited_again"
+        ],
+        "unlocks": [
+          "Q-ASSZ-03"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 300 },
-        { "type": "information", "unique_named": true, "id": "topic_the_blackrose_day_book", "name": "the Blackrose day-book" },
-        { "type": "item", "unique_named": true, "id": "item_the_two_hundred_and_nine", "name": "a list of two hundred and nine names", "on_resolution": ["res_take_to_vell"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 300
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_blackrose_day_book",
+          "name": "the Blackrose day-book"
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_the_two_hundred_and_nine",
+          "name": "a list of two hundred and nine names",
+          "on_resolution": [
+            "res_take_to_vell"
+          ]
+        }
       ],
       "notes": "Rank 2 and the corruption reveal, inside RI-QST01's hard deadline of rank 3. The reveal is structural rather than personal: the audit is honest, the auditor is honest, the lease is lawful, and six hundred and eleven people are property. That is the Morrowind Imperial Legion shape (D4's Vabdas order) at institutional scale."
     },
@@ -496,7 +752,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 3, "min_reputation": 36 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 3,
+        "min_reputation": 36
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "clerk-avelia-doren",
@@ -506,8 +766,12 @@
       },
       "opens_by": {
         "topic": "the struck off notary",
-        "prerequisite_quests": ["Q-ASSZ-02"],
-        "prerequisite_topics": ["the lease roll"]
+        "prerequisite_quests": [
+          "Q-ASSZ-02"
+        ],
+        "prerequisite_topics": [
+          "the lease roll"
+        ]
       },
       "task_kind": "moral_dilemma",
       "stakes": 6,
@@ -558,13 +822,13 @@
         {
           "index": 94,
           "state": "success",
-          "text": "I returned the writ unserved and wrote the reason on the back of it. Corvo has entered the refusal on the roll against my name, which is what a refusal is for, and the writ has gone to somebody else.",
+          "text": "I returned the writ unserved and wrote the reason on the back of it. Corvo has entered the refusal on the roll against my name, which is what a refusal is for, and the writ has gone to another server.",
           "records_belief": false
         },
         {
           "index": 96,
           "state": "success",
-          "text": "I bought the holding off her at four times the compensation, out of my own purse, and served the writ on myself. Everybody got what the file says they wanted. She is on the Gideon road with money instead of nothing, which is not the same as being right.",
+          "text": "I bought the holding off her at four times the compensation, out of my own purse, and served the writ on myself. Every party got what the file says they wanted. She is on the Gideon road with money instead of nothing, which is not the same as being right.",
           "records_belief": false
         }
       ],
@@ -573,7 +837,13 @@
           "id": "br_ford",
           "at_journal_index": 36,
           "condition": "The player has met the widow and read the compensation date",
-          "leads_to": ["res_serve_it", "res_move_the_cut", "res_return_unserved", "res_buy_her_out", "rev_far_bank"],
+          "leads_to": [
+            "res_serve_it",
+            "res_move_the_cut",
+            "res_return_unserved",
+            "res_buy_her_out",
+            "rev_far_bank"
+          ],
           "irreversible": true
         }
       ],
@@ -585,12 +855,31 @@
           "journal_index": 90,
           "outcome": "The writ is served lawfully and the holding comes down. It is the correct execution of a lawful instrument and it is the worst thing in this line the player does with a clear conscience available to them.",
           "morally_better": false,
-          "requires": { "skills": { "speechcraft": 32 } },
-          "exclusive_with": ["res_move_the_cut", "res_return_unserved", "res_buy_her_out"],
+          "requires": {
+            "skills": {
+              "speechcraft": 32
+            }
+          },
+          "exclusive_with": [
+            "res_move_the_cut",
+            "res_return_unserved",
+            "res_buy_her_out"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 20, "the_xul_aneekh": -20, "the_dockhands": -8 },
-            "world_flags": ["chelnisi_holding_taken", "assize_seal_held", "assize_survey_cut_near_bank"],
-            "npc_disposition": { "clerk-avelia-doren": 30, "notary-sedda-vell": -30 }
+            "faction_reputation": {
+              "the_imperial_assize": 20,
+              "the_xul_aneekh": -20,
+              "the_dockhands": -8
+            },
+            "world_flags": [
+              "chelnisi_holding_taken",
+              "assize_seal_held",
+              "assize_survey_cut_near_bank"
+            ],
+            "npc_disposition": {
+              "clerk-avelia-doren": 30,
+              "notary-sedda-vell": -30
+            }
           }
         },
         {
@@ -600,13 +889,37 @@
           "journal_index": 92,
           "outcome": "The cut moves to the far bank at a third more cost, argued through on figures rather than on mercy. The holding stands. Doren does not speak to the player again and the office notes that they can be argued into things.",
           "morally_better": true,
-          "requires": { "attributes": { "intellect": 16 }, "skills": { "mercantile": 32 } },
-          "requires_knowing": ["rev_far_bank"],
-          "exclusive_with": ["res_serve_it", "res_return_unserved", "res_buy_her_out"],
+          "requires": {
+            "attributes": {
+              "intellect": 16
+            },
+            "skills": {
+              "mercantile": 32
+            }
+          },
+          "requires_knowing": [
+            "rev_far_bank"
+          ],
+          "exclusive_with": [
+            "res_serve_it",
+            "res_return_unserved",
+            "res_buy_her_out"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 12, "the_xul_aneekh": 15, "the_dockhands": 10 },
-            "world_flags": ["chelnisi_holding_stands", "assize_seal_held", "assize_survey_cut_far_bank"],
-            "npc_disposition": { "clerk-avelia-doren": -40, "notary-sedda-vell": 35 }
+            "faction_reputation": {
+              "the_imperial_assize": 12,
+              "the_xul_aneekh": 15,
+              "the_dockhands": 10
+            },
+            "world_flags": [
+              "chelnisi_holding_stands",
+              "assize_seal_held",
+              "assize_survey_cut_far_bank"
+            ],
+            "npc_disposition": {
+              "clerk-avelia-doren": -40,
+              "notary-sedda-vell": 35
+            }
           }
         },
         {
@@ -617,11 +930,26 @@
           "outcome": "The writ comes back with a reason written on it. The refusal goes on the roll against the player's name, which costs standing and buys a record that somebody objected. Somebody else serves it within the month.",
           "morally_better": true,
           "requires": {},
-          "exclusive_with": ["res_serve_it", "res_move_the_cut", "res_buy_her_out"],
+          "exclusive_with": [
+            "res_serve_it",
+            "res_move_the_cut",
+            "res_buy_her_out"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": -14, "the_xul_aneekh": 10 },
-            "world_flags": ["chelnisi_holding_taken", "assize_refusal_on_the_roll", "assize_survey_cut_near_bank"],
-            "npc_disposition": { "clerk-avelia-doren": -25, "assizer-corvo": -10, "notary-sedda-vell": 30 }
+            "faction_reputation": {
+              "the_imperial_assize": -14,
+              "the_xul_aneekh": 10
+            },
+            "world_flags": [
+              "chelnisi_holding_taken",
+              "assize_refusal_on_the_roll",
+              "assize_survey_cut_near_bank"
+            ],
+            "npc_disposition": {
+              "clerk-avelia-doren": -25,
+              "assizer-corvo": -10,
+              "notary-sedda-vell": 30
+            }
           }
         },
         {
@@ -631,12 +959,27 @@
           "journal_index": 96,
           "outcome": "The player pays four times the compensation out of their own purse and executes the writ against themselves. The file is satisfied, the survey is satisfied, and a family is on the road with money — which the office will record as a success and the player will not.",
           "morally_better": null,
-          "requires": { "gold": 1600 },
-          "exclusive_with": ["res_serve_it", "res_move_the_cut", "res_return_unserved"],
+          "requires": {
+            "gold": 1600
+          },
+          "exclusive_with": [
+            "res_serve_it",
+            "res_move_the_cut",
+            "res_return_unserved"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 18, "the_xul_aneekh": -6 },
-            "world_flags": ["chelnisi_holding_taken", "assize_seal_held", "player_bought_the_chelnisi_holding"],
-            "npc_disposition": { "clerk-avelia-doren": 20 }
+            "faction_reputation": {
+              "the_imperial_assize": 18,
+              "the_xul_aneekh": -6
+            },
+            "world_flags": [
+              "chelnisi_holding_taken",
+              "assize_seal_held",
+              "player_bought_the_chelnisi_holding"
+            ],
+            "npc_disposition": {
+              "clerk-avelia-doren": 20
+            }
           }
         }
       ],
@@ -652,28 +995,77 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D4", "D2", "D12"],
+        "patterns": [
+          "D4",
+          "D2",
+          "D12"
+        ],
         "stated_objective": "Serve a lawful writ of possession on a holding whose compensation was offered and refused",
         "actual_objective": "Clear the near bank cheaply, having chosen it because the holding on it was expected to fold",
         "truth": "The compensation was offered to a man four months after the survey's own trial cut drowned him, and the far bank would work for about a third more.",
         "revealed_by": [
-          { "id": "rev_the_date", "channel": "ledger", "source": "item_compensation_file", "before_point_of_no_return": true },
-          { "id": "rev_widow", "channel": "talk_to_target", "source": "npc-ineel-sa", "before_point_of_no_return": true },
-          { "id": "rev_far_bank", "channel": "rival_npc", "source": "notary-sedda-vell", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_date",
+            "channel": "ledger",
+            "source": "item_compensation_file",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_widow",
+            "channel": "talk_to_target",
+            "source": "npc-ineel-sa",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_far_bank",
+            "channel": "rival_npc",
+            "source": "notary-sedda-vell",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 16, "the_xul_aneekh": 0 },
-        "world_flags": ["chelnisi_writ_settled"],
-        "unlocks": ["Q-ASSZ-04"]
+        "faction_reputation": {
+          "the_imperial_assize": 16,
+          "the_xul_aneekh": 0
+        },
+        "world_flags": [
+          "chelnisi_writ_settled"
+        ],
+        "unlocks": [
+          "Q-ASSZ-04"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "access", "unique_named": true, "id": "acc_assize_seal", "name": "a seal of the Assize", "on_resolution": ["res_serve_it", "res_move_the_cut", "res_buy_her_out"] },
-        { "type": "property", "unique_named": true, "id": "prop_chelnisi_holding", "name": "the holding at the Chelnisi ford", "on_resolution": ["res_buy_her_out"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_warrant", "name": "the warrant of attainder" }
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_assize_seal",
+          "name": "a seal of the Assize",
+          "on_resolution": [
+            "res_serve_it",
+            "res_move_the_cut",
+            "res_buy_her_out"
+          ]
+        },
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_chelnisi_holding",
+          "name": "the holding at the Chelnisi ford",
+          "on_resolution": [
+            "res_buy_her_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_warrant",
+          "name": "the warrant of attainder"
+        }
       ],
       "notes": "Rank 3. RI-QST02 D4 is the whole quest — Morrowind's Vabdas order, reconstructed: a lawful instrument from a legitimate authority that is unjust on inspection, with refusal implemented as a first-class resolution that has an outcome, a cost, and is not a failure state. Three of the four resolutions raise `assize_seal_held`, which is the rank-5 world state; res_return_unserved does not, so the player who refuses pays for it at the ladder as well as at the roll."
     },
@@ -683,7 +1075,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 4, "min_reputation": 52 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 4,
+        "min_reputation": 52
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "prefect-hallow",
@@ -693,8 +1089,12 @@
       },
       "opens_by": {
         "topic": "the blackrose day book",
-        "prerequisite_quests": ["Q-ASSZ-03"],
-        "prerequisite_topics": ["the struck off notary"]
+        "prerequisite_quests": [
+          "Q-ASSZ-03"
+        ],
+        "prerequisite_topics": [
+          "the struck off notary"
+        ]
       },
       "task_kind": "dirty_work",
       "stakes": 7,
@@ -721,7 +1121,7 @@
         {
           "index": 54,
           "state": "active",
-          "text": "Vell will give them up. Not to the office — to the vote. She says she has waited eleven years to be asked by somebody who was going to do something and she is not certain I am, and neither am I.",
+          "text": "Vell will give them up. Not to the office — to the vote. She says she has waited eleven years to be asked by a person who was going to do something and she is not certain I am, and neither am I.",
           "records_belief": true
         },
         {
@@ -757,7 +1157,7 @@
         {
           "index": 96,
           "state": "success",
-          "text": "I told Hallow the books had burned before I got there and I told Vell to move. She is at Soulrest under an undertaker's roof, which is the one place in this province nobody searches, and the vote goes ahead with nothing on the table.",
+          "text": "I told Hallow the books had burned before I got there and I told Vell to move. She is at Soulrest under an undertaker's roof, which is the one place in this province that does not get searched, and the vote goes ahead with nothing on the table.",
           "records_belief": false
         }
       ],
@@ -766,7 +1166,13 @@
           "id": "br_daybooks",
           "at_journal_index": 38,
           "condition": "The player knows the vote is in Second Seed and that the day-books decide it",
-          "leads_to": ["res_hand_hallow", "res_lodge_them", "res_copy_and_hand", "res_hide_vell", "rev_vell_terms"],
+          "leads_to": [
+            "res_hand_hallow",
+            "res_lodge_them",
+            "res_copy_and_hand",
+            "res_hide_vell",
+            "rev_vell_terms"
+          ],
           "irreversible": true
         }
       ],
@@ -778,13 +1184,35 @@
           "journal_index": 90,
           "outcome": "Eleven years of day-books go into the Prefect's office and are not seen again. The lease vote will have the roll and nothing else. The player is trusted absolutely by four people who are now permanently in their debt.",
           "morally_better": false,
-          "requires": { "skills": { "security": 40, "sneak": 20 } },
-          "exclusive_with": ["res_lodge_them", "res_copy_and_hand", "res_hide_vell"],
+          "requires": {
+            "skills": {
+              "security": 40,
+              "sneak": 20
+            }
+          },
+          "exclusive_with": [
+            "res_lodge_them",
+            "res_copy_and_hand",
+            "res_hide_vell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 24, "house_dres": 15, "the_xul_aneekh": -25 },
-            "world_flags": ["blackrose_daybooks_suppressed", "assize_seal_held", "hallow_owes_the_player"],
-            "locks": ["Q-XULA-04"],
-            "npc_disposition": { "prefect-hallow": 45, "notary-sedda-vell": -80 }
+            "faction_reputation": {
+              "the_imperial_assize": 24,
+              "house_dres": 15,
+              "the_xul_aneekh": -25
+            },
+            "world_flags": [
+              "blackrose_daybooks_suppressed",
+              "assize_seal_held",
+              "hallow_owes_the_player"
+            ],
+            "locks": [
+              "Q-XULA-04"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": 45,
+              "notary-sedda-vell": -80
+            }
           }
         },
         {
@@ -794,13 +1222,41 @@
           "journal_index": 92,
           "outcome": "The day-books are lodged with the court against the vote, in the open, by an officer of the Assize acting within their own authority. It is entirely lawful and it makes an enemy of a Prefect and a friend of nobody who can help.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 18 }, "skills": { "speechcraft": 40 }, "items": ["acc_assize_seal"] },
-          "requires_knowing": ["rev_vell_terms"],
-          "exclusive_with": ["res_hand_hallow", "res_copy_and_hand", "res_hide_vell"],
+          "requires": {
+            "attributes": {
+              "personality": 18
+            },
+            "skills": {
+              "speechcraft": 40
+            },
+            "items": [
+              "acc_assize_seal"
+            ]
+          },
+          "requires_knowing": [
+            "rev_vell_terms"
+          ],
+          "exclusive_with": [
+            "res_hand_hallow",
+            "res_copy_and_hand",
+            "res_hide_vell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 10, "the_xul_aneekh": 25, "house_dres": -30, "the_dockhands": 15 },
-            "world_flags": ["blackrose_daybooks_lodged", "assize_seal_held", "hallow_hostile_to_the_player"],
-            "npc_disposition": { "prefect-hallow": -60, "notary-sedda-vell": 60 }
+            "faction_reputation": {
+              "the_imperial_assize": 10,
+              "the_xul_aneekh": 25,
+              "house_dres": -30,
+              "the_dockhands": 15
+            },
+            "world_flags": [
+              "blackrose_daybooks_lodged",
+              "assize_seal_held",
+              "hallow_hostile_to_the_player"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": -60,
+              "notary-sedda-vell": 60
+            }
           }
         },
         {
@@ -810,14 +1266,39 @@
           "journal_index": 94,
           "outcome": "Both parties are served and only the player knows it. The list survives in one hand and that hand is theirs, which is a great deal of power and precisely the reward RI-QST02 D9 warns about.",
           "morally_better": false,
-          "requires": { "attributes": { "intellect": 18 }, "skills": { "security": 40 } },
-          "requires_knowing": ["rev_vell_terms"],
-          "exclusive_with": ["res_hand_hallow", "res_lodge_them", "res_hide_vell"],
+          "requires": {
+            "attributes": {
+              "intellect": 18
+            },
+            "skills": {
+              "security": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_vell_terms"
+          ],
+          "exclusive_with": [
+            "res_hand_hallow",
+            "res_lodge_them",
+            "res_hide_vell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 22, "house_dres": 10 },
-            "world_flags": ["blackrose_daybooks_suppressed", "assize_seal_held", "player_holds_the_two_hundred_and_nine"],
-            "locks": ["Q-XULA-04"],
-            "npc_disposition": { "prefect-hallow": 40, "notary-sedda-vell": -40 }
+            "faction_reputation": {
+              "the_imperial_assize": 22,
+              "house_dres": 10
+            },
+            "world_flags": [
+              "blackrose_daybooks_suppressed",
+              "assize_seal_held",
+              "player_holds_the_two_hundred_and_nine"
+            ],
+            "locks": [
+              "Q-XULA-04"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": 40,
+              "notary-sedda-vell": -40
+            }
           }
         },
         {
@@ -827,13 +1308,35 @@
           "journal_index": 96,
           "outcome": "Nothing reaches the vote and nothing is destroyed. The player has lied to a Prefect, moved a witness, and bought eleven years of paper another four seasons of existing. It resolves nothing and it is the only ending in which everybody who was alive stays alive.",
           "morally_better": true,
-          "requires": { "skills": { "speechcraft": 40 } },
-          "requires_knowing": ["rev_vell_terms"],
-          "exclusive_with": ["res_hand_hallow", "res_lodge_them", "res_copy_and_hand"],
+          "requires": {
+            "skills": {
+              "speechcraft": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_vell_terms"
+          ],
+          "exclusive_with": [
+            "res_hand_hallow",
+            "res_lodge_them",
+            "res_copy_and_hand"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 8, "the_drowned_court": 20, "the_xul_aneekh": 8 },
-            "world_flags": ["blackrose_daybooks_hidden", "assize_seal_held", "vell_at_soulrest"],
-            "npc_disposition": { "notary-sedda-vell": 50, "undertaker-vaskh": 25, "prefect-hallow": 5 }
+            "faction_reputation": {
+              "the_imperial_assize": 8,
+              "the_drowned_court": 20,
+              "the_xul_aneekh": 8
+            },
+            "world_flags": [
+              "blackrose_daybooks_hidden",
+              "assize_seal_held",
+              "vell_at_soulrest"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": 50,
+              "undertaker-vaskh": 25,
+              "prefect-hallow": 5
+            }
           }
         }
       ],
@@ -849,28 +1352,81 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D2", "D8", "D9"],
+        "patterns": [
+          "D1",
+          "D2",
+          "D8",
+          "D9"
+        ],
         "stated_objective": "Recover the Assize's property from a former officer of the court",
         "actual_objective": "Get the only evidence against the labour-lease off the table before the Second Seed vote",
         "truth": "The office has not asked for the books in eleven years because asking would concede they exist. It is asking now because the vote is four months away.",
         "revealed_by": [
-          { "id": "rev_the_vote", "channel": "letter", "source": "item_second_seed_summons", "before_point_of_no_return": true },
-          { "id": "rev_vell_terms", "channel": "rival_npc", "source": "notary-sedda-vell", "before_point_of_no_return": true },
-          { "id": "rev_yard_hands", "channel": "talk_to_target", "source": "blackrose-yard-hands", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_vote",
+            "channel": "letter",
+            "source": "item_second_seed_summons",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vell_terms",
+            "channel": "rival_npc",
+            "source": "notary-sedda-vell",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_yard_hands",
+            "channel": "talk_to_target",
+            "source": "blackrose-yard-hands",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 18, "house_dres": 0 },
-        "world_flags": ["blackrose_daybooks_settled"],
-        "unlocks": ["Q-ASSZ-05"]
+        "faction_reputation": {
+          "the_imperial_assize": 18,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "blackrose_daybooks_settled"
+        ],
+        "unlocks": [
+          "Q-ASSZ-05"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 700, "on_resolution": ["res_hand_hallow", "res_copy_and_hand"] },
-        { "type": "item", "unique_named": true, "id": "item_the_two_hundred_and_nine", "name": "a list of two hundred and nine names", "on_resolution": ["res_copy_and_hand", "res_lodge_them"] },
-        { "type": "ally", "unique_named": true, "id": "notary-sedda-vell", "name": "Sedda Vell, struck off", "on_resolution": ["res_lodge_them", "res_hide_vell"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 700,
+          "on_resolution": [
+            "res_hand_hallow",
+            "res_copy_and_hand"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_the_two_hundred_and_nine",
+          "name": "a list of two hundred and nine names",
+          "on_resolution": [
+            "res_copy_and_hand",
+            "res_lodge_them"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "notary-sedda-vell",
+          "name": "Sedda Vell, struck off",
+          "on_resolution": [
+            "res_lodge_them",
+            "res_hide_vell"
+          ]
+        }
       ],
       "notes": "Rank 4, first of two. RI-QST02 D8: two of the four resolutions permanently lock Q-XULA-04 and the Deep-Kin line with it, and the journal says so in first person on the day it happens rather than in a modal. The X3 escape is res_lodge_them and res_hide_vell, both gated on the dissenter's own terms."
     },
@@ -880,7 +1436,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 4, "min_reputation": 52 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 4,
+        "min_reputation": 52
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "prefect-galvus-arn",
@@ -890,8 +1450,12 @@
       },
       "opens_by": {
         "topic": "the warrant of attainder",
-        "prerequisite_quests": ["Q-ASSZ-04"],
-        "prerequisite_topics": ["the blackrose day book"]
+        "prerequisite_quests": [
+          "Q-ASSZ-04"
+        ],
+        "prerequisite_topics": [
+          "the blackrose day book"
+        ]
       },
       "task_kind": "dirty_work",
       "stakes": 7,
@@ -936,7 +1500,7 @@
         {
           "index": 90,
           "state": "success",
-          "text": "It was done at Archon on chartered ground with the warrant in my hand. Four witnesses, four reports, and all four resolved lawful. The Cohort took the body. The bill for the doorman was eleven hundred and fifty and the warrant did not touch it.",
+          "text": "It was done at Archon on chartered ground with the warrant in my hand. Four witnesses, four reports, and all four resolved lawful. The Cohort took the body. The bill for the doorman was sixteen hundred and the warrant did not touch it.",
           "records_belief": false
         },
         {
@@ -954,7 +1518,7 @@
         {
           "index": 96,
           "state": "success",
-          "text": "I gave the warrant back unserved. Arn took two ranks of progress off me for it and told me the office would send somebody else, and it has, and I expect I will hear about it.",
+          "text": "I gave the warrant back unserved. Arn took two ranks of progress off me for it and told me the office would send another, and it has, and I expect I will hear about it.",
           "records_belief": false
         }
       ],
@@ -963,7 +1527,13 @@
           "id": "br_jurisdiction",
           "at_journal_index": 30,
           "condition": "The player holds the warrant, knows where the target lives and knows where the warrant is good",
-          "leads_to": ["res_execute", "res_exile_him", "res_substitute", "res_return_warrant", "rev_receipts"],
+          "leads_to": [
+            "res_execute",
+            "res_exile_him",
+            "res_substitute",
+            "res_return_warrant",
+            "rev_receipts"
+          ],
           "irreversible": true
         }
       ],
@@ -976,11 +1546,27 @@
           "outcome": "A lawful killing on chartered ground, four lawful reports, and a bill for everything the warrant did not cover. The office is entirely satisfied and the player has learned what a writ is worth, which is exactly the name written on it.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_exile_him", "res_substitute", "res_return_warrant"],
+          "exclusive_with": [
+            "res_exile_him",
+            "res_substitute",
+            "res_return_warrant"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 22, "house_dres": -45, "the_xul_aneekh": 10 },
-            "world_flags": ["vaun_dead", "assize_warrant_executed", "assize_seal_held", "archon_dres_factor_gone"],
-            "npc_disposition": { "prefect-galvus-arn": 35, "salt-factor-neloth-vaun": -100 }
+            "faction_reputation": {
+              "the_imperial_assize": 22,
+              "house_dres": -45,
+              "the_xul_aneekh": 10
+            },
+            "world_flags": [
+              "vaun_dead",
+              "assize_warrant_executed",
+              "assize_seal_held",
+              "archon_dres_factor_gone"
+            ],
+            "npc_disposition": {
+              "prefect-galvus-arn": 35,
+              "salt-factor-neloth-vaun": -100
+            }
           }
         },
         {
@@ -990,12 +1576,33 @@
           "journal_index": 92,
           "outcome": "The target and his household leave the province on a hull he paid for. The warrant is returned marked absent and the office pays half. Archon loses its factor and House Dres sends another within the year.",
           "morally_better": null,
-          "requires": { "attributes": { "personality": 18 }, "skills": { "speechcraft": 40 } },
-          "exclusive_with": ["res_execute", "res_substitute", "res_return_warrant"],
+          "requires": {
+            "attributes": {
+              "personality": 18
+            },
+            "skills": {
+              "speechcraft": 40
+            }
+          },
+          "exclusive_with": [
+            "res_execute",
+            "res_substitute",
+            "res_return_warrant"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 14, "house_dres": -25 },
-            "world_flags": ["vaun_left_the_province", "assize_warrant_absent", "assize_seal_held", "archon_dres_factor_gone"],
-            "npc_disposition": { "prefect-galvus-arn": 15 }
+            "faction_reputation": {
+              "the_imperial_assize": 14,
+              "house_dres": -25
+            },
+            "world_flags": [
+              "vaun_left_the_province",
+              "assize_warrant_absent",
+              "assize_seal_held",
+              "archon_dres_factor_gone"
+            ],
+            "npc_disposition": {
+              "prefect-galvus-arn": 15
+            }
           }
         },
         {
@@ -1005,13 +1612,42 @@
           "journal_index": 94,
           "outcome": "The office wanted a result rather than a body, and a public ruin in the toll book is one. The target lives, attainted of nothing, unable to trade in the province, and holding a grudge with a name on it.",
           "morally_better": true,
-          "requires": { "attributes": { "intellect": 18 }, "skills": { "mercantile": 40 }, "items": ["acc_assize_seal"] },
-          "requires_knowing": ["rev_receipts"],
-          "exclusive_with": ["res_execute", "res_exile_him", "res_return_warrant"],
+          "requires": {
+            "attributes": {
+              "intellect": 18
+            },
+            "skills": {
+              "mercantile": 40
+            },
+            "items": [
+              "acc_assize_seal"
+            ]
+          },
+          "requires_knowing": [
+            "rev_receipts"
+          ],
+          "exclusive_with": [
+            "res_execute",
+            "res_exile_him",
+            "res_return_warrant"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 26, "house_dres": -40, "the_wet_ledger": -20 },
-            "world_flags": ["vaun_ruined_publicly", "assize_warrant_substituted", "assize_seal_held", "archon_receipts_in_the_toll_book"],
-            "npc_disposition": { "prefect-galvus-arn": 40, "salt-factor-neloth-vaun": -60, "assizer-corvo": 25 }
+            "faction_reputation": {
+              "the_imperial_assize": 26,
+              "house_dres": -40,
+              "the_wet_ledger": -20
+            },
+            "world_flags": [
+              "vaun_ruined_publicly",
+              "assize_warrant_substituted",
+              "assize_seal_held",
+              "archon_receipts_in_the_toll_book"
+            ],
+            "npc_disposition": {
+              "prefect-galvus-arn": 40,
+              "salt-factor-neloth-vaun": -60,
+              "assizer-corvo": 25
+            }
           }
         },
         {
@@ -1022,11 +1658,23 @@
           "outcome": "The warrant comes back unserved at a cost of two ranks of progress. The office sends somebody else, and that somebody is a named man who succeeds, visibly, and the player watches it happen.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_execute", "res_exile_him", "res_substitute"],
+          "exclusive_with": [
+            "res_execute",
+            "res_exile_him",
+            "res_substitute"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": -20 },
-            "world_flags": ["assize_warrant_refused", "assize_sent_someone_else", "vaun_dead"],
-            "npc_disposition": { "prefect-galvus-arn": -35 }
+            "faction_reputation": {
+              "the_imperial_assize": -20
+            },
+            "world_flags": [
+              "assize_warrant_refused",
+              "assize_sent_someone_else",
+              "vaun_dead"
+            ],
+            "npc_disposition": {
+              "prefect-galvus-arn": -35
+            }
           }
         }
       ],
@@ -1042,28 +1690,72 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D6", "D11", "D4"],
+        "patterns": [
+          "D6",
+          "D11",
+          "D4"
+        ],
         "stated_objective": "Execute a Warrant of Attainder against a House Dres salt-factor at Archon",
         "actual_objective": "The same, honestly stated — the Prefect hides nothing, including the fourteen days and the fact that the office will tell the target who you are",
         "truth": "The target has receipts showing the Empire taxed every hull it has now attainted him for, and the office has never asked whether any of its previous warrants were bought off.",
         "revealed_by": [
-          { "id": "rev_receipts", "channel": "talk_to_target", "source": "salt-factor-neloth-vaun", "before_point_of_no_return": true },
-          { "id": "rev_the_offer", "channel": "talk_to_target", "source": "salt-factor-neloth-vaun", "before_point_of_no_return": true },
-          { "id": "rev_previous_warrants", "channel": "ledger", "source": "item_stormhold_warrant_register", "before_point_of_no_return": true }
+          {
+            "id": "rev_receipts",
+            "channel": "talk_to_target",
+            "source": "salt-factor-neloth-vaun",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_offer",
+            "channel": "talk_to_target",
+            "source": "salt-factor-neloth-vaun",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_previous_warrants",
+            "channel": "ledger",
+            "source": "item_stormhold_warrant_register",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 18, "house_dres": 0 },
-        "world_flags": ["assize_warrant_settled"],
-        "unlocks": ["Q-ASSZ-06"]
+        "faction_reputation": {
+          "the_imperial_assize": 18,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "assize_warrant_settled"
+        ],
+        "unlocks": [
+          "Q-ASSZ-06"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 1200, "on_resolution": ["res_execute", "res_substitute"] },
-        { "type": "item", "unique_named": true, "id": "item_warrant_of_attainder", "name": "a Warrant of Attainder" },
-        { "type": "information", "unique_named": true, "id": "topic_the_prefects_return", "name": "the Prefect's return" }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 1200,
+          "on_resolution": [
+            "res_execute",
+            "res_substitute"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_warrant_of_attainder",
+          "name": "a Warrant of Attainder"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_prefects_return",
+          "name": "the Prefect's return"
+        }
       ],
       "notes": "Rank 4, second of two. RI-CRM02 §2 and §3 as playable content: the warrant is jurisdictional, does not suppress witnesses, does not cover collateral, expires in fourteen days and tells the target your name when it does. Three of four resolutions are non-lethal, and D6 is satisfied — the target talks, has receipts, and one resolution is only reachable through what he says."
     },
@@ -1073,7 +1765,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 5, "min_reputation": 70 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 5,
+        "min_reputation": 70
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "assizer-corvo",
@@ -1083,8 +1779,12 @@
       },
       "opens_by": {
         "topic": "the prefects return",
-        "prerequisite_quests": ["Q-ASSZ-05"],
-        "prerequisite_topics": ["the warrant of attainder"]
+        "prerequisite_quests": [
+          "Q-ASSZ-05"
+        ],
+        "prerequisite_topics": [
+          "the warrant of attainder"
+        ]
       },
       "task_kind": "politics",
       "stakes": 8,
@@ -1129,13 +1829,13 @@
         {
           "index": 92,
           "state": "success",
-          "text": "The lease fell. Two hundred and nine renewals read into the record, the day-books on the table, and Corvo's own six returns read out by Corvo. Blackrose empties in a season and nobody in that room could say where to.",
+          "text": "The lease fell. Two hundred and nine renewals read into the record, the day-books on the table, and Corvo's own six returns read out by Corvo. Blackrose empties in a season and not a person in that room could say where to.",
           "records_belief": false
         },
         {
           "index": 94,
           "state": "success",
-          "text": "The lease stands with a term on it. Four seasons, no renewal, audited from Gideon by somebody who has never been to Blackrose. It is a worse answer than ending it and a better one than the last sixteen years, and it is mine.",
+          "text": "The lease stands with a term on it. Four seasons, no renewal, audited from Gideon by a clerk who has never been to Blackrose. It is a worse answer than ending it and a better one than the last sixteen years, and it is mine.",
           "records_belief": false
         }
       ],
@@ -1144,7 +1844,12 @@
           "id": "br_vote",
           "at_journal_index": 38,
           "condition": "The player has the seats counted and knows what the giver has been signing",
-          "leads_to": ["res_lease_stands", "res_lease_falls", "res_term_on_it", "rev_corvo_hand"],
+          "leads_to": [
+            "res_lease_stands",
+            "res_lease_falls",
+            "res_term_on_it",
+            "rev_corvo_hand"
+          ],
           "irreversible": true
         }
       ],
@@ -1156,14 +1861,39 @@
           "journal_index": 90,
           "outcome": "The labour-lease is confirmed for another four years by an Assize that has now examined it properly and kept it anyway. That is a worse thing than never having looked, and the player did it with their eyes open.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 20 }, "skills": { "speechcraft": 50 } },
-          "exclusive_with": ["res_lease_falls", "res_term_on_it"],
+          "requires": {
+            "attributes": {
+              "personality": 16
+            },
+            "skills": {
+              "speechcraft": 50
+            }
+          },
+          "exclusive_with": [
+            "res_lease_falls",
+            "res_term_on_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 26, "house_dres": 25, "the_xul_aneekh": -35, "the_dockhands": -10 },
-            "world_flags": ["assize_lease_decided", "blackrose_lease_stands", "assize_seal_held"],
-            "locks": ["Q-XULA-06"],
-            "npc_disposition": { "prefect-hallow": 45, "notary-sedda-vell": -60 }
-          }
+            "faction_reputation": {
+              "the_imperial_assize": 26,
+              "house_dres": 25,
+              "the_xul_aneekh": -35,
+              "the_dockhands": -10
+            },
+            "world_flags": [
+              "assize_lease_decided",
+              "blackrose_lease_stands",
+              "assize_seal_held"
+            ],
+            "locks": [
+              "Q-XULA-06"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": 45,
+              "notary-sedda-vell": -60
+            }
+          },
+          "requires_note": "Lowered under the MEASURED ceiling for this attribute (reports/faction-signature-sweep.json: base + 6 per governing skill, character/derive.js:359). At the old figure this quest had NO reachable ending for a p10 signature and the questline dead-ended on its own last rank. tools/quests/resolution-reachability.mjs is the check."
         },
         {
           "id": "res_lease_falls",
@@ -1172,13 +1902,42 @@
           "journal_index": 92,
           "outcome": "The lease ends. Six hundred and eleven people are free and destitute in the same afternoon, four careers end, and the province gains a labour problem it has no institution capable of holding. It is the right answer and it is not a happy one.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 20 }, "skills": { "speechcraft": 50 }, "items": ["acc_assize_seal"] },
-          "requires_knowing": ["rev_corvo_hand"],
-          "exclusive_with": ["res_lease_stands", "res_term_on_it"],
+          "requires": {
+            "attributes": {
+              "personality": 20
+            },
+            "skills": {
+              "speechcraft": 50
+            },
+            "items": [
+              "acc_assize_seal"
+            ]
+          },
+          "requires_knowing": [
+            "rev_corvo_hand"
+          ],
+          "exclusive_with": [
+            "res_lease_stands",
+            "res_term_on_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 12, "house_dres": -60, "the_xul_aneekh": 35, "the_drowned_court": 15 },
-            "world_flags": ["assize_lease_decided", "blackrose_lease_fell", "assize_seal_held", "blackrose_emptying"],
-            "npc_disposition": { "prefect-hallow": -80, "notary-sedda-vell": 70, "assizer-corvo": 30 }
+            "faction_reputation": {
+              "the_imperial_assize": 12,
+              "house_dres": -60,
+              "the_xul_aneekh": 35,
+              "the_drowned_court": 15
+            },
+            "world_flags": [
+              "assize_lease_decided",
+              "blackrose_lease_fell",
+              "assize_seal_held",
+              "blackrose_emptying"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": -80,
+              "notary-sedda-vell": 70,
+              "assizer-corvo": 30
+            }
           }
         },
         {
@@ -1188,13 +1947,40 @@
           "journal_index": 94,
           "outcome": "The lease survives with a four-season term, no renewal, and an audit from outside Blackrose. Nobody in the room is happy and every one of them can live with it, which is what an Assize is actually for.",
           "morally_better": null,
-          "requires": { "attributes": { "intellect": 20 }, "skills": { "speechcraft": 40, "mercantile": 40 } },
-          "requires_knowing": ["rev_corvo_hand", "rev_renewal_clause"],
-          "exclusive_with": ["res_lease_stands", "res_lease_falls"],
+          "requires": {
+            "attributes": {
+              "intellect": 20
+            },
+            "skills": {
+              "speechcraft": 40,
+              "mercantile": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_corvo_hand",
+            "rev_renewal_clause"
+          ],
+          "exclusive_with": [
+            "res_lease_stands",
+            "res_lease_falls"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 24, "house_dres": -20, "the_xul_aneekh": 15, "the_dockhands": 10 },
-            "world_flags": ["assize_lease_decided", "blackrose_lease_termed", "assize_seal_held"],
-            "npc_disposition": { "assizer-corvo": 40, "prefect-hallow": -20, "notary-sedda-vell": 25 }
+            "faction_reputation": {
+              "the_imperial_assize": 24,
+              "house_dres": -20,
+              "the_xul_aneekh": 15,
+              "the_dockhands": 10
+            },
+            "world_flags": [
+              "assize_lease_decided",
+              "blackrose_lease_termed",
+              "assize_seal_held"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 40,
+              "prefect-hallow": -20,
+              "notary-sedda-vell": 25
+            }
           }
         }
       ],
@@ -1210,27 +1996,62 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D12"],
+        "patterns": [
+          "D3",
+          "D12"
+        ],
         "stated_objective": "Decide the Assize's position on the Blackrose labour-lease before Second Seed",
         "actual_objective": "The same. The giver confesses his own part before the player can discover it, which is the one time in this line anybody does",
         "truth": "Assizer Corvo has copied the Prefect's return in his own hand for six seasons, and has decided to abstain rather than to hide it.",
         "revealed_by": [
-          { "id": "rev_corvo_hand", "channel": "talk_to_target", "source": "assizer-corvo", "before_point_of_no_return": true },
-          { "id": "rev_renewal_clause", "channel": "ledger", "source": "item_blackrose_lease_roll", "before_point_of_no_return": true }
+          {
+            "id": "rev_corvo_hand",
+            "channel": "talk_to_target",
+            "source": "assizer-corvo",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_renewal_clause",
+            "channel": "ledger",
+            "source": "item_blackrose_lease_roll",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 22, "house_dres": 0 },
-        "world_flags": ["assize_lease_decided"],
-        "unlocks": ["Q-ASSZ-07"]
+        "faction_reputation": {
+          "the_imperial_assize": 22,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "assize_lease_decided"
+        ],
+        "unlocks": [
+          "Q-ASSZ-07"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "faction_rank", "unique_named": false, "id": "rank_prefect", "name": "Prefect" },
-        { "type": "access", "unique_named": true, "id": "acc_assize_vote", "name": "a seat at the Assize's vote" },
-        { "type": "information", "unique_named": true, "id": "topic_the_legates_seal", "name": "the Legate's seal" }
+        {
+          "type": "faction_rank",
+          "unique_named": false,
+          "id": "rank_prefect",
+          "name": "Prefect"
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_assize_vote",
+          "name": "a seat at the Assize's vote"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_legates_seal",
+          "name": "the Legate's seal"
+        }
       ],
       "notes": "Rank 5, the `politics` quest RI-QST03 §B requires before rank 6, and the one place in the line where a giver tells the truth about themselves before being caught. Every ending raises `assize_lease_decided`: the rank-6 requirement is that the province knows which way you chose, not which way you chose."
     },
@@ -1240,7 +2061,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 6, "min_reputation": 90 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 6,
+        "min_reputation": 90
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "scribe-hulen",
@@ -1250,8 +2075,12 @@
       },
       "opens_by": {
         "topic": "the lease vote",
-        "prerequisite_quests": ["Q-ASSZ-06"],
-        "prerequisite_topics": ["the prefects return"]
+        "prerequisite_quests": [
+          "Q-ASSZ-06"
+        ],
+        "prerequisite_topics": [
+          "the prefects return"
+        ]
       },
       "task_kind": "politics",
       "stakes": 9,
@@ -1314,7 +2143,7 @@
         {
           "index": 96,
           "state": "success",
-          "text": "I told Hulen that the archive could want its return from somebody else. He has written to the Legate about me. Hallow is still at Blackrose with whatever Blackrose is now, and so is everyone in it.",
+          "text": "I told Hulen that the archive could want its return from another hand. He has written to the Legate about me. Hallow is still at Blackrose with whatever Blackrose is now, and so is everyone in it.",
           "records_belief": false
         }
       ],
@@ -1323,7 +2152,13 @@
           "id": "br_prefect",
           "at_journal_index": 40,
           "condition": "The player knows the giver wants a removal rather than a return",
-          "leads_to": ["res_remove_him", "res_file_for_him", "res_resignation", "res_refuse_hulen", "rev_transfers"],
+          "leads_to": [
+            "res_remove_him",
+            "res_file_for_him",
+            "res_resignation",
+            "res_refuse_hulen",
+            "rev_transfers"
+          ],
           "irreversible": true
         }
       ],
@@ -1335,12 +2170,33 @@
           "journal_index": 90,
           "outcome": "Hallow is relieved on the strength of nine requests to be relieved. The chair is empty, the archive is satisfied, and the man who ran the lease for eleven years is punished for wanting to stop.",
           "morally_better": false,
-          "requires": { "skills": { "speechcraft": 60 }, "items": ["acc_assize_seal"] },
-          "exclusive_with": ["res_file_for_him", "res_resignation", "res_refuse_hulen"],
+          "requires": {
+            "skills": {
+              "speechcraft": 60
+            },
+            "items": [
+              "acc_assize_seal"
+            ]
+          },
+          "exclusive_with": [
+            "res_file_for_him",
+            "res_resignation",
+            "res_refuse_hulen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 26, "the_xul_aneekh": 6 },
-            "world_flags": ["assize_prefect_vacant", "hallow_relieved", "blackrose_return_filed"],
-            "npc_disposition": { "scribe-hulen": 45, "prefect-hallow": -70 }
+            "faction_reputation": {
+              "the_imperial_assize": 26,
+              "the_xul_aneekh": 6
+            },
+            "world_flags": [
+              "assize_prefect_vacant",
+              "hallow_relieved",
+              "blackrose_return_filed"
+            ],
+            "npc_disposition": {
+              "scribe-hulen": 45,
+              "prefect-hallow": -70
+            }
           }
         },
         {
@@ -1350,12 +2206,32 @@
           "journal_index": 92,
           "outcome": "The return is filed by the player, out of what they saw, and the chair stays occupied. The archive is satisfied by a document rather than by a removal, and the Legate now knows the player's name for the wrong reason.",
           "morally_better": true,
-          "requires": { "attributes": { "intellect": 22 }, "skills": { "speechcraft": 50 } },
-          "exclusive_with": ["res_remove_him", "res_resignation", "res_refuse_hulen"],
+          "requires": {
+            "attributes": {
+              "intellect": 22
+            },
+            "skills": {
+              "speechcraft": 50
+            }
+          },
+          "exclusive_with": [
+            "res_remove_him",
+            "res_resignation",
+            "res_refuse_hulen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 10 },
-            "world_flags": ["blackrose_return_filed", "hallow_holds_the_chair", "legate_watching_the_player"],
-            "npc_disposition": { "prefect-hallow": 40, "scribe-hulen": -40 }
+            "faction_reputation": {
+              "the_imperial_assize": 10
+            },
+            "world_flags": [
+              "blackrose_return_filed",
+              "hallow_holds_the_chair",
+              "legate_watching_the_player"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": 40,
+              "scribe-hulen": -40
+            }
           }
         },
         {
@@ -1365,13 +2241,38 @@
           "journal_index": 94,
           "outcome": "The ninth transfer request is read to the Legate as a resignation and Hallow does not contradict it. He leaves on the first packet with his career and his name, and the chair is empty by his own hand and the player's.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 22 }, "skills": { "speechcraft": 60 } },
-          "requires_knowing": ["rev_transfers", "rev_hallow"],
-          "exclusive_with": ["res_remove_him", "res_file_for_him", "res_refuse_hulen"],
+          "requires": {
+            "attributes": {
+              "personality": 22
+            },
+            "skills": {
+              "speechcraft": 60
+            }
+          },
+          "requires_knowing": [
+            "rev_transfers",
+            "rev_hallow"
+          ],
+          "exclusive_with": [
+            "res_remove_him",
+            "res_file_for_him",
+            "res_refuse_hulen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 24, "the_xul_aneekh": 8 },
-            "world_flags": ["assize_prefect_vacant", "hallow_resigned", "blackrose_return_filed"],
-            "npc_disposition": { "prefect-hallow": 25, "scribe-hulen": 20, "notary-sedda-vell": 20 }
+            "faction_reputation": {
+              "the_imperial_assize": 24,
+              "the_xul_aneekh": 8
+            },
+            "world_flags": [
+              "assize_prefect_vacant",
+              "hallow_resigned",
+              "blackrose_return_filed"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": 25,
+              "scribe-hulen": 20,
+              "notary-sedda-vell": 20
+            }
           }
         },
         {
@@ -1382,11 +2283,24 @@
           "outcome": "The player declines to be the archive's instrument. Nothing is filed, nobody is removed, Blackrose goes on being whatever it now is, and the line stops at Prefect with a letter about the player already at the Legate's desk.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_remove_him", "res_file_for_him", "res_resignation"],
+          "exclusive_with": [
+            "res_remove_him",
+            "res_file_for_him",
+            "res_resignation"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": -22 },
-            "world_flags": ["blackrose_return_unfiled", "hallow_holds_the_chair", "legate_watching_the_player"],
-            "npc_disposition": { "scribe-hulen": -60, "prefect-hallow": 15 }
+            "faction_reputation": {
+              "the_imperial_assize": -22
+            },
+            "world_flags": [
+              "blackrose_return_unfiled",
+              "hallow_holds_the_chair",
+              "legate_watching_the_player"
+            ],
+            "npc_disposition": {
+              "scribe-hulen": -60,
+              "prefect-hallow": 15
+            }
           }
         }
       ],
@@ -1402,28 +2316,77 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D11", "D6"],
+        "patterns": [
+          "D1",
+          "D11",
+          "D6"
+        ],
         "stated_objective": "Obtain the Prefect of Blackrose's overdue return for the Stormhold archive",
         "actual_objective": "Have the Prefect of Blackrose removed by an officer who has been inside twice and can be believed about it",
         "truth": "Hallow has asked to leave nine times in eleven years and every request is in the archive of the man who wants him gone.",
         "revealed_by": [
-          { "id": "rev_transfers", "channel": "ledger", "source": "item_stormhold_transfer_file", "before_point_of_no_return": true },
-          { "id": "rev_hallow", "channel": "talk_to_target", "source": "prefect-hallow", "before_point_of_no_return": true },
-          { "id": "rev_vell_on_hallow", "channel": "rival_npc", "source": "notary-sedda-vell", "before_point_of_no_return": true }
+          {
+            "id": "rev_transfers",
+            "channel": "ledger",
+            "source": "item_stormhold_transfer_file",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_hallow",
+            "channel": "talk_to_target",
+            "source": "prefect-hallow",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vell_on_hallow",
+            "channel": "rival_npc",
+            "source": "notary-sedda-vell",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 24, "the_xul_aneekh": 0 },
-        "world_flags": ["blackrose_prefect_settled"],
-        "unlocks": ["Q-ASSZ-08"]
+        "faction_reputation": {
+          "the_imperial_assize": 24,
+          "the_xul_aneekh": 0
+        },
+        "world_flags": [
+          "blackrose_prefect_settled"
+        ],
+        "unlocks": [
+          "Q-ASSZ-08"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_nine_requests", "name": "the nine requests" },
-        { "type": "access", "unique_named": true, "id": "acc_blackrose_fortress", "name": "the run of Blackrose fortress", "on_resolution": ["res_remove_him", "res_resignation"] },
-        { "type": "ally", "unique_named": true, "id": "prefect-hallow", "name": "Hallow, formerly of Blackrose", "on_resolution": ["res_file_for_him", "res_resignation"] }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_nine_requests",
+          "name": "the nine requests"
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_blackrose_fortress",
+          "name": "the run of Blackrose fortress",
+          "on_resolution": [
+            "res_remove_him",
+            "res_resignation"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "prefect-hallow",
+          "name": "Hallow, formerly of Blackrose",
+          "on_resolution": [
+            "res_file_for_him",
+            "res_resignation"
+          ]
+        }
       ],
       "notes": "Rank 6, and the quest that vacates the seat rank 7 requires. RI-QST02 D11: the man who has run the labour-lease for eleven years is given the coherent account in which he is the reasonable party, in dialogue, at length, and the player can press on it. Not one of the four resolutions is combat."
     },
@@ -1433,7 +2396,11 @@
       "category": "faction",
       "faction": "the_imperial_assize",
       "act": null,
-      "rank_gate": { "faction": "the_imperial_assize", "min_rank": 7, "min_reputation": 112 },
+      "rank_gate": {
+        "faction": "the_imperial_assize",
+        "min_rank": 7,
+        "min_reputation": 112
+      },
       "discovery": "consequence",
       "giver": {
         "npc_id": "assizer-corvo",
@@ -1443,7 +2410,9 @@
       },
       "opens_by": {
         "topic": "the legates seal",
-        "prerequisite_quests": ["Q-ASSZ-07"]
+        "prerequisite_quests": [
+          "Q-ASSZ-07"
+        ]
       },
       "task_kind": "succession",
       "stakes": 10,
@@ -1452,7 +2421,7 @@
         {
           "index": 10,
           "state": "active",
-          "text": "The Legate has gone home on the winter packet and the Elder Council has not sent another. Corvo says the province has an Assize with nobody at the head of it and a seal in an unlocked drawer, and that he is telling me because I am next on the roll.",
+          "text": "The Legate has gone home on the winter packet and the Elder Council has not sent another. Corvo says the province has an Assize with an empty chair at the head of it and a seal in an unlocked drawer, and that he is telling me because I am next on the roll.",
           "records_belief": true
         },
         {
@@ -1470,7 +2439,7 @@
         {
           "index": 60,
           "state": "active",
-          "text": "Vell says the seal was made to stop a governor reopening a case to punish somebody, and that it has been used forty times and thirty-nine of those were to stop a case being opened at all. She would like it back on a boat to Cyrodiil.",
+          "text": "Vell says the seal was made to stop a governor reopening a case out of spite, and that it has been used forty times and thirty-nine of those were to stop a case being opened at all. She would like it back on a boat to Cyrodiil.",
           "records_belief": true
         },
         {
@@ -1482,7 +2451,7 @@
         {
           "index": 90,
           "state": "success",
-          "text": "I took the seal and closed all four. The lease, the toll book, the renewals, the eighth chair, sealed in one afternoon in a room with nobody else in it. The province is quiet. I have never been so certain that quiet is a thing that is done to people.",
+          "text": "I took the seal and closed all four. The lease, the toll book, the renewals, the eighth chair, sealed in one afternoon alone in a room with the door shut. The province is quiet. I have never been so certain that quiet is a thing that is done to people.",
           "records_belief": false
         },
         {
@@ -1509,7 +2478,13 @@
           "id": "br_seal",
           "at_journal_index": 46,
           "condition": "The player is Legate in fact, alone in the room, with four open findings and the drawer",
-          "leads_to": ["res_close_all_four", "res_open_all_four", "res_seal_the_men", "res_send_it_back", "rev_forty_uses"],
+          "leads_to": [
+            "res_close_all_four",
+            "res_open_all_four",
+            "res_seal_the_men",
+            "res_send_it_back",
+            "rev_forty_uses"
+          ],
           "irreversible": true
         }
       ],
@@ -1522,11 +2497,27 @@
           "outcome": "Everything is closed and cannot be reopened. The Assize becomes what it was always tending toward: an instrument for making questions stop. The player is the institution, and the institution is the drawer.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_open_all_four", "res_seal_the_men", "res_send_it_back"],
+          "exclusive_with": [
+            "res_open_all_four",
+            "res_seal_the_men",
+            "res_send_it_back"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 20, "house_dres": 30, "the_wet_ledger": 25, "the_xul_aneekh": -50 },
-            "world_flags": ["assize_legate_seated", "assize_four_findings_closed", "province_quiet_by_seal"],
-            "npc_disposition": { "notary-sedda-vell": -90, "assizer-corvo": -30 }
+            "faction_reputation": {
+              "the_imperial_assize": 20,
+              "house_dres": 30,
+              "the_wet_ledger": 25,
+              "the_xul_aneekh": -50
+            },
+            "world_flags": [
+              "assize_legate_seated",
+              "assize_four_findings_closed",
+              "province_quiet_by_seal"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": -90,
+              "assizer-corvo": -30
+            }
           }
         },
         {
@@ -1536,13 +2527,39 @@
           "journal_index": 92,
           "outcome": "All four findings are opened and the openings sealed, so no successor can shut them. The province gets four years of court and the player gets four years of everyone who matters wanting them gone.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 24 }, "skills": { "speechcraft": 70, "security": 35 } },
-          "requires_knowing": ["rev_forty_uses"],
-          "exclusive_with": ["res_close_all_four", "res_seal_the_men", "res_send_it_back"],
+          "requires": {
+            "attributes": {
+              "personality": 24
+            },
+            "skills": {
+              "speechcraft": 70,
+              "security": 35
+            }
+          },
+          "requires_knowing": [
+            "rev_forty_uses"
+          ],
+          "exclusive_with": [
+            "res_close_all_four",
+            "res_seal_the_men",
+            "res_send_it_back"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 14, "house_dres": -70, "the_wet_ledger": -50, "the_xul_aneekh": 30 },
-            "world_flags": ["assize_legate_seated", "assize_four_findings_open", "province_in_litigation"],
-            "npc_disposition": { "notary-sedda-vell": 80, "assizer-corvo": 40 }
+            "faction_reputation": {
+              "the_imperial_assize": 14,
+              "house_dres": -70,
+              "the_wet_ledger": -50,
+              "the_xul_aneekh": 30
+            },
+            "world_flags": [
+              "assize_legate_seated",
+              "assize_four_findings_open",
+              "province_in_litigation"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": 80,
+              "assizer-corvo": 40
+            }
           }
         },
         {
@@ -1552,13 +2569,43 @@
           "journal_index": 94,
           "outcome": "The brass is used once, on the two hundred and nine, and those men are free beyond appeal while everything else stays arguable. The narrowest possible use of an absolute power, which is the hardest of the four to argue for and the easiest to live with.",
           "morally_better": true,
-          "requires": { "attributes": { "intellect": 24 }, "skills": { "speechcraft": 70, "mercantile": 35 }, "items": ["item_the_two_hundred_and_nine"] },
-          "requires_knowing": ["rev_forty_uses"],
-          "exclusive_with": ["res_close_all_four", "res_open_all_four", "res_send_it_back"],
+          "requires": {
+            "attributes": {
+              "intellect": 24
+            },
+            "skills": {
+              "speechcraft": 70,
+              "mercantile": 35
+            },
+            "items": [
+              "item_the_two_hundred_and_nine"
+            ]
+          },
+          "requires_knowing": [
+            "rev_forty_uses"
+          ],
+          "exclusive_with": [
+            "res_close_all_four",
+            "res_open_all_four",
+            "res_send_it_back"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 22, "house_dres": -40, "the_xul_aneekh": 25, "the_dockhands": 20 },
-            "world_flags": ["assize_legate_seated", "two_hundred_and_nine_freed", "assize_three_findings_open"],
-            "npc_disposition": { "notary-sedda-vell": 70, "prefect-hallow": -20, "assizer-corvo": 30 }
+            "faction_reputation": {
+              "the_imperial_assize": 22,
+              "house_dres": -40,
+              "the_xul_aneekh": 25,
+              "the_dockhands": 20
+            },
+            "world_flags": [
+              "assize_legate_seated",
+              "two_hundred_and_nine_freed",
+              "assize_three_findings_open"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": 70,
+              "prefect-hallow": -20,
+              "assizer-corvo": 30
+            }
           }
         },
         {
@@ -1568,13 +2615,35 @@
           "journal_index": 96,
           "outcome": "The seal goes back to Cyrodiil with an account of its forty uses. The Assize can no longer close anything, which makes it weaker, slower and considerably harder to buy — and it may not survive the year.",
           "morally_better": null,
-          "requires": { "skills": { "speechcraft": 60 } },
-          "requires_knowing": ["rev_forty_uses", "rev_vell_on_the_seal"],
-          "exclusive_with": ["res_close_all_four", "res_open_all_four", "res_seal_the_men"],
+          "requires": {
+            "skills": {
+              "speechcraft": 60
+            }
+          },
+          "requires_knowing": [
+            "rev_forty_uses",
+            "rev_vell_on_the_seal"
+          ],
+          "exclusive_with": [
+            "res_close_all_four",
+            "res_open_all_four",
+            "res_seal_the_men"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": -30, "the_wet_ledger": -20, "the_xul_aneekh": 20 },
-            "world_flags": ["assize_legate_seated", "legates_seal_returned", "assize_cannot_close_a_finding"],
-            "npc_disposition": { "notary-sedda-vell": 60, "assizer-corvo": -20 }
+            "faction_reputation": {
+              "the_imperial_assize": -30,
+              "the_wet_ledger": -20,
+              "the_xul_aneekh": 20
+            },
+            "world_flags": [
+              "assize_legate_seated",
+              "legates_seal_returned",
+              "assize_cannot_close_a_finding"
+            ],
+            "npc_disposition": {
+              "notary-sedda-vell": 60,
+              "assizer-corvo": -20
+            }
           }
         }
       ],
@@ -1590,26 +2659,64 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D12", "D3"],
+        "patterns": [
+          "D12",
+          "D3"
+        ],
         "stated_objective": "Hold the Assize until the Elder Council sends a Legate",
         "actual_objective": "The same, honestly offered. The lie in this quest is not the giver's — it is the office's account of what the seal is for",
         "truth": "The seal was made so a governor could not reopen a case to punish somebody. It has been used forty times and thirty-nine of those were to stop a case being opened at all.",
         "revealed_by": [
-          { "id": "rev_forty_uses", "channel": "ledger", "source": "item_legates_seal_register", "before_point_of_no_return": true },
-          { "id": "rev_vell_on_the_seal", "channel": "rival_npc", "source": "notary-sedda-vell", "before_point_of_no_return": true }
+          {
+            "id": "rev_forty_uses",
+            "channel": "ledger",
+            "source": "item_legates_seal_register",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vell_on_the_seal",
+            "channel": "rival_npc",
+            "source": "notary-sedda-vell",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_imperial_assize": 20, "house_dres": 0 },
-        "world_flags": ["assize_succession_settled"]
+        "faction_reputation": {
+          "the_imperial_assize": 20,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "assize_succession_settled"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "faction_rank", "unique_named": true, "id": "rank_legate_of_the_assize", "name": "Legate of the Assize" },
-        { "type": "item", "unique_named": true, "id": "item_legates_seal", "name": "the Legate's seal", "on_resolution": ["res_close_all_four", "res_open_all_four", "res_seal_the_men"] },
-        { "type": "access", "unique_named": true, "id": "acc_assize_verbal_account", "name": "a verbal account accepted at any Imperial arrest" }
+        {
+          "type": "faction_rank",
+          "unique_named": true,
+          "id": "rank_legate_of_the_assize",
+          "name": "Legate of the Assize"
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_legates_seal",
+          "name": "the Legate's seal",
+          "on_resolution": [
+            "res_close_all_four",
+            "res_open_all_four",
+            "res_seal_the_men"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_assize_verbal_account",
+          "name": "a verbal account accepted at any Imperial arrest"
+        }
       ],
       "notes": "Rank 7. Succession by vacancy rather than by removal, which is the Imperial version: nobody is killed, the Elder Council simply does not send anyone. All four resolutions are non-violent and the line's whole argument — that a lawful institution with nobody watching it is more dangerous than a corrupt one — is decided in a single afternoon with a piece of brass. `acc_assize_verbal_account` is RI-CRM02 §6's Cohort-rank-4 dismissal, granted here as the terminal reward."
     }

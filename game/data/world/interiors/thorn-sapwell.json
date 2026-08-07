@@ -63,7 +63,7 @@
  },
  "lights": [
   {
-   "id": "thorn.weaver3.r0.hearth",
+   "id": "thorn.priest2.r0.hearth",
    "pos": [
     0,
     0.7,
@@ -74,40 +74,40 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.weaver3.r0.lamp0",
+   "id": "thorn.priest2.r0.lamp0",
    "pos": [
-    1,
+    -1,
     1.6,
-    3.5999999999999996
+    2.2
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.weaver3.r0.lamp1",
+   "id": "thorn.priest2.r0.lamp1",
    "pos": [
-    -0.8999999999999999,
+    -2.9,
     1.6,
-    3.6999999999999993
+    2.3
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.weaver3.r0.lamp2",
+   "id": "thorn.priest2.r0.lamp2",
    "pos": [
-    -2.8,
+    2.8,
     1.6,
-    3.4000000000000004
+    2.4000000000000004
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.cook6.r0.hearth",
+   "id": "thorn.weaver5.r1.hearth",
    "pos": [
     0,
     0.7,
@@ -118,22 +118,22 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.cook6.r0.lamp0",
+   "id": "thorn.weaver5.r1.lamp0",
    "pos": [
-    1.2999999999999998,
+    -2.5,
     1.6,
-    -3.3
+    3.3
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.cook6.r0.lamp1",
+   "id": "thorn.weaver5.r1.lamp1",
    "pos": [
-    3.2,
+    -0.6000000000000001,
     1.6,
-    -3.4
+    3.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -173,7 +173,7 @@
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.publican12.r0.hearth",
+   "id": "thorn.publican12.r1.hearth",
    "pos": [
     0,
     0.7,
@@ -184,33 +184,22 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.publican12.r0.lamp0",
+   "id": "thorn.publican12.r1.lamp0",
    "pos": [
-    -2,
+    -0.10000000000000009,
     1.6,
-    -2.4
+    -2.1
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.publican12.r0.lamp1",
+   "id": "thorn.publican12.r1.lamp1",
    "pos": [
-    3.0999999999999996,
+    1.7999999999999998,
     1.6,
-    -2.3
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "thorn.publican12.r0.lamp2",
-   "pos": [
-    1.2000000000000002,
-    1.6,
-    -2.6
+    -2.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -238,27 +227,22 @@
   "tho_stilt_house"
  ],
  "property_zones": [
-  "thorn.weaver3.r0",
-  "thorn.cook6.r0",
+  "thorn.priest2.r0",
+  "thorn.weaver5.r1",
   "thorn.smith9.r0",
-  "thorn.publican12.r0"
+  "thorn.publican12.r1"
  ],
  "containers": [
-  "thorn.weaver3.r0.0",
-  "thorn.weaver3.r0.4",
-  "thorn.cook6.r0.0",
-  "thorn.cook6.r0.2",
-  "thorn.cook6.r0.4",
-  "thorn.cook6.r0.6",
-  "thorn.publican12.r0.0",
-  "thorn.publican12.r0.4"
+  "thorn.weaver5.r1.1",
+  "thorn.weaver5.r1.3",
+  "thorn.publican12.r1.3"
  ],
  "unique_item": {
   "id": "thorn-sapwell-unique",
   "name": "a sap-tap the king is not allowed to touch",
   "unique": true,
   "takeable": true,
-  "owner": "npc:thorn-weaver-3"
+  "owner": "npc:thorn-priest-2"
  },
  "readable": {
   "id": "thorn-sapwell-readable",

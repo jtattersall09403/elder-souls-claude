@@ -148,7 +148,22 @@ try {
       const out = {
         chain: name, completed: [], blocked_at: null, why: null, violent: [], journal_n: 0,
         // per gate NPC: the lowest standing seen at any step of this chain
-        floor: {}, trace: [],
+        floor: {},
+        // per QUEST: the standing at this quest's own giver at the instant the chain arrives at
+        // it, before anything is done about it.
+        //
+        // SUCCESSOR ADDITION, and it is the number a clamp should be set from. `floor` is the
+        // minimum over EVERY step, which is more conservative than a gate needs: a gate only has
+        // to be passable at the moment you walk up to it, and a standing that dipped in Act I and
+        // recovered by Act IV is not evidence against an Act IV gate. Setting a clamp from
+        // `floor` prices gates that nothing is actually short at; setting it from the cold start
+        // (round 1) prices nothing and leaves a margin of exactly zero. `arrival` is the
+        // measured form of the round-1 verdict's own prescription — "worst cold-start standing
+        // minus the largest cumulative negative faction term the mainline can itself produce at
+        // that giver" — with the subtraction performed by the running build rather than by an
+        // author's arithmetic.
+        arrival: {},
+        trace: [],
       };
       const fold = (s) => { for (const [k, v] of Object.entries(s)) { if (v == null) continue; if (out.floor[k] == null || v < out.floor[k]) out.floor[k] = v; } };
       // Frame zero counts: it is a step of the chain like any other.
@@ -163,6 +178,16 @@ try {
         // What the gate would say about THIS quest at the moment the chain reaches it, before
         // anything is done about it. This is the number the round-1 clamp never looked at.
         const offer = H.questOffers().find((o) => o.id === step.id) || null;
+        // The standing at THIS quest's own giver, at the instant the chain arrives. Sampled
+        // before `questOpen`, so a gate that the purse then buys open is still recorded at the
+        // standing the character actually walked up with.
+        {
+          const g = (H.questDef(step.id).giver || {}).npc_id;
+          if (g) {
+            const v = H.getGateDispositions()[g];
+            if (v != null) out.arrival[step.id] = v;
+          }
+        }
         let o = H.questOpen(step.id);
         // Refused on standing? Go and talk to them. This is the only place the trace does
         // anything a player could not, and what it does is stand in front of the quest giver —
@@ -255,12 +280,29 @@ for (const row of report.rows) {
   }
 }
 
+// ARRIVAL: the worst standing any signature walks up to THIS gate with, on either chain. A gate
+// only has to be passable when you reach it, so this — not `chain_floor` — is the number a clamp
+// is set from. A quest no signature ever reaches has no arrival and reports null; that is a
+// completion failure and shows up in `failures`, not here.
+const arrivals = {};
+const arrivalBySig = {};
+for (const row of report.rows) {
+  for (const ch of Object.values(row.chains)) {
+    for (const [quest, v] of Object.entries(ch.arrival || {})) {
+      if (arrivals[quest] == null || v < arrivals[quest]) { arrivals[quest] = v; arrivalBySig[quest] = `${row.race}/${row.upbringing}`; }
+    }
+  }
+}
+
 const perGate = gates.map((g) => ({
   ...g,
   chain_floor: floors[g.npc] ?? null,
   floor_signature: floorBySig[g.npc] || null,
   chain_margin: (floors[g.npc] ?? 0) - g.min,
-})).sort((a, b) => a.chain_margin - b.chain_margin);
+  arrival_floor: arrivals[g.quest] ?? null,
+  arrival_signature: arrivalBySig[g.quest] || null,
+  arrival_margin: arrivals[g.quest] == null ? null : arrivals[g.quest] - g.min,
+})).sort((a, b) => (a.arrival_margin ?? -1e9) - (b.arrival_margin ?? -1e9));
 
 const finished = report.rows.filter((r) => !r.chains.intended.blocked_at && !r.chains.backpath.blocked_at);
 const failures = [];
@@ -289,6 +331,11 @@ const out = {
   // design (see the re-clamp note on `giver.disposition_min_note`). What would be broken is a
   // gate nothing can pay past, and that shows up in `failures`, not here.
   priced_gates: perGate.filter((g) => g.chain_floor < g.min).map((g) => `${g.quest} (${g.npc} floor ${g.chain_floor} vs min ${g.min}, worst ${g.floor_signature})`),
+  // The gates somebody actually walks up to short. Under `--sabotage no-purse` this is the set
+  // that decides whether a penniless character can finish, and it is a much smaller set than
+  // `priced_gates` — most of those dips happen in acts the gate is not in.
+  arrival_short: perGate.filter((g) => g.arrival_margin != null && g.arrival_margin < 0)
+    .map((g) => `${g.quest} (${g.npc}: arrives ${g.arrival_floor} vs min ${g.min}, short ${Math.round(-g.arrival_margin * 1000) / 1000}, worst ${g.arrival_signature})`),
   gates_never_short: perGate.filter((g) => g.chain_floor >= g.min).length,
   persuasion: report.rows.flatMap((r) => Object.entries(r.chains).flatMap(([n, c]) => (c.persuasion || []).map((p) => ({ sig: `${r.race}/${r.upbringing}`, chain: n, ...p })))),
   failures,
@@ -301,10 +348,13 @@ if (args.json) console.log(JSON.stringify(out, null, 2));
 else {
   console.log(`\nmainline chain floor — ${SIGS.length} signatures x 2 chains, state '${STATE}'${sabotage ? `  [SABOTAGE ${sabotage}]` : ''}`);
   console.log(`bootstrap: ${out.bootstrap_npc ? `greeted ${out.bootstrap_npc}, topics ${out.bootstrap_sample.topics_before} -> ${out.bootstrap_sample.topics_after}` : 'NONE'}; topics hand-fed: ${out.hand_fed_topics}\n`);
-  console.log('  quest        act npc                          min  chain floor  margin  floor signature');
+  const n2 = (v) => (v == null ? '  -  ' : (Math.round(v * 100) / 100).toFixed(2));
+  console.log('  quest        act npc                          min  arrival  margin  worst signature      | chain floor  margin');
   for (const g of perGate) {
-    console.log(`  ${g.quest.padEnd(11)} ${String(g.act ?? '-').padEnd(3)} ${g.npc.padEnd(28)} ${String(g.min).padStart(3)}  ${String(g.chain_floor).padStart(11)}  ${String(g.chain_margin).padStart(6)}  ${g.floor_signature || ''}`);
+    console.log(`  ${g.quest.padEnd(11)} ${String(g.act ?? '-').padEnd(3)} ${g.npc.padEnd(28)} ${String(g.min).padStart(3)}  ${n2(g.arrival_floor).padStart(7)}  ${n2(g.arrival_margin).padStart(6)}  ${(g.arrival_signature || '').padEnd(20)} | ${n2(g.chain_floor).padStart(11)}  ${n2(g.chain_margin).padStart(6)}`);
   }
+  const short = perGate.filter((g) => g.arrival_margin != null && g.arrival_margin < 0);
+  console.log(`\n  gates some signature ARRIVES SHORT of  ${short.length}/${perGate.length}${short.length ? '  ' + short.map((g) => `${g.quest} by ${(Math.round(-g.arrival_margin * 100) / 100)}`).join(', ') : ''}`);
   console.log(`\n  signatures completing both chains  ${finished.length}/${SIGS.length}`);
   console.log(`  gates never short of their min     ${out.gates_never_short}/${perGate.length}`);
   console.log(`  PRICED gates (floor below the min, so somebody has to pay)  ${out.priced_gates.length}`);

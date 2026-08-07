@@ -6,9 +6,9 @@
 
   "topics": [
     { "id": "gideon", "settlement": "gideon", "infos": [
-      { "a": "archivist", "cell": "gideon", "x": "Gideon is what the Empire believed the whole province would become: a grid of tilled fields, a timber trade, a chapel with a bell, and an annexe of the Provincial Office that answers letters. It is entirely successful and it is eleven miles across and there is nothing else like it anywhere in Argonia.", "to": ["the-chapel-of-akatosh", "the-timber-yards", "the-field-grid"] },
+      { "a": "archivist", "cell": "gideon", "x": "Gideon is what the Empire believed the whole province would become: a grid of tilled fields, a timber trade, a chapel with a bell, and an annexe of the Provincial Office that answers letters. It is entirely successful and it is nine miles across and there is nothing else like it anywhere in Argonia.", "to": ["the-chapel-of-akatosh", "the-timber-yards", "the-field-grid"] },
       { "a": "legionary", "cell": "gideon", "x": "Quiet posting. Good bread. Nothing happens. Watch the timber yards on pay night.", "to": ["the-timber-yards"] },
-      { "a": "rootkeeper", "cell": "gideon", "d": 25, "x": "There is a well under the chapel and the chapel knows, and it has been the most useful arrangement in this province for eleven years and neither institution has ever put it in writing.", "to": ["the-chapel-of-akatosh", "the-vestry-well"] },
+      { "a": "rootkeeper", "cell": "gideon", "d": 25, "x": "There is a well under the chapel and the chapel knows, and it has been the most useful arrangement in this province for forty years and neither institution has ever put it in writing.", "to": ["the-chapel-of-akatosh", "the-vestry-well"] },
       { "a": "sapcutter", "cell": "gideon", "x": "Good road, good coin, dull town. Friend, this one sells everything here and drinks somewhere else.", "to": ["the-cart-roads", "the-timber-yards"] },
       { "a": "mudborn", "cell": "gideon", "d": 10, "x": "They are kind here in the way that people are kind when they have enough, dry-one, which is real kindness and also the cheapest kind there is, and I would still rather be here than anywhere.", "to": ["the-chapel-of-akatosh"] } ] },
 
@@ -20,12 +20,12 @@
       { "a": "sapcutter", "cell": "gideon", "x": "Logs down the river in a raft. Two men ride it. Friend, one of them usually gets off.", "to": ["the-timber-yards"] } ] },
 
     { "id": "the-field-grid", "settlement": "gideon", "infos": [
-      { "a": "archivist", "cell": "gideon", "x": "Surveyed in square plots on the Cyrodiilic pattern, which works here and works nowhere else in the province, and the reason it works is the one fact about Gideon that nobody local will say out loud: the ground was cleared of something before the plots were pegged.", "to": ["the-cleared-ground", "blackwood"] },
+      { "a": "archivist", "cell": "gideon", "x": "Surveyed in square plots on the Cyrodiilic pattern, which works here and works nowhere else in the province, and the reason it works is the one fact about Gideon that no local will say out loud: the ground was cleared of something before the plots were pegged.", "to": ["the-cleared-ground", "blackwood"] },
       { "a": "mudborn", "cell": "gideon", "d": 10, "x": "There is work in the fields at the cut and at the sowing and none in between, dry-one, so the town is full twice a year and the rest of the time it is very carefully empty.", "to": [] } ] },
 
     { "id": "the-cleared-ground", "settlement": "gideon", "quest": "q-cleared-ground", "infos": [
-      { "a": "archivist", "cell": "gideon", "d": 50, "x": "The plot register begins in the year the settlement was chartered and the first eleven sheets are a fair copy in a single hand, which means the originals were destroyed or were never made, and a survey does not produce a fair copy of an eleven-sheet register on its first day of work.", "to": ["the-field-grid", "the-charter", "the-vestry-well"], "q": true, "res": { "journal": ["q-cleared-ground", 10] } },
-      { "a": "rootkeeper", "d": 40, "x": "There were three wells on that ground, supplicant, and there is one under the chapel, and I am not going to tell you what happened to the other two because you should hear it from somebody who was owed it.", "to": ["the-vestry-well", "the-blood-price"] } ] },
+      { "a": "archivist", "cell": "gideon", "d": 50, "x": "The plot register begins in the year the settlement was chartered and the first thirty sheets are a fair copy in a single hand, which means the originals were destroyed or were never made, and a survey does not produce a fair copy of an eleven-sheet register on its first day of work.", "to": ["the-field-grid", "the-charter", "the-vestry-well"], "q": true, "res": { "journal": ["q-cleared-ground", 10] } },
+      { "a": "rootkeeper", "d": 40, "x": "There were three wells on that ground, supplicant, and there is one under the chapel, and I am not going to tell you what happened to the other two because you should hear it from a keeper who was owed it.", "to": ["the-vestry-well", "the-blood-price"] } ] },
 
     { "id": "the-vestry-well", "settlement": "gideon", "infos": [
       { "a": "rootkeeper", "cell": "gideon", "d": 30, "x": "It is tended in the vestry after the last bell by a priest of Akatosh who has never once asked what he is doing or been told, and it is the only well in the province that is kept by an outsider and it has not gone quiet.", "to": ["the-chapel-of-akatosh", "the-quiet-wells", "brother-teleno"] } ] },
@@ -35,13 +35,13 @@
       { "a": "mudborn", "cell": "gideon", "d": 10, "x": "He will feed you without making you sit through anything first, dry-one, which sounds like a small thing and is the only reason I have ever gone back to a chapel twice.", "to": ["the-chapel-of-akatosh"] } ] },
 
     { "id": "the-office-annexe", "settlement": "gideon", "infos": [
-      { "a": "archivist", "cell": "gideon", "x": "Two rooms, four clerks, and the provincial copy of every instrument in force in Argonia, including one treaty whose original nobody in Cyrodiil can now produce. It is the most important building in the province and it has a leaking roof.", "to": ["the-blackwater-treaty", "the-catalogue", "the-provincial-office"] },
+      { "a": "archivist", "cell": "gideon", "x": "Two rooms, four clerks, and the provincial copy of every instrument in force in Argonia, including one treaty whose original Cyrodiil can no longer produce. It is the most important building in the province and it has a leaking roof.", "to": ["the-blackwater-treaty", "the-catalogue", "the-provincial-office"] },
       { "a": "legionary", "cell": "gideon", "x": "Clerks. Paper. Sealed after the fourth bell. Do not knock.", "to": [] } ] },
 
     { "id": "archon", "settlement": "archon", "infos": [
-      { "a": "sapcutter", "cell": "archon", "x": "Dye town. Everything smells. Everything sells. Friend, the coast is red four months a year and so is everybody's hands.", "to": ["the-dye-yards", "the-crimson-coast"] },
+      { "a": "sapcutter", "cell": "archon", "x": "Dye town. Everything smells. Everything sells. Friend, the coast is red four months a year and so are all the hands in it.", "to": ["the-dye-yards", "the-crimson-coast"] },
       { "a": "archivist", "cell": "archon", "x": "Archon exists because a lichen that grows on a hundred miles of rock can be boiled into a purple the Empire has legislated the use of, and the entire settlement is therefore a function of a sumptuary law passed in a city none of these people will ever see.", "to": ["the-dye-yards", "the-purple-law"] },
-      { "a": "mudborn", "cell": "archon", "d": 10, "x": "It is the easiest town in the province to get work in and the hardest to leave with a body that still works, dry-one, and everybody who arrives says they will do one season.", "to": ["the-dye-yards", "the-vat-cough"] },
+      { "a": "mudborn", "cell": "archon", "d": 10, "x": "It is the easiest town in the province to get work in and the hardest to leave with a body that still works, dry-one, and all who arrive say they will do one season.", "to": ["the-dye-yards", "the-vat-cough"] },
       { "a": "legionary", "cell": "archon", "x": "Militia town. No cohort here. Twelve men and a sergeant. It is enough. Just.", "to": ["the-militia"] },
       { "a": "rootkeeper", "cell": "archon", "d": 25, "x": "The lichen is taken from the rock and nothing is returned to the rock, supplicant, and the keepers have argued for two generations about whether stone is owed anything, and the argument has not been settled and the harvest has not stopped.", "to": ["the-covenant", "the-tide-lichen"] } ] },
 
@@ -50,7 +50,7 @@
       { "a": "archivist", "cell": "archon", "x": "The organism is a lichen only by courtesy; the surveys that classified it did so on colour, and the two attempts to establish it elsewhere both failed for reasons the reports describe as unsuitable rock and one appendix describes as refusal.", "to": ["the-crimson-coast"] } ] },
 
     { "id": "the-purple-law", "settlement": "archon", "infos": [
-      { "a": "archivist", "cell": "archon", "x": "Imperial purple may be worn by four categories of person and the enforcement of that restriction is what makes this dye worth carrying eight hundred miles, so the wealth of this town rests entirely on a prohibition being kept in a place nobody here has been.", "to": ["the-dye-yards", "the-imperial-claim"] } ] },
+      { "a": "archivist", "cell": "archon", "x": "Imperial purple may be worn by four categories of person and the enforcement of that restriction is what makes this dye worth carrying eight hundred miles, so the wealth of this town rests entirely on a prohibition being kept in a place none of us has been.", "to": ["the-dye-yards", "the-imperial-claim"] } ] },
 
     { "id": "the-vat-cough", "settlement": "archon", "infos": [
       { "a": "mudborn", "cell": "archon", "d": 10, "x": "It starts in the third season and it does not stop, dry-one, and the yard masters call it the wet chest and pay a copper a week extra for it, which they call the lung wage as though naming it honestly made it all right.", "to": ["the-dye-yards", "the-physicians"] },
@@ -67,12 +67,12 @@
 
     { "id": "an-deesei", "settlement": "archon", "infos": [
       { "a": "sapcutter", "cell": "archon", "d": 20, "x": "Yard clerk. Keeps every book. Hates the yard. Friend, that is a useful combination.", "to": ["the-yard-office", "the-lung-wage"] },
-      { "a": "mudborn", "cell": "archon", "d": 15, "x": "She came for one season eleven years ago, dry-one, and she has the cough now herself, and she still writes down every name that takes the wage in a very good hand.", "to": ["the-vat-cough", "the-lung-wage"] } ] },
+      { "a": "mudborn", "cell": "archon", "d": 15, "x": "She came for one season twenty years ago, dry-one, and she has the cough now herself, and she still writes down every name that takes the wage in a very good hand.", "to": ["the-vat-cough", "the-lung-wage"] } ] },
 
     { "id": "blackrose", "settlement": "blackrose", "infos": [
       { "a": "legionary", "cell": "blackrose", "x": "Prison town. The prison came first. Everything else feeds it. Bread, boots, coal, guards.", "to": ["blackrose-prison", "the-supply-road"] },
       { "a": "archivist", "cell": "blackrose", "x": "A settlement that exists to provision a single institution develops a particular character: there is no trade here that does not have one customer, and a town with one customer is not a town, it is a wage.", "to": ["blackrose-prison", "the-one-customer"] },
-      { "a": "mudborn", "cell": "blackrose", "d": 10, "x": "Half the people here have somebody inside and the other half turn the key on them, dry-one, and they all drink in the same two rooms afterwards, and I have never worked out how they manage it.", "to": ["blackrose-prison"] },
+      { "a": "mudborn", "cell": "blackrose", "d": 10, "x": "Half the people here have kin inside and the other half turn the key on them, dry-one, and they all drink in the same two rooms afterwards, and I have never worked out how they manage it.", "to": ["blackrose-prison"] },
       { "a": "sapcutter", "cell": "blackrose", "x": "One buyer. Fixed price. Friend, this one hates this town.", "to": ["the-one-customer"] },
       { "a": "rootkeeper", "cell": "blackrose", "d": 25, "x": "There are men in there who were given to wells, supplicant, and the wells are still owed the tending they are not doing, and the order has petitioned four times and has been answered once and the answer was a form.", "to": ["blackrose-prison", "the-petition"] } ] },
 
@@ -85,10 +85,10 @@
 
     { "id": "the-warden", "settlement": "blackrose", "infos": [
       { "a": "legionary", "cell": "blackrose", "x": "Warden Sallus. Twenty years. Never leaves the walls. Runs a clean house, they say.", "to": ["blackrose-prison", "the-one-customer"] },
-      { "a": "mudborn", "cell": "blackrose", "d": 10, "x": "He walks the town on the first of the month with no guard at all, dry-one, and everybody nods, and I have never once seen anybody speak to him.", "to": ["blackrose-prison"] } ] },
+      { "a": "mudborn", "cell": "blackrose", "d": 10, "x": "He walks the town on the first of the month with no guard at all, dry-one, and they all nod, and I have never once seen a soul speak to him.", "to": ["blackrose-prison"] } ] },
 
     { "id": "the-petition", "settlement": "blackrose", "quest": "q-the-petition", "infos": [
-      { "a": "rootkeeper", "cell": "blackrose", "d": 55, "x": "Four petitions, one answer, and the answer was a form declining a request that had not been made, which means somebody in the annexe at Gideon read a petition about wells and filed it against a heading about land, and the heading it was filed against is the interesting thing.", "to": ["the-office-annexe", "blackrose-prison", "the-heirs-clause"], "q": true, "res": { "journal": ["q-the-petition", 10] } } ] },
+      { "a": "rootkeeper", "cell": "blackrose", "d": 55, "x": "Four petitions, one answer, and the answer was a form declining a request that had not been made, which means a clerk in the annexe at Gideon read a petition about wells and filed it against a heading about land, and the heading it was filed against is the interesting thing.", "to": ["the-office-annexe", "blackrose-prison", "the-heirs-clause"], "q": true, "res": { "journal": ["q-the-petition", 10] } } ] },
 
     { "id": "the-long-sentences", "settlement": "blackrose", "infos": [
       { "a": "archivist", "cell": "blackrose", "x": "Sentences here are longer than the equivalent offence draws in Cyrodiil by a factor the register makes plain and the Office has never commented on, and the explanation offered locally is transport cost, which does not survive five minutes of arithmetic.", "to": ["blackrose-prison", "the-sanction"] },

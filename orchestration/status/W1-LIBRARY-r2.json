@@ -20,19 +20,29 @@
     "game/src/sim/quest/machine.js \u2014 QuestEngine.bookKnowledge + ctx.knowledge union",
     "game/src/save/state.js \u2014 dialogue.books_read written and read back",
     "game/data/save-manifest.json \u2014 dialogue.books_read declared durable + id-sorted",
-    "game/src/engine.js \u2014 orchestrator's fail-closed guard REMOVED (method exists; its {} fallback was the wrong type for .get())"
+    "game/src/engine.js \u2014 orchestrator's fail-closed guard REMOVED (method exists; its {} fallback was the wrong type for .get())",
+    "corpus/80-methods/book-stats.py \u2014 pct() now linear interpolation (was floor-index); new step8_metadata_vs_prose() and checks S8/S9/S10; self-test gains the critic's derangement and flag-flip mutations",
+    "game/data/books/the-casebook-of-the-assize.json \u2014 NEW, 3 volumes (1281/1357/1284 words), a fourth multi-volume series",
+    "game/data/books/the-short-forms.json \u2014 NEW, songs-for-the-weir (T5) and the-heron-and-the-clerk (T8)",
+    "tools/analysis/text-metrics.mjs \u2014 --books flag so RI-UIX05 step 1's three-resolution fixture pass is runnable at all"
   ],
   "findings": [
     "RE-VERIFIED after the restart, in a real browser at 320x240 with setRenderRate(0): seam probe topics_before 0 / topics_after 116 / gained 116, 60/60 books opened; consume probe shows the 'you have not learned book_*' clause in the control and ABSENT after reading on all 3 quests. check-data/check-content/boot-check clean; check-quests' 1 problem (3 quests seed no topic) is pre-existing and not this piece's.",
+    "ALREADY LANDED BY MY PREDECESSOR AND BANKED IN 58b6c6e, verified by diff, not assumed: (a) the B8 last-page balancing pass (game/src/ui/type.js paginateBook + TAIL_FLOOR_WORDS 80, and the 0.80->0.84 fill factor in ui/screens/text.js) \u2014 K1 now measures p10 85 / median 132 / p90 162 / 301 pages in the browser, all three bands in band, was p10 62.3; (b) the a-progress-ii <-> pilots-chart-book contradiction rewrite \u2014 all three declared errors are now IN the prose (direction reversed and announced, left ear defended, the drowned crane with the counting-office moved to Archon while the same book gives Lilmoth the rotting quarter and no crane), and 7-gram overlap fell from 5.36% to 2.07% of a-progress-ii's grams.",
     "SEAM CLOSED, measured with the critic's own probe: critic-w1-library-seam.mjs now reports topics_before 0, topics_after 116, gained 116 (was 0/0/0). seam_sterile is now FALSE by measurement.",
     "KNOWLEDGE GATES: critic-w1-library-consume.mjs now shows the 'you have not learned book_*' clause present in the control and ABSENT after reading, on all 3 quests. Residual refusals are skill floors and reveals from other channels, which are other systems'.",
     "THE READ SITE WAS IN THE WRONG FILE. Engine.openMenu() is the HARNESS door. A player reads by selecting a readable in the inventory and pressing confirm: UISystem._confirm() calls this.open('book', ...) directly and never passes through Engine.openMenu(). The old _booksRead recorder sat in the engine wrapper, so it could not see the only route a person takes. The hook is now in UISystem.open().",
     "ALL EIGHT knowledge_key values are consumed, by TWO authored linkages: 3 are named directly by a quest's requires.knowledge; the other 5 are named as deceit.revealed_by[].source with channel 'book' (Q-MAIN-05 x2, Q-MAIN-09, Q-MAIN-12, Q-MAIN-22). _bookKnowledgeIndex() reconciles both.",
     "Engine._booksRead was a Set on the engine object: it survived sim.reset() (carrying one run's reading into the next state) and appeared in NO save blob. Replaced by sim.quest.booksRead, serialised as dialogue.books_read.",
     "PAGINATION baseline re-measured in bare Node at 1920x1080: 324 pages, linear p10 62.3, median 126, p90 153, min 3, max 172. 12 books end on a page under 25 words.",
-    "BOOK LENGTHS: linear-interpolation p90 = 1128.6 against RI-LOR03's >= 1200 fail band (floor-index estimator says 1259). The gap in the sorted lengths is 933 -> 1259; the corpus is inside the bar only by estimator choice, as the critic said."
+    "BOOK LENGTHS: linear-interpolation p90 = 1128.6 against RI-LOR03's >= 1200 fail band (floor-index estimator says 1259). The gap in the sorted lengths is 933 -> 1259; the corpus is inside the bar only by estimator choice, as the critic said.",
+    "ESTIMATOR: pct() was sorted[int(p*n)]. Fixed to linear interpolation. p90 fell 1316 -> 1167.2 against a 1200 bar, i.e. S1b had been passing by convention, exactly as the critic said. S6's IQR also moved (6.04 -> 6.0, sitting on its bar).",
+    "K1 IS FIXED AND MEASURED: critic-w1-library-pages.mjs in the browser reads 301 pages over 65/65 books, p10 85 / median 132 / p90 162 / max 186 \u2014 all three K1 bands in band, on ALL pages including every book's last. Was p10 62.3.",
+    "K2 and K3 MEASURED FOR THE FIRST TIME (nobody had ever run text-metrics.mjs at the reading screen). At 1280x720 / 1920x1080 / 3840x2160: chars per line median 60.1 (range 52.6-64.3, band 45-75); leading 1.46 (band 1.35-1.65); body 17.33 / 26 / 52 px at 2.407% of screen height at every scale (band >=18px @1080p and >=1.6% everywhere); ink/page contrast 8.1-8.23 from the rendered PNG (bar >=7.0). 7/7.",
+    "P90 FIXED BY WRITING, NOT BY ARITHMETIC: the corpus had NO book between 944 and 1,316 words, which is why the two estimators disagreed by 150 words. Three new 1,281-1,357-word volumes fill the hole; p90 is now 1,317.3 under linear interpolation, with the floor index no longer flattering it. S6 IQR 6.0 -> 6.6.",
+    "BOTH NEW book-stats CHECKS GO RED ON THE CRITIC'S OWN DERANGED CORPUS: S8 (books anchoring >=1 declared topic in their own prose) 76.9% -> 10%, S9 (contradiction edges whose subject both texts engage) 89.2% -> 29.4%, S10 (books flagged Argonian whose byline names a Tamrielic author) 0 -> 30. self-test is 10/10 RED including the two mutations the critic invented."
   ],
-  "next_step": "perturbation demo (break the hook, confirm red); then paginator last-page balancing; estimator fix; contradiction pair; tool self-tests vs deranged corpus",
+  "next_step": "book-budget.mjs estimator + a derangement-sensitive check; then the K5/K6/K7 probe and the delete-the-fix runs",
   "notes_for_successor": "",
   "files_touched_prose": []
 }

@@ -118,11 +118,77 @@ const PROFILE = {
   },
 };
 
-// ---- RI-QST03 §B, with only the attribute column re-derived. See FACTION-ROSTER-DESIGN.md §5.4.
+// ---- RI-QST03 §B, with the attribute column re-derived PER FACTION. See FACTION-ROSTER-DESIGN §5.4.
 const REP = [0, 10, 22, 36, 52, 70, 90, 112];   // §B verbatim
-const ATTR = [null, 12, 14, 16, 18, 20, 22, 24]; // §B's shape, lowered to the measured ceiling
 const S1 = [null, 20, 25, 32, 40, 50, 60, 70];   // §B verbatim
 const S2 = [null, null, 10, 15, 20, 25, 30, 35]; // §B verbatim (its rank-1 5 folded into null)
+
+// ---- THE ATTRIBUTE COLUMN, AND WHY IT IS NO LONGER ONE ROW OF LITERALS -----------------------
+//
+// The first repair lowered the shared column from [_,25..75] to [_,12..24] and asserted it was
+// reachable. The assertion was computed against `ATTR_AT_CREATION_MAX = 19` — the best favoured
+// attribute any of 240 signatures has — plus 6 points for every governed skill in the game taken
+// to 90. That is a BEST CASE twice over: the single best sheet in the build, grinding skills the
+// ladder never asks for. The brief's own warning is that the main quest clamped with a margin of
+// exactly zero and shut Act IV for 11 of 40 signatures; this was the same defect, and driving the
+// live line through `questOffers()` found it — `tools/quests/faction-probe.mjs` walked the Wet
+// Ledger to reputation 112, which is the rank-7 demand, and the DERIVED rank stopped at 3, because
+// agility had only reached 16 against a demand of 24. 3 of 9 quests on the line were reachable.
+//
+// The arithmetic nobody had done: an attribute rises by +1 each time a governed skill crosses a
+// multiple of 15, and nothing else in this build moves one. Taking the two skills the ladder
+// itself grades from a median starting sheet to the rank-7 demands (70 and 35) crosses at most
+// **four** such multiples. So a whole faction ladder pays +4 attribute, while the spread between
+// signatures at creation is 6 to 19. THE ATTRIBUTE TERM CANNOT CARRY THE LADDER: reputation
+// (0 -> 112) and the two skill columns (20 -> 70) scale, and the attribute column does not.
+//
+// So it now asks for exactly what its own work pays for, per faction, measured:
+//
+//     attribute(R) = p10_creation_favoured_attribute + earned(R) - MARGIN
+//
+// where `earned(R)` is the multiples of 15 the rank's OWN skill_1/skill_2 demands cross from that
+// faction's median starting skills, and both inputs are read from a live sweep of the shipped
+// character builder rather than restated here. A rank never asks for an attribute point the rank's
+// own work has not paid for, and it leaves MARGIN points of room on top.
+const SWEEP_PATH = ROOT + '/reports/faction-signature-sweep.json';
+if (!fs.existsSync(SWEEP_PATH)) {
+  throw new Error(`gen-faction-gates: ${SWEEP_PATH} does not exist. The attribute column is derived from a\nlive sweep of the character builder, not from literals. Run:\n  node tools/quests/faction-signature-sweep.mjs --out reports/faction-signature-sweep.json`);
+}
+const SWEEP = JSON.parse(fs.readFileSync(SWEEP_PATH, 'utf8'));
+const SWEEP_BY = new Map((SWEEP.per_faction || []).map((f) => [f.id, f]));
+// A rank must clear its own demand by this much. Zero margin is how Act IV shut.
+const ATTR_MARGIN = 2;
+// character/derive.js:359 — +1 to the governing attribute each time the skill value crosses a
+// multiple of 15. Counted from where the sheet actually starts, not from zero.
+const crossings = (from, to) => (to == null ? 0 : Math.max(0, Math.floor(to / 15) - Math.floor((from || 0) / 15)));
+
+function attrColumnFor(id, attrs) {
+  const s = SWEEP_BY.get(id);
+  if (!s) throw new Error(`gen-faction-gates: ${id} has no row in reports/faction-signature-sweep.json — re-run the sweep after adding a faction.`);
+  const base = s.at_creation.best_favoured_attribute.p10;
+  const s1start = s.at_creation.best_favoured_skill.median;
+  const s2start = s.at_creation.second_favoured_skill.median;
+  // The gate grades the two best favoured skills. Only the ones GOVERNED BY a favoured attribute
+  // pay into it, so a faction with one such skill is credited for one graded skill, not two.
+  const governed = Math.min(2, Math.max(...attrs.map((a) => (p_skills_governed_by(id, a)))));
+  const col = [null];
+  let prev = 0;
+  for (let r = 1; r <= 7; r++) {
+    const earned = crossings(s1start, S1[r]) + (governed >= 2 ? crossings(s2start, S2[r]) : 0);
+    const want = Math.max(1, base + earned - ATTR_MARGIN);
+    prev = Math.max(prev, want);      // monotone: a rank never asks less than the one below it
+    col.push(prev);
+  }
+  return { col, base, s1start, s2start, governed };
+}
+// resolved against PROFILE below; declared here so attrColumnFor reads in one place.
+function p_skills_governed_by(id, attr) {
+  let p = PROFILE[id];
+  if (p && p.alias) p = PROFILE[p.alias];
+  return (p.skills || []).filter((sk) => GOVERNS_OF[sk] === attr).length;
+}
+const GOVERNS_OF = {};
+for (const s of skillsDoc.skills) GOVERNS_OF[s.id] = s.governing;
 
 // Which factions the quest book actually references, split by WHAT IT ASKS OF THEM. Nothing is
 // invented that nothing asks for, and — the half the first version got wrong — nothing is given a
@@ -161,18 +227,38 @@ for (const id of [...fac].sort()) {
   for (const a of p.attrs) {
     if (!ATTRS.includes(a)) throw new Error(`${id}: '${a}' is not an attribute in game/data/progression/attributes.json — the sheet has [${ATTRS.join(', ')}]`);
   }
-  // REACHABILITY. The rank-7 demand must sit under what the skill system can deliver for the
-  // BEST of the two favoured attributes. A ladder whose top is unreachable is not a ladder.
-  const best = Math.max(...p.attrs.map(headroom));
-  const top = ATTR[7];
-  if (top + REQUIRED_MARGIN > best) {
-    throw new Error(`${id}: rank 7 asks ${top} of ${p.attrs.join(' or ')}, whose reachable ceiling is ${best} (creation max ${ATTR_AT_CREATION_MAX} + ${ATTR_POINTS_PER_SKILL} per governed skill) — margin ${best - top} against a required ${REQUIRED_MARGIN}. See FACTION-ROSTER-DESIGN.md §5.2.`);
+  // REACHABILITY, against real signatures rather than the best one in the game. The old check
+  // compared a shared rank-7 literal against `creation MAX + 6 per governed skill` — the best
+  // sheet in the build grinding skills the ladder never grades. It passed, and the live line
+  // still clamped at rank 3 of 7. The column is now DERIVED from what the rank's own skill
+  // demands earn a p10 signature, so the assertion is that the derivation held: every rank must
+  // sit at or under what that signature reaches, by ATTR_MARGIN, and must still be monotone.
+  const { col: ATTR, base, s1start, s2start, governed } = attrColumnFor(id, p.attrs);
+  for (let r = 1; r <= 7; r++) {
+    const earned = crossings(s1start, S1[r]) + (governed >= 2 ? crossings(s2start, S2[r]) : 0);
+    const reach = base + earned;
+    if (ATTR[r] + ATTR_MARGIN > reach) {
+      throw new Error(`${id}: rank ${r} asks ${ATTR[r]} of ${p.attrs.join(' or ')}; a p10 signature starting at ${base} and taking the rank's own skills to ${S1[r]}/${S2[r]} reaches ${reach} — margin ${reach - ATTR[r]} against a required ${ATTR_MARGIN}. See FACTION-ROSTER-DESIGN.md §5.2.`);
+    }
+    if (ATTR[r] < ATTR[r - 1]) throw new Error(`${id}: rank ${r} asks less attribute (${ATTR[r]}) than rank ${r - 1} (${ATTR[r - 1]})`);
   }
+  // The old best-case number is kept, reported rather than asserted on, because it is the honest
+  // upper bound a grinder can reach and it is useful to see next to the demand.
+  const best = Math.max(...p.attrs.map(headroom));
   factions.push({
     id, name: p.name,
     favoured_attributes: p.attrs,
     favoured_skills: p.skills,
     attribute_headroom: Object.fromEntries(p.attrs.map((a) => [a, headroom(a)])),
+    attribute_column_derivation: {
+      rule: 'attribute(R) = p10 creation favoured attribute + multiples of 15 the rank\'s own skill_1/skill_2 demands cross from a median starting sheet - margin',
+      measured_from: 'reports/faction-signature-sweep.json (240 signatures through the shipped character builder)',
+      p10_creation_favoured_attribute: base,
+      median_start_skill_1: s1start, median_start_skill_2: s2start,
+      graded_skills_governed_by_a_favoured_attribute: governed,
+      margin: ATTR_MARGIN,
+      best_case_grinder_ceiling: best,
+    },
     ranks: p.ranks.map((n, i) => ({
       rank: i, name: n, reputation: REP[i], attribute: ATTR[i], skill_1: S1[i], skill_2: S2[i],
       world_state: p.world && p.world[i] ? { flag: p.world[i][0], text: p.world[i][1] } : null,
@@ -259,5 +345,9 @@ if (check) {
   console.log(`[harness] faction-gates.json current — ${factions.length} factions`);
 } else {
   fs.writeFileSync(outPath, text);
-  console.log('wrote faction-gates.json —', factions.length, 'factions; rank-7 attribute', ATTR[7], 'against headroom', factions.map((f) => `${f.id}:${Math.max(...Object.values(f.attribute_headroom))}`).join(' '));
+  console.log('wrote faction-gates.json —', factions.length, 'factions. Rank-7 attribute demand is now per-faction, derived from what the rank\'s own skill demands earn a p10 signature:');
+  for (const f of factions) {
+    const d = f.attribute_column_derivation;
+    console.log(`  ${f.id.padEnd(22)} ${f.favoured_attributes.join('/').padEnd(22)} column ${f.ranks.map((r) => r.attribute == null ? '—' : r.attribute).join(' ')}  (p10 base ${d.p10_creation_favoured_attribute}, ${d.graded_skills_governed_by_a_favoured_attribute} graded skill(s) governed, margin ${d.margin}, grinder ceiling ${d.best_case_grinder_ceiling})`);
+  }
 }

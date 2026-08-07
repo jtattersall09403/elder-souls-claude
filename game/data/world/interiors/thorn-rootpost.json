@@ -63,7 +63,7 @@
  },
  "lights": [
   {
-   "id": "thorn.weaver3.r1.hearth",
+   "id": "thorn.priest2.r1.hearth",
    "pos": [
     0,
     0.7,
@@ -74,29 +74,29 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.weaver3.r1.lamp0",
+   "id": "thorn.priest2.r1.lamp0",
    "pos": [
-    -2.7,
+    2.7,
     1.6,
-    -0.5
+    -0.8999999999999999
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.weaver3.r1.lamp1",
+   "id": "thorn.priest2.r1.lamp1",
    "pos": [
-    -0.7999999999999998,
+    -2.4,
     1.6,
-    -0.6000000000000001
+    -1
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.cook6.r1.hearth",
+   "id": "thorn.cook6.r0.hearth",
    "pos": [
     0,
     0.7,
@@ -107,33 +107,22 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.cook6.r1.lamp0",
+   "id": "thorn.cook6.r0.lamp0",
    "pos": [
-    0,
+    1.2999999999999998,
     1.6,
-    2.2
+    -3.3
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.cook6.r1.lamp1",
+   "id": "thorn.cook6.r0.lamp1",
    "pos": [
-    -1.9,
+    3.2,
     1.6,
-    2.3
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "thorn.cook6.r1.lamp2",
-   "pos": [
-    -3.2,
-    1.6,
-    2.4000000000000004
+    -3.4
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -184,7 +173,7 @@
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.publican12.r1.hearth",
+   "id": "thorn.publican12.r2.hearth",
    "pos": [
     0,
     0.7,
@@ -195,22 +184,33 @@
    "kind": "hearth"
   },
   {
-   "id": "thorn.publican12.r1.lamp0",
+   "id": "thorn.publican12.r2.lamp0",
    "pos": [
-    -0.10000000000000009,
+    -3,
     1.6,
-    -2.1
+    -3.8
    ],
    "intensity": 0.55,
    "snuffable": true,
    "kind": "oil-lamp"
   },
   {
-   "id": "thorn.publican12.r1.lamp1",
+   "id": "thorn.publican12.r2.lamp1",
    "pos": [
-    1.7999999999999998,
+    2.0999999999999996,
     1.6,
-    -2.2
+    -3.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.publican12.r2.lamp2",
+   "pos": [
+    0.7999999999999998,
+    1.6,
+    -3.6
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -238,24 +238,28 @@
   "tho_stilt_house"
  ],
  "property_zones": [
-  "thorn.weaver3.r1",
-  "thorn.cook6.r1",
+  "thorn.priest2.r1",
+  "thorn.cook6.r0",
   "thorn.smith9.r1",
-  "thorn.publican12.r1"
+  "thorn.publican12.r2"
  ],
  "containers": [
-  "thorn.cook6.r1.1",
-  "thorn.cook6.r1.3",
-  "thorn.cook6.r1.5",
+  "thorn.cook6.r0.0",
+  "thorn.cook6.r0.2",
+  "thorn.cook6.r0.4",
+  "thorn.cook6.r0.6",
   "thorn.smith9.r1.2",
-  "thorn.publican12.r1.3"
+  "thorn.publican12.r2.0",
+  "thorn.publican12.r2.2",
+  "thorn.publican12.r2.4",
+  "thorn.publican12.r2.6"
  ],
  "unique_item": {
   "id": "thorn-rootpost-unique",
   "name": "the leg to Archon, closed at high tide",
   "unique": true,
   "takeable": true,
-  "owner": "npc:thorn-weaver-3"
+  "owner": "npc:thorn-priest-2"
  },
  "readable": {
   "id": "thorn-rootpost-readable",

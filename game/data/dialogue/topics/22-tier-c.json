@@ -10,7 +10,7 @@
       { "a": "legionary", "cell": "thorn", "x": "Eleven households and a hall. The king is real. The charter is real. Do not laugh in front of him.", "to": ["the-rotted-hall", "the-charter", "hlaalu-teeth"] },
       { "a": "archivist", "cell": "thorn", "x": "The charter of Thorn is an authentic Imperial instrument granting a hereditary title over a jurisdiction that has since shrunk to eleven households, and it is therefore the cleanest illustration available anywhere of the difference between a right and a possession.", "to": ["the-charter", "the-imperial-claim", "hlaalu-teeth"] },
       { "a": "sapcutter", "cell": "thorn", "x": "Thornwood town. Straight grain. Good money. Friend, the king takes a tenth and gives it back at the feast.", "to": ["the-needle-forest", "the-tenth"] },
-      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "It is the poorest place I have ever begged in and the only one where somebody came out of a hall to give me something, dry-one, and it was fish, and it was all they had.", "to": ["the-rotted-hall"] } ] },
+      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "It is the poorest place I have ever begged in and the only one where a woman came out of a hall to give me something, dry-one, and it was fish, and it was all they had.", "to": ["the-rotted-hall"] } ] },
 
     { "id": "the-rotted-hall", "settlement": "thorn", "infos": [
       { "a": "archivist", "cell": "thorn", "x": "The roof leaks over the throne and not over the hearth, and I am assured this was a decision rather than a subsidence, which if true is the most articulate piece of architecture in the province.", "to": ["hlaalu-teeth", "thorn"] },
@@ -30,25 +30,25 @@
 
     { "id": "warden-eshi", "settlement": "thorn", "actor_topic": true, "infos": [
       { "a": "legionary", "cell": "thorn", "x": "The warden. Not ours. Not the king's either, whatever he says. She keeps the path through the needles.", "to": ["the-needle-forest", "the-one-path"] },
-      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "She walks the path every day whether anybody is going through or not, dry-one, and I asked her why once and she said that a path you do not walk stops being one.", "to": ["the-one-path"] } ] },
+      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "She walks the path every day whether there is traffic on it or not, dry-one, and I asked her why once and she said that a path you do not walk stops being one.", "to": ["the-one-path"] } ] },
 
     { "id": "the-one-path", "settlement": "thorn", "infos": [
       { "a": "sapcutter", "cell": "thorn", "x": "One way through the needles. No map has it. Friend, the warden has it in her feet.", "to": ["the-needle-forest", "warden-eshi"] },
       { "a": "archivist", "x": "Three surveyors have attempted to record the Thorn path and all three records disagree, and the warden's explanation — that the path is re-walked and therefore moves — is dismissed in each report and is almost certainly correct.", "to": ["the-unfinished-survey", "warden-eshi"] } ] },
 
     { "id": "the-thorn-charter", "settlement": "thorn", "quest": "q-thorn-charter", "infos": [
-      { "a": "archivist", "cell": "thorn", "d": 55, "x": "The instrument names a successor procedure and the king has no heir, and the clause that would then govern is not in the charter but in the treaty it was issued under, which is the clause nobody has read for ninety years and which does not return the holding to the Empire.", "to": ["the-charter", "the-heirs-clause", "hlaalu-teeth"], "q": true, "res": { "journal": ["q-thorn-charter", 10] } },
+      { "a": "archivist", "cell": "thorn", "d": 55, "x": "The instrument names a successor procedure and the king has no heir, and the clause that would then govern is not in the charter but in the treaty it was issued under, which is the clause that has not been read for ninety years and which does not return the holding to the Empire.", "to": ["the-charter", "the-heirs-clause", "hlaalu-teeth"], "q": true, "res": { "journal": ["q-thorn-charter", 10] } },
       { "a": "magister", "d": 40, "x": "Should the old man die without an heir, provincial, there will be a very interesting afternoon in the annexe at Gideon, and I intend to be in the room.", "to": ["the-heirs-clause", "magister-varo-dren"] } ] },
 
     { "id": "soulrest", "settlement": "soulrest", "infos": [
-      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "It was a port and the bay silted and now it is salt pans and old bones and a well that stopped, dry-one, and nobody has left, and after a while you understand that nobody is going to.", "to": ["the-dead-well", "the-salt-pans", "the-silted-bay"] },
-      { "a": "archivist", "cell": "soulrest", "x": "The harbour returns show a working port for eleven generations and then a decline over forty years that is far too regular to be siltation alone, and the alternative explanation is one nobody in the settlement will discuss and everybody in it knows.", "to": ["the-silted-bay", "the-dead-well"] },
+      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "It was a port and the bay silted and now it is salt pans and old bones and a well that stopped, dry-one, and none have left, and after a while you understand that none are going to.", "to": ["the-dead-well", "the-salt-pans", "the-silted-bay"] },
+      { "a": "archivist", "cell": "soulrest", "x": "The harbour returns show a working port for twelve generations and then a decline over forty years that is far too regular to be siltation alone, and the alternative explanation is one no soul in the settlement will discuss and every soul in it knows.", "to": ["the-silted-bay", "the-dead-well"] },
       { "a": "rootkeeper", "cell": "soulrest", "d": 20, "x": "The well stopped in my mother's time and the tending did not, supplicant, and that is the whole of what this village is and there is no need to look for another explanation.", "to": ["the-dead-well", "the-covenant", "the-tide-turn-walk"] },
       { "a": "sapcutter", "cell": "soulrest", "x": "Salt, bone, nothing. Friend, this one comes twice a year out of habit.", "to": ["the-salt-pans", "the-bone-diggers"] } ] },
 
     { "id": "the-salt-pans", "settlement": "soulrest", "infos": [
       { "a": "sapcutter", "cell": "soulrest", "x": "Cut squares in the flat. Sun does the rest. Friend, it is the only wage here.", "to": ["the-silted-bay"] },
-      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "It is honest work in that nobody can cheat you about how much salt there is, dry-one, and it is dishonest work in that the factor sets the price and there is one factor.", "to": ["the-quiet-ledgerman"] } ] },
+      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "It is honest work in that you cannot be cheated about how much salt there is, dry-one, and it is dishonest work in that the factor sets the price and there is one factor.", "to": ["the-quiet-ledgerman"] } ] },
 
     { "id": "the-silted-bay", "settlement": "soulrest", "infos": [
       { "a": "archivist", "cell": "soulrest", "x": "The bay filled from the landward side, which is the wrong direction for a river silt and the right direction for a collapse, and the survey that would have established which is one of the eastern sheets that was never completed.", "to": ["the-unfinished-survey", "the-dead-well"] } ] },
@@ -58,14 +58,14 @@
       { "a": "rootkeeper", "cell": "soulrest", "d": 30, "x": "It is forbidden and it is done, supplicant, and the people who do it are the people whose families are in that ground, and there is no version of that sentence which is comfortable.", "to": ["the-old-ground", "the-blood-price"] } ] },
 
     { "id": "the-old-ground", "settlement": "soulrest", "infos": [
-      { "a": "rootkeeper", "cell": "soulrest", "d": 30, "x": "Eleven generations were returned there when the well was alive and the ground was owed them, and now the well is quiet the ground is owed to nobody, which is a conclusion the covenant does not actually reach and which everybody here has reached anyway.", "to": ["the-dead-well", "the-covenant", "the-bone-diggers"] } ] },
+      { "a": "rootkeeper", "cell": "soulrest", "d": 30, "x": "Twelve generations were returned there when the well was alive and the ground was owed them, and now the well is quiet the ground is owed to none, which is a conclusion the covenant does not actually reach and which this village has reached anyway.", "to": ["the-dead-well", "the-covenant", "the-bone-diggers"] } ] },
 
     { "id": "the-tide-turn-walk", "settlement": "soulrest", "infos": [
       { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "Every one of them walks down at the turn and stands at the dead well and walks back, dry-one, and it is the most frightening thing I have seen in this province and there is nothing frightening in it at all.", "to": ["the-dead-well", "the-old-ground"] },
       { "a": "rootkeeper", "cell": "soulrest", "d": 25, "x": "It is not mourning and it is not worship. It is the tending, at the hour the tending was done, and it will be done at that hour whether or not anything is there to receive it.", "to": ["the-covenant", "the-dead-well"] } ] },
 
     { "id": "the-bone-setter", "settlement": "soulrest", "infos": [
-      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "She will set anybody's arm for nothing and she has nothing because of it, dry-one, and the village feeds her badly and would fight anybody who tried to take her away.", "to": ["the-physicians", "soulrest"] } ] },
+      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "She will set any arm for nothing and she has nothing because of it, dry-one, and the village feeds her badly and would fight the man who tried to take her away.", "to": ["the-physicians", "soulrest"] } ] },
 
     { "id": "the-listening-at-soulrest", "settlement": "soulrest", "quest": "q-soulrest-listening", "infos": [
       { "a": "rootkeeper", "cell": "soulrest", "d": 60, "x": "I will say this once and then deny it. Three years ago the dead well answered. Not sap. A sound, at the tide-turn, and four of us heard it, and two of those four have since left the province and one will not speak to me.", "to": ["the-dead-well", "the-listening-floor", "the-tide-turn-walk", "the-quiet-wells"], "q": true, "res": { "journal": ["q-soulrest-listening", 10] } } ] }

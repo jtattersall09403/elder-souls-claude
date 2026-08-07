@@ -12,7 +12,7 @@
       { "a": "sapcutter", "x": "Soldiers buy. Soldiers do not pay. Friend, this one keeps two prices.", "to": ["the-quartermaster"] } ] },
 
     { "id": "the-tribune", "infos": [
-      { "a": "legionary", "d": 30, "x": "Tribune Ancus Varo. Eleven years in post. Nobody sends for him and he sends for nobody. Draw your own conclusion, citizen.", "to": ["ancus-varo", "the-dead-pay"] },
+      { "a": "legionary", "d": 30, "x": "Tribune Ancus Varo. Twelve years in post. He is not sent for and he sends for none. Draw your own conclusion, citizen.", "to": ["ancus-varo", "the-dead-pay"] },
       { "a": "archivist", "x": "The tribune's appointment is renewed by the silence of the Provincial Office, which is technically a valid mechanism and is generally understood to mean that no one in Cyrodiil can remember why the post exists.", "to": ["ancus-varo", "the-provincial-office"] } ] },
 
     { "id": "ancus-varo", "infos": [
@@ -21,10 +21,10 @@
 
     { "id": "the-muster-board", "infos": [
       { "a": "legionary", "x": "Names, ranks, watches. Nailed by the gate. Read it and you know the garrison. Most people never read it.", "to": ["the-dead-pay"] },
-      { "a": "archivist", "d": 40, "x": "The interesting property of a muster board is that it is a public document nobody audits, and the interesting property of the Ninth's board is that a number of the names on it have been there without interruption since before the fever year, which is longer than anyone actually serves.", "to": ["the-dead-pay", "the-fever-year"] } ] },
+      { "a": "archivist", "d": 40, "x": "The interesting property of a muster board is that it is a public document that is never audited, and the interesting property of the Ninth's board is that a number of the names on it have been there without interruption since before the fever year, which is longer than anyone actually serves.", "to": ["the-dead-pay", "the-fever-year"] } ] },
 
     { "id": "the-dead-pay", "quest": "q-dead-pay", "infos": [
-      { "a": "legionary", "d": 60, "x": "You did not hear it from me. Twenty-one names on that board are dead. The pay still goes out. Somebody signs for it. I am not asking who.", "to": ["the-paymaster", "ancus-varo"], "q": true, "res": { "journal": ["q-dead-pay", 10] } },
+      { "a": "legionary", "d": 60, "x": "You did not hear it from me. Twenty-one names on that board are dead. The pay still goes out. The pay is signed for. I am not asking who.", "to": ["the-paymaster", "ancus-varo"], "q": true, "res": { "journal": ["q-dead-pay", 10] } },
       { "a": "archivist", "d": 50, "x": "The discrepancy is arithmetical and therefore not deniable: the ration returns and the pay returns disagree by twenty-one men over four years, and rations are drawn by people who eat while pay is drawn by whoever holds the chit.", "to": ["the-paymaster"] } ] },
 
     { "id": "the-paymaster", "infos": [
@@ -32,7 +32,7 @@
 
     { "id": "belena-sarn", "infos": [
       { "a": "archivist", "d": 30, "x": "Sarn came out with the last honest posting the Office made and has been here since, which is either a testament to her patience or evidence of something she cannot afford to leave behind. The catalogue does not distinguish between those two states and neither, generally, does anyone else.", "to": ["the-dead-pay", "stormhold"] },
-      { "a": "sapcutter", "d": 40, "x": "The pay woman buys nothing. Friend, nobody buys nothing. This one watches her.", "to": ["the-dead-pay"] } ] },
+      { "a": "sapcutter", "d": 40, "x": "The pay woman buys nothing. Friend, buying nothing is not a thing people do. This one watches her.", "to": ["the-dead-pay"] } ] },
 
     { "id": "the-provincial-office", "infos": [
       { "a": "archivist", "x": "The Office is the Empire's memory of Argonia, and it is a bad one. It surveys, it taxes, it issues charters, and it does all three on the assumption that the province is a version of Cyrodiil that has been rained on. The single most consequential document it holds is a treaty it has not opened in ninety years.", "to": ["the-blackwater-treaty", "the-charter", "the-catalogue"] },
@@ -51,7 +51,7 @@
       { "a": "sapcutter", "x": "A manifest is a story about a cart. Friend, this one tells good stories.", "to": ["the-short-weight"] } ] },
 
     { "id": "the-short-weight", "infos": [
-      { "a": "sapcutter", "d": 40, "x": "Sap weighs heavy wet. The Ledger buys wet, sells dry. Friend, the difference is a cart in ten. Nobody weighs twice.", "to": ["the-wet-ledger", "hist-sap"] },
+      { "a": "sapcutter", "d": 40, "x": "Sap weighs heavy wet. The Ledger buys wet, sells dry. Friend, the difference is a cart in ten. It is not weighed twice.", "to": ["the-wet-ledger", "hist-sap"] },
       { "a": "archivist", "d": 30, "x": "The practice is not fraud in the legal sense, because no weight is misstated; the fraud, if that is the word, is in the interval between the two weighings, and the interval is weather.", "to": ["the-wet-ledger"] } ] },
 
     { "id": "contraband", "infos": [
@@ -89,12 +89,12 @@
       { "a": "archivist", "x": "Every attested account agrees the tree predates the settlement and none agrees by how much, with the estimates in the chronology ranging across a factor of nine, which is generally a sign that the question is being answered by people who need a particular answer.", "to": ["helstrom", "the-chronology"] } ] },
 
     { "id": "the-quiet-wells", "infos": [
-      { "a": "rootkeeper", "d": 30, "x": "Eleven wells have gone quiet in my lifetime and not one of them was cut, supplicant, which is the part nobody will repeat: it is not the cutters who are killing them, or not only, and I would rather it were.", "to": ["the-dead-well", "the-covenant", "the-bad-dreams"] },
+      { "a": "rootkeeper", "d": 30, "x": "Fourteen wells have gone quiet in my lifetime and not one of them was cut, supplicant, which is the part that does not get repeated: it is not the cutters who are killing them, or not only, and I would rather it were.", "to": ["the-dead-well", "the-covenant", "the-bad-dreams"] },
       { "a": "sapcutter", "d": 30, "x": "Quiet well, no sap, no coin. Friend, this one has lost three routes.", "to": ["the-cart-roads"] },
       { "a": "mudborn", "d": 10, "x": "They say the wells are going quiet and they say it like it is weather, dry-one, but I slept by the one at Soulrest for six years and I can tell you it did not go quiet all at once, it went quiet the way a person does.", "to": ["soulrest", "the-dead-well"] } ] },
 
     { "id": "the-bad-dreams", "infos": [
-      { "a": "mudborn", "d": 10, "x": "Everybody on the boards is having them and nobody will say so first, dry-one, and it is always the same one, and it is always somebody standing in water that is warmer than water should be, and I would not mind so much if I did not wake up glad.", "to": ["the-boards", "the-quiet-wells"] },
+      { "a": "mudborn", "d": 10, "x": "They are all having them on the boards and none will say so first, dry-one, and it is always the same one, and it is always a person standing in water that is warmer than water should be, and I would not mind so much if I did not wake up glad.", "to": ["the-boards", "the-quiet-wells"] },
       { "a": "rootkeeper", "d": 40, "x": "The keepers dream now, which we did not, and the dreams come from the direction of the wells that have stopped, and I have written this down four times and burned it three.", "to": ["the-quiet-wells", "the-covenant"] },
       { "a": "legionary", "x": "Fever dreams. Half the barracks has them. Physician says damp. I say damp too.", "to": ["the-fever-year"] } ] },
 
@@ -112,7 +112,7 @@
       { "a": "archivist", "x": "Four Imperial attempts at a grammar survive and all four contradict each other on the tense system, which suggests either that the language has none or that it has one the surveyors could not hear, and I incline to the second on the evidence of how much trouble they had with the word for river.", "to": ["the-unfinished-survey"] } ] },
 
     { "id": "the-blackwater-treaty", "infos": [
-      { "a": "archivist", "x": "Signed after the Arnesian War by an Argonian party the Empire has never fully identified and has never been able to say did not exist. It ended the raiding, it fixed the border, it exempted a category of person from imperial inquiry, and it contains a clause about inheritance that nobody has read since the year it was sealed.", "to": ["the-arnesian-war", "the-heirs-clause", "the-shadowscales"] },
+      { "a": "archivist", "x": "Signed after the Arnesian War by an Argonian party the Empire has never fully identified and has never been able to say did not exist. It ended the raiding, it fixed the border, it exempted a category of person from imperial inquiry, and it contains a clause about inheritance that has not been read since the year it was sealed.", "to": ["the-arnesian-war", "the-heirs-clause", "the-shadowscales"] },
       { "a": "magister", "d": 20, "x": "The treaty is why my estate is not an estate. Should you find that funny, provincial, you would be in company.", "to": ["house-dres"] },
       { "a": "rootkeeper", "d": 30, "x": "It is a paper about a promise that was not made in a language that has papers, and it has been kept anyway, which says more about the keeping than the paper.", "to": ["the-covenant"] } ] },
 
@@ -126,7 +126,7 @@
       { "a": "rootkeeper", "d": 30, "x": "It is not a war in our telling, supplicant, it is a return, and the difference is that a war is fought against someone and a return is only walked.", "to": ["the-covenant"] } ] },
 
     { "id": "the-slavers-road", "infos": [
-      { "a": "mudborn", "d": 10, "x": "The old road north still has the posts in it, dry-one, every forty paces the whole way to the border, and nobody has pulled them up because pulling them up would be a thing that had to be decided by somebody.", "to": ["house-dres", "the-cart-roads"] },
+      { "a": "mudborn", "d": 10, "x": "The old road north still has the posts in it, dry-one, every forty paces the whole way to the border, and they have not been pulled up because pulling them up would be a thing that had to be decided by an office.", "to": ["house-dres", "the-cart-roads"] },
       { "a": "magister", "d": 20, "x": "A road. If you are hoping I will apologise for a road, provincial, you have misjudged the conversation.", "to": ["house-dres"] } ] },
 
     { "id": "house-dres", "infos": [
@@ -168,21 +168,21 @@
 
     { "id": "the-cart-roads", "infos": [
       { "a": "sapcutter", "x": "Boards where there is water. Stone where the Empire could be bothered. Friend, the stone runs out at Gideon.", "to": ["the-boards", "gideon", "the-drowned-road"] },
-      { "a": "legionary", "x": "We patrol three. There are eleven. Do the sum, citizen.", "to": ["the-drowned-road"] } ] },
+      { "a": "legionary", "x": "We patrol three. There are nine. Do the sum, citizen.", "to": ["the-drowned-road"] } ] },
 
     { "id": "the-drowned-road", "infos": [
       { "a": "mudborn", "d": 10, "x": "There was a proper Imperial road south of the Clay Moor and the marsh has had it back, dry-one, and you can still walk it at the low tide of the year if you know where it goes under, and people do, and some of them come out the other side.", "to": ["the-clay-moor", "the-boards"] },
-      { "a": "archivist", "x": "The southern trunk road is carried on the survey as extant, which is administratively true and physically false, and the discrepancy has never been corrected because correcting it would require somebody to go and look.", "to": ["the-unfinished-survey"] } ] },
+      { "a": "archivist", "x": "The southern trunk road is carried on the survey as extant, which is administratively true and physically false, and the discrepancy has never been corrected because correcting it would require a man to go and look.", "to": ["the-unfinished-survey"] } ] },
 
     { "id": "the-boards", "infos": [
-      { "a": "mudborn", "x": "The boards are the province, dry-one, whatever the maps say, because everything that matters here happens on a plank two hands wide with water under it and somebody coming the other way who will not give ground.", "to": ["the-cart-roads", "tide-law"] },
+      { "a": "mudborn", "x": "The boards are the province, dry-one, whatever the maps say, because everything that matters here happens on a plank two hands wide with water under it and a man coming the other way who will not give ground.", "to": ["the-cart-roads", "tide-law"] },
       { "a": "sapcutter", "x": "Walk the boards. Not the ground. Friend, this one has said it twice now.", "to": [] },
       { "a": "legionary", "x": "Keep left. Give way to a laden man. It is not courtesy. It is the fine.", "to": ["the-sanction"] } ] },
 
     { "id": "tide-law", "infos": [
-      { "a": "legionary", "x": "What the tide takes is nobody's. What is above the line is somebody's. That is the whole of it. Learn the line.", "to": ["the-sanction"] },
+      { "a": "legionary", "x": "What the tide takes has no owner. What is above the line has one. That is the whole of it. Learn the line.", "to": ["the-sanction"] },
       { "a": "archivist", "x": "The doctrine is Imperial in form and entirely native in substance: possession lapses at the high-water mark, which in a province where the high-water mark moves is less a rule of property than an annual redistribution with a legal vocabulary attached.", "to": ["the-covenant"] },
-      { "a": "sapcutter", "d": 40, "x": "Everything is nobody's twice a day. Friend, this one owns a very good boat.", "to": ["the-organ-market"] } ] },
+      { "a": "sapcutter", "d": 40, "x": "Everything is ownerless twice a day. Friend, this one owns a very good boat.", "to": ["the-organ-market"] } ] },
 
     { "id": "the-xanmeers", "infos": [
       { "a": "archivist", "x": "Step pyramids, pre-Imperial, and older than the settlements around them by an interval the chronology does not attempt. They are not tombs, whatever the sale catalogues say; the interior arrangement is wrong for it, and the Office knows this and has never issued a correction because the correction would depress a market it taxes.", "to": ["the-chronology", "the-organ-market", "the-stone-forest"] },
@@ -190,20 +190,20 @@
       { "a": "mudborn", "d": 10, "x": "There is one out past the ford with the top off it and I would not sleep in it for any money, dry-one, and I have slept in a great many places you would not.", "to": ["the-eastern-rootlands"] } ] },
 
     { "id": "the-chronology", "infos": [
-      { "a": "archivist", "x": "There are three chronologies of this province in general use and they disagree by four hundred years at the Arnesian War, which is impossible, and the resolution is that one of them is counting from a different event and has never said which. I have spent eleven years on that question and I am now reasonably confident that the event is a flood.", "to": ["the-arnesian-war", "the-unfinished-survey"] } ] },
+      { "a": "archivist", "x": "There are three chronologies of this province in general use and they disagree by four hundred years at the Arnesian War, which is impossible, and the resolution is that one of them is counting from a different event and has never said which. I have spent twenty years on that question and I am now reasonably confident that the event is a flood.", "to": ["the-arnesian-war", "the-unfinished-survey"] } ] },
 
     { "id": "the-unfinished-survey", "quest": "q-unfinished-survey", "infos": [
-      { "a": "archivist", "d": 50, "x": "The eastern survey stops mid-sheet. The stated cause is weather. The surveyor's own note on the reverse says the party was ordered to withdraw by a man whose name has since been cut out of the paper with a knife, and the sheet is still in the annexe at Gideon, and nobody has asked for it but me.", "to": ["gideon", "the-eastern-rootlands", "the-catalogue"], "q": true, "res": { "journal": ["q-unfinished-survey", 10] } },
+      { "a": "archivist", "d": 50, "x": "The eastern survey stops mid-sheet. The stated cause is weather. The surveyor's own note on the reverse says the party was ordered to withdraw by a man whose name has since been cut out of the paper with a knife, and the sheet is still in the annexe at Gideon, and it has not been asked for but by me.", "to": ["gideon", "the-eastern-rootlands", "the-catalogue"], "q": true, "res": { "journal": ["q-unfinished-survey", 10] } },
       { "a": "legionary", "x": "Surveyors went east. Came back short. Before my time.", "to": ["the-eastern-rootlands"] } ] },
 
     { "id": "the-fever-year", "infos": [
-      { "a": "mudborn", "d": 10, "x": "Four years back, and it took the boards first because we are wet and thin, dry-one, and then it went up the hill and took the ones with the dry beds, and that was the only time in my life anybody has treated me as though we were the same thing.", "to": ["the-bad-dreams", "the-physicians"] },
+      { "a": "mudborn", "d": 10, "x": "Four years back, and it took the boards first because we are wet and thin, dry-one, and then it went up the hill and took the ones with the dry beds, and that was the only time in my life I have been treated as though we were the same thing.", "to": ["the-bad-dreams", "the-physicians"] },
       { "a": "archivist", "x": "The mortality is not recorded because the recording apparatus was itself among the mortality, which is a sentence I have written in a report and been asked to remove. The catalogue's gap begins in that year and it is not a coincidence.", "to": ["the-catalogue"] },
       { "a": "rootkeeper", "d": 30, "x": "The wells were asked for more than they had and three of them stopped, and it has never been said aloud that the two things are one thing, supplicant, but it has been thought.", "to": ["the-quiet-wells"] } ] },
 
     { "id": "the-physicians", "infos": [
       { "a": "legionary", "x": "One per garrison. Overworked. Ours is good. Ours drinks.", "to": ["the-fever-year"] },
-      { "a": "mudborn", "d": 10, "x": "The chapel ones will see you if you are quiet and the Imperial ones will see you if you are paying, dry-one, and the bone-setter at Soulrest will see anybody and that is why she has nothing.", "to": ["soulrest"] } ] },
+      { "a": "mudborn", "d": 10, "x": "The chapel ones will see you if you are quiet and the Imperial ones will see you if you are paying, dry-one, and the bone-setter at Soulrest will see all comers and that is why she has nothing.", "to": ["soulrest"] } ] },
 
     { "id": "the-imperial-claim", "infos": [
       { "a": "archivist", "x": "The claim rests on conquest that did not occur, cession that was never signed, and a treaty that carefully does not use the word province. It is nonetheless entirely effective, because a claim is a thing that is administered rather than a thing that is true.", "to": ["the-blackwater-treaty", "the-provincial-office"] },
@@ -211,7 +211,7 @@
 
     { "id": "the-thirteen-regions", "infos": [
       { "a": "archivist", "x": "The name of the province is a lie of convenience: there is marsh, certainly, but there is also mountain at the Valus, arid rock in the west, petrified forest in the middle, jungle at Blackwood and a red littoral on the eastern coast. A traveller who expects swamp will spend a week being wrong in six different climates.", "to": ["the-stone-forest", "the-clay-moor", "the-eastern-rootlands", "the-deep-marshes", "the-salt-hills", "blackwood"] },
-      { "a": "sapcutter", "x": "Thirteen names. Eleven roads. Friend, this one has walked nine.", "to": ["the-cart-roads"] } ] },
+      { "a": "sapcutter", "x": "Thirteen names. Nine roads. Friend, this one has walked nine.", "to": ["the-cart-roads"] } ] },
 
     { "id": "the-stone-forest", "infos": [
       { "a": "archivist", "x": "Petrified growth standing where a living forest stood, and standing in the same arrangement, which is the detail that makes the Imperial explanation of gradual mineralisation difficult to hold: gradual processes do not preserve a canopy. Helstrom is inside it, which is presumably not an accident.", "to": ["helstrom", "the-great-hist", "the-xanmeers"] },
@@ -219,15 +219,15 @@
 
     { "id": "the-clay-moor", "infos": [
       { "a": "sapcutter", "x": "Dry uplands. Hard cart, good road. Friend, no water for a day. Carry it.", "to": ["the-drowned-road", "the-cart-roads"] },
-      { "a": "mudborn", "d": 10, "x": "I went up on the moor the summer of the fever because nobody dies of a wet chest on the Clay Moor, dry-one, and I nearly died of thirst instead, which the province thought was funny.", "to": ["the-fever-year"] } ] },
+      { "a": "mudborn", "d": 10, "x": "I went up on the moor the summer of the fever because a wet chest does not kill on the Clay Moor, dry-one, and I nearly died of thirst instead, which the province thought was funny.", "to": ["the-fever-year"] } ] },
 
     { "id": "the-eastern-rootlands", "infos": [
       { "a": "archivist", "x": "Unfinished on every map I have handled, and the unfinished portions are not the same on any two of them, which means either that three surveys stopped at three different points or that one survey stopped and two subsequent draughtsmen guessed differently about where.", "to": ["the-unfinished-survey", "the-xanmeers"] },
-      { "a": "legionary", "x": "We do not patrol east of the ford. Orders. Old orders. Nobody asks why.", "to": ["the-weeping-ford"] } ] },
+      { "a": "legionary", "x": "We do not patrol east of the ford. Orders. Old orders. The why is not asked.", "to": ["the-weeping-ford"] } ] },
 
     { "id": "the-deep-marshes", "infos": [
-      { "a": "rootkeeper", "d": 25, "x": "The interior is not empty and it is not lawless, supplicant, it is simply governed by people who did not ask the Empire and will not, and a stranger who walks in without being brought in has made himself a question that somebody will have to answer.", "to": ["the-deep-kin", "the-covenant"] },
-      { "a": "legionary", "x": "In there we are a rumour. Go if you must. Go with somebody.", "to": ["the-deep-kin"] },
+      { "a": "rootkeeper", "d": 25, "x": "The interior is not empty and it is not lawless, supplicant, it is simply governed by people who did not ask the Empire and will not, and a stranger who walks in without being brought in has made himself a question that will have to be answered.", "to": ["the-deep-kin", "the-covenant"] },
+      { "a": "legionary", "x": "In there we are a rumour. Go if you must. Go with a guide.", "to": ["the-deep-kin"] },
       { "a": "magister", "d": 20, "x": "Were the interior worth holding, provincial, it would have been held. It is not. That is the entire strategic history of this province in one sentence.", "to": [] } ] },
 
     { "id": "the-deep-kin", "infos": [
@@ -246,14 +246,14 @@
 
     { "id": "the-weeping-ford", "infos": [
       { "a": "sapcutter", "x": "Crossing on the Helstrom leg. Deep at the turn. Friend, wait for the boards to show.", "to": ["the-cart-roads", "the-eastern-rootlands"] },
-      { "a": "mudborn", "d": 10, "x": "They call it weeping because of the sound the water makes on the stones, which is not true, dry-one, it is called that because of what the crossing used to be for and everybody has agreed to forget.", "to": ["the-slavers-road"] } ] },
+      { "a": "mudborn", "d": 10, "x": "They call it weeping because of the sound the water makes on the stones, which is not true, dry-one, it is called that because of what the crossing used to be for and it has been agreed to forget.", "to": ["the-slavers-road"] } ] },
 
     { "id": "the-cut", "infos": [
-      { "a": "mudborn", "d": 15, "x": "The channel behind the warehouses at Lilmoth, dry-one, and things come out of it that went in somewhere else entirely, and the Cohort fishes them out and writes drowned and everybody is satisfied except the ones who watched.", "to": ["lilmoth", "the-man-in-the-water", "the-drowned-court"] },
+      { "a": "mudborn", "d": 15, "x": "The channel behind the warehouses at Lilmoth, dry-one, and things come out of it that went in somewhere else entirely, and the Cohort fishes them out and writes drowned and all are satisfied except the ones who watched.", "to": ["lilmoth", "the-man-in-the-water", "the-drowned-court"] },
       { "a": "legionary", "x": "Bad water. Bad district. Four this year. All drowned.", "to": ["lilmoth"] } ] },
 
     { "id": "the-man-in-the-water", "quest": "q-the-cut", "infos": [
-      { "a": "mudborn", "d": 60, "x": "He walked down on his own feet with somebody behind him not hurrying, and that is not a drowning however it is written up, and I have told three people and two of them told me to be quieter and the third asked me where I sleep.", "to": ["the-cut", "the-drowned-court", "the-ledgerman-of-lilmoth"], "q": true, "res": { "journal": ["q-the-cut", 10] } },
+      { "a": "mudborn", "d": 60, "x": "He walked down on his own feet with a man behind him not hurrying, and that is not a drowning however it is written up, and I have told three people and two of them told me to be quieter and the third asked me where I sleep.", "to": ["the-cut", "the-drowned-court", "the-ledgerman-of-lilmoth"], "q": true, "res": { "journal": ["q-the-cut", 10] } },
       { "a": "legionary", "x": "One of the four. Nothing on him. Case closed, citizen.", "to": ["the-cut"] } ] },
 
     { "id": "the-ledgerman-of-lilmoth", "infos": [
@@ -273,12 +273,12 @@
       { "a": "archivist", "cell": "gideon", "x": "The chapel's roll of the tithed, which in Gideon is very nearly the roll of the respectable, and the two names on it that surprise a reader are the two worth asking about.", "to": ["gideon", "the-chapel-of-akatosh"] } ] },
 
     { "id": "the-chapel-of-akatosh", "infos": [
-      { "a": "archivist", "cell": "gideon", "x": "A proper chapel, stone, with a bell that was carried here in pieces, and a priest who has been quietly conducting the covenant's rites in the vestry for eleven years on the entirely reasonable grounds that the people asking for them are his parish.", "to": ["gideon", "the-covenant", "the-tithe-roll"] },
+      { "a": "archivist", "cell": "gideon", "x": "A proper chapel, stone, with a bell that was carried here in pieces, and a priest who has been quietly conducting the covenant's rites in the vestry for a dozen years on the entirely reasonable grounds that the people asking for them are his parish.", "to": ["gideon", "the-covenant", "the-tithe-roll"] },
       { "a": "rootkeeper", "d": 40, "x": "The priest at Gideon is not a fool and is not a traitor to his order, supplicant; he has simply understood that a well and an altar are asked for by the same people at the same hours for the same reasons.", "to": ["the-covenant"] } ] },
 
     { "id": "the-needle-forest", "infos": [
       { "a": "sapcutter", "cell": "thorn", "x": "Thornwood. Straight grain. Dunmer buy it for bows. Friend, the Empire buys it for spears.", "to": ["thorn", "house-dres"] },
-      { "a": "mudborn", "d": 10, "x": "It is called a forest and it is a field of spikes as tall as a hall, dry-one, and there is one path through it that everybody in Thorn knows and no map has.", "to": ["thorn"] } ] },
+      { "a": "mudborn", "d": 10, "x": "It is called a forest and it is a field of spikes as tall as a hall, dry-one, and there is one path through it that all of Thorn knows and no map has.", "to": ["thorn"] } ] },
 
     { "id": "the-dye-yards", "infos": [
       { "a": "sapcutter", "cell": "archon", "x": "Tide-lichen, boiled. Comes out imperial purple. Friend, the Empire pays for the colour of its own gowns.", "to": ["archon", "the-crimson-coast"] },
@@ -288,13 +288,13 @@
       { "a": "archivist", "x": "The colour is lichen and the lichen is seasonal, so the coast is red for four months and grey for eight, and every Imperial painting of it was made in the four. The Office's revenue projections were also made in the four.", "to": ["archon", "the-provincial-office"] } ] },
 
     { "id": "the-dead-well", "infos": [
-      { "a": "rootkeeper", "cell": "soulrest", "d": 20, "x": "It stopped in my mother's time and the village has stayed, which is not stubbornness, supplicant, it is that a well that has stopped is still owed the tending and there is nobody else to do it.", "to": ["soulrest", "the-quiet-wells", "the-covenant"] },
-      { "a": "mudborn", "d": 10, "x": "They still walk down to it at the tide-turn, dry-one, all of them, and stand there, and go home, and nobody has told them to stop and nobody would dare.", "to": ["soulrest"] } ] },
+      { "a": "rootkeeper", "cell": "soulrest", "d": 20, "x": "It stopped in my mother's time and the village has stayed, which is not stubbornness, supplicant, it is that a well that has stopped is still owed the tending and the tending falls to them.", "to": ["soulrest", "the-quiet-wells", "the-covenant"] },
+      { "a": "mudborn", "d": 10, "x": "They still walk down to it at the tide-turn, dry-one, all of them, and stand there, and go home, and they have not been told to stop and none would dare.", "to": ["soulrest"] } ] },
 
     { "id": "blackrose-prison", "infos": [
       { "a": "legionary", "x": "Imperial. Long sentences. Full. Do not end up in it, citizen.", "to": ["blackrose", "the-sanction"] },
       { "a": "archivist", "x": "The prison is the largest Imperial structure in the province and its population is recorded to the individual, which makes it the only place in Argonia where the Empire genuinely knows how many people there are.", "to": ["blackrose", "the-catalogue"] },
-      { "a": "mudborn", "d": 10, "x": "Half of Blackrose has somebody in it and the other half works in it, dry-one, and at the end of a shift they drink together, which I have always found to be the strangest thing in this province.", "to": ["blackrose"] } ] },
+      { "a": "mudborn", "d": 10, "x": "Half of Blackrose has kin in it and the other half works in it, dry-one, and at the end of a shift they drink together, which I have always found to be the strangest thing in this province.", "to": ["blackrose"] } ] },
 
     { "id": "the-drowned-quarter", "infos": [
       { "a": "sapcutter", "cell": "lilmoth", "x": "Old Imperial stone. Sunk to the first windows. Friend, people still live in the second.", "to": ["lilmoth", "the-organ-market", "the-cut"] },

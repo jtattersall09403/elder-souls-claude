@@ -223,11 +223,26 @@ export class QuestEngine {
     // be bypassed by anything that sets standing directly (including the harness, which is what
     // makes the perturbation test honest), and RI-QST03 §C X1 says the lock lands "permanently,
     // at join time", so it must hold on the very first `offers()` call after the rank exists.
+    // WHAT COUNTS AS "YOU ARE ONE OF THEM". This was `Math.max(ranks[f], member ? 1 : 0)` —
+    // a DERIVED rank alone was enough to close every rival. Derived rank asks only for
+    // reputation, an attribute and a skill, and reputation is paid sideways all over the book:
+    // `Q-ASSZ-04 res_hide_vell` pays the Drowned Court 20 for hiding a witness. Driving the
+    // Imperial Assize line through `questOffers()` from a cold start, that single favour derived
+    // Drowned Court rank 1 and the Assize then refused its OWN rank-5 quest — "The Imperial
+    // Assize will not deal with you: you are The Drowned Court" — to a player who had never
+    // joined the Drowned Court and had done the favour on the Assize's own instructions. 4 of 9
+    // quests on the line went unreachable.
+    //
+    // So a rank closes a rival only where the player actually JOINED: `joins_faction`, an
+    // authored act with a scene around it. Reputation without membership is a qualification —
+    // it is what makes you *eligible* to join — and RI-QST03 §C X1's "permanently, at join time"
+    // says the same thing in four words. Standing you were paid is not a career you chose.
+    const heldRank = (f) => ((q.factions[f] && q.factions[f].member) ? Math.max(ranks[f] || 0, 1) : 0);
     const rivalryLocked = new Set();
     if (this.gates) {
       const ex = this.gates.exclusivity || {};
       for (const f of this.gates.ids()) {
-        const held = Math.max(ranks[f] || 0, (q.factions[f] && q.factions[f].member) ? 1 : 0);
+        const held = heldRank(f);
         if (held < 1) continue;
         // X1 + X4: holding any rank at all closes these outright.
         for (const other of this.gates.closedBy(f)) rivalryLocked.add(other);
@@ -248,7 +263,7 @@ export class QuestEngine {
         const fid = def.faction || (def.rank_gate && def.rank_gate.faction);
         if (fid && rivalryLocked.has(fid) && !q.completed.includes(def.id)) {
           locked.add(def.id);
-          const by = this.gates.ids().filter((x) => Math.max(ranks[x] || 0, (q.factions[x] && q.factions[x].member) ? 1 : 0) >= 1
+          const by = this.gates.ids().filter((x) => heldRank(x) >= 1
             && (this.gates.closedBy(x).includes(fid) || (this.gates.exclusivity.earned || []).some((r) => (r.a === x && r.b === fid) || (r.b === x && r.a === fid))));
           const nm = (id) => { try { return this.gates.get(id).name; } catch { return id; } };
           lockedReason.set(def.id, `${nm(fid)} will not deal with you: you are ${by.map(nm).join(' and ')}`);
@@ -261,7 +276,7 @@ export class QuestEngine {
           const row = q.factions[f];
           if (!Array.isArray(row.rivalry_locked)) row.rivalry_locked = [];
           for (const by of this.gates.ids()) {
-            const held = Math.max(ranks[by] || 0, (q.factions[by] && q.factions[by].member) ? 1 : 0);
+            const held = heldRank(by);
             if (held >= 1 && this.gates.closedBy(by).includes(f) && !row.rivalry_locked.includes(by)) row.rivalry_locked.push(by);
           }
         }

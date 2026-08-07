@@ -28,8 +28,8 @@
         { "a": "rootkeeper", "f": "rootkeepers", "d": 30, "x": "The well is tended at dawn and at the turn of the tide, and what is owed to it is counted twice, once by the one who brings it and once by the one who receives it, because a thing given in the dark is not an offering, supplicant, it is a disposal.", "to": ["the-sapwells", "the-covenant"] },
         { "a": "magister", "f": "house-dres", "d": 20, "x": "If you are asking what I do here, provincial, the answer is that I hold an estate that the Empire says is not an estate. The duty is largely correspondence. Presumably you have better things to ask about.", "to": ["house-dres", "the-blackwater-treaty"] },
         { "a": "sapcutter", "x": "This one buys. This one sells. Friend, that is the whole of it. Cart in the morning. Cart at night.", "to": ["the-sap-cutters", "the-cart-roads"] },
-        { "a": "archivist", "x": "In the strict sense my duty is the sequence: what arrived, in what order, and from whom, which is a smaller question than it sounds and a much larger one than the Provincial Office believes it is paying for. The catalogue is generally three years behind, and the years it is behind are not the years anybody wants.", "to": ["the-provincial-office", "the-catalogue"] },
-        { "a": "mudborn", "d": 15, "x": "I have no duties, dry-one, that is rather the difficulty with me, and if I had one I would keep it very carefully and not let anybody know I had it, in case they took it back off me for somebody younger.", "to": ["the-boards"] }
+        { "a": "archivist", "x": "In the strict sense my duty is the sequence: what arrived, in what order, and from whom, which is a smaller question than it sounds and a much larger one than the Provincial Office believes it is paying for. The catalogue is generally three years behind, and the years it is behind are not the years that are wanted.", "to": ["the-provincial-office", "the-catalogue"] },
+        { "a": "mudborn", "d": 15, "x": "I have no duties, dry-one, that is rather the difficulty with me, and if I had one I would keep it very carefully and not let it be known I had it, in case they took it back off me for a younger man.", "to": ["the-boards"] }
       ]
     },
     {
@@ -38,7 +38,7 @@
         { "a": "archivist", "x": "Yours or mine? Mine is a chapel school in Cyrodiil and twenty-one years of other people's paperwork, which is a background in the sense that a wall is a view. Yours the Office will have written down somewhere, and it will be wrong in one particular, and you will never find out which.", "to": ["the-provincial-office", "the-charter"] },
         { "a": "magister", "d": 20, "x": "If you mean where I am from, provincial, the answer is a place that no longer sends me anything. If you mean what I am, that is a longer conversation and you have not earned it.", "to": ["house-dres"] },
         { "a": "rootkeeper", "d": 30, "x": "I was hatched at the third well and I was given to it before I was named, which is a thing that is done less now than it was done then, and the not-doing of it is one of the reasons the sap runs thin.", "to": ["the-sapwells", "the-naming"] },
-        { "a": "legionary", "x": "Chorrol. Second son. No land. So: the Cohort. Wet boots for eleven years. That is the whole story, citizen.", "to": ["the-ninth-cohort"] },
+        { "a": "legionary", "x": "Chorrol. Second son. No land. So: the Cohort. Wet boots for twenty years. That is the whole story, citizen.", "to": ["the-ninth-cohort"] },
         { "a": "sapcutter", "x": "This one's mother pushed a cart. Her mother pushed a cart. Friend, you see the shape of it.", "to": ["the-cart-roads"] }
       ]
     },
@@ -51,7 +51,7 @@
         { "a": "archivist", "cell": "gideon", "x": "Gideon is surveyed, which makes it the only settlement in the province I can describe without apologising. Fields to the west in a grid, timber yards on the river, the chapel on the only rise, and the inn where the survey pegs used to be. Ask for any of them by name.", "to": ["gideon", "the-chapel-of-akatosh"] },
         { "a": "legionary", "cell": "blackrose", "x": "There is the prison. There is the town that feeds it. That is Blackrose, citizen. Pick one.", "to": ["blackrose", "blackrose-prison"] },
         { "a": "sapcutter", "cell": "archon", "x": "Archon is the dye yards and the tide steps. Friend, follow your nose to the first one.", "to": ["archon", "the-dye-yards"] },
-        { "a": "mudborn", "cell": "soulrest", "d": 15, "x": "There is not much of Soulrest left to be specific about, dry-one, but if you want the salt pans they are south past the dead well, and if you want the dead well it is where everybody is standing about not looking at it.", "to": ["soulrest", "the-dead-well"] },
+        { "a": "mudborn", "cell": "soulrest", "d": 15, "x": "There is not much of Soulrest left to be specific about, dry-one, but if you want the salt pans they are south past the dead well, and if you want the dead well it is where they are all standing about not looking at it.", "to": ["soulrest", "the-dead-well"] },
         { "a": "legionary", "cell": "thorn", "x": "The hall. The gate. The needle-forest. Walk the boards, citizen. Not the ground.", "to": ["thorn", "the-needle-forest"] },
         { "a": "archivist", "x": "Somewhere in the province, then. I can generally place a settlement to within a day's walk and a river to within the wrong bank. Name it and we will see which of us is more embarrassed.", "to": ["the-thirteen-regions"] }
       ]
@@ -59,7 +59,7 @@
     {
       "id": "someone-in-particular", "name": "someone in particular", "root": true,
       "infos": [
-        { "a": "sapcutter", "cell": "lilmoth", "x": "This one knows everybody who buys. Friend, say a name. If they sell, this one knows them twice.", "to": ["lilmoth", "hard-bargain-jeel"] },
+        { "a": "sapcutter", "cell": "lilmoth", "x": "This one knows every buyer. Friend, say a name. If they sell, this one knows them twice.", "to": ["lilmoth", "hard-bargain-jeel"] },
         { "a": "legionary", "cell": "stormhold", "x": "Ask at the muster board. Names, ranks, watches. If they are not on it, they are not ours. Then ask the Ledger.", "to": ["the-muster-board", "the-wet-ledger"] },
         { "a": "rootkeeper", "cell": "helstrom", "d": 25, "x": "Every person in Helstrom is written on the root they were given to, supplicant, so a name is not enough here and never has been; bring me the name and the well and I will bring you the person.", "to": ["the-naming", "the-great-hist"] },
         { "a": "archivist", "cell": "gideon", "x": "The chapel keeps a roll of the tithed and the Office keeps a roll of the taxed, and the interesting people in Gideon are on precisely one of the two. Give me a name and I will tell you which, which will tell you rather more than the name did.", "to": ["gideon", "the-tithe-roll"] },
@@ -105,7 +105,7 @@
       "id": "latest-rumors", "name": "latest rumors", "root": true,
       "rumour_root": true,
       "infos": [
-        { "a": "archivist", "x": "I do not repeat rumour on principle, which is a principle I hold for about as long as it takes somebody to ask me a second time. Ask somebody in the street; they will have the same story I have and they will tell it faster.", "to": [] }
+        { "a": "archivist", "x": "I do not repeat rumour on principle, which is a principle I hold for about as long as it takes to be asked a second time. Ask in the street; they will have the same story I have and they will tell it faster.", "to": [] }
       ],
       "note": "The rumour POOL itself is game/data/dialogue/rumours/*.json, partitioned per settlement and per main-quest act. This INFO is the last-resort catch-all for a speaker who has no rumour pool entry that passes — RI-DLG01's Greeting-9 discipline applied to a topic."
     },
@@ -116,9 +116,9 @@
         { "a": "sapcutter", "d": 80, "x": "For you? This one will say it once. The Ledger weighs sap wet. Friend, that is a whole cart in ten.", "to": ["the-wet-ledger", "the-short-weight"] },
         { "a": "legionary", "d": 80, "x": "Quietly, then. Half the muster is names. Dead men, drawing pay. The paymaster knows. So does the tribune.", "to": ["the-muster-board", "the-dead-pay"] },
         { "a": "rootkeeper", "d": 80, "x": "There is a well that is not on the rolls and is not tended and has not gone quiet, supplicant, and the reason it is not on the rolls is that the keeper who found it decided the covenant was better served by a lie than by a procession, and I have never been able to decide whether she was right.", "to": ["the-unlisted-well", "the-covenant"] },
-        { "a": "magister", "d": 80, "x": "Since you have been useful: the treaty has a clause about heirs. Nobody has read it in ninety years. I have.", "to": ["the-blackwater-treaty", "the-heirs-clause"] },
-        { "a": "archivist", "d": 80, "x": "Very well, and this does not leave the room. The survey of the eastern rootlands was never completed, and the reason given in the file is weather, and the reason in the surveyor's own hand on the back of the last sheet is that the party was told to stop by somebody whose name has been scraped off with a knife.", "to": ["the-unfinished-survey", "the-eastern-rootlands"] },
-        { "a": "mudborn", "d": 80, "x": "You have been kind to me and I will be kind back, dry-one, and what I know is that the man they fished out of the cut in the spring did not drown, because I saw him walk down to the water on his own feet with somebody behind him who was not hurrying.", "to": ["the-cut", "the-man-in-the-water"] },
+        { "a": "magister", "d": 80, "x": "Since you have been useful: the treaty has a clause about heirs. It has not been read in ninety years. I have read it.", "to": ["the-blackwater-treaty", "the-heirs-clause"] },
+        { "a": "archivist", "d": 80, "x": "Very well, and this does not leave the room. The survey of the eastern rootlands was never completed, and the reason given in the file is weather, and the reason in the surveyor's own hand on the back of the last sheet is that the party was told to stop by a man whose name has been scraped off with a knife.", "to": ["the-unfinished-survey", "the-eastern-rootlands"] },
+        { "a": "mudborn", "d": 80, "x": "You have been kind to me and I will be kind back, dry-one, and what I know is that the man they fished out of the cut in the spring did not drown, because I saw him walk down to the water on his own feet with a man behind him who was not hurrying.", "to": ["the-cut", "the-man-in-the-water"] },
         { "a": "sapcutter", "x": "A secret? Friend, this one sells those. Come back when we are better acquainted.", "to": [] }
       ]
     }

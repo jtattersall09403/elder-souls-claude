@@ -280,8 +280,14 @@ export class RoadBook {
    * `extra` list. Returns `[]` for somebody who belongs to no settlement, which is correct: a
    * hermit on the Clay Moor is not a signpost.
    */
-  forNpc(npc) {
-    const settlement = RoadBook.settlementOf(npc);
+  forNpc(npc, fallbackSettlement = null) {
+    // `fallbackSettlement` is where the PLAYER is standing (`sim.env.settlement`). An NPC
+    // instantiated by a state file often carries no `settlement` of its own, and without this
+    // fallback the road topics silently never appear — which is how the first run of
+    // `tools/world/wayfind-journey.mjs` found four people standing in Soulrest and not one of
+    // them able to tell you the way out of it. `rumourFor` in engine.js already falls back the
+    // same way, and the two must agree or a town gossips about a place it cannot direct you to.
+    const settlement = RoadBook.settlementOf(npc) || fallbackSettlement;
     if (!settlement) return [];
     const out = [];
     for (const route of this.bySettlement.get(settlement) || []) {

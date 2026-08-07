@@ -229,7 +229,19 @@ function measure(opts) {
 
   // ---- lengths (RI-LOR03 §1 shape)
   const lens = books.map((b) => wc(b.text)).sort((a, b) => a - b);
-  const pct = (p) => lens[Math.min(lens.length - 1, Math.floor(p * lens.length))];
+  // Linear interpolation between order statistics — numpy's default and `statistics.quantiles`'
+  // `method='inclusive'`. W1-LIBRARY round 2: this was `lens[Math.floor(p * n)]`, a floor-index
+  // estimator, and on 65 samples with a hole in the distribution the two conventions disagreed
+  // by 150 words and decided L2 — p90 read 1,316 against a 1,200 bar on the floor index and
+  // 1,167 under interpolation. `corpus/80-methods/book-stats.py` had the identical bug and the
+  // identical row, so the two "independent" instruments agreed because they shared a mistake.
+  const pct = (p) => {
+    const n = lens.length;
+    if (!n) return 0;
+    if (n === 1) return lens[0];
+    const k = (n - 1) * p, lo = Math.floor(k);
+    return +(lens[lo] + (lens[Math.min(lo + 1, n - 1)] - lens[lo]) * (k - lo)).toFixed(1);
+  };
   const totalBookWords = lens.reduce((a, b) => a + b, 0);
   const series = new Map();
   for (const b of books) if (b.series && b.series.id) {
@@ -321,6 +333,44 @@ function measure(opts) {
   }
   const questLinked = [...new Set([...namedLinks.map((l) => l.book), ...topicLinks.map((l) => l.book)])];
 
+  // ---- D7: does the linked book's own PROSE say the thing the link claims it says?
+  //
+  // W1-LIBRARY ROUND 2. D6 above is the row RI-UIX05 calls decisive — "this row owns whether the
+  // reading surface is connected to anything" — and it is computed by matching a JSON key in
+  // game/data/books against a JSON key in game/data/quests. The round-1 critic's mutation shows
+  // what that is worth: swap every book's `text` with another book's and change nothing else, and
+  // D6 returns the identical 17, because not one of its inputs is the writing. Every row above is
+  // an aggregate over the corpus and every aggregate is invariant under a permutation of texts.
+  //
+  // D7 is the row that is not. For every book the linkage says a quest depends on, the book's own
+  // prose must name at least one distinctive term of the topic or key the link was made through.
+  // A book that teaches `the-rootless-egg` to a quest and never mentions a root, an egg or a
+  // keeper is not the book that quest wanted, whatever its id says.
+  const STOPW = new Set(['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'by', 'book']);
+  const stem = (w) => (w.length > 4 && w.endsWith('s') ? w.slice(0, -1) : w);
+  const bag = (t) => new Set(String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(' ').filter(Boolean).map(stem));
+  const linkTerms = new Map();               // book id -> the terms its linkage was made through
+  for (const l of namedLinks) {
+    const t = linkTerms.get(l.book) || new Set();
+    for (const w of bag(l.key)) if (!STOPW.has(w)) t.add(w);
+    linkTerms.set(l.book, t);
+  }
+  for (const l of topicLinks) {
+    const t = linkTerms.get(l.book) || new Set();
+    for (const w of bag(l.topic)) if (!STOPW.has(w)) t.add(w);
+    linkTerms.set(l.book, t);
+  }
+  const linkGrounded = [], linkUngrounded = [];
+  for (const b of books) {
+    const terms = linkTerms.get(b.id);
+    if (!terms || !terms.size) continue;
+    const own = bag(b.text);
+    const hit = [...terms].filter((w) => own.has(w));
+    (hit.length ? linkGrounded : linkUngrounded).push({ book: b.id, terms: [...terms], grounded_by: hit });
+  }
+  const linkPct = (linkGrounded.length + linkUngrounded.length)
+    ? +(100 * linkGrounded.length / (linkGrounded.length + linkUngrounded.length)).toFixed(1) : null;
+
   // ---- S8: no markers in book text
   const markerHits = [];
   for (const b of books) {
@@ -363,6 +413,7 @@ function measure(opts) {
     { id: 'D4', name: 'books that contradict another book on a named fact', value: contradicting.length, bar: '>= 8', hard_fail_below: 1, pass: contradicting.length >= 8 },
     { id: 'D5', name: 'books carrying a usable prose direction', value: withDirections.length, bar: '>= 12', hard_fail_below: 1, pass: withDirections.length >= 12 },
     { id: 'D6', name: 'books readable before the quest that references them', value: questLinked.length, bar: '>= 10', pass: questLinked.length >= 10 },
+    { id: 'D7', name: 'quest-linked books whose own prose grounds the link (%)', value: linkPct, bar: '>= 70', pass: linkPct !== null && linkPct >= 70 },
     { id: 'S8', name: 'marker/objective/coordinate language in book text', value: markerHits.length, bar: '== 0', pass: markerHits.length === 0 },
     { id: 'X1', name: 'duplicate book ids across files', value: duplicates.length, bar: '== 0', pass: duplicates.length === 0 },
     { id: 'X2', name: 'contradicts[] naming a book that does not exist', value: danglingContradictions.length, bar: '== 0', pass: danglingContradictions.length === 0 },
@@ -393,6 +444,8 @@ function measure(opts) {
       contradicting,
       dangling_contradictions: danglingContradictions,
       prose_directions: withDirections,
+      link_grounded: linkGrounded,
+      link_ungrounded: linkUngrounded,
       quest_linked: questLinked,
       quest_links_named: namedLinks,
       quest_links_topic: topicLinks,
@@ -418,7 +471,25 @@ function selfTest() {
     return 1;
   }
 
+  // The round-1 critic's mutation, adopted verbatim and permanently. Swap every book's `text`
+  // with another book's — a derangement, so no book keeps its own prose — and change NOTHING
+  // else. This tool returned 15/15 PASS on that corpus, because every row it had was an
+  // aggregate over the same 65 texts and aggregates do not notice a permutation. D7 does.
+  const derange = (bs, seed = 4242) => {
+    let s = seed >>> 0;
+    const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+    const n = bs.length;
+    if (n < 2) return bs.map((b) => ({ ...b }));
+    let order;
+    do {
+      order = bs.map((_, i) => i);
+      for (let i = n - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    } while (order.some((v, i) => v === i));
+    return bs.map((b, i) => ({ ...b, text: bs[order[i]].text }));
+  };
+
   const mutations = [
+    ["swap every book's text with another book's (derangement, seed 4242)", derange, 'D7'],
     ['drop every contradicts[]', (bs) => bs.map((b) => ({ ...b, contradicts: [] })), 'D4'],
     ['halve the corpus', (bs) => bs.slice(0, Math.floor(bs.length / 8)), 'D2'],
     ['duplicate an id', (bs) => [...bs, { ...bs[0], _file: 'MUTANT' }], 'X1'],

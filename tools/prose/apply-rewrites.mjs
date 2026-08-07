@@ -30,13 +30,26 @@ export function esc(s) {
   return JSON.stringify(s).slice(1, -1);
 }
 
-export function applyOne(src, before, after) {
+// `occurrences` opts a record out of the uniqueness rule, but only by DECLARING the count up front.
+// Shipped boilerplate exists — game/data/quests/magic-utility.json carries one identical "the quest
+// resolved without me" entry on twenty-four different quests — and an identical string has no
+// context to disambiguate it with. The declared count is what keeps this from becoming a blind
+// search-and-replace: if the file holds 23 or 25 the record is refused, so a rewrite can never
+// silently hit more text than its author counted.
+export function applyOne(src, before, after, occurrences) {
   const b = esc(before);
   const a = esc(after);
   const first = src.indexOf(b);
   if (first < 0) return { ok: false, reason: 'not found', src };
-  if (src.indexOf(b, first + 1) >= 0) return { ok: false, reason: 'ambiguous (occurs more than once)', src };
-  return { ok: true, src: src.slice(0, first) + a + src.slice(first + b.length) };
+  const dup = src.indexOf(b, first + 1) >= 0;
+  if (occurrences == null) {
+    if (dup) return { ok: false, reason: 'ambiguous (occurs more than once)', src };
+    return { ok: true, src: src.slice(0, first) + a + src.slice(first + b.length) };
+  }
+  let n = 0;
+  for (let i = src.indexOf(b); i >= 0; i = src.indexOf(b, i + b.length)) n++;
+  if (n !== occurrences) return { ok: false, reason: `declared ${occurrences} occurrences, found ${n}`, src };
+  return { ok: true, src: src.split(b).join(a) };
 }
 
 function stringsOf(o, out = []) {
@@ -66,7 +79,7 @@ function run(files, check) {
     let src = original;
     const beforeStrings = stringsOf(JSON.parse(original)).length;
     for (const r of recs) {
-      const res = applyOne(src, r.before, r.after);
+      const res = applyOne(src, r.before, r.after, r.occurrences);
       if (!res.ok) {
         console.error(`  FAIL ${rel}: ${res.reason}\n       before: ${r.before.slice(0, 110)}`);
         failed++;
@@ -112,6 +125,16 @@ function selfTest() {
   const dup = '{"a":"Same line.","b":"Same line."}';
   const r3 = applyOne(dup, 'Same line.', 'Other.');
   t(!r3.ok && r3.reason.startsWith('ambiguous'), 'an ambiguous sentence is refused rather than guessed');
+
+  // declared-count boilerplate replacement
+  const r5 = applyOne(dup, 'Same line.', 'Other.', 2);
+  t(r5.ok && JSON.parse(r5.src).a === 'Other.' && JSON.parse(r5.src).b === 'Other.',
+    'a DECLARED count of 2 replaces both copies of shipped boilerplate');
+  const r6 = applyOne(dup, 'Same line.', 'Other.', 3);
+  t(!r6.ok && r6.reason === 'declared 3 occurrences, found 2',
+    'a wrong declared count is refused — the tool never replaces more text than was counted');
+  const r7 = applyOne('{"a":"Same line.","b":"Same line.","c":"Same line."}', 'Same line.', 'X.', 2);
+  t(!r7.ok, 'and refused the other way round too, when the file has grown a third copy');
 
   // the escaping path: a sentence carrying a quote, a backslash and a newline must round-trip
   const tricky = JSON.stringify({ a: 'He said "no" \\ then\nleft.' });
