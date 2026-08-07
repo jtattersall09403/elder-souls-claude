@@ -168,14 +168,35 @@ const stationAt = new Map(stations.stations.map((s) => [s.id, s]));
  * search cannot start from is not a hearth.
  */
 function standable(x, z) { return Number.isFinite(secPerM(x, z)) && passable(idxOf(x, z)); }
+
+/**
+ * Seam S7, enforced in the MAP rather than argued about in a verdict.
+ *
+ * A hearth is not a node of the transport network. Placing one on top of a station makes it one
+ * in the only sense that matters — you can buy a ride that ends at a checkpoint — and it also
+ * breaks RI-PRG04 §5's "at the settlement edge, not the centre", which exists so that arriving
+ * somewhere and resting somewhere are different acts. The first build put five wells inside 5 m
+ * of a station because the minor-settlement candidates were placed at the POI centre and the
+ * stations are at the POI centre too; RI-JRN06 M-D18 measured it.
+ */
+const STATION_KEEP_OUT_M = 90;
+const STATION_POINTS = [];
+for (const st of stations.stations) {
+  STATION_POINTS.push([st.x, st.z]);
+  if (st.arrive_at) STATION_POINTS.push([st.arrive_at[0], st.arrive_at[2]]);
+}
+function nearStation(x, z) {
+  for (const [sx, sz] of STATION_POINTS) if (Math.hypot(sx - x, sz - z) < STATION_KEEP_OUT_M) return true;
+  return false;
+}
 function snap(x, z, r = 90) {
-  if (standable(x, z)) return [x, z];
-  for (let ring = CELL / 2; ring <= r; ring += CELL / 2) {
+  if (standable(x, z) && !nearStation(x, z)) return [x, z];
+  for (let ring = CELL / 2; ring <= Math.max(r, STATION_KEEP_OUT_M * 2); ring += CELL / 2) {
     for (let a = 0; a < 24; a++) {
       const th = (a / 24) * Math.PI * 2;
       const px = x + Math.cos(th) * ring, pz = z + Math.sin(th) * ring;
       if (px < 0 || pz < 0 || px >= field.sizeX || pz >= field.sizeZ) continue;
-      if (standable(px, pz)) return [px, pz];
+      if (standable(px, pz) && !nearStation(px, pz)) return [px, pz];
     }
   }
   return null;
@@ -623,6 +644,7 @@ const rules = {
   no_land_orphaned_by_hearth_placement: cov.unreached <= islandCells,
   every_settlement_has_one: mandatory.every((id) => chosen.includes(id)),
   every_fog_gate_60_110s: FOG_GATES.every((g) => g.hearth && g.hearth_walk_s >= 60 && g.hearth_walk_s <= 110),
+  no_hearth_on_a_travel_station: chosenC.every((c) => !nearStation(c.pos[0], c.pos[2])),
 };
 
 const doc = {
@@ -655,6 +677,11 @@ const doc = {
       mean_gap_min: cpMean === null ? null : +cpMean.toFixed(2),
     },
     min_pair: { a: minPair.a, b: minPair.b, walk_min: +(minPair.min / 60).toFixed(2) },
+    station_separation: {
+      keep_out_m: STATION_KEEP_OUT_M,
+      nearest_station_m: Math.min(...chosenC.map((c) => Math.min(...STATION_POINTS.map(([sx, sz]) => Math.hypot(sx - c.pos[0], sz - c.pos[2]))))).toFixed(1),
+      why: 'Seam S7 and RI-PRG04 §5. A hearth is not a node of the transport network and a settlement well sits at the edge, not on the quay.',
+    },
     coverage: {
       land_cells_sampled: landCells.length,
       worst_time_to_nearest_min: +(cov.worst / 60).toFixed(2),

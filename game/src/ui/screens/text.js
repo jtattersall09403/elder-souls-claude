@@ -139,7 +139,7 @@ export function drawJournal(S, m) {
   }
 
   // the gutter: a stitched binding, not a divider line
-  S.el({ id: 'journal.gutter', kind: 'divider', rect: [px + colW + 14 * s, iy, 18 * s, colH], opacity: alpha },
+  S.el({ id: 'journal.gutter', kind: 'divider', rect: [px + colW + 17 * s, iy, 12 * s, colH], opacity: alpha },
     (c, r) => {
       for (let i = 0; i < 16; i++) {
         const y = r[1] + (r[3] * (i + 0.5)) / 16;

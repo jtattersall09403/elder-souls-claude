@@ -108,7 +108,9 @@ export function screen(S, id, title, subtitle, material, alpha) {
     }
     boneRule(c, q[0] + 20 * s, q[1] + hh - 4 * s, q[2] - 40 * s, s, seed + 5);
   });
-  return { rect: r, inner: [r[0] + 22 * s, r[1] + hh + 10 * s, r[2] - 44 * s, r[3] - hh - 34 * s], seed, alpha };
+  // The inner box leaves 30 px at the foot for the hint line, so the hint is INSIDE the
+  // panel and cannot be clipped by its own edge.
+  return { rect: r, inner: [r[0] + 22 * s, r[1] + hh + 10 * s, r[2] - 44 * s, r[3] - hh - 52 * s], seed, alpha };
 }
 
 /** A worked-bone divider between columns. Not a 1 px border (G4). */

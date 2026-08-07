@@ -13,7 +13,7 @@
 | Accept | 7 — `journey/beat-extract`, `mw-open-beats.json`, `experience/{session-run, beat-extract, beat-diff, isolation-check, log-lint}` |
 | Worst instrument | **`tools/analysis/build-viability.mjs`** |
 | C8 at start of this pass | 55 |
-| C8 now | **51** (3 cleared by path corrections ruled below; 1 by another agent shipping `marker-scan.mjs` mid-pass) |
+| C8 now | **49** (3 cleared by the path corrections ruled below; 3 by other agents shipping `marker-scan.mjs`, `ui-census.mjs`, `ui-layer.mjs` mid-pass) |
 | Harness state | `node tools/harness/smoke.mjs` PASS (6/6) before every measurement below. The game boots. |
 
 Every number below was produced by me, on this tree, at this commit. Where I broke something on
@@ -526,13 +526,16 @@ assigned.
 
 ```
 at the start of this pass   : 55
-now                         : 51      (0 errors from tools/corpus-index.mjs)
+now                         : 49      (0 errors from tools/corpus-index.mjs)
 ```
 
-Of the 4 cleared: **3 by the path corrections ruled above**, 1 by another agent shipping
-`tools/analysis/marker-scan.mjs` mid-pass.
+Of the 6 cleared: **3 by the path corrections ruled above**, 3 by other agents shipping
+`tools/analysis/marker-scan.mjs`, `ui-census.mjs` and `ui-layer.mjs` while this pass was running.
+The count is moving under the review — fourteen agents share this tree — so **49 is what I observed
+at the end of this pass, not a stable figure**. Re-run `node tools/corpus-index.mjs` before quoting
+it. The three cleared by me are stable; the rest are other agents' work landing.
 
-**The remaining 51 are not 51 missing tools. One is a bug in the counter.**
+**The remaining 49 are not 49 missing tools. One is a bug in the counter.**
 
 `tools/harness/viewpoints.js` is a **false positive**. Every item that names it — `RI-CAM07` M1 and
 its harness-dependency note, `RI-UIX01` step 3 — names `tools/harness/viewpoints.json`, which
@@ -548,9 +551,9 @@ backtracks and matches `tools/harness/viewpoints.js`, leaving `on` unconsumed. I
 phantom for a file that is present. Fix: append `(?![A-Za-z0-9])`. This inflates every C8 figure
 quoted since the sweep began, including the headline 67.
 
-**So: true C8 = 50 genuinely missing tools.** I checked all 51 for same-basename files elsewhere in
-the tree; after the three corrections, no further path errors remain. The rest are real absences,
-and the builder's priority order for them is sound.
+**So: true C8 = 48 genuinely missing tools at the end of this pass.** I checked every remaining name
+for a same-basename file elsewhere in the tree; after the three corrections, **no further path
+errors remain**. The rest are real absences, and the builder's priority order for them is sound.
 
 ---
 

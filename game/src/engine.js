@@ -946,6 +946,12 @@ export class Engine {
       if (this.renderer && this.renderer.ui.model && this.renderer.ui.model.kind === 'death') {
         this.renderer.ui.setModel(null);
       }
+      // The death camera is STICKY by design: `sim/camera.js resolveMode()` re-asserts
+      // `mode = 'death'` on every step while `camera.deathFrame >= 0`, so writing `mode` here
+      // was undone one frame later and the rig stayed in its death orbit for the rest of the
+      // session. The across-death diff caught it as `pose.camera_mode "free" -> "death"`
+      // surviving a respawn, which is the whole argument for running the diff.
+      this.sim.camera.deathFrame = -1;
       this.sim.camera.mode = 'free';
       // Seam S27 and RI-CHR03: waking at the well is the same transaction as resting at it, so
       // the Dry Well's drawback applies to it. A sign whose cost you can dodge by dying is not
@@ -1822,8 +1828,15 @@ export class Engine {
       && this.data.progression.attributes.attributes) || [];
     const skills = (this.data.progression && this.data.progression.skills
       && (this.data.progression.skills.skills || [])) || [];
+    // Keyed by QUEST id, not by file id. `loadData` buckets `quests/*.json` under the FILE's
+    // `doc.id` ('mainline-act1'), so a lookup of 'Q-MAIN-01' against that bucket returns
+    // undefined and the journal's quest index falls back to printing raw ids at the player.
+    const quests = {};
+    for (const doc of Object.values(this.data.quests || {})) {
+      for (const q of (doc.quests || [])) quests[q.id] = q;
+    }
     this.ui = new UISystem(this.renderer.menus, {
-      items, books, attributes: attrs, skills, quests: this.data.quests || {},
+      items, books, attributes: attrs, skills, quests,
       levels: (this.data.progression && this.data.progression.levels) || null,
     });
     this.renderer.uiBuild = (force) => this.ui.build(this._uiCtx(), force);
@@ -1884,10 +1897,10 @@ export class Engine {
       player: p,
       estusMax: (cb && cb.estusMax) || 5,
       slots: {
-        left: this.sim.loadout ? this.sim.loadout.shield : null,
-        right: this.sim.loadout ? this.sim.loadout.weapon : null,
-        item: this._quickSlotName('item'),
-        spell: (p.attuned && p.attuned.length && p.cast) ? String(p.cast.spell || p.attuned[0]) : (p.attuned && p.attuned[0]) || null,
+        left: this._slotLabel(this.sim.loadout ? this.sim.loadout.shield : null),
+        right: this._slotLabel(this.sim.loadout ? this.sim.loadout.weapon : null),
+        item: this._slotLabel(this._quickSlotName('item')),
+        spell: this._slotLabel((p.attuned && p.attuned.length && p.cast) ? String(p.cast.spell || p.attuned[0]) : (p.attuned && p.attuned[0]) || null),
         leftActive: !!(cb && cb.blocking), rightActive: !!(p.state === 'ATTACK'),
       },
       buildups: (this.sim.quest.afflictions || []).map((a) => ({
@@ -1961,6 +1974,17 @@ export class Engine {
     this.sim.player.carriedWeight = w;
     this.sim.player.burdenRatio = cap > 0 ? w / cap : 0;
     return this.sim.player.burdenRatio;
+  }
+
+  /** A slot shows the object's NAME, never its id. An id on the HUD is a debug path shipping. */
+  _slotLabel(id) {
+    if (!id) return null;
+    const rec = this.ui && this.ui.data.items.get(id);
+    if (rec && rec.name) return rec.name;
+    const sp = this.magic && this.magic.d && this.magic.d.spells
+      && (this.magic.d.spells.spells || []).find((x) => x.id === id);
+    if (sp && sp.name) return sp.name;
+    return String(id).replace(/[-_]/g, ' ');
   }
 
   _quickSlotName(kind) {

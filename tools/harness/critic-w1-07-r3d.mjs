@@ -66,11 +66,13 @@ function panelArea(png) {
   };
 }
 
-const h = await launchGame({ ...args, width: 1920, height: 1080 });
+const PART = String(args.part || 'all');
+const h = await launchGame({ ...args, width: Number(args.width || 640), height: Number(args.height || 360) });
 try {
   await h.h('setSeed', 1337);
 
-  // ---- M20 / HF9: is there a title surface, and does a returning player reach a save? -----
+  // ---- M20 / HF9 ---------------------------------------------------------------------
+  if (PART === 'all' || PART === 'title') {
   say('== M20 / HF9 — the title surface ==');
   const t0 = await h.h('getTitleState');
   say(`  harness-mode boot: title present=${t0 && t0.present} shown=${t0 && t0.shown}`);
@@ -106,8 +108,10 @@ try {
   const hits = (nonDialogue.distinct || []).filter((s) => BAD.some((b) => s.includes(b)));
   say(`\n== M9 — instruction grep over ${(nonDialogue.distinct || []).length} distinct non-dialogue strings: ${hits.length} hits ${JSON.stringify(hits)}`);
   rec.m9 = { accessor: '__HARNESS.getRenderedText({notSurface:["dialogue"]})', searched: (nonDialogue.distinct || []).length, hits };
+  }
 
   // ---- M5: the census, node by node, from PIXELS -------------------------------------------
+  if (PART === 'all' || PART === 'm5' || PART === 'writ') {
   await h.page.goto(h.url, { waitUntil: 'load' });
   await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, null, { timeout: 60000 });
   await h.page.evaluate(() => window.__HARNESS.ready());
@@ -140,6 +144,7 @@ try {
     if (v == null) break;
     st = await h.h('censusAnswer', v);
   }
+  if (PART === 'writ') { /* skip the area table's summary lines below */ }
   const maxSelf = Math.max(...rec.m5.map((r) => r.self_reported));
   const maxPix = Math.max(...rec.m5.map((r) => r.pixel_area_frac));
   say(`\n  MAX self-reported ${maxSelf}   MAX pixel readback ${maxPix}   M5 ceiling 0.55`);
@@ -163,7 +168,8 @@ try {
   say(`  writ-reader pixel area ${wa.pixel_area_frac} (M5 ceiling 0.55), world colours behind ${wa.world_colours_outside_panel}`);
   rec.m8 = { writ_lines: (writ && writ.lines || []).length, reader: wr, drawn_distinct: wtext.distinct, opened, pixels: wa };
   rec.m5_summary = { max_self_reported: maxSelf, max_pixel: maxPix, ceiling: 0.55, understatement: +(maxPix - maxSelf).toFixed(4) };
+  }
 } finally {
-  fs.writeFileSync(path.join(OUT, 'm5-title-writ-critic.json'), JSON.stringify(rec, null, 2));
+  fs.writeFileSync(path.join(OUT, `m5-title-writ-critic${PART==='all'?'':'-'+PART}.json`), JSON.stringify(rec, null, 2));
   await h.close();
 }

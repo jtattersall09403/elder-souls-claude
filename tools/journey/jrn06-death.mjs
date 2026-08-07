@@ -26,20 +26,20 @@ const WALK_MPS = 2.0;
 
 /** RI-JRN06 M-D4: the group excluded from the across-death diff, EXCLUDED BY NAME. */
 export const DEATH_VOLATILE = [
-  'character.souls_held',
-  'player.hp', 'player.stamina', 'player.poise',
-  'player.pos', 'player.yaw', 'player.state', 'player.anim', 'player.anim_frame',
-  'player.phase', 'player.move', 'player.actionable_in_frames', 'player.regen_block_in_frames',
-  'player.swing_seq', 'player.iframe', 'player.iframe_kind', 'player.grounded',
-  'player.speed_mps', 'player.move_dir_deg', 'player.lock_on',
-  'player.estus',
-  'camera.',                       // the death camera is a camera pose, not world state
+  // THE NAMES ARE THE SAVE'S OWN PATHS, not a guess at them. The first version of this list
+  // used `player.*` and `camera.*`; the save calls that whole group `pose.*`, so nine
+  // genuinely volatile fields were reported as seam-S6 violations on all eight seeds. A
+  // volatile list that does not match the schema is an instrument that cries wolf, and the
+  // fix is to read `game/src/save/state.js`, not to widen the list until it goes quiet.
+  'character.souls_held',          // dropped as the bloom — D3
+  'character.hp', 'character.stamina', 'character.poise', 'character.estus',
+  'pose.',                         // position, facing, animation, and the death camera's orbit
   'world.entities',                // ordinary-enemy alive flags: D9 says they come back
   'world.enemies_dead_until_rest',
   'death.bloodstain',              // the stain IS the death's product
-  'meta.frame', 'clock.frame',
-  'magic.focus',
-  'afflictions',                   // timed effects expire on respawn (D8); diseases are checked separately
+  'volatile.',                     // frame index, playtime, thumbnail — declared volatile already
+  'magic.focus',                   // restored at the well, and refused there for the Dry Well
+  'afflictions',                   // timed effects expire on respawn (D8); diseases checked by name below
 ];
 
 const isVolatile = (p) => DEATH_VOLATILE.some((v) => p === v || p.startsWith(v + '.') || p.startsWith(v + '[') || (v.endsWith('.') && p.startsWith(v)));
@@ -858,16 +858,37 @@ async function runBack(h) {
     // simulation per FAILED bearing — and eight bearings at three radii of that is the whole
     // run's budget spent proving the marsh is muddy. A bearing that mires is not the bearing a
     // player walks; take the next one.
-    const WOPT = { speed: 'walk', maxFrames: 24000, miredAbort: 1200, stuckAbort: 300 };
+    const WOPT = { speed: 'walk', maxFrames: 24000, miredAbort: 1800, stuckAbort: 900 };
+    // PICK THE BEARING BEFORE WALKING IT. The first version swept 8 bearings blind and reported
+    // "no walkable bearing at this radius" at 150, 220 and 300 m out of a settlement well —
+    // which is a statement about the marsh, not about the run back. The province is 14.5 km2 of
+    // swamp and most rays out of a well cross water. So each ray is SAMPLED first (depth, slope
+    // and substrate at 12 points along it) and only the passable ones are walked; the rejected
+    // bearings are reported, because "the ground would not take it" is a finding either way.
+    const probeRay = async (th) => {
+      const bad = [];
+      for (let k = 1; k <= 12; k++) {
+        const f = (k / 12) * dist;
+        const x = hearth.pos[0] + Math.cos(th) * f, z = hearth.pos[2] + Math.sin(th) * f;
+        const w = await h.hOpt('getWaterAt', x, z);
+        const t = await h.hOpt('getTerrainAt', x, z);
+        const depth = w && w.depth_m !== undefined ? w.depth_m : 0;
+        if (depth > 0.7 || (t && t.slope_deg > 26) || (t && !t.land)) bad.push({ at_m: +f.toFixed(0), depth_m: depth, slope: t && t.slope_deg, land: t && t.land });
+      }
+      return bad;
+    };
     let out = null, site = null;
-    for (let a = 0; a < 8 && !out; a++) {
-      const th = (a / 8) * Math.PI * 2 + 0.19;
+    const bearings = [];
+    for (let a = 0; a < 24 && !out; a++) {
+      const th = (a / 24) * Math.PI * 2 + 0.19;
+      const bad = await probeRay(th);
+      if (bad.length) { bearings.push({ deg: Math.round(th * 180 / Math.PI), rejected_at: bad[0] }); continue; }
       const x = hearth.pos[0] + Math.cos(th) * dist, z = hearth.pos[2] + Math.sin(th) * dist;
       const r = await h.hOpt('walkPath', [[hearth.pos[0], hearth.pos[2]], [x, z]], WOPT);
-      if (r && !r.aborted && r.distance_m > dist * 0.6) { out = r; site = [x, z]; }
-      else { await h.h('teleport', hearth.pos[0], hearth.pos[2]); await h.h('stepFrames', 2); }
+      if (r && !r.aborted && r.distance_m > dist * 0.6) { out = r; site = [x, z]; bearings.push({ deg: Math.round(th * 180 / Math.PI), walked: true, frames: r.frames }); }
+      else { bearings.push({ deg: Math.round(th * 180 / Math.PI), walk_aborted: r ? r.aborted : 'no result' }); await h.h('teleport', hearth.pos[0], hearth.pos[2]); await h.h('stepFrames', 2); }
     }
-    if (!out) { trials.push({ dist, ok: false, why: 'no walkable bearing at this radius' }); continue; }
+    if (!out) { trials.push({ dist, ok: false, why: 'no walkable bearing at this radius', bearings_tried: bearings }); continue; }
     const blob = await h.h('saveState');
     blob.character.souls_held = 4200;
     await h.h('restoreState', blob);
@@ -885,6 +906,7 @@ async function runBack(h) {
     const afterWalk = await h.h('getDeathState');
     trials.push({
       dist, ok: true,
+      bearings_tried: bearings.length, bearings_rejected_by_ground: bearings.filter((b) => b.rejected_at).length,
       respawned_at: from ? from.at : null,
       approach_frames: out.frames, approach_min: +(out.frames / 3600).toFixed(3), approach_m: +out.distance_m.toFixed(1),
       run_back_frames: back ? back.frames : null,

@@ -52,6 +52,14 @@ EXIT 0 all checks pass · 1 one or more fail · 2 could not measure
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 
+const KNOWN = new Set(['health_bar', 'stamina_bar', 'focus_bar', 'heal_charges', 'quick_slots',
+  'buildup_meter', 'lockon_reticle', 'boss_bar', 'equip_load', 'interact_prompt', 'toast',
+  'panel', 'panel_header', 'list_row', 'detail_panel', 'encumbrance', 'category',
+  'journal_entry', 'journal_index_row', 'book_page', 'page_count', 'attribute_row',
+  'attribute_preview', 'souls_held', 'souls_to_next', 'level_value', 'skill_row',
+  'spell_row', 'sheet_row', 'search_field', 'scroll_extent', 'selection', 'divider',
+  'hint', 'gold', 'container_panel', 'topic_link', 'entry_glyph']);
+
 const BUDGET = {
   persistent: { pass: 6, fail: 9 },
   peak_total: { pass: 9, fail: 12 },
@@ -207,13 +215,6 @@ process.exit(out.ok ? 0 : 1);
 
 // ---- grading ------------------------------------------------------------------------------
 
-const KNOWN = new Set(['health_bar', 'stamina_bar', 'focus_bar', 'heal_charges', 'quick_slots',
-  'buildup_meter', 'lockon_reticle', 'boss_bar', 'equip_load', 'interact_prompt', 'toast',
-  'panel', 'panel_header', 'list_row', 'detail_panel', 'encumbrance', 'category',
-  'journal_entry', 'journal_index_row', 'book_page', 'page_count', 'attribute_row',
-  'attribute_preview', 'souls_held', 'souls_to_next', 'level_value', 'skill_row',
-  'spell_row', 'sheet_row', 'search_field', 'scroll_extent', 'selection', 'divider',
-  'hint', 'gold', 'container_panel', 'topic_link', 'entry_glyph']);
 
 function grade(o) {
   const c = [];

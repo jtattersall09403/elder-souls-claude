@@ -400,7 +400,11 @@ if (constants) {
 // than paid down. The number being visible is the change.
 const phantomTools = new Map(); // toolPath -> Set(item file)
 {
-  const TOOL_RX = /tools\/[A-Za-z0-9_\-/.]*\.(?:mjs|cjs|js|py)/g;
+  // The trailing boundary is load-bearing. Without it the character class swallows the dot in
+  // "tools/harness/viewpoints.json", then backtracks so that ".js" matches and "on" is left over —
+  // inventing a phantom "viewpoints.js" while the real .json file sits next to it. That inflated
+  // every C8 figure this project has quoted, including the headline 67. Found by the tool critic.
+  const TOOL_RX = /tools\/[A-Za-z0-9_\-/.]*\.(?:mjs|cjs|js|py)(?![A-Za-z0-9_])/g;
   for (const it of items) {
     const text = readFileSync(it.path, 'utf8');
     const i = text.indexOf('## Comparison method');

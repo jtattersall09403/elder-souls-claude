@@ -83,8 +83,8 @@
    "kind": "critical-path",
    "region": "stone-forest",
    "pos": [
-    2344.17,
-    89.145,
+    2369.17,
+    73.044,
     1412.3
    ],
    "interact_radius_m": 3,
@@ -200,9 +200,9 @@
    "kind": "critical-path",
    "region": "western-rootlands",
    "pos": [
-    1920.75,
-    1.1,
-    4204.23
+    1922.66,
+    1.209,
+    4212.3
    ],
    "interact_radius_m": 3,
    "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
@@ -276,10 +276,10 @@
    "id": "hearth-ixtaxh-tzil",
    "name": "Ixtaxh-Tzil Well",
    "kind": "minor-settlement",
-   "region": "stone-forest",
+   "region": "thornmarsh",
    "pos": [
-    2988.6,
-    34.93,
+    3088.6,
+    26.342,
     929.8
    ],
    "interact_radius_m": 3,
@@ -291,8 +291,8 @@
    "kind": "minor-settlement",
    "region": "eastern-rootlands",
    "pos": [
-    3489.8,
-    2.54,
+    3589.8,
+    1.768,
     3534.9
    ],
    "interact_radius_m": 3,
@@ -330,8 +330,8 @@
    "kind": "minor-settlement",
    "region": "blackwood",
    "pos": [
-    1617.4,
-    48.57,
+    1717.4,
+    53.067,
     2732.8
    ],
    "interact_radius_m": 3,
@@ -369,9 +369,9 @@
    "kind": "minor-settlement",
    "region": "blackwood",
    "pos": [
-    990.6,
-    2.79,
-    2931.3
+    1087.19,
+    0.813,
+    2957.18
    ],
    "interact_radius_m": 3,
    "why": "Candidate at POI tenmarch-bridge (minor-settlement)."
@@ -395,8 +395,8 @@
    "kind": "minor-settlement",
    "region": "deep-marshes",
    "pos": [
-    2938,
-    2.767,
+    3038,
+    1.436,
     3347.5
    ],
    "interact_radius_m": 3,
@@ -451,13 +451,13 @@
      "from": "hearth-cross-01",
      "to": "hearth-cross-02",
      "walk_min": 3.98,
-     "direct_min": 2.77
+     "direct_min": 2.98
     },
     {
      "from": "hearth-cross-02",
      "to": "hearth-cross-03",
      "walk_min": 3.37,
-     "direct_min": 2.76
+     "direct_min": 2.67
     },
     {
      "from": "hearth-cross-03",
@@ -545,6 +545,11 @@
    "b": "hearth-cross-10",
    "walk_min": 2.1
   },
+  "station_separation": {
+   "keep_out_m": 90,
+   "nearest_station_m": "90.3",
+   "why": "Seam S7 and RI-PRG04 §5. A hearth is not a node of the transport network and a settlement well sits at the edge, not on the quay."
+  },
   "coverage": {
    "land_cells_sampled": 22068,
    "worst_time_to_nearest_min": 10.42,
@@ -561,7 +566,8 @@
    "worst_to_nearest_le_11min": true,
    "no_land_orphaned_by_hearth_placement": true,
    "every_settlement_has_one": true,
-   "every_fog_gate_60_110s": true
+   "every_fog_gate_60_110s": true,
+   "no_hearth_on_a_travel_station": true
   }
  },
  "ri_prg04_table_discrepancy": {
@@ -573,12 +579,6 @@
   "built_count": 29,
   "ruling": "RI-PRG04 provenance note: \"the counts are derived and should move if the map says so\". The RULES are checked in measured.rules and are the binding half. Filed, not resolved here."
  },
- "layout_repairs": [
-  {
-   "id": "hearth-cross-11",
-   "from_min": 41.12,
-   "to_min": 41.96
-  }
- ],
+ "layout_repairs": [],
  "rejected_candidates": []
 }

@@ -1,0 +1,457 @@
+{
+  "schema": "elder-souls/tool-coverage@1",
+  "id": "TOOL-COVERAGE-R1",
+  "round": 1,
+  "role": "tool critic",
+  "authority": "orchestration/TOOL-LOOP.md rule 3",
+  "verdict": "NOT_SATISFIED",
+  "summary": "Five of the twelve must be rebuilt; seven are sound. Ten of twelve ship a passing --self-test, but four of the five failures are invisible to the tool's own self-test. The repeated pattern is a substitution made where the world did not supply what the item asked for, chosen in the permissive direction, and not declared.",
+  "worst_instrument": "tools/analysis/build-viability.mjs",
+  "worst_instrument_why": "It is the axis that has pinned RI-CHR01 and RI-CHR03 at native 0 since wave 0, its output is about to un-pin them, it returns 540/540 viable with a self-test passing 8/8, and BOTH of its substitutions push toward viable:true — one justified by a false claim about the shipped data, the other undeclared anywhere in its output.",
+  "harness_state": {
+    "smoke": "PASS 6/6",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)",
+    "game_boots": true,
+    "note": "Confirmed before every measurement in this pass."
+  },
+
+  "c8": {
+    "at_start_of_pass": 55,
+    "now": 49,
+    "stability_warning": "The count moved three times DURING this review — fourteen agents share this tree. 49 is what was observed at the end of this pass, not a stable figure. Re-run node tools/corpus-index.mjs before quoting it. Only the three cleared by this critic are attributable here.",
+    "cleared_by_this_critic": 3,
+    "cleared_by_other_agents_mid_pass": 3,
+    "cleared_detail": [
+      "tools/corpus/disposition-oracle.mjs -> tools/dialogue/disposition-oracle.py (RI-DLG04) [this critic]",
+      "tools/corpus/dump-engine-disposition.mjs -> tools/dialogue/dump-engine-disposition.mjs (RI-DLG04) [this critic]",
+      "tools/experience/build-viability.mjs -> tools/analysis/build-viability.mjs (RI-CMP03) [this critic]",
+      "tools/analysis/marker-scan.mjs written by another agent during this pass",
+      "tools/analysis/ui-census.mjs written by another agent during this pass",
+      "tools/analysis/ui-layer.mjs written by another agent during this pass"
+    ],
+    "false_positives_remaining": 1,
+    "false_positive_detail": {
+      "reported": "tools/harness/viewpoints.js",
+      "reality": "tools/harness/viewpoints.json EXISTS and is what every naming item (RI-CAM07 M1, RI-UIX01 step 3) actually writes",
+      "cause": "tools/corpus-index.mjs:403 TOOL_RX = /tools\\/[A-Za-z0-9_\\-/.]*\\.(?:mjs|cjs|js|py)/g has no trailing boundary, so 'viewpoints.json' backtracks to match 'viewpoints.js'",
+      "fix": "append (?![A-Za-z0-9]) to TOOL_RX",
+      "impact": "inflates every C8 figure quoted since the sweep began, including the headline 67"
+    },
+    "genuinely_missing": 48,
+    "path_errors_remaining": 0,
+    "path_error_audit": "Every remaining name checked for a same-basename file anywhere under tools/ and corpus/. After the three corrections, none remain."
+  },
+
+  "tools": [
+    {
+      "path": "tools/analysis/build-viability.mjs",
+      "items": ["RI-CHR01 M6", "RI-CHR03 M5", "RI-MTH06 §A", "RI-CMP03 step 2"],
+      "ruling": "REBUILD",
+      "q1_measures_specified_thing": "FAIL",
+      "q2_can_fail": "PASS",
+      "q3_reads_world": "PASS (legitimate static exception, RI-MTH06 §A)",
+      "q4_self_blinding": "FAIL",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "8/8 PASS, exit 0",
+      "real_data_result": "540/540 viable, exit 0",
+      "verified_claims": [
+        "Imports the SHIPPING predicates rather than reimplementing them — CONFIRMED. game/src/engine.js imports FactionGates (l.19), composeCharacter (l.56), derivedDisposition (l.68) from the same modules; mitigate is consumed by combat/actor.js, harness/api.js, sim/magic/system.js, sim/combat-bridge.js.",
+        "Criterion 4 is not a stub and IS signature-sensitive — CONFIRMED independently by damage-multiplier sweep: x1->0, x2->0, x3->117, x4->279, x6->405, x8->504 criterion-4 failures of 540. Partial counts prove it discriminates between signatures rather than flipping all 540 together.",
+        "Criterion 3 is signature-sensitive — CONFIRMED by disposition-floor sweep: floor 60 -> 450 viable, 90 -> 90, 93 -> 54."
+      ],
+      "defects": [
+        {
+          "id": "BV-A",
+          "severity": "high",
+          "title": "The tier-5 substitution rests on a false claim about the shipped data",
+          "detail": "The tool prints into every report: 'regions.json declares no tier on any region'. FALSE. game/data/world/regions.json carries danger_tier 1-5 on all thirteen regions; deep-marshes and stone-wastes are danger_tier 5. game/src/engine.js:3306 consumes r.danger_tier in getTerrainAt(), so it is world-side and not paperwork. corpus/90-verdicts/wave1/W1-01.md:441 already named it.",
+          "substitution_is_wrong_in_both_directions": [
+            "INCLUDES cst_sap_speaker, whose fog gate gate-ceyatatar-vault is in blackwood (danger_tier 2)",
+            "EXCLUDES deep-kin-war-brood (regions: deep-marshes, stone-forest; 3 x inf_trash) — the only encounter authored in a tier-5 region, and the only multi-enemy fight in the data. fightEncounter resolves one enemy at a time and has no concept of a group."
+          ],
+          "ruling": "The substitution is NOT legitimate. The referent exists and the disclaimer that was supposed to keep the substitution honest is itself a false statement in the artifact.",
+          "fix": "Resolve the cohort as every enemy reachable in a danger_tier==5 region (via encounters[].regions and hearths.json fog_gates[].region) and fight the group. Where the cohort is thin, report unmeasurable rather than widening it."
+        },
+        {
+          "id": "BV-B",
+          "severity": "critical",
+          "title": "The disposition ceiling grants itself the thing under test, undeclared",
+          "detail": "questClearableInner resolves the giver's reaction group via npcGroupById (walking game/data/npcs/**) and falls back to bestDispositionCeiling — the MAXIMUM over all twelve reaction groups — on a miss.",
+          "census": {
+            "quest_givers_with_disposition_min": 41,
+            "resolving_to_a_reaction_group": 0,
+            "falling_back_to_best_over_all_groups": 41,
+            "fallback_rate": "100%",
+            "note": "The 15 NPC records carrying a reaction_group are all non-givers. No quest giver has an NPC record anywhere in game/data/; they exist only inside quest files."
+          },
+          "consequence": "Best-over-all-groups ceiling is 92-94 for every race and upbringing. Highest shipped giver disposition_min is 50. The permanent race+upbringing bar CANNOT FIRE for any signature.",
+          "worked_example": {
+            "character": "dunmer/lukiul",
+            "group": "RG-DEEP",
+            "true_ceiling": 34,
+            "ceiling_used_by_tool": 92,
+            "quest": "Q-DEEP-01 (speaker-teel-ashaan) requires 50",
+            "correct_result": "blocked",
+            "tool_result": "viable"
+          },
+          "why_worse_than_BV_A": [
+            "UNDECLARED — the model block declares the tier-5 substitution but says nothing about giver-group resolution, and the report carries no unresolved-giver count. A reader of reports/viability.json cannot discover it.",
+            "The self-test's 'criterion 1/3 falsifiable' cases drive the fixture floor to 200, above even the permissive 92 ceiling, so both pass identically whether the group lookup works or is 100% broken. The falsification is VACUOUS with respect to the mechanism it appears to test."
+          ],
+          "spec_reference": "This is precisely the stopped_at RI-MTH06 §A prints as its model of a useful failure: 'race term -40 + upbringing -4 puts the ceiling at 41'. The tool is structurally incapable of producing it on shipped data.",
+          "fix": "An unresolvable giver group is a DATA ABSENCE. TOOL-LOOP rule 1: report the absence and exit non-zero with a reason; never stub it to pass. Report the count, name the givers, mark those quests unmeasurable. Add a falsification that fails when group resolution is broken."
+        }
+      ],
+      "scoring_consequence": {
+        "binding": true,
+        "ruling": "RI-CHR01's Distinctness axis and RI-CHR03's Decidability axis MUST NOT be scored from this run. They remain corpus_debt against RI-MTH06 for one more round.",
+        "why": "The 540/540 is a real computation of a permissively substituted question, on the wrong cohort, with the item's own headline failure mode disabled. Un-pinning two items on it would hand them a score they have not earned."
+      }
+    },
+    {
+      "path": "tools/journey/gamepad-shim.mjs",
+      "items": ["RI-JRN01 M13", "RI-JRN04", "RI-MTH06 §B (A-JRN2)"],
+      "ruling": "REBUILD",
+      "q2_can_fail": "FAIL — it does not run at all",
+      "self_test_as_run": "CRASH, exit 1, uncaught TimeoutError, 3 of 3 attempts",
+      "builder_claim_contradicted": "orchestration/status/W1-TOOLS.json records 'gamepad-shim self-test 5/5 incl. null control' and 'gamepad-shim DID pass 5/5 against a booting game'. Not reproducible on a tree where smoke.mjs passes.",
+      "error": "page.reload: Timeout 30000ms exceeded. at launchGameWithShim (tools/journey/gamepad-shim.mjs:253:21)",
+      "defects": [
+        {"id": "GP-A", "severity": "critical", "title": "Hangs on page.reload({waitUntil:'load'})", "detail": "The null control (a bare launch) succeeds in the same run, so the game boots; the reload path is what is broken. The design comment concedes the shape: 'launch, install, and RELOAD, which replays init scripts'."},
+        {"id": "GP-B", "severity": "high", "title": "Crashes instead of reporting", "detail": "Throws an uncaught TimeoutError with a raw Node stack. Every other tool in the set routes failure through die(EXIT....) with a reason. It has a HARNESS_ABSENT exit path immediately below the failing line and never reaches it."},
+        {"id": "GP-C", "severity": "medium", "title": "A partial self-test reports nothing", "detail": "PASS/FAIL lines are buffered into lines[] and only written after every case completes. The null control had already PASSED when the crash occurred and that result was lost."}
+      ],
+      "blocks": "journey-run.mjs jrn04-pad leg; RI-JRN04 M13 is unmeasurable until it runs"
+    },
+    {
+      "path": "tools/journey/journey-run.mjs",
+      "items": ["RI-JRN01..09", "RI-MTH06 §B (A-JRN1) / method 5"],
+      "ruling": "REBUILD (narrow)",
+      "q1_measures_specified_thing": "PASS",
+      "q2_can_fail": "PASS",
+      "q3_reads_world": "PASS",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "FAIL",
+      "self_test_as_run": "5/5 PASS, exit 0 — RE-VERIFIED AGAINST A BOOTING GAME as requested",
+      "re_verification": {
+        "requested_because": "The builder recorded this as UNVERIFIED — the game was down on quest integrity failures (QuestBook: 8 integrity failures, Q-MAIN-15 naming Q-MAIN-16..23).",
+        "result": "PASSES 5/5",
+        "cases": [
+          "accessor empty before any surface — 0 entries via __HARNESS.getRenderedText(), open=false",
+          "real keyboard input reaches the world (entity-side) — player moved 2.2400 m under a real page.keyboard 'w'",
+          "null control: no input, no movement — player drifted 0 over 60 uncommanded frames",
+          "accessor non-empty on a frame known to carry text — censusBegin -> 12 strings, first 'JEEH-EI'",
+          "blinded accessor detected as empty (BOTH accessors) — reported unmeasurable, never '0 instruction hits'"
+        ],
+        "critic_note": "This is the standard the other four rebuilds should be held to: a null control, an ENTITY-SIDE observable rather than the model's own return value, and a blinding test that degrades to unmeasurable rather than to a zero that reads as a pass. RI-MTH07 §B applied to the instrument itself."
+      },
+      "defects": [
+        {
+          "id": "JR-A",
+          "severity": "high",
+          "title": "--sample-quests and --stratified are advertised and inert, and the leg still reports ok",
+          "detail": "Usage promises 'quests to sample' and 'stratify the quest sample by giver/region'. The entire jrn07-quest leg is: const qs = await handle.hOpt('getQuestState'); led.ok('m_quest_state', 'quest state', { sample: Number(args['sample-quests']||0), stratified: !!args.stratified, state: ... }). Nothing is sampled, nothing stratified, and the leg reports ok.",
+          "precedent": "This is cmb-reach.mjs --verify reproduced exactly — a flag asserted in a usage block, silently ignored, run exits 0 — in the round whose purpose was to stop that happening. RI-MTH07 §D.3: 'A comment asserting a check is not a check.'",
+          "fix": "Implement the sampling, or delete both flags and mark the jrn07 sampling leg led.unmeasurable(...) with the reason. It may not report ok."
+        }
+      ],
+      "flags_audited": "24 advertised; 23 reach real behaviour (--wall-clock-advance, --layouts, --scenario, --corruption, --deaths, --dpr, --pointer, --state all verified against code outside the usage literal). Only --sample-quests and --stratified are inert."
+    },
+    {
+      "path": "tools/journey/cadence.mjs",
+      "items": ["RI-JRN02 §B (C1..C10)"],
+      "ruling": "REBUILD (narrow)",
+      "q1_measures_specified_thing": "FAIL",
+      "q2_can_fail": "PARTIAL",
+      "q3_reads_world": "PASS",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "5/5 PASS",
+      "defects": [
+        {
+          "id": "CD-A",
+          "severity": "high",
+          "title": "LOCOMOTION_ACTIONS is not the shipped closed action set",
+          "documented_as": "'These are the closed action set's locomotion members.'",
+          "shipped_action_set": ["light", "heavy", "roll", "block", "parry", "sprint", "jump", "use_item", "interact", "lock_on", "two_hand", "swap_right", "swap_left", "menu", "crouch", "spell_cycle"],
+          "source": "game/src/input/actions.js:26",
+          "detail": "Eleven of cadence's sixteen names are absent from the closed set (forward back left right move walk run jog look turn camera) — they appear to come from rebind.js's internal mapping, not the emitted event. Meanwhile it EXCLUDES sprint, jump and crouch, which ARE in the closed set; crouch is a toggle that changes a flag, i.e. a C1 state change by the item's own words.",
+          "independent_falsification": {
+            "construction": "an hour of pure locomotion, 21,601 input_action events, under seven action names",
+            "results": [
+              {"action": "forward", "C1": "fail", "gap_max_s": 3600, "excluded": "21601/21601", "traversal_fraction": 1.0},
+              {"action": "moveForward", "C1": "pass", "gap_max_s": 0.17, "excluded": "0/21601", "traversal_fraction": 0},
+              {"action": "w", "C1": "pass", "gap_max_s": 0.17, "excluded": "0/21601", "traversal_fraction": 0},
+              {"action": "axis_move", "C1": "pass", "gap_max_s": 0.17, "excluded": "0/21601", "traversal_fraction": 0},
+              {"action": "strafe_left", "C1": "pass", "gap_max_s": 0.17, "excluded": "0/21601", "traversal_fraction": 0},
+              {"action": "MoveForward", "C1": "pass", "gap_max_s": 0.17, "excluded": "0/21601", "traversal_fraction": 0},
+              {"action": "lookX", "C1": "pass", "gap_max_s": 0.17, "excluded": "0/21601", "traversal_fraction": 0}
+            ],
+            "reading": "Six of seven produce exactly the reading the file exists to prevent: an hour walking in a circle as maximally engaged."
+          },
+          "mitigation_stated_in_fairness": "Against THIS build the tool is not fooled today: movement is an axis, not an action. The engine emits input_action only for attack/roll moves (sim/player.js:109) and census commits (engine.js:1514), so an hour of walking emits no input events and C1 goes red for the right reason by accident. The defect is that the exclusion encodes an ASSUMPTION about the world instead of reading it — a mild RI-MTH07 q3 failure — and that the audit field the header offers as its defence (locomotion_actions_excluded) will always print empty, so it audits nothing.",
+          "fix": "import { ACTIONS } from '../../game/src/input/actions.js' and assert every LOCOMOTION_ACTIONS member is in it, failing loudly when it is not."
+        },
+        {"id": "CD-B", "severity": "low", "title": "An hour of no-op interact mashing reads C1 pass", "detail": "gap 0.5 s. An action that opened nothing and changed nothing is not one of C1's five clauses. C3 (apm_nc 120, fail) and C10 (variety 1, fail) do catch it, so the item is not fooled; C1 alone is."},
+        {"id": "CD-C", "severity": "low", "title": "export function analyse is dead", "detail": "Importing the module runs the CLI and process.exit()s, so no other tool can reuse it."}
+      ],
+      "what_is_right": "An empty trace is unmeasurable on all ten checks and never a pass. C4, C9 and C10 degrade to unmeasurable with a stated reason rather than to zeros. C9 explicitly refuses to compute proximity from world/** because that would measure the design document. These are the hard parts and they are correct."
+    },
+    {
+      "path": "tools/journey/competence.mjs",
+      "items": ["RI-JRN02 §C (K1..K7)"],
+      "ruling": "REBUILD (narrow)",
+      "q1_measures_specified_thing": "PARTIAL",
+      "q2_can_fail": "FAIL (gear clause)",
+      "q3_reads_world": "PASS",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "5/5 PASS",
+      "k7_confirmed_holding": "An identical improvement measured against a weaker-tier late enemy yields status:unmeasurable, blocker K7_WEAKER_LATE — voided, not caveated. Independently reproduced.",
+      "defects": [
+        {
+          "id": "CP-A",
+          "severity": "high",
+          "title": "The gear clause silently degrades to unchecked",
+          "spec": "RI-JRN02 §C: 'no equipment upgrade between them: if the improvement requires better gear, the game taught the player to shop, not to fight.'",
+          "file_header_claims": "'the loadout is captured at both encounters and any difference invalidates the comparison'",
+          "detail": "compareLoadouts() returns { changed: null, why: 'no trace record carries player.loadout...' } when the field is absent. The caller is `if (gear && gear.changed)`. null is falsy, so NO blocker is raised when the clause cannot be checked at all.",
+          "independent_falsification": [
+            {"trace": "loadout present, unchanged", "gear_changed": false, "blockers": [], "status": "proceeds (correct)"},
+            {"trace": "loadout present, upgraded", "gear_changed": true, "blockers": ["GEAR_CHANGED"], "status": "unmeasurable (correct)"},
+            {"trace": "loadout field absent", "gear_changed": null, "blockers": [], "status": "proceeds (DEFECT)"}
+          ],
+          "reading": "A competence curve bought entirely with gear is certified whenever the trace omits player.loadout. The self-test's own fixture (mkEnc) never emits that field, which is why the builder's 'a real improvement is recognised' case passed with the gear clause silently unchecked.",
+          "precedent": "Third instance in this review of a check asserted in a comment and absent in effect. RI-MTH07 §D.3.",
+          "fix": "An unavailable gear check must block as unmeasurable, exactly as K7 does when it cannot resolve a statblock."
+        },
+        {
+          "id": "CP-B",
+          "severity": "low",
+          "title": "K7's three-value tier ladder hides a 7.6x weakening",
+          "detail": "champion_hist_marked (2876 hp) and cst_sap_speaker (380 hp) are BOTH tier 'elite', so E_first=champion -> E_late=sap_speaker rates K7:pass. Confirmed by construction.",
+          "ruling": "The tool obeys RI-JRN02 K7 to the letter and the letter is thin. NOT a rebuild trigger.",
+          "recommendation": "Also report the hp/dps spread between the two cohorts so a critic can see what the tier label is hiding."
+        }
+      ]
+    },
+    {
+      "path": "tools/journey/beat-extract.mjs",
+      "items": ["RI-JRN01 blind pair", "RI-MTH06 §C"],
+      "ruling": "ACCEPT",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS", "q5": "PASS",
+      "self_test_as_run": "6/6 PASS",
+      "note": "Refuses to write the committed reference file, asserted as a check rather than a comment. The right guard: an extractor that can regenerate the reference side is one that can quietly move the goalposts between rounds."
+    },
+    {
+      "path": "corpus/88-journeys/data/mw-open-beats.json",
+      "items": ["RI-MTH06 §C", "RI-JRN01 blind pair"],
+      "ruling": "ACCEPT",
+      "beats": 10,
+      "detail": "MW/OPEN rows 3-12 in the same four-field form as our side (actor, place, utterance, fields_set), with side, source, provenance, confidence and owner declared. Satisfies RI-MTH06 §C — wave 1's RI-JRN01 pack was discriminable on REGISTER because one side was transcript and the other stage direction. Committed once, so every future critic compares against the same text."
+    },
+    {
+      "path": "tools/experience/session-run.mjs",
+      "items": ["RI-EXP01 step 1", "RI-EXP05", "RI-CMP03"],
+      "ruling": "ACCEPT — best instrument of the twelve",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS (exemplary)", "q5": "PASS",
+      "self_test_as_run": "6/6 PASS — RE-VERIFIED AGAINST A BOOTING GAME as requested",
+      "re_verification": {
+        "requested_because": "Builder recorded this as UNVERIFIED — the game was down on quest integrity failures.",
+        "result": "PASSES 6/6",
+        "cases": [
+          "null control: teleport works BEFORE the profile is installed",
+          "every prohibited method throws once installed (teleport spawn aggro setTimeOfDay setWeather loadState)",
+          "each attempt is recorded as a violation — 6 for 6",
+          "cannot be bypassed by calling window.__HARNESS directly",
+          "non-prohibited methods still work — listEntities() -> 0 entities",
+          "a violation VOIDS the run (not a footnote)"
+        ]
+      },
+      "why_best": "The only one of the twelve that answers question 4 structurally rather than by promising. Prohibitions are installed IN THE PAGE by replacing the __HARNESS methods, so a driving agent reaching window.__HARNESS via page.evaluate cannot walk past a Node-side check — and the self-test proves that specific bypass is closed. It carries a null control, proves non-prohibited methods still work (a profile that breaks everything measures nothing), and proves a violation voids rather than footnotes.",
+      "spec_conformance": "first-hour refusal set is VERBATIM RI-EXP01 lines 186-187: teleport, spawn, aggro, setTimeOfDay, setWeather, loadState.",
+      "addressed_failure": "The build-identity profile additionally refuses setSkills/setAttributes/setMagicSkills/setGold/learnSpell — the direct answer to the frozen-skill-register failure that survived two rounds because every magic probe in this tree, including two written by a critic, opened by setting all magic skills to 100."
+    },
+    {
+      "path": "tools/experience/beat-extract.mjs",
+      "items": ["RI-EXP01"],
+      "ruling": "ACCEPT",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS", "q5": "PASS",
+      "self_test_as_run": "8/8 PASS",
+      "note": "The falsifications are subtle and correct: found_not_given does not fire when a topic named the item first; a topic AFTER the pickup does not retro-convert it, so 'at the time it fires' is load-bearing for T_found (RI-EXP01's headline metric); combat requires an AGGRO hostile and not merely an attack."
+    },
+    {
+      "path": "tools/experience/beat-diff.mjs",
+      "items": ["RI-EXP01 STEP 5"],
+      "ruling": "ACCEPT",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS", "q5": "PASS",
+      "self_test_as_run": "9/9 PASS",
+      "note": "A beat outside tolerance is LATE not HIT; one observation cannot satisfy two sheet beats, which stops a single lucky event inflating beats_hit. Implements RI-EXP01 STEP 5 (the negative artifact — the search performed and its empty output) on every missing row, the step that normally gets dropped. Schema-tolerant across both beat-sheet shapes with a self-test proving both give identical verdicts."
+    },
+    {
+      "path": "tools/experience/isolation-check.mjs",
+      "items": ["RI-EXP01 step 0"],
+      "ruling": "ACCEPT",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS", "q5": "PASS",
+      "self_test_as_run": "6/6 PASS",
+      "note": "Catches a beat-sheet read hidden inside a Bash command line, where leaks actually hide — `cat corpus/...` never appears in a file_path field. An inbox materialising a whole reference item is VOID by construction. 'enforced' with no tool-call log degrades to 'attested' and caps the item at 6 rather than passing — degradation that costs the claim, which is the right direction."
+    },
+    {
+      "path": "tools/experience/log-lint.mjs",
+      "items": ["PLAYTHROUGH-CRITIC §5.4"],
+      "ruling": "ACCEPT",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS", "q5": "PASS",
+      "self_test_as_run": "8/8 PASS",
+      "note": "Includes a FALSE-POSITIVE CONTROL — a genuinely neutral 5-line log passes. A lint that fires on everything gets ignored rather than obeyed, and testing for that is unusually mature. Exits 20 as §5.4 names."
+    },
+    {
+      "path": "tools/experience/lib/md.mjs",
+      "items": ["RI-EXP01 (generator library)"],
+      "ruling": "ACCEPT (library, not a command)",
+      "q1": "PASS", "q2": "PASS", "q3": "PASS", "q4": "PASS", "q5": "PARTIAL",
+      "defect": {
+        "severity": "low",
+        "title": "Builder's --help claim is false for 1 of 12",
+        "detail": "W1-TOOLS.json records 'RI-MTH06 M2 (exit-code contract) verified: all 12 tools exit 0 on --help with a usage block.' md.mjs --help exits 0 and prints NOTHING. RI-MTH06 method 2 asks for exit 0 AND a usage block.",
+        "fix": "Stop counting a library among the twelve commands, rather than bolting a usage block onto it."
+      },
+      "note": "Correctly built as a library: the generator reads the prose item and never a hand-maintained copy, so RI-EXP01.beats.json cannot drift from RI-EXP01."
+    }
+  ],
+
+  "referred_judgements": [
+    {
+      "id": "RULING-1",
+      "subject": "Corpus path correction for the dialogue tools vs building duplicates",
+      "ruling": "BUILDER IS RIGHT — path correction, not duplication. APPLIED.",
+      "reasoning": "tools/corpus/ has never existed. Building a second oracle under a different directory would be exactly the 'adjacent thing wearing the name' TOOL-LOOP forbids. But blessing a path to a tool that does not work would be worse, because it clears the C8 warning and leaves nothing behind it — so I ran the pair end to end rather than taking the builder's word.",
+      "verification": {
+        "command_1": "python3 tools/dialogue/disposition-oracle.py --sweep 2000 --out oracle.tsv  -> exit 0",
+        "command_2": "node tools/dialogue/dump-engine-disposition.mjs --cases oracle.tsv --out ours.tsv -> exit 0",
+        "agreement": "2000/2000 cases agree numerically on output columns 31-35 (D, d, target1, target2, target3)"
+      },
+      "rider": {
+        "title": "The corpus's .mjs extension for the oracle is ITSELF the error and must not be honoured",
+        "detail": "RI-DLG04 step 1's first sentence demands a reference implemented 'independently of our code'. The Python file is in a different language ON PURPOSE — its header says so. 'Correcting' it into a .mjs sibling of the engine would destroy exactly the independence the item is buying. Corrected path is tools/dialogue/disposition-oracle.py, invoked with python3."
+      },
+      "further_defects_found_by_running_the_step": [
+        {
+          "severity": "critical",
+          "title": "RI-DLG04 step 1 has been a check that CANNOT FAIL since it was written",
+          "detail": "The verification command was `diff <(cut -f9-12 /tmp/oracle.tsv) <(cut -f9-12 /tmp/ours.tsv)`. Columns 9-12 are pLevel, pReputation, pFatigue, pFatigueMax — INPUTS, which both files echo verbatim. The check passed identically whether or not the engine agreed with the oracle. Measured: diff of cols 9-12 = 0 lines. The outputs are columns 31-35.",
+          "corrected": true
+        },
+        {
+          "severity": "medium",
+          "title": "Signed-zero formatting makes a textual diff report a false 15% mismatch",
+          "detail": "The oracle emits -0.000000000 where the engine emits 0.000000000. On the real output columns a textual diff reports 1132 differing lines of 2000 when the arithmetic agrees exactly. The step must compare NUMERICALLY at +/-0.001, which is what the item's own stated requirement says and what its command did not do.",
+          "corrected": true
+        }
+      ],
+      "edits_applied": [
+        "corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md — paths corrected, python3 invocation, numeric comparison over columns 31-35, CORRECTED wave 1 note. NO THRESHOLD CHANGED.",
+        "corpus/95-experience/RI-CMP03-build-identity-payoff.md — path corrected to tools/analysis/build-viability.mjs, plus a PATH CORRECTED, CONTRACT STILL OPEN note."
+      ],
+      "third_path_error_the_builder_missed": {
+        "item": "RI-CMP03 step 2",
+        "named": "tools/experience/build-viability.mjs",
+        "actual": "tools/analysis/build-viability.mjs — where RI-MTH06 §A and RI-CHR01 M6 both put it, so the path in RI-CMP03 was the error",
+        "critical_caveat": "Correcting the path does NOT make the step runnable. RI-CMP03 asks for --chains and for V-MAIN / V-FAC / V-BOSS per build archetype plus a driver-refusal list. The shipped tool implements --signatures over RI-CHR01 §5's 540-cell grid and has NO --chains mode at all (confirmed: 0 occurrences in --help). Step 2 remains corpus_debt against RI-MTH06. The C8 warning cleared; the capability did not. Clearing a warning without the capability behind it is the same defect as a phantom tool wearing better clothes."
+      }
+    },
+    {
+      "id": "RULING-2",
+      "subject": "Audio and platform performance tools deliberately not written",
+      "ruling": "RIGHT ON THE SUBSTANCE, WRONG ON THE CONCLUSION.",
+      "premises_confirmed": [
+        "Audio is genuinely absent with a named owner: game/src/harness/api.js:1387 declares { what: 'audio', owner: 'RI-AUD01..03 / wave-1 piece W1-25', surfaced_as: 'audioMB: 0...' }; engine.js:4097 reports audioMB: 0.",
+        "RI-PLT01 rule T1 does forbid the number: 'A manifest whose renderer string contains SwiftShader, llvmpipe, software or Mesa may not produce a Tier-H score at all — not a low one, not a provisional one.' Our renderer is SwiftShader, confirmed in this pass's smoke.mjs output."
+      ],
+      "where_the_builder_is_wrong": {
+        "detail": "'Write nothing' is not what the corpus asks. TOOL-LOOP rule 1: 'If the tool cannot be written honestly — because the system it measures does not exist — then write it so it reports the absence and exits non-zero with a reason. Never stub it to pass.' Writing nothing and stubbing to pass are OPPOSITE errors; the rule names a third thing, and that third thing is the deliverable.",
+        "sharper_on_platform": "RI-PLT01 T1 names perf-run.mjs as the enforcer of its own rule: 'The tooling enforces this (tools/platform/perf-run.mjs refuses to emit Tier-H fields when the renderer is software) so that a well-meaning critic cannot report a SwiftShader frame time as evidence.' The item's defence against its own worst failure mode IS a tool that does not exist. Today nothing stops that critic. This is a live risk created by the omission, not a neutral deferral — and the same shape as everything else in this review: a check asserted in prose, absent in fact."
+      },
+      "required_action": "The 12 tools (4 audio + 8 platform) must be written as ABSENCE-REPORTERS: name the absent system and its owner, emit NO number, exit non-zero. perf-run.mjs must additionally implement the T1 renderer refusal, because an item delegates its enforcement to it."
+    }
+  ],
+
+  "corpus_debt": {
+    "rule": "RI-MTH06 §E.2 — a dimension blocked SOLELY by a phantom tool is recorded unmeasurable, its weight removed from numerator and denominator, and the debt filed against RI-MTH06. It is NOT a zero against any builder.",
+    "entries": [
+      {
+        "system": "audio",
+        "state": "not_implemented",
+        "owner": "W1-25 (RI-AUD01..03)",
+        "evidence": "game/src/harness/api.js:1387; game/src/engine.js:4097 audioMB: 0",
+        "tools_owed": ["tools/analysis/audio-sync.mjs", "tools/analysis/audio-budget.mjs", "tools/analysis/music-coverage.mjs", "tools/blind/audio-pack.mjs"],
+        "required_form": "absence-reporter: name the absent system and owner, emit no number, exit non-zero",
+        "charge": "corpus_debt against RI-MTH06, charged to the ABSENT AUDIO SYSTEM — never a zero against any builder"
+      },
+      {
+        "system": "platform performance measurement",
+        "state": "unmeasurable on this harness by RI-PLT01 rule T1",
+        "owner": "UNASSIGNED — needs an owner",
+        "evidence": "RI-PLT01 rule T1; smoke.mjs renderer string contains SwiftShader",
+        "tools_owed": ["tools/platform/perf-run.mjs", "tools/platform/heap-walk.mjs", "tools/platform/hitch-census.mjs", "tools/platform/leak-run.mjs", "tools/platform/load-run.mjs", "tools/platform/stream-audit.mjs", "tools/platform/decoupling.mjs", "tools/analysis/asset-budget.mjs"],
+        "required_form": "absence-reporter; perf-run.mjs must additionally implement the T1 renderer refusal that RI-PLT01 delegates to it",
+        "charge": "corpus_debt against RI-MTH06 — never a zero against any builder"
+      },
+      {
+        "system": "RI-CMP03 step 2 build-chain viability",
+        "state": "path corrected, contract not met",
+        "owner": "W1-TOOLS",
+        "evidence": "tools/analysis/build-viability.mjs has no --chains mode; 0 occurrences in --help",
+        "charge": "corpus_debt against RI-MTH06"
+      },
+      {
+        "system": "RI-CHR01 Distinctness / RI-CHR03 Decidability",
+        "state": "tool exists but its result is not admissible this round",
+        "owner": "W1-TOOLS",
+        "evidence": "TOOL-COVERAGE-R1 defects BV-A and BV-B",
+        "charge": "remains corpus_debt against RI-MTH06 for one more round; MUST NOT be scored from the current 540/540 run"
+      }
+    ]
+  },
+
+  "rebuild_list": [
+    {"tool": "tools/analysis/build-viability.mjs", "actions": ["Resolve the tier-5 cohort from danger_tier==5 and fight the authored group, not one enemy at a time", "Delete the false 'regions.json declares no tier' note", "Report the unresolved-giver count and mark those quests unmeasurable instead of granting the best reaction group in the game", "Add a falsification that fails when giver-group resolution is broken — the current fixture floor of 200 cannot see it"]},
+    {"tool": "tools/journey/gamepad-shim.mjs", "actions": ["Make it run", "Fail through die(EXIT....) with a reason instead of an uncaught stack", "Flush accumulated PASS/FAIL lines before exiting on a crash"]},
+    {"tool": "tools/journey/journey-run.mjs", "actions": ["Implement --sample-quests / --stratified, or delete them and mark the jrn07 leg unmeasurable. It may not report ok."]},
+    {"tool": "tools/journey/cadence.mjs", "actions": ["Derive LOCOMOTION_ACTIONS from game/src/input/actions.js and assert membership at startup", "Fix the dead analyse export"]},
+    {"tool": "tools/journey/competence.mjs", "actions": ["An unavailable gear check must block as unmeasurable, not pass silently", "Report the hp/dps spread alongside K7's tier comparison"]}
+  ],
+  "do_not_touch": ["tools/journey/beat-extract.mjs", "corpus/88-journeys/data/mw-open-beats.json", "tools/experience/session-run.mjs", "tools/experience/beat-extract.mjs", "tools/experience/beat-diff.mjs", "tools/experience/isolation-check.mjs", "tools/experience/log-lint.mjs"],
+
+  "also_filed": [
+    {
+      "target": "tools/corpus-index.mjs:403",
+      "severity": "medium",
+      "title": "C8 regex has no trailing boundary and reports a phantom for a file that exists",
+      "fix": "TOOL_RX needs (?![A-Za-z0-9]) appended",
+      "impact": "inflates every C8 figure quoted since the sweep began, including the headline 67"
+    }
+  ],
+
+  "provenance": {
+    "kind": "measured",
+    "by": "tool critic, round 1, fresh context, wrote none of the twelve",
+    "harness_confirmed_before_every_measurement": "node tools/harness/smoke.mjs PASS 6/6",
+    "falsifications_constructed_by_the_critic": [
+      "seven-name locomotion sweep against cadence.mjs",
+      "three-way gear-clause comparison against competence.mjs",
+      "same-tier-weaker-enemy case against competence.mjs K7",
+      "damage-multiplier sweep (x1..x8) against build-viability criterion 4",
+      "disposition-floor sweep (60/90/93/95) against build-viability criterion 3",
+      "quest-giver reaction-group census (41 givers, 0 resolved)",
+      "2000-case oracle/engine agreement run for RULING-1"
+    ],
+    "self_test_results_are_first_hand": "Quoted from runs executed in this pass, not from the builder's record. Where they disagree with orchestration/status/W1-TOOLS.json — gamepad-shim 5/5 versus a hard crash, and md.mjs's usage block — the disagreement is stated rather than reconciled.",
+    "constraints_observed": ["no git commit", "no tools/publish.mjs", "no indexed data file deleted", "no git worktree add"],
+    "files_modified": [
+      "corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md",
+      "corpus/95-experience/RI-CMP03-build-identity-payoff.md",
+      "corpus/80-methods/TOOL-COVERAGE-R1.md",
+      "corpus/80-methods/TOOL-COVERAGE-R1.json"
+    ]
+  }
+}
