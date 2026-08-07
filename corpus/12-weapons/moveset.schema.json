@@ -1,245 +1,563 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "elder-souls/moveset@1",
-  "title": "ES-MOVESET/1 — the per-weapon moveset contract",
-  "description": "Every file under game/data/combat/movesets/<weapon-id>.json MUST validate against this schema. It is the declared half of the two-source rule in HARNESS.md §7.4: the critic diffs this file against the reference tables in RI-WPN01/02/04 and THEN confirms the harness trace agrees with this file. A mismatch between declared and observed is a hard fail.",
-  "type": "object",
-  "required": ["schema", "weapon_id", "name", "class", "weight_tier", "stance", "slots"],
-  "additionalProperties": false,
-  "properties": {
-    "schema": { "const": "elder-souls/moveset@1" },
-    "weapon_id": {
-      "type": "string",
-      "pattern": "^[a-z0-9_]+$",
-      "description": "Stable id. HARNESS.md §7.2: renaming breaks cross-wave comparison."
-    },
-    "name": { "type": "string", "minLength": 2 },
-    "class": {
-      "enum": ["DGR", "SSW", "CSW", "TSW", "FST", "SPR", "AXE", "MCE", "WHP", "HLB", "GSW", "CGS", "GHM", "UGS", "BOW"],
-      "description": "Weapon class code. RI-WPN02 §A is authoritative on the fifteen."
-    },
-    "weight_tier": {
-      "enum": ["light", "medium", "heavy", "ultra", "ranged"],
-      "description": "Drives hitstop and impact tables in RI-WPN05 §A. Must match the class's tier in RI-WPN02 §A."
-    },
-    "baseline_ref": {
-      "type": ["string", "null"],
-      "description": "weapon_id of the class-baseline weapon this weapon inherits its clip family from, or null if this weapon IS the baseline. RI-WPN03 computes deviation against this."
-    },
-    "stance": {
-      "type": "object",
-      "required": ["one_hand", "two_hand"],
-      "additionalProperties": false,
-      "properties": {
-        "one_hand": { "$ref": "#/$defs/stanceBlock" },
-        "two_hand": { "$ref": "#/$defs/stanceBlock" },
-        "off_hand": {
-          "$ref": "#/$defs/stanceBlock",
-          "description": "Present only when this weapon is legal in the offhand of a dual-wield configuration. Supplies the off.* slots. RI-WPN06 §C."
-        }
-      }
-    },
-    "parry_capable": {
-      "type": "boolean",
-      "description": "Whether this weapon may occupy the offhand parry role (RI-WPN06 §D). Non-parry classes MUST declare false; a true here with no parry slot is a schema error."
-    },
-    "guardbreak_kind": {
-      "enum": ["kick", "shield_bash", "thrust_through", "shoulder", "none"],
-      "description": "Which guardbreak animation family this weapon uses. 'none' is legal ONLY for BOW."
-    },
-    "reach_m": { "type": "number", "minimum": 0.5, "maximum": 6.0 },
-    "arc_sweep_deg": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 360,
-      "description": "Total angular travel of the hitbox capsule across the active window of slot r1.1, in the player's local yaw frame. The single most diagnostic per-class number after startup."
-    },
-    "slots": {
-      "type": "object",
-      "description": "Keyed by slot id. Every id in RI-WPN01 §B marked MANDATORY must be present. Absent mandatory slot = the weapon does not exist for scoring purposes.",
-      "propertyNames": { "$ref": "#/$defs/slotId" },
-      "additionalProperties": { "$ref": "#/$defs/slot" }
-    },
-    "notes": { "type": "string" }
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "$id": "elder-souls/moveset@1",
+ "title": "ES-MOVESET/1 — the per-weapon moveset contract",
+ "description": "Every file under game/data/combat/movesets/<weapon-id>.json MUST validate against this schema. It is the declared half of the two-source rule in HARNESS.md §7.4: the critic diffs this file against the reference tables in RI-WPN01/02/04 and THEN confirms the harness trace agrees with this file. A mismatch between declared and observed is a hard fail.",
+ "type": "object",
+ "required": [
+  "schema",
+  "weapon_id",
+  "name",
+  "class",
+  "weight_tier",
+  "stance",
+  "slots"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "schema": {
+   "const": "elder-souls/moveset@1"
   },
-  "allOf": [
-    {
-      "_comment": "AMENDED wave 1 (W1-10, AMENDMENT-W1-10-01 D8). slots.minProperties was an unconditional 25, which denied the reduced table RI-WPN01 \u00a7A grants BOW in prose ('BOW is the one class permitted a reduced table ... a mandatory count of 7'). The conditional below is exactly what the item says.",
-      "if": { "properties": { "class": { "const": "BOW" } }, "required": ["class"] },
-      "then": { "properties": { "slots": { "minProperties": 7 } } },
-      "else": { "properties": { "slots": { "minProperties": 25 } } }
+  "weapon_id": {
+   "type": "string",
+   "pattern": "^[a-z0-9_]+$",
+   "description": "Stable id. HARNESS.md §7.2: renaming breaks cross-wave comparison."
+  },
+  "name": {
+   "type": "string",
+   "minLength": 2
+  },
+  "class": {
+   "enum": [
+    "DGR",
+    "SSW",
+    "CSW",
+    "TSW",
+    "FST",
+    "SPR",
+    "AXE",
+    "MCE",
+    "WHP",
+    "HLB",
+    "GSW",
+    "CGS",
+    "GHM",
+    "UGS",
+    "BOW"
+   ],
+   "description": "Weapon class code. RI-WPN02 §A is authoritative on the fifteen."
+  },
+  "weight_tier": {
+   "enum": [
+    "light",
+    "medium",
+    "heavy",
+    "ultra",
+    "ranged"
+   ],
+   "description": "Drives hitstop and impact tables in RI-WPN05 §A. Must match the class's tier in RI-WPN02 §A."
+  },
+  "baseline_ref": {
+   "type": [
+    "string",
+    "null"
+   ],
+   "description": "weapon_id of the class-baseline weapon this weapon inherits its clip family from, or null if this weapon IS the baseline. RI-WPN03 computes deviation against this."
+  },
+  "stance": {
+   "type": "object",
+   "required": [
+    "one_hand",
+    "two_hand"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "one_hand": {
+     "$ref": "#/$defs/stanceBlock"
+    },
+    "two_hand": {
+     "$ref": "#/$defs/stanceBlock"
+    },
+    "off_hand": {
+     "$ref": "#/$defs/stanceBlock",
+     "description": "Present only when this weapon is legal in the offhand of a dual-wield configuration. Supplies the off.* slots. RI-WPN06 §C."
     }
-  ],
-  "$defs": {
-    "stanceBlock": {
-      "type": "object",
-      "required": ["stamina_mult", "motion_value_mult", "poise_damage_mult"],
-      "additionalProperties": false,
-      "properties": {
-        "stamina_mult": { "type": "number", "minimum": 0.5, "maximum": 2.0 },
-        "motion_value_mult": { "type": "number", "minimum": 0.5, "maximum": 2.0 },
-        "poise_damage_mult": { "type": "number", "minimum": 0.5, "maximum": 3.0 },
-        "exclusive_slots": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/slotId" },
-          "description": "Slot ids that exist ONLY in this stance. RI-WPN06 §B requires >= 2 for two_hand on every melee class."
-        }
-      }
+   }
+  },
+  "parry_capable": {
+   "type": "boolean",
+   "description": "Whether this weapon may occupy the offhand parry role (RI-WPN06 §D). Non-parry classes MUST declare false; a true here with no parry slot is a schema error."
+  },
+  "guardbreak_kind": {
+   "enum": [
+    "kick",
+    "shield_bash",
+    "thrust_through",
+    "shoulder",
+    "none"
+   ],
+   "description": "Which guardbreak animation family this weapon uses. 'none' is legal ONLY for BOW."
+  },
+  "reach_m": {
+   "type": "number",
+   "minimum": 0.5,
+   "maximum": 6.0
+  },
+  "arc_sweep_deg": {
+   "type": "number",
+   "minimum": 0,
+   "maximum": 360,
+   "description": "Total angular travel of the hitbox capsule across the active window of slot r1.1, in the player's local yaw frame. The single most diagnostic per-class number after startup."
+  },
+  "slots": {
+   "type": "object",
+   "description": "Keyed by slot id. Every id in RI-WPN01 §B marked MANDATORY must be present. Absent mandatory slot = the weapon does not exist for scoring purposes.",
+   "propertyNames": {
+    "$ref": "#/$defs/slotId"
+   },
+   "additionalProperties": {
+    "$ref": "#/$defs/slot"
+   }
+  },
+  "notes": {
+   "type": "string"
+  }
+ },
+ "allOf": [
+  {
+   "_comment": "AMENDED wave 1 (W1-10, AMENDMENT-W1-10-01 D8). slots.minProperties was an unconditional 25, which denied the reduced table RI-WPN01 §A grants BOW in prose ('BOW is the one class permitted a reduced table ... a mandatory count of 7'). The conditional below is exactly what the item says.",
+   "if": {
+    "properties": {
+     "class": {
+      "const": "BOW"
+     }
     },
-    "slotId": {
-      "type": "string",
-      "enum": [
-        "r1.1", "r1.2", "r1.3", "r1.4", "r1.5",
-        "r2", "r2.charged", "r2.follow",
-        "run.r1", "run.r2",
-        "roll.r1", "roll.r2",
-        "backstep.r1",
-        "jump.r1", "jump.r2",
-        "plunge",
-        "guard.counter",
-        "guardbreak",
-        "art.1", "art.2",
-        "parry",
-        "off.r1.1", "off.r1.2", "off.r2",
-        "shield.bash", "shield.charge",
-        "2h.r1.1", "2h.r1.2", "2h.r1.3", "2h.r1.4", "2h.r1.5",
-        "2h.r2", "2h.r2.charged", "2h.r2.follow",
-        "2h.run.r1", "2h.run.r2",
-        "2h.roll.r1", "2h.roll.r2",
-        "2h.backstep.r1",
-        "2h.jump.r1", "2h.jump.r2",
-        "2h.guard.counter",
-        "2h.art.1", "2h.art.2",
-        "bow.draw", "bow.quick", "bow.aimed", "bow.roll"
-      ]
+    "required": [
+     "class"
+    ]
+   },
+   "then": {
+    "properties": {
+     "slots": {
+      "minProperties": 7
+     }
+    }
+   },
+   "else": {
+    "properties": {
+     "slots": {
+      "minProperties": 25
+     }
+    }
+   }
+  }
+ ],
+ "$defs": {
+  "stanceBlock": {
+   "type": "object",
+   "required": [
+    "stamina_mult",
+    "motion_value_mult",
+    "poise_damage_mult"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "stamina_mult": {
+     "type": "number",
+     "minimum": 0.5,
+     "maximum": 2.0
     },
-    "slot": {
-      "type": "object",
-      "required": [
-        "anim", "trigger", "startup_f", "active_f", "recovery_f",
-        "stamina", "motion_value", "poise_damage", "hyperarmour", "hitbox"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "anim": {
-          "type": "string",
-          "pattern": "^clip_[a-z0-9_]+$",
-          "description": "Animation clip id. THE load-bearing field of this schema. RI-WPN03's every measurement is a function of the multiset of clip ids across all weapons. Two slots with the same clip id MUST play byte-identical animation."
-        },
-        "anim_owner": {
-          "type": "string",
-          "description": "weapon_id that owns this clip. Equal to this file's weapon_id when the clip is unique to it. RI-WPN03 M2 counts unique clips by anim_owner == weapon_id."
-        },
-        "trigger": { "$ref": "#/$defs/trigger" },
-        "chains_to": {
-          "type": ["string", "null"],
-          "description": "slot id this slot may chain into via the 8-frame combo buffer (RI-CMB02 §D.5), or null to terminate the chain."
-        },
-        "chain_index": { "type": "integer", "minimum": 1, "maximum": 5 },
-        "startup_f": { "type": "integer", "minimum": 6, "maximum": 180, "description": "AMENDED wave 1 (W1-10, AMENDMENT-W1-10-01 D3): was 4..90, which forbade GHM R2 startup 96 and UGS R2 startup 104 (RI-WPN02 \u00a7B, rebased). Minimum raised to RI-CMB02 \u00a7E's 6 f@60 floor, which S22 does NOT rebase." },
-        "active_f": { "type": "integer", "minimum": 2, "maximum": 32, "description": "AMENDED wave 1 (W1-10, D1): was 2..16, the pre-S22 bound, which forbade the published jump.r1 active frames of HLB 18, GSW 20, CGS 23, GHM 20, UGS 25 (RI-WPN04 \u00a7A)." },
-        "recovery_f": { "type": "integer", "minimum": 6, "maximum": 180, "description": "AMENDED wave 1 (W1-10, D2): was 6..90, which forbade GHM jump.r1 recovery 96 and UGS jump.r1 recovery 106 (RI-WPN04 \u00a7A)." },
-        "charge_max_f": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 90,
-          "description": "AMENDED wave 1 (W1-10, D4): maximum was 60, which forbade bow.aimed's published 90 f@60 draw (RI-WPN02 \u00a7C). RI-WPN01 \u00a7C.3's melee 1-60 range is prose the critic checks, not an encoding bound. Frames of hold inserted between startup and active. Non-zero ONLY on r2.charged / 2h.r2.charged / bow.aimed. Closes the combat.attack.charge hole."
-        },
-        "charge_ramp": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "motion_value_at_full": { "type": "number" },
-            "poise_damage_at_full": { "type": "number" },
-            "hyperarmour_at_full": { "type": "boolean" }
-          }
-        },
-        "stamina": { "type": "number", "minimum": 0, "maximum": 90 },
-        "motion_value": { "type": "number", "minimum": 0.1, "maximum": 4.0 },
-        "poise_damage": { "type": "number", "minimum": 0, "maximum": 140 },
-        "root_dz_m": { "type": "number", "minimum": -2.0, "maximum": 6.0 },
-        "arc_sweep_deg": { "type": "number", "minimum": 0, "maximum": 360 },
-        "shape": {
-          "enum": ["slash_h", "slash_d", "slash_v", "thrust", "sweep", "smash", "spin", "lash", "shoot", "grab"],
-          "description": "The attack's geometric family. RI-WPN03 requires shape variety inside a class; RI-WPN04 uses shape inequality as one of the fallback-detection tests."
-        },
-        "hyperarmour": {
-          "type": "object",
-          "required": ["enabled"],
-          "additionalProperties": false,
-          "properties": {
-            "enabled": { "type": "boolean" },
-            "from_f": { "type": "integer", "minimum": 1 },
-            "to_f": { "type": "integer", "minimum": 1 },
-            "poise_multiplier": {
-              "type": "number",
-              "minimum": 1.0,
-              "maximum": 3.0,
-              "description": "Multiplier on the player's poise health while the window is open. Owned by RI-CMB05; declared here so the two sources can be diffed."
-            }
-          }
-        },
-        "hitbox": {
-          "type": "object",
-          "required": ["kind", "radius_m"],
-          "additionalProperties": false,
-          "properties": {
-            "kind": { "enum": ["capsule", "sphere", "capsule_swept"] },
-            "radius_m": { "type": "number", "minimum": 0.05, "maximum": 1.2 },
-            "bone_a": { "type": "string" },
-            "bone_b": { "type": "string" },
-            "multi_hit": { "type": "integer", "minimum": 1, "maximum": 4 }
-          }
-        },
-        "hitstop_f": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "Per-material attacker hitstop. Omitted means 'inherit the RI-WPN05 §A row for this weight_tier'. Present means this weapon overrides it and RI-WPN05 M1 checks the override, not the table.",
-          "properties": {
-            "flesh": { "type": "integer" },
-            "chitin": { "type": "integer" },
-            "stone": { "type": "integer" },
-            "metal": { "type": "integer" },
-            "shield": { "type": "integer" },
-            "wood": { "type": "integer" },
-            "water": { "type": "integer" }
-          }
-        },
-        "cancels_into": {
-          "type": "array",
-          "items": { "enum": ["dodge"] },
-          "description": "RI-CMB02 §D is authoritative: dodge only, and only in the back 55% of recovery. Any other value is an AR-1 violation."
-        },
-        "requires": {
-          "type": "array",
-          "items": { "enum": ["locked_on", "sprinting", "airborne", "descending", "post_block", "two_handed", "offhand_free", "ammo"] }
-        },
-        "answers": {
-          "type": "array",
-          "items": { "enum": ["INFANTRY", "TURTLE", "DUELIST", "POISE_MONSTER", "RANGED", "AMBUSHER", "SWARM", "CASTER", "ELITE", "GANK_DUO"] },
-          "description": "RI-AI05 archetypes this slot is an intended answer to. Feeds the answer matrix in RI-WPN01 §E (BAR-CRITIQUE-01 G9)."
-        }
-      }
+    "motion_value_mult": {
+     "type": "number",
+     "minimum": 0.5,
+     "maximum": 2.0
+    },
+    "poise_damage_mult": {
+     "type": "number",
+     "minimum": 0.5,
+     "maximum": 3.0
+    },
+    "exclusive_slots": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/slotId"
+     },
+     "description": "Slot ids that exist ONLY in this stance. RI-WPN06 §B requires >= 2 for two_hand on every melee class."
+    }
+   }
+  },
+  "slotId": {
+   "type": "string",
+   "enum": [
+    "r1.1",
+    "r1.2",
+    "r1.3",
+    "r1.4",
+    "r1.5",
+    "r2",
+    "r2.charged",
+    "r2.follow",
+    "run.r1",
+    "run.r2",
+    "roll.r1",
+    "roll.r2",
+    "backstep.r1",
+    "jump.r1",
+    "jump.r2",
+    "plunge",
+    "guard.counter",
+    "guardbreak",
+    "art.1",
+    "art.2",
+    "parry",
+    "off.r1.1",
+    "off.r1.2",
+    "off.r2",
+    "shield.bash",
+    "shield.charge",
+    "2h.r1.1",
+    "2h.r1.2",
+    "2h.r1.3",
+    "2h.r1.4",
+    "2h.r1.5",
+    "2h.r2",
+    "2h.r2.charged",
+    "2h.r2.follow",
+    "2h.run.r1",
+    "2h.run.r2",
+    "2h.roll.r1",
+    "2h.roll.r2",
+    "2h.backstep.r1",
+    "2h.jump.r1",
+    "2h.jump.r2",
+    "2h.guard.counter",
+    "2h.art.1",
+    "2h.art.2",
+    "bow.draw",
+    "bow.quick",
+    "bow.aimed",
+    "bow.roll"
+   ]
+  },
+  "slot": {
+   "type": "object",
+   "required": [
+    "anim",
+    "trigger",
+    "startup_f",
+    "active_f",
+    "recovery_f",
+    "stamina",
+    "motion_value",
+    "poise_damage",
+    "hyperarmour",
+    "hitbox"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "anim": {
+     "type": "string",
+     "pattern": "^clip_[a-z0-9_]+$",
+     "description": "Animation clip id. THE load-bearing field of this schema. RI-WPN03's every measurement is a function of the multiset of clip ids across all weapons. Two slots with the same clip id MUST play byte-identical animation."
+    },
+    "anim_owner": {
+     "type": "string",
+     "description": "weapon_id that owns this clip. Equal to this file's weapon_id when the clip is unique to it. RI-WPN03 M2 counts unique clips by anim_owner == weapon_id."
     },
     "trigger": {
-      "type": "object",
-      "required": ["button"],
-      "additionalProperties": false,
-      "description": "The input contract. Buttons are the closed set from HARNESS.md §4; an unlisted button is a tooling error, not a silent no-op.",
-      "properties": {
-        "button": { "enum": ["light", "heavy", "roll", "block", "parry", "sprint", "jump", "use_item", "interact", "lock_on", "two_hand", "swap_right", "swap_left", "menu"], "description": "AMENDED wave 1 (W1-10, D5): carried 8 of HARNESS.md \u00a74's 14 names while claiming to BE that closed set. Omitting swap_left forbade RI-WPN06 \u00a7C's mandatory O2 offhand slots outright." },
-        "modifier": { "enum": ["none", "forward", "hold", "tap", "block_held", "double_tap"] },
-        "state_window": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "The frame window, INSIDE the named state's own animation, during which the press produces this slot. RI-WPN04 §B is authoritative on every window.",
-          "properties": {
-            "state": { "enum": ["IDLE", "ROLL", "BACKSTEP", "SPRINT", "AIRBORNE", "BLOCK_SUCCESS", "ATTACK_RECOVERY"] },
-            "from_f": { "type": "integer", "minimum": 1 },
-            "to_f": { "type": "integer", "minimum": 1 }
-          }
-        }
+     "$ref": "#/$defs/trigger"
+    },
+    "chains_to": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "slot id this slot may chain into via the 8-frame combo buffer (RI-CMB02 §D.5), or null to terminate the chain."
+    },
+    "chain_index": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "startup_f": {
+     "type": "integer",
+     "minimum": 6,
+     "maximum": 180,
+     "description": "AMENDED wave 1 (W1-10, AMENDMENT-W1-10-01 D3): was 4..90, which forbade GHM R2 startup 96 and UGS R2 startup 104 (RI-WPN02 §B, rebased). Minimum raised to RI-CMB02 §E's 6 f@60 floor, which S22 does NOT rebase."
+    },
+    "active_f": {
+     "type": "integer",
+     "minimum": 2,
+     "maximum": 32,
+     "description": "AMENDED wave 1 (W1-10, D1): was 2..16, the pre-S22 bound, which forbade the published jump.r1 active frames of HLB 18, GSW 20, CGS 23, GHM 20, UGS 25 (RI-WPN04 §A)."
+    },
+    "recovery_f": {
+     "type": "integer",
+     "minimum": 6,
+     "maximum": 180,
+     "description": "AMENDED wave 1 (W1-10, D2): was 6..90, which forbade GHM jump.r1 recovery 96 and UGS jump.r1 recovery 106 (RI-WPN04 §A)."
+    },
+    "charge_max_f": {
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 90,
+     "description": "AMENDED wave 1 (W1-10, D4): maximum was 60, which forbade bow.aimed's published 90 f@60 draw (RI-WPN02 §C). RI-WPN01 §C.3's melee 1-60 range is prose the critic checks, not an encoding bound. Frames of hold inserted between startup and active. Non-zero ONLY on r2.charged / 2h.r2.charged / bow.aimed. Closes the combat.attack.charge hole."
+    },
+    "charge_ramp": {
+     "type": "object",
+     "additionalProperties": false,
+     "properties": {
+      "motion_value_at_full": {
+       "type": "number"
+      },
+      "poise_damage_at_full": {
+       "type": "number"
+      },
+      "hyperarmour_at_full": {
+       "type": "boolean"
       }
+     }
+    },
+    "stamina": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 90
+    },
+    "motion_value": {
+     "type": "number",
+     "minimum": 0.1,
+     "maximum": 4.0
+    },
+    "poise_damage": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 140
+    },
+    "root_dz_m": {
+     "type": "number",
+     "minimum": -2.0,
+     "maximum": 6.0
+    },
+    "arc_sweep_deg": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 360
+    },
+    "shape": {
+     "enum": [
+      "slash_h",
+      "slash_d",
+      "slash_v",
+      "thrust",
+      "sweep",
+      "smash",
+      "spin",
+      "lash",
+      "shoot",
+      "grab"
+     ],
+     "description": "The attack's geometric family. RI-WPN03 requires shape variety inside a class; RI-WPN04 uses shape inequality as one of the fallback-detection tests."
+    },
+    "hyperarmour": {
+     "type": "object",
+     "required": [
+      "enabled"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "enabled": {
+       "type": "boolean"
+      },
+      "from_f": {
+       "type": "integer",
+       "minimum": 1
+      },
+      "to_f": {
+       "type": "integer",
+       "minimum": 1
+      },
+      "poise_multiplier": {
+       "type": "number",
+       "minimum": 1.0,
+       "maximum": 3.0,
+       "description": "Multiplier on the player's poise health while the window is open. Owned by RI-CMB05; declared here so the two sources can be diffed."
+      }
+     }
+    },
+    "hitbox": {
+     "type": "object",
+     "required": [
+      "kind",
+      "radius_m"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "kind": {
+       "enum": [
+        "capsule",
+        "sphere",
+        "capsule_swept"
+       ]
+      },
+      "radius_m": {
+       "type": "number",
+       "minimum": 0.05,
+       "maximum": 1.2
+      },
+      "bone_a": {
+       "type": "string"
+      },
+      "bone_b": {
+       "type": "string"
+      },
+      "multi_hit": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 4
+      }
+     }
+    },
+    "hitstop_f": {
+     "type": "object",
+     "additionalProperties": false,
+     "description": "Per-material attacker hitstop. Omitted means 'inherit the RI-WPN05 §A row for this weight_tier'. Present means this weapon overrides it and RI-WPN05 M1 checks the override, not the table.",
+     "properties": {
+      "flesh": {
+       "type": "integer"
+      },
+      "chitin": {
+       "type": "integer"
+      },
+      "stone": {
+       "type": "integer"
+      },
+      "metal": {
+       "type": "integer"
+      },
+      "shield": {
+       "type": "integer"
+      },
+      "wood": {
+       "type": "integer"
+      },
+      "water": {
+       "type": "integer"
+      }
+     }
+    },
+    "cancels_into": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "dodge"
+      ]
+     },
+     "description": "RI-CMB02 §D is authoritative: dodge only, and only in the back 55% of recovery. Any other value is an AR-1 violation."
+    },
+    "requires": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "locked_on",
+       "sprinting",
+       "airborne",
+       "descending",
+       "post_block",
+       "two_handed",
+       "offhand_free",
+       "ammo"
+      ]
+     }
+    },
+    "answers": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "INFANTRY",
+       "TURTLE",
+       "DUELIST",
+       "POISE_MONSTER",
+       "RANGED",
+       "AMBUSHER",
+       "SWARM",
+       "CASTER",
+       "ELITE",
+       "GANK_DUO"
+      ]
+     },
+     "description": "RI-AI05 archetypes this slot is an intended answer to. Feeds the answer matrix in RI-WPN01 §E (BAR-CRITIQUE-01 G9)."
+    },
+    "peak_tip_speed_mps_implied": {
+     "type": "number",
+     "minimum": 0,
+     "description": "RI-WPN05 §E.2. Written by tools/weapons/build-movesets.mjs ONLY when this slot's declared arc, its weapon's reach_m and its active_f jointly imply a peak weapon-tip speed above §E.2's ceiling of 1.25x the tier's §E band top: peak = 1.5 * arc_rad * reach_m * 60 / active_f, where 1.5 is the exact maximum derivative of the smoothstep used between every key pair in game/src/combat/clips.js. Its ABSENCE is the pass condition. It is a derived indictment, never an input: nothing reads it back, and repairing the slot removes it."
     }
+   }
+  },
+  "trigger": {
+   "type": "object",
+   "required": [
+    "button"
+   ],
+   "additionalProperties": false,
+   "description": "The input contract. Buttons are the closed set from HARNESS.md §4; an unlisted button is a tooling error, not a silent no-op.",
+   "properties": {
+    "button": {
+     "enum": [
+      "light",
+      "heavy",
+      "roll",
+      "block",
+      "parry",
+      "sprint",
+      "jump",
+      "use_item",
+      "interact",
+      "lock_on",
+      "two_hand",
+      "swap_right",
+      "swap_left",
+      "menu"
+     ],
+     "description": "AMENDED wave 1 (W1-10, D5): carried 8 of HARNESS.md §4's 14 names while claiming to BE that closed set. Omitting swap_left forbade RI-WPN06 §C's mandatory O2 offhand slots outright."
+    },
+    "modifier": {
+     "enum": [
+      "none",
+      "forward",
+      "hold",
+      "tap",
+      "block_held",
+      "double_tap"
+     ]
+    },
+    "state_window": {
+     "type": "object",
+     "additionalProperties": false,
+     "description": "The frame window, INSIDE the named state's own animation, during which the press produces this slot. RI-WPN04 §B is authoritative on every window.",
+     "properties": {
+      "state": {
+       "enum": [
+        "IDLE",
+        "ROLL",
+        "BACKSTEP",
+        "SPRINT",
+        "AIRBORNE",
+        "BLOCK_SUCCESS",
+        "ATTACK_RECOVERY"
+       ]
+      },
+      "from_f": {
+       "type": "integer",
+       "minimum": 1
+      },
+      "to_f": {
+       "type": "integer",
+       "minimum": 1
+      }
+     }
+    }
+   }
   }
+ }
 }

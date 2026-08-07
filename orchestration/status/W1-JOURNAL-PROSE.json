@@ -7,8 +7,13 @@
   "outputs_written": [],
   "files_touched": [],
   "findings": [
-    "Dispatch claims: journal closing-sting rate 36.41 vs bar 6.16; zero contractions across 1005 entries; journal untouched by both prior prose passes."
+    "Dispatch claims confirmed: journal 36.41 sting /10k vs reference 6.16, ceiling 18.49; contractions 0 vs reference 77.20, band floor 11.58. 1005 entries, 39819 words, all in game/data/quests/*.json quests[].journal[].text.",
+    "THE CONTRACTION BAR IS NOT AN EXEMPTION CASE, and I checked before assuming it was. RI-DLG05 'How we lose' says the register is 'plain, slightly formal, past tense' and 'Contractions are rare.' RARE IS NOT ZERO. The reference is Morrowind's own 3183 journal entries (92,487 w) via {{Journal Entries}}: 539 of 3183 entries carry a contraction (17%), 77.20/10k. Top forms I've:199 I'm:88 he's:47 I'll:36 he'll:35 didn't:35. The band floor of 11.58/10k is 15% of Morrowind's own journal rate — i.e. the floor IS 'rare'. There is no conflict between the fiction and the bar, so no exemption is defensible here. Fix in the prose.",
+    "WHAT THE JOURNAL sting BAR IS ACTUALLY MADE OF (checked, per the dispatch's warning). Reference journal has 57 sting hits in 3183 entries and they are almost all BENIGN: continued indirect speech ('X says ... and that ...') and locational relative clauses ('which is on an island east of Bal Fell'). Morrowind essentially never appends an interpretation to a fact. Ours: 145 entries, and the shape is one habit — a comma plus a verdict clause: 'which is worse', 'which is a kind of wage', 'which is either justice or a very good joke'. 101 trailing-clause, 31 trailing-clause+recast, 13 fragment-close. So the honest fix is to remove the VERDICT clauses and keep the reported-speech continuations, which lands the rate near the reference by itself.",
+    "-body forms: ours 89 (22.35/10k) vs reference journal 2 (0.22/10k) — 100x, the largest single ratio in the register. that-is cadence 3 (ref 0). filler eleven 1 (ref 0).",
+    "andopen undershoot in 4 files only (assize 1.8, xul-aneekh 1.6, act2 0.0, act5 0.0 vs floor 2.24). Morrowind's journal does open sentences with And/But/So freely ('And he also told me to establish a cover identity'). One added opener per file clears it.",
+    "questions and exclamations can NEVER flag on a journal file: MIN_EXPECTED=2 against targets 0.97 and 1.19 /10k needs 20,554 and 16,821 words, and no journal file is a third of that. So the gate never asks this register to exclaim. Good — nothing to defend there."
   ],
-  "next_step": "read RI-JRN* and RI-DLG05, then run node tools/check-prose.mjs --verbose",
+  "next_step": "state the closing-line rule, then rewrite file by file, re-running the FULL gate after every batch",
   "notes_for_successor": "Do NOT sweep. Most journal entries should end flat. Need a stated rule for which minority earn a closing line. Re-run full gate after EVERY batch (a prior fix seeded its own defect 4x). sting/fragopen/tics are unwaivable; other bars may warrant declared exemption if register is deliberate."
 }

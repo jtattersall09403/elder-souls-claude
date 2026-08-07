@@ -562,13 +562,40 @@ function lockOrientation(sim, c, dx, dy) {
 
   aimPoint(sim, p, t, h, _aim);
 
-  // Yaw/pitch targets from the aim point, measured FROM THE CAMERA'S CURRENT POSITION —
-  // which is what closes the loop between the containment correction (which moves the
-  // camera) and the orientation that has to keep both anchors inside the frame.
-  const ax = _aim[0] - c.pos[0], ay = _aim[1] - c.pos[1], az = _aim[2] - c.pos[2];
-  const flat = Math.sqrt(ax * ax + az * az);
+  // YAW target from the aim point, measured from the camera's current position — which closes
+  // the loop between the containment correction (which moves the camera) and the orientation
+  // that has to keep both anchors inside the frame. This is stable: swinging the yaw carries
+  // the camera around the pivot on a radius shorter than its distance to the aim point, so the
+  // loop gain is ≈ arm/|A − camera| ≈ 0.4, and it converges on the pivot→A bearing.
+  const ax = _aim[0] - c.pos[0], az = _aim[2] - c.pos[2];
   const yawT = norm360(Math.atan2(ax, az) * RAD);
-  let pitchT = Math.atan2(ay, flat) * RAD;
+
+  // PITCH target — AND THIS ONE MAY NOT BE MEASURED FROM c.pos. THAT WAS THE PIN.
+  //
+  // `c.pos[1] = c.pivot[1] − sin(pitch)·armLen` (writePose → desiredPoint). So taking the
+  // elevation of A from the camera makes the pitch target a function of the pitch, and the
+  // same-sign one: tilting DOWN raises the camera, which drops A further below it, which
+  // demands more down-tilt. Differentiating at the mid-boss case (h 4.5, d 6.0, arm ≈ 3.9,
+  // baseline ≈ 6 m) gives d(pitchT)/d(pitch) ≈ (−9.6 °/m)·(−0.27 m/°) ≈ +2.5.
+  //
+  // A loop gain above 1 does not settle. It DIVERGES from any starting pitch until a clamp
+  // catches it, and which clamp it reaches is decided by the sign of the initial error, not by
+  // the world. Measured both ways with the real module: in the boss arena it ran to −50.000°,
+  // exactly `pitch_min_locked_deg`, and stared at the tops of everyone's heads for the rest of
+  // the fight and past the kill; in `cam-pitch-instrument.mjs` on flat ground it ran the other
+  // way to +24.6° with the camera 0.1 m UNDER the floor. Both are the same defect. Neither is
+  // a tuning problem in pitchBias() or aimPoint(), which is why round 1 was right to refuse to
+  // guess: pitchBias(6, 4.5) is −9.2° and tilts UP, and A sits 2.0 m ABOVE the pivot.
+  //
+  // The elevation is therefore taken over a baseline that does not move with the pitch: the
+  // pivot's height, and the horizontal distance the camera actually has to work with — the
+  // boom plus the pivot-to-A run. That is the same composition the real rig has (the camera
+  // sits `armLen` behind the pivot and A is 0.35·d in front of it), it is well-posed, and it
+  // makes RI-CAM03 §E M2's "the pitch the aim-point spring alone would produce" a quantity
+  // that exists. Residual feedback through pitchArmScale() is −0.04 and damping.
+  const aimRun = Math.sqrt((_aim[0] - c.pivot[0]) * (_aim[0] - c.pivot[0])
+    + (_aim[2] - c.pivot[2]) * (_aim[2] - c.pivot[2]));
+  let pitchT = Math.atan2(_aim[1] - c.pivot[1], c.armLen + aimRun) * RAD;
 
   // §D: distance- and size-dependent pitch, and §C step 5's containment correction, are both
   // applied to the spring TARGET. Never to its output — that is the double-smoothing failure.

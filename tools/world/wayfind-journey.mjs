@@ -405,8 +405,16 @@ if (!PLAN_ONLY && plan.ok) {
         const roads = (t.topics || []).filter((x) => /^the road to /i.test(x.id));
         if (!roads.length) continue;
         for (const r of roads) {
-          const said = H.conversationSay(r.id);
-          if (said && said.text) out.push({ npc: n.eid, actor: n.actor || null, topic: r.id, source: said.source || null, route: said.route || null, text: said.text });
+          // `conversationSay` returns `Conversation.state()`, NOT the `said` record. The words
+          // are `st.said` and the topic is `st.said_topic`; there is no `st.text`. Reading
+          // `said.text` is why this probe reported ZERO road directions spoken while every
+          // person in the town was in fact offering two — a false negative on the one
+          // consumption claim the L3 layer of this piece rests on.
+          const st = H.conversationSay(r.id);
+          if (st && st.said) {
+            out.push({ npc: n.eid, actor: n.actor || null, topic: st.said_topic || r.id,
+              source: st.said_source || null, route: st.said_route || null, text: st.said });
+          }
         }
         H.conversationClose();
         if (out.length >= 12) break;

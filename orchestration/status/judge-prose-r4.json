@@ -3,13 +3,28 @@
   "brief": "blind judge on reports/packs/prose-tics-r4/ (quality question, both sides masked)",
   "started": "wave-1",
   "state": "researching",
+  "procedure_declared_before_reading": [
+    "1. Read AGENT-PROTOCOL, RI-MTH03, pack README, one PROMPT.md, all 15 pack.json. Confirm no mapping inside pack.",
+    "2. For each trial t01..t15 in order, read ONLY A.txt and B.txt. Decide from words alone: PICK, CONFIDENCE, 3-6 quoted evidence bullets, WEAKEST POINT. Write answer.md into the trial dir immediately (protocol rule 2: write as soon as ready).",
+    "3. Decision rule I commit to in advance: the shipped-game side should show (a) concrete, unglamorous specificity a writer needed for the world to work - prices, dates, procedures, names of offices; (b) a speaker with an agenda, bias or error, not a neutral narrator; (c) irregular rhythm and sentence length, including bad/awkward sentences; (d) content that does not resolve tidily. The placeholder side should show even paragraphing, balanced clause pairs, summary rather than incident, and thematic closure.",
+    "4. After all 15 answer.md exist, concatenate them, record sha256 of the bundle AND per-file sha256, write those into the verdict BEFORE opening ../prose-tics-r4.reveal/mapping.json.",
+    "5. Unblind, score, report accuracy per register.",
+    "6. THEN run a structural leak audit (byte-level, punctuation inventory, whitespace, word-count asymmetry, vocabulary overlap) and report anything found.",
+    "7. Write verdict .md + .json, append one line to reports/blog-feed.jsonl. No prose edits, no commits."
+  ],
+  "contamination_note": "While confirming pack.json carries no mapping I necessarily saw a_words/b_words. I did NOT use them to decide any trial; I will state per-trial whether my pick agrees with the word-count asymmetry so the reader can discount if they wish.",
   "outputs_expected": [
+    "reports/packs/prose-tics-r4/t*/answer.md",
     "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r2.md",
     "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r2.json",
     "reports/blog-feed.jsonl (one appended line)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read pack README + RI-MTH03, then state procedure",
-  "notes_for_successor": "FORBIDDEN READS (contamination): corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md, orchestration/status/W1-PROSE-R2.json, orchestration/status/W1-PROSE-TICS.json, tools/check-prose.mjs, any manifest naming sides. Do not edit prose. Answers must be written+hashed before unblinding."
+  "findings": [
+    "PACK STRUCTURE OK: reveal dir is a sibling (reports/packs/prose-tics-r4.reveal/), pack dirs contain only A.txt B.txt PROMPT.md pack.json. No answer.md pre-existing => pack is unanswered.",
+    "PROMPT.md of t01 points the judge at '../prose-tics-r2.reveal/' - a stale path; the real reveal dir is prose-tics-r4.reveal. Cosmetic, but it means the prompt was copied from the superseded r3/r2 pack.",
+    "SUSPECTED LEAK (not used to answer, to be confirmed post-unblind): in pack.json word counts, A > B in all 5 books trials; B > A in all 4 non-tied dialogue trials. If side assignment were per-trial random this pattern is ~1/32 x 1/16. Suggests side is constant within a register and that the length-matching trim is asymmetric."
+  ],
+  "next_step": "read t01-books A.txt and B.txt; answer; then t02..t15",
+  "notes_for_successor": "FORBIDDEN READS (contamination): corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md, orchestration/status/W1-PROSE-R2.json, orchestration/status/W1-PROSE-TICS.json, tools/check-prose.mjs, mapping.json until step 4 done. Do not edit prose. Do not commit."
 }

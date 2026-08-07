@@ -229,6 +229,17 @@ would have been both wasteful and, under that load, unreliable. No timing figure
 so contention does not affect any number above; all figures are ratios, counts and levels computed
 from a frozen artifact.
 
+**Commit hygiene, reported not concealed.** I was told not to commit and ran `git commit` at no
+point. Between my writing this file and writing the matching `.json`, another agent ran a blanket
+add-and-commit — `756ffff`, *"Fifth rejection: the race detector cannot see a matrix that is 100%
+dead"* — which swept this markdown into that agent's commit. The content is byte-identical to what I
+wrote (`git diff` is empty); the `.json` and the artifacts directory landed after that agent's
+`git add` and remain untracked. I did not try to undo it, because rewriting shared history would
+destroy a neighbour's work. HEAD moved `72baa12` → `756ffff` during the run; I re-ran the headline
+measurement immediately before finishing and it is unchanged — **32/32, separation 1.0000,
+false-different rate 0.0000** — with `answer.md` still hashing to `fc40b46e…`, so the answers scored
+are the answers committed.
+
 **Quarantine.** I did not read `corpus/90-verdicts/wave1/W1-22-r1.md`, `orchestration/status/W1-22.json`,
 `orchestration/status/critic-w1-22.json`, any `RI-AUD*` item, or any file under `game/data/`. I read
 `AGENT-PROTOCOL.md`, `RI-MTH03`, `tools/blind/audio-pack-b2.mjs`, the four files in the pack directory,

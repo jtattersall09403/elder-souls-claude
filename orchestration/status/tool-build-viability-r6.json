@@ -1,0 +1,18 @@
+{
+  "task_id": "tool-build-viability-r6",
+  "brief": "round 6 of tools/analysis/build-viability.mjs; rebuild it so it cannot lie, OR argue for retirement/replacement",
+  "started": "wave-1",
+  "start_commit": "756ffff",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/analysis/build-viability.mjs (rebuilt or replaced)",
+    "reports/blog-feed.jsonl (one appended line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "box contention at start: pgrep -c headless_shell = 32, loadavg 10.24 12.97 14.46 -> Node-side work only, no browser",
+    "BASELINE at 756ffff: `node tools/boot-check.mjs` PASS; `node tools/harness/boot-check.mjs` PASS; C8 = 26, unchanged from R4 verdict."
+  ],
+  "next_step": "map build-viability.mjs (3760 lines); reproduce R4 attacks before fixing anything",
+  "notes_for_successor": "Round 6. Five prior rejections. Do NOT self-grade; a separate tool critic checks. Never touch critic probes. Prove by patching a shadow tree + booting engine, not by reading source."
+}

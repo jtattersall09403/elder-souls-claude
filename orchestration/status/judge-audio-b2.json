@@ -2,8 +2,8 @@
   "task_id": "judge-audio-b2",
   "brief": "fresh blind judge on the W1-22 audio SAME/DIFFERENT pack B2 (32 trials, seed 22071)",
   "started": "wave-1",
-  "state": "researching",
-  "role": "blind judge - MUST NOT read W1-22 verdict, W1-22 status files, critic-w1-22 status, RI-AUD* items, or game/data audio data",
+  "state": "complete",
+  "role": "blind judge - did NOT read the W1-22 verdict, W1-22 status files, critic-w1-22 status, any RI-AUD* item, or any game/data audio data",
   "quarantine": {
     "forbidden_reads": [
       "corpus/90-verdicts/wave1/W1-22-r1.md",
@@ -13,40 +13,67 @@
       "game/data/**"
     ],
     "accidental_reads": [],
-    "clean_so_far": true
+    "clean": true
   },
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-22-B2-blind.md",
     "corpus/90-verdicts/wave1/W1-22-B2-blind.json",
     "reports/blog-feed.jsonl (one appended line)"
   ],
-  "outputs_written": [],
-  "findings": [
-    "Contention at start: pgrep -c headless_shell = 30, loadavg 20.28 on 4 cores. Well above the protocol cap of ~8. Doing all offline work first; will not take a browser unless the pack requires one.",
-    "Pack ALREADY BUILT at reports/w1-22-critic/b2 (pack_id w1-22-b2-78aebc7, 32 trials, seed 22071, commit 78aebc7 dirty). No need to render -- avoids a browser entirely under load 20.",
-    "LEAK 1 (author missed): reports/w1-22-critic/b2/JUDGE.md lives INSIDE the pack directory and states 'separation over the 24 DIFFERENT trials, and false_different_rate over the 8 SAME trials'. PROMPT.md explicitly promises 'You are not told how many of each.' The pack contradicts its own prompt. RI-MTH03 SectionA says the pack contains only the artifacts + PROMPT.md + pack.json; operator notes belong in the reveal sibling.",
-    "LEAK 2 (author missed): audio-pack-b2.mjs hardcodes hard=12, random=12, catch=8, so the class balance is recoverable from the builder source -- which the judge's own brief instructs it to read and audit.",
-    "LEAK 3 (author missed): audio-pack-b2.mjs lines 249-250 print catch-pair proxy distances and hard-stratum distances to STDOUT at build time. Anyone who builds the pack and reads the console sees the numeric separation between the SAME and DIFFERENT strata, which calibrates a threshold exactly. Should be written into the reveal directory, not stdout.",
-    "LEAK CHECKED, CLEAN: crest_factor_db uses the TRUE lufsI() while loudness_lufs is hardcoded -23.0. Crest factor = peak/RMS is scale-invariant, so it does NOT reopen the loudness channel the author closed. Verified algebraically from the source."
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-22-B2-blind.md",
+    "corpus/90-verdicts/wave1/W1-22-B2-blind.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-22-B2-blind/PROCEDURE.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-22-B2-blind/analyse.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-22-B2-blind/mkanswer.mjs",
+    "reports/w1-22-critic/b2/answer.md",
+    "reports/blog-feed.jsonl (1 line appended 2026-08-07T18:55:06Z)"
   ],
+  "result": {
+    "accuracy": "32/32 = 1.0000",
+    "separation": 1.0,
+    "false_different_rate": 0.0,
+    "false_different_bar": 0.25,
+    "admissible": true,
+    "by_stratum": { "hard": "12/12", "random": "12/12", "catch": "8/8" },
+    "unanswerable_trials": 0,
+    "protocol_score_ri_mth03": "15/16 = 93.75% -> admissible, process defect recorded"
+  },
   "answers_committed": {
     "file": "reports/w1-22-critic/b2/answer.md",
     "sha256": "fc40b46e6051d0574d066e76f329a8bd8dcff352116113bc20b8c55269ba734d",
     "committed_at_utc": "2026-08-07T18:49:20Z",
     "procedure_sha256": "59e49482efb20dd1455a03451ae4053376b446964cc79cb2bc703a6eefe04bac",
-    "reveal_opened": false,
-    "called_SAME": ["T02","T04","T12","T17","T19","T21","T25","T30"],
-    "called_DIFFERENT_count": 24
+    "reveal_opened_after_hash": true,
+    "called_SAME": ["T02","T04","T12","T17","T19","T21","T25","T30"]
   },
-  "findings_2": [
-    "PACK INTEGRITY DEFECT: pack.json trials_sha256=3ab1e3b8... does NOT match trials.json on disk (recomputed 14684a7c...). Cause identified: trials.json contains the literal token -23.0 sixty-four times, a form JSON.stringify cannot emit (it emits -23). The file was text-substituted after the tool wrote it, so the declared hash is the hash of the ORIGINAL leaky build. Blinding is intact (all 64 values are the same constant, no residual variance) but RI-MTH03 M3's auditability claim is broken for this pack.",
-    "RESULT IS ROBUST: two independent metrics agree exactly. Mean absolute band difference puts 8 trials at 0.14-0.95 dB and the next at 4.39 dB (4.6x gap). Cosine distance on linear band power puts the SAME 8 at 0.00001-0.00105 and the next at 0.15185 (145x gap). Identical partition, no threshold tuning possible.",
-    "ZERO transient onsets across all 64 recordings in the pack. One of the four channels the pack advertises carries no information anywhere. Corroborated detector-free by crest factor, which spans only 10.0-17.4 dB across all clips - consistent with steady noise/drone beds, not with discrete one-shot events (which push crest above ~20 dB).",
-    "13 acoustic identities recovered by clustering the 24 distinct band-vectors (11 regions present at both capture seeds, 2 at one). 13 regions gives C(13,2)=78 pairs, matching the tool docstring's '78 pairs'.",
-    "NO TWO REGIONS ARE INDISTINGUISHABLE. The closest distinct-region pair in the pack (T22) is 4.39 dB mean / 0.152 cosine apart, still 145x further than the closest same-region re-roll.",
-    "Stereo correlation spans 0.001 to 0.999 across the 24 distinct clips; 7 of 24 sit above 0.989, i.e. effectively mono with no stereo image at all, while others are fully decorrelated. Spatial treatment is inconsistent between regions.",
-    "Tree moved: pack built at commit 78aebc7, HEAD at judging time 72baa12 (dirty). The pack is a frozen artifact so this does not affect the judgement, but both are recorded."
+  "findings": [
+    "Contention: pgrep -c headless_shell = 30, loadavg 20.28 at start and 12.35 at finish, on 4 cores. Far above the protocol cap of ~8. NO BROWSER WAS LAUNCHED - the pack already existed and was loaded, not rendered. No timing figure is reported, so no number here is contention-distorted.",
+    "GAME FINDING (biggest): zero transient onsets across all 64 recordings, 21 min 20 s of ambience - no bird, drip, gust or creak anywhere. Corroborated detector-free by crest factor, which spans only 10.0-17.4 dB (steady noise measures 10-13; one-shot events push above 20). Every region is a single unchanging hum.",
+    "GAME FINDING (positive): no two regions are indistinguishable. Globally closest pair (T22) is 4.39 dB mean apart, proxy 0.1659, still 166x further than the largest same-place re-roll. The hard stratum is by construction the 12 closest of all 78 pairs, so that is the global minimum.",
+    "GAME FINDING: 13 beds sort into four tone families by spectral centre - deep rumble (112, 133 Hz), low hum (327-588 Hz), mid-weighted (1493-1925 Hz), bright/hissy (2112-3469 Hz). Stereo correlation runs 0.001 to 0.999 with 7 of 24 clips above 0.989 i.e. effectively mono - spatial treatment is inconsistent between regions.",
+    "LEAK 1 (author missed, HIGH): reports/w1-22-critic/b2/JUDGE.md sits INSIDE the pack and states the 24 DIFFERENT / 8 SAME split, while PROMPT.md in the same directory promises 'You are not told how many of each.' The pack contradicts its own prompt. Fix: move JUDGE.md into b2.reveal/.",
+    "LEAK 2 (author missed): audio-pack-b2.mjs hardcodes hard=12, random=12, catch=8, so the class balance is recoverable from the builder source - which a judge asked to audit the builder must read.",
+    "LEAK 3 (author missed): audio-pack-b2.mjs lines 249-250 print catch-pair and hard-stratum proxy distances to stdout at build time, handing anyone who builds the pack the exact numeric SAME/DIFFERENT boundary. Should go to the reveal directory, not the terminal.",
+    "INTEGRITY DEFECT (HIGH): pack.json trials_sha256=3ab1e3b8... does not match trials.json (recomputed 14684a7c...). Cause proven: trials.json contains the literal token -23.0 sixty-four times, a form JSON.stringify cannot emit; the pretty round trip is exactly 128 bytes shorter (64 recordings x 2 chars); mapping.json is 18:29 while trials.json and pack.json are 18:31. The pack was built once then text-substituted in place rather than rebuilt. Blinding is intact but RI-MTH03 M3 auditability is broken for this pack.",
+    "LEAK CHECK PASSED: the author's loudness fix is sound and better than claimed. loudness_lufs is the constant -23.0 in all 64 recordings AND every remaining field is level-invariant by construction (crest = peak/RMS, bands relative to own loudest, centroid from normalised bands, correlation and onset rise are ratios). Verified algebraically, not assumed.",
+    "META FINDING (HIGH): the pack does not discriminate between a judge and a threshold. The tool's docstring claims it is 'stronger than a cosine threshold, because a judge decides'; a plain cosine threshold scores the same 32/32 here. B2 as instrumented measures whether the ambience emits per-region-distinct spectra (it does) and not whether a player could tell regions apart - the channel players use is events, which the pack itself shows are absent. A 1.0000 first outing should be hardened before its number is cited.",
+    "The 'seven-step unblinding order' named in the dispatch brief DOES NOT EXIST on disk - not in the pack, not in b2.reveal/ (only mapping.json), not in the builder, not in RI-MTH03. Followed JUDGE.md's three steps plus RI-MTH03 M3's hash requirement instead, and reported the discrepancy rather than back-filling.",
+    "The class-balance leak was real but INERT on this pack, and that is checkable: the pre-registered threshold sits inside a 4.6x empty gap (SAME 0.14-0.95 dB, DIFFERENT 4.39-35.76 dB), so no count information could move any trial across it. Absolute rule and count-constrained rule give the identical partition.",
+    "Blind structural inference confirmed by the reveal: clustering the 24 distinct band-vectors at cosine<0.01 recovered 13 acoustic identities, 11 at both capture seeds and 2 at one. Reveal: exactly 13 regions, 11 at both seeds, 2 at one, C(13,2)=78 pairs."
   ],
-  "next_step": "UNBLIND in the recorded seven-step order, score separation and false_different_rate, write verdict md+json and blog line",
-  "notes_for_successor": "Answering procedure must be stated and answers hashed BEFORE unblinding. Reveal key held by a sibling; unblind in the pack's recorded seven-step order."
+  "concurrency": {
+    "head_at_measurement": "72baa12",
+    "head_at_finish": "756ffff",
+    "headline_re_run_before_finishing": "32/32, separation 1.0000, false_different_rate 0.0000 - unchanged",
+    "note": "Instructed not to commit and did not run git commit at any point. Another agent's blanket add-and-commit (756ffff) swept W1-22-B2-blind.md into that agent's commit between my writing the .md and the .json. Content byte-identical (git diff empty). The .json and artifacts/ remain untracked. Did not undo it - rewriting shared history would destroy a neighbour's work."
+  },
+  "method_deviations": [
+    "scratchpad/analyse.mjs - per-trial band statistics, degeneracy and float-precision leak audit, alternative-metric sensitivity check. Reads only trials.json. Archived to corpus/90-verdicts/wave1/artifacts/W1-22-B2-blind/.",
+    "scratchpad/mkanswer.mjs - emits answer.md so each trial's reason carries its real measured numbers. Reads only trials.json. Archived alongside.",
+    "Pack loaded, not rendered - it already existed and the box was at 30 browsers / loadavg 20.28.",
+    "Judge read the builder source before answering because the brief required a leak audit of it; this is the vector for LEAK 2. Declared, and shown inert by the pre-registered hashed decision rule."
+  ],
+  "next_step": "none - task complete",
+  "notes_for_successor": "The blind result is admissible and can be cited: 32/32, separation 1.0000, false_different_rate 0.0000, answers hashed before reveal. Three things a successor should act on before this number is used again. (1) Move JUDGE.md out of the pack directory into b2.reveal/ - it discloses the class balance the prompt promises to withhold. (2) Rebuild the pack rather than text-editing it, so pack.json's trials_sha256 matches its contents again. (3) Do not cite the 1.0000 as evidence that a judge can distinguish regions - a plain cosine threshold scores identically, so the pack measures the DSP front-end, not judgement. To make B2 discriminating, compare a region against itself at different times of day, or compare neighbouring regions after loudness- and spectrum-matching them. The substantive game finding to hand a builder is that region ambience has no event layer at all: 64 recordings, zero onsets, crest factor never above 17.4 dB."
 }

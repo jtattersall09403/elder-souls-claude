@@ -1,0 +1,288 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-22-B2-blind",
+ "piece_title": "RI-AUD03 B2 blind judgement — region ambience SAME/DIFFERENT, 32 trials, seed 22071",
+ "subsystem_paths": [
+  "audio.ambience.region.separation",
+  "audio.ambience.region.character",
+  "audio.ambience.events",
+  "audio.ambience.stereo",
+  "process.blind.protocol"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "judge-audio-b2",
+  "role": "judge.blind.audio",
+  "started_at": "2026-08-07T18:44:00Z",
+  "finished_at": "2026-08-07T18:55:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": false,
+  "note": "Fresh blind judge. Did NOT read corpus/90-verdicts/wave1/W1-22-r1.md, orchestration/status/W1-22.json, orchestration/status/critic-w1-22.json, any RI-AUD* item, or any file under game/data/. Read only orchestration/AGENT-PROTOCOL.md, corpus/80-methods/RI-MTH03-blind-comparison-protocol.md, tools/blind/audio-pack-b2.mjs, and the four files in the pack directory. reports/w1-22-critic/b2.reveal/mapping.json was opened only after answer.md was written and hashed. No knowledge of what any region is supposed to sound like."
+ },
+ "build": {
+  "commit_sha": "72baa12",
+  "branch": "main",
+  "pack_built_at_commit": "78aebc7",
+  "pack_dirty": true,
+  "head_dirty": true,
+  "harness_commands": [
+   "node /tmp/.../scratchpad/analyse.mjs",
+   "node /tmp/.../scratchpad/mkanswer.mjs",
+   "sha256sum reports/w1-22-critic/b2/answer.md"
+  ],
+  "note": "No browser launched, no clip rendered. The pack already existed at reports/w1-22-critic/b2. pgrep -c headless_shell read 30 with loadavg 20.28 at start and 12.35 at finish, far above the AGENT-PROTOCOL cap of ~8; re-rendering would have been wasteful and unreliable. Every figure reported is a ratio, count or level computed from a frozen artifact, so contention distorts none of them. No timing figure is reported."
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "This role judges only whether two label-free acoustic profiles describe the same place. No image is cited. No region is named."
+ },
+ "reference_items": [
+  {
+   "id": "RI-MTH03",
+   "path": "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md",
+   "role": "the protocol this judgement is scored against"
+  },
+  {
+   "id": "RI-AUD03",
+   "path": "NOT READ - quarantined",
+   "role": "the item the pack serves; deliberately unread by this judge, which is the point of the exercise"
+  }
+ ],
+ "pack": {
+  "pack_id": "w1-22-b2-78aebc7",
+  "item": "RI-AUD03",
+  "check": "B2",
+  "kind": "audio-profile",
+  "seed": 22071,
+  "trials": 32,
+  "seconds_per_clip": 20,
+  "sample_rate": 16000,
+  "built_at": "2026-08-07T18:29:48.164Z",
+  "strata": { "hard": 12, "random": 12, "catch": 8 },
+  "regions_in_pack": 13,
+  "region_pairs_possible": 78,
+  "distinct_clips": 24,
+  "regions_at_both_capture_seeds": 11,
+  "regions_at_one_capture_seed": 2
+ },
+ "blind_discipline": {
+  "procedure_pre_registered": true,
+  "procedure_sha256": "59e49482efb20dd1455a03451ae4053376b446964cc79cb2bc703a6eefe04bac",
+  "answer_file": "reports/w1-22-critic/b2/answer.md",
+  "answer_sha256": "fc40b46e6051d0574d066e76f329a8bd8dcff352116113bc20b8c55269ba734d",
+  "answer_committed_at": "2026-08-07T18:49:20Z",
+  "reveal_opened_after_hash": true,
+  "reveal_path": "reports/w1-22-critic/b2.reveal/mapping.json",
+  "decision_rule": "SAME iff mean absolute difference over the 24 band levels < 1.5 dB AND fractional spectral-centroid shift < 0.05; else DIFFERENT. Fixed before the trial data was read.",
+  "class_balance_used": false,
+  "class_balance_known": true,
+  "class_balance_leak_note": "The 24/8 balance leaked via the pack's own JUDGE.md and via hardcoded constants in the builder. An absolute threshold was chosen deliberately over any rank-based rule so the leak could not act. Because the threshold sits inside a 4.6x empty gap, no count information could have moved any trial across it."
+ },
+ "results": {
+  "overall_correct": 32,
+  "overall_trials": 32,
+  "overall_accuracy": 1.0,
+  "separation": 1.0,
+  "separation_n": "24/24",
+  "false_different_rate": 0.0,
+  "false_different_n": "0/8",
+  "false_different_bar": 0.25,
+  "admissible": true,
+  "by_stratum": {
+   "hard": { "correct": 12, "n": 12 },
+   "random": { "correct": 12, "n": 12 },
+   "catch": { "correct": 8, "n": 8 }
+  },
+  "hedged_or_declined": 0,
+  "unanswerable": 0,
+  "called_same": ["T02", "T04", "T12", "T17", "T19", "T21", "T25", "T30"],
+  "wrong_trials": []
+ },
+ "separation_margin": {
+  "note": "Three metrics, two of them chosen before the reveal, produce the identical partition.",
+  "mad_db_same_range": [0.14, 0.95],
+  "mad_db_different_range": [4.39, 35.76],
+  "mad_db_gap_ratio": 4.6,
+  "cosine_same_range": [0.00001, 0.00105],
+  "cosine_different_range": [0.15185, 0.89745],
+  "cosine_gap_ratio": 145,
+  "pack_proxy_catch_range": [0.0, 0.001],
+  "pack_proxy_hard_range": [0.1659, 0.3896],
+  "pack_proxy_gap_ratio": 166,
+  "threshold_insensitivity": "Any threshold between 1.0 and 4.3 dB yields the identical 32/32 partition."
+ },
+ "findings": [
+  {
+   "id": "AUDB2-F1",
+   "severity": "high",
+   "subsystem_path": "audio.ambience.events",
+   "what": "Zero transient onsets were detected across all 64 recordings in the pack - 21 minutes 20 seconds of ambience with not one discrete sound event.",
+   "corroboration": "Detector-free: crest factor spans only 10.0-17.4 dB across every clip. Steady filtered noise measures 10-13 dB; a bed carrying one-shot events measures above 20 dB. The two independent statistics agree.",
+   "player_facing": "Walking between regions changes the colour of the hum, which is noticeable. Standing still in any region for twenty seconds, nothing happens at all.",
+   "qualification": "Cannot fully exclude that the onset detector (3.5x median energy AND 1.6x frame-on-frame rise) is too strict, but the crest-factor corroboration is independent of the detector and points the same way."
+  },
+  {
+   "id": "AUDB2-F2",
+   "severity": "positive",
+   "subsystem_path": "audio.ambience.region.separation",
+   "what": "No two regions are indistinguishable. The globally closest distinct pair is trial T22 at 4.39 dB mean band difference, 9.2 dB at the worst band (97-121 Hz), pack proxy distance 0.1659 - still 166x further apart than the largest same-place re-roll.",
+   "why_global": "The hard stratum is by construction the 12 closest of all 78 region pairs, so its minimum is the global minimum.",
+   "qualification": "T22's two beds are separable but are plainly the same kind of place - both a subsonic rumble at 116 and 131 Hz with the treble gone. They differ in degree, not in character."
+  },
+  {
+   "id": "AUDB2-F3",
+   "severity": "medium",
+   "subsystem_path": "audio.ambience.stereo",
+   "what": "Stereo correlation across the 24 distinct clips runs from 0.001 (fully decorrelated) to 0.999 (effectively mono). Seven of 24 sit above 0.989 and have no stereo image at all.",
+   "why_it_matters": "Nothing suggests a designed contrast; it reads as beds built to different rules. Half the world is wide and half is a point source."
+  },
+  {
+   "id": "AUDB2-F4",
+   "severity": "medium",
+   "subsystem_path": "audio.ambience.region.character",
+   "what": "The 13 beds are distinguished purely by spectral centre and stereo width, and sort into four families: deep rumble (112, 133 Hz), low hum (327, 350, 514, 588 Hz), mid-weighted (1493, 1870, 1925 Hz) and bright/hissy (2112, 2280, 2842, 3469 Hz).",
+   "why_it_matters": "Tone colour is the entire vocabulary of region identity in the current build."
+  },
+  {
+   "id": "AUDB2-F5",
+   "severity": "high",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The pack discloses its own class balance. reports/w1-22-critic/b2/JUDGE.md sits inside the pack directory and names '24 DIFFERENT trials' and '8 SAME trials', while PROMPT.md in the same directory promises 'You are not told how many of each.'",
+   "why_it_matters": "RI-MTH03 SectionA specifies the pack contains the artifacts, PROMPT.md and pack.json; operator notes belong in the reveal sibling. Any judge that lists the directory sees the answer's shape.",
+   "fix": "Move JUDGE.md into reports/w1-22-critic/b2.reveal/."
+  },
+  {
+   "id": "AUDB2-F6",
+   "severity": "medium",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The class balance is also recoverable from the builder source: audio-pack-b2.mjs hardcodes hard=all.slice(0,12), picked.length<12 and catchRegions.length<8.",
+   "why_it_matters": "A judge instructed to audit the builder for leaks reads the balance out of the source as an unavoidable side effect of the audit."
+  },
+  {
+   "id": "AUDB2-F7",
+   "severity": "medium",
+   "subsystem_path": "process.blind.protocol",
+   "what": "audio-pack-b2.mjs lines 249-250 print the catch-pair proxy distances and the hard-stratum distances to stdout at build time.",
+   "why_it_matters": "Anyone who builds the pack and reads the console is handed the exact numeric boundary between the SAME and DIFFERENT strata, which calibrates a threshold perfectly.",
+   "fix": "Write those lines into the reveal directory instead of the terminal."
+  },
+  {
+   "id": "AUDB2-F8",
+   "severity": "high",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The pack's declared integrity hash does not match the pack. pack.json declares trials_sha256 3ab1e3b84faebdf821d62a1627d16e72a40644e99792922d981b11e343c7c768; recomputing it the way the builder does gives 14684a7c7203ff06f8d547ab715c88e846da7d8c886f44ad2032063f94c90749.",
+   "cause": "trials.json contains the literal token -23.0 sixty-four times, a form JSON.stringify cannot emit (it renders -23). The pretty round trip is exactly 128 bytes shorter than the file on disk: 64 recordings x 2 characters. mapping.json is timestamped 18:29 while trials.json and pack.json are 18:31. The pack was built once and then text-substituted in place rather than rebuilt.",
+   "consequence": "The blinding is intact - verified mechanically that no loudness variance survives - but RI-MTH03 M3's auditability claim is broken for this pack: the recorded hash can no longer prove the trials a judge saw are the trials the builder made. The judge's own answer hash is unaffected.",
+   "fix": "Rebuild the pack and let the tool write the hash, or recompute trials_sha256 after any edit."
+  },
+  {
+   "id": "AUDB2-F9",
+   "severity": "positive",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The loudness leak the author closed is closed properly and more thoroughly than claimed. loudness_lufs is the constant -23.0 in all 64 recordings, and every remaining field is level-invariant by construction: crest_factor_db is peak/RMS, band levels are relative to the clip's own loudest band, the centroid derives from normalised bands, and stereo correlation and onset rise are ratios.",
+   "why_it_matters": "A blanked field can still leak through a sibling statistic. This one does not. Checked algebraically, not assumed."
+  },
+  {
+   "id": "AUDB2-F10",
+   "severity": "high",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The pack does not discriminate between a judge and a threshold. The tool's docstring claims it is 'stronger than a cosine threshold, because a judge decides'; on this data a plain cosine threshold set anywhere in a wide range scores the same 32/32.",
+   "why_it_matters": "A probe that cannot fail is worse than no probe (AGENT-PROTOCOL). B2 as instrumented measures whether the ambience system emits per-region-distinct spectra - it emphatically does - not whether a player could tell the regions apart. The channel a player discriminates on is events and dynamics, which AUDB2-F1 shows are absent.",
+   "fix": "Harden the pack before citing its number: compare a region against itself at different times of day, or compare neighbouring regions after loudness- and spectrum-matching them."
+  },
+  {
+   "id": "AUDB2-F11",
+   "severity": "low",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The 'seven-step unblinding order' named in the judge's dispatch brief does not exist anywhere on disk - not in the pack, not in b2.reveal/ (which contains only mapping.json), not in the builder, and not in RI-MTH03.",
+   "what_was_followed": "JUDGE.md's three steps plus RI-MTH03 M3's hash requirement: hand the judge PROMPT.md and trials.json only, write answer.md, hash it, then and only then open ../b2.reveal/mapping.json.",
+   "why_it_matters": "Reported rather than back-filled. A protocol step that only exists in a dispatch brief is not a recorded protocol step."
+  },
+  {
+   "id": "AUDB2-F12",
+   "severity": "low",
+   "subsystem_path": "process.blind.protocol",
+   "what": "The catch trials are correct in design and weak in force. Two of the eight have a pack proxy distance of exactly 0.0000 and the largest is 0.0010.",
+   "cause": "If a bed is pure filtered noise with no event layer (AUDB2-F1), a different capture seed can only reroll the noise phase, so the spectrum is essentially unchanged.",
+   "why_it_matters": "The catch stratum does its stated job - it would catch a judge that answers DIFFERENT to everything - but it is not a strong control against a judge using a tight threshold, because the thing it varies barely varies. Credit to the author for adding it; RI-AUD03 B2 as written has no SAME control at all."
+  }
+ ],
+ "protocol_score": {
+  "against": "RI-MTH03 Scoring",
+  "checks": [
+   { "check": "Pack built by a tool, not hand-assembled", "points": 2, "awarded": 1, "why": "Tool-built, then hand-edited post-build; see AUDB2-F8" },
+   { "check": "Reveal key outside the pack directory", "points": 2, "awarded": 2, "why": "b2.reveal/ is a sibling, not a child" },
+   { "check": "answer.md written before reveal, hash recorded", "points": 3, "awarded": 3, "why": "Hashed at 18:49:20Z; reveal opened after" },
+   { "check": "Answer is SAME or DIFFERENT, no hedging, no refusal", "points": 2, "awarded": 2, "why": "32/32 answered, none hedged or declined" },
+   { "check": "At least 3 specific, checkable evidence items", "points": 2, "awarded": 2, "why": "Every trial line in answer.md carries band, centroid and correlation figures" },
+   { "check": "WEAKEST POINT present and non-trivial", "points": 1, "awarded": 1, "why": "Section 9 of the markdown" },
+   { "check": "Reveal outcome recorded", "points": 2, "awarded": 2, "why": "Full per-trial table and stratum breakdown" },
+   { "check": "Second pass when the pick was ours", "points": 0, "awarded": 0, "why": "n/a - excluded from denominator; a SAME/DIFFERENT design has no 'ours' side" },
+   { "check": "Leak audit performed", "points": 2, "awarded": 2, "why": "Author's, plus this independent one finding three further leaks" }
+  ],
+  "applicable_points": 16,
+  "awarded_points": 15,
+  "percent": 93.75,
+  "band_label": "Below bar - the blind result is admissible and the process defect is recorded",
+  "blind_result_admissible": true
+ },
+ "score": {
+  "overall_0_10": null,
+  "note": "This judge does not score the W1-22 piece. It has deliberately not read RI-AUD03 or any RI-AUD item, so it has no bar to score the piece against. It reports the blind outcome, the acoustic findings and the protocol score only. The piece score belongs to a critic that has read the item.",
+  "aggregation": "n/a",
+  "confidence": "high",
+  "confidence_note": "Three independent metrics agree exactly; the partition survives any threshold in a 4.6x-wide gap; a blind structural inference (13 acoustic identities, 11 at both seeds and 2 at one) was confirmed by the reveal."
+ },
+ "status": "complete",
+ "status_reasons": [
+  "All 32 trials answered, hashed before reveal, and scored: 32/32, separation 1.0000, false_different_rate 0.0000, admissible.",
+  "Independent leak audit found three leaks the pack author missed and one integrity defect; all recorded.",
+  "A perfect score was treated as a reason for scepticism rather than a result: AUDB2-F10 records that the pack does not discriminate between a judge and a threshold."
+ ],
+ "biggest_gap": {
+  "gap_id": "AUDB2-F1",
+  "subsystem_path": "audio.ambience.events",
+  "what": "The regions are distinguishable but inert. Zero discrete sound events across 21 minutes 20 seconds of ambience in 64 recordings; crest factor never exceeds 17.4 dB anywhere.",
+  "why_it_matters": "Region identity is currently carried entirely by the colour of a steady hum. A player standing still anywhere in the world hears nothing occur, and the axis on which players actually recognise a place - what happens in it - is empty. It also makes the B2 check easy for the wrong reason (AUDB2-F10)."
+ },
+ "method_deviations": [
+  {
+   "tool": "scratchpad/analyse.mjs",
+   "why": "Per-trial band statistics, degeneracy and float-precision leak audit, and an alternative-metric sensitivity check. Reads only reports/w1-22-critic/b2/trials.json.",
+   "declared_per": "AGENT-PROTOCOL 'If a method names a tool that does not exist, build it' / TOOL-LOOP"
+  },
+  {
+   "tool": "scratchpad/mkanswer.mjs",
+   "why": "Emits answer.md so each trial's stated reason carries its real measured numbers rather than prose. Reads only trials.json.",
+   "declared_per": "same"
+  },
+  {
+   "deviation": "The pack was loaded, not rendered.",
+   "why": "reports/w1-22-critic/b2 already existed. pgrep -c headless_shell read 30 with loadavg 20.28 at start, far above the AGENT-PROTOCOL cap of ~8. No browser was launched at any point."
+  },
+  {
+   "deviation": "The judge read the builder source before answering.",
+   "why": "The dispatch brief required a leak audit of the builder. This is the vector for AUDB2-F6: reading the source discloses the class balance. Declared rather than concealed, and the decision rule was pre-registered and hashed so the disclosure can be shown to be inert."
+  }
+ ],
+ "concurrency": {
+  "head_at_measurement": "72baa12",
+  "head_at_finish": "756ffff",
+  "headline_re_run_before_finishing": true,
+  "headline_on_re_run": "32/32, separation 1.0000, false_different_rate 0.0000 - unchanged",
+  "pack_frozen_check": "reports/w1-22-critic/b2/answer.md still hashes to fc40b46e6051d0574d066e76f329a8bd8dcff352116113bc20b8c55269ba734d at finish, so the answers scored are the answers committed.",
+  "note": "This judge was instructed not to commit and did not run git commit at any point. Between writing W1-22-B2-blind.md and writing the .json, another agent ran a blanket add-and-commit (756ffff, 'Fifth rejection: the race detector cannot see a matrix that is 100% dead') which swept the markdown into that agent's commit. Content is byte-identical to what this judge wrote (git diff is empty). The .json and the artifacts directory arrived after that agent's git add and remain untracked. No attempt was made to undo the commit, because rewriting shared history would destroy a neighbouring agent's work. Recorded rather than concealed; this is the AGENT-PROTOCOL 'the tree moves under you' hazard occurring during a run."
+ },
+ "quarantine": {
+  "forbidden_reads": [
+   "corpus/90-verdicts/wave1/W1-22-r1.md",
+   "orchestration/status/W1-22.json",
+   "orchestration/status/critic-w1-22.json",
+   "corpus/**/RI-AUD*",
+   "game/data/**"
+  ],
+  "accidental_reads": [],
+  "clean": true
+ }
+}
