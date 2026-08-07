@@ -152,8 +152,27 @@ function run(idx, npcs, { quiet = false } = {}) {
     }
   }
 
+  // Q5 — THE MIRROR OF THE HEADLINE DEFECT.
+  //
+  // Q2 asks which actor names have no lines. This asks which LINES have no actor: an info
+  // written for an `a` that no NPC record in the build wears is dialogue nobody in the province
+  // can ever say. Same root cause as the headline — nothing ever joined the roster in
+  // `game/data/npcs/**` to the `a` fields in `game/data/dialogue/topics/**` — and it is exactly
+  // as invisible, because a dead info does not error, it simply never gets scored.
+  //
+  // Reported, never gated. Whether the fix is to rename the actor on 25 NPC records or to alias
+  // the two names in the reader is a data-ownership decision, not a coverage one, and a builder
+  // that quietly renames another piece's voice slot has changed a thing it does not own.
+  const worn = new Set(npcs.map((n) => n.actor).filter(Boolean));
+  const deadActors = new Map();
+  for (const [, t] of idx) for (const i of (t.infos || [])) {
+    if (i.a && !worn.has(i.a)) deadActors.set(i.a, (deadActors.get(i.a) || 0) + 1);
+  }
+
   const res = {
     npcs: per.length, roots: roots.length,
+    dead_actors: Object.fromEntries([...deadActors].sort((a, b) => b[1] - a[1])),
+    dead_infos: [...deadActors.values()].reduce((a, b) => a + b, 0),
     answering_any: answeringAny, answering_all: answeringAll,
     per_root: perRoot,
     by_actor: Object.fromEntries([...byActor].map(([k, v]) => [k, v])),
@@ -186,6 +205,9 @@ function run(idx, npcs, { quiet = false } = {}) {
   say('');
   say(`Q4 PLACE      settlement-gated answers delivered: ${placed.checked}, MISPLACED: ${placed.misplaced}`);
   for (const e of placed.examples) say(`     ${e}`);
+  say('');
+  say(`Q5 DEAD LINES  infos written for an actor no NPC record wears: ${res.dead_infos}  (reported, not gated)`);
+  for (const [a, n] of Object.entries(res.dead_actors)) say(`     ${a.padEnd(16)} ${String(n).padStart(3)} infos, 0 mouths`);
   return res;
 }
 

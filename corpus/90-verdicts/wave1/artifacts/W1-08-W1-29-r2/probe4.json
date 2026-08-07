@@ -1,0 +1,72 @@
+{
+  "at": "2026-08-07T16:56:59.916Z",
+  "load_at_start": "14.78 13.71 13.43 14/375 26223",
+  "legs": {
+    "MP20_rederived": {
+      "legs": [
+        {
+          "label": "dialogue",
+          "runs": 32,
+          "hud_excluded": 2,
+          "min_css_px": 7,
+          "raw_px": 14,
+          "smallest": "JEEH-EI",
+          "hud_min_css_px": 8.5,
+          "hud_smallest": "  Left-Hand-Of-The-Hist"
+        },
+        {
+          "label": "journal",
+          "runs": 49,
+          "hud_excluded": 5,
+          "min_css_px": 5.06,
+          "raw_px": 10.11111111111111,
+          "smallest": "The Company Man",
+          "hud_min_css_px": 3.97,
+          "hud_smallest": "LIGHT"
+        },
+        {
+          "label": "book",
+          "runs": 28,
+          "hud_excluded": 10,
+          "min_css_px": 5.06,
+          "raw_px": 10.11111111111111,
+          "smallest": "1–2 of 7",
+          "hud_min_css_px": 3.97,
+          "hud_smallest": "LIGHT"
+        }
+      ],
+      "floor": 18,
+      "cssPerDevice": 0.5,
+      "buffer": [
+        1688,
+        780
+      ]
+    },
+    "MP20_break_probe": {
+      "note": "scale hook probe",
+      "before": null,
+      "keys": [
+        "S",
+        "data",
+        "mode",
+        "stack",
+        "focus",
+        "bookId",
+        "bookPages",
+        "containerEid",
+        "toast",
+        "entryGlyphUntil",
+        "pending",
+        "axis",
+        "builtFrame",
+        "lastModel",
+        "openedAt",
+        "onBookOpened",
+        "touchDrawn",
+        "rotateDrawn",
+        "lastMode",
+        "lastTouchSig"
+      ]
+    }
+  }
+}

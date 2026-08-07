@@ -238,6 +238,19 @@ for (const [id, b] of Object.entries(beds)) {
   else if (!(t >= -28 && t <= -24)) fail('C10', `${id}: bed target ${t} LUFS outside §A's −28..−24 band. Ambience that sits above this has eaten RI-AUD01's combat headroom and the parry chime has nowhere to go.`);
 }
 
+// ---- C12: has this bed ever been rendered and levelled? ----------------------------------------
+// A WARNING, deliberately, not a failure. A bed added today legitimately has no `bed_gain_db`
+// until somebody renders it, and failing here would make writing a new region impossible without
+// a browser — a fail-closed assertion landed ahead of its data, which is the thing that has taken
+// this engine down repeatedly. But an uncalibrated bed is a bed at an unknown loudness, and the
+// first render measured the province spanning 22 LU, so an unwarned one would sit in the mix at
+// whatever level the sum of its layer gains happened to produce.
+for (const [id, b] of Object.entries(beds)) {
+  if (b.bed_gain_db === undefined) {
+    warn('C12', `${id}: no bed_gain_db — this bed has never been rendered and levelled. Run \`node tools/analysis/ambience-render.mjs --seconds 20 --calibrate\`. Until then its loudness is whatever its layer gains happen to sum to, which spanned 22 LU across the province before calibration.`);
+  }
+}
+
 // ---- C11: the bed must not silently drift from regions.json ------------------------------------
 for (const r of regions) {
   const b = beds[r.id];

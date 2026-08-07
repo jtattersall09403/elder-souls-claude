@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-TRIBES",
+  "brief": "inline dispatch: Argonian tribes — CF-C023 gap (Agacephs/Paatru/Archein/Sarpa/Dead-Water/Miredancers all zero occurrences)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/60-lore/RI-LORxx-argonian-tribes-design.md",
+    "game/data/lore/canon-register (facts/holders/edges for tribal disputes)",
+    "game/data/books/* (tribal books)",
+    "game/data/dialogue/* (infos + rumours voicing tribal positions)",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read reports/lore/W1-23-registry-report.md, orchestration/status/W1-23.json, RI-LOR01, RI-LOR06",
+  "notes_for_successor": "Authoring task. NO BROWSER until final verify — box at loadavg 21 with 24 browsers. Prose bar: use question marks, avoid every-line-punchline, avoid the word 'eleven'. Run node tools/check-prose.mjs on output.",
+  "files_touching": []
+}

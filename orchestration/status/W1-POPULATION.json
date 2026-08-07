@@ -2,7 +2,7 @@
   "task_id": "W1-POPULATION",
   "brief": "inline (world population builder): hostile population + encounters",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "game/data/world/<population/encounter data>",
     "engine consumer wiring",
@@ -11,7 +11,15 @@
   ],
   "outputs_written": [
     "game/data/world/encounters.json (+14 wilderness composition templates; W1-07's two UNTOUCHED)",
-    "game/src/character/encounter.js (+'always_hostile' behaviour rule, additive)"
+    "game/src/character/encounter.js (+'always_hostile' behaviour rule, additive)",
+    "game/data/world/population.json (NEW: the placement model - density budget, tier multipliers, safety falloff, composition tables, introduction rule, stream radii, respawn coupling)",
+    "tools/world/build-population.mjs (NEW: deterministic generator + --write/--check + --tier-mult/--encounters-per-tm/--no-safety perturbation flags)",
+    "game/data/world/population-posts.json (NEW, GENERATED: 144 posts, 267 bodies, 34,646 souls)",
+    "game/src/world/population.js (NEW: PopulationSystem - dormant/resident/cleared, release hysteresis, S5 epoch coupling, province-cell gate)",
+    "game/src/engine.js (data branches for population.json/population-posts.json; import + construct; _streamPopulation() from _afterStep; reset on loadState and applySave; spawnEncounter opts.tag/opts.yaw)",
+    "game/src/sim/death.js (respawnOrdinary bumps ordinaryRespawnEpoch - the half of S5 that lives outside sim.entities)",
+    "game/src/harness/api.js (populationReport(), setPopulation() ablation switch)",
+    "game/data/index.json (regenerated, 538 -> 545)"
   ],
   "findings": [
     "START CONTENTION: pgrep -c headless_shell = 18, loadavg 8.05 -- at/above the cap of 8. Authoring phase first, no browser.",
@@ -25,8 +33,17 @@
     "SURVEY 8 - NO RANGED/DUELIST/TURTLE/AMBUSHER/ordinary-CASTER STATBLOCK EXISTS, so RI-AI05 \u00a7D's per-region archetype MIX is unreachable on this roster and no template fakes one. Declared in encounters.json absent_roles_declared rather than hidden.",
     "SURVEY 9 - THE GEOMETRY IS ALL THERE: roads.json 10 legs / 25,056.9 m trunk / point polylines every ~12 m; regions.json 13 regions with danger_tier 1-5 and bounds; pois.json 42 (8 settlement, 16 minor-settlement, 10 landmark, 8 waystation); hearths.json 29 hearths (13 of them `critical-path` along the crossing) + 2 fog gates. The crossing is named_routes.crossing: legs stormhold-helstrom + helstrom-blackrose + blackrose-lilmoth, 6,816 m, 56.8 walk-min.",
     "DENSITY CONTRACT, reconciled from two items that agree: RI-AI07 \u00a7D encounters per TM 0.88 (0.59-1.29), enemies per TM 1.65 (1.05-2.45), enemies per encounter 1.9 (1.4-2.6), solo:grouped 55:45; RI-WLD02 D9 hostile groups per minute of wilderness road walking 0.7-1.2 (fail <0.4 or >2.0). A TM is 120 m at S17's 2.0 m/s, so both are the SAME density and 0.88/TM = one encounter per 136 m.",
-    "ARITHMETIC THAT SETS THE GROUPED SIZES: 0.55x1 + 0.45xG = 1.9 => G = 3.0. Grouped encounters must average exactly 3 bodies for the mean to land on RI-AI07's 1.9 at the declared 55:45 split."
+    "ARITHMETIC THAT SETS THE GROUPED SIZES: 0.55x1 + 0.45xG = 1.9 => G = 3.0. Grouped encounters must average exactly 3 bodies for the mean to land on RI-AI07's 1.9 at the declared 55:45 split.",
+    "GENERATED PLACEMENT, first full build: 144 posts / 267 bodies / 34,646 souls. Wilderness road density 0.884 encounters per traversal minute against RI-AI07 \u00a7D's target of 0.88 and band 0.59-1.29, and inside RI-WLD02 D9's 0.7-1.2. Enemies per TM 1.598 (target 1.65, band 1.05-2.45). Enemies per encounter 1.854 (target 1.9, band 1.4-2.6). Solo:grouped 59:41 (band 45:55-65:35). Grouped mean bodies 2.968 against the derivation's required 3.0. 17 gank-duo posts.",
+    "THE CROSSING, generated: 27 posts, 38 bodies, 4,554 souls over 6,825 m / 56.9 walk-minutes, crossing salt-hills(t3), valus-ridge(t4), stone-forest(t3), deep-marshes(t5), blackwood(t2), western-rootlands(t1). Fully cleared it pays LEVEL 8 on RI-PRG01's shipped curve. Before this the same walk passed six sentries worth 816 souls = level 2.",
+    "FIRST GENERATOR RUN WAS WRONG AND THE MISTAKE IS WORTH KEEPING: at hearth clear 45 m + ramp 150 m, the THIRTEEN critical-path hearths strung along the crossing suppressed 390 m of every 500 m of it and the road came out at 0.431 enc/TM against a floor of 0.59. A HEARTH IS A CHECKPOINT, NOT A SAFE ZONE -- in Souls an enemy stands twenty metres from the bonfire in sight of it. Apron is now 22 m with a 40 m ramp; settlements keep 70+150.",
+    "SECOND GENERATOR FIX: a candidate rejected for water/fog-corridor/separation used to consume its unit of density, so a causeway silently cost the road its budget (243 water rejections on the trunk). Rejections now put the unit back, capped at 1.5 so a long causeway does not pile up on the first dry land the far side. 0.541 -> 0.884 enc/TM.",
+    "THE INTRODUCTION RULE HAS TO BE A POST-PASS, NOT INLINE. Run along the road in leg order it introduced inf_trash in a TIER-4 region, because that is simply where the crossing's first leg starts. RI-AI05 \u00a7D is about what the PLAYER meets first, so the pass now runs over the finished placement ordered by (danger_tier, distance from nearest safety). Resulting order: drowned_lesser, beast_slitherfang, inf_trash (all western-rootlands t1), then guard_legion (stone-forest t3), then drowned_greater (clay-moor t4) -- each solo.",
+    "SPAWN COLLISION FOUND BY READING, BEFORE IT COULD FIRE: Engine.spawnEncounter names bodies `${encounterId}-${role}-${i}` and Engine.spawn THROWS on a duplicate eid. Two posts of the same template resident at once would have crashed the fixed step the first time a road carried two marsh sentries. Fixed with an additive opts.tag (the post id); every existing caller passes none and is byte-identical.",
+    "THE PROVINCE-CELL GATE IS NOT OPTIONAL: PopulationSystem.step() returns early unless engine.cellFor(sim.env) === 'province'. Without it wilderness bodies would appear in arena_flat and contaminate every combat probe in the project.",
+    "S5 HAS A HALF THAT LIVES OUTSIDE sim.entities. DeathSystem.respawnOrdinary() revives ordinary hostiles that are still ENTITIES -- i.e. within ~260 m. RI-PRG04 \u00a71 says every non-unique hostile returns INCLUDING ONES KILLED HOURS AGO, and a post cleared two kilometres back is not in that array. Coupled with a COUNTER (death.ordinaryRespawnEpoch), deliberately not a callback, so respawnOrdinary still touches only sim.entities and the combat bodies and the seam stays structural.",
+    "GATES AFTER THE WIRING: check-data 0 (545 indexed files), check-quests 0 (120 quests), check-content 0 (383 resolutions), boot-check PASS. Taken at pgrep -c headless_shell = 24 and loadavg 21.47 -- booleans only, no timing claimed."
   ],
-  "next_step": "write game/data/world/population.json (the model), then tools/world/build-population.mjs",
+  "next_step": "write tools/world/population-consumption.mjs (authoring), then take ONE browser when pgrep < 8: baseline walk / ablation / model perturbation regenerate+reload / composition swap / S5 respawn / still-vs-walking / delete-the-fix. Then docs/shots + blog line.",
   "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters."
 }

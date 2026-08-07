@@ -1,0 +1,474 @@
+{
+  "at": "2026-08-07T16:46:43.718Z",
+  "legs": {
+    "A_B_ablation": {
+      "arms": [
+        {
+          "tag": "desktop",
+          "md5": "a5787b35519babf1",
+          "n_controls": null,
+          "layout_keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "visible": true,
+          "held": [],
+          "stats": {
+            "w": 844,
+            "h": 390,
+            "distinct_colours": 409,
+            "mean_luma": 74.33,
+            "stdev_luma": 28.196,
+            "blank": false
+          }
+        },
+        {
+          "tag": "handheld",
+          "md5": "a13a5c0c2c0c91da",
+          "n_controls": null,
+          "layout_keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "visible": true,
+          "held": [],
+          "stats": {
+            "w": 844,
+            "h": 390,
+            "distinct_colours": 404,
+            "mean_luma": 74.32,
+            "stdev_luma": 28.196,
+            "blank": false
+          }
+        },
+        {
+          "tag": "desktop-resample",
+          "md5": "469b2d9865dc8170",
+          "n_controls": null,
+          "layout_keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "visible": true,
+          "held": [],
+          "stats": {
+            "w": 844,
+            "h": 390,
+            "distinct_colours": 404,
+            "mean_luma": 74.32,
+            "stdev_luma": 28.196,
+            "blank": false
+          }
+        },
+        {
+          "tag": "handheld-fix-deleted",
+          "md5": "62ce92c48c925412",
+          "n_controls": null,
+          "layout_keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "visible": true,
+          "held": [],
+          "stats": {
+            "w": 844,
+            "h": 390,
+            "distinct_colours": 370,
+            "mean_luma": 73.07,
+            "stdev_luma": 27.822,
+            "blank": false
+          }
+        },
+        {
+          "tag": "handheld-restored",
+          "md5": "fd468b7541dad467",
+          "n_controls": null,
+          "layout_keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "visible": true,
+          "held": [],
+          "stats": {
+            "w": 844,
+            "h": 390,
+            "distinct_colours": 408,
+            "mean_luma": 74.32,
+            "stdev_luma": 28.197,
+            "blank": false
+          }
+        }
+      ],
+      "handheld_controls": null,
+      "null_control_stable": false,
+      "handheld_differs": true,
+      "delete_fix_returns_to_desktop": false,
+      "restored_matches": false
+    },
+    "C_register": {
+      "coverage": {
+        "declared": [
+          "dialogue",
+          "title",
+          "menus"
+        ],
+        "instrumented": [
+          "dialogue",
+          "title",
+          "menus"
+        ],
+        "blind": [],
+        "complete": true,
+        "in_scope": 3,
+        "paths": {
+          "dialogue": [
+            "fillText",
+            "strokeText",
+            "glyphs.drawText"
+          ],
+          "title": [
+            "fillText",
+            "strokeText",
+            "glyphs.drawText"
+          ],
+          "menus": [
+            "fillText",
+            "strokeText",
+            "glyphs.drawText"
+          ]
+        },
+        "why": {
+          "dialogue": "render/ui.js — the vellum panel, via ctx.fillText",
+          "title": "render/title.js — the title surface, via ctx.fillText",
+          "menus": "ui/hud.js + ui/screens/* — the HUD and the menus, via ui/glyphs.js drawText (stroked vector paths)"
+        }
+      },
+      "per_state": {
+        "arena_flat": {
+          "entries": 3,
+          "distinct": 3,
+          "complete": true,
+          "blind": [],
+          "sample": [
+            "5",
+            "LIGHT",
+            "Spark-Da…"
+          ]
+        },
+        "default": {
+          "entries": 0,
+          "distinct": 0,
+          "complete": true,
+          "blind": [],
+          "sample": []
+        },
+        "barge-hold": {
+          "entries": 0,
+          "distinct": 0,
+          "complete": true,
+          "blind": [],
+          "sample": []
+        },
+        "helstrom-market": {
+          "entries": 0,
+          "distinct": 0,
+          "complete": true,
+          "blind": [],
+          "sample": []
+        }
+      },
+      "ui_states": {
+        "journal": {
+          "entries": 0,
+          "distinct": 0,
+          "complete": true,
+          "sample": []
+        },
+        "map": {
+          "entries": 0,
+          "distinct": 0,
+          "complete": true,
+          "sample": []
+        },
+        "inventory": {
+          "entries": 0,
+          "distinct": 0,
+          "complete": true,
+          "sample": []
+        }
+      },
+      "sentinel": {
+        "text": "Press E to open",
+        "seen": true,
+        "surface": "menus",
+        "entries": 1
+      },
+      "my_grep_hits": [
+        "Press E to open"
+      ],
+      "instrument_goes_red": true
+    },
+    "D_typesize": {
+      "entry_keys": [
+        "i",
+        "frame",
+        "surface",
+        "kind",
+        "text",
+        "x",
+        "y",
+        "w",
+        "px",
+        "clipped"
+      ],
+      "sample_entry": {
+        "i": 0,
+        "frame": 3,
+        "surface": "menus",
+        "kind": "vector",
+        "text": "5",
+        "x": 72,
+        "y": 137,
+        "w": 8,
+        "px": 20,
+        "clipped": false
+      },
+      "n": 3,
+      "n_with_px": 3,
+      "smallest": [
+        {
+          "t": "LIGHT",
+          "surface": "menus",
+          "px": 11
+        },
+        {
+          "t": "Spark-Da…",
+          "surface": "menus",
+          "px": 11
+        },
+        {
+          "t": "5",
+          "surface": "menus",
+          "px": 20
+        }
+      ],
+      "largest": [
+        {
+          "t": "LIGHT",
+          "surface": "menus",
+          "px": 11
+        },
+        {
+          "t": "Spark-Da…",
+          "surface": "menus",
+          "px": 11
+        },
+        {
+          "t": "5",
+          "surface": "menus",
+          "px": 20
+        }
+      ],
+      "by_surface": {
+        "menus": {
+          "t": "LIGHT",
+          "surface": "menus",
+          "px": 11
+        }
+      },
+      "dpr": 1,
+      "viewport": {
+        "deviceClass": "handheld",
+        "size": {
+          "w": 844,
+          "h": 390,
+          "dpr": 1
+        },
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "orientation": "landscape",
+        "orientationLocked": false,
+        "lockRefused": false,
+        "fullscreen": false,
+        "wakeLock": false,
+        "resizes": 1,
+        "deviceClassChanges": 5,
+        "rotateState": null,
+        "capabilities": {
+          "orientationLock": true,
+          "fullscreen": true,
+          "wakeLock": true,
+          "matchMedia": true
+        },
+        "min_text_css_px": 18
+      }
+    },
+    "E_gamepad": {
+      "control_clean_standard_idx0": [
+        "interact:down"
+      ],
+      "control_clean_standard_idx5": [
+        "light:down"
+      ],
+      "e1_stranger_arrives": [],
+      "e1_after_arrival": {
+        "calibrating": true,
+        "cal_done": false,
+        "prompt": {
+          "line": "Get out of the way.",
+          "step": 2,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "profile": "souls-default",
+        "active": 0,
+        "n_pads": 1
+      },
+      "e1_calibrated": {
+        "calibrating": false,
+        "cal_done": null,
+        "prompt": null,
+        "result_id": "Some Unknown Pad 9000",
+        "result_map": {
+          "0": "roll",
+          "1": "block",
+          "2": "light",
+          "3": "interact",
+          "4": "menu",
+          "5": "lock_on"
+        },
+        "profile": "souls-default",
+        "active": 0,
+        "n_pads": 1
+      },
+      "e1_stranger_raw0": [
+        "light:down"
+      ],
+      "e1_standard_idx0": [
+        "interact:down"
+      ],
+      "e1_standard_idx5": [
+        "light:down"
+      ],
+      "e1_final_cal": {
+        "calibrating": false,
+        "cal_done": null,
+        "prompt": null,
+        "result_id": "Some Unknown Pad 9000",
+        "result_map": {
+          "0": "roll",
+          "1": "block",
+          "2": "light",
+          "3": "interact",
+          "4": "menu",
+          "5": "lock_on"
+        },
+        "profile": "souls-default",
+        "active": 0,
+        "n_pads": 1
+      },
+      "e2_stranger_arrives": [],
+      "e2_partial": {
+        "calibrating": true,
+        "cal_done": false,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "profile": "souls-default",
+        "active": 0,
+        "n_pads": 1
+      },
+      "e2_after_unplug": {
+        "calibrating": true,
+        "cal_done": false,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "profile": "souls-default",
+        "active": null,
+        "n_pads": 0
+      },
+      "e2_standard_idx0": [],
+      "e2_standard_idx1": [],
+      "e2_standard_idx2": [],
+      "e2_standard_idx3": [],
+      "e2_after_standard": {
+        "calibrating": true,
+        "cal_done": false,
+        "prompt": {
+          "line": "Stop and think.",
+          "step": 5,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "profile": "souls-default",
+        "active": 0,
+        "n_pads": 1
+      },
+      "e2_standard_idx0_again": []
+    },
+    "F_consumption": {
+      "control_ids": [],
+      "sample_control": null
+    }
+  }
+}

@@ -339,6 +339,42 @@ export class Renderer {
    * amber sap standing in it, drawn for every well within 160 m so the thing you are running
    * back from is a place and not a coordinate.
    */
+  /**
+   * The height the ground is **drawn** at, which is not the height it is collided at.
+   *
+   * W1-13 round 3, and the mechanism behind `GAP-W1-bloodstain-invisible-from-most-bearings`.
+   * `DeathSystem.placeStain()` finishes `return { pos: [x, ground(x, z), z], … }`, where `ground`
+   * is `field.heightAt` — the **collision** surface. The surface the player looks at is two
+   * layers above it:
+   *
+   *   - `Province._meshY()` interpolates the tile mesh, which uses `bareHeightAt` on deck cells
+   *     and differs from `heightAt` *"by up to 6.80 m in the Stone Forest and 2.61 m in the
+   *     Hive"* — that file's own words, written when a rock and a dozen wax cell rims were found
+   *     hanging in the air over the Hive for exactly this reason;
+   *   - `Province._skinLift()` adds the ground skin, which `groundskin.js` states outright is
+   *     *"NOT in `field.heightAt()`"* — a Deep Marshes tussock field is **0.34 m of relief at
+   *     1.1 m spacing**, drawn and not collided, because as collision it would fence the
+   *     province at 51°.
+   *
+   * So the bloom was drawn at the bottom of the tussocks. Its knot stands 0.37 m over its origin
+   * and its ground halo 0.035 m, against 0.34 m of drawn relief that the placement cannot see —
+   * which is why it read from **1 of 8** bearings in daylight at 12 m and 3 of 8 in the dark at
+   * 6 m, and why the ones it read from were a function of bearing: the line of sight from an eye
+   * 1.6 m up, 12 m away, grazes several metres of sedge dome on the way in.
+   *
+   * The sapwell basins had the same defect and are lifted by the same call. Collision is
+   * untouched: this changes only where a thing is DRAWN, which is the same decision
+   * `Province._placeSite()` and the ground-cover instancing already made.
+   */
+  _drawnGroundY(x, z, fallbackY) {
+    const p = this.province;
+    if (this.cell !== 'province' || !p || !this.field) return fallbackY;
+    try {
+      const y = p._meshY(x, z) + (p._skinLift ? p._skinLift(x, z) : 0);
+      return Number.isFinite(y) ? y : fallbackY;
+    } catch (err) { return fallbackY; }
+  }
+
   syncDeathMarkers(sim, hearths) {
     if (!this._marks) {
       this._marks = { stain: null, wells: new Map(), group: new THREE.Group() };
@@ -372,6 +408,32 @@ export class Renderer {
       halo.rotation.x = -Math.PI / 2;
       halo.position.y = 0.035;
       g.add(halo);
+      // ---- THE HUM, WHICH IS WHAT CARRIES THE READ AT 12 m --------------------------------
+      //
+      // W1-13 round 3. A knot 0.37 m tall and a halo lying at 0.035 m are both SHORTER than the
+      // ground they are drawn on: `groundskin.js` puts 0.34 m of tussock relief at 1.1 m spacing
+      // into the picture and deliberately not into the collision surface. Lifting the bloom onto
+      // the drawn ground (`_drawnGroundY`) stops it being buried; it does not stop a sedge dome
+      // six metres away from standing in front of it, because a 0.37 m object seen from an eye
+      // 1.6 m up at 12 m is a 1.8-degree target behind several metres of 0.34 m relief.
+      //
+      // So the bloom is given HEIGHT. RI-LOR05 §4 already says what it is — "a grey fungal knot
+      // grows over it, humming faintly" — and this is the hum: a column of sap-light standing
+      // 1.9 m out of the knot, cross-planed so it reads from every bearing without being a
+      // billboard that swings as you circle it. It is `depthTest: true` on purpose: the bloom is
+      // a THING IN THE WORLD and real geometry occludes it. D19 and HF6 forbid a marker, and a
+      // shape you can see through a hill is a marker no matter what it is made of.
+      const humMat = new THREE.MeshBasicMaterial({
+        color: 0xd8b25a, toneMapped: false, fog: false, transparent: true, opacity: 0.30,
+        side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending,
+      });
+      for (let i = 0; i < 3; i++) {
+        const blade = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 1.9), humMat);
+        blade.position.y = 0.34 + 1.9 / 2;
+        blade.rotation.y = (i / 3) * Math.PI;
+        blade.renderOrder = 2;
+        g.add(blade);
+      }
       g.name = 'bloom';
       M.group.add(g);
       M.stain = g;
@@ -379,7 +441,10 @@ export class Renderer {
       M.group.remove(M.stain);
       M.stain = null;
     }
-    if (M.stain && stain) M.stain.position.set(stain.pos[0], stain.pos[1], stain.pos[2]);
+    // Drawn on the ground you SEE, not the ground you collide with. See `_drawnGroundY`.
+    if (M.stain && stain) {
+      M.stain.position.set(stain.pos[0], this._drawnGroundY(stain.pos[0], stain.pos[2], stain.pos[1]), stain.pos[2]);
+    }
 
     const list = hearths ? hearths.list() : [];
     const px = sim.player.pos[0], pz = sim.player.pos[2];
@@ -404,14 +469,22 @@ export class Renderer {
           new THREE.MeshStandardMaterial({ color: 0x4a3a26, roughness: 0.96 }));
         root.position.set(0.95, 0.95, -0.4); root.rotation.z = 0.26;
         g.add(root);
-        g.position.set(h.pos[0], h.pos[1], h.pos[2]);
+        // Same lift as the bloom, for the same reason: a basin sunk 0.34 m into drawn tussock is
+        // the other half of the run back, and it was placed off `hearths.json`'s collision y.
+        g.position.set(h.pos[0], this._drawnGroundY(h.pos[0], h.pos[2], h.pos[1]), h.pos[2]);
         g.name = 'sapwell:' + h.id;
         M.group.add(g);
         M.wells.set(h.id, g);
+        mesh = g;
       } else if (!near && mesh) {
         M.group.remove(mesh);
         M.wells.delete(h.id);
+        mesh = null;
       }
+      // Re-lifted every frame rather than only at creation: `_skinLift` reads the ground-skin
+      // patch, which is rebuilt as the player moves, so a well built while the patch was
+      // somewhere else would keep a lift of zero for the whole approach.
+      if (mesh) mesh.position.y = this._drawnGroundY(h.pos[0], h.pos[2], h.pos[1]);
     }
     M.group.visible = true;
   }

@@ -1,0 +1,312 @@
+{
+  "at": "2026-08-07T16:54:19.667Z",
+  "load_at_start": "13.45 12.27 12.97 12/362 19763",
+  "legs": {
+    "C1_consumption": {
+      "controls": [
+        {
+          "action": "roll",
+          "x": 673,
+          "y": 342,
+          "r": 24,
+          "gate": {
+            "tap": "roll",
+            "hold": "sprint",
+            "frames": 12
+          }
+        },
+        {
+          "action": "block",
+          "x": 693,
+          "y": 285,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "light",
+          "x": 737,
+          "y": 242,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "interact",
+          "x": 795,
+          "y": 224,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "jump",
+          "x": 609,
+          "y": 336,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "parry",
+          "x": 639,
+          "y": 250,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "heavy",
+          "x": 704,
+          "y": 187,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "use_item",
+          "x": 790,
+          "y": 160,
+          "r": 24,
+          "gate": null
+        },
+        {
+          "action": "crouch",
+          "x": 545,
+          "y": 329,
+          "r": 22,
+          "gate": null
+        },
+        {
+          "action": "lock_on",
+          "x": 786,
+          "y": 97,
+          "r": 22,
+          "gate": null
+        },
+        {
+          "action": "__drawer",
+          "x": 484,
+          "y": 158,
+          "r": 24,
+          "gate": null
+        }
+      ],
+      "touch_cfg": {
+        "cfg_keys": [
+          "owner",
+          "stick",
+          "camera",
+          "min_target_css_px",
+          "min_gap_css_px",
+          "hide_after_ms_when_pad_active",
+          "buttons",
+          "drawer",
+          "coords_note",
+          "layout_note"
+        ],
+        "stick": {
+          "region": "left half",
+          "floating": true,
+          "max_radius_css_px": 90,
+          "note": "T2: the stick originates wherever the thumb lands. A fixed rosette fails the moment the phone is a different size."
+        },
+        "regions": null
+      },
+      "stick_after_down": {
+        "active": true,
+        "ox": 150,
+        "oy": 300,
+        "x": 0,
+        "y": 0
+      },
+      "stick_after_move": {
+        "active": true,
+        "ox": 150,
+        "oy": 300,
+        "x": 0.8888888888888888,
+        "y": 0
+      },
+      "move_vector": [
+        0.9595959595959594,
+        0
+      ],
+      "stick": {
+        "from": {
+          "x": 0,
+          "z": 0,
+          "yaw": 0
+        },
+        "during": {
+          "x": 3.2533,
+          "z": 0,
+          "yaw": 90
+        },
+        "after_release": {
+          "x": 3.2533,
+          "z": 0,
+          "yaw": 90
+        },
+        "displacement_m": 3.2533,
+        "drift_after_release_m": 0
+      },
+      "stick_null_control": {
+        "displacement_m": 0
+      },
+      "buttons": {
+        "roll": {
+          "edges_down": [
+            "roll"
+          ],
+          "state_before": "IDLE",
+          "state_after": "BACKSTEP",
+          "stamina_delta": -14,
+          "moved_m": 2.211
+        },
+        "block": {
+          "edges_down": [
+            "block"
+          ],
+          "state_before": "IDLE",
+          "state_after": "IDLE",
+          "stamina_delta": 0,
+          "moved_m": 0
+        },
+        "light": {
+          "edges_down": [
+            "light"
+          ],
+          "state_before": "IDLE",
+          "state_after": "ATK_STARTUP",
+          "stamina_delta": -20,
+          "moved_m": 0.013
+        },
+        "interact": {
+          "edges_down": [
+            "interact"
+          ],
+          "state_before": "IDLE",
+          "state_after": "IDLE",
+          "stamina_delta": 0,
+          "moved_m": 0
+        },
+        "jump": {
+          "edges_down": [
+            "jump"
+          ],
+          "state_before": "IDLE",
+          "state_after": "JUMP_AIR",
+          "stamina_delta": -18,
+          "moved_m": 0.349
+        },
+        "parry": {
+          "edges_down": [
+            "parry"
+          ],
+          "state_before": "IDLE",
+          "state_after": "PARRY_ACTIVE",
+          "stamina_delta": -22,
+          "moved_m": 0
+        },
+        "heavy": {
+          "edges_down": [
+            "heavy"
+          ],
+          "state_before": "IDLE",
+          "state_after": "ATK_STARTUP",
+          "stamina_delta": -34,
+          "moved_m": 0.052
+        },
+        "use_item": {
+          "edges_down": [
+            "use_item"
+          ],
+          "state_before": "IDLE",
+          "state_after": "HEAL_STARTUP",
+          "stamina_delta": 0,
+          "moved_m": 0
+        },
+        "crouch": {
+          "edges_down": [
+            "crouch"
+          ],
+          "state_before": "IDLE",
+          "state_after": "IDLE",
+          "stamina_delta": 0,
+          "moved_m": 0
+        },
+        "lock_on": {
+          "edges_down": [
+            "lock_on"
+          ],
+          "state_before": "IDLE",
+          "state_after": "IDLE",
+          "stamina_delta": 0,
+          "moved_m": 0
+        },
+        "__drawer": {
+          "edges_down": [],
+          "state_before": "IDLE",
+          "state_after": "IDLE",
+          "stamina_delta": 0,
+          "moved_m": 0
+        }
+      },
+      "dead_glass_null_control": []
+    },
+    "C2_stuck_calibration": {
+      "cal_stuck": {
+        "calibrating": true,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        }
+      },
+      "touch_controls_during_stuck_cal": [
+        "roll",
+        "block",
+        "light",
+        "interact",
+        "jump",
+        "parry",
+        "heavy",
+        "use_item",
+        "crouch",
+        "lock_on",
+        "__drawer",
+        "two_hand",
+        "swap_left",
+        "swap_right",
+        "spell_cycle",
+        "menu"
+      ],
+      "touch_light_during_stuck_cal": [
+        "light"
+      ],
+      "prompt_still_drawn": {
+        "line": "Take it on the shield.",
+        "step": 3,
+        "of": 6
+      },
+      "after_600_frames": {
+        "calibrating": true,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        }
+      }
+    },
+    "C3_drawer": {
+      "open": false,
+      "controls": [
+        "roll",
+        "block",
+        "light",
+        "interact",
+        "jump",
+        "parry",
+        "heavy",
+        "use_item",
+        "crouch",
+        "lock_on",
+        "__drawer"
+      ]
+    }
+  }
+}

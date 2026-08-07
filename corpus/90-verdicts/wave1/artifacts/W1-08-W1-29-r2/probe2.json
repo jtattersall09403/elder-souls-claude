@@ -1,0 +1,442 @@
+{
+  "at": "2026-08-07T16:51:21.288Z",
+  "load_at_start": "7.53 11.61 12.95 6/290 2533",
+  "legs": {
+    "P2A_ablation": {
+      "arms": [
+        {
+          "tag": "desktop-1",
+          "md5": "031138a55eb2abf9",
+          "frame": 24,
+          "n_layout": 11,
+          "shown": false,
+          "visible": true,
+          "enabled": false
+        },
+        {
+          "tag": "desktop-2-NULLCONTROL",
+          "md5": "031138a55eb2abf9",
+          "frame": 24,
+          "n_layout": 11,
+          "shown": false,
+          "visible": true,
+          "enabled": false
+        },
+        {
+          "tag": "handheld-1",
+          "md5": "52668bd678cd2a34",
+          "frame": 24,
+          "n_layout": 11,
+          "shown": true,
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "tag": "handheld-2-NULLCONTROL",
+          "md5": "52668bd678cd2a34",
+          "frame": 24,
+          "n_layout": 11,
+          "shown": true,
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "tag": "handheld-fix-deleted",
+          "md5": "031138a55eb2abf9",
+          "frame": 24,
+          "n_layout": 11,
+          "shown": true,
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "tag": "handheld-restored",
+          "md5": "52668bd678cd2a34",
+          "frame": 24,
+          "n_layout": 11,
+          "shown": true,
+          "visible": true,
+          "enabled": true
+        }
+      ],
+      "pinned_frame": 24,
+      "null_desktop_identical": true,
+      "null_handheld_identical": true,
+      "diff_desktop_vs_handheld_pct": 4.702,
+      "diff_handheld_null_pct": 0,
+      "diff_handheld_vs_fixdeleted_pct": 4.702,
+      "diff_fixdeleted_vs_desktop_pct": 0,
+      "handheld_layout": [
+        {
+          "id": "roll",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "block",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "light",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "interact",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "jump",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "parry",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "heavy",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "use_item",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "crouch",
+          "r": 22,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "lock_on",
+          "r": 22,
+          "label": null,
+          "glyph": null
+        },
+        {
+          "id": "__drawer",
+          "r": 24,
+          "label": null,
+          "glyph": null
+        }
+      ],
+      "desktop_layout_n": 11
+    },
+    "P2B_budget_register": {
+      "states": [
+        "arena_flat",
+        "settlement",
+        "helstrom-market",
+        "barge-hold",
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "close",
+        "title",
+        "handheld"
+      ],
+      "entries": 150,
+      "distinct": 87,
+      "complete": true,
+      "blind": [],
+      "by_surface": {
+        "menus": 150
+      },
+      "sample": [
+        "5",
+        "LIGHT",
+        "Spark-Da…",
+        "0",
+        "A tithe-gourd, empty",
+        "Carried",
+        "barge-hold",
+        "0.0 / 166",
+        "UNBURDENED",
+        "All",
+        "Weapon",
+        "Armour",
+        "Clothing",
+        "Potion",
+        "Ingredient",
+        "Book",
+        "Tool",
+        "Misc",
+        "Quest",
+        "sorted by",
+        "name",
+        "gold",
+        "weight",
+        "for weight"
+      ]
+    },
+    "P2C_break_MK20": {
+      "entries": 8,
+      "hits": [
+        "Press E to open the door"
+      ],
+      "sample": [
+        "5",
+        "LIGHT",
+        "Spark-Da…",
+        "Press E to open the door"
+      ],
+      "instrument_goes_red": true
+    },
+    "P2D_consumption": {
+      "n": 11,
+      "ids": [
+        "roll",
+        "block",
+        "light",
+        "interact",
+        "jump",
+        "parry",
+        "heavy",
+        "use_item",
+        "crouch",
+        "lock_on",
+        "__drawer"
+      ],
+      "sample": {
+        "action": "roll",
+        "x": 673,
+        "y": 342,
+        "r": 24,
+        "held": false,
+        "gate": {
+          "tap": "roll",
+          "hold": "sprint",
+          "frames": 12
+        },
+        "down": false
+      },
+      "shown": {
+        "enabled": true,
+        "visible": true,
+        "shown": true,
+        "pointers": 0,
+        "lastTouchFrame": -1000000000,
+        "hideAfterFrames": 120,
+        "stick": {
+          "active": false,
+          "ox": 0,
+          "oy": 0,
+          "x": 0,
+          "y": 0
+        },
+        "drawerOpen": false,
+        "held": [],
+        "roles": [],
+        "insetViolations": 0
+      },
+      "touch_state_keys": [
+        "enabled",
+        "visible",
+        "shown",
+        "pointers",
+        "lastTouchFrame",
+        "hideAfterFrames",
+        "stick",
+        "drawerOpen",
+        "held",
+        "roles",
+        "insetViolations"
+      ],
+      "move_vector": [
+        0,
+        0
+      ],
+      "snapshot_keys": [
+        "f",
+        "t_ms",
+        "input",
+        "player",
+        "civilians",
+        "camera",
+        "enemies",
+        "events",
+        "rng",
+        "env"
+      ],
+      "from": [
+        null,
+        null
+      ],
+      "to": [
+        null,
+        null
+      ],
+      "displacement_m": null,
+      "button": {
+        "id": "light",
+        "centre": [
+          null,
+          null
+        ],
+        "edges": []
+      },
+      "combat_after": {
+        "state": "IDLE",
+        "frame": 59
+      }
+    },
+    "P2E_gamepad": {
+      "control_standard_idx0": [
+        "interact:down"
+      ],
+      "a_partial": {
+        "calibrating": true,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "n_pads": 1
+      },
+      "a_cal_survives_unplug": {
+        "calibrating": true,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "n_pads": 0
+      },
+      "a_standard_presses": {
+        "i0": [],
+        "i1": [],
+        "i2": [],
+        "i3": []
+      },
+      "a_cal_after": {
+        "calibrating": true,
+        "prompt": {
+          "line": "Stop and think.",
+          "step": 5,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "n_pads": 1
+      },
+      "a_finish_on_standard": {
+        "calibrating": false,
+        "prompt": null,
+        "result_id": "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
+        "result_map": {
+          "0": "roll",
+          "1": "block",
+          "2": "light",
+          "3": "interact",
+          "4": "menu",
+          "5": "lock_on"
+        },
+        "n_pads": 1
+      },
+      "a_standard_after_finish": {
+        "i0": [
+          "roll:down"
+        ],
+        "i4": [
+          "menu:down"
+        ],
+        "i5": [
+          "lock_on:down"
+        ]
+      },
+      "fix": "applied",
+      "b_partial": {
+        "calibrating": true,
+        "prompt": {
+          "line": "Take it on the shield.",
+          "step": 3,
+          "of": 6
+        },
+        "result_id": null,
+        "result_map": null,
+        "n_pads": 1
+      },
+      "b_cal_after_unplug": {
+        "calibrating": false,
+        "prompt": null,
+        "result_id": null,
+        "result_map": null,
+        "n_pads": 0
+      },
+      "b_standard_presses": {
+        "i0": [
+          "interact:down"
+        ],
+        "i5": [
+          "light:down"
+        ]
+      }
+    },
+    "P2F_screen_suppression": {
+      "world": [
+        "roll",
+        "block",
+        "light",
+        "interact",
+        "jump",
+        "parry",
+        "heavy",
+        "use_item",
+        "crouch",
+        "lock_on",
+        "__drawer"
+      ],
+      "map": [
+        "__drawer"
+      ],
+      "journal": [
+        "__drawer"
+      ],
+      "inventory": [
+        "roll",
+        "block",
+        "light",
+        "interact",
+        "jump",
+        "parry",
+        "heavy",
+        "use_item",
+        "crouch",
+        "lock_on",
+        "__drawer"
+      ],
+      "world_after": [
+        "roll",
+        "block",
+        "light",
+        "interact",
+        "jump",
+        "parry",
+        "heavy",
+        "use_item",
+        "crouch",
+        "lock_on",
+        "__drawer"
+      ]
+    }
+  }
+}
