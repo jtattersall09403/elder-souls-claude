@@ -175,7 +175,7 @@ function lineKey(topicId) { return topicKey(topicId).split(' ').join('_'); }
  */
 export function infoFor(topicIndex, topicId, npc, player) {
   const own = npc.lines ? npc.lines[lineKey(topicId)] : null;
-  if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc' };
+  if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc', to: [] };
   const t = topicIndex.get(topicKey(topicId));
   if (!t) return null;
   const actor = npc.actor || null;
@@ -211,6 +211,13 @@ export function infoFor(topicIndex, topicId, npc, player) {
     topic: topicId, actor: best.a || null, text: best.x,
     gated: !!(best.requires || best.forbids),
     source: best.a ? 'actor' : 'generic',
+    // Morrowind's AddTopic, which this corpus has been authoring all along under the name `to`.
+    // 456 of the 638 infos in `game/data/dialogue/topics/**` carry one and NOTHING read it, so
+    // the province's entire keyword graph — 181 distinct targets — was a diagram. It is
+    // returned here and fired by `Engine.conversationSay()`; see the header of
+    // `game/src/sim/quest/topic-supply.js` for why that is the whole of the main quest's
+    // bootstrap.
+    to: Array.isArray(best.to) ? best.to.slice() : [],
   };
 }
 
@@ -246,6 +253,7 @@ export class Conversation {
     this.greeting = null;
     this.said = null;
     this.list = [];
+    this.extra = [];
     this.sel = 0;
     return this;
   }
@@ -275,6 +283,19 @@ export class Conversation {
       this.greeting = { cell: null, reaction_group: npc.reaction_group, disposition_band: null, player_race_class: playerRaceClass(player.race), line: npc.lines.greeting, pool_size: 1 };
     }
     this.list = topicsFor(this.topics, npc, this.player);
+    // W1-19 round 2 — the two topics that are not in anybody's `topics` array because they are
+    // not about a subject, they are about getting somewhere and about what the town is saying.
+    // `supply` is installed by `Engine` (`_installTopicSupply`) and is the reader for
+    // `q.directions` and `dialogue/rumours.json`; see `sim/quest/topic-supply.js`.
+    this.extra = [];
+    if (this.supply) {
+      for (const d of this.supply.directionsFor(npc.eid) || []) {
+        this.extra.push({ id: d.id, text: d.id, gated: false, kind: 'directions', quest: d.quest, x: d.text });
+      }
+      const r = this.supply.rumourFor(npc, this.player, nth || 0);
+      if (r) this.extra.push({ id: r.id, text: r.id, gated: !!(r.requires || r.forbids), kind: 'rumour', x: r.x, to: r.adds_topics || [] });
+    }
+    for (const e of this.extra) this.list.push({ id: e.id, text: e.text, gated: e.gated });
     return this;
   }
 
@@ -286,8 +307,23 @@ export class Conversation {
    */
   setKnows(knows) { this.knows = knows || null; return this; }
 
+  /**
+   * The reader for `q.directions`, `opens_by.overheard_from` and `dialogue/rumours.json`.
+   * Installed by `Engine`; absent in a bare unit test, in which case a conversation behaves
+   * exactly as it did before this round.
+   */
+  setSupply(supply) { this.supply = supply || null; return this; }
+
   say(topicId, player) {
     if (!this.open || !this.npc) return null;
+    // The way there, and what the town is saying. Both return their text VERBATIM out of the
+    // model that owns it — `q.directions` and a rumour row — because a line composed from
+    // quest metadata is `RI-DLG05`'s "How we lose" and the rule does not stop at the journal.
+    const ex = (this.extra || []).find((e) => topicKey(e.id) === topicKey(topicId));
+    if (ex) {
+      this.said = { topic: ex.id, actor: this.npc.actor || null, text: ex.x, gated: ex.gated, source: ex.kind, to: ex.to || [], quest: ex.quest || null };
+      return this.said;
+    }
     // The conversation's own filter context wins: it carries the derived disposition and the
     // knowledge set, which the caller does not have. A caller-supplied view is merged over it
     // so a probe can still perturb race or upbringing mid-conversation and watch the list move.

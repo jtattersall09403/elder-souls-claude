@@ -1,0 +1,15 @@
+{
+  "task_id": "critic-w1-library",
+  "brief": "critic with fresh context on RI-LOR03 (in-world library) and RI-UIX05 (book reader/pagination)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-LIBRARY-r1.md",
+    "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json",
+    "reports/blog-feed.jsonl (one line appended)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read TOOL-LOOP.md, ARBITRATION.md S8 and §3, RI-LOR03, RI-UIX05, W1-LIBRARY.json",
+  "notes_for_successor": "Attack order given in brief: (1) is the prose Morrowind-good, sample >=12 books by a stated rule; (2) run RI-LOR03 steps 2-3 blind-pair + author-voice per RI-MTH03; (3) check the 24 contradiction pairs are real; (4) CONSUMPTION: drive 3 knowledge-gated quest resolutions in the running engine, with negative control; (5) test K1 unsatisfiability claim; (6) verify numbers incl. 324 pages in engine; (7) break book-stats.py and book-budget.mjs with novel mutations."
+}

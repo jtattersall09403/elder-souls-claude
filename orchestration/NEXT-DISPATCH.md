@@ -5,7 +5,48 @@ and its status file exists. Respect the concurrency cap in `AGENT-PROTOCOL.md` �
 doing browser work, no more; the cap exists because fourteen agents on four cores cost a builder its
 headline measurement entirely.
 
-## 0. A player who walks 750 m walks off the built world — ULTRACODE, above everything
+## ~~0. A player who walks 750 m walks off the built world~~ — FIXED. A critic is checking it.
+
+`Engine._streamProvince()` now runs from `_afterStep()`, on the one path every way of advancing the
+world passes through, and focus follows the posed camera eye when an override exists (which closes
+the `shoot.mjs --direct` half). A second defect was found and fixed on the way: `request()` released
+a tile the instant it left the build ring, so a body oscillating on a tile *edge* rebuilt a 5-tile
+row each time — 30 tile builds for 26.9 m of movement.
+
+Walked 3 km: ring 25/25, 0 unbuilt, ground underfoot the whole way, against "gone by 750 m, 20 of 30
+samples with no ground, discs 2,182 m behind". Full crossing walked end to end: 55.131 min, 6,615.1 m,
+zero samples with no ground. Delete-the-fix returns 0 tiles built and ring 0/25. Consumption:
+`radiusTiles` 1/2/3 → 9/25/49 built against predicted (2R+1)², coupling 1.00, with a null control.
+
+**Residual, and it is real:** p99.9 is **66.8 ms and max 133.8 ms** — 194 steps over 16.7 ms out of
+60,000 — from a ~59 ms ground-skin + cover rebuild every ~13.8 m. The builder assigns that to W1-01's
+`updateSkin` calibration. A hitch of eight frames during a swing is a Souls-side failure, so the
+critic has been asked whether that boundary is fair or a handoff of the actual defect.
+
+## 0a. The level-up screen is refused everywhere — ULTRACODE
+
+`engine.js:2011` gates levelling on `this.hearths.atHearth(...)`; **`HearthSystem` has no such
+method.** Refused at all 29 sapwells, measured live at three while the hearth registry itself
+reported `standing_at: hearth-<id>`; `setAtHearth(true)` opens it as the control. The player can
+recover 4,200 souls and cannot spend one — and souls are the whole of levelling.
+
+Also from that verdict (`corpus/90-verdicts/wave1/W1-13-r1.md`, **FAIL 4/10**): a save taken while
+the death surface is up destroys the bloom, 4,200 → 0 on both routes, because the blob restores the
+bloodstain *and* `hp = 0` and the next frame fires a fresh `die()` with `soulsHeld` already zero.
+Not player-reachable until autosave or save-on-rest lands, at which point it is immediate.
+
+Owner: W1-13, dispatched.
+
+## 0b. The prohibitions are installed on the wrong object
+
+`session-run`'s capability prohibitions install on `window.__HARNESS`, and `main.js:24` publishes
+`window.__ENGINE`. The tool critic went in the back door: front door refused and recorded,
+`__ENGINE.spawnNPC` **spawned**, `listNPCs` 0→1, violations still 1. `setTimeOfDay` likewise. This
+is R2 §8's result through a different door, and it means every measurement that relies on a
+capability profile is only as good as the door it watches. Owner: tool builder r4, dispatched.
+
+<!-- historic, kept for the record -->
+## ~~0old. A player who walks 750 m walks off the built world~~ — ULTRACODE, above everything
 
 Confirmed independently by the capture-service critic, and it is a **game** defect, not a tooling one.
 
@@ -100,10 +141,16 @@ Acceptance: screenshots of three weapon classes at the same frame are **not** by
 60-frame attack moves substantially more than 0.2% of the character box; the rendered weapon's tip
 tracks the socket the hit resolution uses, so what you see is what hits you.
 
-## 2. Tool rebuild round 2 — the five the tool critic rejected
+## 2. Tool rebuild — now at round 4, and dispatched
 
-`corpus/80-methods/TOOL-COVERAGE-R1.md` is **NOT SATISFIED**. Rebuild, then a **separate** tool
-critic re-checks — the builder never checks its own tools.
+Superseded by `corpus/80-methods/TOOL-COVERAGE-R3.md` (**NOT SATISFIED**, six rebuilds:
+`build-viability`, `experience/beat-extract`, `journey-run`, `session-run`, `cadence`, `decoupling`).
+Round 3's own headline finding — two tools reading `r.frame` while every shipped trace numbers frames
+`f` — is the round's indictment too: it fixed the two it found and did not ask how many siblings
+there were. There were two more, both in tools R1 *and* R2 accepted, and one of them promotes a
+hedged confidence-0.7 verdict to 1.0 with corroborating evidence the trace does not contain.
+
+The R1 list below is kept because parts of it are still open.
 
 - **`build-viability.mjs`** — first. It buys a false pass on the exact axis it was written to
   unblock, while its self-test reports 8/8. Two permissive substitutions: it prints "no region

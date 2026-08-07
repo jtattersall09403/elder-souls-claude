@@ -74,6 +74,7 @@ import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACT
 /** Lines of the writ visible at once in the reader. The document scrolls; it never clips. */
 const WRIT_WINDOW = 9;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
+import { buildOverheardIndex, buildDirectionsIndex, RumourBook, learnTopics } from './sim/quest/topic-supply.js';
 import { makeNPC } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
@@ -313,6 +314,11 @@ export class Engine {
     // W1-19: the authored NPC disposition table, copied into the register the quest gates read.
     // Without this every `giver.disposition_min` in game/data/quests/** is unreachable.
     this.seedDispositions();
+    // W1-19 round 2: the world-side supply of topic keywords. Four authored models had no
+    // reader before this line — `info.to` (456 infos), `opens_by.overheard_from` (3 quests),
+    // `q.directions` (32 strings) and `dialogue/rumours.json` — and the consequence was that
+    // 0 of 32 main quests were offerable at a cold start. See sim/quest/topic-supply.js.
+    this._installTopicSupply();
     this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
     this.applyNamedState(opts.state || 'default');
@@ -1396,6 +1402,18 @@ export class Engine {
     this._greetCount.set(eid, nth + 1);
     this.conversation.start(n, p, d.disposition, nth);
     for (const x of this.sim.npcs) x.speaking = (x.eid === n.eid);
+    // W1-19 round 2 — `opens_by.overheard_from`, which three main quests declare and which had
+    // ZERO code consumers. These are the people who are already talking about the thing. You do
+    // not have to know the words to walk up to a carter; walking up is how you learn them, and
+    // it is the only route into `Q-MAIN-01` that owes nothing to a prior quest.
+    const overheard = (this.overheardIndex && this.overheardIndex.get(n.eid)) || [];
+    if (overheard.length) {
+      const got = learnTopics(this.sim.quest.topicsKnown, overheard.map((o) => o.topic));
+      for (const t of got) {
+        const te = this.bus.emit(this.sim.frame, 'topic_add');
+        te.npc = n.eid; te.topic = t; te.source = 'OVERHEARD';
+      }
+    }
     const st = this.conversation.state();
     const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
     ev.npc = n.eid; ev.greeting_cell = st.greeting_cell; ev.disposition = d.disposition;
@@ -1404,16 +1422,67 @@ export class Engine {
     return st;
   }
 
+  /**
+   * Install the world-side supply of topic keywords: the three readers that `topic-supply.js`
+   * exists to be. Called once at boot, after the quest book is loaded, because two of the three
+   * indexes are built out of the quest definitions themselves.
+   */
+  _installTopicSupply() {
+    const defs = this.questBook.ids.map((id) => this.questBook.get(id));
+    this.overheardIndex = buildOverheardIndex(defs);
+    this.directionsIndex = buildDirectionsIndex(defs);
+    this.rumourBook = new RumourBook(this.data.rumours);
+    this.conversation.setSupply({
+      // The way there — offered only once the quest is OPEN, because directions to a place you
+      // have not been sent to are not directions, they are a spoiler.
+      directionsFor: (npcId) => {
+        const rows = this.directionsIndex.get(npcId) || [];
+        return rows.filter((r) => {
+          const rec = this.sim.quest.quests[r.quest];
+          return !!rec && !rec.failed && !this.sim.quest.completed.includes(r.quest);
+        });
+      },
+      // What the town is saying. Keyed to the settlement the speaker belongs to, so Thorn and
+      // Stormhold do not gossip in the same words (RI-DLG02), and race-gated so the square does
+      // not say the same sentence to a Saxhleel and to a Dunmer.
+      rumourFor: (npc, player, nth) => {
+        const settlement = npc.settlement || (npc.record && npc.record.settlement) || this.sim.env.settlement || null;
+        const r = this.rumourBook.pick(settlement, player, npc.eid, nth);
+        return r ? { id: 'latest rumours', ...r } : null;
+      },
+    });
+    return { overheard: this.overheardIndex.size, directions: this.directionsIndex.size, rumours: this.rumourBook.size };
+  }
+
   /** Say a topic. Returns the info, or a refusal naming why there is nothing to hear. */
   conversationSay(topicId) {
     const p = this._talkPlayer();
     const info = this.conversation.say(topicId, p);
     if (!info) return { refused: 'no_info', topic: topicId, npc: this.conversation.npc ? this.conversation.npc.eid : null };
+    // W1-19 round 2 — ASKING IS HOW YOU COME TO KNOW THE WORDS. Two edges fire here:
+    //
+    //   * the topic you just raised enters `topicsKnown`, because you have now heard somebody
+    //     in the province use it and can put it to the next person; and
+    //   * every `to` on the info you heard enters with it — Morrowind's AddTopic, authored on
+    //     456 of the 638 infos in this tree and read by nothing until this line.
+    //
+    // This is the whole of the main quest's bootstrap. Before it, `canOffer` refused all 32
+    // main quests on `opens_by.topic` from a cold boot and no world action could clear the
+    // refusal; the only producer of a topic was `hooks.json`, whose main-quest edges granted
+    // the topic of the quest whose own journal fired them.
+    const learned = learnTopics(this.sim.quest.topicsKnown, [topicId, ...(info.to || [])]);
+    for (const t of learned) {
+      const te = this.bus.emit(this.sim.frame, 'topic_add');
+      te.npc = this.conversation.npc.eid; te.topic = t; te.source = info.source === 'rumour' ? 'RUMOUR' : 'CONVERSATION';
+    }
     // `topic_select` is already in HARNESS.md §5's closed vocabulary (A-JRN7) and is exactly
     // this event; an earlier draft invented `dialogue_topic`, which the bus refused. Reuse the
     // vocabulary rather than extending it — an amendment is for what the list cannot say.
     const ev = this.bus.emit(this.sim.frame, 'topic_select');
     ev.npc = this.conversation.npc.eid; ev.topic = topicId; ev.gated = info.gated;
+    // The one observable that proves `q.directions` reached a person's mouth. A probe asserts
+    // against it; `mainline-findability.mjs` counts it.
+    if (info.source === 'directions' && info.quest) this.sim.quest.flags[`directions_heard:${info.quest}`] = 1;
     this._conversationSync();
     return this.conversation.state();
   }

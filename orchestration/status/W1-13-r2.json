@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-13-r2",
+  "brief": "death, recovery and the hearth loop (RI-JRN06, RI-PRG04) — round 2 after 4/10 FAIL",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [
+    "fix: engine.js:2011 hearth gate for level-up screen",
+    "proof: end-to-end levelling loop from walked arrival",
+    "fix: souls survive a mid-death save (DeathSystem in-flight state durable)",
+    "fix: M-D5 named-NPC world-side consumer",
+    "fix: souls-conservation instrument filtering 6/20 deaths",
+    "fix: fall/lastGrounded rule never fires, 'drown' dead code",
+    "fix: fog-gate push-out at exact centre",
+    "fix: respawn body sliding 5-22m off basin",
+    "docs/shots/ image + reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read verdict corpus/90-verdicts/wave1/W1-13-r1.md",
+  "notes_for_successor": ""
+}

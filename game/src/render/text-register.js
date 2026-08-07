@@ -13,13 +13,40 @@
 // refusing to score M9/M15 at all unless the build names an accessor and demonstrates it
 // non-empty on a frame known to carry text. This is that accessor.
 //
-// WHY IT INSTRUMENTS `fillText` AND NOT A MODEL.
+// WHY IT INSTRUMENTS THE DRAW CALL AND NOT A MODEL.
 // A register fed by the layout code would be a second copy of the layout's intentions, and
 // the defect this whole area exists to catch — round 2's ten authored questions carried
 // correctly in the model and drawn by nothing — is precisely a divergence between intention
 // and paint. So the register is fed by the **draw call**: nothing can appear in it that was
-// not handed to a 2D context's `fillText`/`strokeText`, and nothing handed to one can fail to
-// appear. It cannot drift from the frame because it *is* the frame's text.
+// not handed to a drawing primitive, and nothing handed to one can fail to appear. It cannot
+// drift from the frame because it *is* the frame's text.
+//
+// THIS BUILD HAS **TWO** TEXT DRAW PATHS, AND ROUND 1 INSTRUMENTED ONE OF THEM.
+// `render/ui.js` and `render/title.js` paint with `CanvasRenderingContext2D.fillText`.
+// `ui/glyphs.js drawText()` — which every HUD and menu string goes through, via `ui/type.js` —
+// renders each glyph as a STROKED QUADRATIC PATH (`moveTo`/`lineTo`/`quadraticCurveTo`/
+// `stroke`) and never calls `fillText` at all. Wrapping `fillText` therefore made the HUD
+// surface invisible even after its context was instrumented, and the W1-26 round-1 verdict
+// falsified it directly: on a freshly instrumented `menus` context, a sentinel through
+// `glyphs.drawText()` was **not seen** and a sentinel through `ctx.fillText()` **was**. The
+// build's own report then recorded `distinct_searched: 0, hits: []` as an M9 PASS — the
+// register bought the same false pass, one layer down, that it was written to close.
+//
+// So `instrument()` installs `ctx.__esNoteText`, and `glyphs.drawText()` calls it. The hook is
+// installed BY the register ON the context, rather than imported by the glyph module, for two
+// reasons: a drawing module cannot record against a context the register does not own, and a
+// context that was never instrumented has no hook, so an unregistered surface stays visibly
+// unregistered instead of quietly reporting into a shared bucket.
+//
+// AN EMPTY RESULT AND A CLEAN RESULT MUST NEVER BE THE SAME VALUE.
+// This is the single most repeated defect in this project: an instrument that cannot see its
+// subject returns `[]`, a grep over `[]` returns zero hits, and zero hits reads as a pass.
+// §0.1(a) exists because of it and round 1 reproduced it anyway. The register therefore keeps
+// a roster: every surface this build draws text onto is `declare()`d — by name, at
+// construction, whether or not it can be instrumented — and `coverage()` reports which of them
+// are actually wrapped. A query that spans a declared-but-blind surface comes back
+// `complete: false` with the blind surfaces named, and every consumer is required to treat
+// that as `unmeasurable` rather than as zero hits.
 //
 // WHY IT ALSO TRACKS THE CLIP.
 // `fillText` was called is not the same claim as *the player could read it*. The dialogue
@@ -64,6 +91,54 @@ export class TextRegister {
     this.seq = 0;
     this.frame = 0;
     this.enabled = true;
+    /**
+     * The roster. name -> {name, declared, instrumented, paths, why}.
+     *
+     * A surface appears here the moment the renderer says it exists, which is BEFORE anything
+     * has been drawn on it and independently of whether the register managed to wrap it. That
+     * is the whole point: `coverage().blind` is how a consumer learns that its zero hits are
+     * ignorance rather than absence.
+     */
+    this.surfaces = new Map();
+  }
+
+  /**
+   * Name a surface this build paints text onto. Idempotent; safe before instrumentation.
+   * @param {string} name  the class `RI-JRN01` M9 filters on ('dialogue' | 'title' | 'menus')
+   * @param {string} [why] what draws on it, for a critic reading `coverage()` cold
+   */
+  declare(name, why) {
+    let s = this.surfaces.get(name);
+    if (!s) { s = { name, declared: true, instrumented: false, paths: [], why: why || null }; this.surfaces.set(name, s); }
+    else if (why) s.why = why;
+    return s;
+  }
+
+  /**
+   * Which declared surfaces are actually wrapped, and which are not.
+   *
+   * `complete` is the field a consumer must branch on before reporting a grep result. It is
+   * derived from the contexts that were really instrumented — never from a static array, which
+   * is exactly how round 1 came to publish `surfaces: ['dialogue','title']` while the strings
+   * M9 is aimed at were painted on a third surface nobody had wrapped.
+   */
+  coverage(opts) {
+    const o = opts || {};
+    const all = [...this.surfaces.values()];
+    let scope = all;
+    if (o.surface) { const w = Array.isArray(o.surface) ? o.surface : [o.surface]; scope = all.filter((s) => w.indexOf(s.name) >= 0); }
+    if (o.notSurface) { const n = Array.isArray(o.notSurface) ? o.notSurface : [o.notSurface]; scope = scope.filter((s) => n.indexOf(s.name) < 0); }
+    const instrumented = scope.filter((s) => s.instrumented).map((s) => s.name);
+    const blind = scope.filter((s) => !s.instrumented).map((s) => s.name);
+    return {
+      declared: all.map((s) => s.name),
+      instrumented,
+      blind,
+      complete: blind.length === 0 && scope.length > 0,
+      in_scope: scope.length,
+      paths: Object.fromEntries(scope.map((s) => [s.name, s.paths.slice()])),
+      why: Object.fromEntries(all.map((s) => [s.name, s.why])),
+    };
   }
 
   /** The sim frame the next draw calls belong to. Called once per render by the Renderer. */
@@ -81,7 +156,9 @@ export class TextRegister {
    * critic afterwards.
    */
   instrument(ctx, surface) {
-    if (!ctx || ctx[INSTRUMENTED]) return ctx;
+    if (!ctx) return ctx;
+    const rec = this.declare(surface);
+    if (ctx[INSTRUMENTED]) { rec.instrumented = true; return ctx; }
     const reg = this;
     const state = { clip: null, stack: [], path: null };
 
@@ -114,31 +191,52 @@ export class TextRegister {
 
     const record = (kind) => (orig) => function (text, x, y, maxWidth) {
       const r = orig(text, x, y, maxWidth);
-      if (reg.enabled) reg._push(ctx, state, surface, kind, text, x, y);
+      if (reg.enabled) {
+        const s = String(text);
+        let w = 0;
+        try { w = ctx.measureText(s).width || 0; } catch { w = 0; }
+        reg._record(state, surface, kind, s, x, y, w, fontPx(ctx.font), ctx.textAlign || 'left');
+      }
       return r;
     };
     wrap('fillText', record('fill'));
     wrap('strokeText', record('stroke'));
+
+    /**
+     * The SECOND draw path's entry point — see the header. `ui/glyphs.js drawText()` calls
+     * this after it has stroked the string's paths, handing over the advance width and the
+     * nominal size it drew at, because a vector run has no `measureText` to interrogate.
+     *
+     * It is installed on the context by the register rather than imported by the drawer, so a
+     * surface the register does not own has no hook and cannot report into it.
+     *
+     * @param {string} text  @param {number} x  @param {number} y baseline
+     * @param {number} w advance in px  @param {number} px nominal size
+     */
+    ctx.__esNoteText = (text, x, y, w, px) => {
+      if (reg.enabled) reg._record(state, surface, 'vector', String(text), x, y, w || 0, px || 16, 'left');
+    };
+    if (rec.paths.indexOf('fillText') < 0) rec.paths.push('fillText', 'strokeText', 'glyphs.drawText');
+    rec.instrumented = true;
 
     ctx[INSTRUMENTED] = true;
     ctx.__esTextState = state;
     return ctx;
   }
 
-  _push(ctx, state, surface, kind, text, x, y) {
-    const s = String(text);
+  /**
+   * One string, from either draw path.
+   *
+   * The box is an approximation in both directions: the nominal px size is the only height
+   * available cheaply and the baseline sits at `y`. Both bounds are widened by a line's worth
+   * so a marginal string is called VISIBLE rather than clipped — the register must never be
+   * the thing that hides text that really reached the frame.
+   */
+  _record(state, surface, kind, s, x, y, w, px, align) {
     if (!s.length) return;
     if (this.entries.length >= CAP) { this.dropped++; return; }
-    let w = 0;
-    try { w = ctx.measureText(s).width || 0; } catch { w = 0; }
-    // A rough box: the font's px size is the only height we can read cheaply, and the
-    // baseline sits at `y`. Both are approximations, and both are widened by a line's worth
-    // in each direction so a marginal string is called VISIBLE rather than clipped.
-    const px = fontPx(ctx.font);
-    const align = ctx.textAlign || 'left';
     const x0 = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
     const box = { x0, y0: y - px * 1.2, x1: x0 + w, y1: y + px * 0.5 };
-    const clip = state.clip;
     this.entries.push({
       i: this.seq++,
       frame: this.frame,
@@ -147,7 +245,7 @@ export class TextRegister {
       text: s,
       x: Math.round(x), y: Math.round(y),
       w: Math.round(w), px,
-      clipped: !overlaps(box, clip),
+      clipped: !overlaps(box, state.clip),
     });
   }
 

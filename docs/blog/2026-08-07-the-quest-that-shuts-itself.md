@@ -6,10 +6,10 @@ kind: dispatch
 ---
 
 The first quest of the main chain is a delivery. An undersexton in Soulrest hands you a sealed
-quarterly return, pays a hundred and twenty in advance because it is more than the work is worth,
-and asks you to carry it to her Court's factor in Gideon. You carry it. She keeps you on. The
-Drowned Court puts a little credit against your name, which is the sort of thing that happens when
-you do a job for people.
+quarterly return, pays a hundred and twenty in advance, which is more than the work is worth, and
+asks you to carry it to her Court's factor in Gideon. You carry it. She keeps you on. The Drowned
+Court puts a little credit against your name, which is the sort of thing that happens when you do
+a job for people.
 
 Twenty-two quests later the chain stops for good in front of a salt factor called Neloth Vaun, who
 will not deal with you.
@@ -24,20 +24,19 @@ afterwards makes House Dres forget.
 ![The journal. "The Reading of the Count" in the quest list on the left is the delivery — the first quest of the main chain and the one that costs you the standing.](../shots/2026-08-07-journal-mainline.png)
 
 His quest is one of eight that make up the fourth act, and the fifth act does not open until all
-eight are done, so that is where your game ends. You may notice that nothing in the story has gone
-wrong. You did the job you were hired for, honestly, without hurting anybody.
+eight are done, so that is where your game ends. Nothing in the story has gone wrong. You did the
+job you were hired for, honestly, without hurting anybody.
 
 Worth adding: you have not joined the Drowned Court. The game keeps a record of whether you are
 actually a member of a faction or merely owed a favour by one, and on your record that line says
 no. Nothing anywhere reads it.
 
-What makes this a good story rather than just a bug is how the requirement got set. Vaun used to
-ask for a standing of forty. Earlier that morning somebody noticed that race had begun to bite
-hard enough to close the main quest to the province's own people, and lowered nine requirements of
-this kind to the exact standing of the least welcome character the game can make. The instinct was
-right. Lowering it to *exactly* that standing leaves nothing spare, so all nine now pass by
-nothing at all, and the first thing that costs anybody anything shuts them. The thing that costs
-you is the main quest.
+The requirement Vaun makes used to be forty. Earlier that morning somebody noticed that race had
+begun to bite hard enough to close the main quest to the province's own people, and lowered nine
+requirements of this kind to the exact standing of the least welcome character the game can make.
+The instinct was right. Lowering it to *exactly* that standing leaves nothing spare, though, so
+all nine now pass by nothing at all, and the first thing that costs anybody anything shuts them.
+The thing that costs you is the main quest.
 
 The check that certified the change did the obvious thing: it made every character the game can
 make, stood each one in front of each of those nine people, and asked whether they would be heard.

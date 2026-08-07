@@ -1,0 +1,16 @@
+{
+  "task_id": "critic-province-stream",
+  "brief": "critic with fresh context on W1-01 province streaming pump (Engine._streamProvince from _afterStep + release hysteresis)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-01-province-stream-r1.md",
+    "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json",
+    "docs/shots/<dated>.png",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION.md S3 CONSUMPTION rule, RI-MTH04, TOOL-LOOP, builder status file, then the diff",
+  "notes_for_successor": "load at start 2.15. Must write own probes; must break-the-instrument before trusting."
+}

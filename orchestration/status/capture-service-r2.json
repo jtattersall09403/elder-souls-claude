@@ -1,0 +1,22 @@
+{
+  "task_id": "capture-service-r2",
+  "brief": "inline: rebuild capture service gates per corpus/80-methods/CAPTURE-SERVICE-R1.md verdict (NOT SATISFIED, 7 rebuilds)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "acceptance_test": "node tools/capture/critic-r1-probe.mjs --gates --key --metric --forge --sticky --isolate (must exit 0; do not edit the probe)",
+  "outputs_expected": [
+    "tools/capture/arrival.mjs (rebuilt gate)",
+    "tools/capture/settle.mjs (rebuilt proof)",
+    "tools/capture/server.mjs (manifest forgery refusal, isolation)",
+    "tools/capture/buildkey.mjs (key coverage)",
+    "tools/capture/README.md (updated)",
+    "docs/shots/<dated>.png",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [
+    {"at": "start", "note": "loadavg 1.94 at start - box quiet, browser work viable"}
+  ],
+  "next_step": "read CAPTURE-SERVICE-R1.md verdict + critic-r1-probe.mjs to extract the seven rebuilds",
+  "notes_for_successor": "Predecessor on this exact task died to watchdog after 10min silence. Write status updates every few minutes."
+}
