@@ -83,6 +83,21 @@ try {
 
     // One swing, sampling the DRAWN tip every frame. `moving` orbits a live enemy around the
     // player's own position and facing, so the character is steering while the blade travels.
+    //
+    // THE ACTIVE WINDOW COMES FROM THE FIGHT, NOT FROM A DECLARATION FILE. `getCombatState()
+    // .player.move` is the move the engine is EXECUTING this frame and carries its own
+    // {startup, active, recovery} in f@60; `anim_frame` is the frame counter inside it. The
+    // phase convention is clips.js `Clip.phaseAt`: phase 1.0 is the FIRST active frame,
+    // f = startup+1, so the active window is anim_frame in (startup, startup+active] and
+    // recovery is anim_frame > startup+active. Reading it here rather than from the moveset
+    // JSON is what makes the consumption test in P3 mean anything — if the on-disk edit did
+    // not reach the engine, `active` here does not move either.
+    //
+    // NOTE FOR A SUCCESSOR: the player state during an attack is `ATTACK_RECOVERY` for the
+    // WHOLE move (player.js:702) — startup, active and recovery alike. There is no 'ATTACK'
+    // state. Filtering frames on `state === 'ATTACK'` matches nothing, yields an empty active
+    // window, and reports follow_through_frac null — a check that reports neither pass nor
+    // fail. That is how the first cut of this tool was wrong.
     const swing = (wid, moving, heavy) => {
       H.setSeed(1337);
       H.loadState('arena_duel');
@@ -92,11 +107,12 @@ try {
       for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
       const eid = H.spawn('mat_flesh', 0, 1.6, { as: 'MASS' });
       const R = 1.6;
-      let theta = moving ? -40 : 0;
+      let theta = moving ? -40 : 0, dir = 1;
       H.queueInputs([{ f: 1, press: [heavy ? 'heavy' : 'light'] }, { f: 4, release: [heavy ? 'heavy' : 'light'] }]);
-      const tips = [], yaws = [], states = [];
-      for (let f = 0; f < 200; f++) {
-        if (moving) { theta += 2.2; if (theta > 40) theta = -40; }
+      const tips = [], yaws = [], frames = [];
+      let sawMove = false;
+      for (let f = 0; f < 260; f++) {
+        if (moving) { theta += 2.2 * dir; if (theta > 40) { theta = 40; dir = -1; } else if (theta < -40) { theta = -40; dir = 1; } }
         const cs0 = H.getCombatState();
         const rad = ((cs0.player.yaw_deg + theta) * Math.PI) / 180;
         H.setEntityPos(eid, cs0.player.pos[0] + R * Math.sin(rad), cs0.player.pos[2] + R * Math.cos(rad));
@@ -104,12 +120,20 @@ try {
         H.renderFrame();
         const P = H.getDrawnGeometry().actors.find((a) => a.id === 'player');
         const cs = H.getCombatState();
-        if (P && P.drawn_tip) tips.push(P.drawn_tip.slice());
+        const m = cs.player.move;
+        tips.push(P && P.drawn_tip ? P.drawn_tip.slice() : null);
         yaws.push(cs.player.yaw_deg);
-        states.push({ st: cs.player.state, af: cs.player.anim_frame });
-        if (tips.length > 4 && cs.player.state !== 'ATTACK' && states.filter((s) => s.st === 'ATTACK').length > 4) break;
+        frames.push({
+          st: cs.player.state, af: cs.player.anim_frame,
+          move: m ? m.id : null,
+          startup: m ? m.startup : null, active: m ? m.active : null,
+          recovery: m ? m.recovery : null, total: m ? m.total : null,
+        });
+        if (m) sawMove = true;
+        // Stop one full move after it retires, not on a state name.
+        if (sawMove && !m) break;
       }
-      return { tips, yaws, states };
+      return { tips, yaws, frames };
     };
 
     for (const s of SUBJ) {

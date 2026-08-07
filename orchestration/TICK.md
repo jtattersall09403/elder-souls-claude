@@ -96,6 +96,23 @@ discipline means not paying twice for the same work — never paying less for th
 **Every dispatch is one builder or one critic, never both in the same agent.** No builder ever
 checks its own homework.
 
+### 3z. Before you spawn anything, ask whether the piece needs it
+
+```
+node tools/dispatchable.mjs <task-id>      # exits 3 if this piece is done and judged
+node tools/dispatchable.mjs                # everything, grouped by what it actually needs
+```
+
+Written because the orchestrator dispatched a successor to a piece whose status file already read
+`state: "complete"`, and the agent spent 92k tokens correctly proving there was nothing to do —
+**an hour after writing the rule that forbids exactly that.** A rule you have to remember is not a
+control. Run the command.
+
+It separates the two answers that matter and are easy to conflate: *unfinished* wants a successor,
+**finished but never judged wants a critic, not a builder.** That second category is currently the
+largest one on the board, which is the loop stalling in the quietest possible way — a builder
+reports, nothing is dispatched against it, and the piece looks busy on every dashboard.
+
 ### 3a. Check who is already in the area before you add a thirteenth agent
 
 Before dispatching into a file or directory another live piece might also be touching, run:
