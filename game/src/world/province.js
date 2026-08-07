@@ -13,6 +13,7 @@ import { noise2, fbm, ridged, hash2, clamp, smoothstep, lerp } from './noise.js'
 import { arrangeAt } from './arrangement.js';
 import { SIGNATURE_KINDS } from './signature.js';
 import { signatureGeometry, signatureMaterials, mergeAll } from './signature-geo.js';
+import { thresholdGeometry, thresholdMaterials, remainsGeometry, remainsMaterial } from './threshold-geo.js';
 
 const TILE_M = 300;
 // 5.36 m per quad. Raised from 40 (7.5 m) in round 4 for one reason, and it is a Nyquist reason
@@ -776,6 +777,8 @@ export class Province {
     this._scatter(g, ox, oz);
     // ---- the region's ONLY-HERE element ------------------------------------------------------
     this._signatures(g, ox, oz);
+    // ---- the border's markers, RI-WLD12 M64 / M66 --------------------------------------------
+    this._thresholds(g, ox, oz);
     // ---- the road's declared deck spans, as structures ---------------------------------------
     this._spans(g, ox, oz);
     // ---- the signposts, W1-05 / RI-WLD06 L2 --------------------------------------------------
@@ -945,6 +948,83 @@ export class Province {
         group.add(gm);
       }
     }
+  }
+
+  /**
+   * The border's markers, in this tile. `RI-WLD12` M64 (something built or grown at the frontier)
+   * and M66 (a tier jump announced on a second channel before you are in it).
+   *
+   * WHY THIS IS NOT DECORATION. Seam S35 settled what the map may be: only ground the player has
+   * already walked, a square per place they have personally stood, and their own position. No
+   * markers, no routes, nothing a quest can put on it. So there is no interface that can tell a
+   * player they are about to leave Blackwood; the only thing that can is the ground and what is
+   * standing on it. Round 1 gave the border nine staggered axes and 210 objects, and drew none of
+   * the objects — a frontier whose whole announcement lived in a JSON file.
+   *
+   * Eight owners, eight silhouettes: an Imperial cairn shedding its top block, a root gate grown
+   * rather than built, a villagers' tide pole notched at every tide worth remembering, a
+   * path-cutters' lashed and blazed tripod, naga kiln slag still warm at night, a line of upright
+   * ribs, a fulgurite nobody placed, and the Dres gibbet with somebody in it. Plus, on the seven
+   * borders where the danger tier jumps by two or more, the remains that are the second channel.
+   */
+  _thresholds(group, ox, oz) {
+    const bf = this.field.borders;
+    if (!bf || !bf.markersIn) return;
+    const here = bf.markersIn(ox, oz, ox + TILE_M, oz + TILE_M);
+    if (!here.length) return;
+    const m = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), s = new THREE.Vector3();
+    const up = new THREE.Vector3(0, 1, 0);
+    const buckets = new Map();
+    for (const it of here) {
+      let b = buckets.get(it.type);
+      if (!b) { b = { type: it.type, remains: it.remains, xf: [] }; buckets.set(it.type, b); }
+      q.setFromAxisAngle(up, it.rot);
+      // Authored at height 1 with y = 0 on the ground, so one number carries the instance; the
+      // horizontal scale is the type's own half-extent rather than the height, or a bone line
+      // would be as wide as it is tall.
+      v.set(it.x, this._meshY(it.x, it.z), it.z);
+      s.setScalar(it.h);
+      m.compose(v, q, s);
+      b.xf.push(m.clone());
+    }
+    for (const b of buckets.values()) {
+      const geo = this._thrGeo(b.type, b.remains);
+      const mat = this._thrMat(b.type, b.remains);
+      if (!geo || !mat) continue;
+      const body = b.remains ? geo : geo.body;
+      const bodyMat = b.remains ? mat : mat.body;
+      const im = new THREE.InstancedMesh(body, bodyMat, b.xf.length);
+      for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
+      im.instanceMatrix.needsUpdate = true;
+      im.castShadow = true; im.receiveShadow = true;
+      im.name = b.remains ? `remains:${b.type}` : `threshold:${b.type}`;
+      group.add(im);
+      if (!b.remains && geo.glow && mat.glow) {
+        const gm = new THREE.InstancedMesh(geo.glow, mat.glow, b.xf.length);
+        for (let i = 0; i < b.xf.length; i++) gm.setMatrixAt(i, b.xf[i]);
+        gm.instanceMatrix.needsUpdate = true;
+        gm.name = `threshold-glow:${b.type}`;
+        group.add(gm);
+      }
+    }
+  }
+
+  _thrGeo(type, remains) {
+    this._thrGeoCache = this._thrGeoCache || new Map();
+    const k = (remains ? 'r:' : 't:') + type;
+    if (!this._thrGeoCache.has(k)) {
+      this._thrGeoCache.set(k, remains ? remainsGeometry(type) : thresholdGeometry(type));
+    }
+    return this._thrGeoCache.get(k);
+  }
+
+  _thrMat(type, remains) {
+    this._thrMatCache = this._thrMatCache || new Map();
+    const k = (remains ? 'r:' : 't:') + type;
+    if (!this._thrMatCache.has(k)) {
+      this._thrMatCache.set(k, remains ? remainsMaterial(type) : thresholdMaterials(type));
+    }
+    return this._thrMatCache.get(k);
   }
 
   /**

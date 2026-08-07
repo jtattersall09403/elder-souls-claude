@@ -465,7 +465,15 @@ const result = await runJourney();
 writeJson(path.join(outDir, 'journey.json'), result);
 process.stdout.write(`journey-run: ${journeyId} -> ${path.relative(REPO_ROOT, outDir)}\n`);
 for (const r of result.instruments) {
-  process.stdout.write(`  [${r.status === 'measured' ? 'OK ' : 'N/A'}] ${r.id} ${r.what}` +
+  // ROUND 3, W1-13. This line used to read `measured ? 'OK ' : 'N/A'`, so the two checks that
+  // carried `pass: false` in the round-2 aggregation — `m_d8_second_death` and
+  // `m_d14_stain_visibility` — both printed `[OK ]`. Nothing was hidden (the run's top-level
+  // `ok` was false) but the per-check line a human reads said the opposite of the check's own
+  // verdict. `measured` is a statement about the INSTRUMENT; `pass` is a statement about the
+  // BUILD, and the dump now says both.
+  const failed = r.status === 'measured' && r.value && r.value.pass === false;
+  const tag = r.status !== 'measured' ? 'N/A ' : (failed ? 'FAIL' : 'OK  ');
+  process.stdout.write(`  [${tag}] ${r.id} ${r.what}` +
     (r.status === 'measured' ? ` = ${JSON.stringify(r.value).slice(0, 120)}` : ` — ${r.why}`) + '\n');
 }
 process.exit(result.ok ? 0 : 1);
@@ -872,8 +880,14 @@ async function driveBeats(handle, o) {
     led.unmeasurable('control_observed', 'the player body responded to a movement input',
       `the player did not move between ${JSON.stringify(pos0)} and ${JSON.stringify(pos1)} after 60 frames of forward input ` +
       `in mode '${o.inputMode}'. This is an ENTITY-SIDE observation (RI-MTH07 §B2): first_control ` +
-      `is not claimable when nothing in the world moved.`,
-      'the build');
+      `is not claimable when nothing in the world moved. ` +
+      (gControl.ok
+        ? `The world WAS running when this was taken (world_runs_before_first_control advanced ${gControl.advanced} of `
+          + `${gControl.frames_requested}, UI mode ${JSON.stringify(gControl.ui_mode_after_close)}), so this is the BUILD `
+          + 'refusing the input and not a frozen simulation.'
+        : `The world was NOT running when this was taken (${gControl.why}), so this row is a harness fault and NOT `
+          + 'evidence against the build.'),
+      gControl.ok ? 'the build' : 'the leg that left a screen open');
   }
   await o.onUISample('after-first-control');
 
@@ -947,6 +961,21 @@ async function driveBeats(handle, o) {
 /** Per-journey extra legs. Each one either measures or says why it cannot. */
 async function journeyLegs(handle, led, o) {
   const { journeyId, absentAmendments } = o;
+
+  // --- THE WORLD-RUNS GATE, site 3 of 3: before EVERY journey's own legs -------------------
+  //
+  // This is the one that round 2 wrote inside `jrn06-death.mjs` and the critic asked to be
+  // lifted. Every branch below drives the world with `stepFrames` and reads the result, and
+  // `driveBeats` has just spent the journey's whole frame budget with surfaces opening and
+  // closing — so this is exactly where a screen gets left up. `jrn01`, `jrn02`, `jrn03`,
+  // `jrn05`, `jrn07`, `jrn08` and `jrn09` had no gate at all until this line.
+  const gLegs = await gateOrRefuse(handle, led, `legs_${journeyId}`);
+  if (!gLegs.ok) {
+    led.unmeasurable(`m_legs_${journeyId}`, `${journeyId}'s own legs`,
+      'refusing to run this journey\'s legs on a stopped world: ' + gLegs.why,
+      'the leg that left a screen open');
+    return;
+  }
 
   if (journeyId === 'jrn03-desktop') {
     const wanted = String(args.layouts || '').split(',').map((s) => s.trim()).filter(Boolean);

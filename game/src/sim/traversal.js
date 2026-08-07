@@ -208,6 +208,16 @@ export class Traversal {
       if (r) { x = r[0]; z = r[1]; dx = x - px; dz = z - pz; }
     }
 
+    // ---- 4b. so are the border markers ---------------------------------------------------------
+    // The cairn, the tide pole, the lashed thorn tripod and the Dres gibbet. `borders.json` placed
+    // 210 of these and for one round they were rows in a file: not drawn, not collided with, not
+    // reachable. A marker you can stand inside is not a marker, and this is the line that makes
+    // deleting them from the data change where the player may put their feet.
+    if (f.borders && f.borders.resolveMarker) {
+      const r = f.borders.resolveMarker(x, z, 0.55);
+      if (r) { x = r[0]; z = r[1]; dx = x - px; dz = z - pz; }
+    }
+
     p.pos[0] = x; p.pos[2] = z;
 
     // ---- 5. vertical: gravity, landing, damage ------------------------------------------------

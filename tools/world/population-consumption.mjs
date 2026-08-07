@@ -111,8 +111,12 @@ const INSTALL = () => {
         const toPlayer = Math.atan2(dx, dz) * 180 / Math.PI;
         let dyaw = ((ent.yaw === undefined ? 0 : ent.yaw) - toPlayer + 540) % 360 - 180;
         bodies.push({
-          eid: ent.eid, stat: ent.statId || ent.stat || null, post: ent.populationPost,
-          region: ent.populationRegion, tier: ent.populationTier,
+          // `ent.id` is the STATBLOCK id (sim/entities.js#makeEntity). `ent.tier` is the
+          // statblock's combat tier and `ent.populationTier` is the REGION's danger_tier; they
+          // are different numbers and both are reported so nothing has to guess which.
+          eid: ent.eid, stat: ent.id, post: ent.populationPost,
+          region: ent.populationRegion, region_tier: ent.populationTier, stat_tier: ent.tier,
+          encounter: ent.encounterId, role: ent.encounterRole, ai_state: ent.state,
           hp: ent.hp, alert: +(ent.alert || 0).toFixed(4), alert_state: ent.alertState,
           dist_m: +Math.hypot(dx, dz).toFixed(2),
           yaw: +(ent.yaw === undefined ? 0 : ent.yaw).toFixed(2),
@@ -145,13 +149,27 @@ const INSTALL = () => {
         faults: (r.faults || []).length,
       };
     },
-    /** Keep the census walker alive. Declared in the report: these walks count, they do not fight. */
+    /**
+     * Keep the census walker alive, and REPORT WHAT IT COST. Declared in the report: these walks
+     * count bodies, they do not fight back, so a walker that dies would be measuring how long an
+     * unarmed mannequin survives a marsh rather than how populated the road is.
+     *
+     * `combat.player` is the authority — `sim/combat-bridge.js#mirror` copies its hp into
+     * `sim.player` every step, so healing `sim.player` alone is undone on the next frame. That
+     * is why the first smoke run reported five top-ups and a walker still bleeding out.
+     */
     topUp() {
-      const p = window.__ENGINE.sim.player;
-      const before = p.hp;
-      if (p.hpMax !== undefined && p.hp < p.hpMax) p.hp = p.hpMax;
-      return { before, after: p.hp };
+      const e = window.__ENGINE;
+      const b = e.combat && e.combat.player;
+      const p = e.sim.player;
+      const before = b ? b.hp : p.hp;
+      const max = b ? b.hpMax : p.hpMax;
+      const healed = max !== undefined && before < max ? max - before : 0;
+      if (healed > 0) { if (b) b.hp = max; p.hp = max; }
+      window.__POP._damage = (window.__POP._damage || 0) + healed;
+      return { before, after: max === undefined ? before : max, healed, cumulative_damage: window.__POP._damage };
     },
+    damageTaken() { return window.__POP._damage || 0; },
     /** Post ids of everything currently resident, with their body eids. */
     resident() {
       const e = window.__ENGINE;
@@ -194,6 +212,31 @@ async function bootPage(handle) {
 }
 
 /**
+ * A harness call that is ALLOWED to throw. `handle.h()` calls `die()` on an in-page throw and
+ * takes the whole process with it, which is right for a verb the tool depends on and wrong for
+ * `killEntity` on a body that is already down.
+ */
+async function tryH(handle, method, ...callArgs) {
+  return handle.page.evaluate(async ({ m, a }) => {
+    const H = window.__HARNESS;
+    if (!H || typeof H[m] !== 'function') return { ok: false, error: `no such harness verb: ${m}` };
+    try { return { ok: true, value: await H[m](...a) }; }
+    catch (e) { return { ok: false, error: String((e && e.message) || e) }; }
+  }, { m: method, a: callArgs });
+}
+
+/**
+ * Run `fn` against a freshly booted page. A5 needs this because a data file only reaches the
+ * engine at boot. The caller closes its own handle first, so this never raises the number of
+ * browsers running at once above one.
+ */
+async function withFreshBrowser(fn) {
+  const h2 = await launchGame({ width: 320, height: 240, ...args });
+  try { await bootPage(h2); return await fn(h2); }
+  finally { try { await h2.close(); } catch { /* closing a dead page */ } }
+}
+
+/**
  * Walk `metres` of the named route through the game's own locomotion, sampling the census.
  * `restart:true` teleports to the route head, which is the ONLY placement in this arm.
  */
@@ -203,18 +246,22 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
   samples.push({ m: 0, ...(await handle.page.evaluate(() => window.__POP.census())) });
   let topUps = 0;
   let guard = 0;
-  while (r.dist_m < metres && !r.done && guard++ < 400) {
+  while (r.path_m < metres && !r.done && guard++ < 400) {
     r = await handle.h('walkRoute', { route: ROUTE, speed: SPEED, chunkFrames: chunk, stream: false });
     const c = await handle.page.evaluate(() => window.__POP.census());
-    samples.push({ m: +r.dist_m.toFixed(1), ...c });
+    samples.push({ m: +r.path_m.toFixed(1), ...c });
     // The census walks are a CENSUS, not a survival test: they walk straight through fights the
     // player never fights back in. Topping the walker up keeps the arm measuring placement rather
     // than measuring how long an unarmed mannequin survives a marsh. Counted and declared.
     const t = await handle.page.evaluate(() => window.__POP.topUp());
-    if (t.after > t.before) topUps++;
+    if (t.healed > 0) topUps++;
   }
   const last = samples[samples.length - 1];
-  return { label, metres_walked: +(r.dist_m || 0).toFixed(1), frames: r.frames, done: !!r.done, top_ups: topUps, samples, final: last };
+  const damage = await handle.page.evaluate(() => window.__POP.damageTaken());
+  return {
+    label, metres_walked: +(r.path_m || 0).toFixed(1), frames: r.frames, done: !!r.done,
+    top_ups: topUps, damage_taken_hp: +damage.toFixed(1), samples, final: last,
+  };
 }
 
 // =============================================================================================
@@ -264,7 +311,11 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
         metres: baseline.metres_walked, frames: baseline.frames,
         posts_spawned: f.spawned, posts_released: f.released, bodies_live_at_end: f.live_bodies,
         spawned_at_metre_zero: atStart, samples_where_count_rose: rises,
-        refocuses: f.refocuses, steps: f.steps, faults: f.faults, top_ups: baseline.top_ups,
+        refocuses: f.refocuses, steps: f.steps, faults: f.faults,
+        // The road fights back now, and this is the number that says so. The walker never
+        // attacks; this is damage taken walking THROUGH the population, healed between chunks
+        // so the arm measures placement rather than survival.
+        damage_taken_hp: baseline.damage_taken_hp, top_ups: baseline.top_ups,
       });
     }
 
@@ -337,21 +388,24 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
     //    This is the arm that proves `game/data/world/population.json` is what fills the world.
     // -------------------------------------------------------------------------------------
     if (want('A5') && baseline) {
-      log('A5 regenerating population-posts.json at double density …');
+      log('A5 regenerating population-posts.json at higher density …');
       const gen = JSON.parse(execFileSync('node', [BUILDER, '--encounters-per-tm', '1.7', '--write'], { cwd: REPO_ROOT }).toString());
       restored = false;
-      await handle.page.reload({ waitUntil: 'load' });
-      await handle.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready && window.__HARNESS.ready(), null, { timeout: 120000 }).catch(() => {});
-      await bootPage(handle);
-      const dense = await walkCensus(handle, METRES, { label: 'dense' });
+      await handle.close(); handle = null;   // one browser at a time, always
+      // A data file only reaches the engine at boot, so this arm needs a fresh page. It takes a
+      // SECOND browser SEQUENTIALLY — the first is closed before the second opens, so the
+      // concurrent-browser count never rises — rather than `page.reload()`, which
+      // TOOL-COVERAGE-R1 §2 recorded hanging 3 of 3 times on this build.
+      const dense = await withFreshBrowser(async (h2) => walkCensus(h2, METRES, { label: 'dense' }));
 
       // Restore the canonical bytes and confirm the world comes back to the baseline count.
       fs.writeFileSync(POSTS_PATH, originalPosts);
       restored = true;
-      await handle.page.reload({ waitUntil: 'load' });
-      await handle.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready && window.__HARNESS.ready(), null, { timeout: 120000 }).catch(() => {});
+      const back = await withFreshBrowser(async (h2) => walkCensus(h2, METRES, { label: 'restored' }));
+      // The instrument returns to the browser it came in with, so the later arms still run on
+      // one long-lived page.
+      handle = await launchGame({ width: 320, height: 240, ...args });
       await bootPage(handle);
-      const back = await walkCensus(handle, METRES, { label: 'restored' });
 
       report.arms.A5 = {
         perturbation: '--encounters-per-tm 1.7 (model default is in population.json budget)',
@@ -442,22 +496,25 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
       });
       const before = await handle.h('spawnEncounter', 'dres-raid-party', at[0], at[1], { tag: 'a7-before' });
       const statsBefore = await handle.page.evaluate((eids) => eids.map((eid) => {
-        const e = window.__ENGINE.sim.findEntity(eid); return e ? { eid, stat: e.statId || e.stat, hp: e.hp } : { eid, missing: true };
+        const e = window.__ENGINE.sim.findEntity(eid);
+        return e ? { eid, stat: e.id, role: e.encounterRole, hp: e.hp, hp_max: e.hpMax, poise: e.poise } : { eid, missing: true };
       }), before.eids);
       for (const eid of before.eids) await handle.h('despawn', eid);
 
-      await handle.h('questSetFlag', 'the_sixty_are_protected', true);
+      const flagSet = await tryH(handle, 'questSetFlag', 'the_sixty_are_protected', true);
       const after = await handle.h('spawnEncounter', 'dres-raid-party', at[0], at[1], { tag: 'a7-after' });
       const statsAfter = await handle.page.evaluate((eids) => eids.map((eid) => {
-        const e = window.__ENGINE.sim.findEntity(eid); return e ? { eid, stat: e.statId || e.stat, hp: e.hp } : { eid, missing: true };
+        const e = window.__ENGINE.sim.findEntity(eid);
+        return e ? { eid, stat: e.id, role: e.encounterRole, hp: e.hp, hp_max: e.hpMax, poise: e.poise } : { eid, missing: true };
       }), after.eids);
       for (const eid of after.eids) await handle.h('despawn', eid);
-      await handle.h('questSetFlag', 'the_sixty_are_protected', false);
+      await tryH(handle, 'questSetFlag', 'the_sixty_are_protected', false);
 
       const kinds = (s) => [...new Set(s.map((b) => b.stat))].sort();
       const hpsB = [...new Set(statsBefore.map((b) => b.hp))].sort();
       const hpsA = [...new Set(statsAfter.map((b) => b.hp))].sort();
       report.arms.A7 = {
+        flag: 'the_sixty_are_protected', flag_set: flagSet,
         before: { bodies: before.eids.length, kinds: kinds(statsBefore), hps: hpsB, detail: statsBefore },
         after: { bodies: after.eids.length, kinds: kinds(statsAfter), hps: hpsA, detail: statsAfter },
       };
@@ -497,46 +554,68 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
       const stages = {};
       if (res.length) {
         const victim = res[0];
-        for (const eid of victim.eids) { try { await handle.h('killEntity', eid); } catch { /* already down */ } }
-        await handle.h('stepFrames', 60);
-        stages.after_kill = await handle.page.evaluate((id) => {
-          const e = window.__ENGINE; return { state: e.population.state.get(id), census: window.__POP.census() };
-        }, victim.post);
+        const snap = async (id) => handle.page.evaluate((pid) => {
+          const e = window.__ENGINE;
+          const eids = e.population.live.get(pid) || [];
+          return {
+            state: e.population.state.get(pid),
+            live_here: eids.length,
+            alive_here: eids.filter((x) => { const b = e.sim.findEntity(x); return b && b.hp > 0; }).length,
+            census: window.__POP.census(),
+          };
+        }, id);
 
-        // Walk away past the release radius and come back. Walking away is NOT a respawn.
+        for (const eid of victim.eids) await tryH(handle, 'killEntity', eid);
+        await handle.h('stepFrames', 60);
+        stages.after_kill = await snap(victim.post);
+
+        // Walk away past the release radius. Walking away is NOT a respawn.
         await handle.h('walkRoute', { route: ROUTE, speed: 'jog', chunkFrames: 12000, stream: false });
         await handle.page.evaluate(() => window.__POP.topUp());
-        stages.after_walk_away = await handle.page.evaluate((id) => {
-          const e = window.__ENGINE; return { state: e.population.state.get(id), census: window.__POP.census() };
-        }, victim.post);
+        stages.after_walk_away = await snap(victim.post);
+
+        // Come back to it WITHOUT resting. Still cleared, still empty: the whole point of the
+        // three-state lifecycle is that returning to a place you emptied finds it empty.
+        await handle.h('teleport', victim.x + 40, victim.z + 40);
+        await handle.h('stepFrames', 300);
+        stages.after_return_no_rest = await snap(victim.post);
 
         // Rest. RI-PRG04 §1: every non-unique hostile returns, including ones killed hours ago.
-        const rest = await handle.h('hearthRest', {}).catch((e) => ({ error: String(e && e.message || e) }));
-        await handle.h('stepFrames', 60);
-        stages.after_rest = await handle.page.evaluate((id) => {
-          const e = window.__ENGINE; return { state: e.population.state.get(id), census: window.__POP.census() };
-        }, victim.post);
-        stages.rest = rest;
+        // `restAt(id)` is the harness affordance the engine documents for naming a well the body
+        // is not standing at; the respawn path it drives is the same `respawnOrdinary`.
+        const restHearth = String(args.hearth || 'hearth-blackrose');
+        stages.rest = await tryH(handle, 'restAt', restHearth);
+        await handle.h('stepFrames', 300);
+        stages.after_rest = await snap(victim.post);
 
         const npcsAfter = (await handle.page.evaluate(() => window.__POP.census())).npcs;
-        report.arms.A8 = { victim, npcs_before: npcsBefore, npcs_after: npcsAfter, stages };
+        report.arms.A8 = { victim, rest_hearth: restHearth, npcs_before: npcsBefore, npcs_after: npcsAfter, stages };
 
         const clearedOnKill = stages.after_kill.state === 'cleared';
-        const stayedCleared = stages.after_walk_away.state === 'cleared';
+        const stayedCleared = stages.after_walk_away.state === 'cleared'
+          && stages.after_return_no_rest.state === 'cleared'
+          && stages.after_return_no_rest.alive_here === 0;
         const backAfterRest = stages.after_rest.state !== 'cleared';
         const npcsHeld = npcsBefore === npcsAfter;
-        (clearedOnKill && stayedCleared && npcsHeld ? pass : fail)(
-          'A8 S5: a cleared post stays cleared across a walk-away (walking is not a respawn)', {
+        (clearedOnKill && stayedCleared ? pass : fail)(
+          'A8 S5: a cleared post stays cleared across a walk-away AND a return (walking is not resting)', {
             post: victim.post, bodies_killed: victim.eids.length,
             state_after_kill: stages.after_kill.state,
             state_after_walking_away: stages.after_walk_away.state,
-            npcs_before: npcsBefore, npcs_after: npcsAfter,
+            state_after_returning: stages.after_return_no_rest.state,
+            bodies_alive_on_return: stages.after_return_no_rest.alive_here,
           });
         (backAfterRest ? pass : fail)('A8 S5: resting at a hearth returns the post to the world', {
-          post: victim.post, state_after_rest: stages.after_rest.state,
-          uncleared_count: stages.after_rest.census ? undefined : undefined,
-          rest: stages.rest,
+          post: victim.post, hearth: restHearth,
+          state_after_rest: stages.after_rest.state,
+          cleared_posts_before_rest: stages.after_return_no_rest.census.cleared,
+          cleared_posts_after_rest: stages.after_rest.census.cleared,
+          rest_ok: stages.rest.ok, rest_error: stages.rest.error || null,
           note: 'RI-PRG04 §1 — every non-unique hostile returns, including ones killed a kilometre back',
+        });
+        (npcsHeld ? pass : fail)('A8 S5: named people, merchants, trainers and quest actors are untouched by all of it', {
+          npcs_before: npcsBefore, npcs_after: npcsAfter,
+          note: 'sim.npcs is a different array and nothing in game/src/world/population.js touches it',
         });
       } else {
         report.arms.A8 = { note: 'no resident post inside the walk budget' };

@@ -95,6 +95,17 @@ export const CAMERA_CONST = {
   head_height_m: 1.66,
 
   // ---- look — RI-CAM02 §A/§B -------------------------------------------------------------
+  // SEAM S32, and the reason these four live HERE and not in `input/`. The input piece owns
+  // the RAW stick — which axes exist, which pad reports what, and the hardware deadzone that
+  // decides whether a stick is being touched at all (`input/gamepad.js`, from
+  // `data/input/profiles.json`). The RESPONSE CURVE above that — how a deflection of 0.6
+  // becomes a number of degrees — is the camera's, because it is the thing a player calls
+  // "the camera feels heavy". `input/pipeline.js:shapeLookStick()` reads them from here.
+  look_stick_deadzone: 0.15,
+  look_stick_saturation: 0.95,
+  look_stick_exponent: 2.0,
+  look_stick_yaw_deg_per_frame: 3.0,
+  look_stick_pitch_deg_per_frame: 2.0,
   look_cap_yaw_deg_per_frame: 30.0,
   look_cap_pitch_deg_per_frame: 20.0,
   pitch_min_deg: -55.0,
@@ -167,20 +178,229 @@ export const CAMERA_CONST = {
   fog_arm_frames: 40,
 };
 
+// =========================================================================================
+// THE DATA FILE GOVERNS. RI-MTH07 / ARBITRATION §3.
+//
+// Every number in `CAMERA_CONST` above was ALSO written down in `game/data/camera/rig.json`,
+// and until this function existed the JSON was fetched at boot (engine.js `out.cameraRig`),
+// assigned to a field, and read by nothing. Editing it changed nothing a player could see —
+// the fifteenth instrumented model in this project with no world-side consumer, and the one
+// in the piece whose whole job is what the player is looking through.
+//
+// So the literals above are now DEFAULTS AND A SCHEMA, not the authority. `applyCameraRig()`
+// overwrites them from the file at boot; the derived alphas and the near-plane corner radius
+// are recomputed from the new values; and `input/pipeline.js` reads its look curve from the
+// same object. Perturb a line of rig.json and the camera moves differently on the next boot.
+//
+// The mapping is EXHAUSTIVE by assertion, not by hope. Every key of `CAMERA_CONST` is either
+// in `RIG_MAP` or in `RIG_UNDECLARED`, and `applyCameraRig()` throws if a key is in neither,
+// if a mapped path is missing from the document, or if the value is not finite. A rig.json
+// that loses a field fails the boot instead of silently reverting to a literal — which is the
+// exact failure this whole function exists to make impossible.
+//
+// `t` is the transform from the file's unit to the code's. It exists in five places only,
+// all of them "per second in the file, per frame in the step", and each one is checked
+// against the file's own pre-divided twin where the file carries one.
+const P = (x) => x;                 // identity, named so the table reads as a table
+const PER_FRAME = (x) => x / 60;    // deg/s or m/s in the file → per fixed step in the code
+/** @type {Array<[string, string, (n: number) => number]>} */
+const RIG_MAP = [
+  ['pivot_height_m',                'rig.pivot_height_m', P],
+  ['shoulder_right_free_m',         'rig.shoulder_right_free_m', P],
+  ['shoulder_up_free_m',            'rig.shoulder_up_free_m', P],
+  ['shoulder_right_locked_m',       'rig.shoulder_right_locked_m', P],
+  ['shoulder_up_locked_m',          'rig.shoulder_up_locked_m', P],
+  ['arm_free_m',                    'rig.arm_free_m', P],
+  ['arm_locked_near_m',             'rig.arm_locked_near_m', P],
+  ['arm_locked_far_m',              'rig.arm_locked_far_m', P],
+  ['arm_locked_near_d_m',           'rig.arm_locked_near_at_target_dist_m', P],
+  ['arm_locked_far_d_m',            'rig.arm_locked_far_at_target_dist_m', P],
+  ['arm_max_m',                     'rig.arm_max_m', P],
+  ['arm_min_m',                     'rig.arm_min_m', P],
+  ['cast_radius_m',                 'rig.cast_radius_m', P],
+  ['cast_backoff_m',                'rig.cast_backoff_m', P],
+  ['fov_deg',                       'rig.fov_deg', P],
+  ['near_m',                        'rig.near_m', P],
+  ['far_m',                         'rig.far_m', P],
+  ['aspect',                        'rig.aspect_canonical', P],
+  ['pivot_y_half_life_s',           'pivot_follow.vertical_half_life_s', P],
+  ['pivot_y_half_life_air_s',       'pivot_follow.vertical_half_life_airborne_s', P],
+  ['pivot_y_lag_clamp_m',           'pivot_follow.vertical_lag_clamp_m', P],
+  ['pull_in_m_per_frame',           'spring_arm.pull_in_mps', PER_FRAME],
+  ['push_out_m_per_frame',          'spring_arm.push_out_mps', PER_FRAME],
+  ['push_out_dwell_frames',         'spring_arm.push_out_dwell_frames', P],
+  ['fade_start_m',                  'spring_arm.fade_start_m', P],
+  ['fade_zero_m',                   'spring_arm.fade_zero_m', P],
+  ['guard_radius_m',                'spring_arm.penetration_guard.guard_radius_m', P],
+  ['arm_hard_min_m',                'spring_arm.penetration_guard.arm_hard_min_m', P],
+  ['camera_to_head_min_m',          'spring_arm.penetration_guard.camera_to_head_min_m', P],
+  ['head_height_m',                 'player_body.eye_height_m', P],
+  ['chest_height_m',                'player_body.chest_height_m', P],
+  ['look_stick_deadzone',           'look.stick_deadzone_radial', P],
+  ['look_stick_saturation',         'look.stick_saturation', P],
+  ['look_stick_exponent',           'look.magnitude_exponent', P],
+  ['look_stick_yaw_deg_per_frame',  'look.max_yaw_rate_dps', PER_FRAME],
+  ['look_stick_pitch_deg_per_frame', 'look.max_pitch_rate_dps', PER_FRAME],
+  ['look_cap_yaw_deg_per_frame',    'look.cap_yaw_deg_per_frame', P],
+  ['look_cap_pitch_deg_per_frame',  'look.cap_pitch_deg_per_frame', P],
+  ['pitch_min_deg',                 'pitch_clamp.min_deg', P],
+  ['pitch_max_deg',                 'pitch_clamp.max_deg', P],
+  ['pitch_min_locked_deg',          'pitch_clamp.min_locked_deg', P],
+  ['pitch_max_locked_deg',          'pitch_clamp.max_locked_deg', P],
+  ['recentre_gate_frames',          'auto_recentre.gate_frames', P],
+  ['recentre_speed_fraction',       'auto_recentre.gate_speed_fraction_of_sprint', P],
+  ['recentre_forward_dominance',    'auto_recentre.gate_forward_dominance', P],
+  ['recentre_yaw_half_life_s',      'auto_recentre.yaw_half_life_s', P],
+  ['recentre_yaw_clamp_deg_per_frame', 'auto_recentre.yaw_rate_clamp_dps', PER_FRAME],
+  ['recentre_pitch_target_deg',     'auto_recentre.pitch_target_deg', P],
+  ['recentre_pitch_half_life_s',    'auto_recentre.pitch_half_life_s', P],
+  ['lock_yaw_half_life_s',          'lock_framing.yaw_half_life_s', P],
+  ['lock_pitch_half_life_s',        'lock_framing.pitch_half_life_s', P],
+  ['lock_yaw_clamp_deg_per_frame',  'lock_framing.yaw_rate_clamp_deg_per_frame', P],
+  ['safe_rect_x',                   'lock_framing.safe_rect_ndc_x', P],
+  ['safe_rect_y',                   'lock_framing.safe_rect_ndc_y', P],
+  ['contain_extend_m_per_frame',    'lock_framing.containment_arm_extend_m_per_frame', P],
+  ['contain_retract_m_per_frame',   'lock_framing.containment_arm_retract_m_per_frame', P],
+  ['contain_grab_m',                'lock_framing.containment_grab_m_per_frame', P],
+  ['contain_release_m',             'lock_framing.containment_release_m_per_frame', P],
+  ['contain_pitch_deg_per_frame',   'lock_framing.containment_pitch_deg_per_frame', P],
+  ['contain_soft_cap_m',            'lock_framing.containment_drivers.contain_soft_cap_m', P],
+  ['contain_pitch_max_deg',         'lock_framing.containment_drivers.contain_pitch_max_deg', P],
+  ['contain_pitch_soft_deg',        'lock_framing.containment_drivers.contain_pitch_soft_deg', P],
+  ['arm_half_life_s',               'lock_framing.arm_half_life_s', P],
+  ['pitch_base_min_deg',            'lock_framing.pitch_base_min_deg', P],
+  ['pitch_base_max_deg',            'lock_framing.pitch_base_max_deg', P],
+  ['pitch_base_slope',              'lock_framing.pitch_base_slope_deg_per_m', P],
+  ['pitch_base_ref_d_m',            'lock_framing.pitch_base_ref_dist_m', P],
+  ['size_bias_per_m',               'lock_framing.size_bias_per_m', P],
+  ['size_bias_ref_h_m',             'lock_framing.size_bias_height_ref_m', P],
+  ['aim_k_div_m',                   'lock_framing.aim_k_divisor_m', P],
+  ['aim_k_max',                     'lock_framing.aim_k_max', P],
+  ['aim_base_w',                    'lock_framing.aim_base_weight', P],
+  ['aim_k_span',                    'lock_framing.aim_k_span', P],
+  ['dialogue_yaw_max_deg',          'dialogue.accommodation_max_yaw_deg', P],
+  ['dialogue_arm_max_m',            'dialogue.accommodation_max_arm_m', P],
+  ['dialogue_frames',               'dialogue.accommodation_frames', P],
+  ['rest_arm_m',                    'rest.arm_to_m', P],
+  ['rest_pitch_deg',                'rest.pitch_to_deg', P],
+  ['rest_ease_frames',              'rest.ease_frames', P],
+  ['shake_half_life_s',             'feel.shake.half_life_s', P],
+  ['shake_max_deg',                 'feel.shake.max_deg', P],
+  ['shake_max_frames',              'feel.shake.max_frames', P],
+  ['death_arm_m',                   'feel.death.arm_to_m', P],
+  ['death_pitch_deg',               'feel.death.pitch_to_deg', P],
+  ['death_ease_frames',             'feel.death.ease_frames', P],
+  ['death_orbit_deg_per_frame',     'feel.death.orbit_dps', PER_FRAME],
+  ['death_orbit_until',             'feel.death.orbit_until_frame', P],
+  ['death_pitch_rate_deg_per_frame', 'feel.death.pitch_rate_deg_per_frame', P],
+  ['fog_frames',                    'feel.fog_gate.frames', P],
+  ['fog_yaw_half_life_s',           'feel.fog_gate.yaw_half_life_s', P],
+  ['fog_yaw_clamp_deg_per_frame',   'feel.fog_gate.yaw_rate_clamp_dps', PER_FRAME],
+  ['fog_arm_m',                     'feel.fog_gate.arm_to_m', P],
+  ['fog_arm_frames',                'feel.fog_gate.arm_ease_frames', P],
+];
+/** Keys the rig file deliberately does NOT declare, with the reason. Anything not here and
+ *  not in `RIG_MAP` is a mapping hole and throws. */
+const RIG_UNDECLARED = {
+  pitch_scale_down_at: 'rig.pitch_arm_scale, a table — read separately below',
+  pitch_scale_down: 'rig.pitch_arm_scale, a table — read separately below',
+  pitch_scale_up_at: 'rig.pitch_arm_scale, a table — read separately below',
+  pitch_scale_up: 'rig.pitch_arm_scale, a table — read separately below',
+  sprint_mps: 'W1-08/W1-15 own the sprint speed; the camera only compares against it',
+};
+
+function dig(doc, dotted) {
+  let o = doc;
+  for (const k of dotted.split('.')) {
+    if (o === null || typeof o !== 'object' || !(k in o)) return undefined;
+    o = o[k];
+  }
+  return o;
+}
+
+/**
+ * Install `game/data/camera/rig.json` over the defaults. Called once, from `Engine.loadState`,
+ * BEFORE the first step — every constant here is read inside the fixed step and none may
+ * change while the world is running.
+ *
+ * Returns the audit a probe needs to prove consumption: which keys the file moved, and by how
+ * much. `tools/camera/cam-consume.mjs` perturbs the file, reads this, and then watches the
+ * camera actually behave differently — the audit alone would be another promise.
+ */
+export function applyCameraRig(doc) {
+  if (!doc || typeof doc !== 'object') throw new Error('applyCameraRig: camera/rig.json missing');
+  const mapped = new Set(RIG_MAP.map((r) => r[0]));
+  for (const k of Object.keys(CAMERA_CONST)) {
+    if (!mapped.has(k) && !(k in RIG_UNDECLARED)) {
+      throw new Error(`applyCameraRig: CAMERA_CONST.${k} is declared by no path in rig.json and is ` +
+        'not listed in RIG_UNDECLARED — the mapping is not exhaustive');
+    }
+  }
+  const changed = [];
+  for (const [key, dotted, t] of RIG_MAP) {
+    const raw = dig(doc, dotted);
+    if (typeof raw !== 'number' || !Number.isFinite(raw)) {
+      throw new Error(`applyCameraRig: rig.json ${dotted} (-> CAMERA_CONST.${key}) is ` +
+        `${JSON.stringify(raw)}, expected a finite number`);
+    }
+    const v = t(raw);
+    const was = CAMERA_CONST[key];
+    if (was !== v) changed.push({ key, path: dotted, was, now: v });
+    CAMERA_CONST[key] = v;
+  }
+  // The pitch/arm scale table. Three rows, ordered, and the middle one must be the identity
+  // at pitch 0 or the free arm length stops meaning what RI-CAM01 §A says it means.
+  const tab = dig(doc, 'rig.pitch_arm_scale');
+  if (!Array.isArray(tab) || tab.length !== 3) throw new Error('applyCameraRig: rig.pitch_arm_scale must be 3 rows');
+  const rows = tab.slice().sort((a, b) => a.pitch_deg - b.pitch_deg);
+  if (rows[1].pitch_deg !== 0 || rows[1].scale !== 1) {
+    throw new Error('applyCameraRig: rig.pitch_arm_scale middle row must be {pitch_deg: 0, scale: 1}');
+  }
+  for (const [key, v] of [['pitch_scale_down_at', rows[0].pitch_deg], ['pitch_scale_down', rows[0].scale],
+    ['pitch_scale_up_at', rows[2].pitch_deg], ['pitch_scale_up', rows[2].scale]]) {
+    if (CAMERA_CONST[key] !== v) changed.push({ key, path: 'rig.pitch_arm_scale', was: CAMERA_CONST[key], now: v });
+    CAMERA_CONST[key] = v;
+  }
+  recomputeDerived();
+  return { keys: RIG_MAP.length + 4, changed };
+}
+
+/** Everything computed FROM `CAMERA_CONST` rather than stated in it. Re-derived whenever the
+ *  file moves a constant, because an alpha left over from a default is exactly how a data
+ *  file comes to be half-consumed. */
+function recomputeDerived() {
+  A_PIVOT_Y = alphaFor(CAMERA_CONST.pivot_y_half_life_s);
+  A_PIVOT_Y_AIR = alphaFor(CAMERA_CONST.pivot_y_half_life_air_s);
+  A_LOCK_YAW = alphaFor(CAMERA_CONST.lock_yaw_half_life_s);
+  A_LOCK_PITCH = alphaFor(CAMERA_CONST.lock_pitch_half_life_s);
+  A_ARM = alphaFor(CAMERA_CONST.arm_half_life_s);
+  A_RECENTRE_YAW = alphaFor(CAMERA_CONST.recentre_yaw_half_life_s);
+  A_RECENTRE_PITCH = alphaFor(CAMERA_CONST.recentre_pitch_half_life_s);
+  A_SHAKE = alphaFor(CAMERA_CONST.shake_half_life_s);
+  A_FOG_YAW = alphaFor(CAMERA_CONST.fog_yaw_half_life_s);
+  for (const [k, v] of [['0.080', A_SHAKE], ['0.120', A_LOCK_YAW], ['0.180', A_LOCK_PITCH],
+    ['0.250', A_ARM], ['0.350', A_RECENTRE_YAW], ['0.400', A_PIVOT_Y_AIR], ['0.600', A_RECENTRE_PITCH]]) {
+    CAMERA_ALPHAS[k] = v;
+  }
+  const hh = CAMERA_CONST.near_m * Math.tan(CAMERA_CONST.fov_deg * DEG / 2);
+  const hw = hh * CAMERA_CONST.aspect;
+  NEAR_CORNER_R = Math.sqrt(CAMERA_CONST.near_m ** 2 + hh ** 2 + hw ** 2);
+}
+
 /** RI-CAM05 §F: the closed `camera.mode` vocabulary. Anything else in a trace is a fail. */
 export const CAMERA_MODES = ['free', 'locked', 'dialogue', 'menu', 'rest', 'death', 'fog_gate'];
 /** RI-CAM05 §F: `listPerspectiveModes()` must return exactly this, and nothing may add to it. */
 export const PERSPECTIVE_MODES = ['third'];
 
-const A_PIVOT_Y = alphaFor(CAMERA_CONST.pivot_y_half_life_s);
-const A_PIVOT_Y_AIR = alphaFor(CAMERA_CONST.pivot_y_half_life_air_s);
-const A_LOCK_YAW = alphaFor(CAMERA_CONST.lock_yaw_half_life_s);
-const A_LOCK_PITCH = alphaFor(CAMERA_CONST.lock_pitch_half_life_s);
-const A_ARM = alphaFor(CAMERA_CONST.arm_half_life_s);
-const A_RECENTRE_YAW = alphaFor(CAMERA_CONST.recentre_yaw_half_life_s);
-const A_RECENTRE_PITCH = alphaFor(CAMERA_CONST.recentre_pitch_half_life_s);
-const A_SHAKE = alphaFor(CAMERA_CONST.shake_half_life_s);
-const A_FOG_YAW = alphaFor(CAMERA_CONST.fog_yaw_half_life_s);
+let A_PIVOT_Y = alphaFor(CAMERA_CONST.pivot_y_half_life_s);
+let A_PIVOT_Y_AIR = alphaFor(CAMERA_CONST.pivot_y_half_life_air_s);
+let A_LOCK_YAW = alphaFor(CAMERA_CONST.lock_yaw_half_life_s);
+let A_LOCK_PITCH = alphaFor(CAMERA_CONST.lock_pitch_half_life_s);
+let A_ARM = alphaFor(CAMERA_CONST.arm_half_life_s);
+let A_RECENTRE_YAW = alphaFor(CAMERA_CONST.recentre_yaw_half_life_s);
+let A_RECENTRE_PITCH = alphaFor(CAMERA_CONST.recentre_pitch_half_life_s);
+let A_SHAKE = alphaFor(CAMERA_CONST.shake_half_life_s);
+let A_FOG_YAW = alphaFor(CAMERA_CONST.fog_yaw_half_life_s);
 export const CAMERA_ALPHAS = {
   '0.080': A_SHAKE, '0.120': A_LOCK_YAW, '0.180': A_LOCK_PITCH, '0.250': A_ARM,
   '0.350': A_RECENTRE_YAW, '0.400': A_PIVOT_Y_AIR, '0.600': A_RECENTRE_PITCH,
@@ -189,7 +409,7 @@ export const CAMERA_ALPHAS = {
 /** Near-plane corner radius: the distance from the camera origin to a corner of the near
  *  plane. The penetration guard's sphere is deliberately larger than this, which is what
  *  makes `clip_through == false` a structural property rather than a lucky one. */
-export const NEAR_CORNER_R = (() => {
+export let NEAR_CORNER_R = (() => {
   const hh = CAMERA_CONST.near_m * Math.tan(CAMERA_CONST.fov_deg * DEG / 2);
   const hw = hh * CAMERA_CONST.aspect;
   return Math.sqrt(CAMERA_CONST.near_m ** 2 + hh ** 2 + hw ** 2);

@@ -51,6 +51,38 @@ Two things make this achievable rather than aspirational:
 
 Never "wait for results before starting more". Results arrive continuously; the box does not care.
 
+## 2b. Cost discipline — every token spent twice is a token not spent on the game
+
+> Owner: *"be dramatically more token efficient… but with absolutely no drop in performance or
+> quality."*
+
+The budget is dominated by **subagent work**, not by orchestration prose: one agent costs 200–350k,
+so a wave of fourteen is several million. That means the savings that matter are the ones that stop
+work being *repeated*, and the ones that stop it being *wasted*. Trimming words is the small half.
+
+**The four rules, in order of how much they save:**
+
+1. **Never dispatch a piece that is already done.** Read the status file and the last commit before
+   relaunching a successor. A successor sent to a complete piece spends its whole budget proving
+   the piece is complete. That has happened; it was an orchestration error, not the agent's.
+2. **Briefs point at files; they do not restate them.** The findings already live in the verdict,
+   the status file and `NEXT-DISPATCH.md`, and the agent is going to read them anyway. Restating
+   them costs tokens **and** risks a paraphrase being wrong — which has happened repeatedly, with
+   writers and critics correcting the orchestrator's summaries dozens of times. A brief is: the
+   role, the status file, the two or three files that carry the findings, and the one instruction
+   that is genuinely new. Two hundred words, not nine hundred. **This is a quality gain, not a
+   trade-off** — the file is authoritative and the summary is not.
+3. **Status files earn their cost on the first restart.** Three restarts in one day, every agent
+   killed each time. An agent that writes as it goes resumes; one that holds work in its head
+   starts over and spends the budget twice.
+4. **Say it once.** A finding belongs in its verdict. Commit messages carry a subject and a couple
+   of lines; the detail is one `git show` away and nobody needs it duplicated in five places.
+
+**What must not be cut, because it is where the quality lives:** the separate critic, the
+delete-the-fix, the CONSUMPTION check, the self-test that goes red on purpose, and reading the
+actual file rather than trusting a summary. Every one of those has caught something expensive. Cost
+discipline means not paying twice for the same work — never paying less for the verification.
+
 ## 3. Top up, in this order of preference
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the

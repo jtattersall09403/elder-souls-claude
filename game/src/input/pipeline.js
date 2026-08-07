@@ -25,6 +25,9 @@
 'use strict';
 
 import { ACTIONS, BIT, bitOf, maskToNames } from './actions.js';
+// S32: the look RESPONSE CURVE is the camera's, and lives in the camera's own constants so
+// that `game/data/camera/rig.json §look` governs it. See `shapeLookStick()` below.
+import { CAMERA_CONST } from '../sim/camera.js';
 
 export const BUFFER_FRAMES = 8;      // f@60 — RI-CMB09 §1, excluded from the S22 rebase.
 
@@ -293,14 +296,21 @@ export class InputPipeline {
  */
 const _shaped = [0, 0];
 export function shapeLookStick(x, y) {
+  // SEAM S32 and RI-MTH07, together. The five numbers below used to be literals here, which
+  // made `game/data/camera/rig.json §look` — where they are also written down — decorative.
+  // They now come from `CAMERA_CONST`, which the engine overwrites from that file at boot, so
+  // editing `look.max_yaw_rate_dps` changes how fast the camera turns. S32 is unmoved: the
+  // input piece still owns the RAW stick and the hardware deadzone in `input/gamepad.js`;
+  // what is imported here is the RESPONSE CURVE above it, which is the camera's.
+  const dz = CAMERA_CONST.look_stick_deadzone, sat = CAMERA_CONST.look_stick_saturation;
   const m = Math.sqrt(x * x + y * y);
-  if (m <= 0.15) { _shaped[0] = 0; _shaped[1] = 0; return _shaped; }
-  let mm = (Math.min(m, 0.95) - 0.15) / 0.80;
+  if (m <= dz) { _shaped[0] = 0; _shaped[1] = 0; return _shaped; }
+  let mm = (Math.min(m, sat) - dz) / (sat - dz);
   if (mm > 1) mm = 1;
-  mm *= mm;
+  mm = Math.pow(mm, CAMERA_CONST.look_stick_exponent);
   const ux = x / m, uy = y / m;
-  _shaped[0] = ux * mm * 3.0;
-  _shaped[1] = uy * mm * 2.0;
+  _shaped[0] = ux * mm * CAMERA_CONST.look_stick_yaw_deg_per_frame;
+  _shaped[1] = uy * mm * CAMERA_CONST.look_stick_pitch_deg_per_frame;
   return _shaped;
 }
 

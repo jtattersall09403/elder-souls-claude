@@ -40,7 +40,7 @@ import { AmbienceDriver, renderBedOffline, emitterPlacement } from './audio/ambi
 import { ImpactAudio, renderVoiceOffline } from './audio/impact-audio.js';
 import { buildCells, EMPTY_CELL } from './sim/collision.js';
 import {
-  CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS,
+  CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS, applyCameraRig,
   openUI as cameraOpenUI, closeUI as cameraCloseUI, beginFogGate, beginDeathCamera,
   pitchArmScale, projectNDC, cameraBasis, triggerShake,
 } from './sim/camera.js';
@@ -424,6 +424,14 @@ export class Engine {
     // selected per named state; the sim step only ever reads it.
     this._buildUI();
     this.cells = buildCells(this.data.cameraCells);
+    // RI-MTH07. `camera/rig.json` was fetched here and dropped — 97 constants describing the
+    // one thing the player looks through, none of them read by anything. This is the call that
+    // makes the file govern: it overwrites `CAMERA_CONST`, re-derives the smoothing alphas and
+    // the near-plane corner radius, and throws if the file has lost a field rather than
+    // reverting to a literal. `tools/camera/cam-consume.mjs` perturbs the file and watches the
+    // camera move. It must run BEFORE the first step, because every constant it writes is read
+    // inside the fixed step.
+    this._cameraRigAudit = applyCameraRig(this.data.cameraRig);
     this.sim.cameraTargets = this.data.cameraTargets.heights_m;
     this.sim.cameraTargets._default = this.data.cameraTargets._default;
     // The binding table is DATA (game/data/input/profiles.json). setProfiles() must run before
@@ -5480,6 +5488,12 @@ export class Engine {
       modes: CAMERA_MODES.slice(),
       perspective_modes: PERSPECTIVE_MODES.slice(),
       declared_file: 'game/data/camera/rig.json',
+      // Proof of consumption, not a claim of it: this is what `applyCameraRig()` actually
+      // wrote at boot. `keys` is how many constants the file governs; `changed` is every one
+      // whose value the file MOVED off the module default, which on an unedited tree is empty
+      // and on a perturbed tree names the edit. A critic diffing declaration against
+      // observation can now also diff the file against the module.
+      rig_from_file: this._cameraRigAudit || null,
       cells: [...this.cells.keys()].sort(),
       // The authored fixture metadata a probe needs in order to *place* the character in a
       // cell at all: the cells are not part of the province heightfield, so `teleport(x,z)`

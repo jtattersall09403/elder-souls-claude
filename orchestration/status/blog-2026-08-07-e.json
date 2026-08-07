@@ -9,8 +9,17 @@
     "docs/blog/2026-08-07-<missing-province>.md",
     "docs/blog/COVERED.md (appended)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read COVERED.md, blog-feed.jsonl, run tools/blog-threads.mjs",
+  "outputs_written": [
+    "docs/blog/2026-08-07-nothing-had-ever-given-you-a-soul.md"
+  ],
+  "findings": [
+    "CORRECTION to the dispatch brief: W1-SOULS was RETURNED 5/10 by corpus/90-verdicts/wave1/W1-SOULS-r1.md. The brief's 'the economy is right' is the BUILDER's claim; the critic's HF-1 says every soul value is anchored to a superseded enemy census (576) that constants.json world.enemy_census replaced with 1230, so values are ~2.14x too high (inf_trash should be 64, not 136) and a 100% clear lands on level 120 exactly (2,400,817 vs cum(120)=2,391,999), which RI-PRG06 forbids as a first-clear level.",
+    "CORRECTION: 'the world is empty' is already stale. W1-POPULATION landed game/data/world/population.json + population-posts.json (144 posts, 267 bodies, 34,646 souls = level 24 on the shipped curve). Verified by re-running the cumulative lookup. Interiors declared_incomplete.",
+    "VERIFIED: levels.json cost(2)=418, 139 rows, formula round(0.015n^3+2n^2+55n+300). Enemy souls on disk: inf_trash 136, champion_hist_marked 2423, drowned_greater 334, guard_legion 176, cst_sap_speaker 137, beast_slitherfang 72, drowned_lesser 50, 15 props 0. 1224 -> L3, 4554 -> L8, 34646 -> L24, cum(82)=759,447.",
+    "VERIFIED: hp_max 196 -> 222, 210-point blow lethal at old ceiling / 12 hp at new (W1-SOULS status finding G3 + verdict 'Consumption is real and three layers deep').",
+    "SHOT NOTE: docs/shots/2026-08-07-w1-souls-critic-r1-levelup-funded-by-kills.png is BYTE-IDENTICAL (md5 47b5e5a6) to the builder's 2026-08-07-w1-souls-earned-at-the-sapwell.png. Used only one.",
+    "GOOD before/after pair for souls: w1-13-levelup-at-a-walked-sapwell.png shows 4,200 souls a test wrote; w1-souls-earned-at-the-sapwell.png shows 816 souls six men paid. Same screen, same well, same 418-to-next."
+  ],
+  "next_step": "write post 2 (canon registry) then post 3 (deep time / tribes / lease)",
   "notes_for_successor": ""
 }

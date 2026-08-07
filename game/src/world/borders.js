@@ -22,6 +22,8 @@
 // different answer from `axisRegionAt(x, z, 'architecture')` for the eighty metres between them.
 'use strict';
 
+import { thresholdInstances } from './threshold.js';
+
 /** The nine `RI-WLD04` axes, in the order `borders.json` stores their offsets. */
 export const BORDER_AXES = ['palette', 'flora', 'weather', 'fauna', 'audio', 'hazard', 'tier', 'architecture', 'only_here'];
 
@@ -62,6 +64,76 @@ export class BorderField {
     const cx = Math.max(0, Math.min(this.cols - 1, Math.floor(x / this.cell)));
     const cy = Math.max(0, Math.min(this.rows - 1, Math.floor(z / this.cell)));
     return cy * this.cols + cx;
+  }
+
+  // -- the markers ------------------------------------------------------------------------------
+  //
+  // `borders.json` places 210 threshold objects and 7 pieces of tier-jump remains and round 1 drew
+  // none of them. These three methods are the whole of the runtime side: one flattened list, one
+  // 60 m bucket grid for the tile builder and the collision, and a push-out so a cairn is a thing
+  // and not a picture of a thing. The shapes are `threshold-geo.js`; the numbers `threshold.js`.
+
+  /** Every drawable marker in the province, built once. */
+  markers() {
+    if (!this._markers) this._markers = thresholdInstances(this.doc);
+    return this._markers;
+  }
+
+  _markerGrid() {
+    if (this._mgrid) return this._mgrid;
+    const g = new Map();
+    this.MCELL = 60;
+    for (const it of this.markers()) {
+      // A marker is bucketed into every cell its footprint can touch, so a lookup is one bucket.
+      const reach = Math.max(it.r, it.solid_r) + 1;
+      const i0 = Math.floor((it.x - reach) / this.MCELL), i1 = Math.floor((it.x + reach) / this.MCELL);
+      const j0 = Math.floor((it.z - reach) / this.MCELL), j1 = Math.floor((it.z + reach) / this.MCELL);
+      for (let i = i0; i <= i1; i++) {
+        for (let j = j0; j <= j1; j++) {
+          const k = i * 100003 + j;
+          if (!g.has(k)) g.set(k, []);
+          g.get(k).push(it);
+        }
+      }
+    }
+    this._mgrid = g;
+    return g;
+  }
+
+  /** Markers whose CENTRE is inside the box, so one is drawn by exactly one tile. */
+  markersIn(x0, z0, x1, z1) {
+    const out = [];
+    for (const it of this.markers()) {
+      if (it.x < x0 || it.x >= x1 || it.z < z0 || it.z >= z1) continue;
+      out.push(it);
+    }
+    return out;
+  }
+
+  /**
+   * Push a capsule of radius `pr` out of any solid marker. Returns null or [x, z].
+   *
+   * A gibbet you walk through is a decal. This is also the difference between a threshold object
+   * being a rendered decoration and being part of the world: `sim/traversal.js` calls it every
+   * collision frame, so deleting the objects from `borders.json` changes where the player can
+   * stand, which is the perturbation `RI-MTH07` asks for.
+   */
+  resolveMarker(x, z, pr) {
+    const g = this._markerGrid();
+    const b = g.get(Math.floor(x / this.MCELL) * 100003 + Math.floor(z / this.MCELL));
+    if (!b) return null;
+    let ox = x, oz = z, hit = false;
+    for (let i = 0; i < b.length; i++) {
+      const it = b[i];
+      if (it.solid_r <= 0) continue;
+      const d = Math.hypot(ox - it.x, oz - it.z), want = it.solid_r + pr;
+      if (d < want && d > 1e-6) {
+        ox = it.x + (ox - it.x) / d * want;
+        oz = it.z + (oz - it.z) / d * want;
+        hit = true;
+      }
+    }
+    return hit ? [ox, oz] : null;
   }
 
   /**

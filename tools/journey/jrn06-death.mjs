@@ -24,6 +24,7 @@
 
 import { PNG } from 'pngjs';
 import { log } from '../lib/cli.mjs';
+import { worldRunsGate } from './world-runs-gate.mjs';
 
 const WALK_MPS = 2.0;
 
@@ -214,28 +215,17 @@ export async function runJrn06(h, args, led, ctx = {}) {
   // So: close whatever is up, then PROVE the world moves by stepping it and watching the frame
   // counter, and refuse to measure if it does not. A journey that cannot fail is worse than no
   // journey (AGENT-PROTOCOL), and this one could not.
-  const runs = await (async () => {
-    const before = await h.h('getUIState');
-    if (before.mode && before.mode !== 'world') await h.h('closeMenu').catch(() => {});
-    const after = await h.h('getUIState');
-    // `getFrame()` returns a NUMBER (`engine.sim.frame`), while `stepFrames()` returns
-    // `{frame, t_ms}`. Reading `.frame` off the former gives `undefined`, and `undefined -
-    // undefined` is `NaN`, which is not equal to 5 — so the first version of this gate refused
-    // to measure a world that was running perfectly well. Both shapes are accepted here.
-    const frameOf = (r) => (typeof r === 'number' ? r : (r && typeof r.frame === 'number' ? r.frame : NaN));
-    const f0 = frameOf(await h.h('getFrame'));
-    await h.h('stepFrames', 5);
-    const f1 = frameOf(await h.h('getFrame'));
-    return { ui_mode_on_entry: before.mode, ui_mode_after_close: after.mode, frame_before: f0, frame_after: f1, advanced: f1 - f0 };
-  })();
+  // ROUND 3: this block used to live here, in this file, and only here. The round-2 critic's
+  // answer was that the other seven journeys are exposed to exactly the same freeze and that
+  // `journey-run.mjs`'s own null control had already gone `unmeasurable` because of it. It is
+  // now `tools/journey/world-runs-gate.mjs`, called from three sites in `journey-run.mjs` and
+  // from here. A check that exists in eight copies is a check that is true in seven of them.
+  const runs = await worldRunsGate(h, { site: 'jrn06' });
   out.world_runs_on_entry = runs;
-  if (runs.advanced !== 5) {
+  if (!runs.ok) {
     led.unmeasurable('m_jrn06', 'the death loop',
-      `the simulation is not advancing: stepFrames(5) moved sim.frame by ${runs.advanced}, with the UI in `
-      + `mode ${JSON.stringify(runs.ui_mode_after_close)} after a closeMenu(). Every check in RI-JRN06 drives a `
-      + 'death with damagePlayer + stepFrames, so on a stopped world they would all report a quiet, false pass. '
-      + 'Refusing to measure. S14 stops the world while a screen is open outside combat, and loadState() does '
-      + 'not close one, so a screen opened by an earlier journey leg freezes this whole item.', 'W1-13');
+      runs.why + ' Every check in RI-JRN06 drives a death with damagePlayer + stepFrames, so on a stopped world '
+      + 'they would all report a quiet, false pass.', 'W1-13');
     out.unmeasurable = true;
     return out;
   }
@@ -456,6 +446,9 @@ export async function runJrn06(h, args, led, ctx = {}) {
   }
 
   // ---- M-D1 / M-D2 / M-D8 / M-D10 / M-D12 / M-D17: the 20-death session --------------------
+  // `rows` is block-scoped; the placement histogram it produces is needed by `m_d2b` two blocks
+  // down, so it is lifted out here rather than the whole 200-line block being widened.
+  let scriptedPlacementRules = {};
   {
     await h.h('loadState', 'default');
     await h.h('setRenderRate', 0);
@@ -492,17 +485,50 @@ export async function runJrn06(h, args, led, ctx = {}) {
       // every third death: die again before recovering (RN3 / M-D8 / M-D17)
       let secondDeath = null;
       if (i % 3 === 2) {
+        // ROUND 3 — WHY THIS TELEPORT EXISTS, and it is the whole of `m_d8_second_death`'s
+        // round-2 failure.
+        //
+        // The verdict read six rows of `stains_before: 1 -> stains_after: 0` and concluded
+        // "the first bloom is destroyed and none is created". The rows themselves say
+        // otherwise: every one of them carries `on_surface_stain_count: 1`, read one frame
+        // after the killing blow. THE SECOND BLOOM IS CREATED. What destroyed it was this
+        // script.
+        //
+        // The first death has just put the body back on the sapwell basin. Damaging it here
+        // killed it ON the basin, so `placeStain()` put the second bloom on the basin, so the
+        // second respawn put the body back on top of its own bloom, and
+        // `DeathSystem.tryRecover()` — "walk into it, no prompt, no cost" — drank it at range
+        // 0.00 m inside the 200-frame wake-up window. `stains_after: 0` was a RECOVERY, not a
+        // missing placement, and `second_stain_souls: null` followed from it.
+        //
+        // A player who dies twice dies in two places. So: walk the body off the basin first,
+        // 45 m out on a different bearing, and record `recovered_between` either way so that if
+        // a bloom is ever eaten by its own respawn again the mechanism is in the row instead of
+        // being inferred from a null.
+        const th2 = ((i + 0.5) / nDeaths) * Math.PI * 2 + Math.PI;
+        await h.h('teleport', hearth.pos[0] + Math.cos(th2) * 45, hearth.pos[2] + Math.sin(th2) * 45);
+        await h.h('stepFrames', 3);
         const before = await h.h('getDeathState');
+        const posSecond = (await h.h('snapshot')).player.pos;
         await h.h('damagePlayer', 100000, { stagger: false });
         await h.h('stepFrames', 1);
         const mid = await h.h('getDeathState');
         await h.h('stepFrames', 200);
         const after = await h.h('getDeathState');
+        const recAfter = after.last_recovery;
+        // A recovery that happened DURING the wake-up window, i.e. one the player never walked
+        // to. `last_recovery` is a running field, so compare it with what was there before.
+        const recBefore = before.last_recovery;
+        const sameRec = JSON.stringify(recBefore || null) === JSON.stringify(recAfter || null);
         secondDeath = {
           stains_before: before.bloodstain_count, stains_after: after.bloodstain_count,
           first_stain_souls: before.bloodstain ? before.bloodstain.souls : null,
           second_stain_souls: after.bloodstain ? after.bloodstain.souls : null,
           on_surface_stain_count: mid.bloodstain_count,
+          second_death_pos: posSecond,
+          hearth_pos: hearth.pos,
+          second_death_dist_from_hearth_m: +Math.hypot(posSecond[0] - hearth.pos[0], posSecond[2] - hearth.pos[2]).toFixed(2),
+          recovered_between: sameRec ? null : recAfter,
         };
         lost++;
       }
@@ -582,7 +608,10 @@ export async function runJrn06(h, args, led, ctx = {}) {
       max_offset_m: offs.length ? Math.max(...offs) : null,
       mean_offset_m: offs.length ? +(offs.reduce((a, b) => a + b, 0) / offs.length).toFixed(4) : null,
       over_2m: offs.filter((v) => v > 2.0).length,
-      placement_rules: rows.reduce((m, r) => { m[r.placement_rule] = (m[r.placement_rule] || 0) + 1; return m; }, {}),
+      placement_rules: (scriptedPlacementRules = rows.reduce((m, r) => { m[r.placement_rule] = (m[r.placement_rule] || 0) + 1; return m; }, {})),
+      _see_also: 'm_d2b_placement_rules_exercised — this population is 20 scripted deaths on flat '
+        + 'standable ground and can only ever produce `death_point`. The other three §6 rules are '
+        + 'driven there.',
       pass: offs.every((v) => v <= 2.0),
     });
 
@@ -591,8 +620,18 @@ export async function runJrn06(h, args, led, ctx = {}) {
       trials: dbl.length,
       any_two_stains: dbl.filter((d) => d.stains_after > 1 || d.stains_before > 1 || d.on_surface_stain_count > 1).length,
       first_souls_returned_anywhere: dbl.filter((d) => d.second_stain_souls !== 0 && d.second_stain_souls === d.first_stain_souls).length,
+      // ROUND 3. Both halves are reported separately so the round-2 reading can never recur:
+      // `bloom_created_on_second_death` is read ONE FRAME after the killing blow and is the
+      // answer to "is a second bloom placed at all"; `stains_after` is read after the wake-up
+      // window and is the answer to "is exactly one still there". In round 2 the first was 6/6
+      // and the second was 0/6, and the difference was a recovery at 0.00 m, not a placement.
+      bloom_created_on_second_death: dbl.filter((d) => d.on_surface_stain_count === 1).length,
+      still_one_after_wake: dbl.filter((d) => d.stains_after === 1).length,
+      recovered_during_wake_window: dbl.filter((d) => d.recovered_between).length,
+      min_second_death_dist_from_hearth_m: dbl.length
+        ? Math.min(...dbl.map((d) => (d.second_death_dist_from_hearth_m === undefined ? -1 : d.second_death_dist_from_hearth_m))) : null,
       sample: dbl.slice(0, 3),
-      pass: dbl.length > 0 && dbl.every((d) => d.stains_after === 1 && d.on_surface_stain_count === 1),
+      pass: dbl.length > 0 && dbl.every((d) => d.stains_after === 1 && d.on_surface_stain_count === 1 && !d.recovered_between),
       hard_fail_HF4: dbl.some((d) => d.stains_after > 1),
     });
 
@@ -623,6 +662,161 @@ export async function runJrn06(h, args, led, ctx = {}) {
         + 'such: what the check proves is that a second death DOES destroy the first stain '
         + '(M-D8) and that the rate is neither 0 (nothing at stake) nor > 0.60 (a shredder). '
         + 'The human figure is RI-PRG04 §7 arithmetic and is unvalidated against play.',
+    });
+  }
+
+  // ---- M-D2b / M-D10b: DEATHS THE WORLD CAUSES, NOT DEATHS THE VERB CAUSES -----------------
+  //
+  // ROUND 3, and this is `path_to_ten` item 7 in the round-2 verdict.
+  //
+  // The twenty deaths above are all `damagePlayer(100000)` on flat standable ground next to a
+  // settlement well. That is a fine way to test conservation and it is a useless way to test
+  // either of these two:
+  //
+  //   * M-D2 reported `placement_rules: {death_point: 20}` and `max_offset_m: 0.000`, in round 1
+  //     and again in round 2's aggregation. Three of the four rules RI-PRG04 §6 declares — the
+  //     fog-gate push-out, the last-grounded rule, the clamp — DID NOT FIRE ONCE. The fixes are
+  //     real (`w1-13-r2-placement.mjs` shows the fall rule anchoring the bloom 0.00 m from the
+  //     ledge and 63.64 m from the floor) and the journey could not reach any of them, so the
+  //     aggregate had no opinion about the code the round changed.
+  //   * M-D10 reported `n: 20, max_frames: 0`. `frames_since_last_damage` is measured from the
+  //     last frame HP fell, and when HP falls from 620 to 0 in one harness call on the same
+  //     frame the answer is 0 by construction. THE CHECK WAS MEASURING `damagePlayer`.
+  //
+  // So: drive deaths the WORLD delivers. A real 120 m fall — the body is dropped and the ground
+  // kills it, no cause supplied by any verb — and a death inside a fog gate. Both are cheap.
+  // Drowning is not driven here: it costs up to 16,000 frames to find water a burdened body
+  // sinks in, which belongs in `w1-13-r2-placement.mjs` and not in a journey.
+  {
+    await h.h('loadState', 'default');
+    await h.h('setRenderRate', 0);
+    await seedWorld(h);
+    const list = await h.h('listHearths');
+    const well = list.hearths.find((x) => x.id === 'hearth-archon') || list.hearths[0];
+    const worldRows = [];
+
+    const rested = async (souls) => {
+      await h.h('loadState', 'default');
+      await h.h('setRenderRate', 0);
+      await h.h('teleport', well.pos[0], well.pos[2]);
+      await h.h('stepFrames', 2);
+      await h.h('restAt', well.id);
+      const b = await h.h('saveState');
+      b.character.souls_held = souls;
+      await h.h('restoreState', b);
+      await h.h('stepFrames', 2);
+    };
+    const lastRec = (d) => (d.log || d.deaths || []).slice(-1)[0] || d.last_death || null;
+
+    // --- A REAL FALL ------------------------------------------------------------------------
+    // The lateral offset in the air is the control that makes the row mean anything: without it
+    // the take-off point and the landing point coincide and `last_grounded` is indistinguishable
+    // from doing nothing.
+    try {
+      await rested(1100);
+      const gx = well.pos[0] + 55, gz = well.pos[2] + 55;
+      await h.h('teleport', gx, gz);
+      await h.h('stepFrames', 30);
+      const ground = await h.h('getPlayerStats');
+      const ledge = [ground.pos[0], ground.pos[2]];
+      await h.h('teleport', gx + 45, gz + 45, { y: ground.pos[1] + 120 });
+      let f = 0, dead = null;
+      while (f < 600 && !dead) {
+        await h.h('stepFrames', 1); f++;
+        const st = await h.h('getPlayerStats');
+        if (st.hp <= 0) dead = st;
+      }
+      await h.h('stepFrames', 2);
+      const d = await h.h('getDeathState');
+      const rec = lastRec(d);
+      const b = d.bloodstain;
+      worldRows.push({
+        kind: 'fall_120m', frames_to_death: f,
+        cause: rec ? rec.cause : null,
+        placement_rule: rec ? rec.placement_rule : null,
+        frames_since_last_damage: d.frames_since_last_damage,
+        death_point: dead ? [+dead.pos[0].toFixed(2), +dead.pos[2].toFixed(2)] : null,
+        bloom_to_ledge_m: b ? +Math.hypot(b.pos[0] - ledge[0], b.pos[2] - ledge[1]).toFixed(2) : null,
+        bloom_to_death_point_m: (b && dead) ? +Math.hypot(b.pos[0] - dead.pos[0], b.pos[2] - dead.pos[2]).toFixed(2) : null,
+        world_supplied_the_cause: true,
+      });
+    } catch (err) {
+      worldRows.push({ kind: 'fall_120m', error: String(err && err.message || err) });
+    }
+
+    // --- A DEATH INSIDE A FOG GATE ----------------------------------------------------------
+    try {
+      const gates = await h.hOpt('getFogGates');
+      const g = gates && gates.gates && gates.gates[0];
+      if (g) {
+        await rested(1300);
+        await h.h('teleport', g.pos[0] + 12, g.pos[2]);
+        await h.h('stepFrames', 3);
+        await h.h('killPlayer', 'combat');
+        await h.h('stepFrames', 2);
+        const d = await h.h('getDeathState');
+        const rec = lastRec(d);
+        const b = d.bloodstain;
+        const r = b ? Math.hypot(b.pos[0] - g.pos[0], b.pos[2] - g.pos[2]) : null;
+        worldRows.push({
+          kind: 'inside_fog_gate', gate: g.id, radius_m: g.radius_m, death_offset_m: 12,
+          cause: rec ? rec.cause : null,
+          placement_rule: rec ? rec.placement_rule : null,
+          bloom_dist_from_gate_centre_m: r === null ? null : +r.toFixed(2),
+          outside_gate: r !== null && r > (g.radius_m || 26),
+          world_supplied_the_cause: false,
+        });
+      } else {
+        worldRows.push({ kind: 'inside_fog_gate', unmeasurable: 'getFogGates() reports no gate' });
+      }
+    } catch (err) {
+      worldRows.push({ kind: 'inside_fog_gate', error: String(err && err.message || err) });
+    }
+
+    const scriptedRules = scriptedPlacementRules;
+    const allRules = { ...scriptedRules };
+    for (const r of worldRows) if (r.placement_rule) allRules[r.placement_rule] = (allRules[r.placement_rule] || 0) + 1;
+    const DECLARED = ['death_point', 'last_grounded', 'outside_fog_gate', 'clamped_within_2m', 'relocated_toward_hearth'];
+    const reached = DECLARED.filter((k) => Object.keys(allRules).some((seen) => String(seen).startsWith(k)));
+    const fall = worldRows.find((r) => r.kind === 'fall_120m') || {};
+    const fog = worldRows.find((r) => r.kind === 'inside_fog_gate') || {};
+    put('m_d2b_placement_rules_exercised', 'M-D2 the four §6 placement rules, driven inside the journey', {
+      rules_in_the_scripted_20: scriptedRules,
+      rules_over_the_whole_journey: allRules,
+      declared_rules: DECLARED,
+      rules_reached: reached,
+      rules_reached_n: reached.length,
+      fall_rule: {
+        cause: fall.cause, rule: fall.placement_rule,
+        bloom_to_ledge_m: fall.bloom_to_ledge_m, bloom_to_death_point_m: fall.bloom_to_death_point_m,
+        // The bloom must be at the LEDGE and not at the FLOOR, and the two must be far apart.
+        pass: fall.cause === 'fall' && String(fall.placement_rule || '').startsWith('last_grounded')
+          && fall.bloom_to_ledge_m !== null && fall.bloom_to_ledge_m < 3.0 && fall.bloom_to_death_point_m > 20,
+      },
+      fog_rule: {
+        rule: fog.placement_rule, r_m: fog.bloom_dist_from_gate_centre_m, radius_m: fog.radius_m,
+        pass: String(fog.placement_rule || '').startsWith('outside_fog_gate') && fog.outside_gate === true,
+      },
+      rows: worldRows,
+      _why: 'Round 1 and round 2 both reported `placement_rules: {death_point: 20}` and 0.000 m, so '
+        + 'three of the four rules the piece FIXED had never fired in the aggregation that scored it. '
+        + 'This check exists to make the aggregate able to see them.',
+      pass: reached.length >= 3
+        && fall.cause === 'fall' && String(fall.placement_rule || '').startsWith('last_grounded')
+        && String(fog.placement_rule || '').startsWith('outside_fog_gate') && fog.outside_gate === true,
+    });
+
+    const worldLeg = worldRows.map((r) => r.frames_since_last_damage).filter((v) => typeof v === 'number');
+    put('m_d10b_death_legibility_world_caused', 'M-D10 HP reaches 0 within 12 frames of the last hit — on a death the WORLD delivered', {
+      n: worldLeg.length,
+      max_frames: worldLeg.length ? Math.max(...worldLeg) : null,
+      over_12: worldLeg.filter((v) => v > 12).length,
+      rows: worldRows.map((r) => ({ kind: r.kind, frames_since_last_damage: r.frames_since_last_damage, frames_to_death: r.frames_to_death })),
+      _why: 'The scripted 20 are all `damagePlayer(100000)`, which sets HP to 0 on the same frame it '
+        + 'is the last damage — so `m_d10_death_legibility` reported `max_frames: 0` over 20 trials and '
+        + 'was measuring the verb. This population is a body that fell 120 m and was killed by the '
+        + 'ground: the damage is the world\'s and the frame count is a real one.',
+      pass: worldLeg.length > 0 && worldLeg.every((v) => v <= 12),
     });
   }
 

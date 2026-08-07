@@ -2,7 +2,7 @@
   "task_id": "W1-TRIBES",
   "brief": "inline dispatch: Argonian tribes \u2014 CF-C023 gap (Agacephs/Paatru/Archein/Sarpa/Dead-Water/Miredancers all zero occurrences)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "writing",
   "outputs_expected": [
     "corpus/60-lore/RI-LORxx-argonian-tribes-design.md",
     "game/data/lore/canon-register (facts/holders/edges for tribal disputes)",
@@ -16,9 +16,25 @@
     "Ruling from lore builder (W1-23 \u00a74): a contradiction is a disagreement about what IS THE CASE; a disagreement about what is WORTH DOING is an argument. Register the first, write the second.",
     "Registry now has real consumers: tools/lore/build-canon.mjs projects corpus/60-lore/data/canon-facts.json -> game/data/lore/canon.json with authorially_true replaced by truth_seal. converse.js infoFor() gates infos by cf+pos against holders.",
     "21 disputes registered, 71 facts, as of W1-23. canon-census.mjs is the gate tool (not wired into CI on purpose).",
-    "Faction ids are spelled two ways on NPC records (drowned-court vs the_drowned_court etc) - any new tribe id must pick ONE and check world/canon.js#fold()."
+    "Faction ids are spelled two ways on NPC records (drowned-court vs the_drowned_court etc) - any new tribe id must pick ONE and check world/canon.js#fold().",
+    "SOURCE MINE (uesp extract): Agacephs/Paatru/Sarpa named in Lore:The Argonian Account Book 4 \u2014 Agacephs are interior, near the Hist, 'finding little in the outside world worth seeing'; Nagas, toad-like Paatru and winged Sarpa 'would have killed him on the spot'.",
+    "SOURCE: Archeins are canon and are the answer to the lease finding \u2014 PGE 3rd ed: Imperials rule the coast but 'most have native Argonians as advisors. These Archeins also act as governors in the rural areas'. The Argonian Account Bk4 calls them 'pompous, assimilated, slaver kleptocrats'; ESO's From Argonian to Saxhleel calls them 'Archein tribe scum in the employ of House Dres'. Plantation east of Gideon (Archein Right-Foot-Rock) sells a she-worker's twins to 'a good trader in town'.",
+    "SOURCE: Tribes of Murkmire (7 books, Emmanubeth Hurrent) gives the canonical DIFFERENTIATION MODEL: Jel name + Tamrielic name; one distinguishing craft; one distinguishing taboo; Miredancers = Gee-Rusleel (piety, Sap-Speaker, sap-poisoning: gold tongue, bark scale); Dead-Water = Naga-Kur (wear pieces of fallen comrades so they 'fight after death too'); Root-House = Tum-Taleel; Black-Tongues = Kota-Vimleel (alchemy, Shadowscale breeding, Gloom Nectar); Ghost People = Veeskhleel (dead-stealers); Bright-Throats = Wasseek-haleel (seed dolls).",
+    "SOURCE: 'Tribal Connections' is the load-bearing one \u2014 tribes raid each other and forgive, because reincarnation makes tribe membership fluid ('A Black-Tongue may become a Miredancer in the fullness of time'), and because they are INTERDEPENDENT by design. And 'As many as the lights' = the count of tribes is deliberately uncountable.",
+    "MECHANICS: game/src/world/canon.js \u2014 holders match on actor OR faction, narrowed by races/settlements; a speaker matching TWO positions gets NEITHER. fold() normalises id spellings. resolve() THROWS at boot on: a topics[] entry that is not a dialogue topic in the build, a voiced_by book/npc/dialogue#actor that does not exist, or a position with no holders. So content must land BEFORE registration.",
+    "GEOGRAPHY: region->settlement map is blackwood>Gideon, crimson-coast>Archon, stone-forest>Helstrom, stone-wastes>Soulrest, thornmarsh>Thorn, western-rootlands>Lilmoth+Blackrose, salt-hills>Stormhold. clay-moor, deep-marshes, eastern-rootlands, hive, marauders-coast, valus-ridge have NO settlement \u2014 those are the tribes' ground.",
+    "PROSE BARS (tools/check-prose.mjs): questions floor 39.8/10k (ref 159.2), exclamations band floor 5.3 (ref 21.3), sting ceiling 6.0 (ref 3.4), andopen band floor 16.0 (ref 64.0), contractions band 43.8-365.4 (ref 292.3). Tics: 'that is what/why/all', -body forms, 'eleven', sentence-initial 'Which' fragments."
   ],
-  "next_step": "read RI-LOR01, W1-PROSE-BLIND-r1, mine uesp extract for tribe names; then write design note",
-  "notes_for_successor": "Authoring task. NO BROWSER until final verify \u2014 box at loadavg 21 with 24 browsers. Prose bar: use question marks, avoid every-line-punchline, avoid the word 'eleven'. Run node tools/check-prose.mjs on output.",
-  "files_touching": []
+  "next_step": "write corpus/60-lore/RI-LOR08-argonian-tribes.md (design note) BEFORE authoring anything",
+  "notes_for_successor": "DESIGN DECIDED (write it down before authoring): six peoples, ALL canon-named, none invented \u2014 Agacephs (Deep Marshes), Paatru (Clay Moor), Sarpa (Stone Forest), Archein (Blackwood/Gideon estates), Gee-Rusleel/Miredancers (Eastern Rootlands), Naga-Kur/Dead-Water (Thornmarsh+Hive). The hinge: the Xul-Aneekh is a CONSENSUS OF tribes, not a people, which is why it is fragile. New files only (no collision): corpus/60-lore/RI-LOR08-argonian-tribes.md, game/data/npcs/tribes.json, game/data/dialogue/topics/75-tribes.json, game/data/books/the-tribes.json. Prose builder holds 10-global/50-mainline/30-texture/20-tier-a/greetings/40-race-gated; martial library holds the-drill-book/the-arms-of-the-province/the-ford-arguments.",
+  "files_touching": [
+    "corpus/60-lore/RI-LOR08-argonian-tribes.md",
+    "corpus/60-lore/data/canon-facts.json",
+    "game/data/npcs/tribes.json",
+    "game/data/dialogue/topics/75-tribes.json",
+    "game/data/books/the-tribes.json",
+    "game/data/lore/canon.json (generated)",
+    "game/data/index.json",
+    "reports/blog-feed.jsonl"
+  ]
 }

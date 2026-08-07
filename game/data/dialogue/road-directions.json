@@ -12,7 +12,7 @@
   "on_being_wrong": "Four of these answers are FALSE, marked truth 'wrong', and that is deliberate. RI-JRN07 U4/HF8: 'a world where everyone is honest is not this world', and Morrowind's directions are remembered partly because you could follow one into a swamp. Each wrong answer carries `tell` — the thing in the built world that contradicts it — and `tell_ids`, which names the signpost, waystation, region boundary or road-class change a careful player can actually check. A lie with no way to catch it is not a feature, it is a defect, so signpost-audit.mjs resolves every id in `tell_ids` against the shipped data and fails if one dangles.",
   "answer_keys": {
     "a": "speaker archetype (game/data/dialogue/speakers.json and the `actor` field on NPC records); an answer with no `a` is what anybody says when nothing more particular applies",
-    "truth": "true | vague | wrong — `vague` is followable but imprecise, which is most of how people actually give directions",
+    "truth": "true | vague | wrong. `vague` is followable but imprecise, and that is most of how people actually give directions",
     "x": "the words, spoken verbatim",
     "tell": "for a wrong answer: what in the world contradicts it, in plain English",
     "tell_ids": "for a wrong answer: the ids a critic can resolve — signpost, waystation, poi, leg or region"
@@ -28,19 +28,19 @@
         {
           "a": "legionary",
           "truth": "true",
-          "x": "West, and it is the only road out of here you will not lose your boots on. Ours. You will know it by the stones and by the mileposts, which are the only writing in this province that tells you a number. Past Rootway Post, over the two bridges, and the white ruin standing in the trees about halfway is Ceyatatar-Zel — that is Ayleid, it is older than the Legion, and you will walk past it and not go in. Tenmarch Bridge after that, then Gideon. Call it twenty minutes if you keep moving."
+          "x": "West. Can you read a number? The mileposts have them cut in, and the mileposts are ours — squared stone, not root. Past Rootway Post, over the two bridges. The white ruin standing in the trees about halfway is Ceyatatar-Zel. That's Ayleid, older than us, and you'll walk past it and not go in. Tenmarch Bridge after that, then Gideon. Twenty minutes if you keep moving."
         },
         {
           "a": "innkeeper",
           "truth": "wrong",
-          "x": "Gideon? South, out past the shrine with the blue stone burning in it, and then you keep on and it comes up on you. That is what the soldiers say, anyway, and they are the ones who go.",
+          "x": "Gideon? South, out past the shrine with the blue stone burning in it, and then you keep on and it comes up on you. So the soldiers tell me, and they're the ones who go.",
           "tell": "South out of Helstrom is the marsh trail to Blackrose, and the shrine with the blue stone in it is the Welkynd Shrine on that trail. Gideon is west. The Helstrom junction post has four arms and one of them says so; and the Gideon road is the only road out of Helstrom signed on Legion mileposts, which are squared stone and impossible to confuse with a cut root.",
           "tell_ids": ["sign-junction-helstrom", "sign-approach-helstrom-gideon-from", "way-helstrom-blackrose-3", "helstrom-blackrose"]
         },
         {
           "a": "villager",
           "truth": "vague",
-          "x": "That way. Where the ground goes hard and stays hard. You will feel it change under you before you see anything, and once it is hard you just keep on it, because it does not go anywhere else."
+          "x": "You have boots? That way, then. Where the ground goes hard and stays hard — you'll feel it change under you before you see anything, and once it's hard you keep on it, because it doesn't go anywhere else."
         }
       ]
     },
@@ -54,12 +54,12 @@
         {
           "a": "legionary",
           "truth": "true",
-          "x": "Back east on the paved road, and the milepost outside the gate will tell you how far in a number you will need a clerk to read. Tenmarch Bridge, then the ruin in the trees, then Rootway Post, then the ridge lets you down into the Stone Forest and Helstrom is standing in it. Twenty minutes. You will not get lost; it is the only road we bothered to build."
+          "x": "Back east on the paved road, and the milepost outside the gate will tell you how far in a number you'll need a clerk to read. Tenmarch Bridge, then the ruin in the trees, then Rootway Post, then the ridge lets you down into the Stone Forest and Helstrom is standing in it. Twenty minutes. You won't get lost. It's the only road we bothered to build."
         },
         {
           "a": "merchant",
           "truth": "vague",
-          "x": "East and up. It climbs on and off, and every time it climbs you can see further, which is the only thing to be said for it. When the trees start being stone instead of wood you are nearly there."
+          "x": "East and up. First time down here? It climbs on and off, and every time it climbs you can see further. When the trees start being stone instead of wood, you're nearly there."
         }
       ]
     },
@@ -73,17 +73,17 @@
         {
           "a": "rootkeeper",
           "truth": "true",
-          "x": "South on the marsh trail, and it is a trail, not a road — it was never paved and it never will be. The marks are cut in the roots at shoulder height and kept greased so the wood does not close them; if you cannot read them, ask, because there is a stretch where the ground looks the same in three directions. Welkynd Shrine early on. Sunken Barrow about the middle. Mudwater Landing when you are nearly done. Twenty minutes, longer if the Hive has crept over the path again."
+          "x": "South on the marsh trail, and it is a trail, not a road — it was never paved and it never will be. The marks are cut in the roots at shoulder height and kept greased so the wood does not close them. Can you read a cut mark? If you cannot, ask before you go, because there is a stretch where the ground looks the same in three directions. Welkynd Shrine early on. Sunken Barrow about the middle. Mudwater Landing when you are nearly done. Twenty minutes, longer if the Hive has crept over the path again."
         },
         {
           "a": "healer",
           "truth": "vague",
-          "x": "South, and go in the morning. It runs through the Hive twice — you will know, the air goes sweet and there is no weather at all under the comb — and I would rather you were through both stretches before dark."
+          "x": "South, and go in the morning. Not at dusk! It runs through the Hive twice — you'll know it, the air goes sweet and there's no weather at all under the comb — and I'd rather you were through both stretches before dark. You are going today?"
         },
         {
           "a": "townsman",
           "truth": "vague",
-          "x": "Follow the cut roots. That is the whole of it. There have been hands keeping those marks open since before my grandmother and they have not been wrong yet."
+          "x": "Follow the cut roots and nothing else. And there have been hands keeping those marks open since before my grandmother, so they will not put you wrong."
         }
       ]
     },
@@ -102,7 +102,7 @@
         {
           "a": "outlaw",
           "truth": "vague",
-          "x": "North, friend, and keep your voice down through the comb. Not for what lives there. For what listens."
+          "x": "North on the cut trail, friend, and keep your voice down through the comb. Not for what lives there — for what listens."
         }
       ]
     },
@@ -116,12 +116,12 @@
         {
           "a": "merchant",
           "truth": "true",
-          "x": "The stone road, out south-eastward, and it is the best walking in the province after the Legion's own. Xal-Ithix at the halfway. Kiln Camp when you can smell it. Twenty minutes and you are at Archon's vat-yard, and you will smell that before you see it too."
+          "x": "The stone road, out south-eastward, and it's the best walking in the province after the Legion's own. Xal-Ithix at the halfway. Kiln Camp when you can smell it. Twenty minutes and you're at Archon's vat-yard, and you'll smell that before you see it too."
         },
         {
           "a": "clerk",
           "truth": "vague",
-          "x": "The made road, the one with the boards painted in both hands. It goes down through the Deep Marshes and comes up on the coast. Everything on it is signed and none of the signs have ever been wrong, which I appreciate more than I can tell you."
+          "x": "The made road — the one with the boards painted in both hands. Do you read Jel? It goes down through the Deep Marshes and comes up on the coast, and every turn on it is boarded in both hands the whole way, so it does not matter greatly if you do not."
         }
       ]
     },
@@ -135,12 +135,12 @@
         {
           "a": "merchant",
           "truth": "true",
-          "x": "North-west on the stone road. Past Kiln Camp, then Xal-Ithix, then the ground starts lifting and the trees turn to stone and that is Helstrom. Twenty minutes. It is the only road out of here you can walk in the dark without praying."
+          "x": "North-west on the stone road. Past Kiln Camp, then Xal-Ithix, then the ground starts lifting and the trees turn to stone and that's Helstrom. Twenty minutes. It's the only road out of here you can walk in the dark without praying."
         },
         {
           "a": "townsman",
           "truth": "vague",
-          "x": "Inland. Away from the water and keep away from it. Once the smell of the vats is off you, you are on your way."
+          "x": "Inland. Away from the water and keep away from it. Once the smell of the vats is off you, you're on your way."
         }
       ]
     },
@@ -154,12 +154,12 @@
         {
           "a": "archivist",
           "truth": "true",
-          "x": "North on the river road, and it climbs the whole way, which people forget until they are doing it. The Weeping Ford first, then the wayshrine, then Nine-Mud, and by then you are in the Salt Hills and the water has stopped being brown. Twenty-five minutes. Longer, if you stop to look at the obelisk, and you will."
+          "x": "North on the river road, and it climbs the whole way, which people forget until they are doing it. The Weeping Ford first, then the wayshrine, then Nine-Mud, and by then you are in the Salt Hills and the water has stopped being brown. Twenty-five minutes, and add to that if you stop at the obelisk."
         },
         {
           "a": "sapcutter",
           "truth": "vague",
-          "x": "Follow the river up. Not across it, up it. Keep it on your hand and do not lose it, because the day you lose the river is the day you are in the hills with no water in a place made of salt."
+          "x": "Follow the river up. Not across it — up it! Keep it on your hand and don't lose it. How much water are you carrying? The day you lose the river is the day you're in the hills with none, in a place made of salt."
         }
       ]
     },
@@ -173,12 +173,12 @@
         {
           "a": "legionary",
           "truth": "true",
-          "x": "South out of the gate and down the river road. It drops the whole way, which is the only kindness in it. Nine-Mud, the wayshrine, the ford where they drowned the tax-farmer, and then the Stone Forest with Helstrom sitting in the middle of it. Twenty-five minutes down. Reckon thirty-five coming back and you will not be disappointed."
+          "x": "South out of the gate and down the river road. It drops the whole way, which is the only kindness in it. Nine-Mud, the wayshrine, the ford where they drowned the tax-farmer, and then the Stone Forest with Helstrom sitting in the middle of it. Twenty-five minutes down. Thirty-five back up."
         },
         {
           "a": "town-elder",
           "truth": "vague",
-          "x": "Downhill and south, and the water goes with you the whole way. If the water is going the other way you have taken a branch, and there is one branch, and it goes east to Thorn, and Thorn is not where you want to be."
+          "x": "Downhill and south, and the water goes with you the whole way. If the water is going the other way, you've taken a branch. There is one branch, it goes east to Thorn, and Thorn is not where you want to be."
         }
       ]
     },
@@ -192,12 +192,12 @@
         {
           "a": "mudborn",
           "truth": "true",
-          "x": "East on the causeway. Legion milepost first, then Ixtaxh-Tzil sitting right on the road at the middle of it, then the Ash Shelter, and by the shelter you are out of the Salt Hills and into Thornmarsh and you will not need telling — the air goes wet and the light goes brown. Two bridges on the way. Nineteen minutes, and I would not do it after dark."
+          "x": "East on the causeway. Legion milepost first, then Ixtaxh-Tzil sitting right on the road at the middle of it, then the Ash Shelter. By the shelter you're out of the Salt Hills and into Thornmarsh, and you won't need telling — the air goes wet and the light goes brown. Two bridges on the way. Nineteen minutes. Are you going now or in the morning? Go in the morning."
         },
         {
           "a": "legionary",
           "truth": "wrong",
-          "x": "Straight run east on the causeway, all of it in the Salt Hills, dry the whole way. Twenty minutes and you never leave good ground.",
+          "x": "Straight run east on the causeway, all of it in the Salt Hills, dry the whole way. Twenty minutes and you'll never leave good ground.",
           "tell": "The causeway leaves the Salt Hills at about its halfway point and the second half is Thornmarsh — different ground, different weather, different light, and Ixtaxh-Tzil sits on the road right at the change. It also carries two bridged spans he does not mention. He has never walked past the milepost; the Ninth holds the roads on paper.",
           "tell_ids": ["ixtaxh-tzil", "way-stormhold-thorn-1", "sign-way-way-stormhold-thorn-1", "thornmarsh", "stormhold-thorn"]
         },
@@ -218,12 +218,12 @@
         {
           "a": "outlaw",
           "truth": "true",
-          "x": "West on the causeway, and west is the direction every soul in this town has thought about at least once. Ash Shelter, then Ixtaxh-Tzil, then the ground comes up under you and goes white and that is the Salt Hills. Milepost near the end. Nineteen minutes and a legion at the far side of it."
+          "x": "West on the causeway, and west is the direction every soul in this town has thought about at least once. Ash Shelter, then Ixtaxh-Tzil, then the ground comes up under you and goes white and that's the Salt Hills. Milepost near the end. Nineteen minutes, and a legion at the far side of it."
         },
         {
           "a": "town-elder",
           "truth": "vague",
-          "x": "West and uphill. When the mud stops sticking to you, you are halfway."
+          "x": "West and uphill. When the mud stops sticking to you, you're halfway."
         }
       ]
     },
@@ -237,17 +237,17 @@
         {
           "a": "outlaw",
           "truth": "true",
-          "x": "South on the Clay Moor track, and it is the longest walk in the province — thirty-five minutes if nothing stops you, and things stop you. The Red Wells about a third down. Clayfast after. The wells at Fired-Cold are the only water you should drink on that stretch, whatever you are told about the others. Marks cut in fired slabs the whole way, if you can read them."
+          "x": "South on the Clay Moor track, and it's the longest walk in the province — thirty-five minutes if nothing stops you, and things stop you. The Red Wells about a third down. Clayfast after. The wells at Fired-Cold are the only water you should drink on that stretch, whatever you're told about the others. Marks cut in fired slabs the whole way. Can you read them?"
         },
         {
           "a": "sapcutter",
           "truth": "vague",
-          "x": "South, and take twice the water you think. The Moor does not look like it is doing anything to you and then you sit down and that is that."
+          "x": "South, and take twice the water you think you need. The Moor doesn't look like it's doing anything to you, and then you sit down."
         },
         {
           "a": "villager",
           "truth": "vague",
-          "x": "Down past the wells. If the wells are behind you and you have not reached the coast, keep going; it is longer than it has any right to be."
+          "x": "Down past the wells. If the wells are behind you and you haven't reached the coast, keep going. It's longer than they tell you."
         }
       ]
     },
@@ -261,12 +261,12 @@
         {
           "a": "merchant",
           "truth": "true",
-          "x": "North on the Clay Moor track, and clear a whole morning for it. The shrine with the corpse-lilies early. The Lichen Post about halfway. The Red Wells, Clayfast, Fired-Cold, and then Thorn. Thirty-five minutes if you are quick, and none are. There is an island off the coast on your way out — red rock, you cannot miss it — and once it is behind your shoulder you have committed."
+          "x": "North on the Clay Moor track, and clear a whole morning for it. The shrine with the corpse-lilies early. The Lichen Post about halfway. The Red Wells, Clayfast, Fired-Cold, and then Thorn. Thirty-five minutes if you're quick. There's an island of red rock off the coast on your way out, and while you can still see it you have not yet started climbing."
         },
         {
           "a": "clerk",
           "truth": "vague",
-          "x": "North, a long way, and it is not signed in anything I can read. I have been twice and both times I was walked."
+          "x": "North, a long way, and it is not signed in anything I can read. Have you someone to walk you? I have been twice and both times I was walked."
         }
       ]
     },
@@ -280,12 +280,12 @@
         {
           "a": "fisher",
           "truth": "true",
-          "x": "South-west on the tideway, and the tideway is not a road, it is a permission. Look at the poles before you set out: if the wet band is high, sit down and have something to eat, because the middle of that walk goes under. Twenty minutes when it lets you. Tideway Shrine is halfway and it is where you wait if the water beats you to it. And do not panic when the path swings away from where you are going — it does that, twice, and both times it comes back."
+          "x": "South-west on the tideway, and the tideway isn't a road, it is a permission. Did you look at the poles? Look at them before you set out! If the wet band is high, sit down and eat something, because the middle of that walk goes under. Twenty minutes when it lets you. Tideway Shrine is halfway and it's where you wait if the water beats you to it. And don't panic when the path swings away from where you're going — it does that twice, and both times it comes back."
         },
         {
           "a": "innkeeper",
           "truth": "vague",
-          "x": "Down the tideway when the poles say so. That is the whole of the advice. Everything else about that walk is between you and the water."
+          "x": "Down the tideway when the poles say so, and not an hour before. Everything else about that walk is between you and the water."
         }
       ]
     },
@@ -299,12 +299,12 @@
         {
           "a": "fisher",
           "truth": "true",
-          "x": "North-east up the tideway, and read the poles first, every time, even if you walked it yesterday. Tide-pole post early, Tideway Shrine at the middle, Stilt-Rest after. Twenty minutes if the water is where you want it. If the paint is wet where you are standing you are already late."
+          "x": "North-east up the tideway, and read the poles first, every time, even if you walked it yesterday. Tide-pole post early, Tideway Shrine at the middle, Stilt-Rest after. Twenty minutes if the water is where you want it. If the paint's wet where you're standing, you're already late."
         },
         {
           "a": "townsman",
           "truth": "wrong",
-          "x": "Up the tideway. It is a walk of a bit under half an hour and you can take it whenever you like — it is a made path, it does not care about the water.",
+          "x": "Up the tideway. It's a walk of a bit under half an hour and you can take it whenever you like — it's a made path, it doesn't care about the water.",
           "tell": "The tideway is the one leg in the province that is tide-gated, and it is signed with tide-poles rather than boards for exactly that reason: the painted bands show where the water was and where it is going. The post's own line says it is passable while the paint is dry. He has never been further than the first pole.",
           "tell_ids": ["lilmoth-archon", "sign-way-way-lilmoth-archon-7", "sign-way-way-lilmoth-archon-8", "tideway-shrine"]
         },
@@ -325,12 +325,12 @@
         {
           "a": "villager",
           "truth": "true",
-          "x": "North-west out of the harbour and onto the stilt causeway, and it is the shortest walk between any two towns here — twelve minutes, thirteen. Stilt-Row is halfway and there are people living on it. There is a long stretch up on legs over open water near the start of it, so if you are carrying anything heavy, carry it in front of you. Then the prison stands up out of the reeds and that is Blackrose, and you are welcome to it."
+          "x": "North-west out of the harbour and onto the stilt causeway. It's the shortest walk between any two towns here — twelve minutes, thirteen. Stilt-Row is halfway and there are people living on it. Are you carrying much? There's a long stretch up on legs over open water near the start, and whatever you carry, carry it in front of you. Then the prison stands up out of the reeds. The town is the part underneath it."
         },
         {
           "a": "innkeeper",
           "truth": "vague",
-          "x": "Up the stilts. You can see the tower from the middle of it, and once you can see the tower there is nothing left to explain."
+          "x": "Up the stilts. You can see the tower from the middle of it, so from there on you walk at the tower."
         }
       ]
     },
@@ -344,12 +344,12 @@
         {
           "a": "villager",
           "truth": "true",
-          "x": "South-east on the stilts. Stilt-Row halfway, then the long leg over open water, then the harbour. Twelve minutes. Keep the tower at your back the whole way and you cannot go wrong, which is the only good thing ever said about that tower."
+          "x": "South-east on the stilts. Stilt-Row halfway, then the long leg over open water, then the harbour. Twelve minutes. Keep the tower at your back the whole way and you cannot go wrong."
         },
         {
           "a": "mercenary",
           "truth": "vague",
-          "x": "Down the causeway to the water. It is the one walk here you can do drunk, and I have."
+          "x": "Down the causeway to the water. It's the one walk here you can do drunk, and I have."
         }
       ]
     },
@@ -368,7 +368,7 @@
         {
           "a": "healer",
           "truth": "vague",
-          "x": "West. It is short and it is soft underfoot and there is nothing on it that wants you. Go while the light is good and look at the stone."
+          "x": "West. It's short, it's soft underfoot, and there's nothing on it that wants you. Go while the light is good, and look at the stone when you pass it."
         }
       ]
     },
@@ -387,7 +387,7 @@
         {
           "a": "clerk",
           "truth": "vague",
-          "x": "East along the living road. It is signed in root-glyph and nothing else, so if you cannot read it, walk behind a poler who can."
+          "x": "Can you read root-glyph? East along the living road, and it is signed in that and nothing else, so if you cannot, walk behind a poler who can."
         }
       ]
     },
@@ -401,12 +401,12 @@
         {
           "a": "fisher",
           "truth": "true",
-          "x": "North on the coast road, water on your left the whole way and never let it get behind you. Bone Ladder a quarter along. Hollow-Reeds further up. Twenty minutes and then it goes inland and gets green and that is Blackwood and Gideon is in it. Boards on whalebone posts, all of them leaning the same way, which is the way the wind has been going since the first post went in."
+          "x": "North on the coast road, water on your left the whole way, and never let it get behind you. Bone Ladder a quarter along. Hollow-Reeds further up. Twenty minutes, and then it goes inland and gets green, and that's Blackwood, and Gideon is in it. The posts are whalebone with boards nailed on, and they all lean the same way — inland, off the water. If they're leaning at you, you've turned round."
         },
         {
           "a": "town-elder",
           "truth": "vague",
-          "x": "Up the coast. The crater is behind you before you have properly started, and once the ships stop being on the beach you are past the worst of it."
+          "x": "Up the coast. The crater is behind you before you've properly started, and once the ships stop being on the beach you're past the worst of it."
         }
       ]
     },
@@ -420,19 +420,19 @@
         {
           "a": "fisher",
           "truth": "true",
-          "x": "South on the coast road and keep the water on your right. Hollow-Reeds, then Bone Ladder, then the hulls start — whole ships walked up the shore and lived in keel-up, chimneys punched through them, and they are worth the walk on their own. Twenty minutes. The crater at the end tells you you have arrived before Soulrest does."
+          "x": "South on the coast road, and keep the water on your right. Hollow-Reeds, then Bone Ladder, then the hulls start — whole ships walked up the shore and lived in keel-up, chimneys punched through them. Twenty minutes. Have you been told about the crater? You'll see that before you see the town, and when you see it you're there."
         },
         {
           "a": "legionary",
           "truth": "wrong",
-          "x": "South, and it runs on to Blackrose after that without changing — one road, Gideon to Soulrest to Blackrose, signed the whole way. You will not need to ask again.",
+          "x": "South, and it runs on to Blackrose after that without changing — one road, Gideon to Soulrest to Blackrose, signed the whole way. You won't need to ask again.",
           "tell": "The coast road ends at Soulrest. What continues east to Blackrose is a rootland track, and it is signed in root-glyph cut into living wood, not on the coast road's painted whalebone boards. He cannot read root-glyph, so as far as he is concerned the signs simply carried on. A walker who can read them — or who has been taught — sees the writing change at Soulrest.",
           "tell_ids": ["gideon-soulrest", "soulrest-blackrose", "sign-approach-soulrest-blackrose-from", "sign-approach-gideon-soulrest-to"]
         },
         {
           "a": "archivist",
           "truth": "vague",
-          "x": "South along the shore. It is flat, it is long, and the interesting part is the wrecks, which are not wrecks."
+          "x": "South along the shore. It is flat and it is long. But the hulls you pass beyond Bone Ladder are not wrecks — people live in them, and they will give you water."
         }
       ]
     }
