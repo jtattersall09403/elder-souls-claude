@@ -109,6 +109,27 @@ if (FALSIFY === 'plant-route') {
   if (victim) { hookRouted.add(victim); console.log(`[falsify plant-route] planted a synthetic hooks route for ${victim}`); }
 }
 
+// ------------------------------------------------- route table 3: people (W1-18 round 2)
+// `Engine.talkTo(eid)` -> `QuestEngine.learnFrom('person', eid)`. A row is only a route if the
+// person can actually be stood in front of, so the source must be an NPC record.
+const { CHANNEL_READERS, buildRevealRoutes } = await import(url.pathToFileURL(path.join(ROOT, 'game/src/sim/quest/reveal-routes.js')).href);
+const npcIds = new Set();
+try {
+  for (const f of fs.readdirSync(path.join(ROOT, 'game/data/npcs')).filter((x) => x.endsWith('.json'))) {
+    const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/npcs', f), 'utf8'));
+    for (const n of (Array.isArray(j) ? j : (j.npcs || j.entries || []))) if (n && n.id) npcIds.add(n.id);
+  }
+} catch { /* no npc tree */ }
+const personRouted = new Set();
+const personSourceMissing = [];
+for (const { q } of quests) {
+  for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
+    if (CHANNEL_READERS[rev.channel] !== 'person') continue;
+    if (npcIds.has(rev.source)) personRouted.add(`${q.id}|${rev.id}`);
+    else personSourceMissing.push({ quest: q.id, reveal: rev.id, channel: rev.channel, source: rev.source });
+  }
+}
+
 // ---------------------------------------------------------------- route table 2: books
 const bookIds = new Set();
 const walkBooks = (d) => {
@@ -133,7 +154,8 @@ for (const { file, q } of quests) {
     const d = byId.get(revId);
     const viaHook = hookRouted.has(`${q.id}|${revId}`);
     const viaBook = !!(d && d.channel === 'book' && d.source && bookIds.has(d.source));
-    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, routed: viaHook || viaBook });
+    const viaPerson = personRouted.has(`${q.id}|${revId}`);
+    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, routed: viaHook || viaBook || viaPerson });
   }
 }
 const unrouted = rows.filter((r) => !r.routed);
@@ -300,6 +322,87 @@ e2e.demonstrable = demonstrable.length;
 e2e.undemanded = e2e.cases.filter((c) => c.no_gate_demands_it).map((c) => c.reveal);
 e2e.ok = demonstrable.length > 0 && demonstrable.every((c) => c.passed);
 
+// ------------------------------------------------- D. the people channel, end to end
+//
+// W1-18 round 2. The same question section C asks of the hook table, asked of the route this
+// round built: play the thing a player does, and watch the gate stop refusing.
+//
+// THE ACT IS `learnFrom('person', <npc>)`, which is the exact function `Engine.talkTo()` calls
+// and the only thing it does with the result. `questReveal` and `questNote` are never called.
+// The offer gate is not touched: the quest is put in the OPEN state directly, because whether
+// this player could have been offered this quest is a different measurement that belongs to
+// `mainline-findability.mjs`, and half these quests are rank-gated behind a ladder.
+//
+// NON-VACUOUS, and this is the whole reason the section is written this way. The obvious version
+// — "call learnFrom, assert the refusals are gone" — passes trivially for a quest whose gate
+// never named the reveal, and passes silently for a leg where `learnFrom` refused everything. So:
+//
+//   * a leg is only RUN if the gate refused BY NAME before the act. If it did not, there was
+//     nothing to open and the leg is classified, not scored.
+//   * a leg that ran and learned nothing is a FAILURE, not a skip.
+//   * `--falsify no-router` empties the index and every run leg must go red. If it does not,
+//     this section is not measuring the router.
+const { canResolve: canResolveD } = await import(url.pathToFileURL(path.join(ROOT, 'game/src/sim/quest/gate.js')).href);
+const allDefs = book.ids.map((id) => book.get(id));
+const routeIndex = buildRevealRoutes(allDefs);
+const NO_ROUTER = FALSIFY === 'no-router';
+
+const people = { cases: [], ok: false, journal_writes: 0 };
+for (const def of allDefs) {
+  const personRows = ((def.deceit && def.deceit.revealed_by) || []).filter((r) => CHANNEL_READERS[r.channel] === 'person' && npcIds.has(r.source));
+  if (!personRows.length) continue;
+  const demanded = new Set();
+  for (const r of (def.resolutions || [])) for (const k of (r.requires_knowing || [])) demanded.add(k);
+  const sources = [...new Set(personRows.map((r) => r.source))].sort();
+  const sim = freshSim();
+  const qe = new QuestEngine(book, null, hooksDoc, sim);
+  qe.presenceMode = 'off';
+  qe.revealRoutes = NO_ROUTER ? new Map() : routeIndex;
+  qe.rec(def.id, true).opened = true;
+  const targets = (def.resolutions || []).filter((r) => (r.requires_knowing || []).some((k) => personRows.some((p) => p.id === k)));
+  const namesBefore = (r) => (canResolveD(r, qe.context()).why || []).filter((w) => personRows.some((p) => w.includes(p.id)));
+  const before = targets.reduce((n, r) => n + namesBefore(r).length, 0);
+  const sample = targets.map((r) => namesBefore(r)).find((w) => w.length) || [];
+  // ---- THE ACT
+  let learned = 0, journal = 0, refusals = [];
+  for (const s of sources) {
+    const r = qe.learnFrom('person', s);
+    learned += r.learned.length; journal += r.journal.length;
+    for (const x of r.refused) if (x.quest === def.id) refusals.push(`${x.reveal}: ${x.why}`);
+  }
+  const after = targets.reduce((n, r) => n + namesBefore(r).length, 0);
+  const wroteJournal = (sim.quest.journal || []).filter((e) => e.quest === def.id).map((e) => e.n);
+  people.journal_writes += journal;
+  const ran = before > 0;
+  people.cases.push({
+    quest: def.id, sources, reveals: personRows.map((r) => r.id),
+    demanded_by_a_resolution: personRows.filter((r) => demanded.has(r.id)).map((r) => r.id),
+    learned, journal_entries_written: wroteJournal, refusals,
+    refusals_before: before, refusals_after: after,
+    sample_refusal: sample[0] || null,
+    leg_ran: ran,
+    passed: ran && learned > 0 && after === 0,
+  });
+}
+const peopleRun = people.cases.filter((c) => c.leg_ran);
+people.legs_run = peopleRun.length;
+people.legs_total = people.cases.length;
+people.not_run = people.cases.filter((c) => !c.leg_ran).map((c) => c.quest);
+people.ok = peopleRun.length > 0 && peopleRun.every((c) => c.passed);
+
+// ---- THE CALL SITE. A router with no caller is exactly the inert fix this round exists to
+// stop, and section D above drives `learnFrom()` directly, so on its own it cannot tell a wired
+// engine from an unwired one. This reads the shipped `Engine.talkTo()` and asserts the call is
+// in it. It is a static assertion and it is labelled as one: the WORLD-side proof — a browser,
+// `talkTo` through the harness, `getQuestState()` after — is in `reports/runs/W1-18-R2/`.
+const engineSrc = fs.readFileSync(path.join(ROOT, 'game/src/engine.js'), 'utf8');
+const talkToBody = (engineSrc.split(/\n {2}talkTo\(eid\) \{\n/)[1] || '').split(/\n {2}\}\n/)[0];
+people.call_site = {
+  where: 'game/src/engine.js#talkTo(eid)',
+  calls_learn_from: /questEngine\.learnFrom\(\s*'person'/.test(talkToBody),
+  note: 'static assertion; the world-side proof is a browser run under reports/runs/W1-18-R2/',
+};
+
 // ---------------------------------------------------------------- report
 const report = {
   schema: 'elder-souls/reveal-route-audit@1',
@@ -314,6 +417,8 @@ const report = {
   fully_blocked_quests: blockedQuests,
   coupling,
   end_to_end: e2e,
+  people_channel: people,
+  person_routes_with_no_such_npc: personSourceMissing,
   unrouted_rows: unrouted,
 };
 
