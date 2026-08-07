@@ -2,7 +2,7 @@
   "task_id": "W1-SOULS-r3",
   "item": "RI-PRG06 / W1-SOULS",
   "round": 3,
-  "state": "running",
+  "state": "complete",
   "started_at": "2026-08-07",
   "git_at_start": {
     "commit": "5de8f79",
@@ -36,16 +36,24 @@
       "boundary: ONE list of per-session observers shared by applyNamedState() and the blob path, instead of two hand-maintained lists that have already drifted (souls is in one, not the other)."
     ]
   },
-  "next_step": "re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, population down register); souls-consumption suite; critic-souls-r1; shot; blog",
+  "next_step": "none - complete. DO NOT SELF-GRADE.",
   "files_touched": [
     "orchestration/status/W1-SOULS-r3.json",
     "game/src/sim/souls.js",
     "game/src/engine.js",
     "game/src/world/population.js",
+    "game/data/combat/enemies/*.json (7 re-derived)",
     "tools/progression/derive-soul-values.mjs",
-    "tools/check-souls-corpus.mjs",
+    "tools/progression/souls-consumption.mjs",
+    "tools/progression/critic-souls-r1.mjs",
     "tools/progression/souls-ledger-oracle.mjs",
-    "game/data/combat/enemies/*.json (7 re-derived)"
+    "tools/progression/souls-r3-shot.mjs",
+    "tools/check-souls-corpus.mjs",
+    "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md (new \u00a79, AQ-1)",
+    "corpus/20-progression/GAP-W1-souls-alive-keyed-on-eid.md",
+    "corpus/20-progression/GAP-W1-region-1-has-no-boss.md",
+    "docs/shots/2026-08-07-w1-souls-r3-the-same-fight-pays-on-both-sides.png",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "game/src/sim/souls.js",
@@ -79,5 +87,33 @@
     "AFTER those two corrections, 460 of 463 routes clean and 17 I3 violations on 2 distinct routes NOBODY HAS EVER DRIVEN: `kill_some > release > materialise > materialise > materialise` and `save_load > kill_all > materialise > release > materialise`. Both materialise a post that is already standing.",
     "ROOT: Engine.spawnEncounter() IS NOT ATOMIC. It spawns members in order and Engine.spawn() THROWS on a duplicate eid, so a post whose survivor is still standing spawns every member before it -- alive, full HP, including the ones the player killed -- and then throws. _materialise's catch marks the post CLEARED and returns, leaving those bodies in the world and in nothing's index. Untracked, live, free.",
     "Not reachable by a player today: step (4) guarantees DORMANT before calling _materialise. But that guarantee lives in the CALLER, which is the exact shape of defect this whole round is about, so _materialise is now idempotent -- a post whose bodies are already in the world is not materialised. This is what 'make the fourth instance impossible rather than absent' bought."
+  ],
+  "git_at_finish": {
+    "commit": "0c8acfa",
+    "note": "a neighbour ran git add and swept my files into the index in their FINAL state (verified: `git diff` on my paths is empty and no DELETE-THE-FIX marker is in the index). I did not commit."
+  },
+  "contention": {
+    "headless_shell": "18 at start, 12-18 throughout, 12 at finish",
+    "loadavg": "6.5 - 12.6 throughout",
+    "declared": "above the protocol cap of 8 for the whole run. NO WALL-CLOCK FIGURE IS PUBLISHED ANYWHERE. Every number is a frame count at 60 Hz, a soul count, a route count, a level or a boolean. One browser per tool invocation, closed after."
+  },
+  "measured": [
+    "souls-consumption 17/17 arms, 0 unfalsifiable (was 15/15). ACCEPTANCE (a) arm N: an UNTAGGED fight pays +252 then +252 across loadState('arena_flat'), SAME eids, 0 rests, 0 refused re-arms. Round 2 measured +384 then +0.",
+    "ACCEPTANCE (b) arm O: post of 6, killed 5, +210; released (5 remembered down); re-materialised under the SAME tag -> ONE body (the survivor), the dead stayed down, killing it paid +42 with 0 rests; after ONE rest the post is whole again (6 bodies) and pays +252. Round 2 measured five live full-HP hostiles worth +0.",
+    "arm M re-pointed to the case the epoch gate still governs: the SAME entity objects revived in place pay +126, then +0, +0 with no rest, then +126 after one rest. rebuilds seen 0.",
+    "souls-ledger-oracle INTACT: 463 routes (343 exhaustive length-3 + 120 seeded length-5), 460 clean, I1 0, I2 0, I3 12 on ONE route - every remaining I3 route contains save_load and is GAP-W1-population-save-reload-repays-every-corpse, filed against W1-POPULATION and left deliberately red.",
+    "DELETE-THE-FIX, world memory (population.js `down`): 341/343 clean -> I3 RED, 11 violations on 2 routes including HF-2's own `kill_some > release > materialise`. The oracle can fail and this fix is load-bearing.",
+    "DELETE-THE-FIX, body identity (souls.js rec.ref): GREEN on all 343 length-3 routes. REPORTED AS SUCH IN THE SOURCE. The boundary registry and the world register already cover every route that set can express, so the identity key is DEFENCE IN DEPTH today, not the mechanism. An honest claim about a redundant guard beats an inflated claim about a load-bearing one.",
+    "check-souls-corpus: 72 corpus rows, 0 drift. Falsified 3 ways (a \u00a72 band row in the markdown, a JSON/markdown transcription drift, the shipped level curve drifting from souls_for_L120); tree restored byte-identical each time, git index checked.",
+    "--census scale premise falsified: with the band floor dropped to 200 it fires FIRST and BLOCKS methods 1/2/10 from asserting on a wrong scale. With the premise satisfied, method 10 speaks and fails (36.881 outside 1.8-2.6).",
+    "gates at finish: boot-check 0, check-data 0, check-quests 0, check-content 0, check-prose 0, check-souls-corpus 0, corpus-index 0, derive --check 0. --check --strict 1 and --census 1 are deliberate and neither is wired into a project gate."
+  ],
+  "not_done": [
+    "souls-ledger-oracle --self-break was NOT run. Its purpose - showing the oracle can fail - is served by the world-memory delete-the-fix, which took it from clean to 11 I3 violations. Declared rather than implied.",
+    "critic-souls-r1.mjs was repaired (K3 repolarised into the mirror-is-a-cache control, K5 re-pointed to an observation, K6/K7 retired with reasons) but NOT re-run in a browser. The repair is a predicate change, not a measurement.",
+    "GAP-W1-population-save-reload-repays-every-corpse is NOT closed. It needs the cleared-post set (and now the `down` register) persisted into the save, which is a save-schema decision belonging to W1-POPULATION and W1-JRN05. The oracle leaves it red and names it.",
+    "PopulationSystem.reset() still misses `enabled` and `faults` (W1-POPULATION-r1 \u00a77). Deliberately NOT fixed: their critic is in flight and charged it, and changing it could invalidate an in-flight measurement. My arms set `enabled` explicitly instead of relying on the boundary.",
+    "The blob path still does not clear the stealth subsystem's civilians/searches/pending. Declared in _sessionObservers() as a why_not. Owner W1-15.",
+    "AQ-1 (method 6) is instrumented in two tools and REPORTED, never armed. It is a corpus contradiction and needs a ruling, not a fix."
   ]
 }

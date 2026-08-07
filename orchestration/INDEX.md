@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `0c8acfa`: 478 tools, 153 reference
+so it cannot drift. Generated at `0672d9a`: 479 tools, 153 reference
 items, 26 pieces in flight.
 
 Its purpose is to stop 26+ concurrent agents each paying separately to discover the
@@ -429,7 +429,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 29
+### `tools/quests/` — 30
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -455,6 +455,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/resolution-reachability.mjs` — can the player ACTUALLY take any of the endings a quest offers?
 - `tools/quests/reveal-route-audit.mjs` — is there a route in PLAY that produces each reveal a resolution demands, and does the hook table that is supposed to carry them actually fire?
 - `tools/quests/reveal-route-chart.mjs` — Draw the W1-19 round-3 headline as a picture: which reveal channels a player can actually walk, and what one line of a measuring tool was worth.
+- `tools/quests/reveal-route-world.mjs` — THE WORLD-SIDE HALF.
 - `tools/quests/topic-supply-audit.mjs` — can a player be OFFERED each quest by playing?
 - `tools/quests/utility-findability.mjs` — can a player be OFFERED the quests that are NOT the main quest?
 - `tools/quests/viability-split-shot.mjs` — one picture of the two instruments, drawn from their own artifacts.
@@ -756,6 +757,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-13-r4` | starting | read corpus/90-verdicts/wave1/W1-13-r3.md and prior status files | — |
 | `critic-w1-13-r3` | done | none — verdict delivered | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-23-r2` | ? | none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a | `corpus/60-lore/data/canon-facts.json` `game/data/lore/canon.json` `game/data/dialogue/topics/40-race-gated.json` `game/data/dialogue/topics/70-disputes.json` `game/data/factions/argonian-tribes.json` `tools/lore/build-canon.mjs` |
 | `W1-DLG-SHADOWS` | in_progress | Enumerate the 23 live collisions reported by `node tools/check-dialogue-topics.mjs --all`, | — |
@@ -767,7 +769,6 @@ work is the difference between resuming and starting over.
 | `W1-19-r3` | done | hand to a critic. NOT DONE and not faked: Q-MAIN-06 is still blocked and so are 7 other ma | `orchestration/status/W1-19-r3.json` `game/src/sim/quest/machine.js` `game/data/quests/hooks.json` `tools/quests/reveal-route-audit.mjs` `tools/quests/reveal-route-chart.mjs` `tools/quests/mainline-chain-floor.mjs` |
 | `W1-22-r3` | in-progress | (2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 | `tools/analysis/ambience-determinism.mjs` `game/src/audio/synth.js` `game/src/audio/ambience.js` `reports/w1-22/` |
 | `critic-w1-17-act5` | ? | none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17- | `corpus/90-verdicts/wave1/W1-17-act5-r1.md` `corpus/90-verdicts/wave1/W1-17-act5-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt` |
-| `W1-SOULS-r3` | running | re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, pop | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |

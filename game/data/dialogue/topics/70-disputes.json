@@ -42,6 +42,7 @@
     },
     {
       "id": "the-cutters-terms",
+      "note": "W1-DLG-SHADOWS. The sapcutter (CF-D017 pos A) info carries `d:20`, added for the same reason as reading-the-count's note in this file: it tied on specificity against 50-mainline.json's ungated sapcutter info for this id ('The yards want the leases read...') and, loading second (50-mainline.json < 70-disputes.json), was permanently unreachable regardless of context. `d:20` makes the dispute stance reachable once earned rather than silently dead.",
       "infos": [
         {
           "a": "rootkeeper",
@@ -53,6 +54,7 @@
           "a": "sapcutter",
           "cf": "CF-D017",
           "pos": "A",
+          "d": 20,
           "x": "Friend, this one was taught the depth and this one was taught the season, and this one keeps both. What the buyer does after is between the buyer and his own tree. Show this one the clause that says otherwise and this one will read it."
         }
       ]
@@ -154,6 +156,7 @@
     },
     {
       "id": "reading-the-count",
+      "note": "W1-DLG-SHADOWS. The archivist (CF-D018 pos B) info carries `d:20`, added so it stops tying against 50-mainline.json's ungated archivist info for this same id ('Hosk-Vei can read the Count...') — same actor, neither side previously carried a requires/cell/d, so `infoFor()`'s score was an exact tie and Map iteration order (50-mainline.json loads before 70-disputes.json) made the dispute stance permanently unreachable from this archivist regardless of context, defeating RI-LOR06's requirement that a registered dispute be heard from a real, qualified speaker. `d:20` makes the two deterministic instead of order-dependent: the practical fact answers below that trust threshold, the archivist's dispute position once the player has earned it.",
       "infos": [
         {
           "a": "notary",
@@ -165,6 +168,7 @@
           "a": "archivist",
           "cf": "CF-D018",
           "pos": "B",
+          "d": 20,
           "x": "They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the object was, which is the wrong order of operations and produced the right number anyway. A boundary stone marks one place. These count."
         }
       ]

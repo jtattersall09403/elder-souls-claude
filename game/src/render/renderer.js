@@ -530,6 +530,34 @@ export class Renderer {
   }
 
   /**
+   * ARBITRATION S25 / RI-WLD10 §10.3's waterline — "depth is read off the player's own
+   * silhouette", not an NPC's, so this is player-only. `game/src/render/actor.js` has the
+   * shader; this is the one place that decides what to feed it: the water surface's world
+   * height at the player's feet, and how "wet" the body still reads (1 while at or below the
+   * surface, fading to 0 over the last 3 of the declared 20 s after leaving it — "persists 20 s
+   * ... and dries visibly" is a fade, not a cliff).
+   *
+   * State persists on the RENDERER, across frames, exactly the way `this.interiorId` above
+   * already does — a picture-only concern, never on `sim`, which would make it a traced value
+   * and violate this file's own header rule ("nothing here can change a traced value").
+   */
+  _playerWaterline(sim) {
+    const DRY_FRAMES = 20 * 60;
+    const FADE_FRAMES = 3 * 60;
+    if (!this._waterline) this._waterline = { y: -9999, wetUntil: -Infinity };
+    const W = this._waterline;
+    const frame = sim.frame || 0;
+    const band = (sim.player && sim.player.waterBand) || 'W0';
+    if (band !== 'W0' && this.cell === 'province' && this.field) {
+      const surf = this.field.waterSurfaceAt(sim.player.pos[0], sim.player.pos[2]);
+      if (surf !== null && surf !== undefined) { W.y = surf; W.wetUntil = frame + DRY_FRAMES; }
+    }
+    const remain = W.wetUntil - frame;
+    if (remain <= 0) return null;
+    return { y: W.y, wetness: remain >= FADE_FRAMES ? 1 : remain / FADE_FRAMES };
+  }
+
+  /**
    * Draw the current simulation state.
    * @param {SimState} sim
    */
@@ -544,7 +572,8 @@ export class Renderer {
     // and a yaw and nothing else, which is precisely why writing only those two numbers here
     // drew one static box for every weapon and every frame of every clip.
     const cb = sim._combat && sim._combat.player;
-    if (!(cb && poseFromRig(this.playerMesh, cb))) {
+    const water = this._playerWaterline(sim);
+    if (!(cb && poseFromRig(this.playerMesh, cb, water))) {
       poseStatic(this.playerMesh, this._anyRig(sim), sim.player.pos, sim.player.yaw);
     }
     // S18 / RI-CAM07: the character is third-person ALWAYS, so it is drawn always. This line

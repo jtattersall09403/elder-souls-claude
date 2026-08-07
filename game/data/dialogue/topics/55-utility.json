@@ -514,11 +514,12 @@
     },
     {
       "id": "the-witness",
-      "note": "Opens Q-MAG-10 (assizer-corvo, the Gideon court).",
+      "note": "Opens Q-MAG-10 (assizer-corvo, the Gideon court). W1-DLG-SHADOWS: the clerk/gideon info below carries `d:20`, added because it tied on specificity against 50-factions.json's clerk/gideon info for this same id ('She gave a statement and she gave it twice...') — same actor, same cell, neither carried a `d` — and, loading second (50-factions.json < 55-utility.json), was permanently unreachable from that speaker regardless of context. The quest was still openable via the legionary info below (`to` also includes `the-dead-runner`), so this was a silenced unique line rather than a blocked quest, but it is silenced all the same. `d:20` makes the clerk's insider reveal the thing you hear once you have their trust, and the faction-neutral first read the thing you hear before it.",
       "infos": [
         {
           "a": "clerk",
           "cell": "gideon",
+          "d": 20,
           "x": "She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he can write into a file.",
           "to": [
             "the-dead-runner",
