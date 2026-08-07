@@ -36,8 +36,12 @@ import { topicKey } from '../../game/src/core/topics.js';
 const USAGE = `
 utility-findability.mjs — can a player be offered the NON-main quests by standing in a town?
 
-  --state <id>        named state to boot (default helstrom-market). Repeatable.
+  --state a,b,c       named states to boot (default helstrom-market,stormhold-street,soulrest-quay)
   --sabotage <s>      no-rumours | none-at-all
+
+A quest counts as findable here only when the person who gives it is in the world and
+H.talkTo(giver) opens a conversation. Quests the gate would offer with nobody to say the words
+to are counted under `blocked NO GIVER HERE`, not under `offerable`.
 `;
 
 const args = parseArgs();
@@ -46,7 +50,15 @@ const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, '
 ensureDir(outDir);
 const sabotage = args.sabotage ? String(args.sabotage) : null;
 if (sabotage && !['no-rumours', 'none-at-all'].includes(sabotage)) usage(USAGE);
-const STATES = (args.state ? String(args.state).split(',') : 'helstrom-market,stormhold-street,soulrest-quay').split(',').map((s) => s.trim()).filter(Boolean);
+// W1-19 round-2 verdict §3, and `orchestration/TOOL-LOOP.md` rule 5 — *a flag that lies is worse
+// than a missing flag*. This read
+//   (args.state ? String(args.state).split(',') : '<defaults>').split(',')
+// which calls `.split` on the ARRAY the ternary has already produced, so the documented `--state`
+// crashed on every invocation and the tool had only ever run on its three hardcoded defaults.
+// `thorn-hall` — the fourth town, with six quests keyed to it — was never measured once. Split
+// once, at the end, over whichever string the ternary chose.
+const STATES = String(args.state === undefined ? 'helstrom-market,stormhold-street,soulrest-quay' : args.state)
+  .split(',').map((s) => s.trim()).filter(Boolean);
 
 // ---- which quests this tool is about ----------------------------------------------------------
 // Everything that is not the main spine and not a faction rank ladder: the 28 magic-utility
@@ -74,11 +86,25 @@ try {
       H.loadState(state);
       const known = () => (H.getQuestState().topicsKnown || []).slice();
       const offerable = () => {
-        const out = { ok: [], blocked_on_topic: [], blocked_other: [] };
+        const out = { ok: [], blocked_on_topic: [], blocked_no_giver: [], blocked_other: [] };
         for (const id of subject) {
+          // ---- GAP-W1-quest-givers-not-in-the-world -----------------------------------------
+          // This tool's headline — "10 of 35 findable from a cold start" — was taken entirely
+          // from `questOpen`'s answer, and `open()` had no presence term: not one of those 35
+          // quests had a giver anywhere a player could stand. A gate saying `ok` is not a person
+          // offering you a job, so a quest is not counted here until the conversation with the
+          // person who gives it has actually opened.
+          const giver = ((H.questDef(id) || {}).giver || {}).npc_id || null;
+          let spoke = false, why = null;
+          if (giver) {
+            try { const st = H.talkTo(giver); spoke = !!st; H.conversationClose(); }
+            catch (e) { why = String(e && e.message || e); }
+          }
           let r;
           try { r = H.questOpen(id); } catch (e) { out.blocked_other.push([id, String(e && e.message || e)]); continue; }
+          if (r.ok && giver && !spoke) { out.blocked_no_giver.push([id, `gate said ok; ${giver} is not in this world (${why})`]); continue; }
           if (r.ok) out.ok.push(id);
+          else if (/giver absent/i.test(String(r.reason || ''))) out.blocked_no_giver.push([id, r.reason]);
           else if (/topic/i.test(String(r.reason || ''))) out.blocked_on_topic.push([id, r.reason]);
           else out.blocked_other.push([id, r.reason]);
           // `questOpen` OPENS the quest when it succeeds, which would change the next answer.
@@ -129,6 +155,8 @@ try {
     row.newly_offerable = row.after.offer.ok.filter((q) => !row.cold.offer.ok.includes(q));
     row.blocked_on_topic_cold = row.cold.offer.blocked_on_topic.length;
     row.blocked_on_topic_after = row.after.offer.blocked_on_topic.length;
+    row.blocked_no_giver_cold = row.cold.offer.blocked_no_giver.length;
+    row.blocked_no_giver_after = row.after.offer.blocked_no_giver.length;
     delete row.cold.topics; delete row.after.topics;
     report.states.push(row);
 
@@ -137,6 +165,7 @@ try {
     console.log(`  quest keywords learned ${row.quest_keywords_learned.length}   ${row.quest_keywords_learned.slice(0, 12).join(', ')}`);
     console.log(`  offerable (of ${SUBJECT.length})     cold ${row.offerable_cold}  ->  after ${row.offerable_after}`);
     console.log(`  blocked ON TOPIC       cold ${row.blocked_on_topic_cold}  ->  after ${row.blocked_on_topic_after}`);
+    console.log(`  blocked NO GIVER HERE  cold ${row.blocked_no_giver_cold}  ->  after ${row.blocked_no_giver_after}`);
     console.log(`  newly offerable        ${row.newly_offerable.join(', ') || '(none)'}`);
   }
 } finally {

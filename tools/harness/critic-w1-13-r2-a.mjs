@@ -114,9 +114,9 @@ try {
       let steps = set.to - set.from;
       const dir = steps >= 0 ? -1 : 1;   // list walks: stick DOWN goes to the later row
       for (let k = 0; k < Math.abs(steps); k++) {
-        await h.h('queueInputs', [{ f: 0, moveY: dir }]);
+        await h.h('queueInputs', [{ f: 0, move: [0, dir] }]);
         await h.h('stepFrames', 1);
-        await h.h('queueInputs', [{ f: 0, moveY: 0 }]);
+        await h.h('queueInputs', [{ f: 0, move: [0, 0] }]);
         await h.h('stepFrames', 1);
       }
       const at = await ev(h, () => {
@@ -279,7 +279,7 @@ try {
           // walk away so the death is not on the basin
           H.teleport(well.pos[0] + 120, well.pos[2] + 120);
           H.stepFrames(20);
-          if (m === 'held') H.queueInputs([{ f: 0, moveY: 1 }]);
+          if (m === 'held') H.queueInputs([{ f: 0, move: [0, 1] }]);
           H.stepFrames(10);
           H.killPlayer('combat');
           H.stepFrames(1);

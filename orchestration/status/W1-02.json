@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-02",
+  "title": "Regions, borders and the strange",
+  "brief": "docs/PLAN.md §3 W1-02",
+  "started": "wave-1 round-1 (2026-08-07)",
+  "state": "researching",
+  "paths": ["world.region.identity","world.region.transition","world.weather.systems","world.time.daynight","world.strangeness.budget","world.strangeness.architecture"],
+  "outputs_expected": [],
+  "outputs_written": [],
+  "findings": [
+    "Prior round measured RI-WLD04 and found 8/9 axes read strings out of regions.json rather than measuring the world; an audio axis scored 78/78 with audioMB 0. Assume nothing measured.",
+    "Blind pack shipped unshuffled: 39/39 answers came off file index. Must shuffle + not self-judge.",
+    "S30 overruled by S35: map shows only travelled terrain + visited-place squares + own position. No objective markers. 'Distinguishable without map' is MORE load-bearing."
+  ],
+  "next_step": "assemble judges from front-matter (RI-AUD03 RI-PRG04 RI-TRV01 RI-WLD04 RI-WLD05 RI-WLD08 RI-WLD09 RI-WLD11 RI-WLD12 RI-WLD14); read S35; inventory region data + engine consumers",
+  "notes_for_successor": "Load was 9.13 / 12 headless_shell at start — authoring phase first, browser only for verification.",
+  "method_deviations": []
+}

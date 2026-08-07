@@ -3085,58 +3085,8 @@ function produceRecords({ quiet = false } = {}) {
   return out;
 }
 
-const records = produceRecords();
 
-// ---------------------------------------------------------------------------------------------
-// ROUND 5 — MODEL DEPENDENCE IS MEASURED, NOT INFERRED FROM "DID A DISPOSITION STOP HAPPEN".
-//
-// Round 4 gated the exit code on `records.filter(r => r.stopped_at.offer_model !== undefined)` —
-// i.e. on whether any signature happened to STOP at a disposition gate. That is not the same
-// question. A signature that PASSES because the derived model lifted a giver over the bar is
-// just as dependent on the model as one that fails, and it contributes nothing to that count;
-// and on a tree where some other gate stops everyone first, the count is 0 and the run exits
-// with a clean bill on a model it never looked at.
-//
-// The honest predicate is a differential: walk the same grid under the OTHER offer model and
-// count the signatures whose verdict moves. If none move, the model is not load-bearing for this
-// run and the run may stand without a live attestation. If any move, the run's numbers are a
-// function of a hypothesis about source text, and TOOL-COVERAGE-R3 §1 proved that hypothesis can
-// be wrong while every anchor matches.
-//
-// `--no-model-sensitivity` skips the second walk. It costs one extra walk (~40 s on 540 cells),
-// and the flag stamps the artifact so a reader knows the gate was not evaluated.
-// ---------------------------------------------------------------------------------------------
-const MODEL_SENSITIVITY = (() => {
-  if (args['no-model-sensitivity']) {
-    return { measured: false, why: '--no-model-sensitivity: the differential walk was skipped, so ' +
-      'this run cannot say whether its verdicts depend on the offer model.' };
-  }
-  const detected = OFFER_MODEL.model;
-  const other = detected === 'derived' ? 'raw' : 'derived';
-  const key = (r) => `${r.signature}|${r.viable}|${r.unmeasurable}|${JSON.stringify(r.criteria)}|${r.stopped_at ? r.stopped_at.gate + '::' + r.stopped_at.why : ''}`;
-  let alt;
-  const saved = OFFER_MODEL.model;
-  try { OFFER_MODEL.model = other; alt = produceRecords({ quiet: true }); }
-  finally { OFFER_MODEL.model = saved; }
-  const byKey = new Map(alt.map((r) => [r.signature, key(r)]));
-  const moved = records.filter((r) => byKey.get(r.signature) !== key(r));
-  return {
-    measured: true,
-    method: `the same grid walked twice, once under the detected offer model ("${detected}") and ` +
-            `once under "${other}", comparing each signature's viability, four criteria and stop.`,
-    detected_model: detected, compared_against: other,
-    signatures_whose_verdict_moves: moved.length,
-    signatures_walked: records.length,
-    model_is_load_bearing: moved.length > 0,
-    examples: moved.slice(0, 5).map((r) => ({ signature: r.signature, under_detected: r.stopped_at && r.stopped_at.why, criteria: r.criteria })),
-    why: moved.length
-      ? `${moved.length} of ${records.length} signature verdicts change when the offer model ` +
-        `changes, so every number in this artifact is conditional on the model being right. ` +
-        `Source anchors cannot establish that (TOOL-COVERAGE-R3 §1); only --verify-model can.`
-      : `no signature's verdict changes between the two offer models on this tree, so these ` +
-        `numbers do not depend on which one the build implements.`,
-  };
-})();
+
 
 // ---------------------------------------------------------------------------------------------
 // --verify-model — THE DEFINITIONAL TEST, and the thing R3 §1 proved the anchors cannot do.
@@ -3275,6 +3225,7 @@ async function verifyModelMode() {
 }
 
 if (args['verify-model']) process.exit(await verifyModelMode());
+
 
 // ---------------------------------------------------------------------------------------------
 // --cross-check. RI-MTH06 §A requires this tool to be a STATIC walk so it can run in CI, and
@@ -3490,6 +3441,64 @@ async function crossCheck() {
     };
   } finally { await handle.close().catch(() => {}); }
 }
+
+// ---------------------------------------------------------------------------------------------
+// ROUND 5 — MODEL DEPENDENCE IS MEASURED, NOT INFERRED FROM "DID A DISPOSITION STOP HAPPEN".
+//
+// Round 4 gated the exit code on `records.filter(r => r.stopped_at.offer_model !== undefined)` —
+// i.e. on whether any signature happened to STOP at a disposition gate. That is not the same
+// question. A signature that PASSES because the derived model lifted a giver over the bar is
+// just as dependent on the model as one that fails, and it contributes nothing to that count;
+// and on a tree where some other gate stops everyone first, the count is 0 and the run exits
+// with a clean bill on a model it never looked at.
+//
+// The honest predicate is a differential: walk the same grid under the OTHER offer model and
+// count the signatures whose verdict moves. If none move, the model is not load-bearing for this
+// run and the run may stand without a live attestation. If any move, the run's numbers are a
+// function of a hypothesis about source text, and TOOL-COVERAGE-R3 §1 proved that hypothesis can
+// be wrong while every anchor matches.
+//
+// `--no-model-sensitivity` skips the second walk. It costs one extra walk (~40 s on 540 cells),
+// and the flag stamps the artifact so a reader knows the gate was not evaluated.
+// ROUND 5. THE ORDER HERE IS LOAD-BEARING. `--verify-model` used to run AFTER the walk, and
+// once the model-sensitivity differential landed that meant a mode which needs no walk at all
+// paid for TWO 540-cell walks before it opened a browser — minutes of pure waste on a loaded
+// box, for the one mode a critic reaches for when the tool has already refused to publish.
+// The walk is deferred to the point where its result is first consumed.
+const records = produceRecords();
+
+// ---------------------------------------------------------------------------------------------
+const MODEL_SENSITIVITY = (() => {
+  if (args['no-model-sensitivity']) {
+    return { measured: false, why: '--no-model-sensitivity: the differential walk was skipped, so ' +
+      'this run cannot say whether its verdicts depend on the offer model.' };
+  }
+  const detected = OFFER_MODEL.model;
+  const other = detected === 'derived' ? 'raw' : 'derived';
+  const key = (r) => `${r.signature}|${r.viable}|${r.unmeasurable}|${JSON.stringify(r.criteria)}|${r.stopped_at ? r.stopped_at.gate + '::' + r.stopped_at.why : ''}`;
+  let alt;
+  const saved = OFFER_MODEL.model;
+  try { OFFER_MODEL.model = other; alt = produceRecords({ quiet: true }); }
+  finally { OFFER_MODEL.model = saved; }
+  const byKey = new Map(alt.map((r) => [r.signature, key(r)]));
+  const moved = records.filter((r) => byKey.get(r.signature) !== key(r));
+  return {
+    measured: true,
+    method: `the same grid walked twice, once under the detected offer model ("${detected}") and ` +
+            `once under "${other}", comparing each signature's viability, four criteria and stop.`,
+    detected_model: detected, compared_against: other,
+    signatures_whose_verdict_moves: moved.length,
+    signatures_walked: records.length,
+    model_is_load_bearing: moved.length > 0,
+    examples: moved.slice(0, 5).map((r) => ({ signature: r.signature, under_detected: r.stopped_at && r.stopped_at.why, criteria: r.criteria })),
+    why: moved.length
+      ? `${moved.length} of ${records.length} signature verdicts change when the offer model ` +
+        `changes, so every number in this artifact is conditional on the model being right. ` +
+        `Source anchors cannot establish that (TOOL-COVERAGE-R3 §1); only --verify-model can.`
+      : `no signature's verdict changes between the two offer models on this tree, so these ` +
+        `numbers do not depend on which one the build implements.`,
+  };
+})();
 
 const rep = report(records, fixture);
 rep.model_sensitivity = MODEL_SENSITIVITY;

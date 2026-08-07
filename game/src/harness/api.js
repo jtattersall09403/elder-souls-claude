@@ -1488,6 +1488,27 @@ export function installHarness(engine, bootPromise) {
     // ---- the quest runtime (W1-2x owns the content; this is the machine) --------------------
     questOffers() { return engine.questEngine ? engine.questEngine.offers() : { _declared_incomplete: 'no quest runtime' }; },
     questOpen(id) { return engine.questEngine.open(String(id)); },
+    /**
+     * GAP-W1-quest-givers-not-in-the-world. Read or set the presence term on `open()`:
+     * 'on' (shipped) refuses a quest whose giver is not in the world, 'report' counts the misses
+     * without refusing, 'off' does not evaluate it. Returns the mode and the misses seen so far,
+     * so a probe can say WHICH quest was refused for want of a person.
+     *
+     * This is the perturbation handle for RI-MTH07 on this model: flip it to 'off', re-run, and
+     * a build whose givers are absent starts reporting `ok` again. A term that cannot be turned
+     * off cannot be shown to be doing anything.
+     */
+    questPresenceGate(mode) {
+      const q = engine.questEngine;
+      if (mode !== undefined) {
+        const m = String(mode);
+        if (!['on', 'report', 'off'].includes(m)) throw new Error(`questPresenceGate: '${m}' is not on|report|off`);
+        q.presenceMode = m;
+        q.presenceMisses = 0;
+        q.presenceMissed = [];
+      }
+      return { mode: q.presenceMode, misses: q.presenceMisses || 0, missed: (q.presenceMissed || []).slice(0, 200) };
+    },
     questNote(id, index) { return engine.questEngine.note(String(id), Number(index)); },
     questResolutions(id) { return engine.questEngine.resolutionsFor(String(id)); },
     questResolve(id, resolutionId) { return engine.questEngine.resolve(String(id), String(resolutionId)); },

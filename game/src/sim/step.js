@@ -24,6 +24,7 @@ import { stepNPCs } from './npc.js';
 import { stepSettlement } from './settlement.js';
 import { stepSkillUse } from '../character/skilluse.js';
 import { stepDiscovery } from './discovery.js';
+import { stepSouls } from './souls.js';
 
 /**
  * S29 / seam S19. The frame the world last did violence. Read off the event bus so it cannot
@@ -95,6 +96,17 @@ export function stepOnce(sim, input, combat, bus) {
     // the fight actually emitted rather than off a flag someone remembered to set. Any of these
     // event types on the bus means somebody is still fighting somebody.
     stampHostileAction(sim, bus);
+    // W1-SOULS / seam S2: the soul source. An OBSERVER over the entities the fight just
+    // resolved, in the same slot and for the same reason `stampHostileAction` is — it reads
+    // what happened rather than instrumenting the five separate places a body can die (weapon,
+    // crit, spell, hazard, the non-combat entity path), so it cannot miss one and cannot
+    // double-pay one that emits two events. It cannot reach the hit test (seam S1) and it
+    // cannot award for a death the fight did not produce.
+    //
+    // Deliberately BEFORE `stepEncounters`, so an encounter that opens on frame N is opening
+    // against the souls frame N's kills earned, and before the camera so `souls_awarded`
+    // appears in frame N's record.
+    stepSouls(sim, bus);
     // The pivot must read the POST-physics controller position (RI-CAM01 §A), so the body is
     // pushed out of the world between the fight and the camera, never after it.
     stepWorldCollision(sim, combat);

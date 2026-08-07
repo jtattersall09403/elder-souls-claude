@@ -368,6 +368,11 @@ export class Engine {
     // W1-15: the stealth/crime subsystem, hung on the sim so stepOnce() needs no engine
     // reference. Built before the first state is applied so a scenario can load into it.
     this.sim.stealth = new StealthCrime(this.data);
+    // W1-SOULS: THE SOURCE. Hung on the sim for the same reason the two above are — so
+    // `stepOnce()` needs no engine reference. Until this line existed `soulsHeld` had exactly
+    // one producer in the whole build (`death.js` handing back a bloodstain you had already
+    // paid for), so `_spendSouls()` and RI-PRG01's 139-row curve were an unfundable sink.
+    this.sim.souls = new SoulsSystem(this.data.enemies);
     this.census = new Census(this.data.character);
     // W1-07: the drawn half of the census. `censusSurface` holds the selection index, the
     // in-progress picks and the typed name; `sim.censusDriver` is what sim/step.js calls so
@@ -5192,6 +5197,14 @@ export class Engine {
       // on step 1 and 26 further player fields did not exist at all, because `sim.reset()`
       // replaces `sim.player` with `makePlayer()` and only `mirror()` ever adds them.
       this._restoreFightFromSave(arg);
+      // W1-SOULS. The soul source's per-eid "was it alive last time I looked" map is a
+      // per-session observation, exactly like the death observer's HP baseline below, and for
+      // the same reason: a load that restored a corpse would otherwise read as a fresh kill on
+      // the next frame and bank its souls a second time. Cleared here so the scan LAZILY
+      // re-seeds against the restored world — a body that comes back dead is recorded as
+      // already settled and is never paid for. (`applySave` restores `soulsHeld` itself; this
+      // clears only the observer, so souls banked before the save survive the load.)
+      if (this.sim.souls) this.sim.souls.reset();
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.

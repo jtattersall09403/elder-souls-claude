@@ -2,7 +2,7 @@
   "task_id": "W1-SOULS",
   "brief": "souls economy: souls have no source; wire kill-award, verify levelling loop end-to-end",
   "started": "wave-1",
-  "state": "designing",
+  "state": "building",
   "outputs_expected": [
     "game/src/** kill-award soul source",
     "tools/** soul economy instrument (breakable)",
@@ -10,7 +10,14 @@
     "docs/shots/<dated>.png",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/progression/derive-soul-values.mjs (derivation + --check + surgical --write)",
+    "game/data/combat/enemies/*.json  (+souls, +_souls_note, 22 files, 2-line diffs)",
+    "game/src/sim/souls.js  (SoulsSystem: post-step alive->dead transition scan)",
+    "game/src/sim/step.js   (stepSouls after stampHostileAction)",
+    "game/src/engine.js     (construct, reset on loadState, reset on applySave)",
+    "game/src/sim/events.js (+'souls_awarded' vocabulary amendment)"
+  ],
   "findings": [
     "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser.",
     "RI-PRG06 is a complete yield spec: R1 12,665 souls / 93 enemies = 136 souls per average R1 trash kill; bands R1 trash 35-190, miniboss 700-900, boss 3000. Night x1.35 (21:00-05:00). Quests pay ZERO souls. No level scaling (S9).",
@@ -18,8 +25,13 @@
     "SHIPPED ENEMY ROSTER IS 7 FIGHTABLE + 16 PROPS, not 576. game/data/combat/enemies/*.json. No `souls` field on any of them. Props are hp=99999 DUMMY/FIXTURE -> MUST yield 0 or a training dummy is an infinite farm.",
     "ONLY 9 ENEMIES ARE PLACED IN THE WORLD (game/data/world/encounters.json: dres-raid-party 6x inf_trash, deep-kin-war-brood 3x inf_trash). So RI-PRG06 method 1 (world-total -> L93) CANNOT be asserted; a fail-closed world-budget assertion would be a fail-closed assertion before its data exists. Per-kill anchoring only.",
     "Death sites are plural: combat/resolve.js killed() (weapon), combat/player.js _critDamage (backstab/riposte), sim/combat-bridge.js spell damage, sim/hazards.js. A single award site must be a POST-STEP transition scan (!dead -> dead), not a hook in one of them.",
-    "regions.json carries danger_tier 1..5 per region (western-rootlands=1). inf_trash is placed in the tier-1 region -> it is the R1 baseline trash anchor."
+    "regions.json carries danger_tier 1..5 per region (western-rootlands=1). inf_trash is placed in the tier-1 region -> it is the R1 baseline trash anchor.",
+    "DERIVATION: souls = round(K * hp*(1+ar/100)*(1+poise/200) * (attack_rating/120) * TIER_PREMIUM). ONE anchored constant K=0.219191, solved so inf_trash = 136.18 = RI-PRG06 R1 mean kill (12,665/93). TIER_PREMIUM trash 1.0 / elite 1.6 / miniboss 2.6 / boss 4.0 -- elite is the only row the shipped roster exercises and it is FITTED, declared as such.",
+    "RESULTING VALUES: drowned_lesser 50, beast_slitherfang 72, inf_trash 136, cst_sap_speaker 137, guard_legion 176, drowned_greater 334, champion_hist_marked 2423. ALL 15 props = 0 (hp 99999 dummies would otherwise be infinite farms). Every fightable value lands inside an RI-PRG06 \u00a72 band.",
+    "BALANCE: level 2 costs 418 -> 3.07 inf_trash kills. The dres-raid-party crossing (6x inf_trash) = 816 souls = L1->L3 with 333 spare.",
+    "EVENT VOCABULARY IS CLOSED and emit() THROWS on an unknown type (sim/events.js:212). Added 'souls_awarded' by amendment -- a missing entry is a live throw inside the fixed step.",
+    "BASELINE (before my change): check-data/quests/content all exit 0; attr-scale-audit 0 defects, bands {reachable 174, specialist 35, dedicated 19, vacuous 7}, 54 attribute demands."
   ],
-  "next_step": "design souls-per-kill derivation; check world clock for night x1.35; check hearth level-up path",
+  "next_step": "write tools/progression/souls-consumption.mjs (breakable instrument); measure TTK in combat-node; then ONE browser for the live loop",
   "notes_for_successor": ""
 }

@@ -77,6 +77,23 @@ export class QuestEngine {
     this.events = [];
     this.glyphUntilFrame = -1;
 
+    // GAP-W1-quest-givers-not-in-the-world. Three settings, and the middle one is the reason
+    // this is a field rather than an `if`:
+    //
+    //   'on'      a quest whose giver is nowhere cannot be opened.       (the shipped behaviour)
+    //   'report'  the term is evaluated and counted but never refuses.   (measure before arming)
+    //   'off'     the term is not evaluated at all.
+    //
+    // `report` exists because landing this fail-closed before the world had people in it would
+    // have refused every quest in the build, and taking the engine down is how four previous
+    // rounds were lost. The order that works is: author the population, run the whole tree in
+    // `report` and read the misses, then arm. `presenceMisses`/`presenceMissed` are what a probe
+    // reads in that middle mode, and they keep accumulating in `on` so a run can say WHICH quest
+    // was refused for want of a person rather than just that something was.
+    this.presenceMode = 'on';
+    this.presenceMisses = 0;
+    this.presenceMissed = [];
+
     // W1-07 round 4. The register (`sim.quest.dispositions`) is what the WORLD has written
     // down about you — the giver's authored base plus every delta a quest or a Charm has
     // added. It is not what the person in front of you feels, because it contains no term for
@@ -440,6 +457,28 @@ export class QuestEngine {
     const existing = this.rec(id);
     if (this.isClosed(id)) return { ok: false, reason: 'quest is closed' };
     if (existing && existing.opened) return { ok: false, reason: 'already opened' };
+    // ---- THE PRESENCE TERM. GAP-W1-quest-givers-not-in-the-world. --------------------------
+    //
+    // W1-19 round 2 §2: *"nine of the ninety-four quest givers in this build exist anywhere a
+    // player can stand"*, and the gate did not care. Every findability number this project has
+    // published was taken by asking `open()` whether a quest could be accepted, and `open()` had
+    // no term for whether the person it names is in the world — so a quest given by nobody
+    // reported `ok: true`, a probe wrote it down, and the player walked to the town and found
+    // the room empty. `mainline-chain-floor.mjs` conceded it in a comment and then spawned the
+    // giver out of nothing so the run could continue.
+    //
+    // A quest is a thing a person asks you to do. If there is no person, there is no quest.
+    const giverId = (def.giver && def.giver.npc_id) || null;
+    if (giverId && this.presenceMode !== 'off') {
+      const present = !!(this.sim.findNPC && this.sim.findNPC(giverId));
+      if (!present) {
+        this.presenceMisses = (this.presenceMisses || 0) + 1;
+        (this.presenceMissed || (this.presenceMissed = [])).push({ quest: id, giver: giverId });
+        if (this.presenceMode !== 'report') {
+          return { ok: false, reason: `giver absent: ${giverId} is not in this world`, gate: 'giver_presence', giver: giverId };
+        }
+      }
+    }
     const ctx = this.context();
     const c = canOffer(def, ctx, this.gates);
     if (!c.offerable) return { ok: false, reason: c.why.join('; '), gate: c.gate };

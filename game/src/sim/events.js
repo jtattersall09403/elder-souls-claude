@@ -188,6 +188,19 @@ export const EVENT_TYPES = new Set([
   //       The scene's error path was itself the error.
   'settlement_enter', 'settlement_exit', 'door_refused', 'interior_enter', 'interior_exit',
   'census_refused',
+  // ---- W1-SOULS, vocabulary amendment 2026-08-07 — the soul SOURCE -------------------------
+  // Same "closed vocabulary, EXTENSIBLE BY AMENDMENT" clause. `level_up` (the SINK) has been in
+  // this set since wave 1 and was unreachable, because souls had no producer: nothing in
+  // `game/src/**` ever added to `soulsHeld` except recovering a bloodstain you had already
+  // paid for. `sim/souls.js` is the producer and this is what it says it did.
+  //
+  // The payload is deliberately the whole calculation and not just the total — `base`, `night`,
+  // `multiplier`, `souls`, `held`, `hour` — so that RI-PRG06 §4's night row (x1.35 between
+  // 21:00 and 05:00) and S9's no-scaling rule are recomputable from a TRACE rather than from a
+  // function a probe called. `gold_awarded: 0` and `enabled` are on the record for the same
+  // reason: seam S15 ("souls level you and only level you") and the ablation state of the
+  // source are things a critic should be able to read rather than take on trust.
+  'souls_awarded',
 ]);
 
 const POOL_SIZE = 128;
