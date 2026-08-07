@@ -197,6 +197,48 @@ try {
     `ceilings from the engine's own terms: dunmer/lukiul ${ceil(lk.explain)} (permanently short of the 50 asked), dunmer/interior ${ceil(di.explain)} (reaches it)`,
     'lukiul 34 < 50 <= interior 60, exactly RI-MTH06 §A — the upbringing axis partly buys out the race term and never fully cancels it');
 
+  // ---- 2b. the handicap has a route through it ---------------------------------------------
+  // `race-reactions.json` §repair_paths: "Deep-Kin rank 6 against a Deep-Kin NPC is +48, which
+  // fully covers a Dunmer's -40", and §upbringing_note: "The axis never fully cancels the race
+  // term, and that is the point." Both are claims about the running game and neither had ever
+  // been executed — the faction term resolved to 0 for every live faction id.
+  say('\n== 2b. the repair path — climb the Xul-Aneekh ladder and watch the same gate open, or not');
+  const rep = await page.evaluate(() => {
+    const H = window.__HARNESS;
+    const rows = [];
+    for (const [race, up] of [['dunmer', 'interior'], ['dunmer', 'lukiul']]) {
+      for (const rank of [null, 0, 2, 4, 6]) {
+        H.reset();
+        H.setCharacter({ race, upbringing: up, class: 'reed-walker', birthsign: 'raj-xul' });
+        if (rank !== null) H.setFactionStanding('the_xul_aneekh', { reputation: 100, rank });
+        const d = H.explainDisposition('speaker-teel-ashaan');
+        const q = H.questOffers().find((x) => x.id === 'Q-DEEP-01');
+        rows.push({
+          signature: `${race}/${up}`, rank: rank === null ? 'no membership' : rank,
+          faction_term: (d.movable || []).find((t) => t[0] === 'faction')[1],
+          disposition: d.value,
+          refused: !!(q.why || []).find((w) => w.includes('speaker-teel-ashaan')),
+        });
+      }
+    }
+    return rows;
+  });
+  out.repair_path = rep;
+  for (const r of rep) {
+    say(`     ${r.signature.padEnd(16)} rank ${String(r.rank).padEnd(13)} faction ${String('+' + r.faction_term).padStart(3)}  disposition ${String(r.disposition).padStart(3)}  ${r.refused ? 'refused' : 'OFFERED'}`);
+  }
+  const interiorTop = rep.filter((r) => r.signature === 'dunmer/interior');
+  const lukiulTop = rep.filter((r) => r.signature === 'dunmer/lukiul');
+  check('REPAIR-PATH-OPENS-THE-DOOR', interiorTop.some((r) => !r.refused) && interiorTop[0].refused,
+    `dunmer/interior goes ${interiorTop[0].disposition} -> ${interiorTop[interiorTop.length - 1].disposition} up the ladder and is offered Q-DEEP-01 from rank ${(interiorTop.find((r) => !r.refused) || {}).rank}`,
+    'refused cold, offered once the faction term is earned — otherwise the race fix differentiates by subtraction');
+  check('REPAIR-PATH-DOES-NOT-CANCEL-RACE', lukiulTop.every((r) => r.refused),
+    `dunmer/lukiul goes ${lukiulTop[0].disposition} -> ${lukiulTop[lukiulTop.length - 1].disposition} and is STILL refused at rank 6, the top of the ladder`,
+    'still refused at rank 6 — race-reactions.json §upbringing_note: "the axis never fully cancels the race term, and that is the point"');
+  check('FACTION-TERM-RESOLVES', rep.some((r) => r.faction_term > 0),
+    `the RI-DLG04 §B faction term reaches ${Math.max(...rep.map((r) => r.faction_term))} at the top of the ladder`,
+    '> 0 — the quest vocabulary (`the_xul_aneekh`) and the reaction matrix (`xul-aneekh`) disagreed, so this term was a silent 0 for every faction in the build');
+
   // ---- 3. every race can finish ------------------------------------------------------------
   say('\n== 3. no differentiation by subtraction — every race, every main-quest gate');
   const via = await page.evaluate(({ races, ups }) => {
