@@ -1,0 +1,29 @@
+{
+  "task_id": "judge-audio-b2",
+  "brief": "fresh blind judge on the W1-22 audio SAME/DIFFERENT pack B2 (32 trials, seed 22071)",
+  "started": "wave-1",
+  "state": "researching",
+  "role": "blind judge - MUST NOT read W1-22 verdict, W1-22 status files, critic-w1-22 status, RI-AUD* items, or game/data audio data",
+  "quarantine": {
+    "forbidden_reads": [
+      "corpus/90-verdicts/wave1/W1-22-r1.md",
+      "orchestration/status/W1-22.json",
+      "orchestration/status/critic-w1-22.json",
+      "corpus/**/RI-AUD*",
+      "game/data/**"
+    ],
+    "accidental_reads": [],
+    "clean_so_far": true
+  },
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-22-B2-blind.md",
+    "corpus/90-verdicts/wave1/W1-22-B2-blind.json",
+    "reports/blog-feed.jsonl (one appended line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "Contention at start: pgrep -c headless_shell = 30, loadavg 20.28 on 4 cores. Well above the protocol cap of ~8. Doing all offline work first; will not take a browser unless the pack requires one."
+  ],
+  "next_step": "read RI-MTH03 blind comparison protocol, then audit tools/blind/audio-pack-b2.mjs for leaks BEFORE rendering",
+  "notes_for_successor": "Answering procedure must be stated and answers hashed BEFORE unblinding. Reveal key held by a sibling; unblind in the pack's recorded seven-step order."
+}

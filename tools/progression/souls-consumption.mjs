@@ -430,7 +430,9 @@ try {
         delta: E.sim.progression.soulsHeld - soulsBefore, events: evs,
       };
     };
-    R.L = { fixed: hazardRun(true), control_view_write: hazardRun(false) };
+    R.L = {};
+    try { R.L.fixed = hazardRun(true); } catch (e) { R.L.fixed = { error: String(e.message || e) }; }
+    try { R.L.control_view_write = hazardRun(false); } catch (e) { R.L.control_view_write = { error: String(e.message || e) }; }
 
     // ---- M. THE RESPAWN RE-ARM IS GATED ON A HEARTH REST, NOT ON ANY RE-SPAWN ------------------
     //

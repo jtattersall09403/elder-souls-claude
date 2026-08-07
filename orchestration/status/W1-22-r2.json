@@ -1,0 +1,13 @@
+{
+  "task_id": "W1-22-r2",
+  "brief": "corpus/90-verdicts/wave1/W1-22-r1.md (the verdict IS the spec)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [],
+  "outputs_written": [],
+  "findings": [
+    "START: pgrep -c headless_shell = 24, loadavg 19.70 18.40 15.95 on 4 cores. WAY above the cap of 8. Doing synthesis/authoring first, browser phase later. No timing figure taken now is citable."
+  ],
+  "next_step": "read corpus/90-verdicts/wave1/W1-22-r1.md in full, then orchestration/status/W1-22.json",
+  "notes_for_successor": "Do not touch tools/blind/audio-pack-b2.mjs or its pack dir - a fresh judge is answering it right now."
+}

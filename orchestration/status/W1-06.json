@@ -113,6 +113,15 @@
     "DEATH-IN-LOCK FINAL 14/15 (reports/w1-06/cam-death-in-lock.json). All four D-checks green with the controls in place: lock releases at 0 frames latency, no hop to the second enemy, worst single-frame view change across the death 1.206 deg against CMB06's own 7.000 clamp, mode back to 'free' with 0 m of XZ pivot lag, no clip, boom never under 3.011 m. The two instrument controls now pass: the cut detector reports an injected 40.000 deg/frame slam exactly and stays quiet (0.5) on a clean ramp; the heading-swing metric reads 80 deg on a deliberate 100 deg look swing while reading 0.000 for the three observation runs -- so 'the camera does not whip back' is a measurement, not an artefact of a dead metric.",
     "THE ONE CHECK I AM LEAVING RED, deliberately: the_target_was_alive_and_moving_before_the_kill. cam_levy walks 3.515 m at 4.0 m and cam_boss_mid walks 2.524 m at 6.0 m, but the levy in the strafe fixture walks 0.000 m at BOTH 3.5 m and 5.5 m. The other three runs have a moving target so the death-in-lock conclusions stand. An aggroed enemy that never takes a step while the player circles it is an enemy-AI observation (W1-09/W1-15), and I am reporting it rather than tuning the fixture until the check goes green.",
     "HOUSEKEEPING: the --falsify decoy was written as game/data/camera/rig.json.notloaded and a neighbouring agent's sweeping in-flight commit picked it up MID-RUN, so it is tracked in HEAD and deleted in the working tree. The decoy now lives at reports/w1-06/rig.json.notloaded -- outside game/data/, where index.json cannot reach it and a git add -A is less likely to sweep it. Somebody should drop the tracked path; I did not commit.",
-    "boot-check PASS; check-data, check-quests, check-content all clean after every edit."
-  ]
+    "boot-check PASS; check-data, check-quests, check-content all clean after every edit.",
+    "HEADLINE RE-RUN BEFORE FINISHING (AGENT-PROTOCOL 'your numbers expire'): cam-consume re-run at HEAD 95d62da, 6/6, identical figures to the c3e21db run (pivot 1.5500->3.0500; boom 4.0159->1.9949; NDC x 0.2279->0.1063; sweep 180.000->45.000; death pitch -20.329->-52.927). The tree moved four commits under me and the number did not. rig.json restored to a zero diff."
+  ],
+  "headline_numbers": {
+    "commit": "95d62da (re-run; first taken at c3e21db, unchanged)",
+    "git_dirty": true,
+    "box": "36 headless_shell and loadavg 15-20 on 4 cores during most of this round. Every figure below is a ratio, a count or a boolean, which survive contention; I took no wall-clock timing and report none.",
+    "consumption": "reports/w1-06/cam-consume.json 6/6; reports/w1-06/cam-consume-falsify.json all 5 perturbation checks red by construction",
+    "death_in_lock": "reports/w1-06/cam-death-in-lock.json 14/15, one deliberate open failure",
+    "shots": "3/3 written, all non-blank (290/378/343 distinct colours, luma sd 41.4/28.0/34.9)"
+  }
 }
