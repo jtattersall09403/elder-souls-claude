@@ -201,6 +201,12 @@ export class Engine {
     // What the ground and the water do to a body: max walkable slope, gravity and the fall, the
     // S25 denial ladder, the per-band stamina drain, the breath clock, the mire counter.
     this.traversal = new Traversal(this.data.traversal, this.field);
+    // Hung on the sim for the same reason `sim._combat` is: `save/state.js buildSave()` takes
+    // a SimState and nothing else, and the traversal's own header says "everything below is a
+    // live counter, reset by reset() and SAVED BY THE ENGINE" — which was not true. The breath
+    // meter, the mire progress, the fall apex and the escape count were all live state with no
+    // save field, so a save taken drowning reloaded with a full lungful.
+    this.sim._traversal = this.traversal;
     this.traversal.attach(this.signatures);
     // The nineteen hazards, wired to the world that has to fire them. `hazards.json` was loaded
     // and read by nothing; round 2 stood 60 s in each of the thirteen regions and measured
@@ -2581,7 +2587,31 @@ export class Engine {
       gold: l.gold || 0,
       willpower: l.willpower === null ? undefined : l.willpower,
     });
+    // DECLARED CONSEQUENCE, so it is not discovered as a surprise: `_buildCombat` constructs
+    // a new MagicSystem, and `MagicSystem.active` — the live effect LEASES — cannot be
+    // restored by assignment (each entry holds an `_undo` closure and its application wrote a
+    // term into a consuming system). So a warm load in the same session no longer keeps a
+    // running buff, which it used to do only because nothing on this path rebuilt the fight
+    // at all. It never survived a cold load or a page reload, so nothing durable became less
+    // durable; the warm and cold paths now agree, which is what makes RI-JRN05 M3 a different
+    // check from M1 rather than a second copy of it. Recorded in the manifest's
+    // `declared_incomplete.known_gaps_not_closed_by_the_w1_repair`. Owner: W1-14 / seam S19.
     this._buildCombat(this._loadout);
+    // THE BIRTHSIGN'S DERIVED POOLS. `loadCreation()` now restores `powers` and `drawbacks`,
+    // but the three things RI-CHR03 reads them FOR live on the MagicSystem, which
+    // `_buildCombat` has just rebuilt from the loadout: `focusMax` (the sign's x1.60
+    // reservoir, otherwise recomputed from WILLPOWER alone), `spellAbsorption` (the 55%), and
+    // `focusRestoresAtHearth` (seam S27 — the Dry Well's whole drawback). Without this line
+    // the terms were restored and nothing read them, which is the ninth orphan model this
+    // project has found rather than the end of one.
+    //
+    // `refill: false`, so a load does not heal you, and ONLY when a character exists: W1-13
+    // recorded that deriving from `sim.progression.attributes` on a state with no character
+    // yields no WILLPOWER, `focus_max` comes out 0, and the load clamps a restored reservoir
+    // of 94 Focus to nothing. `applySaveMagic` below then puts the saved Focus back on top of
+    // the correctly derived ceiling.
+    if (sim.character) this.applyDerivedPools({ refill: false, why: 'loadState' });
+    else sim.pools = null;
     // Seam S19: `_buildCombat` constructs a FRESH MagicSystem, so the spells, gems, known
     // effects and Focus `applySave` restored a moment ago are now on a discarded object.
     // Restored again onto the new one — the call is idempotent by construction.
@@ -2617,6 +2647,25 @@ export class Engine {
     // it had never run on this path.
     mirror(sim, c);
     return { bodies: c.bodies.length, weapon: c.player.weaponId };
+  }
+
+  /** The seven traversal view fields on `sim.player`. One writer, called from two places. */
+  _mirrorTraversalToPlayer() {
+    // Gated exactly as `_settleWorld()` gates itself. Outside the province — an authored
+    // interior, a camera fixture — the traversal never steps and the view is never written,
+    // so writing it here would put a breath meter on a character standing in a barge hold
+    // that no step would ever have given them, and the census would (correctly) report the
+    // load inventing state the save point did not have.
+    if (!this.field || this.cellFor(this.sim.env) !== 'province' || this.sim.cellId) return null;
+    const p = this.sim.player, t = this.traversal;
+    if (!t) return null;
+    p.frameNow = this.sim.frame;
+    p.waterBand = t.band;
+    p.denySprint = t.denies('sprint');
+    p.denyRoll = t.denies('roll');
+    p.breathS = t.breath;
+    p.mired = t.mired;
+    return p;
   }
 
   _settleCamera() {
@@ -3725,6 +3774,12 @@ export class Engine {
       // field in RI-JRN05 M2's diff on a bare round trip of the empty `arena_flat`.
       this._settleCamera();
       restoreCameraRig(this.sim.camera, arg.pose, this.sim.frame);
+      // The traversal VIEW on `sim.player`, refreshed from the authority the save just put
+      // back. `stepOnce()` writes these seven every step; without this line a state loaded in
+      // W5 water read `waterBand: 'W0'`, `denyRoll: false` and a full breath meter until the
+      // first step ran, and the input gate reads `denyRoll` — so for one frame after every
+      // load the player could roll in water the world had already denied it in.
+      this._mirrorTraversalToPlayer();
       quantiseColdState(this.sim);
       return r;
     }
@@ -3812,6 +3867,7 @@ export class Engine {
       'env.wallClockOffsetMs': 'A-JRN10 advanceWallClock(). Never read by the simulation and never hashed; it exists so a critic can move an in-world clock without perturbing the fixed step.',
       'input': 'The input pipeline is a per-session device, not saved state. __HARNESS.loadState() calls input.reset(frame) explicitly so a load cannot inherit a half-buffered press from the session that wrote the save.',
       'nextEid': 'Re-derived from the restored eids by applySave(), so a load cannot mint a colliding eid. Carried as a derivation rather than as a field.',
+      'player.frameNow': 'The CURRENT FRAME INDEX under another name. `_settleWorld()` copies `sim.frame` onto the player at the top of every province step so `sim/player.js` can read it without a handle to the engine, and outside the province it is never written at all. `volatile.frame` is a DECLARED VOLATILE field (RI-JRN05 §B) and this is the same number; carrying it would make the round-trip hash depend on when the save was taken, which is the exact thing the volatile declaration exists to prevent. Excluded here by name rather than silently.',
     };
 
     const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -3862,6 +3918,7 @@ export class Engine {
       o.frame = 0;
       o.hitstopUntil = clamped(o.hitstopUntil);
       o.player.regenBlockUntil = clamped(o.player.regenBlockUntil);
+      delete o.player.frameNow;
       o.player.actionableAt = clamped(o.player.actionableAt);
       o.camera.shakeUntil = clamped(o.camera.shakeUntil);
       for (const e of o.entities) {

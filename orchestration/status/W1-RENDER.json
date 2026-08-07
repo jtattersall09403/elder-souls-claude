@@ -2,20 +2,24 @@
   "task_id": "W1-RENDER",
   "brief": "orchestration/NEXT-DISPATCH.md \u00a71 \u2014 character and weapon renderer",
   "started": "wave-1 round-1",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "game/src/render/ \u2014 skinned character + weapon mesh driven by CombatBody rig sockets",
     "tools/harness/ \u2014 capture probe proving three weapon classes differ",
     "corpus finding notes"
   ],
   "outputs_written": [
-    "game/src/render/actor.js (new) \u2014 skinned actor + 15 weapon silhouettes, driven by Rig.world[]",
-    "game/src/render/renderer.js \u2014 poseFromRig consumer; playerMesh.visible no longer gated on camera override",
-    "game/src/render/scene.js \u2014 player is a rigged actor",
-    "game/src/combat/moveset.js \u2014 weapon block carries hitbox_span_m / arc_sweep_deg",
-    "game/src/render/ui.js + title.js \u2014 texture.dispose() on resize (ghost-UI fix)",
-    "game/src/harness/api.js \u2014 getDrawnGeometry() debug channel",
-    "tools/harness/wpn-render-probe.mjs (new)"
+    "game/src/render/actor.js (NEW, 637 lines) \u2014 SkinnedMesh actor driven by Rig.world[], 15 per-class weapon silhouettes, Argonian head/crest/tail",
+    "game/src/render/renderer.js \u2014 poseFromRig consumer for player and enemies; playerMesh.visible no longer gated on camera override",
+    "game/src/render/scene.js \u2014 player and the VP07 character-closeup showcase are rigged actors",
+    "game/src/combat/moveset.js \u2014 weapon block carries hitbox_span_m / arc_sweep_deg (the docstring already claimed hitbox_span_m; it was absent)",
+    "game/src/render/ui.js, game/src/render/title.js \u2014 texture.dispose() on canvas resize (ghost-UI on resize/DPR-2)",
+    "game/src/harness/api.js \u2014 getDrawnGeometry() debug channel, reads the live THREE scene graph, never the sockets",
+    "tools/harness/wpn-render-probe.mjs (NEW) \u2014 boot/tip/motion/consumption/screenshots",
+    "tools/harness/wpn-render-look.mjs (NEW) \u2014 side-on swing capture with projected tip per frame",
+    "tools/harness/wpn-render-motion.mjs (NEW) \u2014 pixel motion of a 60-frame attack in the character box",
+    "tools/harness/wpn-render-control.mjs (NEW) \u2014 perturb + delete-the-fix controls, backup/restore with sha verification",
+    "tools/harness/wpn-render-crop.mjs (NEW) \u2014 delete-the-fix decided on the character region"
   ],
   "findings": [
     "load average at start: 7.43 (four cores) \u2014 capture expensive; plan for it",
@@ -35,8 +39,22 @@
     "HEADLINE VISUAL FINDING, only visible because the weapon is now drawn: cgs_drowned_reaper's blade tip is BELOW THE GROUND PLANE FOR EVERY FRAME OF THE SWING. tip y runs -0.83 m at rest to -1.92 m at frame 30; blade inclination runs -36.7 deg at rest to -66.3 deg at frame 30 (worsening THROUGH the swing, not just during it). Character head is at y=1.638, so the tip is up to 1.9 m below its own feet.",
     "MECHANISM of the underground blade: MovesetLibrary._bladeLength solves CGS to 3.098 m of blade so the tip's horizontal radius equals declared reach_m 2.75. The character is ~1.75 m tall. skeleton.json's rest pose hangs the blade point-down from the hand (blade_axis_local [0,-1,0]). A 3.1 m blade hanging point-down from a hand at ~1.0 m puts the tip at -2.1 m BY ARITHMETIC. The declared reaches cannot be satisfied by a blade that also stays above ground on a 1.75 m body.",
     "This is a DATA/solver defect, not a render defect: drawn tip == socketB to 0.0000 mm, so the renderer is faithfully drawing what hit resolution uses. Correcting it in the renderer would BREAK the what-you-see-is-what-hits-you invariant and is explicitly out of scope.",
-    "Consistent with (and worse than) the round-3 critic's numbers: they measured 35-41 deg and a tip at -1.88 m; measured here -36.7 to -66.3 deg with tip min -1.92 m and NEVER above ground."
+    "Consistent with (and worse than) the round-3 critic's numbers: they measured 35-41 deg and a tip at -1.88 m; measured here -36.7 to -66.3 deg with tip min -1.92 m and NEVER above ground.",
+    "Weapon block additions are SAFE for determinism: combat/trace.js picks w.attack_rating by name and never spreads the weapon block; the combat body is explicitly non-durable (sim/combat-bridge.js), so no state hash or save schema sees hitbox_span_m/arc_sweep_deg.",
+    "BOW class_key trap avoided: classes.json BOW reach_m is 22 (arrow range), but the PER-WEAPON moveset reach is 1.813 and _bladeLength solves to 1.405 m, so no 22 m bow is drawn. Bow stave is centred on the grip rather than run to socket_b.",
+    "Solved blade lengths across classes: SSW 1.518, HLB 2.908, CGS 3.098, SPR 2.967, WHP 3.468, BOW 1.405 m.",
+    "CONSUMPTION (RI-MTH07) PASSED, and specifically: perturbed classes.json CGS reach 2.75->1.10 span 1.55->0.25 and HLB reach 2.85->1.30 span 0.75->0.20, left SSW untouched, relaunched. Result: HLB md5 90e661b0->ec272424 CHANGED, CGS md5 8083d265->2733b818 CHANGED, SSW md5 ddc3a027 BYTE-IDENTICAL to baseline. The un-perturbed weapon did not move, so the change is attributable to the perturbed declarations and not to run-to-run noise.",
+    "BASELINE md5s (1920x1080, frame 8 of light attack, identical camera pose for all three): ssw_garrison_sword ddc3a027348a4c3adf7317e6c2e0842c / hlb_garrison_bill 90e661b045bf7f67026e27ede60e285a / cgs_drowned_reaper 8083d2656805fbb43f76c343e5462303. distinct 3 of 3.",
+    "QUANTIFIED SWING (cgs_drowned_reaper, 40 frames from attack start, drawn tip == socketB): tip sweeps 238 deg of yaw about the actor (class declares arc_sweep_deg 340); tip horizontal radius peaks at 2.87 m against declared reach 2.75 m (good conformance); tip y ranges -1.92 to -0.81 m and is ABOVE GROUND ON 0 OF 40 FRAMES. So the arc shape and the reach are approximately right and the entire swing PLANE is sunk 0.8-1.9 m below the character's own feet.",
+    "What the swing looks like: the BODY animates convincingly - torso twists, both arms extend and cross, legs shift stance, the head tracks. The WEAPON is on a plane about a metre below the floor, so on a halberd you see a bare haft stabbing down into the dirt and on a curved greatsword you see the blade lying in the ground several metres in front of the character. It reads as a character miming a swing while the weapon ploughs the field.",
+    "MOTION (pixel, comparable to the critic's 0.19%): ssw_garrison_sword, fixed camera, character box 370x607 = 224,590 px. Max single frame vs frame 0 = 43.76%; union across the 60-frame attack = 54.96%. Pre-fix build was 0.19%. That is 230x on the single-frame figure.",
+    "DELETE-THE-FIX CONTROL PASSED. Reverted renderer.js + scene.js to position+yaw+welded-actor, relaunched, recaptured. In the derived character region (696x794 = 552,624 px): FIXED build every weapon pair differs by 60,794-65,434 px (11.0-11.8% of region, max delta 156-157). PRE-FIX build every pair differs by ZERO pixels above an 8/255 tolerance (max delta 6-7, 196 px, all in a 28px band on the horizon line - antialiasing, not a weapon). Pre-fix frames contain no character at all.",
+    "NOTE for whoever reads the raw md5s: whole-frame md5s of the PRE-FIX captures are also 3-distinct, because setLoadout() changes equip load and the HUD stamina bar is a different length per weapon. The whole-frame hash is sensitive to the HUD, so the control is decided on the character region. Both numbers are printed by tools/harness/wpn-render-crop.mjs.",
+    "Final smoke PASS before and after. No page errors in any of the four browser runs. classes.json verified restored (CGS 2.75/1.55, HLB 2.85/0.75).",
+    "ENEMIES are rigged too, measured not asserted: spawned mat_flesh, aggro'd, 90 frames. enemy:e0 built=true rigged=true, its own weapon mesh, drawn tip travels 0.506 m and matches ITS OWN socketB to 0.00068 mm. So the thing swinging at you is drawn from the same rig that hits you as well.",
+    "Enemy weapons are NOT from the 87-weapon roster - CombatSystem.spawn reads game/data/combat/enemies/*.json `weapon` blocks, which carry no `class`. Before the fix for this, every enemy drew the same default blade. Now classOfUnrostered() reads the DECLARED socket_a/socket_b names (wpn_head_a/wpn_head_b = headed weapon -> AXE family; wpn_guard/wpn_tip = bladed) and capsule_length_m as the edged span. cam_* enemies at 1.45 m now read as greatswords, which is what their own _peak_declared_note says they are.",
+    "Cache-key bug found and fixed during that work: the weapon mesh cache was keyed on roster-only fields, so EVERY unrostered enemy weapon collapsed to the key '||1.45||0.095'. weaponKeyOf() now includes capsule_length_m and the socket names."
   ],
-  "next_step": "baseline shots running; then perturb control and prefix control",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 reporting",
+  "notes_for_successor": "ARCHITECTURE: render/actor.js consumes Rig.world[] (world-space 3x4 per bone) directly by writing THREE.Bone.matrixWorld, with EVERY bone's matrixAutoUpdate AND matrixWorldAutoUpdate set false (see the long comment - setting only the root silently rebuilds the rest pose). SkinnedMesh is bound with an IDENTITY bindMatrix and the actor group is held at identity, so the shader resolves to boneWorld*restInverse and the character lands in world space with no group transform. The weapon rides rig.world[gripIdx] as its matrix and is authored along local -Y, so its tip is socketB through the same matrix - do NOT 'fix' blade pitch here, it would break that invariant. OPEN: the underground blade is a DATA defect (blade longer than the character is tall + point-down rest pose); it belongs to whoever owns _bladeLength/reach_m, not the renderer. NOT DONE: foot IK (RI-CAM07 D), cloth/secondary motion (E5 - the tail is rigid, skinned to pelvis, skeleton.json has no tail bones), equipment slots (E3/E4), sheathed weapons (E1), armour variation."
 }

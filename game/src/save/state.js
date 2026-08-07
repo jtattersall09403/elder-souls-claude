@@ -26,7 +26,16 @@ import { canonicalise } from '../core/canonical.js';
 import { sha256 } from '../core/sha256.js';
 import { saveFight } from './fight.js';
 
-export const SAVE_SCHEMA_VERSION = 1;
+/**
+ * 2, and the bump is deliberate. The W1 save/load repair added the FIGHT (the loadout, the
+ * combat bodies, their controllers and the animation rig), the camera rig, the traversal
+ * counters, the birthsign terms and half a dozen fields that had no writer. A schema-1 blob
+ * lacks all of them, and there is no migration that could invent a combat body — so under
+ * RI-JRN05 CR5 a schema-1 blob is REFUSED with a legible in-fiction line and nothing is
+ * changed. Leaving the version at 1 would have made an old blob a SILENT PARTIAL LOAD, which
+ * is HF3 and the item's "most common real bug in shipped browser games".
+ */
+export const SAVE_SCHEMA_VERSION = 2;
 
 /** Paths excluded from the round-trip diff. CLOSED — RI-JRN05 rule V1. */
 export const VOLATILE_PATHS = [
@@ -177,6 +186,12 @@ export function buildSave(sim, build) {
         pos: vec(n.pos), yaw_deg: r6(n.yaw), home_yaw_deg: r6(n.homeYaw),
         height_scale: r6(n.height_scale), notice_radius_m: r6(n.notice_radius_m),
         visible: !!n.visible, loiter_frames: n.loiter_frames, noticing: !!n.noticing,
+        // The ACTOR ROLE the dialogue infos are selected by, and any per-person line
+        // overrides. Both are written by spawnNPC from the npcs/*.json record and neither was
+        // in the save, so every restored person came back with `actor: null` — and an actor
+        // role of null selects no infos at all, which is a settlement of mutes.
+        actor: n.actor === undefined ? null : n.actor,
+        lines: n.lines === undefined ? null : n.lines,
       })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
       props: sim.props.map((o) => ({
         eid: o.eid, name: o.name, item: o.item, pos: vec(o.pos), yaw_deg: r6(o.yaw),
@@ -220,6 +235,11 @@ export function buildSave(sim, build) {
         // is what "lost him" is measured against, and both were written every frame by the
         // stealth system and carried by nothing. A guard that saw you, then a reload, and the
         // guard has never seen anyone.
+        encounter_id: e.encounterId === undefined ? null : e.encounterId,
+        encounter_role: e.encounterRole === undefined ? null : e.encounterRole,
+        encounter_leader: !!e.encLeader,
+        encounter_aggroed: !!e.encAggroed,
+        encounter_hailed: !!e.encHailed,
         alert_channel: e.alertChannel === undefined ? null : e.alertChannel,
         percept_dist_m: e.percept_dist === undefined || e.percept_dist === null ? null : r6(e.percept_dist),
         percept_los: !!e.percept_los,
@@ -367,6 +387,34 @@ export function buildSave(sim, build) {
     // configuration, the flask, or any combat body — and `mirror()` overwrote six `pose.*`
     // fields the save had just restored on the first step after every load.
     fight: saveFight(sim, sim._combat, sim.magic, f),
+    // RI-WLD10 / S25. `sim/traversal.js` says of every one of these fields "a live counter,
+    // reset by reset() and saved by the engine". The engine did not save them: the breath
+    // meter, the mire progress and refractory, the fall apex, the slide accumulator and the
+    // escape count were all live simulation state with no save field anywhere, so a save taken
+    // drowning in W5 water reloaded with a full lungful and a save taken mid-fall reloaded
+    // standing. `last_escape_ago_frames` is the one frame stamp and is rebased like the rest.
+    traversal: sim._traversal ? {
+      airborne: !!sim._traversal.airborne,
+      vy: r6(sim._traversal.vy),
+      apex_y: sim._traversal.apexY === null ? null : r6(sim._traversal.apexY),
+      band: sim._traversal.band,
+      depth_m: r6(sim._traversal.depth),
+      submerged: !!sim._traversal.submerged,
+      breath_s: r6(sim._traversal.breath),
+      breathes_water: !!sim._traversal.breathesWater,
+      buoyant: !!sim._traversal.buoyant,
+      mire: r6(sim._traversal.mire),
+      mire_last_footfall: r6(sim._traversal.mireLastFootfall),
+      mired: !!sim._traversal.mired,
+      mire_escapes: sim._traversal.mireEscapes,
+      mire_recovery: sim._traversal.mireRecovery,
+      mire_refractory: sim._traversal.mireRefractory,
+      slide: r6(sim._traversal.slide),
+      blocked_by_slope: !!sim._traversal.blockedBySlope,
+      foot_accum: r6(sim._traversal.footAccum),
+      last_escape_ago_frames: f - sim._traversal.lastEscapeF,
+      escape_pressed: !!sim._traversal.escapePressed,
+    } : null,
     rng: rng.saveRngState(),
     flags: sortedMap(sim.quest.flags),
     volatile: {
@@ -541,6 +589,7 @@ export function applySave(sim, blob, moves, statFor) {
       pos: [...n.pos], homePos: [...n.pos], yaw: n.yaw_deg, homeYaw: n.home_yaw_deg,
       height_scale: n.height_scale, notice_radius_m: n.notice_radius_m,
       visible: n.visible, loiter_frames: n.loiter_frames, noticing: n.noticing, speaking: false,
+      actor: n.actor, lines: n.lines,
     });
   }
   sim.props.length = 0;
@@ -567,6 +616,11 @@ export function applySave(sim, blob, moves, statFor) {
     e.animPhase0 = es.anim_phase0 === undefined ? -1 : es.anim_phase0;
     e.stagger = es.stagger; e.staggerUntil = f + es.stagger_in_frames;
     e.stateEnteredF = f - es.state_entered_ago_frames;
+    e.encounterId = es.encounter_id;
+    e.encounterRole = es.encounter_role;
+    e.encLeader = es.encounter_leader;
+    e.encAggroed = es.encounter_aggroed;
+    e.encHailed = es.encounter_hailed;
     e.alertChannel = es.alert_channel;
     e.percept_dist = es.percept_dist_m;
     e.percept_los = es.percept_los;
@@ -605,6 +659,19 @@ export function applySave(sim, blob, moves, statFor) {
   c.shakeAmp = blob.pose.camera_shake_amp_deg;
   c.shakeUntil = f + blob.pose.camera_shake_in_frames;
   restoreCameraRig(c, blob.pose, f);
+  if (sim._traversal && blob.traversal) {
+    const t = sim._traversal, b = blob.traversal;
+    t.airborne = b.airborne; t.vy = b.vy; t.apexY = b.apex_y;
+    t.band = b.band; t.depth = b.depth_m; t.submerged = b.submerged;
+    t.breath = b.breath_s; t.breathesWater = b.breathes_water; t.buoyant = b.buoyant;
+    t.mire = b.mire; t.mireLastFootfall = b.mire_last_footfall; t.mired = b.mired;
+    t.mireEscapes = b.mire_escapes; t.mireRecovery = b.mire_recovery;
+    t.mireRefractory = b.mire_refractory; t.slide = b.slide;
+    t.blockedBySlope = b.blocked_by_slope; t.footAccum = b.foot_accum;
+    t.lastEscapeF = f - b.last_escape_ago_frames;
+    t.escapePressed = b.escape_pressed;
+    t.events.length = 0;
+  }
 
   rng.loadRngState(blob.rng);
   return { ok: true, frame: sim.frame, seed: rng.seed };

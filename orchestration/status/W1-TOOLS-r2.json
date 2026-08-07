@@ -2,7 +2,7 @@
   "task_id": "W1-TOOLS-r2",
   "brief": "orchestration/NEXT-DISPATCH.md \u00a72 + corpus/80-methods/TOOL-COVERAGE-R1.md (NOT SATISFIED)",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "tools/analysis/build-viability.mjs (rebuild)",
     "tools/journey/gamepad-shim.mjs (rebuild)",
@@ -18,7 +18,21 @@
     "tools/journey/gamepad-shim.mjs (REBUILT)",
     "tools/lib/browser.mjs (additive: launchGame({initScripts:[...]}) applied before goto)",
     "tools/journey/journey-run.mjs (jrn07 sampling implemented; pad install moved off the reload path)",
-    "tools/journey/cadence.mjs (REBUILT)"
+    "tools/journey/cadence.mjs (REBUILT)",
+    "tools/journey/competence.mjs (REBUILT)",
+    "tools/lib/absence.mjs (new: the absence-reporter contract, TOOL-LOOP rule 1 third path)",
+    "tools/platform/perf-run.mjs (absence-reporter + LIVE RI-PLT01 T1 enforcer)",
+    "tools/platform/heap-walk.mjs",
+    "tools/platform/leak-run.mjs",
+    "tools/platform/hitch-census.mjs",
+    "tools/platform/load-run.mjs",
+    "tools/platform/stream-audit.mjs",
+    "tools/platform/decoupling.mjs",
+    "tools/analysis/asset-budget.mjs",
+    "tools/analysis/audio-sync.mjs",
+    "tools/analysis/audio-budget.mjs",
+    "tools/analysis/music-coverage.mjs",
+    "tools/blind/audio-pack.mjs"
   ],
   "findings": [
     "BASELINE r2: node tools/harness/smoke.mjs PASS 6/6 (game boots, SwiftShader). node tools/corpus-index.mjs: C8 = 38 phantom tools, 0 errors. (Critic's 49/48 figure has moved down further as other agents ship.)",
@@ -41,8 +55,16 @@
     "INDEPENDENT FALSIFICATION of the sampler (a different implementation, in a different language): reimplemented all five RI-JRN07 \u00a7B stratum predicates in Python straight from the raw quest JSON. Candidate counts agree exactly -- Q1 32, Q2 0, Q3 2, Q4 9, Q5 0. Seed sensitivity confirmed (4711/99/12345 give different draws), determinism confirmed (three runs at 4711 identical), and with the flags absent the m_quest_sample rows do not appear at all. Round 1's inert flags produced byte-identical output at every seed.",
     "cadence REBUILT. LOCOMOTION_ACTIONS is now DERIVED from game/src/input/actions.js ACTIONS and every member is asserted to be in it at module load (a drift throws with the closed set printed - verified against a patched copy). The list is {sprint, jump}: round 1 had 16 names of which 11 were not in the closed set. crouch moved OUT of the exclusion (actions.js AM-W1-15-01 says it is a TOGGLE and a toggle changes a flag). Added FLAG_TOGGLE and NO_OP_CAPABLE classes: interact/use_item count only when the trace corroborates a C1 clause within 60 frames, with a control proving the rule is not a blanket refusal. Dead `analyse` export fixed with an import.meta.url IS_MAIN guard.",
     "cadence: the KEY behavioural change. HARNESS.md \u00a74 says an unknown button is an error never a silent no-op; the tool now mirrors it. If ANY input_action names an action outside the closed set, classification_reliable=false and C1/C2/C3/C7/C10 go UNMEASURABLE with the disagreement named. --self-test 10/10.",
-    "INDEPENDENT FALSIFICATION of cadence (the critic's OWN seven-name sweep, re-run by importing analyse - which also proves the dead export is fixed): round 1 gave 'pass, gap 0.17s, 0 excluded, traversal 0' for six of seven. Round 2 gives UNMEASURABLE for all seven names outside the closed set, and 'fail, gap 3600s, 21601 excluded, traversal 1.0' for sprint and jump, the two that ARE in the set and ARE locomotion. Second falsification: a patched copy with LOCOMOTION_NAMES=['moveForward','jump'] THROWS at module load with the closed set printed."
+    "INDEPENDENT FALSIFICATION of cadence (the critic's OWN seven-name sweep, re-run by importing analyse - which also proves the dead export is fixed): round 1 gave 'pass, gap 0.17s, 0 excluded, traversal 0' for six of seven. Round 2 gives UNMEASURABLE for all seven names outside the closed set, and 'fail, gap 3600s, 21601 excluded, traversal 1.0' for sprint and jump, the two that ARE in the set and ARE locomotion. Second falsification: a patched copy with LOCOMOTION_NAMES=['moveForward','jump'] THROWS at module load with the closed set printed.",
+    "competence REBUILT. The gear clause's three states are now distinct and two of them BLOCK: changed===true -> GEAR_CHANGED, changed===null -> GEAR_UNCHECKABLE (new), changed===false -> proceed. Round 1's `if (gear && gear.changed)` treated null as falsy so an absent player.loadout raised NO blocker at all, and the self-test's own fixture never emitted the field. The fixture now emits a loadout by default and takes loadout:null on purpose.",
+    "competence: found and closed a FOURTH state the critic did not name -- a STALE observation. compareLoadouts's at() walks backwards for the last record carrying player.loadout; if that record predates E_first, E_late inherits E_first's kit and 'unchanged' is certified from an observation never taken. It now reports observed_at frames and degrades to null when the E_late observation predates E_first.",
+    "competence: K7's hp/dps spread is now reported alongside the tier ladder as the critic recommended. champion_hist_marked (2876 hp) vs cst_sap_speaker (380 hp), both 'elite', reports late_over_first_hp 0.13 with a named note. The threshold is NOT moved -- that is RI-JRN02's call. --self-test 9/9.",
+    "INDEPENDENT FALSIFICATION of competence (via the CLI on trace.jsonl files on disk -- the self-test drives analyse() in-process with synthetic arrays, so this is a different means): (a) STALE case, kit recorded once at frame 67800 before E_first at 68400 and nowhere after -> GEAR_UNCHECKABLE, exit 1; (b) ARMOUR-ONLY upgrade, chitin-cuirass -> ebony-plate, subtler than the self-test's weapon swap -> GEAR_CHANGED, exit 1; (c) CONTROL, identical kit observed inside both encounters -> no gear blocker, the six metrics compute, exit 1 on the metrics themselves. A clause that rejected all three would measure nothing.",
+    "TWELVE ABSENCE-REPORTERS shipped per TOOL-COVERAGE-R1 Ruling 2 (8 platform + 4 audio). Built on a new tools/lib/absence.mjs. They BOOT THE GAME and confirm the absence against the running build (getCapabilityReport().not_implemented + the harness methods the real instrument needs), so they stop being true the moment the system ships. Three outcomes, NONE of them 0: exit 20 ABSENT, exit 20 UNCONFIRMED, exit 21 ARRIVED (= replace this file). Confirmed ABSENT on this tree: all 12.",
+    "perf-run.mjs implements RI-PLT01 T1's REFUSAL, which the item delegates its own enforcement to and which had never existed. It reads the renderer through WEBGL_debug_renderer_info on the page rather than trusting a manifest. FALSIFIED: SwiftShader -> REFUSED (swiftshader), llvmpipe/Mesa -> REFUSED (llvmpipe, mesa), valid GPU + device-class gaming-pc -> REFUSED (bad class), RTX 4070 + desktop-discrete -> ADMISSIBLE. The gate is a check, not a constant. --t1-only --attest-renderer is the falsification handle and is documented as such.",
+    "INDEPENDENT FALSIFICATION of the absence contract (pointing the library at an IMPLEMENTED system, gamepad/A-JRN2): it FOUND TWO REAL BUGS IN MY OWN LIBRARY. (1) the not_implemented match was a SUBSTRING, so 'gamepad' hit the heap/GC entry whose text says A-JRN2 LANDED -- the library reported ABSENT while quoting a sentence saying the opposite. Now a PREFIX match. (2) a zero-arg call that THREW was counted as evidence of absence; setPadProfile() throws on a missing arg and gamepad() throws on mode. Throws are now recorded and excluded from the verdict. After both fixes the probe correctly returns ARRIVED / exit 21, and all 12 real reporters still return ABSENT / exit 20.",
+    "C8: 38 -> 26. Remaining 26 by area: experience 14, composition 5, corpus 5, analysis 2 (pacifist-in-fight, economy-model). NOT written this round."
   ],
-  "next_step": "competence.mjs: the gear clause cannot fail (null is falsy)",
-  "notes_for_successor": "Round 2. Do NOT touch the seven accepted tools (journey/beat-extract, mw-open-beats.json, experience/{session-run,beat-extract,beat-diff,isolation-check,log-lint})."
+  "next_step": "hand to the tool critic. Remaining C8 = 26 (experience 14, composition 5, corpus 5, analysis 2).",
+  "notes_for_successor": "Round 2 rebuilt the five the R1 critic rejected plus the 12 absence-reporters Ruling 2 ordered. DO NOT rewrite the seven R1-accepted tools. build-viability now exits 20 on this tree BY DESIGN: 0/40 quest givers resolve to a reaction group, so criteria 1 and 3 are unmeasurable and RI-CHR01 Distinctness / RI-CHR03 Decidability stay corpus_debt. That is a DATA defect with a clear fix: give the 31 mainline.json givers a reaction_group field, and mint npc records for the 9 that have none. The moment either lands the tool measures the race bar for real -- proven against a patched data root via --data-root. Remaining C8 = 26. Priority per NEXT-DISPATCH (an axis feeding min-over-axes outranks a standalone dimension): tools/experience/* (14) is the largest block and RI-EXP03/04/06 and RI-CMP03 all aggregate min-over-axes; then tools/corpus/* (5, unblocks the RI-DLG set); then tools/composition/* (5). tools/analysis/economy-model.mjs and pacifist-in-fight.mjs are standalone dimensions and rank last."
 }

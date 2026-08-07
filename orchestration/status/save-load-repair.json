@@ -2,7 +2,7 @@
   "task_id": "save-load-repair",
   "brief": "inline dispatch: repair the save/load round trip (RI-JRN05), which belongs to no single piece",
   "started": "wave-1 repair",
-  "state": "implementing",
+  "state": "measuring",
   "outputs_expected": [
     "game/src/save/state.js (writers for camera rig, loadout, creation powers/drawbacks)",
     "game/src/engine.js (loadState restores the fight and re-mirrors; census widened)",
@@ -17,7 +17,9 @@
     "game/src/sim/entities.js (identity values for the five perception fields)",
     "game/src/sim/camera.js (resolveMode death sentinel)",
     "game/src/combat/actor.js (identity values for worldDeny/mireStruggle/moveOpts/moveStartFrame)",
-    "game/data/save-manifest.json (Fight group; Crime/World/Progression/Identity/Character/Player pose completed)"
+    "game/data/save-manifest.json (Fight group; Crime/World/Progression/Identity/Character/Player pose completed)",
+    "tools/harness/save-break.mjs (NEW \u2014 the delete-the-fix falsifier)",
+    "tools/harness/save-consume.mjs (NEW \u2014 RI-MTH07 CONSUMPTION)"
   ],
   "findings": [
     "BASELINE REPRODUCED. state-diff.mjs --states arena_flat --seeds 4711 --frames 120: 0/1 clean. M1 FAIL, M2 FAIL, M4 FAIL, M5 DIVERGED, census not ok.",
@@ -34,8 +36,23 @@
     "FIVE MORE DURABLE FIELDS WITH NO WRITER: progression.gold (read by _buildCombat into the parley price and by the spell merchant), player.carriedWeight and player.burdenRatio (RI-PRG07 encumbrance), entities[].lkp and entities[].lastSeenF (the last-known-position the whole search behaviour is driven from). Plus the entire fight: weapon, shield, offhand config, two-handed, endurance, armour poise, hp ceiling, flask, and every combat body.",
     "SIX FIELDS WHOSE EXISTENCE DEPENDED ON GAME HISTORY, not on the schema: CombatBody.worldDeny/.mireStruggle/.moveOpts/.moveStartFrame, sim.player.carriedWeight/.burdenRatio, sim.progression.gold/.sapTaint, and five perception fields on the entity. Measured: fight.player.worldDeny.* was in the save on sv1-midquest and endgame-200q and absent on arena_flat, same build, same frame. A key set that changes with game state cannot be checked by set difference at all.",
     "quantiseSaveGrid() did not grid the COMBAT BODIES, which are the authority behind sim.player. With everything else clean M5 still diverged on 7 fields for 1-5 frames from a 1e-7 m difference crossing a 4-dp trace rounding boundary.",
-    "The lockOn was released by every load: _buildCombat ends with mirror() of the freshly built fight, so reading sim.player.lockOn after it read a null the rebuild had just written. Restored from blob.pose.locked_on instead."
+    "The lockOn was released by every load: _buildCombat ends with mirror() of the freshly built fight, so reading sim.player.lockOn after it read a null the rebuild had just written. Restored from blob.pose.locked_on instead.",
+    "ALL SEVEN previously-failing states now clean (barge-hold, writ-house, default, helstrom-market, water_shallows, wpn-loadout-o3_twohand, swamp_canopy): M1 ok, M2 ok, M4 ok, M5 identical, census ok.",
+    "MOVE REFERENCES WERE SERIALISED BY THE WRONG KEY. move.id is the NAME (roll); the key it lives under in the body move table is roll_LIGHT, because RI-CMB09 gives every equip tier its own roll. So every attack round-tripped (slot id == id) and every roll and backstep was silently dropped. Measured on barge-hold and writ-house, whose preroll ends mid-roll: player.move roll -> null, player.phase active -> none, M5 diverged on 45 fields over 500+ of 600 frames.",
+    "THE ANIMATION RIG carries state nothing carried: lastR* (the pose the actor is holding), fromR*+blendLeft (a cross-fade in progress) and the previous hurtbox capsules. A rig rebuilt by a load has _hasLastPose=false, so beginCrossFade() returns early and the ten-frame blend clips.json exists to provide is instantiated in one frame. M5 diverged on weapon_tip/weapon_guard for exactly 30 frames on 12/12 trials before this was carried.",
+    "TRAVERSAL (RI-WLD10/S25) had NO WRITER AT ALL, while its own header says \"everything below is a live counter, reset by reset() and SAVED BY THE ENGINE\". Breath, mire progress and refractory, fall apex, slide accumulator, escape count: a save taken drowning reloaded with a full lungful. Now a manifest group of its own.",
+    "MORE FIELDS WITH NO WRITER: npcs[].actor (the actor role the dialogue infos are selected by \u2014 a restored settlement came back with actor:null, which selects no infos, i.e. a town of mutes) and npcs[].lines; progression.skills[].levelsSinceRest and .restClamped (RI-PRG03 per-rest advancement cap \u2014 a reload re-granted the allowance).",
+    "npcs[].topics and npcs[].services are declared id-sorted by the save and arrive unsorted from npcs/*.json, so the round trip reordered them on every settlement state. Canonicalised in the live copy (the same ruling quest.topicsKnown already had), not by relaxing the check.",
+    "EVENT DECLARED AND NEVER EMITTED, in this piece: save_read. writeSave() emitted save_write; readSave() emitted nothing, so RI-JRN05 M12 degraded-load surfacing and M17 slot honesty had no trace evidence. Now emitted with {slot, gen, degraded}.",
+    "NINE MORE EVENTS DECLARED IN THE CLOSED VOCABULARY AND EMITTED BY NOTHING ANYWHERE IN game/src (not mine, reported for their owners): topic, region_stream_in, region_stream_out, hitch, input_device_change, input_overflow, light_snuffed, trespass_enter, fence_sale.",
+    "ABSOLUTE FRAME STAMPS INSIDE THE CRIME LEDGER (crimes[].frame, witnesses[].frame_seen, zones[].baseline_until_f, ctx_until_f) are restored UNREBASED by CrimeWorld.fromJSON/SearchZones.fromJSON while loadState resets the frame to 0. Round-trips identically so no check fires, but the guard band and the zone baselines read them against the new frame. NOT FIXED \u2014 W1-15 area, reported.",
+    "MORE FIELDS WITH NO WRITER, found by widening the census and sweeping all 38 shipped states: entities[].encounterId and .encounterRole (W1-07 encounter membership \u2014 a restored Dres raid came back as unaffiliated enemies and the whole AR-3 net-and-capture branch was unreachable after any load; measured as enemies[].encounter differing on 1800 of 1800 record slots on wld-dres-raid-road).",
+    "THE 6-DP SAVE GRID had to be extended three times, each time found by M5 rather than reasoned: the combat bodies, then the whole camera rig (c.pos and c.onscreen.* \u2014 RI-CAM03 lock spring measures its yaw target FROM the camera position and takes its catch-up weight from LAST frame projected NDC, so a 1e-7 m camera position became a 1e-4 deg pitch difference 36 frames later), then entities[].lkp and .percept_dist.",
+    "SAVE_SCHEMA_VERSION bumped 1 -> 2. A schema-1 blob has no fight, no traversal, no camera rig and no birthsign terms, and no migration can invent a combat body, so CR5 applies and it is refused with a legible line. Leaving it at 1 would have made every old blob a SILENT PARTIAL LOAD, which is HF3.",
+    "DECLARED CONSEQUENCE of rebuilding the fight on load: MagicSystem.active (live effect leases, each holding an _undo closure) is destroyed by the rebuild. It was never in the save and never survived a cold load; what changed is that the warm and cold paths now agree. Recorded in the manifest declared_incomplete and in the code. Owner W1-14.",
+    "THREE MORE ENCOUNTER FIELDS with no writer: entities[].encLeader / .encAggroed / .encHailed \u2014 the AR-3 opening latches. encHailed is a ONE-SHOT: a restored encounter hailed the player a second time, and a raid that had already gone hostile came back deciding afresh whether to. wld-dres-raid-road now clean on both seeds.",
+    "ALL-STATES SWEEP (38 shipped states x 2 seeds x 300 frames, reports/runs/STATE-DIFF-allstates): 70/76 clean, and the 6 failures were exactly the two causes fixed after it started (entities[].lkp not on the save grid; encounter membership not carried). Both verified clean on re-run."
   ],
-  "next_step": "sweep every shipped state x seeds; regression-check other tools; write the delete-the-fix falsifier",
+  "next_step": "final full sweep; save-break falsifier; save-consume; save-audit",
   "notes_for_successor": "Baseline artifact: /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/base1/state-diff.json"
 }

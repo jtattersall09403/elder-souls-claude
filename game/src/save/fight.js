@@ -68,23 +68,38 @@ const STAMP = new Set(FRAME_STAMP_FIELDS);
 const relStamp = (v, now) => (typeof v !== 'number' ? v : (v <= 0 ? v : v - now));
 const absStamp = (v, now) => (typeof v !== 'number' ? v : (v <= 0 ? v : v + now));
 
-/** A move reference becomes its slot id; a null stays null. */
-const moveId = (m) => (m && m.id !== undefined ? m.id : null);
+/**
+ * A move reference becomes its TABLE KEY, and that distinction is a defect this repair had to
+ * find twice. `move.id` is the move's NAME (`roll`); the key it lives under in the body's move
+ * table is `roll_LIGHT`, because RI-CMB09 §2 gives every equip tier its own roll. Serialising
+ * `move.id` therefore round-tripped every attack (whose slot id and `id` agree) and silently
+ * dropped every roll and backstep: measured on `barge-hold`, where the pre-roll ends mid-roll,
+ * `player.move` came back null, `player.phase` 'active' -> 'none', and RI-JRN05 M5 diverged on
+ * 45 fields for 500+ of 600 frames.
+ *
+ * The alias rows (`out.light === out['r1.1']`) are the same OBJECT, so any key that resolves to
+ * it restores the identical move; the scan is over sorted keys so the choice is canonical.
+ */
+function moveKeyOf(m, table) {
+  if (!m) return null;
+  if (table) for (const k of Object.keys(table).sort()) if (table[k] === m) return k;
+  return m.id !== undefined ? m.id : null;
+}
 
-function encode(v, key, now) {
+function encode(v, key, now, table) {
   if (v === undefined) return null;
   if (v === null) return null;
   if (v instanceof Set) return [...v].map(String).sort();
-  if (v instanceof Map) return [...v.entries()].map(([k, x]) => [String(k), encode(x, '', now)]).sort();
-  if (Array.isArray(v)) return v.map((x) => encode(x, key, now));
+  if (v instanceof Map) return [...v.entries()].map(([k, x]) => [String(k), encode(x, '', now, table)]).sort();
+  if (Array.isArray(v)) return v.map((x) => encode(x, key, now, table));
   if (typeof v === 'number') return STAMP.has(key) ? relStamp(v, now) : r6(v);
   if (typeof v === 'function') return null;
   if (typeof v === 'object') {
-    // A move object anywhere in the graph is carried as its id — the table it lives in is
-    // shared between every actor holding that weapon and is rebuilt from the loadout.
-    if (v.total !== undefined && v.startup !== undefined && v.id !== undefined) return { __move: v.id };
+    // A move object anywhere in the graph is carried as its table key — the table it lives in
+    // is shared between every actor holding that weapon and is rebuilt from the loadout.
+    if (v.total !== undefined && v.startup !== undefined && v.id !== undefined) return { __move: moveKeyOf(v, table) };
     const out = {};
-    for (const k of Object.keys(v).sort()) out[k] = encode(v[k], k, now);
+    for (const k of Object.keys(v).sort()) out[k] = encode(v[k], k, now, table);
     return out;
   }
   return v;
@@ -108,7 +123,8 @@ export function actorFields(o) {
   return Object.keys(o).filter((k) => !SKIP.has(k)).sort();
 }
 
-export function saveActor(o, now) {
+export function saveActor(o, now, table) {
+  const t = table || o.moves || (o.b && o.b.moves) || null;
   const out = {};
   // The rig is skipped as an OBJECT (it is rebuilt from skeleton.json) but it carries real
   // animation state: the pose the actor is holding, a cross-fade in progress, and last
@@ -116,10 +132,10 @@ export function saveActor(o, now) {
   if (o.rig && typeof o.rig.saveState === 'function') out.rig = o.rig.saveState();
   for (const k of actorFields(o)) {
     const v = o[k];
-    if (k === 'move' || k === 'pendingMove') { out[k] = moveId(v); continue; }
+    if (k === 'move' || k === 'pendingMove') { out[k] = moveKeyOf(v, t); continue; }
     if (k === 'hitThisSwing') { out[k] = [...v].map(String).sort(); continue; }
     if (typeof v === 'function') continue;
-    out[k] = encode(v, k, now);
+    out[k] = encode(v, k, now, t);
   }
   return out;
 }
@@ -178,13 +194,13 @@ export function saveFight(sim, combat, magic, now) {
   for (const b of combat.bodies) {
     if (b === combat.player) continue;
     const ctl = combat.enemies.get(b.id);
-    enemies.push({ eid: b.id, stat_id: b.statId || null, body: saveActor(b, now), ctl: ctl ? saveActor(ctl, now) : null });
+    enemies.push({ eid: b.id, stat_id: b.statId || null, body: saveActor(b, now, b.moves), ctl: ctl ? saveActor(ctl, now, b.moves) : null });
   }
   enemies.sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0));
   return {
     loadout: saveLoadout(combat, magic, sim),
-    player: saveActor(combat.player, now),
-    player_ctl: combat.playerCtl ? saveActor(combat.playerCtl, now) : null,
+    player: saveActor(combat.player, now, combat.player.moves),
+    player_ctl: combat.playerCtl ? saveActor(combat.playerCtl, now, combat.player.moves) : null,
     enemies,
   };
 }

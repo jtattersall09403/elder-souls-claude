@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/save-manifest@1",
   "save_schema": "elder-souls/save@1",
-  "save_schema_version": 1,
+  "save_schema_version": 2,
   "provenance": "Enumerated from RI-JRN05 §B, which is binding. This file is the SPECIFICATION; game/src/save/state.js is the implementation. RI-JRN05 M4 is a set-difference in BOTH directions between this file and the key set of canonicalise(saveState()) — a field in the save that is not here is a defect, and a field here that is not in the save is a defect. | W1-repair pass: the manifest and the save disagreed in both directions on every shipped state; the Crime, World, Progression, Identity, Player pose and Fight groups were brought back into agreement and the fields with no writer were given one.",
   "rules": {
     "V1": "The volatile list is CLOSED. A field that differs across a round trip and is not on it is a defect. Moving a field onto it to make a test pass is falsification under RI-MTH04, not a fix.",
@@ -262,7 +262,12 @@
         "percept_dist_m",
         "percept_los",
         "last_seen_ago_frames",
-        "lkp"
+        "lkp",
+        "encounter_id",
+        "encounter_role",
+        "encounter_leader",
+        "encounter_aggroed",
+        "encounter_hailed"
       ],
       "entity_field_live_to_save": {
         "id": "id",
@@ -292,7 +297,12 @@
         "percept_dist": "percept_dist_m",
         "percept_los": "percept_los",
         "lastSeenF": "last_seen_ago_frames",
-        "lkp": "lkp"
+        "lkp": "lkp",
+        "encounterId": "encounter_id",
+        "encounterRole": "encounter_role",
+        "encLeader": "encounter_leader",
+        "encAggroed": "encounter_aggroed",
+        "encHailed": "encounter_hailed"
       },
       "entity_fields_derived_from_the_archetype": [
         "archetype",
@@ -329,7 +339,9 @@
         "notice_radius_m",
         "visible",
         "loiter_frames",
-        "noticing"
+        "noticing",
+        "actor",
+        "lines"
       ],
       "prop_record_fields": [
         "eid",
@@ -524,6 +536,33 @@
         "id": "Supplied when the body is created (the eid).",
         "side": "'P' or 'E', supplied when the body is created."
       }
+    },
+    {
+      "group": "Traversal",
+      "class": "durable",
+      "paths": [
+        "traversal.airborne",
+        "traversal.apex_y",
+        "traversal.band",
+        "traversal.blocked_by_slope",
+        "traversal.breath_s",
+        "traversal.breathes_water",
+        "traversal.buoyant",
+        "traversal.depth_m",
+        "traversal.escape_pressed",
+        "traversal.foot_accum",
+        "traversal.last_escape_ago_frames",
+        "traversal.mire",
+        "traversal.mire_escapes",
+        "traversal.mire_last_footfall",
+        "traversal.mire_recovery",
+        "traversal.mire_refractory",
+        "traversal.mired",
+        "traversal.slide",
+        "traversal.submerged",
+        "traversal.vy"
+      ],
+      "note": "RI-WLD10 / seam S25. game/src/sim/traversal.js declares of every field here \"everything below is a live counter, reset by reset() and SAVED BY THE ENGINE\". The engine did not save any of it: the breath meter, the mire progress and its refractory, the fall apex, the slide accumulator and the escape count were live simulation state with no save field anywhere in the project. A save taken drowning in W5 water reloaded with a full lungful; a save taken mid-fall reloaded standing. The seven view copies of these on sim.player (waterBand, denyRoll, denySprint, breathS, mired, mireStruggle, frameNow) are a VIEW refreshed by Engine.stepOnce() and are declared at their identity values in makePlayer(), not carried twice. Every field is enumerated above; the durable-field census walks the live object as well."
     }
   ],
   "declared_incomplete": {
@@ -534,6 +573,11 @@
       "faction runtime",
       "disease incubation runtime",
       "bloodstain runtime"
+    ],
+    "known_gaps_not_closed_by_the_w1_repair": [
+      "The CRIME LEDGER's own frame stamps are restored UNREBASED. `crimes[].frame`, `witnesses[].frame_seen`, `deaths[].frame` and `zones[].{baseline_until_f, ctx_until_f}` are absolute indices written by sim/crime/state.js and sim/stealth/search.js, and CrimeWorld.fromJSON()/SearchZones.fromJSON() put them back verbatim while loadState() resets the frame to 0 (RI-MTH01 A07). The ROUND TRIP is unaffected — the same number goes out as came in, so M1/M2/M4 stay clean — but a zone whose alert baseline expires at frame 12,000 comes back holding it for 12,000 more frames, and a crime seen 30 frames ago comes back seen 12,000 frames in the future. Owner: W1-15. Found by the W1 save/load repair; not fixed here because the rebasing rule belongs with the system that stamps them.",
+      "MagicSystem.active — the live effect LEASES (a fortify running, a chameleon, a muffle) — are not in the save and cannot be restored by assignment: each entry holds an `_undo` closure and its application wrote a term into a consuming system. RI-JRN05 §B's Affliction group names 'active long-duration effects and their remaining duration', so this IS a manifest field with no writer, and it is declared rather than quietly omitted. Owner: W1-14 / seam S19; the restore needs applyEffects() to be re-runnable from a record, which is that piece's design decision, not this one's. DECLARED CONSEQUENCE OF THE W1 REPAIR: loadState(blob) now rebuilds the fight (and therefore the MagicSystem) from fight.loadout on every load, so a warm load in the same session no longer keeps a running buff by accident. It never survived a cold load or a page reload, so nothing that was durable became less durable; what changed is that the warm and cold paths now behave identically, which is what makes RI-JRN05 M3 a meaningful check rather than a second copy of M1."
     ]
-  }
+  },
+  "save_schema_version_note": "Bumped from 1 by the W1 save/load repair. A schema-1 blob has no `fight`, no `traversal`, no camera rig and no birthsign terms, and no migration can invent a combat body, so RI-JRN05 CR5 applies: a schema-1 blob is refused with a legible line and nothing is changed. Leaving it at 1 would have made every old blob a SILENT PARTIAL LOAD (HF3)."
 }

@@ -316,6 +316,12 @@ export function installHarness(engine, bootPromise) {
       const C = engine.sim && engine.sim._combat;
       read('player', r.playerMesh, C && C.player);
       for (const [eid, mesh] of r.enemyMeshes || []) read('enemy:' + eid, mesh, C && C.bodyOf ? C.bodyOf(eid) : null);
+      // NPCs have no combat body, so they are posed by the group transform at the rest pose
+      // (render/actor.js `poseStatic`). They are enumerated anyway: "the villagers are still
+      // boxes" is exactly the kind of half-finished conversion this channel should be able to
+      // catch, and it cannot catch it if it only looks at the two actors that were converted
+      // first. `rigged` is expected to be FALSE here — that is the static path, not a fault.
+      for (const [eid, mesh] of r.npcMeshes || []) read('npc:' + eid, mesh, null);
       return out;
     },
 

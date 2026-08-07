@@ -92,6 +92,19 @@ export function makePlayer() {
     // field as lost by a save that never had it. Carried by save/state.js `character`.
     carriedWeight: 0,
     burdenRatio: 0,
+    // ---- the traversal VIEW (RI-WLD10 / S25) ---------------------------------------------
+    // `Engine.stepOnce()` copies all seven off `this.traversal` every step so the frame record
+    // and the input gate can read them. None was declared here, so they came into existence on
+    // the first step of a state with a heightfield under it and did not exist at all in an
+    // authored interior — a live object whose key set depends on which cell it is in. The
+    // AUTHORITY is `sim._traversal`, which the save now carries; these are the view.
+    frameNow: 0,
+    waterBand: 'W0',
+    denySprint: false,
+    denyRoll: false,
+    breathS: 0,
+    mired: false,
+    mireStruggle: false,
   };
 }
 
@@ -260,6 +273,26 @@ export function quantiseSaveGrid(sim) {
   c.containArm = q6(c.containArm); c.containPitch = q6(c.containPitch);
   c.shakeYaw = q6(c.shakeYaw); c.shakePitch = q6(c.shakePitch);
   c.dialogueArm = q6(c.dialogueArm);
+  // W1-repair. Everything else the save now carries off the rig, for the reason the arm note
+  // above already gives. `c.pos` and `c.onscreen.*` are the load-bearing pair: RI-CAM03's lock
+  // spring measures its yaw target FROM THE CAMERA'S CURRENT POSITION and takes its catch-up
+  // weight from LAST frame's projected NDC, so a 1e-7 m camera position the save could not
+  // represent came back as a 1e-4 deg pitch difference 36 frames later — measured on
+  // `wpn-loadout-o3_twohand`, the one state left failing RI-JRN05 M5 after everything else
+  // was clean. Allocation-free: fixed field list, no loops over keys.
+  c.pos[0] = q6(c.pos[0]); c.pos[1] = q6(c.pos[1]); c.pos[2] = q6(c.pos[2]);
+  c.armCast = q6(c.armCast); c.distTarget = q6(c.distTarget);
+  c.lockDist = q6(c.lockDist); c.lockHeight = q6(c.lockHeight);
+  c.yawRate = q6(c.yawRate); c.charOpacity = q6(c.charOpacity);
+  c.shoulderR = q6(c.shoulderR); c.shoulderU = q6(c.shoulderU);
+  c.lookBufX = q6(c.lookBufX); c.lookBufY = q6(c.lookBufY);
+  c.dialogueYawStep = q6(c.dialogueYawStep); c.dialogueArmStep = q6(c.dialogueArmStep);
+  c.dialogueYawTotal = q6(c.dialogueYawTotal);
+  const os = c.onscreen;
+  os.tBandY = q6(os.tBandY);
+  os.pNdc[0] = q6(os.pNdc[0]); os.pNdc[1] = q6(os.pNdc[1]);
+  os.tNdc[0] = q6(os.tNdc[0]); os.tNdc[1] = q6(os.tNdc[1]);
+  os.thNdc[0] = q6(os.thNdc[0]); os.thNdc[1] = q6(os.thNdc[1]);
   sim.env.timeOfDay = q6(sim.env.timeOfDay);
   for (let i = 0; i < sim.entities.length; i++) {
     const e = sim.entities[i];
@@ -267,6 +300,12 @@ export function quantiseSaveGrid(sim) {
     e.anchor[0] = q6(e.anchor[0]); e.anchor[1] = q6(e.anchor[1]); e.anchor[2] = q6(e.anchor[2]);
     e.yaw = q6(e.yaw); e.yawRate = q6(e.yawRate); e.speed = q6(e.speed);
     e.hp = q6(e.hp); e.poise = q6(e.poise);
+    // W1-15's last-known-position. Carried by the save at 6 dp and read back by
+    // `searchStart()` into the `search_start` event and the search plan, so an ungridded value
+    // is a post-load trace divergence — measured as `events[].lkp[]` differing on 36 of 300
+    // frames on cam_boardwalk and cam_mangrove.
+    if (e.lkp) { e.lkp[0] = q6(e.lkp[0]); e.lkp[1] = q6(e.lkp[1]); e.lkp[2] = q6(e.lkp[2]); }
+    if (e.percept_dist !== null && e.percept_dist !== undefined) e.percept_dist = q6(e.percept_dist);
   }
   for (let i = 0; i < sim.npcs.length; i++) {
     const n = sim.npcs[i];
@@ -324,6 +363,14 @@ export function quantiseColdState(sim) {
   // an order the round trip changed — the census caught `quest.topicsKnown` doing exactly
   // that on sv1-midquest. Canonicalise the live copy instead of relaxing the check.
   sim.quest.topicsKnown.sort();
+  // A person's topic and service lists are DECLARED id-sorted by the save (world.npcs[].topics)
+  // and arrive from npcs/*.json in authored order, so the round trip reordered them and the
+  // durable-field census reported `npcs[].topics[]` swapping places on every settlement state.
+  // Canonicalise the live copy rather than relax the check — the same ruling topicsKnown got.
+  for (let i = 0; i < sim.npcs.length; i++) {
+    if (sim.npcs[i].topics) sim.npcs[i].topics.sort();
+    if (sim.npcs[i].services) sim.npcs[i].services.sort();
+  }
   sim.quest.completed.sort();
   sim.quest.crime.witnesses.sort();
   sim.quest.crime.stolen.sort();

@@ -94,6 +94,23 @@ export function makeEntity(stat, eid, x, z, frame) {
     // reported `lkp` (the last known position the whole search behaviour is driven from),
     // `lastSeenF` and `alertChannel` as lost by every load. Carried by save/state.js
     // `world.entities[].{alert_channel,percept_dist,percept_los,last_seen_ago_frames,lkp}`.
+    // W1-07's encounter membership. `spawnEncounter()` stamps both, `character/encounter.js`
+    // reads `encounterId` to decide whether the net-and-capture path is live, and `despawn`
+    // sweeps by it. Neither was declared here and neither was in the save, so a restored
+    // Dres raid came back as a group of unaffiliated enemies and the whole AR-3 capture
+    // branch was unreachable after any load. Measured as `enemies[].encounter` and
+    // `enemies[].encounter_role` differing on 1,800 of 1,800 record slots on
+    // `wld-dres-raid-road`.
+    encounterId: null,
+    encounterRole: null,
+    // The AR-3 opening latches. `character/encounter.js` reads all three: `encLeader` picks
+    // the one member who may hail, and `encAggroed`/`encHailed` are ONE-SHOT latches — once
+    // hailed, never hailed again. None was declared or saved, so a restored encounter hailed
+    // the player a second time and a raid that had already gone hostile came back deciding
+    // afresh whether to.
+    encLeader: false,
+    encAggroed: false,
+    encHailed: false,
     alertChannel: null,
     percept_dist: null,
     percept_los: false,

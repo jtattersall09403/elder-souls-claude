@@ -339,13 +339,43 @@ function box(w, h, d, y, z = 0, x = 0) {
   return g;
 }
 
+/**
+ * The class an ENEMY's weapon belongs to.
+ *
+ * Enemy weapons do not come from the 87-weapon roster — `CombatSystem.spawn` reads a statblock's
+ * own `weapon` block (game/data/combat/enemies/*.json), which carries no `class` at all. Without
+ * this, every enemy in the game drew the same default blade, which is the piece's own defect
+ * wearing a different hat.
+ *
+ * Nothing is invented: the statblocks already declare `socket_a`/`socket_b` by NAME, and those
+ * names are the shape. `wpn_head_a`/`wpn_head_b` is skeleton.json's headed-weapon pair — the
+ * hit volume is a lump near the end, which is an axe or a set of jaws — while `wpn_guard`/
+ * `wpn_tip` is a blade running the length of the weapon. `capsule_length_m` is the declared
+ * edged span. So the enemy silhouette is read off the same two fields the hit resolution uses.
+ */
+function classOfUnrostered(w) {
+  const a = String(w.socket_a || ''), b = String(w.socket_b || '');
+  if (a === 'wpn_head_a' || b === 'wpn_head_b') return 'AXE';
+  // Length bands, chosen to match the statblocks' OWN notes: every `cam_*` enemy declares a
+  // 1.45 m weapon and says in `_peak_declared_note` that it took its speed ceiling from
+  // RI-CMB04 §B's greatsword row, so 1.45 m reading as a greatsword is the statblock agreeing
+  // with itself rather than this file guessing.
+  const L = Number(w.length_m) || 0;
+  if (L >= 2.20) return 'UGS';
+  if (L >= 1.25) return 'GSW';
+  return 'SSW';
+}
+
 function buildWeaponGeo(w) {
   // L: hand -> tip. span: the edged portion, measured back from the tip. Both from data.
   const L = Math.max(0.15, Number(w.length_m) || 0.95);
-  const rawSpan = Number(w.hitbox_span_m);
-  const span = Math.min(L * 0.98, Math.max(0.06, isFinite(rawSpan) ? rawSpan : L * 0.7));
+  // `hitbox_span_m` is the roster's edged span; `capsule_length_m` is the same quantity as an
+  // enemy statblock declares it. Fall back to the latter before guessing a fraction of L.
+  const rawSpan = isFinite(Number(w.hitbox_span_m)) && Number(w.hitbox_span_m) > 0
+    ? Number(w.hitbox_span_m) : Number(w.capsule_length_m);
+  const span = Math.min(L * 0.98, Math.max(0.06, isFinite(rawSpan) && rawSpan > 0 ? rawSpan : L * 0.7));
   const R = Math.max(0.012, (Number(w.radius_m) || 0.06));
-  const cls = String(w.class || 'SSW');
+  const cls = String(w.class || classOfUnrostered(w));
   const haftTop = -(L - span);              // where the edged part begins, in -Y
   const tip = -L;
   const metal = [], wood = [];
@@ -501,8 +531,21 @@ function mergeBoxes(list) {
  * have made this file's own consumption test pass while nothing consumed anything.
  */
 const _weaponCache = new Map();
+
+/**
+ * The cache key, in ONE place because two copies of it is how a cache and its invalidator
+ * drift. Every field `buildWeaponGeo` reads is in the key, including the two an enemy
+ * statblock varies (`socket_a`, `capsule_length_m`) — a key built only from the roster's
+ * fields collapses every unrostered weapon onto the string "||1.45||0.095" and hands the
+ * beast's jaws the boss's greatsword.
+ */
+export function weaponKeyOf(w) {
+  return [w.weapon_id, w.class, w.length_m, w.hitbox_span_m,
+    w.capsule_length_m, w.socket_a, w.socket_b, w.radius_m].join('|');
+}
+
 function weaponMesh(w, mats) {
-  const key = [w.weapon_id, w.class, w.length_m, w.hitbox_span_m, w.radius_m].join('|');
+  const key = weaponKeyOf(w);
   let entry = _weaponCache.get(key);
   if (!entry) {
     const { metal, wood } = buildWeaponGeo(w);
@@ -593,7 +636,7 @@ export function poseFromRig(group, body) {
   // ---- the weapon ----------------------------------------------------------------------
   const w = (body.moves && body.moves._weapon) || null;
   if (w) {
-    const key = [w.weapon_id, w.class, w.length_m, w.hitbox_span_m, w.radius_m].join('|');
+    const key = weaponKeyOf(w);
     if (key !== A.weaponKey) {
       if (A.weapon) group.remove(A.weapon);
       A.weapon = weaponMesh(w, A.mats);
