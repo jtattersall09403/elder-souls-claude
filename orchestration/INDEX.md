@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `48f6ec9`: 488 tools, 153 reference
-items, 27 pieces in flight.
+so it cannot drift. Generated at `107c1b3`: 489 tools, 153 reference
+items, 28 pieces in flight.
 
-Its purpose is to stop 27+ concurrent agents each paying separately to discover the
+Its purpose is to stop 28+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -505,7 +505,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 83
+### `tools/world/` — 84
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -585,6 +585,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-interior-sweep.mjs` — **no header comment**
 - `tools/world/w1-04-r2-shots.mjs` — **no header comment**
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
+- `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
 - `tools/world/waylamp-probe.mjs` — **no header comment**
 - `tools/world/wld-borders-shots.mjs` — W1-02 — the three pictures.
@@ -592,7 +593,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **117 tools have no header comment**, so nobody can tell what they do without
+> **118 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -766,8 +767,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-04-r2` | measuring | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | `game/src/sim/settlement.js` `game/src/engine.js` `game/src/render/interior.js` `game/src/render/renderer.js` `game/src/harness/api.js` `game/src/sim/npc.js` |
-| `W1-13-r4` | done | critic | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
+| `W1-12` | running | Read RULES/INDEX/PLAN/ARBITRATION; survey enemy AI honestly before building | `orchestration/status/W1-12.json` |
+| `critic-w1-22-r2` | running | read RULES, INDEX, r1 verdict, blind judge verdict, W1-22-r3 status | `orchestration/status/critic-w1-22-r2.json` |
+| `W1-13-r4` | running | diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six  | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
 | `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
 | `W1-READABLES` | building | write the mechanism, then the documents | `orchestration/status/W1-READABLES.json` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |

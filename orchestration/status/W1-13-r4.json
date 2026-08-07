@@ -2,9 +2,9 @@
   "task_id": "W1-13-r4",
   "item": "RI-PRG04",
   "title": "Death, recovery, the hearth loop and levelling — round 4",
-  "state": "done",
+  "state": "running",
   "started_at": "2026-08-07",
-  "next_step": "critic",
+  "next_step": "diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six clauses pass in the standalone probe",
   "files_claimed": [
     "orchestration/status/W1-13-r4.json",
     "game/src/sim/environment.js",
@@ -35,8 +35,8 @@
   "notes": [
     "souls.js is claimed by W1-SOULS-r3 (state: complete). ONE line changed: awardFor() reads env.awardTimeOfDay instead of env.timeOfDay, plus one extra field on the souls_awarded event. Declared redundant_with rather than left to read as a collision (RULES.md 16).",
     "game/src/render/renderer.js is comment-only this round. tools/journey/jrn06-death.mjs gains one instrument (m_prg04_m8_clock_consequence) and three scored fields on m_d14.",
-    "THE AGGREGATION WAS NOT RE-RUN. m_prg04_m8_clock_consequence is written and syntax-checked but the 17-minute journey run was not taken; the same six clauses ARE measured end to end in reports/runs/W1-13-R4/clock-consequences.json at commit 0f6ff17. A critic should run node tools/journey/journey-run.mjs for jrn06-death to bank it in the aggregation, and to re-take m_d14 against its new margin floors.",
-    "DECLARED OVERLAPS. W1-13-r3 is my own predecessor (state: done) and I continue its files by design: game/src/sim/environment.js, tools/journey/jrn06-death.mjs, tools/harness/w1-13-r3-clock.mjs, reports/runs/W1-13-R3/clock.json. game/src/sim/souls.js belongs to W1-SOULS-r3 (state: complete) and takes ONE line. game/src/render/renderer.js is shared with W1-03 and W1-04-r2 and my change there is COMMENT-ONLY - no executable line was touched."
+    "DECLARED OVERLAPS. W1-13-r3 is my own predecessor (state: done) and I continue its files by design: game/src/sim/environment.js, tools/journey/jrn06-death.mjs, tools/harness/w1-13-r3-clock.mjs, reports/runs/W1-13-R3/clock.json. game/src/sim/souls.js belongs to W1-SOULS-r3 (state: complete) and takes ONE line. game/src/render/renderer.js is shared with W1-03 and W1-04-r2 and my change there is COMMENT-ONLY - no executable line was touched.",
+    "AGGREGATION RUN (reports/journeys/w1-13-r4-jrn06). RULES 9 earned its place immediately: m_prg04_m8_clock_consequence reports FAIL inside the journey while the identical six clauses pass in the standalone probe at the same commit. Diagnosis in progress; whichever way it goes it is reported."
   ],
   "redundant_with": [
     "W1-SOULS-r3",

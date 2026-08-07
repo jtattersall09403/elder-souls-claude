@@ -1,0 +1,22 @@
+{
+  "task_id": "critic-w1-22-r2",
+  "role": "critic",
+  "item": "W1-22",
+  "round": 3,
+  "state": "running",
+  "started_at": "2026-08-07",
+  "next_step": "read RULES, INDEX, r1 verdict, blind judge verdict, W1-22-r3 status",
+  "files_touched": [
+    "orchestration/status/critic-w1-22-r2.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-22-r2.md",
+    "corpus/90-verdicts/wave1/W1-22-r2.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "notes": [
+    "Judging audio round 3 against W1-22-r1.md (FAIL 4/10) and W1-22-B2-blind.md.",
+    "Three angles: determinism under varied conditions; harder blind pack (rule 25 - not judged by me); detector-widening refusal + crest-factor amendment arithmetic."
+  ]
+}

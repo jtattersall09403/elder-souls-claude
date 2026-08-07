@@ -1,7 +1,13 @@
 {
   "task_id": "W1-04-r2",
   "title": "Settlements, interiors and the people in them - round 2",
-  "state": "measuring",
+  "state": "complete",
+  "gates_at_completion": {
+    "boot-check": 0, "check-data": 0, "check-content": 0, "check-quests": 0,
+    "check-prose": 0, "corpus-index": 0, "publish": 0,
+    "stamped_at": "107c1b3 (HEAD moved under me repeatedly; see method_deviations)"
+  },
+  "blog": "reports/blog-feed.jsonl, last line, piece W1-04-r2.",
   "done_so_far": [
     "sim/settlement.js: applyCell() hook called from useDoor() and leaveInterior()",
     "engine.js: sim.applyCell hook + _syncCell() reconciliation from _afterStep() and _render(); _applyCell() now passes the interior record to the renderer",
