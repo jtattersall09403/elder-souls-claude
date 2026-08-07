@@ -21,7 +21,83 @@
     "Disposition gates (`d`) are real. The Ledger will not discuss its second set of weights with",
     "somebody it does not like, and that is the gate on the quest, not a separate check."
   ],
+  "also_repairs": [
+    "Three topics below are not mine: `the-tolls` opens Q-LEDG-01 (rank 1 of the Wet Ledger line,",
+    "written by W1-18) and `the-cut-roots` and `the-hollow` open Q-DEEP-01 (rank 2 of the",
+    "Xul-Aneekh line). All three had NO BODY ANYWHERE in game/data/dialogue/topics/**, so neither",
+    "quest could be opened by anything a player does. They are written here because these two",
+    "quests are ranks of lines this piece carries and a line with a hole in it is not a line.",
+    "",
+    "`tools/quests/topic-supply-audit.mjs` reports the other 34 quest topics in this tree that",
+    "still have no body — all of them on quests owned by other pieces — and the 37 hooks.json",
+    "entry_topics rows that are still self-loops after W1-19 repaired the Q-MAIN ones."
+  ],
   "topics": [
+    {
+      "id": "the-tolls",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "Every barge that comes up this river pays at the gate and the gate writes it in the book, and the book goes to the Assize once a season and to the table every night. Two readers, one book. You would think that was safe.",
+          "to": ["the-short-weight", "the-second-set-of-weights"]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "I have carried up that ramp for eleven years and I have watched the same barge weighed twice and written down once, and I have said so, and the man I said it to is not on the quay any more.",
+          "to": ["the-short-weight", "the-wharf-debt"]
+        },
+        {
+          "a": "merchant",
+          "x": "The tolls are the only tax in this province that gets collected, which tells you who is really running it and it is not the man in the compound.",
+          "to": ["the-wet-ledger", "the-short-weight"]
+        }
+      ]
+    },
+    {
+      "id": "the-cut-roots",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "A well is opened, not cut. What the Ixtu-Vakh do to a well is what a butcher does to a thing that is still standing. And I have to tell you that the wells they never touched have stopped as well.",
+          "to": ["the-hollow", "the-taking-below"]
+        },
+        {
+          "a": "sapcutter",
+          "x": "We cut clean and we cut the same wells our fathers cut and those wells are still giving. Ask anybody who has actually walked out there instead of arguing about it in a gallery.",
+          "to": ["the-hollow", "the-taking-below"]
+        },
+        {
+          "a": "mudborn",
+          "x": "There were four cut on the east track this season and none of them by us, and everybody in Helstrom has decided that is the Ixtu-Vakh because the alternative is worse.",
+          "to": ["the-hollow"]
+        }
+      ]
+    },
+    {
+      "id": "the-hollow",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "Not a hall and not a council. A place a day east on the root track where the ones who have been named go to argue, and where what everybody has stopped arguing about becomes what we do.",
+          "to": ["the-hollow-that-eats", "the-consensus"]
+        },
+        {
+          "a": "merchant",
+          "cell": "helstrom",
+          "x": "Half this town has been down there and none of them will take you. It is not secrecy, dry-one. It is that walking you in makes you theirs and they have not decided about you.",
+          "to": ["the-hollow-that-eats", "the-root-track"]
+        },
+        {
+          "a": "legionary",
+          "x": "The Cohort has never had a man in it and has stopped pretending it might. Whatever gets decided about the coast gets decided down there and we find out when Thorn goes quiet.",
+          "to": ["the-consensus"]
+        }
+      ]
+    },
     {
       "id": "the-second-set-of-weights",
       "infos": [

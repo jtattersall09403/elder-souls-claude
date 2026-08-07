@@ -1,0 +1,2037 @@
+{
+  "schema": "signposts/1",
+  "generator": "tools/world/build-signposts.mjs",
+  "note": "RI-WLD06 L2, built. Every junction of degree >= 3 and every settlement approach carries a post; every arm names a place that exists in pois.json and a compass word within 22.5 deg of the true bearing to it. `along_deg` is where the arm physically points (the road tangent); `bearing_deg` is what the word means (straight line to the place). Consumed by game/src/world/province.js `_signposts()` (drawn) and game/src/engine.js `signRead()` (read).",
+  "provenance": "derived — roads.json legs and waystations, pois.json settlement positions, regions.json labels. No coordinate here was typed by hand.",
+  "conventions": {
+    "bearing": "compass degrees clockwise from north; north = -Z, east = +X",
+    "yaw_deg": "engine yaw (sim/player.js: forward = sin(yaw), _, cos(yaw)); yaw = 180 - bearing",
+    "position": "[x, z, y] matching roads.json leg points, NOT pois.json [x, y, z]",
+    "pace_m": 1.48
+  },
+  "styles": {
+    "Imperial road": {
+      "style": "milestone",
+      "script": "cyrodilic-numerals",
+      "legible": "letters",
+      "carries_distance": true,
+      "object": "a squared Legion milestone, the numerals cut deep and filled with lichen, with two iron arms re-set at some point by somebody who did not care which way they had faced before"
+    },
+    "stone road": {
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "carries_distance": false,
+      "object": "a painted board on a dressed stone pillar, the names in Cyrodilic above and in root-glyph below, both repainted often enough that the two do not always agree about spelling"
+    },
+    "causeway": {
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "carries_distance": false,
+      "object": "a board bolted to the causeway parapet, salt-bleached, the letters gone chalky"
+    },
+    "stilt causeway": {
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "carries_distance": false,
+      "object": "a board lashed to a stilt at head height, hung about with somebody’s drying net"
+    },
+    "river road": {
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "carries_distance": false,
+      "object": "a board on a driven pile, the paint renewed on one side only, which tells you which way the traffic looks"
+    },
+    "coast road": {
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "carries_distance": false,
+      "object": "a board on a whalebone post, leaning inland the way everything on this coast leans inland"
+    },
+    "marsh trail": {
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "carries_distance": false,
+      "object": "knife-marks cut into a standing root at chest height and kept open with a thumb of grease, so the wood does not close them"
+    },
+    "rootland track": {
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "carries_distance": false,
+      "object": "a living root cut and re-cut so many times that the scar tissue is the sign now, raised proud of the bark"
+    },
+    "Clay Moor track": {
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "carries_distance": false,
+      "object": "marks scratched into a fired clay slab and set upright in the dust, with a second slab face down beside it that nobody has lifted in years"
+    },
+    "tideway (tide-gated)": {
+      "style": "tide-pole",
+      "script": "waterline",
+      "legible": "anyone",
+      "carries_distance": false,
+      "object": "a tide-pole, banded with paint. The band that is wet is where the water was this morning; the band above it is where the water will be by evening"
+    }
+  },
+  "counts": {
+    "posts": 32,
+    "arms": 68,
+    "by_kind": {
+      "junction": 3,
+      "approach": 20,
+      "waystation": 9
+    },
+    "by_style": {
+      "painted-board": 15,
+      "knife-marks": 11,
+      "milestone": 2,
+      "tide-pole": 4
+    },
+    "junction_nodes_degree_ge_3": [
+      "Helstrom",
+      "Archon",
+      "Blackrose"
+    ],
+    "glyph_only_posts": 11
+  },
+  "audit": {
+    "wrong_bearings": 0,
+    "problems": [],
+    "arm_word_skew_over_45deg": [
+      "sign-junction-helstrom/Archon 79.4°",
+      "sign-junction-helstrom/Blackrose 54.4°",
+      "sign-junction-helstrom/Stormhold 45.4°",
+      "sign-junction-archon/Thorn 56.4°",
+      "sign-junction-blackrose/Lilmoth 49.2°",
+      "sign-approach-gideon-soulrest-to/Soulrest 48°",
+      "sign-approach-soulrest-blackrose-to/Soulrest 50.5°",
+      "sign-approach-blackrose-lilmoth-to/Blackrose 78.8°",
+      "sign-approach-lilmoth-archon-from/Lilmoth 82.6°",
+      "sign-way-way-stormhold-thorn-0/Stormhold 73.2°",
+      "sign-way-way-stormhold-thorn-0/Thorn 66.4°",
+      "sign-way-way-stormhold-thorn-1/Thorn 72.9°",
+      "sign-way-way-helstrom-archon-2/Archon 50.6°",
+      "sign-way-way-archon-thorn-5/Thorn 93.6°",
+      "sign-way-way-archon-thorn-5/Archon 64.7°",
+      "sign-way-way-archon-thorn-6/Thorn 52.1°",
+      "sign-way-way-archon-thorn-6/Archon 86.2°",
+      "sign-way-way-lilmoth-archon-7/Lilmoth 66.2°",
+      "sign-way-way-lilmoth-archon-7/Archon 57.8°",
+      "sign-way-way-lilmoth-archon-8/Archon 85.1°",
+      "sign-way-way-lilmoth-archon-8/Lilmoth 72.6°"
+    ]
+  },
+  "signposts": [
+    {
+      "id": "sign-approach-archon-thorn-from",
+      "kind": "approach",
+      "name": "The Archon road post",
+      "at": {
+        "leg": "archon-thorn",
+        "at_m": 144,
+        "of_m": 4229
+      },
+      "road_class": "Clay Moor track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "x": 3895.47,
+      "z": 3731.99,
+      "y": 3.98,
+      "yaw_deg": 50.7,
+      "object": "marks scratched into a fired clay slab and set upright in the dust, with a second slab face down beside it that nobody has lifted in years",
+      "arms": [
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "north",
+          "bearing_deg": 358.5,
+          "along_deg": 39.3,
+          "arm_vs_word_deg": 40.9,
+          "path_m": 4085,
+          "walk_min": 34,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south-west",
+          "bearing_deg": 230.4,
+          "along_deg": 219.3,
+          "arm_vs_word_deg": 11,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        }
+      ],
+      "lines": [
+        "Thorn — north",
+        "Archon — south-west"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-approach-archon-thorn-to",
+      "kind": "approach",
+      "name": "The Thorn road post",
+      "at": {
+        "leg": "archon-thorn",
+        "at_m": 4094,
+        "of_m": 4229
+      },
+      "road_class": "Clay Moor track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "thornmarsh",
+      "region_name": "Thornmarsh",
+      "x": 3928.48,
+      "z": 927.91,
+      "y": 14.31,
+      "yaw_deg": 288.6,
+      "object": "marks scratched into a fired clay slab and set upright in the dust, with a second slab face down beside it that nobody has lifted in years",
+      "arms": [
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south",
+          "bearing_deg": 182.8,
+          "along_deg": 161.4,
+          "arm_vs_word_deg": 21.5,
+          "path_m": 4094,
+          "walk_min": 34.1,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        },
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "north-west",
+          "bearing_deg": 302.4,
+          "along_deg": 341.4,
+          "arm_vs_word_deg": 38.9,
+          "path_m": 135,
+          "walk_min": 1.1,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        }
+      ],
+      "lines": [
+        "Archon — south",
+        "Thorn — north-west"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-approach-blackrose-lilmoth-from",
+      "kind": "approach",
+      "name": "The Blackrose road post",
+      "at": {
+        "leg": "blackrose-lilmoth",
+        "at_m": 144,
+        "of_m": 1482
+      },
+      "road_class": "stilt causeway",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "western-rootlands",
+      "region_name": "Western Rootlands",
+      "x": 1981.17,
+      "z": 4553.44,
+      "y": 2.48,
+      "yaw_deg": 329.7,
+      "object": "a board lashed to a stilt at head height, hung about with somebody’s drying net",
+      "arms": [
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south-east",
+          "bearing_deg": 121.1,
+          "along_deg": 120.3,
+          "arm_vs_word_deg": 0.9,
+          "path_m": 1338,
+          "walk_min": 11.2,
+          "road_class": "stilt causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "blackrose-lilmoth"
+        },
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "north-west",
+          "bearing_deg": 323.8,
+          "along_deg": 300.3,
+          "arm_vs_word_deg": 23.6,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "stilt causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "blackrose-lilmoth"
+        }
+      ],
+      "lines": [
+        "Lilmoth — south-east — 11 minutes' walk",
+        "Blackrose — north-west — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-blackrose-lilmoth-to",
+      "kind": "approach",
+      "name": "The Lilmoth road post",
+      "at": {
+        "leg": "blackrose-lilmoth",
+        "at_m": 1347,
+        "of_m": 1482
+      },
+      "road_class": "stilt causeway",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "eastern-rootlands",
+      "region_name": "Eastern Rootlands",
+      "x": 2749.62,
+      "z": 4911.9,
+      "y": 2.66,
+      "yaw_deg": 72.5,
+      "object": "a board lashed to a stilt at head height, hung about with somebody’s drying net",
+      "arms": [
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "north-west",
+          "bearing_deg": 298.7,
+          "along_deg": 17.5,
+          "arm_vs_word_deg": 78.8,
+          "path_m": 1347,
+          "walk_min": 11.2,
+          "road_class": "stilt causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "blackrose-lilmoth"
+        },
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south",
+          "bearing_deg": 171.7,
+          "along_deg": 197.5,
+          "arm_vs_word_deg": 25.8,
+          "path_m": 135,
+          "walk_min": 1.1,
+          "road_class": "stilt causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "blackrose-lilmoth"
+        }
+      ],
+      "lines": [
+        "Blackrose — north-west — 11 minutes' walk",
+        "Lilmoth — south — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-gideon-soulrest-from",
+      "kind": "approach",
+      "name": "The Gideon road post",
+      "at": {
+        "leg": "gideon-soulrest",
+        "at_m": 144,
+        "of_m": 2539
+      },
+      "road_class": "coast road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "blackwood",
+      "region_name": "Blackwood",
+      "x": 308.71,
+      "z": 2949.09,
+      "y": 2.64,
+      "yaw_deg": 240.1,
+      "object": "a board on a whalebone post, leaning inland the way everything on this coast leans inland",
+      "arms": [
+        {
+          "to": "soulrest",
+          "name": "Soulrest",
+          "compass": "south",
+          "bearing_deg": 171.1,
+          "along_deg": 209.9,
+          "arm_vs_word_deg": 38.8,
+          "path_m": 2395,
+          "walk_min": 20,
+          "road_class": "coast road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "gideon-soulrest"
+        },
+        {
+          "to": "gideon",
+          "name": "Gideon",
+          "compass": "east",
+          "bearing_deg": 74.7,
+          "along_deg": 29.9,
+          "arm_vs_word_deg": 44.8,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "coast road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "gideon-soulrest"
+        }
+      ],
+      "lines": [
+        "Soulrest — south — 20 minutes' walk",
+        "Gideon — east — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-gideon-soulrest-to",
+      "kind": "approach",
+      "name": "The Soulrest road post",
+      "at": {
+        "leg": "gideon-soulrest",
+        "at_m": 2395,
+        "of_m": 2539
+      },
+      "road_class": "coast road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "stone-wastes",
+      "region_name": "Stone Wastes",
+      "x": 501.69,
+      "z": 4827.01,
+      "y": 7.79,
+      "yaw_deg": 107.4,
+      "object": "a board on a whalebone post, leaning inland the way everything on this coast leans inland",
+      "arms": [
+        {
+          "to": "gideon",
+          "name": "Gideon",
+          "compass": "north",
+          "bearing_deg": 358.1,
+          "along_deg": 342.6,
+          "arm_vs_word_deg": 15.5,
+          "path_m": 2395,
+          "walk_min": 20,
+          "road_class": "coast road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "gideon-soulrest"
+        },
+        {
+          "to": "soulrest",
+          "name": "Soulrest",
+          "compass": "south-east",
+          "bearing_deg": 114.7,
+          "along_deg": 162.6,
+          "arm_vs_word_deg": 48,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "coast road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "gideon-soulrest"
+        }
+      ],
+      "lines": [
+        "Gideon — north — 20 minutes' walk",
+        "Soulrest — south-east — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-helstrom-archon-from",
+      "kind": "approach",
+      "name": "The Helstrom road post",
+      "at": {
+        "leg": "helstrom-archon",
+        "at_m": 144,
+        "of_m": 2550
+      },
+      "road_class": "stone road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "x": 2296.14,
+      "z": 2898.6,
+      "y": 27.2,
+      "yaw_deg": 316.6,
+      "object": "a painted board on a dressed stone pillar, the names in Cyrodilic above and in root-glyph below, both repainted often enough that the two do not always agree about spelling",
+      "arms": [
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south-east",
+          "bearing_deg": 121.8,
+          "along_deg": 133.4,
+          "arm_vs_word_deg": 11.6,
+          "path_m": 2406,
+          "walk_min": 20.1,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        },
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north",
+          "bearing_deg": 344.9,
+          "along_deg": 313.4,
+          "arm_vs_word_deg": 31.5,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        }
+      ],
+      "lines": [
+        "Archon — south-east — 20 minutes' walk",
+        "Helstrom — north — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-helstrom-archon-to",
+      "kind": "approach",
+      "name": "The Archon road post",
+      "at": {
+        "leg": "helstrom-archon",
+        "at_m": 2410,
+        "of_m": 2550
+      },
+      "road_class": "stone road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "x": 3719.84,
+      "z": 3703.87,
+      "y": 3.27,
+      "yaw_deg": 129.8,
+      "object": "a painted board on a dressed stone pillar, the names in Cyrodilic above and in root-glyph below, both repainted often enough that the two do not always agree about spelling",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north-west",
+          "bearing_deg": 302.6,
+          "along_deg": 320.2,
+          "arm_vs_word_deg": 17.6,
+          "path_m": 2410,
+          "walk_min": 20.1,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south-east",
+          "bearing_deg": 151.4,
+          "along_deg": 140.2,
+          "arm_vs_word_deg": 11.2,
+          "path_m": 140,
+          "walk_min": 1.2,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        }
+      ],
+      "lines": [
+        "Helstrom — north-west — 20 minutes' walk",
+        "Archon — south-east — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-helstrom-blackrose-from",
+      "kind": "approach",
+      "name": "The Helstrom road post",
+      "at": {
+        "leg": "helstrom-blackrose",
+        "at_m": 144,
+        "of_m": 2457
+      },
+      "road_class": "marsh trail",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "x": 2176.98,
+      "z": 2874.03,
+      "y": 27.2,
+      "yaw_deg": 268,
+      "object": "knife-marks cut into a standing root at chest height and kept open with a thumb of grease, so the wood does not close them",
+      "arms": [
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "south",
+          "bearing_deg": 189.8,
+          "along_deg": 182,
+          "arm_vs_word_deg": 7.8,
+          "path_m": 2313,
+          "walk_min": 19.3,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        },
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north-east",
+          "bearing_deg": 40.4,
+          "along_deg": 2,
+          "arm_vs_word_deg": 38.4,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        }
+      ],
+      "lines": [
+        "Blackrose — south",
+        "Helstrom — north-east"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-approach-helstrom-blackrose-to",
+      "kind": "approach",
+      "name": "The Blackrose road post",
+      "at": {
+        "leg": "helstrom-blackrose",
+        "at_m": 2317,
+        "of_m": 2457
+      },
+      "road_class": "marsh trail",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "western-rootlands",
+      "region_name": "Western Rootlands",
+      "x": 1931.9,
+      "z": 4319.62,
+      "y": 2.54,
+      "yaw_deg": 120.2,
+      "object": "knife-marks cut into a standing root at chest height and kept open with a thumb of grease, so the wood does not close them",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north",
+          "bearing_deg": 12.1,
+          "along_deg": 329.8,
+          "arm_vs_word_deg": 42.2,
+          "path_m": 2317,
+          "walk_min": 19.3,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        },
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "south",
+          "bearing_deg": 191.4,
+          "along_deg": 149.8,
+          "arm_vs_word_deg": 41.6,
+          "path_m": 140,
+          "walk_min": 1.2,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        }
+      ],
+      "lines": [
+        "Helstrom — north",
+        "Blackrose — south"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-approach-helstrom-gideon-from",
+      "kind": "approach",
+      "name": "The Helstrom road post",
+      "at": {
+        "leg": "helstrom-gideon",
+        "at_m": 144,
+        "of_m": 2368
+      },
+      "road_class": "Imperial road",
+      "style": "milestone",
+      "script": "cyrodilic-numerals",
+      "legible": "letters",
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "x": 2127.89,
+      "z": 2817.51,
+      "y": 27.19,
+      "yaw_deg": 207.8,
+      "object": "a squared Legion milestone, the numerals cut deep and filled with lichen, with two iron arms re-set at some point by somebody who did not care which way they had faced before",
+      "arms": [
+        {
+          "to": "gideon",
+          "name": "Gideon",
+          "compass": "west",
+          "bearing_deg": 266.7,
+          "along_deg": 242.2,
+          "arm_vs_word_deg": 24.6,
+          "path_m": 2224,
+          "walk_min": 18.5,
+          "road_class": "Imperial road",
+          "show_distance": true,
+          "numerals": "MDIII",
+          "via_leg": "helstrom-gideon"
+        },
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "east",
+          "bearing_deg": 71.9,
+          "along_deg": 62.2,
+          "arm_vs_word_deg": 9.7,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "Imperial road",
+          "show_distance": true,
+          "numerals": "XCVII",
+          "via_leg": "helstrom-gideon"
+        }
+      ],
+      "lines": [
+        "GIDEON  —  MDIII PASSVS  —  west",
+        "HELSTROM  —  XCVII PASSVS  —  east"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-helstrom-gideon-to",
+      "kind": "approach",
+      "name": "The Gideon road post",
+      "at": {
+        "leg": "helstrom-gideon",
+        "at_m": 2222,
+        "of_m": 2368
+      },
+      "road_class": "Imperial road",
+      "style": "milestone",
+      "script": "cyrodilic-numerals",
+      "legible": "letters",
+      "region": "blackwood",
+      "region_name": "Blackwood",
+      "x": 564.6,
+      "z": 2842.33,
+      "y": 2.68,
+      "yaw_deg": 8.5,
+      "object": "a squared Legion milestone, the numerals cut deep and filled with lichen, with two iron arms re-set at some point by somebody who did not care which way they had faced before",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "east",
+          "bearing_deg": 87.7,
+          "along_deg": 81.5,
+          "arm_vs_word_deg": 6.2,
+          "path_m": 2222,
+          "walk_min": 18.5,
+          "road_class": "Imperial road",
+          "show_distance": true,
+          "numerals": "MDII",
+          "via_leg": "helstrom-gideon"
+        },
+        {
+          "to": "gideon",
+          "name": "Gideon",
+          "compass": "south-west",
+          "bearing_deg": 240.5,
+          "along_deg": 261.5,
+          "arm_vs_word_deg": 21,
+          "path_m": 146,
+          "walk_min": 1.2,
+          "road_class": "Imperial road",
+          "show_distance": true,
+          "numerals": "XCIX",
+          "via_leg": "helstrom-gideon"
+        }
+      ],
+      "lines": [
+        "HELSTROM  —  MDII PASSVS  —  east",
+        "GIDEON  —  XCIX PASSVS  —  south-west"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-lilmoth-archon-from",
+      "kind": "approach",
+      "name": "The Lilmoth road post",
+      "at": {
+        "leg": "lilmoth-archon",
+        "at_m": 143,
+        "of_m": 2522
+      },
+      "road_class": "tideway (tide-gated)",
+      "style": "tide-pole",
+      "script": "waterline",
+      "legible": "anyone",
+      "region": "eastern-rootlands",
+      "region_name": "Eastern Rootlands",
+      "x": 2857.82,
+      "z": 5098.09,
+      "y": 1.83,
+      "yaw_deg": 44.9,
+      "object": "a tide-pole, banded with paint. The band that is wet is where the water was this morning; the band above it is where the water will be by evening",
+      "arms": [
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "north-east",
+          "bearing_deg": 36,
+          "along_deg": 45.1,
+          "arm_vs_word_deg": 9.1,
+          "path_m": 2379,
+          "walk_min": 19.8,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        },
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "north-west",
+          "bearing_deg": 307.7,
+          "along_deg": 225.1,
+          "arm_vs_word_deg": 82.6,
+          "path_m": 143,
+          "walk_min": 1.2,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        }
+      ],
+      "lines": [
+        "Archon — north-east — passable while the paint is dry",
+        "Lilmoth — north-west — passable while the paint is dry"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-lilmoth-archon-to",
+      "kind": "approach",
+      "name": "The Archon road post",
+      "at": {
+        "leg": "lilmoth-archon",
+        "at_m": 2387,
+        "of_m": 2522
+      },
+      "road_class": "tideway (tide-gated)",
+      "style": "tide-pole",
+      "script": "waterline",
+      "legible": "anyone",
+      "region": "eastern-rootlands",
+      "region_name": "Eastern Rootlands",
+      "x": 3671.81,
+      "z": 3890.74,
+      "y": 2.56,
+      "yaw_deg": 199.5,
+      "object": "a tide-pole, banded with paint. The band that is wet is where the water was this morning; the band above it is where the water will be by evening",
+      "arms": [
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south-west",
+          "bearing_deg": 218.5,
+          "along_deg": 250.5,
+          "arm_vs_word_deg": 32,
+          "path_m": 2387,
+          "walk_min": 19.9,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "north-east",
+          "bearing_deg": 59.3,
+          "along_deg": 70.5,
+          "arm_vs_word_deg": 11.2,
+          "path_m": 135,
+          "walk_min": 1.1,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        }
+      ],
+      "lines": [
+        "Lilmoth — south-west — passable while the paint is dry",
+        "Archon — north-east — passable while the paint is dry"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-soulrest-blackrose-from",
+      "kind": "approach",
+      "name": "The Soulrest road post",
+      "at": {
+        "leg": "soulrest-blackrose",
+        "at_m": 144,
+        "of_m": 1808
+      },
+      "road_class": "rootland track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "stone-wastes",
+      "region_name": "Stone Wastes",
+      "x": 710.92,
+      "z": 4788.15,
+      "y": 7.98,
+      "yaw_deg": 49.4,
+      "object": "a living root cut and re-cut so many times that the scar tissue is the sign now, raised proud of the bark",
+      "arms": [
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "east",
+          "bearing_deg": 74.2,
+          "along_deg": 40.6,
+          "arm_vs_word_deg": 33.6,
+          "path_m": 1665,
+          "walk_min": 13.9,
+          "road_class": "rootland track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "soulrest-blackrose"
+        },
+        {
+          "to": "soulrest",
+          "name": "Soulrest",
+          "compass": "south-west",
+          "bearing_deg": 228.5,
+          "along_deg": 220.6,
+          "arm_vs_word_deg": 7.9,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "rootland track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "soulrest-blackrose"
+        }
+      ],
+      "lines": [
+        "Blackrose — east",
+        "Soulrest — south-west"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-approach-soulrest-blackrose-to",
+      "kind": "approach",
+      "name": "The Blackrose road post",
+      "at": {
+        "leg": "soulrest-blackrose",
+        "at_m": 1672,
+        "of_m": 1808
+      },
+      "road_class": "rootland track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "western-rootlands",
+      "region_name": "Western Rootlands",
+      "x": 1776.98,
+      "z": 4428.26,
+      "y": 2.51,
+      "yaw_deg": 150.5,
+      "object": "a living root cut and re-cut so many times that the scar tissue is the sign now, raised proud of the bark",
+      "arms": [
+        {
+          "to": "soulrest",
+          "name": "Soulrest",
+          "compass": "west",
+          "bearing_deg": 249,
+          "along_deg": 299.5,
+          "arm_vs_word_deg": 50.5,
+          "path_m": 1672,
+          "walk_min": 13.9,
+          "road_class": "rootland track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "soulrest-blackrose"
+        },
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "east",
+          "bearing_deg": 99.6,
+          "along_deg": 119.5,
+          "arm_vs_word_deg": 19.9,
+          "path_m": 136,
+          "walk_min": 1.1,
+          "road_class": "rootland track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "soulrest-blackrose"
+        }
+      ],
+      "lines": [
+        "Soulrest — west",
+        "Blackrose — east"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-approach-stormhold-helstrom-from",
+      "kind": "approach",
+      "name": "The Stormhold road post",
+      "at": {
+        "leg": "stormhold-helstrom",
+        "at_m": 144,
+        "of_m": 2877
+      },
+      "road_class": "river road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "salt-hills",
+      "region_name": "The Salt Hills",
+      "x": 2251.13,
+      "z": 880.7,
+      "y": 141.09,
+      "yaw_deg": 295.9,
+      "object": "a board on a driven pile, the paint renewed on one side only, which tells you which way the traffic looks",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "south",
+          "bearing_deg": 179.7,
+          "along_deg": 154.1,
+          "arm_vs_word_deg": 25.6,
+          "path_m": 2733,
+          "walk_min": 22.8,
+          "road_class": "river road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-helstrom"
+        },
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "north-west",
+          "bearing_deg": 326.4,
+          "along_deg": 334.1,
+          "arm_vs_word_deg": 7.7,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "river road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-helstrom"
+        }
+      ],
+      "lines": [
+        "Helstrom — south — 23 minutes' walk",
+        "Stormhold — north-west — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-stormhold-helstrom-to",
+      "kind": "approach",
+      "name": "The Helstrom road post",
+      "at": {
+        "leg": "stormhold-helstrom",
+        "at_m": 2740,
+        "of_m": 2877
+      },
+      "road_class": "river road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "x": 2359.15,
+      "z": 2677.53,
+      "y": 27.2,
+      "yaw_deg": 53,
+      "object": "a board on a driven pile, the paint renewed on one side only, which tells you which way the traffic looks",
+      "arms": [
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "north",
+          "bearing_deg": 354.4,
+          "along_deg": 37,
+          "arm_vs_word_deg": 42.6,
+          "path_m": 2740,
+          "walk_min": 22.8,
+          "road_class": "river road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-helstrom"
+        },
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "south-west",
+          "bearing_deg": 225.2,
+          "along_deg": 217,
+          "arm_vs_word_deg": 8.2,
+          "path_m": 137,
+          "walk_min": 1.1,
+          "road_class": "river road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-helstrom"
+        }
+      ],
+      "lines": [
+        "Stormhold — north — 23 minutes' walk",
+        "Helstrom — south-west — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-stormhold-thorn-from",
+      "kind": "approach",
+      "name": "The Stormhold road post",
+      "at": {
+        "leg": "stormhold-thorn",
+        "at_m": 144,
+        "of_m": 2225
+      },
+      "road_class": "causeway",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "salt-hills",
+      "region_name": "The Salt Hills",
+      "x": 2309.77,
+      "z": 771.7,
+      "y": 140.92,
+      "yaw_deg": 20.4,
+      "object": "a board bolted to the causeway parapet, salt-bleached, the letters gone chalky",
+      "arms": [
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "east",
+          "bearing_deg": 93.3,
+          "along_deg": 69.6,
+          "arm_vs_word_deg": 23.7,
+          "path_m": 2081,
+          "walk_min": 17.3,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        },
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "west",
+          "bearing_deg": 274.4,
+          "along_deg": 249.6,
+          "arm_vs_word_deg": 24.8,
+          "path_m": 144,
+          "walk_min": 1.2,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        }
+      ],
+      "lines": [
+        "Thorn — east — 17 minutes' walk",
+        "Stormhold — west — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-approach-stormhold-thorn-to",
+      "kind": "approach",
+      "name": "The Thorn road post",
+      "at": {
+        "leg": "stormhold-thorn",
+        "at_m": 2080,
+        "of_m": 2225
+      },
+      "road_class": "causeway",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "thornmarsh",
+      "region_name": "Thornmarsh",
+      "x": 3682.33,
+      "z": 891.21,
+      "y": 12.73,
+      "yaw_deg": 166.3,
+      "object": "a board bolted to the causeway parapet, salt-bleached, the letters gone chalky",
+      "arms": [
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "west",
+          "bearing_deg": 274.9,
+          "along_deg": 283.7,
+          "arm_vs_word_deg": 8.8,
+          "path_m": 2080,
+          "walk_min": 17.3,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        },
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "east",
+          "bearing_deg": 76.8,
+          "along_deg": 103.7,
+          "arm_vs_word_deg": 26.9,
+          "path_m": 145,
+          "walk_min": 1.2,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        }
+      ],
+      "lines": [
+        "Stormhold — west — 17 minutes' walk",
+        "Thorn — east — 1 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-junction-archon",
+      "kind": "junction",
+      "name": "The Archon post",
+      "at": {
+        "junction": "archon",
+        "leg": "helstrom-archon",
+        "at_m": 2506
+      },
+      "road_class": "stone road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "crimson-coast",
+      "region_name": "Crimson Coast",
+      "x": 3771.43,
+      "z": 3781.55,
+      "y": 3.42,
+      "yaw_deg": 32.7,
+      "object": "a painted board on a dressed stone pillar, the names in Cyrodilic above and in root-glyph below, both repainted often enough that the two do not always agree about spelling",
+      "arms": [
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "north",
+          "bearing_deg": 1,
+          "along_deg": 57.3,
+          "arm_vs_word_deg": 56.4,
+          "path_m": 4229,
+          "walk_min": 35.2,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        },
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south-west",
+          "bearing_deg": 218.9,
+          "along_deg": 262.2,
+          "arm_vs_word_deg": 43.3,
+          "path_m": 2522,
+          "walk_min": 21,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        },
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north-west",
+          "bearing_deg": 303.7,
+          "along_deg": 340,
+          "arm_vs_word_deg": 36.3,
+          "path_m": 2550,
+          "walk_min": 21.2,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        }
+      ],
+      "lines": [
+        "Thorn — north — 35 minutes' walk",
+        "Lilmoth — south-west — 21 minutes' walk",
+        "Helstrom — north-west — 21 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-junction-blackrose",
+      "kind": "junction",
+      "name": "The Blackrose post",
+      "at": {
+        "junction": "blackrose",
+        "leg": "helstrom-blackrose",
+        "at_m": 2413
+      },
+      "road_class": "marsh trail",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "western-rootlands",
+      "region_name": "Western Rootlands",
+      "x": 1921.79,
+      "z": 4408.9,
+      "y": 2.59,
+      "yaw_deg": 68.6,
+      "object": "knife-marks cut into a standing root at chest height and kept open with a thumb of grease, so the wood does not close them",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north",
+          "bearing_deg": 11.8,
+          "along_deg": 21.4,
+          "arm_vs_word_deg": 9.6,
+          "path_m": 2457,
+          "walk_min": 20.5,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        },
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south-east",
+          "bearing_deg": 126.2,
+          "along_deg": 175.5,
+          "arm_vs_word_deg": 49.2,
+          "path_m": 1482,
+          "walk_min": 12.3,
+          "road_class": "stilt causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "blackrose-lilmoth"
+        },
+        {
+          "to": "soulrest",
+          "name": "Soulrest",
+          "compass": "west",
+          "bearing_deg": 250.4,
+          "along_deg": 257,
+          "arm_vs_word_deg": 6.7,
+          "path_m": 1808,
+          "walk_min": 15.1,
+          "road_class": "rootland track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "soulrest-blackrose"
+        }
+      ],
+      "lines": [
+        "Helstrom — north",
+        "Lilmoth — south-east",
+        "Soulrest — west"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-junction-helstrom",
+      "kind": "junction",
+      "name": "The Helstrom post",
+      "at": {
+        "junction": "helstrom",
+        "leg": "stormhold-helstrom",
+        "at_m": 2836
+      },
+      "road_class": "river road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "stone-forest",
+      "region_name": "The Stone Forest",
+      "x": 2292.58,
+      "z": 2745.93,
+      "y": 27.2,
+      "yaw_deg": 244.7,
+      "object": "a board on a driven pile, the paint renewed on one side only, which tells you which way the traffic looks",
+      "arms": [
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south-east",
+          "bearing_deg": 125.8,
+          "along_deg": 205.3,
+          "arm_vs_word_deg": 79.4,
+          "path_m": 2550,
+          "walk_min": 21.2,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        },
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "south",
+          "bearing_deg": 192.8,
+          "along_deg": 247.2,
+          "arm_vs_word_deg": 54.4,
+          "path_m": 2457,
+          "walk_min": 20.5,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        },
+        {
+          "to": "gideon",
+          "name": "Gideon",
+          "compass": "west",
+          "bearing_deg": 264.8,
+          "along_deg": 269.8,
+          "arm_vs_word_deg": 5,
+          "path_m": 2368,
+          "walk_min": 19.7,
+          "road_class": "Imperial road",
+          "show_distance": true,
+          "numerals": "MDC",
+          "via_leg": "helstrom-gideon"
+        },
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "north",
+          "bearing_deg": 356.5,
+          "along_deg": 41.9,
+          "arm_vs_word_deg": 45.4,
+          "path_m": 2877,
+          "walk_min": 24,
+          "road_class": "river road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-helstrom"
+        }
+      ],
+      "lines": [
+        "Archon — south-east — 21 minutes' walk",
+        "Blackrose — south — 21 minutes' walk",
+        "Gideon — west — 20 minutes' walk",
+        "Stormhold — north — 24 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-way-way-archon-thorn-4",
+      "kind": "waystation",
+      "name": "The post at Corpse-Lily Shrine",
+      "at": {
+        "leg": "archon-thorn",
+        "at_m": 740,
+        "of_m": 4229,
+        "waystation": "way-archon-thorn-4",
+        "waystation_name": "Corpse-Lily Shrine (Archon–Thorn)"
+      },
+      "road_class": "Clay Moor track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "x": 4124.19,
+      "z": 3199.44,
+      "y": 8.45,
+      "yaw_deg": 274.7,
+      "object": "marks scratched into a fired clay slab and set upright in the dust, with a second slab face down beside it that nobody has lifted in years",
+      "arms": [
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south-west",
+          "bearing_deg": 208.5,
+          "along_deg": 175.3,
+          "arm_vs_word_deg": 33.2,
+          "path_m": 742,
+          "walk_min": 6.2,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        },
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "north",
+          "bearing_deg": 352.6,
+          "along_deg": 355.3,
+          "arm_vs_word_deg": 2.7,
+          "path_m": 3487,
+          "walk_min": 29.1,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        }
+      ],
+      "lines": [
+        "Archon — south-west",
+        "Thorn — north"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-way-way-archon-thorn-5",
+      "kind": "waystation",
+      "name": "The post at Lichen Post",
+      "at": {
+        "leg": "archon-thorn",
+        "at_m": 2225,
+        "of_m": 4229,
+        "waystation": "way-archon-thorn-5",
+        "waystation_name": "Lichen Post (Archon–Thorn)"
+      },
+      "road_class": "Clay Moor track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "crimson-coast",
+      "region_name": "Crimson Coast",
+      "x": 4184.97,
+      "z": 2273.22,
+      "y": 13.83,
+      "yaw_deg": 10.8,
+      "object": "marks scratched into a fired clay slab and set upright in the dust, with a second slab face down beside it that nobody has lifted in years",
+      "arms": [
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "north",
+          "bearing_deg": 345.5,
+          "along_deg": 79.2,
+          "arm_vs_word_deg": 93.6,
+          "path_m": 2009,
+          "walk_min": 16.7,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south",
+          "bearing_deg": 194.5,
+          "along_deg": 259.2,
+          "arm_vs_word_deg": 64.7,
+          "path_m": 2220,
+          "walk_min": 18.5,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        }
+      ],
+      "lines": [
+        "Thorn — north",
+        "Archon — south"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-way-way-archon-thorn-6",
+      "kind": "waystation",
+      "name": "The post at Fired-Cold Well",
+      "at": {
+        "leg": "archon-thorn",
+        "at_m": 3597,
+        "of_m": 4229,
+        "waystation": "way-archon-thorn-6",
+        "waystation_name": "Fired-Cold Well (Archon–Thorn)"
+      },
+      "road_class": "Clay Moor track",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "clay-moor",
+      "region_name": "The Clay Moor",
+      "x": 4050.87,
+      "z": 1290.6,
+      "y": -0.22,
+      "yaw_deg": 170.2,
+      "object": "marks scratched into a fired clay slab and set upright in the dust, with a second slab face down beside it that nobody has lifted in years",
+      "arms": [
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "north-west",
+          "bearing_deg": 331.9,
+          "along_deg": 279.8,
+          "arm_vs_word_deg": 52.1,
+          "path_m": 636,
+          "walk_min": 5.3,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south",
+          "bearing_deg": 186,
+          "along_deg": 99.8,
+          "arm_vs_word_deg": 86.2,
+          "path_m": 3593,
+          "walk_min": 29.9,
+          "road_class": "Clay Moor track",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "archon-thorn"
+        }
+      ],
+      "lines": [
+        "Thorn — north-west",
+        "Archon — south"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-way-way-helstrom-archon-2",
+      "kind": "waystation",
+      "name": "The post at Corpse-Lily Shrine",
+      "at": {
+        "leg": "helstrom-archon",
+        "at_m": 607,
+        "of_m": 2550,
+        "waystation": "way-helstrom-archon-2",
+        "waystation_name": "Corpse-Lily Shrine (Helstrom–Archon)"
+      },
+      "road_class": "stone road",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "x": 2722.86,
+      "z": 3005.29,
+      "y": 7.07,
+      "yaw_deg": 193,
+      "object": "a painted board on a dressed stone pillar, the names in Cyrodilic above and in root-glyph below, both repainted often enough that the two do not always agree about spelling",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north-west",
+          "bearing_deg": 296.7,
+          "along_deg": 257,
+          "arm_vs_word_deg": 39.7,
+          "path_m": 606,
+          "walk_min": 5.1,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "south-east",
+          "bearing_deg": 127.6,
+          "along_deg": 77,
+          "arm_vs_word_deg": 50.6,
+          "path_m": 1943,
+          "walk_min": 16.2,
+          "road_class": "stone road",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-archon"
+        }
+      ],
+      "lines": [
+        "Helstrom — north-west — 5 minutes' walk",
+        "Archon — south-east — 16 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-way-way-helstrom-blackrose-3",
+      "kind": "waystation",
+      "name": "The post at Welkynd Shrine",
+      "at": {
+        "leg": "helstrom-blackrose",
+        "at_m": 544,
+        "of_m": 2457,
+        "waystation": "way-helstrom-blackrose-3",
+        "waystation_name": "Welkynd Shrine (Helstrom–Blackrose)"
+      },
+      "road_class": "marsh trail",
+      "style": "knife-marks",
+      "script": "root-glyph",
+      "legible": "glyph",
+      "region": "blackwood",
+      "region_name": "Blackwood",
+      "x": 2169.37,
+      "z": 3213.02,
+      "y": 6.06,
+      "yaw_deg": 36.9,
+      "object": "knife-marks cut into a standing root at chest height and kept open with a thumb of grease, so the wood does not close them",
+      "arms": [
+        {
+          "to": "helstrom",
+          "name": "Helstrom",
+          "compass": "north",
+          "bearing_deg": 12,
+          "along_deg": 53.1,
+          "arm_vs_word_deg": 41.2,
+          "path_m": 549,
+          "walk_min": 4.6,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        },
+        {
+          "to": "blackrose",
+          "name": "Blackrose",
+          "compass": "south",
+          "bearing_deg": 192,
+          "along_deg": 233.1,
+          "arm_vs_word_deg": 41.1,
+          "path_m": 1908,
+          "walk_min": 15.9,
+          "road_class": "marsh trail",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "helstrom-blackrose"
+        }
+      ],
+      "lines": [
+        "Helstrom — north",
+        "Blackrose — south"
+      ],
+      "illegible_lines": [
+        "Marks, cut deliberately, in more than one hand.",
+        "Two of them are arrows. The rest are not."
+      ]
+    },
+    {
+      "id": "sign-way-way-lilmoth-archon-7",
+      "kind": "waystation",
+      "name": "The post at Tide-Pole Post",
+      "at": {
+        "leg": "lilmoth-archon",
+        "at_m": 626,
+        "of_m": 2522,
+        "waystation": "way-lilmoth-archon-7",
+        "waystation_name": "Tide-Pole Post (Lilmoth–Archon)"
+      },
+      "road_class": "tideway (tide-gated)",
+      "style": "tide-pole",
+      "script": "waterline",
+      "legible": "anyone",
+      "region": "eastern-rootlands",
+      "region_name": "Eastern Rootlands",
+      "x": 2983.02,
+      "z": 4704.68,
+      "y": 0.69,
+      "yaw_deg": 169.9,
+      "object": "a tide-pole, banded with paint. The band that is wet is where the water was this morning; the band above it is where the water will be by evening",
+      "arms": [
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south-west",
+          "bearing_deg": 213.9,
+          "along_deg": 280.1,
+          "arm_vs_word_deg": 66.2,
+          "path_m": 630,
+          "walk_min": 5.3,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        },
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "north-east",
+          "bearing_deg": 42.3,
+          "along_deg": 100.1,
+          "arm_vs_word_deg": 57.8,
+          "path_m": 1892,
+          "walk_min": 15.8,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        }
+      ],
+      "lines": [
+        "Lilmoth — south-west — passable while the paint is dry",
+        "Archon — north-east — passable while the paint is dry"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-way-way-lilmoth-archon-8",
+      "kind": "waystation",
+      "name": "The post at Stilt-Rest",
+      "at": {
+        "leg": "lilmoth-archon",
+        "at_m": 1891,
+        "of_m": 2522,
+        "waystation": "way-lilmoth-archon-8",
+        "waystation_name": "Stilt-Rest (Lilmoth–Archon)"
+      },
+      "road_class": "tideway (tide-gated)",
+      "style": "tide-pole",
+      "script": "waterline",
+      "legible": "anyone",
+      "region": "eastern-rootlands",
+      "region_name": "Eastern Rootlands",
+      "x": 3572.97,
+      "z": 4177.26,
+      "y": 0.69,
+      "yaw_deg": 333.9,
+      "object": "a tide-pole, banded with paint. The band that is wet is where the water was this morning; the band above it is where the water will be by evening",
+      "arms": [
+        {
+          "to": "archon",
+          "name": "Archon",
+          "compass": "north-east",
+          "bearing_deg": 30.9,
+          "along_deg": 116.1,
+          "arm_vs_word_deg": 85.1,
+          "path_m": 637,
+          "walk_min": 5.3,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        },
+        {
+          "to": "lilmoth",
+          "name": "Lilmoth",
+          "compass": "south-west",
+          "bearing_deg": 223.5,
+          "along_deg": 296.1,
+          "arm_vs_word_deg": 72.6,
+          "path_m": 1885,
+          "walk_min": 15.7,
+          "road_class": "tideway (tide-gated)",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "lilmoth-archon"
+        }
+      ],
+      "lines": [
+        "Archon — north-east — passable while the paint is dry",
+        "Lilmoth — south-west — passable while the paint is dry"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-way-way-stormhold-thorn-0",
+      "kind": "waystation",
+      "name": "The post at Legion Milepost",
+      "at": {
+        "leg": "stormhold-thorn",
+        "at_m": 556,
+        "of_m": 2225,
+        "waystation": "way-stormhold-thorn-0",
+        "waystation_name": "Legion Milepost (Stormhold–Thorn)"
+      },
+      "road_class": "causeway",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "salt-hills",
+      "region_name": "The Salt Hills",
+      "x": 2674.72,
+      "z": 749.7,
+      "y": 99.42,
+      "yaw_deg": 108.1,
+      "object": "a board bolted to the causeway parapet, salt-bleached, the letters gone chalky",
+      "arms": [
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "west",
+          "bearing_deg": 268.7,
+          "along_deg": 341.9,
+          "arm_vs_word_deg": 73.2,
+          "path_m": 551,
+          "walk_min": 4.6,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        },
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "east",
+          "bearing_deg": 95.5,
+          "along_deg": 161.9,
+          "arm_vs_word_deg": 66.4,
+          "path_m": 1674,
+          "walk_min": 13.9,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        }
+      ],
+      "lines": [
+        "Stormhold — west — 5 minutes' walk",
+        "Thorn — east — 14 minutes' walk"
+      ],
+      "illegible_lines": null
+    },
+    {
+      "id": "sign-way-way-stormhold-thorn-1",
+      "kind": "waystation",
+      "name": "The post at Ash Shelter",
+      "at": {
+        "leg": "stormhold-thorn",
+        "at_m": 1674,
+        "of_m": 2225,
+        "waystation": "way-stormhold-thorn-1",
+        "waystation_name": "Ash Shelter (Stormhold–Thorn)"
+      },
+      "road_class": "causeway",
+      "style": "painted-board",
+      "script": "bilingual",
+      "legible": "letters",
+      "region": "thornmarsh",
+      "region_name": "Thornmarsh",
+      "x": 3416.81,
+      "z": 1014.12,
+      "y": 15.78,
+      "yaw_deg": 308.1,
+      "object": "a board bolted to the causeway parapet, salt-bleached, the letters gone chalky",
+      "arms": [
+        {
+          "to": "thorn",
+          "name": "Thorn",
+          "compass": "east",
+          "bearing_deg": 69,
+          "along_deg": 141.9,
+          "arm_vs_word_deg": 72.9,
+          "path_m": 551,
+          "walk_min": 4.6,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        },
+        {
+          "to": "stormhold",
+          "name": "Stormhold",
+          "compass": "west",
+          "bearing_deg": 281.5,
+          "along_deg": 321.9,
+          "arm_vs_word_deg": 40.4,
+          "path_m": 1674,
+          "walk_min": 13.9,
+          "road_class": "causeway",
+          "show_distance": false,
+          "numerals": null,
+          "via_leg": "stormhold-thorn"
+        }
+      ],
+      "lines": [
+        "Thorn — east — 5 minutes' walk",
+        "Stormhold — west — 14 minutes' walk"
+      ],
+      "illegible_lines": null
+    }
+  ]
+}

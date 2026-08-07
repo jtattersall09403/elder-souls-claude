@@ -23,6 +23,7 @@
       "world.enemies_dead_until_rest",
       "world.fog_gates_passed",
       "quests_completed",
+      "dialogue.books_read",
       "dialogue.topics_known",
       "crime.witnesses",
       "crime.stolen_registry",
@@ -182,9 +183,11 @@
       "group": "Dialogue",
       "class": "durable",
       "paths": [
+        "dialogue.books_read",
         "dialogue.dispositions",
         "dialogue.topics_known"
-      ]
+      ],
+      "note": "W1-LIBRARY round 2: dialogue.books_read is the set of book ids this character has opened. Durable rather than volatile because QuestEngine.context() resolves it into ctx.knowledge through book.knowledge_key, which is what makes the three lore_knowledge resolutions reachable; a load that dropped it would close them again."
     },
     {
       "group": "Factions",

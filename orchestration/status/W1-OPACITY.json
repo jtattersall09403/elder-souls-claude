@@ -2,7 +2,7 @@
  "task_id": "W1-OPACITY",
  "brief": "build game/data/world/opacity.json (opacity@1) per RI-WLD09 \u00a7B1",
  "started": "wave-1",
- "state": "building",
+ "state": "verifying",
  "outputs_expected": [
   "game/data/world/opacity.json",
   "corpus/50-world/sealed/SEALED-ANSWERS.md M-05..M-24",
@@ -11,9 +11,15 @@
   "tools/ opacity resolver that can fail"
  ],
  "outputs_written": [
-  "corpus/50-world/sealed/SEALED-ANSWERS.md (24 records, all sealed)",
-  "game/data/world/opacity.json (opacity@1, 24 mysteries)",
-  "tools/world/opacity-reseal.py"
+  "corpus/50-world/sealed/SEALED-ANSWERS.md \u2014 24 sealed records (M-05..M-24 new; M-01..M-04 re-pointed, seals untouched)",
+  "game/data/world/opacity.json \u2014 opacity@1, 24 mysteries, registered in index.json",
+  "game/src/world/opacity.js \u2014 OpacityRegister (3 readers: resolve / refusalFor / met+state)",
+  "game/src/engine.js \u2014 loadData branch, _opacityWorldIndex, _installOpacity (throws on a dangle), getOpacityState, booksRead",
+  "game/src/character/converse.js \u2014 setOpacity + the refusal branch in say()",
+  "game/src/harness/api.js \u2014 getOpacityState()",
+  "tools/world/opacity-reseal.py \u2014 the only writer of a seal, imports norm() from the auditor",
+  "tools/world/opacity-resolve.mjs \u2014 R1..R5, 7 self-test break modes, all red",
+  "tools/world/opacity-consumption.mjs \u2014 C1/C2/C3 disk perturbation in the live browser"
  ],
  "findings": [
   "corpus/80-methods/opacity-audit.py EXISTS and is complete (325 lines). Parses SEALED-ANSWERS.md with regex REC=^### (M-\\d+) \u2014 name; fields as '- **kind:** ...'; evidence counted as indented '  - ' bullets under '- **evidence:**'; leak_ngrams harvested as backtick-quoted `\"...\"` ANYWHERE in the record body (so a quoted phrase in prose counts); answer parsed from '> **SEALED ANSWER.** ...' up to a blank line.",
@@ -26,8 +32,13 @@
   "SHIPPED: 24 sealed answers, 24 declared. opacity-audit.py --seals --leak-scan = CLEAN over 2614 strings (which now include my 48 refusal lines).",
   "Composition met exactly: place 8 / object 6 / creature 4 / phenomenon 3 / person 3 = 24. settleable 12, sealed 12. encounterable 22 (M-03 and M-23 are honestly false: valus-ridge has ZERO POIs in pois.json). within_three_hours 6 (floor 6). has_reward 3 (cap 6). all 24 carry 2 false accounts (floor 8).",
   "pois.json is GENERATED from corpus/50-world/world-scale.json by tools/world/build-pois.mjs \u2014 landmarks are RI-WLD01 \u00a77's map-derived set. Adding a POI is W1-01/W1-02's call, so M-02/M-03's missing landmarks are declared as anchor_pending and anchored to their region instead.",
-  "SCHEMA EXTENSIONS (must be reported, not smuggled): false_accounts, encounterable, evidence_classes, resolution, refusal_topics/refusals. All five are documented in opacity.json#schema_extensions with the \u00a7B clause that forces each."
+  "SCHEMA EXTENSIONS (must be reported, not smuggled): false_accounts, encounterable, evidence_classes, resolution, refusal_topics/refusals. All five are documented in opacity.json#schema_extensions with the \u00a7B clause that forces each.",
+  "THE PYTHON LEAK SCAN HAS A HOLE AND IT IS IN THE DIALOGUE LAYER. opacity-audit.py harvests only keys in TEXT_KEYS (text|body|line|response|entry|prose|greeting|rumour|description|note|inscription|journal). A dialogue INFO writes its prose under `x`. Measured: 2,699 strings inside that list, 4,292 further prose-length strings outside it, 1,102 of them under `x`. So the library builder's --leak-scan CLEAN was never evidence about dialogue at all. tools/world/opacity-resolve.mjs R5 scans EVERY string in game/data + game/src regardless of key (110,160 strings) plus a 40-char substring test, and is still CLEAN.",
+  "CONSUMPTION CONFIRMED in the browser: C1 the refusal \u2014 243 refusals heard across 4 states; deleting M-01 from opacity.json turned clerk-avelia-doren's authored decline on `the-village-tally` back into refused:no_info and the register went 24 -> 23. C2 the dangle guard \u2014 pointing one evidence id at a non-existent book made boot-check exit 12 naming the unresolved reference.",
+  "tools/lib/browser.mjs launchGame() calls die() (process.exit) when ready() throws, which SKIPS a finally block. A probe that perturbs a data file on disk and expects a boot failure MUST use a sidecar backup + process.on('exit'), or it leaves the tree broken for every other agent. It did, once, before I fixed it.",
+  "TREE BROKEN BY A CONCURRENT AGENT at 49279c1: engine.js:335 calls this._bookKnowledgeIndex() (W1-LIBRARY round 2) and the method is not defined anywhere. Nothing boots. Not mine; my boot-check PASSED before that landed.",
+  "Another agent committed the tree including my in-progress files. I did not commit."
  ],
- "next_step": "wire the consumer: game/src/world/opacity.js + engine loadData branch + converse refusal + getOpacityState; then tools/world/opacity-resolve.mjs",
+ "next_step": "re-run boot-check + opacity-consumption once W1-LIBRARY defines _bookKnowledgeIndex; then blog line",
  "notes_for_successor": "Scope is the register (B1) only. assembled-lore.json (B2) and voids.json (B4) are separate deliverables and are NOT in this brief; opacity-audit.py --all will fail on them until someone builds them. Run --seals --leak-scan only."
 }

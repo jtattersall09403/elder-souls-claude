@@ -3,7 +3,7 @@
   "id": "quest-hooks",
   "corpus_item": "RI-QST04 (behaviour hooks keyed by world_flags), RI-DLG05 §A.3 (every chain seeds a topic)",
   "generated_by": "tools/analysis/gen-quest-hooks.mjs",
-  "note": "Generated. Do not hand-edit; edit the generator or the quest files it reads.",
+  "note": "Generated ONCE and hand-maintained since. DO NOT run tools/analysis/gen-quest-hooks.mjs: it writes the self-loop form, which is what made 0 of 32 main quests offerable at a cold start. Edit this file.",
   "entry_topics": [
     {
       "quest": "Q-ARCH-01",
@@ -13,10 +13,59 @@
       ]
     },
     {
-      "quest": "Q-SOUL-02",
+      "quest": "Q-ASSZ-00",
       "index": 10,
       "adds_topics": [
-        "the-tally-of-the-dead"
+        "the-toll-book"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-01",
+      "index": 10,
+      "adds_topics": [
+        "the-lease-roll"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-02",
+      "index": 10,
+      "adds_topics": [
+        "the-struck-off-notary"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-03",
+      "index": 10,
+      "adds_topics": [
+        "the-blackrose-day-book"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-04",
+      "index": 10,
+      "adds_topics": [
+        "the-warrant-of-attainder"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-05",
+      "index": 10,
+      "adds_topics": [
+        "the-prefects-return"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-06",
+      "index": 10,
+      "adds_topics": [
+        "the-lease-vote"
+      ]
+    },
+    {
+      "quest": "Q-ASSZ-07",
+      "index": 10,
+      "adds_topics": [
+        "the-legates-seal"
       ]
     },
     {
@@ -27,31 +76,10 @@
       ]
     },
     {
-      "quest": "Q-STRM-01",
+      "quest": "Q-DEEP-01",
       "index": 10,
       "adds_topics": [
-        "the-old-quarter"
-      ]
-    },
-    {
-      "quest": "Q-LILM-01",
-      "index": 10,
-      "adds_topics": [
-        "the-leyawiin-charter"
-      ]
-    },
-    {
-      "quest": "Q-SAP-01",
-      "index": 10,
-      "adds_topics": [
-        "the-phial"
-      ]
-    },
-    {
-      "quest": "Q-LEDG-01",
-      "index": 10,
-      "adds_topics": [
-        "the-short-weight"
+        "the-lukiul-question"
       ]
     },
     {
@@ -62,10 +90,67 @@
       ]
     },
     {
-      "quest": "Q-DEEP-01",
+      "quest": "Q-LEDG-00",
       "index": 10,
       "adds_topics": [
-        "the-cut-roots"
+        "the-short-weight"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-01",
+      "index": 10,
+      "adds_topics": [
+        "the-second-set-of-weights"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-02",
+      "index": 10,
+      "adds_topics": [
+        "the-wharf-debt"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-03",
+      "index": 10,
+      "adds_topics": [
+        "the-quiet-partner"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-04",
+      "index": 10,
+      "adds_topics": [
+        "the-water-call"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-05",
+      "index": 10,
+      "adds_topics": [
+        "the-underwriters-gate"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-06",
+      "index": 10,
+      "adds_topics": [
+        "the-archon-question",
+        "the-first-chair"
+      ]
+    },
+    {
+      "quest": "Q-LEDG-07",
+      "index": 10,
+      "adds_topics": [
+        "the-first-chair"
+      ]
+    },
+    {
+      "quest": "Q-LILM-01",
+      "index": 10,
+      "adds_topics": [
+        "the-leyawiin-charter"
       ]
     },
     {
@@ -410,55 +495,6 @@
       "teaches": "forward"
     },
     {
-      "quest": "Q-MAIN-24",
-      "index": 10,
-      "adds_topics": [
-        "the-ash-gallery"
-      ],
-      "teaches": "forward"
-    },
-    {
-      "quest": "Q-MAIN-25",
-      "index": 10,
-      "adds_topics": [
-        "the-steward-of-the-count"
-      ],
-      "teaches": "forward"
-    },
-    {
-      "quest": "Q-MAIN-26",
-      "index": 10,
-      "adds_topics": [
-        "the-sill"
-      ],
-      "teaches": "forward"
-    },
-    {
-      "quest": "Q-MAIN-27",
-      "index": 10,
-      "adds_topics": [
-        "the-opening-of-the-count"
-      ],
-      "teaches": "forward"
-    },
-    {
-      "quest": "Q-MAIN-28",
-      "index": 10,
-      "adds_topics": [
-        "what-the-tide-does-now",
-        "what-the-wells-do-now"
-      ],
-      "teaches": "forward"
-    },
-    {
-      "quest": "Q-MAIN-29",
-      "index": 10,
-      "adds_topics": [
-        "the-root-channels"
-      ],
-      "teaches": "forward"
-    },
-    {
       "quest": "Q-MAIN-17",
       "index": 10,
       "adds_topics": [
@@ -515,6 +551,55 @@
       "teaches": "lateral"
     },
     {
+      "quest": "Q-MAIN-24",
+      "index": 10,
+      "adds_topics": [
+        "the-ash-gallery"
+      ],
+      "teaches": "forward"
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "index": 10,
+      "adds_topics": [
+        "the-steward-of-the-count"
+      ],
+      "teaches": "forward"
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "index": 10,
+      "adds_topics": [
+        "the-sill"
+      ],
+      "teaches": "forward"
+    },
+    {
+      "quest": "Q-MAIN-27",
+      "index": 10,
+      "adds_topics": [
+        "the-opening-of-the-count"
+      ],
+      "teaches": "forward"
+    },
+    {
+      "quest": "Q-MAIN-28",
+      "index": 10,
+      "adds_topics": [
+        "what-the-tide-does-now",
+        "what-the-wells-do-now"
+      ],
+      "teaches": "forward"
+    },
+    {
+      "quest": "Q-MAIN-29",
+      "index": 10,
+      "adds_topics": [
+        "the-root-channels"
+      ],
+      "teaches": "forward"
+    },
+    {
       "quest": "Q-MAIN-30",
       "index": 10,
       "adds_topics": [
@@ -537,6 +622,77 @@
         "what-people-say-happened"
       ],
       "teaches": "lateral"
+    },
+    {
+      "quest": "Q-SAP-01",
+      "index": 10,
+      "adds_topics": [
+        "the-phial"
+      ]
+    },
+    {
+      "quest": "Q-SOUL-02",
+      "index": 10,
+      "adds_topics": [
+        "the-tally-of-the-dead"
+      ]
+    },
+    {
+      "quest": "Q-STRM-01",
+      "index": 10,
+      "adds_topics": [
+        "the-old-quarter"
+      ]
+    },
+    {
+      "quest": "Q-XULA-00",
+      "index": 10,
+      "adds_topics": [
+        "the-root-track"
+      ]
+    },
+    {
+      "quest": "Q-XULA-01",
+      "index": 10,
+      "adds_topics": [
+        "the-cut-roots",
+        "the-hollow"
+      ]
+    },
+    {
+      "quest": "Q-XULA-03",
+      "index": 10,
+      "adds_topics": [
+        "the-coast-wound"
+      ]
+    },
+    {
+      "quest": "Q-XULA-04",
+      "index": 10,
+      "adds_topics": [
+        "the-taking-below"
+      ]
+    },
+    {
+      "quest": "Q-XULA-05",
+      "index": 10,
+      "adds_topics": [
+        "the-ku-vastei"
+      ]
+    },
+    {
+      "quest": "Q-XULA-06",
+      "index": 10,
+      "adds_topics": [
+        "the-consensus"
+      ]
+    },
+    {
+      "quest": "Q-XULA-07",
+      "index": 10,
+      "adds_topics": [
+        "the-speakers-silence"
+      ]
     }
   ],
   "hooks": [
@@ -636,5 +792,6 @@
     }
   ],
   "deadlines": [],
-  "w1_19_note": "W1-19 round 2 rewrote every Q-MAIN entry_topics row. Round 1 authored 32 rows in which the topic a quest fired was the topic that quest itself demanded (23 of 32) or a topic nothing asked for (5 of 32), so the supply graph was a set of self-loops and 0 of 32 main quests were offerable at a cold start. Every row here now points FORWARD — a quest teaches the keyword that opens a LATER quest, never its own — and Q-MAIN-01 owes nothing to any quest: its topic is supplied only by the world (dialogue/rumours.json, opens_by.overheard_from, and the NPC topic lists), which is what game/src/sim/quest/topic-supply.js exists to read. Slugs are spelled so that core/topics.js topicKey() folds them onto the quest's own opens_by.topic; three round-1 rows (the-chapter-s-vote, the-ledger-s-terms, the-interior-s-consent) did not fold and could never have satisfied their gate."
+  "w1_19_note": "W1-19 round 2 rewrote every Q-MAIN entry_topics row. Round 1 authored 32 rows in which the topic a quest fired was the topic that quest itself demanded (23 of 32) or a topic nothing asked for (5 of 32), so the supply graph was a set of self-loops and 0 of 32 main quests were offerable at a cold start. Every row here now points FORWARD — a quest teaches the keyword that opens a LATER quest, never its own — and Q-MAIN-01 owes nothing to any quest: its topic is supplied only by the world (dialogue/rumours.json, opens_by.overheard_from, and the NPC topic lists), which is what game/src/sim/quest/topic-supply.js exists to read. Slugs are spelled so that core/topics.js topicKey() folds them onto the quest's own opens_by.topic; three round-1 rows (the-chapter-s-vote, the-ledger-s-terms, the-interior-s-consent) did not fold and could never have satisfied their gate.",
+  "w1_factions_note": "W1-FACTIONS added 22 rows and rewrote 2, for the Wet Ledger, Imperial Assize and Xul-Aneekh lines. Every one points FORWARD, on the rule W1-19 round 2 established: a quest teaches the keyword that opens a LATER quest and never its own. Q-LEDG-01 and Q-DEEP-01 were self-loops and are now the rank-1 and rank-2 suppliers for the ranks above them; the rank-0 quest of each of the three lines owes its topic to the world alone (opens_by.overheard_from, the rumour layer, and a body in dialogue/topics/50-factions.json). 37 rows on OTHER pieces quests remain self-loops — see tools/quests/topic-supply-audit.mjs."
 }
