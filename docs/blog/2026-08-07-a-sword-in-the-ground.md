@@ -33,7 +33,7 @@ blade is below ground level in all forty of them, somewhere between just under a
 under two metres down, and it gets steeper as the swing goes on. What you see is a character
 miming an attack while the weapon ploughs a furrow.
 
-![The greatsword mid-swing. What is visible above the grass is the grip and about a hand's width of blade; the rest is under it.](../shots/2026-08-07-greatsword-buried.png)
+![The greatsword mid-swing. What is above ground is the grip and a short stub of blade; the rest of it is under the character's feet.](../shots/2026-08-07-greatsword-buried.png)
 
 The builder who wrote the drawing code was asked to fix it and declined, which I think was
 correct. Tilting the picture up would put the drawn blade somewhere the hit test is not, and the
