@@ -163,8 +163,39 @@ const LEG = 'stormhold-helstrom';                 // THE CROSSING's first leg �
 const candidates = buildingsNear('stormhold', LEG, 60);
 if (!candidates.length) { process.stderr.write(`no stormhold building within 60 m of ${LEG} — retarget this probe\n`); process.exit(2); }
 const MOVE_SUBJECT = candidates[0];
-const GROW_SUBJECT = candidates.find((b) => b.interior && interiors[b.interior]
-  && interiors[b.interior].continuity && Array.isArray(interiors[b.interior].continuity.exterior_footprint_m)) || null;
+
+/**
+ * Pick a GROW subject whose growth actually survives `planSettlement`'s shrink pass.
+ *
+ * This search exists because the first version of the GROW perturbation did not bite and looked
+ * like a coupling failure when it was nothing of the sort: asking for a 47 x 47 m footprint got
+ * 28.85 x 28.85 back, because the shrink pass caught the giant swallowing its neighbours' centres
+ * and shrank both parties. Growing harder does not help — the shrink converges — so the subject
+ * has to be chosen for whether the EFFECTIVE, post-shrink footprint can be made to reach the road.
+ * Searched in memory over (building, factor); nothing is written until one is found.
+ */
+function pickGrow() {
+  const rec = rd(path.join(ROOT, 'game/data/world/settlements/stormhold.json'));
+  const decl = candidates.filter((b) => b.interior && interiors[b.interior]
+    && interiors[b.interior].continuity && Array.isArray(interiors[b.interior].continuity.exterior_footprint_m));
+  for (const cand of decl) {
+    const base = interiors[cand.interior].continuity.exterior_footprint_m;
+    for (const f of [1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) {
+      const want = [+(base[0] * f).toFixed(2), +(base[1] * f).toFixed(2)];
+      const ints = { ...interiors, [cand.interior]: { ...interiors[cand.interior],
+        continuity: { ...interiors[cand.interior].continuity, exterior_footprint_m: want } } };
+      const b = planSettlement(rec, ints).buildings.find((q) => q.id === cand.id);
+      if (!b) continue;
+      const fp = b.drawn_footprint_m, yaw = -(b.yaw_deg || 0) * Math.PI / 180;
+      const c = Math.cos(yaw), s = Math.sin(yaw);
+      const dx = cand.road[0] - b.x, dz = cand.road[1] - b.z;
+      const covers = Math.abs(dx * c + dz * s) <= fp[0] / 2 - 1 && Math.abs(-dx * s + dz * c) <= fp[1] / 2 - 1;
+      if (covers) return { ...cand, was: base.slice(), want, factor: f, effective: fp };
+    }
+  }
+  return null;
+}
+const GROW_SUBJECT = pickGrow();
 log(`subjects, chosen from the tree:`);
 log(`  MOVE/ADD anchor  ${MOVE_SUBJECT.id} at (${MOVE_SUBJECT.x.toFixed(1)}, ${MOVE_SUBJECT.z.toFixed(1)}), ${MOVE_SUBJECT.d.toFixed(1)} m from ${LEG}`);
 log(`  GROW subject     ${GROW_SUBJECT ? GROW_SUBJECT.id + ' (interior ' + GROW_SUBJECT.interior + ')' : 'NONE — no nearby building declares an exterior_footprint_m'}`);
@@ -216,17 +247,11 @@ if (GROW_SUBJECT) PERTURBATIONS.push({
     const file = path.join(dir, `game/data/world/interiors/${GROW_SUBJECT.interior}.json`);
     const doc = rd(file);
     const was = doc.continuity.exterior_footprint_m.slice();
-    // The first cut of this perturbation asked for a 47 x 47 m footprint and got almost nothing:
-    // `planSettlement`'s shrink pass caught the giant swallowing its neighbours' centres and
-    // shrank BOTH parties back to roughly their original size, so the model consumed the edit and
-    // then cancelled it. A perturbation that the model legally undoes is not a perturbation. The
-    // growth is now the smallest that reaches the road, and `verify()` below reads the EFFECTIVE
-    // post-shrink footprint back out of `planSettlement` and refuses to proceed if it did not take.
-    const need = (GROW_SUBJECT.d + 2.5) * 2;
-    doc.continuity.exterior_footprint_m = [Math.max(was[0], need), Math.max(was[1], need)];
+    doc.continuity.exterior_footprint_m = GROW_SUBJECT.want.slice();
     fs.writeFileSync(file, JSON.stringify(doc, null, 1) + '\n');
     return `${GROW_SUBJECT.interior}.continuity.exterior_footprint_m ${JSON.stringify(was)} -> `
-      + `${JSON.stringify(doc.continuity.exterior_footprint_m.map((v) => +v.toFixed(1)))}`;
+      + `${JSON.stringify(GROW_SUBJECT.want)} (x${GROW_SUBJECT.factor}); after planSettlement's shrink pass the `
+      + `EFFECTIVE footprint is ${JSON.stringify(GROW_SUBJECT.effective)}, which does reach the road`;
   },
 });
 // ---- the NULL control, and it took two goes to make it null ------------------------------------

@@ -968,7 +968,28 @@ export class PlayerController {
       // expires after one frame is neither. Same field, same producer, read where locomotion is
       // actually decided. RI-PRG07 §3's Overladen `sprint: no` arrives through the same channel
       // (engine -> `p.denySprint` -> `b.worldDeny.sprint`) and is guarded to be inert in a fight.
+      //
+      // W1-16 round 3 adds RI-CMB01 §B's other half — "`OVERLOADED` additionally forbids
+      // sprinting and jump-attacks". The jump-attack clause has had a reader since W1-10
+      // (`moveset.js`: `ctx.roll_tier === 'OVERLOADED'` -> `{slot: null, reason: 'overloaded'}`);
+      // the sprint clause had none, and the round-2 verdict measured the consequence — an
+      // OVERLOADED player covered 10.000 m over 120 f@60 for 18 stamina, which is exactly what a
+      // LIGHT one covers, against a 6.400 m button-up control.
+      //
+      // It is NOT routed through `worldDeny.sprint`, and that is deliberate. `worldDeny` carries
+      // the WORLD's denials — water bands and RI-PRG07 §3's burden, both of which are guarded to
+      // be inert inside a fight (AR-1). Equip load is the opposite: it is RI-CMB01's and it must
+      // apply inside the fight above all. Borrowing burden's channel would have put an in-fight
+      // effect behind an out-of-fight guard. `b.tier` is recomputed from `b.equipLoadPct` at the
+      // top of every `step()` (line 71), so this reads the live tier and not a cached flag —
+      // and this is the same single line where locomotion is decided, so there is no second
+      // sprint implementation to keep in step with. `sim/player.js stepPlayer` is imported by
+      // nothing and is not it.
+      // DELETE-THE-FIX arm (`__breakW116('oversprint')`), on the combat data object because it is
+      // the one handle this controller holds that outlives a `setLoadout()` body rebuild.
+      const overloaded = b.tier === 'OVERLOADED' && !this.d.__w116_oversprint;
       const wantSprint = (input.held & BIT.sprint) !== 0 && !b.exhausted && b.stamina > 0
+        && !overloaded
         && !(b.worldDeny && b.worldDeny.sprint);
       let mps;
       if (wantSprint) {

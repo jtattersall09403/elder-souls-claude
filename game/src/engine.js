@@ -3737,49 +3737,6 @@ export class Engine {
    * return `null` and are unequippable by construction — which is also RI-PRG07 §2's
    * "consumables are not counted" enforced at the only place that can enforce it.
    */
-  /**
-   * W1-16 round 3 — THE WEIGHT OF WHAT IS ACTUALLY IN YOUR HANDS.
-   *
-   * `RI-PRG07` §2 opens with "weight of equipped **weapons, shields**, armour, talismans". Round 2
-   * implemented the third term and neither of the first two, because it summed `sim.inventory`
-   * rows carrying a `slot` and the weapon the fight swings is not an inventory row — it is
-   * `combat.player.moves._weapon`, resolved from the loadout through `combat/system.js
-   * movesetFor()`. The round-2 verdict measured the consequence: a character holding an ultra
-   * greatsword and a greatshield read **0.00%**, and `setLoadout({weapon:'ultra-greatsword',
-   * shield:'greatshield_xanmeer'})` moved the ratio by nothing to six decimal places.
-   *
-   * NOTHING IS INVENTED HERE. Both numbers are already in the tree and were already unread:
-   *   * `game/data/weapons/classes.json` ships `equip_weight` on all fifteen classes (Dagger 1 …
-   *     Ultra greatsword 20). `combat/moveset.js weaponFor()` copies it onto the weapon block and
-   *     `combat/moves.js buildMoveTable()` hangs that block on `moves._weapon`. Before this round
-   *     a grep of `game/src` for the token found two lines: one comment and one copy. Fifteen
-   *     shipped rows, zero readers.
-   *   * The shield's `weight` is on the merged row `combat/system.js shieldFor()` already returns
-   *     — `game/data/weapons/offhand.json` for a taxonomy id (Xanmeer door 12) and
-   *     `game/data/combat/stamina.json` for a stability id (Naga tower 13). One row, one weight,
-   *     resolved at the single place shields are resolved, so there is no second table to drift.
-   *
-   * A body with no move table (a scenario built before the fight, a synthetic `this` in an
-   * offline probe) contributes zero rather than throwing: the equipped-armour sum is still a
-   * legitimate answer without it, and a producer that throws is worse than one that under-reads.
-   */
-  _handWeight() {
-    const b = this.combat && this.combat.player;
-    // DELETE-THE-FIX arm (`__breakW116('hands')`): the round-2 world exactly — the ratio is blind
-    // to the weapon and the shield, and only the inventory's clothing rows reach it.
-    if (!b || (this._w116Break && this._w116Break.hands)) return { weapon: 0, shield: 0, total: 0 };
-    const wpn = b.moves && b.moves._weapon;
-    const weapon = wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0;
-    const sh = b.shield;
-    const shield = sh && typeof sh.weight === 'number' ? sh.weight : 0;
-    return {
-      weapon, shield, total: weapon + shield,
-      weapon_id: b.weaponId || null,
-      weapon_class: wpn ? wpn.class : null,
-      shield_id: b.shieldId || null,
-    };
-  }
-
   _slotForItem(rec) {
     if (!rec) return null;
     // DELETE-THE-FIX arm (`__breakW116('slots')`): the pre-round-2 behaviour, in which the ONLY
@@ -3832,7 +3789,7 @@ export class Engine {
    * body — the one moment it is provably offset-free — so the delta is a delta on every path.
    *
    * ROUND 3, THE OTHER HALF: the hands. §2's first two terms are the weapon and the shield, and
-   * they are not inventory rows. `_handWeight()` supplies them from weights the game already
+   * they are not inventory rows. The sum below supplies them from weights the game already
    * ships, and `_finishEquipCommit()` routes a `right`/`left` equip through `setLoadout()` so the
    * hand that is weighed and the hand that fights are the same object. The `right`/`left` rows are
    * therefore SKIPPED in the inventory sum below — counting the pack row as well as the class
@@ -3850,12 +3807,50 @@ export class Engine {
       const slot = inv[i].slot;
       if (!slot) continue;
       equippedCount++;
-      // The hands are weighed once, from the fight's own loadout, not from the pack row.
-      if (slot === 'right' || slot === 'left') continue;
+      // The hands are weighed once, from the fight's own loadout, not from the pack row. Under
+      // the `onehand` delete-the-fix arm the pack row is weighed instead, which is round 2's
+      // world exactly: a maul in the inventory's right hand adds 11.5 kg to the ratio while the
+      // fight keeps swinging the garrison sword.
+      if ((slot === 'right' || slot === 'left') && !(this._w116Break && this._w116Break.onehand)) continue;
       const rec = this.ui && this.ui.data.items.get(inv[i].id);
       if (rec && rec.weight) w += rec.weight;      // worn once, however many are in the pack
     }
-    const hands = this._handWeight();
+    // ---- RI-PRG07 §2's FIRST TWO TERMS, read where the sum is taken -------------------------
+    //
+    // "equipRatio = (weight of equipped WEAPONS, SHIELDS, armour, talismans) / maxLoad". Round 2
+    // implemented the third term and neither of the first two, because it summed `sim.inventory`
+    // rows carrying a `slot` and the weapon the fight swings is not an inventory row — it is
+    // `combat.player.moves._weapon`, resolved from the loadout by `combat/system.js movesetFor()`.
+    // The round-2 verdict measured the consequence: a character holding an ultra greatsword and a
+    // greatshield read 0.00%, and `setLoadout({weapon:'ultra-greatsword'})` moved the ratio by
+    // nothing to six decimal places.
+    //
+    // NOTHING IS INVENTED HERE. Both numbers are already in the tree and both were unread:
+    //   * `game/data/weapons/classes.json` ships `equip_weight` on all fifteen classes (Dagger 1
+    //     ... Ultra greatsword 20). `combat/moveset.js weaponFor()` copies it onto the weapon
+    //     block and `combat/moves.js buildMoveTable()` hangs that block on `moves._weapon`. A grep
+    //     of `game/src` for the token used to find two lines: one comment and one copy.
+    //   * The shield's `weight` is on the merged row `combat/system.js shieldFor()` already
+    //     returns — `weapons/offhand.json` for a taxonomy id (Xanmeer door 12) or
+    //     `combat/stamina.json` for a stability id (Naga tower 13). One row, one weight, resolved
+    //     at the one place shields are resolved, so there is no second table to drift out of step.
+    //
+    // A body with no move table (a synthetic `this` in an offline probe) contributes zero rather
+    // than throwing: the worn sum is still a legitimate answer without it.
+    //
+    // DELETE-THE-FIX arm (`__breakW116('hands')`): the round-2 world exactly — the ratio goes
+    // blind to the weapon and the shield and only the inventory's clothing rows reach it.
+    const blind = !!(this._w116Break && this._w116Break.hands);
+    const wpn = b.moves && b.moves._weapon;
+    const shieldRow = b.shield;
+    const hands = {
+      weapon: !blind && wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0,
+      shield: !blind && shieldRow && typeof shieldRow.weight === 'number' ? shieldRow.weight : 0,
+      weapon_id: b.weaponId || null,
+      weapon_class: wpn ? wpn.class : null,
+      shield_id: b.shieldId || null,
+    };
+    hands.total = hands.weapon + hands.shield;
     w += hands.total;
     // The producer engages the moment there is ANY equipped weight to report — which, once the
     // hands count, is every scenario that puts a weapon in them. That is the point: a hardcoded
@@ -4362,7 +4357,7 @@ export class Engine {
    * hands, one weighed and one fighting, live in the same frame.
    *
    * They are one object now: a `right` or `left` equip goes through `setLoadout()`, which is the
-   * only thing in this build that changes what the fight holds, and `_handWeight()` then weighs
+   * only thing in this build that changes what the fight holds, and `_recomputeEquipLoad()` weighs
    * the body rather than the pack row. Taking the row off restores the loadout the scenario
    * declared, so the model runs in both directions — a one-way encumbrance model is not a model.
    */
@@ -4383,10 +4378,12 @@ export class Engine {
     // is no way to REDUCE your load, and a one-way encumbrance model is not a model.
     if (row.slot === slot) {
       row.slot = null; ev.equipped = false;
-      if (hand) this._restoreDeclaredHand(slot, ev);
+      if (hand && !(this._w116Break && this._w116Break.onehand)) this._restoreDeclaredHand(slot, ev);
       return;
     }
-    if (hand) {
+    // DELETE-THE-FIX arm (`__breakW116('onehand')`): the round-2 world exactly — the row lands in
+    // the hand slot and is weighed there, and the fight goes on swinging what it was holding.
+    if (hand && !(this._w116Break && this._w116Break.onehand)) {
       const { patch, why } = this._loadoutForItem(rec, slot);
       // REFUSED, and named. The alternative is the round-2 defect: a weight in the ratio for an
       // object the fight is not holding.
@@ -6023,12 +6020,19 @@ export class Engine {
         pct: +(this.combat && this.combat.player ? this.combat.player.equipLoadPct : 0).toFixed(6),
         tier: this.combat && this.combat.player ? this.combat.tierOf(this.combat.player) : null,
         equipped_weight: +(this.sim.player.equippedWeight || 0).toFixed(3),
+        // W1-16 round 3 — the two terms RI-PRG07 §2 names FIRST, broken out so a reader can see
+        // that the ratio knows what is in your hands without having to trust the total.
+        hands: this.sim.player.equippedHandWeight || null,
+        weapon_the_fight_swings: this.combat && this.combat.player ? this.combat.player.weaponId : null,
+        shield_the_fight_holds: this.combat && this.combat.player ? this.combat.player.shieldId : null,
+        overloaded_denies_sprint: this.combat && this.combat.player
+          ? this.combat.tierOf(this.combat.player) === 'OVERLOADED' : null,
         equip_load_max: +this._equipCapacity().toFixed(3),
         carried_weight: +(this.sim.player.carriedWeight || 0).toFixed(3),
         burden_divisor: +this._equipLoadMax().toFixed(3),   // = maxLoad x 2.5, RI-PRG07 §3
         burden_source: this._burdenPinned ? 'pinned by setBurden()' : 'derived from the pack',
         source: this._equipLoadPinned ? 'pinned by the scenario or setEquipLoad()'
-          : this._equipLoadEngaged ? 'derived from equipped items (W1-16 r2)'
+          : this._equipLoadEngaged ? 'derived from equipped items and the hands (W1-16 r3)'
           : 'engine default — nothing is equipped yet',
         boundaries_pct: this.combat ? this.combat.d.roll.tier_boundaries_pct : null,
         owner: 'RI-CMB01 §B (seam S23: everything the tier does inside the fight)',
@@ -6038,6 +6042,18 @@ export class Engine {
         roll_recovery: 'combat/moves.js equipTier() -> roll.json row',
         roll_stamina_cost: 'combat/moves.js equipTier() -> roll.json costs',
         stamina_regen_mult: 'combat/rules.js regenStamina() ctx.tier',
+        // ---- W1-16 round 3. Three rows the round-2 census did not enumerate at all, and the
+        // round-2 verdict §E found by auditing the shipped data rather than the hand-written
+        // list. ARBITRATION §3: "a sample is not an enumeration."
+        weapon_weight: 'weapons/classes.json equip_weight -> combat/moveset.js weaponFor() -> '
+          + 'moves._weapon -> engine._recomputeEquipLoad() -> the equip ratio (W1-16 r3)',
+        shield_weight: 'weapons/offhand.json + combat/stamina.json weight -> combat/system.js '
+          + 'shieldFor() -> body.shield.weight -> engine._recomputeEquipLoad() -> the ratio (W1-16 r3)',
+        overloaded_denies_sprint: 'combat/player.js locomotion gate — b.tier === "OVERLOADED" '
+          + 'refuses SPRINT at the place locomotion is decided, not at the press gate (W1-16 r3)',
+        overloaded_denies_jump_attack: 'combat/moveset.js resolveSlot() — ctx.roll_tier === '
+          + '"OVERLOADED" -> {slot: null, reason: "overloaded"}',
+        fall_damage_mult: null,
       },
       burden_consumers: {
         move: 'engine._burdenMult() -> sim/traversal.js step() horizontal retraction',

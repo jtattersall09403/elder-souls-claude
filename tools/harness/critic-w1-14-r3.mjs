@@ -47,7 +47,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.resolve('reports/critic-w1-14-r3');
 ensureDir(outDir);
-const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
 const handle = await launchGame(args);
 let report;
@@ -577,6 +577,98 @@ try {
       out.H = Hp;
     }
 
+    // =================================================================== PART I
+    // Three re-measurements, each because part D/H's first arena answered the wrong question.
+    if (PARTS.includes('I')) {
+      const I = {};
+      // I1 — DURATION, re-measured in the arena that demonstrably delivers. Part D aggroed the
+      // target and lock-on steered the bolt into a body that was walking; every row came back
+      // `applied 1, damage 0`. This is H1's arena — un-aggroed body at 4.0 m, `target` range,
+      // one application — with duration as the ONLY thing that varies.
+      const durRun2 = (effect, magnitude, dur) => {
+        baseArena();
+        const e0 = H.spawn('inf_trash', 0, 4.0);
+        H.lockOn(e0);
+        H.stepFrames(20);
+        const hp0 = r2(bodyById(e0).hp);
+        const c = castSpell({ class: 'LIGHT', range: 'target',
+          effects: [{ effect, magnitude, duration_s: dur, area_r_m: 0 }] }, `critI_${effect}_${dur}`, 2100);
+        const b1 = bodyById(e0);
+        const st = H.getMagicState();
+        const eff = D.effects.effects.find((x) => x.id === effect);
+        return { effect, magnitude, duration_s: dur, applied: c.applied, refused: c.refused,
+          hp_before: hp0, hp_after: b1 ? r2(b1.hp) : null,
+          total_damage: b1 ? r2(hp0 - b1.hp) : null,
+          lease_rows_left: st.effects_active ? st.effects_active.length : null,
+          morrowind_per_second_total: r2(magnitude * (eff.magnitude.output_per_point || 1) * Math.max(dur, 1)) };
+      };
+      I.duration = [];
+      for (const e of ['fire_damage', 'frost_damage', 'poison_damage']) {
+        for (const d of [0, 1, 5, 30]) I.duration.push(durRun2(e, 20, d));
+      }
+
+      // I2 — ALLEGIANCE, at the distance where this arena demonstrably produces a fight. At
+      // 2.4 m the foe RUSHed, hit RI-AI01's leash and returned to its anchor without ever
+      // swinging; at 1.2 m part E's enemy took the player from 80 hp to 1.88 in 120 f@60.
+      const alleg2 = (mode) => {
+        baseArena();
+        let sid = null;
+        if (mode !== 'control') {
+          const c = castSpell({ class: 'LIGHT', range: 'self',
+            effects: [{ effect: 'bind_lesser', magnitude: 60, duration_s: 90, area_r_m: 0 }] }, `critI_alleg_${mode}`, 40);
+          if (c.refused) return { mode, refused: c.refused };
+          const w = H.getMagicWorld();
+          sid = w.summons[0] ? w.summons[0].eid : null;
+        }
+        const foe = H.spawn('inf_trash', 0, 1.2);
+        H.aggro(foe);
+        if (mode === 'aggroed' && sid) H.aggro(sid);
+        const foe0 = bodyById(foe) ? r2(bodyById(foe).hp) : null;
+        const sum0 = sid && bodyById(sid) ? r2(bodyById(sid).hp) : null;
+        const php0 = r2(playerHp());
+        H.stepFrames(1200);
+        const fb = bodyById(foe); const sb = sid ? bodyById(sid) : null;
+        return { mode, summon_eid: sid,
+          foe_hp: [foe0, fb ? r2(fb.hp) : null], foe_damage_taken: fb && foe0 !== null ? r2(foe0 - fb.hp) : null,
+          summon_hp: [sum0, sb ? r2(sb.hp) : null], summon_damage_taken: sb && sum0 !== null ? r2(sum0 - sb.hp) : null,
+          player_hp: [php0, r2(playerHp())], player_damage_taken: r2(php0 - playerHp()),
+          foe_state: fb ? fb.state : null, summon_state: sb ? sb.state : null,
+          foe_dist_m: fb ? r2(fb.dist_m) : null, summon_dist_m: sb ? r2(sb.dist_m) : null };
+      };
+      I.allegiance = [alleg2('control'), alleg2('left_alone'), alleg2('aggroed')];
+
+      // I3 — WHERE DOES THE PLAYER GO WHEN A CAST IS SILENTLY DROPPED? Part C measured a
+      // `calm_beast` at magnitude 90 that delivered nothing (applied 0) and left the caster
+      // 3784 m from the origin after 900 f@60. Either the drop leaves the input somewhere it
+      // should not be, or that was an artefact; sample the position rather than guess.
+      const driftRun = (label, spec) => {
+        baseArena();
+        const e0 = H.spawn('inf_trash', 0, 4.0);
+        H.aggro(e0); H.lockOn(e0);
+        H.stepFrames(30);
+        const mk = H.makeSpell(spec, `critI_drift_${label}`);
+        const made = !mk.refused;
+        if (made) { H.setAttuned([mk.spell.id]); H.stepFrames(2); }
+        H.magicEventsDrain();
+        H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+        const series = [];
+        for (let i = 0; i < 9; i++) { H.stepFrames(100); const ps = H.getPlayerStats(); series.push({ f: (i + 1) * 100, pos: ps.pos.map(r2), state: H.getCombatState().player.state }); }
+        const ev = H.magicEventsDrain();
+        return { label, made, refused: mk.refused ? (mk.reason || mk.gate) : null,
+          quote_focus_cost: mk.spell ? mk.spell.focus_cost : (mk.quote ? mk.quote.focus_cost : null),
+          focus_max: H.getMagicState().focus_max,
+          event_kinds: [...new Set(ev.map((x) => x.kind))],
+          applied: ev.filter((x) => x.kind === 'effect_apply').length,
+          pos_series: series };
+      };
+      I.drift = [
+        driftRun('calm_beast_mag90_dur30', { class: 'LIGHT', range: 'target', effects: [{ effect: 'calm_beast', magnitude: 90, duration_s: 30, area_r_m: 0 }] }),
+        driftRun('calm_beast_mag1_dur30', { class: 'LIGHT', range: 'target', effects: [{ effect: 'calm_beast', magnitude: 1, duration_s: 30, area_r_m: 0 }] }),
+        driftRun('no_spell_attuned', { class: 'LIGHT', range: 'target', effects: [{ effect: 'bind_lesser', magnitude: 1, duration_s: 1, area_r_m: 0 }] }),
+      ];
+      out.I = I;
+    }
+
     return out;
   }, { PARTS: parts });
 } finally {
@@ -615,5 +707,10 @@ if (report.H) {
   for (const a of report.H.allegiance) log(`H2 ${a.mode}: foe took ${a.foe_damage_taken}, summon took ${a.summon_damage_taken}, player took ${a.player_damage_taken}`);
   log(`H3 focus_max fresh ${report.H.focus_ceiling.focus_max_fresh} -> after 120 f ${report.H.focus_ceiling.focus_max_after_120f}; quote ${report.H.focus_ceiling.quote_focus_cost}; cast kinds ${JSON.stringify(report.H.focus_ceiling.cast_event_kinds)}`);
   for (const h of report.H.highest_castable) log(`H3 bind_greater mag ${h.magnitude}: summoned ${h.summoned} power ${h.power} hp ${h.hp} (focus_max at gate ${h.focus_max_at_gate})`);
+}
+if (report.I) {
+  for (const r of report.I.duration) log(`I1 ${r.effect} dur ${r.duration_s}s -> applied ${r.applied}, total damage ${r.total_damage} (Morrowind per-second total ${r.morrowind_per_second_total})`);
+  for (const a of report.I.allegiance) log(`I2 ${a.mode}: foe took ${a.foe_damage_taken}, summon took ${a.summon_damage_taken}, player took ${a.player_damage_taken}`);
+  for (const d of report.I.drift) log(`I3 ${d.label}: made=${d.made} applied=${d.applied} kinds=${JSON.stringify(d.event_kinds)} final pos ${JSON.stringify(d.pos_series[d.pos_series.length - 1])}`);
 }
 console.log(p);

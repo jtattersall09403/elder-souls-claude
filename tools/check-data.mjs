@@ -85,6 +85,44 @@ console.log(`check-data: ${refs.length} indexed data files, all present.`);
 }
 
 // ---------------------------------------------------------------------------
+// A LIVE OBJECT must not come back from a save as a plain one.
+//
+// `save/fight.js`'s SKIP list omitted `ai`, so the save serialised the live `SoulsAI` and the
+// load assigned the plain object back over the instance. The next fixed step threw
+// `this.ai.step is not a function` and killed every stepping probe in the project — while
+// boot-check stayed green, because boot does not step. Every agent here boot-checks before it
+// measures, so that was not one agent's problem (RULES 13).
+//
+// It runs here, over the real classes with no browser and no engine (~100 ms), because
+// .githooks/pre-commit already runs check-data on every commit that touches game/ data, and
+// because rule 14 says content and shape integrity belong in a check rather than in a
+// constructor. Armed only after being shown BOTH ways: silent on the repaired tree, and 15
+// findings when run against the pre-fix source at HEAD~ — including five frame stamps that
+// were never being rebased and that nobody had noticed.
+//
+// Standalone, with the per-assertion detail and the falsifiability arm:
+//   node tools/check-save-shape.mjs [--verbose]
+//   node tools/check-save-shape.mjs --self-break
+{
+  const shape = join(ROOT, 'tools', 'check-save-shape.mjs');
+  if (existsSync(shape)) {
+    const { spawnSync } = await import('node:child_process');
+    const r = spawnSync(process.execPath, [shape], { encoding: 'utf8' });
+    process.stdout.write(r.stdout || '');
+    if (r.status !== 0) {
+      process.stderr.write(r.stderr || '');
+      console.error('\ncheck-data: a live object does not survive the save/load round trip.');
+      console.error('This does not fail at the load. It fails on the NEXT FIXED STEP, in whoever');
+      console.error('happens to be measuring, with an error about the caller and not about the save.');
+      process.exit(1);
+    }
+  } else {
+    console.error('check-data: tools/check-save-shape.mjs is missing — the save round trip is NOT being shape-checked.');
+    process.exit(1);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // An NPC's `settlement` must be a place the world can answer for.
 //
 // This exists because NPC records kept acquiring settlement strings that are not

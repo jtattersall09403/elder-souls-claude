@@ -1,0 +1,71 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "G"
+  ],
+  "notes": [],
+  "G": {
+    "multi_effect_quote": {
+      "refused": false,
+      "reason": null,
+      "focus_base": 64,
+      "focus_cost": 78,
+      "tier": 3,
+      "gold": 9187,
+      "effects": [
+        {
+          "effect": "fire_damage",
+          "magnitude": 25,
+          "duration_s": 6,
+          "area_r_m": 5
+        },
+        {
+          "effect": "demoralise",
+          "magnitude": 20,
+          "duration_s": 10,
+          "area_r_m": 5
+        }
+      ]
+    },
+    "multi_effect_made": {
+      "refused": false,
+      "id": "custom_1_a_critic_s_own_spell",
+      "geometry": {
+        "kind": "volume",
+        "shape": "sphere",
+        "radius_m": 5,
+        "active_f": 6,
+        "ticks_every_f": 12,
+        "decal_lead_f": 20,
+        "placement": "resolved_world_point"
+      }
+    },
+    "clamping": {
+      "refused": false,
+      "effects": [
+        {
+          "effect": "damage_health",
+          "magnitude": 200,
+          "duration_s": 0,
+          "area_r_m": 0
+        }
+      ]
+    },
+    "menus": [
+      "inventory",
+      "journal",
+      "book",
+      "levelup",
+      "sheet",
+      "spells",
+      "container",
+      "map"
+    ],
+    "ui_modes": null,
+    "custom_spells_in_save": {
+      "has_custom_spells_key": true,
+      "count": 1
+    }
+  }
+}

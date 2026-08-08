@@ -1576,11 +1576,25 @@ export function installHarness(engine, bootPromise) {
      * has not looked.
      */
     __breakW116(what) {
-      if (what === null || what === undefined || what === false) { engine._w116Break = null; return { broken: [] }; }
+      if (what === null || what === undefined || what === false) {
+        engine._w116Break = null;
+        if (engine.combat && engine.combat.d) engine.combat.d.__w116_oversprint = false;
+        return { broken: [] };
+      }
       const list = Array.isArray(what) ? what : String(what).split(',').map((x) => x.trim()).filter(Boolean);
-      const known = ['producer', 'slots', 'travel', 'sprint'];
+      // W1-16 round 3 adds three arms, one per claim the round makes:
+      //   hands      — the equip ratio goes blind to the weapon and the shield again (§C).
+      //   onehand    — `_finishEquipCommit` stops routing a `right`/`left` equip through
+      //                `setLoadout()`, so the hand that is weighed and the hand that fights come
+      //                apart again. This is the RULES #10 arm.
+      //   oversprint — `OVERLOADED` stops forbidding sprint (RI-CMB01 §B).
+      const known = ['producer', 'slots', 'travel', 'sprint', 'hands', 'onehand', 'oversprint'];
       for (const k of list) if (!known.includes(k)) throw new Error(`__breakW116('${k}'): unknown arm. Known: ${known.join(', ')}`);
       engine._w116Break = Object.fromEntries(list.map((k) => [k, true]));
+      // The `oversprint` arm has to reach `combat/player.js`, which holds the combat DATA object
+      // and the body and no reference to the engine. The data object is the one handle that
+      // survives a `setLoadout()` body rebuild, which the `onehand` arm's own probe performs.
+      if (engine.combat && engine.combat.d) engine.combat.d.__w116_oversprint = !!engine._w116Break.oversprint;
       return { broken: list };
     },
 

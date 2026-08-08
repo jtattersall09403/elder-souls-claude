@@ -1,0 +1,23 @@
+{
+  "task_id": "W1-DLG-S37",
+  "role": "builder",
+  "state": "starting",
+  "started_at": "2026-08-08",
+  "ruling": "RI-DLG01 §A governs; engine yields. infoFor() becomes first-match-wins in authored file order; scoring deleted, not re-weighted. Topic-file merge order declared in a manifest.",
+  "next_step": "read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention gates",
+  "files_claimed": [
+    "game/src/character/converse.js",
+    "game/data/dialogue/topic-manifest.json",
+    "tools/dialogue/order-infos.mjs",
+    "orchestration/status/W1-DLG-S37.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-DLG-S37.json"
+  ],
+  "do_not_touch": [
+    "tools/dialogue/arbiter-order-divergence.mjs",
+    "tools/dialogue/arbiter-reference-reader.mjs"
+  ],
+  "notes": []
+}

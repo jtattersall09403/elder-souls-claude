@@ -88,16 +88,27 @@ right now). Between these two you should not need to go looking for anything.
     `node tools/ownership.mjs --staged <your-task-id>` names every staged path another live piece
     has declared, and the pre-commit hook prints it. Read it before you commit, not after.
 
-    **If your work lands in someone else's commit, it is almost certainly the orchestrator's bank
-    and not another agent.** Several agents have reported being swept and attributed it to a
-    neighbour, and one reported that `--only` had itself carried other people's staged files.
-    Tested directly: `git commit --only a.txt` with `b.txt` staged commits `a.txt` alone and leaves
-    `b.txt` staged. `--only` does what it says. The actual mechanism is that
-    `node tools/bank.mjs` stages the whole tree every few minutes on purpose — the container has
-    restarted twice in a day and unbanked work dies with it — so anything you have written but not
-    yet committed will be carried under the bank's message. That is not a race you can win and it
-    is not worth trying to; the bank now names whose work it is carrying, in the commit message,
-    from the ownership registry. Check there before diagnosing a neighbour.
+    **Two things will put files you did not write into your commit, and neither is a neighbour.**
+    This paragraph has been wrong twice; both corrections came from agents, and the second one
+    corrected me after I had told the first it was mistaken.
+
+    1. **`tools/bank.mjs`.** The orchestrator stages the whole tree every few minutes on purpose —
+       the container has restarted twice in a day and unbanked work dies with it — so anything you
+       have written but not yet committed gets carried under the bank's message. Not a race you
+       can win. The bank names whose work it carries, from the ownership registry, in its own
+       commit message; look there before diagnosing anyone.
+    2. **The pre-commit hook stages five generated files itself** — `orchestration/INDEX.md`,
+       `corpus/00-doctrine/INDEX.md`, `docs/index.html`, `docs/progress.html` and
+       `docs/status.json` — because they are regenerated during the hook and a commit that
+       regenerates them without committing them leaves the tree permanently dirty. So
+       `git commit --only <your paths>` still comes out with those five. **That is expected and
+       it is not a sweep.**
+
+    `--only` itself is sound and you should still use it: tested directly, `git commit --only
+    a.txt` with `b.txt` staged commits `a.txt` alone and leaves `b.txt` staged. An agent reported
+    otherwise, I tested that narrow claim, found it false, and said so — and was then shown the
+    hook, which produces the same symptom by a different route. Test the mechanism you are
+    accused of, not the one you assumed.
 
 ## Cost
 

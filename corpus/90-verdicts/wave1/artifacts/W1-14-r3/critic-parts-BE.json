@@ -1,0 +1,478 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "B",
+    "E"
+  ],
+  "notes": [],
+  "B": {
+    "design": "volume centre is 9.0 m in front of the caster (system.js _spawnVolume dist); bodies surveyed from there",
+    "runs": [
+      {
+        "effect": "fire_damage",
+        "radius_r_m": 2,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 1,
+        "geometry_radius_m": 2,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 140,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "bodies_hit": 1,
+        "hit_ids": [
+          "e0"
+        ]
+      },
+      {
+        "effect": "fire_damage",
+        "radius_r_m": 8,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 4,
+        "geometry_radius_m": 8,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 140,
+          "e1": 140,
+          "e2": 140,
+          "e3": 140
+        },
+        "bodies_hit": 4,
+        "hit_ids": [
+          "e0",
+          "e1",
+          "e2",
+          "e3"
+        ]
+      },
+      {
+        "effect": "frost_damage",
+        "radius_r_m": 2,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 1,
+        "geometry_radius_m": 2,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 199,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "bodies_hit": 1,
+        "hit_ids": [
+          "e0"
+        ]
+      },
+      {
+        "effect": "frost_damage",
+        "radius_r_m": 8,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 4,
+        "geometry_radius_m": 8,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 199,
+          "e1": 199,
+          "e2": 199,
+          "e3": 199
+        },
+        "bodies_hit": 4,
+        "hit_ids": [
+          "e0",
+          "e1",
+          "e2",
+          "e3"
+        ]
+      },
+      {
+        "effect": "poison_damage",
+        "radius_r_m": 2,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 1,
+        "geometry_radius_m": 2,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 232,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "bodies_hit": 1,
+        "hit_ids": [
+          "e0"
+        ]
+      },
+      {
+        "effect": "poison_damage",
+        "radius_r_m": 6,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 3,
+        "geometry_radius_m": 6,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 232,
+          "e1": 232,
+          "e2": 232,
+          "e3": 312
+        },
+        "bodies_hit": 3,
+        "hit_ids": [
+          "e0",
+          "e1",
+          "e2"
+        ]
+      }
+    ],
+    "repeat_null": [
+      {
+        "effect": "fire_damage",
+        "radius_r_m": 8,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 4,
+        "geometry_radius_m": 8,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 140,
+          "e1": 140,
+          "e2": 140,
+          "e3": 140
+        },
+        "bodies_hit": 4,
+        "hit_ids": [
+          "e0",
+          "e1",
+          "e2",
+          "e3"
+        ]
+      },
+      {
+        "effect": "fire_damage",
+        "radius_r_m": 8,
+        "magnitude": 60,
+        "refused": null,
+        "applied": 4,
+        "geometry_radius_m": 8,
+        "bodies_at_m": [
+          0.3,
+          2.6,
+          5,
+          7.4
+        ],
+        "hp_before": {
+          "e0": 312,
+          "e1": 312,
+          "e2": 312,
+          "e3": 312
+        },
+        "hp_after": {
+          "e0": 140,
+          "e1": 140,
+          "e2": 140,
+          "e3": 140
+        },
+        "bodies_hit": 4,
+        "hit_ids": [
+          "e0",
+          "e1",
+          "e2",
+          "e3"
+        ]
+      }
+    ]
+  },
+  "E": {
+    "absorb": [
+      {
+        "effect": "absorb_health",
+        "magnitude": 60,
+        "refused": null,
+        "applied": 0,
+        "player_hp": [
+          80,
+          1.88
+        ],
+        "player_delta": -78.12,
+        "enemy_hp": [
+          412,
+          412
+        ],
+        "enemy_delta": 0
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 60,
+        "refused": null,
+        "applied": 0,
+        "player_hp": [
+          80,
+          1.88
+        ],
+        "player_delta": -78.12,
+        "enemy_hp": [
+          412,
+          412
+        ],
+        "enemy_delta": 0
+      },
+      {
+        "effect": "drain_health",
+        "magnitude": 60,
+        "refused": null,
+        "applied": 0,
+        "player_hp": [
+          80,
+          1.88
+        ],
+        "player_delta": -78.12,
+        "enemy_hp": [
+          412,
+          412
+        ],
+        "enemy_delta": 0
+      }
+    ],
+    "summon_side": {
+      "refused": "'bind_lesser' does not accept range 'target' (accepts self)",
+      "summon_eid": null,
+      "entity_record": [],
+      "body_fields": null,
+      "bodies_in_room": 0,
+      "player_hp_before_900f": 300,
+      "player_hp_after_900f": 300,
+      "player_damage_from_own_summon": 0,
+      "summon_state": null
+    },
+    "frenzy": {
+      "refused": null,
+      "applied": 0,
+      "frenzy_target_declared": null,
+      "hp_before": {
+        "e0": 412,
+        "e1": 412
+      },
+      "hp_after": {
+        "e0": 412,
+        "e1": 412
+      },
+      "other_body_damaged": 0,
+      "frenzied_body_damaged": 0
+    },
+    "bind_greater_ceiling": {
+      "focus_max": 124,
+      "ladder": [
+        {
+          "magnitude": 1,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 10,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 20,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 30,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 40,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 45,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 50,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 60,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 70,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 80,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        },
+        {
+          "magnitude": 90,
+          "refused": true,
+          "reason": "'bind_greater' does not accept range 'target' (accepts self)",
+          "affordable": false
+        }
+      ],
+      "by_class_at_mag90": [
+        {
+          "class": "CANTRIP",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "class": "LIGHT",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "class": "HEAVY",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "class": "GREAT",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "class": "RITUAL",
+          "refused": true,
+          "affordable": false
+        }
+      ],
+      "cantrip_by_duration_at_mag90": [
+        {
+          "duration_s": 1,
+          "class": "CANTRIP",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "duration_s": 5,
+          "class": "CANTRIP",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "duration_s": 10,
+          "class": "CANTRIP",
+          "refused": true,
+          "affordable": false
+        },
+        {
+          "duration_s": 60,
+          "class": "CANTRIP",
+          "refused": true,
+          "affordable": false
+        }
+      ]
+    },
+    "bind_greater_over_reservoir": {
+      "refused": "'bind_greater' does not accept range 'target' (accepts self)",
+      "kinds": null,
+      "applied": null,
+      "focus_max": 124
+    }
+  }
+}

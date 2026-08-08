@@ -3,16 +3,31 @@
   "title": "save/fight.js serialises live SoulsAI as plain object; boot-check blind to it",
   "state": "in_progress",
   "started": "2026-08-08",
-  "next_step": "read RULES/INDEX/NEXT-DISPATCH Q0, then save/fight.js + save/state.js",
+  "next_step": "land the fix in save/fight.js + combat/ai.js + combat/enemy.js, then verify in one browser",
   "files_touched": [
     "orchestration/status/W1-SAVE-AI.json"
   ],
   "files_claimed": [
     "game/src/save/fight.js",
-    "game/src/save/state.js",
+    "game/src/combat/ai.js",
+    "game/src/combat/enemy.js",
     "tools/harness/boot-check.mjs",
     "tools/check-data.mjs",
-    "reports/blog-feed.jsonl"
+    "tools/check-save-shape.mjs",
+    "tools/harness/save-ai-roundtrip.mjs",
+    "reports/w1-save-ai/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ],
-  "notes": []
+  "notes": [
+    "combat/ai.js and combat/enemy.js are declared by W1-12 [done] and W1-03 [fixed]; neither is building and both files were clean in the working tree when claimed. Declared here rather than left to read as a collision (rule 16).",
+    "NOT touching game/src/engine.js: 8 live pieces, working tree MM (staged AND unstaged neighbour edits). A `git commit --only game/src/engine.js` would carry them.",
+    "PRE-FIX REPRODUCTION (commit 63f41ef + working tree, one browser): ctl.ai constructor SoulsAI -> Object across saveRoundTrip(); ai.step is not a function on the next stepFrames(1); hash_equal false; the serialised SoulsAI is 81,892 of the 194,161-byte save (42%) because it drags the whole CombatBody, statblock and ai.json along with it.",
+    "SECOND, SEPARATE DEFECT FOUND, NOT MINE TO FIX: game/src/engine.js:7182 nulls this.death.lastGrounded on every load where the death surface is not active, one statement after DeathSystem.restoreInFlight() restored it -- so death.last_grounded is the OTHER half of hash_equal:false and the D3 fall-rule respawn point does not survive a load. Same family as the comment four lines above it. Handed up.",
+    "FLEET NOTE: at the start of this run the whole tree was unbootable (Engine._installCanon threw on 2 unresolved canon refs after bank 63f41ef swept W1-17's in-flight removal of the `notary` infos). Someone demoted the throw to a warning mid-run and boot-check went green again. Not my change."
+  ],
+  "redundant_with": [
+    "W1-12",
+    "W1-03"
+  ]
 }

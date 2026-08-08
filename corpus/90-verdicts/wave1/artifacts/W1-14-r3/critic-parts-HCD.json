@@ -1,0 +1,793 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "H",
+    "C",
+    "D"
+  ],
+  "notes": [],
+  "C": {
+    "summon": [
+      {
+        "effect": "bind_lesser",
+        "magnitude": 1,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 4,
+        "summon": {
+          "eid": "e0",
+          "power": 0.25,
+          "hp": 65,
+          "attack_rating": 22,
+          "archetype": "drowned_lesser"
+        },
+        "body_hp_max": 65,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_lesser",
+        "magnitude": 90,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 57,
+        "summon": {
+          "eid": "e0",
+          "power": 4,
+          "hp": 1040,
+          "attack_rating": 88,
+          "archetype": "drowned_lesser"
+        },
+        "body_hp_max": 1040,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_lesser",
+        "magnitude": 1,
+        "break": "bindblind",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 4,
+        "summon": {
+          "eid": "e0",
+          "power": 1,
+          "hp": 260,
+          "attack_rating": 88,
+          "archetype": "drowned_lesser"
+        },
+        "body_hp_max": 260,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_lesser",
+        "magnitude": 90,
+        "break": "bindblind",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 57,
+        "summon": {
+          "eid": "e0",
+          "power": 1,
+          "hp": 260,
+          "attack_rating": 88,
+          "archetype": "drowned_lesser"
+        },
+        "body_hp_max": 260,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_greater",
+        "magnitude": 1,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 8,
+        "summon": {
+          "eid": "e0",
+          "power": 0.25,
+          "hp": 160,
+          "attack_rating": 42,
+          "archetype": "drowned_greater"
+        },
+        "body_hp_max": 160,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_greater",
+        "magnitude": 45,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 49,
+        "summon": {
+          "eid": "e0",
+          "power": 2.498,
+          "hp": 1599,
+          "attack_rating": 105,
+          "archetype": "drowned_greater"
+        },
+        "body_hp_max": 1599,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_greater",
+        "magnitude": 1,
+        "break": "bindblind",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 8,
+        "summon": {
+          "eid": "e0",
+          "power": 1,
+          "hp": 640,
+          "attack_rating": 105,
+          "archetype": "drowned_greater"
+        },
+        "body_hp_max": 640,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      },
+      {
+        "effect": "bind_greater",
+        "magnitude": 45,
+        "break": "bindblind",
+        "refused": null,
+        "applied": 1,
+        "focus_cost": 49,
+        "summon": {
+          "eid": "e0",
+          "power": 1,
+          "hp": 640,
+          "attack_rating": 105,
+          "archetype": "drowned_greater"
+        },
+        "body_hp_max": 640,
+        "body_state_at_cast": "IDLE",
+        "bodies_in_room": 1,
+        "body_ids": [
+          "e0"
+        ],
+        "player_hp_start": 300,
+        "player_hp_end_600f": 300,
+        "player_damage_taken_600f": 0
+      }
+    ],
+    "flee": [
+      {
+        "effect": "demoralise",
+        "magnitude": 1,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "declared_leash_m": 6,
+        "declared_speed_mps": 4.2,
+        "dist_at_cast_m": 3.93,
+        "dist_after_900f_m": 6.02,
+        "dist_from_entity_list_m": 6.02,
+        "target_pos": [
+          0.8,
+          0,
+          6.12
+        ],
+        "caster_pos": [
+          0.01,
+          0,
+          0.15
+        ],
+        "yielded": true,
+        "dead": false
+      },
+      {
+        "effect": "demoralise",
+        "magnitude": 34,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "declared_leash_m": 45,
+        "declared_speed_mps": 4.2,
+        "dist_at_cast_m": 3.93,
+        "dist_after_900f_m": 45.01,
+        "dist_from_entity_list_m": 45.01,
+        "target_pos": [
+          5.96,
+          0,
+          44.77
+        ],
+        "caster_pos": [
+          0.01,
+          0,
+          0.15
+        ],
+        "yielded": true,
+        "dead": false
+      },
+      {
+        "effect": "demoralise",
+        "magnitude": 1,
+        "break": "fleeblind",
+        "refused": null,
+        "applied": 1,
+        "declared_leash_m": 6,
+        "declared_speed_mps": 4.2,
+        "dist_at_cast_m": 3.93,
+        "dist_after_900f_m": 2.38,
+        "dist_from_entity_list_m": 2.38,
+        "target_pos": [
+          0.32,
+          0,
+          2.51
+        ],
+        "caster_pos": [
+          0.01,
+          0,
+          0.15
+        ],
+        "yielded": true,
+        "dead": false
+      },
+      {
+        "effect": "demoralise",
+        "magnitude": 34,
+        "break": "fleeblind",
+        "refused": null,
+        "applied": 1,
+        "declared_leash_m": 45,
+        "declared_speed_mps": 4.2,
+        "dist_at_cast_m": 3.93,
+        "dist_after_900f_m": 2.38,
+        "dist_from_entity_list_m": 2.38,
+        "target_pos": [
+          0.32,
+          0,
+          2.51
+        ],
+        "caster_pos": [
+          0.01,
+          0,
+          0.15
+        ],
+        "yielded": true,
+        "dead": false
+      }
+    ],
+    "calm_reference": [
+      {
+        "effect": "calm_beast",
+        "magnitude": 1,
+        "break": "none",
+        "refused": null,
+        "applied": 1,
+        "dist_at_cast_m": 3.93,
+        "dist_after_900f_m": 2.38,
+        "dist_from_entity_list_m": 2.38,
+        "target_pos": [
+          0.32,
+          0,
+          2.51
+        ],
+        "caster_pos": [
+          0.01,
+          0,
+          0.15
+        ],
+        "yielded": true,
+        "dead": false
+      },
+      {
+        "effect": "calm_beast",
+        "magnitude": 90,
+        "break": "none",
+        "refused": null,
+        "applied": 0,
+        "declared_leash_m": null,
+        "declared_speed_mps": null,
+        "dist_at_cast_m": 3.93,
+        "dist_after_900f_m": 5454.97,
+        "dist_from_entity_list_m": 5454.97,
+        "target_pos": [
+          6.4,
+          0,
+          6.76
+        ],
+        "caster_pos": [
+          3784.57,
+          0,
+          3941.5
+        ],
+        "yielded": false,
+        "dead": false
+      }
+    ]
+  },
+  "D": {
+    "design": "same magnitude, same target, duration 1 s vs the effect maximum; total damage compared",
+    "rows": [
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "duration_s": 1,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 36
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "duration_s": 30,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 1080
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "duration_s": 1,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 34
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "duration_s": 30,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 1020
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "duration_s": 1,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 24
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "duration_s": 30,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 720
+      },
+      {
+        "effect": "restore_health",
+        "magnitude": 20,
+        "duration_s": 1,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 20
+      },
+      {
+        "effect": "restore_health",
+        "magnitude": 20,
+        "duration_s": 30,
+        "frames": 2100,
+        "refused": null,
+        "applied": 1,
+        "hp_before": 412,
+        "hp_after": 412,
+        "damage_total": 0,
+        "morrowind_expected_if_per_second": 600
+      }
+    ]
+  },
+  "H": {
+    "range_multiplier": [
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "touch",
+        "class": "CANTRIP",
+        "refused": null,
+        "applied": 4,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 236,
+        "damage": 176,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "target",
+        "class": "CANTRIP",
+        "refused": null,
+        "applied": 1,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 368,
+        "damage": 44,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "projectile",
+        "class": "CANTRIP",
+        "refused": null,
+        "applied": 1,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 368,
+        "damage": 44,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "touch",
+        "class": "LIGHT",
+        "refused": null,
+        "applied": 5,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 192,
+        "damage": 220,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "target",
+        "class": "LIGHT",
+        "refused": null,
+        "applied": 1,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 368,
+        "damage": 44,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "projectile",
+        "class": "LIGHT",
+        "refused": null,
+        "applied": 1,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 368,
+        "damage": 44,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "touch",
+        "class": "HEAVY",
+        "refused": null,
+        "applied": 7,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 104,
+        "damage": 308,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "target",
+        "class": "HEAVY",
+        "refused": null,
+        "applied": 1,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 368,
+        "damage": 44,
+        "dead": false,
+        "declared_output": 40
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "projectile",
+        "class": "HEAVY",
+        "refused": null,
+        "applied": 1,
+        "class_active_f": null,
+        "hp_before": 412,
+        "hp_after": 368,
+        "damage": 44,
+        "dead": false,
+        "declared_output": 40
+      }
+    ],
+    "allegiance": [
+      {
+        "mode": "control",
+        "summon_eid": null,
+        "foe_hp": [
+          412,
+          412
+        ],
+        "foe_damage_taken": 0,
+        "summon_hp": [
+          null,
+          null
+        ],
+        "summon_damage_taken": null,
+        "player_hp": [
+          300,
+          300
+        ],
+        "player_damage_taken": 0,
+        "foe_state": "RUSH",
+        "summon_state": null
+      },
+      {
+        "mode": "left_alone",
+        "summon_eid": "e1",
+        "foe_hp": [
+          412,
+          412
+        ],
+        "foe_damage_taken": 0,
+        "summon_hp": [
+          866,
+          866
+        ],
+        "summon_damage_taken": 0,
+        "player_hp": [
+          300,
+          300
+        ],
+        "player_damage_taken": 0,
+        "foe_state": "LEASH_RETURN",
+        "summon_state": "IDLE"
+      },
+      {
+        "mode": "aggroed",
+        "summon_eid": "e1",
+        "foe_hp": [
+          412,
+          412
+        ],
+        "foe_damage_taken": 0,
+        "summon_hp": [
+          866,
+          866
+        ],
+        "summon_damage_taken": 0,
+        "player_hp": [
+          300,
+          300
+        ],
+        "player_damage_taken": 0,
+        "foe_state": "LEASH_RETURN",
+        "summon_state": "LEASH_RETURN"
+      }
+    ],
+    "focus_ceiling": {
+      "focus_max_fresh": 124,
+      "focus_at_fresh": 124,
+      "focus_max_after_120f": 88,
+      "focus_after_120f": 88,
+      "quote_focus_cost": 111,
+      "quote_refused": false,
+      "cast_event_kinds": [],
+      "cast_applied": 0,
+      "focus_max_after_cast": 88,
+      "focus_after_cast": 88,
+      "input_drop_reason": null,
+      "summons_after": 0
+    },
+    "highest_castable": [
+      {
+        "magnitude": 40,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "applied": 1,
+        "summoned": 1,
+        "power": 2.22,
+        "hp": 1421,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 50,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "applied": 1,
+        "summoned": 1,
+        "power": 2.775,
+        "hp": 1776,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 60,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "applied": 1,
+        "summoned": 1,
+        "power": 3.33,
+        "hp": 2131,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 65,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "applied": 1,
+        "summoned": 1,
+        "power": 3.608,
+        "hp": 2309,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 70,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "applied": 1,
+        "summoned": 1,
+        "power": 3.885,
+        "hp": 2486,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 72,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "applied": 1,
+        "summoned": 1,
+        "power": 3.996,
+        "hp": 2557,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 74,
+        "kinds": [],
+        "applied": 0,
+        "summoned": 0,
+        "power": null,
+        "hp": null,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 76,
+        "kinds": [],
+        "applied": 0,
+        "summoned": 0,
+        "power": null,
+        "hp": null,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 78,
+        "kinds": [],
+        "applied": 0,
+        "summoned": 0,
+        "power": null,
+        "hp": null,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 80,
+        "kinds": [],
+        "applied": 0,
+        "summoned": 0,
+        "power": null,
+        "hp": null,
+        "focus_max_at_gate": 88
+      },
+      {
+        "magnitude": 90,
+        "kinds": [],
+        "applied": 0,
+        "summoned": 0,
+        "power": null,
+        "hp": null,
+        "focus_max_at_gate": 88
+      }
+    ]
+  }
+}

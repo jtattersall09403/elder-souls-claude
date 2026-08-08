@@ -1,0 +1,279 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "E"
+  ],
+  "notes": [],
+  "E": {
+    "absorb": [
+      {
+        "effect": "absorb_health",
+        "magnitude": 60,
+        "refused": null,
+        "applied": 5,
+        "player_hp": [
+          80,
+          300
+        ],
+        "player_delta": 220,
+        "enemy_hp": [
+          412,
+          77
+        ],
+        "enemy_delta": -335
+      },
+      {
+        "effect": "damage_health",
+        "magnitude": 60,
+        "refused": null,
+        "applied": 4,
+        "player_hp": [
+          80,
+          80
+        ],
+        "player_delta": 0,
+        "enemy_hp": [
+          412,
+          0
+        ],
+        "enemy_delta": -412
+      },
+      {
+        "effect": "drain_health",
+        "magnitude": 60,
+        "refused": null,
+        "applied": 5,
+        "player_hp": [
+          80,
+          80
+        ],
+        "player_delta": 0,
+        "enemy_hp": [
+          412,
+          345
+        ],
+        "enemy_delta": -67
+      }
+    ],
+    "summon_side": {
+      "refused": null,
+      "summon_eid": "e0",
+      "entity_record": [
+        {
+          "eid": "e0",
+          "kind": "enemy",
+          "side": "(absent)",
+          "faction": "(absent)",
+          "summoned": "(absent)"
+        }
+      ],
+      "body_fields": {},
+      "bodies_in_room": 1,
+      "player_hp_before_900f": 300,
+      "player_hp_after_900f": 300,
+      "player_damage_from_own_summon": 0,
+      "summon_state": "IDLE"
+    },
+    "frenzy": {
+      "refused": null,
+      "applied": 4,
+      "frenzy_target_declared": [
+        "\"frenzy_target\":\"e1\""
+      ],
+      "hp_before": {
+        "e0": 412,
+        "e1": 412
+      },
+      "hp_after": {
+        "e0": 412,
+        "e1": 412
+      },
+      "other_body_damaged": 0,
+      "frenzied_body_damaged": 0
+    },
+    "bind_greater_ceiling": {
+      "focus_max": 124,
+      "ladder": [
+        {
+          "magnitude": 1,
+          "refused": false,
+          "reason": null,
+          "focus_base": 12,
+          "focus_cost": 8,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 10,
+          "refused": false,
+          "reason": null,
+          "focus_base": 23,
+          "focus_cost": 16,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 20,
+          "refused": false,
+          "reason": null,
+          "focus_base": 36,
+          "focus_cost": 24,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 30,
+          "refused": false,
+          "reason": null,
+          "focus_base": 51,
+          "focus_cost": 34,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 40,
+          "refused": false,
+          "reason": null,
+          "focus_base": 66,
+          "focus_cost": 44,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 45,
+          "refused": false,
+          "reason": null,
+          "focus_base": 73,
+          "focus_cost": 49,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 50,
+          "refused": false,
+          "reason": null,
+          "focus_base": 81,
+          "focus_cost": 54,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 60,
+          "refused": false,
+          "reason": null,
+          "focus_base": 98,
+          "focus_cost": 65,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 70,
+          "refused": false,
+          "reason": null,
+          "focus_base": 115,
+          "focus_cost": 76,
+          "tier": 4,
+          "skill_req": 65,
+          "affordable": true
+        },
+        {
+          "magnitude": 80,
+          "refused": false,
+          "reason": null,
+          "focus_base": 132,
+          "focus_cost": 98,
+          "tier": 5,
+          "skill_req": 85,
+          "affordable": true
+        },
+        {
+          "magnitude": 90,
+          "refused": false,
+          "reason": null,
+          "focus_base": 150,
+          "focus_cost": 111,
+          "tier": 5,
+          "skill_req": 85,
+          "affordable": true
+        }
+      ],
+      "by_class_at_mag90": [
+        {
+          "class": "CANTRIP",
+          "refused": false,
+          "focus_cost": 56,
+          "affordable": true
+        },
+        {
+          "class": "LIGHT",
+          "refused": false,
+          "focus_cost": 111,
+          "affordable": true
+        },
+        {
+          "class": "HEAVY",
+          "refused": false,
+          "focus_cost": 234,
+          "affordable": false
+        },
+        {
+          "class": "GREAT",
+          "refused": false,
+          "focus_cost": 489,
+          "affordable": false
+        },
+        {
+          "class": "RITUAL",
+          "refused": false,
+          "focus_cost": 111,
+          "affordable": true
+        }
+      ],
+      "cantrip_by_duration_at_mag90": [
+        {
+          "duration_s": 1,
+          "class": "CANTRIP",
+          "refused": false,
+          "focus_cost": 36,
+          "affordable": true
+        },
+        {
+          "duration_s": 5,
+          "class": "CANTRIP",
+          "refused": false,
+          "focus_cost": 39,
+          "affordable": true
+        },
+        {
+          "duration_s": 10,
+          "class": "CANTRIP",
+          "refused": false,
+          "focus_cost": 45,
+          "affordable": true
+        },
+        {
+          "duration_s": 60,
+          "class": "CANTRIP",
+          "refused": false,
+          "focus_cost": 56,
+          "affordable": true
+        }
+      ]
+    },
+    "bind_greater_over_reservoir": {
+      "refused": null,
+      "kinds": [],
+      "applied": 0,
+      "focus_max": 124
+    }
+  }
+}

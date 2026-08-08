@@ -269,10 +269,30 @@ function main() {
   // mouth". `orphans_npc_advertised` is reported separately and does NOT clear the gate — it
   // names topics that only ever arrive because somebody wears them, which is legal but is a
   // thinner way in than being mentioned, and a critic should be able to see the number.
+  // CORRECTED IN W1-17 ROUND 2 — THE SPLIT ABOVE WAS HONEST DISCLOSURE FILED IN THE WRONG BUCKET.
+  //
+  // Round 1 subtracted the npc-advertised topics OUT of `orphans` and reported them alongside, so
+  // the headline read `orphans: 0` (+23 disclosed). The round-1 critic accepted that the discovery
+  // and the disclosure were the larger half of the work — the fourth door is real and nothing else
+  // in the tree modelled it — and still ruled the bucket wrong, for a reason that is simply the
+  // item's own text:
+  //
+  //     RI-DLG01 §D: "Orphans (in-degree 0, not a root, NOT JOURNAL-ADDED) — 0 by intent —
+  //                   >=1 = fail"
+  //
+  // `npc.topics` is not journal-added. On the item's own definition those 23 ARE orphans and the
+  // row fails. A builder does not get to widen an exemption the item wrote narrowly, however
+  // genuine the mechanism it found.
+  //
+  // So `orphans` is now exactly the item's definition and the gate fails on it. The fourth door is
+  // NOT discarded — it survives as a BREAKDOWN of that number rather than as an exemption from it,
+  // which keeps everything the round-1 disclosure was worth while reporting the figure where the
+  // item says it goes.
   const advertised = loadAdvertisedTopics();
   const noWayIn = (n) => (inDeg.get(n) || 0) === 0 && !roots.has(n) && !journalAdded.has(n);
-  const orphansNpcAdvertised = [...nodes].filter((n) => noWayIn(n) && advertised.has(topicFold(n)));
-  const orphans = [...nodes].filter((n) => noWayIn(n) && !advertised.has(topicFold(n)));
+  const orphans = [...nodes].filter(noWayIn);
+  const orphansNpcAdvertised = orphans.filter((n) => advertised.has(topicFold(n)));
+  const orphansNoWayInAtAll = orphans.filter((n) => !advertised.has(topicFold(n)));
 
   // BFS depth from every greeting node
   const adj = new Map();
@@ -322,7 +342,10 @@ function main() {
     median_depth: median,
     unreachable_from_greeting: [...nodes].filter((n) => !depth.has(n) && !roots.has(n)),
     orphans,
+    orphans_definition: 'RI-DLG01 §D: in-degree 0, not a root, not journal-added. 0 by intent; >=1 = fail.',
     orphans_npc_advertised: orphansNpcAdvertised,
+    orphans_no_way_in_at_all: orphansNoWayInAtAll,
+    orphans_breakdown_note: 'orphans_npc_advertised is a BREAKDOWN of `orphans`, not an exemption from it. These topics are reachable in play only because a speaker\'s own record advertises the word (converse.js topicsFor() -> npc.topics), which is a real fourth door the lint did not model before W1-17 r1 found it — but it is not journal-added, so RI-DLG01 §D counts them as orphans and so does this tool.',
     unreachable_infos: unreachable,
     convergence: +(conv.length / nodes.size).toFixed(4),
     quest_topic_fraction: +(questNodes.length / nodes.size).toFixed(4),
@@ -372,7 +395,7 @@ function main() {
 
   const bad = errors.length + orphans.length + unreachable.length;
   console.log(JSON.stringify({ ...metrics, unreachable_infos: unreachable.length, unreachable_info_detail: unreachable.slice(0, 5) }, null, 2));
-  if (bad) { console.error(`\nFAIL: ${errors.length} dangling edges, ${orphans.length} orphans, ${unreachable.length} unreachable INFOs  (+${orphansNpcAdvertised.length} reachable only because a speaker advertises them)`); process.exit(1); }
+  if (bad) { console.error(`\nFAIL: ${errors.length} dangling edges, ${orphans.length} orphans (RI-DLG01 §D definition: in-degree 0, not a root, not journal-added), ${unreachable.length} unreachable INFOs`); console.error(`      of those ${orphans.length} orphans: ${orphansNpcAdvertised.length} are reachable in play ONLY because a speaker advertises the word (npc.topics), and ${orphansNoWayInAtAll.length} have no way in at all.`); process.exit(1); }
 }
 
 if (import.meta.url === url.pathToFileURL(process.argv[1]).href) main();

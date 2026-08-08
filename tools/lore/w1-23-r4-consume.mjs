@@ -188,8 +188,12 @@ async function runLegs(handle, { farByM = 0 } = {}) {
       rec.entered = true;
     } catch (e) { rec.note = `enterInterior threw: ${e.message}`; out.push(rec); continue; }
 
+    // `listEntities()` returns an ARRAY. Reading it as `{entities: [...]}` yields zero props and
+    // a clean, wrong "nothing is placed here" — which is what this tool reported on its first run.
+    await handle.h('stepFrames', 2);
     const ents = await handle.h('listEntities');
-    const props = (ents.entities || ents || []).filter((e) => e && e.readable_book === leg.book);
+    if (!Array.isArray(ents)) { rec.note = 'listEntities did not return an array'; out.push(rec); continue; }
+    const props = ents.filter((e) => e && e.readable_book === leg.book);
     if (!props.length) { rec.note = 'no prop in this room offers that book'; out.push(rec); continue; }
     const prop = props[0];
     rec.prop = { eid: prop.eid, name: prop.name, reach_m: prop.reach_m ?? null, pos: prop.pos };

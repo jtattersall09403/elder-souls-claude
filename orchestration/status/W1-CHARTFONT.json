@@ -1,0 +1,10 @@
+{
+  "task_id": "W1-CHARTFONT",
+  "status": "in_progress",
+  "started_at": "2026-08-08",
+  "summary": "Shared chart/figure glyph table has a width/stride mismatch causing a mid-string deletion that shears every row below it. Present in nine chart tools. Fix once in the shared module, add a self-test, enumerate damage in docs/shots and reports.",
+  "next_step": "Read spec section G of corpus/90-verdicts/wave1/W1-READABLES-r2.md; locate shared glyph table.",
+  "files_touched": ["orchestration/status/W1-CHARTFONT.json"],
+  "files_claimed": ["reports/blog-feed.jsonl"],
+  "notes": []
+}

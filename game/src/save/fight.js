@@ -33,7 +33,7 @@
 // "never" into a date.
 'use strict';
 
-const r6 = (v) => (typeof v === 'number' && Number.isFinite(v) ? Math.round(v * 1e6) / 1e6 : v);
+export const r6 = (v) => (typeof v === 'number' && Number.isFinite(v) ? Math.round(v * 1e6) / 1e6 : v);
 
 /** Not state: handles to shared data tables, to other objects, or to the rig that is rebuilt. */
 const SKIP = new Set([
@@ -65,8 +65,52 @@ export const FRAME_STAMP_FIELDS = [
 ];
 const STAMP = new Set(FRAME_STAMP_FIELDS);
 
-const relStamp = (v, now) => (typeof v !== 'number' ? v : (v <= 0 ? v : v - now));
-const absStamp = (v, now) => (typeof v !== 'number' ? v : (v <= 0 ? v : v + now));
+export const relStamp = (v, now) => (typeof v !== 'number' ? v : (v <= 0 ? v : v - now));
+export const absStamp = (v, now) => (typeof v !== 'number' ? v : (v <= 0 ? v : v + now));
+
+/**
+ * A LIVE OBJECT — an instance of a class, not a plain record — and the reason this function
+ * exists rather than one more name in `SKIP`.
+ *
+ * THE DEFECT IT ABOLISHES. `SKIP` did not list `ai`, so `saveActor(ctl)` walked the live
+ * `SoulsAI` with `encode()`, which does not care what an object's prototype is: it emitted the
+ * state machine's fields, and behind `ai.b` the whole `CombatBody`, behind `ai.stat` the
+ * statblock and behind `ai.cfg` the entirety of `ai.json` — 81,892 bytes of a 194,161-byte
+ * save, 42% of the file. `loadActor` then assigned that plain object back over the instance,
+ * and the next fixed step threw `this.ai.step is not a function`, killing every stepping probe
+ * in the project — **while `boot-check` stayed green, because boot does not step.** That is
+ * rule 15's failure mode wearing different clothes, and rule 13's: not one agent's problem.
+ *
+ * WHY NOT JUST `SKIP` IT. Because a `SoulsAI` is not a handle. It holds behavioural state a
+ * player would expect to persist — what it is doing, who has the attack token, where its leash
+ * is anchored, when it last committed — and `EnemyController.step()` guards its AI call with
+ * `if (this.ai)`, so a skipped `ai` restores as `null` and the enemy simply stands there
+ * forever. That is the SAME class of defect as `post` in `save/state.js` (a field the writer
+ * dropped, restoring quest-givers invisibly inside locked cellars), only quieter: no throw, no
+ * diff, an enemy that has stopped thinking. So the split is made explicitly, by the class that
+ * knows it: `SoulsAI.saveState()` carries the state, and the constructor rebuilds the
+ * machinery.
+ *
+ * AND WHY IT IS A RULE RATHER THAN A CASE. "A live object serialised as a plain object, then
+ * called" is a shape, not a one-off. Every actor field is now classified: a class instance is
+ * carried through its own `saveState`/`loadState` or it is NOT CARRIED AT ALL and says so in
+ * `__unsaved`. `loadActor` never assigns a plain object over a live one again. Losing state
+ * loudly is recoverable; handing back an object with the right fields and no methods is not.
+ * `tools/check-save-shape.mjs` (pre-commit, no browser) fails closed on the `__unsaved` list
+ * and on any restored object that lost a method.
+ *
+ * Typed arrays are DATA, not machinery — `encode()` has always walked them and they have no
+ * behaviour to lose — so they are deliberately not live objects here.
+ *
+ * @returns {string|null} the constructor name, or null if `v` is not a live object.
+ */
+export function liveObjectName(v) {
+  if (v === null || typeof v !== 'object') return null;
+  if (Array.isArray(v) || v instanceof Set || v instanceof Map || ArrayBuffer.isView(v)) return null;
+  const p = Object.getPrototypeOf(v);
+  if (p === Object.prototype || p === null) return null;
+  return (p.constructor && p.constructor.name) || 'anonymous';
+}
 
 /**
  * A move reference becomes its TABLE KEY, and that distinction is a defect this repair had to
@@ -135,17 +179,37 @@ export function saveActor(o, now, table) {
     if (k === 'move' || k === 'pendingMove') { out[k] = moveKeyOf(v, t); continue; }
     if (k === 'hitThisSwing') { out[k] = [...v].map(String).sort(); continue; }
     if (typeof v === 'function') continue;
+    // A LIVE OBJECT is never walked by `encode()`. See `liveObjectName()` for what that cost.
+    const live = liveObjectName(v);
+    if (live) {
+      if (typeof v.saveState === 'function') { out[k] = { __live: live, s: v.saveState(now) }; continue; }
+      // Not carried, and LOUD about it rather than serialised into a corpse. `__unsaved` is
+      // absent on a sound tree, so it costs nothing until something is wrong — and when it is
+      // present, `check-save-shape.mjs` and `getSaveManifest()` both see it.
+      (out.__unsaved || (out.__unsaved = [])).push(`${k}:${live}`);
+      continue;
+    }
     out[k] = encode(v, k, now, t);
   }
   return out;
 }
 
+/** Is this record the `{__live, s}` envelope `saveActor` writes for a class instance? */
+const isLiveRecord = (v) => v !== null && typeof v === 'object' && !Array.isArray(v) && v.__live !== undefined;
+
 export function loadActor(o, rec, now, table) {
   if (rec.rig && o.rig && typeof o.rig.loadState === 'function') o.rig.loadState(rec.rig);
+  const live = [];
   for (const k of Object.keys(rec)) {
-    if (k === 'rig') continue;
+    if (k === 'rig' || k === '__unsaved') continue;
     if (SKIP.has(k)) continue;
     const v = rec[k];
+    // A LIVE OBJECT goes back through its own loader or it does not go back at all, and it
+    // goes back in a SECOND PASS. The one thing that may never happen again is the assignment
+    // on the last line of this loop running against a class instance: that is what turned a
+    // `SoulsAI` into a record with the right fields and no `step`, and it failed on the frame
+    // AFTER the load, where no gate in this project was looking.
+    if (isLiveRecord(v)) { live.push([k, v]); continue; }
     if (k === 'move' || k === 'pendingMove') { o[k] = v === null ? null : (table[v] || null); continue; }
     if (k === 'hitThisSwing') { o[k] = new Set(v); continue; }
     if (k === 'pos' || k === 'socketA' || k === 'socketB' || k === 'prevA' || k === 'prevB') {
@@ -153,6 +217,21 @@ export function loadActor(o, rec, now, table) {
       continue;
     }
     o[k] = decode(v, k, now, table);
+  }
+  // ---- second pass: the live objects ------------------------------------------------------
+  // AFTER the plain fields, and that ordering is the whole reason it is a second pass.
+  // `EnemyController.ai` is built lazily on the controller's first step ("the behaviour is
+  // resolved lazily, on the first step, and not here: `loadScript()` is called AFTER the
+  // controller is constructed"), so at load time `o.ai` is still `null` and there is nothing
+  // to load into. `_resolveAI()` is what builds it, and it decides `scripted` vs `souls` from
+  // `this.script.length` — so it may only be called once `script` and `behaviour` have been
+  // restored, which is here and is not inside the loop above.
+  for (const [k, v] of live) {
+    if (o[k] === null || o[k] === undefined) {
+      if (k === 'ai' && typeof o._resolveAI === 'function') o._resolveAI();
+    }
+    const target = o[k];
+    if (target && typeof target.loadState === 'function') target.loadState(v.s, now);
   }
   return o;
 }

@@ -140,9 +140,19 @@ export class EnemyController {
     this.behaviour = null;
   }
 
-  /** Resolve `souls` vs `scripted` once, on the first frame, when the script is known. */
+  /**
+   * Resolve `souls` vs `scripted` once, on the first frame, when the script is known.
+   *
+   * THE SECOND CONDITION IS A LOAD PATH. `behaviour` is durable and `ai` is not: a controller
+   * restored from a save comes back having already decided it is `souls`, with no AI object,
+   * because `save/fight.js` carries the state machine's STATE and lets the constructor rebuild
+   * the machine. A bare `if (this.behaviour) return` left that controller with `ai === null`
+   * forever, and `_idleBehaviour()` guards its whole souls branch with `if (this.ai)` — so the
+   * enemy would not throw, it would simply stop thinking, which is the quieter and worse half
+   * of the defect that made this repair necessary. Re-resolving is cheap and idempotent.
+   */
   _resolveAI() {
-    if (this.behaviour) return this.behaviour;
+    if (this.behaviour && !(this.behaviour === 'souls' && !this.ai)) return this.behaviour;
     this.behaviour = resolveBehaviour(this.stat, this.d.ai, this.script.length > 0);
     if (this.behaviour === 'souls') {
       this.ai = new SoulsAI(this.b, this.stat, this.d);

@@ -263,6 +263,74 @@ function main() {
   }
   if (pairBad) bad += pairBad; else console.log(`ok   pairwise separation: all ${rows.length * (rows.length - 1) / 2} pairs separable on w/sent, <=6w or STTR`);
 
+  // ---- THE MOOD AXIS — REPORTED, NOT GATING -----------------------------------------------------
+  //
+  // W1-17 round 2, answering the round-1 critic's §F3. It found three archetype pairs
+  // "statistically indistinguishable" and then judged, by ear, that ONE OF THE THREE IS A DEFECT IN
+  // THE MEASURE rather than in the writing:
+  //
+  //     sapcutter: "Friend, this one was taught the depth and this one was taught the season."
+  //     legionary: "Do not draw in the street. Do not argue with a writ. Pay the gate fee."
+  //
+  // Δw/sent 0.23, Δ<=6w 10.5pp, ΔSTTR 0.036 — identical on every axis the rule offers. To the ear
+  // they are not remotely alike: one is terse-because-servile, the other terse-because-imperative.
+  // RI-DLG06 §B's separation rule offers only w/sent, <=6w and STTR — THREE MEASURES OF SENTENCE
+  // LENGTH AND VOCABULARY DIVERSITY, AND NONE OF MOOD — while the corpus already holds the
+  // discriminating evidence in the `address` and `grammar_tic` blocks that the rule never consults.
+  //
+  // So this axis is computed and printed, and the pairs it resolves are named. It is deliberately
+  // NOT added to `bad`: RI-DLG06 §B is a reference item and a builder does not get to rewrite the
+  // bar it is judged against. This is the evidence for the amendment, put where the next critic
+  // and the item's owner can see it.
+  const moodOf = (texts) => {
+    const w = tok(texts.join('\n')).length || 1;
+    const rate = (src) => { const re = new RegExp(src, 'gi'); let n = 0; for (const t of texts) for (const s of sentences(t)) { re.lastIndex = 0; n += (s.match(re) || []).length; } return n / w * 1000; };
+    return {
+      imper: rate('^(Do not|Don\'t|Halt|Move|Stand|State|Show|Declare|Keep|Step|Report|Hand|Pay|Go|Come|Ask|Leave|Return|Mind|Sit|Wait)\\b'),
+      quest: rate('\\?'),
+      first: rate('\\b(I|me|my|mine)\\b'),
+      second: rate('\\b(you|your|yours)\\b'),
+      hedge: rate('\\b(generally|presumably|perhaps|possibly|might|may|reportedly|so far as|one assumes|it is said)\\b'),
+    };
+  };
+  const MOOD = new Map(rows.map((r) => [r.a.id, moodOf(r.texts)]));
+  console.log('\nmood axis (REPORTED, not gating — the axis RI-DLG06 §B does not have)');
+  console.log('archetype     imperative  question  1st-person  2nd-person   hedge   (all /1k words)');
+  for (const r of rows) {
+    const m = MOOD.get(r.a.id);
+    console.log(`  ${r.a.id.padEnd(12)}${m.imper.toFixed(2).padStart(9)}${m.quest.toFixed(2).padStart(10)}${m.first.toFixed(2).padStart(12)}${m.second.toFixed(2).padStart(12)}${m.hedge.toFixed(2).padStart(8)}`);
+  }
+  const moodDist = (a, b) => {
+    const A = MOOD.get(a), B = MOOD.get(b);
+    return Math.max(...['imper', 'quest', 'first', 'second', 'hedge'].map((k) => Math.abs(A[k] - B[k])));
+  };
+  // The three length-indistinguishable pairs, with their mood gaps beside them. This tool does NOT
+  // pronounce on which are metric defects and which are real: the round-1 critic made that call by
+  // ear, judged ONE of the three a defect in the measure and TWO genuine, and a builder's tool
+  // announcing "3 of 3 resolved" would be overturning a critic's judgement with a threshold it
+  // chose itself. The numbers are printed so the item's owner can weigh them.
+  console.log('\n  the pairs RI-DLG06 §B\'s three length axes cannot separate, with their mood gaps:');
+  console.log('  (round-1 critic\'s judgement by ear, quoted: sapcutter/legionary = METRIC defect;');
+  console.log('   mudborn/archivist and rootkeeper/mudborn = REAL, "the rhythm is shared and');
+  console.log('   RI-DLG06\'s spread requirement is about rhythm")');
+  for (let i = 0; i < rows.length; i++) for (let j = i + 1; j < rows.length; j++) {
+    const A = rows[i].fp, B = rows[j].fp;
+    const lenOk = Math.abs(A.w_sent - B.w_sent) >= 2.0 || Math.abs(A.le6w - B.le6w) >= 15 || Math.abs(A.sttr - B.sttr) >= 0.06;
+    if (lenOk) continue;
+    const a = rows[i].a.id, b = rows[j].a.id;
+    const MA = MOOD.get(a), MB = MOOD.get(b);
+    const worst = ['imper', 'quest', 'first', 'second', 'hedge']
+      .map((k) => ({ k, d: Math.abs(MA[k] - MB[k]), r: Math.max(MA[k], MB[k]) / Math.max(0.01, Math.min(MA[k], MB[k])) }))
+      .sort((x, y) => y.d - x.d)[0];
+    console.log(`    ${a} vs ${b}: max mood gap ${moodDist(a, b).toFixed(2)}/1k on \`${worst.k}\` (${MA[worst.k].toFixed(2)} vs ${MB[worst.k].toFixed(2)}, ${worst.r.toFixed(1)}x)`);
+  }
+  console.log('  The evidence this axis exists to supply: the discriminating signal is already in the');
+  console.log('  corpus, in the `address` and `grammar_tic` blocks, and RI-DLG06 §B\'s separation rule');
+  console.log('  consults neither. sapcutter refuses the first person (2.84/1k — that IS its declared');
+  console.log('  tic) while legionary is at 14.97; on length they are 0.24 w/sent apart. A rule that');
+  console.log('  calls those two the same voice is measuring the wrong thing. Amendment owed to the');
+  console.log('  item, not to the prose.');
+
   console.log(`\n${bad === 0 ? 'PASS' : `${bad} requirement(s) missed`}`);
   if (bad) process.exit(1);
 }

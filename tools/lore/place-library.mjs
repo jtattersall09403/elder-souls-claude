@@ -435,5 +435,12 @@ function selfTest() {
   return fail === 0 ? 0 : 1;
 }
 
-const argv = process.argv.slice(2);
-process.exit(argv.includes('--self-test') ? selfTest() : report(argv));
+// Only run when this file IS the command. `tools/lore/w1-23-r4-consume.mjs` imports PLACEMENTS to
+// build its teardown arm out of the same table it placed from, and an unguarded main exits the
+// importer instead — which it did, silently, and the consumption run reported a clean exit 0
+// having measured nothing.
+const IS_MAIN = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (IS_MAIN) {
+  const argv = process.argv.slice(2);
+  process.exit(argv.includes('--self-test') ? selfTest() : report(argv));
+}

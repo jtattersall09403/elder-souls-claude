@@ -1,22 +1,39 @@
 {
   "task_id": "critic-w1-14-r3",
   "role": "critic",
-  "piece": "W1-14 round 3 — magic",
+  "piece": "W1-14 round 3 — magic (seam S19)",
   "state": "running",
-  "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION/spec/builder-status; then attack A-G",
-  "contention": "gate returned WAIT (3 instances, load 5.07/core over 4.0 ceiling) at start; doing offline work first",
+  "started_at": "2026-08-08T02:05:00Z",
+  "next_step": "finish parts H/C/D, then A and F; write verdict md+json; blog line; commit",
+  "commit_measured_at": "34d1387",
+  "commit_note": "HEAD (63f41ef) does NOT boot — game/data/lore/canon.json canon register has 2 unresolved references (CF-D015/A, CF-D018/A: topic info for actor `notary` removed by a concurrent dialogue piece). That is a rule-13 breach and it is NOT this piece. All measurements are taken against a pinned export of game/ at 34d1387 (last bootable commit), which is byte-identical to the builder's commit 9aeb839 across game/src/sim/magic/**, game/data/magic/** and game/src/harness/api.js.",
+  "contention": "gate WAIT at start (3 instances, 5.07/core) — all instrument writing and all static analysis done offline first. GO from 03:0x; one browser at a time, never in parallel, never proceeded past a WAIT. Frame counts and hp deltas are load-independent; no timing figure is published.",
+  "findings": [
+    "A-STATIC: the builder's control arm (--break=nocast) never exercises the comparator it is offered as the control for. runOne() skips makeSpell when BREAK==='nocast', base.delivered comes back false, and the row `continue`s at NOT_DELIVERED BEFORE readDial() is called. So 55/55 NOT_DELIVERED with coupled 0 / blind 0 is a statement about the delivery gate, not about whether the BLIND/COUPLED comparison can manufacture a coupling. The real null is two identical arms.",
+    "A-STATIC: --break=bindblind and --break=fleeblind are declared in the probe's own USAGE self-test block and NEITHER WAS EVER RUN — reports/w1-14-r3/ contains dials-break-nocast.json and no dials-break-bindblind.json. The positive direction of the instrument is untested by the builder.",
+    "HEADLINE-ARITHMETIC: the reported '104 declared dials' is not the instrument's own denominator. dials.json declares magnitude 48 / duration 37 / area 12 = 97; 104 counts a magnitude dial on all 55 effects including the 7 whose min equals their max.",
+    "M7 CORRECTION, computed from the builder's own dials.json: 4 magnitude dials (bound_weapon, mend_item, detect_life, detect_key), 7 duration dials (soul_trap, bound_weapon, buoyancy, breathe_water, wall, detect_life, detect_key) and 1 area dial (wall) read COUPLED **only** through `world.*` — getMagicWorld(), magic's own bookkeeping, which the round-2 critic's M7 explicitly excludes. World-side, dial blindness is 19/48 magnitude, 13/37 duration, 3/12 area = 35 of 97, not 23.",
+    "B MEASURED (own instrument, bodies surveyed from the volume's own centre 9.0 m in front of the caster): fire_damage r=2 hits 1 of 4 bodies, r=8 hits 4 of 4; frost_damage 1 vs 4; poison_damage r=2 1, r=6 3. AREA IS GENUINELY READ AND A WIDER SPELL HITS MORE BODIES. The attack on the area dial FAILS — the ten live area dials are live.",
+    "NEW DEFECT (H1), nobody has reported it: a `touch`-range spell applies its effect ONCE PER ACTIVE FRAME. `MagicSystem._spawnContact` sets ticksEveryF:1 over the class's whole active window and the volume loop has no per-target dedupe. damage_health magnitude 20 (declared output 40): CANTRIP touch 4 applications / 176 damage, LIGHT touch 5 / 220, HEAVY touch 7 / 308 — against 1 application / 44 damage at `target` and at `projectile`. Touch multiplies every effect by the class's active-frame count. The census and the dials probe both PREFER `touch` (rangeFor order self,touch,target,...), so a large part of the catalogue was measured through a 4-7x applicator.",
+    "E1 CONTRADICTS THE BUILDER: absorb_health DOES absorb. Player wounded to 80/300, absorb_health magnitude 60 at touch: player 80 -> 300 (+220, capped), enemy 412 -> 77. damage_health and drain_health both move the caster 0. The builder's 'absorb_health does not absorb' was measured at magnitude 1 in an arena where the caster's hp was already at its cap for the frame it looked at.",
+    "E3 CONFIRMS THE BUILDER: frenzy is inert as a behaviour. frenzy_target is written ('e1') and over 1200 f@60 with two bodies 0.7 m apart NEITHER body loses a single hp. hostileTo has exactly one grep hit in the whole build, the write itself.",
+    "E2/H3 CONFIRM AND SHARPEN: engine.spawn(id,x,z,{side:'ally'}) ignores opts.side entirely (engine.js:6213 reads only opts.as, opts.yaw and _classifyOnSpawn). The summon arrives as kind 'enemy' with no side, team or faction field on the entity or the body. AND the builder's own CONSUMPTION arm for the magnitude fix is `H.aggro(summon)` followed by 'damage the player took' — i.e. the world-side consumer it demonstrates is the summon fighting its caster, produced by a harness call.",
+    "H3 MEASURED: focus_max is 124 on a fresh arena and 88 after 120 f@60 of stepping (the character sheet reclaims H.setWillpower). quoteSpell at bind_greater magnitude 90 returns focus_cost 111 and refused:false — so the commission surface tells the player it is fine — and the cast then emits an EMPTY event stream: no cast_start, no refusal, nothing. bind_greater puts a body down at magnitude 40/50/60/65/70 and silently drops at 80 and 90."
+  ],
   "files_touched": [
-    "orchestration/status/critic-w1-14-r3.json"
+    "orchestration/status/critic-w1-14-r3.json",
+    "tools/harness/critic-w1-14-r3.mjs",
+    "reports/critic-w1-14-r3/"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-14-r3.md",
     "corpus/90-verdicts/wave1/W1-14-r3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/",
     "orchestration/status/critic-w1-14-r3.json",
-    "tools/harness/critic-w1-14-*",
+    "tools/harness/critic-w1-14-r3.mjs",
     "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "reports/critic-w1-14-r3/"
   ],
-  "redundant_with": ["W1-14-r3"],
-  "findings": []
+  "redundant_with": ["W1-14-r3"]
 }

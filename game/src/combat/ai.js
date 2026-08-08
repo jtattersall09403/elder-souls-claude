@@ -29,6 +29,10 @@
 'use strict';
 
 import { bearingDeg, angleDelta, norm360 } from './geometry.js';
+// The save's own vocabulary, imported rather than restated. `relStamp`/`absStamp` carry the
+// sentinel rule (a value <= 0 is "never" and passes through unrebased) that `save/fight.js`
+// found the hard way; a second copy of that rule here would be a second thing to get wrong.
+import { r6, relStamp, absStamp } from '../save/fight.js';
 
 /** RI-AI01 §D. The behaviour-tree leaves this module can be in. */
 export const AI_STATES = new Set([
@@ -64,6 +68,44 @@ function groupKeyOf(b, ctx) {
   const ent = ctx.entityOf ? ctx.entityOf(b.id) : null;
   return (ent && ent.encounterId) || `solo:${b.id}`;
 }
+
+/**
+ * WHAT IS MACHINERY AND WHAT IS STATE — the split a save has to make, declared beside the
+ * constructor that creates both rather than in the save, so that a field added below is
+ * carried by default and only an explicit line here takes it out again.
+ *
+ * MACHINERY: handles to objects the constructor is given (`b`, `stat`, `cfg`), and the row
+ * and the five numbers it derives from them (`A`, `omega`, `sightR`, `walk`, `sprint`,
+ * `leashHard`). Every one is a pure function of (statblock, ai.json) and every one is rebuilt
+ * on construction. Serialising them was 81,892 bytes of a 194,161-byte save — `ai.b` alone
+ * dragged the whole `CombatBody` in behind it — and restoring them would pin a live enemy to
+ * a *copy* of the data tables the rest of the fight is still reading from.
+ *
+ * Everything else is behavioural state and is carried: what the enemy is doing and for how
+ * long (`state`, `prevState`, `stateF`, `stateEnteredF`), how fast it is actually moving
+ * (`speed`, `yawRate`), which way it has chosen to go round you (`strafeDir`, `strafeUntil`,
+ * `radialSign`), whether it is holding the group's attack token (`token`, `tokenSinceF`), its
+ * four clocks (`cooldownUntil`, `feintUntil`, `roarUntil`, `healUntil`), how long it has had
+ * no line of sight (`noLosSinceF`), the frame it last committed on and the interval history
+ * RI-AI01 M4's cadence coefficient is computed from (`lastCommitF`, `commitIntervals`), and —
+ * the one a player would notice first — `anchor`, the leash origin. `anchor` is assigned by
+ * `EnemyController._resolveAI()` from the body's position at the moment the AI is built, so a
+ * load that did not carry it would re-anchor every enemy in the province to wherever it
+ * happened to be standing, and T25's leash would let it walk `L_hard` further than it should.
+ */
+const MACHINERY = new Set(['b', 'stat', 'cfg', 'A', 'omega', 'sightR', 'walk', 'sprint', 'leashHard']);
+
+/**
+ * Frame STAMPS on the AI, stored as differences against the save frame because `loadState()`
+ * resets the frame to 0 (`RI-MTH01` A07). Same rule and same helpers as
+ * `save/fight.js FRAME_STAMP_FIELDS`; declared rather than pattern-matched for the same reason
+ * that file gives — `stateF` ends in F and is a COUNTER, not a stamp, and rebasing it would
+ * turn "eleven frames in this state" into a date.
+ */
+const AI_FRAME_STAMPS = new Set([
+  'stateEnteredF', 'strafeUntil', 'tokenSinceF', 'cooldownUntil',
+  'feintUntil', 'roarUntil', 'healUntil', 'noLosSinceF', 'lastCommitF',
+]);
 
 export class SoulsAI {
   /**
@@ -112,6 +154,50 @@ export class SoulsAI {
     this.healUntil = 0;
     this.lastCommitF = -1;
     this.commitIntervals = [];
+  }
+
+  /**
+   * THE AI'S DURABLE STATE — the same `saveState()`/`loadState()` contract `Rig` already has
+   * in `combat/skeleton.js`, and `save/fight.js` reaches both the same way rather than knowing
+   * anything about either class.
+   *
+   * The field set is ENUMERATED FROM THE LIVE OBJECT minus `MACHINERY`, which is the
+   * discipline `save/fight.js` opens with: a field a future round adds to this state machine
+   * appears in the save without anybody remembering to declare it, and the things deliberately
+   * not carried are named above with their reasons rather than being absent.
+   *
+   * @param {number} now the frame the save is being taken on; stamps are stored relative to it.
+   */
+  saveState(now = 0) {
+    const out = {};
+    for (const k of Object.keys(this).sort()) {
+      if (MACHINERY.has(k)) continue;
+      const v = this[k];
+      if (typeof v === 'function') continue;
+      if (Array.isArray(v)) { out[k] = v.map(r6); continue; }
+      if (typeof v === 'number') { out[k] = AI_FRAME_STAMPS.has(k) ? relStamp(v, now) : r6(v); continue; }
+      out[k] = v === undefined ? null : v;
+    }
+    return out;
+  }
+
+  /**
+   * Put the behaviour back onto a FRESHLY CONSTRUCTED instance — never onto the record. The
+   * constructor has already rebuilt the machinery from the statblock and `ai.json`, and
+   * `MACHINERY` is refused here as well as in `saveState()` so that an old or a hand-edited
+   * save cannot hand this object a stale copy of the data tables the rest of the fight reads.
+   *
+   * @param {number} now the frame the load reset to; stamps are rebased against it.
+   */
+  loadState(rec, now = 0) {
+    if (!rec) return this;
+    for (const k of Object.keys(rec)) {
+      if (MACHINERY.has(k)) continue;
+      const v = rec[k];
+      if (Array.isArray(v)) { this[k] = v.slice(); continue; }
+      this[k] = (typeof v === 'number' && AI_FRAME_STAMPS.has(k)) ? absStamp(v, now) : v;
+    }
+    return this;
   }
 
   band(dist) {
