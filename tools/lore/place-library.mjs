@@ -265,7 +265,43 @@ export const PLACEMENTS = {
     ['the-last-letter-of-a-file-leader', 'A letter found folded in a helmet'],
     ['the-casebook-iii', 'The casebook of the Assize, the third'],
   ],
+
+  // ---- the short measures (T5 and T8, written this round) -------------------------------------
+  // Songs and stories do not live in archives. They live where they are sung and told: the gate
+  // the toll rhyme is about, the weir the count is sung at, the taprooms, the markets, the steps.
+  'thorn-sapwell': [
+    ['the-weir-count', 'The weir count, as it is sung setting stakes'],
+  ],
+  'stormhold-inn-pass': [
+    ['ode-upon-the-southern-marshes', 'An ode, composed on the voyage out'],
+  ],
+  'blackrose-inn': [
+    ['the-ninth-comes-down-the-road', 'The Ninth Comes Down the Road'],
+  ],
+  'soulrest-boneyard': [
+    ['what-is-sung-going-down', 'What is sung going down'],
+  ],
+  'gideon-lowmarket': [
+    ['the-clerk-who-would-not-be-counted', 'The clerk who would not be counted'],
+  ],
+  'gideon-inn': [
+    ['the-two-sisters-and-the-sluice', 'The two sisters and the sluice'],
+  ],
+  'helstrom-deep-market': [
+    ['why-the-mud-crab-carries-his-house', 'Why the mud-crab carries his house'],
+  ],
+  'blackrose-market': [
+    ['the-man-who-sold-his-name', 'The man who sold his name'],
+  ],
+  'soulrest-market': [
+    ['the-girl-who-carried-water-upright', 'The girl who carried water upright'],
+  ],
+  'lilmoth-inn-stilt': [
+    ['a-rocking-song-for-the-fever-years', 'A rocking song, of the fever years'],
+  ],
 };
+// The toll rhyme goes in the room it is about, which already holds three papers.
+PLACEMENTS['gideon-tollhouse'].push(['the-toll-at-gideon-gate-in-verse', 'The toll, set out in verse for carters']);
 
 // ---------------------------------------------------------------------------------------------
 

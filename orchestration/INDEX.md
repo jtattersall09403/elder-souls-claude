@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `63cba35`: 611 tools, 153 reference
+so it cannot drift. Generated at `bf4ec20`: 616 tools, 153 reference
 items, 47 pieces in flight.
 
 Its purpose is to stop 47+ concurrent agents each paying separately to discover the
@@ -85,7 +85,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
 
-### `tools/analysis/` — 44
+### `tools/analysis/` — 45
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -131,6 +131,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-13-r4-chart.mjs` — THE PICTURE FOR W1-13 ROUND 4: what one ordinary enemy is worth, when you died and when you did not.
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 - `tools/analysis/w1-15-r3-chart.mjs` — THE PICTURE FOR W1-15 ROUND 3: the light in one room, before and after it was told about the lamps.
+- `tools/analysis/w1-chartfont-deletefix.mjs` — RULE 6 for the shared chart font, both halves of it.
 
 ### `tools/audio/` — 8
 
@@ -193,7 +194,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 23
+### `tools/dialogue/` — 24
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/arbiter-order-divergence.mjs` — ARBITRATION S37 — the instrument.
@@ -212,6 +213,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/order-infos.mjs` — Put every topic's INFOs into the order the shipping reader already resolves them in.
 - `tools/dialogue/rehome-actors.mjs` — W1-17 round 2.
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
+- `tools/dialogue/s37-unhearable.mjs` — which INFOs can no player hear from any speaker, under the reader that ACTUALLY RUNS.
 - `tools/dialogue/shadow-audit.mjs` — IS THE SHADOWED LINE DEAD, OR IS THE LINT WRONG ABOUT IT?
 - `tools/dialogue/voice-metrics.mjs` — DOES AN ORDINATOR SOUND LIKE A BEGGAR?
 - `tools/dialogue/w1-17-r2-deletefix.mjs` — RULES 6, run as a 2x2, with the control arm watched going red.
@@ -250,7 +252,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 203
+### `tools/harness/` — 205
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -355,6 +357,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r3-seam.mjs` — W1-14 round-3 CRITIC.
 - `tools/harness/critic-w1-14-r3-vfx.mjs` — W1-14 round-3 CRITIC, RI-MAG05.
 - `tools/harness/critic-w1-14-r3.mjs` — the critic's own instrument for W1-14 round 3 (magic, seam S19).
+- `tools/harness/critic-w1-14-shot.mjs` — one picture for W1-14 round 3's verdict.
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
 - `tools/harness/critic-w1-16-live.mjs` — W1-16 ROUND-2 CRITIC's stepping instrument.
 - `tools/harness/critic-w1-16-offline.mjs` — W1-16 ROUND-2 CRITIC's own instrument.
@@ -386,6 +389,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/map-shots.mjs` — photograph the discovery map, early and well-travelled.
 - `tools/harness/prg-encumbrance.mjs` — W1-16 round 2.
 - `tools/harness/run-headless.mjs` — boot the game in headless Chromium, run a named scenario, write artifacts to a run directory.
+- `tools/harness/save-ai-consumption.mjs` — RI-MTH07 for the restored enemy AI, plus RULES 6 in full.
 - `tools/harness/save-audit.mjs` — the RI-JRN05 checks that can be taken from a browser without the journey-runner fleet: the round trip, the manifest set-difference, the backend attestation, the
 - `tools/harness/save-break-critic.mjs` — **no header comment**
 - `tools/harness/save-break.mjs` — THE FALSIFIER FOR THE SAVE/LOAD REPAIR.
@@ -644,7 +648,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 101
+### `tools/world/` — 102
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -717,6 +721,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/reachability-walk.mjs` — **no header comment**
 - `tools/world/region-axes.mjs` — **no header comment**
 - `tools/world/region-dispersion.mjs` — **no header comment**
+- `tools/world/road-join-chart.mjs` — **no header comment**
 - `tools/world/road-join-consumption.mjs` — **no header comment**
 - `tools/world/road-join-deletefix.mjs` — **no header comment**
 - `tools/world/road-through-building.mjs` — **no header comment**
@@ -749,7 +754,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **135 tools have no header comment**, so nobody can tell what they do without
+> **136 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -923,18 +928,18 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
+| `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
+| `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
+| `W1-16-r3` | measured (acceptance taken); waiting on a tree-wide boot break to finish the optional spell arm | retry the live spell arm when boot-check is green again; then screenshot, blog line, commi | `orchestration/status/W1-16-r3.json` `game/src/engine.js` `game/src/combat/player.js` `game/src/harness/api.js` `game/data/items/carried.json` `tools/harness/w1-16-r3-reach.mjs` |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-CHARTFONT` | ? | Wire the seven editable chart tools to the shared module; hand off the two owned by live p | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` |
-| `W1-26-r3` | ? | read INDEX/NEXT-DISPATCH/verdict, run ownership, run the three journey probes RED first | — |
-| `W1-ROAD-JOIN` | ? | body walk on THE CROSSING (browser), then the soulrest-blackrose leg, then shot + blog + c | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
-| `W1-16-r3` | measuring | live stepping run: critic-w1-16-live.mjs --probe parallel,oversprint,separation,spell + de | `orchestration/status/W1-16-r3.json` `game/src/engine.js` `game/src/combat/player.js` `game/src/harness/api.js` `game/data/items/carried.json` `tools/harness/w1-16-r3-reach.mjs` |
 | `W1-SAVE-AI` | fix_landed | extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the  | `orchestration/status/W1-SAVE-AI.json` `game/src/save/fight.js` `game/src/combat/ai.js` `game/src/combat/enemy.js` `tools/check-save-shape.mjs` `tools/check-data.mjs` |
 | `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `critic-w1-14-r3` | running | finish parts H/C/D, then A and F; write verdict md+json; blog line; commit | `orchestration/status/critic-w1-14-r3.json` `tools/harness/critic-w1-14-r3.mjs` `reports/critic-w1-14-r3/` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
-| `W1-23-r4` | building | part 2 — make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement mach | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `game/data/npcs/` `game/data/world/property/` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 2 | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` |
 | `critic-w1-17` | done | Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-w | `orchestration/status/critic-w1-17.json` `corpus/90-verdicts/wave1/W1-17-r1.md` `corpus/90-verdicts/wave1/W1-17-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-r1/` `tools/dialogue/critic-field-census.mjs` `tools/dialogue/critic-semantics.mjs` |

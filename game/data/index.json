@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 564,
+  "file_count": 565,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -1997,6 +1997,13 @@
       "sha256": "fbf446933bd47444"
     },
     {
+      "path": "dialogue/topics/_manifest.json",
+      "schema": "elder-souls/dialogue-topic-manifest@1",
+      "id": "topic-merge-manifest",
+      "bytes": 6369,
+      "sha256": "af485093ab0b5af4"
+    },
+    {
       "path": "dialogue/topics/main-quest-argument.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": "main-quest-argument",
@@ -3042,15 +3049,15 @@
       "path": "world/interiors/blackrose-inn.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-inn",
-      "bytes": 3547,
-      "sha256": "26d0a60b6977394d"
+      "bytes": 4287,
+      "sha256": "0d718cb6f781bfa6"
     },
     {
       "path": "world/interiors/blackrose-market.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-market",
-      "bytes": 3431,
-      "sha256": "6e71e77f3cf68526"
+      "bytes": 4130,
+      "sha256": "ecb092d6780c4fde"
     },
     {
       "path": "world/interiors/blackrose-pawn.json",
@@ -3140,15 +3147,15 @@
       "path": "world/interiors/gideon-inn.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-inn",
-      "bytes": 3388,
-      "sha256": "ff5e3c2db320bdb8"
+      "bytes": 4106,
+      "sha256": "594b55d32bd8fd00"
     },
     {
       "path": "world/interiors/gideon-lowmarket.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-lowmarket",
-      "bytes": 3132,
-      "sha256": "6af59615c77d5d55"
+      "bytes": 3819,
+      "sha256": "4ad2bcec541fb256"
     },
     {
       "path": "world/interiors/gideon-rootpost.json",
@@ -3175,8 +3182,8 @@
       "path": "world/interiors/gideon-tollhouse.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-tollhouse",
-      "bytes": 4952,
-      "sha256": "84028bc8f880c540"
+      "bytes": 5119,
+      "sha256": "79a02a2cfe42b634"
     },
     {
       "path": "world/interiors/helstrom-apothecary.json",
@@ -3196,8 +3203,8 @@
       "path": "world/interiors/helstrom-deep-market.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-deep-market",
-      "bytes": 1551,
-      "sha256": "9345ed73707f39f2"
+      "bytes": 1924,
+      "sha256": "803b947366f9632c"
     },
     {
       "path": "world/interiors/helstrom-hist-shrine.json",
@@ -3427,8 +3434,8 @@
       "path": "world/interiors/lilmoth-inn-stilt.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-inn-stilt",
-      "bytes": 2269,
-      "sha256": "b91ebd55cb46260c"
+      "bytes": 2785,
+      "sha256": "8255347bcbb9447d"
     },
     {
       "path": "world/interiors/lilmoth-ledger-house.json",
@@ -3490,8 +3497,8 @@
       "path": "world/interiors/soulrest-boneyard.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-boneyard",
-      "bytes": 4179,
-      "sha256": "d8e2ec53550ed718"
+      "bytes": 5016,
+      "sha256": "4352be31df242857"
     },
     {
       "path": "world/interiors/soulrest-court-steps.json",
@@ -3511,8 +3518,8 @@
       "path": "world/interiors/soulrest-market.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-market",
-      "bytes": 4129,
-      "sha256": "c329473c40882ec0"
+      "bytes": 4997,
+      "sha256": "b26d2f4a5d52e7f6"
     },
     {
       "path": "world/interiors/soulrest-pawn.json",
@@ -3609,8 +3616,8 @@
       "path": "world/interiors/stormhold-inn-pass.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-inn-pass",
-      "bytes": 2316,
-      "sha256": "0d5cc4f7e559dabc"
+      "bytes": 2824,
+      "sha256": "c821586a12cab29e"
     },
     {
       "path": "world/interiors/stormhold-kiln.json",
@@ -3707,8 +3714,8 @@
       "path": "world/interiors/thorn-sapwell.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-sapwell",
-      "bytes": 4763,
-      "sha256": "4b6b5b86c176da73"
+      "bytes": 4900,
+      "sha256": "853918ec0baae99a"
     },
     {
       "path": "world/interiors/thorn-trader.json",
