@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e97347f`: 531 tools, 153 reference
-items, 36 pieces in flight.
+so it cannot drift. Generated at `6364437`: 542 tools, 153 reference
+items, 35 pieces in flight.
 
-Its purpose is to stop 36+ concurrent agents each paying separately to discover the
+Its purpose is to stop 35+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -29,10 +29,10 @@ a check that never ran can read as one that passed.
 
 ## The harness
 
-`window.__HARNESS` — 396 verbs. `window.__ENGINE` is also published by `main.js`,
+`window.__HARNESS` — 399 verbs. `window.__ENGINE` is also published by `main.js`,
 which is a **back door**: capability prohibitions installed on the harness do not cover it.
 
-`__breakBindMagnitude`, `__breakCastCredit`, `__breakKindBlindWards`, `__breakSkillRegister`, `__breakTrackingCutoff`, `__breakTravelFence`, `__breakW116`, `__w1_04_content`, `__w1_04_doors`, `__w1_04_drawBuildings`, `__w1_04_interior`, `__w1_04_npc`, `__w1_04_perturbSettlement`, `__w1_04_plan`, `__w1_04_settlement`, `__w1_04_sim`, `__w1_04_system`, `__w1_04_townSolids`, `__w1_04_zone`, `addAffliction`, `addCoverVolume`, `addLightSource`, `addOccluder`, `addStatusBuildup`, `addWitness`, `advanceWallClock`, `aggro`, `ambienceCapture`, `ambienceEmitters`, `ambienceLog`, `answerArrest`, `arrestTopics`, `audioCapture`, `audioLog`, `audioStats`, `boardTravel`, `breakInvisibility`, `bribeWitness`, `buildingAt`, `camera`, `cameraRoute`, `cameraRouteEnd`, `cameraRouteState`, `canJoinFaction`, `castCameraArm`, `castNow`, `censusAnswer`, `censusBegin`, `censusEnter`, `clearInputs`, `clearProps`, `closeMenu`, `closeRebinding`, `closeWrit`, `combatTraceDrain`, `combatTraceMeta`, `combatTraceStart`, `combatTraceStop`, `commitCrime`, `conversationClose`, `conversationPersuade`, `conversationSay`, `coverAt`, `damagePlayer`, `darkCoverage`, `deathCamera`, `deleteSaveSlot`, `despawn`, `discoverCorpse`, `drainStealthEvents`, `drawOnMenus`, `drawSentinels`, `dropFrom`, `emitStealthSound`, `enchantQuote`, `enchanterOpen`, `enterInterior`, `exitInterior`, `explainDisposition`, `exportSave`, `factionDiscipline`, `factionGates`, `factionReadmit`, `fenceQuote`, `fenceSell`, `fogGate`, `gamepad`, `gamepadPoll`, `getActionSet`, `getAmbienceState`, `getBorderAt`, `getBorderCrossover`, `getBuildInfo`, `getBurden`, `getCameraFrame`, `getCameraRig`, `getCanonState`, `getCapabilityReport`, `getCaptureState`, `getCastEffects`, `getCensusModel`, `getCensusState`, `getCharacter`, `getCombatState`, `getConversationState`, `getCreationData`, `getCrimeState`, `getDeathState`, `getDerivedStats`, `getDeterminismReport`, `getDevicePixelRatio`, `getDispositions`, `getDrawnGeometry`, `getDrawnInterior`, `getDrawnMarkers`, `getDrawnSettlements`, `getDurableFieldCensus`, `getEffectConsumerMap`, `getEncounterState`, `getEnvConditions`, `getEnvironment`, `getFactionStanding`, `getFallState`, `getFogGates`, `getFrame`, `getGateDispositions`, `getGold`, `getGuardBand`, `getGuardTerms`, `getHazardReport`, `getHitGeometry`, `getInputEdges`, `getInputState`, `getInventory`, `getJourneyStamps`, `getLightAt`, `getLoadState`, `getMagicData`, `getMagicState`, `getMagicWorld`, `getMoveVector`, `getOpacityState`, `getPerfStats`, `getPlayerStats`, `getPriceQuote`, `getProvinceStats`, `getQuestState`, `getReaction`, `getRegionAt`, `getRegionSignature`, `getRenderRate`, `getRenderedText`, `getRespawnRules`, `getRoutes`, `getSanctionState`, `getSapTaint`, `getSaveManifest`, `getSearchState`, `getSeed`, `getSettlementSolids`, `getSignReaderState`, `getSignatures`, `getSkillProgress`, `getSkillSheet`, `getSkills`, `getSpellVFXReport`, `getStateHash`, `getStatus`, `getStatusState`, `getStealthState`, `getStorageInfo`, `getTerrainAt`, `getTide`, `getTitleState`, `getTravelNetwork`, `getTravelState`, `getTraversalReport`, `getUIPauseReport`, `getUIState`, `getViewport`, `getWaterAt`, `getWorldRegisters`, `getWorldStats`, `getWritReaderState`, `getXulHesh`, `grantSkillUse`, `hearthRest`, `importSave`, `isOpenNow`, `isStealthOpener`, `jailLedger`, `killEntity`, `killPlayer`, `killWitness`, `landReport`, `learnSpell`, `learnTopic`, `listAnchors`, `listBorderMarkers`, `listBorders`, `listCameraModes`, `listCivilians`, `listCoverVolumes`, `listEntities`, `listHearths`, `listInteriors`, `listMenus`, `listNPCs`, `listOccluders`, `listOwnedObjects`, `listPendingReports`, `listPerspectiveModes`, `listPropertyZones`, `listSaveSlots`, `listSettlements`, `listSignposts`, `listStations`, `loadState`, `lockBegin`, `lockGate`, `lockOn`, `lockPress`, `lockState`, `lockTolerance`, `losBetween`, `magicEventsDrain`, `makeSpell`, `mapState`, `npcDisposition`, `openContainer`, `openMenu`, `openRebinding`, `openWrit`, `pauseClock`, `perceptionState`, `perturbInput`, `perturbInputReset`, `pickpocketBegin`, `pickpocketState`, `playerDeath`, `populateSettlement`, `populateSite`, `populationReport`, `pressCast`, `probeWard`, `projectPoint`, `provinceResidency`, `questBook`, `questDef`, `questEndings`, `questEventsDrain`, `questFail`, `questNote`, `questOffers`, `questOpen`, `questPresenceGate`, `questResolutionConsequences`, `questResolutionRequirements`, `questResolutions`, `questResolve`, `questReveal`, `questSetFlag`, `questTopicsKnown`, `questVerbCensus`, `questWorldFlags`, `queueEnemyScript`, `queueInputs`, `quoteSpell`, `raiseEnemyAlert`, `readSave`, `readWrit`, `reanchorFreeRunning`, `rebindBegin`, `rebindCommit`, `rebindOffer`, `rebindRestore`, `rebindSerialise`, `rebindStep`, `rebindUnbind`, `rebindView`, `recallQuote`, `recoverBloodstain`, `registerSurfaces`, `renderFrame`, `renderedTextClear`, `reportRoute`, `reset`, `resetMagicWorld`, `resetSapTaint`, `residentsPresent`, `resolveKilling`, `restAt`, `restoreState`, `saveRoundTrip`, `saveState`, `setAtHearth`, `setAttributes`, `setAttuned`, `setAudioPanSource`, `setAudioTriggerSource`, `setBounty`, `setBurden`, `setCameraCell`, `setCameraObstacle`, `setCatalyst`, `setCharacter`, `setCrimeContext`, `setDevicePixelRatio`, `setDisposition`, `setEntityNamed`, `setEntityPos`, `setEquipLoad`, `setFactionStanding`, `setFactionStandings`, `setFogGateBoss`, `setGold`, `setHearths`, `setLevitating`, `setLoadout`, `setMagicSkills`, `setMode`, `setPadProfile`, `setPlayerMotion`, `setPopulation`, `setRenderRate`, `setRespawnRules`, `setSeed`, `setSkills`, `setStealthState`, `setSyntheticPads`, `setTide`, `setTimeOfDay`, `setTouchEnabled`, `setTravelMark`, `setUIVisible`, `setViewport`, `setWeather`, `setWillpower`, `setWorldKnowledge`, `setZoneAmbient`, `signClose`, `signRead`, `signatureAudit`, `simulateStorageFailure`, `skipDeathSurface`, `snapshot`, `snuffLight`, `solidAt`, `soundRadiusFor`, `spawn`, `spawnCivilian`, `spawnEncounter`, `spawnGuard`, `spawnNPC`, `spawnProp`, `spellCost`, `stallMainThread`, `stepFrames`, `streamAround`, `syncFactionStandings`, `takeObject`, `takeProp`, `talkDownWitness`, `talkTo`, `teleport`, `titleActivate`, `titleDismiss`, `titleShow`, `touchDown`, `touchLayout`, `touchMove`, `touchState`, `touchUp`, `traceDrain`, `traceStart`, `traceStop`, `trapSoul`, `travelFare`, `travelQuote`, `travelRide`, `travelToGiver`, `trespassCheck`, `triggerCameraShake`, `tryPlaceMapMarker`, `uiClose`, `uiFocus`, `uiOpen`, `uiSearch`, `uiToast`, `visibilityAt`, `walkPath`, `walkRoute`, `warbroodShift`, `whereAmI`, `whereIsEveryone`, `writeSave`
+`__breakBindMagnitude`, `__breakCastCredit`, `__breakFleeMotion`, `__breakKindBlindWards`, `__breakSkillRegister`, `__breakTrackingCutoff`, `__breakTravelFence`, `__breakW116`, `__w1_04_content`, `__w1_04_doors`, `__w1_04_drawBuildings`, `__w1_04_interior`, `__w1_04_npc`, `__w1_04_perturbSettlement`, `__w1_04_plan`, `__w1_04_settlement`, `__w1_04_sim`, `__w1_04_system`, `__w1_04_townSolids`, `__w1_04_zone`, `addAffliction`, `addCoverVolume`, `addLightSource`, `addOccluder`, `addStatusBuildup`, `addWitness`, `advanceWallClock`, `aggro`, `ambienceCapture`, `ambienceEmitters`, `ambienceLog`, `answerArrest`, `arrestTopics`, `audioCapture`, `audioLog`, `audioStats`, `boardTravel`, `breakInvisibility`, `bribeWitness`, `buildingAt`, `camera`, `cameraRoute`, `cameraRouteEnd`, `cameraRouteState`, `canJoinFaction`, `castCameraArm`, `castNow`, `censusAnswer`, `censusBegin`, `censusEnter`, `clearInputs`, `clearProps`, `closeMenu`, `closeRebinding`, `closeWrit`, `combatTraceDrain`, `combatTraceMeta`, `combatTraceStart`, `combatTraceStop`, `commitCrime`, `conversationClose`, `conversationPersuade`, `conversationSay`, `coverAt`, `damageEnemy`, `damagePlayer`, `darkCoverage`, `deathCamera`, `deleteSaveSlot`, `despawn`, `discoverCorpse`, `drainStealthEvents`, `drawOnMenus`, `drawSentinels`, `dropFrom`, `emitStealthSound`, `enchantQuote`, `enchanterOpen`, `enterInterior`, `equipItem`, `exitInterior`, `explainDisposition`, `exportSave`, `factionDiscipline`, `factionGates`, `factionReadmit`, `fenceQuote`, `fenceSell`, `fogGate`, `gamepad`, `gamepadPoll`, `getActionSet`, `getAmbienceState`, `getBorderAt`, `getBorderCrossover`, `getBuildInfo`, `getBurden`, `getCameraFrame`, `getCameraRig`, `getCanonState`, `getCapabilityReport`, `getCaptureState`, `getCastEffects`, `getCensusModel`, `getCensusState`, `getCharacter`, `getCombatState`, `getConversationState`, `getCreationData`, `getCrimeState`, `getDeathState`, `getDerivedStats`, `getDeterminismReport`, `getDevicePixelRatio`, `getDispositions`, `getDrawnGeometry`, `getDrawnInterior`, `getDrawnMarkers`, `getDrawnSettlements`, `getDurableFieldCensus`, `getEffectConsumerMap`, `getEncounterState`, `getEnvConditions`, `getEnvironment`, `getFactionStanding`, `getFallState`, `getFogGates`, `getFrame`, `getGateDispositions`, `getGold`, `getGuardBand`, `getGuardTerms`, `getHazardReport`, `getHitGeometry`, `getInputEdges`, `getInputState`, `getInventory`, `getJourneyStamps`, `getLightAt`, `getLoadState`, `getMagicData`, `getMagicState`, `getMagicWorld`, `getMoveVector`, `getOpacityState`, `getPerfStats`, `getPlayerStats`, `getPriceQuote`, `getProvinceStats`, `getQuestState`, `getReaction`, `getRegionAt`, `getRegionSignature`, `getRenderRate`, `getRenderedText`, `getRespawnRules`, `getRoutes`, `getSanctionState`, `getSapTaint`, `getSaveManifest`, `getSearchState`, `getSeed`, `getSettlementSolids`, `getSignReaderState`, `getSignatures`, `getSkillProgress`, `getSkillSheet`, `getSkills`, `getSpellVFXReport`, `getStateHash`, `getStatus`, `getStatusState`, `getStealthState`, `getStorageInfo`, `getTerrainAt`, `getTide`, `getTitleState`, `getTravelNetwork`, `getTravelState`, `getTraversalReport`, `getUIPauseReport`, `getUIState`, `getViewport`, `getWaterAt`, `getWorldRegisters`, `getWorldStats`, `getWritReaderState`, `getXulHesh`, `grantSkillUse`, `hearthRest`, `importSave`, `isOpenNow`, `isStealthOpener`, `jailLedger`, `killEntity`, `killPlayer`, `killWitness`, `landReport`, `learnSpell`, `learnTopic`, `listAnchors`, `listBorderMarkers`, `listBorders`, `listCameraModes`, `listCivilians`, `listCoverVolumes`, `listEntities`, `listHearths`, `listInteriors`, `listMenus`, `listNPCs`, `listOccluders`, `listOwnedObjects`, `listPendingReports`, `listPerspectiveModes`, `listPropertyZones`, `listSaveSlots`, `listSettlements`, `listSignposts`, `listStations`, `loadState`, `lockBegin`, `lockGate`, `lockOn`, `lockPress`, `lockState`, `lockTolerance`, `losBetween`, `magicEventsDrain`, `makeSpell`, `mapState`, `npcDisposition`, `openContainer`, `openMenu`, `openRebinding`, `openWrit`, `pauseClock`, `perceptionState`, `perturbInput`, `perturbInputReset`, `pickpocketBegin`, `pickpocketState`, `playerDeath`, `populateSettlement`, `populateSite`, `populationReport`, `pressCast`, `probeWard`, `projectPoint`, `provinceResidency`, `questBook`, `questDef`, `questEndings`, `questEventsDrain`, `questFail`, `questNote`, `questOffers`, `questOpen`, `questPresenceGate`, `questResolutionConsequences`, `questResolutionRequirements`, `questResolutions`, `questResolve`, `questReveal`, `questSetFlag`, `questTopicsKnown`, `questVerbCensus`, `questWorldFlags`, `queueEnemyScript`, `queueInputs`, `quoteSpell`, `raiseEnemyAlert`, `readSave`, `readWrit`, `reanchorFreeRunning`, `rebindBegin`, `rebindCommit`, `rebindOffer`, `rebindRestore`, `rebindSerialise`, `rebindStep`, `rebindUnbind`, `rebindView`, `recallQuote`, `recoverBloodstain`, `registerSurfaces`, `renderFrame`, `renderedTextClear`, `reportRoute`, `reset`, `resetMagicWorld`, `resetSapTaint`, `residentsPresent`, `resolveKilling`, `restAt`, `restoreState`, `saveRoundTrip`, `saveState`, `setAtHearth`, `setAttributes`, `setAttuned`, `setAudioPanSource`, `setAudioTriggerSource`, `setBounty`, `setBurden`, `setCameraCell`, `setCameraObstacle`, `setCatalyst`, `setCharacter`, `setCrimeContext`, `setDevicePixelRatio`, `setDisposition`, `setEntityNamed`, `setEntityPos`, `setEquipLoad`, `setFactionStanding`, `setFactionStandings`, `setFogGateBoss`, `setGold`, `setHearths`, `setLevitating`, `setLoadout`, `setMagicSkills`, `setMode`, `setPadProfile`, `setPlayerMotion`, `setPopulation`, `setRenderRate`, `setRespawnRules`, `setSeed`, `setSkills`, `setStealthState`, `setSyntheticPads`, `setTide`, `setTimeOfDay`, `setTouchEnabled`, `setTravelMark`, `setUIVisible`, `setViewport`, `setWeather`, `setWillpower`, `setWorldKnowledge`, `setZoneAmbient`, `signClose`, `signRead`, `signatureAudit`, `simulateStorageFailure`, `skipDeathSurface`, `snapshot`, `snuffLight`, `solidAt`, `soundRadiusFor`, `spawn`, `spawnCivilian`, `spawnEncounter`, `spawnGuard`, `spawnNPC`, `spawnProp`, `spellCost`, `stallMainThread`, `stepFrames`, `streamAround`, `syncFactionStandings`, `takeObject`, `takeProp`, `talkDownWitness`, `talkTo`, `teleport`, `titleActivate`, `titleDismiss`, `titleShow`, `touchDown`, `touchLayout`, `touchMove`, `touchState`, `touchUp`, `traceDrain`, `traceStart`, `traceStop`, `trapSoul`, `travelFare`, `travelQuote`, `travelRide`, `travelToGiver`, `trespassCheck`, `triggerCameraShake`, `tryPlaceMapMarker`, `uiClose`, `uiFocus`, `uiOpen`, `uiSearch`, `uiToast`, `visibilityAt`, `walkPath`, `walkRoute`, `warbroodShift`, `whereAmI`, `whereIsEveryone`, `writeSave`
 
 ## Tools, by area
 
@@ -64,7 +64,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
 
-### `tools/analysis/` — 42
+### `tools/analysis/` — 43
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -108,6 +108,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/ui-layer.mjs` — RI-UIX02 §C, detector 1 of three: the pixel sweep.
 - `tools/analysis/w1-12-chart.mjs` — THE PICTURE FOR W1-12: where an enemy stands, for sixty seconds, while you fight it.
 - `tools/analysis/w1-13-r4-chart.mjs` — THE PICTURE FOR W1-13 ROUND 4: what one ordinary enemy is worth, when you died and when you did not.
+- `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 
 ### `tools/audio/` — 4
 
@@ -150,28 +151,34 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/capture/settle-shapes.mjs` — **no header comment**
 - `tools/capture/settle.mjs` — the anti-loophole half of S34, and the thing that makes placed captures safe.
 
-### `tools/combat/` — 1
+### `tools/combat/` — 3
 
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
+- `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
+- `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
 
 ### `tools/corpus/` — 1
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 9
+### `tools/dialogue/` — 12
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
+- `tools/dialogue/consume.mjs` — CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
 - `tools/dialogue/disposition-oracle.py` — **no header comment**
 - `tools/dialogue/dump-engine-disposition.mjs` — RI-DLG04 step 1, our side: feed the oracle's cases through the SHIPPING engine module and emit the same four columns.
 - `tools/dialogue/gen-greetings.mjs` — build game/data/dialogue/greetings.json from the authored stems below.
 - `tools/dialogue/mk-asking-around.mjs` — AUTHORING TOOL — the connective tissue of the topic graph.
+- `tools/dialogue/mk-rumours.mjs` — AUTHORING TOOL — what a town is saying this week.
 - `tools/dialogue/order-infos.mjs` — Put every topic's INFOs into the order the shipping reader already resolves them in.
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
 - `tools/dialogue/shadow-audit.mjs` — IS THE SHADOWED LINE DEAD, OR IS THE LINT WRONG ABOUT IT?
+- `tools/dialogue/voice-metrics.mjs` — DOES AN ORDINATOR SOUND LIKE A BEGGAR?
 
-### `tools/economy/` — 1
+### `tools/economy/` — 2
 
+- `tools/economy/critic-souls-r3-chart.mjs` — THE PICTURE FOR W1-SOULS ROUND 3, DRAWN BY ITS CRITIC: two guards, and neither one alone.
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 
 ### `tools/experience/` — 12
@@ -189,7 +196,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 196
+### `tools/harness/` — 197
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -360,6 +367,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-vfx.mjs` — RI-MAG05, the two findings the round-2 verdict could see in the picture.
 - `tools/harness/w1-14-r3-wards.mjs` — the three round-2 findings that are not the skill register.
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
+- `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
 - `tools/harness/w1-21-r2-deletefix.mjs` — DELETE-THE-FIX for W1-21 round 2's AR-2 change (RULES 6, and RULES 17 for the index check).
 - `tools/harness/w1-21-r2-forge.mjs` — THE FALSIFIER FOR THE W1-21 AR-2 FIX: can a save still put a square on the map?
@@ -469,7 +477,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 31
+### `tools/quests/` — 32
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -492,6 +500,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/mainline-gate-margin.mjs` — how much room does each signature have at each main-quest gate?
 - `tools/quests/mainline-race-trace.mjs` — CAN EVERY RACE AND UPBRINGING FINISH THE MAIN QUEST?
 - `tools/quests/mainline-trace.mjs` — W1-19's deliverable: the main quest, played end to end, in the browser, through the shipped QuestEngine, with a trace instead of a claim.
+- `tools/quests/mark-route-world.mjs` — THE WORLD-SIDE HALF OF THE ENVIRONMENT CHANNEL.
 - `tools/quests/method-guard-control.mjs` — W1-FACTIONS round 3.
 - `tools/quests/resolution-reachability.mjs` — can the player ACTUALLY take any of the endings a quest offers?
 - `tools/quests/reveal-route-audit.mjs` — is there a route in PLAY that produces each reveal a resolution demands, and does the hook table that is supposed to carry them actually fire?
@@ -503,9 +512,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
-### `tools/readables/` — 3
+### `tools/readables/` — 4
 
 - `tools/readables/mk-evidence.mjs` — Authoring tool for game/data/books/the-books-in-evidence.json — W1-READABLES.
+- `tools/readables/mk-papers.mjs` — W1-READABLES round 2 — write the documents the `ledger` and `letter` channels name.
 - `tools/readables/mk-tally.mjs` — W1-READABLES — three more volumes of the Drowned Tally, and the one field that makes the fourth volume readable by the quest that already names it.
 - `tools/readables/place-documents.mjs` — W1-READABLES — put each document in the room the quest sends you to.
 
@@ -550,7 +560,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 93
+### `tools/world/` — 94
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -631,6 +641,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/tier-announcement.mjs` — `RI-WLD12` M66 — is a jump in danger announced BEFORE the player is in it?
 - `tools/world/travel-audit.mjs` — **no header comment**
 - `tools/world/w1-01-r3-probe.mjs` — **no header comment**
+- `tools/world/w1-01-r4-consumption.mjs` — **no header comment**
 - `tools/world/w1-01-r4-shots.mjs` — Round-4 eye-height comparison shots: one frame per region at a fixed, seeded ground point, so the ground skin and the near-field prop disc can be looked at rath
 - `tools/world/w1-04-consumption.mjs` — **no header comment**
 - `tools/world/w1-04-interior-sweep.mjs` — **no header comment**
@@ -647,7 +658,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **123 tools have no header comment**, so nobody can tell what they do without
+> **124 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -821,16 +832,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-01-r4` | building | Browser arms, one browser at a time: (1) THE CROSSING A/B with __w1_04_townSolids on vs of | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` |
-| `W1-04-r3` | successor: predecessor’s collision arm found inert and being re-measured | For a successor or a critic, in order: (1) `node tools/world/w1-04-r3-collision.mjs` — it  | `docs/shots/2026-08-07-w1-04-r3-helstrom-forty-buildings-round-the-hist.png` `docs/shots/2026-08-07-w1-04-r3-vp04-settlement-street-thorn-buildings-drawn.png` `docs/shots/2026-08-07-w1-04-r3-vp04-settlement-street-thorn-draw-call-cut.png` `game/src/engine.js` `game/src/harness/api.js` `game/src/render/exterior.js` |
-| `W1-14-r3` | building | CONTENTION GATE has said WAIT on every check so far. Offline work complete: dials probe +  | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
+| `W1-17` | building | voice-metrics.mjs (named by game/data/dialogue/speakers.json, absent from the tree — RULES | `orchestration/status/W1-17.json` `game/data/dialogue/topics/` `game/data/dialogue/rumours.json` `game/src/sim/quest/topic-supply.js` `tools/dialogue/order-infos.mjs` `tools/dialogue/answer-census.mjs` |
+| `W1-01-r4` | building | Crossing arms B (solids off) and C (solids off + deck clamp off) are running in ONE backgr | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` |
+| `critic-w1-souls` | writing-verdict | offline arms A/B/C/E first (no browser), then contention --gate, then D (CONSUMPTION) + de | `orchestration/status/critic-w1-souls.json` `corpus/90-verdicts/wave1/W1-SOULS-r1.md` `tools/progression/critic-souls-r1.mjs` |
+| `W1-READABLES-r2` | in_progress | browser proof of the mark reader, then the mainline chain numbers | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/data/world/readables/site-marks.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` |
+| `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `W1-16` | building | none -- complete. See notes_for_successor for what is left open. | `orchestration/status/W1-16.json` `game/src/engine.js` `game/src/harness/api.js` `game/src/sim/stealth/system.js` `corpus/20-progression/GAP-W1-skill-and-attribute-scaling-never-reaches-damage.md` `docs/shots/` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `game/src/sim/stealth/system.js (resetSessionEphemera, syncCiviliansFromWorld, wiring both into step()/the constructor call sites)` `game/src/engine.js (_sessionObservers()'s 'stealth' row now has a save handler; answerArrest() routes through _setGold/_gold)` `tools/world/build-settlements.mjs (dwelling open_h/close_h default now checks the zones actually inside it)` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `orchestration/status/W1-15-r3.json` |
-| `W1-READABLES-r2` | in_progress | write the 26 missing documents, place them, then prove the mark reader in a browser | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/data/world/readables/site-marks.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` |
-| `W1-17` | building | author the 3 missing AddTopic targets (the-burning-yard, the-north-wall, the-deep-marsh);  | `orchestration/status/W1-17.json` `game/data/dialogue/persuasion-gmst.json` `game/data/dialogue/faction-reactions.json` `game/src/sim/dialogue/disposition.js` `tools/dialogue/disposition-oracle.py` `tools/dialogue/dump-engine-disposition.mjs` |
 | `critic-w1-21-r2` | in_progress | finish the three unrun-detector runs; run tools/ui/critic-w1-21-r2-a.mjs (B..G) when the c | `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` |
 | `critic-w1-23-r3` | ? | re-run tools/lore/critic-w1-23-r1.mjs per W1-23-r2.next_step; then A texts count + read 8  | `orchestration/status/critic-w1-23-r3.json` |
-| `critic-w1-souls` | successor-running | offline arms A/B/C/E first (no browser), then contention --gate, then D (CONSUMPTION) + de | `orchestration/status/critic-w1-souls.json` `corpus/90-verdicts/wave1/W1-SOULS-r1.md` `tools/progression/critic-souls-r1.mjs` |
 | `critic-w1-12` | running | read ARBITRATION §3 + AR-1, RULES, survey.md, then build critic instruments under tools/co | `orchestration/status/critic-w1-12.json` |
 | `W1-21-r2` | done | critic. Three edited detectors are UNRUN and named under not_done below. | `game/src/ui/system.js` `game/src/sim/discovery.js` `tools/analysis/marker-scan.mjs` `tools/analysis/ui-layer.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/marker-diff.mjs` |
 | `W1-12` | done | none - piece complete. A successor should read reports/w1-12/survey.md sections 3c, 4 and  | `orchestration/status/W1-12.json` `reports/w1-12/survey.md` `reports/w1-12/ai-probe-souls-inf_trash.json` `game/data/combat/ai.json` `game/data/index.json` `game/src/combat/ai.js` |

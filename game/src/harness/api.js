@@ -390,6 +390,8 @@ export function installHarness(engine, bootPromise) {
     // ---- RI-PRG07 §3 — burden, the out-of-fight half of carrying things -----------------------
     setBurden(arg) { return engine.setBurden(arg); },
     getBurden() { return engine.getBurden(); },
+    /** W1-16 r2: put a row on, through `UISystem`'s own equip queue. See Engine.equipItem(). */
+    equipItem(id) { return engine.equipItem(id); },
     getProvinceStats() { return engine.getProvinceStats(); },
     walkRoute(opts) { return engine.walkRoute(opts); },
     walkPath(points, opts) { return engine.walkPath(points, opts || {}); },
@@ -1094,6 +1096,24 @@ export function installHarness(engine, bootPromise) {
     },
 
     /**
+     * WOUND A BODY. The same class of precondition as `damagePlayer()` and `setTravelMark()`,
+     * and it exists for the same reason: `restore_health` cast as an AREA can only reach bodies
+     * (`MagicSystem.step` walks `side === 'E'`, never the caster), so in an arena where every
+     * body is at full health an area heal is unobservable for want of a wound rather than for
+     * want of a radius — and the round-3 dial census read it as blind on all three dials for
+     * exactly that reason. Writes hp directly rather than routing a hit, so it cannot stagger,
+     * aggro, proc a status or spend a ward charge and become the difference between two arms.
+     */
+    damageEnemy(eid, amount) {
+      const b = engine.combat.bodyOf(String(eid));
+      if (!b) throw new Error(`damageEnemy('${eid}'): no such body`);
+      b.hp = Math.max(1, b.hp - Number(amount));
+      const e = engine.sim.findEntity(String(eid));
+      if (e) e.hp = b.hp;
+      return { eid: String(eid), hp: b.hp, hp_max: b.hpMax };
+    },
+
+    /**
      * RI-PRG02 §3 and RI-CHR03 §2, read: the pools the attributes and the birthsign produce,
      * the live values in the fight, and the curve anchors the item's method 3 samples.
      */
@@ -1504,15 +1524,65 @@ export function installHarness(engine, bootPromise) {
       b.wardCharges = saved;
       return Math.round(applied * 1000) / 1000;
     },
-    /** The inventory with its condition — `mend_item` raises it, `corrode` lowers it. */
+    /**
+     * The inventory with its condition — `mend_item` raises it, `corrode` lowers it.
+     *
+     * W1-16 round 2 added `slot`. Equipped weight is what RI-PRG07 §2 divides by maxLoad to get
+     * the in-fight roll tier, and until this line the harness could not see which rows were worn
+     * at all — so "did equipping the hauberk change the roll" was answerable only through the
+     * `__ENGINE` back door, which is not a measurement of the shipping surface.
+     */
     getInventory() {
       return (engine.sim.inventory || []).map((i) => ({
         id: i.id, count: i.count, condition: Math.round((i.condition === undefined ? 1 : i.condition) * 1e4) / 1e4,
+        slot: i.slot || null,
       }));
     },
     /** RI-LOR05 §4a: read the taint register; and clear it, for a probe that needs to count from 0. */
     getSapTaint() { const t = engine.sim.progression.sapTaint; return t ? { ...t } : null; },
     resetSapTaint() { engine.sim.progression.sapTaint = null; return engine.hearthRest ? true : true; },
+
+    /**
+     * The dial census's self-test (`w1-14-r3-dials.mjs --break=bindblind`). Restores the
+     * magnitude-blind summon handler round 3 shipped: `bind_lesser`/`bind_greater` read the
+     * magnitude dial and discard it, so a 1-point call and a 90-point call put the identical
+     * body on the floor. The two rows must go COUPLED -> MAGNITUDE_BLIND under this.
+     */
+    __breakBindMagnitude() { engine.magic._bindMagnitudeBlind = true; return true; },
+
+    /**
+     * The other half of the same self-test. Switches off the flee loop in `MagicSystem.step`,
+     * restoring round 3's `demoralise`: `fleeingUntil` written, never read, the routed body
+     * standing exactly where it was and indistinguishable from `calm_beast`.
+     */
+    __breakFleeMotion() { engine.magic._fleeDisabled = true; return true; },
+
+    /**
+     * W1-16 round 2 DELETE-THE-FIX, as a first-class control arm rather than a `git stash`.
+     *
+     * RULES.md #6 wants the fix removed and the OLD number back, and #17 warns that doing that
+     * with a stash on a tree twenty-nine agents are writing to is how a neighbour's `git add -A`
+     * stages your temporary deletion. So each of this round's four couplings has a switch that
+     * restores the exact pre-round-2 behaviour, and the probe runs both arms in one browser:
+     *
+     *   producer — `_recomputeEquipLoad()` never runs, so `equipLoadPct` has no writer but
+     *              `setEquipLoad()`, the hardcoded 24.0 and the feather spell. The world's
+     *              equipment cannot reach the roll.
+     *   slots    — `_finishEquipCommit()` can only fill 'right', so armour goes in the sword hand.
+     *   travel   — `travel_time` is computed, reported and read by nothing.
+     *   sprint   — burden never reaches `denySprint`, so an Overladen player sprints home.
+     *
+     * `__breakW116(null)` clears them. A probe that cannot produce the failure it is looking for
+     * has not looked.
+     */
+    __breakW116(what) {
+      if (what === null || what === undefined || what === false) { engine._w116Break = null; return { broken: [] }; }
+      const list = Array.isArray(what) ? what : String(what).split(',').map((x) => x.trim()).filter(Boolean);
+      const known = ['producer', 'slots', 'travel', 'sprint'];
+      for (const k of list) if (!known.includes(k)) throw new Error(`__breakW116('${k}'): unknown arm. Known: ${known.join(', ')}`);
+      engine._w116Break = Object.fromEntries(list.map((k) => [k, true]));
+      return { broken: list };
+    },
 
     /** S29 self-test: open the travel fence, so the refusal can be watched not happening. */
     __breakTravelFence() { engine.magic._fenceDisabled = true; return true; },
@@ -2251,10 +2321,19 @@ export function installHarness(engine, bootPromise) {
     },
     /** RI-WLD03 R1: what the town collision set holds, and whether you are inside a wall. */
     getSettlementSolids() { return engine.settlementSolidsReport(); },
-    /** The collision control arm: take the walls out and walk the same walk again. */
+    /**
+     * The collision control arm: take the walls out and walk the same walk again.
+     *
+     * DO NOT null `engine._townCell` here. `_settleSettlementSolids()`'s off-branch is
+     * `if (this._townCell && this.sim.cell === this._townCell) this.sim.cell = EMPTY_CELL` —
+     * it needs the handle to recognise the cell it is being asked to remove. Nulling it first
+     * made that branch dead code, so `sim.cell` kept the wall set and the walls were never
+     * removed: the round-3 collision run returned byte-identical results on both arms and its
+     * control was inert (RULES.md #6). The method clears and rebuilds the handle itself.
+     */
     __w1_04_townSolids(on) {
       engine._townSolidsOff = !on;
-      engine._townSolids = null; engine._townCell = null;
+      engine._townSolids = null;
       engine._settleSettlementSolids();
       return engine.settlementSolidsReport();
     },
