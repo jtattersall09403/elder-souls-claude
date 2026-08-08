@@ -1,0 +1,20 @@
+{
+  "task_id": "critic-w1-04-r5",
+  "role": "critic",
+  "piece": "W1-04",
+  "round": 5,
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "commit_at_start": "1fda355",
+  "next_step": "read RULES, INDEX, ARBITRATION §3, W1-04-r4.md verdict, W1-04-r5.json builder status",
+  "files_touched": [],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-04-r5.md",
+    "corpus/90-verdicts/wave1/W1-04-r5.json",
+    "orchestration/status/critic-w1-04-r5.json",
+    "tools/world/critic-w1-04-r5-*.mjs",
+    "docs/shots/"
+  ],
+  "redundant_with": ["W1-04-r5"],
+  "notes": "Fresh critic. Contention GO at start (3 instances, load 1.84/core)."
+}
