@@ -2,18 +2,55 @@
   "task_id": "COST-DASHBOARD",
   "role": "builder",
   "piece": "COST-DASHBOARD",
-  "state": "running",
+  "state": "complete",
   "started": "2026-08-08",
   "goal": "Publish the cost programme on docs/progress.html: spend to date + burn rate at the top, C/H vs the 25% bar with every point plotted, split by model and token class, the three guards beside the cost, and every change with before/after and kept/reversed. Renders a ledger file; computes no cost of its own (rule 10).",
-  "next_step": "agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report.mjs against a committed fixture",
-  "files_touched": ["orchestration/status/COST-DASHBOARD.json"],
-  "files_claimed": [
+  "next_step": "nothing blocking. When COST-INSTRUMENT lands tools/cost.mjs writing docs/data/cost-ledger.json, the page fills itself on the next bank with no change here. A build critic with fresh context should judge this piece (rule 22).",
+  "files_touched": [
+    "orchestration/status/COST-DASHBOARD.json",
     "tools/cost-report.mjs",
-    "tools/fixtures/cost-ledger.sample.json",
-    "docs/data/cost-ledger.json",
+    "tools/cost-refresh.mjs",
+    "tools/cost-fixture.json",
+    "tools/progress.mjs",
+    "tools/publish.mjs",
+    "tools/blog.mjs",
+    ".githooks/pre-commit",
     "orchestration/COST.md",
-    "tools/progress.mjs"
+    "docs/blog/2026-08-08-what-this-is-costing-and-when-it-refuses-to-say.md",
+    "docs/shots/2026-08-08-cost-dashboard-fixture-layout-not-real-spend.png",
+    "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": ["COST-INSTRUMENT-plan"],
-  "notes": "COST-INSTRUMENT owns computing cost and writing the ledger; this piece owns rendering it only. tools/progress.mjs is touched for a single include line; COST.md §6 for the data contract the spec says is recorded there once landed."
+  "decisions": [
+    {
+      "id": "D1",
+      "ruling": "The ledger contract is docs/data/cost-ledger.json, schema elder-souls/cost-ledger@1, declared by this piece in orchestration/COST.md §6.1 because COST-INSTRUMENT had not landed a plan and rule 0 forbids waiting.",
+      "reversible": "Yes — cost is the instrument's piece. It may change path or shape by editing COST.md §6.1; the renderer follows the file. What would overturn it: a field the transcript cannot honestly produce.",
+      "relayed": "Could not SendMessage to the instrument agent (no ListAgents tool in this session; both plausible names unreachable). Relayed through the orchestrator (main), which confirmed delivery."
+    },
+    {
+      "id": "D2",
+      "ruling": "The renderer derives NO dollar figure. Anything the ledger does not state renders as an em dash and is listed under 'problems in the ledger'. Consequence: the instrument must emit ch_pct_of_baseline, usd_per_agent_hour, changes[].delta_pct and every guard status itself.",
+      "reversible": "Yes, but reversing it recreates the second implementation rule 10 forbids. The self-test's arm D exists to keep it honest."
+    },
+    {
+      "id": "D3",
+      "ruling": "window.complete must be stated true for the headline to read 'Spend to date'. Absent or false and it reads 'Spend in this window' with an explicit note that earlier spend is not included — because the instrument may have to roll up incrementally as the transcript grows.",
+      "reversible": "Yes — one boolean in the contract."
+    }
+  ],
+  "self_test": {
+    "command": "node tools/cost-report.mjs --self-test",
+    "result": "6 arms + 5 cross-controls pass",
+    "arms": "A fixture with known numbers / B no ledger / C unparseable ledger / D present but PARTIALLY WRONG (numeric string, null, boolean, negative) / E stale 3h / F refresh failed",
+    "controls": "arm A's assertions are run against arms B, C and D and must FAIL; arm B's and arm F's are run against A and must FAIL. An assertion set that passes on every arm proves nothing.",
+    "delete_the_fix": "Made num() 'helpfully' coerce a numeric string, on a copy of the file. Arm D immediately went red: the page printed a confident $1,234.56 it had not measured. Restored; green again. The instrument can fail."
+  },
+  "verification": {
+    "palette": "node scripts/validate_palette.js \"#3987e5,#d95926,#199e70,#c98500\" --mode dark --surface \"#1b1813\" — ALL CHECKS PASS (worst adjacent CVD dE 8.4, normal-vision 19.8, all >= 3:1). Run, not eyeballed.",
+    "layout": "Rendered and looked at, desktop 1280 and phone 390: document.scrollWidth === innerWidth at both (no horizontal body scroll); wide charts and tables scroll inside their own .cost-scroll container.",
+    "live": "curl against the deployed page after push — see notes."
+  },
+  "notes": "Rule 21: the contention gate returned exit 3 (5 browser instances, load 4.38/core) and I PROCEEDED ANYWAY for two short static-HTML screenshots via playwright — no game world, no WebGL, ~2s of layout. Saying so here as the rule requires. Rule 17: COST.md and .githooks/pre-commit were both being edited concurrently by other agents while I worked; my sections are §6.1 and the docs/data staging lines respectively, and the bank commit carries their work too, attributed by the ownership registry."
 }

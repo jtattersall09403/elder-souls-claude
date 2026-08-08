@@ -36,28 +36,87 @@ when **all four guards hold simultaneously**:
 and cost-per-agent-hour did not fall, the fleet simply got smaller and the programme has failed.
 Report both, always, in that order.
 
+### Ruling C2 — G1 is the median, not the mean *(reversible)*
+
+The `COST-INSTRUMENT` plan found G1 has **two honest readings that disagree**: mean concurrent agents
+**13.10**, which passes, against a median of **11 with 35 of 63 hours below the floor**, which fails.
+It reported that it *chose the passing one after seeing which passed*, and named that as its critic's
+strongest move against itself. That disclosure is the reason this ruling can be made at all, and it
+is exactly the standard expected.
+
+**G1 is measured as the median, and additionally the fraction of hours below the floor must not
+increase.** Two reasons, and the second is the one that decides it. First, the mean is inflated by
+bursts, and a guard against fleet shrinkage that a burst can satisfy is not guarding. Second,
+**selecting a metric after seeing which reading passes is the defect this whole project is built to
+catch** — it is the inert control in another costume, and it would be indefensible to forbid it in a
+builder and permit it in our own scorecard. On this reading **G1 currently fails**, which is the
+correct starting state for a programme that has not yet done anything.
+
+**Reversal**: one line in the instrument. **Falsifier**: if the median proves to be dominated by
+container restarts and usage-limit kills — periods when the fleet was destroyed rather than
+under-dispatched — then it is measuring survival, not intent, and the ruling should be revisited with
+those windows excluded rather than the metric swapped.
+
+### G3 currently ships as `unmeasured`, and that is the honest state
+
+The same plan found that **four of G3's five non-negotiables are not honestly measurable today**:
+they exist only in verdict prose, a grep counts the word rather than the act, and just 2 of 95
+verdicts carry a structured header. They are published as `null`/`unmeasured` — **never as a green
+tick.** A guard that cannot be measured must not be allowed to read as passing; that is how a
+programme quietly loses the thing it promised to protect. Making G3 real is its own piece.
+
 **The five non-negotiables (G3), which no cost measure may reduce.** Every one has caught something
 expensive; each is cheap relative to what it prevents:
 one separate critic with fresh context per piece · delete-the-fix · the CONSUMPTION check
 (`RI-MTH07`) · a self-test with arms that genuinely disagree · reading the actual file rather than
 trusting a summary.
 
-## 2. What is already known, measured not guessed
+## 2. What is measured — and the four ways the orchestrator's first reading of it was wrong
 
-Taken from the session transcript at `/root/.claude/projects/-home-user-elder-souls-claude/*.jsonl`,
-which carries per-request `model`, `timestamp` and a `usage` block with `input_tokens`,
-`cache_creation_input_tokens`, `cache_read_input_tokens` and `output_tokens`. **That file is the
-ground truth for this programme.** Anything not derived from it is an opinion.
+**Everything in the first version of this section was wrong, and the plan loop caught all of it
+before a build agent was paid to inherit it.** Kept visible rather than quietly rewritten, because
+the errors are the argument for the loop. Source of truth is the `COST-INSTRUMENT` plan
+(`orchestration/plans/COST-INSTRUMENT.md`); its numbers below supersede this document's originals.
 
-- **The fleet is essentially all Opus: 3,230 `claude-opus-5` requests against 29 Sonnet.** The
-  existing model-choice policy in `PLAN-LOOP.md` — Sonnet for a build with a landed plan and an
-  existing instrument — has been written down and almost never applied. This is the largest single
-  lever and it has barely been pulled.
-- A typical subagent costs **130–420k tokens**. Recent completions: 131k, 137k, 155k, 165k, 204k,
-  372k, 376k, 419k. A wave of fourteen is several million.
-- The **plan loop's own estimate was wrong and low** — 60–100k projected for plan *and* critic; the
-  plan half alone cost 131k. Corrected in `PLAN-LOOP.md`. Assume estimates here are optimistic until
-  measured; that is exactly the failure this programme must not repeat about itself.
+1. **The source is 403 files / 638 MB, not one file / 31 MB.** The glob this section originally gave
+   — `/root/.claude/projects/-home-user-elder-souls-claude/*.jsonl` — matches only the
+   **orchestrator's** session, which is **9.3% of the money**. Subagent transcripts live in
+   `<session>/subagents/`. An instrument built to the original brief would have understated total
+   cost by about **10.7×** and looked entirely plausible doing it.
+2. **One API response is written as several JSONL records sharing one `message.id` and one identical
+   `usage` block.** 84,490 usage-bearing records collapse to **46,575 distinct requests**. Summing
+   records inflates cost **1.81× overall and 2.58× on output**. Deduplicate by `message.id`. This
+   also means the original "3,230 Opus vs 29 Sonnet" *request* counts were themselves inflated.
+3. **There are five priced token classes, not four.** `cache_creation` splits into `ephemeral_5m`
+   (1.25× base) and `ephemeral_1h` (2×), and **both occur here** — the orchestrator uses the 1-hour
+   TTL, subagents the 5-minute. The prices first declared in the contract were also roughly **3×**
+   the real published figures.
+4. **The lever ranking in §4 was built on a false premise.** See below.
+
+### The baseline, and what it says about where the money actually is
+
+**$5,792.69 over 62 hours → C/H = $111.40/h.** Cost per agent-hour **$8.51**; mean concurrent agents
+**13.10**. **Target: C/H ≤ $27.85/h.**
+
+- **Cache reads are 81.2% of spend, and the hit ratio is already 98.39%.** The cache lever in §4 is
+  therefore close to dead — there is almost no miss left to convert. What remains is the *write*
+  side, $910.89, which is what Ruling C1 targets.
+- **Output is 1.7% of spend and median output is 5 tokens.** Writing shorter is worth approximately
+  nothing. Every instinct to trim prose is aimed at 1.7% of the bill.
+- **Cost is context volume × request count.** Median context **190k**, **103 requests per agent**.
+  That product is the thing to attack, and nothing else is close.
+- **Model mix alone caps at 0.6× at list price**, because every model's price vector is
+  `base_input × [1, 1.25, 2, 0.1, 5]`. It cannot reach the 25% bar by itself: **volume must fall
+  about 2.8×** on top of it.
+
+### The methodological finding that constrains every experiment
+
+**Cost-per-run has a coefficient of variation of 0.97.** Detecting a 25% effect in dollars would need
+roughly **238 runs per arm (~76 hours — longer than this project's entire history).** So attribution
+**cannot** rest on comparing dollar totals between waves. It must rest on **mechanism** — measured
+token flows through the specific path a change touches. Any experiment whose acceptance is "the bill
+went down" is unfalsifiable here, and saying so is not pessimism, it is the difference between this
+programme producing knowledge and producing anecdotes.
 
 ## 3. How the programme runs — the same gauntlet, pointed at ourselves
 

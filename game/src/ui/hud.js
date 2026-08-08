@@ -25,7 +25,7 @@
 'use strict';
 
 import { C, Ca, BARS, BUILDUP, panel, chitinPath, boneRule, bonePip, resinFill, idHash, jitter } from './theme.js';
-import { drawText, faceOf, measure } from './type.js';
+import { drawText, faceOf, measure, wrap, ellipsise } from './type.js';
 
 /** 1080p geometry, scaled by `s`. Everything is expressed here so the budget is auditable. */
 const L = {
@@ -234,8 +234,14 @@ export function drawHUD(S, m) {
       meta: { range_m: m.prompt.range_m, device: m.prompt.device || 'keyboard', glyph: m.prompt.glyph || 'keycap' },
     }, (c, r) => {
       const f = faceOf('bone'), sz = 15 * s;
-      const t = m.prompt.text;
       const gw = 22 * s;
+      // W1-HUD-TOAST-A. The census (tools/analysis/hud-toast-corpus.mjs) found 130 of 1309
+      // reachable prompt names (readable-prop titles, mostly) wider than the ~169 px this label
+      // has after the device glyph — a name, drawn as one line with no wrap and no truncation of
+      // any kind, is the same defect the toast had. A prompt is one line by design (RI-UIX01 §C's
+      // "small and permanent"), so it is ellipsised rather than wrapped.
+      const budget = r[2] - gw * 1.4;
+      const t = ellipsise(m.prompt.text, f, sz, budget);
       const tw = measure(t, f, sz);
       const x0 = r[0] + r[2] / 2 - (tw + gw * 1.4) / 2;
       deviceGlyph(c, m.prompt.glyph || 'keycap', x0 + gw * 0.5, r[1] + r[3] * 0.60, gw * 0.5, s);
@@ -260,20 +266,40 @@ export function drawHUD(S, m) {
     // ever been asked to carry, but it is not a faction defect: every equip refusal
     // (`_sayEquip`) and every cast refusal in the build goes through the same element. A short
     // toast is unaffected — one line, same rect, same coverage — so this is additive.
+    // W1-HUD-TOAST-A. The greedy wrap above was a SECOND implementation of `ui/type.js`'s
+    // `wrap()`/`ellipsise()` (rule 10) — hud.js already imported `measure`/`drawText`/`faceOf`
+    // from that same file. Two defects rode along with the duplication, both named CARRIED by
+    // the plan critic and both closed here:
+    //  1. `wrap()` does not shorten a single word wider than `maxW` either — it emits it as its
+    //     own over-wide row, identically to the inline copy. Every row is `ellipsise()`'d
+    //     explicitly after wrapping, so an over-wide word is truncated with a mark rather than
+    //     drawn past the panel edge. Not reachable by today's data (widest word in any
+    //     `game/data` name is 129.0 px against this 376 px budget — see
+    //     `reports/w1-hud-toast-a/corpus.json`) but it is unreachable-by-data, not correct.
+    //  2. `wrap()` calls `normalise()` (good — A3 compares against `normalise(T)`) and splits on
+    //     `\n`, emitting `''` for a blank paragraph. A toast is one paragraph; blank rows are
+    //     dropped rather than counted, so a stray blank line cannot change `row_count` and, with
+    //     it, the panel height and the 3-row ellipsis ceiling.
     const f = faceOf('ink'), sz = 16 * s;
     const maxW = (L.toastW - 24) * s;
-    const words = String(m.toast.text).split(/\s+/).filter(Boolean);
-    const rows = [];
-    let cur = '';
-    for (const w of words) {
-      const next = cur ? `${cur} ${w}` : w;
-      if (cur && measure(next, f, sz) > maxW) { rows.push(cur); cur = w; } else cur = next;
-    }
-    if (cur) rows.push(cur);
+    let wrapped = wrap(String(m.toast.text), f, sz, maxW).filter((row) => row.length > 0);
+    if (!wrapped.length) wrapped = [''];
     // Three lines is the ceiling. RI-UIX04 Q11 keeps this channel small on purpose, and a toast
-    // that grows without bound is a quest log wearing a parchment. A fourth line is dropped and
-    // the third gets an ellipsis, so the overflow is visible rather than silent.
-    if (rows.length > 3) { rows.length = 3; rows[2] = `${rows[2]}…`; }
+    // that grows without bound is a quest log wearing a parchment. A fourth-plus row is dropped.
+    const ceilingHit = wrapped.length > 3;
+    if (ceilingHit) wrapped = wrapped.slice(0, 3);
+    // Every row is `ellipsise()`'d: the third row (if the ceiling fired) is FORCED to end in an
+    // ellipsis even though it already fits `maxW` — the marker itself can push an exactly-fitting
+    // row over budget, so the same shrink loop `ellipsise()` uses for "doesn't fit" is reused
+    // rather than re-appending '…' raw. Every other row only shrinks if it is itself over `maxW`
+    // (CARRIED-1: a single word wider than the budget, which `wrap()` does not shorten).
+    const rows = wrapped.map((row, i) => ellipsise(row, f, sz, maxW, { force: ceilingHit && i === wrapped.length - 1 }));
+    // A3's escape hatch: no silent loss unless `truncated` is set. Silent loss now has two
+    // distinct causes and both must set it — the 3-row ceiling (`ceilingHit`) AND a per-row
+    // shrink from an over-wide single word, which `rows.join(' ') === normalise(T)` alone would
+    // not catch on its own (row 1 or 2 can lose text without the ceiling ever firing).
+    const rowShortened = rows.some((row, i) => row !== wrapped[i]);
+    const truncated = ceilingHit || rowShortened;
     const lineH = 20 * s;
     const h = Math.max(L.toastH * s, rows.length * lineH + 20 * s);
     const widest = rows.reduce((a, t) => Math.max(a, measure(t, f, sz)), 0);
@@ -290,7 +316,7 @@ export function drawHUD(S, m) {
       // wrapper moved the yardstick with it and the check stayed green on a line that ran 823 px
       // across a 400 px panel. ui/system.js now derives `fits` from the element's own RECT,
       // which the wrapper does not set.
-      meta: { rows: rows.slice(), row_count: rows.length, widest_px: +widest.toFixed(1), wrap_budget: +maxW.toFixed(1), truncated: rows.length === 3 && rows[2].endsWith('…') },
+      meta: { rows: rows.slice(), row_count: rows.length, widest_px: +widest.toFixed(1), wrap_budget: +maxW.toFixed(1), truncated },
     }, (c, r) => {
       panel(c, 'parchment', r[0], r[1], r[2], r[3], s, 4242, 0.86);
       const top = r[1] + (r[3] - rows.length * lineH) / 2 + lineH * 0.72;

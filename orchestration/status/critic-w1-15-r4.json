@@ -1,18 +1,34 @@
 {
   "task_id": "critic-w1-15-r4",
   "role": "critic",
-  "piece": "W1-15 round 4 critic — interior lighting, stealth, fencing, crime",
+  "piece": "W1-15 round 4 critic \u2014 interior lighting, stealth, fencing, crime",
   "status": "in_progress",
   "started_at": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-15-r3.md + orchestration/status/W1-15-r4.json",
-  "next_step": "read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a frame-time number, re-run 2x2, perturb census",
-  "redundant_with": ["W1-15-r4"],
-  "files_touched": ["orchestration/status/critic-w1-15-r4.json"],
+  "next_step": "live probe (frame-time + third site live) running under load 7.5/core; then write verdict md+json, ledger, publish, bank, push",
+  "redundant_with": [
+    "W1-15-r4"
+  ],
+  "files_touched": [
+    "orchestration/status/critic-w1-15-r4.json",
+    "tools/stealth/critic-w1-15-r4.mjs",
+    "tools/stealth/critic-w1-15-r4-live.mjs",
+    "reports/w1-15/critic-r4.json"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-15-r4.md",
     "corpus/90-verdicts/wave1/W1-15-r4.json",
     "reports/blog-feed.jsonl"
   ],
-  "findings": [],
+  "findings": [
+    "THIRD LIGHTING SITE, unclaimed: engine.js#cellFor() routes writ-house and barge-hold to render/places.js, which builds its own PointLights and never calls world/interior-lighting.js. writ-house: 47 of 108 floor cells drawn lit and simulated dark (43.5%) \u2014 the round-3 defect verbatim, in the game's second room. barge-hold: 2 drawn vs 3 simulated, brightest sources 3.8 m apart. 1 of the round's own eleven fail-open rooms (writ-house) does NOT get the shared fail-open.",
+    "k RE-DERIVED INDEPENDENTLY AND CORRECT: max aperture ratio 0.102565 (blackrose-house-1, 12.94x4.34 m, 8 panes), k=2.5350; declared bounds give 8.0600; 112 of 115 shrunk; archon-apothecary 13.60x15.60 -> 9.83x4.98. Exact.",
+    "SATURATION: 12,210 of 16,996 indoor floor cells (71.8%) sit at L=1.0000 at noon clear; 10 rooms entirely flat. Round 3 was 69.4% / 7 flat. Pre-existing property of authored_intensity_to_L_scale, but the round published it at ROOM granularity (11 rooms) and not at CELL granularity.",
+    "VACUITY GUARD CANNOT GO RED: staged a copy where syncCoverVolumes() still exists, is still called in the fixed step, and returns an empty list. All six VACUITY rows still PASS and the tool exits 0. The guard tests for an ABSENT NAME, never for an INERT PRODUCER.",
+    "RULE-6 SHAPE LABELS INVERTED against rule 6's own text: on the disagreement measurement only site A bites (0->1215; B is 0->0), which is ONE site; on the eleven-rooms measurement BOTH bite alone (0.1676->0.1102 and ->0.0974), which is two INDEPENDENT sites, not \"two guards for one defect\" (rule 6: \"deleting either alone changes nothing\").",
+    "FOURTH RAW-TOTAL CONSUMER: disposition.js:313 `-G.fDispCrimeMod * player.bounty` where _questPlayerView() (engine.js:9074) sums ALL bounty jurisdictions with no unattributed subtraction. fDispCrimeMod=0.02, so the round's own 680 g unattributed scenario costs -13.6 disposition with every person in the province.",
+    "VERIFIED: 0 disagreeing cells of 16,996 on an instrument this critic wrote; renderer-side cut (which the round's 2x2 never ran) bites \u2014 706->500 point lights, 0->94 cells; fence 1,787/1,787 refusable with control 0, and 5-8 of 9 fences still buy so the economy has an out.",
+    "CANOPY_DAY clamp is unreachable by construction (0 rooms), so interiorAmbientL().clamped can never be true on the shipped corpus."
+  ],
   "could_not_do": []
 }

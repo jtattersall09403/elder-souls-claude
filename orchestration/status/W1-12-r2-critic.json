@@ -6,7 +6,7 @@
   "state": "running",
   "started": "2026-08-08",
   "resumed_by": "successor after predecessor killed by usage limit",
-  "next_step": "browser M1/M2; then teardown-arm audit; then consumption perturbation of the 39",
+  "next_step": "teardown-arm audit; consumption perturbation of the 39; S22 contrary; write verdict",
   "files_touched": [
     "orchestration/status/W1-12-r2-critic.json"
   ],
@@ -22,7 +22,7 @@
     "read_survey": true,
     "read_r1_verdict": true,
     "push1_closure_frametrace": true,
-    "push2_M1_M2": false,
+    "push2_M1_M2": true,
     "push3_teardown_arms": false,
     "push4_consumption_39": false,
     "push5_S22_contrary": false
@@ -32,6 +32,9 @@
   "findings_so_far": [
     "F1 HARD FAIL: on RI-AI01 M3's OWN fixture (stationary player, 60 s, never attacks) min_dist_dwell is 0.44 (inf_trash), 0.36-0.39 (beast), 0.42-0.44 (five others) -- over the 0.35 chase-bot HARD FAIL that VOIDS the piece. The round scored 0.2521 on the r1 critic's LISSAJOUS fixture (player drifting at ~1.6 m/s peak), which is not the item's fixture. Same enemy trajectory in r1 and r2 (spacing_variance identical to 4 dp); only the RECOVER relabel exposes it. 6 of 7 statblocks fail; only cst_sap_speaker (0.30-0.33) is clear. Rises with duration: 0.3807 at 1800 f, 0.4373 at 3600, 0.4399 at 5400.",
     "F2 push-1 VERDICT: the round's rejection of the r1 closure remedy SURVIVES my independent 2x2 (predicate {closure,recession} x placement {APPROACH-only, +CIRCLE}). closure+CIRCLE-half still never reaches the strike band (min gap 2.72 m, 0 frames in strike) vs recession 1.61 m / 294 frames. My instrument reproduces the round's headline (1.612/294/385) and its arm E (1.795/28) independently.",
-    "F3 ai.json documents the REJECTED design: _closure_rule and _closure_rule_two_zones describe closure-gating with two leaves rush_when_closure_below_mps and chase_when_gap_opening_above_mps 'both 0.8 m/s ... separate leaves'. NEITHER LEAF EXISTS in the file. Shipped code uses one leaf walk_in_min_closure_mps=0.5 and the SAME predicate in both zones (ai.js:612 and :623). check-ai-units.mjs passes because it only enumerates leaves that exist."
+    "F3 ai.json documents the REJECTED design: _closure_rule and _closure_rule_two_zones describe closure-gating with two leaves rush_when_closure_below_mps and chase_when_gap_opening_above_mps 'both 0.8 m/s ... separate leaves'. NEITHER LEAF EXISTS in the file. Shipped code uses one leaf walk_in_min_closure_mps=0.5 and the SAME predicate in both zones (ai.js:612 and :623). check-ai-units.mjs passes because it only enumerates leaves that exist.",
+    "F4 push-1 FULL RULING: closure-gating with HYSTERESIS (30 f min RUSH dwell) DOES catch the walking player (min gap 0.90 m, 144 strike frames) -- so the oscillation the round diagnosed is curable and its stated proof is the weaker half of its case. The STRONGER half, which the round did not measure: closure fires on a STATIONARY player too, and M3 min_dist_dwell goes 0.4373 (recession) -> 0.7448 (closure) -> 0.7064 (closure+hysteresis). The round's conclusion is right; its published argument is not the reason it is right.",
+    "F5 M1/M2 MEASURED IN THE BROWSER (contention GO, 1 instance, 0.57/core). tools/harness/ai-browser.mjs b2/b3 -> reports/w1-12-r2-critic/ai-browser.json. M1: rear 180 never acquires (good), 1.5R never acquires (good), but 0.9R at bearing 0 NEVER acquires -- the item's PASS requires it in every trial. Only 0.5R acquires, at 2 of 7 bearings. M1 = 1, NOT 2. M2: median SUSPICIOUS dwell 244 f, idle->aggro jump fraction 0 -> M2 = 2. Both confirm r1's accepted numbers rather than overturning them; the round's refusal to adopt them was correct in principle and vindicated in fact.",
+    "F6 PREDECESSOR ARM DISCARDED: reports/w1-12-r2-critic/closure-vs-recession.json arm `clFull` is byte-identical to `base` on 6 of 7 statblocks across both fixtures -- an INERT CONTROL (rule 6 shape 2). Its predicate computes |enemy_now - player_old| - |enemy_now - player_now|, which cancels the enemy's own motion and is therefore recession again, not closure. Not published as evidence; replaced by my own arms clA/clB/clHyst which do differ."
   ]
 }

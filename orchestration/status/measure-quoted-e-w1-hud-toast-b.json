@@ -1,20 +1,70 @@
 {
   "task_id": "measure-quoted-e-w1-hud-toast-b",
-  "role": "measurement (text-only, no browser, no build)",
+  "role": "measurement (text-only, no browser, no build agent, no tool executed)",
   "piece": "W1-HUD-TOAST / Piece B (W1-INSTRUMENT-COUPLING)",
-  "state": "running",
+  "state": "complete",
   "started": "2026-08-08",
-  "dispatch_condition_being_closed": "Plan critic exchange 1: 'Piece B must not be dispatched until its first measurement — the quoted-E fraction over the 133 — is taken.'",
-  "deliverable": "orchestration/plans/W1-HUD-TOAST.md — a MEASUREMENT section written where the critic's dispatch condition sits",
+  "commit_pinned": "9063779",
+  "pinning_method": "git archive 9063779 tools corpus/90-verdicts/wave1 into a scratch snapshot outside the repo. Necessary, not decorative: the working tree gained six tools/**/*.mjs from other agents during the ten minutes this took, and a moving denominator is exactly how the 786 went wrong.",
+  "dispatch_condition_closed": "Plan critic exchange 1: 'Piece B must not be dispatched until the quoted-E fraction over the 133 is measured.'",
+  "deliverable": "orchestration/plans/W1-HUD-TOAST.md — section 'MEASUREMENT — the quoted-E fraction', plus a CLOSED pointer on the dispatch-condition paragraph itself",
   "files_touched": [
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/plan-w1-hud-toast.json",
     "orchestration/status/measure-quoted-e-w1-hud-toast-b.json"
   ],
-  "files_claimed": [
-    "orchestration/plans/W1-HUD-TOAST.md",
-    "orchestration/status/plan-critic-w1-hud-toast.json"
-  ],
+  "files_claimed": [],
   "redundant_with": ["plan-critic-w1-hud-toast", "plan-w1-hud-toast"],
-  "overlap_note": "Closes the plan critic's own dispatch condition in the same plan file. No game/ or tools/ source touched.",
+  "overlap_note": "Closes the plan critic's own dispatch condition in the same plan file and annotates its status file. Declared, not a collision. No game/ or tools/ source touched or claimed.",
   "no_browser_launched": true,
-  "next_step": "Re-derive 786/244/459/133/326, then measure the quoted-E fraction over the 133."
+  "no_tool_executed": true,
+  "headline": "quoted-E = 14 of 109 = 12.8%; strict (contemporaneous) reading 3 of 109 = 2.8%. B1 as written is not gradeable. B1' over the 14 is.",
+  "counts_re_derived": {
+    "tools_mjs_on_disk": {"critic": 786, "mine": 776, "agree": false, "why": "786 = 776 + 10 vendored .mjs under tools/node_modules/"},
+    "P_perturbable": {"critic": 244, "mine": 198, "agree": false, "why": "not reproducible from the published rule; nine variants span 202-262"},
+    "cited_distinct": {"critic": 471, "mine": 471, "agree": true},
+    "cited_missing_from_disk": {"critic": 12, "mine": 12, "agree": true},
+    "cited_and_existing": {"critic": 459, "mine": 459, "agree": true, "note": "identical only when the artifacts/ subtree is counted; verdict DOCUMENTS alone give 450 of 462"},
+    "operative_intersection": {"critic": 133, "mine": 112, "mine_documents_only": 109, "agree": false},
+    "cited_no_perturbation": {"critic": "326 = 71%", "mine": "347 of 459 = 75.6% / 341 of 450 = 75.8%", "agree": false, "direction": "worse than reported — strengthens the critic's own conclusion"}
+  },
+  "quoted_E": {
+    "population": 109,
+    "E_QUOTED": 14,
+    "fraction": "12.8%",
+    "contemporaneous_bar_only": 3,
+    "contemporaneous_fraction": "2.8%",
+    "forward_acceptance_only": 11,
+    "no_external_E": 95,
+    "cited_only_as_absent_or_broken": 7,
+    "the_14": [
+      "tools/analysis/ui-forbidden.mjs",
+      "tools/experience/critic-w1-25.mjs",
+      "tools/harness/critic-w1-16-live.mjs",
+      "tools/harness/critic-w1-16-r3-live.mjs",
+      "tools/harness/prg-encumbrance.mjs",
+      "tools/journey/input-checks.mjs",
+      "tools/journey/opening-play.mjs",
+      "tools/lore/canon-census.mjs",
+      "tools/lore/critic-w1-23-r1.mjs",
+      "tools/lore/critic-w1-23-r3-reach.mjs",
+      "tools/metrics/ui-metrics.mjs",
+      "tools/world/critic-road-join-ingame.mjs",
+      "tools/world/road-through-building.mjs",
+      "tools/world/w1-04-r3-exterior.mjs"
+    ],
+    "the_3_contemporaneous": ["tools/lore/canon-census.mjs", "tools/lore/critic-w1-23-r1.mjs", "tools/metrics/ui-metrics.mjs (and this one is an arbitration question recording that the bar is DISPUTED — the single best coupled-yardstick candidate in the corpus)"]
+  },
+  "verdict": "B1 as written is NOT gradeable — not because 12.8% is small, but because its acceptance ('100% classified into five classes, one of which is OPAQUE') cannot go red. Ruled in its place: S-PLAN-HUD-B3, B1' graded over the 14 with OPAQUE unavailable, B1b reported over 109. Reversible on one further text-only measurement.",
+  "routing": "Piece B dispatchable to OPUS once exchange 2's edit lands. B1' is now decidable without judgement (this measurement made the judgement and wrote it down), but BLOCKING-4 — how the four historical positives enter the swept population — is not, and the piece's own text says B2 is the acceptance.",
+  "could_not_do": [
+    "DID NOT measure the other half of gradeability and it is the larger half: whether each tool's OWN artifact publishes a readable expected side. YD reads E from the tool; the verdict-quoted E is the second source. So 14 is a FLOOR on the gradeable population, not a ceiling, and this is the stated overturn condition of S-PLAN-HUD-B3. Text-only, browserless, should be the next dispatch.",
+    "Ran no tool and opened no tool's source. Every ruling is from verdict prose.",
+    "The 82 hand-rulings are judgement against the published rule; six borderlines are named in the plan section. build-property.mjs is the one I would expect a successor to overturn. A second reader applying the rule should land within +-2 of 14.",
+    "Attribution is the enclosing block, so a bar three paragraphs from its tool path is missed — the critic's own weakness, reduced from a line to a paragraph, not removed.",
+    "Could not reconstruct the critic's 244 from any of nine regex variants; report 198 with its rule rather than fitting a rule to a number.",
+    "Did not verify the 14 tools run today or that their declared perturbations still fire.",
+    "Did not open the W1-04, W1-25 or compliance-report records — BLOCKING-4 is untouched by this measurement."
+  ],
+  "next_step": "Exchange 2 edit folds BLOCKING-1..6 and the B1'/B1b denominators into the plan text; then dispatch W1-HUD-TOAST-A (Sonnet) and W1-INSTRUMENT-COUPLING (Opus). Highest-value follow-up: the tool-side E census described in could_not_do[0]."
 }

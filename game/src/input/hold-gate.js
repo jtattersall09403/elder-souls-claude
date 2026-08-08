@@ -37,16 +37,26 @@
 // discriminator was INVERTED on 2 of 5. It was not coarse; it was uncorrelated with the press,
 // because `sim.frame` did not advance at all while the presses were happening.
 //
-// THE INCLUSIVE +1, AND WHY IT SURVIVES THE REWRITE. S39 writes the conversion as
-// `Math.round((tUp - tDown) / STEP_MS)`. That is the number of STEP BOUNDARIES crossed; the
-// quantity this gate has always used, and the one `RI-JRN04` M-P5 is written in, is the number of
-// FRAMES OCCUPIED, which is one more. A harness press driven by `stepFrames(n)` occupies n frames
-// and spans (n-1) * STEP_MS of stamped time, so `framesHeld` keeps the `+ 1` and M-P5's boundary
-// ("roll at 11, sprint from 12") is unmoved on every path. S39's own falsifier allows this: it
-// requires `frames_held` within +/-1 f@60 of `round(asked_ms / 16.667)`, and it predicts the
-// promotion pattern roll/roll/roll/sprint/sprint for 20/60/120/250/500 ms — which `+1` gives
-// exactly (2/5/8/16/31 f@60 against a 12 f@60 gate). Dropping the `+1` would satisfy the
-// arithmetic and break M-P5, which is the more load-bearing of the two.
+// A SAMPLE IS NOT AN ENDPOINT, AND THIS IS THE ONE THING THE REWRITE GOT WRONG FIRST.
+// "Frames held" means "how many fixed frames was this control DOWN for", and that is two
+// different formulas depending on which question you are asking:
+//
+//   * asked at a POLL, while the finger is still down (`framesHeldWhileDown`) — the press frame
+//     and the current frame are BOTH frames the control was down for, so it is the span PLUS
+//     ONE. This is the inclusive quantity the old `frame - pressFrame + 1` computed and the one
+//     `RI-JRN04` M-P5 is written in.
+//   * asked at the RELEASE (`framesHeld`) — the frame the release lands on is a frame the
+//     control was NOT down for, so it is the span, full stop. This is S39's own formula,
+//     `Math.round((tUp - tDown) / STEP_MS)`, verbatim.
+//
+// The first version of this file used the inclusive form for both and moved M-P5's boundary from
+// 12 to 11 on BOTH paths at once — caught by `tools/touch/touch-run.mjs --leg gate`, which is
+// exactly the check that exists to catch it, and which was green on the pre-S39 tree. That the
+// touchscreen and the pad moved TOGETHER is the shared-implementation property working; that
+// they moved at all was the bug. Both forms are here, both are named for what they measure, and
+// the polls and the releases each call the one that matches their question. With them, S39's
+// falsifier prediction holds exactly — 20/60/120/250/500 ms release as 1/4/7/15/30 f@60 and the
+// 12 f@60 gate splits them roll/roll/roll/sprint/sprint — and M-P5's boundary does not move.
 //
 // HOW TO BREAK IT ON PURPOSE (RULES 4/6):
 //   * change `DEFAULT_HOLD_GATE_FRAMES` or the comparison in `shouldPromote` and re-run
@@ -112,25 +122,47 @@ export function inputNow(mode, frame, event) {
 }
 
 /**
- * Frames held, INCLUSIVE of the press frame, converted from a stamped wall-clock span.
+ * FRAMES HELD AT THE RELEASE — S39's conversion, verbatim. The frame the release lands on is not
+ * a frame the control was down for, so this is the span and nothing is added to it.
  *
  * This is the quantity RI-JRN04 M-P5 counts when it says "released at 11 => roll, released at 12
- * => sprint". Both arguments are ms; the return is f@60. See the header for why the `+ 1` stays.
+ * => sprint". Both arguments are ms; the return is f@60.
  *
  * @param {number} tDownMs  ms, stamped at the press
- * @param {number} tNowMs   ms, stamped now (at the release, or at the poll)
+ * @param {number} tUpMs    ms, stamped at the release
  * @returns {number} f@60
  */
-export function framesHeld(tDownMs, tNowMs) {
-  const dtMs = tNowMs - tDownMs;
-  if (!Number.isFinite(dtMs) || dtMs <= 0) return 1;
-  return Math.round(dtMs / STEP_MS) + 1;
+export function framesHeld(tDownMs, tUpMs) {
+  const dtMs = tUpMs - tDownMs;
+  if (!Number.isFinite(dtMs) || dtMs <= 0) return 0;
+  return Math.round(dtMs / STEP_MS);
 }
 
 /**
- * True once the press has been held long enough to become the HOLD action.
+ * FRAMES HELD AT A POLL, while the control is still down — inclusive of the press frame, because
+ * the press frame and the current frame are both frames it was down for. One more than the span.
+ * @returns {number} f@60
+ */
+export function framesHeldWhileDown(tDownMs, tNowMs) {
+  return framesHeld(tDownMs, tNowMs) + 1;
+}
+
+/**
+ * True once a press that is STILL DOWN has been held long enough to become the HOLD action.
+ * Called from the polls — the rAF poll in mode `play`, the fixed step in the harness modes.
  * @param {number} tDownMs ms  @param {number} tNowMs ms  @param {object} gate a `profiles.json` row
  */
 export function shouldPromote(tDownMs, tNowMs, gate) {
-  return framesHeld(tDownMs, tNowMs) >= holdGateFrames(gate);
+  return framesHeldWhileDown(tDownMs, tNowMs) >= holdGateFrames(gate);
+}
+
+/**
+ * True when a press that has just been RELEASED was long enough to have been the HOLD action.
+ *
+ * This is the S39 headline: the release re-asks the question in milliseconds instead of trusting
+ * a flag that only a poll can set. A press that begins and ends between two rAF ticks is never
+ * seen by any poll, and before S39 it came out as a tap no matter how long the finger was down.
+ */
+export function promotedAtRelease(tDownMs, tUpMs, gate) {
+  return framesHeld(tDownMs, tUpMs) >= holdGateFrames(gate);
 }

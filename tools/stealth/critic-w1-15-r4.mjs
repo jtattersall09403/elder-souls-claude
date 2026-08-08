@@ -137,8 +137,13 @@ const skyClear = (h) => { const day = 1.0, night = 0.22; if (h >= 8 && h < 17) r
 /** Sample a room's floor on a 1 m chest-height grid. Returns L per cell for a given field. */
 function grid(rec) {
   const b = rec.bounds_m, cells = [];
-  for (let x = Math.ceil(b.x[0]) + 1; x <= Math.floor(b.x[1]) - 1; x++)
-    for (let z = Math.ceil(b.z[0]) + 1; z <= Math.floor(b.z[1]) - 1; z++) cells.push([x, b.y[0] + 1.35, z]);
+  // `--edge` walks the room's own bounds from the wall in, which is the round's own denominator
+  // (16,996 cells). The default insets by 1 m, which samples the middle of the room where the
+  // lamps are — the two grids give different answers and BOTH are published, because a saturation
+  // figure that depends on where you stand is a figure that has to say where it stood.
+  const inset = has('--edge') ? 0 : 1;
+  for (let x = b.x[0] + inset; x <= b.x[1] - inset; x += 1)
+    for (let z = b.z[0] + inset; z <= b.z[1] - inset; z += 1) cells.push([x, b.y[0] + 1.35, z]);
   return cells;
 }
 

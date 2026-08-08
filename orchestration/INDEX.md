@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e9946e5`: 795 tools, 153 reference
-items, 91 pieces in flight.
+so it cannot drift. Generated at `04569c7`: 797 tools, 153 reference
+items, 90 pieces in flight.
 
-Its purpose is to stop 91+ concurrent agents each paying separately to discover the
+Its purpose is to stop 90+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -662,7 +662,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 44
+### `tools/quests/` — 45
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -682,6 +682,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-unrouted-census.mjs` — W1-READABLES r2 critic, attack E.
 - `tools/quests/critic-w1-20-ledgers.mjs` — the W1-20 round-1 critic's SECOND instrument.
 - `tools/quests/critic-w1-20-play.mjs` — THE W1-20 ROUND-1 CRITIC'S OWN INSTRUMENT.
+- `tools/quests/critic-w1-20-reach.mjs` — the W1-20 critic's THIRD instrument.
 - `tools/quests/critic-w1-readables-chart.mjs` — the picture for the W1-READABLES round-2 verdict (rule 27).
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
@@ -803,7 +804,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 153
+### `tools/world/` — 154
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -840,6 +841,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-deploy-r2-drift.mjs` — how much of the deployed site does verify-live-site's staleness check actually look at, and is anything drifted right now that it cannot see?
 - `tools/world/critic-deploy-r2-gate.mjs` — re-take W1-DEPLOY r1's gate measurement against the version of `tools/check-shipped-files.mjs` that exists NOW, in BOTH of its modes.
 - `tools/world/critic-deploy-r2-imgref-fixture.mjs` — run tools/playability/check-image-refs.mjs against real repositories that really have a broken published reference, and against ones that do not.
+- `tools/world/critic-deploy-r2-notice.mjs` — two questions about the deploy instruments that nothing else asks.
 - `tools/world/critic-deploy-requested-files.mjs` — every file the running game actually asks for must be in git.
 - `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
@@ -1134,6 +1136,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
+| `critic-w1-deploy-r2` | measuring (successor 2) | run tools/world/critic-deploy-r2-notice.mjs --notice --boot when contention allows; then w | `orchestration/status/critic-w1-deploy-r2.json` `tools/world/critic-deploy-r2-gate.mjs` `tools/world/critic-deploy-r2-drift.mjs` `tools/world/critic-deploy-r2-imgref-fixture.mjs` `tools/world/critic-deploy-r2-notice.mjs` `reports/w1-deploy-r2/selftest-local.json` |
+| `COST-G3` | running | verify the 2-of-95 diagnosis; count verdicts myself | — |
 | `COST-INSTRUMENT-plancritic` | ? | independently verify coverage, dedup, prices, 81% claim, CV arithmetic; then write critiqu | — |
 | `critic-w1-15-r4` | ? | live probe (frame-time + third site live) running under load 7.5/core; then write verdict  | `orchestration/status/critic-w1-15-r4.json` `tools/stealth/critic-w1-15-r4.mjs` `tools/stealth/critic-w1-15-r4-live.mjs` `reports/w1-15/critic-r4.json` |
 | `S39-falsifier` | instrument built; browser arms running | Run --self-test (A1 one-frame shift must go red; A4 lint must flip green when stamped), th | `orchestration/status/S39-falsifier.json` |
@@ -1143,12 +1148,8 @@ work is the difference between resuming and starting over.
 | `critic-w1-20` | running | JOB1 DONE. Now: JOB2 sweep tree for self-referential expected values; JOB3 faction texture | — |
 | `W1-12-r2-critic` | running | teardown-arm audit; consumption perturbation of the 39; S22 contrary; write verdict | `orchestration/status/W1-12-r2-critic.json` |
 | `W1-HUD-TOAST-A` | starting | Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text | `orchestration/status/W1-HUD-TOAST-A.json` |
-| `measure-quoted-e-w1-hud-toast-b` | running | Re-derive 786/244/459/133/326, then measure the quoted-E fraction over the 133. | `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
-| `W1-TOUCH-r2` | in_progress | Read RI-JRN04 M-P5, guards.js, loop.js modes, touch-run.mjs --leg gate. Then implement inp | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `W1-PROSE-TICS-r4-instrument` | ? | write tools/blind/leakcheck.mjs (battery + gate + self-test), then tools/blind/mask-text.m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
-| `critic-w1-deploy-r2` | running (successor 2 — predecessor killed by usage limit with no artifacts on disk) | read all six subjects; then break each on purpose | `orchestration/status/critic-w1-deploy-r2.json` |
-| `COST-DASHBOARD` | running | agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report. | `orchestration/status/COST-DASHBOARD.json` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |

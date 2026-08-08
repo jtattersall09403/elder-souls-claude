@@ -8,6 +8,10 @@ import { join, relative, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chartHtml } from './scores.mjs';
 import { computeReport, discoverVerdicts } from './verdict-staleness.mjs';
+// The cost programme (COST.md §6). It renders docs/data/cost-ledger.json and computes no cost of
+// its own — the instrument is the only thing that prices tokens (rule 10). costHtml() never
+// throws: this page is regenerated inside the pre-commit hook.
+import { costHtml, COST_CSS } from './cost-report.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const P = (...a) => join(ROOT, ...a);
@@ -226,12 +230,15 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 .shots figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
 .shots img{width:100%;display:block}
 .shots figcaption{font-size:10px;color:var(--dim);padding:6px 8px;word-break:break-all}
+${COST_CSS}
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
   <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated ${esc(now)} &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
+
+${costHtml()}
 
 <div class="grid">
   <div class="card"><div class="n">${items.length}</div><div class="l">Reference items</div></div>

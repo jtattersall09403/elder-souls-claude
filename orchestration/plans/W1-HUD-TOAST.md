@@ -11,6 +11,14 @@ build agent should re-derive rather than trust it (rule 18). Rule 12: these are 
 This plan splits into **two pieces**, deliberately, because they want different models and only
 one of them needs a browser. Their acceptances are independent and either can land alone.
 
+**BLOCKING-1, -3 and -6 folded in by the Piece A build agent at `9790db8`, before any `game/`
+source was touched, per the dispatch condition below §6.** §1 Piece A's table, §3's instrument
+list and §6 are edited in place to carry the ruled resolutions rather than the original text;
+nothing was re-argued, and BLOCKING-6 was independently re-verified against
+`game/src/harness/api.js:939-949` before relying on it. Piece B (BLOCKING-4, -5) is **untouched** —
+its first measurement (the quoted-`E` fraction over the 133) is a separate agent's job and this
+build does not open `tools/experience/lib/sabotage.mjs`.
+
 ---
 
 ## 0. What is actually broken
@@ -766,3 +774,266 @@ place, which is BLOCKING-3's error committed by the critic instead of the plan.
 BLOCKING-1, -3 and -6 are folded in; **Piece B must not be dispatched until its first measurement —
 the quoted-`E` fraction over the 133 — is taken**, because that number decides whether B1 is
 gradeable at all, and it needs no browser and no build agent.
+
+> **CLOSED — see "MEASUREMENT — the quoted-`E` fraction" below, the last section of this file.**
+> Taken by `measure-quoted-e-w1-hud-toast-b` at `9063779`, no browser, no build agent. The fraction
+> is **14 of 109 = 12.8%** (**3 of 109 = 2.8%** for the bar a verdict actually graded against), on
+> a population of **109**, not 133 — three of this section's five counts do not re-derive. The
+> `<25%` branch of the revised reversibility condition fires: **B1 as written is not gradeable**,
+> and a re-denominated **B1′ over the 14 named tools** is ruled in its place (S-PLAN-HUD-B3,
+> reversible). **Piece B is dispatchable to Opus** once exchange 2's edit lands.
+
+---
+
+# MEASUREMENT — the quoted-`E` fraction. The exchange-1 dispatch condition, closed.
+
+**Task `measure-quoted-e-w1-hud-toast-b`. Text only: no browser, no build agent, no tool executed,
+no `game/` or `tools/` file written.** Every number below is a claim about **`9063779`** — the
+critic's own commit — read off a pinned `git archive 9063779 tools corpus/90-verdicts/wave1`
+snapshot outside the repo, because the working tree gained six `tools/**/*.mjs` from other agents
+in the ten minutes this measurement took (rule 12; and a moving denominator is how the 786 went
+wrong, see §3).
+
+**The condition being closed**, exchange 1's last line: *"Piece B must not be dispatched until its
+first measurement — the quoted-`E` fraction over the 133 — is taken, because that number decides
+whether B1 is gradeable at all."*
+
+**The headline, four lines.** The quoted-`E` fraction is **14 of 109 = 12.8%**, on an operative
+population that is **109, not 133**. Under the strict reading of the claim it was measured to test —
+a bar the verdict graded against *at the time it believed the result* — it is **3 of 109 = 2.8%**,
+and one of those three is a verdict saying the bar is disputed. **The exchange-1 reversibility
+condition fires as written: 12.8% is under ~25%, so B1 as written is not gradeable.** It is not
+gradeable for a sharper reason than the fraction, and there is a re-denominated acceptance over
+**14** that is — §4.
+
+---
+
+## 1. The counting rule
+
+Stated so another reader gets the same number, and so a disagreement is locatable rather than
+merely felt.
+
+**A tool `t` in the operative population counts as E-QUOTED iff at least one wave-1 verdict
+*document* states a specific expected value for a named graded row of `t` — a value `t`'s observed
+output is to be compared against, written in a file `t` did not produce.**
+
+- **Corpus:** `corpus/90-verdicts/wave1/*.md` and `*.json` only. The `artifacts/` subtree is **not**
+  a verdict: it holds 443 tool-written reports and **112 copied tool sources**, so a path found
+  there can be a tool citing itself. §3 measures what that exclusion costs.
+- **Attribution unit:** the enclosing prose block — a blank-line paragraph in `.md`, or one JSON
+  string value in `.json`. Nothing outside the block counts. This is deliberately more generous
+  than exchange 1's line-adjacency proxy (verdict prose wraps at ~95 columns, so a line is usually
+  half a sentence) and deliberately less generous than the file, which would score ~100% and
+  measure nothing.
+- **The value** may be numeric (`0`, `≥15 of 19`, `at most 3× 9.3 per 10k`, `ΔE ≤ 3`) **or** a
+  literal (`[]`, `false`, `true`, `ERROR`, `NO_MEASUREMENT`).
+
+**What does not count. Every one of these was met in the corpus and ruled out:**
+
+| # | excluded | why | example met |
+|---|---|---|---|
+| a | outcome words with no value — "passes", "exits 0", "green", "goes red" | names the verdict, not the yardstick; a sweep has nothing to hold fixed | *"Acceptance: `node tools/quests/critic-glyph-audit.mjs` exits 0"* |
+| b | observed readings | that is `O`; YD already has `O` from the tool | *"exit 1 — 42 hits"* (`marker-scan.mjs`); *"5 of 32"* (`critic-chain-headless.mjs`) |
+| c | `N/N` self-test tallies | the bar is "all of them" and the denominator is printed by the tool itself — no independent side | *"`--self-test` passes 10/10"* (`canon-census.mjs`); *"6/6"* (`smoke.mjs`, `arbiter-map-s38.mjs`) |
+| d | command lines and artifact listings | `--steps 60000` is a parameter, not an expectation. Keys `build.harness_commands`, `artifacts[].produced_by`, `evidence[]`, `files_touched` excluded structurally | *"`node tools/platform/alloc-probe.mjs --steps 60000`"* |
+| e | descriptive sizes | populations, not bars | *"25 checks"*, *"139 modules"*, *"121 `entry_topics` rows"* |
+| f | directional expectations | a comparator with no value cannot be frozen | *"require the count to rise"* (`critic-road-join-ingame.mjs` remedy); *"must raise the `Which` count"* |
+| g | a bar the verdict restates **from the tool's own source** | quoted, but not independent — which is the entire point | *"the shipped `--self-test` clears a fixture at band ≥ 4"* (`critic-w1-23-r4-band.mjs`) |
+
+**Borderlines ruled the other way — counted, and each one changes the number:**
+
+- **Non-numeric literals count.** `critic-w1-16-r3-live.mjs`: *"reports
+  `states_whose_ROLL_TIER_changes_across_a_save_and_reload: []` and
+  `equip_load_moved_across_the_save: false` on every pinned row."* `[]` and `false` are values a
+  sweep can freeze and serve YD exactly as a number does. Exchange 1's proxy counted "unit-bearing
+  numbers" and would have missed all four instances of this shape; it is the main reason 12.8% is
+  above its ~9%.
+- **Categorical row-values count.** `critic-w1-25.mjs`: *"A1 and A3 must become ERROR or
+  NO_MEASUREMENT rather than OK; A4 must become NO_MEASUREMENT; B-COLLIDE-1 must become MASKED."*
+- **A reference item's bar counts** when the tool's row is graded against it. `canon-census.mjs`:
+  *"27 fully-voiced disputes against a bar of 8 and a band-5 bar of 10."* The 8 is RI-LOR06's, not
+  the tool's — that is precisely the independence YD needs, and it is the best instance in 109.
+- **A contested bar counts, and is flagged.** `ui-metrics.mjs`, in `arbitration_questions[]`:
+  *"RI-UIX06 FD6 specifies deltaE <= 3 with a hard fail above 8; `tools/metrics/ui-metrics.mjs`
+  measures a 0-255 luminance overshoot against 40. Which is the bar?"* This is the one case in 109
+  where a verdict states an external `E` **and says it disagrees with the tool's own**. It is
+  counted, and it is worth more to Piece B than the other thirteen put together.
+- **A generator's output bar does not count.** `build-property.mjs`: *"so the 235 placed locks
+  include >= 40 at tier 1"* — ruled OUT, because ≥40 is checked by a probe over the emitted data,
+  not by a row of `build-property`'s own artifact. If a successor disagrees with one ruling, expect
+  it to be this one.
+
+**Method.** A screen over all 109 collected every prose citation and kept those with a surviving
+numeric token after stripping commit hashes, dates, `path:line` refs, item ids and rule/round
+numbers; 17 tools had no numeric prose context at all and 10 were cited only in command/artifact
+listings, and all 27 were then read anyway to catch literal (`false`, `[]`) expectations that carry
+no digit. The remaining **82 were read by hand, in full context, and ruled individually.** This is a
+census of 109, not a sample of it — a 40-tool sample taken first gave 5/40 with a Wilson interval
+whose upper edge (26.1%) straddled the decision boundary, which is exactly the situation in which an
+estimate is worthless. The census also **corrected the sample**: `critic-road-join-ingame.mjs` was
+ruled NO on the sample's contexts and YES on the full set, because the acceptance clause quoting its
+`E` was not among the first contexts shown.
+
+---
+
+## 2. The number
+
+| tier | count | fraction of 109 |
+|---|---|---|
+| **E-QUOTED** — an external expected value for a named row of the tool | **14** | **12.8%** |
+| of which the bar is **contemporaneous** — the yardstick the verdict graded against when it believed the result | **3** | **2.8%** |
+| of which the bar is **forward** — an acceptance written for the *next* round's fix | 11 | 10.1% |
+| no external `E` anywhere in any wave-1 verdict document | **95** | **87.2%** |
+
+**The 14, committed as a list** (this is the enumeration B1′ in §4 is denominated on):
+
+```
+tools/analysis/ui-forbidden.mjs           tools/lore/canon-census.mjs              [contemporaneous]
+tools/experience/critic-w1-25.mjs         tools/lore/critic-w1-23-r1.mjs           [contemporaneous]
+tools/harness/critic-w1-16-live.mjs       tools/lore/critic-w1-23-r3-reach.mjs
+tools/harness/critic-w1-16-r3-live.mjs    tools/metrics/ui-metrics.mjs             [contemporaneous, contested]
+tools/harness/prg-encumbrance.mjs         tools/world/critic-road-join-ingame.mjs
+tools/journey/input-checks.mjs            tools/world/road-through-building.mjs
+tools/journey/opening-play.mjs            tools/world/w1-04-r3-exterior.mjs
+```
+
+**Where the `E`s live, and it is one field.** Eleven of the fourteen sit in
+`biggest_gap.remedy.acceptance` or `other_gaps[].remedy.acceptance`. That is a bar written for the
+round that comes *next*, not the bar the verdict used. It is still usable by YD — it is external,
+specific and frozen — but it is not the thing exchange 1's reason 2 claimed.
+
+**So reason 2, measured against its own words.** It claimed *"a verdict that cites a tool as
+evidence for a green result **quotes the number it believed**, in prose, in a file the tool did not
+write."* Tools for which a wave-1 verdict quotes the bar it graded against at the time:
+**3 of 109 — 2.8%** — and one of the three (`ui-metrics.mjs`) is a verdict recording that it does
+**not** know which bar applies. Exchange 1 demoted this argument to a hypothesis on a ~9%
+line-adjacency proxy and was right to; measured properly, with a *more* generous attribution window
+and a *broader* notion of value, the claim as written is **2.8%**, not 9%. The proxy was not
+pessimistic. It was optimistic.
+
+**One smaller correction to the population's meaning.** B1's population is *tools cited as evidence
+for a **green** result*. **7 of the 109** are cited only in a context that says the tool is absent,
+broken, unrun or uncited — `gamepad-shim.mjs`, `perf-run.mjs` (*"does not exist"*),
+`critic-w1-23-r5-consume.mjs` (*"cannot run on HEAD"*), `critic-differential.mjs` (*"is a BROKEN
+PROBE and its verdict line is wrong and must be ignored"*), and three more. Small, and it moves the
+denominator the same way everything else here does: down.
+
+---
+
+## 3. The counts re-derived — three of the five disagree
+
+Method for every row: `git archive 9063779`, then `find`/`git ls-tree` and the regex printed beside
+it. Nothing below depends on the working tree.
+
+| set | exchange 1 | re-derived at `9063779` | verdict |
+|---|---|---|---|
+| `tools/**/*.mjs` on disk | **786** | **776** | **DISAGREE.** 786 = 776 project tools **+ 10 vendored third-party files under `tools/node_modules/`** (`playwright/index.mjs`, `fast-uri/benchmark/*.mjs`, `@jsquash/avif/…worker.mjs`). The arithmetic is exact: `git ls-tree -r 9063779 -- tools \| grep -c '\.mjs$'` = 776, `find` = 786, the difference is `node_modules` to the file. None of the ten is a tool of this project. |
+| **P** — declares a perturbation | **244** | **198** (case-sensitive) / **202** (case-insensitive) | **DISAGREE, and not reproducible from the published rule.** The rule as printed is *"mentions `self-test`/`__break`/`teardown`/`deletefix`"*; that yields 198. Nine regex variants were tried and none lands on 244 (they span 202–262; adding the prose form `delete-the-fix` gives 254, adding `selfTest` too gives 261). I report mine with its rule rather than guess at one that reproduces theirs. |
+| distinct `tools/**.mjs` paths cited anywhere under `wave1/` | **471**, 12 not on disk → **459** | **471**, 12 not on disk → **459** | **AGREE, exactly** — including the 12. |
+| the same over verdict ***documents*** only | — | **462** distinct, 12 missing → **450** | **NEW.** Exchange 1's 459 counts the `artifacts/` subtree, which contains 112 copied tool sources and 443 tool-written reports. The correction is small (9 paths) but the definition matters: a tool named inside its own copied source is not a tool a verdict cited. |
+| **P_cited ∩ P** — the operative population | **133** | **112** over the whole subtree / **109** over verdict documents | **DISAGREE.** The intersection is the product of the two errors above; 133 inherits P's inflation. **109** is the number this measurement is denominated on. |
+| cited with **no** declared perturbation | **326** = 71% | **347 of 459 = 75.6%** (subtree) / **341 of 450 = 75.8%** (documents) | **DISAGREE — and the disagreement strengthens exchange 1's own conclusion.** The share of the cited set that is OPAQUE-by-construction before a tool is executed is *worse* than reported, not better. |
+
+**The shape of the error is the same one exchange 1 caught in its predecessor, one level down.** Two
+readers accepted "smaller, enumerable from the verdicts" without counting; exchange 1 counted, and
+then took `find | wc -l` for a population of *this project's tools* without asking what `find` was
+walking. `tools/node_modules/` has been in the tree the whole time. The correction is 10 files out
+of 786 and it changes nothing important — but the same habit, applied to P, produced a 23% inflation
+that carried straight into the operative denominator, and **that** changes the piece.
+
+---
+
+## 4. Verdict on gradeability — B1 as written is not gradeable, and B1′ over 14 is
+
+**The condition fires.** 12.8% < ~25%, so exchange 1's revised reversibility condition applies as
+written: *"if it falls under ~25%, B1 is not gradeable and the piece reduces to B2 + B1b reported."*
+
+**But the reason is sharper than the fraction, and it should replace it in the brief.** B1's
+acceptance is *"every member of P classified into {INDEPENDENT, COUPLED, INERT, OPAQUE, ERROR} —
+**100%** of a committed enumeration."* Every member can always be assigned one of five classes, and
+**OPAQUE is one of them**. On this population OPAQUE is the modal outcome by construction: 95 of 109
+have no external `E`, and for any of those whose own artifact also publishes no expected side, the
+sweep has no second source and must return OPAQUE. **B1 would score 100% while establishing
+nothing** — an acceptance that cannot go red, inside the piece written to sweep for acceptances that
+cannot go red. That is the finding. The fraction is only how we got to it.
+
+### S-PLAN-HUD-B3 — ruled, reversible: re-denominate rather than delete
+
+Exchange 1's condition says "reduce to B2 + B1b reported". I execute it, and rule that the reduction
+should not throw away the graded half, because a graded population now exists and it is enumerated
+above:
+
+> **B1′ (graded).** Over `P_E` = the **14** tools listed in §2, fire each tool's declared
+> perturbation and classify **each graded row** INDEPENDENT / COUPLED / INERT / ERROR by comparing
+> the tool's own expected side, before and after, **against the verdict's frozen quoted value**,
+> printed per row beside it. **Acceptance: 100% of 14 classified, with both `E`s printed per row;
+> `OPAQUE` is not an available outcome**, because an external `E` exists by construction for every
+> member. Publish the COUPLED count over the denominator **14**, never as a percentage.
+>
+> **14 clears exchange 1's own floor** of *"~8 members, below which the graded population is too
+> small to carry B1."*
+>
+> **Overturned by:** the builder finding that **the tool's own artifact publishes no readable
+> expected side for 7 or more of the 14** — in which case B1′'s rows collapse to a one-sided
+> comparison, `OPAQUE` returns as a legitimate outcome, and the piece reduces to B2 + B1b exactly as
+> exchange 1 said. That is the next measurement and it needs no browser either (§5).
+>
+> **B1b (reported, never graded)** keeps the wide denominator: **109** cited-and-perturbable, of
+> which **95 (87.2%) have no external `E`** — published as that fraction with that denominator
+> (§7 item 5, upheld).
+>
+> **B2 is unchanged and is still the acceptance**, with BLOCKING-4's correction: the four historical
+> positives must each be named through the member of `P_E` (or `P`) the sweep would meet them in, or
+> moved into a separately-denominated shape-recognition check.
+
+**Why this is worth buying rather than dropping.** `ui-metrics.mjs` alone justifies the graded half:
+a verdict states an external bar (ΔE ≤ 3, hard fail above 8), records that the tool measures against
+**40**, and files it as an open arbitration question. That is a coupled-yardstick candidate already
+sitting in the corpus with both sides written down by different authors — the single cheapest true
+positive Piece B could possibly have, and it is inside the 14.
+
+---
+
+## 5. What I could not do
+
+- **I did not measure the other half of gradeability**, and it is the larger half: whether each
+  tool's **own artifact** publishes a readable expected side. YD reads `E` from the tool; the
+  verdict-quoted `E` measured here is the *second* source. If a tool publishes its own `E`, YD works
+  on it whether or not any verdict quotes a bar — so the true gradeable population is a **superset**
+  of the 14, and 14 is a floor, not a ceiling. That measurement needs no browser and no build agent
+  either, it is the stated overturn condition of S-PLAN-HUD-B3, and it should be the next text-only
+  dispatch. **I state this plainly rather than letting 12.8% read as the whole answer, because it
+  is not.**
+- **I ran no tool and opened no tool's source.** Every ruling is from verdict prose. A tool whose
+  artifact obviously publishes an `E` scores NO here if no verdict quotes one.
+- **The 82 hand-rulings are judgement**, made against the rule in §1 and reproducible only to the
+  extent that rule is followed. The six borderlines most likely to move are named in §1;
+  `build-property.mjs` is the one I would expect a successor to overturn. A second reader applying
+  §1 should land within ±2 of 14, and if they land outside that the rule is wrong, not the count.
+- **Attribution is the enclosing block.** A bar stated three paragraphs from its tool path is missed.
+  This is exchange 1's own stated weakness, reduced from a line to a paragraph, not removed.
+- **I could not reconstruct exchange 1's 244** from any of nine regex variants (202–262). I state
+  198 with its rule rather than fitting a rule to a number.
+- **I did not verify the 14 tools run today**, or that their declared perturbations still fire.
+- **I did not open the W1-04, W1-25 or compliance-report records** — BLOCKING-4 is untouched by this
+  measurement and remains as exchange 1 left it.
+
+---
+
+## VERDICT ON THE DISPATCH CONDITION: **CLOSED.**
+
+The quoted-`E` fraction over the operative population is **14 of 109 = 12.8%** (**3 of 109 = 2.8%**
+for the bar the verdict actually graded against). The population is **109**, not 133; the wide
+tool count is **776**, not 786; **P** is **198**, not 244; and the OPAQUE-by-construction share of
+the cited set is **75.8%**, not 71%. **B1 as written is not gradeable** — not because 12.8% is
+small, but because its acceptance admits OPAQUE and therefore cannot go red. **B1′ over the 14 named
+tools is gradeable**, and is ruled in above as S-PLAN-HUD-B3, reversible on one further text-only
+measurement.
+
+**Piece B is dispatchable — to Opus** — once exchange 2's edit folds BLOCKING-1..6 and this section's
+B1′/B1b denominators into the plan text. Opus and not Sonnet on the project's stated axis: B1′'s
+acceptance is now decidable without judgement (this section made that judgement and wrote it down),
+but **BLOCKING-4 is not** — deciding how the four historical positives enter the swept population,
+and whether a missed one is a recall failure or a scope error, is discretion with no written rule,
+and the piece's own text says *"B2 is the acceptance, not B1's headline."* The discretion moved; it
+did not leave.

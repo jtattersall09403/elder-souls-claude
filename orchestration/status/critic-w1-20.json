@@ -5,7 +5,7 @@
   "round": 1,
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read round report + RI-QST01; build wrap-break instrument for ui/hud.js; sweep tree for self-referential expected values; consumption on faction models",
+  "next_step": "JOB1 DONE. Now: JOB2 sweep tree for self-referential expected values; JOB3 faction texture vs Morrowind; JOB4 consumption outside quest gating.",
   "files_touched": [],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-20-r1.md",
@@ -21,6 +21,10 @@
     "HEADLINE REPRODUCES at f862df5: builder's probe re-run cold gives 8 ladders, 7 joinable end to end, 7 refusals spoken and whole. Exit 0.",
     "deep_kin is NOT an inert duplicate id: faction-gates.json gives it its own 8-rank ladder with DIFFERENT rank names (Stranger/Guest/Known/Kin-Named/Deep Kin/Elder Kin...) from the_xul_aneekh (Unnamed/Taken/Bound/Debtor/Keeper/Gem-Cutter...), and the shipped quest book pays deep_kin 226 positive reputation across 9 quests - twice its own rank-7 requirement of 112. To be verified in the running world.",
     "RI-QST01 mean-quests-per-rank over 8 ranks: assize/wet_ledger/xul_aneekh 2.25 (pass); rootkeepers 0.38, dockhands 0.50, drowned_court 0.25, ixtu_vakh 0.25, deep_kin 0.13 (hard fail). Four lines have 6-7 EMPTY rank bands.",
-    "the_dockhands has 4 category=faction quests and deceit==null on all of them - RI-QST01 hard fail 'any faction line where every quest is honest'."
+    "the_dockhands has 4 category=faction quests and deceit==null on all of them - RI-QST01 hard fail 'any faction line where every quest is honest'.",
+    "JOB1 VERIFIED at fb2cb09. Baseline: 7/7 refusals fit (widest 345-372px vs 400px panel), and an INDEPENDENT yardstick (render/text-register.js's own recorded advance width `e.w` per draw call, which the renderer measures, not hud.js) agrees with hud.js meta.widest_px to within 1px on all 7. Break maxW=99999*s -> shipped fits goes FALSE on 7/7, overflow 97.7-423.4px, my independent yardstick agrees (823.4 vs 823 on wet_ledger). THE WRAP REPAIR HOLDS AND THE INSTRUMENT CAN FAIL.",
+    "JOB1 RESIDUAL DEFECT, SAME SHAPE, STILL LIVE: ui/system.js line ~1167 `fits: (m.widest_px || 0) <= t.rect[2] + 0.5`. The COMPARISON moved out of hud.js but the MEASUREMENT did not. Break 2 (maxW=99999 AND drop widest_px from hud.js's meta - exactly what a refactor of that meta block does) makes fits = (0 <= 400) = TRUE on all 7 lines while all 7 run 203-423px off the paper. overflow_px also fail-opens to 0 via Math.max(0, 0-400).",
+    "JOB1 KILLER: the round's OWN probe tools/quests/faction-joining-probe.mjs EXITS 0 under break 2 and prints the identical headline. summary is BYTE-IDENTICAL between clean and broken: refusals_spoken_and_drawn_on_screen=7, problems=[]. Only row_count 3->1, wrap_budget 376->99999 and panel_h 80->48 differ, and the probe asserts on none of them. The headline 'refusals spoken and whole on the glass = 7' is reproducible on a build where none of them is.",
+    "DISK: / was at 100% (131M free) and git worktree add failed outright. Reclaimed 2.3G by deleting three scratch trees >2h stale (headboot 03:17, head-tree 10:13, teardown 10:06). Now 94%. NOTE scratchpad/wt-hud is a LIVE registered git worktree at a73eee2 - that is W1-HUD-TOAST working on hud.js; I did not touch it or the live tree's hud.js."
   ]
 }

@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-08T12:19:44Z
+Generated: 2026-08-08T12:29:02Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -30,7 +30,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 - Subsystems with at least one judging reference item: **324**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
-- Front-matter problems: 0 error(s), 42 warning(s)
+- Front-matter problems: 0 error(s), 41 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -956,7 +956,6 @@ _None._
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/sag-fit.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/session-beats.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/shape-check.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/85-platform/RI-PLT01-frame-budget.md` | names phantom tool `tools/platform/timefidelity.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 
 ---
 

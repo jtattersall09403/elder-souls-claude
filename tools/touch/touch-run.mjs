@@ -152,9 +152,13 @@ function makePatchedTree() {
   fs.cpSync(path.join(REPO_ROOT, 'game'), path.join(dst, 'game'), { recursive: true });
   const p = path.join(dst, 'game', 'src', 'input', 'hold-gate.js');
   const src = fs.readFileSync(p, 'utf8');
-  const patched = src.replace('export const DEFAULT_HOLD_GATE_FRAMES = 12;', 'export const DEFAULT_HOLD_GATE_FRAMES = 12;')
-    .replace('return framesHeld(frame, pressFrame) >= holdGateFrames(gate);',
-      'return framesHeld(frame, pressFrame) >= 1;   // SABOTAGE: tools/touch/touch-run.mjs --serve-patched');
+  // S39 moved this line's arguments from (frame, pressFrame) to (tDownMs, tNowMs). The sabotage
+  // string moved with it — a teardown whose needle no longer matches its haystack is an INERT
+  // CONTROL (RULES 6), which is exactly the failure shape that made both arms look identical in
+  // W1-04. The `throw` below is what stops that being silent, and it is the reason this string is
+  // asserted rather than best-effort replaced.
+  const patched = src.replace('return framesHeld(tDownMs, tNowMs) >= holdGateFrames(gate);',
+    'return framesHeld(tDownMs, tNowMs) >= 1;   // SABOTAGE: tools/touch/touch-run.mjs --serve-patched');
   if (patched === src) throw new Error('--serve-patched: the sabotage did NOT apply — hold-gate.js does not contain the line it expects. The teardown is inert and every number below would be void.');
   fs.writeFileSync(p, patched);
   return dst;

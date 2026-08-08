@@ -19,7 +19,7 @@ import { GamepadRouter } from './gamepad.js';
 import { TouchInput } from './touch.js';
 import { Viewport } from './viewport.js';
 import { Rebinder, labelOf } from './rebind.js';
-import { inputNow, holdGateFrames, shouldPromote, framesHeld, STEP_MS } from './hold-gate.js';
+import { inputNow, holdGateFrames, shouldPromote, promotedAtRelease, framesHeld, framesHeldWhileDown, STEP_MS } from './hold-gate.js';
 
 /** RI-JRN03 §B: two-binding hold gates, `KeyG` for two_hand and `Mouse1` held for lock_on. */
 const HOLD_SUFFIX = /^(.*)Hold(\d+)$/;
@@ -491,7 +491,7 @@ export class RealInput {
       // tap — the two-handed stance simply never happened, however long the key was down.
       const tUp = this.inputNow(event);
       h.framesHeld = framesHeld(h.tDown, tUp);     // f@60, for the harness and the tools
-      const held = h.fired || shouldPromote(h.tDown, tUp, h.gate);
+      const held = h.fired || promotedAtRelease(h.tDown, tUp, h.gate);
       if (held) {
         if (!h.fired) this.pipe.edgeDown(h.action);
         this.pipe.edgeUp(h.action);
@@ -511,7 +511,7 @@ export class RealInput {
       const h = this._holds[control];
       if (!h.fired && shouldPromote(h.tDown, nowMs, h.gate)) {
         h.fired = true;
-        h.framesHeld = framesHeld(h.tDown, nowMs);   // f@60
+        h.framesHeld = framesHeldWhileDown(h.tDown, nowMs);   // f@60, still down
         this.pipe.edgeDown(h.action);
       }
     }

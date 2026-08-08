@@ -2,12 +2,31 @@
   "task_id": "PLAN-COST-EXPERIMENTS",
   "role": "plan",
   "piece": "COST-EXPERIMENTS",
-  "state": "running",
+  "state": "complete",
   "started_at": "2026-08-08",
-  "summary": "Plan agent for COST-EXPERIMENTS: turn external cost claims into runnable, attributable experiments. Plan only, no build.",
-  "next_step": "Read COST.md, research report, PLAN-LOOP.md, RULES.md; survey instruments; write orchestration/plans/COST-EXPERIMENTS.md",
+  "measured_at_commit": "db449a5",
+  "summary": "Plan for COST-EXPERIMENTS: five experiments (E1 C1-retrospective, E2 context profile, E3 model routing, E4 pruning, E5 criteria injection), each with acceptance number+predicate+units, a null control, G1/G2/G3 checks, a named one-step reversal with tripwire, the instrument reused by path, and a model recommendation on the decidability axis.",
+  "next_step": "Plan critic (BLOCKING/CARRIED, bounded at two exchanges, no browser). Do not build.",
   "files_claimed": ["orchestration/plans/COST-EXPERIMENTS.md", "orchestration/status/PLAN-COST-EXPERIMENTS.json"],
-  "files_touched": ["orchestration/status/PLAN-COST-EXPERIMENTS.json"],
-  "blockers": [],
-  "notes": ["Depends on COST-INSTRUMENT (tools/cost.mjs -> docs/data/cost-ledger.json); nothing here is measurable before it lands."]
+  "files_touched": ["orchestration/plans/COST-EXPERIMENTS.md", "orchestration/status/PLAN-COST-EXPERIMENTS.json"],
+  "redundant_with": [],
+  "blockers": [
+    "COST-INSTRUMENT must land tools/cost.mjs -> docs/data/cost-ledger.json before E3/E4/E5 can take a before-number. E1/E2 need only the instrument's transcript parser.",
+    "G1 baseline unresolved: mean concurrent agents measured at 4.40 over the 62.1h span (peak 16) against a floor of 12. Flagged for COST-INSTRUMENT to rule; every G1 predicate in the plan is conditional on it."
+  ],
+  "key_findings": [
+    "COST.md section 2 measured the WRONG FILE. The *.jsonl glob matches only the orchestrator's main thread (isSidechain=false throughout, zero Sonnet). Fleet transcripts are in <session>/subagents/ - 403 agent-<id>.jsonl files with agent-<id>.meta.json sidecars whose 'description' field is the dispatch headline and the attribution key the programme needs.",
+    "Corrected baseline at real prices (Opus5 $5/$25, Sonnet5 $2/$10 intro to 2026-08-31, cache read 0.1x, write 1.25x/2x): spend to date $10,059.08 over 62.1h => C/H $161.98/hour. The 25% bar is C/H <= $40.50/hour.",
+    "cache_read is 77.7% of all spend ($7,817). cache_write 5m 17.5%, output 3.1%, cache_write 1h 1.5%, uncached input 0.14%. Cache HIT RATIO is already 98.1% - the lever is not the ratio, it is context_size x request_count.",
+    "Cost is roughly QUADRATIC in tool calls: mean cost per agent rises 1.02M -> 13.57M cost-equivalents from the 0-99 to the 400-499 request bin, because each extra call enlarges the context every later call re-reads. Not in COST.md section 4 nor the research ranking; likely the largest structural lever.",
+    "RULING C1 MEASURES AS INERT. First-request cache_write is 1.0% of all cache_write = 0.20% of spend (ceiling). Tight bursts warm_fraction 0.958 vs staggered 0.964 (+0.6pp, bar was 10pp). 376/401 agents already read cache on their first request. Expected verdict: revert per C1's own tripwire - but the builder must reproduce independently, not confirm.",
+    "COST.md section 2's 'essentially all Opus, 3230 vs 29' is main-thread-only. Fleet is 78,537 Opus requests / 366 agents vs 5,780 Sonnet / 35 agents - Sonnet is already 7% of requests. Routing's ceiling is the 2.5x price ratio (1.67x after 2026-08-31), so the 25% bar CANNOT be reached by routing alone.",
+    "COST.md section 6.1's example prices are 3x the real rate (input 15 vs 5, output 75 vs 25). Ratios right, absolutes look Opus-4.1-era. Instrument must not copy them.",
+    "Ledger schema omits the cache-write TTL split. usage.cache_creation carries ephemeral_5m_input_tokens and ephemeral_1h_input_tokens separately, priced 1.25x and 2x; 15.5 Mtok of Opus writes were 1-hour. Treating cache_creation_input_tokens as one number misprices writes by up to 60%.",
+    "COST.md section 2's '130-420k tokens per subagent' is low: real per-agent median is 561k excluding cache_read, 29.1M including it."
+  ],
+  "notes": [
+    "Prototype scripts in the session scratchpad, suffixed with the task id: survey-, burst-, growth-, dollars-PLAN-COST-EXPERIMENTS.mjs. Scratchpad is session-scoped; every predicate the plan depends on is stated in closed form in the plan itself.",
+    "No browser used. No orchestration behaviour changed. Nothing built."
+  ]
 }

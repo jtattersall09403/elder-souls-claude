@@ -53,9 +53,20 @@ export function wrap(text, face, size, maxW) {
   return out;
 }
 
-export function ellipsise(text, face, size, maxW) {
+/**
+ * Shrink `text` to fit `maxW`, adding a trailing ellipsis.
+ *
+ * `opts.force` (default false, additive — every existing caller is unaffected) always returns a
+ * string ending in an ellipsis, even when `text` already fits. W1-HUD-TOAST-A needs this for the
+ * toast's 3-row ceiling: the third row already fits `maxW` (it came out of `wrap()`), but the
+ * ceiling still has to MARK it truncated by appending `…`, and appending a character to a
+ * string that exactly fits can itself push it over `maxW` — the same shrink loop this function
+ * already runs for the "doesn't fit at all" case, so it is reused rather than re-written inline.
+ */
+export function ellipsise(text, face, size, maxW, opts) {
+  const o = opts || {};
   const t = normalise(text);
-  if (measure(t, face, size) <= maxW) return t;
+  if (!o.force && measure(t, face, size) <= maxW) return t;
   let s = t;
   while (s.length > 2 && measure(s + '…', face, size) > maxW) s = s.slice(0, -1);
   return s + '…';

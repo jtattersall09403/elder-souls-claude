@@ -251,8 +251,10 @@ const svgEl = (tag, attrs, inner = '') =>
   `<${tag} ${Object.entries(attrs).map(([k, v]) => `${k}="${esc(v)}"`).join(' ')}${inner ? `>${inner}</${tag}>` : '/>'}`;
 
 /** One small-multiple line panel: every measurement as a dot, reference levels marked. */
-function linePanel({ title, unit, points, colour, refs = [], W = 900, H = 190, fmt = n1 }) {
-  const L = 62, R = 116, T = 26, B = 26;
+function linePanel({ title, unit, pointUnit = '', points, colour, refs = [], W = 960, H = 190, fmt = n1 }) {
+  // R is the gutter the reference labels live in. It was 116 and "target $20.13 (25%)" ran off the
+  // right edge of the SVG — a target the reader cannot finish reading is not a marked target.
+  const L = 62, R = 168, T = 26, B = 26;
   const pts = points.filter(p => p.y !== null);
   if (!pts.length) return `<div class="cost-panel"><h3>${esc(title)}</h3><div class="cost-empty">no measurements in the ledger yet</div></div>`;
   const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
@@ -288,7 +290,9 @@ function linePanel({ title, unit, points, colour, refs = [], W = 900, H = 190, f
   }
   // The newest reading, labelled directly, because it is the one the reader came for.
   const last = pts[pts.length - 1];
-  s += svgEl('text', { x: Math.min(sx(last.x) + 10, W - R - 4), y: sy(last.y) - 10, fill: colour, 'font-size': 12, 'font-weight': 600 }, esc(fmt(last.y) + unit));
+  // The dot label carries the per-unit only ("$42.10/h"), not the axis unit ("$/h"), or it reads
+  // "$42.10$/h".
+  s += svgEl('text', { x: Math.min(sx(last.x) + 10, W - R - 4), y: sy(last.y) - 10, fill: colour, 'font-size': 12, 'font-weight': 600 }, esc(fmt(last.y) + pointUnit));
   s += svgEl('text', { x: L, y: H - 6, fill: C.dim, 'font-size': 10 }, esc(when(new Date(t0).toISOString()) || ''));
   s += svgEl('text', { x: W - R, y: H - 6, fill: C.dim, 'font-size': 10, 'text-anchor': 'end' }, esc(when(new Date(t1).toISOString()) || ''));
 
@@ -431,21 +435,21 @@ export function renderCost(load) {
   }));
   const charts = ledger.series.length ? `
 ${linePanel({
-    title: 'C/H &mdash; model spend per hour of fleet runtime', unit: '$/h', colour: C.ch, points: mk('ch'), fmt: usdShort,
+    title: 'C/H — model spend per hour of fleet runtime', unit: '$/h', pointUnit: '/h', colour: C.ch, points: mk('ch'), fmt: usdShort,
     refs: [
       { value: ledger.baseline.ch, colour: C.baseline, label: `baseline ${usdShort(ledger.baseline.ch)}`, dash: '2 4' },
-      { value: ledger.target.ch, colour: C.target, label: `target ${usdShort(ledger.target.ch)} (25%)` },
+      { value: ledger.target.ch, colour: C.target, label: `target ${usdShort(ledger.target.ch)} · ${ledger.target.fraction === null ? '25' : n1(ledger.target.fraction * 100)}% bar` },
     ],
   })}
 ${linePanel({
-    title: 'Cost per agent-hour &mdash; the diagnostic that proves efficiency, not idling', unit: '$/agent-h', colour: C.pah, points: mk('perAgentHour'), fmt: usdShort,
+    title: 'Cost per agent-hour — the diagnostic that proves efficiency, not idling', unit: '$/agent-h', pointUnit: '/agent-h', colour: C.pah, points: mk('perAgentHour'), fmt: usdShort,
     refs: [
       { value: ledger.baseline.perAgentHour, colour: C.baseline, label: `baseline ${usdShort(ledger.baseline.perAgentHour)}`, dash: '2 4' },
       { value: ledger.target.perAgentHour, colour: C.target, label: `target ${usdShort(ledger.target.perAgentHour)}` },
     ],
   })}
 ${linePanel({
-    title: 'G1 &mdash; mean concurrent agents, on the same clock as the cost', unit: 'agents', colour: C.agents, points: mk('agents'),
+    title: 'G1 — mean concurrent agents, on the same clock as the cost', unit: 'agents', pointUnit: ' agents', colour: C.agents, points: mk('agents'),
     refs: [{ value: ledger.guards.g1?.floor ?? 12, colour: C.warn, label: `floor ${n1(ledger.guards.g1?.floor ?? 12)}` }],
   })}
 <details class="cost-details"><summary>Every measurement, as a table</summary>
@@ -459,7 +463,7 @@ ${ledger.series.slice().reverse().map(p => `<tr><td>${esc(when(p.t) || p.t)}</td
     note: 'Routing is the largest single lever: 3,230 Opus requests against 29 Sonnet when the programme opened.',
     rows: ledger.byModel.map(m => ({
       label: m.model, value: m.usd, display: usd(m.usd),
-      sub: `${m.requests === null ? DASH : m.requests.toLocaleString('en-US')} requests${m.tokens ? ` &middot; in ${tok(m.tokens.input)} / write ${tok(m.tokens.cache_write)} / read ${tok(m.tokens.cache_read)} / out ${tok(m.tokens.output)}` : ''}`,
+      sub: `${m.requests === null ? DASH : m.requests.toLocaleString('en-US')} requests${m.tokens ? ` · in ${tok(m.tokens.input)} / write ${tok(m.tokens.cache_write)} / read ${tok(m.tokens.cache_read)} / out ${tok(m.tokens.output)}` : ''}`,
     })),
   });
   const classBars = barPanel({
@@ -475,7 +479,7 @@ ${ledger.series.slice().reverse().map(p => `<tr><td>${esc(when(p.t) || p.t)}</td
   const stateCls = s => s === 'kept' ? 'ok' : s === 'reversed' ? 'bad' : s === 'trial' ? 'warn' : 'dimtext';
   const changes = `<div class="cost-panel"><h3>Every change, kept or reversed <span class="cost-n">${ledger.changes.length}</span></h3>
 <div class="cost-note">A ledger showing only what worked is the same failure as a critic who finds no gaps. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
-<div class="cost-scroll"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
+<div class="cost-scroll cost-wide"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
 ${ledger.changes.length ? ledger.changes.map(c => `<tr>
   <td><b>${esc(c.id)}</b> ${esc(c.title)}<div class="rem">${esc(when(c.landed) || '')}${c.commit ? ` &middot; <code>${esc(c.commit.slice(0, 7))}</code>` : ''}</div></td>
   <td class="${stateCls(c.state)}">${esc(c.state)}</td>
@@ -496,7 +500,28 @@ ${ledger.changes.length ? ledger.changes.map(c => `<tr>
   return `<section class="cost">${head}${hero}${guards}${problemBlock}${charts}<div class="cost-two">${modelBars}${classBars}</div>${changes}${foot}</section>`;
 }
 
+/**
+ * One line for the site header. The full section lives behind a tab on docs/index.html, and the
+ * owner's requirement is that they know what this costs "at any point" — one click away is not
+ * that. Same loader, same fields, no second implementation: this is a shorter view of the same
+ * data, and it carries its own freshness word so a strip can never read as current when it is not.
+ */
+export function costStripHtml(opts = {}) {
+  try {
+    const load = loadLedger(opts);
+    const l = load.ledger;
+    if (!l) return `<div class="cost-strip"><a href="#cost">Cost</a> <span class="cost-strip-dim">&mdash; ${load.state === 'malformed' ? 'ledger unreadable' : 'instrument not landed yet'}, so no figure is published</span></div>`;
+    const word = load.state === 'failed' ? '<b class="bad">REFRESH FAILED</b>' : load.state === 'stale' ? '<b class="warn">STALE</b>' : '<span class="ok">&#10003;</span>';
+    return `<div class="cost-strip">${word} <a href="#cost">${l.window.complete ? 'Spend to date' : 'Spend in window'}</a>
+      <b>${usd(l.headline.spend)}</b> <span class="cost-strip-dim">&middot; burn ${usdShort(l.headline.burn)}/h &middot; C/H ${usdShort(l.headline.ch)}/h${l.headline.chPct === null ? '' : ` (${pct(l.headline.chPct)} of baseline, bar 25%)`} &middot; agents ${n1(l.guards.g1?.agents ?? null)} &middot; read ${esc(when(l.generatedAt) || 'at an unknown time')}, ${esc(ageText(load.ageMinutes))}</span></div>`;
+  } catch { return ''; }
+}
+
 export const COST_CSS = `
+.cost-strip{font-size:11px;color:var(--dim);margin-top:8px;line-height:1.6}
+.cost-strip a{color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold)}
+.cost-strip b{color:var(--ink)}
+.cost-strip-dim{color:var(--dim)}
 .cost{margin:0 0 34px}
 .cost-banner{border:1px solid var(--line);border-radius:6px;padding:12px 15px;font-size:12px;line-height:1.7;margin-bottom:14px}
 .cost-banner-ok{border-color:#3f5230;background:linear-gradient(180deg,#161d12,#1b1813);color:var(--dim)}
@@ -527,6 +552,7 @@ export const COST_CSS = `
 .cost-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .cost-scroll svg{display:block;width:100%;min-width:620px;height:auto}
 .cost-scroll table{min-width:620px}
+.cost-wide table{min-width:820px}
 .cost-dot{cursor:crosshair}
 .cost-empty{color:var(--dim);font-style:italic;padding:12px 0;font-size:12px}
 .cost-bars{display:grid;gap:9px}
@@ -578,8 +604,11 @@ async function runSelfTest() {
     const dir = sandbox(files);
     const load = loadLedger({ root: dir, now: nowMs });
     const html = renderCost(load);
+    // The header strip is a second surface on the same data, so it gets the same arms: a strip
+    // that stayed confident while the section admitted it did not know would be the worst of both.
+    const strip = costStripHtml({ root: dir, now: nowMs });
     rmSync(dir, { recursive: true, force: true });
-    arms.push({ name, load, html });
+    arms.push({ name, load, html, strip });
     return arms[arms.length - 1];
   };
 
@@ -612,8 +641,10 @@ async function runSelfTest() {
         'cache write', 'cache read', 'target $20.13', 'baseline $80.50', 'floor 12', '19 measurements',
         'separate critic 41', 'executed on a copy', 'not yet executed'],
       hasNot: ['STALE', 'FAILED', 'has not landed yet', 'Spend in this window'],
+      stripHas: ['Spend to date', '$1,234.56', 'burn $42.10/h'], stripHasNot: ['STALE', 'REFRESH FAILED'],
     },
-    B: { state: 'missing', has: ['has not landed yet', 'docs/data/cost-ledger.json'], hasNot: ['$1,234.56', '42.10', 'Spend to date'] },
+    B: { state: 'missing', has: ['has not landed yet', 'docs/data/cost-ledger.json'], hasNot: ['$1,234.56', '42.10', 'Spend to date'],
+      stripHas: ['instrument not landed yet'], stripHasNot: ['1,234.56', 'Spend to date'] },
     C: { state: 'malformed', has: ['could not be read', 'no cost figure is shown at all'], hasNot: ['$1,234.56', 'Spend to date', 'CH-02'] },
     D: {
       state: 'fresh',
@@ -624,11 +655,13 @@ async function runSelfTest() {
         'headline.ch_usd_per_hour: expected a number'],
       hasNot: ['$1,234.56', '1,234.56', '$-3', 'Spend to date'],
     },
-    E: { state: 'stale', has: ['STALE', '2026-08-08 11:02Z', '3.0 h ago', '$1,234.56'], hasNot: ['FAILED'] },
+    E: { state: 'stale', has: ['STALE', '2026-08-08 11:02Z', '3.0 h ago', '$1,234.56'], hasNot: ['FAILED'],
+      stripHas: ['STALE', '3.0 h ago'], stripHasNot: ['REFRESH FAILED'] },
     F: {
       state: 'failed',
       has: ['FAILED', 'transcript unreadable', 'last good reading', '2026-08-08 11:02Z', 'They are not current'],
       hasNot: ['Reading taken <b>2026-08-08 11:02Z</b> (18 min ago)'],
+      stripHas: ['REFRESH FAILED'],
     },
   };
   const key = a => a.name[0];
@@ -637,6 +670,8 @@ async function runSelfTest() {
     if (exp.state && arm.load.state !== exp.state) fails.push(`state is "${arm.load.state}", expected "${exp.state}"`);
     for (const s of exp.has || []) if (!arm.html.includes(s)) fails.push(`missing: ${JSON.stringify(s)}`);
     for (const s of exp.hasNot || []) if (arm.html.includes(s)) fails.push(`present but must not be: ${JSON.stringify(s)}`);
+    for (const s of exp.stripHas || []) if (!arm.strip.includes(s)) fails.push(`strip missing: ${JSON.stringify(s)}`);
+    for (const s of exp.stripHasNot || []) if (arm.strip.includes(s)) fails.push(`strip must not say: ${JSON.stringify(s)}`);
     return fails;
   };
 
@@ -675,8 +710,13 @@ if (isMain) {
       const { tmpdir } = await import('node:os');
       const dir = mkdtempSync(join(tmpdir(), 'cost-preview-COST-DASHBOARD-'));
       mkdirSync(join(dir, 'docs', 'data'), { recursive: true });
-      wf(join(dir, LEDGER_PATH), readFileSync(join(ROOT, 'tools', 'cost-fixture.json'), 'utf8'));
-      load = loadLedger({ root: dir });
+      const fx = readFileSync(join(ROOT, 'tools', 'cost-fixture.json'), 'utf8');
+      wf(join(dir, LEDGER_PATH), fx);
+      // Preview the FRESH state by pretending it is five minutes after the fixture was written.
+      // The fixture's timestamps are fixed so the self-test can assert on them; left alone, every
+      // preview would show the stale banner and never exercise the layout the owner will see.
+      const t = Date.parse(JSON.parse(fx).generated_at);
+      load = loadLedger({ root: dir, now: (Number.isFinite(t) ? t : Date.now()) + 5 * 60000 });
     } else load = loadLedger();
     const page = `<!doctype html><html><head><meta charset="utf-8"><title>cost preview</title><style>
 :root{--bg:#12100d;--panel:#1b1813;--ink:#e8ddc8;--dim:#9a8f79;--line:#332d24;--gold:#c8a253;--green:#7d9a5a;--red:#b4553f}
@@ -685,7 +725,9 @@ h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)
 table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;color:var(--dim);font-weight:500;padding:6px 10px;border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase}
 td{padding:6px 10px;border-bottom:1px solid #241f19;vertical-align:top}code{color:#5f7f96;font-size:11px}
 .ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--gold)}.dimtext,.rem{color:var(--dim)}.rem{font-size:11px}.gapq{color:var(--ink)}
-.empty{color:var(--dim);font-style:italic}${COST_CSS}</style></head><body>${renderCost(load)}</body></html>`;
+.empty{color:var(--dim);font-style:italic}
+.fixture-stamp{border:2px solid var(--red);background:#2a1512;color:#f0c0b0;border-radius:6px;padding:12px 16px;margin-bottom:16px;font-size:13px;line-height:1.6}
+${COST_CSS}</style></head><body>${useFixture ? `<div class="fixture-stamp"><b>FIXTURE — every number below is invented.</b> This is <code>tools/cost-fixture.json</code>, the worked example of the ledger contract, rendered to prove the layout. It is not a measurement of this project and no figure here is real spend. The live page renders <code>docs/data/cost-ledger.json</code>, written by the instrument.</div>` : ''}${renderCost(load)}</body></html>`;
     const out = join((await import('node:os')).tmpdir(), 'cost-preview-COST-DASHBOARD.html');
     writeFileSync(out, page);
     console.log(`cost-report: state=${load.state}, ${load.problems.length} ledger problem(s) -> ${out}`);

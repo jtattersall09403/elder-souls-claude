@@ -106,7 +106,55 @@
       "Nothing here licenses Haiku. Piece B's static half looks like the one mechanical trial task and is NOT, because its output is a population definition a later ruling rests on."
     ]
   },
-  "next_step": "Fold the SIX blocking resolutions into the plan text — all six are text edits with rulings supplied. Then dispatch W1-HUD-TOAST-A (Sonnet) with the seven surviving CARRIED risks declared. DO NOT dispatch W1-INSTRUMENT-COUPLING yet: its first measurement — the quoted-E fraction over the 133 cited-and-perturbable tools — decides whether B1 is gradeable at all, needs no browser and no build agent, and should be taken before the brief is written.",
+  "dispatch_condition_for_piece_B": {
+    "state": "CLOSED",
+    "closed_by": "measure-quoted-e-w1-hud-toast-b",
+    "at_commit": "9063779 (pinned via git archive to a snapshot outside the repo; the working tree gained six tools/**/*.mjs from other agents during the run)",
+    "where": "orchestration/plans/W1-HUD-TOAST.md — section 'MEASUREMENT — the quoted-E fraction', the last section of the file; a CLOSED pointer sits on the dispatch-condition paragraph itself",
+    "no_browser_launched": true,
+    "no_tool_executed": true,
+    "headline": "quoted-E fraction = 14 of 109 = 12.8%. Under the strict reading of the claim it tests — a bar the verdict graded against AT THE TIME it believed the result — 3 of 109 = 2.8%, and one of those three is a verdict recording that it does not know which bar applies.",
+    "counting_rule": "A tool counts as E-QUOTED iff a wave-1 verdict DOCUMENT (never the artifacts/ subtree, which holds 112 copied tool sources) states a specific expected value for a NAMED GRADED ROW of that tool, in the enclosing prose block (a blank-line paragraph in .md, one JSON string value in .json). Value may be numeric or a literal ([], false, true, ERROR). EXCLUDED: outcome words with no value (exits 0, passes, green); observed readings (that is O, which YD already has); N/N self-test tallies (the bar is 'all of them' and the denominator is the tool's own); command lines and artifact listings; descriptive population sizes; directional expectations (must rise) with no arm value; and a bar the verdict explicitly restates from the tool's own source. COUNTED as borderlines: non-numeric literals, categorical row-values, a reference item's bar, and one contested bar.",
+    "method": "census of all 109, not a sample. 17 tools had no numeric prose context and 10 were cited only in command/artifact listings; all 27 were read anyway for digit-free literal expectations. The remaining 82 were read in full context and ruled by hand. A 40-tool sample taken first gave 5/40 with a Wilson upper edge of 26.1% straddling the decision boundary, and the census then CORRECTED the sample on critic-road-join-ingame.mjs.",
+    "counts_re_derived_at_9063779": {
+      "tools_mjs_on_disk": {
+        "critic": 786,
+        "re_derived": 776,
+        "verdict": "DISAGREE — 786 = 776 project tools + 10 vendored third-party .mjs under tools/node_modules/ (playwright, fast-uri benchmarks, @jsquash avif worker). Arithmetic exact to the file."
+      },
+      "P_declares_a_perturbation": {
+        "critic": 244,
+        "re_derived": "198 case-sensitive / 202 case-insensitive",
+        "verdict": "DISAGREE and NOT REPRODUCIBLE from the published rule. Nine regex variants span 202-262; none lands on 244."
+      },
+      "cited_paths_distinct_and_existing": {
+        "critic": "471 distinct, 12 missing, 459 exist",
+        "re_derived": "471 / 12 / 459 identical",
+        "verdict": "AGREE EXACTLY — but only when the artifacts/ subtree is counted. Verdict DOCUMENTS alone give 462 distinct / 12 missing / 450 exist."
+      },
+      "operative_population_cited_and_perturbable": {
+        "critic": 133,
+        "re_derived": "112 over the whole wave1 subtree, 109 over verdict documents only",
+        "verdict": "DISAGREE — 133 inherits P's inflation. 109 is the denominator this measurement uses."
+      },
+      "cited_with_no_declared_perturbation": {
+        "critic": "326 of 459 = 71%",
+        "re_derived": "347 of 459 = 75.6% (subtree) / 341 of 450 = 75.8% (documents)",
+        "verdict": "DISAGREE — and the disagreement STRENGTHENS the critic's conclusion: the OPAQUE-by-construction share is worse, not better."
+      }
+    },
+    "gradeability_verdict": "B1 AS WRITTEN IS NOT GRADEABLE. The <25% branch of the revised reversibility condition fires. But the reason is sharper than the fraction and should replace it in the brief: B1's acceptance is '100% of P classified into {INDEPENDENT, COUPLED, INERT, OPAQUE, ERROR}', every member can always be assigned one of five classes, and OPAQUE is one of them — so B1 CANNOT GO RED. On this population OPAQUE is modal by construction (95 of 109 have no external E). B1 would score 100% while establishing nothing: an acceptance that cannot fail, inside the piece written to sweep for acceptances that cannot fail.",
+    "reason_2_measured": "Exchange 1's reason 2 claimed a citing verdict 'quotes the number it believed, in prose, in a file the tool did not write'. Measured with a MORE generous attribution window (paragraph, not line) and a BROADER notion of value (literals as well as numbers): 3 of 109 = 2.8%. The ~9% line-adjacency proxy was not pessimistic, it was optimistic. Eleven of the fourteen E-QUOTED cases sit in biggest_gap.remedy.acceptance — a bar written for the NEXT round's fix, not the bar the verdict used."
+  },
+  "rulings_rule_0_added_by_the_measurement": [
+    {
+      "id": "S-PLAN-HUD-B3",
+      "ruling": "Execute exchange 1's <25% branch, but re-denominate rather than delete. B1' (graded) runs over P_E = the 14 tools for which a wave-1 verdict states an external expected value for a named row (list committed in the plan's MEASUREMENT section). Acceptance: 100% of 14 classified INDEPENDENT/COUPLED/INERT/ERROR with the tool's own E and the verdict's frozen E printed per row; OPAQUE is NOT an available outcome because an external E exists by construction for every member. COUPLED count published over the denominator 14, never as a bare percentage. 14 clears exchange 1's own floor of ~8. B1b (reported, never graded) keeps the wide denominator 109, of which 95 (87.2%) have no external E. B2 unchanged and still the acceptance.",
+      "reversible": true,
+      "what_would_overturn_it": "The builder finding that the TOOL'S OWN artifact publishes no readable expected side for 7 or more of the 14 — then B1' collapses to a one-sided comparison, OPAQUE returns as legitimate, and the piece reduces to B2 + B1b exactly as exchange 1 said. That is the next text-only measurement and it needs no browser either."
+    }
+  ],
+  "next_step": "Fold the SIX blocking resolutions AND the B1'/B1b denominators from the MEASUREMENT section into the plan text — all text edits with rulings supplied. Then dispatch W1-HUD-TOAST-A (Sonnet) with the seven surviving CARRIED risks declared, and W1-INSTRUMENT-COUPLING (Opus) — its dispatch condition is now CLOSED. The single highest-value follow-up, text-only and browserless, is the OTHER half of gradeability that this measurement did not take: does each tool's OWN artifact publish a readable expected side? YD reads E from the tool; the verdict-quoted E is only the second source, so 14 is a FLOOR on the gradeable population, not a ceiling.",
   "least_sure_of": [
     "The ~9% quoted-E proxy is line-adjacency in verdict prose and could understate badly; a number a paragraph from its tool path is missed. If the true fraction is high, revised BLOCKING-5 over-corrects and P_cited can widen back toward 459.",
     "BLOCKING-4 is argued from the plan's own population definition; I did not open the W1-04, W1-25 or compliance-report records to confirm the four positives are re-seedable at all.",

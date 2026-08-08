@@ -195,7 +195,7 @@ export class TextRegister {
         const s = String(text);
         let w = 0;
         try { w = ctx.measureText(s).width || 0; } catch { w = 0; }
-        reg._record(state, surface, kind, s, x, y, w, fontPx(ctx.font), ctx.textAlign || 'left');
+        reg._record(state, surface, kind, s, x, y, w, fontPx(ctx.font), ctx.textAlign || 'left', ctx.__esOwnerId || null);
       }
       return r;
     };
@@ -214,7 +214,7 @@ export class TextRegister {
      * @param {number} w advance in px  @param {number} px nominal size
      */
     ctx.__esNoteText = (text, x, y, w, px) => {
-      if (reg.enabled) reg._record(state, surface, 'vector', String(text), x, y, w || 0, px || 16, 'left');
+      if (reg.enabled) reg._record(state, surface, 'vector', String(text), x, y, w || 0, px || 16, 'left', ctx.__esOwnerId || null);
     };
     if (rec.paths.indexOf('fillText') < 0) rec.paths.push('fillText', 'strokeText', 'glyphs.drawText');
     rec.instrumented = true;
@@ -231,8 +231,15 @@ export class TextRegister {
    * available cheaply and the baseline sits at `y`. Both bounds are widened by a line's worth
    * so a marginal string is called VISIBLE rather than clipped — the register must never be
    * the thing that hides text that really reached the frame.
+   *
+   * `owner` (W1-HUD-TOAST-A) is the drawing `UISurface` element's own `id`, set on the context by
+   * `surface.js el()` for the duration of that element's draw callback and read back here — a
+   * generalised per-element fit check needs "the entries THIS element painted", and a surface-wide
+   * filter cannot tell two same-frame elements' runs apart. `null` on any entry drawn outside an
+   * `el()` callback (a title/dialogue string, a harness sentinel) or on a context predating this
+   * change; every existing consumer that does not ask for `owner` is unaffected.
    */
-  _record(state, surface, kind, s, x, y, w, px, align) {
+  _record(state, surface, kind, s, x, y, w, px, align, owner) {
     if (!s.length) return;
     if (this.entries.length >= CAP) { this.dropped++; return; }
     const x0 = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
@@ -246,6 +253,7 @@ export class TextRegister {
       x: Math.round(x), y: Math.round(y),
       w: Math.round(w), px,
       clipped: !overlaps(box, state.clip),
+      owner: owner || null,
     });
   }
 
@@ -277,6 +285,12 @@ export class TextRegister {
   _filter(list, opts) {
     const o = opts || {};
     let out = list;
+    // W1-HUD-TOAST-A. `owner` is the UISurface element id (`surface.js el()` sets it for the
+    // duration of that element's draw callback). Additive: entries drawn before this change, or
+    // outside any `el()` callback, carry `owner: null` and are excluded by an owner filter —
+    // never silently included, which would be the same "empty result reads as a clean one"
+    // defect this file's own header warns about.
+    if (o.owner !== undefined) out = out.filter((e) => e.owner === o.owner);
     if (Number.isFinite(o.since)) out = out.filter((e) => e.i >= o.since);
     if (Number.isFinite(o.sinceFrame)) out = out.filter((e) => e.frame >= o.sinceFrame);
     if (o.surface) {

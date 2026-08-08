@@ -1,22 +1,35 @@
 {
   "task_id": "critic-w1-deploy-r2",
   "role": "critic",
-  "state": "running (successor 2 — predecessor killed by usage limit with no artifacts on disk)",
+  "state": "measuring (successor 2)",
   "subject": "W1-DEPLOY r2 — re-take the score on the deploy-safety instruments after the r1 fixes and the new tools landed",
-  "started_at": "2026-08-08T00:00:00Z",
   "gate": 7.0,
   "scoring": "min-over-axes",
-  "predecessor": "critic-w1-deploy (r1, score 3.5, FAIL); critic-w1-deploy-r2 attempt 1 (no artifacts landed)",
-  "why": "r1's 3.5 is stale: check-shipped-files, verify-playable, verify-live-site, check-image-refs, loader-retry and the boot notice have all moved since. A stale score makes the progress page lie in whichever direction the work went.",
-  "method": [
-    "verify every claimed landing from git log + the files, not from the dispatch summary (rule 18)",
-    "break each check on purpose and watch it go red (rule 4)",
-    "rule 6's four failure shapes, especially two-guards-for-one-defect: count defects with N tools and defects with zero",
-    "name what reaches a player that no instrument looks at (cache, HTTP/2, TLS, slow/cold/second visit)"
+  "predecessor": "critic-w1-deploy (r1, score 3.5, FAIL); critic-w1-deploy-r2 attempt 1 (killed, no artifacts on disk)",
+  "commits_measured_at": {
+    "check-shipped-files.mjs": "worktree sha256 54bb8dab2962 (GATE-BLAST-RADIUS's new version, uncommitted at measurement time)",
+    "verify-playable.mjs": "6dece5e",
+    "verify-live-site.mjs / check-image-refs.mjs / drift": "3979d78 .. db449a5"
+  },
+  "findings": [
+    "check-shipped-files: DETECTION IS UNCHANGED SINCE r1. Under --strict (the mode bank.mjs uses) it catches 1 of 5 defect shapes; C/D/E/G2 all still missed, and the same 3 false-positive shapes (template-literal import, directory import, ?query import) still fire on sound trees. What changed is only the blast-radius POLICY, which is new and correct (P1 blocks, P2 passes). tools/world/critic-deploy-r2-gate.mjs",
+    "check-shipped-files: the false positives are now WORSE, not better, because tools/bank.mjs un-stages the offending importer rather than refusing — so a ?v= or directory import silently drops an agent's file out of the bank, which is the work-loss rule 1 exists to prevent.",
+    "verify-playable --self-test FAILS on the shipped tree: the CONTROL is red (boot promise unresolved after 146 s). The tool's own comment says 'the untouched page must go GREEN, or everything is red proves nothing'. So the six-sabotage matrix currently proves nothing.",
+    "verify-playable: 4 of 6 sabotage arms report litFraction=1.0, litBlocks=1.0 — the boot notice's full-screen overlay is what the whole-frame pixel measurement measures. The two thresholds MIN_LIT_FRACTION/MIN_LIT_BLOCKS were never the reason any arm went red; every arm went red on DOM state (noticeBad / booted).",
+    "verify-playable: draws-nothing and frozen both went red as 'STILL LOADING', i.e. for the wrong reason — the two mechanisms they exist to test were never reached.",
+    "verify-live-site: its drift check compares the deployed bytes against the WORKING TREE, not HEAD. Measured: 3 of 60 sampled files differ from the worktree and 0 differ from HEAD — the difference is neighbours mid-edit, which it would report as a deployment failure. tools/world/critic-deploy-r2-drift.mjs",
+    "verify-live-site: still hashes 2 of 715 files. Full sweep at HEAD prints PASS — 'the deployed bytes match what we published' — with 3 sampled files differing from the disk it claims to compare against.",
+    "check-image-refs: its self-test calls sweep() on two hand-built rows; PAGES/refsInHtml/refsInMarkdown/resolve are never executed by either arm — the same 'the scanner is not exercised' defect r1 named in check-shipped-files. Fixture: 2 of 6 broken-reference shapes detected (CSS url(), srcset, root-relative and raw <img> in markdown all missed), 2 false-positive shapes on 3 sound trees. tools/world/critic-deploy-r2-imgref-fixture.mjs",
+    "the aggregation (tools/playability/standing-check.mjs) exists and is referenced by nothing but the generated INDEX.md — not TICK.md, not the hook, not bank.mjs. And it omits check-image-refs and loader-retry."
   ],
-  "next_step": "read all six subjects; then break each on purpose",
+  "next_step": "run tools/world/critic-deploy-r2-notice.mjs --notice --boot when contention allows; then write the verdict + json, ledger, publish, blog line, bank",
   "files_touched": [
-    "orchestration/status/critic-w1-deploy-r2.json"
+    "orchestration/status/critic-w1-deploy-r2.json",
+    "tools/world/critic-deploy-r2-gate.mjs",
+    "tools/world/critic-deploy-r2-drift.mjs",
+    "tools/world/critic-deploy-r2-imgref-fixture.mjs",
+    "tools/world/critic-deploy-r2-notice.mjs",
+    "reports/w1-deploy-r2/selftest-local.json"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-DEPLOY-r2.md",
@@ -27,5 +40,7 @@
     "docs/shots/"
   ],
   "redundant_with": ["PLAYABILITY", "P10-loader-retry", "GATE-BLAST-RADIUS"],
-  "could_not_do": []
+  "could_not_do": [
+    "did not reproduce the bank.mjs unstage-on-false-positive live: planting a ?v= import under game/ on the shared tree would drop a neighbour's file out of the next bank. The scan() result is reproduced in a throwaway repo and bank.mjs's unstage path is four lines away from it."
+  ]
 }

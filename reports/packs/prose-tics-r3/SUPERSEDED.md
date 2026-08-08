@@ -16,3 +16,20 @@ build.
 
 This directory is kept only so the two packs can be compared if anyone wants to see what the pass
 changed.
+
+---
+
+## Amended 2026-08-08 — the pack this file points at is itself now closed
+
+The paragraph above says "judge `prose-tics-r4/` instead". **Do not.** `prose-tics-r4/` was judged
+three times and its own judgement found it decidable 15/15 by counting `[NAME-n]` tokens; it now
+carries a `SUPERSEDED.md` of its own. `prose-tics-r2/` is likewise closed as the pre-masking pack.
+
+**The live pack is `reports/packs/prose-tics-r5/`.** Everything in this file's original reasoning
+still stands: r3 grades ~380 dialogue lines that were rewritten before it was built, so a verdict on
+it would be a verdict on prose that is not in the game.
+
+All three of r2, r3 and r4 are closed as `superseded`, not `awaiting judge`, so no future
+orchestrator spends a judge on any of them.
+
+Closed by `W1-PROSE-TICS-r4-instrument`.

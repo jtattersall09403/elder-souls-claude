@@ -22,7 +22,7 @@
 // moves with `env(safe-area-inset-*)` and can never enter an inset (H3/T8).
 'use strict';
 
-import { shouldPromote, framesHeld } from './hold-gate.js';
+import { shouldPromote, framesHeld, framesHeldWhileDown, promotedAtRelease } from './hold-gate.js';
 
 export class TouchInput {
   /**
@@ -302,7 +302,16 @@ export class TouchInput {
         // finger stayed down. That is the measured 5-of-5-rolled inversion: at 2.32 rAF Hz a
         // 500 ms press fits entirely inside one rAF gap.
         h.framesHeld = framesHeld(h.tDown, tUp);   // f@60, published for the harness and tools
-        const hold = h.promoted || shouldPromote(h.tDown, tUp, h.gate);
+        const hold = h.promoted || promotedAtRelease(h.tDown, tUp, h.gate);
+        // The gate's own verdict, published for the harness and for `tools/touch/r2-gate-clock`.
+        // Before S39 there was nowhere to read this from: the `held` record was deleted on the
+        // release and the only evidence a press had happened was which edge came out. The span
+        // is in BOTH units on purpose (S22) — `ms` is what the thumb did, `f@60` is what the
+        // gate compared, and the whole S39 defect was the two silently disagreeing.
+        this.lastGate = {
+          action: p.action, span_ms: tUp - h.tDown, frames_held_f60: h.framesHeld,
+          gate_frames_f60: h.gate.frames, promoted_by_poll: h.promoted, verdict: hold ? h.gate.hold : h.gate.tap,
+        };
         if (hold) {
           // Never both, never neither (M-P5). If the poll never got to promote it, the down
           // edge is emitted here so the hold action still HAPPENS — briefly, which is the
@@ -336,7 +345,7 @@ export class TouchInput {
       // that the semantics transfer is true to the frame and not just in spirit.
       if (h.gate && !h.promoted && shouldPromote(h.tDown, nowMs, h.gate)) {
         h.promoted = true;
-        h.framesHeld = framesHeld(h.tDown, nowMs);           // f@60
+        h.framesHeld = framesHeldWhileDown(h.tDown, nowMs);  // f@60, still down
         this.pipe.edgeDown(h.gate.hold);
       }
     }

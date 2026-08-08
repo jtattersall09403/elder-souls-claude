@@ -27,7 +27,7 @@
 // twice as fast.
 'use strict';
 
-import { shouldPromote } from './hold-gate.js';
+import { shouldPromote, promotedAtRelease, framesHeld, framesHeldWhileDown, STEP_MS } from './hold-gate.js';
 
 /** RI-JRN04 §B — the W3C Standard Gamepad. Recalled, and the axis sign convention matters. */
 export const STANDARD = {
@@ -222,9 +222,13 @@ export class GamepadRouter {
    * @param {Array<Gamepad|null>} rawPads the array `navigator.getGamepads()` returned — a
    *        SNAPSHOT (§D). Never cached; a cached Gamepad silently freezes input in Chrome.
    * @param {number} frame the fixed sim frame about to be simulated
+   * @param {number} nowMs S39's `inputNow()` — ms. `event.timeStamp` has no meaning for a pad
+   *        (the Gamepad API is polled, not evented), so in mode `play` this is the rAF's own
+   *        wall clock and in harness modes it is `frame * STEP_MS`. Every duration below whose
+   *        two endpoints are both in the player's HANDS is measured with it; the rest stay f@60.
    * @returns {object|null} an observation for A-JRN6. NOT the consumer of anything.
    */
-  poll(rawPads, frame) {
+  poll(rawPads, frame, nowMs = frame * STEP_MS) {
     this.pollCount++;
     const live = [];
     for (const p of (rawPads || [])) if (p && p.connected !== false) live.push(p);
@@ -287,8 +291,8 @@ export class GamepadRouter {
 
     if (this.calibration && !this.calibration.done) { this._calibrationPoll(st, frame); return this._observe(st); }
 
-    this._applyRest(st, frame);
-    this._applyButtons(st, frame);
+    this._applyRest(st, frame, nowMs);
+    this._applyButtons(st, frame, nowMs);
     this._applySticks(st, frame);
     return this._observe(st);
   }
@@ -350,9 +354,19 @@ export class GamepadRouter {
   // ---- §D analog ---------------------------------------------------------------------------
 
   /** Hall triggers do not always rest at 0, and hair-trigger mode changes travel. */
-  _applyRest(st, frame) {
+  _applyRest(st, frame, nowMs = frame * STEP_MS) {
+    // S39 FIGURES 13 AND 14. Both windows below are opened by the pad being PLUGGED IN and
+    // closed by the pad still being there, so both endpoints are the player's, not the sim's:
+    // category (b), stamped in ms, converted to f@60 once. They were worse than S39's own
+    // arithmetic said, because neither counted sim frames — both counted POLLS, and a poll is
+    // one rAF. At the 2.32 rAF Hz the round-1 critic's numbers imply, `drift_guard.frames = 600`
+    // is 258 s of real time before the guard that exists to stop a drifting stick fires, not
+    // S39's already-bad 51.7 s and not the 10.0 s the figure means. Written as `f@60` in the
+    // data and converted here; the DATA IS UNCHANGED.
     const tol = this.analog.trigger.rest_tolerance;
-    if (st.restFrames < this.analog.trigger.autozero_frames) {
+    if (st.restFromMs === undefined) st.restFromMs = nowMs;
+    const autozeroMs = this.analog.trigger.autozero_frames * STEP_MS;   // 30 f@60 = 500 ms
+    if (nowMs - st.restFromMs < autozeroMs) {
       st.restFrames++;
       for (const i of STANDARD.analog_indices) {
         const v = st.snap.values[i];
@@ -364,9 +378,11 @@ export class GamepadRouter {
     const ax = st.snap.axes;
     if (!st.drift) st.drift = { lo: ax.slice(), hi: ax.slice(), n: 0, bias: [0, 0, 0, 0] };
     const d = st.drift;
+    if (d.fromMs === undefined) d.fromMs = nowMs;
     for (let i = 0; i < 4; i++) { if (ax[i] < d.lo[i]) d.lo[i] = ax[i]; if (ax[i] > d.hi[i]) d.hi[i] = ax[i]; }
     d.n++;
-    if (d.n >= this.analog.drift_guard.frames) {
+    const driftWindowMs = this.analog.drift_guard.frames * STEP_MS;     // 600 f@60 = 10,000 ms
+    if (nowMs - d.fromMs >= driftWindowMs) {
       for (let i = 0; i < 4; i++) {
         const w = d.hi[i] - d.lo[i];
         const centre = (d.hi[i] + d.lo[i]) / 2;
@@ -375,13 +391,13 @@ export class GamepadRouter {
           this.log.push({ frame, what: 'stick_drift_recentred', axis: i, bias: centre });
         }
       }
-      d.n = 0; d.lo = ax.slice(); d.hi = ax.slice();
+      d.n = 0; d.fromMs = nowMs; d.lo = ax.slice(); d.hi = ax.slice();
     }
   }
 
   _triggerValue(st, i) { return Math.max(0, st.snap.values[i] - st.restBias[i]); }
 
-  _applyButtons(st, frame) {
+  _applyButtons(st, frame, nowMs) {
     const prof = this.profiles.pad_profiles[st.profileName] || this.profile;
     const gates = prof.hold_gate || {};
     const analogB = prof.analog_buttons || {};
@@ -431,7 +447,7 @@ export class GamepadRouter {
         // §C's tap/hold discriminator. Released within `frames` of the press => the TAP action
         // is emitted ON RELEASE; still held at `frames` => the HOLD action is held from that
         // frame until release. Never both, never neither (M-P5).
-        const g = st.gate[i] || (st.gate[i] = { pressFrame: -1, promoted: false, holdAction: gate.hold });
+        const g = st.gate[i] || (st.gate[i] = { pressFrame: -1, tDown: -1, promoted: false, holdAction: gate.hold });
         g.holdAction = gate.hold;
         // §C: "released within 12 frames of press => roll; still held at frame 12 => sprint".
         // The quantity is FRAMES HELD, which is `frame - pressFrame + 1` — the press frame
@@ -442,14 +458,21 @@ export class GamepadRouter {
         // had its own copy of this same line and T5 promises the touchscreen uses "the SAME
         // 12-frame discriminator" — a promise two copies cannot keep (RULES 10). The state
         // machine below is still the pad's own; only the RULE is shared.
-        if (downNow && g.pressFrame < 0) { g.pressFrame = frame; g.promoted = false; }
-        else if (downNow && !g.promoted && shouldPromote(frame, g.pressFrame, gate)) {
+        if (downNow && g.pressFrame < 0) { g.pressFrame = frame; g.tDown = nowMs; g.promoted = false; }
+        else if (downNow && !g.promoted && shouldPromote(g.tDown, nowMs, gate)) {
           g.promoted = true;
+          g.framesHeld = framesHeldWhileDown(g.tDown, nowMs);   // f@60, still down
           this.pipe.edgeDown(gate.hold);
         } else if (!downNow && g.pressFrame >= 0) {
-          if (g.promoted) this.pipe.edgeUp(gate.hold);
-          else { this.pipe.edgeDown(gate.tap); this.pipe.edgeUp(gate.tap); }
-          g.pressFrame = -1; g.promoted = false;
+          // S39: the release re-asks in ms. A pad is POLLED, so at 2.32 rAF Hz the whole press
+          // can happen between two polls and `g.promoted` never gets a chance to be set — the
+          // same inversion the touchscreen had, by a different route.
+          g.framesHeld = framesHeld(g.tDown, nowMs);            // f@60, at the release
+          if (g.promoted || promotedAtRelease(g.tDown, nowMs, gate)) {
+            if (!g.promoted) this.pipe.edgeDown(gate.hold);
+            this.pipe.edgeUp(gate.hold);
+          } else { this.pipe.edgeDown(gate.tap); this.pipe.edgeUp(gate.tap); }
+          g.pressFrame = -1; g.tDown = -1; g.promoted = false;
         }
         continue;
       }

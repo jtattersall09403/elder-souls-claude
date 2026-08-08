@@ -5,7 +5,7 @@
   "verdict_under_repair": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md (FAIL 6/10, binding axis: coverage of RI-JRN04 \u00a7G)",
   "state": "in_progress",
   "commit_at_start": "6bb9003",
-  "contention_note": "tools/contention.mjs said WAIT before framerate run 2 and I proceeded anyway (RULES 21 permits it if declared). Declared here. The whole point of that run was a load-bracketed design, so a busy box is the condition it was built for, not a hazard to it.",
+  "contention_note": "tools/contention.mjs said WAIT before framerate run 2 and I proceeded anyway (RULES 21 permits it if declared). Declared here. The whole point of that run was a load-bracketed design, so a busy box is the condition it was built for, not a hazard to it. | r2 successor: tools/contention.mjs said WAIT at load 6.78-7.15 before the play leg and I PROCEEDED (RULES 21 permits it if declared). Declared. The presses are stamped via CDP `timestamp`, so the figures that matter (span_ms, frames_held_f60) are load-independent by construction; the step rate is stamped on every row so a reader can see what the box was doing.",
   "arbitration_note": "corpus/00-doctrine/ARBITRATION.md at 6bb9003 has no ruling on the T5 frames-vs-wall-clock seam (highest ruling is S38). Per the brief I am building against the number RI-JRN04 \u00a7G T5 specifies \u2014 12 f@60 \u2014 and NOT changing the gate. Every duration I touch is written with its unit per S22.",
   "work_list": [
     {
@@ -18,7 +18,7 @@
       "id": "B",
       "from": "\u00a73 + S39",
       "what": "clock boundary: framesHeld() in ms via event.timeStamp, inputNow(), 16 reclassified figures, real.js:446 bare 12",
-      "state": "in_progress"
+      "state": "code landed; --leg gate green (M-P5 boundary unmoved), --leg play GREEN (roll/roll/roll/sprint/sprint, frames_held 1/4/7/15/30 at 6 steps/s). Control leg next."
     },
     {
       "id": "C",
@@ -73,9 +73,17 @@
     "reports/w1-touch-r2/framerate.json"
   ],
   "files_touched": [
+    "game/src/engine.js",
+    "game/src/input/gamepad.js",
+    "game/src/input/hold-gate.js",
+    "game/src/input/real.js",
+    "game/src/input/touch.js",
     "orchestration/status/W1-TOUCH-r2.json",
+    "reports/w1-touch-r2/framerate.json",
+    "reports/w1-touch-r2/gate-clock-play.json",
     "tools/touch/r2-framerate.mjs",
-    "reports/w1-touch-r2/framerate.json"
+    "tools/touch/r2-gate-clock.mjs",
+    "tools/touch/touch-run.mjs"
   ],
   "files_claimed": [
     "orchestration/status/W1-TOUCH-r2.json",
@@ -92,7 +100,7 @@
     "game/data/input/profiles.json"
   ],
   "redundant_with": [],
-  "next_step": "Read RI-JRN04 M-P5, guards.js, loop.js modes, touch-run.mjs --leg gate. Then implement inputNow()+framesHeld() in hold-gate.js and route the four call sites.",
+  "next_step": "--leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item C (by-construction comments), then D (menu/insets/portrait legs).",
   "not_done": [
     "The stall control is too weak and must be re-taken at a stall large enough to dominate the frame.",
     "No real device. Every number here is headless SwiftShader on a shared box and is stamped with its load."

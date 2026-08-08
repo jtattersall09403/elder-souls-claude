@@ -8,6 +8,10 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, statSy
 import { execFileSync } from 'node:child_process';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+// docs/index.html inlines progress.html's BODY (see progressBody below) but not its <style>, so the
+// cost section arrived here unstyled — a stat tile with no tile, a chart with no scroll container.
+// Importing the same stylesheet the generator uses is the only version of this that cannot drift.
+import { COST_CSS, costStripHtml } from './cost-report.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const P = (...a) => join(ROOT, ...a);
@@ -261,8 +265,11 @@ function detectMarkdownLeakage(html) {
   for (const m of scan.match(/\[\^[^\]\s]+\]/g) || [])
     found.push({ kind: 'footnote-marker', snippet: m });
   // `![alt](src "title")` — the image regex's `[^)]+` swallows the quoted title into `src`, which
-  // `esc()` then turns into a literal `&quot;` sitting inside the attribute value.
-  for (const m of scan.match(/<img[^>]*&quot;[^>]*>/g) || [])
+  // `esc()` then turns into a literal `&quot;` sitting inside the SRC attribute specifically —
+  // scoped to `src="..."` on purpose, because a caption legitimately quoting dialogue (`alt="...
+  // &quot;Foo&quot;..."`) is correct output, not a leak, and a broader `<img[^>]*&quot;` match
+  // flagged 13 genuine captions as false positives before this was narrowed.
+  for (const m of scan.match(/<img src="[^"]*&quot;[^"]*"/g) || [])
     found.push({ kind: 'mangled-image-title', snippet: m.slice(0, 140) });
   // `[text](http://x/a(b))` — the link regex's `[^)]+` stops at the URL's own first `)`, so the
   // rendered link's href is truncated and the source's closing paren is stranded right after </a>.
@@ -382,10 +389,12 @@ code{color:var(--blue);font-size:11px}.gapq{color:var(--ink)}.rem{color:var(--di
 .shots img{width:100%;display:block}.shots figcaption{font-size:10px;color:var(--dim);padding:6px 8px;word-break:break-all}
 footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid var(--line);margin-top:30px}
 @media(max-width:640px){.wrap{padding:18px 14px}.post h2{font-size:21px}}
+${COST_CSS}
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
   <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated ${esc(now)}</div>
+  ${costStripHtml()}
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>

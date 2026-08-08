@@ -21,7 +21,20 @@
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
+
+/** Run a child WITHOUT blocking this process's event loop — the fixture's own HTTP server lives
+ *  here, and `spawnSync` would freeze it so every curl inside the tool would time out and every
+ *  scenario would read as a false positive. (It did, on the first run of this file.) */
+function run(cmd, args, opts) {
+  return new Promise((res) => {
+    const c = spawn(cmd, args, { ...opts, encoding: 'utf8' });
+    let out = '', err = '';
+    c.stdout.on('data', (d) => { out += d; });
+    c.stderr.on('data', (d) => { err += d; });
+    c.on('close', (status) => res({ status, stdout: out, stderr: err }));
+  });
+}
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import http from 'node:http';
@@ -150,8 +163,8 @@ for (const s of SCENARIOS) {
     base = `http://127.0.0.1:${srv.address().port}/`;
     origHandler.close = () => srv.close();
   }
-  const r = spawnSync('node', [join(dir, 'tools/playability/check-image-refs.mjs'), '--url', base],
-    { cwd: dir, encoding: 'utf8' });
+  const r = await run('node', [join(dir, 'tools/playability/check-image-refs.mjs'), '--url', base],
+    { cwd: dir });
   origHandler.close();
   const out = (r.stdout || '') + (r.stderr || '');
   const fired = r.status === 1;

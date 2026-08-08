@@ -6,6 +6,15 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
+
+// Refresh the cost ledger BEFORE the page that draws it, so the published cost figure is never
+// more than one bank old (COST.md §6). cost-refresh.mjs runs the instrument with a timeout and
+// always exits 0 — a cost report that stops the fleet has cost more than it saves (rule 13) — and
+// publishes its own failure as a banner on the page rather than letting a stale number pass as
+// current. Wrapped anyway: nothing about cost may break the site build.
+try { process.stdout.write(execFileSync('node', [join(ROOT, 'tools/cost-refresh.mjs')], { cwd: ROOT }).toString()); }
+catch (e) { console.error('publish: cost-refresh failed —', e.message, '(the page reports this itself; continuing)'); }
+
 for (const t of ['tools/progress.mjs', 'tools/blog.mjs']) {
   try { process.stdout.write(execFileSync('node', [join(ROOT, t)], { cwd: ROOT }).toString()); }
   catch (e) { console.error(`publish: ${t} failed —`, e.message); process.exitCode = 1; }

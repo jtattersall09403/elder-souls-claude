@@ -435,15 +435,43 @@ const STAT_IDS = new Set(STATS.map((s) => s.id));
 // ------------------------------------------------------------------------------------------------
 // scoring
 
-/** Classify a rule's result. Deliberately over-sensitive: a false alarm costs an investigation,
- *  a miss costs every score taken through the pack. See the header. */
-export function classify(decided, hits) {
+/**
+ * Classify a rule's result.
+ *
+ * THE THRESHOLD IS CALIBRATED AGAINST THE NULL, NOT CHOSEN. Two earlier versions of this function
+ * were wrong and L3 of the self-test caught both, which is the whole reason L3 exists.
+ *
+ *   v1 flagged on raw accuracy alone (>=80% of >=8 decided trials). Measured against 60 null packs
+ *      it raised at least one LEAK on 35% of them. With 40 rules and 15 trials that is roughly 1.4
+ *      false alarms per pack by arithmetic, and a gate that fails a third of clean packs is a gate
+ *      that gets ignored, which is the same as no gate.
+ *   v2 added "and the rule must win inside every register", on the theory that a real channel
+ *      sweeps and a chance artefact concentrates. Measured: **still 35%.** A rule scoring 12/15 is
+ *      usually 4/5 in each register anyway, so the extra condition was very nearly implied by the
+ *      first and bought nothing. It is kept in the OUTPUT as information and dropped from the
+ *      decision, because a condition that never changes an answer is decoration.
+ *
+ * v3, here, is the ordinary multiple-comparison correction and nothing cleverer: a rule is a LEAK
+ * when its exact binomial tail survives Bonferroni over the size of the battery
+ * (p_raw * family <= 0.05), and a WATCH when it clears the uncorrected 0.05. On 15 decided trials
+ * that means 14/15 flags, 12-13/15 watches, 11/15 is chance — and the pack-level false-alarm rate
+ * is ~5% by construction rather than by hope. The measured rate is printed by --self-test every
+ * run, so if the battery grows and the correction stops holding, that number moves and the ceiling
+ * assertion fails.
+ *
+ * WATCH is not a pass. It is the band where 15 trials with one author per side cannot tell a
+ * channel from luck, and the honest response to a WATCH is to look at it, not to ship past it.
+ */
+export const FAMILY_ALPHA = 0.05;
+
+export function classify(decided, hits, blocksWon = 1, blocksDecided = 1, family = 1) {
   const best = Math.max(hits, decided - hits);
   const acc = decided ? best / decided : 0;
-  if (decided >= 8 && acc >= 0.80) return { level: 'LEAK', acc, best };
-  if (decided >= 5 && acc >= 0.999) return { level: 'LEAK', acc, best };
-  if (decided >= 8 && acc >= 0.70) return { level: 'WATCH', acc, best };
-  if (decided >= 5 && acc >= 0.80) return { level: 'WATCH', acc, best };
+  void blocksWon; void blocksDecided;              // reported, deliberately not decided on — see v2
+  if (decided < 5) return { level: 'CHANCE', acc, best };
+  const p = binomTail(best, decided);
+  if (p * family <= FAMILY_ALPHA) return { level: 'LEAK', acc, best };
+  if (p <= FAMILY_ALPHA) return { level: 'WATCH', acc, best };
   return { level: 'CHANCE', acc, best };
 }
 
@@ -471,7 +499,6 @@ export function scoreBattery(trials, statList = STATS) {
       const r = byReg.get(t.register || '-'); r.d++; if (hit) r.h++;
       perTrial.push({ trial: t.id, pick, sa, sb, hit });
     }
-    const { level, acc, best } = classify(decided, hits);
     // register-blocked: does the rule's majority direction hold inside EVERY register?
     const dir = hits >= decided - hits ? 1 : 0;   // 1 == "larger side is the reference"
     let blocksWon = 0, blocksDecided = 0;
@@ -481,6 +508,7 @@ export function scoreBattery(trials, statList = STATS) {
       const won = dir ? r.h : r.d - r.h;
       if (won / r.d > 0.5) blocksWon++;
     }
+    const { level, acc, best } = classify(decided, hits, blocksWon, blocksDecided, statList.length);
     return {
       id: rule.id, group: rule.group, matched: !!rule.matched, describe: rule.describe,
       decided, hits, best, acc, level,
@@ -699,7 +727,10 @@ export const INJECTORS = {
   digit_ratio: (t) => t.replace(/\b(water|stone|rope)\b/g, '4172'),
   repeated_sentence: (t) => { const s = sentences(t); return s.length ? t + ' ' + s[0] + ' ' + s[0] : t; },
   alpha_sortedness: (t) => sentences(t).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1).join(' ') + '\n',
-  blank_line_ratio: (t) => sentences(t).join('\n\n') + '\n',
+  // NB: `join('\n\n')` looks like it injects blank lines and does NOT move the ratio — one blank
+  // per non-blank line is 0.5, which is exactly what the single-line clean side already scores.
+  // The self-test caught that: the arm was uncaught, which is an arm that was never an arm.
+  blank_line_ratio: (t) => sentences(t).join('\n\n\n') + '\n',
   trailing_ws_lines: (t) => sentences(t).map((s) => s + '   ').join('\n') + '\n',
   allcaps_words: (t) => 'CHAPTER THE FIRST\n' + t.replace(/\b(ledger|market)\b/g, (m) => m.toUpperCase()),
   opens_lowercase: (t) => t[0].toLowerCase() + t.slice(1),
@@ -789,18 +820,22 @@ function selfTest() {
     + ` (per-rule false-alarm ${(100 * fpRule).toFixed(2)}%).`);
   if (byRule.size) console.log('     noisiest rules on the null: '
     + [...byRule].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => `${k} ${v}/${N}`).join(', '));
-  t(fpPack <= 0.35, `null false-alarm rate ${(100 * fpPack).toFixed(0)}% is at or under the 35% ceiling (the gate does not cry wolf)`);
-  t(fpPack > 0 || true, '     (a 0% rate would be reported here too — it would mean the thresholds are too loose to fire)');
+  t(fpPack <= 0.12, `null false-alarm rate ${(100 * fpPack).toFixed(0)}% is at or under the 12% ceiling (the gate does not cry wolf)`);
 
   // the converse of L3: the detector must not be silently unable to fire. Prove sensitivity is
   // real by measuring detection on the null-plus-one-channel, which is the arm above, and by
   // checking the classifier's own arithmetic.
-  t(classify(15, 15).level === 'LEAK', 'classify: 15/15 is a leak');
-  t(classify(15, 12).level === 'LEAK', 'classify: 12/15 is a leak');
-  t(classify(15, 11).level === 'WATCH', 'classify: 11/15 is a watch, not a leak');
-  t(classify(15, 8).level === 'CHANCE', 'classify: 8/15 is chance');
-  t(classify(15, 0).level === 'LEAK', 'classify: 0/15 is a leak too — an inverted rule is still a rule');
-  t(classify(3, 3).level === 'CHANCE', 'classify: 3/3 on three decided trials is not enough to flag');
+  const K = STATS.length;
+  t(classify(15, 15, 3, 3, K).level === 'LEAK', 'classify: 15/15 is a leak (survives Bonferroni over the battery)');
+  t(classify(15, 14, 3, 3, K).level === 'LEAK', 'classify: 14/15 is a leak');
+  t(classify(15, 13, 3, 3, K).level === 'WATCH', 'classify: 13/15 is a WATCH — 40 rules on 15 trials cannot call that a channel');
+  t(classify(15, 12, 3, 3, K).level === 'WATCH', 'classify: 12/15 is a watch');
+  t(classify(15, 11, 3, 3, K).level === 'CHANCE', 'classify: 11/15 is chance');
+  t(classify(15, 8, 3, 3, K).level === 'CHANCE', 'classify: 8/15 is chance');
+  t(classify(15, 0, 3, 3, K).level === 'LEAK', 'classify: 0/15 is a leak too — an inverted rule is still a rule');
+  t(classify(4, 4, 1, 1, K).level === 'CHANCE', 'classify: 4/4 decided trials is too few to flag anything');
+  t(classify(15, 15, 3, 3, 1).level === 'LEAK', 'classify: with a one-rule battery the correction vanishes and 15/15 still flags');
+  t(classify(15, 12, 3, 3, 1).level === 'LEAK', 'classify: ... and 12/15 becomes a leak, because there is nothing to correct for');
   t(Math.abs(binomTail(15, 15) - Math.pow(0.5, 15)) < 1e-12, 'binomTail(15,15) = 2^-15');
   t(Math.abs(binomTail(0, 15) - 1) < 1e-12, 'binomTail(0,15) = 1');
 
@@ -855,12 +890,14 @@ function main() {
     waivers.set(id, rest.join(':').trim());
   }
 
+  // Structural problems do not short-circuit the battery: a pack with an answer key in it is
+  // unjudgeable AND may also be decidable, and a builder fixing one wants to see the other in the
+  // same run. Both are reported; the exit code takes the worse of the two.
   const st = structuralCheck(packDir);
   if (st.problems.length) {
-    console.error(`\nSTRUCTURAL DEFECTS in ${path.relative(ROOT, packDir)} — the pack cannot be judged as it stands:`);
-    for (const p of st.problems) console.error('  * ' + p);
-    console.error('');
-    return 4;
+    console.log(`STRUCTURAL DEFECTS in ${path.relative(ROOT, packDir)} — the pack cannot be judged as it stands:`);
+    for (const p of st.problems) console.log('  * ' + p);
+    console.log('');
   }
   for (const n of st.notes) console.log('note: ' + n);
 
@@ -888,9 +925,13 @@ function main() {
   }
 
   if (rep.leaks.length) {
-    console.error('\nGATE FAILED. Do not dispatch a judge: this pack is decidable without reading it.');
-    console.error('Fix the builder, or waive the channel IN WRITING with --waive <id>:"<reason>".');
-    return 3;
+    console.log('\nGATE FAILED. Do not dispatch a judge: this pack is decidable without reading it.');
+    console.log('Fix the builder, or waive the channel IN WRITING with --waive <id>:"<reason>".');
+    return st.problems.length ? 4 : 3;
+  }
+  if (st.problems.length) {
+    console.log('\nGATE FAILED on structure (above). No channel beat the battery, but the pack is still unjudgeable.');
+    return 4;
   }
   console.log('\nGATE PASSED on the held-out channels. This is necessary, not sufficient:');
   console.log('RI-MTH03 M6 (a fresh agent asked "what is the tell?") is still owed once per wave.');

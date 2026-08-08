@@ -1,10 +1,10 @@
 {
   "task_id": "S39-falsifier",
   "role": "builder+runner (instrument only, not the remedy)",
-  "state": "designing",
+  "state": "instrument built; browser arms running",
   "started": "2026-08-08",
   "question": "Run the falsifier S39 specified and never ran: two-arm replay above and below the 12.00 Hz rAF floor; identical promoted actions and bit-identical replay hashes, or S39 falls.",
-  "next_step": "Build tools/input/arbiter-clock-s39.mjs: (A) capture arm, real DOM presses 20/60/120/250/500 ms at rAF above and below the floor, shipped tree vs an S39-patched COPY (r2-framerate.mjs patchedTree precedent); (B) replay arm, same recorded converted-integer stream replayed at both rates, sha256 of the trace compared -- this is the arm whose divergence overturns S39; (C) offline lint of the 16 reclassified figures vs the 11,161 that stay; (D) --self-test that perturbs one arm by one frame and must go red.",
+  "next_step": "Run --self-test (A1 one-frame shift must go red; A4 lint must flip green when stamped), then the full four-arm run, then write the verdict into ARBITRATION.md under S39.",
   "read_so_far": [
     "ARBITRATION.md S39 (full row)",
     "NEXT-DISPATCH.md section U",
@@ -15,7 +15,10 @@
     "tools/touch/r2-framerate.mjs (patchedTree precedent, load stamping), tools/touch/critic-gate-wallclock.mjs (Finger/CDP press precedent), tools/harness/determinism.mjs (trace hash precedent)"
   ],
   "findings_so_far": [
-    "hold-gate.js at HEAD is UNPATCHED -- framesHeld() = frame - pressFrame + 1. So the falsifier must run S39's remedy on a served COPY of the tree, never in the working tree (W1-TOUCH r2 owns that file)."
+    "THE BRIEF WAS OVERTAKEN: S39's remedy LANDED while I was reading. hold-gate.js now carries inputNow(), STEP_MS, framesHeld(tDownMs,tNowMs) and a fail-closed inFixedStep() throw; real.js/touch.js stamp from event.timeStamp and poll holds per rAF. So the falsifier no longer needs a patched copy to run predictions (a)/(b) -- it needs a DELETE-THE-FIX copy, and hold-gate.js's own header names the teardown (inputNow() -> frame*STEP_MS in play). A3 does exactly that.",
+    "A4 lint at db449a5: 2 of 16 reclassified figures stamped. All EIGHT data figures in data/input/profiles.json still publish frames with no ms twin -- the landed remedy's own comments say that is deliberate (the conversion is stamped, the datum stays f@60), so this half of the lint is a contested reading and is reported as such. Six of eight source sites still frame-counted at HEAD (gamepad 13/14 are stamped in the owner's UNCOMMITTED copy).",
+    "game/data frame-denominated duration figures at db449a5: 11,018 across 118 field names, against S39's 11,161 across 106 at 2d40c02. Reported, not reconciled -- the tree has moved.",
+    "Two frame-record fields are inert: input.dispatch_lag and input.catchup_steps are set once in the pipeline constructor/reset and never written again, so record.js publishes a constant 0 and a constant 1. Not S39's business; noted for whoever owns RI-CMB11."
   ],
   "files_claimed": [
     "tools/input/arbiter-clock-s39.mjs",
@@ -29,5 +32,6 @@
     "game/src/input/hold-gate.js (owned by W1-TOUCH round 2, live -- confirmed by tools/ownership.mjs)",
     "game/src/input/touch.js, real.js, gamepad.js (same owner)"
   ],
-  "no_browser": null
+  "no_browser": null,
+  "contention_note": "tools/contention.mjs said WAIT (load 7.0/core, 2 browser instances) before the capture smoke run and I proceeded anyway, one browser at a time, RULES 21 declared here. The rate arms are driven by a rAF SHIM (setTimeout pump at a fixed period), not by loading the box, precisely so a busy box cannot move the result."
 }

@@ -58,6 +58,39 @@ packs/p1.reveal/                ← never inside the pack; held by the operator
 Both sides go through the **same** stripping path, so the transformation cannot itself be
 a tell. Re-encoding images through one encoder also normalises file size as a channel.
 
+#### B.1 — A redaction token is itself a signal
+
+**AMENDED 2026-08-08 (W1-PROSE-TICS r4). This clause exists because the table above caused
+the failure it was written to prevent, twice, in the same item.**
+
+Round 1 of W1-PROSE-TICS shipped a text pack with the `text` row never applied: a rule
+counting *Vvardenfell / Dunmer / Septim* scored **17/17 without reading a word**. The fix
+applied the row properly — every proper noun on both sides replaced with `[NAME-n]`. Round
+4's judge then decided that pack **15/15 by counting the `[NAME-n]` tokens**, margins
+1.6×–7×, median ≈ 3.5×. Re-running the battery that now exists over that pack finds the
+same marker deciding it under **ten** statistics: the brackets (`paren_density` 15/15), the
+capitals (`uppercase_ratio`, `allcaps_words` 14/15), the digits in `-12` (`digit_ratio`
+14/15) and the token's length (`chars`, `mean_line_len` 15/15, `mean_word_len` 14/15).
+
+The builder's own check was not absent. It re-ran the round-1 judge's rule over the finished
+pack and got zero decidable trials, and that was **true**. It was a check on what the mask
+*contained*. The leak was in what the mask *added*.
+
+So:
+
+> **Any pack that replaces content with a marker must publish the marker's per-side count
+> next to its per-side vocabulary, and is decidable if either differs.** A gate that
+> verifies its own output can only catch the failure it was written to look for.
+
+For `text`, `[REDACTED]` is therefore no longer sufficient on its own. **Prefer re-naming to
+redaction**: substitute invented names of matched shape, drawn from one generator shared by
+both sides, consistent within a passage and independent between passages, so no marker
+exists to count. Implemented in `tools/blind/mask-text.mjs`, with the costs of that choice —
+the artifact is *altered*, not merely redacted, so naming craft becomes unjudgeable — stated
+in its header. Where a difference is a genuine property of the two corpora rather than an
+artefact of the machinery (name *density* is the case here), it cannot be masked at all and
+must be closed at **selection** time by pairing, or the register must be dropped.
+
 ### C. The judge prompt (verbatim, emitted into every pack)
 
 > You are judging two artifacts. You do **not** know which is which, and you must not try
@@ -73,6 +106,33 @@ a tell. Re-encoding images through one encoder also normalises file size as a ch
 > 4. `WEAKEST POINT:` one sentence naming the strongest argument *against* your own pick.
 >
 > Do not hedge, do not decline, do not say the two are equivalent.
+
+#### C.1 — Two answer lines, and the answer file lives outside the pack
+
+**AMENDED 2026-08-08 (W1-PROSE-TICS r4).** Two defects in the paragraph above, both of which
+cost a round.
+
+**One `PICK:` line cannot carry a question with two axes.** §D's text question presupposes
+*shipped ⇒ better*. Where that fails — and in r4 it failed on a majority of trials, the
+shipped passages being quest-log telemetry and alphabetised topic dumps against assured prose
+— one line has to silently pick a half and throw the other away. Two judges of r4 then
+"disagreed" on **14 of 15 rows while agreeing about every single passage**: one answered
+provenance (15/15 reference), the other preference (1/15). So packs whose question has both
+axes emit and score both:
+
+> 1. `PROV: A` or `PROV: B` — which is the shipped/reference artifact.
+> 2. `QUAL: A` or `QUAL: B` — which is the better artifact, judged as work.
+
+`QUAL:` is the axis §E's outcome table applies to. `PROV:` is a **leak detector**: a judge
+scoring high on `PROV:` and at chance on `QUAL:` is reporting that the blinding is broken,
+which is worth more than either answer alone.
+
+**The answer file must not be written into the pack.** `answer.md` inside the trial directory
+turns a re-judged pack into a plaintext answer key — in the exact filename the prompt tells
+the next judge to create, and which any careful agent will read before writing so as not to
+clobber it. r4 accumulated fifteen of them, all correct. Answers go in
+`<pack>.answers/<agent-id>/`, a sibling of the pack, for the same structural reason `.reveal/`
+already is one.
 
 ### D. Default questions by kind
 
@@ -93,6 +153,25 @@ a tell. Re-encoding images through one encoder also normalises file size as a ch
 | "Equivalent" / refusal | — | protocol violation | verdict **void**; re-run with a critic instructed per §C |
 | Correct pick but no cited evidence | — | unfalsifiable | verdict **void**; evidence bullets are mandatory |
 
+#### E.1 — The chance baseline is the number of INDEPENDENT trials, not the number of trials
+
+**AMENDED 2026-08-08 (W1-PROSE-TICS r4).** A pack drawn from **one author per side** does not
+give n independent binary trials. Recognise the voice in the first trial and the remaining
+n−1 sort themselves by matching it — which is a provenance channel that survives every word
+of the masking work, because masking closes the *vocabulary* channel and leaves the *idiolect*
+channel wide open, and idiolect is the stronger of the two once you have more than one
+sample. The r4 judge said so in its own weakest-point section: *"I never judged fifteen
+things. I judged one voice."*
+
+So the effective independent trials are the number of **strata** the pack spans — registers,
+scenes, authors — not the number of trials. For r4's 15 trials across 3 registers that is
+**three**, and a clean sweep by chance is about **1-in-8**, not 1-in-270 and not 1-in-32768.
+
+**Every verdict quoting a blind score states the effective baseline beside it**, and the
+pack's `PROMPT.md` and `README.md` state it too, so a judge cannot report 15/15 as though it
+were 2⁻¹⁵. Where the strata cannot be counted, the honest default is the most pessimistic
+one: assume one effective trial per author pair.
+
 ## Comparison method
 
 **M1 — Build the pack.**
@@ -107,6 +186,37 @@ node tools/blind/make-pair.mjs \
 
 Verify the pack directory contains only `A.*`, `B.*`, `PROMPT.md`, `pack.json`, and that
 the reveal directory is a sibling, not a child.
+
+**M1a — GATE THE PACK BEFORE ANY JUDGE IS DISPATCHED. Fail-closed.**
+
+```bash
+node tools/blind/leakcheck.mjs --pack reports/packs/<item>-<n>
+# exit 0 = dispatchable   exit 3 = decidable without reading it   exit 4 = structural defect
+```
+
+A battery of ~40 cheap mechanical discriminators — redaction markers, length in words and
+characters, sentence shape, vocabulary size, punctuation and whitespace profiles, character
+classes, formatting artefacts, ordering, side balance — each scored against the reveal key.
+**Every rule's score is printed every run, including the ones at chance**; a battery that
+only ever reports hits is a rubber stamp, and the judge that found the r4 leak set the
+standard by pre-declaring four channels and reporting that two of them failed when scored
+(9/15 and 5/15) as plainly as the one that hit.
+
+Two things the output states about itself and that must be carried into any verdict quoting
+it:
+
+* Rules the builder **pairs on** are printed in a separate block and marked `matched`. A
+  pass there is *by construction* and is **not evidence** — you cannot optimise against a
+  gate and then cite the gate.
+* A `LEAK` is a rule surviving Bonferroni over the battery; a `WATCH` clears uncorrected
+  0.05 and **is not a pass**. On 15 trials that is 14/15 and 12–13/15 respectively. The
+  thresholds are calibrated against 60 synthetic null packs by `--self-test`, which prints
+  the measured false-alarm rate — the detector is measured for its own failure mode rather
+  than trusted, because a gate that fails a third of clean packs gets ignored.
+
+This does **not** retire M6. A gate can only test the channels someone thought of; the fresh
+agent asked "what is the tell?" is still owed once per wave, and both of this item's leaks
+were found by a judge, not by a builder.
 
 **M2 — Judge blind.** Hand a fresh agent — one with no access to this conversation and no
 knowledge of which side is which — the pack directory and `PROMPT.md` only. It writes
@@ -143,6 +253,9 @@ This item scores the **protocol**, not the artifacts. Per pack:
 |---|---|
 | Pack built by `make-pair.mjs` (not hand-assembled) | 2 |
 | Reveal key outside the pack directory | 2 |
+| **M1a leak gate run and passed before dispatch (`leakcheck.mjs`, exit 0)** | 3 |
+| **Answers written outside the pack; no answer file inside it** | 2 |
+| **Effective chance baseline stated wherever a score is reported** | 1 |
 | `answer.md` written before reveal, hash recorded | 3 |
 | Pick is A or B, no hedging, no refusal | 2 |
 | ≥ 3 specific, checkable evidence bullets | 2 |
@@ -164,6 +277,10 @@ This item scores the **protocol**, not the artifacts. Per pack:
 - The pack was assembled by hand with labels "removed by eye".
 - A critic reports a blind result for an item whose front-matter says `blind_pair: no`.
 - The verdict reports the blind pick but not the reveal, or vice versa.
+- **A judge was dispatched to a pack that had not passed M1a**, or that contains another
+  judge's answers, or whose `PROMPT.md` points at a different pack's reveal directory. All
+  three occurred in `prose-tics-r4`; every score taken through it is void or non-blind, and
+  the pack is closed rather than re-judged (`reports/packs/prose-tics-r4/SUPERSEDED.md`).
 
 **Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
@@ -188,6 +305,9 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
 3. **Resolution/aspect leak.** Our shots are exactly 1920×1080; a reference screenshot is
    2560×1440. The judge learns nothing about quality and everything about provenance. Any
    image reference must be resampled to the contract resolution *before* it enters a pack.
+4a. **The mask becomes the tell.** The channel you close is replaced by the marker you closed
+    it with. Twice in this item. See §B.1; it is the single most expensive failure mode the
+    protocol has, because it looks exactly like a fix and passes the builder's own audit.
 4. **Style leak in text.** Our generated dialogue has a consistent tic (em-dashes, a fixed
    sentence rhythm) that a competent judge recognises immediately as machine-made. That is
    a *legitimate* finding about our writing, not a protocol defect — but it must be

@@ -935,17 +935,34 @@ export function installHarness(engine, bootPromise) {
      * draw path, and check that the grep it was supposed to trip actually trips. A probe that
      * asserts a bad string is gone without ever showing that its check would have caught the
      * string is asserting its own diligence.
+     *
+     * W1-HUD-TOAST-A / BLOCKING-6. The signature was `drawOnMenus(text)`, hardcoding position
+     * `(20,120)`, face `bone`, size 16, colour `#fff` — fine for "did the register see this
+     * string at all" (the only question its three existing callers ever asked) but useless as a
+     * CLIP-FREE REFERENCE DRAW for a specific element: A2a needs to difference this render
+     * against `hud.toast`'s own (clipped) render, and a reference drawn in a different face at a
+     * different position cannot be differenced against an element drawn in face `ink`, centred on
+     * its panel. `opts` is additive — every existing call (`text` only) gets exactly today's five
+     * defaults and is unaffected.
+     * @param {string} text
+     * @param {{x?:number, y?:number, face?:string, size?:number, color?:string}} [opts]
      */
-    drawOnMenus(text) {
+    drawOnMenus(text, opts) {
       const s = String(text);
+      const o = opts || {};
       const reg = engine.renderer.textRegister;
       const ctx = engine.renderer.menus.ctx;
       const mark = reg.seq;
+      const x = o.x === undefined ? 20 : Number(o.x);
+      const y = o.y === undefined ? 120 : Number(o.y);
+      const face = faceOf(o.face === undefined ? 'bone' : String(o.face));
+      const size = o.size === undefined ? 16 : Number(o.size);
+      const color = o.color === undefined ? '#fff' : String(o.color);
       ctx.save();
-      drawGlyphText(ctx, s, 20, 120, faceOf('bone'), 16, '#fff');
+      drawGlyphText(ctx, s, x, y, face, size, color);
       ctx.restore();
       const rows = reg.all({ since: mark });
-      return { text: s, seen: rows.some((e) => e.text === s), surface: 'menus', entries: rows.length };
+      return { text: s, seen: rows.some((e) => e.text === s), surface: 'menus', entries: rows.length, x, y, face: o.face === undefined ? 'bone' : String(o.face), size, color };
     },
 
     drawSentinels(tag) {

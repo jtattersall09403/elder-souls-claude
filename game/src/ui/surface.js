@@ -217,7 +217,15 @@ export class UISurface {
     c.beginPath();
     c.rect(r[0] - 0.5, r[1] - 0.5, r[2] + 1, r[3] + 1);
     c.clip();
+    // W1-HUD-TOAST-A / BLOCKING-1's §3 resolution: `render/text-register.js` records the OWNING
+    // ELEMENT for every string drawn while this element's callback runs, so a generalised fit
+    // check can find "the entries this element painted" rather than "every entry on the
+    // surface". Set for the duration of `draw()` only, on the context `el()` already owns —
+    // additive, and a no-op for any context the register does not instrument.
+    const prevOwner = c.__esOwnerId;
+    c.__esOwnerId = rec.id;
     draw(c, r);
+    c.__esOwnerId = prevOwner;
     c.restore();
     this.drawn = true;
     this.overdrawPx += Math.max(0, r[2]) * Math.max(0, r[3]);
