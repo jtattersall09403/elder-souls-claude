@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `fbb3d83`: 567 tools, 153 reference
+so it cannot drift. Generated at `1b70d4d`: 568 tools, 153 reference
 items, 38 pieces in flight.
 
 Its purpose is to stop 38+ concurrent agents each paying separately to discover the
@@ -179,6 +179,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
 - `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
+
+### `tools/composition/` — 1
+
+- `tools/composition/cells-from-md.mjs` — the living artifact RI-CMP01 names, generated from the item itself.
 
 ### `tools/corpus/` — 1
 
@@ -873,10 +877,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `W1-25` | building | Build RI-CMP01: tools/composition/cells-from-md.mjs -> corpus/95-experience/RI-CMP01.cells | `orchestration/status/W1-25.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `reports/experience/w1/sabotage.json` |
-| `critic-w1-23-r3` | ? | measurement complete; writing corpus/90-verdicts/wave1/W1-23-r3.md + .json, then blog line | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-ban | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` `tools/audio/critic-w1-22-r2-probe.mjs` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
