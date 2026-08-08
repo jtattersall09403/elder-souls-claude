@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6bb9003`: 767 tools, 153 reference
-items, 78 pieces in flight.
+so it cannot drift. Generated at `cca44e0`: 769 tools, 153 reference
+items, 77 pieces in flight.
 
-Its purpose is to stop 78+ concurrent agents each paying separately to discover the
+Its purpose is to stop 77+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -615,9 +615,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/playability/` — 3
+### `tools/playability/` — 4
 
 - `tools/playability/live-mirror.mjs` — put a real browser in front of the REAL deployed site.
+- `tools/playability/notice-over-game.mjs` — Does the boot notice appear OVER A WORKING GAME?
 - `tools/playability/standing-check.mjs` — THE one command.
 - `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
 
@@ -642,7 +643,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 39
+### `tools/quests/` — 40
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -657,6 +658,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G: the shared 5x5 chart font.
 - `tools/quests/critic-readable-slots-and-marks.mjs` — W1-READABLES r2 critic, attack F.
 - `tools/quests/critic-unrouted-census.mjs` — W1-READABLES r2 critic, attack E.
+- `tools/quests/critic-w1-20-play.mjs` — THE W1-20 ROUND-1 CRITIC'S OWN INSTRUMENT.
 - `tools/quests/critic-w1-readables-chart.mjs` — the picture for the W1-READABLES round-2 verdict (rule 27).
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
@@ -1103,6 +1105,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `PLAYABILITY` | measuring (successor 2) | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `P10-loader-retry` | starting | read loadData in game/src/engine.js and the boot notice in game/index.html | — |
@@ -1110,14 +1113,12 @@ work is the difference between resuming and starting over.
 | `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
 | `critic-w1-attr-scale` | running | read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure | — |
 | `W1-TOUCH-r2` | starting | read ARBITRATION.md, W1-TOUCH.json, critic-w1-touch.json, then the touch/step source | — |
-| `plan-w1-hud-toast` | running | read game/src/ui/hud.js, W1-20 probe/verdict, reference items; write plan | — |
 | `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-27` | done |  | `orchestration/status/W1-27.json` `tools/coherence/w1-27-coherence.mjs` `tools/coherence/w1-27-loot-consumption.mjs` `tools/coherence/w1-27-chart.mjs` `tools/world/build-property.mjs` `reports/w1-27/RULING.md` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
-| `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
 | `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |

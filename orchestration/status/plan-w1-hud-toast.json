@@ -2,13 +2,53 @@
   "task_id": "plan-w1-hud-toast",
   "role": "plan-agent",
   "piece": "W1-HUD-TOAST",
-  "state": "running",
+  "state": "complete",
   "started": "2026-08-08",
-  "next_step": "read game/src/ui/hud.js, W1-20 probe/verdict, reference items; write plan",
-  "files_touched": [],
-  "files_claimed": [
+  "commit_at_measurement": "6bb9003",
+  "deliverable": "orchestration/plans/W1-HUD-TOAST.md",
+  "files_touched": [
     "orchestration/plans/W1-HUD-TOAST.md",
     "orchestration/status/plan-w1-hud-toast.json"
   ],
-  "notes": "Plan only. No browser, no game/ edits."
+  "files_claimed": [],
+  "redundant_with": ["W1-21", "W1-20"],
+  "overlap_note": "This is a PLAN only. It writes no game/ source and claims none. It PROPOSES changes to game/src/ui/hud.js, game/src/ui/system.js, game/src/render/text-register.js and tools/analysis/ui-census.mjs, which belong to W1-21 (hud/system) and W1-26 (text register). The build piece must declare those, not this one.",
+  "no_browser_launched": true,
+  "numbers_measured_offline_at_6bb9003": {
+    "method": "node import of game/src/ui/glyphs.js measure() with faceOf('ink') at size 16; wrap budget 400-24=376 px; corpus = sentence-shaped strings in game/data/dialogue/faction-refusals.json plus the 11 cast/water/equip refusal lines hand-listed from sim/magic/system.js and engine.js:_sayEquip",
+    "toast_strings_censused": 75,
+    "wider_than_the_400px_panel_as_one_run": 58,
+    "widest_toast_px": 1013.5,
+    "widest_equip_refusal_over_2113_data_names_px": 870.0,
+    "post_wrap_rows_histogram": { "1": 13, "2": 54, "3": 8, "4_or_more": 0 },
+    "strings_hitting_the_3_row_ellipsis_ceiling": 0,
+    "widest_single_word_in_any_game_data_name_px": 129.0,
+    "interact_prompt_budget_px": 169.2,
+    "interact_prompt_sample_widths_px": [25.1, 26.1, 27.0, 28.3, 67.6, 84.2, 86.4, 92.9, 97.0],
+    "sweep_population_upper_bounds": {
+      "tools_mentioning_self_test": 118,
+      "tools_mentioning_break_or_deletefix": 137,
+      "harness_break_verbs": 30
+    }
+  },
+  "rulings_rule_0": [
+    {
+      "id": "S-PLAN-HUD-A",
+      "ruling": "Split into two build pieces: W1-HUD-TOAST-A (Sonnet, one browser) and W1-INSTRUMENT-COUPLING (Opus, no browser until its shortlist). One brief for both would queue the cheap sweep behind an hour of browser.",
+      "reversible": true,
+      "what_would_overturn_it": "The BLOCKING unknown resolving such that A1 is unavailable; then Piece A shrinks to a sampled pixel test and the two could share one agent."
+    },
+    {
+      "id": "S-PLAN-HUD-B",
+      "ruling": "The new failure shape is named COUPLED YARDSTICK and is added as a SIXTH verdict on tools/experience/lib/sabotage.mjs rather than as a new tool (rule 10).",
+      "reversible": true,
+      "what_would_overturn_it": "sabotage.mjs's arm model turning out to have no place to carry an expected-side value, in which case it is a sibling module in the same directory, not a new top-level tool."
+    }
+  ],
+  "blocking_unknown": "Is the HUD surface's 2D context instrumented by render/text-register.js in the state ui-census.mjs drives, with w > 0 on the toast's run? glyphs.drawText calls ctx.__esNoteText only if the hook exists. Resolved by one browser-minute: raise a toast, call getRenderedText({surface:'hud'}), report entry count and the toast run's w. If absent, acceptance A1 does not exist and everything falls back to A2.",
+  "next_step": "plan critic with fresh context. Push hardest on B1's population definition (my 118/137/30 are grep counts of MENTIONS, not of tools that publish a comparable expected value) and on A2's frame-diff assumption that nothing else on the HUD changes between the two frames.",
+  "least_sure_of": [
+    "Piece B's population definition may degenerate: if most of P is OPAQUE, B2's 4-instance recall carries the whole piece.",
+    "A2's frame diff assumes the toast is the only difference between the two frames; the panel is drawn with a seeded jitter and I have not verified the clock can be held still in that state. The vacuity guard catches a diff that saw nothing, not one that saw too much."
+  ]
 }
