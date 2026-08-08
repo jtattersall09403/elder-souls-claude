@@ -186,7 +186,11 @@ function N1(w) {
     const parts = n.replace(/ of [a-z -]+$/, '').split(' ');
     return parts.length === 2 && GIVEN.has(parts[0]) && EPITHET.has(parts[1]);
   });
-  const guarded = /--write/.test(w.generatorSrc);
+  // The guard must be a real guard: `process.argv.includes('--write')` reached BEFORE the write.
+  // A bare `/--write/` test over the whole file passed on the header comment alone, which the
+  // self-test's delete-the-guard arm caught — a check satisfiable by prose is not a check.
+  const beforeWrite = w.generatorSrc.slice(0, w.generatorSrc.indexOf('fs.mkdirSync(OUT'));
+  const guarded = /process\.argv\.includes\(\s*['"]--write['"]\s*\)/.test(beforeWrite);
   return {
     id: 'N1', path: 'coherence.naming',
     red: !guarded && stockHyphen > 0,
@@ -472,9 +476,21 @@ const TEARDOWNS = {
     ['add-300-pois', (w) => { for (let i = 0; i < 300; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' }); }, 'green'],
     ['add-118-pois — one short of the floor', (w) => { for (let i = 0; i < 118; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' }); }, 'red'],
   ],
+  // N1 was RED and this piece FIXED it, so its arms had to change with it — and the inert-control
+  // detector below is what noticed. Before the guard landed, `add-the-write-guard` was the
+  // repair arm and went red -> green. Once the guard was in the file, both arms were green, the
+  // baseline was green, and N1 had never been seen to move: an inert control, on a check whose
+  // own fix had just made it inert. So the first arm is now DELETE-THE-FIX — strip the guard back
+  // out on a copy and require the old red — and the second confirms the stock is the other half
+  // of the defect rather than the guard carrying it alone.
   N1: [
-    ['add-the-write-guard', (w) => { w.generatorSrc = w.generatorSrc.replace('fs.mkdirSync(OUT', 'if (!process.argv.includes(\'--write\')) process.exit(0);\nfs.mkdirSync(OUT'); }, 'green'],
-    ['guard-plus-empty-stock', (w) => { w.generatorSrc = w.generatorSrc.replace(/const EPITHET = \[[^\]]*\];/, 'const EPITHET = [];').replace(/const GIVEN = \[[^\]]*\];/, 'const GIVEN = [];'); }, 'green'],
+    ['delete-the-guard', (w) => { w.generatorSrc = w.generatorSrc.replace(/if \(!process\.argv\.includes\('--write'\)\)[\s\S]*?\n\}\n/, ''); }, 'red'],
+    ['delete-the-guard-and-empty-the-stock', (w) => {
+      w.generatorSrc = w.generatorSrc
+        .replace(/if \(!process\.argv\.includes\('--write'\)\)[\s\S]*?\n\}\n/, '')
+        .replace(/const EPITHET = \[[^\]]*\];/, 'const EPITHET = [];')
+        .replace(/const GIVEN = \[[^\]]*\];/, 'const GIVEN = [];');
+    }, 'green'],
   ],
   // LR1 is RED on the shipped tree (one dispute cites a book nobody wrote), so the primary arm
   // REPAIRS it — write the missing book — and demands green. The second arm repairs and then

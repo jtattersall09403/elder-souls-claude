@@ -290,6 +290,41 @@ for (const s of SETTLEMENTS) {
   }
 }
 
+// ---- the write guard (W1-27) -----------------------------------------------------------------
+// THIS TOOL IS NO LONGER THE ONLY AUTHOR OF ITS OWN OUTPUT, and until this guard existed it did
+// not know that. Two later rounds edit `game/data/world/property/*.json` after this file writes
+// it, and re-running this tool silently deletes both:
+//
+//   * W1-23 round 3/4's rename. `tools/lore/name-rosters.mjs --write` brought the shipped rosters
+//     from 121 of 217 named Argonians carrying a hyphenated-English descriptive name (55.8%,
+//     against RI-LOR04 §4's attested 11%) down to effectively none. The GIVEN/EPITHET stock below
+//     is the stock that produced that defect and it is still here — measured on a scratch copy at
+//     this commit, running this file unguarded writes 45 distinct people at **80.0%**
+//     hyphenated-English, including `Sedura Rope-Maker`: *sedura* is a Dunmer honorific, so that
+//     is an Argonian called "Sir Rope-Maker", which is the exact line the round-3 verdict called
+//     out. It also collapses 280 named people into 45, because the stock is too small not to
+//     collide.
+//   * `tools/world/build-unique-property.mjs`'s 83 hand-placed unique objects, which are the only
+//     objects in the province that are not palette assembly.
+//
+// So the guard is deliberately NOT clever: it refuses to write without `--write`, and prints what
+// must be re-run afterwards. Anyone who genuinely wants to regenerate still can, in one word, and
+// now knows what they are spending. Removing these four lines restores the old behaviour exactly,
+// which is the delete-the-fix arm — `tools/coherence/w1-27-coherence.mjs --self-test` runs it.
+if (!process.argv.includes('--write')) {
+  process.stderr.write(
+    'build-property.mjs: refusing to write without --write.\n'
+    + '  This overwrites game/data/world/property/*.json, which two later rounds have edited since:\n'
+    + '    * tools/lore/name-rosters.mjs --write   (W1-23 r3/r4 — the rename; unguarded this file\n'
+    + '      writes 80.0% hyphenated-English names and collapses 280 people into 45)\n'
+    + '    * tools/world/build-unique-property.mjs (the 83 hand-placed unique objects)\n'
+    + '  If you mean it: node tools/world/build-property.mjs --write && \\\n'
+    + '                  node tools/world/build-unique-property.mjs && \\\n'
+    + '                  node tools/lore/name-rosters.mjs --write\n'
+  );
+  process.exit(2);
+}
+
 fs.mkdirSync(OUT, { recursive: true });
 for (const f of files) fs.writeFileSync(path.join(OUT, `${f.settlement}.json`), JSON.stringify(f, null, 1) + '\n');
 
