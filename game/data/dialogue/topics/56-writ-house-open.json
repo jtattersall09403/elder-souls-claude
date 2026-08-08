@@ -31,7 +31,7 @@
       "note": "jeeh-ei, in the barge hold, before the player has a name. The one topic answered by somebody with nothing to gain from answering.",
       "infos": [
         {
-          "a": "dockhand",
+          "a": "townsman",
           "d": 20,
           "x": "The hold of a writ barge. It is not a prison, they will tell you, because a prison would want a charge written down. It is a room that goes where the Office sends it.",
           "to": [
@@ -167,13 +167,14 @@
       "note": "warden-scribe-tuleeh-ma. A Saxhleel clerk filling in writs for Saxhleel, which is the whole character in one topic.",
       "infos": [
         {
-          "a": "notary",
+          "a": "archivist",
           "d": 25,
           "x": "Tuleeh-Ma keeps the Tidewrack intake. Cleanest hand in the province, and the only one who files the returns on the day they happen. The Office has never once looked at his books. He wants them looked at.",
           "to": [
             "the-list",
             "the-provincial-office"
-          ]
+          ],
+          "cell": "blackrose"
         },
         {
           "a": "clerk",

@@ -913,7 +913,7 @@
       "id": "the-bond-berth",
       "infos": [
         {
-          "a": "dockhand",
+          "a": "townsman",
           "cell": "gideon",
           "x": "A salt-wife bond passes to the wife when the man drowns. The Ledger calls that compassion. It's a berth, a debt, and a woman who can't leave the river.",
           "to": [
@@ -951,12 +951,13 @@
           ]
         },
         {
-          "a": "dockhand",
+          "a": "townsman",
           "cell": "gideon",
           "x": "His room is still paid for. Four seasons! If they'd done what you think they did, why would they still be paying the rent on it?",
           "to": [
             "the-quiet-partner"
-          ]
+          ],
+          "d": 30
         }
       ]
     },
@@ -973,8 +974,8 @@
           ]
         },
         {
-          "a": "harbourmistress",
-          "cell": "gideon",
+          "a": "clerk",
+          "cell": "lilmoth",
           "x": "A chair falls vacant three ways and only one of them needs a knife. The other two are in the articles, and no one at that table has opened the articles in forty years.",
           "to": [
             "the-first-chair"
@@ -986,7 +987,7 @@
       "id": "the-room-with-no-case",
       "infos": [
         {
-          "a": "notary",
+          "a": "archivist",
           "cell": "gideon",
           "x": "On the half-landing, grey door, same grey as the wall. Two chairs in it and years of wear on the floor. Every plan of this building says there is nothing there.",
           "to": [
@@ -995,7 +996,7 @@
           ]
         },
         {
-          "a": "scribe",
+          "a": "clerk",
           "cell": "gideon",
           "x": "It is a store. It has been a store since before I came. Nothing has ever been stored in it.",
           "to": [
@@ -1008,7 +1009,7 @@
       "id": "the-removal-that-is-not-one",
       "infos": [
         {
-          "a": "notary",
+          "a": "archivist",
           "cell": "gideon",
           "x": "No one in this province can remove a prefect. That is true and it is not the sentence you want. A prefect can vacate, and a commission has a term on it, and terms end whether anyone reads them or not.",
           "to": [
@@ -1017,7 +1018,7 @@
           ]
         },
         {
-          "a": "scribe",
+          "a": "clerk",
           "cell": "gideon",
           "x": "The commission is in the box marked for the last Legate's attention. That box has not been opened since there was a Legate to attend to it.",
           "to": [
@@ -1031,7 +1032,6 @@
       "infos": [
         {
           "a": "rootkeeper",
-          "cell": "rootlands",
           "x": "Between the tides, at the eastern well, there is a knocking in the ground that was not there two seasons ago. The old word for it is the taking-below being heard.",
           "to": [
             "the-taking-below",
@@ -1039,8 +1039,7 @@
           ]
         },
         {
-          "a": "walker",
-          "cell": "rootlands",
+          "a": "mudborn",
           "x": "It keeps time. I have counted it against a glass twice and it does not drift.",
           "to": [
             "the-hollow"
@@ -1052,8 +1051,7 @@
       "id": "the-drowned-post",
       "infos": [
         {
-          "a": "walker",
-          "cell": "rootlands",
+          "a": "mudborn",
           "x": "At the sluice crossing there is a post with marks on the far side, and the far side is under water except on the lowest tide of the season. Nine marks. One a year, and each one higher.",
           "to": [
             "the-coast-wound",
@@ -1062,7 +1060,6 @@
         },
         {
           "a": "rootkeeper",
-          "cell": "rootlands",
           "x": "Someone cuts them. I know who, and I am not going to say. She has never asked anyone to look, and that is her right.",
           "to": [
             "the-hollow"
@@ -1075,7 +1072,6 @@
       "infos": [
         {
           "a": "rootkeeper",
-          "cell": "rootlands",
           "x": "A speaker falls silent when four fourth-days pass and no hollow puts a question to them. Not a vote. An absence, counted, on a post that no one alive has seen used.",
           "to": [
             "the-speakers-silence",
@@ -1083,8 +1079,7 @@
           ]
         },
         {
-          "a": "walker",
-          "cell": "rootlands",
+          "a": "mudborn",
           "x": "Three have gone by. And every hollow is waiting for a different hollow to speak first.",
           "to": [
             "the-empty-chair"
@@ -1105,7 +1100,7 @@
           ]
         },
         {
-          "a": "notary",
+          "a": "archivist",
           "cell": "gideon",
           "x": "They have asked her many times what she saw. What she is afraid of is a question the court has not put to her.",
           "to": [

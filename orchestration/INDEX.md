@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `4a17ec3`: 595 tools, 153 reference
+so it cannot drift. Generated at `34d1387`: 596 tools, 153 reference
 items, 46 pieces in flight.
 
 Its purpose is to stop 46+ concurrent agents each paying separately to discover the
@@ -191,7 +191,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 18
+### `tools/dialogue/` — 19
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/arbiter-order-divergence.mjs` — ARBITRATION S37 — the instrument.
@@ -207,6 +207,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/mk-asking-around.mjs` — AUTHORING TOOL — the connective tissue of the topic graph.
 - `tools/dialogue/mk-rumours.mjs` — AUTHORING TOOL — what a town is saying this week.
 - `tools/dialogue/order-infos.mjs` — Put every topic's INFOs into the order the shipping reader already resolves them in.
+- `tools/dialogue/rehome-actors.mjs` — W1-17 round 2.
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
 - `tools/dialogue/shadow-audit.mjs` — IS THE SHADOWED LINE DEAD, OR IS THE LINT WRONG ABOUT IT?
 - `tools/dialogue/voice-metrics.mjs` — DOES AN ORDINATOR SOUND LIKE A BEGGAR?

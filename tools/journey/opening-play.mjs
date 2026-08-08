@@ -432,7 +432,13 @@ try {
   }
   out.checks.desk_presses = presses;
   const last = presses[presses.length - 1] || {};
-  const stuck = last.node === 'writ.race-observed' || !!last.refusal;
+  // The desk must actually have been reached. The first draft treated "still at hold.out" as
+  // "not stuck" and passed on a run whose walker never left the barge hold — a probe that
+  // cannot tell "the scene went on" from "the scene never started" is worse than no probe.
+  const reachedDesk = ['writ.enter', 'writ.race-observed', 'writ.sex'].includes(deskNode.node)
+    || (out.checks.after_companionway.place && out.checks.after_companionway.place !== 'barge-hold');
+  const stuck = !reachedDesk || last.node === 'writ.race-observed' || !!last.refusal;
+  out.checks.reached_desk = reachedDesk;
   const censusEvents = await h.page.evaluate(() => {
     const evs = (window.__HARNESS.getEvents ? window.__HARNESS.getEvents() : []) || [];
     return evs.filter((e) => e.type === 'census_refused').slice(-3);
@@ -442,7 +448,10 @@ try {
   if (!stuck) {
     pass('P10', `the scene moved past the desk to '${last.node}'`, { presses, race: last.race });
   } else {
-    fail('P10', `the scene cannot be finished from the title: stuck at '${last.node}' after ${presses.length} presses of the bound key` + (last.refusal ? `, refusal "${last.refusal}"` : ''), { presses, race_observed: last.race, census_refused_events: censusEvents });
+    fail('P10', reachedDesk
+      ? `the scene cannot be finished from the title: stuck at '${last.node}' after ${presses.length} presses of the bound key` + (last.refusal ? `, refusal "${last.refusal}"` : '')
+      : `the walker never left the barge hold (moved ${walkOut.total_moved_m} m over ${walkOut.iterations} attempts, final ${JSON.stringify(walkOut.final_pos)}, trigger is z>=4.2 and |x|<=1.6) — the desk was not reached, so this leg is UNMEASURED rather than passed`,
+    { presses, reached_desk: reachedDesk, walk_out: walkOut, race_observed: last.race, census_refused_events: censusEvents });
   }
 
   // ---- P9 — nothing drawn tells the player what to do -------------------------------------

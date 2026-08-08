@@ -266,7 +266,70 @@ function mergeCensus(docs) {
 }
 
 // ---------------------------------------------------------------------------------------------
-function run() {
+// THE GATE. Everything above models the reader; this arm CALLS it.
+//
+// The modelled comparison is what produces the report, but it can never be the gate, because a
+// model of `infoFor()` written today keeps answering for the `infoFor()` of today. So the gate
+// imports the real function and asks it, resolution by resolution, whether the info it returns
+// is the first admissible info in authored order. It goes red the day anybody puts a score back
+// in, and it can never go green by being out of date.
+//
+// It calls `infoFor()` once per (topic, speaker, distinct player-side admissibility class) —
+// exhaustive over everything that can change the answer, without 1.4 billion calls.
+// ---------------------------------------------------------------------------------------------
+async function verifyEngine(docs, npcs, players, readerPath) {
+  const mod = readerPath
+    ? await import(url.pathToFileURL(path.resolve(ROOT, readerPath)).href)
+    : await import('../../game/src/character/converse.js');
+  const idx = mod.buildTopicIndex(docs);
+  const allowed = mod.infoAllowed;
+  const topicIds = [...new Set(docs.flatMap((d) => (d.topics || []).filter((t) => t && typeof t.id === 'string').map((t) => t.id)))].sort();
+
+  let checked = 0, mismatched = 0; const bad = []; const badPairs = new Set(); const badTopics = new Set();
+  for (const tid of topicIds) {
+    const t = idx.get(topicKey(tid));
+    if (!t || !t.infos.length) continue;
+    const n = t.infos.length;
+    // one representative player per distinct player-side admissibility mask for this topic
+    const rep = new Map();
+    for (const p of players) {
+      let m = 0;
+      for (let i = 0; i < n; i++) if (allowed(t.infos[i], p)) m |= (1 << i);
+      if (!rep.has(m)) rep.set(m, p);
+    }
+    for (const npc of npcs) {
+      for (const [pm, p] of rep) {
+        // the §A answer: first admissible entry in authored order
+        let firstText = null;
+        if (npc.lines && npc.lines[topicKey(tid).split(' ').join('_')]) firstText = npc.lines[topicKey(tid).split(' ').join('_')];
+        else {
+          const actor = npc.actor || null;
+          for (let i = 0; i < n; i++) {
+            if (!(pm & (1 << i))) continue;
+            const info = t.infos[i];
+            if (info.cell && !inCell(npc, info.cell)) continue;
+            const matchesActor = actor && info.a === actor;
+            if (!matchesActor && info.a) continue;
+            firstText = info.x; break;
+          }
+        }
+        const got = mod.infoFor(idx, tid, npc, p);
+        const gotText = got ? got.text : null;
+        if (firstText == null && gotText == null) continue;
+        checked++;
+        if (firstText !== gotText) {
+          mismatched++; badTopics.add(t.id); badPairs.add(`${t.id}|${npc.id}`);
+          if (bad.length < 10) bad.push({ topic: t.id, speaker: npc.id, engine: String(gotText).slice(0, 110), first_match: String(firstText).slice(0, 110) });
+        }
+      }
+    }
+  }
+  return { checked, mismatched, bad, pairs: badPairs.size, topics: badTopics.size,
+    reader: readerPath || 'game/src/character/converse.js' };
+}
+
+// ---------------------------------------------------------------------------------------------
+async function run() {
   const docs = loadTopicDocs();
   const npcs = loadNpcs();
   const axes = canonicalPlayerAxes(docs);
@@ -339,6 +402,13 @@ function run() {
   console.log(`   under the shipped scoring reader                          ${full.deadScore}`);
   console.log(`   under RI-DLG01 §A first-match-wins                        ${full.deadOrder}`);
   console.log('');
+  const eng = await verifyEngine(docs, npcs, players, READER);
+  out.engine_conformance = { reader: eng.reader, checked: eng.checked, mismatched: eng.mismatched, pairs: eng.pairs, topics: eng.topics };
+  console.log('F. THE GATE — the RUNNING infoFor(), called, not modelled');
+  console.log(`   reader under test                                         ${eng.reader}`);
+  console.log(`   resolutions checked                                       ${eng.checked.toLocaleString()}`);
+  console.log(`   where infoFor() did NOT return the first admissible info  ${eng.mismatched.toLocaleString()}  (${eng.pairs} speaker/topic pairs, ${eng.topics} topics)`);
+  console.log('');
   if (full.examples.length) {
     console.log('DIVERGENCES (first 8):');
     for (const e of full.examples.slice(0, 8)) {
@@ -352,7 +422,7 @@ function run() {
   console.log(`measured at commit ${out.commit} (RULES 12 — a number is a claim about a commit)`);
   if (JSONOUT) { fs.mkdirSync(path.dirname(path.resolve(ROOT, JSONOUT)), { recursive: true }); fs.writeFileSync(path.resolve(ROOT, JSONOUT), JSON.stringify(out, null, 2)); console.log(`json -> ${JSONOUT}`); }
 
-  return { full, census, merge, axes, players };
+  return { full, census, merge, axes, players, eng };
 }
 
 function gitSha() {
