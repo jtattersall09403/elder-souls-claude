@@ -1,35 +1,34 @@
 {
   "task_id": "W1-SAVE-AI",
   "title": "save/fight.js serialises live SoulsAI as plain object; boot-check blind to it",
-  "state": "fix_landed",
+  "state": "complete",
   "started": "2026-08-08",
-  "next_step": "extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the damaged probes",
+  "next_step": "none \u2014 piece complete; a critic should judge it (rule 22)",
   "files_touched": [
     "orchestration/status/W1-SAVE-AI.json",
     "game/src/save/fight.js",
     "game/src/combat/ai.js",
     "game/src/combat/enemy.js",
     "tools/check-save-shape.mjs",
-    "tools/check-data.mjs"
-  ],
-  "files_claimed": [
-    "game/src/save/fight.js",
-    "game/src/combat/ai.js",
-    "game/src/combat/enemy.js",
-    "tools/harness/boot-check.mjs",
     "tools/check-data.mjs",
-    "tools/check-save-shape.mjs",
-    "tools/harness/save-ai-roundtrip.mjs",
-    "reports/w1-save-ai/",
+    "tools/harness/boot-check.mjs",
+    "tools/harness/save-ai-consumption.mjs",
+    "reports/w1-save-ai/consumption.json",
+    "reports/w1-save-ai/consumption-deletefix.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/2026-08-08-w1-save-ai-the-guard-still-knows-you-after-a-reload.png"
   ],
+  "files_claimed": [],
   "notes": [
     "combat/ai.js and combat/enemy.js are declared by W1-12 [done] and W1-03 [fixed]; neither is building and both files were clean in the working tree when claimed. Declared here rather than left to read as a collision (rule 16).",
     "NOT touching game/src/engine.js: 8 live pieces, working tree MM (staged AND unstaged neighbour edits). A `git commit --only game/src/engine.js` would carry them.",
     "PRE-FIX REPRODUCTION (commit 63f41ef + working tree, one browser): ctl.ai constructor SoulsAI -> Object across saveRoundTrip(); ai.step is not a function on the next stepFrames(1); hash_equal false; the serialised SoulsAI is 81,892 of the 194,161-byte save (42%) because it drags the whole CombatBody, statblock and ai.json along with it.",
     "SECOND, SEPARATE DEFECT FOUND, NOT MINE TO FIX: game/src/engine.js:7182 nulls this.death.lastGrounded on every load where the death surface is not active, one statement after DeathSystem.restoreInFlight() restored it -- so death.last_grounded is the OTHER half of hash_equal:false and the D3 fall-rule respawn point does not survive a load. Same family as the comment four lines above it. Handed up.",
-    "FLEET NOTE: at the start of this run the whole tree was unbootable (Engine._installCanon threw on 2 unresolved canon refs after bank 63f41ef swept W1-17's in-flight removal of the `notary` infos). Someone demoted the throw to a warning mid-run and boot-check went green again. Not my change."
+    "FLEET NOTE: at the start of this run the whole tree was unbootable (Engine._installCanon threw on 2 unresolved canon refs after bank 63f41ef swept W1-17's in-flight removal of the `notary` infos). Someone demoted the throw to a warning mid-run and boot-check went green again. Not my change.",
+    "RULE 17 / SWEEPING, reported rather than diagnosed as a neighbour: commit 692b6aa ('S37: the corpus governs dialogue selection and the engine yields') carried my in-flight game/src/save/fight.js, game/src/combat/ai.js, game/src/combat/enemy.js, tools/check-save-shape.mjs and tools/check-data.mjs under its own message, along with many other agents' files. My own two commits (674c107, be9af27) then found my named paths already committed and carried only leftovers -- docs/index.html, docs/progress.html, docs/status.json, orchestration/INDEX.md, orchestration/status/critic-w1-26.json -- which belong to arbiter-wpn-s36 and critic-w1-26. I did not intend that and I am recording it rather than trying to unpick it. `git commit --only` with paths that are already committed does NOT restrict the commit to nothing; see dd63f6c, where another agent recorded the same thing ('record that --only did not fully hold').",
+    "TREE RED TWICE DURING THIS RUN, neither mine, both rule 13: (1) Engine._installCanon threw on 2 unresolved canon refs after bank 63f41ef swept W1-17's removal of the `notary` infos -- someone demoted it to a warning mid-run; (2) converse.js orderTopicDocs threw because game/data/dialogue/topics/_manifest.json exists on disk but was not listed in game/data/index.json, so the engine loaded 21 grouped topic docs without it. Both blocked all browser work for the whole box while they lasted.",
+    "CONTENTION: `node tools/contention.mjs --gate` returned GO before each browser run (2 instances / room for 4, then room for 3). Five browser runs total: one pre-fix diagnostic, one post-fix diagnostic, three boot-check runs (fixed, pre-fix, naive-SKIP), plus timing and the three consumption arms. Own browser used throughout rather than tools/capture/, because every measurement here steps the simulation (RULES 20).",
+    "The screenshot was taken with my own browser for the same reason: the frame only means anything after a save, a load and 240 fixed steps."
   ],
   "redundant_with": [
     "W1-12",
@@ -55,5 +54,67 @@
       "ai_record_bytes": 302,
       "save_bytes": 112590
     }
-  }
+  },
+  "commit_of_fix": "692b6aa (a neighbour commit swept the source files before my own; see below) + be9af27/674c107",
+  "boot_check_extension": {
+    "what": "boot-check.mjs now spawns one guard_legion, steps once to build its AI, saveState -> structural clone -> loadState, and steps again. Armed (STRICT_STEP) only after being shown silent and able to fail.",
+    "silent_on_HEAD": {
+      "stepped_after_a_load": true,
+      "step_ms": 622,
+      "total_s": 27.9
+    },
+    "cost": "622 ms added. saveRoundTrip() was tried first and cost 3,110 ms -- two extra getStateHash() calls and a stateDiff the arm does not need -- so it was replaced with saveState/clone/loadState. 900 ms of the remaining 622-1100 ms is loadState() rebuilding the world, which is the thing under test.",
+    "proven_red_two_ways": [
+      "against the real pre-fix source served from a scratch copy: rendered_a_frame TRUE, harness_responsive TRUE, stepped_after_a_load FALSE, step_error 'this.ai.step is not a function', exit 12. Every pre-existing arm of boot-check stayed green, which is the point.",
+      "against the NAIVE fix (ai added to SKIP), which throws nothing at all: step_error 'a live AI was lost across the round trip: 2 before, 0 after', exit 12. The arm counts live AIs rather than only watching for an exception, so the silent variant is caught too."
+    ],
+    "quiet_where_it_cannot_know": "no verbs / no combat state / no live AI on the floor -> stepped_after_a_load is null and the gate ignores it."
+  },
+  "consumption_RI_MTH07": {
+    "world_side_consumer": "EnemyController._idleBehaviour() -> SoulsAI.step(), which writes b.pos/b.yaw/b.state/b.speedMps and emits enemy_state. The leash test (T25) is the FIRST decision step() takes and it reads this.anchor, which exists nowhere but on the AI.",
+    "A_baseline": "IDLE, moved 0.000 m, end (2771.5, 5013)",
+    "B_perturbed_anchor": "saved anchor moved 300 m; restored body enters LEASH_RETURN and walks 8.672 m to (2765.368, 5006.868)",
+    "C_null_control": "perturbed ai.s.yawRate (a trace output assigned every frame before anything reads it) -> byte-identical to A, 0.000 m. So B is not noise.",
+    "D_delete_the_fix": "same script against a served copy of the pre-fix source: fixture sound (ai_live_before_save true), then 'the AI came back without step()', exit 2. The teardown bites.",
+    "which_shape": "a single fix, not two guards and not an inert one: cutting it alone returns the old failure."
+  },
+  "hash_equal": {
+    "before": "false, 2 diff paths (fight.enemies, death.last_grounded)",
+    "after": "still false, 1 diff path (death.last_grounded ONLY)",
+    "fight_enemies_cause": "moveKeyOf() resolves a move object to its TABLE KEY by identity (table[k] === m). Nested under ctl.ai.b.moves the save carried COPIES, so on re-save identity failed and moveKeyOf fell back to m.id -- 'roll' where the first save wrote 'roll_LIGHT'. Gone with the ai subtree.",
+    "residual_NOT_MINE": "game/src/engine.js:7182 -- `if (this.death.active) ... else { this.death.lastHp = null; this.death.lastGrounded = null; }` runs on every load, one statement after DeathSystem.restoreInFlight() restored lastGrounded from the blob. save/state.js:336 writes it, death.js:98 reads it back, and this line then throws it away. It is the D3 fall-rule respawn point, so a player who loads a save loses where they last stood on solid ground. Exactly the shape of the comment four lines above it. NOT FIXED: engine.js has 8 live claimants and was `MM` (staged AND unstaged neighbour edits) throughout, so `git commit --only game/src/engine.js` would have carried them."
+  },
+  "damaged_other_pieces": [
+    {
+      "piece": "critic-w1-map / W1-MAP-r1",
+      "evidence": "orchestration/status/critic-w1-map.json:28; corpus/90-verdicts/wave1/W1-MAP-r1.md:237; 2 runs in reports/runs/_raw/node-tools-harness-critic-w1-map-r1.mjs-*.log",
+      "what": "'It first presented as four map-shaped failures (C2, D1, D2, D3) that were really a walk whose steps never ran.' The critic caught the misattribution, but C2/D1/D2/D3 are worth re-taking now the throw is gone.",
+      "action": "re-take C2, D1, D2, D3"
+    },
+    {
+      "piece": "W1-21-r2",
+      "evidence": "orchestration/status/W1-21-r2.json:132; 2 runs in reports/runs/_raw/node-tools-harness-w1-21-r2-nav.mjs-*.log",
+      "what": "'It took two runs of my probe down before I stepped one frame at a time and cleared hostiles around it.' Two probe runs lost, and the figures that survived were taken with hostiles cleared out of the way.",
+      "action": "re-take with hostiles present"
+    },
+    {
+      "piece": "critic-w1-16 / W1-16-r2 (the finder)",
+      "evidence": "orchestration/status/critic-w1-16.json:30; corpus/90-verdicts/wave1/W1-16-r2.md:321,407; reports/w1-16/critic-live-pin.json, critic-live2.json, critic-live3.json",
+      "what": "The L4 PIN ladder's dress() despawns EVERY hostile before every load path, purely to make any load path measurable at all. All five load-path pin measurements were therefore taken in an emptied world.",
+      "action": "re-take the L4 pin ladder without the despawn"
+    },
+    {
+      "piece": "W1-SOULS-r3 souls-ledger-oracle",
+      "evidence": "reports/critic-souls-r3-oracle-SELFBREAK.json \u2014 16 of 59 routes carry \"broke\": \"save_load: this.ai.step is not a function\"",
+      "what": "Every route containing save_load was truncated at that step, so 16 of 59 routes (27%) never had their post-load invariants checked at all.",
+      "action": "re-run the oracle; the save_load routes are unmeasured, not passing"
+    }
+  ],
+  "not_done": [
+    "game/src/engine.js:7182 (death.lastGrounded destroyed on every load) \u2014 diagnosed precisely, NOT fixed. It is the whole of the remaining hash_equal:false. Handed up because engine.js had 8 live claimants and staged neighbour edits in it all run.",
+    "No worktree-level delete-the-fix of the boot-check change itself; the delete-the-fix was done at the source level (a served scratch copy of the pre-fix game/) which is stronger, but it means the arms were run on a COPY of game/, not on the shared tree.",
+    "getDurableFieldCensus() was not extended to walk enemy controllers (it only calls saveActor on bodies and playerCtl), so the census still cannot see an enemy ctl field going missing. Named, not fixed.",
+    "The `__unsaved` list is written by saveActor and read by check-save-shape, but nothing surfaces it in getSaveManifest()'s path census; on a sound tree it is absent so this costs nothing today.",
+    "No judgement of my own work (RULES 22) \u2014 a critic with fresh context is needed."
+  ]
 }
