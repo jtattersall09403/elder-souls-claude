@@ -1,48 +1,77 @@
 {
   "task_id": "W1-TOUCH-r2",
   "role": "builder",
-  "item": "RI-JRN04 §G / RI-JRN01 O17 — touch input, round 2",
-  "verdict_under_repair": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md (FAIL 6/10, binding axis: coverage of RI-JRN04 §G)",
+  "item": "RI-JRN04 \u00a7G / RI-JRN01 O17 \u2014 touch input, round 2",
+  "verdict_under_repair": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md (FAIL 6/10, binding axis: coverage of RI-JRN04 \u00a7G)",
   "state": "in_progress",
   "commit_at_start": "6bb9003",
   "contention_note": "tools/contention.mjs said WAIT before framerate run 2 and I proceeded anyway (RULES 21 permits it if declared). Declared here. The whole point of that run was a load-bracketed design, so a busy box is the condition it was built for, not a hazard to it.",
-  "arbitration_note": "corpus/00-doctrine/ARBITRATION.md at 6bb9003 has no ruling on the T5 frames-vs-wall-clock seam (highest ruling is S38). Per the brief I am building against the number RI-JRN04 §G T5 specifies — 12 f@60 — and NOT changing the gate. Every duration I touch is written with its unit per S22.",
+  "arbitration_note": "corpus/00-doctrine/ARBITRATION.md at 6bb9003 has no ruling on the T5 frames-vs-wall-clock seam (highest ruling is S38). Per the brief I am building against the number RI-JRN04 \u00a7G T5 specifies \u2014 12 f@60 \u2014 and NOT changing the gate. Every duration I touch is written with its unit per S22.",
   "work_list": [
-    {"id": "A", "from": "§4", "what": "why does the fixed-step rate collapse at the handheld profile?", "state": "measured, mechanism established"},
-    {"id": "B", "from": "§3", "what": "T5 hold gate: frames vs wall-clock", "state": "todo"},
-    {"id": "C", "from": "§5", "what": "ui/system.js:647 and touch-overlay.js:101 'by construction'", "state": "todo"},
-    {"id": "D", "from": "§6", "what": "run --leg menu, --leg insets, --leg portrait", "state": "todo"},
-    {"id": "E", "from": "§2", "what": "roll unreliable while stick held", "state": "todo"}
+    {
+      "id": "A",
+      "from": "\u00a74",
+      "what": "framerate collapse",
+      "state": "DONE r2a, and REASSIGNED by S39 to RI-PLT01 \u2014 not mine any more"
+    },
+    {
+      "id": "B",
+      "from": "\u00a73 + S39",
+      "what": "clock boundary: framesHeld() in ms via event.timeStamp, inputNow(), 16 reclassified figures, real.js:446 bare 12",
+      "state": "in_progress"
+    },
+    {
+      "id": "C",
+      "from": "\u00a75",
+      "what": "ui/system.js:647 + touch-overlay.js:101 'by construction' \u2014 measure or delete",
+      "state": "todo"
+    },
+    {
+      "id": "D",
+      "from": "\u00a76",
+      "what": "run --leg menu, --leg insets, --leg portrait",
+      "state": "todo"
+    },
+    {
+      "id": "E",
+      "from": "\u00a72",
+      "what": "roll suppressed while stick held (S39: routing fault, not timing)",
+      "state": "todo"
+    }
   ],
   "findings": [
     {
       "id": "A1",
       "headline": "The step rate does not collapse AT the handheld profile. It collapses in play mode at every profile, and the handheld profile is the FASTEST of the three measured.",
-      "evidence": "reports/w1-touch-r2/framerate.json run 1, commit 6bb9003: phone 844x390 dpr3 = 9.04 steps/s at load 2.70; desktop 1280x720 dpr1 = 6.24 steps/s at load 2.81. The desktop null control the critic never took is WORSE than the phone. §4's framing as a handheld problem is wrong; it is a play-mode render problem that touch merely inherits."
+      "evidence": "reports/w1-touch-r2/framerate.json run 1, commit 6bb9003: phone 844x390 dpr3 = 9.04 steps/s at load 2.70; desktop 1280x720 dpr1 = 6.24 steps/s at load 2.81. The desktop null control the critic never took is WORSE than the phone. \u00a74's framing as a handheld problem is wrong; it is a play-mode render problem that touch merely inherits."
     },
     {
       "id": "A2",
       "headline": "The mechanism is the render, and the accumulator is the amplifier. Neither is the touch overlay and neither is device pixel ratio.",
-      "evidence": "steps_per_raf is EXACTLY 5.000 in every rendering arm at every load — pinned at core/loop.js MAX_CATCHUP. sim_cpu_frac is 0.2-0.4%: the fixed step itself is free. Removing the render (loop.setRenderRate(0), the instrument RI-PLT01 §D M12 says nobody ever uses) takes rAF from 1.0-2.3 Hz to 24-25 Hz, a 16-25x move. Suppressing the touch overlay moves nothing outside noise. dpr 3 -> 1 gave +27% at equal load: real, small, not the cause."
+      "evidence": "steps_per_raf is EXACTLY 5.000 in every rendering arm at every load \u2014 pinned at core/loop.js MAX_CATCHUP. sim_cpu_frac is 0.2-0.4%: the fixed step itself is free. Removing the render (loop.setRenderRate(0), the instrument RI-PLT01 \u00a7D M12 says nobody ever uses) takes rAF from 1.0-2.3 Hz to 24-25 Hz, a 16-25x move. Suppressing the touch overlay moves nothing outside noise. dpr 3 -> 1 gave +27% at equal load: real, small, not the cause."
     },
     {
       "id": "A3",
       "headline": "The player-facing defect is not a low frame rate. It is that 87% of simulated time is deleted, so the world runs in slow motion.",
-      "evidence": "dropped_ms_per_s = 776-882 of every 1000 ms wall clock across all rendering arms; sim_time_ratio 0.07-0.19. RI-PLT01 §C.4 R3 requires exactly this ('max 5 steps, then time is dropped') as a Tier-S structural bar with M8 checking it, so the loop is OBEYING its specification. R3 is written for recovery from a stall; it is being applied to a steady state where every frame is slow, and there it is a permanent 85-93% slow-motion tax. I did NOT change MAX_CATCHUP: 5 is a binding number in a reference item and not a knob a touch round may turn."
+      "evidence": "dropped_ms_per_s = 776-882 of every 1000 ms wall clock across all rendering arms; sim_time_ratio 0.07-0.19. RI-PLT01 \u00a7C.4 R3 requires exactly this ('max 5 steps, then time is dropped') as a Tier-S structural bar with M8 checking it, so the loop is OBEYING its specification. R3 is written for recovery from a stall; it is being applied to a steady state where every frame is slow, and there it is a permanent 85-93% slow-motion tax. I did NOT change MAX_CATCHUP: 5 is a binding number in a reference item and not a knob a touch round may turn."
     },
     {
       "id": "A4",
-      "headline": "This is the cause of §3. The T5 gate's wall-clock length is a direct function of dropped simulated time, not of the gate's units.",
+      "headline": "This is the cause of \u00a73. The T5 gate's wall-clock length is a direct function of dropped simulated time, not of the gate's units.",
       "evidence": "12 f@60 = 200 ms of thumb time when the sim runs at wall-clock speed. The critic measured 1034 ms because the sim was running at 11.6 steps/s = 19% of wall clock. If simulated time were not being dropped, the gate would cost 200 ms at ANY frame rate and there would be no frames-vs-milliseconds seam to rule on."
     },
     {
       "id": "A5-INSTRUMENT-DEFECT",
       "headline": "My own first control was confounded by load and I am reporting it rather than keeping the number.",
-      "evidence": "Run 1 took six arms in sequence while load per core drifted 2.70 -> 4.07, and 'the control went red' was partly the box. Run 2 is A-B-A bracketed: four takes of the IDENTICAL phone arm gave 7.83 / 5.14 / 6.00 / 4.00 steps/s — a 66.7% spread with nothing changed. Under bracketing the stall control DID NOT GO RED (7.20 vs a 5.74 baseline mean), because a 60 ms busy-wait against a 640 ms frame is +9% and invisible. That is a weak control, not a passing one. Every cross-arm claim smaller than 67% in this piece is void; A1's desktop/phone gap is at the edge of it and is reported as such; A2's 16-25x norender move is far outside it and stands."
+      "evidence": "Run 1 took six arms in sequence while load per core drifted 2.70 -> 4.07, and 'the control went red' was partly the box. Run 2 is A-B-A bracketed: four takes of the IDENTICAL phone arm gave 7.83 / 5.14 / 6.00 / 4.00 steps/s \u2014 a 66.7% spread with nothing changed. Under bracketing the stall control DID NOT GO RED (7.20 vs a 5.74 baseline mean), because a 60 ms busy-wait against a 640 ms frame is +9% and invisible. That is a weak control, not a passing one. Every cross-arm claim smaller than 67% in this piece is void; A1's desktop/phone gap is at the edge of it and is reported as such; A2's 16-25x norender move is far outside it and stands."
     }
   ],
-  "instruments": ["tools/touch/r2-framerate.mjs"],
-  "artifacts": ["reports/w1-touch-r2/framerate.json"],
+  "instruments": [
+    "tools/touch/r2-framerate.mjs"
+  ],
+  "artifacts": [
+    "reports/w1-touch-r2/framerate.json"
+  ],
   "files_touched": [
     "orchestration/status/W1-TOUCH-r2.json",
     "tools/touch/r2-framerate.mjs",
@@ -52,14 +81,26 @@
     "orchestration/status/W1-TOUCH-r2.json",
     "tools/touch/",
     "reports/w1-touch-r2/",
+    "game/src/input/hold-gate.js",
+    "game/src/input/touch.js",
+    "game/src/input/real.js",
+    "game/src/input/gamepad.js",
     "game/src/ui/system.js",
     "game/src/ui/touch-overlay.js",
-    "game/src/input/touch.js"
+    "game/src/combat/player.js",
+    "game/src/sim/stealth/pickpocket.js",
+    "game/data/input/profiles.json"
   ],
   "redundant_with": [],
-  "next_step": "offline while the box is over its ceiling: item C (the 'by construction' comments) and reading the three unrun legs. Then browser: strengthen the stall control to 1500 ms so it is decisive at any load, take the --max-catchup counterfactual, run --leg menu|insets|portrait.",
+  "next_step": "Read RI-JRN04 M-P5, guards.js, loop.js modes, touch-run.mjs --leg gate. Then implement inputNow()+framesHeld() in hold-gate.js and route the four call sites.",
   "not_done": [
     "The stall control is too weak and must be re-taken at a stall large enough to dominate the frame.",
     "No real device. Every number here is headless SwiftShader on a shared box and is stamped with its load."
+  ],
+  "successor_note": "Predecessor killed by a usage limit after item A (framerate). S39 landed in the meantime and REASSIGNS item A to RI-PLT01/PLT01-STEPRATE (not mine). My work list is now S39 remedy (framesHeld/inputNow + 16 figures), plus verdict \u00a75 (by-construction comments) and \u00a76 (menu/insets/portrait legs) and \u00a72 (roll asymmetry, S39 says routing not timing).",
+  "commit_at_resume": "dd889d5",
+  "must_not_touch": [
+    "tools/input/arbiter-clock-s39.mjs (S39-falsifier)",
+    "game/src/core/loop.js MAX_CATCHUP (RI-PLT01)"
   ]
 }

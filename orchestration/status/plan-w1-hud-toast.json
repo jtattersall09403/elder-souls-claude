@@ -1,8 +1,8 @@
 {
   "task_id": "plan-w1-hud-toast",
-  "role": "plan-agent",
+  "role": "plan-agent + plan-critic (exchange 1)",
   "piece": "W1-HUD-TOAST",
-  "state": "complete",
+  "state": "plan-critic-exchange-1-complete",
   "started": "2026-08-08",
   "commit_at_measurement": "6bb9003",
   "deliverable": "orchestration/plans/W1-HUD-TOAST.md",
@@ -11,7 +11,10 @@
     "orchestration/status/plan-w1-hud-toast.json"
   ],
   "files_claimed": [],
-  "redundant_with": ["W1-21", "W1-20"],
+  "redundant_with": [
+    "W1-21",
+    "W1-20"
+  ],
   "overlap_note": "This is a PLAN only. It writes no game/ source and claims none. It PROPOSES changes to game/src/ui/hud.js, game/src/ui/system.js, game/src/render/text-register.js and tools/analysis/ui-census.mjs, which belong to W1-21 (hud/system) and W1-26 (text register). The build piece must declare those, not this one.",
   "no_browser_launched": true,
   "numbers_measured_offline_at_6bb9003": {
@@ -20,11 +23,26 @@
     "wider_than_the_400px_panel_as_one_run": 58,
     "widest_toast_px": 1013.5,
     "widest_equip_refusal_over_2113_data_names_px": 870.0,
-    "post_wrap_rows_histogram": { "1": 13, "2": 54, "3": 8, "4_or_more": 0 },
+    "post_wrap_rows_histogram": {
+      "1": 13,
+      "2": 54,
+      "3": 8,
+      "4_or_more": 0
+    },
     "strings_hitting_the_3_row_ellipsis_ceiling": 0,
     "widest_single_word_in_any_game_data_name_px": 129.0,
     "interact_prompt_budget_px": 169.2,
-    "interact_prompt_sample_widths_px": [25.1, 26.1, 27.0, 28.3, 67.6, 84.2, 86.4, 92.9, 97.0],
+    "interact_prompt_sample_widths_px": [
+      25.1,
+      26.1,
+      27.0,
+      28.3,
+      67.6,
+      84.2,
+      86.4,
+      92.9,
+      97.0
+    ],
     "sweep_population_upper_bounds": {
       "tools_mentioning_self_test": 118,
       "tools_mentioning_break_or_deletefix": 137,
@@ -45,25 +63,53 @@
       "what_would_overturn_it": "sabotage.mjs's arm model turning out to have no place to carry an expected-side value, in which case it is a sibling module in the same directory, not a new top-level tool."
     }
   ],
-  "blocking_unknown": "Is the HUD surface's 2D context instrumented by render/text-register.js in the state ui-census.mjs drives, with w > 0 on the toast's run? glyphs.drawText calls ctx.__esNoteText only if the hook exists. Resolved by one browser-minute: raise a toast, call getRenderedText({surface:'hud'}), report entry count and the toast run's w. If absent, acceptance A1 does not exist and everything falls back to A2.",
+  "blocking_unknown": "CLOSED IN TEXT by BLOCKING-2, no browser needed. The HUD draws on surface \"menus\" (renderer.js:124-129 declares exactly dialogue/title/menus and instruments all three unconditionally in the Renderer constructor), so A1 exists and the plan's 8x-cost fallback to A2 must not be briefed. The plan's proposed query named surface \"hud\", which does not exist and would have returned an empty set — a gating measurement that was itself an empty-set query, in a piece about checks that cannot disagree. Real trap that replaces the false one: build() is cached per frame (system.js:600), so clearing the register and calling getUIState() twice on one frame repaints nothing and yields an empty register that reads exactly like a clean one. Branch on complete, never on entries.length.",
   "critique": {
     "by": "plan-critic-w1-hud-toast",
-    "at_commit": "77439c0",
-    "verdict": "BLOCKED pending items 1, 2, 3, 4, 5",
+    "at_commit": "77439c0 (first pass) + 9063779 (completion pass)",
+    "verdict": "BLOCKED pending items 1, 2, 3, 4, 5, 6",
     "where": "orchestration/plans/W1-HUD-TOAST.md — section 'PLAN CRITIC — exchange 1 of 2'",
     "blocking_headlines": [
       "1. A2's null is inert: UISurface.el() clips every element to its declared rect (ui/surface.js:210-213), so escaped_px == 0 on the fixed AND the reverted arm. Redesigned as A2a (cut_px vs a clip-free reference draw) + A2b (same-row-count pair).",
       "2. The section-6 BLOCKING unknown is CLOSED in text — the HUD draws on surface 'menus' (renderer.js:124-129), instrumented unconditionally in the Renderer constructor; A1 exists. The plan's proposed query named a surface that does not exist and would have returned an empty set.",
       "3. A1's predicate contradicts the register that supplies it: vector entries are left-aligned by construction, and x/w are integer-rounded against an exact ==0 acceptance.",
       "4. B2's four positives are not shown to be members of P, so the recall cannot disagree with the sweep.",
-      "5. Piece B's population re-scoped: graded YD over verdict-cited tools (rule 5 applied to instruments, plus the verdict supplies a second independent E); wide static screen reported, not graded. Reversible."
+      "5. Piece B's population re-scoped — REVISED ON MEASUREMENT. The plan's reason ('smaller, enumerable from the verdicts') is FALSE: P_cited=459 against P=244, so the re-scope makes the population larger, not smaller, and the first pass's reversibility floor (~8 members) guarded the tail that was never at risk. The harm argument (rule 5) survives; the operative population is the intersection P_cited n P = 133. Reason 2 (the verdict supplies a second independent E) is demoted from established property to a hypothesis the builder measures FIRST.",
+      "6. A2a's own resolution names a harness call that cannot draw the toast: __HARNESS.drawOnMenus(text) (harness/api.js:939-949) takes one argument and hardcodes position (20,120), face 'bone', size 16, colour #fff, while the toast draws face 'ink' centred on the panel. Resolution: extend the signature additively and declare game/src/harness/api.js as a third touched file. This is BLOCKING-3's error committed by the critic rather than the plan."
     ],
-    "carried_count": 8,
-    "model_split": "upheld — Sonnet for A conditional on BLOCKING-1 and -3 landing, Opus for B."
+    "carried_count": "8 raised, 1 discharged (CARRIED-6 closed on measurement), 7 carry into the build briefs",
+    "model_split": "upheld — Sonnet for A conditional on BLOCKING-1, -3 and -6 landing; Opus for B. Generalised for COST.md reuse: route on whether the acceptance is DECIDABLE WITHOUT JUDGEMENT at the time the agent writes it, not on how hard the subject sounds. Difficulty is not the axis, discretion is — A is the harder engineering job and the Sonnet one; B is mostly grep and is the Opus one because its central act is choosing a population, and two successive readers accepted an uncounted premise about that population. Headline corollary: the plan loop CONVERTS OPUS BUILDS INTO SONNET BUILDS by manufacturing the three conditions PLAN-LOOP's middle row requires — so COST.md levers 1 and 4 should be measured as ONE coupled lever, and that is the largest uncosted saving in the programme. Critics stay Opus unconditionally; downgrading a critic is the same cut as removing one.",
+    "exchange": "1 of 2 — COMPLETE. First pass was killed by the weekly usage limit with its verdict written and three items open; the completion pass finished the SAME exchange. Exchange 2 is an edit, not an argument.",
+    "measurements_taken_in_completion_pass_at_9063779": {
+      "method": "find + grep set arithmetic over tools/**/*.mjs and corpus/90-verdicts/wave1/ (145 files, 71 verdict JSONs); python json walk for gates_run. Scratch lists suffixed -plancritic, not committed.",
+      "tools_mjs_on_disk": 786,
+      "P_declares_a_perturbation": 244,
+      "P_cited_path_in_a_wave1_verdict_and_file_exists": 459,
+      "cited_paths_distinct": 471,
+      "cited_paths_no_longer_on_disk": 12,
+      "INTERSECTION_cited_and_perturbable": 133,
+      "cited_with_no_declared_perturbation": 326,
+      "opaque_by_construction_fraction_of_cited": "326/459 = 71%",
+      "verdict_prose_lines_citing_a_tool": 520,
+      "those_also_carrying_a_unit_bearing_number_on_the_same_line": 49,
+      "gates_run_rows_across_all_71_verdict_jsons": 7,
+      "gates_run_rows_with_both_a_tool_and_a_number": 2,
+      "runControl_callers": 9,
+      "caveat": "grep counts mentions, not members — the same weakness the plan named in its own section 8. The intersection is the CEILING of the gradeable population, never its floor. The ~9% quoted-E figure is line-adjacency and is a proxy, written into the brief as the builders first measurement rather than as a finding."
+    },
+    "carried_6_closed": "sabotage.mjs has NO expected-side slot: runControl's measure() returns {value, support, detail?} and arms store {arm,broken,value,support,support_declared,detail,error,canon,measured_nothing} (lib/sabotage.mjs:333-360). spec.expect is an expected VERDICT not an expected NUMBER; spec.margin/direction declare a relation between arms; spec.detail is free-form and stashing E there is the loose-convention defect the module was rebuilt to prevent. Ruling S-PLAN-HUD-B STANDS (verdict on the facility, not a new tool) because the blast radius is 9 files referencing runControl, but the plan must price the contract change: a new absent-is-a-verdict sibling to support, a validateSpec change, a VERDICT entry, and exit code 12 (EXIT_FOR uses 0,2-7,10,11; 8 and 9 are the CLI's). It is the TENTH verdict, not the sixth as the plan's section 3 says.",
+    "what_would_change_the_model_ruling": [
+      "Sonnet on A produces a build-critic round-2 finding that is a MEASUREMENT-DESIGN error rather than a coding error -> the decidable-without-judgement line is drawn wrong and browser-bearing halves go Opus regardless.",
+      "Sonnet on A lands clean -> rule confirmed on its first real trial; immediately re-run on a second landed-plan piece because n=1.",
+      "Opus on B produces a population it did not enumerate and commit, or reports B1 without the quoted-E fraction -> the model was not the operative variable and the lever is smaller than COST.md section 4 ranks it.",
+      "Measured cost of A on Sonnet is not materially below a comparable Opus build -> routing is not the lever; move to cache economics (COST.md lever 2). Needs the per-model, per-token-class figures COST.md section 2 names as ground truth, measured on this piece rather than assumed.",
+      "Nothing here licenses Haiku. Piece B's static half looks like the one mechanical trial task and is NOT, because its output is a population definition a later ruling rests on."
+    ]
   },
-  "next_step": "Fold the five BLOCKING resolutions into the plan text (all five are text edits with rulings supplied — exchange 2 is an edit, not an argument), then dispatch W1-HUD-TOAST-A (Sonnet) and W1-INSTRUMENT-COUPLING (Opus) with the eight CARRIED risks written into both briefs. The plan agent's own two worries were both answered: the panel jitter is a pure hash of (seed, index) and cannot vary between frames, and the clock-holding question is precedented by tools/harness/ui-pause.mjs.",
+  "next_step": "Fold the SIX blocking resolutions into the plan text — all six are text edits with rulings supplied. Then dispatch W1-HUD-TOAST-A (Sonnet) with the seven surviving CARRIED risks declared. DO NOT dispatch W1-INSTRUMENT-COUPLING yet: its first measurement — the quoted-E fraction over the 133 cited-and-perturbable tools — decides whether B1 is gradeable at all, needs no browser and no build agent, and should be taken before the brief is written.",
   "least_sure_of": [
-    "Piece B's population definition may degenerate: if most of P is OPAQUE, B2's 4-instance recall carries the whole piece.",
-    "A2's frame diff assumes the toast is the only difference between the two frames; the panel is drawn with a seeded jitter and I have not verified the clock can be held still in that state. The vacuity guard catches a diff that saw nothing, not one that saw too much."
+    "The ~9% quoted-E proxy is line-adjacency in verdict prose and could understate badly; a number a paragraph from its tool path is missed. If the true fraction is high, revised BLOCKING-5 over-corrects and P_cited can widen back toward 459.",
+    "BLOCKING-4 is argued from the plan's own population definition; I did not open the W1-04, W1-25 or compliance-report records to confirm the four positives are re-seedable at all.",
+    "A2b (same-row-count toast pair) assumes equal row counts give a byte-identical panel via h = max(toastH*s, rows*lineH + 20*s). That is read off hud.js:277 and not observed on a frame."
   ]
 }

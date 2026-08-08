@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `c5292f7`: 781 tools, 153 reference
+so it cannot drift. Generated at `fb2cb09`: 781 tools, 153 reference
 items, 89 pieces in flight.
 
 Its purpose is to stop 89+ concurrent agents each paying separately to discover the
@@ -1117,6 +1117,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-TOUCH-r2` | in_progress | Read RI-JRN04 M-P5, guards.js, loop.js modes, touch-run.mjs --leg gate. Then implement inp | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `W1-PROSE-TICS-r4-instrument` | ? | write tools/blind/leakcheck.mjs (battery + gate + self-test), then tools/blind/mask-text.m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
 | `critic-w1-deploy-r2` | running (successor 2 — predecessor killed by usage limit with no artifacts on disk) | read all six subjects; then break each on purpose | `orchestration/status/critic-w1-deploy-r2.json` |
 | `COST-DASHBOARD` | running | agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report. | `orchestration/status/COST-DASHBOARD.json` |
@@ -1134,7 +1135,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
 | `critic-w1-attr-scale` | running | write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md | `orchestration/status/critic-w1-attr-scale.json` |
 | `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
-| `W1-TOUCH-r2` | in_progress | offline while the box is over its ceiling: item C (the 'by construction' comments) and rea | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `broken-blog-images-fix` | ? | none -- banked and pushed | `tools/progress.mjs` `docs/progress.html` `docs/index.html` `tools/playability/check-image-refs.mjs` `orchestration/NEXT-DISPATCH.md` |
 | `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
