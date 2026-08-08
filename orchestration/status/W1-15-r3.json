@@ -237,7 +237,9 @@
     },
     "committed_at": [
       "87380df \u2014 the work",
-      "96fda92 \u2014 a whitespace correction to detection.json's indent"
-    ]
+      "96fda92 \u2014 a whitespace correction to detection.json's indent",
+      "06fbd05 \u2014 the commit stamp; SEE THE WARNING BELOW"
+    ],
+    "rule_17_incident": "06fbd05 carries SIX files I did not author and did not stage: .githooks/pre-commit, orchestration/RULES.md, tools/contention.mjs, tools/ownership.mjs, tools/publish.mjs, tools/verdict-validate.mjs \u2014 the orchestrator's own in-flight edit to rule 17 (about not sweeping neighbours' work), which was sitting STAGED IN THE INDEX when I ran `git commit`. I never ran `git add -A`; I staged one path by name. `git add <paths>` does not protect you here, because commit takes the whole index, not the paths you just added \u2014 only `git commit --only <paths>` does. Nothing is lost: that work is banked at 06fbd05, under my message rather than its author's. Recording it so the author can find it, and so the next agent knows that staging by name is NOT sufficient on this tree."
   }
 }
