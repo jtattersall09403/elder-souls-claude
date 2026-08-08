@@ -270,18 +270,24 @@ player, and the node carries a `line_note` with the old string and this reasonin
 Checked against P9's own two patterns at **every wrap point** (the surface wraps, and P9 tests each
 drawn row): 0 rows trip either. `check-dialogue-topics` and `check-prose` are unchanged.
 
-**Re-run status is in §8 — I did not get a clean second `opening-play` inside my window.**
+**Re-run: MEASURED, and green.** `node tools/journey/opening-play.mjs` at 480×270 (5 sim fps,
+`loadavg` 27.5 on four cores):
+
+```
+PASS P10  the scene moved past the desk to 'writ.sex'
+PASS P9   35 distinct strings drawn across the whole opening, none of them an instruction
+10 pass · 0 fail
+```
+
+So the whole probe is green on the shipped build: **P1–P10, no failures.** The three acceptance
+tools the round-2 verdict wrote — `census-newgame.mjs`, `name-entry.mjs`, `opening-play.mjs` —
+were all red before this round and are all green now, and each was watched red first.
 
 ## 8. What I did not do
 
 
-* **I did not re-run `opening-play.mjs` to green after the `hold.out` rewrite.** The box sat at or
-  over `contention.mjs`'s ceiling for the rest of my window (5–6 browser instances, 4.0–5.5 per
-  core) and the probe is ~35 minutes of wall clock at 2 sim fps. So: **P10 is measured green on
-  the build with the old line**, and the only change since is one authored string, verified
-  node-side against P9's exact two regexes at every wrap point. **P9 green is predicted, not
-  measured, and the next runner should treat it as unverified.** The command is
-  `node tools/journey/opening-play.mjs`.
+* ~~I did not re-run `opening-play.mjs` after the `hold.out` rewrite~~ — **done, and green**
+  (§7a): 10 pass, 0 fail, P9 and P10 both measured on the shipped build.
 * ~~`jrn09-exchange.mjs` was queued behind the same gate~~ — **re-run and confirmed** on the
   rewritten line: `DTR_q 1.0000`, `DTR_scene 1.0000`, `NAMED_distinct 14 of 14`, **`ALL PASS`**,
   no `HF1`. So the writing change did not buy P9 at DTR's expense.

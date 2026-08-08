@@ -1,7 +1,7 @@
 {
   "task_id": "W1-26-r3",
   "role": "builder",
-  "status": "in_progress",
+  "status": "done",
   "started": "2026-08-08",
   "base_commit": "e00e6fe",
   "spec": "corpus/90-verdicts/wave1/W1-26-r2.md",
@@ -14,7 +14,7 @@
     "E. tools/journey/journey-run.mjs `catch { break; }` \u2014 the driver reproduces the player's defect and swallows the proof.",
     "F. ./play.sh \u2014 does not exist at the root despite the brief. Write it."
   ],
-  "next_step": "opening-play P9 re-run in flight at 480x270 (5 sim fps); then final status",
+  "next_step": "none \u2014 handing to a critic",
   "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 browser instances, load 5.10/core vs a 4.0 ceiling). Node-side work first; browser runs one at a time, and if I proceed past exit 3 it is recorded here.",
   "files_touched": [
     "orchestration/status/W1-26-r3.json",
@@ -60,7 +60,8 @@
       "created-by-keyboard": "4 pass / 0 fail. A WHOLE character made with nothing but real DOM key events from the title screen: Jekq-Vozbnu Twylfax, Saxhleel, Salt-Blade, raj-xul, raised interior, carrying the stamped writ, 11 nodes. This is RI-JRN01 M13's keyboard leg over the journey rather than over the title's first two button presses.",
       "A-JRN1 journey-run": "census_walk pass, 12 nodes reached, 7 fields written (was: broke on iteration 1, wrote nothing, reported N/A). m4_clause1 is MEASURED for the first time in the project: 1.03 s, first_control 141 -> first_defining 203.",
       "opening-play (real DOM input, no flags)": "P10 PASSES \u2014 'the scene moved past the desk to writ.sex'. P1-P8 pass; P8 records hatchName 'Silt-Under-Salt' verbatim (RED run: 'il-Un-l'). P9 went RED as a direct consequence of closing HF1 \u2014 see findings.",
-      "jrn09-exchange (after the hold.out rewrite)": "ALL PASS \u2014 DTR_q 1.0000, DTR_scene 1.0000, NAMED 14/14, no HF1. The writing change did not buy P9 at DTR's expense."
+      "jrn09-exchange (after the hold.out rewrite)": "ALL PASS \u2014 DTR_q 1.0000, DTR_scene 1.0000, NAMED 14/14, no HF1. The writing change did not buy P9 at DTR's expense.",
+      "opening-play (after the hold.out rewrite)": "10 pass / 0 fail \u2014 P9 AND P10 both green on the shipped build, real DOM input, play mode, no flags. All three of the verdict's acceptance tools were red before this round and are green now."
     }
   },
   "findings": [
