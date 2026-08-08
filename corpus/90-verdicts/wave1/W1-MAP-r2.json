@@ -1,0 +1,235 @@
+{
+  "schema": "elder-souls/verdict@1",
+  "piece": "W1-MAP",
+  "round": 2,
+  "critic": {
+    "id": "critic-w1-map-r2",
+    "context": "fresh",
+    "finished_at": "2026-08-08T00:00:00Z"
+  },
+  "date": "2026-08-08",
+  "commit": "f291b01",
+  "binding": "corpus/00-doctrine/ARBITRATION.md S35 (the owner's overrule of S30); corpus/00-doctrine/AMENDMENT-W1-MAP-01.md",
+  "score": 3.0,
+  "gate": 7.0,
+  "verdict": "fail",
+  "outcome": "round 3 required",
+  "ar_1": "not triggered",
+  "ar_2": "not triggered on the honest path; see forged_save",
+  "ar_3": "seam_sterile",
+  "seam_sterile": true,
+  "seam_sterile_justification": "A record of where you have been is legitimately internal. S35 requires wayfinding to work with the map closed, and world/province.js signposts already carry it. Recorded for RI-CMP01's floor.",
+  "supersedes": "corpus/90-verdicts/wave1/W1-MAP-r1.md",
+  "re_take": {
+    "why": "W1-SAVE-AI fixed game/src/save/fight.js, which serialised the live SoulsAI as a plain object so the next fixed step after any save/load with a hostile present threw while boot-check stayed green. It listed W1-MAP-r1 C2/D1/D2/D3 as measurements to re-take.",
+    "brief_premise_corrected": "The dispatch says the four were 'presented as four map failures'. They were not. W1-MAP-r1.md §1 lists C2/D1/D2/D3 as PASSES; §9 records that they first appeared as failures, that critic-w1-map-stepcheck.mjs reproduced the throw with sim.discovery removed entirely, and that preconditions C0/D0 stopped them being filed. W1-SAVE-AI.json:91 says the same. No false finding was ever published.",
+    "method": "Each check run twice at f291b01 — once in an empty world, once with three live hostile SoulsAI controllers on the floor — with step faults, frames advanced and cells drawn counted per arm.",
+    "premise_verified": "P1: save/load with hostiles present keeps a live AI (SoulsAI -> SoulsAI, 3 -> 3) and 60 fixed steps run with 0 faults.",
+    "control_verified": "P3, run in every mode: replacing a live ctl.ai with a plain object makes the fault detector fire with 'this.ai.step is not a function'. Every '0 faults' figure here is from a detector watched going red (rule 6).",
+    "results": [
+      {
+        "finding": "C2",
+        "claim": "partial map: undiscovered ground still the screen's own colour and still the majority",
+        "survives": true,
+        "clean_arm": "#0b0a08 at 95.43%, 2106/42846 drawn, 0 faults, 6 frames",
+        "hostile_arm": "#0b0a08 at 95.41%, 2115/42846 drawn, 0 faults, 8 frames, 3 live hostile AI",
+        "cause_named_by_r1_confirmed": true
+      },
+      {
+        "finding": "D1",
+        "claim": "a square appears only after standing in the pad",
+        "survives": true,
+        "clean_arm": "region(+480m) false, near(+40m) false, standing true",
+        "hostile_arm": "identical",
+        "cause_named_by_r1_confirmed": true
+      },
+      {
+        "finding": "D2",
+        "claim": "the hover name is the place name from pois.json",
+        "survives": true,
+        "clean_arm": "\"Thorn\" == pois.name",
+        "hostile_arm": "identical",
+        "cause_named_by_r1_confirmed": true
+      },
+      {
+        "finding": "D3",
+        "claim": "the naming element carries no quest identity",
+        "survives": true,
+        "clean_arm": "quest:null objective:null travel:false",
+        "hostile_arm": "identical",
+        "cause_named_by_r1_confirmed": true
+      }
+    ],
+    "conclusion": "All four reproduce as passes and the two arms agree exactly (R-agree). They are properties of the map, not artefacts of the save. The round-1 verdict's attribution of the original failures to a walk whose steps never ran is confirmed."
+  },
+  "axes": [
+    {
+      "axis": "S35 surface refusals (unrendered, routes, numerals, travel, naming, journal separation)",
+      "score": 9,
+      "round_1_score": 9,
+      "evidence": "critic-map-r2 R-C2/R-D1/R-D2/R-D3 both arms, U1/U2/U3, E3/E4/E5/E6; critic-map-r2-composite X1-X5 on the composited frame"
+    },
+    {
+      "axis": "S35 'no square for a place not personally stood in', adversarially",
+      "score": 3,
+      "round_1_score": 5,
+      "evidence": "critic-map-r2 A1/A2/A3/A9/A10/A12a/A12b — 42 of 42 places and 100% of the province, delivered through the player-facing sealed save file and durable across 180 stepped frames with hostiles present"
+    },
+    {
+      "axis": "instrument adequacy - can the build detect its own violation",
+      "score": 3,
+      "round_1_score": 4,
+      "evidence": "critic-map-r2 A4/A5/A11; map-probe 32/32 with L3 GREEN at the same commit A9 renders 42 phantom squares; and critic-map-r2-composite X2/X3 shows the pixel test both prior instruments relied on reads the UI canvas, not the screen"
+    },
+    {
+      "axis": "API closure (no API by which a quest could touch the map)",
+      "score": 5,
+      "round_1_score": 6,
+      "evidence": "critic-map-r2 Q1/Q2/Q3/Q4; sim.discovery writable+configurable and questEngine.sim === sim (3 squares), plus window.__ENGINE which getCapabilityReport() does not cover (2 squares). Q4 passes: no method on the model accepts a place."
+    },
+    {
+      "axis": "CONSUMPTION (RI-MTH07)",
+      "score": 4,
+      "round_1_score": 4,
+      "evidence": "critic-map-r2 G1/G1b/G2; world hash c23bbb77:52365 identical across full and ablated arms with the discovery blob excluded; --break consumer turns G2 green"
+    }
+  ],
+  "consumption": {
+    "model": "game/src/sim/discovery.js Discovery",
+    "world_side_consumer": null,
+    "only_consumer": "game/src/ui/screens/map.js via UISystem._mapModel - the map's own draw call",
+    "readers_enumerated": [
+      "game/src/ui/system.js (_mapPlaces, _mapModel, state)",
+      "game/src/harness/api.js (mapState, tryPlaceMapMarker)",
+      "game/src/save/state.js (serialise at :190, restore at :676)",
+      "game/src/engine.js (construction :435, _uiCtx :3726, reset register :790)"
+    ],
+    "sim_side_readers": "none - game/src/sim/step.js only WRITES via stepDiscovery",
+    "ablation": {
+      "method": "suspend the model, walk the same route, step 600 frames, hash saveState() with world.discovery deleted",
+      "arm_full": "c23bbb77:52365, 2209 cells revealed, 0 step faults",
+      "arm_ablated": "c23bbb77:52365, 0 cells revealed, 0 step faults",
+      "identical": true
+    },
+    "positive_control": "--break consumer installs a durable world-side reader and G2 goes GREEN",
+    "verdict": "no world-side consumer; this is a finding, not a pass"
+  },
+  "forged_save": {
+    "question": "is the hole closed, or was the report closed",
+    "answer": "neither. The hole is open and is wider than round 1 recorded, and the report is closed in the sense that matters least - every published compliance number reads clean on a fully forged map.",
+    "route_round_1": "forge world.discovery.stood and hand the object to loadState()",
+    "route_this_round": "build the same forged blob, seal it with the game's OWN save/exchange.js exportSave(), and read it back through the player-facing importSave()",
+    "delivered": "124898 sealed bytes ACCEPTED",
+    "result": {
+      "place_count": "42 of 42",
+      "revealed_cells": "42846 of 42846",
+      "squares_drawn": 42,
+      "honest_walk_for_comparison": "1 place, 9 cells"
+    },
+    "durable": "A10 - after import, 2 hostiles spawned and 180 fixed steps ran with 0 faults; the map still held 42/42 places and 42846/42846 cells. NOT an artefact of the load that used to die.",
+    "seal": {
+      "A12a_integrity": "bytes edited after sealing are REFUSED ('the seal does not match')",
+      "A12b_authenticity": "the same forgery resealed by the game's own writer is ACCEPTED",
+      "conclusion": "an unkeyed sha-256 stops corruption, not a forger - and the shipping writer will recompute it on request"
+    },
+    "report_blind": {
+      "A11": "places_drawn 42 == places_discovered 42, markers 0, routes_drawn 0, quest_bearing 0, travel 0, numeric_text 0, dropped_on_load 0",
+      "A5": "Discovery.restore() computes dropped, phantom_cells, missing_cells, claimed_places, derived_places, stood_cells, legacy; save/state.js:676 keeps only .dropped and mapState() publishes only dropped_on_load. Published footprint-audit fields: NONE.",
+      "map_probe": "32/32 at f291b01 with L3 ('a FORGED save ... is refused') GREEN, because map-probe.mjs:440 forges world.discovery.places - the field Discovery.RESTORE_READS was narrowed to exclude"
+    },
+    "screenshot": "docs/shots/2026-08-08-critic-map-r2-forged.png"
+  },
+  "quest_to_map_api": {
+    "static": "grep -rn 'map|discovery|__ENGINE|reveal|marker|Discovery' over all 8 files of game/src/sim/quest/ returns only quest-internal reveal() (a know: flag), Array.prototype.map, and one S35 comment in topic-supply.js. No quest module imports or reaches a map module.",
+    "reachable_setters": [
+      {
+        "route": "questEngine.sim.discovery = <object with the reader surface>",
+        "call_path": "QuestEngine constructed with the sim at engine.js:538, stored at machine.js:79, re-assigned at engine.js:8141 -> Engine._uiCtx() engine.js:3726 -> UISystem._mapModel -> drawMap",
+        "squares_drawn": 3,
+        "descriptor": "writable: true, configurable: true"
+      },
+      {
+        "route": "window.__ENGINE.sim.discovery = <forged>",
+        "call_path": "main.js:24 publishes window.__ENGINE; capability prohibitions are installed on the harness and getCapabilityReport() does not mention __ENGINE",
+        "squares_drawn": 2,
+        "covered_by_capability_prohibitions": false
+      }
+    ],
+    "held": "Q4 - tryPlaceMapMarker runs 13 attempts against the model's own surface; 0 succeed, the requested place never appears, the place list does not move. observe() is arity 0, the instance is frozen, the fields are #private, RESTORE_READS is ['stood'].",
+    "remedy": "Object.defineProperty(sim, 'discovery', {value: d, writable: false, configurable: false}) after construction - one line, closes all three"
+  },
+  "unrendered": {
+    "verdict": "holds",
+    "carried_by": "screens/map.js:103 `if (!m.seen(cx, rz)) continue;` and drawn_cells, NOT by a colour count",
+    "fresh_map": "drawn_cells 0/42846, revealed 0 - no undiscovered cell is painted at any alpha",
+    "instrument_correction": "W1-MAP-r1 C1/C3 and this tool's own first U1/U2 read UISurface.ctx.getImageData - the interface's own 2D canvas - and reported 'exactly one colour, channel range [0,0,0]'. True of the UI layer, false of the picture: the panel is drawn at CALM_ALPHA over the running 3D world. On the composited frame the same box holds 44 distinct colours.",
+    "causes_separated": {
+      "X4": "two EMPTY maps photographed from different standing places: 44 -> 92 colours with drawn_cells 0 -> 0, so the variation is the world behind the panel",
+      "X5": "same standing place, a walked body: 44 -> 1855 colours with drawn_cells 0 -> 2911, so the map is separable from the scene"
+    },
+    "chevron_artefact_reproduced": "UI layer, naive sample = 15 colours; chevron and naming label excluded = 1"
+  },
+  "hover_names": {
+    "stood_not_entered_not_near": "region(+480m) false, near(+40m) false, standing true - both arms",
+    "not_told": "E3 - questEngine.learnFrom('place'), setWorldKnowledge and learnTopic all ran; places [lilmoth] -> [lilmoth], unchanged",
+    "one_per_place": "E4 - squares 2 == placeCount 2, ids unique",
+    "name_source": "E5 - the naming element names places[placeIdx] and the string is that place's own pois.json name",
+    "surface": "E6 - markers 0, routes 0, numerals none, travel none, quest_bearing none, reachable_from_journal false"
+  },
+  "self_tests": {
+    "unrendered": "SELF-TEST OK - turned U1, U2, U3 red (U2 is the drawn-then-masked detector)",
+    "standing": "SELF-TEST OK - turned R-D1-clean, R-D1-hostile red",
+    "consumer": "SELF-TEST OK - turned G2 GREEN (opposite polarity: G2's pass condition is 'nothing happened')",
+    "P3": "CONTROL, runs in every mode - the step-fault detector fires when a live AI is replaced by a plain object"
+  },
+  "own_errors_caught_before_filing": [
+    "E3 read placeCount 0 -> 1 after the 'tell' attempts and looked exactly like a build defect. The baseline was taken before the first step and the default start position is inside LILMOTH's own pad, so the following steps recorded ground the body was already on. Baseline now taken after stepping; answer is unchanged.",
+    "E5 asserted the hover name must be 'Thorn'. The naming element names places[placeIdx], the first place FOUND (Lilmoth from the spawn). Assertion corrected to the property S35 actually requires.",
+    "Q4 saw the place list move because tryPlaceMapMarker ends by calling d.observe(4600, 5200) to show surplus arguments are ignored, and observe() records the cell the body is in.",
+    "A12 originally PASSED by matching the substring 'signature' in the save manifest - regionSignature/focusSignature, nothing to do with saves. An inert check that passed for the wrong reason; replaced by the executed arms A12a/A12b."
+  ],
+  "biggest_gap": "Nothing in this build can tell an honest map from a completely forged one, because every compliance number it reports is derived from the model being audited - and the forgery now works through the player's own save file, sealed by the game's own writer. None of round 1's three remedies has landed.",
+  "remedies": [
+    "Publish the audit restore() already computes: carry stood_cells/phantom_cells/missing_cells/legacy onto sim and surface them through mapState() and getUIState().map. save/state.js:676 currently keeps only .dropped.",
+    "Point map-probe L3 at the field that is read: forge world.discovery.stood in the wire format (critic-map-r2.mjs forgeTrail() is 9 lines) and give it a --break forge self-test.",
+    "Corroborate the footprint against engine.js's travel.visited, written by a different system. NOT ISOLATED: coverage unverified, same gap as round 1.",
+    "Freeze the slot: Object.defineProperty(sim, 'discovery', {value: d, writable: false, configurable: false}). One line, closes Q1/Q2/Q3.",
+    "Say what the seal is. exchange.js's sha-256 is an integrity check, not an authenticity check; a map that trusts exactly one field wants a keyed check or an out-of-band corroborator."
+  ],
+  "documents_that_disagree": {
+    "unchanged_since_round_1": true,
+    "a": "game/src/sim/discovery.js lines 46-50 claim both hard fails 'fail closed against a blob whose every field is under the attacker's control'",
+    "b": "tools/harness/w1-21-r2-forge.mjs R8 says they do not",
+    "resolution": "R8 is right. A9 is the screenshot. The header is the one the next author will read."
+  },
+  "reported_plainly": {
+    "contention": "node tools/contention.mjs --gate returned GO before every browser run except the screenshot pass, where it returned exit 3. I proceeded, as rule 21 permits and requires me to declare, because one browser was the only work left and the frames are gated on their own content rather than on timing. One browser per tool run, kept for the whole run, and my own rather than tools/capture/ because every measurement steps the simulation (rule 20).",
+    "no_timing_figure": "every number in this verdict is a count, a boolean or a pixel colour",
+    "not_done": [
+      "travel.visited coverage not isolated (remedy 3), same gap as round 1",
+      "the forgery was not tested against a COLD browser reload; importSave was driven in a live session",
+      "the local view's own pixels were not audited; the unrendered numbers are the world view",
+      "no file under game/ was edited and no fix was made"
+    ]
+  },
+  "files_written": [
+    "corpus/90-verdicts/wave1/W1-MAP-r2.md",
+    "corpus/90-verdicts/wave1/W1-MAP-r2.json",
+    "orchestration/status/critic-w1-map-r2.json",
+    "tools/harness/critic-map-r2.mjs",
+    "tools/harness/critic-map-r2-shots.mjs",
+    "tools/harness/critic-map-r2-composite.mjs",
+    "docs/shots/2026-08-08-critic-map-r2-fresh.png",
+    "docs/shots/2026-08-08-critic-map-r2-partial.png",
+    "docs/shots/2026-08-08-critic-map-r2-explored.png",
+    "docs/shots/2026-08-08-critic-map-r2-forged.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "reproduce": [
+    "node tools/harness/critic-map-r2.mjs",
+    "node tools/harness/critic-map-r2.mjs --break all",
+    "node tools/harness/critic-map-r2-composite.mjs",
+    "node tools/harness/critic-map-r2-shots.mjs",
+    "node tools/harness/map-probe.mjs"
+  ]
+}

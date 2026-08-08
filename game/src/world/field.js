@@ -181,12 +181,19 @@ export class WorldField {
         for (let i = sp.from_i; i <= sp.to_i && i < p.length; i++) spanOf[i] = sp;
       }
       for (let i = 0; i + 1 < p.length; i++) {
+        const span = spanOf[i] && spanOf[i + 1] ? spanOf[i] : null;
         segs.push({
           ax: p[i][0], az: p[i][1], ay: p[i][2], bx: p[i + 1][0], bz: p[i + 1][1], by: p[i + 1][2],
           hw: leg.half_width_m, leg: leg.id,
           // Both endpoints on the span: the segment is deck. One endpoint: it is the abutment,
           // and the abutment is earth, so the deck is reachable from the road either side of it.
-          span: spanOf[i] && spanOf[i + 1] ? spanOf[i] : null,
+          span,
+          // WHICH END OF THE STRUCTURE THIS IS. `clampToDeck` needs it to tell "walking off the
+          // abutment", which is how you leave a bridge, from "walking off the side", which is how
+          // you fall off one. Without it the parapet had to guess from a projection parameter and
+          // it guessed wrong 286 times in 3,632 (W1-CROSSING, reports/w1-crossing/road-grade-*).
+          spanFirst: !!span && !(spanOf[i - 1] && spanOf[i]),
+          spanLast: !!span && !(spanOf[i + 1] && spanOf[i + 2]),
         });
       }
     }
@@ -386,68 +393,64 @@ export class WorldField {
     // walker leaked off the side of a 40 m viaduct after 1.75 s of pushing.
     const a = this.roadGrid.at(px, pz), b = this.roadGrid.at(x, z);
     const segs = a === b ? a : a.concat(b);
-    // ---- THE 0.15 m HOLE, and why this is a two-pass search now ------------------------------
+    // ---- WHY THIS IS A DISTANCE TEST AND NOT A PROJECTION-PARAMETER TEST ----------------------
     //
-    // Round 3 reported a parapet that "holds in a direct test but leaks after ~3.5 m of sustained
-    // sideways push", refused to claim a railing it had not proved, and could not find the cause.
-    // `tools/world/parapet-probe.mjs` reproduces it: hold the stick perpendicular to the deck at
-    // the midpoint of every declared span and ten of twenty-eight pushes walk clean off, reaching
-    // 46 m from the centreline and dropping 3.3 m onto the valley side.
+    // Round 3 found a parapet that leaked after a sustained push and could not say why; round 4
+    // found a 0.15 m annulus between the parapet's `hw + 0.35` and `_deckY`'s `hw + 0.5` and closed
+    // it. W1-CROSSING measured what was left with `tools/world/road-grade.mjs`: **286 of 3,632
+    // sideways pushes still walked off a bridge deck**, and they were not spread over the decks —
+    // they clustered at the ENDS of every span chain and on the earth approach within 3.5 m of one.
     //
-    // The cause is an arithmetic mismatch between two widths. The parapet stands at `hw + 0.35`.
-    // The bail-out below it — "two spans can overlap where the road doubles back, so clamp only
-    // when the destination is on no deck at all" — asked `_deckY`, whose sampling footprint is
-    // `hw + 0.5`. Between those two numbers is a 0.15 m annulus in which the destination is
-    // simultaneously OUTSIDE the parapet and INSIDE `_deckY`, so the function returned null and
-    // clamped nothing; and once the body is past `hw + 0.5`, the `d0 > hw + 0.5` test at the top
-    // says it "was not on this deck" and the parapet is gone for good. At a 0.055 m step it takes
-    // three frames to walk through the hole, which is why a direct test passes and a sustained
-    // push does not: the direct test lands in the annulus and stops, the sustained one crosses it.
+    // The cause was that "off the end" was inferred from `t`, the projection parameter, on a
+    // SINGLE segment. Near a chain's terminal vertex the body's `t` on the terminal segment falls
+    // outside [0, 1] for a push that is purely sideways, so a body walking around the corner of
+    // the end cap was read as a body walking off the abutment and let go — into 4.7 m of air with
+    // no way back up. And a body standing on the earth in front of an abutment IS on the deck as
+    // far as `heightAt`/`onDeckAt` are concerned (`_deckY` samples to `hw + 0.5` past the end
+    // vertex), so it was standing on a slab with no railing at all.
     //
-    // The exemption itself is right — stepping from one span onto an overlapping other one is not
-    // stepping off a bridge — but it has to mean "the destination is on the WALKABLE surface of a
-    // DIFFERENT segment", not "some span's sampling footprint contains it". So: find the segment
-    // the body was actually on (the nearest one, not the first in bucket order), and let it go
-    // only if some OTHER segment's own parapet limit contains the destination.
-    let best = null, bestD = Infinity;
+    // So the question is asked of the STRUCTURE, not of a segment, and it is asked as a distance:
+    //   1. was the body on some span's walkable surface?          (nearest CLAMPED distance)
+    //   2. is the destination still on one?                       (same measure, same limit)
+    //   3. if not, is it beyond a chain END and still within the parapet's width ACROSS the chain?
+    //      That is the abutment, and the road continues there.
+    //   4. otherwise it is going over the side. Put it back against the railing.
+    // Steps 2 and 4 use the same `lim`, so there is no width for an annulus to hide in.
+    const near = (s, qx, qz) => {
+      const dx = s.bx - s.ax, dz = s.bz - s.az;
+      const len2 = dx * dx + dz * dz || 1;
+      const t = ((qx - s.ax) * dx + (qz - s.az) * dz) / len2;
+      const tc = clamp(t, 0, 1);
+      const cx = s.ax + dx * tc, cz = s.az + dz * tc;
+      return { t, cx, cz, d: Math.hypot(qx - cx, qz - cz) };
+    };
+    let onSeg = null, onD = Infinity;
     for (let i = 0; i < segs.length; i++) {
       const s = segs[i];
       if (!s.span) continue;
-      const dx = s.bx - s.ax, dz = s.bz - s.az;
-      const len2 = dx * dx + dz * dz || 1;
-      const t0 = ((px - s.ax) * dx + (pz - s.az) * dz) / len2;
-      // A TOLERANCE, not a hard bound. A deck is a chain of 12 m segments and the body spends
-      // every twelfth metre standing exactly on a joint, where t lands a hair either side of 0 or
-      // 1 on BOTH adjoining segments — so a hard bound skipped both and the parapet had a 0.03 m
-      // hole in it once per segment.
-      if (t0 < -0.02 || t0 > 1.02) continue;
-      const d0 = Math.hypot(px - (s.ax + dx * t0), pz - (s.az + dz * t0));
-      if (d0 > s.hw + 0.5) continue;                      // was not on this deck
-      if (d0 < bestD) { bestD = d0; best = { s, dx, dz, len2 }; }
+      const n = near(s, px, pz);
+      if (n.d < onD) { onD = n.d; onSeg = s; }
     }
-    if (!best) return null;
-    const { s, dx, dz, len2 } = best;
-    const t1 = ((x - s.ax) * dx + (z - s.az) * dz) / len2;
-    // Off an END is the abutment, and the road continues there — but only if no other segment of
-    // the chain carries on. `t1` outside the tolerance means the next segment owns the point, and
-    // THAT segment will be `best` on the following frame, so letting go here is correct.
-    if (t1 < -0.05 || t1 > 1.05) return null;
-    const tc = clamp(t1, 0, 1);
-    const cx = s.ax + dx * tc, cz = s.az + dz * tc;
-    const d1 = Math.hypot(x - cx, z - cz);
-    const lim = s.hw + 0.35;
-    if (d1 <= lim || d1 < 1e-6) return null;
-    // The genuine overlap case: a DIFFERENT span segment whose own deck surface — not its sampling
-    // footprint — contains the destination.
+    if (!onSeg || onD > onSeg.hw + 0.5) return null;      // was not on a deck at all
+    const lim = onSeg.hw + 0.35;
+    let toSeg = null, toN = null, toD = Infinity;
     for (let i = 0; i < segs.length; i++) {
-      const o = segs[i];
-      if (!o.span || o === s) continue;
-      const ox = o.bx - o.ax, oz = o.bz - o.az;
-      const ol2 = ox * ox + oz * oz || 1;
-      const ot = clamp(((x - o.ax) * ox + (z - o.az) * oz) / ol2, 0, 1);
-      if (Math.hypot(x - (o.ax + ox * ot), z - (o.az + oz * ot)) <= o.hw + 0.35) return null;
+      const s = segs[i];
+      if (!s.span) continue;
+      const n = near(s, x, z);
+      if (n.d < toD) { toD = n.d; toSeg = s; toN = n; }
     }
-    return [cx + (x - cx) / d1 * lim, cz + (z - cz) / d1 * lim];
+    if (toD <= lim || toD < 1e-6) return null;            // still on the structure
+    // Off an END. The perpendicular distance from the terminal segment's INFINITE line is the
+    // "across the chain" measure; inside the railing's width, walking past the last vertex is
+    // walking onto the abutment, which is the way off a bridge.
+    if ((toSeg.spanFirst && toN.t <= 0) || (toSeg.spanLast && toN.t >= 1)) {
+      const dx = toSeg.bx - toSeg.ax, dz = toSeg.bz - toSeg.az;
+      const L = Math.hypot(dx, dz) || 1;
+      const across = Math.abs((x - toSeg.ax) * (-dz / L) + (z - toSeg.az) * (dx / L));
+      if (across <= lim) return null;
+    }
+    return [toN.cx + (x - toN.cx) / toD * lim, toN.cz + (z - toN.cz) / toD * lim];
   }
 
   /**

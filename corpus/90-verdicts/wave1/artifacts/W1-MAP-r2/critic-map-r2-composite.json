@@ -1,0 +1,175 @@
+{
+  "schema": "elder-souls/critic-map-r2-composite@1",
+  "checks": [
+    {
+      "id": "X1",
+      "name": "THE PROVINCE IS NOT IN THE SCENE: a fresh map paints zero cells",
+      "got": "drawn_cells=0/42846, revealed=0, stood=0; screens/map.js:103 is \"if (!m.seen(cx,rz)) continue;\"",
+      "target": "0 cells painted — no undiscovered geometry is drawn at any alpha",
+      "pass": true
+    },
+    {
+      "id": "X2",
+      "name": "THE UI LAYER holds one colour once the chevron is excluded — and ~15 if it is not",
+      "got": "UI canvas inside the terrain box: naive=15 colours, chevron+label excluded=1, red range=0",
+      "target": "1 with the chevron excluded, more without — an attack that did not exclude it would invent a finding",
+      "pass": true
+    },
+    {
+      "id": "X3",
+      "name": "THE COMPOSITED FRAME DOES NOT: the panel is translucent and the world shows through",
+      "got": "screenshot inside the same box: distinct=44 over 345071px, dominant=#0c0c09 (48.04%), channel range=[11,11,11]",
+      "target": "MORE than one colour — recorded so that \"the box holds exactly one colour\" is not read as a claim about the picture",
+      "pass": true
+    },
+    {
+      "id": "X4",
+      "name": "WHAT VARIES IS THE SCENE, NOT THE MAP: moving the body changes the box on an EMPTY model",
+      "got": "stood at [2000,800] -> [3400,3900], map identical (drawn_cells 0 -> 0); distinct 44 -> 92, dominant #0c0c09 -> #0d0d0a",
+      "target": "both maps empty, the box still differs — so the variation is the world behind the panel",
+      "pass": true
+    },
+    {
+      "id": "X5",
+      "name": "AND THE MAP IS WHAT CHANGES WHEN THE FOOTPRINT CHANGES: same spot, a walked body",
+      "got": "both arms stood at [2000,800]; drawn_cells 0 -> 2911, distinct 44 -> 1855, dominant frac 48.04% -> 37.50%",
+      "target": "the box gains colours when the body walked — the two causes are separable",
+      "pass": true
+    }
+  ],
+  "fresh_yawA": {
+    "geo": {
+      "rect": [
+        683.91,
+        230,
+        552.18,
+        634
+      ],
+      "dpr": 1,
+      "holes": [
+        [
+          909.29,
+          318.05,
+          7,
+          7
+        ]
+      ],
+      "ui_layer": {
+        "distinct_naive": 15,
+        "distinct": 1,
+        "red_range": 0
+      },
+      "drawn_cells": 0,
+      "total_cells": 42846,
+      "revealed": 0,
+      "stood": 0,
+      "at": [
+        2000,
+        800
+      ]
+    },
+    "composite": {
+      "distinct": 44,
+      "pixels": 345071,
+      "dominant": "#0c0c09",
+      "dominant_frac": 0.4804,
+      "channel_range": [
+        11,
+        11,
+        11
+      ]
+    }
+  },
+  "fresh_yawB": {
+    "geo": {
+      "rect": [
+        683.91,
+        230,
+        552.18,
+        634
+      ],
+      "dpr": 1,
+      "holes": [
+        [
+          1069.51,
+          672.82,
+          7,
+          7
+        ]
+      ],
+      "ui_layer": {
+        "distinct_naive": 13,
+        "distinct": 1,
+        "red_range": 0
+      },
+      "drawn_cells": 0,
+      "total_cells": 42846,
+      "revealed": 0,
+      "stood": 0,
+      "at": [
+        3400,
+        3900
+      ]
+    },
+    "composite": {
+      "distinct": 92,
+      "pixels": 345071,
+      "dominant": "#0d0d0a",
+      "dominant_frac": 0.1805,
+      "channel_range": [
+        11,
+        12,
+        11
+      ]
+    }
+  },
+  "walked_yawA": {
+    "geo": {
+      "rect": [
+        683.91,
+        230,
+        552.18,
+        634
+      ],
+      "dpr": 1,
+      "holes": [
+        [
+          909.29,
+          318.05,
+          7,
+          7
+        ],
+        [
+          897.24,
+          291.09,
+          70.37,
+          22
+        ]
+      ],
+      "ui_layer": {
+        "distinct_naive": 2057,
+        "distinct": 1825,
+        "red_range": 197
+      },
+      "drawn_cells": 2911,
+      "total_cells": 42846,
+      "revealed": 2911,
+      "stood": 12,
+      "at": [
+        2000,
+        800
+      ]
+    },
+    "composite": {
+      "distinct": 1855,
+      "pixels": 342956,
+      "dominant": "#0c0b09",
+      "dominant_frac": 0.375,
+      "channel_range": [
+        186,
+        180,
+        161
+      ]
+    }
+  }
+}

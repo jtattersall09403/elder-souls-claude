@@ -3,17 +3,43 @@
   "role": "builder",
   "state": "in_progress",
   "started_at": "2026-08-08T00:00:00Z",
-  "commit_at_start": "",
-  "headline": "WIP - making Stormhold->Lilmoth walkable end to end: ridge skirt grade, off-road recovery (H1/drowning), then a real body-walk.",
-  "next_step": "read NEXT-DISPATCH SS W and P.4, W1-ROAD-JOIN.json, W1-05.json; run ownership + contention",
+  "commit_at_start": "345dcca",
+  "headline": "The crossing is not blocked by a 57.5 deg road. The worst ROAD gradient in the province is 24.27 deg, under the 40 deg walkable limit, and always was. What stopped the body is that stormhold-helstrom carries 918 m of BRIDGE, including a 471 m viaduct standing 50.6 m above the Valus Ridge \u2014 the body had fallen off it. Two fixes in flight: pure-pursuit-against-the-path steering (the H1 / drowning candidate) and a parapet that is asked of the structure rather than of a segment.",
+  "next_step": "browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consumption, shots, blog",
   "files_touched": [
-    "orchestration/status/W1-CROSSING.json"
+    "orchestration/status/W1-CROSSING.json",
+    "tools/world/road-grade.mjs",
+    "tools/world/crossing-body.mjs",
+    "game/src/engine.js",
+    "game/src/world/field.js",
+    "tools/world/build-roads.mjs",
+    "reports/w1-crossing/"
   ],
   "files_claimed": [
+    "tools/world/road-grade.mjs",
+    "tools/world/crossing-body.mjs",
+    "tools/world/crossing-deletefix.mjs",
+    "tools/world/crossing-consumption.mjs",
+    "game/src/engine.js",
+    "game/src/world/field.js",
     "tools/world/build-roads.mjs",
+    "reports/w1-crossing/",
     "orchestration/status/W1-CROSSING.json",
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
-  "notes": []
+  "notes": [],
+  "redundant_with": [
+    "W1-ROAD-JOIN",
+    "W1-01-r4",
+    "W1-05"
+  ],
+  "overlap_declared": "build-roads.mjs and roads.json were W1-ROAD-JOIN's and it is DONE; I am its named successor (its handoff H1). engine.js is declared by seven other live pieces \u2014 my change is confined to walkRoute/walkPath/_pursue, which none of them touch. field.js is declared by nobody live.",
+  "findings": [
+    "F1 THE PREMISE OF THE BRIEF IS WRONG, AND THIS IS THE HEADLINE. There is no 57.5 deg skirt to fix and no length budget to spend, because the road's own gradient was never the problem: tools/world/road-grade.mjs measures the worst longitudinal gradient on every leg straight off roads.json and the worst in the province is 24.27 deg (stormhold-helstrom), against a 40 deg walkable limit. G2 \u2014 the exact quantity sim/traversal.js gates on, sampled every metre along every centreline \u2014 refuses ZERO samples. The 57.5/61.09 deg figures are field.slopeAt() readings taken BESIDE A VIADUCT, where the +/-5 m central difference straddles the edge of a slab. traversal.js's own comment says this happens; the stall census printed it anyway.",
+    "F2 WHAT IS ACTUALLY THERE. stormhold-helstrom, the crossing's first leg, is 2,921 m long and 918 m of it is BRIDGE: eight declared deck_spans, of which one is 471 m long and stands 50.6 m above the mountainside and another is 257 m at 41.2 m. blackrose-lilmoth carries a further 456 m. The body at (2153.7, 1197.8) was 4.98 m from the road and 15.3 m BELOW it. It had not met a slope. It had fallen off a bridge.",
+    "F3 THE VIADUCTS ARE NOT NEW AND NOT THE JOIN'S. Measured on reports/w1-road-join/roads-BEFORE-join.json: the same leg had a 50.3 m max fill before the join and 50.6 m after.",
+    "F4 THE DROWNING LEG'S GROUND IS INNOCENT. soulrest-blackrose \u2014 the leg on which a body ran 6,459 m of an 1,841 m route and finished in 18 m of sea \u2014 scores worst regain 11.5 deg, zero falls, zero slope refusals, zero spans. Nothing about that leg's terrain can strand a body. The wander is the WALKER'S STEERING, and that is now fixed.",
+    "F5 THE PARAPET LEAKS AND IT LEAKS AT THE ENDS. 286 of 3,632 sideways pushes walked off a deck; the leaks cluster on the terminal segments of every span chain and on the earth approach within 3.5 m of one, because 'off the end' was inferred from a projection parameter on a single segment."
+  ]
 }

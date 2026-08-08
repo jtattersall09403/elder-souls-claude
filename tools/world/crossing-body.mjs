@@ -85,11 +85,11 @@ try {
     r = await handle.h('walkRoute', { route: ROUTE, speed: SPEED, chunkFrames: CHUNK });
     doc.chunks.push({ t_s: +((Date.now() - t0) / 1000).toFixed(1), frames: r.frames, path_m: r.path_m,
       minutes: r.minutes, remaining_points: r.remaining_points, worst_off_path_m: r.worst_off_path_m,
-      off_path_frames: r.off_path_frames, regains: r.regains });
+      off_path_frames: r.off_path_frames, regains: r.regains, teleports: r.teleports, teleported_m: r.teleported_m });
     doc.result = r;
     flush();
     log(`  ${r.minutes.toFixed(2)} in-world min · ${r.path_m.toFixed(0)} m · ${r.remaining_points} pts left · `
-      + `off-path worst ${r.worst_off_path_m} m, ${r.off_path_frames} f, ${r.regains} regains`);
+      + `off-path worst ${r.worst_off_path_m} m, ${r.off_path_frames} f, ${r.regains} regains, ${r.teleports} teleports (${r.teleported_m} m)`);
     if (SHOT && !shotTaken && (SHOT_AT === null ? false : r.path_m >= SHOT_AT)) {
       ensureDir(path.dirname(SHOT));
       await handle.page.screenshot({ path: SHOT });
@@ -141,5 +141,7 @@ console.log(`  distance      ${r.path_m} m   (declared ${doc.declared_route && d
 console.log(`  frames        ${r.frames}`);
 console.log(`  in-world time ${r.minutes} min  (${r.seconds} s at 60 Hz)`);
 console.log(`  off the road  worst ${r.worst_off_path_m} m, ${r.off_path_frames} frames off, ${r.regains} regains`);
+console.log(`  moved not walked  ${r.teleports} discontinuities, ${r.teleported_m} m — EXCLUDED from the distance above`);
+if (r.teleport_log && r.teleport_log.length) console.log(`  first: ${JSON.stringify(r.teleport_log[0])}`);
 console.log(`  ${OUT}`);
 process.exit(doc.state === 'arrived' ? 0 : 1);

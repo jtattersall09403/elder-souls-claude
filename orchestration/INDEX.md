@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `8b1295b`: 655 tools, 153 reference
-items, 53 pieces in flight.
+so it cannot drift. Generated at `3cc1dfe`: 656 tools, 153 reference
+items, 54 pieces in flight.
 
-Its purpose is to stop 53+ concurrent agents each paying separately to discover the
+Its purpose is to stop 54+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -531,6 +531,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/w1-23-r4-chart.mjs` — THE PICTURE FOR W1-23 ROUND 4.
 - `tools/lore/w1-23-r4-consume.mjs` — CONSUMPTION for the library half (RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3).
 
+### `tools/map/` — 1
+
+- `tools/map/arbiter-map-s38.mjs` — THE S38 GATE — does the map comply with S35's "no square for a place the player has not stood in"?
+
 ### `tools/metrics/` — 6
 
 - `tools/metrics/image-metrics.mjs` — the RI-VIS03 fidelity battery, M1..M12.
@@ -970,12 +974,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-26-r3` | ? | opening-play P10 still running; restore the r2-named shots the probe overwrote, save r3 co | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
+| `W1-16-r4` | ? | read RULES, INDEX, verdict W1-16-r3, RI-PRG07 §2/§3 in full | `orchestration/status/W1-16-r4.json` |
 | `W1-04-r4` | live arm running (S3 distinctness sweep); everything else green | one browser: live join proof + signature re-take + two pictures (a building whose outside  | `game/src/harness/api.js` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `orchestration/status/W1-04-r4.json` `reports/w1-04-r4/join.json` |
 | `critic-w1-23-r4` | writing | shelf/crowding run + screenshot in flight; then blog line and commit | `orchestration/status/critic-w1-23-r4.json` `corpus/90-verdicts/wave1/W1-23-r4.md` `corpus/90-verdicts/wave1/W1-23-r4.json` `tools/lore/critic-w1-23-r4-onscreen.mjs` `tools/lore/critic-w1-23-r4-shelf.mjs` `tools/lore/critic-w1-23-r4-band.mjs` |
 | `arbiter-map-s38` | measuring | Write tools/map/arbiter-map-s38.mjs with --self-test, run it, then write S38 into ARBITRAT | `orchestration/status/arbiter-map-s38.json` |
 | `W1-CHARTFONT-r2` | ? | none — see handoffs. | `orchestration/status/W1-CHARTFONT-r2.json` `tools/analysis/w1-15-r3-chart.mjs` `tools/harness/w1-16-r3-chart.mjs` `tools/world/road-join-chart.mjs` `tools/world/w1-01-r4-crossing-chart.mjs` `tools/audio/critic-w1-22-r2-chart.mjs` |
 | `W1-CROSSING` | in_progress | browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consu | `orchestration/status/W1-CROSSING.json` `tools/world/road-grade.mjs` `tools/world/crossing-body.mjs` `game/src/engine.js` `game/src/world/field.js` `tools/world/build-roads.mjs` |
-| `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-21-r3` | in_progress | offline: add sample counts + EMPTY grading to all 15 checks; markers derived; withdraw NO_ | `orchestration/status/W1-21-r3.json` |
 | `W1-14-r4` | building | objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission  | `orchestration/status/W1-14-r4.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` `game/src/engine.js` `game/src/sim/magic/system.js` `game/src/sim/magic/apply.js` |
 | `critic-w1-21-r2` | done | orchestrator. Three arbitration questions are filed in the verdict JSON and need a ruling: | `corpus/90-verdicts/wave1/W1-21-r2.md` `corpus/90-verdicts/wave1/W1-21-r2.json` `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` `tools/ui/critic-w1-21-r2-b.mjs` `tools/ui/critic-w1-21-r2-consume.mjs` |

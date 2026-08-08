@@ -3,20 +3,23 @@
   "role": "critic",
   "piece": "W1-23",
   "round": 4,
-  "state": "running",
+  "state": "writing",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "E blind attribution test, then one browser session for A (walk to books, press interact, screenshot an open book)",
+  "next_step": "shelf/crowding run + screenshot in flight; then blog line and commit",
   "files_touched": [
     "orchestration/status/critic-w1-23-r4.json",
-    "tools/lore/critic-w1-23-r4-band.mjs",
-    "tools/lore/critic-w1-23-r4-lor04-lib.mjs"
-  ],
-  "files_claimed": [
     "corpus/90-verdicts/wave1/W1-23-r4.md",
     "corpus/90-verdicts/wave1/W1-23-r4.json",
-    "orchestration/status/critic-w1-23-r4.json",
-    "tools/lore/critic-w1-23-r4-*.mjs",
-    "docs/shots/",
+    "tools/lore/critic-w1-23-r4-onscreen.mjs",
+    "tools/lore/critic-w1-23-r4-shelf.mjs",
+    "tools/lore/critic-w1-23-r4-band.mjs",
+    "tools/lore/critic-w1-23-r4-blind.mjs",
+    "tools/lore/critic-w1-23-r4-lor04-lib.mjs",
+    "reports/w1-23-r4/critic-onscreen.json"
+  ],
+  "files_claimed": [
+    "docs/shots/2026-08-08-w1-23-r4-critic-a-book-open-in-the-lilmoth-customs-house.png",
+    "reports/w1-23-r4/critic-shelf.json",
     "reports/blog-feed.jsonl"
   ],
   "notes": "contention --gate reported WAIT at start (4 instances, load 4.60/core over 4.0 ceiling). Doing offline work first.",
@@ -31,6 +34,12 @@
     "B ARM D never presses the button: runLegs() bails at the missing prop, so \"the press opens nothing\" is unearned; and arm C pass predicate is !opened, which does not require the prop to be present.",
     "CONSUMPTION report is stamped e00e6fe and 11 of the 110 placements landed after it."
   ],
-  "contention": "gate returned WAIT at start; all work so far is offline. Browser work still to do.",
-  "accidental_touch": "ran tools/uesp/mine-argonian-names.mjs with no args, which rewrote corpus/60-lore/data/argonian-names.json; reverted immediately with git checkout --, tree clean for that path."
+  "contention": "gate returned WAIT at the start and I did the whole of the offline work first; it returned GO before any browser launched and the twelve-leg on-screen run and its control were taken inside that window. It returned WAIT again for the SECOND shelf/screenshot run and I PROCEEDED PAST EXIT 3, partly because my own first run was one of the two instances counted. Rule 26: no timing figure is published anywhere in this verdict, and every figure in the shelf run is a count, a distance or a boolean.",
+  "accidental_touch": "ran tools/uesp/mine-argonian-names.mjs with no args, which rewrote corpus/60-lore/data/argonian-names.json; reverted immediately with git checkout --, tree clean for that path.",
+  "redundant_with": [
+    "W1-23-r4",
+    "critic-w1-23-r3",
+    "W1-READABLES-r2"
+  ],
+  "score": 4
 }

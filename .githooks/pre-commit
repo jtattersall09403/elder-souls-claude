@@ -85,7 +85,7 @@ git add docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
 # than a sound `2`; published numbers could have been read as different numbers. It survived because
 # nothing threw and a sheared glyph is still a picture of a letter.
 #
-# It was fixed once, in tools/lib/chart-font.mjs. All thirteen tools now import it and the tree
+# It was fixed once, in tools/lib/chart-font.mjs. Sixteen chart tools now import it and the tree
 # carries no sheared table at all, so this is ARMED (W1-CHARTFONT-r2). It was a warning until then
 # for rule 13's reason: five tools still carried the table and four belonged to live pieces, so
 # arming it would have blocked their owners over a defect they inherited. Two of those five were

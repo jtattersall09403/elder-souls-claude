@@ -124,12 +124,57 @@ try {
       };
     }
 
+    // ---- THE NOISE FLOOR, MEASURED BEFORE ANY CROSS-ROOM NUMBER IS REPORTED -----------------
+    //
+    // W1-04 round 4, and it is the round-3 verdict's own remedy for
+    // `GAP-W1-pixel-acceptance-is-unmeasurable`. This sweep's comment predicted its own failure
+    // mode and nobody ran the arm that would have caught it: the critic did, and measured ONE
+    // UNCHANGED ROOM returning 8 distinct images out of 8 after two fixed steps, and 1 of 8 with
+    // no step at all. Advancing the fixed step by two frames changes every pixel in this
+    // renderer, so 115 distinct images over 115 rooms is a count of the step counter.
+    //
+    // So: shoot ONE room N times under the identical protocol first. If that is not 1, the
+    // cross-room number below is not admissible and this tool says so instead of printing it.
+    // (The measure that DOES survive this is a geometry signature over the scene graph —
+    // `__HARNESS.getDrawnSignature()`, and `tools/world/w1-04-r4-live.mjs` S3 runs the same
+    // three floors against it.)
+    async function floor(id, n) {
+      const seen = new Set();
+      for (let i = 0; i < n; i++) {
+        if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(1); }
+        const r = H.enterInterior(id);
+        if (!r || !r.entered) return { id, shots: 0, distinct: 0, error: 'the floor room refused entry' };
+        H.stepFrames(2);
+        E.sim.npcs.length = 0;
+        H.camera(POSE);
+        H.renderFrame();
+        seen.add(hashStr(await H.screenshot()));
+      }
+      return { id, shots: n, distinct: seen.size };
+    }
+    const noiseFloor = await floor(ids.find((x) => x === 'archon-apothecary') || ids[0], 8);
+    if (noiseFloor.distinct !== 1) {
+      try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* outside */ }
+      return { noise_floor: noiseFloor, live: null, control: null, unmeasurable: true };
+    }
+
     const live = await sweep('live', false);
     const control = opts.withControl ? await sweep('room builder cut', true) : null;
     try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* outside */ }
-    return { live, control };
+    return { noise_floor: noiseFloor, live, control };
   }, { withControl });
 
+  if (run.unmeasurable) {
+    log(`NOISE FLOOR           ${run.noise_floor.distinct} distinct images from ${run.noise_floor.shots} shots of THE SAME UNCHANGED ROOM`);
+    log('');
+    log('This sweep is UNMEASURABLE on this build and no cross-room number is reported.');
+    log('A pixel hash that changes when nothing changes cannot tell you whether two rooms differ.');
+    log('Use the geometry signature instead: __HARNESS.getDrawnSignature(), and see');
+    log('tools/world/w1-04-r4-live.mjs S3 for the same three floors run against it.');
+    writeJson(outFile, { tool: 'w1-04-interior-sweep', unmeasurable: true, noise_floor: run.noise_floor });
+    process.exit(21);
+  }
+  log(`NOISE FLOOR           ${run.noise_floor.distinct} distinct image from ${run.noise_floor.shots} shots of the same room — the sweep is admissible`);
   const live = run.live, control = run.control;
   log(`sweep (live)          entered ${live.entered}/${live.total}  refused ${live.refused}  errors ${live.errors}`);
   log(`  drawn cell agrees   ${live.drawn_cell_agrees}/${live.entered}`);

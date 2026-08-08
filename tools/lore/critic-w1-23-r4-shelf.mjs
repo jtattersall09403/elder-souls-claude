@@ -110,11 +110,11 @@ try {
     rooms.push(out);
   }
 
-  if (SHOT) {
+  if (SHOT) try {
     const R = ROOMS.find((r) => r.room === 'lilmoth-customs') || ROOMS[0];
     const book = R.room === 'lilmoth-customs' ? 'the-blessings-of-the-coast' : R.books[0];
     await handle.h('reset');
-    await handle.h('setRenderRate', 1);
+    await handle.h('setRenderRate', 0);
     await handle.h('enterInterior', R.room);
     await handle.h('stepFrames', 2);
     const ents = await handle.h('listEntities');
@@ -130,10 +130,10 @@ try {
       await handle.h('stepFrames', 10);
       await handle.h('renderFrame');
       ensureDir(path.dirname(SHOT));
-      await handle.page.screenshot({ path: SHOT });
+      await handle.page.screenshot({ path: SHOT, timeout: 120000, animations: 'disabled', caret: 'hide' });
       console.log(`shot: ${path.relative(ROOT, SHOT)} — ${book} open in ${R.room}`);
     } else console.error('shot: the book was not in the room; no picture taken');
-  }
+  } catch (e) { console.error(`shot failed (the census above is unaffected): ${e.message}`); }
 } finally { await handle.close(); }
 
 const bad = rooms.filter((r) => r.openable !== r.spawned || r.pairs_within_reach.length);

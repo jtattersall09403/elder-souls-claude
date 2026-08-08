@@ -1,6 +1,6 @@
 {
   "task_id": "W1-04-r4",
-  "state": "offline half complete and green; browser arm next",
+  "state": "live arm running (S3 distinctness sweep); everything else green",
   "started": "2026-08-08",
   "commit_at_start": "9e962a4",
   "piece": "W1-04 round 4 - settlements, interiors and the people in them",
@@ -12,12 +12,16 @@
     "game/src/world/province.js",
     "orchestration/status/W1-04-r4.json",
     "reports/w1-04-r4/join.json",
+    "reports/w1-04-r4/live.json",
     "reports/w1-04-r4/vp04-survey.json",
     "tools/check-building-fits-room.mjs",
     "tools/check-data.mjs",
     "tools/harness/viewpoints.json",
     "tools/world/w1-04-consumption.mjs",
+    "tools/world/w1-04-interior-sweep.mjs",
     "tools/world/w1-04-r4-join.mjs",
+    "tools/world/w1-04-r4-live.mjs",
+    "tools/world/w1-04-r4-shots.mjs",
     "tools/world/w1-04-r4-vp04.mjs"
   ],
   "files_claimed": [
@@ -60,6 +64,13 @@
     },
     "deep_overlaps": "12 before, 12 after (unchanged) \u2014 the per-axis shrink pays for the 5.0 m enterable floor",
     "check": "tools/check-building-fits-room.mjs, wired into tools/check-data.mjs; --self-break shows 112 of 112 failing with the join removed",
-    "gates": "node tools/harness/boot-check.mjs PASS; node tools/check-data.mjs PASS"
-  }
+    "gates": "node tools/harness/boot-check.mjs PASS; node tools/check-data.mjs PASS",
+    "live_S1": "112 enterable buildings read off the RUNNING engine: 0 draw an exterior smaller than their own room; 0 records the engine failed to join; worst live area ratio 1.0887",
+    "live_S2_control": "the join cut in the live page: 112 of 112 fail (worst 0.2116); re-running the engine's own setSettlements() restores 0 of 112. The control has a demonstrated failure mode."
+  },
+  "method_deviations": [
+    "node tools/contention.mjs --gate returned GO at the start of the run and WAIT (exit 3) later, at 2 browser instances and load 5.59 per core against a ceiling of 4.0. RULES.md rule 21 permits proceeding if it is declared: I did, ONCE, with ONE browser (tools/world/w1-04-r4-live.mjs) kept for the whole run, because the capture daemon's query path is a read-only whitelist and every section of the live arm mutates the world. The two pictures go through the pooled daemon and launch nothing.",
+    "NO TIMING FIGURE is published anywhere in this piece (rule 26).",
+    "game/src/render/exterior.js was undeclared by any live piece when I started; I declared it before writing (rule 16). It carries the shrink pass, which is where the round-3 verdict's blocking gap lives."
+  ]
 }

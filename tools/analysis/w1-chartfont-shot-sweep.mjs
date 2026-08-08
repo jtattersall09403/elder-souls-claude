@@ -213,7 +213,7 @@ export function classify(img, scales = [1, 2, 3]) {
   const ratio = total ? nX / total : 0;
   let verdict = 'not-a-chart-font-figure';
   if (total >= 20) verdict = ratio >= 0.05 ? 'SHEARED' : 'sound';
-  else if (total >= 6) verdict = 'ambiguous';
+  else if (total >= 6) verdict = 'weak-signal';
   return {
     verdict,
     sound_hits: nS,
@@ -277,7 +277,7 @@ for (const f of files) {
 if (!one) {
   const bad = rows.filter((r) => r.verdict === 'SHEARED');
   const good = rows.filter((r) => r.verdict === 'sound');
-  const amb = rows.filter((r) => r.verdict === 'ambiguous');
+  const amb = rows.filter((r) => r.verdict === 'weak-signal');
   const und = rows.filter((r) => r.verdict === 'undecodable');
   console.log(`\n  swept ${rows.length} PNG(s) in ${dir.replace(ROOT + '/', '')}`);
   console.log(`  ${good.length} drawn with the FIXED chart font, ${bad.length} with the SHEARED one,`);
@@ -292,7 +292,7 @@ if (!one) {
     for (const r of good) console.log(`    ${r.file}   (${r.sound_hits} hits)`);
     console.log();
   }
-  if (amb.length) { console.log('  ambiguous:'); for (const r of amb) console.log(`    ${r.file}  sound ${r.sound_hits} / sheared ${r.sheared_hits}`); console.log(); }
+  if (amb.length) { console.log('  weak signal (too few glyphs to call — not drawn with either table):'); for (const r of amb) console.log(`    ${r.file}  sound ${r.sound_hits} / sheared ${r.sheared_hits}`); console.log(); }
   if (und.length) { console.log(`  undecodable (${und.length}): ${und.slice(0, 4).map((r) => r.file).join(', ')}${und.length > 4 ? ' …' : ''}\n`); }
 
   const jsonPath = argOf('--json');

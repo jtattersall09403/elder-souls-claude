@@ -1,0 +1,1901 @@
+{
+  "schema": "elder-souls/critic-map-r2@1",
+  "reports": [
+    {
+      "schema": "elder-souls/critic-map-r2@1",
+      "break": "unrendered",
+      "expected_red": [
+        "U1",
+        "U2",
+        "U3"
+      ],
+      "expected_green": [],
+      "red": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A9",
+        "A10",
+        "A11",
+        "A12b",
+        "Q1",
+        "Q2",
+        "Q3",
+        "U1",
+        "U2",
+        "U3",
+        "G2"
+      ],
+      "notes": [
+        "BREAK unrendered: the screen draws every cell regardless of discovery"
+      ],
+      "faults": [
+        "this.ai.step is not a function"
+      ],
+      "fault_count": 1,
+      "retake": {
+        "clean": {
+          "arm": "clean",
+          "faults": 0,
+          "live_ai": 0,
+          "frames_advanced": 6,
+          "ink_empty": {
+            "distinct": 1,
+            "pixels": 345071,
+            "dominant": "#0b0a08",
+            "dominant_frac": 1,
+            "channel_range": [
+              0,
+              0,
+              0
+            ],
+            "meta_drawn": 0,
+            "meta_total": 42846
+          },
+          "ink_partial": {
+            "distinct": 955,
+            "pixels": 342943,
+            "dominant": "#0b0a08",
+            "dominant_frac": 0.9543,
+            "channel_range": [
+              196,
+              189,
+              170
+            ],
+            "meta_drawn": 2106,
+            "meta_total": 42846
+          },
+          "c2": true,
+          "d1": true,
+          "d2": true,
+          "d3": true,
+          "d1_detail": "region(+480m):false near(+40m):false standing:true",
+          "naming": "Thorn",
+          "poi_name": "Thorn",
+          "naming_meta": {
+            "place": "thorn",
+            "names": "thorn",
+            "quest": null,
+            "objective": null,
+            "travel": false
+          },
+          "squares": 1,
+          "discovered": 1,
+          "quest_bearing": [],
+          "travel_affordances": [],
+          "numeric_text": [],
+          "routes": 0
+        },
+        "hostile": {
+          "arm": "hostile",
+          "faults": 0,
+          "live_ai": 3,
+          "frames_advanced": 8,
+          "ink_empty": {
+            "distinct": 1,
+            "pixels": 345071,
+            "dominant": "#0b0a08",
+            "dominant_frac": 1,
+            "channel_range": [
+              0,
+              0,
+              0
+            ],
+            "meta_drawn": 9,
+            "meta_total": 42846
+          },
+          "ink_partial": {
+            "distinct": 1457,
+            "pixels": 342943,
+            "dominant": "#0b0a08",
+            "dominant_frac": 0.9541,
+            "channel_range": [
+              199,
+              191,
+              171
+            ],
+            "meta_drawn": 2115,
+            "meta_total": 42846
+          },
+          "c2": true,
+          "d1": true,
+          "d2": true,
+          "d3": true,
+          "d1_detail": "region(+480m):false near(+40m):false standing:true",
+          "naming": "Thorn",
+          "poi_name": "Thorn",
+          "naming_meta": {
+            "place": "thorn",
+            "names": "thorn",
+            "quest": null,
+            "objective": null,
+            "travel": false
+          },
+          "squares": 1,
+          "discovered": 1,
+          "quest_bearing": [],
+          "travel_affordances": [],
+          "numeric_text": [],
+          "routes": 0
+        }
+      },
+      "honest": {
+        "present": true,
+        "revealed_cells": 9,
+        "total_cells": 42846,
+        "revealed_frac": 0.00021,
+        "observations": 31,
+        "places": [
+          "thorn"
+        ],
+        "place_count": 1,
+        "suspended": false,
+        "dropped_on_load": [],
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "seenCell",
+            "arity": 2
+          },
+          {
+            "name": "seenAt",
+            "arity": 2
+          },
+          {
+            "name": "places",
+            "arity": 0
+          },
+          {
+            "name": "hasPlace",
+            "arity": 1
+          },
+          {
+            "name": "raster",
+            "arity": 0
+          },
+          {
+            "name": "footprint",
+            "arity": 0
+          },
+          {
+            "name": "placePos",
+            "arity": 1
+          },
+          {
+            "name": "serialise",
+            "arity": 0
+          },
+          {
+            "name": "mutatorReport",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          }
+        ],
+        "frozen": true
+      },
+      "forged_all": {
+        "present": true,
+        "revealed_cells": 42846,
+        "total_cells": 42846,
+        "revealed_frac": 1,
+        "observations": 31,
+        "places": [
+          "the-border-falls",
+          "stormhold",
+          "way-stormhold-thorn-0",
+          "thorn",
+          "ixtaxh-tzil",
+          "way-stormhold-thorn-1",
+          "way-archon-thorn-5",
+          "the-xanmeer-of-ix-thakla",
+          "nine-mud",
+          "the-counting-obelisk",
+          "the-red-wells",
+          "wayshrine-of-the-ninth-root",
+          "way-stormhold-helstrom-2",
+          "the-weeping-ford",
+          "way-archon-thorn-4",
+          "helstrom",
+          "rootway-post",
+          "clayfast",
+          "bloodmarl-isle",
+          "gideon",
+          "the-drowned-xanmeer",
+          "ceyatatar-zel-ayleid-vault",
+          "tenmarch-bridge",
+          "way-helstrom-archon-3",
+          "xal-ithix",
+          "sunken-barrow",
+          "kiln-camp",
+          "hollow-reeds",
+          "archon",
+          "way-lilmoth-archon-7",
+          "mudwater-landing",
+          "xanmeer-of-sunken-teeth",
+          "tideway-shrine",
+          "bone-ladder",
+          "blackrose",
+          "the-leaning-stone",
+          "salt-egg-camp",
+          "way-lilmoth-archon-6",
+          "soulrest",
+          "stilt-row",
+          "the-glassed-crater",
+          "lilmoth"
+        ],
+        "place_count": 42,
+        "suspended": false,
+        "dropped_on_load": [],
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "seenCell",
+            "arity": 2
+          },
+          {
+            "name": "seenAt",
+            "arity": 2
+          },
+          {
+            "name": "places",
+            "arity": 0
+          },
+          {
+            "name": "hasPlace",
+            "arity": 1
+          },
+          {
+            "name": "raster",
+            "arity": 0
+          },
+          {
+            "name": "footprint",
+            "arity": 0
+          },
+          {
+            "name": "placePos",
+            "arity": 1
+          },
+          {
+            "name": "serialise",
+            "arity": 0
+          },
+          {
+            "name": "mutatorReport",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          }
+        ],
+        "frozen": true
+      },
+      "a9": {
+        "ok": true,
+        "err": null,
+        "place_count": 42,
+        "revealed": 42846,
+        "squares": 42,
+        "bytes": 124898
+      },
+      "forged_report": {
+        "places_drawn": 42,
+        "places_discovered": 42,
+        "drawn_cells": 42846,
+        "revealed_cells": 42846,
+        "markers": 0,
+        "routes_drawn": 0,
+        "quest_bearing": 0,
+        "travel": 0,
+        "numeric_text": 0,
+        "dropped_on_load": 0
+      },
+      "arms": {
+        "full": {
+          "hash": "c23bbb77:52365",
+          "revealed": 2209,
+          "places": 0,
+          "faults": 0
+        },
+        "ablated": {
+          "hash": "c23bbb77:52365",
+          "revealed": 0,
+          "places": 0,
+          "faults": 0
+        }
+      },
+      "checks": [
+        {
+          "id": "P1",
+          "name": "PREMISE: after a save/load with hostiles present, the fixed step runs and the AI is live",
+          "got": "live AI 3 -> 3, ctor SoulsAI -> SoulsAI, 60 steps ok=true, faults=0",
+          "target": "a live SoulsAI survives the round trip and the step does not throw",
+          "pass": true
+        },
+        {
+          "id": "P3",
+          "name": "CONTROL: replacing a live AI with a plain object makes the fault detector go RED",
+          "got": "detector fired=true — \"this.ai.step is not a function\"",
+          "target": "the detector fires — otherwise every \"0 faults\" below is a detector that cannot fail",
+          "pass": true
+        },
+        {
+          "id": "R-pre-clean",
+          "name": "PRECONDITION (clean): the walk this arm measures actually stepped the world",
+          "got": "step faults=0, frames advanced=6, cells drawn after walking=2106, live hostile AI=0",
+          "target": "no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor",
+          "pass": true
+        },
+        {
+          "id": "R-C2-clean",
+          "name": "C2 (clean): partial map — undiscovered ground is still the screen ground and still the majority",
+          "got": "distinct=955, dominant=#0b0a08 at 95.43%, drawn=2106/42846",
+          "target": "more than one colour, the undiscovered hex unchanged and over 50%",
+          "pass": true
+        },
+        {
+          "id": "R-D1-clean",
+          "name": "D1 (clean): a square appears ONLY after standing in the pad",
+          "got": "region(+480m):false near(+40m):false standing:true",
+          "target": "false / false / true",
+          "pass": true
+        },
+        {
+          "id": "R-D2-clean",
+          "name": "D2 (clean): the hover name is the place name from pois.json",
+          "got": "naming=\"Thorn\" pois.name=\"Thorn\"",
+          "target": "identical to the world-data name",
+          "pass": true
+        },
+        {
+          "id": "R-D3-clean",
+          "name": "D3 (clean): the naming element carries no quest, objective or travel identity",
+          "got": "{\"place\":\"thorn\",\"names\":\"thorn\",\"quest\":null,\"objective\":null,\"travel\":false}",
+          "target": "quest:null objective:null travel:false",
+          "pass": true
+        },
+        {
+          "id": "R-pre-hostile",
+          "name": "PRECONDITION (hostile): the walk this arm measures actually stepped the world",
+          "got": "step faults=0, frames advanced=8, cells drawn after walking=2115, live hostile AI=3",
+          "target": "no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor",
+          "pass": true
+        },
+        {
+          "id": "R-C2-hostile",
+          "name": "C2 (hostile): partial map — undiscovered ground is still the screen ground and still the majority",
+          "got": "distinct=1457, dominant=#0b0a08 at 95.41%, drawn=2115/42846",
+          "target": "more than one colour, the undiscovered hex unchanged and over 50%",
+          "pass": true
+        },
+        {
+          "id": "R-D1-hostile",
+          "name": "D1 (hostile): a square appears ONLY after standing in the pad",
+          "got": "region(+480m):false near(+40m):false standing:true",
+          "target": "false / false / true",
+          "pass": true
+        },
+        {
+          "id": "R-D2-hostile",
+          "name": "D2 (hostile): the hover name is the place name from pois.json",
+          "got": "naming=\"Thorn\" pois.name=\"Thorn\"",
+          "target": "identical to the world-data name",
+          "pass": true
+        },
+        {
+          "id": "R-D3-hostile",
+          "name": "D3 (hostile): the naming element carries no quest, objective or travel identity",
+          "got": "{\"place\":\"thorn\",\"names\":\"thorn\",\"quest\":null,\"objective\":null,\"travel\":false}",
+          "target": "quest:null objective:null travel:false",
+          "pass": true
+        },
+        {
+          "id": "R-agree",
+          "name": "THE RE-TAKE ITSELF: the two arms agree, so these are properties of the map and not of the save",
+          "got": "clean C2/D1/D2/D3 = true/true/true/true; hostile = true/true/true/true",
+          "target": "identical in both arms",
+          "pass": true
+        },
+        {
+          "id": "A0",
+          "name": "BASELINE: an honest walk to one place discovers exactly that place",
+          "got": "places=[thorn] revealed=9/42846",
+          "target": ">=1 place, >0 cells",
+          "pass": true
+        },
+        {
+          "id": "Afmt",
+          "name": "PRECONDITION: a forged trail in the real wire format reaches the model at all",
+          "got": "one forged cell -> stood_cells=1, revealed=true",
+          "target": "delivered — otherwise every A-result below is a false negative",
+          "pass": true
+        },
+        {
+          "id": "A1",
+          "name": "S35: no square for a place the body has not stood in — a forged `stood` must not mint them",
+          "got": "place_count=42 of 42 pois (the honest walk gave 1)",
+          "target": "no more places than the body actually stood in",
+          "pass": false
+        },
+        {
+          "id": "A2",
+          "name": "S35: undiscovered is unrendered — a forged `stood` must not reveal the province",
+          "got": "revealed=42846/42846 (100.0%)",
+          "target": "no more ground than was walked",
+          "pass": false
+        },
+        {
+          "id": "A3",
+          "name": "THE SCREEN: a forged footprint must not draw phantom squares",
+          "got": "map_place squares drawn=42, drawn_cells=42846/42846",
+          "target": "no phantom squares rendered",
+          "pass": false
+        },
+        {
+          "id": "A4",
+          "name": "the screen's compliance report must not be a fixed point on its own model",
+          "got": "places_drawn=42 places_discovered=42, squares on screen=42",
+          "target": "either no forgery, or a report that can tell drawn-from-forged apart",
+          "pass": false
+        },
+        {
+          "id": "A5",
+          "name": "the footprint-disagreement signal restore() already computes must reach an instrument",
+          "got": "Discovery.lastRestore computes [dropped,phantom_cells,missing_cells,claimed_places,derived_places,stood_cells,legacy]; published by mapState/getUIState: [nothing]",
+          "target": "phantom_cells / stood_cells / missing_cells published — save/state.js keeps only .dropped",
+          "pass": false
+        },
+        {
+          "id": "A9",
+          "name": "THE PLAYER-FACING ROUTE: a sealed save file, imported through importSave(), must not fill the map",
+          "got": "124898 sealed bytes accepted -> place_count=42/42, revealed=42846/42846, squares drawn=42",
+          "target": "refused by the seal, or no more places than were walked",
+          "pass": false
+        },
+        {
+          "id": "A10",
+          "name": "the forgery must not survive 180 fixed steps with hostiles on the floor",
+          "got": "stepped ok=true, faults=0, live hostile AI=3, place_count after=42, revealed after=42846/42846",
+          "target": "the map is not still full — and the step ran, so this is not a load that died",
+          "pass": false
+        },
+        {
+          "id": "A11",
+          "name": "HOLE vs REPORT: some published number must distinguish a forged map from an honest one",
+          "got": "on the forged state every compliance number reads clean: {\"places_drawn\":42,\"places_discovered\":42,\"drawn_cells\":42846,\"revealed_cells\":42846,\"markers\":0,\"routes_drawn\":0,\"quest_bearing\":0,\"travel\":0,\"numeric_text\":0,\"dropped_on_load\":0}",
+          "target": "a forged map that fills the province must move at least one published number",
+          "pass": false
+        },
+        {
+          "id": "A12a",
+          "name": "INTEGRITY: bytes edited after sealing must be refused",
+          "got": "refused: This ledger has been altered since it was written; the seal does not match. Nothing has be",
+          "target": "refused — the sha-256 over the body works",
+          "pass": true
+        },
+        {
+          "id": "A12b",
+          "name": "AUTHENTICITY: a forged blob RESEALED by the game's own writer must still be refused",
+          "got": "ACCEPTED",
+          "target": "refused — an unkeyed digest stops corruption, not a forger who can recompute it",
+          "pass": false
+        },
+        {
+          "id": "Q1",
+          "name": "sim.discovery must not be a writable slot the quest machine holds a reference to",
+          "got": "writable=true configurable=true; questEngine.sim === sim: true",
+          "target": "non-writable, or not reachable from the quest machine",
+          "pass": false
+        },
+        {
+          "id": "Q2",
+          "name": "writing sim.discovery from the object the quest machine holds must not draw squares",
+          "got": "squares drawn from a model installed via questEngine.sim: 3",
+          "target": "refused or inert",
+          "pass": false
+        },
+        {
+          "id": "Q3",
+          "name": "the window.__ENGINE back door must not reach a map setter either",
+          "got": "squares drawn via window.__ENGINE.sim.discovery = forged: 2; capability report mentions __ENGINE: false",
+          "target": "refused or inert",
+          "pass": false
+        },
+        {
+          "id": "Q4",
+          "name": "no method ON the model accepts a place — tryPlaceMapMarker tries them all",
+          "got": "attempts=13, succeeded=0, requested \"blackrose\" discovered_after=false, places [none] -> [none]",
+          "target": "every attempt refused, the requested place absent, the place list unchanged",
+          "pass": true
+        },
+        {
+          "id": "U1",
+          "name": "EMPTY MAP: the terrain box holds ONE colour — no coastline is readable",
+          "got": "distinct=5918 over 345071px, dominant=#243542 (15.32%), drawn_cells=42846",
+          "target": "exactly 1 colour, 0 cells drawn",
+          "pass": false
+        },
+        {
+          "id": "U2",
+          "name": "NOT DRAWN-THEN-MASKED: no channel varies anywhere in the undiscovered ground",
+          "got": "per-channel range across the box = [204,194,172]",
+          "target": "[0,0,0] — a province drawn at low alpha leaks its height raster as a range",
+          "pass": false
+        },
+        {
+          "id": "U3",
+          "name": "PARTIAL: the discovered ground appears and the undiscovered hex is unchanged",
+          "got": "distinct 5918 -> 5918, dominant #243542 at 15.32%, drawn 42846/42846",
+          "target": "more colours, same ground colour, still the majority",
+          "pass": false
+        },
+        {
+          "id": "U4",
+          "name": "PRECONDITION: the U block stepped",
+          "got": "faults=0, drawn after walking=42846",
+          "target": "no faults, non-empty map",
+          "pass": true
+        },
+        {
+          "id": "E3",
+          "name": "being TOLD about a place must not put a square on the map",
+          "got": "places [lilmoth] -> [lilmoth] after [questEngine.learnFrom('place', site): ran; setWorldKnowledge: ran; learnTopic: ran] (baseline taken AFTER the spawn cell registered)",
+          "target": "unchanged",
+          "pass": true
+        },
+        {
+          "id": "E4",
+          "name": "ONE square per place personally stood in, and no duplicates",
+          "got": "squares=2 discovered=2 unique ids=2 [lilmoth,thorn]",
+          "target": "equal, unique",
+          "pass": true
+        },
+        {
+          "id": "E5",
+          "name": "the name is the named PLACE's own name from pois.json, not a quest string",
+          "got": "naming=\"Lilmoth\" names place \"lilmoth\" whose pois.name is \"Lilmoth\"",
+          "target": "identical to that place's world-data name",
+          "pass": true
+        },
+        {
+          "id": "E6",
+          "name": "S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity",
+          "got": "markers=0 routes=0 numerals=[none] travel=[none] quest_bearing=[none] reachable_from_journal=false",
+          "target": "all zero and no \"show on map\" route from the journal",
+          "pass": true
+        },
+        {
+          "id": "G1",
+          "name": "ABLATION IS REAL: the model records in arm A and records nothing in arm B",
+          "got": "full: 2209 cells / 0 places — ablated: 0 cells / 0 places",
+          "target": "arm A non-zero, arm B zero",
+          "pass": true
+        },
+        {
+          "id": "G1b",
+          "name": "the two arms are comparable: the same number of step faults in each",
+          "got": "full=0 ablated=0",
+          "target": "equal",
+          "pass": true
+        },
+        {
+          "id": "G2",
+          "name": "RI-MTH07: a world-side consumer exists — destroying the model changes the running world",
+          "got": "world hash (discovery blob excluded) full=c23bbb77:52365 ablated=c23bbb77:52365 differ=false",
+          "target": "the hashes DIFFER — identical means the only consumer is the map screen's own draw call",
+          "pass": false
+        }
+      ],
+      "passed": 24,
+      "total": 40
+    },
+    {
+      "schema": "elder-souls/critic-map-r2@1",
+      "break": "standing",
+      "expected_red": [
+        "R-D1-clean",
+        "R-D1-hostile"
+      ],
+      "expected_green": [],
+      "red": [
+        "R-D1-clean",
+        "R-D1-hostile",
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A9",
+        "A10",
+        "A11",
+        "A12b",
+        "Q1",
+        "Q2",
+        "Q3",
+        "G2"
+      ],
+      "notes": [],
+      "faults": [
+        "this.ai.step is not a function"
+      ],
+      "fault_count": 1,
+      "retake": {
+        "clean": {
+          "arm": "clean",
+          "faults": 0,
+          "live_ai": 0,
+          "frames_advanced": 6,
+          "ink_empty": {
+            "distinct": 1,
+            "pixels": 345071,
+            "dominant": "#0b0a08",
+            "dominant_frac": 1,
+            "channel_range": [
+              0,
+              0,
+              0
+            ],
+            "meta_drawn": 0,
+            "meta_total": 42846
+          },
+          "ink_partial": {
+            "distinct": 1442,
+            "pixels": 342943,
+            "dominant": "#0b0a08",
+            "dominant_frac": 0.9544,
+            "channel_range": [
+              197,
+              191,
+              170
+            ],
+            "meta_drawn": 2106,
+            "meta_total": 42846
+          },
+          "c2": true,
+          "d1": false,
+          "d2": true,
+          "d3": true,
+          "d1_detail": "region(+480m):true near(+40m):true standing:true",
+          "naming": "Thorn",
+          "poi_name": "Thorn",
+          "naming_meta": {
+            "place": "thorn",
+            "names": "thorn",
+            "quest": null,
+            "objective": null,
+            "travel": false
+          },
+          "squares": 1,
+          "discovered": 1,
+          "quest_bearing": [],
+          "travel_affordances": [],
+          "numeric_text": [],
+          "routes": 0
+        },
+        "hostile": {
+          "arm": "hostile",
+          "faults": 0,
+          "live_ai": 3,
+          "frames_advanced": 8,
+          "ink_empty": {
+            "distinct": 1,
+            "pixels": 345071,
+            "dominant": "#0b0a08",
+            "dominant_frac": 1,
+            "channel_range": [
+              0,
+              0,
+              0
+            ],
+            "meta_drawn": 9,
+            "meta_total": 42846
+          },
+          "ink_partial": {
+            "distinct": 1457,
+            "pixels": 342943,
+            "dominant": "#0b0a08",
+            "dominant_frac": 0.9541,
+            "channel_range": [
+              199,
+              191,
+              171
+            ],
+            "meta_drawn": 2115,
+            "meta_total": 42846
+          },
+          "c2": true,
+          "d1": false,
+          "d2": true,
+          "d3": true,
+          "d1_detail": "region(+480m):true near(+40m):true standing:true",
+          "naming": "Thorn",
+          "poi_name": "Thorn",
+          "naming_meta": {
+            "place": "thorn",
+            "names": "thorn",
+            "quest": null,
+            "objective": null,
+            "travel": false
+          },
+          "squares": 1,
+          "discovered": 1,
+          "quest_bearing": [],
+          "travel_affordances": [],
+          "numeric_text": [],
+          "routes": 0
+        }
+      },
+      "honest": {
+        "present": true,
+        "revealed_cells": 9,
+        "total_cells": 42846,
+        "revealed_frac": 0.00021,
+        "observations": 82,
+        "places": [
+          "thorn"
+        ],
+        "place_count": 1,
+        "suspended": false,
+        "dropped_on_load": [],
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "seenCell",
+            "arity": 2
+          },
+          {
+            "name": "seenAt",
+            "arity": 2
+          },
+          {
+            "name": "places",
+            "arity": 0
+          },
+          {
+            "name": "hasPlace",
+            "arity": 1
+          },
+          {
+            "name": "raster",
+            "arity": 0
+          },
+          {
+            "name": "footprint",
+            "arity": 0
+          },
+          {
+            "name": "placePos",
+            "arity": 1
+          },
+          {
+            "name": "serialise",
+            "arity": 0
+          },
+          {
+            "name": "mutatorReport",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          }
+        ],
+        "frozen": true
+      },
+      "forged_all": {
+        "present": true,
+        "revealed_cells": 42846,
+        "total_cells": 42846,
+        "revealed_frac": 1,
+        "observations": 82,
+        "places": [
+          "the-border-falls",
+          "stormhold",
+          "way-stormhold-thorn-0",
+          "thorn",
+          "ixtaxh-tzil",
+          "way-stormhold-thorn-1",
+          "way-archon-thorn-5",
+          "the-xanmeer-of-ix-thakla",
+          "nine-mud",
+          "the-counting-obelisk",
+          "the-red-wells",
+          "wayshrine-of-the-ninth-root",
+          "way-stormhold-helstrom-2",
+          "the-weeping-ford",
+          "way-archon-thorn-4",
+          "helstrom",
+          "rootway-post",
+          "clayfast",
+          "bloodmarl-isle",
+          "gideon",
+          "the-drowned-xanmeer",
+          "ceyatatar-zel-ayleid-vault",
+          "tenmarch-bridge",
+          "way-helstrom-archon-3",
+          "xal-ithix",
+          "sunken-barrow",
+          "kiln-camp",
+          "hollow-reeds",
+          "archon",
+          "way-lilmoth-archon-7",
+          "mudwater-landing",
+          "xanmeer-of-sunken-teeth",
+          "tideway-shrine",
+          "bone-ladder",
+          "blackrose",
+          "the-leaning-stone",
+          "salt-egg-camp",
+          "way-lilmoth-archon-6",
+          "soulrest",
+          "stilt-row",
+          "the-glassed-crater",
+          "lilmoth"
+        ],
+        "place_count": 42,
+        "suspended": false,
+        "dropped_on_load": [],
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "seenCell",
+            "arity": 2
+          },
+          {
+            "name": "seenAt",
+            "arity": 2
+          },
+          {
+            "name": "places",
+            "arity": 0
+          },
+          {
+            "name": "hasPlace",
+            "arity": 1
+          },
+          {
+            "name": "raster",
+            "arity": 0
+          },
+          {
+            "name": "footprint",
+            "arity": 0
+          },
+          {
+            "name": "placePos",
+            "arity": 1
+          },
+          {
+            "name": "serialise",
+            "arity": 0
+          },
+          {
+            "name": "mutatorReport",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          }
+        ],
+        "frozen": true
+      },
+      "a9": {
+        "ok": true,
+        "err": null,
+        "place_count": 42,
+        "revealed": 42846,
+        "squares": 42,
+        "bytes": 124898
+      },
+      "forged_report": {
+        "places_drawn": 42,
+        "places_discovered": 42,
+        "drawn_cells": 42846,
+        "revealed_cells": 42846,
+        "markers": 0,
+        "routes_drawn": 0,
+        "quest_bearing": 0,
+        "travel": 0,
+        "numeric_text": 0,
+        "dropped_on_load": 0
+      },
+      "arms": {
+        "full": {
+          "hash": "c23bbb77:52365",
+          "revealed": 2209,
+          "places": 0,
+          "faults": 0
+        },
+        "ablated": {
+          "hash": "c23bbb77:52365",
+          "revealed": 0,
+          "places": 0,
+          "faults": 0
+        }
+      },
+      "checks": [
+        {
+          "id": "P1",
+          "name": "PREMISE: after a save/load with hostiles present, the fixed step runs and the AI is live",
+          "got": "live AI 2 -> 2, ctor SoulsAI -> SoulsAI, 60 steps ok=true, faults=0",
+          "target": "a live SoulsAI survives the round trip and the step does not throw",
+          "pass": true
+        },
+        {
+          "id": "P3",
+          "name": "CONTROL: replacing a live AI with a plain object makes the fault detector go RED",
+          "got": "detector fired=true — \"this.ai.step is not a function\"",
+          "target": "the detector fires — otherwise every \"0 faults\" below is a detector that cannot fail",
+          "pass": true
+        },
+        {
+          "id": "R-pre-clean",
+          "name": "PRECONDITION (clean): the walk this arm measures actually stepped the world",
+          "got": "step faults=0, frames advanced=6, cells drawn after walking=2106, live hostile AI=0",
+          "target": "no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor",
+          "pass": true
+        },
+        {
+          "id": "R-C2-clean",
+          "name": "C2 (clean): partial map — undiscovered ground is still the screen ground and still the majority",
+          "got": "distinct=1442, dominant=#0b0a08 at 95.44%, drawn=2106/42846",
+          "target": "more than one colour, the undiscovered hex unchanged and over 50%",
+          "pass": true
+        },
+        {
+          "id": "R-D1-clean",
+          "name": "D1 (clean): a square appears ONLY after standing in the pad",
+          "got": "region(+480m):true near(+40m):true standing:true",
+          "target": "false / false / true",
+          "pass": false
+        },
+        {
+          "id": "R-D2-clean",
+          "name": "D2 (clean): the hover name is the place name from pois.json",
+          "got": "naming=\"Thorn\" pois.name=\"Thorn\"",
+          "target": "identical to the world-data name",
+          "pass": true
+        },
+        {
+          "id": "R-D3-clean",
+          "name": "D3 (clean): the naming element carries no quest, objective or travel identity",
+          "got": "{\"place\":\"thorn\",\"names\":\"thorn\",\"quest\":null,\"objective\":null,\"travel\":false}",
+          "target": "quest:null objective:null travel:false",
+          "pass": true
+        },
+        {
+          "id": "R-pre-hostile",
+          "name": "PRECONDITION (hostile): the walk this arm measures actually stepped the world",
+          "got": "step faults=0, frames advanced=8, cells drawn after walking=2115, live hostile AI=3",
+          "target": "no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor",
+          "pass": true
+        },
+        {
+          "id": "R-C2-hostile",
+          "name": "C2 (hostile): partial map — undiscovered ground is still the screen ground and still the majority",
+          "got": "distinct=1457, dominant=#0b0a08 at 95.41%, drawn=2115/42846",
+          "target": "more than one colour, the undiscovered hex unchanged and over 50%",
+          "pass": true
+        },
+        {
+          "id": "R-D1-hostile",
+          "name": "D1 (hostile): a square appears ONLY after standing in the pad",
+          "got": "region(+480m):true near(+40m):true standing:true",
+          "target": "false / false / true",
+          "pass": false
+        },
+        {
+          "id": "R-D2-hostile",
+          "name": "D2 (hostile): the hover name is the place name from pois.json",
+          "got": "naming=\"Thorn\" pois.name=\"Thorn\"",
+          "target": "identical to the world-data name",
+          "pass": true
+        },
+        {
+          "id": "R-D3-hostile",
+          "name": "D3 (hostile): the naming element carries no quest, objective or travel identity",
+          "got": "{\"place\":\"thorn\",\"names\":\"thorn\",\"quest\":null,\"objective\":null,\"travel\":false}",
+          "target": "quest:null objective:null travel:false",
+          "pass": true
+        },
+        {
+          "id": "R-agree",
+          "name": "THE RE-TAKE ITSELF: the two arms agree, so these are properties of the map and not of the save",
+          "got": "clean C2/D1/D2/D3 = true/false/true/true; hostile = true/false/true/true",
+          "target": "identical in both arms",
+          "pass": true
+        },
+        {
+          "id": "A0",
+          "name": "BASELINE: an honest walk to one place discovers exactly that place",
+          "got": "places=[thorn] revealed=9/42846",
+          "target": ">=1 place, >0 cells",
+          "pass": true
+        },
+        {
+          "id": "Afmt",
+          "name": "PRECONDITION: a forged trail in the real wire format reaches the model at all",
+          "got": "one forged cell -> stood_cells=1, revealed=true",
+          "target": "delivered — otherwise every A-result below is a false negative",
+          "pass": true
+        },
+        {
+          "id": "A1",
+          "name": "S35: no square for a place the body has not stood in — a forged `stood` must not mint them",
+          "got": "place_count=42 of 42 pois (the honest walk gave 1)",
+          "target": "no more places than the body actually stood in",
+          "pass": false
+        },
+        {
+          "id": "A2",
+          "name": "S35: undiscovered is unrendered — a forged `stood` must not reveal the province",
+          "got": "revealed=42846/42846 (100.0%)",
+          "target": "no more ground than was walked",
+          "pass": false
+        },
+        {
+          "id": "A3",
+          "name": "THE SCREEN: a forged footprint must not draw phantom squares",
+          "got": "map_place squares drawn=42, drawn_cells=42846/42846",
+          "target": "no phantom squares rendered",
+          "pass": false
+        },
+        {
+          "id": "A4",
+          "name": "the screen's compliance report must not be a fixed point on its own model",
+          "got": "places_drawn=42 places_discovered=42, squares on screen=42",
+          "target": "either no forgery, or a report that can tell drawn-from-forged apart",
+          "pass": false
+        },
+        {
+          "id": "A5",
+          "name": "the footprint-disagreement signal restore() already computes must reach an instrument",
+          "got": "Discovery.lastRestore computes [dropped,phantom_cells,missing_cells,claimed_places,derived_places,stood_cells,legacy]; published by mapState/getUIState: [nothing]",
+          "target": "phantom_cells / stood_cells / missing_cells published — save/state.js keeps only .dropped",
+          "pass": false
+        },
+        {
+          "id": "A9",
+          "name": "THE PLAYER-FACING ROUTE: a sealed save file, imported through importSave(), must not fill the map",
+          "got": "124898 sealed bytes accepted -> place_count=42/42, revealed=42846/42846, squares drawn=42",
+          "target": "refused by the seal, or no more places than were walked",
+          "pass": false
+        },
+        {
+          "id": "A10",
+          "name": "the forgery must not survive 180 fixed steps with hostiles on the floor",
+          "got": "stepped ok=true, faults=0, live hostile AI=3, place_count after=42, revealed after=42846/42846",
+          "target": "the map is not still full — and the step ran, so this is not a load that died",
+          "pass": false
+        },
+        {
+          "id": "A11",
+          "name": "HOLE vs REPORT: some published number must distinguish a forged map from an honest one",
+          "got": "on the forged state every compliance number reads clean: {\"places_drawn\":42,\"places_discovered\":42,\"drawn_cells\":42846,\"revealed_cells\":42846,\"markers\":0,\"routes_drawn\":0,\"quest_bearing\":0,\"travel\":0,\"numeric_text\":0,\"dropped_on_load\":0}",
+          "target": "a forged map that fills the province must move at least one published number",
+          "pass": false
+        },
+        {
+          "id": "A12a",
+          "name": "INTEGRITY: bytes edited after sealing must be refused",
+          "got": "refused: This ledger has been altered since it was written; the seal does not match. Nothing has be",
+          "target": "refused — the sha-256 over the body works",
+          "pass": true
+        },
+        {
+          "id": "A12b",
+          "name": "AUTHENTICITY: a forged blob RESEALED by the game's own writer must still be refused",
+          "got": "ACCEPTED",
+          "target": "refused — an unkeyed digest stops corruption, not a forger who can recompute it",
+          "pass": false
+        },
+        {
+          "id": "Q1",
+          "name": "sim.discovery must not be a writable slot the quest machine holds a reference to",
+          "got": "writable=true configurable=true; questEngine.sim === sim: true",
+          "target": "non-writable, or not reachable from the quest machine",
+          "pass": false
+        },
+        {
+          "id": "Q2",
+          "name": "writing sim.discovery from the object the quest machine holds must not draw squares",
+          "got": "squares drawn from a model installed via questEngine.sim: 3",
+          "target": "refused or inert",
+          "pass": false
+        },
+        {
+          "id": "Q3",
+          "name": "the window.__ENGINE back door must not reach a map setter either",
+          "got": "squares drawn via window.__ENGINE.sim.discovery = forged: 2; capability report mentions __ENGINE: false",
+          "target": "refused or inert",
+          "pass": false
+        },
+        {
+          "id": "Q4",
+          "name": "no method ON the model accepts a place — tryPlaceMapMarker tries them all",
+          "got": "attempts=13, succeeded=0, requested \"blackrose\" discovered_after=false, places [none] -> [none]",
+          "target": "every attempt refused, the requested place absent, the place list unchanged",
+          "pass": true
+        },
+        {
+          "id": "U1",
+          "name": "EMPTY MAP: the terrain box holds ONE colour — no coastline is readable",
+          "got": "distinct=1 over 345071px, dominant=#0b0a08 (100.00%), drawn_cells=0",
+          "target": "exactly 1 colour, 0 cells drawn",
+          "pass": true
+        },
+        {
+          "id": "U2",
+          "name": "NOT DRAWN-THEN-MASKED: no channel varies anywhere in the undiscovered ground",
+          "got": "per-channel range across the box = [0,0,0]",
+          "target": "[0,0,0] — a province drawn at low alpha leaks its height raster as a range",
+          "pass": true
+        },
+        {
+          "id": "U3",
+          "name": "PARTIAL: the discovered ground appears and the undiscovered hex is unchanged",
+          "got": "distinct 1 -> 91, dominant #0b0a08 at 99.79%, drawn 72/42846",
+          "target": "more colours, same ground colour, still the majority",
+          "pass": true
+        },
+        {
+          "id": "U4",
+          "name": "PRECONDITION: the U block stepped",
+          "got": "faults=0, drawn after walking=72",
+          "target": "no faults, non-empty map",
+          "pass": true
+        },
+        {
+          "id": "E3",
+          "name": "being TOLD about a place must not put a square on the map",
+          "got": "places [lilmoth] -> [lilmoth] after [questEngine.learnFrom('place', site): ran; setWorldKnowledge: ran; learnTopic: ran] (baseline taken AFTER the spawn cell registered)",
+          "target": "unchanged",
+          "pass": true
+        },
+        {
+          "id": "E4",
+          "name": "ONE square per place personally stood in, and no duplicates",
+          "got": "squares=2 discovered=2 unique ids=2 [lilmoth,thorn]",
+          "target": "equal, unique",
+          "pass": true
+        },
+        {
+          "id": "E5",
+          "name": "the name is the named PLACE's own name from pois.json, not a quest string",
+          "got": "naming=\"Lilmoth\" names place \"lilmoth\" whose pois.name is \"Lilmoth\"",
+          "target": "identical to that place's world-data name",
+          "pass": true
+        },
+        {
+          "id": "E6",
+          "name": "S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity",
+          "got": "markers=0 routes=0 numerals=[none] travel=[none] quest_bearing=[none] reachable_from_journal=false",
+          "target": "all zero and no \"show on map\" route from the journal",
+          "pass": true
+        },
+        {
+          "id": "G1",
+          "name": "ABLATION IS REAL: the model records in arm A and records nothing in arm B",
+          "got": "full: 2209 cells / 0 places — ablated: 0 cells / 0 places",
+          "target": "arm A non-zero, arm B zero",
+          "pass": true
+        },
+        {
+          "id": "G1b",
+          "name": "the two arms are comparable: the same number of step faults in each",
+          "got": "full=0 ablated=0",
+          "target": "equal",
+          "pass": true
+        },
+        {
+          "id": "G2",
+          "name": "RI-MTH07: a world-side consumer exists — destroying the model changes the running world",
+          "got": "world hash (discovery blob excluded) full=c23bbb77:52365 ablated=c23bbb77:52365 differ=false",
+          "target": "the hashes DIFFER — identical means the only consumer is the map screen's own draw call",
+          "pass": false
+        }
+      ],
+      "passed": 25,
+      "total": 40
+    },
+    {
+      "schema": "elder-souls/critic-map-r2@1",
+      "break": "consumer",
+      "expected_red": [],
+      "expected_green": [
+        "G2"
+      ],
+      "red": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A9",
+        "A10",
+        "A11",
+        "A12b",
+        "Q1",
+        "Q2",
+        "Q3"
+      ],
+      "notes": [],
+      "faults": [
+        "this.ai.step is not a function"
+      ],
+      "fault_count": 1,
+      "retake": {
+        "clean": {
+          "arm": "clean",
+          "faults": 0,
+          "live_ai": 0,
+          "frames_advanced": 6,
+          "ink_empty": {
+            "distinct": 1,
+            "pixels": 345071,
+            "dominant": "#0b0a08",
+            "dominant_frac": 1,
+            "channel_range": [
+              0,
+              0,
+              0
+            ],
+            "meta_drawn": 0,
+            "meta_total": 42846
+          },
+          "ink_partial": {
+            "distinct": 1442,
+            "pixels": 342943,
+            "dominant": "#0b0a08",
+            "dominant_frac": 0.9544,
+            "channel_range": [
+              197,
+              191,
+              170
+            ],
+            "meta_drawn": 2106,
+            "meta_total": 42846
+          },
+          "c2": true,
+          "d1": true,
+          "d2": true,
+          "d3": true,
+          "d1_detail": "region(+480m):false near(+40m):false standing:true",
+          "naming": "Thorn",
+          "poi_name": "Thorn",
+          "naming_meta": {
+            "place": "thorn",
+            "names": "thorn",
+            "quest": null,
+            "objective": null,
+            "travel": false
+          },
+          "squares": 1,
+          "discovered": 1,
+          "quest_bearing": [],
+          "travel_affordances": [],
+          "numeric_text": [],
+          "routes": 0
+        },
+        "hostile": {
+          "arm": "hostile",
+          "faults": 0,
+          "live_ai": 3,
+          "frames_advanced": 8,
+          "ink_empty": {
+            "distinct": 1,
+            "pixels": 345071,
+            "dominant": "#0b0a08",
+            "dominant_frac": 1,
+            "channel_range": [
+              0,
+              0,
+              0
+            ],
+            "meta_drawn": 9,
+            "meta_total": 42846
+          },
+          "ink_partial": {
+            "distinct": 1457,
+            "pixels": 342943,
+            "dominant": "#0b0a08",
+            "dominant_frac": 0.9541,
+            "channel_range": [
+              199,
+              191,
+              171
+            ],
+            "meta_drawn": 2115,
+            "meta_total": 42846
+          },
+          "c2": true,
+          "d1": true,
+          "d2": true,
+          "d3": true,
+          "d1_detail": "region(+480m):false near(+40m):false standing:true",
+          "naming": "Thorn",
+          "poi_name": "Thorn",
+          "naming_meta": {
+            "place": "thorn",
+            "names": "thorn",
+            "quest": null,
+            "objective": null,
+            "travel": false
+          },
+          "squares": 1,
+          "discovered": 1,
+          "quest_bearing": [],
+          "travel_affordances": [],
+          "numeric_text": [],
+          "routes": 0
+        }
+      },
+      "honest": {
+        "present": true,
+        "revealed_cells": 9,
+        "total_cells": 42846,
+        "revealed_frac": 0.00021,
+        "observations": 133,
+        "places": [
+          "thorn"
+        ],
+        "place_count": 1,
+        "suspended": false,
+        "dropped_on_load": [],
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "seenCell",
+            "arity": 2
+          },
+          {
+            "name": "seenAt",
+            "arity": 2
+          },
+          {
+            "name": "places",
+            "arity": 0
+          },
+          {
+            "name": "hasPlace",
+            "arity": 1
+          },
+          {
+            "name": "raster",
+            "arity": 0
+          },
+          {
+            "name": "footprint",
+            "arity": 0
+          },
+          {
+            "name": "placePos",
+            "arity": 1
+          },
+          {
+            "name": "serialise",
+            "arity": 0
+          },
+          {
+            "name": "mutatorReport",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          }
+        ],
+        "frozen": true
+      },
+      "forged_all": {
+        "present": true,
+        "revealed_cells": 42846,
+        "total_cells": 42846,
+        "revealed_frac": 1,
+        "observations": 133,
+        "places": [
+          "the-border-falls",
+          "stormhold",
+          "way-stormhold-thorn-0",
+          "thorn",
+          "ixtaxh-tzil",
+          "way-stormhold-thorn-1",
+          "way-archon-thorn-5",
+          "the-xanmeer-of-ix-thakla",
+          "nine-mud",
+          "the-counting-obelisk",
+          "the-red-wells",
+          "wayshrine-of-the-ninth-root",
+          "way-stormhold-helstrom-2",
+          "the-weeping-ford",
+          "way-archon-thorn-4",
+          "helstrom",
+          "rootway-post",
+          "clayfast",
+          "bloodmarl-isle",
+          "gideon",
+          "the-drowned-xanmeer",
+          "ceyatatar-zel-ayleid-vault",
+          "tenmarch-bridge",
+          "way-helstrom-archon-3",
+          "xal-ithix",
+          "sunken-barrow",
+          "kiln-camp",
+          "hollow-reeds",
+          "archon",
+          "way-lilmoth-archon-7",
+          "mudwater-landing",
+          "xanmeer-of-sunken-teeth",
+          "tideway-shrine",
+          "bone-ladder",
+          "blackrose",
+          "the-leaning-stone",
+          "salt-egg-camp",
+          "way-lilmoth-archon-6",
+          "soulrest",
+          "stilt-row",
+          "the-glassed-crater",
+          "lilmoth"
+        ],
+        "place_count": 42,
+        "suspended": false,
+        "dropped_on_load": [],
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "seenCell",
+            "arity": 2
+          },
+          {
+            "name": "seenAt",
+            "arity": 2
+          },
+          {
+            "name": "places",
+            "arity": 0
+          },
+          {
+            "name": "hasPlace",
+            "arity": 1
+          },
+          {
+            "name": "raster",
+            "arity": 0
+          },
+          {
+            "name": "footprint",
+            "arity": 0
+          },
+          {
+            "name": "placePos",
+            "arity": 1
+          },
+          {
+            "name": "serialise",
+            "arity": 0
+          },
+          {
+            "name": "mutatorReport",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          }
+        ],
+        "frozen": true
+      },
+      "a9": {
+        "ok": true,
+        "err": null,
+        "place_count": 42,
+        "revealed": 42846,
+        "squares": 42,
+        "bytes": 124898
+      },
+      "forged_report": {
+        "places_drawn": 42,
+        "places_discovered": 42,
+        "drawn_cells": 42846,
+        "revealed_cells": 42846,
+        "markers": 0,
+        "routes_drawn": 0,
+        "quest_bearing": 0,
+        "travel": 0,
+        "numeric_text": 0,
+        "dropped_on_load": 0
+      },
+      "arms": {
+        "full": {
+          "hash": "77beaedf:52365",
+          "revealed": 2209,
+          "places": 0,
+          "faults": 0
+        },
+        "ablated": {
+          "hash": "c23bbb77:52365",
+          "revealed": 0,
+          "places": 0,
+          "faults": 0
+        }
+      },
+      "checks": [
+        {
+          "id": "P1",
+          "name": "PREMISE: after a save/load with hostiles present, the fixed step runs and the AI is live",
+          "got": "live AI 2 -> 2, ctor SoulsAI -> SoulsAI, 60 steps ok=true, faults=0",
+          "target": "a live SoulsAI survives the round trip and the step does not throw",
+          "pass": true
+        },
+        {
+          "id": "P3",
+          "name": "CONTROL: replacing a live AI with a plain object makes the fault detector go RED",
+          "got": "detector fired=true — \"this.ai.step is not a function\"",
+          "target": "the detector fires — otherwise every \"0 faults\" below is a detector that cannot fail",
+          "pass": true
+        },
+        {
+          "id": "R-pre-clean",
+          "name": "PRECONDITION (clean): the walk this arm measures actually stepped the world",
+          "got": "step faults=0, frames advanced=6, cells drawn after walking=2106, live hostile AI=0",
+          "target": "no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor",
+          "pass": true
+        },
+        {
+          "id": "R-C2-clean",
+          "name": "C2 (clean): partial map — undiscovered ground is still the screen ground and still the majority",
+          "got": "distinct=1442, dominant=#0b0a08 at 95.44%, drawn=2106/42846",
+          "target": "more than one colour, the undiscovered hex unchanged and over 50%",
+          "pass": true
+        },
+        {
+          "id": "R-D1-clean",
+          "name": "D1 (clean): a square appears ONLY after standing in the pad",
+          "got": "region(+480m):false near(+40m):false standing:true",
+          "target": "false / false / true",
+          "pass": true
+        },
+        {
+          "id": "R-D2-clean",
+          "name": "D2 (clean): the hover name is the place name from pois.json",
+          "got": "naming=\"Thorn\" pois.name=\"Thorn\"",
+          "target": "identical to the world-data name",
+          "pass": true
+        },
+        {
+          "id": "R-D3-clean",
+          "name": "D3 (clean): the naming element carries no quest, objective or travel identity",
+          "got": "{\"place\":\"thorn\",\"names\":\"thorn\",\"quest\":null,\"objective\":null,\"travel\":false}",
+          "target": "quest:null objective:null travel:false",
+          "pass": true
+        },
+        {
+          "id": "R-pre-hostile",
+          "name": "PRECONDITION (hostile): the walk this arm measures actually stepped the world",
+          "got": "step faults=0, frames advanced=8, cells drawn after walking=2115, live hostile AI=3",
+          "target": "no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor",
+          "pass": true
+        },
+        {
+          "id": "R-C2-hostile",
+          "name": "C2 (hostile): partial map — undiscovered ground is still the screen ground and still the majority",
+          "got": "distinct=1457, dominant=#0b0a08 at 95.41%, drawn=2115/42846",
+          "target": "more than one colour, the undiscovered hex unchanged and over 50%",
+          "pass": true
+        },
+        {
+          "id": "R-D1-hostile",
+          "name": "D1 (hostile): a square appears ONLY after standing in the pad",
+          "got": "region(+480m):false near(+40m):false standing:true",
+          "target": "false / false / true",
+          "pass": true
+        },
+        {
+          "id": "R-D2-hostile",
+          "name": "D2 (hostile): the hover name is the place name from pois.json",
+          "got": "naming=\"Thorn\" pois.name=\"Thorn\"",
+          "target": "identical to the world-data name",
+          "pass": true
+        },
+        {
+          "id": "R-D3-hostile",
+          "name": "D3 (hostile): the naming element carries no quest, objective or travel identity",
+          "got": "{\"place\":\"thorn\",\"names\":\"thorn\",\"quest\":null,\"objective\":null,\"travel\":false}",
+          "target": "quest:null objective:null travel:false",
+          "pass": true
+        },
+        {
+          "id": "R-agree",
+          "name": "THE RE-TAKE ITSELF: the two arms agree, so these are properties of the map and not of the save",
+          "got": "clean C2/D1/D2/D3 = true/true/true/true; hostile = true/true/true/true",
+          "target": "identical in both arms",
+          "pass": true
+        },
+        {
+          "id": "A0",
+          "name": "BASELINE: an honest walk to one place discovers exactly that place",
+          "got": "places=[thorn] revealed=9/42846",
+          "target": ">=1 place, >0 cells",
+          "pass": true
+        },
+        {
+          "id": "Afmt",
+          "name": "PRECONDITION: a forged trail in the real wire format reaches the model at all",
+          "got": "one forged cell -> stood_cells=1, revealed=true",
+          "target": "delivered — otherwise every A-result below is a false negative",
+          "pass": true
+        },
+        {
+          "id": "A1",
+          "name": "S35: no square for a place the body has not stood in — a forged `stood` must not mint them",
+          "got": "place_count=42 of 42 pois (the honest walk gave 1)",
+          "target": "no more places than the body actually stood in",
+          "pass": false
+        },
+        {
+          "id": "A2",
+          "name": "S35: undiscovered is unrendered — a forged `stood` must not reveal the province",
+          "got": "revealed=42846/42846 (100.0%)",
+          "target": "no more ground than was walked",
+          "pass": false
+        },
+        {
+          "id": "A3",
+          "name": "THE SCREEN: a forged footprint must not draw phantom squares",
+          "got": "map_place squares drawn=42, drawn_cells=42846/42846",
+          "target": "no phantom squares rendered",
+          "pass": false
+        },
+        {
+          "id": "A4",
+          "name": "the screen's compliance report must not be a fixed point on its own model",
+          "got": "places_drawn=42 places_discovered=42, squares on screen=42",
+          "target": "either no forgery, or a report that can tell drawn-from-forged apart",
+          "pass": false
+        },
+        {
+          "id": "A5",
+          "name": "the footprint-disagreement signal restore() already computes must reach an instrument",
+          "got": "Discovery.lastRestore computes [dropped,phantom_cells,missing_cells,claimed_places,derived_places,stood_cells,legacy]; published by mapState/getUIState: [nothing]",
+          "target": "phantom_cells / stood_cells / missing_cells published — save/state.js keeps only .dropped",
+          "pass": false
+        },
+        {
+          "id": "A9",
+          "name": "THE PLAYER-FACING ROUTE: a sealed save file, imported through importSave(), must not fill the map",
+          "got": "124898 sealed bytes accepted -> place_count=42/42, revealed=42846/42846, squares drawn=42",
+          "target": "refused by the seal, or no more places than were walked",
+          "pass": false
+        },
+        {
+          "id": "A10",
+          "name": "the forgery must not survive 180 fixed steps with hostiles on the floor",
+          "got": "stepped ok=true, faults=0, live hostile AI=3, place_count after=42, revealed after=42846/42846",
+          "target": "the map is not still full — and the step ran, so this is not a load that died",
+          "pass": false
+        },
+        {
+          "id": "A11",
+          "name": "HOLE vs REPORT: some published number must distinguish a forged map from an honest one",
+          "got": "on the forged state every compliance number reads clean: {\"places_drawn\":42,\"places_discovered\":42,\"drawn_cells\":42846,\"revealed_cells\":42846,\"markers\":0,\"routes_drawn\":0,\"quest_bearing\":0,\"travel\":0,\"numeric_text\":0,\"dropped_on_load\":0}",
+          "target": "a forged map that fills the province must move at least one published number",
+          "pass": false
+        },
+        {
+          "id": "A12a",
+          "name": "INTEGRITY: bytes edited after sealing must be refused",
+          "got": "refused: This ledger has been altered since it was written; the seal does not match. Nothing has be",
+          "target": "refused — the sha-256 over the body works",
+          "pass": true
+        },
+        {
+          "id": "A12b",
+          "name": "AUTHENTICITY: a forged blob RESEALED by the game's own writer must still be refused",
+          "got": "ACCEPTED",
+          "target": "refused — an unkeyed digest stops corruption, not a forger who can recompute it",
+          "pass": false
+        },
+        {
+          "id": "Q1",
+          "name": "sim.discovery must not be a writable slot the quest machine holds a reference to",
+          "got": "writable=true configurable=true; questEngine.sim === sim: true",
+          "target": "non-writable, or not reachable from the quest machine",
+          "pass": false
+        },
+        {
+          "id": "Q2",
+          "name": "writing sim.discovery from the object the quest machine holds must not draw squares",
+          "got": "squares drawn from a model installed via questEngine.sim: 3",
+          "target": "refused or inert",
+          "pass": false
+        },
+        {
+          "id": "Q3",
+          "name": "the window.__ENGINE back door must not reach a map setter either",
+          "got": "squares drawn via window.__ENGINE.sim.discovery = forged: 2; capability report mentions __ENGINE: false",
+          "target": "refused or inert",
+          "pass": false
+        },
+        {
+          "id": "Q4",
+          "name": "no method ON the model accepts a place — tryPlaceMapMarker tries them all",
+          "got": "attempts=13, succeeded=0, requested \"blackrose\" discovered_after=false, places [none] -> [none]",
+          "target": "every attempt refused, the requested place absent, the place list unchanged",
+          "pass": true
+        },
+        {
+          "id": "U1",
+          "name": "EMPTY MAP: the terrain box holds ONE colour — no coastline is readable",
+          "got": "distinct=1 over 345071px, dominant=#0b0a08 (100.00%), drawn_cells=0",
+          "target": "exactly 1 colour, 0 cells drawn",
+          "pass": true
+        },
+        {
+          "id": "U2",
+          "name": "NOT DRAWN-THEN-MASKED: no channel varies anywhere in the undiscovered ground",
+          "got": "per-channel range across the box = [0,0,0]",
+          "target": "[0,0,0] — a province drawn at low alpha leaks its height raster as a range",
+          "pass": true
+        },
+        {
+          "id": "U3",
+          "name": "PARTIAL: the discovered ground appears and the undiscovered hex is unchanged",
+          "got": "distinct 1 -> 91, dominant #0b0a08 at 99.79%, drawn 72/42846",
+          "target": "more colours, same ground colour, still the majority",
+          "pass": true
+        },
+        {
+          "id": "U4",
+          "name": "PRECONDITION: the U block stepped",
+          "got": "faults=0, drawn after walking=72",
+          "target": "no faults, non-empty map",
+          "pass": true
+        },
+        {
+          "id": "E3",
+          "name": "being TOLD about a place must not put a square on the map",
+          "got": "places [lilmoth] -> [lilmoth] after [questEngine.learnFrom('place', site): ran; setWorldKnowledge: ran; learnTopic: ran] (baseline taken AFTER the spawn cell registered)",
+          "target": "unchanged",
+          "pass": true
+        },
+        {
+          "id": "E4",
+          "name": "ONE square per place personally stood in, and no duplicates",
+          "got": "squares=2 discovered=2 unique ids=2 [lilmoth,thorn]",
+          "target": "equal, unique",
+          "pass": true
+        },
+        {
+          "id": "E5",
+          "name": "the name is the named PLACE's own name from pois.json, not a quest string",
+          "got": "naming=\"Lilmoth\" names place \"lilmoth\" whose pois.name is \"Lilmoth\"",
+          "target": "identical to that place's world-data name",
+          "pass": true
+        },
+        {
+          "id": "E6",
+          "name": "S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity",
+          "got": "markers=0 routes=0 numerals=[none] travel=[none] quest_bearing=[none] reachable_from_journal=false",
+          "target": "all zero and no \"show on map\" route from the journal",
+          "pass": true
+        },
+        {
+          "id": "G1",
+          "name": "ABLATION IS REAL: the model records in arm A and records nothing in arm B",
+          "got": "full: 2209 cells / 0 places — ablated: 0 cells / 0 places",
+          "target": "arm A non-zero, arm B zero",
+          "pass": true
+        },
+        {
+          "id": "G1b",
+          "name": "the two arms are comparable: the same number of step faults in each",
+          "got": "full=0 ablated=0",
+          "target": "equal",
+          "pass": true
+        },
+        {
+          "id": "G2",
+          "name": "RI-MTH07: a world-side consumer exists — destroying the model changes the running world",
+          "got": "world hash (discovery blob excluded) full=77beaedf:52365 ablated=c23bbb77:52365 differ=true",
+          "target": "the hashes DIFFER — identical means the only consumer is the map screen's own draw call",
+          "pass": true
+        }
+      ],
+      "passed": 28,
+      "total": 40
+    }
+  ]
+}

@@ -1,15 +1,25 @@
 {
   "task_id": "arbiter-map-s38",
   "role": "arbiter",
-  "state": "started",
-  "started_at": "2026-08-08T00:00:00Z",
-  "summary": "Ruling S38: adjudicate the S35 'no squares for unvisited places' clause against the forged-footprint referral from W1-21-r2 section C.",
-  "next_step": "Read ARBITRATION.md in full, S35 text, W1-21-r2.md section C.",
-  "files_touched": [],
+  "state": "measuring",
+  "commit_measured_at": "bda8677",
+  "summary": "S38: S35's 'no square for a place the player has not stood in' binds the DERIVATION, not the save file's authenticity. Enforceable: soundness of derivation. Not enforceable: authenticity of the primitive.",
+  "findings": [
+    "Province 193x222 = 42,846 cells at 25 m; 42 places in pois.json; 721 justifying cells (1.683% of province).",
+    "EXHAUSTIVE over all 42,846 single-cell footprints: 0 unjustified places, 0 unjustified revealed cells. Union law verified 40/40 => the result is a proof over all 2^42846 saves.",
+    "Maximal forgery: 42 places, 100% province, 57,128 B. Minimum forgery: 42 cells, 108 B, 42 places, 33.67%. Honest 7-place walk: 557 cells, 8 places, 28.09%.",
+    "Connectivity-constrained forgery (the only further derivable check): 848 cells, 1,464 B, 42 places, 46.41% - the constraint makes the forged map show MORE, not less.",
+    "pois.json is 16,110 B of plaintext naming all 42 places at float precision; the forger must read it to write the forgery.",
+    "Wrong assertion identified: tools/analysis/journal-ui.mjs:199-201 (JU8) asserts mapThrew && map_exists===false, both required FALSE by S35. Cannot pass."
+  ],
+  "next_step": "Write tools/map/arbiter-map-s38.mjs with --self-test, run it, then write S38 into ARBITRATION.md and amend S35.",
+  "browser": "none used - every measurement is bare Node against the shipped Discovery model",
+  "files_touched": ["orchestration/status/arbiter-map-s38.json"],
   "files_claimed": [
     "corpus/00-doctrine/ARBITRATION.md",
-    "orchestration/status/arbiter-map-s38.json",
-    "tools/map/",
-    "reports/blog-feed.jsonl"
+    "tools/map/arbiter-map-s38.mjs",
+    "reports/arbiter-map-s38/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ]
 }

@@ -8131,7 +8131,7 @@ export class Engine {
       this._walk = {
         route: o.route, speed: o.speed, pts, idx: 1, seg: 0, frames: 0, dist: 0,
         samples: [], legFrames: new Map(), regions: [], lastRegion: null,
-        worstOff: 0, offFrames: 0, regains: 0, off: false, offLog: [],
+        worstOff: 0, offFrames: 0, regains: 0, off: false, offLog: [], jumps: [], jumpCount: 0, jumpM: 0,
         startedFrame: this.sim.frame, done: false,
       };
       this.teleport(pts[0][0], pts[0][1]);
@@ -8165,11 +8165,22 @@ export class Engine {
       const cy = this.sim.camera.yaw * Math.PI / 180;
       this.input.reset(this.sim.frame);
       this.input.queueInputs([{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }], this.sim.frame);
-      const x0 = p.pos[0], z0 = p.pos[2];
+      const x0 = p.pos[0], z0 = p.pos[2], hp0 = p.hp;
       this.loop.stepOnce();
       this._afterStep();
       const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
-      w.dist += step;
+      // A WALKING BODY CANNOT MOVE A METRE IN A SIXTIETH OF A SECOND. At 2 m/s a frame is 0.033 m
+      // and the steepest slide in the province is under 0.2 m, so anything over 1 m is the world
+      // MOVING the body, not the body walking: a death and a respawn at a hearth, a fall handler
+      // re-placing the capsule, a streamer re-seat. Those metres were being added to `path_m`, and
+      // that is how a walk that died 1,370 m into THE CROSSING reported 4,812 m of it — the
+      // respawn was 3,391 m and the sum called it progress. They are recorded and NOT walked.
+      if (step > 1) {
+        if (w.jumps.length < 40) w.jumps.push({ at_m: +w.dist.toFixed(1), frame: w.frames, jump_m: +step.toFixed(1),
+          from: [+x0.toFixed(1), +z0.toFixed(1)], to: [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)],
+          hp_before: hp0, hp_after: this.sim.player.hp });
+        w.jumpCount++; w.jumpM += step;
+      } else w.dist += step;
       w.frames++; n++;
       // The leg the body is ON, which is the leg its PROJECTION sits on — not the leg of whatever
       // point it happened to be aiming at, which on a lookahead can already be the next leg.
@@ -8204,6 +8215,8 @@ export class Engine {
       // H1, counted. See walkPath's note: read the three together, never `regains` alone.
       worst_off_path_m: +w.worstOff.toFixed(2), off_path_frames: w.offFrames, regains: w.regains,
       off_path_events: w.offLog,
+      // Discontinuities: metres the body was MOVED rather than walked. `path_m` excludes them.
+      teleports: w.jumpCount, teleported_m: +w.jumpM.toFixed(1), teleport_log: w.jumps,
     };
   }
 
