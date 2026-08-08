@@ -69,10 +69,32 @@ function text(s, x, y, r, g, b, scale = 1) {
 }
 
 const ROUND = argOf('--round') || 'w1-19-r3';
+
+// A DEFECT IN THE FONT, FOUND BY READING THE PICTURE THIS ROUND DREW. Every glyph in the table
+// above is 23 characters long and `text()` indexes it as `bits[j * 5 + i]` for seven rows of five
+// — so the last two pixels of the fifth row of EVERY character are `undefined` and are never
+// drawn. On letters that is invisible. On digits it is not: 2, 3, 5, 6, 8 and 9 all carry their
+// identity in that bottom row, and `28 OF 32` came out of the renderer reading `20 OF 30`. A
+// chart whose whole point is two numbers cannot afford that.
+//
+// The ten digits are re-authored here at the full five rows, and applied ONLY under this round's
+// flag, so `docs/shots/2026-08-07-w1-19-r3-*.png` and `docs/shots/2026-08-07-w1-18-r2-*.png`
+// still regenerate byte-for-byte from the table they were drawn with. The 37 other glyphs are
+// left alone: the same truncation is in all of them and re-authoring a whole font by eye is the
+// tool owner's job, not a side effect of a quest round. REPORTED in W1-READABLES-r2's status.
+if (ROUND === 'w1-readables-r2') Object.assign(FONT, {
+  0: '0111010011101011100101110', 1: '0010001100001000010001110', 2: '0111010001000100010011111',
+  3: '1111000001011100000111110', 4: '0011001010100101111100010', 5: '1111110000111100000111110',
+  6: '0111010000111101000101110', 7: '1111100001000100010000100', 8: '0111010001011101000101110',
+  9: '0111010001011110000101110',
+});
 const world = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-18-R2/reveal-route-world.json'), 'utf8')); } catch { return null; } })();
 
 // ---- title -----------------------------------------------------------------------------------
-if (ROUND === 'w1-readables') {
+if (ROUND === 'w1-readables-r2') {
+  text('THE SOURCES NOBODY HAD MADE, FOR THE TRUTHS THE QUESTS DEMAND', 40, 30, 0xEE, 0xEE, 0xE4, 3);
+  text('W1-READABLES ROUND 2 / 26 DOCUMENTS WRITTEN AND 25 MARKS PUT IN THE WORLD', 40, 66, 0x8A, 0x94, 0x88, 2);
+} else if (ROUND === 'w1-readables') {
   text('THE LEDGERS NOBODY HAD WRITTEN, ON SHELVES NOBODY COULD REACH', 40, 30, 0xEE, 0xEE, 0xE4, 3);
   text('W1-READABLES / A LEDGER IS A BOOK WITH A DIFFERENT NOUN AND A DIFFERENT VERB', 40, 66, 0x8A, 0x94, 0x88, 2);
 } else if (ROUND === 'w1-18-r2') {
@@ -104,7 +126,36 @@ ch.forEach(([name, v], i) => {
 const BY = Y0 + ch.length * rowH + 40;
 const box = (x, y, w, h, r, g, b) => { rect(x, y, w, 2, r, g, b); rect(x, y + h, w, 2, r, g, b); rect(x, y, 2, h, r, g, b); rect(x + w, y, 2, h + 2, r, g, b); };
 
-if (ROUND === 'w1-readables') {
+if (ROUND === 'w1-readables-r2') {
+  // W1-READABLES round 2. Three arms now, from `document-route-world.mjs --chain`: the same
+  // mainline chain, the same verbs, differing only in whether the body may read a document and
+  // whether it may look at a mark. Talking is held constant in all three.
+  const chain = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-READABLES-R2/document-route-chain.json'), 'utf8')).arms; } catch { return null; } })();
+  const mk = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-READABLES-R2/mark-route-world.json'), 'utf8')); } catch { return null; } })();
+  const A = (chain && chain.reading_and_looking) || { completed: 0, of: 32, stopped_at: null };
+  const B = (chain && chain.neither) || { completed: 0, of: 32, stopped_at: null };
+  text('THE MAIN LINE, PLAYED THREE TIMES, DIFFERING ONLY IN WHAT THE BODY MAY DO', 40, BY, 0xCC, 0xC4, 0x9A, 2);
+
+  box(40, BY + 26, 570, 100, 0x2E, 0x7A, 0x44);
+  text('READING AND LOOKING ALLOWED', 56, BY + 40, 0xAA, 0xCC, 0xAA, 2);
+  text(`${A.completed} OF ${A.of} MAINLINE QUESTS FINISHED`, 56, BY + 62, 0xCC, 0xEE, 0xCC, 2);
+  text(`STOPS AT ${A.stopped_at ? A.stopped_at.quest : 'NOTHING'}`, 56, BY + 90, 0x7A, 0x9A, 0x7A, 2);
+
+  box(650, BY + 26, 570, 100, 0x6E, 0x2B, 0x2B);
+  text('THE SAME RUN, NEITHER PERMITTED', 666, BY + 40, 0xCC, 0xAA, 0xAA, 2);
+  text(`${B.completed} OF ${B.of} MAINLINE QUESTS FINISHED`, 666, BY + 62, 0xEE, 0xCC, 0xCC, 2);
+  text(`STOPS AT ${B.stopped_at ? B.stopped_at.quest : 'NOTHING'}`, 666, BY + 90, 0x9A, 0x7A, 0x7A, 2);
+
+  const FY = BY + 145;
+  const passed = mk ? mk.legs_passed : 0, ranN = mk ? mk.legs_run : 0;
+  text(`${rep.routed} OF ${rep.demanded_reveals} REVEALS A RESOLUTION DEMANDS NOW HAVE A ROUTE IN PLAY - WAS 58`, 40, FY, 0xEE, 0xEE, 0xE4, 2);
+  text(`IN THE RUNNING GAME: ${passed} OF ${ranN} LEGS WALKED TO THE THING, PRESSED THE INTERACT`, 40, FY + 28, 0x7A, 0xAA, 0x88, 2);
+  text('BUTTON AT IT, AND WATCHED THE RESOLUTION STOP REFUSING. NO SCREEN OPENS AT A MARK.', 40, FY + 50, 0x7A, 0xAA, 0x88, 2);
+  text('CONTROLS: OUT OF REACH LEARNS NOTHING, AND THE WRONG MARK MOVES NO REFUSAL.', 40, FY + 72, 0x9A, 0x9A, 0x92, 2);
+  text('DELETE THE READER ON A COPY OF THE TREE AND THE SAME LEGS GO 4 OF 4 TO 0 OF 3.', 40, FY + 94, 0x9A, 0x9A, 0x92, 2);
+  text(`STILL UNROUTED: ${rep.unrouted}. NINE EAVESDROP ROWS AND ONE CORPSE ROW HAVE NO READER, AND`, 40, FY + 122, 0xCC, 0xAA, 0x6A, 2);
+  text('ELEVEN PERSON ROWS NAME SOMEBODY WHO IS IN NO NPC FILE. NONE OF THOSE IS CONTENT.', 40, FY + 144, 0xCC, 0xAA, 0x6A, 2);
+} else if (ROUND === 'w1-readables') {
   // The chain arms come from `document-route-world.mjs --chain`, which plays the main line twice
   // with the same two verbs and differs only in whether reading a document is permitted.
   const chain = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-READABLES/document-route-chain.json'), 'utf8')).arms; } catch { return null; } })();

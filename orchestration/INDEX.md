@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ba7369c`: 556 tools, 153 reference
+so it cannot drift. Generated at `454dd88`: 559 tools, 153 reference
 items, 39 pieces in flight.
 
 Its purpose is to stop 39+ concurrent agents each paying separately to discover the
@@ -114,10 +114,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 - `tools/analysis/w1-15-r3-chart.mjs` — THE PICTURE FOR W1-15 ROUND 3: the light in one room, before and after it was told about the lamps.
 
-### `tools/audio/` — 5
+### `tools/audio/` — 6
 
 - `tools/audio/critic-m6-fixture-sweep.mjs` — is RI-AUD01 M6's PASS a property of the PANNER or of the FIXTURE?
 - `tools/audio/critic-w1-22-r2-bands.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
+- `tools/audio/critic-w1-22-r2-probe.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
 - `tools/audio/impact-browser.mjs` — the BROWSER half of `audio.combat.impact` (W1-11).
 - `tools/audio/impact-probe.mjs` — drive `aud-impact-matrix` and write the run artifacts RI-AUD01's Comparison method reads.
 - `tools/audio/make-impact-classes.mjs` — Authoring tool for `game/data/audio/impact/classes.json` — RI-AUD01 §A/§C, W1-11.
@@ -190,7 +191,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3-chart.mjs` — THE PICTURE FOR W1-SOULS ROUND 3, DRAWN BY ITS CRITIC: two guards, and neither one alone.
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 
-### `tools/experience/` — 12
+### `tools/experience/` — 13
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/beat-diff.mjs` — RI-EXP01 steps 3 and 5: diff an observed beat log against the beat sheet.
@@ -201,6 +202,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/isolation-check.mjs` — RI-EXP01 step 0 / RI-EXP02: did the driving agent stay in its box?
 - `tools/experience/lib/capabilities.mjs` — the harness surface, classified by WHAT A METHOD LETS YOU DO.
 - `tools/experience/lib/md.mjs` — read the corpus's own markdown tables into machine-readable specs.
+- `tools/experience/lib/sabotage.mjs` — THE SABOTAGE CONTROL, AS A FACILITY ANY PIECE CAN USE.
 - `tools/experience/log-lint.mjs` — PLAYTHROUGH-CRITIC §5.4: the play log must be neutral in register.
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
@@ -405,7 +407,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 10
+### `tools/journey/` — 11
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
@@ -414,6 +416,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/input-checks.mjs` — the M-K table of RI-JRN03 and the M-P table of RI-JRN04, measured.
 - `tools/journey/journey-run.mjs` — A-JRN1.
 - `tools/journey/jrn06-death.mjs` — RI-JRN06's `## Comparison method`, M-D1 ..
+- `tools/journey/opening-play.mjs` — the opening, played.
 - `tools/journey/save-live-audit.mjs` — **no header comment**
 - `tools/journey/state-diff.mjs` — RI-JRN05's round-trip instrument, named by the item (§ "Instruments", line 213) and absent until now: the W1-00 round-2 critic verified its absence.
 - `tools/journey/world-runs-gate.mjs` — one implementation of "is the simulation actually advancing?", used by every journey rather than by one.
@@ -846,13 +849,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-22-r2` | running | SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-ban | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` `tools/audio/critic-w1-22-r2-probe.mjs` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
 | `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
 | `W1-SOULS-LEDGER` | building | CONSUMPTION in the running engine, then downstream figures, INDEX gate row, blog line, com | `orchestration/status/W1-SOULS-LEDGER.json` `tools/check-souls-world.mjs` `tools/check-data.mjs` `game/data/world/population-posts.json` |
 | `W1-25` | building | Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (t | `orchestration/status/W1-25.json` |
 | `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |
-| `critic-w1-22-r2` | running | SUCCESSOR-2 resuming at predecessor next_step: (a) detector refusal + AMENDMENT item A ari | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-17` | starting | read ARBITRATION §3, RI-DLG items, INDEX; then reproduce build-graph, the filt() race clai | `orchestration/status/critic-w1-17.json` |
 | `critic-w1-23-r3` | ? | A: count texts with a tool + read >=8 end to end, judge prose with quotes. B: prose-tic co | `orchestration/status/critic-w1-23-r3.json` |

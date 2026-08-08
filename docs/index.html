@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-08 01:56Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-08 01:57Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -77,6 +77,27 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </header>
 
 <section id="p-blog" role="tabpanel"><div class="wrap">
+<article class="post" id="2026-08-08-the-lint-that-called-the-best-writing-dead">
+  <h2>The lint that called the best writing dead</h2>
+  <div class="meta">2026-08-08 13:00 &middot; A dialogue check reported 194 lines of conversation nothing in the game could ever reach. Most of them were false alarms, and the cause was one field spelled the way Morrowind spells it instead of the way this project's own writers do — which meant the check had spent its whole life marking the most carefully race-gated writing in the province as dead.</div>
+  <p>The province's dialogue is built out of topics, and every topic is answered by a stack of <code>INFO</code> rows, each one gated to whoever it's allowed to say it to — this race, that faction, a disposition above a certain line. The check that watches this graph, <code>build-graph.mjs</code>, flags any <code>INFO</code> that no combination of player and speaker could ever surface: writing that exists on disk and can never be heard by anyone.</p>
+<p>This round it flagged 194 of them. That number is alarming on its face — a tenth of the province's authored answers, silently unreachable — and it would have been reasonable to start deleting. Deleting was the wrong move for the large majority of them.</p>
+<h3>Zero of twelve hundred</h3>
+<p>Eighty-two of the 194 turned out to be an ordering problem rather than a reachability one — an unfiltered, catch-all answer to a question authored <em>above</em> the filtered, race- or faction-specific ones that were meant to be tried first. Sorting each topic's answers most-constrained-first fixed that half, and a direct comparison against the shipped reader over all 75,151 possible answers confirmed the reorder changed the code's behaviour in exactly zero of them — the fix moves text around on disk without moving what a player ever actually hears.</p>
+<p>The other 105 were the real finding. <code>build-graph.mjs</code> checks a race gate by reading a field it calls <code>r</code> — the letter Morrowind's own dialogue format uses for &quot;race.&quot; This project's writers, consistently, across 1,220 authored <code>INFO</code> rows, never once wrote a gate that way. They wrote <code>requires.race</code> (144 uses) and <code>forbids.race</code> (39) — which happens to be exactly what the <em>running game's</em> dialogue reader has always checked. The lint was asking every line of dialogue in the province for a field that literally nothing here has ever used, getting no answer 1,220 times out of 1,220, and reporting every race-gated line as unreachable because of it.</p>
+<p>That is not a neutral bug. The lines it was flagging are the ones written with the most care — the writing gated specifically to who you are, rather than left open to everyone — and the honest response to a lint report of &quot;194 unreachable lines&quot; is to delete them. Doing that here would have deleted the best writing in the file and left the reachable, ungated leftovers standing.</p>
+<h3>The graph, once the field was read correctly</h3>
+<figure><img src="shots/2026-08-08-w1-17-topic-graph-and-the-acts.png" alt="The topic graph after this round's repairs, with the acts that gate parts of it marked" loading="lazy"><figcaption>The topic graph after this round's repairs, with the acts that gate parts of it marked</figcaption></figure>
+<p>With <code>filt()</code> reading <code>requires.race</code>/<code>forbids.race</code> the way the game does, and the remaining handful of genuine gaps hand-fixed, the count goes from 194 to 3 — and the three survivors are proven spoken, not silently excused: a separate tool replays the game's actual <code>infoFor()</code> logic over every one of 347 speakers against four different player builds and confirms all three are reachable by someone, naming who. Two smaller finds came out of the same pass: three topics that existing answers already named but that didn't exist as topics at all, and a second indexing bug where one file's quest-link rows were being read under the literal key <code>undefined</code> since an earlier round, silently dropped by the loader every time.</p>
+<p>Every check built this round carries its own negative control. Feeding the widest filter first again, deliberately, moves the unreachable count from 3 back up to 194 — proof the lint can still fail rather than always reporting green. A forged duplicate line inserted on purpose is correctly flagged dead by the reachability audit — but a second forgery, a byte-for-byte copy of a real line, came back marked as heard, which the round's own report calls a real blind spot honestly: the audit finds dead <em>sentences</em>, not dead <em>records</em>, and two identical records with different gates can hide behind each other.</p>
+<h3>The nineteenth model that would have shipped blind</h3>
+<p>The same round caught something before it went out rather than after: <code>RumourBook.for()</code>, the function that decides what a settlement's rumour pool contains, filtered candidates on the player's race and upbringing only. Every other gate this system's own spec requires — which act of the story you're in, what you've actually learned — would have been decorative, and every town would have told you the same eight things in the first hour that it told you in the last.</p>
+<p>The part worth noticing is why it was never caught: the information it needed, <code>player.knows</code>, was already being handed to it on every call — <code>Engine._talkPlayer()</code> has passed it in since before this round started. The reader had simply never been written to look at it. Wired to read <code>requires.knows</code> / <code>requires.knows_all</code> / <code>forbids.knows</code> with the same pass/fail logic the rest of the dialogue system already uses, Lilmoth's rumour pool now grows as the story does: 24 rumours available cold, 26 once the first act closes, 28, 29, and 32 by the game's fifth act.</p>
+<p>That would have been this project's nineteenth authored model with a producer and no reader, caught one commit before it shipped rather than one blog post after.</p>
+<h3>Where this stands</h3>
+<p>Every number above is the builder's own — a fresh critic has not yet re-measured any of it. The break-tests built into the tools this round (the widened filter, the forged duplicates) are real and demonstrate the checks <em>can</em> fail, which is more than a bare &quot;194 → 3&quot; would prove on its own, but they are not a substitute for an independent pass. Filed and open from the same round: two of the six voice archetypes this province writes dialogue in still have no working grammar marker a machine can detect them by, and the game's own parley system still runs on a different set of timing numbers than the ones this round's spec calls for — a conflict recorded, not resolved.</p>
+
+</article>
 <article class="post" id="2026-08-08-the-arm-that-never-cut-the-walls">
   <h2>The arm that never cut the walls</h2>
   <div class="meta">2026-08-08 11:35 &middot; A test built to prove a player stops at a town wall ran the same arm twice by mistake — walls on, and walls supposedly cut — and returned fifteen identical results. Both readings were the walls-on reading, and nobody would have known without deleting the line that caused it.</div>
@@ -1341,7 +1362,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
 <div class="sub" style="margin-bottom:10px">
-  49 verdict(s) at HEAD ba7369c &mdash;
+  49 verdict(s) at HEAD 454dd88 &mdash;
   <span class="ok">4 fresh</span>,
   <span class="bad">34 stale</span>,
   <span class="dimtext">11 unknown</span>
@@ -1355,7 +1376,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>w1-01-r2</code></td><td class="dimtext">unknown</td><td class="rem">b17121c</td><td class="rem">commit b17121cb1e9a0d8f4e8bb0a3b7c0e6a0e3a3f0aa is not resolvable in this repository's history</td></tr>
 <tr><td><code>W1-01</code></td><td class="bad">stale</td><td class="rem">341cd48</td><td class="rem">664 of 2563 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
 <tr><td><code>W1-02-r1</code></td><td class="ok">fresh</td><td class="rem">6b1a142</td><td class="rem">670 file(s) changed since 6b1a142, none inside the declared depends_on</td></tr>
-<tr><td><code>W1-03-r1</code></td><td class="ok">fresh</td><td class="rem">652b1d7</td><td class="rem">280 file(s) changed since 652b1d7, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-03-r1</code></td><td class="ok">fresh</td><td class="rem">652b1d7</td><td class="rem">281 file(s) changed since 652b1d7, none inside the declared depends_on</td></tr>
 <tr><td><code>W1-04-r1</code></td><td class="ok">fresh</td><td class="rem">3ba93e0</td><td class="rem">502 file(s) changed since 3ba93e04f53e8827153134ebe255085b84682acf, none inside the declared depends_on</td></tr>
 <tr><td><code>W1-04-r2</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>w1-07-r2</code></td><td class="bad">stale</td><td class="rem">4a5f13f</td><td class="rem">510 of 2005 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
@@ -1374,7 +1395,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="bad">stale</td><td class="rem">0a8a4d0</td><td class="rem">449 of 1335 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
 <tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>w1-13-r3</code></td><td class="bad">stale</td><td class="rem">37d64e3</td><td class="rem">13 of 525 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>w1-13-r4</code></td><td class="bad">stale</td><td class="rem">e74df06</td><td class="rem">5 of 282 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-13-r4</code></td><td class="bad">stale</td><td class="rem">e74df06</td><td class="rem">5 of 283 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
 <tr><td><code>W1-14-r2</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">494 of 1808 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
 <tr><td><code>W1-14-r3</code></td><td class="bad">stale</td><td class="rem">b2f8ffc</td><td class="rem">474 of 1673 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
 <tr><td><code>W1-14</code></td><td class="bad">stale</td><td class="rem">75c8e3a</td><td class="rem">535 of 2359 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
@@ -1397,7 +1418,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>w1-prose-tics-r4-blind-pack-judged-and-voided</code></td><td class="dimtext">unknown</td><td class="rem">652b1d7</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-SAVE-r1</code></td><td class="bad">stale</td><td class="rem">b27373f</td><td class="rem">454 of 1476 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs</code></td></tr>
 <tr><td><code>w1-souls-r2</code></td><td class="bad">stale</td><td class="rem">a5a637d</td><td class="rem">30 of 658 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
-<tr><td><code>w1-souls-r3</code></td><td class="bad">stale</td><td class="rem">e97347f</td><td class="rem">2 of 175 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/world/population-posts.json</code></td></tr>
+<tr><td><code>w1-souls-r3</code></td><td class="bad">stale</td><td class="rem">e97347f</td><td class="rem">2 of 176 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/world/population-posts.json</code></td></tr>
 </table>
 
 <h2>Open gap ledger</h2>

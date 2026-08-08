@@ -102,10 +102,26 @@ try {
       if (mk.refused) return { refused: mk.reason || mk.gate };
       if (!fits()) return { refused: 'over_reservoir', quote: H.quoteSpell(spec()) };
       H.setAttuned([mk.spell.id]);
+      const focusBefore = H.getMagicState();
       H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
       H.stepFrames(70);
+      const focusAfter = H.getMagicState();
       const ev = H.magicEventsDrain();
       const ap = ev.find((x) => x.kind === 'effect_apply' && x.effect === effect);
+      // A CAST THAT NEVER HAPPENED IS A REFUSAL, NOT A ZERO. The first two runs of this file
+      // reported `bind_greater` at magnitude 90 doing 0 damage with a null summon, and the
+      // reason was not the dial: `setWillpower(99)` is a harness override that the character
+      // sheet's own pool derivation RECLAIMS during stepping, so `focus_max` was 124 when the
+      // affordability check passed and lower by the time the input gate looked at it — the cast
+      // was dropped for Focus, silently, with no magic event at all (`event_kinds` empty).
+      // Reading that as "the strong summon did nothing" would be the exact confusion this whole
+      // piece exists to prevent, so it is an explicit refusal.
+      if (!ap) {
+        return { refused: 'not_cast', quote: H.quoteSpell(spec()), duration_s: d,
+                 focus_max_before: focusBefore.focus_max, focus_max_after: focusAfter.focus_max,
+                 focus_before: focusBefore.focus, focus_after: focusAfter.focus,
+                 event_kinds: [...new Set(ev.map((x) => x.kind))] };
+      }
       // THE SUMMON REGISTER, not the event. `applyEffects` emits only consumer/before/after/
       // changed, so the handler's own `power` / `hp` / `attack_rating` never reach the event
       // stream — the first run of this file read them as `undefined` and reported a model with
@@ -140,7 +156,9 @@ try {
       let sid = null;
       if (effect) {
         cast = castBind(effect, magnitude, 60);
-        if (cast.refused) return { refused: cast.refused };
+        if (cast.refused) return { refused: cast.refused, quote: cast.quote || null, duration_s: cast.duration_s,
+                                   focus_max_before: cast.focus_max_before, focus_max_after: cast.focus_max_after,
+                                   event_kinds: cast.event_kinds || null, effect, magnitude };
         const bs = bodies();
         sid = bs.length ? bs[bs.length - 1].id : null;
         // A CATALYST IN THE HAND MAKES `light` A CAST, NOT A SWING. The arena equips
@@ -200,14 +218,20 @@ try {
       control_no_summon: arm(null, 0, false),
       lesser_mag_1: arm('bind_lesser', 1, false),
       lesser_mag_90: arm('bind_lesser', 90, false),
+      // 45, NOT 90: `bind_greater` at magnitude 90 for 60 s quotes `focus_base` 150 / tier 5 /
+      // `focus_cost` 111 against a reservoir that does not reach it, so the top of its declared
+      // range HAS NO CASTABLE CARRIER — the same shelf defect round 2 found for its shipped
+      // spell. 45 is the highest the dial census could pay for and is the number it measured
+      // COUPLED at. The ceiling is reported, not hidden.
       greater_mag_1: arm('bind_greater', 1, false),
-      greater_mag_90: arm('bind_greater', 90, false),
+      greater_mag_45: arm('bind_greater', 45, false),
+      greater_mag_90_over_reservoir: arm('bind_greater', 90, false),
     };
     out.defence = {
       lesser_mag_1: arm('bind_lesser', 1, true),
       lesser_mag_90: arm('bind_lesser', 90, true),
       greater_mag_1: arm('bind_greater', 1, true),
-      greater_mag_90: arm('bind_greater', 90, true),
+      greater_mag_45: arm('bind_greater', 45, true),
     };
 
     // ==========================================================================================
@@ -395,10 +419,11 @@ log(`break=${report.break_mode || '(none)'}`);
 log(`OFFENCE (player not attacking, 600 f@60) — damage the player took:`);
 log(`  control (no summon)  ${o.control_no_summon.player_damage_taken}`);
 log(`  bind_lesser  mag 1  ${o.lesser_mag_1.player_damage_taken}   mag 90  ${o.lesser_mag_90.player_damage_taken}   (summon hp_max ${o.lesser_mag_1.summon_hp_max} vs ${o.lesser_mag_90.summon_hp_max})`);
-log(`  bind_greater mag 1  ${o.greater_mag_1.player_damage_taken}   mag 90  ${o.greater_mag_90.player_damage_taken}   (summon hp_max ${o.greater_mag_1.summon_hp_max} vs ${o.greater_mag_90.summon_hp_max})`);
+log(`  bind_greater mag 1  ${o.greater_mag_1.player_damage_taken}   mag 45  ${o.greater_mag_45.player_damage_taken}   (summon hp_max ${o.greater_mag_1.summon_hp_max} vs ${o.greater_mag_45.summon_hp_max})`);
+log(`  bind_greater mag 90  REFUSED: ${o.greater_mag_90_over_reservoir.refused} (focus_cost ${o.greater_mag_90_over_reservoir.quote ? o.greater_mag_90_over_reservoir.quote.focus_cost : '?'} vs focus_max ${o.greater_mag_90_over_reservoir.focus_max_after})`);
 log(`DEFENCE (player on a fixed attack script) — damage the summon took / dead:`);
 log(`  bind_lesser  mag 1  ${d.lesser_mag_1.summon_damage_taken} dead=${d.lesser_mag_1.summon_dead}@${d.lesser_mag_1.summon_dead_at_f}   mag 90  ${d.lesser_mag_90.summon_damage_taken} dead=${d.lesser_mag_90.summon_dead}@${d.lesser_mag_90.summon_dead_at_f}`);
-log(`  bind_greater mag 1  ${d.greater_mag_1.summon_damage_taken} dead=${d.greater_mag_1.summon_dead}@${d.greater_mag_1.summon_dead_at_f}   mag 90  ${d.greater_mag_90.summon_damage_taken} dead=${d.greater_mag_90.summon_dead}@${d.greater_mag_90.summon_dead_at_f}`);
+log(`  bind_greater mag 1  ${d.greater_mag_1.summon_damage_taken} dead=${d.greater_mag_1.summon_dead}@${d.greater_mag_1.summon_dead_at_f}   mag 45  ${d.greater_mag_45.summon_damage_taken} dead=${d.greater_mag_45.summon_dead}@${d.greater_mag_45.summon_dead_at_f}`);
 log(`EXCLUSIVITY  greater: ${report.exclusivity.greater.net_summons} body(ies) after two casts   lesser: ${report.exclusivity.lesser.net_summons}`);
 const cv = report.control_verbs;
 log(`CONTROL VERBS (distance from the caster, before -> after 600 f@60):`);
