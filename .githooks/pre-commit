@@ -85,6 +85,19 @@ git add docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
 # was "you can't". docs/play/ is generated from game/ and is never a source; --check fails loudly if
 # somebody edits it, which is the reader that stops this becoming the fifth mirror in this project.
 # Only regenerate when game/ actually changed — it is 710 files and every commit does not need it.
+# BLOCKING. Everything the game imports must be IN the repository, not merely on this disk.
+# `game/src/input/hold-gate.js` was written, imported by two modules, and never committed: it ran
+# perfectly here and 404'd on the deployed site, where a failed ES module import draws nothing and
+# reports nothing. The owner got a black screen on their phone and no instrument could have seen
+# why, because every check ran against a machine where the file existed.
+#
+# This one is blocking, unlike its neighbours, because the failure is invisible from the game and
+# only appears after a push. Rule 13 was honoured in order: the tree was made green first (by
+# committing the missing file) and the gate armed in the same commit.
+if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
+  node tools/check-shipped-files.mjs
+fi
+
 if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
   node tools/publish-game.mjs >/dev/null 2>&1 || echo "pre-commit: publish-game failed — docs/play may be stale."
   git add docs/play 2>/dev/null || true

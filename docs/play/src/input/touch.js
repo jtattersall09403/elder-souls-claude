@@ -22,6 +22,8 @@
 // moves with `env(safe-area-inset-*)` and can never enter an inset (H3/T8).
 'use strict';
 
+import { shouldPromote } from './hold-gate.js';
+
 export class TouchInput {
   /**
    * @param {InputPipeline} pipe
@@ -46,6 +48,8 @@ export class TouchInput {
     this.insets = { top: 0, right: 0, bottom: 0, left: 0 };
     this.viewport = { w: 844, h: 390, dpr: 1 };
     this.drawerOpen = false;
+    this.suppressToDrawer = null;   // S35: a READING screen is up; see layout()
+    this.keepOnly = null;           // T8 clause 2: a TALKING surface is up; see layout()
     /** pointerId -> {role, ...}. NOT a single active pointer. T9. */
     this.pointers = new Map();
     this.stick = { active: false, ox: 0, oy: 0, x: 0, y: 0 };
@@ -111,15 +115,42 @@ export class TouchInput {
    *      — declared in the constructor beside `drawerOpen`, which is this class's style.
    */
 
+  /**
+   * T8, SECOND CLAUSE — the arc reduced to the verbs a TALKING surface consumes.
+   *
+   * `suppressToDrawer` above is S35's rule for the READING screens, where nothing the ring draws
+   * can do anything. A conversation is the opposite case and needed its own answer: two of its
+   * verbs are live (`interact` commits, `block` un-picks) and the other eight are not, while the
+   * dialogue panel is 80% of the frame's width and the ring is drawn over it. Measured at
+   * 844x390 with `hold.hatch-name` open, SEVEN of the eleven drawn controls sat on the panel's
+   * rectangle and covered the right-hand column of the name ledger — a player choosing a name
+   * could not read half the names on offer. T8 says the controls "never overlap the dialogue or
+   * journal surfaces"; `ui/system.js` had a comment claiming T8 was "upheld by construction",
+   * which is true of the inset clause and was never true of this one.
+   *
+   * `keepOnly` is an array of action names, or null for the whole arc. Set every frame by
+   * `Engine._touchOverlayModel()`, for the same reason `suppressToDrawer` is: `layout()` is read
+   * by the hit test as well as by the drawing, so a control filtered out of only one of the two
+   * would be invisible and still pressable, or visible and dead.
+   *
+   * The drawer goes with them. S35 kept it because a player who could open the map and not close
+   * it is trapped; nobody is trapped in a conversation — `interact` ends it and `block` steps
+   * back — and the drawer's own centre sits over the panel, which is the defect.
+   * @type {?Array<string>}
+   */
+
   /** @returns {Array<{action,x,y,r,down}>} laid out in CSS px. The renderer draws exactly this. */
   layout() {
     const o = this._origin();
     const out = [];
+    const keep = Array.isArray(this.keepOnly) ? this.keepOnly : null;
     if (!this.suppressToDrawer) {
       for (const b of this.cfg.buttons) {
+        if (keep && keep.indexOf(b.action) < 0) continue;
         out.push({ action: b.action, x: o.x + b.cx, y: o.y + b.cy, r: b.r, held: !!b.held, gate: b.hold_gate || null, down: this.held.has(b.action) });
       }
     }
+    if (keep) return out;
     const d = this.cfg.drawer;
     out.push({ action: '__drawer', x: o.x + d.cx, y: o.y + d.cy, r: d.r, drawer: true, down: this.drawerOpen });
     if (this.drawerOpen) {
@@ -246,7 +277,7 @@ export class TouchInput {
     for (const [action, h] of this.held) {
       // Frames HELD, press frame inclusive — the same quantity the pad uses, so T5's promise
       // that the semantics transfer is true to the frame and not just in spirit.
-      if (h.gate && !h.promoted && (frame - h.gateFrom + 1) >= (h.gate.frames || 12)) {
+      if (h.gate && !h.promoted && shouldPromote(frame, h.gateFrom, h.gate)) {
         h.promoted = true;
         this.pipe.edgeDown(h.gate.hold);
       }

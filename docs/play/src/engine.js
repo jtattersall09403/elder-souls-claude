@@ -3921,6 +3921,28 @@ export class Engine {
     return READING.indexOf(s) >= 0 ? s : null;
   }
 
+  /**
+   * T8 CLAUSE 2 — the arc while a TALKING surface is open.
+   *
+   * S35 above answered the READING screens, where nothing the ring draws is live. A conversation
+   * is the mirror case: two of the arc's verbs ARE live (`interact` commits an answer, `block`
+   * un-picks) and the other eight are swallowed, while `render/ui.js` lays the dialogue panel out
+   * at 80% of the frame's width and the ring is drawn on top of it. Measured on an 844x390 phone
+   * with `hold.hatch-name` open, SEVEN of eleven drawn controls sat on the panel's rectangle and
+   * covered the second column of the name ledger: a player picking their hatch-name could not
+   * read half the names. `ui/system.js` carried a comment saying "T8 is upheld by construction",
+   * which is true of the safe-area clause and was never true of this one.
+   *
+   * Returns the keep-list, or null for the whole arc. `_censusTakesText` is not the test — the
+   * census surface takes the action set whenever it is up, and so does a conversation.
+   */
+  _touchTalkSuppression() {
+    const talking = !!(this.censusSurface && this.censusSurface.takesInput)
+      || !!(this.conversation && this.conversation.open)
+      || !!(this.writReader && this.writReader.open);
+    return talking ? ['interact', 'block'] : null;
+  }
+
   _touchOverlayModel() {
     if (!this.real || !this.real.touch) return null;
     const t = this.real.touch;
@@ -3929,12 +3951,23 @@ export class Engine {
     // actually up, so closing the map restores the arc without anything having to remember to.
     const reading = this._touchScreenSuppression();
     t.suppressToDrawer = reading;
+    const talking = reading ? null : this._touchTalkSuppression();
+    t.keepOnly = talking;
     const controls = t.layout();
+    const shown = !!(t.enabled && t.visible) && controls.length > 0;
+    // The dialogue panel is told where the arc begins so it can stop short of it. Null whenever
+    // there is no arc on the glass, which is every desktop frame — so a keyboard player's panel
+    // geometry is byte-identical to what it was before this line existed.
+    if (this.renderer && this.renderer.ui && this.renderer.ui.setTouchClearRight) {
+      const leftmost = shown ? controls.reduce((min, c) => Math.min(min, c.x - c.r), Infinity) : Infinity;
+      this.renderer.ui.setTouchClearRight(Number.isFinite(leftmost) ? leftmost : null);
+    }
     return {
-      shown: !!(t.enabled && t.visible) && controls.length > 0,
+      shown,
       // Named rather than merely absent, so a critic reading a low `controls_drawn` on a phone
       // can tell "S35 suppressed the ring here" from "the round-1 defect is back".
       suppressed_by_screen: reading,
+      reduced_to_by_talking: talking,
       enabled: !!t.enabled,
       controls,
       stick: { ...t.stick },

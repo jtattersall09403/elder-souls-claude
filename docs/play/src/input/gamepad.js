@@ -27,6 +27,8 @@
 // twice as fast.
 'use strict';
 
+import { shouldPromote } from './hold-gate.js';
+
 /** RI-JRN04 §B — the W3C Standard Gamepad. Recalled, and the axis sign convention matters. */
 export const STANDARD = {
   buttons: 17,
@@ -435,8 +437,13 @@ export class GamepadRouter {
         // The quantity is FRAMES HELD, which is `frame - pressFrame + 1` — the press frame
         // counts. M-P5 releases at 4, 8, 11, 12, 13, 20, 60 and requires roll at 11 and sprint
         // at 12; measured against the raw delta this was off by one and 12 came out as a roll.
+        //
+        // The arithmetic now lives in `./hold-gate.js` and NOT here, because `input/touch.js`
+        // had its own copy of this same line and T5 promises the touchscreen uses "the SAME
+        // 12-frame discriminator" — a promise two copies cannot keep (RULES 10). The state
+        // machine below is still the pad's own; only the RULE is shared.
         if (downNow && g.pressFrame < 0) { g.pressFrame = frame; g.promoted = false; }
-        else if (downNow && !g.promoted && (frame - g.pressFrame + 1) >= (gate.frames || 12)) {
+        else if (downNow && !g.promoted && shouldPromote(frame, g.pressFrame, gate)) {
           g.promoted = true;
           this.pipe.edgeDown(gate.hold);
         } else if (!downNow && g.pressFrame >= 0) {

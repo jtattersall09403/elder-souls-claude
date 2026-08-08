@@ -1,19 +1,40 @@
 {
   "task_id": "W1-TOUCH",
-  "state": "reading",
-  "headline": "Touch input module exists but main.js never imports it — a phone gets a title screen and no controls.",
+  "state": "building",
+  "headline": "The brief's premise is STALE: touch IS wired (main.js -> engine.js -> input/real.js:19 -> touch.js) and real CDP touch events reach it at HEAD. The work is now proving a phone can PLAY.",
   "started": "2026-08-08",
-  "next_step": "Read RULES, INDEX, RI-JRN04 §G, game/src/input/touch.js, game/src/main.js, W1-GAMEPAD.json",
+  "commit_at_start": "9a3e1a7",
+  "next_step": "write tools/touch/touch-run.mjs; legs opening/reach/float/curve/gate/differential",
+  "findings": [
+    "F1 (CORRECTS THE DISPATCH). `game/src/main.js` does not import touch.js and never needed to. The chain is main.js -> Engine (engine.js:57 imports RealInput) -> input/real.js:19 `import { TouchInput }` -> constructed at real.js:73, attached by `applyDeviceClass('handheld')` at real.js:405, ticked inside the FIXED STEP by sim/step.js:69 -> real.js:466. `git log -S 'import { TouchInput }'` dates the import to 6eb8f04. Grepping main.js for 'touch' proves nothing about whether touch is wired.",
+    "F2 (MEASURED, not argued). A phone-shaped Playwright context (844x390, dpr 3, hasTouch, isMobile, webdriver spoofed false) boots into mode 'play' with an empty query string, reports deviceClass 'handheld', touchState().shown === true, 11 controls laid out, 0 inset violations. A REAL CDP `Input.dispatchTouchEvent` at (200,300) opens a floating stick with origin exactly (200,300); a touchMove to (260,260) gives stick {x:0.667,y:0.444}; touchEnd clears it. Screenshot shows the arc drawn on the title screen.",
+    "F3. docs/play/ is IN SYNC with game/ (`node tools/publish-game.mjs --check` -> 710 files match), so the published copy the owner's phone loads has the same touch path. The 'phone gets no controls at all' symptom is not reproducible at 9a3e1a7.",
+    "F4 (REAL, and fixed by me). T5 was kept by TWO copies of one line: gamepad.js `_applyButtons` and touch.js `tick` each computed `(frame - pressFrame + 1) >= (gate.frames || 12)`. RULES 10. Extracted to `game/src/input/hold-gate.js`; both now call `shouldPromote()`. To be proved by breaking that one file on a copy of the tree and watching BOTH arms go red together."
+  ],
+  "rulings": [
+    {
+      "id": "R1",
+      "question": "What does touch do for name entry, given a full-screen keyboard panel is forbidden by RI-JRN01 O8?",
+      "decision": "REUSE THE PAD'S ANSWER UNCHANGED — pick from the ledger. No touch-specific code at all.",
+      "why": "character/scene.js `_nameOptions()` already turns every text node (hold.hatch-name, writ.given-name, writ.class-custom-name) into a pick list, and `CensusSurface.step(input)` moves the caret on `input.moveY` and commits on `pressedName('interact')`. Both are DEVICE-NEUTRAL action-layer reads. The touch stick writes moveY through `pipe.setMove` and the arc's `interact` button writes the edge. So the ledger is reachable on touch with zero new code, and the semantics a player learns on a pad transfer exactly, which is T5's whole argument applied to a menu.",
+      "rule": "RULES 0 — decided and recorded, not asked",
+      "reversible_if": "play-testing shows players want a name the ledger does not carry. Then the owed thing is an INLINE (never full-screen, O8) character wheel driven by the same moveY/interact pair — not an OS keyboard, which would also cover the whole lower half of a landscape phone with the controls on it."
+    }
+  ],
   "files_touched": [
-    "orchestration/status/W1-TOUCH.json"
+    "orchestration/status/W1-TOUCH.json",
+    "game/src/input/hold-gate.js",
+    "game/src/input/gamepad.js",
+    "game/src/input/touch.js"
   ],
   "files_claimed": [
-    "game/src/input/touch.js",
-    "game/src/main.js",
-    "tools/world/touch-opening.mjs",
+    "tools/touch/",
     "reports/w1-touch/",
     "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "docs/play/"
   ],
-  "notes": []
+  "overlap_note": "game/src/input/gamepad.js was last edited by W1-GAMEPAD, whose status file reads state 'done'. My edit there is two lines: an import and one call replacing an inline expression, in the block its own F-notes describe. Nothing else in that file is touched.",
+  "contention_note": "node tools/contention.mjs --gate returned GO (1 browser instance, load 0.52/core) at start.",
+  "not_done": []
 }

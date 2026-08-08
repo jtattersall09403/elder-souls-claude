@@ -112,6 +112,8 @@ const RULE = 'rgba(180, 150, 100, 0.34)';
 
 export class UILayer {
   constructor(width, height) {
+    /** @see setTouchClearRight — null means "no touch arc on the glass" (every desktop frame). */
+    this.touchClearRightX = null;
     this.canvas = document.createElement('canvas');
     this.canvas.width = Math.max(2, width | 0);
     this.canvas.height = Math.max(2, height | 0);
@@ -164,6 +166,22 @@ export class UILayer {
 
   setVisible(v) { this.visible = !!v; this.dirty = true; return this.visible; }
 
+  /**
+   * RI-JRN04 T8, second clause: "touch controls ... never overlap the dialogue or journal
+   * surfaces". `x` is the left edge of the touch arc in the same pixel space this canvas uses,
+   * or null when there is no arc on the glass — which is every desktop frame, so the panel a
+   * keyboard player sees is byte-identical to the one it drew before this existed.
+   *
+   * It is a setter and not a field because `_redraw()` only runs when `dirty`, and a panel that
+   * kept its old width until something else happened to dirty it would be right most of the time
+   * and wrong exactly when a conversation opens.
+   */
+  setTouchClearRight(x) {
+    const v = (x === null || x === undefined || !Number.isFinite(x)) ? null : Math.round(x);
+    if (v !== this.touchClearRightX) { this.touchClearRightX = v; this.dirty = true; }
+    return v;
+  }
+
   /** Composite over whatever the 3D pass just drew. Called by Renderer.render(). */
   render(three) {
     if (this.dirty) { this._redraw(); this.dirty = false; }
@@ -201,7 +219,15 @@ export class UILayer {
     const base = H / 1080;                                // one scale factor, so 4K reads the same
     const maxH = Math.round(H * PANEL_MAX_FRAC);
     const marginX = Math.round(W * 0.10);
-    const panelW = W - marginX * 2;                       // the panel's WIDTH never changes
+    // T8: the panel is 80% of the frame wide, and on a phone the touch arc is drawn on top of it.
+    // When an arc is on the glass the panel stops 10 px short of its leftmost control; a floor of
+    // 45% of the frame means a badly-placed arc can shrink the reading surface but never collapse
+    // it. `touchClearRightX` is null on every desktop frame, so `rightEdge` is `W - marginX` and
+    // the arithmetic below is unchanged.
+    const rightEdge = this.touchClearRightX === null || this.touchClearRightX === undefined
+      ? W - marginX
+      : Math.min(W - marginX, Math.max(marginX + Math.round(W * 0.45), this.touchClearRightX - 10));
+    const panelW = rightEdge - marginX;                   // 0.8W unless a touch arc is drawn
     const opts = Array.isArray(m.options) ? m.options : [];
     const sel = clampInt(m.selected, 0, Math.max(0, opts.length - 1));
 

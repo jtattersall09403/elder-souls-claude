@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b4da273`: 729 tools, 153 reference
+so it cannot drift. Generated at `9a3e1a7`: 734 tools, 153 reference
 items, 64 pieces in flight.
 
 Its purpose is to stop 64+ concurrent agents each paying separately to discover the
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 34
+### `tools/` — 36
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -67,6 +67,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-prose.mjs` — Prose-voice integrity for every player-facing register, checked over the JSON with no engine and no browser.
 - `tools/check-quests.mjs` — Content integrity for the quest layer, checked over the JSON with no engine and no browser.
 - `tools/check-save-shape.mjs` — a LIVE OBJECT must not come back from a save as a plain one.
+- `tools/check-shipped-files.mjs` — everything the game imports must actually be in the repository.
 - `tools/check-souls-corpus.mjs` — the soul economy's CORPUS is internally consistent, checked over the markdown and the JSON with no engine and no browser.
 - `tools/check-souls-world.mjs` — the two soul ledgers must agree — the world's cached roll-up against the statblocks that pay.
 - `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
@@ -86,6 +87,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
 - `tools/souls-consumption-ledger.mjs` — WHICH LEDGER DOES A KILL CONSULT?
 - `tools/tmp-bootpub.mjs` — **no header comment**
+- `tools/tmp-w1-touch-spike.mjs` — **no header comment**
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
@@ -677,6 +679,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
+### `tools/touch/` — 1
+
+- `tools/touch/touch-run.mjs` — CAN A PHONE PLAY THIS?
+
 ### `tools/uesp/` — 8
 
 - `tools/uesp/mine-argonian-names.mjs` — **no header comment**
@@ -731,7 +737,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 144
+### `tools/world/` — 146
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -840,6 +846,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/threshold-shots.mjs` — W1-02 round 2 — the border markers, photographed.
 - `tools/world/tier-announcement.mjs` — `RI-WLD12` M66 — is a jump in danger announced BEFORE the player is in it?
 - `tools/world/travel-audit.mjs` — **no header comment**
+- `tools/world/verify-live-site.mjs` — is the thing on the internet the thing we tested?
+- `tools/world/verify-playable.mjs` — is there a picture on the screen, on the devices people actually hold?
 - `tools/world/verify-published-game.mjs` — does the copy under docs/play actually PLAY?
 - `tools/world/w1-01-r3-probe.mjs` — **no header comment**
 - `tools/world/w1-01-r4-consumption.mjs` — **no header comment**
@@ -879,7 +887,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **175 tools have no header comment**, so nobody can tell what they do without
+> **176 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1053,7 +1061,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-TOUCH` | reading | Read RULES, INDEX, RI-JRN04 §G, game/src/input/touch.js, game/src/main.js, W1-GAMEPAD.json | `orchestration/status/W1-TOUCH.json` |
+| `W1-TOUCH` | building | write tools/touch/touch-run.mjs; legs opening/reach/float/curve/gate/differential | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
 | `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |

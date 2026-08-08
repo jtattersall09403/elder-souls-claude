@@ -11,15 +11,18 @@ fight — frames, stamina, hitboxes, animation, enemy behaviour. Morrowind wins 
 
 There are three ways in, depending on what you are holding.
 
-### 1. On a phone or tablet — a link, and it does not work yet
+### 1. On a phone or tablet — a link, and it is half-working
 
 **https://jtattersall09403.github.io/elder-souls-claude/play/index.html**
 
-It will load and you will get the title screen. **You will not be able to move**, and that is a real
-gap rather than your phone: the touch controls are written — a floating stick under your left thumb,
-camera drag on the right, the same roll/sprint discriminator the gamepad uses — and they are **not
-wired into the game's startup**, so nothing is listening to your fingers. Somebody is fixing that
-now. Until they have, the link is worth opening only to see that it exists.
+You should now get a title screen. **You still will not be able to move**: the touch controls are
+written — a floating stick under your left thumb, camera drag on the right, the same roll/sprint
+timing the gamepad uses — and they are **not wired into the game's startup**, so nothing is
+listening to your fingers. Somebody is fixing that now.
+
+If you get a black screen, **it will now tell you why** rather than sitting there. A loading line, a
+message if a file is missing, a message if the browser refuses 3D. If it says something unexpected,
+that sentence is worth more than a description of the black.
 
 ### 2. On a desktop or laptop — the same link, no clone, nothing to install
 

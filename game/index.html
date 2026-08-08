@@ -47,6 +47,118 @@
 </head>
 <body>
 <canvas id="view" width="1920" height="1080"></canvas>
+
+<!--
+  The boot notice. RI-JRN01 O2: a player must never be shown a blank screen with no account of
+  itself.
+
+  This exists because the owner opened the published game on a phone and got a black rectangle,
+  and neither of us could tell from it whether the world was still loading, whether WebGL had been
+  refused, or whether a file had 404'd. The page was a canvas and a module script: any failure
+  anywhere rendered as #05070a and silence, and the canvas is near-black before the first frame
+  anyway, so "loading" and "broken" looked identical.
+
+  Three properties matter and all three are why this is inline, plain, un-bundled script in the
+  document rather than anything imported:
+    * it runs BEFORE the module does, so a module that fails to parse still leaves a message;
+    * it needs no network, so it survives every asset 404'ing;
+    * it does not use ES module syntax, so an engine that cannot parse modules still shows it.
+-->
+<div id="boot-notice" role="status" aria-live="polite">
+  <div class="bn-inner">
+    <div class="bn-title">Elder Souls</div>
+    <div class="bn-line" id="bn-line">Loading the province…</div>
+    <div class="bn-sub" id="bn-sub">About 17 MB. The first load is the slow one.</div>
+  </div>
+</div>
+<style>
+  #boot-notice{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    background:#05070a;color:#c8bda4;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    z-index:9999;padding:24px;text-align:center}
+  #boot-notice.gone{display:none}
+  .bn-inner{max-width:34rem}
+  .bn-title{font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:#7d7259;margin-bottom:18px}
+  .bn-line{font-size:18px;color:#d8cdb2}
+  .bn-sub{margin-top:12px;font-size:14px;color:#7d7259}
+  .bn-bad .bn-line{color:#d98a6a}
+  #boot-notice code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+    color:#9a8f79;word-break:break-all}
+</style>
+<script>
+(function () {
+  var el = document.getElementById('boot-notice');
+  var line = document.getElementById('bn-line');
+  var sub = document.getElementById('bn-sub');
+  if (!el) return;
+  var done = false;
+
+  function say(msg, detail, bad) {
+    if (done) return;
+    line.textContent = msg;
+    sub.innerHTML = detail || '';
+    el.className = bad ? 'bn-bad' : '';
+  }
+  function hide() { done = true; el.className = 'gone'; }
+
+  // WebGL first, because a phone that refuses it will never draw a frame no matter how long you
+  // wait, and "keep waiting" is the wrong thing to tell someone in that case.
+  try {
+    var probe = document.createElement('canvas');
+    if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) {
+      say('This browser will not give the game a 3D canvas.',
+          'WebGL is unavailable or disabled. On iOS try Safari; on Android try Chrome. ' +
+          'If you are in a private window or have hardware acceleration off, that is usually why.', true);
+      return;
+    }
+  } catch (e) { /* the probe itself failing is not worth taking the page down for */ }
+
+  // Anything thrown before the world comes up is the reason the screen is black. Say it.
+  window.addEventListener('error', function (ev) {
+    var what = ev && (ev.message || (ev.error && ev.error.message)) || 'an unknown error';
+    var src = ev && ev.filename ? '<code>' + String(ev.filename).split('/').slice(-2).join('/') + '</code>' : '';
+    say('The game stopped while loading.', what + '<br>' + src, true);
+  }, true);
+  window.addEventListener('unhandledrejection', function (ev) {
+    var r = ev && ev.reason;
+    say('The game stopped while loading.',
+        (r && (r.message || String(r))) || 'a promise rejected with no message', true);
+  });
+
+  // A file that 404s is the single most likely cause of a silent black screen on a static host,
+  // and it does not throw — the fetch resolves and the caller gets nothing useful.
+  if (window.fetch) {
+    var real = window.fetch;
+    window.fetch = function () {
+      return real.apply(this, arguments).then(function (res) {
+        if (!res.ok && !done) {
+          say('A file the game needs is missing.',
+              res.status + ' on <code>' + String(res.url).split('/').slice(-3).join('/') + '</code>', true);
+        }
+        return res;
+      });
+    };
+  }
+
+  // Progress, so a slow connection reads as slow rather than as broken.
+  var t0 = Date.now();
+  var tick = setInterval(function () {
+    if (done) { clearInterval(tick); return; }
+    var s = Math.round((Date.now() - t0) / 1000);
+    if (el.className === 'bn-bad') return;
+    if (s > 90) say('Still loading, and this is longer than it should take.',
+                    'If it never finishes, the console will say why. This is worth reporting.', false);
+    else if (s > 8) say('Loading the province…', 'About 17 MB. ' + s + 's so far.');
+  }, 1000);
+
+  // The world is up when the harness says it is. Poll rather than wait on an event, because the
+  // module may install the harness before or after this script runs.
+  var poll = setInterval(function () {
+    var h = window.__HARNESS;
+    if (h && (h.ready || h.engine || h.getState)) { clearInterval(poll); clearInterval(tick); hide(); }
+  }, 200);
+})();
+</script>
+
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>
