@@ -55,8 +55,17 @@ right now). Between these two you should not need to go looking for anything.
    `corpus/90-verdicts/wave1/W1-SOULS-r3.md`, run as a 2×2).
 7. **Audit the running world after a load, not the bytes.** A field written and never read back
    re-serialises to exactly what was saved and passes forever.
-8. **A still target hides every steering defect.** If what you measure responds to motion, the
-   target must move. The easiest fixture collects the most data and distinguishes nothing.
+8. **A still target hides every steering defect — and one instant is a still target in time.** If
+   what you measure responds to motion, the target must move. The easiest fixture collects the most
+   data and distinguishes nothing.
+
+   Both halves have now cost a round. A magic bolt hit a standing body at every range and a
+   *walking* body at none, for two rounds, because every fixture used a target that stood still.
+   And a doorstep fix reported **0 of 115 bodies stuck inside a building** — measured one fixed
+   frame after the door. At 30, 120 and 600 frames the same 115 doors give **8, 10 and 10**: the
+   collision solver slides the body into a neighbour and it rests there. In the critic's words,
+   *"the round measured the one frame at which its number is zero."* **Let the world run.** If your
+   number is taken at a single instant, take it again later and publish both.
 9. **Run the aggregation, not just the standalone probes.** Ten checks confirmed individually and
    never together is how a green build ships broken.
 10. **Confirm the code you are about to change actually runs**, by perturbing it and watching the

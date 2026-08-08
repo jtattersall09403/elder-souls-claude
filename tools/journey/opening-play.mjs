@@ -49,6 +49,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { parseArgs, wantsHelp, usage, writeJson, REPO_ROOT, REPORTS_DIR, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
 import { judge, DECLARED_WAYFINDING } from './signposting.mjs';
@@ -76,6 +77,10 @@ if (RED && !['deaf', 'plant', 'harness'].includes(RED)) {
 const RED_SIGNATURE = { deaf: 'P3', plant: 'P9', harness: 'P1' };
 
 const shotsDir = args.shots ? path.resolve(String(args.shots)) : path.join(REPO_ROOT, 'docs', 'shots');
+// See `shot()` below. Default deliberately does NOT name a round, so re-running this tool cannot
+// overwrite a verdict's cited evidence a second time.
+const SHOT_TAG = String(args.tag || 'w1-26-opening-play');
+const SHOT_DATE = String(args.date || new Date().toISOString().slice(0, 10));
 const jsonPath = args.json ? path.resolve(String(args.json)) : path.join(REPORTS_DIR, 'journeys', 'w1-26-r2-play.json');
 ensureDir(path.dirname(jsonPath));
 if (!RED) ensureDir(shotsDir);
@@ -191,7 +196,13 @@ try {
    */
   async function shot(name) {
     if (RED) return null;
-    const p = path.join(shotsDir, `2026-08-08-w1-26-r2-${name}.png`);
+    // `--tag`, and NOT a hardcoded `w1-26-r2-` prefix. This tool wrote
+    // `docs/shots/2026-08-08-w1-26-r2-*.png` on every run — the ROUND-2 CRITIC'S NAMED EVIDENCE,
+    // cited by file name in its verdict. Round 3 overwrote those files, noticed, restored them,
+    // and did not fix the tool; the r3 critic had to run to a separate shots directory to avoid
+    // doing it again. A probe that silently overwrites another agent's evidence is a probe that
+    // will do it again to somebody who does not notice.
+    const p = path.join(shotsDir, `${SHOT_DATE}-${SHOT_TAG}-${name}.png`);
     try {
       await h.page.screenshot({ path: p, timeout: 120000, animations: 'disabled' });
       out.shots.push(path.relative(REPO_ROOT, p));

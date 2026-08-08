@@ -122,6 +122,12 @@ OPTIONS
   --prove-falsifiable    (jrn06) break the S5 classification and the stored souls on purpose
                          and assert the corresponding checks go red
   --no-shots             (jrn06) skip M-D11/M-D14, the two checks that need pixels
+  --still-frames N       frames the driver is held STILL from first control, pressing nothing,
+                         for RI-JRN01 M4 clause 1 (default 3600 = 60 s of simulated time).
+                         0 skips the window, and m4_clause1 then reports unmeasurable.
+  --still-fire-a-field   teardown for m4_clause1: open the creation surface inside the still
+                         window, which is the build defect the row exists to catch. The row
+                         must go red. A control never seen fail is not a control (rule 6).
   --sample-quests N      quests to sample (jrn07)
   --stratified           stratify the quest sample by giver/region (jrn07)
   --state PATH           load a committed save before the journey (jrn08)
