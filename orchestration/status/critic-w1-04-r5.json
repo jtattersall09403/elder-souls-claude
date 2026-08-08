@@ -38,7 +38,10 @@
   ],
   "gates_run": [
     "w1-04-consumption 23/23 exit 0 (run FIRST, rule 9)",
-    "boot-check 0", "check-data 0", "check-content 0", "check-append-only 0",
+    "boot-check 0",
+    "check-data 0",
+    "check-content 0",
+    "check-append-only 0",
     "check-building-fits-room 0; --self-break 112/112 red",
     "w1-04-r5-census exit 0; --self-break exit 1 PROBE FAILURE 115/115 (real exit codes, unpiped)",
     "verdict-validate OK"
@@ -70,7 +73,10 @@
     "reports/blog-feed.jsonl"
   ],
   "files_claimed": [],
-  "redundant_with": ["W1-04-r5"],
+  "redundant_with": [
+    "W1-04-r5"
+  ],
   "ownership_notes": "I edited no game/ source. reports/blog-feed.jsonl is append-only and I appended one line (check-append-only rc 0). docs/shots/ is shared by every piece in the project and is a declared overlap, not a collision. reports/critic-w1-04-r4/offline.json was REWRITTEN by re-running the round-4 critic's own tool at this commit — that is a critic artifact of a finished round and I have declared it here for honesty even though it is not in my brief's file list; its previous contents were a measurement at 3ee6ada and the tool regenerates it deterministically.",
-  "next_step": "none — verdict published"
+  "next_step": "none — verdict published",
+  "commit_note": "RULE 17, REPORTED. My git commit --only loop lost the race: my first attempt malformed the argument order (-m after --, so git read the message as a pathspec) and committed nothing; by the time I retried correctly, an orchestrator bank and a neighbour commit (f242c57, 6b869cc) had already carried every one of my files. I verified rather than unpicked, as rule 17 says: all nine declared deliverables are byte-identical in HEAD and the verdict JSON validates from HEAD. No neighbour work was swept by me — my successful command set was empty."
 }
