@@ -1,0 +1,248 @@
+{
+  "schema": "elder-souls/verdict@1",
+  "piece": "W1-TOUCH",
+  "round": 1,
+  "role": "critic",
+  "verdict": "FAIL",
+  "score": 6,
+  "gate": 7.0,
+  "scoring": "min-over-axes",
+  "items": [
+    "RI-JRN04 §G (T1-T10, M-P8, M-P17, M-P21, M-P22)",
+    "RI-JRN01 O17",
+    "RI-MTH07 / ARBITRATION §3"
+  ],
+  "commit_measured": "fa964554de40783866f1696b2514593fc6aff4e2",
+  "commit_note": "Every browser number was taken against a pristine `git archive HEAD` export, not the working tree. See verdict §0.2.",
+  "verdict_md": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
+  "critic": {
+    "task_id": "critic-w1-touch",
+    "finished_at": "2026-08-08T11:12:00Z",
+    "fresh_context": true,
+    "built_nothing_under_test": true
+  },
+  "conditions": {
+    "load_per_core_range": [
+      2.5,
+      4.9
+    ],
+    "ceiling_per_core": 4.0,
+    "gate_at_start": "WAIT — offline work was done first; one browser per tool invocation, closed by the tool; never pkill",
+    "renderer": "headless Chromium, SwiftShader",
+    "real_device": false
+  },
+  "axes": {
+    "correction_of_the_dispatch": 10,
+    "defects_found_and_fixed": 9,
+    "instrument_and_teardown_discipline": 9,
+    "honesty_rules_26": 10,
+    "evidence_for_claims_made": 8,
+    "coverage_of_RI_JRN04_G": 6,
+    "consumption": 10
+  },
+  "binding_axis": "coverage_of_RI_JRN04_G",
+  "binding_reason": "§G is a ten-requirement bar and the round has evidence for six of them. T10's complete quest, T3's camera curve, T7/M-P22, T8 clause 1 under a real inset, and the tablet and portrait profiles are all unmeasured — the round declares every one of them itself. The fight (T1/T4/T5/T6/T9 against a live enemy) was unmeasured until this critique took it.",
+  "not_a_judgement_that": "the work is poor. On evidence, teardown discipline and honesty this is among the stronger pieces in the corpus; verdict §8 says why at length. The gap between the round and a pass is that a `not_done` entry does not earn coverage credit.",
+  "confirmed": [
+    {
+      "id": "A0",
+      "what": "The dispatch's premise was stale and the round's correction is right. main.js:11 -> engine.js:57/481 -> input/real.js:19 `import { TouchInput }` -> constructed real.js:73 -> attached by applyDeviceClass('handheld') real.js:405 -> ticked INSIDE the fixed step at sim/step.js:69. `git log -S` dates the import to 6eb8f04. A phone-shaped context boots mode 'play', deviceClass 'handheld', touchState().shown true, 11 controls. Verified independently from source and from a running page.",
+      "consequence": "The README that told the owner a phone has no controls said something false. The round caught it against its own dispatch."
+    },
+    {
+      "id": "A1",
+      "what": "T5 really is one implementation now (game/src/input/hold-gate.js), and the round's two teardowns are genuinely different in kind — a one-line code edit reddens both arms, a data-row edit reddens only touch."
+    },
+    {
+      "id": "A2",
+      "what": "hold-gate.js IS tracked at HEAD (`git ls-files` finds it) and `node tools/check-shipped-files.mjs` exits 0 over 139 modules. The file that once shipped a black screen by being untracked is now covered."
+    },
+    {
+      "id": "A3",
+      "what": "T8 clause 2 is really fixed: the arc reduces while a talking surface is up, and the round's 7-of-11 before / 0-of-2 after is reproducible."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "headline-positive",
+      "what": "THE ACCEPTANCE NOBODY HAD TAKEN IS NOW TAKEN — a phone fought. arena_duel behind the real title, reference phone 844x390, every input a real CDP touch, no keyboard in the leg and no harness touch verb. Sentry 412 -> 311.2 hp; player 620 -> 436.28 (it hit back). Moves r1.1/r1.2 out of a finger; stamina 120 -> 98; roll i-frames invuln on 36/67 samples; a held finger gives guardRaised on 20/25 with state BLOCK_HOLD; and the strafing attack (stick + button, two fingers) travelled 0.997 m AND swung.",
+      "artifact": "reports/critic-w1-touch/critic-fight-fight.json"
+    },
+    {
+      "id": "F2",
+      "severity": "positive",
+      "what": "T6 measured on touch for the first time — the round named it unmeasured and correctly located the threshold in combat/player.js _chargeTick. A 60 ms hold on 'heavy' gives ['r1.1']; a 700 ms hold gives ['r2','r2.charged']. The charged variant appears only on the long hold, thresholded on duration exactly as T6 asks."
+    },
+    {
+      "id": "F3",
+      "severity": "major",
+      "what": "THE ROLL IS UNRELIABLE WHILE THE MOVEMENT STICK IS HELD. Four arms, one page, one body: a finger on the arc with no stick backsteps 5/5 (correct — a dodge with no direction is a backstep); a finger on the arc WITH a finger on the stick produced no move at all on 4/5 presses and a sprint on the fifth; the keyboard Space key with the SAME finger on the SAME stick rolls cleanly, as does the pure desktop arm. Rolling out of a run is the most-used verb in a Souls fight.",
+      "not_confirmed_because": "At the 9.9-11.6 fixed steps/s this build reaches at the phone profile on this box, a wall-clock tap is coarse, and I could not separate 'the touch button drops the tap when a second pointer is live' from 'at 12 Hz the tap lands between the frames that would have seen it'. What IS established is the ASYMMETRY: same box, same load, same body, same frame rate, and the desktop key rolls where the touch control does not. That cannot be explained by frame rate alone because both arms pay it.",
+      "fixture_for_round_2": "tools/touch/critic-roll-matrix.mjs",
+      "artifact": "reports/critic-w1-touch/critic-roll-matrix.json"
+    },
+    {
+      "id": "F4",
+      "severity": "major",
+      "what": "T5's GATE IS COUNTED IN FRAMES AND PRESSED IN MILLISECONDS. hold-gate.js is 12 fixed sim frames and the round proved the pad and the touchscreen share one implementation of it — all correct, and reproduced. But `--leg gate` drives the sim with stepFrames, where wall-clock time does not exist, so the harness cannot express this question. Measured in play mode with the press timed BY THE GAME (TouchInput stamps gateFrom on the down, sim.frame is read on the up): at 11.6 fixed steps/s, 12 frames is 1034 ms of thumb time; at a true 60 Hz it is 200 ms. The wall-clock cost of the roll/sprint discriminator is a function of frame rate, so RI-JRN04 T5's promise that pad semantics 'transfer' holds in frames and not in the hand.",
+      "owed": "an S-ruling, not a silence. An ms-based gate breaks determinism; a frame-based gate drifts with frame rate. Not the critic's call to make.",
+      "artifact": "reports/critic-w1-touch/critic-gate-wallclock.json"
+    },
+    {
+      "id": "F5",
+      "severity": "moderate",
+      "what": "NOBODY HAS MEASURED THE FRAME RATE, AND IT IS 10-12 Hz UNDER LOAD. 28.3 fixed steps/s at ~2.6 load/core, 9.9 at ~4.3, 11.6 at ~4.9, all at 844x390. The round said plainly that RI-PLT01/02 frame budgets were untouched, which is honest.",
+      "must_be_read_with": "These are headless SwiftShader on a contended shared box and they are NOT a phone's numbers. They are not evidence that a real device is slow. What they establish is that F4's coupling is real and load-sensitive, and that nobody has taken this measurement anywhere — so 'a phone can play a Souls-shaped fight' is established for the VERBS and not for the TIMING, and a Souls fight is timing."
+    },
+    {
+      "id": "F6",
+      "severity": "minor-but-exactly-the-attack",
+      "what": "THE 'BY CONSTRUCTION' CLAIM THE ROUND'S HEADLINE WAS ABOUT IS STILL ON DISK. game/src/ui/system.js:647 still reads 'T8 is upheld by construction' at HEAD, verbatim. `git log -S 'T8 is upheld by construction' -- game/src/ui/system.js` returns only 9afe234, an unrelated commit; ui/system.js is not in the round's own source_changes. Worse, game/src/input/touch.js:128 describes it in the PAST TENSE ('ui/system.js HAD a comment claiming...'), so a reader of the new file is told the false claim was removed. It was not. The next person to open ui/system.js is told exactly the thing that caused the defect.",
+      "fix": "one line"
+    },
+    {
+      "id": "F7",
+      "severity": "minor",
+      "what": "Swept the tree for the phrase and its cousins: 58 occurrences of 'by construction' in game/src/. Two are in the touch path. game/src/ui/touch-overlay.js:101 — 'the layout is measured from the safe area … that is what makes H3/T8 true by construction' — is the same family and is a claim about the SAFE-AREA CLAUSE ONLY, which is the same half-truth in a second file."
+    },
+    {
+      "id": "F8",
+      "severity": "coverage",
+      "what": "T8 CLAUSE ONE HAS ONLY EVER BEEN MEASURED AGAINST AN INSET OF ZERO. insetViolations is 0 in all six of the round's profiles, but none of them sets an inset, so the number is a measurement against nothing. RI-JRN04 M-P17's {top:0,right:44,bottom:21,left:44} cutout is the case that matters and it is untested."
+    },
+    {
+      "id": "F9",
+      "severity": "transient-tree-wide",
+      "what": "Mid-run every page served from the WORKING TREE went black with 'QuestBook: 16 integrity failure(s)' thrown inside Engine._boot, from another agent's STAGED, uncommitted quest data. RULES 13 exactly. It resolved on its own about forty minutes later and `node tools/check-quests.mjs` now exits 0, so this is reported as a transient and needs no follow-up. Carried forward only as this: the window in which a fail-closed content assertion is armed against half-written data is a window in which every measurement on the box is void AND LOOKS EXACTLY LIKE the black-screen symptom this piece was dispatched to chase."
+    }
+  ],
+  "attack_G_the_black_screen": {
+    "said_plainly": "A desktop browser at a phone-sized viewport is not a phone. Nothing done on this machine can tell the owner why a real device shows black; every check here says the build is fine, which is exactly the situation the dispatch described.",
+    "what_index_html_gets_right": [
+      "probes WebGL before anything else, so a device that will never draw is not told to keep waiting",
+      "traps error and unhandledrejection",
+      "wraps fetch to catch a 404, the commonest silent black screen on a static host",
+      "distinguishes 'booted but painted nothing' from 'never booted' — and the comment records that hiding on the harness object's existence was wrong and cost the owner a second black screen",
+      "catches webglcontextlost, which fires an event rather than throwing and would otherwise be invisible"
+    ],
+    "two_suspicions_of_mine_that_were_wrong_and_are_reported_as_such": [
+      "the canvas is STATIC in the HTML (<canvas id='view'>, line 49), so the context-lost listener does bind",
+      "renderer.js:48 sets preserveDrawingBuffer: true, so painted()'s readPixels outside a rAF callback is valid rather than reading a cleared buffer"
+    ],
+    "does_it_collect_enough": "No.",
+    "missing_in_priority_order": [
+      "navigator.userAgent — NOT COLLECTED ANYWHERE IN THE FILE (grep -c userAgent -> 0). For a phone-only failure this is the single most useful line on the screen; without it nobody can tell which device the report came from.",
+      "shader compile/link failure — the most likely cause of a black screen that gets as far as 'the world loaded, but nothing is being drawn'. Three.js reports a failed shader through console.error, NOT a thrown exception, so window.onerror never fires and the notice reports the symptom with none of the cause. Patching console.error to capture the first line containing 'THREE.WebGLProgram' would turn the owner's screenshot into a diagnosis.",
+      "gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT).precision — a GPU offering only mediump in fragment shaders is a classic mobile-only black screen, and it costs one line",
+      "MAX_VARYING_VECTORS, MAX_FRAGMENT_UNIFORM_VECTORS, MAX_TEXTURE_IMAGE_UNITS — the limits that actually make a mobile shader fail to link; MAX_TEXTURE_SIZE rarely does",
+      "navigator.deviceMemory / hardwareConcurrency, for the memory-pressure hypothesis"
+    ],
+    "hypothesis_offered_as_hypothesis": "renderer.js:50 sets setPixelRatio(1) and sizes from canvas.width, which is 1920x1080 in the markup. With preserveDrawingBuffer: true the browser must keep a SECOND full 1920x1080 buffer — roughly 16 MB of GPU memory that exists only so __HARNESS.screenshot() can read pixels back. On iOS Safari, the strictest WebGL memory environment in common use, an oversized preserved drawing buffer is a well-known way to be handed a lost context on a device that runs everything else fine. CHEAP AND REVERSIBLE EXPERIMENT FOR ROUND 2: set preserveDrawingBuffer: false unless ?harness=1 is present, and size the drawing buffer from the viewport rather than the markup. It costs the harness nothing in play mode. I could not test it — I do not have a phone — and I would rather name a testable hypothesis than score the diagnostics and move on."
+  },
+  "my_own_instrument_errors_reported": [
+    {
+      "id": "E1",
+      "what": "The first run of --leg fight published EIGHT red checks: no swing, no roll, no guard, no damage. Every one was a broken probe. engine.js:3372 hands the latched input to the TITLE SURFACE and returns before stepCombat is ever reached, so the fixture was tapping an attack button at a menu.",
+      "what_caught_it": "the DESKTOP control arm — a real mouse press on Mouse0, which IS 'light' on the keyboard profile, produced exactly the same nothing. A teardown that turns every arm red including the one that is supposed to work is not a finding, it is a broken instrument (RULES 4).",
+      "cost_if_shipped": "this verdict would have said a phone cannot fight, on a build where it can"
+    },
+    {
+      "id": "E2",
+      "what": "My C-BLOCK red in --leg fight was also false — measured with the body still in recovery from six swings and a roll. Measured cleanly it passes 20/25."
+    },
+    {
+      "id": "E3",
+      "what": "My first roll check called `backstep` a failure. A dodge with no direction IS a backstep in both source games; the check was wrong, not the build."
+    }
+  ],
+  "what_should_be_copied_from_this_round": [
+    "It contradicted its own dispatch, in its first line, with the import chain and a git log -S.",
+    "Six teardowns, each naming the check id it must redden, and two of them DIFFERENT IN KIND — one code edit reddens both arms, one data edit reddens only touch. The cleanest proof of 'one implementation' in this corpus.",
+    "It caught two of its own inert instruments and PUBLISHED them (F7's inert control where loadState() silently rebuilt combat.d; F8's e.action/e.button slip that had published 0/16).",
+    "Its not_done is nine entries long, specific, and every entry I checked was true. EVERY HEADLINE FINDING IN THIS VERDICT IS SOMETHING THE ROUND POINTED ME AT. That is what a good not_done buys and it should be the standard.",
+    "Two rulings recorded with the evidence that would overturn them (RULES 0), rather than a question the owner would never have seen."
+  ],
+  "round_2_brief": [
+    "F3 — isolate the roll asymmetry with a second pointer live, on a quiet box (fixture: tools/touch/critic-roll-matrix.mjs)",
+    "F4 — an S-ruling on frames-versus-milliseconds for the tap/hold gate",
+    "F6 — the one-line comment in ui/system.js:647, and the past-tense sentence in touch.js:128",
+    "T3 (M-P8 camera curve on drag) and T7/M-P22 (controls hiding while a pad is active) — both single-leg additions to an instrument that already exists; they would take coverage from 6 to 8",
+    "Attack G — the preserveDrawingBuffer / drawing-buffer-size experiment, and the five additions to deviceLine()"
+  ],
+  "not_done": [
+    "No real device. Attack G is analysis and a named hypothesis, not a measurement.",
+    "F3's roll asymmetry is a differential, not a mechanism — it is not isolated from the frame rate in F5.",
+    "T10's 'one complete quest on touch only' is unmeasured by the round and by me. So are T3's camera curve and T7/M-P22 — the round declared all three.",
+    "The tablet's landscape opening is still unmeasured.",
+    "Every timing figure is under fleet load on SwiftShader and is stamped as such."
+  ],
+  "files_touched": [
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.json",
+    "orchestration/status/critic-w1-touch.json",
+    "tools/touch/critic-fight.mjs",
+    "tools/touch/critic-fight-diag.mjs",
+    "tools/touch/critic-title-probe.mjs",
+    "tools/touch/critic-block-roll.mjs",
+    "tools/touch/critic-roll-matrix.mjs",
+    "tools/touch/critic-gate-wallclock.mjs",
+    "tools/touch/critic-consumption.mjs",
+    "docs/shots/2026-08-08-critic-touch-fight-01-the-sentry-aggroed.png",
+    "docs/shots/2026-08-08-critic-touch-fight-02-after-the-exchange.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.json",
+    "orchestration/status/critic-w1-touch.json",
+    "tools/touch/critic-*",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": [
+    "W1-TOUCH"
+  ],
+  "consumption": {
+    "result": "PASS — no orphan models",
+    "method": "Each model perturbed IN THE DATA on a copy of the tree; the observable is a finger on real glass (RI-JRN04 CONSUMPTION §2 names 'an input that is accepted or refused' admissible and rules a harness return value out). Two well-separated values plus a null control, everything else held fixed.",
+    "artifact": "reports/critic-w1-touch/critic-consumption.json",
+    "models": {
+      "M1 profiles.json touch.buttons[] geometry": {
+        "perturbation": "move the 'light' row 200 px left and 60 px up",
+        "observable": "does a finger at ONE FIXED screen point swing?",
+        "shipped": "(737,242) -> swings r1.1",
+        "perturbed": "same point -> NOTHING; new centre (537,182) -> swings",
+        "coupled": true,
+        "why_this_is_the_strongest_form": "the same input accepted, then refused, then accepted somewhere else, driven purely by a number in a data file, with the finger held at a fixed screen point across arms so the data moving under a stationary thumb is the only variable"
+      },
+      "M2 touch.stick.max_radius_css_px": {
+        "perturbation": "90 -> 45",
+        "observable": "metres walked for one fixed 45 px finger displacement",
+        "shipped": 0.193,
+        "perturbed": 0.64,
+        "coupled": true
+      },
+      "M3 hold_gate.frames": {
+        "perturbation": "12 -> 3",
+        "observable": "the running game's own gate value",
+        "shipped": 12,
+        "perturbed": 3,
+        "coupled": true
+      },
+      "M4 touch.camera.deg_per_css_px_yaw": {
+        "perturbation": "0.28 -> 1.12 (x4)",
+        "observable": "camera yaw after a fixed 100 px drag",
+        "shipped": -28,
+        "perturbed": -112,
+        "coupled": true,
+        "note": "moved by exactly the factor the data moved by, which is the check that the coupling is the real one and not a coincidence"
+      }
+    },
+    "null_control": {
+      "perturbation": "add a `note` field nothing reads",
+      "result": "light@(737,242), walked 0.193 m, camera -28 deg, swung true — identical to baseline on every observable",
+      "inert_as_required": true
+    }
+  }
+}

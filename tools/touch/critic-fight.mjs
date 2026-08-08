@@ -244,6 +244,40 @@ const shot = async (H, name) => {
   say(`  [shot] ${path.relative(REPO_ROOT, p)}`);
 };
 
+/**
+ * Get past the title WITH A FINGER, and refuse to proceed if it is still up.
+ *
+ * THIS FUNCTION IS THE FIRST VERSION OF THIS TOOL'S OWN CORRECTION, and it is left documented
+ * rather than tidied away. Round 1 of `--leg fight` pressed 'light' the moment the page loaded and
+ * published eight red checks — no swing, no roll, no guard, no damage. Every one of them was a
+ * broken probe. `engine.js:3372` gives the TITLE SURFACE the latched input and `return`s before
+ * `stepCombat` is ever reached, so the fixture was tapping an attack button at a menu.
+ *
+ * What caught it was the desktop control arm (`critic-fight-diag.mjs` ARM 3): a real mouse press
+ * on `Mouse0`, which IS `light` on the keyboard profile, produced exactly the same nothing. A
+ * teardown that turns every arm red including the one that is supposed to work is not a finding,
+ * it is a broken instrument — RULES 4. Had this tool shipped its first numbers, the verdict would
+ * have said a phone cannot fight, on a build where it can.
+ */
+async function commitTitleWithAFinger(H, g) {
+  const st = () => H.page.evaluate(() => {
+    const e = window.__ENGINE;
+    return { shown: !!(e.renderer && e.renderer.title && e.renderer.title.shown), sel: window.__HARNESS.getTitleState ? window.__HARNESS.getTitleState().selected_id : null };
+  });
+  let s = await st();
+  if (!s.shown) return { needed: false, shown_after: false };
+  const lay = await g.layout();
+  const ic = centreOf(lay, 'interact');
+  if (!ic) return { needed: true, shown_after: true, why: "'interact' is not on the arc at the title" };
+  say(`  .... the title is up with '${s.sel}' highlighted; committing it with one tap on 'interact'`);
+  await H.finger.down(9, ic.x, ic.y);
+  await H.page.waitForTimeout(110);
+  await H.finger.up(9);
+  await H.page.waitForTimeout(2500);
+  s = await st();
+  return { needed: true, shown_after: s.shown, committed: 'new' };
+}
+
 // =============================================================================================
 // LEG: fight — the acceptance nobody had taken
 // =============================================================================================
@@ -265,6 +299,15 @@ async function legFight() {
     rec.boot = boot;
     if (boot.mode !== 'play') { fail('C-BOOT', `the fight fixture did not boot into play mode (mode=${boot.mode}) — every number below would be taken in the harness's world, not the player's`, boot); return rec; }
     pass('C-BOOT', `arena_duel booted in mode '${boot.mode}' as deviceClass '${boot.deviceClass}', touch overlay shown=${boot.shown}`, boot);
+
+    // The title first, with a finger. See commitTitleWithAFinger() for why this exists.
+    const title = await commitTitleWithAFinger(H, g);
+    rec.title = title;
+    if (title.shown_after) {
+      fail('C-TITLE', `the title is STILL up after a finger committed it — everything below would be measured at a menu, which is how this tool's first run produced eight false reds`, title);
+      return rec;
+    }
+    if (title.needed) pass('C-TITLE', `one tap on 'interact' with a finger took the title down and dropped the player into the arena — the fight fixture is behind the same title a human meets`, title);
 
     const layout = await g.layout();
     rec.layout = layout.map((c) => c.action);

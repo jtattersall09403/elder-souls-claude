@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `d21043d`: 763 tools, 153 reference
+so it cannot drift. Generated at `dbc0b4b`: 765 tools, 153 reference
 items, 72 pieces in flight.
 
 Its purpose is to stop 72+ concurrent agents each paying separately to discover the
@@ -615,9 +615,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/playability/` — 2
+### `tools/playability/` — 3
 
 - `tools/playability/live-mirror.mjs` — put a real browser in front of the REAL deployed site.
+- `tools/playability/touch-fight.mjs` — can a finger fight?
 - `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
 
 ### `tools/progression/` — 6
@@ -641,7 +642,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 38
+### `tools/quests/` — 39
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -680,6 +681,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/utility-findability.mjs` — can a player be OFFERED the quests that are NOT the main quest?
 - `tools/quests/viability-split-shot.mjs` — one picture of the two instruments, drawn from their own artifacts.
 - `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
+- `tools/quests/w1-20-shot.mjs` — The picture for W1-20: the door being shut, in the doorkeeper's own words.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
 ### `tools/readables/` — 4
