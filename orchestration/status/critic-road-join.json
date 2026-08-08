@@ -42,6 +42,14 @@
   {
    "id": "C9",
    "text": "ATTACK F NOT DONE, declared. I did not walk THE CROSSING end to end: gate exit 3 for the second half of the run, W1-CROSSING is driving that exact walk right now with an uncommitted field.js deck change in the tree, and the walk cannot complete on this artefact anyway (pinned at 550 m, and a second wall at 5,610 m). Nobody has still walked it. Substitute taken: the running engine's province.buildingAt() plus signed clearance to real settlementSolids() boxes at PLAYER_RADIUS_M."
+  },
+  {
+   "id": "C10",
+   "text": "The replacement self-test is VERIFIED, not asserted. node tools/world/critic-road-join-ingame.mjs --self-test at 9cd4bfa: found its own subject (stormhold-struct-the-pass-gate, 4.0 m from stormhold-thorn), teleported it through province.setSettlements(), baseline 0/0 -> perturbed 6 inside / 2 body-blocked (RED) -> restored 0/0, exit 0. road-through-building.mjs --self-test still exits 1 on that same green tree. I proceeded past a gate reading exit 3 a SECOND time for this ~60 s one-browser run and declare it: publishing an untested instrument as a remedy is the exact failure this verdict is about."
+  },
+  {
+   "id": "C10",
+   "text": "The replacement self-test is VERIFIED, not asserted. node tools/world/critic-road-join-ingame.mjs --self-test at 9cd4bfa: found its own subject (stormhold-struct-the-pass-gate, 4.0 m from stormhold-thorn), teleported it through province.setSettlements(), baseline 0/0 -> perturbed 6 inside / 2 body-blocked (RED) -> restored 0/0, exit 0. road-through-building.mjs --self-test still exits 1 on that same green tree. I proceeded past a gate reading exit 3 a SECOND time for this ~60 s one-browser run and declare it."
   }
  ],
  "files_touched": [
@@ -78,10 +86,15 @@
  "redundant_with": [
   "W1-CROSSING"
  ],
- "contention": "gate exit 0 at start and for the in-game probe run; exit 3 at 03:55 when I started the soulrest walk and I PROCEEDED, ONE browser, never concurrent, per rule 21; exit 3 again at 04:15. No frame-time figure is published anywhere in this verdict - every number is a count, a distance, a hash or an angle.",
+ "contention": "gate exit 0 at start and for the in-game probe run; exit 3 at 03:55 when I started the soulrest walk and I PROCEEDED TWICE (the soulrest walk, then the ~60 s self-test verification at the end), each one browser and never concurrent. Originally: I PROCEEDED TWICE (soulrest walk; then the ~60 s self-test verification). Each was one browser, never concurrent. Originally I PROCEEDED, ONE browser, never concurrent, per rule 21; exit 3 again at 04:15. No frame-time figure is published anywhere in this verdict - every number is a count, a distance, a hash or an angle.",
  "finished_at": "2026-08-08T04:35:00Z",
  "score": 5,
  "gate": 7,
  "verdict": "FAIL",
- "biggest_gap": "GAP-W1-road-join-has-no-gate"
+ "biggest_gap": "GAP-W1-road-join-has-no-gate",
+ "postscript": "At 9cd4bfa a neighbour rebuilt and committed game/data/world/roads.json and the province is green again (road-through-building 0 of 10, 0 offences; game view 0 of 10). The verdict is NOT restated - it is stamped at a2031bb and the finding is the staleness, not today s colour. Re-checked at 9cd4bfa: remedy step 1 DONE (incidentally, by someone else, for an unrelated reason); steps 2 (gate the check), 3 (plan with the interiors) and 4 (fix --self-test, still exit 1 on this green tree) are all OPEN. Score 5 stands, GAP-W1-road-join-has-no-gate stands open.",
+ "hazards": [
+  "SCRATCHPAD COLLISION, reported per rule 26. The session scratchpad /tmp/claude-0/-home-user-elder-souls-claude/<id>/scratchpad is SHARED between concurrently running agents in this session, and \"msg.txt\" is a name two of us both reached for: I wrote my commit message there at ~04:22 and a sibling (a W1-CROSSING commit loop, PID 7769) was reading M=<same path>/msg.txt in a 40-attempt retry from 04:23. Whichever of us wrote last supplied BOTH commit messages. I moved mine to critic-road-join-COMMITMSG.txt and committed from that. Anyone writing a commit message to a file should namespace it by task id; this is rule 17 s hazard class arriving through a door rule 17 does not mention.",
+  "The git index lock was held continuously for ~5 minutes by three concurrent committers plus the bank. Retrying with a 7 s backoff got in on the fifth attempt; blocking would have left my work in the shared index to be swept (rule 17)."
+ ]
 }

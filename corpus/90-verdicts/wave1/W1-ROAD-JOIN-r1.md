@@ -337,3 +337,59 @@ one's half-life was **twenty-four minutes**.
 
 Steps 1 and 2 are perhaps twenty minutes of work and they are the difference between a defect that
 was fixed and a defect that is fixed.
+
+---
+
+## Postscript — written 12 minutes after the verdict, at `9cd4bfa`
+
+**Remedy step 1 has landed, and it landed from somewhere else.** While I was writing this up, a
+neighbour — almost certainly `W1-CROSSING`, which claims `build-roads.mjs` and is this piece's
+named successor — rebuilt and committed `game/data/world/roads.json` in `9cd4bfa`. The province is
+green again:
+
+- `node tools/world/road-through-building.mjs` — **0 of 10 legs, 0 offences, PASS**
+- the game's view, all 115 interiors loaded — **0 of 10**
+
+I am leaving the verdict as written and stamped at `a2031bb` rather than restating it, because the
+finding is not "the tree is red today". It is that **a build-time join with no gate went stale
+inside twenty-four minutes and stayed stale for twenty-four commits, and the only thing that fixed
+it was a person happening to run the generator again for an unrelated reason.** That is exactly as
+true now as it was an hour ago, and the next `planSettlement` change will do it again.
+
+**Three of the four remedy steps are still open, and I re-checked each one at `9cd4bfa`:**
+
+| step | state |
+|---|---|
+| 1. rebuild `roads.json` | **DONE**, by a neighbour, incidentally |
+| 2. put the check in the gate set | **OPEN** — `road-through-building.mjs` appears in `INDEX.md` only as "no header comment" and in a status table. Nothing runs it. |
+| 3. make the check plan with the interiors | **OPEN** — still `planSettlement(doc, {})` |
+| 4. fix `--self-test` | **OPEN** — still **exit 1** on this green tree |
+
+So the tree is green and its instrument is still blind, still ungated, and still cannot prove
+itself. The score stands at **5** and `GAP-W1-road-join-has-no-gate` stands open.
+
+### The replacement self-test, run on the now-green tree
+
+I published a fix for a broken instrument in section B, and a critic asserting that an untested
+instrument works is the thing this verdict is complaining about. So I ran it, on the green tree at
+`9cd4bfa`, which is precisely the tree the old self-test cannot pass on:
+
+```
+$ node tools/world/critic-road-join-ingame.mjs --self-test
+self-test — teleport stormhold/stormhold-struct-the-pass-gate 4.0 m onto leg stormhold-thorn
+  baseline   inside=0  body-blocked=0
+  perturbed  inside=6  body-blocked=2   RED (correct)
+  restored   inside=0  body-blocked=0   back to baseline (correct)
+
+self-test PASS — the probe moves with the running world.
+```
+
+It chose its own subject from the tree (`stormhold-struct-the-pass-gate`, the nearest building to
+any road point at 4.0 m), teleported it through `province.setSettlements()` — the call
+`Engine._boot()` makes — went red on both the footprint predicate and the body-radius clearance,
+and returned to baseline exactly. Meanwhile `road-through-building.mjs --self-test` **still exits 1
+on this same green tree**.
+
+That is the whole of the difference: an instrument that names its subject rots the day the subject
+is fixed; one that finds its subject cannot. Remedy step 4 is four lines, and this is the reference
+implementation.

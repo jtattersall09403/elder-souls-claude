@@ -13,7 +13,7 @@
   "conflict_of_interest": false,
   "saw_builder_notes_before_blind": true,
   "context": "fresh context; no part of W1-ROAD-JOIN, W1-01-r4 (road-through-building.mjs, crossing.mjs, the soulrest leg tool) or W1-04 (exterior.js, planSettlement) was written by me. I wrote four new instruments under tools/world/critic-* and judged with those plus three of the tree's existing offline audits.",
-  "load_declaration": "node tools/contention.mjs --gate returned exit 0 (GO, 2 instances, 1.75/core) when I started and for the in-game probe; exit 3 (WAIT) at 03:55 when I started the four-arm soulrest body walk and again at 04:15. I PROCEEDED PAST WAIT ONCE, with ONE browser, never concurrent with another of mine, and record it here and in orchestration/status/critic-road-join.json. NO TIMING FIGURE IS PUBLISHED ANYWHERE IN THIS VERDICT, deliberately: every number here is a count, a distance in metres, a hash, an angle or a boolean, and none of them move with load.",
+  "load_declaration": "node tools/contention.mjs --gate returned exit 0 (GO, 2 instances, 1.75/core) when I started and for the in-game probe; exit 3 (WAIT) at 03:55 when I started the four-arm soulrest body walk and again at 04:15. I PROCEEDED PAST WAIT TWICE, each time with ONE browser and never concurrent with another of mine — once for the four-arm soulrest body walk, and once at the very end for a ~60 s run of my own replacement --self-test on the now-green tree, because publishing an untested instrument as a remedy is the exact failure this verdict is about — and record it here and in orchestration/status/critic-road-join.json. NO TIMING FIGURE IS PUBLISHED ANYWHERE IN THIS VERDICT, deliberately: every number here is a count, a distance in metres, a hash, an angle or a boolean, and none of them move with load.",
   "environment_note": "game/src/world/field.js carried an UNCOMMITTED in-flight change from the sibling builder W1-CROSSING for the entire run — a square end-cap on _deckY/clampToDeck span chains. Every OFFLINE measurement in this verdict (the staleness bisection, the consumption arms, the ridge displacement, the water and scale audits, the picture) is unaffected: none of them import field.js's deck path, and the ridge tool deliberately measures the BARE WorldField with no road corridor attached. The two BROWSER measurements — the in-game footprint probe and the soulrest four-arm walk — were taken against that mixed tree and are labelled as such wherever they are quoted.",
   "finished_at": "2026-08-08T04:30:00Z"
  },
@@ -22,7 +22,8 @@
   "branch": "claude/morrowind-souls-threejs-game-mou39v",
   "dirty": true,
   "note": "HEAD was cc70ad2 when I opened the tree and a2031bb by the time the first measurement landed; the orchestrator banked twice during the run. Every figure below is stamped against the revision it was taken at (RULES rule 12), and the central finding is itself a statement about which revision you are on.",
-  "head_moved_during_the_run": "The piece's own artefact, game/data/world/roads.json, has NOT moved since 322f708 (03:15:32Z) — verified with `git log --invert-grep --grep=Orchestrator-Bank -- game/data/world/roads.json`. What moved is game/src/render/exterior.js, in 345dcca (03:35:58Z) and 0dc0703 (03:39:45Z). That is the finding, not a caveat on it."
+  "head_moved_during_the_run": "The piece's own artefact, game/data/world/roads.json, has NOT moved since 322f708 (03:15:32Z) — verified with `git log --invert-grep --grep=Orchestrator-Bank -- game/data/world/roads.json`. What moved is game/src/render/exterior.js, in 345dcca (03:35:58Z) and 0dc0703 (03:39:45Z). That is the finding, not a caveat on it.",
+  "postscript": "At 9cd4bfa, twelve minutes after this verdict was written, a neighbour (almost certainly W1-CROSSING, which claims build-roads.mjs and is this piece's named successor) rebuilt and committed game/data/world/roads.json. The province is green again: road-through-building.mjs 0 of 10 and 0 offences, and the game view with all 115 interiors also 0 of 10 (reports/critic-road-join/stale-after-remedy.json, reports/critic-road-join/offline-recheck-final.json). THE VERDICT IS DELIBERATELY NOT RESTATED. The finding is not \"the tree is red today\" - it is that a build-time join with no gate went stale inside twenty-four minutes, stayed stale for twenty-four commits, and was fixed only because someone happened to run the generator again for an unrelated reason. Re-checked at 9cd4bfa: remedy step 1 DONE; step 2 (gate the check) OPEN - road-through-building.mjs appears in INDEX.md only as a tool with no header comment and in a status table, and nothing runs it; step 3 (plan with the interiors) OPEN; step 4 (fix --self-test) OPEN - it still exits 1 on this green tree. Score 5 stands and GAP-W1-road-join-has-no-gate stands open."
  },
  "bifurcation": {
   "axis": "fidelity",
@@ -224,7 +225,7 @@
    "native_verdict": "the acceptance instrument sees roughly half the game's blocked samples, its self-test cannot pass on a fixed tree, and nothing on the tree runs either",
    "score_0_10": 5,
    "justification": "The piece's headline number comes out of tools/world/road-through-building.mjs, and that instrument is in two kinds of trouble. It plans with planSettlement(doc, {}) and therefore under-reports the running game — 7 samples and 4 buildings against the game's 13 and 5 at HEAD, missing blackrose-house-1 entirely. And its --self-test exits 1 with arm A reading 'not flagged (PROBE IS BLIND)', because its positive arm WAS the shipped defect and cannot flag on a fixed tree. The builder reported both (F1/H2, H3), which is the correct behaviour and is why this is 5 rather than lower; and I verified the union claim so the blindness did NOT produce a false green at the time, which is the other reason. But 'I did not own the file' is a reason to report a broken instrument, not a reason for the tree to keep one — and the piece's own acceptance rests on it.",
-   "why_not_ten": "road-through-building.mjs --self-test exits 1 on the shipped tree. No gate runs road-through-building.mjs at all. The check asks a question the game does not ask.",
+   "why_not_ten": "road-through-building.mjs --self-test exits 1 on the shipped tree. No gate runs road-through-building.mjs at all. The check asks a question the game does not ask. (The prescribed replacement is verified working on the green tree — see check I3 — so remedy step 4 is a reference implementation rather than a suggestion.)",
    "evidence": [
     "reports/critic-road-join/ingame.json",
     "reports/critic-road-join/offline-recheck.json",
@@ -251,6 +252,17 @@
      "evidence": [
       "orchestration/status/W1-ROAD-JOIN.json",
       "reports/critic-road-join/stale.json"
+     ]
+    },
+    {
+     "id": "I3",
+     "what": "does the replacement self-test I am prescribing actually pass on a FIXED tree?",
+     "result": "pass",
+     "observed": "VERIFIED, not asserted. Run at 9cd4bfa — the tree on which road-through-building.mjs --self-test still exits 1. node tools/world/critic-road-join-ingame.mjs --self-test chose its own subject from the tree (stormhold-struct-the-pass-gate, the nearest building to any road point at 4.0 m), teleported it onto leg stormhold-thorn through province.setSettlements() — the call Engine._boot() makes — and went from baseline inside=0 / body-blocked=0 to perturbed inside=6 / body-blocked=2 (RED, correct), then restored to inside=0 / body-blocked=0 exactly. Exit 0. A critic prescribing an untested instrument as a remedy is the exact failure this verdict is about, so I ran it. Taken with one browser past a contention gate reading exit 3, declared here and in orchestration/status/critic-road-join.json.",
+     "hard_fail": false,
+     "evidence": [
+      "tools/world/critic-road-join-ingame.mjs",
+      "reports/critic-road-join/stale-after-remedy.json"
      ]
     }
    ],
@@ -413,6 +425,18 @@
    "kind": "text-excerpt",
    "what": "the sibling builder's in-flight findings, cited so the soulrest improvement is attributed to it and not to this piece",
    "produced_by": "written by the W1-CROSSING builder; read at 04:05Z"
+  },
+  {
+   "path": "reports/critic-road-join/stale-after-remedy.json",
+   "kind": "report",
+   "what": "the same generator-swap audit re-run after a neighbour rebuilt roads.json at 9cd4bfa: 0 of 10 by the check view and 0 of 10 by the game view",
+   "produced_by": "node tools/world/critic-road-join-stale.mjs --impl <exterior.js@HEAD> --label \"HEAD 9cd4bfa, roads REBUILT\" --out reports/critic-road-join/stale-after-remedy.json"
+  },
+  {
+   "path": "reports/critic-road-join/offline-recheck-final.json",
+   "kind": "report",
+   "what": "the piece’s own acceptance instrument re-run after the rebuild: 0 of 10, 0 offences, PASS",
+   "produced_by": "node tools/world/road-through-building.mjs --out reports/critic-road-join/offline-recheck-final.json"
   }
  ],
  "blind_comparisons": [],
