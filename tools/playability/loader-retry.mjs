@@ -336,17 +336,21 @@ const ARMS = {
     expect: (r, srv) => {
       const n = srv.countOf(FAULT_URL_PATH);
       if (!r.booted) return `expected a boot through two 503s, got: ${r.error}`;
-      // The number is the proof. Without retry the loader asks once; with it, three times.
+      // THE LIE THIS WHOLE PIECE EXISTS TO KILL, checked FIRST. Order matters here and it cost a
+      // round: with these last, the `instrument-lie` sabotage tripped the transient-count check
+      // on its way past and the arm went red for a reason that was not the one under test — which
+      // is an instrument proof that proves nothing. The two checks below are the ones arm 8 is
+      // entitled to see bite.
+      const lied = r.noticeLog.find((t) => t.includes('A file the game needs is missing'));
+      if (lied) return `the notice called a 503 a missing file: ${lied}`;
+      if (r.diagnostic) return `a failure diagnostic was raised on a boot that succeeded: ${r.diagnostic}`;
+      // The number is the proof the retry fired. Without retry the loader asks once; with it, three times.
       if (n !== 3) return `expected exactly 3 requests for ${FAULT_URL_PATH} (2 faulted + 1 good), saw ${n}`;
       const rec = (r.retryLog?.events || []).find((e) => e.file === FAULT_FILE && e.outcome === 'recovered');
       if (!rec) return 'the loader did not record a recovery event for the faulted file';
       if (rec.on_attempt !== 3) return `recovery recorded on attempt ${rec.on_attempt}, expected 3`;
       if ((r.retryLog?.retries || 0) < 2) return `expected >= 2 retries in the loader log, saw ${r.retryLog?.retries}`;
       if (!r.transient || r.transient.count !== 2) return `boot notice saw ${r.transient?.count ?? 0} transient failures, expected 2`;
-      // The lie this whole piece exists to kill.
-      if (r.diagnostic) return `a failure diagnostic was raised on a boot that succeeded: ${r.diagnostic}`;
-      const lied = r.noticeLog.find((t) => t.includes('A file the game needs is missing'));
-      if (lied) return `the notice called a 503 a missing file: ${lied}`;
       return null;
     },
   },

@@ -1,0 +1,19 @@
+{
+  "task_id": "S39-falsifier",
+  "role": "builder+runner (instrument only, not the remedy)",
+  "state": "starting",
+  "started": "2026-08-08",
+  "question": "Run the falsifier S39 specified and never ran: two-arm replay above and below the 12.00 Hz rAF floor; identical promoted actions and bit-identical replay hashes, or S39 falls.",
+  "next_step": "Read ARBITRATION.md S39 verbatim, NEXT-DISPATCH.md section U, loop.js, hold-gate.js, input pipeline. Then build tools/input/arbiter-clock-s39.mjs.",
+  "files_claimed": [
+    "tools/input/arbiter-clock-s39.mjs",
+    "orchestration/status/S39-falsifier.json"
+  ],
+  "files_touched": [
+    "orchestration/status/S39-falsifier.json"
+  ],
+  "must_not_touch": [
+    "game/src/input/hold-gate.js (owned by W1-TOUCH round 2, live)"
+  ],
+  "no_browser": null
+}

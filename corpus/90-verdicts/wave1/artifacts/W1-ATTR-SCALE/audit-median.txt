@@ -1,0 +1,36 @@
+attr-scale-audit: 124 quests, 177 resolutions, 54 attribute demands, 193 skill demands. Reachability sheet: median. Reserve: 2.
+
+The scale every demand is judged against (measured, 240 signatures):
+  attribute     creation p10   governors   ceiling p10/med/max   specialist  dedicated (HARD CAP)
+  agility         9           6           47/ 51/ 57             45         49
+  endurance       9           1           17/ 20/ 27             15         18
+  hist-bond      10           1           18/ 18/ 26             16         16
+  intellect       6           2           20/ 25/ 32             18         23
+  luck           11           0           13/ 14/ 17             11         12
+  personality     6           2           20/ 24/ 33             18         22
+  speed          10           1           18/ 20/ 25             16         18
+  strength        5           3           25/ 30/ 39             23         28
+  vigour          6           1           14/ 18/ 22             12         16
+  willpower      10           2           24/ 25/ 32             22         23
+
+No defects: every demand is inside a band a real character can reach, with reserve.
+
+The rank ladders (a line's rank-8 ending must be its hardest check; ranks 0-8 only):
+  ok       Q-ASSZ intellect        1:12 2:14 3:16 4:16 5:16 6:17 7:18 8:20
+  ok       Q-ASSZ personality      4:16 5:16 6:17 7:18 8:20
+  ok       Q-BLAK personality      1:16
+  ok       Q-LEDG personality      1:14 2:14 3:16 4:16 5:16 6:17 7:18 8:20
+  ok       Q-MAIN personality      8:17
+  ok       Q-XULA hist-bond        0:12 4:14 5:14
+  ok       Q-XULA personality      3:16 4:16 6:17 7:18 8:20
+  ok       Q-XULA willpower        5:16 6:17 7:18 8:20
+
+The non-violent floor (ARBITRATION.md: a fight with a person must have a non-lethal exit; corpus bar >=45%):
+  quests with a non-violent resolution AUTHORED   124/124
+  quests with a non-violent resolution REACHABLE  124/124  = 100.0%  MEETS the 45% bar
+  talkable quests silently converted to violent ones by an unreachable gate: 0
+
+  and the number the quest-level rate cannot see —
+  non-violent RESOLUTIONS authored    370
+  non-violent RESOLUTIONS reachable   370  = 100.0% of what was written
+exit 0

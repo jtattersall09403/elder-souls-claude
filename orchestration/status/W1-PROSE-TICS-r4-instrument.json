@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-PROSE-TICS-r4-instrument",
+  "title": "Repair the blind-pack masking instrument (redaction-token-count leak)",
+  "status": "in_progress",
+  "started": "2026-08-08",
+  "next_step": "read RI-MTH03 + JUDGEMENT, then design leak fix",
+  "files_touched": ["orchestration/status/W1-PROSE-TICS-r4-instrument.json"],
+  "files_claimed": [
+    "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md",
+    "tools/blind-pack-leakcheck.mjs",
+    "tools/mask-prose.mjs",
+    "reports/packs/prose-tics-r4/",
+    "reports/packs/prose-tics-r2/",
+    "reports/packs/prose-tics-r3/",
+    "orchestration/NEXT-DISPATCH.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": "Instrument repair only. Do NOT re-judge prose."
+}

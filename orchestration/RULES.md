@@ -143,6 +143,15 @@ right now). Between these two you should not need to go looking for anything.
        `git commit --only <your paths>` still comes out with those five. **That is expected and
        it is not a sweep.**
 
+    **And a third route, which runs the other way: it puts another agent's *words* on your work.**
+    The scratchpad is shared between concurrently running agents and it is not private. A judge
+    retrying a commit with `git commit -F <scratchpad>/msg.txt` got its four files committed under
+    the **S39 arbiter's** message, because the arbiter had written its own message to that exact
+    filename seconds earlier. Nothing was lost and nothing was swept — the judge corrected the
+    record in a follow-up commit rather than rewriting a shared, pushed tree, which is the right
+    call and the one to copy. **Suffix every temporary file with your task id.** A generic name in
+    a shared directory with a dozen writers is a collision waiting for a deadline.
+
     **Finding your own file's real history:** every bank commit carries an `Orchestrator-Bank: true`
     trailer, so `git log --invert-grep --grep=Orchestrator-Bank -- <path>` gives you the authored
     history without the banks. A builder hunting a delete-the-fix base found eight banks that had

@@ -76,15 +76,22 @@ try {
     // enemies, NPCs and props all come back in one list and only enemies have a body to kill.
     const enemies = () => (H.listEntities() || []).filter((e) => e.kind === 'enemy' && e.hp > 0);
 
+    // `spawnEncounter` mints eids from the encounter id, so the same encounter cannot be spawned
+    // twice — each arm takes the next one off this list. An arm that cannot get bodies reports
+    // `real_kills: 0` and this tool refuses to conclude anything from it, which is the point.
+    const POOL = ['dres-raid-party', 'deep-kin-war-brood', 'wl-slitherfang-pack', 'wl-legion-patrol', 'wl-drowned-host'];
+    let poolAt = 0;
+
     const run = (label, { stepFirst, disableLedger }) => {
-      const rec = { label, step_first: !!stepFirst, ledger_disabled: !!disableLedger };
+      const rec = { label, step_first: !!stepFirst, ledger_disabled: !!disableLedger, spawn_errors: [] };
       rec.souls_before = souls();
       rec.level_before = H.getPlayerStats().level;
       rec.souls_to_next = H.getPlayerStats().souls_to_next;
       let es = enemies();
-      if (es.length < 3) {
+      while (es.length < 3 && poolAt < POOL.length) {
         const p = H.getPlayerStats().position || { x: 0, z: 0 };
-        try { H.spawnEncounter('dres-raid-party', p.x || 0, p.z || 0); } catch (e) { rec.spawn_error = String(e.message || e); }
+        const id = POOL[poolAt++];
+        try { H.spawnEncounter(id, p.x || 0, p.z || 0); } catch (e) { rec.spawn_errors.push(`${id}: ${String(e.message || e)}`); }
         es = enemies();
       }
       rec.enemies_alive_before = es.length;

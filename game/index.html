@@ -322,23 +322,32 @@
     } catch (e) { return false; }
   }
 
+  // ORDER MATTERS HERE AND I GOT IT WRONG ONCE, so it is written down.
+  //
+  // My first version asked `drawing()` whenever the pixel reading was not yet positive. That
+  // hides the notice on the very first poll — the renderer is advancing frames within a
+  // millisecond of boot — so the pixel read never gets to decide anything, and "the world booted
+  // and the screen is black" becomes undetectable. That is not a fix, it is the notice being
+  // switched off. It would have passed the after-measurement for the wrong reason, which is
+  // exactly the shape rule 6 calls an inert fix that improves the number.
+  //
+  // So: A COMPLETED READ IS ALWAYS BELIEVED, in both directions. The read is inside a frame now,
+  // so it is a real reading of a real buffer, and if it says black then black is the finding and
+  // the notice should say so. `drawing()` is consulted ONLY when no read has ever completed —
+  // rAF never fired, the renderer never appeared, the context was refused — because that is the
+  // case where the notice would otherwise be accusing on evidence it does not have.
   function painted() {
     schedulePaintRead();
-    if (paintSeen > 0 && paintLit > paintSeen * 0.01) {
-      window.__BOOT_PAINT_EVIDENCE = 'pixels ' + paintLit + '/' + paintSeen;
-      return true;
+    if (paintAt) {
+      var ok = paintSeen > 0 && paintLit > paintSeen * 0.01;
+      window.__BOOT_PAINT_EVIDENCE = 'pixels ' + paintLit + '/' + paintSeen + (ok ? '' : ' — BLACK');
+      return ok;
     }
-    // No usable reading yet. If the renderer is demonstrably drawing frames, we have NOT shown
-    // the screen is black — we have failed to look — and saying "nothing is being drawn" would
-    // be a red full-screen accusation over a working game. That has now happened twice, by two
-    // different mechanisms, and both times it was shipped as the fix for a black screen.
     if (drawing()) {
-      window.__BOOT_PAINT_EVIDENCE = 'frames advancing; buffer not readable' +
-        (paintAt ? ' (last read ' + paintLit + '/' + paintSeen + ')' : ' (no read yet)');
+      window.__BOOT_PAINT_EVIDENCE = 'no read has completed; frames advancing and draw calls issued';
       return true;
     }
-    window.__BOOT_PAINT_EVIDENCE = paintAt ? 'read black ' + paintLit + '/' + paintSeen + ' and no frames'
-                                           : 'no read and no frames';
+    window.__BOOT_PAINT_EVIDENCE = 'no read has completed and no frames are advancing';
     return false;
   }
 

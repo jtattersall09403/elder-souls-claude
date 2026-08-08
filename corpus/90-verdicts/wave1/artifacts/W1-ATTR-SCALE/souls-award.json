@@ -1,0 +1,161 @@
+{
+  "tool": "critic-attr-scale-souls",
+  "at": "2026-08-08T11:41:49.239Z",
+  "arms": {
+    "probe_shape_with_the_wrong_key": {
+      "label": "attr-scale-consumption's own selector: e.id",
+      "kills": [
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        }
+      ],
+      "entities_the_filter_kept": 36,
+      "entities_that_are_enemies": 0,
+      "throws": 5
+    },
+    "arm1_kill_immediately": {
+      "label": "spawn -> kill immediately -> step 60 (the probe shape, right key)",
+      "step_first": false,
+      "ledger_disabled": false,
+      "spawn_errors": [],
+      "souls_before": 0,
+      "level_before": 1,
+      "souls_to_next": 418,
+      "enemies_alive_before": 6,
+      "kills": [
+        {
+          "eid": "dres-raid-party-infantry-0",
+          "archetype": "INFANTRY",
+          "souls_before": 0,
+          "souls_after": 0
+        },
+        {
+          "eid": "dres-raid-party-infantry-1",
+          "archetype": "INFANTRY",
+          "souls_before": 0,
+          "souls_after": 42
+        },
+        {
+          "eid": "dres-raid-party-infantry-2",
+          "archetype": "INFANTRY",
+          "souls_before": 42,
+          "souls_after": 84
+        },
+        {
+          "eid": "dres-raid-party-infantry-3",
+          "archetype": "INFANTRY",
+          "souls_before": 84,
+          "souls_after": 126
+        },
+        {
+          "eid": "dres-raid-party-net-thrower-0",
+          "archetype": "INFANTRY",
+          "souls_before": 126,
+          "souls_after": 168
+        }
+      ],
+      "real_kills": 5,
+      "throws": 0,
+      "souls_after": 168,
+      "awarded": 168
+    },
+    "arm2_stepped_first": {
+      "label": "spawn -> step 60 -> kill -> step 60",
+      "step_first": true,
+      "ledger_disabled": false,
+      "spawn_errors": [],
+      "souls_before": 168,
+      "level_before": 1,
+      "souls_to_next": 418,
+      "enemies_alive_before": 5,
+      "kills": [
+        {
+          "eid": "deep-kin-war-brood-infantry-0",
+          "archetype": "INFANTRY",
+          "souls_before": 168,
+          "souls_after": 210
+        },
+        {
+          "eid": "deep-kin-war-brood-infantry-1",
+          "archetype": "INFANTRY",
+          "souls_before": 210,
+          "souls_after": 252
+        },
+        {
+          "eid": "deep-kin-war-brood-infantry-2",
+          "archetype": "INFANTRY",
+          "souls_before": 252,
+          "souls_after": 294
+        },
+        {
+          "eid": "dres-raid-party-net-thrower-1",
+          "archetype": "INFANTRY",
+          "souls_before": 294,
+          "souls_after": 336
+        },
+        {
+          "eid": "pop-0027-infantry-0",
+          "archetype": "INFANTRY",
+          "souls_before": 336,
+          "souls_after": 378
+        }
+      ],
+      "real_kills": 5,
+      "throws": 0,
+      "souls_after": 378,
+      "awarded": 210
+    },
+    "arm3_red_control": {
+      "label": "RED CONTROL: sim.souls.enabled = false, then arm 2 again",
+      "step_first": true,
+      "ledger_disabled": true,
+      "spawn_errors": [],
+      "souls_before": 378,
+      "level_before": 1,
+      "souls_to_next": 418,
+      "enemies_alive_before": 3,
+      "kills": [
+        {
+          "eid": "wl-slitherfang-pack-beast-0",
+          "archetype": "BEAST",
+          "souls_before": 378,
+          "souls_after": 378
+        },
+        {
+          "eid": "wl-slitherfang-pack-beast-1",
+          "archetype": "BEAST",
+          "souls_before": 378,
+          "souls_after": 378
+        },
+        {
+          "eid": "wl-slitherfang-pack-beast-2",
+          "archetype": "BEAST",
+          "souls_before": 378,
+          "souls_after": 378
+        }
+      ],
+      "real_kills": 3,
+      "throws": 0,
+      "souls_after": 378,
+      "awarded": 0
+    }
+  },
+  "summary": {
+    "real_kills": 10,
+    "souls_awarded": 378,
+    "red_control_went_red": true,
+    "souls_to_next_level": 418
+  }
+}

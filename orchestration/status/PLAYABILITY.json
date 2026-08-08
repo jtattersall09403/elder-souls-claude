@@ -257,5 +257,15 @@
     "load_when_taken": "16.5 over 4 cores (rule 26). Read the 8,781 ms as an upper bound on this box, not as a phone figure \u2014 but the shipped poll asks for it every 200 ms, so the page can never keep up with its own diagnostic at any speed.",
     "fewer_pixels_is_not_the_saving": "16 full-width band reads cost 8,019 ms on the same frame as 2,280 single-pixel reads cost 8,781 ms. The GPU sync is the cost, not the pixel count, so the fix has to read RARELY (once per 2 s, one in flight) rather than read less.",
     "script": "kept out of the repo on purpose \u2014 it is superseded by tools/playability/notice-over-game.mjs, which is the instrument"
+  },
+  "P13_fix": {
+    "where": "game/index.html \u2014 painted(), and the poll's clock",
+    "three_changes": [
+      "THE READ MOVED INSIDE requestAnimationFrame. That is the whole fix and it is the thing the three-way measurement above decided: the same frame reads 0/2880 from a timer and 2753/2880 inside a frame.",
+      "THE READ BECAME RARE. One in flight, at most one every 2 s, and it stops the moment the answer is yes. Fewer pixels was NOT the saving \u2014 16 band reads cost as much as 2,280 single-pixel reads \u2014 so the count had to come down, not the area.",
+      "IT NO LONGER ACCUSES ON A READ IT COULD NOT GET. If the pixels are unreadable but the renderer's own frame counter is advancing and it is issuing draw calls, painted() returns true and the notice hides. Saying 'nothing is being drawn' when you have failed to look is how this defect happened twice; the notice may only say it when it has actually seen black. window.__BOOT_PAINT_EVIDENCE records which of the two signals decided each run, so nobody has to guess."
+    ],
+    "fourth_change_separate_defect": "the poll's `sinceBoot` was `+= 0.2` per 200 ms tick, i.e. a count of ticks pretending to be seconds. With painted() costing 8.8 s a call the ticks were nowhere near 200 ms apart, so the twenty-second escape hatch was over a minute of wall clock. It is Date.now() now. A rescue timer that runs slow exactly when the page is in trouble is the wrong clock.",
+    "what_is_NOT_changed": "game/src/render/renderer.js. a52113c is right \u2014 preserveDrawingBuffer off for players is a real protection for a phone's GL context, and the diagnostic must adapt to it rather than the other way round."
   }
 }

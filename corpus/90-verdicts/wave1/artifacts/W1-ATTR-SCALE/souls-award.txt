@@ -1,0 +1,26 @@
+THE SHIPPED PROBE'S SELECTOR: kept 36 rows (0 are enemies), 5/5 killEntity calls threw.
+
+spawn -> kill immediately -> step 60 (the probe shape, right key)
+         real kills 5, throws 0, souls 0 -> 168 (awarded 168)
+           dres-raid-party-infantry-0  0 -> 0
+           dres-raid-party-infantry-1  0 -> 42
+           dres-raid-party-infantry-2  42 -> 84
+           dres-raid-party-infantry-3  84 -> 126
+           dres-raid-party-net-thrower-0  126 -> 168
+spawn -> step 60 -> kill -> step 60
+         real kills 5, throws 0, souls 168 -> 378 (awarded 210)
+           deep-kin-war-brood-infantry-0  168 -> 210
+           deep-kin-war-brood-infantry-1  210 -> 252
+           deep-kin-war-brood-infantry-2  252 -> 294
+           dres-raid-party-net-thrower-1  294 -> 336
+           pop-0027-infantry-0  336 -> 378
+RED CONTROL: sim.souls.enabled = false, then arm 2 again
+         real kills 3, throws 0, souls 378 -> 378 (awarded 0)
+           wl-slitherfang-pack-beast-0  378 -> 378
+           wl-slitherfang-pack-beast-1  378 -> 378
+           wl-slitherfang-pack-beast-2  378 -> 378
+
+CONTRADICTED. 10 real kills awarded 378 souls on this build. The claim that
+"nothing awards souls" and that the bought attribute stream is unfundable does NOT hold.
+game/src/sim/souls.js pays on the alive->dead transition; the next level costs 418.
+wrote corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json

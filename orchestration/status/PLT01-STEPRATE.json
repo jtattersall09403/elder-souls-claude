@@ -1,0 +1,21 @@
+{
+  "task_id": "PLT01-STEPRATE",
+  "title": "RI-PLT01 step-rate collapse at handheld profile + wire loop.stats.catchupClamps/catchupDroppedMs as a measured requirement",
+  "state": "running",
+  "started_at": "2026-08-08",
+  "owner_brief": "S39 found game/src/loop.js MAX_CATCHUP=5 bounds catch-up; below 12.00 Hz the world runs slow uniformly. Handheld profile measured 11.6 steps/s = 19.3% of real time. catchupClamps/catchupDroppedMs are computed and nothing reads them.",
+  "next_step": "read S39, NEXT-DISPATCH U, RI-PLT01, loop.js",
+  "files_claimed": [
+    "orchestration/status/PLT01-STEPRATE.json",
+    "corpus/10-requirements/RI-PLT01.md",
+    "game/src/loop.js",
+    "tools/steprate-probe.mjs"
+  ],
+  "files_touched": [
+    "orchestration/status/PLT01-STEPRATE.json"
+  ],
+  "notes": [
+    "ownership --for game/src/loop.js: nobody live has declared it (checked at start).",
+    "W1-TOUCH r2 builder is live and also measuring frame rate at handheld profile; S39-falsifier live in tools/input/. Will re-check before writing."
+  ]
+}

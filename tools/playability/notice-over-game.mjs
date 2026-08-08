@@ -77,6 +77,11 @@ const READ = () => {
     // being drawn, the notice is wrong about a running game rather than right about a dead one.
     simFrame: (window.__ENGINE && window.__ENGINE.sim && window.__ENGINE.sim.frame) || null,
     renderFrame: (() => { try { return window.__ENGINE.renderer.three.info.render.frame; } catch (e) { return null; } })(),
+    // WHICH SIGNAL DECIDED. Without this the after-arm is unreadable: a notice that hides could
+    // be hiding because the pixel read worked, or because a fallback switched the check off. The
+    // fixed page publishes the reason and this reads it. On the pre-fix page it is undefined,
+    // which is itself the right answer.
+    evidence: window.__BOOT_PAINT_EVIDENCE || null,
   };
 };
 
@@ -229,10 +234,21 @@ async function run(browser, url, prof, arm) {
   rec.secondsNoticeOverLitPicture = anyVisibleOverLit.length;
   rec.worstLitUnderneath = Math.max(0, ...rec.samples.map((s) => s.litUnderneath ?? 0));
   rec.blocksInput = rec.samples.some((s) => s.visible && s.blocksInput);
-  rec.paintedSays = rec.samples.length ? rec.samples[rec.samples.length - 1].paintedSays : null;
+  rec.evidence = (rec.samples.find((s) => s.evidence) || {}).evidence || 'none published (pre-fix page)';
+  // THE ARM WHERE THE NOTICE HIDES NEEDS A NUMBER TOO. "The notice went away" is only good news
+  // if there is a picture behind it; a notice that hides over a black screen is the FIRST defect
+  // this file was written about, arriving from the other side. So the picture is measured at the
+  // end of every run whether the notice was ever up or not.
+  rec.litAtEnd = await litUnderneath(page).catch(() => null);
+  // Asked ONCE, at the end, because reproducing the shipped read costs seconds per call — which
+  // is the defect, so the probe must not commit it too.
+  rec.painted = await page.evaluate(PAINTED_PROBE).catch(() => ({ note: 'probe failed' }));
+  rec.paintedSays = rec.painted.note;
   rec.noticeText = (badOverLit[0] || anyVisibleOverLit[0] || {}).text || '';
   rec.defect = rec.secondsBadOverLitPicture > 0;
-  rec.ok = !rec.defect && rec.booted === true;
+  // A hidden notice over a black screen is the OTHER failure and must not read as a pass.
+  rec.hidOverBlack = !rec.samples.some((s) => s.visible) && (rec.litAtEnd ?? 0) <= 0.05;
+  rec.ok = !rec.defect && !rec.hidOverBlack && rec.booted === true;
   await ctx.close();
   return rec;
 }
@@ -245,9 +261,14 @@ if (LIVE) {
   say(`notice-over-game: LIVE — ${LIVE_BASE}${OWNER_LINKS.game}`);
   say('  (mirrored: Chromium cannot TLS-handshake through this container\'s proxy — see live-mirror.mjs)');
 } else {
-  const s = await serveDir(REPO_ROOT);
+  // `--root` exists for the delete-the-fix: a SHADOW TREE of symlinks whose only real file is an
+  // older game/index.html. The shared repo is never reverted — a dozen agents read it — so the
+  // control arm is served from somewhere else entirely and the two arms differ in exactly one
+  // file. tools/playability/old-page.sh builds it.
+  const root = at('--root', REPO_ROOT);
+  const s = await serveDir(root);
   origin = s.origin; url = s.origin + '/game/index.html'; close = () => s.close();
-  say(`notice-over-game: LOCAL — ${url}`);
+  say(`notice-over-game: LOCAL — ${url}${root === REPO_ROOT ? '' : `  (root ${root})`}`);
 }
 say(`  commit ${COMMIT} · load ${fs.readFileSync('/proc/loadavg', 'utf8').split(' ')[0]} · watch ${WATCH_MS / 1000}s after boot`);
 
@@ -284,8 +305,9 @@ if (SELF_TEST) {
     const r = await run(browser, url, prof, null);
     out.rows.push(r);
     if (!r.ok) failed++;
-    say(`  ${(r.defect ? 'DEFECT' : r.ok ? 'OK    ' : 'FAIL  ')} ${prof.id.padEnd(22)} boot ${(r.bootMs / 1000).toFixed(0)}s · notice up over a lit picture for ${r.secondsNoticeOverLitPicture}s (${r.secondsBadOverLitPicture}s of it a RED error) · lit underneath ${(r.worstLitUnderneath * 100).toFixed(1)}% · blocks input ${r.blocksInput}`);
-    if (r.paintedSays) say(`         painted() reads: ${r.paintedSays}`);
+    say(`  ${(r.defect ? 'DEFECT' : r.hidOverBlack ? 'BLACK ' : r.ok ? 'OK    ' : 'FAIL  ')} ${prof.id.padEnd(22)} boot ${(r.bootMs / 1000).toFixed(0)}s · notice up over a lit picture for ${r.secondsNoticeOverLitPicture}s (${r.secondsBadOverLitPicture}s of it a RED error) · picture at the end ${((r.litAtEnd ?? 0) * 100).toFixed(1)}% lit · blocks input ${r.blocksInput}`);
+    if (r.paintedSays) say(`         the SHIPPED read, asked once: ${r.paintedSays}`);
+    say(`         the page's own evidence: ${r.evidence}`);
     if (r.noticeText) say(`         it says: "${r.noticeText.slice(0, 150)}"`);
     if (SHOTS) { /* the caller takes pictures with verify-playable; this tool is a number */ }
   }

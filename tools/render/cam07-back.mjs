@@ -232,44 +232,58 @@ async function main() {
 
     // ---- §B FRAMING GATE: "character filling >= 45% of frame height" ---------------------------
     //
-    // Measured, not assumed. The character's pixels are isolated by differencing the capture
-    // against the SAME pose with the body teleported out of frame — lighting, ground, sky and
-    // foliage are byte-identical between the two, so what differs is the body. The bounding box of
-    // the differing pixels gives the on-screen height directly.
+    // MEASURED ANALYTICALLY, THROUGH THE PROJECTION M0 JUST PROVED IS NOT BLIND — not by a
+    // difference mask. The difference-mask version was written first and it produced a FALSE
+    // GREEN: it isolated the body by teleporting it 9 km away, which restreams the whole province,
+    // so the differing region covered the entire frame and the gate reported `height_frac: 1,
+    // ADMISSIBLE` over a mask that was the whole picture. That is a pixel-level SHORT_CIRCUIT —
+    // the teardown removed far more than the thing under test — and it is recorded here rather
+    // than deleted, because it is the same defect this piece exists to catch, committed by me,
+    // twice, in the one file that was supposed to know better.
     //
-    // This gate exists because round 2 of this file shipped a "player_back_closeup" in which the
-    // character occupied the bottom 5% of the frame and nothing complained. A capture that does
-    // not satisfy §B's framing clause is NOT ADMISSIBLE EVIDENCE for §B1-B5, and the tool says so
-    // rather than computing a parity ratio over a picture of a marsh.
-    const framingOf = async (v) => {
-      const withBody = await shot(v);
-      const without = await shot(v, { hidePlayer: true });
-      const fa = path.join(shotDir, `_frame_${v.id}_body.png`);
-      const fb = path.join(shotDir, `_frame_${v.id}_nobody.png`);
-      fs.writeFileSync(fa, withBody); fs.writeFileSync(fb, without);
-      const a = await decodeImage(fa);
-      const b = await decodeImage(fb);
-      const W = a.width, H = a.height;
-      let y0 = H, y1 = -1, x0 = W, x1 = -1, n = 0;
-      for (let y = 0; y < H; y++) {
-        for (let x = 0; x < W; x++) {
-          const i = (y * W + x) * 4;
-          const d = Math.abs(a.data[i] - b.data[i]) + Math.abs(a.data[i + 1] - b.data[i + 1]) + Math.abs(a.data[i + 2] - b.data[i + 2]);
-          if (d > 12) { n++; if (y < y0) y0 = y; if (y > y1) y1 = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
-        }
-      }
-      const h = y1 >= y0 ? (y1 - y0 + 1) : 0;
-      return { pixels: n, bbox: n ? [x0, y0, x1 - x0 + 1, h] : null, height_frac: +(h / H).toFixed(4), W, H };
-    };
+    // The honest measurement needs no teardown at all: `getDrawnGeometry().actors[].bones` carries
+    // the drawn skeleton's world-space bone origins, so the character's vertical extent is the
+    // span of its own bones, and the on-screen height is that span projected through the posed
+    // camera. Falsifiable: halve the arm length and the fraction must grow.
+    const framingAt = async (v, armScale = 1) => page.evaluate(([pos, look, fov, scale]) => {
+      const H = window.__HARNESS;
+      const eye = scale === 1 ? pos
+        : [look[0] + (pos[0] - look[0]) * scale, look[1] + (pos[1] - look[1]) * scale, look[2] + (pos[2] - look[2]) * scale];
+      H.camera({ pos: eye, look, fov });
+      H.renderFrame();
+      const g = H.getDrawnGeometry();
+      const actors = (g && g.actors) || [];
+      const me = actors.find((a) => a.id === 'player') || actors[0];
+      if (!me || !me.bones) return { error: 'no drawn player actor with bones', actors: actors.length };
+      const ys = Object.values(me.bones).map((b) => b[1]);
+      const lo = Math.min(...ys), hi = Math.max(...ys);
+      const cx = Object.values(me.bones).map((b) => b[0]).reduce((a, b) => a + b, 0) / ys.length;
+      const cz = Object.values(me.bones).map((b) => b[2]).reduce((a, b) => a + b, 0) / ys.length;
+      const pLo = H.projectPoint(cx, lo, cz), pHi = H.projectPoint(cx, hi, cz);
+      const ny = (p) => (p && Array.isArray(p.ndc) ? p.ndc[1] : (p && p.y));
+      const a = ny(pLo), b = ny(pHi);
+      // NDC spans -1..1, so a fraction of frame HEIGHT is |dy| / 2.
+      return {
+        bones: ys.length, bone_span_m: +(hi - lo).toFixed(4),
+        ndc_y_low: a, ndc_y_high: b,
+        height_frac: (Number.isFinite(a) && Number.isFinite(b)) ? +(Math.abs(b - a) / 2).toFixed(4) : null,
+        eye,
+      };
+    }, [v.eye, v.look, v.fov, armScale]);
+
     const framing = {};
-    for (const v of VIEWPOINTS) framing[v.id] = await framingOf(v);
+    for (const v of VIEWPOINTS) framing[v.id] = await framingAt(v);
+    // The falsifier for the gate itself: halve the arm and the character must get bigger.
+    const halved = await framingAt(VIEWPOINTS[0], 0.5);
     report.framing = {
-      bar: '§B: "character filling >= 45% of frame height". A capture below this is not admissible evidence for §B1-B5.',
-      measured_by: 'difference mask against the same pose with the body teleported out of frame; the bbox of the differing pixels is the body',
+      bar: '§B: "character filling >= 45% of frame height". A capture below this is NOT admissible evidence for §B1-B5.',
+      measured_by: 'span of the drawn skeleton\'s bone origins, projected through the posed camera (getDrawnGeometry().actors[].bones + projectPoint)',
       ...framing,
-      admissible: Object.values(framing).every((f) => f.height_frac >= 0.45),
+      falsifier: { what: 'the same pose at half the arm length; the fraction MUST grow', half_arm: halved,
+        grew: !!(halved && framing.player_back_closeup && halved.height_frac > framing.player_back_closeup.height_frac) },
+      admissible: Object.values(framing).every((f) => Number.isFinite(f.height_frac) && f.height_frac >= 0.45),
     };
-    log(`framing: back ${framing.player_back_closeup.height_frac}, front ${framing.player_front_closeup.height_frac} (bar 0.45) -> ${report.framing.admissible ? 'ADMISSIBLE' : 'NOT ADMISSIBLE for §B1-B5'}`);
+    log(`framing: back ${framing.player_back_closeup.height_frac}, front ${framing.player_front_closeup.height_frac} (bar 0.45), half-arm ${halved && halved.height_frac} -> ${report.framing.admissible ? 'ADMISSIBLE' : 'NOT ADMISSIBLE for §B1-B5'}`);
 
     // ---- B1': high-frequency parity, back vs front, at a common native window -----------------
     const hfrOf = async (file, K) => {
