@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `caf1eaa`: 780 tools, 153 reference
+so it cannot drift. Generated at `7db8368`: 781 tools, 153 reference
 items, 84 pieces in flight.
 
 Its purpose is to stop 84+ concurrent agents each paying separately to discover the
@@ -194,12 +194,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/coherence/w1-27-coherence.mjs` — **no header comment**
 - `tools/coherence/w1-27-loot-consumption.mjs` — RI-MTH07 / RULES #5 and #11 FOR THE PLACED-OBJECT LAYER.
 
-### `tools/combat/` — 9
+### `tools/combat/` — 10
 
 - `tools/combat/check-ai-units.mjs` — S22 for game/data/combat/ai.json — a CHECK, not a constructor (RULES 14).
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
 - `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
 - `tools/combat/critic-w1-12-r2-closure.mjs` — W1-12 round-2 CRITIC — did the round have the right to overrule its own critic?
+- `tools/combat/critic-w1-12-r2-consume.mjs` — W1-12 round-2 CRITIC — CONSUMPTION (RI-MTH07 / ARBITRATION §3), the contested leaves only.
 - `tools/combat/critic-w1-12-r2-m12.mjs` — W1-12 round-2 CRITIC — RI-AI01 M1 and M2, measured in bare Node.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
 - `tools/combat/w1-12-r2-chart.mjs` — W1-12 ROUND 2 — the picture, and the delete-the-fix control, in one run.

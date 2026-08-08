@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-library-martial-r4",
+  "piece_title": "W1-LIBRARY-MARTIAL round 4 — the prose pass, read as prose against Morrowind's own 241 books",
+  "subsystem_paths": [
+    "books.content",
+    "lore.book.structure",
+    "lore.register",
+    "lore.book.unreliability"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-library-martial-r4-prose",
+    "role": "critic.lore",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T11:05:00Z",
+    "finished_at": "2026-08-08T12:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "3d4c88d",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "harness_commands": [
+      {
+        "cmd": "node tools/check-shipped-files.mjs",
+        "exit_code": 0,
+        "note": "every import and data file the game needs is tracked (140 modules scanned)"
+      },
+      {
+        "cmd": "python3 tools/uesp/mw-book-stats.py --dump <scratch>/mwbooks",
+        "exit_code": 0,
+        "note": "241 Morrowind/Tribunal/Bloodmoon books with recoverable text, dumped as plaintext — the reference arm"
+      },
+      {
+        "cmd": "node tools/lore/critic-martial-r4-fingerprint.mjs",
+        "exit_code": 2,
+        "note": "FAIL-CLOSED ARM. With no reference corpus the tool refuses to print our numbers with no bar beside them."
+      },
+      {
+        "cmd": "node tools/lore/critic-martial-r4-fingerprint.mjs --mw=<scratch>/mwbooks --selftest",
+        "exit_code": 1,
+        "note": "RED on the tree. Selftest arm fed the martial slot the reference texts and the row collapsed onto the Morrowind row, so the arm reads text and not label."
+      },
+      {
+        "cmd": "node tools/check-prose.mjs",
+        "exit_code": 1,
+        "note": "67 corpus-wide regressions, NONE of them in the seven martial files. The builder's green claim is true."
+      },
+      {
+        "cmd": "node tools/contention.mjs --gate",
+        "exit_code": 0,
+        "note": "3 browser instances, load 3.81/core against a 4.0 ceiling — GO. One browser launched and kept."
+      },
+      {
+        "cmd": "node tools/run.mjs -- node tools/lore/critic-martial-r4-consume.mjs --out reports/w1-library-martial-r4/consume.json",
+        "exit_code": null,
+        "note": "Four-arm consumption probe over six martial texts. See method_deviations: it did not finish inside this critic's window and its result is NOT counted toward any score."
+      },
+      {
+        "cmd": "node tools/lore/critic-w1-23-r5-consume.mjs",
+        "exit_code": 2,
+        "note": "A NEIGHBOUR'S tool, run once to confirm the self-matching guard reported in secondary_observations. Not modified."
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Text-only round. No visual reference is cited anywhere in this verdict."
+  },
+  "reference_items": [
+    {
+      "id": "RI-LOR03",
+      "path": "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "0-5; failure threshold below 3",
+      "native_score": 3,
+      "native_max": 5,
+      "native_verdict": "3 — critic separates ours at ~75% but cannot articulate a consistent tell; median >= 350",
+      "score_0_10": 5.4,
+      "measured": "partial",
+      "justification": "Downgraded from the native 3 band on one point: this critic CAN articulate the tell, consistently, and has published it as three numbers with a reference arm and a control arm (corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/fingerprint.txt). Bare numerals 128.5/10k against Morrowind's 9.3 (13.8x); texts with >=2 ALL-CAPS section headings 65.1% against 2.1% (31x); headings carrying a ', WHICH ...' appositive 60 against 1. The rest of this project's own library is the control at 24.9/10k and 8.4%, so the fingerprint belongs to this block and not to the house. Prose QUALITY is separately scored at 8.4 and is genuinely high; the min-over-axes rule is what produces 5.4.",
+      "checks": [
+        { "id": "F1-numerals", "result": "fail", "value": 128.5, "threshold": "<= 3x the reference 9.3 per 10k", "hard_fail": false, "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/numerals.txt"] },
+        { "id": "F2-caps-headings", "result": "fail", "value": 65.1, "threshold": "<= 3x the reference 2.1 percent of texts", "hard_fail": false, "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/headings.txt"] },
+        { "id": "F3-heading-appositive", "result": "fail", "value": 60, "threshold": "reference carries 1 in 241 books", "hard_fail": false, "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/headings.txt"] },
+        { "id": "Q1-disagreement", "result": "pass", "value": "6 irreconcilable accounts of the Reman Ford; 34 declared contradiction pairs corpus-wide; neither side of any martial dispute ratified", "threshold": ">= 8 contradicting pairs", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "Q2-author-has-an-axe", "result": "pass", "value": "bylines carry the grievance in 43/43; e.g. 'has been asked to stop writing to the Office about this', 'dictated to the cohort clerk at Thorn because he does not write'", "threshold": "authorship named ~70% of the time and the name carries a grievance", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "Q3-strange-stated-flatly", "result": "pass", "value": "the Thorn lintel's third line and the men who touch it going out and not coming in; a depot book with no record of the gate it is written in; the Shadowscale report's section VI AGAINST MYSELF, which lists what its own conclusion cannot hold and then stops", "threshold": "no book is corrected; the game never says which is true", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "Q4-practitioner-not-stat-block", "result": "pass", "value": "scanned all 43 texts for poise/stamina/startup/recovery/frames/degrees — zero stat-block leakage; the errors are practitioners' errors (Berethun Cray is wrong about the high grip and the fen lad who beats him is in the next file)", "threshold": "a treatise by someone who fights, not a stat block in prose", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "Q5-measures-from-inside-the-world", "result": "fail", "value": "sap-fall count = 0 occurrences in 50,472 words, against 6 in the rest of the library; all 15 Argonian authors count in Imperial years and seasons", "threshold": "RI-LOR02 section 7: any in-game date is Imperial-calendar 3E 426-427 or a sap-fall count", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "Q6-argonian-frame-load-bearing", "result": "marginal", "value": "15/43 Argonian-authored, but Hist 8 occurrences in 6 texts across 50,472 words; Jel 0; hatching 0; Saxhleel 0; Naga 1", "threshold": ">= 14 Argonian-authored corpus-wide, frame not decoration", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "Q7-an-xileel-absence", "result": "pass", "value": "0 occurrences, which is CORRECT — RI-LOR02 section 2 forbids naming them in 3E 427. My dispatch brief listed this as an expected marker and the brief was wrong.", "threshold": "must never be named", "evidence": ["corpus/60-lore/RI-LOR02-era-and-political-brief.md"] },
+        { "id": "C1-count", "result": "pass", "value": 43, "threshold": "43 martial texts claimed", "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/consumption-census.txt"] },
+        { "id": "C2-tracked-by-git", "result": "pass", "value": "7/7 files tracked; check-shipped-files clean over 140 modules", "threshold": "no file present locally and absent from the repo", "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/consumption-census.txt"] },
+        { "id": "C3-check-prose-green", "result": "pass", "value": "0 of 67 remaining corpus regressions are in the seven martial files", "threshold": "the builder's own claim", "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "'A corpus that imitates the remembered distribution' — not this failure; the length shape is genuinely at Morrowind's now.",
+        "'Books read as codex entries' — NOT hit. These read as people.",
+        "A failure mode RI-LOR03 does not predict and should: a corpus can pass every length, taxonomy and contradiction quota and still read as ONE HAND, because the tell lives in orthography and page furniture rather than in content."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/fingerprint.txt",
+        "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/headings.txt",
+        "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/numerals.txt",
+        "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"
+      ],
+      "why_not_ten": "Three measured single-hand fingerprints at 13.8x, 31x and 60x the reference, all of them in places tools/check-prose.mjs does not read; and the Black Marsh frame carried by 8 mentions of the Hist and zero sap-falls in 50,472 words.",
+      "path_to_ten": "Re-spell the numerals outside ledger documents, break the heading template, give the fifteen Argonian authors their own calendar, and re-baseline check-prose RULE-06 against the measured Morrowind distribution instead of a flat penalty on spelled counts.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-10 per axis; failure threshold: any coupling == 0 on a model the piece's reference items require to act",
+      "native_score": 7,
+      "native_max": 10,
+      "native_verdict": "Above the pass floor on 'consumer named'; below 10 because coupling was not demonstrated by perturbation inside this critic's window",
+      "score_0_10": 7.0,
+      "measured": "partial",
+      "justification": "43/43 martial texts are named by a world-side record and the coupling chain is named by path and line: game/data/world/interiors/*.json readable[].book -> game/src/render/interior.js:751-770 -> game/src/engine.js:5504-5514 (spawnProp readable_book) -> game/src/engine.js:2435-2445 (ui.open('book') on interact) -> game/src/engine.js:4582 (the reach prompt reads 'read' rather than 'take' only when readable_book is set). Zero orphans. Not 10, and NOT scored as demonstrated, because the four-arm perturbation probe did not finish inside this critic's window — see method_deviations.",
+      "checks": [
+        { "id": "M-consumer-named", "result": "pass", "value": "43/43, zero orphans", "threshold": "every model has a named world-side consumer", "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/consumption-census.txt"] },
+        { "id": "M-coupling-measured", "result": "unmeasurable", "value": "probe launched, four arms, did not return inside the window", "threshold": "coupling > 0 with clean controls", "hard_fail": false, "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"] },
+        { "id": "M-instrumentation-honesty", "result": "pass", "value": "the fingerprint tool exits 2 with no reference corpus rather than printing our numbers alone, and its selftest arm collapses onto the reference when fed reference text", "threshold": "declared", "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/fingerprint.txt"] }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/consumption-census.txt"
+      ],
+      "why_not_ten": "The coupling was traced through source and data rather than demonstrated by perturbing a book and watching the screen change. The probe exists and was launched; it did not return in time and its number is not banked.",
+      "path_to_ten": "Run tools/lore/critic-martial-r4-consume.mjs to completion and bank the four arms: A shipped opens the right book and draws characters, B a marker sentence injected into the record reaches the screen, C the same press from reach_m + 3 m opens nothing, D deleting the record shuts it."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/fingerprint.txt",
+      "kind": "report",
+      "produced_by": "node tools/lore/critic-martial-r4-fingerprint.mjs --mw=<scratch>/mwbooks --selftest",
+      "seed": null,
+      "source": "measured on commit 3d4c88d against the 241 Morrowind books dumped by tools/uesp/mw-book-stats.py"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/headings.txt",
+      "kind": "text-excerpt",
+      "produced_by": "every ALL-CAPS section heading in the 43 martial texts, listed by text and author",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/numerals.txt",
+      "kind": "text-excerpt",
+      "produced_by": "every narrative-prose sentence carrying a bare Arabic numeral 2-9, ledger documents excluded",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/consumption-census.txt",
+      "kind": "report",
+      "produced_by": "census of all 43 martial book ids against every non-books JSON in game/data/**",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md",
+      "kind": "report",
+      "produced_by": "this critic's reading of all 43 texts",
+      "seed": null
+    },
+    {
+      "path": "tools/lore/critic-martial-r4-fingerprint.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic; fails closed (exit 2) without a reference corpus and red (exit 1) on the tree",
+      "seed": null
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        { "id": "A1", "result": "pass", "observed": "Judged the shipped text and the shipped data, not the builder's description of them. All 43 texts read in full from game/data/books/**." },
+        { "id": "A2", "result": "pass", "observed": "Every number in this verdict has a command beside it in build.harness_commands and an artifact under artifacts[]." },
+        { "id": "A3", "result": "pass", "observed": "The reference arm is Morrowind's own 241 shipped books, extracted at judgement time, not recalled." },
+        { "id": "A4", "result": "pass", "observed": "The instrument was broken on purpose twice: no-reference exits 2, and the selftest arm fed reference text collapses onto the reference row." },
+        { "id": "A5", "result": "pass", "observed": "Exactly one biggest_gap named, with a re-measurable acceptance condition." }
+      ],
+      "evidence": ["corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/fingerprint.txt"]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        { "id": "B1", "result": "pass", "observed": "CONSUMPTION asked of the 43 texts specifically, not of the library mechanism. 43/43 surfaced, consumer named by path and line." },
+        { "id": "B2", "result": "pass", "observed": "The control arm is the rest of this project's own library (119 texts), which sits at 24.9 numerals/10k and 8.4% caps-headings — so the fingerprint is this block's and not the house's." },
+        { "id": "B3", "result": "pass", "observed": "Contradiction discipline checked from the data: 34 declared pairs, canon-census PASS at 50/50 registered, the martial method-disputes correctly filed as not_disputes and the one factual disagreement as CF-D019." },
+        { "id": "B4", "result": "not_run", "not_run_reason": "The blind pair RI-LOR03 requires needs a judge who did not build the pack (rule 25), and create_session is approval-gated (rule 0). Scored not_run rather than substituted with a sighted reading dressed as blind." },
+        { "id": "B5", "result": "pass", "observed": "Reported plainly that the prose is very good AND that the piece fails, rather than softening either." }
+      ],
+      "evidence": ["corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"]
+    }
+  },
+  "score": {
+    "overall_0_10": 5.4,
+    "pass_threshold": 7.0,
+    "aggregation": "min",
+    "band_label": "Below bar — named remedy required",
+    "confidence": "high",
+    "weights": {
+      "files-shipped-and-tracked": 9.0,
+      "consumption": 7.0,
+      "prose-quality": 8.4,
+      "voice-distinctness": 5.4,
+      "black-marsh-grounding": 6.2
+    }
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "Min over axes against the wave-1 gate of 7.0. The voice-distinctness axis is 5.4.",
+    "Prose quality is deliberately scored on its own axis at 8.4 so that a green file-count axis cannot average it, and equally so that the high quality cannot average away the fingerprint.",
+    "This is a FAIL on a piece whose writing is the best in this library. Both halves are true and a builder reading only the number will draw the wrong conclusion."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-library-martial-single-hand-fingerprint",
+    "subsystem_path": "lore.register",
+    "what": "All 43 martial texts carry the same three orthographic and page-furniture fingerprints, every one of them in a place tools/check-prose.mjs does not read. Bare Arabic numerals run 128.5 per 10k words against Morrowind's measured 9.3 (13.8x) and against the rest of this project's own library at 24.9; 65.1% of the texts carry two or more ALL-CAPS section headings against Morrowind's 2.1% (31x) and this library's 8.4%; and 60 of the 188 headings carry a ', WHICH ...' appositive against 1 in Morrowind's whole 241-book corpus. Two of the three are gate artifacts: check-prose RULE-06 penalises SPELLED counts four..twenty, so de-spelling turns the row green (the status file banks it as a win, 90.77 -> 52.42), and RULE-17/RULE-28's ', which is' tic did not go away in round 4 — it moved one line up into the headings, where a sentence-level detector cannot see it.",
+    "why_it_matters": "A player who reads three of these books in three different towns is meant to meet three people and instead meets one writer in three costumes — and the seam shows inside single sentences, as in 'Every file is to carry 2 bills and they are to be given to the two largest men in it' and 'Water bottle, 2 — two, not one'.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/fingerprint.txt",
+      "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/headings.txt",
+      "corpus/90-verdicts/wave1/artifacts/w1-library-martial-r4/numerals.txt",
+      "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"
+    ],
+    "severity": "major",
+    "remedy": {
+      "action": "Three mechanical edits, none of which rewrites an argument, an image or a joke. (1) Re-spell numerals in narrative prose across the 43 texts, keeping Arabic figures ONLY where a document would really carry them — the muster leaf, the rack tally, the day-book, the handbill's stoppages, registry numbers and 3E dates. This will re-redden check-prose RULE-06, and that is the correct outcome: the rule's own reference is Morrowind and Morrowind spells them, so re-baseline RULE-06 against tools/uesp/mw-book-stats.py's measured distribution (one 68.0% decaying smoothly to thirteen 2.9%, no bump) instead of a flat penalty. (2) Break the heading template: take texts carrying two or more ALL-CAPS headings from 65% to at most 20%, delete the ', WHICH ...' appositive from at least 45 of the 60 headings, and leave at most 12 headings beginning with WHAT — several of these texts should carry no headings at all, since a hunter's oral teaching, a nephew's account of two uncles arguing and a letter found folded in a helmet do not come with a table of contents. (3) Convert Imperial-year counts to sap-falls in at least 8 of the 15 Argonian-authored texts and let at least one refuse to convert, the way game/data/books/quest-keys.json already does. Separately, extend tools/check-prose.mjs to read headings: it reads sentences only, which is why 60 instances of a tracked tic survived a round whose entire subject was tics.",
+      "targets": [
+        "game/data/books/the-drill-book.json",
+        "game/data/books/the-arms-of-the-province.json",
+        "game/data/books/the-ford-arguments.json",
+        "game/data/books/the-schools-and-the-quarrels.json",
+        "game/data/books/the-body-and-the-dark.json",
+        "game/data/books/the-long-service.json",
+        "game/data/books/the-short-arms.json",
+        "tools/check-prose.mjs",
+        "tools/prose/prose-bars.json"
+      ],
+      "acceptance": "node tools/lore/critic-martial-r4-fingerprint.mjs --mw=<dump> exits 0 — that is, bare numerals in the martial set at most 3x the Morrowind reference of 9.3 per 10k, and texts carrying two or more ALL-CAPS headings at most 3x the reference 2.1% — with sap-fall occurrences in the martial set >= 8, and tools/check-prose.mjs still clean on all seven files except a deliberately re-baselined RULE-06 whose new bar is quoted from mw-book-stats.py output.",
+      "ref_item": "RI-LOR03",
+      "estimated_size": "one agent-round; it is a find-and-replace pass with judgement, not a rewrite"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "AN UNDECLARED CROSS-FILE COLLISION THAT IS WORTH MORE DECLARED THAN SWEPT. Four martial author names are also four of the seven names in game/data/books/the-books-in-evidence.json:the-cutters-list, a keepers' register of people who opened a Hist well untaught, each entry ending in a death. Ganeeth-Ei writes volume III of his memoir at 61 at his sister's house at Hollow-Reeds and the register has him 'Killed at the Bone Ladder in the same season'. Weeth-Ei-Vakh teaches the claw at Helstrom and 'Walked into the marsh in the wet season and was not looked for'. Ojal-Aneesh and Teeus-Ahai likewise. No contradicts edge, no canon-fact, no note in either file, and I could not establish which was written first — both landed 2026-08-07 and the authored history is under bank commits. Under RI-LOR06 and Morrowind's own convention this is a GIFT and not a bug: a player who reads the memoir and then the register learns the man who printed three volumes about thirty years in the Ninth was killed opening a well, and the game never says which is true. That is the most Morrowind thing in the whole martial expansion and it happened by accident. The danger is exactly that — undeclared, the next agent to run a name-uniqueness sweep will 'fix' it. Declare it in both files, do not resolve it.",
+      "evidence": ["game/data/books/the-books-in-evidence.json", "game/data/books/the-long-service.json", "game/data/books/the-arms-of-the-province.json"],
+      "subsystem_path": "lore.book.unreliability"
+    },
+    {
+      "what": "A LIVE NEIGHBOUR'S PROBE CANNOT RUN, AND ITS VERDICT MAY BE ABOUT TO CITE IT. tools/lore/critic-w1-23-r5-consume.mjs scans its own non-comment bytes for the prohibited harness verbs 'openMenu' and '__ENGINE' — and the loop that LISTS those two strings is itself a non-comment line, so body.includes(\"'openMenu'\") always matches the guard. Verified on HEAD: exit 2, zero legs, every time. A guard that can only ever fire on itself. I did not touch their file (rule 16); my own copy assembles the names from fragments and runs. That piece's author should know before its verdict quotes numbers this file as it stands cannot produce.",
+      "evidence": ["tools/lore/critic-w1-23-r5-consume.mjs"],
+      "subsystem_path": "books.content"
+    },
+    {
+      "what": "A SHARED IMAGE THAT TWO UNRELATED AUTHORS COULD NOT HAVE SHARED. Beem-Ei, an Argonian who keeps the armoury at Helstrom, and Ivas, a Dunmer serjo's smith at Blackrose, independently invent the same original metaphor for the guard-angle rule in the same anatomy — 'Every shield covers a wedge, with the point of the wedge at your shoulder' and 'A shield covers a wedge with the point at the shoulder'. The word 'wedge' appears 14 times across 4 texts by 4 unrelated authors. game/data/weapons/offhand.json's guard angle is showing through the fiction.",
+      "evidence": ["game/data/books/the-arms-of-the-province.json", "game/data/books/the-schools-and-the-quarrels.json"],
+      "subsystem_path": "lore.register"
+    },
+    {
+      "what": "THE ROUND'S OWN ARITHMETIC FINDING ABOUT RI-LOR03 SECTION 2 IS CORRECT AND I CONFIRMED IT RATHER THAN REPEATING IT. The ten taxon minimums sum to 122 (16+10+14+16+10+12+12+10+6+16) against a stated corpus target of 112 texts, so any corpus that hits 112 must be short on some row by arithmetic. The table is internally inconsistent as written. This is the third thing on the list that item's own provenance note asks its next owner to decide deliberately rather than inherit.",
+      "evidence": ["corpus/60-lore/RI-LOR03-in-world-book-structure.md"],
+      "subsystem_path": "books.taxonomy"
+    },
+    {
+      "what": "THE STATUS FILE LISTS game/data/books/the-articles-of-the-wet-ledger.json as an output and no such file exists. The text is real and lives inside game/data/books/the-long-service.json, is surfaced by game/data/world/interiors/lilmoth-ledger-house.json, and carries the knowledge_key that Q-LEDG-14 and Q-LEDG-15 need. Not a defect — noted so the next agent does not go hunting for a file that was never meant to exist.",
+      "evidence": ["game/data/books/the-long-service.json"],
+      "subsystem_path": "books.content"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-library-l8-corpus-short",
+      "status": "closed",
+      "note": "Independently confirmed: 25 book files, 162 texts, 112,812 words on the tree at 3d4c88d, well past RI-LOR03's 112-text target. The nine skills that scored zero all carry grounded books now."
+    },
+    {
+      "gap_id": "GAP-W1-library-martial-prose-tics",
+      "status": "partial",
+      "note": "The seven martial files ARE clean under tools/check-prose.mjs — I ran it and none of the 67 remaining corpus regressions is theirs. But the ', which is' tic the round reports clearing did not leave the corpus; it moved into the ALL-CAPS headings, where the detector does not read, and it is denser there (60 of 188) than it ever was in the prose."
+    }
+  ],
+  "corpus_extended": [],
+  "method_deviations": [
+    {
+      "ref_item": "RI-LOR03",
+      "deviation": "No blind comparison was run, so RI-LOR03's own headline method (blind pair against real Morrowind books) is not exercised in this verdict.",
+      "why": "Rule 25 forbids judging a pack I built and rule 0 records that create_session is approval-gated here (MCP error -32003), so there is no second judge to hand a pack to. The piece's own notes_for_successor already names this as the one measurement that would settle whether these are books or filler, and it is still not done. My prose-quality score of 8.4 is therefore a SIGHTED reading and is weaker evidence than a blind pass; I say so rather than let it stand as equivalent. What the round does now have that it did not before is the tell a blind judge would use, measured and published: it is not 'yours all sound informative', it is the numerals and the headings.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MTH07",
+      "deviation": "The four-arm consumption probe (tools/lore/critic-martial-r4-consume.mjs) was written and launched under a passing contention gate but did not return inside this critic's window. Its numbers are NOT in this verdict and RI-MTH07 is scored 7.0 on a traced coupling chain rather than 10 on a demonstrated one.",
+      "why": "Rule 26. A number I did not see is not a number I may report, and rule 5's whole point is that 'the mechanism works, therefore my rows are read' is the inference that has cost sixteen subsystems. The census result (43/43 surfaced, zero orphans, consumer named by path and line) is independent of the probe and stands on its own.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MTH07",
+      "deviation": "I ran tools/readables/mk-papers.mjs by accident while probing for a --help flag, on the working tree rather than a copy.",
+      "why": "It is deterministic; git status --porcelain game/data/ came back empty immediately afterwards and nothing in the tree moved. Reported because a silent accident is not a result.",
+      "affects_scores": false
+    }
+  ],
+  "source_reads": [
+    { "path": "game/src/render/interior.js", "purpose": "locate-harness", "note": "lines 751-770 — where readable[].book becomes placements.readables[].book" },
+    { "path": "game/src/engine.js", "purpose": "locate-harness", "note": "2435-2445 opens the book screen on interact; 4582 flips the reach prompt to 'read'; 5504-5514 spawns the prop with readable_book" },
+    { "path": "game/data/books/the-drill-book.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-arms-of-the-province.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-ford-arguments.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-schools-and-the-quarrels.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-body-and-the-dark.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-long-service.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-short-arms.json", "purpose": "quote-written-content" },
+    { "path": "game/data/books/the-books-in-evidence.json", "purpose": "quote-written-content", "note": "the-cutters-list, for the name collision in secondary_observations" },
+    { "path": "game/data/books/quest-keys.json", "purpose": "quote-written-content", "note": "the sap-fall control — the rest of the library does what the martial set does not" },
+    { "path": "game/data/world/interiors/stormhold-praetorium.json", "purpose": "locate-harness" },
+    { "path": "tools/lore/critic-w1-23-r5-consume.mjs", "purpose": "diagnose-after-demonstrating", "note": "read only after observing it exit 2 on HEAD; not modified" }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "Two methods short and both are declared in method_deviations rather than buried. (1) No blind pair: rule 25 plus an approval-gated create_session leaves no second judge, so RI-LOR03's headline instrument was not exercised and my prose score is a sighted one. (2) The consumption probe did not return in the window, so RI-MTH07 is scored on a traced chain, not a demonstrated one. Neither absence is scored as clean. Against them: the fingerprint instrument WAS broken on purpose in two directions (fail-closed at exit 2 with no reference; selftest arm collapsing onto the reference when fed reference text), and the finding carries a control arm — the rest of this project's library — which is what makes it a claim about this block rather than about the house style."
+  },
+  "notes": "The hand-off asked the critic to read the prose and not the gate, and said the green gate was 'exactly the claim a blind reader has to falsify'. It was right to ask. The writing is genuinely excellent — 'A door is a piece of wall that has agreed to walk'; a Legate who is asked what he would cut from his own regulation and answers 'so would I, and I can't'; an Argonian explaining that the province manufactured its own folklore as a security measure and the game never saying whether he is right. Nothing here reads as a codex entry. But the gate that certifies it is counting characters, and two of its rules have been satisfied by moving the offence somewhere the counter does not look: spelled numbers became Arabic figures at 13.8x Morrowind's rate, and the ', which is' tic climbed one line into the section headings, where it is denser than it ever was in the prose. The worst sentence in fifty thousand words — 'Two doors are 2 slow people carrying 2 walls' — is a good sentence paying a tax to a checker. That is the round's finding, and the remedy is a day's mechanical work that does not touch a single argument in the corpus."
+}
