@@ -26,7 +26,15 @@
     "commit_sha": "2fe47f5",
     "branch": "claude/morrowind-souls-threejs-game-mou39v",
     "dirty": true,
-    "note": "Dirty only with my own declared critic files. Gates green at HEAD: boot-check PASS, check-data PASS, road-through-building 0 of 10 legs blocked and 0 named-route offences (so W1-ROAD-JOIN handoff H4's staleness trap has not re-sprung since the builder regenerated roads.json). HEAD moved to bf039f1 during my run (an orchestrator bank carrying W1-14-r5 / W1-03 work in game/src/sim/traversal.js and game/src/sim/magic/system.js). The traversal.js change is a pure refactor — it extracts SWIM_FLOAT_M = 0.78 * 1.8 from an inline literal in the swimming branch — and touches nothing in the slope gate or the walking path, so no measurement in this verdict is affected."
+    "note": "Dirty only with my own declared critic files. Gates green at HEAD: boot-check PASS, check-data PASS, road-through-building 0 of 10 legs blocked and 0 named-route offences (so W1-ROAD-JOIN handoff H4's staleness trap has not re-sprung since the builder regenerated roads.json). HEAD moved to bf039f1 during my run (an orchestrator bank carrying W1-14-r5 / W1-03 work in game/src/sim/traversal.js and game/src/sim/magic/system.js). The traversal.js change is a pure refactor — it extracts SWIM_FLOAT_M = 0.78 * 1.8 from an inline literal in the swimming branch — and touches nothing in the slope gate or the walking path, so no measurement in this verdict is affected.",
+    "depends_on": [
+      "game/src/engine.js",
+      "game/src/world/field.js",
+      "game/src/sim/traversal.js",
+      "game/data/world/roads.json",
+      "game/data/world/traversal.json",
+      "tools/world/build-roads.mjs"
+    ]
   },
   "headline": "I WALKED IT, AND THE NUMBERS ARE RIGHT TO THE DECIMAL. 6,646.7 m, 199,433 frames, 55.398 in-world minutes, mean 1.9991 m/s, 0.063% of 33,238 samples under 1.6 m/s, worst deviation 1.39 m, zero frames off the road, zero teleports, ending at (2765.6, 5028.8) — reproduced independently with a second per-frame counter whose UNBOUNDED sum is also 6,646.7 m and whose largest single-frame step in 199,432 frames is 0.295 m, so the zero is zero because nothing jumped. The teleport exclusion was watched catching a real 3,856.1 m respawn. BUT: walkPath was never fixed and the round says it was; the crossing does not walk backwards (STUCK at 5,072.3 m against a bridge deck laid across its own switchback); and one of the three supports the premise correction rests on is a counter that is 100% exempt by construction.",
   "reference_items": [

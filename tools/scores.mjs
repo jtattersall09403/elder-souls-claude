@@ -80,6 +80,11 @@ const DOMAIN = {
   // `publish.mjs` before this round started, so the shared gate was red for everyone. Its
   // subsystem paths are `quests.*` and `lore.book.*`; the quest reveals are what it grades.
   'w1-readables': 'Quests',
+  // `W1-CROSSING` — the fourth named piece in as many sessions to arrive here unmapped. Same
+  // domain as `w1-01`/`w1-05`/`w1-27`: it is the traversal budget and the road network, and its
+  // verdicts belong on the same line as the province streamer's. Added by critic-w1-crossing for
+  // the reason below, and declared in orchestration/status/critic-w1-crossing.json.
+  'w1-crossing': 'The world',
   // Also not mine: `W1-ROAD-JOIN` landed from another agent mid-round and red-lined the same gate.
   // Added for the same reason as `w1-readables` — a domain mapping cannot conflict with its
   // owner's work, and a shared gate left red costs the next agent a diagnosis.

@@ -13,7 +13,8 @@
     "tools/world/critic-crossing-probe.mjs",
     "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
     "reports/critic-w1-crossing/",
-    "corpus/90-verdicts/wave1/W1-CROSSING-r1.md"
+    "corpus/90-verdicts/wave1/W1-CROSSING-r1.md",
+    "tools/scores.mjs"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-CROSSING-r1.md",
@@ -23,7 +24,8 @@
     "tools/world/critic-crossing-grade.mjs",
     "tools/world/critic-crossing-probe.mjs",
     "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "tools/scores.mjs"
   ],
   "redundant_with": [
     "W1-CROSSING",
@@ -55,7 +57,7 @@
     "K17 THE DELETE-THE-FIX GRID RE-RUN REVERSED AND RE-SEEDED: OLD/OLD ran FIRST from a clean world and reproduced 550.1 m at (2153.7, 1197.8) exactly. But the parapet arms are byte-identical (550.1/550.1 and 1779.2/1779.2), so three of the builders four cells do not reproduce, including the 6 m gap it used to argue the parapet is not load-bearing. crossing-deletefix.mjs pins only sim.player.hp, not combat.player.hp, so both its NEW arms carry a death and a ~3.4 km respawn.",
     "K18 THE REGAIN COUNT IS DELIVERED AND IS STILL AN INERT CONTROL: 20 independent trials, NEW 15/20 (median 649 f) vs OLD 16/20 (median 786 f). Single-shove recovery is not the failure mode the fix addresses. 3 of the 5 NEW failures are bodies shoved 35-39 m DOWN off a viaduct; 2 are genuine failures on level ground. The builders 7,966.3 m vs 788.0 m orbit figure does NOT reproduce (868.8 vs 1,095.7) - it was one stuck body re-shoved seven times."
   ],
-  "overlap_declared": "reports/blog-feed.jsonl is APPEND-ONLY and every finishing piece adds one line to it (rule 27); I appended and did not edit, and node tools/check-append-only.mjs is green. I narrowed my docs/shots/ claim to the single file I wrote so the directory-wide claim stops reading as a collision with the other critics in flight.",
+  "overlap_declared": "reports/blog-feed.jsonl is APPEND-ONLY and every finishing piece adds one line to it (rule 27); I appended and did not edit, and node tools/check-append-only.mjs is green. I narrowed my docs/shots/ claim to the single file I wrote so the directory-wide claim stops reading as a collision with the other critics in flight. I also added ONE line to tools/scores.mjs DOMAIN — \"w1-crossing\": \"The world\" — which I did not originally declare and am declaring here (rule 28). node tools/publish.mjs fails CLOSED on a verdict whose piece id maps to no chart domain, so publishing W1-CROSSING-r1 left the shared gate red for every agent behind me. Three earlier critics added their own line to this table for the same reason and left a note in it asking whoever owns the file for a DOMAIN_DEFAULT; I have added a fourth line and not touched anything else in the file.",
   "verdict": {
     "status": "FAIL",
     "score": 6,
