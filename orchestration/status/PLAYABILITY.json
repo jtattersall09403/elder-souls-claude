@@ -114,9 +114,11 @@
         "phone-small-portrait 360x740 @3x": "PLAYS — boot 58 s, 91.8% of the frame lit across 100% of the screen, picture moving, OPENING COMPLETED ON TOUCH IN 35.8 s",
         "phone-large-landscape 932x430 @3x": "PLAYS — boot 56 s, 95.3% lit across 100% of the screen, picture moving, OPENING COMPLETED ON TOUCH IN 38.0 s",
         "desktop-1440 1440x900": "drew 95.0% across 100% of the screen and moved — the row failed only because MY keyboard leg pressed Enter once and gave up. Fixed: the leg now tries the keys the README documents (Enter, E, Space) and reports which one worked, because 'only one of the two documented keys starts the game' is itself a finding.",
-        "tablet-landscape": "in flight when this was written"
+        "tablet-landscape 1180x820 @2x": "PLAYS — boot 80 s, 95.0% lit across 100% of the screen, picture moving, OPENING COMPLETED ON TOUCH IN 56.4 s"
       },
-      "artifact": "reports/playability/live.json",
+      "verdict": "3 of 4 shapes PLAY on the deployed bytes. The one failure is my keyboard leg, not the game.",
+      "mirror_traffic": "2828 requests, 72.9 MB, 165 s of fetch time in total, 0 bad — and retriedAfter5xx = 1. The live host wobbled once during this run, on its own, unprompted. That is P10 happening in front of the instrument rather than being argued about.",
+      "artifact": "reports/playability/live.json (gitignored by reports/.gitignore as a reproducible run artifact — the numbers are transcribed here on purpose, because this file is not)",
       "pictures": [
         "docs/shots/2026-08-08-playability-the-published-link-playing-on-a-phone-in-the-barge-hold.png — the deployed game, on a large phone in landscape, in the barge hold, eleven touch controls drawn, the woman on the other bench",
         "docs/shots/2026-08-08-playability-the-live-game-on-a-phone-a-503-reported-as-a-missing-file.png — the same link, minutes earlier, refusing to start because of P10"
@@ -131,6 +133,13 @@
     "fixed": true,
     "fix": "two layers. First a guard: it asks getContextAttributes and, if the buffer is not preserved, reports UNMEASURED with the reason instead of reporting black — a silent false negative turned into a loud one. Then the real fix: the measurement now comes from a SCREENSHOT, drawn into a 2-D canvas in the page and reduced on the same grid. That is the composited page, which is what the question was always about, it includes HTML overlays like the boot notice, nothing inside the page can flatter it, and it has no relationship to the WebGL context at all. The GL read remains as a fallback and the run says which it used.",
     "caught_by": "watching a neighbour's commit go past in `pgrep -a git` while waiting for the index lock. It was not caught by any check."
+  },
+
+  "rule_4_status_HONEST": {
+    "what_is_proven": "Each instrument's OWN self-test was run and passed with arms that genuinely disagree: live-mirror (real path 200 and looks like the game / absent path 404 / --break 404s only the named path), verify-links (relative resolve, root-relative seen as off-prefix, absent 404, real 200), verify-live-site (missing reported, real clean, DRIFT detected against the wrong file and silent against the right one, git state committed vs untracked, and the staged-not-committed branch shown to be live code on this tree rather than dead).",
+    "what_is_NOT_yet_proven": "verify-playable's SIX-sabotage matrix with the new screenshot-based reading. It was launched (`--self-test --local --cap-ms 100000`) and had not returned when this was written. A successor should run it and paste the seven lines here. Until then the six arms are UNVERIFIED and this file says so rather than implying otherwise.",
+    "what_stands_in_the_meantime": "the PREVIOUS version's core arms were verified red by an independent critic (corpus/90-verdicts/wave1/W1-DEPLOY-r1.md §2): blocking three.module.js, hold-gate.js, engine.js, data/index.json and ALL of data/ each produced FAIL. That is evidence about the old sampler, not about the new one.",
+    "the_arms": "listed below"
   },
 
   "rule_4_sabotages": [
