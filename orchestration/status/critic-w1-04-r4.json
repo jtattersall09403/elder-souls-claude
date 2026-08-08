@@ -1,0 +1,27 @@
+{
+  "task_id": "critic-w1-04-r4",
+  "role": "critic",
+  "state": "IN_PROGRESS",
+  "started": "2026-08-08T05:17:00Z",
+  "piece": "W1-04 round 4 - settlements, interiors and the people in them",
+  "grading": "corpus/90-verdicts/wave1/W1-04-r4.md",
+  "gate": 7.0,
+  "next_step": "A: read RULES/INDEX/ARBITRATION §3/W1-04-r3.md. B: run tools/world/w1-04-consumption.mjs FIRST (edited and not re-run). C: attack the distinctness measure with degenerate cases. D: check props/items/NPCs outside shrunk rooms. E: 115-room live sweep. F: screenshots.",
+  "files_touched": [
+    "orchestration/status/critic-w1-04-r4.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-04-r4.md",
+    "corpus/90-verdicts/wave1/W1-04-r4.json",
+    "orchestration/status/critic-w1-04-r4.json",
+    "tools/world/critic-",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": [
+    "W1-04-r4"
+  ],
+  "overlap_notes": "I grade W1-04-r4; overlap on docs/shots/ and reports/blog-feed.jsonl is by design (append-only for the feed). I write no game/ source.",
+  "notes": [],
+  "findings": []
+}
