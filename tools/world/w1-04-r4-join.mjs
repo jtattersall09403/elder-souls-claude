@@ -157,7 +157,8 @@ async function sectionJoin(THREE, EX, IN, S, I) {
       // is handed the record the door hands it.
       const room = new THREE.Group();
       const isum = IN.buildInterior(room, rec);
-      const inside = footprintOf(room, null);
+      const inside = footprintOf(room, (m) => m.name === 'roomshell');
+      const withProps = footprintOf(room, null);
       if (!shell || !inside) { rows.push({ id: b.id, interior: b.interior, error: 'nothing built' }); continue; }
       const ratio = +((shell.w * shell.d) / (inside.w * inside.d)).toFixed(4);
       rows.push({
@@ -166,6 +167,8 @@ async function sectionJoin(THREE, EX, IN, S, I) {
         drawn_footprint_m: b.drawn_footprint_m,
         shrink: b.shrink, shrink_axes: b.shrink_m || null,
         outside_m: [shell.w, shell.d], inside_m: [inside.w, inside.d],
+        room_with_props_m: withProps ? [withProps.w, withProps.d] : null,
+        props_outside_the_shell: !!(withProps && (withProps.w > inside.w + 0.05 || withProps.d > inside.d + 0.05)),
         fits_x: +(shell.w - inside.w).toFixed(2) >= -0.01,
         fits_z: +(shell.d - inside.d).toFixed(2) >= -0.01,
         area_ratio: ratio,
@@ -253,26 +256,51 @@ async function sectionThrowingProps(THREE, IN, I) {
  * SECTION 4 — the roofs. Does the roof cover the plan?
  * ==============================================================================================*/
 
+// A BOUNDING BOX IS THE WRONG INSTRUMENT HERE, and using one is how this defect survived three
+// rounds of counting. An ellipsoid dome scaled to w x d has a bounding box exactly w x d and
+// leaves all four corners open to the sky, which is what the round-3 critic photographed. So the
+// roof is measured by RAYCASTING: drop a ray straight down over an 8x8 grid of the building's own
+// footprint and ask whether anything in the roof group is between the sky and the floor. That is
+// the same question as "does the rain come in", and it can only be answered by geometry.
 async function sectionRoofs(THREE, EX, S, I) {
   const rows = [];
+  const N = 8;
   for (const sid of Object.keys(S).sort()) {
     const plan = EX.planSettlement(S[sid], I);
     for (const b of plan.buildings) {
       const built = EX.buildBuilding(b, sid);
       let roof = null;
       built.group.traverse((o) => { if (o.name === 'roof') roof = o; });
-      if (!roof) { rows.push({ id: b.id, settlement: sid, covered: false, why: 'no roof group' }); continue; }
-      const rf = footprintOf(roof, null);
-      const w = built.summary.w, d = built.summary.d;
-      const cov = rf ? Math.min(rf.w / w, rf.d / d) : 0;
-      rows.push({ id: b.id, settlement: sid, w, d, roof_m: rf ? [rf.w, rf.d] : null, coverage: +cov.toFixed(3), covered: cov >= 1 });
+      const w = built.summary.w, d = built.summary.d, h = built.summary.h;
+      if (!roof) { rows.push({ id: b.id, settlement: sid, coverage: 0, covered: false, why: 'no roof group' }); continue; }
+      roof.updateMatrixWorld(true);
+      const rc = new THREE.Raycaster();
+      rc.far = 200;
+      let hit = 0, tot = 0;
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          // Inset by half a cell so the samples are inside the walls, and the outermost sample is
+          // a hand's width in from the corner rather than exactly on it.
+          const x = -w / 2 + (i + 0.5) * (w / N);
+          const z = -d / 2 + (j + 0.5) * (d / N);
+          rc.set(new THREE.Vector3(x, h + 60, z), new THREE.Vector3(0, -1, 0));
+          const hits = rc.intersectObject(roof, true);
+          tot++;
+          // Only count cover ABOVE the wall head: a roof mesh hanging inside the room is not a roof.
+          if (hits.some((q) => q.point.y >= h - 0.6)) hit++;
+        }
+      }
+      const cov = +(hit / tot).toFixed(3);
+      rows.push({ id: b.id, settlement: sid, w, d, samples: tot, covered_samples: hit, coverage: cov, covered: cov >= 0.995 });
     }
   }
   const uncovered = rows.filter((r) => !r.covered);
   return {
+    method: 'raycast, 64 samples over the building footprint, hit must be at or above wall head',
     buildings: rows.length,
-    roofs_smaller_than_their_building: uncovered.length,
+    roofs_that_do_not_cover_their_building: uncovered.length,
     worst_coverage: rows.length ? Math.min(...rows.map((r) => r.coverage || 0)) : null,
+    mean_coverage: rows.length ? +(rows.reduce((a, r) => a + r.coverage, 0) / rows.length).toFixed(3) : null,
     by_town: Object.fromEntries(Object.keys(S).sort().map((s) => [s, rows.filter((r) => r.settlement === s && !r.covered).length])),
     worst: uncovered.sort((a, c) => a.coverage - c.coverage).slice(0, 8),
   };
@@ -302,8 +330,8 @@ async function main() {
     failures.push(`${report.join.outside_smaller_than_inside} of ${report.join.enterable_measured} enterable buildings draw an exterior smaller than the room behind their door (worst ${report.join.worst_id} at ${report.join.worst_area_ratio})`);
   }
   if (!report.distinct.floor_ok) failures.push('the distinctness measure did not pass its own noise floor: it is not measuring the room');
-  if (report.roofs.roofs_smaller_than_their_building > 0) {
-    failures.push(`${report.roofs.roofs_smaller_than_their_building} buildings have a roof narrower than their own walls (worst coverage ${report.roofs.worst_coverage})`);
+  if (report.roofs.roofs_that_do_not_cover_their_building > 0) {
+    failures.push(`${report.roofs.roofs_that_do_not_cover_their_building} buildings have a roof that does not cover them (worst coverage ${report.roofs.worst_coverage})`);
   }
   for (const k of Object.keys(report.props.suspects)) if (report.props.suspects[k].threw) failures.push(`prop builder ${k} throws: ${report.props.suspects[k].threw}`);
   report.failures = failures;
@@ -316,7 +344,7 @@ async function main() {
   console.log(`JOIN     enterable measured ${report.join.enterable_measured}   OUTSIDE SMALLER THAN INSIDE ${report.join.outside_smaller_than_inside}   worst ${report.join.worst_id} ${report.join.worst_area_ratio}   median ${report.join.median_area_ratio}`);
   console.log(`DISTINCT n0 same room twice ${report.distinct.n0_same_room_twice.distinct} (must be 1)   n1 null control ${report.distinct.n1_null_control_every_door_same_record.distinct} (must be 1)   n2 shipped ${report.distinct.n2_shipped.distinct} of ${report.distinct.n2_shipped.rooms}, largest identical group ${report.distinct.n2_shipped.largest_identical_group}`);
   console.log(`PROPS    ${JSON.stringify(report.props.suspects)}`);
-  console.log(`ROOFS    ${report.roofs.roofs_smaller_than_their_building} of ${report.roofs.buildings} roofs narrower than their own building, worst coverage ${report.roofs.worst_coverage}`);
+  console.log(`ROOFS    ${report.roofs.roofs_that_do_not_cover_their_building} of ${report.roofs.buildings} roofs narrower than their own building, worst coverage ${report.roofs.worst_coverage}`);
   console.log(`report   ${path.relative(ROOT, out)}`);
   for (const f of failures) console.log(`FAIL     ${f}`);
 

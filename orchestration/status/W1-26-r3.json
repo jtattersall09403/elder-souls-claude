@@ -7,17 +7,31 @@
   "spec": "corpus/90-verdicts/wave1/W1-26-r2.md",
   "goal": "Three blocking defects: (1) creation cannot complete + engine error rendered as scribe dialogue, (2) input/real.js swallows 14/26 letters before the text field, (3) RI-JRN09 HF1 DTR 0.000 at hold.out.",
   "plan": [
-    "A. The body has a race. sim.identity.race is the body's race (currently the invalid placeholder 'argonian'); censusBegin observes the body when opts.race is absent. Not a literal in the census call — a live world field the dialogue gates already read.",
+    "A. The body has a race. sim.identity.race is the body's race (currently the invalid placeholder 'argonian'); censusBegin observes the body when opts.race is absent. Not a literal in the census call \u2014 a live world field the dialogue gates already read.",
     "B. A caught census throw never renders as dialogue. surface.refusal carries an AUTHORED line only; the engine string goes to surface.fault (never drawn) and onto the census_refused event.",
     "C. input/real.js: a focused text field takes the keyboard before the move/control maps. Single printable characters and Backspace route to text; Enter/Escape/arrows/Tab fall through, so `interact`(Enter) still commits and the arrows still move the caret.",
     "D. hold.out draws. buildCensusModel returns null on a paused node only when nothing is being said; Census.enter() clears `spoken` so the hold's lines are not redrawn a room later above the wrong speaker.",
-    "E. tools/journey/journey-run.mjs `catch { break; }` — the driver reproduces the player's defect and swallows the proof.",
-    "F. ./play.sh — does not exist at the root despite the brief. Write it."
+    "E. tools/journey/journey-run.mjs `catch { break; }` \u2014 the driver reproduces the player's defect and swallows the proof.",
+    "F. ./play.sh \u2014 does not exist at the root despite the brief. Write it."
   ],
-  "next_step": "run the three probes RED before changing anything",
+  "next_step": "run jrn09-exchange (HF1) and opening-play (P10) on the fixed tree",
   "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 browser instances, load 5.10/core vs a 4.0 ceiling). Node-side work first; browser runs one at a time, and if I proceed past exit 3 it is recorded here.",
   "files_touched": [
-    "orchestration/status/W1-26-r3.json"
+    "orchestration/status/W1-26-r3.json",
+    "play.sh",
+    "tools/play.mjs",
+    "game/src/sim/state.js",
+    "game/src/engine.js",
+    "game/src/character/census.js",
+    "game/src/character/scene.js",
+    "game/src/input/real.js",
+    "game/data/dialogue/topics/writ-house.json",
+    "game/data/progression/creation.json",
+    "tools/journey/census-newgame.mjs",
+    "tools/journey/name-entry.mjs",
+    "tools/journey/opening-play.mjs",
+    "tools/w1-26-r3/hold-walkout.mjs",
+    "reports/w1-26-r3/"
   ],
   "files_claimed": [
     "game/src/input/real.js",
@@ -37,5 +51,21 @@
   ],
   "notes": [
     "engine.js has 8 live declarers (most [done]); edits there are minimal and additive."
+  ],
+  "results": {
+    "RED baseline at e00e6fe": {
+      "census-newgame": "exit 1 \u2014 player path stops at writ.race-observed",
+      "name-entry": "exit 1 \u2014 'Silt-Under-Salt' recorded as 'il-Un', committed mid-word at the E",
+      "opening-play": "exit 1 \u2014 P10 FAIL, reached_desk false, hatchName recorded 'il-Un-l'"
+    },
+    "after the fix": {
+      "census-newgame": "exit 0 \u2014 player path completes; no-body control still stops; 7-arm consumption",
+      "name-entry": "exit 0 \u2014 N1/N2/N3 pass; all 26 letters + space + hyphen verbatim",
+      "hold-walkout": "the hold is walkable and the (-1.342,3.862) corner is NOT a trap (7 distinct destinations over 8 directions)"
+    }
+  },
+  "findings": [
+    "The r2 P10 'pinned on geometry' reading is wrong. tools/w1-26-r3/hold-walkout.mjs sweeps 8 directions from the exact frozen position with a per-arm scene reset: every direction moves, 7 distinct destinations. The r2 walker's twenty 0.000 m samples were a world that was not advancing, not a crate. opening-play.mjs now carries frames_advanced so the two can never be confused again.",
+    "My own first corner control was inert (all 8 arms shared one contaminated state and returned the identical 4.816 m to the identical position). Caught and fixed before it was reported \u2014 rule 6, in the control written to detect rule 6."
   ]
 }

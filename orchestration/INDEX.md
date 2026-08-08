@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `345dcca`: 627 tools, 153 reference
-items, 51 pieces in flight.
+so it cannot drift. Generated at `cc70ad2`: 627 tools, 153 reference
+items, 52 pieces in flight.
 
-Its purpose is to stop 51+ concurrent agents each paying separately to discover the
+Its purpose is to stop 52+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -942,6 +942,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-road-join` | ? | read RULES/INDEX/ARBITRATION S28/NEXT-DISPATCH W/W1-ROAD-JOIN.json | `orchestration/status/critic-road-join.json` |
 | `W1-CROSSING` | in_progress | read NEXT-DISPATCH SS W and P.4, W1-ROAD-JOIN.json, W1-05.json; run ownership + contention | `orchestration/status/W1-CROSSING.json` |
 | `W1-26-r3` | ? | run jrn09-exchange (HF1) and opening-play (P10) on the fixed tree | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-CHARTFONT-r2` | ? | read reports/w1-chartfont-damage.md and orchestration/status/W1-CHARTFONT.json; run --audi | `orchestration/status/W1-CHARTFONT-r2.json` |

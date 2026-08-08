@@ -128,7 +128,13 @@ if (unclaimed.length) {
   for (const p of unclaimed.slice(0, 12)) lines.push(`  ${p}`);
   if (unclaimed.length > 12) lines.push(`  … and ${unclaimed.length - 12} more`);
 }
-lines.push('', 'Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>');
+// A machine-readable trailer, because the bank has made `git log -- <path>` misleading. A builder
+// looking for the commit that last touched its own file, in order to find a delete-the-fix base,
+// finds eight orchestrator banks that carried the file mid-edit under someone else's message. It
+// said so, and it was right. With this, `git log --invert-grep --grep=Orchestrator-Bank -- <path>`
+// gives the authored history back.
+lines.push('', 'Orchestrator-Bank: true');
+lines.push('Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>');
 
 const msg = lines.join('\n');
 if (dryRun) { console.log(msg); process.exit(0); }

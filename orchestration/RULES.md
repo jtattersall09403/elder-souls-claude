@@ -104,6 +104,12 @@ right now). Between these two you should not need to go looking for anything.
        `git commit --only <your paths>` still comes out with those five. **That is expected and
        it is not a sweep.**
 
+    **Finding your own file's real history:** every bank commit carries an `Orchestrator-Bank: true`
+    trailer, so `git log --invert-grep --grep=Orchestrator-Bank -- <path>` gives you the authored
+    history without the banks. A builder hunting a delete-the-fix base found eight banks that had
+    carried its file mid-edit under other agents' messages and reported `git log` as useless; it was
+    right, and this is the fix.
+
     **If the index is locked, retry — do not wait.** A dozen agents commit concurrently and the
     lock is held for seconds at a time. An agent that blocks on it is an agent whose staged work
     sits in the shared index waiting to be swept; retrying with a short backoff gets you in

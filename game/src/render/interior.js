@@ -456,10 +456,15 @@ export function buildInterior(root, rec) {
 
   // ---- the shell ----------------------------------------------------------------------------
   // RI-WLD13 N1: `bounds_m` IS the room, rather than a number a check divides by itself.
+  // Floor, ceiling and the four walls are named `roomshell` and nothing else in the room is.
+  // That name is how `tools/world/w1-04-r4-join.mjs` asks "how big is the room" without a shelf
+  // that overhangs its wall answering for it — RI-WLD13 N1 is a question about the shell.
   const floor = box(W, 0.3, D, P.floor);
+  floor.name = 'roomshell';
   floor.position.set((bx[0] + bx[1]) / 2, by[0] - 0.15, (bz[0] + bz[1]) / 2);
   floor.receiveShadow = true; root.add(floor);
   const ceil = box(W, 0.3, D, P.roof);
+  ceil.name = 'roomshell';
   ceil.position.set((bx[0] + bx[1]) / 2, by[1] + 0.15, (bz[0] + bz[1]) / 2);
   ceil.receiveShadow = true; root.add(ceil);
 
@@ -467,17 +472,18 @@ export function buildInterior(root, rec) {
   // `interior_spawn` is derived from — so the door you came in by is the door you can see.
   const entry = (rec.continuity && rec.continuity.entry_side) || 'south';
   const DOOR_W = 1.4;
+  const shell = (m) => { m.name = 'roomshell'; return m; };
   const addWall = (cx, cz, w, d, side) => {
-    if (side !== entry) { part(root, box(w, H, d, P.wall), cx, by[0] + H / 2, cz); return; }
+    if (side !== entry) { part(root, shell(box(w, H, d, P.wall)), cx, by[0] + H / 2, cz); return; }
     // Split, and put a lintel over the gap.
     const along = w > d;
     const span = along ? w : d;
     const seg = (span - DOOR_W) / 2;
     for (const s of [-1, 1]) {
       const off = s * (DOOR_W / 2 + seg / 2);
-      part(root, box(along ? seg : w, H, along ? d : seg, P.wall), cx + (along ? off : 0), by[0] + H / 2, cz + (along ? 0 : off));
+      part(root, shell(box(along ? seg : w, H, along ? d : seg, P.wall)), cx + (along ? off : 0), by[0] + H / 2, cz + (along ? 0 : off));
     }
-    part(root, box(along ? DOOR_W : w, H - 2.1, along ? d : DOOR_W, P.wall), cx, by[0] + 2.1 + (H - 2.1) / 2, cz);
+    part(root, shell(box(along ? DOOR_W : w, H - 2.1, along ? d : DOOR_W, P.wall)), cx, by[0] + 2.1 + (H - 2.1) / 2, cz);
     const frame = P.wood;
     part(root, box(along ? DOOR_W + 0.3 : d + 0.1, 0.18, along ? d + 0.1 : DOOR_W + 0.3, frame), cx, by[0] + 2.1, cz);
   };

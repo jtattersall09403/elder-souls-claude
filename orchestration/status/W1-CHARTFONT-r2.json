@@ -1,0 +1,31 @@
+{
+  "task_id": "W1-CHARTFONT-r2",
+  "role": "builder",
+  "status": "in_progress",
+  "started_at": "2026-08-08",
+  "summary": "Wire the last five chart tools carrying the sheared 23-char 5x5 glyph table to tools/lib/chart-font.mjs, regenerate their figures where honest, arm the pre-commit --audit-tree gate, and sweep docs/shots for published damage.",
+  "next_step": "read reports/w1-chartfont-damage.md and orchestration/status/W1-CHARTFONT.json; run --audit-tree BEFORE baseline",
+  "files_touched": [
+    "orchestration/status/W1-CHARTFONT-r2.json"
+  ],
+  "files_claimed": [
+    "tools/analysis/w1-15-r3-chart.mjs",
+    "tools/harness/w1-16-r3-chart.mjs",
+    "tools/world/road-join-chart.mjs",
+    "tools/world/w1-01-r4-crossing-chart.mjs",
+    "tools/audio/critic-w1-22-r2-chart.mjs",
+    ".githooks/pre-commit",
+    "reports/blog-feed.jsonl",
+    "reports/w1-chartfont-r2.md"
+  ],
+  "redundant_with": [],
+  "notes": [
+    "Predecessor piece: W1-CHARTFONT (orchestration/status/W1-CHARTFONT.json, reports/w1-chartfont-damage.md).",
+    "Rule 13 governs step 3: prove --audit-tree silent on the tree, then arm the hook in the SAME commit."
+  ],
+  "audit_tree_before": null,
+  "audit_tree_after": null,
+  "figures_regenerated": [],
+  "figures_left_alone": [],
+  "not_done": []
+}

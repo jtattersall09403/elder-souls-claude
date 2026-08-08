@@ -453,18 +453,31 @@ async function run(h, brk) {
       !(allGreen && forgedReport.places_drawn > honestLive.place_count),
       'a forged map that fills the province must move at least one published number');
 
-    // ---- A12. Is the one trusted field guarded by anything an attacker cannot recompute? -------
-    let sealKind = 'none';
+    // ---- A12. Is the seal an INTEGRITY check or an AUTHENTICITY check? -------------------------
+    // My first version of this check grepped the save manifest for the string "signature" and
+    // PASSED — on `regionSignature`/`focusSignature`, which have nothing to do with saves. An
+    // inert check that passes for the wrong reason is worse than no check, so it is replaced by
+    // two executed arms that distinguish the two properties the word "seal" conflates:
+    //   A12a  edit the sealed bytes WITHOUT resealing -> must be refused (integrity works)
+    //   A12b  reseal the edited blob with the game's own writer -> is it still refused?
+    //         (authenticity — and this is the property that stops a forger)
+    let a12a = null, a12b = null;
     try {
-      const man = JSON.stringify(H.getSaveManifest()).toLowerCase();
-      if (man.includes('hmac')) sealKind = 'hmac';
-      else if (man.includes('signature')) sealKind = 'signature';
-      else if (man.includes('digest') || man.includes('sha256')) sealKind = 'unkeyed-digest';
-    } catch (e) { /* absent */ }
-    A('A12', 'the one field the map trusts is guarded by a check the forger cannot recompute',
-      `save container seal = ${sealKind} (exchange.js computes sha256 over the body; A9 shows the writer will seal a forged blob on request)`,
-      sealKind === 'hmac' || sealKind === 'signature',
-      'a keyed check — an unkeyed digest stops corruption, not forgery');
+      const ex = await import('/game/src/save/exchange.js');
+      const honestBytes = ex.exportSave(honestBlob);
+      const dec = new TextDecoder().decode(honestBytes);
+      const nl = dec.indexOf('\n');
+      const tampered = dec.slice(0, nl + 1) + dec.slice(nl + 1).replace(/"revealed":\s*\d+/, '"revealed":99999');
+      try { H.importSave(new TextEncoder().encode(tampered)); a12a = 'ACCEPTED'; }
+      catch (e) { a12a = 'refused: ' + String(e.message).slice(0, 90); }
+      try { H.importSave(ex.exportSave(forgedAll)); a12b = 'ACCEPTED'; }
+      catch (e) { a12b = 'refused: ' + String(e.message).slice(0, 90); }
+    } catch (e) { a12a = a12b = 'could not run: ' + String(e.message).slice(0, 90); }
+    A('A12a', 'INTEGRITY: bytes edited after sealing must be refused',
+      String(a12a), String(a12a).startsWith('refused'), 'refused — the sha-256 over the body works');
+    A('A12b', 'AUTHENTICITY: a forged blob RESEALED by the game\'s own writer must still be refused',
+      String(a12b), String(a12b).startsWith('refused'),
+      'refused — an unkeyed digest stops corruption, not a forger who can recompute it');
 
     // =========================================================================================
     // Q — "NO API BY WHICH A QUEST COULD TOUCH THE MAP", EXECUTED
@@ -525,13 +538,19 @@ async function run(h, brk) {
       q3err !== null || q3 <= 0, 'refused or inert');
 
     // Q4 — the honest half: the model's OWN surface really does refuse to name a place.
-    const marker = H.tryPlaceMapMarker ? H.tryPlaceMapMarker('lilmoth') : null;
+    // The comparison is BEFORE-vs-AFTER, not "zero". My first version asserted `placeCount === 0`
+    // and went red at 1 — because the default start position is inside Lilmoth's own pad, so the
+    // body legitimately stands in a place before anything is attempted. A fixture that mistakes
+    // the spawn point for an attack is how a false finding gets filed.
+    const q4Before = sim.discovery.places().slice();
+    const marker = H.tryPlaceMapMarker ? H.tryPlaceMapMarker('blackrose') : null;
     const markerWorked = marker && Array.isArray(marker.attempts)
       ? marker.attempts.filter((a) => a.ok === true || a.result === 'installed' || a.result === 'added' || a.result === 'pushed')
       : [];
+    const q4After = sim.discovery.places().slice();
     A('Q4', 'no method ON the model accepts a place — tryPlaceMapMarker tries them all',
-      `attempts=${marker && marker.attempts ? marker.attempts.length : 0}, succeeded=${markerWorked.length}, places after=${sim.discovery.placeCount}`,
-      markerWorked.length === 0 && sim.discovery.placeCount === 0, 'every attempt refused');
+      `attempts=${marker && marker.attempts ? marker.attempts.length : 0}, succeeded=${markerWorked.length}, places [${q4Before.join(',') || 'none'}] -> [${q4After.join(',') || 'none'}]`,
+      markerWorked.length === 0 && q4After.join(',') === q4Before.join(','), 'every attempt refused, the place list unchanged');
 
     // =========================================================================================
     // U — UNDISCOVERED IS UNRENDERED, AT THE RENDERER
@@ -571,31 +590,52 @@ async function run(h, brk) {
     const eSite = siteOf('thorn') || eng.field.sites[0];
     // E3 — BEING TOLD. The quest machine's own place channel (`engine.js:2314` calls
     // `questEngine.learnFrom('place', o.site_mark)` when the player reads a signpost) plus the
-    // topic channel. Neither may put a square on the map.
-    const beforeTold = D.placeCount;
+    // knowledge and topic channels. None of them may put a square on the map.
+    //
+    // THE BASELINE IS TAKEN AFTER STEPPING, and that repair is the point. My first version took it
+    // immediately after `loadState('default')` and watched placeCount go 0 -> 1, which reads
+    // exactly like "being told revealed a place" and is not: the default start position is inside
+    // LILMOTH'S OWN PAD, so the four steps that follow the tells record the ground the body is
+    // already standing on. Filed as written it would have been a false finding about the build.
+    step(4);                                    // let the spawn cell register FIRST
+    const beforeTold = D.places().slice();
     const toldAttempts = [];
     const tryTell = (label, fn) => { try { fn(); toldAttempts.push(`${label}: ran`); } catch (e) { toldAttempts.push(`${label}: threw`); } };
     tryTell("questEngine.learnFrom('place', site)", () => eng.questEngine.learnFrom('place', eSite.id));
     tryTell('setWorldKnowledge', () => H.setWorldKnowledge && H.setWorldKnowledge({ places: [eSite.id] }));
     tryTell('learnTopic', () => H.learnTopic && H.learnTopic(eSite.id));
     step(4);
-    const afterTold = D.placeCount;
+    const afterTold = D.places().slice();
     A('E3', 'being TOLD about a place must not put a square on the map',
-      `placeCount ${beforeTold} -> ${afterTold} after [${toldAttempts.join('; ')}]`,
-      afterTold === beforeTold, 'unchanged');
+      `places [${beforeTold.join(',') || 'none'}] -> [${afterTold.join(',') || 'none'}] after [${toldAttempts.join('; ')}] (baseline taken AFTER the spawn cell registered)`,
+      afterTold.join(',') === beforeTold.join(','), 'unchanged');
     walkTo(eSite.x, eSite.z);
     const stE = openMap();
     const eSquares = stE.elements.filter((e) => e.kind === 'map_place' && e.id !== 'map.naming');
     const eNaming = stE.elements.find((e) => e.id === 'map.naming');
+    const eMapRep = stE.map;
     H.closeMenu();
     const ids = eSquares.map((e) => e.meta.place);
     A('E4', 'ONE square per place personally stood in, and no duplicates',
       `squares=${eSquares.length} discovered=${D.placeCount} unique ids=${new Set(ids).size} [${ids.join(',')}]`,
       eSquares.length === D.placeCount && new Set(ids).size === eSquares.length, 'equal, unique');
-    const ePoi = pois.find((p) => p.id === eSite.id);
-    A('E5', "the name is the PLACE's name from world data, not a quest string",
-      `naming="${eNaming ? eNaming.text : '(none)'}" pois.name="${ePoi ? ePoi.name : '?'}"`,
-      !!eNaming && !!ePoi && eNaming.text === ePoi.name, 'identical');
+    // The naming element names `places[placeIdx]`, which is the FIRST place discovered until the
+    // stick is moved — Lilmoth, from the spawn — not the place last walked into. Asserting it must
+    // say "Thorn" was a bug in this instrument, not a finding. The property S35 actually requires
+    // is that whatever it names, the string is that place's own name out of `pois.json`.
+    const namedId = eNaming ? eNaming.meta.place : null;
+    const ePoi = pois.find((p) => p.id === namedId);
+    const poiNames = new Set(pois.map((p) => p.name));
+    A('E5', "the name is the named PLACE's own name from pois.json, not a quest string",
+      `naming="${eNaming ? eNaming.text : '(none)'}" names place "${namedId}" whose pois.name is "${ePoi ? ePoi.name : '?'}"`,
+      !!eNaming && !!ePoi && eNaming.text === ePoi.name && poiNames.has(eNaming.text),
+      'identical to that place\'s world-data name');
+    A('E6', 'S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity',
+      `markers=${eMapRep.markers} routes=${eMapRep.routes_drawn} numerals=[${eMapRep.numeric_text.join(',') || 'none'}] travel=[${eMapRep.travel_affordances.join(',') || 'none'}] quest_bearing=[${eMapRep.quest_bearing_elements.join(',') || 'none'}] reachable_from_journal=${eMapRep.reachable_from_journal}`,
+      eMapRep.markers === 0 && eMapRep.routes_drawn === 0 && eMapRep.numeric_text.length === 0
+      && eMapRep.travel_affordances.length === 0 && eMapRep.quest_bearing_elements.length === 0
+      && eMapRep.reachable_from_journal === false,
+      'all zero and no "show on map" route from the journal');
 
     // =========================================================================================
     // G — CONSUMPTION (RI-MTH07)
