@@ -15,6 +15,15 @@ import { detailAt, noise2, clamp, smoothstep, lerp } from './noise.js';
 import { MicroField } from './microrelief.js';
 import { SkinField } from './groundskin.js';
 
+/**
+ * How far below a deck the CARRIAGEWAY may be and still count as the road rather than as air, for
+ * the purpose of `clampToDeck` letting a body off the side. See the long note in that function:
+ * `traversal.json` gives `step_up_m` 0.55, an airborne threshold of 0.35 and `fall.safe_m` 4, so a
+ * metre is a kerb by all three and a viaduct is not. Made a named constant rather than a literal
+ * because it is the one number in this file a reader will want to argue with.
+ */
+const PARAPET_KERB_M = 1.0;
+
 const BANDS = [
   { id: 'W0', name: 'DRY', min: 0.00 },
   { id: 'W1', name: 'FILM', min: 0.01 },
@@ -465,6 +474,44 @@ export class WorldField {
       const L = Math.hypot(dx, dz) || 1;
       const across = Math.abs((x - toSeg.ax) * (-dz / L) + (z - toSeg.az) * (dx / L));
       if (across <= lim) return null;
+    }
+    // ---- THE PARAPET MAY NOT STAND BETWEEN A BODY AND ITS OWN ROAD ---------------------------
+    //
+    // W1-CROSSING round 2. `stormhold-helstrom` walks FORWARDS in 2,784.8 m and BACKWARDS walks
+    // 3,393.7 m of the same 2,827.9 m leg and never arrives — pinned at (2298.8, 1842.7) with
+    // `onRoad` true, `onDeck` true, the slope gate never firing, no water, no fall, no teleport.
+    // The steering is innocent: `_pursue` transcribed and driven with no world under it walks this
+    // leg in BOTH directions (`tools/world/w1-crossing-r2-pursue-sim.mjs`). What holds the body is
+    // this function.
+    //
+    // The leg hairpins at point 120, and the 13 m viaduct on segment 120-121 begins AT the apex.
+    // Near any corner the two limbs are within a slab's width of each other, so the deck's slab
+    // lies over the earth approach — and a body walking the approach is "on the deck" as far as
+    // the test above is concerned, at t = 0.37, which is neither end of the chain. Every step it
+    // takes toward its own road reads as a step over the SIDE and is put back. There is no fix for
+    // this in the road geometry: near a corner the limbs are ALWAYS close, whatever the turn.
+    //
+    // So the question the last test asks is wrong. "Off the side" is supposed to mean *into air*.
+    // Measured one metre off the slab edge here, the carriageway continues at 80.07 against a
+    // deck at 80.83 — a **0.76 m kerb**, with `onRoadAt` true. That is not a fall off a viaduct,
+    // it is stepping down off a kerb onto the road, and the railing has no business there.
+    //
+    // The exemption is deliberately narrow and both halves are load-bearing:
+    //   * `onRoadAt(x, z)` — the destination is CARRIAGEWAY. Off the side of the 471 m viaduct on
+    //     the Valus Ridge there is no road at all, so this is false and the parapet holds.
+    //   * the drop to the ROAD SURFACE WITHOUT THE DECK (`naturalHeightAt`: terrain, sites and the
+    //     road corridor, no slab, no signature landform) is under `PARAPET_KERB_M`. Against the
+    //     game's own numbers: `traversal.json step_up_m` is 0.55, the body goes airborne at 0.35
+    //     above the ground, and `fall.safe_m` is 4 — so a metre is a kerb by every one of them,
+    //     and a viaduct standing 5 m or 50 m proud is not.
+    // Where a slab really is laid over a lower carriageway — the overpass this round removed from
+    // `roads.json` — the drop is 6.99 m and this exemption does NOT fire, so the two fixes do not
+    // cover for one another.
+    if (this.onRoadAt(x, z)) {
+      const dxo = onSeg.bx - onSeg.ax, dzo = onSeg.bz - onSeg.az;
+      const to = clamp(((px - onSeg.ax) * dxo + (pz - onSeg.az) * dzo) / ((dxo * dxo + dzo * dzo) || 1), 0, 1);
+      const deckY = lerp(onSeg.ay, onSeg.by, to);
+      if (deckY - this.naturalHeightAt(x, z) <= PARAPET_KERB_M) return null;
     }
     return [toN.cx + (x - toN.cx) / toD * lim, toN.cz + (z - toN.cz) / toD * lim];
   }

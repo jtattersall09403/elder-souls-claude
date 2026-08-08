@@ -601,9 +601,27 @@ export class UISystem {
     if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode && this.lastTouchSig === sig) return;
     const S = this.S;
     S.begin();
+    // THE TITLE SCREEN IS NOT A WORLD AND THERE IS NOBODY TO HAVE A HEALTH BAR.
+    //
+    // W1-26 r2 §6 named this and r3 did not touch it; the r3 critic put a picture of it in the
+    // verdict (§7 G5) and it is the FIRST thing a new player sees. The drawn-string list of a
+    // fresh `./play.sh` launch opened `'5'`, `'LIGHT'`, `'Spark-Da…'` — a stranger's purse, a
+    // stranger's roll class and a stranger's equipped spell, painted over the title before any
+    // character exists. Every one of those numbers is `sim.player`'s boot defaults, so they are
+    // not merely premature, they are about a person the player has not made yet.
+    //
+    // Suppressed HERE, inside `build()`, and not at the renderer's composite call, because
+    // `Engine.getUIState()` calls `this.ui.build(ctx, false)` directly — every probe in the tree
+    // reads the HUD through that door, and a gate on the composite would have left the strings in
+    // `render/text-register.js` and in `getUIState().hud_elements` while removing them from the
+    // frame. That is the divergence between intention and paint this whole area exists to catch.
+    //
+    // `hudSuppressed` is reported by `state()` so the absence is legible as a decision rather
+    // than as an empty result — an empty result and a clean result must never be the same value.
+    this.hudSuppressed = !!ctx.titleShown;
     // The HUD is drawn in the world and behind a menu, exactly as Souls does: opening the
     // inventory mid-fight does not hide your health.
-    drawHUD(S, this._hudModel(ctx));
+    if (!this.hudSuppressed) drawHUD(S, this._hudModel(ctx));
     // The screen's translucency is applied ONCE, over the screen's own rectangle, after it is
     // drawn — see UISurface.beginScreen(). The HUD is drawn first and outside that rectangle,
     // so opening the inventory mid-fight dims the screen and not your health bar.
@@ -1078,6 +1096,11 @@ export class UISystem {
       elements: els.map((e) => ({ ...e })),          // RENDER ORDER PRESERVED — RI-UIX04 JU2
       coveragePct: +((nonWorld / (S.W * S.H)) * 100).toFixed(4),
       hud: {
+        // W1-26 r4 / r3 §7 G5. True while the title surface is up, when the HUD is deliberately
+        // not drawn at all. A reader seeing `total_count: 0` must be able to tell "suppressed on
+        // purpose" from "the HUD has stopped working".
+        suppressed: !!this.hudSuppressed,
+        suppressed_because: this.hudSuppressed ? 'the title surface is shown — there is no character yet' : null,
         persistent_count: hud.filter((e) => persistent.has(e.kind) && e.visible).length,
         total_count: hud.filter((e) => e.visible).length,
         coverage_pct: +((hudUnion / (S.W * S.H)) * 100).toFixed(4),

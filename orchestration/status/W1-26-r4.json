@@ -3,23 +3,40 @@
   "role": "builder",
   "item": "W1-26 (the opening)",
   "spec": "corpus/90-verdicts/wave1/W1-26-r3.md",
-  "state": "starting",
+  "state": "building",
   "started_at": "2026-08-08",
-  "next_step": "read RULES/INDEX/NEXT-DISPATCH/verdict, locate Engine.bodyRace, P9, m4_clause1",
-  "objectives": [
-    "1. Engine.bodyRace() unknown race must fail loudly at observation, naming the id (prove on altmer + a nonexistent race)",
-    "2. Rewrite P9 to test signposting not imperative grammar; prove red on 6 polite forms + writ.stamp teaching clause; keep or defend the clause",
-    "3. m4_clause1: invert driver-paced threshold into a still-driver build bound",
-    "4. Fix engine comment naming _playerGates()/reactionTo() (neither exists); _talkPlayer() is real; decide whether race consumption is real",
-    "5a. world_was_running: steps.some(...) misreads a stopped world",
-    "5b. HUD painted on title screen"
+  "next_step": "run tools/w1-26-r4/w1-26-r4-verify.mjs in a browser (gate GO), then blog line + shot + commit",
+  "contention": "gate exit 3 (WAIT) at start — all source work done offline first; re-gated GO (2 instances, 1.11/core) before browser work. One browser, kept.",
+  "done": [
+    "1. Engine.bodyRace() now THROWS on a race races.json does not carry, naming the id and the known ids. Split: _bodyRaceRaw() is the non-throwing read for accessors. getCensusState() reports body_race / body_race_raw / body_race_fault. A body with NO race is still null (declared boundary: it is the standing control arm of census-newgame.mjs and w1-26-r3-verify.mjs A4).",
+    "2. P9 rewritten. tools/journey/signposting.mjs: two clauses (instruction, budget 0 everywhere; wayfinding, budget = a DECLARED list of sentences each with a written reason, each of which must be drawn on a dialogue surface). --self-test proves it RED on all 7 of the r3 verdict's polite forms (round 3's regex: 1/7) and on the writ.stamp teaching clause, GREEN on imperatives that teach nothing and point nowhere.",
+    "2b. writ.stamp teaching clause 'So ask them what they do, and what is being said here.' CUT from game/data/dialogue/topics/writ-house.json, with the reason recorded in the node.",
+    "3. m4_clause1 inverted into a still-driver build bound. journey-run.mjs holds the driver still for 3600 sim frames from first control and asserts no character-field-writing event fires. m4StillClause1() is pure + exported; 7 new Node-side self-test rows including the teardown watched red. driver_paced interval kept INSIDE the row, labelled, no longer its own ok row beside threshold_s.",
+    "4. censusBegin comment fixed: _playerGates()/reactionTo() do not exist; the real path is _talkPlayer() -> topicsFor() (topic-supply.js requires/forbids.race) and npcDisposition() -> derivedDisposition()/raceTerm() (disposition.js).",
+    "5a. opening-play.mjs walkTo(): world_was_running now computed over the STUCK steps only, with stuck_steps / frames_advanced_on_stuck_steps beside it and null for 'no stuck step, question does not arise'.",
+    "5b. HUD suppressed while the title surface is shown. Gated inside ui/system.js build() (not at the composite) because getUIState() calls build() directly. state().hud.suppressed reports it."
   ],
   "not_mine": [
-    "jrn09-exchange.mjs re-run (another critic will do it)"
+    "jrn09-exchange.mjs re-run — the r3 critic flagged loudly that it did not re-run it; another critic will."
   ],
   "files_touched": [
-    "orchestration/status/W1-26-r4.json"
+    "orchestration/status/W1-26-r4.json",
+    "game/src/engine.js",
+    "game/src/ui/system.js",
+    "game/data/dialogue/topics/writ-house.json",
+    "tools/journey/signposting.mjs",
+    "tools/journey/opening-play.mjs",
+    "tools/journey/journey-run.mjs"
   ],
-  "files_claimed": [],
-  "notes": []
+  "files_claimed": [
+    "tools/w1-26-r4/",
+    "reports/w1-26-r4/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "redundant_with": [],
+  "notes": [
+    "game/src/engine.js is touched by a dozen live pieces; edits are confined to bodyRace/_bodyRaceRaw, the censusBegin comment, getCensusState's body_race rows and one _uiCtx field.",
+    "reports/blog-feed.jsonl is append-only."
+  ]
 }

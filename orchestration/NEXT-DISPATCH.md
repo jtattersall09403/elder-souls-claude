@@ -267,6 +267,16 @@ is half of a registered contradiction pair. Not crowding (2.60 m separation hold
 --check`, `boot-check`, the reach test and two purpose-built instruments are **all green on it**.
 **4 is a lower bound: 77 rooms were not walked.**
 
+**Q15. Five of the six enchanter posts are unreachable on foot** — 6.17 to 49.57 m short, every
+one of them `stuck`. Only Lilmoth arrives. Found by the magic round while walking to its own
+spellwrights; not its file to fix. Any piece that places a person and expects a player to reach them
+should walk to them, not measure the distance.
+
+**Q16. `on_strike` and `constant` enchantments are made, saved, and read by nothing** — declared in
+the data *and* spoken by the enchanter before she takes your money. That is worse than a dead model:
+the world tells the player it will happen. Same shape as `deceit.revealed_by`'s 186 authored rows,
+except a character says this one out loud.
+
 **Q14. `W1-05` is unblocked — stop testing the drowning.** `soulrest-blackrose` was walked in
 **both directions, both arrived, deepest water 0.00 m**. Four sessions and three independent
 attempts died on that leg; the wall was the first cause and the steering was the second, and both

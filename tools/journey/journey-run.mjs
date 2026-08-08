@@ -598,6 +598,8 @@ async function runJourney() {
     const driverEvents = [];
     let firstInputDriverFrame = null;
     let firstControlDriverFrame = null;
+    // W1-26 r4 — the still-driver window. See `--still-frames` and `m4StillClause1()`.
+    let stillWindow = null;
 
     const frameNow = async () => {
       const s = await handle.hOpt('getFrame');
@@ -612,6 +614,12 @@ async function runJourney() {
       onEvent: (e) => driverEvents.push(e),
       onFirstInput: async () => { firstInputDriverFrame = await frameNow(); },
       onFirstControl: async () => { firstControlDriverFrame = await frameNow(); },
+      onStillWindow: (w) => { stillWindow = w; },
+      stillFrames: args['still-frames'] === undefined ? 3600 : Math.max(0, Math.round(Number(args['still-frames']))),
+      // The teardown for `m4_clause1`. Opens the creation surface in the middle of the window
+      // where nothing is supposed to ask anything, which is the build defect the row exists to
+      // catch. The row must go red under it (rule 6: a control never seen fail is not a control).
+      stillFireAField: !!args['still-fire-a-field'],
       onUISample: async (phase) => { uiStream.push({ frame: await frameNow(), phase, ...(await sampleUIText(handle)) }); },
       led, absentAmendments,
       frames: Number(args['duration-min']) ? Math.round(Number(args['duration-min']) * 60 * 60) : J.frames,
@@ -674,26 +682,27 @@ async function runJourney() {
     }
 
     // M4 clause 1 — the >= 60 s bar nobody has ever measured.
+    //
+    // W1-26 r4: THE BAR IS NOW BOUNDED BY THE BUILD AND NOT BY THIS LOOP'S PATIENCE. See the
+    // still-driver window in `driveBeats` for the argument in full. The driver-paced interval is
+    // still computed and still reported — inside this row, as `driver_paced_interval`, clearly
+    // labelled as a number about the driver — but it is no longer what the row passes or fails
+    // on and no longer occupies a ledger id of its own beside a `threshold_s` it was never
+    // measured against.
     const fcFrame = fcTrace ? fcTrace.frame : firstControlDriverFrame;
-    const m4 = m4Clause1(traceRecords, fcFrame);
+    const m4 = m4StillClause1(traceRecords, stillWindow, 60);
+    const interval = m4Clause1(traceRecords, fcFrame);
     if (m4.status === 'measured') {
-      led.ok('m4_clause1', 'control precedes definition (seconds of available play)', {
+      led.ok('m4_clause1', 'nothing defines the player while the player does nothing', {
         ...m4.value,
-        // WHAT THIS NUMBER IS A NUMBER ABOUT. It was `unmeasurable` for two waves and is
-        // measurable for the first time at W1-26 r3, so the first reader of it deserves the
-        // caveat rather than the trap: the opening's first node hands the body back and asks
-        // NOTHING until the player walks over and speaks to Jeeh-Ei. So "available play before
-        // the first character-defining field" is bounded by how long the DRIVER chooses to be a
-        // body, and this driver reaches for her immediately. A low value here is this loop's
-        // impatience; it is not evidence that the build asks early. The piece's own probe
-        // (`tools/harness/w1-26-opening.mjs`) plays the opening at a human pace and measures the
-        // same interval at 61.5 s, and the two do not disagree — they are asking different
-        // questions of the same graph.
-        note: 'bounded by how long THIS DRIVER waited before reaching for the speaker, not by when the build first asks; hold.come-to asks nothing until the player acts',
-        driver_paced: true,
+        bound_by: 'the build',
+        driver_paced_interval: interval.status === 'measured'
+          ? { ...interval.value, threshold_s: undefined, is_about: 'THIS DRIVER, not the build — it is how long this loop waited before reaching for the speaker. Reported for continuity with round 3, which published it as the row itself.' }
+          : { status: interval.status, why: interval.why },
       });
+    } else {
+      led.unmeasurable('m4_clause1', 'nothing defines the player while the player does nothing', m4.why, 'A-JRN1/A-JRN7');
     }
-    else led.unmeasurable('m4_clause1', 'control precedes definition', m4.why, 'A-JRN1/A-JRN7');
 
     // --- the UI-text stream, and the accessor demonstration ---------------------------------
     const streamPath = path.join(outDir, 'ui-text.jsonl');
@@ -965,6 +974,61 @@ async function driveBeats(handle, o) {
       gControl.ok ? 'the build' : 'the leg that left a screen open');
   }
   await o.onUISample('after-first-control');
+
+  // --- M4 CLAUSE 1, AS A PROPERTY OF THE BUILD: HOLD THE DRIVER STILL ---------------------
+  //
+  // W1-26 r4, on the r3 verdict §6. Round 3 published `m4_clause1 = 1.03 s` through `led.ok()`,
+  // beside its own `threshold_s: 60`, with `driver_paced: true` and a careful prose note. Three
+  // things were wrong with that and only the third is subtle:
+  //
+  //   1. a row reading `ok`, `1.03`, `>= 60` will be read as a build failing its clause sixty to
+  //      one, and the sentence that prevents the misreading lives in a sibling field;
+  //   2. it was a `measured` row for a number that is not about the build at all;
+  //   3. `driver_paced: true` was a field written and never read back — rule 7's exact shape. The
+  //      first tool that counts `m4_clause1` rows would have counted this one.
+  //
+  // The clause is *"the player has control for >= 60 s before anything defines them"*. Measured
+  // from a driver that walks straight over to the speaker, the interval is bounded by THE
+  // DRIVER'S PATIENCE, because `hold.come-to` asks nothing until the player acts. So it is
+  // inverted, exactly as the verdict prescribes: **press nothing** for 60 s of SIMULATED time
+  // from first control, and assert that no character-field-writing event appears on its own.
+  //
+  // That is decidable, needs no wall clock, is a property of the graph rather than of this loop,
+  // and it CAN FAIL: a build that put a timeout on the hold node, or opened the census on a
+  // trigger volume, or emitted a `creation_field` from a boot task, fires it. The teardown that
+  // proves so is `--still-fire-a-field`, which asks the harness to open the census in the middle
+  // of the window; the assertion must go red under it or it is not an assertion.
+  const stillFrames = Number.isFinite(o.stillFrames) ? o.stillFrames : 3600;
+  if (stillFrames > 0) {
+    const stillFrom = await frameNow();
+    // Chunked so a browser under load is never asked for 3600 frames in one round trip, and so a
+    // half-completed window still reports the frames it really advanced rather than the frames it
+    // asked for. A window that did not advance is `unmeasurable`, never a pass.
+    const CHUNK = 600;
+    for (let done = 0; done < stillFrames; done += CHUNK) {
+      await handle.h('stepFrames', Math.min(CHUNK, stillFrames - done));
+      if (o.stillFireAField && done === 0) {
+        // THE TEARDOWN. A field-writing surface opening while the driver is motionless — which is
+        // precisely the build defect this row exists to catch. The assertion must go red.
+        await handle.hOpt('censusBegin', {});
+      }
+    }
+    const stillTo = await frameNow();
+    const window = {
+      from_frame: stillFrom,
+      to_frame: stillTo,
+      frames_advanced: Number.isFinite(stillFrom) && Number.isFinite(stillTo) ? stillTo - stillFrom : null,
+      frames_requested: stillFrames,
+      // Nothing was dispatched. This is the field the whole row rests on and it is stated rather
+      // than implied: no key, no tap, no pad button and no harness mutator between the two
+      // frames above, except under `--still-fire-a-field`, which says so in `teardown`.
+      inputs_dispatched: 0,
+      teardown: !!o.stillFireAField,
+    };
+    window.seconds_still = Number.isFinite(window.frames_advanced) ? +(window.frames_advanced / 60).toFixed(2) : null;
+    await record('still_window', { from: stillFrom, to: stillTo, frames: window.frames_advanced });
+    if (o.onStillWindow) o.onStillWindow(window);
+  }
 
   // --- the census / creation surface ------------------------------------------------------
   const censusOpened = await (async () => {
@@ -1391,6 +1455,62 @@ export function m4Clause1(traceRecords, fcFrame) {
           `readable frame (got ${JSON.stringify(firstDefining.frame)})` };
 }
 
+/**
+ * `RI-JRN01` M4 clause 1, **as a property of the build** — W1-26 r4, on the r3 verdict §6.
+ *
+ * The clause is *"the player has control for >= 60 s before anything defines them"*. Measured as
+ * an interval from a driver that walks straight over to the speaker, it is a measurement of the
+ * driver: `hold.come-to` asks nothing at all until the player acts, so the number is bounded by
+ * how long the loop chose to stand about. Round 3 published 1.03 s through `led.ok()` beside its
+ * own `threshold_s: 60`, with the disclaimer in a sibling field.
+ *
+ * Inverted here. The driver is held still for `window.frames_advanced` frames from first
+ * control, and the assertion is that **no character-field-writing event appears** in that window
+ * — no `creation_field`, no census `dialogue_open`. That is decidable, it is about the graph and
+ * not about this loop, it needs no wall clock, and it fails on a build that opens creation on a
+ * timeout or a trigger. `--still-fire-a-field` is the teardown that proves so.
+ *
+ * Pure and exported so the falsification runs Node-side, on a synthetic trace, with no browser.
+ */
+export function m4StillClause1(traceRecords, window, thresholdS = 60) {
+  if (!window) {
+    return { status: 'unmeasurable', why: 'no still-driver window was run (see --still-frames); '
+      + 'the driver-paced interval is NOT a substitute — it measures this loop, not the build' };
+  }
+  if (!Number.isFinite(window.frames_advanced) || window.frames_advanced <= 0) {
+    return { status: 'unmeasurable', why: `the still window advanced ${JSON.stringify(window.frames_advanced)} `
+      + `frames of ${window.frames_requested} requested — a window that did not run is not a pass` };
+  }
+  const seconds = window.frames_advanced / 60;
+  const defining = [];
+  for (const r of traceRecords || []) {
+    for (const e of (r && r.events) || [r]) {
+      if (!e) continue;
+      const f = eventFrameOf(e, r);
+      if (!Number.isFinite(f) || f < window.from_frame || f > window.to_frame) continue;
+      if (e.type === 'creation_field') defining.push({ frame: f, event: 'creation_field', field: e.field || null });
+      else if (e.type === 'dialogue_open' && e.scene === 'census') defining.push({ frame: f, event: 'dialogue_open(census)' });
+    }
+  }
+  const longEnough = seconds >= thresholdS;
+  return { status: 'measured', value: {
+    seconds_still: +seconds.toFixed(2),
+    threshold_s: thresholdS,
+    frames_still: window.frames_advanced,
+    inputs_dispatched: window.inputs_dispatched,
+    from_frame: window.from_frame, to_frame: window.to_frame,
+    field_writing_events: defining,
+    teardown: !!window.teardown,
+    pass: longEnough && defining.length === 0,
+    why: !longEnough
+      ? `the still window was only ${seconds.toFixed(2)} s of simulated time, short of the ${thresholdS} s bar`
+      : defining.length
+        ? `${defining.length} character-field-writing event(s) fired while the driver pressed nothing: `
+          + defining.map((d) => `${d.event}@${d.frame}`).join(', ')
+        : `${seconds.toFixed(2)} s of simulated time with nothing dispatched, and the build asked nothing`,
+  } };
+}
+
 async function selfTest() {
   const lines = [];
   let failed = 0;
@@ -1473,6 +1593,49 @@ async function selfTest() {
       m.status === 'measured' && m.value.seconds === 81.32,
       `seconds=${m.value && m.value.seconds} — the repair reads both dialects, it does not ` +
       'swap one hard-coded key for another');
+  }
+
+  // R4-5 (W1-26 r4). THE STILL-DRIVER BOUND, and both of its arms. `m4StillClause1` is the row
+  // that replaces the driver-paced interval, and a row that can only pass is not a row.
+  {
+    const still = { from_frame: 200, to_frame: 3800, frames_advanced: 3600, frames_requested: 3600, inputs_dispatched: 0, teardown: false };
+    const quiet = [
+      { f: 121, events: [{ f: 121, type: 'first_control', device: 'keyboard' }] },
+      { f: 900, events: [{ f: 900, type: 'step' }] },
+    ];
+    const a = m4StillClause1(quiet, still, 60);
+    ok('R4: still-driver — 60 s of simulated time, nothing pressed, nothing asked: PASS',
+      a.status === 'measured' && a.value.pass === true && a.value.seconds_still === 60,
+      `${a.value && a.value.seconds_still}s still, ${a.value && a.value.field_writing_events.length} field-writing event(s)`);
+
+    // THE TEARDOWN, watched red. A build that opens creation while the player presses nothing.
+    const asks = quiet.concat([{ f: 2400, events: [{ f: 2400, type: 'creation_field', field: 'name' }] }]);
+    const b = m4StillClause1(asks, { ...still, teardown: true }, 60);
+    ok('R4: still-driver TEARDOWN — a creation_field inside the window turns the row RED',
+      b.status === 'measured' && b.value.pass === false && b.value.field_writing_events.length === 1,
+      b.value && b.value.why);
+    const censusAsks = quiet.concat([{ f: 2400, events: [{ f: 2400, type: 'dialogue_open', scene: 'census' }] }]);
+    const c = m4StillClause1(censusAsks, still, 60);
+    ok('R4: and so does a census dialogue_open — both field-writing shapes are caught',
+      c.status === 'measured' && c.value.pass === false, c.value && c.value.why);
+
+    // A defining event OUTSIDE the window must NOT fire it, or the row is just `m4Clause1` again
+    // wearing a new name and every journey that ever reaches the desk fails it.
+    const later = quiet.concat([{ f: 9000, events: [{ f: 9000, type: 'creation_field', field: 'name' }] }]);
+    ok('R4: a creation_field AFTER the window is not a failure — the window is the claim',
+      m4StillClause1(later, still, 60).value.pass === true, 'frame 9000 is outside [200,3800]');
+
+    // And a window that did not run is UNMEASURABLE, never a pass. This is the shape that would
+    // otherwise ship a green row on a browser that died before it stepped.
+    ok('R4: a still window that advanced 0 frames is UNMEASURABLE, not a pass',
+      m4StillClause1(quiet, { ...still, frames_advanced: 0 }, 60).status === 'unmeasurable',
+      'a window that did not run is not evidence');
+    ok('R4: no still window at all is UNMEASURABLE and says the interval is no substitute',
+      m4StillClause1(quiet, null, 60).status === 'unmeasurable' &&
+      /NOT a substitute/.test(m4StillClause1(quiet, null, 60).why), 'named');
+    ok('R4: a window shorter than the bar is a FAIL, not a quiet pass',
+      m4StillClause1(quiet, { ...still, frames_advanced: 600, to_frame: 800 }, 60).value.pass === false,
+      '10 s of stillness does not clear a 60 s bar');
   }
 
   // The browser half. If the engine cannot boot — which happens on this tree while other agents

@@ -42,7 +42,14 @@ right now). Between these two you should not need to go looking for anything.
      under test and confirm the control arm goes red** — a control you have never seen fail is not
      evidence, it is a second copy of the experiment.
 
-   A third shape exists and is not either of these: **two guards for one defect**, where deleting
+   - **An inert fix that improves the number** — the most dangerous of the three, because every
+     signal says it worked. A magic round's first lead-the-target fix computed `p0[2]` on a planar
+     pair, got `NaN`, and fell silently back to pure pursuit — and the miss distance went from
+     0.89 m to 0.19 m. It was caught only by a frame-by-frame diagnostic, because a number moving
+     the right way is not evidence that your change is what moved it. **Check the code you wrote
+     actually executed**, not just that the measurement improved.
+
+   A fourth shape exists and is not any of these: **two guards for one defect**, where deleting
    either alone changes nothing and only deleting both moves the number. Honest reporting of it
    looks exactly like an inert fix, so say which you have when you report it (see
    `corpus/90-verdicts/wave1/W1-SOULS-r3.md`, run as a 2×2).

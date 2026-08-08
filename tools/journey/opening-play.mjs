@@ -28,8 +28,10 @@
 //   P6  nothing has asked the player who they are yet            RI-JRN01 O6 / How-we-lose #5
 //   P7  the scene begins when the player reaches for a person    RI-JRN01 O6
 //   P8  a character-defining answer can be given by key alone     RI-JRN09 M1 / RI-JRN01 O17
-//   P9  no drawn string in the whole run tells the player what to do
-//                                                                RI-JRN01 M9 (AR-2), HF3
+//   P9  nothing drawn instructs the player, and every string that hands them a route is
+//       one of a declared, defended handful spoken by a person   RI-JRN01 M9 (AR-2), HF3
+//       (W1-26 r4: see tools/journey/signposting.mjs. Until r4 this was one START-ANCHORED
+//        regex, which the r3 verdict §5 measured at 1 of 7 on lines that all signpost.)
 //
 // It exits non-zero when any of them fails, and `--red-team=<mode>` proves that it can:
 //   --red-team=deaf     swallow every keydown before `input/real.js` sees it. P3 must go red.
@@ -49,6 +51,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, writeJson, REPO_ROOT, REPORTS_DIR, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
+import { judge, DECLARED_WAYFINDING } from './signposting.mjs';
 
 const USAGE = `
 opening-play.mjs — play the opening through real input only, in play mode, with no flags.
@@ -466,18 +469,47 @@ try {
     allText.push({ beat: 'red-team', text: 'Press E to talk to her', surface: 'menus', clipped: false });
   }
   const distinct = [...new Set(allText.map((e) => e.text))];
-  const instructions = distinct.filter((s) => IMPERATIVE.test(s.trim()) || EXPLAINS.test(s));
+  // W1-26 r4 — P9 NOW TESTS WHAT ITS OWN HEADER CLAIMS.
+  //
+  // Until this round P9 was one start-anchored regex, and the r3 verdict §5 ran it against seven
+  // lines that all mean *go up the ladder*: it caught the one that began with "Go" and passed the
+  // other six. It also passed `writ.stamp`'s *"So ask them what they do, and what is being said
+  // here."* — the sentence the ROUND-2 verdict had already named as the opening's one tutorial,
+  // still drawn at round 3. A green P9 was therefore evidence about the imperative mood and was
+  // being read as evidence about wayfinding, which is the doctrine it cites.
+  //
+  // `tools/journey/signposting.mjs` replaces it with two clauses — instruction (budget zero,
+  // everywhere) and wayfinding (budget: a DECLARED list of sentences, each with a written reason,
+  // each of which must have been drawn on a surface a person speaks through). Run
+  // `node tools/journey/signposting.mjs --self-test` to see it red on all seven of the critic's
+  // lines and on the teaching clause, and green on imperatives that teach nothing and point
+  // nowhere ("Do not lose it.") — which is the difference between a signposting check and a ban
+  // on the imperative mood.
+  //
+  // The old regexes are kept and reported ALONGSIDE, unused for the verdict, so that the exact
+  // number this check used to publish stays visible next to the number it publishes now.
+  const bySurface = new Map();
+  for (const e of allText) if (!bySurface.has(e.text)) bySurface.set(e.text, e.surface || 'unknown');
+  const entries = distinct.map((t) => ({ text: t, surface: bySurface.get(t) || 'unknown' }));
+  const verdict = judge(entries);
+  const oldRegexHits = distinct.filter((s) => IMPERATIVE.test(s.trim()) || EXPLAINS.test(s));
   out.checks.explanation = {
     distinct_strings_drawn: distinct.length,
-    instruction_like: instructions,
-    count: instructions.length,
-    patterns: { imperative: String(IMPERATIVE), explains: String(EXPLAINS) },
+    signposting: verdict,
+    declared_wayfinding: DECLARED_WAYFINDING,
+    round3_regex_for_comparison: {
+      hits: oldRegexHits, count: oldRegexHits.length,
+      patterns: { imperative: String(IMPERATIVE), explains: String(EXPLAINS) },
+      note: 'start-anchored; the r3 verdict §5 measured it at 1 of 7 on lines that all signpost. '
+        + 'Reported for continuity with rounds 2-3 and NOT used for the P9 verdict.',
+    },
   };
   out.all_drawn_strings = distinct;
-  if (instructions.length === 0) {
-    pass('P9', `${distinct.length} distinct strings drawn across the whole opening, none of them an instruction`, { distinct: distinct.length });
+  if (verdict.ok) {
+    pass('P9', `${distinct.length} distinct strings drawn across the whole opening: ${verdict.why}`,
+      { distinct: distinct.length, declared_wayfinding_drawn: verdict.wayfinding_declared.length });
   } else {
-    fail('P9', `${instructions.length} drawn string(s) tell the player what to do: ${instructions.map((s) => JSON.stringify(s)).join(', ')}`, out.checks.explanation);
+    fail('P9', `the opening explains itself or signposts: ${verdict.why}`, out.checks.explanation);
   }
 
   out.conditions.loadavg_at_end = loadavg();
@@ -583,6 +615,49 @@ async function walkTo(handle, target, advance, pos) {
     // a world that advanced no frames is a STOPPED WORLD, and calling it geometry sends the next
     // builder to look at the crates.
     frames_advanced_total: steps.reduce((a, s) => a + (s.frames_advanced || 0), 0),
-    world_was_running: steps.some((s) => (s.frames_advanced || 0) > 0),
+    // W1-26 r4, and this is the r3 verdict §4's one-word remedy taken literally.
+    //
+    // Round 3 published `world_was_running: steps.some((s) => (s.frames_advanced||0) > 0)`.
+    // **`some`.** A walk that runs for three steps and then meets a paused world reports
+    // `world_was_running: true` — and hands its next reader "the body is pinned on geometry",
+    // which is exactly the wrong conclusion round 2 drew and the reason a builder was sent to
+    // look at crates that were not there. The per-step field separates the two cases correctly;
+    // the summary aggregated it over the wrong steps.
+    //
+    // The question is only ever asked ABOUT THE STEPS THAT DID NOT MOVE, so it is answered over
+    // them. `world_was_running` is now: of the steps where the body did not move, did ANY of
+    // them advance a frame? If none did, the world was stopped and this walk says nothing about
+    // geometry. If some did, the body really was refused by something in the world.
+    //
+    // Three fields rather than one, because "no stuck steps at all" is a third state and must
+    // not be collapsed into either answer: a walk that never stuck reports
+    // `world_was_running: null` with `stuck_steps: 0`, which is "the question does not arise".
+    ...stuckDiagnosis(steps),
+  };
+}
+
+/**
+ * The two-way discrimination, computed over the steps that are actually evidence.
+ *
+ * A step is STUCK when the body moved less than 5 cm since the previous sample — the same
+ * threshold the sweep above uses to decide it is pinned. `frames_advanced` on those steps is the
+ * whole question: 0 frames is a world that was not advancing, > 0 frames is a body the world
+ * refused to move.
+ */
+function stuckDiagnosis(steps) {
+  const stuck = steps.filter((s) => Number.isFinite(s.moved_since_last) && s.moved_since_last < 0.05);
+  const framesOnStuck = stuck.reduce((a, s) => a + (s.frames_advanced || 0), 0);
+  const stuckThatAdvanced = stuck.filter((s) => (s.frames_advanced || 0) > 0).length;
+  return {
+    stuck_steps: stuck.length,
+    frames_advanced_on_stuck_steps: framesOnStuck,
+    stuck_steps_that_advanced_frames: stuckThatAdvanced,
+    // null = no step ever stuck, so this walk carries no evidence either way.
+    world_was_running: stuck.length === 0 ? null : stuckThatAdvanced > 0,
+    world_was_running_means: stuck.length === 0
+      ? 'no step of this walk failed to move, so there is nothing to diagnose'
+      : stuckThatAdvanced > 0
+        ? `${stuckThatAdvanced} of ${stuck.length} stuck step(s) advanced frames — the world was running and did not move the body`
+        : `all ${stuck.length} stuck step(s) advanced 0 frames — THE WORLD WAS STOPPED. This walk is not evidence about geometry.`,
   };
 }

@@ -1,0 +1,675 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-04",
+  "piece_title": "Settlements, interiors and the people in them - round 5",
+  "subsystem_paths": [
+    "world.settlement.anatomy",
+    "world.interior.named",
+    "world.interior.continuity",
+    "world.property.ownership",
+    "world.locks.security",
+    "world.faction.presence",
+    "world.npc.population",
+    "world.npc.schedule"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-04-r5-3c19",
+    "role": "critic.world",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T06:55:00Z",
+    "finished_at": "2026-08-08T07:40:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "1fda355",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "measurement_target": "The working tree at 1fda355 ('W1-04 r5: walking out of a building now leaves you outside it'). Every source file cited was read at 1fda355 and every number in this verdict was taken there (rule 12).",
+    "note": "node tools/contention.mjs --gate returned GO at every check. ONE browser for the live arm, launched once and kept, with setRenderRate(0); the pictures went through the pooled capture daemon and launched nothing. No process was pkill'd. No timing figure is published anywhere in this verdict (rule 26).",
+    "harness_commands": [
+      "node tools/run.mjs -- node tools/world/w1-04-consumption.mjs   (the aggregation, run FIRST — 23/23, exit 0)",
+      "node tools/world/critic-w1-04-r5-offline.mjs                   (D doorstep over all 115, R re-entry via doorAt(), P both prop predicates, B enumerator reach, plus the two cut arms)",
+      "node tools/world/critic-w1-04-r5-offline.mjs --self-break      (both arms watched go red; exits non-zero if either stays green)",
+      "node tools/world/critic-w1-04-r5-live.mjs --only L1,L3          (115 doors: settle sweep at 1/30/120/600 frames, and re-entry through queueInputs('interact'))",
+      "node tools/world/critic-w1-04-r5-live.mjs --only L4 --doors 24  (consumption at an entity: a lamp moves an enemy's alert state)",
+      "node tools/world/critic-w1-04-r5-shots.mjs                      (pooled daemon)",
+      "node tools/world/critic-w1-04-r5-chart.mjs                      (the picture, drawn from my own two report files)",
+      "node tools/world/critic-w1-04-r4-offline.mjs                    (the ROUND-4 CRITIC's instrument, re-run at 1fda355 to reconcile the prop and lamp counts)",
+      "node tools/world/w1-04-r5-census.mjs / --self-break             (real exit codes 0 / 1)",
+      "node tools/check-building-fits-room.mjs / --self-break",
+      "node tools/world/w1-04-r5-deletefix.mjs                         (corner cells compared against my own arms)"
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "W1-04 is judged on the Morrowind side. The one picture published is a chart of my own measurements, not an art-direction judgement. The two in-game captures I attempted are reported as refusals/vacuous deliveries in section 9 and were deleted rather than cited."
+  },
+  "gates_run": [
+    "node tools/world/w1-04-consumption.mjs -> exit 0, 23/23 CONSUMED, 9 paths, 0 skipped",
+    "node tools/boot-check.mjs -> 0",
+    "node tools/check-data.mjs -> 0",
+    "node tools/check-content.mjs -> 0",
+    "node tools/check-append-only.mjs -> 0",
+    "node tools/check-building-fits-room.mjs -> 0; --self-break -> 112 of 112 red",
+    "node tools/world/w1-04-r5-census.mjs -> exit 0; --self-break -> exit 1, PROBE FAILURE on 115/115"
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "W1-04 ships no combat mechanic.",
+      "checks": [],
+      "evidence": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "no-marker-surface-added",
+          "result": "pass",
+          "observed": "STRUCTURAL, NOT RE-MEASURED. Round 5 adds a doorstep derivation, a lamp clamp and two prop sign fixes. No map pin, no waypoint, no compass, no objective marker. Round 1 measured the census properly and nothing here adds one."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r1.md"
+      ]
+    },
+    "ar3": {
+      "status": "pass",
+      "seam_sterile": false,
+      "note": "Two crossings, and this round makes the second one demonstrable at an entity rather than asserted. (1) Round 3's stands: a town's masonry becomes sim.cell and sim/stealth/system.js:223 reads sim.cell.shapes.length to decide whether cover exists at all. (2) The join sizes the rooms the interior lamp model lights, and the round-5 clamp puts those lamps back inside the rooms. I measured the crossing live: with the lamps where the derivation leaves them an enemy two metres away reaches alert 100 / AGGRO; with every lamp in the room moved 60 m the same enemy reaches 80 / SUSPICIOUS; restoring them returns it to 100 / AGGRO. A settlement-layout decision moves a Souls-side alert state, inside the fixed step, reversibly.",
+      "evidence": [
+        "reports/critic-w1-04-r5/live.json"
+      ]
+    },
+    "consumption": {
+      "status": "pass",
+      "note": "The round's own aggregation demonstrates 23 of 23 and exits 0. I re-demonstrated the lamp model myself one link past the census the round used — at an entity's alert meter rather than at lightSourceCensus() — and verified by source that lightSourceCensus() and the fixed step's p.L sample the SAME LightField object, so the round verified at the right place and not at a parallel path. The doorstep model's consumer is sim/settlement.js#leaveInterior() -> placeBody() -> sim.player.pos, read back through whereAmI(); my 115-door sweep is 115 independent perturbations of it."
+    }
+  },
+  "score": {
+    "overall_0_10": 4.8,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "aggregation_note": "Each of the 20 items is scored min-over-its-own-axes; the overall is their mean, as rounds 1-4 did.",
+    "note": "Round 1 3.2 (gate 6), round 2 4.4, round 3 4.6, round 4 4.7, now 4.8. RI-WLD13 rises 3 -> 5, the largest single-item move this piece has had since round 2, and it is deserved: the containment half of the door is genuinely fixed and genuinely measurable for the first time in five rounds, and I reproduced it with my own instrument offline and live. It does not carry the item further because min-over-axes finds the OTHER half of the same object worse than it was — 19 of 115 doorsteps cannot put you back in the room you left, against 7 before this round — and because 0-of-115 is a fact about frame 1 and the number at rest is 10."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "The headline is TRUE and independently reproduced: 115 doors, 0 bodies inside a drawn building one frame after exitInterior(), with a control at 113. Offline, 0 of 113 declared doorsteps satisfy insideBuilding().",
+    "But the round measured the one frame at which its number is zero. The same 115 doors read at 30/120/600 fixed steps give 8/10/10 bodies indoors, stable from frame 120, in ten named rooms.",
+    "Re-entry regressed and the round's number for it is wrong in kind. Its rollup counts door_in_reach truthy (106); doorAt() returns the NEAREST door of the town, so pressing interact returns you to the room you left on 96 of 115, into a different building on 10, into nothing on 9 — against 108/5/2 with the derivation cut. Moving 112 doors onto entry walls put four pairs of Blackrose doors 1.00 m apart.",
+    "The prop count is published under a predicate the round's code does not implement: its words describe overhang, its code computes clearance. At 1fda355 the number is 61 meshes in 49 rooms under overhang (the round-4 verdict's predicate, at the same 0.6 m the verdict DID state) and 0 under clearance.",
+    "A second enumeration blind spot, inside the fix for the first: applyInteriorBounds()'s orphan pass does `if (!plan) continue` BEFORE its own counter, so barge-hold and writ-house — both declaring settlement 'tidewrack', which is not one of the eight settlement documents — are reached by no offline loop in this piece, including the fail-closed check the round shipped.",
+    "The lamp fix is real, confirmed by three instruments including the round-4 critic's own, and reaches an entity's behaviour."
+  ],
+  "what_the_round_got_right": [
+    "The blocking gap it was given is CLOSED at the frame it measures, and I verified it with an instrument the builder did not write, offline and live.",
+    "The reason the door had to be written IN PLACE through the settlement document is correct and load-bearing: SettlementSystem's reach table is built in its constructor at engine.js:324, before setSettlements() ever runs, and each row holds the b.door array itself.",
+    "The 2x2 is honestly labelled and its shape is right — two INDEPENDENT fixes, not two guards for one defect and not an inert fix. I reproduced its two corner cells with my own arms and got byte agreement: doorstep cut 113, lamp clamp cut 153.",
+    "The teardowns bite. w1-04-r5-census.mjs --self-break calls buildInterior(rec) with the wrong arity on purpose and exits 1 with PROBE FAILURE on 115 of 115 rooms — the correct, armed answer to the exact failure the round-4 critic made and reported.",
+    "The lamp clamp is confirmed by a third instrument: the ROUND-4 CRITIC's own critic-w1-04-r4-offline.mjs, re-run at 1fda355, reports C3 = 0 lamps outside in 0 rooms against its own 55 at round 4.",
+    "The lamp fix is not a fork: sim/stealth/system.js is untouched, and lightSourceCensus() reads the same LightField object the fixed step samples. Verified by source, not taken.",
+    "The consumption aggregation was run, is green for the right reason, and row 10a's defect (comparing the previous door's town to this one's) is properly fixed by establishing the street AT the door under test.",
+    "The blind-spot finding the round made itself — three interiors naming a building no settlement document contains — is the best object in the round, and the census now says out loud that it used to be blind to them.",
+    "The stair_narrow / ladder_steep sign error (treads along local -z, backwards through the wall the slot leans on) is a real, well-diagnosed and well-fixed bug in 13 inns and halls.",
+    "It killed its own first live run BY PID rather than pkill'ing headless_shell, and said so."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-the-doorstep-cannot-get-you-back-in",
+    "subsystem_path": "world.interior.continuity",
+    "severity": "blocking",
+    "what": "Pressing `interact` on the doorstep you were just put on — the real latch, sim/settlement.js#stepSettlement() reading input.pressedName('interact') and handing sim.door.interior to useDoor() — returns you to the room you left on 96 of 115 doors. On 10 it opens a DIFFERENT building (blackrose-house-0 -> blackrose-house-1 at 0.50 m, blackrose-inn -> blackrose-warders-hall 0.50, blackrose-market -> blackrose-smithy 0.50, blackrose-rootpost -> blackrose-clerk 0.50, lilmoth-customs -> lilmoth-yard 1.56, soulrest-boneyard -> soulrest-pawn 2.12, soulrest-court-steps -> soulrest-market 0.88, soulrest-grey-hist -> soulrest-court-steps 0.45, thorn-hall -> thorn-apothecary 0.16, thorn-house-0 -> thorn-gate 0.46). On 9 it opens nothing. Before this round moved the doors onto entry walls the same measurement was 108 / 5 / 2. The cause is that doorAt() returns the NEAREST door of the town within DOOR_REACH_M and there are now five pairs of doors within 2.6 m of each other, four of them exactly 1.00 m apart. Separately and by the same cause, 10 of 115 bodies are standing inside a drawn building 120 fixed steps after the door, having been clear of every footprint at frame 1.",
+    "why_it_matters": "RI-WLD13 is interior/exterior continuity, and 'the door I came out of is the door I go back in by' is the other end of the object this round just fixed. A player meets it by turning round. It is also invisible to every instrument in five rounds of this piece, because they all measure a doorstep against BUILDINGS (insideBuilding, buildingAt) and none measures it against the DOOR TABLE.",
+    "remedy": {
+      "action": "Derive the doorstep against the door table, not only against the footprints. The ring search at render/exterior.js:556-574 already walks candidates outward from the wall normal and rejects any point with insideBuilding(plan, x, z, 0). Add the second rejection: a point is standable only if doorAt(plan.id, x, z) returns THIS interior. Because the doors themselves move, this must run as a second pass after every door in a settlement has been placed. Measure at rest, not at frame 1. The live acceptance should read buildingAt() at 120 fixed steps as well as at 1, and require 0 at both. Assert over 115 records, not 112 enterable plan buildings. check-building-fits-room.mjs iterates plan.buildings and cannot see thorn-house-0, barge-hold or writ-house. Iterate Object.keys(interiors) and report records with no plan rather than skipping them; and move the `if (!plan) continue` in applyInteriorBounds()'s orphan pass below its own counter so the count is not blind to its own skips.",
+      "steps": [
+        "Derive the doorstep against the door table, not only against the footprints. The ring search at render/exterior.js:556-574 already walks candidates outward from the wall normal and rejects any point with insideBuilding(plan, x, z, 0). Add the second rejection: a point is standable only if doorAt(plan.id, x, z) returns THIS interior. Because the doors themselves move, this must run as a second pass after every door in a settlement has been placed.",
+        "Measure at rest, not at frame 1. The live acceptance should read buildingAt() at 120 fixed steps as well as at 1, and require 0 at both.",
+        "Assert over 115 records, not 112 enterable plan buildings. check-building-fits-room.mjs iterates plan.buildings and cannot see thorn-house-0, barge-hold or writ-house. Iterate Object.keys(interiors) and report records with no plan rather than skipping them; and move the `if (!plan) continue` in applyInteriorBounds()'s orphan pass below its own counter so the count is not blind to its own skips."
+      ],
+      "targets": [
+        "game/src/render/exterior.js",
+        "game/src/sim/settlement.js",
+        "tools/check-building-fits-room.mjs",
+        "tools/world/w1-04-r5-census.mjs",
+        "tools/world/w1-04-r5-live.mjs"
+      ],
+      "acceptance": "A live sweep of all 115 doors reports 0 doorsteps inside a drawn footprint at BOTH 1 and 120 fixed steps; pressing interact on the doorstep returns the body to the room it left on 115 of 115; and check-building-fits-room.mjs enumerates 115 records with --self-break red on both assertions. All three are re-measurable with tools/world/critic-w1-04-r5-live.mjs and tools/world/critic-w1-04-r5-offline.mjs --self-break."
+    },
+    "acceptance": "A live sweep of all 115 doors reports 0 doorsteps inside a drawn footprint at BOTH 1 and 120 fixed steps; pressing interact on the doorstep returns the body to the room it left on 115 of 115; and check-building-fits-room.mjs enumerates 115 records with --self-break red on both assertions. All three are re-measurable with tools/world/critic-w1-04-r5-live.mjs and tools/world/critic-w1-04-r5-offline.mjs --self-break.",
+    "evidence": [
+      "reports/critic-w1-04-r5/live.json",
+      "reports/critic-w1-04-r5/offline.json",
+      "docs/shots/2026-08-08-w1-04-r5-critic-the-frame-the-round-chose.png"
+    ],
+    "reproduce": "node tools/world/critic-w1-04-r5-offline.mjs  (sections D, R, B) and node tools/world/critic-w1-04-r5-live.mjs --only L1,L3  (115 doors; L1 reads buildingAt() at 1/30/120/600 fixed steps, L3 presses interact through queueInputs and reads which room the body is in). node tools/world/critic-w1-04-r5-offline.mjs --self-break must exit 0 with both arms red."
+  },
+  "other_gaps": [
+    {
+      "gap_id": "GAP-W1-the-generator-still-authors-the-centre-doorstep",
+      "subsystem_path": "world.interior.continuity",
+      "severity": "blocking",
+      "what": "tools/world/build-settlements.mjs:506 still emits `exterior_spawn: [b.door[0], b.door[1], b.door[2] + 1.8]` off the CENTRE door — the exact defect the runtime derivation exists to correct. Nothing breaks today: applyInteriorBounds() has exactly one production caller (world/province.js:849 inside setSettlements(), from engine.js:456), both world-side readers (leaveInterior -> exterior_spawn, doorAt -> b.door) run after boot, and sim/state.js stores env.interior and the body position rather than the records, so there is no saved copy to drift. But the project now holds two definitions of the doorstep with only the derived one under test, and the untested one is the one that writes the file. Leaving the data alone was correct — game/data/world/{settlements,interiors}/ and build-settlements.mjs are all claimed by W1-15-r3.",
+      "remedy": {
+        "action": "Either the generator emits the derived value, or it stops emitting exterior_spawn entirely and applyInteriorBounds() becomes its sole author.",
+        "targets": [],
+        "acceptance": "Re-running the generator changes no number in critic-w1-04-r5-offline.mjs section D."
+      },
+      "acceptance": "Re-running the generator changes no number in critic-w1-04-r5-offline.mjs section D."
+    },
+    {
+      "gap_id": "GAP-W1-the-prop-count-is-not-the-predicate-it-names",
+      "subsystem_path": "world.interior.named",
+      "severity": "major",
+      "what": "w1-04-r5-census.mjs publishes '192 meshes in 28 rooms -> 0' under the definition 'a built mesh whose world bounding box REACHES more than 0.6 m outside its own room's bounds_m'. Its code computes `Math.max(bx[0] - box.max.x, box.min.x - bx[1], 0)` — how far the whole box sits CLEAR of the room, which is 0 whenever the box still overlaps the room at all, so a two-metre bench with 1.9 m through the wall scores zero. The round-4 verdict DID state its tolerance (0.6 m, §4(c)) and used the OVERHANG predicate. Measured both at 1fda355 with all of round 5's fixes in: OVERHANG 61 meshes in 49 rooms (all prop:hel_shell_roof, worst 0.95 m); CLEARANCE 0. The round-4 critic's own instrument re-run at 1fda355 independently gives 61 in 49. The fix itself is real either way — the 179 light fittings that dominated the round-4 count are gone to zero under BOTH predicates.",
+      "remedy": {
+        "action": "Measure and publish both predicates, naming which is which, as tools/world/critic-w1-04-r5-offline.mjs section P does.",
+        "targets": [],
+        "acceptance": "The census reports 61 / 0 at 1fda355 and names the predicate each belongs to."
+      },
+      "acceptance": "The census reports 61 / 0 at 1fda355 and names the predicate each belongs to."
+    },
+    {
+      "gap_id": "GAP-W1-two-interiors-no-offline-loop-can-reach",
+      "subsystem_path": "world.interior.named",
+      "severity": "major",
+      "what": "applyInteriorBounds()'s new orphan pass reads `const plan = planFor.get(rec.settlement); if (!plan) continue; out.orphans++`. The continue is before the counter. barge-hold and writ-house both declare settlement 'tidewrack', which is not one of the eight settlement documents (archon, blackrose, gideon, helstrom, lilmoth, soulrest, stormhold, thorn), so the pass that exists to handle the orphans handles 1 of 3 and cannot report the two it skipped. Downstream: the census enumerates 113, check-building-fits-room.mjs enumerates 112, and only the live sweep reaches 115. Both happen to land clear of every footprint — that is luck, not coverage, and the fail-closed assertion this round shipped to stop the defect returning cannot see them. A town with no document also has no door table, which is two of the nine no-reach doorsteps.",
+      "remedy": {
+        "action": "Move the counter above the guard and report unreachable records explicitly; iterate Object.keys(interiors) in check-building-fits-room.mjs.",
+        "targets": [],
+        "acceptance": "Every offline instrument in the piece reports 115 records, with the ones it cannot derive against named rather than skipped."
+      },
+      "acceptance": "Every offline instrument in the piece reports 115 records, with the ones it cannot derive against named rather than skipped."
+    },
+    {
+      "gap_id": "GAP-W1-the-settle-gate-passes-empty-sky",
+      "subsystem_path": "method",
+      "severity": "minor",
+      "what": "The capture daemon's settle gate refused the inside of archon-market three times to the round-4 critic and four times to the round-5 builder (G3a/G3b, ambient motion). At 240 settle frames it accepted mine and delivered a cloudless blue gradient with no geometry in frame at all. The gate certifies that the world stopped moving; empty sky satisfies that perfectly. I deleted the file rather than publish it under its claim. Five rounds, no picture of that room, and the reason is not that the room is hard to settle.",
+      "remedy": {
+        "action": "Add a content floor to the settle gate — a minimum count of non-sky pixels, or a getDrawnSignature() mesh count above zero for the delivered frame — so a settled frame of nothing is refused rather than certified.",
+        "targets": [],
+        "acceptance": "A capture spec whose delivered frame contains no drawn geometry is refused with a named reason."
+      },
+      "acceptance": "A capture spec whose delivered frame contains no drawn geometry is refused with a named reason."
+    },
+    {
+      "gap_id": "GAP-W1-incoverfraction-reaches-only-a-harness-readout",
+      "subsystem_path": "world.settlement.anatomy",
+      "severity": "major",
+      "what": "Open for a fourth round. p.inCoverFraction is computed every sixth frame in sim/stealth/system.js and reaches exactly one place outside that file: engine.js:8752, `in_cover_fraction` in getStealthState() — a harness readout, not a world consumer. It remains the only unmeasured half of this piece's one AR-3 crossing. The model belongs to W1-15, not to W1-04.",
+      "remedy": {
+        "action": "Dispatch to whoever owns the detection model rather than asking this piece a fifth time.",
+        "targets": [],
+        "acceptance": "A perturbation of inCoverFraction changes an entity's behaviour, demonstrated on both arms."
+      },
+      "acceptance": "A perturbation of inCoverFraction changes an entity's behaviour, demonstrated on both arms."
+    },
+    {
+      "gap_id": "GAP-W1-observed-theft-branch-still-untested",
+      "subsystem_path": "world.property.ownership",
+      "severity": "major",
+      "what": "Open for a fourth round. The unobserved branch was proved 10 of 10 in round 3; the observed branch has never been driven. It is inside this piece's scope and it is cheap.",
+      "remedy": {
+        "action": "Steal in front of a woken civilian and assert the witness, the bounty delta and the crime kind.",
+        "targets": [],
+        "acceptance": "The observed branch is driven end to end with a red control."
+      },
+      "acceptance": "The observed branch is driven end to end with a red control."
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-the-door-puts-you-inside-the-building",
+      "status": "partially-closed",
+      "note": "The half the round-4 verdict measured is CLOSED and I verified it rather than took it: 0 of 115 bodies inside a drawn building one frame after exitInterior() (my own live sweep), 0 of 113 declared doorsteps satisfying insideBuilding() (my own offline pass), buildings[].door no longer at the building centre on any of 112, and check-building-fits-room.mjs --self-break red at 112/112 with only the doorstep leg cut. NOT closed: the same 115 doors read at 120 fixed steps put 10 bodies inside a building, and re-entry through the real interact latch got WORSE — 96 of 115 back into the room you left, against 108 with the derivation cut.",
+      "evidence": [
+        "reports/critic-w1-04-r5/live.json",
+        "reports/critic-w1-04-r5/offline.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-the-join-left-the-lamps-behind",
+      "status": "closed",
+      "note": "Closed and confirmed by three instruments, one of which is the round-4 critic's own. critic-w1-04-r4-offline.mjs C3 re-run at 1fda355 reports 0 authored lamps outside their room in 0 rooms, against its own 55 in 19 rooms at round 4. The round's lightSourceCensus() sweep reads 695 detection sources and 0 outside, with the declared positions restored reading 55 / worst 2.33 m. And I demonstrated it at an entity: lamps in place -> enemy alert 100 AGGRO, every lamp moved 60 m -> 80 SUSPICIOUS, restored -> 100 AGGRO. sim/stealth/system.js is untouched and lightSourceCensus() reads the same LightField object the fixed step samples, so this is not a fork.",
+      "evidence": [
+        "reports/critic-w1-04-r5/live.json",
+        "reports/critic-w1-04-r4/offline.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-a-street-signature-is-not-a-street-signature",
+      "status": "closed",
+      "note": "Row 10a now establishes the street AT the door under test (enter, exit, read) instead of taking it wherever the previous door's exit left the body. tools/world/w1-04-consumption.mjs exits 0 with 23/23 CONSUMED, exterior_restored_on_exit == entered == 115, and the cut arm still reads drawn_agrees 0 / exterior_restored 0. Run by me first, before anything else (rule 9).",
+      "evidence": [
+        "reports/runs/_raw/node-tools-world-w1-04-consumption.mjs-21981117042309.log"
+      ]
+    }
+  ],
+  "rulings": [
+    {
+      "id": "VP04",
+      "action": "lift",
+      "note": "The round-1 ruling that no capture through VP04 may be cited as evidence of a settlement should now be LIFTED. The round-4 critic verified independently that the new pose [3859, _, 860] returns null from insideBuilding() with the nearest building edge about 12 m away and all 15 of Thorn's buildings in front of it. I did NOT re-measure it and am not claiming to have; I am recording that this round's critic agrees with the round-4 critic's finding and that the piece asks for it. A future verdict should confirm before relying on it."
+    }
+  ],
+  "corrections_to_the_round": [
+    "The status file says the round-4 verdict 'does not state its tolerance' for the prop count. It does — W1-04-r4 §4(c): '292 meshes in 63 rooms stand more than 0.6 m outside the room they are in'. Same tolerance. The discrepancy is the predicate, not the tolerance.",
+    "The status file says 'the door is back in reach from the doorstep on 106 of 115'. 10 of those 106 are a DIFFERENT building's door; the number that answers the question the sentence asks is 96.",
+    "The status file lists 'the uncapped live 115-room distinctness sweep' under what_i_did_not_do. The round's own w1-04-consumption.mjs runs it: rooms_read 115, distinct_rooms 100, largest_identical_group 7. It was taken, and its answer — 100 distinct live, not the 115 the offline count has carried — has never been published.",
+    "The status file says 'both the census and applyInteriorBounds() now handle the orphans'. Both handle 1 of the 3; barge-hold and writ-house are skipped by an `if (!plan) continue` placed above the orphan counter."
+  ],
+  "artifacts": [
+    {
+      "path": "reports/critic-w1-04-r5/offline.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r5-offline.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r5/live.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r5-live.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r5/shots.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r5-shots.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-04-r5-critic-the-frame-the-round-chose.png",
+      "kind": "graph",
+      "produced_by": "tools/world/critic-w1-04-r5-chart.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/w1-04-r5/census.json",
+      "kind": "report",
+      "produced_by": "tools/world/w1-04-r5-census.mjs",
+      "source": "builder"
+    },
+    {
+      "path": "reports/w1-04-r5/live.json",
+      "kind": "report",
+      "produced_by": "tools/world/w1-04-r5-live.mjs",
+      "source": "builder"
+    },
+    {
+      "path": "reports/w1-04-r5/deletefix.json",
+      "kind": "report",
+      "produced_by": "tools/world/w1-04-r5-deletefix.mjs",
+      "source": "builder"
+    },
+    {
+      "path": "reports/critic-w1-04-r4/offline.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r4-offline.mjs",
+      "source": "critic-r4, re-run at 1fda355"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-04-r1.md",
+      "kind": "text-excerpt",
+      "produced_by": "critic-r1",
+      "source": "critic-r1"
+    },
+    {
+      "path": "reports/runs/_raw/node-tools-world-w1-04-consumption.mjs-21981117042309.log",
+      "kind": "log",
+      "produced_by": "node tools/run.mjs -- node tools/world/w1-04-consumption.mjs",
+      "source": "critic"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "instrument_self_break_watched_red": true,
+    "self_audit_note": "MY OWN PROBE DEFECTS, REPORTED. (1) My first consumption-at-an-entity arm read enemy alert 0 / IDLE in every arm and I nearly published 'the lamp model does not reach an entity' as a finding about the build. It was my fixture: stepPerception() gates the sight channel on |bearing| > sight_cone_deg/2 and an enemy spawned with the default yaw faces away, so it fell through to hearing, and a still player makes no sound. Rule 4 caught it; the tool now aims the enemy and gives the player a motion band, and its header says why. (2) My first shot run reported all three captures failed; two had in fact succeeded and I was not copying the daemon's cache path to docs/shots/. (3) Two of those captures were then DELETED rather than published — one was empty sky under a name claiming an interior, one was near-black. NOT DONE, plainly: inCoverFraction on both arms (I established only where it reaches); the observed-theft branch; RI-WLD03 M13 (rule 25 bars me, fourth correct deferral, it needs its own dispatch); the inside of archon-market and a camera on the doorstep looking back (section 9); and I did not determine whether the ten settling bodies are a collision-solver defect or a doorstep-placement defect — I measured only that they settle indoors and stay there. My instrument's --self-break was watched go red on both arms and exits non-zero if either stays green."
+  },
+  "files_touched": [
+    "corpus/90-verdicts/wave1/W1-04-r5.md",
+    "corpus/90-verdicts/wave1/W1-04-r5.json",
+    "orchestration/status/critic-w1-04-r5.json",
+    "tools/world/critic-w1-04-r5-offline.mjs",
+    "tools/world/critic-w1-04-r5-live.mjs",
+    "tools/world/critic-w1-04-r5-shots.mjs",
+    "tools/world/critic-w1-04-r5-chart.mjs",
+    "docs/shots/2026-08-08-w1-04-r5-critic-the-frame-the-round-chose.png",
+    "reports/critic-w1-04-r5/offline.json",
+    "reports/critic-w1-04-r5/live.json",
+    "reports/critic-w1-04-r5/shots.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "reference_items": [
+    {
+      "id": "RI-WLD03",
+      "path": "corpus/50-world/RI-WLD03-settlement-anatomy.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 6,
+      "native_verdict": "Unchanged from round 4 and not re-measured: roofs 0 of 202, 69/69 kit ids, VP04 out of the wall. Still no street surface, paving or yard of any kind between a town and the terrain it stands on, and RI-WLD03 M13 is unrun for a fourth consecutive round (rule 25 bars this critic too — it took captures).",
+      "native_scale": "M12 anatomy audit + M13 blind layout + M14 architecture uniqueness + M15 interior spot-check; rules R1-R5",
+      "native_score": 6,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-WLD13",
+      "path": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 5,
+      "native_verdict": "The largest single-item move this piece has had since round 2, and deserved. buildings[].door is off the building centre on all 112 and onto the entry wall of the DRAWN building; 0 of 115 bodies stand inside a drawn building one frame after exitInterior(), reproduced with my own live instrument and independently offline (0 of 113 declared doorsteps satisfy insideBuilding()); check-building-fits-room --self-break goes red at 112/112 with only the doorstep leg cut. The min governs and it is the other half of the same object: at 120 fixed steps 10 of the 115 bodies are inside a building and stay there, and pressing interact on the doorstep returns you to the room you left on 96 of 115 — 10 into a different building, 9 into nothing — against 108/5/2 with this round’s derivation cut.",
+      "native_scale": "N1-N4 continuity checks, S1-S4 seam checks",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-WLD07",
+      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 3,
+      "native_verdict": "Unchanged: no interior collision, 0 records declare a second storey.",
+      "native_scale": "V1-V6",
+      "native_score": 3,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-WLD08",
+      "path": "corpus/50-world/RI-WLD08-the-living-world.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged. Interior anchors still follow the join by reference (anchorFor() insets 1.2 m off bounds_m and collapses in 0 of 115); 3 people still in masonry in the deep-overlap pairs.",
+      "native_scale": "L1-L8",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-CAM05",
+      "path": "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+      "side": "souls",
+      "kind": "trace",
+      "score_0_10": 6,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "C1-C7",
+      "native_score": 6,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-STL02",
+      "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 7,
+      "native_verdict": "Restored to its round-3 value. The 55 authored lamps the join left outside their rooms are back inside them — 0 by three independent instruments, including the round-4 critic’s own C3 re-run at this commit — and the clamp is in the record rather than a fork of the detection model (sim/stealth/system.js untouched; lightSourceCensus() reads the same LightField object the fixed step samples). I demonstrated it at an entity: lamps in place gives an enemy alert 100 AGGRO, every lamp moved 60 m gives 80 SUSPICIOUS, restoring returns it to 100. Held at 7 rather than higher because inCoverFraction still reaches nothing but a harness readout.",
+      "native_scale": "sections 1-6",
+      "native_score": 7,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "full",
+      "justification": "Proved by THREE instruments, one of which neither this round nor I wrote. (1) tools/world/critic-w1-04-r4-offline.mjs — the ROUND-4 CRITIC's own tool, re-run unmodified at 1fda355 — reports section C3: 0 authored lamps outside their room, in 0 rooms, against its own 55 in 19 rooms at round 4 (reports/critic-w1-04-r4/offline.json). (2) The round's own lightSourceCensus() sweep over all 115 rooms reads 695 detection sources and 0 outside their room, and 55 / worst 2.33 m with the declared positions restored (reports/w1-04-r5/consumption.json). (3) MY OWN demonstration at an entity rather than at a census: in archon-apothecary, with the lamps where the derivation leaves them an enemy two metres away with line of sight reaches alert 100 / AGGRO (L 1.00, V 1.276); with every lamp in the room moved 60 m the same enemy reaches 80 / SUSPICIOUS (L 0.04, V 0.05); restoring the lamps returns it to 100 / AGGRO (reports/critic-w1-04-r5/live.json, section L4_consumption_at_an_entity). sim/stealth/system.js is untouched and lightSourceCensus() reads the same LightField object the fixed step samples, so this is a corrected record read by one model, not a fork. Held at 7 and not higher because inCoverFraction still reaches nothing outside engine.js:8752, a harness readout."
+    },
+    {
+      "id": "RI-CRM01",
+      "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+      "side": "morrowind",
+      "kind": "trace",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged. The observed-theft branch has now been untested for four rounds; the unobserved branch was proved 10 of 10 in round 3.",
+      "native_scale": "C1-C9",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-AI07",
+      "path": "corpus/10-combat/RI-AI07-encounter-composition.md",
+      "side": "souls",
+      "kind": "structure",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "E1-E6",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "R1-R5",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-DLG02",
+      "path": "corpus/40-dialogue/RI-DLG02-words-per-settlement.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "W1-W4",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-DLG03",
+      "path": "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "G1-G5",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST03",
+      "path": "corpus/30-quests/RI-QST03-faction-gating.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "F1-F6",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST07",
+      "path": "corpus/30-quests/RI-QST07-side-quest-texture.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 5,
+      "native_verdict": "prop:stair_narrow and prop:ladder_steep ran their treads along local -z, backwards through the wall the slot leans on, in 13 inns and halls. That is a real bug, well diagnosed and well fixed. Held at 5 because the count published for the fix is measured by a predicate its own definition does not describe: 61 meshes in 49 rooms still reach more than 0.6 m past their room wall at this commit, against the 0 the round reports.",
+      "native_scale": "T1-T7",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST08",
+      "path": "corpus/30-quests/RI-QST08-reward-design.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 4,
+      "native_verdict": "Unique items follow the shrink — 0 of 115 outside their room, confirmed. Still takeable again on every re-entry.",
+      "native_scale": "R1-R6",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "S1-S6",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-TRV01",
+      "path": "corpus/50-world/RI-TRV01-transport-network.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "T1-T5",
+      "native_score": 4,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR01",
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "L1-L6",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR02",
+      "path": "corpus/60-lore/RI-LOR02-era-and-political-brief.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "E1-E5",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR04",
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 6,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "N1-N5",
+      "native_score": 6,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR06",
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged; not re-measured.",
+      "native_scale": "C1-C4",
+      "native_score": 5,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r5/offline.json",
+        "reports/critic-w1-04-r5/live.json"
+      ],
+      "measured": "partial"
+    }
+  ]
+}

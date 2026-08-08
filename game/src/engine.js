@@ -1893,20 +1893,6 @@ export class Engine {
   }
 
   /**
-   * The race of the body the player is in, as an id `game/data/progression/races.json` knows.
-   *
-   * This is the one thing the Warden-Scribe LOOKS AT. It is deliberately a read of live world
-   * state and not a constant: perturb `sim.identity.race` — a `--state "race=…"` run, a load, or
-   * whatever W1-07 eventually puts in front of the title — and the misread she says out loud,
-   * the correction, the composed sheet, the writ and every disposition term downstream all move
-   * with it. See `tools/w1-26-r3/body-race-consumption.mjs`.
-   *
-   * Returns null for a race the data does not carry, rather than a guess. A null observation
-   * leaves the census exactly where it was before this existed — stopped at the desk — which is
-   * a loud, already-instrumented failure, and is safer than handing `Census.state()` an id with
-   * no authored misread line for it to draw.
-   */
-  /**
    * Put the starting body's race on the live sim, from `creation.json` `starting_body`.
    *
    * Called once at boot, before any named state is applied, so it is the floor and never the
@@ -1921,11 +1907,74 @@ export class Engine {
     return body.race;
   }
 
+  /**
+   * The race of the body the player is in, as an id `game/data/progression/races.json` knows.
+   *
+   * This is the one thing the Warden-Scribe LOOKS AT. It is deliberately a read of live world
+   * state and not a constant: perturb `sim.identity.race` — a `--state "race=…"` run, a load, or
+   * whatever W1-07 eventually puts in front of the title — and the misread she says out loud,
+   * the correction, the composed sheet, the writ and every disposition term downstream all move
+   * with it. See `tools/w1-26-r4/w1-26-r4-verify.mjs`.
+   *
+   * IT THROWS ON A RACE THIS BUILD DOES NOT KNOW, AND THAT IS THE POINT OF THIS FUNCTION.
+   *
+   * Round 3 ended `return rows.some((r) => r.id === id) ? id : null`. A body carrying an id
+   * `races.json` does not list was therefore observed as **null, silently, at scene start**, and
+   * the census refused ELEVEN NODES LATER at `writ.race-observed` — where the throw is caught and
+   * becomes the one authored refusal line, so the player read *"Not in that box, and not in those
+   * words"* in front of a door held shut and had no way to know a data fault had happened at all.
+   * The W1-26 r3 critic measured it with `altmer`: a race **the scribe's own written line says out
+   * loud** (`writ-house.json`'s misread table offers it as a wrong guess) and one that is not a
+   * body here. At `e00e6fe` the literal in `creation.json` was `argonian`, which is likewise not
+   * an id here — the round fixed the value and left the mechanism, so the class of defect was one
+   * bad string from returning.
+   *
+   * Four things write `sim.identity.race` and none of them validates it: `_applyStartingBody()`,
+   * `applyNamedState('race=…')`, `save/state.js` on load, and whatever W1-07 eventually puts in
+   * front of the title. A silent null cannot tell any of them apart from a correct observation.
+   * So the failure is moved to the point of observation and it names the id it could not read.
+   *
+   * THE ONE THING IT DOES NOT THROW ON is a body with no race at all (`null`/`''`). That is not
+   * an unreadable observation, it is the absence of one — the scene opened on nothing — and it is
+   * the standing control arm of `tools/journey/census-newgame.mjs` and of `w1-26-r3-verify.mjs`
+   * A4, both of which prove the race check is not inert by watching a no-body scene stop at the
+   * desk. Turning that into a throw here would delete two controls to close a hole that is
+   * already loud.
+   *
+   * Read it without the throw — for an accessor, a diagnostic or a report — with
+   * `_bodyRaceRaw()`, which returns the fault as a string instead of raising it.
+   */
   bodyRace() {
+    const r = this._bodyRaceRaw();
+    if (r.fault) throw new Error(r.fault);
+    return r.id;
+  }
+
+  /**
+   * `bodyRace()` without the throw: `{ id, raw, known, fault }`.
+   *
+   * `id` is the observed race or null; `raw` is what was actually on the body even when it is
+   * unreadable; `fault` is the sentence `bodyRace()` would have thrown, or null.
+   *
+   * This exists so that a REPORT about a broken body is still readable. `getCensusState()` is the
+   * accessor every probe reaches for when the scene has gone wrong, and an accessor that throws
+   * because the thing it is reporting on is broken tells the reader nothing at all.
+   */
+  _bodyRaceRaw() {
     const id = this.sim && this.sim.identity ? this.sim.identity.race : null;
-    if (!id) return null;
     const rows = (this.chData && this.chData.races && this.chData.races.races) || [];
-    return rows.some((r) => r.id === id) ? id : null;
+    const known = rows.map((r) => r.id);
+    if (!id) return { id: null, raw: null, known, fault: null };
+    if (known.indexOf(id) >= 0) return { id, raw: id, known, fault: null };
+    return {
+      id: null, raw: id, known,
+      fault: `census: the body carries race '${id}', which is not an id in `
+        + `game/data/progression/races.json (known: ${known.join(', ')}). The Warden-Scribe has `
+        + 'nothing to write down for it and no authored misread line to say. This is a fault in '
+        + 'whatever wrote sim.identity.race — creation.json starting_body.race, a --state '
+        + "'race=…' run, a load, or the title's body picker — and NOT something the census "
+        + 'declines to write down. Fix the body, not the scene.',
+    };
   }
 
   // ---- the census scene ----------------------------------------------------------------------
@@ -1968,10 +2017,32 @@ export class Engine {
     // RI-CHR01 §1 row 2 says race is OBSERVED, not asked, so the fix cannot be a question and
     // must not be a literal written here: a hardcoded default would satisfy the acceptance test
     // and betray the item. It is read from the body the player is already standing in —
-    // `sim.identity.race`, the same field `_playerGates()` hands the dialogue offer gates and
-    // `reactionTo()` hands the disposition matrix, so the race the scribe writes down and the
-    // race the province reacts to are one field and cannot disagree. Whatever chooses that body
-    // (W1-07) changes what she sees by writing that field, and nothing here needs editing.
+    // `sim.identity.race` — so the race the scribe writes down and the race the province reacts
+    // to are one field and cannot disagree. Whatever chooses that body (W1-07) changes what she
+    // sees by writing that field, and nothing here needs editing.
+    //
+    // THE TWO CONSUMERS, NAMED CORRECTLY. Round 3's comment here said this was "the same field
+    // `_playerGates()` hands the dialogue offer gates and `reactionTo()` hands the disposition
+    // matrix". **Neither function has ever existed** — the r3 critic grepped `game/src/` for both
+    // and found only this comment. The real path is one function and two consumers:
+    //
+    //   `_talkPlayer()` reads `sim.identity.race` (or `sim.character.race` once the writ exists)
+    //   and hands `{ race, upbringing, birthsign, knows, topics_known }` to
+    //     * `topicsFor()`  — `sim/quest/topic-supply.js` :141/:164/:166, the dialogue OFFER gate.
+    //       `requires.race` offers an info only to that race; `forbids.race` never offers it to
+    //       them. `game/data/dialogue/topics/40-race-gated.json` is written entirely against it.
+    //     * `derivedDisposition()` -> `raceTerm()` — `sim/dialogue/disposition.js` :260/:265 and
+    //       :297, reached from `npcDisposition()`. `race-reactions.json`'s matrix is added to the
+    //       NPC's base disposition BEFORE every other term, and `movableTerms()` adds
+    //       `fDispRaceMod` again when the NPC shares the player's race.
+    //
+    // Both are demonstrated by perturbation in `tools/w1-26-r4/w1-26-r4-verify.mjs` §C rather
+    // than asserted here, because a comment that names a consumer is exactly what was wrong with
+    // the last one. What the r3 critic measured — four races, four identical `topics_known`, zero
+    // topics offered — is true and is not a contradiction: `topics_known` is what the character
+    // has been GIVEN (empty until `_censusFinish`), the race gate is applied to what is OFFERED,
+    // and the two people in the barge hold carry no race-gated infos. In the hold the offer gate
+    // is real and has nothing to bite on; the disposition term bites immediately.
     //
     // `opts.race` still wins, so every harness walk and every existing probe is unchanged.
     this.census.observe(opts.race || this.bodyRace());
@@ -3531,7 +3602,15 @@ export class Engine {
       // The race the scribe LOOKED AT, and where she got it. `observed_from: 'body'` is the
       // player's path; 'harness' is a probe that supplied one. See `bodyRace()`.
       race_observed: this.census.spec.race || null,
-      body_race: this.bodyRace(),
+      // `_bodyRaceRaw()` and not `bodyRace()`: the strict reader THROWS on a body carrying a race
+      // `races.json` does not know, which is the whole W1-26 r4 repair, and an accessor that
+      // throws when the thing it reports on is broken is useless exactly when it is needed.
+      // `body_race_fault` carries the sentence `bodyRace()` would have raised, and
+      // `body_race_raw` carries the unreadable id itself, so a probe reading this state cold can
+      // see WHAT was on the body as well as that it was rejected.
+      body_race: this._bodyRaceRaw().id,
+      body_race_raw: this._bodyRaceRaw().raw,
+      body_race_fault: this._bodyRaceRaw().fault,
       routes_offered: this.chData.writHouse.nodes.find((n) => n.id === 'writ.class-routes').input.options.map((o) => o.id),
       full_screen_panels: 0,
     };
@@ -3899,6 +3978,12 @@ export class Engine {
     return {
       frame: this.sim.frame,
       inCombat,
+      // W1-26 r4. The title surface is up: `ui/system.js build()` draws no HUD at all while this
+      // is true. Read live off the surface rather than off a mode flag, because `getTitleState()`
+      // is what every probe and the acceptance ("0 HUD strings drawn while getTitleState().shown
+      // is true") reads, and two sources of truth about whether the title is up is how a suppress
+      // like this goes stale.
+      titleShown: !!(this.renderer && this.renderer.title && this.renderer.title.shown),
       // W1-13 r2: the first disjunct is the WORLD's answer (`HearthSystem.atHearth`, which now
       // exists — see sim/hearth.js). The second is a declared test override and it is reported
       // as one, so a probe that leans on `setAtHearth()` is visible in its own output rather

@@ -3,18 +3,74 @@
   "role": "critic",
   "piece": "W1-04",
   "round": 5,
-  "state": "running",
-  "started_at": "2026-08-08T00:00:00Z",
+  "state": "complete",
+  "started_at": "2026-08-08T06:55:00Z",
+  "finished_at": "2026-08-08T07:40:00Z",
   "commit_at_start": "1fda355",
-  "next_step": "read RULES, INDEX, ARBITRATION §3, W1-04-r4.md verdict, W1-04-r5.json builder status",
-  "files_touched": [],
-  "files_claimed": [
+  "head_at_finish": "1fda355",
+  "verdict": "FAIL 4.8 / 10 against a gate of 7.0 (r1 3.2, r2 4.4, r3 4.6, r4 4.7)",
+  "stamp_note": "Every number in the verdict was taken at 1fda355 (rule 12).",
+  "contention": "node tools/contention.mjs --gate returned GO at every check. ONE browser for the live arm, launched once and kept, with setRenderRate(0) — the builder's trick, and it is the reason a 115-door sweep at 602 frames per door was affordable. The pictures went through the pooled capture daemon and launched nothing. I did not pkill anything.",
+  "headline": [
+    "THE ROUND'S CLAIM IS TRUE AT THE FRAME IT MEASURES. My own live sweep of all 115 doors: 0 bodies inside a drawn building one frame after exitInterior(). Offline, independently: 0 of 113 declared doorsteps satisfy insideBuilding().",
+    "AND IT STOPS BEING TRUE AT FRAME 30. Same 115 doors at 1/30/120/600 fixed steps: 0 / 8 / 10 / 10. The solver slides the body 0.5-8.9 m into a neighbour and it rests there. Ten rooms named in the verdict.",
+    "RE-ENTRY REGRESSED AND THE ROUND'S NUMBER FOR IT IS WRONG IN KIND. doorAt() returns the NEAREST door of the town; the round's rollup counts door_in_reach truthy and publishes 106. Pressing interact through the real latch: 96 back into the room you left, 10 into a DIFFERENT building, 9 into nothing — against 108/5/2 with the derivation cut. Moving 112 doors onto entry walls put four pairs of Blackrose doors 1.00 m apart. Reproduced offline and live, identical numbers.",
+    "THE PROP COUNT IS MEASURED BY A PREDICATE THE ROUND DID NOT DESCRIBE. Its words say 'reaches more than 0.6 m outside'; its code computes how far the box sits WHOLLY CLEAR, which is 0 whenever the box still overlaps the room. At 1fda355: 61 meshes in 49 rooms under overhang (all prop:hel_shell_roof), 0 under clearance. The round-4 verdict DID state its tolerance (0.6 m, §4(c)) — the builder's status file says it did not.",
+    "THE NEXT BLIND SET, inside the fix for the first: applyInteriorBounds()'s orphan pass does `if (!plan) continue` ABOVE its own counter, so barge-hold and writ-house (settlement 'tidewrack', not one of the 8 documents) are reached by NO offline loop in this piece — including the fail-closed check the round shipped. Only the live sweep sees them.",
+    "THE LAMP FIX IS REAL AND I STRENGTHENED IT. Confirmed by the round-4 critic's own instrument re-run at HEAD (C3 = 0), and demonstrated at an ENTITY: lamps in place -> enemy alert 100 AGGRO; every lamp 60 m away -> 80 SUSPICIOUS; restored -> 100."
+  ],
+  "attacks": {
+    "A_doorstep": "Reproduced 0/115 with my own instrument, offline and live. Pushed past it: settle sweep (10 indoors by frame 120) and REAL re-entry through queueInputs('interact') (96/10/9, regressed from 108/5/2).",
+    "B_blind_set": "Found it: barge-hold and writ-house, skipped by an `if (!plan) continue` above the orphan counter. Second blind set: no instrument in five rounds measures a doorstep against the DOOR TABLE, only against buildings.",
+    "C_lamp_consumer": "lightSourceCensus() reads the SAME LightField the fixed step samples — verified by source, right consumer. Went one link further to an enemy's alert meter. My first arm was wrong (enemy facing away, sight channel gated) and I reported that rather than publishing it.",
+    "D_delete_the_fix": "2x2 verified — my own arms reproduce its corners byte for byte (doorstep cut 113, lamp cut 153). Two INDEPENDENT fixes. Teardowns bite: census --self-break exits 1 with PROBE FAILURE 115/115; fits-room --self-break 112/112 red. The 2x2 has no column for re-entry, which the doorstep leg made worse.",
+    "E_second_source_of_truth": "Acceptable this round, blocking next. One production caller (province.js:849), both world readers after boot, save stores no records. BUT build-settlements.mjs:506 still authors exterior_spawn off the CENTRE door — an untested second definition that writes the file.",
+    "F_prop_count": "Settled. Not a tolerance disagreement (both 0.6 m) but a PREDICATE disagreement. 292 -> 61 under overhang; 192 -> 0 under clearance. The fix is real either way; the 179 fittings are gone under both.",
+    "G_four_rounds_untouched": "inCoverFraction blocks RI-STL02's ceiling but belongs to W1-15. Observed-theft blocks RI-CRM01 and is in scope, fourth deferral, no excuse left. M13 is a process failure needing its own dispatch (rule 25 bars me too). The distinctness sweep HAS been taken — inside the round's own aggregation: 115 rooms, 100 distinct, largest identical group 7 — and the status file wrongly lists it as not done.",
+    "H_pictures": "archon-market's interior PASSED the settle gate at 240 frames and delivered EMPTY SKY. I deleted it rather than publish it, and filed the gate as a minor gap: it certifies that the world stopped moving, not that anything is in frame. The doorstep-looking-back shot was refused (G3b), same as the builder. A third was near-black and also deleted. Published a chart of my own measurements instead."
+  },
+  "instruments": [
+    "tools/world/critic-w1-04-r5-offline.mjs — D doorstep over ALL 115, R re-entry via a reimplemented doorAt(), P both prop predicates, B enumerator reach, plus doorstep-cut and lamp-cut arms. --self-break moves every doorstep to its building's centre and every prop 5 m out; BOTH arms watched go red (112 doorsteps inside; 6652 overhang / 4581 clearance) and it exits non-zero if either stays green.",
+    "tools/world/critic-w1-04-r5-live.mjs — one browser, setRenderRate(0), chunked in eights with a write after every chunk. L1/L2 the settle sweep, L3 re-entry through the real input latch, L4 consumption at an entity.",
+    "tools/world/critic-w1-04-r5-shots.mjs — pooled daemon.",
+    "tools/world/critic-w1-04-r5-chart.mjs — the picture, drawn from my own two report files.",
+    "tools/world/critic-w1-04-r4-offline.mjs — the ROUND-4 CRITIC's instrument, re-run unmodified at 1fda355 to reconcile the prop and lamp counts."
+  ],
+  "gates_run": [
+    "w1-04-consumption 23/23 exit 0 (run FIRST, rule 9)",
+    "boot-check 0", "check-data 0", "check-content 0", "check-append-only 0",
+    "check-building-fits-room 0; --self-break 112/112 red",
+    "w1-04-r5-census exit 0; --self-break exit 1 PROBE FAILURE 115/115 (real exit codes, unpiped)",
+    "verdict-validate OK"
+  ],
+  "what_i_could_not_do": [
+    "The inside of archon-market — the gate passed my capture and delivered empty sky; deleted rather than published. Five rounds, no picture.",
+    "A camera on the doorstep looking back — refused, G3b, same as the builder.",
+    "RI-WLD03 M13 — rule 25 bars me; fourth correct deferral, needs its own dispatch.",
+    "inCoverFraction on both arms and the observed-theft branch — not measured. I established only where inCoverFraction reaches (engine.js:8752, a harness readout).",
+    "Whether the ten settling bodies are a collision-solver defect or a doorstep-placement defect. I measured that they settle indoors and stay there; which owns it is the next agent's question."
+  ],
+  "my_own_probe_defects_reported": [
+    "First L4 arm read enemy alert 0/IDLE in every arm; I nearly published it as a finding about the build. It was my fixture — stepPerception() gates sight on |bearing| > sight_cone_deg/2 and a spawned enemy faces away. Rule 4 caught it.",
+    "First shot run reported all three captures failed; two had succeeded and I was not copying the daemon's cache path.",
+    "Two captures were deleted after inspection for showing nothing."
+  ],
+  "files_touched": [
     "corpus/90-verdicts/wave1/W1-04-r5.md",
     "corpus/90-verdicts/wave1/W1-04-r5.json",
     "orchestration/status/critic-w1-04-r5.json",
-    "tools/world/critic-w1-04-r5-*.mjs",
-    "docs/shots/"
+    "tools/world/critic-w1-04-r5-offline.mjs",
+    "tools/world/critic-w1-04-r5-live.mjs",
+    "tools/world/critic-w1-04-r5-shots.mjs",
+    "tools/world/critic-w1-04-r5-chart.mjs",
+    "docs/shots/2026-08-08-w1-04-r5-critic-the-frame-the-round-chose.png",
+    "reports/critic-w1-04-r5/offline.json",
+    "reports/critic-w1-04-r5/live.json",
+    "reports/critic-w1-04-r5/shots.json",
+    "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": ["W1-04-r5"],
-  "notes": "Fresh critic. Contention GO at start (3 instances, load 1.84/core)."
+  "ownership_notes": "I edited no game/ source. reports/blog-feed.jsonl is append-only and I appended one line (check-append-only rc 0). docs/shots/ is shared by every piece in the project and is a declared overlap, not a collision. reports/critic-w1-04-r4/offline.json was REWRITTEN by re-running the round-4 critic's own tool at this commit — that is a critic artifact of a finished round and I have declared it here for honesty even though it is not in my brief's file list; its previous contents were a measurement at 3ee6ada and the tool regenerates it deterministically.",
+  "next_step": "none — verdict published"
 }

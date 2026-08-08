@@ -118,6 +118,12 @@ async function armCounter(pin) {
           } else C.walked += step;
         } else C.start = now.slice();
         C.last = now;
+        if (C.trace && C.frames % C.traceEvery === 0) {
+          const t = this.traversal || {};
+          C.trace.push([C.frames, +now[0].toFixed(1), +now[1].toFixed(1), +p.pos[1].toFixed(2),
+            t.blockedBySlope ? 1 : 0, t.airborne ? 1 : 0, t.onDeck ? 1 : 0, t.onRoad ? 1 : 0,
+            t.mired ? 1 : 0, +(t.slopeDeg || 0).toFixed(1), +(t.climbBlockedDeg || 0).toFixed(1)]);
+        }
         if (p.hp < C.minHp) C.minHp = p.hp;
         if (p.hp <= 0) C.hpZero++;
         // BOTH pins. `sim.player.hp` alone does not hold — W1-CROSSING r1 §C4.
@@ -130,7 +136,11 @@ async function armCounter(pin) {
       E.__r2Armed = true;
     }
     E.__r2 = { frames: 0, naive: 0, walked: 0, jumps: [], jumpCount: 0, jumpM: 0, maxStep: 0,
-      hpZero: 0, absorbed: 0, minHp: Infinity, start: null, last: null, pin: pinHp };
+      hpZero: 0, absorbed: 0, minHp: Infinity, start: null, last: null, pin: pinHp,
+      // --trace: a downsampled track WITH the traversal flags, so a walk that fails on the road
+      // says which of the collision's seven sections was holding the body rather than leaving a
+      // reader to guess. Off by default; it is a diagnostic, not part of a measurement.
+      trace: null, traceEvery: 0 };
     return { armed: true, pin: pinHp, hp_max: E.sim.player.hpMax };
   }, pin);
 }
@@ -139,6 +149,8 @@ const readCounter = () => handle.page.evaluate(() => {
   return { frames: C.frames, naive_sum_m: +C.naive.toFixed(1), walked_m: +C.walked.toFixed(1),
     teleports: C.jumpCount, teleported_m: +C.jumpM.toFixed(1), max_step_m: +C.maxStep.toFixed(3),
     jumps: C.jumps, hp_zero_frames: C.hpZero, hp_absorbed: +C.absorbed.toFixed(1),
+    trace_legend: C.trace ? ['frame', 'x', 'z', 'y', 'blockedBySlope', 'airborne', 'onDeck', 'onRoad', 'mired', 'slopeDeg', 'climbBlockedDeg'] : undefined,
+    trace: C.trace,
     min_hp: C.minHp === Infinity ? null : C.minHp,
     start: C.start && C.start.map((v) => +v.toFixed(1)), end: C.last && C.last.map((v) => +v.toFixed(1)),
     net_m: C.start && C.last ? +Math.hypot(C.last[0] - C.start[0], C.last[1] - C.start[1]).toFixed(1) : null };
@@ -200,6 +212,7 @@ try {
       await handle.page.evaluate((r) => { window.__ENGINE.data.roads = r; window.__ENGINE.field.setRoads(r); }, roadsAgain);
     }
     const armed = await armCounter(SURVIVE);
+    if (args.trace) await handle.page.evaluate((n) => { window.__ENGINE.__r2.trace = []; window.__ENGINE.__r2.traceEvery = n; }, Number(args.trace));
     const wt = Date.now();
     const r = await handle.h('walkPath', w.points, { speed: SPEED, maxFrames: MAXF });
     const c = await readCounter();
