@@ -2,28 +2,68 @@
   "task_id": "W1-28",
   "role": "builder",
   "round": 1,
-  "state": "starting",
+  "state": "partial",
   "started_at": "2026-08-08",
-  "piece": "W1-28 — the first hour as interaction",
-  "paths": ["journey.firsthour.interaction", "journey.firsthour.competence"],
-  "reference_items": ["RI-JRN02"],
-  "next_step": "build tools/journey/jrn02-hour.mjs — the hour driver. journey-run.mjs registers jrn02-first-hour but NOTHING DRIVES IT: driveBeats() ends with `stepFrames(min(frames,20000))` and no inputs, and journeyLegs() has no jrn02 branch. That is the empty-ops.json shape the brief warned about, found before any measurement was trusted.",
-  "files_touched": ["orchestration/status/W1-28.json"],
-  "files_claimed": [
+  "piece": "W1-28 \u2014 the first hour as interaction",
+  "paths": [
+    "journey.firsthour.interaction",
+    "journey.firsthour.competence"
+  ],
+  "reference_items": [
+    "RI-JRN02"
+  ],
+  "next_step": "a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1-28/hour/, incremental) \u2014 re-read hour.json for the minute it reached. Then: cadence.mjs over reports/w1-28/hour/trace.jsonl, which is the trace-side C1..C10 this piece did not get to run; and M-I3 (verb teaching purity) over journey-run.mjs's UI-text stream.",
+  "files_touched": [
+    "orchestration/status/W1-28.json",
     "tools/journey/jrn02-hour.mjs",
     "tools/journey/jrn02-competence.mjs",
     "tools/journey/jrn02-chart.mjs",
     "reports/w1-28/",
-    "docs/shots/",
+    "docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png",
     "reports/blog-feed.jsonl"
   ],
-  "contention": "tools/contention.mjs --gate returned exit 3 (5 browser instances, load 4.83/core against a 4.0 ceiling) at start. Offline work first; browser work only after a re-gate, and if I proceed past exit 3 it will be said here.",
+  "files_claimed": [],
+  "contention": "gate exit 3 at start (5.31/core). Re-gated to exit 0 (3.54/core) for the verb-coverage and competence runs. The 60-minute hour was launched at gate exit 3 (4.07/core against a 4.0 ceiling, 5 of 6 browser instances) \u2014 PROCEEDED AND DECLARED, per rule 21. No timing figure is published from any run; every number here is frame-counted, not wall-clocked.",
   "notes": [
     "Declared seam: RI-JRN02 also judges input.discoverability which is W1-08's. Cited here, scored against W1-08.",
     "Narrowed files_claimed from tools/journey/ to three named new files: W1-26-r3/r4 and W1-13-r3 are live on tools/journey/journey-run.mjs and a directory claim read as a conflict against all three."
   ],
   "found_before_measuring": [
-    "journey-run.mjs JOURNEYS['jrn02-first-hour'] exists (216000 frames, durationMin 60) and cadence.mjs/competence.mjs are built and hardened over four rounds — but no code anywhere drives an hour of play. driveBeats() drives the OPENING (first input, first control, a still window, the census walk) and then runs the remaining budget out with `stepAndSample(handle, min(o.frames, 20000))` and zero inputs. journeyLegs() branches on jrn03..jrn08 and has no jrn02 case. So a jrn02 run today = the opening + 5.5 minutes of nobody playing, capped at 20000 frames regardless of --duration-min.",
-    "Consequence if that had been trusted: cadence.mjs would have reported gap_max ~= the whole run and combat_fraction 0 — HF3 twice over — as a fact about the BUILD, when it is a fact about the DRIVER. Same shape as the 36,000-frame/0-event session (empty ops.json)."
-  ]
+    "journey-run.mjs JOURNEYS['jrn02-first-hour'] exists (216000 frames, durationMin 60) and cadence.mjs/competence.mjs are built and hardened over four rounds \u2014 but no code anywhere drives an hour of play. driveBeats() drives the OPENING (first input, first control, a still window, the census walk) and then runs the remaining budget out with `stepAndSample(handle, min(o.frames, 20000))` and zero inputs. journeyLegs() branches on jrn03..jrn08 and has no jrn02 case. So a jrn02 run today = the opening + 5.5 minutes of nobody playing, capped at 20000 frames regardless of --duration-min.",
+    "Consequence if that had been trusted: cadence.mjs would have reported gap_max ~= the whole run and combat_fraction 0 \u2014 HF3 twice over \u2014 as a fact about the BUILD, when it is a fact about the DRIVER. Same shape as the 36,000-frame/0-event session (empty ops.json)."
+  ],
+  "measured_at": "033e7ac",
+  "findings": [
+    "F1 \u2014 NOTHING DRIVES jrn02. journey-run.mjs registers the journey but driveBeats() ends with stepFrames(min(frames,20000)) and zero inputs, and journeyLegs() has no jrn02 branch. A jrn02 run today is the opening plus 5.5 minutes of nobody playing, whatever --duration-min says.",
+    "F2 \u2014 THE VERB LEDGER IS UNMEASURABLE FROM THE TRACE. RI-JRN02 M-I1 needs `input_action` (A-JRN7) per verb. Measured, with three controls all holding in the same browser: the drain is live; 10 of 16 actions produced their own consequence event so the button reached the body; and `input_action` IS reachable and IS carried (proved by pressing `interact` standing at a signpost, which put input_action in the record and opened the post). Against that positive control, 0 of 16 actions emit `input_action`, and SEVEN of them \u2014 light, roll, block, parry, jump, swap_right, swap_left \u2014 demonstrably EXECUTED (ACTION_START / GUARD_UP in the same window) and still emitted none.",
+    "F2 cause: the only emission for a combat button is game/src/sim/player.js:109, inside stepPlayer(), which nothing imports \u2014 game/src/sim/souls.js:46 says so in-tree (\"DEAD CODE. Nothing imports stepPlayer\"). The live path is game/src/combat/player.js and it contains no input_action emit at all. Two parallel implementations of one system, RULES 10.",
+    "F3 \u2014 input_action IS emitted on five engine.js paths, all of them the `interact` reach, but the harness-verb arm of that route emits OUTSIDE the fixed step and sim/step.js clears the bus at the top of the step, so signRead() raises the event and no record ever carries it. Only the BUTTON arm lands in the trace. Recorded as two arms in the artifact rather than one number.",
+    "F4 \u2014 COMBAT ARRIVES AT MINUTE 1.5, NOT MINUTE 19. \u00a7A puts `light` at first_use <= 0:19 and `roll` at <= 0:19. The agent, which presses a combat verb only when the world puts a hostile in reach, first swung at 1:31 and first rolled at 3:00. The bars are upper bounds so the letter is met, but the Souls half of the hour arrives seventeen minutes ahead of the sheet and nothing else in the corpus would notice.",
+    "F5 \u2014 THE ORDINARY TRASH MOB CANNOT BE LEARNED ON AVERAGE. `inf_trash` declares startups of 22, 44, 54 and 68 frames \u2014 a 46-frame spread against an 11-frame i-frame window. An agent that learns ONE repeated attack goes 0.833 -> 1.000; the same agent against the full declared moveset is FLAT at 0.167, because no single roll time covers the spread and the mean covers none of them. This is the right shape for a Souls moveset \u2014 you learn the moves, not the mean \u2014 and it is a warning about \u00a7C itself: K2 averaged over an encounter will read a perfectly learnable enemy as unlearnable."
+  ],
+  "done": [
+    "tools/journey/jrn02-hour.mjs \u2014 three modes. --verb-coverage (the instrument audit), --hour (the driver that did not exist), --self-test (11 offline assertions, all green, including two that prove the gap statistic goes red on a dead hour and STAYS red on an hour of uncorroborated dodge-rolling).",
+    "tools/journey/jrn02-competence.mjs \u2014 RI-JRN02 \u00a7C as a 6-arm design that can fail. 11 offline assertions.",
+    "tools/journey/jrn02-chart.mjs \u2014 the rule-27 picture.",
+    "THE HOUR NOW EXISTS AS A DRIVEN RUN. Need-driven policy agent, walking the `crossing` road route out of Lilmoth. At the 9.0-minute checkpoint: 1,602 m walked, 7 verbs acquired in a WORLD-DRIVEN order \u2014 sprint@0.03, interact@0.73, read@0.73, light@1.52, roll@3.0, lock_on@7.37, use_item@8.38. That order matches V3 (light -> roll -> block -> lock_on -> use_item -> heavy) with `block` and `heavy` not yet triggered.",
+    "COMPETENCE: all four controls hold. B (learner on, one repeated attack) 0.833 -> 1.000; A (learner FROZEN) flat at 0 \u2014 the delete-the-fix bites; D (randomised enemy) ends at 0.5 against B's 1.0; E (unlearnable, spread >> i-frames) flat \u2014 the hard control."
+  ],
+  "method_notes": [
+    "THE COMPETENCE DESIGN, defended in the file header. \u00a7C cannot be answered as written on this build: the agent is a program, so authoring a better late policy measures my source code, and holding the policy fixed (as M-I9 gear and K7 tier require) makes the expected improvement zero by construction. The design gives the agent ONE thing it cannot be told and can only learn by being hit \u2014 the enemy's windup \u2014 and identical code runs in every arm. I authored the capacity to learn, not the content learned; the content came from the world.",
+    "THREE CONTROLS I WATCHED FAIL BEFORE THEY PASSED, each recorded in the file that carries it: (1) the verb-coverage audit refused to report 0/16 until it could show, in the same browser, that it could hear an input_action at all; (2) the competence control \"a randomised enemy is unlearnable\" FAILED \u2014 the learner converged on the distribution mean and gained 0.167, because an 11-frame i-frame window is wide relative to the spread. Bar made relative and a genuinely unlearnable arm E added; (3) the relative-delta bar was then CEILING-CONFOUNDED \u2014 arm B reaches 0.833 in its first bout, so it can gain at most 0.167 while arm D climbs 0.5 to a worse end state. The statistic is now the end state and both numbers are published.",
+    "TWO FIXTURE BUGS FOUND BY THE DRIVER FAILING, not by inspection: the first loop walked only when no verb had fired, so `sprint` fired once and starved locomotion for ever (3.7 simulated minutes, body moved 2.6 m, 25 jump presses). And `walkPath` beelines, so the body wedged against Lilmoth's buildings; locomotion is now `walkRoute` along the built road legs. Either would have published \"the first hour contains nothing\" as a finding about the game."
+  ],
+  "not_done": [
+    "THE 60-MINUTE RUN DID NOT FINISH INSIDE MY BUDGET. It reached 9.0 simulated minutes at the last checkpoint I read and was still running at hand-off, writing dispatches.jsonl and samples.jsonl every tick and hour.json every 60 ticks. Throughput is about 2 simulated minutes per 5 minutes of wall clock, so a full hour is roughly 2h15m. Every hour-derived number above is A NINE-MINUTE NUMBER and is labelled as one. V_exercised 6/14 and gap_max 496 s are NOT verdicts on the hour and must not be quoted as such.",
+    "cadence.mjs WAS NOT RUN over the produced trace. It is built, hardened over four rounds, and reads trace.jsonl \u2014 which this driver only writes at the END of the run, so there was nothing for it to read. That is the single most valuable next step and it is one command.",
+    "C5..C8 (combat/dialogue/traversal/menu fractions) are only approximated driver-side at tick resolution in hour.json, and are labelled `fractions_driver_side`. cadence.mjs owns them and its own round-4 note says no trace record in this tree carries a `ui` subtree at all, so C6 and C8 are very likely unmeasurable \u2014 unconfirmed by me.",
+    "M-I3 (verb teaching purity, V2 \"no verb is introduced by text\") NOT RUN. It needs the UI-text stream, which journey-run.mjs owns and this driver does not sample. HF2 is therefore unassessed.",
+    "M-I5 (necessity: re-run each introducing encounter WITHOUT the verb) NOT RUN. `--no-acquire` exists and is self-tested as the arm that would do it, but no encounter was re-run.",
+    "M-I13 / M-N1..M-N5 (the frustration ledger and the naive pass) NOT RUN. They require a naive agent under enforced isolation, which is a separate fleet role (JC-02N) and not a builder's to run on itself.",
+    "M-I14 (gamepad-only and touch-only repeats of the hour) NOT RUN \u2014 RI-JRN04 / W1-29.",
+    "The competence 2x2 is resolved ANALYTICALLY against the enemy's declared startups, not by driving a live fight frame by frame. The statblock is read from the running page where the served root allows it and from the shipped file otherwise, with the provenance recorded. A live-fight arm is the obvious next round and would test whether the declared startups are the ones the body actually faces.",
+    "The blind pair RI-JRN02 requires (our timeline vs Morrowind/Dark Souls, coin-flipped) was NOT built. Rule 25 forbids me judging one I built anyway.",
+    "input.discoverability is CITED, NOT SCORED \u2014 the declared W1-28 <-> W1-08 seam."
+  ],
+  "seam_W1_28_W1_08": "RI-JRN02 judges input.discoverability, which is W1-08's. Cited, not scored, per CORPUS-CONTRACT \u00a74 rule 1. One thing found here that W1-08 should have: RI-JRN02 V2 says no verb may be introduced by text, and M-I3 checks the 30 s of UI text before each verb's first use. This piece could not run it. The coupling debt is that W1-28 can produce the first-use minutes and W1-08 owns the text stream they must be checked against, and neither piece alone closes HF2."
 }

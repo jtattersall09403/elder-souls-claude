@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `033e7ac`: 762 tools, 153 reference
+so it cannot drift. Generated at `d21043d`: 763 tools, 153 reference
 items, 72 pieces in flight.
 
 Its purpose is to stop 72+ concurrent agents each paying separately to discover the
@@ -693,11 +693,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/render/` — 3
+### `tools/render/` — 4
 
 - `tools/render/cam07-back.mjs` — THE ONE FIDELITY PATH THE CAMERA DEPENDS ON: the player's back.
 - `tools/render/visual-reading.mjs` — `render.process.measurement`.
 - `tools/render/w1-24-audit.mjs` — THE PROTOCOL, RUN AGAINST NUMBERS THIS PROJECT HAS ALREADY PUBLISHED.
+- `tools/render/w1-24-shot.mjs` — the picture.
 
 ### `tools/stealth/` — 3
 
@@ -1098,13 +1099,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLAYABILITY` | measuring | finish the local and live runs at all eight shapes with --play; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `critic-w1-touch` | measuring — fight leg done, roll/sprint gate under investigation | settle whether arm B's sprint promotion is a real gate defect or CDP latency; then the dif | `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` `tools/touch/critic-block-roll.mjs` `tools/touch/critic-roll-matrix.mjs` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-27` | done |  | `orchestration/status/W1-27.json` `tools/coherence/w1-27-coherence.mjs` `tools/coherence/w1-27-loot-consumption.mjs` `tools/coherence/w1-27-chart.mjs` `tools/world/build-property.mjs` `reports/w1-27/RULING.md` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `W1-20` | building | refusals in voice (faction-refusals.json + Engine.factionRefusal) then the probe | `orchestration/status/W1-20.json` `game/data/quests/faction-joining-wave1.json` `game/data/quests/hooks.json` `game/data/crime/sanction.json` `game/src/sim/crime/sanction.js` `game/data/index.json` |
-| `PLAYABILITY` | starting | read RULES/INDEX/README/W1-TOUCH; attempt to make headless chromium reach github.io throug | `orchestration/status/PLAYABILITY.json` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |

@@ -98,6 +98,7 @@ OPTIONS
   --seed N         determinism seed (default 4711)
   --out DIR        run directory (default reports/journeys/<runId>)
   --tick-s N       seconds of simulated time between decisions (default 2)
+  --route NAME     named road route to walk (default: the first the build declares)
   --no-acquire V   withhold verb V from the agent entirely (the delete-the-fix arm)
   --entry PATH     alternative game/index.html (a pristine HEAD copy, when the shared tree is
                    mid-write: a fail-closed constructor in a neighbour's data blocks every
@@ -336,17 +337,66 @@ async function verbCoverage() {
     let signEvents = [];
     let signResult = null;
     try {
-      const signs = (await handle.hOpt('listSignposts')) || [];
+      // THE WORLD-RUNS GATE. Round 3 of this control got zero events of ANY kind from a button
+      // press at the post and `sign_open_after_button: false` — because the sweep above presses
+      // `menu`, `menu` opens a surface, and seam S14 stops the world while one is up. A control
+      // taken on a stopped world is not evidence about the build; it is a charge against the
+      // build for something the sweep did. So: close what is up, prove a frame advances, and
+      // only then ask the question.
+      await handle.hOpt('closeMenu');
+      await handle.hOpt('uiClose');
+      await handle.hOpt('signClose');
+      const f0 = await frameOf(handle);
+      await handle.h('stepFrames', 30);
+      const f1 = await frameOf(handle);
+      out.world_runs_before_control_c = {
+        frames_advanced: f1 - f0, requested: 30, ok: (f1 - f0) >= 25,
+        ui: (await handle.hOpt('getUIState')) || null,
+      };
+      // `listSignposts()` returns `{present, count, signposts:[...]}` — NOT an array. Round 2 of
+      // this control read `.length` off the wrapper, got `undefined`, and reported the control as
+      // failed. A control that fails because the tool misread a shape is not evidence about the
+      // build, which is why the assertion carries `sign_read_ok` and the refusal reason.
+      const signWrap = (await handle.hOpt('listSignposts')) || {};
+      const signs = Array.isArray(signWrap) ? signWrap : (signWrap.signposts || []);
       out.signposts_in_world = signs.length;
       if (signs.length) {
         const s = signs[0];
         const sx = s.x ?? (s.pos && s.pos[0]), sz = s.z ?? (s.pos && s.pos[2]);
         if (Number.isFinite(sx) && Number.isFinite(sz)) await handle.hOpt('teleport', sx, sz);
         await handle.h('stepFrames', 4);
+        // TWO ARMS, and the difference between them is the finding.
+        //
+        // ARM 1 — THE HARNESS VERB. `signRead()` is called from OUTSIDE the fixed step. The
+        // engine emits `input_action` inside `_openSign` (engine.js:3240), but `sim/step.js`
+        // calls `bus.clear()` at the TOP of the step and `_afterStep()` builds the record
+        // afterwards, so an event raised between stepped frames is wiped before any record can
+        // carry it. W1-26 r4 hit this same wall with `censusAnswer` and wrote it down.
+        //
+        // ARM 2 — THE BUTTON. Standing at the post and pressing `interact` runs the reach latch
+        // INSIDE the step, so anything it emits is in that frame's record. This is the player's
+        // path and it is the one a claim about the build has to be made on.
         signResult = await handle.hOpt('signRead');
+        out.sign_read_result = signResult;
         await handle.h('stepFrames', 4);
-        const drained = (await handle.hOpt('traceDrain')) || [];
-        for (const r of drained) for (const e of (r.events || r.e || [])) signEvents.push(e.type || e.t);
+        let drained = (await handle.hOpt('traceDrain')) || [];
+        const armVerb = [];
+        for (const r of drained) for (const e of (r.events || r.e || [])) armVerb.push(e.type || e.t);
+
+        await handle.hOpt('signClose');
+        await handle.h('stepFrames', 4);
+        await handle.hOpt('traceDrain');
+        await handle.h('queueInputs', [{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]);
+        await handle.h('stepFrames', 30);
+        drained = (await handle.hOpt('traceDrain')) || [];
+        const armButton = [];
+        for (const r of drained) for (const e of (r.events || r.e || [])) armButton.push(e.type || e.t);
+        out.control_c_arms = {
+          arm1_harness_verb_signRead: [...new Set(armVerb)],
+          arm2_button_interact_at_the_post: [...new Set(armButton)],
+          sign_open_after_button: !!((await handle.hOpt('getSignReaderState')) || {}).open,
+        };
+        signEvents = armVerb.concat(armButton);
       }
     } catch (e) { out.control_c_error = String(e && e.message || e); }
 
@@ -365,9 +415,12 @@ async function verbCoverage() {
     };
     out.assertions.C_C_event_name_is_reachable = {
       holds: signEvents.includes('input_action'),
-      via: 'signRead() — game/src/engine.js:3240 emits input_action{action:interact, via:signpost}',
+      via: 'the signpost, on TWO arms: the harness verb signRead(), and the button `interact` ' +
+           'pressed standing at the post. game/src/engine.js:3240 emits input_action{via:signpost}.',
       events_seen: [...new Set(signEvents)],
-      sign_read_ok: !!(signResult && (signResult.open || signResult.lines)),
+      sign_read_ok: !!(signResult && signResult.open),
+      sign_read_refused: (signResult && signResult.refused) || null,
+      world_was_running: !!(out.world_runs_before_control_c && out.world_runs_before_control_c.ok),
       why: signEvents.includes('input_action')
         ? 'THIS TOOL CAN SEE `input_action`. So an action that produces none is the engine not emitting one.'
         : 'the one route in the engine that emits `input_action` did not produce one here either, ' +
@@ -384,10 +437,20 @@ async function verbCoverage() {
       && out.assertions.C_B_the_input_landed.holds
       && out.assertions.C_C_event_name_is_reachable.holds;
     out.conclusive = controlsHold;
-    out.finding = controlsHold && silent.length > 0
+    // PRECISION. An action pressed in an empty room that legitimately does nothing SHOULD emit
+    // nothing, and counting it as a silent verb would inflate the finding. The claim is made
+    // only over the actions whose own consequence event proves they EXECUTED — the move started,
+    // the guard went up — and which still carried no `input_action`.
+    const landedButSilent = landed.filter((a) => !out.actions[a].visible_to_M_I1
+      && !out.actions[a].other_event_kinds.INPUT_DROPPED
+      && !out.actions[a].other_event_kinds.input_dropped);
+    out.landed_but_silent = landedButSilent;
+    out.finding = controlsHold && landedButSilent.length > 0
       ? `RI-JRN02 M-I1 wants a first-use minute and a repetition count for every verb, off the ` +
-        `trace, and \`input_action\` is the A-JRN7 event that carries them. ${silent.length} of ` +
-        `${ACTIONS.length} closed actions emit none. The emission at game/src/sim/player.js:109 ` +
+        `trace, and \`input_action\` is the A-JRN7 event that carries them. ${landedButSilent.length} ` +
+        `action(s) — ${landedButSilent.join(', ')} — EXECUTED (their own consequence event is in ` +
+        `the same trace window) and emitted no \`input_action\` at all; ${silent.length} of ` +
+        `${ACTIONS.length} emit none in this fixture. The emission at game/src/sim/player.js:109 ` +
         `is in \`stepPlayer\`, which nothing imports (game/src/sim/souls.js:46 says so in-tree); ` +
         `the live path is game/src/combat/player.js and it emits no \`input_action\` at all. So ` +
         `the verb ledger is unmeasurable from the trace for every button in the game, and the ` +
@@ -402,6 +465,7 @@ async function verbCoverage() {
       ` input_action reachable=${out.assertions.C_C_event_name_is_reachable.holds}\n`);
     process.stdout.write(`  input_action emitted for ${emitters.length}/${ACTIONS.length}: ${emitters.join(' ') || '(none)'}\n`);
     process.stdout.write(`  SILENT (invisible to RI-JRN02 M-I1): ${silent.join(' ') || '(none)'}\n`);
+    process.stdout.write(`  EXECUTED AND STILL SILENT: ${landedButSilent.join(' ') || '(none)'}\n`);
     if (out.finding) process.stdout.write(`  FINDING: ${out.finding.slice(0, 200)}...\n`);
     return out.ok;
   } finally {
@@ -437,6 +501,8 @@ async function driveHour() {
       'The trace-side equivalents are cadence.mjs\'s, over trace.jsonl in this directory. ' +
       'Where the two differ, --verb-coverage says which verbs the trace can see at all.',
     acquisition: [], dispatches_by_verb: {}, ticks: 0, frames_run: 0, aborted: null,
+    poi_outcomes: [], route_outcomes: [], distance_walked_m: 0,
+    locomotion: 'walkRoute along a named road route (resumable, chunked per tick)',
   };
   const dispatches = [];
   const known = new Set();
@@ -459,8 +525,15 @@ async function driveHour() {
 
     let frame = await frameOf(handle);
     const startFrame = frame;
-    let visited = 0;
+    const visitedIds = new Set();
     const tickFrames = Math.round(tickS * fps);
+    // Which road. `--route` names one; otherwise the first the build declares. A build with no
+    // named route falls back to point-steering and says so in `locomotion`.
+    const routes = (await handle.hOpt('getRoutes')) || null;
+    const routeNames = routes && routes.named_routes ? Object.keys(routes.named_routes)
+      : (routes && routes.routes ? Object.keys(routes.routes) : []);
+    let route = args.route ? String(args.route) : (routeNames[0] || null);
+    run.route = route; run.routes_available = routeNames;
 
     while (frame - startFrame < totalFrames) {
       const obs = await observe(handle, pois);
@@ -473,6 +546,9 @@ async function driveHour() {
         const anythingNear = [obs.nearestNPC_m, obs.nearestProp_m, obs.nearestSign_m, obs.nearestHostile_m]
           .some((x) => x !== null && x <= 15);
         mem.metres_since_anything_near = anythingNear ? 0 : mem.metres_since_anything_near + d;
+        // A jump/respawn is not a walk (walkPath's own rule: > 1 m in a frame is the world
+        // moving the body, not the body walking).
+        if (d < 200) run.distance_walked_m += d;
         if (d < 0.05) mem.stuck_ticks++; else mem.stuck_ticks = 0;
         mem.traversal_frames += (d > 0.1 && obs.nearestHostile_m === null) ? tickFrames : 0;
       }
@@ -495,21 +571,64 @@ async function driveHour() {
             trigger_state: triggerWitness(f.verb, obs, mem) });
         }
         const rec = await act(handle, f.verb, obs);
+        // USING A VERB ANSWERS THE NEED THAT ASKED FOR IT. Without this the trigger that fired
+        // once fires for ever and starves every other verb — see the note on the walk below.
+        if (f.verb === 'sprint') mem.metres_since_anything_near = 0;
+        if (f.verb === 'jump') mem.stuck_ticks = 0;
+        if (f.verb === 'heavy') mem.lights_without_stagger = 0;
+        if (f.verb === 'block') mem.hits_taken_while_retreating = 0;
+        if (f.verb === 'roll') mem.frames_since_hit_taken = null;
         rec.frame = frame; rec.verb = f.verb; rec.minute = obs.minute;
         dispatches.push(rec);
         run.dispatches_by_verb[f.verb] = (run.dispatches_by_verb[f.verb] || 0) + 1;
         fs.writeSync(dispatchFh, JSON.stringify(rec) + '\n');
       }
 
-      // move: to the nearest unvisited point of interest, in tick-sized bites, through the
-      // engine's own path follower (one harness call for many frames — an hour is 216 000).
-      const dest = pois.list[visited % Math.max(1, pois.list.length)];
-      if (dest && !fired.length) {
-        const r = await handle.hOpt('walkPath', [[obs.pos[0], obs.pos[2]], [dest.x, dest.z]],
-          { maxFrames: tickFrames, speed: 'walk' });
-        if (r && (r.arrived || r.aborted)) visited++;
-      } else {
-        await handle.h('stepFrames', tickFrames);
+      // MOVE. EVERY TICK, WHATEVER ELSE HAPPENED.
+      //
+      // Round 1 of this loop walked only when NO verb had fired (`if (dest && !fired.length)`),
+      // and the smoke run shows what that produces: `sprint` fired on tick 17 because 63 m had
+      // passed with nothing near, `metres_since_anything_near` was never reset by using it, so
+      // sprint fired on every subsequent tick, so the body never walked again. Three simulated
+      // minutes, 64 dispatches, and the body moved 2.6 m. An agent that stops walking to press
+      // the walking button is a fixture, not a player — and it would have reported a first hour
+      // with nothing in it, which is a finding-shaped artifact of a bug.
+      //
+      // A player does both: they hold the button and they keep going. So the walk is
+      // unconditional, and the verbs above are dispatched on top of it.
+      // ON THE ROAD, NOT ACROSS COUNTRY. The first version steered `walkPath` straight at the
+      // nearest point of interest, and 3.7 simulated minutes later the body had moved 31 m net
+      // and pressed `jump` twenty-five times: `walkPath` beelines, Lilmoth is full of buildings,
+      // and the stuck-detector was the only thing firing. That is a measurement of the path
+      // follower, not of the hour.
+      //
+      // `walkRoute` follows the built road legs and is RESUMABLE — it keeps its own progress on
+      // the engine unless `restart` is passed — so calling it once per tick with
+      // `chunkFrames: tickFrames` walks the province the way the body that crossed it walked,
+      // and the hour becomes "leave the town and go", which is the first hour this game has.
+      let walked = null;
+      if (route) {
+        walked = await handle.hOpt('walkRoute',
+          { route, speed: 'jog', chunkFrames: tickFrames, restart: run.ticks === 0 });
+      }
+      if (!walked) {
+        // No route in the build: fall back to steering at the nearest unvisited place, and SAY
+        // in the artifact that this is what happened rather than letting the two look alike.
+        run.locomotion = 'walkPath fallback (no named route)';
+        const dest = nearestUnvisited(pois.list, obs.pos, visitedIds);
+        if (dest) {
+          const r = await handle.hOpt('walkPath', [[obs.pos[0], obs.pos[2]], [dest.x, dest.z]],
+            { maxFrames: tickFrames, speed: 'jog' });
+          if (r && (r.arrived || r.aborted)) {
+            visitedIds.add(dest.key);
+            run.poi_outcomes.push({ key: dest.key, kind: dest.kind, id: dest.id,
+              arrived: !!r.arrived, aborted: r.aborted || null, minute: obs.minute });
+          }
+        } else await handle.h('stepFrames', tickFrames);
+      } else if (walked.done || walked.aborted) {
+        run.route_outcomes.push({ minute: obs.minute, done: !!walked.done,
+          aborted: walked.aborted || null, path_m: walked.path_m ?? null });
+        if (walked.done) route = null;         // arrived; the rest of the hour is on foot
       }
 
       frame = await frameOf(handle);
@@ -597,6 +716,18 @@ function triggerWitness(verb, obs, mem) {
     hits_taken_while_retreating: mem.hits_taken_while_retreating };
 }
 
+/** The nearest place the agent has not already steered at. Nearest, so the hour is a walk
+ *  outward from where the world put the body, not a tour of an arbitrary list order. */
+function nearestUnvisited(list, pos, visitedIds) {
+  let best = null, bestD = Infinity;
+  for (const q of list) {
+    if (visitedIds.has(q.key)) continue;
+    const d = Math.hypot(q.x - pos[0], q.z - pos[2]);
+    if (d < bestD) { bestD = d; best = q; }
+  }
+  return best;
+}
+
 async function frameOf(handle) {
   const f = await handle.hOpt('getFrame');
   return (f && (f.frame ?? f)) ?? 0;
@@ -606,13 +737,18 @@ async function frameOf(handle) {
 async function gatherPOIs(handle) {
   const list = [];
   const add = (kind, x, z, id) => {
-    if (Number.isFinite(x) && Number.isFinite(z)) list.push({ kind, x: +x, z: +z, id: id || null });
+    if (Number.isFinite(x) && Number.isFinite(z)) {
+      list.push({ kind, x: +x, z: +z, id: id || null, key: `${kind}:${id || list.length}` });
+    }
   };
-  const settlements = (await handle.hOpt('listSettlements')) || [];
+  const setWrap = (await handle.hOpt('listSettlements')) || {};
+  const settlements = Array.isArray(setWrap) ? setWrap : (setWrap.settlements || []);
   for (const s of settlements) add('settlement', s.x ?? (s.pos && s.pos[0]), s.z ?? (s.pos && s.pos[2]), s.id);
-  const signs = (await handle.hOpt('listSignposts')) || [];
+  const signWrap = (await handle.hOpt('listSignposts')) || {};
+  const signs = Array.isArray(signWrap) ? signWrap : (signWrap.signposts || []);
   for (const s of signs) add('signpost', s.x ?? (s.pos && s.pos[0]), s.z ?? (s.pos && s.pos[2]), s.id);
-  const hearths = (await handle.hOpt('listHearths')) || [];
+  const hearthWrap = (await handle.hOpt('listHearths')) || {};
+  const hearths = Array.isArray(hearthWrap) ? hearthWrap : (hearthWrap.hearths || []);
   for (const h of hearths) add('hearth', h.x ?? (h.pos && h.pos[0]), h.z ?? (h.pos && h.pos[2]), h.id);
   return { list, counts: { settlements: settlements.length, signposts: signs.length, hearths: hearths.length } };
 }
@@ -623,19 +759,36 @@ async function observe(handle, pois) {
   const p = (snap.player) || {};
   const pos = (p.pos && p.pos.slice()) || [0, 0, 0];
   const ents = (await handle.hOpt('listEntities')) || [];
-  const npcs = (await handle.hOpt('listNPCs')) || [];
-  const inv = (await handle.hOpt('getInventory')) || {};
+  const npcsAll = (await handle.hOpt('listNPCs')) || [];
+  // NPCs INSIDE an interior carry INTERIOR-LOCAL coordinates — Corvus Aldeyn stands at
+  // [-1.41, 0, 2] while the body is at [2766, _, 5011]. Measuring a world-space distance to
+  // one is measuring nothing, so the outdoor set is what proximity is computed over and the
+  // count of the rest is reported instead of being silently mixed in.
+  const npcs = npcsAll.filter((n) => n && !n.interior);
+  // `getInventory()` returns an ARRAY of rows, not `{items}`. Round 1 read `.items` off it, got
+  // undefined, and `inventory_count` was 0 for the whole run — so `menu` ("inventory pressure")
+  // could never be acquired. A verb that cannot be reached because the tool misread a shape is
+  // the worst kind of zero: it looks exactly like a design finding.
+  const invRaw = await handle.hOpt('getInventory');
+  const inv = Array.isArray(invRaw) ? { items: invRaw, gold: 0 } : (invRaw || {});
+  const where = (await handle.hOpt('whereAmI')) || null;
   const d2 = (a) => Math.hypot((a.pos ? a.pos[0] : a.x) - pos[0], (a.pos ? a.pos[2] : a.z) - pos[2]);
   const finite = (xs) => (xs.length ? +Math.min(...xs).toFixed(2) : null);
   const hostiles = ents.filter((e) => e && (e.hostile || e.kind === 'enemy' || e.faction === 'hostile'));
   const items = (inv.items || inv.rows || []);
-  return {
+  const o = {
     pos,
     hp: p.hp ?? null, hp_max: p.hp_max ?? p.hpMax ?? null,
     hp_frac: (p.hp != null && (p.hp_max || p.hpMax)) ? p.hp / (p.hp_max || p.hpMax) : 1,
     stamina: p.stamina ?? null,
     retreating: false,
-    reach: null,
+    // C1's "reach" — is there anything the `interact` button would act on? The engine's own
+    // answer where it has one (`whereAmI().door_in_reach`), and otherwise anything placed
+    // within the reach distance the sign reader uses.
+    reach: where && where.door_in_reach ? `door:${where.door_in_reach}` : null,
+    settlement: where ? where.settlement : null,
+    interior: where ? where.interior : null,
+    npcs_indoors_excluded: npcsAll.length - npcs.length,
     nearestNPC_m: finite(npcs.map(d2).filter(Number.isFinite)),
     nearestHostile_m: finite(hostiles.map(d2).filter(Number.isFinite)),
     hostiles_within_12m: hostiles.filter((h) => d2(h) <= 12).length,
@@ -649,6 +802,19 @@ async function observe(handle, pois) {
     weapons_carried: items.filter((i) => i && (i.slot === 'weapon' || i.kind === 'weapon')).length,
     gold: inv.gold ?? 0,
   };
+  return withReach(o);
+}
+
+/** `reach` is C1's "is there anything the button would act on". A door the engine names, a post
+ *  inside the sign reader's range, or a placed thing at arm's length. Computed after the record
+ *  is built because it is a function of three of its own fields. */
+function withReach(o) {
+  if (!o.reach) {
+    if (o.nearestSign_m !== null && o.nearestSign_m <= 4.0) o.reach = 'signpost';
+    else if (o.nearestProp_m !== null && o.nearestProp_m <= 3.0) o.reach = 'prop';
+    else if (o.nearestNPC_m !== null && o.nearestNPC_m <= 3.0) o.reach = 'npc';
+  }
+  return o;
 }
 
 /** Perform a verb. Buttons go through the input pipeline; services through their verb. */
