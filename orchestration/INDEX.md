@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2ff7041`: 568 tools, 153 reference
+so it cannot drift. Generated at `067ba53`: 568 tools, 153 reference
 items, 39 pieces in flight.
 
 Its purpose is to stop 39+ concurrent agents each paying separately to discover the
@@ -877,13 +877,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-22-r2` | running | SUCCESSOR-2: probe running; then build reports/packs/w1-22-r3-hard and spawn a FRESH judge | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` `reports/w1-22-critic/r2/onsets-at-HEAD.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` |
 | `W1-ROAD-JOIN` | ? |  | — |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `W1-25` | building | Build RI-CMP01: tools/composition/cells-from-md.mjs -> corpus/95-experience/RI-CMP01.cells | `orchestration/status/W1-25.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `reports/experience/w1/sabotage.json` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
-| `critic-w1-22-r2` | running | SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-ban | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` `tools/audio/critic-w1-22-r2-probe.mjs` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
 | `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |

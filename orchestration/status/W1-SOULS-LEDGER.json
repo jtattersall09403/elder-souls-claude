@@ -160,5 +160,10 @@
   "The check counts encounter templates at DEFAULT composition — one template, dres-raid-party, carries an `absent_when_flag` member that a quest can remove. The generator does the same, so the comparison is exact; the caveat is printed under --verbose rather than assumed.",
   "I did not rewrite W1-POPULATION-r1.json, nor any figure inside a stamped verdict body. Annotated instead, and said so above.",
   "No timing figure of any kind is published by this piece, so RULES 26's load-declaration requirement does not bind — but the contention state is declared above anyway."
+ ],
+ "commit_landed": "3463e06",
+ "notes": [
+  "Landed at 3463e06. Committed by pathspec (git commit -F msg -- <paths>) rather than by index, because critic-w1-23-r3 and critic-w1-17 had their own work staged in the shared index at the time and  takes the whole index (RULES 17, and the message of d30a3de). Their staged entries survived the commit, verified after. The pre-commit hook added its own docs/index.html, docs/progress.html and docs/status.json rebuild to the commit; that is the hook, not me.",
+  "Gates re-run at 3463e06: check-data 0, check-souls-world --totals 0 (10,679 souls / crossing level 3), build-population --check 0."
  ]
 }
