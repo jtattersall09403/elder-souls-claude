@@ -317,9 +317,14 @@ try {
       row.dur_separable = durAllowed && durHi * 60 > FRAMES && durLo * 60 < FRAMES;
       row.area_separable = areaAllowed && areaHi > areaLo;
 
-      const runOne = (m, d, a, cast) => {
+      const runOne = (m, d, a, cast, isKnockdown) => {
         const eid = arena(wantsEnemy);
         let sid = null;
+        // THE COMPARATOR'S NULL (round 4). Under `nulldial` a knock-down arm casts the BASE
+        // tuple, so the two arms differ in nothing at all and every separable dial must read
+        // BLIND. This is the arm the round-3 self-test did not have: `nocast` exits at the
+        // delivery gate and never reaches `readDial()` (RULES.md #6, the inert-control shape).
+        if (BREAK === 'nulldial' && isKnockdown) { m = magHi; d = durHi; a = areaHi; }
         if (cast && BREAK !== 'nocast') {
           const mk = H.makeSpell(spec(m, d, a), `dial_${e.id}_${m}_${d}_${a}`);
           if (mk.refused) return { refused: mk.reason || mk.gate, before: null, after: null };
@@ -342,11 +347,11 @@ try {
 
       let ctl, base, mlo, dlo, alo;
       try {
-        ctl = runOne(magHi, durHi, areaHi, false);
-        base = runOne(magHi, durHi, areaHi, true);
-        mlo = row.mag_separable ? runOne(magLo, durHi, areaHi, true) : null;
-        dlo = row.dur_separable ? runOne(magHi, durLo, areaHi, true) : null;
-        alo = row.area_separable ? runOne(magHi, durHi, areaLo, true) : null;
+        ctl = runOne(magHi, durHi, areaHi, false, false);
+        base = runOne(magHi, durHi, areaHi, true, false);
+        mlo = row.mag_separable ? runOne(magLo, durHi, areaHi, true, true) : null;
+        dlo = row.dur_separable ? runOne(magHi, durLo, areaHi, true, true) : null;
+        alo = row.area_separable ? runOne(magHi, durHi, areaLo, true, true) : null;
       } catch (err) { row.verdict = 'THREW'; row.note = String(err && err.message).slice(0, 300); rows.push(row); continue; }
 
       if (base.refused) { row.verdict = 'NOT_CASTABLE'; row.note = base.refused; rows.push(row); continue; }
@@ -431,7 +436,55 @@ log(`area      blind: ${s.area_blind.join(', ') || '(none)'}`);
 if (s.inert.length) log(`INERT (control arm says the spell moved nothing): ${s.inert.join(', ')}`);
 for (const n of report.notes) log(`NOTE: ${n}`);
 
+// ---- ROUND 4: EACH ARM'S EXPECTATION, AS AN EXIT CODE ----------------------------------------
+//
+// RULES.md #6: "a control you have never seen fail is not evidence, it is a second copy of the
+// experiment." So every break mode carries the assertion that says whether the sabotage reached
+// the thing under test, the report carries the verdict, and the process exit says it too. The
+// round-3 self-test block declared four modes, published one, and asserted nothing about any of
+// them.
+const dialOf = (effect, dial) => {
+  const r = report.rows.find((x) => x.effect === effect);
+  return r && r[dial] ? r[dial].coupling : null;
+};
+const failures = [];
+const expectBlind = (effect, dial) => {
+  const c = dialOf(effect, dial);
+  if (c === null) failures.push(`${effect}: not in this run (was --only passed?)`);
+  else if (c !== 'BLIND') failures.push(`${effect} ${dial} came back ${c}; the sabotage should have made it BLIND — this teardown does not reach the thing under test`);
+};
+if (breakMode === 'bindblind') { expectBlind('bind_lesser', 'magnitude'); expectBlind('bind_greater', 'magnitude'); }
+if (breakMode === 'fleeblind') { expectBlind('demoralise', 'magnitude'); }
+if (breakMode === 'nulldial') {
+  // Two identical arms. Every ACTIVE, separable dial must read BLIND; anything COUPLED here is
+  // arena noise this instrument would otherwise report as a reader.
+  const noisy = [];
+  for (const r of report.rows) {
+    if (r.verdict !== 'ACTIVE') continue;
+    for (const dial of ['magnitude', 'duration', 'area']) {
+      if (r[dial] && r[dial].coupling === 'COUPLED') noisy.push(`${r.effect}.${dial} (${(r[dial].differing || []).slice(0, 4).join(', ')})`);
+    }
+  }
+  report.summary.null_arm_noise = noisy;
+  if (noisy.length) failures.push(`NULL ARM NOT CLEAN — ${noisy.length} dial reading(s) COUPLED between two identical casts: ${noisy.join('; ')}`);
+}
+if (breakMode === 'nocast') {
+  // What this arm is actually a control FOR: the delivery gate. Nothing was cast, so nothing may
+  // be ACTIVE and no dial may be COUPLED. It is NOT the comparator's control and the report says so.
+  report.summary.this_arm_controls = 'the DELIVERY GATE only — every row exits at NOT_DELIVERED before readDial() is reached. The comparator control is --break=nulldial.';
+  if (s.active !== 0) failures.push(`nocast: ${s.active} row(s) still ACTIVE with nothing cast`);
+  for (const d of ['magnitude', 'duration', 'area']) {
+    if (s[`${d}_coupled`] !== 0) failures.push(`nocast: ${d}_coupled is ${s[`${d}_coupled`]} with nothing cast`);
+  }
+}
+report.self_test = { mode: breakMode || null, asserted: !!breakMode, failures };
+for (const f of failures) log(`SELF-TEST FAIL: ${f}`);
+if (breakMode) log(`self-test '${breakMode}': ${failures.length ? 'FAILED' : 'the arm broke what it names'}`);
+
 const tag = report.break_mode ? `-break-${report.break_mode}` : '';
 const p = path.join(outDir, `dials${tag}.json`);
 writeJson(p, report);
 console.log(p);
+// The report is on disk BEFORE the exit code, always: a self-test that fails is the run whose
+// numbers you most want to read afterwards.
+if (args.assert && failures.length) process.exit(20);

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `37bbb6f`: 646 tools, 153 reference
-items, 54 pieces in flight.
+so it cannot drift. Generated at `bab2271`: 646 tools, 153 reference
+items, 53 pieces in flight.
 
-Its purpose is to stop 54+ concurrent agents each paying separately to discover the
+Its purpose is to stop 53+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -968,7 +968,6 @@ work is the difference between resuming and starting over.
 | `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `critic-road-join` | ? | B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F w | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `critic-w1-map-r2` | running | screenshots (docs/shots), then write the verdict | `orchestration/status/critic-w1-map-r2.json` `tools/harness/critic-map-r2.mjs` |
-| `W1-04-r4` | building — offline half green | delete-the-fix arms, then one browser run for the live arm + two pictures | `orchestration/status/W1-04-r4.json` `tools/world/w1-04-r4-join.mjs` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `reports/w1-04-r4/join.json` |
 | `critic-w1-16-r3` | running | run tools/harness/critic-w1-16-r3-live.mjs (one browser), then write the verdict | `orchestration/status/critic-w1-16-r3.json` `tools/harness/critic-w1-16-r3-offline.mjs` `tools/harness/critic-w1-16-r3-live.mjs` `reports/w1-16/critic-r3-offline.json` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
 | `W1-CROSSING` | in_progress | read NEXT-DISPATCH SS W and P.4, W1-ROAD-JOIN.json, W1-05.json; run ownership + contention | `orchestration/status/W1-CROSSING.json` |

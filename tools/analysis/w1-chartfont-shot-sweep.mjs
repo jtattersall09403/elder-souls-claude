@@ -84,6 +84,13 @@ export function decodePng(buf) {
 }
 
 // ---- the two tables, reduced to the glyphs that actually DISTINGUISH them -----------------------
+// EVIDENCE IS ALPHANUMERIC ONLY. Punctuation glyphs ('-', '=', '_', ':', '.') are a handful of
+// aligned pixels, and a chart is full of axis rules, tick marks and bar edges that reproduce them
+// by accident — that is where the false positives live. Letters and digits are where the evidence
+// is, and they are also the thing a reader misreads. Punctuation still keeps a RUN alive (a word
+// may contain a hyphen); it just never counts as evidence for either table.
+const isEvidence = (ch) => /^[A-Z0-9]$/.test(String(ch).toUpperCase());
+
 const soundByPattern = new Map();
 const shearedByPattern = new Map();
 for (const [ch, bits] of Object.entries(FONT)) {
@@ -101,8 +108,8 @@ for (const [ch, bits] of Object.entries(SHEARED_FONT)) {
 }
 // A pattern present in both tables tells you nothing about which drew it.
 const AMBIGUOUS = new Set([...soundByPattern.keys()].filter((p) => shearedByPattern.has(p)));
-const SOUND_ONLY = new Map([...soundByPattern].filter(([p]) => !AMBIGUOUS.has(p)));
-const SHEARED_ONLY = new Map([...shearedByPattern].filter(([p]) => !AMBIGUOUS.has(p)));
+const SOUND_ONLY = new Map([...soundByPattern].filter(([p, ch]) => !AMBIGUOUS.has(p) && isEvidence(ch)));
+const SHEARED_ONLY = new Map([...shearedByPattern].filter(([p, ch]) => !AMBIGUOUS.has(p) && isEvidence(ch)));
 
 // ---- the classifier -----------------------------------------------------------------------------
 //
@@ -194,12 +201,24 @@ export function classify(img, scales = [1, 2, 3]) {
 
   const nS = [...sound.values()].reduce((a, b) => a + b, 0);
   const nX = [...sheared.values()].reduce((a, b) => a + b, 0);
+
+  // DECIDE ON THE RATIO, NOT THE COUNTS, and the reason is the defect itself: a sheared glyph's
+  // bitmap frequently EQUALS some other sound glyph (a sheared `2` is a sound `8`), so a genuinely
+  // sheared figure still scores plenty of sound-only hits. What separates them cleanly is how often
+  // a sheared-only pattern appears at all. Calibrated against the four archived pre-fix figures and
+  // their regenerated counterparts, with known labels:
+  //     sheared figures   0.22 .. 0.87        fixed figures   0.003 .. 0.007
+  // Two orders of magnitude apart, so the cut sits at 0.05 with room either side.
+  const total = nS + nX;
+  const ratio = total ? nX / total : 0;
   let verdict = 'not-a-chart-font-figure';
-  if (nS + nX >= 6) verdict = nX > nS ? 'SHEARED' : nS > nX ? 'sound' : 'ambiguous';
+  if (total >= 20) verdict = ratio >= 0.05 ? 'SHEARED' : 'sound';
+  else if (total >= 6) verdict = 'ambiguous';
   return {
     verdict,
     sound_hits: nS,
     sheared_hits: nX,
+    sheared_ratio: Number(ratio.toFixed(4)),
     runs,
     glyph_cells: cellsSeen,
     sound_glyphs: [...sound.keys()].sort().join(''),

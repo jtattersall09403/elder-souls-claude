@@ -66,6 +66,33 @@ console.log(`check-data: ${refs.length} indexed data files, all present.`);
 //   node tools/check-souls-world.mjs [--verbose] [--json <path>] [--self-break]
 // And the one line that answers "what is the world worth today":
 //   node tools/check-souls-world.mjs --totals
+// ---------------------------------------------------------------------------
+// A building's outside must contain its inside. RI-WLD13 N1.
+//
+// W1-04 round 3 shrank the drawn exteriors to keep buildings out of one another and left the
+// interiors at their declared footprints, and NOTHING IN THE TREE READ BOTH HALVES — so 41 of
+// 112 enterable buildings spent a round drawing a shed over a hall, worst case a 3.4 m shed you
+// walk into and find a 13.6 m inn, and it took a critic's photograph to find it. This is the
+// check that would have caught it on the commit that caused it. It runs here for the same reason
+// the soul ledger does: the pre-commit hook already runs check-data on every commit that touches
+// game/data/, which is every commit that can move a town plan or a room's bounds.
+//
+// Standalone, including the arm that proves it can fail:
+//   node tools/check-building-fits-room.mjs [--verbose] [--self-break]
+{
+  const fits = join(ROOT, 'tools', 'check-building-fits-room.mjs');
+  if (existsSync(fits)) {
+    const { spawnSync } = await import('node:child_process');
+    const r = spawnSync(process.execPath, [fits], { encoding: 'utf8' });
+    process.stdout.write(r.stdout || '');
+    if (r.status !== 0) {
+      process.stderr.write(r.stderr || '');
+      console.error('\ncheck-data: a settlement draws a building smaller than the room behind its door.');
+      process.exit(1);
+    }
+  }
+}
+
 {
   const souls = join(ROOT, 'tools', 'check-souls-world.mjs');
   if (existsSync(souls)) {

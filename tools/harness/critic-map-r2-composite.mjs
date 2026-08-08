@@ -117,17 +117,36 @@ try {
     const terr = S.elements.find((e) => e.kind === 'map_terrain');
     const plr = S.elements.find((e) => e.kind === 'map_player');
     const nam = S.elements.find((e) => e.id === 'map.naming');
-    // The UI layer's own reading, the one the other two instruments report.
+    // The UI layer's own reading — BOTH ways, because the difference between them is a warning the
+    // round-1 verdict left on the record and this arm reproduces: sampled naively the blank map
+    // reads ~15 colours, ALL of them the player chevron's antialiased edge. Excluding the chevron
+    // and the naming label is what makes the number mean "how much province is painted".
     const box = terr.rect.map(Math.round);
-    const img = S.ctx.getImageData(box[0] + 2, box[1] + 2, box[2] - 4, box[3] - 4).data;
-    const set = new Set();
+    const bx = box[0] + 2, by = box[1] + 2, bw = box[2] - 4, bh = box[3] - 4;
+    const img = S.ctx.getImageData(bx, by, bw, bh).data;
+    const holeRects = [plr, nam].filter(Boolean).map((e) => e.rect);
+    const naive = new Set(); const clean = new Set();
     let lo = 255, hi = 0;
-    for (let i = 0; i < img.length; i += 4) { const k = (img[i] << 16) | (img[i + 1] << 8) | img[i + 2]; set.add(k); if (img[i] < lo) lo = img[i]; if (img[i] > hi) hi = img[i]; }
+    for (let py = 0; py < bh; py++) {
+      for (let px = 0; px < bw; px++) {
+        const i = (py * bw + px) * 4;
+        const k = (img[i] << 16) | (img[i + 1] << 8) | img[i + 2];
+        naive.add(k);
+        const gx = bx + px, gy = by + py;
+        let skip = false;
+        for (const b of holeRects) {
+          if (gx >= b[0] - 3 && gx <= b[0] + b[2] + 3 && gy >= b[1] - 3 && gy <= b[1] + b[3] + 3) { skip = true; break; }
+        }
+        if (skip) continue;
+        clean.add(k);
+        if (img[i] < lo) lo = img[i]; if (img[i] > hi) hi = img[i];
+      }
+    }
     const dpr = window.devicePixelRatio || 1;
     return {
       rect: terr.rect, dpr,
       holes: [plr, nam].filter(Boolean).map((e) => e.rect),
-      ui_layer: { distinct: set.size, red_range: hi - lo },
+      ui_layer: { distinct_naive: naive.size, distinct: clean.size, red_range: hi - lo },
       drawn_cells: terr.meta.drawn_cells, total_cells: terr.meta.total_cells,
       revealed: D.revealedCells, stood: D.stoodCells,
       at: [Math.round(sim.player.pos[0]), Math.round(sim.player.pos[2])],
@@ -158,9 +177,10 @@ try {
     `drawn_cells=${g1.drawn_cells}/${g1.total_cells}, revealed=${g1.revealed}, stood=${g1.stood}; screens/map.js:103 is "if (!m.seen(cx,rz)) continue;"`,
     g1.drawn_cells === 0 && g1.revealed === 0,
     '0 cells painted — no undiscovered geometry is drawn at any alpha');
-  A('X2', 'THE UI LAYER holds one colour, which is what the other two instruments measure',
-    `UI canvas inside the terrain box: distinct=${g1.ui_layer.distinct}, red range=${g1.ui_layer.red_range}`,
-    g1.ui_layer.distinct === 1, '1 colour on the interface surface');
+  A('X2', 'THE UI LAYER holds one colour once the chevron is excluded — and ~15 if it is not',
+    `UI canvas inside the terrain box: naive=${g1.ui_layer.distinct_naive} colours, chevron+label excluded=${g1.ui_layer.distinct}, red range=${g1.ui_layer.red_range}`,
+    g1.ui_layer.distinct === 1 && g1.ui_layer.distinct_naive > 1,
+    '1 with the chevron excluded, more without — an attack that did not exclude it would invent a finding');
   A('X3', 'THE COMPOSITED FRAME DOES NOT: the panel is translucent and the world shows through',
     `screenshot inside the same box: distinct=${c1.distinct} over ${c1.pixels}px, dominant=${c1.dominant} (${(c1.dominant_frac * 100).toFixed(2)}%), channel range=${JSON.stringify(c1.channel_range)}`,
     c1.distinct > 1,

@@ -81,7 +81,7 @@ function auditLeg(field, bare, leg) {
     climb_deg: 0, climb_at_m: 0, climb_over_limit: 0,
     regain_deg: 0, regain_at_m: 0, regain_over_limit: 0,
     edge_drop_m: 0, edge_drop_at_m: 0, edge_drop_over_step: 0,
-    samples: 0,
+    samples: 0, span_samples: 0, parapet_leaks: 0, first_leak: null,
     worst: null,
   };
   // ---- 1. the road's own gradient, straight off the artifact -----------------------------------
@@ -131,12 +131,39 @@ function auditLeg(field, bare, leg) {
       if (yA > y0 && climb > out.climb_deg) { out.climb_deg = climb; out.climb_at_m = s; }
     }
     // 4. H1 — step off the road and try to come back.
-    //    Stand 1 m outside the exempt band on each side, face the centreline, and ask the same
-    //    question the slope gate asks. Also record how far DOWN the first step off the edge is:
-    //    a body that fell is not a body that wandered, and the two want different fixes.
+    //
+    //    A BRIDGE IS SUPPOSED TO HAVE A DROP BESIDE IT. The first cut of this check counted every
+    //    metre of viaduct as a defect and reported 3,829 of them, which is not a finding, it is a
+    //    category error: what a bridge is required to have is a PARAPET, and this build has one
+    //    (`field.clampToDeck`). So the question splits by what the body is standing on:
+    //
+    //      on a span  — push it sideways, one 0.06 m step at a time, applying the same clamp the
+    //                   controller applies, and see whether the railing holds it. A leak is a
+    //                   defect; a drop behind a railing that holds is a bridge.
+    //      on earth   — the old question: is the shoulder something a body can walk back up?
+    //
+    //    The abutments are where these two meet, and that is exactly where this found the hole.
     const nx = -uz, nz = ux;
     const off = hw * 1.15 + 1.0;
     const deckY = field.heightAt(x, z);
+    if (field.onDeckAt(x, z)) {
+      out.span_samples++;
+      for (const sgn of [-1, 1]) {
+        let bx = x, bz = z, leaked = false;
+        for (let k = 0; k < 120; k++) {
+          const tx = bx + nx * 0.06 * sgn, tz = bz + nz * 0.06 * sgn;
+          const c = field.clampToDeck(bx, bz, tx, tz);
+          bx = c ? c[0] : tx; bz = c ? c[1] : tz;
+          const dc = Math.hypot(bx - x, bz - z);
+          if (dc > hw + 0.6) { leaked = true; break; }
+        }
+        if (leaked) {
+          out.parapet_leaks++;
+          if (!out.first_leak) out.first_leak = { at_m: +s.toFixed(1), on_road: [+x.toFixed(1), +z.toFixed(1)], side: sgn };
+        }
+      }
+      continue;   // the earth questions below are not asked of a bridge
+    }
     for (const sgn of [-1, 1]) {
       const px = x + nx * off * sgn, pz = z + nz * off * sgn;
       // the drop from the carriageway to the ground just outside it
@@ -184,6 +211,8 @@ function report(roads, label) {
       worst_regain_deg: Math.max(0, ...rows.map((x) => x.regain_deg)),
       climb_over_limit: rows.reduce((a, x) => a + x.climb_over_limit, 0),
       regain_over_limit: rows.reduce((a, x) => a + x.regain_over_limit, 0),
+      edge_drop_over_step: rows.reduce((a, x) => a + x.edge_drop_over_step, 0),
+      parapet_leaks: rows.reduce((a, x) => a + x.parapet_leaks, 0),
       span_m: rows.reduce((a, x) => a + x.span_m, 0),
       span_max_height_m: Math.max(0, ...rows.map((x) => x.span_max_height_m)),
     };
@@ -194,9 +223,11 @@ function report(roads, label) {
     { id: 'G2-CLIMB', pass: legs.every((l) => l.climb_over_limit === 0),
       detail: `${legs.reduce((a, l) => a + l.climb_over_limit, 0)} centreline samples the slope gate would refuse, bar 0` },
     { id: 'G3-REGAIN', pass: legs.every((l) => l.regain_over_limit === 0),
-      detail: `${legs.reduce((a, l) => a + l.regain_over_limit, 0)} places where a body one metre off the road cannot climb back on, bar 0` },
+      detail: `${legs.reduce((a, l) => a + l.regain_over_limit, 0)} places on EARTH road where a body one metre off the shoulder cannot climb back on, bar 0` },
     { id: 'G4-NO-FALL', pass: legs.every((l) => l.edge_drop_over_step === 0),
-      detail: `${legs.reduce((a, l) => a + l.edge_drop_over_step, 0)} places where stepping off the carriageway is a fall of more than ${STEP_M} m, bar 0` },
+      detail: `${legs.reduce((a, l) => a + l.edge_drop_over_step, 0)} places on EARTH road where stepping off the carriageway is a fall of more than ${STEP_M} m, bar 0` },
+    { id: 'G5-PARAPET', pass: legs.every((l) => l.parapet_leaks === 0),
+      detail: `${legs.reduce((a, l) => a + l.parapet_leaks, 0)} of ${legs.reduce((a, l) => a + l.span_samples * 2, 0)} sideways pushes walk off a bridge deck, bar 0` },
   ];
   return { label, max_walkable_deg: MAX_WALK_DEG, step_m: STEP_M, legs, named_routes: named, checks, ok: checks.every((c) => c.pass) };
 }
@@ -239,7 +270,7 @@ if (!QUIET) {
   console.log(`road-grade — ${ROADS_FILE}   walkable limit ${MAX_WALK_DEG} deg`);
   console.log(`${pad('leg', 22)}${num('len')} ${num('deck')} ${num('climb')} ${num('regain')} ${num('drop')} ${num('span_m')} ${num('span_h')}  over-limit`);
   for (const l of main.legs) {
-    console.log(`${pad(l.leg, 22)}${num(l.metres.toFixed(0))} ${num(l.deck_grade_deg.toFixed(1))} ${num(l.climb_deg.toFixed(1))} ${num(l.regain_deg.toFixed(1))} ${num(l.edge_drop_m.toFixed(1))} ${num(l.span_m)} ${num(l.span_max_height_m)}  climb ${l.climb_over_limit} regain ${l.regain_over_limit} fall ${l.edge_drop_over_step}`);
+    console.log(`${pad(l.leg, 22)}${num(l.metres.toFixed(0))} ${num(l.deck_grade_deg.toFixed(1))} ${num(l.climb_deg.toFixed(1))} ${num(l.regain_deg.toFixed(1))} ${num(l.edge_drop_m.toFixed(1))} ${num(l.span_m)} ${num(l.span_max_height_m)}  climb ${l.climb_over_limit} regain ${l.regain_over_limit} fall ${l.edge_drop_over_step} leak ${l.parapet_leaks}/${l.span_samples * 2}`);
   }
   for (const c of main.checks) console.log(`  ${c.pass ? 'PASS' : 'FAIL'}  ${c.id}  ${c.detail}`);
   console.log(`wrote ${OUT}`);
