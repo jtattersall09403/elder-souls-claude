@@ -1,0 +1,824 @@
+{
+  "schema": "elder-souls/critic-input@1",
+  "piece": "W1-26-r3",
+  "role": "critic",
+  "method": "real DOM keydown/keyup into input/real.js listeners; the sim is stepped by the harness because the handler, not the frame source, is under test",
+  "conditions": {
+    "loadavg_at_start": [
+      13.62,
+      12.41,
+      11.16
+    ],
+    "loadavg_at_end": [
+      19.19,
+      14.06,
+      11.77
+    ],
+    "page_errors": []
+  },
+  "passes": [
+    "C2",
+    "C5",
+    "C4",
+    "C7"
+  ],
+  "failures": [
+    "C0",
+    "C1",
+    "C3",
+    "C6"
+  ],
+  "checks": {
+    "world_state": {
+      "census_open": false,
+      "census_takes_input": false,
+      "title_open": false,
+      "ui_mode": "world",
+      "pos": [
+        1.9,
+        0,
+        0.3
+      ]
+    },
+    "bindings": {
+      "bindings": {
+        "light": [
+          "Mouse0",
+          null
+        ],
+        "block": [
+          "Mouse2",
+          "KeyF"
+        ],
+        "parry": [
+          "Mouse1",
+          "KeyV"
+        ],
+        "heavy": [
+          "KeyR",
+          "Mouse3"
+        ],
+        "roll": [
+          "Space",
+          "Mouse4"
+        ],
+        "sprint": [
+          "ShiftLeft",
+          null
+        ],
+        "jump": [
+          "KeyX",
+          null
+        ],
+        "interact": [
+          "KeyE",
+          "Enter"
+        ],
+        "use_item": [
+          "Digit1",
+          null
+        ],
+        "lock_on": [
+          "Tab",
+          "Mouse1Hold12"
+        ],
+        "two_hand": [
+          "KeyG",
+          null
+        ],
+        "swap_right": [
+          "Digit3",
+          "WheelUp"
+        ],
+        "swap_left": [
+          "Digit4",
+          "WheelDown"
+        ],
+        "menu": [
+          "Escape",
+          "KeyM"
+        ],
+        "crouch": [
+          "KeyC",
+          "KeyZ"
+        ],
+        "spell_cycle": [
+          "KeyT",
+          "Digit2"
+        ]
+      },
+      "move": {
+        "forward": [
+          "KeyW",
+          "ArrowUp"
+        ],
+        "back": [
+          "KeyS",
+          "ArrowDown"
+        ],
+        "left": [
+          "KeyA",
+          "ArrowLeft"
+        ],
+        "right": [
+          "KeyD",
+          "ArrowRight"
+        ]
+      }
+    },
+    "survey_shipped": {
+      "label": "shipped",
+      "rows": [
+        {
+          "action": "light",
+          "code": null,
+          "skipped": "no keyboard binding"
+        },
+        {
+          "action": "block",
+          "code": "KeyF",
+          "arrived": true,
+          "latched": [
+            "block"
+          ]
+        },
+        {
+          "action": "parry",
+          "code": "KeyV",
+          "arrived": true,
+          "latched": [
+            "parry"
+          ]
+        },
+        {
+          "action": "heavy",
+          "code": "KeyR",
+          "arrived": true,
+          "latched": [
+            "heavy"
+          ]
+        },
+        {
+          "action": "roll",
+          "code": "Space",
+          "arrived": true,
+          "latched": [
+            "roll"
+          ]
+        },
+        {
+          "action": "sprint",
+          "code": "ShiftLeft",
+          "arrived": true,
+          "latched": [
+            "sprint"
+          ]
+        },
+        {
+          "action": "jump",
+          "code": "KeyX",
+          "arrived": true,
+          "latched": [
+            "jump"
+          ]
+        },
+        {
+          "action": "interact",
+          "code": "KeyE",
+          "arrived": true,
+          "latched": [
+            "interact"
+          ]
+        },
+        {
+          "action": "use_item",
+          "code": "Digit1",
+          "arrived": true,
+          "latched": [
+            "use_item"
+          ]
+        },
+        {
+          "action": "lock_on",
+          "code": "Tab",
+          "arrived": true,
+          "latched": [
+            "lock_on"
+          ]
+        },
+        {
+          "action": "two_hand",
+          "code": "KeyG",
+          "arrived": true,
+          "latched": [
+            "two_hand"
+          ]
+        },
+        {
+          "action": "swap_right",
+          "code": "Digit3",
+          "arrived": true,
+          "latched": [
+            "swap_right"
+          ]
+        },
+        {
+          "action": "swap_left",
+          "code": "Digit4",
+          "arrived": true,
+          "latched": [
+            "swap_left"
+          ]
+        },
+        {
+          "action": "menu",
+          "code": "Escape",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "crouch",
+          "code": "KeyC",
+          "arrived": true,
+          "latched": [
+            "crouch"
+          ]
+        },
+        {
+          "action": "spell_cycle",
+          "code": "KeyT",
+          "arrived": true,
+          "latched": [
+            "spell_cycle"
+          ]
+        }
+      ],
+      "moves": [
+        {
+          "dir": "forward",
+          "code": "KeyW",
+          "moveX": 0,
+          "moveY": 1,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "back",
+          "code": "KeyS",
+          "moveX": 0,
+          "moveY": -1,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "left",
+          "code": "KeyA",
+          "moveX": -1,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "right",
+          "code": "KeyD",
+          "moveX": 1,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": true
+        }
+      ],
+      "textFocused": false
+    },
+    "survey_branch_unreachable": {
+      "label": "text-branch-unreachable",
+      "rows": [
+        {
+          "action": "light",
+          "code": null,
+          "skipped": "no keyboard binding"
+        },
+        {
+          "action": "block",
+          "code": "KeyF",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "parry",
+          "code": "KeyV",
+          "arrived": true,
+          "latched": [
+            "parry"
+          ]
+        },
+        {
+          "action": "heavy",
+          "code": "KeyR",
+          "arrived": true,
+          "latched": [
+            "heavy"
+          ]
+        },
+        {
+          "action": "roll",
+          "code": "Space",
+          "arrived": true,
+          "latched": [
+            "roll"
+          ]
+        },
+        {
+          "action": "sprint",
+          "code": "ShiftLeft",
+          "arrived": true,
+          "latched": [
+            "sprint"
+          ]
+        },
+        {
+          "action": "jump",
+          "code": "KeyX",
+          "arrived": true,
+          "latched": [
+            "jump"
+          ]
+        },
+        {
+          "action": "interact",
+          "code": "KeyE",
+          "arrived": true,
+          "latched": [
+            "interact"
+          ]
+        },
+        {
+          "action": "use_item",
+          "code": "Digit1",
+          "arrived": true,
+          "latched": [
+            "use_item"
+          ]
+        },
+        {
+          "action": "lock_on",
+          "code": "Tab",
+          "arrived": true,
+          "latched": [
+            "lock_on"
+          ]
+        },
+        {
+          "action": "two_hand",
+          "code": "KeyG",
+          "arrived": true,
+          "latched": [
+            "two_hand"
+          ]
+        },
+        {
+          "action": "swap_right",
+          "code": "Digit3",
+          "arrived": true,
+          "latched": [
+            "swap_right"
+          ]
+        },
+        {
+          "action": "swap_left",
+          "code": "Digit4",
+          "arrived": true,
+          "latched": [
+            "swap_left"
+          ]
+        },
+        {
+          "action": "menu",
+          "code": "Escape",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "crouch",
+          "code": "KeyC",
+          "arrived": true,
+          "latched": [
+            "crouch"
+          ]
+        },
+        {
+          "action": "spell_cycle",
+          "code": "KeyT",
+          "arrived": true,
+          "latched": [
+            "spell_cycle"
+          ]
+        }
+      ],
+      "moves": [
+        {
+          "dir": "forward",
+          "code": "KeyW",
+          "moveX": 0,
+          "moveY": 1,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "back",
+          "code": "KeyS",
+          "moveX": 0,
+          "moveY": -1,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "left",
+          "code": "KeyA",
+          "moveX": -1,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "right",
+          "code": "KeyD",
+          "moveX": 1,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": true
+        }
+      ],
+      "textFocused": false
+    },
+    "differential": {
+      "control_key_differences": [
+        {
+          "action": "block",
+          "code": "KeyF",
+          "shipped": true,
+          "without_branch": false
+        }
+      ],
+      "movement_differences": []
+    },
+    "C0": {
+      "ok": false,
+      "what": "the text branch changes 1 control key(s) and 0 movement key(s) in the world",
+      "control_key_differences": [
+        {
+          "action": "block",
+          "code": "KeyF",
+          "shipped": true,
+          "without_branch": false
+        }
+      ],
+      "movement_differences": []
+    },
+    "C1": {
+      "ok": false,
+      "what": "1 bound key(s) never reach their action: Escape->menu",
+      "missing": [
+        {
+          "action": "menu",
+          "code": "Escape",
+          "arrived": false,
+          "latched": []
+        }
+      ]
+    },
+    "C2": {
+      "ok": true,
+      "what": "all four movement keys drive the move vector",
+      "moves": [
+        {
+          "dir": "forward",
+          "code": "KeyW",
+          "moveX": 0,
+          "moveY": 1,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "back",
+          "code": "KeyS",
+          "moveX": 0,
+          "moveY": -1,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "left",
+          "code": "KeyA",
+          "moveX": -1,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": true
+        },
+        {
+          "dir": "right",
+          "code": "KeyD",
+          "moveX": 1,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": true
+        }
+      ]
+    },
+    "C5": {
+      "ok": true,
+      "what": "textFocused is false in the world — the text branch is not armed outside a field"
+    },
+    "gait": {
+      "walk_m": 0,
+      "sprint_m": 0,
+      "roll_latched": []
+    },
+    "C3": {
+      "ok": false,
+      "what": "sprint 0 m vs walk 0 m; Space latched []",
+      "walk_m": 0,
+      "sprint_m": 0,
+      "roll_latched": []
+    },
+    "screens": [
+      {
+        "key": "KeyM",
+        "before": {
+          "mode": "world",
+          "isMenu": false
+        },
+        "opened": {
+          "mode": "inventory",
+          "isMenu": true
+        },
+        "closed": {
+          "mode": "world",
+          "isMenu": false
+        },
+        "opened_ok": true,
+        "closed_ok": true
+      },
+      {
+        "key": "Escape",
+        "before": {
+          "mode": "world",
+          "isMenu": false
+        },
+        "opened": {
+          "mode": "inventory",
+          "isMenu": true
+        },
+        "closed": {
+          "mode": "world",
+          "isMenu": false
+        },
+        "opened_ok": true,
+        "closed_ok": true
+      }
+    ],
+    "C4": {
+      "ok": true,
+      "what": "2 screen key(s) opened a screen and Escape closed every one",
+      "screens": [
+        {
+          "key": "KeyM",
+          "before": {
+            "mode": "world",
+            "isMenu": false
+          },
+          "opened": {
+            "mode": "inventory",
+            "isMenu": true
+          },
+          "closed": {
+            "mode": "world",
+            "isMenu": false
+          },
+          "opened_ok": true,
+          "closed_ok": true
+        },
+        {
+          "key": "Escape",
+          "before": {
+            "mode": "world",
+            "isMenu": false
+          },
+          "opened": {
+            "mode": "inventory",
+            "isMenu": true
+          },
+          "closed": {
+            "mode": "world",
+            "isMenu": false
+          },
+          "opened_ok": true,
+          "closed_ok": true
+        }
+      ]
+    },
+    "field_state": {
+      "ui_mode": "world",
+      "node": "hold.hatch-name",
+      "takes_input": true,
+      "kind": "text"
+    },
+    "fallthrough": {
+      "textFocused_in_field": true,
+      "sel_before": 0,
+      "sel_after_two_downs": 0,
+      "arrows_fall_through": false,
+      "typed_after_e_w_a": "ewa",
+      "bound_letters_type": true,
+      "node_after_typing_e": "hold.hatch-name",
+      "keye_did_not_commit": true,
+      "typed_after_backspace": "ew",
+      "backspace_deletes": true,
+      "typed_after_space": "ew ",
+      "space_types": true,
+      "node_after_enter": "hold.hatch-name",
+      "enter_commits": false
+    },
+    "C6": {
+      "ok": false,
+      "what": "a deliberate fall-through does not behave",
+      "textFocused_in_field": true,
+      "sel_before": 0,
+      "sel_after_two_downs": 0,
+      "arrows_fall_through": false,
+      "typed_after_e_w_a": "ewa",
+      "bound_letters_type": true,
+      "node_after_typing_e": "hold.hatch-name",
+      "keye_did_not_commit": true,
+      "typed_after_backspace": "ew",
+      "backspace_deletes": true,
+      "typed_after_space": "ew ",
+      "space_types": true,
+      "node_after_enter": "hold.hatch-name",
+      "enter_commits": false
+    },
+    "survey_teardown": {
+      "label": "guard-forced-true",
+      "rows": [
+        {
+          "action": "light",
+          "code": null,
+          "skipped": "no keyboard binding"
+        },
+        {
+          "action": "block",
+          "code": "KeyF",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "parry",
+          "code": "KeyV",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "heavy",
+          "code": "KeyR",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "roll",
+          "code": "Space",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "sprint",
+          "code": "ShiftLeft",
+          "arrived": true,
+          "latched": [
+            "sprint"
+          ]
+        },
+        {
+          "action": "jump",
+          "code": "KeyX",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "interact",
+          "code": "KeyE",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "use_item",
+          "code": "Digit1",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "lock_on",
+          "code": "Tab",
+          "arrived": true,
+          "latched": [
+            "lock_on"
+          ]
+        },
+        {
+          "action": "two_hand",
+          "code": "KeyG",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "swap_right",
+          "code": "Digit3",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "swap_left",
+          "code": "Digit4",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "menu",
+          "code": "Escape",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "crouch",
+          "code": "KeyC",
+          "arrived": false,
+          "latched": []
+        },
+        {
+          "action": "spell_cycle",
+          "code": "KeyT",
+          "arrived": false,
+          "latched": []
+        }
+      ],
+      "moves": [
+        {
+          "dir": "forward",
+          "code": "KeyW",
+          "moveX": 0,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": false
+        },
+        {
+          "dir": "back",
+          "code": "KeyS",
+          "moveX": 0,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": false
+        },
+        {
+          "dir": "left",
+          "code": "KeyA",
+          "moveX": 0,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": false
+        },
+        {
+          "dir": "right",
+          "code": "KeyD",
+          "moveX": 0,
+          "moveY": 0,
+          "moved_m": 0,
+          "nonzero": false
+        }
+      ],
+      "textFocused": true
+    },
+    "C7": {
+      "ok": true,
+      "what": "with the predicate forced true in the world, 13 control key(s) and 4 movement key(s) go dead — this survey can fail",
+      "swallowed": [
+        "KeyF",
+        "KeyV",
+        "KeyR",
+        "Space",
+        "KeyX",
+        "KeyE",
+        "Digit1",
+        "KeyG",
+        "Digit3",
+        "Digit4",
+        "Escape",
+        "KeyC",
+        "KeyT"
+      ],
+      "deadMoves": [
+        "KeyW",
+        "KeyS",
+        "KeyA",
+        "KeyD"
+      ]
+    }
+  }
+}

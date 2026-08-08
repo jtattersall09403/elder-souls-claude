@@ -1,0 +1,797 @@
+{
+  "schema": "elder-souls/opening-play@1",
+  "piece": "W1-26",
+  "role": "critic round 2",
+  "items": [
+    "RI-JRN01",
+    "RI-JRN09"
+  ],
+  "red_team": null,
+  "drive": "real DOM input only — page.keyboard / page.mouse. No __HARNESS mutator is called.",
+  "viewport": {
+    "width": 960,
+    "height": 540
+  },
+  "conditions": {
+    "loadavg_at_start": [
+      5.19,
+      8.57,
+      13.98
+    ],
+    "url": "http://127.0.0.1:44021/game/index.html",
+    "commit": "",
+    "fps_note": "rAF-driven play mode, headless SwiftShader, under the stated load, on a box shared with other agents' browsers. An upper bound on badness, not a machine spec.",
+    "fps_at_title": {
+      "sim_fps": 3.7,
+      "frames": 50,
+      "ms": 13531,
+      "loadavg": [
+        5.61,
+        8.44,
+        13.82
+      ]
+    },
+    "fps_in_world": {
+      "sim_fps": 5.42,
+      "frames": 65,
+      "ms": 12002,
+      "loadavg": [
+        5.55,
+        7.68,
+        13.03
+      ]
+    },
+    "loadavg_at_end": [
+      7.77,
+      7.71,
+      10.39
+    ],
+    "page_errors": []
+  },
+  "checks": {
+    "boot": {
+      "mode": "play",
+      "search": "",
+      "webdriver": false
+    },
+    "P1": {
+      "ok": true,
+      "what": "play mode reached with no query string",
+      "mode": "play",
+      "search": "",
+      "webdriver": false
+    },
+    "title_state": {
+      "present": true,
+      "shown": true,
+      "page": "root",
+      "options": [
+        {
+          "id": "continue",
+          "label": "Continue",
+          "enabled": false
+        },
+        {
+          "id": "new",
+          "label": "New",
+          "enabled": true
+        },
+        {
+          "id": "load",
+          "label": "Load",
+          "enabled": false
+        },
+        {
+          "id": "settings",
+          "label": "Settings",
+          "enabled": true
+        },
+        {
+          "id": "quit-to-menu",
+          "label": "Quit to menu",
+          "enabled": false
+        }
+      ],
+      "option_ids": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "selected_index": 1,
+      "selected_id": "new",
+      "saves": [],
+      "save_count": 0,
+      "continue_available": false,
+      "in_session": false,
+      "inputs_taken": 0,
+      "first_gesture_at_input": null,
+      "shown_at_frame": 0,
+      "dismissed_by": null,
+      "look_sensitivity_scale": 1,
+      "unskippable_ms": 0,
+      "world_behind": true
+    },
+    "title_drawn_strings": [
+      "5",
+      "LIGHT",
+      "Spark-Da…",
+      "ELDER SOULS",
+      "ARGONIA",
+      "  Continue",
+      "— New",
+      "  Load",
+      "  Settings",
+      "  Quit to menu",
+      "No life recorded in this province."
+    ],
+    "P2": {
+      "ok": true,
+      "what": "title shown and all 5 rows drawn",
+      "rows": [
+        "Continue",
+        "New",
+        "Load",
+        "Settings",
+        "Quit to menu"
+      ],
+      "distinct_strings": 11
+    },
+    "title_nav": {
+      "before": "new",
+      "after_down": "settings",
+      "after_up": "new"
+    },
+    "title_after_enter": {
+      "shown": false,
+      "dismissed_by": "new",
+      "in_session": true,
+      "inputs_taken": 1
+    },
+    "P3": {
+      "ok": true,
+      "what": "title navigated and committed by key alone (dismissed_by 'new')",
+      "before": "new",
+      "after_down": "settings",
+      "after_up": "new"
+    },
+    "world": {
+      "cell": "barge_hold",
+      "interior": "barge-hold",
+      "pos": [
+        0.3,
+        0,
+        -1.2
+      ],
+      "npcs": [
+        {
+          "name": "Jeeh-Ei",
+          "pos": [
+            -2.115128,
+            0,
+            3.741686
+          ]
+        }
+      ],
+      "props": [
+        "A tithe-gourd, empty",
+        "A knife somebody did not find"
+      ]
+    },
+    "P4": {
+      "ok": true,
+      "what": "a body stands in 'barge-hold' with 1 person(s) present",
+      "interior": "barge-hold",
+      "npcs": [
+        "Jeeh-Ei"
+      ]
+    },
+    "census_at_open": {
+      "census_present": true,
+      "paused": true,
+      "node": "hold.come-to",
+      "resume_by": "talk",
+      "takes_input": false,
+      "field_written": null
+    },
+    "locomotion": {
+      "from": [
+        0.3,
+        0,
+        -1.2
+      ],
+      "to": [
+        -7.2087,
+        0,
+        46.2093
+      ],
+      "metres": 48.0002,
+      "frames": 900,
+      "seconds_of_play": 15,
+      "wall_ms": 71848
+    },
+    "P5": {
+      "ok": true,
+      "what": "held movement keys moved the body 48.00 m over 900 frames",
+      "from": [
+        0.3,
+        0,
+        -1.2
+      ],
+      "to": [
+        -7.2087,
+        0,
+        46.2093
+      ],
+      "metres": 48.0002,
+      "frames": 900,
+      "seconds_of_play": 15,
+      "wall_ms": 71848
+    },
+    "census_after_wander": {
+      "paused": true,
+      "node": "hold.come-to",
+      "takes_input": false,
+      "fields": []
+    },
+    "available_play_s_before_first_question": 15,
+    "P6": {
+      "ok": true,
+      "what": "15 s of play and 48.0 m walked with nothing asked and no field written",
+      "node": "hold.come-to",
+      "o6_threshold_s": 60,
+      "reached_s": 15,
+      "met": false
+    },
+    "speaker": {
+      "name": "Jeeh-Ei",
+      "pos": [
+        -2.115128,
+        0,
+        3.741686
+      ]
+    },
+    "approach": {
+      "steps": [
+        {
+          "dist": 42.772,
+          "pos": [
+            -7.209,
+            0,
+            46.209
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": null,
+          "frames_advanced": 120,
+          "advance_ms": 7160
+        },
+        {
+          "dist": 37.336,
+          "pos": [
+            -6.358,
+            0,
+            40.836
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 5.44,
+          "frames_advanced": 120,
+          "advance_ms": 7040
+        },
+        {
+          "dist": 30.944,
+          "pos": [
+            -5.357,
+            0,
+            34.515
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 6.4,
+          "frames_advanced": 120,
+          "advance_ms": 8023
+        },
+        {
+          "dist": 24.554,
+          "pos": [
+            -4.355,
+            0,
+            28.194
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 6.4,
+          "frames_advanced": 120,
+          "advance_ms": 8006
+        },
+        {
+          "dist": 18.173,
+          "pos": [
+            -3.354,
+            0,
+            21.873
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 6.4,
+          "frames_advanced": 120,
+          "advance_ms": 7442
+        },
+        {
+          "dist": 11.812,
+          "pos": [
+            -2.353,
+            0,
+            15.551
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 6.4,
+          "frames_advanced": 120,
+          "advance_ms": 7886
+        },
+        {
+          "dist": 5.541,
+          "pos": [
+            -1.352,
+            0,
+            9.23
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 6.4,
+          "frames_advanced": 115,
+          "advance_ms": 11838
+        },
+        {
+          "dist": 1.814,
+          "pos": [
+            -0.392,
+            0,
+            3.172
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 6.133,
+          "frames_advanced": 40,
+          "advance_ms": 5051
+        },
+        {
+          "dist": 0.783,
+          "pos": [
+            -1.342,
+            0,
+            3.862
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": 1.174
+        }
+      ],
+      "iterations": 9,
+      "total_moved_m": 44.747,
+      "final_dist": 0.783,
+      "final_pos": [
+        -1.342,
+        0,
+        3.862
+      ],
+      "reached": true,
+      "frames_advanced_total": 875,
+      "world_was_running": true
+    },
+    "census_after_reach": {
+      "node": "hold.hatch-name",
+      "takes_input": true,
+      "paused": false,
+      "question": null,
+      "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "options": []
+    },
+    "P7": {
+      "ok": true,
+      "what": "pressing interact beside Jeeh-Ei opened the scene at 'hold.hatch-name'",
+      "node": "hold.hatch-name",
+      "takes_input": true,
+      "paused": false,
+      "question": null,
+      "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "options": []
+    },
+    "answer": {
+      "input_kind": "text",
+      "typed": "Silt-Under-Salt",
+      "before_node": "hold.hatch-name",
+      "after_node": "hold.out",
+      "spec_changed": [
+        {
+          "field": "hatchName",
+          "from": "",
+          "to": "Silt-Under-Salt"
+        }
+      ],
+      "spoken_back": [
+        "Silt-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are."
+      ]
+    },
+    "P8": {
+      "ok": true,
+      "what": "an answer given by key alone was written down (hold.hatch-name -> hold.out; hatchName=\"Silt-Under-Salt\")",
+      "input_kind": "text",
+      "typed": "Silt-Under-Salt",
+      "before_node": "hold.hatch-name",
+      "after_node": "hold.out",
+      "spec_changed": [
+        {
+          "field": "hatchName",
+          "from": "",
+          "to": "Silt-Under-Salt"
+        }
+      ],
+      "spoken_back": [
+        "Silt-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are."
+      ]
+    },
+    "walk_out": {
+      "steps": [
+        {
+          "dist": 1.759,
+          "pos": [
+            -1.342,
+            0,
+            3.862
+          ],
+          "camera_yaw": 351,
+          "moved_since_last": null,
+          "frames_advanced": 36,
+          "advance_ms": 5740
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 4.816,
+          "frames_advanced": 105,
+          "advance_ms": 17772
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 16043
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 17776
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 24262
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 18190
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 18432
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 19906
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 16937
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 19242
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 26985
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 38350
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 29161
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 15372
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 13267
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 13073
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 15964
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 25674
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 17850
+        },
+        {
+          "dist": 5.07,
+          "pos": [
+            1.9,
+            0,
+            0.3
+          ],
+          "camera_yaw": 350,
+          "moved_since_last": 0,
+          "frames_advanced": 105,
+          "advance_ms": 14179
+        }
+      ],
+      "iterations": 20,
+      "total_moved_m": 4.816,
+      "final_dist": 5.07,
+      "final_pos": [
+        1.9,
+        0,
+        0.3
+      ],
+      "reached": false,
+      "frames_advanced_total": 2031,
+      "world_was_running": true
+    },
+    "after_companionway": {
+      "node": "writ.race-observed",
+      "paused": false,
+      "place": "writ-house",
+      "takes_input": true,
+      "refusal": null,
+      "interior": "writ-house"
+    },
+    "desk_presses": [
+      {
+        "press": 1,
+        "node": "writ.sex",
+        "takes_input": true,
+        "refusal": null,
+        "race": "saxhleel"
+      }
+    ],
+    "reached_desk": true,
+    "census_refused_events": [],
+    "P10": {
+      "ok": true,
+      "what": "the scene moved past the desk to 'writ.sex'",
+      "presses": [
+        {
+          "press": 1,
+          "node": "writ.sex",
+          "takes_input": true,
+          "refusal": null,
+          "race": "saxhleel"
+        }
+      ],
+      "race": "saxhleel"
+    },
+    "explanation": {
+      "distinct_strings_drawn": 41,
+      "instruction_like": [],
+      "count": 0,
+      "patterns": {
+        "imperative": "/^(press|hold|tap|click|use|push|move|walk|go|take|open|close|talk|speak|look|aim|pick|select|choose|enter|swipe|drag|attack|block|dodge|roll|equip|find|head|return|follow|try|now|you must|you should|you can|to \\w+,)\\b/i",
+        "explains": "/\\b(tutorial|controls?:|hint|objective|press [a-z0-9]+ to|hold [a-z0-9]+ to|use the \\w+ to|this is your)\\b/i"
+      }
+    },
+    "P9": {
+      "ok": true,
+      "what": "41 distinct strings drawn across the whole opening, none of them an instruction",
+      "distinct": 41
+    }
+  },
+  "shots": [
+    "../../../tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/shots/2026-08-08-w1-26-r2-01-title-first-launch.png",
+    "../../../tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png",
+    "../../../tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/shots/2026-08-08-w1-26-r2-03-first-exchange.png",
+    "../../../tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/shots/2026-08-08-w1-26-r2-04-jeeh-ei-or-the-desk.png"
+  ],
+  "passes": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8",
+    "P10",
+    "P9"
+  ],
+  "failures": [],
+  "all_drawn_strings": [
+    "5",
+    "LIGHT",
+    "Spark-Da…",
+    "ELDER SOULS",
+    "ARGONIA",
+    "  Continue",
+    "— New",
+    "  Load",
+    "  Settings",
+    "  Quit to menu",
+    "No life recorded in this province.",
+    "JEEH-EI",
+    "THE HOLD, TWO DAYS OUT OF GIDEON",
+    "You're awake. Good. They don't like waking you at the desk, it makes the writing slow.",
+    "They will take the other one off you at the writ house. Tell me the one they cannot.",
+    "— Silence-Under-Salt",
+    "  Waits-For-The-Second-Tide",
+    "  Counts-The-Drowned",
+    "  Small-Root-Deep-Water",
+    "  Hears-The-Barge-Coming",
+    "  Does-Not-Answer-Twice",
+    "  Walks-Where-It-Is-Dry",
+    "  Keeps-The-Egg-Warm",
+    "  Three-Names-One-Mouth",
+    "  Sees-The-Ledger-Burning",
+    "  Left-Hand-Of-The-Hist",
+    "  Never-Sold-A-Cousin",
+    "  Say nothing.   she will remember that you did not",
+    "Jeeh-Ei",
+    "Silt-Under-Salt▁",
+    "Silt-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are.",
+    "The light up there is bad, but it is light. When they have finished writing you down, this is where I will be, if I am",
+    "anywhere.",
+    "TULEEH-MA",
+    "THE WRIT HOUSE AT TIDEWRACK",
+    "And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat",
+    "you differently for it and I have watched for eleven years.",
+    "— Male.",
+    "  Female.",
+    "  Leave it empty.",
+    "Tuleeh-Ma"
+  ],
+  "summary": {
+    "pass": 10,
+    "fail": 0
+  }
+}

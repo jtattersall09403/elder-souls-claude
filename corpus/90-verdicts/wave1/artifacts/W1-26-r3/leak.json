@@ -1,0 +1,214 @@
+{
+  "schema": "elder-souls/critic-leak@1",
+  "piece": "W1-26-r3",
+  "role": "critic",
+  "method": "the scene is SET UP through the harness; every commit under test is a real DOM key press into input/real.js. The throw is injected into the live Census instance, not into the source.",
+  "conditions": {
+    "loadavg_at_start": [
+      12.33,
+      10.21,
+      9.75
+    ],
+    "loadavg_at_end": [
+      14,
+      11.1,
+      10.12
+    ],
+    "page_errors": []
+  },
+  "arms": [
+    {
+      "id": "L1",
+      "at": "writ.sex",
+      "msg": "census: ZZLEAK1 writ.sex node index -1 out of range",
+      "inert": false,
+      "sentinel": "ZZLEAK1",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 11,
+      "leaked_rows": [],
+      "leaked_in_model": false,
+      "leaked": false,
+      "fault_holds_it": true,
+      "refusal": "She stops writing, and does not look up. — No. Not in that box, and not in those words.",
+      "census_state_fault": null,
+      "node_at_refusal": "writ.sex",
+      "recovered_after_unarming": {
+        "node": "writ.upbringing",
+        "done": false,
+        "moved": true
+      }
+    },
+    {
+      "id": "L2",
+      "at": "hold.hatch-name",
+      "msg": "census: ZZLEAK2 cannot serialise hatch_name: undefined is not an object",
+      "inert": false,
+      "sentinel": "ZZLEAK2",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 22,
+      "leaked_rows": [],
+      "leaked_in_model": false,
+      "leaked": false,
+      "fault_holds_it": true,
+      "refusal": "She stops writing, and does not look up. — No. Not in that box, and not in those words.",
+      "census_state_fault": null,
+      "node_at_refusal": "hold.hatch-name",
+      "recovered_after_unarming": {
+        "node": "hold.out",
+        "done": false,
+        "moved": true
+      }
+    },
+    {
+      "id": "L3",
+      "at": "writ.stamp",
+      "msg": "census: ZZLEAK3 composeCharacter failed: birthsign_second is null",
+      "inert": false,
+      "sentinel": "ZZLEAK3",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 20,
+      "leaked_rows": [],
+      "leaked_in_model": false,
+      "leaked": false,
+      "fault_holds_it": true,
+      "refusal": "She stops writing, and does not look up. — No. Not in that box, and not in those words.",
+      "census_state_fault": null,
+      "node_at_refusal": "writ.stamp",
+      "recovered_after_unarming": {
+        "node": null,
+        "done": true,
+        "moved": true
+      }
+    },
+    {
+      "id": "L4",
+      "at": "writ.upbringing",
+      "msg": "She sets the pen down. ZZLEAK4. The ledger will not take that.",
+      "inert": false,
+      "sentinel": "ZZLEAK4",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 11,
+      "leaked_rows": [],
+      "leaked_in_model": false,
+      "leaked": false,
+      "fault_holds_it": true,
+      "refusal": "She stops writing, and does not look up. — No. Not in that box, and not in those words.",
+      "census_state_fault": null,
+      "node_at_refusal": "writ.upbringing",
+      "recovered_after_unarming": {
+        "node": "writ.given-name",
+        "done": false,
+        "moved": true
+      }
+    },
+    {
+      "id": "L5",
+      "at": "writ.stamp",
+      "msg": "census: ZZLEAK5 applyCharacter: renderWrit() returned undefined",
+      "where": "finish",
+      "inert": false,
+      "sentinel": "ZZLEAK5",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 3,
+      "leaked_rows": [],
+      "leaked_in_model": false,
+      "leaked": false,
+      "fault_holds_it": true,
+      "refusal": "She stops writing, and does not look up. — No. Not in that box, and not in those words.",
+      "census_state_fault": null,
+      "node_at_refusal": null,
+      "recovered_after_unarming": {
+        "node": null,
+        "done": true,
+        "moved": true
+      }
+    }
+  ],
+  "passes": [
+    "LEAK",
+    "FAULT",
+    "TEARDOWN"
+  ],
+  "failures": [],
+  "checks": {
+    "LEAK": {
+      "ok": true,
+      "what": "5 throws from 5 different places in the census path; none reached a drawn row",
+      "arms": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5"
+      ]
+    },
+    "FAULT": {
+      "ok": true,
+      "what": "every caught exception is on `fault` and readable from the trace",
+      "n": 5
+    },
+    "TEARDOWN": {
+      "ok": true,
+      "what": "with one line put back the engine string reaches a drawn row in 2/2 arms — this probe can fail",
+      "arms": [
+        "L1",
+        "L2"
+      ]
+    }
+  },
+  "teardown": [
+    {
+      "id": "L1",
+      "at": "writ.sex",
+      "msg": "census: ZZLEAK1 writ.sex node index -1 out of range",
+      "inert": true,
+      "sentinel": "ZZLEAK1",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 11,
+      "leaked_rows": [
+        "ZZLEAK1 writ.sex node index -1 out of range"
+      ],
+      "leaked_in_model": true,
+      "leaked": true,
+      "fault_holds_it": true,
+      "refusal": "ZZLEAK1 writ.sex node index -1 out of range",
+      "census_state_fault": null,
+      "node_at_refusal": "writ.sex",
+      "recovered_after_unarming": {
+        "node": "writ.upbringing",
+        "done": false,
+        "moved": true
+      }
+    },
+    {
+      "id": "L2",
+      "at": "hold.hatch-name",
+      "msg": "census: ZZLEAK2 cannot serialise hatch_name: undefined is not an object",
+      "inert": true,
+      "sentinel": "ZZLEAK2",
+      "register_complete": true,
+      "blind_surfaces": [],
+      "drawn_row_count": 22,
+      "leaked_rows": [
+        "ZZLEAK2 cannot serialise hatch_name: undefined is not an object"
+      ],
+      "leaked_in_model": true,
+      "leaked": true,
+      "fault_holds_it": true,
+      "refusal": "ZZLEAK2 cannot serialise hatch_name: undefined is not an object",
+      "census_state_fault": null,
+      "node_at_refusal": "hold.hatch-name",
+      "recovered_after_unarming": {
+        "node": "hold.out",
+        "done": false,
+        "moved": true
+      }
+    }
+  ]
+}

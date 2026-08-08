@@ -2,11 +2,14 @@
   "task_id": "critic-w1-26-r3",
   "role": "critic",
   "piece": "W1-26 round 3",
-  "state": "running",
+  "state": "done",
   "started_at": "2026-08-08T05:08:00Z",
-  "next_step": "finish A7/H/D runs, run jrn09-exchange + name-entry, write verdict",
+  "next_step": "none \u2014 verdict written. A second critic should reproduce tools/harness/jrn09-exchange.mjs; it is the one headline claim I did not re-run.",
   "files_touched": [
     "orchestration/status/critic-w1-26-r3.json",
+    "corpus/90-verdicts/wave1/W1-26-r3.md",
+    "corpus/90-verdicts/wave1/W1-26-r3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r3/",
     "tools/journey/critic-w1-26-r3-asaperson.mjs",
     "tools/journey/critic-w1-26-r3-leak.mjs",
     "tools/journey/critic-w1-26-r3-input.mjs",
@@ -15,16 +18,11 @@
     "docs/shots/2026-08-08-w1-26-r3-critic-02-the-hold-a-body-in-a-world.png",
     "docs/shots/2026-08-08-w1-26-r3-critic-03-a-pangram-in-the-name-field.png",
     "docs/shots/2026-08-08-w1-26-r3-critic-04-the-writ-stamped.png",
-    "docs/shots/2026-08-08-w1-26-r3-critic-05-standing-in-the-world-after-creation.png"
-  ],
-  "files_claimed": [
-    "corpus/90-verdicts/wave1/W1-26-r3.md",
-    "corpus/90-verdicts/wave1/W1-26-r3.json",
-    "orchestration/status/critic-w1-26-r3.json",
-    "tools/journey/critic-*",
-    "docs/shots/",
+    "docs/shots/2026-08-08-w1-26-r3-critic-05-standing-in-the-world-after-creation.png",
+    "docs/shots/2026-08-08-w1-26-r3-critic-every-letter-of-the-alphabet-typed-into-the-name-field.png",
     "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": [
     "W1-26-r3"
   ],
@@ -38,5 +36,18 @@
     "r2 section 6 HUD-on-the-title defect UNFIXED: 5, LIGHT, Spark-Da... drawn on the title before any character exists (my own opening-play artifact).",
     "G verified at base e00e6fe: 39 failing verdict files at the base, 15 at HEAD. Builder's \"pre-existing, not mine\" claim is TRUE and conservative.",
     "F: m4_clause1 is recorded led.ok() at 1.03 s against its own threshold_s of 60 - a driver-paced number filed as a passing measurement."
-  ]
+  ],
+  "status": "done",
+  "finished_at": "2026-08-08T07:10:00Z",
+  "verdict": {
+    "md": "corpus/90-verdicts/wave1/W1-26-r3.md",
+    "json": "corpus/90-verdicts/wave1/W1-26-r3.json",
+    "status": "FAIL",
+    "min_over_axes": 0,
+    "three_item_mean": 3.3,
+    "headline": 2,
+    "gate": 7.0,
+    "P_gate_1": "MET",
+    "P_gate_2": "MET"
+  }
 }

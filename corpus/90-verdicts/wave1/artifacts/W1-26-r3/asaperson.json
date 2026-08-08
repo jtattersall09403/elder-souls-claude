@@ -1,0 +1,717 @@
+{
+  "schema": "elder-souls/critic-asaperson@1",
+  "piece": "W1-26-r3",
+  "role": "critic",
+  "red_team": null,
+  "url": "http://127.0.0.1:8137/index.html",
+  "drive": "real DOM key events only; every __ENGINE/__HARNESS call in this file is a read",
+  "conditions": {
+    "loadavg_at_start": [
+      7.52,
+      11.86,
+      11.8
+    ],
+    "loadavg_at_end": [
+      13.27,
+      12.54,
+      12.04
+    ],
+    "total_seconds": 307.8,
+    "page_errors": []
+  },
+  "timeline": [
+    {
+      "t": 19.87,
+      "what": "title reached",
+      "mode": "play",
+      "search": "",
+      "origin": "http://127.0.0.1:8137"
+    },
+    {
+      "t": 65.66,
+      "what": "pressed Enter on New",
+      "node": "hold.come-to"
+    },
+    {
+      "t": 84.62,
+      "what": "walked 2.67 m on held KeyW with nothing asked"
+    },
+    {
+      "t": 90.73,
+      "what": "reached for her",
+      "node": "hold.hatch-name",
+      "opened": true
+    },
+    {
+      "t": 124.8,
+      "what": "walked out of 'hold.out' to 'writ.race-observed'"
+    }
+  ],
+  "nodes_visited": [
+    {
+      "t": 102.68,
+      "node": "hold.hatch-name",
+      "kind": "text",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 103.61,
+      "node": "hold.out",
+      "kind": null,
+      "paused": true,
+      "takes_input": false,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 124.8,
+      "node": "writ.race-observed",
+      "kind": "observed",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 126.48,
+      "node": "writ.sex",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 128.25,
+      "node": "writ.upbringing",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 130.12,
+      "node": "writ.given-name",
+      "kind": "text",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 132.78,
+      "node": "writ.class-routes",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 133.97,
+      "node": "writ.class-named",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 135.04,
+      "node": "writ.class-verdict",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 136.17,
+      "node": "writ.birthsign",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    },
+    {
+      "t": 137.78,
+      "node": "writ.stamp",
+      "kind": "choice",
+      "paused": false,
+      "takes_input": true,
+      "refusal": null,
+      "fault": null
+    }
+  ],
+  "shots": [
+    "/home/user/elder-souls-claude/docs/shots/2026-08-08-w1-26-r3-critic-01-the-title-play-sh-serves.png",
+    "/home/user/elder-souls-claude/docs/shots/2026-08-08-w1-26-r3-critic-02-the-hold-a-body-in-a-world.png",
+    "/home/user/elder-souls-claude/docs/shots/2026-08-08-w1-26-r3-critic-03-a-pangram-in-the-name-field.png",
+    "/home/user/elder-souls-claude/docs/shots/2026-08-08-w1-26-r3-critic-04-the-writ-stamped.png",
+    "/home/user/elder-souls-claude/docs/shots/2026-08-08-w1-26-r3-critic-05-standing-in-the-world-after-creation.png"
+  ],
+  "passes": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7"
+  ],
+  "failures": [],
+  "checks": {
+    "boot": {
+      "mode": "play",
+      "search": "",
+      "origin": "http://127.0.0.1:8137"
+    },
+    "A1": {
+      "ok": true,
+      "what": "play.sh served a play-mode title at http://127.0.0.1:8137 with no query string",
+      "mode": "play",
+      "search": "",
+      "origin": "http://127.0.0.1:8137"
+    },
+    "after_new": {
+      "census": {
+        "node": "hold.come-to",
+        "kind": null,
+        "paused": true,
+        "done": false,
+        "takes_input": false,
+        "sel": 0,
+        "options": [],
+        "picked": [],
+        "typed": "",
+        "refusal": null,
+        "fault": null,
+        "race": "saxhleel",
+        "pick_want": 0
+      },
+      "inWorld": true
+    },
+    "A2": {
+      "ok": true,
+      "what": "Enter on 'New' put a body in the hold at 'hold.come-to'",
+      "node": "hold.come-to"
+    },
+    "free_walk_m": 2.667,
+    "A3": {
+      "ok": true,
+      "what": "walked 2.67 m unprompted, then KeyE opened 'hold.hatch-name'",
+      "walked_m": 2.667
+    },
+    "typed": {
+      "want": "Jackdaws-Love-My-Big-Sphinx-Of-Quartz",
+      "got": "Jackdaws-Love-My-Big-Sphinx-Of-Quartz",
+      "ms": 2039
+    },
+    "alphabet_missing": [],
+    "A4": {
+      "ok": true,
+      "what": "all 26 letters typed verbatim into the field: \"Jackdaws-Love-My-Big-Sphinx-Of-Quartz\"",
+      "typed": "Jackdaws-Love-My-Big-Sphinx-Of-Quartz"
+    },
+    "character": {
+      "character": {
+        "name": null,
+        "race": "saxhleel",
+        "cls": null,
+        "birthsign": "raj-xul"
+      },
+      "writ_lines": null,
+      "identity": {
+        "race": "saxhleel",
+        "name": "Vashk-Doon"
+      }
+    },
+    "final_census": {
+      "node": null,
+      "kind": null,
+      "paused": false,
+      "done": true,
+      "takes_input": false,
+      "sel": 0,
+      "options": [],
+      "picked": [],
+      "typed": "",
+      "refusal": null,
+      "fault": null,
+      "race": "saxhleel",
+      "pick_want": 0
+    },
+    "creation_seconds": 138.85,
+    "unique_nodes": [
+      "hold.hatch-name",
+      "hold.out",
+      "writ.race-observed",
+      "writ.sex",
+      "writ.upbringing",
+      "writ.given-name",
+      "writ.class-routes",
+      "writ.class-named",
+      "writ.class-verdict",
+      "writ.birthsign",
+      "writ.stamp"
+    ],
+    "A5": {
+      "ok": true,
+      "what": "the whole census was answered by key alone — 11 nodes, 151.48 s of wall clock",
+      "nodes": [
+        "hold.hatch-name",
+        "hold.out",
+        "writ.race-observed",
+        "writ.sex",
+        "writ.upbringing",
+        "writ.given-name",
+        "writ.class-routes",
+        "writ.class-named",
+        "writ.class-verdict",
+        "writ.birthsign",
+        "writ.stamp"
+      ]
+    },
+    "walk_after_creation_m": 3.2,
+    "input_debug": {
+      "before": {
+        "pointerLocked": false,
+        "hasFocus": true,
+        "textFocused": false,
+        "textCharsTaken": 47,
+        "activeDevice": "keyboard",
+        "deviceClass": "desktop",
+        "menuOpen": false,
+        "lockErrors": 0,
+        "lockRequests": 0,
+        "dragLookFallback": false,
+        "gamepad": {
+          "connected": false,
+          "id": null,
+          "index": null,
+          "mapping": null,
+          "quirk": null,
+          "profile": "souls-default",
+          "polls": 92,
+          "pads": 0,
+          "calibrating": false,
+          "calibrationPrompt": null,
+          "chargeIntent": 0,
+          "log": []
+        },
+        "touch": {
+          "enabled": false,
+          "visible": true,
+          "shown": false,
+          "pointers": 0,
+          "lastTouchFrame": -1000000000,
+          "hideAfterFrames": 120,
+          "stick": {
+            "active": false,
+            "ox": 0,
+            "oy": 0,
+            "x": 0,
+            "y": 0
+          },
+          "drawerOpen": false,
+          "held": [],
+          "roles": [],
+          "insetViolations": 0
+        },
+        "viewport": {
+          "deviceClass": "desktop",
+          "size": {
+            "w": 960,
+            "h": 540,
+            "dpr": 1
+          },
+          "insets": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "orientation": "landscape",
+          "orientationLocked": false,
+          "lockRefused": false,
+          "fullscreen": false,
+          "wakeLock": false,
+          "resizes": 0,
+          "deviceClassChanges": 0,
+          "rotateState": null,
+          "capabilities": {
+            "orientationLock": true,
+            "fullscreen": true,
+            "wakeLock": true,
+            "matchMedia": true
+          },
+          "min_text_css_px": 18
+        },
+        "rebinding": {
+          "open": false,
+          "capturing": false,
+          "pending": null,
+          "message": null,
+          "device": "keyboard"
+        },
+        "held": [],
+        "bindings": {
+          "light": [
+            "Mouse0",
+            null
+          ],
+          "block": [
+            "Mouse2",
+            "KeyF"
+          ],
+          "parry": [
+            "Mouse1",
+            "KeyV"
+          ],
+          "heavy": [
+            "KeyR",
+            "Mouse3"
+          ],
+          "roll": [
+            "Space",
+            "Mouse4"
+          ],
+          "sprint": [
+            "ShiftLeft",
+            null
+          ],
+          "jump": [
+            "KeyX",
+            null
+          ],
+          "interact": [
+            "KeyE",
+            "Enter"
+          ],
+          "use_item": [
+            "Digit1",
+            null
+          ],
+          "lock_on": [
+            "Tab",
+            "Mouse1Hold12"
+          ],
+          "two_hand": [
+            "KeyG",
+            null
+          ],
+          "swap_right": [
+            "Digit3",
+            "WheelUp"
+          ],
+          "swap_left": [
+            "Digit4",
+            "WheelDown"
+          ],
+          "menu": [
+            "Escape",
+            "KeyM"
+          ],
+          "crouch": [
+            "KeyC",
+            "KeyZ"
+          ],
+          "spell_cycle": [
+            "KeyT",
+            "Digit2"
+          ]
+        },
+        "moveBindings": {
+          "forward": [
+            "KeyW",
+            "ArrowUp"
+          ],
+          "back": [
+            "KeyS",
+            "ArrowDown"
+          ],
+          "left": [
+            "KeyA",
+            "ArrowLeft"
+          ],
+          "right": [
+            "KeyD",
+            "ArrowRight"
+          ]
+        },
+        "chargeIntent": 1,
+        "droppedInputs": 0,
+        "pipelineDrops": 0,
+        "bufferMisses": 0
+      },
+      "after": {
+        "pointerLocked": false,
+        "hasFocus": true,
+        "textFocused": false,
+        "textCharsTaken": 47,
+        "activeDevice": "keyboard",
+        "deviceClass": "desktop",
+        "menuOpen": false,
+        "lockErrors": 0,
+        "lockRequests": 0,
+        "dragLookFallback": false,
+        "gamepad": {
+          "connected": false,
+          "id": null,
+          "index": null,
+          "mapping": null,
+          "quirk": null,
+          "profile": "souls-default",
+          "polls": 105,
+          "pads": 0,
+          "calibrating": false,
+          "calibrationPrompt": null,
+          "chargeIntent": 0,
+          "log": []
+        },
+        "touch": {
+          "enabled": false,
+          "visible": true,
+          "shown": false,
+          "pointers": 0,
+          "lastTouchFrame": -1000000000,
+          "hideAfterFrames": 120,
+          "stick": {
+            "active": false,
+            "ox": 0,
+            "oy": 0,
+            "x": 0,
+            "y": 0
+          },
+          "drawerOpen": false,
+          "held": [],
+          "roles": [],
+          "insetViolations": 0
+        },
+        "viewport": {
+          "deviceClass": "desktop",
+          "size": {
+            "w": 960,
+            "h": 540,
+            "dpr": 1
+          },
+          "insets": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "orientation": "landscape",
+          "orientationLocked": false,
+          "lockRefused": false,
+          "fullscreen": false,
+          "wakeLock": false,
+          "resizes": 0,
+          "deviceClassChanges": 0,
+          "rotateState": null,
+          "capabilities": {
+            "orientationLock": true,
+            "fullscreen": true,
+            "wakeLock": true,
+            "matchMedia": true
+          },
+          "min_text_css_px": 18
+        },
+        "rebinding": {
+          "open": false,
+          "capturing": false,
+          "pending": null,
+          "message": null,
+          "device": "keyboard"
+        },
+        "held": [],
+        "bindings": {
+          "light": [
+            "Mouse0",
+            null
+          ],
+          "block": [
+            "Mouse2",
+            "KeyF"
+          ],
+          "parry": [
+            "Mouse1",
+            "KeyV"
+          ],
+          "heavy": [
+            "KeyR",
+            "Mouse3"
+          ],
+          "roll": [
+            "Space",
+            "Mouse4"
+          ],
+          "sprint": [
+            "ShiftLeft",
+            null
+          ],
+          "jump": [
+            "KeyX",
+            null
+          ],
+          "interact": [
+            "KeyE",
+            "Enter"
+          ],
+          "use_item": [
+            "Digit1",
+            null
+          ],
+          "lock_on": [
+            "Tab",
+            "Mouse1Hold12"
+          ],
+          "two_hand": [
+            "KeyG",
+            null
+          ],
+          "swap_right": [
+            "Digit3",
+            "WheelUp"
+          ],
+          "swap_left": [
+            "Digit4",
+            "WheelDown"
+          ],
+          "menu": [
+            "Escape",
+            "KeyM"
+          ],
+          "crouch": [
+            "KeyC",
+            "KeyZ"
+          ],
+          "spell_cycle": [
+            "KeyT",
+            "Digit2"
+          ]
+        },
+        "moveBindings": {
+          "forward": [
+            "KeyW",
+            "ArrowUp"
+          ],
+          "back": [
+            "KeyS",
+            "ArrowDown"
+          ],
+          "left": [
+            "KeyA",
+            "ArrowLeft"
+          ],
+          "right": [
+            "KeyD",
+            "ArrowRight"
+          ]
+        },
+        "chargeIntent": 1,
+        "droppedInputs": 0,
+        "pipelineDrops": 0,
+        "bufferMisses": 0
+      }
+    },
+    "A6": {
+      "ok": true,
+      "what": "the body walked 3.20 m after the writ, with textFocused=false",
+      "m": 3.2
+    },
+    "world_after_writ": {
+      "walk": {
+        "m": 2.133,
+        "frames": 40
+      },
+      "sprint": {
+        "m": 3.333,
+        "frames": 40
+      },
+      "strafe": {
+        "m": 1.333,
+        "frames": 25
+      },
+      "back": {
+        "m": 1.333,
+        "frames": 25
+      },
+      "roll": {
+        "m": 2.3,
+        "frames": 25
+      },
+      "walk_per_frame": 0.0533,
+      "sprint_per_frame": 0.0833,
+      "screens": [
+        {
+          "key": "KeyM",
+          "before": "world",
+          "opened": "inventory",
+          "closed": "world",
+          "opened_ok": true,
+          "closed_ok": true
+        },
+        {
+          "key": "Escape",
+          "before": "world",
+          "opened": "inventory",
+          "closed": "world",
+          "opened_ok": true,
+          "closed_ok": true
+        }
+      ],
+      "textFocused": false
+    },
+    "A7": {
+      "ok": true,
+      "what": "after the writ: walked 2.133 m, sprinted 0.0833 m/frame against a walk of 0.0533, strafed 1.333 m, backed 1.333 m, 2 screen(s) opened and closed, textFocused=false",
+      "walk": {
+        "m": 2.133,
+        "frames": 40
+      },
+      "sprint": {
+        "m": 3.333,
+        "frames": 40
+      },
+      "strafe": {
+        "m": 1.333,
+        "frames": 25
+      },
+      "back": {
+        "m": 1.333,
+        "frames": 25
+      },
+      "roll": {
+        "m": 2.3,
+        "frames": 25
+      },
+      "walk_per_frame": 0.0533,
+      "sprint_per_frame": 0.0833,
+      "screens": [
+        {
+          "key": "KeyM",
+          "before": "world",
+          "opened": "inventory",
+          "closed": "world",
+          "opened_ok": true,
+          "closed_ok": true
+        },
+        {
+          "key": "Escape",
+          "before": "world",
+          "opened": "inventory",
+          "closed": "world",
+          "opened_ok": true,
+          "closed_ok": true
+        }
+      ],
+      "textFocused": false
+    }
+  }
+}
