@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `4315759`: 734 tools, 153 reference
-items, 64 pieces in flight.
+so it cannot drift. Generated at `09e11d0`: 737 tools, 153 reference
+items, 67 pieces in flight.
 
-Its purpose is to stop 64+ concurrent agents each paying separately to discover the
+Its purpose is to stop 67+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -737,7 +737,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 146
+### `tools/world/` — 149
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -768,6 +768,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-crossing-grade.mjs` — **no header comment**
 - `tools/world/critic-crossing-probe.mjs` — **no header comment**
 - `tools/world/critic-crossing-walk.mjs` — **no header comment**
+- `tools/world/critic-deploy-gate-fixture.mjs` — run tools/check-shipped-files.mjs against a real repository that really has an untracked module, and against seven shapes that must NOT trip it.
+- `tools/world/critic-deploy-probe.mjs` — the browser half of the deploy-instrument critique.
+- `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
 - `tools/world/critic-locomotion-probe.mjs` — **no header comment**
 - `tools/world/critic-population-r1-diag.mjs` — **no header comment**
@@ -1061,6 +1064,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-15-r4` | ? | survey engine.fenceQuote, zone data shape, justice/state.js, search.js coverVolumes | — |
+| `W1-12-r2` | building | read spec W1-12-r1.md, ai.json, enemy AI source | `orchestration/status/W1-12-r2.json` |
+| `critic-w1-deploy` | running | read RULES.md (done), INDEX.md, then the four subjects | `orchestration/status/critic-w1-deploy.json` |
 | `W1-TOUCH` | building | write tools/touch/touch-run.mjs; legs opening/reach/float/curve/gate/differential | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
