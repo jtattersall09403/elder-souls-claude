@@ -9772,13 +9772,38 @@ export class Engine {
     return st.crime.killWitness(w, this.sim.frame, { observed: !!opts.observed, victimNamed: !!opts.victimNamed, victimIsOfficial: !!opts.victimIsOfficial, settlement: opts.settlement || null });
   }
 
+  /**
+   * THIS WAS A SECOND IMPLEMENTATION OF THE GUARD LADDER, and `RULES.md` rule 10 is about exactly
+   * that: *"two parallel implementations of one system is how this build had a good detection model
+   * and a broken one at the same time."*
+   *
+   * `StealthCrime.stepGuards()` asks `guardBandNow()`, which decides what a guard standing in front
+   * of you does. This method is what a probe, the HUD and `getCrimeState()` ask. They both computed
+   * a band and until now they computed it from different ledgers — this one from
+   * `crime.bounty.imperial`, the total, and `guardBandNow()` (as of round 4) from the ATTRIBUTED
+   * total. The first live run of `w1-15-r4-live.mjs` caught it in the act: four unidentified
+   * reports, attributed bounty 0, `stepGuards` correctly holding at band 0, and this method
+   * reporting `band 2, arrest_dialogue`. A number a critic reads that disagrees with the number the
+   * world acts on is worse than either number alone.
+   *
+   * It now reads the same ledger. `opts.bounty` still overrides, because a probe asking "what would
+   * band 3 look like" is a legitimate question and always was — but the override is reported as
+   * `bounty_source: 'caller'` so it cannot be mistaken for the world's answer.
+   */
   getGuardBand(opts) {
     const st = this.sim.stealth;
     const race = opts.race || st.p.race;
     const standing = opts.standing || STL_SAN.standingKey(st.p.standings);
     const th = STL_JUS.thresholds(st.d.races, st.d.sanction, st.d.justice, { race, standing, authority: opts.authority || 'imperial_authority' });
-    const bounty = opts.bounty === undefined ? st.crime.bounty.imperial : opts.bounty;
-    return { race, standing, bounty, thresholds: th, ...STL_JUS.guardBand(st.d.justice, bounty, th, opts) };
+    const acted = st.crime.attributedIn('imperial');
+    const bounty = opts.bounty === undefined ? acted : opts.bounty;
+    return {
+      race, standing, bounty, thresholds: th,
+      bounty_source: opts.bounty === undefined ? 'world' : 'caller',
+      bounty_total: st.crime.bounty.imperial,
+      bounty_unattributed: st.crime.unattributedIn('imperial'),
+      ...STL_JUS.guardBand(st.d.justice, bounty, th, opts),
+    };
   }
 
   arrestTopics(opts) {

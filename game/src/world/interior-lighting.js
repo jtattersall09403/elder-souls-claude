@@ -60,19 +60,34 @@
 // with the windowless three pinned at `unlit_L` — which is now the row's HONEST use, because
 // `unlit interior / xanmeer depth` is exactly what a gaol and a barge hold are.
 //
-// `DAYLIGHT_K` is derived, not fitted. The aperture ratio over the shipped 115 runs 0.0200 to
-// 0.03226 (a 0.9 x 0.8 m pane, up to eight of them, against `bounds_m`'s own floor area). The
-// anchor is the corpus's own light table: **the brightest windowed room in the province, at full
-// midday sun, reads `canopy_day` = 0.30** — RI-STL01 §3's own value for daylight arriving through
-// a heavy filter, which is what a wall of small shuttered windows is. That fixes
+// `DAYLIGHT_K` is derived, not fitted, and it is derived from THE ROOMS THE WORLD ACTUALLY BUILDS
+// rather than from the rooms the files declare — which is a distinction this round nearly got
+// wrong and had to measure its way out of. `render/exterior.js#applyInteriorBounds()` rewrites
+// every `bounds_m` at load so a room fits inside the building drawn around it: **112 of the 115
+// are shrunk**, `archon-apothecary` from 13.6 x 15.6 m to 9.83 x 4.98 m, and the aperture ratio
+// therefore roughly triples between the file and the world. A constant pinned to the declared
+// geometry would have been another number defended by rooms that do not exist, which is the exact
+// defect this block replaces. Measured over the JOINED corpus, the ratio runs 0.01159
+// (`archon-shrine`) to 0.10256 (`blackrose-house-1`).
 //
-//     DAYLIGHT_K = (0.30 - 0.04) / 0.03226 = 8.0595
+// The anchor is the corpus's own light table: **the brightest windowed room in the province, at
+// full midday sun, reads `canopy_day` = 0.30** — RI-STL01 §3's own value for daylight arriving
+// through a heavy filter, which is what a wall of small shuttered windows is. That fixes
 //
-// and every other room follows from its own geometry. Consequences, all of them intended:
-// the brightest room reads 0.3000 at noon and 0.0634 at 03:00 overcast; the dimmest windowed room
-// reads 0.2012 at noon; a gaol reads 0.0400 at every hour, forever. **An interior is now brighter
-// at noon than at midnight**, which is a thing every window in the province was drawn to say and
-// no part of the simulation could hear.
+//     DAYLIGHT_K = (0.30 - 0.04) / 0.10256 = 2.5350
+//
+// and every other room follows from its own geometry. Consequences, all of them intended: the
+// brightest room reads 0.3000 at full sun and 0.0634 at 03:00 overcast; `archon-apothecary` reads
+// 0.1799 at an overcast noon; `archon-shrine`, a long thin room with one window, reads 0.0694 at
+// full sun; a gaol reads 0.0400 at every hour, forever. **An interior is now brighter at noon than
+// at midnight, and a room with more glass is brighter than a room with less** — two things every
+// window in the province was drawn to say and no part of the simulation could hear.
+//
+// `L` is additionally CLAMPED at `canopy_day`. That is not belt-and-braces on the arithmetic: it
+// is the invariant that survives the next change to the join. If a later round makes a room bigger
+// or a window larger, the derivation stays inside RI-STL01 §3's own brightest interior row instead
+// of quietly walking an indoor floor up toward direct sun, and `interiorAmbientL()` reports
+// `clamped: true` so a census can count how many rooms are sitting on the ceiling.
 //
 // KEEPING THE ROUND-3 CRITIC'S 2x2 FINDING TRUE. That critic crossed the two edit sites of the
 // round-3 fix and found neither an inert fix nor two-guards-for-one-defect but two independent
@@ -101,9 +116,13 @@ export const WINDOWLESS_KINDS = new Set(['prison', 'hold']);
 export const UNLIT_L = 0.04;
 /** `light_table_L`'s `canopy_day` row — daylight through a heavy filter. The anchor, see the header. */
 export const CANOPY_DAY_L = 0.30;
-/** The largest aperture ratio in the shipped corpus (`archon-house-0` and its 14 siblings). */
-export const MAX_APERTURE_RATIO = 0.03226;
-/** (0.30 - 0.04) / 0.03226. Derived from the two rows above and the corpus's own geometry. */
+/**
+ * The largest aperture ratio in the shipped corpus AFTER `render/exterior.js` has fitted each room
+ * to its building — `blackrose-house-1`, 12.94 x 4.34 m with 8 panes. Re-derive it with
+ * `node tools/harness/w1-15-r4-lights.mjs --apertures`, which applies the same join.
+ */
+export const MAX_APERTURE_RATIO = 0.102565;
+/** (0.30 - 0.04) / 0.102565 = 2.5350. Two rows of the corpus's own light table and one measurement. */
 export const DAYLIGHT_K = (CANOPY_DAY_L - UNLIT_L) / MAX_APERTURE_RATIO;
 
 /** A hearth is the room's fire; a lamp is a fitting on a wall. The 2:1 both readers already used. */
@@ -241,10 +260,13 @@ export function interiorAmbientL(rec, skyL, opts) {
   const unlit = o.unlit_L === undefined ? UNLIT_L : o.unlit_L;
   const k = o.daylight_k === undefined ? DAYLIGHT_K : o.daylight_k;
   const plan = windowPlan(rec);
-  if (plan.windowless) return { L: unlit, windowless: true, aperture_ratio: 0, windows: 0, sky_L: skyL, bleed: 0 };
+  if (plan.windowless) return { L: unlit, clamped: false, windowless: true, aperture_ratio: 0, windows: 0, sky_L: skyL, bleed: 0 };
   const bleed = Math.max(0, skyL) * k * plan.aperture_ratio;
+  const ceiling = o.max_L === undefined ? CANOPY_DAY_L : o.max_L;
+  const raw = unlit + bleed;
   return {
-    L: Math.min(1, unlit + bleed),
+    L: Math.min(ceiling, raw),
+    clamped: raw > ceiling,
     windowless: false,
     aperture_ratio: plan.aperture_ratio,
     windows: plan.count,

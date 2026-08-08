@@ -59,13 +59,33 @@ function flee(id) {
   const arena = new NodeArena({ data, seed: 1337 });
   const b = arena.spawn('e1', id, 0, 12, 180);
   const ctl = arena.cs.enemies.get('e1'); const p = arena.player;
-  let min = Infinity;
+  // MIN GAP IS THE WRONG NUMBER ON ITS OWN and this arm proved it: deleting the CIRCLE half of
+  // the closure rule moved inf_trash's min gap by 0.18 m, which reads as a nearly-inert clause.
+  // The number that matters is HOW LONG THE ENEMY IS IN RANGE TO HIT YOU, and by that measure
+  // the same deletion goes from 627 frames inside the strike band to 0. Both are returned.
+  let min = Infinity, inStrike = 0;
+  const O = om(id);
+  const strike = data.ai.bands.strike * O;
   for (let i = 0; i < 1200; i++) {
     p.pos[0] = 0; p.pos[2] = -(i/60)*2.0;
     ctl.alert = 100; ctl.alertState = 'AGGRO'; arena.step();
-    if (i > 30) min = Math.min(min, Math.hypot(p.pos[0]-b.pos[0], p.pos[2]-b.pos[2]));
+    if (i > 30) { const d = Math.hypot(p.pos[0]-b.pos[0], p.pos[2]-b.pos[2]); min = Math.min(min, d); if (d <= strike) inStrike++; }
   }
-  return min;
+  return { min, inStrike };
+}
+// 1b. The same, from 4 m — inside the DANCE band, where the CIRCLE half of the rule lives.
+function flee4(id) {
+  const arena = new NodeArena({ data, seed: 1337 });
+  const b = arena.spawn('e1', id, 0, 4, 180);
+  const ctl = arena.cs.enemies.get('e1'); const p = arena.player;
+  const strike = data.ai.bands.strike * om(id);
+  let inStrike = 0;
+  for (let i = 0; i < 1200; i++) {
+    p.pos[0] = 0; p.pos[2] = -(i/60)*2.0;
+    ctl.alert = 100; ctl.alertState = 'AGGRO'; arena.step();
+    if (i > 30 && Math.hypot(p.pos[0]-b.pos[0], p.pos[2]-b.pos[2]) <= strike) inStrike++;
+  }
+  return inStrike;
 }
 // 2. RI-AI01 M3's min_dist_dwell, on the round-1 fixture and seed.
 function dwell(id) {
@@ -121,7 +141,9 @@ function alive() {
 }
 const hashes = sigs();
 console.log(JSON.stringify({
-  flee_min_gap_m: Object.fromEntries(IDS.map(id => [id, +flee(id).toFixed(3)])),
+  flee_min_gap_m: Object.fromEntries(IDS.map(id => [id, +flee(id).min.toFixed(3)])),
+  flee_frames_inside_strike: Object.fromEntries(IDS.map(id => [id, flee(id).inStrike])),
+  flee_from_4m_frames_inside_strike: Object.fromEntries(IDS.map(id => [id, flee4(id)])),
   m3_dwell: Object.fromEntries(IDS.map(id => [id, +dwell(id).toFixed(4)])),
   strike_band_m: Object.fromEntries(IDS.map(id => [id, +(data.ai.bands.strike*om(id)).toFixed(3)])),
   trace_hashes: hashes,
@@ -198,6 +220,7 @@ function main() {
     results[k] = { label: arm.label, expect: arm.expect || null, ...measure(dir) };
     console.log(`\n== ${arm.label}`);
     console.log(`   flee min gap (inf_trash) ${results[k].flee_min_gap_m.inf_trash} m   strike band ${results[k].strike_band_m.inf_trash} m`);
+    console.log(`   frames inside strike     ${results[k].flee_frames_inside_strike.inf_trash} from 12 m, ${results[k].flee_from_4m_frames_inside_strike.inf_trash} from 4 m`);
     console.log(`   M3 dwell (inf_trash)     ${results[k].m3_dwell.inf_trash}`);
     console.log(`   distinct traces / 7      ${results[k].distinct_traces}`);
     console.log(`   alive: ${results[k].alive.moving_frames} moving frames, ${results[k].alive.commits} commits, states ${results[k].alive.states.join(',')}`);
@@ -215,6 +238,9 @@ function main() {
   }
   if (same(results.C.m3_dwell.inf_trash, base.m3_dwell.inf_trash)) {
     problems.push('arm C changed no dwell: RECOVER is inert OR the control is.');
+  }
+  if (results.E.flee_from_4m_frames_inside_strike.inf_trash === base.flee_from_4m_frames_inside_strike.inf_trash) {
+    problems.push('arm E changed nothing from 4 m: the CIRCLE half of the closure rule is inert OR the control is.');
   }
   if (results.D.distinct_traces >= base.distinct_traces) {
     problems.push('arm D did not reduce the distinct-trace count: the behaviour_archetype table is inert OR the control is.');

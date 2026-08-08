@@ -5,15 +5,147 @@
   "greed_envelope_note": "RI-STL02 declares fenceGreed in [0.85, 1.10] AND asserts (method 9) that the best achievable multiplier at Mercantile 100 sits in [0.58, 0.62]. Those two are not simultaneously satisfiable: 0.35 x mercantileTerm(100)=1.71 x 1.10 = 0.658, outside the band. The shipped roster therefore tops out at greed 1.02 (0.35 x 1.71 x 1.02 = 0.6105), which is inside the declared envelope AND inside the asserted band. The envelope is the constraint on authoring; the band is the constraint on the world, and the world is what a critic measures.",
   "mercantile_term": "1.00 + 0.0071 * Mercantile",
   "fences": [
-    { "id": "fence.lilmoth.rot-hookline",  "name": "Hookline",              "npc": "npc:hookline",              "settlement": "lilmoth",   "quarter": "rot-quarter",     "faction": null,          "greed": 0.92, "gold_pool": 900,  "access": ["mercantile>=25"],                     "is_fence": true },
-    { "id": "fence.lilmoth.rot-veek",      "name": "Veek-Ei the Shorter",   "npc": "npc:veek-ei",               "settlement": "lilmoth",   "quarter": "rot-quarter",     "faction": null,          "greed": 1.02, "gold_pool": 2600, "access": ["thieves-network>=1"],                  "is_fence": true },
-    { "id": "fence.gideon.docks",          "name": "Fastidious Cassa",      "npc": "npc:fastidious-cassa",      "settlement": "gideon",    "quarter": "docks",           "faction": "wet-ledger",  "greed": 0.98, "gold_pool": 2100, "access": ["mercantile>=25", "wet-ledger>=1"],     "is_fence": true },
-    { "id": "fence.archon.salvage",        "name": "The Salvage Yard clerk","npc": "npc:tuls-avaro",            "settlement": "archon",    "quarter": "salvage-yard",    "faction": null,          "greed": 0.88, "gold_pool": 1400, "access": ["mercantile>=25"],                     "is_fence": true },
-    { "id": "fence.soulrest.drowned",      "name": "The Drowned Court factor","npc": "npc:the-quiet-ledgerman", "settlement": "soulrest",  "quarter": "drowned-court",   "faction": "drowned-court","greed": 0.85,"gold_pool": 1800, "access": ["quest:the-quiet-ledger"],              "is_fence": true },
-    { "id": "fence.stormhold.outside",     "name": "Outside-the-Wall market","npc": "npc:sees-two-prices",      "settlement": "stormhold", "quarter": "outside-the-wall","faction": null,          "greed": 0.95, "gold_pool": 1200, "access": ["mercantile>=25"],                     "is_fence": true },
-    { "id": "fence.blackrose.gate",        "name": "Gate-side Ashen",       "npc": "npc:ashen-of-the-gate",     "settlement": "blackrose", "quarter": "prison-gate",     "faction": null,          "greed": 1.00, "gold_pool": 700,  "access": ["thieves-network>=1"],                  "is_fence": true },
-    { "id": "fence.itinerant.barge",       "name": "The barge factor",      "npc": "npc:onwen-tul",             "settlement": null,        "quarter": "itinerant",       "faction": null,          "greed": 0.90, "gold_pool": 400,  "access": ["quest:the-long-barge"],                "is_fence": true, "itinerant": true, "route": ["gideon", "soulrest", "lilmoth"] },
-    { "id": "fence.itinerant.sapcutter",   "name": "A Sap-Cutter with a cart","npc": "npc:hard-bargain-jeel",   "settlement": null,        "quarter": "itinerant",       "faction": "sap-cutters", "greed": 0.86, "gold_pool": 650,  "access": ["mercantile>=25"],                     "is_fence": true, "itinerant": true, "route": ["thorn", "stormhold", "archon"] }
+    {
+      "id": "fence.lilmoth.rot-hookline",
+      "name": "Hookline",
+      "npc": "npc:hookline",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "faction": null,
+      "greed": 0.92,
+      "gold_pool": 900,
+      "access": [
+        "mercantile>=25"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.lilmoth.rot-veek",
+      "name": "Veek-Ei the Shorter",
+      "npc": "npc:veek-ei",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "faction": null,
+      "greed": 1.02,
+      "gold_pool": 2600,
+      "access": [
+        "thieves-network>=1"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.gideon.docks",
+      "name": "Fastidious Cassa",
+      "npc": "npc:fastidious-cassa",
+      "settlement": "gideon",
+      "quarter": "docks",
+      "faction": "wet-ledger",
+      "greed": 0.98,
+      "gold_pool": 2100,
+      "access": [
+        "mercantile>=25",
+        "wet-ledger>=1"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.archon.salvage",
+      "name": "The Salvage Yard clerk",
+      "npc": "npc:tuls-avaro",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "faction": null,
+      "greed": 0.88,
+      "gold_pool": 1400,
+      "access": [
+        "mercantile>=25"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.soulrest.drowned",
+      "name": "The Drowned Court factor",
+      "npc": "npc:the-quiet-ledgerman",
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "faction": "drowned-court",
+      "greed": 0.85,
+      "gold_pool": 1800,
+      "access": [
+        "quest:the-quiet-ledger"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.stormhold.outside",
+      "name": "Outside-the-Wall market",
+      "npc": "npc:sees-two-prices",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "faction": null,
+      "greed": 0.95,
+      "gold_pool": 1200,
+      "access": [
+        "mercantile>=25"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.blackrose.gate",
+      "name": "Gate-side Ashen",
+      "npc": "npc:ashen-of-the-gate",
+      "settlement": "blackrose",
+      "quarter": "prison-gate",
+      "faction": null,
+      "greed": 1.0,
+      "gold_pool": 700,
+      "access": [
+        "thieves-network>=1"
+      ],
+      "is_fence": true
+    },
+    {
+      "id": "fence.itinerant.barge",
+      "name": "The barge factor",
+      "npc": "npc:onwen-tul",
+      "settlement": null,
+      "quarter": "itinerant",
+      "faction": null,
+      "greed": 0.9,
+      "gold_pool": 400,
+      "access": [
+        "quest:the-long-barge"
+      ],
+      "is_fence": true,
+      "itinerant": true,
+      "route": [
+        "gideon",
+        "soulrest",
+        "lilmoth"
+      ]
+    },
+    {
+      "id": "fence.itinerant.sapcutter",
+      "name": "A Sap-Cutter with a cart",
+      "npc": "npc:hard-bargain-jeel",
+      "settlement": null,
+      "quarter": "itinerant",
+      "faction": "sap-cutters",
+      "greed": 0.86,
+      "gold_pool": 650,
+      "access": [
+        "mercantile>=25"
+      ],
+      "is_fence": true,
+      "itinerant": true,
+      "route": [
+        "thorn",
+        "stormhold",
+        "archon",
+        "helstrom"
+      ],
+      "route_note": "W1-15 round 4. Helstrom was the one settlement neither itinerant route called at and the only town in the province with no fence of its own, so 187 of the 1,787 person-owned objects in the property tree had no buyer anywhere who would refuse them — measured, not assumed: with the route as it stood, 1,600 of 1,787 were refusable and every one of the 187 exceptions was Helstrom's. The Sap-Cutters work the interior forest, Helstrom is the interior capital, and a cart that calls at a town knows the people it buys from; adding it here is the smallest content change that makes RI-STL02 section 6's third refusal line reachable for the whole tree. The roster is still the nine fences the item declares — no fence was added."
+    }
   ],
   "gold_pool_refresh_days": 3,
   "refusal_lines": {
@@ -23,10 +155,11 @@
     "not_a_fence": "I do not deal in other people's property."
   },
   "unique_item_rule": {
-    "rate": 0.20,
+    "rate": 0.2,
     "buys_once": true,
     "delayed_bounty_multiplier": 0.5,
     "delay_days": 3,
     "note": "Named things are recognised. Fencing the Full Root Chalice is a decision, not a transaction."
-  }
+  },
+  "itinerant_route_rule": "A fence with a `route` calls at those towns often enough to know the people in them: Engine.dispositionBetween() returns 60 — exactly the friend_of_the_owner threshold, because 'he calls there' is the weakest relation that should still count — for an owner who lives on the route. This is the only relation in the corpus that crosses a settlement boundary, and it is therefore the only way RI-STL02 section 6's third refusal was ever going to be reachable: same_settlement and same_faction refuse first, so friend_of_the_owner is only ever asked about a buyer in a different town AND a different faction. W1-15 round 4."
 }

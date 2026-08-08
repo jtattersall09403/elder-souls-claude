@@ -46,6 +46,7 @@ export class StealthCrime {
     this.light = new LightField(this.d.detection);
     this.zones = new ZoneMemory(this.d.search);
     this.crime = new CrimeWorld(this.d.bounty, this.d.justice);
+    this.installReportConsequences();
 
     // The player's stealth-side state. Allocated once (RI-PLT01 P4).
     this.p = {
@@ -370,18 +371,10 @@ export class StealthCrime {
         r.state = 'landed';
         const wc = this.civilians.find((c) => c.eid === r.w.eid);
         if (wc) { wc.flee = null; wc.reporting = false; }
-        // W1-15 r4. `unidentified_effect`'s other two promises, and they fire HERE because this is
-        // the only place that knows both that the report was unattributed and which zone it
-        // happened in. A crime nobody could pin on you does not put a guard on your shoulder — it
-        // makes the town watch, and it makes the room remember.
-        let alarm = null;
-        if (res && res.attributed === false) {
-          const ue = this.d.justice.unidentified_consequence || {};
-          alarm = this.crime.raiseAlarm(res.settlement || this.p.settlement, f,
-            ue.alarm_step === undefined ? 20 : ue.alarm_step,
-            Math.round((ue.alarm_hold_s === undefined ? 600 : ue.alarm_hold_s) * 60));
-          if (this.p.zone) this.zones.onUnattributedReport(this.p.zone, f);
-        }
+        // W1-15 r4. `unidentified_effect`'s other two promises fire from `CrimeWorld.land()`'s
+        // `onLand` hook (see `installReportConsequences()`), because there are three paths that
+        // land a report and only one of them is this loop.
+        const alarm = res && res.attributed === false ? this.crime.alarm[res.settlement || this.p.settlement || 'unknown'] : null;
         if (bus && res) { const e = bus.emit(f, 'report'); e.kind = res.kind; e.bounty_delta = res.delta; e.eid = r.w.eid; e.route = r.route.route; e.attributed = res.attributed !== false; e.settlement_alarm = alarm ? alarm.level : 0; }
         this.events.push({ type: 'report', frame: f, eid: r.w.eid, route: r.route.route, kind: res ? res.kind : 'none', bounty_delta: res ? res.delta : 0, attributed: res ? res.attributed !== false : null, settlement_alarm: alarm ? alarm.level : 0, zone_remembers: !!(res && res.attributed === false && this.p.zone) });
       }
@@ -853,6 +846,7 @@ export class StealthCrime {
     this._overridden.clear();
     this.zones = new ZoneMemory(this.d.search);
     this.crime = new CrimeWorld(this.d.bounty, this.d.justice);
+    this.installReportConsequences();
     this.civilians.length = 0;
     this.pending.length = 0;
     this.searches.length = 0;
@@ -1138,6 +1132,27 @@ export class StealthCrime {
     }
     this.p.zone = best ? best.id : null;
     return this.p.zone;
+  }
+
+  /**
+   * WHAT AN UNATTRIBUTED REPORT DOES BESIDES ADD A SMALLER NUMBER — W1-15 round 4.
+   *
+   * `CrimeWorld` owns the ledger and knows the settlement; it does not and should not know about
+   * zones. So the split lives there and the other two consequences hang off its one gate here,
+   * where the zone is. Installed on the constructor and re-installed after `applySave()` replaces
+   * the ledger, because a listener attached to a `CrimeWorld` that has been thrown away is a
+   * consequence that silently stops happening — which is `RULES.md` 7's shape.
+   */
+  installReportConsequences() {
+    this.crime.onLand = (res, frame) => {
+      if (!res || res.attributed !== false) return;
+      const ue = (this.d.justice && this.d.justice.unidentified_consequence) || {};
+      const step = ue.settlement_alarm && ue.settlement_alarm.alarm_step !== undefined ? ue.settlement_alarm.alarm_step : 20;
+      const hold = ue.settlement_alarm && ue.settlement_alarm.alarm_hold_s !== undefined ? ue.settlement_alarm.alarm_hold_s : 600;
+      this.crime.raiseAlarm(res.settlement || this.p.settlement, frame, step, Math.round(hold * 60));
+      if (this.p.zone) this.zones.onUnattributedReport(this.p.zone, frame);
+    };
+    return this.crime.onLand;
   }
 
   /**

@@ -1,0 +1,19 @@
+{
+  "piece": "W1-20",
+  "title": "Faction skeleton - every line present, one quest deep",
+  "role": "builder",
+  "state": "surveying",
+  "phase": "reading prior W1-FACTIONS r1-r3 status + critic verdicts to find the real gap",
+  "judged_by": ["RI-CRM02","RI-LOR01","RI-LOR02","RI-QST01","RI-QST03"],
+  "subsystem_paths": ["quests.faction.joining","quests.faction.rankgating"],
+  "found_so_far": {
+    "faction_gates_json_factions": 8,
+    "standing_only": ["house_dres","ixtu_vakh"],
+    "faction_quest_files": ["faction-imperial-assize.json","faction-wet-ledger.json","faction-xul-aneekh.json"],
+    "note": "3 of 8 laddered factions have a quest file on first glance - width gap suspected"
+  },
+  "files_claimed": ["orchestration/status/W1-20.json"],
+  "files_touched": ["orchestration/status/W1-20.json"],
+  "redundant_with": ["W1-FACTIONS-r3"],
+  "next_step": "read critic-w1-factions-r2 verdict + W1-FACTIONS-r3 status; measure joinability through play"
+}

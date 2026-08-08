@@ -461,6 +461,111 @@ try {
     }
   }
 
+  // ---- PAGES404: a static host does not abort, it answers 404 with an HTML body ----------------
+  //
+  // verify-playable's self-test sabotages with `route.abort()`. That is a *connection failure*,
+  // and it is not what happened to this project. GitHub Pages answers a missing path with
+  // `HTTP 404` and a `text/html` error page — a response that arrives, resolves, and has a body.
+  // The two are different events in the browser: an abort fires `requestfailed`, a 404 fires
+  // `response` with a status. A checker whose sabotage arm only ever produces the first has never
+  // been shown to detect the second, which is the one that reaches real users.
+  //
+  // This runs both shapes against the same three targets and puts the verdicts side by side.
+  if (all || has('--pages404')) {
+    const PAGES_404 = '<!DOCTYPE html><html><head><title>Site not found &middot; GitHub Pages</title></head>'
+      + '<body><h1>404</h1><p>There isn&rsquo;t a GitHub Pages site here.</p></body></html>';
+    const targets = [
+      { label: 'hold-gate.js (module)',      glob: '**/hold-gate.js' },
+      { label: 'data/index.json (manifest)', glob: '**/data/index.json' },
+      { label: 'data/progression/** (leaf)', glob: '**/data/progression/**' },
+    ];
+    const rows = [];
+    for (const t of targets) {
+      for (const shape of ['abort', '404']) {
+        const { ctx, page, errors, bad } = await openPage(browser, origin, VIEWPORTS[1]);
+        let hits = 0;
+        await page.route(t.glob, (route) => {
+          hits++;
+          if (shape === 'abort') return route.abort();
+          return route.fulfill({ status: 404, contentType: 'text/html; charset=utf-8', body: PAGES_404 });
+        });
+        await page.goto(url, { waitUntil: 'load', timeout: 120000 }).catch(() => {});
+        await page.waitForTimeout(SHIPPED_WAIT_MS);
+        const s = await page.evaluate(() => {
+          const r = window.__criticSample();
+          const n = document.getElementById('boot-notice');
+          r.noticeVisible = !!n && n.className !== 'gone';
+          r.noticeText = (n && n.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+          return r;
+        }).catch(() => ({ cornerFrac: 0, noticeVisible: false, noticeText: '' }));
+        await ctx.close();
+        const drew = s.canvas && s.cornerFrac >= MIN_NONBLACK_FRACTION;
+        const verdict = (drew && !s.noticeVisible && errors.length === 0 && bad.length === 0) ? 'PASS' : 'FAIL';
+        rows.push({ target: t.label, shape, hits, cornerFrac: s.cornerFrac,
+                    noticeVisible: s.noticeVisible, noticeText: s.noticeText,
+                    errors: errors.length, bad: bad.length, verdict });
+      }
+    }
+    results.pages404 = rows;
+    console.log('\n--- PAGES404: abort (what the self-test simulates) vs 404 (what a static host does) ---');
+    console.log('     target                      shape   intercepts  corner%   notice up   verify-playable');
+    for (const r of rows) {
+      // An arm that intercepted nothing is inert and its verdict is worthless — say so in the row.
+      const inert = r.hits === 0 ? '  <-- INERT: matched no request' : '';
+      console.log(`   ${r.target.padEnd(27)} ${r.shape.padEnd(7)} ${String(r.hits).padStart(10)}  ` +
+        `${(r.cornerFrac * 100).toFixed(2).padStart(7)}   ${String(r.noticeVisible).padEnd(9)}   ${r.verdict}${inert}`);
+      if (r.noticeVisible) console.log(`        notice said: "${r.noticeText}"`);
+    }
+  }
+
+  // ---- NOTICE2: exactly when does it hide, on a MutationObserver ---------------------------------
+  if (all || has('--notice2')) {
+    const spy = `
+      window.__nt = { t0: Date.now() };
+      // addInitScript runs at document-start, where document.documentElement is still null —
+      // observing it throws and silently kills the rest of this script. Observe \`document\`,
+      // which always exists. (The first version of this spy did throw here, and reported
+      // "harness at undefined ms" rather than failing loudly, which is its own small lesson.)
+      new MutationObserver(function (recs) {
+        for (const r of recs) {
+          const el = r.target;
+          if (el && el.id === 'boot-notice' && el.className === 'gone' && !window.__nt.hiddenAt)
+            window.__nt.hiddenAt = Date.now() - window.__nt.t0;
+        }
+      }).observe(document, { attributes: true, subtree: true, attributeFilter: ['class'] });
+      (function poll() {
+        if (window.__HARNESS && !window.__nt.harnessAt) window.__nt.harnessAt = Date.now() - window.__nt.t0;
+        if (window.__ENGINE && window.__ENGINE.renderer && !window.__nt.rendererAt)
+          window.__nt.rendererAt = Date.now() - window.__nt.t0;
+        if (!window.__nt.harnessAt || !window.__nt.rendererAt) setTimeout(poll, 5);
+      })();
+    `;
+    const rows = [];
+    for (const cond of [{ label: 'unthrottled', cpu: 1 }, { label: 'CPU x4 (a phone)', cpu: 4 }]) {
+      const { ctx, page } = await openPage(browser, origin, VIEWPORTS[1], { init: spy });
+      const cdp = await ctx.newCDPSession(page);
+      if (cond.cpu > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: cond.cpu });
+      await page.goto(url, { waitUntil: 'load', timeout: 180000 });
+      const readyAt = await page.evaluate(async () => {
+        await window.__HARNESS.ready(); return Date.now() - window.__nt.t0;
+      });
+      // How long after the notice hid did the first drawn frame appear? Read on a fresh timeline:
+      // sample the framebuffer only now, so the read cannot latch (see SETTLE).
+      const nt = await page.evaluate(() => ({ ...window.__nt }));
+      await ctx.close();
+      rows.push({ ...cond, ...nt, readyAt });
+    }
+    results.notice2 = rows;
+    console.log('\n--- NOTICE2: when the notice hides, against when the world is actually there ---');
+    console.log('     condition           harness at   notice hid at   renderer at   boot resolved at   blind gap');
+    for (const r of rows) {
+      const gap = r.readyAt - (r.hiddenAt ?? 0);
+      console.log(`   ${r.label.padEnd(19)} ${String(r.harnessAt + ' ms').padEnd(12)} ${String((r.hiddenAt ?? '-') + ' ms').padEnd(15)} ` +
+        `${String(r.rendererAt + ' ms').padEnd(13)} ${String(r.readyAt + ' ms').padEnd(18)} ${gap} ms ` +
+        `(${(100 * gap / r.readyAt).toFixed(0)}% of the load, with nothing on screen and no message)`);
+    }
+  }
+
   mkdirSync(join(SCRATCH, 'critic-deploy'), { recursive: true });
   writeFileSync(join(SCRATCH, 'critic-deploy', 'probe.json'), JSON.stringify(results, null, 1));
   console.log(`\ncritic-deploy-probe: raw numbers at ${join(SCRATCH, 'critic-deploy', 'probe.json')}`);

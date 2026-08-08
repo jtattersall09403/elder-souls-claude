@@ -1,0 +1,30 @@
+{
+  "task_id": "W1-27",
+  "state": "starting",
+  "role": "builder",
+  "piece": "W1-27 — density, loot and the coherence pass",
+  "paths": [
+    "world.density.handplacement",
+    "world.loot.placement",
+    "coherence.naming",
+    "coherence.lore",
+    "coherence.tone",
+    "coherence.faction",
+    "coherence.difficulty",
+    "coherence.progression",
+    "coherence.economy",
+    "coherence.systems"
+  ],
+  "items": ["RI-AI07","RI-CMP01","RI-DLG08","RI-LOR05","RI-LOR06","RI-MTH05","RI-PRG04","RI-PRG08","RI-QST08","RI-WLD01","RI-WLD02","RI-WLD05","RI-WLD09"],
+  "next_step": "read RULES/INDEX/PLAN W1-27 and the 13 items; then offline: procedural-loot hunt, then coherence reads across corpus/90-verdicts/wave1",
+  "contention": "gate exit WAIT at start (4 instances, load 4.23/core) — doing offline work first per brief",
+  "files_touched": ["orchestration/status/W1-27.json"],
+  "files_claimed": [
+    "tools/coherence/",
+    "reports/w1-27/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl",
+    "corpus/90-verdicts/wave1/W1-27.md"
+  ],
+  "notes": []
+}

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ced0a03`: 743 tools, 153 reference
-items, 67 pieces in flight.
+so it cannot drift. Generated at `fa96455`: 743 tools, 153 reference
+items, 72 pieces in flight.
 
-Its purpose is to stop 67+ concurrent agents each paying separately to discover the
+Its purpose is to stop 72+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1070,6 +1070,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-touch` | running | read RULES/INDEX/ARBITRATION/RI-JRN04, verify the main.js->TouchInput import chain (attack | `orchestration/status/critic-w1-touch.json` |
+| `W1-20` | surveying | read critic-w1-factions-r2 verdict + W1-FACTIONS-r3 status; measure joinability through pl | `orchestration/status/W1-20.json` |
+| `W1-27` | starting | read RULES/INDEX/PLAN W1-27 and the 13 items; then offline: procedural-loot hunt, then coh | `orchestration/status/W1-27.json` |
+| `W1-28` | starting | read RULES.md, INDEX.md, docs/PLAN.md W1-28, corpus RI-JRN02 in full, W1-25-r2.json, game/ | `orchestration/status/W1-28.json` |
+| `W1-24` | reading | read RULES (done), INDEX, PLAN W1-24, the six items, sabotage.mjs | `orchestration/status/W1-24.json` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `W1-15-r4` | ? | update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4- | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |

@@ -190,7 +190,16 @@ export class CrimeWorld {
     const k = partial ? 'partial' : 'unlawful';
     this.log.push({ type: 'report', kind: k, crime_ref: crime.id, eid: witnessRec.eid, frame, bounty_delta: delta, attributed: partial ? null : 'player' });
     this.log.push({ type: 'bounty_change', jurisdiction: crime.jurisdiction, delta, total: this.bountyIn(crime.jurisdiction, crime.settlement), frame, attributed: !partial });
-    return { kind: k, delta, attributed: !partial, settlement: crime.settlement, jurisdiction: crime.jurisdiction, crime_ref: crime.id };
+    const out = { kind: k, delta, attributed: !partial, settlement: crime.settlement, jurisdiction: crime.jurisdiction, crime_ref: crime.id };
+    // W1-15 r4. THE HOOK IS HERE AND NOT AT THE CALL SITE, and the first live run is why: the
+    // settlement-alarm and zone-memory consequences were wired into `StealthCrime.stepReports()`,
+    // which is only one of THREE paths that land a report (`Engine.landReport()` and
+    // `completePickpocket()` are the others), so a report landed by a verb rather than by a
+    // fleeing witness raised nothing at all. `land()` is the single gate the whole design is built
+    // around — *"A crime does not create a bounty. A REPORT does."* — so the consequence hangs off
+    // it, and `StealthCrime` installs the listener that knows about zones.
+    if (this.onLand) this.onLand(out, frame);
+    return out;
   }
 
   /**

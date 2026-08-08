@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-28",
+  "role": "builder",
+  "round": 1,
+  "state": "starting",
+  "started_at": "2026-08-08",
+  "piece": "W1-28 — the first hour as interaction",
+  "paths": ["journey.firsthour.interaction", "journey.firsthour.competence"],
+  "reference_items": ["RI-JRN02"],
+  "next_step": "read RULES.md, INDEX.md, docs/PLAN.md W1-28, corpus RI-JRN02 in full, W1-25-r2.json, game/data/input/profiles.json",
+  "files_touched": ["orchestration/status/W1-28.json"],
+  "files_claimed": [
+    "tools/journey/",
+    "reports/w1-28/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": [
+    "Declared seam: RI-JRN02 also judges input.discoverability which is W1-08's. Cited here, scored against W1-08."
+  ]
+}

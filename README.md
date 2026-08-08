@@ -15,10 +15,14 @@ There are three ways in, depending on what you are holding.
 
 **https://jtattersall09403.github.io/elder-souls-claude/play/index.html**
 
-You should now get a title screen. **You still will not be able to move**: the touch controls are
-written — a floating stick under your left thumb, camera drag on the right, the same roll/sprint
-timing the gamepad uses — and they are **not wired into the game's startup**, so nothing is
-listening to your fingers. Somebody is fixing that now.
+**The touch controls are wired and working** — that is corrected: an earlier version of this file
+said they were not, and it was wrong. On a phone-shaped browser the game boots into handheld mode
+with 11 controls drawn, and a real touch opens a floating stick exactly where the thumb lands.
+
+**But the screen is black on a real phone and I do not yet know why.** It is not the controls and it
+is not a missing file. Every check I have passes on this machine, and a desktop browser at a
+phone-sized window is not a phone. The page now tells you what your phone says about itself when it
+fails — if you get a red message with a line of technical detail, **that line is the thing I need.**
 
 If you get a black screen, **it will now tell you why** rather than sitting there. A loading line, a
 message if a file is missing, a message if the browser refuses 3D. If it says something unexpected,
