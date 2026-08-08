@@ -148,6 +148,30 @@ A('FNC-2', 'best achievable fence multiplier at Mercantile 100', best.toFixed(4)
 A('FNC-3', 'fence base rate vs the legitimate 0.60x ceiling', `${theft.fences.base_rate} vs ${theft.fences.legit_sell_ceiling}`, theft.fences.base_rate < theft.fences.legit_sell_ceiling, 'strictly lower');
 A('FNC-4', 'refusal lines authored', Object.keys(fences.refusal_lines).length, Object.keys(fences.refusal_lines).length >= 4, '>= 4, each naming the owner');
 
+// ---- the interior unique items, and the drift check that keeps them wired --------------------
+//
+// W1-15 r3. `interiors/*.json` declares one `unique_item` per room and W1-04 gave every one a
+// body you can press `interact` on — but none of them existed in the ownership tree, so taking
+// one ran no theft chain and `unique_item.owner` was carried and read by nothing.
+// `tools/world/build-unique-property.mjs` writes the missing content row. THIS ASSERTION IS THE
+// GUARD ON IT: the r2 verdict's own worst finding was a generator silently deleting another
+// piece's work in the same commit that claimed it, so the two sides of this one object are
+// compared here and a regeneration of either file that unwires them goes RED rather than quiet.
+const intDir = path.join(ROOT, 'game/data/world/interiors');
+const interiors = fs.readdirSync(intDir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(intDir, f), 'utf8')));
+const wirable = interiors.filter((r) => r.unique_item && r.unique_item.owner && (r.property_zones || []).length);
+const byInstance = new Map(allObjs.filter((o) => o.from_interior).map((o) => [o.instance, o]));
+const missing = wirable.filter((r) => !byInstance.has(r.unique_item.id));
+const disagree = wirable.filter((r) => { const o = byInstance.get(r.unique_item.id); return o && (o.owner !== r.unique_item.owner || o.name !== r.unique_item.name); });
+A('UNI-1', 'interior unique items reachable by the ownership system', `${wirable.length - missing.length}/${wirable.length}${missing.length ? ` — missing: ${missing.slice(0, 4).map((r) => r.id).join(', ')}` : ''}`,
+  missing.length === 0 && wirable.length >= 70, 'every interior with an owner AND a property zone has a property row');
+A('UNI-2', 'the property row and the interior record name the same object', `${disagree.length} disagreement(s)`, disagree.length === 0, '0 — owner and name identical on both sides');
+A('UNI-3', 'every wired row is personal-scope, takeable and priced', `${[...byInstance.values()].filter((o) => o.owner_scope === 'personal' && o.takeable && o.value_g > 0 && o.unique).length}/${byInstance.size}`,
+  byInstance.size > 0 && [...byInstance.values()].every((o) => o.owner_scope === 'personal' && o.takeable && o.value_g > 0 && o.unique), 'all of them — RI-STL02 §1 personal scope is theft seen or not');
+const unwired = interiors.filter((r) => r.unique_item && !(r.unique_item.owner && (r.property_zones || []).length));
+A('UNI-4', 'interior unique items with no owner and no zone are declared, not invented', `${unwired.length} reported: ${unwired.slice(0, 3).map((r) => r.id).join(', ')}...`,
+  unwired.every((r) => !r.unique_item.owner), 'every unwired one genuinely carries no owner');
+
 // ---- output ---------------------------------------------------------------------------------------
 const failed = results.filter((r) => !r.pass);
 if (json) {

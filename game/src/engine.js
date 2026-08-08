@@ -1007,6 +1007,15 @@ export class Engine {
    * determines the combat system, which is what makes a scenario reproducible.
    */
   _buildCombat(loadout) {
+    // W1-16 round 2 — THE EQUIP-LOAD PIN, reset at the one boundary that rebuilds the fight.
+    // A scenario that states its own equip load has pinned it and `_recomputeEquipLoad()` keeps
+    // its hands off; every arena, camera fixture and `wpn-loadout-*` state does exactly that, so
+    // the W1-09/10/11 calibration is untouched. A scenario that does NOT state one gets the
+    // world's answer instead of a hardcoded 24.0. Same shape as round 1's stealth `_overridden`.
+    this._equipLoadPinned = !!(loadout && loadout.equipLoadPct !== undefined);
+    this._burdenPinned = false;
+    this._equipLoadEngaged = false;
+    this._equipLoadBase = null;
     this.combat = new CombatSystem(this._combatData());
     // W1-12. Two handles the enemy AI needs and may not construct for itself.
     //
@@ -1123,9 +1132,34 @@ export class Engine {
     return { weapon: nb.moves._movesetId, weapon_class: nb.moves._classKey, shield: nb.shieldId, stamina_max: nb.staminaMax, tier: nb.tier };
   }
 
+  /**
+   * Put an inventory row on, through the same channel the player uses.
+   *
+   * `ui/system.js _confirm()` queues `{kind:'equip', item}` when you press interact on a weapon,
+   * armour or clothing row; `Engine._applyUIPending()` reads that queue, holds the body for 30
+   * frames, and `_finishEquipCommit()` lands it in the slot. This verb writes the SAME queue —
+   * it does not touch `row.slot` and it does not skip the commitment — so a probe measures the
+   * equip path rather than a shortcut around it. What it skips is the inventory CURSOR, which is
+   * RI-UIX03's subsystem and not encumbrance's.
+   *
+   * Returns the frame the equip will land on, so a caller knows how far to step.
+   */
+  equipItem(id) {
+    const row = (this.sim.inventory || []).find((r) => r.id === String(id));
+    if (!row) throw new Error(`equipItem('${id}'): not in the inventory. Carried: ${(this.sim.inventory || []).map((r) => r.id).join(', ') || '(nothing)'}`);
+    if (!this.ui) throw new Error('equipItem: no UI system — equipping is a UI action and the engine applies it after the step');
+    this.ui.pending = { kind: 'equip', item: row.id };
+    this.ui.actEpoch++;
+    return { queued: row.id, commit_frames: 30, lands_on_frame: this.sim.frame + 30 };
+  }
+
   setEquipLoad(pct) {
     const v = Number(pct);
     if (!Number.isFinite(v) || v < 0) throw new Error(`setEquipLoad(${JSON.stringify(pct)}): expected a non-negative percentage`);
+    // A hand-fed value is a PIN: the world stops writing this field until the next scenario
+    // boundary. Without it `_recomputeEquipLoad()` would overwrite a critic's swept value on the
+    // next step and every M5 cliff sweep would silently measure the same tier 21 times.
+    this._equipLoadPinned = true;
     this.combat.player.equipLoadPct = v;
     this.combat.player.tier = this.combat.tierOf(this.combat.player);
     this.sim.player.equipLoadPct = v;
@@ -1938,6 +1972,16 @@ export class Engine {
       // W1-READABLES. A book id in `game/data/books/**`. When set, `interact` OPENS it where it
       // stands instead of pocketing it; see `_takePropPending`.
       readable_book: spec.readable_book || null,
+      // W1-READABLES round 2. The id of a `deceit.revealed_by` row's `environment` source. When
+      // set, `interact` LOOKS at the thing and nothing is opened, taken or said; see
+      // `_takePropPending`.
+      site_mark: spec.site_mark || null,
+      // W1-15 r3. The `instance` of this object's row in `game/data/world/property/*.json`,
+      // when it has one. Set, `takeProp()` stops being a free pickup and routes through the
+      // ownership system — `takeObject()`, `isTheft`, the stolen registry, the witness pass and
+      // the bounty. The whole difference between a room full of props and a room full of
+      // SOMEONE'S THINGS (RI-STL02 §1) is this field being read on the way out of the room.
+      property_instance: spec.property_instance || null,
       reach_m: Number(spec.reach_m === undefined ? 2.2 : spec.reach_m),
     };
     for (const e of this.sim.props) if (e.eid === o.eid) return e;
@@ -2023,22 +2067,63 @@ export class Engine {
     return n;
   }
 
-  clearProps() { this.sim.props.length = 0; return true; }
+  clearProps() {
+    this.sim.props.length = 0;
+    // W1-READABLES round 2. The province's marks are props, so this takes them too — and it is
+    // called by every named-state application, which is what `reset()` does. Forgetting that a
+    // mark was ever spawned is the whole of the fix: `_syncCell()` puts them back on the next
+    // frame the province is the cell, and `spawnProp()` is idempotent on the eid, so a caller
+    // that clears and re-clears does not end up with two chalk marks on one jamb.
+    this._provinceMarksDone = false;
+    return true;
+  }
 
   /** Pick it up. Emits `item`, exactly as the writ does when it is handed over the desk. */
+  /** Is there a property-tree row with this instance id? */
+  _propertyHas(instance) {
+    for (const k of Object.keys(this.data.property || {})) {
+      for (const z of this.data.property[k].zones) if (z.contents.some((c) => c.instance === instance)) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Pick it up. Emits `item`, exactly as the writ does when it is handed over the desk.
+   *
+   * W1-15 r3: AND IF IT BELONGS TO SOMEBODY, THAT IS A THEFT. This method used to push every
+   * prop into the inventory with `stolen: false, owner: null` unconditionally, which meant the
+   * one take-verb the player's `interact` button can actually reach was the one verb in the
+   * build that had never heard of ownership. 83 interior unique items — the most obviously
+   * stealable object in every room in the province, each with an `owner` authored on it — came
+   * away clean in front of their owners. The theft chain existed and was measured; it was
+   * reachable only from `takeObject()`, a harness verb.
+   *
+   * `takeObject()` is not re-implemented here. It is CALLED, so there is exactly one theft path
+   * and the witness pass, the stolen registry, the bounty, the fence refusal and the save all
+   * see this pickup as they see every other one.
+   */
   takeProp(eid) {
     const o = this.sim.props.find((x) => x.eid === eid);
     if (!o) throw new Error(`takeProp('${eid}'): no such object in the world`);
     if (o.taken) return { eid, taken: true, already: true };
+    let theft = null;
+    if (o.takeable && o.property_instance) {
+      // A failure here must not eat the pickup: if the property row went away with a
+      // regeneration, the object is still a thing you are holding.
+      try { theft = this.takeObject(o.property_instance, {}); } catch { theft = null; }
+    }
     o.taken = true;
     this.sim.world.itemsTaken.push(o.eid);
-    if (o.takeable) {
+    // `takeObject()` has already pushed the inventory row — carrying `stolen` and `owner` — so
+    // pushing again here would give the player two of it and the second one clean.
+    if (o.takeable && !theft) {
       this.sim.inventory.push({ id: o.item, count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
     }
     const ev = this.bus.emit(this.sim.frame, 'item');
     ev.item = o.item; ev.how = 'picked up'; ev.eid = o.eid;
+    if (theft) { ev.stolen = !!theft.theft; ev.owner = theft.stolen_from || null; }
     quantiseColdState(this.sim);
-    return { eid, taken: true, item: o.item, name: o.name };
+    return { eid, taken: true, item: o.item, name: o.name, theft };
   }
 
   /**
@@ -2111,6 +2196,24 @@ export class Engine {
         const ev = this.bus.emit(this.sim.frame, 'input_action');
         ev.action = 'interact'; ev.surface = 'world'; ev.via = 'readable'; ev.node = o.eid;
       } catch { /* the book went away with the data; the prop stays where it is */ }
+      return;
+    }
+    // W1-READABLES round 2. A MARK. There is nothing to open and nothing to carry: the chalk is
+    // on the jamb, the post has nobody on it, the shaft goes down under the rib. Reaching for it
+    // is LOOKING at it, and the only thing that changes is what the character now knows —
+    // `learnFrom('place', ...)` offers the `environment` rows this mark is the declared source
+    // of and refuses the ones whose quest is not open, exactly as the person route does.
+    //
+    // NO TEXT IS PRINTED HERE, deliberately. The alternative — a panel that says "you notice the
+    // wax does not match" — is the narrator voice the whole register forbids, and it would also
+    // make the mark's own prose unnecessary. What the player reads is the name of the thing in
+    // the reach prompt before they press, and afterwards the JOURNAL ENTRY the reveal row names,
+    // written by `note()` in the player's own hand.
+    if (o && o.site_mark && this.questEngine) {
+      const learned = this.questEngine.learnFrom('place', o.site_mark);
+      const ev = this.bus.emit(this.sim.frame, 'input_action');
+      ev.action = 'interact'; ev.surface = 'world'; ev.via = 'mark'; ev.node = o.eid;
+      this._lastLooked = { mark: o.site_mark, learned };
       return;
     }
     try { this.takeProp(id); } catch { /* it went away */ }
@@ -3528,7 +3631,21 @@ export class Engine {
     // number. `equip_load_max` is RI-PRG02's curve on STRENGTH; the ×2.5 is `setBurden`'s own
     // definition of the ratio (`carried_weight / (max_load * 2.5)`), so the capacity shown is
     // the point at which you stop moving, and the ticks on the bar are the tier boundaries.
-    return derivePools(this.sim.progression.attributes).equip_load_max * 2.5;
+    return this._equipCapacity() * 2.5;
+  }
+
+  /**
+   * RI-PRG07 §1's `maxLoad` itself — 45 + 1.50 x STRENGTH + 0.50 x ENDURANCE — with NO headroom.
+   *
+   * The ×2.5 in `_equipLoadMax()` above is BURDEN's (§3: "a character can carry roughly two and
+   * a half times what they can usefully wear"). Equip load divides by the bare capacity (§2), and
+   * writing `_equipLoadMax()` on both paths is exactly the merge this round exists to prevent —
+   * it silently divides the roll's ratio by 2.5 and the fat-roll cliff becomes unreachable. The
+   * offline unit check caught precisely that before it reached a browser; the two divisors get
+   * two names so the next reader cannot repeat it.
+   */
+  _equipCapacity() {
+    return derivePools(this.sim.progression.attributes).equip_load_max;
   }
 
   /**
@@ -3549,6 +3666,7 @@ export class Engine {
    * Allocation-free and clock-free: it runs once per step, over an array the sim already owns.
    */
   _recomputeBurden() {
+    if (this._burdenPinned) return this.sim.player.burdenRatio;
     const inv = this.sim.inventory;
     let w = 0;
     for (let i = 0; i < inv.length; i++) {
@@ -3559,6 +3677,100 @@ export class Engine {
     this.sim.player.carriedWeight = w;
     this.sim.player.burdenRatio = cap > 0 ? w / cap : 0;
     return this.sim.player.burdenRatio;
+  }
+
+  /**
+   * Which slot an object occupies when it is worn or held, or `null` if it cannot be worn at all.
+   *
+   * `game/data/items/carried.json` already declares `slot` on every armour and clothing row
+   * (`chest`, `legs`, `head`, `feet`, `waist`) and declares none on a weapon, so the weapon's
+   * slot is the one thing this has to supply. Consumables, books, tools, documents and misc
+   * return `null` and are unequippable by construction — which is also RI-PRG07 §2's
+   * "consumables are not counted" enforced at the only place that can enforce it.
+   */
+  _slotForItem(rec) {
+    if (!rec) return null;
+    // DELETE-THE-FIX arm (`__breakW116('slots')`): the pre-round-2 behaviour, in which the ONLY
+    // slot the engine could fill was 'right', so equipping a cuirass put armour in the sword hand.
+    if (this._w116Break && this._w116Break.slots) return 'right';
+    if (rec.slot) return String(rec.slot);
+    if (rec.kind === 'weapon' || rec.category === 'weapon') return 'right';
+    if (rec.kind === 'shield' || rec.category === 'shield') return 'left';
+    return null;
+  }
+
+  /**
+   * W1-16 round 2 — THE PRODUCER `equipLoadPct` NEVER HAD.
+   *
+   * Round 1 of this piece characterised the defect precisely and deliberately did not fix it:
+   * the CONSUMER side of the in-fight equip-load ladder was already whole — `combat/moves.js`
+   * `equipTier()` picks the roll row out of `roll.json`, and `combat/rules.js` `regenStamina()`
+   * multiplies the regen rate by the tier — and there was NO producer. `combat.player.equipLoadPct`
+   * was written by exactly three things: the `setEquipLoad()` harness verb, a hardcoded 24.0 in
+   * `combat/system.js createPlayer()`, and a feather spell in `sim/magic/apply.js`. Nothing the
+   * player wore or picked up could move it. RI-CMB01's whole tier system, and RI-PRG07's whole
+   * premise that armour weight decides how you roll, had no data path from the world at all.
+   *
+   * RI-PRG07 §2 is exact about what feeds it, and it is emphatically NOT `_recomputeBurden`'s sum:
+   *
+   *     equipRatio = (weight of EQUIPPED weapons, shields, armour, talismans) / maxLoad
+   *     "Inventory weight is not counted. Consumables are not counted."
+   *
+   * So this reads `slot`, not the whole pack, and divides by `equip_load_max` WITHOUT the ×2.5
+   * headroom `_recomputeBurden()` uses — that headroom belongs to burden (§3) and to nothing else.
+   * Round 1 proposed "mirror `_recomputeBurden`" as the obvious minimal patch; that patch would
+   * have merged the two ratios, which is RI-PRG07's "How we lose" entry #1 ("the two ratios get
+   * merged back into one"), fails its method 3 (200 kg of loot must leave the roll byte-identical)
+   * and is an AR-1 automatic fail. The obvious patch was the wrong one.
+   *
+   * WHAT IT DOES NOT TOUCH, and why the existing combat calibration is safe:
+   *   * A scenario that DECLARES `loadout.equip_load_pct` has pinned it. 24 of the 49 named states
+   *     do — every arena, every camera fixture, every `wpn-loadout-*` — so every TTK, hitstop and
+   *     exemplar number W1-09/10/11 measured is untouched, byte for byte.
+   *   * `setEquipLoad()` pins it too, for the same reason `setStealthState()` pins the stealth
+   *     sheet (round 1's `_overridden` pattern): a probe's hand-fed value must not be stomped by
+   *     the world one frame later.
+   *   * Until something is actually equipped, nothing engages. A bare arena keeps its default.
+   *
+   * It applies its result as a DELTA rather than an assignment, so the feather effect's own
+   * additive offset (`sim/magic/apply.js`, which adds on cast and subtracts on expiry) survives
+   * untouched. An assignment here would have silently deleted a spell.
+   */
+  _recomputeEquipLoad() {
+    const b = this.combat && this.combat.player;
+    // DELETE-THE-FIX arm (`__breakW116('producer')`): the pre-round-2 world exactly — the only
+    // writers of `equipLoadPct` are `setEquipLoad()`, the hardcoded 24.0 and the feather spell.
+    if (this._w116Break && this._w116Break.producer) return null;
+    if (!b || this._equipLoadPinned) return null;
+    const inv = this.sim.inventory;
+    let w = 0, equippedCount = 0;
+    for (let i = 0; i < inv.length; i++) {
+      if (!inv[i].slot) continue;
+      equippedCount++;
+      const rec = this.ui && this.ui.data.items.get(inv[i].id);
+      if (rec && rec.weight) w += rec.weight;      // worn once, however many are in the pack
+    }
+    if (!equippedCount && !this._equipLoadEngaged) return null;
+    this._equipLoadEngaged = true;
+    const cap = this._equipCapacity();          // RI-PRG07 §2: maxLoad, NOT maxLoad x 2.5
+    const base = cap > 0 ? (w / cap) * 100 : 0;
+    const prev = this._equipLoadBase === undefined || this._equipLoadBase === null
+      ? b.equipLoadPct : this._equipLoadBase;
+    if (base !== this._equipLoadBase) {
+      b.equipLoadPct = Math.max(0, b.equipLoadPct + (base - prev));
+      b.tier = this.combat.tierOf(b);
+      this.sim.player.equipLoadPct = b.equipLoadPct;
+      this.sim.player.rollClass = b.tier;
+      this._equipLoadBase = base;
+    }
+    this.sim.player.equippedWeight = w;
+    return b.equipLoadPct;
+  }
+
+  /** The burden tier in force RIGHT NOW, with RI-PRG07 §3's AR-1 guard applied in one place. */
+  _burdenTierNow() {
+    if (this.inCombat()) return BURDEN_TIERS[0];
+    return burdenTierOf(this.sim.player.burdenRatio || 0);
   }
 
   /** A slot shows the object's NAME, never its id. An id on the HUD is a debug path shipping. */
@@ -3643,7 +3855,9 @@ export class Engine {
       // W1-READABLES: the verb follows the object. A ledger on its desk is `read`, because that
       // is what reaching for it does — and a prompt that said `take` at a book nobody will let
       // you carry would be naming an action the world refuses.
-      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: o.readable_book ? 'read' : 'take', range_m: +d.toFixed(2), device, glyph };
+      // A mark is `look`. It cannot be read, because there is nothing written on a drained tank,
+      // and it cannot be taken, because it is a fact about where it is.
+      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: o.site_mark ? 'look' : o.readable_book ? 'read' : 'take', range_m: +d.toFixed(2), device, glyph };
     }
     for (const n of this.sim.npcs) {
       const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
@@ -3982,14 +4196,35 @@ export class Engine {
     }
   }
 
+  /**
+   * W1-16 round 2. This used to read `for (... ) if (r.slot === 'right') r.slot = null;` and then
+   * `row.slot = 'right'` — the ONLY slot the engine could fill. `game/data/items/carried.json`
+   * ships nine armour and clothing rows carrying a declared `slot` (`chest`, `legs`, `head`,
+   * `feet`, `waist`), and one named state (`ui-journal`) already puts a chitin cuirass in `chest`,
+   * so the data has always had an equipped-armour concept and the equip verb could not reach it:
+   * equipping a cuirass moved it to the right hand, where it displaced your sword.
+   *
+   * That was the missing half of RI-PRG07. Encumbrance that decides the roll is armour weight,
+   * and there was no way for the player to put armour on.
+   */
   _finishEquipCommit() {
     const c = this._equipCommit;
     if (!c || this.sim.frame < c.at) return;
     this._equipCommit = null;
-    for (const r of this.sim.inventory) if (r.slot === 'right') r.slot = null;
     const row = this.sim.inventory.find((r) => r.id === c.item);
-    if (row) row.slot = 'right';
-    const ev = this.bus.emit(this.sim.frame, 'equip_end'); ev.item = c.item;
+    const rec = row && this.ui && this.ui.data.items.get(row.id);
+    const slot = this._slotForItem(rec);
+    const ev = this.bus.emit(this.sim.frame, 'equip_end');
+    ev.item = c.item; ev.slot = slot;
+    // Nothing wearable about it — a potion, a book, a tally stick. Refused rather than shoved
+    // into the sword hand, which is what the old single-slot branch did to every one of them.
+    if (!row || !slot) { ev.equipped = false; return; }
+    // Toggle: pressing equip on the thing already in that slot takes it off. Without this there
+    // is no way to REDUCE your load, and a one-way encumbrance model is not a model.
+    if (row.slot === slot) { row.slot = null; ev.equipped = false; return; }
+    for (const r of this.sim.inventory) if (r.slot === slot) r.slot = null;
+    row.slot = slot;
+    ev.equipped = true;
   }
 
   _transferItem(id, to) {
@@ -4310,6 +4545,11 @@ export class Engine {
       this.loadState_.regionsResident = [this.field.regionAt(this.sim.player.pos[0], this.sim.player.pos[2]).id];
       this._boundaryEnd('region');
     }
+    // W1-READABLES round 2. The province's own marks, once the ground exists to stand them on.
+    // OUTSIDE the streaming branch above, deliberately: that branch is guarded on
+    // `this.renderer.province`, which is null in the harness's headless renderer, and a mark that
+    // only exists when the tile streamer is attached is a mark no probe can ever stand at.
+    if (cell === 'province') this._ensureProvinceMarks();
     this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
     this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
   }
@@ -4357,6 +4597,11 @@ export class Engine {
       this.spawnProp({
         eid, name: p.unique.name, item: p.unique.id, pos: p.unique.pos, yaw: 0,
         material: 'metal', shape: 'small', reach_m: 2.0,
+        // W1-15 r3. `unique_item.owner` was carried this far — `render/interior.js` puts it on
+        // `placements.unique.owner` — and then dropped, because nothing downstream had anywhere
+        // to put it. `tools/world/build-unique-property.mjs` gives the item a row in the
+        // property tree keyed on this same id, and this is the pointer that reaches it.
+        property_instance: this._propertyHas(p.unique.id) ? p.unique.id : null,
       });
       mine.push(eid);
     }
@@ -4375,13 +4620,108 @@ export class Engine {
       });
       mine.push(eid);
     }
+    // W1-READABLES round 2 — the marks that stand INSIDE a room. Same list, same lifetime: they
+    // are removed with the furniture when the room changes, so the dead post in the Helstrom
+    // gallery is not also standing in the Gideon court.
+    for (const m of this._siteMarksIn('interior', this.sim.env.interior)) {
+      for (const eid of this._spawnMark(m, m.pos)) mine.push(eid);
+    }
     return mine;
+  }
+
+  /**
+   * THE MARKS. W1-READABLES round 2, and the whole of the `environment` channel.
+   *
+   * `deceit.revealed_by[].channel === 'environment'` says: you learn this by looking at something
+   * that is there. 27 rows say it and, until this round, every one of them named an id — `loc_
+   * shaft_under_the_rib`, `item_gallery_dead_post` — that was not an object anywhere in
+   * `game/data/`, and three of them were not ids at all but sentences. There was nothing to look
+   * at, so there was nothing to route, and the last round was right to refuse to wire a reader to
+   * them and to say so.
+   *
+   * A mark is a PROP and not a new entity kind, for the same reason an inscription is one: it
+   * goes through `spawnProp()`, it is `takeable: false` because you cannot pocket a chalk stroke
+   * or a drained tank, and that makes it visible to `listEntities()`, to the reach prompt, to
+   * `syncProps()`'s scene graph and to the save round trip without any of them learning a type.
+   *
+   * A record may carry `count` and `spread_m`, and that is not decoration either. Three of the
+   * eighteen ARE a number — eleven chalked doors, four unreachable posts, four backed-up reaches
+   * — and the fact the player is being asked to learn is the count. Drawing one box and calling
+   * it eleven doors would be the same lie as printing the sentence.
+   */
+  _siteMarksIn(kind, id) {
+    const doc = this.data && this.data.siteMarks;
+    if (!doc || !Array.isArray(doc.marks) || !id) return [];
+    return doc.marks.filter((m) => m.at && m.at[kind] === id);
+  }
+
+  /** One mark, `count` boxes, spread along its own axis. Returns the eids spawned. */
+  _spawnMark(m, base) {
+    const out = [];
+    const n = Math.max(1, Number(m.count || 1));
+    const spread = Number(m.spread_m || 1.4);
+    for (let i = 0; i < n; i++) {
+      const off = n === 1 ? 0 : (i - (n - 1) / 2) * spread;
+      const rad = (Number(m.axis_deg || 0) * Math.PI) / 180;
+      const pos = [base[0] + Math.cos(rad) * off, base[1], base[2] + Math.sin(rad) * off];
+      const eid = n === 1 ? `mark:${m.id}` : `mark:${m.id}#${i}`;
+      this.spawnProp({
+        eid,
+        name: m.name,
+        pos,
+        yaw: m.yaw_deg || 0,
+        material: m.material || 'plank',
+        shape: m.shape || 'flat',
+        takeable: false,
+        site_mark: m.id,
+        // Wider than a book on a shelf and narrower than a conversation: you have to be at the
+        // thing, and a drained tank is bigger than a ledger.
+        reach_m: Number(m.reach_m || 2.6),
+      });
+      out.push(eid);
+    }
+    return out;
+  }
+
+  /**
+   * The marks that stand on the ground of the province. Spawned once, when the province is first
+   * drawn, because that is when there is a heightfield to stand them on — `y` is resolved through
+   * `groundInActiveCell()` rather than authored, so a mark cannot be left hanging over the marsh
+   * by a terrain regeneration.
+   */
+  _ensureProvinceMarks() {
+    if (this._provinceMarksDone) return 0;
+    const doc = this.data && this.data.siteMarks;
+    if (!doc || !Array.isArray(doc.marks)) return 0;
+    let n = 0;
+    const failed = [];
+    for (const m of doc.marks) {
+      if (!m.at || !Array.isArray(m.at.world)) continue;
+      const [x, z] = m.at.world;
+      // The heightfield, and a fallback that is NOT silent. `groundInActiveCell` reads the
+      // province tile under the point, and the first version of this method let it throw with
+      // the done-flag already set — so one bad coordinate spawned ZERO marks in the whole
+      // province and left no trace of why. The flag is set at the END now, each mark is its own
+      // try, and the failures are kept where `getWorldStats()` can be asked for them.
+      let y = 0;
+      try { y = this.groundInActiveCell(x, z); }
+      catch (e) { failed.push({ mark: m.id, why: String((e && e.message) || e) }); }
+      n += this._spawnMark(m, [x, y + Number(m.height_m == null ? 0.9 : m.height_m), z]).length;
+    }
+    this._provinceMarksDone = true;
+    this._provinceMarkFailures = failed;
+    return n;
   }
 
   _syncCell() {
     if (!this.renderer) return false;
     const cell = this.cellFor(this.sim.env);
     const key = cell === 'interior' ? `interior:${this.sim.env.interior}` : cell;
+    // The marks first, because the cell key does not change when `clearProps()` empties the
+    // world under it: `applyNamedState()` calls `_applyCell()` and THEN `clearProps()`, so a
+    // reset leaves the province drawn, the key unchanged, and nothing standing on the ground.
+    // The flag makes this a single boolean test on every other frame.
+    if (cell === 'province' && !this._provinceMarksDone) this._ensureProvinceMarks();
     if (!this._cellDirty && key === this._drawnCellKey) return false;
     this._applyCell();
     return true;
@@ -4478,6 +4818,15 @@ export class Engine {
     // check from M1 rather than a second copy of it. Recorded in the manifest's
     // `declared_incomplete.known_gaps_not_closed_by_the_w1_repair`. Owner: W1-14 / seam S19.
     this._buildCombat(this._loadout);
+    // W1-16 round 2, and this line is RULES.md #7 in one statement ("audit the running world
+    // after a load, not the bytes"). `save/fight.js` always writes a number into
+    // `fight.loadout.equip_load_pct`, so `_buildCombat` above would read every LOAD as a
+    // scenario pin and the equip-load producer would stop running the moment anything was
+    // saved and restored — the field would re-serialise to exactly what was saved and pass
+    // forever, which is the defect that rule names. A save is the world, not a scenario: the
+    // pin does not survive it, and the same equipped items re-derive the same number. A
+    // scenario with nothing equipped never engages the producer, so its default is untouched.
+    this._equipLoadPinned = false;
     // THE BIRTHSIGN'S DERIVED POOLS. `loadCreation()` now restores `powers` and `drawbacks`,
     // but the three things RI-CHR03 reads them FOR live on the MagicSystem, which
     // `_buildCombat` has just rebuilt from the loadout: `focusMax` (the sign's x1.60
@@ -4554,6 +4903,12 @@ export class Engine {
     p.frameNow = this.sim.frame;
     p.waterBand = t.band;
     p.denySprint = t.denies('sprint');
+    // W1-16 round 2 — RI-PRG07 §3's `Sprint` column reaches the input gate. `denySprint` is
+    // read by `sim/player.js` (it drops the sprint bit at action selection, so a denied sprint
+    // is legible rather than a silent speed cut), and until this line only water wrote it. An
+    // OVERLADEN player could sprint home with a dungeon on their back. `_burdenTierNow()`
+    // carries §3's AR-1 guard, so this is exactly 1.00 — never a denial — inside a fight.
+    if (!(this._w116Break && this._w116Break.sprint) && !this._burdenTierNow().sprint) p.denySprint = true;
     p.denyRoll = t.denies('roll');
     p.denyAttack = t.denies('attack');
     p.breathS = t.breath;
@@ -4712,7 +5067,7 @@ export class Engine {
     if (this._censusPending) this._censusApplyPending();
     // W1-21: a menu action latched inside the step is applied here, outside the armed guard,
     // and strictly before the frame record, so its event is in this frame.
-    if (this.ui) { this._applyUIPending(); this._finishEquipCommit(); this._recomputeBurden(); }
+    if (this.ui) { this._applyUIPending(); this._finishEquipCommit(); this._recomputeBurden(); this._recomputeEquipLoad(); }
     // An earned attribute point changed the sheet; the pools it feeds are re-derived once,
     // here, rather than every frame.
     if (this.sim._poolsDirty) this.applyDerivedPools({ refill: false, why: 'earned_attribute' });
@@ -5285,6 +5640,12 @@ export class Engine {
     // silent speed reduction. "A denied action is legible; a silently degraded one is not."
     p.waterBand = this.traversal.band;
     p.denySprint = this.traversal.denies('sprint');
+    // W1-16 round 2 — RI-PRG07 §3's `Sprint` column reaches the input gate. `denySprint` is
+    // read by `sim/player.js` (it drops the sprint bit at action selection, so a denied sprint
+    // is legible rather than a silent speed cut), and until this line only water wrote it. An
+    // OVERLADEN player could sprint home with a dungeon on their back. `_burdenTierNow()`
+    // carries §3's AR-1 guard, so this is exactly 1.00 — never a denial — inside a fight.
+    if (!(this._w116Break && this._w116Break.sprint) && !this._burdenTierNow().sprint) p.denySprint = true;
     p.denyRoll = this.traversal.denies('roll');
     // RI-WLD10 §5 R2's third denial clause ("attacks in W4 for the non-amphibious"), published
     // the same way sprint/roll already are — at the input gate, not as a scaled frame number.
@@ -5409,6 +5770,19 @@ export class Engine {
       ? Number(arg.carried_weight) / (Number(arg.max_load) * 2.5)
       : Number(arg);
     if (!Number.isFinite(v) || v < 0) throw new Error(`setBurden(${JSON.stringify(arg)}): expected a non-negative ratio, or {carried_weight, max_load}`);
+    // W1-16 round 2 — THE PIN, and without it this verb is inert.
+    //
+    // `setBurden()` IS RI-PRG07 M5's instrument ("sweep total carried weight, assert three
+    // transitions at 0.60 / 0.85 / 1.00"). When `_recomputeBurden()` was added it began running
+    // every step over the real pack, so a swept value survived until the next frame and no
+    // further: this round's own road probe set 0.95, stepped 180 frames, and measured
+    // UNBURDENED three times without noticing. Every burden number taken from a stepping run
+    // since `_recomputeBurden()` landed is suspect for the same reason.
+    //
+    // Same discipline as `setEquipLoad()`: a hand-fed value pins until the next scenario
+    // boundary, and `_recomputeBurden()` keeps its hands off. `setBurden(null)` releases it.
+    if (arg === null) { this._burdenPinned = false; return this.getBurden(); }
+    this._burdenPinned = true;
     this.sim.player.burdenRatio = v;
     return this.getBurden();
   }
@@ -5429,6 +5803,45 @@ export class Engine {
       in_combat: fight,
       suppressed_by_combat: fight,
       tiers: BURDEN_TIERS.map((q) => ({ id: q.id, ratio_max: q.max === Infinity ? null : q.max, move: q.move })),
+      // ---- W1-16 round 2: the OTHER ratio, reported beside this one on purpose. ------------
+      //
+      // RI-PRG07 exists because these are two ratios with two rulebooks, and the single most
+      // likely way to lose (its "How we lose" #1) is for someone to merge them. Printing them
+      // side by side, with their two different divisors, is the cheapest thing that makes the
+      // merge visible the moment it happens.
+      //
+      // `equip_load_consumers` and `burden_consumers` are the CONSUMPTION table (RI-MTH07 /
+      // ARBITRATION §3) as data rather than prose: every column this model publishes, and the
+      // world-side reader that acts on it, or `null` where there is none. A null here is a
+      // model with no consumer and is a defect by that rule, not a rounding error.
+      equip_load: {
+        pct: +(this.combat && this.combat.player ? this.combat.player.equipLoadPct : 0).toFixed(6),
+        tier: this.combat && this.combat.player ? this.combat.tierOf(this.combat.player) : null,
+        equipped_weight: +(this.sim.player.equippedWeight || 0).toFixed(3),
+        equip_load_max: +this._equipCapacity().toFixed(3),
+        carried_weight: +(this.sim.player.carriedWeight || 0).toFixed(3),
+        burden_divisor: +this._equipLoadMax().toFixed(3),   // = maxLoad x 2.5, RI-PRG07 §3
+        burden_source: this._burdenPinned ? 'pinned by setBurden()' : 'derived from the pack',
+        source: this._equipLoadPinned ? 'pinned by the scenario or setEquipLoad()'
+          : this._equipLoadEngaged ? 'derived from equipped items (W1-16 r2)'
+          : 'engine default — nothing is equipped yet',
+        boundaries_pct: this.combat ? this.combat.d.roll.tier_boundaries_pct : null,
+        owner: 'RI-CMB01 §B (seam S23: everything the tier does inside the fight)',
+      },
+      equip_load_consumers: {
+        roll_iframes: 'combat/moves.js equipTier() -> roll.json row -> combat/player.js roll',
+        roll_recovery: 'combat/moves.js equipTier() -> roll.json row',
+        roll_stamina_cost: 'combat/moves.js equipTier() -> roll.json costs',
+        stamina_regen_mult: 'combat/rules.js regenStamina() ctx.tier',
+      },
+      burden_consumers: {
+        move: 'engine._burdenMult() -> sim/traversal.js step() horizontal retraction',
+        sprint: 'engine -> sim.player.denySprint -> sim/player.js action gate (W1-16 r2)',
+        travel_time: 'engine.boardTravel() -> ride frames and world clock (W1-16 r2)',
+        fatigue: null,
+        sneak: null,
+        jump: null,
+      },
       reason: r > 1
         ? 'You are carrying more than you can move with. Put something down.'
         : t.id === 'OVERLADEN' ? 'You are labouring under the load; you cannot run.'
@@ -5599,13 +6012,31 @@ export class Engine {
     if (!q.purchasable) return { boarded: false, refused: true, reason: q.refusal, ...q };
     const s = T.services.find((x) => x.id === q.service);
     const speed = { rootway: 7.0, barge: 4.0, poler: 2.8, packet: 6.0, rootspeak: 40.0 }[s.mode] || 5.0;
-    const frames = Math.max(60, Math.round(s.built_route_m / speed * 60));
+    // W1-16 round 2 — RI-PRG07 §3's `Travel-time modifier` column reaches the road.
+    //
+    // `BURDEN_TIERS` publishes six columns and, before this line, the running world read exactly
+    // one of them (`move`, through `_burdenMult()` into `sim/traversal.js`). `travel_time` was
+    // computed, returned by `getBurden()` and consumed by nothing: a player hauling ninety kilos
+    // of looted swords caught the same barge, at the same speed, arriving at the same hour, as a
+    // player carrying an empty pack. The item's own sentence for this is "You cannot liquidate a
+    // dungeon in one trip", and it was not true of this build.
+    //
+    // Scales the RIDE, not the fare — the tariff is RI-PRG05's and weight does not change it.
+    // Both halves move together: `frames` is how long the journey takes you, `gameMin` is how
+    // much of the day it costs, and a journey that took longer in real frames while the sun
+    // stood still would be the readout-without-a-consequence defect one level down.
+    const bt = this._burdenTierNow();
+    // DELETE-THE-FIX arm (`__breakW116('travel')`): `travel_time` computed and read by nothing,
+    // which is what it was before this round.
+    const tmult = (this._w116Break && this._w116Break.travel) ? 1.0 : (bt.travel_time || 1.0);
+    const frames = Math.max(60, Math.round(s.built_route_m / speed * 60 * tmult));
     // W1-16: was `this.combat.world.gold -= s.fare_gold` — a fare spent out of the SNAPSHOT
     // `_buildCombat` took at the last load, never the canonical purse, so the money was back
     // the moment anything (a rest, a load) rebuilt the fight. Routed through `_setGold` so a
     // fare is a real, save-durable spend.
     this._setGold(this._gold() - s.fare_gold);
-    T.ride = { svc: s, frame: 0, frames, speed, spent: s.fare_gold, maxDelta: 0, positions: [] };
+    T.ride = { svc: s, frame: 0, frames, speed, spent: s.fare_gold, maxDelta: 0, positions: [],
+      burdenTier: bt.id, travelMult: tmult, gameMin: s.game_min * tmult };
     const run = Math.min(frames, opts.frames === undefined ? frames : Number(opts.frames));
     return this.travelRide(run);
   }
@@ -5643,7 +6074,7 @@ export class Engine {
       this.loop.stepOnce();
       this._afterStep();
       // The clock advances with the ride: `game_min` of world time over `frames` of real time.
-      const hrs = r.svc.game_min / 60 / r.frames;
+      const hrs = (r.gameMin === undefined ? r.svc.game_min : r.gameMin) / 60 / r.frames;
       const tod = this.sim.env.timeOfDay + hrs;
       this.sim.env.dayCount += Math.floor(tod / 24);
       this.sim.env.timeOfDay = ((tod % 24) + 24) % 24;
@@ -5661,13 +6092,17 @@ export class Engine {
         offset_m: +Math.hypot(p.pos[0] - dest.arrive_at[0], p.pos[2] - dest.arrive_at[1]).toFixed(3),
         depth_m: this.field ? +this.field.depthAt(p.pos[0], p.pos[2]).toFixed(3) : null,
         volume_tags: [] };
-      T.log.push({ service: r.svc.id, mode: r.svc.mode, gold_spent: r.spent, game_min: r.svc.game_min,
+      T.log.push({ service: r.svc.id, mode: r.svc.mode, gold_spent: r.spent,
+        game_min: +(r.gameMin === undefined ? r.svc.game_min : r.gameMin).toFixed(3),
+        game_min_scheduled: r.svc.game_min, burden_tier: r.burdenTier, travel_time_mult: r.travelMult,
         frames: r.frames, max_frame_delta_m: +r.maxDelta.toFixed(3), arrival });
       T.ride = null;
     }
     return { boarded: true, refused: false, service: r.svc.id, mode: r.svc.mode,
       frame: r.frame, frames: r.frames, seconds: +(r.frame / 60).toFixed(2),
-      done, gold: this.combat.world.gold, gold_spent: r.spent, game_min: r.svc.game_min,
+      done, gold: this.combat.world.gold, gold_spent: r.spent,
+      game_min: +(r.gameMin === undefined ? r.svc.game_min : r.gameMin).toFixed(3),
+      game_min_scheduled: r.svc.game_min, burden_tier: r.burdenTier, travel_time_mult: r.travelMult,
       route_m: r.svc.built_route_m, max_frame_delta_m: +r.maxDelta.toFixed(3),
       pos: p.pos.slice(), arrival };
   }
@@ -7318,6 +7753,10 @@ export class Engine {
       motion_forced: p.motionForced || null,
       zone_context_multiplier: st.zones.contextMultiplier(p.zone, this.sim.frame),
       lights_out: st.light.sources.filter((s) => !s.lit).map((s) => s.id),
+      // W1-15 r3 — the hand-feed audit for LIGHT. `world_sources` is what the interior record
+      // put here; `scenario_sources` is what a probe put here with `addLightSource`. Until this
+      // round the first number was 0 in all 115 interiors.
+      lights: st.lightSourceCensus(),
       searches: st.searches.filter((s) => !s.over).length,
       stolen_registry_n: st.crime.stolenRegistry.length,
       // Seam S19's five Veiling terms, reported next to the terms they modify so that a critic
@@ -7642,9 +8081,12 @@ export class Engine {
       pos: spec.pos ? spec.pos.slice() : [0, 0, 0],
       yaw: spec.yaw === undefined ? 0 : spec.yaw,
       suspicion: 0, civ_state: 'CALM', alive: true,
+      // W1-15 r3. A scenario may state the case; the world derives it from the schedule
+      // (`StealthCrime.asleepInWorld`). A sleeper is not a sensor and not an observer.
+      asleep: !!spec.asleep,
     };
     st.civilians.push(c);
-    return { eid: c.eid, civ_state: c.civ_state, R: c.R };
+    return { eid: c.eid, civ_state: c.civ_state, R: c.R, asleep: c.asleep };
   }
 
   // ---- W1-15 round 2: the world-side surfaces RI-MTH07's coupling test drives --------------
@@ -8020,6 +8462,7 @@ export class Engine {
     const pos = this.sim.player.pos;
     for (const c of st.civilians) {
       if (!c.alive) continue;
+      if (c.asleep) continue;                       // W1-15 r3: they were there; they could not see
       if (c.civ_state === 'CALM') continue;
       if (!STL_PER.losClear(this.sim, c.pos[0], c.pos[1] + STL_PER.EYE_H_M, c.pos[2], pos[0], pos[1] + STL_PER.CHEST_H_M, pos[2])) continue;
       out.push(c.eid);
@@ -8536,6 +8979,8 @@ async function loadData(onBytes) {
     // (0 readable entities across 8 named states). Consumed by `applyNamedState()` below, which
     // spawns each into the state it names, and read back by `listEntities().readable`.
     else if (entry.path === 'world/inscriptions.json') out.inscriptions = doc;
+    // W1-READABLES round 2 — the `environment` channel's objects. See `Engine._ensureProvinceMarks`.
+    else if (entry.path === 'world/readables/site-marks.json') out.siteMarks = doc;
     // W1-05. RI-WLD06 L3, the spoken direction. Same branch discipline as `world/signposts.json`
     // above and for the same reason: `bucketFor` only claims `dialogue/topics/`, so a
     // `dialogue/*.json` that matches nothing here is fetched, counted in the byte total, and

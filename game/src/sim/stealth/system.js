@@ -94,6 +94,10 @@ export class StealthCrime {
     /** Reused per-observer percept. The fixed step allocates nothing (RI-PLT01 P4). */
     this._per = PER.newPerceptOut();
     this._lastCrimeFrame = -1;
+    /** W1-15 r3 — the cell whose authored lamps are currently in `this.light`. See syncInteriorLights(). */
+    this._litInterior = null;
+    this._interiorLampCount = 0;
+    this._interiorLit = false;
     /**
      * RI-PRG03 §3/§6, the seam this file's own constructor comment left unbuilt: `this.p`
      * started as "the player's stealth-side state" with `sneak`/`security`/`agility`/
@@ -159,6 +163,9 @@ export class StealthCrime {
     // `sim.npcs[].pos`/`.present` are this frame's answer, not last frame's.
     this.syncCiviliansFromWorld(sim);
 
+    // W1-15 r3: THE LAMPS. Before anything below samples `this.light`. See the method.
+    this.syncInteriorLights(sim);
+
     // 1. crouch. A toggle, refused while an AGGRO enemy is within 8 m (RI-STL01 §5).
     if (input && input.pressed & (1 << CROUCH_BIT)) {
       const near = nearestAggroDist(sim);
@@ -180,7 +187,13 @@ export class StealthCrime {
     // simulation's own clock and weather, so walking a road at 03:00 in the rain is genuinely
     // darker than walking it at noon and the stealth model and the renderer are looking at the
     // same world. Indoors, the zone's authored ambient stands and the sky does not reach in.
-    if (!p.zone) this.light.defaultAmbient = skyAmbient(sim.env);
+    // W1-15 r3. Indoors the sky does not reach in. `p.zone` is null in every one of the 115
+    // interiors (nothing in the running world has ever set it), so this line used to give a
+    // sealed cellar `skyAmbient()` — L 1.00 at noon, 0.22 at 03:00 — and the lamps standing in
+    // the room contributed nothing at all. `_interiorLit` is true only when the cell switch
+    // actually found the interior record, so an arena or a state file that names a cell the
+    // settlement data does not carry still gets exactly the sky it got before.
+    if (!p.zone) this.light.defaultAmbient = this._interiorLit ? this.d.detection.interior_lamps.interior_ambient_L : skyAmbient(sim.env);
     const pos = sim.player ? sim.player.pos : [0, 0, 0];
     p.L = this.light.withTorch(this.light.sample(pos[0], pos[1] + 1.35, pos[2], p.zone), p.carryingTorch);
     // ---- seam S19 x S21: THE VEILING SCHOOL'S CONSUMING SYSTEM ------------------------------
@@ -247,6 +260,19 @@ export class StealthCrime {
     const baseline = this.zones.baselineAlert(p.zone, f);
     for (const c of this.civilians) {
       if (!c.alive) continue;
+      // W1-15 r3. A person in their bed is not a sensor. RI-CRM01's witness has to be somebody
+      // who was there AND could see, and until this line the second half was tested only for
+      // line of sight and facing — so a thief working a house at three in the morning was
+      // watched by every resident asleep upstairs, with a full cone and a clear cast. See
+      // `awakeInWorld()` for where the answer comes from.
+      if (c.asleep) {
+        c.los = false; c.alert_channel = null; c.filling = false;
+        // Still decays, so a person who goes to bed at 23:00 having seen something is not
+        // frozen at ALARM until dawn — they settle, exactly as an awake civilian with nothing
+        // in front of them does.
+        DET.stepCivilian(this.d.detection, c, 0, null);
+        continue;
+      }
       // A fleeing witness has stopped being a sensor and started being a runner (RI-CRM01 §3a).
       if (c.flee) this.stepFlight(sim, c, f);
       const per = PER.perceiveInto(this._per, this.d.detection, sim, { x: c.pos[0], y: c.pos[1], z: c.pos[2], yaw: c.yaw, R: c.R },
@@ -844,6 +870,7 @@ export class StealthCrime {
       if (!n) { list.splice(i, 1); continue; }
       c.pos[0] = n.pos[0]; c.pos[1] = n.pos[1]; c.pos[2] = n.pos[2];
       c.yaw = n.yaw;
+      c.asleep = this.asleepInWorld(sim, n);
       near.delete(c.eid);
     }
     for (const [eid, n] of near) {
@@ -851,9 +878,107 @@ export class StealthCrime {
         eid, group: 'civilian', race: n.race || 'saxhleel',
         R: this.d.detection.perception_inherited_from_RI_AI01.sight_radius_R_m.CIVILIAN,
         pos: n.pos.slice(), yaw: n.yaw, suspicion: 0, civ_state: 'CALM', alive: true,
+        asleep: this.asleepInWorld(sim, n),
         _worldDerived: true,
       });
     }
+  }
+
+  /**
+   * Is this person asleep? Derived from the schedule the world already publishes, not authored
+   * a second time: `activity` takes eight values across 1,722 authored schedule rows and none of
+   * them is `sleep`, so nothing in the build could tell a resident in bed from a resident in the
+   * doorway. Somebody who is AT HOME between 23:00 and 06:00 is asleep. That is the whole of the
+   * night-burglary premise and it costs one lookup.
+   *
+   * A `guard` or a person on `watch` is not at home and is therefore never asleep by this rule,
+   * which is the behaviour RI-CRM01 §4 wants: the watch is what you still have to get past.
+   */
+  asleepInWorld(sim, n) {
+    const cfg = this.d.detection.interior_lamps.sleeping_witness;
+    if (!cfg) return false;
+    if (n.activity !== cfg.asleep_activity) return false;
+    const h = sim && sim.env ? sim.env.timeOfDay : 12;
+    const [from, to] = cfg.asleep_between_h;
+    return from > to ? (h >= from || h < to) : (h >= from && h < to);
+  }
+
+  /**
+   * THE LAMPS.
+   *
+   * The W1-04 round-2 critic's finding, in its own words: *"the lamps are drawn and nothing that
+   * decides whether you can be seen has ever been told about one."* `LightField.addSource()` had
+   * exactly one caller in `game/src` and it was the harness verb `addLightSource`, so all 827
+   * authored interior lamps existed for the renderer and for nobody else. Standing beside a
+   * blazing hearth and standing in the black corner behind it produced the SAME `L`, the same
+   * `V`, and the same time-to-detection, because `L` indoors was whatever the sky was doing.
+   *
+   * ONE LIST, READ TWICE. The source of truth is `interiors/*.json`'s `lights[]`, reached here
+   * through `sim.settlements.interior(id)` — the same record `render/interior.js` is handed as
+   * `rec` and draws `rec.lights` from. The simulation does not ask the renderer anything, and
+   * there is no second lamp list to drift: delete a lamp from the JSON and the fitting and the
+   * illumination it casts on the detection model both go.
+   *
+   * The dedupe is the renderer's, verbatim (round each axis to a decimetre and keep the first),
+   * because `lights[]` is authored per PROPERTY ZONE and a three-zone interior therefore
+   * declares three hearths at the same spot; the renderer builds one fitting and the sim must
+   * count one source or a shared hearth would be three times as bright as a private one.
+   *
+   * Sources are added ZONE-FREE (`zone: null`) so they light the whole cell, matching what is
+   * drawn: the deduped fittings all stand in one room. A scenario's own zone-scoped sources are
+   * unaffected — `sample()`'s filter passes a null-zone source in every zone.
+   *
+   * Rebuilt only when the cell changes, never per frame, so a snuffed lamp stays snuffed while
+   * you are in the room with it (RI-STL01 §3 requirement 2) and the per-frame cost is one
+   * string compare.
+   */
+  syncInteriorLights(sim) {
+    const id = (sim && sim.env && sim.env.interior) || null;
+    if (id === this._litInterior) return this._interiorLampCount || 0;
+    this._litInterior = id;
+    this.light.clearWorld();
+    this._interiorLampCount = 0;
+    this._interiorLit = false;
+    if (!id) return 0;
+    const rec = sim.settlements && typeof sim.settlements.interior === 'function' ? sim.settlements.interior(id) : null;
+    if (!rec) return 0;                       // a cell the settlement data does not carry; fail open
+    this._interiorLit = true;
+    const cfg = this.d.detection.interior_lamps;
+    const scale = cfg.authored_intensity_to_L_scale;
+    const seen = new Set();
+    for (const L of rec.lights || []) {
+      const q = L.pos || [0, 1.4, 0];
+      const key = `${Math.round(q[0] * 10)},${Math.round(q[1] * 10)},${Math.round(q[2] * 10)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const sid = `world:${L.id || `${id}:${key}`}`;
+      if (this.light.sources.some((s) => s.id === sid)) continue;
+      const authored = Number(L.intensity === undefined ? 0.55 : L.intensity);
+      const hearth = L.kind === 'hearth';
+      this.light.addSource({
+        id: sid, pos: [q[0], q[1], q[2]], intensity: authored * scale,
+        snuffable: !!L.snuffable, zone: null, world: true, kind: L.kind || 'lamp',
+        authored_intensity: authored,
+        reach_m: hearth ? cfg.reach_m.hearth : cfg.reach_m.flame,
+      });
+      this._interiorLampCount++;
+    }
+    return this._interiorLampCount;
+  }
+
+  /** What the world put in the light field this cell, for the hand-feed audit. */
+  lightSourceCensus() {
+    const world = this.light.sources.filter((s) => s.world);
+    return {
+      interior: this._litInterior || null,
+      interior_ambient_applied: !!this._interiorLit,
+      ambient_L: this.light.defaultAmbient,
+      world_sources: world.length,
+      world_lit: world.filter((s) => s.lit).length,
+      world_snuffable: world.filter((s) => s.snuffable).length,
+      scenario_sources: this.light.sources.length - world.length,
+      sources: world.map((s) => ({ id: s.id, kind: s.kind, pos: [s.x, s.y, s.z], authored_intensity: s.authoredIntensity, intensity_L: +s.intensity.toFixed(4), lit: s.lit, snuffable: s.snuffable })),
+    };
   }
 
   // ---- helpers used by the step and by the harness ----------------------------------------
@@ -971,6 +1096,9 @@ export class StealthCrime {
       reporting: !!c.reporting,
       fleeing_to: c.flee ? c.flee.target_eid : null,
       witnessed: c.witnessed || 0,
+      // W1-15 r3. A person in bed is in the room and is not a witness; the trace has to say
+      // which, or "nobody saw it" and "everybody was asleep" are the same artifact.
+      asleep: !!c.asleep,
     }));
   }
 

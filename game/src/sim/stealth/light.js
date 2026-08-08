@@ -43,9 +43,31 @@ export class LightField {
       id: src.id, x: src.pos[0], y: src.pos[1], z: src.pos[2],
       intensity: src.intensity, snuffable: !!src.snuffable, lit: src.lit !== false,
       relightAtF: -1, zone: src.zone || null,
+      // W1-15 r3. A source the WORLD put here (an authored interior lamp, mirrored from the
+      // same `interiors/*.json` record `render/interior.js` draws) rather than one a scenario
+      // hand-placed through `addLightSource()`. The distinction exists so the cell switch can
+      // take the last room's lamps away without touching a probe's fixture, and so a critic
+      // reading `getStealthState().lights` can tell the world's answer from a hand-fed one —
+      // RI-MTH07 §C3's hand-feed audit, applied to light.
+      world: !!src.world,
+      kind: src.kind || null,
+      authoredIntensity: src.authored_intensity === undefined ? null : src.authored_intensity,
+      // How far this flame's influence extends, squared. RI-STL01 §3's table has three interior
+      // rows and its last one is "4-9 m from a flame"; past 9 m the item's own answer is the
+      // `unlit` row, so 9 m is where a flame stops counting and it is the ITEM's number, not a
+      // fitted one. Unbounded by default, so every source a scenario placed before this existed
+      // behaves exactly as it did.
+      reach2: src.reach_m === undefined || src.reach_m === null ? Infinity : src.reach_m * src.reach_m,
     };
     this.sources.push(s);
     return s;
+  }
+
+  /** Drop every source the world put here, leaving scenario-placed sources alone. */
+  clearWorld() {
+    let n = 0;
+    for (let i = this.sources.length - 1; i >= 0; i--) if (this.sources[i].world) { this.sources.splice(i, 1); n++; }
+    return n;
   }
 
   clear() { this.sources.length = 0; this.ambientByZone.clear(); }
@@ -58,7 +80,9 @@ export class LightField {
       if (!s.lit) continue;
       if (zone !== undefined && s.zone !== null && s.zone !== zone) continue;
       const dx = x - s.x, dy = y - s.y, dz = z - s.z;
-      L += s.intensity / (CORE_M2 + dx * dx + dy * dy + dz * dz);
+      const d2 = dx * dx + dy * dy + dz * dz;
+      if (d2 > s.reach2) continue;
+      L += s.intensity / (CORE_M2 + d2);
     }
     return clamp01(L);
   }
