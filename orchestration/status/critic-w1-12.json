@@ -1,0 +1,85 @@
+{
+  "task_id": "critic-w1-12",
+  "title": "CRITIC round 1 — W1-12 enemy AI and behaviour",
+  "role": "critic",
+  "state": "done",
+  "started_at": "2026-08-08",
+  "commit_at_start": "e97347f",
+  "next_step": "none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A round-2 builder should read §11 (the single gap) first, then §12's eleven ordered items. A round-2 CRITIC must do the two things I could not: build and judge RI-AI01's blind pair, and re-measure M1/M2 plus the B4 sight-cone ablation in a browser.",
+  "verdict": {
+    "status": "FAIL",
+    "overall_0_10": 3,
+    "pass_threshold": 7,
+    "aggregation": "min-over-axes",
+    "axes": {
+      "A_s22_discipline": 5,
+      "B_ar1": 8,
+      "C_consumption": 4,
+      "D_behaviour_observable": 3,
+      "E_delete_the_fix": 8,
+      "F_variety": 3
+    },
+    "reference_item_weighted_mean_also_published": 5.0,
+    "ar1": "pass",
+    "ar2": "not_applicable (reason recorded)",
+    "ar3": "pass — seam_sterile false",
+    "hard_fails": 0,
+    "biggest_gap": "GAP-W1-12-approach-cannot-close-on-a-walking-player"
+  },
+  "headline_findings": [
+    "RECOVER (RI-AI01 §D T15/T16) is not implemented and is not in the piece's declared_incomplete list. The whole swing is labelled COMMIT, so M3's `state != COMMIT` denominator excludes every attack-recovery frame. On the BUILDER'S own fixture and seed, min_dist_dwell goes 0.0414 -> 0.2521 and M3 flips 2/2 -> 1/2 on ALL SEVEN fighting statblocks; 623 of 736 recovery frames are inside 0.85*omega. Still short of the 0.35 hard fail.",
+    "THE PIECE'S OWN CENTRAL QUESTION FAILS. An enemy 10 m from a player WALKING away at 2.0 m/s closes at 0.20 m/s, never enters RUSH in 1,800 frames (RUSH is gated on dist > 5.0*omega = 12 m, and APPROACH advances at archetype.INFANTRY.walk_mps = 2.20), never gets nearer than 8.14 m, hits its 32 m leash and goes home. Five of seven statblocks never enter RUSH at walk. survey.md §7's claim that souls archetypes now RUSH at 4.6 m/s and beat a jogging player is false as measured.",
+    "CONSUMPTION: 104 behaviour leaves in ai.json, 30 with a demonstrated world-side consumer, 45 declared-unrealised (honest), 29 with none across four fixtures. Hard core: leash.no_los_seconds + dist_multiple_of_sight (this.noLosSinceF is initialised to -1 and assigned NOWHERE), leash.hard_m.elite/.ambusher/.boss (every shipped statblock resolves to leash_tier trash, including the tier-elite champion and the boss:true sap-speaker), movement.max_yaw_rate_windup_dps/_active_dps (the shipped windup steer is hard-coded 180/45 dps in enemy.js:259), perception.search_to_leash_frames, perception.suspicious_min_dwell_f, punish_read.react_within_f (a probe threshold in a game data file), commit.swarm_tokens_at_5_plus (needs omega <= 1.8; roster minimum is 2.0), archetype.*.cone_deg at EVERY archetype (12 leaves, no reader in game/src), and three dead duplicates of numbers game/data/stealth/detection.json owns.",
+    "VARIETY: 4 distinct behaviour shapes across 7 fighting enemies. inf_trash (412 hp), guard_legion (520), drowned_lesser (260) and drowned_greater (640) produce a BIT-IDENTICAL 1,800-frame trace of AI state, position to 0.1 mm, yaw to 0.001 deg and move selection — sha1 1edb362ea24dde99 for all four. Every enemy visits the same five states. archetype.*.prefers_band and .blocks have zero readers, DISENGAGE and BLOCK_HOLD are never entered, so the boss:true caster runs the trash-infantry machine.",
+    "ai.json's declared_incomplete says BLOCK_HOLD 'is implemented but unreachable ... the code path exists'. It is not. The only occurrence in combat/ai.js is the string in the AI_STATES Set.",
+    "COMMITMENT IS EXEMPLARY, and I could not break it: 47/47 swings across seven statblocks ran to their full declared clip after the player was teleported 40 m away on the frame the swing began, 0.00 deg/s of yaw on every active and recovery frame. Frames after an attack starts in which the enemy can change its mind: ZERO, structurally. Staggering an enemy out of a mid-swing COMMIT does not leak its attack token.",
+    "S22: no arithmetic error found and every seconds-anchored conversion is correct, but ai.json ships 13 frame-valued leaves with no document-level `unit` field (every statblock beside it has one) and RI-AI01 was never S22-rebased, so perception.aggro_entry_frames [20,30] is either a 0.33-0.50 s aggro roar or a 0.67-1.00 s one and the corpus does not say which."
+  ],
+  "instruments_written": [
+    "tools/combat/critic-w1-12-census.mjs — modes census, census2, variety, commit, punish, flee, recover, speed. --mode=census asserts two controls and exits non-zero if it goes blind or fires spuriously.",
+    "tools/combat/critic-w1-12-s22.mjs — the S22 unit audit; exits non-zero while any shipped frame figure has neither a unit nor a seconds anchor (currently 5).",
+    "tools/combat/critic-w1-12-chart.mjs — the picture."
+  ],
+  "files_touched": [
+    "orchestration/status/critic-w1-12.json",
+    "corpus/90-verdicts/wave1/W1-12-r1.md",
+    "corpus/90-verdicts/wave1/W1-12-r1.json",
+    "tools/combat/critic-w1-12-census.mjs",
+    "tools/combat/critic-w1-12-s22.mjs",
+    "tools/combat/critic-w1-12-chart.mjs",
+    "reports/w1-12-critic/census.json",
+    "reports/w1-12-critic/census2.json",
+    "reports/w1-12-critic/variety.json",
+    "reports/w1-12-critic/commit.json",
+    "reports/w1-12-critic/punish.json",
+    "reports/w1-12-critic/flee.json",
+    "reports/w1-12-critic/recover.json",
+    "reports/w1-12-critic/speed.json",
+    "reports/w1-12-critic/s22.json",
+    "docs/shots/2026-08-08-w1-12-critic-the-frames-m3-never-counted.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-12-r1.md",
+    "corpus/90-verdicts/wave1/W1-12-r1.json",
+    "orchestration/status/critic-w1-12.json",
+    "tools/combat/critic-",
+    "reports/w1-12-critic/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": [
+    "W1-12"
+  ],
+  "overlap_note": "I am the critic for W1-12 (builder state=done). Deliberate overlap on reports/blog-feed.jsonl (append-only, one line) and on reading W1-12's files. I edited NO game/ source: every ablation ran on `cp -r game tools` into the scratchpad and `git status --porcelain -- game/src/combat/ game/data/combat/` plus `git diff --cached --name-only` were empty before and after each one (RULES 17).",
+  "contention": "`node tools/contention.mjs --gate` returned GO (0 browser instances, load 0.27/4 cores) at the start of the run and exit 3 on every poll thereafter — 4 browser instances at load 21.55 over 4 cores, over the 4.0-per-core ceiling. I honoured it: NO BROWSER WAS LAUNCHED and I did the work that needs none (RULES 21). The cost is declared in method_deviations: RI-AI01 M1 and M2 and the B4 sight-cone ablation are the builder's numbers, not independently re-measured. NO TIMING FIGURE appears anywhere in the verdict — every number is fixed-step geometry, a state count or a trace hash, which contention cannot move.",
+  "rule_departures": [
+    "RULES 28 says 'do not commit; the orchestrator banks the tree'. My dispatch instructed me to commit to the current branch and to give the pre-commit hook time. I followed the dispatch and recorded the departure here so the orchestrator can see it rather than discover it. Only my own files were staged — the 41 game/ files carrying other agents' uncommitted work were left alone."
+  ],
+  "not_done": [
+    "RI-AI01's blind pair (two anonymised 60 s dist_m + state series, ours against a reference generated from §C/§D). Neither built nor judged, so RULES 25 is not breached, but the blind evidence is absent.",
+    "RI-AI01 M1 and M2 in a browser, and the B4 sight-cone ablation. Contention refused a browser on every poll after the first.",
+    "A two-sided census perturbation. Mine is x2 only, which is a no-op on a threshold that is already satisfied; six of the 29 no-consumer leaves carry that caveat and are discounted in the headline of 23.",
+    "RI-AI05's placement, mix and soul-yield legs. Only the archetype-distinctness leg was measured, because it is the one this piece's own output decides."
+  ],
+  "environment_note": "The box ran out of disk mid-run: 27 MB free on a 252 GB volume, from other sessions' scratch trees under /tmp/claude-0/.../scratchpad (r3 2.9G, stage 1.3G, shadowB 996M, pinned 874M, tree-head 853M). I deleted only my own scratch. It cost one tool invocation and no measurement, but a later agent may hit it harder."
+}
