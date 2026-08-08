@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b7a41f1`: 569 tools, 153 reference
+so it cannot drift. Generated at `24a82aa`: 570 tools, 153 reference
 items, 41 pieces in flight.
 
 Its purpose is to stop 41+ concurrent agents each paying separately to discover the
@@ -435,10 +435,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 11
+### `tools/journey/` — 12
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
+- `tools/journey/census-newgame.mjs` — can the character creation the TITLE starts actually be finished?
 - `tools/journey/competence.mjs` — RI-JRN02 §C, K1..K7: did the player get BETTER?
 - `tools/journey/gamepad-shim.mjs` — A-JRN2.
 - `tools/journey/input-checks.mjs` — the M-K table of RI-JRN03 and the M-P table of RI-JRN04, measured.
@@ -878,12 +879,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-ROAD-JOIN` | ? | probe the settlement geometry, then implement the thread in build-roads.mjs | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` |
 | `critic-w1-17` | done | Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-w | `orchestration/status/critic-w1-17.json` `corpus/90-verdicts/wave1/W1-17-r1.md` `corpus/90-verdicts/wave1/W1-17-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-r1/` `tools/dialogue/critic-field-census.mjs` `tools/dialogue/critic-semantics.mjs` |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G | `orchestration/status/critic-w1-15-r3.json` |
 | `critic-w1-readables` | running | read RULES/INDEX/ARBITRATION §3, then builder status files | `orchestration/status/critic-w1-readables.json` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: probe running; then build reports/packs/w1-22-r3-hard and spawn a FRESH judge | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` `reports/w1-22-critic/r2/onsets-at-HEAD.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` |
-| `W1-ROAD-JOIN` | ? |  | — |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `W1-25` | building | Build RI-CMP01: tools/composition/cells-from-md.mjs -> corpus/95-experience/RI-CMP01.cells | `orchestration/status/W1-25.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `reports/experience/w1/sabotage.json` |
