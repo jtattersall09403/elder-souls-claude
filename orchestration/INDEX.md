@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9288ebf`: 561 tools, 153 reference
+so it cannot drift. Generated at `0f5f456`: 565 tools, 153 reference
 items, 39 pieces in flight.
 
 Its purpose is to stop 39+ concurrent agents each paying separately to discover the
@@ -16,7 +16,8 @@ Run these; do not invent your own equivalents.
 | command | asserts |
 |---|---|
 | `node tools/boot-check.mjs` | does the engine construct AND draw a frame |
-| `node tools/check-data.mjs` | every file in game/data/index.json exists; NPC settlements resolve |
+| `node tools/check-data.mjs` | every file in game/data/index.json exists; NPC settlements resolve; **the two soul ledgers agree** |
+| `node tools/check-souls-world.mjs` | the world's cached soul roll-up (`population-posts.json`) equals what the statblocks pay, row by row. `--totals` prints the current figure in one line |
 | `node tools/check-quests.mjs` | hooks and entry topics name quests and journal entries that exist |
 | `node tools/check-content.mjs` | no quest resolution has disappeared |
 | `node tools/check-prose.mjs` | questions, exclamations, punchline rate, tic list |
@@ -26,6 +27,21 @@ Run these; do not invent your own equivalents.
 `tools/boot-check.mjs` is a forwarding shim; the real file is `tools/harness/boot-check.mjs`.
 Both work. Note that `node … 2>&1 | tail -1 ; echo exit=$?` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
+
+## Numbers you must not read off a status file
+
+A status file records what was true at the commit it was written at. Twice in one day an
+orchestrator handed an agent a soul total it had read off one (**16,335**, then **21,664**) and both
+were stale — the second by a third. **Ask the tree, it costs one command:**
+
+| question | the one line that answers it |
+|---|---|
+| what is the placed world worth in souls, and what level does the crossing buy? | `node tools/check-souls-world.mjs --totals` |
+| have the two soul ledgers drifted apart again? | same command — it exits non-zero and names the stale one |
+| what is one enemy worth? | `node -p "require('./game/data/combat/enemies/inf_trash.json').souls"` — the statblock is the ledger a kill actually reads (`game/src/sim/souls.js` `awardFor()`) |
+
+`game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
+re-run `node tools/world/build-population.mjs --write`.
 
 ## The harness
 
@@ -114,10 +130,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 - `tools/analysis/w1-15-r3-chart.mjs` — THE PICTURE FOR W1-15 ROUND 3: the light in one room, before and after it was told about the lamps.
 
-### `tools/audio/` — 6
+### `tools/audio/` — 7
 
 - `tools/audio/critic-m6-fixture-sweep.mjs` — is RI-AUD01 M6's PASS a property of the PANNER or of the FIXTURE?
 - `tools/audio/critic-w1-22-r2-bands.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
+- `tools/audio/critic-w1-22-r2-pack.mjs` — W1-22 ROUND-3 CRITIC'S BLIND PACK BUILDER — THE r2 PACK WITH ITS THREE TELLS REMOVED.
 - `tools/audio/critic-w1-22-r2-probe.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
 - `tools/audio/impact-browser.mjs` — the BROWSER half of `audio.combat.impact` (W1-11).
 - `tools/audio/impact-probe.mjs` — drive `aud-impact-matrix` and write the run artifacts RI-AUD01's Comparison method reads.
@@ -192,7 +209,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3-chart.mjs` — THE PICTURE FOR W1-SOULS ROUND 3, DRAWN BY ITS CRITIC: two guards, and neither one alone.
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 
-### `tools/experience/` — 13
+### `tools/experience/` — 15
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/beat-diff.mjs` — RI-EXP01 steps 3 and 5: diff an observed beat log against the beat sheet.
@@ -206,9 +223,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/lib/sabotage.mjs` — THE SABOTAGE CONTROL, AS A FACILITY ANY PIECE CAN USE.
 - `tools/experience/log-lint.mjs` — PLAYTHROUGH-CRITIC §5.4: the play log must be neutral in register.
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
+- `tools/experience/sabotage-cases.mjs` — THE THREE REAL FAILURES, REPLAYED THROUGH THE FACILITY.
+- `tools/experience/sabotage.mjs` — THE SABOTAGE CONTROL, as a command any piece can run.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 197
+### `tools/harness/` — 198
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -313,6 +332,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r3-seam.mjs` — W1-14 round-3 CRITIC.
 - `tools/harness/critic-w1-14-r3-vfx.mjs` — W1-14 round-3 CRITIC, RI-MAG05.
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
+- `tools/harness/critic-w1-16-offline.mjs` — W1-16 ROUND-2 CRITIC's own instrument.
 - `tools/harness/critic-w1-21-r1-shots.mjs` — the W1-21 critic's picture, taken through `tools/capture/`.
 - `tools/harness/critic-w1-21-r1.mjs` — the W1-21 round-1 CRITIC's own instrument.
 - `tools/harness/critic-w1-21-r1b.mjs` — the W1-21 round-1 CRITIC's second pass.
@@ -851,16 +871,16 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
+| `W1-25` | building | Build RI-CMP01: tools/composition/cells-from-md.mjs -> corpus/95-experience/RI-CMP01.cells | `orchestration/status/W1-25.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `reports/experience/w1/sabotage.json` |
+| `critic-w1-23-r3` | ? | measurement complete; writing corpus/90-verdicts/wave1/W1-23-r3.md + .json, then blog line | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` |
+| `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
+| `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-ban | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` `tools/audio/critic-w1-22-r2-probe.mjs` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
 | `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
 | `W1-SOULS-LEDGER` | building | CONSUMPTION in the running engine, then downstream figures, INDEX gate row, blog line, com | `orchestration/status/W1-SOULS-LEDGER.json` `tools/check-souls-world.mjs` `tools/check-data.mjs` `game/data/world/population-posts.json` |
-| `W1-25` | building | Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (t | `orchestration/status/W1-25.json` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |
-| `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-17` | starting | read ARBITRATION §3, RI-DLG items, INDEX; then reproduce build-graph, the filt() race clai | `orchestration/status/critic-w1-17.json` |
-| `critic-w1-23-r3` | ? | A: count texts with a tool + read >=8 end to end, judge prose with quotes. B: prose-tic co | `orchestration/status/critic-w1-23-r3.json` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/world/property/archon.json` `game/data/world/property/blackrose.json` |
 | `W1-17` | partial | (1) the twelve RI-DLG06 misses voice-metrics.mjs now reports — mudborn and legionary have  | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `critic-w1-12` | done | none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A | `orchestration/status/critic-w1-12.json` `corpus/90-verdicts/wave1/W1-12-r1.md` `corpus/90-verdicts/wave1/W1-12-r1.json` `tools/combat/critic-w1-12-census.mjs` `tools/combat/critic-w1-12-s22.mjs` `tools/combat/critic-w1-12-chart.mjs` |
