@@ -47,6 +47,16 @@ import { midSentenceCapitals, REDACTION_RE } from '../blind/leakcheck.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
+// RULES.md 12 — stamp the commit. The pack's A.txt/B.txt and its reveal key are NOT tracked
+// (reports/.gitignore keeps only *.md), so the artifact a judge reads exists on one container's
+// disk and is recoverable ONLY by re-running this builder with the same --seed. That reproduction
+// is exact against the same corpus and wrong against any other, so the corpus commit is written
+// into both pack.json and mapping.json and a later reproduction can be checked rather than assumed.
+function headCommit() {
+  try { return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim(); }
+  catch { return 'unknown'; }
+}
+
 export function mulberry32(a) {
   return function () {
     a |= 0; a = (a + 0x6d2b79f5) | 0;
@@ -287,6 +297,7 @@ function main() {
   const out = path.join(ROOT, outRel);
   const reveal = path.join(ROOT, outRel + '.reveal');
   const packName = path.basename(outRel);
+  const COMMIT = headCommit();
 
   const ours = ourCorpus();
   const ref = referenceCorpus();
@@ -396,6 +407,7 @@ function main() {
         masking: 'proper nouns RE-NAMED (not redacted) from one shared generator; no marker to count',
         paired_on: ['words', 'chars', 'proper-noun density'],
         chance_baseline: 'one author per side: effective trials ~= registers (3). A sweep is ~1-in-8.',
+        corpus_commit: COMMIT,
         a_profile: profile(aText),
         b_profile: profile(bText),
         seed,
@@ -414,6 +426,8 @@ function main() {
     schema: 'elder-souls/blind-pack-reveal@2',
     piece: 'W1-PROSE-TICS',
     seed,
+    corpus_commit: COMMIT,
+    rebuild: `node tools/prose/build-r2-packs.mjs --out ${outRel} --seed ${seed}  (exact only at corpus_commit)`,
     do_not_open_until: 'every answer is written, outside the pack',
     dropped_for_no_legal_partner: dropped,
     trials: mapping,

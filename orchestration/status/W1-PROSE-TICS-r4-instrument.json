@@ -6,7 +6,6 @@
   "finished": "2026-08-08",
   "successor_note": "Predecessor was killed at the reading stage and left nothing on disk but this status file. Resumed from RULES.md, RI-MTH03, JUDGEMENT-judge-prose-r4-m5.md and the builder.",
   "next_step": "Dispatch a fresh judge to reports/packs/prose-tics-r5 (NOT the builder of the prose, NOT me — rule 25). RI-MTH03 M6 (fresh agent asked 'what is the tell?') is still owed for this wave; the gate does not retire it.",
-
   "what_was_built": [
     "tools/blind/leakcheck.mjs — 40-discriminator battery + fail-closed gate + structural checks + --self-test. RI-MTH03 M1a.",
     "tools/blind/mask-text.mjs — renaming masker (no redaction marker exists to count) + --self-test.",
@@ -15,7 +14,6 @@
     "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md — §B.1 (a redaction token is itself a signal), §C.1 (two answer axes; answers outside the pack), §E.1 (effective baseline), M1a, three new scoring rows, a new hard fail, How-we-lose 4a.",
     "SUPERSEDED.md for prose-tics-r2, -r3 (amended), -r4."
   ],
-
   "measurements": {
     "r4_gate": "exit 4. 12 LEAK channels, 2 WATCH, 26 at chance. redaction_tokens/redaction_density/paren_density/mean_line_len/chars 15/15; mean_word_len/digit_ratio/uppercase_ratio/allcaps_words/mid_sentence_capitals/capital_density 14/15; redaction_distinct 13/14. words 6/11 (chance — r4's word matching worked). Saved at reports/packs/prose-tics-r4.reveal/leakcheck.json.",
     "r5_gate": "exit 0. 0 LEAK, 7 WATCH, 33 at chance. All redaction rules 0/0 (no marker exists). chars 8/15, mid_sentence_capitals 5/9, capital_density and words fell out of WATCH once pairing balanced the SIGN as well as the magnitude.",
@@ -23,7 +21,6 @@
     "self_test_null": "60 synthetic null packs, 0 raised a LEAK, 41 WATCH flags over 2400 rule-evaluations. Two earlier versions of classify() were discarded because this measurement put them at 35%.",
     "self_test_arms": "16 injected channels, 16 caught; each with the injection removed the flag disappears (delete-the-fix on the fixture) and the arms' verdicts differ."
   },
-
   "rulings": [
     "RULING-1 (reversible): RE-NAME rather than redact. Cost accepted: the artifact is altered, not merely redacted, so naming craft is unjudgeable. Rejected: token-count padding (falsifies the artifact), fixed mask budget (destroys referent information), single [NAME] token (loses referent identity and does not close the count). Overturned by: a measured channel renaming opens that redaction did not.",
     "RULING-2 (reversible): pairing bounds the MAGNITUDE and alternates the SIGN of words/chars/name-density. Cost accepted: selection bias — the pack samples the band where the two corpora are mechanically comparable, and its verdict does not generalise to the name-saturated end of the reference corpus. Overturned by: a register where the overlap band is too thin to fill (journal is closest: 84 of 147 of our passages have a legal partner).",
@@ -31,16 +28,15 @@
     "RULING-4: r2, r3 and r4 are CLOSED as superseded. A re-judged pack is a different object; r4 contains its own answer key in fifteen files.",
     "RULING-5: r4's PROV scores are void (a shell rule scores the same 15/15). r4's QUAL results survive only as NON-BLIND expert preference and must be re-taken on r5. The M5 findings (one narrator's idiolect across nine passages; no bad writers in our corpus) survive in full."
   ],
-
   "could_not_do": [
     "I did not re-judge any prose and must not — I built r5, and rule 25 forbids judging a pack you built.",
     "The gate cannot prove blindness, only the absence of the channels somebody thought of. Both of this item's leaks were found by a JUDGE, not a builder. RI-MTH03 M6 remains owed.",
     "Seven held-out style channels sit in the WATCH band on r5. They do not survive correction for the battery size, but seven is above chance expectation and I have not closed them. Closing them would mean pairing on sentence rhythm too, which buys more selection bias — I chose to report rather than to over-fit the gate.",
     "The pairing statistics are optimised against rules the gate also measures. That is Goodhart and it is declared: leakcheck prints them in a separate `matched` block and the summary never conflates them with the held-out block. A pass on a matched rule is not evidence.",
     "I did not run tools/prose/tic-detector.mjs cross-document variance work that the r4 judge asked for (measure voice variance ACROSS our documents, not tics within one). That is a prose-builder job, not an instrument job, and it is left in NEXT-DISPATCH.",
-    "No browser was used and none was needed."
+    "No browser was used and none was needed.",
+    "The pack's A.txt/B.txt and the reveal key are NOT in git — reports/.gitignore tracks only *.md under reports/, which has always been true of these packs (r4 is the same). The artifact a judge reads therefore lives on one container's disk. Mitigation, not a fix: the corpus commit is now stamped into pack.json and mapping.json, and `node tools/prose/build-r2-packs.mjs --out reports/packs/prose-tics-r5 --seed 20260810` reproduces the pack EXACTLY at that commit and wrongly at any other. I did not change the repo-wide ignore policy to track reveal keys — putting answer keys into git history is a decision with blast radius past this task."
   ],
-
   "files_touched": [
     "orchestration/status/W1-PROSE-TICS-r4-instrument.json",
     "tools/blind/leakcheck.mjs",
@@ -58,5 +54,6 @@
     "reports/blog-feed.jsonl"
   ],
   "files_claimed": [],
-  "notes": "Instrument repair only. No prose was re-judged. reports/packs/prose-tics-r4/ is left byte-untouched apart from the added SUPERSEDED.md — the three judgements and fifteen answer.md files are the record and were not moved or deleted."
+  "notes": "Instrument repair only. No prose was re-judged. reports/packs/prose-tics-r4/ is left byte-untouched apart from the added SUPERSEDED.md — the three judgements and fifteen answer.md files are the record and were not moved or deleted.",
+  "reproduce": "node tools/prose/build-r2-packs.mjs --out reports/packs/prose-tics-r5 --seed 20260810  (exact only at corpus_commit 692bcc8)"
 }
