@@ -799,9 +799,14 @@ try {
         // Pool both time-of-day bands: a night-only event carries the same within-layer relative
         // weight as its daytime sibling, and calibrating on day alone would leave it uncorrected.
         const xs = [];
+        const byId = {};
         for (const t of Object.values(rec.tod)) {
           if (t.error) continue;
-          for (const e of t._all || t.events || []) if (e.layer === layer) xs.push(e.rel_db);
+          for (const e of t._all || t.events || []) {
+            if (e.layer !== layer) continue;
+            xs.push(e.rel_db);
+            (byId[e.id] = byId[e.id] || []).push(e.rel_db);
+          }
         }
         if (!xs.length || !bed.layers[layer]) continue;
         const measured = median(xs);
@@ -810,6 +815,28 @@ try {
         bed.layers[layer].event_gain_db = next;
         written.push({ region: id, layer, n: xs.length, measured_rel_db: +measured.toFixed(2),
                        target_rel_db: centre[layer], event_gain_db: next, was: prev });
+        // ROUND 3 — AND NOW THE PER-EVENT TRIM, which is the half that was missing.
+        //
+        // The layer trim above moves the whole layer together, so it can centre a layer's SPREAD
+        // and can never narrow it. Round 2 measured that spread at a median of 10.82 dB and a
+        // worst of 17.48 dB within a single layer, which is why 33 events were buried under beds
+        // whose layer median was in band. `trim_db` is solved per event id, from that event's own
+        // rendered level, and it is summed with the layer trim by `eventGrainTrimDb()` in
+        // game/src/audio/ambience.js — one number per event, matching §A's per-event claim.
+        //
+        // The layer trim is applied FIRST and then subtracted out of each event's target, so the
+        // two do not fight: after this pass every event's expected level is the band centre.
+        const layerDelta = next - prev;
+        for (const ev of bed.layers[layer].events || []) {
+          const vs = byId[ev.id];
+          if (!vs || !vs.length) continue;                       // never fired: nothing measured
+          const evPrev = ev.trim_db || 0;
+          const evNext = +(evPrev + (centre[layer] - median(vs)) - layerDelta).toFixed(2);
+          if (evNext === 0) delete ev.trim_db; else ev.trim_db = evNext;
+          written.push({ region: id, layer, event: ev.id, n: vs.length,
+                         measured_rel_db: +median(vs).toFixed(2), target_rel_db: centre[layer],
+                         trim_db: evNext, was: evPrev });
+        }
         touched = true;
       }
       // The INTERIOR beds' master trim. The thirteen region beds are deliberately not touched
@@ -838,7 +865,7 @@ try {
     out.calibration = written;
     out.notes.push('CALIBRATION RUN. `event_gain_db` was written from the measurement above and '
       + 'this run is therefore self-fulfilling and is NOT evidence. Re-run without --calibrate.');
-    console.error(`ambience-onsets --calibrate: wrote ${written.length} layer trims. `
+    console.error(`ambience-onsets --calibrate: wrote ${written.length} trims (layer + per-event). `
       + 'Re-run without --calibrate for a number that means something.');
     exitCode = 0;
   }

@@ -1,0 +1,20 @@
+{
+  "task_id": "AUDIT-R1-LIST",
+  "role": "auditor",
+  "started": "2026-08-08",
+  "state": "running",
+  "summary": "Audit the remaining four bullets of the R1 broken-tool list in NEXT-DISPATCH.md (the gamepad bullet was found two rounds stale). Then build a staleness checker for mechanically-checkable dispatch claims and wire it into the tick + pre-commit.",
+  "next_step": "read NEXT-DISPATCH.md R1 list, enumerate the four remaining bullets",
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/AUDIT-R1-JSON.json",
+    "orchestration/status/AUDIT-R1-LIST.json",
+    "orchestration/NEXT-DISPATCH.md",
+    "tools/dispatch-staleness.mjs",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": [
+    "Owns ONLY the R1 list section of NEXT-DISPATCH.md; several agents live in that file.",
+    "No browser needed."
+  ]
+}
