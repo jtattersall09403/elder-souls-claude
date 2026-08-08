@@ -52,6 +52,14 @@ import { parseArgs, wantsHelp, usage, writeJson, ensureDir, REPO_ROOT } from '..
 import { DETERMINISTIC_CHROMIUM_ARGS, loadPlaywright } from '../lib/browser.mjs';
 import { serveDir } from '../lib/serve.mjs';
 
+// The tree this run SERVES. Defaults to the working copy. `--serve-root <dir>` points it at a
+// pristine `git archive HEAD` export instead, which is what you want on a box where a dozen
+// agents are editing concurrently: on 2026-08-08 a neighbour's STAGED, uncommitted quest data
+// made `QuestBook` throw inside `Engine._boot`, so every page on this machine was a black screen
+// for reasons that had nothing to do with the piece under test. RULES 12 — a measurement is a
+// claim about a COMMIT, not about whatever happened to be on disk.
+const SERVE_ROOT = String(process.env.ES_SERVE_ROOT || '');
+
 const args = parseArgs(process.argv.slice(2));
 if (wantsHelp(args)) {
   usage('critic-fight.mjs', [
@@ -104,7 +112,11 @@ function makePatchedTree() {
   const dst = path.join(OUT, 'patched-tree');
   fs.rmSync(dst, { recursive: true, force: true });
   fs.mkdirSync(dst, { recursive: true });
-  fs.cpSync(path.join(REPO_ROOT, 'game'), path.join(dst, 'game'), { recursive: true });
+  // Copy from whatever tree this run is SERVING, so a teardown on the pristine HEAD export
+  // sabotages the same bytes the positive arm measured. Copying from the working tree while
+  // serving HEAD would make the two arms differ in a second, unnamed way — RULES 6's inert
+  // control by another route.
+  fs.cpSync(path.join(SERVE_ROOT || REPO_ROOT, 'game'), path.join(dst, 'game'), { recursive: true });
   const edit = (rel, from, to, why) => {
     const p = path.join(dst, 'game', 'src', rel);
     const src = fs.readFileSync(p, 'utf8');
@@ -133,7 +145,7 @@ const NEEDS_PATCH = BREAK.keeponly || BREAK.insetAnchor;
 const { chromium } = await loadPlaywright();
 let serveRoot = REPO_ROOT;
 if (NEEDS_PATCH) { try { serveRoot = makePatchedTree(); } catch (e) { say(`  FATAL ${e.message}`); process.exit(2); } }
-const server = await serveDir(serveRoot);
+const server = await serveDir(SERVE_ROOT || serveRoot);
 const browser = await chromium.launch({ headless: true, args: DETERMINISTIC_CHROMIUM_ARGS });
 say(`  [browser] ONE instance, kept for the whole run; served from ${server.origin}`);
 

@@ -33,8 +33,12 @@ const argv = process.argv.slice(2);
 const selfTest = argv.includes('--self-test');
 
 // `docs/play` is a generated mirror and is currently being removed from the tree, so `game/` is
-// the only source that is certainly current. Prefer it, and say which was used.
-const DIR = existsSync(join(ROOT, 'game', 'index.html')) ? join(ROOT, 'game') : join(ROOT, 'docs', 'play');
+// the only source that is certainly current. `--dir <path>` serves somewhere else instead, which
+// is how this gets pinned to a commit: `git archive <sha> game | tar -x -C <tmp>` and point here.
+// A dozen agents commit to this tree; a number taken against "whatever game/ was at the time" is
+// not a claim about anything (rule 12).
+const at = (f, d) => { const i = argv.indexOf(f); return i >= 0 && argv[i + 1] ? argv[i + 1] : d; };
+const DIR = at('--dir', existsSync(join(ROOT, 'game', 'index.html')) ? join(ROOT, 'game') : join(ROOT, 'docs', 'play'));
 
 // The notice's own numbers, restated so a change to either shows up as a diff here.
 const NOTICE_WINDOW = 64;
@@ -140,19 +144,31 @@ try {
   console.log('');
   console.log('     state                       corner%   whole frame%   notice');
   const rows = [];
-  let bad = 0;
+  let bad = 0, unmeasured = 0;
   for (const c of CASES) {
     const r = await run(c);
     rows.push(r);
-    // The frame is drawn — by any honest reading of the whole picture — and yet the notice is up.
-    const drawn = r.gl && r.fullFrac >= 0.02;
-    const wrong = drawn && r.noticeUp;
+    // A state whose frame is black everywhere did not boot — the engine threw, or the data is
+    // broken — and this instrument has measured NOTHING about the notice there. The first version
+    // of this tool counted that as a clean row and printed PASS over six states that never drew a
+    // pixel, which is a fail-open of exactly the kind the round is about. It is `not_run` now.
+    const measured = r.gl && r.fullFrac >= 0.02;
+    if (!measured) unmeasured++;
+    const wrong = measured && r.noticeUp;
     if (wrong) bad++;
-    console.log(`   ${wrong ? 'GAP ' : ' ok '} ${r.label.padEnd(24)} ${(r.cornerFrac * 100).toFixed(2).padStart(7)}   ` +
+    const tag = wrong ? 'GAP ' : measured ? ' ok ' : 'n/m ';
+    console.log(`   ${tag} ${r.label.padEnd(24)} ${(r.cornerFrac * 100).toFixed(2).padStart(7)}   ` +
       `${(r.fullFrac * 100).toFixed(2).padStart(9)}      ${r.noticeUp ? 'STILL UP' : 'hidden'}${r.note ? '  (' + r.note + ')' : ''}`);
     if (wrong) console.log(`        over a drawn frame, the player is reading: "${r.noticeText}"`);
+    if (!measured) console.log('        NOT MEASURED — the frame is black everywhere, so the world never came up here.');
   }
   console.log('');
+  if (unmeasured === CASES.length) {
+    console.log('critic-deploy-night-notice: NOT RUN — no state drew anything, so the build under');
+    console.log('  test does not boot. This says nothing about the notice. Fix the build and re-run.');
+    process.exit(2);
+  }
+  if (unmeasured) console.log(`  ${unmeasured} of ${CASES.length} state(s) could not be measured and are excluded.`);
   console.log(bad ? `critic-deploy-night-notice: FAIL — ${bad} state(s) draw a picture and keep the overlay.`
                   : 'critic-deploy-night-notice: PASS — the notice cleared on every state that draws.');
   process.exit(bad ? 1 : 0);

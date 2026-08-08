@@ -340,20 +340,6 @@ export async function takeReading(spec) {
     other_subject_value: cells.s1_t0.value,
     moved_with_subject: subjectMoved,
   };
-  if (!BREAKS.has('clock') && timeMoved) {
-    return { ...base, verdict: READING.READS_THE_CLOCK, passed: false, cells, clock,
-      why: `with the subject held at ${S[0].id} and only ${clockSteps} step(s) of time passing, the reading moved from ` +
-        `${JSON.stringify(cells.s0_t0.value)} to ${JSON.stringify(cells.s0_t1.value)}. It cannot distinguish the thing under test from ` +
-        `time passing — this is the "8 distinct images from one unchanged room" shape, where the measure was hashing the step counter.`,
-      ms: Date.now() - t0 };
-  }
-  if (!BREAKS.has('subject') && !subjectMoved) {
-    return { ...base, verdict: READING.BLIND_TO_SUBJECT, passed: false, cells, clock,
-      why: `changing the subject from ${S[0].id} to ${S[1].id} at fixed time did not move the reading ` +
-        `(both ${JSON.stringify(cells.s0_t0.value)}). The instrument does not see its own subject, so no number it produces is ` +
-        `about the thing it names. RULES.md rule 8: the easiest fixture collects the most data and distinguishes nothing.`,
-      ms: Date.now() - t0 };
-  }
 
   // ---- Q5 the DEGENERATE SUBJECT ---------------------------------------------------------------
   let degenerate = null;
@@ -361,15 +347,7 @@ export async function takeReading(spec) {
     let dcell;
     try { dcell = await call({ subject: S[0].id, t: 0, degenerate: true }); }
     catch (e) { dcell = { value: null, support: null, error: String((e && e.message) || e) }; }
-    const dpass = gradeBand(spec.band, dcell.value);
-    degenerate = { what: spec.degenerate.what, value: dcell.value, support: dcell.support, in_band: dpass };
-    if (dpass === true) {
-      return { ...base, verdict: READING.PASSES_ON_DEGENERATE, passed: false, cells, clock, degenerate,
-        why: `run against ${spec.degenerate.what} — a subject that is definitionally a failure — the reading returned ` +
-          `${JSON.stringify(dcell.value)} ${spec.unit}, which is INSIDE the band ${JSON.stringify(spec.band)}. The predicate cannot say no. ` +
-          `This is the "a canvas exists, it has non-zero dimensions, and there are no page errors" shape: all three were true of a black screen.`,
-        ms: Date.now() - t0 };
-    }
+    degenerate = { what: spec.degenerate.what, value: dcell.value, support: dcell.support, in_band: gradeBand(spec.band, dcell.value) };
   }
 
   // ---- Q3 the NULL CONTROL, through sabotage.mjs (not re-implemented here) ---------------------
@@ -382,22 +360,66 @@ export async function takeReading(spec) {
       unit: spec.support_unit,
       factors: spec.factors,
       margin: spec.margin,
+      supportArms: spec.supportArms,
+      support_note: spec.support_note,
+      supportFloor: spec.supportFloor,
       measure: async (broken) => {
         const c = await call({ subject: S[0].id, t: 0, broken });
         return { value: c.value, support: c.support === null ? 0 : c.support };
       },
     });
-    if (!nul.passed) {
-      return { ...base, verdict: READING.NULL_CONTROL_FAILED, passed: false, cells, clock, degenerate, null_control: nul,
-        why: `the null control came back ${nul.verdict}: ${nul.why}`,
-        ms: Date.now() - t0 };
-    }
+  }
+
+  // ---- the cascade ----------------------------------------------------------------------------
+  //
+  // ORDER, and the reason for it. `PASSES_ON_DEGENERATE` outranks both discrimination arms
+  // because RULES.md rule 4 — "a probe that cannot fail is worse than no probe" — is a statement
+  // about whether the check has a red state at all, and a probe with no red state has no
+  // discrimination worth measuring. `canvas !== null` is blind to its subject AND passes on a
+  // black screen; reporting only the first would send the next agent to fix the resolution of a
+  // check that can never say no.
+  //
+  // Every condition that held is recorded in `concurrent_failures`, so the collisions the cascade
+  // necessarily creates are reported rather than swallowed by whichever test ran first. That is
+  // sabotage.mjs's own round-2 lesson and it applies here unchanged.
+  const held = [];
+  if (degenerate && degenerate.in_band === true) held.push(READING.PASSES_ON_DEGENERATE);
+  if (!BREAKS.has('clock') && timeMoved) held.push(READING.READS_THE_CLOCK);
+  if (!BREAKS.has('subject') && !subjectMoved) held.push(READING.BLIND_TO_SUBJECT);
+  if (nul && !nul.passed) held.push(READING.NULL_CONTROL_FAILED);
+
+  const common = { ...base, cells, clock, degenerate, null_control: nul, concurrent_failures: held, reading_breaks: [...BREAKS], ms: Date.now() - t0 };
+
+  if (held.includes(READING.PASSES_ON_DEGENERATE)) {
+    return { ...common, verdict: READING.PASSES_ON_DEGENERATE, passed: false,
+      why: `run against ${spec.degenerate.what} — a subject that is definitionally a failure — the reading returned ` +
+        `${JSON.stringify(degenerate.value)} ${spec.unit}, which is INSIDE the band ${JSON.stringify(spec.band)}. THE PREDICATE CANNOT SAY NO. ` +
+        `This is the "a canvas exists, it has non-zero dimensions, and there are no page errors" shape: all three were true of a black screen.` +
+        (held.length > 1 ? ` ALSO HELD: ${held.filter((h) => h !== READING.PASSES_ON_DEGENERATE).join(', ')}.` : '') };
+  }
+  if (held.includes(READING.READS_THE_CLOCK)) {
+    return { ...common, verdict: READING.READS_THE_CLOCK, passed: false,
+      why: `with the subject held at ${S[0].id} and only ${clockSteps} step(s) of time passing, the reading moved from ` +
+        `${JSON.stringify(cells.s0_t0.value)} to ${JSON.stringify(cells.s0_t1.value)}. It cannot distinguish the thing under test from ` +
+        `time passing — this is the "8 distinct images from one unchanged room" shape, where the measure was hashing the step counter.` +
+        (held.length > 1 ? ` ALSO HELD: ${held.filter((h) => h !== READING.READS_THE_CLOCK).join(', ')}.` : '') };
+  }
+  if (held.includes(READING.BLIND_TO_SUBJECT)) {
+    return { ...common, verdict: READING.BLIND_TO_SUBJECT, passed: false,
+      why: `changing the subject from ${S[0].id} to ${S[1].id} at fixed time did not move the reading ` +
+        `(both ${JSON.stringify(cells.s0_t0.value)}). The instrument does not see its own subject, so no number it produces is ` +
+        `about the thing it names. RULES.md rule 8: the easiest fixture collects the most data and distinguishes nothing.` +
+        (held.length > 1 ? ` ALSO HELD: ${held.filter((h) => h !== READING.BLIND_TO_SUBJECT).join(', ')}.` : '') };
+  }
+  if (held.includes(READING.NULL_CONTROL_FAILED)) {
+    return { ...common, verdict: READING.NULL_CONTROL_FAILED, passed: false,
+      why: `the null control came back ${nul.verdict}: ${nul.why}` };
   }
 
   const value = cells.s0_t0.value;
   const inBand = gradeBand(spec.band, value);
   return {
-    ...base,
+    ...common,
     verdict: READING.OK,
     passed: true,
     value,
@@ -405,13 +427,11 @@ export async function takeReading(spec) {
     support_unit: spec.support_unit,
     in_band: inBand,
     artifact_sha256: cells.s0_t0.artifact_sha256 || null,
-    cells, clock, degenerate, null_control: nul,
     why: `read ${JSON.stringify(value)} ${spec.unit} off the ${spec.surface} over ${cells.s0_t0.support} ${spec.support_unit}; ` +
       `held still through ${clockSteps} step(s) of time; moved when the subject changed; ` +
-      `went red on ${spec.degenerate.what}; and the null control moved it (${nul ? nul.why : 'skipped'}). ` +
+      `went ${JSON.stringify(degenerate ? degenerate.value : null)} (out of band) on ${spec.degenerate.what}; ` +
+      `and the null control moved it (${nul ? nul.why : 'skipped'}). ` +
       `Band ${JSON.stringify(spec.band)}: ${inBand === null ? 'not gradeable (non-numeric value)' : inBand ? 'IN BAND' : 'OUT OF BAND'}.`,
-    reading_breaks: [...BREAKS],
-    ms: Date.now() - t0,
   };
 }
 
@@ -491,8 +511,11 @@ function cases() {
       claim_class: CLAIM.ON_SCREEN, surface: SURFACE.FRAMEBUFFER,
       unit: 'count', band: { unit: 'count', min: 8 }, support_unit: 'captures compared',
       subjects: twoSubjects, factors: oneFactor,
-      degenerate: { what: 'an emptied scene group' },
-      read: async ({ t }) => ({ value: 8 + t, support: 8 }),
+      degenerate: { what: 'a capture set with no captures in it' },
+      // The real one held TWO defects at once — a step-counter hash also produces distinct values
+      // over an emptied scene — and `concurrent_failures` is where that is recorded. Here the
+      // degenerate arm is the empty capture set, so the clock defect is isolated.
+      read: async ({ t, degenerate }) => (degenerate ? { value: 0, support: 0 } : { value: 8 + t, support: 8 }),
       expect: READING.READS_THE_CLOCK },
 
     // FAILURE 3 — `interior.meshes` as a renderer read. Refused before it is ever run.
@@ -509,12 +532,12 @@ function cases() {
     { id: 'failure-3b--the-same-build-record-under-an-AUTHORED-claim',
       claim: 'the builder authored 127 meshes for this room',
       claim_class: CLAIM.AUTHORED, surface: SURFACE.BUILD_RECORD,
-      unit: 'count', band: { unit: 'count', min: 100 }, support_unit: 'meshes recorded at build time',
+      unit: 'count', band: { unit: 'count', min: 100 }, support_unit: 'interior build records read',
       subjects: twoSubjects, factors: oneFactor,
       degenerate: { what: 'a room with no authored contents' },
       read: async ({ subject, degenerate, broken }) => {
-        if (degenerate || broken.includes('meshes')) return { value: 0, support: 0 };
-        return { value: subject === 'room-A' ? 127 : 113, support: subject === 'room-A' ? 127 : 113 };
+        if (degenerate || broken.includes('meshes')) return { value: 0, support: 1 };
+        return { value: subject === 'room-A' ? 127 : 113, support: 1 };
       },
       expect: READING.OK },
 

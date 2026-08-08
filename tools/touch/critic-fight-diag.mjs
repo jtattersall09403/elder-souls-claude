@@ -17,13 +17,21 @@ import { parseArgs, writeJson, ensureDir, REPO_ROOT } from '../lib/cli.mjs';
 import { DETERMINISTIC_CHROMIUM_ARGS, loadPlaywright } from '../lib/browser.mjs';
 import { serveDir } from '../lib/serve.mjs';
 
+// The tree this run SERVES. Defaults to the working copy. `--serve-root <dir>` points it at a
+// pristine `git archive HEAD` export instead, which is what you want on a box where a dozen
+// agents are editing concurrently: on 2026-08-08 a neighbour's STAGED, uncommitted quest data
+// made `QuestBook` throw inside `Engine._boot`, so every page on this machine was a black screen
+// for reasons that had nothing to do with the piece under test. RULES 12 — a measurement is a
+// claim about a COMMIT, not about whatever happened to be on disk.
+const SERVE_ROOT = String(process.env.ES_SERVE_ROOT || '');
+
 const args = parseArgs(process.argv.slice(2));
 const STATE = String(args.state || 'arena_duel');
 const OUT = path.join(REPO_ROOT, 'reports', 'critic-w1-touch');
 ensureDir(OUT);
 const say = (s) => process.stdout.write(s + '\n');
 
-const server = await serveDir(REPO_ROOT);
+const server = await serveDir(SERVE_ROOT || REPO_ROOT);
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch({ headless: true, args: DETERMINISTIC_CHROMIUM_ARGS });
 const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true, reducedMotion: 'reduce' });

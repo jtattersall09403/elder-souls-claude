@@ -453,38 +453,61 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 const TEARDOWNS = {
   // Delete every palette-named object: L1 must go green. If it stays red, L1 is not counting what
   // it says it counts.
-  L1: (w) => {
-    const { palette } = generatorStock(w.generatorSrc);
-    for (const p of w.property) for (const z of p.zones || []) {
-      z.contents = (z.contents || []).filter((c) => !(palette.has(c.name) && /\.\d+$/.test(String(c.instance))));
-    }
-    return { expect: 'green' };
-  },
-  // Give the world 300 more POIs: D1 must go green.
-  D1: (w) => {
-    for (let i = 0; i < 300; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' });
-    return { expect: 'green' };
-  },
-  // Add the guard N1 is asking for: N1 must go green.
-  N1: (w) => { w.generatorSrc = w.generatorSrc.replace('fs.mkdirSync(OUT', 'if (!process.argv.includes("--write")) process.exit(0);\nfs.mkdirSync(OUT'); return { expect: 'green' }; },
-  // Strip the voices off one disputed fact: LR1 must go RED. This is the arm that matters — LR1
-  // is green on the shipped tree, so without this teardown it is a check nobody has seen fail.
-  LR1: (w) => { const f = (w.canon.facts || []).find((x) => x.disputed); f.positions[0].voiced_by = []; return { expect: 'red' }; },
-  // Empty a region of everything: T1 must go red.
-  T1: (w) => {
-    const id = (w.pois.pois || [])[0].region;
-    w.pois.pois = w.pois.pois.filter((p) => p.region !== id);
-    w.posts.posts = (w.posts.posts || []).filter((p) => p.region !== id);
-    return { expect: 'red' };
-  },
-  // Remove a faction from the roster: F1 must go red.
-  F1: (w) => { w.factions.factions = (w.factions.factions || []).filter((f) => (f.id || f) !== 'drowned-court'); return { expect: 'red' }; },
-  // Invert the souls of the top tier: X1 must go red.
-  X1: (w) => { for (const p of w.posts.posts || []) if (p.tier >= 4) p.souls = 1; return { expect: 'red' }; },
-  // P1 shells out to the owning tool; the arm that can be broken here is the parse.
+  L1: [
+    ['strip-palette-objects', (w) => {
+      const { palette } = generatorStock(w.generatorSrc);
+      for (const p of w.property) for (const z of p.zones || []) {
+        z.contents = (z.contents || []).filter((c) => !(palette.has(c.name) && /\.\d+$/.test(String(c.instance))));
+      }
+    }, 'green'],
+    ['strip-then-replant-one', (w) => {
+      const { palette } = generatorStock(w.generatorSrc);
+      for (const p of w.property) for (const z of p.zones || []) {
+        z.contents = (z.contents || []).filter((c) => !(palette.has(c.name) && /\.\d+$/.test(String(c.instance))));
+      }
+      w.property[0].zones[0].contents.push({ instance: 'x.y.0', name: [...palette][0], unique: false });
+    }, 'red'],
+  ],
+  D1: [
+    ['add-300-pois', (w) => { for (let i = 0; i < 300; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' }); }, 'green'],
+    ['add-118-pois — one short of the floor', (w) => { for (let i = 0; i < 118; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' }); }, 'red'],
+  ],
+  N1: [
+    ['add-the-write-guard', (w) => { w.generatorSrc = w.generatorSrc.replace('fs.mkdirSync(OUT', 'if (!process.argv.includes(\'--write\')) process.exit(0);\nfs.mkdirSync(OUT'); }, 'green'],
+    ['guard-plus-empty-stock', (w) => { w.generatorSrc = w.generatorSrc.replace(/const EPITHET = \[[^\]]*\];/, 'const EPITHET = [];').replace(/const GIVEN = \[[^\]]*\];/, 'const GIVEN = [];'); }, 'green'],
+  ],
+  // LR1 is RED on the shipped tree (one dispute cites a book nobody wrote), so the primary arm
+  // REPAIRS it — write the missing book — and demands green. The second arm repairs and then
+  // strips a position's `held_by`, and demands red again: that is what shows the malformed clause
+  // is live rather than being carried by the dangling-book clause.
+  LR1: [
+    ['repair', (w) => { w.bookIds = new Set([...w.bookIds, 'the-drowned-ford']); }, 'green'],
+    ['repair+strip-held_by', (w) => {
+      w.bookIds = new Set([...w.bookIds, 'the-drowned-ford']);
+      (w.canon.facts || []).find((x) => x.disputed).positions[0].held_by = [];
+    }, 'red'],
+    ['repair+registry-drift', (w) => {
+      w.bookIds = new Set([...w.bookIds, 'the-drowned-ford']);
+      w.canonCorpus = (w.canonCorpus || []).filter((f) => f.id !== 'CF-D001');
+    }, 'red'],
+  ],
+  // T1 is RED because `hive` carries nothing. Repair it and demand green; then repair and empty a
+  // different region, and demand red.
+  T1: [
+    ['repair', (w) => { w.posts.posts.push({ region: 'hive', tier: 1, souls: 0 }); }, 'green'],
+    ['repair+empty-another', (w) => {
+      w.posts.posts.push({ region: 'hive', tier: 1, souls: 0 });
+      w.pois.pois = w.pois.pois.filter((p) => p.region !== 'blackwood');
+      w.posts.posts = w.posts.posts.filter((p) => p.region !== 'blackwood');
+    }, 'red'],
+  ],
+  F1: [['drop-a-faction-from-the-roster', (w) => { w.factions.factions = (w.factions.factions || []).filter((f) => (f.id || f) !== 'drowned-court'); }, 'red']],
+  X1: [['flatten-the-top-tiers', (w) => { for (const p of w.posts.posts || []) if (p.tier >= 4) p.souls = 1; }, 'red']],
+  // P1 and S1 shell out to the owning instrument, which has its own teardown. Breaking them here
+  // would be testing my copy of somebody else's check, which is the second-definition defect
+  // RI-MTH05 C4 exists to catch.
   P1: null,
-  // Take one purse out of goldMirrors: E1 must go red.
-  E1: (w) => { w.harnessSrc = w.harnessSrc.replace(/magic_gold:[^,]+,/, ''); return { expect: 'red' }; },
+  E1: [['drop-a-purse-from-goldMirrors', (w) => { w.harnessSrc = w.harnessSrc.replace(/magic_gold:[^,]+,/, ''); }, 'red']],
   S1: null,
 };
 
@@ -494,21 +517,35 @@ function selfTest() {
   for (const [id, fn] of CHECKS) baseline[id] = fn(base).red;
   const rows = [];
   for (const [id, fn] of CHECKS) {
-    const td = TEARDOWNS[id];
-    if (!td) { rows.push({ id, arm: 'delegated', ok: true, note: 'shells out to the owning instrument; broken there, not here' }); continue; }
-    const w = { ...base, property: clone(base.property), pois: clone(base.pois), canon: clone(base.canon), factions: clone(base.factions), posts: clone(base.posts), regions: clone(base.regions) };
-    const { expect } = td(w);
-    const after = fn(w).red;
-    const ok = expect === 'red' ? (after === true && baseline[id] === false) : (after === false && baseline[id] === true);
-    rows.push({ id, baseline: baseline[id] ? 'red' : 'green', expect, after: after ? 'red' : 'green', ok });
+    const arms = TEARDOWNS[id];
+    if (!arms) { rows.push({ id, arm: 'delegated', ok: true, note: 'shells out to the owning instrument; broken there, not here' }); continue; }
+    for (const [arm, mutate, expect] of arms) {
+      const w = {
+        ...base,
+        property: clone(base.property), pois: clone(base.pois), canon: clone(base.canon),
+        factions: clone(base.factions), posts: clone(base.posts), regions: clone(base.regions),
+        canonCorpus: clone(base.canonCorpus), bookIds: new Set(base.bookIds),
+      };
+      mutate(w);
+      const after = fn(w).red;
+      rows.push({ id, arm, baseline: baseline[id] ? 'red' : 'green', expect, after: after ? 'red' : 'green', ok: (after ? 'red' : 'green') === expect });
+    }
+  }
+  // The arms of one check must not all agree with each other AND with the baseline — that is the
+  // inert control, and it is reported separately from a wrong arm because they are different bugs.
+  const inert = [];
+  for (const [id] of CHECKS) {
+    const mine = rows.filter((r) => r.id === id && r.arm !== 'delegated');
+    if (mine.length && new Set(mine.map((r) => r.after).concat([mine[0].baseline])).size === 1) inert.push(id);
   }
   const bad = rows.filter((r) => !r.ok);
   for (const r of rows) {
-    process.stdout.write(`  ${r.ok ? 'PASS' : 'FAIL'}  ${r.id.padEnd(4)} ${r.note || `baseline ${r.baseline} -> teardown wants ${r.expect}, got ${r.after}`}\n`);
+    process.stdout.write(`  ${r.ok ? 'PASS' : 'FAIL'}  ${r.id.padEnd(4)} ${(r.arm || '').padEnd(24)} ${r.note || `baseline ${r.baseline} -> arm wants ${r.expect}, got ${r.after}`}\n`);
   }
-  process.stdout.write(`\nself-test: ${rows.length - bad.length}/${rows.length} arms behaved. ` +
-    `An arm marked FAIL means that check cannot distinguish its two arms and its number is not evidence.\n`);
-  return bad.length ? 1 : 0;
+  process.stdout.write(`\nself-test: ${rows.length - bad.length}/${rows.length} arms behaved`
+    + (inert.length ? `; INERT CONTROL on ${inert.join(', ')} — every arm agrees with the baseline, so that check has never been seen to move` : '; no inert controls')
+    + '.\nAn arm marked FAIL means that check cannot distinguish its two arms and its number is not evidence.\n');
+  return bad.length || inert.length ? 1 : 0;
 }
 
 // ----------------------------------------------------------------------------------------- main

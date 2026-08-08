@@ -30,8 +30,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import * as THREE from '../../game/vendor/three/three.module.js';
 import { buildInterior } from '../../game/src/render/interior.js';
-import { litLights, windowPlan, interiorAmbientL, UNLIT_L, DAYLIGHT_K } from '../../game/src/world/interior-lighting.js';
+import { litLights, windowPlan, interiorAmbientL, UNLIT_L, DAYLIGHT_K, CANOPY_DAY_L } from '../../game/src/world/interior-lighting.js';
 import { LightField } from '../../game/src/sim/stealth/light.js';
+import { planSettlement, applyInteriorBounds } from '../../game/src/render/exterior.js';
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const argv = process.argv.slice(2);
@@ -46,10 +47,29 @@ const CFG = DET.interior_lamps;
 const SCALE = CFG.authored_intensity_to_L_scale;
 const REACH = CFG.reach_m;
 
+/**
+ * THE ROOMS THE WORLD BUILDS, NOT THE ROOMS THE FILES DECLARE.
+ *
+ * `render/exterior.js#applyInteriorBounds()` fits every room to the building drawn around it at
+ * load and SHRINKS 112 of the 115 — `archon-apothecary` from 13.6 x 15.6 m to 9.83 x 4.98 m. An
+ * offline tool that reads the JSON and stops has measured a different province from the one the
+ * player walks around in, and this round nearly shipped a lighting constant derived that way. The
+ * same join runs here, from the same module, before anything is sampled.
+ *
+ * `--declared` skips it, so the difference is a flag rather than an argument.
+ */
 function interiors() {
   const dir = path.join(ROOT, 'game/data/world/interiors');
-  return fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort()
+  const list = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort()
     .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
+  if (has('--declared')) return list;
+  const I = {};
+  for (const r of list) I[r.id] = r;
+  const sdir = path.join(ROOT, 'game/data/world/settlements');
+  const docs = fs.readdirSync(sdir).filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(fs.readFileSync(path.join(sdir, f), 'utf8')));
+  applyInteriorBounds(docs.map((d) => planSettlement(d, I)), I, docs, {});
+  return list;
 }
 
 // ---- THE SKY, copied from `sim/stealth/system.js#skyAmbient` for the clear-weather case only ----
@@ -253,6 +273,58 @@ if (has('--selftest')) {
   process.stdout.write(`selftest: PASS — 5 arms. The round-3 control disagrees on ${ctl.disagree} cells; the shipped policy is measured below.\n`);
 }
 
+/**
+ * DOES THE ROOM STILL DISCRIMINATE, and what did the derived ambient cost?
+ *
+ * Raising an interior's floor from a flat 0.04 to a daylight-derived value cannot be waved through:
+ * the round-3 critic's 2x2 arm 01 showed that flattening the ambient is what destroys the light
+ * term, and a brighter floor clamps more of the room at L 1.0000. So the cost is measured, both
+ * ways, over the whole province, and published whichever way it comes out.
+ */
+function discrimination() {
+  const list = interiors();
+  const arms = [
+    { id: 'r3_flat_0.04', amb: () => UNLIT_L },
+    { id: 'r4_derived_noon_clear', amb: (r) => interiorAmbientL(r, 1.00).L },
+    { id: 'r4_derived_noon_overcast', amb: (r) => interiorAmbientL(r, 0.75).L },
+    { id: 'r4_derived_0300_overcast', amb: (r) => interiorAmbientL(r, 0.09).L },
+    { id: 'CONTROL_r3_critic_arm01_0.75', amb: () => 0.75 },
+  ];
+  const out = [];
+  for (const arm of arms) {
+    let disc = 0, flat = 0, sum = 0;
+    for (const rec of list) {
+      const f = fieldFor(simArm(rec), arm.amb(rec));
+      let mn = Infinity, mx = -Infinity;
+      const b = rec.bounds_m;
+      for (let x = b.x[0] + 0.2; x <= b.x[1] - 0.2; x += 0.4) {
+        for (let z = b.z[0] + 0.2; z <= b.z[1] - 0.2; z += 0.4) {
+          const L = f.sample(x, b.y[0] + 1.35, z, null);
+          if (L < mn) mn = L; if (L > mx) mx = L;
+        }
+      }
+      const sp = mx - mn;
+      sum += sp;
+      if (sp > 0.30) disc++;
+      if (sp < 1e-9) flat++;
+    }
+    out.push({ arm: arm.id, rooms: list.length, discriminating: disc, flat, mean_spread: +(sum / list.length).toFixed(4) });
+  }
+  return out;
+}
+
+if (has('--apertures')) {
+  const rows = interiors().map((r) => ({ id: r.id, ...windowPlan(r) })).sort((a, b) => b.aperture_ratio - a.aperture_ratio);
+  const windowed = rows.filter((r) => !r.windowless);
+  process.stdout.write(`\naperture ratios over ${rows.length} interiors (${has('--declared') ? 'DECLARED' : 'JOINED'} bounds)\n`);
+  for (const r of windowed.slice(0, 3)) process.stdout.write(`  ${r.id.padEnd(26)} ${r.count} panes / ${r.floor_area_m2.toFixed(1)} m2 = ${r.aperture_ratio.toFixed(5)}\n`);
+  process.stdout.write(`  ...\n`);
+  for (const r of windowed.slice(-3)) process.stdout.write(`  ${r.id.padEnd(26)} ${r.count} panes / ${r.floor_area_m2.toFixed(1)} m2 = ${r.aperture_ratio.toFixed(5)}\n`);
+  process.stdout.write(`  windowless: ${rows.filter((r) => r.windowless).map((r) => r.id).join(', ')}\n`);
+  process.stdout.write(`  MAX = ${windowed[0].aperture_ratio.toFixed(6)}  ->  DAYLIGHT_K = (${CANOPY_DAY_L} - ${UNLIT_L}) / MAX = ${((CANOPY_DAY_L - UNLIT_L) / windowed[0].aperture_ratio).toFixed(4)}  (shipped: ${DAYLIGHT_K.toFixed(4)})\n\n`);
+  process.exit(0);
+}
+
 const hour = Number(val('--hour', 12));
 const shipped = run('now', hour);
 const control = run('r3', hour);
@@ -284,13 +356,23 @@ if (VERBOSE) {
   for (const r of bad.slice(0, 30)) process.stdout.write(`    ${r.id.padEnd(26)} ${r.disagree}/${r.cells}  renderer ${r.renderer_lights} sim ${r.sim_sources}\n`);
 }
 
-const pass = shipped.disagree === 0 && worstRegressed > CFG.interior_ambient_L && control.disagree > 0;
-process.stdout.write(`\n  ${pass ? 'PASS' : 'FAIL'}  0 disagreeing cells required (got ${shipped.disagree}); the eleven rooms above ${CFG.interior_ambient_L} (got ${worstRegressed.toFixed(4)}); the control must bite (got ${control.disagree}).\n`);
+const disc = discrimination();
+process.stdout.write(`\n  DOES THE ROOM STILL DISCRIMINATE — spread over each room's floor, all ${shipped.interiors} interiors\n${'-'.repeat(84)}\n`);
+process.stdout.write(`  ${'ambient arm'.padEnd(32)} ${'spread>0.30'.padStart(12)} ${'flat'.padStart(6)} ${'mean spread'.padStart(12)}\n`);
+for (const d of disc) process.stdout.write(`  ${d.arm.padEnd(32)} ${String(`${d.discriminating}/${d.rooms}`).padStart(12)} ${String(d.flat).padStart(6)} ${String(d.mean_spread).padStart(12)}\n`);
+process.stdout.write('  The last row is the round-3 critic\'s 2x2 arm 01 — the old 0.75 ambient with the lamps kept.\n');
+
+const r3arm = disc.find((d) => d.arm === 'r3_flat_0.04');
+const r4arm = disc.find((d) => d.arm === 'r4_derived_noon_clear');
+const ctlArm = disc.find((d) => d.arm === 'CONTROL_r3_critic_arm01_0.75');
+const pass = shipped.disagree === 0 && worstRegressed > CFG.interior_ambient_L && control.disagree > 0
+  && r4arm.discriminating >= r3arm.discriminating - 3 && r4arm.discriminating > ctlArm.discriminating;
+process.stdout.write(`\n  ${pass ? 'PASS' : 'FAIL'}  0 disagreeing cells (got ${shipped.disagree}); the eleven rooms above ${CFG.interior_ambient_L} (got ${worstRegressed.toFixed(4)}); the control bites (got ${control.disagree}); the derived ambient costs at most 3 discriminating rooms against round 3's constant (${r3arm.discriminating} -> ${r4arm.discriminating}) and beats the 0.75 arm (${ctlArm.discriminating}).\n`);
 process.stdout.write(`  ambient constants in play: unlit ${UNLIT_L}, daylight_k ${DAYLIGHT_K.toFixed(4)}\n\n`);
 
 if (JSON_OUT) {
   fs.mkdirSync(path.dirname(path.join(ROOT, JSON_OUT)), { recursive: true });
-  fs.writeFileSync(path.join(ROOT, JSON_OUT), JSON.stringify({ shipped, control, regressed, shadow_L: SHADOW_L, hour }, null, 2) + '\n');
+  fs.writeFileSync(path.join(ROOT, JSON_OUT), JSON.stringify({ shipped, control, regressed, discrimination: disc, shadow_L: SHADOW_L, hour, joined_bounds: !has('--declared') }, null, 2) + '\n');
   process.stdout.write(`  wrote ${JSON_OUT}\n\n`);
 }
 process.exit(pass ? 0 : 1);

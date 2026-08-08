@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `c8414d7`: 746 tools, 153 reference
+so it cannot drift. Generated at `67ae051`: 746 tools, 153 reference
 items, 73 pieces in flight.
 
 Its purpose is to stop 73+ concurrent agents each paying separately to discover the
@@ -1079,15 +1079,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-20` | building | refusals in voice (faction-refusals.json + Engine.factionRefusal) then the probe | `orchestration/status/W1-20.json` `game/data/quests/faction-joining-wave1.json` `game/data/quests/hooks.json` `game/data/crime/sanction.json` `game/src/sim/crime/sanction.js` `game/data/index.json` |
+| `W1-15-r4` | ? | update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4- | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `PLAYABILITY` | starting | read RULES/INDEX/README/W1-TOUCH; attempt to make headless chromium reach github.io throug | `orchestration/status/PLAYABILITY.json` |
-| `W1-20` | building | author the four joining quests | `orchestration/status/W1-20.json` |
 | `W1-27` | measuring | finish lore/faction/tone/difficulty reads, then build tools/coherence/w1-27-coherence.mjs  | `orchestration/status/W1-27.json` |
 | `W1-24` | building | write cc-scan.mjs | `orchestration/status/W1-24.json` |
 | `W1-28` | starting | build tools/journey/jrn02-hour.mjs — the hour driver. journey-run.mjs registers jrn02-firs | `orchestration/status/W1-28.json` |
 | `critic-w1-touch` | running | read RULES/INDEX/ARBITRATION/RI-JRN04, verify the main.js->TouchInput import chain (attack | `orchestration/status/critic-w1-touch.json` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
-| `W1-15-r4` | ? | update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4- | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `critic-w1-deploy` | running | read RULES.md (done), INDEX.md, then the four subjects | `orchestration/status/critic-w1-deploy.json` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |

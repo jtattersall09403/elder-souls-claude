@@ -53,5 +53,7 @@
   "redundant_with": [
     "W1-15-r3"
   ],
-  "checks_green": "node tools/check-data.mjs exit 0 (566 files); node tools/analysis/crime-audit.mjs 41/41"
+  "checks_green": "node tools/check-data.mjs exit 0 (566 files); node tools/analysis/crime-audit.mjs 41/41",
+  "blocked_by_neighbour": "At the time of the r4 live re-run the engine threw at boot: 'QuestBook: 16 integrity failure(s) in game/data/quests/**' (Q-CORT-00, Q-DOCK-00, Q-ROOT-00, Q-VAKH-00 journal band + a banned-prose direction). Not this piece's files and not this piece's assertion \u2014 RULES.md 13's exact shape, a fail-closed check landed against data that does not satisfy it, and it takes down every browser probe in the fleet. Recorded rather than worked around; the 16/16 live run below was taken immediately before it appeared.",
+  "live_16_of_16": "tools/harness/w1-15-r4-live.mjs \u2014 16/16 at the run recorded in reports/w1-15/r4-live.json"
 }

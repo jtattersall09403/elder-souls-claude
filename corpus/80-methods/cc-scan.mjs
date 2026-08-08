@@ -241,7 +241,7 @@ export function scan(text, opts = {}) {
     S('S1', !claims, claims
       ? 'no === VIS DECLARATION === block, in a file that makes visual claims. RI-VIS01 §B: "A verdict without it is void and scores 0."'
       : 'no declaration block, and the file makes no visual claim — nothing to declare.');
-    return finish({ structural, tripwires, waivers, blocks, absent: claims, declarations: [] });
+    return finish({ structural, tripwires, waivers, blocks, absent: claims, na: !claims, declarations: [] });
   }
 
   const decls = [];
@@ -428,12 +428,19 @@ export function scan(text, opts = {}) {
 
 function finish(r) {
   const failed = r.structural.filter((s) => !s.ok);
-  const verdict = r.absent ? 'ABSENT' : failed.length ? 'VOID' : r.tripwires.length ? 'TRIPWIRE' : 'CLEAN';
+  // NOT_APPLICABLE vs CLEAN. A file with no declaration AND no visual claim was never examined,
+  // and reporting CLEAN over it is a pass over an empty sample set — `tools/lib/graded.mjs`'s
+  // whole subject, and the reason 55 of 70 wave-1 verdicts came back "clean" on the first run of
+  // this tool over the real corpus. They are not clean. They are not about visuals.
+  const verdict = r.absent ? 'ABSENT'
+    : r.na ? 'NOT_APPLICABLE'
+      : failed.length ? 'VOID'
+        : r.tripwires.length ? 'TRIPWIRE' : 'CLEAN';
   return {
     schema: 'elder-souls/cc-scan@1',
     item: 'RI-VIS01',
     verdict,
-    exit: EXIT[verdict === 'CLEAN' ? 'OK' : verdict],
+    exit: EXIT[verdict === 'CLEAN' || verdict === 'NOT_APPLICABLE' ? 'OK' : verdict],
     structural: r.structural,
     structural_failed: failed.map((s) => s.id),
     tripwires: r.tripwires,
