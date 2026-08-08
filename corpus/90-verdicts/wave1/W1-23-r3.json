@@ -1,0 +1,476 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-23-lore-registry-and-the-provinces-canon",
+  "piece_title": "W1-23 round 3 — lore, the library, and the province's canon (RI-LOR03 + RI-LOR06 + RI-LOR04)",
+  "subsystem_paths": [
+    "lore.canon.registry",
+    "lore.canon.argonian",
+    "lore.naming.conventions",
+    "lore.book.structure",
+    "dialogue.topics.truth",
+    "coherence.lore.consistency"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-23-r3",
+    "role": "critic.lore.canon",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T09:10:00Z",
+    "finished_at": "2026-08-08T11:55:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "0f5f456ee6d224725eac81e75845de09656e57bd",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "harness_commands": [
+      {
+        "command": "node tools/lore/critic-w1-23-r3-reach.mjs --self-test",
+        "exit_code": 0,
+        "stdout_artifact": "self-test PASS — 14/14. Each measure broken on purpose: pair reach re-run with everything placed / nothing placed / one side placed; the naming classifier run against a Jel roster and a descriptive roster; the 'of the ...' articled form confirmed NOT flagged; the fact-striking confirmed to work on a copy."
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r3-reach.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "19 mutual pairs: both sides reachable 3, one 1, NEITHER 15. 28 disputed facts: 16 move, 12 inert. CONTROL striking undisputed CF-001: 0 of 162396 changed. 217 named Argonians, 121 hyphenated-English (55.8%) -> RI-LOR04 §4 FAILED."
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r3.mjs --self-test",
+        "exit_code": 0,
+        "stdout_artifact": "self-test PASS — 19/19"
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r3.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "152 texts / 110,420 words. 7 of 10 taxa below their §2 minimum, shortfall 27. 105 of 152 texts are not a readable object in a room. 268 taught topics, 0 root, 96 of 121 books teach only topics that reach no consumer."
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "note": "A text task. No screenshot was taken and none is claimed; the dispatch specified no browser and CONSUMPTION did not require one, because the perturbation runs the shipped converse.js and world/canon.js modules directly against game/data — the same code engine.js._installCanon() runs at boot.",
+    "declared_before_citation": true
+  },
+  "reference_items": [
+    {
+      "id": "RI-LOR03",
+      "path": "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "0-5 band",
+      "native_score": 3,
+      "native_max": 5,
+      "native_verdict": "The writing itself is band-5 work and the contradiction design is genuine. Held to band 3 because §2's per-taxon table is a table of MINIMUMS and seven of ten rows are under it, and because §2's '>=8 pairs of books must contradict each other' is satisfied as a registry claim and fails as a world claim at 3 reachable pairs.",
+      "score_0_10": 6,
+      "measured": "full",
+      "justification": "152 texts / 110,420 words recounted independently of both instruments; 152 distinct ids, no duplicates. Nine texts read end to end before any measurement. Cross-cutting quotas all pass and were each recomputed: Argonian-authored 45 (>=14), skill-book tagged 63 (>=26), multi-volume series 5 (>=3), median 582 words (target 520), p90 1470 (target 1600), wrong_on_purpose 21 (>=6). 57 directed contradiction edges resolve to 19 MUTUAL pairs with 0 naming a book not on disk.",
+      "why_not_ten": "Seven of ten taxa are below their stated minimum (T1 13/16, T2 6/10, T3 9/14, T5 4/10, T7 9/12, T8 5/10, T9 5/6), total shortfall 27 texts, and the corpus clears the 112 total only because T4 is over-filled 61 against a floor of 16. Seven texts carry no taxon at all. The starved taxa are the expensive ones — poetry, folk tale, imperial propaganda — and the overshoot is in the ledger, which a quest-document piece produces as a by-product.",
+      "checks": [
+        {
+          "id": "lor03-s2-corpus-total",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "152 texts against a target of 112. Median 582 words (target 520), p90 1470 (target 1600).",
+          "threshold": ">=112 texts",
+          "note": "A sibling reported '70 of 112'. That figure is stale; recounted today at 152 by two tools that share no code."
+        },
+        {
+          "id": "lor03-s2-per-taxon-minimums",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "7 of 10 taxa below floor; shortfall 27 texts; 7 texts untaxoned. T4 61/16.",
+          "threshold": "§2 caption: 'Counts below are minimums.'",
+          "note": "No gate in the tree reads book.taxon for a floor, so the corpus passes the total row while missing most of the taxa."
+        },
+        {
+          "id": "lor03-s2-eight-contradicting-pairs",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "19 mutual pairs registered; 3 have both sides reachable anywhere under game/, 1 has one side, 15 have neither.",
+          "threshold": ">=8 pairs of books must contradict each other",
+          "note": "Satisfied as a registry claim, failed as a world claim. The bar is about books a reader can compare. Every gate in the tree checks registration; none checks reach.",
+          "evidence": [
+            "tools/lore/critic-w1-23-r3-reach.mjs"
+          ]
+        },
+        {
+          "id": "lor03-prose-tics",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "Strict pass — second-person imperative directing the PLAYER, location hints, stated stakes, stated morals, 'in conclusion', 'what it all means' — returns 3 hits in 110,420 words, and all 3 are false positives on reading (each addresses an apprentice inside a T6 manual).",
+          "threshold": "quest-brief phrasing, stated stakes, tidy summary sentences, modern helpfulness, signposting, 'you must', any line telling the player where to go",
+          "note": "REPORTED AGAINST MY OWN INSTRUMENT: critic-w1-23-r3.mjs §B reports 26 hits and I do not stand behind that number. It fires on 'simply' and 'you must' regardless of voice, and §2's own table gives T6's defining move as 'numbered procedure, imperative mood'. The corpus is cleaner than my first tool claimed."
+        },
+        {
+          "id": "lor03-canon-never-explained",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "No compendium, no summary entry, no in-game encyclopedia. getCanonState() is a harness surface. The shipped register carries no narrator adjudication.",
+          "threshold": "no in-game resolution of contradictions",
+          "note": "Closest call is the publisher's afterword in the-lizard-kings-bride, which lists the novel's errors — but it is an in-world document with a commercial motive, arguing rather than narrating, and its last word is given to a bookseller with a stake. It survives."
+        },
+        {
+          "id": "lor03-quest-hint-ceiling",
+          "result": "unmeasurable",
+          "hard_fail": false,
+          "value": "45 of 152 texts (29.6%) carry a quest mechanism (gates / knowledge_key / revealed_by_id).",
+          "threshold": "<=10% may contain a direct quest hint",
+          "note": "Recorded, not called a breach. Almost all 45 are evidence ledgers and charter files where the document IS the evidence rather than a hint pointing elsewhere. Reading the-blackrose-lease-roll as 'a direct quest hint' would be reading the field, not the text."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "tools/lore/critic-w1-23-r3.mjs",
+        "tools/lore/critic-w1-23-r3-reach.mjs"
+      ]
+    },
+    {
+      "id": "RI-LOR06",
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-5 band",
+      "native_score": 3,
+      "native_max": 5,
+      "native_verdict": "Band 3. The discipline is real — 19 two-sided fights about what IS the case, no dangling partners, no narrator adjudicator — but 12 of 28 registered disputes are inert under perturbation, which is the item's own 'How we lose' #8: a registry full of things a player cannot perceive.",
+      "score_0_10": 6,
+      "measured": "full",
+      "justification": "57 directed edges resolve to 19 mutual pairs with 0 naming a book not on disk, recomputed by an instrument that self-tests the mutual/one-way/dangling distinction in both directions. The disputes are about what is the case — who built the xanmeers, what caused the Flu, whether subjects of the Empire are held as property — not about what is worth doing.",
+      "why_not_ten": "Per-dispute perturbation over 162,396 (npc,topic) pairs: 12 of 28 registered disputes change nothing anybody says. They are the province's largest questions — is the Hist one mind or many trees, what caused the Knahaten Flu, who cut the first sapwell, does the labour-lease raise any question of consent. A dispute that is registered, sealed and unobservable from every chair in the world is a document.",
+      "checks": [
+        {
+          "id": "lor06-mutual-pairs",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "57 directed edges -> 19 MUTUAL pairs, 0 dangling.",
+          "threshold": ">=8, and a directed edge alone is not a pair",
+          "note": "A directed edge alone would let eight books point at eight silent partners and satisfy a naive count. The instrument separates mutual from one-way and self-tests both."
+        },
+        {
+          "id": "lor06-dispute-inertness",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "28 disputed facts: 16 change what somebody says when their holders are struck, 12 change nothing. Inert: CF-D002, D003, D004, D005, D007, D009, D012, D014, D016, D019, D020, D021.",
+          "threshold": "a registered dispute should be perceivable",
+          "note": "The split is not random: the inert twelve are the disputes voiced by BOOKS, and the books have no world-side reader. The register's dialogue half works; its library half does not.",
+          "evidence": [
+            "tools/lore/critic-w1-23-r3-reach.mjs"
+          ]
+        },
+        {
+          "id": "lor06-no-narrator-adjudication",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "0 facts carry a narrator ruling in the shipped register; the seal is a sha256 and the salt is corpus-side only.",
+          "threshold": "the game must not adjudicate"
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "tools/lore/critic-w1-23-r3-reach.mjs"
+      ]
+    },
+    {
+      "id": "RI-LOR04",
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "0-5 band",
+      "native_score": 2,
+      "native_max": 5,
+      "native_verdict": "Band 2 — 'the languages exist but bleed into each other'. §4's roster rule is failed by its own stated wording, and the bleed is literal: 33 Argonian NPCs carry established Dunmer or Khajiit given names. No apostrophe appears in any Argonian name, so the item's 0-FAIL condition is clear.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "justification": "RI-LOR04 §4 verbatim: 'A settlement roster in which most Argonians carry hyphenated English names has failed this section however well each individual name scores.' Its own attested table puts the Tamrielic-descriptive form at 11%. Measured over the shipped roster: 121 of 217 named Argonians (55.8%) carry a hyphenated-English descriptive name. 'Most'. The classifier self-tests in both directions and never matches a Jel compound (Wuleen-Kus, Ee-Vashum, Ixt-Shaneekh).",
+      "why_not_ten": "Beyond the §4 failure: 33 Argonian NPCs carry an established Dunmer or Khajiit given name bolted to an Argonian epithet (Ahnassi Dark-Water, Falura Nine-Teeth, Llarara the Elder, Bevene the Patient, Nartise Wet-Foot, Onwen Quick-Tally) — and Sedura Nine-Teeth is not a name at all, sedura being a Dunmer honorific, so the roster contains an Argonian called 'Sir Nine-Teeth'. 43 distinct names are reused across settlements (Wanan the Shorter is six different people in six towns). 18 names carry an unarticled template slug visible in the shipped string: 'Llarara the Elder of salvage yard', 'Deek Slow-Rain of docks', 'Beem-Kiune Nine-Teeth of high street'.",
+      "checks": [
+        {
+          "id": "lor04-s4-roster-shape",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "121 of 217 named Argonians (55.8%) hyphenated-English, against an attested share of 11%.",
+          "threshold": "§4: a roster in which MOST Argonians carry hyphenated English names has failed this section",
+          "note": "The hand-authored names are good Jel — Wuleen-Kus, Ee-Vashum, Ixtu-Meer, Sesh-Anaat, Ojal-Weeth. The defect is entirely in the generated settlement rosters (pop-*.json).",
+          "evidence": [
+            "tools/lore/critic-w1-23-r3-reach.mjs"
+          ]
+        },
+        {
+          "id": "lor04-apostrophe-hard-fail",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "0 apostrophes in any Argonian name across 227 Argonian-race records.",
+          "threshold": "Any apostrophe in an Argonian name -> 0, FAIL"
+        },
+        {
+          "id": "lor04-cross-culture-given-names",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "33 Argonian-race NPCs whose given name is an established Dunmer or Khajiit name.",
+          "threshold": "the languages must not bleed into each other",
+          "note": "Sedura is a Dunmer honorific, not a given name."
+        },
+        {
+          "id": "lor04-violation-rate-bands",
+          "result": "unmeasurable",
+          "hard_fail": false,
+          "value": "Not computed.",
+          "threshold": "band 5 <=1% violations, blind attribution >=90%",
+          "note": "RULES #24. The item's §5 invokes a validator with --culture jel. The only tool in the tree is tools/uesp/mine-argonian-names.mjs, which mines the UESP extract and does not validate. The validator named by the method does not exist, so the numeric bands could not be computed and this axis is marked partial rather than claiming a band I did not measure."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "tools/lore/critic-w1-23-r3-reach.mjs"
+      ]
+    },
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/00-doctrine/ARBITRATION.md",
+      "side": "neutral",
+      "kind": "trace",
+      "native_scale": "consumed / not consumed",
+      "native_score": 2,
+      "native_max": 5,
+      "native_verdict": "The register half is consumed and demonstrated with a working control. The library half — 152 texts, 110,420 words — reaches nothing: 99 texts are referenced nowhere under game/ outside the file that defines them.",
+      "score_0_10": 5,
+      "measured": "partial",
+      "justification": "POSITIVE ARM: striking every holder from CF-D008 ('Are subjects of the Empire held as property in this province?') silences 78 of 162,396 (npc,topic) answers, swept through the shipped converse.js infoFor() with the shipped CanonRegistry. CF-D001 silences 20. CONTROL ARM: striking an undisputed fact changes 0 of 162,396. The two arms differ, so the probe is not a rubber stamp. Measured against today's tree: 578 topic nodes / 468 distinct topic ids / 1,280 infos / 347 NPCs.",
+      "why_not_ten": "Three independent routes agree that the library reaches nothing. (1) 99 of 152 texts are referenced nowhere under game/ outside game/data/books — not an interior readable, not an item, not a container, not a quest, not a line of code; the test counts a single mention anywhere as reachable. (2) 177 of 268 taught topics appear nowhere else in the tree; of the 91 that do, 0 are root topics, and converse.js:342 topicsFor() surfaces a held topic only if it is root — so a non-root topic in topicsKnown cannot reach a topic list. The 11 named by a quest gate are all also ordinary dialogue topics reachable through an info to: edge, so conversation supplies every one without a book being opened. (3) Per-dispute perturbation leaves 12 of 28 disputes inert.",
+      "checks": [
+        {
+          "id": "mth07-perturb-positive",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "CF-D008 struck -> 78 (npc,topic) answers silenced of 162,396. CF-D001 -> 20.",
+          "threshold": "perturb the model, observe an entity change behaviour"
+        },
+        {
+          "id": "mth07-perturb-control",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "Striking an undisputed fact (CF-001) changes 0 of 162,396.",
+          "threshold": "the control arm must not move",
+          "note": "RULES #4/#6. My first control run reported 18,607 changed and that was my own bug — I passed a CanonRegistry where a sweep map was expected. Fixed and re-run. The bug is the reason the control exists and it is recorded rather than quietly corrected."
+        },
+        {
+          "id": "mth07-library-reach",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "99 of 152 texts referenced nowhere under game/ outside game/data/books. 105 of 152 are not a readable object in any room.",
+          "threshold": "name the world-side consumer",
+          "note": "Re-derived at 0f5f456, AFTER game/data/world/readables/site-marks.json landed mid-run. The number did not move."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "tools/lore/critic-w1-23-r3-reach.mjs",
+        "tools/lore/critic-w1-23-r3.mjs"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tools/lore/critic-w1-23-r3-reach.mjs",
+      "kind": "report",
+      "produced_by": "node tools/lore/critic-w1-23-r3-reach.mjs",
+      "note": "Pair reach, per-dispute inertness with a control, and the RI-LOR04 §4 roster-shape measure. --self-test 14/14, each measure broken on purpose."
+    },
+    {
+      "path": "tools/lore/critic-w1-23-r3.mjs",
+      "kind": "report",
+      "produced_by": "node tools/lore/critic-w1-23-r3.mjs",
+      "note": "Taxon floors, tic families, directed-vs-mutual edges, placement and topic reach. --self-test 19/19. Its §B tic count over-fires and is corrected in this verdict."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t1/pack.json",
+      "kind": "blind-pack",
+      "produced_by": "pre-existing; inspected not used",
+      "note": "NEGATIVE EVIDENCE. Declares stripping: 'identifying phrases redacted'. [REDACTED] marks appear only ever in B (t1 B:2 A:0, t7 B:5 A:0) — the same one-sided tell that voided the r4 prose pack. No reveal key on disk."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-23-r3.md",
+      "kind": "report",
+      "produced_by": "written by the critic; every figure in it reproduced by the two instruments above",
+      "note": "The verdict prose, with the nine texts read end to end and quoted."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "Nothing in this piece touches the fight. The library, the register and the naming rosters are world-side only; no combat model, timing, damage or enemy behaviour is authored or altered here.",
+      "note": "Nothing in this piece touches the fight.",
+      "checks": [
+        {
+          "id": "ar1-no-combat-surface",
+          "result": "not_applicable",
+          "value": "This piece authors game/data/books, game/data/lore/canon.json, game/data/npcs name fields and dialogue topic gating. No combat model, attack timing, damage number, i-frame window or enemy behaviour is touched.",
+          "threshold": "roll-to-hit, dice damage, pausing mid-fight, untelegraphed instant attacks, animation cancels, level-scaled enemies"
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "note": "The rule exists to catch 'item descriptions replacing NPC dialogue as the primary lore vector'. This build is the opposite and is right to be: dialogue is primary and load-bearing (1,280 infos, 78 answers moving on one registered dispute), books are secondary. The §4 finding is not that books should carry the plot — it is that a secondary vector still has to be reachable, and 99 of 152 texts are not reachable at all.",
+      "checks": [
+        {
+          "id": "ar2-lore-vector-primacy",
+          "result": "pass",
+          "value": "Dialogue is the primary lore vector and is load-bearing: 1,280 infos across 468 topics, and striking one registered dispute holder set moves 78 answers. Books are secondary and carry no plot: 0 of 268 taught topics are root topics, and all 11 topics named by a quest gate are independently reachable through conversation via an info to: edge.",
+          "threshold": "item descriptions replacing NPC dialogue as the primary lore vector -> automatic fail"
+        },
+        {
+          "id": "ar2-no-objective-markers-or-codex",
+          "result": "pass",
+          "value": "No compendium, summary entry or in-game encyclopedia resolves any contradiction. getCanonState() is a harness surface only. The shipped register carries 0 narrator rulings.",
+          "threshold": "objective markers, bonfire warp, minimal/absent dialogue, procedural loot, soul-currency purchases"
+        }
+      ]
+    },
+    "ar3_seam_crossing": "pass",
+    "seam_sterile": false,
+    "ar3_note": "The register crosses the seam: a speaker's faction standing decides which side of a registered dispute they will give you, via converse.js:239 canon.allows(info, npc). Demonstrated at 78 answers under perturbation, with a control that does not move."
+  },
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "aggregation_note": "min-over-axes as the dispatch specified: RI-LOR03 6, RI-LOR06 6, RI-MTH07 consumption 5, RI-LOR04 4 -> 4.",
+    "band_label": "The writing is the best in the project and nobody can read it: 3 of 19 registered contradiction pairs have both sides reachable, 15 have neither, and the province's central moral fact is argued by two books that exist nowhere in the world",
+    "confidence": "high",
+    "confidence_note": "Every figure is a count or a boolean over the shipped data, taken through the same engine modules the game loads, with no browser and no timing. The pair-reach, inertness and naming measures each self-test in both directions and were re-derived at 0f5f456 after the world tree moved mid-run. Where my numbers overlap the sibling instrument's they agree (152 texts, 19 mutual pairs, 0 root topics, 11 quest gates, 48 dialogue-index hits). NOT CLAIMED: the RI-LOR04 numeric violation bands, which need a validator that does not exist; any blind-comparison result, for the reasons in the verdict §6."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "Min-over-axes 4 against a wave-1 gate of 7.0.",
+    "RI-LOR03 §2's '>=8 pairs of books must contradict each other' is satisfied as a registry claim (19) and fails as a world claim (3 reachable), and no gate in the tree can tell the difference.",
+    "RI-LOR04 §4 is failed by its own stated wording: 55.8% of named Argonians carry hyphenated-English names against an attested 11%.",
+    "12 of 28 registered disputes are inert under perturbation."
+  ],
+  "biggest_gap": {
+    "id": "W1-23-r3-G1",
+    "what": "Three of nineteen registered contradiction pairs have both sides reachable by a player. Fifteen have neither side reachable anywhere under game/. The ford pair — the best writing in the project — and the province's central moral fact (CF-062/CF-D008, whether subjects of the Empire are held as property, argued by the-blessings-of-the-coast against ledger-and-journal-of-andrel-vorin) are each argued by two books that are referenced nowhere in the world.",
+    "why_it_matters": "The bar for this piece was that the library is books, not a codex, and that two books which disagree are the point. The disagreement was authored, registered, sealed and gated — and then left where nothing can reach it. This is the project's eighteen-plus pattern in its most painful form: not a model nothing reads, but a model that IS read, wired to a corpus the reader cannot get to. The three pairs that do survive are all the same argument, about one document, in one building, so the surviving diversity is near zero. RI-LOR06's discipline passes and the player still cannot perceive the province disagreeing with itself about the Hist, the Flu, the xanmeers, or slavery.",
+    "evidence": [
+      "tools/lore/critic-w1-23-r3-reach.mjs",
+      "tools/lore/critic-w1-23-r3.mjs",
+      "corpus/90-verdicts/wave1/W1-23-r3.md"
+    ],
+    "remedy": {
+      "action": "Place the 30 books carrying the 15 unreachable disputes as `readable` entries in interiors that already exist, starting with the four pairs that carry the province own subjects (the ford, slavery, the Knahaten Flu, the Hist-soul question); then lift the pair-reach measure out of tools/lore/critic-w1-23-r3-reach.mjs into tools/lore/canon-census.mjs so it runs where check-content.mjs runs.",
+      "acceptance": "node tools/lore/critic-w1-23-r3-reach.mjs reports >=15 of 19 mutual pairs with BOTH sides reachable (today 3), and canon-census.mjs exits non-zero when any registered dispute has fewer than 2 of its sides placed. Re-measurable by re-running both tools at the fix commit.",
+      "targets": [
+        "game/data/world/interiors/",
+        "game/data/world/readables/",
+        "tools/lore/canon-census.mjs"
+      ]
+    },
+    "severity": "blocking",
+    "gap_id": "GAP-W1-library-unreachable-contradiction-pairs",
+    "evidence_note": "critic-w1-23-r3-reach.mjs section A: '19 MUTUAL pairs (0 naming a book not on disk); both sides reachable: 3, one side: 1, NEITHER side: 15'. Section B: '28 disputed facts: 16 change what somebody says, 12 change NOTHING', control striking an undisputed fact 0 of 162,396. critic-w1-23-r3.mjs section D1: '47 of 152 texts are a readable object in a room; 105 are not'. Verdict §5."
+  },
+  "secondary_observations": [
+    {
+      "what": "Seven of ten taxa are below RI-LOR03 §2's stated minimums (shortfall 27 texts) and the corpus clears the 112 total only because T4 diaries/ledgers is over-filled 61 against a floor of 16. Seven texts carry no taxon at all. No gate reads book.taxon for a floor.",
+      "severity": "major"
+    },
+    {
+      "what": "RI-LOR04 §4 is failed by its own wording — 121 of 217 named Argonians (55.8%) carry hyphenated-English descriptive names against an attested 11%. With it: 33 Argonians carry established Dunmer or Khajiit given names (including Sedura Nine-Teeth, sedura being a Dunmer honorific), 43 names are reused across settlements (Wanan the Shorter is six people), and 18 carry an unarticled template slug visible in the shipped string ('of salvage yard', 'of docks', 'of high street'). The hand-authored names are good Jel; the defect is entirely in the generated pop-*.json rosters.",
+      "severity": "major"
+    },
+    {
+      "what": "The four RI-LOR03 blind packs are unusable and should be rebuilt or retired. [REDACTED] marks appear only in B (t1 B:2/A:0, t7 B:5/A:0) — the same one-sided tell that voided the r4 prose pack, because only the reference text contains real place names worth stripping. All four answers were produced by a pre-registered mechanical rule ('higher /eleven/i rate per 1000 words is the imitation'), which is a provenance heuristic and not a judgement of quality. t3 and t4 differ 68 lines to 36 and 13 lines to 36, a formatting tell the pack's own prompt forbids using. No reveal key is on disk, so the picks cannot be scored at all.",
+      "severity": "major"
+    },
+    {
+      "what": "My own instrument tools/lore/critic-w1-23-r3.mjs §B reports 26 prose-tic hits and over-fires. It matches 'simply' and 'you must' regardless of voice, and §2's own table gives T6's defining move as 'numbered procedure, imperative mood'. A strict pass returns 3 hits in 110,420 words, all false positives. Recorded against myself so the next round does not inherit the wrong number.",
+      "severity": "minor"
+    },
+    {
+      "what": "The Hist is handled in-voice and this is NOT a defect, checked before claiming it: 'Hist' appears only 9 times in 110,420 words, but tree/trees/sap appear 98 times and keeper(s) 105, across 32 texts. Argonians saying 'the tree' rather than the scholar's word is correct.",
+      "severity": "minor"
+    },
+    {
+      "what": "The Argonian tribes barely reach the library despite CF-C023 and the round-2 faction records: Agacephs 3 mentions, Paatru 1, Archein 1, Sarpa 2, Dead-Water 1, Miredancers 1 across the whole corpus. Round 2's own note said the next registration should come from a book pair that actually landed; no tribe has one.",
+      "severity": "minor"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "W1-23-r1-G1",
+      "evidence": [
+        "tools/lore/critic-w1-23-r3-reach.mjs"
+      ],
+      "status": "closed",
+      "closed_by_builder_of_fix": false,
+      "evidence_note": "Round 1's gap was that the province's only Argonian voice on slavery was a refusal. Re-measured today: striking CF-D008's holders moves 78 (npc,topic) answers, and CF-D028 (the lease-roll dispute) is voiced by two disagreeing Argonian actors. The dialogue half of the register does the work round 2 claimed."
+    },
+    {
+      "gap_id": "W1-23-r1-G2",
+      "evidence": [
+        "tools/lore/critic-w1-23-r3-reach.mjs"
+      ],
+      "status": "closed",
+      "closed_by_builder_of_fix": false,
+      "evidence_note": "Seal invertibility. 0 of 27 sealed rulings recoverable by hashing the published position ids; the salt is a corpus-side field that project() does not copy. Re-confirmed against the shipped game/data/lore/canon.json, which carries no truth_seal_salt."
+    },
+    {
+      "gap_id": "W1-23-r1-G3",
+      "evidence": [
+        "tools/lore/critic-w1-23-r3-reach.mjs"
+      ],
+      "status": "superseded",
+      "closed_by_builder_of_fix": false,
+      "evidence_note": "Round 1 flagged CF-C023's falsified `measured:` claim and round 2 corrected it and armed staleMeasured() in canon-census.mjs. Superseded rather than closed because the deeper form of the same defect is now visible one level up: the census checks that a registered dispute is VOICED and never that its voices are REACHABLE, which is this round's biggest gap."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "what": "RI-LOR03 §2 requires \">=8 pairs of books must contradict each other, each pair registered in canon-facts.json\" and the whole tree reads that as a registration requirement. It is silent on whether either book is placed anywhere a reader can reach. The item should say so: a pair is a pair when both sides are readable, and the census that enforces it should measure reach, not registration.",
+      "where": "corpus/60-lore/RI-LOR03-in-world-book-structure.md §2"
+    },
+    {
+      "what": "RI-LOR04 §5 invokes a name validator with --culture jel and no such tool exists in the tree; tools/uesp/mine-argonian-names.mjs mines the UESP extract and does not validate. The item’s scoring bands (violation rate, blind culture-attribution) are therefore uncomputable as written. RULES #24.",
+      "where": "corpus/60-lore/RI-LOR04-naming-and-language.md §5 and Scoring"
+    },
+    {
+      "what": "RI-LOR03 §2’s per-taxon table is captioned \"Counts below are minimums\" but the only shipped gate over it (tools/analysis/book-budget.mjs row L8) checks the corpus TOTAL. A corpus can miss seven of ten taxa and pass. The floors should be enforced per row or the caption should be softened.",
+      "where": "corpus/60-lore/RI-LOR03-in-world-book-structure.md §2 / tools/analysis/book-budget.mjs"
+    }
+  ],
+  "method_deviations": [
+    "BLIND COMPARISON NOT RUN. Four RI-LOR03 packs exist and I inspected rather than used them: two of the four carry the same one-sided [REDACTED] tell that voided the r4 prose pack, all four were answered by a provenance heuristic rather than a quality judgement, and no reveal key is on disk. Substituted direct reading of nine texts end to end, quoted in the verdict §0, and said so plainly rather than reporting a blind score I did not earn.",
+    "RI-LOR04's numeric bands not computed. They score a per-name violation rate and a blind culture-attribution rate; the item's §5 invokes a validator with --culture jel and no such validator exists in the tree (tools/uesp/mine-argonian-names.mjs mines, it does not validate). RULES #24 — a builder should build it. The axis is marked measured: partial rather than claiming a band.",
+    "RI-LOR06 methods 2 and 3 (secret-leak triage and adjudication pass) not run — unchanged from round 1, still unreviewable at 657 hits.",
+    "No browser and no screenshot. Dispatched as a text task; CONSUMPTION did not need one because the perturbation runs the shipped converse.js and world/canon.js directly against game/data. No timing figure is published because none was taken."
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    {
+      "path": "game/src/character/converse.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "topicsFor() at :342 unions the NPC's own topics with root topics the player holds, and nothing else — which is why a non-root topic in topicsKnown cannot reach a topic list. Read after measuring that 0 of 268 taught topics are root."
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "_readBook() at :4019 unions topics_taught into topicsKnown. Read to establish what the library's only mechanical effect is, after measuring that 177 of 268 taught topics appear nowhere else."
+    },
+    {
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "purpose": "quote-written-content",
+      "note": "§4's roster rule and its attested 86/11 table, quoted verbatim in the verdict."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "Two false entries, both declared in method_deviations and both in the verdict body. (a) ran_every_assigned_method: RI-LOR04's numeric bands need a validator the tree does not contain, and RI-LOR06 methods 2 and 3 remain unreviewable at 657 triage hits. (b) blind_done_where_required: a pack exists but carries the same redaction tell that voided the r4 prose pack, was answered by a provenance heuristic rather than a quality judgement, and has no reveal key on disk. I read nine texts end to end and quoted them instead. Reporting the substitution rather than a score I did not earn (RULES #26). The verdict is PROVISIONAL on the naming axis in the sense that a real validator could move RI-LOR04 up or down; it could not move the overall score above the gate, because the biggest gap sits on the consumption and RI-LOR03 axes independently."
+  },
+  "notes": "The headline of this verdict is not that the work is bad. The prose is the best in the project and I said so first and at length, with quotations, before measuring anything. The headline is that 152 texts and 110,420 words of it sit behind a door nobody opened: 99 texts referenced nowhere, 15 of 19 registered disputes with neither side reachable, 12 of 28 disputes inert under a perturbation whose control does not move. The remedy is placement plus a gate, and it is a day of work, not a rewrite."
+}

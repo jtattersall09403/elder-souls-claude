@@ -1,22 +1,33 @@
 {
   "task_id": "critic-w1-23-r3",
   "title": "CRITIC round 3 — W1-23: lore, the library, and the province's canon",
-  "status": "in_progress",
+  "status": "complete",
   "started": "2026-08-08",
   "restarted": "2026-08-08 — previous attempt died on an infrastructure error; this run starts clean and re-derives every number rather than inheriting it",
   "commit": "6c979e36bdf411b8dd665fa49d1e753cc4eeeae3",
   "method": "TEXT task. No browser unless CONSUMPTION genuinely needs one (RULES #21 gate first). Every figure taken by running the shipped engine modules (converse.js, world/canon.js) against game/data, plus a fresh instrument.",
-  "next_step": "A: count texts with a tool + read >=8 end to end, judge prose with quotes. B: prose-tic count. C: contradiction pairs. D: CONSUMPTION perturbation against today's dialogue tree (468 topics / 1283 infos). E: blind pack check for the redaction tell that voided r4.",
+  "next_step": "none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-library-unreachable-contradiction-pairs: place the 30 books carrying the 15 unreachable disputes, then gate pair REACH in canon-census.mjs.",
+  "measured_at_commit": "0f5f456ee6d224725eac81e75845de09656e57bd",
+  "head_drift": "HEAD moved 6c979e3 -> 9288ebf -> 0f5f456 under this run. The world tree DID move (new game/data/world/readables/site-marks.json, 12 interiors rewritten), so every figure was re-taken at 0f5f456. Section A/B numbers are byte-identical across the drift; the placement figure was re-derived after the new readables file landed and did not move (53 of 152).",
+  "findings_headline": "3 of 19 registered contradiction pairs have BOTH sides reachable anywhere under game/; 15 of 19 have NEITHER. 99 of 152 texts are referenced nowhere outside the file that defines them. 12 of 28 registered disputes are inert under perturbation. RI-LOR04 §4 failed: 55.8% of named Argonians carry hyphenated-English names against an attested 11%.",
+  "prose_judgement": "The prose itself is the strongest thing in the piece and is NOT the gap. Read 9 texts end to end; strict tic pass finds 3 hits in 110,420 words and all 3 are false positives in-voice.",
   "files_touched": [
-    "orchestration/status/critic-w1-23-r3.json"
-  ],
-  "files_claimed": [
+    "orchestration/status/critic-w1-23-r3.json",
+    "tools/lore/critic-w1-23-r3-reach.mjs",
     "corpus/90-verdicts/wave1/W1-23-r3.md",
     "corpus/90-verdicts/wave1/W1-23-r3.json",
-    "tools/lore/critic-w1-23-r3.mjs",
-    "tools/lore/critic-w1-23-r3-prose.mjs",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-23-r2", "W1-23-r1"],
-  "notes": "Prior attempt left a 429-line tools/lore/critic-w1-23-r3.mjs on disk. Treated as untrusted draft: re-read and re-verified before any number from it is used."
+  "files_claimed": [],
+  "redundant_with": [
+    "W1-23-r2",
+    "W1-23-r1"
+  ],
+  "notes": "Prior attempt left a 429-line tools/lore/critic-w1-23-r3.mjs on disk. Treated as untrusted draft: re-read and re-verified before any number from it is used.",
+  "gates_run": {
+    "node tools/lore/critic-w1-23-r3-reach.mjs --self-test": "PASS 14/14",
+    "node tools/lore/critic-w1-23-r3.mjs --self-test": "PASS 19/19",
+    "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-23-r3.json": "OK, 0 warnings"
+  },
+  "no_browser": "TEXT task. No browser launched and no screenshot taken; rule 27 image deliberately skipped and reported rather than faked. CONSUMPTION did not need one — the perturbation runs the shipped converse.js and world/canon.js against game/data directly."
 }
