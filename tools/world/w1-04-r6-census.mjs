@@ -76,9 +76,10 @@ const opts = {};
 if (has('--no-doorstep')) opts.doorstep = false;
 if (has('--no-lamp-clamp')) opts.lamps = false;
 if (has('--r5-doorstep')) opts.r6 = false;
+const PROP_INSET = !has('--no-prop-inset');
 const join = has('--no-join') ? { note: 'the whole join was not run' } : EX.applyInteriorBounds(plans, I, Object.values(S), opts);
 
-const out = { commit: null, self_break: SELF_BREAK, arm: { ...opts, no_join: has('--no-join') }, findings: [] };
+const out = { commit: null, self_break: SELF_BREAK, arm: { ...opts, no_join: has('--no-join'), prop_inset: !has('--no-prop-inset') }, findings: [] };
 try {
   out.commit = (await import('node:child_process')).execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim();
 } catch { /* not a git tree */ }
@@ -231,7 +232,7 @@ for (const id of ids) {
   }
   const root = new THREE.Group();
   // THE SIGNATURE IS (root, rec). Getting it wrong is how a census reads nothing and passes.
-  if (SELF_BREAK) IN.buildInterior(rec); else IN.buildInterior(root, rec);
+  if (SELF_BREAK) IN.buildInterior(rec); else IN.buildInterior(root, rec, { propInset: PROP_INSET });
   let seen = 0;
   const box = new THREE.Box3();
   root.traverse((m) => {

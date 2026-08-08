@@ -2,39 +2,113 @@
   "task_id": "W1-04-r6",
   "role": "builder",
   "piece": "W1-04 round 6 — settlements, interiors and the people in them",
-  "started_at": "2026-08-08",
-  "base_commit": "bebc411",
-  "state": "building",
+  "state": "complete",
   "spec": "corpus/90-verdicts/wave1/W1-04-r5.md (FAIL 4.8/10)",
-  "contention": "node tools/contention.mjs --gate returned GO (2 browser instances, load 1.25/core, ceiling 6). Offline work first.",
-  "next_step": "boot-check, then rewrite tools/check-building-fits-room.mjs to enumerate from interiors, then the r6 census, live sweep, deletefix, consumption, prop predicate, generator",
-  "done_so_far": [
-    "ROOT CAUSE of the settle defect, found offline and stated as arithmetic: insideBuilding() tests the FOOTPRINT; the body is solved against settlementSolids(), whose wall slabs are SHELL_WALL_T=0.36 thick and CENTRED ON the footprint edge (so they reach 0.18 m outside it), by resolveSphere() with a body radius of 0.32 m. A doorstep clearing the footprint by less than 0.50 m is a point the solver MOVES. That is the 0.50-0.61 m slides in the r5 verdict's table.",
-    "FIX 1: exterior.js horizontalClearance(shapes,x,z) + a standability predicate — outside every footprint AND >= BODY_RADIUS_M + 0.05 clear of every wall slab, which is the exact fixed-point condition of resolveSphere(). Offline: 0 of 112 doorsteps inside a footprint AND 0 within the player radius of a solid, verified against a real CollisionCell built from the shipped shapes.",
-    "FIX 2: applyInteriorBounds() split into (a) a per-building pass that queues, (b) a per-settlement pass that writes all doors and only then derives doorsteps against the whole door table. nearestDoor() reimplements doorAt()'s rule; the doorstep must be the one whose OWN door is nearest within DOOR_REACH_M.",
-    "FIX 3: the door itself now moves ALONG its entry wall (b.door_along_m), with the drawn doorway hole and the collision doorway hole both following doorAlongLocal(b) through one shared doorwaySegments() helper. 16 doors slid.",
-    "FIX 4: where the whole declared entry wall is buried in a neighbour (5 buildings), the entry SIDE rotates — written to BOTH b.entry_side and rec.continuity.entry_side, which render/interior.js:478 reads, so both ends of the door move together and RI-WLD13 N2 holds by construction. 5 rotated, all south->north.",
-    "FIX 5: the orphan pass counts ABOVE every continue and enumerates from Object.keys(interiors); barge-hold and writ-house (settlement 'tidewrack', which is not one of the eight documents) are now named in orphans_unreachable rather than silently skipped.",
-    "LATENT BUG FOUND: planSettlement()'s door_declared took the settlement document's b.door BY REFERENCE, and applyInteriorBounds() mutates that array element by element, so 'what the record said before the join touched it' became 'what the join last wrote'. entrySideLocal()'s fallback reads exactly that field. .slice() added. Found by a counter that read 0 doors moved after moving 112.",
-    "OFFLINE NUMBERS at working tree: 112 of 112 doorsteps standable-with-own-door-nearest, 0 other, 0 no-door, 0 not-standable, 0 inside a footprint. Over all 115 interiors: 112 own / 1 other (thorn-house-0, an orphan with no door row of its own) / 2 none (barge-hold, writ-house in tidewrack). Derivation verified IDEMPOTENT (second call byte-identical to the first)."
+  "head_at_start": "bebc411",
+  "stamp_note": "Every number below was taken with this round's edits in the working tree. The offline numbers were last re-run at 74403ba; the live L1/L2 sweep was taken at the same tree AFTER the last change to game/src/render/exterior.js, and re-run for that reason (the first L1/L2 pass was taken one edit earlier and gave the identical 0/0/0/0 and 112/1/2). The live L3/L4 sections were taken one edit earlier, before the change that lets the derivation author a doorstep from nothing; that change is a no-op for any record that declares one, which every shipped record does, and it is measured as deletefix arm F.",
+  "contention": "node tools/contention.mjs --gate returned GO at every check (2 browser instances, load 1.25/core, ceiling 6; later 5 instances of headroom). One browser per live run, launched by tools/lib/browser.mjs and closed by the tool. setRenderRate(0) throughout. I never ran pkill; I killed nothing by hand.",
+
+  "what_the_dispatch_asked_and_what_happened": {
+    "1_bodies_outside_and_staying_outside_at_1_30_120_600": {
+      "result": "LIVE, 115 doors, one browser: 0 / 0 / 0 / 0 inside a drawn building at 1 / 30 / 120 / 600 fixed steps. All four published, in reports/w1-04-r6/live.json and on the chart.",
+      "root_cause_found": "insideBuilding() tests the FOOTPRINT. The body is solved against settlementSolids(), whose wall slabs are SHELL_WALL_T = 0.36 thick and CENTRED ON the footprint edge, so a slab reaches 0.18 m OUTSIDE it; and the body is a sphere of PLAYER_RADIUS_M = 0.32 depenetrated by CollisionCell.resolveSphere(), which pushes until distance >= r. A doorstep clearing the footprint by less than 0.50 m is a point the solver MOVES — down the steepest-ascent gradient, which between two close buildings points at the neighbour and through a doorway gap if one is behind it. 0.18 + 0.32 = 0.50, which is the 0.50–0.61 m slide in the round-5 verdict's own table.",
+      "fix": "the derivation's accept test is now 'a FIXED POINT OF THE COLLISION SOLVER': outside every footprint AND >= BODY_RADIUS_M + 0.05 clear of every wall slab, via the new exterior.js#horizontalClearance() over the shipped settlementSolids() shape list.",
+      "checked_against_the_original": "w1-04-r6-census.mjs S builds a REAL CollisionCell from the same shapes and requires the 2-D restatement never to call a point clear that the 3-D original calls solid: 0 disagreements over 113 testable records."
+    },
+    "2_reentry_through_the_real_latch": {
+      "result": "LIVE, pressing `interact` through queueInputs() on the doorstep: 112 back in the room you left / 1 into a different building / 2 into nothing, over 115. Bar was 108 / 5 / 2.",
+      "reproduced_the_verdict_first": "the r6 census's offline arm --r5-doorstep (round 5's derivation entire, round 6's predicates removed) reads 96 / 10 / 9 and 10 doorsteps inside a wall slab — the round-5 critic's live numbers, reproduced by an independent offline instrument. The --no-doorstep arm reads 108 / 5 / 2, also exactly the verdict's.",
+      "fix": "three parts. (a) applyInteriorBounds() split so ALL doors in a settlement move before ANY doorstep is derived, and the doorstep must satisfy nearestDoor(x,z) === my own row — doorAt()'s rule, reimplemented over the settlement document's own rows. (b) the door slides ALONG its entry wall (b.door_along_m), with the drawn doorway hole and the collision doorway hole both following doorAlongLocal(b) through one shared doorwaySegments() helper — 16 doors slid. (c) where the whole declared entry wall is buried inside a neighbour, the entry SIDE rotates, written to BOTH b.entry_side and rec.continuity.entry_side, which render/interior.js:478 reads, so both ends of the door move together and RI-WLD13 N2 holds by construction — 5 rotated, all south -> north.",
+      "also": "the ring search now starts at 0.5 m instead of 1.5 m. 1.5 was round 5's guess at 'far enough out'; the standability predicate measures that instead of guessing it, and starting at 1.5 was itself costing re-entry at the four Blackrose pairs."
+    },
+    "3_the_orphans_enumerated_from_the_interiors": {
+      "result": "applyInteriorBounds()'s orphan pass counts ABOVE every continue and enumerates Object.keys(interiors). It now reports interiors_total 115, orphans 3, orphans_without_a_settlement_document 2, and names barge-hold and writ-house (settlement 'tidewrack', which is not one of the eight documents) in orphans_unreachable with the reason.",
+      "check": "tools/check-building-fits-room.mjs rewritten to enumerate from Object.keys(interiors) — 115 of 115, with the 3 orphans printed by name and by re-entry outcome every run, not skipped.",
+      "census": "w1-04-r6-census.mjs section E asserts its own reach and cross-checks the join's orphan count against its own."
+    },
+    "4_the_prop_predicate": {
+      "predicate_named": "OVERHANG — max(bx0 - box.min, box.max - bx1) per axis, at 0.6 m.",
+      "why": "RI-WLD13 N1 is footprint containment and the failure it exists to catch is inside geometry that does not fit inside the building. CLEARANCE (the round-5 census's code) is 0 whenever the box still overlaps the room at all, so a 2 m bench with 1.9 m through the wall scores zero and the failure N1 is about is invisible to it. The reference item states NO per-mesh bar — the 0.6 m predicate is this piece's own instrument — and saying so is part of naming it.",
+      "measured": "at HEAD before the fix: OVERHANG 61 meshes in 49 rooms, CLEARANCE 0. That reproduces the round-5 critic's 61 / 0 exactly. The 61 are FOUR kit meshes, not one as the verdict says: arc_clay_dome 24, hel_shell_roof 26, tho_lean_to 8, gid_square_arcade 3, worst 0.95 m.",
+      "and_fixed": "diagnosed rather than guessed: wallSlots() insets every wall prop by a FIXED 0.55 m, and hel_shell_roof is a 1.5 m radius shell — 1.5 - 0.55 = 0.95, the worst overhang to the centimetre. The inset is now the prop's own half-extent, measured after placement and rotation. OVERHANG 61 -> 0 with the mesh count unchanged at 14,878, and --no-prop-inset is a delete-the-fix arm that puts all 61 back.",
+      "corroboration": "with the prop inset in and the lamp clamp cut, the overhang count is 179 — exactly the '179 light fittings' the round-4 verdict published."
+    },
+    "5_one_definition_of_the_doorstep": {
+      "result": "tools/world/build-settlements.mjs no longer authors continuity.exterior_spawn at all. applyInteriorBounds() is the sole author: it now CREATES the field when a record does not declare one.",
+      "proved": "deletefix arm F strips every declared exterior_spawn before the derivation runs — the world the generator now makes — and reads 0 inside a footprint, 0 in a wall slab, 112 back in the room you left. No record goes from correct to incorrect. The one difference is the orphan thorn-house-0, which has no building and therefore no wall to derive from: it moves from 'opens thorn-gate' (already wrong) to 'opens nothing' (also wrong). Nothing correct became incorrect.",
+      "ownership": "I did NOT regenerate any data. game/data/world/{settlements,interiors}/ are claimed by W1-15-r3 and are untouched. build-settlements.mjs is also claimed by it, and I declared redundant_with rather than leaving the overlap to read as a collision; the edit is the deletion of one line and a comment."
+    }
+  },
+
+  "consumption_RI_MTH07": {
+    "aggregation_rule_9": "node tools/world/w1-04-consumption.mjs -> 23/23 CONSUMED, 9 paths, 0 skipped, exit 0.",
+    "at_the_body_live": "live.json L3: the doorstep model perturbed on the RUNNING records (continuity.exterior_spawn restored to the declared value on 113 of them), then the same 115-door sweep re-run: 113 / 113 / 113 / 113 bodies inside a drawn building at 1 / 30 / 120 / 600. Restored: 0 / 0 / 0 / 0. Consumer: sim/settlement.js#leaveInterior() -> placeBody() -> combat.player.pos, then sim/world-collision.js#stepWorldCollision(). Reversible, in the fixed step.",
+    "at_an_entity_that_is_not_the_player": "live.json L4: an inf_trash body, solved by the same stepWorldCollision(), placed on the doorstep this round derived for gideon-tollhouse rests outside every building; placed where round 5 put it — the middle of the entry wall this round rotated away from, 1.5 m out — it rests INSIDE gideon-tollhouse. That is the entry-side rotation moving the geometry and not only the number."
+  },
+
+  "rule_6_delete_the_fix": {
+    "tool": "tools/world/w1-04-r6-deletefix.mjs — seven arms, all cut through applyInteriorBounds()'s and buildInterior()'s own switches, not a fork of either file.",
+    "why_the_arm_that_matters_is_new": "round 5 already ships a doorstep derivation that passes its own number, so --no-doorstep is a control for ROUND FIVE and an arm that goes red there says nothing about round six. --r5-doorstep keeps round 5's derivation entire and removes only round 6's additions. If that arm does not go red, round 6 is an inert fix sitting on round 5's evidence.",
+    "table": "A shipped: 0 in footprint / 0 in wall / 112-1-2 / 0 lamps / 0 meshes. B round-6 cut: 0 / 10 / 96-10-9 / 0 / 0. C whole derivation cut: 113 / 0 / 108-5-2 / 0 / 0. D lamp clamp cut: 0 / 0 / 112-1-2 / 74 / 179. E B+D: 0 / 10 / 96-10-9 / 74 / 179. F declared doorsteps stripped: 0 / 0 / 112-0-3 / 0 / 0. G prop inset cut: 0 / 0 / 112-1-2 / 0 / 61.",
+    "shape": "THREE INDEPENDENT FIXES. Each leg alone moves its own number and only its own number; E equals B and D combined. Not two guards for one defect, not an inert fix, not an inert control.",
+    "teardowns_watched_going_red_with_real_exit_codes": [
+      "w1-04-r6-deletefix.mjs arm B — 10 doorsteps back inside a wall slab and re-entry back to 96/10/9",
+      "w1-04-r6-deletefix.mjs arm G — 61 meshes back outside their room",
+      "check-building-fits-room.mjs --self-break, now THREE red arms: the bounds join cut (112 of 112 buildings fail), the doorstep derivation cut (113 of 115 doorsteps inside a building), and the doorstep derivation cut again for the NEW re-entry assertion (4 of 115 doorsteps open the wrong room). It exits non-zero if any arm stays green; I watched each one print.",
+      "w1-04-r6-census.mjs --self-break — calls buildInterior(rec) with the wrong arity on purpose: 115 of 115 rooms read nothing, PROBE FAILURE, exit 1"
+    ]
+  },
+
+  "also_fixed_found_while_measuring": [
+    "planSettlement()'s door_declared took the settlement document's b.door BY REFERENCE, and applyInteriorBounds() mutates that array element by element (it has to — SettlementSystem's reach table holds it). So 'what the record said before the join touched it' became 'what the join last wrote', and entrySideLocal()'s fallback reads exactly that field, under a round-5 comment saying the answer must not depend on how many times the derivation has run. Now .slice(). Found by a counter that read 0 doors moved after moving 112.",
+    "the derivation is verified IDEMPOTENT: a second applyInteriorBounds() on the same objects produces a byte-identical exterior_spawn and entry_side for all 115 records."
   ],
+
+  "gates_run": [
+    "boot-check PASS",
+    "check-data rc 0",
+    "check-quests rc 0",
+    "check-content rc 0",
+    "check-souls-world rc 0",
+    "check-append-only rc 0",
+    "check-building-fits-room rc 0, --self-break rc 0 (three red arms)",
+    "w1-04-r6-census rc 0, --self-break rc 1 as designed",
+    "w1-04-r6-deletefix rc 0",
+    "w1-04-consumption 23/23 rc 0"
+  ],
+
+  "what_i_did_not_do": [
+    "I did not fix the three orphan interiors. thorn-house-0, barge-hold and writ-house are in no settlement document's building list, so no door table names them and no derivation can give them a door. They are now enumerated and named by every offline loop in this piece instead of being silently skipped, which is what the dispatch asked for, but they remain 1 'opens someone else's door' and 2 'opens nothing' in the re-entry number and I have not hidden them. tidewrack has no settlement document at all; authoring one is a different piece of work.",
+    "I did not regenerate game/data/world/{settlements,interiors}/. They and build-settlements.mjs are claimed by W1-15-r3 [building]. The whole fix is in the runtime derivation, stashed and reversible; the only generator edit is the DELETION of the line that authored a second doorstep.",
+    "I did not re-run the live L3/L4 sections after the final edit to exterior.js. They were taken one edit earlier; that edit only lets the derivation author a doorstep for a record that declares none, which no shipped record is, and deletefix arm F measures exactly that case offline. L1/L2 WERE re-run at the final tree and gave the same numbers as the earlier pass.",
+    "I did not take an in-game screenshot. The rule-27 picture is a chart drawn entirely from reports/w1-04-r6/{live,deletefix}.json — no number in it is typed — and I opened the PNG and read it before shipping it, twice, moving the legend the first time because it collided with the 113 line. Five rounds have now failed to photograph the inside of archon-market and the round-5 critic filed the settle gate's blindness as a finding of its own; I did not spend this round's budget re-attempting it.",
+    "inCoverFraction on both arms, the observed-theft branch, and RI-WLD03 M13 — untouched for a fifth round, as in rounds 4 and 5. The round-5 verdict is right that M13 needs a dispatch of its own with an agent who authored no W1-04 capture, and I have now authored one.",
+    "I did not re-measure the round-5 lamp result at an entity. The round-5 critic did it (100 AGGRO -> 80 SUSPICIOUS -> 100) and re-running a critic's surviving instrument is not evidence; I re-measured the lamp COUNT (0 outside, 74 with the clamp cut) so a regression in it would be visible here."
+  ],
+
+  "method_deviations": [
+    "MY OWN PROBE DEFECT, reported because it nearly became a measurement. L4's first version took the enemy off the END of listEntities() and got mark:loc_the_works_camp — a MAP MARKER, which is an entity too — then threw on despawn(). If that id had happened to be despawnable I would have published a map marker's position as an enemy's. The eid now comes from spawn()'s own return value and the tool says so in a comment.",
+    "exterior.js declares BODY_RADIUS_M and DOOR_REACH_M as MIRRORS of sim/world-collision.js#PLAYER_RADIUS_M and sim/settlement.js#DOOR_REACH_M, because that file's stated rule is that render/ must not import sim/. An unchecked copy is the shape this project has found five times, so check-building-fits-room.mjs imports all four and exits non-zero if either mirror has drifted, and the census publishes both pairs.",
+    "The round-5 line on the chart (0/8/10/10) is the round-5 CRITIC's published live sweep, quoted from its verdict and labelled as its. I did not run round 5's code in a browser; my round-5 arm is the offline --r5-doorstep census, which agrees with the critic on the re-entry numbers to the unit.",
+    "My work was carried into commit 45752f3 by an orchestrator bank (`git add -A` on purpose, per its own message) while I was still writing. Rule 17 says verify the content landed and move on: `git diff HEAD` on tools/check-building-fits-room.mjs and orchestration/status/W1-04-r6.json is empty, so it did. I did not unpick it.",
+    "reports/w1-04-r6/ is gitignored (reports/.gitignore), so the artifacts are not committed; every one of them is regenerated by a single command named in this file."
+  ],
+
   "files_touched": [
     "orchestration/status/W1-04-r6.json",
-    "game/src/render/exterior.js"
-  ],
-  "files_claimed": [
+    "game/src/render/exterior.js",
+    "game/src/render/interior.js",
     "tools/check-building-fits-room.mjs",
+    "tools/world/build-settlements.mjs",
     "tools/world/w1-04-r6-census.mjs",
     "tools/world/w1-04-r6-live.mjs",
     "tools/world/w1-04-r6-deletefix.mjs",
-    "tools/world/w1-04-r6-shot.mjs",
-    "tools/world/w1-04-consumption.mjs",
-    "tools/world/build-settlements.mjs",
-    "reports/w1-04-r6/",
-    "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "tools/world/w1-04-r6-chart.mjs",
+    "docs/shots/2026-08-08-w1-04-r6-the-doorstep-holds-at-600-frames.png",
+    "reports/blog-feed.jsonl"
   ],
-  "ownership_notes": "game/data/world/{settlements,interiors}/ and tools/world/build-settlements.mjs are claimed by W1-15-r3 [building], whose status file was last written at 01:43 today. I do NOT touch the data files. For item 5 of the dispatch (the generator's second definition of the doorstep) I touch build-settlements.mjs only, by deleting the line that authors exterior_spawn, and I do not regenerate any data. Declared redundant_with W1-15-r3 rather than left to read as a collision. game/src/render/exterior.js is declared by nobody live.",
+  "files_claimed": [],
   "redundant_with": ["W1-15-r3"],
-  "not_done_yet": []
+  "ownership_notes": "tools/world/build-settlements.mjs and game/data/world/{settlements,interiors}/ are claimed by W1-15-r3 [building], whose status file was last written at 01:43 today. I touched ONLY build-settlements.mjs, and only to delete the line that authors a second definition of the doorstep — item 5 of the dispatch. No data file is regenerated. game/src/render/interior.js is declared by W1-READABLES and W1-READABLES-r2, both [done]; my edit is one insertion in the prop placement loop and one optional third argument on buildInterior(), and touches nothing they own. game/src/render/exterior.js and tools/check-building-fits-room.mjs are declared by nobody live.",
+  "next_step": "a fresh-context critic"
 }

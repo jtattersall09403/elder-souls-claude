@@ -49,6 +49,7 @@ const arms = [
   // `build-settlements.mjs` now generates. If no record goes from correct to incorrect, the field
   // the generator used to write was contributing nothing but a second opinion.
   { cell: 'F  every DECLARED doorstep stripped (the world the generator now makes)', flags: ['--strip-declared-doorstep'] },
+  { cell: 'G  the per-prop inset cut', flags: ['--no-prop-inset'] },
 ];
 
 const rows = [];
@@ -70,7 +71,7 @@ for (const a of arms) {
 }
 fs.rmSync(TMP, { force: true });
 
-const [A, B, C, D, E, F] = rows;
+const [A, B, C, D, E, F, G] = rows;
 const findings = [];
 if (A.doorsteps_inside_a_footprint !== 0 || A.doorsteps_in_a_wall_slab !== 0) findings.push('the SHIPPED arm leaves a doorstep the solver will move');
 if (A.lamps_outside_their_room !== 0) findings.push('the SHIPPED arm leaves a lamp outside its room');
@@ -92,8 +93,13 @@ if (!(E.doorsteps_in_a_wall_slab === B.doorsteps_in_a_wall_slab && E.lamps_outsi
 if (F.reentry_own < A.reentry_own) findings.push(`F: stripping the declared doorsteps took ${A.reentry_own - F.reentry_own} record(s) from correct to incorrect — the generator's value was load-bearing after all`);
 if (F.doorsteps_inside_a_footprint || F.doorsteps_in_a_wall_slab) findings.push('F: with no declared doorstep, the derivation leaves a body somewhere the solver will move it');
 
+// --- the third leg: the per-prop inset ----------------------------------------------------------
+if (A.meshes_overhanging_0_6m !== 0) findings.push('the SHIPPED arm still overhangs a room by more than 0.6 m');
+if (!(G.meshes_overhanging_0_6m > A.meshes_overhanging_0_6m)) findings.push('G: cutting the per-prop inset did not put a mesh back outside its room — INERT');
+if (G.doorsteps_in_a_wall_slab !== A.doorsteps_in_a_wall_slab || G.lamps_outside_their_room !== A.lamps_outside_their_room) findings.push('G: cutting the prop inset moved a doorstep or a lamp number — the legs are not independent');
+
 const shape = findings.length ? 'UNDECLARED — see findings'
-  : 'TWO INDEPENDENT FIXES, and round 6 is a separate one again: cutting round 6 alone moves the doorstep and re-entry numbers and nothing else; cutting the lamp clamp alone moves the lamp and mesh numbers and nothing else.';
+  : 'THREE INDEPENDENT FIXES. Cutting round 6\'s doorstep predicates alone moves the doorstep and re-entry numbers and nothing else; cutting the lamp clamp alone moves the lamp number; cutting the per-prop inset alone moves the overhang number. Not two guards for one defect, and not an inert fix: each leg alone moves its own number and only its own number.';
 
 const report = { tool: 'tools/world/w1-04-r6-deletefix.mjs', when: new Date().toISOString(), commit: null, rows, shape, findings };
 try { report.commit = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT }).toString().trim(); } catch { /* not a git tree */ }

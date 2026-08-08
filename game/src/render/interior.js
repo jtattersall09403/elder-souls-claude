@@ -434,7 +434,11 @@ function floorSlots(bx, bz, step) {
  * reached the scene graph, which is what a consumption probe needs and what an unconsumed model
  * cannot produce.
  */
-export function buildInterior(root, rec) {
+export function buildInterior(root, rec, opts) {
+  // ROUND 6: `opts.propInset === false` disables the per-prop inset added below, so RULES rule 6
+  // can delete that leg on a copy without editing this file. Optional third argument; every
+  // existing caller passes two and gets the shipped behaviour.
+  const PROP_INSET = !(opts && opts.propInset === false);
   const summary = {
     id: rec && rec.id ? rec.id : null, name: (rec && rec.name) || null,
     kind: (rec && rec.interior_kind) || null, settlement: (rec && rec.settlement) || null,
@@ -588,6 +592,7 @@ export function buildInterior(root, rec) {
     // The inset is now the prop's OWN half-extent rather than a constant. Measured after
     // placement and rotation, because a 2.4 m lean-to turned 90° is a different width.
     {
+      if (PROP_INSET) {
       obj.updateWorldMatrix(true, true);
       const bb = new THREE.Box3().setFromObject(obj);
       if (Number.isFinite(bb.min.x) && Number.isFinite(bb.max.x)) {
@@ -600,6 +605,7 @@ export function buildInterior(root, rec) {
         else obj.position.x = (bx[0] + bx[1]) / 2 - (bb.min.x + bb.max.x) / 2 + obj.position.x;
         if (bb.max.z - bb.min.z <= bz[1] - bz[0]) obj.position.z += dz;
         else obj.position.z = (bz[0] + bz[1]) / 2 - (bb.min.z + bb.max.z) / 2 + obj.position.z;
+      }
       }
     }
     root.add(obj);
