@@ -35,31 +35,63 @@ field is the attribution key this whole programme needs, and nothing in `COST.md
 **Consequence for the ledger contract (`COST.md` §6.1):** `source` must be the **directory tree**, not the
 single glob. An instrument that reads only the glob reports the orchestrator and calls it the fleet.
 
+### 0.1a Correction, made by this plan agent before the critic saw it
+
+**My first pass double-counted, and the numbers in an earlier draft of this section were ~1.7× too high.**
+The transcript repeats requests across files: deduplicating on `requestId` (falling back to `message.id`)
+removes **39,245 priced requests carrying 6.90 Btok of cache_read**. `subagents/workflows/wf_*/` is a second
+duplication route and is excluded here (top-level `subagents/*.jsonl` only).
+
+The sibling `COST-INSTRUMENT` plan, banked at `db449a5`, independently derived **$5,792.69** and found the
+same duplication. My deduped figure is **$5,887.01** all-in (**$5,346.01** subagents + ~$541 orchestrator);
+the residual gap is file-set selection, not method. **`COST-INSTRUMENT`'s number is the one of record** —
+the instrument owns cost (rule 10), and this piece consumes it. I record the disagreement and my own error
+rather than quietly restating a corrected figure as if it had always been there.
+
+**Every qualitative conclusion in this section survived the correction**, and two got stronger: cache_read's
+share rose 77.7% → **81.6%**, and C1's ceiling rose 0.20% → **0.32%** — still an order of magnitude below
+its own bar. Nothing in §2's ranking changed. That is worth stating precisely because it is the kind of
+claim a critic should distrust: the numbers moved and the conclusions did not, which is either robustness or
+motivated reasoning. The reason it is the former is that all four conclusions are **ratios and shares**,
+and uniform double-counting of whole requests scales numerator and denominator together.
+
 ### 0.2 The corrected baseline
 
 Priced at the real published rates (`claude-api` skill, cached 2026-06-24): Opus 5 **$5 / $25** per Mtok;
 Sonnet 5 **$2 / $10** per Mtok (introductory rate, in effect until 2026-08-31 — today is 2026-08-08);
 cache read **0.1×** input, 5-minute cache write **1.25×**, 1-hour cache write **2×**.
 
-| | requests | cache_read | cache_write | output | input | **USD** |
-|---|---:|---:|---:|---:|---:|---:|
-| `claude-opus-5` | 78,537 | 15.25 Btok | 290.7 Mtok | 12.29 Mtok | 2.44 Mtok | **$9,821.40** |
-| `claude-sonnet-5` | 5,780 | 952.4 Mtok | 16.16 Mtok | 0.54 Mtok | 0.69 Mtok | **$237.69** |
-| **total** | **84,317** | **16.21 Btok** | **306.9 Mtok** | **12.84 Mtok** | **3.13 Mtok** | **$10,059.08** |
+Deduplicated, subagents only (403 agents; the orchestrator's own thread adds ~$541 on top):
 
-Over a 62.1-hour span: **C/H ≈ $161.98/hour. The 25% bar is C/H ≤ $40.50/hour.**
+| | agents | requests | **USD** | share of spend |
+|---|---:|---:|---:|---:|
+| `claude-opus-5` | 368 | 42,893 | **$5,218.97** | 97.6% |
+| `claude-sonnet-5` | 35 | 3,089 | **$127.04** | **2.4%** |
+| **subagent total** | **403** | **45,982** | **$5,346.01** | |
+
+All-in (with the orchestrator) **≈ $5,887**; use `COST-INSTRUMENT`'s $5,792.69 as the figure of record.
+Its C/H is **$111.40/hour over 52 active clock-hours**, and its 25% bar is **C/H ≤ $27.85/hour**. I adopt
+its window convention (active hours, excluding idle) rather than my earlier 62.1-hour span, because
+excluding idle hours is what makes idling cost-neutral — otherwise the fleet can improve C/H by pausing,
+which is the exact gaming `COST.md` §1 forbids.
 
 ### 0.3 Where the money is, which is not where §4 assumes
 
+Subagent spend by token class, deduplicated:
+
 | token class | USD | share |
 |---|---:|---:|
-| **cache_read** | **$7,817.34** | **77.7%** |
-| cache_write (5m) | $1,760.36 | 17.5% |
-| output | $312.76 | 3.1% |
-| cache_write (1h) | $155.06 | 1.5% |
-| input (uncached) | $13.56 | 0.14% |
+| **cache_read** | **$4,362.72** | **81.6%** |
+| cache_write (5m) | $926.72 | 17.3% |
+| output | $51.46 | 1.0% |
+| input (uncached) | $5.11 | 0.1% |
+| cache_write (1h) | $0.00 | 0.0% |
 
-**The cache-hit ratio is already 98.1%** of non-output input volume. `COST.md` §4.2 anticipated this
+**Output is 1% of spend.** Every instinct that says "make the agent write less" is aimed at a rounding
+error. The 1-hour cache writes are entirely the orchestrator's, not the fleet's — but the ledger schema
+must still split the TTLs, because 5m and 1h are priced 1.25× and 2× and the orchestrator is in scope.
+
+**The cache-hit ratio is already 98.3%** of non-output input volume. `COST.md` §4.2 anticipated this
 (*"it may already be high, in which case this lever is smaller than it looks"*) — but the conclusion it
 draws is wrong in an important way. The ratio being high does not make the lever small; it means **the
 lever is not the ratio.** Cost is dominated by re-reading an already-cached context on every request:
@@ -68,8 +100,8 @@ lever is not the ratio.** Cost is dominated by re-reading an already-cached cont
 
 So there are exactly three multiplicative handles, and only the third is in `COST.md`'s lever list:
 
-1. **requests per agent** — median **186**, p95 443, max 545.
-2. **context size per request** — median **151,760** tokens re-read per request, p95 262,931.
+1. **requests per agent** — median **102**, p95 258, max 359.
+2. **context size per request** — median **159,515** cached tokens re-read per request.
 3. **price per token** — the model.
 
 ### 0.4 Cost is roughly quadratic in tool calls, and nothing in the programme says so
@@ -78,30 +110,33 @@ Traced through the single largest agent (`W1-10 remediation (ultracode)`, 473 pr
 grows near-linearly with request index — 23.8k at request 0, 245k at 118, 505k at 354, 578k at 472. Summed
 context read across the turn is 172.2 Mtok; `sum / (n × max) = 0.629` (0.5 would be exactly linear growth).
 
-Across all 401 live agents, binned by request count:
+Across all 403 live agents, binned by request count (deduplicated, real USD):
 
-| requests | agents | mean cost-equivalents | per request |
+| requests | agents | mean USD/agent | USD per request |
 |---|---:|---:|---:|
-| 0–99 | 86 | 1.02 M | 16,226 |
-| 100–199 | 129 | 2.82 M | 18,714 |
-| 200–299 | 109 | 5.61 M | 22,796 |
-| 300–399 | 51 | 9.41 M | 27,488 |
-| 400–499 | 20 | 13.57 M | 29,613 |
+| 0–99 | 190 | $4.55 | $0.0836 |
+| 100–199 | 162 | $16.17 | $0.1159 |
+| 200–299 | 42 | $33.20 | $0.1389 |
+| 300–399 | 9 | $51.83 | $0.1565 |
 
-**An agent that makes twice as many tool calls costs roughly four times as much**, because each extra call
-also enlarges the context every *subsequent* call re-reads. This is the largest structural lever in the
-programme and it appears in neither `COST.md` §4 nor the research report's §6 ranking.
+**A ~3.5× rise in request count buys an ~11× rise in cost**, because each extra call also enlarges the
+context every *subsequent* call re-reads — per-request cost itself nearly doubles across the range. This is
+the largest structural lever in the programme and it appears in neither `COST.md` §4 nor the research
+report's §6 ranking. It is also the lever with the most obvious quality hazard: the cheapest agent is one
+that does no work, so **any experiment on it must be paired with a quality arm or it is worthless.**
 
 ### 0.5 Three other corrections the successors need
 
 - **`COST.md` §2: "3,230 Opus against 29 Sonnet."** That is the orchestrator's main thread. The fleet is
-  **78,537 Opus requests / 366 agents** against **5,780 Sonnet / 35 agents** — Sonnet is already **7%
+  **42,893 Opus requests / 368 agents** against **3,089 Sonnet / 35 agents** — Sonnet is already **6.7%
   of requests and 2.4% of spend**, not 0.9%. Sonnet has been used for camera work, stealth, water,
   progression, blog rounds, playability and successors. The lever is real but it is **not untouched**, and
   a claim that it is will overstate the headroom.
-- **`COST.md` §2: "a typical subagent costs 130–420k tokens."** Excluding cache_read, per-agent median is
-  **561k** (p25 390k, p75 771k, max 11.8 M). Including cache_read — which is what is billed — the median
-  agent is **29.1 M tokens**. The 130–420k figure is roughly the output+write half of a *small* agent.
+- **`COST.md` §2: "a typical subagent costs 130–420k tokens."** The median agent makes 102 priced requests
+  and costs **$4.55–$16.17** depending on bin; in tokens it is dominated by cache_read, which the 130–420k
+  figure omits entirely. Stating agent cost in undifferentiated "tokens" is the error — four token classes
+  differ in price by 250× (cache_read $0.50/Mtok vs output $25/Mtok on Opus), so a token count without its
+  class mix carries almost no information about cost.
 - **`COST.md` §6.1's published example prices are 3× the real rate** (`input: 15, cache_write: 18.75,
   cache_read: 1.5, output: 75`). The *ratios* are right; the absolute values look like Opus-4.1-era pricing.
   The instrument must not copy them, and the schema comment should be corrected. **Reversible ruling:** use
@@ -233,12 +268,12 @@ shuffled labels also produce a 10pp difference, the statistic is measuring burst
 reading the wrong field, not a null result.
 
 **Prototype result, already computed (this is a prediction the builder must reproduce or refute).**
-401 agents; 167 bursts, 78 multi-agent, largest 16. **Tight bursts (n=30): mean warm_fraction 0.958.
-Staggered (n=48): 0.964. Difference +0.6pp — an order of magnitude below the 10pp bar.** First-request
-`cache_write` totals 3.0 Mtok = **1.0% of all cache_write = 0.20% of spend** — an order of magnitude below
-the 2% ceiling. Median first-request write is **6,284 tokens**; **376 of 401 agents (93.8%) already read
-cache on their very first request**, because the 1-hour cache holds the shared prefix across the whole
-session regardless of dispatch timing.
+Deduplicated: 403 agents; 168 bursts, 79 multi-agent, largest 16. **Tight bursts (n=30): mean
+warm_fraction 0.958. Staggered (n=49): 0.965. Difference +0.7pp — an order of magnitude below the 10pp
+bar.** First-request `cache_write` totals 3.02 Mtok = **2.0% of all cache_write = 0.32% of spend** — an
+order of magnitude below the 2%-of-spend ceiling. **378 of 403 agents (93.8%) already read cache on their
+very first request**, because the shared prefix stays warm across the session regardless of dispatch
+timing.
 
 **Expected verdict: C1 is inert and should be reverted**, per its own stated tripwire. Its ceiling is 0.20%
 of spend; it cannot matter. The mechanism the research report identified is real in the API docs and

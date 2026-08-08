@@ -177,32 +177,44 @@ await game.close();
 // ---- verdict, computed here.
 const findings = [];
 const summary = [];
-const distinct = (rows, key) => [...new Set(rows.filter((r) => r.perturbation_took).map((r) => JSON.stringify(r[key])))];
+const CHANNELS = [
+  ['R1 dialogue disposition', 'disposition', 'A'],
+  ['R1 faction term', 'faction_term', 'A'],
+  ['R2 theft classification', 'theft', 'B'],
+  ['R3 trespass', 'trespassing', 'B'],
+  ['R4 arrest topics', 'arrest_topics', 'arg'],
+  ['R5 price', 'price', 'A'],
+  ['C1 guard warbrood shift', 'warbrood_shift', 'B'],
+];
 
 for (const L of report.lines) {
-  const took = L.rows.filter((r) => r.perturbation_took);
-  const s = { faction: L.faction, rows_scored: took.length, rows_total: L.rows.length };
-  if (took.length < 2) {
-    findings.push(`${L.faction}: only ${took.length} of ${L.rows.length} perturbations took — cannot score this line`);
-  }
-  for (const [label, key] of [['R1 dialogue disposition', 'disposition'], ['R1 faction term', 'faction_term'],
-    ['R3 trespass', 'trespassing'], ['R4 arrest topics', 'arrest_topics'], ['R5 price', 'price'],
-    ['C1 guard warbrood shift', 'warbrood_shift']]) {
-    const vals = distinct(took, key);
-    s[key] = { distinct_values: vals.length, values: vals.slice(0, 8) };
-    if (vals.length <= 1) findings.push(`${L.faction}: ${label} does NOT move across ranks ${took.map((r) => r.rank).join(',')} — value stayed ${vals[0]}`);
+  const scored = L.rows.filter((r) => r.channel_b_took);
+  const s = { faction: L.faction, zone: L.zone, rows_scored: scored.length, rows_total: L.rows.length, channels: {} };
+  if (scored.length < 2) findings.push(`${L.faction}: only ${scored.length} of ${L.rows.length} channel-B perturbations took — this line cannot be scored`);
+  for (const [label, key, chan] of CHANNELS) {
+    const vals = [...new Set(scored.map((r) => JSON.stringify(r[key])))];
+    s.channels[key] = { channel: chan, distinct: vals.length, values: vals.slice(0, 8) };
+    if (key === 'trespassing' && !L.zone) { s.channels[key].note = 'no faction_interior exists for this faction anywhere in the world'; continue; }
+    if (key === 'theft' && !L.zone) continue;
+    if (vals.length <= 1) findings.push(`${L.faction}: ${label} does NOT move across ranks ${scored.map((r) => r.rank).join(',')} — stayed ${vals[0]}`);
   }
   summary.push(s);
 }
 
-const out = { commit_note: 'see verdict', zone_census: report.zone_census, summary, findings, detail: report };
+// The POSITIVE CONTROL, checked explicitly: if C1 did not move on any line, nothing above is a
+// finding about the build and this tool says so instead of publishing a list of false zeroes.
+const c1Moved = summary.some((s) => s.channels.warbrood_shift && s.channels.warbrood_shift.distinct > 1);
+if (!c1Moved) findings.unshift('POSITIVE CONTROL FAILED: the guard law factor did not move either, so this run measures my driving and not the build. No row above may be read as a finding.');
+
+const out = { positive_control_c1_moved: c1Moved, summary, findings, detail: report };
 writeJson(OUT, out);
 console.log(`critic-w1-20-reach: ${findings.length} finding(s); wrote ${OUT}`);
-console.log('faction_interior zones by faction:', JSON.stringify(report.zone_census));
+console.log(`positive control (C1 guard law factor moved): ${c1Moved}`);
 for (const s of summary) {
-  console.log(`  ${s.faction}: scored ${s.rows_scored}/${s.rows_total} rows`);
-  for (const k of ['disposition', 'faction_term', 'trespassing', 'arrest_topics', 'price', 'warbrood_shift']) {
-    if (s[k]) console.log(`     ${k}: ${s[k].distinct_values} distinct — ${JSON.stringify(s[k].values)}`);
+  console.log(`  ${s.faction} (zone ${s.zone || 'NONE IN WORLD'}): scored ${s.rows_scored}/${s.rows_total}`);
+  for (const [, k] of CHANNELS.map((c) => [c[0], c[1]])) {
+    const c = s.channels[k]; if (!c) continue;
+    console.log(`     [${c.channel}] ${k}: ${c.distinct} distinct — ${JSON.stringify(c.values).slice(0, 150)}${c.note ? ' // ' + c.note : ''}`);
   }
 }
 for (const f of findings) console.log(`  FINDING: ${f}`);

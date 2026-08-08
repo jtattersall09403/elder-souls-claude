@@ -68,7 +68,12 @@ const fail = (id, why, data) => { fails++; checks.push({ id, ok: false, why, dat
 // that moves between the two arms moved because of this one line.
 const NEEDLE = `  if (mode === 'play') {`;
 function makeRevertedTree() {
-  const dst = path.join(OUT, 'reverted-tree');
+  // NOT under `reports/`. `reports/.gitignore` re-includes `**/*.md`, so a copy of the game tree
+  // parked there puts every `game/**/README.md` into the index — and on a tree where a dozen
+  // agents commit concurrently, and `tools/bank.mjs` stages everything every few minutes, that
+  // is somebody else's commit carrying 40 files of mine (RULES 17). It goes in the OS temp dir,
+  // suffixed with the task id because the scratchpad is shared and generic names collide.
+  const dst = path.join(os.tmpdir(), 'w1-touch-r2-reverted-tree');
   fs.rmSync(dst, { recursive: true, force: true });
   fs.mkdirSync(dst, { recursive: true });
   fs.cpSync(path.join(REPO_ROOT, 'game'), path.join(dst, 'game'), { recursive: true });

@@ -129,6 +129,182 @@ const BUDGET = {
 
 const RUN = path.join(RUNS_DIR, String(args.out || 'UI-CENSUS'));
 
+// ---- W1-HUD-TOAST-A: --hud-toast, a standalone browser pass -----------------------------------
+//
+// Separate from the §C/§D1 flow below on purpose (plan §4: "A needs a browser for an hour ...
+// they should not queue behind each other" generalised — this alone is ~4 harness round-trips
+// per corpus string over up to several hundred strings, and would dominate a combined run's
+// cost). `arena_duel` (the census default) is IN COMBAT, and the toast never draws in combat
+// (hud.js: `if (m.toast && !m.inCombat)`) — `ui-journal` is the non-combat fixture
+// `tools/harness/ui-pause.mjs` already uses.
+function decodePng(dataUrl) { return PNG.sync.read(Buffer.from(dataUrl.split(',')[1], 'base64')); }
+
+/** Count of pixels differing by >8 on any RGB channel between two same-size PNGs. */
+function pixelDiffCount(a, b) {
+  let n = 0;
+  const len = Math.min(a.data.length, b.data.length);
+  for (let o = 0; o < len; o += 4) {
+    if (Math.abs(a.data[o] - b.data[o]) + Math.abs(a.data[o + 1] - b.data[o + 1]) + Math.abs(a.data[o + 2] - b.data[o + 2]) > 8) n++;
+  }
+  return n;
+}
+
+const INK_HEX = '#241e1c';   // game/src/ui/theme.js PALETTE.ink — the toast's own draw colour
+
+async function runHudToastCensus(push) {
+  const width = Number(args.width || 1920), height = Number(args.height || 1080);
+  const { corpus, budget_px } = buildToastCorpus();
+  const limit = args['hud-toast-limit'] ? Number(args['hud-toast-limit']) : corpus.length;
+  const population = corpus.slice(0, limit);
+  const sample = pickA2Sample(corpus);            // A2a/A2b's 8, always the FULL corpus's picks
+
+  const h = await launchGame({ width, height, timeout: 300000 });
+  const out = { schema: 'elder-souls/hud-toast-a@1', item: 'W1-HUD-TOAST-A', at: new Date().toISOString(),
+    corpus_size: corpus.length, population_run: population.length, budget_px, checks: [] };
+  try {
+    await h.h('setRenderRate', 0);
+    await h.h('loadState', 'ui-journal');
+    await h.h('setDevicePixelRatio', 1);
+    await h.h('closeMenu');
+    await h.h('lockOn', null);
+    await h.h('stepFrames', 4);
+
+    // ---- A1: overflow_px over the population, register-derived, per element -------------------
+    const a1Results = [];
+    for (const c of population) {
+      await h.h('renderedTextClear');
+      await h.h('uiToast', c.text, 200);
+      const ui = await h.h('getUIState');
+      const el = (ui.elements || []).find((e) => e.id === 'hud.toast');
+      const reg = await h.h('getRenderedText', { surface: 'menus', owner: 'hud.toast' });
+      if (!el || !reg.measurable) { a1Results.push({ text: c.text, measured: false, reason: !el ? 'no hud.toast element' : 'register not measurable (blind surface)' }); continue; }
+      const a1 = computeA1(reg.entries, el.rect);
+      a1Results.push({ text: c.text, source: c.sources, widest_px: c.widest_px, over_budget: c.over_budget, measured: a1.measured, entries: reg.entries.length, overflow_px: a1.overflow_px, rect: el.rect });
+    }
+    const a1Measured = a1Results.filter((r) => r.measured);
+    const a1Over = a1Measured.filter((r) => r.overflow_px > 1.0);
+    out.a1 = { population: population.length, measured: a1Measured.length, over_1px: a1Over.length, worst: [...a1Measured].sort((x, y) => y.overflow_px - x.overflow_px).slice(0, 5) };
+    push('A1', 'overflow_px <= 1.0px for 100% of (element,string) pairs in C, extent read from render/text-register.js (BLOCKING-1/-3 folded)', {
+      samples: a1Measured.length, expected: population.length, sample_of: '(hud.toast, corpus string) pairs',
+      pass: () => a1Over.length === 0,
+      detail: `${a1Over.length} of ${a1Measured.length} measured pairs over 1.0px; worst ${a1Over.length ? a1Over.sort((x, y) => y.overflow_px - x.overflow_px)[0].overflow_px : 0}px`,
+      counts: { over_budget_single_run: population.filter((c) => c.over_budget).length },
+    });
+
+    // ---- A2a: cut_px, the decisive check — clip-free reference draw vs the element's own -------
+    const a2aResults = [];
+    for (const c of sample) {
+      await h.h('renderedTextClear');
+      await h.h('uiToast', c.text, 200);
+      const ui = await h.h('getUIState');
+      const el = (ui.elements || []).find((e) => e.id === 'hud.toast');
+      const rowsReg = await h.h('getRenderedText', { surface: 'menus', owner: 'hud.toast' });
+      if (!el || !rowsReg.entries.length) { a2aResults.push({ text: c.text, why: c.why, measured: false }); continue; }
+      const shotA = decodePng(await h.h('screenshot'));
+      const mark = (await h.h('getRenderedText', { surface: 'menus' })).next_index;
+      // The clip-free reference: SAME rows, SAME x/y (read back off the element's own entries,
+      // BLOCKING-6), SAME face/size/colour, drawn UNCLIPPED directly onto the same base frame —
+      // additive ink only, so any pixel that changes is ink the clip removed.
+      for (const row of rowsReg.entries) {
+        await h.h('drawOnMenus', row.text, { x: row.x, y: row.y, face: 'ink', size: 16, color: INK_HEX });
+      }
+      const refCheck = await h.h('getRenderedText', { surface: 'menus', since: mark });
+      const shotB = decodePng(await h.h('screenshot'));
+      const cut_px = pixelDiffCount(shotA, shotB);
+      a2aResults.push({ text: c.text, why: c.why, measured: true, rows: rowsReg.entries.length, reference_ink_confirmed: refCheck.entries.length > 0, cut_px, rect: el.rect });
+    }
+    const a2aMeasured = a2aResults.filter((r) => r.measured);
+    const a2aFail = a2aMeasured.filter((r) => r.cut_px > 0);
+    out.a2a = { sample: sample.length, measured: a2aMeasured.length, results: a2aResults };
+    push('A2a', 'cut_px == 0 — clip-free reference draw (BLOCKING-6 harness/api.js drawOnMenus extension) vs the element\'s own clipped render, over the 8-sample', {
+      samples: a2aMeasured.length, expected: sample.length, sample_of: 'the 3 widest, 3 narrowest, widest word, one 3-row string',
+      pass: () => a2aFail.length === 0 && a2aMeasured.every((r) => r.reference_ink_confirmed),
+      detail: `${a2aFail.length} of ${a2aMeasured.length} show cut ink; reference-draw vacuity guard ${a2aMeasured.every((r) => r.reference_ink_confirmed) ? 'held (every reference draw registered ink)' : 'FAILED — a reference draw registered nothing'}`,
+    });
+
+    // ---- A2b: escaped_px, the residue — two SAME-row-count toasts, outside-rect diff -----------
+    const byRows = new Map();
+    for (const c of corpus) { if (!byRows.has(c.predicted_row_count)) byRows.set(c.predicted_row_count, []); byRows.get(c.predicted_row_count).push(c); }
+    let pairRowCount = null, T1 = null, T2 = null;
+    for (const [rc, list] of byRows) { if (list.length >= 2) { pairRowCount = rc; T1 = list[0]; T2 = list[1]; break; } }
+    let a2b = null;
+    if (T1 && T2) {
+      await h.h('renderedTextClear'); await h.h('uiToast', T1.text, 200);
+      const ui1 = await h.h('getUIState'); const rect1 = (ui1.elements || []).find((e) => e.id === 'hud.toast').rect;
+      const shot1 = decodePng(await h.h('screenshot'));
+      await h.h('renderedTextClear'); await h.h('uiToast', T2.text, 200);
+      const ui2 = await h.h('getUIState'); const rect2 = (ui2.elements || []).find((e) => e.id === 'hud.toast').rect;
+      const shot2 = decodePng(await h.h('screenshot'));
+      const sameRect = JSON.stringify(rect1) === JSON.stringify(rect2);
+      let insidePx = 0, outsidePx = 0;
+      for (let y = 0; y < shot1.height; y++) {
+        for (let x = 0; x < shot1.width; x++) {
+          const o = (y * shot1.width + x) * 4;
+          const diff = Math.abs(shot1.data[o] - shot2.data[o]) + Math.abs(shot1.data[o + 1] - shot2.data[o + 1]) + Math.abs(shot1.data[o + 2] - shot2.data[o + 2]) > 8;
+          if (!diff) continue;
+          const inRect = sameRect && x >= rect1[0] && x < rect1[0] + rect1[2] && y >= rect1[1] && y < rect1[1] + rect1[3];
+          if (inRect) insidePx++; else outsidePx++;
+        }
+      }
+      a2b = { row_count: pairRowCount, T1: T1.text, T2: T2.text, same_rect: sameRect, rect1, rect2, escaped_px: outsidePx, changed_px_inside_rect: insidePx };
+    }
+    out.a2b = a2b;
+    push('A2b', 'escaped_px == 0 outside rect for two same-row-count toasts (rect/panel/deckle held constant); vacuity guard changed_px_inside_rect > 0', {
+      samples: a2b ? 1 : 0, sample_of: 'same-row-count toast pairs',
+      pass: () => !!a2b && a2b.same_rect && a2b.escaped_px === 0 && a2b.changed_px_inside_rect > 0,
+      detail: a2b ? `row_count ${a2b.row_count}, same_rect ${a2b.same_rect}, escaped_px ${a2b.escaped_px}, changed_px_inside_rect ${a2b.changed_px_inside_rect}` : 'no two corpus strings share a predicted row count',
+    });
+
+    // ---- A3: no silent loss --------------------------------------------------------------------
+    const a3Results = [];
+    for (const c of population) {
+      const meta = await h.page.evaluate((text) => {
+        const H = window.__HARNESS;
+        H.uiToast(text, 200);
+        const ui = H.getUIState();
+        const t = (ui.elements || []).find((e) => e.id === 'hud.toast');
+        return t ? t.meta : null;
+      }, c.text);
+      if (!meta) { a3Results.push({ text: c.text, ok: false, reason: 'no meta' }); continue; }
+      const joined = (meta.rows || []).join(' ');
+      const ok = meta.truncated === true || joined === c.text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/−/g, '-');
+      a3Results.push({ text: c.text, ok, truncated: meta.truncated, row_count: meta.row_count });
+    }
+    const a3Fail = a3Results.filter((r) => !r.ok);
+    out.a3 = { population: a3Results.length, fail: a3Fail.length, fail_samples: a3Fail.slice(0, 5) };
+    push('A3', 'no silent loss: rows.join(" ") === normalise(T) or meta.truncated === true', {
+      samples: a3Results.length, expected: population.length, sample_of: 'corpus strings',
+      pass: () => a3Fail.length === 0,
+      detail: `${a3Fail.length} of ${a3Results.length} lost text silently`,
+    });
+
+    function push(id, what, spec) { out.checks.push(...grader().push(id, what, spec) ? [] : []); }
+  } finally {
+    await h.close();
+  }
+  return out;
+}
+
+if (args['hud-toast']) {
+  const G = grader();
+  const push = (id, what, spec) => G.push(id, what, spec);
+  // reassign the local `push` used inside runHudToastCensus's closure via a module-level ref
+  globalThis.__hudToastPush = push;
+  const out = await runHudToastCensus();
+  out.checks = G.checks;
+  out.ok = out.checks.every((c) => c.status === 'PASS');
+  out.sample_table = sampleTable(out.checks, { tool: 'ui-census.mjs --hud-toast' });
+  ensureDir(RUN);
+  writeJson(path.join(RUN, 'hud-toast.json'), out);
+  fs.writeFileSync(path.join(RUN, 'hud-toast-sample-table.md'), out.sample_table + '\n');
+  if (args.json) { console.log(JSON.stringify(out, null, 2)); } else {
+    log(`hud-toast: corpus=${out.corpus_size} population_run=${out.population_run}`);
+    for (const c of out.checks) log(line(c));
+    log(`hud-toast: ${out.checks.filter((c) => c.status === 'PASS').length}/${out.checks.length} passed`);
+  }
+  process.exit(exitCode(out.checks));
+}
+
 if (args.run) {
   const cap = JSON.parse(fs.readFileSync(path.join(String(args.run), 'ui-census.json'), 'utf8'));
   report(cap);

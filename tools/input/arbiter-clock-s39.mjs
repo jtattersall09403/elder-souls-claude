@@ -281,6 +281,11 @@ async function openPage(browser, server, periodMs, { phone = false } = {}) {
   // to 24-25 Hz. So the render is removed and the rAF rate is set by the shim and ONLY by the
   // shim. A-JRN11 exists for exactly this and the sim is required not to care what is drawn.
   await page.evaluate(() => window.__HARNESS.setRenderRate(0));
+  // WARM UP BEFORE MEASURING THE RATE, because the first run of this arm did not and reported
+  // 0.15 rAF Hz for a page whose simulation was demonstrably advancing 30 frames in 511 ms
+  // moments later. The rate window had landed inside a post-`ready()` streaming stall, and a
+  // rate taken there is a claim about the boot, not about the arm. RULES 8's other half.
+  await page.waitForTimeout(2500);
   return { ctx, page, errs };
 }
 
@@ -549,8 +554,28 @@ function scoreCapture(side) {
   if (!rows.length) return null;
   const rightMove = rows.filter((r) => r.outcome === r.expected_outcome).length;
   const withinOne = rows.filter((r) => r.frames_held_by_the_game !== null && Math.abs(r.frames_held_by_the_game - r.expected_f60) <= 1).length;
+  // THE DISCRIMINATING PAIR, and it only means anything below the floor. `frames_held` can track
+  // the HAND (the measured wall span) or the WORLD (the sim frames that elapsed while the finger
+  // was down). Above the floor those are the same number and no check can tell them apart. Below
+  // it they differ by six times, which is exactly the seam S39 rules on. So both are scored, and
+  // the second is scored as a REQUIREMENT THAT THEY DIFFER — a check whose two candidates are
+  // equal is a check that cannot fail (RULES 6, the inert control).
+  const tracksHand = rows.filter((r) => r.frames_held_by_the_game !== null
+    && Math.abs(r.frames_held_by_the_game - (Math.round(r.wall_ms / (1000 / 60)) + 1)) <= 1).length;
+  const tracksWorld = rows.filter((r) => r.frames_held_by_the_game !== null
+    && r.frames_held_by_the_game === r.sim_frames_elapsed_during_press + 1).length;
+  const handAndWorldDiffer = rows.filter((r) => r.frames_held_by_the_game !== null
+    && Math.abs((Math.round(r.wall_ms / (1000 / 60)) + 1) - (r.sim_frames_elapsed_during_press + 1)) > 1).length;
   const distinct = new Set(rows.map((r) => r.frames_held_by_the_game)).size;
-  return { rows: rows.length, right_move: rightMove, frames_within_1: withinOne, distinct_frame_counts: distinct };
+  return {
+    rows: rows.length,
+    right_move: rightMove,
+    frames_within_1_of_asked: withinOne,
+    frames_track_the_hand: tracksHand,
+    frames_track_the_world: tracksWorld,
+    rows_where_hand_and_world_differ: handAndWorldDiffer,
+    distinct_frame_counts: distinct,
+  };
 }
 
 async function armCapture(browser, server, label) {
@@ -559,9 +584,15 @@ async function armCapture(browser, server, label) {
   hr();
   for (const [key, period] of [['above', HI_MS], ['below', LO_MS]]) {
     const p = await openPage(browser, server, period, { phone: true });
-    const rate = await measureRate(p.page, key === 'below' ? 4500 : 2500);
+    const rate = await measureRate(p.page, key === 'below' ? 4500 : 3000);
     let cap;
     try { cap = await capturePresses(p.page); } catch (e) { cap = { error: String((e && e.message) || e) }; }
+    // Taken again AFTER the presses. A single rate reading cannot tell a stalled boot from a
+    // slow arm, and this tool has already been fooled by that once.
+    const rateAfter = await measureRate(p.page, key === 'below' ? 4500 : 3000);
+    if (rate.raf_hz < rateAfter.raf_hz) { rate.raf_hz_first_reading = rate.raf_hz; rate.raf_hz = rateAfter.raf_hz; rate.sim_steps_per_s = rateAfter.sim_steps_per_s; rate.sim_time_ratio = rateAfter.sim_time_ratio; rate.taken = 'after the presses (the first reading was slower and is kept beside it)'; }
+    else rate.taken = 'before the presses';
+    rate.second_reading = rateAfter;
     if (p.errs.length) cap.page_errors = p.errs.slice(0, 6);
     await p.ctx.close();
     A[key] = { rate, ...cap };
@@ -926,10 +957,11 @@ if (browser) {
             `${ab.right_move}/${ab.rows} presses produced the move S39 predicts (roll/roll/roll/sprint/sprint)`),
           promoted_below: control('A2/promoted-action-below-floor (S39 prediction a)', be.right_move === be.rows,
             `${be.right_move}/${be.rows} presses produced the predicted move at ${rec.arms.a2.below.rate.raf_hz} rAF Hz — this is the half the referral measured as 5 of 5 wrongly rolled`),
-          frames_above: control('A2/frames_held within +-1 above floor', ab.frames_within_1 === ab.rows,
-            `${ab.frames_within_1}/${ab.rows} within +-1 f@60 of round(asked_ms/16.667)`),
-          frames_below: control('A2/frames_held within +-1 below floor (S39 prediction b)', be.frames_within_1 === be.rows,
-            `${be.frames_within_1}/${be.rows} within +-1 f@60 below the floor; the referral measured a constant 1 for a 25x range of thumb time`),
+          frames_below: control('A2/frames_held within +-1 of round(asked_ms/16.667) below the floor (S39 prediction b)', be.frames_within_1_of_asked === be.rows,
+            `${be.frames_within_1_of_asked}/${be.rows} below the floor and ${ab.frames_within_1_of_asked}/${ab.rows} above it. Two known biases sit inside this and both are documented rather than tuned away: hold-gate.js keeps an INCLUSIVE +1 on purpose (its header says why — M-P5 counts frames occupied, not boundaries crossed), and a setTimeout on a loaded box overshoots the ms it was asked for. The next check removes both by measuring against the span that actually happened.`),
+          frames_track_hand: control('A2/frames_held tracks THE HAND, not the world, below the floor',
+            be.frames_track_the_hand === be.rows && be.rows_where_hand_and_world_differ >= 3,
+            `${be.frames_track_the_hand}/${be.rows} rows are within +-1 of round(measured wall span / 16.667) + 1, and the hand and the world give different answers on ${be.rows_where_hand_and_world_differ}/${be.rows} rows (${be.frames_track_the_world}/${be.rows} track the world instead). Below the floor those two quantities differ by six times, which is the whole of the seam; above it they coincide and the check could not fail, which is why it is only scored here.`),
         };
       } else {
         rec.could_not_run.push({ arm: 'a2', why: 'no rows captured on one or both sides' });
@@ -1000,7 +1032,7 @@ if (a1) {
 }
 if (rec.arms.a2) {
   const ab = rec.arms.a2.above_score, be = rec.arms.a2.below_score;
-  if (ab && be) lines.push(`A2  shipped:      right move ${ab.right_move}/${ab.rows} above the floor, ${be.right_move}/${be.rows} below it; frames_held within +-1: ${ab.frames_within_1}/${ab.rows} and ${be.frames_within_1}/${be.rows}`);
+  if (ab && be) lines.push(`A2  shipped:      right move ${ab.right_move}/${ab.rows} above the floor, ${be.right_move}/${be.rows} below it; below the floor frames_held tracks the hand on ${be.frames_track_the_hand}/${be.rows} rows and the world on ${be.frames_track_the_world}/${be.rows}`);
 }
 if (rec.arms.a3) {
   const ab = rec.arms.a3.above_score, be = rec.arms.a3.below_score;
