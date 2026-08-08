@@ -201,6 +201,14 @@ and Stormhold's street is 141.12. Standing perfectly still, `magic.airborne` was
 and `castDropReason` returned `'airborne'`: input dropped, no `cast_start`, no Focus spent. **Four
 rounds of magic were measured in arenas whose floor happens to be zero.** Found by a builder who
 was not asked to look, fixed by asking `Engine.groundInActiveCell`, control restores the refusal.
+
+**Sharpened by the round-4 critic, and my first framing of it was too strong.** It **retracts no
+round-3 number** — `arena_flat`'s floor genuinely *is* 0, so the defect could not perturb anything
+measured there. What it retracts is the **scope** those numbers silently carried. The reason it hid
+for four rounds is now counted: **26 of the 49 named states put the player at exactly y = 0** —
+every arena, every camera rig, every weapon fixture. And there is a **new instance of the same
+defect**: 13 states put the player in deep water, where `groundInActiveCell` returns the sea bed, so
+a swimmer is 40 m "airborne" and the press produces no event on either stream.
 If your piece asks whether a body is airborne, grounded, falling or standing, check which zero it
 is comparing against.
 

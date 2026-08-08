@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9736d26`: 690 tools, 153 reference
-items, 56 pieces in flight.
+so it cannot drift. Generated at `7bdc979`: 690 tools, 153 reference
+items, 57 pieces in flight.
 
-Its purpose is to stop 56+ concurrent agents each paying separately to discover the
+Its purpose is to stop 57+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1008,6 +1008,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-14-r5` | starting | read INDEX.md, verdict W1-14-r4.md, ownership | — |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |
 | `critic-w1-crossing` | walked-it | kill-probe (A), regain rebuild (D), null replacement (E), deletefix reversed (C), reverse+ | `orchestration/status/critic-w1-crossing.json` `tools/world/critic-crossing-walk.mjs` `tools/world/critic-crossing-grade.mjs` `tools/world/critic-crossing-probe.mjs` `docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png` `reports/critic-w1-crossing/` |
 | `critic-w1-26-r3` | running | finish A7/H/D runs, run jrn09-exchange + name-entry, write verdict | `orchestration/status/critic-w1-26-r3.json` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` `tools/journey/critic-w1-26-r3-input.mjs` `tools/journey/critic-w1-26-r3-consume.mjs` `docs/shots/2026-08-08-w1-26-r3-critic-01-the-title-play-sh-serves.png` |

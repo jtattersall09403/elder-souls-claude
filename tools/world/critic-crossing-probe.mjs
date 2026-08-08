@@ -91,7 +91,7 @@ async function reseed() {
   await handle.h('setSeed', 1337);
   await handle.h('loadState', 'default');
   await handle.h('setTide', 'LOW');
-  await handle.h('setTimeOfDay', '1200');
+  await handle.h('setTimeOfDay', 12);   // hours, 0..24
   await handle.page.evaluate(() => {
     const E = window.__ENGINE;
     if (!E.__critPin) {                       // pin HP identically in every arm, once

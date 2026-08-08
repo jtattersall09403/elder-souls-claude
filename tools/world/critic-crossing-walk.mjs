@@ -48,7 +48,7 @@ const USAGE = `critic-crossing-walk.mjs — the critic's own end-to-end walk.
   --speed <s>       walk | jog                   (default walk)
   --survive         pin HP (declared in the artifact); off by default
   --kill-at-m <m>   kill the body the first chunk past this distance, to force a respawn
-  --time <t>        setTimeOfDay before walking, e.g. 0200
+  --time <h>        setTimeOfDay before walking, HOURS 0..24 (e.g. 2 for 02:00)
   --weather <w>     setWeather before walking
   --burden <n>      setBurden before walking
   --chunk <n>       frames per chunk            (default 20000)
@@ -145,7 +145,7 @@ try {
   await handle.h('setSeed', 1337);
   await handle.h('loadState', 'default');
   await handle.h('setTide', 'LOW');
-  if (args.time) await handle.h('setTimeOfDay', String(args.time));
+  if (args.time !== undefined) await handle.h('setTimeOfDay', Number(args.time));   // hours, 0..24
   if (args.weather) await handle.h('setWeather', String(args.weather));
   if (args.burden !== undefined) await handle.h('setBurden', Number(args.burden));
   doc.env = {
