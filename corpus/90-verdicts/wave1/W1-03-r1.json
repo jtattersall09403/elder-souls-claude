@@ -1,0 +1,588 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-03-r1",
+ "piece_title": "Water, marsh and the amphibious body — round 1 critique",
+ "subsystem_paths": [
+  "world.water.marsh",
+  "render.fidelity.water",
+  "world.hazard.environment"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-03-r1-3c19",
+  "role": "critic.world",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T22:58:00Z",
+  "finished_at": "2026-08-07T23:50:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "652b1d7",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "note": "Working tree dirty and under concurrent rewrite by other agents for the whole run: FIVE distinct capture build_keys passed under my captures inside twenty minutes (9be56db53c56fd4c, 23a1146653c96742, 06e0fd644e62c3e4, 1ce3fc1557eb0c48 ... 755e5dbef6a2600e), each stamped beside the frame it produced. The three tide frames that carry the headline pixel measurement are 1ce3fc1557eb0c48 (LOW), f25f5c41b563272c (MEAN) and 7e753da92ceeffcb (HIGH); the rebuild arm is 755e5dbef6a2600e; the byte-identical drying pair is 89066aaa9c690fad and d2a9b2306cd6ce3a. pgrep -c headless_shell ran 24 -> 12 and /proc/loadavg 13.11 -> 6.30, above RULES.md rule 21's ~8 for most of the run, so I launched NO browser of my own: every frame came through the pooled tools/capture/ daemon and every other number from bare Node over the shipped modules. NO TIMING FIGURE APPEARS IN THIS VERDICT, so contention affects nothing in it. I ran git commit at no point (rule 28).",
+  "harness_commands": [
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.mjs   (critic instrument: both races x six real bands over the real WorldField+Traversal, moving-body gradient walk, delete-the-fix arm, enemy roster census, fail-closed fixture audit)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-amphibious-breath.mjs   (critic instrument: 70 s forced submersion via the OVERLOADED sink rule, Nord vs Saxhleel)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-tide-confinement.mjs   (critic instrument: tidal amplitude per region + rule-4 control with tideRange zeroed and restored)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-water-quad-coverage.mjs   (critic instrument: province.js water-quad keep rate vs actual wet area, per tile)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/run.mjs -- node corpus/80-methods/m-wld10-water-census.mjs   (M47, re-run independently)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/run.mjs -- node corpus/80-methods/m-wld11-hazard-census.mjs   (M57, re-run independently)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "eleven captures through tools/capture/ CaptureSession: five depths, three tide states, three times of day, plus a matched drying pair and a forced-rebuild arm",
+    "seed": 1337,
+    "exit_code": 0
+   }
+  ],
+  "depends_on": [
+   "W1-01 (game/src/world/field.js, province.js, terrain.json, regions.json — the water field and the tile streamer this piece's render half sits on)",
+   "W1-06 (the camera; S25 makes the two mutually load-bearing)",
+   "W1-09 (game/src/combat/enemy.js — the scripted attack machine the enemy-side denial hooks into)",
+   "W1-12 / RI-AI01-07 (enemy pursuit locomotion, which does not exist, so R5's leash half is unbuildable here)"
+  ],
+  "depends_on_note": "The two most consequential findings — the tidal-confinement leak (field.js:556) and the water-mesh quad rule (province.js:747-773) — are in files W1-01 authored. They are charged here anyway because W1-03 owns RI-WLD10 and world.water.marsh, and because the round-2 waterline closure is stated in terms of them."
+ },
+ "bifurcation": {
+  "axis": "both-separately",
+  "declared_before_citation": true,
+  "note": "Declared before any frame was opened. The ART-DIRECTION half (RI-WLD10 §10 points 1-6: the waterline on the character, the drying window, no full-screen blue filter, water carrying the region's own sky) is judged against RI-WLD10's own prose and against Morrowind, and is where §3.1-§3.4 sit. The FIDELITY half (RI-VIS04 §9's MIN BAR: planar reflection, refraction/depth term, Fresnel, scrolling normals) is judged against modern references only and is reported separately in §6. No 2002 screenshot is cited against the fidelity half anywhere in this verdict (ARBITRATION §4). The measurements in §3.1 and §5 are neither — they are numeric conformance to the item's own field, and are scored as structure."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WLD10",
+   "path": "corpus/50-world/RI-WLD10-the-water-model.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum over M47-M56, we-lose floor 75",
+   "native_score": 20,
+   "native_max": 100,
+   "native_verdict": "Only M47 (weight 20) passes. M51 fails sub-check 1 (breath_max is a flat 60, not END-derived) although its headline §5 amphibious diff now passes for the first time; M53 (16) fails R6's second clause; M48/M49/M52/M55/M56 (34) have no instrument run. AND the item's own 'Automatic fail regardless of score' list is triggered: a tidal amplitude in five of the eight non-tidal regions.",
+   "score_0_10": 2,
+   "measured": "partial",
+   "justification": "Capped at 2 by SCORING.md §1.1 — 'any triggered hard fail caps the whole item at 2, no matter how many other checks passed'. The triggered fail is measured in corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-tide-confinement.txt with a two-arm control.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-tide-confinement.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-amphibious-breath.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-water-quad-coverage.txt",
+    "docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png"
+   ],
+   "checks": [
+    {
+     "id": "M47-S24-regional-census",
+     "result": "pass",
+     "observed": "INDEPENDENTLY RE-RUN. Area-weighted WCI 0.294 in [0.22,0.42]; spread 0.86 >= 0.55; 5 regions <= 0.05; 2 at exactly 0.00; 2 >= 0.60 (bar <= 3); 11 water classes >= 6; tidal regions exactly 5. The regional DESIGN is sound — it is the tide's confinement to those five that fails, not the table."
+    },
+    {
+     "id": "M51-5-amphibious-diff",
+     "result": "pass",
+     "observed": "THE ITEM'S OWN HEADLINE AR-3 EVIDENCE, PASSING FOR THE FIRST TIME. At a real W4 point (d=1.383) denies('attack') is true for a Nord and false for a Saxhleel; at W5 (d=40.16) both are denied, per §3's 'W5 remains no-attack for everyone'. W5 drain 4.0/s -> 0 and regen suppression lifted for the Saxhleel only; W3/W4 drains exactly halved (5.0 -> 2.5/s). Forced submersion 70 s: the Nord's breath reaches 0 at frame 3600 and he loses 200 HP by 4199 (2%/s of 1000, §3's rate); the Saxhleel's breath never leaves 60.00 and he loses none. Walking ONE body down a real depth gradient (rule 8, a moving target) the two races diverge on the same walk: attack denied in [W4,W5,W4,W5,W4,W5] vs [W5,W5,W5]. Delete-the-fix: calling step() with the old six arguments restores amphibious=false and the W4 denial for everyone, and the two arms differ."
+    },
+    {
+     "id": "M51-1-breath-max-per-endurance",
+     "result": "fail",
+     "observed": "breath_max_s is a flat 60 in game/data/world/traversal.json and nothing in game/src derives it from a sheet (grep: the only readers are traversal.js:77/348/362/497 and engine.js:8216, all of the constant). §3 specifies 40 + 2*(END-10) capped 100, i.e. 40 s at END 10 and 60 s at END 20. A Warrior at END 30 and a Mage at END 10 hold their breath for the same 60 s. Round 2's own status names this and did not fix it."
+    },
+    {
+     "id": "M53-6-native-roster",
+     "result": "fail",
+     "observed": "Exactly 4 archetypes declare water_native — the bare minimum — but drowned_greater and drowned_lesser both carry ai:'none', and enemy.js _idleBehaviour() returns at the top for those, so they never start an action in any band. Their DPS in W5 is identically 0, against M53.6's bar of '>= 60% of the roster median on land (a water enemy that cannot hurt you is scenery)'. Water-native AND able to act: beast_slitherfang and inf_trash. Two."
+    },
+    {
+     "id": "M53-5-leash",
+     "result": "fail",
+     "observed": "NOT BUILT, and correctly declared rather than faked. Verified independently: every position write in game/src/combat is clip root motion (actor.js:233-234), body-separation displace (actor.js:420), knockback (resolve.js:430-433), the player's own input (player.js:979-1069) or a placement (system.js:262). enemy.js _idleBehaviour()'s AGGRO branch calls _steer() which writes b.yaw only. An enemy turns to face you and never steps toward you, so there is no pursuit for a waterline to leash."
+    },
+    {
+     "id": "M53-enemy-denial-consumption",
+     "result": "fail",
+     "observed": "The producer (Engine._settleEnemyWater, engine.js:5153) and the consumer (enemy.js:189) have never been demonstrated connected in a running world. engine.js does not load in bare Node, so round 2's 12/12 enemy checks ran through tools/lib/combat-node.mjs against a waterDeniesAttack set by hand. The producer's gate is cellFor(env)==='province' && !sim.cellId; the consumer's gate is stat.ai==='scripted' and a script only ever arrives through the harness method queueEnemyScript(). Nothing in the game loads a script. RULES.md rule 9."
+    },
+    {
+     "id": "M54-tidal-confinement-AUTOMATIC-FAIL",
+     "result": "fail",
+     "observed": "TRIGGERED AUTOMATIC FAIL — 'A tidal amplitude anywhere outside the five tidal regions.' Bar is > 0.02 m in any of the 8 non-tidal regions; measured over each region's own bounds at 12 phases: Thornmarsh 1.2000 m, The Deep Marshes 0.6600, Valus Ridge 0.6600, The Stone Forest 0.6600, The Salt Hills 0.6600. Five of eight, 33x to 60x the bar. Cause is one clause, field.js:556 `const tidalHere = this.tidal[r] === 1 || !this.isLandAt(x, z);` — the disjunct overrides the declared flag for any cell the field does not call land, i.e. every standing-water cell. The comment six lines below asserts the invariant the code breaks. RULE 4 CONTROL: tideRange zeroed -> worst non-tidal amplitude 0.0000 m; restored -> 1.2000 m. Two arms that differ. (My FIRST control was broken — tideRange is an object so `.length` was undefined and the loop never ran — and I did not charge the finding until I understood why.)"
+    },
+    {
+     "id": "S25-10.3-waterline-on-the-character",
+     "result": "pass",
+     "observed": "BUILT, LIVE AND CORRECTLY COUPLED — I reproduced it rather than taking it. One point (2620,4362) where the shipped field's own phase sweep moves the surface 1.178 m, carrying the same ground from W1 (0.104 m) to W3 (0.693) to W4 (1.282). One camera, one time of day, only the tide changed: LOW->MEAN 8,631 differing px bbox (424,458)-(536,636); MEAN->HIGH 15,003 px bbox (387,300)-(527,518); LOW->HIGH 21,804 px bbox (387,300)-(536,636). The line climbs calf -> thigh -> waist and EVERY changed pixel is on the character. Against the geometry (1.8 m body over ~520 px) the drawn line sits within ~0.07 m of the field. Control: changing time of day instead moves 809,999 px (the whole frame), separating 'the line moved' from 'the light moved'."
+    },
+    {
+     "id": "S25-10.3-drying-window",
+     "result": "fail",
+     "observed": "DOES NOT EXIST. Matched pair, same camera, same place, same pose, back to back: A = a body dry throughout; B = the same body ONE SECOND after standing in 1.05 m of water (surface 1.623 m), teleported to ground at 2.711 m, well inside the declared 20 s window. ZERO differing pixels, bbox=None, md5 8531d20d4f3dc7f82b8b6be2b9c63a77 for both. Cause: esBand = uWaterY - vEsWaterY (actor.js:185) is a WORLD-SPACE cutoff and renderer.js:598 stops updating W.y once the band is W0, so stepping UP out of water puts every vertex above the frozen plane and esWet is 0 everywhere. The timer runs and the uniform is delivered; nothing visible consumes it."
+    },
+    {
+     "id": "10.3-water-surface-drawn-at-the-readout",
+     "result": "fail",
+     "observed": "province.js:747-773 builds each tile's water mesh on a 12.5 m lattice (TILE_M 300 / WATER_SEG 24) and drops a quad if ANY of its four corners is dry. Audited over the shipped field with roads: the round-1/round-2 shot tile (2100,4200) is 61.3% wet and keeps 32.1% of quads; Eastern Rootlands (2400,4200) 85.0% wet, 62.0% kept; open water (2700,4200) 89.9% wet, 80.9% kept. The shot point's OWN quad has corners [1.650, 1.600, null, null] and is DROPPED — no water is drawn on the square metre the player stands in, in 0.886 m of it. This is the check round 1 explicitly flagged as not run."
+    },
+    {
+     "id": "10.3-water-surface-follows-the-tide",
+     "result": "fail",
+     "observed": "The mesh is sampled from waterSurfaceAt() at TILE BUILD TIME and nothing rebuilds it when the tide moves. Falsified with two arms: tide to HIGH with tiles already built -> 21,804 px change, all on the body, zero ground pixels; tide to HIGH then teleport away and back to force a rebuild -> 657,561 px change and the water visibly rises to the character's chest. The body's waterline is live and the world's surface is stale by up to the full 1.20 m Padomaic range."
+    },
+    {
+     "id": "R1-frame-invariance",
+     "result": "pass",
+     "observed": "Not re-derived by me; round 2 measured identical startup/active/recovery/total for the same move on land and in permitted deep water, and the denial path in enemy.js:189 and traversal.js denies() is a gate on action START, never a multiplier on a frame number. Nothing I read anywhere in traversal.js, enemy.js or actor.js scales a frame count by depth. Recorded as pass on a source read plus the builder's trace, not on my own instrument."
+    },
+    {
+     "id": "no-depth-meter-HUD",
+     "result": "pass",
+     "observed": "No depth number, meter or 'you are wading' element exists in the UI. water_band is exposed through getPlayerStats() for the harness only, which is not a HUD element."
+    },
+    {
+     "id": "fail-closed-fixture-defaults",
+     "result": "fail",
+     "observed": "All 22 statblocks declare both fields and all 15 fixtures carry water_native:false / water_max_band:'W0'. But deleting the fields from a fixture changes NOTHING — stat.water_max_band || 'W0' (engine.js:5165) already yields W0 — so the declaration is documentation, not behaviour, and no perturbation of it can fail (rule 4: a probe that cannot fail). And 14 of the 15 carry ai:'none', which enemy.js:165 gates the whole denial on, so waterDeniesAttack is written onto them every frame and never read. Only probe_pulse could ever observe its own stance."
+    }
+   ]
+  },
+  {
+   "id": "RI-WLD11",
+   "path": "corpus/50-world/RI-WLD11-environmental-hazards.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum over M57-M63, we-lose floor 70",
+   "native_score": 24,
+   "native_max": 100,
+   "native_verdict": "M57 (24) passes on a re-run. M58-M63 (76) have no instrument run this round, by me or by the piece — they score 0 fail-closed. Below the item's own '< 70 — we lose' line.",
+   "score_0_10": 3,
+   "measured": "partial",
+   "evidence": [
+    "reports/runs/_raw/node-corpus-80-methods-m-wld11-hazard-census.mjs-11722617772857.log",
+    "reports/runs/_raw/node-corpus-80-methods-m-wld10-water-census.mjs-11501719739889.log"
+   ],
+   "checks": [
+    {
+     "id": "M57-census-and-confinement",
+     "result": "pass",
+     "observed": "INDEPENDENTLY RE-RUN: 19 hazards (bar >= 13), 13/13 region signatures, exactly one KILL (bar = 1), 8 zero-damage (bar >= 6). The hazards are also genuinely wired — W1-01's consumption harness perturbs salt-storm damage.value and kiln-ground tell.lead_s and both move the world."
+    },
+    {
+     "id": "M58-M63",
+     "result": "not_run",
+     "observed": "Telegraph law, escapability, counters, no-scaling/arena overlap, hazards-hurt-everyone and regional spread were not exercised. Round 1's survey §8 named these as real remaining work and round 2 did not touch them. 0 fail-closed, not skipped."
+    }
+   ]
+  },
+  {
+   "id": "RI-VIS04",
+   "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+   "side": "modern-fidelity",
+   "kind": "structure",
+   "native_scale": "FEATURE SCORE = min(10 * present/13, cap); this piece owns §9 (water) only",
+   "native_score": "§9 ABSENT",
+   "native_max": 10,
+   "native_verdict": "§9's MIN BAR is 'planar reflection at half-res for the main water body + depth-based colour + Fresnel + at least one scrolling normal layer'. None of it exists. The item's own band table: 'missing §5 or §9 -> 0-2'. I judged §9 only and did not score the other twelve features, which are not this piece's.",
+   "score_0_10": 1,
+   "measured": "partial",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-rebuilt.png"
+   ],
+   "checks": [
+    {
+     "id": "VIS04-9-water",
+     "result": "fail",
+     "observed": "grep for `.environment =`, `envMap`, `Reflector` and `normalMap` across game/src/render/*.js and game/src/world/*.js returns NOTHING — unchanged since round 1's survey found the same. Three.js MeshStandardMaterial needs one of those to reflect any geometry at all, so the water's only 'reflection' is the directional light's specular highlight: no reflected sky, canopy or architecture, in any of the thirteen regions, ever. No refraction, no depth-buffer shoreline blend, no animated normals. This also fails RI-WLD10 §10.4 ('water carries the region's sky, not a sky') trivially, since there is no reflection of anything to be regional."
+    }
+   ]
+  },
+  {
+   "id": "RI-VIS02",
+   "path": "corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md",
+   "side": "modern-fidelity",
+   "kind": "image",
+   "native_scale": "per paired shot, fraction of 'what to look at' clauses PRESENT x 10; failure threshold < 6 on any paired shot",
+   "native_score": "not scored — paired-shot comparison not run",
+   "native_max": 10,
+   "native_verdict": "REF-M4's paired-shot comparison was not run this round. Reported as unmeasurable rather than inferred. The one clause I could bound without it — REF-M4's own note that 'water reflects and refracts and has a shoreline' — is refuted by source read (see RI-VIS04 §9 above), so the item cannot be near its bar; but bounding is not measuring and I am not scoring it as if it were.",
+   "score_0_10": 0,
+   "measured": "unmeasurable",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-stale.png"
+   ],
+   "checks": [
+    {
+     "id": "REF-M4-paired-water",
+     "result": "not_run",
+     "observed": "No blind pack was built or judged for water. SCORING.md: measured 'unmeasurable' => 0, not skipped and not averaged out."
+    }
+   ]
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png",
+   "kind": "screenshot",
+   "produced_by": "three tools/capture/ frames composited with PIL: LOW and HIGH tide at one point and camera, plus a HIGH arm with the tiles forcibly rebuilt",
+   "seed": 1337,
+   "resolution": "1696x730 (panels 900x900 downscaled to 560)",
+   "camera_pose": "pos [2617.4, 2.57, 4360.2], look [2620, 1.87, 4362], fov 50, time-of-day 11, place (2620, 4362) Eastern Rootlands"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-LOW.png",
+   "kind": "screenshot",
+   "produced_by": "CaptureSession.capture, place (2620,4362), tide LOW, evidence_of appearance",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2617.4, 2.57, 4360.2], look [2620, 1.87, 4362], fov 50, time 11, tide LOW"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-MEAN.png",
+   "kind": "screenshot",
+   "produced_by": "CaptureSession.capture, same point and camera, tide RISING (phase 0, height 0)",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2617.4, 2.57, 4360.2], look [2620, 1.87, 4362], fov 50, time 11, tide RISING"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-stale.png",
+   "kind": "screenshot",
+   "produced_by": "CaptureSession.capture, same point and camera, tide HIGH, tiles built before the tide moved",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2617.4, 2.57, 4360.2], look [2620, 1.87, 4362], fov 50, time 11, tide HIGH"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-rebuilt.png",
+   "kind": "screenshot",
+   "produced_by": "CaptureSession.capture, same point, camera and tide, with ops [teleport far, stepFrames 10, teleport back, stepFrames 45] to force a tile rebuild after the tide moved",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2617.4, 2.57, 4360.2], look [2620, 1.87, 4362], fov 50, time 11, tide HIGH"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/drying-A-dry-throughout.png",
+   "kind": "screenshot",
+   "produced_by": "CaptureSession.capture, ops [teleport (2178.2,4387.3), stepFrames 180] — control arm of the drying-window pair",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2175.6, 4.26, 4385.5], look [2178.2, 3.56, 4387.3], fov 50, time 11"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/drying-B-1s-after-1.05m-water.png",
+   "kind": "negative-evidence",
+   "produced_by": "CaptureSession.capture, ops [stepFrames 120 in 1.05 m of water at (2231.8,4375.0), teleport (2178.2,4387.3), stepFrames 60] — byte-identical to the control, md5 8531d20d4f3dc7f82b8b6be2b9c63a77",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2175.6, 4.26, 4385.5], look [2178.2, 3.56, 4387.3], fov 50, time 11"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/round1-shot-point-W3-waterline-drawn-no-water-in-world.png",
+   "kind": "screenshot",
+   "produced_by": "CaptureSession.capture at (2226.9,4376.1), the round-1/round-2 evidence point: the waterline IS drawn at hip for d=0.886 m and no water surface is drawn anywhere in the frame",
+   "seed": 1337,
+   "resolution": "900x900",
+   "camera_pose": "pos [2224.3, 2.31, 4374.3], look [2226.9, 1.61, 4376.1], fov 50, time 11"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.txt",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.mjs",
+   "seed": null
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-tide-confinement.txt",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-tide-confinement.mjs",
+   "seed": null
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-water-quad-coverage.txt",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-water-quad-coverage.mjs",
+   "seed": null
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-amphibious-breath.txt",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-amphibious-breath.mjs",
+   "seed": null
+  },
+  {
+   "path": "reports/w1-03-survey.md",
+   "kind": "report",
+   "produced_by": "round 1's own survey, read in full and used as the statement of what was claimed",
+   "seed": null
+  },
+  {
+   "path": "reports/runs/_raw/node-corpus-80-methods-m-wld11-hazard-census.mjs-11722617772857.log",
+   "kind": "log",
+   "produced_by": "node tools/run.mjs -- node corpus/80-methods/m-wld11-hazard-census.mjs",
+   "seed": null
+  },
+  {
+   "path": "reports/runs/_raw/node-corpus-80-methods-m-wld10-water-census.mjs-11501719739889.log",
+   "kind": "log",
+   "produced_by": "node tools/run.mjs -- node corpus/80-methods/m-wld10-water-census.mjs",
+   "seed": null
+  },
+  {
+   "path": "reports/runs/_raw/node-tmp-claude-0--home-user-elder-souls-claude-3c195166-6f1-10599097053184.log",
+   "kind": "log",
+   "produced_by": "the capture run that surfaced tools/capture/server.mjs stringifying a numeric tide phase",
+   "seed": null
+  }
+ ],
+ "blind_comparisons": [],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    "S25 R1 frame invariance: no frame number varies with depth anywhere in traversal.js, enemy.js or actor.js. Both denial paths (traversal.js denies(), enemy.js:189) are gates on action START, never multipliers on startup/active/recovery/i-frames.",
+    "S25 R3 cost-not-chance: no probability, slip roll or to-hit term is introduced by water. The only water term touching displacement is a magnitude retraction on an existing step (speed_mult <= 1), which can shrink a step and never redirect it."
+   ],
+   "note": "AR-1 holds for what water does to the fight. Recorded as pass on a source read of both denial paths plus round 2's own frame-invariance trace, not on an instrument of my own — I did not re-run RI-CMB01 M1/M2 at W0/W1/W2."
+  },
+  "ar2": {
+   "status": "fail",
+   "checks": [
+    "RI-WLD10 §1: 'There is no depth meter and there must never be one' — satisfied, no HUD element exists.",
+    "RI-WLD10 §10.3: 'This is the player's only depth readout and it is not optional' — the readout is on the body and live, but the water it reads against is undrawn over ~half the wet area of the marsh regions and stale under tide."
+   ],
+   "note": "AR-2 fails not because information was moved into a UI element — it was not, and the item's forbidden alternative is correctly absent — but because the sanctioned diegetic readout is only half-delivered. A body with darkened legs standing on green grass is not a waterline, and the item left no fallback by design."
+  }
+ },
+ "score": {
+  "overall_0_10": 2,
+  "pass_threshold": 7,
+  "aggregation": "weighted-mean",
+  "weights": {
+   "RI-WLD10": 0.6,
+   "RI-WLD11": 0.15,
+   "RI-VIS04": 0.15,
+   "RI-VIS02": 0.1
+  },
+  "band_label": "Built on a rejected model in one named respect — the amphibious body and the waterline on it are real, verified and correctly coupled, and the tide the province is supposed to be shaped by runs in five regions the item says have none",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "hard_fail:RI-WLD10/automatic-fail-tidal-amplitude-outside-the-five-tidal-regions",
+  "hard_fail:RI-VIS04/§9-water-absent",
+  "ar2_fail",
+  "below_threshold"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-03-water-surface-undrawn-and-frozen",
+  "subsystem_path": "world.water.marsh",
+  "severity": "blocking",
+  "what": "The waterline drawn on the player's body is live and correct to about 0.07 m — I measured it climbing calf to thigh to waist across a 1.178 m tide swing at one fixed point and camera, 21,804 changed pixels every one of which is on the character. The water surface it is a line OF is not. (a) game/src/world/province.js:747-773 builds each tile's water mesh on a 12.5 m lattice and drops any quad with a single dry corner, so on the paddy-and-channel tile both rounds photographed it keeps 32.1% of quads over ground that is 61.3% wet — and the shot point's own quad, corners [1.650, 1.600, null, null], is dropped: no water is drawn on the square metre the player stands in, in 0.886 m of it. (b) Where water IS drawn the mesh is sampled at tile-build time and nothing rebuilds it when the tide moves: moving the tide changes 21,804 pixels and not one of them is ground, while forcing a rebuild at the same tide changes 657,561. (c) The 20 s drying window §10.3 requires does not exist at all — a body dry throughout and the same body one second out of 1.05 m of water are BYTE-IDENTICAL, md5 8531d20d4f3dc7f82b8b6be2b9c63a77, because esBand is a world-space cutoff that the body rises above the moment it steps up a bank.",
+  "why_it_matters": "RI-WLD10 §10.3 calls the waterline 'the player's only depth readout and it is not optional' and §1 forbids a HUD substitute, so a player standing hip-deep sees darkened legs on green grass with no water in the frame, and after a tide swing sees a body wet to the chest with the drawn water at their ankles — which is the readout S25 made S18's permanent third person load-bearing for.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-water-quad-coverage.txt",
+   "corpus/90-verdicts/wave1/artifacts/W1-03-r1/round1-shot-point-W3-waterline-drawn-no-water-in-world.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-stale.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-rebuilt.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-03-r1/drying-A-dry-throughout.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-03-r1/drying-B-1s-after-1.05m-water.png",
+   "docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png"
+  ],
+  "remedy": {
+   "action": "Three changes, all local. (1) province.js:756 — stop dropping a water quad because one corner is dry: emit the quad whenever ANY corner is wet, clamping each dry corner's y down to the local ground height, so a channel narrower than the 12.5 m lattice still gets a surface that meets the bank. (2) Mark province tiles water-dirty when field.tidePhase crosses a threshold and rewrite only the water sub-mesh's vertex Y from waterSurfaceAt() — the per-region geometry already exists per tile, so this is a position-attribute update, not a tile rebuild. (3) renderer.js _playerWaterline() — while drying, carry uWaterY relative to the body: hold the offset between the surface and the player's foot height at the moment the band left W0 rather than a frozen world Y, so stepping up a bank keeps the wet band on the legs and it fades over the declared window.",
+   "acceptance": "(1) A capture at (2226.9, 4376.1) shows a drawn water surface meeting the body at the height the shader shades to. (2) probe-water-quad-coverage.mjs reports kept-quad fraction >= 0.90 x wet-area fraction on tiles (2100,4200) and (2400,4200), against today's 32.1%/61.3% and 62.0%/85.0%. (3) The LOW->HIGH pair at (2620,4362) changes ground pixels as well as body pixels with NO forced rebuild in ops. (4) The matched drying pair stops being byte-identical, and a capture 19 s after leaving water still shows wet-shading while one at 21 s does not.",
+   "owner_hint": "W1-03 with W1-01 — (1) and (2) are in province.js which W1-01 owns; land them together so the waterline and the water agree.",
+   "targets": [
+    "game/src/world/province.js",
+    "game/src/render/renderer.js",
+    "game/src/render/actor.js",
+    "world.water.marsh",
+    "render.fidelity.water"
+   ],
+   "ref_item": "RI-WLD10",
+   "estimated_size": "M"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "GAP-W1-03-tide-outside-tidal-regions — the item's own automatic fail, triggered. Five of the eight non-tidal regions carry a tidal amplitude: Thornmarsh 1.2000 m, Deep Marshes / Valus Ridge / Stone Forest / Salt Hills 0.6600 m each, against a > 0.02 m bar. Cause is one clause, field.js:556's `|| !this.isLandAt(x, z)`, which overrides the region's declared tidal flag for every standing-water cell; the comment six lines below asserts the invariant it breaks. Fix is small, but per RULES.md rule 13 the M54 check must be authored and proven silent on a fixed tree BEFORE it is armed.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-tide-confinement.txt"
+   ],
+   "subsystem_path": "world.water.marsh"
+  },
+  {
+   "what": "GAP-W1-03-r6-natives-are-scenery — R6 needs >= 4 water_native archetypes that are 'genuinely dangerous' in W5. Exactly 4 declare it, but drowned_greater and drowned_lesser carry ai:'none' and never start an action in any band, so their DPS in W5 is identically 0 against M53.6's >= 60%-of-roster-median bar. Two archetypes actually qualify. Cheapest honest fix is to promote one of the two drowned to a scripted moveset (they already carry full frame data inherited from inf_trash) and author a fourth native, rather than to relax the count.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.txt"
+   ],
+   "subsystem_path": "world.water.marsh"
+  },
+  {
+   "what": "breath_max_s is a flat 60 in game/data/world/traversal.json and no code derives it from a sheet, against §3's 40 + 2*(END-10) capped 100. M51 sub-check 1 fails: a Warrior at END 30 and a Mage at END 10 hold their breath for the same time. Round 2's own status names this and left it.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-amphibious-breath.txt"
+   ],
+   "subsystem_path": "world.water.marsh"
+  },
+  {
+   "what": "The enemy-side denial's producer and consumer have never been shown connected in a running world. Engine._settleEnemyWater() only runs in the open province with no cellId; enemy.js only reads waterDeniesAttack inside the ai:'scripted' branch, and a script only ever arrives through the harness method queueEnemyScript() — nothing in the game loads one. engine.js does not load in bare Node, so round 2's verification exercised the consumer against a field set by hand. A single browser probe (spawn a scripted enemy in deep water in the province, queue a script, step, read the action_denied_by_water event) would close it.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.txt"
+   ],
+   "subsystem_path": "world.water.marsh"
+  },
+  {
+   "what": "__HARNESS.setTide accepts a phase number (engine.js:6889) exactly as RI-WLD10 §12's amendment requested, but tools/capture/server.mjs coerces spec.tide to a string, so `tide: 0.75` throws \"setTide('0.75'): states are RISING, HIGH, FALLING, LOW\". A capture-service coercion bug, not an engine one; it costs a critic the ability to sweep a tide cycle finely through the daemon.",
+   "evidence": [
+    "reports/runs/_raw/node-tmp-claude-0--home-user-elder-souls-claude-3c195166-6f1-10599097053184.log"
+   ],
+   "subsystem_path": "render.fidelity.water"
+  },
+  {
+   "what": "NPCs and enemies never show a waterline: renderer.js:620 passes the water argument only for the player, so a drowned rising out of a channel renders bone dry. Defensible under S25's 'depth is read off the PLAYER's own silhouette', but now that enemies carry a real water band it reads as an inconsistency rather than a scope line.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-rebuilt.png"
+   ],
+   "subsystem_path": "render.fidelity.water"
+  },
+  {
+   "what": "W1-05's water trap remains unclaimed and unchased — three independent walks drowning near the soulrest-blackrose leg. I did not touch it. Round 1's exoneration of the depth field, the tide cycle and a current term still stands on its evidence, and its leading hypothesis (population streaming near pop-0025/0026/0027) is still untested. Nothing I measured this round bears on it either way.",
+   "evidence": [
+    "reports/w1-03-survey.md"
+   ],
+   "subsystem_path": "world.water.marsh"
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-03-amphibious-races-indistinguishable",
+   "status": "closed",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-amphibious-breath.txt"
+   ],
+   "measured_value": "W4 attack denied nord=true saxhleel=false; W5 drain nord=4.0/s saxhleel=0; 70 s submerged: nord breath 0 and -200 HP, saxhleel breath 60.00 and -0 HP",
+   "acceptance_restated": "RI-WLD10 M51 §5: FAIL if the two are identical, or if the Saxhleel has a breath meter, or if the Saxhleel cannot land an attack in W4, or if either can attack in W5.",
+   "closed_by_builder_of_fix": false,
+   "note": "Closed on my own instrument against the real WorldField and Traversal, not on the builder's. Includes a delete-the-fix arm (six-argument step() restores the old behaviour) and a moving-target arm (one body walked down a real depth gradient, rule 8). This retires RI-WLD10's named automatic fail 'Amphibious races indistinguishable from the rest'."
+  },
+  {
+   "gap_id": "GAP-W1-03-no-waterline-on-the-character",
+   "status": "partially-closed",
+   "evidence": [
+    "docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-LOW.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/tide-HIGH-tiles-stale.png"
+   ],
+   "measured_value": "LOW->HIGH at one fixed point and camera: 21,804 differing pixels, bbox (387,300)-(536,636), entirely on the character; drawn line within ~0.07 m of the field's surface",
+   "acceptance_restated": "RI-WLD10 §10.3: a meniscus band on the mesh at height d, wet-shading below it that persists 20 s after leaving the water and dries visibly.",
+   "closed_by_builder_of_fix": false,
+   "note": "The meniscus-and-wet-shading half is CLOSED and independently reproduced at three tide states and three times of day. The 'persists 20 s and dries visibly' half is OPEN and measurably inert — the matched pair is byte-identical. And the water the line is drawn against is undrawn or stale, which is this verdict's named gap."
+  },
+  {
+   "gap_id": "GAP-W1-03-enemy-water-band-absent",
+   "status": "partially-closed",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/probe-bands-and-roster.txt"
+   ],
+   "measured_value": "22/22 statblocks declare water_native and water_max_band; 4 declare native at W5; 2 of those 4 can never act",
+   "acceptance_restated": "RI-WLD10 §5 R5/R6 and §11: every enemy statblock gains water_max_band and water_native; >= 4 archetypes water_native at W5 and genuinely dangerous there; a land enemy holds at the waterline and reacquires.",
+   "closed_by_builder_of_fix": false,
+   "note": "The DATA half is closed — every statblock declares, and the fail-closed default is right. R6's count is met only nominally and its 'genuinely dangerous' clause fails. R5's leash half is genuinely unbuildable here (no pursuit locomotion exists) and is correctly declared rather than faked. The denial has not been observed firing in a running world."
+  }
+ ],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "method": "RI-WLD10 M48 (declared vs observed depth field), M49 (locomotion ladder), M52 (substrate and MIRED), M55 (stealth in water), M56 (the look, blind pair)",
+   "why": "Not run. M56 needs a 16-shot x 4-region blind pack and a fresh judge; M48/M49/M52/M55 need long instrumented browser runs. The box sat at 24 -> 12 headless_shell and loadavg 13 -> 6, above rule 21's ~8 for most of the run, so I spent the pooled-daemon budget on the ONE thing S25 names as load-bearing — the waterline — and reported the rest as unmeasured rather than guessed.",
+   "impact": "34 of RI-WLD10's 100 weight is 0 fail-closed for want of an instrument rather than for failing. The FAIL does not rest on them: it rests on a triggered automatic fail (M54's confinement rule) and on M53, both of which I measured."
+  },
+  {
+   "method": "RI-WLD11 M58-M63",
+   "why": "Out of this round's dispatch, which named four angles all inside RI-WLD10 and S25. Round 1's survey §8 already flagged them as real remaining work.",
+   "impact": "76 of RI-WLD11's 100 weight scores 0 fail-closed. RI-WLD11's score of 3 is therefore a floor, not a measurement of the hazard model's quality."
+  },
+  {
+   "method": "RI-VIS02 REF-M4 paired-shot comparison",
+   "why": "No blind pack exists for water and building one was out of budget under the load described above. RULES.md rule 25 also forbids me judging a pack I built.",
+   "impact": "measured 'unmeasurable' => score 0 per SCORING.md §1.1. Recorded as a hole, not inferred from the RI-VIS04 §9 absence."
+  },
+  {
+   "method": "RI-CMB01 M1/M2 re-run at W0/W1/W2 (S25 R1's frame-invariance evidence)",
+   "why": "Not re-derived by me. I read both denial paths instead and confirmed neither multiplies a frame number, and took round 2's own bare-Node invariance trace for the rest.",
+   "impact": "AR-1 is recorded as pass on a source read plus the builder's trace rather than on my own instrument, and is labelled as such."
+  }
+ ],
+ "arbitration_questions": [
+  {
+   "question": "S25 says depth is read off the player's own silhouette, and RI-WLD10 §1 forbids a depth meter. Does the ruling implicitly require the WATER to be drawn wherever the field says there is water — i.e. is an undrawn or tide-stale water surface an S25 breach, or only a render-quality gap that leaves S25 formally satisfied because the shader is correct? This verdict treats it as an AR-2 failure of the sanctioned readout; a different reading would score it as a VIS04 matter only and leave RI-WLD10's §10.3 closed.",
+   "why_it_matters": "It decides whether the named gap is blocking for W1-03 or is handed to W1-01 as a streamer defect, and whether W1-06's dependency on this piece is satisfied."
+  },
+  {
+   "question": "RI-WLD10 M53.6 fails a water_native archetype whose 'DPS in W5 is below 60% of the roster median on land'. On the shipped roster 18 of 22 statblocks have ai:'none' or 'hold_ground' and can never attack, so the roster median DPS on land is ZERO and the bar is vacuous — every native passes it trivially, including two that cannot act. I judged against the clause's evident intent ('a water enemy that cannot hurt you is scenery') rather than its arithmetic, and said so. Should M53.6's median be defined over archetypes CAPABLE of acting, or should the method wait until W1-12 gives the roster real action selection?",
+   "why_it_matters": "As written the check cannot fail on this roster, which makes it a probe that cannot fail (RULES.md rule 4). It also decides whether R6's count of 4 may be met by summons and props at all, or only by archetypes the world places against the player under their own AI."
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/world/field.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read lines 505-580 AFTER measuring a 0.66-1.20 m tidal amplitude in five declared non-tidal regions, to name the cause (line 556's `|| !this.isLandAt(x, z)`). The measurement came first and stands on its own control."
+  },
+  {
+   "path": "game/src/world/province.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read lines 745-780 AFTER photographing a body in 0.886 m of water with no water in the frame, to explain the absence (the 12.5 m lattice and the all-four-corners-wet rule). The quad-coverage audit that quantifies it is an independent instrument."
+  },
+  {
+   "path": "game/src/render/actor.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read the installWaterline shader AFTER the drying pair came back byte-identical, to name the cause (esBand is a world-space cutoff)."
+  },
+  {
+   "path": "game/src/combat/enemy.js",
+   "purpose": "quote-written-content",
+   "note": "Read to verify round 2's 'no pursuit locomotion at all' scope declaration rather than accept it, and to establish that ai:'none' bodies never start an action — which is what makes two of the four water natives score 0 DPS."
+  },
+  {
+   "path": "game/src/sim/camera.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read applyOverride() and renderer.js:635-637 to settle whether the round-1 capture was in the stale-yaw class. It was not: the renderer builds its camera from pos+pivot via lookAt, and only projectNDC reads yaw/pitch."
+  },
+  {
+   "path": "tools/capture/server.mjs",
+   "purpose": "locate-harness",
+   "note": "Read runQuery's whitelist and the placement/settle path to confirm captures step the sim before rendering (so sim.player.waterBand is written) and to find why a numeric tide phase was rejected."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE: RI-WLD10 M48/M49/M52/M55/M56 and RI-WLD11 M58-M63 were not exercised, each named in method_deviations with its reason and its impact; none is load-bearing for the FAIL, which rests on M54's confinement rule and M53, both measured by me. blind_done_where_required is FALSE: RI-WLD10 is blind_pair:yes and I did not run M56's 16-shot pack or judge one; I did not build a pack either, so rule 25 is not breached, but the blind evidence is simply absent and RI-VIS02 is scored 0 unmeasurable rather than inferred. judged_output_not_source is true: every finding began as a measurement — a probe run, a pixel diff, a photograph — and source was read only afterwards to name a cause, which is recorded per-file in source_reads. Two things I got wrong and corrected before charging them: (a) my first tide control was broken (tideRange is an object, so `.length` was undefined and the zeroing loop never ran) and reported a 1.2 m residual that would have read as an instrument failure — I did not charge the finding until the fixed control gave 0.0000 m zeroed and 1.2000 m restored; (b) my first bare-Node transect disagreed with the engine by 1.86 m of ground at one point because my field had no roads loaded, so the 'W5' point in my first capture set was really a W0-on-the-road point and I dropped it. Both are written up in §11 of the markdown. I also re-shot my first capture set after framing the camera below the terrain."
+ },
+ "notes": "The two closures round 2 claims most loudly are real and I reproduced both on my own instruments rather than taking them: all three amphibious privileges are exact, and the waterline on the body is live and tracks the field to about 7 cm across a 1.178 m tide swing. This piece went from no race payoff, no enemy water and no waterline to that in one round, and RI-WLD10's named automatic fail 'Amphibious races indistinguishable from the rest' is genuinely retired. The score is 2 because a DIFFERENT entry on the same automatic-fail list is triggered — the tide runs in five of the eight regions the item says have none — and because the round fixed the line without looking at the water it is drawn against: on the exact tile both rounds photographed, 32.1% of water quads survive a rule that needs 12.5 m of unbroken water, over ground that is 61.3% wet, and the shot point's own quad is dropped. The pattern across all three is the same and worth naming: this round measured the thing it built and did not measure the thing it built it against."
+}

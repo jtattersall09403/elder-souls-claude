@@ -72,7 +72,10 @@ const ROUND = argOf('--round') || 'w1-19-r3';
 const world = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-18-R2/reveal-route-world.json'), 'utf8')); } catch { return null; } })();
 
 // ---- title -----------------------------------------------------------------------------------
-if (ROUND === 'w1-18-r2') {
+if (ROUND === 'w1-readables') {
+  text('THE LEDGERS NOBODY HAD WRITTEN, ON SHELVES NOBODY COULD REACH', 40, 30, 0xEE, 0xEE, 0xE4, 3);
+  text('W1-READABLES / A LEDGER IS A BOOK WITH A DIFFERENT NOUN AND A DIFFERENT VERB', 40, 66, 0x8A, 0x94, 0x88, 2);
+} else if (ROUND === 'w1-18-r2') {
   text('THE PEOPLE WHO KNEW, AND NOBODY COULD ASK THEM', 40, 30, 0xEE, 0xEE, 0xE4, 3);
   text('W1-18 ROUND 2 / TALKING TO THE PERSON THE QUEST FILE NAMES NOW TELLS YOU WHAT THEY KNOW', 40, 66, 0x8A, 0x94, 0x88, 2);
 } else {
@@ -101,7 +104,35 @@ ch.forEach(([name, v], i) => {
 const BY = Y0 + ch.length * rowH + 40;
 const box = (x, y, w, h, r, g, b) => { rect(x, y, w, 2, r, g, b); rect(x, y + h, w, 2, r, g, b); rect(x, y, 2, h, r, g, b); rect(x + w, y, 2, h + 2, r, g, b); };
 
-if (ROUND === 'w1-18-r2') {
+if (ROUND === 'w1-readables') {
+  // The chain arms come from `document-route-world.mjs --chain`, which plays the main line twice
+  // with the same two verbs and differs only in whether reading a document is permitted.
+  const chain = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-READABLES/document-route-chain.json'), 'utf8')).arms; } catch { return null; } })();
+  const wr = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-READABLES/document-route-world.json'), 'utf8')); } catch { return null; } })();
+  const A = (chain && chain.reading_allowed) || { completed: 0, of: 32, stopped_at: null };
+  const B = (chain && chain.reading_refused) || { completed: 0, of: 32, stopped_at: null };
+  text('THE MAIN LINE, PLAYED TWICE, DIFFERING ONLY IN WHETHER A BOOK MAY BE OPENED', 40, BY, 0xCC, 0xC4, 0x9A, 2);
+
+  box(40, BY + 26, 570, 100, 0x2E, 0x7A, 0x44);
+  text('READING ALLOWED', 56, BY + 40, 0xAA, 0xCC, 0xAA, 2);
+  text(`${A.completed} OF ${A.of} MAINLINE QUESTS FINISHED`, 56, BY + 62, 0xCC, 0xEE, 0xCC, 2);
+  text(`STOPS AT ${A.stopped_at ? A.stopped_at.quest : 'NOTHING'}`, 56, BY + 90, 0x7A, 0x9A, 0x7A, 2);
+
+  box(650, BY + 26, 570, 100, 0x6E, 0x2B, 0x2B);
+  text('THE SAME RUN, READING REFUSED', 666, BY + 40, 0xCC, 0xAA, 0xAA, 2);
+  text(`${B.completed} OF ${B.of} MAINLINE QUESTS FINISHED`, 666, BY + 62, 0xEE, 0xCC, 0xCC, 2);
+  text(`STOPS AT ${B.stopped_at ? B.stopped_at.quest : 'NOTHING'}`, 666, BY + 90, 0x9A, 0x7A, 0x7A, 2);
+
+  const FY = BY + 145;
+  const passed = wr ? wr.legs_passed : 0, ranN = wr ? wr.legs_run : 0;
+  text(`${rep.routed} OF ${rep.demanded_reveals} REVEALS A RESOLUTION DEMANDS NOW HAVE A ROUTE IN PLAY - WAS 48`, 40, FY, 0xEE, 0xEE, 0xE4, 2);
+  text(`IN THE RUNNING GAME: ${passed} OF ${ranN} LEGS WALKED INTO THE ROOM, REACHED FOR THE`, 40, FY + 28, 0x7A, 0xAA, 0x88, 2);
+  text('DOCUMENT AND WATCHED THE RESOLUTION STOP REFUSING. THE ONLY ACT IS THE INTERACT', 40, FY + 50, 0x7A, 0xAA, 0x88, 2);
+  text('BUTTON, PRESSED THROUGH THE INPUT PIPELINE.', 40, FY + 72, 0x7A, 0xAA, 0x88, 2);
+  text('CONTROLS: OUT OF REACH OPENS NOTHING, AND THE WRONG DOCUMENT MOVES NO REFUSAL.', 40, FY + 94, 0x9A, 0x9A, 0x92, 2);
+  text(`STILL UNROUTED: ${rep.unrouted}. 18 ENVIRONMENT SOURCES ARE PLACES, NOT DOCUMENTS, AND`, 40, FY + 122, 0xCC, 0xAA, 0x6A, 2);
+  text('24 LEDGERS AND LETTERS ARE STILL UNWRITTEN. BOTH ARE NAMED IN THE AUDIT.', 40, FY + 144, 0xCC, 0xAA, 0x6A, 2);
+} else if (ROUND === 'w1-18-r2') {
   const p = rep.people_channel || { legs_run: 0, journal_writes: 0 };
   const w = (world && world.cases || []).find((c) => c.passed) || null;
   text('THE ROUTER, AND THE SAME RUN WITH THE ROUTER TAKEN OUT', 40, BY, 0xCC, 0xC4, 0x9A, 2);

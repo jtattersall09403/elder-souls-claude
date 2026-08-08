@@ -192,7 +192,27 @@ export function stepEncounters(sim, combat, bus, data) {
     const dx = p.pos[0] - e.pos[0], dz = p.pos[2] - e.pos[2];
     const dist = Math.sqrt(dx * dx + dz * dz);
 
-    if (rule.opening === 'hostile' && !e.encAggroed && dist <= rule.aggro_at_m) {
+    // ---- W1-12 ---------------------------------------------------------------------------
+    // The latch below is `dist <= aggro_at_m` and nothing else: a bare circle, with no cone, no
+    // line of sight, no light and no Sneak. RI-AI01 M1 fails a build outright for it — "FAIL if
+    // the acquisition set is a circle: that is proximity aggro wearing a cone costume" — and M2
+    // fails it again for jumping IDLE straight to AGGRO with no SUSPICIOUS. It is also the
+    // reason nothing in this world can be sneaked past, which is RI-STL01's problem as much as
+    // this piece's: two of the shipped circles are LARGER than the archetype's own eyes
+    // (wl-slitherfang-* aggro at 20 m on a statblock that sees 16; wl-drowned-straggler at 16 m
+    // on one that sees 14), so those enemies notice you from behind, through geometry, in the
+    // dark, from beyond their own sight radius.
+    //
+    // The narrowest honest fix, and it is deliberately narrow. Only `always_hostile` — the
+    // WILDERNESS roster, which is this piece's — is gated. W1-07's two AR-3 rules,
+    // `race_behaviour` and `hostile_below_disposition`, are untouched: they are a different
+    // question (does this party open hostile ON YOU) and re-deciding them here would move a
+    // measurement that belongs to another piece. What is added is the cone and the sight line
+    // the archetype already declares, so an enemy has to be able to SEE you before it decides
+    // it has seen you. The radius itself is left exactly as the population data set it.
+    const wild = rule.source === 'always_hostile';
+    const perceives = !wild || (inSightCone(e, dx, dz) && e.percept_los !== false);
+    if (rule.opening === 'hostile' && !e.encAggroed && dist <= rule.aggro_at_m && perceives) {
       e.encAggroed = true;
       const ctl = combat.enemies.get(e.eid);
       const body = combat.bodyOf(e.eid);
@@ -233,6 +253,18 @@ function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
   const b = combat.bodyOf(e.eid);
   const ctl = combat.enemies.get(e.eid);
   if (!b || b.dead || b.yielded) return;
+  // ---- W1-12 -----------------------------------------------------------------------------
+  // This function's own header says what it is: an approach-and-swing written by W1-07 so that
+  // its AR-3 capture branch could be reached at all, "because enemy DECISION-MAKING is
+  // RI-AI01..07 / wave-1 piece W1-12 and is correctly refused there". That piece now exists.
+  //
+  // A body running `souls` steers itself, so this must not also drive it — two hands on one
+  // enemy is the "two parallel implementations of one system" failure, and here it would show
+  // up as a body advancing 2.20 m/s in a straight line while its own state machine believed it
+  // was strafing. The net-thrower path is deliberately NOT excluded: nets are an encounter
+  // verb, not an AI one, and RI-CHR02 §4e's capture branch still needs them thrown.
+  const aiDriven = !!(ctl && ctl.ai);
+  if (aiDriven && e.encounterRole !== 'net-thrower') return;
   // Committed to an animation: an approach that overrode a swing would delete commitment,
   // which is the one thing seam S1 does not allow anybody to do.
   if (b.move) return;
@@ -242,14 +274,17 @@ function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
   const isNetter = e.encounterRole === 'net-thrower';
   const want = isNetter ? ENGAGE.net_range_m : ENGAGE.engage_range_m;
 
-  // Face the player, at the controller's own turn rate.
-  const bearing = bearingDeg(dx, dz);
-  const maxStep = 240 / 60;
-  let t = angleDelta(b.yaw, bearing);
-  if (t > maxStep) t = maxStep; else if (t < -maxStep) t = -maxStep;
-  b.yaw = norm360(b.yaw + t);
+  // Face the player, at the controller's own turn rate. An AI-driven body has already faced
+  // and moved itself this frame inside `stepCombat`; only its net cadence is decided here.
+  if (!aiDriven) {
+    const bearing = bearingDeg(dx, dz);
+    const maxStep = 240 / 60;
+    let t = angleDelta(b.yaw, bearing);
+    if (t > maxStep) t = maxStep; else if (t < -maxStep) t = -maxStep;
+    b.yaw = norm360(b.yaw + t);
+  }
 
-  if (!isNetter && dist < ENGAGE.min_standoff_m) {
+  if (!aiDriven && !isNetter && dist < ENGAGE.min_standoff_m) {
     // Too close to swing. Back off to the standoff rather than stand inside the player and
     // whiff forever — which is what 46 attacks and 46 WHIFFs in one run looks like.
     const step = ENGAGE.advance_mps / 60;
@@ -260,7 +295,7 @@ function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
     return;
   }
 
-  if (dist > want) {
+  if (dist > want && !aiDriven) {
     // Close. Straight-line advance at a constant speed, with a per-member lateral offset so
     // six of them arrive as a line rather than as a stack.
     const step = ENGAGE.advance_mps / 60;
@@ -272,12 +307,12 @@ function engageMember(sim, combat, bus, e, enc, rule, dist, dx, dz) {
     b.speedMps = ENGAGE.advance_mps;
     return;
   }
-  b.speedMps = 0;
+  if (!aiDriven) b.speedMps = 0;
 
   if (isNetter) {
     if (sim.nettedUntil > sim.frame) return;
     const due = e.encNextNetF === undefined ? sim.frame + order * ENGAGE.party_stagger_f : e.encNextNetF;
-    if (sim.frame < due) { e.encNextNetF = due; b.state = 'REPOSITION'; return; }
+    if (sim.frame < due) { e.encNextNetF = due; if (!aiDriven) b.state = 'REPOSITION'; return; }
     e.encNextNetF = sim.frame + ENGAGE.net_cadence_f;
     const hit = dist <= ENGAGE.net_range_m;
     const ev = bus.emit(sim.frame, 'net_throw');
@@ -330,6 +365,19 @@ function orderOf(e) {
 }
 
 function norm360(a) { a %= 360; return a < 0 ? a + 360 : a; }
+
+/**
+ * Is the player inside this entity's own declared sight cone? `dx,dz` is the vector FROM the
+ * entity TO the player. The cone is the statblock's `sight_cone_deg` (120-160° across the
+ * shipped roster) and it is read rather than re-declared: an encounter file may not give an
+ * enemy better eyes than its archetype has.
+ */
+function inSightCone(e, dx, dz) {
+  const cone = e.sight_cone_deg;
+  if (!cone) return true;          // a statblock with no cone declared is not made blind by it
+  const bearing = bearingDeg(dx, dz);
+  return Math.abs(angleDelta(e.yaw, bearing)) <= cone / 2;
+}
 
 /** What a defeat means here. Read by the death handler; race-conditioned, moveset-blind. */
 export function defeatOutcome(data, encounterId, character) {

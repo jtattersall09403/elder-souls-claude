@@ -38,7 +38,7 @@ import { AmbienceDriver, renderBedOffline, emitterPlacement } from './audio/ambi
 // W1-11 — `audio.combat.impact`. RI-AUD01 / RI-AUD02. Imports synth.js's primitives via
 // impact-audio.js and touches nothing of W1-22's ambience path.
 import { ImpactAudio, renderVoiceOffline } from './audio/impact-audio.js';
-import { buildCells, EMPTY_CELL } from './sim/collision.js';
+import { buildCells, EMPTY_CELL, CollisionCell } from './sim/collision.js';
 import {
   CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS, applyCameraRig,
   openUI as cameraOpenUI, closeUI as cameraCloseUI, beginFogGate, beginDeathCamera,
@@ -439,6 +439,18 @@ export class Engine {
       pois: this.data.pois,
     });
     this.renderer.setWorld(this.field, this.data.roads);
+    // W1-04 round 3 — THE TOWNS, ATTACHED BEFORE THE FIRST TILE IS BUILT.
+    //
+    // `settlement.buildings` was read at exactly two sites before this line — the door table and
+    // a `.length` — so the 202 buildings of the eight settlements were building-shaped doors on
+    // bare ground and VP04-settlement-street photographed terrain. This is the reader.
+    // Same placement and same reason as `field.setSignposts()` above: a tile built before the
+    // plans exist is a street with doors on it and nothing standing up.
+    if (this.renderer.province) {
+      this.renderer.province.setSettlements(
+        Object.values(this.data.settlements || {}), this.data.interiors || {},
+      );
+    }
     // W1-13: the renderer draws the wells and the bloom off the same registry the simulation
     // respawns you at. One source, so a well you can see is a well you can rest at.
     this.renderer.hearths = this.hearths;
@@ -643,6 +655,10 @@ export class Engine {
       parley: d.combat.parley,
       skeleton: d.combat.skeleton,
       clips: d.combat.clips,
+      // W1-12: RI-AI01 §C/§D/§E/§F's parameter tables. `combat/ai.js` throws without it rather
+      // than falling back to constants in code, which is the RI-MTH07 failure this project has
+      // shipped sixteen times.
+      ai: d.combat.ai,
       movesets: d.movesets,
       // W1-10: the 87-weapon roster, the class table and the clip registry are what the FIGHT
       // reads now. `movesets` (the seven spine files) stays in the shape only so that anything
@@ -751,14 +767,14 @@ export class Engine {
         phase: 'early',
         dirt: () => (E.sim.stealth ? E.sim.stealth.civilians.length + E.sim.stealth.searches.length + E.sim.stealth.pending.length : 0),
         named: () => { if (E.sim.stealth) E.sim.stealth.resetSubsystem(); },
-        // DECLARED, NOT ASSUMED. `applySave()` restores `crime.ledger` and `crime.zones` from
-        // the blob and restores nothing else on this subsystem, so a load carries the previous
-        // session's civilians, searches and pending reports into the loaded world. That is the
-        // same shape as the two defects this list exists for and it is NOT this piece's to
-        // change — W1-15 owns the stealth subsystem and its round-1 verdict is the place to
-        // rule on it. Written down here so the next person sees a claim rather than a gap.
-        save: null,
-        why_not: 'applySave() restores crime.ledger + crime.zones only; civilians/searches/pending survive a load. Owner: W1-15. Reported by W1-SOULS r3, not changed by it.',
+        // W1-15 r3. `resetSubsystem()` cannot run here unmodified: `applySave()` (save/state.js)
+        // restores `crime.ledger` and `crime.zones` from the blob ONE STATEMENT before this
+        // boundary runs, and `resetSubsystem()` also re-`new`s both — it would throw the restore
+        // away on the very next line. `resetSessionEphemera()` is the same clear minus those two
+        // fields, plus a reconciliation of the world's `stolen_from` marks against the registry
+        // the blob just restored. Reported by W1-SOULS r3 as "civilians/searches/pending survive
+        // a load"; closed here.
+        save: () => { if (E.sim.stealth) E.sim.stealth.resetSessionEphemera(); },
       },
       {
         id: 'discovery',
@@ -992,6 +1008,17 @@ export class Engine {
    */
   _buildCombat(loadout) {
     this.combat = new CombatSystem(this._combatData());
+    // W1-12. Two handles the enemy AI needs and may not construct for itself.
+    //
+    // `rng` is THE global instance from core/rng.js — "nothing in sim/ may construct its own",
+    // and an AI with a private stream would be exactly that rule broken somewhere quieter. Its
+    // draws are counted and its state is in the save blob, so a strafe reseed is a real seeded
+    // simulation quantity and not hidden entropy.
+    //
+    // `entityOf` is how the token arbitrator finds an enemy's encounter group (RI-AI01 §E's
+    // "same encounter volume"). It is a lookup, not a write: the AI cannot touch the entity.
+    this.combat.rng = rng;
+    this.combat.entityOf = (eid) => this.sim.findEntity(eid);
     // W1-11 — the fight is where impact audio is DECIDED, so the driver is hung on the fight
     // rather than polled from outside it. `CombatSystem.step`'s `emit` closure calls
     // `onEvent(frame, kind, e, world)` inside `sweepAndResolve`'s call stack, which is what
@@ -1105,6 +1132,30 @@ export class Engine {
     this.sim.player.rollClass = this.combat.player.tier;
     return { equip_load_pct: v, tier: this.combat.player.tier };
   }
+
+  /**
+   * THE ONE PURSE (W1-16 finding). `sim.progression.gold` is canonical — it is what
+   * `save/state.js` persists and what `getGold()` has always read — and before this method
+   * existed four call sites each kept their own copy of "how much gold the player has" and none
+   * of them talked to each other: `fenceSell` paid into `sim.stealth.p.gold` (seeded once at
+   * 400 and never touched again), `boardTravel` spent out of `combat.world.gold` (a snapshot
+   * taken at the last `_buildCombat`, so a fare survived a save/load reload for free), the save
+   * wrote and read `sim.progression.gold`, and the level-up/inventory screen drew
+   * `sim.loadout.gold || sim.gold` — two fields nothing ever set, so it read **0** whether or
+   * not `setGold(777)` had just been called. Every write now goes through here; every mirror
+   * moves in the same frame.
+   */
+  _setGold(v) {
+    const n = Number(v) || 0;
+    this.sim.progression.gold = n;
+    if (this.magic) this.magic.gold = n;
+    if (this.combat && this.combat.world) this.combat.world.gold = n;
+    if (this.sim.stealth) this.sim.stealth.p.gold = n;
+    return n;
+  }
+
+  /** The one purse, read. See `_setGold`. */
+  _gold() { return Number(this.sim.progression.gold) || 0; }
 
   /** Load a scripted enemy action list — RI-CMB07 M1 Mode-A's instrument. */
   queueEnemyScript(eid, script) {
@@ -1998,9 +2049,8 @@ export class Engine {
     const req = this.sim.captureRequest;
     this.sim.captureRequest = null;
     if (!req) return;
-    const goldBefore = this.combat.world.gold || 0;
-    this.combat.world.gold = 0;
-    this.sim.progression.gold = 0;
+    const goldBefore = this._gold();
+    this._setGold(0);
     const writIdx = this.sim.inventory.findIndex((i) => i.id === 'stamped-writ');
     if (writIdx >= 0) this.sim.inventory.splice(writIdx, 1);
     this.sim.nettedUntil = 0;
@@ -2468,7 +2518,7 @@ export class Engine {
     const gmst = this.data.persuasionGmst && this.data.persuasionGmst.gmst;
     if (!gmst) return { refused: 'no_gmst' };
     const cost = V.startsWith('bribe') ? Number(V.slice(5)) : 0;
-    const purse = this.sim.progression.gold || 0;
+    const purse = this._gold();
     if (cost > purse) return { refused: 'not_enough_gold', need: cost, have: purse };
     const rec = this._anyNpcRecord(n.eid) || {};
     const npcView = {
@@ -2484,10 +2534,9 @@ export class Engine {
       raceReactions: (this.chData && this.chData.reactions) || null,
     });
     if (cost) {
-      // One purse. `magic.gold` and `progression.gold` are the same money seen from two places
-      // (`setGold` writes both); a bribe that only debited one of them would be free.
-      this.sim.progression.gold = purse - cost;
-      if (this.magic) this.magic.gold = this.sim.progression.gold;
+      // One purse (W1-16). `_setGold` moves every mirror in the same frame; a bribe that only
+      // debited one of them would be free.
+      this._setGold(purse - cost);
     }
     const before = this._dispositionRegister(n.eid);
     this.sim.quest.dispositions[n.eid] = Math.max(0, Math.min(100, before + r.permChange));
@@ -2497,7 +2546,7 @@ export class Engine {
       npc: n.eid, verb: V, roll, success: r.success,
       register_before: before, register_after: this.sim.quest.dispositions[n.eid],
       perm_change: r.permChange, temp_change: r.tempChange,
-      gold_spent: cost, gold_left: this.sim.progression.gold,
+      gold_spent: cost, gold_left: this._gold(),
       standing_now: this.questEngine ? this.questEngine.dispositionView()[n.eid] : null,
       target_used: r.target_used,
     };
@@ -3438,7 +3487,10 @@ export class Engine {
       loadMax: this._equipLoadMax(),
       burdenTier: burdenTierOf(this.sim.player.burdenRatio || 0).id
         || burdenTierOf(this.sim.player.burdenRatio || 0).name || 'unburdened',
-      gold: (this.sim.loadout && this.sim.loadout.gold) || this.sim.gold || 0,
+      // W1-16: was `(this.sim.loadout && this.sim.loadout.gold) || this.sim.gold || 0` — neither
+      // field is ever written by anything, so the drawn inventory read 0 gold before AND after
+      // `setGold(777)`. `_gold()` is the one purse `setGold`/`getGold`/the save all agree on.
+      gold: this._gold(),
       placeName: this.sim.env.interior || this.sim.env.region || null,
       journal: this.sim.quest.journal,
       dateLabel: this.sim.quest.journal.length ? this.sim.quest.journal[this.sim.quest.journal.length - 1].date : null,
@@ -4709,6 +4761,10 @@ export class Engine {
     // THE PROVINCE FOLLOWS THE PLAYER. After `_deathTick()`, so a respawn is streamed on the
     // frame it happens rather than the next one. See `_streamProvince()`.
     this._streamProvince();
+    // W1-04 r3 — AND THE BUILDINGS ARE SOLID. After `_streamProvince()`, because the collision
+    // set is derived from the same plans the streamer draws from and there is no reason for it
+    // to lead them. See `_settleSettlementSolids()`.
+    this._settleSettlementSolids();
     // W1-POPULATION — AND THE COUNTRY IS INHABITED. Immediately after `_streamProvince()` and
     // for the identical reason: this is the one slot every way the world advances passes
     // through, and it is outside the armed determinism guard. Ground that streams in under an
@@ -4784,6 +4840,96 @@ export class Engine {
    */
   _streamPopulation() {
     if (this.population) this.population.step(this);
+  }
+
+  /**
+   * THE BUILDINGS ARE SOLID — `RI-WLD03` R1, and the half of "a settlement of buildings" that a
+   * picture cannot prove.
+   *
+   * Before this the province had NO static collision at all: `sim.cell` is `EMPTY_CELL` outside
+   * a camera fixture, `stepWorldCollision()` returns on its first line when it sees that, and a
+   * player could walk through the Rotted Hall. Drawing 202 buildings you can walk through would
+   * be a diorama with a better silhouette.
+   *
+   * WHY `sim.cell` AND NOT A NEW FIELD. Four systems already read `sim.cell` and every one of
+   * them is asking the question a building answers: the body's depenetration
+   * (`sim/world-collision.js`), the camera's spring arm (`sim/camera.js`), stealth line of sight
+   * (`sim/stealth/perception.js`) and conjured walls (`sim/magic/apply.js`). A second collision
+   * set would give the right answer to one of them and leave the other three walking through
+   * masonry — that is the two-parallel-implementations failure AGENT-PROTOCOL names, authored on
+   * purpose. **Stated plainly for the pieces that own those systems: standing inside a town in
+   * the province is now a place where the camera arm can be obstructed and line of sight can be
+   * broken, and it was not before.**
+   *
+   * `sim.cellId` IS LEFT NULL. It is the flag `_settleWorld()`, `_mirrorTraversalToPlayer()`,
+   * `_settleEnemyWater()` and `groundInActiveCell()` use to mean "authored fixture geometry owns
+   * the ground here", and it must keep meaning that: the town stands ON the province
+   * heightfield, so the terrain is still authoritative for Y and the streamer must keep running.
+   * A camera fixture therefore still wins outright — the first line below yields to it.
+   *
+   * The set is rebuilt when the player moves 8 m or changes town, and holds only the buildings
+   * within 45 m, because `CollisionCell.distance()` is a linear scan the spring arm evaluates up
+   * to 96 times a frame.
+   */
+  _settleSettlementSolids() {
+    // THE CONTROL ARM for the collision half, and the reason it is a field on the engine rather
+    // than a comment: "you cannot walk through a wall" is only a measurement if the same walk
+    // can be run with the walls taken out. `__w1_04_townSolids(false)` sets this.
+    if (this._townSolidsOff) {
+      if (this._townCell && this.sim.cell === this._townCell) this.sim.cell = EMPTY_CELL;
+      this._townCell = null; this._townSolids = null;
+      return;
+    }
+    // An authored camera fixture owns `sim.cell` outright.
+    if (this.sim.cellId) { this._townCell = null; return; }
+    const pv = this.renderer && this.renderer.province;
+    if (!pv || !pv.settlementPlans || !pv.settlementPlans.length) return;
+    if (this.cellFor(this.sim.env) !== 'province') {
+      // Through a door. The room behind it is its own cell and the street's walls are not in it.
+      if (this._townCell && this.sim.cell === this._townCell) { this.sim.cell = EMPTY_CELL; }
+      this._townCell = null;
+      return;
+    }
+    const p = this.sim.player.pos;
+    const s = this._townSolids || (this._townSolids = { x: NaN, z: NaN, id: null, rebuilds: 0 });
+    const here = pv.settlementAt(p[0], p[2]);
+    const id = here ? here.id : null;
+    const dx = p[0] - s.x, dz = p[2] - s.z;
+    // Unmoved AND still holding a cell for this town: re-assert it and stop. `_applyCell()` and
+    // `setCameraCell(null)` both clear `sim.cell`, and a camera fixture releasing drops
+    // `_townCell` entirely — so "unmoved" is not enough on its own to skip the rebuild, or a
+    // fixture released inside a town would leave the street hollow until the player walked 8 m.
+    if (id === s.id && dx * dx + dz * dz < 64 && (!id || this._townCell)) {
+      if (this._townCell && this.sim.cell !== this._townCell) this.sim.cell = this._townCell;
+      return;
+    }
+    s.x = p[0]; s.z = p[2]; s.id = id; s.rebuilds++;
+    if (!id) {
+      if (this._townCell && this.sim.cell === this._townCell) this.sim.cell = EMPTY_CELL;
+      this._townCell = null;
+      return;
+    }
+    const solids = pv.settlementSolidsNear(p[0], p[2], 45);
+    const cell = new CollisionCell(`settlement:${id}`, solids ? solids.shapes : [], {
+      class: 'exterior', title: `${id} — settlement buildings`,
+    });
+    this._townCell = cell;
+    this.sim.cell = cell;
+  }
+
+  /** What the town collision set currently holds. Read-only; the harness's window on R1. */
+  settlementSolidsReport() {
+    const pv = this.renderer && this.renderer.province;
+    const p = this.sim.player.pos;
+    const here = pv ? pv.settlementAt(p[0], p[2]) : null;
+    return {
+      settlement: here ? here.id : null,
+      cell_id: this.sim.cell && this.sim.cell.id !== '__empty' ? this.sim.cell.id : null,
+      shapes: this.sim.cell ? this.sim.cell.shapes.length : 0,
+      camera_fixture: this.sim.cellId || null,
+      rebuilds: this._townSolids ? this._townSolids.rebuilds : 0,
+      inside_a_building: pv ? pv.buildingAt(p[0], p[2]) : null,
+    };
   }
 
   _streamProvince() {
@@ -5454,7 +5600,11 @@ export class Engine {
     const s = T.services.find((x) => x.id === q.service);
     const speed = { rootway: 7.0, barge: 4.0, poler: 2.8, packet: 6.0, rootspeak: 40.0 }[s.mode] || 5.0;
     const frames = Math.max(60, Math.round(s.built_route_m / speed * 60));
-    this.combat.world.gold -= s.fare_gold;
+    // W1-16: was `this.combat.world.gold -= s.fare_gold` — a fare spent out of the SNAPSHOT
+    // `_buildCombat` took at the last load, never the canonical purse, so the money was back
+    // the moment anything (a rest, a load) rebuilt the fight. Routed through `_setGold` so a
+    // fare is a real, save-durable spend.
+    this._setGold(this._gold() - s.fare_gold);
     T.ride = { svc: s, frame: 0, frames, speed, spent: s.fare_gold, maxDelta: 0, positions: [] };
     const run = Math.min(frames, opts.frames === undefined ? frames : Number(opts.frames));
     return this.travelRide(run);
@@ -7462,11 +7612,18 @@ export class Engine {
   }
 
   setStealthState(patch) {
-    const p = this.sim.stealth.p;
+    const st = this.sim.stealth;
+    const p = st.p;
     const allow = ['sneak', 'security', 'agility', 'mercantile', 'speechcraft', 'load', 'race', 'surface', 'inCover', 'zone', 'carryingTorch', 'gold', 'picks', 'crouched', 'jurisdiction', 'settlement'];
+    // Fields the world otherwise tracks live off the character sheet every frame
+    // (`StealthCrime.syncFromCharacter`, RI-PRG03 consumption). A caller stating one of them
+    // here is declaring a scenario override — recorded so the next step doesn't silently
+    // stomp it back to whatever the character carries.
+    const trackedByCharacter = ['sneak', 'security', 'agility', 'mercantile', 'speechcraft', 'race', 'gold'];
     for (const k of Object.keys(patch)) {
       if (!allow.includes(k)) throw new Error(`setStealthState: unknown field ${JSON.stringify(k)}; allowed: ${allow.join(', ')}`);
       p[k] = patch[k];
+      if (trackedByCharacter.includes(k)) st._overridden.add(k);
       // `in_cover` is derived from geometry every frame unless a scenario states it. Setting it
       // here is a declaration that the scenario is stating it, and the trace records that so a
       // critic can tell the world's answer from a hand-fed one (RI-MTH07 §C3).
@@ -7558,10 +7715,12 @@ export class Engine {
     const st = this.sim.stealth;
     const r = st.pending[i];
     if (!r) throw new Error(`bribeWitness(${i}): no pending report at that index`);
-    const purse = gold === null ? st.p.gold : gold;
+    // W1-16: was `gold === null ? st.p.gold : gold` — the stale mirror. `_gold()` is the
+    // canonical purse.
+    const purse = gold === null || gold === undefined ? this._gold() : gold;
     const out = r.bribe(purse, this.sim.frame);
     if (out.ok) {
-      st.p.gold -= out.paid;
+      this._setGold(this._gold() - out.paid);
       const c = st.civilians.find((x) => x.eid === r.w.eid);
       if (c) { c.flee = null; c.reporting = false; }
       st.mirrorToSave(this.sim);
@@ -7590,7 +7749,10 @@ export class Engine {
     if (!row) throw new Error(`fenceSell: ${JSON.stringify(instance)} is not in the stolen registry. Registered: ${st.crime.stolenRegistry.map((s) => s.instance).join(', ') || '(none)'}`);
     const q = this.fenceQuote(fenceId, { stolen_from: row.owner, value_g: row.value_g, unique: row.unique, stolen_settlement: row.settlement });
     if (!q.buys) return q;
-    st.p.gold += q.price_g;
+    // W1-16: was `st.p.gold += q.price_g` — a purse seeded at 400 and touched by nothing else
+    // in the game, disjoint from `sim.progression.gold` (what the save writes and `getGold()`
+    // reads). Routed through `_setGold` so a fence payment is real money.
+    this._setGold(this._gold() + q.price_g);
     st.crime.launder(instance, fenceId, this.sim.frame);
     const inv = this.sim.inventory.find((it) => it.id === instance);
     if (inv) { inv.stolen = false; inv.owner = null; }
@@ -8041,7 +8203,13 @@ export class Engine {
       jurisdiction: opts.jurisdiction || 'imperial', settlement: opts.settlement || null,
       persuadeSucceeded: !!opts.persuadeSucceeded, stolenItems: opts.stolenItems || [],
     });
-    if (out.ok && answer === 'pay') st.p.gold -= bounty;
+    // W1-15 r3: was `st.p.gold -= bounty` — a write to the stealth mirror only.
+    // `syncFromCharacter()` re-heals `p.gold` from `sim.progression.gold` on the very next
+    // frame (see its own W1-16 comment), so the deduction was invisible by the next step and
+    // paying off a bounty at the guard cost nothing against the purse the save actually writes.
+    // Routed through `_setGold`/`_gold` so paying a bounty is the same kind of real money
+    // fencing and bribing already are (W1-16's "ONE PURSE" finding).
+    if (out.ok && answer === 'pay') this._setGold(this._gold() - bounty);
     if (out.ok && answer === 'serve') { st.p.sneak += out.gained.sneak || 0; st.p.security += out.gained.security || 0; }
     return out;
   }

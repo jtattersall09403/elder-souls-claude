@@ -1,0 +1,7 @@
+breath_max_s in shipped traversal.json = 60
+NORD     {"trace":[{"f":0,"sub":true,"breath":59.98,"hp":1000,"state":"SUBMERGED"},{"f":1200,"sub":true,"breath":39.98,"hp":1000,"state":"SUBMERGED"},{"f":2400,"sub":true,"breath":19.98,"hp":1000,"state":"SUBMERGED"},{"f":3600,"sub":true,"breath":0,"hp":999.7,"state":"SUBMERGED"},{"f":4199,"sub":true,"breath":0,"hp":800,"state":"SUBMERGED"}],"band":"W5","depth":40.3}
+SAXHLEEL {"trace":[{"f":0,"sub":true,"breath":60,"hp":1000,"state":"SUBMERGED"},{"f":1200,"sub":true,"breath":60,"hp":1000,"state":"SUBMERGED"},{"f":2400,"sub":true,"breath":60,"hp":1000,"state":"SUBMERGED"},{"f":3600,"sub":true,"breath":60,"hp":1000,"state":"SUBMERGED"},{"f":4199,"sub":true,"breath":60,"hp":1000,"state":"SUBMERGED"}],"band":"W5","depth":40.3}
+
+privilege 1 (breath_max = infinity): HELD  nord_breath_end=0  sax_breath_end=60  nord_hp=800  sax_hp=1000
+
+END-scaling check: is breath_max derived from a sheet anywhere in game/src?

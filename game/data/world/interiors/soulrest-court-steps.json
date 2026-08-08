@@ -1,265 +1,322 @@
 {
- "schema": "elder-souls/interior@1",
- "id": "soulrest-court-steps",
- "name": "The Drowned Court Steps",
- "settlement": "soulrest",
- "cell_kind": "named",
- "interior_kind": "temple",
- "service": null,
- "faction": "drowned-court",
- "exterior_door": [
-  630.6,
-  7.91,
-  4885.95
- ],
- "continuity": {
-  "building": "soulrest-court-steps",
-  "building_offset_m": [
-   20.1,
-   0,
-   8.95
+  "schema": "elder-souls/interior@1",
+  "id": "soulrest-court-steps",
+  "name": "The Drowned Court Steps",
+  "settlement": "soulrest",
+  "cell_kind": "named",
+  "interior_kind": "temple",
+  "service": null,
+  "faction": "drowned-court",
+  "exterior_door": [
+    630.6,
+    7.91,
+    4885.95
   ],
-  "building_yaw_deg": 246,
-  "exterior_footprint_m": [
-   14.8,
-   16.8
+  "continuity": {
+    "building": "soulrest-court-steps",
+    "building_offset_m": [
+      20.1,
+      0,
+      8.95
+    ],
+    "building_yaw_deg": 246,
+    "exterior_footprint_m": [
+      14.8,
+      16.8
+    ],
+    "entry_side": "south",
+    "interior_spawn": [
+      0,
+      0,
+      7.2
+    ],
+    "exterior_spawn": [
+      630.6,
+      7.91,
+      4887.75
+    ]
+  },
+  "bounds_m": {
+    "x": [
+      -7.4,
+      7.4
+    ],
+    "y": [
+      0,
+      3.2
+    ],
+    "z": [
+      -8.4,
+      8.4
+    ]
+  },
+  "floor_area_m2": 248.6,
+  "light": {
+    "kind": "lamp",
+    "pos": [
+      0,
+      0.6,
+      3.36
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.2
+  },
+  "lights": [
+    {
+      "id": "soulrest.weaver0.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.weaver0.r1.lamp0",
+      "pos": [
+        0.7999999999999998,
+        1.6,
+        -3.6
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.weaver0.r1.lamp1",
+      "pos": [
+        -1.1,
+        1.6,
+        -3.5
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.weaver0.r1.lamp2",
+      "pos": [
+        -2.4,
+        1.6,
+        -3.4
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.cook4.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.cook4.r0.lamp0",
+      "pos": [
+        -0.2999999999999998,
+        1.6,
+        -0.8999999999999999
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.cook4.r0.lamp1",
+      "pos": [
+        1.5999999999999996,
+        1.6,
+        -1
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.weaver7.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.weaver7.r1.lamp0",
+      "pos": [
+        -3.1,
+        1.6,
+        -3.5
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.weaver7.r1.lamp1",
+      "pos": [
+        -1.2000000000000002,
+        1.6,
+        -3.6
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.warder11.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.warder11.r0.lamp0",
+      "pos": [
+        1,
+        1.6,
+        0
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.warder11.r0.lamp1",
+      "pos": [
+        -0.8999999999999999,
+        1.6,
+        0.09999999999999964
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.warder11.r0.lamp2",
+      "pos": [
+        -2.8,
+        1.6,
+        -0.20000000000000018
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    }
   ],
-  "entry_side": "south",
-  "interior_spawn": [
-   0,
-   0,
-   7.2
+  "props": [
+    "altar_low",
+    "kneel_step",
+    "censer_stand",
+    "offering_bowl",
+    "candle_rack",
+    "sermon_lectern",
+    "water_stoup",
+    "bench_row",
+    "wall_niche",
+    "cloth_hanging",
+    "reliquary_case",
+    "lamp_votive",
+    "bell_small",
+    "ash_tray",
+    "sou_rib_frame",
+    "sou_salt_block",
+    "sou_bleached_wall",
+    "sou_bone_stack"
   ],
-  "exterior_spawn": [
-   630.6,
-   7.91,
-   4887.75
-  ]
- },
- "bounds_m": {
-  "x": [
-   -7.4,
-   7.4
+  "property_zones": [
+    "soulrest.weaver0.r1",
+    "soulrest.cook4.r0",
+    "soulrest.weaver7.r1",
+    "soulrest.warder11.r0"
   ],
-  "y": [
-   0,
-   3.2
+  "containers": [
+    "soulrest.cook4.r0.0",
+    "soulrest.cook4.r0.2"
   ],
-  "z": [
-   -8.4,
-   8.4
-  ]
- },
- "floor_area_m2": 248.6,
- "light": {
-  "kind": "lamp",
-  "pos": [
-   0,
-   0.6,
-   3.36
+  "unique_item": {
+    "id": "soulrest-court-steps-unique",
+    "name": "a sexton’s stole for a rite nobody will perform",
+    "unique": true,
+    "takeable": true,
+    "owner": "npc:soulrest-weaver-0"
+  },
+  "readable": [
+    {
+      "id": "soulrest-court-steps-readable",
+      "title": "The Chapter's Vote"
+    },
+    {
+      "id": "the-drowned-tally-tenth-volume",
+      "title": "The Drowned Tally, tenth volume",
+      "book": "the-drowned-tally-tenth-volume"
+    },
+    {
+      "id": "the-drowned-tally-fourth-volume",
+      "title": "The Drowned Tally, fourth volume",
+      "book": "the-drowned-tally-fourth-volume"
+    },
+    {
+      "id": "the-drowned-tally-appendix",
+      "title": "A short appendix, bound at the back",
+      "book": "the-drowned-tally-appendix"
+    },
+    {
+      "id": "the-drowned-tally-severances",
+      "title": "Three leaves, kept out of order",
+      "book": "the-drowned-tally-severances"
+    },
+    {
+      "id": "the-drowned-tally-sixth-volume",
+      "title": "The Drowned Tally, sixth volume",
+      "book": "the-drowned-tally-sixth-volume"
+    },
+    {
+      "id": "the-drowned-tally-eleventh-volume",
+      "title": "The Drowned Tally, the current leaves",
+      "book": "the-drowned-tally-eleventh-volume"
+    },
+    {
+      "id": "the-seventh-recension",
+      "title": "The Seventh Recension, the clauses entire",
+      "book": "the-seventh-recension"
+    },
+    {
+      "id": "for-the-ninth-clause",
+      "title": "An answer to the archive",
+      "book": "for-the-ninth-clause"
+    },
+    {
+      "id": "against-the-ninth-clause",
+      "title": "On what was done to the fair copies",
+      "book": "against-the-ninth-clause"
+    },
+    {
+      "id": "the-court-and-the-tide",
+      "title": "A clerk’s handbook, much annotated",
+      "book": "the-court-and-the-tide"
+    },
+    {
+      "id": "the-commonplace-book-of-ivo-sarn",
+      "title": "A commonplace book, returned to the chapter",
+      "book": "the-commonplace-book-of-ivo-sarn"
+    }
   ],
-  "colour_hex": "#ffb066",
-  "intensity": 2.2
- },
- "lights": [
-  {
-   "id": "soulrest.weaver0.r1.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "soulrest.weaver0.r1.lamp0",
-   "pos": [
-    0.7999999999999998,
-    1.6,
-    -3.6
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.weaver0.r1.lamp1",
-   "pos": [
-    -1.1,
-    1.6,
-    -3.5
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.weaver0.r1.lamp2",
-   "pos": [
-    -2.4,
-    1.6,
-    -3.4
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.cook4.r0.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "soulrest.cook4.r0.lamp0",
-   "pos": [
-    -0.2999999999999998,
-    1.6,
-    -0.8999999999999999
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.cook4.r0.lamp1",
-   "pos": [
-    1.5999999999999996,
-    1.6,
-    -1
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.weaver7.r1.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "soulrest.weaver7.r1.lamp0",
-   "pos": [
-    -3.1,
-    1.6,
-    -3.5
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.weaver7.r1.lamp1",
-   "pos": [
-    -1.2000000000000002,
-    1.6,
-    -3.6
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.warder11.r0.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "soulrest.warder11.r0.lamp0",
-   "pos": [
-    1,
-    1.6,
-    0
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.warder11.r0.lamp1",
-   "pos": [
-    -0.8999999999999999,
-    1.6,
-    0.09999999999999964
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "soulrest.warder11.r0.lamp2",
-   "pos": [
-    -2.8,
-    1.6,
-    -0.20000000000000018
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  }
- ],
- "props": [
-  "altar_low",
-  "kneel_step",
-  "censer_stand",
-  "offering_bowl",
-  "candle_rack",
-  "sermon_lectern",
-  "water_stoup",
-  "bench_row",
-  "wall_niche",
-  "cloth_hanging",
-  "reliquary_case",
-  "lamp_votive",
-  "bell_small",
-  "ash_tray",
-  "sou_rib_frame",
-  "sou_salt_block",
-  "sou_bleached_wall",
-  "sou_bone_stack"
- ],
- "property_zones": [
-  "soulrest.weaver0.r1",
-  "soulrest.cook4.r0",
-  "soulrest.weaver7.r1",
-  "soulrest.warder11.r0"
- ],
- "containers": [
-  "soulrest.cook4.r0.0",
-  "soulrest.cook4.r0.2"
- ],
- "unique_item": {
-  "id": "soulrest-court-steps-unique",
-  "name": "a sexton’s stole for a rite nobody will perform",
-  "unique": true,
-  "takeable": true,
-  "owner": "npc:soulrest-weaver-0"
- },
- "readable": {
-  "id": "soulrest-court-steps-readable",
-  "title": "The Chapter's Vote"
- },
- "inhabitants": [],
- "anchor": "interior_firelit",
- "open_h": 8,
- "close_h": 19
+  "inhabitants": [],
+  "anchor": "interior_firelit",
+  "open_h": 8,
+  "close_h": 19
 }

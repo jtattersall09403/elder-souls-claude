@@ -136,6 +136,19 @@ try {
   out.ui_layer_px = layer.c;
 
   // ---- §E: three quest states per quest, 24 frames after a settled load ----------------------
+  //
+  // W1-21 round 2 — AND WITH THE MAP OPEN AS WELL AS CLOSED.
+  //
+  // The round-1 verdict tabulated this detector as "quest-state differential, no menu open —
+  // map? no". It is the detector RI-UIX02 calls the important one, because it defines a marker by
+  // behaviour rather than by shape or by name, and it had never once run against the surface
+  // AMENDMENT-W1-MAP-01 §3a is written about. A quest-conditioned square on the map is precisely
+  // the thing that survives detectors 1 and 2 and does not survive this one — so this one has to
+  // be looking at the map.
+  //
+  // The `world` arm keeps its exact previous meaning, so the round-1 numbers stay comparable.
+  const SURFACES = [{ id: 'world', open: null }, { id: 'map', open: 'map' }];
+  for (const surface of SURFACES) {
   for (const q of QUESTS) {
     const shots = [];
     for (const stage of [0, 3, 7]) {
@@ -156,12 +169,17 @@ try {
       await h.h('setTimeOfDay', 13);
       await h.h('setWeather', 'clear');
       await h.h('camera', { pos: [0, 1.6, -4.2], look: [0, 1.55, 0], fov: 50 });
+      // AFTER the load, because a load does not close an open screen and the mode a state file
+      // happens to carry is not this tool's variable.
+      await h.h('closeMenu');
+      if (surface.open) await h.h('openMenu', surface.open);
       await h.h('stepFrames', 24);
       shots.push(decode(await h.h('screenshot')));
     }
     const ab = restrict(maskOf(shots[0], shots[1]).m, layer.m);
     const ac = restrict(maskOf(shots[0], shots[2]).m, layer.m);
     const rec = {
+      surface: surface.id,
       quest: q,
       D_AB_px: ab.c, D_AB_bbox: bbox(ab.m, width),
       D_AC_px: ac.c, D_AC_bbox: bbox(ac.m, width),
@@ -169,7 +187,7 @@ try {
       empty: ab.c === 0 && ac.c === 0,
     };
     if (!rec.empty) {
-      const dir = path.join(RUN, q);
+      const dir = path.join(RUN, `${surface.id}-${q}`);
       ensureDir(dir);
       fs.writeFileSync(path.join(dir, 'A.png'), PNG.sync.write(shots[0]));
       fs.writeFileSync(path.join(dir, 'B.png'), PNG.sync.write(shots[1]));
@@ -177,8 +195,10 @@ try {
       rec.artifacts = dir;
     }
     out.differentials.push(rec);
-    log(`  ${q}: D_AB ${ab.c} px, D_AC ${ac.c} px in the UI layer`);
+    log(`  [${surface.id}] ${q}: D_AB ${ab.c} px, D_AC ${ac.c} px in the UI layer`);
   }
+  }
+  await h.h('closeMenu');
 
   // ---- §E M-def-1: the camera-yaw sweep -----------------------------------------------------
   // At three positions, per the method: a street, an open vista, and an interior. This build's

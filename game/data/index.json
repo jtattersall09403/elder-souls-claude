@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 557,
+  "file_count": 558,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -341,6 +341,14 @@
       "id": null,
       "bytes": 837,
       "sha256": "944f999482d0670f"
+    },
+    {
+      "path": "combat/ai.json",
+      "schema": "elder-souls/enemy-ai@1",
+      "id": "enemy-ai",
+      "bytes": 9425,
+      "sha256": "5c61f8a5ba4b0f29",
+      "declared_incomplete": true
     },
     {
       "path": "combat/clips.json",
@@ -2909,7 +2917,7 @@
       "schema": "elder-souls/interior@1",
       "id": "archon-house-2",
       "bytes": 2538,
-      "sha256": "cd31cc11fb33ccb8"
+      "sha256": "3ab6c996bb81c001"
     },
     {
       "path": "world/interiors/archon-inn.json",
@@ -2980,7 +2988,7 @@
       "schema": "elder-souls/interior@1",
       "id": "blackrose-house-0",
       "bytes": 2620,
-      "sha256": "de44ee62f13d36d3"
+      "sha256": "fc51e230560b2c5e"
     },
     {
       "path": "world/interiors/blackrose-house-1.json",
@@ -3092,7 +3100,7 @@
       "schema": "elder-souls/interior@1",
       "id": "gideon-house-1",
       "bytes": 2614,
-      "sha256": "60e09148f36b1c31"
+      "sha256": "d5120f99b3d903ac"
     },
     {
       "path": "world/interiors/gideon-inn.json",
@@ -3225,7 +3233,7 @@
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-5",
       "bytes": 2600,
-      "sha256": "b5e7207426f43b0d"
+      "sha256": "fead93474b6bf3e7"
     },
     {
       "path": "world/interiors/helstrom-house-6.json",
@@ -3308,8 +3316,8 @@
       "path": "world/interiors/helstrom-undertemple.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-undertemple",
-      "bytes": 2569,
-      "sha256": "bb3a9982a4fe9359"
+      "bytes": 2697,
+      "sha256": "aba1928ca99cf650"
     },
     {
       "path": "world/interiors/helstrom-warders.json",
@@ -3329,8 +3337,8 @@
       "path": "world/interiors/lilmoth-customs.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-customs",
-      "bytes": 2943,
-      "sha256": "c1a1923e5fb51046"
+      "bytes": 3540,
+      "sha256": "1ed9dcd181ccbc6b"
     },
     {
       "path": "world/interiors/lilmoth-healer.json",
@@ -3392,8 +3400,8 @@
       "path": "world/interiors/lilmoth-ledger-house.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-ledger-house",
-      "bytes": 3402,
-      "sha256": "462b938a676e6e60"
+      "bytes": 3552,
+      "sha256": "7099f310b28f7438"
     },
     {
       "path": "world/interiors/lilmoth-market.json",
@@ -3455,8 +3463,8 @@
       "path": "world/interiors/soulrest-court-steps.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-court-steps",
-      "bytes": 5717,
-      "sha256": "69233156c15e6768"
+      "bytes": 6459,
+      "sha256": "add53f1fac729322"
     },
     {
       "path": "world/interiors/soulrest-grey-hist.json",
@@ -3533,14 +3541,14 @@
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-1",
       "bytes": 2612,
-      "sha256": "564c2e8d5c5943a3"
+      "sha256": "d9ca3c381581fe1b"
     },
     {
       "path": "world/interiors/stormhold-house-2.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-2",
       "bytes": 2664,
-      "sha256": "c0ad8b8ca4e5bdce"
+      "sha256": "05106b63834a9585"
     },
     {
       "path": "world/interiors/stormhold-house-3.json",
@@ -3665,8 +3673,8 @@
       "path": "world/interiors/thorn-sapwell.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-sapwell",
-      "bytes": 4622,
-      "sha256": "4df76451e67361d7"
+      "bytes": 4763,
+      "sha256": "4b6b5b86c176da73"
     },
     {
       "path": "world/interiors/thorn-trader.json",

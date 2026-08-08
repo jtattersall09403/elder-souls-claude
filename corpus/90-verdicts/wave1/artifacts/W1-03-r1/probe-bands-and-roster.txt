@@ -1,0 +1,81 @@
+
+--- real world points, one per band (shipped field, no synthesis) ---
+W0 {"x":244,"z":2988,"depth":0,"band":"W0","surf":null}
+W1 {"x":251,"z":2869,"depth":0.104,"band":"W1","surf":1.5}
+W2 {"x":244,"z":2848,"depth":0.211,"band":"W2","surf":1.5579999999999998}
+W3 {"x":244,"z":2834,"depth":0.848,"band":"W3","surf":1.6560000000000004}
+W4 {"x":230,"z":2925,"depth":1.396,"band":"W4","surf":1.5}
+W5 {"x":20,"z":20,"depth":40.267,"band":"W5","surf":0}
+
+=== 1. PLAYER SIDE — same point, two races ===
+W0 d=0.036  NORD attack_denied=false stam=0 drain/s=0 regenSup=false
+W0 d=0.036  SAXH attack_denied=false stam=0 drain/s=0 regenSup=false amph=true
+W1 d=0.015  NORD attack_denied=false stam=0 drain/s=0 regenSup=false
+W1 d=0.015  SAXH attack_denied=false stam=0 drain/s=0 regenSup=false amph=true
+W2 d=0.175  NORD attack_denied=false stam=0 drain/s=0 regenSup=false
+W2 d=0.175  SAXH attack_denied=false stam=0 drain/s=0 regenSup=false amph=true
+W3 d=0.792  NORD attack_denied=false stam=4 drain/s=2 regenSup=false
+W3 d=0.792  SAXH attack_denied=false stam=2 drain/s=1 regenSup=false amph=true
+W4 d=1.383  NORD attack_denied=true stam=10 drain/s=5 regenSup=false
+W4 d=1.383  SAXH attack_denied=false stam=5 drain/s=2.5 regenSup=false amph=true
+W5 d=40.163  NORD attack_denied=true stam=8 drain/s=4 regenSup=true
+W5 d=40.163  SAXH attack_denied=true stam=0 drain/s=0 regenSup=false amph=true
+PASS  P1 W4 attack denied for Nord, allowed for Saxhleel (§3 privilege 3 / §5 R2)  nord=true sax=false
+PASS  P2 W5 attack denied for BOTH (§3: "W5 remains no-attack for everyone")  nord=true sax=true
+PASS  P3 W5 stamina drain zeroed for Saxhleel, non-zero for Nord (§3 privilege 2)  nord=8 sax=0
+PASS  P4 W5 regen suppression lifted for Saxhleel only  nord=true sax=false
+PASS  P5 W3/W4 drain halved for Saxhleel, not zeroed (§3: "still apply at x0.5")  nord=5/s sax=2.5/s
+
+=== 1b. PERTURBATION: walk one body down a real depth gradient ===
+NORD     [{"u":0,"band":"W0","d":0,"atk":false,"spr":false,"roll":false},{"u":0.005,"band":"W4","d":1.07,"atk":true,"spr":true,"roll":true},{"u":0.025,"band":"W5","d":1.87,"atk":true,"spr":true,"roll":true},{"u":0.03,"band":"W4","d":1.36,"atk":true,"spr":true,"roll":true},{"u":0.04,"band":"W5","d":1.86,"atk":true,"spr":true,"roll":true},{"u":0.05,"band":"W4","d":1.11,"atk":true,"spr":true,"roll":true},{"u":0.055,"band":"W5","d":1.72,"atk":true,"spr":true,"roll":true}]
+SAXHLEEL [{"u":0,"band":"W0","d":0,"atk":false,"spr":false,"roll":false},{"u":0.005,"band":"W4","d":1.07,"atk":false,"spr":true,"roll":true},{"u":0.025,"band":"W5","d":1.87,"atk":true,"spr":true,"roll":true},{"u":0.03,"band":"W4","d":1.36,"atk":false,"spr":true,"roll":true},{"u":0.04,"band":"W5","d":1.86,"atk":true,"spr":true,"roll":true},{"u":0.05,"band":"W4","d":1.11,"atk":false,"spr":true,"roll":true},{"u":0.055,"band":"W5","d":1.72,"atk":true,"spr":true,"roll":true}]
+PASS  P6 a MOVING body flips its legal action set at a real depth boundary  nord band sequence W0>W4>W5>W4>W5>W4>W5, attack denied in [W4,W5,W4,W5,W4,W5]
+PASS  P7 the two races differ ON THE SAME WALK (M51 §5: "FAIL if the two are identical")  nord denied in [W4,W5,W4,W5,W4,W5] vs saxhleel denied in [W5,W5,W5]
+
+=== 1c. DELETE-THE-FIX: call step() with six arguments, as before ===
+no-race W4 {"band":"W4","amph":false,"atk":true,"stam":10}  W5 {"band":"W5","amph":false,"atk":true,"stam":8}
+PASS  P8 delete-the-fix: dropping the 7th argument returns the pre-fix behaviour  W4 amph=false atk_denied=true
+PASS  P9 the two arms actually differ (rule 6: an inert fix has passed here twice)  no-race=true saxhleel=false
+
+=== 2. ENEMY SIDE — declared bands over the real field ===
+PASS  E0 producer expression in engine.js is the one reproduced below  b.waterDeniesAttack = bandIndex(w.band) > bandIndex(stat.water_max_band || 'W0')
+  gate: if (!this.field || !this.combat || this.cellFor(this.sim.env) !== 'province' || this.sim.cellId) return;
+
+  archetype              ai           native  max  denied at W0/W1/W2/W3/W4/W5
+  beast_slitherfang      scripted     true    W5   . . . . . .
+  cam_boss_great         none         false   W0   . X X X X X
+  cam_boss_mid           none         false   W0   . X X X X X
+  cam_elite              none         false   W0   . X X X X X
+  cam_levy               none         false   W0   . X X X X X
+  cam_rat                none         false   W0   . X X X X X
+  champion_hist_marked   scripted     false   W3   . . . . X X
+  cst_sap_speaker        scripted     false   W2   . . . X X X
+  drowned_greater        none         true    W5   . . . . . .
+  drowned_lesser         none         true    W5   . . . . . .
+  dummy_passive          none         false   W0   . X X X X X
+  guard_legion           hold_ground  false   W2   . . . X X X
+  inf_trash              scripted     true    W5   . . . . . .
+  mat_chitin             none         false   W0   . X X X X X
+  mat_flesh              none         false   W0   . X X X X X
+  mat_metal              none         false   W0   . X X X X X
+  mat_plant              none         false   W0   . X X X X X
+  mat_shield             none         false   W0   . X X X X X
+  mat_stone              none         false   W0   . X X X X X
+  mat_water              none         false   W0   . X X X X X
+  mat_wood               none         false   W0   . X X X X X
+  probe_pulse            scripted     false   W0   . X X X X X
+PASS  E1 >= 4 archetypes declare water_native (R6 count)  4: beast_slitherfang, drowned_greater, drowned_lesser, inf_trash
+PASS  E2 every water_native declares water_max_band W5 (R6)  beast_slitherfang=W5 drowned_greater=W5 drowned_lesser=W5 inf_trash=W5
+FAIL  E3 R6 second clause: every water_native can actually act (DPS in W5 > 0)  2 of 4 natives have ai=drowned_greater:none,drowned_lesser:none — never start an action, so DPS_W5 = 0
+FAIL  E4 >= 4 water_native archetypes that are dangerous in W5 (R6 as written)  only 2: beast_slitherfang, inf_trash
+
+=== 2b. FAIL-CLOSED DEFAULTS ON THE FIXTURES ===
+PASS  E5 15 fixtures present  15: cam_boss_great,cam_boss_mid,cam_elite,cam_levy,cam_rat,dummy_passive,mat_chitin,mat_flesh,mat_metal,mat_plant,mat_shield,mat_stone,mat_water,mat_wood,probe_pulse
+PASS  E6 every fixture declares W0 / native=false  all W0/false
+PASS  E7 fail-closed: deleting the field on a fixture still denies above W0  declared W0 and absent-field W0 are the same stance — the declaration is documentation, not a behaviour change
+PASS  E8 a fixture that could ever OBSERVE its denial exists  1 of 15 fixtures have ai='scripted' (probe_pulse); the other 14 have ai='none' and never start an action, so their declared stance is never read
+
+=====================================
+16/18 checks pass
+  FAILED: E3 R6 second clause: every water_native can actually act (DPS in W5 > 0) -- 2 of 4 natives have ai=drowned_greater:none,drowned_lesser:none — never start an action, so DPS_W5 = 0
+  FAILED: E4 >= 4 water_native archetypes that are dangerous in W5 (R6 as written) -- only 2: beast_slitherfang, inf_trash

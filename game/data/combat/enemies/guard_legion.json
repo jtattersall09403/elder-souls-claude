@@ -105,7 +105,7 @@
   "faction": "legion",
   "rank_required": 3,
   "rival_faction": null,
-  "gold_price": 0,
+  "gold_price": 300,
   "base_disposition": 35,
   "honour_bound": false,
   "grounds": [
@@ -114,7 +114,8 @@
    "faction"
   ],
   "surrender": true,
-  "fiction": "A militiaman arresting you is doing a job, not settling a score. Yielding works: he takes you in. Seam S13 requires a fight with a person to have a non-lethal exit, and RI-CRM01 \u00a74 band 3 requires that exit to be a SURRENDER specifically \u2014 the arrest interaction is the parley, and the three answers (pay, resist, serve) are what it opens onto."
+  "fiction": "A militiaman arresting you is doing a job, not settling a score. Yielding works: he takes you in. Seam S13 requires a fight with a person to have a non-lethal exit, and RI-CRM01 \u00a74 band 3 requires that exit to be a SURRENDER specifically \u2014 the arrest interaction is the parley, and the three answers (pay, resist, serve) are what it opens onto.",
+  "gold_price_note": "W1-15 r3, round-2 verdict biggest_gap GAP-W1-crime-enforcement-is-a-free-win: was 0, and combat/parley.js's GOLD ground passes on `gold >= price AND disposition >= 20` \u2014 with base_disposition 35 already over that bar, price 0 made a band-3 attack-on-sight guard surrender for free, at full HP, on one `interact` press, with the 3,000 g bounty left standing. Raised to 300 (the verdict's own floor is >=200 g) so buying off a guard costs a real purse instead of nothing. NOT closed by this alone: (1) `combat/parley.js`'s GOLD disposition floor (20) is shared by every parleying NPC in the data, so raising it to the verdict's suggested 40 for guards specifically needs a code change this round did not make; (2) guard_legion's `ai` is `hold_ground`, and `combat/enemy.js` only runs a scripted action for `ai === 'scripted'` \u2014 an AGGRO'd guard still deals 0 damage, which is W1-12's (enemy AI) to close, not a data field; (3) an accepted surrender still does not route into `arrestTopics()`/`answerArrest()`, so the bounty is not paid, served or refused by yielding \u2014 it is left standing, same as before this fix."
  },
  "provenance": "W1-15 round 2. RI-CRM01 \u00a74 needs a guard that EXISTS: round 1 had no guard entities at all, so getGuardBand() was a pure function of a number setBounty() wrote, the arrest was unreachable, and RI-CRM01 method 7 band 3 (\"assert a surrender parley exists in band 3\") could only be checked as a string on a record. Frames, hitboxes and moveset are inf_trash's unchanged \u2014 this piece does not own combat, and inventing a guard moveset would be exactly the fabrication RI-MTH04 forbids.",
  "armour_rating": 30,

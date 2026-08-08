@@ -22,16 +22,23 @@
 //      `requires_knowing`, is there ANY authored route that could produce it? Two routes exist in
 //      `game/src/`:
 //        1. `hooks.json` row carrying BOTH `quest` and `reveal` — fired from `setFlag()`;
-//        2. `channel: 'book'` with a `source` that is a real book id — `Engine
-//           ._bookKnowledgeIndex()` unions it into `ctx.knowledge` when the book is read.
+//        2. `channel: 'book' | 'ledger' | 'letter'` — a DOCUMENT — whose `source` is a real book
+//           in `game/data/books/**` AND which is an object in a room. `Engine
+//           ._bookKnowledgeIndex()` unions it into `ctx.knowledge` when the book is read, and
+//           `Engine._furnishInterior()` is what puts the thing in front of a player. `book` was
+//           routed in W1-LIBRARY round 2; `ledger` and `letter` and the PLACEMENT half were
+//           added by W1-READABLES, which is also when the nine `knowledge_key` books turned out
+//           to be objects in no room at all.
 //        3. `channel: 'talk_to_target' | 'rival_npc'` with a `source` that is a real NPC —
 //           `QuestEngine.learnFrom('person', eid)`, called from `Engine.talkTo()`. ADDED by
 //           W1-18 ROUND 2; see `game/src/sim/quest/reveal-routes.js` for why these two channels
 //           and not the other four.
-//      `ledger`, `letter`, `environment` and `eavesdrop` (and the single `corpse` row) still have
-//      no reader in `game/src/` at all, and the first three cannot get one until their sources
-//      exist: 34 of the 37 `ledger` rows, all 10 `letter` rows and all 27 `environment` rows name
-//      an `item_*`/`loc_*` id — or a sentence — that is not an object anywhere in `game/data/`.
+//      `environment` and `eavesdrop` (and the single `corpse` row) still have no reader in
+//      `game/src/` at all. `environment` is not a document channel and is not treated as one:
+//      its sources are places and marks, and four of the 27 are not ids at all but sentences —
+//      "the cough on the lichen beds". Section A.2 lists every document row that has no text
+//      written for it and every one that is written and placed nowhere, which are different
+//      jobs.
 //
 //      A ROUTE TO NOBODY IS NOT A ROUTE. A `person` row whose `source` is not a row in
 //      `game/data/npcs/**` is counted UNROUTED and listed, because `Engine.talkTo()` throws on
@@ -51,6 +58,10 @@
 //                           go red. This is the delete-the-fix arm for W1-18 round 2's whole
 //                           change: it separates "the reveals arrive because the router runs"
 //                           from "the reveals were arriving anyway".
+//   --falsify unplace       forget every book placement in `game/data/world/interiors/**` and
+//                           `game/data/items/**` and re-run section A. Every document route must
+//                           go red. This separates "the document is reachable" from "the document
+//                           exists", which is the whole of the half W1-READABLES added.
 //   --falsify plant-route   plant a synthetic hooks row for a reveal that has no route and
 //                           confirm section A's count moves. If it does not, A is not reading
 //                           the route table it claims to read.
@@ -78,7 +89,7 @@ if (argv.includes('--help') || argv.includes('-h')) {
   console.log(`reveal-route-audit.mjs — can play produce the reveals the resolutions demand?
 
 USAGE
-  node tools/quests/reveal-route-audit.mjs [--json] [--falsify no-router|plant-route|plant-flag]
+  node tools/quests/reveal-route-audit.mjs [--json] [--falsify no-router|unplace|plant-route|plant-flag]
 
   A. static census of every (quest,reveal) a resolution demands vs the routes game/src/ can read
   B. live coupling test: does a played resolution's world_flag reach the hooks table?
@@ -87,6 +98,7 @@ USAGE
      does note() write the entry the file declares?
 
   --falsify no-router empties the route index; every leg of D must go red.
+  --falsify unplace   forgets every book placement; every document route must go red.
 
   Exit 0 only when A has no unroutable reveal, B couples, and C and D pass.`);
   process.exit(0);
@@ -118,7 +130,7 @@ if (FALSIFY === 'plant-route') {
 // ------------------------------------------------- route table 3: people (W1-18 round 2)
 // `Engine.talkTo(eid)` -> `QuestEngine.learnFrom('person', eid)`. A row is only a route if the
 // person can actually be stood in front of, so the source must be an NPC record.
-const { CHANNEL_READERS, buildRevealRoutes } = await import(url.pathToFileURL(path.join(ROOT, 'game/src/sim/quest/reveal-routes.js')).href);
+const { CHANNEL_READERS, DOCUMENT_CHANNELS, buildRevealRoutes } = await import(url.pathToFileURL(path.join(ROOT, 'game/src/sim/quest/reveal-routes.js')).href);
 const npcIds = new Set();
 try {
   for (const f of fs.readdirSync(path.join(ROOT, 'game/data/npcs')).filter((x) => x.endsWith('.json'))) {
@@ -136,7 +148,24 @@ for (const { q } of quests) {
   }
 }
 
-// ---------------------------------------------------------------- route table 2: books
+// ---------------------------------------------------------------- route table 2: documents
+//
+// W1-READABLES widened this from `book` to `DOCUMENT_CHANNELS` (book, ledger, letter) and added
+// the second half of the test. A document route needs TWO things and the second is new:
+//
+//   1. the source id is a `knowledge_key` (or an id) of a real book in `game/data/books/**`, so
+//      `Engine._bookKnowledgeIndex()` will union the reveal into `ctx.knowledge` when it is read;
+//   2. THE BOOK IS AN OBJECT SOMEWHERE A PLAYER CAN STAND. A text nobody can reach is the same
+//      defect as a reader with no source, one layer along. It counts as placed when a room in
+//      `game/data/world/interiors/**` names it under `readable[].book` — `Engine
+//      ._furnishInterior()` spawns a prop for each of those and `interact` opens it — or when an
+//      item in `game/data/items/**` carries it as `book_id`, which is the carried form.
+//
+// Test 2 is not free and was not free for the incumbent: on the tree this landed against, NONE of
+// the nine `knowledge_key` books shipped by W1-LIBRARY was an object in any room, so the five
+// `channel: book` rows this section had been scoring green since that round were reachable only
+// through `openMenu('book')`, which is the harness door. They are placed now. If a later round
+// deletes a placement, this goes red and names the book.
 const bookIds = new Set();
 const walkBooks = (d) => {
   for (const e of fs.readdirSync(d, { withFileTypes: true })) {
@@ -149,6 +178,57 @@ const walkBooks = (d) => {
 };
 try { walkBooks(path.join(ROOT, 'game/data/books')); } catch { /* no books tree */ }
 
+// source id -> the book id that carries it, so a placement can be checked against a source.
+const bookForSource = new Map();
+const walkBooks2 = (d) => {
+  for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    const p = path.join(d, e.name);
+    if (e.isDirectory()) { walkBooks2(p); continue; }
+    if (!e.name.endsWith('.json')) continue;
+    const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+    for (const b of (Array.isArray(j) ? j : (j.books || []))) {
+      if (!b.id) continue;
+      bookForSource.set(b.id, b.id);
+      if (b.knowledge_key) bookForSource.set(b.knowledge_key, b.id);
+    }
+  }
+};
+try { walkBooks2(path.join(ROOT, 'game/data/books')); } catch { /* no books tree */ }
+
+// which book ids are objects in the world
+const placedBooks = new Set();
+try {
+  const idir = path.join(ROOT, 'game/data/world/interiors');
+  for (const f of fs.readdirSync(idir).filter((x) => x.endsWith('.json'))) {
+    const rec = JSON.parse(fs.readFileSync(path.join(idir, f), 'utf8'));
+    const list = Array.isArray(rec.readable) ? rec.readable : (rec.readable ? [rec.readable] : []);
+    for (const r of list) if (r && r.book) placedBooks.add(r.book);
+  }
+} catch { /* no interiors tree */ }
+try {
+  const idir = path.join(ROOT, 'game/data/items');
+  for (const f of fs.readdirSync(idir).filter((x) => x.endsWith('.json'))) {
+    const rec = JSON.parse(fs.readFileSync(path.join(idir, f), 'utf8'));
+    for (const it of (rec.items || [])) if (it && it.readable && it.book_id) placedBooks.add(it.book_id);
+  }
+} catch { /* no items tree */ }
+
+// --falsify unplace: forget every placement. If section A does not move, the placement half of
+// the document test is decoration and the tool is scoring `bookIds` twice.
+if (FALSIFY === 'unplace') {
+  const n = placedBooks.size;
+  placedBooks.clear();
+  console.log(`[falsify unplace] forgot ${n} book placement(s); every document route must go red`);
+}
+
+/** Both halves: the document exists, and it is somewhere a player can stand. */
+function documentRoute(d) {
+  if (!d || !DOCUMENT_CHANNELS.has(d.channel) || !d.source) return { via: false, exists: false, placed: false };
+  const exists = bookIds.has(d.source);
+  const placed = exists && placedBooks.has(bookForSource.get(d.source));
+  return { via: exists && placed, exists, placed };
+}
+
 // ---------------------------------------------------------------- A. the census
 const rows = [];
 for (const { file, q } of quests) {
@@ -159,9 +239,10 @@ for (const { file, q } of quests) {
   for (const revId of need) {
     const d = byId.get(revId);
     const viaHook = hookRouted.has(`${q.id}|${revId}`);
-    const viaBook = !!(d && d.channel === 'book' && d.source && bookIds.has(d.source));
+    const doc = documentRoute(d);
+    const viaBook = doc.via;
     const viaPerson = personRouted.has(`${q.id}|${revId}`);
-    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, routed: viaHook || viaBook || viaPerson });
+    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, doc_exists: doc.exists, doc_placed: doc.placed, routed: viaHook || viaBook || viaPerson });
   }
 }
 const unrouted = rows.filter((r) => !r.routed);
@@ -459,6 +540,18 @@ else {
   for (const [c, v] of Object.entries(byChannel).sort((a, b) => b[1].total - a[1].total)) {
     console.log(`       ${c.padEnd(16)} ${String(v.total).padStart(3)} demanded, ${String(v.routed).padStart(3)} routed  ${v.routed === 0 ? '<- no reader in game/src/' : ''}`);
   }
+  // W1-READABLES section A.2 — the document census, so an unrouted document row says WHICH of
+  // the two halves is missing. A source that is not written and a source that is written and
+  // nowhere are different jobs for whoever picks this up next.
+  const docRows = rows.filter((r) => DOCUMENT_CHANNELS.has(r.channel));
+  const noText = docRows.filter((r) => !r.doc_exists);
+  const noPlace = docRows.filter((r) => r.doc_exists && !r.doc_placed);
+  console.log(`\n     document channels (book/ledger/letter), demanded rows ... ${docRows.length}`);
+  console.log(`       written AND placed in a room a player can stand in .... ${docRows.filter((r) => r.routed).length}`);
+  console.log(`       written but placed nowhere ............................ ${noPlace.length}`);
+  for (const r of noPlace) console.log(`         ${r.quest.padEnd(12)} ${r.reveal.padEnd(26)} ${r.source}`);
+  console.log(`       no document of that id anywhere in game/data/books/** . ${noText.length}`);
+  for (const r of noText) console.log(`         ${r.quest.padEnd(12)} ${r.reveal.padEnd(26)} ${r.source}`);
   console.log(`\n     quests with EVERY resolution blocked ........ ${blockedQuests.length}`);
   for (const b of blockedQuests) console.log(`       ${b.id.padEnd(12)} ${b.resolutions} resolutions, 0 reachable   [${b.file}]`);
   console.log(`\n  B. coupling test — does a PLAYED world_flag reach the hook table?`);

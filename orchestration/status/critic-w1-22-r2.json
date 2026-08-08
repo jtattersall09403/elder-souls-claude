@@ -5,18 +5,28 @@
   "round": 3,
   "state": "running",
   "started_at": "2026-08-07",
-  "next_step": "read RULES, INDEX, r1 verdict, blind judge verdict, W1-22-r3 status",
+  "next_step": "3) detector refusal + AMENDMENT item A arithmetic; 2) build harder blind pack and spawn fresh judge; then write verdict",
   "files_touched": [
-    "orchestration/status/critic-w1-22-r2.json"
+    "orchestration/status/critic-w1-22-r2.json",
+    "tools/analysis/critic-w1-22-r2-determinism.mjs",
+    "reports/w1-22-critic/r2/"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-22-r2.md",
     "corpus/90-verdicts/wave1/W1-22-r2.json",
+    "tools/blind/audio-pack-w1-22-r2.mjs",
+    "reports/w1-22-critic/r2/",
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
+  "findings_so_far": [
+    "ANGLE 1 DETERMINISM — HOLDS, AND HARDER THAN CLAIMED. My own independently written probe reproduces all 40 of the builder's stored 8 s bed|tod digests EXACTLY: different tool, different process, different browser launch, different commit (0f6ff17 -> 444d43d), 18 minutes later, reverse capture order, loadavg 13-19 vs the builder's. 40/40 same, 0 diff.",
+    "AND UNDER THE CONDITIONS THE FENCE NEVER TESTS: 60 s captures (1-5 L3/L4 events per bed, vs 0 at 8 s), listener placed ON the emitter so R7 renders, both capture orders, four separate browser processes, loads 13.1-18.9. Every bed bit-identical in every arm.",
+    "BUT THE SHIPPED FENCE IS BLIND TO HALF OF R3. reports/w1-22/ambience-determinism.json records fired: 0 for ALL FORTY bed x tod rows -- the default --seconds 8 is shorter than every L3 interval band (min 8 s), and the tool hardcodes listener: null. So the '20 beds, 2 tod, 3 captures, bit-identical' headline is a claim about the continuous bed alone. The seeded event scheduler (R3's actual subject) and the R7 emitters -- the two things that put voices into the DeterministicMixer's ROTATING grain lanes -- are never exercised by the standing gate.",
+    "R5 FINDING: at 60 s, listener none, NIGHT IS BIT-IDENTICAL TO DAY for 9 of 13 regions (clay-moor, crimson-coast, deep-marshes, eastern-rootlands, hive, salt-hills, stone-wastes, thornmarsh, valus-ridge). Only blackwood, marauders-coast, stone-forest, western-rootlands differ."
+  ],
   "notes": [
-    "Judging audio round 3 against W1-22-r1.md (FAIL 4/10) and W1-22-B2-blind.md.",
-    "Three angles: determinism under varied conditions; harder blind pack (rule 25 - not judged by me); detector-widening refusal + crest-factor amendment arithmetic."
+    "Contention: loadavg 13-19 on 4 cores, 18-30 headless_shell, throughout. Every figure is a byte comparison, a digest, a level or a count. No wall-clock figure quoted.",
+    "HEAD moved during the run: 107c1b3 -> fc5e13a -> a3af8c2 -> 444d43d (neighbours committing)."
   ]
 }

@@ -237,6 +237,7 @@ export function mirror(sim, combat) {
     const ec = combat.enemies.get(e.eid);
     e.pos[0] = eb.pos[0]; e.pos[1] = eb.pos[1]; e.pos[2] = eb.pos[2];
     const prev = e.state;
+    const prevYaw = e.yaw;
     e.state = eb.state;
     e.anim = eb.anim;
     e.animFrame = eb.animFrame;
@@ -249,6 +250,16 @@ export function mirror(sim, combat) {
     e.stagger = !!(eb.move && eb.move.kind === 'stagger');
     e.staggerUntil = eb.staggerUntil;
     e.hitActive = eb.hitboxActive;
+    // ---- AMENDED W1-12 -------------------------------------------------------------------
+    // `speed_mps` and `yaw_rate_dps` are in RI-AI01 §A's field contract and are read by two of
+    // its checks — M3's STATUE clause ("speed_mps median < 0.2") and M7, the binary turn-rate
+    // hard fail. Neither was mirrored here, so for every enemy that goes through CombatSystem
+    // — which is every scripted enemy and every encounter member in the game — both fields
+    // were whatever `sim/entities.js` last left them at, i.e. 0 forever. M7 could not fail and
+    // M3's statue clause was satisfied by a field nobody wrote. A probe that cannot go red is
+    // worse than no probe (RULES §4); so is a field that cannot.
+    e.speed = eb.speedMps || 0;
+    e.yawRate = Math.abs(angleDelta180(e.yaw, prevYaw)) * 60;
     e.alert = ec ? ec.alert : e.alert;
     e.alertState = ec ? ec.alertState : e.alertState;
     e.hitboxes.length = 0;
@@ -283,3 +294,6 @@ function phaseOf(b) {
 }
 
 function r4(v) { return Math.round(v * 1e4) / 1e4; }
+
+/** Shortest signed angular difference in degrees, for the per-frame yaw rate. */
+function angleDelta180(a, b) { let d = (a - b) % 360; if (d > 180) d -= 360; if (d < -180) d += 360; return d; }

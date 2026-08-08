@@ -252,7 +252,15 @@ function enemyRecord(e, sim, opts) {
     alert_hop: e.alertHop || 0,
     target: e.alertState === 'AGGRO' ? 'player' : null,
     dist_m: r4(Math.sqrt(dx * dx + dz * dz)),
-    los: true,
+    // ---- AMENDED W1-12 ---------------------------------------------------------------------
+    // `los: true` used to sit here, twenty lines BELOW a second `los:` key that reads the real
+    // occlusion term. Two keys of the same name in one object literal, and the later one wins —
+    // so `los` in every enemy record this project has ever produced was the constant `true`,
+    // and the field W1-15 added so "a wall can be seen to be doing something" was silently
+    // dead on arrival. RI-AI01 §A lists `los` in its field contract and calls a missing field a
+    // fail-closed 0; a field that is present and always true is worse, because it scores.
+    // The honest value is the one the perception system computed, and `null` where nothing has
+    // looked at this entity yet — which is a different claim from "yes, it can see you".
     in_sight_cone: inCone(e, -dx, -dz),   // bearing FROM the enemy TO the player
     alert: Math.round(e.alert),
     alert_state: e.alertState,

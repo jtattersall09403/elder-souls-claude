@@ -1385,9 +1385,14 @@ export function installHarness(engine, bootPromise) {
     /** The Focus this spell would actually deduct RIGHT NOW, at this caster's skill and catalyst. */
     spellCost(id) { return engine.magic.costOf(engine.magic.spellOf(String(id))); },
 
-    /** Gold is the only currency (S15); spellmaking and enchanting spend it and nothing else. */
-    setGold(n) { engine.sim.progression.gold = Number(n); engine.magic.gold = Number(n); return engine.magic.gold; },
-    getGold() { return engine.magic.gold; },
+    /**
+     * Gold is the only currency (S15); spellmaking and enchanting spend it and nothing else.
+     * Routed through `Engine._setGold`/`_gold` (W1-16) so this agrees with what fencing pays,
+     * what a travel fare spends, what the save round-trips, and what the inventory screen draws
+     * — one purse, not four.
+     */
+    setGold(n) { return engine._setGold(n); },
+    getGold() { return engine._gold(); },
 
     /** Price an ARBITRARY coordinate in the parameter space. There is no whitelist to consult. */
     quoteSpell(spec) { return engine.magic.quoteSpell(spec); },
@@ -2201,6 +2206,62 @@ export function installHarness(engine, bootPromise) {
         interior_id: r.interiorId || null,
         interior: r.interiorSummary || null,
       };
+    },
+    /**
+     * W1-04 r3 / RI-WLD03 R5 — THE TOWN FROM THE STREET, READ OFF THE RENDERER.
+     *
+     * Deliberately a scene-graph TRAVERSAL and not a sum over `settlement.buildings`: the whole
+     * round-1 finding is that the data was correct and nothing drew it, so a report computed
+     * from the data would have passed on the build that had no buildings in it. Everything here
+     * is counted by walking `renderer.province.group`.
+     */
+    getDrawnSettlements() {
+      const pv = engine.renderer && engine.renderer.province;
+      if (!pv) return { present: false, buildings: 0, settlements: [] };
+      return { present: true, ...pv.drawnBuildings(), stats: pv.stats() };
+    },
+    /** The control arm: cut the draw call, drop the tiles, and re-request. RULES.md #6. */
+    __w1_04_drawBuildings(on) {
+      const pv = engine.renderer && engine.renderer.province;
+      if (!pv) return null;
+      pv.drawBuildings = !!on;
+      for (const [k, t] of [...pv.tiles]) pv._release(k, t);
+      pv.queue.length = 0;
+      pv.buildingsDrawn = 0;
+      const p = engine.sim.player.pos;
+      pv.request(p[0], p[2]); pv.drain();
+      return pv.stats();
+    },
+    /** Replace a settlement's plan at runtime — the RI-MTH07 perturbation handle. */
+    __w1_04_perturbSettlement(doc, interiors) {
+      const pv = engine.renderer && engine.renderer.province;
+      if (!pv) return null;
+      const docs = Object.values(engine.data.settlements || {}).map((d) => (d.id === doc.id ? doc : d));
+      pv.setSettlements(docs, interiors || engine.data.interiors || {});
+      const p = engine.sim.player.pos;
+      pv.request(p[0], p[2]); pv.drain();
+      engine._townSolids = null; engine._townCell = null;
+      return pv.stats();
+    },
+    /** The plan as READ (not as drawn), so a probe can diff the two. */
+    __w1_04_plan(sid) {
+      const pv = engine.renderer && engine.renderer.province;
+      if (!pv) return null;
+      return pv.settlementPlans.find((p) => p.id === String(sid)) || null;
+    },
+    /** RI-WLD03 R1: what the town collision set holds, and whether you are inside a wall. */
+    getSettlementSolids() { return engine.settlementSolidsReport(); },
+    /** The collision control arm: take the walls out and walk the same walk again. */
+    __w1_04_townSolids(on) {
+      engine._townSolidsOff = !on;
+      engine._townSolids = null; engine._townCell = null;
+      engine._settleSettlementSolids();
+      return engine.settlementSolidsReport();
+    },
+    /** Which building's footprint a world point is inside, or null. */
+    buildingAt(x, z, inset) {
+      const pv = engine.renderer && engine.renderer.province;
+      return pv ? pv.buildingAt(Number(x), Number(z), inset === undefined ? 0 : Number(inset)) : null;
     },
     /** RI-STL02 §4: is the cell this zone is a room of open at the current hour? */
     isOpenNow(zoneOrInterior) { return engine.isOpenNow(String(zoneOrInterior)); },

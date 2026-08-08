@@ -19,12 +19,19 @@ import { fileURLToPath } from 'node:url';
 
 import { CombatSystem } from '../../game/src/combat/system.js';
 import { InputPipeline } from '../../game/src/input/pipeline.js';
+import { Rng } from '../../game/src/core/rng.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const GAME_DATA = path.resolve(HERE, '../../game/data');
 
+// AMENDED W1-12. These were `jog 4.4 / sprint 6.6`; `game/src/sim/state.js` PLAYER_CONST — the
+// numbers the SHIPPING game runs — say 3.2 and 5.0. This file's own header says a disagreement
+// between a number measured here and the same number measured through the harness "is a defect
+// in this file and the browser wins", so a private 37%-faster jog is that defect in the one
+// place nobody would look for it. It matters most for exactly the question W1-12 asks: whether
+// an enemy at its archetype sprint can catch a player who is running away.
 const PLAYER_CONST = {
-  walk_mps: 2.0, jog_mps: 4.4, sprint_mps: 6.6, turn_rate_dps: 480,
+  walk_mps: 2.0, jog_mps: 3.2, sprint_mps: 5.0, turn_rate_dps: 480,
 };
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
@@ -76,6 +83,9 @@ export function loadCombatData(root = GAME_DATA) {
     frames: combat.frames, roll: combat.roll, stamina: combat.stamina, poise: combat.poise,
     hitgeometry: combat.hitgeometry, lockon: combat.lockon, flask: combat.flask,
     parley: combat.parley, skeleton: combat.skeleton, clips: combat.clips,
+    // W1-12: RI-AI01's parameter tables. Without it `combat/ai.js` throws on construction
+    // rather than inventing constants, so a missing line here is loud instead of silent.
+    ai: combat.ai,
     movesets, _enemies: enemies, input: combat.input,
     locomotion: {
       walk_mps: PLAYER_CONST.walk_mps, jog_mps: PLAYER_CONST.jog_mps,
@@ -106,6 +116,14 @@ export class NodeArena {
     // setLoadout() and paper over it. Calling it here keeps this arena on the same code path
     // rather than assigning the field behind the system's back.
     if (this.cs.lib && this.player.weaponId === undefined) this.cs.rebuildPlayerLoadout({});
+    // W1-12: the two handles Engine._buildCombat() hangs on the fight, hung here for the same
+    // reason and from the same module — `core/rng.js`'s single global instance, not a private
+    // one. `entityOf` returns null here because a bare arena has no sim entities, which makes
+    // every enemy its own token group of one. That is the correct answer for the arena and it
+    // is NOT the same world as a wilderness post, so any group-token claim has to be made in
+    // the browser. Said here so a probe author cannot mistake the arena for the game.
+    this.cs.rng = opts.rng || new Rng(opts.seed === undefined ? 1337 : opts.seed);
+    this.cs.entityOf = opts.entityOf || (() => null);
   }
 
   spawn(id, statId, x, z, yaw) {

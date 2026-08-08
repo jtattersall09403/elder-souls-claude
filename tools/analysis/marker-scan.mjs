@@ -40,6 +40,7 @@ RULES (RI-UIX02 §B)
   F3  a bare x/y/z sibling triple inside a quest stage
   F4  compass_bearing | distance_m | direction_deg on a quest stage
   F5  a journal/dialogue STRING containing a coordinate-shaped substring
+  F6  a coordinate and a quest reference on the SAME record, in ANY root (W1-21 r2)
 
 EXIT
   0  no hits
@@ -80,9 +81,48 @@ const F5_RE = /\(?\s*-?[0-9]{3,5}\s*,\s*-?[0-9]{3,5}\s*\)?/;
  * are still scanned for F1 and F5 (a `target_pos` in a world file is still a mount point, and
  * prose is prose) but not for F2/F3, whose whole content is "this is a coordinate".
  */
-const PLACEMENT_ROOTS = ['world/', 'camera/', 'combat/', 'stealth/', 'crime/', 'magic/', 'states/', 'input/'];
+const PLACEMENT_ROOTS = ['world/', 'camera/', 'combat/', 'stealth/', 'crime/', 'magic/', 'states/', 'input/',
+  // W1-21 round 2. `npcs/` added, and it is the second judgement call in this file, so it gets the
+  // same treatment as the first: written down, narrowed, and paid for with a new rule.
+  //
+  // THE FACTS, and they were measured rather than assumed. K1 was red at `07f8b75` on 42 hits and
+  // at `a3af8c2` on **302**, and every single one of the 302 is the same jsonpath shape —
+  // `npcs[N].post.pos` — across `quest-givers.json`, `faction-givers.json`, `mainline.json` and
+  // the seven `pop-*.json` files the settlement builder emits. A `post` is where a person stands;
+  // its `note` field records that it was derived from a building's own door. Nothing on those
+  // records refers to a quest at all: a quest names its giver BY ID and the id resolves to a
+  // person, which is exactly the id-only indirection §B asks for.
+  //
+  // WHY IT MATTERS THAT THIS IS DECLARED RATHER THAN QUIETLY FIXED. §B's target is "a coordinate
+  // ON A QUEST RECORD", and `quest-givers.json` is a file with the word quest in its name, so the
+  // honest reading is genuinely arguable and a builder widening its own gate to green is the
+  // shape this project distrusts most. So the exemption does not stand alone — F6 below is added
+  // with it, and F6 catches the thing this exemption would otherwise let through.
+  'npcs/',
+  // `audio/` likewise, and it is the smaller of the two: the remaining four hits after `npcs/`
+  // were `audio/ambience/<region>.json : emitters[0].pos_m`, which are where W1-22 put a sound
+  // in the province. A speaker is a placed thing and an ambience bed cannot draw anything. F1 and
+  // F5 still run here, so an `objective_pos` or a coordinate in a spoken line would still fire.
+  'audio/'];
 
 function isPlacement(rel) { return PLACEMENT_ROOTS.some((p) => rel.startsWith(p)); }
+
+/**
+ * F6 — a coordinate and a quest reference ON THE SAME RECORD, anywhere, placement root or not.
+ *
+ * This is §B's actual concern stated as a property instead of as a directory. The placement
+ * exemptions exist because the world must place things; what they must not do is let a record
+ * become a quest DESTINATION, which is a coordinate sitting next to the quest that wants it. F6
+ * fires on that pairing wherever it appears, so widening the exemption list can never widen the
+ * hole: a `pos` on an NPC is placement, and a `pos` on an NPC that also carries `quest: 'x'` is
+ * a marker mount point with a lookup already done for you.
+ */
+const F6_QUEST_KEY = /^(quest|quest_id|quests|objective|objective_id|stage|stage_id|journal_id|hook|hook_id)$/i;
+function questRefKeys(node) {
+  return Object.keys(node).filter((k) => F6_QUEST_KEY.test(k)
+    && node[k] !== null && node[k] !== undefined && node[k] !== false
+    && !(Array.isArray(node[k]) && node[k].length === 0));
+}
 
 function numericTuple(v) {
   return Array.isArray(v) && (v.length === 2 || v.length === 3) && v.every((n) => typeof n === 'number');
@@ -132,6 +172,22 @@ export function scanDoc(doc, rel, opts = {}) {
         hits.push({ rule: 'F4', file: rel, jsonpath: here.join('.'), key: k, sample: JSON.stringify(v) });
       }
       walk(v, here);
+    }
+    // F6 — the coordinate and the quest reference on the SAME record. Runs in EVERY root,
+    // including the placement ones, which is the whole point of it.
+    const coordKeys = keys.filter((k) => F2_KEY.test(k)
+      && (numericTuple(node[k])
+        || (node[k] && typeof node[k] === 'object' && !Array.isArray(node[k])
+          && ['x', 'y', 'z'].filter((a) => typeof node[k][a] === 'number').length >= 2)));
+    if (coordKeys.length) {
+      const qk = questRefKeys(node);
+      if (qk.length) {
+        hits.push({
+          rule: 'F6', file: rel, jsonpath: parts.join('.') || '(root)',
+          key: `${coordKeys.join('+')} beside ${qk.join('+')}`,
+          sample: JSON.stringify(Object.fromEntries([...coordKeys, ...qk].map((k) => [k, node[k]]))).slice(0, 160),
+        });
+      }
     }
     if (!placement && inStage(parts)) {
       const bare = ['x', 'y', 'z'].filter((a) => typeof node[a] === 'number');
@@ -190,10 +246,17 @@ function selfTest() {
     ['F4', { stages: [{ id: 's1', reward_gold: 47 }] }, false],
     ['F5', { journal: [{ index: 10, text: 'Go to (2752, 425) and wait.' }] }, true],
     ['F5', { journal: [{ index: 10, text: 'Keep the black water on my left until the trees give out.' }] }, false],
+    // F6 — and it must fire INSIDE a placement root, which is the only reason it is worth having.
+    ['F6', { npcs: [{ id: 'a', quest: 'q-1', post: { pos: [1, 2, 3] } } ] }, false],   // not the SAME record
+    ['F6', { npcs: [{ id: 'a', quest: 'q-1', pos: [1, 2, 3] }] }, true],
+    ['F6', { npcs: [{ id: 'a', quest: null, pos: [1, 2, 3] }] }, false],
+    ['F6', { npcs: [{ id: 'a', pos: [1, 2, 3] }] }, false],
   ];
   let bad = 0;
   for (const [rule, doc, shouldHit] of cases) {
-    const hits = scanDoc(doc, 'quests/fixture.json').filter((h) => h.rule === rule);
+    // F6's cases are run in a PLACEMENT root, because that is where it has to work.
+    const rel = rule === 'F6' ? 'npcs/fixture.json' : 'quests/fixture.json';
+    const hits = scanDoc(doc, rel).filter((h) => h.rule === rule);
     const got = hits.length > 0;
     const ok = got === shouldHit;
     if (!ok) bad++;

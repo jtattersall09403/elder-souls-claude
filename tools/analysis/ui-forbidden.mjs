@@ -176,7 +176,10 @@ try {
     }
   };
   scanDeclared(await h.h('getUIState'), 'combat');
-  for (const m of ['inventory', 'journal', 'sheet', 'spells']) {
+  // W1-21 round 2: `map` added. The round-1 verdict found this sweep visiting four screens and
+  // not the one S35 exists to constrain — and this tool had never been run against any build at
+  // all, so "it does not open the map" was two absences stacked on each other.
+  for (const m of ['inventory', 'journal', 'sheet', 'spells', 'map']) {
     await h.h('openMenu', m);
     scanDeclared(await h.h('getUIState'), m);
   }

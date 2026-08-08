@@ -104,6 +104,8 @@ export class UISystem {
     this.toast = null;
     this.entryGlyphUntil = -1;
     this.pending = null;                 // an action the engine applies after the step
+    this.actEpoch = 0;                   // bumped by every `pending` write — see build()'s key
+    this.navRefused = null;              // why the last peer walk did not land, if it did not
     this.axis = { x: 0, y: 0, sinceX: 0, sinceY: 0 };
     this.builtFrame = -1;
     this.lastModel = null;
@@ -272,6 +274,38 @@ export class UISystem {
     // P6: `roll` stays live in a fight. Out of one it is "back", which is Souls' own B button.
     if (!inCombat) taken.push('roll');
 
+    // ---- W1-21 round 2: THE DOOR BETWEEN SCREENS (NEXT-DISPATCH §P.6) ------------------------
+    //
+    // `navigable(ctx)` has always advertised six destinations at a hearth — inventory, journal,
+    // sheet, spells, map, levelup — and until this branch existed there was no way to reach five
+    // of them. W1-13 round 4 measured it rather than reading it: all sixteen actions of RI-JRN03
+    // §A pressed one at a time, from the world and from every screen they open, plus all four
+    // axes, and **input reached exactly two modes**. `openMenu('levelup')` succeeded on the same
+    // body on the same frame, so the state, the hearth and the vocabulary were all fine and the
+    // input path was the whole defect. `menu` opens the inventory and closes everything; the
+    // axes are spent walking the open screen's own rows; nothing walked to a peer.
+    //
+    // THE ACTION SET IS NOT WIDENED. RI-JRN03 §A closes it at fourteen names and `swap_left` /
+    // `swap_right` are two of the fourteen — already bound on keyboard (`3`/`4` and the wheel),
+    // on the pad (D-pad left/right) and on touch. What changes is what they MEAN while a screen
+    // is open, which is declared rather than assumed: see `state().actions_in_menu`.
+    //
+    // AND ONLY OUT OF COMBAT, which is not tidiness. In a fight `swap_left` is half of the
+    // offhand chord (`input-map.json` `off.r1.*` is "swap_left HELD + light tap",
+    // `combat/player.js`), and RI-UIX03 P6 requires the fight to stay playable with the screen
+    // up. So this branch takes the same shape the file already uses for `roll`: it is "back" out
+    // of a fight and a dodge in one, and these two are "walk to the next screen" out of a fight
+    // and equipment cycling in one. One rule, two applications, no new verb.
+    if (!inCombat) {
+      const step = (input.pressedName('swap_right') ? 1 : 0) - (input.pressedName('swap_left') ? 1 : 0);
+      if (step) {
+        taken.push(step > 0 ? 'swap_right' : 'swap_left');
+        this._walkPeer(step, ctx);
+        this._resetAxis();
+        return taken;
+      }
+    }
+
     // The move axes are the PIPELINE's: +y is forward, i.e. the stick pushed AWAY from you.
     // A list walks the other way — stick up goes to the earlier row — which is the convention
     // `character/scene.js` already set for the census surface ("stick up = earlier option").
@@ -283,6 +317,56 @@ export class UISystem {
     if (input.pressedName('interact')) this._confirm(ctx);
     if (!inCombat && input.pressedName('roll')) this.back();
     return taken;
+  }
+
+  /**
+   * The order the screens are walked in. `world` is in it because `navigable()` advertises it and
+   * because a ring you cannot leave the way you came is worse than one you can.
+   *
+   * `book` and `container` are NOT walk targets, and that is declared here rather than left to be
+   * discovered: both are screens opened ONTO an object — a book has an id, a container has an
+   * entity — so there is no such thing as "walk to the book" without naming which book. They are
+   * reached by confirming the thing itself, which already works, and you can walk OUT of them.
+   * `state().nav.walkable` reports the ring, so the difference between what is advertised and
+   * what is walkable is a number a probe reads rather than a claim in a comment.
+   */
+  static WALK_ORDER = ['world', 'inventory', 'journal', 'sheet', 'spells', 'map', 'levelup'];
+
+  /** The ring this mode sits in: WALK_ORDER filtered to here plus everywhere advertised. */
+  _walkRing(ctx) {
+    const nav = this.navigable(ctx);
+    return UISystem.WALK_ORDER.filter((m) => m === this.mode || nav.includes(m));
+  }
+
+  /**
+   * Walk one screen along the advertised list. NEXT-DISPATCH §P.6's missing door.
+   *
+   * It goes through `navigable()` and therefore inherits every refusal already written there —
+   * `NEVER_ADJACENT` keeps `journal` and `map` out of each other's ring in both directions
+   * (RI-UIX04 Q7), and `levelup` is only in the ring at a hearth. It cannot reach a screen
+   * `openMenu()` would refuse, because it calls the same `open()`; a refusal leaves the mode
+   * where it was and is recorded rather than thrown, because this runs inside the fixed step and
+   * a throw here kills the step for everyone.
+   */
+  _walkPeer(dir, ctx) {
+    const ring = this._walkRing(ctx);
+    const at = ring.indexOf(this.mode);
+    if (at < 0 || ring.length < 2) return this.mode;
+    const to = ring[((at + dir) % ring.length + ring.length) % ring.length];
+    this.navRefused = null;
+    if (to === 'world') { this.close(); return this.mode; }
+    try {
+      // A peer replaces the screen rather than stacking on it: walking inventory -> journal ->
+      // sheet and pressing back should return you to the world, not retrace four rooms.
+      this.stack.length = 0;
+      this.mode = 'world';
+      this.bookId = null;             // T5 keeps the PAGE in `bookPages`; the open book is closed
+      this.open(to, null, ctx);
+    } catch (e) {
+      this.mode = ring[at];
+      this.navRefused = { to, reason: String(e && e.message || e) };
+    }
+    return this.mode;
   }
 
   _resetAxis() { this.axis = { x: 0, y: 0, sinceX: 0, sinceY: 0 }; }
@@ -378,6 +462,16 @@ export class UISystem {
     }
   }
 
+  /**
+   * Hand an action to the engine, and MARK THAT THE MODEL IS ABOUT TO CHANGE.
+   *
+   * Every write to `this.pending` goes through here, so the layout cache cannot miss one. It is a
+   * method rather than four assignments because the round-1 verdict's §4 defect was exactly a
+   * cache key that covered three of the four things that move on a paused frame — the way to stop
+   * that recurring is to make there be one place, not to remember four.
+   */
+  _queue(act) { this.pending = act; this.actEpoch++; return act; }
+
   _confirm(ctx) {
     const f = this.focus;
     switch (this.mode) {
@@ -396,16 +490,16 @@ export class UISystem {
         } else if (it.category === 'weapon' || it.category === 'armour' || it.category === 'clothing') {
           // P7: an equip is an animation-committed action. The engine applies it after the
           // step and holds the body for >= 30 frames.
-          this.pending = { kind: 'equip', item: it.id };
+          this._queue({ kind: 'equip', item: it.id });
         } else if (it.category === 'potion') {
-          this.pending = { kind: 'use', item: it.id };
+          this._queue({ kind: 'use', item: it.id });
         }
         break;
       }
       case 'container': {
         const from = f.container.side === 0 ? this._invRows(ctx) : this._containerRows(ctx);
         const it = from[f.container.side === 0 ? f.container.rowIdx : f.container.otherIdx];
-        if (it) this.pending = { kind: 'transfer', item: it.id, to: f.container.side === 0 ? 'container' : 'player' };
+        if (it) this._queue({ kind: 'transfer', item: it.id, to: f.container.side === 0 ? 'container' : 'player' });
         break;
       }
       case 'journal': {
@@ -435,7 +529,7 @@ export class UISystem {
         if (!a) break;
         if (!f.levelup.armed) { f.levelup.armed = true; break; }   // L6: preview, then confirm
         f.levelup.armed = false;
-        this.pending = { kind: 'level', attribute: a.id };
+        this._queue({ kind: 'level', attribute: a.id });
         break;
       }
       default: break;
@@ -486,7 +580,24 @@ export class UISystem {
     // It survived this long because `uiFocus()`, `openMenu()` and `closeMenu()` all call
     // `build(ctx, true)`. Every probe that moves focus through the harness door forces a
     // rebuild and cannot see this; only input driven through the pipeline can.
-    const sig = touchSignature(ctx) + '#' + focusSignature(this.mode, this.focus);
+    //
+    // W1-21 ROUND 2 — AND FOCUS IS NOT THE ONLY THING THAT MOVES WHILE THE WORLD IS STOPPED.
+    // The round-1 verdict §4 confirmed the focus term works (55,656 px on a focus move) and then
+    // showed the other half is still open: `Engine._afterStep()` runs on paused frames and
+    // applies `ui.pending` there — `use`, `transfer`, `level` and `equip` all commit while the
+    // world is stopped, and none of them touches `focus[mode]`. Measured in pixels through the
+    // real input pipeline: a player selects a potion, presses use, the potion leaves the
+    // simulation, and **the screen does not move a single pixel** (0 px) until they close the
+    // inventory and open it again (102 px on reopen). That is the third instance of one family
+    // of defect in this interface and the second time it has shipped after being fixed.
+    //
+    // `pending` is the whole channel — `_confirm()` is the only writer and `Engine._afterStep()`
+    // is the only reader, and it nulls it after applying — so putting it in the key covers every
+    // one of the four actions and cannot miss a fifth added later. It appears in the key TWICE
+    // over, once as it is set and once as it is cleared, which is deliberate: whichever side of
+    // `_afterStep()` a build happens on, the key has moved.
+    const sig = touchSignature(ctx) + '#' + focusSignature(this.mode, this.focus)
+      + '#p:' + (this.pending ? JSON.stringify(this.pending) : '-') + ':' + this.actEpoch;
     if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode && this.lastTouchSig === sig) return;
     const S = this.S;
     S.begin();
@@ -886,13 +997,34 @@ export class UISystem {
         places_drawn: els.filter((e) => e.kind === 'map_place' && e.id !== 'map.naming').length,
         places_discovered: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.placeCount : 0,
         view: this.focus.map.view,
-        // The structural half of AMENDMENT-W1-MAP-01 §3b, reported from the running object so a
-        // critic does not have to take the source file's word for it.
-        mutator_arities: ctx && ctx.map && ctx.map.discovery
-          ? { observe: ctx.map.discovery.observe.length, suspend: ctx.map.discovery.suspend.length, resume: ctx.map.discovery.resume.length }
-          : null,
+        // The structural half of AMENDMENT-W1-MAP-01 §3b, ENUMERATED FROM THE RUNNING OBJECT.
+        //
+        // This used to be `{observe: …length, suspend: …length, resume: …length}` — a hand-typed
+        // literal of three names on an object with four mutators, and the missing one was
+        // `restore(blob)`, precisely the member that broke the claim the field exists to support.
+        // The W1-21 round-1 verdict named the pattern: a compliance report assembled from a list
+        // can only ever report the things whoever wrote the list already thought of. So the list
+        // is gone. `Discovery.mutatorReport()` walks its own prototype and classifies fail-closed
+        // — an accessor or a named reader is a reader, and ANYTHING ELSE is a state writer,
+        // including a method added tomorrow by somebody who never read this file.
+        ...mapMutators(ctx),
       },
       navigable: this.navigable(ctx),
+      // W1-21 round 2 / NEXT-DISPATCH §P.6. `navigable` advertises the destinations; `nav` says
+      // which of them input can actually REACH, and by which action. Until round 2 those two
+      // lists were "six" and "none", and nothing in the build reported the difference — the
+      // advertisement was the only evidence anyone had that the doors existed.
+      nav: {
+        advertised: this.navigable(ctx),
+        walkable: this._walkRing(ctx),
+        // The two actions, named. They are two of RI-JRN03 §A's closed fourteen and no fifteenth
+        // was added; what is declared here is the MEANING they take while a screen is open.
+        walk_actions: { prev: 'swap_left', next: 'swap_right' },
+        // …and only out of a fight, where they stay equipment cycling and half of the offhand
+        // chord. Same rule `roll` already follows in this file.
+        walk_live: this.isMenu() && !(ctx && ctx.inCombat),
+        refused: this.navRefused || null,
+      },
       // W1-13 r2. The level-up screen is gated on this flag in three places above, and for the
       // whole of round 1 it was `undefined` at all 29 sapwells. Reporting it here means a probe
       // can see WHY the screen is or is not offered, and can see whether the answer came from
@@ -962,6 +1094,43 @@ export class UISystem {
 }
 
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+/**
+ * AMENDMENT-W1-MAP-01 §3b, computed rather than transcribed — see the call site.
+ *
+ * `mutator_arities` keeps its name and its `{name: arity}` shape so that a probe written against
+ * the old field gets a CHANGED answer rather than `undefined` (the same reasoning `map_exists`
+ * carries above: a check that silently starts reading `undefined` is a check that starts
+ * passing). What changes is that the object is now every state-writing member of the prototype,
+ * and it is expected to contain `restore: 1`.
+ *
+ * The amendment's original acceptance was "every mutator arity 0", which the save path cannot
+ * meet — `restore()` has to receive the blob. The property that actually matters is narrower and
+ * stronger, so it is reported as its own field: **no mutator has a parameter in which a place can
+ * be named.** `Discovery.RESTORE_READS` is the whole channel from a blob into the model, it is
+ * published on the instance, and `place_naming_parameters` is derived from it rather than
+ * asserted. If somebody re-adds `places` to that list, this field turns red without anyone
+ * having to remember to update a check.
+ */
+function mapMutators(ctx) {
+  const d = ctx && ctx.map && ctx.map.discovery;
+  if (!d || typeof d.mutatorReport !== 'function') {
+    return { mutator_arities: null, mutators: null, mutators_enumerated: false, restore_reads: null, place_naming_parameters: null };
+  }
+  const rep = d.mutatorReport();
+  const arities = {};
+  for (const m of rep) arities[m.name] = m.arity;
+  const reads = Array.from(d.restoreReads || []);
+  const NAMES_A_PLACE = /^(place|places|markers?|pins?|reveal|discovered|locations?)$/i;
+  return {
+    mutator_arities: arities,
+    mutators: rep,
+    mutators_enumerated: true,
+    zero_arity_mutators: rep.filter((m) => m.arity === 0).map((m) => m.name),
+    restore_reads: reads,
+    place_naming_parameters: reads.filter((k) => NAMES_A_PLACE.test(String(k))),
+  };
+}
 
 /** "16 Last Seed, 3E 427" -> an absolute day number. Inverse of calendar.dateOf(). */
 export function dayFromText(text) {

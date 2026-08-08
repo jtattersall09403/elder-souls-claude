@@ -59,7 +59,37 @@ const VIEWPOINTS = [
   { id: 'ui_menu_levelup', open: ['levelup'], hearth: true },
   { id: 'ui_menu_sheet', open: ['sheet'] },
   { id: 'ui_menu_spells', open: ['spells'] },
+  // W1-21 round 2. The map, in BOTH of its views.
+  //
+  // The round-1 verdict tabulated every AR-2 and fidelity detector this piece ships against the
+  // one surface S35 defines entirely by its refusals, and the answer was five detectors and zero
+  // visits — the only thing that had ever looked at the map screen was the probe its own builder
+  // wrote. The undeclared-component sweep is exactly the check that matters most there, because
+  // `UISurface.el()` clipping every draw to its declared rect is the whole reason the map's
+  // element-level assertions mean anything: a square drawn outside a declared rect would be a
+  // marker that the census cannot see and the pixels can.
+  //
+  // `view` presses confirm on the map, which is the one input that swaps world view for local
+  // view (`_confirm()` case 'map'), so `ui_menu_map_local` is a genuinely different layout and
+  // not the same picture twice.
+  { id: 'ui_menu_map', open: ['map'] },
+  { id: 'ui_menu_map_local', open: ['map'], mapLocal: true },
 ];
+
+/**
+ * `--only a,b` / `--skip a,b` — run a subset of the viewpoints, and SAY SO in the report.
+ *
+ * Added by W1-21 round 2 for a reason worth writing down: `ui_combat_neutral` currently dies on
+ * `aggro('deadwater-koor-nakh'): no such entity` and takes the whole sweep with it, because
+ * `browser.mjs` treats a harness throw as fatal at the process level and the tool's own
+ * `try/catch` around the aggro never gets a chance. One broken viewpoint should not make the
+ * other nine unmeasurable. The subset is written into the report as `viewpoints_skipped` and
+ * `covered_all_viewpoints`, so a partial run can never be mistaken for a full one — which is the
+ * failure mode this whole round has been about.
+ */
+const ONLY = args.only ? new Set(String(args.only).split(',')) : null;
+const SKIP = args.skip ? new Set(String(args.skip).split(',')) : new Set();
+const SELECTED = VIEWPOINTS.filter((v) => (!ONLY || ONLY.has(v.id)) && !SKIP.has(v.id));
 
 function decode(dataUrl) { return PNG.sync.read(Buffer.from(dataUrl.split(',')[1], 'base64')); }
 
@@ -141,7 +171,7 @@ try {
   const buf = await h.h('setDevicePixelRatio', 1);
   await h.h('loadState', state);
   await h.h('stepFrames', 4);
-  for (const vp of VIEWPOINTS) {
+  for (const vp of SELECTED) {
     await h.h('closeMenu');
     if (vp.hearth) await h.h('setAtHearth', true);
     if (vp.combat) {
@@ -150,6 +180,14 @@ try {
       if (t) { try { await h.h('aggro', t.eid); await h.h('lockOn', t.eid); } catch { /* none */ } }
     }
     if (vp.open) await h.h('openMenu', ...vp.open);
+    // The local view is reached the way a player reaches it — confirm, through the real input
+    // pipeline — and not by a harness verb that sets `focus.map.view`, because the round-1 fix to
+    // `build()`'s cache key is precisely about whether a press on a paused screen repaints. A
+    // viewpoint that got there through the back door could not see this viewpoint's own bug.
+    if (vp.mapLocal) {
+      await h.h('queueInputs', [{ f: 0, press: ['interact'] }, { f: 1, release: ['interact'] }]);
+      await h.h('stepFrames', 3);
+    }
     await h.h('stepFrames', 2);
 
     await h.h('setUIVisible', true);
@@ -221,6 +259,10 @@ const report = {
   at: new Date().toISOString(),
   state, screen: [width, height],
   viewpoints: results.length,
+  viewpoints_declared: VIEWPOINTS.map((v) => v.id),
+  viewpoints_run: SELECTED.map((v) => v.id),
+  viewpoints_skipped: VIEWPOINTS.filter((v) => !SELECTED.includes(v)).map((v) => v.id),
+  covered_all_viewpoints: SELECTED.length === VIEWPOINTS.length,
   results,
   undeclared_components: results.reduce((a, r) => a + r.undeclared.length, 0),
   instrument_agreement: instrument,

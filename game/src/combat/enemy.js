@@ -22,8 +22,13 @@
 import { Clip, LoopClip } from './clips.js';
 import { bearingDeg, angleDelta, norm360 } from './geometry.js';
 import { applyPoiseDamage } from './rules.js';
+import { SoulsAI, resolveBehaviour } from './ai.js';
 
-export const IMPLEMENTED_AI = new Set(['none', 'hold_ground', 'scripted']);
+// ---- AMENDED W1-12 ---------------------------------------------------------------------
+// `souls` is added to the set, additively; the three behaviours above it are unchanged and
+// `scripted` still wins for any body that has actually been handed a script, so RI-CMB07 M1's
+// frame-exact Mode-A instrument is untouched. See `resolveBehaviour` in ./ai.js.
+export const IMPLEMENTED_AI = new Set(['none', 'hold_ground', 'scripted', 'souls']);
 
 /**
  * Which damage type an enemy attack's pose archetype delivers, when the statblock does not say.
@@ -126,6 +131,24 @@ export class EnemyController {
     // absence from the round-1 enemy record the verdict called "its own answer". Written by
     // sim/stealth/perception.js and read by sim/record.js.
     this.alertChannel = null;
+    // ---- W1-12 -------------------------------------------------------------------------
+    // The behaviour is resolved lazily, on the first step, and not here: `loadScript()` is
+    // called AFTER the controller is constructed, so a constructor-time decision could not
+    // see whether this body has a script and would take every scripted enemy in the project
+    // away from its script.
+    this.ai = null;
+    this.behaviour = null;
+  }
+
+  /** Resolve `souls` vs `scripted` once, on the first frame, when the script is known. */
+  _resolveAI() {
+    if (this.behaviour) return this.behaviour;
+    this.behaviour = resolveBehaviour(this.stat, this.d.ai, this.script.length > 0);
+    if (this.behaviour === 'souls') {
+      this.ai = new SoulsAI(this.b, this.stat, this.d);
+      this.ai.anchor = [this.b.pos[0], this.b.pos[1], this.b.pos[2]];
+    }
+    return this.behaviour;
   }
 
   /** Scenario contract: enemy actions on declared frames, relative to the window origin. */
@@ -146,8 +169,18 @@ export class EnemyController {
       return;
     }
 
+    this._resolveAI();
+
     // Retire at the TOP of the step — see the note in combat/player.js.
-    if (b.move && b.animFrame >= b.moveTotal()) b.endMove();
+    // T15/T16: the frame a committed attack retires is the frame the token goes back and the
+    // enemy re-enters CIRCLE. Doing it here, at the retire, rather than in the AI's own step
+    // means the punish window the player is standing in belongs entirely to RECOVER and the
+    // AI cannot shorten it by deciding early.
+    if (b.move && b.animFrame >= b.moveTotal()) {
+      const wasAttack = b.move.kind === 'attack';
+      b.endMove();
+      if (wasAttack && this.ai) this.ai.onMoveEnded(frame, ctx);
+    }
 
     if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
       b.advance(frame);
@@ -258,6 +291,38 @@ export class EnemyController {
 
   _idleBehaviour(frame, ctx) {
     const b = this.b;
+    // ---- W1-12. The whole of RI-AI01 §D lives behind this one call ------------------------
+    //
+    // What it replaces, for a `souls` body, is the four lines at the bottom of this method:
+    // an AGGRO enemy turned its yaw towards the player, set `b.state = 'REPOSITION'` and posed
+    // an IDLE loop. Nothing wrote `b.pos`. The state was named for a movement the code did not
+    // contain, which is why the W1-07 verdict could report six raiders sitting in REPOSITION
+    // for 1,657 consecutive frames at a distance frozen to the centimetre.
+    if (this.ai) {
+      const before = b.state;
+      this.ai.step(frame, ctx, this);
+      // The AI may have COMMITTED on this very frame. If it did, the body is mid-attack now and
+      // must be advanced through its clip, not posed as locomotion — posing it would clear
+      // `hitboxActive` on frame 1 of every swing and put a walk cycle on the frame RI-AI02's
+      // silhouette check reads.
+      if (b.move) { b.advance(frame); return; }
+      // The gait the trace reports is the gait the AI is actually using, so a critic reading
+      // `speed_mps` sees a walk-in decelerate into a strafe rather than a constant.
+      const st = b.state;
+      const gait = st === 'RUSH' || st === 'PUNISH_READ' ? 'SPRINT'
+        : (b.speedMps > 0.15 ? 'WALK' : 'IDLE');
+      b.poseLocomotion(gait, frame);
+      if (before !== st && ctx.emit) {
+        const e = ctx.emit(frame, 'enemy_state');
+        e.eid = b.id; e.from = before; e.to = st; e.channel = 'ai_state';
+        e.dist_m = ctx.player
+          ? Math.round(Math.hypot(ctx.player.pos[0] - b.pos[0], ctx.player.pos[2] - b.pos[2]) * 1000) / 1000
+          : null;
+        e.band = ctx.player ? this.ai.band(Math.hypot(ctx.player.pos[0] - b.pos[0], ctx.player.pos[2] - b.pos[2])) : null;
+        e.token = this.ai.token;
+      }
+      return;
+    }
     if (this.stat.ai === 'none') { b.state = 'IDLE'; b.poseLocomotion('IDLE', frame); return; }
     const p = ctx.player;
     // ---- PERCEPTION IS NOT OWNED HERE ANY MORE (W1-15 round 2) -------------------------------

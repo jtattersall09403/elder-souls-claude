@@ -216,6 +216,72 @@ function checkAgainst(hooksDoc, book) {
   }
 }
 
+// ---- W1-READABLES: a document channel whose document is not an object -----------------------
+// `deceit.revealed_by[].channel` of `book`, `ledger` or `letter` says the truth arrives by
+// reading a thing somebody wrote, and `.source` names the thing. Two ways for that to be a route
+// to nothing, and they are different jobs: no document of that id exists in `game/data/books/**`
+// at all, or one exists and is an object in no room, so the only way to open it is the harness
+// door. Both are reported here.
+//
+// WARNING, NOT AN ERROR, for the same reason as the attribute-scale audit above and RULES.md
+// rule 13: 24 of the 39 demanded document rows have no text written for them on this tree, and a
+// fail-closed assertion would take `check-quests` red for every agent on the box over content
+// nobody has written yet. The standing tool with the full table and a non-zero exit is
+// `tools/quests/reveal-route-audit.mjs`.
+{
+  const DOC_CHANNELS = new Set(['book', 'ledger', 'letter']);
+  const bookById = new Map();
+  const bdir = join(ROOT, 'game', 'data', 'books');
+  if (existsSync(bdir)) {
+    for (const f of readdirSync(bdir).filter((x) => x.endsWith('.json'))) {
+      const j = readJSON(join(bdir, f));
+      for (const b of (Array.isArray(j.books) ? j.books : (j.id ? [j] : []))) {
+        if (!b.id) continue;
+        bookById.set(b.id, b.id);
+        if (b.knowledge_key) bookById.set(b.knowledge_key, b.id);
+      }
+    }
+  }
+  const placed = new Set();
+  const idir = join(ROOT, 'game', 'data', 'world', 'interiors');
+  if (existsSync(idir)) {
+    for (const f of readdirSync(idir).filter((x) => x.endsWith('.json'))) {
+      const rec = readJSON(join(idir, f));
+      const list = Array.isArray(rec.readable) ? rec.readable : (rec.readable ? [rec.readable] : []);
+      for (const r of list) if (r && r.book) placed.add(r.book);
+    }
+  }
+  const itdir = join(ROOT, 'game', 'data', 'items');
+  if (existsSync(itdir)) {
+    for (const f of readdirSync(itdir).filter((x) => x.endsWith('.json'))) {
+      for (const it of (readJSON(join(itdir, f)).items || [])) if (it && it.readable && it.book_id) placed.add(it.book_id);
+    }
+  }
+  const missing = [], unplaced = [];
+  for (const [id, q] of quests) {
+    const demanded = new Set();
+    for (const r of q.resolutions || []) for (const k of (r.requires_knowing || [])) demanded.add(k);
+    for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
+      if (!DOC_CHANNELS.has(rev.channel) || !rev.source) continue;
+      const where = `${sourceOf.get(id)}: ${id}.${rev.id} (${rev.channel})`;
+      const dem = demanded.has(rev.id) ? '' : ' [not demanded by any resolution]';
+      if (!bookById.has(rev.source)) missing.push(`${where} names ${rev.source}${dem}`);
+      else if (!placed.has(bookById.get(rev.source))) unplaced.push(`${where} names ${rev.source} — written, in no room${dem}`);
+    }
+  }
+  if (missing.length) {
+    console.warn(`check-quests: WARNING — ${missing.length} document reveal(s) name a source with no document written for it.`);
+    console.warn('  A reader wired to a source that does not exist is a route to nothing; see');
+    console.warn('  `node tools/quests/reveal-route-audit.mjs` section A.2.');
+    for (const m of missing) console.warn(`  ${m}`);
+  }
+  if (unplaced.length) {
+    console.warn(`check-quests: WARNING — ${unplaced.length} document reveal(s) name a document that is an object in no room.`);
+    console.warn('  It can then be opened only through openMenu(), which is the harness door and not a player.');
+    for (const m of unplaced) console.warn(`  ${m}`);
+  }
+}
+
 // ---- report ------------------------------------------------------------------------------
 if (problems.length) {
   console.error(`check-quests: ${problems.length} problem(s) across ${quests.size} quests:`);

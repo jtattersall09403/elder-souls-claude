@@ -143,7 +143,7 @@ try {
     const E = window.__ENGINE, o = {};
     for (const [id, b] of Object.entries(E.ambience.beds)) {
       const e = (b.emitters || [])[0];
-      o[id] = e && e.pos ? [e.pos[0], e.pos[1], 0] : null;
+      o[id] = e && e.pos_m ? [e.pos_m[0], e.pos_m[1], 0] : null;
     }
     return o;
   });

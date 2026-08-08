@@ -1,10 +1,10 @@
 {
   "task_id": "W1-13-r4",
   "item": "RI-PRG04",
-  "title": "Death, recovery, the hearth loop and levelling \u2014 round 4",
+  "title": "Death, recovery, the hearth loop and levelling — round 4",
   "state": "complete",
   "started_at": "2026-08-07",
-  "next_step": "critic (fresh context): re-measure the AR-1 award clock, the four-rest determinism, the 151x deadline gap, and the one clause the builder declared unmeasurable (QuestMachine.onDay has no consumer).",
+  "next_step": "critic — read status.aggregation for the journey row beside the standalone probe",
   "files_claimed": [
     "orchestration/status/W1-13-r4.json",
     "game/src/sim/environment.js",
@@ -77,5 +77,20 @@
     "corpus-index": "PASS",
     "publish": "PASS"
   },
-  "state_stamped_by_orchestrator": "The builder reported and its work is committed at a3af8c2; its last status write still read 'running'. Stamped complete so tools/dispatchable.mjs classifies it as FINISHED BUT UNJUDGED rather than hiding a critic that is owed."
+  "state_stamped_by_orchestrator": "The builder reported and its work is committed at a3af8c2; its last status write still read 'running'. Stamped complete so tools/dispatchable.mjs classifies it as FINISHED BUT UNJUDGED rather than hiding a critic that is owed.",
+  "aggregation": {
+    "run": "reports/journeys/w1-13-r4-jrn06/journey.json",
+    "run_id": "20260807T230938Z-jrn06-death-s4711-371625",
+    "git": {
+      "commit": "1110bf72248e08b5d9f52e796dd5345fca787835",
+      "branch": "claude/morrowind-souls-threejs-game-mou39v",
+      "dirty": true
+    },
+    "instruments": 0,
+    "failed": [],
+    "page_errors": 0,
+    "m_prg04_m8_clock_consequence": "ROW ABSENT from the aggregation",
+    "m_d14": null,
+    "note": "Recorded by tools/harness/w1-13-r4-record-aggregation.mjs so the numbers survive the run. The standalone probe (reports/runs/W1-13-R4/clock-consequences.json) passes all six measurable clauses at commit 0f6ff17; if the aggregation row disagrees, THE DISAGREEMENT IS THE FINDING and belongs in the verdict, not smoothed over."
+  }
 }

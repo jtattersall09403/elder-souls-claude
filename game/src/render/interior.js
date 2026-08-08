@@ -669,6 +669,18 @@ export function buildInterior(root, rec) {
   // a `book` in `game/data/books/**`, which is what makes the drawn object a thing you can read;
   // a record without one is the shelf dressing it always was and is drawn exactly as before.
   const readables = Array.isArray(rec.readable) ? rec.readable : (rec.readable ? [rec.readable] : []);
+  // NOT ON THE SHELF BESIDE THE DOOR. `sim/settlement.js` takes `interact` for the way out within
+  // `DOOR_REACH_M` = 2.6 m of `continuity.interior_spawn`, and it takes it BEFORE the engine's
+  // prop reach — so a document drawn within that radius is a document that can never be read:
+  // press the button at it and you walk out of the room instead. Measured, not reasoned:
+  // `tools/quests/document-route-world.mjs` refused to run the Archon leg and named the distance.
+  // The slots are filtered rather than the reach changed, because 2.6 m is the door's number and
+  // this is the shelf's problem.
+  const spawnPt = (rec.continuity && rec.continuity.interior_spawn) || null;
+  const readSlots = spawnPt
+    ? wSlots.filter((s) => Math.hypot(s.x - spawnPt[0], s.z - spawnPt[2]) > 3.8)
+    : wSlots;
+  const rSlots = readSlots.length ? readSlots : wSlots;
   for (let ri = 0; ri < readables.length; ri++) {
     const r = readables[ri];
     if (!r) continue;
@@ -678,7 +690,7 @@ export function buildInterior(root, rec) {
     part(g, bk, 0, 0.04, 0);
     // Successive documents take successive wall slots, so two books in one room are two places
     // to stand rather than one mesh inside another.
-    const s = wSlots[(wi + 3 + ri * 2) % wSlots.length];
+    const s = rSlots[(wi + 3 + ri * 2) % rSlots.length];
     const px = s.x + Math.cos(s.yaw) * 0.25, pz = s.z + Math.sin(s.yaw) * 0.25;
     g.position.set(px, by[0] + 1.06, pz);
     root.add(g);
@@ -752,3 +764,25 @@ export function clearInterior(root) {
   for (const o of dead) if (o.geometry) o.geometry.dispose();
   root.clear();
 }
+
+/* ================================================================================================
+ * THE SHARED VOCABULARY — added by W1-04 round 3, additively and with no behaviour change.
+ *
+ * The exterior half (`render/exterior.js`) has to be built out of THE SAME kit definitions, the
+ * same palette rule and the same primitive helpers as the interior, for one reason: a building's
+ * outside and its inside must be recognisably the same building. Two divergent sets of kits is
+ * how the Crimson Apothecary ends up a clay dome from the street and a timber shed once you are
+ * through the door, and the check that would have caught it — "does the exterior kit match the
+ * interior kit for this record" — would be comparing two tables rather than one.
+ *
+ * Nothing above this line moved. These are the existing objects, exported.
+ * ==============================================================================================*/
+
+/** The four-per-town architecture-kit builders `props[]` already instantiates indoors. */
+export const KIT_MESHES = KIT;
+/** `(interior_kind, settlement) -> materials`, cached. The exterior asks for the same key. */
+export { paletteFor };
+/** The furniture vocabulary, so an exterior can stand a real barrel outside a real door. */
+export const SHAPES = B;
+/** box / cyl / ico / part — the four primitives every mesh in this file is assembled from. */
+export const PRIMS = { box, cyl, ico, part, hashStr };

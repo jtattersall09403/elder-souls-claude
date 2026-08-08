@@ -2,25 +2,41 @@
   "task_id": "critic-w1-03",
   "role": "critic",
   "judges": "W1-03",
-  "state": "running",
+  "state": "done",
   "started": "2026-08-07",
-  "next_step": "bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser session for waterline-vs-surface at multiple depths/tides and the province-side enemy denial end-to-end.",
+  "finished": "2026-08-08",
+  "verdict": "FAIL, 2/10",
+  "next_step": "none — verdict written and validated. Next builder round should take GAP-W1-03-water-surface-undrawn-and-frozen first, and GAP-W1-03-tide-outside-tidal-regions (a triggered automatic fail, one clause at field.js:556) second.",
   "files_touched": [
-    "orchestration/status/critic-w1-03.json"
-  ],
-  "files_claimed": [
+    "orchestration/status/critic-w1-03.json",
     "corpus/90-verdicts/wave1/W1-03-r1.md",
     "corpus/90-verdicts/wave1/W1-03-r1.json",
-    "docs/shots/",
+    "corpus/90-verdicts/wave1/artifacts/W1-03-r1/",
+    "docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png",
     "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
+  "redundant_with": [],
+  "commit_stamp": "652b1d7",
   "findings": [
-    "PLAYER SIDE HOLDS. Independent bare-Node probe on real WorldField+Traversal: all three RI-WLD10 §3 privileges land, including a moving-body gradient walk (rule 8) and a delete-the-fix that reverts (rule 6). 9/9 player checks pass.",
-    "R6 SECOND CLAUSE FAILS. Exactly 4 archetypes declare water_native, but drowned_greater and drowned_lesser both have ai:'none' -- enemy.js _idleBehaviour returns at the top, so they never start any action in any band. Their DPS in W5 is identically 0. M53.6: 'FAIL if ... a water_native enemy's DPS in W5 is below 60% of the roster median on land (a water enemy that cannot hurt you is scenery).' Only 2 natives can act.",
-    "NO PURSUIT LOCOMOTION: CLAIM VERIFIED, not convenient. _idleBehaviour's AGGRO branch calls _steer() (yaw only) and poseLocomotion('IDLE'); the only position writes in game/src/combat are clip root motion, body-separation displace(), and knockback. Round 2's scope declaration is accurate.",
-    "CAMERA-YAW STALE BASIS DOES NOT TAINT EITHER SHOT. renderer.js:615-617 builds the THREE camera from c.pos + c.pivot via lookAt; the pre-fix applyOverride path already wrote both. Only projectNDC/projectPoint read c.yaw/c.pitch. Pixels were correct before and after the fix.",
-    "FAIL-CLOSED DEFAULTS ARE UNFALSIFIABLE ON 14 OF 15 FIXTURES. All 15 declare W0/false, and deleting the field yields the same W0 -- so the declaration changes no behaviour. 14 of 15 have ai:'none' and never start an action, so waterDeniesAttack is written and never read on them. Only probe_pulse could observe it.",
-    "ENEMY-SIDE PRODUCER NEVER RAN. _settleEnemyWater lives in engine.js, which does not load in bare Node; round 2 verified only the consumer (enemy.js) via tools/lib/combat-node.mjs with the field set by hand. The producer's gate is province-only + no cellId, while scripted enemies are a harness instrument (queueEnemyScript) -- the two halves have never been shown connected in a running world."
+    "VERDICT FAIL 2/10. Capped at 2 by SCORING.md 1.1: a triggered automatic fail on RI-WLD10's own list.",
+    "CLOSED (verified independently, not taken): all three amphibious privileges. Nord drowns and loses 200 HP over 70 s submerged; Saxhleel's breath never leaves 60.00. W4 attack denied nord=true sax=false; W5 drain 4.0/s -> 0; W3/W4 drains exactly halved. Includes a delete-the-fix arm and a moving-body gradient walk (rule 8). RI-WLD10's named automatic fail 'Amphibious races indistinguishable' is retired.",
+    "PARTIALLY CLOSED: the waterline on the body is live and correct to ~0.07 m. One point, one camera, tide only: LOW->HIGH changes 21,804 px, bbox entirely on the character; time of day instead changes 809,999 px. Round 2's third closure is genuine.",
+    "BIGGEST GAP GAP-W1-03-water-surface-undrawn-and-frozen: province.js:747-773 drops any 12.5 m water quad with one dry corner -> 32.1% of quads kept on a tile that is 61.3% wet, and the round-1/round-2 shot point's own quad (corners [1.650,1.600,null,null]) is DROPPED. No water drawn where the player stands in 0.886 m of it. Plus the mesh is baked at tile-build time: moving the tide changes 21,804 px (all body); forcing a rebuild changes 657,561.",
+    "AUTOMATIC FAIL: tidal amplitude in 5 of the 8 non-tidal regions (Thornmarsh 1.2000 m; Deep Marshes / Valus Ridge / Stone Forest / Salt Hills 0.6600 m) against a 0.02 m bar. Cause: field.js:556's `|| !this.isLandAt(x, z)`. Two-arm control: ranges zeroed -> 0.0000, restored -> 1.2000.",
+    "20 s drying window does not exist: dry-throughout and 1-s-after-1.05 m-of-water are BYTE-IDENTICAL (md5 8531d20d4f3dc7f82b8b6be2b9c63a77). esBand is a world-space cutoff; step up a bank and every vertex clears it.",
+    "R6 fails its second clause: 2 of the 4 declared water natives (drowned_greater, drowned_lesser) have ai:'none' and never act, so DPS in W5 = 0. And M53.6 as written cannot fail — 18 of 22 statblocks cannot act, so the 'roster median on land' is zero. Filed as an arbitration question.",
+    "'No pursuit locomotion at all' VERIFIED, not convenient: every position write in game/src/combat is root motion, body separation, knockback, player input or placement; _idleBehaviour's AGGRO branch writes yaw only.",
+    "Camera-yaw stale basis does NOT taint either shot: renderer.js:635-637 builds the camera from pos+pivot via lookAt; only projectNDC reads yaw/pitch. The before/after is instead uncontrolled (1280x720 vs 1920x1080, different camera and pose).",
+    "Fail-closed fixture defaults are unfalsifiable: deleting the field yields the same W0, and 14 of 15 fixtures have ai:'none' so the value is written and never read.",
+    "Enemy denial producer (engine.js) and consumer (enemy.js) have never been shown connected in a running world."
   ],
-  "notes": "Critic with fresh context. Four angles: waterline visual truth, pursuit-locomotion absence claim, band perturbation both races both sides, fail-closed defaults on 15 dummies. Plus two live findings: drowning near one leg (streaming hypothesis), and camera yaw never written until recently (stale-basis captures)."
+  "not_done": [
+    "RI-WLD10 M48, M49, M52, M55, M56 (blind pair) — no instrument run; 34/100 weight scores 0 fail-closed.",
+    "RI-WLD11 M58-M63 — not exercised; 76/100 weight scores 0 fail-closed.",
+    "RI-VIS02 REF-M4 paired-shot comparison — no blind pack; measured unmeasurable => 0.",
+    "W1-05 water trap — not chased; round 1's exoneration and streaming hypothesis both stand untouched.",
+    "The one-browser end-to-end enemy denial probe in the province — identified as the missing evidence but not run."
+  ],
+  "notes": "Box 24 -> 12 headless_shell, loadavg 13.11 -> 6.30, above rule 21's ~8 for most of the run, so NO browser of my own was launched: 11 captures through the pooled tools/capture/ daemon, everything else bare Node over the shipped modules. No timing figure appears in the verdict. Five distinct capture build_keys passed under my frames in 20 minutes (concurrent agents); each is stamped beside the frame it produced. Two self-corrections before charging anything: my first tide control was broken (tideRange is an object, .length undefined, the zeroing loop never ran) and my first bare-Node transect lacked roads and disagreed with the engine by 1.86 m of ground height. Both written up. Did not commit (rule 28)."
 }

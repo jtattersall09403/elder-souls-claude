@@ -233,7 +233,12 @@ export class Renderer {
       rec.bounds_m, rec.props, rec.containers, rec.interior_kind, rec.settlement,
       (rec.lights || []).map((l) => [l.pos, l.intensity, l.kind]),
       rec.light, rec.continuity && rec.continuity.entry_side, rec.service,
-      rec.unique_item && rec.unique_item.id, rec.readable && rec.readable.id,
+      rec.unique_item && rec.unique_item.id,
+      // W1-READABLES: `readable` may be a LIST, and each member may name a book. The old key was
+      // `rec.readable && rec.readable.id`, which on a list reads `undefined` — so every room with
+      // documents in it hashed to the same value as every other and the perturbation this key
+      // exists to catch (RULES.md rule 5) would have stopped catching it.
+      (Array.isArray(rec.readable) ? rec.readable : (rec.readable ? [rec.readable] : [])).map((r) => [r && r.id, r && r.book]),
     ])}`;
     if (key === this.interiorKey) return this.interiorSummary;
     this.interiorKey = key;

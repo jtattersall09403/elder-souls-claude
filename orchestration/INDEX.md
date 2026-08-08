@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b831960`: 517 tools, 153 reference
+so it cannot drift. Generated at `1cdd845`: 517 tools, 153 reference
 items, 29 pieces in flight.
 
 Its purpose is to stop 29+ concurrent agents each paying separately to discover the
@@ -798,12 +798,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-21-r2` | done | critic. Three edited detectors are UNRUN and named under not_done below. | `game/src/ui/system.js` `game/src/sim/discovery.js` `tools/analysis/marker-scan.mjs` `tools/analysis/ui-layer.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/marker-diff.mjs` |
 | `W1-12` | done | none - piece complete. A successor should read reports/w1-12/survey.md sections 3c, 4 and  | `orchestration/status/W1-12.json` `reports/w1-12/survey.md` `reports/w1-12/ai-probe-souls-inf_trash.json` `game/data/combat/ai.json` `game/data/index.json` `game/src/combat/ai.js` |
 | `W1-READABLES` | done | hand to a critic. NOT DONE and not faked: 63 demanded reveals still have no route. 24 ledg | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/src/render/renderer.js` `game/data/books/the-books-in-evidence.json` |
 | `arbiter-wpn-s36` | done | DONE. S36 is ruled and on disk. Three referrals filed as NEXT-DISPATCH §S1 (RI-CMB04 subst | `corpus/00-doctrine/ARBITRATION.md` `corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md` `corpus/12-weapons/RI-WPN05-weapon-feel-impact.md` `orchestration/NEXT-DISPATCH.md` `orchestration/INDEX.md` `orchestration/status/arbiter-wpn-s36.json` |
 | `critic-w1-03` | done | none — verdict written and validated. Next builder round should take GAP-W1-03-water-surfa | `orchestration/status/critic-w1-03.json` `corpus/90-verdicts/wave1/W1-03-r1.md` `corpus/90-verdicts/wave1/W1-03-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-03-r1/` `docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png` `reports/blog-feed.jsonl` |
 | `judge-prose-r4` | done | none - task complete | `orchestration/status/judge-prose-r4.json` `reports/packs/prose-tics-r4-judgement.md` `corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.md` `corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.json` `reports/blog-feed.jsonl` |
-| `W1-21-r2` | in_progress | browser leg, blocked on contention (48-60 headless_shell, loadavg 30-38, 4 cores): node to | `game/src/ui/system.js` `game/src/sim/discovery.js` `tools/analysis/marker-scan.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-layer.mjs` `tools/analysis/ui-forbidden.mjs` |
 | `critic-w1-22-r2` | running | 3) detector refusal + AMENDMENT item A arithmetic; 2) build harder blind pack and spawn fr | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
 | `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |

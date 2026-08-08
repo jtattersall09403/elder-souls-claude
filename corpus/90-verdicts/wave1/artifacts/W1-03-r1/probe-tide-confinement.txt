@@ -1,0 +1,12 @@
+The Deep Marshes: point (2503,3325) regionAt.id=deep-marshes declared_tidal=false sea=null
+   surface HIGH=2.490 LOW=2.274 swing=0.216 m   isLandAt=false
+Thornmarsh: point (4002,531) regionAt.id=thornmarsh declared_tidal=false sea=null
+   surface HIGH=9.179 LOW=7.979 swing=1.200 m   isLandAt=false
+Valus Ridge: point (411,1164) regionAt.id=valus-ridge declared_tidal=false sea=null
+   surface HIGH=0.330 LOW=-0.330 swing=0.660 m   isLandAt=false
+
+RULE 4 CONTROL — tideRange zeroed: worst non-tidal amplitude = 0.0000 m (must be 0.0000; if it were not, my instrument would be measuring something other than the tide)
+SECOND ARM  — ranges restored: worst non-tidal amplitude = 1.2000 m
+
+cause, quoted from game/src/world/field.js:
+    const tidalHere = this.tidal[r] === 1 || !this.isLandAt(x, z);

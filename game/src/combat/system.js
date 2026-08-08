@@ -395,6 +395,45 @@ export class CombatSystem {
       player: this.player,
       world: this.world,
       rebuildLoadout: (p) => this.rebuildPlayerLoadout(p),
+      // ---- W1-12. What the enemy AI needs and may not go and get for itself ---------------
+      //
+      // `combat/ai.js` is a decision module, so everything it reads about the wider world
+      // arrives through this object. It is deliberately narrow: the AI can ask what the player
+      // is doing, who its token peers are, and for a counted PRNG draw. It cannot reach the hit
+      // test (seam S1), cannot see the encounter data, and cannot write anything but its own
+      // body's pos/yaw/state.
+      d: this.d,
+      rng: this.rng || null,
+      entityOf: this.entityOf || null,
+      playerState: () => {
+        const b = this.player;
+        if (!b || !b.move) return null;
+        // `heal` is the kind `moves.js` actually builds for RI-CMB08 §C's flask. The first
+        // draft of this read `'flask'`, which is the name of the DATA file and not of the move,
+        // so T22 — the anti-chug contract, the whole reason PUNISH_READ exists — was wired to a
+        // string nothing ever sets. It cost one probe run to find and it would have cost a
+        // verdict: an enemy that ignores a heal is the single most exploitable thing a
+        // Souls-like can ship.
+        if (b.move.kind === 'heal' || b.move.kind === 'item') return 'HEAL';
+        // RI-AI01 T22's third trigger. A "long recovery" is one the player cannot cancel and
+        // that lasts longer than the enemy needs to cross the PUNISH_READ band — anything with
+        // a recovery of half a second or more qualifies, which is every heavy and every
+        // greatweapon swing.
+        if (b.move.kind === 'attack' && b.move.recovery >= 30
+            && b.animFrame > b.move.startup + b.move.active) return 'LONG_RECOVERY';
+        return null;
+      },
+      aiPeers: (key) => {
+        const out = [];
+        for (const b2 of this.bodies) {
+          if (b2 === this.player || b2.dead) continue;
+          const c2 = this.enemies.get(b2.id);
+          if (!c2 || !c2.ai) continue;
+          const k2 = (this.entityOf && this.entityOf(b2.id) && this.entityOf(b2.id).encounterId) || `solo:${b2.id}`;
+          if (k2 === key) out.push(c2.ai);
+        }
+        return out.length ? out : [];
+      },
     };
 
     // steps 1–7, player then enemies in stable id order (HARNESS.md D7).

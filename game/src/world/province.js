@@ -14,6 +14,7 @@ import { arrangeAt } from './arrangement.js';
 import { SIGNATURE_KINDS } from './signature.js';
 import { signatureGeometry, signatureMaterials, mergeAll } from './signature-geo.js';
 import { thresholdGeometry, thresholdMaterials, remainsGeometry, remainsMaterial } from './threshold-geo.js';
+import { planSettlement, buildSettlementExterior, settlementSolids, insideBuilding } from '../render/exterior.js';
 
 const TILE_M = 300;
 // 5.36 m per quad. Raised from 40 (7.5 m) in round 4 for one reason, and it is a Nyquist reason
@@ -85,6 +86,22 @@ export class Province {
     this.focus = [0, 0];
     this.nightFactor = 0;
     this.sigLights = null;
+
+    // W1-04 round 3 — THE TOWNS. `setSettlements()` fills these; until it is called the province
+    // is exactly what it was, which is what makes the control arm below a one-line cut.
+    this.settlementPlans = [];
+    /**
+     * THE CONTROL ARM, and it is not a debug flag.
+     *
+     * RULES.md #6 and the round-1 verdict's acceptance both require the identical run with the
+     * draw call cut to come back at zero. Setting this to `false` and re-requesting the tiles is
+     * that cut: the plans are still read, the collision set is still derived, and NOTHING is
+     * added to the scene graph. A probe that cannot produce the before-picture on demand is
+     * measuring its own optimism.
+     */
+    this.drawBuildings = true;
+    this.buildingsDrawn = 0;
+    this.buildingSummary = null;
 
     // THE STREAMING SETTINGS, AS FIELDS AND NOT AS MODULE CONSTANTS.
     //
@@ -783,9 +800,159 @@ export class Province {
     this._spans(g, ox, oz);
     // ---- the signposts, W1-05 / RI-WLD06 L2 --------------------------------------------------
     this._signposts(g, ox, oz);
+    // ---- the town, W1-04 r3 / RI-WLD03 R5 ----------------------------------------------------
+    this._settlementBuildings(g, ox, oz);
 
     this.group.add(g);
     return { group: g, tx, tz };
+  }
+
+  /**
+   * THE TOWNS, ATTACHED. `RI-WLD03` R5, and the second half of the round-1 verdict's blocking gap.
+   *
+   * Called once by `Engine._boot()`, before the renderer builds any tile, for exactly the reason
+   * `field.setSignposts()` is called there: a tile built before the plans exist is a stretch of
+   * ground with a town's worth of doors on it and nothing standing up.
+   *
+   * The plan is computed ONCE per settlement and cached, because `planSettlement()` is pure and
+   * because the shrink pass is O(n^2) over 40 buildings and has no business running per tile.
+   * Re-calling this REPLACES the plans and drops every built tile, which is what makes the
+   * consumption perturbation ("change a settlement's building list and watch the screen") a
+   * thing a probe can do at runtime rather than a thing you rebuild the game to see.
+   *
+   * @param {object[]} docs  `game/data/world/settlements/*.json` documents
+   * @param {object} interiors  `{ [interiorId]: interiorRecord }`
+   */
+  setSettlements(docs, interiors) {
+    this.settlementPlans = (docs || []).map((d) => planSettlement(d, interiors || {}));
+    this._solidCache = null;
+    // Anything already built was built without these; drop it so the next request rebuilds.
+    for (const [k, t] of [...this.tiles]) this._release(k, t);
+    this.queue.length = 0;
+    return this.settlementPlans.length;
+  }
+
+  /**
+   * Draw every settlement whose centre falls in this tile.
+   *
+   * WHY ON THE CENTRE TILE AND NOT PER BUILDING. The widest plan (Helstrom) reaches 66 m from its
+   * centre and a tile is 300 m, so a town is at most two tiles wide and its centre tile is always
+   * resident before the player is within sight of it — the ring is 5x5. Splitting a town across
+   * tile groups would mean a building disappearing when the tile it happens to sit in is released
+   * while the player stands in the same street, which is a worse artefact than building 40
+   * buildings one tile early.
+   */
+  _settlementBuildings(group, ox, oz) {
+    if (!this.drawBuildings) return 0;
+    if (!this.settlementPlans.length) return 0;
+    let n = 0;
+    for (const plan of this.settlementPlans) {
+      const [px, , pz] = plan.pos;
+      if (!(px >= ox && px < ox + TILE_M && pz >= oz && pz < oz + TILE_M)) continue;
+      const g = new THREE.Group();
+      g.name = `settlement:${plan.id}`;
+      const summary = buildSettlementExterior(g, plan, (x, z) => this._meshY(x, z));
+      // The plan's own inconsistencies, carried on the summary rather than swallowed: a town
+      // whose offsets place buildings closer together than the shrink floor allows still
+      // interpenetrates, and a probe should be able to see how often.
+      summary.deep_overlaps = this._deepOverlaps(plan);
+      g.userData.exterior = summary;
+      group.add(g);
+      this.buildingsDrawn += summary.buildings;
+      n += summary.buildings;
+    }
+    return n;
+  }
+
+  /** How many pairs in this plan still cover more than 45% of the smaller building. */
+  _deepOverlaps(plan) {
+    let n = 0;
+    const B = plan.buildings;
+    for (let i = 0; i < B.length; i++) {
+      for (let j = i + 1; j < B.length; j++) {
+        const a = B[i], c = B[j];
+        const aw = a.drawn_footprint_m[0], ad = a.drawn_footprint_m[1];
+        const cw = c.drawn_footprint_m[0], cd = c.drawn_footprint_m[1];
+        const ox2 = (aw + cw) / 2 - Math.abs(a.x - c.x), oz2 = (ad + cd) / 2 - Math.abs(a.z - c.z);
+        if (ox2 > Math.min(aw, cw) * 0.45 + 1e-6 && oz2 > Math.min(ad, cd) * 0.45 + 1e-6) n++;
+      }
+    }
+    return n;
+  }
+
+  /** The settlement whose radius contains (x, z), or null. */
+  settlementAt(x, z, slack = 25) {
+    for (const p of this.settlementPlans) {
+      const dx = p.pos[0] - x, dz = p.pos[2] - z;
+      const r = p.radius_m + slack;
+      if (dx * dx + dz * dz <= r * r) return p;
+    }
+    return null;
+  }
+
+  /**
+   * The collision shapes for the buildings near (x, z) — the SOLIDS half of the same plan the
+   * meshes are built from, so the wall you cannot walk through is the wall you can see.
+   *
+   * Only what is within `radius`, because `CollisionCell.distance()` is a linear scan and the
+   * camera's spring arm evaluates it up to 96 times a frame; 40 buildings at five slabs each
+   * would put 200 primitives in that loop for the sake of geometry 60 m behind the player.
+   */
+  settlementSolidsNear(x, z, radius = 45) {
+    const p = this.settlementAt(x, z);
+    if (!p) return null;
+    return { id: p.id, shapes: settlementSolids(p, x, z, radius, (bx, bz) => this._meshY(bx, bz)) };
+  }
+
+  /** Which building's footprint this world point is inside, across every town. Audit only. */
+  buildingAt(x, z, inset = 0) {
+    for (const p of this.settlementPlans) {
+      const hit = insideBuilding(p, x, z, inset);
+      if (hit) return { settlement: p.id, building: hit };
+    }
+    return null;
+  }
+
+  /**
+   * WHAT IS ACTUALLY IN THE SCENE GRAPH, read back off it rather than off the plans.
+   *
+   * This is the measurement the round-1 verdict's acceptance asks for and the reason it is a
+   * traversal and not a `this.settlementPlans` sum: a plan that is read and never added to a
+   * group would report identically, and that is precisely the failure this piece exists to fix.
+   */
+  drawnBuildings() {
+    const out = { settlements: [], buildings: 0, meshes: 0, triangles: 0, kit_meshes: 0, kit_ids: [] };
+    const kit = new Set();
+    this.group.traverse((o) => {
+      if (!o.name || !o.name.startsWith('settlement:')) return;
+      const s = o.userData.exterior;
+      let meshes = 0, tris = 0, kitN = 0;
+      o.traverse((m) => {
+        if (m.name && m.name.startsWith('kit:')) { kitN++; kit.add(m.name.slice(4)); }
+        if (!m.isMesh || !m.geometry) return;
+        meshes++;
+        const g = m.geometry;
+        tris += g.index ? g.index.count / 3 : (g.attributes.position ? g.attributes.position.count / 3 : 0);
+      });
+      const groups = o.children.filter((c) => c.name && c.name.startsWith('building:'));
+      out.settlements.push({
+        id: o.name.slice(11), building_groups: groups.length,
+        meshes, triangles: Math.round(tris), kit_meshes: kitN,
+        declared_footprints: s ? s.declared_footprints : null,
+        derived_footprints: s ? s.derived_footprints : null,
+        shrunk: s ? s.shrunk : null,
+        deep_overlaps: s ? s.deep_overlaps : null,
+        doorways: s ? s.doorways : null,
+        drawn: s ? s.drawn : [],
+      });
+      out.buildings += groups.length;
+      out.meshes += meshes;
+      out.triangles += Math.round(tris);
+      out.kit_meshes += kitN;
+    });
+    out.kit_ids = [...kit].sort();
+    out.settlements.sort((a, b) => (a.id < b.id ? -1 : 1));
+    return out;
   }
 
   /**
@@ -1386,6 +1553,16 @@ export class Province {
       tilesResident: this.tiles.size, tilesQueued: this.queue.length, tilesBuiltTotal: this.built,
       tileSizeM: this.tileM, residentRadiusTiles: this.radiusTiles, meshes, instances,
       groundCoverInstances: this.coverCount || 0, groundCoverRadiusM: COVER_RADIUS_M,
+      // W1-04 r3. `settlementsPlanned` is what was READ; `buildingGroups` is what is in the
+      // scene graph right now. They differ whenever a town's tile is not resident, and they
+      // differ by everything when `drawBuildings` is cut.
+      settlementsPlanned: this.settlementPlans.length,
+      settlementsDrawn: this.group.children.reduce((n, t) => n + t.children.filter((c) => c.name && c.name.startsWith('settlement:')).length, 0),
+      buildingGroups: this.group.children.reduce((n, t) => {
+        for (const c of t.children) if (c.name && c.name.startsWith('settlement:')) n += c.children.filter((b) => b.name && b.name.startsWith('building:')).length;
+        return n;
+      }, 0),
+      drawBuildings: !!this.drawBuildings,
     };
   }
 }

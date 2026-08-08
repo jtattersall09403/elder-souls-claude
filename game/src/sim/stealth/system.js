@@ -94,6 +94,54 @@ export class StealthCrime {
     /** Reused per-observer percept. The fixed step allocates nothing (RI-PLT01 P4). */
     this._per = PER.newPerceptOut();
     this._lastCrimeFrame = -1;
+    /**
+     * RI-PRG03 §3/§6, the seam this file's own constructor comment left unbuilt: `this.p`
+     * started as "the player's stealth-side state" with `sneak`/`security`/`agility`/
+     * `mercantile`/`speechcraft` hand-seeded at creation-ish numbers and `race: 'imperial'`
+     * always — and NOTHING ever wrote them again. A player who trained Security from 5 to 60
+     * still had every lock in the game gated on Security 5 (`lockGateFor`, engine.js), every
+     * fence still priced goods off Mercantile 5 (`fenceQuote`), and a Dunmer or Argonian
+     * character was judged by guards as `imperial` (`raceSuspicion`) for the entire game. The
+     * live numbers existed the whole time in `sim.progression.skills`/`.attributes` — RI-PRG03's
+     * skill-by-use loop banks them every hit, lockpick and barter — they just never reached
+     * here. `_overridden` is the declared escape hatch: `setStealthState()` (a scenario/harness
+     * verb) marks a field overridden so a scripted probe that hand-feeds Security 80 to test a
+     * tier-5 lock in isolation keeps that number, exactly as `atHearthOverridden` lets a
+     * scenario put its thumb on the hearth check without the world's own answer fighting it.
+     * Everything NOT overridden tracks the character every frame in `syncFromCharacter()`.
+     */
+    this._overridden = new Set();
+  }
+
+  /**
+   * Mirror the live character sheet onto the fields RI-STL01/02 and RI-CRM01 gate on, for every
+   * field a scenario has not explicitly pinned via `setStealthState()`. Idempotent, allocation
+   * free, and a no-op before a character exists (`sim.progression.skills` starts populated by
+   * `Engine._ensureSkillRegister()`, so this only ever reads, never seeds).
+   */
+  syncFromCharacter(sim) {
+    const prog = sim && sim.progression;
+    if (!prog) return;
+    const p = this.p, ov = this._overridden;
+    const skills = prog.skills || {};
+    const skillVal = (k) => { const v = skills[k]; return v && v.value != null ? Number(v.value) : undefined; };
+    for (const k of ['sneak', 'security', 'mercantile', 'speechcraft']) {
+      if (ov.has(k)) continue;
+      const v = skillVal(k);
+      if (v !== undefined) p[k] = v;
+    }
+    if (!ov.has('agility')) {
+      const av = prog.attributes && prog.attributes.agility;
+      if (av !== undefined) p.agility = Number(av);
+    }
+    if (!ov.has('race') && sim.identity && sim.identity.race) p.race = sim.identity.race;
+    // W1-16 gold-purse finding: `Engine._setGold` mirrors here immediately on every write, but
+    // this per-frame pass is what re-heals `p.gold` after a path that changes
+    // `sim.progression.gold` directly — chiefly `save/state.js` on a load, which runs BEFORE
+    // `_buildCombat` re-mirrors `combat.world.gold`/`magic.gold` and never touches this object
+    // at all. Without this line a loaded save's purse would show 400 (the constructor default)
+    // to every stealth/crime read until the next spend.
+    if (!ov.has('gold') && prog.gold !== undefined) p.gold = Number(prog.gold) || 0;
   }
 
   // ---- the fixed step -------------------------------------------------------------------
@@ -101,6 +149,15 @@ export class StealthCrime {
   step(sim, input, bus) {
     const f = sim.frame;
     const p = this.p;
+
+    // RI-PRG03 §3/§6 consumption: the character's live skill growth reaches the gates every
+    // frame, not just at boot. See the constructor's comment on `_overridden`.
+    this.syncFromCharacter(sim);
+
+    // W1-15 r3: the world's own people, before anything below reads `this.civilians`.
+    // `sim/step.js` runs `stepSettlement` then `stepNPCs` immediately before this step, so
+    // `sim.npcs[].pos`/`.present` are this frame's answer, not last frame's.
+    this.syncCiviliansFromWorld(sim);
 
     // 1. crouch. A toggle, refused while an AGGRO enemy is within 8 m (RI-STL01 §5).
     if (input && input.pressed & (1 << CROUCH_BIT)) {
@@ -685,6 +742,10 @@ export class StealthCrime {
    * memory, the scratch occluders and the context are all scenario state and all go.
    */
   resetSubsystem() {
+    // A fresh scenario boundary: any scripted pin from the PREVIOUS scenario must not survive
+    // into this one, or a probe that ran `setStealthState({security:80})` once would leak that
+    // override into every scenario after it for the rest of the session.
+    this._overridden.clear();
     this.zones = new ZoneMemory(this.d.search);
     this.crime = new CrimeWorld(this.d.bounty, this.d.justice);
     this.civilians.length = 0;
@@ -707,6 +768,92 @@ export class StealthCrime {
       for (const z of this.property[k].zones || []) for (const c of z.contents || []) c.stolen_from = null;
     }
     return true;
+  }
+
+  /**
+   * The SAVE-LOAD half of `resetSubsystem()` — everything that is session ephemera and NOT
+   * save state, minus the two fields `applySave()` restores one statement before this runs
+   * (`save/state.js`: `sim.stealth.crime.fromJSON(blob.crime.ledger)` then
+   * `sim.stealth.zones.fromJSON(blob.crime.zones)`). `resetSubsystem()` cannot be reused on
+   * this boundary: it also re-`new`s `this.crime`/`this.zones`, which would throw the ledger
+   * `applySave()` just restored back to zero on the very next line.
+   *
+   * Declared in `Engine._sessionObservers()`'s `stealth` row as the `save` handler. Until this
+   * existed the row's `why_not` read "applySave() restores crime.ledger + crime.zones only;
+   * civilians/searches/pending survive a load" (found and reported, not fixed, by W1-SOULS r3):
+   * a civilian who watched last session's theft, or a search still walking to a stale LKP, was
+   * still standing in the loaded world, and a witness who was mid-report from a crime the new
+   * save never committed could still land a bounty on it.
+   */
+  resetSessionEphemera() {
+    this.civilians.length = 0;
+    this.pending.length = 0;
+    this.searches.length = 0;
+    this.events.length = 0;
+    this.coverVolumes.length = 0;
+    this.occluders = new CollisionCell('stealth_occluders', []);
+    for (const s of this.light.sources) { s.lit = true; s.relightAtF = -1; }
+    Object.assign(this.p, {
+      crouched: false, crouchRefusedReason: null, inCover: false, inCoverForced: false,
+      inCoverFraction: 0, motionForced: null, carryingTorch: false, zone: null, motion: 'still',
+      lockAttempt: null, pickpocket: null,
+    });
+    this.setContext('public_street_sheathed');
+    // `this.property` is the same in-memory object for the whole session — it is never
+    // rebuilt by `sim.reset()` — so an object taken (or laundered) after the save point would
+    // otherwise carry its `stolen_from` mark straight through the load unchanged. Rebuild it
+    // from the registry `applySave()` just restored, which is the loaded save's own truth
+    // (rule: audit the running world after a load, not the bytes).
+    const stolen = new Map(this.crime.stolenRegistry.filter((s) => !s.laundered_by).map((s) => [s.instance, s.owner]));
+    for (const k of Object.keys(this.property || {})) {
+      for (const z of this.property[k].zones || []) for (const c of z.contents || []) c.stolen_from = stolen.get(c.instance) || null;
+    }
+    return true;
+  }
+
+  /**
+   * The world's own people, mirrored into `civilians[]`. RI-MTH07's coupling was built and
+   * measured entirely against `spawnCivilian()` — a scenario/harness verb nothing in the
+   * running province ever calls — so the open world had a witness predicate, a civilian
+   * CALM/WATCHING/CHALLENGE/ALARM machine and a pickpocket target list with nobody in it: a
+   * player sneaking past a real settlement had no one to be seen by, heard by, or steal in
+   * front of. `sim.npcs` (W1-04) is full of people with a schedule and a walking `pos`, and
+   * since W1-04-r2's street life, some of them are outdoors at any hour — this is the line
+   * that makes them visible to the stealth kernel rather than just to the renderer.
+   *
+   * Every row here is tagged `_worldDerived` so a scenario's own hand-spawned civilians and
+   * guards — the fixture every RI-STL01/RI-CRM01 probe in this piece drives — are never
+   * touched, duplicated or removed by this sync.
+   */
+  syncCiviliansFromWorld(sim) {
+    if (!sim.npcs || !sim.npcs.length || !sim.player) return;
+    const SYNC_R_M = 40; // >= the widest live r_effective a probe has measured (sprint, ~36.3 m)
+    const ppos = sim.player.pos;
+    const near = new Map();
+    for (const n of sim.npcs) {
+      if (!n.present) continue;
+      const dx = n.pos[0] - ppos[0], dz = n.pos[2] - ppos[2];
+      if (dx * dx + dz * dz > SYNC_R_M * SYNC_R_M) continue;
+      near.set(n.eid, n);
+    }
+    const list = this.civilians;
+    for (let i = list.length - 1; i >= 0; i--) {
+      const c = list[i];
+      if (!c._worldDerived) continue;
+      const n = near.get(c.eid);
+      if (!n) { list.splice(i, 1); continue; }
+      c.pos[0] = n.pos[0]; c.pos[1] = n.pos[1]; c.pos[2] = n.pos[2];
+      c.yaw = n.yaw;
+      near.delete(c.eid);
+    }
+    for (const [eid, n] of near) {
+      list.push({
+        eid, group: 'civilian', race: n.race || 'saxhleel',
+        R: this.d.detection.perception_inherited_from_RI_AI01.sight_radius_R_m.CIVILIAN,
+        pos: n.pos.slice(), yaw: n.yaw, suspicion: 0, civ_state: 'CALM', alive: true,
+        _worldDerived: true,
+      });
+    }
   }
 
   // ---- helpers used by the step and by the harness ----------------------------------------

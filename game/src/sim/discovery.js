@@ -7,12 +7,54 @@
 // THE ONE PROPERTY THIS FILE EXISTS TO HOLD, AND IT IS A PROPERTY OF THE SIGNATURES.
 //
 // S35 permits a map and forbids, as a hard fail, "any icon a quest can place, request or
-// highlight". The amendment turns that into a check with teeth: **every mutating method on this
-// object has arity 0.** Not "no quest currently calls one" — there is no parameter in which a
-// caller could name a place.
+// highlight". The amendment turns that into a check with teeth: **there is no parameter in which
+// a caller could name a place.**
 //
-//   observe()            length 0   the only mutator. Reads the body off the captured SIM.
+//   observe()            length 0   the only play-time mutator. Reads the body off the captured SIM.
 //   suspend() / resume() length 0   the interior gate; they take no place either.
+//   restore(blob)        length 1   THE SAVE PATH. See "THE SAVE CARRIES A FOOTPRINT" below.
+//
+// ---------------------------------------------------------------------------------------------
+// THE SAVE CARRIES A FOOTPRINT AND NOTHING ELSE — W1-21 round 2, and it is the AR-2 fix.
+//
+// The W1-21 round-1 verdict got a marker onto this map. Not through a quest hook and not through
+// any of the routes `tryPlaceMapMarker` tries — all of those are genuinely closed — but through
+// the save file, because `restore()` used to take the place list from the blob and corroborate it
+// against **the raster in the same blob**. Forge one field and the check works; forge both and
+// the corroboration is a fixed-point test on its own input. The critic forged both, and the map
+// drew 42 squares, 35 of them for places the body had never stood in, over a fully rendered
+// province, while the screen's own compliance report read `places_drawn == places_discovered`
+// and went green — because both of those numbers came from the same forged model.
+//
+// The fix is not a better check. It is the removal of the field:
+//
+//   * The save carries **`stood`** — a bitset of the terrain cells the body actually occupied.
+//     Nothing else in the blob is read. `Discovery.RESTORE_READS` is the list, `restore()` copies
+//     the blob through it and touches the original object nowhere else, and the list is published
+//     on the running instance (`restoreReads`) so a critic reads it off the object rather than
+//     off this comment.
+//   * The sightline raster and the discovered-place list are **re-derived** from that footprint
+//     on load, by the same two private methods `observe()` uses during play. They are therefore
+//     not fields that can disagree with each other: there is only one field.
+//   * `cells`, `places` and `revealed` are still WRITTEN, and they are still READ — but they are
+//     read as a CLAIM TO BE CHECKED, never as state to be trusted. `restore()` derives the truth
+//     from `stood`, then reports every place the blob named that the footprint does not support
+//     as `dropped`, and every raster cell the blob claimed that the footprint does not paint as
+//     `phantom_cells`. A forged save is therefore not merely refused, it is itemised.
+//
+// What this closes, in the amendment's own words (§3a): "a square for a place the player has not
+// stood in" — the place list is derived from the footprint, so a forged `places` array changes
+// nothing; and "terrain rendered where the player has not been" — the raster is derived from the
+// footprint too, so a forged all-ones `cells` renders nothing extra either. Both hard fails now
+// fail closed against a blob whose every field is under the attacker's control, because the map
+// is a pure function of ONE field and that field is the body's own history.
+//
+// The cost, paid deliberately and recorded rather than hidden: `observe()` now paints from the
+// CENTRE of the cell the body occupies rather than from the body's exact position. That is what
+// makes live play and load bit-identical — the raster is a pure function of the set of occupied
+// cells, so replaying the footprint reproduces the raster exactly and a round trip is stable.
+// The cell is 25 m and the smallest built pad is 26 m (terrain.json `sites[].r_flat`), so every
+// place remains discoverable: the furthest any point can be from a cell centre is 17.7 m.
 //
 // `observe()` reads `sim.player`'s position and `sim.env.interior` and nothing else. A quest
 // holding `this.sim` can reach `sim.discovery` and call `observe()`; the effect is to reveal the
@@ -58,8 +100,17 @@
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
 export class Discovery {
+  /**
+   * The ONLY keys `restore()` reads out of a save blob. Published on the instance as
+   * `restoreReads` so `getUIState()` and any critic can read it off the running object instead of
+   * off a comment. `places` is deliberately not here: a place cannot be named into this model.
+   */
+  static RESTORE_READS = Object.freeze(['stood']);
+
   #cols; #rows; #cell;
-  #bits;                 // Uint8Array bitset, one bit per terrain cell
+  #bits;                 // Uint8Array bitset, one bit per terrain cell — DERIVED from #trail
+  #stood;                // Uint8Array bitset — "have I already been here?", for O(1) de-dup
+  #trail;                // cell indices, FIRST-VISIT ORDER. The footprint, and the whole save.
   #revealed = 0;         // popcount, maintained incrementally
   #placeSet;             // Set<string> of place ids the body has stood in
   #placeOrder;           // ids in discovery order — the map draws them in the order you found them
@@ -69,6 +120,7 @@ export class Discovery {
   #lastCol = -1; #lastRow = -1;   // only re-paint when the body changes cell
   #suspended = false;
   #observations = 0;     // how many times the raster was actually re-painted
+  #lastRestore = null;   // the last load's audit, kept on the object so no probe has to be told
 
   /**
    * @param {object} o
@@ -91,6 +143,8 @@ export class Discovery {
     this.#sim = o.sim;
     this.#cols = f.cols; this.#rows = f.rows; this.#cell = f.cell;
     this.#bits = new Uint8Array(((this.#cols * this.#rows) + 7) >> 3);
+    this.#stood = new Uint8Array(this.#bits.length);
+    this.#trail = [];
     this.#placeSet = new Set();
     this.#placeOrder = [];
 
@@ -135,25 +189,71 @@ export class Discovery {
     const p = this.#sim.player;
     if (!p || !p.pos) return;
     const x = p.pos[0], z = p.pos[2];
+    // A non-finite position is not a place. Without this line `clamp(NaN, …)` returns NaN,
+    // `NaN >> 3` is 0 and `1 << (NaN & 7)` is 1, so a body whose position has gone NaN silently
+    // marks CELL ZERO as stood in — and because the footprint is now the save, that one corrupt
+    // bit replays into a whole revealed disc in the top corner of the province on every load
+    // thereafter. Found by this file's own round-trip check (`w1-21-r2-forge.mjs` R7) going red
+    // on a fixture that divided by zero, which is the only reason it is here rather than in a
+    // verdict later.
+    if (!Number.isFinite(x) || !Number.isFinite(z)) return;
 
-    // Places first: standing inside a site's own pad is what discovers it. Cheap — 42 squared
-    // distances, no allocation, no sqrt.
-    for (let i = 0; i < this.#sites.length; i++) {
-      const s = this.#sites[i];
-      if (this.#placeSet.has(s.id)) continue;
-      const dx = x - s.x, dz = z - s.z;
-      if (dx * dx + dz * dz <= s.r2) { this.#placeSet.add(s.id); this.#placeOrder.push(s.id); }
-    }
-
-    // Terrain: only when the body has crossed into a new cell. A player standing still repaints
-    // nothing, so the cost of this method at 60 Hz is the 42 distances above.
+    // Only when the body has crossed into a new cell. A player standing still repaints nothing,
+    // so the cost of this method at 60 Hz is two divisions and a compare.
     const col = clamp(Math.floor(x / this.#cell), 0, this.#cols - 1);
     const row = clamp(Math.floor(z / this.#cell), 0, this.#rows - 1);
     if (col === this.#lastCol && row === this.#lastRow) return;
     this.#lastCol = col; this.#lastRow = row;
     this.#observations++;
 
-    // The region's own sightline, clamped. `regions.json` decides how much of itself it shows.
+    // W1-21 round 2. EVERYTHING BELOW THIS LINE IS A PURE FUNCTION OF (col, row), and that is
+    // the whole AR-2 fix rather than an implementation detail: it is what lets the save carry the
+    // footprint alone and lets `restore()` re-derive the raster and the place list by replaying
+    // the same two methods. If either derivation ever starts reading the body's exact position
+    // again, a save round trip stops being bit-stable and `w1-21-r2-forge.mjs` R4 goes red.
+    if (!this.#occupy(col, row)) return;     // already been here; both derivations are idempotent
+    this.#derivePlaces(col, row);
+    this.#deriveReveal(col, row);
+  }
+
+  /**
+   * Record that the body stood in this cell, ONCE. The one piece of state the save carries.
+   *
+   * First-visit order is kept because the map draws places "in the order you found them", and a
+   * set cannot carry an order — a bitset footprint round-tripped a save into a map whose places
+   * were listed in cell-index order instead of walk order, which `w1-21-r2-forge.mjs` R7 caught.
+   * Recording only first visits is what bounds the trail at one entry per terrain cell however
+   * long the session runs, and it is sound precisely because both derivations depend on nothing
+   * but `(col, row)`.
+   *
+   * @returns {boolean} true if this is new ground
+   */
+  #occupy(col, row) {
+    const i = row * this.#cols + col;
+    const b = i >> 3, m = 1 << (i & 7);
+    if (this.#stood[b] & m) return false;
+    this.#stood[b] |= m;
+    this.#trail.push(i);
+    return true;
+  }
+
+  /**
+   * Which places this cell stands in. The test is the site's OWN built pad (`r_flat`), measured
+   * from the cell's centre — see the header for why the centre and not the body.
+   */
+  #derivePlaces(col, row) {
+    const x = (col + 0.5) * this.#cell, z = (row + 0.5) * this.#cell;
+    for (let i = 0; i < this.#sites.length; i++) {
+      const s = this.#sites[i];
+      if (this.#placeSet.has(s.id)) continue;
+      const dx = x - s.x, dz = z - s.z;
+      if (dx * dx + dz * dz <= s.r2) { this.#placeSet.add(s.id); this.#placeOrder.push(s.id); }
+    }
+  }
+
+  /** The region's own sightline, clamped. `regions.json` decides how much of itself it shows. */
+  #deriveReveal(col, row) {
+    const x = (col + 0.5) * this.#cell, z = (row + 0.5) * this.#cell;
     const reg = this.#field.regionAt(x, z);
     const r = clamp(Number(reg && reg.sightline_m) || this.#minR, this.#minR, this.#maxR);
     const cr = Math.max(0, Math.floor(r / this.#cell));
@@ -211,8 +311,14 @@ export class Discovery {
   hasPlace(id) { return this.#placeSet.has(String(id)); }
   get placeCount() { return this.#placeSet.size; }
 
-  /** A copy of the raster, for the screen and for the save. */
+  /** A copy of the raster, for the screen. Derived; the save no longer trusts it. */
   raster() { return this.#bits.slice(); }
+
+  /** A copy of the footprint — the cells the body occupied, in order. This is what the save is. */
+  footprint() { return this.#trail.slice(); }
+
+  /** How many cells the body has stood in. The denominator every other number here derives from. */
+  get stoodCells() { return this.#trail.length; }
 
   /** Where a place sits, for the screen. Refuses to answer for a place you have not stood in. */
   placePos(id) {
@@ -223,8 +329,48 @@ export class Discovery {
 
   // ---- the save ----------------------------------------------------------------------------
 
+  /**
+   * `stood` is the state. `cells`, `places` and `revealed` are the model's own CLAIM about what
+   * that footprint implies — written so a save is legible and so `restore()` has something to
+   * check the footprint against, and read back on load as a claim rather than as state. See
+   * `Discovery.RESTORE_READS`, which is the whole of what a blob can put into this object.
+   */
   serialise() {
-    return { cells: b64(this.#bits), places: this.#placeOrder.slice(), revealed: this.#revealed };
+    return {
+      stood: b64(zigzag(this.#trail)),
+      cells: b64(this.#bits),
+      places: this.#placeOrder.slice(),
+      revealed: this.#revealed,
+      derived_from: 'stood',
+    };
+  }
+
+  /** The blob keys `restore()` reads, off the running object. Never a place list. */
+  get restoreReads() { return Discovery.RESTORE_READS; }
+
+  /**
+   * Every state-writing method on this object, enumerated from the prototype rather than listed.
+   *
+   * The W1-21 round-1 verdict caught `getUIState().map.mutator_arities` reporting a hand-typed
+   * literal of three names on an object that has four mutators, missing precisely the one that
+   * broke the claim. A list can only report what whoever wrote it already thought of, so this
+   * enumerates and classifies **fail-closed**: a member is a reader only if it is an accessor or
+   * is on `READERS` below, and anything else — including a method added tomorrow by somebody who
+   * never read this file — is reported as a state writer.
+   */
+  mutatorReport() {
+    const READERS = new Set(['constructor', 'seenCell', 'seenAt', 'places', 'hasPlace', 'raster',
+      'footprint', 'placePos', 'serialise', 'mutatorReport']);
+    const proto = Object.getPrototypeOf(this);
+    const out = [];
+    for (const name of Object.getOwnPropertyNames(proto)) {
+      const d = Object.getOwnPropertyDescriptor(proto, name);
+      if (!d || typeof d.value !== 'function') continue;      // getters are readers by construction
+      if (READERS.has(name)) continue;
+      out.push({ name, arity: d.value.length });
+    }
+    out.sort((a, b) => a.name.localeCompare(b.name));
+    return out;
   }
 
   /**
@@ -237,36 +383,90 @@ export class Discovery {
    * 1. It is the reason `map-probe.mjs` audits `Engine.mapState()` after the load rather than
    *    diffing the blob. The blob test is a fixed-point test on the serialiser.
    *
-   * 2. **It validates.** A place is accepted only if the raster in the same blob shows its own
-   *    cell revealed — which is an invariant `observe()` cannot break, because standing in a
-   *    place necessarily reveals the cell you are standing in. So a save that names a place the
-   *    raster does not corroborate is a forged save, and the forged half is dropped rather than
-   *    loaded. It returns what it dropped, so the audit can see it happen instead of being told.
+   * 2. **It derives; it does not accept.** It used to accept a place if the raster in the SAME
+   *    BLOB showed that place's cell revealed. That reads like corroboration and is not: an
+   *    attacker who can write one field of the blob can write the other, and the W1-21 round-1
+   *    critic forged both and put 35 phantom squares on the map. Nothing in a blob can corroborate
+   *    anything else in the same blob.
    *
-   * @returns {{dropped: string[]}}
+   *    So the place list and the sightline raster are no longer loaded at all. They are RECOMPUTED
+   *    from the footprint by `#derivePlaces` / `#deriveReveal` — the same two methods `observe()`
+   *    calls during play — and the blob's own `places` and `cells` are then compared against the
+   *    result and reported. `dropped` is every place the save named that the body's footprint does
+   *    not put it in; `phantom_cells` is every raster cell the save claimed that the footprint does
+   *    not paint. A forged save is itemised rather than merely refused.
+   *
+   * 3. **It cannot name a place.** `Discovery.RESTORE_READS` is `['stood']`. The blob is copied
+   *    through that list on the first line and the original object is never read again, so the
+   *    parameter carries no channel by which a caller could put a named place on this map. That is
+   *    AMENDMENT-W1-MAP-01 §3a's third hard fail ("any API by which a quest can place, request,
+   *    highlight or name a position on the map") held structurally rather than by review.
+   *
+   * @returns {{dropped: string[], phantom_cells: number, missing_cells: number,
+   *            claimed_places: number, derived_places: number, legacy: boolean}}
    */
   restore(blob) {
     this.#bits.fill(0);
+    this.#stood.fill(0);
+    this.#trail.length = 0;
     this.#revealed = 0;
     this.#placeSet.clear();
     this.#placeOrder.length = 0;
     this.#lastCol = -1; this.#lastRow = -1;
-    if (!blob) return { dropped: [] };
-    const raw = unb64(blob.cells || '');
-    const n = Math.min(raw.length, this.#bits.length);
-    for (let i = 0; i < n; i++) this.#bits[i] = raw[i];
-    for (let i = 0; i < this.#cols * this.#rows; i++) {
-      if ((this.#bits[i >> 3] >> (i & 7)) & 1) this.#revealed++;
+    const empty = {
+      dropped: [], phantom_cells: 0, missing_cells: 0,
+      claimed_places: 0, derived_places: 0, legacy: false,
+    };
+    if (!blob) { this.#lastRestore = empty; return empty; }
+
+    // THE ONLY PATH FROM THE BLOB INTO THIS OBJECT. Everything below reads `read`, never `blob`.
+    const read = {};
+    for (const k of Discovery.RESTORE_READS) read[k] = blob[k];
+
+    // REPLAY, in the order the body walked it, through the same two methods `observe()` calls.
+    // `#occupy` de-dups and bounds-checks, so a trail carrying a repeat or a garbage index costs
+    // nothing and reveals nothing.
+    const total = this.#cols * this.#rows;
+    for (const i of unzigzag(unb64(read.stood || ''))) {
+      if (!(i >= 0 && i < total)) continue;
+      const row = (i / this.#cols) | 0, col = i - row * this.#cols;
+      if (!this.#occupy(col, row)) continue;
+      this.#derivePlaces(col, row);
+      this.#deriveReveal(col, row);
     }
+    const occupied = this.#trail.length;
+
+    // Now check the blob's CLAIMS against what its footprint actually implies. Nothing here
+    // writes state; it exists so that a forged save is visible to the audit rather than silent.
     const dropped = [];
-    for (const id of blob.places || []) {
-      const s = this.#sites.find((q) => q.id === id);
-      if (!s || !this.seenAt(s.x, s.z)) { dropped.push(String(id)); continue; }
-      if (this.#placeSet.has(id)) continue;
-      this.#placeSet.add(id); this.#placeOrder.push(id);
+    for (const id of (blob && blob.places) || []) {
+      if (!this.#placeSet.has(String(id))) dropped.push(String(id));
     }
-    return { dropped };
+    const claimed = unb64((blob && blob.cells) || '');
+    let phantom = 0, missing = 0;
+    for (let i = 0; i < total; i++) {
+      const b = i >> 3, m = 1 << (i & 7);
+      const c = b < claimed.length ? (claimed[b] & m) !== 0 : false;
+      const d = (this.#bits[b] & m) !== 0;
+      if (c && !d) phantom++;
+      else if (d && !c) missing++;
+    }
+    return (this.#lastRestore = {
+      dropped,
+      phantom_cells: phantom,
+      missing_cells: missing,
+      claimed_places: (((blob && blob.places) || []).length),
+      derived_places: this.#placeOrder.length,
+      stood_cells: occupied,
+      // A save written before W1-21 round 2 has no footprint. Its map comes back EMPTY rather
+      // than trusted, and it says so: a legacy raster is exactly the field this fix stopped
+      // believing, and quietly believing it for old saves would leave the hole open.
+      legacy: occupied === 0 && !!((blob && blob.cells)),
+    });
   }
+
+  /** The last load's audit. Read off the object, so no probe has to be handed it. */
+  get lastRestore() { return this.#lastRestore; }
 }
 
 /**
@@ -276,6 +476,42 @@ export class Discovery {
  */
 export function stepDiscovery(sim) {
   if (sim.discovery) sim.discovery.observe();
+}
+
+// ---- the footprint on the wire: zigzag varint deltas -----------------------------------------
+//
+// The trail is cell indices in walk order, and consecutive entries are almost always adjacent
+// cells, so the deltas are tiny and usually signed (a walk that doubles back steps the index
+// down). Zigzag folds the sign into the low bit and the varint then costs one byte for anything
+// within ±63 — which is every ordinary step, and a step of one row is ±193. A 557-cell trail
+// costs about 700 bytes against the 5,356-byte raster it replaces; the pathological case, a body
+// that has stood in all 42,846 cells, costs about 60 KB, and that is a body that has walked the
+// entire province. Bounded either way, because `#occupy` records first visits only.
+
+function zigzag(indices) {
+  const out = [];
+  let prev = 0;
+  for (const i of indices) {
+    let v = i - prev; prev = i;
+    v = v < 0 ? (-v * 2 - 1) : v * 2;              // zigzag
+    while (v >= 0x80) { out.push((v & 0x7F) | 0x80); v = Math.floor(v / 128); }
+    out.push(v);
+  }
+  return Uint8Array.from(out);
+}
+
+function unzigzag(bytes) {
+  const out = [];
+  let prev = 0, v = 0, shift = 1;
+  for (let k = 0; k < bytes.length; k++) {
+    const b = bytes[k];
+    v += (b & 0x7F) * shift; shift *= 128;
+    if (b & 0x80) continue;                        // a truncated final varint is simply dropped
+    prev += (v & 1) ? -((v + 1) / 2) : v / 2;
+    out.push(prev);
+    v = 0; shift = 1;
+  }
+  return out;
 }
 
 // ---- base64 for a byte array, with no Node/browser split ------------------------------------

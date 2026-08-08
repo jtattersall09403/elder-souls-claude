@@ -2,34 +2,161 @@
   "task_id": "W1-12",
   "title": "Enemy AI and encounter composition",
   "role": "builder",
-  "state": "building",
+  "state": "done",
   "started_at": "2026-08-07",
   "commit_at_start": "107c1b3",
-  "next_step": "Survey written. Build game/data/combat/ai.json + game/src/combat/ai.js (RI-AI01 state machine), wire additively, then tools/harness/ai-probe.mjs (M1-M9, must go red on the pre-change tree), then browser confirmation.",
-  "files_touched": ["orchestration/status/W1-12.json"],
-  "files_claimed": [
-    "reports/w1-12/",
+  "next_step": "none - piece complete. A successor should read reports/w1-12/survey.md sections 3c, 4 and 8 first: three named gaps are left open on purpose and each belongs to a different piece.",
+  "files_touched": [
+    "orchestration/status/W1-12.json",
+    "reports/w1-12/survey.md",
+    "reports/w1-12/ai-probe-souls-inf_trash.json",
     "game/data/combat/ai.json",
+    "game/data/index.json",
     "game/src/combat/ai.js",
     "game/src/combat/enemy.js",
+    "game/src/combat/system.js",
     "game/src/character/encounter.js",
     "game/src/sim/record.js",
+    "game/src/sim/combat-bridge.js",
+    "game/src/engine.js",
+    "tools/lib/combat-node.mjs",
     "tools/harness/ai-probe.mjs",
     "tools/analysis/w1-12-chart.mjs",
-    "docs/shots/",
+    "docs/shots/2026-08-07-w1-12-where-an-enemy-stands-while-you-fight-it.png",
+    "reports/w1-12/ai-browser.json",
+    "tools/harness/ai-browser.mjs",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-03"],
-  "overlap_note": "W1-03 (water, state=fixed) claims game/data/combat/enemies/ and has touched game/src/combat/enemy.js. I do NOT write any statblock: the per-archetype AI parameters live in a NEW file game/data/combat/ai.json that this piece owns, precisely so the statblock directory is untouched. My enemy.js edits are additive (one new ai behaviour). W1-07 (encounter.js) and W1-POPULATION are both complete.",
-  "survey_findings": [
-    "IMPLEMENTED_AI in game/src/combat/enemy.js is {none, hold_ground, scripted}. No approach, no circling, no pursuit. The AGGRO branch of _idleBehaviour sets b.state='REPOSITION' and only turns yaw - nothing writes b.pos. Confirms the water builder.",
-    "There IS one pursuit locomotion and the water builder missed it: character/encounter.js::engageMember (W1-07). Every wilderness body spawns through spawnEncounter, so it is stamped encounterId, so engageMember IS the shipped enemy AI of this game.",
-    "engageMember trips three of RI-AI01's five named hard fails by construction: constant attack_cadence_f=78 (M4 inter-COMMIT CoV=0), beeline-and-stand (M3 statue), and instant proximity aggro with no cone/LOS/meter (M1 circle + M2 no SUSPICIOUS ladder).",
-    "ENGAGE.advance_mps=2.20 is the only pursuit speed in the game. Player walk 2.0 / jog 3.2 / sprint 5.0. Nothing in this world can catch a jogging player.",
-    "wl-slitherfang-* aggro_at_m=20 vs beast_slitherfang sight_radius_m=16; wl-drowned-straggler aggro_at_m=16 vs drowned_lesser sight_radius_m=14. The encounter circle is LARGER than the declared sight radius, so those two aggro from behind, through walls, in the dark.",
-    "Roster: 7 combat statblocks over 3 of RI-AI05's 10 archetypes (INFANTRY, BEAST, CASTER). No TURTLE, DUELIST, POISE_MONSTER, RANGED, AMBUSHER, SWARM, BOSS. tier: 5 trash, 2 elite, 0 boss."
+  "files_claimed": [
+    "reports/w1-12/",
+    "docs/shots/2026-08-07-w1-12-where-an-enemy-stands-while-you-fight-it.png",
+    "reports/blog-feed.jsonl"
   ],
-  "notes": [
-    "Load at start: 18 headless_shell / loadavg 15.22; at survey end 24 / 19.19. All survey work above is offline source+data analysis, no browser."
+  "redundant_with": [
+    "W1-03"
+  ],
+  "overlap_note": "W1-03 (water, state=fixed) claims game/data/combat/enemies/ and has touched game/src/combat/enemy.js. NO statblock was written by this piece: the per-archetype AI parameters live in a new file, game/data/combat/ai.json, precisely so that directory stays untouched. The enemy.js change is additive (one new value in IMPLEMENTED_AI plus a delegation). W1-07 (encounter.js), W1-POPULATION and W1-SOULS are all state=complete.",
+  "deliverables": {
+    "survey": "reports/w1-12/survey.md - the honest survey, written before anything was built",
+    "model": "game/data/combat/ai.json - RI-AI01 sections B-F as data, no constants in code",
+    "consumer": "game/src/combat/ai.js - the section D transition table, stepped every fixed frame from stepCombat()",
+    "instrument": "tools/harness/ai-probe.mjs - RI-AI01 M1-M9, with --selftest that exits non-zero unless the control arm goes red",
+    "picture": "docs/shots/2026-08-07-w1-12-where-an-enemy-stands-while-you-fight-it.png",
+    "chart_tool": "tools/analysis/w1-12-chart.mjs"
+  },
+  "measured": {
+    "commit": "107c1b3 + this piece's working tree",
+    "arena": "bare Node via tools/lib/combat-node.mjs; one INFANTRY, 3600 fixed frames, MOVING player (RULES 8)",
+    "souls_arm": {
+      "total": "14/18",
+      "hard_fails": 0,
+      "M3": 2,
+      "M4": 2,
+      "M5": 2,
+      "M6": 2,
+      "M7": 2,
+      "M8": 2,
+      "M9": 2,
+      "M1": "0 - browser required",
+      "M2": "0 - browser required"
+    },
+    "beeline_control_arm": {
+      "total": "2/18",
+      "hard_fails": 2,
+      "M3": 0,
+      "M5": 0,
+      "M6": 0,
+      "M8": 0,
+      "M9": 0
+    },
+    "spacing_variance_m": {
+      "souls": 1.746,
+      "beeline": 1.238
+    },
+    "min_dist_dwell": {
+      "souls": 0.041,
+      "beeline": 0.0,
+      "note": "beeline is 0 only because it is COMMITted for most of the fight and M3 excludes COMMIT frames"
+    },
+    "browser": {
+      "tool": "tools/harness/ai-browser.mjs",
+      "contention_declared": "30-48 concurrent headless browsers at loadavg 25.6-34.5 for the whole browser window; polled 25 minutes, never fell below 30. ONE browser launched and kept (RULES 21). No timing figure published from this run.",
+      "B1_engine_matches_arena": {
+        "spacing_variance": 2.3201,
+        "min_dist_dwell": 0.0115,
+        "state_entropy": 2.6123,
+        "worst_committed_yaw_rate_dps": 0,
+        "committed_frames": 222,
+        "nonzero_speed_frames": "1034/1200 - the repaired speed field is alive",
+        "max_yaw_rate_dps": "300 - exactly RI-AI01 F free-movement ceiling, so M7 is now falsifiable and passes"
+      },
+      "B2_M1_acquisition": {
+        "is_a_circle": false,
+        "rear_180_never": true,
+        "beyond_1p5R_never": true,
+        "front_0p9R_within_3s": false,
+        "score": 1,
+        "why_partial": "geometry correct, FILL RATE too slow: acquisition at 12 m takes 330 frames (5.5 s). RI-STL01 section 1 gives W1-15 ownership of the multipliers on RI-AI01 section B fill rates, so this is raised, not fixed here."
+      },
+      "B3_M2_alert_ladder": {
+        "median_suspicious_dwell_f": 244,
+        "jump_fraction": 0.0,
+        "score": 2
+      },
+      "B4_sight_cone_gate": {
+        "in_front_aggroed_f": 188,
+        "flank_90deg": "never (300 f)",
+        "behind_180deg": "never (300 f)",
+        "note": "before this piece all three aggroed - the latch was a bare radius check"
+      },
+      "B5_consumption": {
+        "shipped_mean_dist_m": 3.2409,
+        "perturbed_mean_dist_m": 4.4875,
+        "restored_mean_dist_m": 3.2409,
+        "delta_m": 1.2466,
+        "changed": true,
+        "restored_matches": true,
+        "probe_defect_found_and_fixed": "the first run of this leg reported restored mean 6.49 m / sd 137.6 m. The model was fine, the WORLD was dirty: probe b4 spawns a wl-fen-sentry ENCOUNTER and b5 swept only listEntities(). A leftover encounter body moved the number the whole RI-MTH07 claim rests on. RULES 6 and 7 both, and it is why the delete-the-fix leg exists."
+      },
+      "combined_score": "17/18, no hard fails (arena 14/18 with M1+M2 fail-closed at 0; browser M1=1, M2=2). Pre-piece behaviour: 2/18 with two hard fails. No SINGLE instrument produced 17 and it is not reported as if one did."
+    }
+  },
+  "survey_findings": [
+    "CONFIRMED, water builder: IMPLEMENTED_AI was {none, hold_ground, scripted}; the AGGRO branch set b.state='REPOSITION' and only turned yaw. Nothing wrote b.pos.",
+    "EXTENDED: there IS one pursuit locomotion and it is character/encounter.js::engageMember (W1-07). Every wilderness body carries an encounterId, so that beeline was in practice this game's enemy AI. It scores 2/18 against RI-AI01.",
+    "THE DEAD ROAD IS EXPLAINED, three compounding causes: (a) the only pursuit speed in the game is 2.20 m/s against a player who walks at 2.0, jogs at 3.2 and sprints at 5.0, so closure on a walking player is 0.20 m/s and 137 m of road; (b) the enemy is stationary for the whole of every attack animation, handing back 2.4-5.1 m per swing; (c) world/population.js releases a post on the distance from its ANCHOR, not from the chasing body, so the chase is despawned 260 m after the anchor. 689-479=210 m is one such window.",
+    "Aggro was a bare proximity circle with no cone, no LOS, no meter - RI-AI01 M1's named failure - and for wl-slitherfang-* (20 m) and wl-drowned-straggler (16 m) the circle is WIDER than the statblock's own sight radius (16 and 14). Nothing in this world could be sneaked past. Also an RI-STL01 finding.",
+    "Roster: 7 combat statblocks over 3 of RI-AI05's 10 archetypes. Four of the seven are the same INFANTRY chassis at different HP. champion_hist_marked is tier elite, archetype INFANTRY, 7x HP - RI-AI05 lever 6 in place of lever 1. No BOSS, no ELITE archetype, no RANGED, no TURTLE, no POISE_MONSTER, no AMBUSHER, no DUELIST.",
+    "INSTRUMENT DEFECT: sim/record.js had TWO keys named `los` in one object literal, the later being the constant true. Every enemy record this project has produced reported los=true. FIXED.",
+    "INSTRUMENT DEFECT: sim/combat-bridge.js::mirror() never wrote e.speed or e.yawRate, so speed_mps and yaw_rate_dps read 0 forever for every combat-driven enemy. RI-AI01 M7 - a binary hard fail - was unfalsifiable, and M3's STATUE clause was satisfied by a field nobody wrote. FIXED.",
+    "INSTRUMENT DEFECT: tools/lib/combat-node.mjs declared jog 4.4 / sprint 6.6 against the game's 3.2 / 5.0. FIXED, and it is exactly the number this piece's central question turns on.",
+    "ITEM GAP, reported not exploited: RI-AI01 M4's inter-COMMIT coefficient-of-variation test does NOT detect this build's attack timer. attack_cadence_f is a single constant 78 f, but three of the four rotated attacks are longer than that, so the interval is set by whichever animation is playing and a fixed rotation of differently-lengthed moves manufactures CoV ~0.3 out of no decision. A critic scoring M4 off a trace would clear the most timer-driven enemy in the project.",
+    "NEW, from the repaired speed field: max_speed_mps in the browser is 18.211 m/s. That is not the AI (capped at the 4.6 m/s archetype sprint) - it is attack ROOT MOTION, root_dz_m 0.6-1.2 m consumed over a handful of active frames. An enemy swing translates its body at 18 m/s. Invisible before, because the field was zero. RI-CMB04 / W1-09 owns it; raised, not absorbed.",
+    "RI-AI01 M1 is a PARTIAL in the shipping game and the reason is W1-15 s: the acquisition geometry is correct (not a circle, rear-blind, respects R) but the perception fill rate is roughly 2.5x too slow for the item s \"acquires at 0.9R within 3 s\" leg.",
+    "CLOSED A NEIGHBOUR'S NAMED DEBT: game/data/combat/enemies/guard_legion.json (edited by W1-15-r3 this session) says an AGGRO'd guard deals 0 damage and names it 'W1-12's to close'. ai.json's override maps guard_legion to souls; measured 14 commits and player HP 620 -> 0 over 3600 frames. No statblock was edited to do it.",
+    "ACCIDENTAL CONFIRMATION of the roster finding: ai-probe --stat=guard_legion returns spacing_variance 1.746, CoV 0.1724, 14 commits, feint ratio 0.263 - IDENTICAL to four decimals to inf_trash, because guard_legion's own provenance says its frames, hitboxes and moveset are inf_trash's unchanged. Two differently-named enemies are the same fight frame for frame."
+  ],
+  "declared_incomplete": [
+    "PATROL (T01) - no route data exists for wilderness posts to walk.",
+    "Attack strings (RI-AI04 / T17) - the moveset data declares none.",
+    "BLOCK_HOLD (T18) - implemented, unreachable: TURTLE-only and no statblock is a TURTLE.",
+    "Mid-fight save/load of AI timers - save/state.js was not extended.",
+    "The roster gap: seven archetypes now have parameter rows and no statblock. Writing statblocks means writing into a directory two other pieces are near, and RI-AI05's bar is a set of QUESTIONS, which is a content decision this piece should not take alone.",
+    "world/population.js's anchor-based release (survey section 3c) is untouched: a chasing enemy is still despawned when its ANCHOR passes 260 m. That file is W1-POPULATION's."
+  ],
+  "gates_run": [
+    "node tools/boot-check.mjs PASS",
+    "node tools/check-data.mjs PASS",
+    "node tools/check-content.mjs PASS",
+    "node tools/harness/ai-probe.mjs --selftest PASS",
+    "node tools/check-prose.mjs PASS",
+    "node tools/harness/ai-browser.mjs --probe=b1,b2,b3,b4,b5 (one browser, load declared)"
+  ],
+  "contention": "18 browsers / loadavg 15.22 at start; 24 / 19.19 after the survey; 42 / 37.00 when the build finished. Polled for 25 minutes for a window below 8 and never got one - the tree held 30-48 browsers throughout. ONE browser was then launched and kept for the whole run (RULES 21), with B1 trimmed from 3600 to 1200 frames to cost other agents less. NO timing figure is published anywhere in this piece. Every browser number is fixed-step geometry or a state count, which contention cannot move.",
+  "not_done": [
+    "The roster gap (survey section 4): 7 statblocks over 3 of RI-AI05 s 10 archetypes, no BOSS, no ELITE archetype. ai.json now carries parameter rows for all ten so the gap is visible rather than implicit, but writing statblocks is a CONTENT decision and the directory is claimed by W1-03.",
+    "world/population.js releases a post on the distance from its ANCHOR, not from the chasing body, so a chasing enemy is still despawned 260 m past where it started. One line, in W1-POPULATION s file.",
+    "The perception fill rate (B2): W1-15 s multipliers.",
+    "Enemy attack root motion peaks at 18.2 m/s (B1): W1-09 / RI-CMB04."
   ]
 }

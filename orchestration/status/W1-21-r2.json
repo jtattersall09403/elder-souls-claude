@@ -1,21 +1,136 @@
 {
   "task_id": "W1-21-r2",
   "role": "builder",
-  "wave": 1,
   "item": "W1-21",
   "round": 2,
-  "state": "starting",
+  "state": "done",
   "started_at": "2026-08-07",
+  "base_commit": "852bb87",
   "spec": "corpus/90-verdicts/wave1/W1-21-r1.md",
-  "summary": "UI / HUD / AR-2 enforcement. Round 2 after FAIL 2/10 (AR-2 fail).",
-  "objectives": [
-    "P.6 blocker: menu-to-menu navigation — 6 advertised destinations at a rest site, only 2 reachable; add peer-walk branch for the two nav actions while a menu is open. Check RI-JRN03 §A action-set closure before widening.",
-    "Verdict's biggest gap: map draws discovered places from the same model the compliance report reads (fixed-point). Need a probe that forges ONE side (place list) and leaves the raster honest, and detectors that actually open the map (S35 surface seam).",
-    "Discovery object has 4 state-writing methods, amendment lists 3, list is a hand-typed literal not read from the running object.",
-    "UI measurement region whitelist: 2 screens return 0 samples in every configuration, grader filters them out before reporting pass."
+  "title": "UI, the HUD and AR-2 enforcement — round 2",
+  "next_step": "critic. Three edited detectors are UNRUN and named under not_done below.",
+  "files_claimed": [
+    "game/src/ui/system.js",
+    "game/src/sim/discovery.js",
+    "tools/analysis/marker-scan.mjs",
+    "tools/analysis/ui-layer.mjs",
+    "tools/analysis/ui-forbidden.mjs",
+    "tools/analysis/marker-diff.mjs",
+    "tools/metrics/ui-metrics.mjs",
+    "tools/harness/w1-21-r2-forge.mjs",
+    "tools/harness/w1-21-r2-deletefix.mjs",
+    "tools/harness/w1-21-r2-nav.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-08-w1-21-r2-the-forged-save-changes-nothing.png"
   ],
-  "next_step": "read RULES.md (done), INDEX.md, W1-21-r1.md verdict, W1-13-r4.json §5, NEXT-DISPATCH.md §P.6",
-  "files_touched": [],
-  "files_claimed": [],
-  "notes": []
+  "files_touched": [
+    "game/src/ui/system.js",
+    "game/src/sim/discovery.js",
+    "tools/analysis/marker-scan.mjs",
+    "tools/analysis/ui-layer.mjs",
+    "tools/analysis/ui-forbidden.mjs",
+    "tools/analysis/marker-diff.mjs",
+    "tools/metrics/ui-metrics.mjs",
+    "tools/harness/w1-21-r2-forge.mjs",
+    "tools/harness/w1-21-r2-deletefix.mjs",
+    "tools/harness/w1-21-r2-nav.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-08-w1-21-r2-the-forged-save-changes-nothing.png"
+  ],
+  "deliberately_not_touched": {
+    "game/src/save/state.js": "claimed by W1-15-r3 (in_progress, purse unification). The discovery blob's SHAPE lives entirely inside sim/discovery.js, so serialise()/restore() changed without a line of save/state.js moving.",
+    "game/src/harness/api.js": "also claimed by W1-15-r3. The new load audit is published as `sim.discovery.lastRestore` on the model instead, which probes read off the object."
+  },
+  "measured": [
+    {
+      "what": "AR-2 / seam S35: a save forged in BOTH discovery fields can no longer put a square on the map",
+      "commit": "a3af8c2 + this working tree",
+      "tool": "tools/harness/w1-21-r2-forge.mjs",
+      "result": "9/9. Forged blob (all-ones raster + all 42 place ids) derives 8 places against 8 stood in, phantom 0, 34 names refused; revealed 12,035 == honest 12,035, with 30,811 cells the blob CLAIMED that the footprint does not paint. Control arm (pre-fix restore, transcribed from 07f8b75) keeps 42 of 42 and drops 0 — the two arms differ.",
+      "artifact": "reports/runs/W1-21-R2/forge.json",
+      "load": "node only, no browser"
+    },
+    {
+      "what": "RULES 6 delete-the-fix, against git rather than against a re-implementation",
+      "commit": "852bb87 + working tree",
+      "tool": "tools/harness/w1-21-r2-deletefix.mjs",
+      "result": "the fix deleted (game/src/sim/discovery.js at 852bb87): a forged blob loads 42 places for a body that stood in 8, 34 phantom, revealed 11,848 -> 42,846, dropped 0. The fix present: 8 places, 0 phantom, revealed 12,035 -> 12,035, 34 names refused. Old number returns: yes. Arms differ: yes.",
+      "artifact": "reports/runs/W1-21-R2/deletefix.json",
+      "load": "node only, no browser. RULES 17: neither changed file was in the git index at the time of the comparison, and the run refuses to conclude if it is."
+    },
+    {
+      "what": "RI-UIX02 K1 (marker-scan) — RED AT HEAD for two rounds, now green, with the self-test still passing",
+      "commit": "852bb87 + working tree",
+      "tool": "tools/analysis/marker-scan.mjs",
+      "result": "302 hits -> 0. Every one of the 302 was the same jsonpath shape: npcs[N].post.pos across quest-givers/faction-givers/mainline and the seven pop-*.json the settlement builder emits, plus 4 audio/ambience emitters[0].pos_m. `npcs/` and `audio/` added to PLACEMENT_ROOTS as declared judgement calls, and PAID FOR with a new rule F6 that fires on a coordinate and a quest reference on the SAME record in ANY root, placement or not — so widening the exemption list cannot widen the hole. --self-test passes with F6's four new cases.",
+      "artifact": "stdout; K1 PASS - 0 hits, 1 declared exception",
+      "load": "node only, no browser"
+    },
+    {
+      "what": "NEXT-DISPATCH §P.6 — every destination navigable(ctx) advertises is now reachable BY INPUT ALONE",
+      "commit": "852bb87 + working tree",
+      "tool": "tools/harness/w1-21-r2-nav.mjs (N0, N1, N1b, N2, N3)",
+      "result": "N1b is W1-13 r4's own recipe taken to a fixed point — 16 actions and 4 axes, one at a time, from every screen discovered so far, 7 rounds, openMenu never called. Input reaches [inventory, journal, levelup, map, sheet, spells, world]; missing: none. Route to levelup: menu -> swap_right x5. Before: input reached exactly TWO of six advertised. N0 control: 8/8 right-steps and 8/8 left-steps moved getUIState(). N2: Q7 holds — journal steps to sheet/inventory, map steps to levelup/spells, and neither ring contains the other. N3: in a fight the two actions do NOT navigate (in_combat=true, mode inventory -> inventory, walk_live=false).",
+      "artifact": "reports/runs/W1-21-R2/nav.json",
+      "load": "ONE browser, kept for the whole run. loadavg 24-37 with 24-60 other headless_shell on 4 cores. Every figure here is a count or a boolean; NO TIMING FIGURE IS PUBLISHED BY THIS PIECE."
+    },
+    {
+      "what": "The round-1 headline, re-run on the LIVE WORLD and the DRAWN SCREEN",
+      "commit": "852bb87 + working tree",
+      "tool": "tools/harness/w1-21-r2-nav.mjs (N5a-N5e)",
+      "result": "Body stood in 7 places. Save forged in BOTH fields (all-ones raster + all 42 place ids). ROUND 1: dropped 0, 42 squares drawn, 35 phantom, province fully rendered, places_drawn=42 places_discovered=42 stood_in=7, screen green. ROUND 2: 35 names refused, 7 squares drawn, 0 phantom, revealed 3,896 -> 3,896 (unchanged), places_drawn=7 places_discovered=7 stood_in=7. The load audit itemises the forgery: claimed_places 42, derived_places 7, phantom_cells 38,950. mutator_arities={observe:0, restore:1, resume:0, suspend:0} with mutators_enumerated=true; restore_reads=[\"stood\"]; place_naming_parameters=[].",
+      "artifact": "reports/runs/W1-21-R2/nav.json, reports/runs/W1-21-R2/map-honest.png, reports/runs/W1-21-R2/map-forged-save.png, docs/shots/2026-08-08-w1-21-r2-the-forged-save-changes-nothing.png",
+      "load": "same single browser; see above"
+    },
+    {
+      "what": "Verdict §4 — a model change on a PAUSED screen now reaches the screen",
+      "commit": "852bb87 + working tree",
+      "tool": "tools/harness/w1-21-r2-nav.mjs (N4a control, N4b)",
+      "result": "CONTROL first: a focus move on the paused screen = 55,627 px (round 1 measured 55,656). Then ONE confirm press through the real input pipeline: black-water-draught 3 -> 2 -> 1 in the simulation and 164 pixels changed on screen, with menu.paused=true and the world advancing 0 frames across the press. Round 1 measured 0 px for exactly this and the row still said x3 until the screen was closed and reopened.",
+      "artifact": "reports/runs/W1-21-R2/paused-before-use.png, paused-after-use.png",
+      "load": "same single browser; see above"
+    },
+    {
+      "what": "RI-UIX02 §C K2 — the undeclared-component pixel sweep, WITH THE MAP IN IT for the first time",
+      "commit": "852bb87 + working tree",
+      "tool": "tools/analysis/ui-layer.mjs --skip ui_combat_neutral",
+      "result": "K2 PASS — 0 undeclared components over 9 viewpoints, now including ui_menu_map and ui_menu_map_local (the local view reached by pressing confirm through the pipeline, not by a harness verb). __HARNESS.screenshot() vs page.screenshot() = 0 differing pixels at every viewpoint including both map views, so no part of this interface is in the DOM. ui_combat_neutral was SKIPPED and the report says so (covered_all_viewpoints:false): it dies on aggro('deadwater-koor-nakh'): no such entity, which is a pre-existing breakage this piece did not cause and cannot catch, because browser.mjs treats a harness throw as fatal at the process level and the tool's own try/catch never runs.",
+      "artifact": "reports/runs/UI-LAYER/",
+      "load": "24 other headless_shell, loadavg 22-25. Counts only, no timing."
+    }
+  ],
+  "notes": [
+    "THE FIX IS THE REMOVAL OF THE FIELD, not a better check. The save now carries ONE thing — `stood`, the body's own footprint as first-visit cell indices in walk order, zigzag-varint. The sightline raster and the place list are RE-DERIVED from it on load by the same two private methods observe() calls during play. `cells` and `places` are still written and still read, but read as a CLAIM to be checked: restore() reports every named place the footprint does not support (dropped) and every raster cell the blob claimed that the footprint does not paint (phantom_cells). Nothing in a blob can corroborate anything else in the same blob, which was the round-1 defect exactly.",
+    "Discovery.RESTORE_READS = ['stood'] is the whole channel from a blob into the model, published on the instance as `restoreReads`, and getUIState() derives `place_naming_parameters` from it rather than asserting it.",
+    "COST, RECORDED: observe() now paints from the CENTRE of the occupied cell rather than the body's exact position. That is what makes live play and replay bit-identical (R7) — the raster is a pure function of the set of occupied cells. Cell is 25 m, smallest built pad is 26 m, furthest any point sits from a cell centre is 17.7 m, so every place stays discoverable.",
+    "SIDE EFFECT, in our favour: the footprint is ~1 KB after a 557-cell walk against the 7 KB raster it replaces.",
+    "A NaN player position used to mark CELL ZERO as stood in (clamp(NaN) is NaN, NaN>>3 is 0, 1<<(NaN&7) is 1). Harmless while the raster was saved; corrupting once the footprint IS the save. Guarded in observe(). Found by R7 going red on a fixture that divided by zero.",
+    "LEGACY SAVES: a pre-round-2 blob has no footprint and comes back EMPTY, reporting legacy:true. Quietly trusting the old raster for old saves would leave the hole open.",
+    "LIMIT, stated: forging the FOOTPRINT itself is not refused (R8 records it). That is a different claim — 'I walked the whole province', whose map is the honest map of that walk — not 'put a square on a place I have not been', which is what S35 forbids and is now impossible. There is no field left in which a place can be NAMED.",
+    "RI-UIX02 K1 was red at HEAD for two rounds and the r1 verdict called it 'a five-minute decision that is currently sitting as a red gate'. Both exemptions I added are declared judgement calls a critic should feel free to overturn; the reason I was willing to make them is F6, which encodes §B's actual concern ('a coordinate ON A QUEST RECORD') as a property rather than as a directory list, and which fires inside the placement roots."
+  ],
+  "referred": [
+    {
+      "to": "orchestrator / RI-JRN03 §A",
+      "what": "The P.6 remedy gives `swap_left`/`swap_right` a SECOND MEANING while a screen is open and no fight is live: walk the advertised destination list. The ACTION SET IS NOT WIDENED — both are two of RI-JRN03 §A's closed fourteen, already bound on keyboard (3/4, wheel), pad (D-pad L/R) and touch, so no fifteenth verb and no new binding. What changes is the meaning, contextually, which is the same shape the file already uses for `roll` ('back' out of a fight, a dodge in one). In combat they are untouched, because `swap_left` is half of the offhand chord (input-map.json off.r1.*) and RI-UIX03 P6 requires the fight to stay playable with the screen up. Declared at runtime as getUIState().nav.walk_actions / walk_live so it is a number a probe reads rather than a claim in a comment. Raising it rather than landing it silently, per the brief."
+    },
+    {
+      "to": "orchestrator / AMENDMENT-W1-MAP-01 §3b",
+      "what": "The r1 verdict's acceptance — 'getUIState().map.mutator_arities lists EVERY state-writing method with EVERY arity 0' — cannot be met by the save path: restore() has to receive the blob. mutator_arities is now enumerated from the prototype and fail-closed (an accessor or a named reader is a reader; anything else is a state writer), and it reports `restore: 1` honestly. The property that actually matters is reported alongside and is stronger: `place_naming_parameters`, derived from Discovery.RESTORE_READS, is empty. Asking for that substitution to be ruled on."
+    }
+  ],
+  "redundant_with": [],
+  "not_done": [
+    "tools/metrics/ui-metrics.mjs — EDITED (map added to SCREENS; the four-kind region whitelist replaced with \"the biggest text-bearing element whatever kind it is\"; new graded check FD8 that fails on any opened screen with no stem sample and no declared reason, AND on a stale declaration) but NOT RUN. It is a 2-resolution x 2-DPR x 7-screen browser sweep and the box carried 24-60 other browsers throughout. UNTIL IT RUNS, whether `sheet` and `spells` now produce samples is UNKNOWN — the whitelist was one of two possible causes and the other (a >40-character length filter on rows that may be shorter) is still in the code as a PREFERENCE rather than a filter. A critic should run it; FD8 is written to go red rather than quiet if they still do not.",
+    "tools/analysis/ui-forbidden.mjs — EDITED (declared sweep gains `map`) but NOT RUN, and per the round-1 verdict §11.2 it has still never been run against any build. Two absences stacked; I removed one.",
+    "tools/analysis/marker-diff.mjs — EDITED (the quest-state differential now runs over two surfaces, world and map, with closeMenu/openMenu after the load because a load does not close an open screen) but NOT RUN. K3 grades over all differentials so the map arm is included automatically.",
+    "RI-UIX02 K6 (>=14 viewpoints) is still not met: ui-layer now declares 10 and ran 9.",
+    "AR-1 not independently re-measured (tools/harness/ui-pause.mjs not re-run), same as round 1."
+  ],
+  "findings_for_other_pieces": [
+    "game/src/render/interior.js — `bla_prison_block` does `Object.assign(B.grate(P), { position: new THREE.Vector3(0,0,0.2) })`. `position` is a read-only accessor on THREE.Object3D, so this throws `Cannot assign to read only property position` out of Province._buildTile and kills any teleport whose build ring reaches Blackrose. Uncommitted in the working tree (game/src/render/exterior.js is untracked alongside it), so this is the settlements/exterior builder mid-edit. Fix is `.position.set(0,0,0.2)`. NOT TOUCHED — their claimed file.",
+    "game/src/combat/enemy.js:303 — EnemyController._idleBehaviour throws `this.ai.step is not a function` on ANY fixed step with a streamed enemy alive. It took two runs of my probe down before I stepped one frame at a time and cleared hostiles around it. Uncommitted; the enemy-AI rebuild (W1-12) is in flight. NOT TOUCHED.",
+    "tools/analysis/ui-layer.mjs ui_combat_neutral — aggro('deadwater-koor-nakh'): no such entity. listEntities() is returning an entry whose eid aggro() rejects. The tool wraps the call in try/catch and it does not help, because tools/lib/browser.mjs exits the process on a harness throw; that is worth someone fixing, because it means NO tool can survive a harness error it has already anticipated.",
+    "tools/harness/w1-13-r4-input-only.mjs still reports [\"inventory\",\"journal\",\"world\"] and `levelup by input = false` after this fix, and that is a TRUE report of what it measures: its pass 2 visits only screens ONE press from the world and never recurses, while the ring is seven screens long and levelup is five steps from the inventory. I did not edit their file. N1b in my probe is the same recipe taken to a fixed point and reaches all six; the difference between the two numbers is itself the finding, and a critic should check my closure rather than take it."
+  ]
 }
