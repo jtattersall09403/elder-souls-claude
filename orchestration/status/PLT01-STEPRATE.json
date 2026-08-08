@@ -1,30 +1,92 @@
 {
   "task_id": "PLT01-STEPRATE",
-  "title": "RI-PLT01 step-rate collapse at handheld profile + wire loop.stats.catchupClamps/catchupDroppedMs as a measured requirement",
-  "state": "running",
+  "title": "RI-PLT01 §C.5 — the catch-up counters become a measured requirement, and what 19.3% does to a player",
+  "state": "done",
   "started_at": "2026-08-08",
-  "owner_brief": "S39 found game/src/core/loop.js MAX_CATCHUP=5 bounds catch-up; below 12.00 Hz the world runs slow uniformly. Handheld profile measured 11.6 steps/s = 19.3% of real time. catchupClamps/catchupDroppedMs are computed and nothing reads them.",
-  "next_step": "state acceptance numbers in the item BEFORE measuring; then build tools/platform/timefidelity.mjs; then measure step rate by profile",
+  "commit_at_start": "c5292f7",
+  "predecessor_note": "A predecessor was killed by a usage limit having written only this file. Nothing on disk to resume from; kept the task id and started the work.",
+  "acceptance_numbers_declared_before_measuring": {
+    "declared_at": "written into corpus/85-platform/RI-PLT01-frame-budget.md §C.5 BEFORE tools/platform/timefidelity.mjs was written or run",
+    "P10": "world_time_fidelity >= 0.990 over any 10 s play window outside a declared load boundary; >= 0.999 session-wide. Tier-H.",
+    "P11": "catchupClamps == 0 during F3/F4. Tier-H.",
+    "P12": "clamp_run <= 2 anywhere in a session. Tier-H.",
+    "P13": "images_per_sim_frame >= 0.67 in F1/F2/F5, >= 0.92 in F3/F4 — C.1's existing 40 and 55 fps floors divided by 60, restated in a unit that survives the slow-motion regime. Tier-H.",
+    "P14": "clamp accounting identity exact on every rAF tick, and a clamp occurs iff arrears reach (MAX_CATCHUP+1) x STEP_MS. Tier-S.",
+    "P15": "catchupClamps and catchupDroppedMs exactly 0 forever in harness / play-instrumented. Tier-S.",
+    "HF9": "clamp_run >= 10 is a hard fail. HF10: any clamp in harness mode is a hard fail."
+  },
+  "result": "M16 PASS at c5292f7. reports/platform/PLT01-STEPRATE/timefidelity.json. Exit code 0, checked directly and not through a pipeline.",
+  "findings": [
+    {
+      "id": "F1",
+      "headline": "The brief and S39 both say nothing reads the counters. Half true, and the true half is worse than stated.",
+      "detail": "catchupClamps IS exposed (engine.js:7887) and HAS been read twice as narrative (W1-00, W1-01-province-stream-r1). catchupDroppedMs was exposed NOWHERE — the running world could report that world time had been thrown away and never how much. What was actually missing in both cases is a THRESHOLD: no item stated a number either had to meet, which is observationally identical to not counting at all. Demonstrated: the `nocount` null control (stop incrementing catchupDroppedMs) scores a perfect 1.0000 fidelity at 2.32 Hz while the world still runs at a fifth speed."
+    },
+    {
+      "id": "F2",
+      "headline": "19.3% is now a derivation, not a SwiftShader anecdote.",
+      "detail": "world_time_fidelity = min(1, MAX_CATCHUP x STEP_MS x raf_hz / 1000), verified exactly at eleven swept rates by driving the SHIPPED FixedLoop from Node with a synthetic clock and synthetic rAF. Needs no browser, no GPU, and gives the same answer on a phone as on SwiftShader — RI-PLT01 Tier-S in the strong sense. 2.32 Hz -> 0.193333, steps_per_raf exactly 5.000, clamp_run 400 of 400."
+    },
+    {
+      "id": "F3-CORRECTION-TO-S39",
+      "headline": "S39's 'the fight stays fair AND READABLE' — fair is upheld, readable is not.",
+      "detail": "Uniform stretch preserves every ratio between two SIMULATED quantities. images_per_sim_frame = rendersTotal/simStepsTotal is a simulated quantity over a RENDERED one and is not preserved: below the floor the loop runs 5 steps per rAF and draws once, so it falls to 0.2. roll.json LIGHT ships iframe_count 26; the player is shown ~5 pictures of that window instead of ~26, and an 18-frame RI-AI02 telegraph becomes 3.6 pictures. That is verbatim RI-PLT01's founding argument. Filed as P13, whose numbers are C.1's own 40/55 fps floors divided by 60. Does NOT move where the defect is scored; does mean a critic may not cite S39 to argue a slow device is merely slow. Reversible: strike P13 if a hands-on judgement ever calls the fight readable below 0.67."
+    },
+    {
+      "id": "F4",
+      "headline": "Two floors, and they are different numbers. S39's 12.00 Hz is right; the per-tick threshold is 10.00 Hz.",
+      "detail": "A single tick clamps iff arrears reach (MAX_CATCHUP+1) x STEP_MS = 100 ms = 10.00 Hz. A SUSTAINED rate keeps real time only at/above MAX_CATCHUP x STEP_MS = 12.00 Hz, because residues accumulate and the clamp that eventually fires ZEROES the accumulator. Measured at 11.5 Hz: fidelity 0.9583 with one clamp. A builder who checks the per-tick figure writes a check that passes at 11.5 Hz."
+    },
+    {
+      "id": "F5",
+      "headline": "12.00 Hz is a cliff edge, not a safe place to sit.",
+      "detail": "STEP_MS = 1000/60 is not representable in binary; at exactly 12.00 Hz arrears come to 99.9999999999999 against a nominal 100 and whether a tick clamps is decided in the last bits of a double. Measured over 400 ticks (33.3 s): one clamp, fidelity 0.9990 — on the line of P10's session bound."
+    },
+    {
+      "id": "F6-TIER-WARNING",
+      "headline": "The 11.6 steps/s headline is a SwiftShader number and may not be reported as a fact about a phone.",
+      "detail": "critic-gate-wallclock.json (fa96455) and reports/w1-touch-r2/framerate.json were both taken in this container on a shared box. Under RI-PLT01 T1 those are Tier-H quantities; 'a phone at 11.6 steps/s' is the inference 'How we lose' #5 exists to forbid, and it has propagated into S39 and NEXT-DISPATCH §U. P10-P13 are marked Tier-H and score 0 here for exactly that reason. What survives with no device is the conditional, which is P14 and is proved."
+    }
+  ],
+  "null_controls": {
+    "method": "Four mutants of the SHIPPED loop.js, each a single-line edit, written to the scratchpad (never into game/src — RULES 17), guards import rewritten to an absolute URL so they share the process clock. Each asserts its anchor text matched, so an edit that did not apply throws rather than passing as an inert control.",
+    "leak": "RED — clamp branch stops zeroing the accumulator; spiral, fidelity -160.7",
+    "nocount": "RED — catchupDroppedMs stops incrementing; fidelity reads a perfect 1.0000 while the world runs at a fifth speed",
+    "rafsteps": "RED — rafDrivesSim true in every mode; P15 goes red, HF10's shape",
+    "maxcatchup50": "RED — MAX_CATCHUP 5->50 moves fidelity at 2.32 Hz from 0.1933 to 1.0000, establishing the cap as the cause",
+    "inert_control_found_and_reported": "maxcatchup50 came out GREEN on run 1 and is reported rather than quietly repaired: `predicted` is computed from the module's own MAX_CATCHUP, so the law self-adjusted and both arms were identical. That is RULES 6's inert control AND a true statement about the law — it cannot detect a change to MAX_CATCHUP, because the constant is on both sides. R3/M8 own that constant and do catch it. The control kept the mutation and changed what it is a control FOR: the headline number."
+  },
+  "instrument_defects_in_my_own_tool_found_and_fixed": [
+    "Run 1: fidelity defined as simStepsTotal x STEP_MS / wall carried a window-boundary artefact (up to STEP_MS pending in the accumulator) and produced a FALSE FAIL at 12.00 Hz. Redefined on the counter: 1 - catchupDroppedMs/wall.",
+    "Run 2: the clamp iff asserted a closed form (arrears >= 6 x STEP_MS) against a machine not doing real arithmetic; 1-ULP false violations at 12.00 Hz. Now evaluated in the loop's own float order.",
+    "Run 3: the checker used the NOMINAL rAF period instead of the dt the loop actually computed; a clock advanced by 60 nominal steps reads back 16.666666666666629 on the first tick, below STEP_MS, running zero steps. Three phantom violations at 60 Hz. Now reads loop.lastWallMs."
+  ],
+  "not_done": [
+    "PRIORITY 2 (why the step rate collapses at a handheld profile) was NOT re-measured by me, deliberately. W1-TOUCH-r2 is live and had already answered it better than the brief assumed: findings A1-A5 in orchestration/status/W1-TOUCH-r2.json, artifact reports/w1-touch-r2/framerate.json. Its answer: it does NOT collapse at the handheld profile — it collapses in play mode at EVERY profile and the handheld one was the fastest of three; the mechanism is the render (setRenderRate(0) moves rAF 1-2 Hz -> 24-25 Hz, a 16-25x move), not the touch overlay (no movement outside noise) and not dpr (+27%, real, small, not the cause). Re-running its sweep would have duplicated a live neighbour and paid its 67% load-noise tax again. My contribution is the load-INDEPENDENT half: the same mechanism as exact arithmetic, which needs no box at all.",
+    "P10-P13 and M17 are Tier-H and score `unmeasurable` = 0 until a run manifest attests real hardware. No device exists in this project. That is the item's design, not a gap I left.",
+    "No browser was launched. contention.mjs said GO; it was not needed, which is the point of M16."
+  ],
   "files_claimed": [
     "orchestration/status/PLT01-STEPRATE.json",
     "corpus/85-platform/RI-PLT01-frame-budget.md",
     "tools/platform/timefidelity.mjs",
     "reports/platform/PLT01-STEPRATE/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "game/src/engine.js"
   ],
   "files_touched": [
-    "orchestration/status/PLT01-STEPRATE.json"
+    "orchestration/status/PLT01-STEPRATE.json",
+    "corpus/85-platform/RI-PLT01-frame-budget.md",
+    "tools/platform/timefidelity.mjs",
+    "reports/platform/PLT01-STEPRATE/timefidelity.json",
+    "game/src/engine.js",
+    "reports/blog-feed.jsonl"
   ],
-  "notes": [
-    "PREDECESSOR did nothing but write this file (killed by usage limit after reading contention). Effectively a fresh start; keeping the task id.",
-    "ownership --for game/src/core/loop.js: nobody live has declared it. NOTE the brief says game/src/loop.js; the real path is game/src/core/loop.js.",
-    "I am deliberately NOT claiming game/src/core/loop.js for edits yet. S39's remedy list gives loop.js to the input-clock work (NEXT-DISPATCH U item 3, inputNow()). If I need a read-only accessor I will declare it first.",
-    "DECISION: acceptance numbers written into RI-PLT01 before any measurement, per brief."
+  "engine_js_note": "game/src/engine.js has 16 live pieces against it and ownership.mjs warns before a third claimant. Declared anyway and kept to ONE additive edit inside getPerfStats(): exposing catchupDroppedMs and rafTicks beside the catchupClamps already there. Without it the world-side consumer for §C.5's threshold quantity does not exist, which is the exact defect I was sent to fix (RULES 5, CONSUMPTION). boot-check PASS and lint-determinism 0 errors after the edit.",
+  "did_not_touch": [
+    "game/src/core/loop.js — S39's remedy list gives it to the input-clock work (NEXT-DISPATCH §U item 3, inputNow()) and the S39-falsifier is live in tools/input/. §C.5 measures the loop; it does not change it.",
+    "MAX_CATCHUP — R3 fixes it at 5 and it is a binding number in a reference item, not a knob this piece may turn. Whether 5 is right is R3's question and is still open.",
+    "game/src/input/hold-gate.js — owned by W1-TOUCH round 2."
   ],
-  "acceptance_numbers_declared_before_measuring": {
-    "P10": "catchupClamps == 0 over any F3/F4 (combat) window on attested hardware. Rationale: one clamp requires a single rAF gap >= 6*STEP_MS = 100.0 ms, which already violates C.1's F3/F4 worst-frame <= 33 ms AND HF6's >100 ms rule.",
-    "P11": "world_time_fidelity >= 0.999 over any 60 s play-mode window outside a declared load boundary; equivalently catchupDroppedMs <= 60 ms per 60 s.",
-    "P12": "Tier-S instrument check: in play mode, stallMainThread(400) must produce exactly +1 catchupClamps and +catchupDroppedMs in [300.0, 350.0] ms on the recovery tick. Machine-independent: it is arithmetic over the stall, not over the renderer.",
-    "P13": "Tier-S invariant: in harness / play-instrumented mode catchupClamps and catchupDroppedMs are exactly 0 forever, because rAF must not advance the sim."
-  }
+  "next_step": "A critic with fresh context should judge §C.5 (RULES 22). The two things to attack: whether P13's 0.67/0.92 really follow from C.1's fps floors, and whether M16's synthetic rAF is a fair model of a browser's — a real rAF jitters and mine does not."
 }

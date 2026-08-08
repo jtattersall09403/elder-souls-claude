@@ -118,6 +118,7 @@ function armAccounting(mod, rafHz, ticks) {
   for (let i = 0; i < ticks; i++) {
     const s = loop.stats;
     const accBefore = loop.accumulatorMs;
+    const lastWallBefore = loop.lastWallMs;
     const stepsBefore = s.simStepsTotal, droppedBefore = s.catchupDroppedMs, clampsBefore = s.catchupClamps;
     tick(dt);
     const steps = s.simStepsTotal - stepsBefore;
@@ -125,8 +126,12 @@ function armAccounting(mod, rafHz, ticks) {
     const clamped = s.catchupClamps - clampsBefore;
     const accAfter = loop.accumulatorMs;
 
-    // dt is clamped by the loop at 1000 ms ("tab was backgrounded"); mirror that, do not assume it.
-    const dtClamped = Math.min(Math.max(dt, 0), 1000);
+    // THE dt THE LOOP ACTUALLY SAW, not the dt we asked for — and the difference is not
+    // pedantry. STEP_MS = 1000/60 is not representable, so a clock advanced by 60 nominal
+    // 16.666666666666668 ms steps reads back a dt of 16.666666666666629 on the first tick,
+    // which is BELOW STEP_MS and runs zero steps. Checking against the nominal period reported
+    // three phantom violations at 60 Hz on run 3 of this tool. Read the loop's own inputs.
+    const dtClamped = Math.min(Math.max(CLOCK - lastWallBefore, 0), 1000);
 
     // P14, half one: conservation.
     const lhs = dtClamped;

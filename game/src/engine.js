@@ -481,6 +481,10 @@ export class Engine {
     setProfiles(this.data.inputProfiles);
     this.real = new RealInput(this.input, this.canvas, this.data);
     this.real.frameOf = () => this.sim.frame;
+    // S39: the loop mode selects the input clock — `event.timeStamp` in `play`, `frame *
+    // STEP_MS` in `harness`/`play-instrumented`. `input/hold-gate.js` `inputNow()` is the one
+    // place that reads it, and it throws if a play-mode wall read is attempted inside the step.
+    this.real.modeOf = () => this.loop.mode;
     this.sim.realInput = this.real;
 
     this.loadState_.phase = 'opening-store';
@@ -7884,7 +7888,15 @@ export class Engine {
       allocBytesThisStep: null,     // measured externally by tools/platform/alloc-probe.mjs
       simStepsTotal: this.loop.stats.simStepsTotal,
       rendersTotal: this.loop.stats.rendersTotal,
+      rafTicks: this.loop.stats.rafTicks,
       catchupClamps: this.loop.stats.catchupClamps,
+      // RI-PLT01 §C.5 / P10-P15. `catchupDroppedMs` has been computed on every clamp since the
+      // loop was written (core/loop.js:139) and was exposed NOWHERE — `catchupClamps` came out
+      // here and its partner did not, so the running world could report that world time had been
+      // thrown away but never HOW MUCH. Every threshold in §C.5 is denominated in it:
+      // world_time_fidelity = 1 - catchupDroppedMs / wall_ms. `rafTicks` joins it because
+      // fidelity is meaningless without the tick count that produced it.
+      catchupDroppedMs: +this.loop.stats.catchupDroppedMs.toFixed(3),
       _unmeasurable: {
         renderCpuMs: 'Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).',
         allocBytesThisStep: 'requires --js-flags=--expose-gc and CDP Runtime.getHeapUsage; measured by the runner (A-JRN9), not self-reported.',

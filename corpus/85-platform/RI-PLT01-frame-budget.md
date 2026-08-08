@@ -247,7 +247,8 @@ number.
 | symbol | definition |
 |---|---|
 | `world_ms` | `simStepsTotal × STEP_MS` — how much *world* the window advanced |
-| **`world_time_fidelity`** | `world_ms / wall_ms` — 1.000 means the world kept real time |
+| **`world_time_fidelity`** | **`1 − catchupDroppedMs / wall_ms`** — the fraction of the player's life that was not thrown away. 1.000 means the world kept real time |
+| `sim_time_ratio` | `world_ms / wall_ms` — reported alongside, **not** the threshold quantity |
 | `dropped_ms_per_s` | `catchupDroppedMs / (wall_ms/1000)` — world deleted per second of life |
 | `clamp_run` | the longest run of **consecutive** rAF ticks that clamped |
 | **`images_per_sim_frame`** | `rendersTotal / simStepsTotal` — how many pictures of each simulated frame the player was shown |
@@ -260,6 +261,31 @@ number.
 | **P13** | `images_per_sim_frame` | ≥ **0.67** in F1/F2/F5, ≥ **0.92** in F3/F4 | **H** |
 | **P14** | **Clamp accounting identity**, per rAF tick: `dt_clamped == steps × STEP_MS + dropped + Δaccumulator`, and a clamp occurs **iff** `accumulator_before + dt ≥ (MAX_CATCHUP+1) × STEP_MS` | **exact**, every tick | **S** |
 | **P15** | `catchupClamps` and `catchupDroppedMs` in mode `harness` / `play-instrumented` | **exactly 0, forever** | **S** |
+
+**Fidelity is defined on the counter and not on the step total, and the difference is not
+cosmetic.** `sim_time_ratio` carries a window-boundary artefact: when the window closes, up to
+one `STEP_MS` of real time is sitting in the accumulator — neither simulated yet nor thrown away
+— and over a 33 s window that alone pushed the 12.00 Hz row under P10's 0.999 line and produced
+a false FAIL on the first run of `timefidelity.mjs`. Real time is in exactly one of three places:
+simulated, pending, or **dropped**, and only the third is a loss. So the threshold quantity is
+the one the loop already counts. This is the whole point of §C.5: **the requirement is written in
+terms of the counter, so the counter is the instrument rather than a footnote beside one.**
+
+**Two floors, and they are different numbers.** A *single* rAF tick clamps iff its arrears reach
+`(MAX_CATCHUP+1) × STEP_MS = 100.0 ms`, i.e. **10.00 Hz** — that is P14's iff. But a *sustained*
+rate keeps real time only at or above `MAX_CATCHUP × STEP_MS` per tick, i.e. **12.00 Hz**,
+because below that every tick leaves a residue in the accumulator, the residues add up, and the
+clamp that eventually fires **zeroes the accumulator and discards the lot**. So the slow-motion
+régime begins at 12.00 Hz, not 10.00. S39's 12.00 Hz is the right number and `timefidelity.mjs`
+confirms it — but the two floors are not interchangeable and a builder who checks the wrong one
+will write a check that passes at 11.5 Hz. **Measured at 11.5 Hz: fidelity 0.9583, one clamp.**
+
+**And 12.00 Hz itself is not a safe place to sit.** `STEP_MS = 1000/60` is not representable in
+binary, so at exactly 12.00 Hz the arrears come to 99.9999999999999 ms against a nominal 100 and
+whether a given tick clamps is decided in the last bits of a double. Measured over 400 ticks
+(33.3 s): **one clamp, fidelity 0.9990** — inside P10's 0.990 ten-second bound, on the line of its
+0.999 session bound. The floor is a limit, not an inclusive bound; a budget that aims at exactly
+12 rAF Hz is aiming at the cliff edge.
 
 **Why P10–P12 are not new severity.** One clamp requires a single rAF gap of at least
 `(MAX_CATCHUP+1) × STEP_MS = 100.0 ms`, which **HF6 already calls a hard fail** outside a
@@ -293,6 +319,66 @@ and they can be taken **with no browser at all**, by driving `FixedLoop` from No
 synthetic clock and a synthetic `requestAnimationFrame` at any chosen rate, including rates no
 container can produce on demand. `tools/platform/timefidelity.mjs` does exactly that, and its
 null control breaks the accounting on purpose and requires the check to go red.
+
+**M16, taken at `c5292f7`, `reports/platform/PLT01-STEPRATE/timefidelity.json` — PASS.** The
+shipped loop satisfies P14 at all eleven swept rates and P15 over 10 000 rAF ticks in both
+harness modes. The law holds exactly below the floor: fidelity **1.0000** at 60/30/20/15/12.5 Hz,
+**0.9990** at 12, **0.9583** at 11.5, **0.6667** at 8, **0.3333** at 4, **0.1933** at 2.32 and
+**0.1250** at 1.5 Hz, with `steps_per_raf` pinned at exactly 5.000 everywhere below the floor and
+`clamp_run` at 400 of 400 ticks. **All four null controls went red and each broke the arm it was
+aimed at.** Two of them are worth reading rather than counting:
+
+- **`nocount`** — stop incrementing `catchupDroppedMs`, change nothing else. Fidelity at 2.32 Hz
+  reads **1.0000**, a perfect score, while the world still runs at a fifth speed and every other
+  check still passes. That is not a hypothetical: **it is the state this project was in until
+  §C.5 existed** — the counter was incrementing and nothing scored it, which is observationally
+  the same as not counting at all.
+- **`maxcatchup50`** — `MAX_CATCHUP` 5 → 50. Fidelity at 2.32 Hz goes **0.1933 → 1.0000**, which
+  is what establishes that 19.3% is a consequence of the cap and not an artefact of the harness.
+  Note what this control also proves about the *law*: because `MAX_CATCHUP` appears on both sides
+  of it, **the law cannot detect a change to `MAX_CATCHUP`**. R3 and M8 own that constant and do
+  catch it. Said here so nobody mistakes the law for a guard on the cap.
+
+**What a person actually experiences at 19.3%, checked against the source rather than the
+arithmetic.** S39's fairness argument is about *ratios*, and it is correct about every ratio it
+covers. Four things were checked against a player, and **three of the four survive the argument
+and one does not**:
+
+1. **The input buffer still catches the press — and gets more generous, not less.**
+   `input/pipeline.js:32` `BUFFER_FRAMES = 8`, and `queueBuffered()` (`:254`) compares it against
+   `framesLeft` in a recovery — both endpoints simulation-side, S39 case (c), stays in `f@60`.
+   Uniform stretch makes that window **8 f@60 = 691 ms of wall clock** at 19.3% instead of
+   133 ms. A press that would have missed at 60 Hz now lands. S39 is right here.
+2. **The camera stays attached — to the world.** `camera.js alphaFor()` is a per-frame ease from
+   a half-life in seconds evaluated inside the step, so it converges in the same number of
+   simulated frames at any rate and the camera never lags the body. What stretches is how long
+   the *player's* turn takes in wall clock: the same stick deflection sweeps 19.3% as many
+   degrees per second of real time. That is a slow game, not a broken camera, and every enemy is
+   equally slow. S39 is right here too.
+3. **The press's own duration is destroyed** — but that is the seam defect S39 already ruled on
+   and filed at the input boundary, not here.
+4. **The animation that is correct in frames is NOT correct on a screen, and this is where the
+   fairness argument stops covering the case.** Uniform stretch preserves ratios between two
+   *simulated* quantities. `images_per_sim_frame` is not one of those: it is a simulated quantity
+   over a *rendered* one, and below the floor the loop runs five steps per rAF and draws **once**
+   (`loop.js` `maybeRender` is called once per tick), so it falls to **0.2**. `roll.json` LIGHT
+   ships `iframe_count: 26`; at 60 Hz the player is shown ~26 pictures of the window they must
+   learn to time, and at 2.32 rAF Hz they are shown **~5** — of a roll that now takes 4.5 s. An
+   18-frame `RI-AI02` telegraph becomes **3.6 pictures**. That is verbatim this item's opening
+   argument — *"the player sees fewer, later, and less evenly-spaced samples of a window they
+   must time by eye"* — and it is the reason the budget exists at all.
+
+**So the ruling and the item are both right and they are about different things.
+`ARBITRATION.md` S39's "the fight stays fair" is upheld: nothing gains an advantage over anything
+else, i-frames stay in `f@60`, and pinning them to milliseconds would be the worse game, exactly
+as ruled. Its "and readable" is not upheld, and this item is the authority on that half.
+Fairness is a property of the simulation; readability is a property of the display; only one of
+them stretches.** This is a correction to one word of a ruling, not a challenge to it, and it
+changes nothing about where the defect is filed — the defect is still the frame rate and it is
+still scored here. It changes what a critic may conclude from the ruling: **a critic may not cite
+S39 to argue that a slow device is merely slow.** It is also fully reversible on evidence: if a
+build ever measures `images_per_sim_frame` below 0.67 on attested hardware and a hands-on
+judgement calls the fight readable anyway, P13 is the row to strike.
 
 > **A warning this item must give about its own headline number.** The **11.6 fixed steps/s**
 > that started this investigation (`reports/critic-w1-touch/critic-gate-wallclock.json`,
