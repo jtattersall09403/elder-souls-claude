@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `674c107`: 605 tools, 153 reference
+so it cannot drift. Generated at `be9af27`: 606 tools, 153 reference
 items, 46 pieces in flight.
 
 Its purpose is to stop 46+ concurrent agents each paying separately to discover the
@@ -248,7 +248,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 202
+### `tools/harness/` — 203
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -425,6 +425,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
+- `tools/harness/w1-16-r3-live.mjs` — W1-16 ROUND 3, the stepping half.
 - `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
 - `tools/harness/w1-21-r2-deletefix.mjs` — DELETE-THE-FIX for W1-21 round 2's AR-2 change (RULES 6, and RULES 17 for the index check).
 - `tools/harness/w1-21-r2-forge.mjs` — THE FALSIFIER FOR THE W1-21 AR-2 FIX: can a save still put a square on the map?

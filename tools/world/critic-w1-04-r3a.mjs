@@ -630,6 +630,87 @@ try {
     save();
   }
 
+  // =====================================================================================
+  // S8 — HOW LONG IS THE TOWN NOT THERE?
+  //
+  // S7 read the drawn building count one town LATE in all eight towns: arriving at Helstrom
+  // and reading the scene graph returned Thorn's 15. Either the streamer needs more than the
+  // 24 fixed steps S7 gave it, or the town genuinely never arrives. This measures it: stand in
+  // each town and step until the drawn count reaches the town's own declared count, or give up.
+  // The townspeople are spawned by `populateSettlement` on arrival, so any gap here is a window
+  // in which the cast is standing on bare ground — which is what round 2 was criticised for.
+  // =====================================================================================
+  if (want('S8')) {
+    R.sections.S8 = await page.evaluate(async () => {
+      const H = window.__HARNESS;
+      const TOWNS = {
+        thorn: [3820, 13.31, 859, 15], helstrom: [2262.5, 27.22, 2773.5, 40],
+        archon: [3785, 3.42, 3823.5, 22], soulrest: [610.5, 7.91, 4877, 15],
+      };
+      if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(2); }
+      const rows = {};
+      for (const [sid, c] of Object.entries(TOWNS)) {
+        const want_n = c[3];
+        H.teleport(c[0], c[2]);
+        let frames = 0, got = H.getDrawnSettlements().buildings, trace = [];
+        for (let i = 0; i < 40; i++) {
+          H.stepFrames(6); frames += 6;
+          got = H.getDrawnSettlements().buildings;
+          if (trace.length < 12) trace.push({ frames, drawn: got });
+          if (got === want_n) break;
+        }
+        rows[sid] = {
+          declared_buildings: want_n, drawn_at_end: got, frames_to_reach_it: got === want_n ? frames : null,
+          reached: got === want_n, trace,
+          people_present: (H.whereIsEveryone ? (H.whereIsEveryone().present || null) : null),
+        };
+      }
+      return { side: 'HARNESS', note: 'teleport arrival, then step until the drawn count equals the town\'s own declared count', rows };
+    });
+    save();
+    log('S8 streaming latency written');
+  }
+
+  // =====================================================================================
+  // S9 — THE PICTURES, RETAKEN, WITH THE SCENE GRAPH CHECKED BEFORE THE SHUTTER.
+  // The first pass photographed a bare hill at Helstrom because the tiles had not streamed
+  // and the count read was the previous town's. A picture whose subject was never verified
+  // to be in the scene graph is not evidence.
+  // =====================================================================================
+  if (want('S9')) {
+    const shoot = async (spec) => page.evaluate(async (s) => {
+      const H = window.__HARNESS;
+      if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(2); }
+      H.teleport(s.at[0], s.at[2]);
+      let drawn = 0;
+      for (let i = 0; i < 40; i++) { H.stepFrames(6); drawn = H.getDrawnSettlements().buildings; if (drawn === s.expect) break; }
+      H.setTimeOfDay(s.hour === undefined ? 12 : s.hour);
+      if (H.setWeather) H.setWeather('clear');
+      H.camera({ pos: s.pos, look: s.look, fov: s.fov || 60 });
+      H.renderFrame();
+      const url = await H.screenshot();
+      return { url, drawn, expected: s.expect, verified: drawn === s.expect };
+    }, spec);
+
+    const H2 = { helstrom: [2262.5, 27.22, 2773.5] };
+    const c = H2.helstrom;
+    const roofs = await shoot({
+      at: c, expect: 40, hour: 12,
+      // Close in and high enough to see over the roofline, looking down at about 50 degrees.
+      pos: [c[0] + 30, c[1] + 42, c[2] + 30], look: [c[0], c[1] + 4, c[2]],
+    });
+    const town = await shoot({
+      at: c, expect: 40, hour: 9,
+      pos: [c[0] + 62, c[1] + 16, c[2] + 62], look: [c[0], c[1] + 5, c[2]],
+    });
+    R.sections.S9 = {
+      roofs: { file: savePng(roofs.url, '2026-08-08-w1-04-r3-critic-helstrom-roofs-from-above.png'), drawn: roofs.drawn, verified: roofs.verified },
+      town: { file: savePng(town.url, '2026-08-08-w1-04-r3-critic-helstrom-forty-buildings.png'), drawn: town.drawn, verified: town.verified },
+    };
+    save();
+    log(`S9 pictures: roofs verified=${roofs.verified} (${roofs.drawn}), town verified=${town.verified} (${town.drawn})`);
+  }
+
   R.finished_at = new Date().toISOString();
   save();
   log(`wrote ${outFile}`);

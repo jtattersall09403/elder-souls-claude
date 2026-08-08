@@ -76,6 +76,28 @@ const LEXICON = R('corpus/60-lore/data/jel-lexicon.json');
 
 // ---------------------------------------------------------------- population
 
+/**
+ * DELETE-THE-FIX, and the BEFORE number, from THIS tool rather than from a note.
+ *
+ * `--at <rev>` harvests the rosters out of git at <rev> instead of off the working tree, so the
+ * pre-fix population can be banded by the identical code that bands the post-fix one. RULES #6:
+ * the teardown here is not "imagine the old names", it is the old bytes.
+ */
+function harvestAt(rev) {
+  const files = execSync(`git ls-tree --name-only ${rev} game/data/npcs/`, { cwd: ROOT, encoding: 'utf8' })
+    .trim().split('\n').filter((f) => f.endsWith('.json'));
+  const out = [];
+  for (const f of files) {
+    const j = JSON.parse(execSync(`git show ${rev}:${f}`, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+    for (const n of (j.npcs || [])) {
+      if (!n || !n.name || !n.race || /^the /i.test(n.name)) continue;
+      out.push({ id: n.id, name: n.name, race: n.race, file: path.basename(f), generated: /^pop-/.test(path.basename(f)) });
+    }
+  }
+  if (!out.length) { console.error(`FATAL: no roster at ${rev}`); process.exit(2); }
+  return out;
+}
+
 /** Everybody in the tree who has a name AND a declared race. */
 export function harvestPeople(dir = R('game/data/npcs')) {
   if (!fs.existsSync(dir)) {
@@ -319,7 +341,9 @@ export function band(m) {
 function commit() { try { return execSync('git rev-parse HEAD', { cwd: ROOT }).toString().trim(); } catch { return 'unknown'; } }
 
 function run(argv) {
-  const people = harvestPeople();
+  const at = (() => { const i = argv.indexOf('--at'); return i >= 0 ? argv[i + 1] : null; })();
+  const people = at ? harvestAt(at) : harvestPeople();
+  if (at) console.log(`population taken from git at ${at} (DELETE-THE-FIX arm)`);
   // Culture-forced per RI-LOR04 comparison method §3: Argonians are judged as Argonians, and
   // everybody else is judged by free classification.
   const argNames = people.filter((p) => isArgonian(p.race)).map((p) => p.name);
@@ -330,7 +354,7 @@ function run(argv) {
   ];
   const m = measure(people, results);
   const b = band(m);
-  const out = { commit: commit(), ...m, band: b };
+  const out = { commit: commit(), population_at: at || 'working tree', ...m, band: b };
 
   if (argv.includes('--json')) { console.log(JSON.stringify(out, null, 2)); return b.native >= 3 ? 0 : 1; }
 

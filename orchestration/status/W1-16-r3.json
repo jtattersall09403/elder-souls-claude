@@ -1,36 +1,59 @@
 {
   "task_id": "W1-16-r3",
-  "title": "W1-16 round 3 — progression and encumbrance",
+  "title": "W1-16 round 3 \u2014 progression and encumbrance",
   "round": 3,
   "successor_of": "W1-16 round 2 (orchestration/status/W1-16.json), FAIL 3/10 at corpus/90-verdicts/wave1/W1-16-r2.md",
-  "state": "building",
+  "state": "measuring",
   "started": "2026-08-08",
   "git_at_start": "4a17ec3",
-  "contention_at_start": "GO — 4 browser instances, 24 processes, load 14.19/4 cores = 3.55 per core, ceilings 6 instances / 4.0 per core. Offline half first regardless.",
-  "brief": "Round 2's producer exists and is real; it reads the wrong hand. Fix (1) the two right hands — the hand that is weighed and the hand that fights must be one object; (2) count the shipped equip_weight / shield weight so tiers are reachable with no invented weights; (3) OVERLOADED forbids sprinting; (4) the first-engagement delta collapse that eats a Feather offset. Do NOT re-tune the ladder — the critic verified it exact at 13 loads with three cliffs.",
+  "contention_at_start": "GO \u2014 4 browser instances, 24 processes, load 14.19/4 cores = 3.55 per core, ceilings 6 instances / 4.0 per core. Offline half first regardless.",
+  "brief": "Round 2's producer exists and is real; it reads the wrong hand. Fix (1) the two right hands \u2014 the hand that is weighed and the hand that fights must be one object; (2) count the shipped equip_weight / shield weight so tiers are reachable with no invented weights; (3) OVERLOADED forbids sprinting; (4) the first-engagement delta collapse that eats a Feather offset. Do NOT re-tune the ladder \u2014 the critic verified it exact at 13 loads with three cliffs.",
   "must_land": [
     "1. Equipping a weapon changes equip load AND the fight swings the weapon you equipped, with before numbers from the critic's own instruments",
     "2. All four tiers reachable by dressing with no invented weights; report the reachable percentage range per tier",
     "3. OVERLOADED forbids sprinting, measured in metres against a button-up control",
     "4. CONSUMPTION (RI-MTH07) and delete-the-fix per rule 6, with a teardown watched going red"
   ],
-  "next_step": "implement _handWeight() in engine.js; route right/left equips through setLoadout; seed _equipLoadBase at _buildCombat; add OVERLOADED sprint denial",
+  "next_step": "live stepping run: critic-w1-16-live.mjs --probe parallel,oversprint,separation,spell + delete-the-fix arms",
   "files_touched": [
-    "orchestration/status/W1-16-r3.json"
+    "orchestration/status/W1-16-r3.json",
+    "game/src/engine.js",
+    "game/src/combat/player.js",
+    "game/src/harness/api.js",
+    "game/data/items/carried.json",
+    "tools/harness/w1-16-r3-reach.mjs",
+    "reports/w1-16/r3-reach.json"
   ],
   "files_claimed": [
     "orchestration/status/W1-16-r3.json",
     "game/src/engine.js",
     "game/src/combat/player.js",
     "game/src/harness/api.js",
-    "tools/harness/prg-encumbrance.mjs",
+    "game/data/items/carried.json",
     "tools/harness/w1-16-r3-reach.mjs",
+    "reports/w1-16/r3-reach.json",
+    "tools/harness/critic-w1-16-offline.mjs",
     "reports/w1-16/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-03", "W1-15-r3", "W1-06-r3", "W1-12", "W1-18-r2", "W1-READABLES-r2"],
-  "redundant_note": "game/src/engine.js is this build's shared spine and seven live pieces declare it; the overlap is the project norm rather than a collision. game/src/combat/player.js is declared by W1-03 (water traversal) — my change is at the same locomotion line round 2 touched, which serves W1-03's water sprint denial too. game/src/harness/api.js is declared by W1-13-r3 and W1-14-r3, both done. docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces.",
-  "findings": [],
+  "redundant_with": [
+    "W1-03",
+    "W1-15-r3",
+    "W1-06-r3",
+    "W1-12",
+    "W1-18-r2",
+    "W1-READABLES-r2"
+  ],
+  "redundant_note": "game/src/engine.js is this build's shared spine and seven live pieces declare it; the overlap is the project norm rather than a collision. game/src/combat/player.js is declared by W1-03 (water traversal) \u2014 my change is at the same locomotion line round 2 touched, which serves W1-03's water sprint denial too. game/src/harness/api.js is declared by W1-13-r3 and W1-14-r3, both done. docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces.",
+  "findings": [
+    "BUILT (the round-2 verdict's biggest gap, \u00a7C): _recomputeEquipLoad() now reads RI-PRG07 \u00a72's FIRST TWO TERMS. The weapon's equip_weight comes off combat.player.moves._weapon (weapons/classes.json -> combat/moveset.js weaponFor() -> combat/moves.js buildMoveTable()) and the shield's weight off combat.player.shield (weapons/offhand.json or combat/stamina.json, merged by combat/system.js shieldFor()). Both were already shipped and BOTH had zero readers in game/src. Nothing is invented.",
+    "BUILT (the RULES #10 half, and the one that stops it coming back): _finishEquipCommit() routes a right/left equip through setLoadout(), so the hand that is WEIGHED and the hand that FIGHTS are one object. Before this, equipping a maul added 11.5 kg to the roll ratio while combat.player.weaponId stayed ssw_garrison_sword. The right/left inventory rows are now SKIPPED in the pack sum, so one sword is weighed once (class weight, not class weight + pack row) -- asserted as R2.",
+    "BUILT: taking a held object off restores the loadout the scenario declared (_handBase, captured at _buildCombat). A one-way encumbrance model is not a model.",
+    "BUILT (RI-CMB01 \u00a7B, the census miss the round-2 verdict found): OVERLOADED forbids sprinting, at combat/player.js's locomotion gate -- the SAME single line round 2 made the one place locomotion is decided. NOT routed through worldDeny.sprint, deliberately: worldDeny carries the WORLD's denials (water, burden) and both are guarded inert inside a fight (AR-1). Equip load is RI-CMB01's and must apply inside the fight above all, so borrowing burden's channel would have put an in-fight effect behind an out-of-fight guard. No third sprint path: sim/player.js stepPlayer is imported by nothing.",
+    "BUILT (round-2 verdict \u00a7E, the false claim in the predecessor's own header): _buildCombat() seeds _equipLoadBase from the freshly built body -- the one moment the body's equip load is provably the bare equipment base with no effect offsets on it. The header claimed a Feather offset 'survives untouched'; on the first engagement _equipLoadBase was null, prev was read off the body (offset and all) and the delta collapsed to an assignment. Measured offline as a 2-arm control (R5): seeded arm 14 -> 4 -> 14 (correct); unseeded arm 14 -> 14 -> 24, i.e. 10 points wrong and stuck, exactly as the verdict described.",
+    "FIXED, and it is a consequence of the above: setLoadout() left sim.combatBody pointing at the DISCARDED body. sim/route.js and render/spell-vfx.js steer the player through that reference, so a scripted route would have been writing a corpse. It never mattered while setLoadout was a probe-only verb; round 3 makes it the way an ordinary player puts a sword in their hand.",
+    "DATA DEFECT FOUND: game/data/items/carried.json declares `moveset` on all five weapon rows and NOTHING in game/src read the field -- a grep for `.moveset` over the whole source tree returns the enemy-encounter census and nothing else. Two of the five named a moveset that does not exist: the loader keys weaponMovesets by weapon_id off combat/movesets/ (87 roster weapons) and movesets by id off combat/spine/ (seven class documents), and 'great-hammer' and 'bow' are neither, nor one of moveset.js SPINE_ALIASES' seven names. Fixed bog-iron-maul -> ghm_bog_maul (exact name and class match: 'Bog maul', GHM). hist-sap-bow still declares 'bow' and is now REFUSED at equip with a reason on the equip_end event rather than silently weighed as though held -- reported, not guessed at."
+  ],
   "did_not_do": []
 }

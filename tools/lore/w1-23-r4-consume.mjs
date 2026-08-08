@@ -130,8 +130,26 @@ function copyGame(tag) {
   fs.rmSync(dst, { recursive: true, force: true });
   fs.mkdirSync(dst, { recursive: true });
   fs.cpSync(path.join(ROOT, 'game'), path.join(dst, 'game'), { recursive: true });
+  // A SECOND KIND OF NEIGHBOUR DAMAGE, repaired on the copy and reported. `game/data/index.json`
+  // named `npcs/pop-trades.json` for several minutes while that file did not exist on disk — a
+  // half-landed edit by another agent — and `loadData()` throws on the first 404, so no arm of
+  // this measurement could boot. The copy drops index entries whose file is genuinely absent
+  // rather than waiting the tree out, and every dropped entry is printed and lands in the report.
+  const ix = path.join(dst, 'game', 'data', 'index.json');
+  if (fs.existsSync(ix)) {
+    const j = JSON.parse(fs.readFileSync(ix, 'utf8'));
+    const before = (j.files || []).length;
+    j.files = (j.files || []).filter((e) => fs.existsSync(path.join(dst, 'game', 'data', e.path)));
+    const dropped = before - j.files.length;
+    if (dropped) {
+      DROPPED.push(...[]);
+      fs.writeFileSync(ix, JSON.stringify(j, null, 2) + '\n');
+      if (!DROPPED.length) DROPPED.push(`${dropped} index entr(y|ies) naming a file that is not on disk`);
+    }
+  }
   return path.join(dst, 'game', 'index.html');
 }
+const DROPPED = [];
 
 const NEIGHBOURS = neighbourEdits();
 if (NEIGHBOURS.length) console.log(`carried (not mine, not reverted, HEAD does not boot without them): ${NEIGHBOURS.join(', ')}`);
@@ -212,9 +230,24 @@ async function runLegs(handle, { farByM = 0 } = {}) {
     await handle.h('stepFrames', 8);
     const ui = await handle.h('getUIState');
     rec.opened = (ui && ui.book && ui.book.id) || null;
-    const body = (ui && ui.book && (ui.book.text || ui.book.body || '')) || '';
-    rec.first_line = String(body).split('\n').map((s) => s.trim()).filter(Boolean)[0] || null;
-    rec.perturbation_visible = String(body).includes(PERTURB_MARK);
+    // `getUIState().book` carries the PAGINATION, not the prose (`ui/system.js:1054` spreads
+    // `bookPagination(bk.text, S)`), so "did the text change" cannot be asked of it. The right
+    // surface is the one the player is looking at: clear the rendered-text accumulator, draw a
+    // frame, and read back every string the frame actually put on the screen.
+    rec.pages = (ui && ui.book && ui.book.pages) || null;
+    rec.words_on_page_1 = (ui && ui.book && ui.book.words_per_page && ui.book.words_per_page[0]) || null;
+    let drawn = '';
+    if (rec.opened) {
+      try {
+        await handle.h('renderedTextClear');
+        await handle.h('renderFrame');
+        const t = await handle.h('getRenderedText');
+        const rows = Array.isArray(t) ? t : (t && t.text) || [];
+        drawn = rows.map((r) => (typeof r === 'string' ? r : (r && (r.text || r.s)) || '')).join('\n');
+      } catch (e) { rec.note = `getRenderedText: ${e.message}`; }
+    }
+    rec.first_line = drawn.split('\n').map((s) => s.trim()).filter(Boolean)[0] || null;
+    rec.perturbation_visible = drawn.includes(PERTURB_MARK) || drawn.includes('PERTURBATION MARKER');
     if (ui && ui.mode && ui.mode !== 'world') await handle.h('closeMenu');
     out.push(rec);
   }
@@ -228,7 +261,8 @@ async function arm(tag, entry) {
   const handle = await launchGame({ ...args, entry });
   try {
     await requireMethods(handle, ['reset', 'setRenderRate', 'enterInterior', 'listEntities', 'teleport',
-      'queueInputs', 'stepFrames', 'getUIState', 'closeMenu', 'whereAmI']);
+      'queueInputs', 'stepFrames', 'getUIState', 'closeMenu', 'whereAmI',
+      'renderFrame', 'renderedTextClear', 'getRenderedText']);
     arms[tag] = await runLegs(handle, tag === 'C-out-of-reach' ? { farByM: 3 } : {});
   } finally { await handle.close(); }
 }
@@ -266,7 +300,7 @@ const pass = openedA === LEGS.length
   && perturbed.every(Boolean)
   && removed > 0;
 
-const report = { commit, head_boots: false, neighbour_edits_carried: NEIGHBOURS, legs: LEGS.length, arms, summary: { openedA, changedB, shutC, redD, propGoneD, placements_removed: removed }, pass };
+const report = { commit, head_boots: false, neighbour_edits_carried: NEIGHBOURS, index_entries_dropped: DROPPED, legs: LEGS.length, arms, summary: { openedA, changedB, shutC, redD, propGoneD, placements_removed: removed }, pass };
 ensureDir(path.dirname(OUT));
 writeJson(OUT, report);
 
