@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `250d0c8`: 669 tools, 153 reference
+so it cannot drift. Generated at `ef6953b`: 671 tools, 153 reference
 items, 54 pieces in flight.
 
 Its purpose is to stop 54+ concurrent agents each paying separately to discover the
@@ -53,12 +53,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 30
+### `tools/` — 31
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
 - `tools/boot-check.mjs` — A forwarding shim, because agents keep writing `tools/boot-check.mjs` and the real file is `tools/harness/boot-check.mjs`.
+- `tools/check-append-only.mjs` — the shared record may be added to, never rewritten.
 - `tools/check-building-fits-room.mjs` — A BUILDING'S OUTSIDE MUST CONTAIN ITS INSIDE.
 - `tools/check-content.mjs` — Hand-authored content must not vanish when a generator re-runs.
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
@@ -258,7 +259,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 219
+### `tools/harness/` — 220
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -366,6 +367,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r3-seam.mjs` — W1-14 round-3 CRITIC.
 - `tools/harness/critic-w1-14-r3-vfx.mjs` — W1-14 round-3 CRITIC, RI-MAG05.
 - `tools/harness/critic-w1-14-r3.mjs` — the critic's own instrument for W1-14 round 3 (magic, seam S19).
+- `tools/harness/critic-w1-14-r4-ground.mjs` — CAN A SPELL BE CAST WHERE THE PLAYER ACTUALLY STANDS?
 - `tools/harness/critic-w1-14-shot.mjs` — one picture for W1-14 round 3's verdict.
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
 - `tools/harness/critic-w1-16-live.mjs` — W1-16 ROUND-2 CRITIC's stepping instrument.

@@ -112,6 +112,15 @@ node tools/lib/chart-font.mjs --audit-staged || {
 }
 node tools/lib/chart-font.mjs --audit-tree 2>/dev/null || true
 
+# `reports/blog-feed.jsonl` is append-only: every line is one agent's account of something it
+# measured, and it is what the project owner reads. An agent rewrote a line in place once, leaving
+# a record carrying one task's id and screenshots under another task's title — noticed only because
+# the agent whose line it was went back and repaired its own row. Nothing else would have caught it.
+#
+# WARNING, NOT BLOCKING, for rule 13's reason: a dozen agents append concurrently, and a hard gate
+# over a line somebody else mangled blocks the wrong person. Seeing it is the point.
+node tools/check-append-only.mjs --staged || true
+
 git diff --cached --name-only --diff-filter=ACMR \
   | grep -Eq '^(corpus/.*RI-.*\.md|corpus/00-doctrine/(subsystems|constants)\.json|tools/corpus-index\.mjs)$' \
   || exit 0
