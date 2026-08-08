@@ -91,6 +91,10 @@ together*. Assume a full exchange is **200–260k**, not 100k. That is still rou
 build round and it still needs no browser, so the case holds; but the number in the paragraph above
 was written before anything had run and it should be read as what it was.
 
+**The full exchange came in at 214k** — plan 131k, plan critic 83k — against the 200–260k this
+section revised the estimate to. That revision was taken *before* the critic ran, so the number
+above is a prediction that held, not one fitted afterwards.
+
 **What the plan bought, which is the part that decides whether the loop survives.** Before any build
 agent was dispatched, offline reading alone established:
 

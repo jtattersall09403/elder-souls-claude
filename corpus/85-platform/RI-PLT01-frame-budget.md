@@ -218,6 +218,94 @@ whether the game will stutter on a phone.
 | **R5** | Input is sampled per rAF, latched, and consumed by the next sim step (`RI-JRN04` §D) | `RI-JRN04` M-P9 |
 | **R6** | No `Date.now()`/`performance.now()` in any code path that changes sim state | `HARNESS.md` D3, detected by D5 |
 
+**C.5 — world-time fidelity: what R3 costs when it is not recovering from anything**
+
+> **Added by `PLT01-STEPRATE`, `c5292f7`, on a finding referred here by `ARBITRATION.md` S39.**
+> **Every acceptance number in this section was written into this file before the measurement
+> that tests it was taken**, and the run that took it is named beside each row.
+
+R3 is written as a *spiral-of-death guard*: real time runs ahead after a stall, the sim catches
+up by at most `MAX_CATCHUP = 5` steps, and the surplus is dropped rather than taken as a bigger
+step. As a recovery rule it is correct and this item keeps it. **But R3 has no floor and no
+alarm, and applied to a steady state it is not a guard, it is a permanent tax.**
+`game/src/core/loop.js` therefore keeps real time exactly at any sustained rAF rate ≥ **12.00 Hz**
+(5 × 16.667 ms = 83.33 ms) and **below that the whole world enters uniform slow motion, for as
+long as the rate stays there, and reports nothing.** At 2.32 rAF Hz the world advances at
+**19.3% of real time**. That figure is arithmetic over `MAX_CATCHUP`, not a measurement of any
+device: `fidelity = min(1, MAX_CATCHUP × STEP_MS × raf_hz / 1000)`.
+
+**The counters that see this already exist and have never had a threshold.**
+`FixedLoop.stats.catchupClamps` and `.catchupDroppedMs` are computed on every clamp
+(`loop.js:139–140`); `catchupClamps` is exposed through `getPerfStats()` (`engine.js:7887`) and
+`catchupDroppedMs` **is not exposed at all**. Two critics have printed `catchupClamps` as a
+narrative aside (`W1-00`, `W1-01-province-stream-r1`) and **no item in this corpus has ever
+stated a number it must meet.** A counter nobody scores is not an instrument. §C.5 is that
+number.
+
+**Definitions.** All from `FixedLoop.stats`, over a window of mode `play` wall clock `wall_ms`:
+
+| symbol | definition |
+|---|---|
+| `world_ms` | `simStepsTotal × STEP_MS` — how much *world* the window advanced |
+| **`world_time_fidelity`** | `world_ms / wall_ms` — 1.000 means the world kept real time |
+| `dropped_ms_per_s` | `catchupDroppedMs / (wall_ms/1000)` — world deleted per second of life |
+| `clamp_run` | the longest run of **consecutive** rAF ticks that clamped |
+| **`images_per_sim_frame`** | `rendersTotal / simStepsTotal` — how many pictures of each simulated frame the player was shown |
+
+| # | Quantity | Budget | Tier |
+|---|---|---|---|
+| **P10** | `world_time_fidelity`, any **10 s** play window outside a declared load boundary | ≥ **0.990**; ≥ **0.999** session-wide | **H** |
+| **P11** | `catchupClamps` during F3/F4 | **0** | **H** |
+| **P12** | `clamp_run`, anywhere in a session | ≤ **2** | **H** |
+| **P13** | `images_per_sim_frame` | ≥ **0.67** in F1/F2/F5, ≥ **0.92** in F3/F4 | **H** |
+| **P14** | **Clamp accounting identity**, per rAF tick: `dt_clamped == steps × STEP_MS + dropped + Δaccumulator`, and a clamp occurs **iff** `accumulator_before + dt ≥ (MAX_CATCHUP+1) × STEP_MS` | **exact**, every tick | **S** |
+| **P15** | `catchupClamps` and `catchupDroppedMs` in mode `harness` / `play-instrumented` | **exactly 0, forever** | **S** |
+
+**Why P10–P12 are not new severity.** One clamp requires a single rAF gap of at least
+`(MAX_CATCHUP+1) × STEP_MS = 100.0 ms`, which **HF6 already calls a hard fail** outside a
+declared load boundary, and which is triple F3/F4's 33 ms worst-frame ceiling. So §C.5 does not
+tighten §C.1; it restates §C.1's consequence in a unit that a phone can report from a single
+integer counter instead of a 6 000-sample frame-time series, and it adds the one thing §C.1
+cannot express — **the difference between one clamp (R3 recovering, correct) and a hundred
+consecutive clamps (R3 misapplied, the world permanently at a fifth speed)**. That difference is
+`clamp_run`, and nothing in this item measured it before.
+
+**P13 is §C.1's fps floor, restated so it survives the slow-motion régime, and it is the row
+that contradicts a ruling.** `ARBITRATION.md` S39 rules — correctly — that stretched i-frames on
+a slow device are *not* a seam defect, because below 12 rAF Hz every simulated duration stretches
+by the same factor and so **the fight stays fair**. This item agrees about fairness and **rejects
+the same sentence's claim that the fight stays "readable"**. Uniform stretch preserves every
+ratio between two *simulated* quantities. It does not preserve the ratio between a simulated
+quantity and a *rendered* one, and that ratio is what this item's opening argument is about: at
+60 Hz a 26-frame roll i-frame window is shown to the player as ~26 pictures; at 2.32 rAF Hz with
+five steps per tick it is shown as **~5**. The player is asked to time by eye a window they are
+given a fifth as many samples of — which is, verbatim, "the player sees fewer, later, and less
+evenly-spaced samples of a window they must time by eye", the sentence this item was written
+around. **Fairness is a property of the simulation; readability is a property of the display, and
+only one of them stretches.** P13's numbers are not new: 0.67 = the 40 fps F1 floor ÷ 60, and
+0.92 = the 55 fps F3/F4 floor ÷ 60. When the sim itself is slow, "fps" stops being expressible —
+40 fps against a 12 Hz sim is not a thing — and `images_per_sim_frame` is the same bar in a unit
+that still means something.
+
+**P14/P15 are the Tier-S half, and they are Tier-S in the strong sense.** They are arithmetic
+over `FixedLoop`, so they give the same answer on a phone, on a workstation and on SwiftShader —
+and they can be taken **with no browser at all**, by driving `FixedLoop` from Node with a
+synthetic clock and a synthetic `requestAnimationFrame` at any chosen rate, including rates no
+container can produce on demand. `tools/platform/timefidelity.mjs` does exactly that, and its
+null control breaks the accounting on purpose and requires the check to go red.
+
+> **A warning this item must give about its own headline number.** The **11.6 fixed steps/s**
+> that started this investigation (`reports/critic-w1-touch/critic-gate-wallclock.json`,
+> `fa96455`; restated in S39 and in `NEXT-DISPATCH.md` §U) and the 7.8–9.0 steps/s of
+> `reports/w1-touch-r2/framerate.json` were **all taken in this container, on SwiftShader, on a
+> shared box**. Under §A rule T1 they are Tier-H quantities and **may not be reported as facts
+> about a phone** — "a phone at 11.6 steps/s" is precisely the inference "How we lose" #5 exists
+> to forbid, and P10–P13 are marked Tier-H for that reason and score `unmeasurable` = 0 here.
+> **What survives without a device, and what §C.5 is really built on, is the conditional:** *if*
+> a device sustains an rAF rate below 12.00 Hz, *then* the world runs at
+> `MAX_CATCHUP × STEP_MS × raf_hz / 1000` of real time and nothing tells anyone. That implication
+> is Tier-S, it is P14, and it is true today.
+
 ### D. Why this cannot be met by lowering fidelity in secret
 
 **Rule F1 (the trade rule).** A fidelity reduction is a legitimate response to a §C.1 or §C.2
@@ -244,6 +332,7 @@ node tools/platform/perf-run.mjs --scenarios F1,F2,F3,F4,F5 --seed 4711 \
      --tier S --frames 6000 --out reports/platform/<runId>
 node tools/platform/alloc-probe.mjs --in reports/platform/<runId>
 node tools/platform/decoupling.mjs --render-rates 60,30,15 --in reports/platform/<runId>
+node tools/platform/timefidelity.mjs --out reports/platform/<runId>/timefidelity.json   # M16; no browser
 
 # Tier-H — refuses to emit unless the manifest attests a real GPU
 node tools/platform/perf-run.mjs --scenarios F1,F2,F3,F4,F5 --tier H \
@@ -273,6 +362,8 @@ exist, every check is `unmeasurable` and scores **0**, fail-closed.
 | **M13** | H | GC pause duration | Long-task census correlated with GC events | P7 |
 | **M14** | H | Thermal hold | 20-minute continuous F1→F2→F4 loop on a phone; compare the last 5 minutes' distribution to the first 5 | p99 degradation ≤ **15%**; fps floor still met (`RI-JRN04` H8) |
 | **M15** | S | **Attestation integrity** | Read every run manifest cited in the verdict; check `renderer.unmaskedRenderer` and `deviceClass` | **Any Tier-H number sourced from a software-renderer manifest is a `RI-MTH04` falsification, voids the verdict, and is reported as such.** This check is run by the critic *on itself* |
+| **M16** | S | **Clamp accounting — the counters mean what they say** | `tools/platform/timefidelity.mjs`. Drives `FixedLoop` from Node with a synthetic clock and a synthetic `requestAnimationFrame`, needing no browser and no GPU. Three arms: **(a)** per-tick accounting over a swept rAF rate (60 → 1 Hz) — assert P14's identity and the iff on every tick; **(b)** the slow-motion law — at each swept rate assert `world_time_fidelity == min(1, MAX_CATCHUP × STEP_MS × raf_hz / 1000)` to 1e-9, which is what makes 19.3% a derivation rather than a SwiftShader anecdote; **(c)** P15 — 10 000 rAF ticks in mode `harness` and `play-instrumented` leave both counters at 0. **Each arm ships a null control that is run and must fail**: leak the surplus back into the accumulator instead of dropping it (breaks P14), stop incrementing `catchupDroppedMs` (breaks the identity), and let rAF drive the sim in `harness` (breaks P15) | **P14, P15. Every arm exact. Hard fail: the null control does not go red** — a clamp counter that cannot be caught lying is not evidence |
+| **M17** | H | **World-time fidelity and the clamp régime** | On attested hardware only. Read `catchupClamps`, `catchupDroppedMs`, `simStepsTotal`, `rendersTotal` and wall clock in mode `play` across all five scenarios; report `world_time_fidelity` per 10 s window and session-wide, `dropped_ms_per_s`, the longest `clamp_run`, and `images_per_sim_frame` | **P10–P13. Hard fail HF9: `clamp_run ≥ 10`** |
 
 ## Scoring
 
@@ -280,13 +371,21 @@ Native scale: **0–100**, weighted, plus hard fails that cap the item at **2**.
 
 | Block | Tier | Weight | Checks |
 |---|---|---|---|
-| **Sim integrity — the fixed step is real** | S | **26** | M6 (10), M9 (8), M7 (5), M8 (3) |
+| **Sim integrity — the fixed step is real** | S | **26** | M6 (10), M9 (7), M7 (4), M16 (3), M8 (2) |
 | **Sim cost and allocation** | S | **22** | M4 (10), M3 (8), M5 (4) |
 | **Scene budget** | S | **14** | M1 (10), M2 (4) |
 | **Measurement honesty** | S | **2** | M15 (2) |
-| **Frame-time distribution** | **H** | **20** | M10 (20) |
+| **Frame-time distribution** | **H** | **20** | M10 (17), M17 (3) |
 | **Combat frame integrity** | **H** | **12** | M11 (12) |
 | **Catastrophes and thermals** | **H** | **4** | M12 (2), M13 (1), M14 (1) |
+
+**The block totals are unchanged by §C.5's arrival and that is deliberate.** M16's 3 points are
+taken from inside its own block (M9 8→7, M7 5→4, M8 3→2) and M17's 3 from M10 (20→17), so
+Tier-S stays 64, Tier-H stays 36, and the band table below needs no re-derivation. The three
+checks that gave up a point — M9, M7, M6's neighbours — each stand behind a **hard fail**
+(HF1/HF3/HF2) that caps the item at 2 regardless of weight, so their weight was doing the least
+work in the block. M8 gives up a point to M16 because **M16 subsumes it**: M8 counts steps after
+one 400 ms stall, M16 checks the arithmetic of every tick at every rate, including M8's.
 
 **Tier-S total: 64. Tier-H total: 36.** A run in this container can therefore reach at most
 **64**, which lands in "Recognisably attempting it", ladder ceiling **5**. Per rule T2 that
@@ -313,6 +412,17 @@ ceiling is not a bug and may not be lifted by re-weighting.
   `RI-MTH04`.
 - **HF8** — A fidelity reduction made to pass this item that is absent from
   `reports/platform/tradeoffs.json` (rule F1).
+- **HF9** — **`clamp_run ≥ 10`** anywhere in a session on attested hardware (M17): ten
+  consecutive rAF ticks that each threw world time away is not R3 recovering from a stall, it is
+  the world running in **sustained slow motion**, and every frame-counted quantity in
+  `corpus/10-combat/` is now being displayed to the player at a fraction of its stated wall-clock
+  length. **Deliberately redundant with HF6** — the same condition seen through a counter rather
+  than a frame-time series, because the counter costs one integer and works on a device nobody
+  can attach a profiler to. A second, independent detector of the worst failure this item has.
+- **HF10** — **`catchupClamps > 0` or `catchupDroppedMs > 0` in mode `harness` or
+  `play-instrumented`** (M16 arm c, Tier-S, scoreable here today): rAF is advancing the
+  simulation on the path every probe in the project drives, so no trace taken by this fleet is
+  reproducible and `RI-MTH02` D5 is void.
 
 ## How we lose
 
@@ -356,7 +466,19 @@ ceiling is not a bug and may not be lifted by re-weighting.
     are read from a Three.js `renderer.info` snapshot taken before the UI pass, or after a
     `renderLists` reset. The number is honest-looking and wrong by half. The critic must assert
     the counter is read **after** the final present of the frame.
-12. **Nobody ever tests with render disabled.** M3 and M6 both require `setRenderRate(0)`, and if
+12. **The catch-up bound stops being a guard and becomes a tax, and it is silent about it.** This
+    is #10's twin and it is the one that actually happened. R3 is written for *recovery*: a stall
+    ends, five steps run, the surplus goes. Nobody writes down what R3 does when the stall never
+    ends — when every rAF tick is 400 ms because the device is simply slow. The answer is that
+    the world runs at `MAX_CATCHUP × STEP_MS × raf_hz / 1000` of real time **permanently**, every
+    combat item's frame counts stay perfectly self-consistent, every ratio the corpus checks
+    still holds, every determinism test still passes, and **the game is in slow motion.** It is
+    invisible to every check this item had before §C.5 because none of them look at wall clock
+    and simulation time *together*. The counters that would have shown it were computed on every
+    clamp from the day the loop was written, exposed halfway (`catchupClamps` yes,
+    `catchupDroppedMs` no), printed twice as an aside, and **never given a threshold by anything**
+    — which is how an engine records the evidence of a defect for months and nobody asks it.
+13. **Nobody ever tests with render disabled.** M3 and M6 both require `setRenderRate(0)`, and if
     `A-JRN11` is not built, sim cost can only be measured *through* the software rasteriser,
     where it is buried under a 200 ms rasterisation and cannot be seen at all.
 

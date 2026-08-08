@@ -1,0 +1,22 @@
+{
+  "task_id": "blog-table-fix",
+  "role": "fixer",
+  "started": "2026-08-08",
+  "state": "running",
+  "summary": "tools/blog.mjs has no GFM table support -- pipes render literally. Adding table rendering, sweeping docs/blog/*.md for existing damage, checking other renderer gaps (nested lists, footnotes, image titles, link parens), adding --self-test with two disagreeing arms, regenerating docs/index.html, verifying live via curl.",
+  "next_step": "implement table parsing in md() in tools/blog.mjs",
+  "files_touched": [
+    "orchestration/status/blog-table-fix.json"
+  ],
+  "files_claimed": [
+    "tools/blog.mjs",
+    "docs/index.html"
+  ],
+  "notes": [
+    "Predecessor killed by usage limit before any edit -- no partial diff found in tools/blog.mjs (git diff empty), no prior status file for this task existed under any obvious task id. Starting fresh.",
+    "Confirmed bug post: docs/blog/2026-08-08-the-facility-built-to-catch-a-fake-control-had-one-of-its-own.md (lines 29-33, real | table with delimiter row).",
+    "grep -lE for a delimiter row pattern across docs/blog/*.md found 12 posts with real GFM tables (not just stray pipe characters in prose): confirming exact list before fix."
+  ],
+  "findings": [],
+  "contention_note": "No browser needed for this task."
+}

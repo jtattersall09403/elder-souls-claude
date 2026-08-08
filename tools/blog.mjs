@@ -41,6 +41,61 @@ function joinWrappedImages(src) {
   return out.join('\n');
 }
 
+// ---------- GFM tables ----------
+// Split a `| a | b\|c | `d|e` |` row into cells on UNESCAPED pipes only. Two kinds of pipe must
+// survive a naive split-on-'|': one inside a backtick code span (GFM never treats that as a
+// separator, same as a code span protects it from every other inline construct) and one written
+// `\|` on purpose. Both are unescaped back to a literal `|` here, before `inline()` ever runs, so
+// a cell's markdown formatting is applied to the whole cell text exactly like any other inline
+// content — this is also why a pipe inside a code span must NOT be split on: doing it naively
+// (as a bare `.split('|')`) silently cuts a table cell in half without any error, which is exactly
+// the class of defect this file is being fixed for, not just the missing table itself.
+function splitTableRow(line) {
+  let l = line.trim();
+  if (l.startsWith('|')) l = l.slice(1);
+  if (l.endsWith('|')) {
+    // don't strip a trailing pipe that is itself escaped, e.g. `...cell\|`
+    let bs = 0;
+    for (let i = l.length - 2; i >= 0 && l[i] === '\\'; i--) bs++;
+    if (bs % 2 === 0) l = l.slice(0, -1);
+  }
+  const cells = [];
+  let cur = '', inCode = false;
+  for (let i = 0; i < l.length; i++) {
+    const c = l[i];
+    if (c === '\\' && l[i + 1] === '|') { cur += '|'; i++; continue; }
+    if (c === '`') { inCode = !inCode; cur += c; continue; }
+    if (c === '|' && !inCode) { cells.push(cur); cur = ''; continue; }
+    cur += c;
+  }
+  cells.push(cur);
+  return cells.map(c => c.trim());
+}
+// A delimiter row is what makes the line above it a header, not a paragraph that happens to
+// contain a pipe: GFM requires every cell to be dashes only, optionally colon-flanked for
+// alignment (`---`, `:---`, `---:`, `:---:`). Anything else and the whole block is not a table.
+function isDelimiterRow(line) {
+  const l = line.trim();
+  if (!/\|/.test(l)) return false;
+  const cells = splitTableRow(l);
+  return cells.length > 0 && cells.every(c => /^:?-{1,}:?$/.test(c));
+}
+function cellAlign(delim) {
+  const l = delim.startsWith(':'), r = delim.endsWith(':');
+  return l && r ? 'center' : r ? 'right' : l ? 'left' : '';
+}
+// `inline` is passed in rather than closed over: it is `md()`'s local formatter (bold/italic/
+// code/links), and a table cell gets exactly the same inline treatment as any other line.
+function renderTable(header, aligns, rows, inline) {
+  const attr = i => aligns[i] ? ` style="text-align:${aligns[i]}"` : '';
+  let h = '<div class="tblwrap"><table><thead><tr>'
+    + header.map((c, i) => `<th${attr(i)}>${inline(c)}</th>`).join('') + '</tr></thead><tbody>';
+  for (const r of rows) {
+    h += '<tr>' + header.map((_, i) => `<td${attr(i)}>${inline(r[i] ?? '')}</td>`).join('') + '</tr>';
+  }
+  return h + '</tbody></table></div>\n';
+}
+
 function md(src) {
   const lines = joinWrappedImages(src).split('\n');
   let out = '', inCode = false, inList = false, inQuote = false;
@@ -77,7 +132,8 @@ function md(src) {
       + `</div>${cmp.caption ? `<figcaption>${inline(cmp.caption)}</figcaption>` : ''}</figure>\n`;
     cmp = null;
   };
-  for (const raw of lines) {
+  for (let li = 0; li < lines.length; li++) {
+    const raw = lines[li];
     const l = raw.trimEnd();
     if (l.startsWith('```')) { flushPara(); flushCmp(); inCode = !inCode; out += inCode ? '<pre><code>' : '</code></pre>\n'; continue; }
     if (inCode) { out += esc(raw) + '\n'; continue; }
@@ -90,6 +146,23 @@ function md(src) {
       continue;
     }
     if (/^\s*$/.test(l)) { flushPara(); closeList(); closeQuote(); continue; }
+    // A GFM table: this line has a pipe and the very next line is nothing but dashes/colons in
+    // pipe-separated cells. That second line is the only thing that tells a table apart from an
+    // ordinary sentence that happens to contain a `|` — so a table is never recognised on a line
+    // by itself, only on a header line whose successor proves it.
+    if (l.trim() !== '' && /\|/.test(l) && li + 1 < lines.length && isDelimiterRow(lines[li + 1])) {
+      flushPara(); closeList(); closeQuote(); flushCmp();
+      const header = splitTableRow(l);
+      const aligns = splitTableRow(lines[li + 1]).map(cellAlign);
+      li++; // consume the delimiter row
+      const rows = [];
+      while (li + 1 < lines.length && lines[li + 1].trim() !== '' && /\|/.test(lines[li + 1])) {
+        li++;
+        rows.push(splitTableRow(lines[li]));
+      }
+      out += renderTable(header, aligns, rows);
+      continue;
+    }
     // Blockquotes are buffered exactly like paragraphs. They used to emit one <p> per source
     // line, which broke twice over on a hard-wrapped quote: the reader got a paragraph per line,
     // and any *emphasis* spanning a line break published as literal asterisks, because the
@@ -245,6 +318,11 @@ nav button[aria-selected=true]{background:var(--bg);color:var(--gold);border-col
 @media(max-width:560px){.cmp-row{grid-template-columns:1fr !important}}
 .post code{color:var(--blue);font-size:13px}
 .post strong{color:#fff}
+/* Wide tables (many columns, long inline-code cells) scroll inside their own box on a phone
+   instead of pushing the whole page sideways — the wrapper is the scroll container, never body. */
+.post .tblwrap{overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch}
+.post .tblwrap table{margin:0;width:100%}
+.post .tblwrap code{white-space:nowrap}
 h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:8px;margin:30px 0 14px}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{text-align:left;color:var(--dim);font-weight:500;padding:6px 10px;border-bottom:1px solid var(--line);text-transform:uppercase;font-size:10px;letter-spacing:.08em}

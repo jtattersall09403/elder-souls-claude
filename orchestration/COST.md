@@ -94,6 +94,21 @@ hypothesis to be measured; none is a decision.**
    seam rulings, graded prose and every critic stay Opus; a build with a landed plan, an existing
    instrument and a machine-checkable acceptance is a Sonnet job. **Haiku is unproven here and no
    build should be its first job** — trial it on one mechanical task and measure before trusting it.
+
+   **The routing axis is discretion, not difficulty.** Ruled by the `W1-HUD-TOAST` plan critic from
+   its own exchange and adopted: *route on whether the acceptance is **decidable without
+   judgement**, not on how hard the subject sounds.* Its worked case is the proof — of two pieces,
+   the harder engineering job was the Sonnet one because its acceptance was machine-checkable, and
+   the piece that was "mostly grep" was the Opus one because deciding what to count required
+   judgement. Two readers had already accepted an uncounted premise about that population; a Sonnet
+   build would have inherited it. Sorting by apparent difficulty gets this exactly backwards.
+
+   **Levers 1 and 4 are one coupled lever, and it is the largest uncosted saving in the programme.**
+   Same source: **the plan loop converts Opus builds into Sonnet builds**, because it manufactures
+   precisely the three conditions the middle row of `PLAN-LOOP.md`'s table requires — a landed plan,
+   a named existing instrument, and a machine-checkable acceptance. So a plan exchange does not
+   merely remove a build round; it *changes the price of the round that remains*. Measure them
+   together or the saving is attributed to the wrong thing and the wrong one gets scaled.
 2. **Cache economics.** Cache reads are an order of magnitude cheaper than fresh input. Brief shape,
    file-read order and prompt stability all move the cache-hit ratio. Measure the ratio first; it may
    already be high, in which case this lever is smaller than it looks.
@@ -165,7 +180,13 @@ transcript does not carry. Renderer: `tools/cost-report.mjs`; worked example wit
   "commit": "abc1234",                       // rule 12: every number is a claim about a commit
   "source": "/root/.claude/projects/.../*.jsonl",
   "stale_after_minutes": 45,                 // older than this and the page says STALE (default 45)
-  "window": { "from": ISO, "to": ISO, "hours": 62.4 },  // what the totals cover
+  "window": { "from": ISO, "to": ISO, "hours": 62.4,
+              "complete": true },            // true = covers ALL history, so the total really is
+                                             // "spend to date". FALSE (or absent) and the page
+                                             // labels the headline "spend in window" and says so:
+                                             // a total that silently covers less than the reader
+                                             // assumes is the same defect as a stale one. Set it
+                                             // false if the instrument rolls up incrementally.
   "prices": { "note": "usd per Mtok", "claude-opus-5": { "input": 15, "cache_write": 18.75,
               "cache_read": 1.5, "output": 75 } },      // published so a reader can audit the money
   "headline": {                              // the top of the page. Every field pre-computed.

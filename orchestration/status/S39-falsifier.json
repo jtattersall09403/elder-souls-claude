@@ -1,19 +1,33 @@
 {
   "task_id": "S39-falsifier",
   "role": "builder+runner (instrument only, not the remedy)",
-  "state": "starting",
+  "state": "designing",
   "started": "2026-08-08",
   "question": "Run the falsifier S39 specified and never ran: two-arm replay above and below the 12.00 Hz rAF floor; identical promoted actions and bit-identical replay hashes, or S39 falls.",
-  "next_step": "Read ARBITRATION.md S39 verbatim, NEXT-DISPATCH.md section U, loop.js, hold-gate.js, input pipeline. Then build tools/input/arbiter-clock-s39.mjs.",
+  "next_step": "Build tools/input/arbiter-clock-s39.mjs: (A) capture arm, real DOM presses 20/60/120/250/500 ms at rAF above and below the floor, shipped tree vs an S39-patched COPY (r2-framerate.mjs patchedTree precedent); (B) replay arm, same recorded converted-integer stream replayed at both rates, sha256 of the trace compared -- this is the arm whose divergence overturns S39; (C) offline lint of the 16 reclassified figures vs the 11,161 that stay; (D) --self-test that perturbs one arm by one frame and must go red.",
+  "read_so_far": [
+    "ARBITRATION.md S39 (full row)",
+    "NEXT-DISPATCH.md section U",
+    "game/src/core/loop.js (MAX_CATCHUP=5, 12.00 Hz floor, play|harness|play-instrumented)",
+    "game/src/core/guards.js (armSim window; wallNow)",
+    "game/src/input/hold-gate.js (REMEDY NOT LANDED: framesHeld is still frame - pressFrame + 1)",
+    "game/src/input/touch.js, real.js (gate call sites); sim/step.js:69 calls realInput.tick(sim.frame) INSIDE the fixed step",
+    "tools/touch/r2-framerate.mjs (patchedTree precedent, load stamping), tools/touch/critic-gate-wallclock.mjs (Finger/CDP press precedent), tools/harness/determinism.mjs (trace hash precedent)"
+  ],
+  "findings_so_far": [
+    "hold-gate.js at HEAD is UNPATCHED -- framesHeld() = frame - pressFrame + 1. So the falsifier must run S39's remedy on a served COPY of the tree, never in the working tree (W1-TOUCH r2 owns that file)."
+  ],
   "files_claimed": [
     "tools/input/arbiter-clock-s39.mjs",
-    "orchestration/status/S39-falsifier.json"
+    "orchestration/status/S39-falsifier.json",
+    "reports/s39/"
   ],
   "files_touched": [
     "orchestration/status/S39-falsifier.json"
   ],
   "must_not_touch": [
-    "game/src/input/hold-gate.js (owned by W1-TOUCH round 2, live)"
+    "game/src/input/hold-gate.js (owned by W1-TOUCH round 2, live -- confirmed by tools/ownership.mjs)",
+    "game/src/input/touch.js, real.js, gamepad.js (same owner)"
   ],
   "no_browser": null
 }
