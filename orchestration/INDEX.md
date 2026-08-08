@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9063779`: 781 tools, 153 reference
-items, 88 pieces in flight.
+so it cannot drift. Generated at `dd889d5`: 781 tools, 153 reference
+items, 89 pieces in flight.
 
-Its purpose is to stop 88+ concurrent agents each paying separately to discover the
+Its purpose is to stop 89+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1117,6 +1117,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `COST-DASHBOARD` | running | agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report. | `orchestration/status/COST-DASHBOARD.json` |
+| `critic-w1-20` | running | read round report + RI-QST01; build wrap-break instrument for ui/hud.js; sweep tree for se | — |
+| `PLT01-STEPRATE` | running | state acceptance numbers in the item BEFORE measuring; then build tools/platform/timefidel | `orchestration/status/PLT01-STEPRATE.json` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
 | `W1-12-r2-critic` | running | read ai.js closure rule; verify B-arm frame trace; then browser M1/M2 | `orchestration/status/W1-12-r2-critic.json` |
 | `critic-w1-15-r4` | ? | read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a fram | `orchestration/status/critic-w1-15-r4.json` |
@@ -1125,7 +1128,6 @@ work is the difference between resuming and starting over.
 | `COST-INSTRUMENT-plan` | running | verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-IN | `orchestration/status/COST-INSTRUMENT-plan.json` |
 | `W1-PROSE-TICS-r4-instrument` | ? | read RI-MTH03 + JUDGEMENT, then design leak fix | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
-| `PLT01-STEPRATE` | running | read S39, NEXT-DISPATCH U, RI-PLT01, loop.js | `orchestration/status/PLT01-STEPRATE.json` |
 | `critic-w1-deploy-r2` | running | verify the landings from git log; check ownership of verify-playable.mjs before touching i | `orchestration/status/critic-w1-deploy-r2.json` |
 | `S39-falsifier` | starting | Read ARBITRATION.md S39 verbatim, NEXT-DISPATCH.md section U, loop.js, hold-gate.js, input | `orchestration/status/S39-falsifier.json` |
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
@@ -1136,7 +1138,6 @@ work is the difference between resuming and starting over.
 | `broken-blog-images-fix` | ? | none -- banked and pushed | `tools/progress.mjs` `docs/progress.html` `docs/index.html` `tools/playability/check-image-refs.mjs` `orchestration/NEXT-DISPATCH.md` |
 | `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
-| `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |

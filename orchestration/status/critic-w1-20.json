@@ -5,7 +5,7 @@
   "round": 1,
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms",
+  "next_step": "read round report + RI-QST01; build wrap-break instrument for ui/hud.js; sweep tree for self-referential expected values; consumption on faction models",
   "files_touched": [],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-20-r1.md",
@@ -15,7 +15,7 @@
     "docs/shots/"
   ],
   "redundant_with": [],
-  "notes": "fresh-context critic; attacks A-G per dispatch",
+  "notes": "fresh-context critic; attacks A-G per dispatch | SUCCESSOR resumed 2026-08-08 after predecessor killed by usage limit; continuing from next_step.",
   "commit_at_start": "f862df5",
   "findings_so_far": [
     "HEADLINE REPRODUCES at f862df5: builder's probe re-run cold gives 8 ladders, 7 joinable end to end, 7 refusals spoken and whole. Exit 0.",

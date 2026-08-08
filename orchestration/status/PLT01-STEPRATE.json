@@ -3,19 +3,28 @@
   "title": "RI-PLT01 step-rate collapse at handheld profile + wire loop.stats.catchupClamps/catchupDroppedMs as a measured requirement",
   "state": "running",
   "started_at": "2026-08-08",
-  "owner_brief": "S39 found game/src/loop.js MAX_CATCHUP=5 bounds catch-up; below 12.00 Hz the world runs slow uniformly. Handheld profile measured 11.6 steps/s = 19.3% of real time. catchupClamps/catchupDroppedMs are computed and nothing reads them.",
-  "next_step": "read S39, NEXT-DISPATCH U, RI-PLT01, loop.js",
+  "owner_brief": "S39 found game/src/core/loop.js MAX_CATCHUP=5 bounds catch-up; below 12.00 Hz the world runs slow uniformly. Handheld profile measured 11.6 steps/s = 19.3% of real time. catchupClamps/catchupDroppedMs are computed and nothing reads them.",
+  "next_step": "state acceptance numbers in the item BEFORE measuring; then build tools/platform/timefidelity.mjs; then measure step rate by profile",
   "files_claimed": [
     "orchestration/status/PLT01-STEPRATE.json",
-    "corpus/10-requirements/RI-PLT01.md",
-    "game/src/loop.js",
-    "tools/steprate-probe.mjs"
+    "corpus/85-platform/RI-PLT01-frame-budget.md",
+    "tools/platform/timefidelity.mjs",
+    "reports/platform/PLT01-STEPRATE/",
+    "reports/blog-feed.jsonl"
   ],
   "files_touched": [
     "orchestration/status/PLT01-STEPRATE.json"
   ],
   "notes": [
-    "ownership --for game/src/loop.js: nobody live has declared it (checked at start).",
-    "W1-TOUCH r2 builder is live and also measuring frame rate at handheld profile; S39-falsifier live in tools/input/. Will re-check before writing."
-  ]
+    "PREDECESSOR did nothing but write this file (killed by usage limit after reading contention). Effectively a fresh start; keeping the task id.",
+    "ownership --for game/src/core/loop.js: nobody live has declared it. NOTE the brief says game/src/loop.js; the real path is game/src/core/loop.js.",
+    "I am deliberately NOT claiming game/src/core/loop.js for edits yet. S39's remedy list gives loop.js to the input-clock work (NEXT-DISPATCH U item 3, inputNow()). If I need a read-only accessor I will declare it first.",
+    "DECISION: acceptance numbers written into RI-PLT01 before any measurement, per brief."
+  ],
+  "acceptance_numbers_declared_before_measuring": {
+    "P10": "catchupClamps == 0 over any F3/F4 (combat) window on attested hardware. Rationale: one clamp requires a single rAF gap >= 6*STEP_MS = 100.0 ms, which already violates C.1's F3/F4 worst-frame <= 33 ms AND HF6's >100 ms rule.",
+    "P11": "world_time_fidelity >= 0.999 over any 60 s play-mode window outside a declared load boundary; equivalently catchupDroppedMs <= 60 ms per 60 s.",
+    "P12": "Tier-S instrument check: in play mode, stallMainThread(400) must produce exactly +1 catchupClamps and +catchupDroppedMs in [300.0, 350.0] ms on the recovery tick. Machine-independent: it is arithmetic over the stall, not over the renderer.",
+    "P13": "Tier-S invariant: in harness / play-instrumented mode catchupClamps and catchupDroppedMs are exactly 0 forever, because rAF must not advance the sim."
+  }
 }

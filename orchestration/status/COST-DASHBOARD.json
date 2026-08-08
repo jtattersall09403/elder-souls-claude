@@ -1,0 +1,19 @@
+{
+  "task_id": "COST-DASHBOARD",
+  "role": "builder",
+  "piece": "COST-DASHBOARD",
+  "state": "running",
+  "started": "2026-08-08",
+  "goal": "Publish the cost programme on docs/progress.html: spend to date + burn rate at the top, C/H vs the 25% bar with every point plotted, split by model and token class, the three guards beside the cost, and every change with before/after and kept/reversed. Renders a ledger file; computes no cost of its own (rule 10).",
+  "next_step": "agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report.mjs against a committed fixture",
+  "files_touched": ["orchestration/status/COST-DASHBOARD.json"],
+  "files_claimed": [
+    "tools/cost-report.mjs",
+    "tools/fixtures/cost-ledger.sample.json",
+    "docs/data/cost-ledger.json",
+    "orchestration/COST.md",
+    "tools/progress.mjs"
+  ],
+  "redundant_with": ["COST-INSTRUMENT-plan"],
+  "notes": "COST-INSTRUMENT owns computing cost and writing the ledger; this piece owns rendering it only. tools/progress.mjs is touched for a single include line; COST.md §6 for the data contract the spec says is recorded there once landed."
+}
