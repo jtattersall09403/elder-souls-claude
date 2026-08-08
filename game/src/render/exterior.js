@@ -239,6 +239,22 @@ const MIN_FOOTPRINT_M = 3.4;
  */
 const ROOM_INSET_M = 0.66;
 
+/* ---- ROUND 5: the doorstep and the lamps -------------------------------------------------------
+ * `DOORSTEP_OUT_M` is how far beyond the entry wall the body lands when it leaves. It has to clear
+ * the wall slab (`SHELL_WALL_T`) and the roof overhang (0.5 m in `hipRoof`) and still be inside
+ * `sim/settlement.js DOOR_REACH_M` = 2.6 m of the door, so the way back in is where the way out
+ * was. 1.5 m is the middle of that band.
+ * `DOOR_REACH_M` is duplicated here rather than imported because `render/exterior.js` must not
+ * depend on `sim/`; the census asserts the two agree.
+ */
+const DOORSTEP_OUT_M = 1.5;
+const DOORSTEP_MAX_OUT_M = 8.0;
+const DOORSTEP_RING_MAX_M = 24.0;
+const DOOR_REACH_M = 2.6;
+/** How far inside its own wall a lamp's CENTRE is kept. A hearth is a 1.1 m stone ring. */
+const HEARTH_INSET_M = 1.15;
+const LAMP_INSET_M = 0.35;
+
 /**
  * Read a settlement record and its interiors into a list of placed, sized buildings.
  *
@@ -302,6 +318,11 @@ export function planSettlement(rec, interiors) {
       storeys,
       entry_side: entry,
       door: b.door || (it ? it.exterior_door : null) || null,
+      // WHAT THE RECORD SAID BEFORE THE JOIN TOUCHED IT. `applyInteriorBounds()` re-derives the
+      // door onto the entry wall and writes it back through this object AND through the settlement
+      // document, so every side derived from a door must be derived from this field and not from
+      // the live one. Prefer a stash the join has already made over the raw field.
+      door_declared: b.door_declared || b.door || (it ? it.exterior_door : null) || null,
       seal_state: b.seal_state || null,
       interior_kit: innerKit,
       exterior_kit: extKit,
@@ -419,8 +440,20 @@ export function planSettlement(rec, interiors) {
  *
  * @returns {object} a report: how many rooms were reduced, by how much, and the worst.
  */
-export function applyInteriorBounds(plans, interiors) {
+export function applyInteriorBounds(plans, interiors, docs, opts) {
   const I = interiors || {};
+  const O = opts || {};
+  // The two round-5 legs, switchable so `rule 6` can delete either one on a copy without editing
+  // this file. Default ON; the census and the delete-the-fix tool are the only callers that pass
+  // them false, and each arm is measured separately.
+  const DO_DOORSTEP = O.doorstep !== false;
+  const DO_LAMPS = O.lamps !== false;
+  // `docs` — the settlement documents themselves, so the door can be moved in the ONE place
+  // `sim/settlement.js SettlementSystem` reads it from. Optional: a caller that only wants the
+  // room sizes (every pre-round-5 tool) passes two arguments and gets round 4's behaviour for the
+  // door table, with the interior records still corrected.
+  const byDoc = new Map();
+  for (const d of docs || []) if (d && d.id) byDoc.set(d.id, d);
   // TWO DIFFERENT NUMBERS, and reporting them as one would hide the one that matters.
   //  * EVERY room loses `ROOM_INSET_M` on each axis, because the declared footprint is the
   //    OUTSIDE of the building and the room is what is left inside its walls. That is not a
@@ -431,9 +464,15 @@ export function applyInteriorBounds(plans, interiors) {
   const out = {
     rooms: 0, rooms_limited_by_the_plan: 0, rooms_at_declared_bounds_less_walls: 0,
     spawns_moved: 0, worst: null, limited: [],
+    // Round 5.
+    doors_moved: 0, doorsteps_moved: 0, doorsteps_unresolved: 0, doorsteps_out_of_reach: 0,
+    lamps: 0, lamps_moved: 0, unresolved: [],
   };
   const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
   for (const plan of plans || []) {
+    const doc = byDoc.get(plan.id) || null;
+    const rawById = new Map();
+    for (const r of (doc && doc.buildings) || []) if (r && r.id) rawById.set(r.id, r);
     for (const b of plan.buildings) {
       const rec = b.interior ? I[b.interior] : null;
       if (!rec || !rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) continue;
@@ -467,6 +506,122 @@ export function applyInteriorBounds(plans, interiors) {
         if (s[0] !== cont.interior_spawn[0] || s[2] !== cont.interior_spawn[2]) out.spawns_moved++;
         cont.interior_spawn = s;
       }
+
+      // ---- ROUND 5, LEG 1: THE DOORSTEP ---------------------------------------------------------
+      //
+      // Four rounds measured whether the building is big enough to hold its room and none measured
+      // where the body stands when it comes back out. It stands wherever `continuity.exterior_spawn`
+      // says, and that was authored as `door + 1.8 m in +z` where `door` was the building's CENTRE
+      // on 112 of 112 — so leaving a building put you in the middle of it, and round 4's roof fix
+      // put a lid on the box. Both halves are re-derived here:
+      //
+      //   * the DOOR moves onto the entry wall of the DRAWN building, because a door in the middle
+      //     of a house is not a door and because `sim/settlement.js#doorAt()` measures your hand's
+      //     distance to it — leave it at the centre and the corrected doorstep cannot get back in;
+      //   * the DOORSTEP moves to `DOORSTEP_OUT_M` beyond that wall point, then out of any
+      //     neighbour's footprint it happens to land in.
+      //
+      // It is the same shape as the `interior_spawn` clamp above and for the same reason, pointed
+      // the other way: stashed once, always re-derived from the stash, so it is idempotent and
+      // reversible.
+      if (DO_DOORSTEP && cont && Array.isArray(cont.exterior_spawn)) {
+        const raw = rawById.get(b.id) || null;
+        if (raw && raw.door && !raw.door_declared) raw.door_declared = raw.door.slice();
+        const dp = doorPointWorld(b);
+        const doorY = (b.door_declared && b.door_declared[1]) || (raw && raw.door_declared && raw.door_declared[1]) || cont.exterior_spawn[1] || 0;
+        const newDoor = [+dp[0].toFixed(3), doorY, +dp[1].toFixed(3)];
+        if (!b.door || b.door[0] !== newDoor[0] || b.door[2] !== newDoor[2]) out.doors_moved++;
+        b.door = newDoor;
+        // IN PLACE, ELEMENT BY ELEMENT. `SettlementSystem`'s door table is built in its constructor
+        // — before `setSettlements()` ever runs — and each row holds `door: b.door`, the array
+        // itself. Assigning a new array here would leave the reach table pointing at the old one
+        // and the door would still be in the middle of the house for everything the sim does.
+        if (raw && Array.isArray(raw.door)) { raw.door[0] = newDoor[0]; raw.door[1] = newDoor[1]; raw.door[2] = newDoor[2]; }
+        else if (raw) raw.door = newDoor.slice();
+
+        if (!cont.exterior_spawn_declared) cont.exterior_spawn_declared = cont.exterior_spawn.slice();
+        const nrm = entryOutwardWorld(b);
+        const tan = [-nrm[1], nrm[0]];
+        // Candidates, nearest first. The tangential slide comes before the outward push because a
+        // doorstep 1.5 m out and 1.2 m sideways is still 1.92 m from the door and still in reach,
+        // while a doorstep pushed 4 m out is not — and a doorstep you cannot get back in through
+        // is the same defect wearing the other sign.
+        // NEAREST STANDABLE POINT TO THE DOOR, searched outward. Two passes: first the half-plane
+        // in FRONT of the door, which is where a doorstep belongs, then the whole ring — because
+        // seven buildings in this province have their entry wall buried inside a neighbour (the
+        // deep-overlap gap the round-4 verdict calls the piece's oldest, and which is not fixed by
+        // moving a building to satisfy a probe). For those, "the nearest point outside every
+        // footprint" is the best answer available and the count of them is published.
+        let picked = null, inReach = true, bestR = Infinity;
+        for (const frontOnly of [true, false]) {
+          for (let rr = DOORSTEP_OUT_M; rr <= DOORSTEP_RING_MAX_M + 1e-9; rr += 0.25) {
+            let found = null;
+            for (let ai = 0; ai < 72; ai++) {
+              // Sweep outward from the wall normal in alternating directions, so the first hit at a
+              // given radius is the one closest to straight out of the door.
+              const step = Math.ceil(ai / 2) * (Math.PI / 36) * (ai % 2 ? 1 : -1);
+              const dx = nrm[0] * Math.cos(step) - nrm[1] * Math.sin(step);
+              const dz = nrm[0] * Math.sin(step) + nrm[1] * Math.cos(step);
+              if (frontOnly && (dx * nrm[0] + dz * nrm[1]) <= 0.05) continue;
+              const x = dp[0] + dx * rr, z = dp[1] + dz * rr;
+              if (insideBuilding(plan, x, z, 0)) continue;
+              found = [x, z];
+              break;
+            }
+            if (found) { bestR = rr; picked = [+found[0].toFixed(3), cont.exterior_spawn_declared[1], +found[1].toFixed(3)]; break; }
+          }
+          if (picked) break;
+        }
+        if (picked) inReach = bestR <= DOOR_REACH_M;
+        if (!picked) {
+          // Nowhere outside every footprint within reach of this door. Say so, loudly, rather than
+          // silently leaving the body under the roof: the last resort is still on the wall's normal
+          // and still outside this building, and the count is published.
+          const x = dp[0] + nrm[0] * DOORSTEP_MAX_OUT_M, z = dp[1] + nrm[1] * DOORSTEP_MAX_OUT_M;
+          picked = [+x.toFixed(3), cont.exterior_spawn_declared[1], +z.toFixed(3)];
+          inReach = false;
+          out.doorsteps_unresolved++;
+          out.unresolved.push({ building: b.id, interior: rec.id, settlement: plan.id });
+        }
+        if (!inReach) out.doorsteps_out_of_reach++;
+        if (picked[0] !== cont.exterior_spawn[0] || picked[2] !== cont.exterior_spawn[2]) out.doorsteps_moved++;
+        cont.exterior_spawn = picked;
+      }
+
+      // ---- ROUND 5, LEG 2: THE LAMPS ------------------------------------------------------------
+      //
+      // Round 4 moved the rooms and left the lamps where they were: 55 authored lamps in 19 of the
+      // 41 shrunk rooms stood outside their own walls, 12 of them non-snuffable hearths. It is not
+      // decoration. `sim/stealth/system.js#syncInteriorLights()` runs inside the fixed step and
+      // adds a detection light source at each of these VERBATIM positions, so a corner was lit or
+      // dark for a reason the player could not see. The clamp is here, in the record, so the
+      // renderer and the detection model read one corrected number — W1-15 owns that model and
+      // this must not fork it.
+      //
+      // The inset is per-fitting, because a hearth is a 1.1 m stone ring and a lamp stand is a
+      // 0.13 m spike, and clamping a hearth's CENTRE to the wall leaves a metre of masonry outside.
+      if (DO_LAMPS && Array.isArray(rec.lights) && rec.lights.length) {
+        if (!rec.lights_declared) rec.lights_declared = rec.lights.map((L) => ({ pos: (L.pos || [0, 1.4, 0]).slice() }));
+        for (let i = 0; i < rec.lights.length; i++) {
+          const L = rec.lights[i];
+          const dcl = rec.lights_declared[i] || { pos: (L.pos || [0, 1.4, 0]).slice() };
+          const p0 = dcl.pos;
+          out.lamps++;
+          const inset = L.kind === 'hearth' ? HEARTH_INSET_M : LAMP_INSET_M;
+          const mx = Math.max(0.2, W / 2 - inset), mz = Math.max(0.2, D / 2 - inset);
+          const p = [+clamp(p0[0], cx - mx, cx + mx).toFixed(3), p0[1], +clamp(p0[2], cz - mz, cz + mz).toFixed(3)];
+          if (!L.pos || p[0] !== L.pos[0] || p[2] !== L.pos[2]) out.lamps_moved++;
+          L.pos = p;
+        }
+      }
+      // The fail-open single light a room with no `lights[]` falls back to, same clamp.
+      if (DO_LAMPS && rec.light && Array.isArray(rec.light.pos)) {
+        if (!rec.light_declared_pos) rec.light_declared_pos = rec.light.pos.slice();
+        const p0 = rec.light_declared_pos;
+        const mx = Math.max(0.2, W / 2 - HEARTH_INSET_M), mz = Math.max(0.2, D / 2 - HEARTH_INSET_M);
+        rec.light.pos = [+clamp(p0[0], cx - mx, cx + mx).toFixed(3), p0[1], +clamp(p0[2], cz - mz, cz + mz).toFixed(3)];
+      }
+
       if (!limited) { out.rooms_at_declared_bounds_less_walls++; continue; }
       out.rooms_limited_by_the_plan++;
       const frac = +((W * D) / (decW * decD)).toFixed(4);
@@ -474,6 +629,48 @@ export function applyInteriorBounds(plans, interiors) {
       if (!out.worst || frac < out.worst.area_kept) out.worst = out.limited[out.limited.length - 1];
     }
   }
+  // ---- ROUND 5: THE ORPHANS, and why they were invisible ---------------------------------------
+  //
+  // Three interior records name a `continuity.building` that no settlement document contains —
+  // `thorn-house-0`, `barge-hold`, `writ-house`. The loop above is over PLAN buildings, so it has
+  // never seen them, and neither has any census in five rounds of this piece: a check that walks
+  // the plan and asks about its rooms cannot report a room whose building is not in the plan.
+  // `thorn-house-0`'s declared doorstep sits inside `thorn-gate`, and the only instrument that
+  // found it was the live sweep, which asked the BODY rather than the data.
+  //
+  // There is no wall to derive a doorstep from, so this does the one thing that is still true:
+  // pushes the declared point out of whatever building it is standing in.
+  if (DO_DOORSTEP) {
+    const planFor = new Map();
+    for (const plan of plans || []) planFor.set(plan.id, plan);
+    const claimed = new Set();
+    for (const plan of plans || []) for (const b of plan.buildings) if (b.interior) claimed.add(b.interior);
+    for (const id of Object.keys(I)) {
+      const rec = I[id];
+      if (!rec || claimed.has(id)) continue;
+      const cont = rec.continuity;
+      if (!cont || !Array.isArray(cont.exterior_spawn)) continue;
+      const plan = planFor.get(rec.settlement);
+      if (!plan) continue;
+      out.orphans = (out.orphans || 0) + 1;
+      if (!cont.exterior_spawn_declared) cont.exterior_spawn_declared = cont.exterior_spawn.slice();
+      const s0 = cont.exterior_spawn_declared;
+      if (!insideBuilding(plan, s0[0], s0[2], 0)) { cont.exterior_spawn = s0.slice(); continue; }
+      let picked = null;
+      for (let rr = 0.5; rr <= DOORSTEP_RING_MAX_M && !picked; rr += 0.25) {
+        for (let ai = 0; ai < 72; ai++) {
+          const a = ai * (Math.PI / 36);
+          const x = s0[0] + Math.cos(a) * rr, z = s0[2] + Math.sin(a) * rr;
+          if (insideBuilding(plan, x, z, 0)) continue;
+          picked = [+x.toFixed(3), s0[1], +z.toFixed(3)];
+          break;
+        }
+      }
+      if (picked) { cont.exterior_spawn = picked; out.orphan_doorsteps_moved = (out.orphan_doorsteps_moved || 0) + 1; }
+      else out.doorsteps_unresolved++;
+    }
+  }
+
   out.limited.sort((a, c) => a.area_kept - c.area_kept);
   return out;
 }
@@ -492,19 +689,59 @@ export function applyInteriorBounds(plans, interiors) {
 function entrySideLocal(b) {
   const yaw = (b.yaw_deg || 0) * Math.PI / 180;
   let wx = 0, wz = 1;
+  // ROUND 5: read `door_declared` in preference to `door`, because `applyInteriorBounds()` now
+  // MOVES the door onto the entry wall. Deriving the side from a door that this derivation itself
+  // wrote would make the answer depend on how many times the derivation had run. It stays the
+  // same either way — a door on the +z wall points +z from the centre, which is the same answer a
+  // door AT the centre falls back to — but "stays the same by luck" is not a property to rely on.
+  const dd = b.door_declared || b.door;
   if (b.entry_side) {
     if (b.entry_side === 'north') { wx = 0; wz = -1; }
     else if (b.entry_side === 'south') { wx = 0; wz = 1; }
     else if (b.entry_side === 'east') { wx = 1; wz = 0; }
     else if (b.entry_side === 'west') { wx = -1; wz = 0; }
-  } else if (b.door) {
-    const dx = b.door[0] - b.x, dz = b.door[2] - b.z;
+  } else if (dd) {
+    const dx = dd[0] - b.x, dz = dd[2] - b.z;
     if (Math.abs(dx) > Math.abs(dz)) { wx = Math.sign(dx) || 1; wz = 0; } else { wx = 0; wz = Math.sign(dz) || 1; }
   }
   // Rotate the world direction into the building's local frame.
   const c = Math.cos(-yaw), s = Math.sin(-yaw);
   const lx = wx * c + wz * s, lz = -wx * s + wz * c;
   return Math.abs(lx) > Math.abs(lz) ? (lx > 0 ? '+x' : '-x') : (lz > 0 ? '+z' : '-z');
+}
+
+/**
+ * The OUTWARD unit normal, in WORLD space, of the wall the door is cut in.
+ *
+ * `entrySideLocal()` answers in the building's own frame; this rotates that answer back out,
+ * using the same local -> world convention `settlementSolids()` uses for the wall slabs
+ * (`wx = cx*cos + cz*sin`, `wz = -cx*sin + cz*cos`), so the doorstep and the collision gap are
+ * derived from one arithmetic rather than two that agree by inspection.
+ */
+export function entryOutwardWorld(b) {
+  const side = entrySideLocal(b);
+  const lx = side === '+x' ? 1 : side === '-x' ? -1 : 0;
+  const lz = side === '+z' ? 1 : side === '-z' ? -1 : 0;
+  const yaw = (b.yaw_deg || 0) * Math.PI / 180;
+  const c = Math.cos(yaw), s = Math.sin(yaw);
+  return [lx * c + lz * s, -lx * s + lz * c];
+}
+
+/**
+ * The world point at the middle of the doorway — ON the entry wall of the DRAWN building.
+ *
+ * Round 4 and everything before it had `buildings[].door` at the building's centre on 112 of 112,
+ * which is how a doorstep 1.8 m from "the door" ended up under the roof.
+ */
+export function doorPointWorld(b) {
+  const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+  const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+  const side = entrySideLocal(b);
+  const lx = (side === '+x' ? 1 : side === '-x' ? -1 : 0) * (w / 2);
+  const lz = (side === '+z' ? 1 : side === '-z' ? -1 : 0) * (d / 2);
+  const yaw = (b.yaw_deg || 0) * Math.PI / 180;
+  const c = Math.cos(yaw), s = Math.sin(yaw);
+  return [b.x + lx * c + lz * s, b.z - lx * s + lz * c];
 }
 
 const DOOR_W = 1.8;

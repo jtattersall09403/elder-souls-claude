@@ -135,9 +135,19 @@ export function buildSave(sim, build) {
         focus_base: c.focus_base, tier: c.tier, skill_req: c.skill_req, gold_price: c.gold_price,
       })),
       gems: sim.magic.gems.map((g) => ({ grade: g.grade, filled: !!g.filled, charge: g.charge })),
+      // W1-14 r5 — THE THING YOU HAD MADE, and its remaining charge. Without this line an
+      // enchanted item is a session object: you walk to Blackrose, spend a grand soul and 4,000
+      // gold on a ring, save, load, and the ring is gone while the soul stays spent. Rule 7's
+      // shape from the other side — a field the world writes and the save never carried.
+      enchanted: sim.magic.enchanted.map((e) => ({
+        id: e.id, name: e.name, item_class: e.item_class, kind: e.kind, range: e.range,
+        effects: e.effects.map((t) => ({ effect: t.effect, magnitude: t.magnitude, duration_s: t.duration_s, area_r_m: t.area_r_m })),
+        points: e.points, gold_price: e.gold_price, enchanter: e.enchanter, soul_grade: e.soul_grade,
+        charge_max: e.charge_max, charge: e.charge, charge_per_use: e.charge_per_use, worn: !!e.worn,
+      })),
       xul_hesh: sim.magic.xulHesh,
       soul_history: [...sim.magic.soulHistory.entries()].sort().map(([k, v]) => ({ instance: k, traps: v })),
-    } : { focus: 0, attuned: [], catalyst: null, known_effects: [], custom_spells: [], gems: [], xul_hesh: 0, soul_history: [] },
+    } : { focus: 0, attuned: [], catalyst: null, known_effects: [], custom_spells: [], gems: [], enchanted: [], xul_hesh: 0, soul_history: [] },
     quests: sortedQuestMap(sim.quest.quests),
     quests_completed: [...sim.quest.completed].sort(),
     journal: sim.quest.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text })), // ORDER IS SEMANTIC
@@ -532,6 +542,9 @@ export function applySaveMagic(sim, blob) {
   }));
   M.knownEffects = new Set(blob.magic.known_effects);
   M.gems = blob.magic.gems.map((g) => ({ ...g }));
+  // W1-14 r5. Tolerant of a blob written before the field existed, because a save from an
+  // earlier commit of this same schema version is a real thing on this tree.
+  M.enchanted = (blob.magic.enchanted || []).map((e) => ({ ...e, enchanted: true, effects: e.effects.map((t) => ({ ...t })) }));
   M.xulHesh = blob.magic.xul_hesh;
   M.soulHistory = new Map(blob.magic.soul_history.map((r) => [r.instance, r.traps]));
   if (blob.magic.catalyst) M.setCatalyst(blob.magic.catalyst); else { M.catalyst = 'none'; M.hasCatalyst = false; }
@@ -544,7 +557,30 @@ export function applySaveMagic(sim, blob) {
  * Restore. `frame` is reset to 0 (RI-MTH01 A07: "world present, frame reset"), and every
  * frame-relative offset is rebased against it.
  */
-export function applySave(sim, blob, moves, statFor) {
+/**
+ * W1-14 ROUND 5 — THE FOURTH MIRRORED-VALUE DEFECT IN THIS PROJECT, CLOSED AT THE WRITE SITE.
+ *
+ * The round-4 verdict §8 found the last write in the build that moves a purse without going
+ * through `Engine._setGold`: `sim.progression.gold = blob.progression.gold`, restored bare while
+ * `combat.world.gold`, `sim.stealth.p.gold` and `magic.gold` are left holding whatever the
+ * session before the load was holding. It reported it as a residual and could not produce a
+ * stale mirror, because a load rebuilds the fight and `bindWorld` re-seeds `magic.gold` — so
+ * the write is MASKED by a rebuild rather than correct. That is rule 7's exact shape: a field
+ * written and never read back re-serialises to what was saved and passes forever.
+ *
+ * Masked is not closed. The mask is one caller's rebuild order, and every mirror not covered by
+ * that particular rebuild is live: measured, `sim.stealth.p.gold` came out of a load holding the
+ * PRE-LOAD purse (`reports/w1-14-r5/purse.json`, both arms). So the write is routed. `applySave`
+ * cannot call `_setGold` — it is handed a `sim` and not an engine, deliberately, and inverting
+ * that would put the save format's loader inside the engine — so the engine passes its own
+ * purse writer down as a hook and the loader uses it when it has one.
+ *
+ * This is the same defect as the two soul ledgers and as `magic.gold` one round ago. Four.
+ *
+ * @param {object} [hooks] {setGold(n)} — the engine's own one-writer purse. Omitted, the loader
+ *   writes the authority field alone, which is exactly today's behaviour and is the teardown.
+ */
+export function applySave(sim, blob, moves, statFor, hooks) {
   if (!blob || typeof blob !== 'object') throw new Error('loadState: save blob must be an object');
   if (!blob.meta || blob.meta.schema !== 'elder-souls/save@1') {
     throw new Error(`loadState: not an elder-souls/save@1 blob (got ${blob.meta && blob.meta.schema})`);
@@ -589,7 +625,9 @@ export function applySave(sim, blob, moves, statFor) {
     };
   }
   sim.progression.soulsSpent = blob.progression.souls_spent;
-  sim.progression.gold = blob.progression.gold;
+  // ONE PURSE, ON THE LOAD PATH TOO. See the header on this function.
+  if (hooks && typeof hooks.setGold === 'function') hooks.setGold(blob.progression.gold);
+  else sim.progression.gold = blob.progression.gold;
   sim.progression.hearthsDiscovered = [...blob.progression.hearths_discovered];
   sim.progression.hearthLastRested = blob.progression.hearth_last_rested;
   sim.progression.upgrades = { ...blob.progression.upgrades };

@@ -76,8 +76,24 @@ known to be broken, and what is simply not built yet — and tell them.
    the published stall **to the metre and the coordinate** (550.1 m, ending 2153.7, 1197.8), and
    the parapet turns out not to be load-bearing for this walk at all.
 
-   Residual: a 133.8 ms worst frame, unmeasured since. `--stair-grade` is swept but not landed —
-   nobody has ruled whether a 31° road is a road.
+   **Independently re-walked by a fresh critic with its own tool and its own per-frame accumulator:
+   identical to the decimal**, ending at (2765.6, 5028.8). It amends the claim rather than just
+   confirming it, and the amendments belong here: the run is **`hp_pinned: true`**, it is
+   **forwards-only**, there was a 116.7 m respawn, and *"zero slope-gate refusals on any
+   centreline"* is a **tautology** — 25,390 of 25,390 centreline samples are exempt via `onRoadAt`,
+   so that clause supports nothing. A lateral sweep with a structure-free control replaces it.
+
+   **It does not walk backwards.** Stuck at 5,072.3 m on the `stormhold-helstrom` switchbacks,
+   where a 17 m viaduct's deck slab is laid 5.74 m across and 7.51 m above its own lower limb.
+   `--no-deck` goes 1,165 m further and collapses the stuck run from 900 frames to 18. Dispatched.
+   Not a reason to gate the README: forwards is the direction a player walks first.
+
+   Two numbers nobody had: a **jog** is 34.622 min (RI-WLD01 M2 step 4, never run by anybody), and
+   **overladen in a storm at 02:00 still arrives**, at 71.591 min.
+
+   Residual: a 133.8 ms worst frame, unmeasured since. `--stair-grade 0.60` referred with numbers
+   (span 1,732 → 1,431 m, tallest fill 50.6 → 32.7 m, zero length cost, worst grade 24.27 → 31.13°)
+   — nobody has ruled whether a 31° road is a road.
 
 5. **A fight is survivable and a level is spendable.** The hearth opens; **souls have no source**,
    so the loop does not close yet. Dispatched.
@@ -247,6 +263,14 @@ is half of a registered contradiction pair. Not crowding (2.60 m separation hold
 14-document archive) and not the exit door (pre-registered hypothesis, refuted). `place-library
 --check`, `boot-check`, the reach test and two purpose-built instruments are **all green on it**.
 **4 is a lower bound: 77 rooms were not walked.**
+
+**Q14. `W1-05` is unblocked — stop testing the drowning.** `soulrest-blackrose` was walked in
+**both directions, both arrived, deepest water 0.00 m**. Four sessions and three independent
+attempts died on that leg; the wall was the first cause and the steering was the second, and both
+are closed. `W1-05`'s mandatory reachability proof can now be taken. **But `walkPath` itself was
+never fixed** — the fix landed in `_pursue`, and `walkPath` is the verb
+`tools/world/w1-01-r4-soulrest-leg.mjs` drives, so re-run against the fixed path rather than the
+old verb.
 
 **Q0. FLEET HAZARD — a save/load with a hostile present kills every stepping probe, silently.**
 `save/fight.js`'s `SKIP` list omits `ai`, so `saveActor(ctl)` serialises the live `SoulsAI` as a

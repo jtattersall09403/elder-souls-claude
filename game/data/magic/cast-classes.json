@@ -157,6 +157,7 @@
   "hyperarmour_rule": "RI-MAG01 §B: HA = [ceil(0.60 × startup), startup + active], DERIVED by RI-CMB02's own formula, and applies ONLY when two-handing a catalyst. One-handed casting with a shield or an off-hand weapon has no hyperarmour at any class.",
   "iframe_rule": "Casting grants NO i-frames at any class, at any time, under any catalyst, ever. A cast with i-frames is a dodge with damage attached (RI-MAG01 §D, automatic fail).",
   "ballistics": {
+    "turn_rate_law": "W1-14 ROUND 5 — WHY THE TWO TRACKING CLASSES' ARCS ARE DERIVED RATHER THAN CHOSEN. Wave 1 never set a target on a projectile, so the trace measured 0.000 deg/s and the W1-14 verdict recorded a declared-vs-observed mismatch under M8: `turn_rate_dps` was a number in a file that nothing had ever had to satisfy. Round 4's verdict then found that a bolt misses a body walking sideways at 14 m, and round 5's fix is LEAD — a bolt aims at where the body will be and then coasts, rather than chasing where it is. Under lead the arc has ONE job with a closed-form size: swing from the line of sight onto the collision course, which sits `atan(v_cross / speed_mps)` off it. The window it has to do that in is the class's own `tracking_cutoff` fraction of the flight, which SHRINKS WITH RANGE while the angle does not — so a fraction alone cannot be right at every range, and the binding case is the CLOSEST one. Hence: turn_rate_dps >= atan(v_cross / speed_mps) / (tracking_cutoff * (d_min - radius_m - 0.45) / speed_mps), with v_cross = 3.0 m/s (a body jogging across you; RI-MAG01's Souls enemy circling) and d_min = 6 m (inside that a ranged class is not what you are holding). This RAISES the arc and does NOT weaken any fence: `tracking_cutoff` is untouched, so AP-M3's 'turn_rate_dps > 2 past 0.35 x travel_f' is exactly as tight as it was, and a higher rate under a lead means the bolt reaches its collision course SOONER and then turns 0 deg/s for the rest of the flight — it does not mean it steers for longer. What it does not buy: a body crossing at 5.0 m/s inside 10 m is still missed, measured, and that is the dodge doing its job rather than a defect (reports/w1-14-r5/lead-fix.json).",
     "absolute_speed_ceiling_mps": 30,
     "min_dodge_window_f": 20,
     "volume_decal_lead_f": 20,
@@ -172,7 +173,8 @@
       },
       "LIGHT": {
         "speed_mps": 16,
-        "turn_rate_dps": 60,
+        "turn_rate_dps": 95,
+        "turn_rate_derivation": "W1-14 r5. Was 60, invented. See ballistics.turn_rate_law: atan(3/16)=10.62 deg over a window of 0.35 x (6 - 0.67)/16 = 0.1166 s gives 91.1 deg/s; 95 is that with a small margin for the aim the lock-on has not finished closing. Measured at 60 the bolt fell 0.06 m short of a 3 m/s crosser at 6 m with a 0.67 m hit radius, on all five damage effects, deterministically.",
         "tracking_cutoff": 0.35,
         "radius_m": 0.22,
         "lifetime_s": 2.5,
@@ -180,7 +182,8 @@
       },
       "HEAVY": {
         "speed_mps": 11,
-        "turn_rate_dps": 45,
+        "turn_rate_dps": 115,
+        "turn_rate_derivation": "W1-14 r5. Was 45, invented. atan(3/11)=15.26 deg over 0.30 x (6 - 0.90)/11 = 0.1391 s gives 109.7 deg/s; 115 with the same margin.",
         "tracking_cutoff": 0.3,
         "radius_m": 0.45,
         "lifetime_s": 4,

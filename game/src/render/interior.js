@@ -320,8 +320,13 @@ const PROPS = {
   toll_bar: ['centre', (P) => { const g = new THREE.Group(); const b = cyl(0.07, 0.07, 3.0, 6, P.wood); b.rotation.z = Math.PI / 2; part(g, b, 0, 1.1, 0); part(g, cyl(0.1, 0.13, 1.2, 6, P.wood), -1.4, 0.6, 0); return g; }],
   gate_winch: ['wall', (P) => { const g = new THREE.Group(); const d = cyl(0.3, 0.3, 0.5, 10, P.wood); d.rotation.z = Math.PI / 2; part(g, d, 0, 1.1, 0); part(g, cyl(0.04, 0.04, 0.8, 5, P.metal), 0.4, 1.1, 0).rotation.z = Math.PI / 2; return g; }],
   watch_stool: ['floor', (P) => B.stool(P, 0.5)],
-  stair_narrow: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 8; i++) part(g, box(0.9, 0.16, 0.3, P.wood), 0, 0.08 + i * 0.3, -i * 0.3); return g; }],
-  ladder_steep: ['wall', (P) => { const g = new THREE.Group(); for (const sx of [-0.2, 0.2]) { const r = cyl(0.04, 0.04, 2.6, 5, P.wood); r.rotation.x = 0.22; part(g, r, sx, 1.3, 0); } for (let i = 0; i < 7; i++) part(g, cyl(0.03, 0.03, 0.4, 4, P.wood), 0, 0.3 + i * 0.34, -0.07 - i * 0.075).rotation.z = Math.PI / 2; return g; }],
+  // A WALL PROP RISES INTO THE ROOM, NOT THROUGH THE WALL. `wallSlots()` puts a wall prop 0.55 m
+  // in front of its wall and rotates it so that LOCAL +z points into the room; both of these ran
+  // their treads along local -z, so eight treads at 0.3 m took the stair 2.4 m backwards through
+  // the masonry — 39 meshes across 13 inns and halls, every one of the props the round-5 census
+  // found more than 0.6 m outside its own room. Measured, not reasoned: `w1-04-r5-census.mjs` P.
+  stair_narrow: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 8; i++) part(g, box(0.9, 0.16, 0.3, P.wood), 0, 0.08 + i * 0.3, i * 0.3); return g; }],
+  ladder_steep: ['wall', (P) => { const g = new THREE.Group(); for (const sx of [-0.2, 0.2]) { const r = cyl(0.04, 0.04, 2.6, 5, P.wood); r.rotation.x = -0.22; part(g, r, sx, 1.3, 0); } for (let i = 0; i < 7; i++) part(g, cyl(0.03, 0.03, 0.4, 4, P.wood), 0, 0.3 + i * 0.34, 0.07 + i * 0.075).rotation.z = Math.PI / 2; return g; }],
   deck_hatch: ['floor', (P) => { const g = new THREE.Group(); part(g, box(1.0, 0.1, 1.0, P.wood), 0, 0.05, 0); part(g, cyl(0.05, 0.05, 0.1, 6, P.metal), 0, 0.12, 0); return g; }],
   bilge_plank: ['floor', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) part(g, box(0.3, 0.06, 2.2, P.wood), (i - 1) * 0.34, 0.04, 0); return g; }],
   hull_rib: ['wall', (P) => { const g = new THREE.Group(); const r = cyl(0.1, 0.14, 3.0, 6, P.wood); r.rotation.z = 0.24; part(g, r, 0, 1.5, 0); return g; }],

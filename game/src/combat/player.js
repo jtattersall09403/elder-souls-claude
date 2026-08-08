@@ -575,7 +575,12 @@ export class PlayerController {
   _tryCast(bit, frame, input, ctx) {
     const b = this.b, M = this.magic, emit = ctx.emit;
     const spellId = M.attuned[0];
-    if (!spellId) { const e = emit(frame, 'INPUT_DROPPED'); e.button = 'cast'; e.reason = 'nothing_attuned'; return; }
+    if (!spellId) {
+      const e = emit(frame, 'INPUT_DROPPED'); e.button = 'cast'; e.reason = 'nothing_attuned';
+      // W1-14 r5: and it is SAID. See MagicSystem.sayCastRefusal.
+      if (M && M.sayCastRefusal) e.said = M.sayCastRefusal('nothing_attuned', null, null);
+      return;
+    }
     const reason = M.castDropReason(spellId, b.stamina);
     if (reason) {
       M.stats.drops++;
@@ -594,6 +599,13 @@ export class PlayerController {
         te.spell = spellId; te.fence = t.reason; te.text = t.text; te.ruling = 'S29';
         if (t.frames_remaining !== undefined) { te.frames_remaining = t.frames_remaining; te.cooldown_f = t.cooldown_f; }
       }
+      // W1-14 r5 — THE REFUSAL IS SAID, not merely recorded. Round 4 §9 half-withdrew round 3's
+      // "silent drop": the event is real and carries `have`/`need`, so it was never silent to
+      // the trace. It was silent to the PLAYER, because nothing under ui/ or render/ reads
+      // `INPUT_DROPPED` — and, measured while fixing this, nothing reads `travel_refused`'s
+      // `text` either, so the S29 fence the verdict held up as the good example was equally
+      // mute. `e.said` is what the player was actually told; the numbers stay on the event.
+      if (M.sayCastRefusal) e.said = M.sayCastRefusal(reason, spellId, e);
       this.dropReason = reason;
       return;
     }

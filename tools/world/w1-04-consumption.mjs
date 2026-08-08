@@ -558,8 +558,24 @@ try {
           try {
             // Always start outside, through the door verb rather than by hand.
             if (H.whereAmI().interior) { H.exitInterior(); step(1); }
-            // THE STREET, AS A SCENE SIGNATURE, BEFORE THE DOOR IS TOUCHED. See the
-            // `exteriorRestored` line below for why this replaced a check that could not fail.
+            // THE STREET AT *THIS* DOOR — and this is the round-5 correction.
+            //
+            // Round 4 read the street signature HERE, before touching the door, which is wherever
+            // the PREVIOUS door's exit left the body. `listInteriors()` returns 115 ids in id order
+            // across eight towns, so about ten times in the sweep that previous door was in a
+            // different town, and the check then compared Helstrom's street with Archon's and
+            // called the difference "the exterior did not come back". Ten of them, which is exactly
+            // the shortfall the round-4 critic attributed: 105 of 115, the build innocent and the
+            // instrument wrong. Its author had never run it.
+            //
+            // So the street is established AT the door under test, by going in and coming straight
+            // back out — `exitInterior()` puts the body on this interior's own doorstep — and only
+            // then is the measured visit taken. Two visits per door instead of one; the number now
+            // means what its name says.
+            const r0 = H.enterInterior(id);
+            step(1);
+            if (!r0 || !r0.entered) { refused++; continue; }
+            H.exitInterior(); step(2);
             const sigStreet = H.getDrawnSignature ? H.getDrawnSignature().hash : null;
             const r = H.enterInterior(id);
             step(2);
@@ -715,6 +731,141 @@ try {
         changed: sigs.size > 2,
         verdict: sigs.size > 2 ? 'CONSUMED' : 'DEAD',
         note: 'A scene-graph signature, not a pixel hash — the pixel sweep is tools/world/w1-04-interior-sweep.mjs.',
+      });
+    }
+
+    // ---- 10d. THE DOORSTEP — round 5's first new model ------------------------------------------
+    // `applyInteriorBounds()` now derives `buildings[].door` onto the entry wall and
+    // `continuity.exterior_spawn` onto the nearest standable point outside it. RI-MTH07 asks for
+    // the world-side consumer and a perturbation that moves an entity. The entity is the PLAYER'S
+    // BODY, and the perturbation is the doorstep itself: move it and the body lands somewhere else.
+    check({
+      path: 'world.interior.named',
+      model: `game/data/world/interiors/${roomId}.json -> continuity.exterior_spawn (derived by render/exterior.js#applyInteriorBounds)`,
+      consumer: 'sim/settlement.js leaveInterior() -> placeBody() -> sim.player.pos, read back through whereAmI() after one fixed step',
+      perturbation: 'move the derived doorstep 40 m north and walk out of the door',
+      note: 'Round 4: the doorstep was `door + 1.8 m` where `door` was the building CENTRE on 112 of 112, so leaving put you under the roof round 4 had just added.',
+      read: () => {
+        try { if (H.whereAmI().interior) { H.exitInterior(); step(1); } } catch { /* outside */ }
+        H.enterInterior(roomId); step(2);
+        H.exitInterior(); step(1);
+        const w = H.whereAmI();
+        const hit = H.buildingAt(w.pos[0], w.pos[2], 0);
+        return { pos: [Math.round(w.pos[0] * 10) / 10, Math.round(w.pos[2] * 10) / 10], inside_building: hit ? hit.building : null };
+      },
+      perturb: () => {
+        const d = H.__w1_04_interior(roomId);
+        const old = d.continuity.exterior_spawn.slice();
+        d.continuity.exterior_spawn = [old[0], old[1], old[2] + 40];
+        return () => { d.continuity.exterior_spawn = old; };
+      },
+      cut: () => {
+        // Disconnect the consumer: the door verb stops moving the body at all.
+        const E = eng();
+        const s = E.sim.placeBody;
+        E.sim.placeBody = () => {};
+        return () => { E.sim.placeBody = s; };
+      },
+    });
+
+    // ---- 10e. THE LAMPS, AT THE DETECTION MODEL — round 5's second -------------------------------
+    // The round-4 verdict: the join moved the rooms and left the lamps behind, 55 of them outside
+    // their own walls including 12 non-snuffable hearths, and `sim/stealth/system.js#syncInteriorLights()`
+    // fed those verbatim positions to the SOULS-SIDE DETECTION MODEL on the fixed step. Round 5
+    // clamps `lights[].pos` in the join, in the record, so the renderer and the detection model
+    // read ONE corrected number — W1-15 owns that model and this must not fork it. The row that
+    // proves the clamp reaches the model is this one: perturb the lamp, watch the light the
+    // stealth system reports at the player's feet move.
+    check({
+      path: 'world.interior.named',
+      model: `game/data/world/interiors/${roomId}.json -> lights[].pos (clamped into the joined room by applyInteriorBounds)`,
+      consumer: 'sim/stealth/system.js syncInteriorLights() -> LightField.addSource() -> getLightAt(), inside the fixed step',
+      perturbation: 'walk the room\'s brightest lamp to the far corner and read the light where the body stands',
+      note: 'RI-STL02. This is the consumer the round-4 verdict said was being lied to by 19 rooms.',
+      read: () => {
+        try { if (H.whereAmI().interior) { H.exitInterior(); step(1); } } catch { /* outside */ }
+        H.enterInterior(roomId); step(3);
+        const w = H.whereAmI();
+        const L = H.getLightAt ? H.getLightAt(w.pos[0], w.pos[1], w.pos[2]) : null;
+        const v = (L && typeof L === 'object') ? (L.light !== undefined ? L.light : L.value) : L;
+        const cen = eng().sim.stealth.lightSourceCensus();
+        return {
+          light: Math.round(Number(v) * 1000) / 1000,
+          world_sources: cen.world_sources,
+          furthest_source_m: cen.sources.length ? Math.round(Math.max(...cen.sources.map((s) => Math.hypot(s.pos[0], s.pos[2]))) * 10) / 10 : null,
+        };
+      },
+      perturb: () => {
+        const d = H.__w1_04_interior(roomId);
+        const old = JSON.parse(JSON.stringify(d.lights));
+        // Somewhere the clamp would never put it, so the reading has to come from THESE numbers.
+        for (const L of d.lights) L.pos = [L.pos[0] + 60, L.pos[1], L.pos[2] + 60];
+        return () => { d.lights = old; };
+      },
+      cut: () => {
+        const E = eng();
+        const S = E.sim.stealth;
+        const s = S.syncInteriorLights;
+        S.syncInteriorLights = () => {};
+        return () => { S.syncInteriorLights = s; };
+      },
+    });
+
+    // ---- 10f. AND ARE THEY THE CORRECTED POSITIONS? ---------------------------------------------
+    // 10e proves the model reads `lights[].pos`. This proves WHICH positions it reads, over every
+    // room, off the detection model's own source list rather than off the record — with the clamp
+    // cut on the live records as the control arm, which is the world round 4 shipped.
+    {
+      const sweep = () => {
+        const ids = H.listInteriors().map((i) => i.id);
+        let rooms = 0, sources = 0, outside = 0, worst = 0;
+        const bad = [];
+        for (const id of ids) {
+          try {
+            if (H.whereAmI().interior) { H.exitInterior(); step(1); }
+            const r = H.enterInterior(id);
+            if (!r || !r.entered) continue;
+            step(1);
+            const rec = H.__w1_04_interior(id);
+            if (!rec || !rec.bounds_m) continue;
+            rooms++;
+            const bx = rec.bounds_m.x, bz = rec.bounds_m.z;
+            for (const s of eng().sim.stealth.lightSourceCensus().sources) {
+              sources++;
+              const dx = Math.max(bx[0] - s.pos[0], s.pos[0] - bx[1], 0);
+              const dz = Math.max(bz[0] - s.pos[2], s.pos[2] - bz[1], 0);
+              const d = Math.hypot(dx, dz);
+              if (d > 1e-6) { outside++; if (d > worst) worst = d; if (bad.length < 8) bad.push({ room: id, id: s.id, kind: s.kind, out_m: Math.round(d * 100) / 100 }); }
+            }
+          } catch { /* counted by rooms */ }
+        }
+        try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* outside */ }
+        step(2);
+        return { rooms, detection_sources: sources, sources_outside_their_room: outside, worst_m: Math.round(worst * 100) / 100, worst_rows: bad };
+      };
+      const after = sweep();
+      // THE CONTROL: put the declared lamp positions back on the live records — the round-4 world.
+      const stash = [];
+      for (const rec of Object.values(eng().data.interiors || {})) {
+        if (!Array.isArray(rec.lights_declared)) continue;
+        stash.push([rec, rec.lights.map((L) => L.pos)]);
+        for (let i = 0; i < rec.lights.length; i++) if (rec.lights_declared[i]) rec.lights[i].pos = rec.lights_declared[i].pos.slice();
+      }
+      let before = null;
+      try { before = sweep(); } finally {
+        for (const [rec, poss] of stash) for (let i = 0; i < rec.lights.length; i++) rec.lights[i].pos = poss[i];
+        try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* outside */ }
+        step(2);
+      }
+      pushRow({
+        path: 'world.interior.named',
+        model: 'all 115 interior records -> lights[].pos, as clamped into the joined room',
+        consumer: 'sim/stealth/system.js syncInteriorLights() -> LightField world sources, read back off lightSourceCensus()',
+        perturbation: 'walk into every room and read the detection model\'s own source list; then restore the DECLARED lamp positions and walk them all again',
+        before, after,
+        changed: !!(before && before.sources_outside_their_room > after.sources_outside_their_room),
+        verdict: (after.sources_outside_their_room === 0 && before && before.sources_outside_their_room > 0 && !!stash.length) ? 'CONSUMED' : 'DEAD',
+        note: 'Round 4: 55 authored lamps in 19 rooms outside their own walls, 12 non-snuffable hearths, feeding the Souls-side detection model. If the control arm reads 0 too, the clamp is inert and this row says so.',
       });
     }
 

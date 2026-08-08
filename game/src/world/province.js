@@ -840,7 +840,13 @@ export class Province {
     // in — so a room that shrank shrank for the simulation too, and not only for the picture.
     // The report is published on the province because the acceptance number ("how many rooms did
     // the plan have to take space from, and how much") must be readable from a probe.
-    this.interiorJoin = applyInteriorBounds(this.settlementPlans, interiors || {});
+    // ROUND 5 passes `docs` as well, and that argument is load-bearing rather than tidy. The join
+    // now also moves `buildings[].door` off the building's CENTRE and onto its entry wall, and
+    // `sim/settlement.js SettlementSystem` built its door-reach table in its own constructor —
+    // before this ever runs — from these exact document objects. Without them the doorstep would
+    // land 1.5 m outside a wall whose door the sim still believes is 6 m away in the middle of
+    // the house, and you would step out of a building you could not step back into.
+    this.interiorJoin = applyInteriorBounds(this.settlementPlans, interiors || {}, docs || []);
     this._solidCache = null;
     // Anything already built was built without these; drop it so the next request rebuilds.
     for (const [k, t] of [...this.tiles]) this._release(k, t);

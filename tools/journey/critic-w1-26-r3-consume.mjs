@@ -69,7 +69,12 @@ const out = {
 const pass = (id, what, d) => { out.passes.push(id); out.checks[id] = { ok: true, what, ...d }; say(`  PASS ${id}  ${what}`); };
 const fail = (id, what, d) => { out.failures.push(id); out.checks[id] = { ok: false, what, ...d }; say(`  FAIL ${id}  ${what}`); };
 
-const BODIES = ['saxhleel', 'dunmer', 'khajiit', 'altmer'];
+// Four bodies the build's own `races.json` knows. The first draft used `altmer` as the fourth
+// and the run THREW — which is the finding in section D of the verdict, not a typo: `bodyRace()`
+// silently returns null for any id not in `races.json`, and the desk then refuses forever. It is
+// measured deliberately below as `ILLEGAL`.
+const BODIES = ['saxhleel', 'dunmer', 'khajiit', 'nord'];
+const ILLEGAL = 'altmer';   // a real Elder Scrolls race, named in the scribe's OWN written line
 
 const h = await launchGame({ width: 640, height: 360, timeout: 180000 });
 try {
@@ -85,7 +90,7 @@ try {
    * @param {boolean} freeze    the teardown: pin the observation to one literal
    */
   async function arm(race, freeze) {
-    await h.page.reload({ waitUntil: 'load' });
+    await h.page.reload({ waitUntil: 'load', timeout: 180000 });
     await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, { timeout: 180000 });
     await h.page.evaluate(() => window.__HARNESS.ready());
     await h.page.evaluate(() => window.__HARNESS.setMode('play-instrumented'));
@@ -126,13 +131,20 @@ try {
       const ch = e.sim.character || null;
       // THE SECOND CONSUMER. The same field feeds the reaction matrix; if only the scribe reads
       // it, the model is a scene prop.
+      //
+      // The engine's own comment at censusBegin names `reactionTo()` as the second reader. There
+      // is NO `reactionTo` anywhere in game/src — grep it. The function that does exist and does
+      // read this field is `_playerGates()` (engine.js), which hands the dialogue offer gates the
+      // race, the upbringing and the birthsign. That is what is measured here.
       let reactions = null;
       try {
-        const names = Object.keys(e.data.character.npcs || {}).slice(0, 6);
-        reactions = names.map((n) => { try { return [n, e.reactionTo ? e.reactionTo(n) : null]; } catch { return [n, 'threw']; } });
-      } catch { reactions = 'unavailable'; }
+        reactions = { has_reactionTo: typeof e.reactionTo === 'function', gates: e._playerGates ? e._playerGates() : 'no _playerGates' };
+      } catch (err) { reactions = { error: String(err.message || err) }; }
       // The sentence she says about the body — the one row that must differ per body.
-      const raceRows = rows.filter((s) => /Saxhleel|Dunmer|Khajiit|Altmer|Argonian|Bosmer|Orsimer|Imperial|Nord|Redguard|Breton/i.test(s));
+      // Every race id in the build plus every WRONG name the misread table uses. The first draft
+      // omitted `Naga` and `Marsh-form`, which are precisely the saxhleel arm's misread, so the
+      // default body looked as though it had no misread line when it has a good one.
+      const raceRows = rows.filter((s) => /Saxhleel|Naga|Marsh-form|Dunmer|Khajiit|Altmer|Bosmer|Orsimer|Imperial|Nord|Redguard|Breton|Observed as/i.test(s));
       return {
         body_field: bodyBefore,
         census_race: e.census ? e.census.spec.race : null,
@@ -185,8 +197,56 @@ try {
   // second consumer
   const reactionSets = new Set(out.arms.map((a) => JSON.stringify(a.reactions)));
   out.checks.second_consumer = { distinct_reaction_sets: reactionSets.size, sample: out.arms[0].reactions };
-  if (reactionSets.size > 1) pass('H3', `the same field has a SECOND world-side consumer: ${reactionSets.size} distinct reaction sets over 4 bodies`, out.checks.second_consumer);
-  else fail('H3', 'the reaction matrix returns the same thing for all four bodies — the observed race is read by the scribe and by nothing else', out.checks.second_consumer);
+  if (reactionSets.size > 1) pass('H3', `the same field has a SECOND world-side consumer: _playerGates() differs across ${reactionSets.size} of 4 bodies`, out.checks.second_consumer);
+  else fail('H3', '_playerGates() returns the same thing for all four bodies — outside the census the observed race changes nothing a player can meet', out.checks.second_consumer);
+
+  // ---- H5 — a body whose race the build does not know -------------------------------------
+  //
+  // `Engine.bodyRace()` ends `rows.some((r) => r.id === id) ? id : null`. A body carrying an id
+  // that is not in `races.json` is therefore observed as NULL, silently, at scene start — and
+  // `Census.answer()` at `writ.race-observed`, eleven nodes later, throws the round-2 sentence.
+  // `altmer` is not in this build's races.json, and it is the race the scribe's own written line
+  // says out loud ("Altmer. - No, of course not, you are not tall enough"). The round-2 verdict
+  // also recorded the placeholder on this field as `argonian`, which is likewise not an id here.
+  // So this is not a hypothetical: it is the round-2 defect with a better sentence over it.
+  const illegal = await h.page.evaluate((r) => {
+    const H = window.__HARNESS, e = window.__ENGINE;
+    e.sim.identity.race = r;
+    const observed = e.bodyRace();
+    H.titleActivate('new');
+    // Walk the player's path with the SURFACE commit, so the catch in _censusApplyPending runs
+    // and the player sees what a player would see.
+    let guard = 0, stoppedAt = null;
+    while (guard++ < 30) {
+      const st = e.census ? e.census.state() : null;
+      if (!st || st.done) break;
+      if (st.paused) { H.censusEnter(st.resume_by === 'walk' ? 'walk' : 'talk'); H.stepFrames(2); continue; }
+      try {
+        const k = st.input ? st.input.kind : null;
+        if (!k) { H.censusAnswer(null); continue; }
+        if (k === 'text') { H.censusAnswer('Silence-Under-Salt'); continue; }
+        if (k === 'observed') { H.censusAnswer('correct'); continue; }
+        const opts = st.input.options || [];
+        H.censusAnswer(opts.length ? opts[0].id : null);
+      } catch (err) { stoppedAt = { node: st.node, message: String(err.message || err) }; break; }
+    }
+    return {
+      body_field: r,
+      bodyRace_returned: observed,
+      census_spec_race: e.census ? e.census.spec.race : null,
+      stopped_at: stoppedAt,
+      nodes_reached: e.census ? e.census.state().node : null,
+    };
+  }, ILLEGAL);
+  out.checks.illegal_body = illegal;
+  say(`  H5 body '${ILLEGAL}': bodyRace() -> ${JSON.stringify(illegal.bodyRace_returned)}, stopped ${JSON.stringify(illegal.stopped_at && illegal.stopped_at.node)}`);
+  if (illegal.bodyRace_returned === null && illegal.stopped_at) {
+    fail('H5', `a body whose race is not in races.json is observed as null SILENTLY and the desk refuses at '${illegal.stopped_at.node}' with "${illegal.stopped_at.message}" — the round-2 stop, unchanged, behind an authored line`, illegal);
+  } else if (illegal.bodyRace_returned === null) {
+    fail('H5', `bodyRace() returned null for '${ILLEGAL}' with no diagnostic at scene start; the scene did not stop in this arm but the observation is silently absent`, illegal);
+  } else {
+    pass('H5', `'${ILLEGAL}' is a legal body here (bodyRace -> ${illegal.bodyRace_returned}); no silent null`, illegal);
+  }
 
   // ---- H teardown — pin the observation to a literal ----------------------------------------
   say('  teardown — bodyRace() pinned to one literal:');
@@ -208,7 +268,7 @@ try {
 
   /** Put the body at the corner in the hold, with the scene at hold.out. */
   async function atCorner() {
-    await h.page.reload({ waitUntil: 'load' });
+    await h.page.reload({ waitUntil: 'load', timeout: 180000 });
     await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, { timeout: 180000 });
     await h.page.evaluate(() => window.__HARNESS.ready());
     await h.page.evaluate(() => window.__HARNESS.setMode('play-instrumented'));

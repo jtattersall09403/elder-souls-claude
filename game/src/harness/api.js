@@ -1039,6 +1039,33 @@ export function installHarness(engine, bootPromise) {
     commissionState() { return engine.commissionState(); },
 
     /**
+     * W1-14 round 5 — the ENCHANTING counter, read only. Same rule as `commissionState`: this
+     * verb cannot OPEN anything and cannot buy anything. The only way in is `talkTo` an
+     * enchanter and `conversationSay('enchanting')`, which is the only way a player has.
+     */
+    enchantCounterState() { return engine.enchantCounterState(); },
+
+    /** The objects you had made, with their remaining charge. */
+    enchantedItems() { return engine.magic.enchantedItems(); },
+
+    /**
+     * Use one. The world-side consumer of the enchanting model: charge goes down, a body loses
+     * hit points, and the Focus reservoir does not move. `__breakEnchantUse` leaves the object
+     * in the pack and makes pressing it do nothing, which is the world before this round.
+     */
+    useEnchanted(itemId, targetEid) { return engine.useEnchanted(itemId, targetEid === undefined ? null : targetEid); },
+
+    __breakEnchantUse(on) { return engine.magic.__breakEnchantUse(on === undefined ? true : !!on); },
+
+    /** Put a filled gem in the pack, so a probe can reach the counter without hunting a soul. */
+    grantSoulGem(grade) {
+      const g = engine.magic.d.enchanting.soul_gems.grades.find((x) => x.id === grade);
+      if (!g) throw new Error(`grantSoulGem('${grade}'): unknown grade. Known: ${engine.magic.d.enchanting.soul_gems.grades.map((x) => x.id).join(', ')}`);
+      engine.magic.gems.push({ grade: g.id, filled: true, charge: g.charge });
+      return engine.magic.gems.length;
+    },
+
+    /**
      * RI-WLD09 §B1's opacity register, as the running world sees it: which of the twenty-four
      * mysteries the character has met, by which route, and how many times somebody has declined
      * to discuss one. It reports NO answers and there is no call that could — the sealed half
@@ -1270,6 +1297,19 @@ export function installHarness(engine, bootPromise) {
     getMagicState() { return engine.magic.report(engine.sim.frame); },
     /** Drain the magic event stream: cast_start, cast_release, cast_interrupt, focus_spend, effect_apply, effect_expire. */
     magicEventsDrain() { return engine.magic.drainEvents(); },
+
+    /**
+     * W1-14 round 5 — LIVE SPELL GEOMETRY, UNABRIDGED.
+     *
+     * `sim/record.js`'s `cloneHitbox` publishes the §5 trace subset of a projectile record and
+     * is deliberately narrow: a weapon hitbox must stay byte-identical to what W1-09 emits, so
+     * every optional field is enumerated there by hand. The lead diagnostics (`aim_at`,
+     * `target_vel_mps`, `target_at`, `closest_m`) are not trace fields and do not belong in that
+     * schema — but without them a miss can only be diagnosed by reading source, which is the
+     * thing that let `GAP-W1-magic-bolt-cannot-lead-a-body-that-walks` survive two rounds. This
+     * verb hands back the system's own records, for a probe, off the trace path.
+     */
+    magicHitboxes() { return engine.magic.hitboxRecords(engine.sim.frame); },
 
     /** The two — and only two — things in this project that raise Focus. */
     // W1-14 defined `hearthRest()` as the MAGIC reservoir refill; W1-07 needs the same verb to
@@ -1612,6 +1652,68 @@ export function installHarness(engine, bootPromise) {
      * in Lilmoth must produce `INPUT_DROPPED reason: airborne` and no `cast_start`.
      */
     __breakGroundPlane(on) { engine.magic._groundPlaneBlind = on === undefined ? true : !!on; return !!engine.magic._groundPlaneBlind; },
+
+    /**
+     * W1-14 round 5 DELETE-THE-FIX #1 — THE LEAD.
+     *
+     * Puts the tracking loop back on pure pursuit: the bolt steers at where the body IS rather
+     * than at where it will be when the bolt arrives. Everything else is untouched — the same
+     * turn rate, the same acquisition cone, the same cutoff, the same collision test — so the
+     * arm is exactly the width of the fix. With this armed, a body walking sideways at 1.5 m/s
+     * at 14 m must take zero damage from all five damage effects, which is the round-4 verdict's
+     * §2 table reproduced on demand.
+     */
+    __breakLead(on) { return engine.magic.__breakLead(on === undefined ? true : !!on); },
+
+    /**
+     * W1-14 round 5 DELETE-THE-FIX #1b — THE RELATIVE SWEEP.
+     *
+     * The bolt is swept against the body's END-OF-FRAME position rather than against the body's
+     * own segment, so a body moving 5 cm per fixed step is treated as teleporting there. Held
+     * separate from `__breakLead` on purpose: these are TWO GUARDS OVER ONE DEFECT (RULES.md #6's
+     * third shape), the lead is worth ~0.8 m of the miss and the sweep the last ~0.06 m, and the
+     * only honest way to report that is a 2x2 — which `w1-14-r5-lead.mjs --matrix` runs.
+     */
+    __breakRelativeSweep(on) { return engine.magic.__breakRelativeSweep(on === undefined ? true : !!on); },
+
+    /**
+     * W1-14 round 5 DELETE-THE-FIX #2 — THE WATER PLANE.
+     *
+     * Restores the sea bed as the magic system's floor in deep water, which is what
+     * `groundInActiveCell` answers there. With this armed, a body swimming on the surface is
+     * ~40 m "airborne" and every cast in the 13 deep-water states is refused `airborne`. Same
+     * control shape as `__breakGroundPlane`: the person, the place and the button are all still
+     * there, and only the floor moves.
+     */
+    __breakWaterPlane(on) { return engine.magic.__breakWaterPlane(on === undefined ? true : !!on); },
+
+    /**
+     * W1-14 round 5 DELETE-THE-FIX #3 — THE SPOKEN REFUSAL.
+     *
+     * The cast refusal goes back to being a field on an event nothing under `ui/` or `render/`
+     * reads. `INPUT_DROPPED` still fires and still carries `have`/`need`, so the trace is
+     * identical between the arms and only what the PLAYER can perceive moves — which is the
+     * whole finding.
+     */
+    __breakRefusalVoice(on) { return engine.magic.__breakRefusalVoice(on === undefined ? true : !!on); },
+
+    /**
+     * W1-14 round 5 DELETE-THE-FIX #4 — THE LOAD-PATH PURSE.
+     *
+     * Withholds the `setGold` hook from `applySave`, so the loader writes `sim.progression.gold`
+     * bare and leaves `combat.world.gold`, `sim.stealth.p.gold` and `magic.gold` holding the
+     * pre-load session's money. That is `save/state.js` exactly as it shipped.
+     */
+    __breakPurseHook(on) { engine._purseHookBlind = on === undefined ? true : !!on; return !!engine._purseHookBlind; },
+
+    /**
+     * W1-14 round 5 DELETE-THE-FIX #5 — THE ENCHANTING COUNTER.
+     *
+     * Shuts the door and leaves the person, the town, the topic and the shelf prices, exactly as
+     * `__breakCommissionCounter` does for spellmaking. The enchanter still answers on the
+     * subject in their own voice; nothing opens.
+     */
+    __breakEnchantCounter(on) { engine._enchantDisabled = on === undefined ? true : !!on; return !!engine._enchantDisabled; },
 
     /**
      * W1-16 round 2 DELETE-THE-FIX, as a first-class control arm rather than a `git stash`.
