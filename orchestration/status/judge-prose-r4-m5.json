@@ -26,5 +26,29 @@
     "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md",
     "reports/blog-feed.jsonl"
   ],
-  "next_step": "Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal."
+  "state_final": "done",
+  "result": {
+    "prov_axis_which_side_is_the_shipped_rpg_text": "15/15 correct",
+    "qual_axis_which_side_is_the_better_writing": "preferred OURS 15/15 -> RI-MTH03 SsE picked-ours on every row",
+    "m5_harsher_lens": "run; did not overturn a single row; produced a real gap (see below)",
+    "chance_baseline": "7.5/15 by coin-flip; but effective independent trials ~3 (one per register) because each side is one author, so quote 1-in-8, not 1-in-270",
+    "headline_defect": "R0 LEAK: raw count of [NAME-n] tokens, higher side = reference, scores 15/15 with zero reading and zero domain knowledge. Margins 1.6x-7x, median ~3.5x. This is round 1's failure (a rule counting Vvardenfell scored 17/17) reappearing inside the masking machinery installed to fix it. The README's own check verified what the mask CONTAINS, not how many tokens it ADDS.",
+    "other_defects": [
+      "D1 the PICK: line cannot express the pack's question - provenance and quality point opposite ways on most trials; the two prior judges did not disagree about a single passage, they answered different questions and it was recorded as a 14-row disagreement",
+      "D2 pack is no longer blind-safe - two judges' answer.md files sit inside the trial dirs and judge 1 was 15/15, so they are a plaintext answer key in the file the PROMPT tells a judge to write",
+      "D3 every PROMPT.md in r4 points at ../prose-tics-r2.reveal/ - a different pack's key - and is headed 'round 2'",
+      "D4 trials are not independent - one author per side, so 15 trials carry roughly 3 trials of information",
+      "D5 masker over-fires on sentence-initial capitals (nevertheless, finally, perhaps, however all became [NAME-n]) and leaks sentence-initial proper nouns on both sides (gro-Kharbush, gro-Bagrat, Eraamion on ref; Vaskh on ours)"
+    ],
+    "gap_for_the_builder": "Our prose is monotonous across documents: nine of fifteen passages share one narrator's idiolect. No unreliable narrator, no propagandist, no bore. Measure cross-document voice variance, not just within-document tics.",
+    "rules_i_pre_declared_that_FAILED": "R2 alphabetical sortedness 9/15 (chance), R3 extraction-damage heuristic 5/15 (worse than chance). Reported as plainly as the hit."
+  },
+  "could_not_do": [
+    "Not a clean instrument: I learned judge 1's aggregate 15/15 while orienting, before judging. Declared up front, not discovered after.",
+    "M5 literally requires a DIFFERENT fresh agent from the one whose pick was ours; both prior judges are gone, so I ran the harsher lens myself in the same pass. Weaker than the protocol wants and reported as such.",
+    "Did not run tools/check-prose.mjs or tools/prose/tic-detector.mjs self-tests - builder instruments, and per rule 4 a pass from them is worthless unless broken first, which I had no budget for. So the cross-document-variance recommendation is UNTESTED against what the tic detector may already do.",
+    "Did not open or reconcile against the two existing answer.md sets (they are the answer key); aggregate comparison taken from judge-prose-r4.json, not from the files."
+  ],
+  "sibling_packs_finding": "The orchestrator records TWO W1-PROSE-TICS packs awaiting a round-2 judge. File state confirms prose-tics-r2/ and prose-tics-r3/ have ZERO answer.md files with a PICK: line. But NEITHER should be judged: prose-tics-r3/ carries its own SUPERSEDED.md ('do not judge this pack') because ~380 dialogue lines were rewritten after it was built, and prose-tics-r2/ is the unmasked pack whose leak is already documented and whose corpus r4 supersedes. RECOMMEND closing both as superseded rather than spending judges on prose that is not in the game. prose-tics-voice-r2/ IS answered (5/5 have PICK:).",
+  "next_step": "None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token counts across arms (or re-name rather than redact) and assert it fail-closed in the pack builder; move answers to a sibling <pack>.answers/<judge-id>/; fix the stale reveal path in PROMPT.md."
 }

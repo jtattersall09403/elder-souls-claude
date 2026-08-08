@@ -255,3 +255,171 @@ writing" measured in a world.** Nothing in this pack can distinguish those two, 
 *Pre-reveal record ends here. Everything below was written after opening the key.*
 
 ---
+## 5. Reveal and accuracy
+
+Key: `reports/packs/prose-tics-r4.reveal/mapping.json`, seed `20260809`, opened after the hash
+above was recorded in `orchestration/status/judge-prose-r4-m5.json`.
+
+| # | ours | ref | my PROV | PROV | my QUAL | QUAL means |
+|---|---|---|---|---|---|---|
+| t01 | B | A | A | ✅ | B | preferred ours |
+| t02 | A | B | B | ✅ | A | preferred ours |
+| t03 | B | A | A | ✅ | B | preferred ours |
+| t04 | B | A | A | ✅ | B | preferred ours |
+| t05 | A | B | B | ✅ | A | preferred ours |
+| t06 | A | B | B | ✅ | A | preferred ours |
+| t07 | A | B | B | ✅ | A | preferred ours |
+| t08 | A | B | B | ✅ | A | preferred ours |
+| t09 | B | A | A | ✅ | B | preferred ours |
+| t10 | A | B | B | ✅ | A | preferred ours |
+| t11 | B | A | A | ✅ | B | preferred ours |
+| t12 | B | A | A | ✅ | B | preferred ours |
+| t13 | A | B | B | ✅ | A | preferred ours |
+| t14 | A | B | B | ✅ | A | preferred ours |
+| t15 | A | B | B | ✅ | A | preferred ours |
+
+**`PROV:` — 15 / 15.** Books 5/5, dialogue 5/5, journal 5/5. Confidence was "high" on all fifteen
+and was calibrated.
+
+**`QUAL:` — I preferred *our* side on 15 of 15.** Under RI-MTH03 §E that is `picked-ours` on every
+row of the quality axis. This is the third independent judge to land there: judge 1 by provenance,
+judge 2 by preference, me on both axes at once.
+
+**Chance baseline.** Coin-flipping 15 binary trials gets 7.5 right; P(15/15) = 2⁻¹⁵ ≈ 0.00003. I
+will not quote that number as my achievement, for the reason in §6: two rules that read no English
+also score 15/15, so 15/15 is what this pack awards to anything that looks at it, including things
+that cannot read.
+
+---
+
+## 6. Leak audit (M6) — the pack is decidable with no domain knowledge, and the README's own check missed it
+
+I pre-declared four mechanical rules in §D5 before reveal and scored them after. Script:
+`scratchpad/leakaudit.mjs`. Results:
+
+| Rule | Score | Verdict |
+|---|---|---|
+| **R0 — `[NAME-n]` token count, higher side = reference** | **15 / 15, zero undecided** | **channel wide open** |
+| R1 — contains a verbatim repeated sentence ≥ 40 chars | 4/4 where it fires, 11 undecided | perfect precision, low recall |
+| R2 — alphabetical sortedness of sentence openings | 9/15 | ≈ chance |
+| R3 — extraction-damage heuristic | 5/15 | worse than chance as coded |
+
+R2 and R3 were my own hypotheses and they **failed** — the sorting and damage I saw by eye did not
+survive being counted. I record that as plainly as the hit: two of the four channels I accused the
+pack of leaking through, it does not.
+
+### R0 is the finding, and it is round 1 happening again
+
+**Raw count of `[NAME-n]` tokens; whichever side has more is the reference. 15 out of 15.**
+
+```
+t01  49 v  26      t06   7 v  45      t11  43 v   7
+t02  41 v 129      t07   7 v  19      t12  58 v  15
+t03 104 v  15      t08  15 v  47      t13  13 v  56
+t04  40 v  30      t09  43 v   7      t14   5 v  48
+t05   6 v  39      t10  12 v  56      t15  10 v  39
+```
+
+Fourteen of the fifteen margins are better than 1.6×; the median is about 3.5×. The one close pair
+is t04 (40 v 30) and it still goes the right way. Word-normalised density also scores 15/15.
+
+This is `grep -c` and a comparison. It requires no English, no Elder Scrolls knowledge, no
+judgement, and it beats or equals every human-legible criterion in this document. **It is the same
+defect round 1 died of** — there, a rule counting *Vvardenfell / Dunmer / Septim* scored 17/17
+without reading a word — arriving through the machinery that was installed to fix it.
+
+The README's confidence is precise and precisely misdirected:
+
+> *the builder then re-runs the judge's own counting rule over the finished pack and refuses to
+> write it if either side still shows a setting noun or markup. Re-running that rule by hand over
+> this pack gives 0 decidable trials out of 15 — it is now pure chance.*
+
+That is true and it is a check on the **contents** of the mask. The leak is in the **count** of the
+mask. Masking removed the words and left behind a token that is easier to count than the words
+were. A gate that verifies its own output can only catch the failure it was written to look for,
+and this one was written to look for `Vvardenfell`.
+
+### Why the counts diverge — two causes, both fixable
+
+1. **Real name density.** Shipped Morrowind text is name-saturated: quest logs and topic entries
+   exist to route a player to NPCs and places. Our Black Marsh prose is about *procedures* and
+   names few things. That is a genuine difference between the corpora and no masker can hide it.
+2. **The masker over-fires, and over-fires asymmetrically.** The reveal's own `name_map_ref`
+   entries include `nevertheless`, `finally`, `after`, `though`, `perhaps`, `certainly`, `because`,
+   `however`, `before`, `please`, `thus`, `farewell`, `yours`, `oh`. None of these are proper
+   nouns. They are ordinary words capitalised at the start of a sentence that the masker's
+   "non-sentence-initial capital" test misread — which happens constantly after a closing quote,
+   and reference text is far more quote-dense than ours. So the masker adds *extra* tokens to the
+   reference side in rough proportion to how much dialogue it contains.
+
+   The same bug fires on our side too — `first`, `second`, `third`, `stone`, `ladder`, `reader`,
+   `chapter` are all in `name_map_ours` — and it leaves a visible scar: t01-B enumerates
+   "`[NAME-4]`, the source … `[NAME-5]`, the two hands … `[NAME-6]`, the gap … **Fourth**, the seal
+   … **Fifth**, the carriage." First through third masked, fourth and fifth not. A reader who
+   noticed that could have decided t01 from the punctuation alone.
+
+### What would actually close it
+
+Not more masking. **Equalise the token count**: mask to a fixed budget of `[NAME-n]` slots per
+passage, drawn to the same density on both sides, dropping or padding candidate passages until the
+counts match within a few percent — and then assert the counts match, in the builder, as a
+fail-closed check on exactly the statistic that leaked. Better still, do what round 1's failure
+already implied and **re-name rather than redact**: substitute plausible invented names of the same
+shape on both sides, so the passage keeps its grammar and the count carries no information at all.
+
+And the general rule, which is the part worth putting in the corpus: **a redaction token is
+itself a signal.** Every blind pack in this project that replaces content with a marker must
+publish the marker's per-side count next to its per-side vocabulary, because the pack is decidable
+if either differs. `RI-MTH03 §B` should say so; it currently does not.
+
+---
+
+## 7. Verdict on the pack, and what I could not do
+
+**Admissible, with the leak recorded.** The `PROV:` result is real — I identified the shipped-RPG
+side 15/15 — but it is **not evidence that the pack is well blinded**, because a five-character
+shell rule does the same. I cannot separate how much of my 15/15 came from reading and how much
+from a channel I did not consciously use but had in front of me the whole time; nobody can, from
+inside a single judge. That is not false modesty, it is the actual epistemic position, and the two
+prior 15/15 provenance scores on this pack should be read the same way.
+
+**The `QUAL:` result is the one I stand behind**, and it is the one the item wants: on fifteen
+paired comparisons, blind, against shipped Morrowind text, our prose is the better writing every
+time, and the M5 harsher lens did not overturn a single row. §E caps the item at *meets the bar*
+and the cap should stand, for the reason in §3 — not because the writing falls short but because
+D4 (one voice per side) means this pack cannot support a stronger claim, and because M5 found a
+real gap.
+
+**The gap, stated once, plainly, for the builder:** the writing is excellent and it is all the same
+person. Nine of our fifteen passages share one narrator's idiolect. There is no fabulist, no liar,
+no bore, no incompetent — and a shipped RPG corpus needs all four, because an unreliable in-world
+document is how a world shows a player it has sides. Measure **cross-document voice variance**, not
+just within-document tics; a tic detector that only looks inside one file is blind to the defect
+this round actually has.
+
+### What I could not do
+
+- **I am not a clean instrument.** I learned judge 1's aggregate score (15/15) before judging.
+  I avoided the answer keys, but a judge who knows a pack is decidable is not the same as a judge
+  who does not.
+- **I did not run `tools/check-prose.mjs --self-test`, `--verbose`, or
+  `tools/prose/tic-detector.mjs --self-test`,** which the README invites. They are the builder's
+  instruments and running them is the critic's job, not the blind judge's; and per rule 4 I could
+  not have trusted a pass from them without breaking them first, which I had no budget to do.
+  **The recommendation in §7 about cross-document variance is therefore untested against what the
+  tic detector already measures** — it may already do this. Someone should check.
+- **I did not re-judge, and did not open, the two answered `answer.md` sets,** so I have not
+  reconciled my rows against theirs trial by trial. The aggregate reconciliation in §0 is taken
+  from the status file, not from the files.
+- **I could not run M5 as the protocol literally specifies** — a *different* fresh agent from the
+  one whose pick was ours. Both prior judges are gone and I am the only agent here; I ran the M5
+  lens myself, in the same pass as my own picks, which is weaker than the protocol wants. It is
+  reported as one agent's two-lens pass, not as two independent agents.
+- **The sibling packs.** `prose-tics-r2/` (15 trials) and `prose-tics-r3/` (15 trials) both contain
+  **zero** `answer.md` files with a `PICK:` line, so the orchestrator's "two packs await a round-2
+  judge" is a correct file-state reading. But **neither should be judged.** `prose-tics-r3/`
+  carries its own `SUPERSEDED.md` saying so in its title — it grades ~380 dialogue lines that were
+  rewritten before it was built. And `prose-tics-r2/` is the unmasked pack whose leak is already
+  documented and whose corpus r4 supersedes. Spending a judge on either buys a verdict on prose
+  that is not in the game. `prose-tics-voice-r2/` (5 trials) *is* answered — 5 of 5 have a `PICK:`.
+  **Recommended: close both as `superseded`, not as `awaiting judge`.**

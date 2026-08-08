@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `588b783`: 772 tools, 153 reference
-items, 79 pieces in flight.
+so it cannot drift. Generated at `5596325`: 773 tools, 153 reference
+items, 80 pieces in flight.
 
-Its purpose is to stop 79+ concurrent agents each paying separately to discover the
+Its purpose is to stop 80+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -562,12 +562,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 25
+### `tools/lore/` — 26
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
 - `tools/lore/canon-consumption.mjs` — Does anything read the canon register?
 - `tools/lore/canon-in-page.mjs` — The canon register, in the page.
+- `tools/lore/critic-martial-r4-fingerprint.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r1-ablate.mjs` — CRITIC W1-23 r1, RULES #6 delete-the-fix: the same topics answered with the register and with canon=null, to test whether the register CAUSES the province's dis
 - `tools/lore/critic-w1-23-r1-shot.mjs` — One picture for the W1-23 round-1 verdict: what the register is measured to do, next to what it is measured NOT to do.
 - `tools/lore/critic-w1-23-r1-voices.mjs` — CRITIC W1-23 r1.
@@ -934,7 +935,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **176 tools have no header comment**, so nobody can tell what they do without
+> **177 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1108,6 +1109,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-TOUCH-r2` | in_progress | offline while the box is over its ceiling: item C (the 'by construction' comments) and rea | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
+| `broken-blog-images-fix` | ? | none -- banked and pushed | `tools/progress.mjs` `docs/progress.html` `docs/index.html` `tools/playability/check-image-refs.mjs` `orchestration/NEXT-DISPATCH.md` |
 | `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-12-r2-critic` | running | read RULES, CLAUDE.md, r1 verdict, reports/w1-12-r2/survey.md, status/W1-12-r2.json | `orchestration/status/W1-12-r2-critic.json` |
@@ -1117,7 +1120,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
 | `critic-w1-attr-scale` | running | read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure | — |
-| `W1-TOUCH-r2` | starting | read ARBITRATION.md, W1-TOUCH.json, critic-w1-touch.json, then the touch/step source | — |
 | `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
