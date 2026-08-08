@@ -423,26 +423,38 @@ if (RED) {
 }
 process.exit(exitCode);
 
-/** Walk to a point using held movement keys and the mouse for yaw. Real events only. */
+/**
+ * Walk to a point with the four movement keys and nothing else.
+ *
+ * Deliberately NOT by mouse look: `input/real.js` only accumulates look from `movementX` while
+ * `document.pointerLockElement === canvas`, and pointer lock in headless Chromium is not a thing
+ * a probe should depend on. Locomotion is camera-relative (`sim/player.js` §4:
+ * `dir = right*moveX + forward*moveY`, `forward = (sin cy, cos cy)`, `right = (cos cy, -sin cy)`),
+ * so the world-space vector to the target is projected onto that basis and the two keys whose
+ * axes it needs are HELD. Eight directions, which is what a keyboard gives a player too.
+ */
 async function walkTo(handle, target, advance, pos) {
   const steps = [];
-  for (let i = 0; i < 14; i++) {
-    const p = await pos();
-    const dx = target[0] - p[0], dz = target[2] - p[2];
+  const KEY = { fwd: 'KeyW', back: 'KeyS', left: 'KeyA', right: 'KeyD' };
+  for (let i = 0; i < 12; i++) {
+    const st = await handle.page.evaluate(() => ({
+      p: window.__ENGINE.sim.player.pos.slice(),
+      cy: window.__ENGINE.sim.camera.yaw,
+    }));
+    const dx = target[0] - st.p[0], dz = target[2] - st.p[2];
     const d = Math.hypot(dx, dz);
-    steps.push({ dist: Number(d.toFixed(3)), pos: p.map((v) => Number(v.toFixed(3))) });
-    if (d <= 1.6) break;
-    // Face the target: the engine's yaw convention is read back, not assumed.
-    const want = Math.atan2(dx, dz) * 180 / Math.PI;
-    const cur = await handle.page.evaluate(() => window.__ENGINE.sim.player.yaw_deg ?? (window.__ENGINE.sim.player.yaw * 180 / Math.PI));
-    let delta = ((want - cur + 540) % 360) - 180;
-    // 0.12 deg per px of movementX (game/data/input/profiles.json look.deg_per_px_yaw).
-    const px = Math.max(-600, Math.min(600, Math.round(delta / 0.12)));
-    await handle.page.mouse.move(400 + px, 270, { steps: 6 });
-    await advance(3, 10000);
-    await handle.page.keyboard.down('KeyW');
-    await advance(Math.max(12, Math.min(180, Math.round(d * 22))), 120000);
-    await handle.page.keyboard.up('KeyW');
+    steps.push({ dist: Number(d.toFixed(3)), pos: st.p.map((v) => Number(v.toFixed(3))), camera_yaw: st.cy });
+    if (d <= 1.5) break;
+    const cy = st.cy * Math.PI / 180;
+    const mx = dx * Math.cos(cy) - dz * Math.sin(cy);   // right component
+    const my = dx * Math.sin(cy) + dz * Math.cos(cy);   // forward component
+    const held = [];
+    if (my > d * 0.35) held.push(KEY.fwd); else if (my < -d * 0.35) held.push(KEY.back);
+    if (mx > d * 0.35) held.push(KEY.right); else if (mx < -d * 0.35) held.push(KEY.left);
+    if (!held.length) held.push(KEY.fwd);
+    for (const k of held) await handle.page.keyboard.down(k);
+    await advance(Math.max(10, Math.min(150, Math.round(d * 20))), 120000);
+    for (const k of held) await handle.page.keyboard.up(k);
     await advance(3, 10000);
   }
   const p = await pos();

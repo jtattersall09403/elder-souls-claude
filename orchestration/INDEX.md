@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `454dd88`: 559 tools, 153 reference
+so it cannot drift. Generated at `9288ebf`: 561 tools, 153 reference
 items, 39 pieces in flight.
 
 Its purpose is to stop 39+ concurrent agents each paying separately to discover the
@@ -167,12 +167,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 16
+### `tools/dialogue/` — 17
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
 - `tools/dialogue/consume.mjs` — CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
 - `tools/dialogue/critic-field-census.mjs` — critic-w1-17 instrument 1 — an INDEPENDENT census of every filter field authored on every info in game/data/dialogue/topics/**, written without reading build-gr
+- `tools/dialogue/critic-figures.mjs` — critic-w1-17 instrument 4 — SIGNPOSTING, AND THE AUTHOR'S HAND SHOWING THROUGH SIX MOUTHS.
 - `tools/dialogue/critic-reach.mjs` — critic-w1-17 instrument 3 — CAN ANY PLAYER, ANYWHERE, EVER HEAR THIS LINE?
 - `tools/dialogue/critic-semantics.mjs` — critic-w1-17 instrument 2 — FIRST-MATCH-WINS versus THE SHIPPED SCORING READER.
 - `tools/dialogue/disposition-oracle.py` — **no header comment**
@@ -433,7 +434,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 10
+### `tools/lore/` — 11
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -443,6 +444,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r1-shot.mjs` — One picture for the W1-23 round-1 verdict: what the register is measured to do, next to what it is measured NOT to do.
 - `tools/lore/critic-w1-23-r1-voices.mjs` — CRITIC W1-23 r1.
 - `tools/lore/critic-w1-23-r1.mjs` — CRITIC instrument, W1-23 round 1.
+- `tools/lore/critic-w1-23-r3-reach.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
 
@@ -675,7 +677,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **127 tools have no header comment**, so nobody can tell what they do without
+> **128 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -849,12 +851,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-ban | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` `tools/audio/critic-w1-22-r2-probe.mjs` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
 | `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
 | `W1-SOULS-LEDGER` | building | CONSUMPTION in the running engine, then downstream figures, INDEX gate row, blog line, com | `orchestration/status/W1-SOULS-LEDGER.json` `tools/check-souls-world.mjs` `tools/check-data.mjs` `game/data/world/population-posts.json` |
 | `W1-25` | building | Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (t | `orchestration/status/W1-25.json` |
-| `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-17` | starting | read ARBITRATION §3, RI-DLG items, INDEX; then reproduce build-graph, the filt() race clai | `orchestration/status/critic-w1-17.json` |
