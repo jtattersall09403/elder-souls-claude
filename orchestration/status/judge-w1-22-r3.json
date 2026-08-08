@@ -1,20 +1,24 @@
 {
   "task_id": "judge-w1-22-r3",
   "role": "blind-judge",
-  "status": "in_progress",
+  "status": "answers_written_pre_reveal",
   "started_at": "2026-08-08T00:00:00Z",
   "pack": "reports/packs/w1-22-r3-hard",
   "reveal_opened": false,
-  "next_step": "analyse 26 trials, write answers to disk incrementally, then open reveal",
+  "next_step": "commit answers, then open reveal and score",
   "notes": [
     "Rule 25 clear: I did not build this pack.",
     "DISCREPANCY FOUND BEFORE ANY ANALYSIS: dispatch asked for a QUALITY judgement (which of A/B is the better Black Marsh ambience). The pack's own PROMPT.md asks a SAME/DIFFERENT identity question and states there is no ours/reference distinction per trial. These are different questions. Recording this now so it cannot be read as a post-hoc excuse.",
     "No audio in the pack at all. PROMPT.md: 'You have no audio.' Judgement is by numeric feature vectors only - not by ear, not by spectrogram."
   ],
-  "files_touched": [],
+  "files_touched": [
+    "reports/packs/w1-22-r3-hard-judgement.md",
+    "orchestration/status/judge-w1-22-r3.json"
+  ],
   "files_claimed": [
     "reports/packs/w1-22-r3-hard-judgement.md",
     "orchestration/status/judge-w1-22-r3.json",
     "reports/blog-feed.jsonl"
-  ]
+  ],
+  "answers_sha256": "2f80d9b25554004879f2f21eaceea2e6253f393e14cc62dc94f46880d93e8fa0"
 }

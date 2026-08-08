@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `45752f3`: 713 tools, 153 reference
+so it cannot drift. Generated at `b4fbd5b`: 716 tools, 153 reference
 items, 60 pieces in flight.
 
 Its purpose is to stop 60+ concurrent agents each paying separately to discover the
@@ -261,6 +261,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 - `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
 - `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
+
+### `tools/gamepad/` — 1
+
+- `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
 ### `tools/harness/` — 232
 
@@ -718,7 +722,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 138
+### `tools/world/` — 140
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -846,6 +850,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/w1-04-r5-shot.mjs` — **no header comment**
 - `tools/world/w1-04-r6-census.mjs` — W1-04 ROUND 6 — THE OFFLINE CENSUS, ENUMERATED FROM THE INTERIORS.
+- `tools/world/w1-04-r6-deletefix.mjs` — **no header comment**
+- `tools/world/w1-04-r6-live.mjs` — **no header comment**
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
 - `tools/world/w1-crossing-r2-bothways-gate.mjs` — **no header comment**
@@ -860,7 +866,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **170 tools have no header comment**, so nobody can tell what they do without
+> **172 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1034,7 +1040,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `judge-w1-22-r3` | ? | analyse 26 trials, write answers to disk incrementally, then open reveal | — |
+| `judge-w1-22-r3` | ? | commit answers, then open reveal and score | `reports/packs/w1-22-r3-hard-judgement.md` `orchestration/status/judge-w1-22-r3.json` |
 | `critic-w1-22-r2` | done | DONE. Verdict written and validated; blog line appended; committing declared files with gi | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/blog-feed.jsonl` `reports/content-stats.json` |
 | `W1-GAMEPAD` | running | Shim is healthy: do NOT manufacture a defect (brief scope note, rule 0). Spend budget on ( | `orchestration/status/W1-GAMEPAD.json` |
 | `W1-04-r6` | building | boot-check, then rewrite tools/check-building-fits-room.mjs to enumerate from interiors, t | `orchestration/status/W1-04-r6.json` `game/src/render/exterior.js` |
