@@ -25,6 +25,7 @@ import { focusBase, focusCost, focusMaxFor, spellSlotsFor, skillDiscount, commis
 import { buildCastMove } from './moves.js';
 import { HANDLERS, DAMAGE_EFFECTS, BUILDUP, addBuildup, assertRegistryComplete } from './apply.js';
 import { mitigate } from '../../combat/resolve.js';
+import { SWIM_FLOAT_M } from '../traversal.js';
 
 const DEG = Math.PI / 180;
 
@@ -1650,9 +1651,20 @@ export class MagicSystem {
     // the real ground under it, it now returns on the first line for a body that is standing —
     // which is what it should always have done.
     // ==========================================================================================
-    const world = !this._groundPlaneBlind && this.w && this.w.engine
-      && typeof this.w.engine.groundInActiveCell === 'function' ? this.w.engine : null;
-    const g = world ? world.groundInActiveCell(b.pos[0], b.pos[2]) : (groundY === undefined ? 0 : groundY);
+    //
+    // W1-14 ROUND 5 — THE GROUND PLANE'S OWN SHADOW, AND IT IS THE SAME DEFECT ONE SURFACE ON.
+    //
+    // The fix above asks the world where the floor is. In deep water the world answers with the
+    // SEA BED. Measured by the round-4 critic at `vista_primary`: the body floats at y = -1.404
+    // in `SWIM`, `groundInActiveCell` returns -41.148, so `airborne` is true forty metres below
+    // a body that is bobbing on the surface, and 13 of the 49 named states in the tree — a
+    // province that is mostly marsh — could not cast at all. Half a fix generalises exactly as
+    // badly as no fix, which is the whole lesson of §1 of that verdict.
+    //
+    // A SWIMMER STANDS ON THE WATER. `_supportY` is the floor as the LOCOMOTION MODEL defines
+    // it, not as the heightfield does, and it agrees with `sim/traversal.js` by importing that
+    // file's own constant rather than by copying its arithmetic.
+    const g = this._supportY(b, groundY);
     if (b.pos[1] <= g + 1e-3) {
       if (this.airborne && this.fall.velMps > 0) this._land(frame, g);
       this.fall.velMps = 0;
@@ -1666,6 +1678,40 @@ export class MagicSystem {
     if (b.pos[1] <= g + 1e-6) this._land(frame, g);
     return { vel_mps: round2(this.fall.velMps), terminal_mps: this.fall.terminalMps, pos_y: round4(b.pos[1]) };
   }
+
+  /**
+   * The height a body is SUPPORTED at, here: the heightfield under it, raised to the swimmer's
+   * float line wherever the body is actually swimming.
+   *
+   * Both halves are the world's own authorities and neither is a second opinion. The floor is
+   * `Engine.groundInActiveCell` (the reader `DeathSystem` is already handed and already calls
+   * inside the armed step). The float line is `sim/traversal.js`'s `SWIM_FLOAT_M`, IMPORTED —
+   * the file that actually places the swimming body every frame — and the swim test is that
+   * file's own live band rather than a depth threshold restated here, so the two cannot drift.
+   *
+   * `__breakWaterPlane(true)` restores the sea bed. RULES.md #6, and the control has been
+   * watched going red: under it every deep-water state refuses the cast `airborne` again.
+   */
+  _supportY(b, groundY) {
+    const world = !this._groundPlaneBlind && this.w && this.w.engine
+      && typeof this.w.engine.groundInActiveCell === 'function' ? this.w.engine : null;
+    const g = world ? world.groundInActiveCell(b.pos[0], b.pos[2]) : (groundY === undefined ? 0 : groundY);
+    if (this._waterPlaneBlind || !world) return g;
+    const t = this.w.sim && this.w.sim._traversal;
+    // W5 is the SWIM band. Below it the feet are on the bottom and the bottom is the floor —
+    // wading through shin-deep water must not lift the body onto the surface. `sinking` is
+    // RI-WLD10 §3's overloaded body walking the sea floor with a breath clock: it is not
+    // swimming, so it is not floated, and Hallgerd's Tale stays true.
+    if (!t || t.band !== 'W5' || t.sinking) return g;
+    const f = world.field;
+    if (!f || typeof f.waterSurfaceAt !== 'function') return g;
+    const surf = f.waterSurfaceAt(b.pos[0], b.pos[2]);
+    if (surf === null || surf === undefined || !Number.isFinite(surf)) return g;
+    return Math.max(g, surf - SWIM_FLOAT_M);
+  }
+
+  /** Delete-the-fix for the water plane: the floor in deep water goes back to the sea bed. */
+  __breakWaterPlane(on) { this._waterPlaneBlind = !!on; return this._waterPlaneBlind; }
 
   _land(frame, g) {
     const b = this.w.combat.player;

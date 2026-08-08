@@ -42,6 +42,20 @@ const AMPHIBIOUS_RACES = new Set(['saxhleel', 'naga']);
 export function isAmphibiousRace(race) { return AMPHIBIOUS_RACES.has(String(race || '').toLowerCase()); }
 export const bandIndex = (b) => BANDS.indexOf(b);
 
+/**
+ * How far a swimming body's origin sits BELOW the water surface: the submerged fraction of a
+ * 1.8 m body, waterline at the chest. `step()` has floated bodies on this number since W1-01
+ * and it was written inline there; it is exported because W1-14 round 5 needed a SECOND system
+ * to agree with it exactly rather than to guess.
+ *
+ * The magic system's own gravity asked `groundInActiveCell` for the floor, which in deep water
+ * is the SEA BED — so a body swimming on the surface of the Topal was 40 m "airborne" by the
+ * magic system's reckoning, `castDropReason` returned `'airborne'`, and 13 of the 49 named
+ * states in the tree could not cast a spell. Two definitions of where a swimmer stands is how
+ * that happens; there is one now, and it is here.
+ */
+export const SWIM_FLOAT_M = 0.78 * 1.8;
+
 /** Band of a depth, with hysteresis about the previous band (RI-WLD10 §1 property 2). */
 export function bandWithHysteresis(depth, prev, hyst) {
   let b = 'W0';
@@ -254,7 +268,7 @@ export class Traversal {
     // ---- 5. vertical: gravity, landing, damage ------------------------------------------------
     const ground = f.heightAt(x, z);
     const surf = f.waterSurfaceAt(x, z);
-    const groundOrFloat = swimming && surf !== null ? surf - 0.78 * 1.8 : ground;
+    const groundOrFloat = swimming && surf !== null ? surf - SWIM_FLOAT_M : ground;
     if (swimming) {
       // Swimming: the body floats with the waterline at chest, so its Y is the surface minus the
       // submerged fraction of a 1.8 m body. There is no fall while swimming.
