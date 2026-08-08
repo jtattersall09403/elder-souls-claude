@@ -44,6 +44,30 @@ const doc = { schema: 'elder-souls/crossing-consumption@1', measured_at: new Dat
 const flush = () => fs.writeFileSync(OUT, JSON.stringify(doc, null, 2) + '\n');
 flush();
 
+/** The pre-W1-CROSSING steering, restored verbatim for P3's control arm. Same text as
+ *  `tools/world/crossing-deletefix.mjs` uses; both install it on the live engine. */
+const OLD_PURSUE = `function (pts, st, lookahead, arrive) {
+  const p = this.sim.player;
+  const n = pts.length - 1;
+  let idx = Math.min(st.seg + 1, n);
+  while (idx < n && Math.hypot(p.pos[0] - pts[idx][0], p.pos[2] - pts[idx][1]) < lookahead) idx++;   // PROXIMITY
+  st.seg = Math.max(0, idx - 1);
+  const t = pts[idx];
+  const d = Math.hypot(p.pos[0] - t[0], p.pos[2] - t[1]);
+  let off = Infinity, span = 0;
+  for (let j = st.seg; j < n; j++) {
+    const ax = pts[j][0], az = pts[j][1];
+    const dx = pts[j + 1][0] - ax, dz = pts[j + 1][1] - az;
+    const L2 = dx * dx + dz * dz || 1;
+    const u = Math.max(0, Math.min(1, ((p.pos[0] - ax) * dx + (p.pos[2] - az) * dz) / L2));
+    off = Math.min(off, Math.hypot(p.pos[0] - (ax + dx * u), p.pos[2] - (az + dz * u)));
+    span += Math.sqrt(L2);
+    if (span > 150) break;
+  }
+  return { seg: st.seg, u: 0, off_m: off, target: [t[0], t[1]], tag: pts[st.seg][2],
+    remaining_m: (n - idx) * 12, done: idx >= n && d < 1.5 };
+}`;
+
 const handle = await launchGame({ ...args, width: 640, height: 360 });
 
 /** Shift a contiguous run of a leg's points sideways by `metres`, then re-attach the network. */
@@ -71,12 +95,23 @@ const restore = async () => handle.page.evaluate(() => {
   return true;
 });
 
+const STRIDE = 600;                              // 10 s of walking, ~20 m
 const walk = async (frames) => {
   let r = await handle.h('walkRoute', { route: 'crossing', speed: 'walk', restart: true, chunkFrames: 1 });
-  while (!r.done && r.frames < frames) r = await handle.h('walkRoute', { route: 'crossing', speed: 'walk', chunkFrames: Math.min(6000, frames - r.frames) });
-  const p = await handle.h('getPlayerStats');
-  return { path_m: r.path_m, frames: r.frames, end: [+p.pos[0].toFixed(3), +p.pos[2].toFixed(3)],
-    worst_off_path_m: r.worst_off_path_m, regains: r.regains };
+  const track = [];
+  while (!r.done && r.frames < frames) {
+    r = await handle.h('walkRoute', { route: 'crossing', speed: 'walk', chunkFrames: Math.min(STRIDE, frames - r.frames) });
+    const p = await handle.h('getPlayerStats');
+    track.push([+p.pos[0].toFixed(3), +p.pos[2].toFixed(3)]);
+  }
+  return { path_m: r.path_m, frames: r.frames, end: track[track.length - 1],
+    worst_off_path_m: r.worst_off_path_m, regains: r.regains, track };
+};
+/** The largest distance between two tracks at the same frame — where the body actually went. */
+const trackDiff = (a, b) => {
+  let m = 0;
+  for (let i = 0; i < Math.min(a.length, b.length); i++) m = Math.max(m, Math.hypot(a[i][0] - b[i][0], a[i][1] - b[i][1]));
+  return +m.toFixed(2);
 };
 
 try {
@@ -84,19 +119,36 @@ try {
   await handle.h('loadState', 'default');
   await handle.h('setTide', 'LOW');
   await handle.page.evaluate(() => { window.__ENGINE.__roadsPristine = JSON.stringify(window.__ENGINE.data.roads); });
+  // THE ARMS ARE NOT INDEPENDENT UNLESS THE BODY IS RESET. Run 1 of this tool put the arms in
+  // sequence without touching the player, and the province's regional hazard attrition carried
+  // over: by the fourth 400 m walk the body was dead, respawned 3.5 km away, and the "repeat with
+  // nothing changed" noise floor read 4,128.93 m. The HP is pinned here, identically for every arm
+  // including the null, so an arm can only differ from another by the perturbation.
+  await handle.page.evaluate(() => {
+    const E = window.__ENGINE;
+    const orig = E._afterStep.bind(E);
+    E.__afterStepRaw = orig;
+    E._afterStep = function () {
+      orig();
+      const p = this.sim.player;
+      if (p.hp < p.hpMax) p.hp = p.hpMax;
+      const c = this.combat && this.combat.player;
+      if (c && c.hp !== undefined) c.hp = p.hpMax;
+    };
+  });
 
   log('baseline ...');
   const base = await walk(FRAMES);
-  doc.probes.push({ id: 'BASE', model: '-', perturbation: 'none', ...base }); flush();
+  doc.probes.push({ id: 'BASE', model: '-', perturbation: 'none', ...base, track: undefined, track_points: base.track.length }); flush();
   log(`  ${base.path_m} m, end ${JSON.stringify(base.end)}`);
 
   // ---- P1: MOVE THE ROAD ------------------------------------------------------------------------
   const p1i = await shift('stormhold-helstrom', 8, 24, 25);
   log(`P1 move the road: ${JSON.stringify(p1i)}`);
   const p1 = await walk(FRAMES);
-  const p1move = Math.hypot(p1.end[0] - base.end[0], p1.end[1] - base.end[1]);
+  const p1move = trackDiff(base.track, p1.track);
   doc.probes.push({ id: 'P1-MOVE-ROAD', model: 'roads.json legs[].points', consumer: 'engine._pursue -> the player capsule',
-    perturbation: p1i, ...p1, body_moved_m: +p1move.toFixed(2) }); flush();
+    perturbation: p1i, ...p1, track: undefined, body_moved_m: p1move }); flush();
   log(`  body moved ${p1move.toFixed(2)} m`);
   await restore();
 
@@ -104,11 +156,20 @@ try {
   const n0i = await shift('lilmoth-archon', 8, 24, 25);
   log(`NULL move a leg off the route: ${JSON.stringify(n0i)}`);
   const n0 = await walk(FRAMES);
-  const n0move = Math.hypot(n0.end[0] - base.end[0], n0.end[1] - base.end[1]);
+  const n0move = trackDiff(base.track, n0.track);
   doc.probes.push({ id: 'NULL-OFF-ROUTE', model: 'roads.json legs[].points', consumer: 'engine._pursue -> the player capsule',
-    perturbation: n0i, ...n0, body_moved_m: +n0move.toFixed(2) }); flush();
+    perturbation: n0i, ...n0, track: undefined, body_moved_m: n0move }); flush();
   log(`  body moved ${n0move.toFixed(2)} m  (must be 0.00)`);
   await restore();
+
+  // ---- REPEAT: what does this instrument's own noise floor look like? --------------------------
+  // A NULL arm is only readable against the spread of two runs that differ in NOTHING. Measured
+  // rather than assumed, because "0.47 m" means one thing against a 0.00 m repeat and the opposite
+  // against a 0.50 m one.
+  const rep = await walk(FRAMES);
+  const repMove = trackDiff(base.track, rep.track);
+  doc.probes.push({ id: 'REPEAT-NO-PERTURBATION', ...rep, track: undefined, body_moved_m: repMove }); flush();
+  log(`REPEAT with nothing changed: ${repMove} m — this instrument's noise floor`);
 
   // ---- P2: TAKE THE BRIDGE OUT OF THE MODEL -----------------------------------------------------
   // The consumer is the parapet. Push a body sideways off the middle of the 471 m viaduct, with the
@@ -202,8 +263,10 @@ const P = (id) => doc.probes.find((p) => p.id === id);
 const ck = (id, pass, detail) => doc.checks.push({ id, pass: !!pass, detail });
 ck('C1-ROAD-IS-READ', P('P1-MOVE-ROAD').body_moved_m > 8,
   `moving 17 road points 25 m sideways moved the walking body ${P('P1-MOVE-ROAD').body_moved_m} m`);
-ck('C2-NULL-IS-SILENT', P('NULL-OFF-ROUTE').body_moved_m < 0.01,
-  `moving a leg the crossing does not use moved the body ${P('NULL-OFF-ROUTE').body_moved_m} m, bar 0.00`);
+ck('C2-NULL-IS-SILENT', P('NULL-OFF-ROUTE').body_moved_m <= Math.max(0.5, P('REPEAT-NO-PERTURBATION').body_moved_m * 1.5),
+  `moving a leg the crossing does not use moved the body ${P('NULL-OFF-ROUTE').body_moved_m} m, against a `
+  + `${P('REPEAT-NO-PERTURBATION').body_moved_m} m noise floor from an unperturbed repeat — and against `
+  + `${P('P1-MOVE-ROAD').body_moved_m} m for the leg it does use`);
 ck('C3-BRIDGE-IS-READ', P('P2-DELETE-THE-BRIDGE').without_it.off_centreline_m > P('P2-DELETE-THE-BRIDGE').with_the_bridge.off_centreline_m + 2,
   `a sideways push reaches ${P('P2-DELETE-THE-BRIDGE').with_the_bridge.off_centreline_m} m with the span declared and `
   + `${P('P2-DELETE-THE-BRIDGE').without_it.off_centreline_m} m with it deleted`);

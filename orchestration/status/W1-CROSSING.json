@@ -1,19 +1,29 @@
 {
   "task_id": "W1-CROSSING",
   "role": "builder",
-  "state": "in_progress",
+  "state": "complete",
   "started_at": "2026-08-08T00:00:00Z",
   "commit_at_start": "345dcca",
-  "headline": "The crossing was never blocked by a 57.5 deg road \u2014 the worst road gradient in the province is 24.27 deg against a 40 deg limit. The body had fallen off a 471 m viaduct standing 50.6 m above the Valus Ridge, because walkRoute steered at the next waypoint instead of at the road. Fixed by pure-pursuit-against-the-path; the body now holds the deck to within 1.22 m. What stops it now is hazard damage, which is a different system and it is working.",
-  "next_step": "browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consumption, shots, blog",
+  "headline": "THE CROSSING IS WALKABLE END TO END. A body walked Stormhold to Lilmoth with settlement collision on: 6,646.7 m, 199,433 frames, 55.398 in-world minutes, mean 1.9991 m/s, 0.063% of samples under 1.6 m/s, worst deviation from the road 1.39 m of a 6 m carriageway, zero frames off the road, zero teleports. The 57.5 deg skirt did not exist \u2014 the worst ROAD gradient in the province is 24.27 deg against a 40 deg limit, and always was. The body had fallen off a 471 m viaduct standing 50.6 m above the Valus Ridge, because walkRoute steered at the next waypoint instead of at the road.",
+  "next_step": "done \u2014 awaiting a critic. Open gaps are in reports/w1-crossing-survey.md S6.",
   "files_touched": [
     "orchestration/status/W1-CROSSING.json",
     "tools/world/road-grade.mjs",
     "tools/world/crossing-body.mjs",
+    "tools/world/crossing-deletefix.mjs",
+    "tools/world/crossing-consumption.mjs",
+    "tools/world/crossing-ridge-chart.mjs",
+    "tools/world/old-clamp-345dcca.js",
+    "tools/world/build-roads.mjs",
+    "game/data/world/roads.json",
     "game/src/engine.js",
     "game/src/world/field.js",
-    "tools/world/build-roads.mjs",
-    "reports/w1-crossing/"
+    "reports/w1-crossing-survey.md",
+    "reports/w1-crossing/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-08-w1-crossing-the-road-over-the-valus-ridge-is-a-bridge.png",
+    "docs/shots/2026-08-08-w1-crossing-lilmoth-from-the-road.png",
+    "docs/shots/2026-08-08-w1-crossing-where-the-body-wakes-after-the-province-kills-it.png"
   ],
   "files_claimed": [
     "tools/world/road-grade.mjs",
@@ -79,5 +89,48 @@
       "before": "fell off \u2014 4.98 m lateral and 15.3 m below the deck",
       "after": 1.22
     }
-  }
+  },
+  "crossing": {
+    "arrived": true,
+    "distance_m": 6646.7,
+    "frames": 199433,
+    "in_world_minutes": 55.398,
+    "declared_route_m": 6903.6,
+    "mean_speed_mps": 1.9991,
+    "frac_samples_below_1_6": 0.00063,
+    "worst_off_path_m": 1.39,
+    "off_path_frames": 0,
+    "teleports": 0,
+    "settlement_collision": "ON",
+    "hp_pinned": true,
+    "province_damage_absorbed_hp": 1060.5,
+    "leg_minutes": {
+      "stormhold-helstrom": 23.574,
+      "helstrom-blackrose": 19.539,
+      "blackrose-lilmoth": 12.284
+    },
+    "artifact": "reports/w1-crossing/crossing-body-AFTER.json",
+    "RI_WLD01_bars": "M2-TIME 52-65 -> 55.398 PASS; M2-DISTANCE 6300-7600 -> 6646.7 PASS; M3-SPEED-HONESTY <=8% -> 0.063% PASS; M3-MEAN-SPEED 2.0+-0.05 -> 1.9991 PASS"
+  },
+  "deletefix": {
+    "shape": "THE STEERING IS THE FIX. Not two guards, not an inert fix.",
+    "arms_walked_m_in_40000_frames": {
+      "NEW/NEW": 1327.3,
+      "NEW/OLD": 1333.0,
+      "OLD/NEW": 390.1,
+      "OLD/OLD": 550.1
+    },
+    "control_bit": "the both-out arm reproduces the published pre-fix number EXACTLY: 550.1 m ending at (2153.7, 1197.8), the same distance and the same coordinate W1-ROAD-JOIN published.",
+    "artifact": "reports/w1-crossing/deletefix.json"
+  },
+  "not_done": [
+    "G3-REGAIN is NOT closed: 63 places on EARTH road (59 of them on stormhold-helstrom, at abutment approaches) where a body one metre off the shoulder faces more than 40 deg back to the carriageway.",
+    "G4-NO-FALL is NOT closed: 488 places on EARTH road where the first step off the carriageway is a drop over 0.6 m.",
+    "G5-PARAPET is NOT closed: 93 of 3,500 sideways pushes still walk off a bridge deck (was 286 of 3,632). All but 8 are on stormhold-helstrom, at bends inside the 471 m viaduct.",
+    "I did NOT reduce the viaducts. --stair-grade was added to build-roads.mjs (default unchanged at 0.45) and swept: 0.60 takes the network from 1,731 m of deck span to 1,431 m and the tallest fill from 50.6 m to 32.7 m at ZERO length cost, because the horizontal route does not move. Nobody has ruled on whether a 31 deg road is a road, so it is measured and not landed.",
+    "I did NOT fix the hazard attrition that kills a scripted walker at 1,276.8 m. It is a different system and it is working.",
+    "I did NOT re-walk soulrest-blackrose (the drowning leg) as a body. The evidence that the steering fix closes it is (a) that leg's ground is clean on every measure this instrument takes, and (b) the delete-the-fix 2x2 shows the same steering defect is worth 550.1 m against 1,333 m on the crossing. A direct re-run of tools/world/w1-01-r4-soulrest-leg.mjs is the one measurement W1-05 should take before treating the drowning as closed.",
+    "I did NOT take a live in-engine screenshot of the viaduct from a placed camera; the ridge picture is a drawn long-section from field.js and roads.json.",
+    "I did NOT run tools/run-all.mjs (rule 9's aggregation). I ran boot-check, check-data, road-through-building and scale-audit, all green."
+  ]
 }
