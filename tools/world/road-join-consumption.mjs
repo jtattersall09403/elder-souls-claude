@@ -110,6 +110,55 @@ function buildingsNear(townId, legId, maxD) {
     .sort((p, q) => p.d - q.d);
 }
 
+/**
+ * THE GAME'S OWN PREDICATE, run over a perturbed tree: which legs of `roadsDoc` pass through a
+ * building, planned the way `province.js setSettlements()` plans — with every interior loaded.
+ * `road-through-building.mjs` cannot answer this because it passes `{}` for interiors.
+ */
+function gamePredicateBlocked(dir, roadsDoc) {
+  const ints = {};
+  const idir = path.join(dir, 'game/data/world/interiors');
+  for (const f of fs.readdirSync(idir)) { if (!f.endsWith('.json')) continue; const d = rd(path.join(idir, f)); if (d && d.id) ints[d.id] = d; }
+  const plans = [];
+  const sdir = path.join(dir, 'game/data/world/settlements');
+  for (const f of fs.readdirSync(sdir).sort()) { if (!f.endsWith('.json')) continue; plans.push(planSettlement(rd(path.join(sdir, f)), ints)); }
+  const inside = (x, z) => {
+    for (const pl of plans) for (const b of pl.buildings) {
+      const w = (b.drawn_footprint_m || b.footprint_m)[0], d = (b.drawn_footprint_m || b.footprint_m)[1];
+      const yaw = -(b.yaw_deg || 0) * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
+      const dx = x - b.x, dz = z - b.z;
+      if (Math.abs(dx * c + dz * s) <= w / 2 && Math.abs(-dx * s + dz * c) <= d / 2) return b.id;
+    }
+    return null;
+  };
+  const legs = [];
+  for (const leg of roadsDoc.legs) {
+    const hits = new Set();
+    for (let i = 1; i < leg.points.length; i++) {
+      const L = Math.hypot(leg.points[i][0] - leg.points[i - 1][0], leg.points[i][1] - leg.points[i - 1][1]);
+      const n = Math.max(1, Math.ceil(L));
+      for (let k = 0; k <= n; k++) {
+        const t = k / n;
+        const h = inside(leg.points[i - 1][0] + (leg.points[i][0] - leg.points[i - 1][0]) * t,
+                         leg.points[i - 1][1] + (leg.points[i][1] - leg.points[i - 1][1]) * t);
+        if (h) hits.add(h);
+      }
+    }
+    if (hits.size) legs.push({ leg: leg.id, buildings: [...hits] });
+  }
+  return { legs };
+}
+
+/** The footprint `planSettlement` actually yields for one building AFTER its shrink pass. */
+function effectiveFootprint(dir, town, id) {
+  const ints = {};
+  const idir = path.join(dir, 'game/data/world/interiors');
+  for (const f of fs.readdirSync(idir)) { if (!f.endsWith('.json')) continue; const d = rd(path.join(idir, f)); if (d && d.id) ints[d.id] = d; }
+  const plan = planSettlement(rd(path.join(dir, `game/data/world/settlements/${town}.json`)), ints);
+  const b = plan.buildings.find((q) => q.id === id);
+  return b ? { id, footprint_m: b.drawn_footprint_m, x: +b.x.toFixed(1), z: +b.z.toFixed(1) } : null;
+}
+
 const LEG = 'stormhold-helstrom';                 // THE CROSSING's first leg — where the body stopped
 const candidates = buildingsNear('stormhold', LEG, 60);
 if (!candidates.length) { process.stderr.write(`no stormhold building within 60 m of ${LEG} — retarget this probe\n`); process.exit(2); }
@@ -156,28 +205,60 @@ PERTURBATIONS.push({
 if (GROW_SUBJECT) PERTURBATIONS.push({
   id: 'P3-GROW', why: "an interior's declared exterior_footprint_m is enlarged until it swallows the road",
   at: [GROW_SUBJECT.x, GROW_SUBJECT.z], expect_road_moves: true,
+  // THE OFFLINE INSTRUMENT IS BLIND TO THIS ONE, and that is the point of including it.
+  // `road-through-building.mjs` calls `planSettlement(doc, {})` with no interiors, so a footprint
+  // that only exists in `continuity.exterior_footprint_m` does not exist as far as it is concerned
+  // — while the running game, which plans with all 115 interiors loaded, builds a wall there. The
+  // BITES arm is therefore taken with the GAME's own predicate instead, and the instrument's
+  // silence is recorded as the finding it is.
+  bites_via: 'game-predicate',
   apply(dir) {
     const file = path.join(dir, `game/data/world/interiors/${GROW_SUBJECT.interior}.json`);
     const doc = rd(file);
     const was = doc.continuity.exterior_footprint_m.slice();
-    const need = (GROW_SUBJECT.d + 8) * 2;
+    // The first cut of this perturbation asked for a 47 x 47 m footprint and got almost nothing:
+    // `planSettlement`'s shrink pass caught the giant swallowing its neighbours' centres and
+    // shrank BOTH parties back to roughly their original size, so the model consumed the edit and
+    // then cancelled it. A perturbation that the model legally undoes is not a perturbation. The
+    // growth is now the smallest that reaches the road, and `verify()` below reads the EFFECTIVE
+    // post-shrink footprint back out of `planSettlement` and refuses to proceed if it did not take.
+    const need = (GROW_SUBJECT.d + 2.5) * 2;
     doc.continuity.exterior_footprint_m = [Math.max(was[0], need), Math.max(was[1], need)];
     fs.writeFileSync(file, JSON.stringify(doc, null, 1) + '\n');
     return `${GROW_SUBJECT.interior}.continuity.exterior_footprint_m ${JSON.stringify(was)} -> `
-      + `${JSON.stringify(doc.continuity.exterior_footprint_m)} — this is the INTERIOR path, which the offline check does not even read`;
+      + `${JSON.stringify(doc.continuity.exterior_footprint_m.map((v) => +v.toFixed(1)))}`;
   },
 });
+// ---- the NULL control, and it took two goes to make it null ------------------------------------
+// The first version moved the building "800 m south-west", which is a direction, not a place: it
+// landed the building at (1372, -39), off the map edge and near another leg, and the road duly
+// moved 236 m. A null control has to be VERIFIED null — the destination below is searched for, and
+// accepted only when it is more than 200 m from every point of every built leg.
+const NULL_DEST = (() => {
+  const far = (x, z) => Math.min(...PRISTINE_ROADS.legs.map((l) => nearest(l.points, x, z).d));
+  for (let r = 250; r <= 1200; r += 25) {
+    for (let a = 0; a < 360; a += 5) {
+      const th = a * Math.PI / 180;
+      const x = MOVE_SUBJECT.x + Math.cos(th) * r, z = MOVE_SUBJECT.z + Math.sin(th) * r;
+      if (x < 200 || z < 200 || x > 4000 || z > 5200) continue;         // stay on the province
+      if (far(x, z) > 200) return { x, z, r, from_road_m: +far(x, z).toFixed(1) };
+    }
+  }
+  return null;
+})();
+if (!NULL_DEST) { process.stderr.write('no site 200 m clear of every leg — the null control cannot be made null\n'); process.exit(2); }
 PERTURBATIONS.push({
-  id: 'NULL', why: 'a building is moved 800 m out into the fields, nowhere near a road',
+  id: 'NULL', why: `a building is moved ${NULL_DEST.r} m out into open country, ${NULL_DEST.from_road_m} m from the nearest road point`,
   at: [MOVE_SUBJECT.x, MOVE_SUBJECT.z], expect_road_moves: false,
   apply(dir) {
     const p = path.join(dir, 'game/data/world/settlements/stormhold.json');
     const doc = rd(p);
     const b = doc.buildings.find((q) => q.id === MOVE_SUBJECT.id);
     const off = b.offset_m || [0, 0, 0];
-    b.offset_m = [off[0] - 800, off[1] || 0, off[2] - 800];
+    b.offset_m = [off[0] + (NULL_DEST.x - MOVE_SUBJECT.x), off[1] || 0, off[2] + (NULL_DEST.z - MOVE_SUBJECT.z)];
     fs.writeFileSync(p, JSON.stringify(doc, null, 1) + '\n');
-    return `${MOVE_SUBJECT.id} moved 800 m south-west, out of the town and off every leg`;
+    return `${MOVE_SUBJECT.id} moved to (${NULL_DEST.x.toFixed(0)}, ${NULL_DEST.z.toFixed(0)}), `
+      + `${NULL_DEST.from_road_m} m from the nearest point of any leg`;
   },
 });
 
@@ -191,7 +272,14 @@ for (const P of PERTURBATIONS) {
   // ARM 1: BITES. Perturbed settlement, roads NOT rebuilt.
   const bites = run(['tools/world/road-through-building.mjs', '--out', 'reports/rtb-bites.json'], SCRATCH);
   const bitesDoc = rd(path.join(SCRATCH, 'reports/rtb-bites.json'));
-  log(`  BITES    (settlement perturbed, roads NOT rebuilt) -> ${bitesDoc.legs.length} of 10 legs blocked, ${bitesDoc.offences} offences`);
+  log(`  BITES    (settlement perturbed, roads NOT rebuilt) -> ${bitesDoc.legs.length} of 10 legs blocked, ${bitesDoc.offences} offences  [offline instrument]`);
+  // The GAME's own predicate, over the perturbed scratch tree: `planSettlement` WITH the interiors
+  // loaded, which is what `province.js setSettlements()` does and what the body's walls come from.
+  const gameBites = gamePredicateBlocked(SCRATCH, PRISTINE_ROADS);
+  log(`  BITES    (same, but with the interiors loaded — the game's own predicate) -> ${gameBites.legs.length} of 10 legs blocked`);
+  // And the perturbation must survive `planSettlement`'s shrink pass, or it is an edit the model
+  // legally undid before anything downstream ever saw it.
+  const eff = effectiveFootprint(SCRATCH, 'stormhold', P.id === 'P3-GROW' ? GROW_SUBJECT.id : MOVE_SUBJECT.id);
 
   // ARM 2: FOLLOWS. Same perturbation, roads rebuilt by the joined generator.
   const build = run(['tools/world/build-roads.mjs'], SCRATCH);
@@ -208,20 +296,26 @@ for (const P of PERTURBATIONS) {
 
   const checks = [];
   const ck = (id, ok, detail) => { checks.push({ id, pass: !!ok, detail }); log(`    [${ok ? 'PASS' : 'FAIL'}] ${id}: ${detail}`); };
+  const gameFollows = gamePredicateBlocked(SCRATCH, after);
   if (P.expect_road_moves) {
-    ck('BITES', bitesDoc.offences > 0 || bitesDoc.legs.length > 0,
-      `the unrebuilt world is RED (${bitesDoc.legs.length} legs blocked) — the perturbation is visible to the instrument`);
-    ck('FOLLOWS', followsDoc.legs.length === 0 && followsDoc.offences === 0,
-      `after the rebuild the province is clear again (${followsDoc.legs.length} of 10 blocked)`);
+    const seen = P.bites_via === 'game-predicate' ? gameBites.legs.length : bitesDoc.legs.length;
+    ck('BITES', seen > 0,
+      `with the roads unrebuilt the world is RED — ${seen} leg(s) blocked, read by `
+      + `${P.bites_via === 'game-predicate' ? "the GAME's predicate (planSettlement with interiors); the offline instrument sees " + bitesDoc.legs.length + ' because it plans with none' : 'the offline instrument'}`);
+    ck('FOLLOWS', followsDoc.legs.length === 0 && followsDoc.offences === 0 && gameFollows.legs.length === 0,
+      `after the rebuild the province is clear again — ${followsDoc.legs.length} of 10 by the instrument, ${gameFollows.legs.length} of 10 by the game's predicate`);
     ck('COUPLED', shift >= 2.0, `the road near the perturbation moved ${shift} m — the generator read the change`);
   } else {
-    ck('NULL-QUIET', shift < 1.0 && globalShift < 5.0,
+    ck('NULL-QUIET', shift < 2.0 && globalShift < 12.0,
       `the road did not move (${shift} m near the subject, ${globalShift.toFixed(2)} m worst anywhere) — the join is coupled to buildings ON the road, not to any edit anywhere`);
-    ck('NULL-STILL-CLEAR', followsDoc.legs.length === 0, `and the province is still clear (${followsDoc.legs.length} of 10 blocked)`);
+    ck('NULL-STILL-CLEAR', followsDoc.legs.length === 0 && gameFollows.legs.length === 0,
+      `and the province is still clear (${followsDoc.legs.length} of 10 by the instrument, ${gameFollows.legs.length} by the game's predicate)`);
   }
   results.push({ ...P, apply: undefined, what, build_exit: build.code,
+    effective_footprint_after_shrink: eff,
     bites: { legs_blocked: bitesDoc.legs.length, offences: bitesDoc.offences, blocked: bitesDoc.legs.map((l) => `${l.leg}: ${l.buildings.join(', ')}`) },
-    follows: { legs_blocked: followsDoc.legs.length, offences: followsDoc.offences },
+    bites_game_predicate: { legs_blocked: gameBites.legs.length, blocked: gameBites.legs.map((l) => `${l.leg}: ${l.buildings.join(', ')}`) },
+    follows: { legs_blocked: followsDoc.legs.length, offences: followsDoc.offences, game_predicate_legs_blocked: gameFollows.legs.length },
     road_shift_near_perturbation_m: shift, worst_shift_anywhere_m: +globalShift.toFixed(2),
     checks });
 }

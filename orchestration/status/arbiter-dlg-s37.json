@@ -1,17 +1,39 @@
 {
   "task_id": "arbiter-dlg-s37",
   "role": "arbiter",
-  "state": "starting",
-  "started_at": "2026-08-08T00:00:00Z",
-  "subject": "S37: RI-DLG01 §A first-match-wins vs converse.js specificity scoring",
-  "next_step": "read RULES.md, INDEX.md, ARBITRATION.md, W1-17-r1.md, converse.js",
-  "files_touched": ["orchestration/status/arbiter-dlg-s37.json"],
+  "state": "writing",
+  "commit": "63f41ef",
+  "subject": "S37: RI-DLG01 §A first-match-wins vs converse.js infoFor() specificity scoring",
+  "next_step": "write S37 into ARBITRATION.md, amend RI-DLG01 §A/§D, file the res referral in NEXT-DISPATCH, blog line, commit",
+  "files_touched": [
+    "orchestration/status/arbiter-dlg-s37.json",
+    "tools/dialogue/arbiter-order-divergence.mjs",
+    "tools/dialogue/arbiter-reference-reader.mjs",
+    "reports/arbiter-dlg-s37/divergence.json",
+    "reports/arbiter-dlg-s37/if-first-match.json"
+  ],
   "files_claimed": [
     "corpus/00-doctrine/ARBITRATION.md",
+    "corpus/40-dialogue/RI-DLG01-topic-graph.md",
     "orchestration/NEXT-DISPATCH.md",
-    "tools/dialogue/arbiter-dlg-order.mjs",
-    "reports/arbiter-dlg-s37/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ],
-  "notes": "RI-DLG01 path TBD; will add to files_claimed once located."
+  "notes": [
+    "BRIEF PATH CORRECTION: the reader is game/src/character/converse.js, not game/src/sim/dialogue/converse.js. The scoring line is 284 in the file that exists.",
+    "I edited NO file under game/src/. S37 rules that the engine yields; a builder implements it.",
+    "The tree moved four times under me (6ff493f -> 9126e02 -> 4a17ec3 -> 63f41ef): a builder is landing NPC records for W1-17's unhearable infos (347 -> 369 speakers). Every number is stamped 63f41ef."
+  ],
+  "findings": {
+    "divergence_canonical": {"resolutions": 1460324864, "diverged": 1906688, "pct": 0.131, "speaker_topic_pairs": 37, "topics": 8},
+    "divergence_census_fixture": {"players": 10, "resolutions": 204602, "diverged": 276, "pairs": 37},
+    "gate_real_infoFor": {"checked": 42456, "mismatched": 58, "pairs": 37, "topics": 8},
+    "order_dependence_under_scoring": {"resolutions": 268800, "pct": 0.018, "topics": 1, "topic": "whose-count-are-you"},
+    "order_dependence_under_first_match": {"resolutions": 266398464, "pct": 18.242, "topics": 64},
+    "merge": {"topic_ids_in_more_than_one_file": 92, "of": 468, "infos_in_merged_topics": 488, "of_infos": 1280},
+    "dead_infos": {"under_scoring": 8, "under_first_match": 14},
+    "corpus_already_sorted_most_specific_first": {"topics_ge2_infos": 326, "non_increasing_in_score": 282, "pct": 86.5, "inverted_pairs": 112, "of_pairs": 2694},
+    "res_referral": {"infos": 13, "deleted_answers_changed": 0, "garbage_answers_changed": 0, "f_infos": 4, "f_answers_changed": 0, "control_to": 113786, "control_x": 204602, "quest_ids_referenced_outside_dialogue_data": 0}
+  },
+  "instrument": "node tools/dialogue/arbiter-order-divergence.mjs --gate  (self-test: --self-test, 4 arms; shown red by sabotage, exit 2)"
 }

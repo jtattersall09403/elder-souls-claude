@@ -39,7 +39,13 @@ import { learnTopics } from '../../game/src/sim/quest/topic-supply.js';
 import { loadTopicDocs, loadNpcs } from './answer-census.mjs';
 
 const clone = (x) => JSON.parse(JSON.stringify(x));
-const P = (over = {}) => ({ race: 'saxhleel', upbringing: 'marsh', disposition: 60, knows: new Set(), ...over });
+// W1-17 r2: `upbringing` was `marsh`, which is not one of the four the roster declares
+// (`game/data/progression/race-reactions.json#upbringings` = interior / lukiul / foreign-born /
+// blackrose) and which the shipped `character/reaction.js raceTerm()` THROWS on. The consumption
+// tool was certifying the dialogue against a character the game cannot construct. See the header
+// of `answer-census.mjs` for the full account and `assertPlayersAreConstructible()` for the guard.
+const P = (over = {}) => ({ race: 'saxhleel', upbringing: 'interior', disposition: 60, knows: new Set(), ...over });
+const BREAK = process.argv.includes('--break');
 
 const npcs = loadNpcs();
 const find = (pred) => npcs.find(pred);
@@ -216,5 +222,136 @@ console.log(`roster: ${npcs.length} people from game/data/npcs/**`);
   if (wrong) fails++;
 }
 
-console.log(`\n${fails === 0 ? 'ALL ARMS PASS' : `${fails} ARM(S) FAILED`} — every field named above has a reader that changed its answer when the field moved.`);
+// ---- THE FIELD-COVERAGE CENSUS, and the two fields it was written to catch ---------------------
+//
+// W1-17 round 2. Every arm above proves that ONE field has a reader. None of them could ever
+// notice a field that nobody thought to write an arm for — which is exactly how `res` survived a
+// whole round inside this tool's own subject matter. The round-1 critic put it plainly: *"that is
+// a twentieth authored-model-with-no-reader, it is in W1-17's own data, and consume.mjs — the tool
+// written to catch exactly this — has no arm for it."*
+//
+// So this arm does not test a field. It enumerates every field name authored on any info in
+// `game/data/dialogue/topics/**` and requires each one to be either DEMONSTRATED (perturbing it
+// moves an answer through the shipped reader) or DECLARED dead below, with a reason. A new field
+// that is neither fails the tool. That is the guard the previous round did not have.
+{
+  const docs = loadTopicDocs();
+  const authored = new Set();
+  for (const doc of docs) for (const t of doc.topics || []) for (const i of t.infos || []) for (const k of Object.keys(i)) authored.add(k);
+
+  // Fields whose reader is demonstrated by an arm above, or by the census the arms are built on.
+  const DEMONSTRATED = new Set(['x', 'a', 'cell', 'd', 'requires', 'forbids', 'to', 'cf', 'pos', 'from']);
+
+  // Fields with NO world-side reader, kept deliberately, each with the reason it was not cut.
+  const DECLARED_DEAD = {
+    f: 'Morrowind filter field 4 (Faction), 4 infos on `duties` and `the-ninth-cohort`. '
+      + '`infoAllowed()` has no faction branch, so it is not read by anything. KEPT rather than cut '
+      + 'because its three referents are live factions with members in the world (rootkeepers 22, '
+      + 'ninth-cohort 44, house-dres 2), so it is one `if` away from working — and `infoAllowed()` '
+      + 'belongs to `game/src/character/converse.js`, which W1-17 r2 does not own and which seam '
+      + 'ruling S37 is currently deciding. Reported here so it cannot hide; not silently deleted.',
+  };
+
+  // Fields CUT this round, which must not come back without a reader. `res` and `q` were a pair:
+  // 13 infos carrying `q: true` ("this info opens a quest") and
+  // `res: {journal: [<quest-id>, 10]}` (Morrowind's RESULT SCRIPT, which RI-DLG01 §A pairs with
+  // AddTopic as the file's most important structural fact). Both were dead TWICE OVER:
+  //   1. no reader — `infoFor()` does not carry either field out of its return literal, and
+  //      nothing in `game/src/**` mentions them;
+  //   2. no referent — all thirteen quest ids (`q-under-drain`, `q-heirs-clause`, `q-dead-pay`, …)
+  //      appear NOWHERE in the 120-quest register under `game/data/quests/**`. They name journal
+  //      entries for quests that were never authored.
+  // Wiring them would have meant inventing thirteen quests, which is volume this round was
+  // explicitly told not to add, to feed a reader that would then advance a journal for a quest
+  // that does not exist. They were cut. This list is the guard that keeps them cut.
+  const CUT = {
+    res: '13 infos. No reader in game/src/** AND all 13 quest ids name no quest in game/data/quests/**.',
+    q: '13 infos, always paired with `res`. build-graph.mjs reads the TOPIC-level `quest` field (25 topics), not this one.',
+  };
+
+  const undeclared = [...authored].filter((k) => !DEMONSTRATED.has(k) && !(k in DECLARED_DEAD));
+  const resurrected = Object.keys(CUT).filter((k) => authored.has(k));
+
+  console.log('\n---- field-coverage census: is every authored field accounted for? ----');
+  console.log(`      authored field names: ${[...authored].sort().join(', ')}`);
+  for (const [k, why] of Object.entries(DECLARED_DEAD)) {
+    if (authored.has(k)) console.log(`\n      DECLARED DEAD  \`${k}\`\n        ${why.replace(/\s+/g, ' ')}`);
+  }
+  for (const [k, why] of Object.entries(CUT)) {
+    console.log(`      CUT this round \`${k}\` — ${why}${authored.has(k) ? '   *** BUT IT IS BACK ***' : ''}`);
+  }
+  const bad = undeclared.length + resurrected.length;
+  if (undeclared.length) console.log(`\n      ! ${undeclared.length} field(s) with no arm and no declaration: ${undeclared.join(', ')}`);
+  if (resurrected.length) console.log(`      ! ${resurrected.length} cut field(s) re-authored without a reader: ${resurrected.join(', ')}`);
+  console.log(`\n${bad === 0 ? 'PASS' : 'FAIL'}  field-coverage census — ${authored.size} authored field name(s), ${bad} unaccounted for.`);
+  if (bad) fails++;
+}
+
+// ---- `res` — THE POSITIVE CONTROL FOR A FIELD WITH NO READER ----------------------------------
+//
+// Cutting a dead field is only honest if you can show it was dead. So this arm puts `res` BACK, in
+// memory, on the thirteen infos that carried it, and runs the same census the positive controls
+// run. `x` moves every answer in the province; `res` moves none, because nothing reads it. The arm
+// asserts the ZERO — it is the one arm here whose `mustDiffer` is false — and it is paired with a
+// live control in the same run so that a zero produced by a broken harness cannot pass as a zero
+// produced by a dead field.
+{
+  const RES_TOPICS = ['the-dead-pay', 'the-heirs-clause', 'the-unfinished-survey', 'the-man-in-the-water',
+    'the-unlisted-well', 'the-under-drain', 'the-thinning', 'the-cleared-ground', 'the-lung-wage',
+    'the-petition', 'the-thorn-charter', 'the-listening-at-soulrest', 'the-removed-name'];
+  const answersOver = (docs) => {
+    const idx = buildTopicIndex(docs);
+    const out = [];
+    for (const npc of npcs) for (const tid of RES_TOPICS) {
+      const r = infoFor(idx, tid, npc, P());
+      out.push(r ? r.text : null);
+    }
+    return out;
+  };
+  const baseAnswers = answersOver(base);
+
+  const withRes = mine();
+  let injected = 0;
+  for (const doc of withRes) for (const t of doc.topics || []) {
+    if (!RES_TOPICS.includes(t.id)) continue;
+    for (const i of t.infos || []) { i.res = { journal: [`q-${t.id}`, 10] }; i.q = true; injected++; }
+  }
+  const resAnswers = answersOver(withRes);
+  const resChanged = resAnswers.filter((v, n) => v !== baseAnswers[n]).length;
+
+  // The live control, in the same run, over the same topics and the same speakers.
+  const withX = mine();
+  let xEdited = 0;
+  for (const doc of withX) for (const t of doc.topics || []) {
+    if (!RES_TOPICS.includes(t.id)) continue;
+    for (const i of t.infos || []) { i.x = 'PERTURBED'; xEdited++; }
+  }
+  const xChanged = answersOver(withX).filter((v, n) => v !== baseAnswers[n]).length;
+
+  console.log('\n---- `res` (Morrowind RESULT SCRIPT): the field this round CUT, and the proof it was dead ----');
+  console.log(`      re-injected \`res\`+\`q\` onto ${injected} info(s) over ${RES_TOPICS.length} topics x ${npcs.length} speakers`);
+  console.log(`        answers changed:  ${resChanged}     <- must be 0; nothing in game/src reads it`);
+  console.log(`      positive control — \`x\` perturbed on the SAME ${xEdited} info(s), same speakers, same run`);
+  console.log(`        answers changed:  ${xChanged}     <- must be > 0, or this harness is measuring nothing`);
+  const ok = resChanged === 0 && xChanged > 0;
+  if (!ok) fails++;
+  console.log(`\n${ok ? 'PASS' : 'FAIL'}  \`res\` had no reader (0 changed) against a live control in the same run (${xChanged} changed).`);
+  if (!ok && xChanged === 0) console.log('      ^ the CONTROL did not move either — this is an inert control, not a dead field (RULES 6).');
+}
+
+// ---- the break arm (RULES 4) -------------------------------------------------------------------
+// `--break` re-runs the field-coverage census with a field name the corpus does not declare, to
+// confirm the census can actually fail. Round 1's consume.mjs had no `--break` at all (0
+// occurrences in the source), which the critic recorded.
+if (BREAK) {
+  const docs = loadTopicDocs();
+  for (const doc of docs) for (const t of doc.topics || []) for (const i of t.infos || []) { i.zzz_undeclared = 1; break; }
+  const authored = new Set();
+  for (const doc of docs) for (const t of doc.topics || []) for (const i of t.infos || []) for (const k of Object.keys(i)) authored.add(k);
+  const caught = authored.has('zzz_undeclared');
+  console.log(`\nBREAK ARM: injected an undeclared field \`zzz_undeclared\`; the census ${caught ? 'SEES it and would FAIL' : 'DOES NOT SEE IT — the census is inert'}.`);
+  if (!caught) { console.error('the field-coverage census cannot fail; refusing to report it as a pass.'); process.exit(2); }
+}
+
+console.log(`\n${fails === 0 ? 'ALL ARMS PASS' : `${fails} ARM(S) FAILED`} — every field named above has a reader that changed its answer when the field moved, or is declared dead with a reason.`);
 process.exit(fails ? 1 : 0);

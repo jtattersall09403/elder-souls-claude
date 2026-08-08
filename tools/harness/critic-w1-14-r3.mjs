@@ -47,7 +47,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.resolve('reports/critic-w1-14-r3');
 ensureDir(outDir);
-const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
 const handle = await launchGame(args);
 let report;
@@ -155,6 +155,8 @@ try {
 
       for (const id of SET) {
         const e = D.effects.effects.find((x) => x.id === id);
+        // `bind_*` is `self`-only; a probe that asks for `target` is refused before it measures
+        // anything. Prefer `target` where the catalogue allows it and fall back to what it does.
         const range = e.ranges.includes('target') ? 'target' : e.ranges[0];
         const mag = e.magnitude.max > 40 ? 40 : e.magnitude.max;
         const dur = e.duration.allowed ? Math.min(20, e.duration.max_s) : 0;
@@ -182,10 +184,10 @@ try {
           differing: differing(a.after, b.after),
           verdict: differing(a.after, b.after).length ? 'COUPLED' : 'BLIND' };
       };
-      A.positive.push(magPair('bind_lesser', 1, 90, 'target', 60, null));
-      A.positive.push(magPair('bind_lesser', 1, 90, 'target', 60, 'bindblind'));
-      A.positive.push(magPair('bind_greater', 1, 45, 'target', 60, null));
-      A.positive.push(magPair('bind_greater', 1, 45, 'target', 60, 'bindblind'));
+      A.positive.push(magPair('bind_lesser', 1, 90, 'self', 60, null));
+      A.positive.push(magPair('bind_lesser', 1, 90, 'self', 60, 'bindblind'));
+      A.positive.push(magPair('bind_greater', 1, 45, 'self', 60, null));
+      A.positive.push(magPair('bind_greater', 1, 45, 'self', 60, 'bindblind'));
       A.positive.push(magPair('demoralise', 1, 34, 'target', 30, null));
       A.positive.push(magPair('demoralise', 1, 34, 'target', 30, 'fleeblind'));
       A.break_hooks_present = { bindblind: !!H.__breakBindMagnitude, fleeblind: !!H.__breakFleeMotion };
@@ -232,7 +234,7 @@ try {
         baseArena();
         if (breakMode === 'bindblind' && H.__breakBindMagnitude) H.__breakBindMagnitude();
         const hp0 = playerHp();
-        const c = castSpell({ class: 'LIGHT', range: 'target',
+        const c = castSpell({ class: 'LIGHT', range: 'self',
           effects: [{ effect, magnitude, duration_s: 60, area_r_m: 0 }] }, `critC_${effect}_${magnitude}_${breakMode || 'none'}`, 30);
         const ent = H.listEntities().filter((e) => e.kind !== 'object' && e.eid !== 'player');
         const w = H.getMagicWorld();
@@ -316,16 +318,19 @@ try {
     if (PARTS.includes('E')) {
       const E = {};
       // E1 — absorb_health. Does the CASTER gain what the target loses?
+      // A `touch` spell's contact volume is 0.30 m of radius at 1.6 m of reach, plus the 0.45 m
+      // slop `MagicSystem.step` allows — so the target has to stand inside ~2.0 m or the arm
+      // measures the reach and not the handler. 1.2 m, un-aggroed so it does not walk out of it.
       const absorbRun = (effect, magnitude) => {
         baseArena();
         H.damagePlayer(220, { stagger: false });
-        const e0 = H.spawn('inf_trash', 0, 2.0);
-        H.aggro(e0); H.lockOn(e0);
+        const e0 = H.spawn('inf_trash', 0, 1.2);
+        H.lockOn(e0);
         H.stepFrames(20);
         const php0 = r2(playerHp());
         const b0 = bodyById(e0); const ehp0 = b0 ? r2(b0.hp) : null;
         const c = castSpell({ class: 'LIGHT', range: 'touch',
-          effects: [{ effect, magnitude, duration_s: 0, area_r_m: 0 }] }, `critE_${effect}_${magnitude}`, 180);
+          effects: [{ effect, magnitude, duration_s: 0, area_r_m: 0 }] }, `critE_${effect}_${magnitude}`, 120);
         const b1 = bodyById(e0);
         return { effect, magnitude, refused: c.refused, applied: c.applied,
           player_hp: [php0, r2(playerHp())], player_delta: r2(playerHp() - php0),
@@ -337,7 +342,7 @@ try {
       // decides; `CombatSystem.spawnEnemy` is what actually makes the body. Read the body's own
       // team fields, and then let the summon and the caster stand in an empty room.
       baseArena();
-      const c2 = castSpell({ class: 'LIGHT', range: 'target',
+      const c2 = castSpell({ class: 'LIGHT', range: 'self',
         effects: [{ effect: 'bind_lesser', magnitude: 40, duration_s: 60, area_r_m: 0 }] }, 'critE_side', 30);
       const w2 = H.getMagicWorld();
       const sid = w2.summons[0] ? w2.summons[0].eid : null;
@@ -357,12 +362,12 @@ try {
 
       // E3 — frenzy. Two bodies. Does the frenzied one damage the other?
       baseArena();
-      const f0 = H.spawn('inf_trash', 0, 3.0);
-      const f1 = H.spawn('inf_trash', 1.2, 3.4);
-      H.aggro(f0); H.lockOn(f0);
+      const f0 = H.spawn('inf_trash', 0, 1.2);
+      const f1 = H.spawn('inf_trash', 1.1, 1.9);
+      H.lockOn(f0);
       H.stepFrames(20);
       const fhp = { [f0]: r2(bodyById(f0).hp), [f1]: r2(bodyById(f1).hp) };
-      const c3 = castSpell({ class: 'LIGHT', range: 'target',
+      const c3 = castSpell({ class: 'LIGHT', range: 'touch',
         effects: [{ effect: 'frenzy', magnitude: 34, duration_s: 60, area_r_m: 0 }] }, 'critE_frenzy', 30);
       const st3 = H.getStatusState();
       H.stepFrames(1200);
@@ -380,25 +385,25 @@ try {
       const fmax = H.getMagicState().focus_max;
       const ladder = [];
       for (const m of [1, 10, 20, 30, 40, 45, 50, 60, 70, 80, 90]) {
-        const q = H.quoteSpell({ class: 'LIGHT', range: 'target', effects: [{ effect: 'bind_greater', magnitude: m, duration_s: 60, area_r_m: 0 }] });
+        const q = H.quoteSpell({ class: 'LIGHT', range: 'self', effects: [{ effect: 'bind_greater', magnitude: m, duration_s: 60, area_r_m: 0 }] });
         ladder.push({ magnitude: m, refused: !!q.refused, reason: q.reason || null, focus_base: q.focus_base, focus_cost: q.focus_cost, tier: q.tier, skill_req: q.skill_req, affordable: !q.refused && q.focus_cost <= fmax });
       }
       // and the same for the CHEAPEST class the game has, to see if any carrier reaches the top.
       const cheap = [];
       for (const cls of ['CANTRIP', 'LIGHT', 'HEAVY', 'GREAT', 'RITUAL']) {
-        const q = H.quoteSpell({ class: cls, range: 'target', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] });
+        const q = H.quoteSpell({ class: cls, range: 'self', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] });
         cheap.push({ class: cls, refused: !!q.refused, focus_cost: q.focus_cost, affordable: !q.refused && q.focus_cost <= fmax });
       }
       // and at the SHORTEST legal duration, which is the other lever a player has.
       const shortDur = [];
       for (const d of [1, 5, 10, 60]) {
-        const q = H.quoteSpell({ class: 'CANTRIP', range: 'target', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: d, area_r_m: 0 }] });
+        const q = H.quoteSpell({ class: 'CANTRIP', range: 'self', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: d, area_r_m: 0 }] });
         shortDur.push({ duration_s: d, class: 'CANTRIP', refused: !!q.refused, focus_cost: q.focus_cost, affordable: !q.refused && q.focus_cost <= fmax });
       }
       E.bind_greater_ceiling = { focus_max: fmax, ladder, by_class_at_mag90: cheap, cantrip_by_duration_at_mag90: shortDur };
       // What actually happens at the unaffordable setting — a refusal, or silence?
       baseArena();
-      const c4 = castSpell({ class: 'LIGHT', range: 'target',
+      const c4 = castSpell({ class: 'LIGHT', range: 'self',
         effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] }, 'critE_over', 120);
       E.bind_greater_over_reservoir = { refused: c4.refused, kinds: c4.kinds || null, applied: c4.applied === undefined ? null : c4.applied, focus_max: fmax };
       out.E = E;
@@ -473,6 +478,100 @@ try {
       out.G = G;
     }
 
+    // =================================================================== PART H
+    // Three things part E turned up that neither the builder nor the round-2 critic looked at.
+    if (PARTS.includes('H')) {
+      const Hp = {};
+      // H1 — RANGE MULTIPLIES THE EFFECT. `_spawnContact` gives a touch spell
+      // `ticksEveryF: 1` over the class's whole `active` window, and the volume loop applies the
+      // effect on every tick with no per-target dedupe. So the SAME spell delivers its magnitude
+      // once as a projectile and `active` times as a touch. Measured, not read.
+      const rangeRun = (effect, magnitude, range, cls) => {
+        baseArena();
+        const e0 = H.spawn('inf_trash', 0, range === 'touch' ? 1.2 : 4.0);
+        H.lockOn(e0);
+        H.stepFrames(20);
+        const hp0 = r2(bodyById(e0).hp);
+        const c = castSpell({ class: cls, range, effects: [{ effect, magnitude, duration_s: 0, area_r_m: 0 }] },
+          `critH_${effect}_${range}_${cls}`, 240);
+        const b1 = bodyById(e0);
+        return { effect, magnitude, range, class: cls, refused: c.refused, applied: c.applied,
+          class_active_f: (D.cast_classes && D.cast_classes.classes && D.cast_classes.classes[cls]) ? D.cast_classes.classes[cls].active : null,
+          hp_before: hp0, hp_after: b1 ? r2(b1.hp) : null,
+          damage: b1 ? r2(hp0 - b1.hp) : null, dead: b1 ? b1.dead : null,
+          declared_output: r2(magnitude * (D.effects.effects.find((x) => x.id === effect).magnitude.output_per_point || 1)) };
+      };
+      Hp.range_multiplier = [];
+      for (const cls of ['CANTRIP', 'LIGHT', 'HEAVY']) {
+        for (const rng of ['touch', 'target', 'projectile']) Hp.range_multiplier.push(rangeRun('damage_health', 20, rng, cls));
+      }
+
+      // H2 — WHOSE SIDE IS THE SUMMON ON? A hostile body, a summon, and 1200 f@60 in which
+      // somebody must hit somebody. Three arms: no summon (control), summon left alone, summon
+      // aggroed the way the builder's own consumption arm aggroes it.
+      const allegiance = (mode) => {
+        baseArena();
+        // 2.4 m, not 8 m: an inf_trash spawned 8 m out RUSHes, hits RI-AI01's leash and returns
+        // to its anchor without ever reaching anybody, and all three arms read a flat zero.
+        const foe = H.spawn('inf_trash', 0, 2.4);
+        let sid = null;
+        if (mode !== 'control') {
+          const c = castSpell({ class: 'LIGHT', range: 'self',
+            effects: [{ effect: 'bind_lesser', magnitude: 60, duration_s: 90, area_r_m: 0 }] }, `critH_alleg_${mode}`, 40);
+          const w = H.getMagicWorld();
+          sid = w.summons[0] ? w.summons[0].eid : null;
+          if (mode === 'aggroed' && sid) H.aggro(sid);
+          if (c.refused) return { mode, refused: c.refused };
+        }
+        H.aggro(foe);
+        const foe0 = bodyById(foe) ? r2(bodyById(foe).hp) : null;
+        const sum0 = sid && bodyById(sid) ? r2(bodyById(sid).hp) : null;
+        const php0 = r2(playerHp());
+        H.stepFrames(1200);
+        const fb = bodyById(foe); const sb = sid ? bodyById(sid) : null;
+        return { mode, summon_eid: sid,
+          foe_hp: [foe0, fb ? r2(fb.hp) : null], foe_damage_taken: fb ? r2(foe0 - fb.hp) : null,
+          summon_hp: [sum0, sb ? r2(sb.hp) : null], summon_damage_taken: sb && sum0 !== null ? r2(sum0 - sb.hp) : null,
+          player_hp: [php0, r2(playerHp())], player_damage_taken: r2(php0 - playerHp()),
+          foe_state: fb ? fb.state : null, summon_state: sb ? sb.state : null };
+      };
+      Hp.allegiance = [allegiance('control'), allegiance('left_alone'), allegiance('aggroed')];
+
+      // H3 — THE FOCUS CEILING. Is `focus_max` really 124 at quote time and 88 at the gate?
+      baseArena();
+      const f0 = H.getMagicState();
+      H.stepFrames(120);
+      const f1 = H.getMagicState();
+      const q90 = H.quoteSpell({ class: 'LIGHT', range: 'self', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] });
+      const c90 = castSpell({ class: 'LIGHT', range: 'self',
+        effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] }, 'critH_over', 200);
+      const f2 = H.getMagicState();
+      const inputs = (() => { try { return H.getInputState(); } catch (e) { return null; } })();
+      Hp.focus_ceiling = {
+        focus_max_fresh: f0.focus_max, focus_at_fresh: f0.focus,
+        focus_max_after_120f: f1.focus_max, focus_after_120f: f1.focus,
+        quote_focus_cost: q90.focus_cost, quote_refused: !!q90.refused,
+        cast_event_kinds: c90.kinds, cast_applied: c90.applied,
+        focus_max_after_cast: f2.focus_max, focus_after_cast: f2.focus,
+        input_drop_reason: inputs && inputs.last_drop ? inputs.last_drop : null,
+        summons_after: H.getMagicWorld().summons.length,
+      };
+      // And the highest magnitude that actually PUTS A BODY DOWN, which is the number that
+      // matters for "a scaling law you cannot cast".
+      Hp.highest_castable = [];
+      for (const m of [40, 50, 60, 65, 70, 72, 74, 76, 78, 80, 90]) {
+        baseArena();
+        const c = castSpell({ class: 'LIGHT', range: 'self',
+          effects: [{ effect: 'bind_greater', magnitude: m, duration_s: 60, area_r_m: 0 }] }, `critH_cast_${m}`, 200);
+        const w = H.getMagicWorld();
+        Hp.highest_castable.push({ magnitude: m, kinds: c.kinds, applied: c.applied,
+          summoned: w.summons.length, power: w.summons[0] ? w.summons[0].power : null,
+          hp: w.summons[0] ? w.summons[0].hp : null,
+          focus_max_at_gate: H.getMagicState().focus_max });
+      }
+      out.H = Hp;
+    }
+
     return out;
   }, { PARTS: parts });
 } finally {
@@ -505,5 +604,11 @@ if (report.F) {
 }
 if (report.G) {
   log(`G  multi-dial spell made: ${!report.G.multi_effect_made.refused} (${report.G.multi_effect_made.id}); menus: ${report.G.menus.join(', ')}`);
+}
+if (report.H) {
+  for (const r of report.H.range_multiplier) log(`H1 ${r.class} ${r.range}: applied ${r.applied}x, damage ${r.damage} (declared output ${r.declared_output})`);
+  for (const a of report.H.allegiance) log(`H2 ${a.mode}: foe took ${a.foe_damage_taken}, summon took ${a.summon_damage_taken}, player took ${a.player_damage_taken}`);
+  log(`H3 focus_max fresh ${report.H.focus_ceiling.focus_max_fresh} -> after 120 f ${report.H.focus_ceiling.focus_max_after_120f}; quote ${report.H.focus_ceiling.quote_focus_cost}; cast kinds ${JSON.stringify(report.H.focus_ceiling.cast_event_kinds)}`);
+  for (const h of report.H.highest_castable) log(`H3 bind_greater mag ${h.magnitude}: summoned ${h.summoned} power ${h.power} hp ${h.hp} (focus_max at gate ${h.focus_max_at_gate})`);
 }
 console.log(p);

@@ -62,6 +62,11 @@ const JSONOUT = (() => { const i = ARGV.indexOf('--json'); return i >= 0 ? ARGV[
 // gate. It does NOT change the engine; it changes this tool's model of the engine, and a builder
 // who has actually landed the change should see the same result without the flag.
 const ASSUME_FM = ARGV.includes('--assume-first-match');
+// `--reader <path>` points the GATE at an alternative module exporting buildTopicIndex /
+// infoAllowed / infoFor. It exists so a builder implementing S37 can prove a candidate reader
+// green BEFORE landing it in `game/src/`, and so this ruling could be shown passing as well as
+// failing without an arbiter editing the engine. Default is the shipped reader.
+const READER = (() => { const i = ARGV.indexOf('--reader'); return i >= 0 ? ARGV[i + 1] : null; })();
 
 // ---------------------------------------------------------------------------------------------
 // The two selection rules. `candidates()` is a verbatim re-derivation of infoFor()'s admissible
@@ -450,7 +455,7 @@ function gitSha() {
 //                            divergent (speaker, topic) pair count MUST fall. A comparator that
 //                            cannot see a repair cannot certify one.
 // ---------------------------------------------------------------------------------------------
-function selfTest() {
+async function selfTest() {
   const docs = loadTopicDocs();
   const npcs = loadNpcs();
   const axes = canonicalPlayerAxes(docs);
@@ -498,19 +503,33 @@ function selfTest() {
     }
   }
 
+  // ARM 4 — the GATE itself, in both directions. The gate calls the real `infoFor()`, so it must
+  // be shown to go red against a reader that scores AND green against one that does not. A gate
+  // nobody has watched pass is half a gate.
+  {
+    const shipped = await verifyEngine(docs, npcs, players, null);
+    const fmPath = path.join(ROOT, 'tools/dialogue/arbiter-reference-reader.mjs');
+    const reference = fs.existsSync(fmPath) ? await verifyEngine(docs, npcs, players, 'tools/dialogue/arbiter-reference-reader.mjs') : null;
+    if (shipped.mismatched > 0) console.log(`ARM 4a (gate vs the SHIPPED reader): ${shipped.mismatched} mismatches — RED, as S37 says it must be until the engine yields.`);
+    else console.log(`ARM 4a: the shipped reader already agrees with RI-DLG01 §A (0 mismatches). If S37 has been implemented this is correct; if it has not, this gate is broken.`);
+    if (!reference) { console.log('ARM 4b FAILED: tools/dialogue/arbiter-reference-reader.mjs is missing — the gate has never been shown to pass.'); bad++; }
+    else if (reference.mismatched === 0) console.log(`ARM 4b (gate vs a first-match-wins reader): 0 mismatches over ${reference.checked.toLocaleString()} resolutions — GREEN. The gate is not stuck red.`);
+    else { console.log(`ARM 4b FAILED: ${reference.mismatched} mismatches against a reader that IS first-match-wins. The gate is stuck red.`); bad++; }
+  }
+
   if (bad) { console.log(`\nSELF-TEST FAILED (${bad} arm(s)). This instrument is not trustworthy.`); process.exit(2); }
-  console.log('\nSELF-TEST PASSED — all three arms behaved as predicted.');
+  console.log('\nSELF-TEST PASSED — all four arms behaved as predicted.');
   process.exit(0);
 }
 
-if (SELFTEST) { selfTest(); }
+if (SELFTEST) { await selfTest(); }
 else {
-  const r = run();
+  const r = await run();
   if (GATE) {
-    const d = r.full.diverged;
-    if (d === 0) { console.log('GATE PASS — the running reader and RI-DLG01 §A select the same info on every resolution.'); process.exit(0); }
-    console.log(`GATE FAIL — ${d} resolutions (${r.full.divergentPairs.size} speaker/topic pairs) where the engine and RI-DLG01 §A disagree.`);
-    console.log('See ARBITRATION.md S37. Either converse.js infoFor() is not first-match-wins, or the corpus order has drifted.');
+    const m = r.eng.mismatched;
+    if (m === 0) { console.log(`GATE PASS — ${r.eng.reader} returns the first admissible info in authored order on all ${r.eng.checked.toLocaleString()} resolutions (ARBITRATION S37).`); process.exit(0); }
+    console.log(`GATE FAIL — ${m.toLocaleString()} resolutions (${r.eng.pairs} speaker/topic pairs, ${r.eng.topics} topics) where ${r.eng.reader} did not return the first admissible info in authored order.`);
+    console.log('See ARBITRATION.md S37: RI-DLG01 §A is authoritative and the reader must not score specificity.');
     process.exit(1);
   }
   process.exit(0);

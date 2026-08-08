@@ -131,7 +131,17 @@ for (const [, t] of idx) {
     }
     if (!cand.length) continue;
     cand.sort((a, b) => (b.s - a.s) || (a.i - b.i));   // infoFor(): strict max, first of a tie
-    const sig = JSON.stringify(cand.map((c) => c.i));
+    // MEMO KEY — CORRECTED IN W1-17 ROUND 2, AND THE OLD KEY WAS WRONG IN A WAY THAT MOVED THE
+    // HEADLINE NUMBER. `memo` is a single Map shared across every topic, and the key used to be
+    // `JSON.stringify(cand.map(c => c.i))` — the candidate INDEX LIST and nothing else. Two
+    // unrelated topics whose surviving candidates happen to sit at the same indices (`[2,3]` is
+    // extremely common) therefore shared one winner set, and whichever topic was visited first
+    // decided reachability for all of them. Measured: `reading-the-count#2` was reported dead
+    // while `ledgerer-hosk-vei` demonstrably says it at disposition 0 and 15 through the shipped
+    // `infoFor()`. The key must identify the actual candidates and their scores, not their
+    // positions, so it now carries the topic and the (index, score) pairs. `--break` still moves
+    // the count, so the gates are still being read.
+    const sig = `${t.id}|${JSON.stringify(cand.map((c) => [c.i, c.s]))}`;
     let winners = memo.get(sig);
     if (!winners) {
       winners = new Set();

@@ -1,13 +1,36 @@
 {
   "task_id": "W1-16-r3",
-  "title": "W1-16 round 3 - progression and encumbrance",
-  "state": "starting",
-  "started_at": "2026-08-08T00:00:00Z",
-  "commit_at_start": "pending",
-  "next_step": "read RULES, INDEX, verdict W1-16-r2.md, status W1-16.json; run ownership + contention",
+  "title": "W1-16 round 3 — progression and encumbrance",
+  "round": 3,
+  "successor_of": "W1-16 round 2 (orchestration/status/W1-16.json), FAIL 3/10 at corpus/90-verdicts/wave1/W1-16-r2.md",
+  "state": "building",
+  "started": "2026-08-08",
+  "git_at_start": "4a17ec3",
+  "contention_at_start": "GO — 4 browser instances, 24 processes, load 14.19/4 cores = 3.55 per core, ceilings 6 instances / 4.0 per core. Offline half first regardless.",
+  "brief": "Round 2's producer exists and is real; it reads the wrong hand. Fix (1) the two right hands — the hand that is weighed and the hand that fights must be one object; (2) count the shipped equip_weight / shield weight so tiers are reachable with no invented weights; (3) OVERLOADED forbids sprinting; (4) the first-engagement delta collapse that eats a Feather offset. Do NOT re-tune the ladder — the critic verified it exact at 13 loads with three cliffs.",
+  "must_land": [
+    "1. Equipping a weapon changes equip load AND the fight swings the weapon you equipped, with before numbers from the critic's own instruments",
+    "2. All four tiers reachable by dressing with no invented weights; report the reachable percentage range per tier",
+    "3. OVERLOADED forbids sprinting, measured in metres against a button-up control",
+    "4. CONSUMPTION (RI-MTH07) and delete-the-fix per rule 6, with a teardown watched going red"
+  ],
+  "next_step": "implement _handWeight() in engine.js; route right/left equips through setLoadout; seed _equipLoadBase at _buildCombat; add OVERLOADED sprint denial",
   "files_touched": [
     "orchestration/status/W1-16-r3.json"
   ],
-  "files_claimed": [],
-  "notes": []
+  "files_claimed": [
+    "orchestration/status/W1-16-r3.json",
+    "game/src/engine.js",
+    "game/src/combat/player.js",
+    "game/src/harness/api.js",
+    "tools/harness/prg-encumbrance.mjs",
+    "tools/harness/w1-16-r3-reach.mjs",
+    "reports/w1-16/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-03", "W1-15-r3", "W1-06-r3", "W1-12", "W1-18-r2", "W1-READABLES-r2"],
+  "redundant_note": "game/src/engine.js is this build's shared spine and seven live pieces declare it; the overlap is the project norm rather than a collision. game/src/combat/player.js is declared by W1-03 (water traversal) — my change is at the same locomotion line round 2 touched, which serves W1-03's water sprint denial too. game/src/harness/api.js is declared by W1-13-r3 and W1-14-r3, both done. docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces.",
+  "findings": [],
+  "did_not_do": []
 }

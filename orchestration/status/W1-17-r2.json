@@ -5,12 +5,13 @@
   "started_at": "2026-08-08",
   "base_commit": "64dd5f9",
   "brief": "corpus/90-verdicts/wave1/W1-17-r1.md (FAIL 5.0/10). Do NOT rewrite prose, do NOT add volume.",
-  "next_step": "write game/data/npcs/pop-trades.json (22 bodies) + index.json entry; then re-home 17 job-named infos; then res/voice-metrics/orphans",
+  "next_step": "res consumption arm; voice-metrics second_regex; orphans bucket; S37 invariance tool; blog+commit",
   "objectives": [
     {
       "id": "A",
       "what": "133 unhearable infos -> triage each (body / re-home / cut), report split",
-      "state": "todo"
+      "state": "done",
+      "result": "136 -> 6 (corrected critic-reach). Split: 105 given a body (22 NPC records), 20 re-homed to an existing named speaker, 0 cut. Residue 6 = \"always outscored\", present unchanged in ALL FOUR cells of the 2x2, so none of them is mine."
     },
     {
       "id": "B",
@@ -41,7 +42,8 @@
     {
       "id": "G",
       "what": "CONSUMPTION RI-MTH07 + delete-the-fix per amended rule 6 with a control watched go red",
-      "state": "todo"
+      "state": "partial",
+      "result": "2x2 delete-the-fix done: A(neither)=136 B(bodies)=26 C(rehome)=119 D(shipped)=6. CONTROL WENT RED. Two independent additive fixes. reports/w1-17-r2/deletefix.json"
     }
   ],
   "do_not_touch": [
@@ -51,7 +53,16 @@
   "files_touched": [
     "orchestration/status/W1-17-r2.json",
     "tools/dialogue/answer-census.mjs",
-    "reports/w1-17-r2/answers-fixture10.json"
+    "tools/dialogue/critic-reach.mjs",
+    "tools/dialogue/rehome-actors.mjs",
+    "tools/dialogue/w1-17-r2-deletefix.mjs",
+    "game/data/npcs/pop-trades.json",
+    "game/data/index.json",
+    "game/data/dialogue/topics/40-race-gated.json",
+    "game/data/dialogue/topics/50-factions.json",
+    "game/data/dialogue/topics/56-writ-house-open.json",
+    "game/data/dialogue/topics/70-disputes.json",
+    "reports/w1-17-r2/"
   ],
   "files_claimed": [
     "game/data/dialogue/",
@@ -90,5 +101,18 @@
   "note_on_shared_files": "game/data/npcs/pop-trades.json is a NEW file I create, chosen deliberately so I do not edit the pop-*.json files W1-23-r4 has claimed (game/data/npcs/). game/data/index.json needs one additive entry or the engine will not load the file (populateSettlement reads this.data.npcs, which is built from index.json \u2014 a file the tools see and the engine does not would be a NEW dead model, which is the defect I am here to fix). Declared per rule 16. I do not touch game/src/character/converse.js: it is not mine and it is the file S37 is ruling on.",
   "redundant_with": [
     "W1-23-r4"
-  ]
+  ],
+  "headline": {
+    "unhearable_before_r1_published": 133,
+    "unhearable_before_same_corrected_tool": 136,
+    "unhearable_after": 6,
+    "why_133_vs_136": "critic-reach.mjs memoised winner-sets in ONE Map keyed on the candidate INDEX LIST only, shared across every topic, so two unrelated topics whose surviving candidates sat at the same indices shared a result. Found by direct contradiction: reading-the-count#2 was reported dead while ledgerer-hosk-vei demonstrably says it at disposition 0 and 15 through the shipped infoFor(). Key now carries the topic id and the (index, score) pairs. Both ends of the before/after are now the same ruler.",
+    "split": {
+      "given_a_body": 105,
+      "re_homed": 20,
+      "cut": 0,
+      "residue_always_outscored": 6
+    },
+    "break_arm": "critic-reach --break: 6 -> 99, so the player gates are still read"
+  }
 }

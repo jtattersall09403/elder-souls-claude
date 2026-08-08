@@ -517,13 +517,33 @@ try {
       const url = await H.screenshot();
       return { url, drawn: H.getDrawnSettlements().buildings };
     });
+    // (3b) Blackrose's inn from the street: a 3.4 x 3.9 m shed whose door opens on a
+    // 13.6 x 15.6 m room. The shrink pass made the exterior smaller than its own interior on
+    // 41 of 112 enterable buildings, and this is the worst of them.
+    shots.shed = await page.evaluate(async () => {
+      const H = window.__HARNESS;
+      H.teleport(1905.5, 4450); H.stepFrames(30);
+      H.setTimeOfDay(12); if (H.setWeather) H.setWeather('clear');
+      const plan = H.__w1_04_plan('blackrose');
+      const b = plan && plan.buildings ? plan.buildings.find((x) => x.id === 'blackrose-inn') : null;
+      if (!b) return { url: null, missing: true };
+      H.teleport(b.x, b.z - 18); H.stepFrames(20);
+      const gy = b.y || 0;
+      H.camera({ pos: [b.x + 9, gy + 4.5, b.z - 14], look: [b.x, gy + 2, b.z], fov: 60 });
+      H.renderFrame();
+      const url = await H.screenshot();
+      return { url, drawn_footprint_m: b.drawn_footprint_m, declared_footprint_m: b.declared_footprint_m, shrink: b.shrink, interior: b.interior };
+    });
+
     // (4) An interior strip: three rooms at the sweep's pose.
     shots.interiors = [];
-    for (const id of ['blackrose-gaol', 'thorn-hall', 'archon-apothecary']) {
+    for (const id of ['blackrose-prison', 'thorn-hall', 'archon-apothecary']) {
       const r = await page.evaluate(async (rid) => {
         const H = window.__HARNESS, E = window.__ENGINE;
         if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(1); }
-        H.enterInterior(rid); H.stepFrames(3);
+        const ok = H.enterInterior(rid);
+        if (!ok || !ok.entered) return { id: rid, url: null, error: 'not entered' };
+        H.stepFrames(3);
         E.sim.npcs.length = 0;
         H.camera({ pos: [0, 1.62, -5.2], look: [0, 1.3, 2.0], fov: 60 });
         H.renderFrame();
@@ -538,9 +558,11 @@ try {
     files.vp04 = savePng(shots.vp04.url, '2026-08-08-w1-04-r3-critic-vp04-inside-a-wall.png');
     files.roofs = savePng(shots.roofs.url, '2026-08-08-w1-04-r3-critic-helstrom-open-topped-roofs.png');
     files.street = savePng(shots.street.url, '2026-08-08-w1-04-r3-critic-helstrom-town-from-outside.png');
+    files.shed = savePng(shots.shed.url, '2026-08-08-w1-04-r3-critic-blackrose-inn-a-shed-over-a-hall.png');
     files.interiors = shots.interiors.map((s) => savePng(s.url, `2026-08-08-w1-04-r3-critic-interior-${s.id}.png`));
     R.sections.S6 = {
       files,
+      shed: { drawn_footprint_m: shots.shed.drawn_footprint_m, declared_footprint_m: shots.shed.declared_footprint_m, shrink: shots.shed.shrink, interior: shots.shed.interior },
       vp04: { buildings_drawn: shots.vp04.drawn, camera_inside_building: shots.vp04.inside },
       roofs: { buildings_drawn: shots.roofs.drawn },
       street: { buildings_drawn: shots.street.drawn },

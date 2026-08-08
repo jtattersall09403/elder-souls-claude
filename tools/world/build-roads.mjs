@@ -343,9 +343,14 @@ const BUILD_CLEAR_M = 1.10;
 // The clearance the road would LIKE. Inside this band it is charged, so where there is room the
 // street runs down the middle of the gap instead of scraping one wall.
 const BUILD_ROOM_M = 3.2;
-// How far outside a town's own radius the fine re-cut reaches. The join must own the whole
-// approach, or it hands the leg back to the coarse route inside somebody's garden.
+// How near a building a road has to come before the join takes the wheel. The re-cut zone is
+// defined by PROXIMITY TO BUILDINGS, not by which town they belong to, and that is a correction
+// the null control of `road-join-consumption.mjs` forced: scoping by town derived the zone radius
+// from the town's farthest building, so moving one outlier 800 m out inflated Stormhold's zone to
+// 845 m, swallowed most of two legs into one fine-grid solve, and moved the road 236 m for a
+// perturbation that should have moved it not at all. A building is an obstacle wherever it stands.
 const TOWN_PAD_M = 45;
+const INFLUENCE_M = 55;
 const FINE_CELL_M = 1.0;       // the re-cut grid. A 2 m alley is two cells wide; 1 m finds it.
 
 /** Every interior record, keyed the way `engine.js` keys `this.data.interiors`. */
@@ -551,45 +556,67 @@ function fineRoute(list, ax, az, bx, bz, corridor, box) {
   return pulled;
 }
 
+/** Is this point near enough to any building for the join to take the wheel? */
+function inPlay(x, z) { return clearanceTo(ALL_OBSTACLES, x, z) < INFLUENCE_M; }
+
 /**
- * Re-cut every part of `p` that lies in a town, so the leg threads the gaps instead of the walls.
- * Returns `{ p, recuts }`. Outside `radius_m + TOWN_PAD_M` of a town centre, `p` is untouched.
+ * Re-cut every part of `p` that runs near buildings, so the leg threads the gaps instead of the
+ * walls. Returns `{ p, recuts }`. Everywhere the road is more than `INFLUENCE_M` from every
+ * building in the province, `p` is returned untouched — which is most of it.
+ *
+ * The zones are found from the ROAD, by walking it and asking each point how near a wall it is.
+ * That is deliberately not "which town is this?": buildings are obstacles wherever they stand, a
+ * town's zone must not be defined by its own farthest outbuilding, and a leg that clips the corner
+ * of a settlement it never enters gets the same treatment as one that runs down its main street.
  */
 function threadSettlements(p, legId) {
-  if (!JOIN_ON) return { p, recuts: [] };
+  if (!JOIN_ON || !ALL_OBSTACLES.length) return { p, recuts: [] };
   const recuts = [];
+  // Zones first, off the ORIGINAL polyline, so a splice cannot shift the indices of a later zone.
+  const flag = p.map((q) => inPlay(q[0], q[1]));
+  const zones = [];
+  for (let i = 0; i < p.length; i++) {
+    if (!flag[i]) continue;
+    let j = i;
+    while (j + 1 < p.length && flag[j + 1]) j++;
+    zones.push([Math.max(0, i - 2), Math.min(p.length - 1, j + 2)]);
+    i = j + 1;
+  }
+  // Merge zones that now overlap after the two-point padding.
+  const merged = [];
+  for (const z of zones) {
+    if (merged.length && z[0] <= merged[merged.length - 1][1] + 1) merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], z[1]);
+    else merged.push(z.slice());
+  }
+  // Splice back to front, so an earlier zone's indices are still valid when it is cut.
   let out = p.map((q) => q.slice());
-  for (const town of TOWNS) {
-    const R = Math.max(town.radius_m, town.reach_m) + TOWN_PAD_M;
-    let i0 = -1, i1 = -1;
-    for (let i = 0; i < out.length; i++) {
-      if (Math.hypot(out[i][0] - town.x, out[i][1] - town.z) > R) continue;
-      if (i0 < 0) i0 = i;
-      i1 = i;
-    }
-    if (i0 < 0) continue;
-    // One point either side of the zone, so the splice joins the untouched road rather than
-    // starting from a point that is already in somebody's garden.
-    i0 = Math.max(0, i0 - 1); i1 = Math.min(out.length - 1, i1 + 1);
+  for (let k = merged.length - 1; k >= 0; k--) {
+    const [i0, i1] = merged[k];
+    if (i1 - i0 < 1) continue;
     const before = out.slice(i0, i1 + 1);
     const beforeLen = len2d(before);
     const a = before[0], b = before[before.length - 1];
-    const xs = before.map((q) => q[0]).concat([town.x]), zs = before.map((q) => q[1]).concat([town.z]);
+    const xs = before.map((q) => q[0]), zs = before.map((q) => q[1]);
     const box = {
-      x0: Math.min(...xs) - 60, x1: Math.max(...xs) + 60,
-      z0: Math.min(...zs) - 60, z1: Math.max(...zs) + 60,
+      x0: Math.min(...xs) - 70, x1: Math.max(...xs) + 70,
+      z0: Math.min(...zs) - 70, z1: Math.max(...zs) + 70,
     };
-    const cut = fineRoute(town.obstacles, a[0], a[1], b[0], b[1], before, box);
+    // Only the buildings this box can reach. A 202-obstacle scan per grid cell is the whole cost
+    // of this solve, and every town but one is irrelevant to any given zone.
+    const local = ALL_OBSTACLES.filter((o) => o.x > box.x0 - 40 && o.x < box.x1 + 40 && o.z > box.z0 - 40 && o.z < box.z1 + 40);
+    const towns = [...new Set(local.map((o) => o.town))].sort();
+    const cut = fineRoute(local, a[0], a[1], b[0], b[1], before, box);
     if (!cut) {
-      process.stderr.write(`JOIN: no corridor of ${BUILD_CLEAR_M} m through ${town.id} for leg ${legId}\n`);
-      recuts.push({ town: town.id, ok: false, from_m: null, before_m: +beforeLen.toFixed(1), after_m: null });
+      process.stderr.write(`JOIN: no corridor of ${BUILD_CLEAR_M} m near ${towns.join('/') || '?'} for leg ${legId}\n`);
+      recuts.push({ town: towns.join('/'), ok: false, before_m: +beforeLen.toFixed(1), after_m: null });
       continue;
     }
     const afterLen = len2d(cut);
     out = out.slice(0, i0).concat(cut, out.slice(i1 + 1));
-    recuts.push({ town: town.id, ok: true, points: cut.length,
+    recuts.push({ town: towns.join('/'), ok: true, points: cut.length, buildings: local.length,
       before_m: +beforeLen.toFixed(1), after_m: +afterLen.toFixed(1), delta_m: +(afterLen - beforeLen).toFixed(1) });
   }
+  recuts.reverse();
   return { p: out, recuts };
 }
 
@@ -609,8 +636,9 @@ function threadSettlements(p, legId) {
  */
 function correctLength(p, target, legId) {
   if (!JOIN_ON || p.length < 4) return { p, corrected_m: 0, spans: 0 };
-  const frozen = p.map(([x, z]) => TOWNS.some((t) =>
-    Math.hypot(x - t.x, z - t.z) <= Math.max(t.radius_m, t.reach_m) + TOWN_PAD_M));
+  // Frozen wherever the join has taken the wheel — the same predicate, so the correction cannot
+  // put metres back into ground the re-cut has just finished negotiating.
+  const frozen = p.map(([x, z]) => inPlay(x, z));
   const spans = [];
   for (let i = 0; i < p.length; i++) {
     if (frozen[i]) continue;

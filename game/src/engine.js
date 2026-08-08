@@ -1069,6 +1069,19 @@ export class Engine {
     if (loadout.catalyst) this.magic.setCatalyst(loadout.catalyst);
     if (loadout.attuned) this.magic.setAttuned(loadout.attuned);
     const b = this.combat.createPlayer(loadout);
+    // W1-16 round 3 — SEED THE DELTA'S ORIGIN, so the first engagement is a delta and not an
+    // assignment. `_recomputeEquipLoad()` applies `pct += (base - _equipLoadBase)` so that an
+    // additive spell offset (Feather -30, Burden +40) rides on top of the equipment sum. With
+    // `_equipLoadBase` left null, the first engagement read `prev` off the BODY — which by then
+    // already carried the offset — and the delta collapsed to an assignment that silently
+    // deleted the spell. The round-2 verdict §E caught this offline and could not land it live.
+    //
+    // Here is the one moment in the fight's life when the body's equip load is provably the bare
+    // equipment base with no offsets on it: `createPlayer` has just built it from the loadout and
+    // no effect has been applied yet. Seeding it here makes `prev` a real previous base forever
+    // after, on every path, including `setLoadout()` (which preserves `prev.equipLoadPct` across
+    // the rebuild and so carries any live offset with it).
+    this._equipLoadBase = b.equipLoadPct;
     // The combat body is the AUTHORITY and `sim.player` is a view (sim/combat-bridge.js). A
     // scripted route therefore has to write the body, not the view, or `mirror()` undoes it on
     // the next frame. This reference is how sim/route.js reaches it without importing combat.
@@ -2512,19 +2525,41 @@ export class Engine {
    * The registry spent its whole life until this round being read by two critic scripts and
    * nothing in the game, which is exactly how it came to describe a build it had never met.
    *
-   * A build with NO register boots and reports `present:false`. A build with a register that
-   * lies does not boot.
+   * A build with NO register boots and reports `present:false`.
+   *
+   * **This used to throw, and the throw took the whole project down.** Two `notary` infos were
+   * re-homed by one agent while another was adding canon rows that named them, and the next
+   * fourteen agents could not boot: `boot-check` exit 12, every browser measurement on the box
+   * blocked, on a defect neither of them could see from their own file. That is RULES rule 13 —
+   * a throwing engine is not one agent's problem, it is everyone's — and rule 14 says where the
+   * check belongs instead: **content integrity is a `tools/check-*.mjs`, not a constructor.**
+   *
+   * The argument for throwing was sound and is preserved: a register that describes a build it
+   * has never met is invisible from every other instrument, and it earned that reputation by
+   * being read only by two critic scripts for its whole life. So the check did not go away — it
+   * moved to `tools/check-content.mjs`, which the pre-commit hook runs, where a broken row costs
+   * the agent that wrote it instead of the thirteen who did not. Here it degrades: the lying rows
+   * are dropped, the sound ones install, and the engine reports what it refused so a probe can
+   * still see it.
    */
   _installCanon() {
     this.canon = new CanonRegistry(this.data.canon);
     if (!this.canon.present()) return { present: false, checked: 0 };
     const r = this.canon.resolve(this._canonWorldIndex());
     if (!r.ok) {
-      throw new Error(
-        `canon register: ${r.unresolved.length} unresolved reference(s) in game/data/lore/canon.json.\n`
-        + '  A dispute whose sides are held by nobody in the build is not texture, it is paperwork '
-        + '(RI-LOR06 §2, `positions[].held_by`).\n  - '
+      // Loud, once, and non-fatal. `unresolved` is carried on the return so `getCanonReport()`
+      // and any critic can assert on it — a warning nothing can read is a warning nobody heeds.
+      console.warn(
+        `canon register: ${r.unresolved.length} unresolved reference(s) in game/data/lore/canon.json — `
+        + 'those rows are NOT installed. A dispute whose sides are held by nobody in the build is not '
+        + 'texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`). Run '
+        + '`node tools/check-content.mjs` for the list.\n  - '
         + r.unresolved.slice(0, 24).join('\n  - '));
+      this.conversation.setCanon(this.canon);
+      return {
+        present: true, checked: r.checked, facts: this.canon.size,
+        disputes: this.canon.disputes().length, unresolved: r.unresolved,
+      };
     }
     this.conversation.setCanon(this.canon);
     return { present: true, checked: r.checked, facts: this.canon.size, disputes: this.canon.disputes().length };
@@ -3688,6 +3723,49 @@ export class Engine {
    * return `null` and are unequippable by construction — which is also RI-PRG07 §2's
    * "consumables are not counted" enforced at the only place that can enforce it.
    */
+  /**
+   * W1-16 round 3 — THE WEIGHT OF WHAT IS ACTUALLY IN YOUR HANDS.
+   *
+   * `RI-PRG07` §2 opens with "weight of equipped **weapons, shields**, armour, talismans". Round 2
+   * implemented the third term and neither of the first two, because it summed `sim.inventory`
+   * rows carrying a `slot` and the weapon the fight swings is not an inventory row — it is
+   * `combat.player.moves._weapon`, resolved from the loadout through `combat/system.js
+   * movesetFor()`. The round-2 verdict measured the consequence: a character holding an ultra
+   * greatsword and a greatshield read **0.00%**, and `setLoadout({weapon:'ultra-greatsword',
+   * shield:'greatshield_xanmeer'})` moved the ratio by nothing to six decimal places.
+   *
+   * NOTHING IS INVENTED HERE. Both numbers are already in the tree and were already unread:
+   *   * `game/data/weapons/classes.json` ships `equip_weight` on all fifteen classes (Dagger 1 …
+   *     Ultra greatsword 20). `combat/moveset.js weaponFor()` copies it onto the weapon block and
+   *     `combat/moves.js buildMoveTable()` hangs that block on `moves._weapon`. Before this round
+   *     a grep of `game/src` for the token found two lines: one comment and one copy. Fifteen
+   *     shipped rows, zero readers.
+   *   * The shield's `weight` is on the merged row `combat/system.js shieldFor()` already returns
+   *     — `game/data/weapons/offhand.json` for a taxonomy id (Xanmeer door 12) and
+   *     `game/data/combat/stamina.json` for a stability id (Naga tower 13). One row, one weight,
+   *     resolved at the single place shields are resolved, so there is no second table to drift.
+   *
+   * A body with no move table (a scenario built before the fight, a synthetic `this` in an
+   * offline probe) contributes zero rather than throwing: the equipped-armour sum is still a
+   * legitimate answer without it, and a producer that throws is worse than one that under-reads.
+   */
+  _handWeight() {
+    const b = this.combat && this.combat.player;
+    // DELETE-THE-FIX arm (`__breakW116('hands')`): the round-2 world exactly — the ratio is blind
+    // to the weapon and the shield, and only the inventory's clothing rows reach it.
+    if (!b || (this._w116Break && this._w116Break.hands)) return { weapon: 0, shield: 0, total: 0 };
+    const wpn = b.moves && b.moves._weapon;
+    const weapon = wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0;
+    const sh = b.shield;
+    const shield = sh && typeof sh.weight === 'number' ? sh.weight : 0;
+    return {
+      weapon, shield, total: weapon + shield,
+      weapon_id: b.weaponId || null,
+      weapon_class: wpn ? wpn.class : null,
+      shield_id: b.shieldId || null,
+    };
+  }
+
   _slotForItem(rec) {
     if (!rec) return null;
     // DELETE-THE-FIX arm (`__breakW116('slots')`): the pre-round-2 behaviour, in which the ONLY
@@ -3734,7 +3812,17 @@ export class Engine {
    *
    * It applies its result as a DELTA rather than an assignment, so the feather effect's own
    * additive offset (`sim/magic/apply.js`, which adds on cast and subtracts on expiry) survives
-   * untouched. An assignment here would have silently deleted a spell.
+   * untouched. An assignment here would have silently deleted a spell. **Round 3:** that claim
+   * was false on the FIRST engagement, because `_equipLoadBase` was null there and `prev` was
+   * read off the body, offset and all. `_buildCombat()` now seeds the base from the freshly built
+   * body — the one moment it is provably offset-free — so the delta is a delta on every path.
+   *
+   * ROUND 3, THE OTHER HALF: the hands. §2's first two terms are the weapon and the shield, and
+   * they are not inventory rows. `_handWeight()` supplies them from weights the game already
+   * ships, and `_finishEquipCommit()` routes a `right`/`left` equip through `setLoadout()` so the
+   * hand that is weighed and the hand that fights are the same object. The `right`/`left` rows are
+   * therefore SKIPPED in the inventory sum below — counting the pack row as well as the class
+   * weight would weigh one sword twice.
    */
   _recomputeEquipLoad() {
     const b = this.combat && this.combat.player;
@@ -3745,12 +3833,21 @@ export class Engine {
     const inv = this.sim.inventory;
     let w = 0, equippedCount = 0;
     for (let i = 0; i < inv.length; i++) {
-      if (!inv[i].slot) continue;
+      const slot = inv[i].slot;
+      if (!slot) continue;
       equippedCount++;
+      // The hands are weighed once, from the fight's own loadout, not from the pack row.
+      if (slot === 'right' || slot === 'left') continue;
       const rec = this.ui && this.ui.data.items.get(inv[i].id);
       if (rec && rec.weight) w += rec.weight;      // worn once, however many are in the pack
     }
-    if (!equippedCount && !this._equipLoadEngaged) return null;
+    const hands = this._handWeight();
+    w += hands.total;
+    // The producer engages the moment there is ANY equipped weight to report — which, once the
+    // hands count, is every scenario that puts a weapon in them. That is the point: a hardcoded
+    // 24.0 was the answer nearly half the shipped states gave, and it is not an answer about
+    // anything. A scenario that pins its own load is still untouched (`_equipLoadPinned`).
+    if (!equippedCount && !hands.total && !this._equipLoadEngaged) return null;
     this._equipLoadEngaged = true;
     const cap = this._equipCapacity();          // RI-PRG07 §2: maxLoad, NOT maxLoad x 2.5
     const base = cap > 0 ? (w / cap) * 100 : 0;
@@ -3764,6 +3861,7 @@ export class Engine {
       this._equipLoadBase = base;
     }
     this.sim.player.equippedWeight = w;
+    this.sim.player.equippedHandWeight = hands;
     return b.equipLoadPct;
   }
 
