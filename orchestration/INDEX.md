@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b13724d`: 601 tools, 153 reference
+so it cannot drift. Generated at `79ff4c6`: 601 tools, 153 reference
 items, 45 pieces in flight.
 
 Its purpose is to stop 45+ concurrent agents each paying separately to discover the
@@ -913,11 +913,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-SAVE-AI` | in_progress | land the fix in save/fight.js + combat/ai.js + combat/enemy.js, then verify in one browser | `orchestration/status/W1-SAVE-AI.json` |
 | `arbiter-dlg-s37` | writing | write S37 into ARBITRATION.md, amend RI-DLG01 §A/§D, file the res referral in NEXT-DISPATC | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `reports/arbiter-dlg-s37/divergence.json` `reports/arbiter-dlg-s37/if-first-match.json` |
 | `W1-16-r3` | building | implement _handWeight() in engine.js; route right/left equips through setLoadout; seed _eq | `orchestration/status/W1-16-r3.json` |
 | `W1-17-r2` | building | res consumption arm; voice-metrics second_regex; orphans bucket; S37 invariance tool; blog | `orchestration/status/W1-17-r2.json` `tools/dialogue/answer-census.mjs` `tools/dialogue/critic-reach.mjs` `tools/dialogue/rehome-actors.mjs` `tools/dialogue/w1-17-r2-deletefix.mjs` `game/data/npcs/pop-trades.json` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
-| `W1-SAVE-AI` | in_progress | read RULES/INDEX/NEXT-DISPATCH Q0, then save/fight.js + save/state.js | `orchestration/status/W1-SAVE-AI.json` |
 | `W1-23-r4` | building | part 2 — make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement mach | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `game/data/npcs/` `game/data/world/property/` |
 | `W1-ROAD-JOIN` | ? | consumption probe, then the body walk on THE CROSSING | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `critic-w1-readables` | running | browser: attack D (CONSUMPTION re-run + delete-the-fix teardown bite) and F (slot allocato | `orchestration/status/critic-w1-readables.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |

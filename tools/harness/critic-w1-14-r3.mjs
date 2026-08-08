@@ -261,20 +261,25 @@ try {
         const e0 = H.spawn('inf_trash', 0, 4.0);
         H.aggro(e0); H.lockOn(e0);
         H.stepFrames(30);
+        // `getCombatState().enemies[].dist_m` is the engine's own planar distance from the
+        // player (engine.js `c.distTo(b)`) — the same number the leash and the aggro radius use.
+        // The rows there carry no `pos`, which is why this reads dist_m rather than recomputing.
         const caster0 = H.getPlayerStats().pos.slice();
         const b0 = bodyById(e0);
-        const d0 = b0 ? dist(b0.pos, caster0) : null;
+        const d0 = b0 ? b0.dist_m : null;
         const c = castSpell({ class: 'LIGHT', range: 'target',
           effects: [{ effect, magnitude, duration_s: 30, area_r_m: 0 }] }, `critC_${effect}_${magnitude}_${breakMode || 'none'}`, 900);
         const b1 = bodyById(e0);
         const caster1 = H.getPlayerStats().pos.slice();
+        const ent1 = H.listEntities().find((x) => x.eid === e0) || null;
         const fe = c.events ? c.events.filter((e) => e.kind === 'fight_ended') : [];
         return { effect, magnitude, break: breakMode || 'none', refused: c.refused, applied: c.applied,
           declared_leash_m: fe.length ? fe[0].flee_leash_m : null,
           declared_speed_mps: fe.length ? fe[0].flee_speed_mps : null,
           dist_at_cast_m: d0 === null ? null : r2(d0),
-          dist_after_900f_m: b1 ? r2(dist(b1.pos, caster1)) : null,
-          target_pos: b1 ? b1.pos.map(r2) : null, caster_pos: caster1.map(r2),
+          dist_after_900f_m: b1 ? r2(b1.dist_m) : null,
+          dist_from_entity_list_m: ent1 && ent1.pos ? r2(dist(ent1.pos, caster1)) : null,
+          target_pos: ent1 && ent1.pos ? ent1.pos.map(r2) : null, caster_pos: caster1.map(r2),
           yielded: b1 ? b1.yielded : null, dead: b1 ? b1.dead : null };
       };
       for (const m of [1, 34]) C.flee.push(fleeRun('demoralise', m, null));

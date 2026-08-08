@@ -90,10 +90,20 @@ const commit = (() => { try { return execSync('git rev-parse HEAD', { cwd: ROOT 
 // nothing in the project could launch a browser at all, this piece included. That is not my file
 // and not my defect to fix.
 //
-// So each copy is taken from the working tree and then every file that is MODIFIED-BUT-NOT-
-// COMMITTED and NOT declared by this piece is reset to its HEAD contents. The arms therefore
-// measure this piece's change against HEAD plus this piece's change, with a neighbour's in-flight
-// work neither carried nor blamed. What was neutralised is printed and lands in the report.
+// The first attempt at isolating that reset every modified-but-uncommitted file under `game/` to
+// its HEAD contents, and it made things WORSE in a way worth writing down, because it is a fact
+// about the tree and not about this piece:
+//
+//     **HEAD DOES NOT BOOT.** `git archive HEAD game | tar -x` into a clean directory and run
+//     `node tools/boot-check.mjs --entry <that>/game/index.html`: exit 12, the same canon error.
+//     The WORKING TREE boots (exit 0) because a neighbour's uncommitted edits to
+//     `game/data/dialogue/topics/**` supply the two infos `_installCanon` demands. So the
+//     uncommitted work is not noise to be filtered out — right now it is the only thing keeping
+//     the build up.
+//
+// So the arms run on the WORKING TREE as it stands, copied per arm, and the neighbour edits that
+// are carried are listed in the report rather than silently included. Nothing of a neighbour's is
+// modified, reverted, or committed by this tool.
 const MINE = [
   'game/data/world/interiors/',
   'game/data/npcs/',
@@ -120,15 +130,11 @@ function copyGame(tag) {
   fs.rmSync(dst, { recursive: true, force: true });
   fs.mkdirSync(dst, { recursive: true });
   fs.cpSync(path.join(ROOT, 'game'), path.join(dst, 'game'), { recursive: true });
-  for (const f of NEIGHBOURS) {
-    const head = execSync(`git show HEAD:${f}`, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
-    fs.writeFileSync(path.join(dst, f), head);
-  }
   return path.join(dst, 'game', 'index.html');
 }
 
 const NEIGHBOURS = neighbourEdits();
-if (NEIGHBOURS.length) console.log(`neutralised ${NEIGHBOURS.length} neighbour edit(s) on every arm: ${NEIGHBOURS.join(', ')}`);
+if (NEIGHBOURS.length) console.log(`carried (not mine, not reverted, HEAD does not boot without them): ${NEIGHBOURS.join(', ')}`);
 
 const PERTURB_MARK = 'THE PERTURBATION MARKER FOR W1-23 ROUND 4';
 
@@ -256,7 +262,7 @@ const pass = openedA === LEGS.length
   && perturbed.every(Boolean)
   && removed > 0;
 
-const report = { commit, neighbour_edits_neutralised: NEIGHBOURS, legs: LEGS.length, arms, summary: { openedA, changedB, shutC, redD, propGoneD, placements_removed: removed }, pass };
+const report = { commit, head_boots: false, neighbour_edits_carried: NEIGHBOURS, legs: LEGS.length, arms, summary: { openedA, changedB, shutC, redD, propGoneD, placements_removed: removed }, pass };
 ensureDir(path.dirname(OUT));
 writeJson(OUT, report);
 

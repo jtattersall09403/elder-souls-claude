@@ -71,6 +71,41 @@ semantics (it is what makes overriding cheap) but MUST expose a lint that flags 
 whose filter set is a strict superset of an earlier INFO's in the same topic — that entry
 is unreachable and is a **corpus bug**, not a style choice.
 
+> **AMENDED BY `ARBITRATION.md` S37, wave 1 — the rule above is upheld, and one sentence of it
+> was a false statement of fact.**
+>
+> ~~"our implementation keeps first-match-wins semantics"~~ — **this was not true of the tree.**
+> `game/src/character/converse.js` `infoFor()` scored specificity
+> (`score = 8·actorMatch + 2·cell + 4·requires + (1 + d/100) + 0.5·forbids`, strict maximum,
+> with authored order surviving only as the tie-break) until S37. Found by the W1-17 round-1
+> critic. Measured at `63f41ef`: the two algorithms answer **1,906,688 of 1,460,324,864
+> resolutions differently — 37 (speaker, topic) pairs across 8 topics** — and under the scoring
+> rule authored order decided **0.018% of resolutions, in one topic**, which is why the reorder
+> tool, the unreachable-INFO lint below and the shadow audit were all built on a rule nothing
+> enforced.
+>
+> **S37 rules that the ENGINE yields, not this clause.** Dialogue is outside the fight and
+> `ARBITRATION` §1 gives it to Morrowind, so §5 precedence 1 settles it. The struck sentence is
+> restored as a **requirement** rather than a description: `infoFor()` returns the first
+> admissible INFO in authored order and does not score. The reference implementation — which is
+> the whole of the diff — is `tools/dialogue/arbiter-reference-reader.mjs`.
+>
+> **Two consequences bind every author and builder touching this data.**
+>
+> 1. **Authored order is content.** 18.242% of resolutions across 64 topics change if the order
+>    changes. Moving an INFO within a file changes what people say; re-run the census.
+> 2. **The merge order must be declared.** `buildTopicIndex()` merges same-id topic records
+>    across files and concatenates them in `readdirSync().sort()` order, and **92 of 468 topic
+>    ids are declared in more than one file, holding 488 of the 1,280 INFOs**. For 38% of this
+>    corpus "authored file order" is a directory listing, which is not authoring. S37 requires
+>    that order be declared in the corpus — the per-file `group` tag plus a manifest, or a
+>    `priority` on the topic record. Until it is, the load order is a latent defect.
+>
+> Checkable: **`node tools/dialogue/arbiter-order-divergence.mjs --gate`**, which calls the
+> running `infoFor()` rather than modelling it. Red at `63f41ef` (58 mismatches over 42,456
+> resolutions, 8 topics); green against the reference reader; `--self-test` runs four arms and
+> has been watched going red on purpose (exit 2).
+
 **Greeting selection.** Greetings are not one topic. They are ten topics, `Greeting 0`
 through `Greeting 9`, evaluated in ascending numeric order, first-match-wins within each.
 The number is a *priority class*, not a disposition band:
@@ -220,6 +255,15 @@ Caius Cosades	South Wall Cornerclub	AddTopic	settlement:Balmora
 | Convergence rate (nodes with in-degree ≥ 2) | ~25% (derived) | ≥ 20% | <10% |
 | Quest-bearing topic nodes / total topic nodes | ~8% (derived) | ≤ 15% | >30% ("quest menu") |
 
+**S37 note on the `Orphans` and `Unreachable INFOs` rows.** The step-4 superset test is sound
+under first-match-wins and is **neither sound nor complete against a scoring reader**: a strictly
+narrower later INFO *outscores* its predecessor and is perfectly reachable, while a genuine shadow
+under scoring is a **tie** the superset test never sees. Both rows were therefore unenforceable
+for the whole of wave 1 and neither may be read as having passed. Measured at `63f41ef`, INFOs no
+player can hear from any speaker: **8** under the scoring reader that shipped, **14** under this
+item's own rule. That six-INFO difference is a corpus bug under this row, and the repair is to
+reorder the files — never to re-score the reader.
+
 ## Comparison method
 
 A fresh agent runs this without prior context.
@@ -266,6 +310,18 @@ the topic*.
 **Step 4 — Unreachable-INFO lint.** For each topic, for each pair (i<j) of INFOs in
 authored order, if `filter[j] ⊇ filter[i]` (every constraint in i is present and equal or
 weaker in j) then j is unreachable. Emit the list. Required output: empty.
+
+**Step 4b — Selection-rule conformance (`ARBITRATION` S37). Run this BEFORE step 4, because
+step 4 is meaningless if it fails.**
+```
+node tools/dialogue/arbiter-order-divergence.mjs --gate
+```
+The gate calls the running `infoFor()` and asserts it returns the **first admissible INFO in
+authored order** for every (topic, speaker, player-admissibility class). Exit 0 is required.
+A non-zero exit means the reader is not implementing this item's §A selection rule, and **step
+4's lint, `order-infos.mjs`, `shadow-audit.mjs` and the two §D rows above are all measuring a
+rule the game does not run** — that was the wave-1 state and it is what S37 exists to stop
+recurring. `--self-test` (four arms) must pass before the gate's result is quoted.
 
 **Step 5 — Combat lockout conformance (seam S13).** Three checks, all required:
 ```
@@ -341,6 +397,12 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
 - **Filters that are decoration.** The filter fields exist in the schema but every INFO
   leaves them blank, so first-match-wins always returns entry 0. Symptom: the
   unreachable-INFO lint returns hundreds of hits.
+- **A reader that repairs the author's ordering.** The subtler form of the row above, and the
+  one that actually happened (S37): the filters are authored and read, the lint is written and
+  run, and the *reader* quietly sorts by a computed specificity score, so an INFO in the wrong
+  place is silently promoted instead of being caught. Symptom: the unreachable-INFO lint returns
+  **zero** hits, the reorder tool changes **zero** answers, and both are true because neither is
+  connected to anything. Instrument: `tools/dialogue/arbiter-order-divergence.mjs --gate`.
 - **Convergence 0.** A pure tree. Every fact has exactly one route in, so missing one
   conversation permanently locks content instead of routing round it.
 - **Dialogue survives into the fight.** An enemy who can be opened as a topic list mid-swing,

@@ -201,6 +201,89 @@ The five rebuild lists in `corpus/80-methods/TOOL-COVERAGE-R1..R4` stay on the r
 their individual findings remain true of the screen.
 
 
+## ~~T0. Referred for a seam ruling: RI-DLG01 §A against `converse.js infoFor()`~~ — RULED. **ARBITRATION S37.**
+
+**Closed by `arbiter-dlg-s37` at `63f41ef`. Read `corpus/00-doctrine/ARBITRATION.md` §2 S37.**
+`RI-DLG01` §A governs; **the engine yields**. `game/src/character/converse.js` `infoFor()` must stop
+scoring specificity and return the **first admissible INFO in authored order**. Dialogue is outside
+the fight, `ARBITRATION` §1 gives it to Morrowind, and §5 precedence 1 settles it before the seam
+rulings are reached. `RI-DLG01` §A and §D are amended on disk; the false clause is struck in place.
+
+**A BUILDER OWNS THE IMPLEMENTATION. The arbiter edited nothing under `game/src/`.** The change is a
+deletion, not a rewrite: keep `infoAllowed()`, the npc-own-line short-circuit, the canon register,
+the cell prefix match, the actor filter and the whole return literal including `to`; delete
+`converse.js:283-285` and `break` on the first survivor. **The reference implementation is
+`tools/dialogue/arbiter-reference-reader.mjs` — that file is the diff.** Delete the scoring
+rationale in the comment block with it.
+
+**Two things land with it and neither is optional.**
+
+1. **Declare the merge order.** `buildTopicIndex()` concatenates same-id topic records in
+   `readdirSync().sort()` order, and **92 of 468 topic ids are declared in more than one file,
+   holding 488 of the 1,280 INFOs**. Under first-match-wins that directory listing decides answers.
+   §A says *authored*; a manifest keyed on the per-file `group`, or a `priority` on the topic
+   record, satisfies it.
+2. **Re-run the reorder and the lint, which now do something.** Under the scoring reader authored
+   order decided **0.018% of resolutions in one topic**, so `order-infos.mjs --write`'s *"0 of
+   75,151 answers changed"* was very nearly forced before the tool ran. Under S37, reversing
+   authored order moves **18.242% of resolutions across 64 topics** — the same tool, the same
+   corpus, and a control that can finally come out either way.
+
+**Acceptance: `node tools/dialogue/arbiter-order-divergence.mjs --gate` exits 0**, with
+`--self-test` (four arms) passing in the same run. At `63f41ef` the gate is **red: 58 mismatches
+over 42,456 resolutions, 37 speaker/topic pairs, 8 topics**, and green against the reference
+reader — so it has been watched failing and passing. Expect **6 more unhearable INFOs** (8 → 14) on
+the day it lands; those are a corpus bug under `RI-DLG01` §D and the repair is to reorder the
+files, never to re-score the reader.
+
+## T. Referred, not ruled: `res` — Morrowind's result script — has no reader. The twentieth dead model.
+
+**Found by the W1-17 round-1 critic (§E2), checked independently by `arbiter-dlg-s37` at `63f41ef`,
+and kept separate from S37 on purpose: this is not a contradiction between two texts, it is a model
+with nothing on the other end.** It is not the arbiter's to build.
+
+`RI-DLG01` §A calls this pair the single most important structural fact in the file:
+*"The response text is inert; the result script is what edits the world: `AddTopic …`,
+`Journal A1_1_FindSpymaster 10`, `ModDisposition` …"* **This project implements the `AddTopic` half
+and not the other.** Thirteen INFOs carry `res`, every one of the form
+`{"journal": ["q-<name>", 10]}`, across `10-global.json`, `20-tier-a.json`, `21-tier-b.json`,
+`22-tier-c.json` and `30-texture.json` — `the-dead-pay`, `the-heirs-clause`,
+`the-unfinished-survey`, `the-man-in-the-water`, `the-unlisted-well`, `the-under-drain`,
+`the-thinning`, `the-cleared-ground`, `the-lung-wage`, `the-petition`, `the-thorn-charter`,
+`the-listening-at-soulrest`, `the-removed-name`.
+
+**Confirmed by perturbation, not by a field census (RULES 11), against positive controls
+(RULES 5) at `63f41ef`:**
+
+```
+field                                            infos edited   answers changed
+res  DELETED            (Morrowind result script)         13            0   *** NO READER ***
+res  REWRITTEN to garbage                                 13            0   *** NO READER ***
+f    DELETED            (filter field 4, Faction)          4            0   *** NO READER ***
+to   DELETED            (positive control, AddTopic)     919      113,786
+x    MANGLED            (positive control, the words)   1,280      204,602
+```
+
+Reproduce with the one-liner recorded in `orchestration/status/arbiter-dlg-s37.json`. **Two layers,
+not one.** `infoFor()` never carries `res` out of the reader — it is absent from the return literal,
+so `Engine.conversationSay()` could not fire it even if it wanted to; and **none of the thirteen
+`q-*` ids is referenced anywhere in `game/data` outside the dialogue files themselves**, so the
+journal entries they would open do not exist as quests either. `f` is the same story with a smaller
+blast radius: `infoAllowed()` has no faction branch.
+
+**Under `RI-MTH07` / `ARBITRATION` §3 both are `unmeasurable ⇒ 0`.** Thirteen topics authored to
+open a journal entry when asked about cannot.
+
+**Acceptance for whoever takes it.** A `res` arm in `tools/dialogue/consume.mjs` (which today has no
+arm for `res`, no arm for `f`, no arm for `rumours.json`, and **no `--break` flag at all**) that:
+(a) perturbs `res` on a named INFO and observes **a journal entry appear in the running world**, not
+a field change; (b) shows the paired control — the unperturbed INFO opens nothing; and (c) reports
+**≥ 13 of 13 `res` INFOs with a demonstrated consumer, and `f` either wired in `infoAllowed()` as
+filter field 4 or deleted from the data with a note**. The thirteen `q-*` quests must exist in
+`game/data/quests/**` or the `res` payloads must be repointed at quests that do; a `res` that fires
+into a quest id nothing declares is the same defect one layer along. Do not build a `res` reader
+that writes a field nothing reads back (RULES 7).
+
 ## ~~S. Referred for a seam ruling: RI-WPN02 §B against RI-WPN05 §E.2~~ — RULED. **ARBITRATION S36.**
 
 **Closed by `arbiter-wpn-s36` at `4698888`. Read `corpus/00-doctrine/ARBITRATION.md` §2 S36.**

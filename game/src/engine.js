@@ -1082,6 +1082,14 @@ export class Engine {
     // after, on every path, including `setLoadout()` (which preserves `prev.equipLoadPct` across
     // the rebuild and so carries any live offset with it).
     this._equipLoadBase = b.equipLoadPct;
+    // W1-16 round 3 — what the scenario says is in your hands, so taking a picked-up weapon back
+    // off restores it instead of leaving you empty-handed. `shield: undefined` means "the
+    // exemplar", `shield: null` means the o2/o3 configurations that have none; both are preserved
+    // exactly, which is why this reads `in` rather than a truthiness test.
+    this._handBase = {
+      weapon: loadout.weapon || 'straight-sword',
+      shield: 'shield' in loadout ? loadout.shield : undefined,
+    };
     // The combat body is the AUTHORITY and `sim.player` is a view (sim/combat-bridge.js). A
     // scripted route therefore has to write the body, not the view, or `mirror()` undoes it on
     // the next frame. This reference is how sim/route.js reaches it without importing combat.
@@ -1138,6 +1146,12 @@ export class Engine {
     nb.yaw = prev.yaw;
     nb.equipLoadPct = prev.equipLoadPct;
     nb.tier = c.tierOf(nb);
+    // W1-16 round 3. `_buildCombat()` publishes the body it built as `sim.combatBody`, and
+    // `sim/route.js` and `render/spell-vfx.js` steer the player through that reference. Rebuilding
+    // the fight left it pointing at the DISCARDED body, so a scripted route would have been
+    // writing a corpse. It never mattered while `setLoadout()` was a probe-only verb; round 3
+    // makes it the way an ordinary player puts a sword in their hand, so it matters now.
+    this.sim.combatBody = nb;
     for (const o of others) { c.bodies.push(o.body); if (o.ctl) c.enemies.set(o.body.id, o.ctl); }
     c.bodies.sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
     nb.evaluateRig(0);
@@ -4305,6 +4319,53 @@ export class Engine {
    * That was the missing half of RI-PRG07. Encumbrance that decides the roll is armour weight,
    * and there was no way for the player to put armour on.
    */
+  /**
+   * W1-16 round 3 — WHICH LOADOUT PATCH DOES PUTTING THIS ROW IN YOUR HAND MEAN?
+   *
+   * `game/data/items/carried.json` declares `moveset` on all five of its weapon rows and NOTHING
+   * in `game/src` read the field — a grep for `.moveset` over the whole source tree returns the
+   * enemy-encounter census and nothing else. It was dead data, and two of the five rows named a
+   * moveset that does not exist: the loader keys `weaponMovesets` by `weapon_id` off
+   * `combat/movesets/` (159 roster weapons) and `movesets` by `id` off `combat/spine/` (seven
+   * class documents), and `great-hammer` and `bow` are neither a roster id nor one of
+   * `moveset.js SPINE_ALIASES`' seven names.
+   *
+   * So this resolves through the SAME call `setLoadout()` would make and reports a refusal rather
+   * than guessing. A row whose declared weapon cannot be resolved is not put in the hand at all —
+   * because putting it there is precisely the round-2 defect: an object that is weighed as though
+   * you were holding it while the fight swings something else.
+   */
+  _loadoutForItem(rec, slot) {
+    if (!rec) return { patch: null, why: 'no item record' };
+    if (slot === 'left') {
+      const id = rec.shield || rec.shield_id || null;
+      if (!id) return { patch: null, why: 'the row declares no shield id' };
+      try { this.combat.shieldFor(id); } catch (e) { return { patch: null, why: String(e && e.message || e) }; }
+      return { patch: { shield: id }, why: null };
+    }
+    const id = rec.moveset || rec.weapon || null;
+    if (!id) return { patch: null, why: 'the row declares no moveset' };
+    try { this.combat.movesetFor(id); } catch (e) { return { patch: null, why: String(e && e.message || e) }; }
+    return { patch: { weapon: id }, why: null };
+  }
+
+  /**
+   * W1-16 round 2. This used to read `for (... ) if (r.slot === 'right') r.slot = null;` etc.
+   *
+   * W1-16 round 3 — THE TWO RIGHT HANDS (RULES.md #10).
+   *
+   * Round 2 landed a weapon row in the inventory's `right` slot and added its `carried.json`
+   * weight to the equip ratio, and the fight went on swinging whatever the scenario's loadout had
+   * put in the body's hand. The round-2 verdict measured both halves of that: equipping a maul
+   * added 11.5 kg to the roll ratio while `combat.player.weaponId` stayed `ssw_garrison_sword`,
+   * and `setLoadout({weapon:'ultra-greatsword'})` moved the ratio by nothing at all. Two right
+   * hands, one weighed and one fighting, live in the same frame.
+   *
+   * They are one object now: a `right` or `left` equip goes through `setLoadout()`, which is the
+   * only thing in this build that changes what the fight holds, and `_handWeight()` then weighs
+   * the body rather than the pack row. Taking the row off restores the loadout the scenario
+   * declared, so the model runs in both directions — a one-way encumbrance model is not a model.
+   */
   _finishEquipCommit() {
     const c = this._equipCommit;
     if (!c || this.sim.frame < c.at) return;
@@ -4317,12 +4378,34 @@ export class Engine {
     // Nothing wearable about it — a potion, a book, a tally stick. Refused rather than shoved
     // into the sword hand, which is what the old single-slot branch did to every one of them.
     if (!row || !slot) { ev.equipped = false; return; }
+    const hand = slot === 'right' || slot === 'left';
     // Toggle: pressing equip on the thing already in that slot takes it off. Without this there
     // is no way to REDUCE your load, and a one-way encumbrance model is not a model.
-    if (row.slot === slot) { row.slot = null; ev.equipped = false; return; }
+    if (row.slot === slot) {
+      row.slot = null; ev.equipped = false;
+      if (hand) this._restoreDeclaredHand(slot, ev);
+      return;
+    }
+    if (hand) {
+      const { patch, why } = this._loadoutForItem(rec, slot);
+      // REFUSED, and named. The alternative is the round-2 defect: a weight in the ratio for an
+      // object the fight is not holding.
+      if (!patch) { ev.equipped = false; ev.refused = why; return; }
+      try { ev.loadout = this.setLoadout(patch); }
+      catch (e) { ev.equipped = false; ev.refused = String(e && e.message || e); return; }
+    }
     for (const r of this.sim.inventory) if (r.slot === slot) r.slot = null;
     row.slot = slot;
     ev.equipped = true;
+  }
+
+  /** Taking a held object off puts the scenario's own declared weapon or shield back in the hand. */
+  _restoreDeclaredHand(slot, ev) {
+    const base = this._handBase || {};
+    const patch = slot === 'left' ? { shield: base.shield === undefined ? null : base.shield }
+      : { weapon: base.weapon || 'straight-sword' };
+    try { ev.loadout = this.setLoadout(patch); }
+    catch (e) { ev.refused = String(e && e.message || e); }
   }
 
   _transferItem(id, to) {

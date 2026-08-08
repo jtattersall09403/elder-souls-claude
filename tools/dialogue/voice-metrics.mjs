@@ -193,15 +193,46 @@ function main() {
   }
 
   // Grammar tic — the requirement that separates voice work from a thesaurus pass.
+  //
+  // REPAIRED IN W1-17 ROUND 2. This block had two defects and between them they published a false
+  // failure, which the round-1 critic caught and the round-1 builder had reported as one of its
+  // two headline self-assessed misses:
+  //
+  //   1. `second_regex` WAS NEVER READ. `speakers.json` declares a second pattern for four of the
+  //      six archetypes and the string `second_regex` occurred ZERO times in this file. The
+  //      legionary's second pattern (`writ|papers|contraband|muster|patrol|fine|bounty|arrest|
+  //      manifest|curfew`) is the half of its tic that actually fires, and the checker never
+  //      looked at it. Reported: 0.00/1k. Actual: well over the 1.0 minimum.
+  //
+  //   2. ANCHORED PATTERNS WERE APPLIED TO THE WRONG UNIT. `per1k()` joins every entry with '\n'
+  //      and matches globally with no `m` flag, so `^(If|Were|Should|…)` could only ever match at
+  //      the very start of the whole joined corpus — one possible hit for an entire archetype.
+  //      The magister's tic is a SENTENCE opening, so it is now counted per sentence, using the
+  //      same `sentences()` splitter every other figure in this file uses.
+  //
+  // The two patterns are SUMMED, which is how RI-DLG06 §B reads them — one archetype, one tic,
+  // expressed two ways — and is the convention the round-1 critic used when it re-derived these
+  // numbers by hand.
   console.log('\ngrammar tic (RI-DLG06 §B, one regexable syntactic marker per archetype)');
+  console.log('  measured PER SENTENCE, and over BOTH declared patterns (`regex` + `second_regex`)');
   for (const { a, texts } of rows) {
     if (!a.grammar_tic) continue;
-    const re = new RegExp(a.grammar_tic.regex, 'gi');
-    const rate = per1k(texts, re);
+    const words = tok(texts.join('\n')).length;
+    const rateOf = (src) => {
+      if (!src) return null;
+      const re = new RegExp(src, 'gi');
+      let n = 0;
+      for (const t of texts) for (const s of sentences(t)) { re.lastIndex = 0; n += (s.match(re) || []).length; }
+      return words ? n / words * 1000 : 0;
+    };
+    const r1 = rateOf(a.grammar_tic.regex) || 0;
+    const r2 = rateOf(a.grammar_tic.second_regex);
+    const rate = r1 + (r2 || 0);
     const min = a.grammar_tic.per_1k_min || 1.0;
     const ok = rate >= min;
     if (!ok) bad++;
-    console.log(`  ${ok ? 'ok  ' : 'MISS'} ${a.id.padEnd(12)} ${rate.toFixed(2)}/1k (min ${min})  ${a.grammar_tic.name}`);
+    const parts = `regex ${r1.toFixed(2)}` + (r2 == null ? ' + (no second_regex declared)' : ` + second_regex ${r2.toFixed(2)}`);
+    console.log(`  ${ok ? 'ok  ' : 'MISS'} ${a.id.padEnd(12)} ${rate.toFixed(2)}/1k (min ${min})  [${parts}]  ${a.grammar_tic.name}`);
   }
 
   // Address form — >=1.0/1k here and <=0.3/1k in >=4 of the other five.
