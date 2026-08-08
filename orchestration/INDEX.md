@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `14ecca9`: 666 tools, 153 reference
+so it cannot drift. Generated at `1458dbc`: 667 tools, 153 reference
 items, 53 pieces in flight.
 
 Its purpose is to stop 53+ concurrent agents each paying separately to discover the
@@ -231,7 +231,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 22
+### `tools/experience/` — 23
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/anecdote-trace.mjs` — `experience.memory.anecdote`.
@@ -240,6 +240,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/beat-extract.mjs` — RI-EXP01 step 2: scan a session trace for the beat signatures.
 - `tools/experience/beats-from-md.mjs` — RI-EXP01 §D (prose) -> RI-EXP01.beats.json (machine-readable).
 - `tools/experience/breakage-probe.mjs` — RI-EXP06 Steps 1 and 2: the register, run, and diffed against its own past.
+- `tools/experience/critic-w1-25.mjs` — GRADING THE SABOTAGE FACILITY BY USING IT, NOT BY READING IT.
 - `tools/experience/ending-diff.mjs` — RI-EXP05 "Comparison method" Step 3, executed as far as this build allows.
 - `tools/experience/ending-specificity.mjs` — RI-EXP05 "Comparison method" Step 4.
 - `tools/experience/event-histogram.mjs` — `experience.session.shape`.

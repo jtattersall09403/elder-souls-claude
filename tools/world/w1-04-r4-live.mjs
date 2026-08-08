@@ -48,7 +48,13 @@ const { launchGame } = await import(path.join(ROOT, 'tools/lib/browser.mjs'));
 const OUT = path.join(ROOT, 'reports/w1-04-r4');
 fs.mkdirSync(OUT, { recursive: true });
 
-const out = { tool: 'tools/world/w1-04-r4-live.mjs', commit: process.env.W1_04_COMMIT || null, when: new Date().toISOString(), sections: {}, failures: [] };
+// `--only S3,S4` and `--rooms N` exist because this box is shared: a 115-room sweep under load
+// can outlive a wrapper's timeout, and a successor should be able to re-take the section that
+// was lost without paying for the three that landed. Every section writes as it finishes.
+const ONLY = (() => { const i = process.argv.indexOf('--only'); return i > 0 ? process.argv[i + 1].split(',') : null; })();
+const want = (s) => !ONLY || ONLY.includes(s);
+const ROOM_CAP = (() => { const i = process.argv.indexOf('--rooms'); return i > 0 ? Number(process.argv[i + 1]) : 0; })();
+const out = { tool: 'tools/world/w1-04-r4-live.mjs', only: ONLY, room_cap: ROOM_CAP || null, commit: process.env.W1_04_COMMIT || null, when: new Date().toISOString(), sections: {}, failures: [] };
 const save = () => fs.writeFileSync(path.join(OUT, 'live.json'), JSON.stringify(out, null, 2));
 save();
 
@@ -57,6 +63,7 @@ const errs = [];
 B.page.on('pageerror', (e) => errs.push(String(e)));
 
 try {
+  if (want('S1')) {
   // ---- S1 -------------------------------------------------------------------------------------
   const s1 = await B.page.evaluate(() => {
     const H = window.__HARNESS;
@@ -94,7 +101,9 @@ try {
   if (s1.not_joined_by_the_engine) out.failures.push(`S1: ${s1.not_joined_by_the_engine} records the engine never joined`);
   console.log(`S1  live: ${s1.measured} enterable buildings, outside smaller than inside ${s1.outside_smaller_than_inside}, worst area ratio ${s1.worst_area_ratio}, records not joined ${s1.not_joined_by_the_engine}`);
   save();
+  }
 
+  if (want('S2')) {
   // ---- S2: the control arm, in the live page --------------------------------------------------
   const s2 = await B.page.evaluate(() => {
     const H = window.__HARNESS, E = window.__ENGINE;
@@ -137,9 +146,11 @@ try {
   if (s2.restored.outside_smaller_than_inside !== 0) out.failures.push(`S2: the join did not restore (${s2.restored.outside_smaller_than_inside} still failing)`);
   console.log(`S2  join cut in the live page: ${s2.cut.outside_smaller_than_inside} of ${s2.cut.measured} fail (worst ${s2.cut.worst_area_ratio}); restored: ${s2.restored.outside_smaller_than_inside} fail (worst ${s2.restored.worst_area_ratio})`);
   save();
+  }
 
+  if (want('S3')) {
   // ---- S3: distinctness with its own floor ----------------------------------------------------
-  const s3 = await B.page.evaluate(() => {
+  const s3 = await B.page.evaluate((CAP) => {
     const H = window.__HARNESS, E = window.__ENGINE;
     const probe = 'archon-apothecary';
     const enter = (id) => { if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(1); } H.enterInterior(id); H.stepFrames(2); };
@@ -155,7 +166,7 @@ try {
     const c = H.getDrawnSignature().hash;
     // n2 — the null control: every door opens on the same record. Point every interior record at
     // the probe's own room contents, so 115 doors build one room.
-    const ids = H.listInteriors().map((i) => i.id);
+    const ids = (() => { const a = H.listInteriors().map((i) => i.id); return CAP ? a.slice(0, CAP) : a; })();
     const P = E.data.interiors[probe];
     const saved = [];
     for (const id of ids) {
@@ -192,7 +203,7 @@ try {
       n3_rooms: { rooms: live.length, distinct: Object.keys(counts).length, largest_identical_group: live.length ? Math.max(...Object.values(counts)) : 0 },
       detail,
     };
-  });
+  }, ROOM_CAP);
   out.sections.S3_distinctness = s3;
   const floorOk = s3.n0_same_room_two_steps.distinct === 1 && s3.n1_left_and_re_entered.distinct === 1 && s3.n2_null_control_one_record.distinct === 1;
   s3.floor_ok = floorOk;
@@ -200,7 +211,9 @@ try {
   console.log(`S3  floor: n0 ${s3.n0_same_room_two_steps.distinct}, n1 ${s3.n1_left_and_re_entered.distinct}, n2 null control ${s3.n2_null_control_one_record.distinct} of ${s3.n2_null_control_one_record.rooms} (all must be 1)`);
   console.log(`S3  rooms: ${s3.n3_rooms.distinct} distinct of ${s3.n3_rooms.rooms}, largest identical group ${s3.n3_rooms.largest_identical_group}`);
   save();
+  }
 
+  if (want('S4')) {
   // ---- S4: build record vs scene read ---------------------------------------------------------
   const s4 = await B.page.evaluate(() => {
     const H = window.__HARNESS, E = window.__ENGINE;
@@ -222,6 +235,7 @@ try {
   if (s4.after.hash === s4.before.hash) out.failures.push('S4: the signature did not change when the room was emptied');
   console.log(`S4  emptied the room's group: build record still says ${s4.after.build_record_meshes} meshes; the scene read says ${s4.after.scene_meshes} (was ${s4.before.scene_meshes}); restored ${s4.restored.scene_meshes}`);
   save();
+  }
 } catch (e) {
   out.fatal = String(e && e.stack || e);
   console.error(out.fatal);

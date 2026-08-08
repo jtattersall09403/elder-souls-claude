@@ -1,17 +1,22 @@
 {
   "task_id": "W1-04-r4",
-  "state": "live arm running (S3 distinctness sweep); everything else green",
+  "state": "fixes landed and committed by the bank sweep; S3/S4 of the live arm being re-taken",
   "started": "2026-08-08",
   "commit_at_start": "9e962a4",
   "piece": "W1-04 round 4 - settlements, interiors and the people in them",
-  "next_step": "one browser: live join proof + signature re-take + two pictures (a building whose outside contains its inside, and a roof)",
+  "next_step": "land S3/S4, then commit status + blog + reports",
   "files_touched": [
+    "docs/shots/2026-08-08-w1-04-r4-blackrose-inn-outside-now-contains-inside.png",
+    "docs/shots/2026-08-08-w1-04-r4-helstrom-roofs-now-cover-the-buildings.png",
     "game/src/harness/api.js",
     "game/src/render/exterior.js",
     "game/src/render/interior.js",
     "game/src/world/province.js",
     "orchestration/status/W1-04-r4.json",
+    "reports/blog-feed.jsonl",
     "reports/w1-04-r4/join.json",
+    "reports/w1-04-r4/live-S1-S2.json",
+    "reports/w1-04-r4/live-and-shots.json",
     "reports/w1-04-r4/live.json",
     "reports/w1-04-r4/vp04-survey.json",
     "tools/check-building-fits-room.mjs",
@@ -72,5 +77,6 @@
     "node tools/contention.mjs --gate returned GO at the start of the run and WAIT (exit 3) later, at 2 browser instances and load 5.59 per core against a ceiling of 4.0. RULES.md rule 21 permits proceeding if it is declared: I did, ONCE, with ONE browser (tools/world/w1-04-r4-live.mjs) kept for the whole run, because the capture daemon's query path is a read-only whitelist and every section of the live arm mutates the world. The two pictures go through the pooled daemon and launch nothing.",
     "NO TIMING FIGURE is published anywhere in this piece (rule 26).",
     "game/src/render/exterior.js was undeclared by any live piece when I started; I declared it before writing (rule 16). It carries the shrink pass, which is where the round-3 verdict's blocking gap lives."
-  ]
+  ],
+  "commit_note": "My source and tool changes were swept into commit a2031bb ('The engine and every instrument measuring it disagreed about 5,760 answers') by another agent's commit taking the whole index, exactly as RULES.md rule 17 describes. The content landed correctly and I have not unpicked it (rule 17's own instruction). Everything after that point I commit myself with --only."
 }
