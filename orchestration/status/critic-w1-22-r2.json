@@ -63,7 +63,8 @@
   "notes": [
     "Contention: loadavg 13-19 on 4 cores, 18-30 headless_shell, throughout. Every figure is a byte comparison, a digest, a level or a count. No wall-clock figure quoted.",
     "HEAD moved during the run: 107c1b3 -> fc5e13a -> a3af8c2 -> 444d43d (neighbours committing).",
-    "CONTENTION: ran the consumption probe with tools/contention.mjs --gate at exit 3 (4 browser instances, load ~4-5.7 per core). Declared per rule 21. One browser at a time throughout; never two of mine concurrently. Every figure in this verdict is a byte comparison, a digest, a level, a count or an accuracy -- no wall-clock figure is quoted."
+    "CONTENTION: ran the consumption probe with tools/contention.mjs --gate at exit 3 (4 browser instances, load ~4-5.7 per core). Declared per rule 21. One browser at a time throughout; never two of mine concurrently. Every figure in this verdict is a byte comparison, a digest, a level, a count or an accuracy -- no wall-clock figure is quoted.",
+    "ATTRIBUTION: my four declared files (corpus/90-verdicts/wave1/W1-22-r2.md and .json, this status file, and my reports/blog-feed.jsonl line) were swept into commit 4a41f58 'Rule 0: never wait for the owner...' by a neighbour, while my own `git commit --only` was losing three consecutive HEAD-lock races (52cffa1 -> 4a41f58 -> 0b16085). My tools and my shot had already been banked by the orchestrator in 64dd5f9. So this critic's verdict is in history under two other agents' messages. Recorded rather than re-committed: the content is correct and complete at HEAD, and rewriting history to fix a byline would be worse than the byline. This is the failure mode rule 17 was rewritten for, observed once more from the losing side -- `--only` restricts what MY commit takes, and does nothing to stop a neighbour's `git add -A` taking mine first."
   ],
   "successor_generation": 2,
   "resumed_at": "2026-08-08"

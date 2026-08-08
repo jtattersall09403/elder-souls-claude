@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `4a41f58`: 712 tools, 153 reference
+so it cannot drift. Generated at `0b16085`: 712 tools, 153 reference
 items, 59 pieces in flight.
 
 Its purpose is to stop 59+ concurrent agents each paying separately to discover the
@@ -1033,9 +1033,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-04-r6` | building | boot-check, then rewrite tools/check-building-fits-room.mjs to enumerate from interiors, t | `orchestration/status/W1-04-r6.json` `game/src/render/exterior.js` |
-| `W1-GAMEPAD` | running | Read RULES, INDEX, W1-21-r2 verdict, NEXT-DISPATCH; run ownership + contention gates; dete | `orchestration/status/W1-GAMEPAD.json` |
 | `critic-w1-22-r2` | done | DONE. Verdict written and validated; blog line appended; committing declared files with gi | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/blog-feed.jsonl` `reports/content-stats.json` |
+| `W1-GAMEPAD` | running | Shim is healthy: do NOT manufacture a defect (brief scope note, rule 0). Spend budget on ( | `orchestration/status/W1-GAMEPAD.json` |
+| `W1-04-r6` | building | boot-check, then rewrite tools/check-building-fits-room.mjs to enumerate from interiors, t | `orchestration/status/W1-04-r6.json` `game/src/render/exterior.js` |
 | `W1-CROSSING-r2` | in-progress | Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/posit | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` `tools/world/w1-crossing-r2-pursue-sim.mjs` `tools/world/w1-crossing-r2-parapet-trap.mjs` |
 | `W1-26-r4` | building | run tools/w1-26-r4/w1-26-r4-verify.mjs in a browser (gate GO), then blog line + shot + com | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `W1-14-r5` | done | commit; nothing outstanding | `docs/shots/2026-08-08-w1-14-r5-the-bolt-goes-where-the-body-is-going.png` `game/data/magic/cast-classes.json` `game/data/npcs/spellwrights.json` `game/src/combat/player.js` `game/src/engine.js` `game/src/harness/api.js` |
