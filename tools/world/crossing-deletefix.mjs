@@ -77,6 +77,15 @@ try {
   await handle.h('setSeed', 1337);
   await handle.h('loadState', 'default');
   await handle.h('setTide', 'LOW');
+  // The body's HP is pinned in EVERY arm. The province's regional hazards kill a scripted walker
+  // at 1,276.8 m and a death is a 3.5 km respawn; leaving that in would make the arms differ by
+  // where they happened to die rather than by the code under test. Declared, and identical across
+  // all four arms, so it cannot be what separates them.
+  await handle.page.evaluate(() => {
+    const E = window.__ENGINE;
+    const orig = E._afterStep.bind(E);
+    E._afterStep = function () { orig(); const p = this.sim.player; if (p.hp < p.hpMax) p.hp = p.hpMax; };
+  });
   // Stash the shipped implementations once, so every arm restores from the same origin.
   await handle.page.evaluate(() => {
     const E = window.__ENGINE;

@@ -363,14 +363,89 @@ export class Discovery {
       'footprint', 'placePos', 'serialise', 'mutatorReport']);
     const proto = Object.getPrototypeOf(this);
     const out = [];
+    let examined = 0;
     for (const name of Object.getOwnPropertyNames(proto)) {
       const d = Object.getOwnPropertyDescriptor(proto, name);
-      if (!d || typeof d.value !== 'function') continue;      // getters are readers by construction
-      if (READERS.has(name)) continue;
-      out.push({ name, arity: d.value.length });
+      if (!d) continue;
+      examined++;
+      if (typeof d.value === 'function') {
+        if (READERS.has(name)) continue;
+        out.push({ name, arity: d.value.length, member: 'method' });
+        continue;
+      }
+      // ACCESSORS, classified by the same fail-closed rule as methods — W1-21 round 3.
+      //
+      // The line that used to sit here was `if (!d || typeof d.value !== 'function') continue;`
+      // with the comment "getters are readers by construction". That is not true of JavaScript,
+      // and the W1-21 round-2 critic broke it on purpose and wrote down exactly how:
+      //
+      //     Object.defineProperty(proto, '__criticGetter',
+      //       { get() { this.restore({ stood: '' }); return 1; } });
+      //
+      // A plain PROPERTY READ — `d.__criticGetter`, which no reviewer would look at twice — wiped
+      // the map from 2,446 revealed cells to 0, and `mutatorReport()` listed nothing at all.
+      // Eleven of this object's twenty-five prototype members are accessors, so the sentence
+      // AMENDMENT-W1-MAP-01 §3b asks a critic to verify — "enumerate the discovery model's own
+      // mutating methods" — was being verified over 14 of 25 members, with the other 11 skipped
+      // SILENTLY. That is round 1's finding one level down: not a list that forgot a member, but
+      // a rule that excluded a category.
+      //
+      // The replacement rule, and it errs toward reporting a writer in every ambiguous case:
+      //
+      //   * a SETTER is always a state writer. There is no such thing as a read-only setter.
+      //   * a GETTER is a reader only if its SOURCE is a single `return <expression>;` containing
+      //     no assignment, no `++`/`--`, no `delete`, and no CALL of any kind. A getter that calls
+      //     something can do whatever that something does, and this class cannot know what that
+      //     is, so it is reported.
+      //
+      // Note what the getter rule does NOT consult: the `READERS` name list. A getter is judged on
+      // what it is written to do, not on whether somebody remembered to name it — a second list
+      // would be the same defect this method exists to remove, one type of member along. The
+      // critic's `__criticGetter` is caught because it calls `restore()`, and it would still be
+      // caught if it were called `cols`.
+      //
+      // The cost of the strict reading is that a future legitimate getter which delegates to a
+      // helper will be reported as a writer until somebody looks at it. That is the direction a
+      // fail-closed classifier is supposed to be wrong in.
+      if (typeof d.set === 'function') {
+        out.push({ name, arity: d.set.length, member: 'setter', why: 'a setter writes state by definition' });
+        continue;
+      }
+      if (typeof d.get === 'function') {
+        const verdict = Discovery.classifyGetter(d.get);
+        if (verdict.reader) continue;
+        out.push({ name, arity: 0, member: 'getter', why: verdict.why });
+      }
     }
     out.sort((a, b) => a.name.localeCompare(b.name));
+    // The sample count for the check this report exists to feed: how many prototype members were
+    // looked at, and how many of each kind. `mutators: []` over 25 examined members and
+    // `mutators: []` over 0 are different claims and used to print the same.
+    Object.defineProperty(out, 'membersExamined', { value: examined, enumerable: false });
     return out;
+  }
+
+  /**
+   * Is this getter a pure read? Public and static so a probe can exercise the RULE directly,
+   * without having to install a getter on the live prototype first.
+   */
+  static classifyGetter(fn) {
+    const src = String(fn);
+    const body = /^\s*(?:get\s+)?[\w$]*\s*\(\s*\)\s*\{([\s\S]*)\}\s*$/.exec(src);
+    if (!body) return { reader: false, why: 'source does not parse as a zero-argument accessor' };
+    const inner = body[1].trim();
+    const m = /^return\s+([\s\S]*?);?$/.exec(inner);
+    if (!m) return { reader: false, why: 'body is not a single `return <expression>;`' };
+    const expr = m[1];
+    // A CALL, not a grouping paren: `(a * b)` is arithmetic, `f(x)` is a call. The difference is
+    // what precedes the bracket. `get revealedFrac() { return this.#revealed / (this.#cols *
+    // this.#rows); }` is a real reader and must not be reported as a writer.
+    if (/[\w$\].]\s*\(/.test(expr)) return { reader: false, why: 'the returned expression calls something' };
+    if (/;/.test(expr)) return { reader: false, why: 'body is not a single statement' };
+    if (/\+\+|--|\bdelete\b|\bawait\b|\byield\b/.test(expr)) return { reader: false, why: 'the returned expression mutates' };
+    // an assignment, but not ==, ===, !=, !==, <=, >=, =>
+    if (/(^|[^=!<>+\-*/%&|^])=(?![=>])/.test(expr)) return { reader: false, why: 'the returned expression assigns' };
+    return { reader: true, why: 'single return of a non-calling, non-assigning expression' };
   }
 
   /**

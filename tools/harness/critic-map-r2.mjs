@@ -453,6 +453,30 @@ async function run(h, brk) {
       !(allGreen && forgedReport.places_drawn > honestLive.place_count),
       'a forged map that fills the province must move at least one published number');
 
+    // ---- A13. ARBITRATION S38 CLAUSE (d): "a discrepancy between the blob's claims and the
+    // derivation is ITEMISED, not swallowed." ---------------------------------------------------
+    //
+    // S38 landed mid-round and disposes of A1/A2/A3/A9/A10 — the derivation is sound and a forged
+    // footprint is out of scope, which `node tools/map/arbiter-map-s38.mjs` proves exhaustively
+    // (6/6, 42,846 of 42,846 generators). Clause (d) is the one clause of S38 that my forgery is
+    // still pointed at, and the S38 gate cannot see the gap, because S38-4 forges the CLAIM FIELDS
+    // (all-ones raster, all 42 names) and so produces an itemisation to observe.
+    //
+    // The natural forgery writes NOTHING to contradict: `cells: ''`, `places: []`. Then `dropped`
+    // is empty because there are no claimed names to drop and `phantom_cells` is 0 because there
+    // are no claimed cells to be phantom — the two fields S38-4 reads both go quiet on the very
+    // save that fills the province. What does move is `missing_cells`, and nothing publishes it.
+    const a13 = D.lastRestore || {};
+    const a13Published = Object.keys(liveAll).concat(Object.keys(mAll));
+    const a13Signals = Object.entries(a13).filter(([k, v]) =>
+      (typeof v === 'number' && v > 0) || (Array.isArray(v) && v.length > 0) || v === true).map(([k]) => k);
+    const a13Reachable = a13Signals.filter((k) => a13Published.includes(k)
+      || (k === 'dropped' && a13Published.includes('dropped_on_load')));
+    A('A13', 'S38(d): the itemisation must be REACHABLE for the forgery that writes no claims',
+      `on a forged footprint with cells:"" and places:[] the audit holds ${JSON.stringify(a13)} — non-zero signals [${a13Signals.join(',') || 'none'}], of which published by mapState()/getUIState(): [${a13Reachable.join(',') || 'NONE'}]`,
+      a13Signals.length > 0 && a13Reachable.length > 0,
+      'at least one moved audit field is readable through a published surface — S38-4 forges the claim fields and so never meets this case');
+
     // ---- A12. Is the seal an INTEGRITY check or an AUTHENTICITY check? -------------------------
     // My first version of this check grepped the save manifest for the string "signature" and
     // PASSED — on `regionSignature`/`focusSignature`, which have nothing to do with saves. An

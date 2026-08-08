@@ -92,6 +92,10 @@ const ONLY = args.only ? new Set(String(args.only).split(',')) : null;
 const SKIP = args.skip ? new Set(String(args.skip).split(',')) : new Set();
 const SELECTED = VIEWPOINTS.filter((v) => (!ONLY || ONLY.has(v.id)) && !SKIP.has(v.id));
 
+// RULES 6 teardown — `--teardown` sweeps no viewpoints, so K2's sample set is empty and it must
+// report EMPTY rather than the `[].reduce(…) === 0` PASS the round-2 verdict found. No browser.
+const TEARDOWN = !!args.teardown;
+
 function decode(dataUrl) { return PNG.sync.read(Buffer.from(dataUrl.split(',')[1], 'base64')); }
 
 /** A − B as a boolean mask, plus the count. Any channel differing by > 2/255 counts. */
@@ -157,10 +161,12 @@ function crop(png, bbox, pad) {
 }
 
 ensureDir(RUN);
-const h = await launchGame({ width, height, timeout: 240000 });
 const results = [];
 let instrument = [];
+const h = TEARDOWN ? null : await launchGame({ width, height, timeout: 240000 });
+if (TEARDOWN) log('  TEARDOWN: sweeping no viewpoints on purpose — K2 must report EMPTY');
 try {
+  if (TEARDOWN) throw { __teardown: true };
   await h.h('setRenderRate', 60);
   // Make the drawing buffer equal the CSS viewport before comparing instruments. `main.js`
   // sizes the canvas from `innerWidth` only on load and on a resize event, so under Playwright
@@ -253,9 +259,47 @@ try {
     });
     log(`  ${vp.id}: ui layer ${count} px, ${comps.length} components, ${undeclared.length} undeclared`);
   }
+} catch (e) {
+  if (!e || !e.__teardown) throw e;
 } finally {
-  await h.close();
+  if (h) await h.close();
 }
+
+// ---- grading -----------------------------------------------------------------------------------
+//
+// W1-21 ROUND 3. Round 2 already recorded `viewpoints_run` and `covered_all_viewpoints: false`,
+// which is more honesty than most of this piece's detectors had — and then did not put either in
+// the exit code, so a run that swept 9 of 10 viewpoints exited 0. The round-2 verdict's remedy is
+// literal: "K2 fails if `covered_all_viewpoints` is false". It is expressed here as the sample
+// count falling short of `expected`, which is `PARTIAL` — not a pass, and distinguishable from an
+// actual finding, which matters because the skipped viewpoint is skipped for a reason this piece
+// does not own (`aggro()` takes the process down; see the --skip comment above).
+const measured = results.filter((r) => r.measured);
+const G = grader();
+G.push('K2', '§C no undeclared component in the UI layer at any viewpoint', {
+  samples: measured.length, expected: VIEWPOINTS.length, sample_of: 'viewpoints with a non-empty UI layer',
+  counts: {
+    ui_layer_px: results.reduce((a, r) => a + r.ui_layer_px, 0),
+    components: results.reduce((a, r) => a + r.components, 0),
+    declared_rects: results.reduce((a, r) => a + r.declared_rects, 0),
+    per_viewpoint: results.map((r) => [r.viewpoint, r.ui_layer_px, r.components, r.declared_rects, r.undeclared.length]),
+  },
+  pass: () => results.reduce((a, r) => a + r.undeclared.length, 0) === 0,
+  detail: `${results.reduce((a, r) => a + r.undeclared.length, 0)} undeclared components over `
+    + `${results.reduce((a, r) => a + r.components, 0)} components / `
+    + `${results.reduce((a, r) => a + r.ui_layer_px, 0)} UI-layer px; `
+    + `skipped [${VIEWPOINTS.filter((v) => !SELECTED.includes(v)).map((v) => v.id).join(',') || '-'}]`
+    + `${results.some((r) => !r.measured) ? `; EMPTY UI LAYER at [${results.filter((r) => !r.measured).map((r) => r.viewpoint).join(',')}]` : ''}`,
+});
+G.push('K2b', 'the harness and the player are looking at the same picture (__HARNESS.screenshot vs page.screenshot)', {
+  samples: instrument.length,
+  expected: args['no-instrument-diff'] ? 0 : SELECTED.length,
+  sample_of: 'viewpoints compared across both instruments',
+  counts: { differing_pixels: instrument.reduce((a, i) => a + Math.max(0, i.differing_pixels), 0) },
+  pass: () => instrument.every((i) => i.differing_pixels === 0),
+  detail: args['no-instrument-diff'] ? 'not run (--no-instrument-diff)'
+    : instrument.map((i) => `${i.viewpoint}:${i.differing_pixels}`).join(' '),
+});
 
 const report = {
   schema: 'elder-souls/ui-layer@1',
@@ -267,21 +311,24 @@ const report = {
   viewpoints_declared: VIEWPOINTS.map((v) => v.id),
   viewpoints_run: SELECTED.map((v) => v.id),
   viewpoints_skipped: VIEWPOINTS.filter((v) => !SELECTED.includes(v)).map((v) => v.id),
+  viewpoints_measured: measured.map((r) => r.viewpoint),
   covered_all_viewpoints: SELECTED.length === VIEWPOINTS.length,
   results,
   undeclared_components: results.reduce((a, r) => a + r.undeclared.length, 0),
   instrument_agreement: instrument,
   instruments_agree: instrument.every((i) => i.differing_pixels === 0),
-  K2: results.reduce((a, r) => a + r.undeclared.length, 0) === 0 ? 'PASS' : 'FAIL',
+  checks: G.checks,
+  K2: G.checks[0].status,
 };
+report.sample_table = sampleTable(G.checks, { tool: 'ui-layer.mjs' });
 writeJson(path.join(RUN, 'ui-layer.json'), report);
+fs.writeFileSync(path.join(RUN, 'sample-table.md'), report.sample_table + '\n');
 if (args.json) console.log(JSON.stringify(report, null, 2));
 else {
-  log(`K2 ${report.K2} — ${report.undeclared_components} undeclared components over ${results.length} viewpoints`);
+  for (const c of G.checks) log(line(c));
   for (const i of instrument) {
     log(`  instrument ${i.viewpoint}: __HARNESS.screenshot() vs page.screenshot() = ${i.differing_pixels} differing pixels`);
   }
-  log(`instruments agree: ${report.instruments_agree}`);
   log(`artifacts: ${RUN}`);
 }
-process.exit(report.K2 === 'PASS' && report.instruments_agree ? 0 : 1);
+process.exit(G.exit);

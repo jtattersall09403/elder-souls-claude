@@ -1,44 +1,71 @@
 {
-  "task_id": "critic-road-join",
-  "role": "critic",
-  "piece": "W1-ROAD-JOIN",
-  "status": "in_progress",
-  "started_at": "2026-08-08T03:40:00Z",
-  "next_step": "B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F walk; G own consumption",
-  "headline": "THE JOIN IS STALE ON THE SHIPPED TREE. The builder's 0/10 was TRUE at 322f708 and is FALSE at HEAD: 3 of 10 legs and 5 named-route offences, including THE CROSSING at 5,610 m in Blackrose. Cause is not data - it is planSettlement() itself (per-axis shrink + MIN_ENTERABLE_SPAN_M, banked 03:39:45 in 0dc0703). 54 exteriors grew, +1,846 m2. Handoff H4 named the DATA staleness door; this is the GENERATOR door and it was already open 24 minutes after the join was cut.",
-  "findings": [
-    {
-      "id": "C1",
-      "text": "In-game measurement (tools/world/critic-road-join-ingame.mjs) reads plans off the RUNNING engine and asks province.buildingAt(): 3 of 10 legs inside a game footprint, 13 samples; crossing 11, long_way 10. Slab clearance against real settlementSolids() wall boxes with PLAYER_RADIUS_M=0.32: 16 samples with less than body radius, worst -0.132 m."
-    },
-    {
-      "id": "C2",
-      "text": "Staleness bisected with roads.json held FIXED and planSettlement swapped by revision (tools/world/critic-road-join-stale.mjs): 322f708 0/10, 345dcca 0/10, 0dc0703 3/10, HEAD 3/10. The builder's number was honest when taken."
-    },
-    {
-      "id": "C3",
-      "text": "F1/H2 confirmed at HEAD: the offline check sees 7 blocked samples and 4 buildings; the game sees 13 samples and 5 buildings - blackrose-house-1 is invisible to the check entirely."
-    }
-  ],
-  "files_touched": [
-    "orchestration/status/critic-road-join.json",
-    "tools/world/critic-road-join-ingame.mjs",
-    "tools/world/critic-road-join-stale.mjs",
-    "reports/critic-road-join/ingame.json",
-    "reports/critic-road-join/stale.json",
-    "reports/critic-road-join/offline-recheck.json"
-  ],
-  "files_claimed": [
-    "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md",
-    "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
-    "orchestration/status/critic-road-join.json",
-    "tools/world/critic-road-join-ingame.mjs",
-    "tools/world/critic-road-join-stale.mjs",
-    "tools/world/critic-road-join-walk.mjs",
-    "reports/critic-road-join/",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
-  ],
-  "redundant_with": ["W1-CROSSING"],
-  "contention": "gate exit 0 at start; exit 3 at the in-game run and I PROCEEDED, one browser, never concurrent, per rule 21. No frame-time figure published."
+ "task_id": "critic-road-join",
+ "role": "critic",
+ "piece": "W1-ROAD-JOIN",
+ "status": "in_progress",
+ "started_at": "2026-08-08T03:40:00Z",
+ "next_step": "awaiting soulrest 4-arm walk (120k frames x4, one browser); then verdict json + blog + commit",
+ "headline": "THE JOIN IS STALE ON THE SHIPPED TREE. The builder's 0/10 was TRUE at 322f708 and is FALSE at HEAD: 3 of 10 legs and 5 named-route offences, including THE CROSSING at 5,610 m in Blackrose. Cause is not data - it is planSettlement() itself (per-axis shrink + MIN_ENTERABLE_SPAN_M, banked 03:39:45 in 0dc0703). 54 exteriors grew, +1,846 m2. Handoff H4 named the DATA staleness door; this is the GENERATOR door and it was already open 24 minutes after the join was cut.",
+ "findings": [
+  {
+   "id": "C1",
+   "text": "In-game measurement (tools/world/critic-road-join-ingame.mjs) reads plans off the RUNNING engine and asks province.buildingAt(): 3 of 10 legs inside a game footprint, 13 samples; crossing 11, long_way 10. Slab clearance against real settlementSolids() wall boxes with PLAYER_RADIUS_M=0.32: 16 samples with less than body radius, worst -0.132 m."
+  },
+  {
+   "id": "C2",
+   "text": "Staleness bisected with roads.json held FIXED and planSettlement swapped by revision (tools/world/critic-road-join-stale.mjs): 322f708 0/10, 345dcca 0/10, 0dc0703 3/10, HEAD 3/10. The builder's number was honest when taken."
+  },
+  {
+   "id": "C3",
+   "text": "F1/H2 confirmed at HEAD: the offline check sees 7 blocked samples and 4 buildings; the game sees 13 samples and 5 buildings - blackrose-house-1 is invisible to the check entirely."
+  },
+  {
+   "id": "C4",
+   "text": "S28(c) - the ruling requires a re-cut leg be re-verified against the full water census, the slope histogram and reachability. The builder re-timed only. I ran the rest at HEAD: road-water-audit 0 leg/phase offences over 4 phases x 10 legs; scale-audit S9-NO-FENCES 13/13 regions and 8/8 settlements; M36-ROAD-RELIEF 31.8%; M4 worst leg 2.26%; crossing 57.59 min. All PASS - so (c) holds in fact but was never checked by the piece."
+  },
+  {
+   "id": "C5",
+   "text": "The ridge argument: the CONCLUSION is right and the EVIDENCE does not support it. critic-road-join-ridge.mjs finds the joined and pre-join roads 0.21 m apart AT THE STALL (worst 2.03 m in the 120 m window), which settles it. But the builder's \"over the same metres\" is false: 63.7% of stormhold-helstrom moved >1 m (worst 17.91) and 95% of helstrom-blackrose (worst 67.43). And the stated CAUSE is an artefact - bare-field ground at the stall is 26.57 deg, not 57.5/61.09. W1-CROSSING found the same independently: 918 m of that leg is bridge and the body was 15.3 m BELOW the road."
+  },
+  {
+   "id": "C6",
+   "text": "Two slope regressions the join caused and nobody recorded: blackrose-lilmoth centreline 39.66 -> 40.41 deg, putting 1 m of trunk road over the 40 deg walkable limit; helstrom-blackrose worst skirt at +/-5.6 m 30.27 -> 39.72 deg and centreline 29.04 -> 37.22 deg. Both are what S28(c)'s slope histogram exists to surface."
+  },
+  {
+   "id": "C7",
+   "text": "My own consumption, 6 arms: R-REMEDY rebuild at HEAD -> 0 of 10 (the mechanism is sound, the artefact is stale); R-DETERM byte-identical; TEARDOWN --no-join 10 of 10 / 267 samples with a distinct hash (I watched my own control go red, rule 6); P-BLACKROSE bites 19 samples from 11 and follows to 0 with the road moving 5.5 m in a town the builder never perturbed; NULL-NOREAD byte-identical roads.json; NULL-REVERSED the x6 grow SURVIVED the shrink pass at HEAD, so the per-axis shrink is more permissive than the one the builder measured against."
+  }
+ ],
+ "files_touched": [
+  "orchestration/status/critic-road-join.json",
+  "tools/world/critic-road-join-ingame.mjs",
+  "tools/world/critic-road-join-stale.mjs",
+  "reports/critic-road-join/ingame.json",
+  "reports/critic-road-join/stale.json",
+  "reports/critic-road-join/offline-recheck.json",
+  "tools/world/critic-road-join-consume.mjs",
+  "tools/world/critic-road-join-ridge.mjs",
+  "tools/world/critic-road-join-shot.mjs",
+  "reports/critic-road-join/consume.json",
+  "reports/critic-road-join/ridge.json",
+  "reports/critic-road-join/road-water-after.json",
+  "reports/critic-road-join/scale-audit.json",
+  "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md",
+  "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png"
+ ],
+ "files_claimed": [
+  "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md",
+  "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
+  "orchestration/status/critic-road-join.json",
+  "tools/world/critic-road-join-ingame.mjs",
+  "tools/world/critic-road-join-stale.mjs",
+  "tools/world/critic-road-join-walk.mjs",
+  "reports/critic-road-join/",
+  "docs/shots/",
+  "reports/blog-feed.jsonl"
+ ],
+ "redundant_with": [
+  "W1-CROSSING"
+ ],
+ "contention": "gate exit 0 at start and for the in-game probe run; exit 3 at 03:55 when I started the soulrest walk and I PROCEEDED, ONE browser, never concurrent, per rule 21; exit 3 again at 04:15. No frame-time figure is published anywhere in this verdict - every number is a count, a distance, a hash or an angle."
 }

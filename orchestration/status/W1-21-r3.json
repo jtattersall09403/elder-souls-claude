@@ -4,9 +4,19 @@
   "piece": "W1-21 round 3 \u2014 controls and interface",
   "state": "in_progress",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "offline: add sample counts + EMPTY grading to all 15 checks; markers derived; withdraw NO_PROSE.map; FD6 dE; mutator accessor hole",
+  "next_step": "markers derived in game/src/ui/system.js; then browser runs (contention permitting)",
   "files_touched": [
-    "orchestration/status/W1-21-r3.json"
+    "orchestration/status/W1-21-r3.json",
+    "tools/lib/graded.mjs",
+    "tools/lib/colour.mjs",
+    "tools/metrics/ui-metrics.mjs",
+    "tools/analysis/ui-forbidden.mjs",
+    "tools/analysis/ui-layer.mjs",
+    "tools/analysis/marker-diff.mjs",
+    "tools/analysis/marker-scan.mjs",
+    "tools/analysis/ui-census.mjs",
+    "game/src/sim/discovery.js",
+    "tools/ui/w1-21-r3-mutator-test.mjs"
   ],
   "files_claimed": [
     "tools/analysis/ui-forbidden.mjs",
@@ -25,7 +35,9 @@
     "tools/ui/w1-21-r3-markers.mjs",
     "reports/runs/W1-21-R3/",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/",
+    "tools/lib/graded.mjs",
+    "tools/lib/colour.mjs"
   ],
   "notes": [
     "Round 3 brief: (1) every graded check must carry a sample count and cannot PASS on zero samples; publish per-screen/per-check sample table. (2) markers:0 literal -> derived. (3) FD8 fires on predecessor's own `map` prose-free declaration: make true or withdraw. (4) FD6 threshold in luma 0-255 but item specifies dE: convert, re-measure, say fail vs hard fail. (5) mutator classifier blind to state-writing accessors (getter calling restore()).",
@@ -36,5 +48,29 @@
   "base_commit": "37bbb6f",
   "redundant_with": [
     "W1-21-r2"
+  ],
+  "measured": [
+    {
+      "what": "FD6 converted from a 0-255 luma overshoot to the item's own unit (\u0394E2000, CIELAB D65), and the instrument shown able to go red",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/metrics/ui-metrics.mjs --self-test",
+      "result": "CIEDE2000 matches 10 published Sharma/Wu/Dalal pairs to 4.1e-5. On a synthetic UI edge over mid-grey: correct composite \u0394E 0.16 (luma 0); dark halo (non-premultiplied) \u0394E 33.1 (luma 96); light halo \u0394E 7.7 (luma 17). Zero-sample FD6 reports EMPTY, not PASS.",
+      "load": "node only, no browser"
+    },
+    {
+      "what": "AMENDMENT-W1-MAP-01 \u00a73b \u2014 mutatorReport() can now see a state-writing ACCESSOR (round-2 verdict D4)",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/ui/w1-21-r3-mutator-test.mjs",
+      "result": "6/6. The round-2 critic's own getter, read as a plain property, wipes revealed 251 -> 0 / places 1 -> 0, and is now reported. 6 writing accessor shapes installed, 6 reported. DELETE-THE-FIX control: the transcribed round-2 classifier reports 0 of 6 \u2014 the arms differ. CONTROL: an honest reader is NOT reported and wrote nothing. mutatorReport() carries membersExamined=25 of 25; 0 accessors on the shipped prototype classify as writers.",
+      "artifact": "reports/runs/W1-21-R3/mutator-test.json",
+      "load": "node only, no browser"
+    },
+    {
+      "what": "K1 at HEAD (the brief's named hazard)",
+      "commit": "37bbb6f",
+      "tool": "node tools/analysis/marker-scan.mjs",
+      "result": "K1 FAIL \u2014 10 F6 hits, all in game/data/world/readables/site-marks.json, a file W1-READABLES-r2 landed. NOT MINE; reported and continued per the brief. 370,670 JSON nodes over 567 files now recorded as K1's sample count. --self-test still passes.",
+      "load": "node only, no browser"
+    }
   ]
 }

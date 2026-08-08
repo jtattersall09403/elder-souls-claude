@@ -41,6 +41,9 @@ USAGE
                                     [--in <dir>] [--out <dir>] [--json] [--self-test]
 
   --in         re-read a capture this tool wrote instead of launching a browser
+  --teardown   RULES 6. Take the subject away — capture nothing — and confirm that every check
+               reports EMPTY rather than PASS. No browser. A grader that cannot be seen refusing
+               to grade is not evidence that it would.
   --self-test  prove FD6's ΔE instrument can go red, with no browser: the CIEDE2000
                implementation against Sharma et al.'s published pairs, then a synthetic UI edge
                composited correctly (must read ~0 ΔE) and the same edge with a non-premultiplied
@@ -358,7 +361,12 @@ const out = {
   captures: [], checks: [],
 };
 
-for (const [w, hpx] of SCALES) {
+// RULES 6 teardown: no captures at all, so every check below has an empty sample set. This is the
+// control arm for the whole of this round's item 1, and it is run in CI-cheap form (no browser) so
+// that there is never an excuse not to run it.
+const TEARDOWN = !!args.teardown;
+if (TEARDOWN) log('  TEARDOWN: capturing nothing on purpose — every check must report EMPTY');
+for (const [w, hpx] of (TEARDOWN ? [] : SCALES)) {
   for (const dpr of DPRS) {
     const h = await launchGame({ width: w, height: hpx, timeout: 240000 });
     try {

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `51fc102`: 661 tools, 153 reference
+so it cannot drift. Generated at `8910db5`: 664 tools, 153 reference
 items, 53 pieces in flight.
 
 Its purpose is to stop 53+ concurrent agents each paying separately to discover the
@@ -256,7 +256,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 216
+### `tools/harness/` — 217
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -447,6 +447,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-16-r3-chart.mjs` — THE PICTURE FOR W1-16 ROUND 3: the sword in your hand used to weigh nothing.
 - `tools/harness/w1-16-r3-live.mjs` — W1-16 ROUND 3, the stepping half.
 - `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
+- `tools/harness/w1-16-r4-live.mjs` — W1-16 ROUND 4, the stepping half.
 - `tools/harness/w1-16-r4-offline.mjs` — W1-16 ROUND 4, the half that needs no browser.
 - `tools/harness/w1-21-r2-deletefix.mjs` — DELETE-THE-FIX for W1-21 round 2's AR-2 change (RULES 6, and RULES 17 for the index check).
 - `tools/harness/w1-21-r2-forge.mjs` — THE FALSIFIER FOR THE W1-21 AR-2 FIX: can a save still put a square on the map?
@@ -648,12 +649,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 6
+### `tools/ui/` — 7
 
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 - `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
+- `tools/ui/w1-21-r3-browser.mjs` — W1-21 round 3's ONE browser: the derived `markers` field, CONSUMPTION, and the six screens.
 - `tools/ui/w1-21-r3-empty.mjs` — RULES 6, FOR THE INSTRUMENT: run every graded check with its subject removed and confirm that none of them goes green.
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 
@@ -685,7 +687,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 116
+### `tools/world/` — 117
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -749,6 +751,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing-consumption.mjs` — **no header comment**
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
+- `tools/world/crossing-ridge-chart.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
@@ -805,7 +808,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **151 tools have no header comment**, so nobody can tell what they do without
+> **152 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

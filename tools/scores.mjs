@@ -70,6 +70,16 @@ const DOMAIN = {
   'w1-prose': 'Dialogue',
   'w1-tools': 'Engine & harness',
   'w1-factions': 'Quests',
+  // The discovery map (ARBITRATION S35, the owner's overrule of S30). Same domain as `w1-21`,
+  // which owns the rest of the interface — the map is a screen, and its verdicts belong on the
+  // same line as the journal's and the HUD's. Added by critic-w1-map-r2 because `publish.mjs`
+  // fails closed on an unmapped verdict and W1-MAP-r2 was the first verdict to carry a
+  // `piece_id` in this series.
+  'w1-map': 'Controls & interface',
+  // Not mine, and pre-existing: `W1-READABLES-r2` (committed at 402d01a) was already failing
+  // `publish.mjs` before this round started, so the shared gate was red for everyone. Its
+  // subsystem paths are `quests.*` and `lore.book.*`; the quest reveals are what it grades.
+  'w1-readables': 'Quests',
 };
 
 // Validated categorical order (dark steps). Used only by the overlay view.

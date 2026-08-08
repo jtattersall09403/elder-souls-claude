@@ -39,6 +39,7 @@ const USAGE = `crossing-body.mjs — a body walks the route, end to end.
   --chunk <n>         frames per chunk (default 20000)
   --stall-frames <n>  give up after this many frames of no route progress (default 12000)
   --no-town-solids    take the settlement walls out (the control arm)
+  --survive           pin the body's HP, and report the damage the province did to it
   --shot <png>        screenshot at --shot-at-m, or at the end if not given
   --shot-at-m <m>     take the shot the first chunk past this many metres`;
 
@@ -51,6 +52,7 @@ const BUDGET_MS = Number(args['budget-min'] || 40) * 60_000;
 const CHUNK = Number(args.chunk || 20000);
 const STALL = Number(args['stall-frames'] || 12000);
 const NO_SOLIDS = !!args['no-town-solids'];
+const SURVIVE = !!args['survive'];
 const SHOT = args.shot ? path.resolve(String(args.shot)) : null;
 const SHOT_AT = args['shot-at-m'] === undefined ? null : Number(args['shot-at-m']);
 ensureDir(path.dirname(OUT));
@@ -58,7 +60,7 @@ ensureDir(path.dirname(OUT));
 const doc = {
   schema: 'elder-souls/crossing-body@1',
   measured_at: new Date().toISOString(), git: gitInfo(),
-  route: ROUTE, speed: SPEED, town_solids: !NO_SOLIDS,
+  route: ROUTE, speed: SPEED, town_solids: !NO_SOLIDS, hp_pinned: SURVIVE,
   budget_min: BUDGET_MS / 60000, chunk_frames: CHUNK, stall_frames: STALL,
   state: 'starting', chunks: [], result: null, shot: null,
 };
@@ -73,6 +75,37 @@ try {
   await handle.h('loadState', 'default');
   await handle.h('setTide', 'LOW');
   if (NO_SOLIDS) log(`town solids OFF: ${JSON.stringify(await handle.h('__w1_04_townSolids', false))}`);
+  // ---- --survive: THE GATE ASKS WHETHER THE GROUND IS THERE, NOT WHETHER YOU LIVE --------------
+  // §P.4 is "you can walk between regions and the ground is there". The province's regional
+  // hazards are a different, working system — `ridge-exposure` in The Salt Hills, `rockfall` and
+  // `the-fall` on the Valus Ridge, `pair-lightning` and `hist-sap-fume` in The Stone Forest — and
+  // a scripted body that never shelters, never drinks and never heals is killed by them: measured,
+  // at 1,276.8 m of THE CROSSING, hp 0 at (2391.1, 1680.9), then a hearth respawn 3,484.9 m away
+  // that the old distance counter added to `path_m` as if it were walking.
+  //
+  // So the HP is pinned, ON PURPOSE and DECLARED IN THE ARTIFACT, and the damage that would have
+  // been taken is counted and reported instead of being thrown away. A crossing walked this way
+  // answers "does the road carry a body from Stormhold to Lilmoth"; it does not claim the province
+  // is survivable, and `hp_pinned: true` is in the file so nobody can read it as if it did.
+  if (SURVIVE) {
+    const armed = await handle.page.evaluate(() => {
+      const E = window.__ENGINE;
+      if (E.__hpPinned) return { armed: false, reason: 'already armed' };
+      const orig = E._afterStep.bind(E);
+      E.__hpAbsorbed = 0; E.__hpZeroFrames = 0; E.__hpPinned = true;
+      E._afterStep = function () {
+        orig();
+        const p = this.sim.player;
+        if (p.hp < p.hpMax) { E.__hpAbsorbed += p.hpMax - p.hp; if (p.hp <= 0) E.__hpZeroFrames++; p.hp = p.hpMax; }
+        const c = this.combat && this.combat.player;
+        if (c && c.hp !== undefined && c.hp < p.hpMax) c.hp = p.hpMax;
+      };
+      return { armed: true, hp_max: E.sim.player.hpMax };
+    });
+    if (!armed.armed) throw new Error(`--survive did not arm: ${armed.reason}`);
+    log(`HP pinned at ${armed.hp_max}`);
+    doc.hp_pin = armed;
+  }
   doc.world = await handle.h('getWorldStats');
   doc.declared_route = (await handle.h('getRoutes')).named_routes[ROUTE];
   doc.state = 'walking';
@@ -127,6 +160,13 @@ try {
     flush();
   }
   doc.player_end = await handle.h('getPlayerStats');
+  if (SURVIVE) {
+    doc.province_damage = await handle.page.evaluate(() => ({
+      hp_absorbed: +window.__ENGINE.__hpAbsorbed.toFixed(1),
+      frames_the_body_would_have_been_dead: window.__ENGINE.__hpZeroFrames,
+    }));
+    log(`the province did ${doc.province_damage.hp_absorbed} damage over the walk`);
+  }
 } catch (e) {
   doc.state = 'threw'; doc.error = String(e && e.stack || e); flush(); throw e;
 } finally {
@@ -143,5 +183,7 @@ console.log(`  in-world time ${r.minutes} min  (${r.seconds} s at 60 Hz)`);
 console.log(`  off the road  worst ${r.worst_off_path_m} m, ${r.off_path_frames} frames off, ${r.regains} regains`);
 console.log(`  moved not walked  ${r.teleports} discontinuities, ${r.teleported_m} m — EXCLUDED from the distance above`);
 if (r.teleport_log && r.teleport_log.length) console.log(`  first: ${JSON.stringify(r.teleport_log[0])}`);
+if (doc.province_damage) console.log(`  HP PINNED — the province did ${doc.province_damage.hp_absorbed} damage, `
+  + `${doc.province_damage.frames_the_body_would_have_been_dead} frames at or below zero`);
 console.log(`  ${OUT}`);
 process.exit(doc.state === 'arrived' ? 0 : 1);

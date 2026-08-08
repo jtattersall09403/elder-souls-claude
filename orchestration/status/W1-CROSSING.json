@@ -4,7 +4,7 @@
   "state": "in_progress",
   "started_at": "2026-08-08T00:00:00Z",
   "commit_at_start": "345dcca",
-  "headline": "The crossing is not blocked by a 57.5 deg road. The worst ROAD gradient in the province is 24.27 deg, under the 40 deg walkable limit, and always was. What stopped the body is that stormhold-helstrom carries 918 m of BRIDGE, including a 471 m viaduct standing 50.6 m above the Valus Ridge \u2014 the body had fallen off it. Two fixes in flight: pure-pursuit-against-the-path steering (the H1 / drowning candidate) and a parapet that is asked of the structure rather than of a segment.",
+  "headline": "The crossing was never blocked by a 57.5 deg road \u2014 the worst road gradient in the province is 24.27 deg against a 40 deg limit. The body had fallen off a 471 m viaduct standing 50.6 m above the Valus Ridge, because walkRoute steered at the next waypoint instead of at the road. Fixed by pure-pursuit-against-the-path; the body now holds the deck to within 1.22 m. What stops it now is hazard damage, which is a different system and it is working.",
   "next_step": "browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consumption, shots, blog",
   "files_touched": [
     "orchestration/status/W1-CROSSING.json",
@@ -40,6 +40,44 @@
     "F2 WHAT IS ACTUALLY THERE. stormhold-helstrom, the crossing's first leg, is 2,921 m long and 918 m of it is BRIDGE: eight declared deck_spans, of which one is 471 m long and stands 50.6 m above the mountainside and another is 257 m at 41.2 m. blackrose-lilmoth carries a further 456 m. The body at (2153.7, 1197.8) was 4.98 m from the road and 15.3 m BELOW it. It had not met a slope. It had fallen off a bridge.",
     "F3 THE VIADUCTS ARE NOT NEW AND NOT THE JOIN'S. Measured on reports/w1-road-join/roads-BEFORE-join.json: the same leg had a 50.3 m max fill before the join and 50.6 m after.",
     "F4 THE DROWNING LEG'S GROUND IS INNOCENT. soulrest-blackrose \u2014 the leg on which a body ran 6,459 m of an 1,841 m route and finished in 18 m of sea \u2014 scores worst regain 11.5 deg, zero falls, zero slope refusals, zero spans. Nothing about that leg's terrain can strand a body. The wander is the WALKER'S STEERING, and that is now fixed.",
-    "F5 THE PARAPET LEAKS AND IT LEAKS AT THE ENDS. 286 of 3,632 sideways pushes walked off a deck; the leaks cluster on the terminal segments of every span chain and on the earth approach within 3.5 m of one, because 'off the end' was inferred from a projection parameter on a single segment."
-  ]
+    "F5 THE PARAPET LEAKS AND IT LEAKS AT THE ENDS. 286 of 3,632 sideways pushes walked off a deck; the leaks cluster on the terminal segments of every span chain and on the earth approach within 3.5 m of one, because 'off the end' was inferred from a projection parameter on a single segment.",
+    "F6 THE BODY DIED. With the steering fixed the body walks the Valus Ridge viaduct cleanly \u2014 worst deviation from the centreline 1.22 m over the first 999 m \u2014 and then hp hits 0 at 1,276.8 m, at (2391.1, 1680.9) in The Stone Forest, and it respawns at a hearth 3,484.9 m away. The killer is the province's REGIONAL HAZARD system working correctly: ridge-exposure (ATTRITION, The Salt Hills), rockfall and the-fall (Valus Ridge), pair-lightning and hist-sap-fume (The Stone Forest). A scripted body never shelters, never drinks and never heals.",
+    "F7 EVERY path_m THIS PROJECT HAS PUBLISHED MAY CONTAIN TELEPORTS. walkRoute accumulated `dist += hypot(step)` with no upper bound, so the 3,484.9 m respawn was added to the walked distance in a single frame: the run reported 4,812 m of THE CROSSING having walked 1,277 m of it. A body at 2 m/s moves 0.033 m per frame; anything over 1 m is the world moving the body. walkRoute and walkPath now record those separately as `teleports` / `teleported_m` and EXCLUDE them from path_m.",
+    "F8 THE JOIN HAD ALREADY GONE STALE, exactly as W1-ROAD-JOIN's handoff H4 warned it would. `node tools/world/road-through-building.mjs` on the shipped tree reported 2 of 10 legs blocked and 4 offences on the named routes \u2014 three of them ON THE CROSSING at 5,610-5,624 m (blackrose-house-0, blackrose-condemned-row, blackrose-old-gallows). Nothing touched roads.json: what moved was `game/src/render/exterior.js`, +227/-33 lines since the join commit 322f708, which is where planSettlement() lives. The building footprints changed under a build-time join and nobody re-ran the generator. Re-running `node tools/world/build-roads.mjs` clears it: 0 of 10, 0 offences, worst leg error against RI-WLD01's declared length 2.26% (S28 bar 5%), THE CROSSING 6,911.4 -> 6,903.6 m against a declared 6,909. roads.json is regenerated and shipped.",
+    "F9 A CROSSING WALKED AGAINST A STALE roads.json IS NOT THE NUMBER TO PUBLISH. I killed a walk that was 3,333 m in and running clean (2.000 m/s, 1.22 m off-path, 0 teleports) because it was walking the pre-rebuild road, and restarted against what I ship. The partial is kept at reports/w1-crossing/crossing-body-STALE-JOIN-partial.json."
+  ],
+  "contention": "node tools/contention.mjs --gate returned GO at the first crossing walk and exit 3 (load 5.9-6.7 per core against a 4.0 ceiling, 3-7 browser instances) for every run after it. I PROCEEDED, one browser at a time, never concurrent, because a body walking the province is the acceptance and cannot be taken offline \u2014 the same call the road-join round made and declared. Every number published here is a distance, a frame count or a boolean, all load-independent. I publish NO frame-time or wall-clock performance figure.",
+  "numbers_before_after": {
+    "worst_road_gradient_deg": {
+      "before": 24.27,
+      "after": 24.27,
+      "limit": 40,
+      "note": "unchanged and always compliant \u2014 see F1"
+    },
+    "per_leg_worst_deck_grade_deg_after": {
+      "stormhold-thorn": 21.8,
+      "stormhold-helstrom": 24.3,
+      "helstrom-archon": 6.1,
+      "helstrom-blackrose": 7.1,
+      "helstrom-gideon": 24.2,
+      "gideon-soulrest": 4.5,
+      "soulrest-blackrose": 6.8,
+      "blackrose-lilmoth": 1.9,
+      "archon-thorn": 24.2,
+      "lilmoth-archon": 3.6
+    },
+    "slope_gate_refusals_on_the_centreline": {
+      "before": 0,
+      "after": 0,
+      "limit": 0
+    },
+    "parapet_leaks": {
+      "before": "286 of 3632",
+      "after": "93 of 3500"
+    },
+    "body_worst_deviation_from_the_road_m": {
+      "before": "fell off \u2014 4.98 m lateral and 15.3 m below the deck",
+      "after": 1.22
+    }
+  }
 }

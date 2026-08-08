@@ -196,9 +196,24 @@ try {
     idx.length > 0 && idxDecorated.length === 0, `${idx.length} index rows, ${idxDecorated.length} decorated`);
   push('JU7', 'search returns chronological results (J7)',
     !!search && search.chronological, `query "${search && search.query}" -> ${search && search.count} results, chronological ${search && search.chronological}`);
-  push('JU8', 'no map: unreachable AND non-existent (Q7)',
-    nav.indexOf('map') < 0 && menus.indexOf('map') < 0 && mapThrew && ui.map_exists === false,
-    `navigable=[${nav.join(',')}] openMenu names=[${menus.join(',')}] openMenu('map') threw=${mapThrew}`);
+  // JU8 used to read "no map: unreachable AND non-existent (Q7)" and require `mapThrew` and
+  // `ui.map_exists === false`. It implemented **S30**, which the project owner personally
+  // overruled — *"Map is 'world', it's 'outside combat' and therefore Morrowind wins, not Souls.
+  // Morrowind has a map."* — and which **S35** superseded. Both of the things it demanded are
+  // things S35 now requires to be FALSE, so the check could not pass on any compliant build: a
+  // dead gate asserting a rule that no longer exists. Named by the S38 arbiter at these exact
+  // lines; see `corpus/00-doctrine/ARBITRATION.md` S35 and S38.
+  //
+  // What replaces it is the *journal's* half of S35, which is the part this file is entitled to
+  // judge: the journal must not reach the map. A "show on map" link, a coordinate, or any
+  // navigation from an entry to a place on the map is an authoring channel from a quest to the
+  // map, and S35 forbids exactly that. Whether the map itself derives its squares soundly is
+  // S38's instrument's business (`tools/map/arbiter-map-s38.mjs`), not this one's.
+  const journalToMap = ui.elements.filter((e) => /show[_ -]?on[_ -]?map|locate|find[_ -]?on/i.test(
+    `${e.kind || ''} ${e.text || ''} ${e.action || ''}`));
+  push('JU8', 'the journal offers no route to the map (S35 via S38; replaces the S30-era "no map" check)',
+    journalToMap.length === 0,
+    `${journalToMap.length} journal element(s) linking to the map; map exists=${ui.map_exists} (expected — S35), openMenu('map') threw=${mapThrew} (expected false)`);
   push('JU9', 'entries verbatim and untruncated (J2)', altered.length === 0 && truncated.length === 0,
     `${altered.length} altered, ${truncated.length} truncated`);
   push('F5', 'no coordinate-shaped substring in the RENDERED journal (RI-DLG05 F5 / K5)',

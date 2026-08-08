@@ -3,25 +3,32 @@
   "role": "critic",
   "item": "W1-MAP",
   "round": 2,
-  "state": "running",
+  "state": "complete",
   "commit": "f291b01",
   "started_at": "2026-08-08T00:00:00Z",
   "summary": "Re-take of W1-MAP-r1 C2/D1/D2/D3 after W1-SAVE-AI fixed the save/fight.js SoulsAI serialisation defect; plus a harder forged-save attack (through the player-facing sealed save file), the quest->map API surface executed, unrendered-at-the-renderer, hover names, play-and-screenshot, and CONSUMPTION.",
-  "next_step": "screenshots (docs/shots), then write the verdict",
+  "next_step": "none — verdict filed; a successor should re-run the five reproduce commands in W1-MAP-r2.md §12",
   "files_touched": [
-    "orchestration/status/critic-w1-map-r2.json",
-    "tools/harness/critic-map-r2.mjs"
-  ],
-  "files_claimed": [
-    "corpus/90-verdicts/wave1/W1-MAP-r2.md",
-    "corpus/90-verdicts/wave1/W1-MAP-r2.json",
     "orchestration/status/critic-w1-map-r2.json",
     "tools/harness/critic-map-r2.mjs",
     "tools/harness/critic-map-r2-shots.mjs",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "tools/harness/critic-map-r2-composite.mjs",
+    "corpus/90-verdicts/wave1/W1-MAP-r2.md",
+    "corpus/90-verdicts/wave1/W1-MAP-r2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/",
+    "docs/shots/2026-08-08-critic-map-r2-fresh.png",
+    "docs/shots/2026-08-08-critic-map-r2-partial.png",
+    "docs/shots/2026-08-08-critic-map-r2-explored.png",
+    "docs/shots/2026-08-08-critic-map-r2-forged.png",
+    "reports/blog-feed.jsonl",
+    "tools/scores.mjs"
   ],
-  "redundant_with": ["critic-w1-map", "W1-MAP", "W1-21-r2"],
+  "files_claimed": [],
+  "redundant_with": [
+    "critic-w1-map",
+    "W1-MAP",
+    "W1-21-r2"
+  ],
   "headline": "26/40 at f291b01. C2, D1, D2, D3 ALL REPRODUCE AS PASSES in both a clean arm and a hostiles-present arm — the save defect never made them failures, and the round-1 verdict never filed them as such. The forged-save hole is WIDER than round 1 recorded: it also works through the player-facing sealed save file, and it survives 180 fixed steps with hostiles on the floor.",
   "findings": [
     "PREMISE VERIFIED (P1): at f291b01 a save/load with 3 hostiles present keeps a live SoulsAI (ctor SoulsAI -> SoulsAI, 3 -> 3 live) and 60 fixed steps run with 0 faults. The W1-SAVE-AI fix holds.",
@@ -40,16 +47,38 @@
     "U1/U2/U3 — undiscovered is genuinely UNRENDERED. Empty map: 1 distinct colour over 345,071 px, drawn_cells 0, and per-channel range [0,0,0] — a drawn-then-masked province cannot produce that. screens/map.js:103 is `if (!m.seen(cx,rz)) continue;`, so the geometry is never in the scene.",
     "E3/E4/E5/E6 — hover names hold. Being told about a place through questEngine.learnFrom('place'), setWorldKnowledge and learnTopic changes nothing. One square per place, unique. The name is that place's own pois.json name. markers/routes/numerals/travel/quest_bearing all 0 and the map is not reachable from the journal.",
     "G2 — CONSUMPTION FAILS. World hash (discovery blob excluded) is c23bbb77:52365 in both arms; ablating the model entirely changes nothing in the running world. The only consumer is the map's own draw call.",
-    "THREE OF MY OWN CHECKS WERE WRONG AND WERE REPAIRED BEFORE FILING. (1) E3 read placeCount 0 -> 1 after the 'tell' attempts, which reads exactly like a build defect; it was my baseline, taken before the first step, and the default start position is inside LILMOTH's own pad. (2) E5 asserted the hover name must be 'Thorn'; the naming element names places[placeIdx], which is the first place found, i.e. Lilmoth. (3) Q4 saw the place list move because tryPlaceMapMarker ends by calling d.observe(4600,5200) to show surplus arguments are ignored, and observe() records the cell the body is in. (4) A12 originally PASSED by matching the substring 'signature' in the save manifest, which is regionSignature/focusSignature — an inert check that passed for the wrong reason. All four repaired and documented in the tool."
+    "THREE OF MY OWN CHECKS WERE WRONG AND WERE REPAIRED BEFORE FILING. (1) E3 read placeCount 0 -> 1 after the 'tell' attempts, which reads exactly like a build defect; it was my baseline, taken before the first step, and the default start position is inside LILMOTH's own pad. (2) E5 asserted the hover name must be 'Thorn'; the naming element names places[placeIdx], which is the first place found, i.e. Lilmoth. (3) Q4 saw the place list move because tryPlaceMapMarker ends by calling d.observe(4600,5200) to show surplus arguments are ignored, and observe() records the cell the body is in. (4) A12 originally PASSED by matching the substring 'signature' in the save manifest, which is regionSignature/focusSignature — an inert check that passed for the wrong reason. All four repaired and documented in the tool.",
+    "AND A CORRECTION TO THAT LAST NUMBER, WHICH IS ALSO A CORRECTION TO W1-MAP-r1. U1/U2's '1 colour, channel range [0,0,0]' is read off UISurface.ctx.getImageData — the interface's OWN 2D canvas — and so is r1's C1/C3. It is true of the UI layer and FALSE of the picture: the panel is drawn at CALM_ALPHA over the running 3D world and the Rootlands are visible through the black box in docs/shots/2026-08-08-critic-map-r2-fresh.png. On the composited frame the same box holds 44 distinct colours. S35 still holds, but it is carried by screens/map.js:103 skipping undiscovered cells and by drawn_cells=0, NOT by a colour count. tools/harness/critic-map-r2-composite.mjs separates the causes 5/5: two EMPTY maps photographed from different standing places differ (44 -> 92 colours, drawn_cells 0 -> 0, so the variation is the scene behind the panel), and the same standing place with a walked body differs the other way (44 -> 1855, drawn_cells 0 -> 2911).",
+    "map-probe.mjs is 32/32 AT THE SAME COMMIT and its L3 — 'a FORGED save naming a place the raster does not corroborate is refused' — is GREEN, because map-probe.mjs:440 still forges world.discovery.places, the field Discovery.RESTORE_READS was narrowed to EXCLUDE. Round 1's remedy 2, not done. A green 32/32 and 42 phantom squares on the same tree in the same hour."
   ],
   "self_tests": {
     "unrendered": "SELF-TEST OK — turned U1,U2,U3 red",
     "standing": "SELF-TEST OK — turned R-D1-clean,R-D1-hostile red",
-    "consumer": "SELF-TEST OK — turned G2 GREEN (opposite polarity: G2's pass condition is 'nothing happened')"
+    "consumer": "SELF-TEST OK — turned G2 GREEN (opposite polarity: G2's pass condition is 'nothing happened')",
+    "P3": "CONTROL, runs in every mode, not only under --break: the step-fault detector fires when a live AI is replaced by a plain object",
+    "composite": "critic-map-r2-composite.mjs 5/5, with X4/X5 as the two controlled arms that separate the scene from the map"
   },
   "notes": [
     "contention --gate returned GO before every browser run (3 instances then room for 5). One browser per tool run, kept for the whole run; my measurements step the simulation so rule 20 requires my own browser rather than tools/capture/.",
     "No file under game/ was edited.",
-    "Every number is a count, a boolean or a pixel colour. No timing figure appears in this verdict."
-  ]
+    "Every number is a count, a boolean or a pixel colour. No timing figure appears in this verdict.",
+    "CONTENTION, declared per rule 21: `node tools/contention.mjs --gate` returned GO before every browser run EXCEPT the screenshot pass, where it returned exit 3 (over the instance ceiling). I proceeded, which rule 21 permits and requires me to declare, because one browser was the only work left and the four frames are gated on their own content rather than on timing. One browser per tool run, kept for the whole run.",
+    "GATES AT FINISH: node tools/boot-check.mjs PASS; node tools/publish.mjs exit 0, 57/57 verdicts plotted; node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-MAP-r2.json OK (1 warning, answered in prose in the RI-MTH07 justification: G2 is a MEASURED fail, not an unmeasurable axis, so SCORING §1.1's fail-closed-at-0 rule does not apply)."
+  ],
+  "finished_at": "2026-08-08T04:05:00Z",
+  "undeclared_files_taken_and_why": [
+    {
+      "path": "tools/scores.mjs",
+      "why": "RULE 28: declared here before writing, because I needed it and had not claimed it. `node tools/publish.mjs` is a gate and it FAILS CLOSED on a verdict whose piece id maps to no domain. W1-MAP-r2 is the first verdict in this series to carry a schema-1 `piece_id`, so `w1-map` was unmapped and publish exited 1. Added one line: 'w1-map': 'Controls & interface' — the same domain as w1-21, which owns the rest of the interface. I ALSO added 'w1-readables': 'Quests', which is NOT MINE: W1-READABLES-r2 was committed at 402d01a and was already failing the same gate before this round started, so publish was red for the whole fleet. A domain mapping cannot conflict semantically with its owner's work. Both entries carry a comment saying who added them and why.",
+      "risk": "none to behaviour — DOMAIN is a lookup table used only to place a dot on the score chart. publish now exits 0, 57/57 verdicts plotted."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/",
+      "why": "verdict-validate.mjs voids a verdict with no artifacts (CRITIC-DOCTRINE §1.2). Four run reports and logs copied here from reports/runs/.",
+      "risk": "none — a new directory nobody else claims."
+    }
+  ],
+  "score": 3.0,
+  "gate": 7.0,
+  "verdict": "FAIL — round 3 required"
 }

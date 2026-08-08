@@ -1447,8 +1447,43 @@ export class MagicSystem {
   stepFall(frame, groundY) {
     const b = this.w && this.w.combat ? this.w.combat.player : null;
     if (!b || this.levitating) return null;
-    const g = groundY === undefined ? 0 : groundY;
-    if (b.pos[1] <= g + 1e-6) {
+    // ==========================================================================================
+    // W1-14 ROUND 4 — THE GROUND IS NOT ZERO, AND UNTIL THIS LINE NO SPELL COULD BE CAST
+    // ANYWHERE IN THE PROVINCE.
+    //
+    // `combat-bridge.js` calls this every frame as `M.stepFall(frame, M.groundY || 0)`, and
+    // `M.groundY` is written in exactly one place — `beginLevitation` — so on a tree where
+    // nobody has levitated it is `undefined` and the ground plane of the entire world is **0**.
+    // Lilmoth's street is at y = 2.68. Stormhold's is at 141.12. So a body standing still in a
+    // town was permanently `> g`, `this.airborne` was permanently true, and
+    // `castDropReason` (line ~556) returns `'airborne'` for every spell but `slowfall`:
+    //
+    //     INPUT_DROPPED  button: cast  reason: airborne  spell: spark_dart
+    //
+    // Measured at `town-lilmoth`, standing, `grounded: true` on the combat body, focus 124/124,
+    // `spark_dart` attuned, catalyst in hand: zero `cast_start`, zero Focus spent, nothing. The
+    // same press in `arena_flat` casts. **Every magic measurement this piece has taken in four
+    // rounds was taken in an arena whose floor happens to be y = 0**, which is why four rounds
+    // of probes and three critics never saw it: the defect is invisible everywhere the ground is
+    // already zero, and that is every fixture in the tree.
+    //
+    // The fix is to ask the world where the floor is. `Engine.groundInActiveCell` is the same
+    // reader `DeathSystem` is already handed and already calls inside the armed step — a pure
+    // heightfield lookup, no allocation, no clock, no RNG — so it is safe here. The epsilon
+    // widens from 1e-6 to 1e-3 because a heightfield sample and the traversal system's own
+    // placement agree to millimetres and not to microns, and a body one micron above the marsh
+    // is standing on it.
+    //
+    // `sim/traversal.js` owns falling in the province and does it properly (gravity, apex,
+    // landing, fall damage). This second gravity remains because a levitation that ends over a
+    // drop has to come down and `stepLevitation` is the thing that put the body up there. With
+    // the real ground under it, it now returns on the first line for a body that is standing —
+    // which is what it should always have done.
+    // ==========================================================================================
+    const world = !this._groundPlaneBlind && this.w && this.w.engine
+      && typeof this.w.engine.groundInActiveCell === 'function' ? this.w.engine : null;
+    const g = world ? world.groundInActiveCell(b.pos[0], b.pos[2]) : (groundY === undefined ? 0 : groundY);
+    if (b.pos[1] <= g + 1e-3) {
       if (this.airborne && this.fall.velMps > 0) this._land(frame, g);
       this.fall.velMps = 0;
       this.airborne = false;

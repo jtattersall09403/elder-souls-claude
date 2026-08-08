@@ -23,6 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, log, REPO_ROOT, writeJson } from '../lib/cli.mjs';
+import { grader, line, sampleTable } from '../lib/graded.mjs';
 
 const USAGE = `
 marker-scan.mjs — RI-UIX02 §B/§D. The data-layer S8 detector.
@@ -140,8 +141,15 @@ function inStage(pathParts) {
 export function scanDoc(doc, rel, opts = {}) {
   const hits = [];
   const placement = isPlacement(rel);
+  // W1-21 round 3. K1'S SAMPLE COUNT. The round-2 verdict tabulated K1 as "559 files — printed,
+  // not graded — PASS on zero samples: 0 files ⇒ 0 hits ⇒ PASS". A file count is also the wrong
+  // unit: a run over 559 files that all parsed to `{}` scans no keys and finds no markers for the
+  // same reason a run over 0 files does. So the walker counts the KEYS it actually tested, and
+  // `hits.scanned` rides back with the hits on the same return value.
+  let scanned = 0;
   const walk = (node, parts) => {
     if (node === null || node === undefined) return;
+    scanned++;
     if (typeof node === 'string') {
       // F5 is a rule about the JOURNAL and about dialogue — "the journal is prose (RI-DLG05);
       // 'go to (2752, 425)' is a marker in a sentence". A `note` field in a camera fixture
@@ -197,6 +205,7 @@ export function scanDoc(doc, rel, opts = {}) {
     }
   };
   walk(doc, []);
+  hits.scanned = scanned;
   return hits;
 }
 
@@ -289,21 +298,30 @@ const exceptionSet = new Map(exceptions.declared.map((d) => [`${d.file}:${d.json
 
 const roots = (args._ && args._.length ? args._ : ['game/data'])
   .map((r) => path.resolve(REPO_ROOT, String(r)));
+// RULES 6 teardown — scan no files, so K1's sample set is empty and it must report EMPTY rather
+// than `0 files => 0 hits => PASS`.
+const TEARDOWN = !!args.teardown;
 const files = [];
-for (const r of roots) walkFiles(r, files);
-if (!files.length) {
+if (!TEARDOWN) for (const r of roots) walkFiles(r, files);
+if (TEARDOWN) log('  TEARDOWN: scanning nothing on purpose — K1 must report EMPTY');
+if (!files.length && !TEARDOWN) {
   log('marker-scan: nothing to scan — the roots are empty or do not exist.');
   process.exit(2);
 }
 
 const hits = [];
 const parseErrors = [];
+let nodesScanned = 0;
+const perFile = [];
 for (const f of files) {
   const rel = path.relative(path.join(REPO_ROOT, 'game/data'), f).split(path.sep).join('/');
   let doc;
   try { doc = JSON.parse(fs.readFileSync(f, 'utf8')); }
   catch (e) { parseErrors.push({ file: rel, error: e.message }); continue; }
-  hits.push(...scanDoc(doc, rel));
+  const found = scanDoc(doc, rel);
+  nodesScanned += found.scanned || 0;
+  perFile.push([rel, found.scanned || 0]);
+  hits.push(...found);
 }
 
 // A declared exception is still REPORTED — it moves out of `hits` and into `excused`, with the
@@ -332,9 +350,28 @@ const report = {
   excused,
   excused_count: excused.length,
   stale_exceptions: stale,
-  by_rule: ['F1', 'F2', 'F3', 'F4', 'F5'].reduce((a, r) => { a[r] = hits.filter((h) => h.rule === r).length; return a; }, {}),
-  K1: hits.length === 0 && parseErrors.length === 0 && stale.length === 0 ? 'PASS' : 'FAIL',
+  by_rule: ['F1', 'F2', 'F3', 'F4', 'F5', 'F6'].reduce((a, r) => { a[r] = hits.filter((h) => h.rule === r).length; return a; }, {}),
 };
+// W1-21 round 3: K1 through the shared sample-aware grader. Zero nodes scanned is EMPTY, not
+// PASS, and the run exits 2 — a distinction the file-count guard above could not make, because
+// 559 files that all parse to `{}` are 559 files and no samples.
+const G = grader();
+G.push('K1', 'F1-F6: 0 marker-shaped records across the scanned roots', {
+  samples: nodesScanned, sample_of: 'JSON nodes tested against F1-F6',
+  counts: {
+    files: files.length,
+    rules: 6,
+    excused: excused.length,
+    biggest_files: perFile.sort((a, b) => b[1] - a[1]).slice(0, 5),
+  },
+  pass: () => hits.length === 0 && parseErrors.length === 0 && stale.length === 0,
+  detail: `${hits.length} hits, ${excused.length} declared exceptions, ${parseErrors.length} parse errors, `
+    + `${stale.length} stale exceptions, over ${files.length} files`,
+});
+report.checks = G.checks;
+report.nodes_scanned = nodesScanned;
+report.K1 = G.checks[0].status;
+report.sample_table = sampleTable(G.checks, { tool: 'marker-scan.mjs' });
 
 if (args.out) writeJson(path.resolve(String(args.out)), report);
 if (args.json) console.log(JSON.stringify(report, null, 2));
@@ -345,6 +382,7 @@ else {
   for (const e of parseErrors) log(`  PARSE ${e.file}: ${e.error}`);
   for (const e of excused) log(`  EXCUSED ${e.rule}  ${e.file}:${e.jsonpath} — ${e.reason}`);
   for (const t of stale) log(`  STALE EXCEPTION (no longer matches anything): ${t}`);
-  log(`K1 ${report.K1} — ${hits.length} hits, ${excused.length} declared exceptions (${JSON.stringify(report.by_rule)})`);
+  log(line(G.checks[0]));
+  log(`  by rule: ${JSON.stringify(report.by_rule)}`);
 }
-process.exit(hits.length || parseErrors.length || stale.length ? 1 : 0);
+process.exit(G.exit);

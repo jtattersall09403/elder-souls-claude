@@ -237,15 +237,54 @@ between them §P.1's "one command" now exists.)
 
 ---
 
+## 7a. `opening-play.mjs` — P10 passes, and closing HF1 turned P9 red on me
+
+The full real-input rAF run finished after the first draft of this report:
+
+```
+PASS P1..P8      (P8 now records hatchName "Silt-Under-Salt"; the RED run recorded "il-Un-l")
+PASS P10  the scene moved past the desk to 'writ.sex'
+FAIL P9   1 drawn string(s) tell the player what to do:
+          "Go up. The light is bad but it is light. When you are done at the desk, ..."
+```
+
+**P10 is the round's headline and it passes**: driven only through real DOM input, in play mode,
+with no query string and no harness verb, the scene goes past the Warden-Scribe's desk. That is
+`NEXT-DISPATCH` §P item 2's binding condition, and it had never been true.
+
+**P9 went red on my own fix, and both instruments were right.** `hold.out`'s line opened *"Go
+up."* — a bare imperative, which is precisely what P9's start-anchored `IMPERATIVE` test exists to
+catch. The round-2 verdict recorded that same line, in §6, as *"Wayfinding, in fiction, and never
+drawn (§4), so it costs nothing and delivers nothing"* — while §4 fired HF1 on its **absence** from
+the frame. The two readings could not collide until the line was actually drawn, and drawing it is
+exactly what closing HF1 required. It is not a regression in the sense of something that used to
+work; it is a cost that was hidden behind a defect.
+
+Repaired in the data. The line now says the same three things — the light up there is bad, it is
+still light, come back to me — as an observation by a person rather than as a direction to a
+player, and the node carries a `line_note` with the old string and this reasoning:
+
+> *"The light up there is bad, but it is light. When they have finished writing you down, this is
+> where I will be, if I am anywhere."*
+
+Checked against P9's own two patterns at **every wrap point** (the surface wraps, and P9 tests each
+drawn row): 0 rows trip either. `check-dialogue-topics` and `check-prose` are unchanged.
+
+**Re-run status is in §8 — I did not get a clean second `opening-play` inside my window.**
+
 ## 8. What I did not do
 
-* **`opening-play.mjs` P10 was still running when I wrote this.** P1–P8 all pass and P8 now records
-  the typed name verbatim; the P10 leg is a 20-iteration walk at ~2 sim fps and had not returned.
-  **I have not seen P10 green in the full rAF run**, and I am not claiming it. What I have instead
-  is: the same walk-out driven by real keys in `created-by-keyboard.mjs` (title → stamp, 11 nodes),
-  `hold-walkout.mjs` proving the hold is walkable and the corner is not a trap, and
-  `census-newgame.mjs` proving the graph completes on the player's path. See the run's own
-  artifact for the final word.
+
+* **I did not re-run `opening-play.mjs` to green after the `hold.out` rewrite.** The box sat at or
+  over `contention.mjs`'s ceiling for the rest of my window (5–6 browser instances, 4.0–5.5 per
+  core) and the probe is ~35 minutes of wall clock at 2 sim fps. So: **P10 is measured green on
+  the build with the old line**, and the only change since is one authored string, verified
+  node-side against P9's exact two regexes at every wrap point. **P9 green is predicted, not
+  measured, and the next runner should treat it as unverified.** The command is
+  `node tools/journey/opening-play.mjs`.
+* **`jrn09-exchange.mjs` was queued behind the same gate** to confirm `DTR(hold.out)` still reads
+  1.000 with the new string. The node still has exactly two authored strings and both still reach
+  the frame by the same route, so the number should not move — but I did not watch it.
 * **`RI-JRN01` M13's other three modality legs** (mouse+keyboard, gamepad, touch). Only the keyboard
   leg is now run over the journey. Pointer lock does not survive headless, which is the round-2
   reason and is still true.

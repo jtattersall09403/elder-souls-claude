@@ -970,18 +970,34 @@ export class UISystem {
       // field is KEPT AND FLIPPED rather than deleted, so that a probe written against S30 gets
       // a changed answer instead of `undefined` — an existence check that silently starts
       // reading `undefined` is an existence check that starts passing.
-      map_exists: true,
+      // W1-21 round 3: derived, like `markers` above it. The round-2 brief asked for the file to
+      // be checked for OTHER literals in the compliance report, and this was one of three
+      // (`map_exists`, `map.exists`, `world_rendered_behind`). It is a claim about whether this
+      // build has a map screen at all, so it is answered by `MODES` — the list `openMenu()` and
+      // `navigable()` both resolve against — rather than by a typed `true` that would go on
+      // saying yes after the screen was deleted.
+      map_exists: MODES.includes('map'),
       // The amended JU8, computed rather than asserted. Every one of these is a hard fail if it
       // comes back wrong, and each is derived from the element census that was just built, so a
       // screen that draws a marker without declaring it is caught by the fact that `el()` is the
       // only way to get a drawing context at all.
       map: {
-        exists: true,
+        exists: MODES.includes('map'),
         // Q7, unamended, in both directions.
         reachable_from_journal: this.mode === 'journal' && this.navigable(ctx).includes('map'),
         journal_reachable_from_map: this.mode === 'map' && this.navigable(ctx).includes('journal'),
         // Everything the screen is forbidden to contain, counted off what it drew.
-        markers: 0,
+        //
+        // `markers` IS NOW DERIVED — W1-21 round 3, and this is the second time this piece has
+        // been failed for the same shape in this same object literal. Round 1 found
+        // `mutator_arities` was "a hand-written literal of three names"; round 2 replaced it with
+        // a real enumeration four lines below this one and left `markers: 0` typed here. The
+        // round-2 verdict: "`markers` — the single field whose name is the thing S8 and S35
+        // forbid — is not measured. It is typed."
+        //
+        // See `markerCensus()` for what counts as one and why. The count is a function of the
+        // elements that were actually drawn, so it moves when the screen does.
+        ...markerCensus(els.filter((e) => e.id.startsWith('map.')), ctx, 'map'),
         routes_drawn: els.filter((e) => e.kind === 'map_terrain' && e.meta && e.meta.routes_drawn).length,
         quest_bearing_elements: els.filter((e) => e.id.startsWith('map.') && e.meta
           && (e.meta.quest || e.meta.objective || e.meta.giver || e.meta.target || e.meta.rumour)).map((e) => e.id),
@@ -990,6 +1006,31 @@ export class UISystem {
         // anywhere on the screen", which is stricter and needs no judgement about what a number
         // is a readout OF.
         numeric_text: els.filter((e) => e.id.startsWith('map.') && e.text !== null && /\d/.test(String(e.text))).map((e) => e.id),
+
+        // W1-21 ROUND 3 — WHAT THIS BLOCK IS AND IS NOT MEASURING, STATED IN THE BLOCK.
+        //
+        // Two defects the round-2 verdict found in the four filters above, both recorded here
+        // rather than hidden, because fixing them by widening the filters would manufacture a
+        // false S35 violation:
+        //
+        //  1. ZERO SAMPLES. Every one of those filters keys on `e.id.startsWith('map.')`. When the
+        //     map is closed there are no `map.*` elements, "so every one of them evaluates to
+        //     empty and the block reports full compliance — a green AR-2 report computed over zero
+        //     elements, available from any mode." `measured` is now false in that case and
+        //     `elements_considered` is the sample count, so a reader can tell a compliant map from
+        //     no map at all.
+        //
+        //  2. THE REST OF THE SCREEN. The verdict's E4: six visible elements on the drawn map are
+        //     not matched by the prefix — the HUD, drawn over it, one of which (`hud.heal`) carries
+        //     the numeral "5". The verdict is explicit that the numeral is "an RI-UIX01
+        //     numeric-budget question and NOT an S35 one", so the map's own numeric_text keeps its
+        //     scope and the rest of the screen is REPORTED beside it instead. The block no longer
+        //     "measures a subset of its own screen and asserts the rest": it now says which subset.
+        measured: this.mode === 'map',
+        elements_considered: els.filter((e) => e.id.startsWith('map.')).length,
+        elements_on_screen: els.length,
+        non_map_elements: els.filter((e) => !e.id.startsWith('map.') && e.visible).map((e) => e.id),
+        numeric_text_screen: els.filter((e) => e.visible && e.text !== null && /\d/.test(String(e.text))).map((e) => e.id),
         // What the screen actually painted, so "undiscovered is unrendered" is a number.
         drawn_cells: (els.find((e) => e.kind === 'map_terrain') || { meta: {} }).meta.drawn_cells || 0,
         revealed_cells: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.revealedCells : 0,
@@ -1087,13 +1128,82 @@ export class UISystem {
       surfaces: els.length ? 1 : 0,
       full_screen_panels: els.filter((e) => e.kind === 'panel' && e.rect[2] * e.rect[3] > 0.9 * S.W * S.H).length,
       hud_elements: hud.filter((e) => e.visible).length,
-      markers: 0,
-      world_rendered_behind: true,
+      // The same derivation, over the WHOLE screen rather than the map's own elements. Round 2's
+      // verdict: "The identical field is typed again at the top level of `getUIState()`." It was.
+      ...markerCensus(els, ctx, 'screen'),
+      // Also derived. S35 requires the world to keep being drawn behind a screen, and the
+      // mechanism is the screen's own translucency: `build()` applies COMBAT_ALPHA in a fight and
+      // CALM_ALPHA out of one, over the screen rectangle only. Anything below 1 lets the world
+      // through; a `true` typed here would survive somebody setting the alpha to 1.
+      world_rendered_behind: (this.isMenu() ? (ctx && ctx.inCombat ? COMBAT_ALPHA : CALM_ALPHA) : 0) < 1,
+      screen_alpha: this.isMenu() ? (ctx && ctx.inCombat ? COMBAT_ALPHA : CALM_ALPHA) : null,
     };
   }
 }
 
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+/**
+ * `markers`, DERIVED FROM WHAT WAS DRAWN — W1-21 round 3.
+ *
+ * WHY THIS FUNCTION EXISTS. `getUIState()` reported `markers: 0` twice, as a typed literal, in the
+ * one field whose name is the thing S8 and S35 forbid. The round-1 verdict caught the identical
+ * shape in `mutator_arities`; round 2 fixed that one and left this one four lines away; the
+ * round-2 verdict found it there. A literal cannot be wrong about a build that has no markers,
+ * which is exactly why it survived two rounds — and exactly why it is worth nothing as evidence.
+ *
+ * WHAT COUNTS AS A MARKER, and the definition is the load-bearing part. A square for a place you
+ * have stood in is NOT a marker: S35 permits the map and permits the places you have found, so a
+ * bare count of `map_place` elements would report `markers: 6` on a compliant screen and be read
+ * as six violations. A marker is an element that points at somewhere you have not been, or that
+ * carries quest identity, or that tracks the world. So, four clauses:
+ *
+ *   m1  a forbidden KIND — RI-UIX01 §B's positional rows X1-X12 (quest_marker, waypoint, map_pin,
+ *       objective_tracker, compass, minimap, hit_marker, damage_direction, ground_telegraph).
+ *   m2  a WORLD ANCHOR on anything but the lock-on reticle. An element pinned to a world position
+ *       is tracking the world whatever it is called; RI-UIX02 §E M-def-1 is the same property.
+ *   m3  QUEST IDENTITY or a destination in the element's own meta — quest, objective, giver,
+ *       target, rumour, route, destination, travel. RI-UIX02 §E's definition of a marker is
+ *       behavioural, and this is its declared half.
+ *   m4  a `map_place` square for a place the DISCOVERY MODEL does not report as discovered. This
+ *       is the round-1 attack's own signature: 42 squares drawn for a body that had stood in 7.
+ *       It is checked against `discovery.hasPlace()`, i.e. against the model, not against the
+ *       element's own `meta.discovered` — an element cannot be its own witness.
+ *
+ * The census returns the count AND its inputs, so that "0 markers" is a measurement with a
+ * denominator rather than an assertion: `marker_census.elements` is how many elements were tested.
+ */
+function markerCensus(els, ctx, scope) {
+  const FORBIDDEN_KINDS = new Set(['quest_marker', 'waypoint', 'map_pin', 'objective_tracker',
+    'compass', 'minimap', 'hit_marker', 'damage_direction', 'ground_telegraph', 'xp_popup',
+    'combo_counter', 'dps_meter', 'damage_number', 'enemy_nameplate']);
+  const IDENTITY = ['quest', 'objective', 'giver', 'target', 'rumour', 'route', 'destination', 'travel'];
+  const discovery = ctx && ctx.map && ctx.map.discovery;
+  const hits = [];
+  for (const e of els) {
+    const m = e.meta || {};
+    if (FORBIDDEN_KINDS.has(e.kind)) { hits.push({ id: e.id, why: 'm1 forbidden kind ' + e.kind }); continue; }
+    if (e.worldAnchor && e.kind !== 'lockon_reticle') { hits.push({ id: e.id, why: 'm2 world-anchored' }); continue; }
+    const ident = IDENTITY.filter((k) => m[k]);
+    if (ident.length) { hits.push({ id: e.id, why: 'm3 carries ' + ident.join('+') }); continue; }
+    if (e.kind === 'map_place' && m.place && discovery && typeof discovery.hasPlace === 'function'
+        && !discovery.hasPlace(m.place)) {
+      hits.push({ id: e.id, why: 'm4 a square for `' + m.place + '`, which the discovery model does not report as stood in' });
+    }
+  }
+  return {
+    markers: hits.length,
+    marker_census: {
+      scope,
+      elements: els.length,                       // THE SAMPLE COUNT
+      derived: true,
+      clauses: ['m1 forbidden kind', 'm2 world anchor', 'm3 quest identity or destination',
+        'm4 a place square the discovery model does not support'],
+      model_available: !!(discovery && typeof discovery.hasPlace === 'function'),
+      hits,
+    },
+  };
+}
 
 /**
  * AMENDMENT-W1-MAP-01 §3b, computed rather than transcribed — see the call site.

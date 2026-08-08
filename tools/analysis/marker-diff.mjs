@@ -33,6 +33,7 @@ import path from 'node:path';
 import { PNG } from 'pngjs';
 import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, log, RUNS_DIR, ensureDir, writeJson } from '../lib/cli.mjs';
+import { grader, line, sampleTable } from '../lib/graded.mjs';
 
 const USAGE = `
 marker-diff.mjs — RI-UIX02 §E. The quest-state differential and the camera-yaw sweep.
@@ -89,8 +90,12 @@ function bbox(mask, w) {
   return x1 < 0 ? null : [x0, y0, x1 - x0 + 1, y1 - y0 + 1];
 }
 
+// RULES 6 teardown — no differentials and no yaw sweeps, so K3 and K4 must report EMPTY rather
+// than the `[].every(…) === true` PASS the round-2 verdict found (K4 silently, via `catch
+// { continue }`). No browser.
+const TEARDOWN = !!args.teardown;
 ensureDir(RUN);
-const h = await launchGame({ width, height, timeout: 240000 });
+const h = TEARDOWN ? null : await launchGame({ width, height, timeout: 240000 });
 const out = {
   schema: 'elder-souls/marker-diff@1',
   item: 'RI-UIX02',
@@ -105,6 +110,7 @@ const out = {
 };
 
 try {
+  if (TEARDOWN) { log('  TEARDOWN: measuring nothing on purpose — K3 and K4 must report EMPTY'); throw { __teardown: true }; }
   await h.h('setRenderRate', 60);
 
   /** Pin everything that is not quest state. §E's own list, applied in its own order. */
@@ -205,10 +211,23 @@ try {
   // named states give us the last two directly and the province street via a teleport.
   const EXEMPT = new Set(['lockon_reticle', 'interact_prompt', 'buildup_meter']);
   const sweeps = [];
-  for (const place of [{ id: 'street', state: 'stormhold-street' }, { id: 'vista', state: 'vista_primary' }, { id: 'dungeon', state: 'dungeon_primary' }]) {
+  const PLACES = [{ id: 'street', state: 'stormhold-street' }, { id: 'vista', state: 'vista_primary' }, { id: 'dungeon', state: 'dungeon_primary' }];
+  out.yaw_places_declared = PLACES.map((p) => p.id);
+  for (const place of PLACES) {
+    // W1-21 round 3. THE BARE `catch { continue }` IS GONE.
+    //
+    // Round-2 verdict §2: "K4 — 3 yaw positions × 24 — PASS on zero samples, and *silently*: a
+    // missing state hits a bare `catch { continue }`." All three states could vanish and K4 would
+    // report `[].every(…) === true` — a PASS over nothing, with no trace in the artifact of the
+    // three positions the method requires. The failure is now recorded as a skipped position with
+    // its reason, it counts against the sample total, and K4 cannot reach PASS without all three.
     try {
       await h.h('loadState', place.state);
-    } catch { continue; }
+    } catch (e) {
+      sweeps.push({ place: place.id, state: place.state, skipped: true, reason: String(e && e.message || e), steps: 0, elements_tracked: 0, world_tracked: [] });
+      log(`  yaw sweep ${place.id}: SKIPPED — ${String(e && e.message || e)}`);
+      continue;
+    }
     await h.h('stepFrames', 8);
     const centres = new Map();
     const moved = [];
@@ -231,8 +250,15 @@ try {
         } else centres.set(e.id, c);
       }
     }
-    sweeps.push({ place: place.id, state: place.state, steps: 24, world_tracked: moved });
-    log(`  yaw sweep ${place.id}: ${moved.length} non-exempt world-tracked elements`);
+    // `centres` is every element id the sweep ever saw. A sweep that tracked NO elements looked
+    // at 24 empty frames and "0 world-tracked elements" would be true of nothing.
+    sweeps.push({
+      place: place.id, state: place.state, skipped: false, steps: 24,
+      elements_tracked: centres.size,
+      element_ids: [...centres.keys()].sort(),
+      world_tracked: moved,
+    });
+    log(`  yaw sweep ${place.id}: ${moved.length} non-exempt world-tracked elements over ${centres.size} tracked elements × 24 steps`);
   }
   out.yaw_sweep = sweeps;
 
@@ -276,22 +302,70 @@ try {
     };
     log(`  self-test: fires=${withQuest} silent=${!without} ui_layer_px=${out.ui_layer_px}`);
   }
+} catch (e) {
+  if (!e || !e.__teardown) throw e;
+  out.yaw_sweep = [];
+  out.yaw_places_declared = ['street', 'vista', 'dungeon'];
 } finally {
-  await h.close();
+  if (h) await h.close();
 }
 
-out.K3 = out.differentials.every((d) => d.empty) ? 'PASS' : 'FAIL';
-out.K4 = (out.yaw_sweep || []).every((s) => s.world_tracked.length === 0) ? 'PASS' : 'FAIL';
+// ---- grading, with sample counts (W1-21 round 3) ----------------------------------------------
+const G = grader();
+const done = (out.yaw_sweep || []).filter((s) => !s.skipped);
+const skipped = (out.yaw_sweep || []).filter((s) => s.skipped);
+
+// K3's sample is a DIFFERENTIAL — one quest on one surface, three loads apart. `[].every(…)` is
+// `true`, so a run where every load threw would have reported PASS.
+G.push('K3', '§E no on-screen element in the UI layer is a function of quest state', {
+  samples: out.differentials.length,
+  expected: QUESTS.length * 2,                 // the two surfaces, world and map
+  sample_of: 'quest×surface differentials (3 loads each)',
+  counts: {
+    ui_layer_px: out.ui_layer_px || 0,
+    surfaces: [...new Set(out.differentials.map((d) => d.surface))],
+    quests: QUESTS.length,
+    captures: out.differentials.length * 3,
+  },
+  // The pixel restriction is only meaningful if the UI layer itself is non-empty: "D restricted
+  // to the UI layer is empty" is trivially true when the restriction is empty.
+  pass: () => (out.ui_layer_px || 0) > 0 && out.differentials.every((d) => d.empty),
+  detail: `${out.differentials.filter((d) => !d.empty).length} of ${out.differentials.length} differentials moved the UI layer; `
+    + `UI-layer mask ${out.ui_layer_px || 0} px`,
+});
+
+// K4's sample is a YAW POSITION that actually loaded AND tracked elements.
+G.push('K4', '§E M-def-1 no non-exempt element tracks the world under a 360° camera yaw', {
+  samples: done.filter((s) => s.elements_tracked > 0).length,
+  expected: (out.yaw_places_declared || []).length,
+  sample_of: 'yaw positions swept (24 steps each)',
+  counts: {
+    steps: done.length * 24,
+    elements_tracked: done.reduce((a, s) => a + s.elements_tracked, 0),
+    skipped: skipped.map((s) => [s.place, s.reason]),
+  },
+  pass: () => done.every((s) => s.world_tracked.length === 0),
+  detail: `${done.reduce((a, s) => a + s.world_tracked.length, 0)} non-exempt world-tracked elements over `
+    + `${done.reduce((a, s) => a + s.elements_tracked, 0)} tracked elements × 24 steps`
+    + `${skipped.length ? `; SKIPPED [${skipped.map((s) => `${s.place}: ${s.reason}`).join('; ')}]` : ''}`,
+});
+
+out.checks = G.checks;
+out.K3 = G.checks[0].status;
+out.K4 = G.checks[1].status;
 out.K6_counts = {
   quests_differentialled: out.differentials.length,
-  yaw_positions: (out.yaw_sweep || []).length,
+  yaw_positions: done.length,
+  yaw_positions_declared: (out.yaw_places_declared || []).length,
   yaw_steps_each: 24,
+  ui_layer_px: out.ui_layer_px || 0,
 };
+out.sample_table = sampleTable(G.checks, { tool: 'marker-diff.mjs' });
 writeJson(path.join(RUN, 'marker-diff.json'), out);
+fs.writeFileSync(path.join(RUN, 'sample-table.md'), out.sample_table + '\n');
 if (args.json) console.log(JSON.stringify(out, null, 2));
 else {
-  log(`K3 ${out.K3} — ${out.differentials.filter((d) => !d.empty).length} of ${out.differentials.length} quests changed the UI layer`);
-  log(`K4 ${out.K4} — ${(out.yaw_sweep || []).reduce((a, s) => a + s.world_tracked.length, 0)} non-exempt world-tracked elements`);
+  for (const c of G.checks) log(line(c));
   log(`artifacts: ${RUN}`);
 }
-process.exit(out.K3 === 'PASS' && out.K4 === 'PASS' && (!out.self_test || out.self_test.pass) ? 0 : 1);
+process.exit(out.self_test && !out.self_test.pass ? 1 : G.exit);

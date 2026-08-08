@@ -1604,6 +1604,16 @@ export function installHarness(engine, bootPromise) {
     __breakCommissionCounter(on) { engine._commissionDisabled = on === undefined ? true : !!on; return !!engine._commissionDisabled; },
 
     /**
+     * W1-14 round 4 DELETE-THE-FIX #4 — the ground plane.
+     *
+     * Restores `MagicSystem.stepFall`'s hardcoded ground of 0, which made `this.airborne` true
+     * for a body standing anywhere in the province and therefore made `castDropReason` return
+     * `'airborne'` for every spell in the game outside an arena. With this armed, a cast pressed
+     * in Lilmoth must produce `INPUT_DROPPED reason: airborne` and no `cast_start`.
+     */
+    __breakGroundPlane(on) { engine.magic._groundPlaneBlind = on === undefined ? true : !!on; return !!engine.magic._groundPlaneBlind; },
+
+    /**
      * W1-16 round 2 DELETE-THE-FIX, as a first-class control arm rather than a `git stash`.
      *
      * RULES.md #6 wants the fix removed and the OLD number back, and #17 warns that doing that
@@ -1634,7 +1644,17 @@ export function installHarness(engine, bootPromise) {
       //                `setLoadout()`, so the hand that is weighed and the hand that fights come
       //                apart again. This is the RULES #10 arm.
       //   oversprint — `OVERLOADED` stops forbidding sprint (RI-CMB01 §B).
-      const known = ['producer', 'slots', 'travel', 'sprint', 'hands', 'onehand', 'oversprint'];
+      // W1-16 round 4 adds five more, one per claim the round makes:
+      //   savepin     — `save/fight.js` stops carrying `equip_load_pinned`, so a pinned scenario
+      //                 comes back deriving its load. This is the round-3 verdict's blocking gap.
+      //   burdenhands — burden goes blind to the hands and the talisman and weighs the pack row
+      //                 instead, which is round 3's world exactly (§3's "equipped or not" broken).
+      //   talisman    — RI-PRG07 §2's fourth term goes back to not existing.
+      //   feather     — the load offset is folded into the running total and clamped on BOTH
+      //                 halves, so a Feather bigger than your load leaves you heavier (§E).
+      //   toast       — the equip refusal goes back to being recorded on an event nothing reads.
+      const known = ['producer', 'slots', 'travel', 'sprint', 'hands', 'onehand', 'oversprint',
+        'savepin', 'burdenhands', 'talisman', 'feather', 'toast'];
       for (const k of list) if (!known.includes(k)) throw new Error(`__breakW116('${k}'): unknown arm. Known: ${known.join(', ')}`);
       engine._w116Break = Object.fromEntries(list.map((k) => [k, true]));
       // The `oversprint` arm has to reach `combat/player.js`, which holds the combat DATA object

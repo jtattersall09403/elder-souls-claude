@@ -297,7 +297,21 @@ export class WorldField {
     return h;
   }
 
-  /** The highest declared deck surface covering (x, z), or null. Hot: called from `heightAt`. */
+  /**
+   * The highest declared deck surface covering (x, z), or null. Hot: called from `heightAt`.
+   *
+   * A BRIDGE DOES NOT HAVE A ROUND END. Clamping `t` to [0, 1] and then testing the distance makes
+   * every segment a STADIUM, and at the first and last segment of a span chain the rounded cap
+   * sticks `hw + 0.5` metres out past the abutment — a disc of slab hanging in the air in front of
+   * the bridge, on which a body stands at deck height with nothing under it and no railing round
+   * it. W1-CROSSING's parapet census found the leaks clustered exactly there. The cap is cut off
+   * square at the terminal vertex; the abutment segment either side is EARTH and carries the road
+   * on at the same elevation, so nothing is left standing on air and there is no step.
+   *
+   * The clamp is kept at every INTERIOR joint, and that is deliberate: a hard `t` bound at a bend
+   * is skipped by both adjoining segments at once, which is the 0.03 m hole `clampToDeck`'s own
+   * history records. Only the two ends of a chain are cut square, and only they can be.
+   */
   _deckY(x, z) {
     if (!this.roadGrid) return null;
     const segs = this.roadGrid.at(x, z);
@@ -307,7 +321,9 @@ export class WorldField {
       if (!s.span) continue;
       const dx = s.bx - s.ax, dz = s.bz - s.az;
       const len2 = dx * dx + dz * dz || 1;
-      const t = clamp(((x - s.ax) * dx + (z - s.az) * dz) / len2, 0, 1);
+      const tr = ((x - s.ax) * dx + (z - s.az) * dz) / len2;
+      if ((s.spanFirst && tr < 0) || (s.spanLast && tr > 1)) continue;
+      const t = clamp(tr, 0, 1);
       if (Math.hypot(x - (s.ax + dx * t), z - (s.az + dz * t)) > s.hw + 0.5) continue;
       const y = lerp(s.ay, s.by, t);
       if (best === null || y > best) best = y;
@@ -483,7 +499,9 @@ export class WorldField {
       if (!s.span) continue;
       const dx = s.bx - s.ax, dz = s.bz - s.az;
       const len2 = dx * dx + dz * dz || 1;
-      const t = clamp(((x - s.ax) * dx + (z - s.az) * dz) / len2, 0, 1);
+      const tr = ((x - s.ax) * dx + (z - s.az) * dz) / len2;
+      if ((s.spanFirst && tr < 0) || (s.spanLast && tr > 1)) continue;   // the square end cap, see _deckY
+      const t = clamp(tr, 0, 1);
       const d = Math.hypot(x - (s.ax + dx * t), z - (s.az + dz * t));
       if (d <= s.hw + 0.5) {
         const y = lerp(s.ay, s.by, t);

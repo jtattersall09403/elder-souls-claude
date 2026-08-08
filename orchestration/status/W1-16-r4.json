@@ -1,10 +1,42 @@
 {
   "task_id": "W1-16-r4",
-  "status": "starting",
-  "piece": "W1-16 round 4 - progression and encumbrance",
+  "state": "building",
+  "title": "W1-16 round 4 — progression and encumbrance",
   "started": "2026-08-08",
-  "next_step": "read RULES, INDEX, verdict W1-16-r3, RI-PRG07 §2/§3 in full",
-  "files_touched": ["orchestration/status/W1-16-r4.json"],
-  "files_claimed": [],
-  "notes": ["contention --gate said WAIT at start (5 instances, load 5.46/core); doing offline work first"]
+  "next_step": "live probes: pinfight (save round trip on every state), burden, talisman, overloaded, feather, refusal",
+  "files_touched": [
+    "orchestration/status/W1-16-r4.json",
+    "game/src/engine.js",
+    "game/src/save/fight.js",
+    "game/src/sim/magic/apply.js",
+    "game/src/harness/api.js",
+    "game/data/magic/cast-classes.json",
+    "game/data/items/carried.json",
+    "tools/harness/w1-16-r4-offline.mjs",
+    "reports/w1-16/r4-offline.json",
+    "reports/w1-16/r4-offline-selftest.json"
+  ],
+  "files_claimed": [
+    "tools/harness/w1-16-r4-live.mjs",
+    "tools/harness/w1-16-r4-chart.mjs",
+    "reports/w1-16/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "redundant_with": [],
+  "fix": {
+    "1_save_pin": "save/fight.js saveLoadout() writes equip_load_pinned off sim.player.equipLoadPinned; Engine._publishEquipLoad() is its sole writer; _restoreFightFromSave() restores the pin and its value from the blob instead of clearing it unconditionally. An old blob has the field undefined, which reads false = round-3 behaviour, so no save is retro-pinned.",
+    "2_burden_worn": "_recomputeBurden() now adds _handWeights() (weapon + shield + talisman) and skips right/left pack rows, exactly as _recomputeEquipLoad() does. RI-PRG07 §3 'equipped or not'. ONE OBJECT ONE WEIGHT: both ratios read the fight's own number.",
+    "3_talisman": "RI-PRG07 §2 term 4. carried.json ships a `talisman` slot row (root-speakers-rod, catalyst rod, 3.0 kg); cast-classes.json catalysts carry equip_weight (RI-PRG07 §4 = 3, enchanted_weapon 0 because it IS the weapon already weighed); _slotForItem resolves the slot; _finishEquipCommit calls MagicSystem.setCatalyst so the term changes focus cost and castNow's no_catalyst refusal, not only a number in a report.",
+    "4_feather_clamp": "engine._equipLoadOffset holds the live spell offset and _publishEquipLoad() clamps the SUM (pct = max(0, base + offset)), so apply and undo are exact inverses at every magnitude. magic/apply.js loadHandler goes through engine._addEquipLoadOffset. This also deletes the delta-origin state the round-3 verdict §C named as the root cause of C5.",
+    "5_refusal_visible": "_sayEquip() puts prose on engine.uiToast() (ui/hud.js E11) for on/off/unwearable/refused; the raw diagnostic naming 87 weapon ids stays on the event as ev.refused, the prose is ev.said."
+  },
+  "notes": [
+    "OFFLINE INSTRUMENT: tools/harness/w1-16-r4-offline.mjs — 6 checks PASS on HEAD, ALL SIX RED under --selftest (each check has its own __breakW116 arm; the runner exits non-zero if any check is still green under --selftest, so an inert arm is caught).",
+    "NEW DELETE-THE-FIX ARMS in __breakW116: savepin, burdenhands, talisman, feather, toast (round 3's producer/slots/travel/sprint/hands/onehand/oversprint are untouched).",
+    "RULE 17 WARNING: game/src/engine.js was `M ` (staged by a neighbour, W1-CROSSING's walkPath teleport accounting) when I started. `git commit --only game/src/engine.js` takes the WORKTREE content, which contains their staged lines, so my commit will carry them. Reported, not unpicked.",
+    "W1-SAVE-AI's contract in save/fight.js (live object vs machinery, __unsaved) is untouched — my change is one field in saveLoadout(), which is not part of the actor classifier.",
+    "contention --gate said WAIT at the start (5 instances, 5.46/core); the whole offline half was done first."
+  ],
+  "not_done": []
 }

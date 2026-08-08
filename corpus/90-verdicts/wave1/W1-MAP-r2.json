@@ -3,11 +3,10 @@
   "piece_id": "w1-map-r2",
   "piece_title": "The discovery map — round 2, and a re-take of four findings whose evidence was undermined",
   "subsystem_paths": [
-    "ui.map.discovery",
-    "ui.map.unrendered",
-    "ui.map.naming",
-    "save.discovery.footprint",
-    "quest.map.reachability"
+    "world.map.legibility",
+    "journal.navigation.nomarkers",
+    "ui.style.diegesis",
+    "platform.save.persistence"
   ],
   "wave": 1,
   "critic": {
@@ -72,25 +71,25 @@
     "depends_on_note": "Read after measuring, to diagnose rather than to design the measurement; see source_reads."
   },
   "bifurcation": {
-    "axis": "decisions",
+    "axis": "not-visual",
     "declared_before_citation": true,
     "art_refs": [],
     "fidelity_refs": [],
-    "note": "Every judgement here is a DECISIONS question — whether the screen refuses what seam S35 forbids and records only what the body did. No art-direction call is made and no image is judged for its look; the four screenshots are evidence of state, not of style."
+    "note": "Declared before any frame was opened. Every judgement here is a DECISIONS question — whether the screen refuses what seam S35 forbids and records only what the body did. No art-direction or fidelity call is made; the four screenshots are evidence of STATE (how much ground is revealed, how many squares) and are never judged for their look."
   },
   "reference_items": [
     {
-      "id": "S35",
-      "path": "corpus/00-doctrine/ARBITRATION.md",
+      "id": "RI-UIX02",
+      "path": "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
       "side": "morrowind",
-      "kind": "ruling",
-      "native_scale": "0-10 band; 10 = every permitted affordance present and every forbidden one structurally impossible, adversarially",
+      "kind": "structure",
+      "native_scale": "0-10 band; 10 = every marker convention structurally impossible on every surface, adversarially, and S35's permitted affordances all present",
       "native_score": 10,
       "native_max": 10,
-      "native_verdict": "Morrowind ships a map and ships no quest markers; the owner's overrule of S30 is the specification",
+      "native_verdict": "Morrowind ships a map and ships no quest markers; RI-UIX02 is the enforcement item and ARBITRATION S35 (the owner's overrule of S30) is the specification it now enforces for this screen",
       "score_0_10": 3,
       "measured": "full",
-      "justification": "The permitted list is fully built and the forbidden list is structurally refused on the honest path: no markers, no routes, no numerals, no travel, no 'show on map' from the journal, a square only after standing, a name only from pois.json, and undiscovered genuinely unrendered (the draw loop skips it; a fresh map paints 0 of 42,846 cells). What fails is the clause 'any square for a place the player has not personally stood in': a forged footprint puts all 42 places and 100% of the province on the map, and it now does so through the player-facing sealed save file.",
+      "justification": "Judged against ARBITRATION S35, which RI-UIX02 enforces. The permitted list is fully built and the forbidden list is structurally refused on the honest path: no markers, no routes, no numerals, no travel, no 'show on map' from the journal, a square only after standing, a name only from pois.json, and undiscovered genuinely unrendered (the draw loop skips it; a fresh map paints 0 of 42,846 cells). What fails is the clause 'any square for a place the player has not personally stood in': a forged footprint puts all 42 places and 100% of the province on the map, and it now does so through the player-facing sealed save file.",
       "why_not_ten": "Two reachable violations. (1) The map is a pure function of one save field the attacker controls, and the container's sha-256 is an integrity check the game's own writer will recompute for a forger. (2) sim.discovery is a writable slot the quest machine holds, and window.__ENGINE reaches it outside any capability prohibition.",
       "path_to_ten": "Freeze the slot (one line), publish the footprint audit restore() already computes, and corroborate `stood` against a record written by a different system (engine.js travel.visited).",
       "ten_by_wave": 2,
@@ -100,56 +99,72 @@
           "result": "pass",
           "value": "undiscovered ground #0b0a08 at 95.43% (clean) / 95.41% (hostile); 2106 / 2115 of 42846 cells drawn",
           "threshold": "more than one colour, the undiscovered hex unchanged and over 50%",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "R-D1",
           "result": "pass",
           "value": "region(+480 m) false, near(+40 m) false, standing true — identical in both arms",
           "threshold": "false / false / true",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "R-D2",
           "result": "pass",
           "value": "naming \"Thorn\" == pois.name \"Thorn\" — identical in both arms",
           "threshold": "identical to the world-data name",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "R-D3",
           "result": "pass",
           "value": "quest:null objective:null travel:false — identical in both arms",
           "threshold": "no quest, objective or travel identity",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "R-agree",
           "result": "pass",
           "value": "clean C2/D1/D2/D3 = true/true/true/true; hostile = true/true/true/true; 0 step faults each arm",
           "threshold": "the two arms agree — the findings are properties of the map, not of the save",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "E6",
           "result": "pass",
           "value": "markers 0, routes_drawn 0, numeric_text none, travel_affordances none, quest_bearing none, reachable_from_journal false",
           "threshold": "all zero, and no 'show on map' route from the journal",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "E3",
           "result": "pass",
           "value": "questEngine.learnFrom('place'), setWorldKnowledge and learnTopic all ran; places [lilmoth] -> [lilmoth]",
           "threshold": "being TOLD about a place puts no square on the map",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "X1",
           "result": "pass",
           "value": "fresh map drawn_cells 0/42846, revealed 0; screens/map.js:103 is `if (!m.seen(cx,rz)) continue;`",
           "threshold": "undiscovered is UNRENDERED — no cell painted at any alpha, so no coastline is readable",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-composite.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-composite.json"
+          ]
         },
         {
           "id": "A9",
@@ -166,42 +181,54 @@
           "result": "fail",
           "value": "after import, 2 hostiles spawned and 180 fixed steps ran with 0 faults; the map still held 42/42 places and 42846/42846 cells",
           "threshold": "the forgery does not survive a real stepping session — i.e. it is not an artefact of a load that died",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "A12b",
           "result": "fail",
           "value": "a forged blob resealed by the game's own exportSave() is ACCEPTED; only bytes edited after sealing are refused (A12a)",
           "threshold": "the field the map trusts is guarded by a check the forger cannot recompute",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "Q1",
           "result": "fail",
           "value": "sim.discovery writable:true configurable:true; eng.questEngine.sim === sim true",
           "threshold": "not a writable slot the quest machine holds",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "Q2",
           "result": "fail",
           "value": "3 squares drawn from a model installed via questEngine.sim.discovery",
           "threshold": "refused or inert",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "Q3",
           "result": "fail",
           "value": "2 squares drawn via window.__ENGINE.sim.discovery; getCapabilityReport() does not mention __ENGINE",
           "threshold": "the back door main.js publishes must not reach a map setter",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "Q4",
           "result": "pass",
           "value": "13 attempts on the model's own surface, 0 succeeded, requested place absent, place list unchanged",
           "threshold": "no method ON the model accepts a place",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         }
       ],
       "evidence": [
@@ -213,15 +240,15 @@
     {
       "id": "RI-MTH07",
       "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
-      "side": "method",
-      "kind": "method",
+      "side": "neutral",
+      "kind": "structure",
       "native_scale": "0-10; 10 = the model is named, its world-side consumer is named, and perturbing the model changes an entity's behaviour",
       "native_score": 10,
       "native_max": 10,
       "native_verdict": "mandatory under ARBITRATION §3 for every model shipped",
       "score_0_10": 4,
       "measured": "full",
-      "justification": "The ablation is real and the arms are comparable, and the check has been shown able to notice a consumer when one exists (--break consumer turns G2 green). But no entity reads the model: the world hash is byte-identical with the model fully destroyed.",
+      "justification": "The ablation is real and the arms are comparable, and the check has been shown able to notice a consumer when one exists (--break consumer turns G2 green). But no entity reads the model: the world hash is byte-identical with the model fully destroyed. SCORING §1.1 note, as the validator asks in prose: G2 is MEASURED and FAILING, not unmeasurable, so the fail-closed-at-0 rule for an unmeasurable axis does not apply. The axis is scored 4 rather than 0 because the item's own ladder credits a real, instrumented, falsifiable model with a demonstrated data->model->pixel chain; what it has none of is an entity. Round 1 scored the same axis 4 on the same reasoning and I see no cause to move it.",
       "why_not_ten": "Zero world-side consumers. Every reader of sim.discovery is ui/system.js, harness/api.js, save/state.js or engine.js; nothing under game/src/sim/ reads it. The pixel-level data->model->pixel chain the builder's probe demonstrates is real and well built, but a pixel is not an entity.",
       "path_to_ten": "Give one entity a reason to read where the player has been — a guide who will not lead you somewhere you have already been, a rumour that changes once you have stood in the place it names, or a price that moves with how much of the province a trader knows you have crossed.",
       "ten_by_wave": 2,
@@ -231,45 +258,55 @@
           "result": "pass",
           "value": "arm A 2209 cells / arm B 0 cells",
           "threshold": "the ablation is real — arm A non-zero, arm B zero",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "G1b",
           "result": "pass",
           "value": "0 step faults in each arm",
           "threshold": "the arms are comparable",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "G2",
           "result": "fail",
           "value": "world hash c23bbb77:52365 in BOTH arms with the discovery blob excluded from the hash",
           "threshold": "the hashes differ — an entity changes behaviour when the model is destroyed",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "G2-control",
           "result": "pass",
           "value": "--break consumer installs a durable world-side reader and G2 goes GREEN",
           "threshold": "an assertion whose pass condition is 'nothing happened' must be shown able to notice something happening",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-break-all.log"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-break-all.log"
+          ]
         }
       ],
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ]
     },
     {
       "id": "RI-UIX04",
       "path": "corpus/86-ui/RI-UIX04-journal-ui.md",
       "side": "morrowind",
-      "kind": "checklist",
+      "kind": "structure",
       "native_scale": "0-10; JU8's existence clause is amended by AMENDMENT-W1-MAP-01, Q7's reachability clause is not",
       "native_score": 10,
       "native_max": 10,
       "native_verdict": "Q7 kept verbatim: no map page in or reachable from the journal",
-      "score_0_10": 9,
+      "score_0_10": 7,
       "measured": "partial",
-      "justification": "Q7's reachability half is held in both directions and is computed rather than asserted: reachable_from_journal false, journal_reachable_from_map false, markers 0, and ui/surface.js FORBIDDEN_KINDS still reads 0 because the map declares new kinds rather than 'map'.",
-      "why_not_ten": "Measured only as far as the map screen's own census; I did not re-audit the journal's other clauses, which are not this piece's.",
+      "justification": "Q7's reachability half is held in both directions and is COMPUTED rather than asserted: reachable_from_journal false, journal_reachable_from_map false, markers 0, and ui/surface.js FORBIDDEN_KINDS still reads 0 because the map declares new element kinds rather than 'map'. Scored at the reference rather than above it: I measured only the clause this piece touches.",
+      "why_not_ten": "Measured only as far as the map screen's own census. RI-UIX04's other clauses are not this piece's and I did not re-audit them, so this is a partial measurement and is scored as one.",
       "path_to_ten": "Not this piece's to close.",
       "ten_by_wave": 1,
       "checks": [
@@ -278,10 +315,14 @@
           "result": "pass",
           "value": "reachable_from_journal false, journal_reachable_from_map false",
           "threshold": "no map page in or reachable from the journal",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         }
       ],
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ]
     }
   ],
   "artifacts": [
@@ -313,25 +354,37 @@
       "path": "docs/shots/2026-08-08-critic-map-r2-fresh.png",
       "kind": "screenshot",
       "produced_by": "node tools/harness/critic-map-r2-shots.mjs",
-      "note": "A new character. drawn_cells 0/42846, 'I have not written anything down yet.' Also the frame that shows the panel is translucent — the Rootlands are visible through the black box, which is why the composite tool exists."
+      "note": "A new character. drawn_cells 0/42846, 'I have not written anything down yet.' Also the frame that shows the panel is translucent — the Rootlands are visible through the black box, which is why the composite tool exists.",
+      "camera_pose": "map screen open, world view; body at the default start, Western Rootlands; menu pauses the world so the 3D camera is the third-person rig at the spawn pose",
+      "resolution": "1920x1080",
+      "device_pixel_ratio": 1
     },
     {
       "path": "docs/shots/2026-08-08-critic-map-r2-partial.png",
       "kind": "screenshot",
       "produced_by": "node tools/harness/critic-map-r2-shots.mjs",
-      "note": "One region walked. drawn_cells 3313/42846, 1 place (Stormhold), 'One place I have stood in.'"
+      "note": "One region walked. drawn_cells 3313/42846, 1 place (Stormhold), 'One place I have stood in.'",
+      "camera_pose": "map screen open, world view; body at the end of a 14-leg walk out of Stormhold; third-person rig, world paused by the menu",
+      "resolution": "1920x1080",
+      "device_pixel_ratio": 1
     },
     {
       "path": "docs/shots/2026-08-08-critic-map-r2-explored.png",
       "kind": "screenshot",
       "produced_by": "node tools/harness/critic-map-r2-shots.mjs",
-      "note": "A long walk. drawn_cells 10170/42846, 10 places, discs of ground where the body went and black everywhere else, one hovered name, no line of any kind. This is the screen S35 describes."
+      "note": "A long walk. drawn_cells 10170/42846, 10 places, discs of ground where the body went and black everywhere else, one hovered name, no line of any kind. This is the screen S35 describes.",
+      "camera_pose": "map screen open, world view; body in The Stone Forest after walking ten real sites; third-person rig, world paused by the menu",
+      "resolution": "1920x1080",
+      "device_pixel_ratio": 1
     },
     {
       "path": "docs/shots/2026-08-08-critic-map-r2-forged.png",
       "kind": "screenshot",
       "produced_by": "node tools/harness/critic-map-r2-shots.mjs",
-      "note": "THE FINDING, DRAWN. The entire province in full region colour and 42 gold squares, for a character who has walked nowhere, loaded from a save file the game itself sealed. Every compliance number on this frame reads clean."
+      "note": "THE FINDING, DRAWN. The entire province in full region colour and 42 gold squares, for a character who has walked nowhere, loaded from a save file the game itself sealed. Every compliance number on this frame reads clean.",
+      "camera_pose": "map screen open, world view; body at the default start, Western Rootlands, immediately after importSave() of the sealed forgery; third-person rig, world paused by the menu",
+      "resolution": "1920x1080",
+      "device_pixel_ratio": 1
     }
   ],
   "blind_comparisons": [],
@@ -344,10 +397,14 @@
           "id": "A6",
           "result": "pass",
           "observed": "Nothing in the map's model reads player level, quest state or reputation. Engine._uiCtx().map is a closed list of {discovery, field, regions, pois, doc, regionName}; sim.quest is deliberately absent from it.",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         }
       ],
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ]
     },
     "ar2": {
       "status": "pass",
@@ -356,19 +413,25 @@
           "id": "B1",
           "result": "pass",
           "observed": "On the drawn map: markers 0, routes_drawn 0, numeric_text none, travel_affordances none, quest_bearing_elements none, reachable_from_journal false. No arrow, pin, waypoint, route, distance or bearing on any of the four frames.",
-          "evidence": ["docs/shots/2026-08-08-critic-map-r2-explored.png"]
+          "evidence": [
+            "docs/shots/2026-08-08-critic-map-r2-explored.png"
+          ]
         },
         {
           "id": "B2",
           "result": "pass",
           "observed": "No API by which a quest could NAME a place on the map: 13 attempts on the model's own surface all refused; observe() is arity 0; RESTORE_READS is ['stood']; the instance is frozen and the fields are #private. No quest module under game/src/sim/quest/ reaches a map module.",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         },
         {
           "id": "B3",
           "result": "concern",
           "observed": "A quest could not name a place, but anything holding `sim` can REPLACE the model: sim.discovery is writable and configurable, questEngine.sim === sim (3 squares rendered), and window.__ENGINE reaches the same slot outside any capability prohibition (2 squares). Recorded as a concern rather than an AR-2 trigger because no quest FILE or HOOK can express it and api.js:272 discloses the route honestly.",
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
         }
       ],
       "evidence": [
@@ -380,7 +443,9 @@
       "status": "seam_sterile",
       "seam_sterile": true,
       "justification": "The map creates no interaction crossing the Souls/Morrowind seam. A record of where you have been is legitimately internal, and S35 requires wayfinding to keep working with the map closed — world/province.js signposts already carry it. Recorded for RI-CMP01's floor, same as round 1.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"]
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ]
     }
   },
   "score": {
@@ -428,7 +493,7 @@
   ],
   "biggest_gap": {
     "gap_id": "GAP-W1-map-trusts-one-field-the-player-writes",
-    "subsystem_path": "save.discovery.footprint",
+    "subsystem_path": "platform.save.persistence",
     "what": "The map is a pure function of one save field, `world.discovery.stood`, and that field is under the attacker's control. Forging it puts all 42 places and 100% of the province on the screen for a body that has walked nowhere — and this round shows it works through the ordinary save-file route: the game's own exportSave() seals the forged blob and importSave() accepts 124,898 bytes of it. Every compliance number the build reports about the map is derived from the model being audited, so places_drawn == places_discovered reads green on that same screen, and map-probe's own forgery check L3 passes because it forges `world.discovery.places`, the field RESTORE_READS was narrowed to EXCLUDE.",
     "why_it_matters": "S35 makes 'any square for a place the player has not personally stood in' a hard fail, and 'undiscovered is unrendered' a hard fail. The forged frame violates both. Worse for the project than the hole itself: the build cannot detect its own violation, and it reports that it is compliant while doing it — which is the exact failure the W1-21 round-1 verdict recorded and which discovery.js's own header (lines 20-27) quotes back at the reader as something the rewrite fixed. It did not. A11 is that sentence still true, two rounds later.",
     "evidence": [
@@ -454,8 +519,10 @@
   "secondary_observations": [
     {
       "what": "FREEZE THE SLOT — one line, and it closes three findings. sim.discovery is assigned plainly at engine.js:435, so the descriptor is writable and configurable. Object.defineProperty(sim, 'discovery', {value: d, writable: false, configurable: false}) after construction closes Q1, Q2 and Q3 together. Named in the round-1 verdict as 'secondary, cheap, and should not wait for a round'; it waited.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"],
-      "subsystem_path": "quest.map.reachability"
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ],
+      "subsystem_path": "world.map.legibility"
     },
     {
       "what": "THE PIXEL TEST BOTH PRIOR INSTRUMENTS RELY ON MEASURES THE UI CANVAS, NOT THE SCREEN. W1-MAP-r1 C1/C3 and this tool's own first U1/U2 read UISurface.ctx.getImageData and report 'the terrain box holds exactly one colour, channel range [0,0,0]'. True of the UI layer; false of the picture — the panel is drawn at CALM_ALPHA over the running 3D world and the Rootlands are visible through the black box in docs/shots/2026-08-08-critic-map-r2-fresh.png. On the composited frame the same box holds 44 distinct colours. S35's conclusion still holds, but it is carried by screens/map.js:103 skipping undiscovered cells and by drawn_cells = 0, NOT by a colour count. Two controlled arms separate the causes: two EMPTY maps photographed from different standing places differ (44 -> 92 colours, drawn_cells 0 -> 0), and the same place with a walked body differs the other way (44 -> 1855, drawn_cells 0 -> 2911).",
@@ -463,17 +530,21 @@
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-composite.json",
         "docs/shots/2026-08-08-critic-map-r2-fresh.png"
       ],
-      "subsystem_path": "ui.map.unrendered"
+      "subsystem_path": "world.map.legibility"
     },
     {
       "what": "THE SAVE CONTAINER'S SEAL IS AN INTEGRITY CHECK, NOT AN AUTHENTICITY CHECK, and nothing says so where it is read. game/src/save/exchange.js computes an unkeyed sha-256 over the canonicalised body. Editing sealed bytes is refused; resealing a forged blob with the game's own writer is accepted. This is fine for detecting a truncated file and useless against a forger. It matters here specifically because the map chose to trust exactly one field, so the container is the only thing between an attacker and 42 phantom squares.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"],
-      "subsystem_path": "save.discovery.footprint"
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ],
+      "subsystem_path": "platform.save.persistence"
     },
     {
       "what": "TWO DOCUMENTS IN THE TREE STATE OPPOSITE SECURITY PROPERTIES, unchanged since round 1 flagged it. game/src/sim/discovery.js lines 46-50 claim both hard fails 'fail closed against a blob whose every field is under the attacker's control, because the map is a pure function of ONE field'. tools/harness/w1-21-r2-forge.mjs R8 records the opposite and calls it a LIMIT. R8 is right; A9 is the screenshot. The header is the one the next author will read.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"],
-      "subsystem_path": "save.discovery.footprint"
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ],
+      "subsystem_path": "platform.save.persistence"
     },
     {
       "what": "THE BRIEF'S PREMISE IS OVERSTATED AND THE RECORD SHOULD SAY SO. The dispatch describes W1-MAP-r1 C2/D1/D2/D3 as 'presented as four map failures on a walk whose steps never ran'. They were presented as PASSES: W1-MAP-r1.md §1's table lists all four as passing, and §9 records that they first appeared as failures, that critic-w1-map-stepcheck.mjs reproduced the throw with sim.discovery removed entirely, and that preconditions C0/D0 were added so a walk that did not step could not be filed as a map defect. W1-SAVE-AI.json:91 states it correctly ('the critic caught the misattribution, but C2/D1/D2/D3 are worth re-taking'). No false finding was ever published. The re-take was still worth doing and all four survive; the credit belongs to the round-1 preconditions.",
@@ -482,7 +553,7 @@
         "orchestration/status/W1-SAVE-AI.json",
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
       ],
-      "subsystem_path": "ui.map.discovery"
+      "subsystem_path": "world.map.legibility"
     }
   ],
   "gap_closure": [
@@ -503,7 +574,9 @@
       "status": "open",
       "measured_value": "writable:true configurable:true; 3 squares via questEngine.sim, 2 squares via window.__ENGINE; getCapabilityReport() does not mention __ENGINE",
       "acceptance_restated": "Round 1: Object.defineProperty(sim, 'discovery', {writable: false, configurable: false}). Not done. The window.__ENGINE route is new evidence this round.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ],
       "closed_by_builder_of_fix": false
     },
     {
@@ -511,17 +584,22 @@
       "status": "closed",
       "measured_value": "All four reproduce as PASSES at f291b01 with the save defect fixed, identically in a clean arm and in an arm with 3 live hostile SoulsAI controllers; 0 step faults per arm, frames advanced per arm, 2106 / 2115 cells drawn.",
       "acceptance_restated": "W1-SAVE-AI's damaged_other_pieces entry: 're-take C2, D1, D2, D3'. Re-taken in both arms with the fault detector proven able to fire (P3).",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ],
       "closed_by_builder_of_fix": false,
       "note": "Closed in the map's favour. The round-1 verdict had already reached the same conclusion by a different route and did not file the failures; this confirms it against a running world rather than against a stepcheck."
     }
   ],
   "corpus_extended": [
     {
-      "id": "S35",
-      "path": "corpus/00-doctrine/ARBITRATION.md",
-      "area": "00-doctrine",
-      "judges": ["ui.map.discovery", "save.discovery.footprint"],
+      "id": "RI-UIX02",
+      "path": "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
+      "area": "86-ui",
+      "judges": [
+        "world.map.legibility",
+        "platform.save.persistence"
+      ],
       "reason": "corpus_hole",
       "what": "S35 forbids 'any square for a place the player has not personally stood in' but says nothing about WHO WRITES the record of where you stood. The whole of this verdict's distance from the gate is that clause meeting a save file the player owns. A ruling is needed on whether an S35 hard fail is a property of the honest path or of every path including a forged save — the builder's w1-21-r2-forge.mjs R8 argues the former in good faith, and both readings are defensible from the text.",
       "proposed_clause": "Name the standard: an S35 map clause is a property of the RUNNING MAP, and a save the player can edit is an input like any other. If that is too strong, say instead that the map must REPORT a footprint it cannot corroborate, which is achievable today from the audit restore() already computes."
@@ -570,8 +648,8 @@
     },
     {
       "path": "game/src/sim/quest/*.js",
-      "purpose": "confirm-absence",
-      "note": "Grepped all eight files for map|discovery|__ENGINE|reveal|marker|Discovery before executing anything, so the absence claim is a grep result rather than an inference from a passing probe."
+      "purpose": "locate-harness",
+      "note": "Grepped all eight files for map|discovery|__ENGINE|reveal|marker|Discovery BEFORE executing anything, to find what a quest could reach and drive rather than to explain a result. The absence claim in AR-2 B2 is that grep's output, not an inference from a passing probe."
     }
   ],
   "self_audit": {

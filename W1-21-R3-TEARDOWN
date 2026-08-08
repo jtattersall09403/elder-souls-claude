@@ -1,0 +1,45 @@
+{
+  "schema": "elder-souls/marker-scan@1",
+  "item": "RI-UIX02",
+  "detector": "F1-F5 (data)",
+  "roots": [
+    "game/data"
+  ],
+  "files_scanned": 0,
+  "parse_errors": [],
+  "hits": [],
+  "hit_count": 0,
+  "excused": [],
+  "excused_count": 0,
+  "stale_exceptions": [
+    "stealth/detection.json:no_meter.hud_elements"
+  ],
+  "by_rule": {
+    "F1": 0,
+    "F2": 0,
+    "F3": 0,
+    "F4": 0,
+    "F5": 0,
+    "F6": 0
+  },
+  "checks": [
+    {
+      "id": "K1",
+      "what": "F1-F6: 0 marker-shaped records across the scanned roots",
+      "status": "EMPTY",
+      "pass": false,
+      "samples": 0,
+      "sample_of": "JSON nodes tested against F1-F6",
+      "detail": "NOT GRADED — 0 JSON nodes tested against F1-F6 sampled. 0 hits, 0 declared exceptions, 0 parse errors, 1 stale exceptions, over 0 files",
+      "counts": {
+        "files": 0,
+        "rules": 6,
+        "excused": 0,
+        "biggest_files": []
+      }
+    }
+  ],
+  "nodes_scanned": 0,
+  "K1": "EMPTY",
+  "sample_table": "| Tool | Check | Status | Samples | One sample is | Detail |\n|---|---|---|---|---|---|\n| `marker-scan.mjs` | K1 | **EMPTY** | 0 | JSON nodes tested against F1-F6 | NOT GRADED — 0 JSON nodes tested against F1-F6 sampled. 0 hits, 0 declared exceptions, 0 parse errors, 1 stale exceptions, over 0 files |"
+}

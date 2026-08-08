@@ -24,15 +24,21 @@
   ],
   "notes": "contention --gate reported WAIT at start (4 instances, load 4.60/core over 4.0 ceiling). Doing offline work first.",
   "findings_so_far": [
-    "REPRODUCED: reach 19/19 BOTH, 163/163 texts referenced, self-test 14/14. place-library --check exit 0; the 3 same-room pairs verified pre-existing at e97347f (soulrest-court-steps), not this table.",
-    "REPRODUCED: lor04-validate before/after arms exactly; hand-authored arm byte-identical across arms (77/44/4.5%/22.73%/12.12%) which proves no hand name was touched.",
-    "RENAMES ARE REAL: 521 of 692 people actually renamed between 97bb918 and HEAD; 0 people moved between pop-*.json and authored files, so nothing was reclassified.",
-    "NEW DEFECT: tools/lore/lor04-validate.mjs has NO main guard. Importing it runs the whole validation and exits the importer (exit 1) - the same defect this round found and fixed in place-library.mjs, left in the round other new tool.",
-    "BAND IS NOT STUCK: repairing exactly the 8 names the tool blames lifts it 0 -> 3 (ladder 6), and an apostrophe puts it back to 0 by a different clause. Instrument: tools/lore/critic-w1-23-r4-band.mjs",
-    "x-DENSITY: shipped Jel carries x at 39-42%; the attested 324-name Jel corpus carries it at 14.8%. RI-LOR04 comparison-method 5 demands >=40%, so the item contradicts its own attested table and the round followed the item.",
-    "SEMANTICS: jelCompoundCandidates() is an unfiltered 75x74 root cross-product, so 8 villagers are named on lukiul (a slur), jel (the language), naga, saxhleel (the autonym) and hist.",
-    "B ARM D never presses the button: runLegs() bails at the missing prop, so \"the press opens nothing\" is unearned; and arm C pass predicate is !opened, which does not require the prop to be present.",
-    "CONSUMPTION report is stamped e00e6fe and 11 of the 110 placements landed after it."
+    "REPRODUCED at HEAD: reach 19/19 BOTH, 163/163 texts, self-test 14/14. place-library --self-test 7/7, --check exit 0.",
+    "PLACEMENT IS REAL, NOT A SUBSTRING: 157 of 163 books are a `readable` entry in an interior record and the other 6 are named by a book_id on an item. Zero are reachable only by the instrument's substring test.",
+    "ON SCREEN, 12 legs in a browser: 12/12 opened the right book by pressing interact at the shelf, 12/12 drew that book's OWN words (1328-1754 chars), 0 cross-talk, control 4/4 prop present and 4/4 stayed shut, 0 of 12 had another document within 1 m.",
+    "THE ROUND'S 'getRenderedText is blind to the book screen' IS WRONG: ui/system.js build() short-circuits on a cache key that cannot change while a screen is up (the world is paused, ctx.frame stops). Clear the register BEFORE the press, not after, and 1531 chars come back.",
+    "THE ROUND'S OWN FILED IMAGE IS A BAR CHART, not a picture of the game. Nobody had photographed a book.",
+    "PAIRS SPLIT ACROSS ROOMS, re-derived from the shipped interiors: 19/19 both placed, 3 same-room (all soulrest-court-steps, all verified pre-existing at e97347f), 16 in different rooms, 13 in different SETTLEMENTS.",
+    "RENAMES ARE REAL: 521 of 692 people actually renamed between 97bb918 and HEAD; 0 people moved between pop-*.json and authored files, so nothing was reclassified. Hand-authored arm byte-identical across both arms.",
+    "NEW DEFECT: tools/lore/lor04-validate.mjs and tools/lore/name-rosters.mjs have NO main guard. Importing lor04-validate runs the whole validation and exits the importer (exit 1) - the same defect this round found and fixed in place-library.mjs.",
+    "BAND IS NOT STUCK: repairing exactly the 8 names the tool blames lifts it 0 -> 3 (ladder 6); an apostrophe puts it back to 0 by a DIFFERENT clause. Instrument tools/lore/critic-w1-23-r4-band.mjs.",
+    "THE 8 BLAMED NAMES: 4 are Imperial officers whose rank is in the record id not the name field; 1 is a good Argonian name whose title prefix `Archein` is missing from jel-lexicon's title_prefixes. Only 3 are arguably naming defects.",
+    "BLIND CULTURE-ATTRIBUTION TAKEN: 21/21 = 100% (18/18 excluding names I had already seen; 15/15 over the non-hyphenated subset). The item calls this the test that actually matters and it had never been taken.",
+    "x-DENSITY: shipped Jel carries x at 39-42%; the attested 324-name Jel corpus carries it at 14.8%. RI-LOR04 comparison-method 5 demands >=40%, so the ITEM contradicts its own attested table and the round followed the item.",
+    "SEMANTICS: jelCompoundCandidates() is an unfiltered 75x74 root cross-product, so 8 villagers are named on lukiul (a slur), jel (the language), naga, saxhleel (the autonym) and hist - all five of which RI-LOR04 exempts from coinage.",
+    "CONSUMPTION arm C's pass predicate is !opened, which a room with no prop satisfies for free; arm D never presses the button (it bails at the missing prop). consume.json is stamped e00e6fe and 11 of the 110 placements landed after it.",
+    "HEAD BOOTS: git archive HEAD game into a clean tree, boot-check exit 0."
   ],
   "contention": "gate returned WAIT at the start and I did the whole of the offline work first; it returned GO before any browser launched and the twelve-leg on-screen run and its control were taken inside that window. It returned WAIT again for the SECOND shelf/screenshot run and I PROCEEDED PAST EXIT 3, partly because my own first run was one of the two instances counted. Rule 26: no timing figure is published anywhere in this verdict, and every figure in the shelf run is a count, a distance or a boolean.",
   "accidental_touch": "ran tools/uesp/mine-argonian-names.mjs with no args, which rewrote corpus/60-lore/data/argonian-names.json; reverted immediately with git checkout --, tree clean for that path.",
@@ -41,5 +47,12 @@
     "critic-w1-23-r3",
     "W1-READABLES-r2"
   ],
-  "score": 4
+  "score": 4,
+  "axes": {
+    "RI-LOR03": 6,
+    "RI-LOR06": 6,
+    "RI-MTH07": 7,
+    "RI-LOR04": 4
+  },
+  "biggest_gap": "RI-LOR04 bands 0 on the shipped tree on 8 names of 337, five of which are not naming defects; the verified repair lifts it to native 3 / ladder 6."
 }

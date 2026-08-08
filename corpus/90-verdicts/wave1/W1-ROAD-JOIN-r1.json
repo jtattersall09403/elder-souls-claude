@@ -1,0 +1,474 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-ROAD-JOIN",
+ "piece_title": "The road/settlement join — build-roads.mjs reads planSettlement() and re-cuts the trunk road around the buildings (round 1)",
+ "subsystem_paths": [
+  "world.traversal.roads",
+  "world.settlement.anatomy",
+  "world.traversal.time"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "critic-road-join",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true,
+  "context": "fresh context; no part of W1-ROAD-JOIN, W1-01-r4 (road-through-building.mjs, crossing.mjs, the soulrest leg tool) or W1-04 (exterior.js, planSettlement) was written by me. I wrote four new instruments under tools/world/critic-* and judged with those plus three of the tree's existing offline audits.",
+  "load_declaration": "node tools/contention.mjs --gate returned exit 0 (GO, 2 instances, 1.75/core) when I started and for the in-game probe; exit 3 (WAIT) at 03:55 when I started the four-arm soulrest body walk and again at 04:15. I PROCEEDED PAST WAIT ONCE, with ONE browser, never concurrent with another of mine, and record it here and in orchestration/status/critic-road-join.json. NO TIMING FIGURE IS PUBLISHED ANYWHERE IN THIS VERDICT, deliberately: every number here is a count, a distance in metres, a hash, an angle or a boolean, and none of them move with load.",
+  "environment_note": "game/src/world/field.js carried an UNCOMMITTED in-flight change from the sibling builder W1-CROSSING for the entire run — a square end-cap on _deckY/clampToDeck span chains. Every OFFLINE measurement in this verdict (the staleness bisection, the consumption arms, the ridge displacement, the water and scale audits, the picture) is unaffected: none of them import field.js's deck path, and the ridge tool deliberately measures the BARE WorldField with no road corridor attached. The two BROWSER measurements — the in-game footprint probe and the soulrest four-arm walk — were taken against that mixed tree and are labelled as such wherever they are quoted.",
+  "finished_at": "2026-08-08T04:30:00Z"
+ },
+ "build": {
+  "commit_sha": "a2031bb",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true,
+  "note": "HEAD was cc70ad2 when I opened the tree and a2031bb by the time the first measurement landed; the orchestrator banked twice during the run. Every figure below is stamped against the revision it was taken at (RULES rule 12), and the central finding is itself a statement about which revision you are on.",
+  "head_moved_during_the_run": "The piece's own artefact, game/data/world/roads.json, has NOT moved since 322f708 (03:15:32Z) — verified with `git log --invert-grep --grep=Orchestrator-Bank -- game/data/world/roads.json`. What moved is game/src/render/exterior.js, in 345dcca (03:35:58Z) and 0dc0703 (03:39:45Z). That is the finding, not a caveat on it."
+ },
+ "bifurcation": {
+  "axis": "fidelity",
+  "declared_before_citation": true,
+  "fidelity_refs": [],
+  "art_refs": [],
+  "note": "This piece is geometry, not art direction: where a road runs relative to a wall. There is no ART axis to judge and no reference imagery is cited anywhere in this verdict. The visual artefact I produced is a plan-view diagram of measured data, not a screenshot offered as a likeness."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WLD01",
+   "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "measured": "full",
+   "native_scale": "band 0-10; M1-M5 gates, and a failing scale score invalidates every other world score",
+   "native_score": 5,
+   "native_max": 10,
+   "native_verdict": "M1-M5 all pass at HEAD and the crossing is 57.59 min inside the 55-60 band, but the shipped road network runs through five buildings on three legs and THE CROSSING itself is offended at 5,610 m",
+   "score_0_10": 5,
+   "justification": "The item's own five metrics all pass and by its ladder that is an 8: M1-BOUNDS, M1-SETTLEMENT-PLACEMENT (worst offset 0.00 m), M1-LAND-AREA 14.31 km2, M2-ROAD-ABOVE-WATER 0 leg/phase offences over 4 phases x 10 legs, M4 worst leg deviation 2.26%, M5 largest habitation gap 7.83 min, crossing 6,911.4 m / 57.59 min. I am scoring 5, below the ladder, and the reason is that the metric set does not contain the defect: a road with a house on it passes every one of M1-M5, which is exactly why this defect survived from the day both generators were written. At HEAD the province is not crossable on foot by a body with a collision capsule — 3 of 10 legs, 13 blocked samples by the engine's own predicate, 16 samples with less than a body radius to a wall slab, worst -0.132 m (the centreline inside a wall face). A scale item whose headline claim is 'about an hour on foot' cannot be scored above the middle of the band while the hour is unwalkable for a reason the item cannot see.",
+   "why_not_ten": "Five buildings stand on the trunk road at HEAD: blackrose-house-0, blackrose-house-1, blackrose-rootpost, blackrose-condemned-row, blackrose-old-gallows. THE CROSSING is offended at 5,610 m and THE LONG WAY at 7,859 m. The piece's published '0 of 10 legs blocked, 0 offences' was true at 322f708 and has been false since 0dc0703, twenty-four minutes later.",
+   "evidence": [
+    "reports/critic-road-join/ingame.json",
+    "reports/critic-road-join/stale.json",
+    "reports/critic-road-join/offline-recheck.json",
+    "reports/critic-road-join/scale-audit.json",
+    "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png"
+   ],
+   "checks": [
+    {
+     "id": "J1",
+     "what": "does the shipped road network run through a building, asked of the RUNNING GAME rather than of a second call to the generator",
+     "result": "fail",
+     "observed": "tools/world/critic-road-join-ingame.mjs boots the game, reads renderer.province.settlementPlans off the live engine (the plans Engine._boot() builds from this.data.interiors), reads engine.data.roads, samples every leg and both named routes at 1 m and asks province.buildingAt() — the engine's own predicate. Result: 3 of 10 legs and 13 samples inside a game footprint; crossing 11 samples, long_way 10. It then measures signed clearance to the ACTUAL settlementSolids() wall slabs, the boxes CollisionCell is built from, against PLAYER_RADIUS_M = 0.32 m: 16 samples on 3 legs have less than a body radius, worst -0.132 m. The offline check agrees on the leg count and under-reports the samples: 7 samples and 4 buildings against the game's 13 and 5 — blackrose-house-1 is invisible to it entirely. Taken against the mixed tree (W1-CROSSING's field.js edit in flight); the finding is a geometry question that does not touch the deck path.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/ingame.json",
+      "reports/critic-road-join/offline-recheck.json"
+     ]
+    },
+    {
+     "id": "J2",
+     "what": "the builder's UNION claim — is the road cleared of the game's footprints, or only of the check's?",
+     "result": "pass",
+     "observed": "SOUND, and datable. tools/world/critic-road-join-stale.mjs holds roads.json FIXED and swaps planSettlement by revision, reporting both views. At 322f708, where the join was cut: check view ({} interiors) 0 of 10, game view (115 interiors) 0 of 10. The union genuinely covered the game and was not a smaller set measured against itself. The builder's number was honest when taken. This is the one place the brief's 'false green with two consistent halves' hypothesis is refuted rather than confirmed.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/stale.json"
+     ]
+    },
+    {
+     "id": "J3",
+     "what": "why the number changed — a data edit, or the generator?",
+     "result": "fail",
+     "observed": "THE GENERATOR. Nothing under game/data/world/settlements/ or game/data/world/interiors/ has changed since the join was cut. game/src/render/exterior.js changed twice: 345dcca (03:35:58Z, still 0 of 10) and 0dc0703 (03:39:45Z, 3 of 10). W1-04 round 4's per-axis shrink with MIN_ENTERABLE_SPAN_M = 6.0 grew 54 of 202 exteriors and shrank NONE, +1,846 m2 of total exterior area; blackrose-inn went from a 3.4 x 3.9 m shed to a 13.6 x 6.0 m terrace and five of its neighbours with it. The builder's handoff H4 names the staleness hazard as a DATA hazard and declines to add the check to the gate set; that decision is the direct and only reason the tree is red now.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/stale.json",
+      "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png"
+     ]
+    },
+    {
+     "id": "J4",
+     "what": "is the join MECHANISM sound, or is the artefact only accidentally right?",
+     "result": "pass",
+     "observed": "SOUND. R-REMEDY in reports/critic-road-join/consume.json: on a scratch copy of the tree exactly as it stands, `node tools/world/build-roads.mjs` returns the province to 0 of 10 legs and 0 blocked samples by both views. R-DETERM: two rebuilds from identical input are byte-identical. TEARDOWN with --no-join: 10 of 10 legs, 267 blocked samples, a distinct hash — the control arm genuinely goes red and produces a different file, so the two arms are not the same arm (RULES rule 6).",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/consume.json"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ARBITRATION-S28",
+   "path": "corpus/00-doctrine/ARBITRATION.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "measured": "full",
+   "native_scale": "the ruling's own three conditions (a) crossing 52-65 min, (b) no leg more than +/-5% from declared, (c) every re-cut leg re-verified against the full water census, the slope histogram and reachability — not merely re-timed",
+   "native_score": 7,
+   "native_max": 10,
+   "native_verdict": "(a) and (b) hold; (c) holds in fact but the piece never checked it, and the histogram it mandates conceals two unreported regressions",
+   "score_0_10": 7,
+   "justification": "The piece is correctly sided — S28 names roads as the yielding side and the builder cites it accurately and does not move one building. (a) The crossing is 57.59 min, inside 52-65 and inside the tighter 55-60 the item's top ladder rung asks for. (b) The worst leg deviation is 2.26% on helstrom-gideon against a 5% bar, and build-roads reports honestly on stderr when it cannot correct a length cleanly rather than paying for it with a wall. (c) is where it falls short: the builder's acceptance 5 is a leg-length table, which is 're-timed' and nothing else. I ran the rest and it passes — but a ruling's condition being satisfied by luck and a critic is not the same as the piece satisfying it.",
+   "why_not_ten": "S28(c) was never run by the piece. When run, the slope histogram it mandates shows two regressions nobody recorded: blackrose-lilmoth's centreline went from 0 m over the 40 deg walkable limit to 1 m (39.66 -> 40.41 deg), and helstrom-blackrose's worst skirt at +/-5.6 m went 30.27 -> 39.72 deg with its centreline 29.04 -> 37.22 deg. Neither is fatal; both are precisely what (c) exists to surface.",
+   "evidence": [
+    "reports/critic-road-join/road-water-after.json",
+    "reports/critic-road-join/scale-audit.json",
+    "reports/critic-road-join/ridge.json"
+   ],
+   "checks": [
+    {
+     "id": "S28a",
+     "what": "THE CROSSING's total walking time stays inside 52-65 minutes",
+     "result": "pass",
+     "observed": "6,911.4 m / 57.59 min against a declared 6,909 m / 57.6 min. A rebuild at HEAD gives 6,903.6 m / 57.53 min, so the band is not being held by the stale file.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/scale-audit.json"
+     ]
+    },
+    {
+     "id": "S28b",
+     "what": "no single leg's length changes by more than +/-5% from its declared value",
+     "result": "pass",
+     "observed": "Worst is helstrom-gideon at +2.26% (2,378 -> 2,431.7 m); every other leg is inside 0.25%. build-roads prints `JOIN: no clean length correction for helstrom-gideon; keeping the threaded route and its length error` on every build — the correct behaviour, and it is on stderr where nothing collects it.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/consume.json"
+     ]
+    },
+    {
+     "id": "S28c",
+     "what": "every re-cut leg re-verified against the full water census, the slope histogram and reachability — not merely re-timed",
+     "result": "fail",
+     "observed": "NOT DONE BY THE PIECE; PASSES WHEN DONE. road-water-audit.mjs: 0 leg/phase offences over 4 tide phases x 10 legs, deepest non-tideway trunk point 0.000 m, tideway inversion intact (0.85 m walkable at LOW, 1.45 m blocked at HIGH). scale-audit.mjs S9-NO-FENCES: 13/13 regions and 8/8 settlements reachable on foot from the Lilmoth start, 99.3% of walkable land. M36-ROAD-RELIEF 31.8% against a 30% target — the measure S28 was asked in order to close, and the join improved it. The slope histogram is the half that was worth running: see why_not_ten.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/road-water-after.json",
+      "reports/critic-road-join/scale-audit.json",
+      "reports/critic-road-join/ridge.json"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/00-doctrine/ARBITRATION.md",
+   "side": "neutral",
+   "kind": "method",
+   "measured": "full",
+   "native_scale": "pass/fail — name the world-side consumer and demonstrate it by perturbing the model and observing an entity change behaviour",
+   "native_score": 9,
+   "native_max": 10,
+   "native_verdict": "PASS, on the builder's four arms and independently on six of mine",
+   "score_0_10": 9,
+   "justification": "The world-side consumer is named and real: render/exterior.js planSettlement() -> world/province.js settlementSolidsNear() -> engine._settleSettlementSolids() CollisionCell -> sim/world-collision.js capsule push-out, and build-roads.mjs imports the same pure function. The coupling is BUILD-TIME, which is legitimate and is exactly why it can go stale — the road carries the answer, not the code, and the code that produced it moved. My own six arms all behave: rebuild fixes it, two builds are byte-identical, --no-join goes to 10 of 10 with a distinct hash, a Blackrose perturbation bites and is followed with the road moving 5.5 m, and a rename of every Blackrose building (a field planSettlement does not read) leaves roads.json byte-identical.",
+   "why_not_ten": "Two method notes rather than doubts about the consumption itself. The builder's probe asserts the perturbation survived planSettlement's shrink pass only for P3-GROW; for P1-MOVE and P2-ADD it computes effectiveFootprint and merely logs it, which is one ck() short of airtight. And its BITES arms are scored on LEG COUNT, which on today's tree cannot see a perturbation getting worse in a town that is already red — mine are scored on samples for that reason.",
+   "evidence": [
+    "reports/critic-road-join/consume.json",
+    "reports/w1-road-join/consumption.json"
+   ],
+   "checks": [
+    {
+     "id": "K-TEARDOWN",
+     "what": "RULES rule 6 — break the thing under test and watch the CONTROL arm go red",
+     "result": "pass",
+     "observed": "`node tools/world/build-roads.mjs --no-join` on a scratch copy: 10 of 10 legs blocked, 267 blocked samples, hash 3d7c87403d7c6df9, distinct from the joined build's 374c54154c5f6af5. I watched my own teardown go red. This is neither an inert fix nor an inert control: the join alone carries the number, and deleting it alone returns the old one.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/consume.json"
+     ]
+    },
+    {
+     "id": "K-NULL",
+     "what": "a null control strong enough to be worth having",
+     "result": "pass",
+     "observed": "NULL-NOREAD renames every Blackrose building — a field planSettlement does not read — and requires the rebuilt roads.json to be BYTE-IDENTICAL to the unperturbed rebuild. It is. That is a stronger null than 'moved less than 2 m'. Separately, the builder's own NULL is the best method in the piece: it FAILED first time (a town-scoped re-cut zone moved the road 236 m for a perturbation that should have moved it none) and forced the join to be rescoped from town radius to INFLUENCE_M = 55 m road proximity. A control that has been seen to fail is evidence.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/consume.json",
+      "orchestration/status/W1-ROAD-JOIN.json"
+     ]
+    },
+    {
+     "id": "K-REVERSED",
+     "what": "the brief's question — is any remaining arm a perturbation the system is entitled to reverse?",
+     "result": "pass",
+     "observed": "No. I built an arm designed to have that shape (NULL-REVERSED: grow blackrose-prison's declared exterior_footprint_m x6 in a town whose plan is authored 1.0 m apart) and the shrink pass did NOT take it back: 13.6 x 15.6 -> 21.5 x 33.44 m survives at HEAD. The per-axis shrink is materially more permissive than the uniform one the builder measured against — which is the same fact that made the join go stale, arriving from a second direction. P1-MOVE and P2-ADD both go red in their BITES arms, so neither is empirically vacuous.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/consume.json"
+     ]
+    },
+    {
+     "id": "K-SECONDTOWN",
+     "what": "is the coupling demonstrated anywhere the builder did not test?",
+     "result": "pass",
+     "observed": "Every one of the builder's four perturbations is in Stormhold. P-BLACKROSE moves blackrose-east-block 13.6 m onto blackrose-lilmoth in the town the join actually fails in: BITES 19 blocked samples (from a baseline of 11), FOLLOWS 0 of 10 after a rebuild, road moved 5.5 m near the subject.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/consume.json"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "RI-MTH-INSTRUMENT",
+   "path": "orchestration/RULES.md",
+   "side": "neutral",
+   "kind": "method",
+   "measured": "full",
+   "native_scale": "RULES rule 4 and rule 24 — a probe that cannot fail is worse than no probe; if a method names a tool, it must be able to fail",
+   "native_score": 5,
+   "native_max": 10,
+   "native_verdict": "the acceptance instrument sees roughly half the game's blocked samples, its self-test cannot pass on a fixed tree, and nothing on the tree runs either",
+   "score_0_10": 5,
+   "justification": "The piece's headline number comes out of tools/world/road-through-building.mjs, and that instrument is in two kinds of trouble. It plans with planSettlement(doc, {}) and therefore under-reports the running game — 7 samples and 4 buildings against the game's 13 and 5 at HEAD, missing blackrose-house-1 entirely. And its --self-test exits 1 with arm A reading 'not flagged (PROBE IS BLIND)', because its positive arm WAS the shipped defect and cannot flag on a fixed tree. The builder reported both (F1/H2, H3), which is the correct behaviour and is why this is 5 rather than lower; and I verified the union claim so the blindness did NOT produce a false green at the time, which is the other reason. But 'I did not own the file' is a reason to report a broken instrument, not a reason for the tree to keep one — and the piece's own acceptance rests on it.",
+   "why_not_ten": "road-through-building.mjs --self-test exits 1 on the shipped tree. No gate runs road-through-building.mjs at all. The check asks a question the game does not ask.",
+   "evidence": [
+    "reports/critic-road-join/ingame.json",
+    "reports/critic-road-join/offline-recheck.json",
+    "tools/world/critic-road-join-ingame.mjs"
+   ],
+   "checks": [
+    {
+     "id": "I1",
+     "what": "adjudication of the broken --self-test, and what should replace it",
+     "result": "fail",
+     "observed": "It fails, exit 1: `arm A (as shipped) -> not flagged (PROBE IS BLIND)`. Its subject is stormhold-scribe across stormhold-helstrom, which was the shipped defect; on a fixed tree arm A is clean and flag/clear/everything-else-identical cannot pass. Its own error message anticipates this ('retarget this test'). ADJUDICATION: a self-test that cannot pass on a fixed tree is a broken instrument. The builder's substitute — road-join-consumption.mjs's P1/FOLLOWS/NULL — demonstrates that the JOIN is coupled; it does not demonstrate that the ACCEPTANCE INSTRUMENT can still see, and those are different questions. THE FIX, concretely: the self-test must find its subject AT RUN TIME rather than name one, because any hard-coded subject rots the same way. tools/world/critic-road-join-ingame.mjs --self-test is a working example that passes on a fixed tree: read the plans off the running engine, search all 202 buildings x every leg point for the closest (building, road point) pair, teleport that building onto that point through province.setSettlements() — the same call _boot() makes — require the count to rise, restore, require it to return to baseline exactly. Four lines of the existing --self-test, in a file that already imports everything needed.",
+     "hard_fail": false,
+     "evidence": [
+      "tools/world/critic-road-join-ingame.mjs",
+      "reports/critic-road-join/ingame.json"
+     ]
+    },
+    {
+     "id": "I2",
+     "what": "does anything on the tree run the check?",
+     "result": "fail",
+     "observed": "No. H4 identifies road-through-building.mjs as the right gate, says it is 'cheap and offline', and then does not add it: 'that table is generated and the gate set is not mine to change'. The table being generated is a reason to change the generator's source list, not a reason to ship an ungated build-time join. The gap between the join landing and the tree going red was twenty-four minutes.",
+     "hard_fail": false,
+     "evidence": [
+      "orchestration/status/W1-ROAD-JOIN.json",
+      "reports/critic-road-join/stale.json"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "W1-05-SOULREST-HANDOFF",
+   "path": "orchestration/status/W1-ROAD-JOIN.json",
+   "side": "neutral",
+   "kind": "method",
+   "measured": "full",
+   "native_scale": "pass/fail — does the finding that would retire three agents' hypothesis rest on a control that can fail?",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "the conclusion is correct and I have now supported it; the evidence originally offered was four byte-identical arms taken on a tree where the join had already removed every building from the leg",
+   "score_0_10": 6,
+   "justification": "The builder reports walls_change_the_answer: false from four arms that came back PAIRWISE BYTE-IDENTICAL (A=B at 6459.8 m, C=D at 6269 m) and proposes on that basis that W1-05 stop testing the walls. Four identical arms is the exact signature RULES rule 6 was written about — W1-04 s wall-collision control produced fifteen byte-identical walks and read as a clean negative. And the builder s own tree explains it: at 322f708 the join had cleared soulrest-blackrose completely (0 of 10 legs, reports/critic-road-join/stale.json), so __w1_04_townSolids(false) was switching off walls the road had already been cut away from. I re-ran the same tool UNMODIFIED at HEAD, where the join is stale and blackrose-rootpost is back on that leg: A and B now DIFFER (3473.3 vs 3469.8 m, stopping 2.0 m apart) — the control bites — and the answer is STILL that the walls do not change it, with any_arm_drowned false. So W1-05 can stop testing the walls, on this evidence rather than on the builder s.",
+   "why_not_ten": "A finding that retires a hypothesis three agents have chased was published from a control that had nothing to switch off, and was not flagged as such by a builder who flagged two subtler versions of the same defect in its own consumption probe. Separately, w1-01-r4-soulrest-leg.mjs writes buildings_on_this_leg as a HARD-CODED CONSTANT rather than measuring it, so its report asserted three buildings on a leg that had none.",
+   "evidence": [
+    "reports/critic-road-join/soulrest-leg-at-HEAD.json",
+    "reports/critic-road-join/stale.json",
+    "reports/w1-road-join/soulrest-leg-after-join.json"
+   ],
+   "checks": [
+    {
+     "id": "E1",
+     "what": "was the wall control capable of failing on the tree it was run on?",
+     "result": "fail",
+     "observed": "Not meaningfully. At 322f708 the join had removed every building from soulrest-blackrose — 0 of 10 legs blocked province-wide — so the walls-off arm removed walls the road no longer met, and all four arms came back pairwise byte-identical. That is RULES rule 6 s inert-control shape and it was reported as a clean negative result.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/stale.json",
+      "reports/w1-road-join/soulrest-leg-after-join.json"
+     ]
+    },
+    {
+     "id": "E2",
+     "what": "re-run at HEAD, where the walls ARE back on the leg",
+     "result": "pass",
+     "observed": "node tools/world/w1-01-r4-soulrest-leg.mjs --frames 120000, unmodified. A (walls on, soulrest->blackrose) 3473.3 m, arrived, hp 27; B (walls off) 3469.8 m, arrived, hp 27 — A and B differ by 3.5 m of path and 2.0 m of final position, so the control DOES bite. C and D (blackrose->soulrest) are byte-identical at 6268.7 m of an 1841 m leg, hp 384, not arrived. walls_change_the_answer: false; any_arm_drowned: false; any_arm_arrived: TRUE. CONCLUSION UPHELD ON EVIDENCE THAT CAN FAIL. Taken on the mixed tree (W1-CROSSING s uncommitted field.js deck end-cap in flight) and labelled as such.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/soulrest-leg-at-HEAD.json"
+     ]
+    },
+    {
+     "id": "E3",
+     "what": "what changed between the builder s run and mine, and whose credit is it?",
+     "result": "pass",
+     "observed": "The builder s A and B ran 6459.8 m and did not arrive; mine run 3473.3 m and DO. The drowning is gone. THIS IS ALMOST CERTAINLY NOT THE JOIN and I am not claiming it: game/src/world/field.js carried W1-CROSSING s uncommitted deck end-cap fix in the working tree for my whole run, and that piece has pure-pursuit steering in flight as well. The blackrose->soulrest direction still fails identically with walls in and out — 6268.7 m of 1841 at 384 HP — which is a direction-asymmetric steering defect and is W1-CROSSING s.",
+     "hard_fail": false,
+     "evidence": [
+      "reports/critic-road-join/soulrest-leg-at-HEAD.json",
+      "orchestration/status/W1-CROSSING.json"
+     ]
+    }
+   ]
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "reports/critic-road-join/ingame.json",
+   "what": "the road network judged by the RUNNING engine's own predicate and its actual collision slabs",
+   "produced_by": "node tools/world/critic-road-join-ingame.mjs"
+  },
+  {
+   "path": "reports/critic-road-join/stale.json",
+   "what": "the staleness bisection: roads.json held fixed, planSettlement swapped across four revisions, both views reported, plus a per-building footprint delta",
+   "produced_by": "node tools/world/critic-road-join-stale.mjs --impl <exterior.js@322f708> --label '322f708 (join built here)' --impl <exterior.js@345dcca> --impl <exterior.js@0dc0703> --impl <exterior.js@HEAD> --out reports/critic-road-join/stale.json"
+  },
+  {
+   "path": "reports/critic-road-join/consume.json",
+   "what": "six consumption arms: SHIPPED, R-REMEDY, R-DETERM, TEARDOWN --no-join, P-BLACKROSE, NULL-NOREAD, NULL-REVERSED",
+   "produced_by": "node tools/world/critic-road-join-consume.mjs"
+  },
+  {
+   "path": "reports/critic-road-join/ridge.json",
+   "what": "lateral displacement of the joined road against the pre-join control, per metre, plus the skirt slope profile at +/-3.6, 5.6, 8.6 and 11.6 m on the bare WorldField",
+   "produced_by": "node tools/world/critic-road-join-ridge.mjs"
+  },
+  {
+   "path": "reports/critic-road-join/offline-recheck.json",
+   "what": "the piece's own acceptance instrument, re-run at HEAD",
+   "produced_by": "node tools/world/road-through-building.mjs --out reports/critic-road-join/offline-recheck.json"
+  },
+  {
+   "path": "reports/critic-road-join/road-water-after.json",
+   "what": "S28(c)'s water census on the joined network: 4 tide phases x 10 legs",
+   "produced_by": "node tools/world/road-water-audit.mjs --out reports/critic-road-join/road-water-after.json"
+  },
+  {
+   "path": "reports/critic-road-join/scale-audit.json",
+   "what": "S28(c)'s reachability and relief half: S9-NO-FENCES, M36-ROAD-RELIEF, M4, M2, cut-and-fill, deck spans",
+   "produced_by": "node tools/world/scale-audit.mjs --out reports/critic-road-join/scale-audit.json"
+  },
+  {
+   "path": "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png",
+   "what": "Blackrose in plan, drawn twice from the SAME roads.json with only planSettlement() swapped: 0 offenders at 322f708, 5 at HEAD",
+   "produced_by": "node tools/world/critic-road-join-shot.mjs --old <exterior.js@322f708> --new <exterior.js@HEAD>"
+  },
+  {
+   "path": "tools/world/critic-road-join-ingame.mjs",
+   "what": "the in-game instrument, including a --self-test that finds its own subject and therefore passes on a fixed tree",
+   "produced_by": "written by this critic"
+  },
+  {
+   "path": "tools/world/critic-road-join-stale.mjs",
+   "what": "the generator-swap harness — the door H4 did not name",
+   "produced_by": "written by this critic"
+  },
+  {
+   "path": "tools/world/critic-road-join-consume.mjs",
+   "what": "the critic's own consumption arms, including a teardown watched going red and a byte-identical null",
+   "produced_by": "written by this critic"
+  },
+  {
+   "path": "tools/world/critic-road-join-ridge.mjs",
+   "what": "the displacement and skirt measurement that settles the ridge argument",
+   "produced_by": "written by this critic"
+  },
+  {
+   "path": "reports/critic-road-join/soulrest-leg-at-HEAD.json",
+   "what": "the four-arm soulrest body walk re-run at HEAD, where blackrose-rootpost is back on the leg and the wall control can therefore bite",
+   "produced_by": "node tools/world/w1-01-r4-soulrest-leg.mjs --frames 120000 --out reports/critic-road-join/soulrest-leg-at-HEAD.json"
+  }
+ ],
+ "blind_comparisons": [],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "independently_measured": false,
+   "checks": [
+    {
+     "id": "AR1-NA",
+     "what": "Morrowind-flavoured mechanics contaminating the fight",
+     "result": "pass",
+     "observed": "Not applicable. The piece touches one build tool, one data file and the road corridor. No combat code, no roll-to-hit, no pause, no level scaling, no animation cancel. Nothing it ships is reachable from inside a fight."
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "independently_measured": true,
+   "checks": [
+    {
+     "id": "AR2-MARKERS",
+     "what": "Souls conventions contaminating the world — the obvious risk here is that a 'road that avoids houses' becomes a guidance rail",
+     "result": "pass",
+     "observed": "It does the opposite, and deliberately. The join's stated design is 'not a detour around the town': only the part of a leg within 55 m of a building is re-cut, on a 1 m grid, so the trunk road BECOMES the street and runs between the houses. The picture shows this — the road threads the terrace at Blackrose rather than skirting it. No marker, no waypoint, no bonfire warp, no procedural placement is introduced. The gate at Thorn (whose declared centre is 7.11 m inside thorn-hall) moves the ROAD'S TERMINUS onto the square and is emitted as `road_anchor` on the leg, i.e. declared rather than silent."
+    }
+   ]
+  },
+  "ar3": {
+   "status": "pass",
+   "seam_sterile": true,
+   "checks": [
+    {
+     "id": "AR3",
+     "what": "does this piece create or carry an interaction crossing the Souls/Morrowind seam?",
+     "result": "pass",
+     "observed": "It does not, and legitimately: this is a build-time geometry join between two world generators. No faction rank, disposition, lore fact or quest resolution changes any encounter because of it. Reported as seam_sterile: true per ARBITRATION §3 rather than penalised; RI-CMP01's project floor governs how many such pieces are tolerable. The nearest thing to a seam consequence is negative and worth stating: while the road runs through a wall, the province is not crossable on foot, which removes the ONE non-combat resolution ARBITRATION §1 cares most about — the right to disengage and walk away — from every fight that happens on the trunk road through Blackrose."
+    }
+   ]
+  },
+  "consumption": {
+   "status": "pass",
+   "model": "game/data/world/roads.json — the trunk road polylines, re-cut by tools/world/build-roads.mjs against planSettlement()",
+   "world_side_consumer": "game/src/render/exterior.js planSettlement() -> game/src/world/province.js setSettlements()/settlementSolidsNear() -> game/src/engine.js _settleSettlementSolids() CollisionCell -> game/src/sim/world-collision.js capsule push-out. build-roads.mjs imports the SAME pure function, which is what makes it a join rather than two agreeing seeds.",
+   "demonstration": "Six arms in reports/critic-road-join/consume.json, all on scratch copies with nothing under game/ written in the real tree. Moving blackrose-east-block 13.6 m onto blackrose-lilmoth takes blocked samples from 11 to 19 with the roads unrebuilt and to 0 with them rebuilt, moving the road 5.5 m at the perturbation. Building with --no-join gives 10 of 10 legs and 267 blocked samples under a distinct hash. Renaming every building in the town — a field planSettlement does not read — leaves roads.json byte-identical.",
+   "first_attempt_rejected": "My first BITES criterion was a leg count, copied from the builder's probe. It cannot work on today's tree: Blackrose is ALREADY red, so moving another building onto an already-blocked leg leaves the leg count unchanged and the arm reads as a coupling failure. Rescored on blocked samples, which rise 11 -> 19. The builder's probe has the same latent defect and will hit it the moment anyone re-runs it.",
+   "sole_consumer_note": "The coupling is BUILD-TIME by design and that is the correct trade — planSettlement is pure and runs per boot in the browser, and pushing the road network into it would be a far heavier coupling. But a build-time consumption is a consumption with a half-life, because the artefact carries the answer and the code that produced it can move underneath it. This one's half-life was twenty-four minutes, and that is the verdict's central finding rather than a footnote to it.",
+   "evidence": [
+    "reports/critic-road-join/consume.json"
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 5,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "Below bar, remedy required — and the remedy is one command plus a gate entry",
+  "confidence": "high",
+  "aggregation_note": "min over the five axes measured: RI-WLD01 5, ARBITRATION-S28 7, RI-MTH07 9, RI-MTH-INSTRUMENT 5, W1-05-SOULREST-HANDOFF 6. The two 5s are the same fact seen from two sides — the artefact is red at HEAD and nothing on the tree can say so. This is a FAIL on the state of the artefact, not on the quality of the engineering: the join is correctly sided on S28, well argued, honest about what it could not do, and its two self-caught control defects (the town-scoped null that moved the road 236 m, and the grow the shrink pass legally undid) are better method than most pieces here produce."
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "The shipped artefact is red. game/data/world/roads.json runs through five buildings on three of ten legs at HEAD; THE CROSSING is offended at 5,610 m and THE LONG WAY at 7,859 m, measured by the running engine's own predicate and confirmed by the piece's own offline check.",
+  "The published '0 of 10 legs blocked, 0 offences' was TRUE when taken at 322f708 and has been false since 0dc0703 — twenty-four minutes later. The cause is not a data edit but a change to planSettlement() itself, a door handoff H4 did not name.",
+  "The piece identified the staleness hazard, identified the correct gate, and declined to add it because the gate table is generated. That decision is the sole reason the tree is red now.",
+  "The acceptance instrument under-reports the running game by roughly half its blocked samples and misses a whole building, and its --self-test exits 1 on a fixed tree and was left broken.",
+  "S28(c)'s re-verification was not performed. It passes when performed — but the slope histogram it mandates conceals two unreported regressions the join caused, including a metre of trunk road put over the 40 deg walkable limit on blackrose-lilmoth.",
+  "Against all of that: the mechanism is sound and the fix is one command. A rebuild at HEAD returns the province to 0 of 10, deterministically, verified on a scratch copy.",
+  "The soulrest finding that would have retired three agents' wall hypothesis was published from a control that had nothing to switch off — four byte-identical arms on a tree where the join had already cleared that leg. The conclusion is correct; I re-ran it at HEAD where the control bites and it still holds, so W1-05 may proceed, on this evidence rather than on the builder's."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-road-join-has-no-gate",
+  "subsystem_path": "world.traversal.roads",
+  "severity": "blocking",
+  "what": "The road/settlement join is a BUILD-TIME consumption with no gate. game/data/world/roads.json carries the answer; planSettlement() produces the question; nothing re-asks it and nothing notices when it changes. The check that would notice exists, is offline, runs in under a second, already exits non-zero on failure, and is run by nothing. The join went stale twenty-four minutes after it was cut and has been stale for every commit since.",
+  "why_it_matters": "The province is not crossable on foot by a body with a collision capsule while a house stands on the trunk road — which is the exact defect this piece was dispatched to remove, and §P.4 of the dispatch was retracted because of it. It is also the shape the project keeps losing to: a correct model, correctly instrumented, whose consumer silently stopped agreeing with it. Here the consumer did not stop reading; the thing it reads moved. Sixteen subsystems have shipped a model nothing reads. This is the seventeenth failure mode: a model something read ONCE.",
+  "evidence": [
+   "reports/critic-road-join/stale.json",
+   "reports/critic-road-join/ingame.json",
+   "reports/critic-road-join/consume.json",
+   "reports/critic-road-join/offline-recheck.json",
+   "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png"
+  ],
+  "remedy": {
+   "action": "Four steps, in order. (1) Run `node tools/world/build-roads.mjs` and commit game/data/world/roads.json — verified on a scratch copy of the tree exactly as it stands (R-REMEDY in reports/critic-road-join/consume.json). (2) Add `node tools/world/road-through-building.mjs` to the gate set by editing the SOURCE LIST the INDEX.md gate table is generated from, not the table. (3) Change road-through-building.mjs to plan with the interiors — planSettlement(doc, interiors), or the union of that and planSettlement(doc, {}) — so the gate asks the game's question rather than the check's; at HEAD the difference is 6 blocked samples and one whole building (blackrose-house-1). (4) Replace road-through-building.mjs --self-test's hard-coded stormhold-scribe subject with a run-time search over every building x every leg point for the nearest (building, road point) pair, perturb THAT through the same path the game uses, and require flag / restore-to-baseline; tools/world/critic-road-join-ingame.mjs --self-test is a working implementation of exactly this.",
+   "acceptance": "On a clean tree at the commit that lands the remedy, ALL of: (i) `node tools/world/road-through-building.mjs` exits 0 with 0 of 10 legs blocked and 0 named-route offences; (ii) the same question asked with all 115 interiors loaded also returns 0 of 10 and 0 blocked samples; (iii) `node tools/world/critic-road-join-ingame.mjs` returns 0 legs inside a game footprint and 0 samples closer than PLAYER_RADIUS_M = 0.32 m to a settlementSolids() wall slab; (iv) `road-through-building.mjs --self-test` exits 0 ON THAT FIXED TREE; (v) the check is named in the generated gate list and a deliberate 1 m edit to any settlement offset_m, committed without a road rebuild, makes the gate fail."
+  }
+ },
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and this is the honest half of the verdict. ATTACK F asked me to walk THE CROSSING end to end. I DID NOT, and I am saying so rather than grading a number I did not take. Three reasons, all of them real: (1) node tools/contention.mjs --gate returned exit 3 for the second half of my run and I had already spent my one over-ceiling browser on the soulrest arms; (2) the sibling builder W1-CROSSING is driving exactly that walk right now with a steering fix and an uncommitted change to game/src/world/field.js's deck path in the working tree, so a walk taken by me would have measured a tree in flux and duplicated a live piece the brief told me not to collide with; (3) the walk cannot complete anyway on this artefact — the body is pinned at 550 m of 6,911 m and, if it were freed, THE CROSSING is offended at 5,610 m inside blackrose-house-0, so the shipped tree has a second wall waiting past the first. What I took INSTEAD is the strongest static substitute available and it is not a path solver: the running engine's own province.buildingAt() over the engine's own plans, plus signed clearance to the actual settlementSolids() collision boxes at the body's real radius. That answers what a walk would have hit; it does not answer whether the walker can get there, and I am not claiming it does. NOBODY HAS STILL WALKED THE CROSSING END TO END and no figure in this verdict should be read as if somebody had."
+ }
+}

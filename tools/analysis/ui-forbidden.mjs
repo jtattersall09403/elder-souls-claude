@@ -153,13 +153,17 @@ function looksLikeBar(c) {
   return h >= 3 && h <= 14 && w >= 30 && w <= 200 && (w / h) > 4 && c.density > 0.6;
 }
 
+// RULES 6 teardown — scan nothing and observe nothing, and confirm U4 and U5 report EMPTY rather
+// than the `0 hits` PASS that a run which opened no screen produced byte-identically in round 2.
+const TEARDOWN = !!args.teardown;
 ensureDir(RUN);
-const h = await launchGame({ width, height, timeout: 240000 });
+const h = TEARDOWN ? null : await launchGame({ width, height, timeout: 240000 });
 const out = {
   schema: 'elder-souls/ui-forbidden@1', item: 'RI-UIX01', at: new Date().toISOString(),
   state, screen: [width, height], declared: [], scanned: [], observed: [], self_test: null,
 };
 try {
+  if (TEARDOWN) { log('  TEARDOWN: scanning nothing on purpose — U4 and U5 must report EMPTY'); throw { __teardown: true }; }
   await h.h('setRenderRate', 60);
   // W1-21 round 3. PIN THE DRAWING BUFFER BEFORE ANY PIXEL IS LOOKED AT.
   //
@@ -292,8 +296,10 @@ try {
     };
     log(`  self-test: injected "247" -> ${cands.length} digit glyphs found`);
   }
+} catch (e) {
+  if (!e || !e.__teardown) throw e;
 } finally {
-  await h.close();
+  if (h) await h.close();
 }
 
 out.declared_hits = out.declared.length;

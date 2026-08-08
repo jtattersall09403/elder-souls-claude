@@ -95,13 +95,21 @@ try {
     // THE WALK. A named settlement, from the state file that puts a player in it, on foot.
     // ------------------------------------------------------------------------------------------
     const WRIGHT = 'spellwright-lilmoth';
-    const POST = [2784.2, 5060.1];
+    // THE ROUTE THROUGH LILMOTH, waypoint by waypoint, and every waypoint was MEASURED. A
+    // straight line from the state file's spawn to a post on the market side of the town aborts
+    // `stuck`: 8.5 m walked of 25.9 to the scribe's stair, 10.35 m short of the smithy, 7.93 m
+    // short of the market. Buildings stand between the quay and that side of Lilmoth and no
+    // walked route in this build gets past them — a W1-04 world-collision finding, reported in
+    // the status file and not this piece's to fix. The yard and then the ledger house is a route
+    // that arrives, so that is where the spellwright stands and that is the way there.
+    const ROUTE = [[2799.85, 5034.17], [2798.2, 5036.6]];
+    const POST = ROUTE[ROUTE.length - 1];
     H.setSeed(4242);
     H.loadState('town-lilmoth');
     H.setRenderRate(0);
     const start = H.getPlayerStats().pos.slice();
     let walk = null;
-    try { walk = H.walkPath([[start[0], start[2]], POST], { speed: 'walk', arrive_m: 1.6 }); }
+    try { walk = H.walkPath([[start[0], start[2]], ...ROUTE], { speed: 'walk', arrive_m: 1.6 }); }
     catch (err) { log2.push(`walkPath: ${err && err.message}`); }
     const standing = H.getPlayerStats().pos.slice();
 
@@ -264,8 +272,14 @@ try {
       // it was paid for in, twenty metres from the person who wrote it.
       H.conversationClose();
       H.hearthRest();
-      const here = H.getPlayerStats().pos;
-      const e = H.spawn('inf_trash', here[0] + 6.0, here[2] + 1.0);
+      // IN FRONT OF THE BODY, not at a fixed offset: the first draft spawned at `+6 x` and the
+      // bolt flew past a body that was standing behind the caster's shoulder — `cast_start`,
+      // `focus_spend` and `cast_release` on the stream and no `spell_hit`. Six metres along the
+      // way the player is actually facing.
+      const ps = H.getPlayerStats();
+      const here = ps.pos;
+      const rad = (ps.yaw_deg || 0) * Math.PI / 180;
+      const e = H.spawn('inf_trash', here[0] + Math.sin(rad) * 6.0, here[2] + Math.cos(rad) * 6.0);
       const eid = e && e.eid ? e.eid : e;
       H.lockOn(eid);
       H.magicEventsDrain();

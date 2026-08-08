@@ -16,7 +16,7 @@
     "role": "critic.lore.canon",
     "model": "claude-opus-5",
     "started_at": "2026-08-08T02:55:00Z",
-    "finished_at": "2026-08-08T04:10:00Z",
+    "finished_at": "2026-08-08T04:07:12Z",
     "conflict_of_interest": false,
     "saw_builder_notes_before_blind": true,
     "blind_pack_built_by_critic": true,
@@ -118,7 +118,7 @@
           "id": "lor03-corpus-total",
           "result": "pass",
           "hard_fail": false,
-          "value": "163 texts, 112,884 words, median 547, p90 1,453, 21 wrong_on_purpose, 0 texts without a taxon",
+          "value": "163 texts, 112,884 words, median 547, p90 1,453, 21 wrong_on_purpose, 0 texts without a taxon. Cross-cutting quotas recomputed independently and all pass: Argonian-authored 52 (>=14), skill-book tagged 63 (>=26), multi-volume series 5 (>=3).",
           "threshold": ">=112 texts, median >=520"
         },
         {
@@ -176,7 +176,7 @@
           "id": "lor06-mutual-pairs",
           "result": "pass",
           "hard_fail": false,
-          "value": "19 mutual, 0 dangling",
+          "value": "19 mutual, 0 dangling, and re-derived from the shipped interior records independently of place-library's own bookkeeping: 19 of 19 have both sides in a room, 3 have their halves in the SAME room (all three soulrest-court-steps, all pre-existing at e97347f), 16 have them in different rooms, of which 13 are in different SETTLEMENTS. Thirteen of nineteen arguments cannot be had without leaving the town — a stronger claim than the round made for itself.",
           "threshold": ">=8"
         },
         {
@@ -297,13 +297,13 @@
       "side": "neutral",
       "kind": "structure",
       "native_scale": "0-5 band",
-      "native_score": 4,
+      "native_score": 3,
       "native_max": 5,
-      "native_verdict": "The library half went from consumed-by-nothing to demonstrated, and I demonstrated it independently rather than accepting the round's arms. Twelve books, twelve rooms, pressed through the input pipeline, each drawing its own words on the screen. Held below 5 because half the register half is still inert and because the round's own control is asserted more weakly than it was observed.",
-      "score_0_10": 7,
+      "native_verdict": "The library half went from consumed-by-nothing to demonstrated, and I demonstrated it independently rather than accepting the round's arms: twelve books, twelve rooms, pressed through the input pipeline, each drawing its own words on the screen. Then I walked every document in the six most loaded rooms and found four that are placed, drawn, and inert under the button — one of them half of a registered contradiction pair. Held at band 3 for that, for the 13 of 28 disputes that still move nothing, and because the round's own control is asserted more weakly than it was observed.",
+      "score_0_10": 6,
       "measured": "full",
       "justification": "tools/lore/critic-w1-23-r4-onscreen.mjs: 12/12 legs opened the right book by standing 1 m from the object and pressing interact; 12/12 drew long words out of that book's own record onto the screen (1,328-1,754 characters per leg); 0 legs drew another book's words; the control, standing at reach_m + 3 m WITH THE PROP ASSERTED PRESENT, stayed shut 4/4. The rendered-text accessor the round reported as structurally blind to the book screen is not blind: ui/system.js build() short-circuits on a cache key that is constant while a screen is up, so clearing the text register before the press rather than after puts 1,531 characters on the record.",
-      "why_not_ten": "13 of 28 registered disputes still change nothing anybody says, so roughly half the register model has no demonstrated world-side behaviour change. The round's arm C passes on `!opened`, which a room with no prop in it satisfies for free — the distinction from arm D is real in the data and absent from the assertion. The round's arm D never presses the button: runLegs() bails at the missing prop before the teleport and the input queue, so 'the press opens nothing' describes a press that did not happen. And the consumption report is stamped e00e6fe, older than the round's own commits, with 11 of the 110 placements landing after it — the eleven texts written this round have been through no consumption arm at all.",
+      "why_not_ten": "4 of 45 documents in loaded rooms cannot be opened where they stand, and one is half of a registered contradiction pair. 13 of 28 registered disputes still change nothing anybody says, so roughly half the register model has no demonstrated world-side behaviour change. The round's arm C passes on `!opened`, which a room with no prop in it satisfies for free — the distinction from arm D is real in the data and absent from the assertion. The round's arm D never presses the button: runLegs() bails at the missing prop before the teleport and the input queue, so 'the press opens nothing' describes a press that did not happen. And the consumption report is stamped e00e6fe, older than the round's own commits, with 11 of the 110 placements landing after it — the eleven texts written this round have been through no consumption arm at all.",
       "checks": [
         {
           "id": "mth07-library-consumer-named",
@@ -337,8 +337,22 @@
           "id": "mth07-crowding",
           "result": "pass",
           "hard_fail": false,
-          "value": "0 of 12 legs had another document within 1 m; nearest other document 3.20-11.59 m, against a 2.6 m minimum separation with a documented crowded-shelf fallback",
+          "value": "Crowding holds everywhere it was tested. Every document in the six most loaded rooms was walked to and opened separately — 45 legs. soulrest-court-steps 14/14 openable at exactly the 2.60 m minimum, gideon-grange 9/9 at 2.66 m, lilmoth-customs 6/6 at 3.92 m, archon-guild-office 5/5 at 3.42 m. The separation logic does what its comment claims, including in the fifteen-document archive where it is tightest.",
           "threshold": "no two documents inside one interact reach, because the nearest prop wins"
+        },
+        {
+          "id": "mth07-instrument-can-fail",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "Two red arms. The control is the same code with one parameter changed and it reports opened: null and 0 characters drawn on 4/4 legs — watched failing, not assumed. The cross-talk arm's zero was checked for vacuity: over the 132 ordered pairs of these twelve books, 6 pairs share two or more of one book's needle words in the other book's full text, so a build that drew the wrong page would have been caught.",
+          "threshold": "RULES #4 — a probe that cannot fail is worse than no probe"
+        },
+        {
+          "id": "mth07-every-document-openable",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "4 of 45 documents in the six most loaded rooms are placed, drawn, standable-at, and open NOTHING when interact is pressed at them: gideon-court's a-short-account-of-the-pacification and the-legates-seal-register, helstrom-undertemple's the-coast-survey-line and the-helstrom-kin-list. Separation is not the cause — those rooms' minimum document spacing is 3.53 m and 3.32 m, well outside the 2 m interact reach. a-short-account-of-the-pacification is one half of a registered contradiction pair (the drowning at the ford, against the-account-the-marsh-keeps), so one of the nineteen pairs the round's headline is about has a side that cannot be opened. Neither the substring reachability test, nor place-library --check, nor my own twelve chosen legs could see it.",
+          "threshold": "every placed document opens when a player presses interact at it"
         }
       ],
       "hard_fails": [],
@@ -346,6 +360,7 @@
         "tools/lore/critic-w1-23-r4-onscreen.mjs",
         "reports/w1-23-r4/critic-onscreen.json",
         "tools/lore/critic-w1-23-r4-shelf.mjs",
+        "tools/lore/critic-w1-23-r4-blocked.mjs",
         "reports/w1-23-r4/consume.json",
         "docs/shots/2026-08-08-w1-23-r4-critic-a-book-open-in-the-lilmoth-customs-house.png"
       ]
@@ -386,7 +401,7 @@
       "path": "tools/lore/critic-w1-23-r4-blind.mjs",
       "kind": "blind-pack",
       "produced_by": "node tools/lore/critic-w1-23-r4-blind.mjs",
-      "note": "The RI-LOR04 comparison-method §6 attribution pack, its six tell checks, and its key. Exits 2 rather than print a pack carrying a tell, and rejected its own first two drafts on the length-tell check (per-culture mean spreads 5.20 and 4.20). --pack prints without the key; --key prints the key; --score scores an answer string. My answers: 21/21."
+      "note": "The RI-LOR04 comparison-method §6 attribution pack, its six tell checks, and its key. Exits 2 rather than print a pack carrying a tell, and rejected its own first two drafts on the length-tell check (per-culture mean spreads 5.20 and 4.20). --pack prints without the key; --key prints the key; --score scores an answer string. My answers: 21/21 at 6803a05. THE DRAW IS DETERMINISTIC AT A COMMIT AND THE ROSTER IS NOT: re-run an hour later at f94df62 it produced a different pack, because a neighbour had added and removed roster names. The exact 21 names I answered and the key are written out in full in the verdict §5 so the result survives the tree moving."
     },
     {
       "path": "docs/shots/2026-08-08-w1-23-r4-critic-a-book-open-in-the-lilmoth-customs-house.png",
@@ -441,6 +456,18 @@
       "kind": "report",
       "produced_by": "written by the critic; every figure in it reproduced by the instruments above",
       "note": "The verdict prose, with the fifty names read by ear and the blind pack scored."
+    },
+    {
+      "path": "tools/lore/critic-w1-23-r4-blocked.mjs",
+      "kind": "report",
+      "produced_by": "node tools/lore/critic-w1-23-r4-blocked.mjs",
+      "note": "Diagnoses the four documents the shelf census found inert: stands at each, presses, and reads back the world state that decided what the press did — player position, the room's interior_spawn, the 2.6 m door reach, and everything else inside the interact radius. Carries two controls, one in the same room that does open and one in a clean room. Also takes the screenshot, at a smaller viewport, because the full-size one timed out twice on a loaded box."
+    },
+    {
+      "path": "reports/w1-23-r4/critic-shelf.json",
+      "kind": "trace",
+      "produced_by": "node tools/lore/critic-w1-23-r4-shelf.mjs",
+      "note": "Per-room census: declared documents, spawned props, real pairwise minimum separation measured in the built room, and how many are separately openable."
     }
   ],
   "arbitration": {
@@ -477,7 +504,7 @@
     "overall_0_10": 4,
     "pass_threshold": 7,
     "aggregation": "min",
-    "aggregation_note": "min-over-axes as the dispatch specified: RI-LOR03 6, RI-LOR06 6, RI-MTH07 consumption 7, RI-LOR04 4 -> 4. Round 3 was also 4 (6/6/5/4) AND THE LADDER BEING FLAT IS THE MOST IMPORTANT THING IN THIS VERDICT, so it is spelled out rather than left to be noticed. Consumption moved 5 -> 7 on evidence I took myself. RI-LOR04 stays at 4 for a reason that is arithmetic rather than judgement: round 3 could not compute the item's band at all and scored the axis 4 on inspection; round 4 built the validator, the band is now computable, and it computes to 0, which SCORING.md §1.2 step 1 caps at 4. So the axis is pinned at the same number by a cliff rather than by a plateau. Repair the eight names in biggest_gap and the same tool reports native 3 / ladder 6, which makes the piece 6 overall — one edit from within striking distance of the gate.",
+    "aggregation_note": "min-over-axes as the dispatch specified: RI-LOR03 6, RI-LOR06 6, RI-MTH07 consumption 6, RI-LOR04 4 -> 4. Round 3 was also 4 (6/6/5/4) AND THE LADDER BEING FLAT IS THE MOST IMPORTANT THING IN THIS VERDICT, so it is spelled out rather than left to be noticed. Consumption moved 5 -> 6 on evidence I took myself, and would have been 7 but for four documents in two rooms that are placed, drawn and inert under the button. RI-LOR04 stays at 4 for a reason that is arithmetic rather than judgement: round 3 could not compute the item's band at all and scored the axis 4 on inspection; round 4 built the validator, the band is now computable, and it computes to 0, which SCORING.md §1.2 step 1 caps at 4. So the axis is pinned at the same number by a cliff rather than by a plateau. Repair the eight names in biggest_gap and the same tool reports native 3 / ladder 6.",
     "band_label": "The library is reachable and readable — twelve books opened by pressing the button at the shelf, each putting its own words on the screen — and the Argonians are named like Argonians at 100% blind attribution. What pins the score is eight names out of 337, five of which are not naming defects at all, tripping RI-LOR04's band-0 clause by 0.37 of a percentage point.",
     "confidence": "high",
     "confidence_note": "Every figure is a count, a boolean or a band, taken with an instrument that self-tests in both directions, and the two headline claims were re-derived by tools I wrote rather than by the round's. Where my numbers overlap the round's they agree exactly (19 mutual pairs, 163 texts, 69.7%/10.2%, 43/0 reused, 18/0 slugs); where they differ I say so and say why (13 inert disputes today against the round's 12, because the dialogue tree moved). NOT CLAIMED: any blind PROSE comparison, for which no reveal key exists on disk; RI-LOR06's secret-leak triage, unreviewable at 657 hits since round 1; any timing figure."
@@ -486,6 +513,7 @@
   "status_reasons": [
     "min-over-axes 4 against a wave-1 gate of 7.0",
     "RI-LOR04 bands 0 native on the shipped tree — its own §Scoring 0-row, 2.37% unclassifiable against a 2.00% line — which SCORING.md §1.2 step 1 caps at ladder 4",
+    "4 of 45 documents in the six most loaded rooms are placed, drawn and inert under the interact button — one of them half of a registered contradiction pair",
     "13 of 28 registered disputes still change nothing anybody says",
     "5 of 10 taxa remain below RI-LOR03 §2's stated minimums, and T4 is at 61 against a floor of 16"
   ],
