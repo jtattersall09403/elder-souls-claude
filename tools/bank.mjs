@@ -68,6 +68,17 @@ const matchLen = (decl, path) => {
   return -1;
 };
 
+// If another process is mid-commit, do not race it. `git add -A` while an agent sits between its
+// own `git add` and its `git commit --only` is how that agent's staged work ends up in this
+// commit instead of its own — a critic named the gap precisely: the rule tells a *finishing*
+// agent how to behave and says nothing to a *waiting* one. This is the orchestrator's half of
+// that. It is not airtight (the lock exists only for the moments git holds it), but it converts
+// the most common collision into a retry.
+if (existsSync(join(ROOT, '.git', 'index.lock'))) {
+  console.log('bank: another commit is in progress — not staging over it. Retry in a moment.');
+  process.exit(1);
+}
+
 git('add', '-A');
 const staged = git('diff', '--cached', '--name-only').split('\n').map(s => s.trim()).filter(Boolean);
 if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }

@@ -104,6 +104,13 @@ right now). Between these two you should not need to go looking for anything.
        `git commit --only <your paths>` still comes out with those five. **That is expected and
        it is not a sweep.**
 
+    **If the index is locked, retry — do not wait.** A dozen agents commit concurrently and the
+    lock is held for seconds at a time. An agent that blocks on it is an agent whose staged work
+    sits in the shared index waiting to be swept; retrying with a short backoff gets you in
+    between other commits. `tools/bank.mjs` now refuses to stage while a commit is in progress,
+    which closes the orchestrator's half of this, but it is not airtight. If your work is banked
+    while you wait, verify the content landed and move on — do not unpick it.
+
     `--only` itself is sound and you should still use it: tested directly, `git commit --only
     a.txt` with `b.txt` staged commits `a.txt` alone and leaves `b.txt` staged. An agent reported
     otherwise, I tested that narrow claim, found it false, and said so — and was then shown the

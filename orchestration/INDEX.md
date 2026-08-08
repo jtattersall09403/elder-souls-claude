@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `eef3327`: 620 tools, 153 reference
-items, 48 pieces in flight.
+so it cannot drift. Generated at `9e962a4`: 620 tools, 153 reference
+items, 49 pieces in flight.
 
-Its purpose is to stop 48+ concurrent agents each paying separately to discover the
+Its purpose is to stop 49+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -932,6 +932,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-04-r4` | starting | read INDEX.md and corpus/90-verdicts/wave1/W1-04-r3.md | `orchestration/status/W1-04-r4.json` |
 | `critic-w1-16-r3` | running | read RULES/INDEX/ARBITRATION/spec/producer status; then attacks A-H | `orchestration/status/critic-w1-16-r3.json` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-14-r4` | building | read RULES/INDEX/ARBITRATION, then ownership --for on target files | `orchestration/status/W1-14-r4.json` |
