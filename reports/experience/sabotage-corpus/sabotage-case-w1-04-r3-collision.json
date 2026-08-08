@@ -1,0 +1,1425 @@
+{
+  "tool": "tools/world/w1-04-r3-collision.mjs",
+  "commit": null,
+  "sections": {
+    "0_instrument": [
+      {
+        "settlement": "thorn",
+        "shapes_with_walls": 67,
+        "shapes_walls_cut": 0,
+        "shapes_restored": 67
+      },
+      {
+        "settlement": "helstrom",
+        "shapes_with_walls": 94,
+        "shapes_walls_cut": 0,
+        "shapes_restored": 94
+      },
+      {
+        "settlement": "gideon",
+        "shapes_with_walls": 60,
+        "shapes_walls_cut": 0,
+        "shapes_restored": 60
+      },
+      {
+        "settlement": "stormhold",
+        "shapes_with_walls": 72,
+        "shapes_walls_cut": 0,
+        "shapes_restored": 72
+      },
+      {
+        "settlement": "soulrest",
+        "shapes_with_walls": 67,
+        "shapes_walls_cut": 0,
+        "shapes_restored": 67
+      }
+    ],
+    "0_goes_red": {
+      "what": "the pre-fix __w1_04_townSolids, re-created in the page, run through the same §0 check",
+      "rows": [
+        {
+          "settlement": "thorn",
+          "shapes_with_walls": 67,
+          "shapes_walls_cut": 67
+        },
+        {
+          "settlement": "helstrom",
+          "shapes_with_walls": 94,
+          "shapes_walls_cut": 94
+        },
+        {
+          "settlement": "gideon",
+          "shapes_with_walls": 60,
+          "shapes_walls_cut": 60
+        },
+        {
+          "settlement": "stormhold",
+          "shapes_with_walls": 72,
+          "shapes_walls_cut": 72
+        },
+        {
+          "settlement": "soulrest",
+          "shapes_with_walls": 67,
+          "shapes_walls_cut": 67
+        }
+      ],
+      "detected_as_inert": 5,
+      "of": 5,
+      "the_check_can_fail": true
+    },
+    "0_instrument_verdict": {
+      "towns": 5,
+      "control_arm_live": true,
+      "towns_where_the_control_did_nothing": []
+    },
+    "A_walk_at_a_wall": [
+      {
+        "settlement": "thorn",
+        "building": "thorn-inn",
+        "side": "-x",
+        "entry_side": "+x",
+        "footprint_m": [
+          14.8,
+          16.8
+        ],
+        "height_m": 8.4,
+        "with_walls": {
+          "end": [
+            3836.98,
+            851.1
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 385,
+            "path_m": 5.6,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 67
+        },
+        "walls_cut": {
+          "end": [
+            3837,
+            856.63
+          ],
+          "outside_wall_m": -5.03,
+          "inside": {
+            "settlement": "thorn",
+            "building": "thorn-inn"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 331,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "thorn",
+        "building": "thorn-trader",
+        "side": "-z",
+        "entry_side": "+x",
+        "footprint_m": [
+          14.8,
+          16.8
+        ],
+        "height_m": 5,
+        "with_walls": {
+          "end": [
+            3848.74,
+            872.84
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 365,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 47
+        },
+        "walls_cut": {
+          "end": [
+            3843.78,
+            870.45
+          ],
+          "outside_wall_m": -5,
+          "inside": {
+            "settlement": "thorn",
+            "building": "thorn-trader"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 330,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "thorn",
+        "building": "thorn-rootpost",
+        "side": "-x",
+        "entry_side": "-z",
+        "footprint_m": [
+          14.8,
+          16.8
+        ],
+        "height_m": 4.8,
+        "with_walls": {
+          "end": [
+            3822.44,
+            883.82
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 376,
+            "path_m": 5.7,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 63
+        },
+        "walls_cut": {
+          "end": [
+            3817.19,
+            881.95
+          ],
+          "outside_wall_m": -5.03,
+          "inside": {
+            "settlement": "thorn",
+            "building": "thorn-rootpost"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 331,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "helstrom",
+        "building": "helstrom-house-8",
+        "side": "+x",
+        "entry_side": "-x",
+        "footprint_m": [
+          13.6,
+          15.6
+        ],
+        "height_m": 4.4,
+        "with_walls": {
+          "end": [
+            2218.78,
+            2748.17
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 365,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 56
+        },
+        "walls_cut": {
+          "end": [
+            2216.74,
+            2753.28
+          ],
+          "outside_wall_m": -5,
+          "inside": {
+            "settlement": "helstrom",
+            "building": "helstrom-house-8"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 330,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "helstrom",
+        "building": "helstrom-house-0",
+        "side": "-x",
+        "entry_side": "-z",
+        "footprint_m": [
+          12.4,
+          14.4
+        ],
+        "height_m": 4.4,
+        "with_walls": {
+          "end": [
+            2235.66,
+            2816.22
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 365,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 55
+        },
+        "walls_cut": {
+          "end": [
+            2231.43,
+            2812.7
+          ],
+          "outside_wall_m": -5,
+          "inside": {
+            "settlement": "helstrom",
+            "building": "helstrom-house-0"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 330,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "helstrom",
+        "building": "helstrom-house-1",
+        "side": "+x",
+        "entry_side": "-x",
+        "footprint_m": [
+          12.4,
+          14.4
+        ],
+        "height_m": 4.4,
+        "with_walls": {
+          "end": [
+            2207.22,
+            2810.16
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 365,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 30
+        },
+        "walls_cut": {
+          "end": [
+            2210.7,
+            2814.41
+          ],
+          "outside_wall_m": -5,
+          "inside": {
+            "settlement": "helstrom",
+            "building": "helstrom-house-1"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 330,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "gideon",
+        "building": "gideon-inn",
+        "side": "-z",
+        "entry_side": "+z",
+        "footprint_m": [
+          13.6,
+          15.6
+        ],
+        "height_m": 8.4,
+        "with_walls": {
+          "end": [
+            462,
+            2912.2
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 379,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 57
+        },
+        "walls_cut": {
+          "end": [
+            462,
+            2917.71
+          ],
+          "outside_wall_m": -5.01,
+          "inside": {
+            "settlement": "gideon",
+            "building": "gideon-inn"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 359,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "gideon",
+        "building": "gideon-smithy",
+        "side": "+x",
+        "entry_side": "-x",
+        "footprint_m": [
+          12.4,
+          14.4
+        ],
+        "height_m": 5,
+        "with_walls": {
+          "end": [
+            416,
+            2899.8
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 379,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 52
+        },
+        "walls_cut": {
+          "end": [
+            416,
+            2905.31
+          ],
+          "outside_wall_m": -5.01,
+          "inside": {
+            "settlement": "gideon",
+            "building": "gideon-smithy"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 359,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "gideon",
+        "building": "gideon-apothecary",
+        "side": "-x",
+        "entry_side": "-z",
+        "footprint_m": [
+          12.4,
+          14.4
+        ],
+        "height_m": 5,
+        "with_walls": {
+          "end": [
+            452.7,
+            2936.5
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 379,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 52
+        },
+        "walls_cut": {
+          "end": [
+            447.19,
+            2936.5
+          ],
+          "outside_wall_m": -5.01,
+          "inside": {
+            "settlement": "gideon",
+            "building": "gideon-apothecary"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 359,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "stormhold",
+        "building": "stormhold-house-0",
+        "side": "-z",
+        "entry_side": "+x",
+        "footprint_m": [
+          13.6,
+          15.6
+        ],
+        "height_m": 4.4,
+        "with_walls": {
+          "end": [
+            2141.86,
+            784.31
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 379,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 73
+        },
+        "walls_cut": {
+          "end": [
+            2137.53,
+            787.71
+          ],
+          "outside_wall_m": -5.01,
+          "inside": {
+            "settlement": "stormhold",
+            "building": "stormhold-house-0"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 359,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "stormhold",
+        "building": "stormhold-house-4",
+        "side": "-x",
+        "entry_side": "+x",
+        "footprint_m": [
+          13.6,
+          15.6
+        ],
+        "height_m": 4.4,
+        "with_walls": {
+          "end": [
+            2126.41,
+            749.36
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 379,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 72
+        },
+        "walls_cut": {
+          "end": [
+            2125.88,
+            754.85
+          ],
+          "outside_wall_m": -5.01,
+          "inside": {
+            "settlement": "stormhold",
+            "building": "stormhold-house-4"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 359,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "stormhold",
+        "building": "stormhold-praetorium",
+        "side": "+x",
+        "entry_side": "-x",
+        "footprint_m": [
+          12.4,
+          14.4
+        ],
+        "height_m": 6,
+        "with_walls": {
+          "end": [
+            2217.94,
+            763.13
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 379,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 40
+        },
+        "walls_cut": {
+          "end": [
+            2216.9,
+            768.54
+          ],
+          "outside_wall_m": -5.01,
+          "inside": {
+            "settlement": "stormhold",
+            "building": "stormhold-praetorium"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 359,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "soulrest",
+        "building": "soulrest-market",
+        "side": "+z",
+        "entry_side": "-z",
+        "footprint_m": [
+          14.8,
+          16.8
+        ],
+        "height_m": 5,
+        "with_walls": {
+          "end": [
+            614.58,
+            4881.54
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 365,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 67
+        },
+        "walls_cut": {
+          "end": [
+            618.29,
+            4885.65
+          ],
+          "outside_wall_m": -5.03,
+          "inside": {
+            "settlement": "soulrest",
+            "building": "soulrest-market"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 331,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "soulrest",
+        "building": "soulrest-smithy",
+        "side": "-x",
+        "entry_side": "-z",
+        "footprint_m": [
+          14.8,
+          16.8
+        ],
+        "height_m": 5,
+        "with_walls": {
+          "end": [
+            625.01,
+            4896.1
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 369,
+            "path_m": 5.7,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 67
+        },
+        "walls_cut": {
+          "end": [
+            619.58,
+            4897.18
+          ],
+          "outside_wall_m": -5,
+          "inside": {
+            "settlement": "soulrest",
+            "building": "soulrest-market"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 330,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      },
+      {
+        "settlement": "soulrest",
+        "building": "soulrest-pawn",
+        "side": "+z",
+        "entry_side": "-z",
+        "footprint_m": [
+          14.8,
+          16.8
+        ],
+        "height_m": 5,
+        "with_walls": {
+          "end": [
+            609.86,
+            4883.07
+          ],
+          "outside_wall_m": 0.5,
+          "inside": null,
+          "walk": {
+            "arrived": false,
+            "aborted": "stuck",
+            "frames": 365,
+            "path_m": 5.5,
+            "longest_stuck_frames": 200
+          },
+          "shapes_in_cell": 67
+        },
+        "walls_cut": {
+          "end": [
+            609.29,
+            4888.54
+          ],
+          "outside_wall_m": -5,
+          "inside": {
+            "settlement": "soulrest",
+            "building": "soulrest-pawn"
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 330,
+            "path_m": 11,
+            "longest_stuck_frames": 0
+          },
+          "shapes_in_cell": 0
+        },
+        "stopped_by_the_wall": true,
+        "passed_through_when_cut": true,
+        "arms_differ": true
+      }
+    ],
+    "A2_walk_at_the_door": [
+      {
+        "settlement": "thorn",
+        "building": "thorn-trader",
+        "door_side": "+x",
+        "end": [
+          3839.68,
+          871.14
+        ],
+        "outside_wall_m": -5,
+        "inside": {
+          "settlement": "thorn",
+          "building": "thorn-trader"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 330,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "thorn",
+        "building": "thorn-rootpost",
+        "door_side": "-z",
+        "end": [
+          3814.13,
+          884.7
+        ],
+        "outside_wall_m": -5.03,
+        "inside": {
+          "settlement": "thorn",
+          "building": "thorn-rootpost"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 331,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "helstrom",
+        "building": "helstrom-house-8",
+        "door_side": "-x",
+        "end": [
+          2215.4,
+          2756.62
+        ],
+        "outside_wall_m": -5,
+        "inside": {
+          "settlement": "helstrom",
+          "building": "helstrom-house-8"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 330,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "helstrom",
+        "building": "helstrom-house-0",
+        "door_side": "-z",
+        "end": [
+          2229.1,
+          2813.62
+        ],
+        "outside_wall_m": -5,
+        "inside": {
+          "settlement": "helstrom",
+          "building": "helstrom-house-0"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 330,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "helstrom",
+        "building": "helstrom-house-1",
+        "door_side": "-x",
+        "end": [
+          2212.22,
+          2816.27
+        ],
+        "outside_wall_m": -5,
+        "inside": {
+          "settlement": "helstrom",
+          "building": "helstrom-house-1"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 330,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "gideon",
+        "building": "gideon-inn",
+        "door_side": "+z",
+        "end": [
+          462,
+          2923.29
+        ],
+        "outside_wall_m": -5.01,
+        "inside": {
+          "settlement": "gideon",
+          "building": "gideon-inn"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 359,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "gideon",
+        "building": "gideon-smithy",
+        "door_side": "-x",
+        "end": [
+          416,
+          2907.69
+        ],
+        "outside_wall_m": -5.01,
+        "inside": {
+          "settlement": "gideon",
+          "building": "gideon-smithy"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 341,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "gideon",
+        "building": "gideon-apothecary",
+        "door_side": "-z",
+        "end": [
+          446,
+          2938.69
+        ],
+        "outside_wall_m": -5.01,
+        "inside": {
+          "settlement": "gideon",
+          "building": "gideon-apothecary"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 359,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "soulrest",
+        "building": "soulrest-market",
+        "door_side": "-z",
+        "end": [
+          623.4,
+          4891.14
+        ],
+        "outside_wall_m": -4.26,
+        "inside": {
+          "settlement": "soulrest",
+          "building": "soulrest-market"
+        },
+        "walk": {
+          "arrived": false,
+          "aborted": "stuck",
+          "frames": 510,
+          "path_m": 10.3,
+          "longest_stuck_frames": 200
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "soulrest",
+        "building": "soulrest-smithy",
+        "door_side": "-z",
+        "end": [
+          618.35,
+          4901.15
+        ],
+        "outside_wall_m": -5,
+        "inside": {
+          "settlement": "soulrest",
+          "building": "soulrest-smithy"
+        },
+        "walk": {
+          "arrived": true,
+          "aborted": null,
+          "frames": 330,
+          "path_m": 11,
+          "longest_stuck_frames": 0
+        },
+        "got_in_through_the_door": true
+      },
+      {
+        "settlement": "soulrest",
+        "building": "soulrest-pawn",
+        "door_side": "-z",
+        "end": [
+          608.47,
+          4896.31
+        ],
+        "outside_wall_m": -3.99,
+        "inside": {
+          "settlement": "soulrest",
+          "building": "soulrest-pawn"
+        },
+        "walk": {
+          "arrived": false,
+          "aborted": "stuck",
+          "frames": 500,
+          "path_m": 10,
+          "longest_stuck_frames": 200
+        },
+        "got_in_through_the_door": true
+      }
+    ],
+    "A_verdict": {
+      "walks": 15,
+      "stopped_outside_the_wall": 15,
+      "walked_through_when_the_walls_were_cut": 15,
+      "arms_that_differ": 15,
+      "door_walks": 11,
+      "got_in_through_the_door": 11
+    },
+    "B_solid_at": [
+      {
+        "settlement": "thorn",
+        "buildings_in_radius": 15,
+        "solid_on_the_wall": 15,
+        "not_solid_4m_clear": 13,
+        "sampled_at": "drawn base Y + 1.0 m",
+        "misses": []
+      },
+      {
+        "settlement": "helstrom",
+        "buildings_in_radius": 20,
+        "solid_on_the_wall": 19,
+        "not_solid_4m_clear": 20,
+        "sampled_at": "drawn base Y + 1.0 m",
+        "misses": [
+          {
+            "id": "helstrom-house-11",
+            "at": [
+              2244.2,
+              28.2,
+              2753.9
+            ],
+            "nearest_m": 0.9
+          }
+        ]
+      },
+      {
+        "settlement": "gideon",
+        "buildings_in_radius": 12,
+        "solid_on_the_wall": 9,
+        "not_solid_4m_clear": 12,
+        "sampled_at": "drawn base Y + 1.0 m",
+        "misses": [
+          {
+            "id": "gideon-court",
+            "at": [
+              451,
+              3.7,
+              2925.7
+            ],
+            "nearest_m": 0.27
+          },
+          {
+            "id": "gideon-inn",
+            "at": [
+              462,
+              3.7,
+              2928.3
+            ],
+            "nearest_m": 0.9
+          },
+          {
+            "id": "gideon-rootpost",
+            "at": [
+              473,
+              3.7,
+              2927.7
+            ],
+            "nearest_m": 0.9
+          }
+        ]
+      },
+      {
+        "settlement": "stormhold",
+        "buildings_in_radius": 16,
+        "solid_on_the_wall": 8,
+        "not_solid_4m_clear": 13,
+        "sampled_at": "drawn base Y + 1.0 m",
+        "misses": [
+          {
+            "id": "stormhold-customs",
+            "at": [
+              2152.5,
+              142.1,
+              738.2
+            ],
+            "nearest_m": 0.9
+          },
+          {
+            "id": "stormhold-smithy",
+            "at": [
+              2167.5,
+              142.1,
+              738.2
+            ],
+            "nearest_m": 0.42
+          },
+          {
+            "id": "stormhold-inn-pass",
+            "at": [
+              2182.5,
+              142.1,
+              737.6
+            ],
+            "nearest_m": 0.42
+          },
+          {
+            "id": "stormhold-chapel",
+            "at": [
+              2197.5,
+              142.1,
+              737.6
+            ],
+            "nearest_m": 0.9
+          },
+          {
+            "id": "stormhold-rootpost",
+            "at": [
+              2137.5,
+              142.1,
+              752.6
+            ],
+            "nearest_m": 0.9
+          },
+          {
+            "id": "stormhold-kiln",
+            "at": [
+              2152.5,
+              142.1,
+              752.6
+            ],
+            "nearest_m": 0.9
+          },
+          {
+            "id": "stormhold-house-1",
+            "at": [
+              2167.5,
+              142.1,
+              753.2
+            ],
+            "nearest_m": 0.9
+          },
+          {
+            "id": "stormhold-house-3",
+            "at": [
+              2182.5,
+              142.1,
+              753.8
+            ],
+            "nearest_m": 0.9
+          }
+        ]
+      },
+      {
+        "settlement": "soulrest",
+        "buildings_in_radius": 15,
+        "solid_on_the_wall": 15,
+        "not_solid_4m_clear": 14,
+        "sampled_at": "drawn base Y + 1.0 m",
+        "misses": []
+      }
+    ],
+    "C_outdoor_people": [
+      {
+        "hour": 3,
+        "outdoors": 46,
+        "inside_a_building_footprint": 22,
+        "inside_solid_masonry": 1,
+        "per_town": [
+          {
+            "settlement": "archon",
+            "outdoors": 6,
+            "inside_a_footprint": 3,
+            "inside_solid_masonry": 1
+          },
+          {
+            "settlement": "blackrose",
+            "outdoors": 2,
+            "inside_a_footprint": 1,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "gideon",
+            "outdoors": 4,
+            "inside_a_footprint": 1,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "helstrom",
+            "outdoors": 7,
+            "inside_a_footprint": 3,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "lilmoth",
+            "outdoors": 8,
+            "inside_a_footprint": 4,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "soulrest",
+            "outdoors": 10,
+            "inside_a_footprint": 4,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "stormhold",
+            "outdoors": 7,
+            "inside_a_footprint": 4,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "thorn",
+            "outdoors": 2,
+            "inside_a_footprint": 2,
+            "inside_solid_masonry": 0
+          }
+        ],
+        "stuck": [
+          {
+            "npc": "archon-keeper-apothecary",
+            "settlement": "archon",
+            "building": "archon-apothecary",
+            "pos": [
+              3811.1,
+              3.4,
+              3846.9
+            ]
+          }
+        ]
+      },
+      {
+        "hour": 9,
+        "outdoors": 151,
+        "inside_a_building_footprint": 119,
+        "inside_solid_masonry": 2,
+        "per_town": [
+          {
+            "settlement": "archon",
+            "outdoors": 16,
+            "inside_a_footprint": 12,
+            "inside_solid_masonry": 1
+          },
+          {
+            "settlement": "blackrose",
+            "outdoors": 13,
+            "inside_a_footprint": 6,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "gideon",
+            "outdoors": 25,
+            "inside_a_footprint": 22,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "helstrom",
+            "outdoors": 26,
+            "inside_a_footprint": 22,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "lilmoth",
+            "outdoors": 25,
+            "inside_a_footprint": 20,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "soulrest",
+            "outdoors": 15,
+            "inside_a_footprint": 9,
+            "inside_solid_masonry": 1
+          },
+          {
+            "settlement": "stormhold",
+            "outdoors": 22,
+            "inside_a_footprint": 19,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "thorn",
+            "outdoors": 9,
+            "inside_a_footprint": 9,
+            "inside_solid_masonry": 0
+          }
+        ],
+        "stuck": [
+          {
+            "npc": "archon-smith-2-partner1",
+            "settlement": "archon",
+            "building": "archon-vat-house",
+            "pos": [
+              3813.6,
+              3.4,
+              3843.4
+            ]
+          },
+          {
+            "npc": "soulrest-keeper-smithy",
+            "settlement": "soulrest",
+            "building": "soulrest-pawn",
+            "pos": [
+              608.6,
+              7.9,
+              4895.3
+            ]
+          }
+        ]
+      },
+      {
+        "hour": 20,
+        "outdoors": 63,
+        "inside_a_building_footprint": 30,
+        "inside_solid_masonry": 0,
+        "per_town": [
+          {
+            "settlement": "archon",
+            "outdoors": 8,
+            "inside_a_footprint": 2,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "blackrose",
+            "outdoors": 7,
+            "inside_a_footprint": 0,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "gideon",
+            "outdoors": 7,
+            "inside_a_footprint": 4,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "helstrom",
+            "outdoors": 9,
+            "inside_a_footprint": 5,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "lilmoth",
+            "outdoors": 10,
+            "inside_a_footprint": 6,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "soulrest",
+            "outdoors": 9,
+            "inside_a_footprint": 3,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "stormhold",
+            "outdoors": 9,
+            "inside_a_footprint": 6,
+            "inside_solid_masonry": 0
+          },
+          {
+            "settlement": "thorn",
+            "outdoors": 4,
+            "inside_a_footprint": 4,
+            "inside_solid_masonry": 0
+          }
+        ],
+        "stuck": []
+      }
+    ]
+  },
+  "errors": [],
+  "fatal": null
+}

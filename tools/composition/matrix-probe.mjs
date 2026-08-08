@@ -321,6 +321,9 @@ async function selfTest() {
     for (const mode of ['live', 'paper', 'empty']) {
       const r = await runControl({
         id: `${p.cell}/${mode}`, what: p.mechanism, metric: p.observable,
+        // lib/sabotage.mjs requires a caller to say what one unit of `support` is; see its
+        // SUPPORT section. Here it is entities the observable was actually read off.
+        unit: 'entities in the live world the observable was read from at the fork',
         factors: [{ id: 'source_state', what: `the source state of ${p.cell.split('->')[0]}` }],
         // A FRESH WORLD PER ARM. The first version of this self-test built one fake world and
         // ran both arms against it; the intact arm's kills, equips and casts were still there
@@ -373,6 +376,7 @@ async function live({ cellsPath, outPath, seed }) {
         id: p.cell,
         what: p.mechanism,
         metric: p.observable,
+        unit: 'entities in the live world the observable was read from at the fork',
         factors: [{ id: 'source_state', what: `${p.cell.split('->')[0]} state set at the fork` }],
         measure: async (broken) => {
           const set = broken.length === 0;

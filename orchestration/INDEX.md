@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3ee6ada`: 671 tools, 153 reference
+so it cannot drift. Generated at `ec0b767`: 685 tools, 153 reference
 items, 55 pieces in flight.
 
 Its purpose is to stop 55+ concurrent agents each paying separately to discover the
@@ -232,7 +232,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 24
+### `tools/experience/` — 27
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/anecdote-trace.mjs` — `experience.memory.anecdote`.
@@ -255,11 +255,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/probes-from-md.mjs` — RI-EXP06 Step 0: "the register is data".
 - `tools/experience/sabotage-cases.mjs` — THE THREE REAL FAILURES, REPLAYED THROUGH THE FACILITY.
+- `tools/experience/sabotage-corpus.mjs` — KEEP THE REPLAY CORPUS, BECAUSE HISTORY THAT IS NOT TRACKED IS NOT HISTORY.
 - `tools/experience/sabotage.mjs` — THE SABOTAGE CONTROL, as a command any piece can run.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
+- `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
+- `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
 
-### `tools/harness/` — 220
+### `tools/harness/` — 225
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -367,7 +370,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r3-seam.mjs` — W1-14 round-3 CRITIC.
 - `tools/harness/critic-w1-14-r3-vfx.mjs` — W1-14 round-3 CRITIC, RI-MAG05.
 - `tools/harness/critic-w1-14-r3.mjs` — the critic's own instrument for W1-14 round 3 (magic, seam S19).
+- `tools/harness/critic-w1-14-r4-carried.mjs` — THE MIRROR, THE DRAG, AND THE SEVEN THINGS ROUND 4 DID NOT FIX.
+- `tools/harness/critic-w1-14-r4-commission.mjs` — A CRITIC WALKS TO A SPELLWRIGHT AND BUYS A SPELL NOBODY WROTE.
 - `tools/harness/critic-w1-14-r4-ground.mjs` — CAN A SPELL BE CAST WHERE THE PLAYER ACTUALLY STANDS?
+- `tools/harness/critic-w1-14-r4-motion.mjs` — THE THREE THINGS MY FIRST PASS COULD NOT SETTLE.
+- `tools/harness/critic-w1-14-r4-summon.mjs` — THE ALIAS FIX, MEASURED WITHOUT TRUSTING THE FIELD THAT REPORTS IT.
+- `tools/harness/critic-w1-14-r4-touch.mjs` — DOES THE TOUCH FIX APPLY ONCE, AND IS ITS TEARDOWN THE SAME WIDTH?
 - `tools/harness/critic-w1-14-shot.mjs` — one picture for W1-14 round 3's verdict.
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
 - `tools/harness/critic-w1-16-live.mjs` — W1-16 ROUND-2 CRITIC's stepping instrument.
@@ -482,12 +490,16 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 13
+### `tools/journey/` — 17
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
 - `tools/journey/census-newgame.mjs` — can the character creation the TITLE starts actually be finished?
 - `tools/journey/competence.mjs` — RI-JRN02 §C, K1..K7: did the player get BETTER?
+- `tools/journey/critic-w1-26-r3-asaperson.mjs` — play the opening the way the owner will, and time it.
+- `tools/journey/critic-w1-26-r3-consume.mjs` — RI-MTH07 on the round's load-bearing model, and the stopped-world/crate discrimination the round claims to have fixed.
+- `tools/journey/critic-w1-26-r3-input.mjs` — the OTHER half of the text-focus fix: did it break the world?
+- `tools/journey/critic-w1-26-r3-leak.mjs` — try to get an engine string onto a drawn row.
 - `tools/journey/gamepad-shim.mjs` — A-JRN2.
 - `tools/journey/input-checks.mjs` — the M-K table of RI-JRN03 and the M-P table of RI-JRN04, measured.
 - `tools/journey/journey-run.mjs` — A-JRN1.
@@ -694,7 +706,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 117
+### `tools/world/` — 119
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -755,6 +767,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r2b.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r3a.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r3b.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r4-live.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r4-offline.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing-consumption.mjs` — **no header comment**
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
@@ -815,7 +829,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **152 tools have no header comment**, so nobody can tell what they do without
+> **154 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -989,10 +1003,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `critic-w1-04-r4` | IN_PROGRESS | A: read RULES/INDEX/ARBITRATION §3/W1-04-r3.md. B: run tools/world/w1-04-consumption.mjs F | `orchestration/status/critic-w1-04-r4.json` |
+| `W1-25-r2` | done | a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that | `orchestration/status/W1-25-r2.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `tools/experience/sabotage-corpus.mjs` `tools/experience/w1-25-r2-active-fixture.mjs` |
+| `critic-w1-04-r4` | IN_PROGRESS | Live sections L2/L6/L4/L5/L1 running; then L3 (115-room live sweep) in its own invocation; | `orchestration/status/critic-w1-04-r4.json` `tools/world/critic-w1-04-r4-offline.mjs` `tools/world/critic-w1-04-r4-live.mjs` `reports/critic-w1-04-r4/offline.json` |
+| `critic-w1-14-r4` | running | parts A/B/C/D/E/F/G/H — ground probe reproduced; running summon/touch; then commission wal | `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` `reports/critic-w1-14-r4/` |
 | `W1-21-r3` | done | critic | `docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-map-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png` |
-| `critic-w1-14-r4` | running | read RULES, INDEX, ARBITRATION S22, W1-14-r3 verdict, W1-14-r4 status | `orchestration/status/critic-w1-14-r4.json` |
-| `W1-25-r2` | building | read RULES/INDEX/verdict, run contention gate, inventory tools/experience | `orchestration/status/W1-25-r2.json` |
 | `critic-w1-26-r3` | running | read INDEX, NEXT-DISPATCH P, W1-26-r2 verdict, W1-26-r3 status; then run opening-play.mjs  | — |
 | `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |
 | `critic-w1-25` | done | Round 2 on W1-25: fix the four cascade defects in lib/sabotage.mjs against the acceptance  | `corpus/90-verdicts/wave1/W1-25-r1.md` `corpus/90-verdicts/wave1/W1-25-r1.json` `orchestration/status/critic-w1-25.json` `tools/experience/critic-w1-25.mjs` `tools/experience/critic-w1-25-chart.mjs` `reports/experience/critic-w1-25.json` |

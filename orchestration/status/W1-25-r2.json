@@ -1,16 +1,66 @@
 {
   "task_id": "W1-25-r2",
-  "state": "building",
+  "state": "done",
   "started": "2026-08-08",
   "summary": "Round 2 of the sabotage control facility. Fixing the facility's own defect: support optional and defaulting to OK; two unnamed failure shapes; three taxonomy collisions; gitignored replay corpus; self-test coverage. Then seam-crossing undercount and the still-target fixture.",
-  "next_step": "read RULES/INDEX/verdict, run contention gate, inventory tools/experience",
-  "files_touched": ["orchestration/status/W1-25-r2.json"],
-  "files_claimed": [
+  "next_step": "a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that turns tellable_moments into verified_anecdotes_per_hour",
+  "files_touched": [
+    "orchestration/status/W1-25-r2.json",
     "tools/experience/lib/sabotage.mjs",
-    "tools/experience/",
-    "tools/composition/",
+    "tools/experience/sabotage.mjs",
+    "tools/experience/sabotage-cases.mjs",
+    "tools/experience/sabotage-corpus.mjs",
+    "tools/experience/w1-25-r2-active-fixture.mjs",
+    "tools/experience/w1-25-r2-chart.mjs",
+    "tools/experience/breakage-probe.mjs",
+    "tools/experience/anecdote-verify.mjs",
+    "tools/composition/matrix-scan.mjs",
+    "tools/composition/matrix-probe.mjs",
+    "tools/quests/encounter-seam-probe.mjs",
+    "reports/.gitignore",
+    "reports/experience/sabotage-corpus/",
+    "reports/experience/w1-25-r2/",
+    "reports/composition/w1/claims.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/2026-08-08-w1-25-r2-the-control-facility-had-an-optional-control.png"
   ],
-  "notes": []
+  "files_claimed": [],
+  "notes": [
+    "reports/.gitignore and tools/quests/encounter-seam-probe.mjs are outside the declared ownership of tools/experience/** and tools/composition/**; both are declared above with the reason (rule 28).",
+    "No timing figure is published. Both browser runs were taken under contention GO with room for 3+ instances."
+  ],
+  "done": [
+    "lib/sabotage.mjs: support MANDATORY (absence -> VERDICT.ERROR, not a throw, so a suite of forty still reports the other thirty-nine); NO_MEASUREMENT and SHORT_CIRCUIT named and added; MASKED hoisted above margin and direction; armsAgree is now 'no arm differs from any other' instead of intact-vs-all-broken; supportArms:'intact' without support_note is a SpecError and the note is carried onto the result; `unit` required for a PASS and last in the cascade so it can only ever withhold a pass, never hide a defect; concurrent_failures reports every condition that held.",
+    "--self-test: 14 cases (was 6), 9 distinct verdicts, a separability matrix that fails if two cases declaring different verdicts land on the same one, and 10 injected facility breaks (was 3) each of which must go red. A break that leaves its target green is named and fails the run.",
+    "sabotage-corpus.mjs: 9 byte-for-byte tracked twins + SHA-256 manifest (379 KB, not the 100 KB the verdict estimated). --sync / --verify / --self-test; the verifier goes red on a flipped byte, a deleted twin and an origin that drifted. reports/.gitignore carries the argument.",
+    "--cases 10/10, all 9 artifacts read from the tracked twin. Cases 4 and 5 added: W1-14-r3 nocast as VACUOUS+SHORT_CIRCUIT, and the SAME TWO FILES declared the other way, carried as a PASS on purpose because that is the facility's own limit and it belongs in the corpus.",
+    "matrix-scan.mjs: four target-side rules over game/data/world/encounters.json; a --sides audit reporting for every crossing whether the table looks at the source end, the target end, both or neither; a probe inventory linking tools/**/*seam*|crossing*.mjs to the cells their data files claim. Crossings with data 4 -> 8 of 41. Two new ablations prove the new rules falsifiable (QST->ROS 1->0, LOR->ROS 2->0).",
+    "w1-25-r2-active-fixture.mjs: a driven session (22/22 harness calls) against the undriven one. Still: 36,000 frames, 0 events. Active: 10,800 frames, 121,085 events, 17 kinds including death, bloodstain_create, player_respawn, souls_awarded. The comparison runs through runControl and reads OK.",
+    "anecdote-trace re-run against the active fixture: 62 candidate moments, 0 tellable, 0 proper nouns. The fixture is fixed and the number is still 0 for a NEW reason - nothing recorded carries a name the world can resolve. That is RI-EXP02 A2 and it is the finding the item wants.",
+    "ADOPTION: tools/quests/encounter-seam-probe.mjs (W1-19 r2's) now decides through runControl. Re-run live: dres-raid-party 6 bodies clause-unsigned, 4 signed, verdict OK, exit 0. QST->ROS is now both data-backed and demonstrated."
+  ],
+  "measured_at": "ec0b767 (see commit for the stamped one)",
+  "declared_outside_ownership": {
+    "reports/.gitignore": "the replay corpus cannot be tracked without a negation line. Two lines plus a comment; touches no other piece's paths.",
+    "tools/quests/encounter-seam-probe.mjs": "the transferred-CONSUMPTION test the r1 verdict failed the piece on: every importer of lib/sabotage.mjs was W1-25's own. No live piece declares this file (checked with tools/ownership.mjs). Its `out.clear.bodies !== out.signed.bodies` is the hand-rolled comparison the facility exists to replace, and it was RE-RUN in a browser after the change: 6 bodies -> 4, verdict OK, exit 0."
+  },
+  "acceptance_from_the_r1_verdict": {
+    "A1 must become ERROR/NO_MEASUREMENT": "MET - ERROR (support_unit_undeclared)",
+    "A3 must become ERROR/NO_MEASUREMENT": "MET - ERROR (support_undeclared)",
+    "A4 must become NO_MEASUREMENT": "MET",
+    "B-COLLIDE-1 must become MASKED": "MET",
+    "B-COLLIDE-2 must stop being INERT": "MET - ERROR (it declares no unit; my own collide.cancellation fixture, which does, reaches OK with cancellation:true on the record)",
+    "B-COLLIDE-4 must throw": "MET - SpecError. Section B of the critic aborts there, which is the acceptance being met; C/D/E were run separately.",
+    "--self-test and the facility breaks must still pass": "MET - 14/14 and 10/10",
+    "--cases must still pass": "MET - 10/10",
+    "a fourth break --break=support-optional shown going red": "MET, plus five more"
+  },
+  "collateral_misses_in_the_critic": "B-OK, A2-teardown and A4-teardown now read ERROR instead of OK. All three are cases that WOULD pass and declare no `unit`; it is the same mechanism the acceptance demands for A1, and A1 and B-OK are structurally indistinguishable to the facility ({33 over 55} vs {0 over 55} is the same shape as W1-04's fixed arm at 67->0 over 360). A2-teardown becoming ERROR is the point: the critic's teardown showed the verdict was carried by one forged integer, and forging it no longer buys a pass. C-PROVENANCE still reports 9 untracked because it checks the ORIGINALS, which remain gitignored by design; the twins are what is tracked.",
+  "not_done": [
+    "matrix-probe.mjs was NOT run. Contention was GO and HEAD boots; I spent the browser budget on the active-session fixture and on re-running the adopted seam probe instead, because those two produced findings and matrix-probe would have produced a count. demonstrated_crossings is still 0 against a wave-1 floor of 4 and RI-CMP01 hard fail 1 still fires.",
+    "verified_anecdotes_per_hour as RI-EXP02 defines it (recalled by an isolated agent, verified minus unverified) is still unmeasurable. What was measured is tellable_moments - the session's CAPACITY - and the tool has always said so in its own output. No recall protocol was run and none exists.",
+    "SAB-P was not re-run as the item's two matched 90-minute A/B, and SAB-E was not built. RI-EXP03's hard fail 8 stands.",
+    "The mirror-event finding (275 of 553 events in an exemplar are payload-free stubs over a parallel uppercase vocabulary) belongs to the harness and was not touched. The critic's E4 check flipped to false only because the active fixture's trace is now the biggest event-bearing trace on the tree and it carries payloads, not mirrors - which is worth somebody looking at.",
+    "The 379 KB corpus is larger than the verdict's 'under 100 KB' estimate. Reported rather than trimmed: a pruned twin would be a transcription, and the whole argument for --cases is that it replays history."
+  ]
 }

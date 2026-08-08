@@ -1,0 +1,81 @@
+{
+  "schema": "sabotage-corpus/1",
+  "what": "Byte-for-byte tracked twins of the nine artifacts tools/experience/sabotage.mjs --cases replays. The originals are excluded by reports/.gitignore and several cannot be regenerated at all: the pre-fix __w1_04_townSolids verb and the two deleted souls guards do not exist at HEAD.",
+  "synced_at": "2026-08-08T05:21:45.864Z",
+  "total_bytes": 388283,
+  "missing_origins": [],
+  "files": [
+    {
+      "case": "w1-04 collision",
+      "origin": "reports/w1-04-r3-collision.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-w1-04-r3-collision.json",
+      "bytes": 34444,
+      "sha256": "64217288559c86afc920295f09f1e7b61a9e60a51821150d54d5937a148b77a0",
+      "why": "§0_goes_red is the pre-fix __w1_04_townSolids, re-created in the page at e37d327. The fix landed; the verb does not exist at HEAD."
+    },
+    {
+      "case": "w1-souls guards",
+      "origin": "reports/critic-souls-r3-INTACT.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-critic-souls-r3-INTACT.json",
+      "bytes": 11270,
+      "sha256": "7be2ff6c46c76358013665f4d0b6307dadd8c7b1786b3b2266e392c0088458d6",
+      "why": "the intact cell of the 2x2 over {identity, boundary}."
+    },
+    {
+      "case": "w1-souls guards",
+      "origin": "reports/critic-souls-r3-DELETED-identity.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-critic-souls-r3-DELETED-identity.json",
+      "bytes": 11280,
+      "sha256": "a7e60afe6ca4359b61f3f072179d86137f44be3f4a991013b3f87e9e20cf723b",
+      "why": "a browser run with the `_alive` identity guard deleted from game/src/sim/souls.js. Present at HEAD."
+    },
+    {
+      "case": "w1-souls guards",
+      "origin": "reports/critic-souls-r3-DELETED-boundary.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-critic-souls-r3-DELETED-boundary.json",
+      "bytes": 11284,
+      "sha256": "19f460c0af333d7ac3319b2ff3cd0c58afc32a5ccacaa3cb456cc14ab946654f",
+      "why": "a browser run with the souls.reset() boundary call deleted from game/src/engine.js. Present at HEAD."
+    },
+    {
+      "case": "w1-souls guards",
+      "origin": "reports/critic-souls-r3-DELETED-identity-boundary.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-critic-souls-r3-DELETED-identity-boundary.json",
+      "bytes": 11286,
+      "sha256": "fc5c9db271358037958734e0ec7cf01769fa65ef8de7bf1c2b43248eb19d8fdc",
+      "why": "both guards deleted — the only cell that pays 0, and the one that makes the pair MASKED rather than two inert halves."
+    },
+    {
+      "case": "w1-13 empty control",
+      "origin": "reports/runs/W1-13-R4/clock-consequences.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-clock-consequences.json",
+      "bytes": 56443,
+      "sha256": "11166a9d6321116fd2397d60c722d86a35c4e82c34a873decb03920df01c5c69",
+      "why": "checks.a_method_8: npcs_moved 25 vs control 0, with roster_n 0 in the control arm. Under reports/runs/, which the gitignore excludes twice over."
+    },
+    {
+      "case": "w1-13 empty control",
+      "origin": "reports/journeys/w1-13-r4-jrn06/journey.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-journey.json",
+      "bytes": 132898,
+      "sha256": "e712f4a74f38e61f6e7df70b80affc9e409c36987fd0971b4ac1a48094cd6923",
+      "why": "the same clause rolled up, with roster {} in EVERY arm."
+    },
+    {
+      "case": "w1-14 nocast",
+      "origin": "reports/w1-14-r3/dials.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-dials.json",
+      "bytes": 84254,
+      "sha256": "a75138db94f973f64178b672f114ed451feb90f4985dfa43dd653303383d6d5e",
+      "why": "the intact arm of W1-14-r3's magnitude-dial census: 55 effects active, 33 magnitude_coupled."
+    },
+    {
+      "case": "w1-14 nocast",
+      "origin": "reports/w1-14-r3/dials-break-nocast.json",
+      "twin": "reports/experience/sabotage-corpus/sabotage-case-dials-break-nocast.json",
+      "bytes": 35124,
+      "sha256": "d2f06e359ddaae26cf6c54dbb9a3785589d1a5b8ee4e07e73dcac8b1791e7a5d",
+      "why": "the control arm a human critic ruled inert: 55 NOT_DELIVERED, active 0, coupled 0. The teardown exits before readDial()."
+    }
+  ]
+}

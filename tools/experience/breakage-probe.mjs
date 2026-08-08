@@ -299,6 +299,8 @@ async function selfTest(files, entriesById) {
       id: det.id,
       what: `does the closure detector for ${det.id} fire when the closing mechanism arrives?`,
       metric: 'register entry status',
+      // What `support` counts here: the substrate hits the register entry was decided on.
+      unit: 'substrate occurrences found for this register entry',
       factors: [{ id: 'closure_arrives', what: `inject: ${TOKENS[det.id]}` }],
       measure: async (broken) => {
         const inj = broken.length ? { rel: 'game/data/__selftest_injected.json', text: TOKENS[det.id] } : null;

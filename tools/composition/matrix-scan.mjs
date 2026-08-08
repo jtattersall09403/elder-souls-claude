@@ -119,7 +119,104 @@ const RULES = [
   { glob: 'quests/faction-gates.json', root: '*', at: 'ranks[]', cell: 'SKL->FAC', why: '§E: SKL→FAC — the rank ladder' },
   { glob: 'items/**', root: '*', at: 'faction', cell: 'EQP->FAC', why: '§F: a uniform changes how members and rivals treat you' },
   { glob: 'world/**', root: '*', at: 'tide', cell: 'WEA->WLD', why: '§E: tidewalking — roads and one whole route exist only at low tide (RI-WLD05 #21)' },
+
+  // ---- ROUND 2: THE TARGET'S SIDE OF THE SEAM ------------------------------------------------
+  //
+  // Every one of the 56 rules above roots in the SOURCE system's own data directory, and that is
+  // a property of how the table was written rather than of the build. A coupling declared on the
+  // TARGET's side was invisible to this scanner, and the piece published "only 4 of 41 declared
+  // crossings have any data behind them at all" — a number that condemned fourteen other pieces
+  // and was wrong in that direction (W1-25-r1 §D).
+  //
+  // `game/data/world/encounters.json` produced ZERO of the 30 claims out of 564 files read, and
+  // four crossings live in it. Two are ARBITRATION AR-3's own worked examples. `QST->ROS` was
+  // built deliberately by W1-19 round 2 to answer a `seam_sterile: true` verdict — its own data
+  // file carries a paragraph saying so — and `tools/quests/encounter-seam-probe.mjs` spawns the
+  // encounter with the flag clear and set and counts bodies.
+  //
+  // `side: 'target'` is not decoration. `--sides` audits the whole table with it and reports, per
+  // crossing cell, whether any rule roots in the source's directory, the target's, or neither, so
+  // the structural blind spot is visible in the output instead of waiting for another critic.
+  { glob: 'world/encounters.json', root: 'encounters[]', at: 'members[].absent_when_flag', cell: 'QST->ROS', side: 'target',
+    why: '§D: AR-3\'s own worked example — "a quest whose resolution changes an encounter\'s composition". Q-MAIN-23 res_sign_the_clause sets `the_sixty_are_protected` and the net-throwers of dres-raid-party carry `absent_when_flag` on it. Declared on the ROSTER, not on the quest.' },
+  { glob: 'world/encounters.json', root: 'encounters[]', at: 'members[].absent_when_flag', cell: 'WLD->ROS', side: 'target',
+    why: '§D: the same field read as world-state -> roster. A world flag removes two bodies from a spawn, whoever set the flag.' },
+  { glob: 'world/encounters.json', root: 'encounters[]', at: 'hostile_below_disposition', cell: 'DIS->ROS', side: 'target',
+    why: '§D: an encounter hostile only below a disposition threshold — the gate lives on the encounter, not on the disposition register.' },
+  { glob: 'world/encounters.json', root: 'encounters[]', at: 'parley.true_name_topic', cell: 'LOR->ROS', side: 'target',
+    why: '§D: AR-3\'s "a lore fact that is also a boss\'s weakness". Knowing a true-name topic opens a parley on an encounter — the-sallow-wife and the-twin-lamps.' },
 ];
+
+/**
+ * Which `game/data/**` directory each system's own state lives in. Hand-declared and PARTIAL on
+ * purpose: several systems (TOD, LVL, WEA) have no data directory at all, and the audit reports
+ * that as `unmappable` rather than inventing a home for them. Used only by `--sides`.
+ */
+const SYSTEM_DATA_DIRS = {
+  QST: ['quests/'], LOR: ['dialogue/topics/', 'books/'], DIS: ['npcs/'], FAC: ['factions/'],
+  ROS: ['combat/enemies/', 'combat/ai.json', 'world/encounters.json'],
+  BOS: ['combat/enemies/'], SPL: ['magic/'], EQP: ['items/'], STL: ['stealth/', 'crime/'],
+  WLD: ['world/'], SCH: ['npcs/'], JRN: ['quests/'], SKL: ['skills/'], GLD: ['economy/'],
+};
+
+/** Which system's directory a rule's glob roots in — the thing the whole table got wrong. */
+function rootsInSystem(glob) {
+  const g = glob.replace(/\/\*\*$/, '/');
+  const hits = [];
+  for (const [code, dirs] of Object.entries(SYSTEM_DATA_DIRS)) {
+    for (const d of dirs) if (g === d || g.startsWith(d) || d.startsWith(g)) { hits.push(code); break; }
+  }
+  return hits;
+}
+
+/**
+ * For every declared crossing cell: does the rule table look at the source's data directory, the
+ * target's, both, or neither? A cell only ever looked at from one end is a cell whose evidence on
+ * the other end is structurally invisible, and that is what produced the wrong 4-of-41.
+ */
+export function sidesAudit(crossingCells) {
+  const rows = [];
+  for (const c of crossingCells) {
+    const src = c.src || c.id.split('->')[0], tgt = c.tgt || c.id.split('->')[1];
+    const rules = RULES.filter((r) => r.cell === c.id);
+    const inSrc = rules.filter((r) => rootsInSystem(r.glob).includes(src));
+    const inTgt = rules.filter((r) => rootsInSystem(r.glob).includes(tgt));
+    rows.push({
+      cell: c.id, rules: rules.length,
+      source_side_rules: inSrc.length, target_side_rules: inTgt.length,
+      looked_at_from: rules.length === 0 ? 'neither end' : inSrc.length && inTgt.length ? 'both ends'
+        : inSrc.length ? 'the source only' : inTgt.length ? 'the target only' : 'a directory belonging to neither end',
+      source_dir_known: !!SYSTEM_DATA_DIRS[src], target_dir_known: !!SYSTEM_DATA_DIRS[tgt],
+    });
+  }
+  return rows;
+}
+
+/**
+ * The check this tool did not have. A crossing another piece has already DEMONSTRATED must not be
+ * reported as having no data. Every `tools/**` file whose name says seam or crossing is read, the
+ * `game/data/**` paths it names are extracted, and the cells those files produce claims for are
+ * attached — so probe and cell are linked through the data file both of them point at, rather
+ * than through a hand-kept list that would rot.
+ */
+export function probeInventory(claims) {
+  const found = [];
+  (function walk(d) {
+    let ents; try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of ents) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); }
+      else if (/\.mjs$/.test(e.name) && /seam|crossing/i.test(e.name)) found.push(p);
+    }
+  })(path.join(REPO, 'tools'));
+  const cellsOf = (rel) => claims.filter((c) => (c.files || []).includes(rel)).map((c) => c.cell);
+  return found.map((p) => {
+    const src = fs.readFileSync(p, 'utf8');
+    const data = [...new Set((src.match(/game\/data\/[A-Za-z0-9_\-/.]+\.json/g) || []))];
+    const cells = [...new Set(data.flatMap((d) => cellsOf(d.replace(/^game\/data\//, ''))))];
+    return { tool: path.relative(REPO, p), data_files_named: data, cells_those_files_claim: cells };
+  }).sort((a, b) => a.tool.localeCompare(b.tool));
+}
 
 // ---------------------------------------------------------------------------------------------
 
@@ -249,6 +346,22 @@ const ABLATIONS = [
       }
       return j; },
   },
+  {
+    // ROUND 2: the target-side rules must be falsifiable too, or four new claims have been added
+    // that nothing can knock down. Delete the flag the encounter carries and QST->ROS must go to
+    // zero — which is only true because no OTHER rule in the table reaches that cell from the
+    // quest side, and that absence is the whole finding.
+    id: 'delete-the-target-side-encounter-flag', cell: 'QST->ROS',
+    mutate: (rel, j) => { if (rel !== 'world/encounters.json') return j;
+      for (const e of j.encounters || []) for (const m of e.members || []) delete m.absent_when_flag;
+      return j; },
+  },
+  {
+    id: 'delete-the-target-side-parley-topic', cell: 'LOR->ROS',
+    mutate: (rel, j) => { if (rel !== 'world/encounters.json') return j;
+      for (const e of j.encounters || []) if (e.parley) delete e.parley.true_name_topic;
+      return j; },
+  },
 ];
 
 async function selfTest(dataDir) {
@@ -306,8 +419,16 @@ async function main() {
     claimed_crossing_cells: claimedCrossings.length,
     crossing_cells_with_no_data_claim: crossingCells.filter((c) => !r.claims.some((x) => x.cell === c.id))
       .map((c) => ({ cell: c.id, direction: c.direction, mechanism: c.mechanism || null })),
+    // Which end of each crossing the rule table actually looks at. Through round 1 the answer was
+    // "the source, always", and four crossings declared on the target's side were reported as
+    // having no data of any kind.
+    sides_audit: sidesAudit(crossingCells),
+    // A crossing another piece has already demonstrated must not be reported as having no data.
+    seam_probes_on_the_tree: probeInventory(r.claims),
     claims: r.claims,
   };
+  out.cells_reachable_only_from_the_target = out.sides_audit.filter((s) => s.looked_at_from === 'the target only').map((s) => s.cell);
+  out.cells_no_rule_looks_at = out.sides_audit.filter((s) => s.rules === 0).map((s) => s.cell);
   const o = path.resolve(REPO, arg('out', 'reports/composition/w1/claims.json'));
   fs.mkdirSync(path.dirname(o), { recursive: true });
   fs.writeFileSync(o, JSON.stringify(out, null, 2) + '\n');
@@ -319,6 +440,14 @@ async function main() {
   }
   say(`  ${out.crossing_cells_with_no_data_claim.length} crossing cell(s) have NO data claim: ` +
     out.crossing_cells_with_no_data_claim.map((c) => c.cell).join(', '));
+  const bothEnds = out.sides_audit.filter((s) => s.looked_at_from === 'both ends').length;
+  say(`  SIDES: of ${crossingCells.length} crossing cells the rule table looks at ${bothEnds} from both ends, ` +
+    `${out.sides_audit.filter((s) => s.looked_at_from === 'the source only').length} from the source only, ` +
+    `${out.cells_reachable_only_from_the_target.length} from the target only ` +
+    `(${out.cells_reachable_only_from_the_target.join(', ') || 'none'}), ` +
+    `${out.cells_no_rule_looks_at.length} from neither.`);
+  say(`  ${out.seam_probes_on_the_tree.length} seam/crossing probe(s) on the tree; ` +
+    `${out.seam_probes_on_the_tree.filter((p) => p.cells_those_files_claim.length).length} name a data file this scan draws claims from.`);
   say(`  HARNESS §7: ${out.js_census.js_files} .js files (${Math.round(out.js_census.js_bytes / 1024)} KB) are invisible to this scanner by rule.`);
   say(`wrote ${path.relative(REPO, o)}`);
   say('STAGE 1 ONLY. None of this is demonstrated. See matrix-probe.mjs.');

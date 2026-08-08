@@ -27,6 +27,20 @@
 !**/*baseline*.json
 !**/*-fingerprint*.json
 
+# 4. THE SABOTAGE REPLAY CORPUS, by the same argument, pushed one step further. The nine
+#    artifacts `tools/experience/sabotage.mjs --cases` replays are not merely files you would
+#    rather not regenerate — SEVERAL OF THEM CANNOT BE REGENERATED AT ALL. §0_goes_red of the
+#    W1-04 collision report is the PRE-FIX `__w1_04_townSolids`; the fix landed and that verb
+#    does not exist at HEAD. Two of the souls artifacts are browser runs with guards deleted from
+#    `sim/souls.js` and `engine.js`; both guards are present at HEAD. The test above — "is this
+#    reproducible by re-running the tool that made it" — answers NO, so by the file's own rule
+#    they belong in history. Excluding them meant a fresh clone reported ABSENT and exited 8
+#    (W1-25-r1 §C): honest, and useless.
+#    They live as byte-for-byte tracked twins under reports/experience/sabotage-corpus/, written
+#    and hash-verified by `tools/experience/sabotage-corpus.mjs`. 379 KB, nine files, plus a
+#    SHA-256 manifest so a twin that drifts from an origin still on the container is caught.
+!**/sabotage-case-*.json
+
 # Still ignored, deliberately: reports/runs/ raw logs (tools/run.mjs writes there by design),
 # every .json artifact, and every capture. Those are reproducible by re-running the tool that
 # made them, which is the test for whether something belongs in history.

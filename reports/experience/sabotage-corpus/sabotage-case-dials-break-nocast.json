@@ -1,0 +1,1663 @@
+{
+  "schema": "elder-souls/w1-14-r3-dials@1",
+  "harness_version": 2,
+  "break_mode": "nocast",
+  "focus_max": 88,
+  "snapshot_f": 240,
+  "summary": {
+    "total": 55,
+    "declared_magnitude_dials": 48,
+    "declared_duration_dials": 37,
+    "declared_area_dials": 12,
+    "inert": [],
+    "not_delivered": [
+      "fire_damage",
+      "frost_damage",
+      "shock_damage",
+      "poison_damage",
+      "damage_health",
+      "drain_health",
+      "absorb_health",
+      "soul_trap",
+      "shatter",
+      "corrode",
+      "bind_lesser",
+      "bind_greater",
+      "bound_weapon",
+      "telekinesis",
+      "restore_health",
+      "cure_disease",
+      "cure_poison",
+      "cure_paralysis",
+      "restore_attribute",
+      "fortify_attribute",
+      "fortify_skill",
+      "resist_element",
+      "resist_disease",
+      "sap_ward",
+      "speak_to_the_dead",
+      "hist_sight",
+      "mend_item",
+      "calm_beast",
+      "open_lock",
+      "lock_lock",
+      "ward_trap",
+      "buoyancy",
+      "breathe_water",
+      "feather",
+      "burden",
+      "slowfall",
+      "levitate",
+      "leap",
+      "shield",
+      "wall",
+      "mark",
+      "recall",
+      "intervention",
+      "invisibility",
+      "chameleon",
+      "muffle",
+      "silence",
+      "night_eye",
+      "detect_life",
+      "detect_key",
+      "charm",
+      "paralyse",
+      "demoralise",
+      "frenzy",
+      "false_face"
+    ],
+    "not_castable": [],
+    "threw": [],
+    "active": 0,
+    "magnitude_blind": [],
+    "magnitude_coupled": 0,
+    "magnitude_unmeasured": [],
+    "duration_blind": [],
+    "duration_coupled": 0,
+    "duration_unmeasured": [],
+    "area_blind": [],
+    "area_coupled": 0,
+    "area_unmeasured": []
+  },
+  "rows": [
+    {
+      "effect": "fire_damage",
+      "school": "sorcery",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 50
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 8
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "frost_damage",
+      "school": "sorcery",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 50
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 8
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "shock_damage",
+      "school": "sorcery",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 50
+      },
+      "duration_s": null,
+      "area_r_m": {
+        "lo": 2,
+        "hi": 6
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "poison_damage",
+      "school": "sorcery",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 75
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 6
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "damage_health",
+      "school": "sorcery",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "drain_health",
+      "school": "sorcery",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 200
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "absorb_health",
+      "school": "sorcery",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 120
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "soul_trap",
+      "school": "sorcery",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 60
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "shatter",
+      "school": "sorcery",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 60
+      },
+      "duration_s": null,
+      "area_r_m": {
+        "lo": 2,
+        "hi": 4
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "corrode",
+      "school": "sorcery",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "bind_lesser",
+      "school": "sorcery",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 90
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "bind_greater",
+      "school": "sorcery",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 45
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "bound_weapon",
+      "school": "sorcery",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 150
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "telekinesis",
+      "school": "sorcery",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 25
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "restore_health",
+      "school": "root_speech",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 25
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 6
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "cure_disease",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 5
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "cure_poison",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 5
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "cure_paralysis",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "restore_attribute",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 60
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "fortify_attribute",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 40
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "fortify_skill",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 50
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "resist_element",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 28
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "resist_disease",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 28
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "sap_ward",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "speak_to_the_dead",
+      "school": "root_speech",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 72
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "hist_sight",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 4
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "mend_item",
+      "school": "root_speech",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "calm_beast",
+      "school": "root_speech",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 22
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 8
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "open_lock",
+      "school": "warding",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "lock_lock",
+      "school": "warding",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "ward_trap",
+      "school": "warding",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 5
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "buoyancy",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "breathe_water",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "feather",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "burden",
+      "school": "warding",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 100
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "slowfall",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "levitate",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "leap",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 20
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "shield",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 120
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "wall",
+      "school": "warding",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 37
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 6
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "mark",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 1
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": false,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": null,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "recall",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 45
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "intervention",
+      "school": "warding",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 45
+      },
+      "duration_s": null,
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": false,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": null,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "invisibility",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 60
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "chameleon",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 27
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "muffle",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 30
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "silence",
+      "school": "veiling",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 30
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 6
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "night_eye",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 25
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "detect_life",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 60
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "detect_key",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 60
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "charm",
+      "school": "veiling",
+      "range": "touch",
+      "mag": {
+        "lo": 1,
+        "hi": 34
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "paralyse",
+      "school": "veiling",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 20
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 4
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "demoralise",
+      "school": "veiling",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 34
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 8
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "frenzy",
+      "school": "veiling",
+      "range": "area_at_range",
+      "mag": {
+        "lo": 1,
+        "hi": 17
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": {
+        "lo": 2,
+        "hi": 8
+      },
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": true,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": false
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    },
+    {
+      "effect": "false_face",
+      "school": "veiling",
+      "range": "self",
+      "mag": {
+        "lo": 1,
+        "hi": 75
+      },
+      "duration_s": {
+        "lo": 1,
+        "hi": 20
+      },
+      "area_r_m": null,
+      "snapshot_f": 240,
+      "mag_separable": true,
+      "dur_separable": true,
+      "area_separable": false,
+      "delivered": {
+        "base": false,
+        "mag_lo": false,
+        "dur_lo": false,
+        "area_lo": null
+      },
+      "refusals_base": [],
+      "footprint": [],
+      "footprint_n": 0,
+      "verdict": "NOT_DELIVERED",
+      "note": "[]"
+    }
+  ],
+  "notes": []
+}

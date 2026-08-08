@@ -30,6 +30,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, writeJson, RUNS_DIR, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
+import { runControl, VERDICT } from '../experience/lib/sabotage.mjs';
 
 const args = parseArgs();
 if (wantsHelp(args)) usage('encounter-seam-probe.mjs [--out <dir>]');
@@ -81,6 +82,36 @@ try {
   await handle.close();
 }
 
+// THE COMPARISON, THROUGH THE SHARED CONTROL FACILITY (W1-25, tools/experience/lib/sabotage.mjs).
+//
+// `out.clear.bodies !== out.signed.bodies` is a correct one-line answer to "did the arms differ",
+// and it is the exact line RULES #6 is about: it cannot tell a real difference from a difference
+// between two empty sets. If `spawnEncounter` ever returned nothing in both arms — a moved id, a
+// renamed statblock, a broken arena load — this probe would print "the seam crossing is dead" and
+// exit 1, which reads as a finding about the build and would be a finding about the spawn call.
+//
+// So the decision is delegated. The facility adds, for free: the vacuity check (0 bodies in an arm
+// is VACUOUS, not INERT), a verdict for "neither arm measured anything", and the support-collapse
+// test — which is switched OFF here, deliberately and with the note the facility asks for, because
+// THIS control's whole point is that the flag removes bodies.
+const seamControl = await runControl({
+  id: 'W1-19-r2 AR-3 seam: does res_sign_the_clause change what dres-raid-party spawns?',
+  what: `spawn ${ENCOUNTER} on arena_flat with ${FLAG} clear, then set, and count who is there`,
+  metric: 'bodies spawned, and the roles they fill',
+  unit: 'bodies the encounter spawned and the composition census actually counted',
+  factors: [{ id: 'clause_signed', what: `H.questSetFlag('${FLAG}', true) — the world flag ${QUEST} ${RESOLUTION} writes` }],
+  direction: 'lower',
+  supportFloor: 0,
+  support_note: 'The support floor is disabled on purpose. A collapse in support normally means the ' +
+    'teardown removed the units before the comparator saw them (SHORT_CIRCUIT). Here the units ARE ' +
+    'the measurement: the clause is supposed to take two net-throwers out of the raid party, so ' +
+    'fewer bodies in the signed arm is the finding and not an artifact.',
+  measure: async (broken) => {
+    const arm = broken.length ? out.signed : out.clear;
+    return { value: { bodies: arm.bodies, by_role: arm.by_role }, support: arm.bodies, detail: arm };
+  },
+});
+
 const changed = out.clear.bodies !== out.signed.bodies;
 const statsHeld = JSON.stringify(out.clear.hp_max) === JSON.stringify(out.signed.hp_max)
   && JSON.stringify(out.clear.poise_max) === JSON.stringify(out.signed.poise_max)
@@ -90,14 +121,20 @@ console.log(`\n  ${QUEST} ${RESOLUTION} declares world flag '${FLAG}':  ${declar
 console.log(`\n  ${ENCOUNTER} with the clause UNSIGNED   ${out.clear.bodies} bodies   ${JSON.stringify(out.clear.by_role)}`);
 console.log(`  ${ENCOUNTER} with the clause SIGNED     ${out.signed.bodies} bodies   ${JSON.stringify(out.signed.by_role)}`);
 console.log(`\n  composition changed by the resolution   ${changed ? 'YES' : 'NO'}`);
+console.log(`  sabotage control (tools/experience/lib/sabotage.mjs)   ${seamControl.verdict}`);
+console.log(`     ${seamControl.why}`);
 console.log(`  statblock / hp_max / poise_max unchanged (AR-1)   ${statsHeld ? 'YES' : 'NO'}`);
 console.log(`     statblocks ${JSON.stringify(out.clear.statblocks)}  hp_max ${JSON.stringify(out.clear.hp_max)}  poise_max ${JSON.stringify(out.clear.poise_max)}`);
 
 const file = path.join(outDir, 'encounter-seam-probe.json');
-writeJson(file, { tool: 'encounter-seam-probe', quest: QUEST, resolution: RESOLUTION, flag: FLAG, encounter: ENCOUNTER, composition_changed: changed, stats_held: statsHeld, declared_by_the_quest: declared, quest_file: QFILE, ...out });
+writeJson(file, { tool: 'encounter-seam-probe', quest: QUEST, resolution: RESOLUTION, flag: FLAG, encounter: ENCOUNTER, composition_changed: changed, stats_held: statsHeld, declared_by_the_quest: declared, quest_file: QFILE, sabotage_control: seamControl, ...out });
 console.log(`\nwrote ${file}`);
 
 if (!declared) { console.log('\nFAIL — the quest resolution does not declare that flag; the coupling is imaginary.'); process.exit(1); }
 if (!changed) { console.log('\nFAIL — the flag makes no difference to what spawns. The seam crossing is dead.'); process.exit(1); }
 if (!statsHeld) { console.log('\nFAIL — a statblock or a stat moved. That is AR-1, not AR-3.'); process.exit(1); }
+if (seamControl.verdict !== VERDICT.OK) {
+  console.log(`\nFAIL — the shared control facility returns ${seamControl.verdict}. ${seamControl.why}`);
+  process.exit(1);
+}
 console.log('\nPASS — one quest resolution changes one encounter, and it changes only who is there.');

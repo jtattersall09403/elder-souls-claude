@@ -183,6 +183,7 @@ async function sabP(dataDir) {
     id: 'SAB-P (RI-EXP02 step 6, mandatory)',
     what: 'does the anecdote instrument separate the shipped prose from a deadened variant of it?',
     metric: 'tellable passages in the shipped content',
+    unit: 'player-facing passages in the shipped content that the tellability test was run over',
     factors: [{ id: 'prose_flattened', what: 'every player-facing passage cut to its first sentence' }],
     measure: async (broken) => {
       const c = census(passages(dataDir, { flatten: broken.length > 0 }));
