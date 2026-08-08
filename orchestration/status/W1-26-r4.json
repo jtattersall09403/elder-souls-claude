@@ -1,0 +1,25 @@
+{
+  "task_id": "W1-26-r4",
+  "role": "builder",
+  "item": "W1-26 (the opening)",
+  "spec": "corpus/90-verdicts/wave1/W1-26-r3.md",
+  "state": "starting",
+  "started_at": "2026-08-08",
+  "next_step": "read RULES/INDEX/NEXT-DISPATCH/verdict, locate Engine.bodyRace, P9, m4_clause1",
+  "objectives": [
+    "1. Engine.bodyRace() unknown race must fail loudly at observation, naming the id (prove on altmer + a nonexistent race)",
+    "2. Rewrite P9 to test signposting not imperative grammar; prove red on 6 polite forms + writ.stamp teaching clause; keep or defend the clause",
+    "3. m4_clause1: invert driver-paced threshold into a still-driver build bound",
+    "4. Fix engine comment naming _playerGates()/reactionTo() (neither exists); _talkPlayer() is real; decide whether race consumption is real",
+    "5a. world_was_running: steps.some(...) misreads a stopped world",
+    "5b. HUD painted on title screen"
+  ],
+  "not_mine": [
+    "jrn09-exchange.mjs re-run (another critic will do it)"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-26-r4.json"
+  ],
+  "files_claimed": [],
+  "notes": []
+}
