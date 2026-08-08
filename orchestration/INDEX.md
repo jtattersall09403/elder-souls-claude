@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `311d801`: 515 tools, 153 reference
-items, 32 pieces in flight.
+so it cannot drift. Generated at `b900460`: 517 tools, 153 reference
+items, 29 pieces in flight.
 
-Its purpose is to stop 32+ concurrent agents each paying separately to discover the
+Its purpose is to stop 29+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -177,7 +177,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 191
+### `tools/harness/` — 192
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -295,6 +295,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-map-b64diag.mjs` — why is `world.discovery.stood` 20 characters?
 - `tools/harness/critic-w1-map-forgediag.mjs` — why did the forged footprint produce ZERO?
 - `tools/harness/critic-w1-map-r1.mjs` — the W1-MAP round-1 critic's instrument.
+- `tools/harness/critic-w1-map-shots.mjs` — the W1-MAP critic's visual evidence, in four discovery states.
 - `tools/harness/critic-w1-map-stepcheck.mjs` — is the long-step crash the map's, or the tree's?
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
 - `tools/harness/input-probe.mjs` — the RI-JRN03 checks that can be taken without the journey fleet.
@@ -528,7 +529,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 90
+### `tools/world/` — 91
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -577,6 +578,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r1.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r1b.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r1c.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r2-compose.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r2-shot.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r2a.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r2b.mjs` — **no header comment**
@@ -611,8 +613,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-interior-sweep.mjs` — **no header comment**
 - `tools/world/w1-04-r2-shots.mjs` — **no header comment**
 - `tools/world/w1-04-r3-collision.mjs` — W1-04 round 3 — CAN YOU WALK THROUGH A WALL, AND IS ANYBODY STANDING IN ONE?
+- `tools/world/w1-04-r3-consume.mjs` — W1-04 round 3 — THE CONSUMPTION CHECK, and the picture.
 - `tools/world/w1-04-r3-exterior.mjs` — W1-04 round 3 — THE EXTERIOR HALF, MEASURED.
-- `tools/world/w1-04-r3-shot.mjs` — W1-04 round 3 — THE PICTURE.
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
@@ -622,7 +624,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **121 tools have no header comment**, so nobody can tell what they do without
+> **122 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -796,15 +798,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-04-r3` | offline half landed; live half pending browser contention | awaiting live sections 5-6; then the collision probe, the shot, the blog line, and a final | `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `game/src/engine.js` `game/src/harness/api.js` `tools/world/w1-04-r3-exterior.mjs` |
+| `W1-12` | done | none - piece complete. A successor should read reports/w1-12/survey.md sections 3c, 4 and  | `orchestration/status/W1-12.json` `reports/w1-12/survey.md` `reports/w1-12/ai-probe-souls-inf_trash.json` `game/data/combat/ai.json` `game/data/index.json` `game/src/combat/ai.js` |
+| `W1-READABLES` | done | hand to a critic. NOT DONE and not faked: 63 demanded reveals still have no route. 24 ledg | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/src/render/renderer.js` `game/data/books/the-books-in-evidence.json` |
 | `arbiter-wpn-s36` | done | DONE. S36 is ruled and on disk. Three referrals filed as NEXT-DISPATCH §S1 (RI-CMB04 subst | `corpus/00-doctrine/ARBITRATION.md` `corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md` `corpus/12-weapons/RI-WPN05-weapon-feel-impact.md` `orchestration/NEXT-DISPATCH.md` `orchestration/INDEX.md` `orchestration/status/arbiter-wpn-s36.json` |
 | `critic-w1-03` | done | none — verdict written and validated. Next builder round should take GAP-W1-03-water-surfa | `orchestration/status/critic-w1-03.json` `corpus/90-verdicts/wave1/W1-03-r1.md` `corpus/90-verdicts/wave1/W1-03-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-03-r1/` `docs/shots/2026-08-07-w1-03-critic-waterline-live-water-mesh-frozen.png` `reports/blog-feed.jsonl` |
-| `critic-w1-04-r2` | in_progress | snapshot runs in flight (sweep, r2a live, then cut arm, r1c, r2b, builder consumption); th | `orchestration/status/critic-w1-04-r2.json` `tools/world/critic-w1-04-r2a.mjs` |
-| `W1-12` | building | BROWSER CONFIRMATION is the only thing outstanding. Deferred at 42 browsers / loadavg 37.  | `orchestration/status/W1-12.json` `reports/w1-12/survey.md` `reports/w1-12/ai-probe-souls-inf_trash.json` `game/data/combat/ai.json` `game/data/index.json` `game/src/combat/ai.js` |
 | `judge-prose-r4` | done | none - task complete | `orchestration/status/judge-prose-r4.json` `reports/packs/prose-tics-r4-judgement.md` `corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.md` `corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.json` `reports/blog-feed.jsonl` |
 | `W1-21-r2` | in_progress | browser leg, blocked on contention (48-60 headless_shell, loadavg 30-38, 4 cores): node to | `game/src/ui/system.js` `game/src/sim/discovery.js` `tools/analysis/marker-scan.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-layer.mjs` `tools/analysis/ui-forbidden.mjs` |
-| `W1-READABLES` | building | browser proof (tools/quests/document-route-world.mjs) when the box drops under ~8 headless | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/books/the-books-in-evidence.json` `game/data/books/the-drowned-tally.json` |
-| `critic-w1-map` | in_progress | read RULES/INDEX/S35, then builder status, then attack A-F | `orchestration/status/critic-w1-map.json` |
 | `critic-w1-22-r2` | running | 3) detector refusal + AMENDMENT item A arithmetic; 2) build harder blind pack and spawn fr | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
 | `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |

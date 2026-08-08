@@ -1,0 +1,142 @@
+{
+  "schema": "elder-souls/verdict@1",
+  "piece": "W1-MAP",
+  "round": 1,
+  "critic": "critic-w1-map",
+  "date": "2026-08-08",
+  "commit": "b900460",
+  "binding": "corpus/00-doctrine/ARBITRATION.md S35 (supersedes S30); corpus/00-doctrine/AMENDMENT-W1-MAP-01.md",
+  "score": 4.0,
+  "gate": 7.0,
+  "verdict": "fail",
+  "outcome": "round 2 required",
+  "ar_1": "not triggered",
+  "ar_2": "not triggered on the honest path; see forged_save finding",
+  "ar_3": "seam_sterile",
+  "seam_sterile": true,
+  "seam_sterile_justification": "A record of where you have been is legitimately internal. S35 requires wayfinding to work with the map closed, and world/province.js signposts already carry it. Recorded for RI-CMP01's floor.",
+  "axes": [
+    {
+      "axis": "S35 surface refusals (unrendered, routes, numerals, travel, naming, journal separation)",
+      "score": 9,
+      "evidence": "critic-w1-map-r1 C1/C2/C3/D1/D2/D3/D4; framebuffer sample with the player chevron excluded"
+    },
+    {
+      "axis": "S35 'no square for a place not personally stood in', adversarially",
+      "score": 5,
+      "evidence": "critic-w1-map-r1 A1/A2/A2b/A3/A6; 42 of 42 places and 100% of the province from a forged `stood`"
+    },
+    {
+      "axis": "instrument adequacy - can the build detect its own violation",
+      "score": 4,
+      "evidence": "critic-w1-map-r1 A4/A5/A7; map-probe L3 forges world.discovery.places, a field RESTORE_READS excludes"
+    },
+    {
+      "axis": "API closure (no API by which a quest could touch the map)",
+      "score": 6,
+      "evidence": "critic-w1-map-r1 B1/B2; sim.discovery writable and configurable, questEngine.sim === sim, substitution renders"
+    },
+    {
+      "axis": "CONSUMPTION (RI-MTH07)",
+      "score": 4,
+      "evidence": "critic-w1-map-r1 F1/F1b/F2; world hash identical across full and ablated arms with the discovery blob excluded"
+    }
+  ],
+  "consumption": {
+    "model": "game/src/sim/discovery.js Discovery",
+    "world_side_consumer": null,
+    "only_consumer": "game/src/ui/screens/map.js via UISystem._mapModel - the map's own draw call",
+    "ablation": {
+      "method": "suspend the model, walk the same route, step 600 frames, hash saveState() with world.discovery deleted",
+      "arm_full": "5094c15a:442141, 2209 cells revealed",
+      "arm_ablated": "5094c15a:442141, 0 cells revealed",
+      "identical": true
+    },
+    "verdict": "no world-side consumer; nothing under game/src/sim/ reads sim.discovery"
+  },
+  "forged_save": {
+    "question": "did the builder close the hole or close the report",
+    "answer": "narrowed the hole from two fields to one and disclosed the remainder honestly in w1-21-r2-forge.mjs R8, but closed neither the hole nor the report",
+    "route": "forge world.discovery.stood, the single field Discovery.RESTORE_READS trusts",
+    "wire_format": "zigzag-varint delta trail of cell indices, base64 - NOT the raw bitset the W1-MAP status file still describes",
+    "delivered_precondition": "critic-w1-map-r1 Afmt: one forged cell moves the model, so the A-results are not false negatives",
+    "result": {
+      "place_count": 42,
+      "pois_total": 42,
+      "revealed_cells": 42846,
+      "total_cells": 42846,
+      "squares_drawn": 42,
+      "dropped_on_load": [],
+      "places_drawn_equals_places_discovered": true
+    },
+    "instrument_blind_because": [
+      "save/state.js keeps only .dropped from the restore audit; phantom_cells, missing_cells, stood_cells and legacy are computed and discarded",
+      "mapState() and getUIState().map publish no footprint field at all",
+      "map-probe L3 forges world.discovery.places, which RESTORE_READS deliberately excludes, so it cannot fail for the case that matters",
+      "none of map-probe's three --break self-tests touches the forgery path"
+    ],
+    "contradiction_in_tree": "discovery.js's header claims the map fails closed against a blob whose every field is under the attacker's control; tools/harness/w1-21-r2-forge.mjs R8 asserts the opposite and is correct"
+  },
+  "reachability": {
+    "quest_tree_clean": true,
+    "grepped": "game/src/sim/quest/ for map|discovery|__ENGINE|reveal - only quest-internal reveal() knowledge flags, one S35 comment, and the marker-phrase regex",
+    "open_route": "sim.discovery is a writable, configurable data property and QuestEngine holds the sim (engine.js:526, machine.js:79)",
+    "call_path": "QuestEngine.this.sim.discovery = <substitute> -> Engine._uiCtx() engine.js:3448 -> UISystem._mapModel -> drawMap",
+    "executed": true,
+    "squares_drawn_from_substitute": 3,
+    "declared_by_builder": "game/src/harness/api.js:272 records it as an attempt it declines to run, annotated 'not defended'"
+  },
+  "confirmed_builder_claims": {
+    "map_probe": "32/32 passed",
+    "map_probe_break_all": "three SELF-TEST OK (discovery -> C0,C1,C4,L1; radius -> C1; world -> C3)"
+  },
+  "biggest_gap": {
+    "statement": "Nothing in this build can tell an honest map from a completely forged one, because every compliance number it reports is derived from the model being audited. places_drawn == places_discovered reads green on a map showing 42 squares for a body that has walked nowhere - the verbatim failure mode the round-1 verdict recorded.",
+    "remedy": [
+      "Publish the audit Discovery.restore() already computes: carry stood_cells, phantom_cells, missing_cells and legacy onto sim and out through mapState() and getUIState().map, instead of keeping only .dropped at save/state.js:674.",
+      "Repoint map-probe L3 at world.discovery.stood in the wire format (lift forgeTrail() from tools/harness/critic-w1-map-r1.mjs) and give it a --break forge self-test so it is proven able to go red.",
+      "Corroborate the footprint against engine.js:5468 this.travel.visited, an independently written record of the 25 m bins actually stood in - which is not a fixed point on one field, unlike the current design.",
+      "Secondary and cheap: Object.defineProperty(sim, 'discovery', {writable: false, configurable: false}) after construction."
+    ]
+  },
+  "provenance_warning": "game/src/sim/discovery.js was rewritten at 23:32:58 on 2026-08-07 by the concurrently in-flight piece W1-21-r2 (still in_progress), after W1-MAP recorded itself complete. The footprint wire format changed from a raw bitset to a zigzag-varint delta trail. A forgery in the format the W1-MAP status file describes decodes to nothing and reads as a successful defence.",
+  "reported_limits": {
+    "contention": "pgrep -c headless_shell 18-36, loadavg 16-32 on 4 cores throughout, far above rule 21's ~8. No timing figure is published; every number is a count, a boolean or a pixel colour.",
+    "browsers": "pooled capture daemon where it fits; one browser per tool for work that steps the simulation (rule 20)",
+    "foreign_defect": "combat/enemy.js:303 _idleBehaviour throws 'this.ai.step is not a function' inside the fixed step on some routes. tools/harness/critic-w1-map-stepcheck.mjs reproduces it with sim.discovery removed entirely, so it is the tree's and not the map's. It first presented as four map-shaped failures (C2, D1, D2, D3) that were a walk whose steps never ran; checks C0 and D0 now assert per-block that the world actually stepped.",
+    "not_isolated": "whether engine.travel.visited is complete enough to serve as the corroborator in remedy 3 - its declaration was read, its coverage was not"
+  },
+  "instruments_built": [
+    "tools/harness/critic-w1-map-r1.mjs",
+    "tools/harness/critic-w1-map-shots.mjs",
+    "tools/harness/critic-w1-map-stepcheck.mjs",
+    "tools/harness/critic-w1-map-forgediag.mjs",
+    "tools/harness/critic-w1-map-b64diag.mjs"
+  ],
+  "self_tests": {
+    "critic-w1-map-r1 --break unrendered": "C1,C2,C3 red - OK",
+    "critic-w1-map-r1 --break standing": "D1 red - OK",
+    "critic-w1-map-r1 --break consumer": "F2 GREEN - OK (opposite polarity: F2 currently fails, so the falsification is to install a real consumer and require it to notice)"
+  },
+  "shots": [
+    "docs/shots/2026-08-08-critic-map-fresh.png",
+    "docs/shots/2026-08-08-critic-map-partial.png",
+    "docs/shots/2026-08-08-critic-map-explored.png",
+    "docs/shots/2026-08-08-critic-map-forged.png"
+  ],
+  "files_touched": [
+    "corpus/90-verdicts/wave1/W1-MAP-r1.md",
+    "corpus/90-verdicts/wave1/W1-MAP-r1.json",
+    "orchestration/status/critic-w1-map.json",
+    "tools/harness/critic-w1-map-r1.mjs",
+    "tools/harness/critic-w1-map-shots.mjs",
+    "tools/harness/critic-w1-map-stepcheck.mjs",
+    "tools/harness/critic-w1-map-forgediag.mjs",
+    "tools/harness/critic-w1-map-b64diag.mjs",
+    "docs/shots/2026-08-08-critic-map-fresh.png",
+    "docs/shots/2026-08-08-critic-map-partial.png",
+    "docs/shots/2026-08-08-critic-map-explored.png",
+    "docs/shots/2026-08-08-critic-map-forged.png",
+    "reports/blog-feed.jsonl"
+  ]
+}

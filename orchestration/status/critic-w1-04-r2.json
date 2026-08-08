@@ -1,0 +1,85 @@
+{
+  "task_id": "critic-w1-04-r2",
+  "role": "critic",
+  "piece": "W1-04",
+  "round": 2,
+  "state": "complete",
+  "started_at": "2026-08-07",
+  "stamped_commit": "444d43d2fe4544456e84bda1547a4ce67ca3252c",
+  "grading_against": "corpus/90-verdicts/wave1/W1-04-r1.md",
+  "next_step": "For a successor: the two browser arms did not finish under load 34-36. Re-run `node tools/world/critic-w1-04-r2a.mjs --expect-live --entry <frozen>/game/index.html`, the same against a cut copy, `node tools/world/w1-04-interior-sweep.mjs --control --entry <frozen>/game/index.html`, and `node tools/world/critic-w1-04-r2b.mjs`. All four take --entry and must be pointed at a FROZEN tree; the working tree moves every few minutes.",
+  "axes": {
+    "A_harness_verb_reads_renderer": "ANSWERED by source: drawn_cell/visible_cells/agrees read Object3D.visible on the live scene graph at call time (renderer.js:189-193), so the 115/115 headline is a genuine renderer read and cannot be faked by the model. interior_id/interior are renderer.interiorSummary, the value buildInterior() returned when the room was last built — a record of the build, not a reading of the scene. The empty-group perturbation that would demonstrate the difference did not finish running.",
+    "B_delete_the_fix": "Arm BUILT at source level on a frozen snapshot (sim.applyCell hook and the body of _syncCell removed; render/interior.js byte-identical between arms) and NOT RUN to completion. The builder own control is real in kind — it cuts the hook AND the reconciliation — and its recorded cut arm reads 0/115 with every row drawn:\"province\" want:\"interior\".",
+    "C_pixel_hash_sweep_115": "NOT LANDED. Separately: the acceptance bar of >=100 distinct images is not well-formed. The 115 records admit only 94 distinct build-relevant contents, so a sweep can exceed 94 only by counting the hashStr(rec.id) arrangement jitter in buildInterior(). I proved the jitter with two captures: helstrom-smithy and helstrom-scriptorium have identical records and differ as pictures. Restate the bar as >=90 with the control arm <=3.",
+    "D_room_cache_key": "ANSWERED by source and it is fine. _syncCell() short-circuits on _drawnCellKey, keyed on the interior ID (engine.js:4372), so setInteriorRecord and its JSON.stringify are only reached on a cell change. Standing still costs nothing; the cache is not disabled either. The measured rebuild counts did not land.",
+    "E_undone_list_completeness": "ACCURATE but NOT WHOLE. Six additions, all measured offline: unique items respawn on every re-entry (itemsTaken has no consumer); interior readables lose readability across a fresh-engine load; 827 declared lights never reach LightField; RI-WLD03 R2 unchanged (0 of 347 gold pools, same 11 of 30 shops); 113 of 115 rooms declare exactly 18 props over 8 distinct floor areas; 21 records are content-duplicates in 12 groups.",
+    "F_save_post_defect": "REAL and FIXED in both halves: state.js:244 writes post/goal/walked_m, :718 reads them back. The load path still rebuilds NPCs inline rather than through makeNPC, so the defect CLASS is live — and it has already recurred one layer along, on props (readable/readable_book)."
+  },
+  "files_touched": [
+    "orchestration/status/critic-w1-04-r2.json",
+    "corpus/90-verdicts/wave1/W1-04-r2.md",
+    "corpus/90-verdicts/wave1/W1-04-r2.json",
+    "tools/world/critic-w1-04-r2a.mjs",
+    "tools/world/critic-w1-04-r2b.mjs",
+    "tools/world/critic-w1-04-r2-shot.mjs",
+    "tools/world/critic-w1-04-r2-compose.mjs",
+    "reports/critic-w1-04-r2-offline.json",
+    "reports/critic-w1-04-r2-shot.json",
+    "docs/shots/2026-08-08-w1-04-r2-critic-two-files-one-room.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "orchestration/status/critic-w1-04-r2.json",
+    "corpus/90-verdicts/wave1/W1-04-r2.md",
+    "corpus/90-verdicts/wave1/W1-04-r2.json",
+    "tools/world/critic-w1-04-r2a.mjs",
+    "tools/world/critic-w1-04-r2b.mjs",
+    "tools/world/critic-w1-04-r2-shot.mjs",
+    "tools/world/critic-w1-04-r2-compose.mjs",
+    "reports/critic-w1-04-r2-offline.json",
+    "reports/critic-w1-04-r2-shot.json",
+    "docs/shots/2026-08-08-w1-04-r2-critic-two-files-one-room.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "explicitly_not_touching": [
+    "game/",
+    "game/src/world/province.js"
+  ],
+  "redundant_with": [
+    "W1-04-r2",
+    "W1-04-r3"
+  ],
+  "environment": {
+    "headless_shell_at_start": 18,
+    "loadavg_at_start": "15.75 15.92 14.19",
+    "note": "above RULES.md rule 21 cap of ~8; browser work deferred / pooled, no timing figures to be published"
+  },
+  "findings_so_far": [
+    "The builders own report shows exterior_restored_on_exit = 115 in BOTH arms of its control. That third of headline claim 1 is vacuous: it passes on the round-1 build.",
+    "The 115 interior records admit at most 94 distinct build-relevant contents (largest identical group 7). The round-1 acceptance bar of >=100 distinct images is unreachable by construction on the shipped data.",
+    "21 of 115 records are content-duplicates of another record, including archon-apothecary == archon-vat-house and a helstrom apothecary/market/scriptorium/smithy that are one room.",
+    "The builder status file says 16 outdoors at 03:00; the blog line for the same round says 23. Two accounts of one number.",
+    "The snapshot already contains another agent ROUND 3 exterior work in game/src/world/province.js (+177 lines, uncommitted, importing render/exterior.js). The round-1 exterior blocker is being closed as I write and I do not grade it here.",
+    "113 of 115 interiors declare exactly 18 props and the 115 rooms have only 8 distinct floor areas. The rooms are built from their records and the records are a generator constant.",
+    "RI-WLD03 M14: every town declares 8-10 bespoke kit meshes and exactly 4 of each town has a builder in render/interior.js KIT. 32 of 69 built, all indoors.",
+    "LightField.addSource() has one caller in game/src and it is the harness verb. 827 declared interior lights are drawn and unread by the model that decides whether you can be seen."
+  ],
+  "measurement_target": {
+    "why": "The tree moved under the first set of runs: game/src/engine.js, harness/api.js, render/interior.js and world/province.js were all rewritten mid-run by other live agents (province.js gained 177 uncommitted lines of W1-04 ROUND 3 settlement-exterior work at 23:41Z, exterior.js at 23:46Z). Every first-pass browser number was therefore about a tree that no longer exists, and I killed all of them rather than report it.",
+    "snapshot_taken_at": "2026-08-07T23:49:11Z",
+    "snapshot_digest_md5_of_md5s": "fd893c5524b35b2334baac19cff93b10",
+    "snapshot_path": "scratchpad/live/game (outside the repo)",
+    "cut_arm": "scratchpad/cut/game — the same snapshot with sim.applyCell and Engine._syncCell() removed at SOURCE level; render/interior.js byte-identical between the two arms",
+    "note": "The round-2 work is uncommitted. There is no commit that contains the code these numbers describe, so they are stamped to the snapshot digest, not to a sha.",
+    "contamination": "W1-04-r3 is LIVE and claims game/src/render/interior.js, engine.js, harness/api.js, world/province.js and render/exterior.js. The snapshot therefore contains round 2 plus whatever of round 3 had landed by 23:49Z. There is no tree anywhere that contains round 2 alone: the builder did not commit (rule 28) and a successor began overwriting the same files. Declared, not worked around."
+  },
+  "verdict": "FAIL 4.4/10 against a wave-1 gate of 7.0 (round 1: 3.2 against 6)",
+  "overlap_notes": "reports/blog-feed.jsonl and docs/shots/ are append-only and claimed by every agent; declared redundant rather than left to read as a collision. I touched nothing under game/ and specifically not game/src/world/province.js, which W1-04-r3 is editing right now.",
+  "what_i_could_not_do": [
+    "Neither browser arm finished. Load was 14.4-36.4 with 18-54 headless_shell for the entire session, two to six times RULES.md rule 21 cap, and a second W1-04 sweep from another agent was running alongside mine for over 50 minutes. The blocker closure is therefore judged from source and from the builder own artifact, not from a run I took, and the verdict says so in three places.",
+    "AR-2 census not re-measured (instrument written, section 4 of critic-w1-04-r2b.mjs).",
+    "RI-WLD03 M13 blind layout is not_possible for round 2 own work: there is no settlement plan to render orthographically."
+  ],
+  "one_error_i_made": "I first reported RI-WLD13 N1 as \"absent — 0 of 115 declare exterior_footprint_m\". Wrong: the field lives under `continuity`. Re-measured, 115 of 115 declare it and on 115 of 115 bounds_m equals it exactly, so N1 is vacuous exactly as round 1 said. Corrected in the verdict and recorded in reports/critic-w1-04-r2-offline.json under `corrections`."
+}

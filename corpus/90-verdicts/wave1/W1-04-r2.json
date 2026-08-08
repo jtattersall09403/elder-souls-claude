@@ -1,0 +1,723 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-04-r2",
+  "piece_title": "Settlements, interiors and the people in them — round 2 critique",
+  "subsystem_paths": [
+    "world.settlement.anatomy",
+    "world.interior.named",
+    "world.interior.continuity",
+    "world.npc.population",
+    "world.npc.schedule",
+    "world.property.ownership",
+    "world.locks.security",
+    "world.faction.presence",
+    "world.persistence.state"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-04-r2-3c19",
+    "role": "critic.world",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T23:05:00Z",
+    "finished_at": "2026-08-08T00:20:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": null,
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "measurement_target": {
+      "kind": "frozen working-tree snapshot",
+      "taken_at": "2026-08-07T23:49:11Z",
+      "digest_md5_of_sorted_md5s": "fd893c5524b35b2334baac19cff93b10",
+      "scope": "every .js/.json/.html under game/",
+      "why": "The round-2 work is uncommitted and there is no commit anywhere containing it. game/src/engine.js, harness/api.js, render/interior.js and world/province.js were all rewritten by other live agents WHILE my first browser runs were in flight (province.js gained 177 uncommitted lines of W1-04 ROUND 3 exterior work at 23:41Z; render/exterior.js appeared at 23:46Z). I killed those runs rather than publish figures about a tree that no longer existed (RULES.md rule 12).",
+      "contamination": "The snapshot contains round 2 PLUS whatever of round 3 had landed by 23:49Z. orchestration/status/W1-04-r3.json claims render/interior.js, engine.js, harness/api.js, world/province.js and render/exterior.js. No clean round-2 tree exists.",
+      "cut_arm": "the same snapshot with `this.sim.applyCell = () => { this._cellDirty = true; }` and the body of Engine._syncCell() removed at SOURCE level; render/interior.js byte-identical between the arms"
+    },
+    "note": "Load 14.4-36.4 and 18-54 headless_shell for the whole run, far above RULES.md rule 21's ~8 cap. NO timing figure appears anywhere in this verdict (rule 26). I did not edit anything under game/, and specifically not game/src/world/province.js. I committed only my own declared files, never `git add -A` (rule 28's hazard is live: W1-04-r3 is mid-edit in five files).",
+    "harness_commands": [
+      {
+        "command": "node tools/world/critic-w1-04-r2a.mjs --expect-live --entry <snapshot>/game/index.html",
+        "exit_code": null,
+        "note": "DID NOT COMPLETE — still running at budget end under load 34-36"
+      },
+      {
+        "command": "node tools/world/w1-04-interior-sweep.mjs --control --entry <snapshot>/game/index.html",
+        "exit_code": null,
+        "note": "DID NOT COMPLETE — still running at budget end"
+      },
+      {
+        "command": "node tools/world/critic-w1-04-r2-shot.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/world/critic-w1-04-r2-compose.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-data.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-content.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-quests.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-prose.mjs",
+        "exit_code": 0
+      }
+    ],
+    "commit_sha_absent_reason": "The round-2 work is uncommitted and no commit anywhere contains it. Numbers are stamped to the frozen snapshot digest fd893c5524b35b2334baac19cff93b10 instead. HEAD at the time of writing was 4698888a847f51be686a6a60b28fcf491f27bb88, which does NOT contain the code judged."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Judged on structure, consumption and measurement. The one image in this verdict is not a fidelity or art-direction comparison and is not scored on a visual axis: it is evidence that two interior records identical in every field the room builder reads draw two rooms that differ only in where the same props were placed. Declared before any frame was opened."
+  },
+  "reference_items": [
+    {
+      "id": "RI-WLD03",
+      "path": "corpus/50-world/RI-WLD03-settlement-anatomy.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 3,
+      "native_verdict": "M15 passes at exactly its bar (4 of 20 rooms miss two or more criteria; the rule fails at >4). R2 is unchanged from round 1: 0 of 347 NPC records carry a gold pool or barter inventory and the same 11 of 30 shop interiors have no barter NPC at any hour. R5: each town declares 8-10 bespoke kit meshes and exactly 4 per town have a builder in render/interior.js KIT (32 of 69), and all 32 are placed inside rooms. settlement.buildings still reaches only the door table and a .length. M13 remains unshootable for this round's own work.",
+      "native_scale": "M12 anatomy audit per settlement + M13 blind layout test + M14 architecture uniqueness + M15 interior spot-check; five anatomy rules R1-R5",
+      "native_score": 30,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json",
+        "docs/shots/2026-08-08-w1-04-r2-critic-two-files-one-room.png"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-WLD13",
+      "path": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "The round-1 hard fail (DOOR-DRAWS-NOTHING) is cleared in mechanism: sim.applyCell + Engine._syncCell() reconcile the drawn cell against cellFor(env) from _afterStep() and _render(). N3 real. N1 still vacuous by construction: 115 of 115 declare continuity.exterior_footprint_m and on 115 of 115 bounds_m equals it exactly. N4/N5 are derived rules rather than authored data; N7 untouched. S1-S4 still 0.",
+      "native_scale": "N1-N7 numeric continuity properties + S1-S4 seamlessness properties",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json",
+        "reports/w1-04-consumption-r2.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-WLD08",
+      "path": "corpus/50-world/RI-WLD08-the-living-world.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 5,
+      "native_verdict": "stepSchedule() now writes pos and the docstring no longer lies; posts put people outdoors at every hour including 03:00. A cell change SNAPS the position, so 'changed position' is largely a consequence of 'changed cell'; an outdoor anchor is a single fixed post, so nobody walks a street.",
+      "native_scale": "schedule/presence/motion census over the live NPC list across a day",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-CAM05",
+      "path": "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+      "side": "souls",
+      "kind": "number",
+      "score_0_10": 5,
+      "native_verdict": "The camera in an interior renders the interior. No interior has a collision cell, so the spring arm has nothing to cast against in any of the 115.",
+      "native_scale": "the camera behaves outside the fight: cell, collision and framing",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-WLD07",
+      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+      "side": "neutral",
+      "kind": "structure",
+      "score_0_10": 3,
+      "native_verdict": "Rooms have geometry built from bounds_m, lights[], props[] and containers, with derived storeys and back rooms. No collision anywhere in any interior, so the mezzanine is scenery and the walls are not there. 113 of 115 rooms declare exactly 18 props over 8 distinct floor areas.",
+      "native_scale": "verticality and interior quality as counts of storeys, reachable levels and bespoke geometry",
+      "native_score": 30,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-STL02",
+      "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 6,
+      "native_verdict": "Ownership, lock tiers and shop hours remain consumed (W1-15's chain, verified in round 1). Down one from 7 on min-over-axes: 827 authored interior lights now reach the renderer and none reaches LightField, whose addSource() has exactly one caller in game/src and it is the harness verb.",
+      "native_scale": "theft, lock tiers, trespass and darkness, each perturbed and observed",
+      "native_score": 60,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-CRM01",
+      "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "72 of 83 unique items declare an owner; 0 of 83 appear in any property zone's contents, so taking one runs no theft chain and files no crime.",
+      "native_scale": "crime filed, witnesses, bounty reaching the ledger",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-AI07",
+      "path": "corpus/10-combat/RI-AI07-encounter-composition.md",
+      "side": "souls",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Population is placed and now stands outdoors on a five-cohort schedule. Density is still not hand-placed.",
+      "native_scale": "encounter composition and density, hand-placed vs generated",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "race and standing reaching world behaviour; AR-3 assertion",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-DLG02",
+      "path": "corpus/40-dialogue/RI-DLG02-words-per-settlement.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "words available per settlement, keyed on env.settlement",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-DLG03",
+      "path": "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "greetings and rumour book keyed per town and per reaction group",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST03",
+      "path": "corpus/30-quests/RI-QST03-faction-gating.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 4,
+      "native_verdict": "Faction halls are now rooms you can stand in and their zones carry a faction; the rank gate itself is still data.",
+      "native_scale": "faction gating: rank ladders reaching a door",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST07",
+      "path": "corpus/30-quests/RI-QST07-side-quest-texture.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "The prop list is instantiated: 2048 instances over 148 ids reach the scene graph. 113 of 115 rooms hold exactly eighteen things.",
+      "native_scale": "side-quest texture: authored content instantiated in the world",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST08",
+      "path": "corpus/30-quests/RI-QST08-reward-design.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "83 unique items are reachable through a door and takeable. They are also takeable again on every re-entry: sim.world.itemsTaken is written, saved, restored and exposed to the harness, and read by nothing that suppresses a respawn.",
+      "native_scale": "reward design: unique rewards reachable, singular and worth taking",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "skills by use: a use raises a skill and the skill moves a gate",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-TRV01",
+      "path": "corpus/50-world/RI-TRV01-transport-network.md",
+      "side": "morrowind",
+      "kind": "graph",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "transport network as a graph with posts and fares",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR01",
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "canon dossier consistency",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR02",
+      "path": "corpus/60-lore/RI-LOR02-era-and-political-brief.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "era and political brief, provable in the world",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR04",
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 6,
+      "native_verdict": "Unchanged from round 1.",
+      "native_scale": "naming and language consistency against the lexicon",
+      "native_score": 60,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR06",
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 5,
+      "native_verdict": "thornmarsh still sits beside western-rootlands and eastern-rootlands in game/data/world/regions.json.",
+      "native_scale": "contradiction discipline across registers and namespaces",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ],
+      "measured": "partial"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-WLD03",
+      "status": "not_possible",
+      "not_possible_reason": "M13 requires eight top-down orthographic renders of settlement PLANS with labels stripped. Round 2 draws no settlement plan: settlement.buildings reaches the door table and a .length and nothing else. The pack's subject does not exist for this round's work. Round 3, in flight in my snapshot, may make it possible for the first time."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "W1-04 ships no combat mechanic. This round adds room geometry, NPC positions and outdoor posts, none of which CombatSystem reads; interiors carry no collision set, so a room cannot change a fight by being in the way.",
+      "checks": [],
+      "evidence": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "no-marker-surface-added",
+          "result": "pass",
+          "observed": "STRUCTURAL, NOT RE-MEASURED. Round 1 measured the census properly (0 map markers, 0 routes drawn, six-element HUD at 2.05% coverage, openMenu('map') refusing with the S35 text). This round adds render/interior.js, NPC positions and outdoor posts and no HUD surface; the door prompt is still sim.door, a diegetic reach state. The re-measurement is section 4 of tools/world/critic-w1-04-r2b.mjs and it did not run. A successor should take it: a room the renderer now furnishes is exactly where an objective marker would appear first."
+        }
+      ],
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    },
+    "ar3": {
+      "status": "pass",
+      "seam_sterile": false,
+      "note": "The crossings this piece carries are W1-15's and it did not build them: an owner makes taking a thing a crime, a lock tier gates on Security and Agility, and shop hours now derive from isOpenNow() so a door refuses with words at the wrong hour. The crossing this round SHOULD have created is the one it did not: a room's declared lamps deciding whether you can be seen in it. LightField.addSource() has exactly one caller in game/src and it is the harness verb, so a shrine lit by eleven lamps and a smithy lit by none are the same darkness to every guard in Argonia.",
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    },
+    "consumption": {
+      "rule": "RI-MTH07 / ARBITRATION.md §3",
+      "verified_by": "source reading only — both browser arms were still running at budget end",
+      "models": [
+        {
+          "model": "interiors/**.bounds_m",
+          "consumer": "render/interior.js buildInterior() shell",
+          "demonstrated": "by reading only"
+        },
+        {
+          "model": "interiors/**.props[]",
+          "consumer": "render/interior.js PROPS table",
+          "demonstrated": "by reading only"
+        },
+        {
+          "model": "interiors/**.lights[]",
+          "consumer": "lamp fittings + point lights",
+          "demonstrated": "by reading only",
+          "also": "NOT consumed by the stealth detection model — LightField.addSource() has one caller and it is the harness verb"
+        },
+        {
+          "model": "interiors/**.unique_item",
+          "consumer": "_furnishInterior() -> sim.props -> takeProp()",
+          "demonstrated": "by reading only",
+          "also": "its `owner` is unread: 0 of 83 appear in any property zone's contents"
+        },
+        {
+          "model": "settlements/**.buildings",
+          "consumer": "the door table (sim/settlement.js:52) and a .length (engine.js:7749)",
+          "demonstrated": "no geometry consumer in round 2"
+        },
+        {
+          "model": "settlements/**.architecture_kit.meshes",
+          "consumer": "render/interior.js KIT",
+          "demonstrated": "32 of 69, all indoors"
+        },
+        {
+          "model": "npcs/**.schedule",
+          "consumer": "sim/npc.js stepSchedule() -> at, present, pos",
+          "demonstrated": "by reading only"
+        },
+        {
+          "model": "npcs/**.post",
+          "consumer": "sim/npc.js stepSchedule() presence rule",
+          "demonstrated": "by reading only"
+        },
+        {
+          "model": "sim.world.itemsTaken",
+          "consumer": "NOTHING — written, saved, restored, exposed to the harness, unread",
+          "demonstrated": "no"
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4.4,
+    "pass_threshold": 7.0,
+    "aggregation": "mean",
+    "note": "Round 1 scored 3.2 against a threshold of 6. This round is 4.4 against a wave-1 gate of 7.0 — the largest single-round movement this piece has had, and still a fail.",
+    "aggregation_note": "Each of the 20 items is scored min-over-its-own-axes; the overall is their mean, as round 1 did."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "The round-1 blocking gap is closed in MECHANISM and I verified the wiring by reading it, but neither of the two acceptance numbers was independently reproduced by me: both browser arms were still running at budget end under load 34-36 with 42-54 headless_shell. Reported as an incomplete measurement, not as a pass.",
+    "GAP-W1-settlement-has-no-outside: 202 buildings still have no exterior geometry in round 2's own work; the eight architecture kits are visible only from indoors.",
+    "GAP-W1-interior-lights-unread-by-detection: 827 authored lights are drawn and none reaches LightField (RI-MTH07).",
+    "GAP-W1-unique-items-respawn-on-re-entry: sim.world.itemsTaken has no consumer, so every one of 83 unique items can be taken again on every re-entry.",
+    "One third of the builder's headline claim 1 is vacuous: exterior_restored_on_exit reads 115 in BOTH arms of its own control."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-settlement-has-no-outside",
+    "subsystem_path": "world.settlement.anatomy",
+    "severity": "blocking",
+    "what": "Round 2 built the inside of 115 buildings and none of the outside of 202. settlement.buildings is read at exactly two sites in game/src: the door table at sim/settlement.js:52 and a .length at engine.js:7749. Each town declares 8-10 bespoke architecture meshes and one silhouette element; 4 per town have a builder (32 of 69) and every one of the 32 is placed INSIDE a room. The 260 townspeople this round put outdoors stand on bare terrain and VP04 is a picture of ground.",
+    "why_it_matters": "RI-WLD13 §2's sentence for it predates the piece: 'the difference between a settlement of buildings and a settlement of building-shaped doors'. From the player's chair, eight towns with no buildings is a larger absence than any interior defect this round fixed.",
+    "in_flight": "W1-04 ROUND 3 is already working on this and its code is in my snapshot: game/src/world/province.js gained 177 lines and game/src/render/exterior.js appeared while I was measuring. I have not measured any of it and this verdict does not grade it. The gap is stated so round 3 has a bar rather than a self-report.",
+    "evidence": [
+      "reports/critic-w1-04-r2-offline.json",
+      "docs/shots/2026-08-08-w1-04-r2-critic-two-files-one-room.png"
+    ],
+    "remedy": {
+      "action": "Draw the settlement from settlement.buildings: a mesh per building placed at its offset_m and yaw_deg, drawn from that town architecture_kit.meshes, with the door table already in place as the entry points. Give the draw call a cut arm so the before-picture can be produced on demand.",
+      "acceptance": [
+        "A probe standing at each of the eight settlement centres and reading the SCENE GRAPH reports >= 8 building meshes drawn per town and 202 of 202 across the province, with a --control arm that cuts the draw call and reports 0; the two arms must differ.",
+        "Removing five buildings from one settlement's `buildings` list changes the drawn count by five and restores when put back; perturbing architecture_kit.meshes changes which meshes appear.",
+        "A pixel sweep of one fixed camera pose at all eight town centres returns 8 distinct images; the control arm returns 1.",
+        "VP04-settlement-street contains a building, and the verdict states plainly whether a capture through VP04 may be cited as evidence of a settlement."
+      ],
+      "targets": [
+        "game/src/world/province.js",
+        "game/src/render/exterior.js",
+        "game/data/world/settlements/*.json"
+      ]
+    }
+  },
+  "other_gaps": [
+    {
+      "gap_id": "GAP-W1-interior-lights-unread-by-detection",
+      "subsystem_path": "world.interior.named",
+      "severity": "blocking",
+      "what": "827 lights are declared across the 115 interior records and this round drew them. LightField.addSource() — the only way a light enters the stealth detection model — has exactly one caller in the whole of game/src and it is the harness verb addLightSource (harness/api.js:2064). 11 rooms declare zero lights and 37 declare seven, and to the model that decides whether a guard can see you they are the same room.",
+      "remedy": {
+        "action": "Register each room's declared lights[] with sim.stealth.light as LightField sources when _applyCell() furnishes the interior, and clear them on leaving. The world positions are already computed by buildInterior().",
+        "acceptance": [
+          "entering a room registers its lights[] as LightField sources",
+          "getLightAt() at the same point in a ten-lamp room and a no-lamp room returns different values",
+          "snuffing one declared lamp changes visibilityAt() at a point near it",
+          "a control that skips the registration reproduces the current reading on both rooms"
+        ],
+        "targets": [
+          "game/src/engine.js",
+          "game/src/sim/stealth/light.js",
+          "game/src/render/interior.js"
+        ]
+      },
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-unique-items-respawn-on-re-entry",
+      "subsystem_path": "world.interior.named",
+      "severity": "major",
+      "what": "Engine._furnishInterior() splices its own props out of sim.props on leaving (engine.js:4336-4340) and re-spawns them on returning; Engine.spawnProp() always sets taken:false and its duplicate guard at :1931 cannot fire because the old object is already gone. sim.world.itemsTaken records every take, is serialised, is restored and is exposed to the harness, and nothing reads it to suppress a respawn. 83 rooms declare a unique item.",
+      "remedy": {
+        "action": "Have _furnishInterior() consult sim.world.itemsTaken before spawning, and spawn with taken:true (or not at all) for an eid already in it.",
+        "acceptance": [
+          "taking a room's unique item and re-entering leaves the pedestal empty, across a save and load",
+          "a control that ignores itemsTaken puts it back"
+        ],
+        "targets": [
+          "game/src/engine.js"
+        ]
+      },
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-interior-props-lose-readability-across-a-load",
+      "subsystem_path": "world.persistence.state",
+      "severity": "major",
+      "what": "_furnishInterior() spawns a room's documents with readable and readable_book set; save/state.js serialises props without either field and rehydrates them with readable:null (state.js:730). Inside one session this is masked by the delete-and-respawn; on a fresh engine _interiorProps is empty, nothing is deleted, and spawnProp() returns the stale object. Props have no makeNPC and no durable-field census.",
+      "remedy": {
+        "action": "Serialise and read back prop.readable and prop.readable_book, and add the prop field set to save-manifest.json so getDurableFieldCensus() fails loudly on the next omission.",
+        "acceptance": [
+          "a save taken inside a room and loaded on a fresh engine returns listEntities() rows whose readable and readable_book match the pre-save rows",
+          "the prop field set is added to game/data/save-manifest.json and checked by getDurableFieldCensus()"
+        ],
+        "targets": [
+          "game/src/save/state.js",
+          "game/data/save-manifest.json"
+        ]
+      },
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-acceptance-instruments-cannot-be-aimed",
+      "subsystem_path": "method",
+      "severity": "minor",
+      "what": "The round-1 verdict names tools/world/critic-w1-04-r1b.mjs and critic-w1-04-r1c.mjs as the re-measurement path for both its acceptance numbers. Both call launchGame({timeout,width,height}) without spreading args, so neither can be pointed at anything but the live working tree. On a tree that moves every few minutes they cannot produce a stamped number.",
+      "remedy": {
+        "action": "Spread args into launchGame in both so --entry works, and re-run each against a frozen snapshot twice to show the number is stable.",
+        "acceptance": [
+          "both spread args into launchGame and accept --entry",
+          "a run against a frozen snapshot reproduces its own number twice"
+        ],
+        "targets": [
+          "tools/world/critic-w1-04-r1b.mjs",
+          "tools/world/critic-w1-04-r1c.mjs"
+        ]
+      },
+      "evidence": [
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    }
+  ],
+  "corpus_extended": [
+    {
+      "what": "RI-WLD13 N1 (footprint containment) is vacuous by construction and this round did not change that: 115 of 115 interiors declare continuity.exterior_footprint_m and on 115 of 115 the bounds_m span equals it exactly. The generator defines the interior's bounds AS the footprint it is checked against.",
+      "where": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md"
+    },
+    {
+      "what": "The round-1 acceptance bar of '>= 100 distinct images over 115 interiors' is not well-formed. The 115 records admit only 94 distinct build-relevant contents, so a sweep can exceed 94 only by counting the hashStr(rec.id) arrangement jitter in buildInterior() — different placements of identical furniture in identically-sized rooms. Restate as: >= 90 distinct images with the room-builder-cut control arm at <= 3.",
+      "where": "corpus/90-verdicts/wave1/W1-04-r1.md"
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/render/renderer.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/render/interior.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/settlement.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/npc.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/save/state.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/stealth/light.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/world/province.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "tools/world/w1-04-consumption.mjs",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "tools/world/w1-04-interior-sweep.mjs",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "tools/world/critic-w1-04-r1c.mjs",
+      "purpose": "diagnose-after-demonstrating"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/critic-w1-04-r2-offline.json",
+      "kind": "report",
+      "produced_by": "critic-w1-04-r2 offline census over the frozen snapshot (no browser)",
+      "source": "critic's own"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-04-r2-critic-two-files-one-room.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-w1-04-r2-shot.mjs && node tools/world/critic-w1-04-r2-compose.mjs",
+      "source": "critic's own, through tools/capture/ under one build key",
+      "camera_pose": {
+        "pos": [
+          0,
+          1.62,
+          -5.2
+        ],
+        "look": [
+          0,
+          1.3,
+          2.0
+        ],
+        "time_of_day": 12,
+        "weather": "clear",
+        "note": "one fixed pose, identical for both halves; the only difference between the halves is which interior record built the cell"
+      },
+      "resolution": "720x480 per half, composed to 1448x506"
+    },
+    {
+      "path": "reports/critic-w1-04-r2-shot.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-w1-04-r2-shot.mjs",
+      "source": "critic's own"
+    },
+    {
+      "path": "reports/w1-04-consumption-r2.json",
+      "kind": "report",
+      "produced_by": "node tools/world/w1-04-consumption.mjs (the BUILDER's run)",
+      "source": "the builder's, read and audited, not re-run by me"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-interior-door-draws-nothing",
+      "status": "partially-closed",
+      "note": "Closed in mechanism and verified by reading (engine.js:357 the hook, :4369 _syncCell, :4748 from _afterStep, :5574 from _render; renderer.js:189-193 the only place cell visibility is set). NOT independently re-measured by me: both browser arms were still running at budget end under load 34-36 with 42-54 headless_shell. A successor must land tools/world/critic-w1-04-r2a.mjs and tools/world/w1-04-interior-sweep.mjs --control against a frozen tree before this is marked closed.",
+      "evidence": [
+        "reports/w1-04-consumption-r2.json",
+        "reports/critic-w1-04-r2-offline.json"
+      ]
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": false,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "Four false entries and all four are stated in the verdict rather than worked around. (1) judged_output_not_source is FALSE for the central question: neither browser arm completed, so the blocker's closure is judged from source and from the builder's own artifact, not from a run I took. That is the weakest part of this verdict and I say so in §2, §3 and §4 rather than dressing it up. (2) ran_every_assigned_method is false for the same reason, and additionally the AR-2 census was not re-measured. (3) blind_done_where_required is false: RI-WLD03's M13 is not_possible for round 2's own work because there is no settlement plan to render. (4) I made one offline error and corrected it in the verdict rather than quietly: I first reported RI-WLD13 N1 as 'absent' having grepped a top-level field that lives under continuity; re-measured, it is 115 of 115 and vacuous, exactly as round 1 said. Everything I DID measure — the duplicate-content census, the kit-mesh coverage, the light-field caller count, the prop and area distributions, M14, M15, R2, the property-zone census, the collision-cell census, and the two frames — was measured by me, offline, over the frozen snapshot, and re-verified against it after the tree moved."
+  }
+}
