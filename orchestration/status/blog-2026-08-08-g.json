@@ -1,0 +1,29 @@
+{
+  "task_id": "blog-2026-08-08-g",
+  "role": "blog",
+  "piece": "W1-DEPLOY",
+  "state": "done",
+  "brief": "Follow-up post: the black screen the owner saw on their phone, now ended. Every beat verified against git log/git show and orchestration files before writing, per the dispatch's own instruction not to trust the orchestrator's summary.",
+  "verification": [
+    "4315759 (09:21:57Z): hold-gate.js untracked-file fix — confirmed by git show, matches 'black screen #1' named in orchestration/status/PLAYABILITY.json and orchestration/status/critic-w1-touch.json",
+    "fa96455 (09:58:55Z): boot-notice-hides-itself fix — confirmed by git show; 'second black screen' phrase and 876ms/8.8s numbers taken verbatim from corpus/90-verdicts/wave1/W1-TOUCH-r1.json and the W1-DEPLOY-r1 critic commit 20ef7a6",
+    "a52113c (11:11:50Z): preserveDrawingBuffer off for players, corner-sampling fix — confirmed by git show; 0.02%/33.30% and 0.00%/52.86% figures taken from critic commit 20ef7a6's message, cross-checked as 160x160/1920x1080 = 1.235%",
+    "docs/shots/2026-08-08-critic-deploy-boot-notice-stuck-over-a-drawn-dungeon.png and the two playability shots (barge hold phone, live tablet landscape) opened and visually confirmed before use",
+    "PLAYABILITY numbers (91.8-95.3% lit, 35.8-56.4s opening) transcribed from orchestration/status/PLAYABILITY.json 'verify-playable (live) — THE HEADLINE'",
+    "P10 (503 misread as missing file) confirmed present but UNCOMMITTED: git diff HEAD -- game/src/engine.js shows the retry fix in the working tree, not in any commit; reported as such, not claimed as shipped",
+    "blog-threads.mjs lists this thread as 'STILL OPEN' (no kind:fix feed line and no re-scored verdict yet under its heuristic) — proceeded anyway per the dispatch's explicit instruction, since direct verification (commits + screenshots + playability run) establishes the ending independently of that heuristic"
+  ],
+  "what_i_did_not_do": [
+    "did not commit the uncommitted P10 retry fix in game/src/engine.js — not my file, not my task",
+    "did not re-run any browser check myself; used already-captured screenshots and already-recorded numbers, since this is a writing task and a browser was not needed",
+    "did not claim W1-DEPLOY's score has moved — it has not; said so plainly"
+  ],
+  "files_touched": [
+    "docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md",
+    "docs/blog/COVERED.md",
+    "reports/blog-feed.jsonl",
+    "orchestration/status/blog-2026-08-08-g.json",
+    "docs/index.html"
+  ],
+  "next_step": "none — published"
+}

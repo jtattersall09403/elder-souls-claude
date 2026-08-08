@@ -25,8 +25,8 @@ present on whichever machine is running it.
 
 **The second** was caused by the fix for the first. The new boot notice was written to hide itself
 the instant the game finished booting — but it checked for the harness object's existence, and
-`main.js` installs that object immediately, before boot resolves, not after. `corpus/90-verdicts/
-wave1/W1-TOUCH-r1.json` records the consequence in one line: the notice "hiding on the harness
+`main.js` installs that object immediately, before boot resolves, not after.
+`corpus/90-verdicts/wave1/W1-TOUCH-r1.json` records the consequence in one line: the notice "hiding on the harness
 object's existence was wrong and cost the owner a second black screen." An independent critic
 measured it directly — the notice hid itself at **876 ms**, against a load that didn't finish until
 **8.8 s** on this machine, **21.9 s** under 4x CPU throttling, and **91.1 s** under 4x CPU plus a
@@ -84,11 +84,9 @@ desktop leg pressed one wrong key). Every figure below is taken under a build-ma
 11.8 rising to about 20 over four cores, so it is a claim about the deployed game, not about a
 phone's own speed:
 
-| shape | boot | lit | opening completed on touch |
-|---|---|---|---|
-| phone, small, portrait (360×740 @3x) | 58 s | 91.8% of the frame | 35.8 s |
-| phone, large, landscape (932×430 @3x) | 56 s | 95.3% of the frame | 38.0 s |
-| tablet, landscape (1180×820 @2x) | 80 s | 95.0% of the frame | 56.4 s |
+- phone, small, portrait (360×740 @3x): boot 58 s, 91.8% of the frame lit, opening completed on touch in 35.8 s
+- phone, large, landscape (932×430 @3x): boot 56 s, 95.3% of the frame lit, opening completed on touch in 38.0 s
+- tablet, landscape (1180×820 @2x): boot 80 s, 95.0% of the frame lit, opening completed on touch in 56.4 s
 
 :::compare Before: the deployed link, on a phone, refusing to start — a transient 503 from the CDN on one of several hundred data files, misreported as a missing file. After: the same deployed link, playing, on a phone in landscape and on a tablet.
 ![Before — the live game on a phone, a 503 reported as a missing file](../shots/2026-08-08-playability-the-live-game-on-a-phone-a-503-reported-as-a-missing-file.png)
