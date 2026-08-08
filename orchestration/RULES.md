@@ -61,13 +61,17 @@ right now). Between these two you should not need to go looking for anything.
     overlap is deliberate — a second critic, a competing hypothesis, the project's whole method —
     declare it with `"redundant_with": ["<other task_id>"]` instead of leaving it to read as a
     collision; a declared pair is never reported as a conflict.
-17. **Never `git add -A`. Stage your own declared paths, by name.** A delete-the-fix on a shared
-    tree must check the git index, not just the file — a neighbour's `git add -A` has staged a
-    temporary deletion before now. And twice in one session an agent finished, ran `git add -A`,
-    and swept a neighbour's in-flight work into its own commit; once it buried a critic's staged
-    verdict, tools, screenshot and blog line under a builder's message. `node tools/ownership.mjs
-    --staged <your-task-id>` names every staged path another live piece has declared, and the
-    pre-commit hook prints it for you. Read it before you commit, not after.
+17. **Commit with `git commit --only <your paths>`. Never `git add -A`, and staging by name is
+    not enough.** Three times in one session an agent's commit carried a neighbour's in-flight
+    work; once it buried a critic's staged verdict, tools, screenshot and blog line under a
+    builder's message. The first version of this rule said "stage your own paths by name", and an
+    agent corrected it within the hour with the reason: **`git commit` commits the whole index**,
+    so on a tree where a dozen agents are staging concurrently, staging carefully still sweeps up
+    whatever someone else already staged. `--only` is the flag that actually restricts the commit
+    to the paths you name. A delete-the-fix on a shared tree must likewise check the *index*, not
+    just the file — a neighbour's `git add -A` has staged a temporary deletion before now.
+    `node tools/ownership.mjs --staged <your-task-id>` names every staged path another live piece
+    has declared, and the pre-commit hook prints it. Read it before you commit, not after.
 
 ## Cost
 
@@ -119,6 +123,8 @@ right now). Between these two you should not need to go looking for anything.
     an hour of work every time the container restarts — which happened today. But a finishing agent
     reaching for `git add -A` is how a neighbour's work ends up under someone else's name.
 
-    So: `git add <the paths you declared>` — never `-A`, never `.`. If you find you need a file you
-    did not declare, declare it first (rule 16) and say why in the status file. The orchestrator
-    banks whatever is left, and says in its message that that is what it is doing.
+    So: `git commit --only <the paths you declared>` — never `-A`, never `.`, and not a bare
+    `git add` either (see rule 17: the commit takes the whole index, not your additions to it). If
+    you find you need a file you did not declare, declare it first (rule 16) and say why in the
+    status file. The orchestrator banks whatever is left, and says in its message that that is
+    what it is doing.

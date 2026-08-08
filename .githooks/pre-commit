@@ -108,5 +108,6 @@ node tools/corpus-index.mjs --check
 # WARNING, NOT BLOCKING. The committer is often the legitimate claimant, the orchestrator banks the
 # whole tree on purpose (rule 28), and a hard block with a dozen agents committing concurrently
 # would deadlock the fleet to prevent a recoverable attribution error. What was missing was never
-# permission — it was seeing the list in time to run `git restore --staged`.
+# permission — it was seeing the list in time. Note that unstaging is not the whole answer:
+# `git commit` takes the entire index, so the reliable form is `git commit --only <your paths>`.
 node tools/ownership.mjs --staged "${ES_TASK_ID:-}" || true
