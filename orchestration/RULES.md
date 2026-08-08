@@ -61,8 +61,13 @@ right now). Between these two you should not need to go looking for anything.
     overlap is deliberate — a second critic, a competing hypothesis, the project's whole method —
     declare it with `"redundant_with": ["<other task_id>"]` instead of leaving it to read as a
     collision; a declared pair is never reported as a conflict.
-17. **A delete-the-fix on a shared tree must check the git index**, not just the file. A
-    neighbour's `git add -A` has staged a temporary deletion before now.
+17. **Never `git add -A`. Stage your own declared paths, by name.** A delete-the-fix on a shared
+    tree must check the git index, not just the file — a neighbour's `git add -A` has staged a
+    temporary deletion before now. And twice in one session an agent finished, ran `git add -A`,
+    and swept a neighbour's in-flight work into its own commit; once it buried a critic's staged
+    verdict, tools, screenshot and blog line under a builder's message. `node tools/ownership.mjs
+    --staged <your-task-id>` names every staged path another live piece has declared, and the
+    pre-commit hook prints it for you. Read it before you commit, not after.
 
 ## Cost
 
@@ -104,4 +109,16 @@ right now). Between these two you should not need to go looking for anything.
 27. **One line in `reports/blog-feed.jsonl`**, in plain words a non-developer would understand, and
     one illustrative image in `docs/shots/` with a dated descriptive name. This is how the owner
     sees progress, and it costs you a minute.
-28. **Do not commit.** The orchestrator banks the tree.
+28. **Commit your own declared files, by explicit path. The orchestrator banks everything else.**
+
+    This rule used to read "do not commit — the orchestrator banks the tree", and dispatch briefs
+    have been telling agents to commit for some time; two agents in one session reported the
+    contradiction rather than guessing, which is the right behaviour and the reason it is now
+    fixed here instead of in the next brief. Both readings had a point. Attribution is better when
+    the agent who did the work writes the message, and a tree banked only by the orchestrator loses
+    an hour of work every time the container restarts — which happened today. But a finishing agent
+    reaching for `git add -A` is how a neighbour's work ends up under someone else's name.
+
+    So: `git add <the paths you declared>` — never `-A`, never `.`. If you find you need a file you
+    did not declare, declare it first (rule 16) and say why in the status file. The orchestrator
+    banks whatever is left, and says in its message that that is what it is doing.

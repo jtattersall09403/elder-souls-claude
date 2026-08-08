@@ -25,6 +25,14 @@ try {
     process.exitCode = 1;
   } else {
     console.log(`publish: ${rows.length} verdict(s), all plotted.`);
+    // Name the verdicts sitting on an inferred time. `scores.mjs` falls back to the file's git-add
+    // time so an unstamped verdict is no longer drawn at the start of the project, but a fallback
+    // that works silently is a fallback nobody fixes: the third unstamped verdict landed nine
+    // minutes after that one was written. Printing the names on every publish is the pressure.
+    const noClock = rows.filter(r => r.inferred).map(r => r.piece);
+    if (noClock.length) {
+      console.log(`publish: ${noClock.length} verdict(s) stamped no critic.finished_at, so their dots sit on the commit time instead: ${[...new Set(noClock)].join(', ')}`);
+    }
   }
 } catch (e) { console.error('publish: score check failed —', e.message); process.exitCode = 1; }
 

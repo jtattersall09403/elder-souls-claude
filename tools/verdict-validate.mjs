@@ -69,6 +69,22 @@ function validate(file) {
     }
   }
   if (v.critic && !v.critic.run_id) E('critic.run_id required');
+  // A verdict with no time is a verdict the progress chart cannot place. Three have shipped without
+  // one, and the chart drew each at x = 0 — the far left of the whole project timeline — so a
+  // verdict filed at 22:10 sat before every measurement its domain had ever taken. That turned a
+  // domain reading 5 -> 6 -> 4 into an apparent 2 -> 5 -> 6: the page told the opposite story to
+  // the disk, and showed no sign anything was missing. `scores.mjs` now falls back to the file's
+  // git-add time, which is close, but close is not the critic's own reading — and the third
+  // unstamped verdict landed nine minutes after that fallback was written, which is the proof that
+  // a fallback does not stop the thing it compensates for. So require the stamp here, where a
+  // verdict becomes real.
+  if (v.critic && !v.critic.finished_at && !v.critic.started_at) {
+    E('critic.finished_at required (ISO 8601) — a verdict with no time cannot be placed on the trajectory chart, and an unplaced point is drawn at the start of the project rather than left out');
+  }
+  for (const k of ['started_at', 'finished_at']) {
+    const t = v.critic?.[k];
+    if (t && Number.isNaN(Date.parse(t))) E(`critic.${k} is not a parseable timestamp: ${JSON.stringify(t)}`);
+  }
   if (v.critic && typeof v.critic.conflict_of_interest !== 'boolean') E('critic.conflict_of_interest must be boolean');
   if (v.critic && v.critic.conflict_of_interest === true && v.status !== 'RECUSED') {
     E('critic.conflict_of_interest is true so status MUST be RECUSED (CRITIC-DOCTRINE §8)');

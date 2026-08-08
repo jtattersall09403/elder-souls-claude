@@ -4,9 +4,21 @@
 // Written because rule 21 has been throttling the whole fleet on a number that does not mean what
 // the rule thinks it means. The rule says "keep `pgrep -c headless_shell` under ~8". But Chromium
 // forks a process tree per launch — a browser process, a zygote, a GPU process and one renderer per
-// tab — so ONE browser shows up as five to seven `headless_shell` entries. Measured on this box:
-// 43 processes were SIX browsers. Under the rule as written, the safe ceiling was about one and a
-// third browsers, and agents have been queueing, sleeping and skipping measurements to respect it.
+// tab — so ONE browser shows up as several `headless_shell` entries.
+//
+// And the multiplier is not a constant, which is the real argument for this tool. Two readings a
+// few hours apart on the same box: 43 processes were 6 browsers (7.2 each), and 26 processes were
+// also 6 browsers (4.3 each). It depends on how many tabs each run holds open and whether the GPU
+// process has started yet. So there is no divisor you could apply to the old number to recover the
+// right one — the old number was not a scaled version of the truth, it was noise with a trend.
+//
+// (A blog writer caught the first version of this comment claiming "43 processes were SIX browsers"
+// while the commit message beside it said 36. Both readings were real, taken minutes apart; neither
+// was written down at the time. That is the same failure this project charges builders for, so it
+// is recorded here rather than quietly corrected.)
+//
+// Under the rule as written the safe ceiling was about one and a third browsers, and agents have
+// been queueing, sleeping and skipping measurements to respect it.
 //
 // The honest metric is the number of browser *instances* (a headless_shell whose parent is not
 // itself a headless_shell) and the run-queue length per core. Those are what actually contend.

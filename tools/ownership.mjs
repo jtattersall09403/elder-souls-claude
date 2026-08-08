@@ -92,6 +92,7 @@ import { readFileSync, readdirSync, existsSync, mkdtempSync, writeFileSync, rmSy
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const STATUS_DIR = join(ROOT, 'orchestration', 'status');
@@ -222,6 +223,46 @@ function reportFor(live, target) {
   }
 }
 
+// ---- what you are about to commit -----------------------------------------------------------
+// Twice in one session an agent finished, ran `git add -A`, and swept a neighbour's in-flight work
+// into its own commit — once burying a critic's staged verdict, tools, screenshot and blog line
+// under a builder's message. Rule 17 already warns about it in prose, and prose lost twice in a
+// day. So this reads the index directly and names, before the commit lands, every staged path that
+// a DIFFERENT live piece has declared.
+//
+// It warns rather than blocks, deliberately. The committer is sometimes the legitimate claimant,
+// the orchestrator banks the whole tree on purpose (rule 28), and a hard block with a dozen agents
+// committing concurrently would deadlock the fleet to prevent a recoverable attribution error.
+// What was missing was never permission — it was seeing the list in time to run `git restore
+// --staged` on the three lines that are not yours.
+function reportStaged(live, me) {
+  let staged = [];
+  try {
+    staged = execFileSync('git', ['diff', '--cached', '--name-only'], { cwd: ROOT, encoding: 'utf8' })
+      .split('\n').map((l) => l.trim()).filter(Boolean);
+  } catch { console.log('ownership --staged: no git index to read.'); return 0; }
+  if (!staged.length) { console.log('ownership --staged: nothing staged.'); return 0; }
+
+  const foreign = [];
+  for (const path of staged) {
+    const owners = live.filter((r) => (!me || r.task_id.toLowerCase() !== me.toLowerCase())
+      && [...declared(r)].some((p) => pathsOverlap(p, path)));
+    if (owners.length) foreign.push({ path, owners: owners.map((r) => r.task_id) });
+  }
+
+  console.log(`ownership --staged: ${staged.length} path(s) staged${me ? `, committing as ${me}` : ''}.`);
+  if (!foreign.length) {
+    console.log('  none of them is declared by another live piece.');
+    return 0;
+  }
+  console.log(`  ${foreign.length} staged path(s) are declared by ANOTHER live piece:`);
+  for (const f of foreign) console.log(`    ${f.path}\n      claimed by ${f.owners.join(', ')}`);
+  console.log('\n  If that work is not yours, unstage it before you commit:');
+  console.log(`    git restore --staged ${foreign.slice(0, 8).map((f) => f.path).join(' ')}${foreign.length > 8 ? ' ...' : ''}`);
+  console.log('  If it IS yours, or you are the orchestrator banking the tree, say so in the commit message.');
+  return foreign.length;
+}
+
 // ---- self-test ---------------------------------------------------------------------------
 // A probe that cannot fail is worse than no probe (RULES.md rule 4). Each case writes REAL status
 // files to a temp status dir and drives the actual loadRecords()/analyse() path -- not a
@@ -291,6 +332,14 @@ if (forIx !== -1) {
 }
 
 const { live, conflicts, redundant, blind } = analyse(records);
+
+const stagedIx = args.indexOf('--staged');
+if (stagedIx !== -1) {
+  // `--staged [my-task-id]` — the task id, when given, is excluded from "another live piece",
+  // because your own claims are the whole point of having made them.
+  const n = reportStaged(live, args[stagedIx + 1] && !args[stagedIx + 1].startsWith('--') ? args[stagedIx + 1] : null);
+  process.exit(n ? 1 : 0);
+}
 
 if (args.includes('--conflicts')) {
   printConflicts(conflicts, redundant, live.length);

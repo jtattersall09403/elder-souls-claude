@@ -158,7 +158,7 @@
       "orchestration/status/W1-15-r3.json"
     ],
     "contention": "gate exit 3 for the whole dispatch (3-5 browser instances against a ceiling of 6, but load 4.8-5.2 per core against a ceiling of 4.0, driven by ~30 concurrent agents). ALL static/data work was done first with no browser, per rule 21. I then PROCEEDED PAST exit 3 with ONE browser at a time, five sequential launches (four probe iterations + the delete-the-fix, which needs two), because every remaining deliverable in the brief \u2014 the witness staging, the CONSUMPTION demonstration and the delete-the-fix \u2014 requires driving the running game, and the load never dropped in ~2h. Declared here per rule 21. NO TIMING FIGURE IS PUBLISHED anywhere in this round's work: every measured number is a frame count or a model value, both load-independent.",
-    "head_at_measurement": "ec1a721",
+    "head_at_measurement": "87380df (every live number above was taken on the tree that became this commit)",
     "headline": "THE LAMPS NOW REACH THE THING THAT DECIDES WHETHER YOU CAN BE SEEN. Verified the W1-04-r2 finding still held at e97347f, then wired it, and found a second half of the same defect nobody had named: indoor L was skyAmbient(env), so a windowless cellar read L=0.75 at noon and 0.09 at 03:00, flat across the whole floor, in all 115 interiors.",
     "what_landed": [
       {
@@ -234,6 +234,10 @@
       "w1-15-r3-live": "15/15",
       "w1-15-r3-deletefix": "5/5",
       "w1-15-consumption": "selftest PASS, 116/983 with no reader"
-    }
+    },
+    "committed_at": [
+      "87380df \u2014 the work",
+      "96fda92 \u2014 a whitespace correction to detection.json's indent"
+    ]
   }
 }

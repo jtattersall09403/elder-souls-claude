@@ -99,3 +99,14 @@ if ! node tools/corpus-index.mjs --check >/dev/null 2>&1; then
 fi
 
 node tools/corpus-index.mjs --check
+
+# Whose work is in this commit? Twice in one session an agent finished, ran `git add -A`, and swept
+# a neighbour's in-flight work into its own commit — once burying a critic's staged verdict, tools,
+# screenshot and blog line under a builder's message. Rule 17 warned about it in prose and prose
+# lost twice in a day, so the list is printed here, where it can still be acted on.
+#
+# WARNING, NOT BLOCKING. The committer is often the legitimate claimant, the orchestrator banks the
+# whole tree on purpose (rule 28), and a hard block with a dozen agents committing concurrently
+# would deadlock the fleet to prevent a recoverable attribution error. What was missing was never
+# permission — it was seeing the list in time to run `git restore --staged`.
+node tools/ownership.mjs --staged "${ES_TASK_ID:-}" || true
