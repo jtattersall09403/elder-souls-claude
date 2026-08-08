@@ -6,21 +6,33 @@
     "W1-04-r2 (interiors)",
     "W1-04-r3 (exteriors)"
   ],
-  "state": "running",
+  "state": "complete",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms",
+  "next_step": "Two gaps want an owner: the footprint/plan conflict (data, five settlement files) and the pixel-sweep noise floor (eight lines in w1-04-interior-sweep.mjs). RI-WLD03 M13 is now possible and wants a critic who authored neither the geometry nor the pack.",
   "files_touched": [
-    "orchestration/status/critic-w1-04-r3.json",
-    "tools/world/critic-w1-04-r3a.mjs"
-  ],
-  "files_claimed": [
     "corpus/90-verdicts/wave1/W1-04-r3.md",
     "corpus/90-verdicts/wave1/W1-04-r3.json",
     "orchestration/status/critic-w1-04-r3.json",
-    "tools/world/critic-",
-    "docs/shots/",
+    "tools/world/critic-w1-04-r3a.mjs",
+    "tools/world/critic-w1-04-r3b.mjs",
+    "reports/critic-w1-04-r3a.json",
+    "reports/critic-w1-04-r3a-b.json",
+    "reports/critic-w1-04-r3a-c.json",
+    "reports/critic-w1-04-r3a-d.json",
+    "reports/critic-w1-04-r3b-shipped.json",
+    "reports/critic-w1-04-r3b-cut.json",
+    "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-roofs-from-above.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-forty-buildings.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-blackrose-inn-a-shed-over-a-hall.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-vp04-inside-a-wall.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-open-topped-roofs.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-town-from-outside.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-interior-blackrose-prison.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-interior-thorn-hall.png",
+    "docs/shots/2026-08-08-w1-04-r3-critic-interior-archon-apothecary.png",
     "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "notes": "Grading two rounds at once. Attack order A-F from brief.",
   "contention_decision": "node tools/contention.mjs --gate returned exit 3 twice. The INSTANCE ceiling \u2014 the thing a browser actually contends for \u2014 was NOT breached (4 of 6); only the per-core load average, at 4.12 against a 4.0 ceiling. I PROCEEDED PAST IT, as rule 21 permits, with ONE browser launched once and kept for every section. NO TIMING FIGURE IS PUBLISHED ANYWHERE IN THIS VERDICT (rule 26).",
   "found_so_far": [
@@ -29,5 +41,33 @@
     "reports/critic-w1-04-r2a.json LANDED: verb_noticed_the_empty_room false; unique items 11 taken, theft_true 0, crime_filed 0.",
     "Object.assign(group,{position}) THROWS against the vendored three r180 (position writable:false). 34 instances across 22 rooms, counted as built.",
     "0 of 83 declared unique_item ids appear in game/data/world/property/*.json zone contents."
+  ],
+  "finished_at": "2026-08-08T03:22:03Z",
+  "verdict": "FAIL 4.6/10 against a wave-1 gate of 7.0 (r1 3.2/6, r2 4.4/7.0)",
+  "stamped_commit": "c36653e",
+  "redundant_with": [
+    "W1-04-r2",
+    "W1-04-r3",
+    "critic-w1-04-r2"
+  ],
+  "overlap_notes": "reports/blog-feed.jsonl and docs/shots/ are append-only and shared by every piece in flight, declared rather than left to read as a collision. I edited nothing under game/.",
+  "explicitly_not_touching": [
+    "game/"
+  ],
+  "headline_findings": [
+    "The brief said neither round had been judged. corpus/90-verdicts/wave1/W1-04-r2.md exists (FAIL 4.4). Found by listing the directory before starting.",
+    "THE PIXEL SWEEP LANDED AT 00:39 AND NOBODY READ IT: live 115 distinct images, control 115, its own failure line saying 'this sweep is not measuring the room'. I measured the noise floor - 8 of 8 distinct images in ONE unchanged room after two fixed steps, 1 of 8 with no step at all. Both pixel acceptance criteria in this piece are unmeasurable as written.",
+    "getDrawnInterior's CELL half is a genuine renderer read (proved by perturbing the renderer alone, twice); its INTERIOR half is a build record - empty the room's group and it still reports 127 meshes.",
+    "All four control arms genuinely differ, and the walls STAY out under further fixed steps (a check the builders' version lacks). But 'exterior restored on exit' passes in BOTH arms and is vacuous.",
+    "NEW AND THIS ROUND'S DOING: 41 of 112 enterable buildings draw an exterior smaller than their own interior. blackrose-inn draws 3.4x3.9 m over a 13.6x15.6 m room. RI-WLD13 N1 goes from vacuous to false.",
+    "CORRECTION TO THE ROUND-2 VERDICT: its '0 crimes filed on taking a unique item' was a probe defect (it read takeProp's `theft` as a boolean when it is an object). 10 of 10 owned items return theft:true naming the declared owner.",
+    "The project's boot gate is RED at HEAD, fleet-wide (rule 13). Cause found: 63f41ef banked a 70-disputes.json that lost two `notary` infos; restoring that one file from 34d1387 makes boot-check PASS. Not fixed by me - game/ is not mine."
+  ],
+  "method_deviations": [
+    "PROCEEDED PAST contention --gate exit 3 at every check, as rule 21 permits. The instance ceiling was never breached (2-4 of 6); only the per-core load average (3.65-6.65 against 4.0). One browser at a time, kept for a whole run; four sequential runs, never overlapping. NO TIMING FIGURE PUBLISHED (rule 26).",
+    "My measurement target changed once mid-run because the tree stopped booting (see headline_findings). Sections S1/S2/S3/S5 ran against the working tree while it booted; S6-S9 and both delete-the-fix arms against a frozen c36653e copy with one dialogue file restored. No settlement, interior, population or render code differs between the two.",
+    "TWO PROBE DEFECTS OF MY OWN, reported in the verdict rather than buried: a wrong interior id (blackrose-gaol; the record is blackrose-prison) threw inside page.evaluate and cost me a section twice; and my eight-town sweep left a posed camera across a teleport, so it read every building count one town late and I nearly published 'the town is not there when you arrive'. It is, within 6 frames.",
+    "I did NOT re-run tools/world/w1-04-consumption.mjs. A critic who re-runs the builder's probe has confirmed that the builder's probe runs.",
+    "RI-WLD03 M13 not run: rule 25 forbids judging a pack I would have had to build."
   ]
 }

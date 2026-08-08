@@ -83,6 +83,19 @@ export class RealInput {
 
     /** Text typed into a dialogue surface. Set by the engine; not part of the action set. */
     this.onTextChar = null;
+    /**
+     * Does a text field have the keyboard right now? Set by the engine to a predicate over the
+     * surface that is open (`Engine._censusTakesText()`); null means "no text field anywhere",
+     * which is the state the whole rest of the game is in and the reason movement is untouched.
+     *
+     * This is the one bit of knowledge that turns the keyboard from a button grid into a text
+     * field, and its absence was W1-26 r2 §3: the device layer routed movement, then controls,
+     * then text, so fourteen of the twenty-six letters never reached the field and `KeyE` —
+     * `interact` — committed the answer mid-word. The engine has always known this
+     * (`_censusTypeChar` tests `st.input.kind === 'text'`); it simply never told this file.
+     */
+    this.textFocus = null;
+    this.textCharsTaken = 0;     // A-JRN6 observation only; nothing reads it as a control
     this.firstGestureDone = false;
   }
 
@@ -202,12 +215,43 @@ export class RealInput {
         this.requestPointerLock();
         return;
       }
+      // A FOCUSED TEXT FIELD TAKES THE KEYBOARD BEFORE THE BUTTONS DO.
+      //
+      // This block used to sit at the BOTTOM of this handler, after the movement map and after
+      // the control map, and W1-26 r2 §3 is the bill for it. `game/data/input/profiles.json`
+      // binds fourteen letters (A C D E F G M R S T V W X Z), the digits 1-4 and `Space`, so
+      // every one of those was eaten as a button and never reached the field: the critic
+      // predicted `"Silt-Under-Salt"` -> `"il-Un-l"` from the bindings file alone, before
+      // opening a browser, and then measured `"il-Un"` live — because `KeyE` is `interact` and
+      // does not merely drop the character, it COMMITS the node in the middle of the word.
+      //
+      // Three things this deliberately does NOT do:
+      //
+      //   * it does not run when no text field is open. `textFocus` is null everywhere else in
+      //     the game, so the movement and control maps below are reached on exactly the frames
+      //     they were reached on before. An input layer that swallowed keys in the world would
+      //     be the same defect wearing the other face.
+      //   * it does not swallow the non-printing keys. `Enter`, `Escape`, `Tab` and the arrows
+      //     fall through to the maps, which is what keeps the field usable: `interact` is bound
+      //     to `["KeyE","Enter"]`, so `Enter` still commits the name, `Escape` is still `menu`,
+      //     and the arrows still move the caret through the offered ledger names. `KeyE` types
+      //     an `e`, which is the whole point.
+      //   * it does not add an action. HARNESS.md §4's set stays closed and O17 still holds —
+      //     the node is completable on a stick and two buttons without this path ever running.
+      if (this.onTextChar && this.textFocus && this.textFocus()) {
+        if (e.key === 'Backspace') { this.onTextChar('\b'); this.textCharsTaken++; return; }
+        if (e.key && e.key.length === 1 && /[\p{L}\p{N}\-' .]/u.test(e.key)) {
+          this.onTextChar(e.key); this.textCharsTaken++;
+          return;
+        }
+      }
       const dir = this.moveCodes[e.code];
       if (dir) { this.moveDirs[dir] = true; this._pushMove(); return; }
       const action = this.controlMap[e.code];
       if (action) { this._down(e.code, action); return; }
-      // Text entry into a dialogue surface. NOT a button — HARNESS.md §4's action set stays
-      // closed, and the surface is completable without ever reaching this path (O17).
+      // The fallback for a build that has an `onTextChar` but no `textFocus` predicate — the
+      // shape this file shipped in before r3. Unreachable for a character the maps above claim,
+      // which is precisely the defect; kept so a caller that sets only `onTextChar` still types.
       if (this.onTextChar) {
         if (e.key === 'Backspace') this.onTextChar('\b');
         else if (e.key && e.key.length === 1 && /[\p{L}\p{N}\-' .]/u.test(e.key)) this.onTextChar(e.key);

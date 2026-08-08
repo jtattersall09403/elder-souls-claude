@@ -6,6 +6,8 @@
   "kind": "creation-graph",
   "note": "This is the character creation UI. There is no other one. Every node has a speaker who is a record in npcs/writ-house.json, a line in that speaker's voice, and — where the node sets a field — the player's reply is the input. No node is a menu, a slider, a step counter or a confirmation screen.",
   "start": "hold.come-to",
+  "refusal_note": "The ONE thing the Warden-Scribe says when the answer she was given cannot go on the form. It exists because the engine used to put its own exception text on her vellum: `Engine._censusApplyPending()` caught a throw out of `Census.answer()` and wrote `err.message` straight onto `censusSurface.refusal`, which `buildCensusModel()` drew as her aside — so a player who reached the desk on the title's `New` read `race must be observed before the scene reaches the desk` in the dialogue panel, in her voice, forever. An engine string surfacing as an NPC's line is worse than a crash, because it looks like content. The exception is now recorded on the `census_refused` event and on `censusSurface.fault`, which nothing draws; this authored line is the only thing that can reach the panel. It is deliberately incurious: she is a clerk and she is not going to explain the form to you.",
+  "refusal_line": "She stops writing, and does not look up. — No. Not in that box, and not in those words.",
   "nodes": [
     {
       "id": "hold.come-to",

@@ -1,0 +1,754 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-04",
+  "piece_title": "Settlements, interiors and the people in them - rounds 2 and 3 judged together",
+  "subsystem_paths": [
+    "world.settlement.anatomy",
+    "world.interior.named",
+    "world.property.ownership",
+    "world.locks.security",
+    "world.faction.presence",
+    "world.npc.population",
+    "world.npc.schedule",
+    "world.interior.continuity"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-04-r3-3c19",
+    "role": "critic.world",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T01:45:16Z",
+    "finished_at": "2026-08-08T03:19:15Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "c36653e",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "measurement_target": "Sections S1/S2/S3/S5 ran against the working tree while it still booted; S6-S9 and both delete-the-fix arms ran against a frozen copy of c36653e with game/data/dialogue/topics/70-disputes.json restored from 34d1387, which is the single file that makes boot-check pass again. No settlement, interior, population or render code differs between the two targets.",
+    "note": "Every file this piece owns was CLEAN in the working tree for the whole run - the first W1-04 round judged against a tree that was not moving under the critic.",
+    "harness_commands": [
+      "node tools/world/critic-w1-04-r3a.mjs (S1..S9)",
+      "node tools/world/critic-w1-04-r3b.mjs --label shipped|cut",
+      "node tools/world/w1-04-r3-exterior.mjs --offline",
+      "node tools/harness/boot-check.mjs"
+    ],
+    "commit_sha_absent_reason": null
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "W1-04 is judged on the Morrowind side. The two visual claims in this verdict (the roofs, and the exterior smaller than its interior) are cited as fidelity evidence for a structural defect, not as art-direction judgements. The one Souls-side crossing the piece now carries is reported under AR-3."
+  },
+  "reference_items": [
+    {
+      "id": "RI-WLD03",
+      "path": "corpus/50-world/RI-WLD03-settlement-anatomy.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 5,
+      "native_verdict": "202 of 202 declared buildings are drawn as building groups (8,371 meshes) and solid; 68 of 69 declared architecture-kit ids now have a builder, 37 of them exterior-only and written this round; M14 worst kit-set share between any two towns 0.000 against a <=0.30 bar. R1 and R5 are met for the first time. R2 is unchanged from rounds 1 and 2: 0 of 347 NPC records carry a gold pool. M13 (blind top-down layout) is now possible for the first time and is still not run. The exterior draws no street surface, no sign and no furniture.",
+      "native_scale": "M12 anatomy audit + M13 blind layout + M14 architecture uniqueness + M15 interior spot-check; rules R1-R5",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/w1-04-r3-exterior-offline.json",
+        "reports/critic-w1-04-r3b-shipped.json",
+        "reports/critic-w1-04-r3b-cut.json",
+        "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-forty-buildings.png"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-WLD13",
+      "path": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 3,
+      "native_verdict": "N3 (door round-trip) remains real and proved. N1 has REGRESSED from vacuous to false: interior bounds_m equals the declared exterior_footprint_m on 115 of 115, and round 3's shrink pass reduces the DRAWN exterior on 54 of 202, so 41 of 112 enterable buildings now draw an exterior smaller than their own interior. Worst: blackrose-inn draws 3.4 x 3.9 m over a 13.6 x 15.6 m room, 6.3% of the area. S1-S4 still 0; N7 untouched.",
+      "native_scale": "N1-N7 continuity properties + S1-S4 seamlessness",
+      "native_score": 30,
+      "native_max": 100,
+      "evidence": [
+        "docs/shots/2026-08-08-w1-04-r3-critic-blackrose-inn-a-shed-over-a-hall.png",
+        "reports/w1-04-r3-exterior-offline.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-WLD07",
+      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 3,
+      "native_verdict": "Exteriors are solid and demonstrably stop a body (3 of 3 my walks, 15 of 15 round 3's, arms differing in both). Interiors still carry no collision set at all, so a mezzanine is scenery and you can walk out through the wall of any of the 115 rooms. 0 of 115 records declare a second storey; storeys are derived by a rule, not authored.",
+      "native_scale": "verticality, storeys, interior collision",
+      "native_score": 30,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r3a-b.json",
+        "reports/w1-04-r3-collision.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-WLD08",
+      "path": "corpus/50-world/RI-WLD08-the-living-world.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 5,
+      "native_verdict": "Of 329 people, 196 change cell and 298 change position across a day - but only 102 accumulate walked_m; the rest are snapped by the cell change, which npc.js does deliberately. Outdoors 46 at 03:00, 151 at 09:00, 63 at 20:00, and they now stand among real buildings rather than on a bare pad. 3 of 260 outdoor placements stand in solid masonry. Round 2's own '16 outdoors at 03:00' reproduces under no definition I could find (23 with a post, 46 with no room named).",
+      "native_scale": "schedules, outdoor presence, walking",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2a.json",
+        "reports/w1-04-r3-collision.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-CAM05",
+      "path": "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+      "side": "souls",
+      "kind": "number",
+      "score_0_10": 6,
+      "native_verdict": "The camera in an interior renders the interior, and I verified it by perturbing the RENDERER alone: setCell('province') behind the world's back and cells.interior.visible=false both flip the verb to agrees:false while sim.env.interior never moves. Source-level delete-the-fix returns 0 of 20. The spring arm can now be obstructed by a building outdoors (sim.cell holds the town's walls); indoors it still has nothing to cast against.",
+      "native_scale": "camera behaviour outside combat",
+      "native_score": 60,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r3a.json",
+        "reports/critic-w1-04-r3b-cut.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-STL02",
+      "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 7,
+      "native_verdict": "Ownership, lock tiers and shop hours all still independently consumed. The round-2 verdict's blocking lamp gap is CLOSED: sim/stealth/system.js#syncInteriorLights() reads interiors/*.json lights[] and calls LightField.addSource() from step() at line 167, inside the fixed step. That is W1-15 r3's work, not this piece's, but it is this piece's data finally reaching the model that decides whether you can be seen.",
+      "native_scale": "theft, locks, trespass reaching behaviour",
+      "native_score": 70,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r3a-b.json"
+      ],
+      "measured": "full",
+      "justification": "7 is justified by a perturbation, not by a reading. reports/critic-w1-04-r3a-b.json \u00a7S5 leg 1: 10 of 10 owned unique items taken through takeProp() return theft:true with stolen_from naming the record's declared owner and a dialogue topic added, and 0 of 10 do so when the item is unowned. Ownership, lock tiers and shop hours were each independently perturbed and restored in round 1 and are unchanged. The item is held BELOW 8 because the lamp bridge that completes it was built by W1-15 r3, not by this piece, and I verified it by source rather than by perturbation."
+    },
+    {
+      "id": "RI-CRM01",
+      "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 5,
+      "native_verdict": "CORRECTION TO THE ROUND-2 VERDICT. It scored this on '0 crimes filed on taking a unique item'; that was a probe defect (it read takeProp's `theft` as a boolean when it is an object). I took 10 owned unique items through the door: 10 of 10 return theft:true, scope:'personal', stolen_from naming the declared owner, owner_notices:true and a dialogue topic. crime is null because observed_by is empty, which is the theft model behaving correctly for an unobserved take. The observed branch is untested by me.",
+      "native_scale": "crime filing, bounty, witnesses",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r3a-b.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-AI07",
+      "path": "corpus/10-combat/RI-AI07-encounter-composition.md",
+      "side": "souls",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Population placed and now standing among real buildings; density still unhand-placed.",
+      "native_scale": "encounter density and composition",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r2a.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged by both rounds; faction presence still reaches trespass and nothing else. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "race and standing reaching behaviour",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-DLG02",
+      "path": "corpus/40-dialogue/RI-DLG02-words-per-settlement.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "words per settlement",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-DLG03",
+      "path": "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "greetings and rumours",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST03",
+      "path": "corpus/30-quests/RI-QST03-faction-gating.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 4,
+      "native_verdict": "Faction halls now have exteriors as well as interiors; the gate itself is still data.",
+      "native_scale": "faction gating",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/w1-04-r3-exterior-offline.json"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-QST07",
+      "path": "corpus/30-quests/RI-QST07-side-quest-texture.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "The prop list is instantiated, but 34 prop instances across 22 rooms silently draw a generic crate because their builder throws (Object.assign on a non-writable Object3D.position) and buildInterior counts them as built.",
+      "native_scale": "side-quest texture",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r3a.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-QST08",
+      "path": "corpus/30-quests/RI-QST08-reward-design.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "83 unique items are reachable through a door, takeable, and correctly recognised as theft against their declared owner - and takeable again on every re-entry, because itemsTaken has no consumer.",
+      "native_scale": "reward design",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "reports/critic-w1-04-r3a-b.json"
+      ],
+      "measured": "full"
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; locks gate by tier and the gate moves. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "skills by use",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-TRV01",
+      "path": "corpus/50-world/RI-TRV01-transport-network.md",
+      "side": "morrowind",
+      "kind": "graph",
+      "score_0_10": 4,
+      "native_verdict": "Unchanged; settlement anatomy supplies posts, travel is W1-05's. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "transport network",
+      "native_score": 40,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR01",
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "canon dossier",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR02",
+      "path": "corpus/60-lore/RI-LOR02-era-and-political-brief.md",
+      "side": "morrowind",
+      "kind": "text",
+      "score_0_10": 5,
+      "native_verdict": "Unchanged. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "era and political brief",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR04",
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 6,
+      "native_verdict": "Unchanged. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "naming and language",
+      "native_score": 60,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    },
+    {
+      "id": "RI-LOR06",
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "score_0_10": 5,
+      "native_verdict": "Region ids are still not a namespace: thornmarsh sits beside western-rootlands. (Carried from the round-2 verdict unchanged; not re-measured by me.)",
+      "native_scale": "contradiction discipline",
+      "native_score": 50,
+      "native_max": 100,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ],
+      "measured": "partial"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-WLD03",
+      "status": "not_possible",
+      "not_possible_reason": "M13 (blind top-down orthographic layout test) became POSSIBLE for the first time this round - there is settlement geometry to render. Round 3 correctly declined it under RULES.md rule 25 (do not judge a pack you built). Rule 25 binds a critic who builds the pack too, so I have left it. It now wants a critic who authored neither the geometry nor the pack; the top-down capture in this verdict is the shot type it needs."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "W1-04 ships no combat mechanic.",
+      "checks": [],
+      "evidence": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "no-marker-surface-added",
+          "result": "pass",
+          "observed": "STRUCTURAL, NOT RE-MEASURED. Rounds 2 and 3 add room and building geometry, a collision set and harness verbs; no map pin, no waypoint, no compass, no objective marker. Round 1 measured the census properly (0 markers, 0 routes, 2.05% HUD coverage, openMenu('map') refusing with the S35 text)."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r1.md"
+      ]
+    },
+    "ar3": {
+      "status": "pass",
+      "seam_sterile": false,
+      "note": "NEWLY NON-STERILE, AND IT IS ROUND 3'S DOING. Engine._settleSettlementSolids() installs the town's wall slabs as sim.cell while the player stands in a street, where it was EMPTY_CELL before. sim/stealth/system.js:223 reads `const hasGeometry = (sim.cell && sim.cell.shapes.length) || this.occluders.shapes.length` and without it sets inCover=false outright - so a town's masonry now decides whether you can be seen in its street, and the camera spring arm can be obstructed by a building. Verified by source and by the collision set being live and coupled to the model (67 shapes at 15 buildings, 25 at 5, 0 with the walls cut). I did NOT measure inCoverFraction on both arms and do not claim it.",
+      "evidence": [
+        "reports/critic-w1-04-r3a-b.json"
+      ]
+    },
+    "consumption": {
+      "rule": "RI-MTH07 / ARBITRATION.md \u00a73",
+      "verified_by": "my own perturbations in the running game, not the builders'",
+      "models": [
+        {
+          "model": "settlements/*.json buildings[]",
+          "consumer": "world/province.js#_settlementBuildings() (drawn) and Engine._settleSettlementSolids() (solid)",
+          "demonstrated": "thorn buildings[] 15->1: drawn 15->1 AND the live collision set 67->5; 15->5 gives 67->25; restores exactly"
+        },
+        {
+          "model": "interiors/*.json continuity.exterior_footprint_m",
+          "consumer": "render/exterior.js#planSettlement()",
+          "demonstrated": "thorn-hall [16,18]->[22,24] moved the DRAWN bounding box 19.91x17.67 -> 20.89x18.04"
+        },
+        {
+          "model": "settlements/*.json architecture_kit.meshes",
+          "consumer": "exterior.js EXT_KIT + interior.js KIT (one table, re-exported)",
+          "demonstrated": "thorn's kit -> gideon's replaced all 8 drawn kit ids, meshes 712->770"
+        },
+        {
+          "model": "interiors/*.json (the record -> the room)",
+          "consumer": "renderer.setInteriorRecord() -> buildInterior()",
+          "demonstrated": "source-level delete-the-fix: 20 of 20 doors drew the right cell shipped, 0 of 20 cut"
+        },
+        {
+          "model": "interiors/*.json unique_item.owner",
+          "consumer": "sim/stealth/theft.js#isTheft via takeProp()",
+          "demonstrated": "10 of 10 owned items return theft:true with stolen_from naming the declared owner and a dialogue topic added. This CORRECTS both the builder's own 'carried and unread' and the round-2 verdict's '0 crimes filed'."
+        },
+        {
+          "model": "interiors/*.json lights[]",
+          "consumer": "sim/stealth/system.js#syncInteriorLights() -> LightField.addSource(), called from step() at :167 inside the fixed step",
+          "demonstrated": "by source; the round-2 verdict's blocking lamp gap is closed, by W1-15 r3 rather than by this piece"
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4.6,
+    "pass_threshold": 7.0,
+    "aggregation": "mean",
+    "note": "Round 1 3.2 (gate 6), round 2 4.4 (gate 7.0), now 4.6. Both blocking gaps this piece carried are closed in mechanism and I verified both independently; the score does not move further because closing them exposed an anatomy item whose service half has never been built, a continuity item this round actively regressed, and 115 rooms you can still walk out through the walls of.",
+    "aggregation_note": "Each of the 20 items is scored min-over-its-own-axes; the overall is their mean, as rounds 1 and 2 did."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "41 of 112 enterable buildings draw an exterior SMALLER than their own interior (worst 6.3% of the area) - RI-WLD13's whole subject, regressed by this round's shrink pass.",
+    "Both pixel-hash acceptance criteria in this piece return the SAME number with the subject removed entirely: the sweep's noise floor is total (8 of 8 distinct images in an unchanged room after two fixed steps).",
+    "RI-WLD03 R2 is unchanged across three rounds: 0 of 347 NPC records carry a gold pool, and M13 has still never been run.",
+    "No interior carries a collision set, so the walls of all 115 rooms are scenery.",
+    "34 prop instances across 22 rooms silently draw a generic crate and are counted as built."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-the-building-is-smaller-than-the-room",
+    "subsystem_path": "world.settlement.anatomy",
+    "severity": "blocking",
+    "what": "54 of 202 exteriors are shrunk to fit plans authored tighter than the interiors declare themselves to be wide, while interior bounds_m is defined as the DECLARED footprint on 115 of 115. 41 of 112 enterable buildings therefore draw an exterior smaller than the room behind their door; blackrose-inn draws a 3.4 x 3.9 m shed over a 13.6 x 15.6 m inn.",
+    "why_it_matters": "It is the whole subject of RI-WLD13, and it is the one defect in the piece the player meets by doing the ordinary thing - walking up to a door. The same conflict produces the 12 residual deep overlaps, the 3 townspeople standing in solid masonry, and a body that stops against one building's wall while standing inside its neighbour.",
+    "in_flight": false,
+    "evidence": [
+      "docs/shots/2026-08-08-w1-04-r3-critic-blackrose-inn-a-shed-over-a-hall.png",
+      "reports/w1-04-r3-exterior-offline.json",
+      "reports/w1-04-r3-collision.json"
+    ],
+    "remedy": {
+      "action": "Repair the conflict in the DATA, not the renderer. (1) Re-derive settlement.buildings[].offset_m so nearest-neighbour spacing is at least the sum of the two declared half-footprints plus a 2 m street, in the five tight plans (archon, blackrose, lilmoth, soulrest, stormhold), re-derived WITH RI-WLD03 R4's legibility rule rather than hand-nudged. (2) OR, if the plans are canon, shrink the interiors to match, moving bounds_m and continuity.exterior_footprint_m together, which also gives RI-WLD13 N1 a ratio that can fail. (3) Add a rule to tools/check-data.mjs asserting drawn_footprint_m >= bounds_m on every enterable building.",
+      "acceptance": "`node tools/world/w1-04-r3-exterior.mjs --offline` reports 0 buildings whose drawn footprint is smaller than their own interior's bounds_m (today 41 of 112) and 0 residual deep overlaps (today 12); `node tools/world/w1-04-r3-collision.mjs` \u00a7C reports 0 people in solid masonry at 03:00, 09:00 and 20:00 (today 1, 2, 0); and `node tools/check-data.mjs` exits 1 naming the record when a single footprint is perturbed and 0 when it is restored.",
+      "targets": [
+        "game/data/world/settlements/archon.json",
+        "game/data/world/settlements/blackrose.json",
+        "game/data/world/settlements/lilmoth.json",
+        "game/data/world/settlements/soulrest.json",
+        "game/data/world/settlements/stormhold.json",
+        "game/data/world/interiors/*.json (continuity.exterior_footprint_m + bounds_m)",
+        "tools/check-data.mjs"
+      ]
+    }
+  },
+  "other_gaps": [
+    {
+      "gap_id": "GAP-W1-pixel-acceptance-is-unmeasurable",
+      "subsystem_path": "method",
+      "severity": "blocking",
+      "what": "Two independent pixel-hash acceptance criteria - the round-1 verdict's 115-interior sweep and the round-2 verdict's 8-town sweep - return the same number in the live arm and in the arm with the subject removed entirely. Measured noise floor: 8 of 8 distinct images in ONE unchanged room when the fixed step advances by two frames; 1 of 8 with no step at all. The 115-interior sweep landed at 00:39 reporting live 115 / control 115 and its own failure line says 'this sweep is not measuring the room'; nobody read it for three hours.",
+      "remedy": "Any sweep comparing pictures must publish its own noise floor first and refuse to report a cross-subject count until it is 1: shoot ONE subject N times under the identical protocol, assert distinct==1, then sweep. w1-04-interior-sweep.mjs already has the right shape and needs one section added before sweep(). Then either pin whatever advances with the step, or drop to a downsampled/perceptual comparison with a stated tolerance.",
+      "evidence": [
+        "reports/w1-04-interior-sweep.json",
+        "reports/critic-w1-04-r3a-b.json",
+        "reports/critic-w1-04-r3a-c.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-boot-gate-red-at-head",
+      "subsystem_path": "project",
+      "severity": "blocking",
+      "what": "node tools/harness/boot-check.mjs EXITS 12 at c36653e and at 63f41ef, fleet-wide: 'canon register: 2 unresolved reference(s)' - topics the-xanmeers and reading-the-count have no info for actor notary. canon.json is clean and has always demanded them; game/data/dialogue/topics/70-disputes.json carried 3 notary infos at 34d1387 and carries 1 now. A bank commit swept a partial dialogue file over a complete one. RULES.md rule 13. Not W1-04's defect; it blocked my last two sections and it is blocking every agent's browser work.",
+      "remedy": "Restore game/data/dialogue/topics/70-disputes.json from 34d1387, or re-author the two notary infos. Verified: that single file restored into a scratch copy makes boot-check PASS.",
+      "evidence": [
+        "reports/runs/_raw/node-tools-harness-boot-check.mjs-7096727422440.log"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-interior-props-silently-fall-back",
+      "subsystem_path": "world.interior.named",
+      "severity": "major",
+      "what": "render/interior.js does Object.assign(group, {position: new THREE.Vector3(...)}) in barrel_row (:228), bench_pair (:272) and bla_prison_block (:374). Against the vendored three r180, Object3D.position has writable:false and ES modules are always strict, so it throws every time - I proved it against game/vendor/three rather than by reading. buildInterior catches per prop and substitutes fallbackProp WITHOUT incrementing props_fallback, so 34 instances across 22 rooms draw a generic crate while the summary counts them as built. One is a Blackrose kit mesh, which is why the province draws 68 of 69 kit ids.",
+      "remedy": "g.position.set(...) at those three lines; and increment props_fallback in the catch, so a throwing builder can never again be counted as built.",
+      "evidence": [
+        "reports/critic-w1-04-r3a.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-interiors-have-no-collision",
+      "subsystem_path": "world.interior.named",
+      "severity": "major",
+      "what": "Exteriors are now solid; no interior carries a collision set. You can walk out through the wall of any of the 115 rooms, and the camera arm has nothing to cast against indoors.",
+      "remedy": "Build a CollisionCell from bounds_m and the drawn partitions when setInteriorRecord() builds the room, and install it as sim.cell for the interior cell - the same shape _settleSettlementSolids() already uses outdoors.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-vp04-is-inside-a-building",
+      "subsystem_path": "world.settlement.anatomy",
+      "severity": "minor",
+      "what": "VP04-settlement-street's declared pose stands inside thorn-sapwell's footprint, so the frame is a near-black picture of the inside of a wall. Round 1 ruled no capture through VP04 may be cited as evidence of a settlement; that ruling stands, for a new reason.",
+      "remedy": "Move the pose in tools/harness/viewpoints.json. Round 3 surveyed a replacement: [3856.5, _, 875.3] looking at [3820, _, 859], 2.5 m clear with 15 buildings in the forward cone. Changing it invalidates cross-wave comparisons through VP04, which is why neither builder took it.",
+      "evidence": [
+        "docs/shots/2026-08-08-w1-04-r3-critic-vp04-inside-a-wall.png"
+      ]
+    }
+  ],
+  "corpus_extended": [
+    {
+      "what": "A measured noise floor for pixel-hash acceptance criteria on this renderer",
+      "where": "corpus/90-verdicts/wave1/W1-04-r3.md \u00a74"
+    },
+    {
+      "what": "The distinction between a control arm that is INERT and a metric that is VACUOUS - this piece has one of each and they need different fixes",
+      "where": "corpus/90-verdicts/wave1/W1-04-r3.md \u00a72, \u00a74"
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/harness/api.js:2264-2344",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "getDrawnInterior and the five W1-04 control verbs"
+    },
+    {
+      "path": "game/src/render/renderer.js:189-251",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "setCell and setInteriorRecord - is the cell read real?"
+    },
+    {
+      "path": "game/src/render/interior.js:228,272,374,530",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "the Object.assign defect and the silent fallback"
+    },
+    {
+      "path": "game/src/render/exterior.js:231-346",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "planSettlement, the shrink pass and entrySideLocal"
+    },
+    {
+      "path": "game/src/world/province.js:804-846",
+      "purpose": "locate-harness",
+      "note": "the exterior draw call and the drawBuildings switch"
+    },
+    {
+      "path": "game/src/engine.js:357,4739,5254-5300",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "the applyCell hook, _syncCell, _settleSettlementSolids"
+    },
+    {
+      "path": "game/src/sim/settlement.js:254-295",
+      "purpose": "locate-harness",
+      "note": "where the door calls the cell hook"
+    },
+    {
+      "path": "game/src/sim/stealth/theft.js:20-61",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "how ownership resolves - off the object, not off a zone"
+    },
+    {
+      "path": "game/src/sim/stealth/system.js:167,223,905-965",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "the lamp bridge and the cover term that reads sim.cell"
+    },
+    {
+      "path": "tools/world/w1-04-interior-sweep.mjs",
+      "purpose": "locate-harness",
+      "note": "what the pixel sweep's control actually cuts"
+    },
+    {
+      "path": "tools/world/w1-04-consumption.mjs:549-611",
+      "purpose": "locate-harness",
+      "note": "the interior cell control arm and the vacuous restore check"
+    },
+    {
+      "path": "orchestration/status/W1-04-r2.json, W1-04-r3.json, critic-w1-04-r2.json",
+      "purpose": "quote-written-content",
+      "note": "both builder accounts and the prior critic's abandoned runs"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/critic-w1-04-r3a.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r3a-b.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r3a-c.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r3a-d.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r3b-shipped.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r3b.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "reports/critic-w1-04-r3b-cut.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r3b.mjs",
+      "source": "critic"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-roofs-from-above.png",
+      "kind": "screenshot",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic",
+      "camera_pose": "pos [2292.5, 69.22, 2803.5] look [2262.5, 31.22, 2773.5] fov 60, timeOfDay 12, clear; 40 buildings verified in the scene graph before the shutter",
+      "resolution": "1920x1080 (rendered at 960x600, device pixel ratio 2)"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-forty-buildings.png",
+      "kind": "screenshot",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic",
+      "camera_pose": "pos [2324.5, 43.22, 2835.5] look [2262.5, 32.22, 2773.5] fov 60, timeOfDay 9, clear; 40 buildings verified before the shutter",
+      "resolution": "1920x1080 (rendered at 960x600, device pixel ratio 2)"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-04-r3-critic-blackrose-inn-a-shed-over-a-hall.png",
+      "kind": "screenshot",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic",
+      "camera_pose": "pos [b.x+9, b.y+4.5, b.z-14] look [b.x, b.y+2, b.z] fov 60 at blackrose-inn, timeOfDay 12, clear",
+      "resolution": "1920x1080 (rendered at 960x600, device pixel ratio 2)"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-04-r3-critic-vp04-inside-a-wall.png",
+      "kind": "screenshot",
+      "produced_by": "tools/world/critic-w1-04-r3a.mjs",
+      "source": "critic",
+      "camera_pose": "VP04-settlement-street's own declared pose: pos [3825.5, 15.1, 879] look [3820.5, 14, 864] fov 60, timeOfDay 9, clear",
+      "resolution": "1920x1080 (rendered at 960x600, device pixel ratio 2)"
+    },
+    {
+      "path": "reports/w1-04-r3-exterior-offline.json",
+      "kind": "report",
+      "produced_by": "tools/world/w1-04-r3-exterior.mjs --offline",
+      "source": "builder"
+    },
+    {
+      "path": "reports/w1-04-r3-collision.json",
+      "kind": "report",
+      "produced_by": "tools/world/w1-04-r3-collision.mjs",
+      "source": "builder"
+    },
+    {
+      "path": "reports/critic-w1-04-r2a.json",
+      "kind": "report",
+      "produced_by": "tools/world/critic-w1-04-r2a.mjs",
+      "source": "prior-critic"
+    },
+    {
+      "path": "reports/w1-04-interior-sweep.json",
+      "kind": "report",
+      "produced_by": "tools/world/w1-04-interior-sweep.mjs --control",
+      "source": "builder"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-04-r1.md",
+      "kind": "text-excerpt",
+      "produced_by": "critic-w1-04",
+      "source": "prior-critic"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-04-r2.md",
+      "kind": "text-excerpt",
+      "produced_by": "critic-w1-04-r2",
+      "source": "prior-critic"
+    },
+    {
+      "path": "reports/runs/_raw/node-tools-harness-boot-check.mjs-7096727422440.log",
+      "kind": "log",
+      "produced_by": "node tools/harness/boot-check.mjs",
+      "source": "critic"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-interior-door-draws-nothing",
+      "status": "closed",
+      "note": "Round 2's fix. Verified independently three ways rather than taken: (a) renderer-only perturbation - setCell('province') behind the world's back and cells.interior.visible=false both flip the verb to agrees:false while sim.env.interior never moves, so the 115/115 is a genuine renderer read; (b) runtime cut arm 12/12 -> 0/12; (c) SOURCE-LEVEL delete-the-fix 20/20 -> 0/20. The round-2 critic could verify this only by reading. CAVEAT: one third of the headline, 'exterior restored on exit', passes in BOTH arms and is vacuous.",
+      "evidence": [
+        "reports/critic-w1-04-r3a.json",
+        "reports/critic-w1-04-r3b-shipped.json",
+        "reports/critic-w1-04-r3b-cut.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-settlement-has-no-outside",
+      "status": "closed",
+      "note": "Round 3's fix. 202 of 202 buildings drawn (8,371 meshes) with the draw call cut giving 0; live, 15 in Thorn and 40 in Helstrom verified in the scene graph before the shutter; the collision set is live and follows the model (67 shapes at 15 buildings, 25 at 5, 0 cut). Source-level delete-the-fix returns 0 buildings. The town streams to its full declared count within 6 frames of arrival.",
+      "evidence": [
+        "reports/w1-04-r3-exterior-offline.json",
+        "reports/critic-w1-04-r3a-d.json",
+        "reports/critic-w1-04-r3b-cut.json",
+        "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-forty-buildings.png"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-interior-lights-unread-by-detection",
+      "status": "closed",
+      "note": "Closed by W1-15 r3, not by W1-04. syncInteriorLights() reads interiors/*.json lights[] and calls LightField.addSource() from step() at line 167, inside the fixed step. Verified by source; not perturbed by me.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-04-r2.md"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-collision-control-arm-inert",
+      "status": "closed",
+      "note": "Round 3's own most valuable finding, and its fix holds. __w1_04_townSolids now empties the live collision set in every town and the walls STAY out under further fixed steps, which the builders' own check does not test: thorn 67/0/67, helstrom 94/0/94, cell_id going settlement:thorn -> null -> settlement:thorn. The GOES-RED arm re-creates the pre-fix verb in the page and confirms the check can fail in 5 of 5 towns. NOTE: the same nulling pattern survives at api.js:2313 inside __w1_04_perturbSettlement, where it happens not to bite.",
+      "evidence": [
+        "reports/critic-w1-04-r3a-b.json",
+        "reports/w1-04-r3-collision.json"
+      ]
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "NOT run: RI-WLD03 M13 (blind layout) - now possible for the first time, declined under rule 25 because building the pack and judging it is the thing the rule forbids; the observed-theft branch; inCoverFraction on both arms of the town collision set. TWO PROBE DEFECTS OF MY OWN are reported in the verdict rather than buried: a wrong interior id cost me a section twice, and my eight-town sweep left a posed camera across a teleport and read every building count one town late - I nearly published 'the town is not there when you arrive', and it is, within 6 frames. I also CORRECTED the round-2 verdict on RI-CRM01: its '0 crimes filed' was a probe defect, not a build defect."
+  }
+}

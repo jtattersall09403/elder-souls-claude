@@ -1,8 +1,11 @@
-#!/bin/sh
-# One command. §P.1 of orchestration/NEXT-DISPATCH.md asks for "clone, one command, a browser
-# window", and until now there wasn't one — the game had only ever been opened by a harness on an
-# ephemeral port. Two critics wrote their own server before they could play it by hand.
+#!/usr/bin/env bash
+# The one command. Serves the game and prints the URL to open.
 #
-# This is a two-line shim on purpose: the work is in tools/play.mjs, which uses the same serveDir
-# every instrument uses, so a person and a probe see the same build on the same headers.
-exec node "$(dirname "$0")/tools/play.mjs" "$@"
+#   ./play.sh                 http://127.0.0.1:8080/index.html
+#   ./play.sh --port 8123
+#   ./play.sh --host 0.0.0.0  reachable from another machine
+#
+# Needs node >= 20 and nothing else. No install step, no build step, no network.
+set -euo pipefail
+cd "$(dirname "$0")"
+exec node tools/play.mjs "$@"

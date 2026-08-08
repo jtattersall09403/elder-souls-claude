@@ -1845,6 +1845,27 @@ export class Engine {
     return { created: true, ...this.sim.character };
   }
 
+  /**
+   * The race of the body the player is in, as an id `game/data/progression/races.json` knows.
+   *
+   * This is the one thing the Warden-Scribe LOOKS AT. It is deliberately a read of live world
+   * state and not a constant: perturb `sim.identity.race` — a `--state "race=…"` run, a load, or
+   * whatever W1-07 eventually puts in front of the title — and the misread she says out loud,
+   * the correction, the composed sheet, the writ and every disposition term downstream all move
+   * with it. See `tools/w1-26-r3/body-race-consumption.mjs`.
+   *
+   * Returns null for a race the data does not carry, rather than a guess. A null observation
+   * leaves the census exactly where it was before this existed — stopped at the desk — which is
+   * a loud, already-instrumented failure, and is safer than handing `Census.state()` an id with
+   * no authored misread line for it to draw.
+   */
+  bodyRace() {
+    const id = this.sim && this.sim.identity ? this.sim.identity.race : null;
+    if (!id) return null;
+    const rows = (this.chData && this.chData.races && this.chData.races.races) || [];
+    return rows.some((r) => r.id === id) ? id : null;
+  }
+
   // ---- the census scene ----------------------------------------------------------------------
 
   censusBegin(opts = {}) {
@@ -1872,7 +1893,26 @@ export class Engine {
     this._firstFieldFrame = null;
     this._firstFieldNode = null;
     this._journeyPrevPose = null;
-    if (opts.race) this.census.observe(opts.race);
+    // THE SCRIBE OBSERVES THE BODY. THE BODY IS NOT AN ARGUMENT TO THIS FUNCTION.
+    //
+    // W1-26 r2 §2, the round's blocking gap: `_titleApply('new')` — the row the title's `New`
+    // commits to, and the only path a player has — called this with `{}`. `Census.observe()`
+    // was reached from nowhere else, so on the player's path `spec.race` stayed null, the
+    // census threw at `writ.race-observed`, the throw was caught, and the player stood in front
+    // of the Warden-Scribe reading an engine error with the door held shut. Every number this
+    // piece has ever published was taken on a scene only the harness could open, because only
+    // the harness passed `opts.race`.
+    //
+    // RI-CHR01 §1 row 2 says race is OBSERVED, not asked, so the fix cannot be a question and
+    // must not be a literal written here: a hardcoded default would satisfy the acceptance test
+    // and betray the item. It is read from the body the player is already standing in —
+    // `sim.identity.race`, the same field `_playerGates()` hands the dialogue offer gates and
+    // `reactionTo()` hands the disposition matrix, so the race the scribe writes down and the
+    // race the province reacts to are one field and cannot disagree. Whatever chooses that body
+    // (W1-07) changes what she sees by writing that field, and nothing here needs editing.
+    //
+    // `opts.race` still wins, so every harness walk and every existing probe is unchanged.
+    this.census.observe(opts.race || this.bodyRace());
     if (opts.at) { this.census.nodeId = opts.at; this.census.paused = false; this.census._autoAdvance(); }
     // THE SCENE. Round 1 opened the census as a pure state machine and left the camera
     // wherever the previous state had put it, which is why nineteen nodes produced twenty
@@ -3136,15 +3176,30 @@ export class Engine {
     const node = this.census.node();
     try {
       this.censusAnswer(r.value);
-      if (this.censusSurface) this.censusSurface.refusal = null;
+      if (this.censusSurface) { this.censusSurface.refusal = null; this.censusSurface.fault = null; }
     } catch (err) {
+      // AN ENGINE STRING MUST NEVER BE DRAWN AS SOMETHING A PERSON SAID.
+      //
+      // W1-26 r2 §2 measured the consequence: the census threw at `writ.race-observed`, this
+      // clause caught it, and `err.message` went onto `censusSurface.refusal`, which
+      // `buildCensusModel()` draws as the Warden-Scribe's aside. The player read
+      // `race must be observed before the scene reaches the desk` in the dialogue panel, in her
+      // voice, with the door held shut. That is worse than the crash it was written to prevent,
+      // because a crash is legible as a fault and this is legible as writing.
+      //
+      // The two are now separated and only one of them can reach a draw call:
+      //   `fault`   — the exception text. On the trace, on `getCensusState()`, never drawn.
+      //   `refusal` — one AUTHORED line out of `writ-house.json`, in her voice, saying nothing
+      //               about the internals. Absent from the data means no aside at all, which is
+      //               the safe direction to fail in.
       const reason = String(err && err.message ? err.message : err).replace(/^census:\s*/, '');
       const ev = this.bus.emit(this.sim.frame, 'census_refused');
       ev.node = node ? node.id : null;
       ev.value = Array.isArray(r.value) ? r.value.slice() : r.value;
       ev.reason = reason;
       if (this.censusSurface) {
-        this.censusSurface.refusal = reason;
+        this.censusSurface.fault = reason;
+        this.censusSurface.refusal = (this.chData && this.chData.writHouse && this.chData.writHouse.refusal_line) || null;
         this.censusSurface.picked = [];
       }
       this._censusSync();
@@ -3230,7 +3285,17 @@ export class Engine {
         picked: this.censusSurface ? this.censusSurface.picked.slice() : [],
         typed: this.censusSurface ? this.censusSurface.typed : '',
         inputs_taken: this.censusSurface ? this.censusSurface.inputsTaken : 0,
+        // The authored line she says when an answer will not go on the form, and — separately —
+        // the engine exception behind it. `fault` is reported here and on the `census_refused`
+        // event so a probe can see it; it is NOT in the model and cannot reach a draw call.
+        // W1-26 r2 §2: an engine string drawn as an NPC's line looks like content.
+        refusal: this.censusSurface ? (this.censusSurface.refusal || null) : null,
+        fault: this.censusSurface ? (this.censusSurface.fault || null) : null,
       },
+      // The race the scribe LOOKED AT, and where she got it. `observed_from: 'body'` is the
+      // player's path; 'harness' is a probe that supplied one. See `bodyRace()`.
+      race_observed: this.census.spec.race || null,
+      body_race: this.bodyRace(),
       routes_offered: this.chData.writHouse.nodes.find((n) => n.id === 'writ.class-routes').input.options.map((o) => o.id),
       full_screen_panels: 0,
     };

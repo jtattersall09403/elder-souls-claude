@@ -98,7 +98,12 @@ export class CensusSurface {
     this.options = [];
     this.axisHeld = 0;
     this.axisFrames = 0;
-    this.refusal = null;      // set by Engine._censusApplyPending when she will not write it
+    // Set by Engine._censusApplyPending when she will not write the answer down. `refusal` is
+    // an AUTHORED line (writ-house.json `refusal_line`) and is the only one of the two that may
+    // be drawn; `fault` is the engine's own exception text, kept for the trace and for probes
+    // and never given to `buildCensusModel()`. See the comment in `_censusApplyPending`.
+    this.refusal = null;
+    this.fault = null;
     this.lastConfirm = -1;
     this.confirmCount = 0;
     this.inputsTaken = 0;
@@ -121,7 +126,7 @@ export class CensusSurface {
     if (!this.takesInput) { this.options = []; if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; } return this; }
 
     const kind = state.input ? state.input.kind : null;
-    if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; this.refusal = null; }
+    if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; this.refusal = null; this.fault = null; }
 
     if (kind === 'text') {
       this.options = this._nameOptions(state, censusObj);
@@ -301,7 +306,11 @@ export function buildCensusModel(data, state, surface, npcRecord) {
   const asking = kind === 'questionnaire' && state.question && state.question.text;
 
   let aside = null;
-  if (surface.refusal) aside = `She will not write that down: ${surface.refusal}`;
+  // `surface.refusal` is authored text and is drawn verbatim. It used to be the engine's
+  // exception message with a sentence of code-composed English glued to the front of it, which
+  // is how `race must be observed before the scene reaches the desk` became a line of dialogue.
+  // `surface.fault` — the exception — is deliberately not read here and must not be.
+  if (surface.refusal) aside = surface.refusal;
   else if (kind === 'pick') {
     const want = surface.pickCount(state);
     const have = surface.picked.length;

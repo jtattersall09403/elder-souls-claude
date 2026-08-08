@@ -3,13 +3,39 @@
   "role": "builder",
   "status": "in_progress",
   "started": "2026-08-08",
+  "base_commit": "e00e6fe",
   "spec": "corpus/90-verdicts/wave1/W1-26-r2.md",
-  "goal": "Three defects blocking the owner playing the game: (1) creation cannot complete (census never observed on play path + engine error rendered as scribe dialogue), (2) input/real.js swallows 14/26 letters before the text field, (3) RI-JRN09 HF1 DTR 0.000 at hold.out (name-reply drawn a room later, wrong speaker).",
-  "next_step": "read INDEX/NEXT-DISPATCH/verdict, run ownership, run the three journey probes RED first",
-  "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 instances / load 5.10 per core). Doing non-browser work first.",
-  "files_touched": [],
-  "files_claimed": [
+  "goal": "Three blocking defects: (1) creation cannot complete + engine error rendered as scribe dialogue, (2) input/real.js swallows 14/26 letters before the text field, (3) RI-JRN09 HF1 DTR 0.000 at hold.out.",
+  "plan": [
+    "A. The body has a race. sim.identity.race is the body's race (currently the invalid placeholder 'argonian'); censusBegin observes the body when opts.race is absent. Not a literal in the census call — a live world field the dialogue gates already read.",
+    "B. A caught census throw never renders as dialogue. surface.refusal carries an AUTHORED line only; the engine string goes to surface.fault (never drawn) and onto the census_refused event.",
+    "C. input/real.js: a focused text field takes the keyboard before the move/control maps. Single printable characters and Backspace route to text; Enter/Escape/arrows/Tab fall through, so `interact`(Enter) still commits and the arrows still move the caret.",
+    "D. hold.out draws. buildCensusModel returns null on a paused node only when nothing is being said; Census.enter() clears `spoken` so the hold's lines are not redrawn a room later above the wrong speaker.",
+    "E. tools/journey/journey-run.mjs `catch { break; }` — the driver reproduces the player's defect and swallows the proof.",
+    "F. ./play.sh — does not exist at the root despite the brief. Write it."
+  ],
+  "next_step": "run the three probes RED before changing anything",
+  "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 browser instances, load 5.10/core vs a 4.0 ceiling). Node-side work first; browser runs one at a time, and if I proceed past exit 3 it is recorded here.",
+  "files_touched": [
     "orchestration/status/W1-26-r3.json"
   ],
-  "notes": []
+  "files_claimed": [
+    "game/src/input/real.js",
+    "game/src/character/census.js",
+    "game/src/character/scene.js",
+    "game/src/sim/state.js",
+    "game/src/engine.js",
+    "game/data/dialogue/topics/writ-house.json",
+    "tools/journey/journey-run.mjs",
+    "tools/journey/census-newgame.mjs",
+    "tools/journey/name-entry.mjs",
+    "tools/w1-26-r3/",
+    "reports/w1-26-r3/",
+    "play.sh",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "notes": [
+    "engine.js has 8 live declarers (most [done]); edits there are minimal and additive."
+  ]
 }

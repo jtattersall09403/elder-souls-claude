@@ -259,8 +259,9 @@ function inCell(npc, cell) {
  * The info this person would give on this topic, or null if there is nothing they are willing
  * or able to say.
  *
- * PRECEDENCE, most specific first — Morrowind's own order, and the reason it is this order is
- * that each step down is a wider audience:
+ * PRECEDENCE. There is exactly ONE precedence step left in this function, and it is the first one
+ * below. ARBITRATION S37 deleted the rest: steps 2 and 3 no longer rank against each other, they
+ * are both simply admissible, and whichever the AUTHOR wrote first is the one that is said.
  *
  *   1. a line written on THIS PERSON'S record (`lines[the_topic_id]`). The opening NPCs each
  *      carry several, and until this round every one of them was authored and unreachable:
@@ -271,21 +272,27 @@ function inCell(npc, cell) {
  *   2. an info written for this person's ACTOR row (`a`).
  *   3. an info written for nobody in particular (no `a`) — anyone may say it.
  *
+ * 2 and 3 are a FILTER, not a ladder: an info with somebody else's `a` is refused outright, and
+ * among what survives the first one authored wins even if a more specific one sits below it. That
+ * is Morrowind's rule and it is why an unreachable INFO is an authoring hazard there and a §D lint
+ * row here. If a general answer is shadowing a particular one, move it down the file.
+ *
  * What is deliberately NOT here: the previous rule handed an NPC with `actor: null` the FIRST
  * allowed info of any actor whatsoever, so a net-mender could speak a Dres factor's line. That
  * is not a fallback, it is a category error, and it also meant "give this person an actor" made
  * them say strictly less. Every NPC record now carries an actor and the accident is gone.
  *
- * Player gates (`requires` / `forbids`) are checked at every level, so a person's own line is
- * still refusable by race — specificity buys precedence, not an exemption.
+ * Player gates (`requires` / `forbids`) are checked on every candidate, so being written for this
+ * person's actor row buys admission, not an exemption.
  *
  * PROVENANCE (`from`). W1-17 round 2. `buildTopicIndex()` merges same-id topic records across
  * files BY DESIGN (its own header says so) and tags every info with the `group` of the file it
  * was authored in. Until this round that tag was computed and thrown away: the return value told
  * a caller THAT an info was found and never WHICH file's info it was. That is exactly how the
  * round-1 hard fail shipped invisible — `main-quest-argument.json` declares `the-steward-of-
- * the-count` and so does the eleven-year-old stub in `50-mainline.json`; they merge, the stub
- * outscores the just-authored greeting for most races, and every existing caller that only asked
+ * the-count` and so does the eleven-year-old stub in `50-mainline.json`; they merge, the stub wins
+ * (it outscored the greeting under the old rule and it PRECEDES it under S37 — the merge is the
+ * defect in both worlds, which is why S37 made the order declared), and every caller that only asked
  * "did text come back?" saw a pass. `from` is additive (every existing return shape is unchanged)
  * so a probe can now ask the question that actually matters: is this THIS FILE's own text, or a
  * stranger's that happens to share the id.
@@ -309,8 +316,8 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     if (canon && !canon.allows(info, npc)) continue;
     // W1-SPEAKERS. Filter field 6 — Cell. `cell` is authored on **267 of the 1,065 infos** in
     // `game/data/dialogue/topics/**` and was read by NOTHING: `infoAllowed()` checks
-    // requires/forbids/`d`/`knows` and never the place, and the specificity score below never
-    // mentioned it. A quarter of the province's dialogue carried a place gate that did not
+    // requires/forbids/`d`/`knows` and never the place, and the specificity score that used to
+    // sit below never mentioned it. A quarter of the province's dialogue carried a place gate that did not
     // close, which does not read as "no gate" — it reads as the WRONG PLACE, because among
     // several equally-scoring infos the first authored one wins. Measured before this line
     // existed: a legionary standing in Thorn answered `specific place` with
@@ -323,34 +330,42 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     if (info.cell && !inCell(npc, info.cell)) continue;
     const matchesActor = actor && info.a === actor;
     if (!matchesActor && info.a) continue;         // written for somebody else's mouth
-    // Specificity, high to low: an actor-matched info beats an actorless one, and among those
-    // a GATED info beats the ungated fallback.
+    // ARBITRATION S37 — THE WHOLE OF THE SELECTION RULE. Take the first survivor.
     //
-    // That last clause is not a nicety. `the-tides` carries three fisher infos — an ungated
-    // one, a saxhleel/naga one and a warmblood one — and because the ungated one is written
-    // first, first-match returned it to everybody and BOTH race variants were dead text. Eight
-    // topics were shadowed this way, `the-hist` and `slavery` among them: the two subjects on
-    // which the province's answer most depends on who is asking. The gates were being read and
-    // were still decorative. Specificity ordering is what makes an ungated info mean "when
-    // nothing more particular applies" rather than "always".
+    // What used to be here was a specificity score —
+    //     8*actorMatch + 2*cell + 4*requires + (d ? 1 + min(1, d/100) : 0) + 0.5*forbids
+    // — kept at its strict maximum, with authored order surviving only as the tie-break. It is
+    // deleted rather than re-weighted, and the rationale that argued for it is deleted with it.
+    // A scoring function tuned until it agrees with first-match is the thing the ruling rejects:
+    // the point is not the answers, it is who decides them.
     //
-    // `d` joins the same ladder, above `forbids` and below `requires`. Morrowind expresses a
-    // disposition band by stacking INFOs with descending `Disposition >=` minima and taking the
-    // first that passes; because this reader scores rather than takes-the-first, a band has to
-    // be worth something or a d60 answer and a d30 answer would tie and the authored order
-    // alone would decide. It scores by the HEIGHT of the bar, so the highest band the speaker
-    // clears is the one the player hears — which is the same answer Morrowind's authored
-    // descending order gives, obtained without depending on file order.
+    // RI-DLG01 §A: *"first-match-wins in authored file order. The engine walks the topic's INFO
+    // list top to bottom and returns the first entry whose entire conjunction passes. It does
+    // not score specificity. Ordering is authored, not computed."* ARBITRATION §1 gives Dialogue
+    // to Morrowind outright and §5 precedence 1 settles it; the corpus is law and the engine was
+    // running a different algorithm.
     //
-    // `cell` sits between the actor and the player gates, worth 2. That places a cell-gated
-    // GENERIC (2) below any actor line (8) — a fisher in Gideon still hears the fisher's answer
-    // rather than the town's — while a cell-gated ACTOR line (10) beats that same actor's
-    // townless one, which is what makes "the Stormhold legionary's answer" reachable in
-    // Stormhold and unreachable in Thorn. It is worth less than `requires` (4) because a race
-    // gate is about who is asking and a cell gate is only about where the answer was written.
-    const dScore = info.d != null ? 1 + Math.min(1, Number(info.d) / 100) : 0;
-    const score = (matchesActor ? 8 : 0) + (info.cell ? 2 : 0) + (info.requires ? 4 : 0) + dScore + (info.forbids ? 0.5 : 0);
-    if (score > bestScore) { best = info; bestScore = score; }
+    // Everything above this line is untouched, and that is the shape of the change: under
+    // Morrowind's rule the actor row, the cell prefix, `requires`/`forbids`, `d` and the
+    // knowledge conditions are all FILTERS, and only the CHOICE was ever in dispute.
+    //
+    // WHAT THIS COSTS, so the next reader does not rediscover it as a bug. The old comment was
+    // right that scoring returned the highest disposition band a speaker clears *"without
+    // depending on file order"*. That property is not lost, it is MOVED: the author must now
+    // stack the bands in descending order, which RI-DLG01 §A already mandates. Two consequences
+    // are real and are the price the ruling accepted:
+    //   * authored order is content — 18.242% of resolutions across 64 topics move if it moves,
+    //     so appending an INFO to the top of a file changes answers. `buildTopicIndex()` above
+    //     is why that order is now declared instead of inherited from a directory listing;
+    //   * six more INFOs become unhearable (8 -> 14 over the canonical player space). Those are
+    //     a corpus bug under RI-DLG01 §D's unreachable-INFO row and the repair is to REORDER the
+    //     files. Never to put a score back. The score is what made §D unenforceable: an author
+    //     could not be wrong, so there was nothing to lint.
+    //
+    // Checked by `node tools/dialogue/arbiter-order-divergence.mjs --gate`, which calls this
+    // function rather than modelling it, and goes red the day anyone scores here again.
+    best = info;
+    break;
   }
   if (!best) return null;
   return {

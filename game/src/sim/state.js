@@ -498,7 +498,16 @@ export class SimState {
     // `document` is written by the save and read back by it; without it here the live
     // object gained a key across a round trip (undefined -> ''), which the durable-field
     // census reports as a field that does not survive.
-    this.identity = { name: 'Nameless', race: 'argonian', sign: 'the-shadow', profession: 'outlander', document: '' };
+    // `race` here is THE RACE OF THE BODY THE PLAYER IS IN, not a field of a character sheet:
+    // the sheet does not exist yet (see `character`, below) and O6 requires the player to be a
+    // body before they are a character. It read `'argonian'` until W1-26 r3, which is not an id
+    // in `game/data/progression/races.json` at all — `argonian` is a boolean TAG on a race row
+    // (`saxhleel` and `naga` carry `argonian: true`). So every reader of this field either
+    // string-compared it against a literal or resolved it to nothing, and the Warden-Scribe,
+    // who observes the body rather than asking it (RI-CHR01 §1 row 2), had nothing valid to
+    // observe. It is now a real race id. Whatever chooses the starting body — W1-07's job —
+    // writes it here, and `Engine.censusBegin()` observes what it finds.
+    this.identity = { name: 'Nameless', race: 'saxhleel', sign: 'the-shadow', profession: 'outlander', document: '' };
     // W1-07 — the composed character sheet, or null before the Writ House. `null` is a real
     // and reachable state: RI-JRN01 O6 requires the player to be controllable, in a body,
     // with a walkable space and another person in it, BEFORE anything defines them.

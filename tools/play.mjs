@@ -1,53 +1,87 @@
 #!/usr/bin/env node
-// play.mjs — serve the game for a person, and say so in plain words.
+// play.mjs — serve the game and print the URL a person opens.
 //
-// `orchestration/NEXT-DISPATCH.md` §P.1 asks for "clone, one command, a browser window". Until now
-// there was no such command: the game has only ever been opened by a harness, which serves it on an
-// ephemeral port from inside a Playwright script and closes it again. A critic playing the opening
-// by hand had to write its own server first. So did the next one.
+// This is §P.1's "one command": clone, run it, click the link, get a title screen. It is not a
+// probe and it measures nothing. It exists because the round-2 verdict's §13 answer to "can a
+// person clone this and run one command?" was *no* — there was no server script anywhere in the
+// tree, and `file://` cannot work here because `game/index.html` is an ES module that `fetch`es
+// its data.
 //
-// This is the same `serveDir` every harness tool uses — deliberately, so what a person sees is what
-// the instruments see, on the same headers (the COOP/COEP pair matters: without it SharedArrayBuffer
-// and precise timers differ from production and the game behaves subtly differently for the human
-// than for the probe). A second, friendlier server would be a second implementation of one system,
-// which is rule 10, and this project already has two sprint paths and two right hands.
+// Two things it checks before it prints a URL, because a link that serves a broken page is worse
+// than no link:
+//   * `game/index.html` and `game/data/index.json` exist;
+//   * every file `game/data/index.json` lists is on disk. A missing data file shows up in the
+//     browser as a blank canvas and a console message nobody asked the owner to open.
 //
-//   node tools/play.mjs             # a fixed port, so the URL is the same every time
-//   node tools/play.mjs --port 8123
-//
-// Ctrl-C stops it.
-import { serveDir } from './lib/serve.mjs';
-import { join } from 'node:path';
+// USAGE
+//   ./play.sh                 (or: node tools/play.mjs)
+//   ./play.sh --port 8123
+//   ./play.sh --host 0.0.0.0  bind on every interface, for a browser on another machine
+'use strict';
+
+import fs from 'node:fs';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { serveDir } from './lib/serve.mjs';
 
-const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const GAME = path.join(REPO_ROOT, 'game');
+
 const argv = process.argv.slice(2);
-const portArg = argv.indexOf('--port');
-// A fixed default rather than an ephemeral port: a person needs to be able to reload the page after
-// a crash and find the same address. The harness wants port 0 for exactly the opposite reason —
-// fourteen agents must not fight over one number.
-const port = portArg !== -1 ? Number(argv[portArg + 1]) : 8080;
-
-const { origin, close } = await serveDir(ROOT, { port });
-const at = `${origin}/game/index.html`;
-
-console.log(`
-  Elder Souls — Argonia
-
-  Open this in a browser:
-
-      ${at}
-
-  What to expect: a title screen, then New. You wake in a barge hold with someone
-  on the other bench. Nothing will explain itself to you — that is deliberate, and
-  it is the whole design. Walk over to her and reach out to start talking.
-
-  What is known to be wrong today is listed in README.md at the repo root. Read it
-  before you decide something is broken; several things are, and they are named.
-
-  Ctrl-C to stop.
-`);
-
-for (const sig of ['SIGINT', 'SIGTERM']) {
-  process.on(sig, async () => { await close?.(); process.exit(0); });
+const argOf = (name, dflt) => {
+  const i = argv.indexOf('--' + name);
+  return i >= 0 && argv[i + 1] ? argv[i + 1] : dflt;
+};
+if (argv.includes('--help') || argv.includes('-h')) {
+  process.stdout.write('usage: ./play.sh [--port <n>] [--host <addr>]\n');
+  process.exit(0);
 }
+const port = Number(argOf('port', process.env.PORT || 8080));
+const host = String(argOf('host', '127.0.0.1'));
+
+const say = (s) => process.stdout.write(s + '\n');
+
+// ---- refuse to print a URL for a tree that cannot serve a playable page ----------------------
+const problems = [];
+for (const rel of ['index.html', 'data/index.json', 'src/main.js']) {
+  if (!fs.existsSync(path.join(GAME, rel))) problems.push(`game/${rel} is missing`);
+}
+if (!problems.length) {
+  const index = JSON.parse(fs.readFileSync(path.join(GAME, 'data/index.json'), 'utf8'));
+  const missing = (index.files || []).map((f) => f.path).filter((p) => !fs.existsSync(path.join(GAME, 'data', p)));
+  if (missing.length) problems.push(`${missing.length} data file(s) listed in game/data/index.json are not on disk: ${missing.slice(0, 4).join(', ')}${missing.length > 4 ? ' …' : ''}`);
+}
+if (problems.length) {
+  say('This tree cannot serve a playable page:');
+  for (const p of problems) say('  - ' + p);
+  say('');
+  say('Nothing was served. Fix the above and run ./play.sh again.');
+  process.exit(1);
+}
+
+let srv;
+try {
+  srv = await serveDir(GAME, { port, host });
+} catch (err) {
+  if (err && err.code === 'EADDRINUSE') {
+    say(`Port ${port} is already in use. Try:  ./play.sh --port ${port + 1}`);
+    process.exit(1);
+  }
+  throw err;
+}
+
+say('');
+say('  Elder Souls is being served. Open this in a browser:');
+say('');
+say(`      ${srv.origin}/index.html`);
+say('');
+say('  New game, then walk to the woman on the other bench and press E to talk to her.');
+say('  Move with WASD, look with the mouse, E or Enter to interact. Escape gives the cursor back.');
+say('  Type your name on the keyboard; Enter writes it down.');
+say('');
+say('  Ctrl-C stops the server.');
+say('');
+
+const stop = async () => { try { await srv.close(); } catch { /* shutting down */ } process.exit(0); };
+process.on('SIGINT', stop);
+process.on('SIGTERM', stop);

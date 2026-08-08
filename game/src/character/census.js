@@ -116,10 +116,18 @@ export class Census {
       world_visible: true,
     };
     if (n.id === 'writ.race-observed' && this.spec.race) {
-      const m = n.misreads[this.spec.race];
-      out.line = m.line;
-      out.misread_as = m.wrong;
-      out.input = { kind: 'observed', options: [{ id: 'correct', text: n.correction_prompt }] };
+      // A race with no authored misread is a DATA gap, not a render-time crash. `state()` is
+      // called from the draw path every frame the surface is up, so a missing key here used to
+      // be `m.line` on undefined — a throw inside a getter, on the node the whole scene stops
+      // at. It now reads as "she has not looked up yet", which is what `answer()` already
+      // refuses to move past, so the scene stops in the place that is already instrumented for
+      // stopping instead of taking the frame with it.
+      const m = n.misreads[this.spec.race] || null;
+      if (m) {
+        out.line = m.line;
+        out.misread_as = m.wrong;
+        out.input = { kind: 'observed', options: [{ id: 'correct', text: n.correction_prompt }] };
+      }
     }
     // At the stamp, the document itself is part of the surface. RI-JRN09 M2(c) counts "a
     // visible written record — the writ, the ledger — whose text is drawn", and RI-JRN01 O10
