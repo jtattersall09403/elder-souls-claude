@@ -246,7 +246,7 @@
           "value": "node tools/map/arbiter-map-s38.mjs 6/6: 42846/42846 generators, 0 unjustified squares, 0 out-of-sightline cells; --control=pre-s38 exits 1, red 4 of 6",
           "threshold": "S38 (a) one non-derived field and (b) the drawn map a pure function of it — re-run by me rather than inherited",
           "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log"
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log.txt"
           ]
         },
         {
@@ -314,7 +314,7 @@
           "value": "--break consumer installs a durable world-side reader and G2 goes GREEN",
           "threshold": "an assertion whose pass condition is 'nothing happened' must be shown able to notice something happening",
           "evidence": [
-            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-break-all.log"
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-break-all.log.txt"
           ]
         }
       ],
@@ -367,13 +367,13 @@
       "note": "'Undiscovered is unrendered' re-taken on the COMPOSITED frame (screenshot decoded with pngjs) rather than on the UI canvas, with the scene-behind-the-panel and the map separated by two controlled arms."
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-break-all.log",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2-break-all.log.txt",
       "kind": "log",
       "produced_by": "node tools/harness/critic-map-r2.mjs --break all",
       "note": "The three falsifications: --break unrendered reddens U1/U2/U3, --break standing reddens R-D1 in both arms, --break consumer turns G2 GREEN."
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log.txt",
       "kind": "log",
       "produced_by": "node tools/harness/map-probe.mjs",
       "note": "The build's own probe at the same commit: 32/32, with L3 ('a FORGED save naming a place the raster does not corroborate is refused') GREEN, on the tree where A9 renders 42 phantom squares."
@@ -415,7 +415,7 @@
       "device_pixel_ratio": 1
     },
     {
-      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log.txt",
       "kind": "log",
       "produced_by": "node tools/map/arbiter-map-s38.mjs",
       "note": "The S38 gate re-run by me rather than inherited from the arbiter: 6/6, exhaustive over all 42,846 of 42,846 generators, 0 unjustified squares, 0 out-of-sightline cells, furthest reveal 450 m against the data file's own 450 m cap. `--control=pre-s38` exits 1 (red 4 of 6) against the historical loader, so the gate's control bites. This is the evidence that S38 clauses (a) and (b) hold, and the baseline against which A13 shows clause (d) does not."
@@ -547,8 +547,8 @@
     "why_it_matters": "S38 deliberately gave up tamper-resistance and kept, in exchange, the promise that a save whose claims disagree with its own derivation is itemised rather than swallowed. That promise is currently unkeepable by any instrument: the signal exists for one function call and then goes out of scope. It is also round 1's remedy 1, unactioned, and it is the difference between a build that can report on its own loads and one that cannot. The second-order cost is worse: the new gate reads green on the clause, so the gap is now covered by a passing check.",
     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log",
-      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log"
+      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log.txt",
+      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log.txt"
     ],
     "severity": "blocking",
     "remedy": {
@@ -677,6 +677,16 @@
     {
       "what": "The forgery was driven in a live session via importSave() rather than against a cold browser reload.",
       "why": "importSave() is the shipping reader either way and a live session is the harder case for the attacker (the world is already built). Recorded as a limit rather than claimed as coverage.",
+      "affects_scores": false
+    },
+    {
+      "what": "Renamed this verdict's three evidence logs from `.log` to `.log.txt` inside corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/, and re-pointed every citation at the new names.",
+      "why": "`.gitignore:3` is `*.log`, so all three were silently untracked — present on my disk, absent from a fresh clone, and cited by this verdict as its evidence for the S38 gate, the map-probe result and the three self-tests. verdict-validate.mjs checks that a cited artifact is DECLARED, not that it is TRACKED, so it passed and the verdict would have shipped citing files nobody else could read. Caught by grepping git log for each declared path rather than trusting the validator.",
+      "affects_scores": false
+    },
+    {
+      "what": "This verdict was committed twice, at bab4814 and 4bba61c, with the same message.",
+      "why": "The index lock was contended (45 agents) and my retry loop read a lock error from the pre-commit hook's own git calls as a failed commit, so it retried after one that had in fact succeeded. Recorded rather than rewritten: history on a tree this shared is not worth rebasing, and both commits carry only my declared paths.",
       "affects_scores": false
     }
   ],

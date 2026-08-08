@@ -1,0 +1,375 @@
+[harness] 
+=== critic-map-r2  break=unrendered  24/40 ===
+[harness]   PASS  P1  PREMISE: after a save/load with hostiles present, the fixed step runs and the AI is live
+         got:  live AI 3 -> 3, ctor SoulsAI -> SoulsAI, 60 steps ok=true, faults=0
+         want: a live SoulsAI survives the round trip and the step does not throw
+[harness]   PASS  P3  CONTROL: replacing a live AI with a plain object makes the fault detector go RED
+         got:  detector fired=true — "this.ai.step is not a function"
+         want: the detector fires — otherwise every "0 faults" below is a detector that cannot fail
+[harness]   PASS  R-pre-clean  PRECONDITION (clean): the walk this arm measures actually stepped the world
+         got:  step faults=0, frames advanced=6, cells drawn after walking=2106, live hostile AI=0
+         want: no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor
+[harness]   PASS  R-C2-clean  C2 (clean): partial map — undiscovered ground is still the screen ground and still the majority
+         got:  distinct=955, dominant=#0b0a08 at 95.43%, drawn=2106/42846
+         want: more than one colour, the undiscovered hex unchanged and over 50%
+[harness]   PASS  R-D1-clean  D1 (clean): a square appears ONLY after standing in the pad
+         got:  region(+480m):false near(+40m):false standing:true
+         want: false / false / true
+[harness]   PASS  R-D2-clean  D2 (clean): the hover name is the place name from pois.json
+         got:  naming="Thorn" pois.name="Thorn"
+         want: identical to the world-data name
+[harness]   PASS  R-D3-clean  D3 (clean): the naming element carries no quest, objective or travel identity
+         got:  {"place":"thorn","names":"thorn","quest":null,"objective":null,"travel":false}
+         want: quest:null objective:null travel:false
+[harness]   PASS  R-pre-hostile  PRECONDITION (hostile): the walk this arm measures actually stepped the world
+         got:  step faults=0, frames advanced=8, cells drawn after walking=2115, live hostile AI=3
+         want: no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor
+[harness]   PASS  R-C2-hostile  C2 (hostile): partial map — undiscovered ground is still the screen ground and still the majority
+         got:  distinct=1457, dominant=#0b0a08 at 95.41%, drawn=2115/42846
+         want: more than one colour, the undiscovered hex unchanged and over 50%
+[harness]   PASS  R-D1-hostile  D1 (hostile): a square appears ONLY after standing in the pad
+         got:  region(+480m):false near(+40m):false standing:true
+         want: false / false / true
+[harness]   PASS  R-D2-hostile  D2 (hostile): the hover name is the place name from pois.json
+         got:  naming="Thorn" pois.name="Thorn"
+         want: identical to the world-data name
+[harness]   PASS  R-D3-hostile  D3 (hostile): the naming element carries no quest, objective or travel identity
+         got:  {"place":"thorn","names":"thorn","quest":null,"objective":null,"travel":false}
+         want: quest:null objective:null travel:false
+[harness]   PASS  R-agree  THE RE-TAKE ITSELF: the two arms agree, so these are properties of the map and not of the save
+         got:  clean C2/D1/D2/D3 = true/true/true/true; hostile = true/true/true/true
+         want: identical in both arms
+[harness]   PASS  A0  BASELINE: an honest walk to one place discovers exactly that place
+         got:  places=[thorn] revealed=9/42846
+         want: >=1 place, >0 cells
+[harness]   PASS  Afmt  PRECONDITION: a forged trail in the real wire format reaches the model at all
+         got:  one forged cell -> stood_cells=1, revealed=true
+         want: delivered — otherwise every A-result below is a false negative
+[harness]   FAIL  A1  S35: no square for a place the body has not stood in — a forged `stood` must not mint them
+         got:  place_count=42 of 42 pois (the honest walk gave 1)
+         want: no more places than the body actually stood in
+[harness]   FAIL  A2  S35: undiscovered is unrendered — a forged `stood` must not reveal the province
+         got:  revealed=42846/42846 (100.0%)
+         want: no more ground than was walked
+[harness]   FAIL  A3  THE SCREEN: a forged footprint must not draw phantom squares
+         got:  map_place squares drawn=42, drawn_cells=42846/42846
+         want: no phantom squares rendered
+[harness]   FAIL  A4  the screen's compliance report must not be a fixed point on its own model
+         got:  places_drawn=42 places_discovered=42, squares on screen=42
+         want: either no forgery, or a report that can tell drawn-from-forged apart
+[harness]   FAIL  A5  the footprint-disagreement signal restore() already computes must reach an instrument
+         got:  Discovery.lastRestore computes [dropped,phantom_cells,missing_cells,claimed_places,derived_places,stood_cells,legacy]; published by mapState/getUIState: [nothing]
+         want: phantom_cells / stood_cells / missing_cells published — save/state.js keeps only .dropped
+[harness]   FAIL  A9  THE PLAYER-FACING ROUTE: a sealed save file, imported through importSave(), must not fill the map
+         got:  124898 sealed bytes accepted -> place_count=42/42, revealed=42846/42846, squares drawn=42
+         want: refused by the seal, or no more places than were walked
+[harness]   FAIL  A10  the forgery must not survive 180 fixed steps with hostiles on the floor
+         got:  stepped ok=true, faults=0, live hostile AI=3, place_count after=42, revealed after=42846/42846
+         want: the map is not still full — and the step ran, so this is not a load that died
+[harness]   FAIL  A11  HOLE vs REPORT: some published number must distinguish a forged map from an honest one
+         got:  on the forged state every compliance number reads clean: {"places_drawn":42,"places_discovered":42,"drawn_cells":42846,"revealed_cells":42846,"markers":0,"routes_drawn":0,"quest_bearing":0,"travel":0,"numeric_text":0,"dropped_on_load":0}
+         want: a forged map that fills the province must move at least one published number
+[harness]   PASS  A12a  INTEGRITY: bytes edited after sealing must be refused
+         got:  refused: This ledger has been altered since it was written; the seal does not match. Nothing has be
+         want: refused — the sha-256 over the body works
+[harness]   FAIL  A12b  AUTHENTICITY: a forged blob RESEALED by the game's own writer must still be refused
+         got:  ACCEPTED
+         want: refused — an unkeyed digest stops corruption, not a forger who can recompute it
+[harness]   FAIL  Q1  sim.discovery must not be a writable slot the quest machine holds a reference to
+         got:  writable=true configurable=true; questEngine.sim === sim: true
+         want: non-writable, or not reachable from the quest machine
+[harness]   FAIL  Q2  writing sim.discovery from the object the quest machine holds must not draw squares
+         got:  squares drawn from a model installed via questEngine.sim: 3
+         want: refused or inert
+[harness]   FAIL  Q3  the window.__ENGINE back door must not reach a map setter either
+         got:  squares drawn via window.__ENGINE.sim.discovery = forged: 2; capability report mentions __ENGINE: false
+         want: refused or inert
+[harness]   PASS  Q4  no method ON the model accepts a place — tryPlaceMapMarker tries them all
+         got:  attempts=13, succeeded=0, requested "blackrose" discovered_after=false, places [none] -> [none]
+         want: every attempt refused, the requested place absent, the place list unchanged
+[harness]   FAIL  U1  EMPTY MAP: the terrain box holds ONE colour — no coastline is readable
+         got:  distinct=5918 over 345071px, dominant=#243542 (15.32%), drawn_cells=42846
+         want: exactly 1 colour, 0 cells drawn
+[harness]   FAIL  U2  NOT DRAWN-THEN-MASKED: no channel varies anywhere in the undiscovered ground
+         got:  per-channel range across the box = [204,194,172]
+         want: [0,0,0] — a province drawn at low alpha leaks its height raster as a range
+[harness]   FAIL  U3  PARTIAL: the discovered ground appears and the undiscovered hex is unchanged
+         got:  distinct 5918 -> 5918, dominant #243542 at 15.32%, drawn 42846/42846
+         want: more colours, same ground colour, still the majority
+[harness]   PASS  U4  PRECONDITION: the U block stepped
+         got:  faults=0, drawn after walking=42846
+         want: no faults, non-empty map
+[harness]   PASS  E3  being TOLD about a place must not put a square on the map
+         got:  places [lilmoth] -> [lilmoth] after [questEngine.learnFrom('place', site): ran; setWorldKnowledge: ran; learnTopic: ran] (baseline taken AFTER the spawn cell registered)
+         want: unchanged
+[harness]   PASS  E4  ONE square per place personally stood in, and no duplicates
+         got:  squares=2 discovered=2 unique ids=2 [lilmoth,thorn]
+         want: equal, unique
+[harness]   PASS  E5  the name is the named PLACE's own name from pois.json, not a quest string
+         got:  naming="Lilmoth" names place "lilmoth" whose pois.name is "Lilmoth"
+         want: identical to that place's world-data name
+[harness]   PASS  E6  S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity
+         got:  markers=0 routes=0 numerals=[none] travel=[none] quest_bearing=[none] reachable_from_journal=false
+         want: all zero and no "show on map" route from the journal
+[harness]   PASS  G1  ABLATION IS REAL: the model records in arm A and records nothing in arm B
+         got:  full: 2209 cells / 0 places — ablated: 0 cells / 0 places
+         want: arm A non-zero, arm B zero
+[harness]   PASS  G1b  the two arms are comparable: the same number of step faults in each
+         got:  full=0 ablated=0
+         want: equal
+[harness]   FAIL  G2  RI-MTH07: a world-side consumer exists — destroying the model changes the running world
+         got:  world hash (discovery blob excluded) full=c23bbb77:52365 ablated=c23bbb77:52365 differ=false
+         want: the hashes DIFFER — identical means the only consumer is the map screen's own draw call
+[harness]   note: BREAK unrendered: the screen draws every cell regardless of discovery
+[harness]   note: 1 step fault(s): this.ai.step is not a function
+[harness]   SELF-TEST OK: --break unrendered turned U1,U2,U3 red, as designed
+[harness] 
+=== critic-map-r2  break=standing  25/40 ===
+[harness]   PASS  P1  PREMISE: after a save/load with hostiles present, the fixed step runs and the AI is live
+         got:  live AI 2 -> 2, ctor SoulsAI -> SoulsAI, 60 steps ok=true, faults=0
+         want: a live SoulsAI survives the round trip and the step does not throw
+[harness]   PASS  P3  CONTROL: replacing a live AI with a plain object makes the fault detector go RED
+         got:  detector fired=true — "this.ai.step is not a function"
+         want: the detector fires — otherwise every "0 faults" below is a detector that cannot fail
+[harness]   PASS  R-pre-clean  PRECONDITION (clean): the walk this arm measures actually stepped the world
+         got:  step faults=0, frames advanced=6, cells drawn after walking=2106, live hostile AI=0
+         want: no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor
+[harness]   PASS  R-C2-clean  C2 (clean): partial map — undiscovered ground is still the screen ground and still the majority
+         got:  distinct=1442, dominant=#0b0a08 at 95.44%, drawn=2106/42846
+         want: more than one colour, the undiscovered hex unchanged and over 50%
+[harness]   FAIL  R-D1-clean  D1 (clean): a square appears ONLY after standing in the pad
+         got:  region(+480m):true near(+40m):true standing:true
+         want: false / false / true
+[harness]   PASS  R-D2-clean  D2 (clean): the hover name is the place name from pois.json
+         got:  naming="Thorn" pois.name="Thorn"
+         want: identical to the world-data name
+[harness]   PASS  R-D3-clean  D3 (clean): the naming element carries no quest, objective or travel identity
+         got:  {"place":"thorn","names":"thorn","quest":null,"objective":null,"travel":false}
+         want: quest:null objective:null travel:false
+[harness]   PASS  R-pre-hostile  PRECONDITION (hostile): the walk this arm measures actually stepped the world
+         got:  step faults=0, frames advanced=8, cells drawn after walking=2115, live hostile AI=3
+         want: no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor
+[harness]   PASS  R-C2-hostile  C2 (hostile): partial map — undiscovered ground is still the screen ground and still the majority
+         got:  distinct=1457, dominant=#0b0a08 at 95.41%, drawn=2115/42846
+         want: more than one colour, the undiscovered hex unchanged and over 50%
+[harness]   FAIL  R-D1-hostile  D1 (hostile): a square appears ONLY after standing in the pad
+         got:  region(+480m):true near(+40m):true standing:true
+         want: false / false / true
+[harness]   PASS  R-D2-hostile  D2 (hostile): the hover name is the place name from pois.json
+         got:  naming="Thorn" pois.name="Thorn"
+         want: identical to the world-data name
+[harness]   PASS  R-D3-hostile  D3 (hostile): the naming element carries no quest, objective or travel identity
+         got:  {"place":"thorn","names":"thorn","quest":null,"objective":null,"travel":false}
+         want: quest:null objective:null travel:false
+[harness]   PASS  R-agree  THE RE-TAKE ITSELF: the two arms agree, so these are properties of the map and not of the save
+         got:  clean C2/D1/D2/D3 = true/false/true/true; hostile = true/false/true/true
+         want: identical in both arms
+[harness]   PASS  A0  BASELINE: an honest walk to one place discovers exactly that place
+         got:  places=[thorn] revealed=9/42846
+         want: >=1 place, >0 cells
+[harness]   PASS  Afmt  PRECONDITION: a forged trail in the real wire format reaches the model at all
+         got:  one forged cell -> stood_cells=1, revealed=true
+         want: delivered — otherwise every A-result below is a false negative
+[harness]   FAIL  A1  S35: no square for a place the body has not stood in — a forged `stood` must not mint them
+         got:  place_count=42 of 42 pois (the honest walk gave 1)
+         want: no more places than the body actually stood in
+[harness]   FAIL  A2  S35: undiscovered is unrendered — a forged `stood` must not reveal the province
+         got:  revealed=42846/42846 (100.0%)
+         want: no more ground than was walked
+[harness]   FAIL  A3  THE SCREEN: a forged footprint must not draw phantom squares
+         got:  map_place squares drawn=42, drawn_cells=42846/42846
+         want: no phantom squares rendered
+[harness]   FAIL  A4  the screen's compliance report must not be a fixed point on its own model
+         got:  places_drawn=42 places_discovered=42, squares on screen=42
+         want: either no forgery, or a report that can tell drawn-from-forged apart
+[harness]   FAIL  A5  the footprint-disagreement signal restore() already computes must reach an instrument
+         got:  Discovery.lastRestore computes [dropped,phantom_cells,missing_cells,claimed_places,derived_places,stood_cells,legacy]; published by mapState/getUIState: [nothing]
+         want: phantom_cells / stood_cells / missing_cells published — save/state.js keeps only .dropped
+[harness]   FAIL  A9  THE PLAYER-FACING ROUTE: a sealed save file, imported through importSave(), must not fill the map
+         got:  124898 sealed bytes accepted -> place_count=42/42, revealed=42846/42846, squares drawn=42
+         want: refused by the seal, or no more places than were walked
+[harness]   FAIL  A10  the forgery must not survive 180 fixed steps with hostiles on the floor
+         got:  stepped ok=true, faults=0, live hostile AI=3, place_count after=42, revealed after=42846/42846
+         want: the map is not still full — and the step ran, so this is not a load that died
+[harness]   FAIL  A11  HOLE vs REPORT: some published number must distinguish a forged map from an honest one
+         got:  on the forged state every compliance number reads clean: {"places_drawn":42,"places_discovered":42,"drawn_cells":42846,"revealed_cells":42846,"markers":0,"routes_drawn":0,"quest_bearing":0,"travel":0,"numeric_text":0,"dropped_on_load":0}
+         want: a forged map that fills the province must move at least one published number
+[harness]   PASS  A12a  INTEGRITY: bytes edited after sealing must be refused
+         got:  refused: This ledger has been altered since it was written; the seal does not match. Nothing has be
+         want: refused — the sha-256 over the body works
+[harness]   FAIL  A12b  AUTHENTICITY: a forged blob RESEALED by the game's own writer must still be refused
+         got:  ACCEPTED
+         want: refused — an unkeyed digest stops corruption, not a forger who can recompute it
+[harness]   FAIL  Q1  sim.discovery must not be a writable slot the quest machine holds a reference to
+         got:  writable=true configurable=true; questEngine.sim === sim: true
+         want: non-writable, or not reachable from the quest machine
+[harness]   FAIL  Q2  writing sim.discovery from the object the quest machine holds must not draw squares
+         got:  squares drawn from a model installed via questEngine.sim: 3
+         want: refused or inert
+[harness]   FAIL  Q3  the window.__ENGINE back door must not reach a map setter either
+         got:  squares drawn via window.__ENGINE.sim.discovery = forged: 2; capability report mentions __ENGINE: false
+         want: refused or inert
+[harness]   PASS  Q4  no method ON the model accepts a place — tryPlaceMapMarker tries them all
+         got:  attempts=13, succeeded=0, requested "blackrose" discovered_after=false, places [none] -> [none]
+         want: every attempt refused, the requested place absent, the place list unchanged
+[harness]   PASS  U1  EMPTY MAP: the terrain box holds ONE colour — no coastline is readable
+         got:  distinct=1 over 345071px, dominant=#0b0a08 (100.00%), drawn_cells=0
+         want: exactly 1 colour, 0 cells drawn
+[harness]   PASS  U2  NOT DRAWN-THEN-MASKED: no channel varies anywhere in the undiscovered ground
+         got:  per-channel range across the box = [0,0,0]
+         want: [0,0,0] — a province drawn at low alpha leaks its height raster as a range
+[harness]   PASS  U3  PARTIAL: the discovered ground appears and the undiscovered hex is unchanged
+         got:  distinct 1 -> 91, dominant #0b0a08 at 99.79%, drawn 72/42846
+         want: more colours, same ground colour, still the majority
+[harness]   PASS  U4  PRECONDITION: the U block stepped
+         got:  faults=0, drawn after walking=72
+         want: no faults, non-empty map
+[harness]   PASS  E3  being TOLD about a place must not put a square on the map
+         got:  places [lilmoth] -> [lilmoth] after [questEngine.learnFrom('place', site): ran; setWorldKnowledge: ran; learnTopic: ran] (baseline taken AFTER the spawn cell registered)
+         want: unchanged
+[harness]   PASS  E4  ONE square per place personally stood in, and no duplicates
+         got:  squares=2 discovered=2 unique ids=2 [lilmoth,thorn]
+         want: equal, unique
+[harness]   PASS  E5  the name is the named PLACE's own name from pois.json, not a quest string
+         got:  naming="Lilmoth" names place "lilmoth" whose pois.name is "Lilmoth"
+         want: identical to that place's world-data name
+[harness]   PASS  E6  S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity
+         got:  markers=0 routes=0 numerals=[none] travel=[none] quest_bearing=[none] reachable_from_journal=false
+         want: all zero and no "show on map" route from the journal
+[harness]   PASS  G1  ABLATION IS REAL: the model records in arm A and records nothing in arm B
+         got:  full: 2209 cells / 0 places — ablated: 0 cells / 0 places
+         want: arm A non-zero, arm B zero
+[harness]   PASS  G1b  the two arms are comparable: the same number of step faults in each
+         got:  full=0 ablated=0
+         want: equal
+[harness]   FAIL  G2  RI-MTH07: a world-side consumer exists — destroying the model changes the running world
+         got:  world hash (discovery blob excluded) full=c23bbb77:52365 ablated=c23bbb77:52365 differ=false
+         want: the hashes DIFFER — identical means the only consumer is the map screen's own draw call
+[harness]   note: 1 step fault(s): this.ai.step is not a function
+[harness]   SELF-TEST OK: --break standing turned R-D1-clean,R-D1-hostile red, as designed
+[harness] 
+=== critic-map-r2  break=consumer  28/40 ===
+[harness]   PASS  P1  PREMISE: after a save/load with hostiles present, the fixed step runs and the AI is live
+         got:  live AI 2 -> 2, ctor SoulsAI -> SoulsAI, 60 steps ok=true, faults=0
+         want: a live SoulsAI survives the round trip and the step does not throw
+[harness]   PASS  P3  CONTROL: replacing a live AI with a plain object makes the fault detector go RED
+         got:  detector fired=true — "this.ai.step is not a function"
+         want: the detector fires — otherwise every "0 faults" below is a detector that cannot fail
+[harness]   PASS  R-pre-clean  PRECONDITION (clean): the walk this arm measures actually stepped the world
+         got:  step faults=0, frames advanced=6, cells drawn after walking=2106, live hostile AI=0
+         want: no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor
+[harness]   PASS  R-C2-clean  C2 (clean): partial map — undiscovered ground is still the screen ground and still the majority
+         got:  distinct=1442, dominant=#0b0a08 at 95.44%, drawn=2106/42846
+         want: more than one colour, the undiscovered hex unchanged and over 50%
+[harness]   PASS  R-D1-clean  D1 (clean): a square appears ONLY after standing in the pad
+         got:  region(+480m):false near(+40m):false standing:true
+         want: false / false / true
+[harness]   PASS  R-D2-clean  D2 (clean): the hover name is the place name from pois.json
+         got:  naming="Thorn" pois.name="Thorn"
+         want: identical to the world-data name
+[harness]   PASS  R-D3-clean  D3 (clean): the naming element carries no quest, objective or travel identity
+         got:  {"place":"thorn","names":"thorn","quest":null,"objective":null,"travel":false}
+         want: quest:null objective:null travel:false
+[harness]   PASS  R-pre-hostile  PRECONDITION (hostile): the walk this arm measures actually stepped the world
+         got:  step faults=0, frames advanced=8, cells drawn after walking=2115, live hostile AI=3
+         want: no faults, the frame advanced, the map filled — and in the hostile arm, hostiles really were on the floor
+[harness]   PASS  R-C2-hostile  C2 (hostile): partial map — undiscovered ground is still the screen ground and still the majority
+         got:  distinct=1457, dominant=#0b0a08 at 95.41%, drawn=2115/42846
+         want: more than one colour, the undiscovered hex unchanged and over 50%
+[harness]   PASS  R-D1-hostile  D1 (hostile): a square appears ONLY after standing in the pad
+         got:  region(+480m):false near(+40m):false standing:true
+         want: false / false / true
+[harness]   PASS  R-D2-hostile  D2 (hostile): the hover name is the place name from pois.json
+         got:  naming="Thorn" pois.name="Thorn"
+         want: identical to the world-data name
+[harness]   PASS  R-D3-hostile  D3 (hostile): the naming element carries no quest, objective or travel identity
+         got:  {"place":"thorn","names":"thorn","quest":null,"objective":null,"travel":false}
+         want: quest:null objective:null travel:false
+[harness]   PASS  R-agree  THE RE-TAKE ITSELF: the two arms agree, so these are properties of the map and not of the save
+         got:  clean C2/D1/D2/D3 = true/true/true/true; hostile = true/true/true/true
+         want: identical in both arms
+[harness]   PASS  A0  BASELINE: an honest walk to one place discovers exactly that place
+         got:  places=[thorn] revealed=9/42846
+         want: >=1 place, >0 cells
+[harness]   PASS  Afmt  PRECONDITION: a forged trail in the real wire format reaches the model at all
+         got:  one forged cell -> stood_cells=1, revealed=true
+         want: delivered — otherwise every A-result below is a false negative
+[harness]   FAIL  A1  S35: no square for a place the body has not stood in — a forged `stood` must not mint them
+         got:  place_count=42 of 42 pois (the honest walk gave 1)
+         want: no more places than the body actually stood in
+[harness]   FAIL  A2  S35: undiscovered is unrendered — a forged `stood` must not reveal the province
+         got:  revealed=42846/42846 (100.0%)
+         want: no more ground than was walked
+[harness]   FAIL  A3  THE SCREEN: a forged footprint must not draw phantom squares
+         got:  map_place squares drawn=42, drawn_cells=42846/42846
+         want: no phantom squares rendered
+[harness]   FAIL  A4  the screen's compliance report must not be a fixed point on its own model
+         got:  places_drawn=42 places_discovered=42, squares on screen=42
+         want: either no forgery, or a report that can tell drawn-from-forged apart
+[harness]   FAIL  A5  the footprint-disagreement signal restore() already computes must reach an instrument
+         got:  Discovery.lastRestore computes [dropped,phantom_cells,missing_cells,claimed_places,derived_places,stood_cells,legacy]; published by mapState/getUIState: [nothing]
+         want: phantom_cells / stood_cells / missing_cells published — save/state.js keeps only .dropped
+[harness]   FAIL  A9  THE PLAYER-FACING ROUTE: a sealed save file, imported through importSave(), must not fill the map
+         got:  124898 sealed bytes accepted -> place_count=42/42, revealed=42846/42846, squares drawn=42
+         want: refused by the seal, or no more places than were walked
+[harness]   FAIL  A10  the forgery must not survive 180 fixed steps with hostiles on the floor
+         got:  stepped ok=true, faults=0, live hostile AI=3, place_count after=42, revealed after=42846/42846
+         want: the map is not still full — and the step ran, so this is not a load that died
+[harness]   FAIL  A11  HOLE vs REPORT: some published number must distinguish a forged map from an honest one
+         got:  on the forged state every compliance number reads clean: {"places_drawn":42,"places_discovered":42,"drawn_cells":42846,"revealed_cells":42846,"markers":0,"routes_drawn":0,"quest_bearing":0,"travel":0,"numeric_text":0,"dropped_on_load":0}
+         want: a forged map that fills the province must move at least one published number
+[harness]   PASS  A12a  INTEGRITY: bytes edited after sealing must be refused
+         got:  refused: This ledger has been altered since it was written; the seal does not match. Nothing has be
+         want: refused — the sha-256 over the body works
+[harness]   FAIL  A12b  AUTHENTICITY: a forged blob RESEALED by the game's own writer must still be refused
+         got:  ACCEPTED
+         want: refused — an unkeyed digest stops corruption, not a forger who can recompute it
+[harness]   FAIL  Q1  sim.discovery must not be a writable slot the quest machine holds a reference to
+         got:  writable=true configurable=true; questEngine.sim === sim: true
+         want: non-writable, or not reachable from the quest machine
+[harness]   FAIL  Q2  writing sim.discovery from the object the quest machine holds must not draw squares
+         got:  squares drawn from a model installed via questEngine.sim: 3
+         want: refused or inert
+[harness]   FAIL  Q3  the window.__ENGINE back door must not reach a map setter either
+         got:  squares drawn via window.__ENGINE.sim.discovery = forged: 2; capability report mentions __ENGINE: false
+         want: refused or inert
+[harness]   PASS  Q4  no method ON the model accepts a place — tryPlaceMapMarker tries them all
+         got:  attempts=13, succeeded=0, requested "blackrose" discovered_after=false, places [none] -> [none]
+         want: every attempt refused, the requested place absent, the place list unchanged
+[harness]   PASS  U1  EMPTY MAP: the terrain box holds ONE colour — no coastline is readable
+         got:  distinct=1 over 345071px, dominant=#0b0a08 (100.00%), drawn_cells=0
+         want: exactly 1 colour, 0 cells drawn
+[harness]   PASS  U2  NOT DRAWN-THEN-MASKED: no channel varies anywhere in the undiscovered ground
+         got:  per-channel range across the box = [0,0,0]
+         want: [0,0,0] — a province drawn at low alpha leaks its height raster as a range
+[harness]   PASS  U3  PARTIAL: the discovered ground appears and the undiscovered hex is unchanged
+         got:  distinct 1 -> 91, dominant #0b0a08 at 99.79%, drawn 72/42846
+         want: more colours, same ground colour, still the majority
+[harness]   PASS  U4  PRECONDITION: the U block stepped
+         got:  faults=0, drawn after walking=72
+         want: no faults, non-empty map
+[harness]   PASS  E3  being TOLD about a place must not put a square on the map
+         got:  places [lilmoth] -> [lilmoth] after [questEngine.learnFrom('place', site): ran; setWorldKnowledge: ran; learnTopic: ran] (baseline taken AFTER the spawn cell registered)
+         want: unchanged
+[harness]   PASS  E4  ONE square per place personally stood in, and no duplicates
+         got:  squares=2 discovered=2 unique ids=2 [lilmoth,thorn]
+         want: equal, unique
+[harness]   PASS  E5  the name is the named PLACE's own name from pois.json, not a quest string
+         got:  naming="Lilmoth" names place "lilmoth" whose pois.name is "Lilmoth"
+         want: identical to that place's world-data name
+[harness]   PASS  E6  S35 surface refusals on the drawn map: no markers, routes, numerals, travel or quest identity
+         got:  markers=0 routes=0 numerals=[none] travel=[none] quest_bearing=[none] reachable_from_journal=false
+         want: all zero and no "show on map" route from the journal
+[harness]   PASS  G1  ABLATION IS REAL: the model records in arm A and records nothing in arm B
+         got:  full: 2209 cells / 0 places — ablated: 0 cells / 0 places
+         want: arm A non-zero, arm B zero
+[harness]   PASS  G1b  the two arms are comparable: the same number of step faults in each
+         got:  full=0 ablated=0
+         want: equal
+[harness]   PASS  G2  RI-MTH07: a world-side consumer exists — destroying the model changes the running world
+         got:  world hash (discovery blob excluded) full=77beaedf:52365 ablated=c23bbb77:52365 differ=true
+         want: the hashes DIFFER — identical means the only consumer is the map screen's own draw call
+[harness]   note: 1 step fault(s): this.ai.step is not a function
+[harness]   SELF-TEST OK: --break consumer turned G2 GREEN, as designed
+[harness] 
+wrote /home/user/elder-souls-claude/reports/runs/CRITIC-W1-MAP-R2/critic-map-r2.json

@@ -1,0 +1,71 @@
+[harness] 
+=== map-probe ===
+
+[harness] PASS  C0    THE SHIPPED MODEL — the object engine.js built — still records after a state load
+[harness]              got revealed 0 -> 2446, places 0 -> 6   target both rise; a frozen count means the model is watching a body reset() replaced
+[harness] PASS  C0b   and it is still the object the engine hung on the sim, not one the probe swapped in
+[harness]              got sim.discovery === engine-built: true   target true
+[harness] PASS  C1    reveal radius is CONSUMED: 450 m > 150 m > 25 m revealed cells
+[harness]              got 450m:2019 150m:471 25m:60   target strictly decreasing
+[harness] PASS  C1b   the SCREEN draws what the model revealed (drawn_cells tracks revealed_cells)
+[harness]              got 2019/2019 471/471 60/60   target drawn > 0 wherever revealed > 0, and falls with it
+[harness] PASS  C2    the map is drawn from game/data/world/: moving a site moves its square
+[harness]              got 929.9,314.6 -> 1032.9,383.3   target the drawn square follows the world data
+[harness] PASS  C3    terrain colour is CONSUMED from regions.json palette_hex — the PIXELS change
+[harness]              got RGB sum 5498550,5273779,4200603 -> 7239507,3646268,6235935 (worst channel 48.453%)   target a channel moves by more than 5% when the region palette changes
+[harness] PASS  C4    a place is discovered by STANDING IN IT, not by being near it
+[harness]              got outside pad: false, inside pad: true   target false then true
+[harness] PASS  S1    the map exists and reports itself
+[harness]              got map_exists=true mode=map   target true / map
+[harness] PASS  S2    no forbidden element kind anywhere on the screen
+[harness]              got none   target none
+[harness] PASS  S3    no element carries a quest, objective, giver, target or rumour identity
+[harness]              got none   target 0
+[harness] PASS  S4    no route, path or line is drawn
+[harness]              got routes_drawn=0   target 0
+[harness] PASS  S5    no numeral is drawn anywhere on the map (no distance, bearing or coordinate)
+[harness]              got none   target 0
+[harness] PASS  S6    no travel affordance
+[harness]              got none   target 0
+[harness] PASS  S7    every drawn square is a place the body has stood in
+[harness]              got drawn 1 / discovered 1   target drawn <= discovered
+[harness] PASS  S8    undiscovered is UNRENDERED — most of the province is not drawn
+[harness]              got 18 of 42846 cells   target 0 < drawn < half the province
+[harness] PASS  S9    RI-UIX04 Q7 UNAMENDED: the journal cannot reach the map
+[harness]              got world,inventory,sheet,spells   target no `map`
+[harness] PASS  S10   and the map cannot reach the journal either
+[harness]              got world,inventory,sheet,spells   target no `journal`
+[harness] PASS  S11a  PRECONDITION: the province view now draws more than a local window could hold
+[harness]              got world view draws 3430 cells   target more than 441, else S11 cannot discriminate
+[harness] PASS  S11   the LOCAL view is a real second view, not the province with a new heading
+[harness]              got view=local, cells 3430 -> 9   target local, at most a 21x21 window, and STRICTLY FEWER cells than the province view
+[harness] PASS  S11b  and confirm does NOT travel: the body has not moved
+[harness]              got no `pending` action was queued   target no queued action
+[harness] PASS  S12   APPENDIX: a character who has been nowhere sees nothing (not a dimmed province)
+[harness]              got drawn 0 cells, 0 squares   target 0 cells, 0 squares
+[harness] PASS  D1    no mutator on the discovery model names a place — every attempt throws
+[harness]              got all threw   target every attempt throws
+[harness] PASS  D1b   surplus arguments to observe() are legal JS and have NO EFFECT on the raster
+[harness]              got seenAt(4600,5200) false -> false, revealed 3430 -> 3430   target the named coordinate is not revealed
+[harness] PASS  D2    and the place is still not discovered afterwards
+[harness]              got hasPlace('helstrom') = false   target false
+[harness] PASS  D3    AMENDMENT §3b: every mutator has arity 0 — there is no parameter to name a place in
+[harness]              got observe/0 suspend/0 resume/0 restore/1   target observe, suspend, resume all arity 0
+[harness] PASS  D4    the model is frozen — a mutator cannot be bolted on at runtime
+[harness]              got frozen=true   target true
+[harness] PASS  D5    openMenu('map', {place}) is REFUSED rather than ignored
+[harness]              got openMenu('map', {"place":"helstrom"}): the map takes no arguments. It    target throws
+[harness] PASS  D6    SCOPE: the claim is "no call exists", not "the object is unreachable"
+[harness]              got declared   target declared, not asserted
+[harness] PASS  L1    THE LIVE WORLD after the load, not the blob: revealed cells survive
+[harness]              got 2132 -> 2132   target equal and non-zero
+[harness] PASS  L2    and the places survive into the live model
+[harness]              got stormhold -> stormhold   target identical
+[harness] PASS  L3    a FORGED save naming a place the raster does not corroborate is refused
+[harness]              got dropped lilmoth,blackrose   target lilmoth and blackrose dropped
+[harness] PASS  L4    CONTROL: an honest save is NOT refused (the check is not "drop everything")
+[harness]              got dropped nothing, kept 1   target nothing dropped, places kept
+[harness] 
+32/32 passed.
+[harness] 
+reports in /home/user/elder-souls-claude/reports/runs/MAP

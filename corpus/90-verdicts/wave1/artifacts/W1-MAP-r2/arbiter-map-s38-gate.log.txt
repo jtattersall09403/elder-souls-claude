@@ -1,0 +1,24 @@
+  S38-3 0/42846  S38-3 8000/42846  S38-3 16000/42846  S38-3 24000/42846  S38-3 32000/42846  S38-3 40000/42846              arbiter-map-s38 — S35's "no square for a place the player has not stood in", subject=shipped
+province 193x222 = 42846 cells at 25 m; 42 places
+
+ok   S38-1  the save has exactly one non-derived map field
+         blob keys read on load = [stood] (1); S38 requires exactly 1
+ok   S38-2  the derivation is per-cell: D(F) = union of D({c}) over c in F
+         40 random footprints (1-400 cells): 0 disagree with the union of their own cells
+ok   S38-3  EXHAUSTIVE: no cell of the province, asserted alone, yields an unjustified square or an out-of-sightline reveal
+         42846/42846 generators; 0 unjustified squares, 0 out-of-sightline cells; 721 place-emissions from 721 cells (1.683% of the province); furthest reveal 450 m against the 450 m cap
+ok   S38-4  eight forged claim fields move the map by nothing, and the load audit itemises them
+         state unchanged=true (1 places both sides); audit dropped=41 names, phantom_cells=41566
+ok   S38-5  no parameter and no accessor by which a caller can name or reveal a place
+         mutators=[observe/0, restore/1, resume/0, suspend/0]; arity>0 other than restore: 0; 11 accessors scanned, 0 write state
+ok   S38-6  the maximal forgery names nothing that game/data/world/pois.json does not already name in plaintext
+         maximal forgery: 42 places, 42846 of 42846 cells (100.00%), blob 57128 B; pois.json: 42 places at float precision in 16110 B of plaintext; map resolution 25 m/cell; names not in pois.json: 0
+
+what a forged footprint buys, recomputed (S38 does not refuse any of these):
+  forgery                         cells   bytes  places  province  8-connected
+  HONEST walk to 7 places           557     980       8    28.09%  yes
+  MINIMUM: one cell per pad          42     108      42    33.67%  NO
+  CONNECTED tour of all 42 pads     848    1464      42    46.41%  yes
+  MAXIMAL: every cell             42846   57128      42      100%  yes
+
+6/6 · reports/arbiter-map-s38/gate.json
