@@ -159,6 +159,16 @@ export function standingKey(standings) {
   if ((standings['xul-aneekh'] || 0) >= 1) return 'xul-aneekh:1-3';
   if ((standings['ixtu-vakh'] || 0) >= 4) return 'ixtu-vakh:4+';
   if ((standings['ixtu-vakh'] || 0) >= 1) return 'ixtu-vakh:1-3';
+  // W1-20. The Rootkeepers and the Drowned Court, added when they became joinable at all.
+  // They sit here — after the interior kin, before the trades — because both are read by a
+  // guard as a religious standing rather than as a trade, and because a player who is both a
+  // keeper and a Deep-Kin is being watched for the Deep-Kin. The Rootkeepers come first of the
+  // two: a keeper's habit is recognised everywhere in the province and an undertaker's is
+  // recognised at Soulrest.
+  if ((standings['rootkeepers'] || 0) >= 4) return 'rootkeepers:4+';
+  if ((standings['rootkeepers'] || 0) >= 1) return 'rootkeepers:1-3';
+  if ((standings['drowned-court'] || 0) >= 4) return 'drowned-court:4+';
+  if ((standings['drowned-court'] || 0) >= 1) return 'drowned-court:1-3';
   if ((standings['wet-ledger'] || 0) >= 3) return 'wet-ledger:3+';
   if ((standings['wet-ledger'] || 0) >= 1) return 'wet-ledger:1-2';
   if (standings['dockhands']) return 'dockhands:any';

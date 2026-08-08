@@ -1,0 +1,660 @@
+{
+  "schema": "elder-souls/quests@1",
+  "id": "faction-joining-wave1",
+  "owner": "W1-20 — the faction skeleton. Width, not depth.",
+  "corpus_item": "RI-QST03 §B (the four-part rank statement) and §C; RI-QST01 rank 0-1 band; RI-CRM02 §1; RI-LOR02 §4",
+  "design_note": "corpus/30-quests/FACTION-ROSTER-DESIGN.md §1 names seven joinable bodies. Three were carried to a rank ceiling by W1-FACTIONS. Four had an eight-rank ladder in faction-gates.json and NO WAY IN: the Rootkeepers and the Drowned Court could not be joined by anything in the build at all, and the Dockhands and the Ixtu-Vakh only as a side effect of a main-quest resolution in Act IV — the main quest's voice, not the faction's, and unreachable to a player who has not got that far. One consequence was visible in the tree and nobody had looked: blackmarsh-coast.json Q-SOUL-02 carries `rank_gate: the_drowned_court >= 2` and there was no path to rank 1.",
+  "note": [
+    "ONE QUEST PER LINE AND NO MORE. The plan is explicit that wave 1 buys width and wave 2 buys",
+    "depth, and a piece that goes deep on one of these four and leaves another with no route has",
+    "failed its own brief. Escalation, expulsion and rivalry inside these four lines are wave 2.",
+    "",
+    "Each quest is the rank 0 -> 1 step and nothing else, built to the RI-QST01 rank-0/1 band:",
+    "errand or delivery, stakes 1-3, no discretion beyond route and method, and the faction's",
+    "enemies present only as a rumour. Every resolution grants the faction's rank-1 reputation",
+    "demand of 10 exactly (faction-gates.json rank 1) so that finishing the quest is joining, and",
+    "no resolution grants more, so a second quest is still required for rank 2.",
+    "",
+    "THE REFUSAL IS THE POINT. Rank 1 in every one of these ladders demands one favoured skill at",
+    "20 and one favoured attribute at 8. A fresh character has neither in most builds. So each",
+    "quest offers two or three resolutions, each demanding a DIFFERENT favoured skill of that",
+    "faction at 20 — the player picks which of the faction's skills they own. A player who owns",
+    "none is refused, and the refusal is spoken by the recruiter and names the skill and the",
+    "number: game/data/dialogue/faction-refusals.json, read by Engine.factionRefusal().",
+    "",
+    "No new NPCs. All four recruiters already exist in game/data/npcs/quest-givers.json with a",
+    "reaction_group and a post with coordinates, because they already give a rank-gated quest for",
+    "the same faction that no player could reach. They are now the way in to the ladder that",
+    "gates them."
+  ],
+  "quests": [
+    {
+      "id": "Q-ROOT-00",
+      "title": "The Well That Is Not Counted",
+      "category": "faction",
+      "faction": "the_rootkeepers",
+      "act": null,
+      "rank_gate": { "faction": "the_rootkeepers", "min_rank": 0, "min_reputation": 0 },
+      "discovery": "given",
+      "giver": {
+        "npc_id": "rootkeeper-jeen",
+        "location": "Helstrom, the undertemple below the hist shrine",
+        "disposition_min": 30,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the quiet wells",
+        "overheard_from": ["rootkeeper-jeen", "npc-porter-eeja"]
+      },
+      "task_kind": "errand",
+      "stakes": 2,
+      "directions": "Down the stair behind the shrine, past the shelf of jars, and Jeen will be at the far end with a slate. The well she wants counted is a half-day north-east of Helstrom on the old walk, in a hollow with no name on any map, and the walk is easy going until the reeds close over it.",
+      "journal": [
+        {
+          "index": 4,
+          "state": "active",
+          "text": "A rootkeeper at Helstrom keeps a slate of every sapwell in the eastern rootlands and the count against each one. She says there is a well on her slate that has no count beside it, and has not had for two years, because the keeper who walked to it stopped walking to it.",
+          "records_belief": false
+        },
+        {
+          "index": 12,
+          "state": "active",
+          "text": "Jeen wants the well counted. Not tended, not opened, counted: how many live roots come up into the water, and how many of those are giving. She would not tell me what she expects the number to be. I asked twice.",
+          "records_belief": false
+        },
+        {
+          "index": 24,
+          "state": "active",
+          "text": "The hollow is where she said it is and the water in it is warm, which the water in a sapwell is not supposed to be. There are nine roots down in it and I can reach four of them without going under.",
+          "records_belief": true
+        },
+        {
+          "index": 36,
+          "state": "branch",
+          "text": "I can count what I can reach and say so, or I can go under and count the rest, or I can sit on the lip until the light is right and count them by their shadows on the floor of it. The Rootkeepers have a word for each of those and it is not the same word.",
+          "records_belief": false
+        },
+        {
+          "index": 64,
+          "state": "failure",
+          "text": "I told her nine and I had counted four. She wrote nine on the slate, and then she put the slate down and asked me to describe the fourth root, and I described it, and she asked me to describe the ninth. I am not going back to the undertemple.",
+          "records_belief": false
+        },
+        {
+          "index": 80,
+          "state": "success",
+          "text": "Four live, one giving. Jeen wrote it on the slate in front of me and did not say whether it was good. She said the slate is the whole of what the Rootkeepers own and that I am now on it, which appears to be the entire ceremony.",
+          "records_belief": false
+        },
+        {
+          "index": 84,
+          "state": "success",
+          "text": "Nine live, one giving, and I had to go under twice to be sure of the ninth. Jeen took a long time over that number. She said the last keeper who counted this well got seven, and that seven is a thing that grows into nine only if you have the years wrong or the well has been fed.",
+          "records_belief": false
+        },
+        {
+          "index": 88,
+          "state": "success",
+          "text": "I waited for the sun to come round and counted the shadows on the floor of the hollow. Nine roots, one giving, and a tenth shadow with no root over it. Jeen looked at that for a while and said the tenth is why the last keeper stopped walking out here.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_count",
+          "at_journal_index": 24,
+          "condition": "The player is at the lip of an unnamed sapwell with nine roots in it, four of them within reach",
+          "leads_to": ["res_count_what_you_reach", "res_go_under", "res_count_the_shadows"],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_count_what_you_reach",
+          "method": "comply",
+          "violence_required": false,
+          "journal_index": 80,
+          "outcome": "An honest partial count. Jeen has four and one and knows they are four and one, which she says is worth more to the slate than a nine she would have to check.",
+          "morally_better": null,
+          "requires": { "skills": { "root-speech": 20 } },
+          "exclusive_with": ["res_go_under", "res_count_the_shadows"],
+          "consequences": {
+            "faction_reputation": { "the_rootkeepers": 10 },
+            "world_flags": ["rootkeeper_slate_names_the_player", "unnamed_well_counted_partial"],
+            "npc_disposition": { "rootkeeper-jeen": 8 },
+            "joins_faction": ["the_rootkeepers"]
+          }
+        },
+        {
+          "id": "res_go_under",
+          "method": "investigate",
+          "violence_required": false,
+          "journal_index": 84,
+          "outcome": "The full count, taken underwater. The well has two more live roots than the last keeper recorded, and a well does not grow roots.",
+          "morally_better": null,
+          "requires": { "skills": { "survival": 20 } },
+          "exclusive_with": ["res_count_what_you_reach", "res_count_the_shadows"],
+          "consequences": {
+            "faction_reputation": { "the_rootkeepers": 10 },
+            "world_flags": ["rootkeeper_slate_names_the_player", "unnamed_well_counted_full", "the_well_has_gained_roots"],
+            "npc_disposition": { "rootkeeper-jeen": 12 },
+            "joins_faction": ["the_rootkeepers"]
+          }
+        },
+        {
+          "id": "res_count_the_shadows",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 88,
+          "outcome": "The count taken the old way, by shadow at the turn of the light. It finds the nine and it finds a tenth shadow with nothing above it, which is the reason the previous keeper stopped coming.",
+          "morally_better": null,
+          "requires": { "skills": { "alchemy": 20 } },
+          "requires_knowing": [],
+          "exclusive_with": ["res_count_what_you_reach", "res_go_under"],
+          "consequences": {
+            "faction_reputation": { "the_rootkeepers": 10 },
+            "world_flags": ["rootkeeper_slate_names_the_player", "unnamed_well_counted_full", "the_tenth_shadow_seen"],
+            "npc_disposition": { "rootkeeper-jeen": 12 },
+            "joins_faction": ["the_rootkeepers"]
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_invented_count",
+          "cause": "The player reports the full nine without having gone under or waited for the light, and Jeen asks them to describe the ninth root",
+          "journal_index": 64,
+          "recoverable": false,
+          "consequence": "The slate is the Rootkeepers' only property and a number on it that came out of a stranger's mouth is worse to them than a blank. The player is not written on it and Jeen will not offer again.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": null,
+      "rewards": [
+        { "type": "gold", "unique_named": false, "amount": 60 },
+        { "type": "faction_rank", "unique_named": false, "id": "the_rootkeepers", "name": "Leaf" },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_tenth_shadow",
+          "name": "the tenth shadow",
+          "on_resolution": ["res_count_the_shadows"]
+        }
+      ],
+      "consequences": {
+        "faction_reputation": { "the_rootkeepers": 10 },
+        "world_flags": ["rootkeeper_slate_names_the_player"]
+      }
+    },
+
+    {
+      "id": "Q-VAKH-00",
+      "title": "A Stoppered Phial and a Buyer Who Waits",
+      "category": "faction",
+      "faction": "the_ixtu_vakh",
+      "act": null,
+      "rank_gate": { "faction": "the_ixtu_vakh", "min_rank": 0, "min_reputation": 0 },
+      "discovery": "given",
+      "giver": {
+        "npc_id": "cutter-neeth",
+        "location": "Helstrom, the room over the sap-house on the eastern track",
+        "disposition_min": 30,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the sap-cutters",
+        "overheard_from": ["cutter-neeth", "npc-porter-eeja"]
+      },
+      "task_kind": "delivery",
+      "stakes": 3,
+      "directions": "Up the outside stair at the sap-house, and do not touch the phials on the sill. The buyer is at Archon, in the vat-house yard, and he will be the only man there who is not working. The coast road from Helstrom is four days if you keep to it and two if you cut the reed-walk, and the reed-walk is where the Rootkeepers watch.",
+      "journal": [
+        {
+          "index": 4,
+          "state": "active",
+          "text": "The sap-cutters are the most hated body in this province and they are hiring, which the innkeeper at Helstrom said in the tone of a man who has watched a lot of people take the work anyway.",
+          "records_belief": false
+        },
+        {
+          "index": 14,
+          "state": "active",
+          "text": "Neeth has given me two phials for a buyer at the Archon vat-house and told me the price twice: sixty now, sixty there. He also told me the reed-walk is faster and that he would not walk it, which are two pieces of advice that do not agree.",
+          "records_belief": false
+        },
+        {
+          "index": 26,
+          "state": "branch",
+          "text": "Two phials, four days by the road or two by the reed-walk. The reed-walk is Rootkeeper ground and I am carrying the thing they hate in a stoppered glass. I could go round it, go through it, or go through it with the phials somewhere other than my pack.",
+          "records_belief": false
+        },
+        {
+          "index": 60,
+          "state": "failure",
+          "text": "A keeper on the reed-walk asked what I was carrying and I let him look. He took both phials and poured them into the mud and stood there while they soaked in. He did not touch me. Neeth paid me nothing and said he would have done the same in my place, which was not comfort.",
+          "records_belief": false
+        },
+        {
+          "index": 82,
+          "state": "success",
+          "text": "Four days by the coast road and no trouble worth writing. The buyer at the vat-house took the phials without looking at them and counted out sixty. Neeth says the Ixtu-Vakh keep a list of who arrives and I am on the short end of it.",
+          "records_belief": false
+        },
+        {
+          "index": 86,
+          "state": "success",
+          "text": "Through the reed-walk in two days with the phials in the lining of my boots. A keeper stopped me and I let him search the pack and he let me go. Neeth laughed for a long time and then wrote my name down, which he says is the only ceremony the cutters have.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I went through the reed-walk and told the keeper the truth, and told him what I thought of the work, and he let me pass because he wanted the phials to reach Archon so he would know who was buying. I have delivered for the cutters and given the keepers a name, and both of them think I am theirs.",
+          "records_belief": true
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_road",
+          "at_journal_index": 26,
+          "condition": "The player holds two stoppered phials at Helstrom with the coast road and the reed-walk both open",
+          "leads_to": ["res_coast_road", "res_line_the_boots", "res_tell_the_keeper"],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_coast_road",
+          "method": "comply",
+          "violence_required": false,
+          "journal_index": 82,
+          "outcome": "The long way round, both phials delivered, nothing learned. The cutters take on a runner who does what runners are told and the Rootkeepers never see them.",
+          "morally_better": null,
+          "requires": { "skills": { "survival": 20 } },
+          "exclusive_with": ["res_line_the_boots", "res_tell_the_keeper"],
+          "consequences": {
+            "faction_reputation": { "the_ixtu_vakh": 10 },
+            "world_flags": ["vakh_runner_named", "archon_buyer_supplied"],
+            "npc_disposition": { "cutter-neeth": 8 },
+            "joins_faction": ["the_ixtu_vakh"]
+          }
+        },
+        {
+          "id": "res_line_the_boots",
+          "method": "sneak",
+          "violence_required": false,
+          "journal_index": 86,
+          "outcome": "Through the keepers' ground with the cargo out of the pack. Two days saved, the phials delivered, and a searched pack behind the player that came up empty.",
+          "morally_better": null,
+          "requires": { "skills": { "acrobatics": 20 } },
+          "exclusive_with": ["res_coast_road", "res_tell_the_keeper"],
+          "consequences": {
+            "faction_reputation": { "the_ixtu_vakh": 10 },
+            "world_flags": ["vakh_runner_named", "archon_buyer_supplied", "walked_the_reed_walk_carrying"],
+            "npc_disposition": { "cutter-neeth": 12 },
+            "joins_faction": ["the_ixtu_vakh"]
+          }
+        },
+        {
+          "id": "res_tell_the_keeper",
+          "method": "persuade",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The keeper is told the truth and lets the phials through because a delivery he knows about is worth more to him than a puddle in the mud. The player is a cutter's runner and a keeper's eye at the same time, and neither has been lied to.",
+          "morally_better": true,
+          "requires": { "skills": { "athletics": 20 } },
+          "requires_knowing": [],
+          "exclusive_with": ["res_coast_road", "res_line_the_boots"],
+          "consequences": {
+            "faction_reputation": { "the_ixtu_vakh": 10, "the_rootkeepers": 4 },
+            "world_flags": ["vakh_runner_named", "archon_buyer_supplied", "the_keepers_know_the_archon_buyer"],
+            "npc_disposition": { "cutter-neeth": 6, "rootkeeper-jeen": 10 },
+            "joins_faction": ["the_ixtu_vakh"]
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_phials_poured",
+          "cause": "The player is searched on the reed-walk carrying the phials in the pack, with no argument for the keeper and nowhere else to put them",
+          "journal_index": 60,
+          "recoverable": false,
+          "consequence": "The cargo is destroyed in front of the player. Neeth pays nothing, holds no grudge, and does not offer again this season.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": null,
+      "rewards": [
+        { "type": "gold", "unique_named": false, "amount": 120 },
+        { "type": "faction_rank", "unique_named": false, "id": "the_ixtu_vakh", "name": "Hatchling" },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_archon_buyer",
+          "name": "the buyer at the vat-house",
+          "on_resolution": ["res_line_the_boots", "res_tell_the_keeper"]
+        }
+      ],
+      "consequences": {
+        "faction_reputation": { "the_ixtu_vakh": 10 },
+        "world_flags": ["vakh_runner_named"],
+        "unlocks": ["Q-SAP-01"]
+      }
+    },
+
+    {
+      "id": "Q-CORT-00",
+      "title": "The Fee Is the Same for All of You",
+      "category": "faction",
+      "faction": "the_drowned_court",
+      "act": null,
+      "rank_gate": { "faction": "the_drowned_court", "min_rank": 0, "min_reputation": 0 },
+      "discovery": "given",
+      "giver": {
+        "npc_id": "undertaker-vaskh",
+        "location": "Soulrest, the burning yard behind the customs post",
+        "disposition_min": 30,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the drowned court",
+        "overheard_from": ["undertaker-vaskh", "npc-porter-eeja"]
+      },
+      "task_kind": "retrieval",
+      "stakes": 3,
+      "directions": "The burning yard is behind the customs post at Soulrest, downwind of it, which is why the customs post is where it is. The body Vaskh wants is on the silted bay side, in the shallows past the salt pans, and the tide there goes out further than a walker expects and comes back faster.",
+      "journal": [
+        {
+          "index": 4,
+          "state": "active",
+          "text": "The undertakers at Soulrest count the dead and they are not counting them for the Empire. A sapcutter told me they have a tally that says the soul-tide is failing and that they will show it to anyone who asks, which is not how a secret behaves.",
+          "records_belief": false
+        },
+        {
+          "index": 14,
+          "state": "active",
+          "text": "Vaskh says there is a man in the shallows past the salt pans who has been there four days and who nobody has claimed. He wants the body, and he wants it whole, and he was specific that the two are the same request.",
+          "records_belief": false
+        },
+        {
+          "index": 28,
+          "state": "active",
+          "text": "The man is where Vaskh said, face down in a foot of water, and the tide is coming in over him. He is wearing a Wet Ledger porter's tally-tag on a cord and his hands are not a porter's hands.",
+          "records_belief": true
+        },
+        {
+          "index": 38,
+          "state": "branch",
+          "text": "I can carry him back the way I came before the water is over the pans, or I can go round by the bone-diggers' causeway, which is longer and dry. Or I can take the tag off the cord and leave him, and tell Vaskh where he is, and let the Court come for him themselves.",
+          "records_belief": false
+        },
+        {
+          "index": 62,
+          "state": "failure",
+          "text": "The tide came back over the salt pans while I was still on them and I let the body go to keep my feet. Vaskh did not reproach me. He said the bay gives them back eventually and that he has waited longer for worse, and then he went on with his work and I stood there.",
+          "records_belief": false
+        },
+        {
+          "index": 80,
+          "state": "success",
+          "text": "I brought him in over the pans ahead of the water. Vaskh laid him out, took the tally-tag, looked at his hands and said what I had already thought, which is that this man never carried anything. He is number four hundred and sixteen in a tally that only goes one way.",
+          "records_belief": false
+        },
+        {
+          "index": 84,
+          "state": "success",
+          "text": "Round by the causeway, dry the whole way, and he was whole when he arrived. Vaskh says whole matters because the Court reads the body and a body that has been dragged reads as a drowning. This one does not read as a drowning.",
+          "records_belief": false
+        },
+        {
+          "index": 88,
+          "state": "success",
+          "text": "I took the tag and left him for the Court's own carriers and told Vaskh where. He thanked me for the tag and said, evenly, that a body they fetch themselves is a body they have to fetch, and that he had wanted to know which sort of person I was. I am, apparently, the sort he expected.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_carry",
+          "at_journal_index": 28,
+          "condition": "The player is standing over an unclaimed body in the shallows with the tide making and two routes back",
+          "leads_to": ["res_over_the_pans", "res_round_the_causeway", "res_take_the_tag"],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_over_the_pans",
+          "method": "comply",
+          "violence_required": false,
+          "journal_index": 80,
+          "outcome": "The body is carried in over the salt pans ahead of the tide. The Court has its four hundred and sixteenth entry and a tally-tag that belongs to a man who was not a porter.",
+          "morally_better": null,
+          "requires": { "skills": { "survival": 20 } },
+          "exclusive_with": ["res_round_the_causeway", "res_take_the_tag"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 10 },
+            "world_flags": ["court_tally_names_the_player", "the_false_porter_recovered"],
+            "npc_disposition": { "undertaker-vaskh": 8 },
+            "joins_faction": ["the_drowned_court"]
+          }
+        },
+        {
+          "id": "res_round_the_causeway",
+          "method": "investigate",
+          "violence_required": false,
+          "journal_index": 84,
+          "outcome": "The long dry route. The body arrives unmarked and the Court can read it, and what it reads is that the man did not drown.",
+          "morally_better": null,
+          "requires": { "skills": { "warding": 20 } },
+          "exclusive_with": ["res_over_the_pans", "res_take_the_tag"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 10 },
+            "world_flags": ["court_tally_names_the_player", "the_false_porter_recovered", "the_false_porter_did_not_drown"],
+            "npc_disposition": { "undertaker-vaskh": 12 },
+            "joins_faction": ["the_drowned_court"]
+          }
+        },
+        {
+          "id": "res_take_the_tag",
+          "method": "expose",
+          "violence_required": false,
+          "journal_index": 88,
+          "outcome": "The tag is brought in and the body is left for the Court's carriers. Vaskh gets the one thing that names the dead man and pays for the fetching himself, and he was testing for exactly this.",
+          "morally_better": false,
+          "requires": { "skills": { "root-speech": 20 } },
+          "requires_knowing": [],
+          "exclusive_with": ["res_over_the_pans", "res_round_the_causeway"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 10 },
+            "world_flags": ["court_tally_names_the_player", "the_false_porters_tag_taken"],
+            "npc_disposition": { "undertaker-vaskh": 4 },
+            "joins_faction": ["the_drowned_court"]
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_lost_to_the_tide",
+          "cause": "The player is on the salt pans with the body when the water comes back over them",
+          "journal_index": 62,
+          "recoverable": false,
+          "consequence": "The body goes back to the bay and the Court's tally has a gap in it where a name would have been. Vaskh holds nothing against the player and does not ask again.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": null,
+      "rewards": [
+        { "type": "gold", "unique_named": false, "amount": 40 },
+        { "type": "faction_rank", "unique_named": false, "id": "the_drowned_court", "name": "Knee-Deep" },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_false_porter",
+          "name": "the man with a porter's tag and no porter's hands",
+          "on_resolution": ["res_over_the_pans", "res_round_the_causeway", "res_take_the_tag"]
+        }
+      ],
+      "consequences": {
+        "faction_reputation": { "the_drowned_court": 10 },
+        "world_flags": ["court_tally_names_the_player"]
+      }
+    },
+
+    {
+      "id": "Q-DOCK-00",
+      "title": "A Place on the Boards",
+      "category": "faction",
+      "faction": "the_dockhands",
+      "act": null,
+      "rank_gate": { "faction": "the_dockhands", "min_rank": 0, "min_reputation": 0 },
+      "discovery": "given",
+      "giver": {
+        "npc_id": "npc-porter-eeja",
+        "location": "Gideon, the shelter at the foot of the crane",
+        "disposition_min": 20,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the boards",
+        "overheard_from": ["npc-porter-eeja", "undertaker-vaskh"]
+      },
+      "task_kind": "errand",
+      "stakes": 1,
+      "directions": "The shelter is at the foot of the crane at the river end of the Gideon market cross, and the hiring board is nailed to the inside of it where the rain does not get. The crane itself is the thing you want to be on the right side of.",
+      "journal": [
+        {
+          "index": 4,
+          "state": "active",
+          "text": "There is a board in the shelter at the foot of the Gideon crane with names on it in chalk, and a man works that day or does not depending on where his name sits. The list is not kept by the Ledger and it is not kept by the Assize. It is kept by the hands.",
+          "records_belief": false
+        },
+        {
+          "index": 12,
+          "state": "active",
+          "text": "Eeja says a name goes on the board when the hands agree it should, and that the way they agree is to watch a stranger work one shift. There is a barge on the third mooring that has to be off by the tide and they are two hands short.",
+          "records_belief": false
+        },
+        {
+          "index": 26,
+          "state": "branch",
+          "text": "The barge is short two hands and the crane is short a brake block, which is why it drops the last foot. I can work it as it is, I can go and argue the block out of the yard office, or I can talk the mate into paying the shift at the rate the board says instead of the rate he offered.",
+          "records_belief": false
+        },
+        {
+          "index": 58,
+          "state": "failure",
+          "text": "The crane dropped its last foot with a crate of glass under it and the mate charged the breakage to the shift. I worked a day for nothing and my name is not on the board, and Eeja said the board is not a punishment, it is just a list of who the hands would rather have.",
+          "records_belief": false
+        },
+        {
+          "index": 80,
+          "state": "success",
+          "text": "One shift, off before the tide, and my name is on the board in chalk at the bottom where a new name goes. Eeja says chalk is the whole of it and that a name stays on until the rain gets in or the hands rub it off.",
+          "records_belief": false
+        },
+        {
+          "index": 84,
+          "state": "success",
+          "text": "I got the brake block out of the yard office by pointing out, in front of a clerk who did not want it pointed out, that the crane belongs to the county and the county is liable. The block was fitted in an hour. My name went on the board above two that were already there.",
+          "records_belief": false
+        },
+        {
+          "index": 88,
+          "state": "success",
+          "text": "The mate offered the shift at eight and the board says eleven, and I said so, and he paid eleven to the four of us rather than have it said out loud twice. My name is on the board and the other three put it there.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_shift",
+          "at_journal_index": 26,
+          "condition": "The player is working a trial shift at the Gideon crane, which is short a brake block and paying under the board rate",
+          "leads_to": ["res_work_it", "res_get_the_block", "res_hold_the_rate"],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_work_it",
+          "method": "comply",
+          "violence_required": false,
+          "journal_index": 80,
+          "outcome": "The shift is worked as it stands and the barge is off before the tide. A name at the bottom of the board, which is where a name starts.",
+          "morally_better": null,
+          "requires": { "skills": { "athletics": 20 } },
+          "exclusive_with": ["res_get_the_block", "res_hold_the_rate"],
+          "consequences": {
+            "faction_reputation": { "the_dockhands": 10 },
+            "world_flags": ["name_on_the_gideon_board"],
+            "npc_disposition": { "npc-porter-eeja": 8 },
+            "joins_faction": ["the_dockhands"]
+          }
+        },
+        {
+          "id": "res_get_the_block",
+          "method": "persuade",
+          "violence_required": false,
+          "journal_index": 84,
+          "outcome": "The brake block is argued out of the yard office on the county's liability. The crane stops dropping its last foot, which every hand on that quay notices.",
+          "morally_better": true,
+          "requires": { "skills": { "mercantile": 20 } },
+          "exclusive_with": ["res_work_it", "res_hold_the_rate"],
+          "consequences": {
+            "faction_reputation": { "the_dockhands": 10 },
+            "world_flags": ["name_on_the_gideon_board", "gideon_crane_brake_fitted"],
+            "npc_disposition": { "npc-porter-eeja": 14 },
+            "joins_faction": ["the_dockhands"]
+          }
+        },
+        {
+          "id": "res_hold_the_rate",
+          "method": "intimidate",
+          "violence_required": false,
+          "journal_index": 88,
+          "outcome": "The mate pays the board rate to the whole shift rather than have the short pay said out loud a second time. Three other hands are paid because the player would not take eight.",
+          "morally_better": true,
+          "requires": { "skills": { "shieldcraft": 20 } },
+          "requires_knowing": [],
+          "exclusive_with": ["res_work_it", "res_get_the_block"],
+          "consequences": {
+            "faction_reputation": { "the_dockhands": 10 },
+            "world_flags": ["name_on_the_gideon_board", "gideon_board_rate_held"],
+            "npc_disposition": { "npc-porter-eeja": 14 },
+            "joins_faction": ["the_dockhands"]
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_breakage",
+          "cause": "The crane drops its last foot on a crate of glass and the mate charges the breakage against the trial shift",
+          "journal_index": 58,
+          "recoverable": false,
+          "consequence": "A day worked for nothing and no name on the board. The hands hold nothing against the player; the list is a preference, not a sentence.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": null,
+      "rewards": [
+        { "type": "gold", "unique_named": false, "amount": 11 },
+        { "type": "faction_rank", "unique_named": false, "id": "the_dockhands", "name": "Hand" },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_gideon_hiring_board",
+          "name": "the hiring board in the shelter at the foot of the Gideon crane"
+        }
+      ],
+      "consequences": {
+        "faction_reputation": { "the_dockhands": 10 },
+        "world_flags": ["name_on_the_gideon_board"],
+        "unlocks": ["Q-DOCK-01"]
+      }
+    }
+  ]
+}

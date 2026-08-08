@@ -98,6 +98,23 @@ delete-the-fix, the CONSUMPTION check, the self-test that goes red on purpose, a
 actual file rather than trusting a summary. Every one of those has caught something expensive. Cost
 discipline means not paying twice for the same work — never paying less for the verification.
 
+## 2c. The playability agent is a standing role — one is always running
+
+> Owner: *"make sure there is also a playability test sub agent in there, for both mobile and
+> desktop, accessing the actual link you will be telling me to access, to make sure it will work
+> for me."*
+
+Two black screens reached the owner because every check in this project ran on the machine that
+built the game. **One agent's whole job is to open the URL the README tells the owner to open**, on
+desktop and on phone profiles, and confirm a person would see a picture. It is not a piece and it
+never finishes; when one reports, dispatch the next.
+
+Its two hard-won constraints, so a successor does not rediscover them:
+- Chromium in this container **cannot reach `github.io`** (`ERR_CONNECTION_RESET`, the agent proxy).
+  `curl` can. `node tools/world/verify-live-site.mjs` is curl-based for that reason, and its own
+  self-test caught node's `fetch` being 403'd on its first run.
+- **A desktop browser at a phone-sized viewport is not a phone.** Say which you tested.
+
 ## 3. Top up, in this order of preference
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the

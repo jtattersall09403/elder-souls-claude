@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1028ba8`: 742 tools, 153 reference
-items, 72 pieces in flight.
+so it cannot drift. Generated at `c8414d7`: 746 tools, 153 reference
+items, 73 pieces in flight.
 
-Its purpose is to stop 72+ concurrent agents each paying separately to discover the
+Its purpose is to stop 73+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -187,6 +187,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/capture/server.mjs` — **no header comment**
 - `tools/capture/settle-shapes.mjs` — **no header comment**
 - `tools/capture/settle.mjs` — the anti-loophole half of S34, and the thing that makes placed captures safe.
+
+### `tools/coherence/` — 1
+
+- `tools/coherence/w1-27-coherence.mjs` — **no header comment**
 
 ### `tools/combat/` — 7
 
@@ -514,7 +518,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 20
+### `tools/journey/` — 21
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
@@ -529,6 +533,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/gamepad-shim.mjs` — A-JRN2.
 - `tools/journey/input-checks.mjs` — the M-K table of RI-JRN03 and the M-P table of RI-JRN04, measured.
 - `tools/journey/journey-run.mjs` — A-JRN1.
+- `tools/journey/jrn02-hour.mjs` — W1-28.
 - `tools/journey/jrn06-death.mjs` — RI-JRN06's `## Comparison method`, M-D1 ..
 - `tools/journey/name-entry.mjs` — can a player type their own name?
 - `tools/journey/opening-play.mjs` — the opening, played.
@@ -677,14 +682,19 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
+### `tools/render/` — 1
+
+- `tools/render/visual-reading.mjs` — `render.process.measurement`.
+
 ### `tools/stealth/` — 3
 
 - `tools/stealth/critic-w1-15-r3-dtf2x2.mjs` — the 2x2 that RULES.md rule 6 (rewritten this session) asks for and that the round's own delete-the-fix did not run.
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
-### `tools/touch/` — 2
+### `tools/touch/` — 3
 
+- `tools/touch/critic-fight-diag.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-fight.mjs` — ================================================================================================= critic-fight.mjs — W1-TOUCH critic round 1.
 - `tools/touch/touch-run.mjs` — CAN A PHONE PLAY THIS?
 
@@ -774,9 +784,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-crossing-probe.mjs` — **no header comment**
 - `tools/world/critic-crossing-walk.mjs` — **no header comment**
 - `tools/world/critic-deploy-gate-fixture.mjs` — run tools/check-shipped-files.mjs against a real repository that really has an untracked module, and against seven shapes that must NOT trip it.
+- `tools/world/critic-deploy-night-notice.mjs` — does the boot notice's own "is anything drawn?" test call a working night scene undrawn, and refuse to get out of the player's way?
 - `tools/world/critic-deploy-probe.mjs` — the browser half of the deploy-instrument critique.
 - `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
-- `tools/world/critic-deploy-tmp-diag.mjs` — **no header comment**
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
 - `tools/world/critic-locomotion-probe.mjs` — **no header comment**
 - `tools/world/critic-population-r1-diag.mjs` — **no header comment**
@@ -1069,6 +1079,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLAYABILITY` | starting | read RULES/INDEX/README/W1-TOUCH; attempt to make headless chromium reach github.io throug | `orchestration/status/PLAYABILITY.json` |
 | `W1-20` | building | author the four joining quests | `orchestration/status/W1-20.json` |
 | `W1-27` | measuring | finish lore/faction/tone/difficulty reads, then build tools/coherence/w1-27-coherence.mjs  | `orchestration/status/W1-27.json` |
 | `W1-24` | building | write cc-scan.mjs | `orchestration/status/W1-24.json` |

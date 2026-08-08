@@ -1123,8 +1123,14 @@ export class StealthCrime {
     let best = null;
     for (const c of cands) {
       const b = c.bounds;
+      // FOOTPRINT ONLY, and the y test that used to be here is gone on purpose. A zone is a room
+      // with one floor, so its `bounds_m.y` says how tall the room is rather than which storey you
+      // are on — and testing against it made the producer silently return null for a body whose y
+      // had drifted. Measured: in `thorn-inn` the whole walk came back `zone: null` with all four
+      // zones correctly resolved as candidates, because thirty frames of stepping had taken the
+      // body a metre and a half under the floor. A gate that fails closed on a number nobody was
+      // maintaining is a producer that looks absent again.
       if (pos[0] < b.x[0] || pos[0] > b.x[1] || pos[2] < b.z[0] || pos[2] > b.z[1]) continue;
-      if (b.y && (pos[1] < b.y[0] - 0.5 || pos[1] > b.y[1] + 0.5)) continue;
       if (!best) { best = c; continue; }
       if (c.weight > best.weight) { best = c; continue; }
       if (c.weight === best.weight && c.area < best.area) { best = c; continue; }

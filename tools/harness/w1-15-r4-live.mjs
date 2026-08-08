@@ -177,11 +177,16 @@ const OUT = await h.page.evaluate(async () => {
     const rec = E.sim.settlements.interior(LIT_ROOM);
     const b = rec.bounds_m;
     const walk = [];
+    // `teleport()`, NOT `sim.player.pos[2] = z`. Writing the sim body alone is a probe measuring
+    // itself: the combat body is the authority and the controller puts the position back on the
+    // next fixed step, so the first version of this walk reported the SPAWN POINT's zone twenty-one
+    // times and read as a producer that does not respond to movement.
     for (let z = b.z[0] + 0.4; z <= b.z[1] - 0.4; z += 0.8) {
-      E.sim.player.pos[0] = 0; E.sim.player.pos[2] = z;
+      H.teleport(0, z);
       H.stepFrames(1);
       const st = H.getStealthState();
-      walk.push({ z: r4(z), zone: st.zone, ctx: r4(st.context_weight === undefined ? -1 : st.context_weight) });
+      walk.push({ z: r4(z), at: [r4(E.sim.player.pos[0]), r4(E.sim.player.pos[2])], zone: st.zone,
+        ctx: r4(st.zone_context_multiplier === undefined ? -1 : st.zone_context_multiplier) });
     }
     O.zone = { interior: LIT_ROOM, declared: rec.property_zones, walk,
       candidates: H.getStealthState().lights.zone_candidates,
@@ -249,11 +254,20 @@ const OUT = await h.page.evaluate(async () => {
   H.loadState('default');
   H.setSeed(1337);
   H.setRenderRate(0);
+  // In a room WITH a property zone, in the settlement the crimes are committed in — otherwise the
+  // zone memory keys on `null` and the settlement-alarm multiplier is asked about a town the body
+  // is not standing in, and both consequences would be reported without being demonstrated.
   try { H.exitInterior(); } catch { /* already outside */ }
   H.stepFrames(2);
-  H.enterInterior(LIT_ROOM);
+  H.enterInterior('archon-apothecary');
   H.stepFrames(3);
   {
+    const rec0 = E.sim.settlements.interior('archon-apothecary');
+    H.teleport(0, (rec0.bounds_m.z[0] + rec0.bounds_m.z[1]) / 2);
+    E.sim.stealth.p.settlement = 'archon';
+    H.stepFrames(2);
+    const ctxBefore = E.sim.stealth._alarmCtx;
+    const zoneHere = H.getStealthState().zone;
     const before = H.getGuardBand({});
     const rows = [];
     // Four UNIDENTIFIED reports. Each lands 0.4x, and none of them may move the band.
@@ -276,13 +290,18 @@ const OUT = await h.page.evaluate(async () => {
     const res = H.landReport(E.sim.stealth.crime.witnesses.indexOf(w), 'unlawful');
     const after = H.getGuardBand({});
     const cs = H.getCrimeState();
+    H.stepFrames(2);
     O.unidentified = {
+      zone_here: zoneHere, settlement: 'archon',
+      civilian_context_multiplier_before: ctxBefore,
+      civilian_context_multiplier_after: E.sim.stealth._alarmCtx,
       band_before: before.band, thresholds: before.thresholds, unidentified_rows: rows,
       identified: { delta: res.delta, attributed: res.attributed, band: after.band, behaviour: after.behaviour,
         bounty_total: cs.bounty.imperial, attributed_bounty: E.sim.stealth.crime.attributedIn('imperial') },
       zone_memory: E.sim.stealth.zones.toJSON(),
       alarm: JSON.parse(JSON.stringify(E.sim.stealth.crime.alarm)),
       alarm_context_multiplier: E.sim.stealth._alarmCtx,
+      alarm_context_multiplier_note: 'the term stepCivilians() multiplies every civilian contextWeight by, in the settlement the body is standing in',
     };
     // SAVE ROUND TRIP (RULES.md 7): the split must survive, or every unidentified crime launders
     // itself on load.
@@ -368,9 +387,10 @@ A('R4-E2', 'one IDENTIFIED report of the same size does move it',
   `+${u.identified.delta} g identified -> total ${u.identified.bounty_total} g, attributed ${u.identified.attributed_bounty} g, band ${u.identified.band} (${u.identified.behaviour})`,
   u.identified.band > lastU.band, 'the band rises — otherwise the split is inert, not a mechanic');
 A('R4-E3', 'the settlement is on alarm and the zone remembers',
-  `alarm ${JSON.stringify(u.alarm)}, civilian contextWeight x${u.alarm_context_multiplier}; zone memory ${JSON.stringify(u.zone_memory)}`,
-  lastU.settlement_alarm > 0 && Object.keys(u.zone_memory || {}).length > 0,
-  'both of `unidentified_effect`\'s other two promises, with a consumer');
+  `alarm ${JSON.stringify(u.alarm)}; civilian contextWeight x${u.civilian_context_multiplier_before} -> x${u.civilian_context_multiplier_after}; zone ${u.zone_here} memory ${JSON.stringify((u.zone_memory || {})[u.zone_here] || null)}`,
+  lastU.settlement_alarm > 0 && u.civilian_context_multiplier_after > u.civilian_context_multiplier_before
+    && !!u.zone_here && !!(u.zone_memory || {})[u.zone_here] && u.zone_memory[u.zone_here].baseline > 0,
+  'both of `unidentified_effect`\'s other two promises, each with a consumer that moved: the town\'s own contextWeight term and the S-4 memory of the room it happened in');
 A('R4-E4', 'and the split survives a save round trip',
   `cleared to ${u.save_round_trip.cleared_between} between; after load total ${u.save_round_trip.after_load_total} g, unattributed ${u.save_round_trip.after_load_unattributed} g, attributed ${u.save_round_trip.after_load_attributed} g, band ${u.save_round_trip.after_load_band}`,
   u.save_round_trip.cleared_between === 0 && u.save_round_trip.after_load_unattributed === lastU.unattributed + 0,
@@ -382,11 +402,16 @@ try {
   await h.page.evaluate(async () => {
     const H = window.__HARNESS;
     H.setRenderRate(1);
-    H.setTimeOfDay(3);
     H.setWeather && H.setWeather('clear');
+    // Through the door at NOON and then wind the clock to 03:00 — a shop is shut at three in the
+    // morning and `useDoor` says so, which is correct behaviour and would otherwise leave this
+    // picture standing in the street.
+    H.setTimeOfDay(12);
     try { H.exitInterior(); } catch { /* already outside */ }
     H.stepFrames(2);
     H.enterInterior('helstrom-apothecary');
+    H.stepFrames(4);
+    H.setTimeOfDay(3);
     H.stepFrames(6);
   });
   const dataUrl = await h.page.evaluate(async () => window.__HARNESS.screenshot());

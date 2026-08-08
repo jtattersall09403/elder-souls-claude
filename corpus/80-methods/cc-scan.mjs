@@ -355,18 +355,41 @@ export function scan(text, opts = {}) {
   }
   S('S7', s7.length === 0, s7.length ? s7.join('; ') : 'no fused visual score and no mean over the two sides');
 
-  // ---- S8 two sides => two disjoint declarations ----------------------------------------------
+  // ---- S8 the BODY does not cross the side the declaration named ------------------------------
+  //
+  // S3 checks the declaration's own property list. This checks the thing S3 structurally cannot
+  // see and which is the actual failure §B is written against: a critic emits one honest
+  // declaration and then judges the other side anyway in the prose beneath it. "A critic judging
+  // both sides in one pass runs TWO passes and emits TWO declarations."
+  //
+  // The first draft of this check tested property-set overlap between two declarations, and this
+  // file's own falsifier caught it: §A assigns each id to exactly one side, so an overlap can only
+  // occur alongside an S3 violation and `--break=disjoint` left the suite green. A check that
+  // cannot fail alone is not a check.
   const s8 = [];
   if (!BREAKS.has('disjoint')) {
-    const sides = new Set(decls.map((d) => d.side).filter(Boolean));
-    if (sides.size === 2) {
-      const a = new Set(decls.filter((d) => d.side === 'ART_DIRECTION').flatMap((d) => d.props));
-      const f = new Set(decls.filter((d) => d.side === 'FIDELITY').flatMap((d) => d.props));
-      const both = [...a].filter((p) => f.has(p));
-      if (both.length) s8.push(`the two passes share ${both.join(', ')} — §Scoring: "the two score sets sharing a reference item ... voids the verdict"`);
+    for (const d of decls) {
+      if (!d.side) continue;
+      const declared = new Set(d.props);
+      const foreign = d.side === 'FIDELITY' ? partition.art : partition.fidelity;
+      const [lo, hi] = d.governs;
+      const seen = new Map();
+      for (let i = (d.end === null ? d.start : d.end) + 1; i <= hi; i++) {
+        const L = lines[i];
+        for (const m of L.matchAll(/\b([PF]\d{2})\b/g)) {
+          const id = m[1];
+          if (declared.has(id) || !foreign.has(id)) continue;
+          if (!seen.has(id)) seen.set(id, i + 1);
+        }
+      }
+      if (seen.size) {
+        s8.push(`a SIDE: ${d.side} pass judges ${[...seen.keys()].join(', ')} in its body (first at line ${Math.min(...seen.values())}) — ` +
+          `${d.side === 'FIDELITY' ? 'those are ART' : 'those are FIDELITY'} properties and this pass never declared them. ` +
+          `§B: a critic judging both sides runs two passes and emits two declarations.`);
+      }
     }
   }
-  S('S8', s8.length === 0, s8.length ? s8.join('; ') : (new Set(decls.map((d) => d.side)).size === 2 ? 'the two passes declare disjoint property sets' : 'one side judged; disjointness not applicable'));
+  S('S8', s8.length === 0, s8.length ? s8.join('; ') : 'no pass judges a property belonging to the side it did not declare');
 
   // ---- CC-1..CC-7, scoped to the enclosing block ----------------------------------------------
   if (!BREAKS.has('phrases')) {
@@ -505,11 +528,11 @@ function selfTestCases() {
     { id: 'morrowind-named-under-ART-is-not-a-hit', want: 'CLEAN', text:
       DECL('ART_DIRECTION', 'P01, P02') + '\n\nP01 palette is judged against Morrowind\'s Ascadian Isles tints, per RI-VIS05.' },
 
-    // S8: two passes that share a property. §Scoring — the two score sets must be disjoint.
-    { id: 'two-passes-sharing-a-property', want: 'VOID', text:
-      DECL('FIDELITY', 'F02, P01') .replace('F02, P01', 'F02') + '\n\nF02 is thin.\n\n' +
-      DECL('ART_DIRECTION', 'P01').replace('PROPERTIES UNDER JUDGEMENT: P01', 'PROPERTIES UNDER JUDGEMENT: P01, F02') +
-      '\n\nP01 is strong and F02 is re-judged here.' },
+    // S8: one honest declaration, and then the other side judged in the prose beneath it. The
+    // declaration is clean; only the body crosses. S3 cannot see this.
+    { id: 'body-crosses-the-declared-side', want: 'VOID', text:
+      DECL('FIDELITY', 'F02, F03') + '\n\nF02 material separation is thin and F03 has no indirect term.\n' +
+      'P01, the palette, is also doing a lot of work here and reads as convincingly alien.' },
 
     // S5: a CAPTURE that resolves on disk and whose declared sha256 is wrong. This is the only
     // case run with the capture check ARMED, because it is the only one with a real file.

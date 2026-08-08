@@ -954,6 +954,94 @@
         "the-taking-below",
         "the-drowned-post"
       ]
+    },
+    {
+      "quest": "Q-ROOT-00",
+      "index": 80,
+      "adds_topics": [
+        "the-hollow-count"
+      ],
+      "note": "W1-20. The Rootkeepers had no way in at all. A player written on Jeen's slate is handed the count that opens Q-MAG-15, so the joining quest hands the line forward instead of ending in a rank and nothing."
+    },
+    {
+      "quest": "Q-VAKH-00",
+      "index": 82,
+      "adds_topics": [
+        "the-phial"
+      ],
+      "note": "W1-20. Q-SAP-01 is rank_gate the_ixtu_vakh >= 1 and, before this file, rank 1 was reachable only through main-quest Act IV. The joining quest now supplies both the rank and the topic."
+    },
+    {
+      "quest": "Q-CORT-00",
+      "index": 80,
+      "adds_topics": [
+        "the-tally-of-the-dead"
+      ],
+      "note": "W1-20. Q-SOUL-02 is rank_gate the_drowned_court >= 2 and NOTHING in the build joined the Drowned Court, so that gate could never open. This is rank 1 of the two it needs; rank 2 is wave 2."
+    },
+    {
+      "quest": "Q-DOCK-00",
+      "index": 80,
+      "adds_topics": [
+        "the-short-pay"
+      ],
+      "note": "W1-20. Opens Q-DOCK-01, which was reachable without any dockhand standing at all."
+    },
+    {
+      "quest": "Q-ROOT-00",
+      "index": 84,
+      "adds_topics": [
+        "the-hollow-count"
+      ]
+    },
+    {
+      "quest": "Q-ROOT-00",
+      "index": 88,
+      "adds_topics": [
+        "the-hollow-count"
+      ]
+    },
+    {
+      "quest": "Q-VAKH-00",
+      "index": 86,
+      "adds_topics": [
+        "the-phial"
+      ]
+    },
+    {
+      "quest": "Q-VAKH-00",
+      "index": 90,
+      "adds_topics": [
+        "the-phial"
+      ]
+    },
+    {
+      "quest": "Q-CORT-00",
+      "index": 84,
+      "adds_topics": [
+        "the-tally-of-the-dead"
+      ]
+    },
+    {
+      "quest": "Q-CORT-00",
+      "index": 88,
+      "adds_topics": [
+        "the-tally-of-the-dead"
+      ]
+    },
+    {
+      "quest": "Q-DOCK-00",
+      "index": 84,
+      "adds_topics": [
+        "the-short-pay"
+      ]
+    },
+    {
+      "quest": "Q-DOCK-00",
+      "index": 88,
+      "adds_topics": [
+        "the-short-pay"
+      ]
     }
   ],
   "hooks": [
@@ -1107,5 +1195,6 @@
   "w1_19_note": "W1-19 round 2 rewrote every Q-MAIN entry_topics row. Round 1 authored 32 rows in which the topic a quest fired was the topic that quest itself demanded (23 of 32) or a topic nothing asked for (5 of 32), so the supply graph was a set of self-loops and 0 of 32 main quests were offerable at a cold start. Every row here now points FORWARD — a quest teaches the keyword that opens a LATER quest, never its own — and Q-MAIN-01 owes nothing to any quest: its topic is supplied only by the world (dialogue/rumours.json, opens_by.overheard_from, and the NPC topic lists), which is what game/src/sim/quest/topic-supply.js exists to read. Slugs are spelled so that core/topics.js topicKey() folds them onto the quest's own opens_by.topic; three round-1 rows (the-chapter-s-vote, the-ledger-s-terms, the-interior-s-consent) did not fold and could never have satisfied their gate.",
   "w1_factions_note": "W1-FACTIONS added 22 rows and rewrote 2, for the Wet Ledger, Imperial Assize and Xul-Aneekh lines. Every one points FORWARD, on the rule W1-19 round 2 established: a quest teaches the keyword that opens a LATER quest and never its own. Q-LEDG-01 and Q-DEEP-01 were self-loops and are now the rank-1 and rank-2 suppliers for the ranks above them; the rank-0 quest of each of the three lines owes its topic to the world alone (opens_by.overheard_from, the rumour layer, and a body in dialogue/topics/50-factions.json). 37 rows on OTHER pieces quests remain self-loops — see tools/quests/topic-supply-audit.mjs.",
   "w1_19_gen3_note": "W1-19 round 2, gen 3 repaired the last 35 self-loop entry_topics rows — every one of them a row whose whole adds_topics list was the topic that opens the very quest that fired it, i.e. a dead edge. They now point FORWARD on the rule this file already states: a quest teaches the keyword that opens ANOTHER quest and never its own. The successor is the same giver's next job where the giver has one (doing a thing for Ossa is how you hear about her other trouble), and otherwise another job in the same town. None of these quests depends on that edge to be found — each is also supplied by a settlement rumour in dialogue/rumours.json and has a body in dialogue/topics/55-utility.json — so the forward edge is a second route, not the only one, which is the shape the main quest ended up with too. The seven quests with no same-giver and no same-town sibling (Q-ARCH-01, Q-SOUL-02, Q-BLAK-01, Q-STRM-01, Q-DOCK-01, Q-SAP-01, Q-MAG-07) were first dropped outright and check-quests refused it — RI-DLG05 §A.3 requires every quest to seed SOME topic from a journal write — so each was given a forward target chosen for what the giver would actually know, and the note on the row says why.",
-  "w1_19_r3_note": "W1-19 round 3. Until this round NO hooks.json row carried a quest+reveal pair, so QuestEngine.reveal() -- the only writer of a `know:` flag -- had no caller outside the harness, and 116 of the 121 (quest,reveal) pairs the resolutions demand had no route in play at all. Worse, the row would not have worked if it had been written: _applyConsequences wrote q.flags[wf] directly instead of calling setFlag(), so the hook table was unreachable from the one thing a player does. That is fixed in game/src/sim/quest/machine.js this round and the five rows added here are the `later_quest` channel, the only one of the nine whose source is a quest id and therefore routable by a world flag alone. The other eight channels name readable documents (ledger 28, letter 6), people to talk to (talk_to_target 28, rival_npc 23, eavesdrop 9), things to see (environment 18) and a body (corpse 1); each needs a world-side action, not a hook row, and none is authored here rather than guessed at. tools/quests/reveal-route-audit.mjs is the standing check."
+  "w1_19_r3_note": "W1-19 round 3. Until this round NO hooks.json row carried a quest+reveal pair, so QuestEngine.reveal() -- the only writer of a `know:` flag -- had no caller outside the harness, and 116 of the 121 (quest,reveal) pairs the resolutions demand had no route in play at all. Worse, the row would not have worked if it had been written: _applyConsequences wrote q.flags[wf] directly instead of calling setFlag(), so the hook table was unreachable from the one thing a player does. That is fixed in game/src/sim/quest/machine.js this round and the five rows added here are the `later_quest` channel, the only one of the nine whose source is a quest id and therefore routable by a world flag alone. The other eight channels name readable documents (ledger 28, letter 6), people to talk to (talk_to_target 28, rival_npc 23, eavesdrop 9), things to see (environment 18) and a body (corpse 1); each needs a world-side action, not a hook row, and none is authored here rather than guessed at. tools/quests/reveal-route-audit.mjs is the standing check.",
+  "w1_20_note": "W1-20 (the faction skeleton). Eight entry_topic edges for the four joining quests, one per success journal index, so the topic that opens each faction’s existing rank-gated quest is handed over by the quest that grants the rank. Before this, Q-SOUL-02 (drowned_court >= 2) and Q-SAP-01 (ixtu_vakh >= 1) were gates on ladders with no entrance."
 }

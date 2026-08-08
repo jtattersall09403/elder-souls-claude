@@ -108,6 +108,13 @@ const MACHINERY = new Set([
 const AI_FRAME_STAMPS = new Set([
   'stateEnteredF', 'strafeUntil', 'tokenSinceF', 'cooldownUntil',
   'feintUntil', 'roarUntil', 'healUntil', 'noLosSinceF', 'lastCommitF',
+  // W1-12 round 2. BOTH OF THESE ARE ABSOLUTE FRAMES compared against `frame`, so a load that
+  // did not rebase them would leave an enemy holding its shield or backing away for the rest of
+  // the session — no throw, no wrong-looking trace, just one body that is unhittable from the
+  // front forever. `pWindow` is deliberately NOT here: it stores raw frame numbers beside
+  // positions, and the contiguity test (`w[last] !== frame - 1`) then fails on the first frame
+  // after a load and rebuilds the window, which is the behaviour we want anyway.
+  'blockUntil', 'disengageUntil',
 ]);
 
 export class SoulsAI {
