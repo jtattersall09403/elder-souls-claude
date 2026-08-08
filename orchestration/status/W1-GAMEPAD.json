@@ -1,10 +1,10 @@
 {
   "task_id": "W1-GAMEPAD",
   "title": "The gamepad path: end-to-end play on a pad alone, stick response curve, shim lives or dies",
-  "state": "reporting",
+  "state": "done",
   "started_at": "2026-08-08T00:00:00Z",
   "commit_at_start": "52cffa1",
-  "next_step": "Apply the engine.js:707 fix (move_deadzone 0.15 -> 0), delete-the-fix, run the opening leg, run the shim direction hardening, publish.",
+  "next_step": "none \u2014 handing to a critic",
   "findings": [
     "F1 (SETTLED, the brief's central question): the NEXT-DISPATCH note `gamepad-shim.mjs \u2014 does not run, 3/3 crash` is STALE BY TWO ROUNDS. TOOL-COVERAGE-R1 said 3/3 crash; R2 recorded 'gamepad-shim runs (8/8, was 3/3 crash)'; R3 line 370 says **Accept, 12/12**. I ran `node tools/journey/gamepad-shim.mjs --self-test` at 52cffa1: PASS 12/12, exit 0. The note sits under a NEXT-DISPATCH heading that says 'The R1 list below is kept because parts of it are still open' \u2014 this bullet is not one of the open parts.",
     "F2: there is no contradiction with the W1-21-r2 critic. The critic used `__HARNESS.gamepad()` (RealInput.pushGamepadState -> pollGamepad). The shim injects one layer higher, at navigator.getGamepads(). RI-JRN01 \u00a70.1(a) STRUCK the shim reference for reachability legs deliberately and kept it for the descriptor leg. Two instruments, two seams, both alive. Neither is stale.",
@@ -52,5 +52,20 @@
     "why": "already shipped in character/scene.js:_nameOptions(), whose own docstring cites RI-JRN01 O8: an on-screen keyboard would be the full-screen panel O8 forbids. step() commits `this.typed ? this.typed : opt.id` and tags it via:'ledger'.",
     "made_measured_by": "tools/gamepad/pad-run.mjs --leg opening dispatches NO key event, so a ledger that did not commit would stall the census at hold.hatch-name forever and O4 would go red. It committed: \"Silence-Under-Salt\".",
     "reversible_if": "play-testing shows players want a name the ledger does not carry and reach for a keyboard to get it - then an O8-compatible INLINE (never full-screen) character wheel is owed."
-  }
+  },
+  "commit_at_end": "561b8db",
+  "results": {
+    "pad_run_aggregate": "24 pass / 0 fail (node tools/gamepad/pad-run.mjs --leg all)",
+    "deadzone_deletefix": "5 pass / 0 fail (all three RULES 6 failure shapes)",
+    "gamepad_shim_selftest": "15/15 (was 12/12; direction check + --break-direction teardown added)",
+    "teardowns_watched_going_red": [
+      "pad-run --break-gate: hold_gate[1].frames 12->1, L3 goes RED (tap sprints instead of rolling) while L0/L1/L2 stay green",
+      "gamepad-shim --break-direction: axes swapped, distance check stays GREEN at 6.4 m (MORE than the correct 5.44 m) and every bearing is 90 degrees out",
+      "deadzone-deletefix arm B: move_deadzone put back to 0.15 on a live body, first-live returns to 0.27 and three deflections return to 0.000 m/s"
+    ],
+    "source_change": "game/src/engine.js:707 locomotion.move_deadzone 0.15 -> 0",
+    "artifacts_are_gitignored": "reports/*.json is ignored by project policy (reports/.gitignore: run artifacts are reproducible from the tools). Reproduction commands are in reports/w1-gamepad-survey.md section 8."
+  },
+  "overlap_note": "orchestration/NEXT-DISPATCH.md is also claimed by arbiter-dlg-s37 and arbiter-wpn-s36. My edit is ONE bullet in section 2's R1 list (striking the stale gamepad-shim line) and touches nothing either arbiter is writing. Declared here rather than left to read as a collision.",
+  "bank_note": "Most of this piece's files (tools/gamepad/, tools/journey/gamepad-shim.mjs, game/src/engine.js, the status file, the screenshot) were carried into HEAD by orchestrator bank commits while the piece was still running - RULES 17's documented behaviour. Content was verified present and correct in HEAD before the final commit; not unpicked."
 }
