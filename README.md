@@ -44,9 +44,13 @@ from anything slowing you down.
 
 - **The opening has not been graded since it was fixed.** A fresh critic is owed one, and until
   then the claim that it plays as a scene is the builder's, not a judge's.
-- **41 of 112 buildings are smaller outside than in.** One inn is a 3.4 m shed over a 13.6 m hall.
-  Every building is also an open-topped tray with a dome loose inside it, so do not look down at a
-  roof. Being fixed now.
+- **Walking out of a building leaves you inside it.** 39 of 40 doors tested. Every building's door
+  is recorded at the building's *centre*, and every declared outdoor spawn sits inside its own wall
+  box — so you step out and find yourself under the roof you just left. This is the most likely
+  thing to stop you exploring a town. Being fixed now.
+- **Some lamps are outside their own rooms.** 55 of them, in 19 rooms, after those rooms were made
+  to fit inside their buildings. The stealth model reads those positions, so a corner may be lit or
+  dark for a reason you cannot see.
 - **An enemy cannot catch you if you walk away.** Five of seven close at 0.20 m/s, never get nearer
   than 8 m, hit their leash and go home. (`corpus/90-verdicts/wave1/W1-12-r1.md`)
 - **Interiors are lit wrongly.** 1,584 floor tiles are drawn lit and simulated pitch black, because

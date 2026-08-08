@@ -134,7 +134,9 @@ right now). Between these two you should not need to go looking for anything.
     simulation, and say which you did.
 21. **Run `node tools/contention.mjs --gate` before browser work.** Exit 3 means do the work that
     needs no browser and come back. Contention has cost two pieces their headline numbers.
-    **Launch one browser and keep it** for the whole run.
+    **Launch one browser and keep it** for the whole run — and **never `pkill -f headless_shell`**.
+    A critic did, unscoped, and reports it may have taken a neighbour's browser mid-measurement.
+    Kill your own child process by pid; the fleet's browsers are not yours to reap.
 
     This rule used to say "above ~8 `pgrep -c headless_shell`, wait", and that was wrong in a way
     that quietly throttled the whole fleet: Chromium forks a browser process, a zygote, a GPU

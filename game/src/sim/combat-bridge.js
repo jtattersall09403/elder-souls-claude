@@ -119,6 +119,23 @@ export function stepCombat(sim, input, combat, bus) {
       // recompute `HP_DAMAGE_ONLY` without re-probing the consuming system.
       ev.damage_effects = spell.effects.filter((t) => DAMAGE_EFFECTS.has(t.effect)).map((t) => t.effect);
       ev.handler_effects = spell.effects.filter((t) => !DAMAGE_EFFECTS.has(t.effect)).map((t) => t.effect);
+      // W1-14 r5 — a delivered bolt says how close it came as well as that it arrived, so
+      // "it hit" and "it was close" are the same statement read off one event.
+      ev.miss = false;
+      ev.closest_m = contact.closest_m === undefined ? null : contact.closest_m;
+      ev.led = contact.led === undefined ? null : contact.led;
+    }, (spell, miss) => {
+      // W1-14 r5 — A BOLT THAT REACHED NOBODY. `spell_hit` with `miss: true` rather than a new
+      // event name: `sim/events.js`'s §5 vocabulary is CLOSED (RULES.md #15) and emitting an
+      // unlisted name throws inside the fixed step and kills every stepping probe in the tree.
+      // The round-4 remedy asked for exactly this shape and this is why.
+      const ev = bus.emit(frame, 'spell_hit');
+      ev.spell = spell.id; ev.target = miss.closest_target || null; ev.dmg = 0; ev.kind = 'projectile';
+      ev.miss = true;
+      ev.closest_m = miss.closest_m; ev.hit_radius_m = miss.hit_radius_m;
+      ev.travel_f = miss.travel_f; ev.tracking_cutoff_f = miss.tracking_cutoff_f; ev.led = miss.led;
+      ev.hit_world_object = null; ev.status = null; ev.damage_by_kind = {};
+      ev.damage_effects = []; ev.handler_effects = [];
     });
     // RI-MAG02 §F2: the levitation altitude meter. `climb` is the jump button held while
     // AIRBORNE; there is no other way to gain altitude and there is no altitude clamp.

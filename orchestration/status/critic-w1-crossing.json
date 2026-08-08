@@ -3,7 +3,7 @@
   "role": "critic",
   "item": "W1-CROSSING",
   "round": 1,
-  "state": "walked-it",
+  "state": "measuring",
   "started_at": "2026-08-08T05:44:47Z",
   "next_step": "kill-probe (A), regain rebuild (D), null replacement (E), deletefix reversed (C), reverse+soulrest walks (G/D), then the verdict",
   "files_touched": [
@@ -12,7 +12,8 @@
     "tools/world/critic-crossing-grade.mjs",
     "tools/world/critic-crossing-probe.mjs",
     "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
-    "reports/critic-w1-crossing/"
+    "reports/critic-w1-crossing/",
+    "corpus/90-verdicts/wave1/W1-CROSSING-r1.md"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-CROSSING-r1.md",
@@ -27,5 +28,20 @@
   ],
   "notes": [],
   "headline": "INDEPENDENTLY WALKED: 6,646.7 m, 199,433 frames, 55.398 in-world min, arrived at Lilmoth (2765.6, 5028.8) — identical to the published figures to the decimal, with the critic own per-frame counter agreeing (walked 6646.7, naive 6646.7, max step 0.295 m, 0 teleports).",
-  "contention": "node tools/contention.mjs --gate returned exit 3 at 05:44 and 05:46 (load 4.2-4.9 per core). I DID NOT PROCEED; I did offline work until it returned GO at 05:49 (1.92 per core) and started the walk then. Wall-clock timings are recorded per run in the artifacts and are NOT published as performance figures."
+  "contention": "node tools/contention.mjs --gate returned exit 3 at 05:44 and 05:46 (load 4.2-4.9 per core). I DID NOT PROCEED; I did offline work until it returned GO at 05:49 (1.92 per core) and started the walk then. Wall-clock timings are recorded per run in the artifacts and are NOT published as performance figures.",
+  "findings": [
+    "K1 REPRODUCED THE HEADLINE INDEPENDENTLY: 6,646.7 m / 199,433 frames / 55.398 min / mean 1.9991 / 0.063% of 33,238 / worst off 1.39 m / 0 off-path frames / 0 teleports / ends (2765.6, 5028.8). Two counters (walkRoute and the critic own _afterStep accumulator) agree exactly; naive unbounded sum is ALSO 6,646.7 and the largest single-frame step in 199,432 frames is 0.295 m, so the zero is zero because nothing jumped.",
+    "K2 TELEPORT EXCLUSION WATCHED CATCHING A REAL RESPAWN (rule 4). Killed at 799 m: 3,856.1 m discontinuity, path_m 799->814, teleports 1; critic naive sum 4,670.1 m. It bites.",
+    "K3 DEFECT: walkPath() STILL COUNTS TELEPORTS AS WALKED DISTANCE. engine.js walkPath accumulates the per-frame step with no upper bound and returns no teleports field, while finding F7 and survey 2c both state walkRoute AND walkPath were fixed. walkPath is the verb w1-01-r4-soulrest-leg.mjs uses - the tool W1-05 is told to re-run.",
+    "K4 DEFECT: the premise correction cites a check that CANNOT FAIL. 25,390 of 25,390 centreline samples (100.0000%) are exempt from the slope gate via onRoadAt(), so climb_over_limit on a centreline is structurally zero for any road/terrain/commit. Replacement lateral sweep supplied; on structure-free legs the gate refuses 0/14,253 at 3.5 m and 4/14,473 at 4 m.",
+    "K5 PREMISE UPHELD ON SUBSTANCE from an independent direction: worst longitudinal road gradient 24.27 deg (same leg), stall 4.97 m off / 15.61 m below the deck inside the declared 471 m 50.6 m viaduct, and slopeAt reproduces 61.10 deg at the stall vs 1.09 deg on a structure-free leg.",
+    "K6 THE CROSSING DOES NOT WALK BACKWARDS (rule 8). Lilmoth->Stormhold: 5,072.3 m of 6,903.6 m then STUCK - 900 consecutive frames under 1 cm - at (2278.6, 1859.2), 0.62 m from the centreline, 1,103.5 m short.",
+    "K7 CAUSE OF K6: THE ROAD BRIDGES OVER ITSELF. stormhold-helstrom points 126 and 131 are 5.74 m apart horizontally and 7.51 m apart vertically; 129-131 is a declared 17 m viaduct whose 3.5 m deck slab overlays the lower limb of the switchback. onDeckAt returns a 7.4 m-clearance deck ON the centreline at 1,635 m, inside a declared span GAP, so heightAt steps the ground up 5.5 m for five metres of carriageway.",
+    "K8 THE DROWNING LEG IS CLOSED IN BOTH DIRECTIONS. soulrest-blackrose walked as a body: forward 1,765.6 m arrived, reverse 1,765.7 m arrived, worst off-path 1.31/1.37 m, 0 frames off, deepest water 0.00 m. The road-join critic left blackrose->soulrest failing at 6,268.7 m and called it direction-asymmetric and W1-CROSSING owns it. It is fixed.",
+    "K9 G3=63 and G4=488 reproduce EXACTLY, including 59 of 63 on stormhold-helstrom.",
+    "K10 --stair-grade 0.60 reproduced by running the generator: deck span 1,732->1,431 m, tallest 50.6->32.7 m, trunk 25,385.3 m unchanged, crossing 6,903.6 m unchanged, worst road gradient 24.27->31.13 deg. REFERRED as a design question.",
+    "K11 RI-WLD01 M4 (leg-time, +-20%) passes on a walked body: -3.0%, -5.6%, -1.7%. RI-WLD01 M2 step 4 (the JOG, pass 33-41 min) has never been run by anyone; running it.",
+    "K12 THE 116.7 m RESPAWN. Death at 799 m places the body 116.7 m from the crossing destination, so under the old accounting dying completes the crossing.",
+    "K13 the join is FRESH at HEAD: road-through-building.mjs 0 of 10, 0 offences. boot-check and check-data green."
+  ]
 }

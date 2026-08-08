@@ -144,6 +144,14 @@ export class MagicSystem {
     // ---- live state ------------------------------------------------------------------------
     this.cast = null;                    // {spell, class, spellId, startFrame, focusSpent, staminaSpent, released, aimYaw, aimPitch, tcFrame}
     this.projectiles = [];
+    // W1-14 r5. THE BODY'S OWN VELOCITY, measured by this system from the positions it is
+    // handed every fixed step. It lives here and not on the combat body because the fix must
+    // not depend on any other system agreeing to publish a velocity field: `step()` already
+    // receives every hostile body in id order on every frame, so the derivative is free and it
+    // is exact for anything that moves — an AI, a script, or `setEntityPos` in a fixture.
+    this._bodyPrev = new Map();          // body id -> [x, z] on the previous step
+    this._bodyVel = new Map();           // body id -> [vx, vz] m/s, smoothed
+    this._leadBlind = false;             // the delete-the-fix arm; see __breakLead()
     this.volumes = [];
     this.active = [];                    // [{effect, magnitude, remaining_f, source, spell}]
     this.levitating = false;
@@ -664,6 +672,123 @@ export class MagicSystem {
 
   // ---- geometry -------------------------------------------------------------------------------
 
+  // ==============================================================================================
+  // W1-14 ROUND 5 — WHY A BOLT COULD NOT HIT ANYTHING THAT WALKED, AND WHAT THE FIX IS.
+  //
+  // The round-4 verdict's single biggest gap, named for two rounds before anybody measured it:
+  // at 14 m a body walking SIDEWAYS at walking pace took 0 damage from all five damage effects,
+  // where the same body standing still took 48/43/41/43/29 and the same body RETREATING TEN
+  // METRES took 48/43/41/43/29. At 6 m the same walk was hit for full damage. That shape —
+  // retreat lands, strafe misses, near lands, far misses — is not speed and it is not reach.
+  // It is PURE PURSUIT.
+  //
+  // The tracking loop below used to steer at `bearing(target.pos - p.pos)`: the bearing to where
+  // the body IS. A pursuit curve always trails a crossing target, and the trail is paid at the
+  // end of the flight, after the tracking cutoff has closed and the bolt can no longer correct.
+  // The arithmetic, for LIGHT at 14 m (speed 16 m/s, turn 60 deg/s, cutoff 0.35 of the journey):
+  //
+  //     journey        (14 - 0.82) / 16          = 0.824 s = 49 f@60
+  //     cutoff         floor(0.35 x 49)          = 17 f    = 0.283 s
+  //     at the cutoff  the bolt is 4.5 m out, aimed at where the body was on frame 17
+  //     remaining      9.5 m / 16                = 0.59 s
+  //     the body walks 1.5 m/s x 0.59 s          = 0.89 m
+  //     the hit needs  radius 0.22 + hurtbox 0.45 = 0.67 m
+  //
+  // 0.89 > 0.67, so it misses — by twenty-two centimetres, deterministically, on every effect.
+  // At 6 m the same sum gives 0.41 m against the same 0.67 and it lands. Retreat lands because
+  // a body moving ALONG the bolt's axis has no lateral error to accumulate at all. Nothing here
+  // is stochastic, which is why the round-4 table is columns of clean zeroes rather than a
+  // scatter — and why four rounds of fixtures with a stationary body could not see any of it.
+  //
+  // THE FIX IS LEAD, NOT MORE HOMING, and the distinction is the whole design.
+  //
+  // `_interceptOf()` solves for the point where the body will BE when the bolt gets there, and
+  // the tracking loop steers at that. For a body holding a course this point is FIXED IN SPACE:
+  // once the bolt is on the collision triangle, every later recomputation returns the same
+  // point, so the required turning falls to zero and the bolt coasts in. That is what makes it
+  // a lead rather than a homing missile — the steering is spent in the first few frames buying
+  // a straight line, and the rest of the flight is ballistic.
+  //
+  // WHAT THAT PRESERVES, and it is the reason the remedy was written this way. `min_dodge_
+  // window_f` is 20 f@60 and RI-CMB01's dodge contract depends on it: a bolt that steers all the
+  // way to impact cannot be dodged and the contract becomes a lie. Under lead, a body that
+  // CHANGES its course after the cutoff is not followed — the intercept was computed against
+  // the course it was holding, and the bolt is already committed to it. So a roll still works,
+  // and it works for the geometric reason a roll should work rather than because the bolt was
+  // bad at its job. The probe measures that arm (`--arm dodge`) beside the hit table, because a
+  // fix that lands every bolt and calls it a win has broken a different item.
+  //
+  // WHAT IS DELIBERATELY NOT FIXED. `CANTRIP` and `GREAT` declare `turn_rate_dps: 0` and
+  // `tracking_cutoff: null` in `cast-classes.json`. They do not track, they never tracked, and
+  // they are not given a lead here: they are the classes that ARE dodgeable by walking, by
+  // declaration, and the range x speed table publishes them missing next to LIGHT and HEAVY
+  // hitting so that "some spells are supposed to be dodgeable" is a measurement and not an
+  // excuse. A bolt with no declared arc gets no lead, because the lead rides on the arc.
+  // ==============================================================================================
+
+  /**
+   * The point to aim at so that the bolt and the body arrive together.
+   *
+   * Fixed-point iteration on `t = |target + v t - p| / speed`, which converges monotonically
+   * whenever the target is slower than the projectile (every body in this build is: the fastest
+   * declared locomotion is 5.5 m/s against a HEAVY bolt's 11). Three passes puts it inside a
+   * millimetre at these ranges. No allocation beyond the returned pair, no clock, no RNG — this
+   * runs inside the armed determinism guard.
+   *
+   * @returns {[number, number]} the [x, z] to steer at. The body's own position when the lead
+   *   is blind, unknown, or capped — so a caller can always use the result.
+   */
+  _interceptOf(p, t) {
+    const tx = t.pos[0], tz = t.pos[2];
+    if (this._leadBlind) return [tx, tz];
+    const v = this._bodyVel.get(t.id);
+    if (!v || (v[0] === 0 && v[1] === 0) || !(p.speed > 0)) return [tx, tz];
+    // The lead may never be longer than the flight the bolt has left, or a body sprinting away
+    // is led into next week and the bolt turns away from a target it could still have reached.
+    const capS = Math.max(0, (p.lifeF - p.travelF)) / 60;
+    let dt = Math.hypot(tx - p.pos[0], tz - p.pos[2]) / p.speed;
+    for (let k = 0; k < 3; k++) {
+      const ax = tx + v[0] * dt, az = tz + v[1] * dt;
+      dt = Math.hypot(ax - p.pos[0], az - p.pos[2]) / p.speed;
+    }
+    if (!(dt > 0)) return [tx, tz];
+    if (dt > capS) dt = capS;
+    return [tx + v[0] * dt, tz + v[1] * dt];
+  }
+
+  /**
+   * One step of the body-velocity derivative. Called at the top of `step()`, before any bolt
+   * moves, so every projectile in the same frame reads the same estimate.
+   *
+   * Smoothed rather than raw, at 0.35 per frame: a raw first difference makes the lead jitter
+   * on any body whose controller nudges it, and a bolt whose aim point twitches spends its turn
+   * budget on noise. It converges to the true velocity of anything holding a course in about
+   * eight frames, which is a third of a LIGHT startup, so the estimate is settled long before
+   * the release frame of any cast the player began after the body started moving.
+   */
+  _stepBodyVelocity(targets) {
+    const prev = this._bodyPrev, vel = this._bodyVel;
+    for (const t of targets) {
+      const p0 = prev.get(t.id);
+      if (p0) {
+        const vx = (t.pos[0] - p0[0]) * 60, vz = (t.pos[2] - p0[2]) * 60;
+        const v = vel.get(t.id);
+        if (v) { v[0] += (vx - v[0]) * 0.35; v[1] += (vz - v[1]) * 0.35; }
+        else vel.set(t.id, [vx, vz]);
+        p0[0] = t.pos[0]; p0[1] = t.pos[2];
+      } else prev.set(t.id, [t.pos[0], t.pos[2]]);
+    }
+    // Bodies that left the fight take their estimate with them, so a recycled id cannot inherit
+    // a dead body's course.
+    if (prev.size > targets.length) {
+      const live = new Set(targets.map((t) => t.id));
+      for (const k of [...prev.keys()]) if (!live.has(k)) { prev.delete(k); vel.delete(k); }
+    }
+  }
+
+  /** Delete-the-fix: the bolt goes back to steering at where the body is. RULES.md #6. */
+  __breakLead(on) { this._leadBlind = !!on; return this._leadBlind; }
+
   _spawnProjectile(frame, s, origin, yaw, pitch) {
     const g = s.geometry;
     const p = {
@@ -715,7 +840,12 @@ export class MagicSystem {
       // frame again.
       if (best) {
         const CONTACT_M = p.r + 0.6;
-        const dist = Math.hypot(best.pos[0] - p.pos[0], best.pos[2] - p.pos[2]);
+        // W1-14 r5: the journey is the flight to the INTERCEPT, not to where the body is
+        // standing at the release frame. Against a body crossing at 3 m/s at 14 m those differ
+        // by 2.6 m, and the difference was being taken out of the cutoff — the fence shortened
+        // itself in exactly the case that needed it longest.
+        const aim = this._interceptOf(p, best);
+        const dist = Math.hypot(aim[0] - p.pos[0], aim[1] - p.pos[2]);
         const journeyF = Math.max(1, ((dist - CONTACT_M) / p.speed) * 60);
         p.journeyF = round2(journeyF);
         p.cutoffF = Math.min(p.cutoffF, Math.floor(g.tracking_cutoff * journeyF));
@@ -772,7 +902,10 @@ export class MagicSystem {
    * @param {Array} targets combat bodies, in id order (HARNESS D7)
    * @param {function} onHit (target, spell, contact) => void
    */
-  step(frame, targets, onHit) {
+  step(frame, targets, onHit, onMiss) {
+    // Every body's course, before anything is steered at it. W1-14 r5 — see the block above
+    // `_interceptOf`.
+    this._stepBodyVelocity(targets);
     // --- projectiles: a SPHERE SWEPT ALONG ITS PER-FRAME PATH, tested every step. Never a
     //     raycast at spawn, never a distance check (RI-MAG01 §E, AP-M1).
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
@@ -783,7 +916,12 @@ export class MagicSystem {
       p.appliedTurnDps = 0;
       p.prevHeadingDeg = p.yaw;                     // AP-M3: the heading BEFORE this frame's turn
       if (p.turnRate > 0 && (this._cutoffDisabled || p.travelF < p.cutoffF) && p.target) {
-        const want = bearing(p.target.pos[0] - p.pos[0], p.target.pos[2] - p.pos[2]);
+        // LEAD, not pursuit. `_interceptOf` returns the body's own position when the lead is
+        // blind or the body is holding still, so this line is the old one in every case where
+        // the old one was right.
+        const aim = this._interceptOf(p, p.target);
+        p.aimAt = aim;
+        const want = bearing(aim[0] - p.pos[0], aim[1] - p.pos[2]);
         const cap = p.turnRate / 60;
         let d = ((want - p.yaw + 540) % 360) - 180;
         if (d > cap) d = cap; else if (d < -cap) d = -cap;
@@ -798,11 +936,26 @@ export class MagicSystem {
       p.pos[2] += Math.cos(rad) * step;
       p.travelF++;
       let consumed = false;
+      // CLOSEST APPROACH, on every frame of every flight. The round-4 remedy's first point:
+      // "the number that matters is the closest approach — if it is 0.6 m the fix is the hit
+      // radius, and if it is 4 m the fix is the steering." Without it a miss is a zero in a
+      // damage column and every diagnosis of one is a guess. It is measured against the same
+      // segment and the same 0.45 hurtbox the hit test uses, so "it hit" and "it was close"
+      // are computed from one geometry rather than two.
+      for (const t of targets) {
+        if (t.dead) continue;
+        const d = Math.sqrt(segmentPointDist2(p.prev, p.pos, t.pos)) - (p.r + 0.45);
+        if (p.closestM === undefined || d < p.closestM) { p.closestM = d; p.closestId = t.id; p.closestF = p.travelF; }
+      }
       for (const t of targets) {
         if (t.dead || p.hits.includes(t.id)) continue;
         if (segmentSphereHit(p.prev, p.pos, p.r, t.pos, 0.45)) {
           p.hits.push(t.id);
-          onHit(t, this.spellOf(p.spell), { kind: 'projectile', at: [p.pos[0], p.pos[1], p.pos[2]], frame });
+          onHit(t, this.spellOf(p.spell), {
+            kind: 'projectile', at: [p.pos[0], p.pos[1], p.pos[2]], frame,
+            closest_m: p.closestM === undefined ? null : round2(p.closestM),
+            travel_f: p.travelF, led: !this._leadBlind && !!p.target,
+          });
           this.projectiles.splice(i, 1);
           this._impact(frame, p.spell, p.pos, 1.25);
           this._residue(frame, p.spell, p.pos);
@@ -829,6 +982,23 @@ export class MagicSystem {
         this.projectiles.splice(i, 1);
         this._impact(frame, p.spell, p.pos, 0.9);      // a spell that expends itself in the air
         this._residue(frame, p.spell, p.pos);
+        // A BOLT THAT REACHED NOBODY SAYS SO, and says by how much. `spell_miss` is on the
+        // MAGIC stream (`this.events`), which is this system's own and is not the closed §5
+        // vocabulary — RULES.md #15 governs `sim/events.js` and nothing here adds a name to it.
+        // `onMiss` carries the same record onto the combat bus as a `spell_hit` with
+        // `miss: true`, so a probe reading either stream can see it (round 4's own §11 records
+        // counting `spell_hit` off the wrong stream, which is the mistake this shape avoids).
+        const miss = {
+          spell: p.spell, travel_f: p.travelF, tracking_cutoff_f: p.cutoffF,
+          closest_m: p.closestM === undefined ? null : round2(p.closestM),
+          closest_target: p.closestId === undefined ? null : p.closestId,
+          closest_f: p.closestF === undefined ? null : p.closestF,
+          hit_radius_m: round2(p.r + 0.45),
+          at: [round2(p.pos[0]), round2(p.pos[1]), round2(p.pos[2])],
+          led: !this._leadBlind && !!p.target,
+        };
+        this._emit(frame, 'spell_miss', miss);
+        if (onMiss) onMiss(this.spellOf(p.spell), miss);
       }
     }
 

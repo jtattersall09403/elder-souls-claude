@@ -54,6 +54,9 @@ const USAGE = `critic-crossing-walk.mjs — the critic's own end-to-end walk.
   --chunk <n>       frames per chunk            (default 20000)
   --budget-min <n>  wall-clock budget           (default 30)
   --stall-frames <n> give up after this many frames of no progress (default 12000)
+  --steer <new|old> install the pre-fix proximity _pursue (default new)
+  --clamp <new|old> install the pre-fix clampToDeck (default new)
+  --no-deck         delete every deck_span from the network before walking
   --shot <png>      screenshot at the end
   --out <file>      artifact path`;
 
@@ -69,6 +72,9 @@ const CHUNK = Number(args.chunk || 20000);
 const BUDGET_MS = Number(args['budget-min'] || 30) * 60_000;
 const STALL = Number(args['stall-frames'] || 12000);
 const SHOT = args.shot ? path.resolve(String(args.shot)) : null;
+const STEER = String(args.steer || 'new').toLowerCase();
+const CLAMP = String(args.clamp || 'new').toLowerCase();
+const NO_DECK = !!args['no-deck'];
 const LABEL = String(args.label || (LEG ? `leg-${LEG}` : ROUTE) + (REVERSE ? '-reverse' : ''));
 const OUT = path.resolve(String(args.out || path.join(REPO_ROOT, `reports/critic-w1-crossing/walk-${LABEL}.json`)));
 ensureDir(path.dirname(OUT));
@@ -77,7 +83,7 @@ const doc = {
   schema: 'elder-souls/critic-crossing-walk@1',
   measured_at: new Date().toISOString(), git: gitInfo(),
   label: LABEL, route: ROUTE, leg: LEG, reverse: REVERSE, speed: SPEED,
-  hp_pinned: SURVIVE, kill_at_m: KILL_AT,
+  hp_pinned: SURVIVE, kill_at_m: KILL_AT, steer: STEER, clamp: CLAMP, no_deck: NO_DECK,
   time_of_day: args.time || null, weather: args.weather || null, burden: args.burden ?? null,
   state: 'starting', chunks: [], engine_result: null, critic_counter: null, shot: null,
 };
@@ -156,6 +162,36 @@ try {
   const armed = await armCounter(SURVIVE);
   if (!armed.armed) throw new Error(`counter did not arm: ${armed.reason}`);
   doc.hp_max = armed.hp_max;
+
+  // ---- optional teardown arms, each PROVEN to have taken ---------------------------------------
+  if (STEER === 'old' || CLAMP === 'old' || NO_DECK) {
+    const OLD_PURSUE = fs.readFileSync(path.join(REPO_ROOT, 'tools/world/critic-crossing-probe.mjs'), 'utf8')
+      .split('const OLD_PURSUE = `')[1].split('`;')[0];
+    const OLD_CLAMP = fs.readFileSync(path.join(REPO_ROOT, 'tools/world/old-clamp-345dcca.js'), 'utf8');
+    doc.arm_install = await handle.page.evaluate(([st, cl, nodeck, op, oc]) => {
+      const E = window.__ENGINE;
+      if (st === 'old') E._pursue = eval(`(${op})`);
+      if (cl === 'old') E.field.clampToDeck = eval(`(${oc})`);
+      let removed = 0;
+      if (nodeck) {
+        const roads = JSON.parse(JSON.stringify(E.data.roads));
+        for (const l of roads.legs) { removed += (l.deck_spans || []).length; l.deck_spans = []; }
+        E.field.setRoads(roads); E.data.roads = roads;
+      }
+      return {
+        pursue_is: /PROXIMITY/.test(String(E._pursue)) ? 'OLD' : 'NEW',
+        clamp_is: /spanFirst/.test(String(E.field.clampToDeck)) ? 'NEW' : 'OLD',
+        spans_removed: removed,
+        spans_left: E.data.roads.legs.reduce((n, l) => n + (l.deck_spans || []).length, 0),
+      };
+    }, [STEER, CLAMP, NO_DECK, OLD_PURSUE, OLD_CLAMP]);
+    const want = { pursue_is: STEER === 'old' ? 'OLD' : 'NEW', clamp_is: CLAMP === 'old' ? 'OLD' : 'NEW' };
+    if (doc.arm_install.pursue_is !== want.pursue_is || doc.arm_install.clamp_is !== want.clamp_is
+      || (NO_DECK && doc.arm_install.spans_left !== 0)) {
+      throw new Error(`the teardown did not take: ${JSON.stringify(doc.arm_install)} — refusing to report an arm that did not happen`);
+    }
+    log(`arm installed: ${JSON.stringify(doc.arm_install)}`);
+  }
 
   // ---- build the walk -------------------------------------------------------------------------
   let points = null;                              // non-null => walkPath mode
