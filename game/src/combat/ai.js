@@ -93,7 +93,10 @@ function groupKeyOf(b, ctx) {
  * load that did not carry it would re-anchor every enemy in the province to wherever it
  * happened to be standing, and T25's leash would let it walk `L_hard` further than it should.
  */
-const MACHINERY = new Set(['b', 'stat', 'cfg', 'A', 'omega', 'sightR', 'walk', 'sprint', 'leashHard']);
+const MACHINERY = new Set([
+  'b', 'stat', 'cfg', 'A', 'archetypeName', 'omega', 'sightR', 'walk', 'sprint',
+  'leashTier', 'leashHard',
+]);
 
 /**
  * Frame STAMPS on the AI, stored as differences against the save frame because `loadState()`
@@ -123,21 +126,41 @@ export class SoulsAI {
         + 'number this state machine uses; running without it would mean inventing them in code, '
         + 'which is the thing RI-MTH07 exists to catch. Add it to the combat data bundle.');
     }
-    const A = this.cfg.archetype[stat.archetype];
+    // ---- W1-12 round 2: which archetype row this body's BEHAVIOUR reads --------------------
+    //
+    // Round 1 read `stat.archetype` and nothing else. inf_trash, guard_legion, drowned_lesser
+    // and drowned_greater are all INFANTRY with byte-identical attack tables, so all four ran a
+    // BIT-IDENTICAL 1,800-frame fight — sha1 1edb362ea24dde99 — at 412, 520, 260 and 640 hp.
+    // A state machine does not read hp and should not; what tells a legionary from a drowned
+    // thing is gait, leash and what it does when you crowd it. `behaviour_archetype` in ai.json
+    // is that mapping and it is an ORDER, not a duplicate (rule 10): the statblock's own
+    // `archetype` is the default and the table overrides it FOR BEHAVIOUR ONLY. No stat moves.
+    const archName = (this.cfg.behaviour_archetype && this.cfg.behaviour_archetype[stat.id])
+      || stat.archetype;
+    const A = this.cfg.archetype[archName];
     if (!A) {
       throw new Error(
-        `SoulsAI: archetype '${stat.archetype}' (statblock '${stat.id}') has no row in `
+        `SoulsAI: archetype '${archName}' (statblock '${stat.id}') has no row in `
         + 'game/data/combat/ai.json §archetype. RI-AI01 §C is a per-archetype table and a '
         + 'missing row is a missing bar, not a default. Add the row or declare the archetype '
         + 'unrealised.');
     }
     this.A = A;
+    this.archetypeName = archName;
     // The STATBLOCK wins wherever it declares the number. ai.json is the archetype default.
     this.omega = stat.reach_m || A.omega_m;
     this.sightR = stat.sight_radius_m || A.sight_r_m;
     this.walk = A.walk_mps;
     this.sprint = A.sprint_mps;
-    this.leashHard = this.cfg.leash.hard_m[A.leash_tier] ?? this.cfg.leash.hard_m.trash;
+    // ---- T25's L_hard. Round 1 took the tier from the ARCHETYPE row alone, and every shipped
+    // statblock resolved to INFANTRY/BEAST/CASTER — all three of which declare `trash` — so
+    // `elite` (45 m), `ambusher` (20 m) and `boss` were unreachable and a statblock flagged
+    // `boss: true` leashed at 32 m like a levy. The order below is the fix, and it is stated in
+    // ai.json §leash._tier_resolution as well as here because a resolution order that lives
+    // only in code is a resolution order nobody can audit.
+    this.leashTier = stat.boss ? 'boss'
+      : (stat.tier && this.cfg.leash.hard_m[stat.tier] !== undefined ? stat.tier : A.leash_tier);
+    this.leashHard = this.cfg.leash.hard_m[this.leashTier] ?? this.cfg.leash.hard_m.trash;
 
     this.state = 'IDLE';
     this.stateF = 0;              // frames in the current state
@@ -154,6 +177,12 @@ export class SoulsAI {
     this.healUntil = 0;
     this.lastCommitF = -1;
     this.commitIntervals = [];
+    // ---- W1-12 round 2. The closure window: the last N frames of centre-to-centre distance,
+    // oldest first. This is the whole memory the closure rule needs and it is behavioural state,
+    // so `saveState()` carries it (arrays are carried by default; see the MACHINERY note).
+    this.distWindow = [];
+    this.blockUntil = 0;
+    this.disengageUntil = 0;
   }
 
   /**
@@ -270,6 +299,30 @@ export class SoulsAI {
     const dist = Math.hypot(dx, dz);
     const anchorD = Math.hypot(b.pos[0] - this.anchor[0], b.pos[2] - this.anchor[2]);
     const alert = ctl.alertState;
+
+    // ---- the closure window (round 2). Pushed every decision frame, oldest first, capped at
+    // `rush_closure_window_f`. `_closureMps()` reads it. It is deliberately fed on EVERY frame
+    // the AI decides on rather than only in APPROACH, so that a state change does not reset the
+    // enemy's memory of whether it is gaining — resetting it was the first draft's bug and it
+    // made the enemy re-earn the sprint after every strafe reseed.
+    const W = this.cfg.movement.rush_closure_window_f;
+    this.distWindow.push(dist);
+    while (this.distWindow.length > W) this.distWindow.shift();
+
+    // ---- T25's second de-aggro clause needs to know whether this enemy can SEE the player, and
+    // round 1 never assigned `noLosSinceF`, so the clause and both `leash` leaves behind it were
+    // dead code. There is exactly ONE line-of-sight model in this build and it is not this one:
+    // `sim/stealth/system.js:403` writes `percept_los` onto the sim entity every frame. The AI
+    // READS it across the seam it already has (`ctx.entityOf`, the same handle the token
+    // arbitrator uses) rather than computing a second one — rule 10, which is how this build
+    // once came to have a good perception model and a broken one at the same time. A context
+    // with no entities (a bare arena) yields `null`, which leaves the stamp alone and the clause
+    // silent, which is honest: no LOS model, no LOS de-aggro.
+    const ent = ctx.entityOf ? ctx.entityOf(b.id) : null;
+    const los = ent && ent.percept_los !== undefined && ent.percept_los !== null
+      ? !!ent.percept_los : null;
+    if (los === true) this.noLosSinceF = -1;
+    else if (los === false && this.noLosSinceF < 0) this.noLosSinceF = frame;
 
     // ---- T25: leash, checked before anything else, because a leashed enemy has no other
     // decision to take. RI-AI01's own M6 fails a build "if the enemy tracks the player past

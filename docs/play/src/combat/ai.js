@@ -93,7 +93,10 @@ function groupKeyOf(b, ctx) {
  * load that did not carry it would re-anchor every enemy in the province to wherever it
  * happened to be standing, and T25's leash would let it walk `L_hard` further than it should.
  */
-const MACHINERY = new Set(['b', 'stat', 'cfg', 'A', 'omega', 'sightR', 'walk', 'sprint', 'leashHard']);
+const MACHINERY = new Set([
+  'b', 'stat', 'cfg', 'A', 'archetypeName', 'omega', 'sightR', 'walk', 'sprint',
+  'leashTier', 'leashHard',
+]);
 
 /**
  * Frame STAMPS on the AI, stored as differences against the save frame because `loadState()`
@@ -123,21 +126,41 @@ export class SoulsAI {
         + 'number this state machine uses; running without it would mean inventing them in code, '
         + 'which is the thing RI-MTH07 exists to catch. Add it to the combat data bundle.');
     }
-    const A = this.cfg.archetype[stat.archetype];
+    // ---- W1-12 round 2: which archetype row this body's BEHAVIOUR reads --------------------
+    //
+    // Round 1 read `stat.archetype` and nothing else. inf_trash, guard_legion, drowned_lesser
+    // and drowned_greater are all INFANTRY with byte-identical attack tables, so all four ran a
+    // BIT-IDENTICAL 1,800-frame fight — sha1 1edb362ea24dde99 — at 412, 520, 260 and 640 hp.
+    // A state machine does not read hp and should not; what tells a legionary from a drowned
+    // thing is gait, leash and what it does when you crowd it. `behaviour_archetype` in ai.json
+    // is that mapping and it is an ORDER, not a duplicate (rule 10): the statblock's own
+    // `archetype` is the default and the table overrides it FOR BEHAVIOUR ONLY. No stat moves.
+    const archName = (this.cfg.behaviour_archetype && this.cfg.behaviour_archetype[stat.id])
+      || stat.archetype;
+    const A = this.cfg.archetype[archName];
     if (!A) {
       throw new Error(
-        `SoulsAI: archetype '${stat.archetype}' (statblock '${stat.id}') has no row in `
+        `SoulsAI: archetype '${archName}' (statblock '${stat.id}') has no row in `
         + 'game/data/combat/ai.json §archetype. RI-AI01 §C is a per-archetype table and a '
         + 'missing row is a missing bar, not a default. Add the row or declare the archetype '
         + 'unrealised.');
     }
     this.A = A;
+    this.archetypeName = archName;
     // The STATBLOCK wins wherever it declares the number. ai.json is the archetype default.
     this.omega = stat.reach_m || A.omega_m;
     this.sightR = stat.sight_radius_m || A.sight_r_m;
     this.walk = A.walk_mps;
     this.sprint = A.sprint_mps;
-    this.leashHard = this.cfg.leash.hard_m[A.leash_tier] ?? this.cfg.leash.hard_m.trash;
+    // ---- T25's L_hard. Round 1 took the tier from the ARCHETYPE row alone, and every shipped
+    // statblock resolved to INFANTRY/BEAST/CASTER — all three of which declare `trash` — so
+    // `elite` (45 m), `ambusher` (20 m) and `boss` were unreachable and a statblock flagged
+    // `boss: true` leashed at 32 m like a levy. The order below is the fix, and it is stated in
+    // ai.json §leash._tier_resolution as well as here because a resolution order that lives
+    // only in code is a resolution order nobody can audit.
+    this.leashTier = stat.boss ? 'boss'
+      : (stat.tier && this.cfg.leash.hard_m[stat.tier] !== undefined ? stat.tier : A.leash_tier);
+    this.leashHard = this.cfg.leash.hard_m[this.leashTier] ?? this.cfg.leash.hard_m.trash;
 
     this.state = 'IDLE';
     this.stateF = 0;              // frames in the current state
@@ -154,6 +177,12 @@ export class SoulsAI {
     this.healUntil = 0;
     this.lastCommitF = -1;
     this.commitIntervals = [];
+    // ---- W1-12 round 2. The closure window: the last N frames of centre-to-centre distance,
+    // oldest first. This is the whole memory the closure rule needs and it is behavioural state,
+    // so `saveState()` carries it (arrays are carried by default; see the MACHINERY note).
+    this.distWindow = [];
+    this.blockUntil = 0;
+    this.disengageUntil = 0;
   }
 
   /**
@@ -200,6 +229,49 @@ export class SoulsAI {
     return this;
   }
 
+  /**
+   * CLOSURE, in m/s: how fast the gap has been shrinking over the last
+   * `movement.rush_closure_window_f` frames. Positive means gaining.
+   *
+   * Returns `null` until the window is full, and a null closure triggers nothing — an enemy does
+   * not get to conclude it is losing a foot race from three frames of data, and the acceleration
+   * ramp (§F, 14 f to sprint) means the first few frames of any approach look like a stall.
+   */
+  _closureMps() {
+    const w = this.distWindow;
+    const W = this.cfg.movement.rush_closure_window_f;
+    if (w.length < W || W <= 0) return null;
+    return (w[0] - w[w.length - 1]) / (W / 60);
+  }
+
+  /**
+   * THE CLOSURE RULE — the whole of round 2's headline, in five lines.
+   *
+   * RI-AI01 T07/T09 gate the sprint on a distance band and round 1 implemented exactly that, so
+   * an enemy 10 m from a player WALKING away closed at 0.20 m/s (its approach walk of 2.20
+   * against the player's 2.00), never entered RUSH in 1,800 frames, never got nearer than
+   * 8.14 m, hit its leash and went home. It did WORSE against a walk than against a jog, because
+   * walking held the gap just inside the band boundary that would have triggered the sprint.
+   *
+   * So: distance decides where the enemy wants to be; closure decides how fast it has to move to
+   * get there. Outside the DANCE band, an enemy that is not gaining at least
+   * `rush_when_closure_below_mps` sprints, whatever band it is in. Inside DANCE it never does —
+   * a shove is not a chase, and an enemy that sprints at a player it is already standing next to
+   * is the chase-bot RI-AI01 M3 exists to fail.
+   */
+  _losingGround(dist) {
+    if (dist <= this.cfg.bands.dance * this.omega) return false;
+    const c = this._closureMps();
+    return c !== null && c < this.cfg.movement.rush_when_closure_below_mps;
+  }
+
+  /** The near edge of a named band, in metres — where T24 re-spaces to. */
+  _bandFloor(name) {
+    const B = this.cfg.bands;
+    const floor = { strike: 0, poke: B.strike, dance: B.poke, close: B.dance, rush: B.close }[name];
+    return (floor === undefined ? B.dance : floor) * this.omega;
+  }
+
   band(dist) {
     const B = this.cfg.bands;
     if (dist <= B.strike * this.omega) return 'STRIKE';
@@ -211,6 +283,11 @@ export class SoulsAI {
 
   _enter(state, frame) {
     if (state === this.state) return;
+    // A guard raised by BLOCK_HOLD (T18) comes down on EVERY exit from it, in one place, so that
+    // no future branch out of the state can leave an enemy holding a shield forever. That would
+    // not throw and would not look wrong in a trace — it would just quietly make one enemy
+    // unhittable from the front, which is the shape of defect this project keeps finding late.
+    if (this.state === 'BLOCK_HOLD') this.b.guardRaised = false;
     this.prevState = this.state;
     this.state = state;
     this.stateF = 0;
@@ -271,6 +348,30 @@ export class SoulsAI {
     const anchorD = Math.hypot(b.pos[0] - this.anchor[0], b.pos[2] - this.anchor[2]);
     const alert = ctl.alertState;
 
+    // ---- the closure window (round 2). Pushed every decision frame, oldest first, capped at
+    // `rush_closure_window_f`. `_closureMps()` reads it. It is deliberately fed on EVERY frame
+    // the AI decides on rather than only in APPROACH, so that a state change does not reset the
+    // enemy's memory of whether it is gaining — resetting it was the first draft's bug and it
+    // made the enemy re-earn the sprint after every strafe reseed.
+    const W = this.cfg.movement.rush_closure_window_f;
+    this.distWindow.push(dist);
+    while (this.distWindow.length > W) this.distWindow.shift();
+
+    // ---- T25's second de-aggro clause needs to know whether this enemy can SEE the player, and
+    // round 1 never assigned `noLosSinceF`, so the clause and both `leash` leaves behind it were
+    // dead code. There is exactly ONE line-of-sight model in this build and it is not this one:
+    // `sim/stealth/system.js:403` writes `percept_los` onto the sim entity every frame. The AI
+    // READS it across the seam it already has (`ctx.entityOf`, the same handle the token
+    // arbitrator uses) rather than computing a second one — rule 10, which is how this build
+    // once came to have a good perception model and a broken one at the same time. A context
+    // with no entities (a bare arena) yields `null`, which leaves the stamp alone and the clause
+    // silent, which is honest: no LOS model, no LOS de-aggro.
+    const ent = ctx.entityOf ? ctx.entityOf(b.id) : null;
+    const los = ent && ent.percept_los !== undefined && ent.percept_los !== null
+      ? !!ent.percept_los : null;
+    if (los === true) this.noLosSinceF = -1;
+    else if (los === false && this.noLosSinceF < 0) this.noLosSinceF = frame;
+
     // ---- T25: leash, checked before anything else, because a leashed enemy has no other
     // decision to take. RI-AI01's own M6 fails a build "if the enemy tracks the player past
     // L_hard", so this is the transition that has to win.
@@ -302,7 +403,19 @@ export class SoulsAI {
       }
       this._ramp(0);
       b.speedMps = 0;
-      this._enter(alert === 'SEARCH' ? 'SEARCH' : alert === 'SUSPICIOUS' ? 'SUSPICIOUS' : 'IDLE', frame);
+      let want = alert === 'SEARCH' ? 'SEARCH' : alert === 'SUSPICIOUS' ? 'SUSPICIOUS' : 'IDLE';
+      // T03/T04's minimum dwell. `perception.suspicious_min_dwell_f` was declared in round 1 and
+      // read by nothing. Without it a meter that flickers across 50 produces a one-frame head
+      // turn, which is a tell the player cannot see and an alert ladder M2 cannot measure.
+      if (want === 'IDLE' && this.state === 'SUSPICIOUS'
+          && this.stateF < this.cfg.perception.suspicious_min_dwell_f) want = 'SUSPICIOUS';
+      this._enter(want, frame);
+      // T06: 12.0 s in SEARCH with no re-acquire and the enemy goes home.
+      // `perception.search_to_leash_frames` was likewise declared and unread; this is its reader.
+      if (this.state === 'SEARCH' && this.stateF >= this.cfg.perception.search_to_leash_frames) {
+        this._enter('LEASH_RETURN', frame);
+        return this._leashReturn(frame, ctx, ctl, dist);
+      }
       if (this.state === 'SUSPICIOUS' || this.state === 'SEARCH') {
         // Look towards the last known position, not at the player. T04 is explicit about it:
         // "walks last-known-position, not player position". This build has no search
@@ -338,7 +451,55 @@ export class SoulsAI {
       return;
     }
 
+    // ---- T18: BLOCK_HOLD. TURTLE only, and `archetype.TURTLE.blocks` is what selects it —
+    // round 1 declared that flag and nothing read it, and its `declared_incomplete` claimed the
+    // code path existed when the only occurrence of the string was inside the AI_STATES set.
+    // This is the path. `guard_legion` is TURTLE (ai.json §behaviour_archetype) and carries a
+    // `chitin_buckler`, and combat/resolve.js:192 tests `guardRaised && shield`, so the raised
+    // guard really blocks rather than merely posing.
+    if (this.A.blocks && ps === 'ATTACK_WINDUP' && !b.move
+        && dist <= this.cfg.block.enter_band_multiple * this.omega
+        && this.state !== 'BLOCK_HOLD') {
+      this._enter('BLOCK_HOLD', frame);
+      this.blockUntil = frame + this.cfg.block.max_hold_f;
+    }
+
+    // ---- T24: DISENGAGE. Selected by the archetype row's `prefers_band`, which round 1 also
+    // declared and never read. Bounded on purpose — see ai.json §disengage._termination_note.
+    if (this.A.prefers_band && this.state !== 'DISENGAGE' && !b.move
+        && frame >= this.disengageUntil
+        && dist < this.cfg.disengage.enter_below_multiple_of_player_reach * this.cfg.disengage.player_reach_m) {
+      this._releaseToken(ctx);
+      this._enter('DISENGAGE', frame);
+    }
+
     switch (this.state) {
+      case 'BLOCK_HOLD': {                                // T18
+        b.guardRaised = true;
+        this._ramp(0);
+        b.speedMps = 0;
+        const stillThreatened = ps === 'ATTACK_WINDUP'
+          && dist <= this.cfg.block.enter_band_multiple * this.omega;
+        if (frame >= this.blockUntil
+            || (this.stateF >= this.cfg.block.min_dwell_f && !stillThreatened)) {
+          this._enter('CIRCLE', frame);          // _enter lowers the guard
+        }
+        break;
+      }
+
+      case 'DISENGAGE': {                                 // T24
+        const floor = this._bandFloor(this.A.prefers_band);
+        const v = this._ramp(this.sprint);
+        this._move(-(dx / (dist || 1)) * (v / 60), -(dz / (dist || 1)) * (v / 60));
+        if (this.stateF >= this.cfg.disengage.min_dwell_f
+            && (dist >= floor || this.stateF >= this.cfg.disengage.max_frames)) {
+          this.disengageUntil = frame + this.cfg.disengage.max_frames;
+          this._enter('CIRCLE', frame);
+          this._reseedStrafe(frame, ctx);
+        }
+        break;
+      }
+
       case 'REPOSITION':
         // T16's other half, and the state the pre-W1-12 code named without implementing. A
         // swing ends with the enemy standing at about a metre — well inside its own STRIKE
@@ -373,14 +534,21 @@ export class SoulsAI {
         this._enter(band === 'RUSH' ? 'RUSH' : band === 'CLOSE' ? 'APPROACH' : 'CIRCLE', frame);
         break;
 
-      case 'RUSH':                                        // T07 / T09
+      case 'RUSH':                                        // T07 / T09, amended by the closure rule
         this._advance(dx, dz, dist, this.sprint);
-        if (band !== 'RUSH' && this.stateF >= 12) this._enter('APPROACH', frame);
+        // Round 1 left RUSH the moment the band said CLOSE, and that produced a standoff you
+        // could watch: the enemy sprinted until 12.0 m, walked at 2.20 until the player's 3.20
+        // jog pushed the gap back over the boundary, and sprinted again — min gap 11.63 m over
+        // 1,800 frames, oscillating on the band edge. It now gives up the sprint only when it
+        // has ARRIVED (the DANCE band) or when it is genuinely gaining ground.
+        if (this.stateF >= 12
+            && (dist <= this.cfg.bands.dance * this.omega
+                || (band !== 'RUSH' && !this._losingGround(dist)))) this._enter('APPROACH', frame);
         break;
 
-      case 'APPROACH':                                    // T08 / T10
+      case 'APPROACH':                                    // T08 / T10, amended by the closure rule
         this._advance(dx, dz, dist, this.walk);
-        if (band === 'RUSH') this._enter('RUSH', frame);
+        if (band === 'RUSH' || this._losingGround(dist)) this._enter('RUSH', frame);
         else if (dist <= this.cfg.bands.dance * this.omega && this.stateF >= 15) this._enter('CIRCLE', frame);
         break;
 

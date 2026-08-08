@@ -1,0 +1,46 @@
+{
+  "task_id": "W1-15-r4",
+  "role": "builder",
+  "piece": "W1-15 round 4 \u2014 stealth, crime and justice",
+  "status": "building",
+  "started_at": "2026-08-08",
+  "spec": "corpus/90-verdicts/wave1/W1-15-r3.md",
+  "next_step": "survey engine.fenceQuote, zone data shape, justice/state.js, search.js coverVolumes",
+  "defects": {
+    "D1_lit_policy_divergence": "open",
+    "D2_darkness_constant_cellar": "open",
+    "D3_fence_npcById_stub": "open",
+    "D4_unidentified_no_consequence": "open",
+    "D5_trespass_no_zone_producer": "open",
+    "D6_census_missing_search_json_and_coverVolumes": "open"
+  },
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/W1-15-r4.json",
+    "game/src/sim/stealth/interior-lights.js",
+    "game/src/sim/stealth/system.js",
+    "game/src/sim/stealth/search.js",
+    "game/src/render/interior.js",
+    "game/src/engine.js",
+    "game/data/stealth/detection.json",
+    "game/data/crime/justice.json",
+    "game/src/sim/crime/state.js",
+    "game/src/sim/crime/justice.js",
+    "tools/analysis/w1-15-consumption.mjs",
+    "tools/harness/w1-15-r4-lights.mjs",
+    "tools/harness/w1-15-r4-live.mjs",
+    "tools/harness/w1-15-r4-deletefix.mjs",
+    "reports/w1-15/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "contention": "GO \u2014 1 browser instance, load 1.19/core. One browser will be taken and kept.",
+  "ownership_check": "node tools/ownership.mjs run. All live pieces touching game/src/render/interior.js, game/src/sim/stealth/, game/data/world/interiors/ and tools/world/build-settlements.mjs are state=complete/done (W1-04-r4..r6, W1-READABLES, W1-READABLES-r2, W1-23-r4). W1-15-r3 is this piece's own predecessor round.",
+  "decisions": {
+    "D1_policy": "ONE MODULE. New game/src/sim/stealth/interior-lights.js owns the lit set AND the window aperture; render/interior.js and sim/stealth/system.js both import it. Ruling on the cap: LIT_CAP is removed as an ILLUMINATION cap (kept as the existing shadow cap of 1), because only one interior is built at a time and the max deduped lamp count is 14, so the 591-lamp province figure the comment cites is never simultaneous. Ruling on the fail-open: it MOVES INTO THE SHARED MODULE rather than being deleted, so a room declaring no lights is lit identically on both sides. REVERSIBLE: a measured frame-time regression from >5 point lights in a room would send the cap back \u2014 in which case it goes back on BOTH sides, from the shared module.",
+    "D2_constant": "Re-derive interior ambient from glazed aperture of rooms that exist, not from a cellar that does not. ambient = dark_floor + sky_L * transmission(glazed_area/floor_area). prison/hold keep the dark value. Must keep the r3 critic 2x2 arm-01 lesson true: the ambient must stay far enough below lamp peak that the room still discriminates."
+  },
+  "redundant_with": [
+    "W1-15-r3"
+  ]
+}

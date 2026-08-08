@@ -50,6 +50,10 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+// W1-15 round 4. The lit set and the window aperture are POLICY, and policy that two files
+// implement is policy that drifts — RULES.md rule 10, and it cost 1,659 disagreeing floor cells.
+// Both this file and `sim/stealth/system.js` read the answer from here and neither invents one.
+import { litLights, windowPlan, PANE_W_M, PANE_H_M } from '../world/interior-lighting.js';
 
 /** The same string hash the Engine uses for NPC offsets, so the two agree on their arithmetic. */
 function hashStr(s) {
@@ -510,20 +514,21 @@ export function buildInterior(root, rec, opts) {
   // ---- windows — RI-WLD13 N4, which had no field and now has a rule --------------------------
   // A gaol, a barge hold and an undertemple do not have them; everything else does, and how many
   // follows the wall it is in.
-  const WINDOWLESS = new Set(['prison', 'hold']);
-  if (!WINDOWLESS.has(rec.interior_kind) && H >= 2.4) {
-    const n = Math.max(1, Math.min(4, Math.round(W / 3.4)));
-    for (const side of [-1, 1]) {
-      for (let i = 0; i < n; i++) {
-        const x = bx[0] + (i + 0.5) * (W / n);
-        const z = side < 0 ? bz[0] + 0.2 : bz[1] - 0.2;
-        if (((side < 0 ? 'north' : 'south') === entry) && Math.abs(x - (bx[0] + bx[1]) / 2) < DOOR_W) continue;
-        part(root, box(0.9, 0.8, 0.06, P.glass), x, by[0] + 1.75, z);
-        part(root, box(1.06, 0.12, 0.12, P.wood), x, by[0] + 2.2, z);
-        summary.windows++;
-      }
-    }
+  //
+  // W1-15 ROUND 4: the rule itself now lives in `world/interior-lighting.js#windowPlan()`, because
+  // the SIMULATION needs to read this aperture and a window rule written only here is a window
+  // rule the stealth model cannot see. Round 3 dropped indoor ambient to 0.04 — the `unlit
+  // interior / xanmeer depth` row — and justified it with "a windowless cellar", while 112 of the
+  // 115 interiors below draw up to eight windows each. Nothing in the build read one. The panes
+  // drawn here and the daylight the detection model lets in are now the same list.
+  const wplan = windowPlan(rec);
+  for (const pane of wplan.panes) {
+    part(root, box(PANE_W_M, PANE_H_M, 0.06, P.glass), pane.x, pane.y, pane.z);
+    part(root, box(PANE_W_M + 0.16, 0.12, 0.12, P.wood), pane.x, pane.y + 0.45, pane.z);
+    summary.windows++;
   }
+  summary.glazed_area_m2 = +wplan.glazed_area_m2.toFixed(3);
+  summary.aperture_ratio = +wplan.aperture_ratio.toFixed(5);
 
   // ---- the props ------------------------------------------------------------------------------
   const declared = (rec.props || []).slice();
@@ -639,51 +644,41 @@ export function buildInterior(root, rec, opts) {
   }
 
   // ---- the lights ------------------------------------------------------------------------------
-  // `lights[]` is authored per PROPERTY ZONE, so a three-zone interior declares three hearths at
-  // the same spot. Dedupe on position; every survivor gets a fitting you can see, and the first
-  // few get real illumination. 591 shadow-casting oil lamps across the province is a slideshow.
-  const declaredLights = (rec.lights || []).slice();
-  summary.lights_declared = declaredLights.length;
-  const seen = new Set();
-  const unique = [];
-  for (const L of declaredLights) {
-    const p = L.pos || [0, 1.4, 0];
-    const key = `${Math.round(p[0] * 10)},${Math.round(p[1] * 10)},${Math.round(p[2] * 10)}`;
-    if (seen.has(key)) continue;
-    seen.add(key); unique.push(L);
-  }
-  const LIT_CAP = 5;
-  let lit = 0;
-  for (const L of unique) {
-    const p = L.pos || [0, 1.4, 0];
-    const hearth = L.kind === 'hearth';
-    const fitting = hearth ? B.hearth(P) : B.lampStand(P);
-    fitting.position.set(p[0], hearth ? by[0] : Math.max(by[0], p[1] - 0.56), p[2]);
-    fitting.name = `light:${L.id || L.kind}`;
+  //
+  // W1-15 ROUND 4 — THIS FILE NO LONGER DECIDES WHAT IS LIT.
+  //
+  // It used to. `lights[]` is authored per PROPERTY ZONE, so a three-zone interior declares three
+  // hearths at the same spot; this file deduped them, lit the first `LIT_CAP = 5` and drew the
+  // rest as unlit fittings, and invented a hearth for a room declaring none. `sim/stealth/system.js`
+  // deduped identically and then did NEITHER — it lit all of them and rescued none. One list, read
+  // twice, two policies. Measured over 22,751 indoor floor cells: **1,659 disagreed (7.29%)** about
+  // whether a player standing there is in shadow, and **1,584 of those were drawn lit and simulated
+  // pitch black** — the eleven rooms with no `lights[]`, pinned at the `unlit` row 0.0400 at every
+  // hour while this file drew them a fire, two readable windows and the people standing in them.
+  //
+  // `litLights(rec)` is now the single answer, and it is the same object on both sides. The cap is
+  // gone (see that module's header: one interior is built at a time and the worst room declares 14
+  // lamps, so the "591 shadow-casting lamps" budget was never the thing it was protecting); the
+  // SHADOW cap that was ever real is still here, as `L.shadow`, and it is still exactly one light
+  // per room. The fail-open moved there too, so a room with no declared lamp is lit identically by
+  // both readers instead of only by this one.
+  summary.lights_declared = (rec.lights || []).length;
+  const lamps = litLights(rec);
+  for (const L of lamps) {
+    const fitting = L.hearth ? B.hearth(P) : B.lampStand(P);
+    fitting.position.set(L.fitting_pos[0], L.fitting_pos[1], L.fitting_pos[2]);
+    fitting.name = `light:${L.id}`;
     fitting.traverse((m) => { if (m.isMesh && m.material !== P.flame) { m.castShadow = true; m.receiveShadow = true; } });
     root.add(fitting);
     summary.lamps_built++;
-    if (lit < LIT_CAP) {
-      const intensity = Number(L.intensity === undefined ? 0.7 : L.intensity);
-      const colour = hearth ? 0xffa050 : 0xffc890;
-      const pl = new THREE.PointLight(colour, intensity * (hearth ? 22 : 9), hearth ? 22 : 11, 2);
-      pl.position.set(p[0], p[1] + (hearth ? 0.5 : 0), p[2]);
-      if (lit === 0) { pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004; }
-      root.add(pl);
-      lit++;
-    }
+    const colour = L.hearth ? 0xffa050 : 0xffc890;
+    const pl = new THREE.PointLight(colour, L.intensity * (L.hearth ? 22 : 9), L.hearth ? 22 : 11, 2);
+    pl.position.set(L.render_pos[0], L.render_pos[1], L.render_pos[2]);
+    if (L.shadow) { pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004; }
+    root.add(pl);
   }
-  // A room with no declared light is not a room in the dark by accident: one hearth, so the
-  // fail-open case is a lit room rather than a black frame.
-  if (!lit) {
-    const key = rec.light || { pos: [0, 0.7, 0], intensity: 1.0 };
-    const f = B.hearth(P); f.position.set(key.pos[0], by[0], key.pos[2]); root.add(f);
-    const pl = new THREE.PointLight(0xffa050, 20, 22, 2);
-    pl.position.set(key.pos[0], by[0] + 1.0, key.pos[2]);
-    pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004;
-    root.add(pl); lit = 1; summary.lamps_built++;
-  }
-  summary.lights_lit = lit;
+  summary.lights_lit = lamps.length;
+  summary.lights_synthesized = lamps.filter((L) => L.synthesized).length;
 
   // ---- containers and the unique item -----------------------------------------------------------
   // RI-QST08: thirty unique items declared, none of them reachable through a door. They are in

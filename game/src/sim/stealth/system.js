@@ -24,6 +24,8 @@ import * as WIT from '../crime/witness.js';
 import * as JUS from '../crime/justice.js';
 import * as SAN from '../crime/sanction.js';
 import { BIT } from '../../input/actions.js';
+// W1-15 round 4. The lit set and the window aperture, shared verbatim with `render/interior.js`.
+import * as INTLIGHT from '../../world/interior-lighting.js';
 
 export const SNEAK_MPS = 0.85;
 
@@ -193,7 +195,23 @@ export class StealthCrime {
     // the room contributed nothing at all. `_interiorLit` is true only when the cell switch
     // actually found the interior record, so an arena or a state file that names a cell the
     // settlement data does not carry still gets exactly the sky it got before.
-    if (!p.zone) this.light.defaultAmbient = this._interiorLit ? this.d.detection.interior_lamps.interior_ambient_L : skyAmbient(sim.env);
+    //
+    // W1-15 ROUND 4, TWO CHANGES, AND THE FIRST ONE IS A LANDMINE THIS ROUND ARMED ITSELF.
+    //
+    // (a) THE GUARD IS NOW `_interiorLit` FIRST, NOT `!p.zone` FIRST. Round 3's line read
+    //     `if (!p.zone) …`, which was safe only because **nothing in the running world had ever
+    //     set `p.zone`** — the round-3 critic's §4 finding, graded 0. This round produces it
+    //     (`syncPlayerZone()`), so the old line would have stopped applying the interior ambient
+    //     on the exact frame the trespass ladder started working, and every interior would have
+    //     silently gone back to whatever `defaultAmbient` was last set to. Fixing one dead model
+    //     breaking another live one is precisely rule 10's shape; the ordering below is the fix.
+    // (b) THE INTERIOR AMBIENT IS DERIVED, not a constant. See `interiorAmbientNow()`.
+    //
+    // A scenario that authored its own zone ambient through `setZoneAmbient()` is untouched:
+    // `sample()` prefers `ambientByZone` over `defaultAmbient` and neither branch here writes it.
+    const iamb = this.interiorAmbientNow(sim);
+    if (iamb) { this.light.defaultAmbient = iamb.L; this._interiorAmbient = iamb; }
+    else { this._interiorAmbient = null; if (!p.zone) this.light.defaultAmbient = skyAmbient(sim.env); }
     const pos = sim.player ? sim.player.pos : [0, 0, 0];
     p.L = this.light.withTorch(this.light.sample(pos[0], pos[1] + 1.35, pos[2], p.zone), p.carryingTorch);
     // ---- seam S19 x S21: THE VEILING SCHOOL'S CONSUMING SYSTEM ------------------------------
@@ -939,31 +957,55 @@ export class StealthCrime {
     this.light.clearWorld();
     this._interiorLampCount = 0;
     this._interiorLit = false;
+    this._interiorRec = null;
+    this._interiorSynthesized = 0;
     if (!id) return 0;
     const rec = sim.settlements && typeof sim.settlements.interior === 'function' ? sim.settlements.interior(id) : null;
     if (!rec) return 0;                       // a cell the settlement data does not carry; fail open
     this._interiorLit = true;
+    this._interiorRec = rec;
     const cfg = this.d.detection.interior_lamps;
     const scale = cfg.authored_intensity_to_L_scale;
-    const seen = new Set();
-    for (const L of rec.lights || []) {
-      const q = L.pos || [0, 1.4, 0];
-      const key = `${Math.round(q[0] * 10)},${Math.round(q[1] * 10)},${Math.round(q[2] * 10)}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      const sid = `world:${L.id || `${id}:${key}`}`;
+    // W1-15 ROUND 4 — THE LIT SET IS NOT DECIDED HERE EITHER. See `world/interior-lighting.js`.
+    // This loop used to dedupe the record's lamps itself and light every survivor, while
+    // `render/interior.js` deduped identically, lit only the first five and invented a hearth for
+    // a room declaring none. Same list, two policies, 1,659 disagreeing floor cells — of which
+    // 1,584 were drawn lit and simulated at the `unlit` row. `litLights()` is now the one answer
+    // and both files read it, so the disagreement cannot be reintroduced without editing a file
+    // that has no renderer and no simulation in it.
+    for (const L of INTLIGHT.litLights(rec)) {
+      const sid = `world:${L.id}`;
       if (this.light.sources.some((s) => s.id === sid)) continue;
-      const authored = Number(L.intensity === undefined ? 0.55 : L.intensity);
-      const hearth = L.kind === 'hearth';
       this.light.addSource({
-        id: sid, pos: [q[0], q[1], q[2]], intensity: authored * scale,
-        snuffable: !!L.snuffable, zone: null, world: true, kind: L.kind || 'lamp',
-        authored_intensity: authored,
-        reach_m: hearth ? cfg.reach_m.hearth : cfg.reach_m.flame,
+        id: sid, pos: L.pos, intensity: L.intensity * scale,
+        snuffable: L.snuffable, zone: null, world: true, kind: L.kind,
+        authored_intensity: L.intensity,
+        reach_m: L.hearth ? cfg.reach_m.hearth : cfg.reach_m.flame,
       });
       this._interiorLampCount++;
+      if (L.synthesized) this._interiorSynthesized++;
     }
     return this._interiorLampCount;
+  }
+
+  /**
+   * The ambient on this room's floor, at this clock and this weather — `world/interior-lighting.js`,
+   * which is also where the derivation is written down.
+   *
+   * Round 3 used a flat 0.04 for every interior at every hour and defended it in `detection.json`
+   * with "a windowless cellar at noon sampled L=1.00." There are no cellars: `WINDOWLESS` is
+   * `{prison, hold}` and matches 3 of 115 rooms, while the other 112 are drawn with up to eight
+   * windows and nothing read one. It is now derived from the aperture the renderer actually draws,
+   * against the same `skyAmbient()` the road outside the door reads — so the three windowless rooms
+   * keep 0.0400 forever (which is the honest use of that row) and a shop is brighter at noon than
+   * at midnight.
+   */
+  interiorAmbientNow(sim) {
+    if (!this._interiorLit || !this._interiorRec) return null;
+    return INTLIGHT.interiorAmbientL(this._interiorRec, skyAmbient(sim && sim.env), {
+      unlit_L: this.d.detection.interior_lamps.interior_ambient_L,
+      daylight_k: this.d.detection.interior_lamps.window_daylight_k,
+    });
   }
 
   /** What the world put in the light field this cell, for the hand-feed audit. */

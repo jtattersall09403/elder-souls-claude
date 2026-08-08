@@ -24,6 +24,8 @@ import * as WIT from '../crime/witness.js';
 import * as JUS from '../crime/justice.js';
 import * as SAN from '../crime/sanction.js';
 import { BIT } from '../../input/actions.js';
+// W1-15 round 4. The lit set and the window aperture, shared verbatim with `render/interior.js`.
+import * as INTLIGHT from '../../world/interior-lighting.js';
 
 export const SNEAK_MPS = 0.85;
 
@@ -56,6 +58,10 @@ export class StealthCrime {
       inCover: false,
       carryingTorch: false,
       zone: null,
+      // W1-15 r4. `syncPlayerZone()` writes `zone` every frame from the body's position.
+      // `zoneForced` is the hand-feed override (RI-MTH07 §C3): a scenario that sets it keeps it,
+      // and a critic reading `getStealthState().zone` can tell the world's answer from a fed one.
+      zoneForced: null,
       motion: 'still',
       sneak: 5,
       security: 5,
@@ -166,6 +172,13 @@ export class StealthCrime {
     // W1-15 r3: THE LAMPS. Before anything below samples `this.light`. See the method.
     this.syncInteriorLights(sim);
 
+    // W1-15 r4: THE ZONE, and THE COVER. Two models this piece ships that had no world-side
+    // producer at all — `p.zone` had zero writers anywhere in `game/src` (233 authored zones
+    // behind an absent producer) and `coverVolumes` had exactly one, the harness verb. Both are
+    // written here, in the step, before anything reads them.
+    this.syncPlayerZone(sim);
+    this.syncCoverVolumes(sim);
+
     // 1. crouch. A toggle, refused while an AGGRO enemy is within 8 m (RI-STL01 §5).
     if (input && input.pressed & (1 << CROUCH_BIT)) {
       const near = nearestAggroDist(sim);
@@ -193,7 +206,23 @@ export class StealthCrime {
     // the room contributed nothing at all. `_interiorLit` is true only when the cell switch
     // actually found the interior record, so an arena or a state file that names a cell the
     // settlement data does not carry still gets exactly the sky it got before.
-    if (!p.zone) this.light.defaultAmbient = this._interiorLit ? this.d.detection.interior_lamps.interior_ambient_L : skyAmbient(sim.env);
+    //
+    // W1-15 ROUND 4, TWO CHANGES, AND THE FIRST ONE IS A LANDMINE THIS ROUND ARMED ITSELF.
+    //
+    // (a) THE GUARD IS NOW `_interiorLit` FIRST, NOT `!p.zone` FIRST. Round 3's line read
+    //     `if (!p.zone) …`, which was safe only because **nothing in the running world had ever
+    //     set `p.zone`** — the round-3 critic's §4 finding, graded 0. This round produces it
+    //     (`syncPlayerZone()`), so the old line would have stopped applying the interior ambient
+    //     on the exact frame the trespass ladder started working, and every interior would have
+    //     silently gone back to whatever `defaultAmbient` was last set to. Fixing one dead model
+    //     breaking another live one is precisely rule 10's shape; the ordering below is the fix.
+    // (b) THE INTERIOR AMBIENT IS DERIVED, not a constant. See `interiorAmbientNow()`.
+    //
+    // A scenario that authored its own zone ambient through `setZoneAmbient()` is untouched:
+    // `sample()` prefers `ambientByZone` over `defaultAmbient` and neither branch here writes it.
+    const iamb = this.interiorAmbientNow(sim);
+    if (iamb) { this.light.defaultAmbient = iamb.L; this._interiorAmbient = iamb; }
+    else { this._interiorAmbient = null; if (!p.zone) this.light.defaultAmbient = skyAmbient(sim.env); }
     const pos = sim.player ? sim.player.pos : [0, 0, 0];
     p.L = this.light.withTorch(this.light.sample(pos[0], pos[1] + 1.35, pos[2], p.zone), p.carryingTorch);
     // ---- seam S19 x S21: THE VEILING SCHOOL'S CONSUMING SYSTEM ------------------------------
@@ -783,7 +812,7 @@ export class StealthCrime {
     for (const s of this.light.sources) { s.lit = true; s.relightAtF = -1; }
     Object.assign(this.p, {
       crouched: false, crouchRefusedReason: null, inCover: false, inCoverForced: false,
-      inCoverFraction: 0, motionForced: null, carryingTorch: false, zone: null, motion: 'still',
+      inCoverFraction: 0, motionForced: null, carryingTorch: false, zone: null, zoneForced: null, motion: 'still',
       lockAttempt: null, pickpocket: null, jurisdiction: 'imperial', settlement: null,
       magicChameleonPct: 0, magicInvisible: false, magicMufflePct: 0, magicLightBonus: 0, magicDisguise: false,
     });
@@ -821,7 +850,7 @@ export class StealthCrime {
     for (const s of this.light.sources) { s.lit = true; s.relightAtF = -1; }
     Object.assign(this.p, {
       crouched: false, crouchRefusedReason: null, inCover: false, inCoverForced: false,
-      inCoverFraction: 0, motionForced: null, carryingTorch: false, zone: null, motion: 'still',
+      inCoverFraction: 0, motionForced: null, carryingTorch: false, zone: null, zoneForced: null, motion: 'still',
       lockAttempt: null, pickpocket: null,
     });
     this.setContext('public_street_sheathed');
@@ -939,31 +968,137 @@ export class StealthCrime {
     this.light.clearWorld();
     this._interiorLampCount = 0;
     this._interiorLit = false;
+    this._interiorRec = null;
+    this._interiorSynthesized = 0;
     if (!id) return 0;
     const rec = sim.settlements && typeof sim.settlements.interior === 'function' ? sim.settlements.interior(id) : null;
     if (!rec) return 0;                       // a cell the settlement data does not carry; fail open
     this._interiorLit = true;
+    this._interiorRec = rec;
     const cfg = this.d.detection.interior_lamps;
     const scale = cfg.authored_intensity_to_L_scale;
-    const seen = new Set();
-    for (const L of rec.lights || []) {
-      const q = L.pos || [0, 1.4, 0];
-      const key = `${Math.round(q[0] * 10)},${Math.round(q[1] * 10)},${Math.round(q[2] * 10)}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      const sid = `world:${L.id || `${id}:${key}`}`;
+    // W1-15 ROUND 4 — THE LIT SET IS NOT DECIDED HERE EITHER. See `world/interior-lighting.js`.
+    // This loop used to dedupe the record's lamps itself and light every survivor, while
+    // `render/interior.js` deduped identically, lit only the first five and invented a hearth for
+    // a room declaring none. Same list, two policies, 1,659 disagreeing floor cells — of which
+    // 1,584 were drawn lit and simulated at the `unlit` row. `litLights()` is now the one answer
+    // and both files read it, so the disagreement cannot be reintroduced without editing a file
+    // that has no renderer and no simulation in it.
+    for (const L of INTLIGHT.litLights(rec)) {
+      const sid = `world:${L.id}`;
       if (this.light.sources.some((s) => s.id === sid)) continue;
-      const authored = Number(L.intensity === undefined ? 0.55 : L.intensity);
-      const hearth = L.kind === 'hearth';
       this.light.addSource({
-        id: sid, pos: [q[0], q[1], q[2]], intensity: authored * scale,
-        snuffable: !!L.snuffable, zone: null, world: true, kind: L.kind || 'lamp',
-        authored_intensity: authored,
-        reach_m: hearth ? cfg.reach_m.hearth : cfg.reach_m.flame,
+        id: sid, pos: L.pos, intensity: L.intensity * scale,
+        snuffable: L.snuffable, zone: null, world: true, kind: L.kind,
+        authored_intensity: L.intensity,
+        reach_m: L.hearth ? cfg.reach_m.hearth : cfg.reach_m.flame,
       });
       this._interiorLampCount++;
+      if (L.synthesized) this._interiorSynthesized++;
     }
     return this._interiorLampCount;
+  }
+
+  /**
+   * The ambient on this room's floor, at this clock and this weather — `world/interior-lighting.js`,
+   * which is also where the derivation is written down.
+   *
+   * Round 3 used a flat 0.04 for every interior at every hour and defended it in `detection.json`
+   * with "a windowless cellar at noon sampled L=1.00." There are no cellars: `WINDOWLESS` is
+   * `{prison, hold}` and matches 3 of 115 rooms, while the other 112 are drawn with up to eight
+   * windows and nothing read one. It is now derived from the aperture the renderer actually draws,
+   * against the same `skyAmbient()` the road outside the door reads — so the three windowless rooms
+   * keep 0.0400 forever (which is the honest use of that row) and a shop is brighter at noon than
+   * at midnight.
+   */
+  interiorAmbientNow(sim) {
+    if (!this._interiorLit || !this._interiorRec) return null;
+    return INTLIGHT.interiorAmbientL(this._interiorRec, skyAmbient(sim && sim.env), {
+      unlit_L: this.d.detection.interior_lamps.interior_ambient_L,
+      daylight_k: this.d.detection.interior_lamps.window_daylight_k,
+    });
+  }
+
+  // ---- THE ZONE THE BODY IS STANDING IN — W1-15 round 4 --------------------------------------
+
+  /**
+   * `p.zone`, PRODUCED. The round-3 critic, §4, graded this 0 and was right to:
+   *
+   * > *"There are **zero** assignments to `p.zone` anywhere in `game/src` — not in the world, and
+   * > not even in the harness. Ten reads, one producer, no writer. ... Behind that absent producer
+   * > sit **233 authored property zones in 7 classes**, the zone context multipliers, the zone
+   * > baselines, and the entire shop-hours trespass ladder ... All of it correct, none of it
+   * > enterable."*
+   *
+   * This is the writer. It is deliberately in the SIM step and not in a harness verb, because a
+   * producer whose only caller is the harness is the defect round 3 fixed for the lamps and left
+   * standing one module over (`coverVolumes`, also fixed this round).
+   *
+   * HOW A ZONE IS CHOSEN, and it is a ruling rather than a lookup. Zones are authored PER
+   * HOUSEHOLD and their `bounds_m` are cell-local, so an interior with three households has three
+   * zones stacked on the same floor: `archon-apothecary`'s three all span roughly the same room.
+   * Position alone therefore cannot separate them, and any tie-break is a design decision. The one
+   * taken here: **among the zones of this cell that contain the body, the strictest wins** —
+   * ordered by the zone class's own authored `context_weight` (3.00 restricted/prison, 2.20
+   * dwelling/faction/shop-closed/sapwell, 0.00 shop-open), then by the smaller floor area (the more
+   * specific room), then by id so it is deterministic and reproducible from the data alone.
+   *
+   * WHY STRICTEST. If you are standing on a spot that is simultaneously the shop floor and the
+   * Legion clerk's back office, the world should treat you as being in the one that gets you into
+   * the most trouble. A guard does not give you the benefit of the doubt about which of two
+   * overlapping rooms you meant to be in, and the alternative — silently picking the most permissive
+   * — would make every mixed-use building in the province un-trespassable. REVERSIBLE: authoring
+   * disjoint `bounds_m` per household in `game/data/world/property/*.json` makes the tie-break
+   * unreachable and this ordering stops mattering; that is the better long-term answer and it is a
+   * content job, not a code one.
+   */
+  syncPlayerZone(sim) {
+    const id = (sim && sim.env && sim.env.interior) || null;
+    if (id !== this._zoneCellId) { this._zoneCellId = id; this._zoneCandidates = this.zoneCandidatesFor(sim, id); }
+    const cands = this._zoneCandidates;
+    // A scenario that forced a zone by hand keeps it — the hand-feed audit's own requirement.
+    if (this.p.zoneForced) { this.p.zone = this.p.zoneForced; return this.p.zone; }
+    if (!cands || !cands.length) { this.p.zone = null; return null; }
+    const pos = sim.player ? sim.player.pos : ZERO3;
+    let best = null;
+    for (const c of cands) {
+      const b = c.bounds;
+      if (pos[0] < b.x[0] || pos[0] > b.x[1] || pos[2] < b.z[0] || pos[2] > b.z[1]) continue;
+      if (b.y && (pos[1] < b.y[0] - 0.5 || pos[1] > b.y[1] + 0.5)) continue;
+      if (!best) { best = c; continue; }
+      if (c.weight > best.weight) { best = c; continue; }
+      if (c.weight === best.weight && c.area < best.area) { best = c; continue; }
+      if (c.weight === best.weight && c.area === best.area && c.id < best.id) best = c;
+    }
+    this.p.zone = best ? best.id : null;
+    return this.p.zone;
+  }
+
+  /** The zones of one cell, resolved once per cell change: id, class, its authored weight, its box. */
+  zoneCandidatesFor(sim, interiorId) {
+    if (!interiorId) return [];
+    const rec = sim && sim.settlements && typeof sim.settlements.interior === 'function' ? sim.settlements.interior(interiorId) : null;
+    const want = (rec && rec.property_zones) || [];
+    if (!want.length) return [];
+    const byId = new Map();
+    for (const k of Object.keys(this.property || {})) {
+      for (const z of this.property[k].zones || []) byId.set(z.id, z);
+    }
+    const classes = new Map(((this.d.theft.trespass && this.d.theft.trespass.classes) || []).map((c) => [c.id, c]));
+    const out = [];
+    for (const zid of want) {
+      const z = byId.get(zid);
+      if (!z || !z.bounds_m) continue;
+      const cls = classes.get(z.class);
+      const b = z.bounds_m;
+      out.push({
+        id: z.id, class: z.class, faction: z.faction || null,
+        weight: cls ? Number(cls.context_weight) : 0,
+        area: (b.x[1] - b.x[0]) * (b.z[1] - b.z[0]),
+        bounds: b,
+      });
+    }
+    return out;
   }
 
   /** What the world put in the light field this cell, for the hand-feed audit. */
