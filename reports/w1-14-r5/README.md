@@ -370,8 +370,18 @@ AREA       declared 12  coupled 10  BLIND 2
 ```
 
 **33 / 31 / 10, which is the round-4 critic's own reading at `9fadada` to the number.** Nothing
-this round perturbed the census, which is the regression statement the change to
-`cast-classes.json` needed and could not get from an argument.
+this round perturbed the census — which is the regression statement the change to
+`cast-classes.json` needed and could not have got from an argument.
+
+And its teardown, at the same commit, in the same directory:
+
+| arm | magnitude | duration | area |
+|---|---|---|---|
+| **no break** | **33 COUPLED / 15 BLIND** | **31 / 6** | **10 / 2** |
+| `--break=nulldial` | **0 COUPLED / 48 BLIND** | **0 / 37** | **0 / 12** |
+
+`self-test 'nulldial': the arm broke what it names`. 74 dials that report COUPLED when the arms
+genuinely differ report BLIND when they do not.
 
 ---
 
