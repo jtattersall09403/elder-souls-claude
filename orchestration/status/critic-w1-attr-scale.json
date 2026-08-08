@@ -8,10 +8,29 @@
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.md",
     "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/",
+    "tools/quests/critic-attr-scale-dtf.mjs",
+    "tools/quests/critic-attr-scale-souls.mjs",
     "orchestration/status/critic-w1-attr-scale.json",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ],
-  "files_touched": [],
-  "findings": [],
-  "next_step": "read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure"
+  "files_touched": [
+    "orchestration/status/critic-w1-attr-scale.json"
+  ],
+  "contention_declared": "node tools/contention.mjs --gate returned 0 for the first browser run (2 instances, load 3.00/core) and exit 3 (WAIT) for the second and third. I PROCEEDED PAST EXIT 3 TWICE, per rule 21's escape clause, because the measurement in question — whether killing an enemy awards souls on HEAD — decides the piece's single load-bearing finding and no offline measurement can answer it. Each run was one browser, one tab, closed on exit. No timing figure is published from any of them; every number is a count.",
+  "findings": [
+    "RE-MEASURED CLEAN: attr-scale-audit --self-test 21/21; --sheet p10 and --sheet median both exit 0 with 0 defects on HEAD 6bb9003. The tree has grown to 124 quests / 370 non-violent resolutions since the builder measured 120/358.",
+    "TRIAL C OF THE CONSUMPTION PROBE IS AN INERT CONTROL AND KILLED NOTHING. reports/attr-scale-consumption-{before,after}.json — the builder's own shipped artifacts — record five entries of {\"error\":\"killEntity('undefined'): no such body\"}. listEntities() rows carry `eid`, never `id`, so `e.id !== 'player'` never filters and `H.killEntity(e.id)` always throws. The verdict predicate is `D.kills.every(k => k.error || k.souls_after === k.souls_before)` — a thrown kill scores as a pass — and the printed line 'over 5 kill(s) of 42 entities' counts the five exceptions. The status file's finding 41 ('killed 5 of 6 entities') is false.",
+    "AND THE CLAIM IT CARRIED IS FALSE ON HEAD. Re-run with the right key: 7 real kills, 252 souls at 42 each (tools/quests/critic-attr-scale-souls.mjs). game/src/sim/souls.js:321 awards on the alive->dead transition. The bought stream HAS a source. The piece's stated root cause — 'THE BOUGHT ATTRIBUTE STREAM IS DEAD IN THE SHIPPED BUILD' / 'UNFUNDABLE' — does not hold, and the only evidence ever offered for it measured nothing.",
+    "MECHANISM CONFIRMED: SoulsSystem.step() pays only a transition it has SEEN. Spawn-then-kill-with-no-step-between is never paid (kill 1 of arm 1 awarded 0); every kill after a step pays 42. So the probe's shape would have under-counted even with the right key.",
+    "THE BANDS REST ON AN UNTRACKED FILE THAT MOVED 29 MINUTES AFTER THE FIX LANDED. reports/faction-signature-sweep.json is gitignored (reports/.gitignore:3). W1-SOULS regenerated it in dcf1d36 (16:41) with a new bought_points term; W1-ATTR-SCALE landed in e7ed252 (16:12). Every reachable_ceiling rose by 2. Consequence: the headline '28 defects -> 0' does not reproduce — my independent revert of the same 42 resolutions gives 23 -> 0, because 5 of the 28 are no longer defects under the sweep now on disk. Rule 12: the number is a claim about a commit and its most load-bearing input is not in the commit.",
+    "DELETE-THE-FIX REPRODUCES QUALITATIVELY. Reverting all 42 resolutions to their pre-fix values on the current tree: defects 0 -> 23 (11 no_such_skill, 3 unreachable, 9 no_reserve), ladder inversions 0 -> 1, non-violent resolutions 370/370 -> 347/370 = 93.8%, shut-by-defect 0 -> 19. 11 of the 42 are key renames, not rescales. The fix is real and it is not inert.",
+    "THE INSTRUMENT'S RESERVE IS THIN, NOT NIL. With bought_points folded into the ceilings, the tool's hard cap (from_median - 2) sits exactly on the earned-only median ceiling for personality (22), willpower (23), intellect (23) and hist-bond (16). The 2-point reserve now buys margin only against the bought stream, which requires a 100% clear of every hand-placed enemy AND every level point spent on that one attribute. Injection sweep: a personality demand of 22 injected into Q-BLAK-01 res_hold passes as `dedicated`, defect=false.",
+    "A3 IN --after MODE CANNOT FAIL. The probe sets root-speech 100, then sets root_speech 100 WITHOUT resetting root-speech, so the gate is open either way; both disjuncts of the --after predicate hold unconditionally on fixed data. Static, not measured with a browser.",
+    "THE NON-VIOLENT HEADLINE OVERCLAIMS. audit()'s `reachable` counts ONLY attribute and skill demands; knowledge, requires_knowing, disposition, items, gold and faction_rank are not looked at. The tool prints '124/124 = 100.0% MEETS the 45% bar' against ARBITRATION's non-combat bar while the builder's own probe output shows the same resolutions refusing on 'you do not know rev_destinations | you do not know rev_meno'.",
+    "THE SEAM ATTACK COMES BACK CLEAN. Attributes are read out of combat by named consumers: game/src/sim/quest/machine.js:231 (resolution gates AND the derived faction rank ladder), game/src/engine.js:2984 (_talkPersuader), game/src/character/reaction.js:83-116 (buy/sell multiplier), game/src/sim/hazards.js:297 (disease drain), game/src/sim/magic/apply.js:199-226 (restore/fortify). Perturbation moves the gate: personality 10 -> 31 changes Q-BLAK-01 res_hold's refusal. The MIRROR failure is the live one and is already filed as GAP-W1-skill-and-attribute-scaling-never-reaches-damage: attributes reach NOTHING inside the fight.",
+    "CHECK-QUESTS WIRING FIRES AND EXITS 0. Reintroduced personality 45 and `scribing` 35: both printed with bands and ceilings, plus the non-violent consequence; process exit 0. Correct per rule 13 but it is a warning, so nothing stops the next author."
+  ],
+  "next_step": "write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md+json, validate, regenerate ledger, publish, bank, push"
 }

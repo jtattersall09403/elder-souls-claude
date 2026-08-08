@@ -1,15 +1,43 @@
 {
   "task_id": "P10-loader-retry",
-  "role": "builder — the data loader has no retry; a 503 on any of ~700 files kills boot and is reported as 'A file the game needs is missing'",
-  "state": "starting",
-  "commit_at_start": "",
-  "next_step": "read loadData in game/src/engine.js and the boot notice in game/index.html",
-  "files_touched": [],
-  "files_claimed": [
+  "role": "builder — the data loader had no retry; a 503 on any of 569 files killed boot and was reported as 'A file the game needs is missing'",
+  "state": "measuring",
+  "commit_at_start": "3d4c88d",
+  "headline": "The loader now retries 5xx/408/429 and network errors with bounded backoff, NEVER retries a 404, and every failure message names the status, the URL and the attempt count. tools/playability/loader-retry.mjs --self-test is the instrument: six arms including a delete-the-fix null control and a control-sanity arm.",
+  "what_changed": {
+    "game/src/engine.js": "loadData()/fetchJson rewritten as a bounded retry ladder. LOAD_RETRY = 4 attempts, backoff 250/750/1750 ms with +-40% jitter, whole-load sleep budget 12000 ms, whole-load ceiling 24 retries. CAP ON ADDED BOOT LATENCY: at most 12 s of sleeping across the entire load plus the round-trip cost of at most 24 extra requests; a healthy boot sleeps zero. Deliberately no per-request timeout (a 17 MB world on a slow phone is a long healthy download) — stated, not hidden. Every attempt/wait/recovery is recorded on globalThis.__ES_LOAD_RETRIES so the retry is watchable.",
+    "game/index.html": "the boot notice no longer calls a 5xx a missing file. 5xx/408/429 report as weather in the progress line ('The server refused N requests (503 on ...). Nothing is missing — the game is asking again.') and set window.__BOOT_TRANSIENT; anything else, 404 above all, stays loud immediately. When the retries are exhausted the loader's own rejection lands on the glass with the status, the URL and the attempt count, plus the device line. deviceLine() gained a 'load' field summarising __ES_LOAD_RETRIES.",
+    "tools/playability/loader-retry.mjs": "NEW. Fault-injecting static server over the real repo + real Chromium. --self-test runs six arms."
+  },
+  "arms": {
+    "clean": "no faults -> boots (baseline: proves the fixture, so a red arm is the fault and not the fixture)",
+    "flaky": "503 on the first 2 requests for world/hazards.json, 200 after -> boots; exactly 3 requests for that path; loader logs recovery on attempt 3; notice never said 'missing'",
+    "persistent": "503 for ever -> gives up after 4 attempts; text names 503, the file and '4 attempts'; device line present; notice does not hide",
+    "notfound": "404 for ever -> exactly 1 request (a 404 is never retried); text names 404 and says the file is genuinely not published",
+    "null-control": "flaky's faults with the retry stripped from the SERVED engine.js (disk untouched) -> MUST FAIL with the pre-fix 'data file missing' message",
+    "control-sane": "no faults, retry stripped -> MUST BOOT, otherwise the null control only proves the strip broke the file"
+  },
+  "measurements": [
+    {
+      "at": "2026-08-08T11:32Z",
+      "commit": "77439c0",
+      "arm": "flaky",
+      "result": "PASS — booted through two injected 503s; 3 requests for /game/data/world/hazards.json; __ES_LOAD_RETRIES {attempts:571, retries:2, sleptMs:780}; recovery event on attempt 3; __BOOT_TRANSIENT.count=2; no failure diagnostic raised",
+      "note": "this run happened by accident (importing the module ran main()); the module now only runs main when it is the entry point"
+    }
+  ],
+  "contention": "node tools/contention.mjs --gate returned exit 3 (load 4.0-4.8 per core, 2-3 browser instances) before both browser runs. I proceeded anyway, per rule 21's escape clause, and am saying so here: this is a boot-time correctness measurement (does the game come up), not a timing or pixel measurement, so contention changes elapsed_ms and nothing that is asserted on. Every assertion is a request count, a status code or a string.",
+  "next_step": "run the full six-arm --self-test, screenshot the persistent-503 notice, blog line, commit",
+  "files_touched": [
     "game/src/engine.js",
     "game/index.html",
-    "tools/playability/loader-retry-fixture.mjs",
+    "tools/playability/loader-retry.mjs",
     "orchestration/status/P10-loader-retry.json"
   ],
-  "notes": []
+  "files_claimed": [
+    "reports/playability/loader-retry.json",
+    "docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "could_not_do": []
 }

@@ -46,7 +46,22 @@
     }
   ],
   "blocking_unknown": "Is the HUD surface's 2D context instrumented by render/text-register.js in the state ui-census.mjs drives, with w > 0 on the toast's run? glyphs.drawText calls ctx.__esNoteText only if the hook exists. Resolved by one browser-minute: raise a toast, call getRenderedText({surface:'hud'}), report entry count and the toast run's w. If absent, acceptance A1 does not exist and everything falls back to A2.",
-  "next_step": "plan critic with fresh context. Push hardest on B1's population definition (my 118/137/30 are grep counts of MENTIONS, not of tools that publish a comparable expected value) and on A2's frame-diff assumption that nothing else on the HUD changes between the two frames.",
+  "critique": {
+    "by": "plan-critic-w1-hud-toast",
+    "at_commit": "77439c0",
+    "verdict": "BLOCKED pending items 1, 2, 3, 4, 5",
+    "where": "orchestration/plans/W1-HUD-TOAST.md — section 'PLAN CRITIC — exchange 1 of 2'",
+    "blocking_headlines": [
+      "1. A2's null is inert: UISurface.el() clips every element to its declared rect (ui/surface.js:210-213), so escaped_px == 0 on the fixed AND the reverted arm. Redesigned as A2a (cut_px vs a clip-free reference draw) + A2b (same-row-count pair).",
+      "2. The section-6 BLOCKING unknown is CLOSED in text — the HUD draws on surface 'menus' (renderer.js:124-129), instrumented unconditionally in the Renderer constructor; A1 exists. The plan's proposed query named a surface that does not exist and would have returned an empty set.",
+      "3. A1's predicate contradicts the register that supplies it: vector entries are left-aligned by construction, and x/w are integer-rounded against an exact ==0 acceptance.",
+      "4. B2's four positives are not shown to be members of P, so the recall cannot disagree with the sweep.",
+      "5. Piece B's population re-scoped: graded YD over verdict-cited tools (rule 5 applied to instruments, plus the verdict supplies a second independent E); wide static screen reported, not graded. Reversible."
+    ],
+    "carried_count": 8,
+    "model_split": "upheld — Sonnet for A conditional on BLOCKING-1 and -3 landing, Opus for B."
+  },
+  "next_step": "Fold the five BLOCKING resolutions into the plan text (all five are text edits with rulings supplied — exchange 2 is an edit, not an argument), then dispatch W1-HUD-TOAST-A (Sonnet) and W1-INSTRUMENT-COUPLING (Opus) with the eight CARRIED risks written into both briefs. The plan agent's own two worries were both answered: the panel jitter is a pure hash of (seed, index) and cannot vary between frames, and the clock-holding question is precedented by tools/harness/ui-pause.mjs.",
   "least_sure_of": [
     "Piece B's population definition may degenerate: if most of P is OPAQUE, B2's 4-instance recall carries the whole piece.",
     "A2's frame diff assumes the toast is the only difference between the two frames; the panel is drawn with a seeded jitter and I have not verified the clock can be held still in that state. The vacuity guard catches a diff that saw nothing, not one that saw too much."

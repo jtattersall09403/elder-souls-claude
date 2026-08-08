@@ -195,8 +195,8 @@
   var transientCount = 0, transientLast = '';
   function transientNote() {
     if (!transientCount) return '';
-    return '<br><br>The server hiccuped on ' + transientCount + ' file' + (transientCount === 1 ? '' : 's') +
-           ' (' + transientLast + '). Those files are not missing — the game is asking again.';
+    return '<br><br>The server refused ' + transientCount + ' request' + (transientCount === 1 ? '' : 's') +
+           ' (' + transientLast + '). Nothing is missing — the game is asking again.';
   }
   if (window.fetch) {
     var real = window.fetch;
@@ -244,27 +244,102 @@
   //   * the canvas has actually drawn something — pixels a person could see.
   // A world that boots and draws nothing is a real state of this game and it must not read as
   // success. If that happens the notice says so, which is the diagnosis rather than the silence.
-  function painted() {
-    var c = document.querySelector('canvas');
-    if (!c) return false;
-    try {
-      var gl = c.getContext('webgl2') || c.getContext('webgl');
-      if (!gl) return false;
-      // Sample a GRID ACROSS THE WHOLE FRAME, not the bottom-left corner. The first version read
-      // `readPixels(0, 0, 64, 64)`, which is 1.2% of the picture and is floor in most scenes: its
-      // critic measured a drawn dungeon at 33.35% of the frame lit and 0.02% in that corner, so
-      // the notice never hid and left an undismissable overlay over a working game. A corner is
-      // not a picture.
-      var STEP = 24, lit = 0, seen = 0, row = new Uint8Array(4);
-      for (var y = 4; y < c.height; y += STEP) {
-        for (var x = 4; x < c.width; x += STEP) {
-          gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, row);
-          seen++;
-          if (row[0] > 8 || row[1] > 8 || row[2] > 8) lit++;
+  // THE READ HAS TO HAPPEN INSIDE A FRAME, AND IT HAS TO BE RARE.
+  //
+  // Two things were wrong here and the second one was invisible until it was measured.
+  //
+  // 1. WHEN. `preserveDrawingBuffer` is off for players since a52113c — correctly, a second
+  //    full-size copy of the framebuffer is a known way to lose a phone's GL context. With it
+  //    off, the drawing buffer's contents are undefined once the frame has been composited, and
+  //    in practice they are zero. This function used to read from a `setInterval`, i.e. always
+  //    after compositing, so on a game drawing perfectly it returned false FOREVER. Measured on
+  //    this build at 1440x900, same game, same second:
+  //        from a timer                       lit    0 / 2880
+  //        inside requestAnimationFrame       lit 2753 / 2880   (95.6%)
+  //        three frames later, still in rAF   lit 2755 / 2880   (stable, not luck)
+  //    The grid fix below was correct and did not matter: every cell of it read black.
+  //
+  // 2. HOW OFTEN. The old body fired 2,280 single-pixel `readPixels` calls at 1440x900, each one
+  //    a GPU sync, and the poll called it every 200 ms. Measured cost of ONE call on this box
+  //    (load 16.5 over 4 cores, so read it as an upper bound rather than as a phone figure):
+  //    8,781 ms. The page's main thread was saturated by its own diagnostic — enough that
+  //    `page.screenshot()` timed out and the instrument that grades playability could not take a
+  //    picture of the game. Fewer pixels is NOT the saving: 16 full-width band reads cost 8,019 ms
+  //    on the same frame. The sync is the cost, so the fix is to read RARELY and to stop as soon
+  //    as the answer is yes.
+  //
+  // So: at most one read in flight, at most one every READ_EVERY_MS, always inside a frame, and
+  // the poll below reads the cached answer instead of taking one itself.
+  var READ_EVERY_MS = 2000;
+  var paintSeen = 0, paintLit = 0, paintAt = 0, paintPending = false;
+  window.__BOOT_PAINT_EVIDENCE = null;   // so an instrument can see WHICH signal decided it
+  function schedulePaintRead() {
+    if (paintPending || done) return;
+    if (paintAt && Date.now() - paintAt < READ_EVERY_MS) return;
+    paintPending = true;
+    requestAnimationFrame(function () {
+      paintPending = false;
+      paintAt = Date.now();
+      try {
+        var c = document.querySelector('canvas');
+        if (!c || !c.width) return;
+        // Do not create the context. If the renderer has not made one yet there is nothing to
+        // read and taking one here would hand the renderer OURS — the latch that cost this
+        // project a false black-screen report in its own instrument.
+        if (!(window.__ENGINE && window.__ENGINE.renderer)) return;
+        var gl = c.getContext('webgl2') || c.getContext('webgl');
+        if (!gl) return;
+        // A GRID ACROSS THE WHOLE FRAME, not the bottom-left corner: the first version read
+        // `readPixels(0, 0, 64, 64)`, 1.2% of the picture, which is floor in most scenes — a
+        // drawn dungeon measured 33.35% lit overall and 0.02% in that corner, so the notice
+        // never hid and sat undismissable over a working game. Bands, because 16 reads and
+        // 2,280 reads cost the same and 16 is less to go wrong.
+        var BANDS = 16, W = c.width, buf = new Uint8Array(W * 4), lit = 0, seen = 0;
+        for (var i = 0; i < BANDS; i++) {
+          var y = Math.floor((i + 0.5) * c.height / BANDS);
+          gl.readPixels(0, y, W, 1, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+          for (var x = 0; x < W; x += 8) {
+            var o = x * 4; seen++;
+            if (buf[o] > 8 || buf[o + 1] > 8 || buf[o + 2] > 8) lit++;
+          }
         }
-      }
-      return seen > 0 && lit > seen * 0.01;
+        paintSeen = seen; paintLit = lit;
+      } catch (e) { /* leave the previous reading; drawing() below is the guard */ }
+    });
+  }
+
+  // Is the renderer running at all? This is not a substitute for looking at the pixels — a
+  // context that accepts every call and rasterises none would still advance these — but it is
+  // the difference between "I can see it is black" and "I could not see". The notice must never
+  // accuse on the second.
+  var lastRenderFrame = -1;
+  function drawing() {
+    try {
+      var info = window.__ENGINE.renderer.three.info.render;
+      var advanced = info.frame > lastRenderFrame;
+      lastRenderFrame = info.frame;
+      return advanced && info.calls > 0;
     } catch (e) { return false; }
+  }
+
+  function painted() {
+    schedulePaintRead();
+    if (paintSeen > 0 && paintLit > paintSeen * 0.01) {
+      window.__BOOT_PAINT_EVIDENCE = 'pixels ' + paintLit + '/' + paintSeen;
+      return true;
+    }
+    // No usable reading yet. If the renderer is demonstrably drawing frames, we have NOT shown
+    // the screen is black — we have failed to look — and saying "nothing is being drawn" would
+    // be a red full-screen accusation over a working game. That has now happened twice, by two
+    // different mechanisms, and both times it was shipped as the fix for a black screen.
+    if (drawing()) {
+      window.__BOOT_PAINT_EVIDENCE = 'frames advancing; buffer not readable' +
+        (paintAt ? ' (last read ' + paintLit + '/' + paintSeen + ')' : ' (no read yet)');
+      return true;
+    }
+    window.__BOOT_PAINT_EVIDENCE = paintAt ? 'read black ' + paintLit + '/' + paintSeen + ' and no frames'
+                                           : 'no read and no frames';
+    return false;
   }
 
   // Everything a phone can tell us about why it will not draw. Deliberately terse: it has to be
@@ -362,13 +437,20 @@
     } catch (e) { say('The world failed to build.', String(e && e.message || e), true); }
   }, 150);
 
-  var sinceBoot = 0;
+  // BOTH TIMERS BELOW ARE WALL-CLOCK NOW, and that is a correctness fix rather than a tidy-up.
+  // `sinceBoot` used to be `+= 0.2` once per 200 ms tick — which is only seconds if the ticks
+  // arrive on time. They did not: `painted()` was costing 8.8 s a call, so each "0.2 seconds"
+  // was several real ones and the twenty-second escape hatch was well over a minute of a person
+  // staring at a red error over a game that was running. A clock that runs slow exactly when the
+  // page is in trouble is the wrong clock for a rescue timer.
+  var bootAt = 0;
   var poll = setInterval(function () {
     if (done) { clearInterval(poll); return; }
     if (!booted) return;
+    if (!bootAt) bootAt = Date.now();
     if (painted()) { clearInterval(poll); clearInterval(tick); hide(); return; }
     // Booted but nothing on the screen. Give the first frame a moment, then say what is true.
-    sinceBoot += 0.2;
+    var sinceBoot = (Date.now() - bootAt) / 1000;
     // Hard ceiling. Whatever the pixel read says, an overlay that cannot be dismissed is worse
     // than a wrong diagnosis: if the world booted and twenty seconds have passed, get out of the
     // player's way and let them look at whatever is there.

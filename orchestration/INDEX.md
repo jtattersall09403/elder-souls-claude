@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `edaede5`: 774 tools, 153 reference
+so it cannot drift. Generated at `ce4f2fc`: 777 tools, 153 reference
 items, 80 pieces in flight.
 
 Its purpose is to stop 80+ concurrent agents each paying separately to discover the
@@ -194,11 +194,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/coherence/w1-27-coherence.mjs` — **no header comment**
 - `tools/coherence/w1-27-loot-consumption.mjs` — RI-MTH07 / RULES #5 and #11 FOR THE PLACED-OBJECT LAYER.
 
-### `tools/combat/` — 7
+### `tools/combat/` — 8
 
 - `tools/combat/check-ai-units.mjs` — S22 for game/data/combat/ai.json — a CHECK, not a constructor (RULES 14).
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
 - `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
+- `tools/combat/critic-w1-12-r2-m12.mjs` — W1-12 round-2 CRITIC — RI-AI01 M1 and M2, measured in bare Node.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
 - `tools/combat/w1-12-r2-chart.mjs` — W1-12 ROUND 2 — the picture, and the delete-the-fix control, in one run.
 - `tools/combat/w1-12-r2-probe.mjs` — W1-12 ROUND 2 — the builder's instrument.
@@ -648,12 +649,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 40
+### `tools/quests/` — 42
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
 - `tools/quests/attr-scale-consumption.mjs` — the CONSUMPTION probe for the attribute-scale sweep.
 - `tools/quests/critic-ar3-endtoend.mjs` — written for the W1-19 round-2 VERDICT.
+- `tools/quests/critic-attr-scale-dtf.mjs` — the W1-ATTR-SCALE critic's own delete-the-fix, plus the two things the builder's instrument does not report about itself.
+- `tools/quests/critic-attr-scale-souls.mjs` — re-measures trial C of tools/quests/attr-scale-consumption.mjs.
 - `tools/quests/critic-chain-headless.mjs` — W1-READABLES r2 critic, attacks B and C.
 - `tools/quests/critic-faction-arbitration.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1).
 - `tools/quests/critic-faction-ceiling.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1), declared under method_deviations.
@@ -1110,9 +1113,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
+| `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
 | `critic-w1-attr-scale` | running | write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md | `orchestration/status/critic-w1-attr-scale.json` |
 | `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
-| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-TOUCH-r2` | in_progress | offline while the box is over its ceiling: item C (the 'by construction' comments) and rea | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `broken-blog-images-fix` | ? | none -- banked and pushed | `tools/progress.mjs` `docs/progress.html` `docs/index.html` `tools/playability/check-image-refs.mjs` `orchestration/NEXT-DISPATCH.md` |
 | `W1-12-r2-critic` | running | read RULES, CLAUDE.md, r1 verdict, reports/w1-12-r2/survey.md, status/W1-12-r2.json | `orchestration/status/W1-12-r2-critic.json` |
@@ -1120,7 +1124,6 @@ work is the difference between resuming and starting over.
 | `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
-| `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
 | `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |

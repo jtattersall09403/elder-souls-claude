@@ -160,10 +160,13 @@ was taken).
 
 | | The published claim | Verdict | What the reading found |
 |---|---|---|---|
+| **B** | *"115 rooms read, 100 distinct"* (`W1-04-r5`) | **SURVIVES — `OK`** | all five questions answered |
 | **C** | *"a canvas exists, with non-zero dimensions, and no page errors"* — the boot-liveness shape | **FAILS — `PASSES_ON_DEGENERATE`** | and it holds **three** failures at once |
+| **A** | *"8 distinct images at 8 town centres"* (`W1-04-r2` round-3 acceptance 3) | **FAILS — `NULL_CONTROL_FAILED` (INERT)** | the number is the same with the buildings cut |
 | **D** | *"58.291 dE2000 against a hard-fail bar of 8"* (`W1-21-r3` FD6) | **`DEGENERATE_NOT_GRADEABLE`** | Q1–Q4 all survive; Q5 is unanswerable from the record |
-| **B** | *"115 rooms read, 100 distinct"* (`W1-04-r5`) | **partially survives** | Q1, Q2 and Q5 survive; Q3 was lost to a teardown of my own |
-| **A** | *"8 distinct images at 8 town centres"* (`W1-04-r2` acceptance 3) | see §3.2 | |
+
+**One of four survives outright.** Its number also disagrees with nothing published — it is the one
+claim whose instrument answers all five questions.
 
 **C is the result this piece exists for, and it is live, on the running build.**
 
@@ -191,15 +194,42 @@ nearest thing available — a capture set with zero graded edge pixels — is **
 empty-set hole**, and it produces no samples, so it demonstrates nothing. The reading says so
 instead of awarding a pass.
 
-**B's shape is right and its published number is not what a bounded re-take gives.** Over the
-first 24 authored interiors: **24 distinct scene-graph signatures at t0, 24 at t+240** (the clock
-arm holds), **1** for the same interior entered 24 times (the subject arm moves), and the
-degenerate arm — every signature replaced by a constant, which is the shape a build-record read
-has — returns 1 and is out of band. The claim is declared `IN_THE_SCENE` off `SCENE_GRAPH`, which
-is admissible; the same number declared `ON_SCREEN` would have been refused at Q1. Its null control
-errored because the browser was torn down mid-arm by a wrapper timeout I set. **That is my
-harness's failure, not a finding about the claim, and it is recorded as such rather than
-reported as a result.**
+**B survives, and it is the only one that does.** Over the first 24 authored interiors:
+
+```
+value     : 24 distinct scene-graph signatures over 24 interiors
+clock     : t0 = 24, t+60 = 24                          <- does not move with time alone
+subject   : one interior entered 24 times = 1           <- moves with the subject
+degenerate: every signature replaced by a constant = 1  <- out of band, the predicate can say no
+null      : OK — breaking `scenegraph` moved it 24 -> 1 over 24 interiors
+```
+
+The claim is declared `IN_THE_SCENE` off `SCENE_GRAPH`, which is admissible. **The same number
+declared `ON_SCREEN` would have been refused at Q1 before a single frame was captured** — which is
+the `interior.meshes` failure, prevented rather than caught.
+
+**A's number does not depend on the buildings.** The eight-town distinct-image sweep passes every
+arm except the one that matters:
+
+```
+clock     : t0 = 8, t+60 = 8                            <- holds
+subject   : one town photographed eight times = 1       <- moves; this IS the acceptance's own control arm
+degenerate: eight captures, canvases cleared to black = 1  <- out of band
+null      : INERT — intact 8, `buildings` cut 8, over 8 captures.
+            "Breaking `buildings` changed nothing."
+```
+
+The acceptance was written to prove **settlements render**. The number it specifies — eight
+distinct images from eight town centres — **comes out at 8 with the settlement building draw cut**.
+Eight different places on a province look different from each other whether or not anyone built a
+town on them: terrain, lighting and horizon are doing the work. A round that satisfies acceptance 3
+as written will have demonstrated that the eight towns are in eight different places.
+
+> **This is a finding about the acceptance criterion, not about the build.** The fix is one clause:
+> acceptance 3's control arm should be *the same eight poses with `drawBuildings` cut*, not *one
+> pose eight times*. Written that way it measures buildings; written as it stands it measures
+> geography. I have not edited `W1-04-r2.md` — it is a critic's verdict and not my file — and I am
+> recording the correction here for whoever runs W1-04 round 6.
 
 ---
 

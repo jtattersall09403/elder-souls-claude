@@ -3,20 +3,35 @@
   "role": "critic",
   "piece": "W1-23",
   "round": 5,
-  "state": "starting",
+  "state": "measuring",
   "started_at": "2026-08-08T11:25:00Z",
-  "next_step": "read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce",
+  "commit_under_test": "cca44e0980acbde39e395e8e654a62e8934c6cfa",
+  "next_step": "browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); then write the verdict",
   "files_touched": [
-    "orchestration/status/critic-w1-23-r5.json"
+    "orchestration/status/critic-w1-23-r5.json",
+    "tools/lore/critic-w1-23-r5-consume.mjs"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-23-r5.md",
     "corpus/90-verdicts/wave1/W1-23-r5.json",
-    "tools/lore/critic-w1-23-r5-*.mjs",
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
   "redundant_with": ["W1-23-r4", "critic-w1-23-r4"],
-  "notes": "SECOND, INDEPENDENT critic on W1-23 round 4. critic-w1-23-r4 already scored the same round 4/10 at 04:22Z; no round-5 build exists. Declared redundant on purpose (rule 16). My distinct job: (a) reproduce the round's headline numbers myself, (b) break the round's OWN checks and the previous critic's checks and watch them go red, (c) find what neither found.",
-  "findings_so_far": []
+  "notes": "SECOND, INDEPENDENT critic on W1-23 round 4. critic-w1-23-r4 scored the same round 4/10 at 04:22Z and no round-5 build exists, so this is a declared-redundant second pass, not a fresh round. My distinct job: run the reference items' OWN instruments (which no round ran), break the round's checks, and walk to the eleven texts round 4 wrote — which its own critic named as the thing it could not do.",
+  "contention": "gate returned GO at 11:24Z and WAIT from 11:50Z onward. All offline work done first. Browser work pending a GO.",
+  "findings_so_far": [
+    "BIGGEST: `corpus/80-methods/book-stats.py` IS RI-LOR03's comparison method #1 and NO ROUND OF W1-23 HAS EVER RUN IT — zero occurrences of the string 'book-stats' in W1-23-r1.md, -r3.md, -r4.md or the r4 status file. At cca44e0 it fails three checks: S4c 27/28, S4e 2, S10 1.",
+    "REGRESSION ATTRIBUTABLE TO ROUND 4: S10 (books flagged Argonian whose byline names a Tamrielic author) was 0 at the round's own start commit 69e6ffa and is 1 at HEAD. The offender is `what-is-sung-going-down`, one of the eleven texts the round wrote, in the round's own new file game/data/books/the-short-measures.json. Delete-the-fix: removing that one record on a copy returns S10 to 0. Break-the-check the other way: flagging the-sap-and-the-ledger argonian_authored takes S10 to 2. The check is live in both directions.",
+    "RI-LOR06 comparison method #1 CANNOT BE RUN AS WRITTEN: it requires `--books-manifest game/data/books/manifest.json` and that file does not exist. That is the flag that makes canon-check error on 'a disputed fact naming an in-world source that was never written'. Ungated. The substitute (book-stats S4e) says the number is 2: CF-D025 names 'The Paatru of the Clay Moor' and CF-D026 names 'The Drowned Court at Soulrest', neither of which was written. RI-LOR03 method 4 says FAIL on exactly that.",
+    "RI-LOR04 is at native band 0 at HEAD by the round's OWN validator (2.33% unclassifiable > the item's 2% hard-0). The eight names are whole one-token NPC names, not tokenisation artefacts: Hallow, Sedd, Tesh, Ashul, Veth, Mek, Eshi (+ Archein Weighs-The-Season), in game/data/npcs/quest-givers.json and game/data/npcs/thorn.json.",
+    "THE HEADLINE MEASURES THE POPULATION NOBODY MEETS. lor04-validate's own by-provenance split: generated rosters 186 Argonians at 1.85% violations / 0.00% unclassifiable; the HAND-AUTHORED cast 48 Argonians at 20.55% violations / 10.96% unclassifiable. The round's headline '69.7% -> 10.2%' is the generated arm. The named cast the player actually talks to sits in RI-LOR04's band 1 ('>15% violations').",
+    "THE APOSTROPHE HARD GATE IS LIVE, credit where due: injecting Vo'sh-Vastei into pop-archon.json takes lor04-validate M4 from 0 to 1.",
+    "THE R3 CRITIC'S NAMED ACCEPTANCE WAS NOT MET IN FORM. It said 'place the 30 books ... then gate pair REACH in canon-census.mjs'. canon-census.mjs contains no REACH section and was not in round 4's files_touched; the 19/19 number lives only in a previous critic's throwaway instrument.",
+    "'REACHABLE' IS DEFINED AS 'REFERENCED ANYWHERE UNDER game/ OUTSIDE THE BOOKS DIR' by critic-w1-23-r3-reach.mjs's own banner line. Five of round 4's new interface-readables (shore-compass, crate-tally, ledger-leaf, sealed-letter-stormhold, pilots-chart-book) are in no interior at all; they hang off game/data/items/carried.json.",
+    "DISPUTE INERTNESS DRIFTED THE WRONG WAY: the same instrument now reports 13 inert of 28, against the round's own not_done note of 12.",
+    "RI-LOR06 method 5 (adjudicator hunt) and method 6 (CF-D002 open-question guard): I read all six of canon-census's ADJUDGE hits by hand and every one is a false positive of the grep. No text in the build settles a registered dispute and nobody has answered CF-D002. That is a genuine pass and I say so.",
+    "RI-LOR04 method 7 (out-of-world terms): 71 grep hits for bonfire/estus under game/data, and every one I opened is a data key or a save-state field. Zero player-visible strings in game/src/ui or game/data/dialogue. Pass.",
+    "THE ITEM'S OWN HARVESTER IS UNUSABLE: RI-LOR04 methods 1-2 as literally written (jel-phonotactics.py --extract over game/data) report a 63.7% violation rate over 3187 'names' because the harvester pulls book `title` fields, which are English sentences. The item's stated gate has never fired in four rounds; every number came from the round's substitute tool."
+  ]
 }

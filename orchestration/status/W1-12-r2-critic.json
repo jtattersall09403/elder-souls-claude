@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-12-r2-critic",
+  "role": "critic",
+  "item": "RI-AI01",
+  "round": "W1-12 round 2",
+  "state": "running",
+  "started": "2026-08-08",
+  "next_step": "read RULES, CLAUDE.md, r1 verdict, reports/w1-12-r2/survey.md, status/W1-12-r2.json",
+  "files_touched": ["orchestration/status/W1-12-r2-critic.json"],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-12-r2.md",
+    "corpus/90-verdicts/wave1/W1-12-r2.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "redundant_with": [],
+  "notes": "Fresh-context critic. Four push points: (1) verify rejection of r1 closure remedy from frame trace, (2) measure M1/M2 if browser available, (3) audit delete-the-fix arms for flattering metrics, (4) perturb sample of 39 unconsumed leaves. Plus review S22 ruling contrary case."
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "plan-critic-w1-hud-toast",
+  "role": "plan-critic",
+  "piece": "W1-HUD-TOAST",
+  "state": "complete",
+  "started": "2026-08-08",
+  "exchange": "1 of 2 (PLAN-LOOP is bounded at two)",
+  "commit_at_reading": "77439c0",
+  "plan_measured_at": "6bb9003",
+  "verdict": "BLOCKED pending items 1, 2, 3, 4, 5",
+  "deliverable": "orchestration/plans/W1-HUD-TOAST.md — section 'PLAN CRITIC — exchange 1 of 2'",
+  "files_touched": [
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/plan-critic-w1-hud-toast.json",
+    "orchestration/status/plan-w1-hud-toast.json"
+  ],
+  "files_claimed": [],
+  "redundant_with": ["plan-w1-hud-toast"],
+  "overlap_note": "Critic of the plan agent's own deliverable; writes into the same plan file and annotates its status file. No game/ or tools/ source touched or claimed.",
+  "no_browser_launched": true,
+  "three_mandatory_checks": {
+    "acceptance_number_predicate_units": "STATED — and two of four predicates do not describe what the named instrument computes (BLOCKING-1, BLOCKING-3).",
+    "null_control": "STATED for both pieces — Piece A's cannot go red (BLOCKING-1); Piece B's is strong but its members may sit outside the swept population (BLOCKING-4).",
+    "instrument_reuse_by_path": "STATED, the strongest section — three gaps: surface name 'hud' does not exist, no path named for the pixel diff (tools/harness/ui-pause.mjs), no path named for a clip-free reference draw (__HARNESS.drawOnMenus, game/src/harness/api.js:940)."
+  },
+  "blocking": [
+    "1. A2 measures the wrong side of the defect and its null is inert — UISurface.el() clips every element to its declared rect (game/src/ui/surface.js:210-213), so escaped_px == 0 on BOTH arms. Replaced with A2a (cut_px against a clip-free reference draw) and A2b (same-row-count toast pair).",
+    "2. Section 6's BLOCKING unknown is closed in text and its own query is an empty-set query — there is no surface named 'hud'; the HUD is on 'menus' (render/renderer.js:124-129), instrumented unconditionally in the Renderer constructor. A1 exists. Real trap named instead: build()'s per-frame cache (ui/system.js:600).",
+    "3. A1's predicate contradicts its instrument — vector entries are recorded left-aligned by construction (text-register.js:217), and x/w are rounded to integers (text-register.js:246-247) against an exact ==0 acceptance in CSS px.",
+    "4. B2's four historical positives are not shown to be members of P — a recall whose positives sit outside the swept population cannot disagree with the sweep.",
+    "5. Piece B's population — the plan's suggested re-scope accepted in direction, rejected as a total replacement. Ruled: graded YD over tools cited by a wave-1 verdict as evidence for a green result; wide static screen reported, not graded."
+  ],
+  "carried": [
+    "1. type.wrap() does not ellipsise an over-wide single word either (type.js:41-54) — the swap does not discharge the plan's carried risk 3.",
+    "2. wrap() calls normalise() and splits on newlines, so it can emit empty rows that change row_count and the 3-row ceiling.",
+    "3. Stroke halo — drawText strokes with round caps/joins, so painted ink exceeds the advance box; any pixel check needs a stated halo tolerance.",
+    "4. advanceUnits() remains the one source A1 shares with the wrapper; the A2a redesign narrows but does not close it.",
+    "5. Holding the clock for frame pairs is precedented by tools/harness/ui-pause.mjs (M-P1, P5) — confirm, do not assume, and reuse its decode/diff.",
+    "6. sabotage.mjs carries NINE verdicts, not five (sabotage.mjs:120-130); COUPLED_YARDSTICK is the tenth and must be shown not to overlap INERT/VACUOUS. Whether an arm can carry an expected-side value is UNVERIFIED — the open condition on ruling S-PLAN-HUD-B.",
+    "7. The plan's own carried items 2, 4, 5, 6 upheld unchanged; item 6 needs W1-26 added if the unrounded-register option is taken.",
+    "8. The soft 24 px margin target is correctly soft for the right reason. Left soft."
+  ],
+  "model_ruling": {
+    "A": "Sonnet, upheld CONDITIONAL on BLOCKING-1 and -3 being folded in; if BLOCKING-1 is carried instead, A becomes measurement design and must go to Opus.",
+    "B": "Opus, upheld and strengthened — the population is now itself a reversible ruling, which is top-row work.",
+    "haiku": "Absent from the plan, correctly — PLAN-LOOP says unproven and no build is its first job."
+  },
+  "measured_by_critic_at_77439c0": {
+    "parchment_deckle_max_excursion_outside_rect_px": 3.77,
+    "method": "node import of game/src/ui/theme.js jitter(); replay of parchmentPath() for the toast rect at 1920x1080, s=1, seed 4242, rows 1/2/3",
+    "harness_break_verbs_in_game_src": 21,
+    "tools_mjs_mentioning_self_test": 121,
+    "tools_mjs_mentioning_break_or_teardown_or_deletefix": 147,
+    "sabotage_verdict_count": 9
+  },
+  "could_not_do": [
+    "No browser, by design — no frame, no register entry, no toast was seen.",
+    "Did not re-derive the plan's offline census (75 / 58 / 1013.5 px / 2113 names / 870.0 px); the build re-derives it anyway.",
+    "Did not verify sabotage.mjs's SPEC arm model can carry an expected-side value — the open reversibility condition of S-PLAN-HUD-B.",
+    "Did not open the W1-04, W1-25 or compliance-report records; BLOCKING-4 is decidable from the plan's own population definition without them.",
+    "Checked git history across 6bb9003..77439c0 only for game/src/ui/surface.js and game/src/render/text-register.js, the two files the critique leans on hardest."
+  ],
+  "next_step": "Plan agent (or orchestrator) folds the five BLOCKING resolutions into the plan text — all five are text edits with rulings supplied, so exchange 2 is an edit, not an argument. Then dispatch W1-HUD-TOAST-A (Sonnet, one browser) and W1-INSTRUMENT-COUPLING (Opus, no browser until its shortlist), with the eight CARRIED risks written into both briefs."
+}

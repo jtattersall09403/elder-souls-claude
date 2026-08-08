@@ -215,7 +215,7 @@ more expensive than a named unknown).
 6. **`ui/hud.js` and `ui/system.js` are W1-21's files.** W1-20 already declared an undeclared
    overlap on both. Piece A must declare `redundant_with: ["W1-21"]` rather than collide.
 
-## 8. What I am least sure of
+## 8. What the plan agent is least sure of
 
 **Piece B's population definition.** "Every tool that emits a pass/fail and declares a
 perturbation" is a clean sentence and I cannot yet prove it is enumerable — my 118/137/30 are
@@ -233,3 +233,308 @@ if anything else on the HUD is frame-dependent, the diff picks it up as escaped 
 guard catches a diff that saw nothing; it does not catch a diff that saw too much. The mitigation
 is to run A2 on a paused clock and diff a control pair (toast-null vs toast-null) first, requiring
 **0** changed pixels — and I have not verified that the clock can be held still in that state.
+
+---
+
+# PLAN CRITIC — exchange 1 of 2
+
+**Critic, fresh context. No browser launched, no `game/` source edited.** Everything below is read
+off the tree at **`77439c0`** (the plan measured at `6bb9003`; nothing I cite moved between them —
+`git log` shows no commit touching `game/src/ui/surface.js` or `game/src/render/text-register.js`
+in that span). One number was computed offline, by importing `game/src/ui/theme.js` in node and
+replaying `parchmentPath()` for the toast rect; the throwaway is not committed and the recipe is
+in item **BLOCKING-1** so it can be re-derived rather than trusted (rule 18, rule 12).
+
+## Verdict on the three things a plan must state
+
+**1. The acceptance number, its predicate and its units — STATED, and two of the four predicates
+do not describe what the named instrument computes.** The table is the right shape and the units
+column is real. But A2's predicate measures the *opposite side* of the defect (BLOCKING-1) and
+A1's extent clause contradicts the register that supplies it (BLOCKING-3). This is precisely the
+class PLAN-LOOP §2 says cost two rounds this week — "overhang" in the prose, "clearance" in the
+code — and it is present here in a plan that quotes that lesson.
+
+**2. The null control — STATED for both pieces, and Piece A's cannot go red.** §2 is the best
+written section in the document; it names the arm, the number, and what inert would look like, and
+it says nothing else may be reported if inert appears. Then A2's null *is* the inert case, for a
+mechanical reason nobody looked up (BLOCKING-1). Piece B's null — four re-seeded historical
+positives on dated commits — is genuinely independent of anything B writes, and is the strongest
+control in either piece. Its defect is that its four members are not shown to belong to the
+population B sweeps (BLOCKING-4).
+
+**3. Which existing instrument, by path — STATED, and the best §3 this project has produced.**
+Seven paths, each with the reason it is that path and not a new file. Three gaps: the surface name
+in §6 does not exist (BLOCKING-2); no path is named for the **pixel diff** A2 needs, though
+`tools/harness/ui-pause.mjs` already does UI-on/UI-off pixel differencing over a screen box with
+`pngjs` in a state where the sim frame is held still (its M-P1/P5); and no path is named for a
+**clip-free reference draw**, though `__HARNESS.drawOnMenus(text)` (`game/src/harness/api.js:940`)
+draws one exact string through the real vector path *outside* `el()` and reports what the register
+saw. Both belong in §3 (rule 10).
+
+---
+
+## BLOCKING — resolve in the plan text before a build agent is dispatched
+
+Every one of these is a text edit. None needs a browser. Where I could rule, I have ruled and
+written the resolution out, so exchange 2 is an edit and not an argument.
+
+### BLOCKING-1. A2 measures the wrong side of the defect, and its null control is inert.
+
+`UISurface.el()` clips every element to its own declared rect before calling the element's draw
+callback — `game/src/ui/surface.js:210-213`:
+
+```js
+c.beginPath();
+c.rect(r[0] - 0.5, r[1] - 0.5, r[2] + 1, r[3] + 1);
+c.clip();
+draw(c, r);
+```
+
+with the comment *"The declared rect IS the clip. An element cannot paint outside what it
+declared."* It is right. **No toast, wrapped or unwrapped, can paint more than 0.5 px outside
+`rect`.** So `escaped_px == 0` is true by construction on the fixed arm *and on the reverted
+arm* — the plan's own §2 test ("`escaped_px > 0` on the widest sample") returns zero, §2's own
+stop-clause fires, and A2 has spent eight frame-pairs and an hour of the only browser to learn
+nothing. A2 as written is a control that cannot fail: the third bullet of rule 6, one layer up,
+in the piece whose subject is controls that cannot fail.
+
+The framing was not viable from the other direction either, and this is worth recording because it
+is why the error was invisible. Had there been no clip, the parchment's own deckled outline would
+have made `escaped_px > 0` unconditional: `parchmentPath()` displaces each outline point along the
+edge normal by `(jitter(k,n)*2.6 + jitter(k+31,n)*1.3)*s`, and replaying it in node for the toast
+rect at 1920×1080, `s=1`, `seed 4242` gives a maximum outward excursion of **3.77 px** on all three
+row counts (rect `760,40,400,{48,60,80}`). Perimeter ≈ 900 px, so of order 1–2k pixels outside the
+rect would have differed between `toast(T)` and `toast(null)` *from the panel edge alone*, with no
+text involved. Either way `escaped_px` is not a function of the wrap. Between the clip and the
+deckle there is no version of "pixels outside the rect" that answers this piece's question.
+
+**The real defect is missing ink inside the rect, not escaped ink outside it.** `hud.js:250-258`
+describes the symptom two ways in one paragraph — *"it simply ran off the paper at both ends"* and
+*"a sentence with its first four words and its last five missing"* — and the clip settles which is
+true: the words were **cut off at the panel edge**. `render/text-register.js` reported
+`clipped:false` on that run for a reason the plan half-states: `overlaps()` (`text-register.js:82`)
+is an *intersection* test, so a run that is 60% outside its clip intersects it and is recorded as
+unclipped. The register's `clipped` flag is containment-blind, not merely canvas-clip-only.
+
+*Resolution, ruled.* Replace A2 with two predicates that can both go red:
+
+- **A2a — `cut_px`, the decisive one.** Draw the same rows at the same positions through
+  `__HARNESS.drawOnMenus()` (`harness/api.js:940`), which goes through `glyphs.drawText` on the
+  menus context *outside* `el()` and therefore outside the clip. `cut_px` = ink pixels present in
+  the clip-free render and absent in the element render, inside a band of `rect` inflated by the
+  stroke halo. Acceptance `cut_px == 0`. On the reverted arm the 676 px run on a 400 px panel loses
+  ~138 px of glyph at each end, so the null goes red by hundreds of pixels and the size of the
+  number is the size of the defect.
+- **A2b — the escaped-ink residue, honestly bounded.** Keep a diff, but pair **two toasts of the
+  same row count** rather than toast-vs-null. `h = max(toastH·s, rows·lineH + 20·s)`
+  (`hud.js:277`), so equal row counts give an identical rect, an identical `panel(...4242...)`, an
+  identical deckle, and the diff isolates glyph ink. Acceptance `escaped_px == 0` then means
+  something, and the vacuity guard still applies because the two strings differ.
+
+Both keep the property the plan correctly insists on: neither reads a number the wrapper chose.
+
+### BLOCKING-2. §6's "BLOCKING unknown" is closed in text — and the query it proposes is itself an empty-set query.
+
+The plan proposes to spend a browser-minute on `getRenderedText({ surface: 'hud' })`. **There is no
+surface named `hud`.** The renderer declares exactly three — `dialogue`, `title`, `menus`
+(`render/renderer.js:124-129`) — and the HUD is on `menus`, declared verbatim as *"ui/hud.js +
+ui/screens/* — the HUD and the menus, via ui/glyphs.js drawText"*. `coverage()` with an unknown
+surface name yields `scope = []`, so `complete = blind.length === 0 && scope.length > 0` is
+**false** and `entries` is `[]`. The plan's stated reading of that result — *"if the HUD context is
+not instrumented, A1 does not exist"* — would have been drawn from a query over an empty set. The
+irony the brief anticipated is real and it is sharper than expected: this is a piece about checks
+whose two sides read one source, and its own gating measurement was a grep over a set that cannot
+contain its subject. The register's header names this defect at line 41 (*"AN EMPTY RESULT AND A
+CLEAN RESULT MUST NEVER BE THE SAME VALUE"*) and the accessor's `complete:false` is the guard that
+would have caught it — but only if whoever read it branched on `complete` rather than on `entries`.
+
+*Ruled: the unknown is CLOSED, not carried, and A1 exists.* The chain is static and complete:
+
+1. `renderer.js:106` constructs `this.menus = new UISurface(...)`; `:129` calls
+   `textRegister.instrument(this.menus.ctx, 'menus')` **unconditionally in the constructor** —
+   there is no state in which a Renderer exists and the menus context lacks the hook.
+2. `instrument()` installs `ctx.__esNoteText` (`text-register.js:216`).
+3. `glyphs.drawText()` ends `if (ctx.__esNoteText) ctx.__esNoteText(s, x, y, adv, size)`
+   (`glyphs.js:255-256`), with `adv` the accumulated pen advance — exactly the quantity A1 wants.
+4. `ui/system.js:624` calls `drawHUD(S, ...)` inside `build()`, and `build()` is called from
+   `getUIState()` as well as from `render()` — the file says so at `:556-558`, *"because every
+   probe in this project runs `setRenderRate(0)` before it steps"*.
+5. `surface.js:190-215` `el()` invokes the draw callback immediately, so the toast's `drawText`
+   calls happen during `getUIState()`.
+
+So the plan's fallback ("everything falls back to A2, 8× the cost") is not needed, and the build
+must not be briefed as if it might be. Replace §6 with the corrected recipe —
+`getRenderedText({ surface: 'menus' })`, branch on `complete`, never on `entries.length` — and with
+the **one real trap** that replaces the false one: `build()` is cached per frame on
+`(builtFrame, mode, touch/focus/pending signature)` (`system.js:600`), so a probe that clears the
+register and then calls `getUIState()` twice on the same frame repaints nothing and gets an empty
+register — an empty result that reads exactly like a clean one. Clear, then force a rebuild or
+advance a frame, then read; and assert `entries > 0` before computing anything from them.
+
+### BLOCKING-3. A1's predicate contradicts the instrument that supplies it. Two corrections, both one line.
+
+- **Alignment.** A1 says `x0` is *"the draw call's own x with alignment applied"*. The vector path
+  records alignment as the literal string `'left'` (`text-register.js:217`) and never consults
+  `ctx.textAlign`; `_record` then sets `x0 = x`. That is correct for this population — `hud.js:263`
+  pre-centres each row itself, `drawText(c, rows[i], r[0] + r[2]/2 - measure(...)/2, ...)` — but the
+  plan's wording invites a build agent to implement alignment handling that the register does not
+  have, i.e. a second implementation of the extent (rule 10). Correct wording: *`x0` is the `x`
+  passed to `glyphs.drawText`, which is already the run's left edge because the HUD pre-centres;
+  the register records vector entries as left-aligned by construction.* If the generalisation to
+  other elements ever meets a caller that relies on `ctx.textAlign`, that is a register defect to
+  report, not a thing to compensate for in the check.
+- **Precision.** `_record` stores `x: Math.round(x), w: Math.round(w)` (`text-register.js:246-247`)
+  and `el()` stores the rect at 2 dp (`surface.js:196`). An acceptance of `overflow_px == 0`
+  **exactly**, in units of "CSS px", is therefore being computed from a ±1 px quantised extent
+  against a 0.01 px rect: a run 0.4 px over the edge reads 0, and a run that exactly fits can read
+  1. State the acceptance as `overflow_px ≤ 1.0 px` **or** publish the unrounded advance from the
+  register — and if the latter, declare `game/src/render/text-register.js` as a touched file
+  against W1-26 (§7 item 6 declares the W1-21 overlap but not this one).
+
+### BLOCKING-4. B2's four positives are not shown to be members of P, so the recall cannot disagree with the sweep.
+
+This is the plan's most important number — it says so itself, *"B2 is the acceptance, not B1's
+headline"* — and it is measured against a population that is not the one being swept. P is defined
+as *"every `.mjs` under `tools/` that both emits a pass/fail and declares a perturbation"*. Of the
+four positives: #2 is a **compliance report**; #3 is a **control arm inside a probe**, reached
+through a harness verb; #4 is an **optional integer in a facility library**. Only #1 is plainly a
+`tools/*.mjs` that emits a verdict. A recall whose positives sit outside the swept population
+measures nothing about the sweep: it can score 4/4 by recognising four shapes it will never meet in
+P, or 0/4 while being perfectly correct on every member of P. That is the same structure as a
+coupled yardstick — the two sides are not reading one source, they are reading *different* sources
+and being reported as one number.
+
+*Resolution:* for each of the four, either name the member of P through which the sweep would
+encounter it (and re-seed it there), or move it out of B2 into a separately-labelled
+**shape-recognition** check with its own denominator. `4 of 4` and `2 of 2 in-population + 2 of 2
+by shape` are different claims and only the second is honest.
+
+### BLOCKING-5. Piece B's population. The plan's suggested re-scope is right, for a reason it did not give — and it is wrong as a total replacement.
+
+The plan hands the critic its own move: re-scope B1 to *tools a wave-1 verdict cites as evidence
+for a green result*, because that set is "smaller, enumerable from the verdicts, and covers the case
+that actually costs us rounds." I accept the direction and reject the completeness, on two grounds
+the plan did not state.
+
+**The reason the plan did not give, and the better one: this is rule 5 applied to instruments.**
+CONSUMPTION says a model nothing in the running world reads scores zero — sixteen subsystems have
+shipped correct, instrumented and unread. A coupled yardstick inside a tool no verdict ever cited
+has, by exactly the same argument, done zero damage: nobody believed anything because of it. The
+harm function of this defect is not *"the tool is wrong"*, it is *"a green result was believed"*,
+and belief is recorded in exactly one place in this project — the verdicts. Scoping B1 by
+*capability* ("has a perturbation") is scoping by the property that makes a tool *testable*;
+scoping by *citation* is scoping by the property that makes it *dangerous*. This project already
+has a rule saying which of those to prefer.
+
+**Second reason the plan did not give: for a cited tool, the verdict supplies a second, independent
+expected value.** The YD test needs `E` and `O`; OPAQUE — the outcome the plan fears will swallow
+the population — is precisely the case where the artifact publishes no `E` and the sweep has only
+the tool's own output to read, which is the single-source condition that makes coupling
+undetectable. A verdict that cites a tool as evidence for a green result **quotes the number it
+believed**, in prose, in a file the tool did not write. That gives the sweep an `E` from outside
+the tool for exactly the members where the damage is, and it means the re-scoped population is not
+merely cheaper — it is the population on which the test is methodologically *able* to disagree.
+An OPAQUE-heavy sweep of uncited tools is a sweep that cannot fail, which is the shape under
+repair; a sweep over cited tools has a second source by construction.
+
+**Where the handed move is wrong: it discards the prospective half.** A tool uncited today is cited
+tomorrow, and the static half of B costs no perturbation runs at all. *Ruled, reversible:*
+
+- **B1 (graded, dynamic YD)** runs over `P_cited` = tools cited by a wave-1 verdict as evidence for
+  a green result, enumerated from `corpus/90-verdicts/` and committed as a list. Acceptance stays
+  100% classified, and the denominator is now a number a reader can check.
+- **B1b (reported, not graded)** is the static screen over the wide set, published as
+  `n_screened / n_enumerated` with the OPAQUE fraction stated. Never a percentage without its
+  denominator (the plan's own §7 item 5, upheld).
+- **Overturned by:** `P_cited` coming out under ~8 members, in which case the graded population is
+  too small to carry B1 and the wide set returns with OPAQUE reported as its own class.
+
+Two arithmetic corrections that bear on this, both re-measured at `77439c0` and both cheaper to fix
+now than in a browser: the harness carries **21** `__break*` verbs in `game/src`, not 30, and they
+are **perturbations, not population members** — B1's units are "tools" while §5's shortlist counts
+verbs, and one tool may drive several. My own grep counts differ from the plan's too (**121**
+`tools/**.mjs` mentioning `self-test`, **147** mentioning a break/teardown/deletefix), which is the
+plan's own point about mentions vs members and is exactly why the builder must publish the
+enumeration rather than a count.
+
+---
+
+## CARRIED — declared risks, to be written into the build brief and graded later
+
+1. **`type.wrap()` does not fix the over-wide single word either.** `type.js:41-54` emits
+   `cur = words[i]` unshortened, identically to hud.js's inline copy; `ellipsise()` is a separate
+   function that nothing in `wrap()` calls. The plan's §5 step 2 ("swap the inline wrap for
+   `type.wrap()` + `ellipsise()`") therefore does **not** discharge §7 item 3 — the builder must
+   apply `ellipsise()` per row explicitly, and say so.
+2. **The swap is not behaviour-neutral.** `wrap()` calls `normalise()` (good — A3 is right to
+   compare against `normalise(T)`) and splits on `\n`, emitting `''` for a blank paragraph. An
+   empty row changes `row_count`, which changes the rect height, which changes the 3-row ellipsis
+   ceiling. Assert `rows.every(r => r.length)` or handle it.
+3. **The stroke halo.** `drawText` strokes with `lineWidth = face.stem * u * weight`, `lineCap`
+   and `lineJoin` round (`glyphs.js:226-231`), so painted ink extends roughly half a stem beyond
+   the advance box in every direction. A1 (advance-based) and any pixel-based check therefore
+   measure different extents; the pixel checks need a stated halo tolerance, derived once and
+   published, not tuned until the number passes.
+4. **`advanceUnits()` remains the one source A1 shares with the wrapper** — the plan's §7 item 1,
+   upheld. The A2a redesign narrows it but does not close it: the clip-free reference draw uses the
+   same advance. The residual is now "the advance is wrong in the same direction in both", which is
+   smaller and should be stated that way.
+5. **Holding the clock for the frame pairs is precedented, not assumed.** `tools/harness/ui-pause.mjs`
+   already measures a state where the sim frame delta is 0 over 120 steps (M-P1) and already does a
+   UI-on/UI-off pixel diff with `pngjs` (P5); the toast only draws when `!m.inCombat`
+   (`hud.js:249`), which is that state. Confirm it rather than assume it, and reuse that file's
+   decode/diff rather than writing a third one.
+6. **`sabotage.mjs` carries nine verdicts, not five** (`VERDICT` at `tools/experience/lib/sabotage.mjs:120-130`:
+   OK, INERT, MASKED, VACUOUS, UNDERPOWERED, WRONG_DIRECTION, NO_MEASUREMENT, SHORT_CIRCUIT, ERROR,
+   each with its own exit code). `COUPLED_YARDSTICK` is the tenth, and the plan must show it does
+   not overlap INERT or VACUOUS before adding it. **I did not verify** that an arm in that module's
+   SPEC can carry an expected-side value, which is the stated reversibility condition of ruling
+   S-PLAN-HUD-B; it stays open and the builder must check it first.
+7. **The plan's §7 items 2, 4, 5 and 6 are upheld unchanged** — the unexercised 3-row ceiling, the
+   tools-not-verdicts scope boundary, the fraction-with-its-denominator discipline, and the W1-21
+   ownership overlap. Item 6 additionally needs W1-26 declared if BLOCKING-3's second half is taken.
+8. **The soft 24 px margin target** is correctly marked soft and correctly reasoned. Leave it soft.
+
+---
+
+## Model split — upheld, with one condition
+
+| piece | plan | critic |
+|---|---|---|
+| A | Sonnet | **Sonnet, conditional.** PLAN-LOOP's middle row requires *a landed plan*. With BLOCKING-1 and -3 folded in, A1/A2a/A2b are machine-checkable against named instruments and nothing is a judgement call — Sonnet holds. If BLOCKING-1 is carried instead of resolved, A becomes *designing a measurement* and must go to Opus. |
+| B | Opus | **Opus, upheld and strengthened.** The plan's stated risk (a Sonnet grep tuned until the list looks reasonable, never running the recall) is the right risk. BLOCKING-4 and -5 add a second: the population is now itself a ruling with a reversibility condition, which is top-row work. |
+
+Haiku appears nowhere in this plan, which is correct — PLAN-LOOP is explicit that it is unproven
+here and that no build should be its first job. The split's practical half (A needs a browser for an
+hour, B needs none until its shortlist, so they must not queue behind each other) is sound and is
+the strongest argument for splitting at all.
+
+---
+
+## What I could not do
+
+- **No browser, by design.** Every claim above is static: source at `77439c0`, plus one offline
+  node replay of `parchmentPath()`. I have not seen a frame, a register entry, or a toast.
+- **I did not verify the plan's offline census** (75 strings, 58 over budget, 1013.5 px widest,
+  2113 `name` fields, 870.0 px widest equip refusal). Those are the plan's numbers at `6bb9003` and
+  the plan already tells the builder to re-derive them; re-deriving them here would have duplicated
+  that work without checking anything the build will not check.
+- **I did not verify `sabotage.mjs`'s arm model** can carry an expected-side value — see CARRIED-6.
+  That is the open condition on ruling S-PLAN-HUD-B and I am leaving it open rather than guessing.
+- **I did not confirm the four historical positives are re-seedable.** I checked that
+  `tools/quests/faction-joining-probe.mjs`, `reports/w1-20/instrument-test.json` and
+  `tools/dialogue/w1-17-r2-deletefix.mjs` exist; I did not open the W1-04, W1-25 or compliance-report
+  records. BLOCKING-4 is about their *population membership*, which is decidable from the plan's own
+  definition and does not need them opened.
+- **`git log` for the `6bb9003`→`77439c0` span was read for the two files I lean on hardest**
+  (`surface.js`, `text-register.js`) and not for the whole tree.
+
+---
+
+# VERDICT: **BLOCKED pending items 1, 2, 3, 4, 5.**
+
+All five are text edits and every one has a ruled resolution written above, so exchange 2 is an
+edit rather than an argument, and no third exchange is needed. **BLOCKING-1 is the one that
+matters**: without it a build agent spends an hour of the box's only scarce resource on a control
+that returns zero on both arms, and reports it as a pass — in the piece written to sweep for
+exactly that.

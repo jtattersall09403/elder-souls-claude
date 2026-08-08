@@ -200,14 +200,13 @@ async function runArm(a) {
       canvas_css: [Math.round(c.getBoundingClientRect().width), Math.round(c.getBoundingClientRect().height)],
       inner: [window.innerWidth, window.innerHeight],
       dpr: window.devicePixelRatio,
-      device_class: e.real ? e.real.deviceClass : null,
+      device_class: e.real && e.real.viewport ? e.real.viewport.deviceClass : null,
       touch_enabled: !!(e.real && e.real.touch && e.real.touch.enabled),
       touch_drawn: e.ui ? e.ui.touchDrawn : null,
       draw_calls: e.renderer && e.renderer.lastStats ? e.renderer.lastStats.drawCalls : null,
       triangles: e.renderer && e.renderer.lastStats ? e.renderer.lastStats.triangles : null,
       preserve_drawing_buffer: e.renderer ? !!e.renderer.preserveDrawingBuffer : null,
       render_rate_hz: e.loop.renderRateHz,
-      max_catchup: 5,
     };
   });
 
@@ -239,48 +238,74 @@ async function runArm(a) {
   return row;
 }
 
-for (const a of ARMS) {
-  if (ONLY && !ONLY.includes(a.id)) continue;
+const sequence = SEQ || ARMS.map((a) => a.id);
+for (const id of sequence) {
+  const a = ARMS.find((x) => x.id === id);
+  if (!a) { say(`[arm] ${id} — UNKNOWN, skipped. Known: ${ARMS.map((x) => x.id).join(', ')}`); continue; }
   say(`[arm] ${a.id} — ${a.note}`);
   try {
     const row = await runArm(a);
+    row.seq = rec.arms.length;
     rec.arms.push(row);
-    say(`      ${row.steps_s} steps/s   rAF ${row.raf_hz} Hz   ${row.steps_per_raf} steps/rAF   sim CPU ${(row.sim_cpu_frac * 100).toFixed(1)}%   clamps ${row.catchup_clamps}   dropped ${row.dropped_ms_per_s} ms/s   sim runs at ${(row.sim_time_ratio * 100).toFixed(0)}% of wall clock`);
+    say(`      ${row.steps_s} steps/s   rAF ${row.raf_hz} Hz   ${row.steps_per_raf} steps/rAF   sim CPU ${(row.sim_cpu_frac * 100).toFixed(1)}%   clamps ${row.catchup_clamps}   dropped ${row.dropped_ms_per_s} ms/s   sim runs at ${(row.sim_time_ratio * 100).toFixed(0)}% of wall clock   load ${row.load_per_core.join('->')}`);
   } catch (e) {
-    rec.arms.push({ arm: a.id, error: String(e && e.message || e) });
+    rec.arms.push({ arm: a.id, seq: rec.arms.length, error: String(e && e.message || e) });
     say(`      FAILED: ${e && e.message}`);
   }
 }
 
 // ---- the verdict, and the check on the check -------------------------------------------------
-const by = (id) => rec.arms.find((r) => r.arm === id && !r.error);
-const base = by('phone'), stall = by('phone-stall');
-rec.control = { name: 'phone-stall', requirement: 'must be the slowest arm, by >20% of the baseline' };
+const all = (id) => rec.arms.filter((r) => r.arm === id && !r.error);
+const mean = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+const baselines = all('phone');
+const baseSteps = mean(baselines.map((r) => r.steps_s));
+const base = baselines[0];
+const stall = all('phone-stall')[0];
+
+// How much did the BOX move between the bracketing baselines? Any arm difference smaller than
+// this is not a finding about the game.
+rec.baseline_drift = baselines.length > 1
+  ? {
+    takes: baselines.map((r) => ({ seq: r.seq, steps_s: r.steps_s, load: r.load_per_core })),
+    spread_pct: Math.round(((Math.max(...baselines.map((r) => r.steps_s)) - Math.min(...baselines.map((r) => r.steps_s))) / baseSteps) * 1000) / 10,
+    note: 'the same arm, same page, different moments. An arm-to-arm difference inside this spread is the box, not the build.',
+  }
+  : { takes: baselines.map((r) => ({ seq: r.seq, steps_s: r.steps_s, load: r.load_per_core })), spread_pct: null, note: 'only one baseline take — arm comparisons here are UNBRACKETED and load drift is not excluded. Re-run as --arm phone,<arm>,phone.' };
+
+rec.control = {
+  name: 'phone-stall',
+  requirement: 'must be slower than the MEAN of the bracketing phone baselines by more than the baseline spread',
+  bracketed: baselines.length > 1,
+};
 if (base && stall) {
-  rec.control.baseline_steps_s = base.steps_s;
+  rec.control.baseline_mean_steps_s = Math.round(baseSteps * 100) / 100;
   rec.control.stalled_steps_s = stall.steps_s;
-  rec.control.went_red = stall.steps_s < base.steps_s * 0.8;
+  rec.control.drop_pct = Math.round((1 - stall.steps_s / baseSteps) * 1000) / 10;
+  rec.control.went_red = stall.steps_s < baseSteps * 0.8
+    && (rec.baseline_drift.spread_pct === null || rec.control.drop_pct > rec.baseline_drift.spread_pct);
 } else {
   rec.control.went_red = null;
 }
 if (base) {
   rec.mechanism = {
     steps_per_raf: base.steps_per_raf,
-    max_catchup: 5,
-    accumulator_capped: base.steps_per_raf !== null && base.steps_per_raf >= 4.75,
+    max_catchup: rec.max_catchup,
+    accumulator_capped: base.steps_per_raf !== null && base.steps_per_raf >= rec.max_catchup * 0.95,
     sim_cpu_frac: base.sim_cpu_frac,
     verdict: null,
   };
   rec.mechanism.verdict = rec.mechanism.accumulator_capped
-    ? 'The accumulator is CAPPED every rAF: the sim wants more steps than MAX_CATCHUP allows, so simulated time is being DROPPED. The rate is set by the rAF rate x 5, and the root cause is whatever makes rAF slow.'
+    ? `The accumulator is CAPPED every rAF at MAX_CATCHUP=${rec.max_catchup}: the sim wants more steps than the cap allows, so simulated time is being DROPPED. The step rate is the rAF rate x ${rec.max_catchup}, and the root cause is whatever makes rAF slow.`
     : 'The accumulator is NOT capped, so the sim is keeping up with rAF and the step rate is the rAF rate. The cost is elsewhere.';
 }
 
-writeJson(path.join(OUT, 'framerate.json'), rec);
+const OUTFILE = String(args.out || (MAX_CATCHUP_OVERRIDE === null ? 'framerate.json' : `framerate-maxcatchup-${MAX_CATCHUP_OVERRIDE}.json`));
+writeJson(path.join(OUT, OUTFILE), rec);
 say('');
+if (rec.baseline_drift.spread_pct !== null) say(`baseline drift across ${baselines.length} takes of the same arm: ${rec.baseline_drift.spread_pct}% — anything smaller than this is the box`);
 say(`control (${rec.control.name}): ${rec.control.went_red === true ? 'WENT RED as required' : rec.control.went_red === false ? 'DID NOT GO RED — the instrument is suspect and every row above is void' : 'not evaluated'}`);
 if (rec.mechanism) say(`mechanism: ${rec.mechanism.verdict}`);
-say(`written: ${path.relative(REPO_ROOT, path.join(OUT, 'framerate.json'))}`);
+say(`written: ${path.relative(REPO_ROOT, path.join(OUT, OUTFILE))}`);
 
 await browser.close();
 await server.close();

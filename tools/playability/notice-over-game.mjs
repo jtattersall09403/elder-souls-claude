@@ -73,24 +73,33 @@ const READ = () => {
     // An overlay at inset:0 with z-index 9999 and no `pointer-events:none` eats every tap and
     // click underneath it. That is the difference between "an ugly message" and "cannot play".
     blocksInput: visible && cs ? cs.pointerEvents !== 'none' : false,
-    // What painted() itself would return right now, computed the same way the page does it, so
-    // the diagnosis names the mechanism rather than the symptom.
-    paintedSays: (() => {
-      try {
-        const c = document.querySelector('canvas');
-        if (!c) return 'no-canvas';
-        const gl = c.getContext('webgl2') || c.getContext('webgl');
-        if (!gl) return 'no-gl';
-        const a = gl.getContextAttributes ? gl.getContextAttributes() : null;
-        let lit = 0, seen = 0; const row = new Uint8Array(4);
-        for (let y = 4; y < c.height; y += 24) for (let x = 4; x < c.width; x += 24) {
-          gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, row);
-          seen++; if (row[0] > 8 || row[1] > 8 || row[2] > 8) lit++;
-        }
-        return `pdb=${a && a.preserveDrawingBuffer ? 1 : 0} readPixels-lit=${lit}/${seen}`;
-      } catch (e) { return 'threw: ' + (e && e.message); }
-    })(),
+    // How far the SIMULATION has got. If this is advancing while the notice claims nothing is
+    // being drawn, the notice is wrong about a running game rather than right about a dead one.
+    simFrame: (window.__ENGINE && window.__ENGINE.sim && window.__ENGINE.sim.frame) || null,
+    renderFrame: (() => { try { return window.__ENGINE.renderer.three.info.render.frame; } catch (e) { return null; } })(),
   };
+};
+
+// The mechanism, asked ONCE per run rather than once per second. Doing it every sample was itself
+// a lesson: `painted()` fires 2,280 single-pixel `readPixels` calls at 1440x900 and each one is a
+// GPU sync, so simply reproducing it in the probe jammed the page's main thread for 23 s. That is
+// not an artefact of the probe — the shipped page does the same thing every 200 ms.
+const PAINTED_PROBE = () => {
+  try {
+    const c = document.querySelector('canvas');
+    if (!c) return { note: 'no-canvas' };
+    const gl = c.getContext('webgl2') || c.getContext('webgl');
+    if (!gl) return { note: 'no-gl' };
+    const a = gl.getContextAttributes ? gl.getContextAttributes() : null;
+    const t0 = performance.now();
+    let lit = 0, seen = 0; const row = new Uint8Array(4);
+    for (let y = 4; y < c.height; y += 24) for (let x = 4; x < c.width; x += 24) {
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, row);
+      seen++; if (row[0] > 8 || row[1] > 8 || row[2] > 8) lit++;
+    }
+    return { pdb: !!(a && a.preserveDrawingBuffer), lit, seen, costMs: Math.round(performance.now() - t0),
+             note: `pdb=${a && a.preserveDrawingBuffer ? 1 : 0} readPixels-lit=${lit}/${seen} cost=${Math.round(performance.now() - t0)}ms` };
+  } catch (e) { return { note: 'threw: ' + (e && e.message) }; }
 };
 
 // The picture underneath, measured from a screenshot — the composited page, which includes the

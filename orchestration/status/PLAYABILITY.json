@@ -184,13 +184,14 @@
     "fixed": true,
     "fix": "the boot promise now leads the diagnosis. A row that never booted is labelled SLOW, not BLANK, names the load it was taken under, and says to re-run with a larger --cap-ms before blaming the renderer. It still fails \u2014 three minutes of nothing is a defect a person experiences \u2014 but it is a different failure and now reads as one. The run also records the mirror's own fetch count, bytes and total time, so the reader can see how much of a live boot figure is the instrument."
   },
-  "next_step": "finish the live run at five shapes with --play and a 600 s cap; run --self-test and publish the seven arm numbers; screenshots to docs/shots; blog line; commit --only.",
+  "next_step": "fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 times per 200 ms), delete-the-fix, re-run verify-playable --self-test with a GREEN control, then the standing live run on phone+desktop.",
   "files_touched": [
     "orchestration/status/PLAYABILITY.json",
     "tools/playability/live-mirror.mjs",
     "tools/playability/verify-links.mjs",
     "tools/world/verify-playable.mjs",
-    "game/index.html"
+    "game/index.html",
+    "tools/playability/notice-over-game.mjs"
   ],
   "files_claimed": [
     "tools/world/verify-playable.mjs",
@@ -199,7 +200,8 @@
     "reports/playability/",
     "docs/shots/",
     "reports/blog-feed.jsonl",
-    "game/index.html"
+    "game/index.html",
+    "tools/playability/notice-over-game.mjs"
   ],
   "ownership_note": "game/index.html is edited ONLY for the boot notice (item 4 of the brief). A critic is grading that file: W1-DEPLOY r1 already scored it 4.0 and its two findings \u2014 corner-sampled painted() and an undismissable overlay \u2014 were fixed by someone else in the working tree while I was editing. I kept their fix and added P4-P7 on top.",
   "successor_run_2": {
@@ -230,5 +232,30 @@
     "landing": "200 2657b",
     "blog": "200 497797b",
     "checked": "2026-08-08 via curl (Chromium cannot reach github.io from here)"
+  },
+  "first_job_ANSWER_the_six_sabotage_matrix": {
+    "question": "is verify-playable's six-sabotage matrix verified under the new screenshot reading?",
+    "answer": "NO, AND IT CANNOT BE UNTIL P13 IS FIXED. The CONTROL ARM IS RED. `everything is red` proves nothing, so the six sabotages below it are not evidence yet.",
+    "the_control_arm_verbatim": "RED    (control, no sabotage)   lit 0.0% blocks 0% moved false  << the control must be green: the page gave up and said so: \"ELDER SOULS The world loaded, but nothing is being drawn...\"; CANNOT MEASURE PIXELS: preserveDrawingBuffer is off, so readPixels after compositing returns zeros; boot notice still up",
+    "run": "node tools/world/verify-playable.mjs --self-test --local --cap-ms 150000 --profiles desktop-1440,phone-small-portrait  (working tree 6bb9003)",
+    "why_the_control_is_red": "P13. The chain, measured rather than reasoned: painted() can never return true for a non-automated visitor -> the boot notice's 200 ms poll calls it forever -> at 1440x900 that is 2,280 single-pixel readPixels calls, each a GPU sync, EVERY 200 ms -> the page's main thread saturates -> page.screenshot() times out -> readFrame falls back to the GL read, which is the very read P12 was rewritten to escape -> the row reports UNMEASURED and the notice's red overlay on top of it.",
+    "so_the_predecessor_screenshot_fix_has_a_hole": "readFrame() falls back to the GL read when the screenshot fails, and the screenshot fails precisely when the page is jammed. The fallback is at least LOUD (it says CANNOT MEASURE rather than reporting black), which is the improvement P12 bought. But the instrument cannot certify the game while the page it is measuring is jamming its own main thread.",
+    "next": "fix P13, re-run the matrix with a green control, and only then paste seven lines."
+  },
+  "redundant_with": [
+    "P10-loader-retry"
+  ],
+  "overlap_declared": "P10-loader-retry and I are both in game/index.html and neither of us is a conflict. It owns the fetch wrapper and the transient/retry wording (lines ~195-235); I own painted() and the poll beneath it (lines ~247-385) and the deviceLine. Declared per rule 16 so the registry stops reporting it as an undeclared overlap. I have not touched a line of its region and it landed its edit under me mid-run, which is why the line numbers in an earlier note here do not match the file.",
+  "contention_note_successor_2": "The gate said WAIT (load 17-19 over 4 cores) when I launched the after-fix measurement, and I PROCEEDED \u2014 recorded here as rule 21 requires. Reasons: I had just killed both of my own browsers by pid (3895, 29024) so I was holding none, one instance at a time throughout, and the run certifies a fix to a defect that is live on the owner's link right now. I never pkill'd anything. Two runs earlier in this shift were killed BY ME, by pid, on purpose: the six-sabotage matrix once its control had gone red (no further value in a matrix with a red control) and a read experiment that had already written its answer.",
+  "measurement_P13_mechanism": {
+    "what": "the same running game, same second, read three ways. This is the whole diagnosis in three numbers.",
+    "canvas": "1440x900, preserveDrawingBuffer=false (a person, not the harness)",
+    "from_a_timer_16_band_reads": "lit 0 / 2880",
+    "inside_requestAnimationFrame": "lit 2753 / 2880 = 95.6%",
+    "inside_rAF_three_frames_later": "lit 2755 / 2880 \u2014 stable, so the first was not luck",
+    "the_shipped_read_2280_single_pixels_from_a_timer": "lit 0 / 2280, and it cost 8,781 ms for ONE call",
+    "load_when_taken": "16.5 over 4 cores (rule 26). Read the 8,781 ms as an upper bound on this box, not as a phone figure \u2014 but the shipped poll asks for it every 200 ms, so the page can never keep up with its own diagnostic at any speed.",
+    "fewer_pixels_is_not_the_saving": "16 full-width band reads cost 8,019 ms on the same frame as 2,280 single-pixel reads cost 8,781 ms. The GPU sync is the cost, not the pixel count, so the fix has to read RARELY (once per 2 s, one in flight) rather than read less.",
+    "script": "kept out of the repo on purpose \u2014 it is superseded by tools/playability/notice-over-game.mjs, which is the instrument"
   }
 }

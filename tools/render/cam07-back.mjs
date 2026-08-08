@@ -144,7 +144,13 @@ async function main() {
 
     const P = anchor.pos;
     const yaw = ((Number(anchor.yaw_deg) || 0) * Math.PI) / 180;
-    const look = [P[0], P[1] + CHEST, P[2]];
+    // THE PIVOT IS ALREADY AT TORSO HEIGHT. Round 2 of this file added CHEST on top of it, so the
+    // frame centre sat 1.05 m above the character and the "back closeup" was a picture of a marsh
+    // with the top of a helmet at the bottom edge. §B's own framing clause — "character filling
+    // >= 45% of frame height" — is the check that catches that, and it was not implemented either.
+    // Both are fixed: the look target is the pivot, and the framing is MEASURED below and gates
+    // the captures.
+    const look = [P[0], P[1], P[2]];
     const pitch = (PITCH_DEG * Math.PI) / 180;
     const horiz = ARM * Math.cos(pitch);
     const rise = -ARM * Math.sin(pitch);          // pitch is negative (looking down) -> eye above
@@ -223,6 +229,47 @@ async function main() {
       log(`captured ${v.id} -> ${files[v.id].file} sha256:${files[v.id].sha256.slice(0, 12)}`);
     }
     report.captures = files;
+
+    // ---- §B FRAMING GATE: "character filling >= 45% of frame height" ---------------------------
+    //
+    // Measured, not assumed. The character's pixels are isolated by differencing the capture
+    // against the SAME pose with the body teleported out of frame — lighting, ground, sky and
+    // foliage are byte-identical between the two, so what differs is the body. The bounding box of
+    // the differing pixels gives the on-screen height directly.
+    //
+    // This gate exists because round 2 of this file shipped a "player_back_closeup" in which the
+    // character occupied the bottom 5% of the frame and nothing complained. A capture that does
+    // not satisfy §B's framing clause is NOT ADMISSIBLE EVIDENCE for §B1-B5, and the tool says so
+    // rather than computing a parity ratio over a picture of a marsh.
+    const framingOf = async (v) => {
+      const withBody = await shot(v);
+      const without = await shot(v, { hidePlayer: true });
+      const fa = path.join(shotDir, `_frame_${v.id}_body.png`);
+      const fb = path.join(shotDir, `_frame_${v.id}_nobody.png`);
+      fs.writeFileSync(fa, withBody); fs.writeFileSync(fb, without);
+      const a = await decodeImage(fa);
+      const b = await decodeImage(fb);
+      const W = a.width, H = a.height;
+      let y0 = H, y1 = -1, x0 = W, x1 = -1, n = 0;
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const i = (y * W + x) * 4;
+          const d = Math.abs(a.data[i] - b.data[i]) + Math.abs(a.data[i + 1] - b.data[i + 1]) + Math.abs(a.data[i + 2] - b.data[i + 2]);
+          if (d > 12) { n++; if (y < y0) y0 = y; if (y > y1) y1 = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
+        }
+      }
+      const h = y1 >= y0 ? (y1 - y0 + 1) : 0;
+      return { pixels: n, bbox: n ? [x0, y0, x1 - x0 + 1, h] : null, height_frac: +(h / H).toFixed(4), W, H };
+    };
+    const framing = {};
+    for (const v of VIEWPOINTS) framing[v.id] = await framingOf(v);
+    report.framing = {
+      bar: '§B: "character filling >= 45% of frame height". A capture below this is not admissible evidence for §B1-B5.',
+      measured_by: 'difference mask against the same pose with the body teleported out of frame; the bbox of the differing pixels is the body',
+      ...framing,
+      admissible: Object.values(framing).every((f) => f.height_frac >= 0.45),
+    };
+    log(`framing: back ${framing.player_back_closeup.height_frac}, front ${framing.player_front_closeup.height_frac} (bar 0.45) -> ${report.framing.admissible ? 'ADMISSIBLE' : 'NOT ADMISSIBLE for §B1-B5'}`);
 
     // ---- B1': high-frequency parity, back vs front, at a common native window -----------------
     const hfrOf = async (file, K) => {
@@ -358,7 +405,8 @@ async function main() {
   const out = path.join(outDir, 'cam07-back.json');
   fs.writeFileSync(out, JSON.stringify(report, null, 2));
   const lines = ['', 'RI-CAM07 — the back-capture path', ''];
-  lines.push(`M0  posed-camera projection not blind: ${report.M0.pass ? 'PASS' : 'FAIL'} (yaw ${report.M0.back.yaw} -> ${report.M0.front.yaw})`);
+  lines.push(`M0  posed-camera projection not blind: ${report.M0.pass ? 'PASS' : 'FAIL'} (yaw ${report.M0.back.yaw_deg} -> ${report.M0.front.yaw_deg}, ndc.x ${report.M0.ndc_x_back} -> ${report.M0.ndc_x_front})`);
+  lines.push(`§B framing gate: back ${report.framing && report.framing.player_back_closeup.height_frac}, front ${report.framing && report.framing.player_front_closeup.height_frac} (bar 0.45) -> ${report.framing && report.framing.admissible ? 'ADMISSIBLE' : 'NOT ADMISSIBLE — §B1-B5 cannot be run on these captures'}`);
   lines.push(`B1' back/front HFR parity: ${report.B1_prime.ratio} (${report.B1_prime.verdict}) — ${report.B1_prime.bar}`);
   for (const r of report.readings || []) lines.push(`    reading ${r.id}: ${r.verdict} — ${r.why}`);
   lines.push('');
