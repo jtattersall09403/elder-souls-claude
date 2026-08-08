@@ -14,7 +14,7 @@
     "E. tools/journey/journey-run.mjs `catch { break; }` \u2014 the driver reproduces the player's defect and swallows the proof.",
     "F. ./play.sh \u2014 does not exist at the root despite the brief. Write it."
   ],
-  "next_step": "opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit",
+  "next_step": "opening-play P10 still running; restore the r2-named shots the probe overwrote, save r3 copies, final commit",
   "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 browser instances, load 5.10/core vs a 4.0 ceiling). Node-side work first; browser runs one at a time, and if I proceed past exit 3 it is recorded here.",
   "files_touched": [
     "orchestration/status/W1-26-r3.json",
@@ -64,6 +64,20 @@
     "The r2 P10 'pinned on geometry' reading is wrong. tools/w1-26-r3/hold-walkout.mjs sweeps 8 directions from the exact frozen position with a per-arm scene reset: every direction moves, 7 distinct destinations. The r2 walker's twenty 0.000 m samples were a world that was not advancing, not a crate. opening-play.mjs now carries frames_advanced so the two can never be confused again.",
     "My own first corner control was inert (all 8 arms shared one contaminated state and returned the identical 4.816 m to the identical position). Caught and fixed before it was reported \u2014 rule 6, in the control written to detect rule 6.",
     "m4_clause1's N/A had a SECOND cause the brief did not know about, and repairing the bare `catch { break; }` was necessary but not sufficient. `sim/step.js:64` calls bus.clear() at the TOP of the step and `_afterStep()` builds the record afterwards, so an event emitted OUTSIDE a step - which is what the harness verb censusAnswer does - is wiped before any record can carry it. creation_field therefore reaches the trace on the PLAYER's path (queued as _censusPending, applied from inside _afterStep) and never on the harness's. The driver now presses Enter instead of calling the verb, and m4_clause1 measures.",
-    "m4_clause1 = 1.03 s is the DRIVER's patience, not the build's restraint: hold.come-to asks nothing until the player reaches for Jeeh-Ei, so the interval is bounded by how long the driver waits. Recorded as `driver_paced: true` with a note in the ledger row so the first reader of a number that has been N/A for two waves cannot misread it. The piece's own probe measures 61.5 s at a human pace and the two do not disagree."
+    "m4_clause1 = 1.03 s is the DRIVER's patience, not the build's restraint: hold.come-to asks nothing until the player reaches for Jeeh-Ei, so the interval is bounded by how long the driver waits. Recorded as `driver_paced: true` with a note in the ledger row so the first reader of a number that has been N/A for two waves cannot misread it. The piece's own probe measures 61.5 s at a human pace and the two do not disagree.",
+    "opening-play.mjs writes its four frames to docs/shots/2026-08-08-w1-26-r2-*.png, which are the ROUND-2 critic's named evidence. Re-running it overwrites them with this build's frames. The originals are in history at e00e6fe; I restore them and keep r3-named copies of my own."
+  ],
+  "deliverables": {
+    "survey": "reports/w1-26-r3-survey.md (committed 3cc1dfe)",
+    "blog": "reports/blog-feed.jsonl (committed 60b86ad)",
+    "shot": "docs/shots/2026-08-08-w1-26-r3-a-character-made-on-a-keyboard-standing-in-the-world.png",
+    "one_command": "play.sh + tools/play.mjs"
+  },
+  "not_done": [
+    "opening-play.mjs P10 not seen green in the full rAF run within my window (a 20-iteration walk at ~2 sim fps). P1-P8 all pass and P8 now records the typed name verbatim. Not claimed.",
+    "RI-JRN01 M13's mouse+keyboard, gamepad and touch legs over the journey. Only the keyboard leg is now run end to end.",
+    "RI-EXP01 - untouched; needs an isolated agent nothing in orchestration/ can create.",
+    "The teaching clause in writ.stamp (verdict section 6) and M10's absent inscriptions - named by the verdict, not mine this round.",
+    "NEXT-DISPATCH Q0 (the save/load ai defect) - read, not touched."
   ]
 }

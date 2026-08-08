@@ -33,6 +33,7 @@ import path from 'node:path';
 import { PNG } from 'pngjs';
 import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, log, RUNS_DIR, ensureDir, writeJson } from '../lib/cli.mjs';
+import { grader, line, sampleTable } from '../lib/graded.mjs';
 
 const USAGE = `
 ui-forbidden.mjs — RI-UIX01 §B. The forbidden-set detector, declared and observed.
@@ -41,8 +42,20 @@ USAGE
   node tools/analysis/ui-forbidden.mjs [--state arena_champion] [--enemies 6]
                                        [--declared-only] [--self-test] [--out <dir>] [--json]
 
-EXIT 0 = 0 hits on both probes · 1 = a hit · 2 = could not measure
+EXIT 0 = both probes ran and found 0 hits · 1 = a hit · 2 = a probe could not measure
 `;
+
+// W1-21 ROUND 3 — WHAT U4 DID NOT RECORD.
+//
+// The round-2 verdict, §1.3: "`out.declared` records only *hits*. There is no field anywhere in
+// `ui-forbidden.json` saying how many elements were scanned, or that the five menus were opened at
+// all. A run that opened nothing and a run that opened five screens produce a byte-identical
+// `\"declared\": []`." It is the round-1 defect in its purest form and it was the one check in the
+// piece that recorded no sample count of any kind.
+//
+// So the declared probe now keeps a per-screen ledger — `scanned` below — of how many elements it
+// looked at on each surface it opened, and U4's sample count is the number of ELEMENTS examined,
+// not the number of hits found. A run that opened nothing now reports EMPTY and exits 2.
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
@@ -144,10 +157,19 @@ ensureDir(RUN);
 const h = await launchGame({ width, height, timeout: 240000 });
 const out = {
   schema: 'elder-souls/ui-forbidden@1', item: 'RI-UIX01', at: new Date().toISOString(),
-  state, screen: [width, height], declared: [], observed: [], self_test: null,
+  state, screen: [width, height], declared: [], scanned: [], observed: [], self_test: null,
 };
 try {
   await h.h('setRenderRate', 60);
+  // W1-21 round 3. PIN THE DRAWING BUFFER BEFORE ANY PIXEL IS LOOKED AT.
+  //
+  // Round-2 verdict §1.3 defect 1: "`__HARNESS.screenshot()` returns 1920×1080 — index.html's
+  // canvas attribute — while the tool computes each enemy's screen position in the 1280×720
+  // viewport space it launched with, and it never pins the drawing buffer. Every 400×400 'region
+  // around the enemy' is therefore offset by a factor of 1.5." `ui-layer.mjs` has done this since
+  // round 2 with a comment describing precisely this hazard; this file had neither.
+  const buf = await h.h('setDevicePixelRatio', 1);
+  out.buffer = buf && buf.buffer ? buf.buffer : null;
   await h.h('loadState', state);
   await h.h('stepFrames', 4);
 
@@ -174,6 +196,15 @@ try {
         out.declared.push({ row: 'X8', where, id: el.id, kind: el.kind, worldAnchor: el.worldAnchor });
       }
     }
+    // THE SAMPLE COUNT. What was looked at, per surface, whether or not anything was found.
+    out.scanned.push({
+      where,
+      mode: ui.mode,
+      elements: ui.elements.length,
+      visible_elements: ui.elements.filter((e) => e.visible).length,
+      kinds: [...new Set(ui.elements.map((e) => e.kind))].sort(),
+      rows_tested: Object.keys(X).length + Object.keys(N).length,
+    });
   };
   scanDeclared(await h.h('getUIState'), 'combat');
   // W1-21 round 2: `map` added. The round-1 verdict found this sweep visiting four screens and
@@ -201,6 +232,10 @@ try {
     await h.h('stepFrames', 1);
     const shot = decode(await h.h('screenshot'));
     fs.writeFileSync(path.join(RUN, 'after-hit.png'), PNG.sync.write(shot));
+    // The buffer/viewport relationship, recorded rather than assumed — this is the thing that
+    // made round 2's 66 "damage numbers" a 1.5× coordinate offset into an enemy's helmet.
+    out.frame_size = [shot.width, shot.height];
+    out.buffer_is_1to1 = shot.width === width && shot.height === height;
 
     const live = (await h.h('listEntities')).filter((e) => e.archetype !== 'player');
     const declaredRects = (await h.h('getUIState')).elements.filter((e) => e.visible).map((e) => e.rect);
@@ -218,11 +253,16 @@ try {
       const bars = cands.filter(looksLikeBar).filter((c) => c.bbox[1] < sy);
       out.observed.push({
         eid: e.eid, screen: [Math.round(sx), Math.round(sy)],
+        region,
+        region_px: Math.max(0, Math.min(shot.width, region[0] + region[2]) - Math.max(0, region[0]))
+          * Math.max(0, Math.min(shot.height, region[1] + region[3]) - Math.max(0, region[1])),
         candidates: cands.length, digit_glyphs: digits.length, nameplate_bars: bars.length,
         digit_bboxes: digits.slice(0, 6).map((d) => d.bbox),
       });
     }
     out.hit_frame = hitFrame;
+    out.enemies_projected = out.observed.length;
+    out.enemies_live = live.length;
   }
 
   // ---- can the observed probe fire? -----------------------------------------------------------
@@ -259,13 +299,64 @@ try {
 out.declared_hits = out.declared.length;
 out.observed_digit_hits = out.observed.reduce((a, o) => a + o.digit_glyphs, 0);
 out.observed_bar_hits = out.observed.reduce((a, o) => a + o.nameplate_bars, 0);
-out.U4 = out.declared_hits === 0 ? 'PASS' : 'FAIL';
-out.U5 = (out.observed_digit_hits === 0 && out.observed_bar_hits === 0) ? 'PASS' : 'FAIL';
+
+// ---- grading, with the sample counts that round 2 did not have --------------------------------
+const G = grader();
+const SURFACES_WANTED = ['combat', 'inventory', 'journal', 'sheet', 'spells', 'map'];
+const elementsScanned = out.scanned.reduce((a, s) => a + s.elements, 0);
+const surfacesOpened = out.scanned.map((s) => s.where);
+// A surface whose recorded mode is not the surface did not open, and an element census taken on
+// the wrong screen is not a sample of the right one.
+const wrongMode = out.scanned.filter((s) => s.where !== 'combat' && s.mode !== s.where).map((s) => `${s.where}->${s.mode}`);
+out.declared_samples = { surfaces: surfacesOpened, elements_scanned: elementsScanned, per_surface: out.scanned, surfaces_not_reached: wrongMode };
+
+G.push('U4', 'no forbidden element (X1-X12, N4-N5) declared on any surface', {
+  samples: elementsScanned, sample_of: 'declared elements examined',
+  expected: undefined,
+  counts: { surfaces: surfacesOpened.length, surfaces_expected: SURFACES_WANTED.length, per_surface: out.scanned.map((s) => [s.where, s.elements]) },
+  pass: () => out.declared_hits === 0 && wrongMode.length === 0
+    && SURFACES_WANTED.every((s) => surfacesOpened.includes(s)),
+  detail: `${out.declared_hits} hits over ${elementsScanned} elements on [${surfacesOpened.join(',')}]`
+    + `${wrongMode.length ? `; SURFACES THAT DID NOT OPEN: ${wrongMode.join(',')}` : ''}`
+    + `${out.declared_hits ? ' ' + JSON.stringify(out.declared.slice(0, 5)) : ''}`,
+});
+
+// U5 — THE OBSERVED PROBE, AND WHAT IT REFUSES TO GRADE.
+//
+// Round-2 verdict §1.3 defect 2: "The method requires the capture to be 'at the frame after a
+// `hit` event'. No HIT fired in 180 frames — the swing never connected. The tool records the null
+// in its artifact and grades the frame anyway." A frame that is not the frame the method names is
+// not a sample of it. `hit_frame === null` now zeroes the sample count, so U5 comes back EMPTY and
+// the run exits 2 rather than reporting a pass — or, as it did, a fail — on the wrong frame.
+const regions = args['declared-only'] ? [] : out.observed;
+const gradableRegions = (out.hit_frame === null || out.buffer_is_1to1 === false) ? [] : regions;
+G.push('U5', 'no floating damage number (X1) or enemy nameplate bar (X2) in the frame after a hit', {
+  samples: gradableRegions.length, sample_of: 'enemy regions on the post-hit frame',
+  counts: {
+    candidates: regions.reduce((a, o) => a + o.candidates, 0),
+    region_px: regions.reduce((a, o) => a + o.region_px, 0),
+    enemies_live: out.enemies_live || 0,
+    hit_frame: out.hit_frame === undefined ? null : out.hit_frame,
+    buffer_is_1to1: out.buffer_is_1to1 === undefined ? null : out.buffer_is_1to1,
+  },
+  pass: () => out.observed_digit_hits === 0 && out.observed_bar_hits === 0,
+  detail: args['declared-only'] ? 'not run (--declared-only)'
+    : `${out.observed_digit_hits} digit glyphs, ${out.observed_bar_hits} nameplate bars over `
+      + `${regions.length} regions / ${regions.reduce((a, o) => a + o.candidates, 0)} candidate blobs; `
+      + `hit_frame ${out.hit_frame}, buffer ${out.frame_size ? out.frame_size.join('x') : '?'} vs viewport ${width}x${height}`
+      + `${out.hit_frame === null ? ' — NO HIT LANDED, so there is no post-hit frame to grade' : ''}`
+      + `${out.buffer_is_1to1 === false ? ' — DRAWING BUFFER IS NOT 1:1 WITH THE VIEWPORT, every region is offset' : ''}`,
+});
+
+out.checks = G.checks;
+out.U4 = G.checks[0].status;
+out.U5 = G.checks[1].status;
+out.sample_table = sampleTable(G.checks, { tool: 'ui-forbidden.mjs' });
 writeJson(path.join(RUN, 'ui-forbidden.json'), out);
+fs.writeFileSync(path.join(RUN, 'sample-table.md'), out.sample_table + '\n');
 if (args.json) console.log(JSON.stringify(out, null, 2));
 else {
-  log(`U4 declared ${out.U4} — ${out.declared_hits} hits ${JSON.stringify(out.declared.slice(0, 5))}`);
-  log(`U5 observed ${out.U5} — ${out.observed_digit_hits} digit glyphs, ${out.observed_bar_hits} nameplate bars, across ${out.observed.length} enemy regions`);
+  for (const c of G.checks) log(line(c));
   log(`artifacts: ${RUN}`);
 }
-process.exit(out.U4 === 'PASS' && out.U5 === 'PASS' && (!out.self_test || out.self_test.pass) ? 0 : 1);
+process.exit(out.self_test && !out.self_test.pass ? 1 : G.exit);

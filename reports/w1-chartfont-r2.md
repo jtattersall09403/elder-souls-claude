@@ -50,6 +50,21 @@ sha256 (`cf37ebb76ddc39c6…`).
 A dead copy of a defect is still the thing the next person pastes, which is why it went rather than
 being annotated.
 
+**Corroborated by an instrument I did not write.** `node tools/quests/critic-glyph-audit.mjs` — the
+critic's own tool, named in the predecessor's damage report — now reads:
+
+```
+0 of 11 chart tool(s) draw numbers from a sheared font.
+```
+
+It read **9 of 11** before W1-CHARTFONT and **2 of 11** after it. The remaining two were the
+handoffs; they are gone.
+
+Sixteen chart tools now import the shared module. Two of those sixteen —
+`tools/harness/critic-w1-16-r3-chart.mjs` and `tools/lore/w1-23-r4-chart.mjs` — were written by
+other agents *after* the fix and adopted it correctly without being asked. That is the shared module
+doing the job eleven retypes could not.
+
 ---
 
 ## 2. The figures

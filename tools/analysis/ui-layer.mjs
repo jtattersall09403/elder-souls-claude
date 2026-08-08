@@ -28,6 +28,7 @@ import path from 'node:path';
 import { PNG } from 'pngjs';
 import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, log, RUNS_DIR, ensureDir, writeJson } from '../lib/cli.mjs';
+import { grader, line, sampleTable } from '../lib/graded.mjs';
 
 const USAGE = `
 ui-layer.mjs — RI-UIX02 §C. The UI-layer pixel sweep and the declared/drawn reconciliation.
@@ -240,6 +241,10 @@ try {
 
     results.push({
       viewpoint: vp.id,
+      // W1-21 round 3: a viewpoint whose UI layer is EMPTY sampled nothing. `[].reduce(…) === 0`
+      // was the round-2 verdict's example of K2 passing on an empty set; `ui_layer_px` and
+      // `components` are the numbers that make "0 undeclared" mean anything, so they are graded.
+      measured: count > 0 && comps.length > 0,
       ui_layer_px: count,
       ui_layer_frac: +(count / (A.width * A.height)).toFixed(5),
       declared_rects: declared.length,

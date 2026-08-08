@@ -125,75 +125,96 @@ const SHEARED_ONLY = new Map([...shearedByPattern].filter(([p, ch]) => !AMBIGUOU
 // Axis furniture does not produce words.
 const ADVANCE_MULT = 6;
 
+// Patterns are compared as 25-bit INTEGERS, not strings. The first working version built a
+// 25-character string per candidate position and allocated a 25-element array beside it, i.e. two
+// allocations per pixel per scale — roughly nine million per image — and spent all its time in the
+// garbage collector: 164 images had not finished in ten minutes. Same algorithm, same answers,
+// integers instead of strings.
+const bitsOf = (s) => { let v = 0; for (let i = 0; i < s.length; i++) v = (v << 1) | (s[i] === '1' ? 1 : 0); return v >>> 0; };
+const SOUND_ALL = new Set([...soundByPattern.keys()].map(bitsOf));
+const SHEARED_ALL = new Set([...shearedByPattern.keys()].map(bitsOf));
+const SOUND_EV = new Map([...SOUND_ONLY].map(([p, ch]) => [bitsOf(p), ch]));
+const SHEARED_EV = new Map([...SHEARED_ONLY].map(([p, ch]) => [bitsOf(p), ch]));
+const KNOWN = (v) => SOUND_ALL.has(v) || SHEARED_ALL.has(v);
+
 export function classify(img, scales = [1, 2, 3]) {
   const { W, H, bpp, px } = img;
-  const at = (x, y) => { const i = (y * W + x) * bpp; return (px[i] << 16) | (px[i + 1] << 8) | px[i + 2]; };
+  // Pack to one integer per pixel once, so the hot loop is a single typed-array read.
+  const buf = new Int32Array(W * H);
+  for (let i = 0, j = 0; i < buf.length; i++, j += bpp) buf[i] = (px[j] << 16) | (px[j + 1] << 8) | px[j + 2];
+
   const sound = new Map(), sheared = new Map();
   let runs = 0, cellsSeen = 0;
+  const inkedRun = new Int32Array(64);   // reused per run; no allocation in the loop
 
   for (const s of scales) {
     const adv = ADVANCE_MULT * s;
     const maxX = W - GLYPH_W * s, maxY = H - GLYPH_H * s;
-    // consumed[y] holds the x past which this baseline has already been attributed to a run
-    const consumed = new Int32Array(H).fill(-1);
+    const consumed = new Int32Array(H).fill(-1);   // x past which this baseline is already attributed
 
-    // Read one cell as an ink mask given a fixed (ink, paper) pair. null if it uses any other colour.
+    // Read one cell as a 25-bit ink mask given a fixed (ink, paper) pair. -1 if any other colour.
     const cellMask = (x, y, ink, paper) => {
-      let m = '';
+      let m = 0;
       for (let j = 0; j < GLYPH_H; j++) {
-        for (let i = 0; i < GLYPH_W; i++) {
-          const c = at(x + i * s, y + j * s);
-          if (c === ink) m += '1';
-          else if (c === paper) m += '0';
-          else return null;
+        let row = (y + j * s) * W + x;
+        for (let i = 0; i < GLYPH_W; i++, row += s) {
+          const c = buf[row];
+          if (c === ink) m = (m << 1) | 1;
+          else if (c === paper) m <<= 1;
+          else return -1;
         }
       }
-      return m;
+      return m >>> 0;
     };
 
     for (let y = 0; y <= maxY; y++) {
       for (let x = 0; x <= maxX; x++) {
         if (x <= consumed[y]) continue;
-        // Seed: this cell must be two colours and a known glyph under one of the two assignments.
+        // Seed: the cell must use exactly two colours. Bail on the third.
         let cA = -1, cB = -1, bad = false;
-        const raw = new Array(GLYPH_W * GLYPH_H);
         for (let j = 0; j < GLYPH_H && !bad; j++) {
-          for (let i = 0; i < GLYPH_W; i++) {
-            const c = at(x + i * s, y + j * s);
-            if (cA < 0 || c === cA) { cA = c; raw[j * GLYPH_W + i] = 0; continue; }
-            if (cB < 0 || c === cB) { cB = c; raw[j * GLYPH_W + i] = 1; continue; }
+          let row = (y + j * s) * W + x;
+          for (let i = 0; i < GLYPH_W; i++, row += s) {
+            const c = buf[row];
+            if (cA < 0 || c === cA) { cA = c; continue; }
+            if (cB < 0 || c === cB) { cB = c; continue; }
             bad = true; break;
           }
         }
         if (bad || cB < 0) continue;
 
-        // Try both ink/paper assignments; take whichever yields the longer run.
-        let best = null;
-        for (const [ink, paper] of [[cB, cA], [cA, cB]]) {
+        // Try both ink/paper assignments; keep whichever yields the longer run of inked cells.
+        let bestN = 0, bestCells = 0;
+        for (let t = 0; t < 2; t++) {
+          const ink = t === 0 ? cB : cA, paper = t === 0 ? cA : cB;
           const seed = cellMask(x, y, ink, paper);
-          if (seed === null) continue;
-          if (!soundByPattern.has(seed) && !shearedByPattern.has(seed)) continue;
-          const cells = [seed];
+          if (seed < 0 || seed === 0 || !KNOWN(seed)) continue;
+          let nCells = 1, nInk = 1;
+          const tmp = [seed];
           for (let k = 1; ; k++) {
             const nx = x + k * adv;
             if (nx > maxX) break;
             const m = cellMask(nx, y, ink, paper);
-            // a blank cell is a legal space and keeps the run going; anything unknown ends it
-            if (m === null) break;
-            if (!/^0+$/.test(m) && !soundByPattern.has(m) && !shearedByPattern.has(m)) break;
-            cells.push(m);
+            if (m < 0) break;                    // an unexpected colour ends the run
+            if (m !== 0 && !KNOWN(m)) break;      // an unknown shape ends it; a blank is a space
+            nCells++;
+            if (m !== 0) { if (nInk < inkedRun.length) tmp.push(m); nInk++; }
           }
-          const inked = cells.filter((m) => !/^0+$/.test(m));
-          if (inked.length >= 3 && (!best || inked.length > best.inked.length)) best = { cells, inked };
+          if (nInk >= 3 && nInk > bestN) {
+            bestN = nInk; bestCells = nCells;
+            for (let i = 0; i < tmp.length; i++) inkedRun[i] = tmp[i];
+            inkedRun[tmp.length] = -1;
+          }
         }
-        if (!best) continue;
+        if (!bestN) continue;
 
         runs++;
-        consumed[y] = x + (best.cells.length - 1) * adv + GLYPH_W * s;
-        for (const m of best.inked) {
+        consumed[y] = x + (bestCells - 1) * adv + GLYPH_W * s;
+        for (let i = 0; i < inkedRun.length && inkedRun[i] !== -1; i++) {
+          const m = inkedRun[i] >>> 0;
           cellsSeen++;
-          const so = SOUND_ONLY.get(m); if (so !== undefined) sound.set(so, (sound.get(so) || 0) + 1);
-          const sh = SHEARED_ONLY.get(m); if (sh !== undefined) sheared.set(sh, (sheared.get(sh) || 0) + 1);
+          const so = SOUND_EV.get(m); if (so !== undefined) sound.set(so, (sound.get(so) || 0) + 1);
+          const sh = SHEARED_EV.get(m); if (sh !== undefined) sheared.set(sh, (sheared.get(sh) || 0) + 1);
         }
       }
     }
