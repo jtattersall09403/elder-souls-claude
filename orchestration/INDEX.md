@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `133ecef`: 719 tools, 153 reference
+so it cannot drift. Generated at `09d5de1`: 719 tools, 153 reference
 items, 61 pieces in flight.
 
 Its purpose is to stop 61+ concurrent agents each paying separately to discover the
@@ -1043,9 +1043,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-22-r3` | building | P2 per-event gain in band + P3 hive bar + P4 refusal guard fixture | `orchestration/status/W1-22-r3.json` `tools/audio/w1-22-r3-daynight.mjs` `game/src/audio/ambience.js` `game/data/audio/ambience/clay-moor.json` `game/data/audio/ambience/crimson-coast.json` `game/data/audio/ambience/deep-marshes.json` |
 | `W1-GAMEPAD` | reporting | Apply the engine.js:707 fix (move_deadzone 0.15 -> 0), delete-the-fix, run the opening leg | `orchestration/status/W1-GAMEPAD.json` `tools/gamepad/pad-run.mjs` `tools/gamepad/deadzone-deletefix.mjs` `tools/journey/gamepad-shim.mjs` `game/src/engine.js` `orchestration/NEXT-DISPATCH.md` |
 | `critic-w1-04-r6` | running | read RULES, INDEX, ARBITRATION s3, W1-04-r5 verdict, builder status | — |
-| `W1-22-r3` | building | P1 — build tools/audio/w1-22-r3-daynight.mjs and measure day-vs-night at HEAD | `orchestration/status/W1-22-r3.json` |
 | `judge-w1-22-r3` | ? | none - complete | `reports/packs/w1-22-r3-hard-judgement.md` `orchestration/status/judge-w1-22-r3.json` `reports/blog-feed.jsonl` |
 | `W1-26-r4` | measuring | finish the P9 red-team and the two journey-run still-window arms, then blog line + commit | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `critic-w1-22-r2` | done | DONE. Verdict written and validated; blog line appended; committing declared files with gi | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/blog-feed.jsonl` `reports/content-stats.json` |

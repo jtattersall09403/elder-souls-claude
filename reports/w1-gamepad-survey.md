@@ -126,11 +126,19 @@ found · confirm: where I am · back: close"*.
 
 `--leg locomote`, 60 fixed frames each, one pad poll per sim frame.
 
+Measured on **the body the pad just created**, standing where the opening left her (the
+writ-house). The venue is recorded in the artifact as `locomotion_venue`; the tool steps out to
+open ground and says so if the room is too small to hold a 60-frame sprint, which it was not here.
+
 | | metres over 60 frames |
 |---|---|
 | nothing held (**null control**) | **0.00** |
-| left stick full forward | **2.24** |
-| left stick + index 1 held | **4.67** (2.08×) |
+| left stick full forward | **3.20** |
+| left stick + index 1 held | **4.67** (1.46×) |
+
+(`3.20 m / 60 f@60 = 3.2 m/s = jog_mps`; `4.67 m/s` against `sprint_mps` 5.0, the shortfall being
+the acceleration ramp inside the window. The standalone run from the province boot position gave
+2.24 m / 4.67 m — same verdict, different ground.)
 
 **The roll/sprint discriminator is read as an action, not a distance**, because a roll and a
 sprint both move you and distance alone cannot tell them apart. `getInputEdges()` is the A-JRN7
@@ -141,7 +149,22 @@ index 1 tapped  5 frames  ->  [roll:down]
 index 1 held   20 frames  ->  [sprint:down]
 ```
 
-Never both, never neither. **This is only measurable because the run interleaves one pad poll per
+Never both, never neither.
+
+**And I broke the discriminator on purpose and watched it go red.** `--break-gate` sets the index-1
+hold gate from 12 frames to 1 in the running world, so a tap that should roll becomes a sprint:
+
+```
+TEARDOWN --break-gate: hold_gate[1].frames 12 -> 1
+  index 1 tapped  5 frames  ->  [sprint:down]      <- was [roll:down]
+  index 1 held   20 frames  ->  [sprint:down]
+FAIL L3  the roll/sprint discriminator is wrong: tap gave [sprint:down], hold gave [sprint:down]
+```
+
+`L0`, `L1` and `L2` stayed green throughout — the teardown breaks exactly the check it targets and
+nothing else, which is what stops it being a second copy of the experiment.
+
+**This is only measurable because the run interleaves one pad poll per
 sim frame.** `beforeTick` polls the pad on the rAF tick, not inside `stepOnce()`, so
 `gamepad(s); stepFrames(20)` gives the router *one instant* and a twelve-frame hold gate can never
 fire. `gamepad(s); stepFrames(1)` × 20 is what a real pad gets at 60 Hz. RULES 8, in the
@@ -163,38 +186,48 @@ they were the collision solver sliding a body along a surface. Publishing them a
 would have been exactly the mistake this project keeps paying for. Rows are now independent and
 obstruction is flagged explicitly; in the published sweep **0 of 45 rows were obstructed**.
 
-### The curve (forward bearing, steady-state window, 60→120 frames of a single hold)
+### The curve as it now ships (forward bearing, steady-state window: frames 60→120 of one hold)
+
+**45 rows, 0 of them obstructed.** `model m/s` is `combat.player.speedMps` — what the locomotion
+model says; `world m/s` is the displacement the body actually achieved. They agree to four
+decimals at every row, which is itself the check that nothing downstream is quietly eating motion.
 
 | stick | rescaled `move_mag` | model m/s | world m/s | gait |
 |---:|---:|---:|---:|---|
-| 0.05 | 0.000 | 0.000 | **0.000** | idle |
-| 0.10 | 0.000 | 0.000 | **0.000** | idle |
-| 0.14 | 0.000 | 0.000 | **0.000** | idle |
-| 0.16 | 0.013 | 0.000 | **0.000** | — |
-| 0.20 | 0.065 | 0.000 | **0.000** | — |
-| 0.25 | 0.130 | 0.000 | **0.000** | — |
-| 0.27 | 0.156 | 0.567 | **0.567** | walk |
-| 0.30 | 0.195 | 0.708 | **0.708** | walk |
-| 0.40 | 0.325 | 1.181 | **1.181** | walk |
-| 0.45 | 0.390 | 1.417 | **1.417** | walk |
-| 0.55 | 0.519 | 1.889 | **1.889** | walk |
-| 0.70 | 0.714 | 3.200 | **3.200** | run |
-| 0.85 | 0.909 | 3.200 | **3.200** | run |
-| 0.92 | 1.000 | 3.200 | **3.200** | run |
-| 1.00 | 1.000 | 3.200 | **3.200** | run |
+| 0.05 | 0.000 | 0.000 | **0.0000** | idle |
+| 0.10 | 0.000 | 0.000 | **0.0000** | idle |
+| 0.14 | 0.000 | 0.000 | **0.0000** | idle |
+| **0.16** | 0.013 | 0.047 | **0.0472** | walk |
+| **0.20** | 0.065 | 0.236 | **0.2361** | walk |
+| **0.25** | 0.130 | 0.472 | **0.4723** | walk |
+| 0.27 | 0.156 | 0.567 | **0.5667** | walk |
+| 0.30 | 0.195 | 0.708 | **0.7084** | walk |
+| 0.40 | 0.325 | 1.181 | **1.1806** | walk |
+| 0.45 | 0.390 | 1.417 | **1.4168** | walk |
+| 0.55 | 0.519 | 1.889 | **1.8890** | walk |
+| 0.70 | 0.714 | 3.200 | **3.2000** | run |
+| 0.85 | 0.909 | 3.200 | **3.2000** | run |
+| 0.92 | 1.000 | 3.200 | **3.2000** | run |
+| 1.00 | 1.000 | 3.200 | **3.2000** | run |
 
-- **C2 — it is not a switch.** Six distinct speeds below saturation. At 0.45 the body walks
-  1.417 m/s against 3.200 m/s at full tilt.
+The three bold rows are the ones §5's fix recovered. **Before it, all three read 0.0000** and the
+first thing the stick did was jump straight to 0.567 m/s.
+
+- **C2 — it is not a switch.** **Nine** distinct speeds below saturation (six before the fix).
+  At 0.45 the body walks 1.417 m/s against 3.200 m/s at full tilt.
 - **C3 — monotonic** across twelve deflections.
 - **C4 — outer saturation at 0.92 is real:** 0.92 and 1.00 are both 3.200 m/s.
 - **C5 — RULES 8, inside the hold.** Three consecutive windows (0–30, 30–60, 60–120) in every
-  single hold. The 30–60 and 60–120 windows agree within 10% at all 27 live rows. **The 0–30
+  single hold. The 30–60 and 60–120 windows agree within 10% at all **33** live rows. **The 0–30
   window is slower at every deflection** — the body accelerating and the bounded-turn law swinging
   it onto the bearing — and a single cumulative average would have hidden that and put a spurious
   knee at the bottom of the curve.
 - **C6 — DIRECTION.** Three bearings (0°, +45°, −90°) × 15 deflections, on **two independent
-  observables**: the latched move vector (pure input layer, which nothing in the world can bend)
-  and the body's own heading in open ground. **Worst error on either: 0.00°.**
+  observables**: the latched move vector (pure input layer, which nothing in the world can bend —
+  36 rows) and the body's own heading in open ground (36 rows). **Worst error on either: 0.00°.**
+- **C7 — the regression guard.** `move_deadzone` reads 0 on this tree and forcing it to 0 changes
+  nothing, which is the two arms being identical *because the fix is in*. The historical A/B lives
+  in `deadzone-deletefix.mjs`, §6.
 
 ---
 
@@ -312,7 +345,25 @@ load-sensitive; **no wall-clock timing figure is published in this piece**, deli
 
 ---
 
-## 8. What I did not do
+## 8. Reproducing every number here
+
+`reports/*.json` is gitignored by deliberate project policy (`reports/.gitignore`: run artifacts
+are "evidence for a verdict, not source", reproducible from the tools). Every figure in this
+survey is therefore reproduced by re-running the tool, not by reading a committed file:
+
+```
+node tools/gamepad/pad-run.mjs --leg all          # §1-§4, §7   24 pass 0 fail
+node tools/gamepad/pad-run.mjs --leg locomote --break-gate   # §3 teardown, L3 must go RED
+node tools/gamepad/deadzone-deletefix.mjs         # §6           5 pass 0 fail
+node tools/journey/gamepad-shim.mjs --self-test   # §0, §6      15/15
+node tools/journey/gamepad-shim.mjs --self-test --break-direction
+```
+
+The two teardown invocations are expected to FAIL, and that is the point of them.
+
+---
+
+## 9. What I did not do
 
 - **I did not walk from the writ-house out into the open province on the pad in one continuous
   run.** The opening ends where the game's opening puts you — inside the writ-house — and the
