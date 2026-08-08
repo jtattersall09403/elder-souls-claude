@@ -220,11 +220,18 @@ export async function runControl(spec) {
   // ---- support accounting (case 3) ----------------------------------------------------------
   // `--break=support` disables it, which is exactly the W1-13 hole: 0 vs 0 then reads as a
   // legitimate agreement failure instead of as a measurement with no subject.
+  //
+  // EVERY arm must have a population, not only the intact one. W1-13's rested arm had 52 people
+  // in it and its control had none: the value differed (25 vs 0) and the clause passed, and the
+  // difference was between a town and an empty set. `supportArms: 'intact'` narrows this to the
+  // intact arm for the rare control whose whole point is that breaking it empties the
+  // population — and a caller that narrows it must say why, in `support_note`.
   const supportChecked = !BREAKS.has('support');
+  const scope = spec.supportArms === 'intact' ? [intact].filter(Boolean) : arms;
   const unsupported = supportChecked
-    ? arms.filter((a) => a.support !== null && a.support < minSupport).map((a) => a.arm)
+    ? scope.filter((a) => a.support !== null && a.support < minSupport).map((a) => a.arm)
     : [];
-  const intactUnsupported = supportChecked && intact && intact.support !== null && intact.support < minSupport;
+  const intactUnsupported = supportChecked && unsupported.length > 0;
 
   // ---- agreement (case 1) -------------------------------------------------------------------
   const distinct = new Set(arms.map((a) => a.canon));
@@ -266,8 +273,10 @@ export async function runControl(spec) {
     why = `an arm threw: ${errored}`;
   } else if (intactUnsupported) {
     verdict = VERDICT.VACUOUS;
-    why = `the intact arm ranged over ${intact.support} unit(s) (minimum ${minSupport}). ` +
-      `Whatever the arms did, they did it to an empty set — this is the W1-13 "roster {} in every arm" shape.`;
+    why = `arm(s) ${unsupported.join(', ')} ranged over fewer than ${minSupport} unit(s) ` +
+      `(${scope.map((a) => `${a.arm}=${a.support}`).join(', ')}). Whatever these arms did, they did it to an ` +
+      `empty set — this is the W1-13 "the control contained zero people" shape, and no difference between ` +
+      `an inhabited arm and an empty one is evidence about the mechanism.`;
   } else if (armsAgree) {
     verdict = VERDICT.INERT;
     why = `the fully-broken arm produced the same ${spec.metric || 'value'} as the intact arm ` +

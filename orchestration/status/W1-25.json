@@ -12,7 +12,12 @@
     "composition.seam.crossings",
     "composition.matrix.coverage"
   ],
-  "judged_by": ["RI-CMP01", "RI-EXP02", "RI-EXP03", "RI-EXP06"],
+  "judged_by": [
+    "RI-CMP01",
+    "RI-EXP02",
+    "RI-EXP03",
+    "RI-EXP06"
+  ],
   "files_claimed": [
     "tools/composition/",
     "tools/experience/sabotage.mjs",
@@ -33,12 +38,28 @@
     "docs/shots/",
     "orchestration/status/W1-25.json"
   ],
-  "files_touched": ["orchestration/status/W1-25.json"],
+  "files_touched": [
+    "orchestration/status/W1-25.json",
+    "tools/experience/lib/sabotage.mjs",
+    "tools/experience/sabotage.mjs",
+    "tools/experience/sabotage-cases.mjs",
+    "reports/experience/w1/sabotage.json"
+  ],
   "progress": [
     "Read RULES.md, INDEX.md, PLAN.md W1-25, RI-CMP01, RI-EXP02, RI-EXP06.",
     "CONFIRMED ABSENT (rule 24 - must build): tools/composition/ entire directory, corpus/95-experience/RI-CMP01.cells.json, corpus/95-experience/RI-EXP06.probes.json, reports/composition/.",
-    "Existing tools/experience/ has 12 files (beat-*, ending-*, isolation-check, log-lint, ponr-probe, session-run, aftermath-diff, lib/). anecdote-verify.mjs, recall-run.mjs, breakage-probe.mjs, pbrule-audit.mjs, probes-from-md.mjs, matrix-scan.mjs, matrix-probe.mjs, cells-from-md.mjs ALL ABSENT."
+    "Existing tools/experience/ has 12 files (beat-*, ending-*, isolation-check, log-lint, ponr-probe, session-run, aftermath-diff, lib/). anecdote-verify.mjs, recall-run.mjs, breakage-probe.mjs, pbrule-audit.mjs, probes-from-md.mjs, matrix-scan.mjs, matrix-probe.mjs, cells-from-md.mjs ALL ABSENT.",
+    "DONE (1/4) THE SABOTAGE CONTROL. tools/experience/lib/sabotage.mjs is a general facility: caller supplies measure() + a list of breakable factors; the facility enumerates the full factorial, accounts for support, and FAILS WHEN THE ARMS AGREE. Five failing verdicts: INERT (arms agree), MASKED (moves only when all k guards are broken - no single-factor effect), VACUOUS (an arm ranged over zero units), UNDERPOWERED, WRONG_DIRECTION.",
+    "--self-test: 6/6 synthetic verdicts correct AND 3/3 deliberately injected defects in the facility itself caught (--break=comparator|support|factorial each makes the suite go red; exit 0 only when it does).",
+    "--cases: 8/8. Replays the three real failures from artifacts on disk. w1-04 collision pre-fix verb -> INERT (67==67 in 5 towns), shipped verb -> OK (67->0). w1-souls one-factor delete-the-fix -> INERT twice, the 2x2 factorial -> MASKED naming {identity,boundary} as the minimal breaking set. w1-13 night-roster -> VACUOUS (control arm roster_n 0), and the merchants clause from the SAME run -> OK (115 shops in both arms)."
   ],
-  "next_step": "Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (the general control facility) first, since everything else is judged through it.",
-  "not_done": ["everything - just started"]
+  "next_step": "Build RI-CMP01: tools/composition/cells-from-md.mjs -> corpus/95-experience/RI-CMP01.cells.json, then matrix-scan.mjs (static claims from game/data) and matrix-probe.mjs (A/B forks through the sabotage facility).",
+  "not_done": [
+    "RI-CMP01 matrix (cells/scan/probe)",
+    "RI-EXP02 anecdote trace + recall + verify",
+    "RI-EXP06 register + breakage probes + PB-RULE audit + durability compare",
+    "RI-EXP03 session shape histogram",
+    "blog line",
+    "docs/shots image"
+  ]
 }
