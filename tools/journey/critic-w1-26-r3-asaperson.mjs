@@ -294,6 +294,51 @@ try {
     fail('A6', `after creation the body moved ${outWalk.toFixed(2)} m; textFocused=${dbg1 ? dbg1.textFocused : 'n/a'}`, { m: Number(outWalk.toFixed(3)), dbg1 });
   }
 
+  // ---- A7 — the world after the writ: walk, sprint, roll, and every screen ------------------
+  //
+  // The other half of the text-focus fix. A companion probe tried to measure this by reading the
+  // input pipeline under `stepFrames` and could not: `pressed` is an edge cleared by the next
+  // latch and `moveX/moveY` are consumed by the step, so a read taken after the step returns
+  // zero on a healthy build. Measured here by OUTCOME instead, under rAF, where a player is.
+  const world = { };
+  const travel = async (keys, frames) => {
+    const a = await pos();
+    for (const k of keys) await h.page.keyboard.down(k);
+    const adv = await advance(frames, 90000);
+    for (const k of keys) await h.page.keyboard.up(k);
+    await advance(2, 20000);
+    const b = await pos();
+    return { m: Number(Math.hypot(b[0] - a[0], b[2] - a[2]).toFixed(3)), frames: adv };
+  };
+  world.walk = await travel(['KeyW'], 40);
+  world.sprint = await travel(['ShiftLeft', 'KeyW'], 40);
+  world.strafe = await travel(['KeyD'], 25);
+  world.back = await travel(['KeyS'], 25);
+  world.roll = await travel(['Space'], 25);
+  // per-frame travel, so the two gaits are comparable even when the frame budget differs
+  const perFrame = (r) => (r.frames ? Number((r.m / r.frames).toFixed(4)) : 0);
+  world.walk_per_frame = perFrame(world.walk);
+  world.sprint_per_frame = perFrame(world.sprint);
+  const screens = [];
+  for (const key of ['KeyM', 'Escape']) {
+    const before = await h.page.evaluate(() => (window.__ENGINE.ui ? window.__ENGINE.ui.mode : null));
+    await press(key, 4);
+    const opened = await h.page.evaluate(() => (window.__ENGINE.ui ? window.__ENGINE.ui.mode : null));
+    await press('Escape', 4);
+    const closed = await h.page.evaluate(() => (window.__ENGINE.ui ? window.__ENGINE.ui.mode : null));
+    screens.push({ key, before, opened, closed, opened_ok: opened !== 'world', closed_ok: closed === 'world' });
+  }
+  world.screens = screens;
+  world.textFocused = (await h.page.evaluate(() => window.__ENGINE.real.getInputState())).textFocused;
+  out.checks.world_after_writ = world;
+  const gaitsOk = world.walk.m > 0.5 && world.sprint_per_frame > world.walk_per_frame * 1.05;
+  const screensOk = screens.every((s) => s.opened_ok && s.closed_ok);
+  if (gaitsOk && world.strafe.m > 0.2 && world.back.m > 0.2 && screensOk && world.textFocused === false) {
+    pass('A7', `after the writ: walked ${world.walk.m} m, sprinted ${world.sprint_per_frame} m/frame against a walk of ${world.walk_per_frame}, strafed ${world.strafe.m} m, backed ${world.back.m} m, ${screens.length} screen(s) opened and closed, textFocused=false`, world);
+  } else {
+    fail('A7', `walk ${world.walk.m} m, sprint/frame ${world.sprint_per_frame} vs walk/frame ${world.walk_per_frame}, strafe ${world.strafe.m}, back ${world.back.m}, screens ${JSON.stringify(screens)}, textFocused=${world.textFocused}`, world);
+  }
+
   out.conditions.loadavg_at_end = loadavg();
   out.conditions.total_seconds = stamp();
   out.conditions.page_errors = h.errors.slice(0, 8);

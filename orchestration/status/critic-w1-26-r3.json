@@ -4,8 +4,19 @@
   "piece": "W1-26 round 3",
   "state": "running",
   "started_at": "2026-08-08T05:08:00Z",
-  "next_step": "read INDEX, NEXT-DISPATCH P, W1-26-r2 verdict, W1-26-r3 status; then run opening-play.mjs to completion",
-  "files_touched": [],
+  "next_step": "finish A7/H/D runs, run jrn09-exchange + name-entry, write verdict",
+  "files_touched": [
+    "orchestration/status/critic-w1-26-r3.json",
+    "tools/journey/critic-w1-26-r3-asaperson.mjs",
+    "tools/journey/critic-w1-26-r3-leak.mjs",
+    "tools/journey/critic-w1-26-r3-input.mjs",
+    "tools/journey/critic-w1-26-r3-consume.mjs",
+    "docs/shots/2026-08-08-w1-26-r3-critic-01-the-title-play-sh-serves.png",
+    "docs/shots/2026-08-08-w1-26-r3-critic-02-the-hold-a-body-in-a-world.png",
+    "docs/shots/2026-08-08-w1-26-r3-critic-03-a-pangram-in-the-name-field.png",
+    "docs/shots/2026-08-08-w1-26-r3-critic-04-the-writ-stamped.png",
+    "docs/shots/2026-08-08-w1-26-r3-critic-05-standing-in-the-world-after-creation.png"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-26-r3.md",
     "corpus/90-verdicts/wave1/W1-26-r3.json",
@@ -14,6 +25,18 @@
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-26-r3"],
-  "contention_at_start": "GO — 1 browser instance, load 7.04/4 cores = 1.76 per core"
+  "redundant_with": [
+    "W1-26-r3"
+  ],
+  "contention_at_start": "GO \u2014 1 browser instance, load 7.04/4 cores = 1.76 per core",
+  "findings_so_far": [
+    "opening-play.mjs REPRODUCED 10 pass / 0 fail on a quiet box, 3.70 sim fps at title / 5.42 in world, loadavg 5.2-7.8. P7-P10 are now independently verified.",
+    "A: a whole character made through ./play.sh in play mode, no flags, no harness verbs: 11 nodes, 142.93 s creation, 193.93 s total, 0 page errors. The pangram Jackdaws-Love-My-Big-Sphinx-Of-Quartz was recorded verbatim.",
+    "B: 5 throws from 5 places (incl. _censusFinish AFTER the writ) - none reached a drawn row; fault held all 5; my own teardown went red 2/2.",
+    "B residual: ONE authored refusal line for every fault, drawn at nodes where it does not fit (writ.stamp: \"Not in that box\").",
+    "E/P9 GAP: the imperative test is start-anchored. Six directional lines that mean \"go up\" pass it, and so does the writ.stamp teaching clause the r2 verdict named as the opening's one tutorial - which is UNCHANGED at r3 and IS drawn.",
+    "r2 section 6 HUD-on-the-title defect UNFIXED: 5, LIGHT, Spark-Da... drawn on the title before any character exists (my own opening-play artifact).",
+    "G verified at base e00e6fe: 39 failing verdict files at the base, 15 at HEAD. Builder's \"pre-existing, not mine\" claim is TRUE and conservative.",
+    "F: m4_clause1 is recorded led.ok() at 1.03 s against its own threshold_s of 60 - a driver-paced number filed as a passing measurement."
+  ]
 }

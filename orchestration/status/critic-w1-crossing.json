@@ -3,11 +3,16 @@
   "role": "critic",
   "item": "W1-CROSSING",
   "round": 1,
-  "state": "started",
+  "state": "walked-it",
   "started_at": "2026-08-08T05:44:47Z",
-  "next_step": "read RULES/INDEX/NEXT-DISPATCH P.4+W, W1-CROSSING.json, W1-ROAD-JOIN-r1.md; then contention gate; then walk Stormhold->Lilmoth independently",
+  "next_step": "kill-probe (A), regain rebuild (D), null replacement (E), deletefix reversed (C), reverse+soulrest walks (G/D), then the verdict",
   "files_touched": [
-    "orchestration/status/critic-w1-crossing.json"
+    "orchestration/status/critic-w1-crossing.json",
+    "tools/world/critic-crossing-walk.mjs",
+    "tools/world/critic-crossing-grade.mjs",
+    "tools/world/critic-crossing-probe.mjs",
+    "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
+    "reports/critic-w1-crossing/"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-CROSSING-r1.md",
@@ -20,5 +25,7 @@
   "redundant_with": [
     "w1-road-join"
   ],
-  "notes": []
+  "notes": [],
+  "headline": "INDEPENDENTLY WALKED: 6,646.7 m, 199,433 frames, 55.398 in-world min, arrived at Lilmoth (2765.6, 5028.8) — identical to the published figures to the decimal, with the critic own per-frame counter agreeing (walked 6646.7, naive 6646.7, max step 0.295 m, 0 teleports).",
+  "contention": "node tools/contention.mjs --gate returned exit 3 at 05:44 and 05:46 (load 4.2-4.9 per core). I DID NOT PROCEED; I did offline work until it returned GO at 05:49 (1.92 per core) and started the walk then. Wall-clock timings are recorded per run in the artifacts and are NOT published as performance figures."
 }

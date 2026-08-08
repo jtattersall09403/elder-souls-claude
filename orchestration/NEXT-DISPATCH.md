@@ -44,8 +44,16 @@ known to be broken, and what is simply not built yet — and tell them.
    action names: `KeyM`, `Digit3` ×1–5, `Escape` out of each, pad button 9 then 15. Controls-first
    verified (an unbound `KeyQ` moves nothing), reproduced twice, re-stamped at a later HEAD. That
    is the half of this item about *reaching* the screens; whether what is on them is drawn well is
-   still open, and **FD6 has been red across two rounds** (114, now 99.9, all 28 captures over) with
-   no verdict ever naming it.
+   still open, and **FD6 has been red across two rounds** (114, then 99.9, all 28 captures over).
+   Round 1 was silent on it; **round 2 named it and discussed it at length** (§1.2, filed as an
+   arbitration question) but could not resolve it, because the tool compared a 0–255 luma overshoot
+   against 40 while `RI-UIX06` §F specifies ΔE. Round 3 converted it and it is a **hard fail**:
+   worst edge ΔE2000 **58.291**, 14/14 captures over 8, **31,322 of 98,659 graded edge pixels over
+   3**, which caps that item's fidelity at 2.
+
+   (An earlier version of this line said no verdict had ever named FD6. That was wrong — a blog
+   writer checked `W1-21-r2.md` rather than taking my word for it and found the discussion. Rule 18
+   again: the verdict is authoritative and my summary of it is not.)
 4. **You can walk between regions and the ground is there.** **MET.** A body walked Stormhold to
    Lilmoth: **6,646.7 m, 199,433 frames, 55.398 in-world minutes**, settlement collision ON, mean
    ground speed 1.9991 m/s, worst deviation from the road 1.39 m of a 6 m carriageway, **zero
