@@ -417,7 +417,7 @@ async function legOpening(prof) {
       const panel = m && m.panel_px && m.open !== false ? { w: m.panel_px[0], h: m.panel_px[1] } : null;
       const W = e.renderer.ui.canvas.width, Hh = e.renderer.ui.canvas.height;
       const controls = window.__HARNESS.touchLayout() || [];
-      if (!panel) return { panel: null, controls: controls.map((c) => c.action) };
+      if (!panel) return { panel_rect: null, controls_drawn: controls.map((c) => c.action), overlapping: [] };
       // `render/ui.js`: x0 = round(W*0.10); y0 = H - panelH - round(H*0.045).
       const x0 = Math.round(W * 0.10), y0 = Hh - panel.h - Math.round(Hh * 0.045);
       const rect = { x0, y0, x1: x0 + panel.w, y1: y0 + panel.h };
