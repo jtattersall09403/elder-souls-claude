@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2c5321f`: 667 tools, 153 reference
+so it cannot drift. Generated at `7feda0d`: 669 tools, 153 reference
 items, 53 pieces in flight.
 
 Its purpose is to stop 53+ concurrent agents each paying separately to discover the
@@ -231,7 +231,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 23
+### `tools/experience/` — 24
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/anecdote-trace.mjs` — `experience.memory.anecdote`.
@@ -240,6 +240,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/beat-extract.mjs` — RI-EXP01 step 2: scan a session trace for the beat signatures.
 - `tools/experience/beats-from-md.mjs` — RI-EXP01 §D (prose) -> RI-EXP01.beats.json (machine-readable).
 - `tools/experience/breakage-probe.mjs` — RI-EXP06 Steps 1 and 2: the register, run, and diffed against its own past.
+- `tools/experience/critic-w1-25-chart.mjs` — ONE PICTURE FOR THE W1-25 VERDICT.
 - `tools/experience/critic-w1-25.mjs` — GRADING THE SABOTAGE FACILITY BY USING IT, NOT BY READING IT.
 - `tools/experience/ending-diff.mjs` — RI-EXP05 "Comparison method" Step 3, executed as far as this build allows.
 - `tools/experience/ending-specificity.mjs` — RI-EXP05 "Comparison method" Step 4.
@@ -257,7 +258,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 218
+### `tools/harness/` — 219
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -449,6 +450,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-16-r3-chart.mjs` — THE PICTURE FOR W1-16 ROUND 3: the sword in your hand used to weigh nothing.
 - `tools/harness/w1-16-r3-live.mjs` — W1-16 ROUND 3, the stepping half.
 - `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
+- `tools/harness/w1-16-r4-chart.mjs` — THE PICTURE FOR W1-16 ROUND 4: quit during a boss fight, resume, and your dodge came back shorter.
 - `tools/harness/w1-16-r4-live.mjs` — W1-16 ROUND 4, the stepping half.
 - `tools/harness/w1-16-r4-offline.mjs` — W1-16 ROUND 4, the half that needs no browser.
 - `tools/harness/w1-21-r2-deletefix.mjs` — DELETE-THE-FIX for W1-21 round 2's AR-2 change (RULES 6, and RULES 17 for the index check).

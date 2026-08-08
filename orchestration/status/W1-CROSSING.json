@@ -132,5 +132,26 @@
     "I did NOT re-walk soulrest-blackrose (the drowning leg) as a body. The evidence that the steering fix closes it is (a) that leg's ground is clean on every measure this instrument takes, and (b) the delete-the-fix 2x2 shows the same steering defect is worth 550.1 m against 1,333 m on the crossing. A direct re-run of tools/world/w1-01-r4-soulrest-leg.mjs is the one measurement W1-05 should take before treating the drowning as closed.",
     "I did NOT take a live in-engine screenshot of the viaduct from a placed camera; the ridge picture is a drawn long-section from field.js and roads.json.",
     "I did NOT run tools/run-all.mjs (rule 9's aggregation). I ran boot-check, check-data, road-through-building and scale-audit, all green."
-  ]
+  ],
+  "consumption_RI_MTH07": {
+    "artifact": "reports/w1-crossing/consumption.json",
+    "C1_road_is_read": "moving 17 points of stormhold-helstrom 25 m sideways moved the walking body 15.65 m (track vs track at the same frame). PASS.",
+    "C2_null": "moving a leg the crossing does not use moved the body 0.72 m. The intended noise-floor arm is INVALID in this run (see the flaw below); C2 currently rests on the 22x separation, not on a measured floor.",
+    "C3_bridge_is_read": "a sideways push on the 471 m viaduct is held at 3.35 m from the centreline with the eight spans declared, and reaches 11.04 m \u2014 21.94 m below the deck \u2014 with deck_spans deleted. PASS.",
+    "C4_reversible": "restoring the model restores 3.35 m exactly. PASS.",
+    "C5_regain": "a body put 25 m off the road recovered 2 of 10 shoves \u2014 2 of 2 on flat ground and 0 on the Valus Ridge skirt, which is G3-REGAIN arriving from the other direction. Shoves 4-10 were not independent (the body was stuck in one place), so the honest count is 2 of 3 independent trials.",
+    "my_own_flaws_found_and_reported": [
+      "Run 1 threw: OLD_PURSUE was referenced in the regain arm and never declared in that file.",
+      "Run 1 measured P1 by END POSITION, which reads 2.15 m for a 25 m perturbation because a bump that returns to the original line moves the body in the MIDDLE. Now measured track-against-track at the same frame: 15.65 m.",
+      "The arms were not independent: hazard attrition carried across them, so by the fourth 400 m walk the body had died and the 'repeat with nothing changed' arm read 4,128.93 m. The tool now pins HP identically in every arm; the shipped artifact's REPEAT arm is invalid and labelled so.",
+      "P3's shoves 4-10 re-measure one stuck body rather than ten trials."
+    ]
+  },
+  "acceptance": {
+    "1_worst_grade_every_leg_under_the_limit": "MET, and it was met before I touched anything: worst road gradient 24.27 deg against 40, zero slope-gate refusals on any centreline. The premise that a 57.5 deg road needed fixing was wrong; the number was a slopeAt() reading beside a viaduct.",
+    "2_body_that_leaves_the_road_regains_it": "PARTIALLY MET. 2 of 2 independent trials on ground the census clears; 0 on the Valus Ridge skirt, which the census flags. Over the completed crossing the body spent ZERO frames off the road.",
+    "3_completed_crossing_with_three_numbers": "MET. 6,646.7 m, 199,433 frames, 55.398 in-world minutes.",
+    "4_consumption": "MET for both models, with four self-reported flaws in my own instrument.",
+    "5_delete_the_fix": "MET, run as a 2x2, teardown watched going red and reproducing the published 550.1 m at (2153.7, 1197.8) exactly."
+  }
 }

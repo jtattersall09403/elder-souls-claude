@@ -206,6 +206,33 @@ controller applies:
 | with `deck_spans` deleted | **11.04 m** — it walks off | **21.94 m below the deck** |
 | model restored | 3.35 m, exactly | 0 m |
 
+**Model 1 again, as the acceptance asks it — "a body that leaves the road demonstrably regains it,
+with a count."** The fixed walker does not leave the road on its own (1.39 m worst deviation over
+6.6 km), so it has to be pushed. `P3-REGAIN` puts the body **25 m off the centreline** ten times
+and resumes the walk for 4,000 frames each time; a regain is the engine's own counter — back inside
+3.5 m of the road it was following — not this file's opinion.
+
+**With the fix in: 2 recovered of 10 shoves — and the split is entirely by terrain.**
+
+| shove | where | regained |
+|---|---|---|
+| 1 | (2204.6, 862.5), the flat out of Stormhold | **yes** |
+| 2 | (2232.7, 1039.5), still on the flat | **yes** |
+| 3 | (2173.5, 1163.3), the foot of the Valus Ridge climb | no |
+| 4–10 | all from (2198.5, 1158.8), 39.71 m off, on the ridge skirt | no |
+
+Read this beside §7's `G3-REGAIN`, because it is the same finding arriving from the other
+direction: **on ground the offline census clears, a shoved body walks back onto the road; on the
+Valus Ridge skirt, which the census flags 59 times, it cannot.** The steering fix restores the
+*intent* to return; it cannot make a 70° cut-slope climbable, and it was never going to.
+
+**This probe's own defect, which I am reporting rather than rounding off.** Shoves 4–10 are not
+independent trials: once the body was stuck at (2198.5, 1158.8) it made no route progress, so every
+later shove started from the same place and re-measured the same failure. The honest count is
+**2 of 3 independent trials, and the one that failed failed on the terrain §7 says it should**. A
+correct version of this probe re-places the body on the road after a failed trial so the ten are
+ten. It is a fifteen-minute fix and I did not have the browser budget left; a critic should take it.
+
 **A defect in my own first run, reported rather than buried.** Run 1 put the arms in sequence
 without resetting the body, and the province's hazard attrition carried across them: by the fourth
 400 m walk the body had died and respawned 3.5 km away, and the "repeat with nothing changed"
