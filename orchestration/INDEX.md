@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `60b86ad`: 654 tools, 153 reference
-items, 52 pieces in flight.
+so it cannot drift. Generated at `8b1295b`: 655 tools, 153 reference
+items, 53 pieces in flight.
 
-Its purpose is to stop 52+ concurrent agents each paying separately to discover the
+Its purpose is to stop 53+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -677,7 +677,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 114
+### `tools/world/` — 115
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -738,6 +738,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r3a.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r3b.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
+- `tools/world/crossing-consumption.mjs` — **no header comment**
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
@@ -784,7 +785,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r3-exterior.mjs` — W1-04 round 3 — THE EXTERIOR HALF, MEASURED.
 - `tools/world/w1-04-r4-join.mjs` — W1-04 round 4 — THE JOIN: can a building's outside contain its inside?
 - `tools/world/w1-04-r4-live.mjs` — W1-04 round 4 — THE LIVE ARM: is the join a thing the RUNNING GAME does?
-- `tools/world/w1-04-r4-shots.mjs` — W1-04 round 4 — THE LIVE ARM AND THE TWO PICTURES.
+- `tools/world/w1-04-r4-shots.mjs` — W1-04 round 4 — THE TWO PICTURES.
 - `tools/world/w1-04-r4-vp04.mjs` — W1-04 round 4 — WHERE VP04 SHOULD STAND.
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
@@ -795,7 +796,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **148 tools have no header comment**, so nobody can tell what they do without
+> **149 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -969,17 +970,18 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-04-r4` | live arm running (S3 distinctness sweep); everything else green | one browser: live join proof + signature re-take + two pictures (a building whose outside  | `game/src/harness/api.js` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `orchestration/status/W1-04-r4.json` `reports/w1-04-r4/join.json` |
+| `critic-w1-23-r4` | writing | shelf/crowding run + screenshot in flight; then blog line and commit | `orchestration/status/critic-w1-23-r4.json` `corpus/90-verdicts/wave1/W1-23-r4.md` `corpus/90-verdicts/wave1/W1-23-r4.json` `tools/lore/critic-w1-23-r4-onscreen.mjs` `tools/lore/critic-w1-23-r4-shelf.mjs` `tools/lore/critic-w1-23-r4-band.mjs` |
+| `arbiter-map-s38` | measuring | Write tools/map/arbiter-map-s38.mjs with --self-test, run it, then write S38 into ARBITRAT | `orchestration/status/arbiter-map-s38.json` |
 | `W1-CHARTFONT-r2` | ? | none — see handoffs. | `orchestration/status/W1-CHARTFONT-r2.json` `tools/analysis/w1-15-r3-chart.mjs` `tools/harness/w1-16-r3-chart.mjs` `tools/world/road-join-chart.mjs` `tools/world/w1-01-r4-crossing-chart.mjs` `tools/audio/critic-w1-22-r2-chart.mjs` |
 | `W1-CROSSING` | in_progress | browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consu | `orchestration/status/W1-CROSSING.json` `tools/world/road-grade.mjs` `tools/world/crossing-body.mjs` `game/src/engine.js` `game/src/world/field.js` `tools/world/build-roads.mjs` |
 | `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-21-r3` | in_progress | offline: add sample counts + EMPTY grading to all 15 checks; markers derived; withdraw NO_ | `orchestration/status/W1-21-r3.json` |
-| `arbiter-map-s38` | started | Read ARBITRATION.md in full, S35 text, W1-21-r2.md section C. | — |
 | `W1-14-r4` | building | objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission  | `orchestration/status/W1-14-r4.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` `game/src/engine.js` `game/src/sim/magic/system.js` `game/src/sim/magic/apply.js` |
 | `critic-w1-21-r2` | done | orchestrator. Three arbitration questions are filed in the verdict JSON and need a ruling: | `corpus/90-verdicts/wave1/W1-21-r2.md` `corpus/90-verdicts/wave1/W1-21-r2.json` `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` `tools/ui/critic-w1-21-r2-b.mjs` `tools/ui/critic-w1-21-r2-consume.mjs` |
 | `critic-road-join` | ? | B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F w | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `critic-w1-map-r2` | running | screenshots (docs/shots), then write the verdict | `orchestration/status/critic-w1-map-r2.json` `tools/harness/critic-map-r2.mjs` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
-| `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
