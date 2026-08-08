@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-deploy-r2",
+  "piece_title": "Deploy-safety instruments — round 2 critique (the gate, the playability check, the live-site check, the image-ref check, the loader retry, and the boot notice)",
+  "subsystem_paths": [
+    "platform.load.ttfp",
+    "platform.mobile.viewport",
+    "platform.determinism.harness"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-deploy-r2-3c19",
+    "role": "critic.platform",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T12:05:00Z",
+    "finished_at": "2026-08-08T13:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "db449a5",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "note": "The tree moved continuously during this round (nine bank commits) and game/ was dirty throughout: six files under game/ had uncommitted edits, three of them staged by neighbours. Every measurement names what it was taken against. check-shipped-files.mjs was measured at worktree sha256 54bb8dab2962 (GATE-BLAST-RADIUS's new version, uncommitted at measurement time) AND at sha256 f611eb7def40 (the previous one, via r1's own fixture). verify-playable.mjs at 6dece5e. verify-live-site.mjs, check-image-refs.mjs and the drift sample between 3979d78 and db449a5. The boot notice at 04569c7 and fe3f8ec, two independent runs. Observer-effect timing at 954b93b and fbc4ff9. tools/contention.mjs reported 1.87 to 7.08 per core across the run; one --gate exit 3 was proceeded past, for the --notice arm only, which serves a 25 KB page with no game in it and is load-insensitive. Recorded in orchestration/status/critic-w1-deploy-r2.json.",
+    "harness_commands": [
+      { "command": "node tools/world/critic-deploy-r2-gate.mjs", "exit_code": 1 },
+      { "command": "node tools/world/critic-deploy-gate-fixture.mjs   (r1's fixture, against the PREVIOUS gate f611eb7def40)", "exit_code": 1 },
+      { "command": "node tools/check-shipped-files.mjs --self-test", "exit_code": 0 },
+      { "command": "node tools/world/critic-deploy-r2-imgref-fixture.mjs", "exit_code": 1 },
+      { "command": "node tools/playability/check-image-refs.mjs --self-test", "exit_code": 0 },
+      { "command": "node tools/playability/check-image-refs.mjs   (216 live references)", "exit_code": 0 },
+      { "command": "node tools/world/critic-deploy-r2-drift.mjs --n 60", "exit_code": 0 },
+      { "command": "node tools/world/verify-live-site.mjs --self-test", "exit_code": 0 },
+      { "command": "node tools/world/verify-live-site.mjs   (715 files)", "exit_code": 0 },
+      { "command": "node tools/world/verify-playable.mjs --self-test --local --json reports/w1-deploy-r2/selftest-local.json", "exit_code": 1, "stdout_artifact": "reports/w1-deploy-r2/selftest-local.json" },
+      { "command": "node tools/world/critic-deploy-r2-notice.mjs --notice --shot docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis", "exit_code": 0 },
+      { "command": "node tools/world/critic-deploy-r2-notice.mjs --boot --reps 2", "exit_code": 0 },
+      { "command": "node tools/harness/boot-check.mjs", "exit_code": 0 },
+      { "command": "node tools/ownership.mjs --conflicts", "exit_code": 0 }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "The subjects are measurement instruments and a boot overlay, not rendered content. The two screenshots cited are evidence of an HTML overlay's presence or absence, not of art direction or fidelity, and no visual reference is cited anywhere in this verdict."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-30 (M1-M8 plus an unmeasured list)",
+      "native_score": "n/a — applied in spirit, not run as written",
+      "native_max": 30,
+      "native_verdict": "not applicable as written; see justification",
+      "score_0_10": 3.5,
+      "measured": "partial",
+      "justification": "RI-MTH04 audits a VERDICT's measurement integrity, not a TOOL's. The corpus has no deployment or shipping reference item — grep across corpus/ finds no RI-DEP, RI-SHIP or RI-PLAY — so there is no item whose ## Comparison method these six tools can be run against. This entry therefore carries RI-MTH04's governing principle only ('a measurement is admissible only if its instrument has been shown able to fail') applied to the instruments themselves, and the score is the min over the seven axes in the .md. The corpus hole is named in `notes` and is the right thing for a later round to close.",
+      "checks": [
+        { "id": "M1-analogue: does each instrument have a control that can fail?", "result": "fail", "value": "3 of 6: check-shipped-files (4 arms, arms disagree), verify-live-site (drift + git-state arms), loader-retry (null control + control-sane + two instrument arms). check-image-refs' self-test does not execute its extractor; verify-playable's control is RED so nothing it reports is evidence; the boot notice has no self-test at all.", "hard_fail": false },
+        { "id": "M4-analogue: does every claim in this verdict resolve to an artifact?", "result": "pass", "value": "every number cites a named command in build.harness_commands or a file in artifacts", "hard_fail": false },
+        { "id": "M6-analogue: no impossible numbers", "result": "pass", "value": "the one impossible-looking number (live engine.js 18 commits behind) was retracted before publication — it was a working-tree comparison, not a deployment fact; recorded in the .md", "hard_fail": false },
+        { "id": "M8-analogue: the instrument does not perturb what it measures", "result": "fail", "value": "verify-playable's screenshot sampling makes the boot it times 1.4x to 6.5x slower in 3 of 3 paired runs, and 3 of 6 screenshots time out", "hard_fail": false }
+      ],
+      "evidence": [
+        "reports/w1-deploy-r2/selftest-local.json",
+        "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
+        "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
+        "tools/world/critic-deploy-r2-gate.mjs",
+        "tools/world/critic-deploy-r2-imgref-fixture.mjs",
+        "tools/world/critic-deploy-r2-drift.mjs",
+        "tools/world/critic-deploy-r2-notice.mjs",
+        "corpus/90-verdicts/wave1/W1-DEPLOY-r2.md"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/W1-DEPLOY-r2.md",
+      "kind": "report",
+      "produced_by": "this critic; the axis table and every measurement are in it",
+      "source": "ours"
+    },
+    {
+      "path": "reports/w1-deploy-r2/selftest-local.json",
+      "kind": "log",
+      "produced_by": "node tools/world/verify-playable.mjs --self-test --local --json reports/w1-deploy-r2/selftest-local.json",
+      "source": "ours",
+      "note": "The subject's own output. Contains the red control and the four sabotage arms measuring litFraction 1.0 on dead pages."
+    },
+    {
+      "path": "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-deploy-r2-notice.mjs --notice --shot docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis",
+      "resolution": "1280x720",
+      "camera_pose": "not a rendered scene — a browser page at 45 s holding the shipped boot-notice markup over a canvas that never draws; no camera",
+      "source": "ours",
+      "note": "AS SHIPPED arm at 45 s: the notice has hidden itself and the diagnosis is gone."
+    },
+    {
+      "path": "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
+      "kind": "negative-evidence",
+      "produced_by": "the same command, delete-the-fix arm with the `if (sinceBoot > 20)` block removed from the served bytes",
+      "resolution": "1280x720",
+      "camera_pose": "not a rendered scene — same page, same instant, ceiling removed; no camera",
+      "source": "ours",
+      "note": "The control that proves the teardown is not inert: same instant, diagnosis still on the glass."
+    },
+    {
+      "path": "tools/world/critic-deploy-r2-gate.mjs",
+      "kind": "trace",
+      "produced_by": "written by this critic; 11 throwaway git repositories, byte-identical copy of the gate, sha256-checked, both modes",
+      "source": "ours"
+    },
+    {
+      "path": "tools/world/critic-deploy-r2-imgref-fixture.mjs",
+      "kind": "trace",
+      "produced_by": "written by this critic; 9 throwaway git repositories, byte-identical copy of check-image-refs, a local host via its own --url flag",
+      "source": "ours"
+    },
+    {
+      "path": "tools/world/critic-deploy-r2-drift.mjs",
+      "kind": "trace",
+      "produced_by": "written by this critic; a 60-file stride sample of the deployed site hashed against BOTH the working tree and HEAD",
+      "source": "ours"
+    },
+    {
+      "path": "tools/world/critic-deploy-r2-notice.mjs",
+      "kind": "trace",
+      "produced_by": "written by this critic; --notice runs the shipped notice bytes with a delete-the-fix arm, --boot times the boot with and without the instrument's own sampling",
+      "source": "ours"
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR1's probes A1-A10 (CRITIC-DOCTRINE §4.1) are Souls-side combat probes — to-hit rolls, dice damage, pause mid-fight, windup frames, animation cancels, level scaling. The subjects here are deploy-safety instruments and an HTML boot overlay. None of A1-A10 has a target in this piece, and running an inapplicable probe to produce a green tick is the kind of vacuous pass this verdict is criticising elsewhere.",
+      "checks": []
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR2's probes B1-B11 (CRITIC-DOCTRINE §4.2) are Morrowind-side world probes — objective markers, bonfire warp, dialogue density, procedural loot, soul currency, rumours. The subjects here are tools and a loading overlay; none of B1-B11 has a target in this piece.",
+      "checks": []
+    }
+  },
+  "score": {
+    "overall_0_10": 3.5,
+    "pass_threshold": 7.0,
+    "aggregation": "min",
+    "band_label": "Below bar — named remedy required",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "min over seven axes is 3.5 against a gate of 7.0",
+    "verify-playable --self-test does not pass on the shipped tree: its control is red, and by its own stated standard 'everything is red proves nothing'",
+    "the boot notice erases its own black-screen diagnosis 19.7 s after boot, demonstrated with a control that genuinely differs",
+    "the aggregation that rule 9 requires (tools/playability/standing-check.mjs) is referenced by nothing but the generated INDEX.md"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player",
+    "subsystem_path": "platform.load.ttfp",
+    "what": "Four instruments now guard the one defect that has already been fixed (an untracked module plainly imported by `import … from`), while six deployment failure classes have zero instruments: a transient 5xx on the module graph, cache headers and a returning visitor, HTTP/2, the CDN's TLS as a browser sees it, a slow connection, and whether the Pages build ran at all. Two of those six — a warm cache on a second visit, and a slow connection — are precisely the conditions the owner's phone was in when it showed a black screen. Meanwhile the instruments that do exist fail in the direction of the tester: verify-playable's control is red because of its own screenshots (boot 10.7 s unobserved vs 69.7 s observed, slower in 3 of 3 paired runs, 3 of 6 screenshots timing out); verify-live-site's staleness check hashes against the dirty working tree rather than HEAD (3 of 60 sampled files differ from the worktree, 0 from HEAD) and looks at 2 of 715 files; and the aggregation that would run them all together is called by nothing.",
+    "why_it_matters": "The owner opens the link on a phone on a real network for the second time; every instrument in this project has only ever measured a cold first load on a fast local wire, so the next black screen is as invisible as the first two were.",
+    "evidence": [
+      "reports/w1-deploy-r2/selftest-local.json",
+      "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
+      "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
+      "tools/world/critic-deploy-r2-drift.mjs",
+      "tools/world/critic-deploy-r2-notice.mjs",
+      "corpus/90-verdicts/wave1/W1-DEPLOY-r2.md"
+    ],
+    "severity": "major",
+    "remedy": {
+      "action": "Three changes, smallest first. (1) Give verify-playable a sampling mode that does not screenshot inside the wait loop — read the DOM only until `__HARNESS.ready()` resolves, then take one screenshot — so its control can go green and its six sabotages mean something; and stop the boot notice's 20 s ceiling from hiding the `bn-bad` state (shrink it to a dismissible corner banner instead), since two instruments read that state as the page's own verdict. (2) Point verify-live-site's staleness check at HEAD (`git show HEAD:game/<rel>`) rather than `readFileSync(game/<rel>)`, widen it from 2 files to index.html + data/index.json + every .js under src/ and vendor/, and give it and check-image-refs the 5xx retry that verify-links.mjs already has. (3) Wire tools/playability/standing-check.mjs into tools/bank.mjs as a non-blocking post-push follow-up, and add check-image-refs and loader-retry to it. Then, and only then, add the missing class: one instrument that loads the deployed page twice with the cache warm between visits.",
+      "targets": [
+        "tools/world/verify-playable.mjs",
+        "game/index.html",
+        "tools/world/verify-live-site.mjs",
+        "tools/playability/check-image-refs.mjs",
+        "tools/playability/standing-check.mjs",
+        "tools/bank.mjs"
+      ],
+      "acceptance": "`node tools/world/verify-playable.mjs --self-test` exits 0 with the control GREEN and all six sabotages red, at a contention of at least 4.0 per core; `critic-deploy-r2-notice.mjs --notice` shows the AS SHIPPED arm still displaying `bn-bad` at 45 s; `critic-deploy-r2-drift.mjs --n 60` reports the same drift count against the working tree and against HEAD (i.e. the check is pointed at HEAD), with at least 140 of 715 files hashed; and `grep -rn standing-check tools/bank.mjs` returns a call site.",
+      "ref_item": "RI-MTH04",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    "check-shipped-files.mjs: the self-test defect r1 named is FIXED — four arms that execute scan()/classify() and are required to disagree — and the rule-13 blast radius is fixed and measured correct (a self-introduced defect blocks, a neighbour's does not). The scanner itself is byte-for-byte the same regex: 1 of 5 defect shapes under --strict, and the same 3 false-positive shapes on 4 sound trees. Because tools/bank.mjs now un-stages the offending importer rather than refusing, a false positive on an ordinary `import x from './a.js?v=2'` silently drops that file out of the bank — work loss, which is the failure rule 1 exists to prevent, moved one level up.",
+    "verify-live-site.mjs and check-image-refs.mjs both sweep the live host with no 5xx retry (715 and 216 paths respectively). Their sibling verify-links.mjs has one, added because a transient 503 made it call a live picture broken — defect P8 in orchestration/status/PLAYABILITY.json. The fix was not propagated. When it fires, verify-live-site prints 'This is exactly how game/src/input/hold-gate.js reached the owner as a black screen' about a file that is there.",
+    "check-image-refs --self-test calls sweep() on two hand-built rows; PAGES(), refsInHtml(), refsInMarkdown() and resolve() are never executed. That is r1's check-shipped-files finding repeated one directory over, in a tool written after it was published. Measured 2 of 6 broken-reference shapes detected: CSS url(), srcset, root-relative and raw <img> inside markdown all missed.",
+    "The boot notice tells a player on any 5xx 'Nothing is missing — the game is asking again.' That is true of game/data/** (LOAD_RETRY wraps fetchJson) and false of the module graph, which the browser's ES module loader fetches outside window.fetch and which nothing retries. A 503 on src/engine.js reports 'The game stopped while loading. an unknown error' — the same empty message r1 measured for a module 404, still unfixed.",
+    "loader-retry.mjs is the strongest instrument in this set and the only one that satisfies rule 6 as written: a null control, a control-sane arm, and two instrument arms that sabotage the check and require it to go red for the named reason. Its limit is scope, not rigour.",
+    "This critic's own first drift measurement was wrong in the same way its subject is: it compared live bytes to the working tree, found engine.js differing, matched the live hash to a commit 18 back and nearly published 'the deployment is 18 commits behind'. `git show HEAD:game/src/engine.js` hashes to exactly what the site serves. Retracted before publication and recorded in the .md."
+  ],
+  "corpus_extended": [],
+  "method_deviations": [
+    "verify-playable --self-test was run in --local mode rather than the documented default --live. The live mode adds ~700 files down one CONNECT tunnel each, which would have made the observer-effect finding harder to attribute rather than easier; every sabotage in the matrix is about the page, not the transport.",
+    "The --play leg of verify-playable was not exercised at all. It is the newest and least-graded part of the family and the only thing in it that asserts the game can be STARTED. It needs its own round.",
+    "RI-MTH04 was applied in spirit rather than run as written, because it audits verdicts and no deployment reference item exists in the corpus. Stated in the reference_items justification."
+  ],
+  "arbitration_questions": [
+    "There is no deployment or shipping reference item in the corpus (no RI-DEP, RI-SHIP, RI-PLAY). Six tools and a boot overlay are now being graded against a bar that does not exist in writing, which is why this verdict's axes are named by the critic rather than by an item. A later round should either write one or rule that deploy tooling is graded under RI-MTH06's phantom-command and blocked-dimension axes."
+  ],
+  "source_reads": [
+    {
+      "path": "tools/check-shipped-files.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "SPEC and the bank integration are quoted only after critic-deploy-r2-gate.mjs demonstrated the misses and false positives by running a byte-identical copy against real repositories. The reading explains the measurement; it does not stand in for it."
+    },
+    {
+      "path": "tools/bank.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "The unstage path (lines 165-190) is quoted to explain what the measured false positives cost. The measurement is scan()'s behaviour in a throwaway repository; the consequence is declared as not-reproduced-live in the .md's could-not-do."
+    },
+    {
+      "path": "game/index.html",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "The 20 s ceiling is quoted after critic-deploy-r2-notice.mjs measured the notice hiding at 19.7 s, with a delete-the-fix arm that keeps it up at 45 s. The finding is the measurement, not the line."
+    },
+    {
+      "path": "tools/world/verify-playable.mjs",
+      "purpose": "locate-harness",
+      "note": "Read to find the sampling loop and readFrame, so that the observer-effect arm could reproduce exactly what the tool does (a full-page screenshot every 2 s) rather than guess at it."
+    },
+    {
+      "path": "tools/playability/verify-links.mjs",
+      "purpose": "quote-written-content",
+      "note": "Its header's 5xx-retry paragraph is quoted verbatim as the record that this project already found and fixed the transient-503 defect in a sibling tool."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false: no deployment reference item exists, so there was no assigned ## Comparison method to run. RI-MTH04 was applied in spirit and is marked `measured: partial`. blind_done_where_required is vacuously true — nothing here is a quality comparison against a reference, so no blind pack applies and none was built (rule 25). The --play leg of verify-playable and a live-mode self-test were not run; both are in method_deviations and in the .md's could_not_do."
+  },
+  "notes": "Round 1 scored 3.5 and round 2 scores 3.5, and that is a coincidence rather than a stasis. The axis that set r1's number (check-shipped-files.mjs) improved from 3.5 to 4.5 — its self-test now works and its rule-13 violation is fixed. The 3.5 is now set by verify-playable (3.5, red control) and the boot notice (3.5, a ceiling that erases the diagnosis) and method-and-wiring (3.5, an aggregation nobody calls), all three of which are new findings from this round. Anyone reading only the headline number will conclude nothing happened; the axis table says otherwise and the .md leads with it. Coordination: PLAYABILITY owns verify-playable.mjs and game/index.html, GATE-BLAST-RADIUS owns check-shipped-files.mjs / bank.mjs / .githooks/pre-commit, P10-loader-retry owns loader-retry.mjs. All three are declared redundant_with in orchestration/status/critic-w1-deploy-r2.json and none of their files was written by this critic. GATE-BLAST-RADIUS moved to done DURING this round and its new gate landed in the worktree mid-measurement, so §1 reports both versions."
+}

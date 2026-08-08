@@ -211,18 +211,26 @@ function findRunOfScript(v, pattern) {
  * to be about a teardown, a control or a perturbation. Deliberately narrow: it needs an explicit
  * contrast marker AND two different numbers. "2 of 2 arms" is not a contrast; "0 -> 8" is.
  */
-const ARM_FIELD = /teardown|control|arm|delete.?the.?fix|deletefix|ablat|revert|perturb|consum|break|null/i;
-const CONTRAST = /(-?\d[\d,.]*)\s*(?:→|->|=>|–>|\bvs\.?\b|\bversus\b|\bagainst\b|\bbecomes\b|\bfell to\b|\brose to\b)\s*(-?\d[\d,.]*)/i;
+const ARM_FIELD = /teardown|control|arm|delete.?the.?fix|deletefix|ablat|revert|perturb|consum|break|null|gates_run/i;
+const CONTRAST = /(-?\d[\d,.]*)\s*(?:→|->|=>|–>|\bvs\.?\b|\bversus\b|\bagainst\b|\bbecomes\b|\bfell to\b|\brose to\b|\bcollapse[sd]? to\b)\s*(-?\d[\d,.]*)/i;
+// The shape the corpus actually uses when it reports a teardown in one line:
+//   "node tools/check-building-fits-room.mjs -> 0; --self-break -> 112 of 112 red"
+// Two readings of the same instrument, arrow-marked, in one string. Requires them to DIFFER.
+const TWO_READINGS = /(?:->|→|=>|\bexit\b|:)\s*(-?\d[\d,.]*)\b[\s\S]{0,120}?(?:->|→|=>|\bexit\b)\s*(-?\d[\d,.]*)\b/;
 
 function findProseArms(root) {
   const found = [];
   walk(root, (n, path, key) => {
     if (typeof n !== 'string') return;
     if (!ARM_FIELD.test(`${key} ${path}`)) return;
+    const same = (a, b) => a.replace(/[,.]/g, '') === b.replace(/[,.]/g, '');
     const m = n.match(CONTRAST);
-    if (!m) return;
-    if (m[1].replace(/[,.]/g, '') === m[2].replace(/[,.]/g, '')) return;   // identical = inert control
-    found.push({ at: path, contrast: `${m[1]} → ${m[2]}`, text: n.slice(0, 160) });
+    if (m && !same(m[1], m[2])) { found.push({ at: path, contrast: `${m[1]} → ${m[2]}`, text: n.slice(0, 160) }); return; }
+    // Two arrow-marked readings only count when the string ALSO names a teardown mechanism,
+    // otherwise "23/23 CONSUMED, 9 paths" and similar tallies would read as a pair of arms.
+    if (!TEARDOWN_FLAG.test(n) && !/\bgit (revert|stash)\b/i.test(n)) return;
+    const t = n.match(TWO_READINGS);
+    if (t && !same(t[1], t[2])) found.push({ at: path, contrast: `${t[1]} → ${t[2]}`, text: n.slice(0, 160) });
   });
   return found;
 }
@@ -234,29 +242,39 @@ const TEARDOWN_PROSE = /\b(git revert|git stash|reverted the (fix|change)|delete
 
 function findTeardownMechanism(v) {
   const hits = [];
-  // Structured first: a command is a mechanism, a sentence is a description of one.
-  for (const hc of v?.build?.harness_commands || []) {
-    const c = hc?.command || hc?.cmd || '';
-    if (TEARDOWN_FLAG.test(c)) hits.push({ kind: 'harness_command', text: String(c).slice(0, 160) });
-  }
-  for (const a of v?.artifacts || []) {
-    const c = a?.produced_by || '';
-    if (TEARDOWN_FLAG.test(c)) hits.push({ kind: 'artifact.produced_by', text: String(c).slice(0, 160) });
-  }
+  // A MECHANISM is a teardown flag on a script that exists on disk, or a git reversal naming a
+  // commit. Anything else is a description of a teardown, which is the word tier by another name.
+  const push = (text, kind) => {
+    const s = String(text);
+    if (TEARDOWN_FLAG.test(s)) {
+      const script = resolveCommand(s);
+      hits.push({ kind, text: s.slice(0, 160), script, executable: !!script });
+    } else if (/\bgit (revert|stash|checkout)\b/i.test(s)) {
+      hits.push({ kind, text: s.slice(0, 160), script: null, executable: true });
+    }
+  };
+  for (const hc of v?.build?.harness_commands || []) push(hc?.command || hc?.cmd || '', 'build.harness_commands');
+  for (const a of v?.artifacts || []) push(a?.produced_by || '', 'artifacts.produced_by');
   walk(v, (n, path, key) => {
     if (typeof n !== 'string') return;
     if (path.startsWith('build.harness_commands') || path.startsWith('artifacts')) return;
-    if (TEARDOWN_FLAG.test(n)) hits.push({ kind: path || key, text: n.slice(0, 160) });
-    else if (/teardown|ablation|delete.?the.?fix|reversal|control/i.test(key) && TEARDOWN_PROSE.test(n)) {
-      hits.push({ kind: path || key, text: n.slice(0, 160) });
-    }
+    // A REMEDY IS NOT A TEARDOWN. `biggest_gap.remedy.targets` saying "add an --ablate mode so the
+    // weapon volume can be graded on its own" is future work the critic is asking for; counting it
+    // as an executed reversal credited two verdicts with a delete-the-fix that had not happened.
+    // Exactly the act/word confusion this tool exists to remove, one level up.
+    if (/^(biggest_gap|other_gaps|rulings|gap_closure)\b/.test(path) || /remedy|acceptance|next_round|recommend/i.test(path)) return;
+    push(n, path || key);
   });
-  return hits;
+  // Executable mechanisms first, so the strongest evidence is the one reported.
+  return hits.sort((a, b) => Number(b.executable) - Number(a.executable));
 }
 
 // ─────────────────────────────────────────────────────────────────── self-tests
 
 const SELFTEST_FLAG = /--(self[-_]?test|self[-_]?check|self[-_]?break|break|selftest)\b/i;
+
+/** An arm STATED to have gone red. Deliberately narrow — "failed" on its own is not this. */
+const RED_ARM = /(watch|watched|went|goes|going|came out|turned|read|reads)\s+red\b|\bred\s*[-—–]\s*OK\b|\b\d+\s*(?:of|\/)\s*\d+\s+red\b|\ball (?:arms|checks|probes)\s+red\b|\bcontrol (?:arm )?(?:went|goes|is) red\b|\bred on both arms\b/i;
 
 /** A command string → { script, flag } if it names a script that exists in the repo. */
 function resolveCommand(cmd) {
@@ -275,8 +293,11 @@ function findSelfTests(v) {
     const row = { command: cmd.slice(0, 200), script, exit_code: exit ?? null, at: where, note: note ? String(note).slice(0, 200) : null };
     if (!script) { unresolved.push(row); return; }
     const isBreak = /--(self[-_]?break|break)\b/i.test(cmd);
-    const wentRed = (typeof exit === 'number' && exit !== 0)
-      || (note && /\bred\b|\bfail(ed|s)?\b|went red|watched red/i.test(String(note)));
+    // A red arm is an OBSERVED failure, not the word "fail" somewhere in a note. The loose version
+    // of this line counted a note containing "failed" as a red arm and inflated arms_disagree by
+    // four; the tight version requires a non-zero exit or an explicit statement that the arm went
+    // red. Rule 6: a control you have never seen fail is not evidence.
+    const wentRed = (typeof exit === 'number' && exit !== 0) || (note && RED_ARM.test(String(note)));
     if (isBreak && wentRed) red.push(row);
     else if (isBreak) { row.red_unproven = true; green.push(row); }
     else if (typeof exit === 'number' && exit === 0) green.push(row);
@@ -502,7 +523,18 @@ export function scoreVerdict({ json, jsonPath, prose, fileIndex }) {
     if (teardown.length && arms.length) say('delete_the_fix', 'act', [{ teardown: teardown[0], arms: arms[0], arm_pairs: arms.length }]);
     else if (arms.length) say('delete_the_fix', 'claim', [{ arms: arms[0], note: 'two arms differ but no teardown mechanism is named — the reversal is believed, not executed' }]);
     else if (teardown.length) say('delete_the_fix', 'claim', [{ teardown: teardown[0], note: 'a teardown is named but no pair of disagreeing readings is recorded' }]);
-    else say('delete_the_fix', wordTier('delete_the_fix'), inert.length ? [{ note: 'arms are present and IDENTICAL — rule 6 calls that an inert control, not a result', inert: inert[0] }] : []);
+    else {
+      // A teardown recorded under a key that NAMES it a teardown, with a stated outcome, is more
+      // than a phrase and less than a residue: the reversal is described but nothing here can
+      // re-derive it. `claim`, not `word`, and not counted either way.
+      const declared = [];
+      walk(v || {}, (n, p, k) => {
+        if (typeof n !== 'string' || n.length < 20) return;
+        if (/teardown|delete.?the.?fix|deletefix|rule_?6|reversal|ablation|null_control/i.test(k)) declared.push({ at: p, text: n.slice(0, 160) });
+      });
+      if (declared.length) say('delete_the_fix', 'claim', [{ note: 'a teardown is declared in a teardown-named field but names no command and no pair of readings — described, not re-derivable', first: declared[0] }]);
+      else say('delete_the_fix', wordTier('delete_the_fix'), inert.length ? [{ note: 'arms are present and IDENTICAL — rule 6 calls that an inert control, not a result', inert: inert[0] }] : []);
+    }
     if (inert.length && out.items.delete_the_fix.tier === 'act') out.items.delete_the_fix.inert_control_warning = inert[0];
   }
 
@@ -523,7 +555,7 @@ export function scoreVerdict({ json, jsonPath, prose, fileIndex }) {
     const redProse = [];
     walk(v || {}, (n, p, k) => {
       if (typeof n !== 'string') return;
-      if (/watched red|went red|goes red|red - OK|red — OK|\bred\b.*\bOK\b/i.test(n) && /teardown|break|control|arm|self.?test|instrument/i.test(`${k} ${n}`)) {
+      if (RED_ARM.test(n) && /teardown|break|control|arm|self.?test|instrument|gates_run/i.test(`${k} ${p}`)) {
         redProse.push({ at: p, text: n.slice(0, 140) });
       }
     });
@@ -816,7 +848,11 @@ else if (IS_MAIN) {
 
   if (has('--detail')) {
     for (const r of rows) {
-      const line = ITEMS.map((i) => `${i}=${(r.items[i]?.tier || '?')[0]}`).join(' ');
+      // ACT / claim / word / -  — never single letters: `act` and `absent` share a first letter,
+      // and an abbreviation that cannot tell the counted tier from the empty one is the exact
+      // defect this whole tool exists to remove. It printed `a` for both for one round.
+      const glyph = { act: 'ACT ', claim: 'clam', word: 'word', absent: ' -  ' };
+      const line = ITEMS.map((i) => `${i}=${glyph[r.items[i]?.tier] || '????'}`).join(' ');
       console.log(`${(r.piece_id || '?').padEnd(24)} ${line}   ${r.path || r.prose_path}`);
     }
   }

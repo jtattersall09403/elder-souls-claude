@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `d98ca28`: 800 tools, 153 reference
-items, 92 pieces in flight.
+so it cannot drift. Generated at `3675320`: 801 tools, 153 reference
+items, 93 pieces in flight.
 
-Its purpose is to stop 92+ concurrent agents each paying separately to discover the
+Its purpose is to stop 93+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -664,7 +664,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 45
+### `tools/quests/` — 46
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -685,6 +685,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-w1-20-ledgers.mjs` — the W1-20 round-1 critic's SECOND instrument.
 - `tools/quests/critic-w1-20-play.mjs` — THE W1-20 ROUND-1 CRITIC'S OWN INSTRUMENT.
 - `tools/quests/critic-w1-20-reach.mjs` — the W1-20 critic's THIRD instrument.
+- `tools/quests/critic-w1-20-wraptest.mjs` — the W1-20 critic's FOURTH instrument: is the toast wrap repair real?
 - `tools/quests/critic-w1-readables-chart.mjs` — the picture for the W1-READABLES round-2 verdict (rule 27).
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
@@ -1139,6 +1140,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `judge-prose-r5` | running | read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding | `orchestration/status/judge-prose-r5.json` |
+| `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
 | `critic-w1-15-r4` | ? | the LIT_CAP frame-time arm is still running under load ~7/core; fold its numbers into §10  | `orchestration/status/critic-w1-15-r4.json` `tools/stealth/critic-w1-15-r4.mjs` `tools/stealth/critic-w1-15-r4-live.mjs` `tools/stealth/critic-w1-15-r4-figure.mjs` `reports/w1-15/critic-r4.json` `corpus/90-verdicts/wave1/W1-15-r4.md` |
 | `PLAN-COST-EXPERIMENTS-critic` | in_progress | Write BLOCKING/CARRIED critique into orchestration/plans/COST-EXPERIMENTS.md, state verdic | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` |
 | `measure-own-e-w1-hud-toast-b` | running | 1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify th | — |
@@ -1150,7 +1153,6 @@ work is the difference between resuming and starting over.
 | `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
 | `critic-w1-attr-scale` | running | SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usag | `orchestration/status/critic-w1-attr-scale.json` |
 | `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The three things to attack: (1)  | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
-| `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
 | `critic-w1-deploy-r2` | measuring (successor 2) | run tools/world/critic-deploy-r2-notice.mjs --notice --boot when contention allows; then w | `orchestration/status/critic-w1-deploy-r2.json` `tools/world/critic-deploy-r2-gate.mjs` `tools/world/critic-deploy-r2-drift.mjs` `tools/world/critic-deploy-r2-imgref-fixture.mjs` `tools/world/critic-deploy-r2-notice.mjs` `reports/w1-deploy-r2/selftest-local.json` |
 | `COST-G3` | running | verify the 2-of-95 diagnosis; count verdicts myself | — |
 | `COST-INSTRUMENT-plancritic` | ? | independently verify coverage, dedup, prices, 81% claim, CV arithmetic; then write critiqu | — |

@@ -18,7 +18,7 @@
       "id": "B",
       "from": "\u00a73 + S39",
       "what": "clock boundary: framesHeld() in ms via event.timeStamp, inputNow(), 16 reclassified figures, real.js:446 bare 12",
-      "state": "code landed; --leg gate green (M-P5 boundary unmoved), --leg play GREEN (roll/roll/roll/sprint/sprint, frames_held 1/4/7/15/30 at 6 steps/s). Control leg next."
+      "state": "DONE. Code landed + banked at fbc4ff9 (orchestrator bank carried it while my commit retried through an index lock; content verified at HEAD and pushed). --leg gate green, --leg play/control/boundary all green."
     },
     {
       "id": "C",
@@ -30,7 +30,7 @@
       "id": "D",
       "from": "\u00a76",
       "what": "run --leg menu, --leg insets, --leg portrait",
-      "state": "todo"
+      "state": "insets leg RUN for the first time (11/11 controls clear under M-P17 cutout); adding a null control; menu + portrait still to run"
     },
     {
       "id": "E",
@@ -64,6 +64,36 @@
       "id": "A5-INSTRUMENT-DEFECT",
       "headline": "My own first control was confounded by load and I am reporting it rather than keeping the number.",
       "evidence": "Run 1 took six arms in sequence while load per core drifted 2.70 -> 4.07, and 'the control went red' was partly the box. Run 2 is A-B-A bracketed: four takes of the IDENTICAL phone arm gave 7.83 / 5.14 / 6.00 / 4.00 steps/s \u2014 a 66.7% spread with nothing changed. Under bracketing the stall control DID NOT GO RED (7.20 vs a 5.74 baseline mean), because a 60 ms busy-wait against a 640 ms frame is +9% and invisible. That is a weak control, not a passing one. Every cross-arm claim smaller than 67% in this piece is void; A1's desktop/phone gap is at the edge of it and is reported as such; A2's 16-25x norender move is far outside it and stands."
+    },
+    {
+      "id": "B1",
+      "headline": "S39's remedy landed and its prediction holds exactly. In mode play at 6 fixed steps/s (10% of real time), presses stamped at 20/60/120/250/500 ms give frames_held 1/4/7/15/30 f@60 and verdicts roll/roll/roll/sprint/sprint.",
+      "evidence": "reports/w1-touch-r2/gate-clock-play.json"
+    },
+    {
+      "id": "B2",
+      "headline": "The delete-the-fix control reproduces the original defect exactly: 5 of 5 roll, frames_held 0 on every row \u2014 one constant across a 25x range of thumb time, which is S39's own characterisation of the bug.",
+      "evidence": "reports/w1-touch-r2/gate-clock-control.json"
+    },
+    {
+      "id": "B3",
+      "headline": "M-P5's boundary did not move. touch-run.mjs --leg gate is green on both arms: roll at <= 11 f@60, sprint from 12, identical on touch and pad.",
+      "evidence": "reports/w1-touch/touch-run-gate.json"
+    },
+    {
+      "id": "B4-MY-OWN-ERROR",
+      "headline": "My first rewrite moved M-P5's boundary from 12 to 11 on BOTH paths and --leg gate caught it. A sample taken while the control is still down is inclusive of the press frame; an endpoint at the release is not. Two functions now, framesHeldWhileDown() and framesHeld(), each named for its question.",
+      "evidence": "the failing run is in reports/runs/_raw/; the fix is the split in game/src/input/hold-gate.js"
+    },
+    {
+      "id": "D1-INSTRUMENT-DEFECT",
+      "headline": "--leg insets had never run and would have died on its first attempt for a reason unrelated to its measurement: page.screenshot() timed out at 30 s on SwiftShader under load and took the whole leg with it. A picture cannot be allowed to kill a measurement; shot() now has a 120 s budget and records its own failure as data.",
+      "evidence": "tools/touch/critic-fight.mjs shot()"
+    },
+    {
+      "id": "D2",
+      "headline": "The CSS env(safe-area-inset-*) route does not reach TouchInput in a Playwright context: TouchInput.insets reads {0,0,0,0} even with the cutout emulated. The leg forces the insets through setViewport() so T8 clause 1 is tested against a non-zero inset one way or another, but the CSS path itself is UNMEASURED and nothing in the tree measures it.",
+      "evidence": "reports/critic-w1-touch/critic-fight-insets.json .seen.insets_seen"
     }
   ],
   "instruments": [

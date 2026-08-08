@@ -343,7 +343,7 @@
     "subsystem_path": "combat.enemy.statemachine",
     "severity": "blocking",
     "what": "On RI-AI01 M3's own fixture \u2014 one enemy aggroed, the player holding position and never attacking for 60 s \u2014 min_dist_dwell is 0.3183 to 0.4373 across the fighting roster against a PASS of 0.10 and a chase-bot HARD FAIL of 0.35 that six of the seven statblocks cross. The round published 0.2521 from the round-1 critic's moving fixture and scored M3 = 1/2. The cause is measured: on a passive player the enemy is in COMMIT or RECOVER for 1,896 of 3,600 frames, every attack carries 0.6-1.2 m of forward root motion, and the AI cannot steer during the swing, so it ends each attack inside its own strike band and stays there for the whole recovery (85% of recovery frames inside 0.85*omega). The number rises with duration at every start range: 0.3807 / 0.4373 / 0.4399 at 1800 / 3600 / 5400 frames from 6 m.",
-    "why_it_matters": "The player learns the rhythm of the approach before they learn the moveset, and an enemy that spends 44% of its non-swinging time inside its own reach against someone who is not even fighting back has no DANCE band from the player's chair, whatever the trace calls the states.",
+    "why_it_matters": "The player learns the rhythm of the approach before they learn the moveset, and an enemy that spends 44% of the frames M3 counts inside its own reach — recovery included, startup and active excluded against someone who is not even fighting back has no DANCE band from the player's chair, whatever the trace calls the states.",
     "evidence": [
       "docs/shots/2026-08-08-w1-12-r2-critic-m3-on-the-fixture-the-item-specifies.png",
       "reports/w1-12/ai-probe-souls-inf_trash.json",

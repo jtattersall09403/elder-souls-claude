@@ -1,0 +1,20 @@
+verdict-validate.mjs mutation test — critic-w1-attr-scale round 2, HEAD 3675320
+Base: corpus/90-verdicts/wave1/W1-SOULS-r3.json.  Mutator: one change per row, sha printed to
+prove the file really differs (the first draft of this table was an INERT CONTROL — a shell
+escaping bug meant no mutation ever applied and all seven rows 'passed'; rule 6, on myself).
+exit 1 = the gate went red = good.  exit 0 on a mutated row = the gate is blind to that clause.
+
+  MUTATION               SHA256_12      RESULT
+  none                   4aeeb300545b   exit 0  control clean (unmutated base validates)
+  drop_biggest_gap       beb4a079d802   exit 1  caught
+  drop_artifacts         75db62e9c329   exit 1  caught
+  drop_self_audit        5d4aa258bbf0   exit 1  caught
+  coi_true_but_pass      4a0d76bdd1a3   exit 1  caught
+  bad_piece_id           d53465f0b5e7   exit 0  MISSED — schema violated, gate silent
+  score_out_of_range     aa719d7abd86   exit 0  MISSED — schema violated, gate silent
+  unknown_key_in_score   dfa0be9d5803   exit 0  MISSED — schema violated, gate silent
+
+Enforced: top-level "required"; the conflict_of_interest=true -> status must be RECUSED conditional.
+Ignored : pattern (piece_id), minimum/maximum (score), additionalProperties (unknown keys).
+Consequence: W1-SOULS-r3.json itself carries score.axes and score.confidence_note, which the
+schema's additionalProperties:false forbids, and the gate reports OK.

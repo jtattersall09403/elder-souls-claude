@@ -158,7 +158,9 @@ async function runHudToastCensus(push) {
   const population = corpus.slice(0, limit);
   const sample = pickA2Sample(corpus);            // A2a/A2b's 8, always the FULL corpus's picks
 
+  log(`hud-toast: launching browser (${width}x${height}, corpus ${corpus.length}, population ${population.length})...`);
   const h = await launchGame({ width, height, timeout: 300000 });
+  log('hud-toast: browser up, loading ui-journal...');
   const out = { schema: 'elder-souls/hud-toast-a@1', item: 'W1-HUD-TOAST-A', at: new Date().toISOString(),
     corpus_size: corpus.length, population_run: population.length, budget_px, checks: [] };
   try {
@@ -168,10 +170,11 @@ async function runHudToastCensus(push) {
     await h.h('closeMenu');
     await h.h('lockOn', null);
     await h.h('stepFrames', 4);
+    log('hud-toast: state loaded, running A1 over the population...');
 
     // ---- A1: overflow_px over the population, register-derived, per element -------------------
     const a1Results = [];
-    for (const c of population) {
+    for (const [i, c] of population.entries()) {
       await h.h('renderedTextClear');
       await h.h('uiToast', c.text, 200);
       const ui = await h.h('getUIState');
@@ -180,6 +183,7 @@ async function runHudToastCensus(push) {
       if (!el || !reg.measurable) { a1Results.push({ text: c.text, measured: false, reason: !el ? 'no hud.toast element' : 'register not measurable (blind surface)' }); continue; }
       const a1 = computeA1(reg.entries, el.rect);
       a1Results.push({ text: c.text, source: c.sources, widest_px: c.widest_px, over_budget: c.over_budget, measured: a1.measured, entries: reg.entries.length, overflow_px: a1.overflow_px, rect: el.rect });
+      if ((i + 1) % 25 === 0 || i === population.length - 1) log(`hud-toast: A1 ${i + 1}/${population.length}`);
     }
     const a1Measured = a1Results.filter((r) => r.measured);
     const a1Over = a1Measured.filter((r) => r.overflow_px > 1.0);
@@ -192,6 +196,7 @@ async function runHudToastCensus(push) {
     });
 
     // ---- A2a: cut_px, the decisive check — clip-free reference draw vs the element's own -------
+    log(`hud-toast: A1 done (${a1Measured.length} measured, ${a1Over.length} over 1.0px); running A2a over the ${sample.length}-sample...`);
     const a2aResults = [];
     for (const c of sample) {
       await h.h('renderedTextClear');
@@ -223,6 +228,7 @@ async function runHudToastCensus(push) {
     });
 
     // ---- A2b: escaped_px, the residue — two SAME-row-count toasts, outside-rect diff -----------
+    log(`hud-toast: A2a done (${a2aMeasured.length} measured, ${a2aFail.length} with cut ink); running A2b...`);
     const byRows = new Map();
     for (const c of corpus) { if (!byRows.has(c.predicted_row_count)) byRows.set(c.predicted_row_count, []); byRows.get(c.predicted_row_count).push(c); }
     let pairRowCount = null, T1 = null, T2 = null;
@@ -256,8 +262,9 @@ async function runHudToastCensus(push) {
     });
 
     // ---- A3: no silent loss --------------------------------------------------------------------
+    log(`hud-toast: A2b done (escaped_px ${a2b ? a2b.escaped_px : 'n/a'}); running A3 over the population...`);
     const a3Results = [];
-    for (const c of population) {
+    for (const [i, c] of population.entries()) {
       const meta = await h.page.evaluate((text) => {
         const H = window.__HARNESS;
         H.uiToast(text, 200);
@@ -269,6 +276,7 @@ async function runHudToastCensus(push) {
       const joined = (meta.rows || []).join(' ');
       const ok = meta.truncated === true || joined === c.text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/−/g, '-');
       a3Results.push({ text: c.text, ok, truncated: meta.truncated, row_count: meta.row_count });
+      if ((i + 1) % 50 === 0 || i === population.length - 1) log(`hud-toast: A3 ${i + 1}/${population.length}`);
     }
     const a3Fail = a3Results.filter((r) => !r.ok);
     out.a3 = { population: a3Results.length, fail: a3Fail.length, fail_samples: a3Fail.slice(0, 5) };
@@ -277,6 +285,7 @@ async function runHudToastCensus(push) {
       pass: () => a3Fail.length === 0,
       detail: `${a3Fail.length} of ${a3Results.length} lost text silently`,
     });
+    log('hud-toast: A3 done, closing browser...');
   } finally {
     await h.close();
   }

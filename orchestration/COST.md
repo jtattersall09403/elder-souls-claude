@@ -57,6 +57,20 @@ container restarts and usage-limit kills — periods when the fleet was destroye
 under-dispatched — then it is measuring survival, not intent, and the ruling should be revisited with
 those windows excluded rather than the metric swapped.
 
+> **AMENDED 2026-08-08 by the `COST-INSTRUMENT` plan critic (Ruling P1, plan §11.4.1).** C2 names a
+> statistic without naming its series, and the two are not the same thing. Measured: the "median 11,
+> 35 of 63 hours below floor" pair is the **span**-hour series; on the **52 active hours** that H
+> itself uses, the median is **12.5** with **24 of 52 (46.2%)** below the floor. And the two readings
+> §4.1 calls "honest readings that disagree" **do not disagree** on the same hour set — requesting
+> 13.31/12.5/24 against present 13.42/12.5/24. The whole gap was the 11 idle hours, not the agent
+> count. **Amended ruling: median, over the same active-hour set as H, requesting reading, present
+> published beside it; the binding guard is that the below-floor fraction must not increase.** On
+> this reading the baseline **passes** G1, reversing C2's factual conclusion while keeping its
+> methodological core (median over mean; no post-hoc metric selection) intact. **Falsifier**: if
+> 46.2% below floor is too lax a starting state, use the span hour set for *both* G1 and C/H — but
+> then C/H must be republished at **$96.63/h**, and switching the fleet off would improve the
+> headline, which is the one outcome the owner forbade. Move both numbers or neither.
+
 ### G3 currently ships as `unmeasured`, and that is the honest state
 
 The same plan found that **four of G3's five non-negotiables are not honestly measurable today**:
@@ -103,6 +117,17 @@ the errors are the argument for the loop. Source of truth is the `COST-INSTRUMEN
   side, $910.89, which is what Ruling C1 targets.
 - **Output is 1.7% of spend and median output is 5 tokens.** Writing shorter is worth approximately
   nothing. Every instinct to trim prose is aimed at 1.7% of the bill.
+
+  > **CORRECTED 2026-08-08 by the `COST-INSTRUMENT` plan critic (BLOCKING 1/3, plan §11).** Those two
+  > figures are artefacts of a dedup bug. One API response is written as several records and only the
+  > **terminal** one carries the true `output_tokens`; 12.6% of requests disagree across records, in
+  > the output class alone, and taking the first record reads **40.8%** of the output. Corrected:
+  > **output is 3.93% of spend ($236.80), median output is 16 tokens** (mean 204, p90 492);
+  > `cache_read` is **79.34%**, C is **$6,025.85**, C/H **$115.88**, $/agent-hour **$8.71**. The
+  > conclusion survives — 3.9% is still small — but the number that justified it was wrong by 2.3×,
+  > and the plan's own §0.2 verification ("byte-identical `usage`") was done on the orchestrator's
+  > session, i.e. **9.3% of the money**, and generalised to the other 90.7%. Full derivation and the
+  > remedy (dedup by element-wise max, plus null-control arm N7): `orchestration/plans/COST-INSTRUMENT.md` §11.
 - **Cost is context volume × request count.** Median context **190k**, **103 requests per agent**.
   That product is the thing to attack, and nothing else is close.
 - **Model mix alone caps at 0.6× at list price**, because every model's price vector is

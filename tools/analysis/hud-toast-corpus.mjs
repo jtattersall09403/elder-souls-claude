@@ -229,9 +229,24 @@ export function buildOtherHudPopulations() {
 
   const measureAll = (arr, sz) => arr.map((t) => ({ text: t, widest_px: +measure(t, FACE_INK, sz).toFixed(1) }));
   return {
-    prompt: { panel_w: 200, usable_px: 169.2, size: 15, samples: measureAll([...new Set(promptTexts)], 15) },
-    boss: { panel_w: 900, size: 22, samples: measureAll([...new Set(bossTexts)], 22) },
-    slot_labels: { panel_w: 54, size: 12, samples: measureAll([...new Set(slotTexts)], 12) },
+    prompt: {
+      panel_w: 200, usable_px: 169.2, size: 15, samples: measureAll([...new Set(promptTexts)], 15),
+      caveat: 'LIVE population: hud.js draws m.prompt.text unwrapped, untruncated, at this size until '
+        + 'W1-HUD-TOAST-A (this piece) added ellipsise() at the draw site. Samples over usable_px WERE a '
+        + 'real defect before that fix landed.',
+    },
+    boss: {
+      panel_w: 900, size: 22, samples: measureAll([...new Set(bossTexts)], 22),
+      caveat: '0 over budget at this population size — hud.js E8 was left untouched, per the plan\'s own '
+        + 'conditional ("wrap hud.prompt and hud.boss only if the census shows a string over budget").',
+    },
+    slot_labels: {
+      panel_w: 54, size: 12, samples: measureAll([...new Set(slotTexts)], 12),
+      caveat: 'NOT a live defect. These are RAW, pre-truncation name widths. hud.js\'s quick-slot draw '
+        + '(the `put()` closure) already truncates any label over 9 characters to 8 chars + an ellipsis '
+        + '(character-length, not pixel-based) before this measurement would ever apply — a separate, '
+        + 'pre-existing mechanism this piece did not touch. Reported for completeness of the census only.',
+    },
   };
 }
 

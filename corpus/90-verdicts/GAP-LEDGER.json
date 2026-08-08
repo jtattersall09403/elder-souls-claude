@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-08T12:46:11Z",
+  "generated": "2026-08-08T12:50:46Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 73,
+  "verdicts_read": 74,
   "counts": {
-    "total": 68,
-    "open": 67,
+    "total": 69,
+    "open": 68,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -77,6 +77,9 @@
     ],
     "crime.guard.response": [
       "GAP-W1-crime-enforcement-is-a-free-win"
+    ],
+    "platform.load.ttfp": [
+      "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player"
     ],
     "combat.hitbox.sweep": [
       "GAP-W1-enemy-attacks-cannot-reach-contact-range",
@@ -559,7 +562,7 @@
       "piece_id": "W1-12-r2",
       "severity": "blocking",
       "what": "On RI-AI01 M3's own fixture — one enemy aggroed, the player holding position and never attacking for 60 s — min_dist_dwell is 0.3183 to 0.4373 across the fighting roster against a PASS of 0.10 and a chase-bot HARD FAIL of 0.35 that six of the seven statblocks cross. The round published 0.2521 from the round-1 critic's moving fixture and scored M3 = 1/2. The cause is measured: on a passive player the enemy is in COMMIT or RECOVER for 1,896 of 3,600 frames, every attack carries 0.6-1.2 m of forward root motion, and the AI cannot steer during the swing, so it ends each attack inside its own strike band and stays there for the whole recovery (85% of recovery frames inside 0.85*omega). The number rises with duration at every start range: 0.3807 / 0.4373 / 0.4399 at 1800 / 3600 / 5400 frames from 6 m.",
-      "why_it_matters": "The player learns the rhythm of the approach before they learn the moveset, and an enemy that spends 44% of its non-swinging time inside its own reach against someone who is not even fighting back has no DANCE band from the player's chair, whatever the trace calls the states.",
+      "why_it_matters": "The player learns the rhythm of the approach before they learn the moveset, and an enemy that spends 44% of the frames M3 counts inside its own reach — recovery included, startup and active excluded against someone who is not even fighting back has no DANCE band from the player's chair, whatever the trace calls the states.",
       "remedy": {
         "action": "In game/src/combat/ai.js, re-space during RECOVER rather than only after it. REPOSITION already runs a sprint back-off toward circle.preferred_band_multiple; RECOVER currently only renames the leaf. The root motion is the body's and must NOT be cancelled — the commitment property (47/47 swings to full clip, zero frames in which the enemy can change its mind) is the best thing in this subsystem and must survive untouched — but the frames after hit_active ends are steerable in principle and are 85%-inside-band in practice. Declare the back-off's start frame as a leaf of game/data/combat/ai.json so the consumption census can see it. Separately, and outside this piece's files, RI-AI01 M3's denominator should be changed from 'while state != COMMIT' to 'while the enemy is in the startup or active frames of an attack', as the round-1 critic proposed in its §14.3 and this round endorsed; until that moves, the item as written is the bar.",
         "targets": [
@@ -1182,6 +1185,52 @@
         "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-regress.json",
         "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json",
         "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-static.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player",
+      "subsystem_path": "platform.load.ttfp",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-deploy-r2-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-DEPLOY-r2.json",
+      "piece_id": "w1-deploy-r2",
+      "severity": "major",
+      "what": "Four instruments now guard the one defect that has already been fixed (an untracked module plainly imported by `import … from`), while six deployment failure classes have zero instruments: a transient 5xx on the module graph, cache headers and a returning visitor, HTTP/2, the CDN's TLS as a browser sees it, a slow connection, and whether the Pages build ran at all. Two of those six — a warm cache on a second visit, and a slow connection — are precisely the conditions the owner's phone was in when it showed a black screen. Meanwhile the instruments that do exist fail in the direction of the tester: verify-playable's control is red because of its own screenshots (boot 10.7 s unobserved vs 69.7 s observed, slower in 3 of 3 paired runs, 3 of 6 screenshots timing out); verify-live-site's staleness check hashes against the dirty working tree rather than HEAD (3 of 60 sampled files differ from the worktree, 0 from HEAD) and looks at 2 of 715 files; and the aggregation that would run them all together is called by nothing.",
+      "why_it_matters": "The owner opens the link on a phone on a real network for the second time; every instrument in this project has only ever measured a cold first load on a fast local wire, so the next black screen is as invisible as the first two were.",
+      "remedy": {
+        "action": "Three changes, smallest first. (1) Give verify-playable a sampling mode that does not screenshot inside the wait loop — read the DOM only until `__HARNESS.ready()` resolves, then take one screenshot — so its control can go green and its six sabotages mean something; and stop the boot notice's 20 s ceiling from hiding the `bn-bad` state (shrink it to a dismissible corner banner instead), since two instruments read that state as the page's own verdict. (2) Point verify-live-site's staleness check at HEAD (`git show HEAD:game/<rel>`) rather than `readFileSync(game/<rel>)`, widen it from 2 files to index.html + data/index.json + every .js under src/ and vendor/, and give it and check-image-refs the 5xx retry that verify-links.mjs already has. (3) Wire tools/playability/standing-check.mjs into tools/bank.mjs as a non-blocking post-push follow-up, and add check-image-refs and loader-retry to it. Then, and only then, add the missing class: one instrument that loads the deployed page twice with the cache warm between visits.",
+        "targets": [
+          "tools/world/verify-playable.mjs",
+          "game/index.html",
+          "tools/world/verify-live-site.mjs",
+          "tools/playability/check-image-refs.mjs",
+          "tools/playability/standing-check.mjs",
+          "tools/bank.mjs"
+        ],
+        "acceptance": "`node tools/world/verify-playable.mjs --self-test` exits 0 with the control GREEN and all six sabotages red, at a contention of at least 4.0 per core; `critic-deploy-r2-notice.mjs --notice` shows the AS SHIPPED arm still displaying `bn-bad` at 45 s; `critic-deploy-r2-drift.mjs --n 60` reports the same drift count against the working tree and against HEAD (i.e. the check is pointed at HEAD), with at least 140 of 715 files hashed; and `grep -rn standing-check tools/bank.mjs` returns a call site.",
+        "ref_item": "RI-MTH04",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Three changes, smallest first. (1) Give verify-playable a sampling mode that does not screenshot inside the wait loop — read the DOM only until `__HARNESS.ready()` resolves, then take one screenshot — so its control can go green and its six sabotages mean something; and stop the boot notice's 20 s ceiling from hiding the `bn-bad` state (shrink it to a dismissible corner banner instead), since two instruments read that state as the page's own verdict. (2) Point verify-live-site's staleness check at HEAD (`git show HEAD:game/<rel>`) rather than `readFileSync(game/<rel>)`, widen it from 2 files to index.html + data/index.json + every .js under src/ and vendor/, and give it and check-image-refs the 5xx retry that verify-links.mjs already has. (3) Wire tools/playability/standing-check.mjs into tools/bank.mjs as a non-blocking post-push follow-up, and add check-image-refs and loader-retry to it. Then, and only then, add the missing class: one instrument that loads the deployed page twice with the cache warm between visits.",
+      "remedy_acceptance": "`node tools/world/verify-playable.mjs --self-test` exits 0 with the control GREEN and all six sabotages red, at a contention of at least 4.0 per core; `critic-deploy-r2-notice.mjs --notice` shows the AS SHIPPED arm still displaying `bn-bad` at 45 s; `critic-deploy-r2-drift.mjs --n 60` reports the same drift count against the working tree and against HEAD (i.e. the check is pointed at HEAD), with at least 140 of 715 files hashed; and `grep -rn standing-check tools/bank.mjs` returns a call site.",
+      "evidence": [
+        "reports/w1-deploy-r2/selftest-local.json",
+        "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
+        "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
+        "tools/world/critic-deploy-r2-drift.mjs",
+        "tools/world/critic-deploy-r2-notice.mjs",
+        "corpus/90-verdicts/wave1/W1-DEPLOY-r2.md"
       ],
       "status": "open",
       "assigned_to_wave": 2,

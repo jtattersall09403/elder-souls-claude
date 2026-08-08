@@ -2,11 +2,40 @@
   "task_id": "COST-INSTRUMENT-plancritic",
   "piece": "COST-INSTRUMENT",
   "role": "plan-critic",
-  "status": "in-progress",
-  "started": "2026-08-08",
-  "next_step": "independently verify coverage, dedup, prices, 81% claim, CV arithmetic; then write critique section into plan file",
-  "files_touched": [],
-  "files_claimed": ["orchestration/plans/COST-INSTRUMENT.md", "orchestration/status/COST-INSTRUMENT-plancritic.json"],
+  "state": "complete",
+  "started": "2026-08-08T12:20Z",
+  "finished": "2026-08-08T12:55Z",
+  "commit_stamped": "70d40ab",
+  "verdict": "BLOCKED pending items 1-6",
+  "exchange": "1 of 2",
+  "browser_used": false,
+  "blocking": [
+    "B1 dedup 'keep one' under-specified; first-wins loses 59% of output tokens (6,034 of 47,915 ids disagree, output class only). Remedy: element-wise max over the five classes.",
+    "B2 null control cannot fail on B1 - all six arms pass a first-wins instrument. Add N7 partial-usage arm + a sixth deliberate break.",
+    "B3 downstream numbers wrong in plan S2 and COST.md S2: output 3.93% not 1.7%, median 16 not 5, cache_read 79.34% not 81.2%, C $6,025.85, C/H $115.88.",
+    "B4 G1 specified two incompatible ways; cited numbers belong to different hour sets (12.5 vs 11).",
+    "B5 C/H and $/agent-hour are both monotone in idleness - all headline numbers improve if the fleet slows. Publish throughput counters beside them.",
+    "B6 PIE-per-run CV 0.888 vs dollars 0.928 - 'far lower variance' is false. Correct mechanism metric is context-tokens-per-request, CV 0.386, 38 runs per arm at 25%."
+  ],
+  "carried_count": 12,
+  "rulings": [
+    "P1 COST.md Ruling C2 upheld in substance (median), amended in specification (active-hour set, requesting reading); baseline now PASSES G1 at median 12.5, 46.2% of hours below floor. Reversible.",
+    "P2 G3 ships as unmeasured, not passing - upheld without qualification; dispatch the verdict-template piece now. Reversible.",
+    "P3 Sonnet build / Opus critic upheld, conditional on B1+B2 landing; general rule added - route on the acceptance being decidable AND complete. Reversible."
+  ],
+  "verified_and_could_not_break": [
+    "9.26% orchestrator share", "workflow mirror has 0 unique ids", "0 cross-agent id collisions",
+    "ephemeral 5m+1h == cache_creation total, 0 exceptions", "usage.iterations sums, 0 mismatches",
+    "40 synthetic records", "238-runs-per-arm arithmetic", "2.88x volume target",
+    "price vector base x [1,1.25,2,0.1,5] for Opus 5 / Sonnet 5 / Haiku 4.5 / Fable 5",
+    "98.394% cache hit ratio", "coverage: one projects dir, one session predating first commit, 396 Task spawns = 396 metas = 0 missing"
+  ],
+  "files_touched": [
+    "orchestration/plans/COST-INSTRUMENT.md",
+    "orchestration/COST.md",
+    "orchestration/status/COST-INSTRUMENT-plancritic.json"
+  ],
+  "files_claimed": [],
   "redundant_with": ["COST-INSTRUMENT-plan"],
-  "notes": "no browser; text-only argument per PLAN-LOOP.md"
+  "next_step": "COST-INSTRUMENT-plan resolves BLOCKING 1-6 in exchange 2, then dispatch the build (Sonnet) with the 12 CARRIED items as declared risks."
 }

@@ -1,7 +1,22 @@
 # W1-ATTR-SCALE — round 1 verdict
 
 **Status: FAIL, 3.0 / 10** (min-over-axes, wave-1 gate 7.0). Critic: fresh context, wrote none of
-the work under judgement. Build: HEAD `6bb9003`, branch `claude/morrowind-souls-threejs-game-mou39v`.
+the work under judgement. Build: measured at HEAD `6bb9003`, **re-verified at HEAD `692bcc8`**,
+branch `claude/morrowind-souls-threejs-game-mou39v`.
+
+> **Successor note.** The first critic of this run was killed by a usage limit while writing this
+> verdict; it had already written both critic tools, all ten artifacts and the prose below. This
+> round-2 successor did not transcribe its numbers. It **re-ran** the auditor self-test (21/21),
+> `--sheet p10` (124 quests, 0 defects, exit 0) and the full delete-the-fix (0 → 23 defects,
+> 0 → 1 ladder inversion, 370 → 347 reachable, margin-at-hard-cap 0 for all ten attributes) on the
+> current tree, and re-confirmed offline that the builder's own shipped artifacts record five
+> `killEntity('undefined')` throws. `git diff 6bb9003..692bcc8` touches **none** of
+> `game/src/sim/souls.js`, `game/src/character/derive.js`, `game/src/sim/magic/system.js` or
+> `game/data/quests/` — so every number below remains a true claim about the tree (rule 12).
+>
+> The successor **corrected one finding of its predecessor's** (Finding 7's "attributes reach
+> nothing inside the fight" — false; willpower scales spell damage) and added two observations of
+> its own. The score is unchanged, and the re-measurement is why.
 
 The fix is real. The reason given for it is not, and the reason is the part that will be inherited.
 
@@ -46,6 +61,27 @@ Everything the builder's `next_step` asked a critic to run, plus the things it d
 
 The tree has grown under other agents since the builder ran: 124 quests and 370 non-violent
 resolutions against the 120 / 358 in the status file. Every number below is on HEAD `6bb9003`.
+
+**Re-run by the round-2 successor on HEAD `692bcc8`**, independently of the rows above:
+
+| Command | Result |
+|---|---|
+| `node tools/quests/attr-scale-audit.mjs --self-test` | 21/21, exit 0 — unchanged |
+| `node tools/quests/attr-scale-audit.mjs --sheet p10` | 124 quests, **0 defects**, 370/370 reachable, 8 ladders ok, exit 0 |
+| `node tools/quests/critic-attr-scale-dtf.mjs --self-test` | 4/4, exit 0 |
+| `node tools/quests/critic-attr-scale-dtf.mjs` | **0 → 23 defects**, ladder **0 → 1**, non-violent **370 → 347 (93.8%)**, shut-by-defect **0 → 19**; margin at hard cap **0 for all ten attributes**; injection sweep flips to `defect=true` at personality 23 |
+| offline: builder's shipped `attr-scale-consumption-{before,after}.json` | **5 `killEntity('undefined'): no such body` in each** — trial C killed nothing in *either* arm |
+| offline: `git check-ignore reports/faction-signature-sweep.json` | ignored at `reports/.gitignore:3`, untracked — Finding 3 confirmed |
+| offline: `git diff 6bb9003..692bcc8 -- souls.js derive.js magic/system.js game/data/quests/` | **empty** — the load-bearing code and data are byte-identical, so the browser numbers still hold |
+
+The souls measurement itself was **not re-run under a browser this round**: `node tools/contention.mjs
+--gate` returned **exit 3 twice** (5 instances / 6.04 per core, then 6 instances / 6.72 per core,
+against ceilings of 6 and 4.0). The predecessor had already proceeded past exit 3 twice for exactly
+this figure and shipped `souls-award.{txt,json}` with a red control in it; since the diff above shows
+`game/src/sim/souls.js` unchanged between the two commits, adding a seventh browser to a saturated
+box would have re-derived a number that cannot have moved. Stated plainly per rule 26: **the
+`10 kills → 378 souls` figure in this verdict is the predecessor's measurement, verified as still
+applicable by a code diff, not re-observed by the signing critic.**
 
 ---
 
@@ -203,12 +239,69 @@ NPC visibly behaving differently — acceptable here, since the gate is what the
 reads, but it is the weaker of the two forms.)
 
 **The mirror failure is the one that is true**, and it is already filed:
-`corpus/20-progression/GAP-W1-skill-and-attribute-scaling-never-reaches-damage.md`. Attributes reach
-persuasion, prices, quests, ranks and disease — and reach **nothing inside the fight**.
-`effectiveGrade()` and `scalingBonus()` are implemented correctly in
-`game/src/character/derive.js` and called from exactly one place: their own definitions. Under the
+`corpus/20-progression/GAP-W1-skill-and-attribute-scaling-never-reaches-damage.md`. Under the
 Arbitration Rule that is the *Souls* half unbuilt, not the Morrowind one. Not this piece's job, and
 not counted against it; recorded so nobody reads this verdict as saying the seam is healthy.
+
+### Correction, round 2 of this critic run — "nothing inside the fight" was too strong
+
+The draft of this verdict said attributes "reach **nothing** inside the fight". Re-measured, that is
+**false**, and the true statement is narrower and more useful. Four attributes reach combat through
+the **pools**, on a live path from the sheet — `applyDerivedPools()` (`game/src/engine.js:1525`) →
+`derivePools()` (`game/src/character/derive.js:173`):
+
+| attribute | in-fight consumer | path |
+|---|---|---|
+| vigour | `hp_max` | `derive.js:180` |
+| endurance | `stamina_max`, stamina regen per frame | `derive.js:181–182`, `combat/rules.js:50` |
+| strength | `equip_load_max` | `derive.js:184` |
+| willpower | `focus_max`, `spell_slots`, **and spell damage** | `derive.js:183`, then `engine.js:1581` → `magic/system.js:355` |
+
+The last one is the substantive correction: **willpower scales magic damage.**
+`engine.js:1581` feeds `pools.from.willpower` into `MagicSystem.setWillpower()`, which sets
+`this.wil`; `combat-bridge.js:92` computes `dmg += Math.round(M.outputOf(t.effect, t.magnitude,
+M.wil))`. That is an attribute reaching a damage number inside a fight, and this verdict's draft
+denied it.
+
+What is genuinely dead is **weapon** damage. Inside `game/src/combat/` the only attribute read of
+any kind is `endurance → staminaMaxFor()`; no strength, dexterity or agility term reaches any weapon
+damage computation. `scalingBonus()` and `effectiveGrade()` — the Souls letter-grade machinery in
+`derive.js:137` and `:153` — are called from nowhere but their own definitions, confirmed by grep
+across `game/src` and `tools`.
+
+### And the two curves disagree, while one of them claims to be the other
+
+`magic/system.js:1503` carries this docstring:
+
+> `RI-MAG02 §E: output = M × output_per_point × (1 + gradeCoeff × scalingBonus(stat)).`
+
+The code one line below does not do that:
+
+```js
+const scaling = Math.max(0, (attrValue - 10) / 90);          // 0 at 10, 1 at 99
+const raw = magnitude * e.magnitude.output_per_point * (1 + 0.55 * scaling);
+```
+
+Two substitutions, neither declared. `scalingBonus()` — RI-PRG02 §4's authored 14-point ramp — is
+replaced by a straight line, and `gradeCoeff` is replaced by the literal `0.55`, which is not any
+value in `GRADE_COEFF` (`S 1.00 / A 0.80 / B 0.62 / C 0.46 / D 0.32 / E 0.18`). Measured against the
+formula the comment states:
+
+| willpower | `scalingBonus` (authored, dead) | `(wil−10)/90` (shipped) | documented mult | shipped mult | shipped ÷ documented |
+|---:|---:|---:|---:|---:|---:|
+| 10 | 0.1600 | 0.0000 | 1.0880 | 1.0000 | 0.919 |
+| 20 | 0.3710 | 0.1111 | 1.2041 | 1.0611 | 0.881 |
+| 30 | 0.6200 | 0.2222 | 1.3410 | 1.1222 | **0.837** |
+| 40 | 0.8500 | 0.3333 | 1.4675 | 1.1833 | **0.806** |
+| 50 | 0.9200 | 0.4444 | 1.5060 | 1.2444 | 0.826 |
+| 70 | 0.9700 | 0.6667 | 1.5335 | 1.3667 | 0.891 |
+| 99 | 1.0000 | 0.9889 | 1.5500 | 1.5439 | 0.996 |
+
+Every spell in the build pays out **16–19% under its own documented formula** across the range a
+character actually plays, converging only at the endpoints — which is exactly the shape that hides
+from an endpoint test. This is not W1-ATTR-SCALE's work and is **not charged against it**; it is
+recorded here because this verdict is the one that went looking at whether attributes reach the
+fight, and the honest answer is "yes, through one curve that is not the curve the corpus authored".
 
 ## Finding 8 — the wiring fires, and it is a warning
 
@@ -289,6 +382,30 @@ roster lands, or they stay unreachable — and nothing in the build can currentl
   the auditor's design forbids in itself.
 - `B3` before/after are the same assertion with different prose and pass in both arms; harmless, but
   it inflates 8/8 to look like eight independent flips when six of them flip.
+- **`tools/verdict-validate.mjs` does not enforce most of its own schema, and this verdict is one of
+  the files it waved through.** Mutation-tested on `W1-SOULS-r3.json`, six deliberate breakages:
+  dropping `biggest_gap` (exit 1), emptying `artifacts` (exit 1), dropping `self_audit` (exit 1) and
+  `conflict_of_interest: true` with `status: PASS` (exit 1) are all caught. But `piece_id` set to
+  `"NOT A Valid Slug!!"` against its `^[a-z0-9]+(?:[-.][a-z0-9]+)*$` pattern **passes**,
+  `score.overall_0_10 = 99` against `maximum: 10` **passes**, and an invented key inside `score`
+  against `additionalProperties: false` **passes**. So it checks `required` and the two `allOf`
+  conditionals, and ignores `pattern`, `minimum`/`maximum` and `additionalProperties`. "Schema-valid"
+  in a dispatch brief is therefore a weaker claim than it reads — the schema is stricter than the
+  gate. Existing verdicts already exploit the hole benignly: `W1-SOULS-r3.json` carries
+  `score.axes` and `score.confidence_note`, neither of which the schema permits. Artifact:
+  `artifacts/W1-ATTR-SCALE/verdict-validate-mutations.txt`. Not this piece's defect; filed because a
+  critic that trusts this gate to prove its own output well-formed is trusting a probe that mostly
+  cannot fail (rule 4).
+
+  **And the first draft of that table was itself an inert control**, which is worth recording
+  because it is the exact failure this verdict fails the builder for. A shell-escaping bug
+  (`'\$MUT'` inside a double-quoted heredoc) meant the mutation name reached Node as a literal
+  string, no mutation was ever applied, and all seven rows came back "exit 0 — MISSED", which read
+  like a devastating finding and was actually a broken instrument measuring nothing. It was caught
+  by noticing the result contradicted a run I had done minutes earlier by hand. The published table
+  now prints a **sha256 per row** to prove each mutated file genuinely differs, and carries a
+  `none` control arm that must validate clean. Rule 6's inert control does not only happen to other
+  people, and a table where *every* row confirms your thesis deserves the suspicion it gets.
 - The builder's honesty is above the bar this project normally sees and should be said plainly: it
   named the 14 ladder edits as *not* defects rather than banking 42 defect fixes, it caught and
   reported its own self-test hole through mutation testing, and it recorded the contention with the

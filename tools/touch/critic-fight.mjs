@@ -580,9 +580,31 @@ async function legInsets() {
     rec.controls = layout.length;
     rec.violations = violations;
     await shot(H, `2026-08-08-critic-touch-04-a-44px-cutout-on-both-sides.png`);
+
+    // ---- THE NULL CONTROL, and without it the check above is not evidence (RULES 4/6) --------
+    // `ui/system.js` claims "T8 is upheld by construction — the layout is measured from the safe
+    // area, so the controls cannot enter an inset". That is a claim about ONE line: `_origin()`
+    // returns the bottom-right of the SAFE AREA rather than of the frame. So break exactly that,
+    // in the running page, and the same arithmetic must go red. A check that has never been seen
+    // to fail is a second copy of the experiment — W1-04's wall-collision control, exactly.
+    const broken = await H.page.evaluate((ins) => {
+      const t = window.__ENGINE.real.touch;
+      t._origin = function frameCornerNotSafeAreaCorner() { return { x: this.viewport.w, y: this.viewport.h }; };
+      const lay = t.layout();
+      const vp = { w: t.viewport.w, h: t.viewport.h, insets: { ...t.insets } };
+      const bad = lay.filter((c) => (
+        c.x + c.r > vp.w - vp.insets.right || c.x - c.r < vp.insets.left ||
+        c.y + c.r > vp.h - vp.insets.bottom || c.y - c.r < vp.insets.top
+      )).map((c) => ({ action: c.action, x: Math.round(c.x), y: Math.round(c.y), r: c.r }));
+      return { controls: lay.length, violations: bad };
+    }, insets);
+    rec.null_control = { what: 'TouchInput._origin() re-anchored to the FRAME corner instead of the SAFE-AREA corner', ...broken };
+    say(`  .... null control: anchor moved off the safe area -> ${broken.violations.length} of ${broken.controls} controls now inside an inset`);
+
     if (!layout.length) fail('C-INSET', 'no controls laid out under the cutout at all', rec);
-    else if (!violations.length) pass('C-INSET', `T8 clause 1 measured against a REAL inset for the first time: with M-P17's {0,44,21,44} cutout applied, all ${layout.length} controls stay clear of every inset. Every profile the round ran had insets of ZERO, so its 'insetViolations: 0' was a measurement against nothing.`, rec);
-    else fail('C-INSET', `under M-P17's cutout ${violations.length} of ${layout.length} controls sit inside a safe-area inset: ${violations.map((v) => v.action).join(', ')}. T8 clause 1 fails the moment the inset is not zero, which is every notched phone.`, rec);
+    else if (violations.length) fail('C-INSET', `under M-P17's cutout ${violations.length} of ${layout.length} controls sit inside a safe-area inset: ${violations.map((v) => v.action).join(', ')}. T8 clause 1 fails the moment the inset is not zero, which is every notched phone.`, rec);
+    else if (!broken.violations.length) fail('C-INSET-CONTROL', `THE CONTROL IS INERT. Re-anchoring the arc off the safe area produced ${broken.violations.length} violations out of ${broken.controls} — the same answer as the shipped arm. Something other than _origin() is holding the arc clear, or the audit cannot see a violation at all, and the PASS above is worth nothing until that is explained (RULES 6).`, rec);
+    else pass('C-INSET', `T8 clause 1 measured against a REAL inset for the first time: with M-P17's {0,44,21,44} cutout applied, all ${layout.length} controls stay clear of every inset — and the null control reddens, ${broken.violations.length} of ${broken.controls} controls landing inside an inset the moment _origin() is re-anchored off the safe area (${broken.violations.map((v) => v.action).join(', ')}). Every profile the round ran had insets of ZERO, so its 'insetViolations: 0' was a measurement against nothing; this one is against a cutout and against a teardown that fails.`, rec);
   } finally { await H.ctx.close(); }
   return rec;
 }

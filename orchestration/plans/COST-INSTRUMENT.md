@@ -696,3 +696,397 @@ this programme's quality guards are its soft flank, and no amount of cost precis
 [LLM Token Optimization Strategies — tokenoptimize.dev](https://www.tokenoptimize.dev/guides/llm-token-optimization-strategies) ·
 [Multi-Agent Cost Compounding — Augment Code](https://www.augmentcode.com/guides/multi-agent-cost-compounding) ·
 [How Anthropic Built a Multi-Agent Research System — ByteByteGo](https://blog.bytebytego.com/p/how-anthropic-built-a-multi-agent)
+
+---
+
+# 11. PLAN CRITIC — `COST-INSTRUMENT-plancritic` (exchange 1 of 2)
+
+**Verdict: BLOCKED pending items 1–6.** Twelve further items are CARRIED into the build brief as
+declared risks. Three rulings the orchestrator asked for are at §11.4, all reversible.
+
+**How this was produced.** Everything below is re-derived independently from
+`/root/.claude/projects/-home-user-elder-souls-claude/**` on **2026-08-08T12:46Z at commit
+`70d40ab`**, by three scripts in the scratchpad suffixed `-COST-INSTRUMENT-plancritic`, which parse
+every `.jsonl` line, build their own `message.id` map and price it from their own table. Nothing
+here is taken from §0–§10. No browser was used. The tree grew *during* this critique — 47,838 →
+47,915 → 48,199 distinct request ids across three passes forty minutes apart — which is §0.4
+confirmed live and is the reason every figure below carries its snapshot.
+
+**This plan is the best document in the repo and it has a defect that would have shipped a wrong
+number.** Its four corrections in §0 are real: I reproduced the 9.3 % orchestrator share (**9.26 %**),
+the zero-unique workflow mirror, the five token classes, the growing source. Its §10 self-criticism
+is honest. And precisely because §0.1 is so good, the plan's readers — and the plan itself — stopped
+looking for a *second* instance of the same shape. There is one, it is in §0.2, and it is BLOCKING 1.
+
+---
+
+## 11.1 BLOCKING — resolve before the build starts
+
+### **BLOCKING 1 — "dedup on `message.id`, keep one, never sum" is under-specified, and the natural implementation loses 59 % of the output tokens.**
+
+§0.2 states that the several records sharing a `message.id` carry "**three byte-identical copies of
+`usage`**", verified "in all 770 main-transcript groups". **I reproduced that verification and it is
+true — of the main transcript.** My pass over the orchestrator's own file finds **786 multi-record
+groups and zero disagreements**, exactly as claimed.
+
+**It is false across the rest of the tree.** Over the canonical set (main + `subagents/*.jsonl`),
+**6,034 of 47,915 request ids — 12.6 % — carry records whose `usage` blocks disagree**, and the
+disagreement is *exclusively* in `output_tokens`:
+
+| class | ids whose records disagree |
+|---|---:|
+| `input`, `cache_write_5m`, `cache_write_1h`, `cache_read` | **0** |
+| `output` | **6,034** |
+
+The mechanism, from the raw records of `msg_011CdpFfEUfTg8xgv1N2Kbqx`:
+
+| record | ts | `stop_reason` | blocks | `output_tokens` |
+|---|---|---|---|---:|
+| 1 | 23:26:47.167 | `null` | `thinking` | 4 |
+| 2 | 23:26:47.567 | `null` | `text` | 4 |
+| 3 | 23:26:54.638 | `null` | `tool_use` | 4 |
+| 4 | 23:26:55.208 | **`tool_use`** | `tool_use` | **1,177** |
+
+The writer flushes a record per content block with the usage snapshot *as of that moment*; only the
+terminal record carries the response's true output count. The other four classes are fixed at
+request time, which is why they never disagree.
+
+**What it costs.** Selecting the first record — the natural reading of "keep one" and, on the
+evidence of §2's own figures, what this plan did — yields **4,001,487 output tokens against a true
+9,797,208. First-wins reads 40.8 % of the output.**
+
+**The remedy, with its proof.** Dedup on `message.id` taking the **element-wise maximum** of each of
+the five classes. Do *not* select on `stop_reason`: it is `null` on **36,845 of 48,199** ids (76 %),
+so it cannot be the primary selector — but wherever it exists it agrees with the maximum in **every
+single case** (0 mismatches among single-terminal ids; 9,941,804 tokens by either rule, identical to
+the token). So max is safe, total, and equivalent to the semantically correct rule. §1.1's field
+table must state it, and the two-word phrase "keep one" must not survive into the build brief.
+
+**Why this is the item that matters most.** It is the same shape as §0.1 one notch smaller and one
+level deeper: a verification performed on the orchestrator's session — **9.3 % of the money** — and
+generalised to the other **90.7 %**. That is the defect this plan is celebrated for finding, and the
+plan committed it in the very section that documents it.
+
+### **BLOCKING 2 — the null control cannot fail on BLOCKING 1. N1 is inert against the defect actually present in the data.**
+
+N1's fixture is specified as "record A written as 3 records sharing one `message.id`, **each carrying
+the same `usage`**". Every arm N1–N6 is satisfied by a first-wins instrument. **A build that
+implements the plan's dedup rule wrongly passes `--self-test` 6/6 and publishes a confident,
+wrong number** — which is the exact sentence §3 opens with.
+
+**Add N7 — the partial-usage arm.** One `message.id` written as four records on `claude-opus-5`,
+**zero in all four fixed classes** so the arithmetic is purely output, with `output_tokens`
+`4, 4, 4, 1177` and `stop_reason` `null, null, null, "tool_use"`:
+
+| instrument | says | why |
+|---|---:|---|
+| **correct (max / terminal)** | **$0.0294** (1,177 out) | the only right answer |
+| first-wins | $0.0001 (4 out) | the defect above, 294× low on this fixture |
+| sums records | $0.0297 (1,189 out) | the N1 defect |
+
+Add it to the §3.3 deliberate-break sequence as a **sixth break**: on a scratch copy, change the
+merge from `max` to `first`, and **N7 must go red while N1–N6 stay green** — which is the whole point,
+because it demonstrates that N1 could never have caught it.
+
+### **BLOCKING 3 — the numbers downstream of BLOCKING 1 are wrong, in both this plan and `COST.md` §2, and one of them is currently being used to demote a lever.**
+
+Re-derived on the canonical set at 2026-08-08T12:46Z, terminal-record selection, Sonnet at intro:
+
+| | plan §2 (first-wins) | **corrected (max)** |
+|---|---:|---:|
+| output tokens | 3,878,309 | **9,797,208** |
+| output USD | $95.69 | **$236.80** |
+| **output share of spend** | **1.7 %** | **3.93 %** |
+| median output per request | **5** | **16** |
+| mean / p90 output per request | 83 / 100 | **204 / 492** |
+| `cache_read` share | 81.2 % | **79.34 %** |
+| C (total) | $5,792.69 | **$6,025.85** |
+| C/H (52 active hours) | $111.40 | **$115.88** |
+| $/agent-hour (692 agent-hours) | $8.51 | **$8.71** |
+
+`COST.md` §2 currently reads *"Output is 1.7% of spend and median output is 5 tokens. Writing shorter
+is worth approximately nothing."* The direction survives — 3.9 % is still small — but the figure is
+wrong by **2.3×** and the median by **3.2×**, and it is the stated basis for writing off a lever.
+A demotion argued from a number that is itself an artefact of the bug is not a demotion, and this
+programme cannot afford to publish one. Both files must be corrected together, with the corrected
+totals re-stamped against a commit.
+
+### **BLOCKING 4 — G1 is specified two different ways in the two binding documents, and the numbers each cites belong to different hour sets. The build cannot implement both.**
+
+§4.1 says mean over active hours of requesting agents (13.10, passes). `COST.md` Ruling C2 says
+median, and cites "**median 11, 35 of 63 hours below the floor**" — but that pair comes from a
+*different series*: the span-hour set, not the active-hour set that H uses. All four readings,
+measured:
+
+| reading | hour set | mean | median | hours < 12 |
+|---|---|---:|---:|---|
+| **requesting** | **52 active** | **13.31** | **12.5** | **24 / 52 (46.2 %)** |
+| **present** (alive between first and last request) | **52 active** | **13.42** | **12.5** | **24 / 52 (46.2 %)** |
+| requesting | 63 span (idle = 0) | 10.98 | 11 | 35 / 63 |
+| present | 63 span | 11.25 | 11 | 35 / 63 |
+
+**And the row that changes the shape of §4.1 entirely: on the same hour set, the two "honest readings
+that disagree" do not disagree.** Requesting and present give **13.31 vs 13.42** mean, **12.5 vs
+12.5** median, **24 vs 24** hours below floor. The 13.10-against-11 gap that §4.1 calls "the critic's
+best line of attack on me" — and that C2 was ruled on — **is not a disagreement about how to count
+agents at all. It is produced entirely by putting 11 idle hours into the denominator**, and it
+appears identically under *both* agent-count rules. §4.1's whole confession is filed against the
+wrong variable.
+
+Two consequences. First, "G1 is the median" does not by itself pick a value: it is **12.5 (passing)**
+or **11 (failing)** depending on a choice about hours that neither §4.1 nor C2 makes. Ruled at
+§11.4.1. Second, §4.1's proposed mitigation — publish both readings, flag a >20 % divergence — will
+essentially never fire once the hour set is fixed (the readings differ by 0.8 %). Keep publishing
+both, but **move the divergence flag onto the hour sets** (`active_hours` vs `span_hours`, currently
+52 vs 63, a 21 % gap), which is where the information actually is and which is the genuine cost
+finding: agents alive and not requesting.
+
+The build must implement one reading, publish both, and the ledger must name the **hour set** beside
+every G1 figure — `comparable_key` already exists for exactly this.
+
+### **BLOCKING 5 — both published metrics are monotone in idleness, which is the failure the owner named in the same breath as the target.**
+
+Owner, verbatim in `COST.md`: *"I don't want to save cost by running more slowly."*
+
+- **C/H = C ÷ active clock hours.** A fleet that does *identical work* spread over more hours has the
+  same C and a larger H, so **C/H falls**. §1.2 analyses only the idle direction (which (b) fixes)
+  and concedes the dilution direction in one line ("an hour containing one cheap request counts as a
+  full hour") without following it: dilution is not an edge case, it is the general behaviour of the
+  metric under slowdown.
+- **$/agent-hour = C ÷ (hour, agentId) pairs.** Identical defect and it is offered as *the guard*.
+  An agent that is alive and idle longer accrues more agent-hours at the same spend, so the
+  diagnostic falls too. §10's third self-criticism gets close ("neither measures work done") and then
+  §1.2 asserts this metric closes the gap anyway. It does not.
+- **G1 counts agents, not work.** Twelve agents each issuing one cheap request an hour satisfies it.
+
+**All three headline numbers improve if the fleet slows down**, and nothing in the declared ledger
+would show it. The remedy is cheap and does not change the bar: the ledger must carry, beside C/H,
+
+- `drivers.requests_per_active_hour` (baseline **920.0**) and `drivers.runs_per_active_hour`
+  (baseline **7.75**; 403 runs / 52 h; median run 33.9 min, mean 40.9, p90 76.1), and
+- a throughput count for the window from tools already being reused — verdicts landed
+  (`tools/scores.mjs`) and pieces closed (`tools/ownership.mjs`) — published as `drivers.work`.
+
+None of these is a new definition of the bar. They are the counters that make a slowdown visible on
+the page instead of invisible in the numerator. **A cost figure whose only guards are also monotone
+in idleness is not guarded.**
+
+### **BLOCKING 6 — §5.3's stated reason for mechanism-based attribution is measurably false, and the correct mechanism metric is ~6× more powerful than the one proposed.**
+
+§5.3: *"Report **PIE tokens per run** … which is model-independent (§0.3) and **has far lower
+variance than dollars** because it removes the model-mix term."* Measured over the same 403 runs:
+
+| per-run metric | mean | **CV** | runs per arm, 25 % effect |
+|---|---:|---:|---:|
+| dollars | $13.65 | **0.928** | 217 |
+| **PIE tokens** | 2.83 M | **0.888** | **198** |
+| requests | 114.4 | 0.643 | 104 |
+| **mean context tokens per request** | 166,568 | **0.386** | **38** |
+
+PIE per run is **4 % less variable than dollars**, not "far lower" — because **94.7 % of PIE is
+already Opus**, so there is almost no mix variance available to remove. The proposed primary
+attribution metric does not solve the power problem it is introduced to solve.
+
+**The conclusion is right and the reason must be replaced.** Mechanism-based attribution is correct
+because the PIE decomposition `C/H = (PIE per active hour) × (weighted mean base input price)` is
+*exact* — mix effects are closed-form and need no experiment at all — not because PIE is quieter.
+
+**And the constructive half, which is the most useful number I found.** The variance lives in *run
+length*, not in tokens: **mean context tokens per request has CV 0.386**, giving **38 runs per arm
+for a 25 % effect (~5 hours of fleet time at 7.75 runs/h) and 235 per arm even at 10 %**. So
+§5.3's headline — *"a 25 % effect needs about 76 hours — longer than the entire history of the
+project"* — is true of **dollars per run** and **false of context per request**. A 25 % context cut,
+which is exactly what H1/H2/H8 propose, is provable here **in an afternoon**. The plan must declare
+**context tokens per request** (equivalently PIE per request) as the primary acceptance for volume
+levers, with dollars per run demoted to the confirmatory readout it can actually support.
+
+---
+
+## 11.2 CARRIED — declared risks for the build brief, not blockers
+
+1. **"403 files / 638 MB" matches no set the instrument will read.** Today: **416 `.jsonl`** =
+   405 subagents + 10 mirror + 1 main, **602.0 MB**; the whole directory is **998 files / 674.8 MB**
+   including 405 `.meta.json`, 174 `tool-results/*.txt` and a workflow script, none of which are ever
+   parsed. The plan's own arithmetic does not close either: **386 + 10 + 1 = 397 ≠ 403**. Define
+   `coverage.files_total` as the *enumerated canonical set* (main + `<session>/subagents/*.jsonl`,
+   mirror excluded) or N5's `files_read == files_total` assertion has no referent.
+2. **Coverage attacked in four directions and it holds — recorded so nobody spends a round repeating
+   it.** (a) One `projects` directory on disk; no second `.claude` tree; `/root/.claude/sessions` and
+   `/root/.claude/backups` hold no transcripts. (b) One session; its first record is
+   `2026-08-05T22:16:46Z`, **earlier than the repo's first commit at 22:25:34**, so no earlier day is
+   missing. (c) **396 `Task` tool_use invocations, 396 `.meta.json` sidecars, 0 spawns without a
+   transcript** — no agent died before writing. (d) The mirror holds **1,045 ids of which 0 are
+   unique**, so §6.2's exclusion of `subagents/workflows/**` loses nothing. §0.1's replacement claim
+   survives independent attack.
+3. **`attributionAgent` is not a stratifier, and §5.1 leans on it as one.** 395 files
+   `general-purpose`, **9 `workflow-subagent`**, **2 carrying no `attributionAgent` at all**; every
+   `.meta.json` reads `agentType: general-purpose, spawnDepth: 1`. There is effectively **one class**,
+   so "cost-per-run within a class" is unstratified, and the 9 workflow-subagents have no `.meta.json`
+   at all. Key attribution on `agentId`; treat `attributionAgent` as a nullable label.
+   **And I tried to break the 238-run finding by stratifying and failed:** pooled within-role CV
+   (critic / build / plan / research, from `.meta.json` descriptions) is **0.928** — identical to the
+   overall 0.928. Stratification buys nothing. §5.3's constraint stands, stronger than it claimed.
+4. **The price table deserves *more* confidence than the plan gives it, and §10.4 conflates two
+   different things.** The `EGRESS_BLOCKED` caveat is right about H1–H8 and wrong about prices.
+   Verified offline, independently, against the bundled `claude-api` skill —
+   `claude-api/shared/models.md` and `claude-api/shared/prompt-caching.md`: **Opus 5 $5/$25**;
+   **Sonnet 5 $3/$15 sticker, "introductory $2/$10 per MTok applies through 2026-08-31"** (verbatim,
+   including the date); **Haiku 4.5 $1.00/$5.00**; **cache read 0.1×, write 1.25× (5 m) / 2× (1 h)**.
+   Every figure in §0.3 matches. This is a versioned local reference, not a search snippet.
+5. **The mix ceiling, measured rather than asserted.** All-Sonnet at list = **0.620×** (§2.1 says
+   0.60×). **Critics pinned to Opus, everything else Sonnet-list = 0.719×** — §2.1 guessed "nearer
+   0.7×" and it is 0.719. Critics are **23.4 % of subagent PIE**. So 0.25 ÷ 0.719 ⇒ **volume must fall
+   2.88×**. §2.1's headline survives contact with the data.
+6. **Two tokenizer facts qualify the scalar-substitution argument.** Opus 5 and Sonnet 5 share the
+   Opus 4.7/4.8 tokenizer (verified), so Opus → Sonnet really is a pure price scalar and §2.1 is
+   sound. **Haiku is a different tokenizer** — "the Opus 4.7 tokenizer tokenizes the same content to
+   roughly 1×–1.35× as many tokens" as Sonnet/Haiku/older — so "Haiku 0.20×" is a *price* scalar, not
+   a cost scalar, and PIE is not strictly model-independent across the Haiku boundary.
+7. **§8's unquantified margin can be given a bound.** The same reference states list cost includes
+   **web search at $10 per 1,000** and **session running time at $0.08/hour**. Web-search calls in
+   this window: **0** (I counted `usage.server_tool_use` across the tree). Session time:
+   692 agent-hours × $0.08 = **$55.36 ≈ 0.9 % of C**. Replace "if the owner's actual bill exceeds C by
+   a fixed margin" with that number and its source.
+8. **The instrument reads a path that is not in the repo, on a container destroyed three times.**
+   If `/root/.claude/projects/**` is lost, §1.3's frozen baseline can never be recomputed and every
+   published number becomes unfalsifiable — rule 12's spirit, violated by the storage layer. §6.2's
+   committed cache nearly fixes it; make it sufficient by committing an **hourly roll-up**
+   (`hour × model × agentId → five class totals + request count`, a few hundred KB) from which C/H,
+   $/agent-hour and both G1 readings for any past window can be rebuilt without the transcripts.
+9. **The 25 s budget has 2× headroom, not 2.8×.** My equivalent full parse of 416 files — same line
+   parse, same id map — took **12.5 s** wall against the plan's 8.85 s on a tree 6 % smaller. §10.3's
+   own fallback is the right one: build the cache **last**, and be prepared to ship `--full`-only.
+10. **`separate_critic` is measurable but not "provable without trusting prose".** `tools/ownership.mjs`
+    reads `orchestration/status/*.json` — which agents write about themselves. Two distinct declared
+    task ids is far better evidence than a grep for a word, so ship it; word the ledger as
+    "distinct declared task ids", not "provable".
+11. **Strike §9's second justification for Sonnet.** "Generates a data point about that lever" is
+    worth nothing: at CV 0.93, **55 runs per arm** are needed to see even a 50 % effect. One build
+    carries no information about routing, and offering it as evidence is the anecdote-for-measurement
+    substitution §5.3 exists to forbid. The routing axis alone justifies the choice — see §11.4.3.
+12. **G2b's gate is under-budgeted.** §4.3 prices a re-grade at "~$13"; measured critic runs mean
+    **$12.81** with **CV 0.768** and a long right tail. Budget the gate at ~$30 or it will be skipped
+    at precisely the moment a change looks good.
+
+---
+
+## 11.3 What I attacked and could not break
+
+Recorded because a critic who reports only hits is describing its own search, not the document.
+
+- **The 9.3 % orchestrator share** — I get **9.26 %** ($544.81 of $5,880.99 at that pass). Holds.
+- **The workflow mirror is a pure mirror** — 1,045 shared ids, **0 unique**. Excluding it is safe.
+- **Dedup never false-merges** — **0 ids appear under more than one `agentId`**, and **0 ids carry
+  more than one `requestId`**. The dedup key is sound; only the *selection rule* is wrong (B1).
+- **`ephemeral_5m + ephemeral_1h == cache_creation_input_tokens`** — 0 exceptions, as claimed.
+- **`usage.iterations` sums to the top-level figures** — 13,152 present, **0 mismatches**; ignoring
+  it is correct.
+- **40 `<synthetic>` records** — exactly as stated.
+- **The 238-runs-per-arm arithmetic** — `n = 2(z₀.₀₂₅+z₀.₂)²CV²/δ²` with CV 0.97 gives 236; my
+  measured CV 0.933 gives 219. The formula and the conclusion are right.
+- **The 2.8× volume target** — 0.25 ÷ 0.719 = 0.348 ⇒ **2.88×**. Right.
+- **The price-vector shape `base × [1, 1.25, 2, 0.1, 5]`** — holds for Opus 5, Sonnet 5, Haiku 4.5
+  *and* Fable 5 ($10/$50). §0.3's proposal to assert it and fail loudly is well-founded.
+- **The 98.39 % cache-hit ratio** — I get **0.98394**. Identical.
+- **Run duration median 34 min** — I get **33.9**.
+
+---
+
+## 11.4 The three rulings the orchestrator asked for. All reversible.
+
+### 11.4.1 Ruling P1 — **`COST.md` Ruling C2 is UPHELD in substance and AMENDED in specification.**
+
+**Upheld:** G1 is the **median**, not the mean, plus the fraction of hours below the floor. C2's
+reasoning is correct and I would have ruled the same way unprompted — a guard a burst can satisfy is
+not guarding, and choosing the statistic after seeing which passes is the inert control in another
+costume.
+
+**Amended, because C2 names a statistic without naming its series (BLOCKING 4).** The median is
+**12.5** or **11** depending on a choice C2 does not make. I rule:
+
+> **G1 is measured over the same hour set as H — the 52 active clock hours — using the *requesting*
+> reading, with the *present* reading published beside it. Baseline: median 12.5, floor met;
+> 24 of 52 active hours (46.2 %) below the floor; present-reading median 13. The binding guard is
+> that the below-floor fraction must not increase.**
+
+**The principle, stated before the numbers rather than after them:** §1.2's own argument is that
+numerator and denominator must never disagree about what an hour is. A guard measured in hours is
+subject to the identical constraint. Publishing "median 11 over 63 span hours" beside "C/H over 52
+active hours" is reading two clocks and calling it one scorecard. This is a principle about *which
+hours exist*, not about which number is prettier — and I apply it knowing it flips G1 from breach to
+pass, which I dislike and cannot honestly avoid.
+
+**What changes:** on this reading the baseline **passes** G1, where C2 concluded it fails. That
+reverses C2's factual conclusion while keeping its methodological core intact — and the 46.2 %
+below-floor fraction is a far more honest description of this fleet than either "13.10, ok" or
+"fails" was.
+
+**Falsifier:** if 46.2 % of active hours below the floor is judged too lax a starting state, the
+alternative is to use the **span** hour set for *both* G1 and C/H — but then C/H must be republished
+at **$96.63/h** on 63 span hours, and §1.2's decisive objection returns: switching the fleet off
+would improve the headline. Whoever overturns this must move both numbers, not one.
+
+### 11.4.2 Ruling P2 — **G3 ships as `unmeasured`, not as passing. UPHELD without qualification.**
+
+The plan is right and the argument is airtight: a guard whose only measurement is a grep for its own
+name is maximally gameable by the process it constrains, and `delete-the-fix` in 59 files against
+2 of 95 verdicts carrying a parseable header is not a measurement. A green tick for four of five
+would be a fabricated guard on the page the owner actually reads, and this project has already
+shipped an instrument that passed against an empty register.
+
+Two refinements, neither blocking: ship `separate_critic` with the wording of CARRIED 10; and dispatch
+the verdict-template piece (§4.4's third bullet) **now** rather than "eventually", because G3 is the
+guard the whole efficiency programme is supposed to protect and it is currently four-fifths dark —
+the longer it stays dark, the longer any cost saving is unfalsifiable in the dimension that matters
+most. **Falsifier:** a machine-readable rigour block landing in the verdict template, at which point
+the four flip from `null` to counted and this ruling expires by itself.
+
+### 11.4.3 Ruling P3 — **Sonnet build / Opus critic: UPHELD, conditional on BLOCKING 1 and 2 landing first.**
+
+Against the adopted axis — *is the acceptance decidable without judgement?* — the build passes:
+`--self-test` prints 6/6 and exits 0, the headline fixture is $74.80 on a calculator, and six
+deliberate breaks must each go red. Nothing in that requires judgement. The measurement *design*,
+which does, was done here in Opus. Correctly routed.
+
+**But the axis has a blind spot this piece has just demonstrated, and it must be named.** The axis
+asks whether the acceptance is *decidable*; it does not ask whether the acceptance is *complete*.
+BLOCKING 1 is a specification defect that a faithful builder would implement wrongly and that all six
+declared arms would wave through. A decidable-but-incomplete acceptance routed to a cheaper model
+does not produce a cheap correct build — it produces a cheap confident wrong one, at a discount.
+**So the general rule, which I am ruling and which generalises beyond this piece: route on the
+acceptance being decidable *and* complete — complete meaning every defect known to exist in the data
+has an arm that goes red on it.** Here that is one extra fixture (N7) and one extra break.
+
+**Therefore:** with N7 landed and the dedup rule stated as element-wise max, **Sonnet**. Without them,
+Opus, because the build would then be re-deriving the measurement rather than implementing it.
+
+**The reflexivity, faced squarely.** This is the piece that measures whether such routing works, so a
+routing mistake here is invisible to the instrument meant to catch it — and worse, per CARRIED 11, at
+CV 0.93 a single build tells us nothing either way. The honest position: this ruling rests entirely
+on the *a priori* axis, and **no evidence about routing will come out of this piece at all**. Anyone
+citing this build as a data point about model mix is misusing it.
+
+**Falsifier:** if the build critic finds the Sonnet build defective on measurement *judgement* rather
+than mechanics, the re-build goes to Opus and the completeness clause above becomes the standing
+routing rule rather than a ruling on one piece.
+
+---
+
+## 11.5 The critique's own weak joint
+
+Rule 23 cuts both ways, so: **the reading I am least sure of is BLOCKING 5.** I claim C/H and
+$/agent-hour are both monotone in idleness and therefore reward slowness. That is arithmetically
+true, but I have not shown that this fleet *can* slow down in the relevant way — a slower fleet
+plausibly also holds more agents alive, which moves agent-hours and the numerator together in ways I
+have not modelled. I have asked for counters rather than a redefinition of the bar precisely because
+I am not confident enough to move the bar. If the build finds `runs_per_active_hour` stable across
+every window, BLOCKING 5 is a theoretical hazard rather than a live one and should be downgraded to
+CARRIED by the build critic, with the number.
+
+**Second weakest: the role classification behind CARRIED 3 and 5** is a keyword match on
+`.meta.json` descriptions, and 259 of 403 runs fall in `other`. The pooled-CV result is robust to
+that (the pooled figure equals the overall figure, so no plausible reclassification rescues
+stratification), but the **critic share of 23.4 %** — and therefore the 0.719 mix factor — would move
+if `other` hides many critics. It would move *upward*, making the mix lever smaller and the 2.88×
+volume requirement larger, so the plan's conclusion is safe in the direction the error runs.
+

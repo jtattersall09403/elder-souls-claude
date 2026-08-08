@@ -153,20 +153,27 @@ The engine constructs (`tools/harness/boot-check.mjs`: PASS). So I timed the boo
 same build, back to back, one browser:
 
 ```
-                boot        screenshots        load
-UNOBSERVED     10.7 s        0                 13.63 → 12.78
-OBSERVED       69.7 s        2 (1 failed)      12.96 → 20.18
-   the instrument's own sampling costs 59.0 s (550%)
-
-second rep, quieter arm only:
-UNOBSERVED     14.5 s        0                 22.39
+rep   arm           boot     screenshots    load at start   paired ratio
+ 1    UNOBSERVED   10.7 s     0             13.63
+ 1    OBSERVED     69.7 s     2 (1 failed)  12.96             6.5x
+ 2    UNOBSERVED   14.5 s     0             22.39
+ 2    OBSERVED     48.4 s     2 (1 failed)  22.62             3.3x
+ 3    UNOBSERVED   52.4 s     0             29.96
+ 3    OBSERVED     72.3 s     2 (1 failed)  26.17             1.4x
 ```
 
 `readFrame` takes a **full-page screenshot on every sample**, and its wait loop samples every 2 s
-while it is timing the boot. The game boots in 10–15 s on this box even at load 22; observed, it
-takes 70 s and one screenshot in two times out. That is why the control's boot promise had not
-resolved after 146 s — the tool's `--self-test` cap is 45 s and the loop overran it threefold on
-screenshot latency alone. **The measurement is changing the thing it measures by a factor of six.**
+while it is timing the boot it is judging. The observed arm is slower in **3 of 3 paired runs**, by
+1.4× to 6.5×; the ratio shrinks as the box's own load rises, because at load 26+ the box dominates.
+And **3 of the 6 screenshots timed out**, one in every observed arm — which is the mechanism, not a
+side effect: when `page.screenshot()` fails, `readFrame` falls back to the GL read, and with
+`preserveDrawingBuffer` off since a52113c that read is guaranteed zero. That is exactly the
+`CANNOT MEASURE PIXELS` line the control produced.
+
+So the control's boot promise had not resolved after 146 s at load 7.83 while the same build boots in
+10.7 s at load 13.6 unobserved. The tool's `--self-test` cap is 45 s and the loop overran it
+threefold on screenshot latency alone. **The measurement is changing the thing it measures**, and the
+one number the tool most needs — "did this boot?" — is the number it perturbs most.
 
 ### The two thresholds that are the point of the redesign have never been the reason anything went red
 
@@ -418,8 +425,18 @@ not retried by anything, and reports "an unknown error". The 503 that produced t
 `world/hazards.json`; the same CDN wobble on `src/engine.js` is uninstrumented and unmitigated.
 
 I did not re-derive its arms (`P10-loader-retry` is `done` and verified; rule 16, declared
-`redundant_with`). I re-ran `--self-test` to confirm it still passes on the current tree — result in
-`reports/w1-deploy-r2/`.
+`redundant_with`). I re-ran `--self-test` on the current tree and watched every arm land:
+
+```
+null control ready: 3276 bytes of retry removed from the served engine.js (disk untouched)
+ok  clean · flaky · persistent · notfound · null-control · control-sane · instrument-404 · instrument-lie
+8/8 arms landed where they must
+```
+
+The `instrument-lie` arm is the one worth copying: it puts the *original defect* back — a 503
+announced to the player as a missing file — and requires the truthfulness check to catch it. That is
+the only place in this family where a check has been shown failing for the exact wrong behaviour the
+fix could have introduced.
 
 ---
 

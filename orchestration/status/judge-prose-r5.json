@@ -1,0 +1,16 @@
+{
+  "task_id": "judge-prose-r5",
+  "role": "blind judge",
+  "piece": "W1-PROSE-TICS",
+  "pack": "reports/packs/prose-tics-r5",
+  "state": "running",
+  "started": "2026-08-08",
+  "next_step": "read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding",
+  "files_claimed": [
+    "reports/packs/prose-tics-r5.answers/judge-prose-r5/",
+    "orchestration/status/judge-prose-r5.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": ["orchestration/status/judge-prose-r5.json"],
+  "notes": "Blind. Must not read prose-tics-r5.reveal/ until all 15 answers written."
+}
