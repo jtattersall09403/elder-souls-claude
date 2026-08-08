@@ -3,9 +3,9 @@
   "role": "critic",
   "item": "W1-CROSSING",
   "round": 1,
-  "state": "measuring",
+  "state": "complete",
   "started_at": "2026-08-08T05:44:47Z",
-  "next_step": "kill-probe (A), regain rebuild (D), null replacement (E), deletefix reversed (C), reverse+soulrest walks (G/D), then the verdict",
+  "next_step": "done — verdict published at corpus/90-verdicts/wave1/W1-CROSSING-r1.md/.json. Round-2 scope is in the verdict JSON under round_2_scope.",
   "files_touched": [
     "orchestration/status/critic-w1-crossing.json",
     "tools/world/critic-crossing-walk.mjs",
@@ -48,7 +48,18 @@
     "K10 --stair-grade 0.60 reproduced by running the generator: deck span 1,732->1,431 m, tallest 50.6->32.7 m, trunk 25,385.3 m unchanged, crossing 6,903.6 m unchanged, worst road gradient 24.27->31.13 deg. REFERRED as a design question.",
     "K11 RI-WLD01 M4 (leg-time, +-20%) passes on a walked body: -3.0%, -5.6%, -1.7%. RI-WLD01 M2 step 4 (the JOG, pass 33-41 min) has never been run by anyone; running it.",
     "K12 THE 116.7 m RESPAWN. Death at 799 m places the body 116.7 m from the crossing destination, so under the old accounting dying completes the crossing.",
-    "K13 the join is FRESH at HEAD: road-through-building.mjs 0 of 10, 0 offences. boot-check and check-data green."
+    "K13 the join is FRESH at HEAD: road-through-building.mjs 0 of 10, 0 offences. boot-check and check-data green.",
+    "K14 THE PARAPET IS NOT THE REVERSE BLOCKER. --clamp old (pre-fix clampToDeck from 345dcca, install verified) walks the reverse crossing to 5,072.3 m and stops at (2278.6, 1859.2) with 900 stuck frames — byte-identical to the shipped arm. The blocker is heightAt/onDeckAt resolving the wrong limb of the switchback, which the parapet never touches. Third independent confirmation that the parapet fix is not load-bearing for this route.",
+    "K15 THE OVERLADEN CROSSING ARRIVES. 02:00, storm, setBurden(0.9) -> OVERLADEN, move_mult 0.72: 6,646.1 m, 257,726 frames, 71.591 in-world minutes at mean 1.5473 m/s, worst off-path 1.39 m, zero frames off, zero teleports, ending at exactly (2765.6, 5028.8). RI-WLD01s fail condition is >75 min, so the hour has headroom even fully laden. Also a clean CONSUMPTION result for the burden model.",
+    "K16 THE JOG. RI-WLD01 M2 step 4 (pass 33-41 min) had never been run by anybody. 6,645.9 m, 124,639 frames, 34.622 min, mean 3.2000 m/s, 0 frames off the road, 0 teleports, arrived. Distance agrees with the walk to 0.8 m over 6.6 km.",
+    "K17 THE DELETE-THE-FIX GRID RE-RUN REVERSED AND RE-SEEDED: OLD/OLD ran FIRST from a clean world and reproduced 550.1 m at (2153.7, 1197.8) exactly. But the parapet arms are byte-identical (550.1/550.1 and 1779.2/1779.2), so three of the builders four cells do not reproduce, including the 6 m gap it used to argue the parapet is not load-bearing. crossing-deletefix.mjs pins only sim.player.hp, not combat.player.hp, so both its NEW arms carry a death and a ~3.4 km respawn.",
+    "K18 THE REGAIN COUNT IS DELIVERED AND IS STILL AN INERT CONTROL: 20 independent trials, NEW 15/20 (median 649 f) vs OLD 16/20 (median 786 f). Single-shove recovery is not the failure mode the fix addresses. 3 of the 5 NEW failures are bodies shoved 35-39 m DOWN off a viaduct; 2 are genuine failures on level ground. The builders 7,966.3 m vs 788.0 m orbit figure does NOT reproduce (868.8 vs 1,095.7) - it was one stuck body re-shoved seven times."
   ],
-  "overlap_declared": "reports/blog-feed.jsonl is APPEND-ONLY and every finishing piece adds one line to it (rule 27); I appended and did not edit, and node tools/check-append-only.mjs is green. I narrowed my docs/shots/ claim to the single file I wrote so the directory-wide claim stops reading as a collision with the other critics in flight."
+  "overlap_declared": "reports/blog-feed.jsonl is APPEND-ONLY and every finishing piece adds one line to it (rule 27); I appended and did not edit, and node tools/check-append-only.mjs is green. I narrowed my docs/shots/ claim to the single file I wrote so the directory-wide claim stops reading as a collision with the other critics in flight.",
+  "verdict": {
+    "status": "FAIL",
+    "score": 6,
+    "gate": 7,
+    "path": "corpus/90-verdicts/wave1/W1-CROSSING-r1.md"
+  }
 }

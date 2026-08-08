@@ -347,7 +347,25 @@ survey rather than presenting it as a result, which is the behaviour the project
 with nothing changed at all, compared track-against-track at the same frame, then the null arm and
 the positive arm against the same baseline.
 
-_(filled from `reports/critic-w1-crossing/null.json`)_
+| arm | worst divergence from the baseline track |
+|---|---|
+| **REPEAT** — the same walk, nothing changed | **0.000 m** |
+| **NULL** — move `lilmoth-archon` 25 m, a leg the crossing does not use | **0.000 m** |
+| P1 — move `stormhold-helstrom`, the leg it does use | **not re-taken — see below** |
+
+**The floor is exactly zero, and that is the finding.** Re-seeded (`setSeed`, `loadState`,
+`setTide`, `setTimeOfDay`) the walk is **bit-deterministic**: 14,000 frames, two runs, zero
+divergence at every frame. So the correct bar for a null on this fixture is not `max(0.5, floor ×
+1.5)` and it is certainly not 6,193 m — **it is 0.000 m**, and the null clears it exactly. That is a
+far stronger `C2` than the one shipped, and it is available for free once the floor is measured
+instead of inherited.
+
+**What I have not re-taken, and I am saying so rather than filling the cell.** My first `P1` cut was
+broken (below), and by the time I had fixed it my browser budget was spent on the reverse-jam arms.
+So the **positive** arm of my replacement is not re-run here. It does not change the conclusion —
+the road-is-read coupling is independently established by §C's grid, where replacing `_pursue`
+alone moves the walk from 1,779.2 m to 550.1 m — but the replacement `C2` is only two-thirds
+delivered and the third arm is a round-2 item.
 
 **And my first cut of it failed, which is the point of running it.** I put the road bump at the
 perturbed leg's **midpoint** — 1,450 m in — and then compared 14,000-frame walks, which cover 466 m.
@@ -424,9 +442,20 @@ happens to cut the hairpin and miss it; walking south the body walks into it and
 This is *not* the defect the round fixed and I am not scoring it against the steering. It is a
 `build-roads.mjs` / `field.setRoads` defect — a deck slab applied by proximity with no check that the
 segment it is shadowing belongs to a different limb of the same road — and it sits **1.6 km into the
-crossing's first leg**. `--clamp old` and `--no-deck` arms are queued to confirm the slab is the
-blocker rather than the steering; whichever way they land, the *observed* asymmetry above stands on
-its own.
+crossing's first leg**.
+
+**The parapet is not the cause, and I proved that rather than assuming it.** `--clamp old` puts the
+pre-fix `clampToDeck` from `345dcca` back (install verified: `clamp_is: "OLD"`, 17 spans still
+declared) and walks the reverse route again:
+
+| reverse arm | walked | ends | stuck frames |
+|---|---|---|---|
+| shipped | 5,072.3 m | (2278.6, 1859.2) | 900 |
+| **pre-fix `clampToDeck`** | **5,072.3 m** | **(2278.6, 1859.2)** | **900** |
+
+Byte-identical. The blocker is `heightAt`/`onDeckAt` resolving the wrong limb's slab, which the
+parapet never touches — a **third** independent confirmation that the parapet fix is not
+load-bearing for this route (§C3 is the other two).
 
 ### G3. What else I varied
 
@@ -489,7 +518,19 @@ Two models ship here and I perturbed both, on top of the builder's own arms.
 
 ### G7. The deck arms on the reverse jam
 
-_(filled from `walk-crossing-reverse-OLDCLAMP.json` and `walk-crossing-reverse-NODECK.json`)_
+| arm | install verified | walked | ends | stuck frames |
+|---|---|---|---|---|
+| shipped | — | 5,072.3 m | (2278.6, 1859.2) | 900 |
+| **`--clamp old`** (pre-fix `clampToDeck` from `345dcca`) | `clamp_is: "OLD"`, 17 spans still declared | **5,072.3 m** | **(2278.6, 1859.2)** | **900** |
+| `--no-deck` (every `deck_span` deleted, `spans_removed: 17`, `spans_left: 0`) | verified installed | **did not finish inside my budget** | — | — |
+
+**The parapet is exonerated as the cause** — byte-identical arms — which is what I set out to test
+and is a third independent confirmation that `clampToDeck` is not load-bearing for this route. The
+`--no-deck` arm was still walking when my browser budget ran out; **I am reporting that rather than
+filling the cell**, because a body with every bridge in the province deleted is walking over open
+ravines and its run time is not comparable. The jam's mechanism is already established by direct
+measurement of the field (§G2) and by the parapet arm being inert; the `--no-deck` arm would have
+been confirmation, not the evidence.
 
 ---
 

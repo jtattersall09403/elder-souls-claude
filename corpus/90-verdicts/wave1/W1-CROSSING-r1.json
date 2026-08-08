@@ -26,7 +26,7 @@
     "commit_sha": "2fe47f5",
     "branch": "claude/morrowind-souls-threejs-game-mou39v",
     "dirty": true,
-    "note": "Dirty only with my own declared critic files. Gates green at HEAD: boot-check PASS, check-data PASS, road-through-building 0 of 10 legs blocked and 0 named-route offences (so W1-ROAD-JOIN handoff H4's staleness trap has not re-sprung since the builder regenerated roads.json)."
+    "note": "Dirty only with my own declared critic files. Gates green at HEAD: boot-check PASS, check-data PASS, road-through-building 0 of 10 legs blocked and 0 named-route offences (so W1-ROAD-JOIN handoff H4's staleness trap has not re-sprung since the builder regenerated roads.json). HEAD moved to bf039f1 during my run (an orchestrator bank carrying W1-14-r5 / W1-03 work in game/src/sim/traversal.js and game/src/sim/magic/system.js). The traversal.js change is a pure refactor — it extracts SWIM_FLOAT_M = 0.78 * 1.8 from an inline literal in the swimming branch — and touches nothing in the slope gate or the walking path, so no measurement in this verdict is affected."
   },
   "headline": "I WALKED IT, AND THE NUMBERS ARE RIGHT TO THE DECIMAL. 6,646.7 m, 199,433 frames, 55.398 in-world minutes, mean 1.9991 m/s, 0.063% of 33,238 samples under 1.6 m/s, worst deviation 1.39 m, zero frames off the road, zero teleports, ending at (2765.6, 5028.8) — reproduced independently with a second per-frame counter whose UNBOUNDED sum is also 6,646.7 m and whose largest single-frame step in 199,432 frames is 0.295 m, so the zero is zero because nothing jumped. The teleport exclusion was watched catching a real 3,856.1 m respawn. BUT: walkPath was never fixed and the round says it was; the crossing does not walk backwards (STUCK at 5,072.3 m against a bridge deck laid across its own switchback); and one of the three supports the premise correction rests on is a counter that is 100% exempt by construction.",
   "reference_items": [
@@ -418,6 +418,34 @@
         "move_mult_applied": 0.72,
         "note": "the route survives the variation; and setBurden IS live on this stepping run, which NEXT-DISPATCH Q1 says it is not — recorded, not adjudicated, it is not my piece"
       }
+    },
+    "null_replacement": {
+      "measured_noise_floor_m": 0,
+      "null_arm_m": 0,
+      "positive_arm": "NOT RE-TAKEN — my first cut put the road bump 1,450 m into a 466 m walk so it read 0.000 m and N2-POSITIVE-BITES went red; the fix (bump at 12% of the leg) was written but the browser budget went to the reverse-jam arms. Declared, not filled in.",
+      "finding": "RE-SEEDED, THE WALK IS BIT-DETERMINISTIC: 14,000 frames, two runs, zero divergence at every frame. So the correct bar for a null on this fixture is 0.000 m, not max(0.5, floor x 1.5) and certainly not the shipped 6,193 m — and the null clears the strictest possible bar exactly.",
+      "artifact": "reports/critic-w1-crossing/null.json"
+    },
+    "reverse_jam_arms": {
+      "shipped": {
+        "walked_m": 5072.3,
+        "end": [
+          2278.6,
+          1859.2
+        ],
+        "stuck_frames": 900
+      },
+      "pre_fix_clampToDeck": {
+        "walked_m": 5072.3,
+        "end": [
+          2278.6,
+          1859.2
+        ],
+        "stuck_frames": 900,
+        "install_verified": "clamp_is: OLD, 17 spans still declared"
+      },
+      "no_deck": "DID NOT FINISH INSIDE MY BROWSER BUDGET — reported rather than filled in",
+      "verdict": "THE PARAPET IS EXONERATED AS THE CAUSE — byte-identical arms. The blocker is heightAt/onDeckAt resolving the wrong limb of the switchback, which clampToDeck never touches. A third independent confirmation that the parapet fix is not load-bearing for this route."
     }
   },
   "artifacts": [
@@ -618,7 +646,8 @@
     "Port the teleport exclusion from walkRoute into walkPath (six lines already written) and correct F7 / survey §2c.",
     "Adjudicate the reverse jam: stormhold-helstrom points 126/131, a 17 m viaduct deck laid across the lower limb of its own switchback, producing a 5.75 m step up and a 7.5 m step down on the carriageway at 1,635 m.",
     "Replace the vacuous centreline slope-gate counter with the lateral sweep, and correct the §P.4 paragraph that cites it.",
-    "Strengthen crossing-deletefix.mjs's HP pin to the one crossing-body.mjs uses and re-run the grid re-seeded; do not quote its per-arm numbers until then."
+    "Strengthen crossing-deletefix.mjs's HP pin to the one crossing-body.mjs uses and re-run the grid re-seeded; do not quote its per-arm numbers until then.",
+    "Re-take the POSITIVE arm of the replacement C2-NULL with the corrected bump position, against the measured 0.000 m floor."
   ],
   "self_audit": {
     "judged_output_not_source": true,
@@ -633,7 +662,9 @@
       "I did not rebuild G5-PARAPET's 93-of-3,500 census; it is the one open count I take on the builder's word.",
       "I did not re-measure the 133.8 ms worst frame, and I publish no timing or performance figure anywhere (rule 26).",
       "I did not run tools/run-all.mjs (rule 9's aggregation). I ran boot-check, check-data and road-through-building — all green.",
-      "No blind pack exists for this piece, so rule 25 is not engaged."
+      "No blind pack exists for this piece, so rule 25 is not engaged.",
+      "The POSITIVE arm of my replacement C2-NULL was not re-taken after I found and fixed my own bug in it (the bump sat 1,450 m into a 466 m walk). The floor and the null arm are measured; the positive arm is a round-2 item. The road-is-read coupling is independently established by the delete-the-fix grid (1,779.2 m -> 550.1 m when _pursue alone is replaced).",
+      "The --no-deck reverse arm was still walking when my browser budget ran out. The parapet arm already answers the question it was queued for."
     ],
     "my_own_instrument_failures_found_and_reported": [
       "My first --null cut put the road bump at the perturbed leg's MIDPOINT (1,450 m in) and compared 14,000-frame walks that cover 466 m, so the POSITIVE arm read 0.000 m and N2-POSITIVE-BITES went red. A probe whose positive arm has never been seen to move is not a probe. Fixed to 12% of the leg and the failure is recorded in the tool's own comment.",

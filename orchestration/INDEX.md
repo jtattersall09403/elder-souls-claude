@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bf039f1`: 694 tools, 153 reference
-items, 57 pieces in flight.
+so it cannot drift. Generated at `55a0a06`: 695 tools, 153 reference
+items, 56 pieces in flight.
 
-Its purpose is to stop 57+ concurrent agents each paying separately to discover the
+Its purpose is to stop 56+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -262,7 +262,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
 - `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
 
-### `tools/harness/` — 228
+### `tools/harness/` — 229
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -455,6 +455,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r4-shot.mjs` — one picture of the thing this round built.
 - `tools/harness/w1-14-r4-summon.mjs` — SIX IDENTICAL CASTS, AND WHAT THEY LEAVE BEHIND.
 - `tools/harness/w1-14-r4-touch.mjs` — HOW MANY TIMES DOES ONE CAST LAND?
+- `tools/harness/w1-14-r5-alias.mjs` — EVERY SHARED STATBLOCK OBJECT IN THE BUILD, COUNTED.
 - `tools/harness/w1-14-r5-diag.mjs` — ONE BOLT, FRAME BY FRAME.
 - `tools/harness/w1-14-r5-lead.mjs` — CAN A BOLT HIT A BODY THAT WALKS?
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
@@ -1012,7 +1013,6 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `critic-w1-crossing` | measuring | kill-probe (A), regain rebuild (D), null replacement (E), deletefix reversed (C), reverse+ | `orchestration/status/critic-w1-crossing.json` `tools/world/critic-crossing-walk.mjs` `tools/world/critic-crossing-grade.mjs` `tools/world/critic-crossing-probe.mjs` `docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png` `reports/critic-w1-crossing/` |
 | `W1-04-r5` | building | fix w1-04-consumption.mjs check 10a (street signature taken before the door), run the aggr | `orchestration/status/W1-04-r5.json` `tools/world/w1-04-r5-census.mjs` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `reports/w1-04-r5/census.json` |
 | `W1-14-r5` | building | implement the lead in sim/magic/system.js | `orchestration/status/W1-14-r5.json` |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |
