@@ -80,9 +80,77 @@ export function greetingFor(data, { npcId, reactionGroup, disposition, playerRac
  * with different `a` (actor) rows; they are merged, so an actor lookup sees every info written
  * for that topic anywhere.
  */
+export const TOPIC_MANIFEST_SCHEMA = 'elder-souls/dialogue-topic-manifest@1';
+
+/**
+ * ARBITRATION S37, second requirement — THE MERGE ORDER IS DECLARED, NOT INHERITED.
+ *
+ * Under the scoring reader this function's output order was nearly decorative: the score picked
+ * the winner and order survived only as a tie-break, in one topic. Under first-match-wins it is
+ * the whole algorithm. **92 of 468 topic ids are declared in more than one file and hold 488 of
+ * the 1,280 INFOs**, so for 38% of the corpus "authored file order" was not authored — and it was
+ * worse than the ruling knew. There were TWO orders, and they disagreed:
+ *
+ *   * every tool built its doc list with `readdirSync().sort()` — by FILENAME;
+ *   * the engine built its with `Object.keys(out.topics).sort()` (`engine.js` `loadData`), where
+ *     the key is `doc.id || basename`. Three files carry a top-level `id`, so `06-opening-roots`,
+ *     `45-speaker-coverage` and `main-quest-argument` sat in a DIFFERENT position in the running
+ *     game than in every instrument pointed at it. **36 of the 92 merged ids involve one of them.**
+ *
+ * So the shipped game and its own gate were merging the corpus in two different orders, and once
+ * order decides answers that is two different games. Neither order was chosen by anyone.
+ *
+ * `game/data/dialogue/topics/_manifest.json` now names the order and this function obeys it, so
+ * the engine, the gate, the census and the lint all resolve against one declared sequence — and
+ * the two accidental sorts upstream stop mattering, because whatever order the docs arrive in,
+ * they leave here in the declared one.
+ *
+ * FAIL-CLOSED, and deliberately narrow (RULES 13: the data is authored before the assertion is
+ * armed, and this was proven silent on the shipped tree before it landed). A doc carrying a
+ * `group` is corpus data, because `group` is the per-file tag the corpus files all declare and
+ * `from` is stamped from it. So:
+ *
+ *   - if any doc carries a `group`, the manifest must be present and must list that group;
+ *   - a topic file whose `group` is missing from the manifest is an ERROR, not a doc quietly
+ *     appended at the end. Adding a topic file is now a decision about where its INFOs sit
+ *     against every other file's, and this makes you make it;
+ *   - a doc list with no `group` anywhere is a hand-built fixture (every bare unit test) and is
+ *     passed through untouched, exactly as before.
+ */
+export function orderTopicDocs(topicDocs) {
+  const docs = Array.isArray(topicDocs) ? topicDocs.filter(Boolean) : [];
+  const manifest = docs.find((d) => d && d.schema === TOPIC_MANIFEST_SCHEMA) || null;
+  const grouped = docs.filter((d) => d !== manifest && typeof d.group === 'string' && d.group);
+  if (!grouped.length) return docs.filter((d) => d !== manifest);   // hand-built fixture
+  if (!manifest) {
+    throw new Error(
+      'dialogue topic merge order is undeclared: game/data/dialogue/topics/_manifest.json was not ' +
+      'in the doc list, but ' + grouped.length + ' grouped topic doc(s) were. ARBITRATION S37 ' +
+      'requires the merge order be declared in the corpus, because under RI-DLG01 §A first-match-' +
+      'wins the file order decides answers. Load the manifest with the topic files.');
+  }
+  const rank = new Map();
+  (manifest.order || []).forEach((row, i) => { if (row && row.group) rank.set(row.group, i); });
+  const unlisted = grouped.filter((d) => !rank.has(d.group));
+  if (unlisted.length) {
+    throw new Error(
+      'topic file(s) outside the declared merge order: ' + unlisted.map((d) => d.group).join(', ') +
+      '. Add them to game/data/dialogue/topics/_manifest.json at the position you intend — under ' +
+      'ARBITRATION S37 / RI-DLG01 §A the position is content, so there is no safe default.');
+  }
+  // Stable: docs sharing a rank (they cannot, ranks are unique per group) and ungrouped docs keep
+  // their arrival order. Ungrouped, non-manifest docs sort last — a fixture spliced into a real
+  // corpus list, which no shipped caller does.
+  return docs
+    .filter((d) => d !== manifest)
+    .map((d, i) => ({ d, i, r: rank.has(d.group) ? rank.get(d.group) : Number.MAX_SAFE_INTEGER }))
+    .sort((a, b) => (a.r - b.r) || (a.i - b.i))
+    .map((e) => e.d);
+}
+
 export function buildTopicIndex(topicDocs) {
   const idx = new Map();
-  for (const doc of topicDocs) {
+  for (const doc of orderTopicDocs(topicDocs)) {
     if (!doc || !Array.isArray(doc.topics)) continue;
     for (const t of doc.topics) {
       // `topics/thorn.json` is a different (quest-link) schema whose rows key on `topic`, not
@@ -228,7 +296,7 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
   const t = topicIndex.get(topicKey(topicId));
   if (!t) return null;
   const actor = npc.actor || null;
-  let best = null, bestScore = -1;
+  let best = null;
   for (const info of t.infos) {
     if (!infoAllowed(info, player)) continue;
     // W1-23. RI-LOR06 §1: a contradiction lives at the SOURCE level, and a source is a person.

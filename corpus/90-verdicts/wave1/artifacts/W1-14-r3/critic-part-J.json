@@ -1,0 +1,307 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "J"
+  ],
+  "notes": [],
+  "J": {
+    "bolts": [
+      {
+        "effect": "damage_health",
+        "magnitude": 20,
+        "range": "target",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          368
+        ],
+        "damage": 44,
+        "spell_hits": [],
+        "applies": [
+          {
+            "effect": "damage_health",
+            "target": "e0",
+            "magnitude": 44.4,
+            "changed": false,
+            "consumer": "target.hp + target.status_buildup",
+            "is_damage_effect": true
+          }
+        ]
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "range": "target",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          372
+        ],
+        "damage": 40,
+        "spell_hits": [],
+        "applies": [
+          {
+            "effect": "fire_damage",
+            "target": "e0",
+            "magnitude": 39.96,
+            "changed": true,
+            "consumer": "target.hp + target.status_buildup",
+            "is_damage_effect": true
+          }
+        ]
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "range": "target",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          374
+        ],
+        "damage": 38,
+        "spell_hits": [],
+        "applies": [
+          {
+            "effect": "frost_damage",
+            "target": "e0",
+            "magnitude": 37.74,
+            "changed": true,
+            "consumer": "target.hp + target.status_buildup",
+            "is_damage_effect": true
+          }
+        ]
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "range": "target",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          385
+        ],
+        "damage": 27,
+        "spell_hits": [],
+        "applies": [
+          {
+            "effect": "poison_damage",
+            "target": "e0",
+            "magnitude": 26.64,
+            "changed": true,
+            "consumer": "target.hp + target.status_buildup",
+            "is_damage_effect": true
+          }
+        ]
+      },
+      {
+        "effect": "shock_damage",
+        "magnitude": 20,
+        "range": "target",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          372
+        ],
+        "damage": 40,
+        "spell_hits": [],
+        "applies": [
+          {
+            "effect": "shock_damage",
+            "target": "e0",
+            "magnitude": 39.96,
+            "changed": true,
+            "consumer": "target.hp + target.status_buildup",
+            "is_damage_effect": true
+          }
+        ]
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "range": "area_at_range",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          372
+        ],
+        "damage": 40,
+        "spell_hits": [],
+        "applies": [
+          {
+            "effect": "fire_damage",
+            "target": "e0",
+            "magnitude": 39.96,
+            "changed": true,
+            "consumer": "target.hp + target.status_buildup",
+            "is_damage_effect": true
+          }
+        ]
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "range": "touch",
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "spell_impact"
+        ],
+        "hp": [
+          412,
+          412
+        ],
+        "damage": 0,
+        "spell_hits": [],
+        "applies": []
+      }
+    ],
+    "archetype_mutation": [
+      {
+        "effect": "bind_lesser",
+        "archetype": "drowned_lesser",
+        "magnitude": 1,
+        "casts": [
+          {
+            "cast": 1,
+            "refused": null,
+            "power": 0.25,
+            "hp": 65,
+            "attack_rating": 22
+          },
+          {
+            "cast": 2,
+            "refused": null,
+            "power": 0.25,
+            "hp": 65,
+            "attack_rating": 22
+          },
+          {
+            "cast": 3,
+            "refused": null,
+            "power": 0.25,
+            "hp": 65,
+            "attack_rating": 6
+          },
+          {
+            "cast": 4,
+            "refused": null,
+            "power": 0.25,
+            "hp": 65,
+            "attack_rating": 6
+          },
+          {
+            "cast": 5,
+            "refused": null,
+            "power": 0.25,
+            "hp": 65,
+            "attack_rating": 2
+          }
+        ],
+        "plain_spawn_attack_rating": null,
+        "plain_spawn_hp_max": 260,
+        "statblock_attack_rating": null
+      },
+      {
+        "effect": "bind_lesser",
+        "archetype": "drowned_lesser",
+        "magnitude": 90,
+        "casts": [
+          {
+            "cast": 1,
+            "refused": null,
+            "power": 4,
+            "hp": 1040,
+            "attack_rating": 8
+          },
+          {
+            "cast": 2,
+            "refused": null,
+            "power": 4,
+            "hp": 1040,
+            "attack_rating": 8
+          },
+          {
+            "cast": 3,
+            "refused": null,
+            "power": 4,
+            "hp": 1040,
+            "attack_rating": 8
+          },
+          {
+            "cast": 4,
+            "refused": null,
+            "power": 4,
+            "hp": 1040,
+            "attack_rating": 8
+          },
+          {
+            "cast": 5,
+            "refused": null,
+            "power": 4,
+            "hp": 1040,
+            "attack_rating": 8
+          }
+        ],
+        "plain_spawn_attack_rating": null,
+        "plain_spawn_hp_max": 260,
+        "statblock_attack_rating": null
+      }
+    ],
+    "engine_statblock_after": {
+      "note": "read via a fresh spawn above; engine.data.enemies is not on the harness surface",
+      "magic_data_keys": [
+        "effects",
+        "spells",
+        "cast_classes",
+        "cast_clips",
+        "enchanting",
+        "vfx",
+        "spell_movesets"
+      ]
+    }
+  }
+}

@@ -343,7 +343,7 @@ function commit() { try { return execSync('git rev-parse HEAD', { cwd: ROOT }).t
 function run(argv) {
   const at = (() => { const i = argv.indexOf('--at'); return i >= 0 ? argv[i + 1] : null; })();
   const people = at ? harvestAt(at) : harvestPeople();
-  if (at) console.log(`population taken from git at ${at} (DELETE-THE-FIX arm)`);
+  if (at && !argv.includes('--json')) console.log(`population taken from git at ${at} (DELETE-THE-FIX arm)`);
   // Culture-forced per RI-LOR04 comparison method §3: Argonians are judged as Argonians, and
   // everybody else is judged by free classification.
   const argNames = people.filter((p) => isArgonian(p.race)).map((p) => p.name);

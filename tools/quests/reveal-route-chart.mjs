@@ -18,6 +18,7 @@ import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { makeText } from '../lib/chart-font.mjs';
 
 const argv = process.argv.slice(2);
 const argOf = (n) => { const i = argv.indexOf(n); return i >= 0 ? argv[i + 1] : null; };
@@ -39,55 +40,27 @@ function png(path) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, Buffer.concat([Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]), chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw, { level: 9 })), chunk('IEND', Buffer.alloc(0))]));
 }
-const FONT = {
-  A: '01100100101111010011001', B: '11100100111100100111110', C: '01110100011000010000111',
-  D: '11100100101001010011110', E: '11111100001111010000111', F: '11111100001111010000100',
-  G: '01110100001011010011011', H: '10001100011111110001100', I: '11111001000010000101111',
-  J: '00111000100001010010110', K: '10001100101110010011000', L: '10000100001000010000111',
-  M: '10001110111011100011000', N: '10001110101101100111000', O: '01110100011000110001011',
-  P: '11110100101111010000100', Q: '01110100011000110101001', R: '11110100101111010011000',
-  S: '01111100000111000011111', T: '11111001000010000100001', U: '10001100011000110001011',
-  V: '10001100011000101010001', W: '10001100011010111011000', X: '10001010100100010100011',
-  Y: '10001010100010000100001', Z: '11111000100010001000111',
-  0: '01110100111010111001011', 1: '00100011000010000100111', 2: '01110100010010010001111',
-  3: '11110000101110000111110', 4: '00110010110010111110001', 5: '11111100001111000011110',
-  6: '01110100001111010011011', 7: '11111000100010001000010', 8: '01110100011011010011011',
-  9: '01110100011011100011011',
-  '-': '00000000001111000000000', '.': '00000000000000000100000', ' ': '00000000000000000000000',
-  '+': '00000001000111000100000', ':': '00000001000000000100000', '/': '00001000100010001000000',
-  '(': '00010001000010000100001', ')': '01000001000010000100010', ',': '00000000000000000100010',
-  '_': '00000000000000000001111', '>': '01000001000001000100010',
-};
-function text(s, x, y, r, g, b, scale = 1) {
-  let cx = x;
-  for (const ch of String(s).toUpperCase()) {
-    const bits = FONT[ch];
-    if (bits) for (let j = 0; j < 7; j++) for (let i = 0; i < 5; i++) if (bits[j * 5 + i] === '1') rect(cx + i * scale, y + j * scale, scale, scale, r, g, b);
-    cx += 6 * scale;
-  }
-  return cx;
-}
+// The 5x5 chart font now comes from tools/lib/chart-font.mjs. It used to be a copy-pasted table
+// of 23-character strings indexed as bits[j * 5 + i] — two characters short of the 25 the stride
+// demands, so every row below each missing character was sheared one pixel left and both digits
+// and letters rendered wrong. Do not paste a font back in here; see W1-CHARTFONT.
+const text = makeText(rect);
 
 const ROUND = argOf('--round') || 'w1-19-r3';
 
-// A DEFECT IN THE FONT, FOUND BY READING THE PICTURE THIS ROUND DREW. Every glyph in the table
-// above is 23 characters long and `text()` indexes it as `bits[j * 5 + i]` for seven rows of five
-// — so the last two pixels of the fifth row of EVERY character are `undefined` and are never
-// drawn. On letters that is invisible. On digits it is not: 2, 3, 5, 6, 8 and 9 all carry their
-// identity in that bottom row, and `28 OF 32` came out of the renderer reading `20 OF 30`. A
-// chart whose whole point is two numbers cannot afford that.
+// THE FONT DEFECT THAT WAS PATCHED HERE UNDER A FLAG IS NOW FIXED AT SOURCE.
 //
-// The ten digits are re-authored here at the full five rows, and applied ONLY under this round's
-// flag, so `docs/shots/2026-08-07-w1-19-r3-*.png` and `docs/shots/2026-08-07-w1-18-r2-*.png`
-// still regenerate byte-for-byte from the table they were drawn with. The 37 other glyphs are
-// left alone: the same truncation is in all of them and re-authoring a whole font by eye is the
-// tool owner's job, not a side effect of a quest round. REPORTED in W1-READABLES-r2's status.
-if (ROUND === 'w1-readables-r2') Object.assign(FONT, {
-  0: '0111010011101011100101110', 1: '0010001100001000010001110', 2: '0111010001000100010011111',
-  3: '1111000001011100000111110', 4: '0011001010100101111100010', 5: '1111110000111100000111110',
-  6: '0111010000111101000101110', 7: '1111100001000100010000100', 8: '0111010001011101000101110',
-  9: '0111010001011110000101110',
-});
+// This round's own diagnosis was wrong twice and the correction is worth keeping. It said the
+// glyph strings were "23 characters read as 35, so the last two pixels of the fifth row are
+// undefined", and that on letters the corruption was invisible. Both halves were false. The font
+// is a 5x5 — 25 characters — and the two missing characters are deleted from the MIDDLE, which
+// shears every row BELOW each cut one pixel left; three or four rows of five are wrong per glyph,
+// not one corner. And it is not invisible on letters: the picture this round published rendered
+// BOOK as POOK and BY CHANNEL as PY CHANNEL.
+//
+// The flagged ten-digit patch that used to sit here is gone. The whole 52-glyph table now comes
+// from `tools/lib/chart-font.mjs` for every round, so the older `--round` renders no longer
+// reproduce their original bytes — by design: those bytes contained the misspelling.
 const world = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-18-R2/reveal-route-world.json'), 'utf8')); } catch { return null; } })();
 
 // ---- title -----------------------------------------------------------------------------------

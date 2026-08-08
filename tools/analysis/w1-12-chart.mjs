@@ -23,6 +23,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 import { NodeArena, loadCombatData } from '../lib/combat-node.mjs';
+import { makeText } from '../lib/chart-font.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 const STAT = 'inf_trash';
@@ -65,39 +66,11 @@ function png(path) {
     chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw, { level: 9 })), chunk('IEND', Buffer.alloc(0)),
   ]));
 }
-const FONT = {
-  A: '01100100101111010011001', B: '11100100111100100111110', C: '01110100011000010000111',
-  D: '11100100101001010011110', E: '11111100001111010000111', F: '11111100001111010000100',
-  G: '01110100001011010011011', H: '10001100011111110001100', I: '11111001000010000101111',
-  J: '00111000100001010010110', K: '10001100101110010011000', L: '10000100001000010000111',
-  M: '10001110111011100011000', N: '10001110101101100111000', O: '01110100011000110001011',
-  P: '11110100101111010000100', Q: '01110100011000110101001', R: '11110100101111010011000',
-  S: '01111100000111000011111', T: '11111001000010000100001', U: '10001100011000110001011',
-  V: '10001100011000101010001', W: '10001100011010111011000', X: '10001010100100010100011',
-  Y: '10001010100010000100001', Z: '11111000100010001000111',
-  0: '01110100111010111001011', 1: '00100011000010000100111', 2: '01110100010010010001111',
-  3: '11110000101110000111110', 4: '00110010110010111110001', 5: '11111100001111000011110',
-  6: '01110100001111010011011', 7: '11111000100010001000010', 8: '01110100011011010011011',
-  9: '01110100011011100011011',
-  '-': '00000000001111000000000', '.': '00000000000000000100000', ' ': '00000000000000000000000',
-  '+': '00000001000111000100000', ':': '00000001000000000100000', '/': '00001000100010001000000',
-  '(': '00010001000010000100001', ')': '01000001000010000100010', ',': '00000000000000000100010',
-  '=': '00000111100000111100000', '?': '01110100010010001000010', '!': '00100001000010000000100',
-  '%': '10001000100100010001000', x: '00000101010001010100000',
-};
-function text(s, x, y, r, g, b, scale = 1) {
-  let cx = x;
-  for (const ch of String(s).toUpperCase()) {
-    const bits = FONT[ch] || FONT[ch.toLowerCase()];
-    if (bits) {
-      for (let j = 0; j < 7; j++) for (let i = 0; i < 5; i++) {
-        if (bits[j * 5 + i] === '1') rect(cx + i * scale, y + j * scale, scale, scale, r, g, b);
-      }
-    }
-    cx += 6 * scale;
-  }
-  return cx;
-}
+// The 5x5 chart font now comes from tools/lib/chart-font.mjs. It used to be a copy-pasted table
+// of 23-character strings indexed as bits[j * 5 + i] — two characters short of the 25 the stride
+// demands, so every row below each missing character was sheared one pixel left and both digits
+// and letters rendered wrong. Do not paste a font back in here; see W1-CHARTFONT.
+const text = makeText(rect);
 
 // ---- the two runs -------------------------------------------------------------------------
 const data = loadCombatData();
