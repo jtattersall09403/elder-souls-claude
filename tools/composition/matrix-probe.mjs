@@ -253,7 +253,8 @@ function fakeWorld(mode) {
     whereIsEveryone: () => (mode === 'empty' ? {} : (live && hour < 6 ? { a: 'inn', b: 'inn' } : { a: 'market', b: 'quay' })),
     residentsPresent: () => (mode === 'empty' ? [] : (live && hour < 6 ? ['a'] : ['a', 'b'])),
     aggro() {}, learnSpell() {}, castNow() { if (live) for (const e of base) e.alert_state = 'CALM'; },
-    commitCrime() { crime = true; }, addWitness() {},
+    commitCrime() { crime = true; if (live) base.push({ eid: 'g1', id: 'g1', side: 'E', kind: 'enemy', type: 'guard_legion', alert_state: 'AGGRO' }); },
+    addWitness() {},
     getInventory: () => [{ id: 'legion_cuirass' }],
     equipItem(i) { worn = i; },
     setDisposition(id, v) { disp[id] = v; },
@@ -275,12 +276,19 @@ async function selfTest() {
   for (const p of PROBES) {
     const row = [];
     for (const mode of ['live', 'paper', 'empty']) {
-      const H = fakeWorld(mode);
-      globalThis.window = { __HARNESS: H };
       const r = await runControl({
         id: `${p.cell}/${mode}`, what: p.mechanism, metric: p.observable,
         factors: [{ id: 'source_state', what: `the source state of ${p.cell.split('->')[0]}` }],
-        measure: async (broken) => p.fork({ set: broken.length === 0 }),
+        // A FRESH WORLD PER ARM. The first version of this self-test built one fake world and
+        // ran both arms against it; the intact arm's kills, equips and casts were still there
+        // when the broken arm ran, and five probes reported INERT or VACUOUS for a reason that
+        // had nothing to do with the probe. That is the same defect as the W1-04 control — an
+        // arm contaminated by its predecessor — and it is why the live path calls
+        // `loadState(scenario)` at the top of every arm rather than once per cell.
+        measure: async (broken) => {
+          globalThis.window = { __HARNESS: fakeWorld(mode) };
+          return p.fork({ set: broken.length === 0 });
+        },
       });
       row.push({ mode, got: r.verdict, want: want[mode], ok: r.verdict === want[mode] });
     }

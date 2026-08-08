@@ -13,13 +13,59 @@
  * which is why M5's "no gap over 9 walking minutes without habitation" is a property of the route
  * rather than a hope.
  *
+ * ================================================================================================
+ * THE JOIN (W1-ROAD-JOIN). THE ROUTER IS SHOWN THE SETTLEMENT PLAN.
+ * ================================================================================================
+ *
+ * Until this section existed, this file routed roads over the TERRAIN and `planSettlement()` planted
+ * houses on the same ground afterwards, and **nothing compared them**. `tools/world/road-through-
+ * building.mjs` reported 10 of 10 built legs passing through at least one building, 16 offences on
+ * the two named routes, and a body put on THE CROSSING got 39 m of 6,816 m before it stood against
+ * the wall of `stormhold-scribe` for 60,001 frames. §P.4 of the dispatch — "you can walk between
+ * regions and the ground is there" — was retracted because of it.
+ *
+ * WHICH SIDE YIELDS, AND WHY. **The road yields. Routing consumes the settlement plan; not one
+ * building moves.** Three reasons, in the order they bind:
+ *
+ *   1. `ARBITRATION` S28 has already ruled the axis: *"settlement positions are authoritative and
+ *      immovable, but the route between any two of them may be re-cut freely"*, subject to the
+ *      crossing staying in its 52-65 minute band and no leg moving more than 5% from its declared
+ *      length. That ruling names roads as the yielding side and this file is where a re-cut lives.
+ *   2. `planSettlement()` says the same thing in its own words — positions are `RI-WLD03` R4's
+ *      spatial proof of the town's power reading. A house is *where* it is on purpose; a road is
+ *      only ever a way of getting somewhere.
+ *   3. `planSettlement()` is PURE and runs in the browser per boot. Making it avoid roads would put
+ *      the whole road network into a function whose contract is "data in, placements out"; making
+ *      the generator read the plan costs one import in a build tool.
+ *
+ * WHAT THE JOIN IS NOT. It is not a detour around the town. A road that swings wide of every
+ * settlement is a worse world than the bug: this is Morrowind's province, and the trunk road is
+ * supposed to *become the street*. So the join re-cuts only the part of a leg that is inside a
+ * town's neighbourhood, on a **1 m grid where the building footprints are the walls**, and then
+ * string-pulls the result so the road hugs the corners of the gaps it found. The road goes
+ * BETWEEN the houses. Outside the neighbourhood not a metre moves.
+ *
+ * THE FOOTPRINTS ARE THE UNION OF BOTH PLANS, and that is not fussiness. The check tool calls
+ * `planSettlement(doc, {})` with an EMPTY interiors map; the running game calls
+ * `setSettlements(docs, this.data.interiors)` with all 115. 114 of the 202 buildings get a
+ * different footprint between the two and the game's is usually the bigger — `stormhold-scribe` is
+ * 10.0 x 11.5 m to the check and 12.4 x 14.4 m to the body. Clearing only the check's footprints
+ * would have produced a green check and a body still in a wall. The join clears both.
+ *
+ * THE GATE. `Thorn`'s declared centre is 7.11 m INSIDE `thorn-hall`, so a road that ends at the
+ * settlement position ends inside the mayor's hall no matter how it is routed. The leg's terminus
+ * — not the settlement — is moved to the nearest clear standing on the square. That is a gate, and
+ * it is emitted as `road_anchor` on the leg so it is a declared fact rather than a silent nudge.
+ *
  * Usage: node tools/world/build-roads.mjs
+ *        node tools/world/build-roads.mjs --no-join   # the delete-the-fix arm: route as before
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WorldField } from '../../game/src/world/field.js';
 import { clamp, lerp } from '../../game/src/world/noise.js';
+import { planSettlement } from '../../game/src/render/exterior.js';
 
 globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('binary'));
 const HERE = dirname(fileURLToPath(import.meta.url));

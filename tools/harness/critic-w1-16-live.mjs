@@ -419,9 +419,12 @@ const PROBES = {
         H.setSeed(1337); H.loadState(stateName); H.stepFrames(8);
         out.source_at_start = H.getBurden().equip_load.source;
         out.pct_at_start = H.getBurden().equip_load.pct;
-        // Cast the shipped Burden spell (+40 points of equip load, 20 s).
-        try { H.learnSpell('burden'); } catch (e) { /* may already be known */ }
-        try { H.setAttuned(['burden']); } catch (e) { /* not required by castNow */ }
+        // Cast the shipped Burden spell (+40 points of equip load, 20 s). Attunement needs slots
+        // (WILLPOWER) and the school skill, so both are raised first and the refusals reported.
+        try { out.willpower = H.setWillpower(70); } catch (e) { out.willpower_err = String(e && e.message || e); }
+        try { out.skills = H.setMagicSkills ? H.setMagicSkills({ alteration: 100, mysticism: 100, restoration: 100, destruction: 100, illusion: 100, conjuration: 100 }) : null; } catch (e) { out.skills_err = String(e && e.message || e); }
+        try { out.learn = H.learnSpell('burden'); } catch (e) { out.learn_err = String(e && e.message || e); }
+        try { out.attune = H.setAttuned(['burden']); } catch (e) { out.attune_err = String(e && e.message || e); }
         out.cast = H.castNow('burden');
         H.stepFrames(2);
         out.pct_after_cast = H.getBurden().equip_load.pct;

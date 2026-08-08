@@ -356,32 +356,93 @@ try {
   await shot('03-first-exchange');
 
   // ---- P8 — an answer can be given by key alone -------------------------------------------
+  // `Census.state()` puts the offered answers on `input.options` and the answers the player has
+  // given on the census's own `spec` — not on a `fields` map. (The first draft of this probe
+  // read `st.fields` and `st.options`, found both undefined, and reported "fields 0 -> 0" for a
+  // node that had in fact taken the name. Read the shape the module actually returns.)
   const before = await h.page.evaluate(() => {
     const e = window.__ENGINE; const st = e.census ? e.census.state() : null;
-    return { node: st ? st.node : null, fields: st && st.fields ? Object.keys(st.fields) : [] };
+    return { node: st ? st.node : null, spec: e.census ? { ...e.census.spec } : null, options: st && st.input ? (st.input.options || []).length : 0, input_kind: st && st.input ? st.input.kind : null };
   });
   m = await mark();
   // Pick the first offered answer with the bound `interact` key. If the node is a text node the
   // surface takes characters instead, so type a name first — both are real DOM key events.
-  const isText = await h.page.evaluate(() => {
-    const e = window.__ENGINE; const st = e.census ? e.census.state() : null;
-    return !!(st && (st.kind === 'text' || st.text_entry || (st.options || []).length === 0));
-  });
-  if (isText) { await h.page.keyboard.type('Silt-Under-Salt', { delay: 40 }); await advance(6, 20000); }
+  const TYPED = 'Silt-Under-Salt';
+  const isText = before.input_kind === 'text';
+  if (isText) { await h.page.keyboard.type(TYPED, { delay: 40 }); await advance(8, 30000); }
   await h.page.keyboard.press('Enter');
   await advance(30, 90000);
   const after = await h.page.evaluate(() => {
     const e = window.__ENGINE; const st = e.census ? e.census.state() : null;
-    return { node: st ? st.node : null, fields: st && st.fields ? st.fields : {} };
+    return { node: st ? st.node : null, spec: e.census ? { ...e.census.spec } : null, spoken: st && st.spoken ? st.spoken.map((s) => s.line) : [] };
   });
   await harvest(m, 'answered');
-  out.checks.answer = { text_node: isText, before, after_node: after.node, fields_after: Object.keys(after.fields), field_values: after.fields };
+  // What the scene now holds that it did not hold before — the answer, in the scene's own record.
+  const changed = [];
+  for (const k of Object.keys(after.spec || {})) {
+    const a = JSON.stringify((before.spec || {})[k]), b = JSON.stringify(after.spec[k]);
+    if (a !== b) changed.push({ field: k, from: (before.spec || {})[k], to: after.spec[k] });
+  }
+  out.checks.answer = { input_kind: before.input_kind, typed: isText ? TYPED : null, before_node: before.node, after_node: after.node, spec_changed: changed, spoken_back: after.spoken };
   const advancedNode = after.node && after.node !== before.node;
-  const wroteField = Object.keys(after.fields).length > before.fields.length;
-  if (advancedNode || wroteField) {
-    pass('P8', `an answer given by key alone was written down (${before.node} -> ${after.node}, fields ${before.fields.length} -> ${Object.keys(after.fields).length})`, out.checks.answer);
+  if (advancedNode && changed.length) {
+    pass('P8', `an answer given by key alone was written down (${before.node} -> ${after.node}; ${changed.map((c) => `${c.field}=${JSON.stringify(c.to)}`).join(', ')})`, out.checks.answer);
+  } else if (advancedNode) {
+    fail('P8', `the scene advanced ${before.node} -> ${after.node} but recorded nothing the player gave it`, out.checks.answer);
   } else {
     fail('P8', `the scene did not take an answer given by key (still at ${after.node})`, out.checks.answer);
+  }
+
+  // ---- P10 — the scene can be finished, by the player, from the title ----------------------
+  // `hold.out` is the second hand-back node (`resume_by: 'walk'`): the way from "somebody asked
+  // my hatch-name" to "somebody is writing me down" is a walk up the companionway, and
+  // `_censusStep` releases it at `pos[2] >= 4.2 && |pos[0]| <= 1.6`. Walk there and keep going.
+  const walkOut = await walkTo(h, [0, 5.0, 5.0], advance, pos);
+  out.checks.walk_out = walkOut;
+  await advance(40, 120000);
+  let deskNode = await h.page.evaluate(() => {
+    const e = window.__ENGINE; const st = e.census ? e.census.state() : null;
+    return {
+      node: st ? st.node : null, paused: st ? !!e.census.paused : null,
+      place: st ? st.place : null, takes_input: !!(e.censusSurface && e.censusSurface.takesInput),
+      refusal: e.censusSurface ? e.censusSurface.refusal || null : null,
+      interior: e.sim.env ? e.sim.env.interior : null,
+    };
+  });
+  out.checks.after_companionway = { ...deskNode };
+  // At the desk the node auto-advances into `writ.race-observed`, whose only input is the
+  // correction. Press the bound key a few times, exactly as a stuck player would.
+  const presses = [];
+  for (let i = 0; i < 4; i++) {
+    m = await mark();
+    await h.page.keyboard.press('Enter');
+    await advance(20, 60000);
+    deskNode = await h.page.evaluate(() => {
+      const e = window.__ENGINE; const st = e.census ? e.census.state() : null;
+      return {
+        node: st ? st.node : null,
+        takes_input: !!(e.censusSurface && e.censusSurface.takesInput),
+        refusal: e.censusSurface ? e.censusSurface.refusal || null : null,
+        race: e.census ? e.census.spec.race : null,
+      };
+    });
+    presses.push({ press: i + 1, ...deskNode });
+    await harvest(m, 'at-the-desk');
+    if (deskNode.node && deskNode.node !== 'writ.race-observed' && deskNode.node !== 'writ.enter') break;
+  }
+  out.checks.desk_presses = presses;
+  const last = presses[presses.length - 1] || {};
+  const stuck = last.node === 'writ.race-observed' || !!last.refusal;
+  const censusEvents = await h.page.evaluate(() => {
+    const evs = (window.__HARNESS.getEvents ? window.__HARNESS.getEvents() : []) || [];
+    return evs.filter((e) => e.type === 'census_refused').slice(-3);
+  }).catch(() => []);
+  out.checks.census_refused_events = censusEvents;
+  await shot('04-at-the-desk');
+  if (!stuck) {
+    pass('P10', `the scene moved past the desk to '${last.node}'`, { presses, race: last.race });
+  } else {
+    fail('P10', `the scene cannot be finished from the title: stuck at '${last.node}' after ${presses.length} presses of the bound key` + (last.refusal ? `, refusal "${last.refusal}"` : ''), { presses, race_observed: last.race, census_refused_events: censusEvents });
   }
 
   // ---- P9 — nothing drawn tells the player what to do -------------------------------------
