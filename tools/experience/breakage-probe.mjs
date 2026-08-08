@@ -93,7 +93,25 @@ const DETECTORS = [
     [{ what: 'a disposition-to-price curve', re: /disposition[\s\S]{0,80}price|price[\s\S]{0,80}disposition/i }],
     [{ what: 'a clamp on the disposition-price curve itself', re: /disposition_price_clamp|max_disposition_discount|price_curve_cap/i }]),
   D('B-10', 'Red if bosses become parley-exempt, if the boss despawns, or if souls are awarded anyway',
-    [{ what: 'a parley verb on bodies that can speak', re: /\bparley\b/i }],
+    [
+      { what: 'a parley verb on bodies that can speak', re: /\bparley\b/i },
+      {
+        // B-10's probe is "enter the arena ... invoke parley ... assert the boss entity persists
+        // in a later session". There has to BE a boss. The shipped roster has tiers trash, prop
+        // and elite and nothing at boss tier, so this half of the substrate is absent and the
+        // entry is `unmeasurable => 0` rather than passing on the elite that does have a parley.
+        what: 'an enemy at boss tier for the parley to end',
+        data: (files) => {
+          const out = [];
+          for (const f of files) {
+            if (!/^game\/data\/combat\/enemies\/.*\.json$/.test(f.rel)) continue;
+            let j; try { j = JSON.parse(f.text); } catch { continue; }
+            if (/^boss$/i.test(String(j.tier || ''))) out.push({ file: f.rel, line: null, text: `${j.id}: tier ${j.tier}` });
+          }
+          return out;
+        },
+      },
+    ],
     [{
       what: 'a NAMED, FACTIONED, HUMANOID boss with no parley path (S13 calls that a DEFECT), ' +
         'or souls awarded on a parley',
@@ -102,10 +120,13 @@ const DETECTORS = [
         for (const f of files) {
           if (!/^game\/data\/combat\/enemies\/.*\.json$/.test(f.rel)) continue;
           let j; try { j = JSON.parse(f.text); } catch { continue; }
-          if (String(j.archetype || '').toUpperCase() === 'DUMMY') continue;      // camera fixtures
-          const humanoid = /humanoid|infantry|legion|guard|ordinator|champion|officer/i.test(String(j.archetype || '') + ' ' + String(j.id || '') + ' ' + String(j.name || ''));
-          const boss = /boss|champion|great|elite|lord/i.test(String(j.archetype || '') + ' ' + String(j.id || ''));
-          if (!(boss && humanoid)) continue;
+          const arch = String(j.archetype || '').toUpperCase();
+          if (arch === 'DUMMY' || arch === 'FIXTURE' || arch === 'BEAST') continue;  // fixtures, and S13's own exemption
+          // TIER, not the id. The first version keyed `boss` off a regex over the id and matched
+          // `drowned_greater` on the letters "great" — a tier-`trash` Deep-Drowned reported as a
+          // boss with no parley path. The statblock carries `tier`; use it.
+          const tier = String(j.tier || '').toLowerCase();
+          if (tier !== 'boss' && tier !== 'elite') continue;
           const p = j.parley;
           const speaks = p && typeof p === 'object' && (p.npc_id || p.true_name_topic || p.faction);
           if (!speaks) out.push({ file: f.rel, line: null, text: `${j.id}: archetype ${j.archetype}, parley ${JSON.stringify(p)}` });
@@ -288,8 +309,13 @@ async function selfTest(files, entriesById) {
       // system that is not there, and the result says nothing about the detector.
       minSupport: 1,
     });
-    const good = r.verdict === VERDICT.OK || (r.verdict === VERDICT.VACUOUS && !runEntry(det, entry, files).substrate_present);
-    const why = r.verdict === VERDICT.VACUOUS ? 'substrate absent — the detector cannot be exercised on this build' : r.verdict;
+    // An entry whose SUBSTRATE is absent cannot be exercised at all: with no alchemy in the tree
+    // there is nothing for a magnitude cap to cap, and both arms correctly read `absent_system`.
+    // That is not a detector failure and it is not a pass either — it is `unmeasurable => 0`,
+    // which is what the row already says, so the self-test records it and moves on.
+    const substratePresent = runEntry(det, entry, files).substrate_present;
+    const good = r.verdict === VERDICT.OK || !substratePresent;
+    const why = !substratePresent ? 'substrate absent — unmeasurable, the detector cannot be exercised here' : r.verdict;
     say(`  ${good ? 'ok  ' : 'FAIL'}  ${det.id}  ${String(why).padEnd(12)} ${r.arms.map((a) => a.value).join(' -> ')}`);
     if (!good) ok = false;
   }
@@ -306,7 +332,23 @@ async function main() {
 
   if (has('self-test')) process.exit((await selfTest(files, entriesById)) ? 0 : 5);
 
-  const rows = DETECTORS.map((d) => runEntry(d, entriesById.get(d.id), files));
+  // `--demo-regression=B-nn` proves STEP 2's teeth, not just the detector's. It injects that
+  // entry's closing mechanism IN MEMORY ONLY — nothing is written into game/ — and the diff
+  // against the baseline must come back REGRESSION. Without this, "regressions: 0" is a number
+  // whose ability to be anything else has never been demonstrated, which is the whole disease
+  // this piece exists to treat.
+  const demo = arg('demo-regression', null);
+  const DEMO_TOKENS = {
+    'B-01': 'cannot_brew_while_affected: true', 'B-02': 'base_skill_only: true', 'B-03': 'max_levitate_height: 40',
+    'B-04': '"not_strong_enough": "You are not strong enough."', 'B-05': '"essential": true',
+    'B-06': 'virtual_inventory: true', 'B-07': 'velocity_cap: 12', 'B-08': 'max_enchants_per_day: 1',
+    'B-09': 'disposition_price_clamp: 0.1', 'B-10': 'parley_exempt', 'B-11': 'no_monsters_in_town: true',
+    'B-12': 'is_quest_item: true', 'B-13': 'unopenable_by_effect: true', 'B-14': 'knowledge_requires_stage: true',
+    'B-15': 'enrage: { unreachable_player: true }',
+  };
+  const inject = demo ? { rel: 'game/data/__demo_regression.json', text: DEMO_TOKENS[demo] || demo } : null;
+  if (demo) say(`!! --demo-regression=${demo}: injecting "${inject.text}" IN MEMORY ONLY. Nothing is written to game/.`);
+  const rows = DETECTORS.map((d) => runEntry(d, entriesById.get(d.id), files, d.id === demo ? inject : null));
   const live = rows.filter((r) => r.register_status === 'live');
   const passing = rows.filter((r) => r.pass);
   const absent = rows.filter((r) => r.status === 'absent_system');

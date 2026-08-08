@@ -1,0 +1,1203 @@
+{
+  "schema": "elder-souls/exp06-register@1",
+  "tool": "tools/experience/breakage-probe.mjs",
+  "at": "2026-08-08T02:24:33.805Z",
+  "evidence_class": "static_absence_of_closure",
+  "evidence_caveat": "RI-EXP06 Step 1 asks each probe to be RUN as a harness scenario that performs the breakage. This run does not perform any breakage; it asserts, per entry, that the substrate is in the tree and that the mechanism the entry's own \"Red if\" clause names is not. That is a regression detector, which is what §C is for, and it is weaker than a demonstration. Do not report it as one.",
+  "sabotage_control": "not_applicable",
+  "sabotage_control_reason": "RI-EXP06 Comparison method: \"No sabotage control is defined for this item, and that is deliberate rather than an omission ... a probe either fires or it does not.\"",
+  "baseline": null,
+  "baseline_absent_note": "No previous register on disk, so every row is `new` and the REGRESSION column is unavailable this wave. THIS FILE IS THE BASELINE the next wave diffs against; that is why it is versioned under reports/.gitignore's baseline exception.",
+  "metrics": {
+    "live_entries": 15,
+    "probes_passing": 13,
+    "probes_passing_fraction": 0.87,
+    "systemic_passing": 7,
+    "permanent_passing": 2,
+    "regressions": 0,
+    "probes_run": 15,
+    "probes_run_fraction": 1,
+    "unmeasurable_entries": [
+      "B-07",
+      "B-10"
+    ],
+    "closed_entries": [],
+    "works_isolated_fails_in_chain": null
+  },
+  "bars": {
+    "live_entries": true,
+    "probes_passing": true,
+    "systemic_passing": true,
+    "permanent_passing": true,
+    "regressions": true,
+    "probes_run": true
+  },
+  "diff": null,
+  "rows": [
+    {
+      "id": "B-01",
+      "title": "The potion ladder (alchemy self-amplification)",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "a magnitude cap, a diminishing-returns curve or a self-stacking prohibition is added.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "an alchemy / brewing surface",
+          "found": [
+            {
+              "file": "game/data/books/foundational.json",
+              "line": 159,
+              "text": "\"skill_book\": \"alchemy\","
+            },
+            {
+              "file": "game/data/books/the-occupation.json",
+              "line": 71,
+              "text": "\"skill_book\": \"alchemy\","
+            },
+            {
+              "file": "game/data/dialogue/creation-questions.json",
+              "line": 110,
+              "text": "\"alchemy\","
+            },
+            {
+              "file": "game/data/dialogue/creation-questions.json",
+              "line": 268,
+              "text": "\"alchemy\","
+            },
+            {
+              "file": "game/data/dialogue/creation-questions.json",
+              "line": 320,
+              "text": "\"alchemy\","
+            },
+            {
+              "file": "game/data/dialogue/creation-questions.json",
+              "line": 532,
+              "text": "\"alchemy\","
+            },
+            {
+              "file": "game/data/dialogue/creation-questions.json",
+              "line": 603,
+              "text": "\"alchemy\""
+            },
+            {
+              "file": "game/data/items/carried.json",
+              "line": 203,
+              "text": "\"description\": \"Pulled from standing water, pale, and edible if you have nothing else. Alchemists want it for the second thing it does, which is stop bleeding.\""
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a magnitude cap or self-stacking prohibition on potions",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-02",
+      "title": "Fortify-skill stacking into a rank you have not earned",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "a \"sustained skill\" check, a base-skill-only evaluation, or a rank rollback is added.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "fortify_skill, and a rank ladder with skill thresholds",
+          "found": [
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 983,
+              "text": "\"id\": \"fortify_skill\","
+            },
+            {
+              "file": "game/data/magic/enchanting.json",
+              "line": 91,
+              "text": "{ \"id\": \"MB-2\", \"what\": \"Fortify Skill across a gate\", \"systemic\": false, \"permanent_world_state\": false, \"test\": \"Security 40 + fortify_skill +40 opens a tier-"
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 1565,
+              "text": "\"effect\": \"fortify_skill\","
+            },
+            {
+              "file": "game/src/sim/magic/apply.js",
+              "line": 229,
+              "text": "function h_fortify_skill(M, frame, rec) {"
+            },
+            {
+              "file": "game/src/sim/magic/apply.js",
+              "line": 1121,
+              "text": "fortify_skill: h_fortify_skill,"
+            },
+            {
+              "file": "game/src/sim/magic/system.js",
+              "line": 136,
+              "text": "// Fortify is a SEPARATE lease, not a write into the sheet. Wave 1 had `h_fortify_skill`"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        },
+        {
+          "what": "faction rank thresholds",
+          "found": [
+            {
+              "file": "game/data/crime/sanction.json",
+              "line": 416,
+              "text": "\"_deep_kin_note\": \"A FIFTH orphan, found by the check above and not by anyone reading the map. `deep_kin` is a live reputation track — twelve Xul-Aneekh resolut"
+            },
+            {
+              "file": "game/data/dialogue/faction-reactions.json",
+              "line": 398,
+              "text": "\"alias_note\": \"W1-07 round 4. `roster_owner` above claimed this file covers every faction id that appears anywhere under game/data/**, and it did not: the quest"
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2332,
+              "text": "\"path\": \"quests/faction-gates.json\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2333,
+              "text": "\"schema\": \"elder-souls/faction-gates@1\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2334,
+              "text": "\"id\": \"faction-gates\","
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 14,
+              "text": "\"rank_gate\": null,"
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 335,
+              "text": "\"rank_gate\": {"
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 645,
+              "text": "\"rank_gate\": null,"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a base-skill-only rank evaluation or a rank rollback",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-03",
+      "title": "The utility spell that skips a designed route",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "a height clamp or an exterior blocking volume appears.",
+      "assertions_declared": 2,
+      "substrate": [
+        {
+          "what": "a levitate effect",
+          "found": [
+            {
+              "file": "game/data/combat/movesets/spell-levitate.json",
+              "line": 3,
+              "text": "\"id\": \"spell-levitate\","
+            },
+            {
+              "file": "game/data/combat/movesets/spell-levitate.json",
+              "line": 4,
+              "text": "\"spell_id\": \"levitate\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 1103,
+              "text": "\"path\": \"combat/movesets/spell-levitate.json\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 1105,
+              "text": "\"id\": \"spell-levitate\","
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 1684,
+              "text": "\"id\": \"levitate\","
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 1728,
+              "text": "\"LOAD-BEARING, NOT TOLERATED. >=6 map routes and >=3 quest resolutions must be reachable only-or-most-easily by levitate/slowfall, asserted by RI-MAG04. An effe"
+            },
+            {
+              "file": "game/data/magic/enchant-services.json",
+              "line": 345,
+              "text": "\"effect\": \"levitate\","
+            },
+            {
+              "file": "game/data/magic/enchanting.json",
+              "line": 90,
+              "text": "{ \"id\": \"MB-1\", \"what\": \"Levitate/slowfall into a region you have no business in\", \"systemic\": true, \"permanent_world_state\": false, \"test\": \"levitate from an R"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a levitation height clamp or an exterior blocking volume",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-04",
+      "title": "Sequence break into a late region at level 1",
+      "systemic": false,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "any soft wall, level gate or difficulty warning is added to that route.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "a region tier ladder",
+          "found": [
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 43,
+              "text": "\"tier\": 1,"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 48,
+              "text": "\"tier\": 2,"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 53,
+              "text": "\"tier\": 3,"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 58,
+              "text": "\"tier\": 4,"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 63,
+              "text": "\"tier\": 5,"
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 74,
+              "text": "\"tier\": 1,"
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 79,
+              "text": "\"tier\": 2,"
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 84,
+              "text": "\"tier\": 3,"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a level gate or \"you are not strong enough\" refusal on a route",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-05",
+      "title": "Killing someone important, early",
+      "systemic": false,
+      "permanent": true,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "the NPC becomes unkillable/essential, if a game-over fires, or if the quest silently reassigns to a substitute NPC — the last being the most likely and the most corrosive, because it looks like it still works.",
+      "assertions_declared": 1,
+      "substrate": [
+        {
+          "what": "a main quest with a named informant and a backpath",
+          "found": [
+            {
+              "file": "game/data/books/the-drowned-tally.json",
+              "line": 5,
+              "text": "\"note\": \"The Drowned Court's own library, and the argument the main quest is about. game/data/quests/mainline.json registers `for: [book_for_the_ninth_clause, b"
+            },
+            {
+              "file": "game/data/books/the-drowned-tally.json",
+              "line": 206,
+              "text": "\"id\": \"the-drowned-tally-severances\","
+            },
+            {
+              "file": "game/data/books/the-drowned-tally.json",
+              "line": 207,
+              "text": "\"knowledge_key\": \"item_the_drowned_tally_severances\","
+            },
+            {
+              "file": "game/data/dialogue/topic-graph.json",
+              "line": 63,
+              "text": "\"the-three-previous-severances\","
+            },
+            {
+              "file": "game/data/dialogue/topic-graph.json",
+              "line": 91,
+              "text": "\"the-three-previous-severances\","
+            },
+            {
+              "file": "game/data/dialogue/topic-graph.json",
+              "line": 5403,
+              "text": "\"id\": \"the-three-previous-severances\","
+            },
+            {
+              "file": "game/data/dialogue/topics/50-mainline.json",
+              "line": 1045,
+              "text": "\"id\": \"the-three-previous-severances\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2409,
+              "text": "\"path\": \"quests/mainline-backpath.json\","
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "an essential/unkillable NPC flag, or a game-over on an NPC death",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-06",
+      "title": "Robbing a merchant you can survive",
+      "systemic": false,
+      "permanent": true,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "merchant inventories become virtual, if the gold pool is untakeable, or if merchants respawn.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "merchant services and a gold pool",
+          "found": [
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 8,
+              "text": "{ \"id\": \"fence.lilmoth.rot-hookline\",  \"name\": \"Hookline\",              \"npc\": \"npc:hookline\",              \"settlement\": \"lilmoth\",   \"quarter\": \"rot-quarter\","
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 9,
+              "text": "{ \"id\": \"fence.lilmoth.rot-veek\",      \"name\": \"Veek-Ei the Shorter\",   \"npc\": \"npc:veek-ei\",               \"settlement\": \"lilmoth\",   \"quarter\": \"rot-quarter\","
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 10,
+              "text": "{ \"id\": \"fence.gideon.docks\",          \"name\": \"Fastidious Cassa\",      \"npc\": \"npc:fastidious-cassa\",      \"settlement\": \"gideon\",    \"quarter\": \"docks\",      "
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 11,
+              "text": "{ \"id\": \"fence.archon.salvage\",        \"name\": \"The Salvage Yard clerk\",\"npc\": \"npc:tuls-avaro\",            \"settlement\": \"archon\",    \"quarter\": \"salvage-yard\""
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 12,
+              "text": "{ \"id\": \"fence.soulrest.drowned\",      \"name\": \"The Drowned Court factor\",\"npc\": \"npc:the-quiet-ledgerman\", \"settlement\": \"soulrest\",  \"quarter\": \"drowned-court"
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 13,
+              "text": "{ \"id\": \"fence.stormhold.outside\",     \"name\": \"Outside-the-Wall market\",\"npc\": \"npc:sees-two-prices\",      \"settlement\": \"stormhold\", \"quarter\": \"outside-the-w"
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 14,
+              "text": "{ \"id\": \"fence.blackrose.gate\",        \"name\": \"Gate-side Ashen\",       \"npc\": \"npc:ashen-of-the-gate\",     \"settlement\": \"blackrose\", \"quarter\": \"prison-gate\","
+            },
+            {
+              "file": "game/data/crime/fences.json",
+              "line": 15,
+              "text": "{ \"id\": \"fence.itinerant.barge\",       \"name\": \"The barge factor\",      \"npc\": \"npc:onwen-tul\",             \"settlement\": null,        \"quarter\": \"itinerant\",  "
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "virtual merchant inventories, an untakeable gold pool, or merchant respawn",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-07",
+      "title": "The movement scroll that kills you, used correctly",
+      "systemic": false,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "the magnitude is clamped, if velocity is capped, or if the scrolls are removed for being dangerous.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "the Scrolls of the Drowned Step (RI-EXP01 B09)",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "an athletics magnitude clamp or a velocity cap",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": false,
+      "closure_present": false,
+      "status": "absent_system",
+      "pass": false,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": true
+    },
+    {
+      "id": "B-08",
+      "title": "Enchantment self-supply",
+      "systemic": true,
+      "permanent": false,
+      "conditional": true,
+      "register_status": "live",
+      "closes_if": null,
+      "assertions_declared": 2,
+      "substrate": [
+        {
+          "what": "soul gems and an enchanting surface",
+          "found": [
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 399,
+              "text": "\"id\": \"soul_trap\","
+            },
+            {
+              "file": "game/data/magic/enchanting.json",
+              "line": 44,
+              "text": "\"soul_gems\": {"
+            },
+            {
+              "file": "game/data/magic/enchanting.json",
+              "line": 59,
+              "text": "\"npc_soul_rule\": \"`soul_trap` on anything with a dialogue record does NOTHING and the Focus is still spent. Exactly one exception exists in the game and it is a"
+            },
+            {
+              "file": "game/data/magic/enchanting.json",
+              "line": 76,
+              "text": "\"increments_on\": [\"soul_trapped\", \"enchantment_made\"],"
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 646,
+              "text": "\"effect\": \"soul_trap\","
+            },
+            {
+              "file": "game/data/magic/vfx.json",
+              "line": 59,
+              "text": "\"soul_trap\": \"A hair-fine amber thread from the target to the gem in your hand, taut, visibly under tension, THINNING as the target's health falls. When it snap"
+            },
+            {
+              "file": "game/src/harness/api.js",
+              "line": 1972,
+              "text": "/** Kill an entity outright, so a death-triggered consumer (`soul_trap`) has a death to read. */"
+            },
+            {
+              "file": "game/src/sim/events.js",
+              "line": 112,
+              "text": "'spell_hit', 'levitate_begin', 'levitate_end', 'soul_trapped', 'soul_trap_refused',"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        },
+        {
+          "what": "enchanting",
+          "found": [
+            {
+              "file": "game/data/books/the-drill-book.json",
+              "line": 147,
+              "text": "\"text\": \"The Provincial Office has replied to my fourth application for a reagent allowance by observing that the Ninth Cohort has managed for sixty years witho"
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2080,
+              "text": "\"path\": \"magic/enchant-services.json\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2081,
+              "text": "\"schema\": \"elder-souls/magic-enchant-services@1\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2082,
+              "text": "\"id\": \"magic-enchant-services\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2087,
+              "text": "\"path\": \"magic/enchanting.json\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2088,
+              "text": "\"schema\": \"elder-souls/magic-enchanting@1\","
+            },
+            {
+              "file": "game/data/index.json",
+              "line": 2089,
+              "text": "\"id\": \"magic-enchanting\","
+            },
+            {
+              "file": "game/data/items/carried.json",
+              "line": 236,
+              "text": "\"description\": \"Amber, viscous, and still warm when it is cut out. It is used in enchanting and in glue, and the people who cut it do not do the enchanting.\""
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a per-day / per-rest / per-session enchanting cap",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-09",
+      "title": "The disposition snowball",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": null,
+      "assertions_declared": 1,
+      "substrate": [
+        {
+          "what": "a disposition-to-price curve",
+          "found": [
+            {
+              "file": "game/data/combat/enemies/guard_legion.json",
+              "line": 118,
+              "text": "\"gold_price_note\": \"W1-15 r3, round-2 verdict biggest_gap GAP-W1-crime-enforcement-is-a-free-win: was 0, and combat/parley.js's GOLD ground passes on `gold >= p"
+            },
+            {
+              "file": "game/data/combat/parley.json",
+              "line": 44,
+              "text": "\"requires\": { \"gold_at_or_above\": \"enemy.parley.gold_price\", \"disposition_at_or_above\": 20 },"
+            },
+            {
+              "file": "game/data/crime/sanction.json",
+              "line": 114,
+              "text": "\"note\": \"Disposition, faction standing, blood-price and rumour all move as if you had murdered somebody, because you did.\""
+            },
+            {
+              "file": "game/data/progression/attributes.json",
+              "line": 98,
+              "text": "\"out_of_fight\": \"Base disposition of every NPC; buy/sell price multiplier (RI-PRG05); persuasion success band; faction rank requirements; whether a bribe is eve"
+            },
+            {
+              "file": "game/data/progression/creation.json",
+              "line": 109,
+              "text": "\"why\": \"Each of the four components is read by a different subsystem — encounters and prices; skills and attributes; a power and a drawback; disposition rows — "
+            },
+            {
+              "file": "game/data/quests/mainline-act4.json",
+              "line": 2145,
+              "text": "\"disposition_min_note\": \"W1-19 round 2 re-clamp, SET FROM THE MEASURED ARRIVAL. Round 1 set every clamped gate to the WORST signature's COLD-START standing at t"
+            },
+            {
+              "file": "game/src/character/reaction.js",
+              "line": 3,
+              "text": "// Owner: W1-07. Binding source: RI-CHR02 §3 (the matrix), §4a (disposition), §4b (prices),"
+            },
+            {
+              "file": "game/src/character/reaction.js",
+              "line": 67,
+              "text": "* A quoted price, with RI-PRG05's disposition/Mercantile term supplied by the caller as"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a clamp on the disposition-price curve itself",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-10",
+      "title": "Talking a boss out of the fight",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "bosses become parley-exempt, if the boss despawns, or if souls are awarded anyway \"so the player isn't punished\".",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "a parley verb on bodies that can speak",
+          "found": [
+            {
+              "file": "game/data/combat/enemies/beast_slitherfang.json",
+              "line": 71,
+              "text": "\"parley\": null,"
+            },
+            {
+              "file": "game/data/combat/enemies/beast_slitherfang.json",
+              "line": 73,
+              "text": "\"parley\": \"parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt \\u2014 they have no parley and Souls owns them entirely.' The exemption "
+            },
+            {
+              "file": "game/data/combat/enemies/cam_boss_great.json",
+              "line": 37,
+              "text": "\"parley\": null,"
+            },
+            {
+              "file": "game/data/combat/enemies/cam_boss_great.json",
+              "line": 39,
+              "text": "\"parley_note\": \"parley: null — a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_m"
+            },
+            {
+              "file": "game/data/combat/enemies/cam_boss_mid.json",
+              "line": 37,
+              "text": "\"parley\": null,"
+            },
+            {
+              "file": "game/data/combat/enemies/cam_boss_mid.json",
+              "line": 39,
+              "text": "\"parley_note\": \"parley: null — a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_m"
+            },
+            {
+              "file": "game/data/combat/enemies/cam_elite.json",
+              "line": 37,
+              "text": "\"parley\": null,"
+            },
+            {
+              "file": "game/data/combat/enemies/cam_elite.json",
+              "line": 39,
+              "text": "\"parley_note\": \"parley: null — a post cannot speak. Beasts and mindless things are EXEMPT under seam S13 and the input is dropped with reason `exempt_beast_or_m"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        },
+        {
+          "what": "an enemy at boss tier for the parley to end",
+          "found": [],
+          "benign": [],
+          "kind": "data"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a NAMED, FACTIONED, HUMANOID boss with no parley path (S13 calls that a DEFECT), or souls awarded on a parley",
+          "found": [
+            {
+              "file": "game/data/combat/enemies/cst_sap_speaker.json",
+              "line": null,
+              "text": "cst_sap_speaker: archetype CASTER, parley undefined"
+            }
+          ],
+          "benign": [],
+          "kind": "data"
+        }
+      ],
+      "substrate_present": false,
+      "closure_present": true,
+      "status": "absent_system",
+      "pass": false,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": true
+    },
+    {
+      "id": "B-11",
+      "title": "Bringing a monster to a fight you did not want",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "hostiles de-aggro on entering a settlement volume, if NPCs become non-combatant to each other, or if a \"no monsters in town\" despawn rule appears.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "a leash rule (RI-AI01)",
+          "found": [
+            {
+              "file": "game/data/combat/ai.json",
+              "line": 10,
+              "text": "\"_consumption\": \"RI-MTH07. The world-side consumer is game/src/combat/ai.js, constructed by game/src/combat/enemy.js::EnemyController when the resolved behaviou"
+            },
+            {
+              "file": "game/data/combat/ai.json",
+              "line": 94,
+              "text": "\"leash\": {"
+            },
+            {
+              "file": "game/data/crime/sanction.json",
+              "line": 161,
+              "text": "\"leash\": true,"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 1325,
+              "text": "\"Drops a beast out of COMBAT to its leash behaviour (RI-AI01). Works on beasts and mindless things - which S13 exempts from parley - so it is the caster's versi"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 2450,
+              "text": "\"Drives a target to FLEE (RI-AI01's leash behaviour, forced). It does NOT delete the enemy, does not despawn it, and does not grant its sap-debt. A routed enemy"
+            },
+            {
+              "file": "game/data/stealth/search.json",
+              "line": 4,
+              "text": "\"source\": \"RI-STL01 §7. RI-AI01 T04/T06 give the skeleton (walk to last-known-position; leash after 12 s in SEARCH) and are NOT re-opened; these four behaviours"
+            },
+            {
+              "file": "game/src/combat/ai.js",
+              "line": 98,
+              "text": "this.leashHard = this.cfg.leash.hard_m[A.leash_tier] ?? this.cfg.leash.hard_m.trash;"
+            },
+            {
+              "file": "game/src/combat/ai.js",
+              "line": 188,
+              "text": "// ---- T25: leash, checked before anything else, because a leashed enemy has no other"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "a settlement de-aggro or no-monsters-in-town despawn rule",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-12",
+      "title": "Selling the quest item",
+      "systemic": false,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "an is_quest_item sell-block is added.",
+      "assertions_declared": 4,
+      "substrate": [
+        {
+          "what": "an inventory with sellable items",
+          "found": [
+            {
+              "file": "game/data/combat/enemies/champion_hist_marked.json",
+              "line": 106,
+              "text": "\"gold_price\": 900,"
+            },
+            {
+              "file": "game/data/combat/enemies/guard_legion.json",
+              "line": 108,
+              "text": "\"gold_price\": 300,"
+            },
+            {
+              "file": "game/data/combat/enemies/inf_trash.json",
+              "line": 106,
+              "text": "\"gold_price\": 180,"
+            },
+            {
+              "file": "game/data/dialogue/greetings/00-priority-classes.json",
+              "line": 238,
+              "text": "\"service\": \"barter\","
+            },
+            {
+              "file": "game/data/dialogue/greetings/20-tier-a.json",
+              "line": 327,
+              "text": "\"service\": \"barter\","
+            },
+            {
+              "file": "game/data/dialogue/persuasion-gmst.json",
+              "line": 50,
+              "text": "\"gates\": \"Greeting band 1. Refuses all topics except the root nine. No services, no barter, no training.\" },"
+            },
+            {
+              "file": "game/data/dialogue/persuasion-gmst.json",
+              "line": 52,
+              "text": "\"gates\": \"Answers place/person/service topics tersely. Barter allowed at punitive prices. No faction business, no personal topics, no quest offers.\" },"
+            },
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 68,
+              "text": "\"gold_price\": {"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "an is_quest_item sell block",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-13",
+      "title": "The lock you should not be able to pick",
+      "systemic": false,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "a \"quest locks cannot be opened by magic\" exception list appears.",
+      "assertions_declared": 4,
+      "substrate": [
+        {
+          "what": "an open_lock effect and tiered locks",
+          "found": [
+            {
+              "file": "game/data/magic/effects.json",
+              "line": 1334,
+              "text": "\"id\": \"open_lock\","
+            },
+            {
+              "file": "game/data/magic/enchant-services.json",
+              "line": 121,
+              "text": "\"effect\": \"open_lock\","
+            },
+            {
+              "file": "game/data/magic/enchanting.json",
+              "line": 100,
+              "text": "{ \"id\": \"MB-11\", \"what\": \"Opening a quest door before you were told it existed\", \"systemic\": false, \"permanent_world_state\": true, \"test\": \"open_lock a quest-fl"
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 2080,
+              "text": "\"effect\": \"open_lock\","
+            },
+            {
+              "file": "game/data/magic/spells.json",
+              "line": 2134,
+              "text": "\"effect\": \"open_lock\","
+            },
+            {
+              "file": "game/data/magic/traversal-routes.json",
+              "line": 36,
+              "text": "\"non_magic_alternative\": \"The maintenance hatch in the undercroft, which is locked at tier 3 and can be opened with Security 45, a key from the night warden, or"
+            },
+            {
+              "file": "game/data/quests/magic-utility.json",
+              "line": 77,
+              "text": "\"open_lock\","
+            },
+            {
+              "file": "game/src/harness/api.js",
+              "line": 1068,
+              "text": "* `open_lock` writes `doorsUnlocked`, `shatter` writes `shortcutsOpened`, taking a prop"
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "an unopenable-by-effect lock flag or exception list",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-14",
+      "title": "Reading the answer instead of earning it",
+      "systemic": true,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "knowledge gates are re-expressed as quest-stage gates.",
+      "assertions_declared": 3,
+      "substrate": [
+        {
+          "what": "requires_knowing on quest resolutions",
+          "found": [
+            {
+              "file": "game/data/npcs/faction-givers.json",
+              "line": 42,
+              "text": "\"note\": \"The Wet Ledger's dissenter — RI-QST02 D3, the Percius Mercius slot. Ledger porter for nineteen years, put off the quay for a theft the Ledger's own fac"
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 132,
+              "text": "\"requires_knowing\": ["
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 173,
+              "text": "\"requires_knowing\": ["
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 457,
+              "text": "\"requires_knowing\": ["
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 494,
+              "text": "\"requires_knowing\": ["
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 802,
+              "text": "\"requires_knowing\": ["
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 845,
+              "text": "\"requires_knowing\": ["
+            },
+            {
+              "file": "game/data/quests/blackmarsh-coast.json",
+              "line": 1110,
+              "text": "\"requires_knowing\": ["
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "the knowledge gate replaced by a stage gate",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    },
+    {
+      "id": "B-15",
+      "title": "Standing where the boss cannot reach you",
+      "systemic": false,
+      "permanent": false,
+      "conditional": false,
+      "register_status": "live",
+      "closes_if": "an unreachable-player enrage rule is added.",
+      "assertions_declared": 2,
+      "substrate": [
+        {
+          "what": "a boss arena with geometry",
+          "found": [
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5126,
+              "text": "\"id\": \"cam-boss-arena\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5129,
+              "text": "\"title\": \"Round boss arena, 29 m across, 6 columns at r = 9.5 m, a 4 m wall.\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5142,
+              "text": "\"id\": \"arenawall0\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5157,
+              "text": "\"id\": \"arenawall1\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5172,
+              "text": "\"id\": \"arenawall2\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5187,
+              "text": "\"id\": \"arenawall3\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5202,
+              "text": "\"id\": \"arenawall4\","
+            },
+            {
+              "file": "game/data/camera/cells.json",
+              "line": 5217,
+              "text": "\"id\": \"arenawall5\","
+            }
+          ],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "closure": [
+        {
+          "what": "an unreachable-player enrage, anti-cheese teleport or arena invisible wall",
+          "found": [],
+          "benign": [],
+          "kind": "text"
+        }
+      ],
+      "substrate_present": true,
+      "closure_present": false,
+      "status": "live",
+      "pass": true,
+      "evidence": "static_absence_of_closure",
+      "evidence_note": "The substrate was found in the tree and no mechanism matching this entry's own \"Red if\" clause was found. The breakage was NOT performed in a running build; RI-EXP06 Step 1 asks for that and this run does not supply it.",
+      "unmeasurable": false
+    }
+  ]
+}

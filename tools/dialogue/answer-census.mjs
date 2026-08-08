@@ -26,6 +26,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 import { buildTopicIndex, infoFor } from '../../game/src/character/converse.js';
+import { raceTerm } from '../../game/src/character/reaction.js';
 
 const HERE = path.dirname(url.fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -49,15 +50,75 @@ export function loadNpcs() {
   return out;
 }
 
-// Four players, chosen so that every player-side gate in the corpus is exercised by at least one
-// of them and no two share a value on any of race / upbringing / disposition. A single player
-// would take a census that could not tell a race gate from a wall (RULES §8).
+// THE PLAYER FIXTURE — REBUILT IN W1-17 ROUND 2, BECAUSE THE OLD ONE COULD NOT BE CONSTRUCTED.
+//
+// The four players this file used to declare had upbringings `marsh` / `town` / `legion` /
+// `coast`. The canonical roster is `game/data/progression/race-reactions.json#upbringings` =
+// `interior` / `lukiul` / `foreign-born` / `blackrose`, and the shipped
+// `game/src/character/reaction.js raceTerm()` THROWS on all four census values:
+//
+//     THROW marsh  -> unknown upbringing: "marsh"        OK interior     {race:6, upbringing:-4}
+//     THROW town   -> unknown upbringing: "town"         OK lukiul       {race:6, upbringing:6}
+//     THROW legion -> unknown upbringing: "legion"       OK foreign-born {race:6, upbringing:0}
+//     THROW coast  -> unknown upbringing: "coast"        OK blackrose    {race:6, upbringing:-2}
+//
+// `infoAllowed()` never calls `raceTerm()`, so the census did not crash — it just compared the
+// string `"marsh"` against gates written in the roster's vocabulary and never matched. Three
+// consequences, all of which silently weakened every instrument that imports this array
+// (`shadow-audit.mjs`, `consume.mjs`, `critic-reach.mjs`):
+//
+//   1. the 3 `requires.upbringing` infos (gated on `interior` and `foreign-born`, both LEGAL)
+//      could never fire in any tool;
+//   2. six of the ten authored races were never tested at all;
+//   3. no census player had disposition above 70, so the seven `d: 80` infos — the most gated
+//      writing in the corpus — were invisible to the instruments certifying it.
+//
+// The fixture is now TEN players: one per authored race, upbringings cycled across all four
+// legal values, dispositions spanning 0..100 and hitting every authored `d` band boundary
+// including 80 and 100, and knowledge sets spanning empty / single-flag / full. Every value in
+// it is one the game can actually construct — asserted below, against the shipped `raceTerm()`.
 export const PLAYERS = [
-  { id: 'saxhleel-marsh-d70', race: 'saxhleel', upbringing: 'marsh', disposition: 70, knows: new Set() },
-  { id: 'dunmer-town-d40', race: 'dunmer', upbringing: 'town', disposition: 40, knows: new Set() },
-  { id: 'imperial-legion-d20', race: 'imperial', upbringing: 'legion', disposition: 20, knows: new Set() },
-  { id: 'naga-coast-d55', race: 'naga', upbringing: 'coast', disposition: 55, knows: new Set() },
+  { id: 'saxhleel-interior-d0', race: 'saxhleel', upbringing: 'interior', disposition: 0, knows: new Set() },
+  { id: 'naga-blackrose-d20', race: 'naga', upbringing: 'blackrose', disposition: 20, knows: new Set() },
+  { id: 'dunmer-foreign-born-d40', race: 'dunmer', upbringing: 'foreign-born', disposition: 40, knows: new Set() },
+  { id: 'imperial-lukiul-d55', race: 'imperial', upbringing: 'lukiul', disposition: 55, knows: new Set() },
+  { id: 'nord-foreign-born-d70', race: 'nord', upbringing: 'foreign-born', disposition: 70, knows: new Set() },
+  { id: 'breton-interior-d80', race: 'breton', upbringing: 'interior', disposition: 80, knows: new Set(['player_heard_the_eleven_keepers']) },
+  { id: 'redguard-blackrose-d100', race: 'redguard', upbringing: 'blackrose', disposition: 100, knows: ALL_KNOWS() },
+  { id: 'khajiit-lukiul-d30', race: 'khajiit', upbringing: 'lukiul', disposition: 30, knows: new Set() },
+  { id: 'orsimer-interior-d10', race: 'orsimer', upbringing: 'interior', disposition: 10, knows: new Set() },
+  { id: 'bosmer-blackrose-d60', race: 'bosmer', upbringing: 'blackrose', disposition: 60, knows: new Set(['approach_through_the_third_bay']) },
 ];
+
+// The knowledge flags the corpus actually gates on, read out of the corpus rather than listed by
+// hand, so a new `requires.knows` cannot silently escape the fixture.
+function ALL_KNOWS() {
+  const out = new Set();
+  for (const doc of loadTopicDocs()) for (const t of (doc.topics || [])) for (const i of (t.infos || [])) {
+    for (const g of [i.requires, i.forbids]) {
+      if (!g) continue;
+      for (const k of [...(g.knows || []), ...(g.knows_all || [])]) out.add(k);
+    }
+  }
+  return out;
+}
+
+/**
+ * RULES §4 in the fixture itself: every player above must be a character the game can build.
+ * Throws loudly if anyone reintroduces an upbringing or race the shipped roster does not carry —
+ * which is the exact defect this fixture shipped with for three rounds.
+ */
+export function assertPlayersAreConstructible() {
+  const data = { reactions: JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/progression/race-reactions.json'), 'utf8')) };
+  const bad = [];
+  for (const p of PLAYERS) {
+    try { raceTerm(data, 'RG-TOWN', p.race, p.upbringing); }
+    catch (e) { bad.push(`${p.id}: ${e.message}`); }
+    if (!(p.disposition >= 0 && p.disposition <= 100)) bad.push(`${p.id}: disposition out of range`);
+  }
+  if (bad.length) throw new Error(`answer-census PLAYERS are not constructible characters:\n  ${bad.join('\n  ')}`);
+  return PLAYERS.length;
+}
 
 export function census(topicDocs, npcs) {
   const idx = buildTopicIndex(topicDocs);

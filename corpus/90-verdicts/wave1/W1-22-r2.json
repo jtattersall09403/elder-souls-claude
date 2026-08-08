@@ -1,8 +1,10 @@
 {
   "schema_version": 1,
   "piece_id": "w1-22-r2",
-  "piece_title": "W1-22 round 3 — regional ambience (audio.ambience.region)",
-  "subsystem_paths": ["audio.ambience.region"],
+  "piece_title": "W1-22 round 3 \u2014 regional ambience (audio.ambience.region)",
+  "subsystem_paths": [
+    "audio.ambience.region"
+  ],
   "wave": 1,
   "critic": {
     "run_id": "crit-w1-22-r2-s2",
@@ -95,17 +97,114 @@
       "side": "morrowind",
       "kind": "structure",
       "native_scale": "checks passed / 6 (B1-B6)",
-      "native_score": "PENDING",
+      "native_score": "2 of 6",
       "native_max": 6,
-      "native_verdict": "PENDING",
-      "score_0_10": 0,
+      "native_verdict": "<=3 -> loses outright (ceiling 4)",
+      "score_0_10": 4,
       "measured": "partial",
-      "justification": "PENDING",
-      "evidence": ["reports/w1-22-critic/r2/bands.json"],
-      "checks": []
+      "justification": "B4 passes and I re-ran it myself at HEAD (13/13 regions, 13 unique L1 assets). B6 passes on the builder's G7 evidence, which is a real fix: round 1 found the R7 emitters produced no sound on any reachable path and they now pan monotonically with a single zero crossing and peak at closest approach. B5 is NOT passed as the item writes it: ambience-render.mjs G4 explicitly substitutes 'each bed lands where its own data says' for B5's absolute -28..-24 LUFS-I, and says so in its own caveat, so the check the item specifies has not been run. B1 and B3 need 13 fresh judges each and remain orchestration debt, unchanged from round 1. B2's round-1 result (32/32) must not be cited -- the judge that produced it said so itself -- and the round-2 replacement pack leaked the answer three ways and had to be rebuilt (see blind[]). No hard fail is triggered: no two regions share an L1 asset, and no region exceeds -18 LUFS-I. Two of six is the honest count and the item's own scale puts that at ceiling 4.",
+      "evidence": [
+        "reports/w1-22-critic/r2/bands.json",
+        "reports/w1-22-critic/r2/onsets-at-HEAD.json",
+        "reports/w1-22-critic/r2/critic-probe-r2-successor.json",
+        "reports/w1-22/ambience-render.json"
+      ],
+      "checks": [
+        {
+          "id": "B1",
+          "result": "not_run",
+          "not_run_reason": "13 fresh judges, one clip each. Orchestration debt, unchanged from round 1."
+        },
+        {
+          "id": "B2",
+          "result": "not_run",
+          "not_run_reason": "The round-2 pack was audited before a judge was spent on it and found to leak the answer three ways (serialised byte length recovers 0.769 of the key against a 0.500 baseline; time of day determines the class; sides never swapped). Rebuilt leak-audited at reports/packs/w1-22-r3-hard and handed to a fresh judge. Rule 25: I built it and did not judge it.",
+          "evidence": [
+            "reports/packs/w1-22-r3-hard/pack.json",
+            "tools/audio/critic-w1-22-r2-pack.mjs"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "not_run",
+          "not_run_reason": "Depends on B1's Q5. Same missing channel."
+        },
+        {
+          "id": "B4",
+          "result": "pass",
+          "observed": "13/13 regions have a bed; 13 unique L1 assets; stone-wastes/L2 declared null and counted as declared per R1. Re-run by me at HEAD.",
+          "evidence": [
+            "node tools/analysis/content-stats.mjs --audio game/data/audio/ambience/"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "fail",
+          "observed": "Not measured as written. ambience-render.mjs G4 checks each bed against its OWN declared target with a +/-4 LU tolerance that is W1-22's, not RI-AUD03's, and states in its own caveat that B5's absolute -28..-24 is a mix calibration this build cannot make. AMENDMENT-W1-22-01 SectionC is a proposal to redefine which capture B5 is about; it has not been applied. The item's check therefore stands unrun, and I score it against the item as it is written rather than as the amendment proposes.",
+          "evidence": [
+            "reports/w1-22/ambience-render.json"
+          ]
+        },
+        {
+          "id": "B6",
+          "result": "pass",
+          "observed": "G7: pan strictly monotonic, 1 zero crossing, gain peaks at closest approach, pan sweeps when the player turns, silent beyond audible_m. Taken by the builder's tool at 733e74f, not re-run by me at HEAD.",
+          "evidence": [
+            "reports/w1-22/ambience-render.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-consumption.md",
+      "side": "shared",
+      "kind": "method",
+      "native_scale": "% of applicable points",
+      "native_score": "partial",
+      "native_max": 100,
+      "native_verdict": "consumed on the audio path; no entity-side consumer",
+      "score_0_10": 5,
+      "measured": "yes",
+      "justification": "The ambience model IS consumed on the audio path -- AmbienceDriver is stepped every frame from Engine._afterStep and renderBedOffline turns it into PCM out of which I measured 413 real events at HEAD -- so this is not the failure RI-MTH07 was written for, and round 1's genuine instance of that failure (R7 emitters unreachable) has been fixed. What it has no consumer for is the world: perturbing the model on 177 fields to inaudibility leaves every state hash, entity position and stealth alert value over a 3600-frame run with 89 entities BYTE-IDENTICAL to the null arm, while a positive control on the stealth detection sound-radius table diverges at the first sample. The builder's own consumption evidence does not demonstrate consumption at all: it perturbs the bed and measures spectral distance in the render, which is the audio model measuring itself. Marked down for that circularity and for the sterility, not zeroed, because the doctrine's 'entity changes behaviour' test is the wrong instrument for a subsystem whose output is sound.",
+      "evidence": [
+        "reports/w1-22-critic/r2/critic-probe-r2-successor.json",
+        "reports/w1-22/ambience-interior-consumption.json"
+      ]
     }
   ],
-  "artifacts": [],
+  "artifacts": [
+    {
+      "path": "reports/w1-22-critic/r2/onsets-at-HEAD.json",
+      "produced_by": "node tools/run.mjs --label critic-w1-22-r2-onsets-HEAD -- node tools/analysis/ambience-onsets.mjs --seconds 180 --out reports/w1-22-critic/r2/onsets-at-HEAD.json",
+      "what": "180 s x 40 bed-tod rows at HEAD 5d88b7e. The render every number in this verdict is taken from."
+    },
+    {
+      "path": "reports/w1-22-critic/r2/bands.json",
+      "produced_by": "node tools/audio/critic-w1-22-r2-bands.mjs",
+      "what": "Per-EVENT band audit, declared-chain fidelity, and the AMENDMENT SectionA arithmetic redone from measurement."
+    },
+    {
+      "path": "reports/w1-22-critic/r2/bands-sab-widen.json",
+      "produced_by": "node tools/audio/critic-w1-22-r2-bands.mjs --sabotage widen",
+      "what": "Falsifier: spread x3 about the layer median. B1 goes redder (182/413)."
+    },
+    {
+      "path": "reports/w1-22-critic/r2/bands-sab-centre.json",
+      "produced_by": "node tools/audio/critic-w1-22-r2-bands.mjs --sabotage centre",
+      "what": "Control: every event collapsed onto its layer median, the shape gate O3 can see. B1 goes GREEN (0/413), proving B1 reads the SPREAD and not the level."
+    },
+    {
+      "path": "reports/w1-22-critic/r2/critic-probe-r2-successor.json",
+      "produced_by": "node tools/run.mjs --label critic-w1-22-r2-probe -- node tools/audio/critic-w1-22-r2-probe.mjs --frames 600 --seconds 60",
+      "what": "P1 the mute-guard falsification; P2 CONSUMPTION with a positive control."
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png",
+      "produced_by": "node tools/audio/critic-w1-22-r2-chart.mjs --out docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png",
+      "what": "One dot per event against RI-AUD03 SectionA's band, with the layer median marked: the medians sit in the stripe and 54 events do not."
+    }
+  ],
   "blind": [],
   "arbitration": {
     "ar1_souls_leakage": {
@@ -121,25 +220,28 @@
       "justification": "The ambience model carries no boundary-crossing interaction. It is driven BY the world (region, position, time of day, weather are written into the driver from _afterStep) and read back only by instruments. Nothing a faction rank, a disposition, a quest resolution or a lore fact does changes what a region sounds like, and nothing a region sounds like changes what any entity does. This is the same finding as CONSUMPTION below, seen from the seam side: the subsystem is a leaf in both directions."
     },
     "consumption": {
-      "result": "PENDING",
-      "world_side_consumer": "PENDING",
-      "demonstrated_by_perturbation": "PENDING",
-      "positive_control": "PENDING",
-      "evidence": ["reports/w1-22-critic/r2/critic-probe-r2-successor.json"]
+      "result": "pass_on_the_audio_path_no_entity_consumer",
+      "world_side_consumer": "AmbienceDriver, constructed in the Engine constructor and stepped every frame from Engine._afterStep(); renderBedOffline() renders it to PCM. No consumer anywhere in game/src/sim/** or game/src/ai/** -- those trees contain zero references to ambience, and the perception model that does make entities behave differently because of sound (soundRadius in game/src/sim/stealth/detection.js) is a separate model reading separate data.",
+      "demonstrated_by_perturbation": "177 fields perturbed to inaudibility (every layer level_db to -60, every event_gain_db to 0, every event list emptied, every emitter removed, every bed_gain_db to -60). Over 3600 stepped frames with 89 entities and the player walking, all six state hashes, every entity position and every stealth alert value were IDENTICAL to the null arm. The null arm re-run after the destructive arm reproduced the first null exactly, so the null result is not an artefact of a broken teardown.",
+      "positive_control": "The stealth detection sound-radius table scaled x8 (21 fields) diverges from the null arm at the FIRST sample and stays diverged. Without this the no-consumer reading would have been inadmissible, and the probe is written to exit 2 and say so.",
+      "evidence": [
+        "reports/w1-22-critic/r2/critic-probe-r2-successor.json"
+      ]
     }
   },
   "score": {
     "method": "min-over-axes",
-    "value": 0,
+    "value": 4,
     "gate": 7.0,
-    "meets_gate": false
+    "meets_gate": false,
+    "note": "min(RI-AUD03 4, RI-MTH07 5) = 4. RI-AUD03's own scale caps at 4 for <=3 checks passed, and 2 of 6 is the honest count."
   },
-  "status": "PENDING",
+  "status": "FAIL",
   "biggest_gap": {
     "gap_id": "GAP-W1-22-event-level-graded-on-a-median",
     "subsystem_path": "audio.ambience.region",
-    "what": "RI-AUD03 §A's 'Level (rel. bed)' band is a claim about EVENTS, and every mechanism that touches it is a per-layer median: gate O3 grades the median of a bed/layer's events, and the corrective trim `event_gain_db` is a single number per layer, while the second gain stage it corrects (`synth.gain_db`, -5..-13) varies PER EVENT. A per-layer trim cannot in principle unbury an event quieter than its layer-mates; it can only move the whole spread. The result is that the round-1 defect this piece exists to close -- declared in band, buried by a second gain stage -- is still present for individual events while the gate reports zero failures: 54 of 413 measured events sit outside §A's band with the tool's own +/-2 dB tolerance, 33 of them buried below the floor, in 11 of 33 bed/layer pairs whose median passes.",
-    "why_it_matters": "The buried events are not marginal ones. blackwood/L3/distant_axe renders at -23.1 dB relative to the bed -- 15 dB below §A's floor -- and 'distant axe-strokes' is one of the three sounds that bed's own `brief` field advertises. deep-marshes/L3/marsh_gas_release reaches -30.4 dB. well/L3/stone_shift -16.3, dungeon/L3/block_settle -11.1. From the player's chair those sounds do not exist, which is exactly the state the B2 judge described as 'nothing ever happens in any of them' and exactly the state this round was commissioned to end. Because the gate is green, no future round has a reason to look.",
+    "what": "RI-AUD03 \u00a7A's 'Level (rel. bed)' band is a claim about EVENTS, and every mechanism that touches it is a per-layer median: gate O3 grades the median of a bed/layer's events, and the corrective trim `event_gain_db` is a single number per layer, while the second gain stage it corrects (`synth.gain_db`, -5..-13) varies PER EVENT. A per-layer trim cannot in principle unbury an event quieter than its layer-mates; it can only move the whole spread. The result is that the round-1 defect this piece exists to close -- declared in band, buried by a second gain stage -- is still present for individual events while the gate reports zero failures: 54 of 413 measured events sit outside \u00a7A's band with the tool's own +/-2 dB tolerance, 33 of them buried below the floor, in 11 of 33 bed/layer pairs whose median passes.",
+    "why_it_matters": "The buried events are not marginal ones. blackwood/L3/distant_axe renders at -23.1 dB relative to the bed -- 15 dB below \u00a7A's floor -- and 'distant axe-strokes' is one of the three sounds that bed's own `brief` field advertises. deep-marshes/L3/marsh_gas_release reaches -30.4 dB. well/L3/stone_shift -16.3, dungeon/L3/block_settle -11.1. From the player's chair those sounds do not exist, which is exactly the state the B2 judge described as 'nothing ever happens in any of them' and exactly the state this round was commissioned to end. Because the gate is green, no future round has a reason to look.",
     "remedy": "Gate O3 on EVERY measured event rather than on the layer median -- the check is already written and falsifiable at tools/audio/critic-w1-22-r2-bands.mjs B1, which goes red on the shipped tree, redder under --sabotage widen, and GREEN under --sabotage centre (every event collapsed onto its layer median), proving its reading is about the spread and not about the level. Then give the trim the same granularity as the stage it corrects: calibrate a per-EVENT gain rather than one `event_gain_db` per layer, since the quantity being corrected varies per event. Both halves are small and neither needs new engine code.",
     "evidence": [
       "reports/w1-22-critic/r2/bands.json",
@@ -158,5 +260,12 @@
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
     "self_audit_note": "PENDING"
-  }
+  },
+  "status_reasons": [
+    "RI-AUD03 native 2 of 6 -> the item's own scale is 'loses outright (ceiling 4)'.",
+    "The defect the round was commissioned to close is not closed: 54 of 413 events sit outside SectionA's band, 33 of them buried, while the gate that checks it reports zero failures because it grades a layer median.",
+    "Two of the three standing gates (O1, O2) are RED on the shipped tree at HEAD 5d88b7e.",
+    "R5 is violated for 9 of 13 regions: night is bit-identical to day.",
+    "B1 and B3 remain unrun for want of a fresh-judge channel -- orchestration debt, not the builder's zeros."
+  ]
 }

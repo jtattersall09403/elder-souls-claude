@@ -2,7 +2,7 @@
   "task_id": "W1-14-r3",
   "brief": "round-3 ULTRACODE builder on W1-14 magic (seam S19)",
   "started": "wave-1 round 3",
-  "state": "building",
+  "state": "done",
   "prior_verdict": "corpus/90-verdicts/wave1/W1-14-r2.json (FAIL 4.4/10)",
   "objectives": [
     "GAP-W1-magic-skill-frozen: one register written by play, survives save/load, quest gate reads it",
@@ -36,7 +36,12 @@
     "reports/w1-14-r3/before/dials.json",
     "reports/w1-14-r3/dials.json",
     "reports/w1-14-r3/summon.json",
-    "reports/w1-14-r3/before/summon.json"
+    "reports/w1-14-r3/before/summon.json",
+    "reports/w1-14-r3/dials-break-nocast.json",
+    "reports/w1-14-r3/census.json (re-run)",
+    "reports/w1-14-r3/wards.json (regression re-run)",
+    "tools/harness/w1-14-r3-shot.mjs",
+    "docs/shots/2026-08-08-w1-14-r3-stillness-stands-cold-water-runs.png"
   ],
   "findings": [
     "SKILL REGISTER: MagicSystem.skills is a private literal at magic/system.js:59 {sorcery:30,root_speech:30,warding:30,veiling:30}. Character sheet uses ids sorcery/root-speech/warding/veiling in sim.progression.skills as {value,useProgress}. Spell tiers: t1 skill_req 0 (17), t2 25 (30), t3 45 (17), t4 65 (8) = 72. At 30 -> 47 attunable, matching the critic exactly.",
@@ -87,37 +92,33 @@
     "R3C CONSUMPTION MEASURED (RI-MTH07 B2 - an ENTITY changing BEHAVIOUR, not a field changing value). OFFENCE, player not attacking, 600 f@60, damage the player took: control-with-no-summon 0; bind_lesser 41 at magnitude 1 vs 164 at 90 (summon hp_max 65 vs 1040, attack_rating 22 vs 88, power 0.25 vs 4.0); bind_greater 78 at 1 vs 195 at 45 (hp_max 160 vs 1599). DEFENCE, player on a fixed attack script: the mag-1 lesser summon DIES at 120 f@60 having taken all 65 of its hp; the mag-90 one takes 282 of 1040 and is still standing at 600. EXCLUSIVITY: two casts of bind_greater leave ONE body, two of bind_lesser leave TWO.",
     "R3C DELETE-THE-FIX, both load-bearing claims, on the scratch copy with the fix cut from the SOURCE: bind_lesser does 160 damage at magnitude 1 AND at magnitude 90, hp_max 260 in both, and both summons die at exactly 480 f@60 having taken exactly 260 - the old number returns and the two arms are byte-identical. bind_greater 300/300, hp_max 640/640, and two casts leave TWO bodies. demoralise at magnitude 1 and at magnitude 34 both end 4.04 m from the caster, which is CALM_BEAST S OWN NUMBER to the centimetre - the collision comes back exactly. Against the fixed build the same arms read 6.07 m and 45.06 m against a model that declared leash 6 and 45.",
     "R3C AR-1 PASS, measured both ways. Determinism violations 0 -> 0 across 12 casts (the guards on Math.random/Date.now/performance.now/new Date THROW inside the armed fixed step, so this is a stronger reading than a draw counter). rng draws delta 4 over 4 applied casts = exactly one draw per spawned body (sim/entities.js), none in the cast path. Attunement is a RULE, not a roll: an under-skilled sheet accepted 0 of 60 tier-4 attunements and a practised one 60 of 60, all-or-nothing on every spell. 20 identical casts from an identical arena produced 20 identical summons (one distinct hp_max). Nothing in the magic path rolls to decide whether a spell fires.",
-    "R3C DEFECT FOUND WHILE MEASURING, NOT FIXED: bind_greater has no castable carrier at the top of its own declared magnitude range. At magnitude 90 for 60 s it quotes focus_base 150 / tier 5 / skill_req 85 / focus_cost 111 against a focus_max of 88 and the input gate drops the cast SILENTLY - no cast_start, no refusal event, an empty magic event stream. Round 2 found the same shelf defect on its shipped spell and it was retuned; the DIAL still reaches past the reservoir. Also: H.setWillpower(99) is a harness override the character sheet reclaims during stepping (focus_max 124 at the affordability check, 88 by the time the input gate looked), which is what made the first two runs of this probe read \"the strong summon did 0 damage\"."
+    "R3C DEFECT FOUND WHILE MEASURING, NOT FIXED: bind_greater has no castable carrier at the top of its own declared magnitude range. At magnitude 90 for 60 s it quotes focus_base 150 / tier 5 / skill_req 85 / focus_cost 111 against a focus_max of 88 and the input gate drops the cast SILENTLY - no cast_start, no refusal event, an empty magic event stream. Round 2 found the same shelf defect on its shipped spell and it was retuned; the DIAL still reaches past the reservoir. Also: H.setWillpower(99) is a harness override the character sheet reclaims during stepping (focus_max 124 at the affordability check, 88 by the time the input gate looked), which is what made the first two runs of this probe read \"the strong summon did 0 damage\".",
+    "R3C CONTROL-ARM SELF-TEST (--break=nocast, all 55 rows, 8m50s): with the treatment arms not casting, 55/55 NOT_DELIVERED, 0 ACTIVE, and coupled 0 / blind 0 on ALL THREE dials. The instrument cannot manufacture a coupling out of arena noise, which is the thing that makes the 33 COUPLED readings mean anything.",
+    "R3C CENSUS RE-RUN, same instrument the predecessor banked: magnitude_ignored 19 -> 15, matching the dial probe exactly. DISTINCT-VERBS 53/55 all-paths, 46/55 world-side-only (was 45), 42/55 under the round-2 blob flattener. [calm_beast, demoralise] IS GONE. [bind_lesser, bind_greater] survives and is expected to: they are one verb at two strengths, so they move the same PATH SET even though the VALUES now differ (260-base body vs 640-base body, each scaled 0.25x-4x by its own dial). RI-MAG06 D says record that rather than excuse it, so it is recorded.",
+    "R3C NEW COLLISION I DID NOT CAUSE AND DID NOT FIX: [damage_health, absorb_health] now share a signature and did not in the predecessor final run. I touched neither effect. Reading the detail: at magnitude 1 damage_health takes the target 412 -> 402 and absorb_health 412 -> 407, and NEITHER moves the caster hp - i.e. absorb_health does not absorb. That is a real gap for the next round, and HEAD moved under me (other sessions committing), so I am not certain whether it is new or was previously masked. Named, not claimed.",
+    "R3C REGRESSIONS GREEN at the same numbers the predecessor banked. wards.mjs: ward x kind matrix identical (control 100 across; shield 69 physical only; resist_element 15 on fire/frost/shock only; resist_disease 15 on poison/disease only; 3/3 distinct ward signatures), sap_ward band ladder 0..4 over 16 rests and 4->3 on one use with physical damage 100->100, status procs 5/5 consumed, S29 refused in fight / refused mid-cooldown / permitted when quiet at 84.674 m, S27 focus 124 -> 75 -> 75 -> 69 -> 69 with regenerated_anywhere false and the Dry Well not restoring. tools/harness/smoke.mjs PASS. check-data PASS (561 files, 347 NPCs). check-content PASS (383 resolutions, none lost).",
+    "R3C WHAT I DID NOT DO, plainly. (1) The 23 surviving dead dials are NOT fixed - 15 magnitude, 6 duration, 2 area - and the six duration ones are the biggest single item left: in Morrowind \"Fire Damage 10 pts for 5 s\" is damage per second, and here a duration on fire_damage/frost_damage/poison_damage/restore_health only sets how long an unread lease row sits in M.active. That is a real Morrowind-side gap in the combinatorial spell system and it is one design decision plus a per-second tick away. (2) engine.spawn IGNORES opts.side, so a summon is spawned side E and fights the caster; and h_frenzy writes ctl.hostileTo which a whole-repo grep shows is read by nothing. Both live in game/src/combat/system.js and the enemy AI, which are W1-12/W1-03 files, not mine - reported, not touched. (3) The VFX camera-override bug my predecessor named is still open; I did not get to it. (4) I did not re-run apm3.mjs or skill.mjs; wards.mjs, census.mjs and smoke were the regression I could afford.",
+    "R3C CONTENTION, honestly. The gate said WAIT on every check for roughly the first third of this run (4-7 browser instances, load 4.3-6.7 per core against a 4.0 ceiling), so all instrument-writing and both source fixes were done offline before any browser started. I did NOT proceed past the gate: every browser run below was launched after a GO, one at a time, never in parallel. The wall-clock figures quoted (dials 7m09 / 7m48 / 8m50, census 8m44, summon 1m20-1m53) were all taken with 2-5 other browser instances live and load 3.4-6.0 per core; every measurement in the reports is frame-count based and therefore unaffected by that load, but the timings are not."
   ],
-  "next_step": "BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceiling for the whole session so far. Background poller waiting for GO. All offline work is done and on disk.",
-  "notes_for_successor": "Where this stands. DISTINCT-VERBS is 53/55 all-paths / 45 world-side-only / 43 blob (round 2 measured 33). AP-M3 is reproducible and passing with a break that goes red. The regressions on P1 (skill), P2 (kind-aware wards + sap taint), P3 (status procs), S27 and S29 are all green and unchanged.\n\nTHREE THINGS LEFT, in value order.\n1. bind_lesser / bind_greater. They share a signature AND both read MAGNITUDE_IGNORED, so a 'greater' bind summons the identical thing. Give the summon a magnitude-scaled body (hp / archetype) and the collision and the coupling gap close together.\n2. calm_beast / demoralise. Both end the fight by setting `yielded`. Morrowind's split is that Calm stops the fight and Demoralise makes the target RUN. Give demoralise a flee state that moves the body and the last collision goes.\n3. The VFX probe's `H.camera({pos,look,fov})` override is NOT taking effect - every frame is shot from the default follow rig and the spawned body is not even in shot. The impact burst radius bug IS fixed at source (was the projectile hitbox radius, now max(im.r,1.3) m) and the shoot now photographs the peak frame rather than the contact frame, taking the diff 0.038% -> 0.083%, but the framing is the dominant term and it is an instrument bug, not an art one. Fix that before anyone re-scores ART/FID.\n\nENVIRONMENT WARNING: a concurrent session is editing game/src/combat/moveset.js and broke engine boot twice mid-run (_bladeLength, then _bladePitch, both 'Cannot read properties of undefined (reading get)'). HEAD boots; the working tree intermittently does not. `git worktree add` on this repo exceeds two minutes - do not bother. Just poll a two-line boot probe and re-run. My own edits kept getting swept into that session's in-flight commits, which is fine, but check `git status` before assuming an edit of yours is still uncommitted.",
+  "next_step": "CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindness, calm_beast/demoralise). OPEN for round 4, in value order: (1) the six duration-blind effects - fire/frost/poison_damage and restore_health need a per-second tick, which is Morrowind's own reading of \"N pts for M s\"; (2) absorb_health does not absorb (new collision with damage_health); (3) engine.spawn ignores opts.side so summons fight the caster, and frenzy's hostileTo has no reader - both in W1-12/W1-03 files; (4) bind_greater has no castable carrier above magnitude ~45 (focus_cost 111 vs focus_max 88); (5) the VFX probe's H.camera override still does not take effect.",
+  "notes_for_successor": "Two instruments are new and both self-test. `tools/harness/w1-14-r3-dials.mjs` is the one that matters: it perturbs magnitude, duration and area SEPARATELY on all 55 effects against a null control, and it is the first thing in this project to have looked at the duration and area dials at all (the census pinned duration_s=20 and area_r_m=0 on every row for three rounds). Run it with --break=nocast to watch the control arm go red, or against scratchpad/deletefix/game to watch the fix removed. `tools/harness/w1-14-r3-summon.mjs` is the CONSUMPTION and AR-1 arm. Three instrument traps I hit and fixed, all documented in the files: a 1 m area burst delivers to nothing so the arm reads UNMEASURED not BLIND; a catalyst in the hand makes `light` a CAST not a swing, so \"the player attacking\" measured nothing for two runs; and H.setWillpower() is reclaimed by the character sheet during stepping, which turns an over-reservoir cast into a silent 0 rather than a refusal.",
   "resumed_by_successor": "r3c (container restart #2) — resuming from next_step: the two surviving collisions + magnitude-blindness sweep",
   "files_touched": [
     "game/src/sim/magic/apply.js",
     "game/src/sim/magic/system.js",
-    "game/src/sim/magic/cost.js",
     "game/data/magic/effects.json",
-    "game/data/magic/spells.json",
-    "game/data/magic/wards.json",
-    "game/data/magic/birthsigns.json",
-    "game/src/render/spell-vfx.js",
-    "tools/harness/w1-14-r3-skill.mjs",
-    "tools/harness/w1-14-r3-wards.mjs",
-    "tools/harness/w1-14-r3-census.mjs",
-    "tools/harness/w1-14-r3-vfx.mjs",
-    "tools/harness/w1-14-r3-apm3.mjs",
-    "reports/w1-14-r3/"
-  ],
-  "files_claimed": [
-    "game/src/sim/magic/",
-    "game/data/magic/",
+    "game/src/harness/api.js",
     "tools/harness/w1-14-r3-dials.mjs",
+    "tools/harness/w1-14-r3-summon.mjs",
+    "tools/harness/w1-14-r3-shot.mjs",
     "reports/w1-14-r3/",
-    "orchestration/status/W1-14-r3.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/2026-08-08-w1-14-r3-stillness-stands-cold-water-runs.png",
+    "orchestration/status/W1-14-r3.json"
   ],
+  "files_claimed": [],
   "redundant_with": [
     "critic-w1-14-r3"
-  ]
+  ],
+  "commit_measured_at": "f78378d"
 }

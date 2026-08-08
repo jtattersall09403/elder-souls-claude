@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f78378d`: 578 tools, 153 reference
+so it cannot drift. Generated at `58796ac`: 581 tools, 153 reference
 items, 44 pieces in flight.
 
 Its purpose is to stop 44+ concurrent agents each paying separately to discover the
@@ -191,9 +191,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 17
+### `tools/dialogue/` — 18
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
+- `tools/dialogue/arbiter-order-divergence.mjs` — ARBITRATION S37 — the instrument.
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
 - `tools/dialogue/consume.mjs` — CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
 - `tools/dialogue/critic-field-census.mjs` — critic-w1-17 instrument 1 — an INDEPENDENT census of every filter field authored on every info in game/data/dialogue/topics/**, written without reading build-gr
@@ -467,7 +468,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 11
+### `tools/lore/` — 12
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -479,6 +480,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r1.mjs` — CRITIC instrument, W1-23 round 1.
 - `tools/lore/critic-w1-23-r3-reach.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
+- `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
 
 ### `tools/metrics/` — 6
@@ -572,8 +574,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/stealth/` — 1
+### `tools/stealth/` — 2
 
+- `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
 ### `tools/uesp/` — 8
@@ -890,6 +893,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 2 | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` |
 | `W1-17-r2` | building | read RULES/INDEX/verdict/r1 status; then reproduce the 133 unhearable count from a tool | `orchestration/status/W1-17-r2.json` |
 | `arbiter-dlg-s37` | starting | read RULES.md, INDEX.md, ARBITRATION.md, W1-17-r1.md, converse.js | `orchestration/status/arbiter-dlg-s37.json` |
@@ -902,7 +906,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-readables` | running | read RULES/INDEX/ARBITRATION §3, then builder status files | `orchestration/status/critic-w1-readables.json` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
-| `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
 | `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |

@@ -1023,16 +1023,26 @@ for (const leg of scale.roads) {
   // between two points that each clear a wall can still clip its corner. If the correction has
   // put the road back into a building the leg is re-threaded and the length error is reported
   // instead of being paid for with a wall.
-  let corr = correctLength(p, leg.path_m, legId);
-  p = corr.p;
+  //
+  // The retreat is deliberate. An earlier cut of this re-threaded the corrected polyline instead,
+  // and re-threading a leg whose corridor has just been bent 60 m sideways made `Helstrom-Gideon`
+  // 19% long — the join's leash faithfully followed a corridor that was no longer the road. When
+  // the correction cannot be had cleanly, the correct outcome is a leg that is slightly short and
+  // has no wall in it, so the deficit is halved and retried, and abandoned if it never comes clean.
+  const threadedP = p.map((q) => q.slice());
+  let corr = { p: threadedP, corrected_m: 0, spans: 0, abandoned: true };
   let audit = joinAudit(p);
-  if (audit.violations) {
-    process.stderr.write(`JOIN: length correction on ${legId} re-entered a building; re-threading and keeping the length error\n`);
-    const re = threadSettlements(p, legId);
-    p = re.p;
-    audit = joinAudit(p);
-    corr = { ...corr, reverted: true };
+  for (let attempt = 0, share = 1; attempt < 5; attempt++, share /= 2) {
+    const want = len2d(threadedP) + (leg.path_m - len2d(threadedP)) * share;
+    const c = correctLength(threadedP, want, legId);
+    const a = joinAudit(c.p);
+    if (a.violations) continue;
+    corr = { ...c, share: +share.toFixed(4), attempts: attempt + 1 };
+    p = c.p; audit = a;
+    break;
   }
+  if (corr.abandoned) process.stderr.write(`JOIN: no clean length correction for ${legId}; keeping the threaded route and its length error\n`);
+  delete corr.p;
 
   const tideway = /tideway/i.test(leg.class);
   routes.push({ leg, p, mode, tideway, recuts: threaded.recuts, audit, corr,

@@ -88,6 +88,17 @@ right now). Between these two you should not need to go looking for anything.
     `node tools/ownership.mjs --staged <your-task-id>` names every staged path another live piece
     has declared, and the pre-commit hook prints it. Read it before you commit, not after.
 
+    **If your work lands in someone else's commit, it is almost certainly the orchestrator's bank
+    and not another agent.** Several agents have reported being swept and attributed it to a
+    neighbour, and one reported that `--only` had itself carried other people's staged files.
+    Tested directly: `git commit --only a.txt` with `b.txt` staged commits `a.txt` alone and leaves
+    `b.txt` staged. `--only` does what it says. The actual mechanism is that
+    `node tools/bank.mjs` stages the whole tree every few minutes on purpose — the container has
+    restarted twice in a day and unbanked work dies with it — so anything you have written but not
+    yet committed will be carried under the bank's message. That is not a race you can win and it
+    is not worth trying to; the bank now names whose work it is carrying, in the commit message,
+    from the ownership registry. Check there before diagnosing a neighbour.
+
 ## Cost
 
 18. **Point at files; do not restate them.** The verdict, the status file and the item are
