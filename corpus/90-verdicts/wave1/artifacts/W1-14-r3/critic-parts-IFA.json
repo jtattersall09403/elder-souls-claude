@@ -1,0 +1,1148 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "I",
+    "F",
+    "A"
+  ],
+  "notes": [],
+  "A": {
+    "design": "two arms, identical dial settings, same seed — every ACTIVE row must read BLIND",
+    "rows": [
+      {
+        "effect": "fire_damage",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "damage_health",
+        "range": "target",
+        "mag": 40,
+        "dur": 0,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "restore_health",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "paralyse",
+        "range": "target",
+        "mag": 20,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "calm_beast",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "demoralise",
+        "range": "target",
+        "mag": 34,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "bind_lesser",
+        "range": "self",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [
+          "world.summons.json"
+        ],
+        "null_verdict": "COUPLED(NOISE)"
+      },
+      {
+        "effect": "bind_greater",
+        "range": "self",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [
+          "world.summons.json"
+        ],
+        "null_verdict": "COUPLED(NOISE)"
+      },
+      {
+        "effect": "shield",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "feather",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "shatter",
+        "range": "target",
+        "mag": 40,
+        "dur": 0,
+        "area": 4,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "silence",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      }
+    ],
+    "null_noise_rows": [
+      {
+        "effect": "bind_lesser",
+        "paths": [
+          "world.summons.json"
+        ]
+      },
+      {
+        "effect": "bind_greater",
+        "paths": [
+          "world.summons.json"
+        ]
+      }
+    ],
+    "positive": [
+      {
+        "effect": "bind_lesser",
+        "break": "none",
+        "lo": 1,
+        "hi": 90,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "enemies.json",
+          "entities.json",
+          "status.json",
+          "world.summons.json"
+        ],
+        "verdict": "COUPLED"
+      },
+      {
+        "effect": "bind_lesser",
+        "break": "bindblind",
+        "lo": 1,
+        "hi": 90,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [],
+        "verdict": "BLIND"
+      },
+      {
+        "effect": "bind_greater",
+        "break": "none",
+        "lo": 1,
+        "hi": 45,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "enemies.json",
+          "entities.json",
+          "status.json",
+          "world.summons.json"
+        ],
+        "verdict": "COUPLED"
+      },
+      {
+        "effect": "bind_greater",
+        "break": "bindblind",
+        "lo": 1,
+        "hi": 45,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [],
+        "verdict": "BLIND"
+      },
+      {
+        "effect": "demoralise",
+        "break": "none",
+        "lo": 1,
+        "hi": 34,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "entities.json",
+          "status.json"
+        ],
+        "verdict": "COUPLED"
+      },
+      {
+        "effect": "demoralise",
+        "break": "fleeblind",
+        "lo": 1,
+        "hi": 34,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "status.json"
+        ],
+        "verdict": "COUPLED"
+      }
+    ],
+    "break_hooks_present": {
+      "bindblind": true,
+      "fleeblind": true
+    }
+  },
+  "F": {
+    "identical": [
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_7684810846112669",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_2641658270731568",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_5794715136289597",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_6452694460749626",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_4481186142656952",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_8972384601365775",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_8817492993548512",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_6972217280417681",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      }
+    ],
+    "identical_damage_set": [
+      80
+    ],
+    "perturbations": [
+      {
+        "name": "baseline",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_916153464699164",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "time_of_day_0",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_3079869104549289",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "time_of_day_13",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_4334039520472288",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "wall_clock_+8h",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_3191253622062504",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "disposition_100",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_0725812034215778",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "bounty_5000",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_7593802984338254",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "weather_storm",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_0541511946357786",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      },
+      {
+        "name": "seed_9",
+        "damage": 80,
+        "applied": 1,
+        "refused": null,
+        "det_violations": 0,
+        "rng_draws_delta": null,
+        "frames": {
+          "f": 24,
+          "kind": "cast_start",
+          "spell": "custom_1_critf_0_0766552058048546",
+          "class": "LIGHT",
+          "focus_spent": 10,
+          "stamina_spent": 16,
+          "focus_after": 78,
+          "tc_frame": 16
+        },
+        "player_state": "IDLE"
+      }
+    ],
+    "perturbation_damage_set": [
+      80
+    ]
+  },
+  "I": {
+    "duration": [
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "duration_s": 0,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 36
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "duration_s": 1,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 36
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "duration_s": 5,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 180
+      },
+      {
+        "effect": "fire_damage",
+        "magnitude": 20,
+        "duration_s": 30,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 1080
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "duration_s": 0,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 34
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "duration_s": 1,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 34
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "duration_s": 5,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 170
+      },
+      {
+        "effect": "frost_damage",
+        "magnitude": 20,
+        "duration_s": 30,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 1020
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "duration_s": 0,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 24
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "duration_s": 1,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 24
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "duration_s": 5,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 120
+      },
+      {
+        "effect": "poison_damage",
+        "magnitude": 20,
+        "duration_s": 30,
+        "applied": 1,
+        "refused": null,
+        "hp_before": 412,
+        "hp_after": 412,
+        "total_damage": 0,
+        "lease_rows_left": 0,
+        "morrowind_per_second_total": 720
+      }
+    ],
+    "allegiance": [
+      {
+        "mode": "control",
+        "summon_eid": null,
+        "foe_hp": [
+          412,
+          412
+        ],
+        "foe_damage_taken": 0,
+        "summon_hp": [
+          null,
+          null
+        ],
+        "summon_damage_taken": null,
+        "player_hp": [
+          300,
+          300
+        ],
+        "player_damage_taken": 0,
+        "foe_state": "RUSH",
+        "summon_state": null,
+        "foe_dist_m": 5436.89,
+        "summon_dist_m": null
+      },
+      {
+        "mode": "left_alone",
+        "summon_eid": "e0",
+        "foe_hp": [
+          412,
+          412
+        ],
+        "foe_damage_taken": 0,
+        "summon_hp": [
+          866,
+          866
+        ],
+        "summon_damage_taken": 0,
+        "player_hp": [
+          300,
+          300
+        ],
+        "player_damage_taken": 0,
+        "foe_state": "LEASH_RETURN",
+        "summon_state": "IDLE",
+        "foe_dist_m": 5435.67,
+        "summon_dist_m": 5462.12
+      },
+      {
+        "mode": "aggroed",
+        "summon_eid": "e0",
+        "foe_hp": [
+          412,
+          412
+        ],
+        "foe_damage_taken": 0,
+        "summon_hp": [
+          866,
+          866
+        ],
+        "summon_damage_taken": 0,
+        "player_hp": [
+          300,
+          300
+        ],
+        "player_damage_taken": 0,
+        "foe_state": "LEASH_RETURN",
+        "summon_state": "LEASH_RETURN",
+        "foe_dist_m": 5462.58,
+        "summon_dist_m": 5445.14
+      }
+    ],
+    "drift": [
+      {
+        "label": "calm_beast_mag90_dur30",
+        "made": true,
+        "refused": null,
+        "focus_max": 88,
+        "event_kinds": [],
+        "applied": 0,
+        "pos_series": [
+          {
+            "f": 100,
+            "pos": [
+              -0.02,
+              0,
+              -0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 200,
+            "pos": [
+              -0.02,
+              0,
+              -0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 300,
+            "pos": [
+              -0.02,
+              0,
+              -0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 400,
+            "pos": [
+              -0.07,
+              0,
+              -0.29
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 500,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 600,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 700,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "DEATH"
+          },
+          {
+            "f": 800,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "DEATH"
+          },
+          {
+            "f": 900,
+            "pos": [
+              3784.57,
+              0,
+              3941.5
+            ],
+            "state": "IDLE"
+          }
+        ]
+      },
+      {
+        "label": "calm_beast_mag1_dur30",
+        "made": true,
+        "refused": null,
+        "focus_max": 88,
+        "event_kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "fight_ended",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "applied": 1,
+        "pos_series": [
+          {
+            "f": 100,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 200,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 300,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 400,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 500,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 600,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 700,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 800,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 900,
+            "pos": [
+              0.01,
+              0,
+              0.15
+            ],
+            "state": "IDLE"
+          }
+        ]
+      },
+      {
+        "label": "no_spell_attuned",
+        "made": false,
+        "refused": "'bind_lesser' does not accept range 'target' (accepts self)",
+        "quote_focus_cost": null,
+        "focus_max": 88,
+        "event_kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "applied": 1,
+        "pos_series": [
+          {
+            "f": 100,
+            "pos": [
+              -0.02,
+              0,
+              -0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 200,
+            "pos": [
+              -0.02,
+              0,
+              -0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 300,
+            "pos": [
+              -0.02,
+              0,
+              -0.15
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 400,
+            "pos": [
+              -0.07,
+              0,
+              -0.29
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 500,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 600,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "IDLE"
+          },
+          {
+            "f": 700,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "DEATH"
+          },
+          {
+            "f": 800,
+            "pos": [
+              -0.09,
+              0,
+              -0.44
+            ],
+            "state": "DEATH"
+          },
+          {
+            "f": 900,
+            "pos": [
+              3784.57,
+              0,
+              3941.5
+            ],
+            "state": "IDLE"
+          }
+        ]
+      }
+    ]
+  }
+}

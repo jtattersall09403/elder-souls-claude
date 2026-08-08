@@ -2,9 +2,34 @@
   "task_id": "W1-CHARTFONT",
   "status": "in_progress",
   "started_at": "2026-08-08",
-  "summary": "Shared chart/figure glyph table has a width/stride mismatch causing a mid-string deletion that shears every row below it. Present in nine chart tools. Fix once in the shared module, add a self-test, enumerate damage in docs/shots and reports.",
-  "next_step": "Read spec section G of corpus/90-verdicts/wave1/W1-READABLES-r2.md; locate shared glyph table.",
-  "files_touched": ["orchestration/status/W1-CHARTFONT.json"],
-  "files_claimed": ["reports/blog-feed.jsonl"],
+  "summary": "The shared chart glyph table is a 5x5 (25-char) bitmap authored at 23 chars, indexed with stride 5. Two characters short = two mid-string deletions = every row below each cut sheared one pixel left. Fixed once in a new shared module tools/lib/chart-font.mjs, authored as validated 5-char rows so the defect class cannot recur silently.",
+  "next_step": "Wire the seven editable chart tools to the shared module; hand off the two owned by live pieces; enumerate damage; regenerate BOOK/POOK figure; delete-the-fix.",
+  "the_defect": {
+    "where": "a copy-pasted FONT/GLYPH literal in each chart tool",
+    "mechanism": "glyph strings are 23 characters; text() indexes bits[j * 5 + i]. Width and stride disagree, so each missing character deletes mid-string and shifts every row below it one pixel left. 3-4 of 5 rows wrong per glyph. Not a truncated tail.",
+    "fix": "tools/lib/chart-font.mjs — glyphs authored as five explicit 5-character rows, compiled at load, compile() throws on any row that is not 5 wide or any glyph that is not 5 rows.",
+    "provenance": "35 of 52 glyphs are a provable two-character-deletion restoration of the shipped string; 17 re-authored for legibility. node tools/lib/chart-font.mjs --provenance recomputes the split."
+  },
+  "files_touched": [
+    "orchestration/status/W1-CHARTFONT.json",
+    "tools/lib/chart-font.mjs"
+  ],
+  "files_claimed": [
+    "tools/combat/critic-w1-12-chart.mjs",
+    "tools/economy/critic-souls-r3-chart.mjs",
+    "tools/economy/w1-souls-ledger-chart.mjs",
+    "tools/analysis/w1-12-chart.mjs",
+    "tools/analysis/w1-13-r4-chart.mjs",
+    "tools/analysis/ambience-determinism-chart.mjs",
+    "tools/analysis/ambience-onsets-chart.mjs",
+    "tools/quests/reveal-route-chart.mjs",
+    "reports/blog-feed.jsonl",
+    "reports/w1-chartfont/",
+    "docs/shots/"
+  ],
+  "not_editing_owned_by_live_pieces": {
+    "tools/world/w1-01-r4-crossing-chart.mjs": "W1-01-r4 [partial] — touched+claimed. Fix is in tools/lib/chart-font.mjs; W1-01-r4 should replace its local FONT literal with `import { makeText } from '../lib/chart-font.mjs'` and regenerate its crossing figure.",
+    "tools/analysis/w1-15-r3-chart.mjs": "W1-15-r3 [building] — touched+claimed. Same one-line change; every number on its figure is currently drawn with sheared digits."
+  },
   "notes": []
 }

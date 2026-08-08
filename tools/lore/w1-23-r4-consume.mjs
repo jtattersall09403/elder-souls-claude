@@ -247,7 +247,17 @@ async function runLegs(handle, { farByM = 0 } = {}) {
       } catch (e) { rec.note = `getRenderedText: ${e.message}`; }
     }
     rec.first_line = drawn.split('\n').map((s) => s.trim()).filter(Boolean)[0] || null;
+    rec.drawn_chars = drawn.length;
     rec.perturbation_visible = drawn.includes(PERTURB_MARK) || drawn.includes('PERTURBATION MARKER');
+    // REPORTED RATHER THAN WORKED AROUND: on this build `getRenderedText()` comes back EMPTY for
+    // the book screen — `drawn_chars` is 0 on every leg — so the frame's own strings cannot be read
+    // back for a book. That is the same shape of hole `tools/harness/critic-w1-26-r1b.mjs` was
+    // written to ask about ("is the rendered-text accessor structurally blind to a third text
+    // surface?"), and it is not this piece's to fix. The perturbation is therefore judged on the
+    // SHIPPED PAGINATOR instead: `ui/system.js:1054` spreads `bookPagination(bk.text, S)` into
+    // `getUIState().book`, so `pages` and `words_per_page[0]` are computed from the book RECORD by
+    // the same code that lays the page out for the player. If the record changes and those numbers
+    // do not, then nothing in the running game read the record.
     if (ui && ui.mode && ui.mode !== 'world') await handle.h('closeMenu');
     out.push(rec);
   }
@@ -287,7 +297,9 @@ await arm('D-placement-removed', dEntry);
 // ---- verdict -------------------------------------------------------------------------------------
 const A = arms['A-shipped'], B = arms['B-perturbed'], C = arms['C-out-of-reach'], D = arms['D-placement-removed'];
 const openedA = A.filter((r) => r.opened === r.book).length;
-const changedB = B.filter((r, i) => r.opened === r.book && r.perturbation_visible && !A[i].perturbation_visible).length;
+const changedB = B.filter((r, i) => r.opened === r.book
+  && (r.perturbation_visible
+    || (r.words_on_page_1 != null && A[i].words_on_page_1 != null && r.words_on_page_1 !== A[i].words_on_page_1))).length;
 const shutC = C.filter((r) => !r.opened).length;
 const redD = D.filter((r) => !r.opened).length;
 const propGoneD = D.filter((r) => !r.prop).length;
@@ -310,7 +322,8 @@ for (const [tag, rows] of Object.entries(arms)) {
   for (const r of rows) {
     console.log(`  ${r.room.padEnd(22)} prop:${r.prop ? 'yes' : 'NO '}  stood ${r.stood_m ?? '-'} m  opened:${r.opened || '(nothing)'}  `
       + `perturbation_visible:${r.perturbation_visible ? 'YES' : 'no'}${r.note ? `  [${r.note}]` : ''}`);
-    if (r.first_line) console.log(`      first line: ${r.first_line.slice(0, 96)}`);
+    if (r.pages != null) console.log(`      book screen: ${r.pages} page(s), ${r.words_on_page_1} words on page 1`
+      + `, rendered-text accessor returned ${r.drawn_chars ?? 0} chars`);
   }
 }
 console.log(`\nA opened the right book on ${openedA}/${LEGS.length} legs`);

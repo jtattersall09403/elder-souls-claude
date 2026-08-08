@@ -47,7 +47,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.resolve('reports/critic-w1-14-r3');
 ensureDir(outDir);
-const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
 const handle = await launchGame(args);
 let report;
@@ -669,6 +669,142 @@ try {
       out.I = I;
     }
 
+    // =================================================================== PART J
+    // Two decisive questions the earlier parts raised and could not settle.
+    if (PARTS.includes('J')) {
+      const J = {};
+      // J1 — WHY DOES A FIRE BOLT DO NOTHING? Part H measured damage_health at `target` range
+      // doing 44 to a stationary body; part I measured fire/frost/poison at the SAME range, the
+      // SAME arena and the SAME class doing 0, with `effect_apply` firing in every row. The
+      // bridge's damage branch is skipped when `target` is null, and `Math.max(1, ...)` means a
+      // fully-warded hit would still take 1 hp — so a flat 0 says the body was never the target.
+      // Read the spell_hit event itself rather than inferring from hp.
+      const boltRun = (effect, magnitude, range) => {
+        baseArena();
+        const e0 = H.spawn('inf_trash', 0, 4.0);
+        H.lockOn(e0);
+        H.stepFrames(20);
+        const hp0 = r2(bodyById(e0).hp);
+        const c = castSpell({ class: 'LIGHT', range, effects: [{ effect, magnitude, duration_s: 0, area_r_m: range === 'area_at_range' ? 6 : 0 }] },
+          `critJ_${effect}_${range}`, 300);
+        const hits = (c.events || []).filter((x) => x.kind === 'spell_hit')
+          .map((x) => ({ target: x.target, dmg: x.dmg, kind: x.kind_of || x.contact_kind || null, damage_by_kind: x.damage_by_kind, hit_world_object: x.hit_world_object, damage_effects: x.damage_effects }));
+        const applies = (c.events || []).filter((x) => x.kind === 'effect_apply')
+          .map((x) => ({ effect: x.effect, target: x.target, magnitude: x.magnitude, changed: x.changed, consumer: x.consumer, is_damage_effect: x.is_damage_effect }));
+        const b1 = bodyById(e0);
+        return { effect, magnitude, range, kinds: c.kinds, hp: [hp0, b1 ? r2(b1.hp) : null], damage: b1 ? r2(hp0 - b1.hp) : null,
+          spell_hits: hits, applies };
+      };
+      J.bolts = [];
+      for (const e of ['damage_health', 'fire_damage', 'frost_damage', 'poison_damage', 'shock_damage']) {
+        J.bolts.push(boltRun(e, 20, 'target'));
+      }
+      J.bolts.push(boltRun('fire_damage', 20, 'area_at_range'));
+      J.bolts.push(boltRun('fire_damage', 20, 'touch'));
+
+      // J2 — DOES THE SUMMON FIX MUTATE THE ARCHETYPE? `combat/enemy.js` buildEnemyMoves sets
+      // `out._weapon = weapon` — the statblock's OWN object, not a copy (the copy in
+      // `combat/moves.js` is the PLAYER's roster path). `bindHandler` writes
+      // `body.moves._weapon.attack_rating *= power` in place. If that is the shared object, the
+      // scaling is cumulative and permanent for every body of that archetype in the session,
+      // summoned or not. Five identical casts, then an ORDINARY spawn of the same archetype.
+      const mutRun = (effect, archetype, magnitude, n) => {
+        baseArena();
+        const series = [];
+        for (let i = 0; i < n; i++) {
+          const c = castSpell({ class: 'LIGHT', range: 'self',
+            effects: [{ effect, magnitude, duration_s: 90, area_r_m: 0 }] }, `critJ_mut_${effect}_${i}`, 40);
+          const w = H.getMagicWorld();
+          const s = w.summons[w.summons.length - 1] || null;
+          series.push({ cast: i + 1, refused: c.refused, power: s ? s.power : null, hp: s ? s.hp : null, attack_rating: s ? s.attack_rating : null });
+        }
+        // An ORDINARY body of the same archetype, spawned by the engine with no magic involved.
+        const plain = H.spawn(archetype, 6, 6);
+        const pb = bodyById(plain);
+        return { effect, archetype, magnitude, casts: series,
+          plain_spawn_attack_rating: pb && pb.attack_rating !== undefined ? pb.attack_rating : null,
+          plain_spawn_hp_max: pb ? r2(pb.hp_max) : null,
+          statblock_attack_rating: (D.enemies && D.enemies[archetype] && D.enemies[archetype].weapon) ? D.enemies[archetype].weapon.attack_rating : null };
+      };
+      J.archetype_mutation = [
+        mutRun('bind_lesser', 'drowned_lesser', 1, 5),
+        mutRun('bind_lesser', 'drowned_lesser', 90, 5),
+      ];
+      // And the same question read straight off the engine's own data object, which is the only
+      // place a permanent mutation would be visible after the bodies are gone.
+      J.engine_statblock_after = (() => {
+        try {
+          const d = H.getMagicData();
+          return { note: 'read via a fresh spawn above; engine.data.enemies is not on the harness surface', magic_data_keys: Object.keys(d) };
+        } catch (e) { return { error: String(e && e.message) }; }
+      })();
+      out.J = J;
+    }
+
+    // =================================================================== PART K
+    // Part I's duration rows all read `applied 1, damage 0` and part J proved the same bolts do
+    // 27-44 damage over a 300-frame window. The difference is the window: I gave the body
+    // 2100 f@60 to stand there, and an out-of-combat body regenerates. So the duration question
+    // has to be asked inside a window short enough that regeneration cannot answer it, with the
+    // hp curve reported rather than just its endpoints — a per-second tick would be VISIBLE as a
+    // staircase and an instantaneous hit is one step.
+    if (PARTS.includes('K')) {
+      const K = {};
+      const durSeries = (effect, magnitude, dur) => {
+        baseArena();
+        const e0 = H.spawn('inf_trash', 0, 4.0);
+        H.lockOn(e0);
+        H.stepFrames(20);
+        const hp0 = r2(bodyById(e0).hp);
+        const mk = H.makeSpell({ class: 'LIGHT', range: 'target',
+          effects: [{ effect, magnitude, duration_s: dur, area_r_m: 0 }] }, `critK_${effect}_${dur}`);
+        if (mk.refused) return { effect, duration_s: dur, refused: mk.reason || mk.gate };
+        H.setAttuned([mk.spell.id]);
+        H.stepFrames(2); H.magicEventsDrain();
+        H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+        const series = [];
+        for (let i = 0; i < 30; i++) { H.stepFrames(20); const b = bodyById(e0); series.push(b ? r2(b.hp) : null); }
+        const ev = H.magicEventsDrain();
+        const b1 = bodyById(e0);
+        const st = H.getMagicState();
+        return { effect, magnitude, duration_s: dur, refused: null,
+          hp_start: hp0, hp_series_every_20f: series, hp_min: Math.min(...series.filter((v) => v !== null)),
+          damage_at_trough: r2(hp0 - Math.min(...series.filter((v) => v !== null))),
+          hp_at_600f: b1 ? r2(b1.hp) : null,
+          applies: ev.filter((x) => x.kind === 'effect_apply').length,
+          lease_rows: st.effects_active ? st.effects_active.map((a) => ({ effect: a.effect, remaining_f: a.remaining_f, consumer_leased: a.consumer_leased })) : null };
+      };
+      K.duration = [];
+      for (const d of [0, 5, 30]) K.duration.push(durSeries('fire_damage', 20, d));
+      K.duration.push(durSeries('restore_health', 20, 0));
+      K.duration.push(durSeries('restore_health', 20, 30));
+
+      // K2 — IDENTICAL CASTS, the check the builder's AR-1 arm made on hp_max only. Focus is
+      // topped up between casts so no cast can be refused, and `exclusive` is respected by
+      // reading the newest summon record by eid rather than by array position.
+      baseArena();
+      const mk2 = H.makeSpell({ class: 'LIGHT', range: 'self',
+        effects: [{ effect: 'bind_lesser', magnitude: 40, duration_s: 90, area_r_m: 0 }] }, 'critK_identical');
+      H.setAttuned([mk2.spell.id]);
+      const seen = new Set();
+      const casts = [];
+      for (let i = 0; i < 6; i++) {
+        H.hearthRest();
+        H.stepFrames(2); H.magicEventsDrain();
+        H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+        H.stepFrames(90);
+        const w = H.getMagicWorld();
+        const fresh = w.summons.filter((x) => !seen.has(x.eid));
+        for (const f of fresh) seen.add(f.eid);
+        const s = fresh[fresh.length - 1] || null;
+        casts.push({ cast: i + 1, eid: s ? s.eid : null, power: s ? s.power : null, hp: s ? s.hp : null, attack_rating: s ? s.attack_rating : null });
+      }
+      K.identical_casts = { spell: mk2.spell ? mk2.spell.id : null, casts,
+        distinct_hp: [...new Set(casts.map((c) => c.hp))],
+        distinct_attack_rating: [...new Set(casts.map((c) => c.attack_rating))] };
+      out.K = K;
+    }
+
     return out;
   }, { PARTS: parts });
 } finally {
@@ -712,5 +848,13 @@ if (report.I) {
   for (const r of report.I.duration) log(`I1 ${r.effect} dur ${r.duration_s}s -> applied ${r.applied}, total damage ${r.total_damage} (Morrowind per-second total ${r.morrowind_per_second_total})`);
   for (const a of report.I.allegiance) log(`I2 ${a.mode}: foe took ${a.foe_damage_taken}, summon took ${a.summon_damage_taken}, player took ${a.player_damage_taken}`);
   for (const d of report.I.drift) log(`I3 ${d.label}: made=${d.made} applied=${d.applied} kinds=${JSON.stringify(d.event_kinds)} final pos ${JSON.stringify(d.pos_series[d.pos_series.length - 1])}`);
+}
+if (report.J) {
+  for (const b of report.J.bolts) log(`J1 ${b.effect} @${b.range}: damage ${b.damage}; spell_hit ${JSON.stringify(b.spell_hits)}`);
+  for (const m of report.J.archetype_mutation) log(`J2 ${m.effect} mag ${m.magnitude}: attack_rating series ${JSON.stringify(m.casts.map((c) => c.attack_rating))}; hp series ${JSON.stringify(m.casts.map((c) => c.hp))}`);
+}
+if (report.K) {
+  for (const d of report.K.duration) log(`K1 ${d.effect} dur ${d.duration_s}s -> applies ${d.applies}, trough damage ${d.damage_at_trough}, hp at 600f ${d.hp_at_600f}, series ${JSON.stringify(d.hp_series_every_20f)}`);
+  log(`K2 identical casts: attack_rating ${JSON.stringify(report.K.identical_casts.casts.map((c) => c.attack_rating))}, hp ${JSON.stringify(report.K.identical_casts.casts.map((c) => c.hp))}`);
 }
 console.log(p);

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `770ca73`: 607 tools, 153 reference
-items, 46 pieces in flight.
+so it cannot drift. Generated at `e00e6fe`: 611 tools, 153 reference
+items, 47 pieces in flight.
 
-Its purpose is to stop 46+ concurrent agents each paying separately to discover the
+Its purpose is to stop 47+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 28
+### `tools/` — 29
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -74,6 +74,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gen-index.mjs` — regenerate orchestration/INDEX.md, the one page an agent reads to orient.
 - `tools/orchestrate.mjs` — Dispatch registry + resume planner.
 - `tools/ownership.mjs` — the file-ownership registry: who is touching what, right now.
+- `tools/play.mjs` — serve the game for a person, and say so in plain words.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
@@ -471,10 +472,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/state-diff.mjs` — RI-JRN05's round-trip instrument, named by the item (§ "Instruments", line 213) and absent until now: the W1-00 round-2 critic verified its absence.
 - `tools/journey/world-runs-gate.mjs` — one implementation of "is the simulation actually advancing?", used by every journey rather than by one.
 
-### `tools/lib/` — 9
+### `tools/lib/` — 10
 
 - `tools/lib/absence.mjs` — the third thing TOOL-LOOP rule 1 names, and the one this project keeps skipping.
 - `tools/lib/browser.mjs` — Boots the game in headless Chromium and hands back a live handle to window.__HARNESS.
+- `tools/lib/chart-font.mjs` — THE shared 5x5 bitmap font for this project's chart/figure tools.
 - `tools/lib/cli.mjs` — Shared CLI helpers for the Elder Souls measurement harness.
 - `tools/lib/combat-node.mjs` — build a CombatSystem in bare Node, from the same modules the game runs.
 - `tools/lib/gamedata.mjs` — load the shipped game/data/** trees the way game/src/engine.js assembles them, so a static tool and the running game cannot drift.
@@ -483,7 +485,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 16
+### `tools/lore/` — 18
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -497,9 +499,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/lor04-validate.mjs` — **no header comment**
+- `tools/lore/mk-short-measures.mjs` — **no header comment**
 - `tools/lore/name-rosters.mjs` — **no header comment**
 - `tools/lore/place-library.mjs` — **no header comment**
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
+- `tools/lore/w1-23-r4-chart.mjs` — THE PICTURE FOR W1-23 ROUND 4.
 - `tools/lore/w1-23-r4-consume.mjs` — CONSUMPTION for the library half (RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3).
 
 ### `tools/metrics/` — 6
@@ -745,7 +749,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **134 tools have no header comment**, so nobody can tell what they do without
+> **135 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -919,15 +923,16 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
+| `W1-CHARTFONT` | ? | Wire the seven editable chart tools to the shared module; hand off the two owned by live p | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` |
+| `W1-26-r3` | ? | read INDEX/NEXT-DISPATCH/verdict, run ownership, run the three journey probes RED first | — |
 | `W1-ROAD-JOIN` | ? | body walk on THE CROSSING (browser), then the soulrest-blackrose leg, then shot + blog + c | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-16-r3` | measuring | live stepping run: critic-w1-16-live.mjs --probe parallel,oversprint,separation,spell + de | `orchestration/status/W1-16-r3.json` `game/src/engine.js` `game/src/combat/player.js` `game/src/harness/api.js` `game/data/items/carried.json` `tools/harness/w1-16-r3-reach.mjs` |
 | `W1-SAVE-AI` | fix_landed | extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the  | `orchestration/status/W1-SAVE-AI.json` `game/src/save/fight.js` `game/src/combat/ai.js` `game/src/combat/enemy.js` `tools/check-save-shape.mjs` `tools/check-data.mjs` |
 | `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |
-| `W1-CHARTFONT` | ? | Read spec section G of corpus/90-verdicts/wave1/W1-READABLES-r2.md; locate shared glyph ta | `orchestration/status/W1-CHARTFONT.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `critic-w1-14-r3` | running | finish parts H/C/D, then A and F; write verdict md+json; blog line; commit | `orchestration/status/critic-w1-14-r3.json` `tools/harness/critic-w1-14-r3.mjs` `reports/critic-w1-14-r3/` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
-| `W1-17-r2` | building | res consumption arm; voice-metrics second_regex; orphans bucket; S37 invariance tool; blog | `orchestration/status/W1-17-r2.json` `tools/dialogue/answer-census.mjs` `tools/dialogue/critic-reach.mjs` `tools/dialogue/rehome-actors.mjs` `tools/dialogue/w1-17-r2-deletefix.mjs` `game/data/npcs/pop-trades.json` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
 | `W1-23-r4` | building | part 2 — make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement mach | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `game/data/npcs/` `game/data/world/property/` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |

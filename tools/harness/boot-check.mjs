@@ -76,9 +76,70 @@ try {
     if (drew && typeof drew === 'object') { drawError = drew.error; drew = false; }
   }
 
+  // A game that constructs, answers and draws can still be broken on the SECOND frame after a
+  // load, and this check used to say PASS through that too. `save/fight.js` serialised the live
+  // `SoulsAI` as a plain object; the next fixed step threw `this.ai.step is not a function` and
+  // killed every stepping probe in the project, for a wave, while every boot check on the tree
+  // stayed green — because boot does not step, and nothing here had ever loaded a save.
+  //
+  // So: put one hostile on the floor, save, load, and step. That is the smallest motion that
+  // exercises save -> load -> step, which is the seam a whole class of defect hides behind.
+  //
+  // BUDGET, measured and then trimmed rather than assumed — every agent runs this, so a second
+  // here is a second times fourteen. `saveRoundTrip()` cost 3.11 s, because on top of the load
+  // it takes two `getStateHash()` calls (a full `saveState()` each) and a `stateDiff`, none of
+  // which this arm needs. `saveState()` -> structural clone -> `loadState()` is the same seam
+  // for ~1.1 s: spawn 1 ms, first step 139 ms (the AI is built there), saveState 17 ms, clone
+  // 18 ms, loadState ~900 ms, final step 15 ms. The 900 ms is `loadState()` rebuilding the
+  // world, which is the thing under test and is not reducible.
+  //
+  // It claims NOTHING it cannot know. If the verbs are absent, or no live AI ever came up, the
+  // result is null and the gate below ignores it: a vacuous arm reported as a pass is how this
+  // project has shipped three inert controls.
+  let stepped = null, stepError = null, stepMs = null;
+  if (alive && drew !== false) {
+    const r = await page.evaluate(async () => {
+      const H = window.__HARNESS;
+      const t0 = performance.now();
+      try {
+        for (const v of ['stepFrames', 'spawn', 'saveState', 'loadState', 'setRenderRate']) {
+          if (typeof H[v] !== 'function') return { skip: `no ${v}()` };
+        }
+        H.setRenderRate(0);
+        const p = H.getCombatState && H.getCombatState().player;
+        if (!p) return { skip: 'no combat state' };
+        // `guard_legion` is in ai.json's override table, so it resolves to `souls` and really
+        // does build a SoulsAI. A body that resolves to `none` would make this arm vacuous.
+        const eid = H.spawn('guard_legion', p.pos[0] + 4, p.pos[2] + 1, {});
+        if (typeof H.aggro === 'function') { try { H.aggro(eid); } catch { /* not fatal */ } }
+        H.stepFrames(1);                       // the AI is built on the controller's first step
+        const liveAI = () => {
+          const c = window.__ENGINE && window.__ENGINE.combat;
+          if (!c || !c.enemies) return null;
+          let n = 0;
+          for (const [, ctl] of c.enemies) if (ctl.ai && typeof ctl.ai.step === 'function') n++;
+          return n;
+        };
+        const before = liveAI();
+        if (!before) return { skip: 'no live AI on the floor — nothing for this arm to lose' };
+        H.loadState(JSON.parse(JSON.stringify(H.saveState())));   // the round trip, cheaply
+        const after = liveAI();
+        H.stepFrames(2);                       // <- the frame the defect lived on
+        return { ok: after >= before, ai_before: before, ai_after: after, ms: performance.now() - t0 };
+      } catch (e) { return { error: String(e && e.message || e).slice(0, 300), ms: performance.now() - t0 }; }
+    }).catch((e) => ({ error: String(e).slice(0, 300) }));
+    stepMs = r && r.ms != null ? Math.round(r.ms) : null;
+    if (r && r.skip) stepped = null;           // cannot know: claim nothing
+    else if (r && r.error) { stepped = false; stepError = r.error; }
+    else if (r && r.ok === false) { stepped = false; stepError = `a live AI was lost across the round trip: ${r.ai_before} before, ${r.ai_after} after`; }
+    else if (r && r.ok === true) stepped = true;
+  }
+
   const report = {
-    ok: !!alive && drew !== false, harness_present: up, harness_responsive: !!alive,
-    rendered_a_frame: drew, render_error: drawError, errors, timeout_ms: timeout,
+    ok: !!alive && drew !== false && stepped !== false, harness_present: up, harness_responsive: !!alive,
+    rendered_a_frame: drew, render_error: drawError,
+    stepped_after_a_load: stepped, step_error: stepError, step_ms: stepMs,
+    errors, timeout_ms: timeout,
   };
   if (args.out) writeJson(args.out, report);
 
@@ -97,6 +158,28 @@ try {
     if (drawError) log(`  ${drawError}`);
     for (const e of errors.slice(0, 8)) log(`  [${e.kind}] ${e.text}`);
     if (STRICT_RENDER) {
+      console.log(JSON.stringify(report));
+      await handle.close().catch(() => { });
+      process.exit(EXIT?.FAIL ?? 12);
+    }
+  }
+
+  // ARMED, and on the same terms as the render assertion above (RULES 13).
+  //   * silent on the repaired tree: `stepped_after_a_load: true`, ~0.6 s.
+  //   * able to fail: run against the pre-fix source, `stepFrames(2)` after the round trip
+  //     throws `this.ai.step is not a function` and this arm reports it. Both the throw and the
+  //     quieter variant are caught — an AI restored as `null` does not throw at all, so the arm
+  //     counts live AIs before and after rather than only watching for an exception.
+  //   * quiet where it cannot know: no verbs, no combat state or no live AI on the floor and
+  //     `stepped_after_a_load` is null and nothing is claimed either way.
+  const STRICT_STEP = true;
+  if (alive && stepped === false) {
+    log('[harness] boot-check: the engine drew a frame and then died on the step after a load.');
+    if (stepError) log(`  ${stepError}`);
+    log('  This is the shape that stays invisible: boot passes, the first frame passes, and every');
+    log('  stepping probe on the box dies with an error about its own caller. See tools/check-save-shape.mjs.');
+    for (const e of errors.slice(0, 8)) log(`  [${e.kind}] ${e.text}`);
+    if (STRICT_STEP) {
       console.log(JSON.stringify(report));
       await handle.close().catch(() => { });
       process.exit(EXIT?.FAIL ?? 12);

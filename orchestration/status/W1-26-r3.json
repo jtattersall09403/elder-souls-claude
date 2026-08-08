@@ -1,0 +1,15 @@
+{
+  "task_id": "W1-26-r3",
+  "role": "builder",
+  "status": "in_progress",
+  "started": "2026-08-08",
+  "spec": "corpus/90-verdicts/wave1/W1-26-r2.md",
+  "goal": "Three defects blocking the owner playing the game: (1) creation cannot complete (census never observed on play path + engine error rendered as scribe dialogue), (2) input/real.js swallows 14/26 letters before the text field, (3) RI-JRN09 HF1 DTR 0.000 at hold.out (name-reply drawn a room later, wrong speaker).",
+  "next_step": "read INDEX/NEXT-DISPATCH/verdict, run ownership, run the three journey probes RED first",
+  "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 instances / load 5.10 per core). Doing non-browser work first.",
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/W1-26-r3.json"
+  ],
+  "notes": []
+}

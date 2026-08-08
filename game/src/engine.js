@@ -1017,6 +1017,16 @@ export class Engine {
     this._equipLoadEngaged = false;
     this._equipLoadBase = null;
     this.combat = new CombatSystem(this._combatData());
+    // W1-16 round 3 — RE-PUBLISH THE `oversprint` DELETE-THE-FIX ARM ACROSS THE SCENARIO BOUNDARY.
+    //
+    // This line exists because the control was INERT without it and I watched it go inert
+    // (RULES #6, the failure W1-04's wall-collision arm shipped). `combat/player.js` holds the
+    // combat DATA object and the body and no reference to the engine, so the arm is carried on
+    // `combat.d`; `_combatData()` builds a FRESH object literal on every `_buildCombat`, and the
+    // probe loads a scenario inside each arm, so the flag was dropped between being set and being
+    // read and both arms measured the fixed code. Byte-identical metres in both orders is what an
+    // inert control looks like from the outside, and it looks exactly like a clean negative.
+    this.combat.d.__w116_oversprint = !!(this._w116Break && this._w116Break.oversprint);
     // W1-12. Two handles the enemy AI needs and may not construct for itself.
     //
     // `rng` is THE global instance from core/rng.js — "nothing in sim/ may construct its own",
