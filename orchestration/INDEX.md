@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `97d6eb0`: 704 tools, 153 reference
-items, 57 pieces in flight.
+so it cannot drift. Generated at `e7e07f9`: 704 tools, 153 reference
+items, 58 pieces in flight.
 
-Its purpose is to stop 57+ concurrent agents each paying separately to discover the
+Its purpose is to stop 58+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1022,6 +1022,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-26-r4` | starting | read RULES/INDEX/NEXT-DISPATCH/verdict, locate Engine.bodyRace, P9, m4_clause1 | `orchestration/status/W1-26-r4.json` |
 | `critic-w1-26-r3` | done | none — verdict written. A second critic should reproduce tools/harness/jrn09-exchange.mjs; | `orchestration/status/critic-w1-26-r3.json` `corpus/90-verdicts/wave1/W1-26-r3.md` `corpus/90-verdicts/wave1/W1-26-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-26-r3/` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` |
 | `W1-CROSSING-r2` | in-progress | Both-ways sweep running in one browser (background). Then: delete-the-fix arm (--roads pre | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/build-roads.mjs` `game/data/world/roads.json` `game/data/world/signposts.json` |
 | `critic-w1-04-r5` | running | read RULES, INDEX, ARBITRATION §3, W1-04-r4.md verdict, W1-04-r5.json builder status | — |

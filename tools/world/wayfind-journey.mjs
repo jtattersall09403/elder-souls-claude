@@ -58,10 +58,13 @@ const PLAN_ONLY = argv.includes('--plan-only');
 const OUT = arg('--out', 'reports/w1-05-journey.json');
 
 // ---------------------------------------------------------------- the world, minus the answers
-const roadsDoc = rd('game/data/world/roads.json');
+// `--roads <file>` exists so an ablation can be re-run against a DIFFERENT road network without
+// touching the shipped one — W1-CROSSING r2 needed it to answer whether its own self-clearance
+// splice was what made this piece's signpost ablation stop biting. Defaults to the shipped file.
+const roadsDoc = rd(String((process.argv.includes('--roads') ? process.argv[process.argv.indexOf('--roads') + 1] : null) || 'game/data/world/roads.json'));
 const field = new WorldField(rd('game/data/world/terrain.json'), rd('game/data/world/regions.json'), rd('game/data/world/water.json'));
 field.setRoads(roadsDoc);
-field.setSignposts(rd('game/data/world/signposts.json'));
+field.setSignposts(rd(String((process.argv.includes('--signposts') ? process.argv[process.argv.indexOf('--signposts') + 1] : null) || 'game/data/world/signposts.json')));
 
 const SETTLEMENTS = {};
 for (const id of ['archon', 'blackrose', 'gideon', 'helstrom', 'lilmoth', 'soulrest', 'stormhold', 'thorn']) {

@@ -29,8 +29,15 @@ built on it holding.
 
 ## What is broken today, plainly
 
-**This is not finished, but you can now make a character and walk out of the room.** Everything
-below is measured and has a verdict behind it; none of it is a guess.
+**A critic has now played this start to finish, and it took about three minutes.** No flags, no
+test hooks: title, New, walk, name yourself, answer the census, get your writ stamped, walk out
+into the world. It typed *Jackdaws-Love-My-Big-Sphinx-Of-Quartz* and got all twenty-six letters
+back. It hesitated once, at the moment the panel closes and nothing tells you to go up the
+companionway — which is the design working, not a bug.
+
+It still failed the piece, and that is not a contradiction: the question "can a person play this"
+and the question "is it any good" are different, and this project scores the second one.
+Everything below is measured and has a verdict behind it; none of it is a guess.
 
 Two things that were broken this morning are fixed: **character creation completes** (the census
 that sets your race is driven from the play path, and a caught error can no longer render as an

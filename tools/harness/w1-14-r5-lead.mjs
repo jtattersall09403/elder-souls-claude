@@ -223,10 +223,17 @@ const RUN = (page, opts) => page.evaluate(async (o) => {
   // f@60 from arriving.
   out.dodge = {};
   for (const dz of [10, 14, 20]) {
-    // LIGHT flies at 16 m/s; the roll goes in at (journey - 20 f).
-    const atF = Math.max(1, Math.round((dz / 16) * 60) - 20);
+    // TIMED OFF THE RELEASE FRAME, NOT OFF THE PRESS. The first version of this arm put the roll
+    // at `(journey - 20)` frames after the BUTTON, and LIGHT has 24 frames of startup — so at 10
+    // and 14 m the roll fired seven frames BEFORE the bolt existed and the arm was measuring a
+    // body that had already stepped aside, not a body dodging. It reported 48 damage on a
+    // "dodged" cell and 0 on an undodged one, which is the shape of a fixture measuring itself.
+    // Release is `startup + 1` (LIGHT startup 24), so the bolt is in the air from PRESS_F + 25.
+    const RELEASE = 25;
+    const journeyF = Math.round((dz / 16) * 60);
+    const atF = RELEASE + Math.max(1, journeyF - 20);   // min_dodge_window_f before it arrives
     out.dodge[`${dz}m`] = {
-      at_frame: atF,
+      at_frame_after_press: atF, release_frame_after_press: RELEASE, journey_f: journeyF,
       no_roll: cell('damage_health', dz, 'strafe_r15', 'LIGHT', null, 'locked'),
       rolled: cell('damage_health', dz, 'strafe_r15', 'LIGHT', { atF, dx: 2.6 }, 'locked'),
       rolled_from_still: cell('damage_health', dz, 'still', 'LIGHT', { atF, dx: 2.6 }, 'locked'),

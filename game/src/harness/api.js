@@ -1688,6 +1688,22 @@ export function installHarness(engine, bootPromise) {
     __breakWaterPlane(on) { return engine.magic.__breakWaterPlane(on === undefined ? true : !!on); },
 
     /**
+     * W1-14 round 5 DELETE-THE-FIX #2b — CASTING WHILE SWIMMING.
+     *
+     * Puts the cast back inside `Traversal.denies('attack')`, so a `light` press with a catalyst
+     * in hand in W5 is swallowed as an attack again. Held separate from `__breakWaterPlane`
+     * because they are TWO GUARDS OVER ONE DEFECT (RULES.md #6's third shape) and deleting
+     * either one alone leaves a swimmer unable to cast — which is the 2x2 the report publishes,
+     * and the reason the floor fix looked inert until this arm existed.
+     */
+    __breakCastInWater(on) {
+      const c = engine.combat && engine.combat.playerCtl;
+      if (!c) throw new Error('__breakCastInWater: no player controller');
+      c._castInWaterDenied = on === undefined ? true : !!on;
+      return !!c._castInWaterDenied;
+    },
+
+    /**
      * W1-14 round 5 DELETE-THE-FIX #3 — THE SPOKEN REFUSAL.
      *
      * The cast refusal goes back to being a field on an event nothing under `ui/` or `render/`

@@ -316,13 +316,39 @@ export class PlayerController {
       // `wd.band === 'W5'`, which quietly dropped R2's second clause — "attacks in W4 for the
       // non-amphibious" — because there was no amphibious flag anywhere for a local copy of the
       // rule to consult. One reader of `denies()` instead of two copies of the rule.
+      // ==========================================================================================
+      // W1-14 ROUND 5 — A CAST IS NOT A SWING, AND THE DEEP-WATER CASE IS THIS LINE.
+      //
+      // The round-4 verdict §9 found that 13 of the 49 named states put the player in deep water,
+      // that `groundInActiveCell` there answers with the SEA BED so a swimmer reads 40 m
+      // "airborne", and that "pressing cast there produces no event on either stream: no
+      // `cast_start`, no `INPUT_DROPPED`, nothing". The floor is fixed one file over
+      // (`MagicSystem._supportY`), and fixing it ALONE changed nothing measurable, which is how
+      // this line was found: `airborne` went false and the press still produced no cast. The
+      // block was never `airborne`. It is here — `wd.attack` is `Traversal.denies('attack')`,
+      // true for everybody in W5, and `light` is caught by it before `_tryCast` is ever reached.
+      //
+      // RI-WLD10 §5 R2 denies ATTACKS while swimming, and the reason it gives is a body: you
+      // cannot swing a weapon while treading water. A spell is a word and a hand, not a swing,
+      // and RI-MAG01 has no swim clause anywhere in it. The precedent is thirty lines below this
+      // one, where the levitation denial list has exactly one hole and that hole is a cast
+      // (`airborne_permits_cast`). This is the same hole in the same shape, and it is as narrow
+      // as that one: it is the CAST predicate — `light`/`heavy` with a catalyst in the right
+      // hand — and not `light` in general, so a sword swing in W5 is denied exactly as before.
+      //
+      // AND THE DENIAL IS SPOKEN. `action_denied_by_water` is a bus event and nothing under
+      // `game/src/ui/` or `game/src/render/` reads it, which is why the press looked silent from
+      // the chair AND from a probe draining the magic stream. Every denial here now goes through
+      // the same `uiToast` channel the cast refusals do.
+      const isCast = (bit === BIT.light || bit === BIT.heavy) && this.magic && this.magic.hasCatalyst;
       const denied = mired
         || (bit === BIT.roll && wd.roll)
         || (bit === BIT.sprint && wd.sprint)
-        || (wd.attack && bit !== BIT.roll);
+        || (wd.attack && bit !== BIT.roll && !(isCast && !this._castInWaterDenied));
       if (denied) {
         const e = emit(frame, 'action_denied_by_water');
         e.button = name; e.band = wd.band || 'W0'; e.mired = !!mired;
+        if (this.magic && this.magic.sayWaterDenial) e.said = this.magic.sayWaterDenial(name, e.band, !!mired);
         // While MIRED the roll press is not a roll, it is a STRUGGLE. `sim/traversal.js` owns the
         // counter (one per 30 f, 25 stamina, three of them break you out); this only reports the
         // press, and it is the ONLY thing in the running build that does.

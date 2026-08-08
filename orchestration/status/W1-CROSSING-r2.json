@@ -4,11 +4,15 @@
   "state": "in-progress",
   "started_at": "2026-08-08T00:00:00Z",
   "summary": "Round 2 on THE CROSSING (r1 FAIL 6/10) + closing W1-05's mandatory reachability proof. The reverse jam is a WORLD defect: the road passes over itself. Fixed in build-roads.mjs with a self-clearance pass.",
-  "next_step": "Install new roads.json, regenerate derived data, then walk every leg BOTH ways in one browser.",
+  "next_step": "Both-ways sweep running in one browser (background). Then: delete-the-fix arm (--roads pre-fix), null/positive consumption arms, the picture, W1-05 reachability proof, survey, blog line, commit.",
   "files_touched": [
     "orchestration/status/W1-CROSSING-r2.json",
     "tools/world/w1-crossing-r2-overpass.mjs",
-    "tools/world/build-roads.mjs"
+    "tools/world/w1-crossing-r2-legs.mjs",
+    "tools/world/build-roads.mjs",
+    "game/data/world/roads.json",
+    "game/data/world/signposts.json",
+    "game/src/engine.js"
   ],
   "files_claimed": [
     "orchestration/status/W1-CROSSING-r2.json",
@@ -34,6 +38,10 @@
   "findings": [
     "R2-F1 (THE CAUSE OF THE REVERSE JAM, measured offline, no browser): the road passes OVER ITSELF. `stormhold-helstrom` segment 126->127 and segment 130->131 CROSS, at (2280.6, 1862.2), with 6.6 m of air between them \u2014 the return limb of a switchback over the outbound limb, and points 129-131 are a declared 17 m viaduct. A deck slab is `half_width + 0.5` = 3.5 m either side of its centreline, so the upper deck is laid across the lower carriageway. `field.heightAt` is a HEIGHTFIELD (one surface per x,z): `_deckY` returns the HIGHEST slab and `_applyRoads` breaks an equal-weight tie in favour of the higher segment \u2014 both deliberate and documented, and neither can represent two carriageways at one coordinate. New census `tools/world/w1-crossing-r2-overpass.mjs`: at commit 2e740f3 exactly ONE offence run in the whole 25 km network, `stormhold-helstrom` 1633-1639 m, the carriageway buried 6.99 m (road_y 83.92, deck_y 90.92). Control arm (every deck_span deleted) = 0, so the census measures slabs and not terrain.",
     "R2-F2 (THE FIX IS IN THE GENERATOR, NOT IN field.js): a scalar heightfield cannot carry an overpass, so the invariant is authored instead \u2014 `build-roads.mjs` gains a `selfClearance()` post-pass: no two non-adjacent stretches of one leg may come within `hw + 0.5 + hw*1.15 + 0.5` (7.45 m at hw=3) of each other; where they do, the excursion between them is spliced out at the point of closest approach. `--no-self-clear` is the delete-the-fix arm. FIFTEEN places in six legs were within reach of themselves; only one of them currently buried a carriageway, the other fourteen were latent.",
-    "R2-F3 (the generator reproduces byte-for-byte, which is what made the diff readable): `build-roads.mjs --out <tmp>` on the untouched tree is BYTE-IDENTICAL to the shipped `game/data/world/roads.json`, so every difference after the change is the change."
+    "R2-F3 (the generator reproduces byte-for-byte, which is what made the diff readable): `build-roads.mjs --out <tmp>` on the untouched tree is BYTE-IDENTICAL to the shipped `game/data/world/roads.json`, so every difference after the change is the change.",
+    "R2-F4 (`walkPath` RECONCILED WITH `_pursue`, and the round-1 verdict's framing needs one correction): the STEERING was never divergent. `walkPath` line 8392 already calls `this._pursue(points, st, o.lookahead_m, o.arrive_m)` \u2014 the same projection-onto-the-path steering `walkRoute` uses, the same function, one implementation. What `walkPath` did NOT have is the TELEPORT EXCLUSION: `dist += step` with no threshold, no `teleports`, no `teleported_m`. \u00a7A3 is right that the verb was unfixed and right that it is the biggest gap; it is the accounting that had not been ported, not the steering. Both are now the same: the `if (step > 1)` branch, the three return fields, plus `arrival_is_clean` \u2014 because `arrived` is answered against the body's position and a respawn moves that too.",
+    "R2-F5 (what the fix cost, and one number went the wrong way \u2014 reported because it did): re-running the round-1 critic's own offline adjudicator `critic-crossing-grade.mjs` against both trees, with its `--self-test` still biting (I1 24.28 -> 89.17 deg on a bent leg): G3-REGAIN 63 -> 54, G4-NO-FALL 488 -> 491. The tool reproduces the critic's published 63/488 EXACTLY when pointed at the pre-fix roads, so the movement is the road and not the instrument. G3 is 14% better; G4 is three places worse.",
+    "R2-F6 (the tautology, replaced, on the NEW tree): `zero slope-gate refusals on any centreline` is still structurally zero \u2014 25,071 of 25,071 centreline samples exempt via `onRoadAt`, 100.0000%. The replacement is the lateral sweep with the STRUCTURE-FREE control column: at 3.45 m 10 refusals of 17,316 gated (worst 58.61 deg) but 0 of 6,726 on legs with no deck_spans (worst 29.21); at 3.5 m 740 of 37,151 (worst 88.31) but 0 of 14,220 structure-free (worst 32.76); refusals on structure-free ground begin at 4 m (4 of 14,414). The 88 deg readings are the slab artefact and are labelled as such rather than published as terrain.",
+    "R2-F7 (--stair-grade 0.60, REFERRED not decided, re-derived on this tree by re-running the generator): deck span 1,714 -> 1,414 m, tallest fill 50.6 -> 32.7 m, trunk network 25,067.2 m in BOTH arms and THE CROSSING 6,728.5 m in BOTH arms (zero length cost), worst road grade atan(max_grade) 24.23 -> 30.96 deg against a 40 deg walkable limit. This is a design question \u2014 is a sustained one-in-six ramp a road \u2014 and a build must not answer it. Referred to RI-WLD01's owner with the numbers."
   ]
 }

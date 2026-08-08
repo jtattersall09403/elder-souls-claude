@@ -13,28 +13,31 @@ known to be broken, and what is simply not built yet — and tell them.
 
 **The gate. All six, each proven by a critic who did not build it:**
 
-1. **It starts.** Clone, one command, a browser window, a character, a world. No harness verbs, no
-   probe, no flags.
-2. **The new-game flow plays as a scene** — was 1.3/10 twice, the lowest score in the project.
-   **The three blocking defects are closed** and each was measured in play mode with no flags and
-   no harness verbs, with every instrument watched red first: `census-newgame` exit 1 → 0,
-   `name-entry` `"Silt-Under-Salt" → "il-Un"` → three arms verbatim, `jrn09-exchange` `DTR(hold.out)`
-   0.000 → 1.000. Creation observes the body the player is standing in rather than a literal
-   (a hardcoded default would have betrayed RI-CHR01 §1 row 2), and a caught throw can no longer
-   render as dialogue — `fault` holds the exception and never enters the model.
+1. **It starts. MET.** `./play.sh --port 8137`, open the URL it prints. No flag, no query string,
+   no harness verb.
 
-   **Orchestrator's own check:** `census-newgame` and `name-entry` reproduce at exit 0 here. The
-   full `opening-play` run reached **6 pass / 1 fail**, and the failure is the probe's page closing
-   under 3.74 sim fps at loadavg 20.9 — contention, not the build. So P7–P10 are the builder's
-   numbers, not independently reproduced, and this item needs **a fresh critic on a quiet box**
-   before it is called met.
+2. **The new-game flow plays as a scene. MET**, and a critic played it rather than probing it:
+   title → `New` → walked 2.67 m with nothing asked of it → `KeyE` → typed
+   `Jackdaws-Love-My-Big-Sphinx-Of-Quartz` and got **all 26 letters back verbatim** → answered
+   **all 11 census nodes on the keyboard** → writ stamped → out into the world walking, sprinting
+   at 1.56× walk, strafing and rolling. **194 s the first time, 308 s on a re-run, 0 page errors.**
+   `opening-play.mjs` also ran to completion on a quiet box: **10 pass / 0 fail**, so P7–P10 are
+   independently verified.
 
-   Two things the round found that are worth keeping: round 2's "pinned on geometry" reading was
-   **wrong** — a body on the frozen coordinate moves in all eight directions to 7 distinct
-   destinations; the walker had met a *stopped world* and its instrument could not tell that from a
-   crate. And closing HF1 turned P9 red honestly, because the newly-drawn line opened *"Go up."* —
-   the exact imperative P9 tests for, which the earlier verdict had excused as costing nothing
-   *because it was never drawn*.
+   Its one hesitation is worth recording verbatim, because it is the design rather than a defect:
+   *"I hesitated at exactly one place: `hold.out`, where the panel closes and nothing says the scene
+   wants you to walk up the companionway — that is the design working, and it is the place to
+   watch."*
+
+   **The piece still FAILS at min-over-axes 0** and that is not a contradiction: the gate asks
+   whether a person can play the opening, and the item asks whether it is any good. Its biggest
+   remaining gap is that `Engine.bodyRace()` ends `rows.some(...) ? id : null`, so a body whose race
+   is not in `races.json` is observed as **`null`, silently**, and the desk refuses eleven nodes
+   later — with round 2's exact sentence behind the authored line. At this round's own base commit
+   the literal in that field was `argonian`, which is not an id here either. **The round fixed the
+   value and left the mechanism.** And `P9`, the check that is supposed to catch signposting,
+   **tests grammar**: a start-anchored imperative regex, so six polite ways of saying "go up the
+   ladder" all pass, and so does the one tutorial line the round-2 verdict named.
 
 3. **The controls are drawn.** W1-08/W1-29 found them "correctly laid out and drawn nowhere". A
    player who cannot see the controls has not been given a game.

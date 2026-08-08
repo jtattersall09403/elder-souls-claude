@@ -52,7 +52,7 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
   // =============================================================================================
   {
     const names = NAMES;
-    const row = (state, broken) => {
+    const row = (state, breakFloor, breakGate) => {
       // TWICE. The round-4 verdict §11 records that `loadState` into a cell carries the PREVIOUS
       // cell's ground for one load, and that its first sweep measured the load order rather than
       // the towns because of it. Every load in this file is doubled for that reason. Thirty
@@ -66,13 +66,16 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
       H.learnSpell(pick); H.setAttuned([pick]);
       H.stepFrames(30);
       // ARMED AFTER THE LOAD, because a load rebuilds the system and would clear it.
-      if (H.__breakWaterPlane) H.__breakWaterPlane(!!broken);
+      if (H.__breakWaterPlane) H.__breakWaterPlane(!!breakFloor);
+      if (H.__breakCastInWater) H.__breakCastInWater(!!breakGate);
+      H.stepFrames(10);   // the teardown needs a frame to act before the state is read
       const m = H.getMagicState();
       const ps = H.getPlayerStats();
       H.magicEventsDrain();
       const pc = H.pressCast(60);
       const evs = H.magicEventsDrain();
       if (H.__breakWaterPlane) H.__breakWaterPlane(false);
+      if (H.__breakCastInWater) H.__breakCastInWater(false);
       return {
         state, pos_y: r3(m.pos_y_m), airborne: !!m.airborne,
         water_band: ps.water_band || null, depth_m: r3(ps.water_depth_m),
@@ -82,12 +85,18 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
         spell: pick,
       };
     };
-    const fixed = [], broken = [];
+    // A 2x2, not a 1x2. There are TWO guards over the deep-water defect — the floor
+    // (`__breakWaterPlane`) and the input gate (`__breakCastInWater`) — and RULES.md #6's third
+    // shape says to say which you have. Deleting the floor alone leaves the swimmer unable to
+    // cast for the OTHER reason, so a 1x2 over the floor reports an inert fix and would be
+    // honestly indistinguishable from one. This is how that was actually found.
+    const fixed = [], broken = [], noFloor = [], noGate = [];
     for (const s of names) {
-      let f = null, b = null;
-      try { f = row(s, false); } catch (e) { f = { state: s, error: String(e && e.message).slice(0, 120) }; }
-      try { b = row(s, true); } catch (e) { b = { state: s, error: String(e && e.message).slice(0, 120) }; }
-      fixed.push(f); broken.push(b);
+      const safe = (a, b2) => { try { return row(s, a, b2); } catch (e) { return { state: s, error: String(e && e.message).slice(0, 120) }; } };
+      fixed.push(safe(false, false));
+      broken.push(safe(true, true));
+      noFloor.push(safe(true, false));
+      noGate.push(safe(false, true));
     }
     // A state is "deep water" if the two arms disagree about the floor — which is the only
     // definition that does not require this probe to re-implement the band test.
@@ -96,16 +105,17 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
     // own signature and it needs no second definition of the swim band inside this probe. A 3 mm
     // settle difference between two separate loads is NOT that, which is why the test is the
     // boolean and not the height.
-    const deep = fixed.filter((f, i) => broken[i] && !f.error && !broken[i].error
-      && broken[i].airborne && !f.airborne);
+    const deep = fixed.filter((f) => f.water_band === 'W5');
     out.water = {
       states_swept: names.length,
       deep_water_states: deep.map((d) => d.state),
       deep_water_count: deep.length,
       fixed_casts_in_deep: deep.filter((d) => d.cast_start > 0).length,
       broken_casts_in_deep: deep.map((d) => broken[fixed.indexOf(d)]).filter((b) => b.cast_start > 0).length,
-      table: deep.map((d) => ({ ...d, broken: broken[fixed.indexOf(d)] })),
-      all_fixed: fixed, all_broken: broken,
+      no_floor_casts_in_deep: deep.map((d) => noFloor[fixed.indexOf(d)]).filter((b) => b.cast_start > 0).length,
+      no_gate_casts_in_deep: deep.map((d) => noGate[fixed.indexOf(d)]).filter((b) => b.cast_start > 0).length,
+      table: deep.map((d) => ({ ...d, broken: broken[fixed.indexOf(d)], no_floor: noFloor[fixed.indexOf(d)], no_gate: noGate[fixed.indexOf(d)] })),
+      all_fixed: fixed, all_broken: broken, all_no_floor: noFloor, all_no_gate: noGate,
     };
   }
 
@@ -157,13 +167,13 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
   // =============================================================================================
   {
     const arm = (broken) => {
-      H.setSeed(5); H.loadState('arena_flat'); H.setRenderRate(0); H.resetMagicWorld();
+      H.setSeed(5); H.loadState('arena_flat'); H.resetMagicWorld();
       for (let i = 0; i < 700; i++) {
         for (const sk of ['sorcery', 'root-speech', 'warding', 'veiling']) H.grantSkillUse('cast_effective', { cost: 40, spell_skill: sk });
         H.hearthRest();
       }
       H.setWillpower(99); H.setCatalyst('great_staff'); H.setGold(4000000); H.hearthRest();
-      for (const s of H.getMagicData().spells.spells) H.learnSpell(s.id);
+      for (const sp of H.getMagicData().spells.spells) H.learnSpell(sp.id);
       if (H.__breakRefusalVoice) H.__breakRefusalVoice(!!broken);
       // A spell whose cost genuinely exceeds `focus_max`, built the way a player would build it.
       const mk = H.makeSpell({
@@ -177,37 +187,42 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
       if (mk.refused) return { fatal: mk.reason || mk.gate };
       H.setAttuned([mk.spell.id]);
       const st = H.getMagicState();
-      H.magicEventsDrain(); H.traceDrain();
-      H.uiToast(null);                                // clear anything standing
+      H.magicEventsDrain();
+      // THE HUD IS READ AT THE DRAW CALL. `getUIState()` does not publish the toast at all — it
+      // is built into the HUD model inside `ui/system.js` and only ever leaves through
+      // `fillText`. `getRenderedText()` hooks that, so this arm measures what is on the screen
+      // rather than what a model says is on it, and it needs the renderer actually running:
+      // every other arm in this file sets `setRenderRate(0)`, and reading the drawn text under
+      // that reports an empty screen for a line that is there. That is what the first version of
+      // this arm did, and it reported the fix and the teardown as identical.
+      H.setRenderRate(1);
+      H.uiToast(null); H.stepFrames(2);
+      // WINDOWED. `text-register.js` ACCUMULATES: `getRenderedText()` returns every string drawn
+      // since the register was last cleared, not the last frame's. The first version of this arm
+      // read the whole register and so the BROKEN arm saw the FIXED arm's own line still sitting
+      // in it and reported both arms speaking — an inert control produced by a wrong reader
+      // rather than by a wrong fix, which is RULES.md #6's second shape and the one W1-04 lost a
+      // whole count to. `since` is the register's own cursor.
+      const since = H.getRenderedText().next_index;
       let press = null;
       try { press = H.pressCast(60); } catch (e) { press = { error: String(e && e.message) }; }
       const magic = H.magicEventsDrain();
       // `pressCast` steps the loop itself and hands back the `INPUT_DROPPED` rows for `cast`, so
-      // the bus is read through its return value rather than through a drain it has consumed —
-      // which is what the first version of this arm did, and it reported an empty bus for a
-      // refusal that was there. The round-4 verdict §11 records the same class of mistake made
-      // the other way round (counting `spell_hit` off the magic stream).
+      // the bus is read through its return value rather than through a drain it has consumed.
       const drop = press && press.drops && press.drops.length ? press.drops[0] : null;
-      // THE HUD, not the event. `getRenderedText()` hooks `fillText`, so this is what is actually
-      // drawn rather than what a model says is drawn.
-      let drawn = [];
-      try {
-        H.setRenderRate(1); H.stepFrames(3);
-        const g = H.getRenderedText ? H.getRenderedText() : null;
-        drawn = g ? (g.distinct || g.texts || g.lines || []) : [];
-        if (!Array.isArray(drawn)) drawn = [];
-      } catch (e) { drawn = [String(e && e.message)]; }
-      const ui = H.getUIState ? H.getUIState() : null;
+      H.stepFrames(3);
+      const drawn = (H.getRenderedText({ since }).distinct || []);
+      const said = drawn.filter((t) => /Focus/i.test(String(t)) && /asks|hold/i.test(String(t)));
       if (H.__breakRefusalVoice) H.__breakRefusalVoice(false);
+      H.setRenderRate(0);
       return {
         focus: st.focus, focus_max: st.focus_max, cost: mk.quote ? mk.quote.focus_cost : null,
         magic_stream: magic.map((e) => e.kind),
         combat_bus_drop: drop ? { reason: drop.reason, spell: drop.spell } : null,
         drops: press && press.drops ? press.drops.length : 0,
-        toast: ui && ui.toast ? ui.toast.text : null,
-        drawn_contains_refusal: drawn.some((t) => /Focus for|asks/i.test(String(t))),
-        drawn_sample: drawn.filter((t) => /Focus|asks|hold/i.test(String(t))).slice(0, 4),
-        press,
+        register_cursor: since,
+        said_on_screen: said,
+        spoken: said.length > 0,
       };
     };
     out.refusal = { fixed: arm(false), broken: arm(true) };
@@ -225,22 +240,29 @@ const RUN = (page) => page.evaluate(async (NAMES) => {
 
   const W = d.water;
   log(`WATER    swept ${W.states_swept} named state(s); ${W.deep_water_count} are deep water`);
-  log(`         FIXED: ${W.fixed_casts_in_deep}/${W.deep_water_count} cast   BROKEN: ${W.broken_casts_in_deep}/${W.deep_water_count} cast`);
+  log('         the 2x2, casts out of ' + W.deep_water_count + ' deep-water states:');
+  log(`             floor FIXED + gate FIXED : ${W.fixed_casts_in_deep}`);
+  log(`             floor BROKEN + gate open : ${W.no_floor_casts_in_deep}`);
+  log(`             floor FIXED  + gate shut : ${W.no_gate_casts_in_deep}`);
+  log(`             both BROKEN              : ${W.broken_casts_in_deep}`);
   for (const r of W.table.slice(0, 16)) {
-    log(`         ${String(r.state).padEnd(28)} y ${String(r.pos_y).padStart(9)} airborne ${r.airborne ? 1 : 0} cast ${r.cast_start}` +
-      `  |  broken: y ${String(r.broken.pos_y).padStart(9)} airborne ${r.broken.airborne ? 1 : 0} cast ${r.broken.cast_start} drop ${r.broken.reason}`);
+    log(`         ${String(r.state).padEnd(28)} band ${r.water_band} y ${String(r.pos_y).padStart(9)} air ${r.airborne ? 1 : 0} cast ${r.cast_start}` +
+      `  | no-floor: air ${r.no_floor.airborne ? 1 : 0} cast ${r.no_floor.cast_start}` +
+      `  | no-gate: cast ${r.no_gate.cast_start}  | both: cast ${r.broken.cast_start}`);
   }
   const P = d.purse;
   log(`PURSE    FIXED  after a load: ${JSON.stringify(P.fixed.after)} -> ${P.fixed.agree ? 'ONE PURSE' : `${P.fixed.distinct.length} DISTINCT VALUES ${JSON.stringify(P.fixed.distinct)}`}`);
   log(`         BROKEN after a load: ${JSON.stringify(P.broken.after)} -> ${P.broken.agree ? 'ONE PURSE' : `${P.broken.distinct.length} DISTINCT VALUES ${JSON.stringify(P.broken.distinct)}`}`);
   if (P.inert_fix) log('         *** INERT FIX: both arms are byte-identical. The change is not carrying the number. ***');
   const R = d.refusal;
-  log(`REFUSAL  FIXED  magic stream ${JSON.stringify(R.fixed.magic_stream)}; bus ${JSON.stringify(R.fixed.combat_bus_drop)}; toast ${JSON.stringify(R.fixed.toast)}`);
-  log(`         BROKEN magic stream ${JSON.stringify(R.broken.magic_stream)}; bus ${JSON.stringify(R.broken.combat_bus_drop)}; toast ${JSON.stringify(R.broken.toast)}`);
+  log(`REFUSAL  focus ${R.fixed.focus} of ${R.fixed.focus_max}; the spell asks ${R.fixed.cost}`);
+  log(`         FIXED  magic stream ${JSON.stringify(R.fixed.magic_stream)}; bus ${JSON.stringify(R.fixed.combat_bus_drop)}; ON SCREEN ${JSON.stringify(R.fixed.said_on_screen)}`);
+  log(`         BROKEN magic stream ${JSON.stringify(R.broken.magic_stream)}; bus ${JSON.stringify(R.broken.combat_bus_drop)}; ON SCREEN ${JSON.stringify(R.broken.said_on_screen)}`);
 
-  const ok = W.deep_water_count > 0 && W.fixed_casts_in_deep === W.deep_water_count && W.broken_casts_in_deep === 0
-    && P.fixed.agree && !P.broken.agree
-    && R.fixed.toast && !R.broken.toast && R.fixed.combat_bus_drop && R.broken.combat_bus_drop;
+  const ok = W.deep_water_count > 0 && W.fixed_casts_in_deep === W.deep_water_count
+    && W.no_floor_casts_in_deep < W.deep_water_count && W.no_gate_casts_in_deep < W.deep_water_count
+    && P.fixed.agree
+    && R.fixed.spoken && !R.broken.spoken && R.fixed.combat_bus_drop && R.broken.combat_bus_drop;
   log(ok ? 'PASS — all three, with both arms.' : 'PARTIAL — see the report; the failing half is printed above.');
   process.exit(ok ? EXIT.OK : 7);
 })();

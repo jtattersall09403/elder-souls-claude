@@ -624,6 +624,24 @@ export class MagicSystem {
   __breakRefusalVoice(on) { this._refusalVoiceBlind = !!on; return this._refusalVoiceBlind; }
 
   /**
+   * What the player is told when the water takes an action away. Same channel, same reason: the
+   * denial was a bus event (`action_denied_by_water`) and nothing under `ui/` or `render/` read
+   * it, so from the chair the button simply did nothing. See `combat/player.js`'s water gate.
+   */
+  sayWaterDenial(button, band, mired) {
+    if (this._refusalVoiceBlind) return null;
+    const line = mired ? 'The mud has you. Roll to pull free of it.'
+      : button === 'sprint' ? 'You cannot run through this.'
+        : button === 'roll' ? 'There is nothing here to roll on.'
+          : band === 'W5' ? 'You are swimming. You cannot swing anything from here.'
+            : 'The water is too deep to fight in.';
+    this._lastSaid = line;
+    const eng = this.w && this.w.engine;
+    if (eng && typeof eng.uiToast === 'function') eng.uiToast(line, 120);
+    return line;
+  }
+
+  /**
    * Begin a cast. Both resources are spent HERE, on frame 1, and neither is refunded — except
    * a `RITUAL` abort, which is the only refund in RI-MAG01. The caller has already built the
    * move and called `body.begin()`; this records the cast and charges for it.
