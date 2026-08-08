@@ -1707,6 +1707,26 @@ export function installHarness(engine, bootPromise) {
     __breakPurseHook(on) { engine._purseHookBlind = on === undefined ? true : !!on; return !!engine._purseHookBlind; },
 
     /**
+     * W1-14 round 5 — EVERY PURSE IN THE BUILD, SIDE BY SIDE.
+     *
+     * `Engine._setGold` is the one writer that moves `sim.progression.gold`, `combat.world.gold`,
+     * `sim.stealth.p.gold` and `magic.gold` together, and this project has now found FOUR
+     * mirrored-value defects — two soul ledgers, `magic.gold`, and `save/state.js`'s bare restore.
+     * Every one of them was found by grep rather than by measurement, because no read-only
+     * surface published the mirrors next to each other: `getGold()` reads the authority, and a
+     * stale copy is invisible to it by construction. This verb is that surface. It reads the
+     * fields directly and does not write, so it cannot itself paper over a divergence.
+     */
+    goldMirrors() {
+      return {
+        progression_gold: engine.sim.progression ? engine.sim.progression.gold : null,
+        magic_gold: engine.magic ? engine.magic.gold : null,
+        combat_world_gold: engine.combat && engine.combat.world ? engine.combat.world.gold : null,
+        stealth_gold: engine.sim.stealth && engine.sim.stealth.p ? engine.sim.stealth.p.gold : null,
+      };
+    },
+
+    /**
      * W1-14 round 5 DELETE-THE-FIX #5 — THE ENCHANTING COUNTER.
      *
      * Shuts the door and leaves the person, the town, the topic and the shelf prices, exactly as

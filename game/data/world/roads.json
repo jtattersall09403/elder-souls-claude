@@ -459,6 +459,12 @@
    "waypoints": [
     "Ixtaxh-Tzil"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
    "points": [
     [
      2171.5,
@@ -1335,10 +1341,10 @@
    "tide_gated": false,
    "straight_m": 2015,
    "declared_path_m": 2921,
-   "built_path_m": 2921,
+   "built_path_m": 2827.9,
    "declared_walk_min": 24.3,
-   "built_walk_min": 24.34,
-   "sinuosity_built": 1.45,
+   "built_walk_min": 23.57,
+   "sinuosity_built": 1.404,
    "routing": "detour w=23.99 + sinuosity 46 m | detour w=23.99 + sinuosity 89+69 m | detour w=1.41 + sinuosity 69 m",
    "max_grade": 0.45,
    "grade_bar": 0.12,
@@ -1913,602 +1919,566 @@
     },
     {
      "i": 105,
-     "from_m": 1366,
-     "to_m": 1378,
-     "grade": 0.202,
-     "deg": 11.4,
-     "natural_grade": 0.212,
+     "from_m": 1368,
+     "to_m": 1372,
+     "grade": 0.15,
+     "deg": 8.5,
+     "natural_grade": 0.527,
      "class": "switchback"
     },
     {
      "i": 108,
-     "from_m": 1400,
-     "to_m": 1412,
-     "grade": 0.13,
-     "deg": 7.4,
-     "natural_grade": 0.049,
-     "class": "switchback"
-    },
-    {
-     "i": 111,
-     "from_m": 1433,
-     "to_m": 1443,
+     "from_m": 1392,
+     "to_m": 1402,
      "grade": 0.167,
      "deg": 9.5,
      "natural_grade": 0.106,
      "class": "switchback"
     },
     {
-     "i": 112,
-     "from_m": 1443,
-     "to_m": 1454,
+     "i": 109,
+     "from_m": 1402,
+     "to_m": 1413,
      "grade": 0.187,
      "deg": 10.6,
      "natural_grade": 0.187,
      "class": "switchback"
     },
     {
-     "i": 113,
-     "from_m": 1454,
-     "to_m": 1465,
+     "i": 110,
+     "from_m": 1413,
+     "to_m": 1424,
      "grade": 0.184,
      "deg": 10.4,
      "natural_grade": 0.125,
      "class": "switchback"
     },
     {
-     "i": 114,
-     "from_m": 1465,
-     "to_m": 1476,
+     "i": 111,
+     "from_m": 1424,
+     "to_m": 1435,
      "grade": 0.23,
      "deg": 12.9,
      "natural_grade": 0.354,
      "class": "stair"
     },
     {
-     "i": 115,
-     "from_m": 1476,
-     "to_m": 1488,
+     "i": 112,
+     "from_m": 1435,
+     "to_m": 1447,
      "grade": 0.317,
      "deg": 17.6,
      "natural_grade": 0.317,
      "class": "stair"
     },
     {
-     "i": 116,
-     "from_m": 1488,
-     "to_m": 1499,
+     "i": 113,
+     "from_m": 1447,
+     "to_m": 1459,
      "grade": 0.385,
      "deg": 21.1,
      "natural_grade": 0.385,
      "class": "stair"
     },
     {
-     "i": 117,
-     "from_m": 1499,
-     "to_m": 1511,
+     "i": 114,
+     "from_m": 1459,
+     "to_m": 1471,
      "grade": 0.166,
      "deg": 9.4,
      "natural_grade": 0.15,
      "class": "switchback"
     },
     {
-     "i": 118,
-     "from_m": 1511,
-     "to_m": 1524,
+     "i": 115,
+     "from_m": 1471,
+     "to_m": 1483,
      "grade": 0.379,
      "deg": 20.7,
      "natural_grade": 0.342,
      "class": "stair"
     },
     {
-     "i": 119,
-     "from_m": 1524,
-     "to_m": 1536,
+     "i": 116,
+     "from_m": 1483,
+     "to_m": 1495,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.502,
      "class": "stair"
     },
     {
-     "i": 120,
-     "from_m": 1536,
-     "to_m": 1549,
+     "i": 117,
+     "from_m": 1495,
+     "to_m": 1508,
      "grade": 0.386,
      "deg": 21.1,
      "natural_grade": 0.386,
      "class": "stair"
     },
     {
-     "i": 123,
-     "from_m": 1575,
-     "to_m": 1589,
+     "i": 120,
+     "from_m": 1534,
+     "to_m": 1548,
      "grade": 0.2,
      "deg": 11.3,
      "natural_grade": 0.335,
      "class": "switchback"
     },
     {
-     "i": 124,
-     "from_m": 1589,
-     "to_m": 1602,
+     "i": 121,
+     "from_m": 1548,
+     "to_m": 1561,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.596,
      "class": "stair"
     },
     {
-     "i": 127,
-     "from_m": 1632,
-     "to_m": 1644,
-     "grade": 0.202,
-     "deg": 11.4,
-     "natural_grade": 0.202,
+     "i": 122,
+     "from_m": 1561,
+     "to_m": 1579,
+     "grade": 0.167,
+     "deg": 9.5,
+     "natural_grade": 0.057,
      "class": "switchback"
     },
     {
-     "i": 128,
-     "from_m": 1644,
+     "i": 123,
+     "from_m": 1579,
+     "to_m": 1593,
+     "grade": 0.263,
+     "deg": 14.7,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 124,
+     "from_m": 1593,
+     "to_m": 1597,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 1.849,
+     "class": "stair"
+    },
+    {
+     "i": 127,
+     "from_m": 1648,
      "to_m": 1649,
-     "grade": 0.34,
-     "deg": 18.8,
-     "natural_grade": 0.477,
-     "class": "stair"
-    },
-    {
-     "i": 129,
-     "from_m": 1649,
-     "to_m": 1664,
-     "grade": 0.302,
-     "deg": 16.8,
-     "natural_grade": 0.085,
-     "class": "stair"
-    },
-    {
-     "i": 130,
-     "from_m": 1664,
-     "to_m": 1668,
-     "grade": 0.45,
-     "deg": 24.2,
-     "natural_grade": 0.79,
-     "class": "stair"
-    },
-    {
-     "i": 131,
-     "from_m": 1668,
-     "to_m": 1680,
-     "grade": 0.45,
-     "deg": 24.2,
-     "natural_grade": 0.85,
-     "class": "stair"
-    },
-    {
-     "i": 134,
-     "from_m": 1731,
-     "to_m": 1732,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 3.713,
      "class": "stair"
     },
     {
-     "i": 135,
-     "from_m": 1732,
-     "to_m": 1745,
-     "grade": 0.324,
-     "deg": 18,
-     "natural_grade": 0.021,
-     "class": "stair"
+     "i": 128,
+     "from_m": 1649,
+     "to_m": 1665,
+     "grade": 0.183,
+     "deg": 10.4,
+     "natural_grade": 0.013,
+     "class": "switchback"
     },
     {
-     "i": 137,
-     "from_m": 1754,
-     "to_m": 1758,
+     "i": 129,
+     "from_m": 1665,
+     "to_m": 1669,
      "grade": 0.45,
      "deg": 24.2,
-     "natural_grade": 0.235,
+     "natural_grade": 0.743,
      "class": "stair"
     },
     {
-     "i": 138,
-     "from_m": 1758,
-     "to_m": 1762,
-     "grade": 0.45,
-     "deg": 24.2,
-     "natural_grade": 2.317,
-     "class": "stair"
-    },
-    {
-     "i": 139,
-     "from_m": 1762,
-     "to_m": 1777,
+     "i": 130,
+     "from_m": 1669,
+     "to_m": 1684,
      "grade": 0.223,
      "deg": 12.6,
      "natural_grade": 0.223,
      "class": "stair"
     },
     {
-     "i": 144,
-     "from_m": 1834,
-     "to_m": 1841,
+     "i": 135,
+     "from_m": 1741,
+     "to_m": 1748,
      "grade": 0.154,
      "deg": 8.8,
      "natural_grade": 0.029,
      "class": "switchback"
     },
     {
-     "i": 145,
-     "from_m": 1841,
-     "to_m": 1852,
+     "i": 136,
+     "from_m": 1748,
+     "to_m": 1759,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.582,
      "class": "stair"
     },
     {
-     "i": 146,
-     "from_m": 1852,
-     "to_m": 1864,
+     "i": 137,
+     "from_m": 1759,
+     "to_m": 1771,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.533,
      "class": "stair"
     },
     {
-     "i": 147,
-     "from_m": 1864,
-     "to_m": 1876,
+     "i": 138,
+     "from_m": 1771,
+     "to_m": 1783,
      "grade": 0.401,
      "deg": 21.9,
      "natural_grade": 0.225,
      "class": "stair"
     },
     {
-     "i": 148,
-     "from_m": 1876,
-     "to_m": 1888,
+     "i": 139,
+     "from_m": 1783,
+     "to_m": 1795,
      "grade": 0.4,
      "deg": 21.8,
      "natural_grade": 0.479,
      "class": "stair"
     },
     {
-     "i": 149,
-     "from_m": 1888,
-     "to_m": 1900,
+     "i": 140,
+     "from_m": 1795,
+     "to_m": 1807,
      "grade": 0.307,
      "deg": 17.1,
      "natural_grade": 0.524,
      "class": "stair"
     },
     {
-     "i": 150,
-     "from_m": 1900,
-     "to_m": 1912,
+     "i": 141,
+     "from_m": 1807,
+     "to_m": 1819,
      "grade": 0.259,
      "deg": 14.5,
      "natural_grade": 0.248,
      "class": "stair"
     },
     {
-     "i": 151,
-     "from_m": 1912,
-     "to_m": 1924,
+     "i": 142,
+     "from_m": 1819,
+     "to_m": 1831,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.44,
      "class": "stair"
     },
     {
-     "i": 152,
-     "from_m": 1924,
-     "to_m": 1936,
+     "i": 143,
+     "from_m": 1831,
+     "to_m": 1843,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.471,
      "class": "stair"
     },
     {
-     "i": 153,
-     "from_m": 1936,
-     "to_m": 1948,
+     "i": 144,
+     "from_m": 1843,
+     "to_m": 1855,
      "grade": 0.312,
      "deg": 17.3,
      "natural_grade": 0.195,
      "class": "stair"
     },
     {
-     "i": 154,
-     "from_m": 1948,
-     "to_m": 1960,
+     "i": 145,
+     "from_m": 1855,
+     "to_m": 1867,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.567,
      "class": "stair"
     },
     {
-     "i": 155,
-     "from_m": 1960,
-     "to_m": 1972,
+     "i": 146,
+     "from_m": 1867,
+     "to_m": 1879,
      "grade": 0.25,
      "deg": 14,
      "natural_grade": 0.25,
      "class": "stair"
     },
     {
-     "i": 156,
-     "from_m": 1972,
-     "to_m": 1984,
+     "i": 147,
+     "from_m": 1879,
+     "to_m": 1891,
      "grade": 0.265,
      "deg": 14.8,
      "natural_grade": 0.265,
      "class": "stair"
     },
     {
-     "i": 157,
-     "from_m": 1984,
-     "to_m": 1996,
+     "i": 148,
+     "from_m": 1891,
+     "to_m": 1903,
      "grade": 0.193,
      "deg": 10.9,
      "natural_grade": 0.193,
      "class": "switchback"
     },
     {
-     "i": 158,
-     "from_m": 1996,
-     "to_m": 2008,
+     "i": 149,
+     "from_m": 1903,
+     "to_m": 1915,
      "grade": 0.137,
      "deg": 7.8,
      "natural_grade": 0.137,
      "class": "switchback"
     },
     {
-     "i": 159,
-     "from_m": 2008,
-     "to_m": 2020,
+     "i": 150,
+     "from_m": 1915,
+     "to_m": 1927,
      "grade": 0.156,
      "deg": 8.9,
      "natural_grade": 0.156,
      "class": "switchback"
     },
     {
-     "i": 171,
-     "from_m": 2144,
-     "to_m": 2156,
+     "i": 162,
+     "from_m": 2051,
+     "to_m": 2063,
      "grade": 0.317,
      "deg": 17.6,
      "natural_grade": 0.317,
      "class": "stair"
     },
     {
-     "i": 172,
-     "from_m": 2156,
-     "to_m": 2168,
+     "i": 163,
+     "from_m": 2063,
+     "to_m": 2075,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.869,
      "class": "stair"
     },
     {
-     "i": 173,
-     "from_m": 2168,
-     "to_m": 2180,
+     "i": 164,
+     "from_m": 2075,
+     "to_m": 2087,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 1.308,
      "class": "stair"
     },
     {
-     "i": 174,
-     "from_m": 2180,
-     "to_m": 2192,
+     "i": 165,
+     "from_m": 2087,
+     "to_m": 2099,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 1.326,
      "class": "stair"
     },
     {
-     "i": 175,
-     "from_m": 2192,
-     "to_m": 2204,
+     "i": 166,
+     "from_m": 2099,
+     "to_m": 2111,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 1.156,
      "class": "stair"
     },
     {
-     "i": 176,
-     "from_m": 2204,
-     "to_m": 2217,
+     "i": 167,
+     "from_m": 2111,
+     "to_m": 2124,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.614,
      "class": "stair"
     },
     {
-     "i": 177,
-     "from_m": 2217,
-     "to_m": 2229,
+     "i": 168,
+     "from_m": 2124,
+     "to_m": 2136,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.586,
      "class": "stair"
     },
     {
-     "i": 178,
-     "from_m": 2229,
-     "to_m": 2241,
+     "i": 169,
+     "from_m": 2136,
+     "to_m": 2148,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.358,
      "class": "stair"
     },
     {
-     "i": 179,
-     "from_m": 2241,
-     "to_m": 2253,
+     "i": 170,
+     "from_m": 2148,
+     "to_m": 2160,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.424,
      "class": "stair"
     },
     {
-     "i": 180,
-     "from_m": 2253,
-     "to_m": 2265,
+     "i": 171,
+     "from_m": 2160,
+     "to_m": 2172,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.443,
      "class": "stair"
     },
     {
-     "i": 181,
-     "from_m": 2265,
-     "to_m": 2277,
+     "i": 172,
+     "from_m": 2172,
+     "to_m": 2184,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.365,
      "class": "stair"
     },
     {
-     "i": 182,
-     "from_m": 2277,
-     "to_m": 2290,
+     "i": 173,
+     "from_m": 2184,
+     "to_m": 2197,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.388,
      "class": "stair"
     },
     {
-     "i": 183,
-     "from_m": 2290,
-     "to_m": 2302,
+     "i": 174,
+     "from_m": 2197,
+     "to_m": 2209,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.226,
      "class": "stair"
     },
     {
-     "i": 184,
-     "from_m": 2302,
-     "to_m": 2314,
+     "i": 175,
+     "from_m": 2209,
+     "to_m": 2221,
      "grade": 0.443,
      "deg": 23.9,
      "natural_grade": 0.235,
      "class": "stair"
     },
     {
-     "i": 185,
-     "from_m": 2314,
-     "to_m": 2327,
+     "i": 176,
+     "from_m": 2221,
+     "to_m": 2234,
      "grade": 0.443,
      "deg": 23.9,
      "natural_grade": 0.223,
      "class": "stair"
     },
     {
-     "i": 186,
-     "from_m": 2327,
-     "to_m": 2340,
+     "i": 177,
+     "from_m": 2234,
+     "to_m": 2246,
      "grade": 0.443,
      "deg": 23.9,
      "natural_grade": 0.298,
      "class": "stair"
     },
     {
-     "i": 187,
-     "from_m": 2340,
-     "to_m": 2352,
+     "i": 178,
+     "from_m": 2246,
+     "to_m": 2259,
      "grade": 0.388,
      "deg": 21.2,
      "natural_grade": 0.021,
      "class": "stair"
     },
     {
-     "i": 188,
-     "from_m": 2352,
-     "to_m": 2364,
+     "i": 179,
+     "from_m": 2259,
+     "to_m": 2271,
      "grade": 0.388,
      "deg": 21.2,
      "natural_grade": 0.071,
      "class": "stair"
     },
     {
-     "i": 189,
-     "from_m": 2364,
-     "to_m": 2376,
+     "i": 180,
+     "from_m": 2271,
+     "to_m": 2283,
      "grade": 0.298,
      "deg": 16.6,
      "natural_grade": 0.213,
      "class": "stair"
     },
     {
-     "i": 190,
-     "from_m": 2376,
-     "to_m": 2388,
+     "i": 181,
+     "from_m": 2283,
+     "to_m": 2295,
      "grade": 0.298,
      "deg": 16.6,
      "natural_grade": 0.033,
      "class": "stair"
     },
     {
-     "i": 191,
-     "from_m": 2388,
-     "to_m": 2400,
+     "i": 182,
+     "from_m": 2295,
+     "to_m": 2307,
      "grade": 0.298,
      "deg": 16.6,
      "natural_grade": 0,
      "class": "stair"
     },
     {
-     "i": 192,
-     "from_m": 2400,
-     "to_m": 2413,
+     "i": 183,
+     "from_m": 2307,
+     "to_m": 2319,
      "grade": 0.298,
      "deg": 16.6,
      "natural_grade": 0.073,
      "class": "stair"
     },
     {
-     "i": 193,
-     "from_m": 2413,
-     "to_m": 2425,
+     "i": 184,
+     "from_m": 2319,
+     "to_m": 2331,
      "grade": 0.213,
      "deg": 12,
      "natural_grade": 0.051,
      "class": "switchback"
     },
     {
-     "i": 194,
-     "from_m": 2425,
-     "to_m": 2437,
+     "i": 185,
+     "from_m": 2331,
+     "to_m": 2343,
      "grade": 0.213,
      "deg": 12,
      "natural_grade": 0.002,
      "class": "switchback"
     },
     {
-     "i": 199,
-     "from_m": 2484,
-     "to_m": 2495,
+     "i": 190,
+     "from_m": 2391,
+     "to_m": 2402,
      "grade": 0.136,
      "deg": 7.8,
      "natural_grade": 0.043,
      "class": "switchback"
     },
     {
-     "i": 200,
-     "from_m": 2495,
-     "to_m": 2507,
+     "i": 191,
+     "from_m": 2402,
+     "to_m": 2413,
      "grade": 0.152,
      "deg": 8.7,
      "natural_grade": 0.128,
      "class": "switchback"
     },
     {
-     "i": 201,
-     "from_m": 2507,
-     "to_m": 2518,
+     "i": 192,
+     "from_m": 2413,
+     "to_m": 2425,
      "grade": 0.221,
      "deg": 12.4,
      "natural_grade": 0.239,
@@ -2516,9 +2486,9 @@
     }
    ],
    "grade_class_m": {
-    "carriageway": 1387,
-    "switchback": 291,
-    "stair": 1243
+    "carriageway": 1327,
+    "switchback": 292,
+    "stair": 1209
    },
    "max_cut_m": 3,
    "max_fill_m": 50.59,
@@ -2561,50 +2531,41 @@
      "kind": "viaduct"
     },
     {
-     "from_i": 123,
-     "to_i": 124,
-     "from_m": 1589,
-     "to_m": 1602,
+     "from_i": 120,
+     "to_i": 121,
+     "from_m": 1548,
+     "to_m": 1561,
      "length_m": 13,
      "max_height_m": 5,
      "kind": "viaduct"
     },
     {
-     "from_i": 129,
-     "to_i": 131,
-     "from_m": 1664,
-     "to_m": 1680,
-     "length_m": 17,
-     "max_height_m": 8,
-     "kind": "viaduct"
-    },
-    {
-     "from_i": 144,
-     "to_i": 149,
-     "from_m": 1841,
-     "to_m": 1900,
+     "from_i": 135,
+     "to_i": 140,
+     "from_m": 1748,
+     "to_m": 1807,
      "length_m": 59,
      "max_height_m": 7,
      "kind": "causeway over water"
     },
     {
-     "from_i": 171,
-     "to_i": 192,
-     "from_m": 2156,
-     "to_m": 2413,
+     "from_i": 162,
+     "to_i": 183,
+     "from_m": 2063,
+     "to_m": 2319,
      "length_m": 257,
      "max_height_m": 41.2,
      "kind": "viaduct"
     }
    ],
-   "deck_span_m": 917,
+   "deck_span_m": 900,
    "half_width_m": 3,
    "settlement_join": {
     "clearance_bar_m": 1.1,
     "worst_clearance_m": 1.15,
     "violations": 0,
     "pre_join_m": 2875.7,
-    "join_delta_m": 45.3,
+    "join_delta_m": -47.8,
     "length_correction": {
      "corrected_m": 45.6,
      "spans": 1,
@@ -2639,6 +2600,52 @@
     "Nine-Mud",
     "The Weeping Ford"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       103,
+       107
+      ],
+      "approach_m": 5.59,
+      "junction": [
+       2393,
+       1746.8
+      ],
+      "points_removed": 4,
+      "loop_m": 40.7
+     },
+     {
+      "between_i": [
+       122,
+       127
+      ],
+      "approach_m": 4.69,
+      "junction": [
+       2279.3,
+       1860.1
+      ],
+      "points_removed": 5,
+      "loop_m": 42.3
+     },
+     {
+      "between_i": [
+       127,
+       130
+      ],
+      "approach_m": 6.63,
+      "junction": [
+       2276.9,
+       1917.6
+      ],
+      "points_removed": 3,
+      "loop_m": 10.2
+     }
+    ],
+    "delta_m": -93.1
+   },
    "points": [
     [
      2171.5,
@@ -3161,24 +3168,9 @@
      49.7
     ],
     [
-     2393.23,
-     1744.01,
-     49.42
-    ],
-    [
-     2402.4,
-     1751.86,
-     46.99
-    ],
-    [
-     2411.25,
-     1757.59,
-     45.84
-    ],
-    [
-     2402.25,
-     1750.37,
-     47.18
+     2393,
+     1746.8,
+     49.37
     ],
     [
      2390.02,
@@ -3268,32 +3260,12 @@
     [
      2274.17,
      1847,
-     85.55
+     87.41
     ],
     [
-     2278.7,
-     1857.85,
-     85.43
-    ],
-    [
-     2283.43,
-     1868.88,
-     83.01
-    ],
-    [
-     2286.5,
-     1873.56,
-     81.11
-    ],
-    [
-     2292.84,
-     1860.57,
-     85.48
-    ],
-    [
-     2288.27,
-     1860.28,
-     87.54
+     2279.27,
+     1860.12,
+     91.11
     ],
     [
      2276.63,
@@ -3316,19 +3288,9 @@
      91.71
     ],
     [
-     2276.25,
-     1914.32,
-     87.71
-    ],
-    [
-     2278.27,
-     1923.9,
-     87.33
-    ],
-    [
-     2279.27,
-     1920.5,
-     88.92
+     2276.86,
+     1917.58,
+     88.88
     ],
     [
      2275.58,
@@ -3785,17 +3747,17 @@
    "tide_gated": false,
    "straight_m": 1849,
    "declared_path_m": 2589,
-   "built_path_m": 2589.5,
+   "built_path_m": 2570.7,
    "declared_walk_min": 21.6,
-   "built_walk_min": 21.58,
-   "sinuosity_built": 1.4,
+   "built_walk_min": 21.42,
+   "sinuosity_built": 1.39,
    "routing": "detour w=0.47 + sinuosity 19+8 m | detour w=23.99 + sinuosity 93+12 m | detour w=23.99 + sinuosity 82 m",
    "max_grade": 0.107,
    "grade_bar": 0.12,
    "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
-    "carriageway": 2589,
+    "carriageway": 2571,
     "switchback": 0,
     "stair": 0
    },
@@ -3810,7 +3772,7 @@
     "worst_clearance_m": 1.15,
     "violations": 0,
     "pre_join_m": 2549.5,
-    "join_delta_m": 39.9,
+    "join_delta_m": 21.1,
     "length_correction": {
      "corrected_m": 0,
      "spans": 1,
@@ -3843,6 +3805,26 @@
     "Xal-Ithix",
     "Kiln Camp"
    ],
+   "self_clearance": {
+    "min_clear_m": 8.74,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       134,
+       137
+      ],
+      "approach_m": 7.71,
+      "junction": [
+       3242.2,
+       3559.4
+      ],
+      "points_removed": 3,
+      "loop_m": 18.8
+     }
+    ],
+    "delta_m": -18.8
+   },
    "points": [
     [
      2262.5,
@@ -4517,27 +4499,17 @@
     [
      3238.62,
      3548.35,
-     2.17
+     2.16
     ],
     [
-     3238.31,
-     3560.35,
-     2.19
-    ],
-    [
-     3239.04,
-     3569.27,
-     2.19
-    ],
-    [
-     3246.04,
-     3559.52,
-     2.19
+     3242.19,
+     3559.42,
+     2.16
     ],
     [
      3253.04,
      3549.77,
-     2.12
+     2.14
     ],
     [
      3260.04,
@@ -4854,10 +4826,10 @@
    "tide_gated": false,
    "straight_m": 1714,
    "declared_path_m": 2485,
-   "built_path_m": 2479.6,
+   "built_path_m": 2419.8,
    "declared_walk_min": 20.7,
-   "built_walk_min": 20.66,
-   "sinuosity_built": 1.447,
+   "built_walk_min": 20.16,
+   "sinuosity_built": 1.412,
    "routing": "detour w=23.99 + sinuosity 98 m | detour w=23.99 + sinuosity 87 m | detour w=23.99 + sinuosity 67 m",
    "max_grade": 0.124,
    "grade_bar": 0.12,
@@ -4883,7 +4855,7 @@
     }
    ],
    "grade_class_m": {
-    "carriageway": 2459,
+    "carriageway": 2399,
     "switchback": 20,
     "stair": 0
    },
@@ -4898,7 +4870,7 @@
     "worst_clearance_m": 1.11,
     "violations": 0,
     "pre_join_m": 2465,
-    "join_delta_m": 14.6,
+    "join_delta_m": -45.2,
     "length_correction": {
      "corrected_m": -84,
      "spans": 1,
@@ -4933,6 +4905,52 @@
     "Sunken Barrow",
     "Mudwater Landing"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       62,
+       66
+      ],
+      "approach_m": 1.34,
+      "junction": [
+       2087.8,
+       3342
+      ],
+      "points_removed": 4,
+      "loop_m": 38.7
+     },
+     {
+      "between_i": [
+       76,
+       79
+      ],
+      "approach_m": 7.03,
+      "junction": [
+       2141.9,
+       3480.1
+      ],
+      "points_removed": 3,
+      "loop_m": 15.1
+     },
+     {
+      "between_i": [
+       126,
+       129
+      ],
+      "approach_m": 3.32,
+      "junction": [
+       1964.2,
+       3847.5
+      ],
+      "points_removed": 3,
+      "loop_m": 6.1
+     }
+    ],
+    "delta_m": -59.8
+   },
    "points": [
     [
      2262.5,
@@ -5250,24 +5268,9 @@
      4.04
     ],
     [
-     2088.42,
-     3342.33,
-     4.07
-    ],
-    [
-     2077.79,
-     3340.74,
-     4.07
-    ],
-    [
-     2073.47,
-     3331.64,
-     4.06
-    ],
-    [
-     2078.9,
-     3340.9,
-     4.06
+     2087.81,
+     3342.05,
+     4.04
     ],
     [
      2087.2,
@@ -5332,27 +5335,27 @@
     [
      2124.53,
      3458.14,
-     4.95
+     4.94
     ],
     [
-     2148.24,
-     3481.45,
-     4.95
+     2133.2,
+     3469.12,
+     4.97
     ],
     [
-     2146.52,
-     3484.02,
+     2141.87,
+     3480.11,
+     4.97
+    ],
+    [
+     2147.63,
+     3489.28,
      4.96
-    ],
-    [
-     2139.4,
-     3482.62,
-     4.98
     ],
     [
      2153.4,
      3498.44,
-     4.98
+     4.93
     ],
     [
      2154.28,
@@ -5585,18 +5588,8 @@
      6.08
     ],
     [
-     1965.91,
-     3850.33,
-     6.04
-    ],
-    [
-     1965.73,
-     3848.92,
-     5.92
-    ],
-    [
-     1962.54,
-     3847.48,
+     1964.2,
+     3847.45,
      6.05
     ],
     [
@@ -6237,6 +6230,12 @@
     "Rootway Post",
     "Tenmarch Bridge"
    ],
+   "self_clearance": {
+    "min_clear_m": 8.74,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
    "points": [
     [
      2262.5,
@@ -7223,6 +7222,12 @@
     "Hollow-Reeds",
     "Bone Ladder"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
    "points": [
     [
      439,
@@ -8229,21 +8234,21 @@
    "tide_gated": false,
    "straight_m": 1364,
    "declared_path_m": 1841,
-   "built_path_m": 1841,
+   "built_path_m": 1771.6,
    "declared_walk_min": 15.3,
-   "built_walk_min": 15.34,
-   "sinuosity_built": 1.35,
+   "built_walk_min": 14.76,
+   "sinuosity_built": 1.299,
    "routing": "detour w=1.39 + sinuosity 107 m | detour w=23.99 + sinuosity 134+73 m",
    "max_grade": 0.12,
    "grade_bar": 0.12,
    "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
-    "carriageway": 1841,
+    "carriageway": 1772,
     "switchback": 0,
     "stair": 0
    },
-   "max_cut_m": 1.7,
+   "max_cut_m": 1.27,
    "max_fill_m": 5.31,
    "cut_sampled_at_m": 3,
    "deck_spans": [
@@ -8264,7 +8269,7 @@
     "worst_clearance_m": 1.15,
     "violations": 0,
     "pre_join_m": 1806.7,
-    "join_delta_m": 34.3,
+    "join_delta_m": -35.2,
     "length_correction": {
      "corrected_m": -3.3,
      "spans": 1,
@@ -8298,6 +8303,65 @@
    "waypoints": [
     "Salt-Egg Camp"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       87,
+       90
+      ],
+      "approach_m": 3.9,
+      "junction": [
+       1391.9,
+       4470.4
+      ],
+      "points_removed": 3,
+      "loop_m": 21.9
+     },
+     {
+      "between_i": [
+       87,
+       90
+      ],
+      "approach_m": 7.23,
+      "junction": [
+       1392.9,
+       4466.9
+      ],
+      "points_removed": 3,
+      "loop_m": 8
+     },
+     {
+      "between_i": [
+       105,
+       108
+      ],
+      "approach_m": 5.48,
+      "junction": [
+       1569.9,
+       4554.8
+      ],
+      "points_removed": 3,
+      "loop_m": 20.6
+     },
+     {
+      "between_i": [
+       105,
+       108
+      ],
+      "approach_m": 2.07,
+      "junction": [
+       1570.4,
+       4553.9
+      ],
+      "points_removed": 3,
+      "loop_m": 19
+     }
+    ],
+    "delta_m": -69.4
+   },
    "points": [
     [
      610.5,
@@ -8740,29 +8804,9 @@
      4.24
     ],
     [
-     1390.7,
-     4471.89,
-     3.93
-    ],
-    [
-     1402.34,
-     4469.14,
-     3.45
-    ],
-    [
-     1398.34,
-     4472.95,
-     3.63
-    ],
-    [
-     1389.8,
-     4466.22,
-     4.12
-    ],
-    [
-     1391.01,
-     4462.54,
-     4.01
+     1392.94,
+     4466.9,
+     3.97
     ],
     [
      1402.48,
@@ -8850,34 +8894,14 @@
      3.5
     ],
     [
-     1569.69,
-     4552.02,
-     3.37
-    ],
-    [
-     1580.57,
-     4557.03,
-     3.8
-    ],
-    [
-     1570.95,
-     4557.43,
-     3.95
-    ],
-    [
-     1561.4,
-     4558.09,
-     3.75
-    ],
-    [
-     1571.02,
-     4553.03,
-     3.37
+     1570.44,
+     4553.89,
+     3.42
     ],
     [
      1580.31,
      4545.55,
-     3.33
+     3.32
     ],
     [
      1586.66,
@@ -9029,17 +9053,17 @@
    "tide_gated": false,
    "straight_m": 1037,
    "declared_path_m": 1503,
-   "built_path_m": 1503,
+   "built_path_m": 1480.8,
    "declared_walk_min": 12.5,
-   "built_walk_min": 12.53,
-   "sinuosity_built": 1.45,
+   "built_walk_min": 12.34,
+   "sinuosity_built": 1.428,
    "routing": "detour w=23.99 + sinuosity 169 m | detour w=0.01 + sinuosity 121+62 m",
    "max_grade": 0.033,
    "grade_bar": 0.12,
    "stair_grade_bar": 0.45,
    "grade_exceptions": [],
    "grade_class_m": {
-    "carriageway": 1503,
+    "carriageway": 1481,
     "switchback": 0,
     "stair": 0
    },
@@ -9048,19 +9072,19 @@
    "cut_sampled_at_m": 3,
    "deck_spans": [
     {
-     "from_i": 43,
-     "to_i": 47,
-     "from_m": 572,
-     "to_m": 620,
+     "from_i": 41,
+     "to_i": 45,
+     "from_m": 549,
+     "to_m": 597,
      "length_m": 48,
      "max_height_m": 3.7,
      "kind": "causeway over water"
     },
     {
-     "from_i": 65,
-     "to_i": 99,
-     "from_m": 824,
-     "to_m": 1232,
+     "from_i": 63,
+     "to_i": 97,
+     "from_m": 802,
+     "to_m": 1210,
      "length_m": 408,
      "max_height_m": 14.3,
      "kind": "causeway over water"
@@ -9073,7 +9097,7 @@
     "worst_clearance_m": 1.12,
     "violations": 0,
     "pre_join_m": 1480.4,
-    "join_delta_m": 22.6,
+    "join_delta_m": 0.4,
     "length_correction": {
      "corrected_m": -6.3,
      "spans": 1,
@@ -9107,6 +9131,26 @@
    "waypoints": [
     "Stilt-Row"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       23,
+       26
+      ],
+      "approach_m": 3.81,
+      "junction": [
+       2130.6,
+       4543.2
+      ],
+      "points_removed": 3,
+      "loop_m": 22.2
+     }
+    ],
+    "delta_m": -22.2
+   },
    "points": [
     [
      1905.5,
@@ -9229,19 +9273,9 @@
      2.39
     ],
     [
-     2128.68,
-     4543.43,
+     2130.58,
+     4543.21,
      2.39
-    ],
-    [
-     2131.26,
-     4531.58,
-     2.38
-    ],
-    [
-     2131.64,
-     4535.8,
-     2.38
     ],
     [
      2133.11,
@@ -9266,7 +9300,7 @@
     [
      2152.29,
      4591.75,
-     2.45
+     2.46
     ],
     [
      2157.36,
@@ -9698,217 +9732,217 @@
    "tide_gated": false,
    "straight_m": 2965,
    "declared_path_m": 4299,
-   "built_path_m": 4299,
+   "built_path_m": 4244.2,
    "declared_walk_min": 35.8,
-   "built_walk_min": 35.82,
-   "sinuosity_built": 1.45,
+   "built_walk_min": 35.37,
+   "sinuosity_built": 1.432,
    "routing": "detour w=23.99 + sinuosity 14 m | detour w=1.68 + sinuosity 80+26+56 m | detour w=23.99 + sinuosity 179 m",
    "max_grade": 0.45,
    "grade_bar": 0.12,
    "stair_grade_bar": 0.45,
    "grade_exceptions": [
     {
-     "i": 284,
-     "from_m": 3481,
-     "to_m": 3493,
+     "i": 279,
+     "from_m": 3426,
+     "to_m": 3438,
      "grade": 0.126,
      "deg": 7.2,
      "natural_grade": 0.041,
      "class": "switchback"
     },
     {
-     "i": 285,
-     "from_m": 3493,
-     "to_m": 3504,
+     "i": 280,
+     "from_m": 3438,
+     "to_m": 3450,
      "grade": 0.263,
      "deg": 14.7,
      "natural_grade": 0.263,
      "class": "stair"
     },
     {
-     "i": 286,
-     "from_m": 3504,
-     "to_m": 3514,
+     "i": 281,
+     "from_m": 3450,
+     "to_m": 3459,
      "grade": 0.449,
      "deg": 24.2,
      "natural_grade": 0.449,
      "class": "stair"
     },
     {
-     "i": 287,
-     "from_m": 3514,
-     "to_m": 3526,
+     "i": 282,
+     "from_m": 3459,
+     "to_m": 3471,
      "grade": 0.142,
      "deg": 8.1,
      "natural_grade": 0.142,
      "class": "switchback"
     },
     {
-     "i": 289,
-     "from_m": 3536,
-     "to_m": 3548,
+     "i": 284,
+     "from_m": 3481,
+     "to_m": 3494,
      "grade": 0.323,
      "deg": 17.9,
      "natural_grade": 0.323,
      "class": "stair"
     },
     {
-     "i": 290,
-     "from_m": 3548,
-     "to_m": 3561,
+     "i": 285,
+     "from_m": 3494,
+     "to_m": 3506,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.523,
      "class": "stair"
     },
     {
-     "i": 291,
-     "from_m": 3561,
-     "to_m": 3573,
+     "i": 286,
+     "from_m": 3506,
+     "to_m": 3518,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.512,
      "class": "stair"
     },
     {
-     "i": 292,
-     "from_m": 3573,
-     "to_m": 3585,
+     "i": 287,
+     "from_m": 3518,
+     "to_m": 3530,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.378,
      "class": "stair"
     },
     {
-     "i": 293,
-     "from_m": 3585,
-     "to_m": 3596,
+     "i": 288,
+     "from_m": 3530,
+     "to_m": 3542,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.625,
      "class": "stair"
     },
     {
-     "i": 294,
-     "from_m": 3596,
-     "to_m": 3608,
+     "i": 289,
+     "from_m": 3542,
+     "to_m": 3553,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.601,
      "class": "stair"
     },
     {
-     "i": 295,
-     "from_m": 3608,
-     "to_m": 3620,
+     "i": 290,
+     "from_m": 3553,
+     "to_m": 3565,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.285,
      "class": "stair"
     },
     {
-     "i": 296,
-     "from_m": 3620,
-     "to_m": 3632,
+     "i": 291,
+     "from_m": 3565,
+     "to_m": 3577,
      "grade": 0.209,
      "deg": 11.8,
      "natural_grade": 0.108,
      "class": "switchback"
     },
     {
-     "i": 300,
-     "from_m": 3667,
-     "to_m": 3677,
+     "i": 295,
+     "from_m": 3612,
+     "to_m": 3623,
      "grade": 0.157,
      "deg": 8.9,
      "natural_grade": 0.113,
      "class": "switchback"
     },
     {
-     "i": 301,
-     "from_m": 3677,
-     "to_m": 3689,
+     "i": 296,
+     "from_m": 3623,
+     "to_m": 3634,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.111,
      "class": "stair"
     },
     {
-     "i": 302,
-     "from_m": 3689,
-     "to_m": 3701,
+     "i": 297,
+     "from_m": 3634,
+     "to_m": 3646,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.682,
      "class": "stair"
     },
     {
-     "i": 303,
-     "from_m": 3701,
-     "to_m": 3713,
+     "i": 298,
+     "from_m": 3646,
+     "to_m": 3658,
      "grade": 0.45,
      "deg": 24.2,
      "natural_grade": 0.734,
      "class": "stair"
     },
     {
-     "i": 304,
-     "from_m": 3713,
-     "to_m": 3725,
+     "i": 299,
+     "from_m": 3658,
+     "to_m": 3670,
      "grade": 0.244,
      "deg": 13.7,
      "natural_grade": 0.244,
      "class": "stair"
     },
     {
-     "i": 305,
-     "from_m": 3725,
-     "to_m": 3737,
+     "i": 300,
+     "from_m": 3670,
+     "to_m": 3682,
      "grade": 0.41,
      "deg": 22.3,
      "natural_grade": 0.41,
      "class": "stair"
     },
     {
-     "i": 306,
-     "from_m": 3737,
-     "to_m": 3748,
+     "i": 301,
+     "from_m": 3682,
+     "to_m": 3693,
      "grade": 0.432,
      "deg": 23.4,
      "natural_grade": 0.432,
      "class": "stair"
     },
     {
-     "i": 307,
-     "from_m": 3748,
-     "to_m": 3760,
+     "i": 302,
+     "from_m": 3693,
+     "to_m": 3705,
      "grade": 0.421,
      "deg": 22.8,
      "natural_grade": 0.421,
      "class": "stair"
     },
     {
-     "i": 308,
-     "from_m": 3760,
-     "to_m": 3772,
+     "i": 303,
+     "from_m": 3705,
+     "to_m": 3717,
      "grade": 0.333,
      "deg": 18.4,
      "natural_grade": 0.333,
      "class": "stair"
     },
     {
-     "i": 309,
-     "from_m": 3772,
-     "to_m": 3784,
+     "i": 304,
+     "from_m": 3717,
+     "to_m": 3729,
      "grade": 0.156,
      "deg": 8.8,
      "natural_grade": 0.156,
      "class": "switchback"
     },
     {
-     "i": 310,
-     "from_m": 3784,
-     "to_m": 3796,
+     "i": 305,
+     "from_m": 3729,
+     "to_m": 3741,
      "grade": 0.155,
      "deg": 8.8,
      "natural_grade": 0.131,
@@ -9916,7 +9950,7 @@
     }
    ],
    "grade_class_m": {
-    "carriageway": 4028,
+    "carriageway": 3974,
     "switchback": 70,
     "stair": 200
    },
@@ -9925,19 +9959,19 @@
    "cut_sampled_at_m": 3,
    "deck_spans": [
     {
-     "from_i": 289,
-     "to_i": 294,
-     "from_m": 3548,
-     "to_m": 3608,
+     "from_i": 284,
+     "to_i": 289,
+     "from_m": 3494,
+     "to_m": 3553,
      "length_m": 60,
      "max_height_m": 8.2,
      "kind": "viaduct"
     },
     {
-     "from_i": 301,
-     "to_i": 303,
-     "from_m": 3689,
-     "to_m": 3713,
+     "from_i": 296,
+     "to_i": 298,
+     "from_m": 3634,
+     "to_m": 3658,
      "length_m": 24,
      "max_height_m": 9.6,
      "kind": "viaduct"
@@ -9950,7 +9984,7 @@
     "worst_clearance_m": 1.33,
     "violations": 0,
     "pre_join_m": 4220.7,
-    "join_delta_m": 78.3,
+    "join_delta_m": 23.5,
     "length_correction": {
      "corrected_m": 70.7,
      "spans": 1,
@@ -9993,6 +10027,52 @@
     "Clayfast",
     "The Red Wells"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       179,
+       182
+      ],
+      "approach_m": 0.01,
+      "junction": [
+       4175.7,
+       2268
+      ],
+      "points_removed": 3,
+      "loop_m": 12.3
+     },
+     {
+      "between_i": [
+       183,
+       186
+      ],
+      "approach_m": 6.34,
+      "junction": [
+       4226.4,
+       2248.2
+      ],
+      "points_removed": 3,
+      "loop_m": 23.6
+     },
+     {
+      "between_i": [
+       205,
+       208
+      ],
+      "approach_m": 4.66,
+      "junction": [
+       4129,
+       2046.8
+      ],
+      "points_removed": 3,
+      "loop_m": 18.8
+     }
+    ],
+    "delta_m": -54.8
+   },
    "points": [
     [
      3785,
@@ -10895,19 +10975,9 @@
      13.83
     ],
     [
-     4175.22,
-     2265.53,
-     14.17
-    ],
-    [
-     4171.23,
-     2264.4,
-     14.3
-    ],
-    [
      4175.7,
      2267.96,
-     14.15
+     13.87
     ],
     [
      4187.73,
@@ -10925,24 +10995,19 @@
      13.74
     ],
     [
-     4227.72,
-     2251.12,
-     13.68
+     4220.12,
+     2258.99,
+     13.77
     ],
     [
-     4218.98,
-     2241.63,
-     13.99
-    ],
-    [
-     4218.32,
-     2248.33,
-     14.04
+     4226.45,
+     2248.22,
+     13.76
     ],
     [
      4226.91,
      2244.55,
-     13.97
+     13.88
     ],
     [
      4239.26,
@@ -11037,22 +11102,12 @@
     [
      4132.31,
      2058.69,
-     17.71
+     17.72
     ],
     [
-     4131.2,
-     2047.46,
-     18.35
-    ],
-    [
-     4124.08,
-     2039.04,
-     18.39
-    ],
-    [
-     4126.49,
-     2046.91,
-     18.47
+     4128.98,
+     2046.77,
+     18.38
     ],
     [
      4130.75,
@@ -11788,6 +11843,12 @@
    "waypoints": [
     "Tideway Shrine"
    ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
    "points": [
     [
      2766.5,
@@ -12811,74 +12872,63 @@
    "of_m": 2229
   },
   {
-   "id": "way-stormhold-helstrom-2",
-   "name": "Wayshrine of the Root (Stormhold–Helstrom)",
-   "leg": "stormhold-helstrom",
-   "region": "stone-forest",
-   "x": 2281.31,
-   "z": 1829.5,
-   "y": 81.99,
-   "at_m": 1552,
-   "of_m": 2921
-  },
-  {
-   "id": "way-helstrom-archon-3",
-   "name": "Pole Camp (Helstrom–Archon)",
+   "id": "way-helstrom-archon-2",
+   "name": "Corpse-Lily Shrine (Helstrom–Archon)",
    "leg": "helstrom-archon",
    "region": "deep-marshes",
    "x": 2713.76,
    "z": 3012.97,
    "y": 7.32,
    "at_m": 633,
-   "of_m": 2589
+   "of_m": 2571
   },
   {
-   "id": "way-helstrom-blackrose-4",
-   "name": "Logging Camp (Helstrom–Blackrose)",
+   "id": "way-helstrom-blackrose-3",
+   "name": "Welkynd Shrine (Helstrom–Blackrose)",
    "leg": "helstrom-blackrose",
    "region": "blackwood",
    "x": 2205.5,
    "z": 3206.2,
    "y": 8.64,
-   "at_m": 651,
-   "of_m": 2480
+   "at_m": 624,
+   "of_m": 2420
   },
   {
-   "id": "way-archon-thorn-5",
-   "name": "Pole Camp (Archon–Thorn)",
+   "id": "way-archon-thorn-4",
+   "name": "Corpse-Lily Shrine (Archon–Thorn)",
    "leg": "archon-thorn",
    "region": "deep-marshes",
    "x": 4127.01,
    "z": 3221.94,
    "y": 7.88,
    "at_m": 710,
-   "of_m": 4299
+   "of_m": 4244
+  },
+  {
+   "id": "way-archon-thorn-5",
+   "name": "Lichen Post (Archon–Thorn)",
+   "leg": "archon-thorn",
+   "region": "crimson-coast",
+   "x": 4175.7,
+   "z": 2267.96,
+   "y": 13.87,
+   "at_m": 2226,
+   "of_m": 4244
   },
   {
    "id": "way-archon-thorn-6",
-   "name": "Vat-Keeper’s Hut (Archon–Thorn)",
-   "leg": "archon-thorn",
-   "region": "crimson-coast",
-   "x": 4199.68,
-   "z": 2269.28,
-   "y": 13.83,
-   "at_m": 2253,
-   "of_m": 4299
-  },
-  {
-   "id": "way-archon-thorn-7",
-   "name": "Kiln Post (Archon–Thorn)",
+   "name": "Fired-Cold Well (Archon–Thorn)",
    "leg": "archon-thorn",
    "region": "clay-moor",
    "x": 4119.25,
    "z": 1251.87,
    "y": -20.52,
-   "at_m": 3665,
-   "of_m": 4299
+   "at_m": 3610,
+   "of_m": 4244
   },
   {
-   "id": "way-lilmoth-archon-8",
-   "name": "Stilt-Rest (Lilmoth–Archon)",
+   "id": "way-lilmoth-archon-7",
+   "name": "Tide-Pole Post (Lilmoth–Archon)",
    "leg": "lilmoth-archon",
    "region": "eastern-rootlands",
    "x": 2966.13,
@@ -12888,8 +12938,8 @@
    "of_m": 2523
   },
   {
-   "id": "way-lilmoth-archon-9",
-   "name": "Tide-Pole Post (Lilmoth–Archon)",
+   "id": "way-lilmoth-archon-8",
+   "name": "Stilt-Rest (Lilmoth–Archon)",
    "leg": "lilmoth-archon",
    "region": "eastern-rootlands",
    "x": 3591.76,
@@ -12912,9 +12962,9 @@
     "helstrom-blackrose",
     "blackrose-lilmoth"
    ],
-   "metres": 6903.6,
-   "walk_min": 57.53,
-   "jog_min": 35.96,
+   "metres": 6728.5,
+   "walk_min": 56.07,
+   "jog_min": 35.04,
    "note": "RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps."
   },
   "long_way": {
@@ -12931,11 +12981,11 @@
     "helstrom-blackrose",
     "soulrest-blackrose"
    ],
-   "metres": 9470.6,
-   "walk_min": 78.92,
-   "jog_min": 49.33,
+   "metres": 9248.3,
+   "walk_min": 77.07,
+   "jog_min": 48.17,
    "note": "RI-WLD01 §5 THE LONG WAY — Thorn to Soulrest."
   }
  },
- "total_trunk_m": 25385.3
+ "total_trunk_m": 25067.2
 }

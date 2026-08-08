@@ -138,7 +138,18 @@ try {
       // race, the upbringing and the birthsign. That is what is measured here.
       let reactions = null;
       try {
-        reactions = { has_reactionTo: typeof e.reactionTo === 'function', gates: e._playerGates ? e._playerGates() : 'no _playerGates' };
+        // BOTH names the engine's comment cites are wrong: there is no `reactionTo` and no
+        // `_playerGates` anywhere in game/src. The function that exists and reads this field is
+        // `_talkPlayer()`. Recorded as data rather than asserted, because naming the right
+        // function is the builder's job and finding it is mine.
+        const tp = e._talkPlayer ? e._talkPlayer() : null;
+        reactions = {
+          has_reactionTo: typeof e.reactionTo === 'function',
+          has_playerGates: typeof e._playerGates === 'function',
+          talkPlayer_race: tp ? tp.race : null,
+          talkPlayer_topics: tp && tp.topics_known ? tp.topics_known.slice().sort() : null,
+          npcs_offering: (() => { try { return e.listEntities ? e.listEntities().filter((x) => x.kind === 'npc').map((x) => [x.id, (x.topics_offered || []).length]) : null; } catch { return 'threw'; } })(),
+        };
       } catch (err) { reactions = { error: String(err.message || err) }; }
       // The sentence she says about the body — the one row that must differ per body.
       // Every race id in the build plus every WRONG name the misread table uses. The first draft

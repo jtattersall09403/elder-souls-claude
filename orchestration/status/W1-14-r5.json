@@ -16,8 +16,25 @@
     "6. no_focus (and every cast refusal) spoken through the shipped uiToast channel.",
     "7. A POSITIVE ARM published beside every teardown."
   ],
-  "next_step": "implement the lead in sim/magic/system.js",
-  "files_touched": ["orchestration/status/W1-14-r5.json"],
+  "next_step": "verify the derived turn rates against AP-M3 and the dodge arm; then water/purse/refusal probes; then re-run the full grid + teardowns",
+  "files_touched": [
+    "orchestration/status/W1-14-r5.json",
+    "game/src/sim/magic/system.js",
+    "game/src/sim/magic/enchant-counter.js",
+    "game/src/sim/combat-bridge.js",
+    "game/src/combat/player.js",
+    "game/src/sim/traversal.js",
+    "game/src/save/state.js",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/data/magic/cast-classes.json",
+    "game/data/npcs/spellwrights.json",
+    "tools/harness/w1-14-r5-lead.mjs",
+    "tools/harness/w1-14-r5-diag.mjs",
+    "tools/harness/w1-14-r5-alias.mjs",
+    "tools/harness/w1-14-r5-enchant.mjs",
+    "reports/w1-14-r5/"
+  ],
   "files_claimed": [
     "game/src/sim/magic/system.js",
     "game/src/sim/magic/enchant-counter.js",
@@ -40,5 +57,17 @@
     "docs/shots/"
   ],
   "notes": "engine.js and harness/api.js are shared with W1-15-r3 [building]; my edits there are additive and narrow (a water reader, a load-time purse resync, counter wiring). Declared here per rule 16.",
-  "contention": "node tools/contention.mjs --gate returned GO before starting (6-instance ceiling, room for 4)."
+  "contention": "node tools/contention.mjs --gate returned GO before starting (6-instance ceiling, room for 4).",
+  "done_so_far": [
+    "LEAD: sim/magic/system.js _interceptOf + _stepBodyVelocity; the bolt aims at the intercept and coasts. First version was INERT (p0[2] on a planar pair -> NaN -> silent fall-through to pure pursuit); caught by the frame-by-frame diagnostic, fixed, and the finiteness guard is now explicit.",
+    "RELATIVE SWEEP: the projectile is swept against the BODY's segment, not its end-of-frame point. Byte-identical for a stationary target.",
+    "closest-approach instrumentation on every flight + spell_miss on the magic stream + spell_hit{miss:true} on the combat bus.",
+    "FIXTURE CORRECTION: the round-4 fixture had the caster staring into space. lock-on is a free action and turns the body; both aimed and unaimed grids are published.",
+    "cast-classes.json: LIGHT 60->95, HEAVY 45->115 deg/s, DERIVED (ballistics.turn_rate_law) rather than invented; tracking_cutoff untouched so AP-M3 is exactly as tight.",
+    "WATER: MagicSystem._supportY - the floor is the swimmer float line, importing traversal.js SWIM_FLOAT_M (one definition now).",
+    "REFUSAL VOICE: all seven cast refusals go through uiToast. Correction to the verdict: the S29 travel fence was ALSO only on the event; nothing under ui/ or render/ read its text either.",
+    "PURSE: applySave takes a setGold hook; engine passes _setGold. __breakPurseHook is the teardown.",
+    "ENCHANTING COUNTER BUILT: sim/magic/enchant-counter.js + MagicSystem.enchantItem/useEnchantedItem + engine wiring + save. MEASURED: walked to Tsona-Ixtu in Lilmoth (ARRIVED, 4.72 m), counter opened, ceiling 70 read off her record, gold 400000->399854, grand gem 1->0, save carries the ring, and using it did 66 hp for 0 Focus with charge 2000->1952. Teardown red: 0 damage, charge unmoved.",
+    "NEW FINDING (not mine to fix): 5 of the 6 enchanter/spellwright posts are NOT reachable on foot - blackrose 7.99 m short, soulrest 6.98, stormhold 49.57, gideon 6.17, helstrom 25.72, all `stuck`. Only Lilmoth arrives. Same class as W1-04."
+  ]
 }

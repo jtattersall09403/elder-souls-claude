@@ -8386,6 +8386,14 @@ export class Engine {
     const st = { seg: 0 };
     let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0;
     let worstOff = 0, offRoadFrames = 0, regains = 0, off = false;
+    // W1-CROSSING round 1, §A3 — THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
+    // (`path_m` counted a respawn as walked distance) was landed in `walkRoute` and stated, in
+    // F7 and in survey §2c, as landing in "`walkRoute` AND `walkPath`". It had not landed here.
+    // `walkPath` is the verb the reachability and drowning instruments drive
+    // (`tools/world/w1-01-r4-soulrest-leg.mjs`, `tools/world/rawleg-check.mjs`), so until now no
+    // `walkPath` distance in this project was a walked distance. Same threshold, same three
+    // fields, same reasoning — see `walkRoute`'s note below for why 1 m is the bar.
+    const jumps = []; let jumpCount = 0, jumpM = 0;
     const visited = new Set([this.field.regionAt(p.pos[0], p.pos[2]).id]);
     const deepest = { depth_m: 0, at: null };
     while (frames < o.maxFrames) {
@@ -8412,11 +8420,22 @@ export class Engine {
       const script = [{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
       if (this.traversal && this.traversal.mired) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
       this.input.queueInputs(script, this.sim.frame);
-      const x0 = p.pos[0], z0 = p.pos[2];
+      const x0 = p.pos[0], z0 = p.pos[2], hp0 = p.hp;
       this.loop.stepOnce();
       this._afterStep();
       const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
-      dist += step; frames++;
+      // A WALKING BODY CANNOT MOVE A METRE IN A SIXTIETH OF A SECOND — see `walkRoute`. Metres the
+      // world MOVED the body (a death and a respawn at a hearth, a fall handler re-placing the
+      // capsule, a streamer re-seat) are recorded and NOT walked. The hearth this province
+      // respawns you at is 116.7 m from THE CROSSING's destination, so without this a body that
+      // dies on the first leg reports an arrival.
+      if (step > 1) {
+        if (jumps.length < 40) jumps.push({ at_m: +dist.toFixed(1), frame: frames, jump_m: +step.toFixed(1),
+          from: [+x0.toFixed(1), +z0.toFixed(1)], to: [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)],
+          hp_before: hp0, hp_after: p.hp });
+        jumpCount++; jumpM += step;
+      } else dist += step;
+      frames++;
       // A body that is MIRED and struggling is paying a declared cost, not stuck. Counting those
       // frames as "stuck" is what made every S9 walked leg abort inside a delta the flood fill
       // calls 99.3% walkable: three struggles at 25 stamina take 90 frames of zero movement, and
@@ -8447,6 +8466,11 @@ export class Engine {
       // because it never needed one; a walk that leaves and never returns reports 0 as well, so
       // read it beside `worst_off_path_m` and `off_path_frames`, never alone.
       worst_off_path_m: +worstOff.toFixed(2), off_path_frames: offRoadFrames, regains: regains + (off ? 0 : 0),
+      // Discontinuities: metres the body was MOVED rather than walked. `path_m` excludes them.
+      teleports: jumpCount, teleported_m: +jumpM.toFixed(1), teleport_log: jumps,
+      // `arrived` is answered against the body's position, which a respawn also moves — so a walk
+      // that teleported is not an arrival this tool will vouch for on its own. Read the two together.
+      arrival_is_clean: jumpCount === 0,
     };
   }
 

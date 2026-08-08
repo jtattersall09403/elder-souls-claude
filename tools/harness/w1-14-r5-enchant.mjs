@@ -62,26 +62,45 @@ const RUN = (page) => page.evaluate(async () => {
   const r2 = (v) => Math.round(v * 100) / 100;
   const out = {};
 
-  // ---- A. THE WALK -----------------------------------------------------------------------------
-  // Blackrose, not Lilmoth: the round-4 commission probe went to Lilmoth and the round-4 critic
-  // went to Gideon precisely so that the door would not be one record that happens to work. The
-  // MASTER enchanter is also the one whose ceiling (110) differs from the journeymen's (70), so
-  // the arm reads a number that is this person's rather than the model's default.
-  H.setSeed(7); H.loadState('town-blackrose'); H.stepFrames(4); H.loadState('town-blackrose');
+  // EVERY town that has one is walked, not one town. The round-4 verdict's §6 went to a DIFFERENT
+  // spellwright than the round did, "so the door is not one record that happens to work", and its
+  // §9 carries W1-04's finding that some authored posts in this province cannot be reached on foot
+  // at all. Both are answered by walking all six and publishing every leg, aborts included. The
+  // counter is then driven in whichever town the walk got closest in, and the metres are stated.
+  const TOWNS = [
+    ['town-blackrose', 'enchanter-blackrose'], ['town-soulrest', 'enchanter-soulrest'],
+    ['town-stormhold', 'enchanter-stormhold'], ['town-lilmoth', 'spellwright-lilmoth'],
+    ['town-gideon', 'spellwright-gideon'], ['town-helstrom', 'spellwright-helstrom'],
+  ];
+  out.walks = [];
+  let best = null;
+  for (const [state, who] of TOWNS) {
+    H.setSeed(7); H.loadState(state); H.stepFrames(4); H.loadState(state);
+    H.setRenderRate(0); H.stepFrames(30);
+    const row = (H.listNPCs() || []).find((n) => n.eid === who || n.id === who);
+    if (!row) { out.walks.push({ town: state, who, found: false }); continue; }
+    const a = H.getPlayerStats().pos.slice();
+    let walked = null;
+    try { walked = H.walkPath([[a[0], a[2]], [row.pos[0], row.pos[2]]], { speed: 'walk', arrive_m: 1.6 }); }
+    catch (e) { walked = { error: String(e && e.message) }; }
+    const b = H.getPlayerStats().pos.slice();
+    const leg = {
+      town: state, who, found: true, name: row.name,
+      covered_m: r2(Math.hypot(b[0] - a[0], b[2] - a[2])),
+      stopped_short_m: r2(Math.hypot(b[0] - row.pos[0], b[2] - row.pos[2])),
+      arrived: !!(walked && walked.arrived), aborted: (walked && walked.aborted) || null,
+      frames: walked ? walked.frames : null,
+    };
+    out.walks.push(leg);
+    if (!best || (leg.arrived && !best.leg.arrived)
+      || (leg.arrived === best.leg.arrived && leg.stopped_short_m < best.leg.stopped_short_m)) best = { leg, state, who };
+  }
+  if (!best) return { ...out, fatal: 'no enchanter is standing in any town' };
+  out.walk = best.leg;
+  H.setSeed(7); H.loadState(best.state); H.stepFrames(4); H.loadState(best.state);
   H.setRenderRate(0); H.stepFrames(30);
-  const people = H.listNPCs();
-  const target = people.find((p) => p.eid === 'enchanter-blackrose' || p.id === 'enchanter-blackrose')
-    || people.find((p) => /enchanter/.test(String(p.eid || p.id)));
-  out.walk = { town: 'town-blackrose', found: !!target, npc: target ? target.eid : null, name: target ? target.name : null };
-  if (!target) return { ...out, fatal: 'no enchanter is standing in Blackrose' };
-  const p0 = H.getPlayerStats().pos.slice();
-  let walked = null;
-  try { walked = H.walkPath([[p0[0], p0[2]], [target.pos[0], target.pos[2]]], { speed: 'walk', arrive_m: 1.6 }); } catch (e) { walked = { error: String(e && e.message) }; }
-  const p1 = H.getPlayerStats().pos.slice();
-  out.walk.from = p0; out.walk.to = p1;
-  out.walk.covered_m = p0 && p1 ? r2(Math.hypot(p1[0] - p0[0], p1[2] - p0[2])) : null;
-  out.walk.stopped_short_m = p1 ? r2(Math.hypot(p1[0] - target.pos[0], p1[2] - target.pos[2])) : null;
-  out.walk.result = walked;
+  const target = (H.listNPCs() || []).find((n) => n.eid === best.who || n.id === best.who);
+  H.walkPath([[H.getPlayerStats().pos[0], H.getPlayerStats().pos[2]], [target.pos[0], target.pos[2]]], { speed: 'walk', arrive_m: 1.6 });
 
   // ---- B. THE COUNTER --------------------------------------------------------------------------
   const talk = H.talkTo(target.eid);
@@ -91,6 +110,16 @@ const RUN = (page) => page.evaluate(async () => {
   out.counter.opened_with_no_soul = !!(st && st.enchanting);
   out.counter.line_with_no_soul = st && st.enchanting ? st.enchanting.line : null;
   out.counter.rows_with_no_soul = st && st.enchanting ? st.enchanting.options.map((o) => o.text) : null;
+
+  // THE REFUSAL A PLAYER MEETS, asked BEFORE the character learns every spell in the game.
+  // After that there is nothing they do not own and the gate cannot be shown to exist at all —
+  // which is the shape of an assertion that can only pass.
+  out.counter.known_before_learning = st && st.enchanting ? st.enchanting.known_effects : null;
+  const say0 = (id) => { st = H.conversationSay(id); return st && st.enchanting ? st.enchanting : null; };
+  say0('enchant.effect.add');
+  const ref = say0('enchant.effect.paralyse');
+  out.counter.refusal_unknown_effect = ref ? ref.last_refusal : null;
+  say0('enchant.back');
 
   // Now a soul, and the spells whose effects the character owns.
   H.grantSoulGem('grand');
@@ -112,7 +141,7 @@ const RUN = (page) => page.evaluate(async () => {
 
   // ---- C. THE PURCHASE -------------------------------------------------------------------------
   const goldBefore = H.getGold();
-  const gemsBefore = (H.getMagicState().gems || []).length;
+  const gemsBefore = (H.saveState().magic.gems || []).length;
   say('enchant.effect.add');
   out.counter.effect_book = st && st.enchanting ? st.enchanting.options.slice(0, 4).map((o) => o.text) : null;
   say('enchant.effect.fire_damage');
@@ -131,7 +160,7 @@ const RUN = (page) => page.evaluate(async () => {
   out.purchase.gold_after = H.getGold();
   out.purchase.gold_moved = goldBefore - H.getGold();
   out.purchase.gems_before = gemsBefore;
-  out.purchase.gems_after = (H.getMagicState().gems || []).length;
+  out.purchase.gems_after = (H.saveState().magic.gems || []).length;
   const items = H.enchantedItems();
   out.purchase.items = items.map((i) => ({ id: i.id, name: i.name, item_class: i.item_class, kind: i.kind, charge: i.charge, charge_max: i.charge_max, charge_per_use: i.charge_per_use, soul_grade: i.soul_grade, gold_price: i.gold_price }));
   // Through the SAVE, not through the field.
@@ -139,14 +168,6 @@ const RUN = (page) => page.evaluate(async () => {
   out.purchase.save_carries = (blob.magic.enchanted || []).map((e) => e.id);
   out.purchase.save_gold = blob.progression.gold;
 
-  // The refusal a player meets: an effect nobody owns a spell for.
-  H.conversationClose();
-  H.resetMagicWorld();
-  H.talkTo(target.eid);
-  say('enchanting'); say('enchant.effect.add');
-  const ref = say('enchant.effect.fire_damage');
-  out.counter.refusal_unknown_effect = ref ? ref.last_refusal : null;
-  H.conversationClose();
 
   // ---- D. THE CONSUMER -------------------------------------------------------------------------
   // A fight, a body, and the object. Focus is read before and after, because "it spent charge and
@@ -194,7 +215,7 @@ const RUN = (page) => page.evaluate(async () => {
   try { d = await RUN(page); } finally { await close(); }
   writeJson(path.join(outDir, 'enchant.json'), { schema: 'elder-souls/w1-14-r5-enchant@1', commit: git.commit, dirty: git.dirty, ...d });
   if (d.fatal) { log(`FATAL: ${d.fatal}`); process.exit(1); }
-  log(`WALK      ${d.walk.name} in ${d.walk.town}: covered ${d.walk.covered_m} m, stopped ${d.walk.stopped_short_m} m short`);
+  for (const w of d.walks) log(`WALK      ${String(w.town).padEnd(16)} ${(w.found ? String(w.name) : '(nobody there)').padEnd(18)} covered ${String(w.covered_m).padStart(7)} m, ${w.arrived ? 'ARRIVED' : `stopped ${w.stopped_short_m} m short (${w.aborted})`}`);
   log(`COUNTER   opened=${d.counter.opened}  ${d.counter.enchanter_name} (${d.counter.enchanter}), ceiling ${d.counter.ceiling}, souls ${JSON.stringify(d.counter.souls_held)}`);
   log(`          "${d.counter.opening_line}"`);
   log(`          rows: ${JSON.stringify(d.counter.root_rows)}`);

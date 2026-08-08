@@ -252,6 +252,99 @@ function resample(p, step) {
   out.push(p[p.length - 1].slice());
   return out;
 }
+/**
+ * ================================================================================================
+ * SELF-CLEARANCE — A ROAD MAY NOT PASS OVER ITSELF. (W1-CROSSING round 2.)
+ * ================================================================================================
+ *
+ * The round-1 critic found THE CROSSING does not walk BACKWARDS: the body jams at 5,072.3 m, on
+ * flat road, 0.62 m from the centreline, for 900 consecutive frames under 1 cm — 1,633 m along
+ * `stormhold-helstrom`. `--no-deck` (every `deck_span` deleted) takes the same body 1,165 m
+ * further and collapses the stuck run to 18 frames, and the pre-fix parapet arm is byte-identical,
+ * so the blocker is the deck GEOMETRY and neither the parapet nor the steering.
+ *
+ * What is there: this leg's segment 126->127 and its segment 130->131 **cross**, at (2280.6,
+ * 1862.2), with 6.6 m of air between them — the return limb of a switchback passing over the
+ * outbound limb. Points 129-131 are a declared 17 m viaduct, and a deck slab is `half_width + 0.5`
+ * = 3.5 m either side of its centreline, so the upper deck is laid across the lower carriageway.
+ *
+ * `field.heightAt()` is a HEIGHTFIELD: one surface per (x, z). `_deckY` returns the HIGHEST slab
+ * covering the point, and `_applyRoads` breaks a tie between two segments covering a point with
+ * equal weight in favour of the higher one — both deliberate, both documented, and neither can
+ * represent two carriageways at one coordinate. A body on the lower limb therefore reads the
+ * ground as the deck 7 m above it: a 5.75 m step up over ten metres, which the 40-degree slope
+ * gate refuses. Walking north the steering cuts the hairpin and misses it; walking south the body
+ * walks into it and stops. **The fix cannot be in `field.js` without a second surface**, so it is
+ * here, where the geometry is authored: a road on a heightfield may not double back within reach
+ * of itself.
+ *
+ * `MIN_SELF_CLEAR_M` is the sum of the two things that can touch: the deck slab's `hw + 0.5` and
+ * the lower carriageway's collision width `hw * 1.15`, plus a margin. Where two non-adjacent
+ * stretches of one leg come closer than that, the excursion between them is spliced out at the
+ * point of closest approach — the loop is removed and the two limbs become one junction. Length
+ * is re-reported per leg (`self_clear_delta_m`) rather than silently re-solved: RI-WLD01 §4's
+ * path_m has a 5% band and the honest thing is to spend part of it visibly.
+ *
+ * `--no-self-clear` restores the old behaviour for delete-the-fix. It is not a debug flag; it is
+ * the control arm, and the control has been watched go red.
+ */
+function segSegNear(a1, a2, b1, b2) {
+  // Closest approach of two 2-D segments. Returns { d, ca, cb }.
+  const ux = a2[0] - a1[0], uz = a2[1] - a1[1];
+  const vx = b2[0] - b1[0], vz = b2[1] - b1[1];
+  const wx = a1[0] - b1[0], wz = a1[1] - b1[1];
+  const a = ux * ux + uz * uz, b = ux * vx + uz * vz, c = vx * vx + vz * vz;
+  const d = ux * wx + uz * wz, e = vx * wx + vz * wz;
+  const D = a * c - b * b;
+  let s, t;
+  if (D < 1e-9) { s = 0; t = c > 1e-9 ? e / c : 0; }
+  else { s = (b * e - c * d) / D; t = (a * e - b * d) / D; }
+  s = Math.max(0, Math.min(1, s)); t = Math.max(0, Math.min(1, t));
+  // One refinement pass after the clamp, so a clamped `s` gets the honest `t` for it and vice
+  // versa. Without it a crossing whose unclamped solution lies outside either segment reports a
+  // distance to a corner rather than to the segment, and a genuine overlap can read as clear.
+  t = c > 1e-9 ? Math.max(0, Math.min(1, (e + b * s) / c)) : 0;
+  s = a > 1e-9 ? Math.max(0, Math.min(1, (b * t - d) / a)) : 0;
+  const ca = [a1[0] + ux * s, a1[1] + uz * s];
+  const cb = [b1[0] + vx * t, b1[1] + vz * t];
+  return { d: Math.hypot(ca[0] - cb[0], ca[1] - cb[1]), ca, cb, s, t };
+}
+
+function selfClearance(p, clear, step = 12) {
+  let out = p.map((q) => q.slice());
+  const removed = [];
+  for (let guard = 0; guard < 64; guard++) {
+    let hit = null;
+    for (let i = 0; i + 1 < out.length && !hit; i++) {
+      for (let j = i + 3; j + 1 < out.length; j++) {
+        const n = segSegNear(out[i], out[i + 1], out[j], out[j + 1]);
+        if (n.d < clear) { hit = { i, j, n }; break; }
+      }
+    }
+    if (!hit) break;
+    // The junction is the midpoint of the closest approach: at a true crossing that IS the
+    // crossing point, so the spliced road passes through where it used to pass over.
+    const jx = (hit.n.ca[0] + hit.n.cb[0]) / 2, jz = (hit.n.ca[1] + hit.n.cb[1]) / 2;
+    const head = out.slice(0, hit.i + 1), tail = out.slice(hit.j + 1);
+    const before = len2d(out);
+    // Densify the two new edges so the spliced stretch keeps the leg's ~12 m point spacing and
+    // the elevation solve still has somewhere to put a grade. Everything outside the splice is
+    // left byte-identical on purpose — this pass must be surgical or the diff is unreadable.
+    const bridge = [];
+    for (const [a, b] of [[head[head.length - 1], [jx, jz]], [[jx, jz], tail[0]]]) {
+      const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      const n = Math.max(1, Math.round(L / step));
+      for (let k = 1; k < n; k++) bridge.push([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]);
+      if (b !== tail[0]) bridge.push([jx, jz]);
+    }
+    out = head.concat(bridge, tail);
+    removed.push({ between_i: [hit.i, hit.j], approach_m: +hit.n.d.toFixed(2),
+      junction: [+jx.toFixed(1), +jz.toFixed(1)], points_removed: hit.j - hit.i,
+      loop_m: +(before - len2d(out)).toFixed(1) });
+  }
+  return { p: out, removed };
+}
+
 function smooth(p, passes) {
   let q = p.map((v) => v.slice());
   for (let k = 0; k < passes; k++) {
@@ -334,6 +427,8 @@ function wiggle(p, amp, seedPhase) {
  * ==============================================================================================*/
 
 const JOIN_ON = !ARGV.includes('--no-join');
+// The self-clearance pass (see `selfClearance`). `--no-self-clear` is the delete-the-fix arm.
+const SELF_CLEAR = !ARGV.includes('--no-self-clear');
 
 // How near a wall face the road CENTRELINE may come. The body is 0.32 m
 // (`world-collision.js PLAYER_RADIUS_M`) and the wall slab stands WALL_T/2 = 0.18 m proud of the
@@ -1073,9 +1168,27 @@ for (const leg of scale.roads) {
   delete corr.p;
 
   const tideway = /tideway/i.test(leg.class);
+  const halfWidth = tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0;
+  // SELF-CLEARANCE, last, on the finished polyline, for the same reason the join is last: the
+  // length solve is a bisection over the whole leg and re-running it here would fight the splice
+  // for the same metres. The loop it removes is tens of metres of a multi-kilometre leg, and the
+  // cost is reported per leg rather than absorbed.
+  const preClearLen = len2d(p);
+  let selfClear = { removed: [] };
+  if (SELF_CLEAR) {
+    selfClear = selfClearance(p, halfWidth + 0.5 + halfWidth * 1.15 + 0.5);
+    if (selfClear.removed.length) {
+      p = selfClear.p;
+      const a = joinAudit(p);
+      process.stdout.write(`SELF-CLEAR: ${legId} — ${selfClear.removed.length} place(s) where the road passed within reach of itself; ${(preClearLen - len2d(p)).toFixed(1)} m of loop removed; join violations after: ${a.violations}\n`);
+      if (a.violations) process.stderr.write(`SELF-CLEAR: the splice on ${legId} put the road into a building — ${a.violations} violation(s)\n`);
+      audit = a;
+    }
+  }
   routes.push({ leg, p, mode, tideway, recuts: threaded.recuts, audit, corr,
     preJoin_m: +preJoinLen.toFixed(1), join_delta_m: +(len2d(p) - preJoinLen).toFixed(1),
-    halfWidth: tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0 });
+    self_clear: selfClear.removed, self_clear_delta_m: +(len2d(p) - preClearLen).toFixed(1),
+    halfWidth });
 }
 
 // ---- the deck repair loop --------------------------------------------------------------------
@@ -1153,6 +1266,11 @@ const legs = [];
         road_anchor: [leg.from, leg.to].filter((n) => GATES[n]).map((n) => ({ settlement: n, ...GATES[n] })),
       } : { disabled: true, reason: '--no-join: routed over terrain with the settlement plan unread' },
       waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
+      // SELF-CLEARANCE, declared on the leg. Where this leg used to double back within reach of
+      // itself — the defect that made THE CROSSING unwalkable in one direction — and what the
+      // splice cost. An empty array is a leg that never came near itself. See `selfClearance`.
+      self_clearance: { min_clear_m: +(halfWidth + 0.5 + halfWidth * 1.15 + 0.5).toFixed(2),
+        enabled: SELF_CLEAR, spliced: r.self_clear, delta_m: r.self_clear_delta_m },
       points: p.map((q, i) => [+q[0].toFixed(2), +q[1].toFixed(2), +y[i].toFixed(2)]),
     });
   });
