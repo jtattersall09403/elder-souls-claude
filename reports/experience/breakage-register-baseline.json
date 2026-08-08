@@ -1,13 +1,13 @@
 {
   "schema": "elder-souls/exp06-register@1",
   "tool": "tools/experience/breakage-probe.mjs",
-  "at": "2026-08-08T02:24:33.805Z",
+  "at": "2026-08-08T02:26:56.933Z",
   "evidence_class": "static_absence_of_closure",
   "evidence_caveat": "RI-EXP06 Step 1 asks each probe to be RUN as a harness scenario that performs the breakage. This run does not perform any breakage; it asserts, per entry, that the substrate is in the tree and that the mechanism the entry's own \"Red if\" clause names is not. That is a regression detector, which is what §C is for, and it is weaker than a demonstration. Do not report it as one.",
   "sabotage_control": "not_applicable",
   "sabotage_control_reason": "RI-EXP06 Comparison method: \"No sabotage control is defined for this item, and that is deliberate rather than an omission ... a probe either fires or it does not.\"",
-  "baseline": null,
-  "baseline_absent_note": "No previous register on disk, so every row is `new` and the REGRESSION column is unavailable this wave. THIS FILE IS THE BASELINE the next wave diffs against; that is why it is versioned under reports/.gitignore's baseline exception.",
+  "baseline": "reports/experience/breakage-register-baseline.json",
+  "baseline_absent_note": null,
   "metrics": {
     "live_entries": 15,
     "probes_passing": 13,
@@ -32,7 +32,113 @@
     "regressions": true,
     "probes_run": true
   },
-  "diff": null,
+  "diff": [
+    {
+      "id": "B-01",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-02",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-03",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-04",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-05",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-06",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-07",
+      "result": "still_failing",
+      "previous": "fail",
+      "current": "fail",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-08",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-09",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-10",
+      "result": "still_failing",
+      "previous": "fail",
+      "current": "fail",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-11",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-12",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-13",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-14",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    },
+    {
+      "id": "B-15",
+      "result": "held",
+      "previous": "pass",
+      "current": "pass",
+      "previous_at": "2026-08-08T02:24:33.805Z"
+    }
+  ],
   "rows": [
     {
       "id": "B-01",

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `58796ac`: 581 tools, 153 reference
+so it cannot drift. Generated at `9aeb839`: 584 tools, 153 reference
 items, 44 pieces in flight.
 
 Its purpose is to stop 44+ concurrent agents each paying separately to discover the
@@ -218,7 +218,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 17
+### `tools/experience/` — 18
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/beat-diff.mjs` — RI-EXP01 steps 3 and 5: diff an observed beat log against the beat sheet.
@@ -232,6 +232,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/lib/md.mjs` — read the corpus's own markdown tables into machine-readable specs.
 - `tools/experience/lib/sabotage.mjs` — THE SABOTAGE CONTROL, AS A FACILITY ANY PIECE CAN USE.
 - `tools/experience/log-lint.mjs` — PLAYTHROUGH-CRITIC §5.4: the play log must be neutral in register.
+- `tools/experience/pbrule-audit.mjs` — RI-EXP06 Step 3.
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/probes-from-md.mjs` — RI-EXP06 Step 0: "the register is data".
 - `tools/experience/sabotage-cases.mjs` — THE THREE REAL FAILURES, REPLAYED THROUGH THE FACILITY.
@@ -468,7 +469,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 12
+### `tools/lore/` — 13
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -481,6 +482,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r3-reach.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
+- `tools/lore/name-rosters.mjs` — **no header comment**
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
 
 ### `tools/metrics/` — 6
@@ -526,12 +528,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 34
+### `tools/quests/` — 35
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
 - `tools/quests/attr-scale-consumption.mjs` — the CONSUMPTION probe for the attribute-scale sweep.
 - `tools/quests/critic-ar3-endtoend.mjs` — written for the W1-19 round-2 VERDICT.
+- `tools/quests/critic-chain-headless.mjs` — W1-READABLES r2 critic, attacks B and C.
 - `tools/quests/critic-faction-arbitration.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1).
 - `tools/quests/critic-faction-ceiling.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1), declared under method_deviations.
 - `tools/quests/critic-faction-gate-bypass.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1), declared under method_deviations.
@@ -719,7 +722,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **128 tools have no header comment**, so nobody can tell what they do without
+> **129 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

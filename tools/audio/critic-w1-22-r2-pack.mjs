@@ -318,14 +318,27 @@ const recordings = new Map();
 let done = 0;
 for (const k of need) {
   const [region, tod, seed] = k.split('|');
+  // BASE64 PCM16, never `arrays: true`. Sixty seconds of stereo at 16 kHz is 1.92M doubles, and
+  // handing that across the CDP bridge as a JSON array is the transport `ambienceCapture`'s own
+  // comment says "turned a thirteen-region render into a ten-minute job on a loaded box". The
+  // compact form is the same samples at about a twentieth of the bytes, decoded here in Node, so
+  // nothing below is a number the engine computed about itself.
   const cap = await page.evaluate(async (o) => {
     const r = await window.__ENGINE.ambienceCapture({
       region: o.region, seconds: o.seconds, sampleRate: o.rate, tod: o.tod,
-      seed: Number(o.seed), listener: null, arrays: true });
-    return r.ok ? { L: r.L, R: r.R, sampleRate: r.sampleRate } : { error: r.why };
+      seed: Number(o.seed), listener: null });
+    return r.ok ? { b64: r.pcm16_interleaved_b64, sampleRate: r.sampleRate, samples: r.samples }
+                : { error: r.why };
   }, { region, tod, seed, seconds: SECONDS, rate: RATE });
   if (cap.error) { console.error(`capture failed for ${k}: ${cap.error}`); await handle.close(); process.exit(2); }
-  recordings.set(k, features(Float64Array.from(cap.L), Float64Array.from(cap.R), cap.sampleRate));
+  const buf = Buffer.from(cap.b64, 'base64');
+  const n = cap.samples;
+  const Lch = new Float64Array(n), Rch = new Float64Array(n);
+  for (let i = 0; i < n; i++) {
+    Lch[i] = buf.readInt16LE(i * 4) / 32767;
+    Rch[i] = buf.readInt16LE(i * 4 + 2) / 32767;
+  }
+  recordings.set(k, features(Lch, Rch, cap.sampleRate));
   done++;
   if (done % 5 === 0) process.stderr.write(`  rendered ${done}/${need.size}\n`);
 }

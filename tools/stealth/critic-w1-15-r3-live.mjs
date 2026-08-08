@@ -196,22 +196,28 @@ A('L6-ZONE', 'p.zone inside an interior',
   OUT.zone.inside !== null && OUT.zone.inside !== undefined,
   'non-null — the whole trespass ladder is behind it');
 
-// ---- the picture --------------------------------------------------------------------------
-const shot = args.shot || 'docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png';
-if (OUT.nolamp_ids.length) {
-  await h.page.evaluate(async (id) => {
-    const H = window.__HARNESS;
-    H.setRenderRate(1); H.enterInterior(id); H.setTimeOfDay(3); H.stepFrames(8);
-  }, OUT.nolamp.id);
-  await h.page.waitForTimeout(1200);
-  const buf = await h.page.screenshot();
-  fs.writeFileSync(shot, buf);
-  say(`\nshot: ${shot}  (${OUT.nolamp.id} at 03:00 — drawn by render/interior.js's fail-open hearth,`);
-  say(`      simulated by the light field at L ${OUT.nolamp.L_min}..${OUT.nolamp.L_max} with ${OUT.nolamp.world_sources} sources)`);
-}
-
 const pass = R.filter((x) => x.pass).length;
 say(`\n${pass}/${R.length} assertions pass`);
+// The measurements are banked BEFORE the picture. The first run of this tool lost its whole JSON
+// to a screenshot timeout under load — rule 2, and the reason it is in this order now.
 if (args.json) writeJson(args.json, { tool: 'critic-w1-15-r3-live', at: new Date().toISOString(), assertions: R, raw: OUT });
+
+// ---- the picture --------------------------------------------------------------------------
+const shot = args.shot || 'docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png';
+if (OUT.nolamp_ids.length && !args['no-shot']) {
+  try {
+    await h.page.evaluate(async (id) => {
+      const H = window.__HARNESS;
+      H.setRenderRate(1); H.enterInterior(id); H.setTimeOfDay(3); H.stepFrames(8);
+    }, OUT.nolamp.id);
+    await h.page.waitForTimeout(2500);
+    const buf = await h.page.screenshot({ timeout: 180000, animations: 'disabled', caret: 'hide' });
+    fs.writeFileSync(shot, buf);
+    say(`\nshot: ${shot}  (${OUT.nolamp.id} at 03:00 — drawn by render/interior.js's fail-open hearth,`);
+    say(`      simulated by the light field at L ${OUT.nolamp.L_min}..${OUT.nolamp.L_max} with ${OUT.nolamp.world_sources} sources)`);
+  } catch (e) {
+    say(`\nSHOT NOT TAKEN: ${String(e && e.message).split('\n')[0]} — reported rather than retried silently (rule 26).`);
+  }
+}
 await h.close();
 process.exitCode = pass === R.length ? 0 : 1;
