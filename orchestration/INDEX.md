@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a52113c`: 766 tools, 153 reference
+so it cannot drift. Generated at `8ab4bb9`: 766 tools, 153 reference
 items, 71 pieces in flight.
 
 Its purpose is to stop 71+ concurrent agents each paying separately to discover the

@@ -190,6 +190,65 @@ const READ_CAPS = () => {
   return out;
 };
 
+
+/**
+ * MEASURE WHAT A PERSON SEES, NOT WHAT THE GL BUFFER STILL HAPPENS TO HOLD.
+ *
+ * The original reading was `gl.readPixels` on the game's own canvas, and that only works while
+ * the renderer sets `preserveDrawingBuffer`. Commit a52113c turned that off for players — for a
+ * good reason, a second full-size buffer with antialias is a known way to lose a phone's GL
+ * context — and this tool deliberately runs as a PERSON, so from that commit onward readPixels
+ * would have returned zeros on a game drawing perfectly and reported a black screen forever.
+ *
+ * A screenshot has none of that coupling. It is the composited page, which is the thing the
+ * question is actually about ("would somebody see a picture"), it includes the boot notice and
+ * any HTML overlay, and nothing running inside the page can flatter it. So: take the screenshot
+ * in Node, hand it back to the page as a data URL, draw it into a 2-D canvas — which has no
+ * relationship to the WebGL context at all — and reduce it there on the same 12x12 grid.
+ *
+ * Falls back to the GL read when the screenshot cannot be taken, and says which it used.
+ */
+async function readFrame(page, grid) {
+  const dom = await page.evaluate(READ_FRAME, { grid });
+  let shot = null;
+  try { shot = (await page.screenshot({ type: 'png' })).toString('base64'); } catch { /* fall back */ }
+  if (!shot) return { ...dom, source: dom.cannotMeasure ? 'unmeasurable' : 'gl' };
+  const px = await page.evaluate(async ({ b64, grid }) => {
+    const img = new Image();
+    img.src = 'data:image/png;base64,' + b64;
+    await img.decode();
+    const W = Math.min(img.naturalWidth, 480);
+    const H = Math.max(1, Math.round(img.naturalHeight * (W / img.naturalWidth)));
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, W, H);
+    const d = ctx.getImageData(0, 0, W, H).data;
+    const cellLit = new Array(grid * grid).fill(0), cellTot = new Array(grid * grid).fill(0);
+    let lit = 0, sampled = 0, sum = 0, hash = 2166136261;
+    for (let y = 0; y < H; y++) {
+      const gy = Math.min(grid - 1, (y / H * grid) | 0);
+      for (let x = 0; x < W; x++) {
+        const i = (y * W + x) * 4;
+        const r = d[i], g = d[i + 1], b = d[i + 2];
+        const gi = Math.min(grid - 1, (x / W * grid) | 0) + gy * grid;
+        cellTot[gi]++; sampled++; sum += r + g + b;
+        if (r > 8 || g > 8 || b > 8) { cellLit[gi]++; lit++; }
+        hash = (Math.imul(hash ^ r, 16777619) ^ g) >>> 0;
+        hash = (Math.imul(hash ^ b, 16777619)) >>> 0;
+      }
+    }
+    let litBlocks = 0;
+    for (let i = 0; i < cellTot.length; i++) if (cellTot[i] && cellLit[i] / cellTot[i] > 0.02) litBlocks++;
+    return { sampled, lit, litFraction: lit / (sampled || 1), litBlocks: litBlocks / (grid * grid),
+             meanLuma: sum / (sampled * 3 || 1), hash, shotW: img.naturalWidth, shotH: img.naturalHeight };
+  }, { b64: shot, grid });
+  // The DOM facts (canvas size, the notice and its error state) come from the page; the PIXELS
+  // come from the screenshot. `cannotMeasure` is dropped because with a screenshot we can.
+  const { cannotMeasure, ...rest } = dom;
+  return { ...rest, ...px, source: 'screenshot', glUnreadable: !!cannotMeasure };
+}
+
 // ── the sabotages (rule 4) ────────────────────────────────────────────────────────────────────
 // Six DIFFERENT ways the page can fail to be playable. Every one of them must turn this tool red.
 // The previous self-test blocked one module; five of these six would have sailed straight past it.
@@ -269,7 +328,7 @@ async function measure(browser, url, prof, { sabotage = null, play = false, shot
   // is what stops "still loading" from being an infinite excuse.
   for (const wait of [3000, 5000, 8000]) {
     await page.waitForTimeout(wait);
-    rec.samples.push({ t: Date.now() - t0, ...(await page.evaluate(READ_FRAME, { grid: GRID })) });
+    rec.samples.push({ t: Date.now() - t0, ...(await readFrame(page, GRID)) });
   }
   // A sabotaged page never boots, so the self-test would otherwise sit on the full cap six
   // times over. Shorter there; the arms still have to go red on their own merits.
@@ -288,12 +347,12 @@ async function measure(browser, url, prof, { sabotage = null, play = false, shot
     }).catch(() => false);
     if (booted) break;
     await page.waitForTimeout(2000);
-    rec.samples.push({ t: Date.now() - t0, waiting: true, ...(await page.evaluate(READ_FRAME, { grid: GRID })) });
+    rec.samples.push({ t: Date.now() - t0, waiting: true, ...(await readFrame(page, GRID)) });
   }
   rec.booted = booted;
   rec.bootMs = Date.now() - t0;
   await page.waitForTimeout(1500);
-  rec.samples.push({ t: Date.now() - t0, after: 'boot', ...(await page.evaluate(READ_FRAME, { grid: GRID })) });
+  rec.samples.push({ t: Date.now() - t0, after: 'boot', ...(await readFrame(page, GRID)) });
   rec.caps = await page.evaluate(READ_CAPS);
 
   // MOVEMENT: turn the camera for real and confirm the picture is not the same picture. A frozen
@@ -315,7 +374,7 @@ async function measure(browser, url, prof, { sabotage = null, play = false, shot
     }
   } catch (e) { rec.motionError = String(e.message).slice(0, 120); }
   await page.waitForTimeout(1200);
-  rec.samples.push({ t: Date.now() - t0, after: 'motion', ...(await page.evaluate(READ_FRAME, { grid: GRID })) });
+  rec.samples.push({ t: Date.now() - t0, after: 'motion', ...(await readFrame(page, GRID)) });
 
   if (play) rec.play = await playOpening(page, ctx, prof);
 
