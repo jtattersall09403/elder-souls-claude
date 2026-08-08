@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bf4ec20`: 616 tools, 153 reference
+so it cannot drift. Generated at `8043f15`: 618 tools, 153 reference
 items, 47 pieces in flight.
 
 Its purpose is to stop 47+ concurrent agents each paying separately to discover the
@@ -252,7 +252,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 205
+### `tools/harness/` — 206
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -431,6 +431,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
+- `tools/harness/w1-16-r3-chart.mjs` — THE PICTURE FOR W1-16 ROUND 3: the sword in your hand used to weigh nothing.
 - `tools/harness/w1-16-r3-live.mjs` — W1-16 ROUND 3, the stepping half.
 - `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
 - `tools/harness/w1-21-r2-deletefix.mjs` — DELETE-THE-FIX for W1-21 round 2's AR-2 change (RULES 6, and RULES 17 for the index check).
@@ -621,10 +622,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 2
+### `tools/ui/` — 3
 
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
+- `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 
 ### `tools/weapons/` — 19
 
@@ -928,11 +930,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
 | `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
 | `W1-16-r3` | measured (acceptance taken); waiting on a tree-wide boot break to finish the optional spell arm | retry the live spell arm when boot-check is green again; then screenshot, blog line, commi | `orchestration/status/W1-16-r3.json` `game/src/engine.js` `game/src/combat/player.js` `game/src/harness/api.js` `game/data/items/carried.json` `tools/harness/w1-16-r3-reach.mjs` |
-| `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-CHARTFONT` | ? | Wire the seven editable chart tools to the shared module; hand off the two owned by live p | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` |
 | `W1-SAVE-AI` | fix_landed | extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the  | `orchestration/status/W1-SAVE-AI.json` `game/src/save/fight.js` `game/src/combat/ai.js` `game/src/combat/enemy.js` `tools/check-save-shape.mjs` `tools/check-data.mjs` |
 | `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |

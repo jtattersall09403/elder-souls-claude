@@ -1,9 +1,9 @@
 {
   "task_id": "W1-ROAD-JOIN",
   "title": "Join road generation and settlement planting so roads do not terminate in walls",
-  "status": "building",
+  "status": "reported",
   "started_at": "2026-08-08T02:08:46Z",
-  "updated_at": "2026-08-08T03:00:55.372Z",
+  "updated_at": "2026-08-08T03:13:13.203Z",
   "owner": "builder",
   "decision": {
     "which_side_yields": "ROADS. Routing consumes the settlement plan; buildings never move.",
@@ -37,7 +37,8 @@
     "reports/w1-road-join/",
     "orchestration/status/W1-ROAD-JOIN.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/2026-08-08-w1-road-join-the-road-now-goes-between-the-houses.png",
+    "tools/world/road-join-chart.mjs"
   ],
   "files_touched": [
     "orchestration/status/W1-ROAD-JOIN.json",
@@ -51,21 +52,52 @@
     "reports/w1-road-join/roads-join-try3.json",
     "tools/world/road-join-consumption.mjs",
     "reports/w1-road-join/consumption.json",
-    "reports/w1-road-join/leg-lengths.json"
+    "reports/w1-road-join/leg-lengths.json",
+    "tools/world/road-join-chart.mjs",
+    "docs/shots/2026-08-08-w1-road-join-the-road-now-goes-between-the-houses.png",
+    "reports/w1-road-join/crossing-after-join.json",
+    "reports/w1-road-join/crossing-before-join-control.json",
+    "reports/blog-feed.jsonl"
   ],
   "acceptance": {
     "1_road_through_building_zero_of_ten": "PASS — 0 of 10 legs blocked, 0 named-route offences (reports/w1-road-join/after.json)",
-    "2_body_walks_THE_CROSSING": "pending",
+    "2_body_walks_THE_CROSSING": "NOT MET, and the wall is not why. Same commit, one browser, one variable (roads.json): PRE-JOIN roads 39.0 m, stopped at (2190.7, 794.3) with 59 solid shapes of settlement:stormhold on the body, 60,001 frames, 16.667 simulated minutes — an exact reproduction of W1-01 r4. JOINED roads 550.1 m, stopped at (2153.7, 1197.8) with ZERO solid shapes anywhere near it, 60,001 frames, 16.667 min. The wall is gone. What stops it now is a 57.5 deg ground skirt on the Valus Ridge, 5.0 m off a 3.6 m half-width deck — a separate, older defect: the pre-join crossing already had 84 samples over the 40 deg max_walkable_deg in 79 runs (worst 64.6 deg) and the joined one has 86 in 78, at the same metres. Nobody had ever got past 39 m to meet it. reports/w1-road-join/crossing-after-join.json and crossing-before-join-control.json",
     "3_delete_the_fix_control": "PASS — 3 arms, all with distinct roads.json; off-flag and off-git (69e6ffa) both return 10/10 and 16 offences (reports/w1-road-join/deletefix.json)",
     "4_consumption_RI_MTH07": "PASS — 11/11 checks. P1 move a building onto the road, P2 add one astride it, P3 grow an interior footprint until it swallows it: each goes RED unrebuilt and CLEAR rebuilt, with the road moving 33.2 / 28.1 / 22.3 m. NULL control (a building moved 250 m into open country, 217 m from any road point) moves the road 0.00 m anywhere on the network. reports/w1-road-join/consumption.json",
     "5_leg_length_table": "PASS — reports/w1-road-join/leg-lengths.json. Worst leg moved +2.68%; worst error vs RI-WLD01 declared is 2.26%, inside ARBITRATION S28 5% bar. THE CROSSING 6816 -> 6911.4 m (56.80 -> 57.59 min) against a declared 6909 m / 57.6 min."
   },
   "contention": "node tools/contention.mjs --gate returned exit 3 at 02:09Z (6 browser instances, load 6.30/core). All offline work is being done first; the body walk waits for the gate or is declared as taken over the ceiling.",
-  "next_step": "body walk on THE CROSSING (browser), then the soulrest-blackrose leg, then shot + blog + commit",
+  "next_step": "hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which could not be walked because the tree boot broke",
   "notes": [
     "The road-through-building --self-test now FAILS, and correctly so: its positive arm A was the shipped defect (stormhold-scribe across stormhold-helstrom). With the join in, arm A is clean, so the self-test as written cannot pass on a fixed tree. Its own error message anticipates this (\"retarget this test\"). I have NOT edited it (it is W1-01-r4s file and the brief says do not rebuild it); tools/world/road-join-consumption.mjs re-runs the same flag/clear/everything-else-identical logic against a building that IS on the new road, which is the retargeted arm A.",
     "RULE 17 IN THE WILD: eight successive orchestrator banks (git add -A) between 02:17Z and 02:31Z committed tools/world/build-roads.mjs and game/data/world/roads.json MID-EDIT under other agents messages. git log -- <path> therefore names commits that already carry half of this change; the delete-the-fix base had to be found by grepping every recent commit for the task id. Base is 69e6ffa (02:15:23Z), the last revision with no W1-ROAD-JOIN marker.",
     "The NULL control found a real defect in my own join and I changed the design because of it. The re-cut zone was originally scoped BY TOWN, with the radius taken from the town plus its farthest building; moving one outbuilding 800 m out inflated Stormholds zone to 845 m, swallowed most of two legs into one fine-grid solve and moved the road 236 m for a perturbation that should have moved it none. The zone is now scoped by ROAD PROXIMITY TO ANY BUILDING (INFLUENCE_M = 55 m), which is both more robust and simpler. The null now reads 0.00 m.",
     "The P3-GROW perturbation initially did not bite and looked like a coupling failure. It was not: planSettlement()s shrink pass caught the enlarged building swallowing its neighbours centres and shrank both parties back, so the model legally undid the edit. The probe now searches (building, factor) in memory for a growth whose EFFECTIVE post-shrink footprint reaches the road, and reports the effective footprint. Worth knowing for anyone else perturbing settlement footprints."
+  ],
+  "blocked_by": [
+    "TREE-WIDE BOOT FAILURE, landed by another piece at ~03:05Z while I was mid-run: game/src/character/converse.js orderTopicDocs() throws \"dialogue topic merge order is undeclared\" inside Engine._boot(). game/data/dialogue/topics/_manifest.json EXISTS on disk but is NOT listed in game/data/index.json, so the loader never hands it over. node tools/boot-check.mjs fails for everyone. This is RULES rule 13 exactly - a fail-closed assertion landed before the data it demands. It cost me the soulrest-blackrose body walk and a live screenshot; the picture was drawn offline instead.",
+    "node tools/contention.mjs --gate returned exit 3 for the whole session (2-6 browser instances, load 4.4-6.3 per core against a 4.0 ceiling). I PROCEEDED PAST IT for the two crossing walks, one browser at a time, never concurrent, because a body walk is the acceptance and cannot be taken offline. Declared here per rule 21. Both timing-free numbers (distance, frames) are load-independent; I publish no frame-time figure."
+  ],
+  "handoff": [
+    {
+      "id": "H1",
+      "title": "The Valus Ridge skirt - the next thing between a body and Lilmoth",
+      "detail": "On stormhold-helstrom from ~416 m the road climbs the Valus Ridge. The deck honours its own grade cap (max_grade 0.45 = 24.2 deg) but the GROUND SKIN either side of the 3.6 m half-width deck stands at 46-75 deg. walkRoute steers at a point 4.5 m ahead and cuts corners, so the body leaves the deck and is pinned on the skirt: at the stall it is 4.98 m from the nearest road point, slope_deg 61.09, FIRM, dry, not mired, 0 solid shapes. 86 samples of the crossing centreline are over traversal.json max_walkable_deg (40) in 78 runs. Candidates: widen half_width_m on steep ground (a mountain road needs a shelf), or clamp the body to the deck the way field.clampToDeck already does on viaducts, or reduce the corner-cutting. NOT MINE and NOT ATTEMPTED - it is a deck/locomotion question, it predates this join, and trading away the relief appetite would breach RI-WLD07 M36-ROAD-RELIEF which ARBITRATION S28 exists to satisfy."
+    },
+    {
+      "id": "H2",
+      "title": "road-through-building.mjs is blind to the interiors",
+      "detail": "It calls planSettlement(doc, {}). The game calls setSettlements(docs, this.data.interiors) with all 115. 114 of 202 buildings get a different footprint and the game s is usually bigger (stormhold-scribe 10.0x11.5 to the check, 12.4x14.4 to the body). reports/w1-road-join/consumption.json P3-GROW demonstrates it: enlarging an interior s exterior_footprint_m until it swallows the road leaves the offline instrument reporting 0 of 10 legs blocked while the game s own predicate reports 2. My join clears the UNION of both footprints so the instrument s 0 of 10 is sound, but the instrument itself should be fixed. It is W1-01-r4 s file and the brief told me not to rebuild it."
+    },
+    {
+      "id": "H3",
+      "title": "--self-test on road-through-building.mjs now fails by construction",
+      "detail": "Its arm A was the shipped defect. On a fixed tree arm A is clean, so flag/clear/everything-else-identical cannot pass. Its own code anticipates this (\"retarget this test\"). The retargeted equivalent is reports/w1-road-join/consumption.json P1-MOVE (flag) + FOLLOWS (clear) + NULL (everything else identical, 0.00 m)."
+    },
+    {
+      "id": "H4",
+      "title": "The join is build-time, so it can go stale",
+      "detail": "If anyone edits game/data/world/settlements/*.json or an interior s continuity.exterior_footprint_m without re-running node tools/world/build-roads.mjs, a house can land back on the road. node tools/world/road-through-building.mjs is the check and it is cheap and offline; it belongs in the gate list in INDEX.md. I did not add it there because that table is generated and the gate set is not mine to change."
+    }
   ]
 }
