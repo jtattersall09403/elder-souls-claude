@@ -1,11 +1,11 @@
 {
   "task_id": "W1-17-r2",
   "title": "W1-17 round 2 \u2014 dialogue: make what exists reachable and correct",
-  "state": "building",
+  "state": "done",
   "started_at": "2026-08-08",
   "base_commit": "64dd5f9",
   "brief": "corpus/90-verdicts/wave1/W1-17-r1.md (FAIL 5.0/10). Do NOT rewrite prose, do NOT add volume.",
-  "next_step": "res consumption arm; voice-metrics second_regex; orphans bucket; S37 invariance tool; blog+commit",
+  "next_step": "critic round 2",
   "objectives": [
     {
       "id": "A",
@@ -16,17 +16,20 @@
     {
       "id": "B",
       "what": "res has no reader: wire or cut, add consume.mjs arm either way",
-      "state": "todo"
+      "state": "done",
+      "result": "`res` CUT (13 infos) and `q` CUT (13 infos, always paired with it). Both dead twice over: no reader in game/src/**, AND all 13 quest ids name no quest in the 120-quest register under game/data/quests/**. consume.mjs now has (a) a `res` arm that re-injects the field and shows 0 answers changed against a live `x` control in the same run that moves 244, and (b) a FIELD-COVERAGE CENSUS that fails on any authored field that is neither demonstrated nor declared dead. --break added (round 1 had none)."
     },
     {
       "id": "C",
       "what": "voice-metrics.mjs missing second_regex; republish BOTH archetype tic numbers",
-      "state": "todo"
+      "state": "done",
+      "result": "voice-metrics.mjs tic block repaired on two counts: `second_regex` was never read (0 occurrences in the file), and anchored patterns were matched against the joined entry blob with no `m` flag so `^` could only match once per archetype. Now per-sentence and over both patterns. REPUBLISHED: legionary 0.00 -> 7.88/1k (PASSES; the round-1 self-reported failure was FALSE). mudborn 0.24 -> 5.69/1k (PASSES; the genuine one). All six archetype tics now pass; voice-metrics went 12 -> 10 requirements missed."
     },
     {
       "id": "D",
       "what": "orphans: 0 should be 23 - report in the bucket the item names",
-      "state": "todo"
+      "state": "done",
+      "result": "build-graph.mjs `orphans` is now exactly RI-DLG01 \u00a7D's definition (in-degree 0, not a root, not journal-added) and reports 23, failing the gate. The npc-advertised discovery is kept as a BREAKDOWN of that number rather than an exemption from it: 23 of 23 are reachable only because a speaker advertises the word, 0 have no way in at all."
     },
     {
       "id": "E",
@@ -37,13 +40,14 @@
     {
       "id": "F",
       "what": "sapcutter/legionary 'indistinguishable' is a metric defect (RI-DLG06 B has no mood axis)",
-      "state": "todo"
+      "state": "done",
+      "result": "Mood axis added to voice-metrics as a REPORTED, non-gating diagnostic. sapcutter refuses the first person (2.84/1k - that IS its declared tic) while legionary is 14.97/1k, yet they are 0.24 w/sent apart. The tool prints the mood table and the gaps and deliberately does NOT pronounce which pairs are metric defects: the round-1 critic judged 1 of 3 by ear and a builder overturning that with a self-chosen threshold would be marking its own homework."
     },
     {
       "id": "G",
       "what": "CONSUMPTION RI-MTH07 + delete-the-fix per amended rule 6 with a control watched go red",
-      "state": "partial",
-      "result": "2x2 delete-the-fix done: A(neither)=136 B(bodies)=26 C(rehome)=119 D(shipped)=6. CONTROL WENT RED. Two independent additive fixes. reports/w1-17-r2/deletefix.json"
+      "state": "done",
+      "result": "2x2 delete-the-fix (tools/dialogue/w1-17-r2-deletefix.mjs): A(neither)=136 B(bodies only)=26 C(rehome only)=119 D(shipped)=6. CONTROL ARM WATCHED GOING RED and the tool exits non-zero if it does not. Verdict: two INDEPENDENT ADDITIVE fixes, not an inert fix and not two-guards-for-one-defect. CONSUMPTION: consume.mjs 10 arms + field census + res arm, all pass, exit 0."
     }
   ],
   "do_not_touch": [
@@ -52,28 +56,32 @@
   ],
   "files_touched": [
     "orchestration/status/W1-17-r2.json",
-    "tools/dialogue/answer-census.mjs",
-    "tools/dialogue/critic-reach.mjs",
-    "tools/dialogue/rehome-actors.mjs",
-    "tools/dialogue/w1-17-r2-deletefix.mjs",
     "game/data/npcs/pop-trades.json",
     "game/data/index.json",
+    "game/data/dialogue/speakers.json",
+    "game/data/dialogue/topics/10-global.json",
+    "game/data/dialogue/topics/20-tier-a.json",
+    "game/data/dialogue/topics/21-tier-b.json",
+    "game/data/dialogue/topics/22-tier-c.json",
+    "game/data/dialogue/topics/30-texture.json",
     "game/data/dialogue/topics/40-race-gated.json",
     "game/data/dialogue/topics/50-factions.json",
     "game/data/dialogue/topics/56-writ-house-open.json",
     "game/data/dialogue/topics/70-disputes.json",
-    "reports/w1-17-r2/"
-  ],
-  "files_claimed": [
-    "game/data/dialogue/",
-    "game/src/sim/dialogue/",
-    "tools/dialogue/",
+    "tools/dialogue/answer-census.mjs",
+    "tools/dialogue/critic-reach.mjs",
+    "tools/dialogue/consume.mjs",
+    "tools/dialogue/build-graph.mjs",
+    "tools/dialogue/voice-metrics.mjs",
+    "tools/dialogue/rehome-actors.mjs",
+    "tools/dialogue/w1-17-r2-deletefix.mjs",
+    "tools/dialogue/w1-17-r2-s37-invariance.mjs",
+    "tools/dialogue/w1-17-r2-shot.mjs",
     "reports/w1-17-r2/",
     "reports/blog-feed.jsonl",
-    "docs/shots/",
-    "game/data/npcs/pop-trades.json",
-    "game/data/index.json"
+    "docs/shots/2026-08-08-w1-17-r2-a-tenth-of-the-writing-had-no-mouth.png"
   ],
+  "files_claimed": [],
   "notes": [],
   "baseline": {
     "commit": "64dd5f9 (working tree)",
@@ -114,5 +122,32 @@
       "residue_always_outscored": 6
     },
     "break_arm": "critic-reach --break: 6 -> 99, so the player gates are still read"
-  }
+  },
+  "finished_at": "2026-08-08",
+  "measured_at_commit": "e00e6fe (working tree; the bank carried most of these files under 63f41ef / 79ff4c6 / 34d1387 before I could commit them \u2014 RULES 17)",
+  "tool_defect_found_in_the_critics_own_instrument": "critic-reach.mjs memoised winner-sets in ONE Map shared across every topic, keyed on the candidate INDEX LIST alone (`JSON.stringify(cand.map(c=>c.i))`). Two unrelated topics whose surviving candidates sat at the same indices \u2014 `[2,3]` is very common \u2014 shared a result, and whichever topic was visited first decided reachability for all of them. Found by direct contradiction: the tool reported reading-the-count#2 dead while ledgerer-hosk-vei demonstrably says it at disposition 0 and 15 through the shipped infoFor(). Key now carries the topic id and the (index, score) pairs. THIS MOVES THE PUBLISHED BASELINE: the round-1 figure of 133 becomes 136 when re-taken with the corrected tool, so both ends of my before/after are the same ruler (RULES 12). --break still moves 6 -> 99.",
+  "s37_measured": {
+    "tool": "tools/dialogue/w1-17-r2-s37-invariance.mjs",
+    "note": "S37 had NOT landed (ARBITRATION.md ends at S36; arbiter status = starting). I changed no ordering code and did not touch game/src/character/converse.js. Rather than assert independence I measured the dead set under BOTH candidate rules over identical data.",
+    "baseline": {
+      "scoring": 136,
+      "first_match": 139
+    },
+    "shipped": {
+      "scoring": 6,
+      "first_match": 12
+    },
+    "reading": "The round improves the number under EITHER ruling (136->6 scoring, 139->12 first-match) and no info is worse off under either. DISCLOSED: 3 of my 20 re-homes (the-xanmeers#3, the-man-off-the-quay#1, reading-the-count#4) are reachable under scoring and not under first-match, because they use the `cell`/`d` narrowing that outranks an earlier ungated sibling. Under first-match those three are dead \u2014 but they were dead under BOTH rules before this round (they named actors with no body), so the change is strictly non-negative under either ruling. If S37 rules for first-match-wins, those three need to move earlier in authored order, which is S37 territory and I left it alone."
+  },
+  "not_done": [
+    "NO BROWSER AT ALL. contention --gate exit 3 (5 instances, load 6.30/core). I changed no engine .js file \u2014 only data, tools and one shared data index \u2014 so no boot-check was owed; I did not run one and nothing here depends on one. The figure in docs/shots was drawn offline with pngjs, deliberately.",
+    "The 6 remaining unhearable infos are NOT closed. All 6 are \"always outscored\", all 6 are present unchanged in ALL FOUR cells of the 2x2 (so none is mine), and closing them means changing which of two siblings wins \u2014 which is exactly the question S37 is deciding. Left alone on purpose.",
+    "voice-metrics still exits 1 with 10 requirements missed (was 12). The 10 are w/sent, <=6w, >20w, w/entry and STTR band misses across five archetypes. Closing them is a corpus-wide prose rewrite, which this round was explicitly told not to do.",
+    "RI-DLG06 \u00a7B separation: 3 pairs still fail the item's three length axes. I supplied the mood evidence for the amendment and did NOT amend the item \u2014 RI-DLG06 is not mine.",
+    "The `f` field (Morrowind filter field 4, Faction, 4 infos) still has no reader. KEPT and declared rather than cut: unlike `res` its three referents are live factions with members in the world, so it is one `if` away from working, and that `if` belongs to converse.js, which I do not own.",
+    "RI-DLG09 parley vs W1-09 game/data/combat/parley.json (78 f@60 / stamina 0 vs 102 / 20): still unresolved, still a cross-piece debt, not touched.",
+    "Time-of-day variation for greetings/rumours: still absent, still no reader. The round-1 critic ruled it not owed and said do not build it until an item requires one. I did not.",
+    "PRE-EXISTING DEFECT I FOUND AND DID NOT FIX: 181 of 347 shipped NPC records carry a `race` that character/reaction.js raceTerm() THROWS on (\"argonian\" x179, \"none\", \"mixed\") \u2014 the canonical id is \"saxhleel\". It is in game/data/npcs/pop-*.json, which W1-23-r4 has claimed. My own 22 records all use canonical ids and are asserted constructible.",
+    "check-dialogue-topics warnings went 30 -> 32. Both new ones are mine and both are the documented specificity ladder (a re-homed info carrying a `cell` the merged sibling lacks). Exit 0; no shared gate was weakened."
+  ]
 }
