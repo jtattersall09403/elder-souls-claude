@@ -55,6 +55,13 @@ const ARM = (page, broken, states) => page.evaluate(async ({ BROKEN, STATES }) =
     let row = { state: st };
     try {
       H.setSeed(11);
+      // LOADED TWICE, ON PURPOSE, and this is itself a finding (see the verdict). A `loadState`
+      // into a town immediately after another town leaves the body at the PREVIOUS cell's ground
+      // — `town-lilmoth` reads y = 0.2495 and `airborne: true` on the first load and y = 2.68 and
+      // `airborne: false` on the second, from the same call with nothing else changed. A sweep
+      // that loads each state once therefore measures the load order, not the town.
+      H.loadState(st);
+      H.stepFrames(4);
       H.loadState(st);
       H.setRenderRate(0);
       H.setCatalyst('great_staff');
@@ -66,7 +73,11 @@ const ARM = (page, broken, states) => page.evaluate(async ({ BROKEN, STATES }) =
       const pick = spells.includes('spark_dart') ? 'spark_dart' : spells[0];
       H.learnSpell(pick);
       H.setAttuned([pick]);
-      H.stepFrames(10);
+      // 30 frames of SETTLE, not 10. A `loadState` can drop the body a few metres — Stormhold
+      // spawns at y = 150.95 and lands at 141.05 — and a press taken mid-FALL measures the fall,
+      // not the ground plane. Ten frames read `town-stormhold` as an uncastable town and that
+      // was the fixture, not the build.
+      H.stepFrames(30);
       const st0 = H.getMagicState();
       row.y = st0.pos_y_m;
       row.airborne = !!st0.airborne;
@@ -99,6 +110,8 @@ const MOVING = (page, broken) => page.evaluate(async (BROKEN) => {
   if (BROKEN && H.__breakGroundPlane) H.__breakGroundPlane(true);
   H.setSeed(11);
   H.loadState('town-lilmoth');
+  H.stepFrames(4);
+  H.loadState('town-lilmoth');
   H.setRenderRate(0);
   if (BROKEN && H.__breakGroundPlane) H.__breakGroundPlane(true);
   H.setCatalyst('great_staff'); H.setWillpower(99); H.hearthRest();
@@ -129,11 +142,40 @@ const MOVING = (page, broken) => page.evaluate(async (BROKEN) => {
   };
 }, broken);
 
+// ---- the water arm: is a SWIMMING body standing on the ground, or 41 m above it? -----------
+const WATER = (page) => page.evaluate(async () => {
+  const H = window.__HARNESS;
+  await H.ready();
+  H.setSeed(11);
+  H.loadState('vista_primary'); H.stepFrames(4); H.loadState('vista_primary');
+  H.setRenderRate(0);
+  H.setCatalyst('great_staff'); H.setWillpower(99); H.hearthRest();
+  H.learnSpell('spark_dart'); H.setAttuned(['spark_dart']);
+  H.stepFrames(30);
+  const w = H.whereAmI();
+  const water = H.getWaterAt(w.pos[0], w.pos[2]);
+  const m = H.getMagicState();
+  const cs = H.getCombatState();
+  H.magicEventsDrain();
+  const pc = H.pressCast(90);
+  const evs = H.magicEventsDrain();
+  return {
+    pos: w.pos, water_depth_m: water.depth_m, water_band: water.band, ground_y: water.ground_y,
+    pos_y_m: m.pos_y_m, airborne: m.airborne,
+    player_state: cs && cs.player ? cs.player.state : null,
+    magic_events: evs.map((e) => e.kind), drops: pc.drops,
+  };
+});
+
 const handle = await launchGame(args);
-let fixed, brokenArm, movedFixed, movedBroken;
+let fixed, brokenArm, movedFixed, movedBroken, water;
 try {
   fixed = await ARM(handle.page, false, STATES);
-  movedFixed = await MOVING(handle.page, false);
+  const p4 = await handle.page.context().newPage();
+  await p4.goto(handle.page.url(), { waitUntil: 'load' });
+  await p4.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
+  movedFixed = await MOVING(p4, false);
+  await p4.close();
   const p2 = await handle.page.context().newPage();
   await p2.goto(handle.page.url(), { waitUntil: 'load' });
   await p2.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
@@ -144,6 +186,11 @@ try {
   await p3.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
   movedBroken = await MOVING(p3, true);
   await p3.close();
+  const p5 = await handle.page.context().newPage();
+  await p5.goto(handle.page.url(), { waitUntil: 'load' });
+  await p5.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
+  water = await WATER(p5);
+  await p5.close();
 } finally {
   await handle.close();
 }
@@ -191,6 +238,7 @@ const report = {
   at_zero_states: atZero.map((r) => r.state),
   table,
   moving: { fixed: movedFixed, broken: movedBroken },
+  water: water,
   control_is_live: !fails.some((f) => f.startsWith('INERT CONTROL')),
   pass: fails.length === 0,
   failures: fails,
@@ -201,6 +249,7 @@ log(`at zero: ${atZero.map((r) => r.state).join(', ')}`);
 for (const r of aboveZero) log(`  ${r.state.padEnd(28)} y=${String(r.y).padStart(9)}  fixed cast=${r.fixed_cast} drop=${JSON.stringify(r.fixed_drop)}  broken cast=${r.broken_cast} drop=${JSON.stringify(r.broken_drop)}`);
 log(`moving FIXED : walked ${movedFixed.walked_m} m, airborne=${movedFixed.airborne}, cast_start=${movedFixed.cast_start}, drops=${JSON.stringify(movedFixed.drop_reasons)}`);
 log(`moving BROKEN: walked ${movedBroken.walked_m} m, airborne=${movedBroken.airborne}, cast_start=${movedBroken.cast_start}, drops=${JSON.stringify(movedBroken.drop_reasons)}`);
+log(`WATER: state=${water.player_state} depth=${water.water_depth_m} m, sea floor y=${water.ground_y}, body y=${water.pos_y_m}, magic.airborne=${water.airborne}, magic events=${JSON.stringify(water.magic_events)}, drops=${JSON.stringify(water.drops)}`);
 for (const f of fails) log(`FAIL: ${f}`);
 log(`report: ${path.join(outDir, 'ground-plane.json')}`);
 process.exit(fails.length ? EXIT.MEASUREMENT_FAIL : 0);

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ec0b767`: 685 tools, 153 reference
-items, 55 pieces in flight.
+so it cannot drift. Generated at `2fe47f5`: 687 tools, 153 reference
+items, 56 pieces in flight.
 
-Its purpose is to stop 55+ concurrent agents each paying separately to discover the
+Its purpose is to stop 56+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -262,7 +262,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
 - `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
 
-### `tools/harness/` — 225
+### `tools/harness/` — 226
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -374,6 +374,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r4-commission.mjs` — A CRITIC WALKS TO A SPELLWRIGHT AND BUYS A SPELL NOBODY WROTE.
 - `tools/harness/critic-w1-14-r4-ground.mjs` — CAN A SPELL BE CAST WHERE THE PLAYER ACTUALLY STANDS?
 - `tools/harness/critic-w1-14-r4-motion.mjs` — THE THREE THINGS MY FIRST PASS COULD NOT SETTLE.
+- `tools/harness/critic-w1-14-r4-shot.mjs` — the critic's own picture: the counter, on screen, at Gideon.
 - `tools/harness/critic-w1-14-r4-summon.mjs` — THE ALIAS FIX, MEASURED WITHOUT TRUSTING THE FIELD THAT REPORTS IT.
 - `tools/harness/critic-w1-14-r4-touch.mjs` — DOES THE TOUCH FIX APPLY ONCE, AND IS ITS TEARDOWN THE SAME WIDTH?
 - `tools/harness/critic-w1-14-shot.mjs` — one picture for W1-14 round 3's verdict.
@@ -706,7 +707,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 119
+### `tools/world/` — 120
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -769,6 +770,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r3b.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r4-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r4-offline.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r4-shots.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing-consumption.mjs` — **no header comment**
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
@@ -829,7 +831,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **154 tools have no header comment**, so nobody can tell what they do without
+> **155 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1003,9 +1005,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-crossing` | started | read RULES/INDEX/NEXT-DISPATCH P.4+W, W1-CROSSING.json, W1-ROAD-JOIN-r1.md; then contentio | `orchestration/status/critic-w1-crossing.json` |
+| `critic-w1-14-r4` | running | write verdict md+json, shot, blog line, commit | `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` `tools/harness/critic-w1-14-r4-commission.mjs` `tools/harness/critic-w1-14-r4-carried.mjs` |
 | `W1-25-r2` | done | a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that | `orchestration/status/W1-25-r2.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `tools/experience/sabotage-corpus.mjs` `tools/experience/w1-25-r2-active-fixture.mjs` |
 | `critic-w1-04-r4` | IN_PROGRESS | Live sections L2/L6/L4/L5/L1 running; then L3 (115-room live sweep) in its own invocation; | `orchestration/status/critic-w1-04-r4.json` `tools/world/critic-w1-04-r4-offline.mjs` `tools/world/critic-w1-04-r4-live.mjs` `reports/critic-w1-04-r4/offline.json` |
-| `critic-w1-14-r4` | running | parts A/B/C/D/E/F/G/H — ground probe reproduced; running summon/touch; then commission wal | `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` `reports/critic-w1-14-r4/` |
 | `W1-21-r3` | done | critic | `docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-map-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png` |
 | `critic-w1-26-r3` | running | read INDEX, NEXT-DISPATCH P, W1-26-r2 verdict, W1-26-r3 status; then run opening-play.mjs  | — |
 | `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |

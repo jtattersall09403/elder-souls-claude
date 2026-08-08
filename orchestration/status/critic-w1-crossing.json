@@ -1,0 +1,24 @@
+{
+  "task_id": "critic-w1-crossing",
+  "role": "critic",
+  "item": "W1-CROSSING",
+  "round": 1,
+  "state": "started",
+  "started_at": "2026-08-08T05:44:47Z",
+  "next_step": "read RULES/INDEX/NEXT-DISPATCH P.4+W, W1-CROSSING.json, W1-ROAD-JOIN-r1.md; then contention gate; then walk Stormhold->Lilmoth independently",
+  "files_touched": [
+    "orchestration/status/critic-w1-crossing.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-CROSSING-r1.md",
+    "corpus/90-verdicts/wave1/W1-CROSSING-r1.json",
+    "orchestration/status/critic-w1-crossing.json",
+    "tools/world/critic-crossing-",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": [
+    "w1-road-join"
+  ],
+  "notes": []
+}

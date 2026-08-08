@@ -6,22 +6,43 @@
   "piece": "W1-04 round 4 - settlements, interiors and the people in them",
   "grading": "corpus/90-verdicts/wave1/W1-04-r4.md",
   "gate": 7.0,
-  "next_step": "A: read RULES/INDEX/ARBITRATION §3/W1-04-r3.md. B: run tools/world/w1-04-consumption.mjs FIRST (edited and not re-run). C: attack the distinctness measure with degenerate cases. D: check props/items/NPCs outside shrunk rooms. E: 115-room live sweep. F: screenshots.",
+  "base_commit": "3ee6ada",
+  "next_step": "Live sections L2/L6/L4/L5/L1 running; then L3 (115-room live sweep) in its own invocation; then screenshots; then write the verdict.",
   "files_touched": [
-    "orchestration/status/critic-w1-04-r4.json"
+    "orchestration/status/critic-w1-04-r4.json",
+    "tools/world/critic-w1-04-r4-offline.mjs",
+    "tools/world/critic-w1-04-r4-live.mjs",
+    "reports/critic-w1-04-r4/offline.json"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-04-r4.md",
     "corpus/90-verdicts/wave1/W1-04-r4.json",
     "orchestration/status/critic-w1-04-r4.json",
-    "tools/world/critic-",
+    "tools/world/critic-w1-04-r4-offline.mjs",
+    "tools/world/critic-w1-04-r4-live.mjs",
+    "reports/critic-w1-04-r4/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": [
-    "W1-04-r4"
-  ],
-  "overlap_notes": "I grade W1-04-r4; overlap on docs/shots/ and reports/blog-feed.jsonl is by design (append-only for the feed). I write no game/ source.",
-  "notes": [],
-  "findings": []
+  "redundant_with": ["W1-04-r4"],
+  "overlap_notes": "I grade W1-04-r4. Overlap on docs/shots/ and reports/blog-feed.jsonl is by design; the feed is append-only and I append one line. I write no game/ source.",
+  "findings": {
+    "AGGREGATION_FAILS": "tools/world/w1-04-consumption.mjs, run end to end (RULES.md rule 9), exits 1: 19/20 CONSUMED. The one DEAD row is 10a, which the builder edited: exterior_restored_on_exit reads 105 in the live arm against a pass condition of 115. The builder shipped without running it.",
+    "LAMPS_OUTSIDE": "55 authored lamps in 19 of the 41 shrunk rooms now stand outside their own room's bounds (12 are non-snuffable hearths; worst 2.33 m outside). 0 in rooms the join did not shrink, so the join caused all of them. applyInteriorBounds() clamps continuity.interior_spawn and does not touch lights[]; buildInterior() and sim/stealth/system.js#syncInteriorLights() both place them at the record's verbatim pos.",
+    "MESHES_OUTSIDE": "292 built meshes in 63 rooms stand more than 0.6 m outside their own room's bounds — 179 light fittings and 113 props. 218 of them, across 26 rooms, are in the 41 rooms the join shrank.",
+    "DOORSTEP_INSIDE_THE_BUILDING": "buildings[].door sits at the building CENTRE on 112 of 112 (max door-to-centre distance 0.00 m), and all 112 declared continuity.exterior_spawn points fall inside their own building's wall box. Round 4 is the round that put a covering roof on that box. Being verified live via buildingAt().",
+    "PROPS_ITEMS_NPCS": "Of the dispatch's three specifics: unique items follow the shrink (0 of 115 outside); NPC interior anchors follow it (anchorFor reads bounds_m, the 1.2 m inset never collapses, smallest joined room 4.34 x 10.94 m); props do NOT entirely (113 prop meshes outside by >0.6 m).",
+    "CONFIRMED_JOIN": "41 -> 0 reproduces independently; worst area ratio 1.0887 by bounds; 41 rooms limited, worst archon-market keeping 0.1714.",
+    "CONFIRMED_ROOFS": "0 of 202 by my own 8x8 downward raycast above half wall height; the instrument goes red (201 of 202) when every mesh above half height is scaled 0.7 in plan.",
+    "CONFIRMED_TAUTOLOGY": "bounds_m equals continuity.exterior_footprint_m on 115 of 115 records, so any N1 ratio dividing one by the other is 1.000 by construction. True — but first stated by the round-3 critic, not by this round.",
+    "CONFIRMED_NULLING_GONE": "api.js __w1_04_perturbSettlement no longer nulls _townCell; it clears _townSolids and calls _settleSettlementSolids(), which owns the handle.",
+    "DEEP_OVERLAPS_BOUNDARY": "The shipped tool reports 12; the identical formula without its +1e-6 epsilon reports 14 (lilmoth 3 not 2, stormhold 1 not 0). Two pairs sit exactly on the 45% line.",
+    "MY_OWN_PROBE_DEFECT": "My first offline census called buildInterior(rec) instead of buildInterior(root, rec) and traversed 0 meshes in 115 of 115 rooms while reporting a clean '0 props outside'. Caught by rule 4, fixed, and an explicit vacuity assertion added."
+  },
+  "method_deviations": [
+    "node tools/contention.mjs --gate returned GO at every check I made.",
+    "I killed my own stalled live run with `pkill -f headless_shell`, which is not scoped to my process and may have killed a neighbour's browser. That was careless and is reported rather than hidden (rule 26). Browsers were running again within 30 s. Every later kill is by my own PID.",
+    "My first live instrument ran all 115 doors inside one page.evaluate with no intermediate write and outlived its wrapper — the same wall the builder reported. Restructured to chunk and save per chunk (rule 2).",
+    "No timing figure is published anywhere in this verdict (rule 26)."
+  ]
 }
