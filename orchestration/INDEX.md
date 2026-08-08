@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a70a97f`: 664 tools, 153 reference
+so it cannot drift. Generated at `35d19bf`: 665 tools, 153 reference
 items, 54 pieces in flight.
 
 Its purpose is to stop 54+ concurrent agents each paying separately to discover the
@@ -256,7 +256,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 217
+### `tools/harness/` — 218
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -439,6 +439,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-vfx.mjs` — RI-MAG05, the two findings the round-2 verdict could see in the picture.
 - `tools/harness/w1-14-r3-wards.mjs` — the three round-2 findings that are not the skill register.
 - `tools/harness/w1-14-r4-commission.mjs` — CAN A PLAYER WALK TO SOMEBODY AND HAVE A SPELL MADE?
+- `tools/harness/w1-14-r4-shot.mjs` — one picture of the thing this round built.
 - `tools/harness/w1-14-r4-summon.mjs` — SIX IDENTICAL CASTS, AND WHAT THEY LEAVE BEHIND.
 - `tools/harness/w1-14-r4-touch.mjs` — HOW MANY TIMES DOES ONE CAST LAND?
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
@@ -982,11 +983,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-road-join` | ? | none — verdict, tools, report, picture and blog line are on disk and committed | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `W1-04-r4` | fixes landed and committed by the bank sweep; S3/S4 of the live arm being re-taken | land S3/S4, then commit status + blog + reports | `docs/shots/2026-08-08-w1-04-r4-blackrose-inn-outside-now-contains-inside.png` `docs/shots/2026-08-08-w1-04-r4-helstrom-roofs-now-cover-the-buildings.png` `game/src/harness/api.js` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` |
 | `W1-26-r3` | ? | opening-play P9 re-run in flight at 480x270 (5 sim fps); then final status | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `critic-w1-23-r4` | done | committed; hand to the orchestrator | `orchestration/status/critic-w1-23-r4.json` `corpus/90-verdicts/wave1/W1-23-r4.md` `corpus/90-verdicts/wave1/W1-23-r4.json` `tools/lore/critic-w1-23-r4-onscreen.mjs` `tools/lore/critic-w1-23-r4-shelf.mjs` `tools/lore/critic-w1-23-r4-blocked.mjs` |
 | `critic-w1-25` | running | read RULES/INDEX/ARBITRATION/PLAN W1-25/RI items/status W1-25 | `orchestration/status/critic-w1-25.json` |
-| `critic-road-join` | ? | none — verdict, tools, report, picture and blog line are on disk and committed | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `W1-CHARTFONT-r2` | ? | none — handoffs below. W1-18-r2, W1-19-r3, W1-READABLES, W1-22-r2, W1-22-r3 and W1-01-r4 e | `orchestration/status/W1-CHARTFONT-r2.json` `tools/analysis/w1-15-r3-chart.mjs` `tools/harness/w1-16-r3-chart.mjs` `tools/world/road-join-chart.mjs` `tools/world/w1-01-r4-crossing-chart.mjs` `tools/audio/critic-w1-22-r2-chart.mjs` |
 | `W1-CROSSING` | in_progress | browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consu | `orchestration/status/W1-CROSSING.json` `tools/world/road-grade.mjs` `tools/world/crossing-body.mjs` `game/src/engine.js` `game/src/world/field.js` `tools/world/build-roads.mjs` |
 | `arbiter-map-s38` | done | none — ruling landed, gate green, S35 amended in place | `corpus/00-doctrine/ARBITRATION.md` `tools/map/arbiter-map-s38.mjs` `orchestration/status/arbiter-map-s38.json` `reports/blog-feed.jsonl` `docs/shots/2026-08-08-s38-what-a-forged-save-can-and-cannot-put-on-the-map.png` |

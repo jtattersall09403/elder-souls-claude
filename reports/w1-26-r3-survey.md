@@ -282,9 +282,9 @@ drawn row): 0 rows trip either. `check-dialogue-topics` and `check-prose` are un
   node-side against P9's exact two regexes at every wrap point. **P9 green is predicted, not
   measured, and the next runner should treat it as unverified.** The command is
   `node tools/journey/opening-play.mjs`.
-* **`jrn09-exchange.mjs` was queued behind the same gate** to confirm `DTR(hold.out)` still reads
-  1.000 with the new string. The node still has exactly two authored strings and both still reach
-  the frame by the same route, so the number should not move — but I did not watch it.
+* ~~`jrn09-exchange.mjs` was queued behind the same gate~~ — **re-run and confirmed** on the
+  rewritten line: `DTR_q 1.0000`, `DTR_scene 1.0000`, `NAMED_distinct 14 of 14`, **`ALL PASS`**,
+  no `HF1`. So the writing change did not buy P9 at DTR's expense.
 * **`RI-JRN01` M13's other three modality legs** (mouse+keyboard, gamepad, touch). Only the keyboard
   leg is now run over the journey. Pointer lock does not survive headless, which is the round-2
   reason and is still true.
