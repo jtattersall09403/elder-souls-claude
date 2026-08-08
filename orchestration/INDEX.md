@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `51de365`: 627 tools, 153 reference
-items, 50 pieces in flight.
+so it cannot drift. Generated at `345dcca`: 627 tools, 153 reference
+items, 51 pieces in flight.
 
-Its purpose is to stop 50+ concurrent agents each paying separately to discover the
+Its purpose is to stop 51+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -942,6 +942,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-CROSSING` | in_progress | read NEXT-DISPATCH SS W and P.4, W1-ROAD-JOIN.json, W1-05.json; run ownership + contention | `orchestration/status/W1-CROSSING.json` |
+| `W1-26-r3` | ? | run jrn09-exchange (HF1) and opening-play (P10) on the fixed tree | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-CHARTFONT-r2` | ? | read reports/w1-chartfont-damage.md and orchestration/status/W1-CHARTFONT.json; run --audi | `orchestration/status/W1-CHARTFONT-r2.json` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
 | `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
@@ -954,7 +956,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
-| `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
