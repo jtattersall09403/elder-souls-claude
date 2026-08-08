@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1d6578a`: 705 tools, 153 reference
+so it cannot drift. Generated at `8baff03`: 709 tools, 153 reference
 items, 58 pieces in flight.
 
 Its purpose is to stop 58+ concurrent agents each paying separately to discover the
@@ -497,7 +497,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 17
+### `tools/journey/` — 18
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
@@ -514,6 +514,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/name-entry.mjs` — can a player type their own name?
 - `tools/journey/opening-play.mjs` — the opening, played.
 - `tools/journey/save-live-audit.mjs` — **no header comment**
+- `tools/journey/signposting.mjs` — what P9 was supposed to be testing.
 - `tools/journey/state-diff.mjs` — RI-JRN05's round-trip instrument, named by the item (§ "Instruments", line 213) and absent until now: the W1-00 round-2 critic verified its absence.
 - `tools/journey/world-runs-gate.mjs` — one implementation of "is the simulation actually advancing?", used by every journey rather than by one.
 
@@ -713,7 +714,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 132
+### `tools/world/` — 135
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -780,6 +781,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r4-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r4-offline.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r4-shots.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r5-chart.mjs` — THE PICTURE FOR THE W1-04 ROUND-5 VERDICT: the frame the round chose, and the two frames after it.
 - `tools/world/critic-w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-offline.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-shots.mjs` — **no header comment**
@@ -840,8 +842,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r5-shot.mjs` — **no header comment**
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
+- `tools/world/w1-crossing-r2-bothways-gate.mjs` — **no header comment**
 - `tools/world/w1-crossing-r2-legs.mjs` — **no header comment**
 - `tools/world/w1-crossing-r2-overpass.mjs` — **no header comment**
+- `tools/world/w1-crossing-r2-pursue-sim.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
 - `tools/world/waylamp-probe.mjs` — **no header comment**
 - `tools/world/wld-borders-shots.mjs` — W1-02 — the three pictures.
@@ -849,7 +853,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **167 tools have no header comment**, so nobody can tell what they do without
+> **169 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1023,11 +1027,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-14-r5` | done | commit; nothing outstanding | `docs/shots/2026-08-08-w1-14-r5-the-bolt-goes-where-the-body-is-going.png` `game/data/magic/cast-classes.json` `game/data/npcs/spellwrights.json` `game/src/combat/player.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `W1-26-r4` | starting | read RULES/INDEX/NEXT-DISPATCH/verdict, locate Engine.bodyRace, P9, m4_clause1 | `orchestration/status/W1-26-r4.json` |
 | `critic-w1-26-r3` | done | none — verdict written. A second critic should reproduce tools/harness/jrn09-exchange.mjs; | `orchestration/status/critic-w1-26-r3.json` `corpus/90-verdicts/wave1/W1-26-r3.md` `corpus/90-verdicts/wave1/W1-26-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-26-r3/` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` |
 | `W1-CROSSING-r2` | in-progress | Both-ways sweep running in one browser (background). Then: delete-the-fix arm (--roads pre | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/build-roads.mjs` `game/data/world/roads.json` `game/data/world/signposts.json` |
 | `critic-w1-04-r5` | running | read RULES, INDEX, ARBITRATION §3, W1-04-r4.md verdict, W1-04-r5.json builder status | — |
-| `W1-14-r5` | building | verify the derived turn rates against AP-M3 and the dodge arm; then water/purse/refusal pr | `orchestration/status/W1-14-r5.json` `game/src/sim/magic/system.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/combat-bridge.js` `game/src/combat/player.js` `game/src/sim/traversal.js` |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |
 | `W1-25-r2` | done | a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that | `orchestration/status/W1-25-r2.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `tools/experience/sabotage-corpus.mjs` `tools/experience/w1-25-r2-active-fixture.mjs` |
 | `W1-21-r3` | done | critic | `docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-map-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png` |

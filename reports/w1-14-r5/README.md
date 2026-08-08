@@ -75,7 +75,31 @@ the same warning the round-4 verdict's §12 gave: still; strafe **left and right
 the caster, whose path is curved and therefore violates the constant-velocity assumption the fix
 is built on.
 
-See `lead-fix.json` `grid` for the full 275 cells and `classes` for the four ballistic classes.
+### The result, and the teardown watched going red
+
+| arm | cells | delivered | **zero** |
+|---|---:|---:|---:|
+| **the fix** (`lead-fix.json`) | 275 | **275** | **0** |
+| `--break nolead` (`lead-nolead.json`) | 275 | 120 | **155** |
+
+**The round-4 verdict's own acceptance, written as it wrote it** — five damage effects at
+magnitude 20, LIGHT/`projectile`, at **6 m and 14 m**, at **0, 1.5 lateral, 3.0 lateral and 3.0
+axial** m/s, 40 cells:
+
+| arm | cells delivering |
+|---|---|
+| **the fix** | **40 of 40** |
+| `--break nolead` | 25 of 40 |
+
+and the fifteen that go to zero under the teardown are **exactly the lateral ones**:
+`6m@3.0`, `14m@1.5`, `14m@3.0`, all five effects each. Nothing else moves. **That is the width of
+the fix measured rather than asserted**, which is what round 4 §4 was praised for and what §5 was
+charged for not doing with the dial arms.
+
+Its reading of today's build against criterion 1 was *"8 of 40 cells at zero"*. It is **0 of 40**.
+
+See `lead-fix.json` `grid` for the full 275 cells, `grid_free` for the unaimed caster, `classes`
+for the four ballistic classes and `dodge` for the roll arm.
 
 ### Which spells are *supposed* to be dodgeable, and the proof that the others are not
 
@@ -85,10 +109,45 @@ the lead rides on the arc. They are the dodgeable classes, by declaration, and t
 of the report puts them missing a walking body next to LIGHT and HEAVY hitting it, so that
 sentence is a measurement rather than an excuse.
 
-And the dodge still works for the classes that DO track, which is the arm that stops the remedy
-being "home harder": `dodge` in the report rolls the body 2.6 m sideways at (journey − 20 f@60),
-i.e. `min_dodge_window_f` before arrival and after the cutoff has closed. The bolt is already
-committed to the intercept it computed against the course the body was holding, and it misses.
+| class | `turn_rate_dps` | still | walking 1.5 | jogging 3.0 |
+|---|---:|---|---|---|
+| CANTRIP | **0** | 48 at 6/14/20 m | hit at 6 m only | **miss at all three** |
+| LIGHT | 95 | 48 | **48 at all three** | **48 at all three** |
+| HEAVY | 115 | 48 | **48 at all three** | **48 at all three** |
+| GREAT | **0** | 48 at 6/14/20 m | **miss at all three** | **miss at all three** |
+
+### The dodge still works, and that is the arm that stops this being "home harder"
+
+`dodge` rolls the body **2.6 m** sideways at `min_dodge_window_f` (20 f@60) before the bolt
+arrives — **timed off the RELEASE frame**, which is `startup + 1` and therefore 25 frames after
+the button. The first version of this arm timed it off the button, and with LIGHT's 24 frames of
+startup that put the roll *seven frames before the bolt existed* at 10 and 14 m; it reported 48
+damage on a "dodged" cell, which is a fixture measuring itself.
+
+| range | journey | no roll | **rolled** | closest approach |
+|---|---:|---:|---:|---:|
+| 10 m | 38 f | 48 | **0** | 1.98 m |
+| 14 m | 53 f | 48 | **0** | 1.96 m |
+| 20 m | 75 f | 48 | **0** | 1.90 m |
+
+The bolt is already committed to the intercept it computed against the course the body was
+holding. A body that changes course after the cutoff is not followed.
+
+### AP-M3 still passes, which is the fence the arc change could have broken
+
+`tracking_cutoff` is untouched, so the fence is exactly as tight — but "structurally unchanged"
+is not a measurement, so `tools/harness/w1-14-r3-apm3.mjs` was re-run unmodified at this commit:
+
+```
+LIGHT  declared 95 dps  cutoff_f 41 | flight 120 f, AP-M3 fence 42 f
+       observed max 95.4 dps before / 0 dps after   arc 28.25 deg -> PASS
+HEAVY  declared 115 dps cutoff_f 54 | flight 184 f, AP-M3 fence 64.4 f
+       observed max 115.2 dps before / 0 dps after  arc 33.08 deg -> PASS
+```
+
+Zero violating frames past `0.35 x travel_f` on both. A higher rate under a lead means the bolt
+reaches its collision course *sooner* and then turns 0 °/s for the rest of the flight; it does
+not mean it steers for longer.
 
 ---
 
@@ -191,12 +250,14 @@ is denied exactly as before.
 
 **Two guards over one defect, run as a 2×2** — casts out of the 14 deep-water states:
 
-| | gate open | gate shut |
+| | gate open | gate shut (`__breakCastInWater`) |
 |---|---:|---:|
 | **floor fixed** | **14** | 2 |
-| floor broken | 2 | 2 |
+| floor broken (`__breakWaterPlane`) | 2 | 2 |
 
-Deleting either guard alone loses 12 of the 14. The two states that cast in every arm are
+Deleting either guard alone loses 12 of the 14, and only removing both is the world as it shipped.
+**Honest reporting of that shape looks exactly like an inert fix** — RULES.md #6 says to say which
+you have, so: this is the third shape, two guards, and the 2×2 is why I can say it. The two states that cast in every arm are
 `town-stormhold` and `wld-dres-raid-road`, whose bodies are not actually at the water line; they
 are named rather than dropped.
 
@@ -283,11 +344,34 @@ HUD in this build:
 
 ## 7. THE POSITIVE ARM, BESIDE EVERY TEARDOWN
 
-Charged in round 4 §5 and it is not a formatting note. **Every arm in this directory is published
-with its own unbroken run at the same commit**: the lead grid ships `lead-fix.json` beside
-`lead-nolead.json`; the alias census ships `alias-fix.json` beside `alias-alias.json`; the water,
-purse and refusal arms each carry `fixed` and `broken` inside `world.json`; the enchanting probe
-carries `consumer.fixed` and `consumer.broken` in the same file.
+Charged in round 4 §5 and it is not a formatting note: *"publishing four control arms and no
+treatment arm is the same shape as publishing a treatment arm and no control."* **Every arm in
+this directory is published with its own unbroken run at the same commit.**
+
+| pair | positive | teardown |
+|---|---|---|
+| the lead grid | `lead-fix.json` — 275/275 | `lead-nolead.json` — 120/275 |
+| the alias census | `alias-fix.json` — 0 of 22 moved | `alias-alias.json` — 1 of 22 moved |
+| deep water | `world.json` `water.all_fixed` — 14/14 cast | `all_no_floor`, `all_no_gate`, `all_broken` — 2/14 each |
+| the purse | `world.json` `purse.fixed` | `purse.broken` — **identical, and named as inert** |
+| the refusal | `world.json` `refusal.fixed` — on screen | `refusal.broken` — `[]` |
+| the enchanted object | `enchant.json` `consumer.fixed` — 66 hp | `consumer.broken` — 0 hp |
+| **the dial census** | `dials.json` — the arm round 4 did not run | `dials-nulldial.json` |
+
+**And the dial census is re-run whole, which is RULES.md #9** — ten checks confirmed individually
+and never together is how a green build ships broken, and this round changed the projectile
+steering, a data file two of the dials read, and the input gate. The positive arm at this commit:
+
+```
+break=(none)   rows 55   ACTIVE 55   INERT 0   NOT_DELIVERED 0
+MAGNITUDE  declared 48  coupled 33  BLIND 15
+DURATION   declared 37  coupled 31  BLIND 6
+AREA       declared 12  coupled 10  BLIND 2
+```
+
+**33 / 31 / 10, which is the round-4 critic's own reading at `9fadada` to the number.** Nothing
+this round perturbed the census, which is the regression statement the change to
+`cast-classes.json` needed and could not get from an argument.
 
 ---
 

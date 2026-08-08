@@ -8,6 +8,7 @@
 // which is the frame the old build never had.
 //
 // Steps the simulation, so it launches its own browser (RULES.md #20).
+import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, log, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
@@ -62,12 +63,16 @@ try {
       }
       if (shotAt !== null && f === shotAt) break;
     }
+    // THE HARNESS'S OWN CAPTURE, not `page.screenshot()`. The latter waits on the page's font
+    // loading and times out in this container; every other shot tool in the tree uses this one.
+    const png = await H.screenshot();
+    H.stepFrames(40);
     const hp1 = (H.getCombatState().enemies.find((e) => e.id === eid) || {}).hp;
-    return { hp0, hp1, shotAt, trace: trace.slice(-8), spell: mk.spell.id, moved_m: Math.round(x * 100) / 100 };
+    return { hp0, hp1, shotAt, trace: trace.slice(-8), spell: mk.spell.id, moved_m: Math.round(x * 100) / 100, png };
   });
-  await handle.page.screenshot({ path: path.resolve(out) });
+  fs.writeFileSync(path.resolve(out), Buffer.from(String(result.png).replace(/^data:image\/png;base64,/, ''), 'base64'));
 } finally { await handle.close(); }
 
 log(`shot: ${out}`);
-log(`frame ${result.shotAt}; the body has walked ${result.moved_m} m across the bolt's line`);
+log(`frame ${result.shotAt}; the body has walked ${result.moved_m} m across the bolt's line; hp ${result.hp0} -> ${result.hp1}`);
 for (const t of result.trace) log(`  f=${t.f} closest ${t.closest} m  aim ${JSON.stringify(t.aim)}  body ${JSON.stringify(t.tgt)}  turning ${t.turn} deg/s`);
