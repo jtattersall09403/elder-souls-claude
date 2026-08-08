@@ -203,6 +203,24 @@ other way round. What would overturn it: a field the instrument cannot honestly 
 transcript does not carry. Renderer: `tools/cost-report.mjs`; worked example with known numbers:
 `tools/cost-fixture.json` (the `--self-test` fixture, and the shape to copy).
 
+> **AMENDED 2026-08-08 by `COST-INSTRUMENT` (plan), which owns cost, under the reversibility clause
+> in the paragraph above. Five changes, each marked inline below, each because the transcript does
+> not support what was declared** — the reason the clause names. Full derivation and the numbers
+> behind every one: **`orchestration/plans/COST-INSTRUMENT.md`**.
+> 1. **`prices` carries five token classes and the real figures.** The declared example priced Opus
+>    at `input 15 / cache_write 18.75 / cache_read 1.5 / output 75` — about **3× the published
+>    price** — and had a single `cache_write` where the API bills **two** (5-minute at 1.25× base,
+>    1-hour at 2×), both of which occur here.
+> 2. **`by_token_class` and `by_model.tokens` carry the same five classes.**
+> 3. **New `coverage`** — a partial read must render `—`, never a confident under-count.
+> 4. **New `drivers`** — 81 % of spend is cache reads, and without this the page never shows why.
+> 5. **New `denominator`** + `comparable_key`, and **G1/G2/G3 rewritten** to state what is actually
+>    measurable: G1 has two disagreeing readings and publishes both; G2 is low-power and says so;
+>    **four of G3's five non-negotiables are not honestly measurable and ship as `null`.**
+>
+> **What would overturn these:** a published price table that differs from the one in `prices`, or a
+> `usage` shape that stops carrying `cache_creation.ephemeral_{5m,1h}_input_tokens` separately.
+
 - **Path: `docs/data/cost-ledger.json`.** Under `docs/` so the raw numbers are fetchable on the
   published site beside the page that draws them, the same way `docs/status.json` already is;
   committed, so the page regenerates identically from any checkout.
@@ -230,8 +248,54 @@ transcript does not carry. Renderer: `tools/cost-report.mjs`; worked example wit
                                              // a total that silently covers less than the reader
                                              // assumes is the same defect as a stale one. Set it
                                              // false if the instrument rolls up incrementally.
-  "prices": { "note": "usd per Mtok", "claude-opus-5": { "input": 15, "cache_write": 18.75,
-              "cache_read": 1.5, "output": 75 } },      // published so a reader can audit the money
+  "comparable_key": "sha1:…",                // hash of {H definition, price `effective` date,
+                                             // file-set rule, >=4 active hours}. Two readings are
+                                             // comparable only if these match. The page may say so;
+                                             // it never infers it.
+
+  // ── AMENDED 2026-08-08 by COST-INSTRUMENT (plan), under the reversibility clause above. ──
+  // FIVE token classes, not four. A 5-minute cache write is 1.25x base input; a 1-hour write is 2x;
+  // and BOTH occur here (149.4M tokens at 5m, 7.5M at 1h — the orchestrator's own session uses the
+  // 1h TTL, subagents use 5m). Collapsing them is the §1 mistake one level further down.
+  // The previously declared figures were ~3x the real published prices and had one cache_write key.
+  "prices": {
+    "note": "USD per million tokens",
+    "effective": "2026-08-08",
+    "sonnet_intro_expires": "2026-08-31",    // Sonnet 5 rises 50% on 2026-09-01 with NO change in
+                                             // behaviour. A series crossing that date is not
+                                             // comparable unless repriced from one pinned table.
+    "claude-opus-5":    { "input": 5, "cache_write_5m": 6.25, "cache_write_1h": 10,
+                          "cache_read": 0.5, "output": 25 },
+    "claude-sonnet-5":  { "input": 2, "cache_write_5m": 2.5,  "cache_write_1h": 4,
+                          "cache_read": 0.2, "output": 10 },  // intro; list = 3 / 3.75 / 6 / 0.3 / 15
+    "claude-haiku-4-5": { "input": 1, "cache_write_5m": 1.25, "cache_write_1h": 2,
+                          "cache_read": 0.1, "output": 5 }
+  },
+
+  // Coverage — the anti-truncation guard, and the arm the null control nearly missed.
+  // The source is 403 files / 638MB: `<session>.jsonl` AND `<session>/subagents/**`. The
+  // orchestrator's own file is 31MB and only 9.3% of the money, so an instrument reading the
+  // top-level glob alone under-reports ~10x and looks entirely plausible doing it.
+  // WHEN `complete` IS false, EVERY `headline` FIELD MUST BE null, so the page draws "—".
+  // A partial read rendered as a confident number is the inert-instrument shape (rule 4).
+  "coverage": { "files_total": n, "files_read": n, "bytes_read": n, "complete": true },
+
+  // Why the cost is what it is. 81% of spend is `cache_read`: cost is context volume x request
+  // count, NOT verbosity (median output is 5 tokens; output is 1.7% of spend). Without this block
+  // the page shows what the cost is and never why, and every lever lives in the why.
+  // pie_tokens = input + 1.25*cw5 + 2*cw1h + 0.1*cr + 5*output — a model-independent volume measure,
+  // valid because every model's price vector is base_input x [1, 1.25, 2, 0.1, 5]. It gives the
+  // exact decomposition  C/H = (PIE per active hour) x (weighted mean base input price),
+  // so model-mix and volume levers are separately measurable and never confounded.
+  "drivers": { "requests": n, "mean_context_tokens": n, "pie_tokens": n,
+               "requests_per_agent_hour": n },
+
+  // Which denominator produced C/H. Idle hours are EXCLUDED, because with a span denominator
+  // switching the fleet off improves the metric — the one outcome the owner explicitly forbade.
+  // Over a fully idle window C/H is null, never 0. `span_hours` is published beside it so the
+  // choice stays auditable rather than buried in the tool.
+  "denominator": { "definition": "active_clock_hours", "active_hours": 52, "agent_hours": 681,
+                   "span_hours": 61.94 },
   "headline": {                              // the top of the page. Every field pre-computed.
     "spend_to_date_usd": 1234.56,
     "burn_usd_per_hour": 42.1,               // current burn, over burn_window_hours
@@ -248,16 +312,55 @@ transcript does not carry. Renderer: `tools/cost-report.mjs`; worked example wit
     { "t": ISO, "usd_per_hour": 61.2, "usd_per_agent_hour": 4.4, "mean_agents": 13.9,
       "commit": "abc1234", "window_hours": 0.5, "note": "" }
   ],
+  // FIVE classes throughout (see `prices` above). `requests` counts DISTINCT `message.id`, not
+  // records: one API response is written as several JSONL records sharing one identical `usage`
+  // block, and summing records inflates the answer 1.81x overall — 2.58x on output.
   "by_model": [ { "model": "claude-opus-5", "usd": 1180.2, "requests": 3230,
-                  "tokens": { "input": n, "cache_write": n, "cache_read": n, "output": n } } ],
-  "by_token_class": [ { "class": "input|cache_write|cache_read|output", "usd": n, "tokens": n } ],
+                  "tokens": { "input": n, "cache_write_5m": n, "cache_write_1h": n,
+                              "cache_read": n, "output": n } } ],
+  "by_token_class": [ { "class": "input|cache_write_5m|cache_write_1h|cache_read|output",
+                        "usd": n, "tokens": n } ],
   "guards": {                                // G1-G3, beside the cost and never on another page
-    "g1_parallelism": { "mean_agents": 13.9, "floor": 12, "status": "ok|breach", "window_hours": 1 },
-    "g2_quality": { "mean_verdict_score": 7.4, "baseline_mean_verdict_score": 7.1,
-                    "critic_find_rate": 3.2, "baseline_critic_find_rate": 3.0, "status": "ok" },
-    "g3_rigour": { "counts": { "separate_critic": n, "delete_the_fix": n, "consumption": n,
-                   "self_test": n, "arms_disagree": n }, "baseline_counts": { ... },
-                   "status": "ok" }
+    // G1: two honest readings disagree and BOTH are published. `mean_agents` counts agents that
+    // ISSUED a request in the hour (13.10 at baseline, floor met). `mean_agents_present` counts
+    // agents alive between their first and last request (median 11 — 35 of 63 hours BELOW the
+    // floor, i.e. the baseline breaches G1 on that reading). The floor applies to the first; the
+    // second is shown beside it, and a >20% divergence is itself flagged, because it means agents
+    // are alive and idle — a cost finding in its own right (rule 21, browser contention).
+    "g1_parallelism": { "mean_agents": 13.9, "mean_agents_present": 11.0, "floor": 12,
+                        "divergence_flag": false, "status": "ok|breach", "window_hours": 1 },
+
+    // G2 ships in two parts and the page must not conflate them.
+    // G2a — continuous tripwire, ONE-SIDED and LOW POWER, and labelled as such: 64 scored verdicts
+    // across 16 domains, ~4 per domain, moving by whole points between rounds. A windowed mean
+    // verdict score CANNOT detect the harm this guard exists to detect, so it is published with its
+    // `power` and its `n` and must never be drawn as proof. The alarm that IS structural is
+    // critic_find_rate = 0 (rule 23: a critic that cannot find a gap has failed) — the exact shape
+    // a context-cutting change produces.
+    // G2b — the controlled re-grade that GATES LANDING a change: a fresh critic re-grades an
+    // already-verdicted piece under the new regime, blind, and its recovery of the known finding
+    // set is compared. This is the only honest controlled quality measurement available.
+    "g2_quality": { "mean_verdict_score": 7.4, "baseline_mean_verdict_score": 7.1, "n": 64,
+                    "power": "low", "critic_find_rate": 3.2, "baseline_critic_find_rate": 3.0,
+                    "regrade": { "piece": "…", "known_findings": n, "recovered": n } | null,
+                    "status": "ok" },
+
+    // G3: FOUR OF THE FIVE ARE NOT HONESTLY MEASURABLE TODAY, and the ledger says so rather than
+    // shipping a number the page would colour green. The five non-negotiables live in verdict PROSE
+    // ("delete-the-fix" in 59 files, "CONSUMPTION" in 143, "self-test" in 55) and only 2 of 95
+    // verdicts carry the structured header row. Grepping counts THE WORD, NOT THE ACT — and a guard
+    // measurable only by grepping for its own name is maximally gameable by the process it
+    // constrains. `separate_critic` IS structural and real: `tools/ownership.mjs` + status files
+    // prove a critic whose task_id differs from the builder's, without trusting prose.
+    // The other four ship as null / "unmeasured". The fix is a SEPARATE PIECE: add a
+    // machine-readable rigour block to the verdict template and have tools/verdict-validate.mjs
+    // require it. Until then G3 is one-fifth measured and must not imply otherwise.
+    "g3_rigour": { "counts": { "separate_critic": n, "delete_the_fix": null, "consumption": null,
+                               "self_test": null, "arms_disagree": null },
+                   "unmeasured": ["delete_the_fix", "consumption", "self_test", "arms_disagree"],
+                   "unmeasured_reason": "verdict prose only; a grep counts the word, not the act",
+                   "baseline_counts": { "separate_critic": n },
+                   "status": "ok|partial" }
   },
   "changes": [                               // including the reversed ones
     { "id": "CH-01", "title": "Sonnet for landed-plan builds", "landed": ISO, "commit": "abc1234",

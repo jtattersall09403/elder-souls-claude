@@ -2,11 +2,57 @@
   "task_id": "COST-INSTRUMENT-plan",
   "role": "plan agent (PLAN-LOOP.md)",
   "piece": "COST-INSTRUMENT",
-  "state": "running",
+  "state": "complete",
   "started": "2026-08-08",
+  "finished": "2026-08-08",
   "goal": "Plan for the cost instrument: C/H measurement, baseline, guards G0-G3, experiment protocol, external research.",
-  "next_step": "verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-INSTRUMENT.md",
-  "files_touched": ["orchestration/status/COST-INSTRUMENT-plan.json"],
-  "files_claimed": ["orchestration/plans/COST-INSTRUMENT.md"],
-  "notes": "Plan only. Does not build tools/cost.mjs."
+  "next_step": "plan critic (Opus, BLOCKING/CARRIED, bounded at 2 exchanges, no browser), then build",
+  "deliverable": "orchestration/plans/COST-INSTRUMENT.md",
+  "files_touched": [
+    "orchestration/plans/COST-INSTRUMENT.md",
+    "orchestration/status/COST-INSTRUMENT-plan.json",
+    "orchestration/COST.md"
+  ],
+  "files_claimed": [],
+  "redundant_with": ["COST-DASHBOARD", "RESEARCH-COSTEXT01"],
+  "redundancy_note": "COST.md is shared. I edited ONLY section 6.1 (the ledger contract), which COST-DASHBOARD explicitly declared as reversible and owned by the instrument. RESEARCH-COSTEXT01 owns section 4a; I did not touch it, and my plan section 7 points at it rather than duplicating it. One concurrent-edit conflict on COST.md was hit and resolved by re-reading before writing, not by forcing.",
+
+  "headline": "Baseline measured: $5,792.69 over 62h. C/H = $111.40/h, cost per agent-hour $8.51, mean concurrent agents 13.10. Target C/H <= $27.85/h.",
+
+  "findings_that_change_the_piece": [
+    "The brief's and COST.md's source glob '*.jsonl' matches ONE file (31MB) out of 403 (638MB). Subagent transcripts live in <session>/subagents/. The orchestrator is only 9.3% of the money, so an instrument built to the brief would have understated cost ~10.7x and looked plausible.",
+    "One API response is written as SEVERAL JSONL records sharing one message.id and one identical usage block. 84,490 records collapse to 46,575 requests. Summing records inflates cost 1.81x overall, 2.58x on output. Dedup on message.id is mandatory.",
+    "There are FIVE priced token classes, not four: cache_creation splits into ephemeral_5m (1.25x base) and ephemeral_1h (2x), and both occur here (149.4M vs 7.5M tokens).",
+    "CACHE READS ARE 81.2% OF ALL SPEND ($4,706 of $5,793). Cache-hit ratio is already 98.39%, so the hit-ratio lever in COST.md section 4 is nearly dead. Output is 1.7% of spend and median output is 5 tokens, so verbosity reduction is worth almost nothing. The cost is context volume x request count: median context 190,096 tokens per request, median 103 requests per agent.",
+    "Model mix CANNOT reach the 25% bar alone: every model's price vector is base_input x [1,1.25,2,0.1,5], so substitution is a scalar. All-Sonnet is 0.60x at list price (0.40x at intro). With critics staying Opus the realistic mix factor is ~0.7x, so token volume must fall 2.8x. That is the real target and it lands on cache-read volume.",
+    "Sonnet 5 is inside an introductory price window expiring 2026-08-31. On 1 September its price rises 50% with no behaviour change, moving C/H for free. Prices must be pinned by effective date.",
+    "The transcript is appended to WHILE being read (46,575 -> 46,643 requests in 11 minutes), so a baseline must be a frozen [from,to] window, not 'everything so far'.",
+    "G1 has two honest readings that DISAGREE: request-based gives 13.10 (passes the floor of 12), span-based gives median 11 with 35 of 63 hours BELOW the floor. I chose the passing one and said so; publishing both is the mitigation.",
+    "FOUR OF G3'S FIVE NON-NEGOTIABLES ARE NOT HONESTLY MEASURABLE. They exist only in verdict prose; a grep counts the word, not the act, and only 2 of 95 verdicts carry a structured header. They ship as null/'unmeasured'. Fixing it is a separate piece: machine-readable rigour block in the verdict template, enforced by tools/verdict-validate.mjs.",
+    "Cost-per-run CV is 0.97, so detecting a 25% effect needs ~238 runs per arm (~76h of fleet time, longer than the project's whole history). Attribution must therefore rest on PIE tokens (mechanism), not dollars (outcome), with paired arms inside one wave."
+  ],
+
+  "contract_amendments": {
+    "file": "orchestration/COST.md section 6.1",
+    "why_allowed": "the contract itself declares cost is the instrument's to change by editing the file",
+    "changes": [
+      "prices: five token classes and the real published figures (declared example was ~3x too high with one cache_write key)",
+      "by_token_class and by_model.tokens: five classes",
+      "new coverage block - when complete is false every headline field must be null so the page draws em-dash",
+      "new drivers block - requests, mean_context_tokens, pie_tokens, requests_per_agent_hour",
+      "new denominator block + comparable_key; G1/G2/G3 rewritten to state what is actually measurable"
+    ]
+  },
+
+  "build_recommendation": {
+    "build": "claude-sonnet-5",
+    "critic": "claude-opus-5",
+    "reason": "landed plan + machine-checkable acceptance ($74.80 fixture, hand-verifiable) per PLAN-LOOP.md; and it is the first application of the programme's own largest lever, generating a data point about that lever while building the tool that measures it. Bounded downside: a wrong parse is caught by --self-test in minutes."
+  },
+
+  "could_not_do": [
+    "WebFetch is blocked by the egress proxy for anthropic.com, claude.com and arxiv.org (EGRESS_BLOCKED, verified). WebSearch works. So every external citation in section 7 is a search-result summary, NOT a reading of the primary source. The H2 '84% token reduction' figure in particular should be verified before any round is planned around it.",
+    "Did not build tools/cost.mjs, the fixtures, or the ledger - this is the plan half.",
+    "Did not measure the cost of agents lost to the three container restarts; spend that left no transcript cannot be measured."
+  ]
 }

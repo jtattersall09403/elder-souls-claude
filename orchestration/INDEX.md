@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9790db8`: 788 tools, 153 reference
-items, 93 pieces in flight.
+so it cannot drift. Generated at `3979d78`: 790 tools, 153 reference
+items, 91 pieces in flight.
 
-Its purpose is to stop 93+ concurrent agents each paying separately to discover the
+Its purpose is to stop 91+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -527,6 +527,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
+### `tools/input/` — 1
+
+- `tools/input/arbiter-clock-s39.mjs` — THE FALSIFIER S39 SPECIFIED AND DID NOT RUN.
+
 ### `tools/journey/` — 23
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
@@ -795,7 +799,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 151
+### `tools/world/` — 152
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -829,6 +833,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-deploy-gate-fixture.mjs` — run tools/check-shipped-files.mjs against a real repository that really has an untracked module, and against seven shapes that must NOT trip it.
 - `tools/world/critic-deploy-night-notice.mjs` — does the boot notice's own "is anything drawn?" test call a working night scene undrawn, and refuse to get out of the player's way?
 - `tools/world/critic-deploy-probe.mjs` — the browser half of the deploy-instrument critique.
+- `tools/world/critic-deploy-r2-drift.mjs` — how much of the deployed site does verify-live-site's staleness check actually look at, and is anything drifted right now that it cannot see?
 - `tools/world/critic-deploy-r2-imgref-fixture.mjs` — run tools/playability/check-image-refs.mjs against real repositories that really have a broken published reference, and against ones that do not.
 - `tools/world/critic-deploy-requested-files.mjs` — every file the running game actually asks for must be in git.
 - `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
@@ -1124,24 +1129,22 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The two things to attack: whethe | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
+| `critic-w1-20` | running | JOB1 DONE. Now: JOB2 sweep tree for self-referential expected values; JOB3 faction texture | — |
+| `W1-12-r2-critic` | running | teardown-arm audit; consumption perturbation of the 39; S22 contrary; write verdict | `orchestration/status/W1-12-r2-critic.json` |
 | `W1-HUD-TOAST-A` | starting | Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text | `orchestration/status/W1-HUD-TOAST-A.json` |
 | `PLAN-COST-EXPERIMENTS` | running | Read COST.md, research report, PLAN-LOOP.md, RULES.md; survey instruments; write orchestra | `orchestration/status/PLAN-COST-EXPERIMENTS.json` |
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
-| `W1-12-r2-critic` | running | browser M1/M2; then teardown-arm audit; then consumption perturbation of the 39 | `orchestration/status/W1-12-r2-critic.json` |
 | `measure-quoted-e-w1-hud-toast-b` | running | Re-derive 786/244/459/133/326, then measure the quoted-E fraction over the 133. | `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
 | `S39-falsifier` | designing | Build tools/input/arbiter-clock-s39.mjs: (A) capture arm, real DOM presses 20/60/120/250/5 | `orchestration/status/S39-falsifier.json` |
-| `blog-table-fix` | running | implement table parsing in md() in tools/blog.mjs | `orchestration/status/blog-table-fix.json` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
 | `W1-TOUCH-r2` | in_progress | Read RI-JRN04 M-P5, guards.js, loop.js modes, touch-run.mjs --leg gate. Then implement inp | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `W1-PROSE-TICS-r4-instrument` | ? | write tools/blind/leakcheck.mjs (battery + gate + self-test), then tools/blind/mask-text.m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
 | `critic-w1-deploy-r2` | running (successor 2 — predecessor killed by usage limit with no artifacts on disk) | read all six subjects; then break each on purpose | `orchestration/status/critic-w1-deploy-r2.json` |
 | `COST-DASHBOARD` | running | agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report. | `orchestration/status/COST-DASHBOARD.json` |
-| `critic-w1-20` | running | read round report + RI-QST01; build wrap-break instrument for ui/hud.js; sweep tree for se | — |
-| `PLT01-STEPRATE` | running | state acceptance numbers in the item BEFORE measuring; then build tools/platform/timefidel | `orchestration/status/PLT01-STEPRATE.json` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r4` | ? | read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a fram | `orchestration/status/critic-w1-15-r4.json` |
 | `GATE-BLAST-RADIUS` | in_progress | checked orchestration/status/ for a predecessor status file on this exact task and found n | — |
-| `COST-INSTRUMENT-plan` | running | verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-IN | `orchestration/status/COST-INSTRUMENT-plan.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
 | `critic-w1-attr-scale` | running | write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md | `orchestration/status/critic-w1-attr-scale.json` |
