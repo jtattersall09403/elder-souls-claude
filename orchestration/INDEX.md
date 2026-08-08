@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `64dd5f9`: 577 tools, 153 reference
-items, 43 pieces in flight.
+so it cannot drift. Generated at `baed801`: 578 tools, 153 reference
+items, 44 pieces in flight.
 
-Its purpose is to stop 43+ concurrent agents each paying separately to discover the
+Its purpose is to stop 44+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -524,7 +524,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 33
+### `tools/quests/` — 34
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -536,6 +536,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-faction-r2.mjs` — the round-2 critic's own instrument for W1-FACTIONS.
 - `tools/quests/critic-giver-presence.mjs` — written for the W1-19 round-2 VERDICT.
 - `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G: the shared 5x5 chart font.
+- `tools/quests/critic-unrouted-census.mjs` — W1-READABLES r2 critic, attack E.
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
 - `tools/quests/faction-probe.mjs` — the CONSUMPTION probe for the faction questlines (RI-MTH07, ARBITRATION §3).
@@ -889,6 +890,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-22-r2` | running | SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 2 | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` |
+| `W1-17-r2` | building | read RULES/INDEX/verdict/r1 status; then reproduce the 133 unhearable count from a tool | `orchestration/status/W1-17-r2.json` |
 | `arbiter-dlg-s37` | starting | read RULES.md, INDEX.md, ARBITRATION.md, W1-17-r1.md, converse.js | `orchestration/status/arbiter-dlg-s37.json` |
 | `W1-23-r4` | building | baseline taken; find the roster generator | `orchestration/status/W1-23-r4.json` |
 | `W1-25` | building | RI-EXP06 (probes-from-md + breakage-probe + pbrule-audit + durability compare), then RI-EX | `corpus/95-experience/RI-CMP01.cells.json` `orchestration/status/W1-25.json` `reports/composition/w1/stage1.md` `reports/experience/w1/sabotage.json` `reports/experience/w1/sabotage.md` `tools/composition/cells-from-md.mjs` |
@@ -897,7 +900,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G | `orchestration/status/critic-w1-15-r3.json` |
 | `critic-w1-readables` | running | read RULES/INDEX/ARBITRATION §3, then builder status files | `orchestration/status/critic-w1-readables.json` |
-| `critic-w1-22-r2` | running | SUCCESSOR-2: probe running; then build reports/packs/w1-22-r3-hard and spawn a FRESH judge | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` `reports/w1-22-critic/r2/onsets-at-HEAD.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |

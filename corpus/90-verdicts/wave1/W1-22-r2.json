@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-22-r2",
+  "piece_title": "W1-22 round 3 — regional ambience (audio.ambience.region)",
+  "subsystem_paths": ["audio.ambience.region"],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-22-r2-s2",
+    "role": "critic.audio",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T22:00:00Z",
+    "finished_at": "PENDING",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "note": "Successor generation 2. Two predecessors were killed by container restarts. This verdict continues from the next_step left on disk and re-verified rather than inherited every number it repeats; where it relies on a predecessor's measurement it says so and names it."
+  },
+  "build": {
+    "commit_sha": "5d88b7e",
+    "branch": "main",
+    "harness_commands": [
+      {
+        "command": "node tools/run.mjs --label critic-w1-22-r2-onsets-HEAD -- node tools/analysis/ambience-onsets.mjs --seconds 180 --out reports/w1-22-critic/r2/onsets-at-HEAD.json",
+        "exit_code": 1,
+        "stdout_artifact": "reports/w1-22-critic/r2/onsets-at-HEAD.json"
+      },
+      {
+        "command": "node tools/audio/critic-w1-22-r2-bands.mjs",
+        "exit_code": 1,
+        "stdout_artifact": "reports/w1-22-critic/r2/bands.json"
+      },
+      {
+        "command": "node tools/audio/critic-w1-22-r2-bands.mjs --sabotage widen",
+        "exit_code": 1,
+        "stdout_artifact": "reports/w1-22-critic/r2/bands-sab-widen.json"
+      },
+      {
+        "command": "node tools/audio/critic-w1-22-r2-bands.mjs --sabotage centre",
+        "exit_code": 1,
+        "stdout_artifact": "reports/w1-22-critic/r2/bands-sab-centre.json"
+      },
+      {
+        "command": "node tools/run.mjs --label critic-w1-22-r2-probe -- node tools/audio/critic-w1-22-r2-probe.mjs --frames 600 --seconds 60",
+        "exit_code": null,
+        "stdout_artifact": "reports/w1-22-critic/r2/critic-probe-r2-successor.json"
+      },
+      {
+        "command": "node tools/audio/critic-w1-22-r2-chart.mjs --out docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png",
+        "exit_code": 0,
+        "stdout_artifact": "docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png"
+      }
+    ],
+    "depends_on": [
+      "corpus/00-doctrine/ARBITRATION.md",
+      "corpus/87-audio/AMENDMENT-W1-22-01.md",
+      "corpus/87-audio/RI-AUD03-regional-ambience.md",
+      "game/data/audio/ambience/**",
+      "game/data/progression/race-reactions.json",
+      "game/src/audio/ambience.js",
+      "game/src/engine.js",
+      "game/src/sim/stealth/detection.js",
+      "reports/w1-22/ambience-determinism-sab-flatmix.json",
+      "reports/w1-22/ambience-determinism.json",
+      "reports/w1-22/ambience-interior-consumption.json",
+      "reports/w1-22/ambience-onsets.json",
+      "tools/analysis/ambience-onsets.mjs",
+      "tools/audio/critic-w1-22-r2-bands.mjs",
+      "tools/audio/critic-w1-22-r2-chart.mjs",
+      "tools/audio/critic-w1-22-r2-pack.mjs",
+      "tools/audio/critic-w1-22-r2-probe.mjs",
+      "tools/blind/audio-pack-w1-22-r2.mjs"
+    ]
+  },
+  "bifurcation": {
+    "visual_judgement": "not_applicable",
+    "note": "Audio. The one picture in this verdict is a plot of a measurement, not a view of the game, so tools/capture/ is not the instrument (rule 20 governs pictures OF THE GAME)."
+  },
+  "method_deviations": [
+    {
+      "what": "Wrote three instruments of my own: tools/audio/critic-w1-22-r2-bands.mjs (offline band/gain-chain audit), tools/audio/critic-w1-22-r2-probe.mjs (browser: the mute-guard falsification and the CONSUMPTION arms), tools/audio/critic-w1-22-r2-pack.mjs (the rebuilt blind pack).",
+      "why": "RI-AUD03 names no tool that checks event levels PER EVENT, and the shipped gate O3 grades a layer median. Rule 24: if a method names a tool that does not exist, build it, and make it able to fail. Each carries a sabotage arm and each was shown to go red."
+    },
+    {
+      "what": "Ran the consumption probe with `node tools/contention.mjs --gate` returning exit 3.",
+      "why": "Rule 21 permits proceeding past exit 3 if declared. Declared here and in orchestration/status/critic-w1-22-r2.json. One browser at a time throughout; never two of mine concurrently. No wall-clock figure is quoted anywhere in this verdict."
+    },
+    {
+      "what": "The consumption scenario runs with no guard entity.",
+      "why": "The default player race is `argonian`, which is not a key in game/data/progression/race-reactions.json's law_factor (that table calls it `saxhleel`), so thresholds() throws inside the fixed step as soon as a guard is stepped. A pre-existing defect in the tree, not this piece's. Reported rather than hidden (rule 26); it makes the fixture weaker than intended."
+    }
+  ],
+  "reference_items": [
+    {
+      "id": "RI-AUD03",
+      "path": "corpus/87-audio/RI-AUD03-regional-ambience.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "checks passed / 6 (B1-B6)",
+      "native_score": "PENDING",
+      "native_max": 6,
+      "native_verdict": "PENDING",
+      "score_0_10": 0,
+      "measured": "partial",
+      "justification": "PENDING",
+      "evidence": ["reports/w1-22-critic/r2/bands.json"],
+      "checks": []
+    }
+  ],
+  "artifacts": [],
+  "blind": [],
+  "arbitration": {
+    "ar1_souls_leakage": {
+      "result": "pass",
+      "note": "Nothing in a synthesised ambience bed carries a Morrowind combat mechanic. No roll-to-hit, no dice, no pause, no level scaling is reachable from this subsystem."
+    },
+    "ar2_morrowind_leakage": {
+      "result": "pass",
+      "note": "No objective marker, bonfire warp, procedural loot or soul-currency purchase is expressed through the ambience layer."
+    },
+    "ar3_seam_sterility": {
+      "seam_sterile": true,
+      "justification": "The ambience model carries no boundary-crossing interaction. It is driven BY the world (region, position, time of day, weather are written into the driver from _afterStep) and read back only by instruments. Nothing a faction rank, a disposition, a quest resolution or a lore fact does changes what a region sounds like, and nothing a region sounds like changes what any entity does. This is the same finding as CONSUMPTION below, seen from the seam side: the subsystem is a leaf in both directions."
+    },
+    "consumption": {
+      "result": "PENDING",
+      "world_side_consumer": "PENDING",
+      "demonstrated_by_perturbation": "PENDING",
+      "positive_control": "PENDING",
+      "evidence": ["reports/w1-22-critic/r2/critic-probe-r2-successor.json"]
+    }
+  },
+  "score": {
+    "method": "min-over-axes",
+    "value": 0,
+    "gate": 7.0,
+    "meets_gate": false
+  },
+  "status": "PENDING",
+  "biggest_gap": {
+    "gap_id": "GAP-W1-22-event-level-graded-on-a-median",
+    "subsystem_path": "audio.ambience.region",
+    "what": "RI-AUD03 §A's 'Level (rel. bed)' band is a claim about EVENTS, and every mechanism that touches it is a per-layer median: gate O3 grades the median of a bed/layer's events, and the corrective trim `event_gain_db` is a single number per layer, while the second gain stage it corrects (`synth.gain_db`, -5..-13) varies PER EVENT. A per-layer trim cannot in principle unbury an event quieter than its layer-mates; it can only move the whole spread. The result is that the round-1 defect this piece exists to close -- declared in band, buried by a second gain stage -- is still present for individual events while the gate reports zero failures: 54 of 413 measured events sit outside §A's band with the tool's own +/-2 dB tolerance, 33 of them buried below the floor, in 11 of 33 bed/layer pairs whose median passes.",
+    "why_it_matters": "The buried events are not marginal ones. blackwood/L3/distant_axe renders at -23.1 dB relative to the bed -- 15 dB below §A's floor -- and 'distant axe-strokes' is one of the three sounds that bed's own `brief` field advertises. deep-marshes/L3/marsh_gas_release reaches -30.4 dB. well/L3/stone_shift -16.3, dungeon/L3/block_settle -11.1. From the player's chair those sounds do not exist, which is exactly the state the B2 judge described as 'nothing ever happens in any of them' and exactly the state this round was commissioned to end. Because the gate is green, no future round has a reason to look.",
+    "remedy": "Gate O3 on EVERY measured event rather than on the layer median -- the check is already written and falsifiable at tools/audio/critic-w1-22-r2-bands.mjs B1, which goes red on the shipped tree, redder under --sabotage widen, and GREEN under --sabotage centre (every event collapsed onto its layer median), proving its reading is about the spread and not about the level. Then give the trim the same granularity as the stage it corrects: calibrate a per-EVENT gain rather than one `event_gain_db` per layer, since the quantity being corrected varies per event. Both halves are small and neither needs new engine code.",
+    "evidence": [
+      "reports/w1-22-critic/r2/bands.json",
+      "reports/w1-22-critic/r2/bands-sab-centre.json",
+      "reports/w1-22-critic/r2/bands-sab-widen.json",
+      "reports/w1-22-critic/r2/onsets-at-HEAD.json",
+      "docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png"
+    ]
+  },
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "PENDING"
+  }
+}

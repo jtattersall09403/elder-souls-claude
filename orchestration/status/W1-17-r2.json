@@ -1,0 +1,29 @@
+{
+  "task_id": "W1-17-r2",
+  "title": "W1-17 round 2 — dialogue: make what exists reachable and correct",
+  "state": "building",
+  "started_at": "2026-08-08",
+  "base_commit": "64dd5f9",
+  "brief": "corpus/90-verdicts/wave1/W1-17-r1.md (FAIL 5.0/10). Do NOT rewrite prose, do NOT add volume.",
+  "next_step": "read RULES/INDEX/verdict/r1 status; then reproduce the 133 unhearable count from a tool",
+  "objectives": [
+    {"id": "A", "what": "133 unhearable infos -> triage each (body / re-home / cut), report split", "state": "todo"},
+    {"id": "B", "what": "res has no reader: wire or cut, add consume.mjs arm either way", "state": "todo"},
+    {"id": "C", "what": "voice-metrics.mjs missing second_regex; republish BOTH archetype tic numbers", "state": "todo"},
+    {"id": "D", "what": "orphans: 0 should be 23 - report in the bucket the item names", "state": "todo"},
+    {"id": "E", "what": "raceTerm() throws - fix before census/shadow-audit/consume run", "state": "todo"},
+    {"id": "F", "what": "sapcutter/legionary 'indistinguishable' is a metric defect (RI-DLG06 B has no mood axis)", "state": "todo"},
+    {"id": "G", "what": "CONSUMPTION RI-MTH07 + delete-the-fix per amended rule 6 with a control watched go red", "state": "todo"}
+  ],
+  "do_not_touch": ["first-match-wins / ordering — arbiter S37 is ruling", "tools/dialogue/arbiter-*"],
+  "files_touched": ["orchestration/status/W1-17-r2.json"],
+  "files_claimed": [
+    "game/data/dialogue/",
+    "game/src/sim/dialogue/",
+    "tools/dialogue/",
+    "reports/w1-17-r2/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "notes": []
+}

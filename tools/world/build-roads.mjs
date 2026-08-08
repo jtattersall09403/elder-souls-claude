@@ -280,8 +280,17 @@ function admissible(x, z) {
   if (!ALLOW_WATER && s !== null && s - g > 0.45) return false;   // never over knee-deep at any phase
   if (ALLOW_WATER && s !== null && s - g > 2.6) return false;     // the tideway floods; it is not a trench
   if (field.slopeAt(x, z, 8) > 28) return false;                  // and never on ground a deck cannot hold
+  // W1-ROAD-JOIN. A wall is ground a road cannot be built on for exactly the same reason a lake is,
+  // and it belongs in exactly the same predicate. Every lateral move in this file — the sinuosity
+  // solve, the straightening, and the post-join length correction — is line-searched against
+  // `safeMove`, so putting the buildings here joins the two generators at every one of them at
+  // once instead of at the three call sites somebody remembers.
+  if (CLEAR_BUILDINGS && clearanceTo(ALL_OBSTACLES, x, z) < BUILD_CLEAR_M) return false;
   return true;
 }
+// Set once the obstacle field exists. `admissible` is defined above it because the routing helpers
+// that call it are, and a hoisted function reading a `let` initialised later would throw.
+let CLEAR_BUILDINGS = false;
 /** Move `q` toward `to` by the largest fraction of the way that stays admissible. */
 function safeMove(q, tox, toz) {
   for (let t = 1.0; t > 0.001; t -= 0.125) {
@@ -312,6 +321,351 @@ function wiggle(p, amp, seedPhase) {
     const L = Math.hypot(px, pz) || 1;
     return safeMove(q, q[0] + (-pz / L) * amp * env * w, q[1] + (px / L) * amp * env * w);
   });
+}
+
+/* ================================================================================================
+ * THE JOIN — the settlement plan, as an obstacle field the router must respect.
+ *
+ * Everything below reads `planSettlement()`, the same pure function `game/src/world/province.js`
+ * calls to decide where the walls are. That is the join: there is one description of where the
+ * buildings stand and both generators now read it. It is not "the seeds happen to agree" — if a
+ * building moves, this file's output moves with it, and `--consume` in
+ * `tools/world/road-join-consumption.mjs` is the demonstration.
+ * ==============================================================================================*/
+
+const JOIN_ON = !ARGV.includes('--no-join');
+
+// How near a wall face the road CENTRELINE may come. The body is 0.32 m
+// (`world-collision.js PLAYER_RADIUS_M`) and the wall slab stands WALL_T/2 = 0.18 m proud of the
+// footprint, so 0.50 m is the geometric minimum. 1.10 m is that plus slack for the walker, which
+// steers at a point 4.5 m ahead and therefore cuts every corner it turns.
+const BUILD_CLEAR_M = 1.10;
+// The clearance the road would LIKE. Inside this band it is charged, so where there is room the
+// street runs down the middle of the gap instead of scraping one wall.
+const BUILD_ROOM_M = 3.2;
+// How far outside a town's own radius the fine re-cut reaches. The join must own the whole
+// approach, or it hands the leg back to the coarse route inside somebody's garden.
+const TOWN_PAD_M = 45;
+const FINE_CELL_M = 1.0;       // the re-cut grid. A 2 m alley is two cells wide; 1 m finds it.
+
+/** Every interior record, keyed the way `engine.js` keys `this.data.interiors`. */
+function loadInteriors() {
+  const out = {};
+  const dir = join(ROOT, 'game/data/world/interiors');
+  for (const f of readdirSync(dir)) {
+    if (!f.endsWith('.json')) continue;
+    const doc = JSON.parse(readFileSync(join(dir, f), 'utf8'));
+    if (doc && doc.id) out[doc.id] = doc;
+    else if (doc) for (const k of Object.keys(doc)) if (doc[k] && doc[k].id) out[doc[k].id] = doc[k];
+  }
+  return out;
+}
+
+/**
+ * The towns, as obstacle fields.
+ *
+ * Each building becomes an oriented box. Its half-extents are the LARGER of the two footprints
+ * `planSettlement()` produces — with the interiors loaded (what the game builds walls from) and
+ * without (what the offline check measures). See the header: they disagree for 114 of 202.
+ */
+function loadTowns() {
+  const interiors = loadInteriors();
+  const dir = join(ROOT, 'game/data/world/settlements');
+  const towns = [];
+  for (const f of readdirSync(dir).sort()) {
+    if (!f.endsWith('.json')) continue;
+    const rec = JSON.parse(readFileSync(join(dir, f), 'utf8'));
+    const withI = planSettlement(rec, interiors), without = planSettlement(rec, {});
+    const obstacles = [];
+    for (let i = 0; i < withI.buildings.length; i++) {
+      const a = withI.buildings[i], b = without.buildings[i];
+      const fp = (q) => (q.drawn_footprint_m || q.footprint_m);
+      obstacles.push({
+        town: withI.id, id: a.id, x: a.x, z: a.z, yaw: (a.yaw_deg || 0) * Math.PI / 180,
+        hw: Math.max(fp(a)[0], fp(b)[0]) / 2, hd: Math.max(fp(a)[1], fp(b)[1]) / 2,
+      });
+    }
+    let reach = 0;
+    for (const o of obstacles) reach = Math.max(reach, Math.hypot(o.x - withI.pos[0], o.z - withI.pos[2]) + Math.hypot(o.hw, o.hd));
+    towns.push({ id: withI.id, x: withI.pos[0], z: withI.pos[2], radius_m: withI.radius_m, reach_m: reach, obstacles });
+  }
+  return towns;
+}
+
+const TOWNS = JOIN_ON ? loadTowns() : [];
+const ALL_OBSTACLES = TOWNS.flatMap((t) => t.obstacles);
+CLEAR_BUILDINGS = JOIN_ON;
+
+/**
+ * Signed clearance from (x, z) to one oriented box: positive outside, negative inside.
+ * The standard box SDF, in the box's own frame.
+ */
+function boxClearance(o, x, z) {
+  const c = Math.cos(-o.yaw), s = Math.sin(-o.yaw);
+  const dx = x - o.x, dz = z - o.z;
+  const lx = Math.abs(dx * c + dz * s) - o.hw;
+  const lz = Math.abs(-dx * s + dz * c) - o.hd;
+  if (lx > 0 || lz > 0) return Math.hypot(Math.max(lx, 0), Math.max(lz, 0));
+  return Math.max(lx, lz);                      // inside: the (negative) distance to the nearest face
+}
+
+/** Clearance to the nearest building in `list`; Infinity where there are none. */
+function clearanceTo(list, x, z) {
+  let best = Infinity;
+  for (const o of list) { const d = boxClearance(o, x, z); if (d < best) best = d; }
+  return best;
+}
+
+/** Is the straight run a->b clear of `list` by `need` metres the whole way, and buildable? */
+function segmentClear(list, ax, az, bx, bz, need) {
+  const L = Math.hypot(bx - ax, bz - az);
+  const n = Math.max(1, Math.ceil(L / 0.5));
+  for (let k = 0; k <= n; k++) {
+    const t = k / n, x = ax + (bx - ax) * t, z = az + (bz - az) * t;
+    if (clearanceTo(list, x, z) < need) return false;
+    if (!admissible(x, z)) return false;
+  }
+  return true;
+}
+
+/**
+ * THE GATE. The nearest standing to `(cx, cz)` that is clear of every building by `need`.
+ *
+ * Only used where a leg's own terminus — the settlement position out of `world-scale.json` — is
+ * itself inside a footprint, which is true of exactly one town in the shipped tree: `Thorn`'s
+ * centre is 7.11 m inside `thorn-hall`. The settlement does not move. The road's terminus moves
+ * onto the square, which is what a gate is.
+ */
+function gateFor(town, cx, cz, need) {
+  if (clearanceTo(town.obstacles, cx, cz) >= need && admissible(cx, cz)) return null;
+  let best = null;
+  for (let r = 1; r <= 120; r += 0.5) {
+    for (let a = 0; a < 720; a++) {                       // half-degree fan, deterministic order
+      const th = a * Math.PI / 360;
+      const x = cx + Math.cos(th) * r, z = cz + Math.sin(th) * r;
+      if (clearanceTo(town.obstacles, x, z) < need) continue;
+      if (!admissible(x, z)) continue;
+      best = { x: +x.toFixed(2), z: +z.toFixed(2), moved_m: +r.toFixed(2), town: town.id };
+      break;
+    }
+    if (best) break;
+  }
+  return best;
+}
+
+/**
+ * A* on a 1 m grid over a box, with the building footprints as walls.
+ *
+ * Complete: if any corridor of `BUILD_CLEAR_M` exists between the two ends, this finds one. That
+ * completeness is the reason the join is a re-cut and not a nudge — the offences in the shipped
+ * tree need lateral moves of 0.5 m to 42 m, and a 42 m move is a road going round a block, which
+ * no amount of pushing a polyline sideways will ever discover.
+ *
+ * The cost has three terms and the third is what keeps the result a road:
+ *   1. distance
+ *   2. a squeeze charge inside `BUILD_ROOM_M` of a wall, so the street centres itself in the gap
+ *   3. a leash to the ORIGINAL corridor, so the re-cut is recognisably the same road arriving from
+ *      the same direction rather than a free-for-all across the parish
+ */
+function fineRoute(list, ax, az, bx, bz, corridor, box) {
+  const x0 = box.x0, z0 = box.z0;
+  const W = Math.ceil((box.x1 - box.x0) / FINE_CELL_M) + 1;
+  const H = Math.ceil((box.z1 - box.z0) / FINE_CELL_M) + 1;
+  const N = W * H;
+  if (N > 4_000_000) return null;
+  const wx = (i) => x0 + (i % W) * FINE_CELL_M;
+  const wz = (i) => z0 + Math.floor(i / W) * FINE_CELL_M;
+  const idx = (x, z) => {
+    const cx = Math.round((x - x0) / FINE_CELL_M), cz = Math.round((z - z0) / FINE_CELL_M);
+    if (cx < 0 || cz < 0 || cx >= W || cz >= H) return -1;
+    return cz * W + cx;
+  };
+  // Distance from a cell to the original corridor, for the leash.
+  const leashAt = (x, z) => {
+    let best = Infinity;
+    for (let i = 0; i + 1 < corridor.length; i++) {
+      const px = corridor[i][0], pz = corridor[i][1];
+      const qx = corridor[i + 1][0], qz = corridor[i + 1][1];
+      const dx = qx - px, dz = qz - pz, L2 = dx * dx + dz * dz;
+      let t = L2 > 1e-9 ? ((x - px) * dx + (z - pz) * dz) / L2 : 0;
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      const d = Math.hypot(x - (px + dx * t), z - (pz + dz * t));
+      if (d < best) best = d;
+    }
+    return best;
+  };
+  const cellCost = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const x = wx(i), z = wz(i);
+    const c = clearanceTo(list, x, z);
+    if (c < BUILD_CLEAR_M || !admissible(x, z)) { cellCost[i] = -1; continue; }
+    const squeeze = c < BUILD_ROOM_M ? 6.0 * (BUILD_ROOM_M - c) / BUILD_ROOM_M : 0;
+    cellCost[i] = 1 + squeeze + 0.06 * leashAt(x, z);
+  }
+  const s = idx(ax, az), t = idx(bx, bz);
+  if (s < 0 || t < 0) return null;
+  cellCost[s] = Math.max(1, cellCost[s]);       // the ends are given, whatever stands on them
+  cellCost[t] = Math.max(1, cellCost[t]);
+  const g = new Float64Array(N).fill(Infinity);
+  const prev = new Int32Array(N).fill(-1);
+  const closed = new Uint8Array(N);
+  const open = makeHeap();
+  g[s] = 0; open.push(0, s);
+  const tx = t % W, tz = Math.floor(t / W);
+  while (open.size) {
+    const cur = open.pop();
+    if (closed[cur]) continue;
+    closed[cur] = 1;
+    if (cur === t) break;
+    const cx = cur % W, cz = Math.floor(cur / W);
+    for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
+      if (!dx && !dz) continue;
+      const nx = cx + dx, nz = cz + dz;
+      if (nx < 0 || nz < 0 || nx >= W || nz >= H) continue;
+      const ni = nz * W + nx;
+      if (closed[ni] || cellCost[ni] < 0) continue;
+      // No corner-cutting through a diagonal gap between two walls.
+      if (dx && dz && (cellCost[cz * W + nx] < 0 || cellCost[nz * W + cx] < 0)) continue;
+      const step = FINE_CELL_M * (dx && dz ? Math.SQRT2 : 1);
+      const ng = g[cur] + step * (cellCost[cur] + cellCost[ni]) / 2;
+      if (ng < g[ni]) { g[ni] = ng; prev[ni] = cur; open.push(ng + Math.hypot(nx - tx, nz - tz) * FINE_CELL_M, ni); }
+    }
+  }
+  if (prev[t] === -1 && t !== s) return null;
+  const cells = [];
+  for (let i = t; i !== -1; i = prev[i]) { cells.push(i); if (i === s) break; }
+  cells.reverse();
+  const raw = cells.map((i) => [wx(i), wz(i)]);
+  raw[0] = [ax, az]; raw[raw.length - 1] = [bx, bz];
+  // STRING-PULL. A grid path is a staircase; a road is not. Advance as far as the straight run
+  // stays clear, which turns the staircase into the few long straights and tight corners that a
+  // street between two rows of houses actually is.
+  const pulled = [raw[0]];
+  let i = 0;
+  while (i < raw.length - 1) {
+    let j = raw.length - 1;
+    for (; j > i + 1; j--) if (segmentClear(list, raw[i][0], raw[i][1], raw[j][0], raw[j][1], BUILD_CLEAR_M)) break;
+    pulled.push(raw[j]);
+    i = j;
+  }
+  return pulled;
+}
+
+/**
+ * Re-cut every part of `p` that lies in a town, so the leg threads the gaps instead of the walls.
+ * Returns `{ p, recuts }`. Outside `radius_m + TOWN_PAD_M` of a town centre, `p` is untouched.
+ */
+function threadSettlements(p, legId) {
+  if (!JOIN_ON) return { p, recuts: [] };
+  const recuts = [];
+  let out = p.map((q) => q.slice());
+  for (const town of TOWNS) {
+    const R = Math.max(town.radius_m, town.reach_m) + TOWN_PAD_M;
+    let i0 = -1, i1 = -1;
+    for (let i = 0; i < out.length; i++) {
+      if (Math.hypot(out[i][0] - town.x, out[i][1] - town.z) > R) continue;
+      if (i0 < 0) i0 = i;
+      i1 = i;
+    }
+    if (i0 < 0) continue;
+    // One point either side of the zone, so the splice joins the untouched road rather than
+    // starting from a point that is already in somebody's garden.
+    i0 = Math.max(0, i0 - 1); i1 = Math.min(out.length - 1, i1 + 1);
+    const before = out.slice(i0, i1 + 1);
+    const beforeLen = len2d(before);
+    const a = before[0], b = before[before.length - 1];
+    const xs = before.map((q) => q[0]).concat([town.x]), zs = before.map((q) => q[1]).concat([town.z]);
+    const box = {
+      x0: Math.min(...xs) - 60, x1: Math.max(...xs) + 60,
+      z0: Math.min(...zs) - 60, z1: Math.max(...zs) + 60,
+    };
+    const cut = fineRoute(town.obstacles, a[0], a[1], b[0], b[1], before, box);
+    if (!cut) {
+      process.stderr.write(`JOIN: no corridor of ${BUILD_CLEAR_M} m through ${town.id} for leg ${legId}\n`);
+      recuts.push({ town: town.id, ok: false, from_m: null, before_m: +beforeLen.toFixed(1), after_m: null });
+      continue;
+    }
+    const afterLen = len2d(cut);
+    out = out.slice(0, i0).concat(cut, out.slice(i1 + 1));
+    recuts.push({ town: town.id, ok: true, points: cut.length,
+      before_m: +beforeLen.toFixed(1), after_m: +afterLen.toFixed(1), delta_m: +(afterLen - beforeLen).toFixed(1) });
+  }
+  return { p: out, recuts };
+}
+
+/**
+ * PUT BACK THE METRES THE RE-CUT SPENT — outside the towns, where there is room.
+ *
+ * The hour it takes to cross this province is the thing the world is for, and `RI-WLD01` §4's
+ * `path_m` is where that hour is written down. `ARBITRATION` S28 permits a re-cut but binds it: no
+ * leg may move more than 5% from its declared length. Threading `Lilmoth -> Archon` through two
+ * towns found a shorter way and took 131.7 m off it — 5.2%, over the bar — so the metres go back.
+ *
+ * They go back OUTSIDE the towns. Every index within a town's re-cut zone is frozen, the leg is cut
+ * into the free spans between them, and each span is given a proportional share of the deficit by
+ * exactly the machinery the original solve uses — `wiggle` to add, `straighten` to remove, both
+ * bisected, both line-searched point by point through `safeMove`. `admissible` now counts a wall as
+ * unbuildable ground, so the correction cannot undo the join it is correcting.
+ */
+function correctLength(p, target, legId) {
+  if (!JOIN_ON || p.length < 4) return { p, corrected_m: 0, spans: 0 };
+  const frozen = p.map(([x, z]) => TOWNS.some((t) =>
+    Math.hypot(x - t.x, z - t.z) <= Math.max(t.radius_m, t.reach_m) + TOWN_PAD_M));
+  const spans = [];
+  for (let i = 0; i < p.length; i++) {
+    if (frozen[i]) continue;
+    const a = Math.max(0, i - 1);
+    let j = i;
+    while (j + 1 < p.length && !frozen[j + 1]) j++;
+    const b = Math.min(p.length - 1, j + 1);
+    if (b - a >= 3) spans.push([a, b]);
+    i = j + 1;
+  }
+  if (!spans.length) return { p, corrected_m: 0, spans: 0 };
+  const spanLen = spans.map(([a, b]) => len2d(p.slice(a, b + 1)));
+  const freeTotal = spanLen.reduce((s, v) => s + v, 0);
+  const deficit = target - len2d(p);
+  if (Math.abs(deficit) < 1 || freeTotal < 1) return { p, corrected_m: 0, spans: spans.length };
+  const out = p.map((q) => q.slice());
+  let got = 0;
+  for (let k = 0; k < spans.length; k++) {
+    const [a, b] = spans[k];
+    const want = spanLen[k] + deficit * spanLen[k] / freeTotal;
+    let sub = out.slice(a, b + 1);
+    if (want < spanLen[k]) {
+      let lo = 0, hi = 1;
+      for (let it = 0; it < 30; it++) { const m = (lo + hi) / 2; if (len2d(straighten(sub, m)) > want) lo = m; else hi = m; }
+      sub = straighten(sub, (lo + hi) / 2);
+    } else {
+      for (let pass = 0; pass < 4 && len2d(sub) < want - 0.5; pass++) {
+        const ph = 0.29 + k * 0.23 + pass * 0.41;
+        let lo = 0, hi = 300;
+        for (let it = 0; it < 30; it++) { const m = (lo + hi) / 2; if (len2d(wiggle(sub, m, ph)) < want) lo = m; else hi = m; }
+        if ((lo + hi) / 2 < 0.5) break;
+        sub = wiggle(sub, (lo + hi) / 2, ph);
+      }
+    }
+    got += len2d(sub) - spanLen[k];
+    for (let i = a; i <= b; i++) out[i] = sub[i - a];
+  }
+  return { p: out, corrected_m: +got.toFixed(1), spans: spans.length, wanted_m: +deficit.toFixed(1), leg: legId };
+}
+
+/** Every 0.5 m sample of `p` that is nearer than `need` to a wall. The join's own audit. */
+function joinAudit(p, need = BUILD_CLEAR_M) {
+  const bad = [];
+  let worst = Infinity;
+  for (let i = 1; i < p.length; i++) {
+    const L = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]);
+    const n = Math.max(1, Math.ceil(L / 0.5));
+    for (let k = 0; k <= n; k++) {
+      const t = k / n, x = p[i - 1][0] + (p[i][0] - p[i - 1][0]) * t, z = p[i - 1][1] + (p[i][1] - p[i - 1][1]) * t;
+      const c = clearanceTo(ALL_OBSTACLES, x, z);
+      if (c < worst) worst = c;
+      if (c < need) bad.push([+x.toFixed(1), +z.toFixed(1), +c.toFixed(2)]);
+    }
+  }
+  return { worst_clearance_m: Number.isFinite(worst) ? +worst.toFixed(2) : null, violations: bad.length, sample: bad.slice(0, 4) };
 }
 
 // ---- the deck ------------------------------------------------------------------------------------
@@ -576,13 +930,29 @@ const minorsFor = (a, b) => Object.entries(scale.minor_settlements)
     return ((p.x - ax) * dx + (p.z - az) * dz) / L2 - ((q.x - ax) * dx + (q.z - az) * dz) / L2;
   });
 
+// ---- the gates -----------------------------------------------------------------------------
+// Where a settlement's own declared position stands inside one of its own buildings, the road
+// cannot end there. Solved ONCE per settlement, so every leg arriving at that town arrives at the
+// same gate and `walkRoute`'s concatenation of two legs stays continuous. On the shipped tree this
+// moves exactly one terminus — Thorn's — and leaves the other seven alone.
+const GATES = {};
+if (JOIN_ON) {
+  for (const [name, s] of Object.entries(S)) {
+    const town = TOWNS.find((t) => t.id === name.toLowerCase());
+    if (!town) continue;
+    const gate = gateFor(town, s.x, s.z, BUILD_CLEAR_M + 0.4);
+    if (gate) { GATES[name] = gate; process.stdout.write(`JOIN: ${name}'s centre is inside a building; the road's terminus is a gate ${gate.moved_m} m away at (${gate.x}, ${gate.z})\n`); }
+  }
+}
+const endAt = (name) => (GATES[name] ? [GATES[name].x, GATES[name].z] : [S[name].x, S[name].z]);
+
 const routes = [];
 for (const leg of scale.roads) {
   // The sinuosity solve is applied PER SUB-SEGMENT (settlement to minor to minor to settlement),
   // not across the whole leg. Solving it across the leg pushed the road up to 200 m sideways and
   // left the minor settlements that justify the leg's shape stranded off it — which is M5's
   // habitation-gap failure wearing a different hat.
-  const way = [[S[leg.from].x, S[leg.from].z], ...minorsFor(leg.from, leg.to).map((m) => [m.x, m.z]), [S[leg.to].x, S[leg.to].z]];
+  const way = [endAt(leg.from), ...minorsFor(leg.from, leg.to).map((m) => [m.x, m.z]), endAt(leg.to)];
   const chords = [];
   for (let i = 0; i + 1 < way.length; i++) chords.push(Math.hypot(way[i + 1][0] - way[i][0], way[i + 1][1] - way[i][1]));
   const chordSum = chords.reduce((a, b) => a + b, 0);
@@ -638,8 +1008,35 @@ for (const leg of scale.roads) {
   const amount = 0;
   p = resample(p, 12);
 
+  // ---- THE JOIN, applied ---------------------------------------------------------------------
+  // Last, and on the finished polyline, on purpose. The length solve above is a bisection over the
+  // whole leg and re-running it after every re-cut would fight the re-cut for the same metres. The
+  // town portion of a leg is a few hundred metres of several thousand, so what the re-cut costs in
+  // declared-length error is small, measured, and reported per leg as `join_delta_m` rather than
+  // hidden — see the table this tool prints and `reports/w1-road-join/leg-lengths.json`.
+  const legId = `${leg.from}-${leg.to}`.toLowerCase();
+  const preJoinLen = len2d(p);
+  const threaded = threadSettlements(p, legId);
+  p = threaded.p;
+  // The metres the re-cut spent or saved, put back outside the towns, so `RI-WLD01` §4's traversal
+  // budget survives the join. Then AUDITED AGAIN — the correction moves points, and a 12 m chord
+  // between two points that each clear a wall can still clip its corner. If the correction has
+  // put the road back into a building the leg is re-threaded and the length error is reported
+  // instead of being paid for with a wall.
+  let corr = correctLength(p, leg.path_m, legId);
+  p = corr.p;
+  let audit = joinAudit(p);
+  if (audit.violations) {
+    process.stderr.write(`JOIN: length correction on ${legId} re-entered a building; re-threading and keeping the length error\n`);
+    const re = threadSettlements(p, legId);
+    p = re.p;
+    audit = joinAudit(p);
+    corr = { ...corr, reverted: true };
+  }
+
   const tideway = /tideway/i.test(leg.class);
-  routes.push({ leg, p, mode, tideway,
+  routes.push({ leg, p, mode, tideway, recuts: threaded.recuts, audit, corr,
+    preJoin_m: +preJoinLen.toFixed(1), join_delta_m: +(len2d(p) - preJoinLen).toFixed(1),
     halfWidth: tideway ? 3.0 : leg.class === 'Imperial road' || leg.class === 'stone road' ? 3.6 : 3.0 });
 }
 
@@ -681,7 +1078,7 @@ const legs = [];
   }
   if (wet) process.stderr.write(`WARNING: deck repair did not converge; ${wet} wet corridor samples remain\n`);
   routes.forEach((r, k) => {
-    const { leg, p, mode, tideway, halfWidth } = r;
+    const { leg, p, mode, tideway, halfWidth, recuts, audit } = r;
     const deck = decks[k], y = deck.y;
     let maxGrade = 0;
     for (let i = 1; i < y.length; i++) {
@@ -704,6 +1101,19 @@ const legs = [];
       cut_sampled_at_m: CUT_SAMPLE_M,
       deck_spans: deck.spans, deck_span_m: deck.span_m,
       half_width_m: halfWidth,
+      // ---- the join, declared on the leg -------------------------------------------------------
+      // A reader of roads.json can see that this leg was cut against the settlement plan, which
+      // town it was cut through, what that cost in metres, and how near a wall the finished
+      // centreline ever comes. A join nobody can audit off the artifact is a join on trust.
+      settlement_join: JOIN_ON ? {
+        clearance_bar_m: BUILD_CLEAR_M,
+        worst_clearance_m: audit.worst_clearance_m,
+        violations: audit.violations,
+        pre_join_m: r.preJoin_m, join_delta_m: r.join_delta_m,
+        length_correction: r.corr,
+        recuts,
+        road_anchor: [leg.from, leg.to].filter((n) => GATES[n]).map((n) => ({ settlement: n, ...GATES[n] })),
+      } : { disabled: true, reason: '--no-join: routed over terrain with the settlement plan unread' },
       waypoints: minorsFor(leg.from, leg.to).map((m) => m.name),
       points: p.map((q, i) => [+q[0].toFixed(2), +q[1].toFixed(2), +y[i].toFixed(2)]),
     });
@@ -805,6 +1215,22 @@ const doc = {
       + 'A* over the built terrain, so the road goes round the ridge and crosses at the narrows. '
       + 'Each leg carries its own elevation profile and the game blends the ground to it, which is '
       + 'what makes a causeway a causeway instead of a decal on a marsh.',
+  // W1-ROAD-JOIN. The one line a reader needs to know that this file was produced by a generator
+  // that had SEEN the settlement plan. Without it, ten of ten legs went through somebody's house.
+  settlement_join: JOIN_ON ? {
+    performed: true,
+    rule: 'roads yield; buildings never move (ARBITRATION S28)',
+    reads: 'game/src/render/exterior.js planSettlement(), over game/data/world/settlements/*.json '
+         + 'and game/data/world/interiors/*.json — the same function game/src/world/province.js '
+         + 'builds the collision walls from',
+    footprints: 'the union of planSettlement(doc, interiors) and planSettlement(doc, {}) — they '
+              + 'differ for 114 of 202 buildings and the game uses the former',
+    clearance_bar_m: BUILD_CLEAR_M, preferred_clearance_m: BUILD_ROOM_M, grid_m: FINE_CELL_M,
+    buildings_considered: ALL_OBSTACLES.length,
+    worst_clearance_m: Math.min(...legs.map((l) => l.settlement_join.worst_clearance_m)),
+    violations: legs.reduce((n, l) => n + l.settlement_join.violations, 0),
+    gates: Object.entries(GATES).map(([k, v]) => ({ settlement: k, ...v })),
+  } : { performed: false, reason: '--no-join' },
   speeds_mps: scale.scale.speeds_mps,
   legs,
   waystations,
@@ -814,7 +1240,10 @@ const doc = {
   },
   total_trunk_m: +legs.reduce((s, l) => s + l.built_path_m, 0).toFixed(1),
 };
-writeFileSync(join(ROOT, 'game/data/world/roads.json'), JSON.stringify(doc, null, 1) + '\n');
+// `--out` exists so the delete-the-fix arm and the consumption perturbation can build a road
+// network WITHOUT overwriting the one the rest of the tree is standing on.
+const OUT = argOf('--out', 'game/data/world/roads.json');
+writeFileSync(join(ROOT, OUT), JSON.stringify(doc, null, 1) + '\n');
 
 process.stdout.write(`leg                       decl m   built m    err%    sinu(decl)  grade    cut   fill  spans\n`);
 for (const l of legs) {
@@ -824,6 +1253,28 @@ for (const l of legs) {
     + `${l.max_grade.toFixed(2).padStart(5)}  ${l.max_cut_m.toFixed(1).padStart(5)}  ${l.max_fill_m.toFixed(1).padStart(5)}  `
     + `${l.deck_spans.length} spans / ${l.deck_span_m} m\n`);
 }
+// ---- THE JOIN, as a table ----------------------------------------------------------------------
+// The design constraint the whole join is subject to: the province takes about an hour to cross on
+// foot, so a re-cut that turns a 6,816 m leg into a 12 km one is a failure even if every wall is
+// cleared. This is the number that says whether that happened.
+if (JOIN_ON) {
+  process.stdout.write(`\nTHE JOIN — the road re-cut against ${ALL_OBSTACLES.length} building footprints in ${TOWNS.length} towns\n`);
+  process.stdout.write(`leg                       before m    after m    delta   delta%   worst clear m   towns re-cut\n`);
+  for (const l of legs) {
+    const j = l.settlement_join;
+    process.stdout.write(`${(l.from + ' -> ' + l.to).padEnd(24)} ${String(j.pre_join_m).padStart(9)} ${String(l.built_path_m).padStart(10)} `
+      + `${(j.join_delta_m >= 0 ? '+' : '') + j.join_delta_m.toFixed(1)}`.padStart(9)
+      + `${(j.join_delta_m / j.pre_join_m * 100).toFixed(2) + '%'}`.padStart(9)
+      + `${String(j.worst_clearance_m).padStart(14)}   ${j.recuts.filter((r) => r.ok).map((r) => r.town).join(', ') || '-'}\n`);
+  }
+  const viol = legs.reduce((n, l) => n + l.settlement_join.violations, 0);
+  process.stdout.write(`worst clearance anywhere on the network: ${Math.min(...legs.map((l) => l.settlement_join.worst_clearance_m)).toFixed(2)} m `
+    + `(bar ${BUILD_CLEAR_M} m) — ${viol} sample(s) below the bar\n`);
+  if (viol) process.stderr.write(`JOIN FAILED: ${viol} road samples are still inside the clearance bar\n`);
+} else {
+  process.stdout.write(`\nTHE JOIN IS OFF (--no-join). The settlement plan was not read. This is the delete-the-fix arm.\n`);
+}
+
 process.stdout.write(`\nwaystations ${waystations.length} inserted to hold every habitation gap under 8 walking minutes\n`);
 process.stdout.write(`trunk network ${doc.total_trunk_m} m (RI-WLD01: 25,331 m)\n`);
 process.stdout.write(`THE CROSSING  ${doc.named_routes.crossing.metres} m = ${doc.named_routes.crossing.walk_min} min walk (RI-WLD01: 6,909 m / 57.6 min)\n`);

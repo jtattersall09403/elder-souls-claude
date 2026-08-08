@@ -1,8 +1,8 @@
 {
   "schema": "elder-souls/harness-smoke@1",
-  "at": "2026-08-07T12:56:56.104Z",
+  "at": "2026-08-08T02:21:48.821Z",
   "node": "v22.22.2",
-  "platform": "linux 6.18.5-fc-v18 x64",
+  "platform": "linux 6.18.5-fc-v20 x64",
   "cpus": 4,
   "playwright_browsers_path": "/opt/pw-browsers",
   "checks": [
@@ -34,7 +34,7 @@
     {
       "name": "requestAnimationFrame runs",
       "ok": true,
-      "detail": "18 -> 26"
+      "detail": "21 -> 29"
     }
   ],
   "ok": true,

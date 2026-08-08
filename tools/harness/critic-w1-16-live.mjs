@@ -474,24 +474,37 @@ const PROBES = {
   // =========================================================================================
   oversprint() {
     const H = window.__HARNESS;
-    const runAt = (pct) => {
+    // The null control matters here: three identical numbers prove nothing if the sprint button
+    // was doing nothing in ALL of them. Each tier is run with the button held and without it.
+    const runAt = (pct, sprint) => {
       H.setSeed(1337); H.loadState('arena_flat'); H.setEquipLoad(pct); H.stepFrames(8);
       const p0 = H.getPlayerStats().pos.slice();
-      H.queueInputs([{ f: 0, move: [0, 1] }, { f: 0, press: ['sprint'] }]);
+      const inputs = [{ f: 0, move: [0, 1] }];
+      if (sprint) inputs.push({ f: 0, press: ['sprint'] });
+      H.queueInputs(inputs);
+      const s0 = H.getCombatState().player.stamina;
       H.stepFrames(120);
       const p1 = H.getPlayerStats().pos.slice();
-      return { pct, tier: H.getCombatState().player.tier,
-        metres_over_120_f60: +Math.hypot(p1[0] - p0[0], p1[2] - p0[2]).toFixed(3) };
+      return { pct, sprint_held: sprint, tier: H.getCombatState().player.tier,
+        metres_over_120_f60: +Math.hypot(p1[0] - p0[0], p1[2] - p0[2]).toFixed(3),
+        stamina_spent: +(s0 - H.getCombatState().player.stamina).toFixed(2) };
     };
-    const light = runAt(15);
-    const over = runAt(120);
-    const heavy = runAt(85);
+    const rows = [];
+    for (const pct of [15, 85, 120]) { rows.push(runAt(pct, false)); rows.push(runAt(pct, true)); }
+    const held = (p) => rows.find((r) => r.pct === p && r.sprint_held);
+    const free = (p) => rows.find((r) => r.pct === p && !r.sprint_held);
+    const sprintDoesSomething = held(15).metres_over_120_f60 > free(15).metres_over_120_f60 * 1.05;
+    const overloadedStillSprints = held(120).metres_over_120_f60 > free(120).metres_over_120_f60 * 1.05;
     return {
-      rows: [light, heavy, over],
+      rows,
       ri_cmb01_b: 'OVERLOADED additionally forbids sprinting and jump-attacks.',
       jump_attack_half_has_a_reader: 'combat/moveset.js — ctx.roll_tier === "OVERLOADED" -> { slot: null, reason: "overloaded" }',
-      overloaded_sprint_is_denied: over.metres_over_120_f60 < light.metres_over_120_f60 * 0.85,
-      coupled: over.metres_over_120_f60 < light.metres_over_120_f60 * 0.85,
+      the_sprint_button_does_something_at_LIGHT: sprintDoesSomething,
+      an_OVERLOADED_player_still_sprints: overloadedStillSprints,
+      every_tier_covers_the_same_ground_holding_sprint:
+        held(15).metres_over_120_f60 === held(85).metres_over_120_f60
+        && held(85).metres_over_120_f60 === held(120).metres_over_120_f60,
+      coupled: sprintDoesSomething && !overloadedStillSprints,
     };
   },
 
