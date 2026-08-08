@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9cd4bfa`: 664 tools, 153 reference
+so it cannot drift. Generated at `a70a97f`: 664 tools, 153 reference
 items, 54 pieces in flight.
 
 Its purpose is to stop 54+ concurrent agents each paying separately to discover the
@@ -982,6 +982,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-04-r4` | fixes landed and committed by the bank sweep; S3/S4 of the live arm being re-taken | land S3/S4, then commit status + blog + reports | `docs/shots/2026-08-08-w1-04-r4-blackrose-inn-outside-now-contains-inside.png` `docs/shots/2026-08-08-w1-04-r4-helstrom-roofs-now-cover-the-buildings.png` `game/src/harness/api.js` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` |
+| `W1-26-r3` | ? | opening-play P9 re-run in flight at 480x270 (5 sim fps); then final status | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `critic-w1-23-r4` | done | committed; hand to the orchestrator | `orchestration/status/critic-w1-23-r4.json` `corpus/90-verdicts/wave1/W1-23-r4.md` `corpus/90-verdicts/wave1/W1-23-r4.json` `tools/lore/critic-w1-23-r4-onscreen.mjs` `tools/lore/critic-w1-23-r4-shelf.mjs` `tools/lore/critic-w1-23-r4-blocked.mjs` |
 | `critic-w1-25` | running | read RULES/INDEX/ARBITRATION/PLAN W1-25/RI items/status W1-25 | `orchestration/status/critic-w1-25.json` |
 | `critic-road-join` | ? | none — verdict, tools, report, picture and blog line are on disk and committed | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
@@ -989,9 +991,7 @@ work is the difference between resuming and starting over.
 | `W1-CROSSING` | in_progress | browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consu | `orchestration/status/W1-CROSSING.json` `tools/world/road-grade.mjs` `tools/world/crossing-body.mjs` `game/src/engine.js` `game/src/world/field.js` `tools/world/build-roads.mjs` |
 | `arbiter-map-s38` | done | none — ruling landed, gate green, S35 amended in place | `corpus/00-doctrine/ARBITRATION.md` `tools/map/arbiter-map-s38.mjs` `orchestration/status/arbiter-map-s38.json` `reports/blog-feed.jsonl` `docs/shots/2026-08-08-s38-what-a-forged-save-can-and-cannot-put-on-the-map.png` |
 | `W1-16-r4` | building | live probes: pinfight (save round trip on every state), burden, talisman, overloaded, feat | `orchestration/status/W1-16-r4.json` `game/src/engine.js` `game/src/save/fight.js` `game/src/sim/magic/apply.js` `game/src/harness/api.js` `game/data/magic/cast-classes.json` |
-| `W1-26-r3` | ? | opening-play P10 still running; restore the r2-named shots the probe overwrote, save r3 co | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-21-r3` | in_progress | markers derived in game/src/ui/system.js; then browser runs (contention permitting) | `orchestration/status/W1-21-r3.json` `tools/lib/graded.mjs` `tools/lib/colour.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/ui-layer.mjs` |
-| `W1-04-r4` | live arm running (S3 distinctness sweep); everything else green | one browser: live join proof + signature re-take + two pictures (a building whose outside  | `game/src/harness/api.js` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `orchestration/status/W1-04-r4.json` `reports/w1-04-r4/join.json` |
 | `W1-14-r4` | building | objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission  | `orchestration/status/W1-14-r4.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` `game/src/engine.js` `game/src/sim/magic/system.js` `game/src/sim/magic/apply.js` |
 | `critic-w1-21-r2` | done | orchestrator. Three arbitration questions are filed in the verdict JSON and need a ruling: | `corpus/90-verdicts/wave1/W1-21-r2.md` `corpus/90-verdicts/wave1/W1-21-r2.json` `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` `tools/ui/critic-w1-21-r2-b.mjs` `tools/ui/critic-w1-21-r2-consume.mjs` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |

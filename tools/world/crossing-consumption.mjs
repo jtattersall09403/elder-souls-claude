@@ -147,6 +147,54 @@ try {
   await restore();
   const restored = await push();
   doc.probes.push({ id: 'P2-RESTORED', with_the_bridge: restored }); flush();
+
+  // ---- P3: "A BODY THAT LEAVES THE ROAD CANNOT GET BACK ON" — the acceptance, as a count -------
+  // The fixed walker does not leave the road on its own (worst deviation over the whole crossing:
+  // 1.22 m of a 6 m deck), so the recovery it was built for cannot be observed by watching it walk.
+  // It has to be PUSHED. Ten times, at ten different places along the crossing, the body is put 25
+  // m off the centreline and the walk is resumed; a regain is the engine's own counter — the body
+  // coming back inside 3.5 m of the road it was following — not this file's opinion.
+  //
+  // The OLD steering is the control and it is run identically. It is the arm that produced this
+  // defect's headline: 6,459 m walked on an 1,841 m leg, ending in 18 m of sea.
+  const regainRun = async (steering) => {
+    await handle.page.evaluate(([steer, oldPursue]) => {
+      const E = window.__ENGINE;
+      if (!E.__newPursue) E.__newPursue = E._pursue;
+      E._pursue = steer === 'NEW' ? E.__newPursue : eval(`(${oldPursue})`);
+      const orig = E.__afterStepRaw || E._afterStep.bind(E);
+      E.__afterStepRaw = orig;
+      E._afterStep = function () { orig(); const p = this.sim.player; if (p.hp < p.hpMax) p.hp = p.hpMax; const c = this.combat && this.combat.player; if (c && c.hp !== undefined) c.hp = p.hpMax; };
+    }, [steering, OLD_PURSUE]);
+    const installed = await handle.page.evaluate(() => (/PROXIMITY/.test(String(window.__ENGINE._pursue)) ? 'OLD' : 'NEW'));
+    if (installed !== steering) throw new Error(`P3 arm ${steering}: install did not take (${installed})`);
+    let r = await handle.h('walkRoute', { route: 'crossing', speed: 'walk', restart: true, chunkFrames: 1 });
+    const events = [];
+    for (let k = 0; k < 10; k++) {
+      r = await handle.h('walkRoute', { route: 'crossing', speed: 'walk', chunkFrames: 3000 });
+      const before = r.regains;
+      const shoved = await handle.page.evaluate(() => {
+        const E = window.__ENGINE, w = E._walk, p = w.pts, i = Math.min(w.seg, p.length - 2);
+        const dx = p[i + 1][0] - p[i][0], dz = p[i + 1][1] - p[i][1], L = Math.hypot(dx, dz) || 1;
+        const x = E.sim.player.pos[0] + (-dz / L) * 25, z = E.sim.player.pos[2] + (dx / L) * 25;
+        E.teleport(x, z); E.sim.player.pos[1] = E.field.heightAt(x, z);
+        return { to: [+x.toFixed(1), +z.toFixed(1)] };
+      });
+      const f0 = r.frames;
+      r = await handle.h('walkRoute', { route: 'crossing', speed: 'walk', chunkFrames: 4000 });
+      events.push({ shoved_to: shoved.to, regained: r.regains > before, frames_allowed: r.frames - f0,
+        worst_off_after_m: r.worst_off_path_m });
+    }
+    return { steering, displacements: events.length, regained: events.filter((e) => e.regained).length,
+      path_m: r.path_m, remaining_points: r.remaining_points, regains_total: r.regains, events };
+  };
+  const p3new = await regainRun('NEW');
+  doc.probes.push({ id: 'P3-REGAIN-NEW', ...p3new }); flush();
+  log(`P3 NEW steering: ${p3new.regained} of ${p3new.displacements} shoves recovered`);
+  const p3old = await regainRun('OLD');
+  doc.probes.push({ id: 'P3-REGAIN-OLD', ...p3old }); flush();
+  log(`P3 OLD steering: ${p3old.regained} of ${p3old.displacements} shoves recovered`);
+  await handle.page.evaluate(() => { window.__ENGINE._pursue = window.__ENGINE.__newPursue; });
 } catch (e) { doc.error = String(e && e.stack || e); flush(); throw e; }
 finally { flush(); await handle.close(); }
 
@@ -159,6 +207,9 @@ ck('C2-NULL-IS-SILENT', P('NULL-OFF-ROUTE').body_moved_m < 0.01,
 ck('C3-BRIDGE-IS-READ', P('P2-DELETE-THE-BRIDGE').without_it.off_centreline_m > P('P2-DELETE-THE-BRIDGE').with_the_bridge.off_centreline_m + 2,
   `a sideways push reaches ${P('P2-DELETE-THE-BRIDGE').with_the_bridge.off_centreline_m} m with the span declared and `
   + `${P('P2-DELETE-THE-BRIDGE').without_it.off_centreline_m} m with it deleted`);
+ck('C5-REGAIN', P('P3-REGAIN-NEW').regained > P('P3-REGAIN-OLD').regained && P('P3-REGAIN-NEW').regained >= 8,
+  `a body put 25 m off the road got back on ${P('P3-REGAIN-NEW').regained} of ${P('P3-REGAIN-NEW').displacements} times with the fix in, `
+  + `and ${P('P3-REGAIN-OLD').regained} of ${P('P3-REGAIN-OLD').displacements} with the pre-fix steering restored`);
 ck('C4-REVERSIBLE', Math.abs(P('P2-RESTORED').with_the_bridge.off_centreline_m - P('P2-DELETE-THE-BRIDGE').with_the_bridge.off_centreline_m) < 0.01,
   `restoring the model restores the behaviour exactly`);
 doc.ok = doc.checks.every((c) => c.pass);

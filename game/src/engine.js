@@ -1031,6 +1031,16 @@ export class Engine {
     // the W1-09/10/11 calibration is untouched. A scenario that does NOT state one gets the
     // world's answer instead of a hardcoded 24.0. Same shape as round 1's stealth `_overridden`.
     this._equipLoadPinned = !!(loadout && loadout.equipLoadPct !== undefined);
+    // W1-16 round 4 — THE PIN'S VALUE, kept beside the flag instead of only on the body.
+    // `_publishEquipLoad()` recomputes `b.equipLoadPct` from a base and an offset on every write,
+    // so the base of a pinned fight has to be a field rather than "whatever the body says now" —
+    // otherwise a spell offset applied to a pinned scenario would be re-added on the next publish.
+    this._equipLoadPinValue = this._equipLoadPinned ? Number(loadout.equipLoadPct) : null;
+    // W1-16 round 4 — THE SPELL OFFSET, IN ITS OWN FIELD. See `_publishEquipLoad()` for the
+    // measured defect this removes (Feather left the caster a roll tier HEAVIER when it expired).
+    // Reset here and nowhere else: `_buildCombat` rebuilds the MagicSystem, and a rebuilt
+    // MagicSystem has no live leases, so there is no offset left to own.
+    this._equipLoadOffset = 0;
     this._burdenPinned = false;
     this._equipLoadEngaged = false;
     this._equipLoadBase = null;
@@ -1118,6 +1128,11 @@ export class Engine {
     // after, on every path, including `setLoadout()` (which preserves `prev.equipLoadPct` across
     // the rebuild and so carries any live offset with it).
     this._equipLoadBase = b.equipLoadPct;
+    // ROUND 4: publish once here so `sim.player.equipLoadPinned` is true from the first frame of a
+    // PINNED scenario. `_recomputeEquipLoad()` returns early when the load is pinned, so without
+    // this line the only states whose pin the save could see would be the ones that do not have
+    // one — and `save/fight.js` would write `equip_load_pinned: false` for every arena.
+    this._publishEquipLoad();
     // W1-16 round 3 — what the scenario says is in your hands, so taking a picked-up weapon back
     // off restores it instead of leaving you empty-handed. `shield: undefined` means "the
     // exemplar", `shield: null` means the o2/o3 configurations that have none; both are preserved
@@ -1223,11 +1238,13 @@ export class Engine {
     // boundary. Without it `_recomputeEquipLoad()` would overwrite a critic's swept value on the
     // next step and every M5 cliff sweep would silently measure the same tier 21 times.
     this._equipLoadPinned = true;
-    this.combat.player.equipLoadPct = v;
-    this.combat.player.tier = this.combat.tierOf(this.combat.player);
-    this.sim.player.equipLoadPct = v;
-    this.sim.player.rollClass = this.combat.player.tier;
-    return { equip_load_pct: v, tier: this.combat.player.tier };
+    // W1-16 round 4. The pinned value is the BASE, and any live spell offset still rides on it —
+    // which is what makes `setEquipLoad()` a pin on the equipment term rather than a pin on the
+    // whole model. `_publishEquipLoad()` is the single writer of `b.equipLoadPct` from here on.
+    this._equipLoadPinValue = v;
+    this._equipLoadOffset = 0;
+    this._publishEquipLoad();
+    return { equip_load_pct: this.combat.player.equipLoadPct, tier: this.combat.player.tier };
   }
 
   /**
@@ -3934,8 +3951,35 @@ export class Engine {
     const inv = this.sim.inventory;
     let w = 0;
     for (let i = 0; i < inv.length; i++) {
+      // W1-16 round 4 — RI-PRG07 §3 IS "ALL CARRIED ITEMS, **EQUIPPED OR NOT**", AND THE HANDS
+      // ARE CARRIED ITEMS.
+      //
+      // Round 3 moved the weapon and the shield out of the inventory sum and into a hands term,
+      // which is right for §2 — but `_recomputeBurden()` summed `sim.inventory` and nothing else,
+      // and the hands are not inventory rows. Measured by the round-3 verdict §B: an ultra
+      // greatsword and a Naga tower, 33 kg, moved the roll a whole tier (13.013699% -> 45.205480%,
+      // 26 i-frames -> 22) and moved `carried_weight` from 0.0 kg to 0.0 kg. A character carrying
+      // the heaviest hands in the game and nothing else read `UNBURDENED` on the walk home.
+      //
+      // The fix is not "add the pack row back", because that is the OTHER half of the same defect:
+      // the same object then has two weights at once (a bog-iron maul is 11.5 kg in `carried.json`
+      // and 16 kg as `GHM` in `weapons/classes.json`). ONE OBJECT, ONE WEIGHT: a `right`/`left`
+      // row is skipped here exactly as it is skipped in `_recomputeEquipLoad()`, and the hands are
+      // supplied below from the fight's own loadout — the same number both ratios read.
+      //
+      // DELETE-THE-FIX arm (`__breakW116('burdenhands')`): the round-3 world exactly — burden goes
+      // blind to the hands and the talisman and weighs the pack row instead.
+      const bare = !!(this._w116Break && this._w116Break.burdenhands);
+      const slot = inv[i].slot;
+      if (!bare && (slot === 'right' || slot === 'left')) continue;
       const rec = this.ui && this.ui.data.items.get(inv[i].id);
       if (rec && rec.weight) w += rec.weight * (inv[i].count || 1);
+    }
+    if (!(this._w116Break && this._w116Break.burdenhands)) {
+      // §3 counts what §2 counts and then some. `_handWeights()` is the one place the hands and
+      // the talisman are priced, so the two ratios can never drift onto two different weights.
+      const h = this._handWeights();
+      w += h.total + h.talisman;
     }
     const cap = this._equipLoadMax();
     this.sim.player.carriedWeight = w;
@@ -3960,7 +4004,52 @@ export class Engine {
     if (rec.slot) return String(rec.slot);
     if (rec.kind === 'weapon' || rec.category === 'weapon') return 'right';
     if (rec.kind === 'shield' || rec.category === 'shield') return 'left';
+    // W1-16 round 4 — RI-PRG07 §2's FOURTH TERM finally has somewhere to go. `talisman` is a slot
+    // like `chest` and `waist`; what makes it different is that equipping one also tells the
+    // MagicSystem which catalyst is in hand, in `_finishEquipCommit()`.
+    if (rec.kind === 'talisman' || rec.kind === 'catalyst' || rec.category === 'talisman') return 'talisman';
     return null;
+  }
+
+  /**
+   * W1-16 round 4 — THE HANDS AND THE TALISMAN, PRICED IN EXACTLY ONE PLACE.
+   *
+   * RI-PRG07 §2 names four terms — "equipped weapons, shields, armour, talismans" — and §3 counts
+   * "ALL carried items, equipped or not". Round 3 built the first two terms inside
+   * `_recomputeEquipLoad()` and burden could not see them; the fourth term did not exist at all,
+   * not even as a declared `null` in the consumption census. Both ratios now call this, so a
+   * weapon cannot weigh one thing to the roll and another to the walk home.
+   *
+   * NOTHING IS INVENTED except the catalyst weight, and that is READ FROM THE CORPUS rather than
+   * chosen: RI-PRG07 §4's representative-weights table prices "Talisman / catalyst" at 3 kg, and
+   * `game/data/magic/cast-classes.json` now carries that number as `equip_weight` on the rows the
+   * MagicSystem already resolves. `enchanted_weapon` is declared 0 on purpose — it is the weapon
+   * already weighed one line above, and pricing it again would weigh one object twice, which is
+   * the defect this method exists to make impossible.
+   */
+  _handWeights() {
+    const b = this.combat && this.combat.player;
+    // DELETE-THE-FIX arm (`__breakW116('hands')`): the round-2 world — blind to weapon and shield.
+    const blind = !!(this._w116Break && this._w116Break.hands);
+    const wpn = b && b.moves && b.moves._weapon;
+    const shieldRow = b && b.shield;
+    const h = {
+      weapon: !blind && wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0,
+      shield: !blind && shieldRow && typeof shieldRow.weight === 'number' ? shieldRow.weight : 0,
+      weapon_id: (b && b.weaponId) || null,
+      weapon_class: wpn ? wpn.class : null,
+      shield_id: (b && b.shieldId) || null,
+    };
+    h.total = h.weapon + h.shield;
+    // DELETE-THE-FIX arm (`__breakW116('talisman')`): §2's fourth term goes back to not existing.
+    const noTal = !!(this._w116Break && this._w116Break.talisman);
+    const cat = this.magic && this.magic.catalyst && this.magic.catalyst !== 'none' ? this.magic.catalyst : null;
+    const rows = (this.data && this.data.magic && this.data.magic['cast-classes'] && this.data.magic['cast-classes'].catalysts) || [];
+    const row = cat ? rows.find((c) => c.id === cat) : null;
+    h.talisman = !noTal && row && typeof row.equip_weight === 'number' ? row.equip_weight : 0;
+    h.talisman_id = cat;
+    h.all = h.total + h.talisman;
+    return h;
   }
 
   /**
@@ -4055,38 +4144,87 @@ export class Engine {
     //
     // DELETE-THE-FIX arm (`__breakW116('hands')`): the round-2 world exactly — the ratio goes
     // blind to the weapon and the shield and only the inventory's clothing rows reach it.
-    const blind = !!(this._w116Break && this._w116Break.hands);
-    const wpn = b.moves && b.moves._weapon;
-    const shieldRow = b.shield;
-    const hands = {
-      weapon: !blind && wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0,
-      shield: !blind && shieldRow && typeof shieldRow.weight === 'number' ? shieldRow.weight : 0,
-      weapon_id: b.weaponId || null,
-      weapon_class: wpn ? wpn.class : null,
-      shield_id: b.shieldId || null,
-    };
-    hands.total = hands.weapon + hands.shield;
-    w += hands.total;
+    // ROUND 4: the same call burden makes, so one object cannot have two weights, and it carries
+    // RI-PRG07 §2's FOURTH TERM (talismans) which round 3 did not implement at all.
+    const hands = this._handWeights();
+    w += hands.all;
     // The producer engages the moment there is ANY equipped weight to report — which, once the
     // hands count, is every scenario that puts a weapon in them. That is the point: a hardcoded
     // 24.0 was the answer nearly half the shipped states gave, and it is not an answer about
     // anything. A scenario that pins its own load is still untouched (`_equipLoadPinned`).
-    if (!equippedCount && !hands.total && !this._equipLoadEngaged) return null;
+    if (!equippedCount && !hands.all && !this._equipLoadEngaged) return null;
     this._equipLoadEngaged = true;
     const cap = this._equipCapacity();          // RI-PRG07 §2: maxLoad, NOT maxLoad x 2.5
-    const base = cap > 0 ? (w / cap) * 100 : 0;
-    const prev = this._equipLoadBase === undefined || this._equipLoadBase === null
-      ? b.equipLoadPct : this._equipLoadBase;
-    if (base !== this._equipLoadBase) {
-      b.equipLoadPct = Math.max(0, b.equipLoadPct + (base - prev));
+    // ROUND 4 — AN ASSIGNMENT, NOT A DELTA, AND THE DELTA-ORIGIN STATE IS GONE.
+    //
+    // Round 3 wrote `pct += (base - _equipLoadBase)` so a spell's additive offset would survive a
+    // re-equip, and had to seed `_equipLoadBase` at the construction site to stop the first
+    // engagement collapsing into an assignment. The round-3 verdict §C adjudicated that: the
+    // seeding repairs the symptom, and the root cause is one mutable scalar with two writers. The
+    // offset now lives in `_equipLoadOffset` and the equipment sum lives in `_equipLoadBase`, so
+    // this is a plain assignment, it is idempotent, and the `Math.max(0, ...)` clamp can no longer
+    // eat a spell's undo (see `_publishEquipLoad`).
+    this._equipLoadBase = cap > 0 ? (w / cap) * 100 : 0;
+    this.sim.player.equippedWeight = w;
+    this.sim.player.equippedHandWeight = hands;
+    return this._publishEquipLoad();
+  }
+
+  /**
+   * W1-16 round 4 — THE ONE WRITER OF `equipLoadPct`, AND THE CLAMP DEFECT IT REMOVES.
+   *
+   *     pct = max(0, equipmentBase + spellOffset)
+   *
+   * Before this, `sim/magic/apply.js loadHandler()` clamped on BOTH halves — `max(0, pct + delta)`
+   * on apply and `max(0, pct - delta)` on undo — so a Feather bigger than your load lost the
+   * surplus to the floor on the way down and got the FULL magnitude back on the way up. Measured
+   * by the round-3 verdict §E: 13.013699% `LIGHT` / 26 i-frames -> 0.000000% -> **42.833333%
+   * `MEDIUM` / 22 i-frames**, permanently. A spell whose entire purpose is to make you lighter
+   * left you a roll tier heavier when it expired.
+   *
+   * Clamping the SUM rather than the running total makes apply and undo exact inverses at every
+   * magnitude, because the offset is never the thing that was clamped. `_equipLoadOffset` is the
+   * signed sum of every live load effect; `_addEquipLoadOffset` is how a handler moves it.
+   *
+   * DELETE-THE-FIX arm (`__breakW116('feather')`): the round-3 world exactly — the offset is
+   * folded into the running total and clamped there, so the undo over-returns.
+   */
+  _publishEquipLoad() {
+    const b = this.combat && this.combat.player;
+    if (!b) return null;
+    const base = this._equipLoadPinned ? this._equipLoadPinValue : this._equipLoadBase;
+    if (base === null || base === undefined) return b.equipLoadPct;
+    b.equipLoadPct = Math.max(0, base + (this._equipLoadOffset || 0));
+    b.tier = this.combat.tierOf(b);
+    this.sim.player.equipLoadPct = b.equipLoadPct;
+    this.sim.player.rollClass = b.tier;
+    // The pin is a property of the RUNNING WORLD and the save has to carry it, or a scenario that
+    // declared its equip load comes back deriving one. See `_restoreFightFromSave` and
+    // `save/fight.js saveLoadout()`; the round-3 verdict's single biggest gap is this field.
+    // DELETE-THE-FIX arm (`__breakW116('savepin')`): the field the save reads goes back to being
+    // absent, which is round 3's world exactly — `_restoreFightFromSave` then sees no pin, clears
+    // it, and the producer re-derives the load of a scenario that declared one.
+    this.sim.player.equipLoadPinned = !!this._equipLoadPinned && !(this._w116Break && this._w116Break.savepin);
+    return b.equipLoadPct;
+  }
+
+  /** Move the live spell offset on the equip ratio. `sim/magic/apply.js loadHandler()`'s only door. */
+  _addEquipLoadOffset(delta) {
+    const d = Number(delta);
+    if (!Number.isFinite(d)) return this.combat && this.combat.player ? this.combat.player.equipLoadPct : null;
+    // DELETE-THE-FIX arm (`__breakW116('feather')`): round 3's world — clamp the running total on
+    // both halves instead of clamping the sum, so the undo returns more than the apply took.
+    if (this._w116Break && this._w116Break.feather) {
+      const b = this.combat && this.combat.player;
+      if (!b) return null;
+      b.equipLoadPct = Math.max(0, b.equipLoadPct + d);
       b.tier = this.combat.tierOf(b);
       this.sim.player.equipLoadPct = b.equipLoadPct;
       this.sim.player.rollClass = b.tier;
-      this._equipLoadBase = base;
+      return b.equipLoadPct;
     }
-    this.sim.player.equippedWeight = w;
-    this.sim.player.equippedHandWeight = hands;
-    return b.equipLoadPct;
+    this._equipLoadOffset = (this._equipLoadOffset || 0) + d;
+    return this._publishEquipLoad();
   }
 
   /** The burden tier in force RIGHT NOW, with RI-PRG07 §3's AR-1 guard applied in one place. */
@@ -4587,13 +4725,15 @@ export class Engine {
     ev.item = c.item; ev.slot = slot;
     // Nothing wearable about it — a potion, a book, a tally stick. Refused rather than shoved
     // into the sword hand, which is what the old single-slot branch did to every one of them.
-    if (!row || !slot) { ev.equipped = false; return; }
+    if (!row || !slot) { ev.equipped = false; this._sayEquip(ev, rec, row ? 'unwearable' : 'gone'); return; }
     const hand = slot === 'right' || slot === 'left';
     // Toggle: pressing equip on the thing already in that slot takes it off. Without this there
     // is no way to REDUCE your load, and a one-way encumbrance model is not a model.
     if (row.slot === slot) {
       row.slot = null; ev.equipped = false;
       if (hand && !(this._w116Break && this._w116Break.onehand)) this._restoreDeclaredHand(slot, ev);
+      if (slot === 'talisman') this._setCatalystFromSlot(null, ev);
+      this._sayEquip(ev, rec, 'off');
       return;
     }
     // DELETE-THE-FIX arm (`__breakW116('onehand')`): the round-2 world exactly — the row lands in
@@ -4602,13 +4742,59 @@ export class Engine {
       const { patch, why } = this._loadoutForItem(rec, slot);
       // REFUSED, and named. The alternative is the round-2 defect: a weight in the ratio for an
       // object the fight is not holding.
-      if (!patch) { ev.equipped = false; ev.refused = why; return; }
+      if (!patch) { ev.equipped = false; ev.refused = why; this._sayEquip(ev, rec, 'refused'); return; }
       try { ev.loadout = this.setLoadout(patch); }
-      catch (e) { ev.equipped = false; ev.refused = String(e && e.message || e); return; }
+      catch (e) { ev.equipped = false; ev.refused = String(e && e.message || e); this._sayEquip(ev, rec, 'refused'); return; }
     }
     for (const r of this.sim.inventory) if (r.slot === slot) r.slot = null;
     row.slot = slot;
     ev.equipped = true;
+    // W1-16 round 4 — RI-PRG07 §2's FOURTH TERM REACHES THE FIGHT. A talisman is not just a weight
+    // in a slot: it is the catalyst the MagicSystem casts through, so putting one on moves the
+    // focus cost and `castNow`'s `no_catalyst` refusal as well as the equip ratio. A term that
+    // only ever changes a number in a report is the orphan-model failure RI-MTH07 exists for.
+    if (slot === 'talisman') this._setCatalystFromSlot(rec, ev);
+    this._sayEquip(ev, rec, 'on');
+  }
+
+  /** A `talisman` row names the catalyst it is; the MagicSystem is where that becomes a cast. */
+  _setCatalystFromSlot(rec, ev) {
+    if (!this.magic) return;
+    try { ev.catalyst = this.magic.setCatalyst(rec ? (rec.catalyst || 'rod') : null); }
+    catch (e) { ev.catalyst_refused = String(e && e.message || e); }
+    this._recomputeEquipLoad();
+  }
+
+  /**
+   * W1-16 round 4 — WHAT THE PLAYER IS TOLD WHEN THEY PRESS EQUIP.
+   *
+   * The round-3 verdict §I measured the refusal path and found `anything_the_player_could_see_
+   * changed: false`. The policy was right — `hist-sap-bow` declares a moveset no roster weapon and
+   * no alias answers to, and guessing would put a weight in the ratio for an object the fight is
+   * not holding — but the reason was written onto the `equip_end` event and NOTHING under
+   * `game/src/ui/` or `game/src/render/` reads `equip_end` or `.refused`. From the chair you press
+   * interact on a bow and the game does nothing and says nothing. A refusal a player cannot
+   * perceive is a silent failure, not a policy.
+   *
+   * `uiToast()` is the shipped player-visible channel — W1-21 built `ui/hud.js`'s E11 element and
+   * it sat unreachable until something gave it a way in. What must NOT go through it is
+   * `ev.refused` itself: that string is a raw exception naming 87 internal weapon ids, and putting
+   * it on the HUD would be a debug path shipping (the same defect `_slotLabel` exists to prevent).
+   * So the toast is written for a person and the diagnostic stays on the event for a probe.
+   *
+   * DELETE-THE-FIX arm (`__breakW116('toast')`): round 3's world exactly — the reason is recorded
+   * on the event and nothing the player can see changes.
+   */
+  _sayEquip(ev, rec, what) {
+    if (this._w116Break && this._w116Break.toast) return null;
+    const name = (rec && rec.name) || this._slotLabel((rec && rec.id) || (ev && ev.item)) || 'it';
+    const line = what === 'on' ? `You put on the ${String(name).toLowerCase()}.`
+      : what === 'off' ? `You take off the ${String(name).toLowerCase()}.`
+      : what === 'unwearable' ? `You cannot wear the ${String(name).toLowerCase()}.`
+      : what === 'gone' ? 'It is no longer in your pack.'
+      : `You cannot get a grip on the ${String(name).toLowerCase()}. It is not made for your hands.`;
+    ev.said = line;
+    return this.uiToast(line, 150);
   }
 
   /** Taking a held object off puts the scenario's own declared weapon or shield back in the hand. */
@@ -5243,7 +5429,29 @@ export class Engine {
     // forever, which is the defect that rule names. A save is the world, not a scenario: the
     // pin does not survive it, and the same equipped items re-derive the same number. A
     // scenario with nothing equipped never engages the producer, so its default is untouched.
-    this._equipLoadPinned = false;
+    //
+    // ROUND 4 — AND THAT WAS RIGHT FOR THE VALUE AND WRONG FOR THE PIN, WHICH COST FOUR I-FRAMES.
+    //
+    // `equip_load_pct` alone cannot tell a DERIVED number from a DECLARED one, so clearing the pin
+    // unconditionally meant a scenario that pinned its load kept it across a `loadState()` and lost
+    // it across a save. Harmless while the derived answer was the clothing sum; round 3's hands
+    // term put the recomputed answer on the other side of the 30% cliff and it became visible:
+    // `arena_duel` and `arena_flat`, hauberk + greaves, **24.000000% `LIGHT` 26 i-frames / 52 f@60
+    // -> 33.424658% `MEDIUM` 22 i-frames / 60 f@60** across one `saveRoundTrip()`. From the chair:
+    // quit during a boss fight, resume, and your dodge is shorter. Round-3 verdict §G.
+    //
+    // So the save carries the PIN, not only its value (`save/fight.js saveLoadout()`), and the
+    // world answers what it was told to answer. RULES #7 still holds and is why this is a boolean
+    // rather than "a number came back, so it must be a pin": a save with no pin re-derives, and
+    // `w1-16-r4-live.mjs --probe pinfight` saves and reloads every shipped state to prove it.
+    //
+    // A blob written before this field existed has `equip_load_pinned === undefined`, which reads
+    // as false — the round-3 behaviour exactly, so an old save is not retro-pinned.
+    this._equipLoadPinned = !!l.equip_load_pinned;
+    this._equipLoadPinValue = this._equipLoadPinned && l.equip_load_pct !== null && l.equip_load_pct !== undefined
+      ? Number(l.equip_load_pct) : null;
+    this._equipLoadOffset = 0;
+    if (this._equipLoadPinned) this._publishEquipLoad();
     // THE BIRTHSIGN'S DERIVED POOLS. `loadCreation()` now restores `powers` and `drawbacks`,
     // but the three things RI-CHR03 reads them FOR live on the MagicSystem, which
     // `_buildCombat` has just rebuilt from the loadout: `focusMax` (the sign's x1.60
@@ -6249,6 +6457,14 @@ export class Engine {
         source: this._equipLoadPinned ? 'pinned by the scenario or setEquipLoad()'
           : this._equipLoadEngaged ? 'derived from equipped items and the hands (W1-16 r3)'
           : 'engine default — nothing is equipped yet',
+        // W1-16 round 4 — the three terms of `pct = max(0, base + offset)`, published so a reader
+        // can see which writer moved the number rather than inferring it from the total.
+        equipment_base_pct: this._equipLoadBase === null || this._equipLoadBase === undefined
+          ? null : +this._equipLoadBase.toFixed(6),
+        pinned_base_pct: this._equipLoadPinValue === null || this._equipLoadPinValue === undefined
+          ? null : +Number(this._equipLoadPinValue).toFixed(6),
+        spell_offset_pct: +(this._equipLoadOffset || 0).toFixed(6),
+        pinned: !!this._equipLoadPinned,
         boundaries_pct: this.combat ? this.combat.d.roll.tier_boundaries_pct : null,
         owner: 'RI-CMB01 §B (seam S23: everything the tier does inside the fight)',
       },
@@ -6264,6 +6480,15 @@ export class Engine {
           + 'moves._weapon -> engine._recomputeEquipLoad() -> the equip ratio (W1-16 r3)',
         shield_weight: 'weapons/offhand.json + combat/stamina.json weight -> combat/system.js '
           + 'shieldFor() -> body.shield.weight -> engine._recomputeEquipLoad() -> the ratio (W1-16 r3)',
+        // ---- W1-16 round 4. RI-PRG07 §2 names FOUR terms and this was the fourth. Before this
+        // round it had no slot, no weight column, no reader, and it was not even declared `null`
+        // here — so the census could not count it as missing (round-3 verdict §E).
+        talisman_weight: 'magic/cast-classes.json catalysts[].equip_weight (RI-PRG07 §4 = 3 kg) '
+          + '-> engine._handWeights() -> BOTH _recomputeEquipLoad() (§2 term 4) and '
+          + '_recomputeBurden() (§3 "equipped or not") -> the roll row and the walk speed (W1-16 r4)',
+        talisman_slot: 'items/carried.json slot:"talisman" -> engine._slotForItem() -> '
+          + '_finishEquipCommit() -> MagicSystem.setCatalyst() -> focus cost and the '
+          + 'castNow() no_catalyst refusal (W1-16 r4)',
         overloaded_denies_sprint: 'combat/player.js locomotion gate — b.tier === "OVERLOADED" '
           + 'refuses SPRINT at the place locomotion is decided, not at the press gate (W1-16 r3)',
         overloaded_denies_jump_attack: 'combat/moveset.js resolveSlot() — ctx.roll_tier === '
