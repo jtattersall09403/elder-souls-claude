@@ -256,6 +256,17 @@ export function saveLoadout(combat, magic, sim) {
     endurance: l.endurance === undefined ? null : l.endurance,
     armour_poise: b ? b.armourPoise : (l.armourPoise === undefined ? null : l.armourPoise),
     equip_load_pct: b ? r6(b.equipLoadPct) : null,
+    // W1-16 round 4. `equip_load_pct` on its own cannot tell a DECLARED load from a DERIVED one,
+    // and `_restoreFightFromSave()` therefore cleared the pin on every load — correctly, because
+    // reinstating it would have been RULES #7's "a field written and never read back re-serialises
+    // forever". The cost was measured in the round-3 verdict §G: `arena_duel` with a hauberk and
+    // greaves came back 24.000000% `LIGHT` / 26 i-frames -> 33.424658% `MEDIUM` / 22 i-frames
+    // across one save and reload. The flag is what makes the value readable back safely: a save
+    // that carries a pin comes back pinned, a save that does not re-derives, and the field is
+    // AUDITED IN THE RUNNING WORLD after the load (`w1-16-r4-live.mjs --probe pinfight`) rather
+    // than compared byte for byte. Read off `sim.player`, which `Engine._publishEquipLoad()` is
+    // the sole writer of.
+    equip_load_pinned: !!(sim && sim.player && sim.player.equipLoadPinned),
     hp_max: b ? b.hpMax : null,
     stamina_max: b ? b.staminaMax : null,
     flask_level: ctl ? ctl.flaskLevel : 0,

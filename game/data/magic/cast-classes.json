@@ -122,28 +122,36 @@
       "focus_mult": 0.8,
       "hands": 2,
       "grants_hyperarmour": true,
-      "note": "The efficiency build; costs you a shield."
+      "note": "The efficiency build; costs you a shield.",
+      "equip_weight": 3,
+      "equip_weight_note": "RI-PRG07 §4, \"Talisman / catalyst\": 3. Read from the corpus, not chosen — this is §2's fourth term and it had no weight column at all before W1-16 round 4."
     },
     {
       "id": "rod",
       "focus_mult": 1,
       "hands": 1,
       "grants_hyperarmour": false,
-      "note": "Baseline."
+      "note": "Baseline.",
+      "equip_weight": 3,
+      "equip_weight_note": "RI-PRG07 §4, \"Talisman / catalyst\": 3. Read from the corpus, not chosen — this is §2's fourth term and it had no weight column at all before W1-16 round 4."
     },
     {
       "id": "enchanted_weapon",
       "focus_mult": 1.15,
       "hands": 1,
       "grants_hyperarmour": false,
-      "note": "Sword-and-board caster tax."
+      "note": "Sword-and-board caster tax.",
+      "equip_weight": 0,
+      "equip_weight_note": "RI-PRG07 §2 counts weapons and talismans separately; this catalyst IS the equipped weapon, already weighed by weapons/classes.json equip_weight. Weighing it again would weigh one object twice."
     },
     {
       "id": "none",
       "focus_mult": 1.35,
       "hands": 2,
       "grants_hyperarmour": true,
-      "note": "Bare-handed Root-Speech. Always possible; always worst. Two-handed by construction, so it keeps the hyperarmour."
+      "note": "Bare-handed Root-Speech. Always possible; always worst. Two-handed by construction, so it keeps the hyperarmour.",
+      "equip_weight": 0,
+      "equip_weight_note": "No object in the hand, no weight. RI-PRG07 §2 term 4 is empty here."
     }
   ],
   "hyperarmour_rule": "RI-MAG01 §B: HA = [ceil(0.60 × startup), startup + active], DERIVED by RI-CMB02's own formula, and applies ONLY when two-handing a catalyst. One-handed casting with a shield or an off-hand weapon has no hyperarmour at any class.",

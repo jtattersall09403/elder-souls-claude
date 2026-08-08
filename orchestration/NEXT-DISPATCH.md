@@ -156,6 +156,24 @@ between the instruments and the game rather than inside either. Closed by
 `game/data/dialogue/topics/_manifest.json`; 0 differing, and still 0 from a reversed arrival order.
 **If your piece loads a directory and sorts it, check the engine sorts it the same way.**
 
+**Q8. "The harness cannot see that screen" has been wrong at least once — re-check yours.**
+`getRenderedText()` was written off by a builder as blind to the book screen, and the round after it
+that claim was refuted in one line: `ui/system.js build()` short-circuits on a cache key that
+**cannot change while a screen is up** — the world is paused and `ctx.frame` is frozen. Clear the
+register *before* the press instead of after and 1,531 characters come back. The critic's own words:
+*"anyone who has written off a menu surface as unmeasurable should re-check."* If your piece has
+graded a screen on a model read because the renderer "could not be reached", that is now a
+recommendation to try again.
+
+**Q9. Two placement mechanisms in the same rooms cannot see each other.** `render/interior.js`
+spaces `readable[]` over that list alone; `site-marks.json` drops quest documents at hard-coded
+coordinates; `engine.js:3270` gives the press to the nearest prop. Walking all 45 documents in the
+six most loaded rooms, **4 are placed, drawn, standable-at and open nothing** — and one of the four
+is half of a registered contradiction pair. Not crowding (2.60 m separation holds even in the
+14-document archive) and not the exit door (pre-registered hypothesis, refuted). `place-library
+--check`, `boot-check`, the reach test and two purpose-built instruments are **all green on it**.
+**4 is a lower bound: 77 rooms were not walked.**
+
 **Q0. FLEET HAZARD — a save/load with a hostile present kills every stepping probe, silently.**
 `save/fight.js`'s `SKIP` list omits `ai`, so `saveActor(ctl)` serialises the live `SoulsAI` as a
 plain object. After any round trip with a hostile in the world, the next fixed step throws

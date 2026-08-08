@@ -3971,7 +3971,7 @@ export class Engine {
       // blind to the hands and the talisman and weighs the pack row instead.
       const bare = !!(this._w116Break && this._w116Break.burdenhands);
       const slot = inv[i].slot;
-      if (!bare && (slot === 'right' || slot === 'left')) continue;
+      if (!bare && (slot === 'right' || slot === 'left' || slot === 'talisman')) continue;
       const rec = this.ui && this.ui.data.items.get(inv[i].id);
       if (rec && rec.weight) w += rec.weight * (inv[i].count || 1);
     }
@@ -4116,6 +4116,13 @@ export class Engine {
       // world exactly: a maul in the inventory's right hand adds 11.5 kg to the ratio while the
       // fight keeps swinging the garrison sword.
       if ((slot === 'right' || slot === 'left') && !(this._w116Break && this._w116Break.onehand)) continue;
+      // ROUND 4, and my own probe found this before a critic did: the `talisman` row is skipped
+      // here for exactly the reason the hands are. Equipping the rod sets the MagicSystem's
+      // catalyst, and `_handWeights()` prices THAT — so counting the pack row as well weighed one
+      // object twice and the dressed fixture read 55.8 kg for 52.8 kg of objects. One object, one
+      // weight, and the fight's own loadout is the authority. An UNEQUIPPED talisman still has no
+      // slot, so §2 does not count it and §3 does, which is what those two sections say.
+      if (slot === 'talisman') continue;
       const rec = this.ui && this.ui.data.items.get(inv[i].id);
       if (rec && rec.weight) w += rec.weight;      // worn once, however many are in the pack
     }
@@ -4164,9 +4171,29 @@ export class Engine {
     // offset now lives in `_equipLoadOffset` and the equipment sum lives in `_equipLoadBase`, so
     // this is a plain assignment, it is idempotent, and the `Math.max(0, ...)` clamp can no longer
     // eat a spell's undo (see `_publishEquipLoad`).
-    this._equipLoadBase = cap > 0 ? (w / cap) * 100 : 0;
+    const base = cap > 0 ? (w / cap) * 100 : 0;
     this.sim.player.equippedWeight = w;
     this.sim.player.equippedHandWeight = hands;
+    // DELETE-THE-FIX arm (`__breakW116('feather')`): ROUND 3'S PRODUCER, VERBATIM. The offset is
+    // not a field, so the equipment sum is applied as a DELTA to the running total and the spell
+    // rides inside it — which, with `_addEquipLoadOffset`'s matching arm clamping both halves at
+    // zero, is exactly the world the round-3 verdict §E measured: 13.013699% -> 0% -> 42.833333%.
+    // The arm has to switch BOTH writers or it is not a counterfactual: switching only the handler
+    // let this producer assign the offset away, which deletes the spell instead of reproducing the
+    // defect. That is an inert control wearing a behaviour change, and I watched it happen.
+    if (this._w116Break && this._w116Break.feather) {
+      const prev = this._equipLoadBase === undefined || this._equipLoadBase === null
+        ? b.equipLoadPct : this._equipLoadBase;
+      if (base !== this._equipLoadBase) {
+        b.equipLoadPct = Math.max(0, b.equipLoadPct + (base - prev));
+        b.tier = this.combat.tierOf(b);
+        this.sim.player.equipLoadPct = b.equipLoadPct;
+        this.sim.player.rollClass = b.tier;
+        this._equipLoadBase = base;
+      }
+      return b.equipLoadPct;
+    }
+    this._equipLoadBase = base;
     return this._publishEquipLoad();
   }
 

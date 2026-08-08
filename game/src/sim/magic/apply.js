@@ -419,14 +419,36 @@ function loadHandler(sign) {
     // Magnitude is a percentage of the load bar. The CLIFF does not move — RI-MAG06 §B is
     // explicit that the 30.00/70.00 discontinuity stays exactly where it was; the player moves.
     const delta = sign * rec.magnitude;
-    b.equipLoadPct = Math.max(0, b.equipLoadPct + delta);
-    b.tier = C.tierOf(b);
-    if (M.w.sim) { M.w.sim.player.equipLoadPct = b.equipLoadPct; M.w.sim.player.rollClass = b.tier; }
-    rec._undo = () => {
-      b.equipLoadPct = Math.max(0, b.equipLoadPct - delta);
+    // W1-16 round 4 — THE CLAMP THAT ATE THE FEATHER, FIXED AT BOTH ENDS.
+    //
+    // This used to be `pct = max(0, pct + delta)` on apply and `pct = max(0, pct - delta)` on
+    // undo, and those are not inverses: a Feather bigger than the caster's load loses the surplus
+    // to the floor going down and gets the FULL magnitude back coming up. Measured to its
+    // consequence by the round-3 verdict §E — 13.013699% `LIGHT` / 26 i-frames -> 0.000000% ->
+    // **42.833333% `MEDIUM` / 22 i-frames**, and it never comes back. A spell whose entire purpose
+    // is to make you lighter left you a roll tier heavier, permanently.
+    //
+    // The engine now holds the offset in its own field and clamps the SUM (`_publishEquipLoad`),
+    // so apply and undo are exact inverses at every magnitude and the offset is never the term
+    // that was clamped. That is the round-3 verdict §C's own prescription and it removes the
+    // delta-origin state at the same time.
+    const eng = M.w && M.w.engine;
+    if (eng && typeof eng._addEquipLoadOffset === 'function') {
+      eng._addEquipLoadOffset(delta);
+      rec._undo = () => { eng._addEquipLoadOffset(-delta); };
+    } else {
+      // No engine bound (an offline probe on a synthetic world). Still symmetric: the undo returns
+      // exactly what the apply took, not what it was asked to take.
+      const applied = Math.max(0, b.equipLoadPct + delta) - b.equipLoadPct;
+      b.equipLoadPct = b.equipLoadPct + applied;
       b.tier = C.tierOf(b);
       if (M.w.sim) { M.w.sim.player.equipLoadPct = b.equipLoadPct; M.w.sim.player.rollClass = b.tier; }
-    };
+      rec._undo = () => {
+        b.equipLoadPct = Math.max(0, b.equipLoadPct - applied);
+        b.tier = C.tierOf(b);
+        if (M.w.sim) { M.w.sim.player.equipLoadPct = b.equipLoadPct; M.w.sim.player.rollClass = b.tier; }
+      };
+    }
     return moved('equip_load_pct + roll_class', before, { equip_load_pct: r2(b.equipLoadPct), roll_class: b.tier }, { cliff_pct: ROLL_CLIFF_PCT });
   };
 }

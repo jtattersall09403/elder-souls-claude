@@ -351,6 +351,38 @@ try {
     C_enchanter_not_spellwright: await controlArm('enchanter'),
     D_quest_gate: await controlArm('gate'),
   };
+  // ---- CONTROL E: THE GROUND PLANE ------------------------------------------------------------
+  // The `cast it` half of the acceptance only became possible this round, because
+  // `MagicSystem.stepFall` used a hardcoded ground of 0 and every body standing anywhere in the
+  // province therefore read `airborne`, and `castDropReason` refuses every spell but `slowfall`
+  // for an airborne caster. This arm restores that and watches the same press in the same street
+  // produce a refusal instead of a spell. It is a control on the FIX, not on the door.
+  {
+    const p = await handle.page.context().newPage();
+    await p.goto(handle.page.url(), { waitUntil: 'load' });
+    await p.waitForFunction(() => !!window.__HARNESS, null, { timeout: 30000 });
+    out.controls.E_ground_plane = await p.evaluate(async () => {
+      const H = window.__HARNESS;
+      await H.ready();
+      const arm = (broken) => {
+        H.setSeed(4242); H.loadState('town-lilmoth'); H.setRenderRate(0);
+        if (H.__breakGroundPlane) H.__breakGroundPlane(broken); else return { fatal: 'H.__breakGroundPlane absent' };
+        H.setCharacter({ race: 'breton', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
+        H.setWillpower(99); H.setCatalyst('great_staff'); H.hearthRest();
+        for (const s of H.getMagicData().spells.spells) H.learnSpell(s.id);
+        H.setAttuned(['spark_dart']);
+        H.combatTraceStart();
+        H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+        H.stepFrames(40);
+        const tr = H.combatTraceDrain();
+        const kinds = [];
+        for (const fr of (tr.frames || tr)) for (const v of (fr.v || [])) if (/INPUT_DROPPED|ACTION_START/.test(v.type || '')) kinds.push({ t: v.type, reason: v.reason || null, mv: v.mv || null });
+        return { airborne: H.getPlayerStats().airborne, focus: H.getMagicState().focus, events: kinds };
+      };
+      return { fixed: arm(false), broken: arm(true) };
+    });
+    await p.close();
+  }
 } finally {
   await handle.close();
 }
@@ -387,8 +419,19 @@ const savedBad = (out.saved_custom || []).filter((s) => !s.in_save);
 push(savedBad.length === 0, `${savedBad.length} commissioned spell(s) are not in saveState()`);
 
 for (const [k, c] of Object.entries(out.controls)) {
+  if (k === 'E_ground_plane') continue;
   if (c.fatal) { fails.push(`control ${k}: ${c.fatal}`); continue; }
   if (c.counter) fails.push(`INERT CONTROL ${k}: a counter opened anyway`);
+}
+{
+  const E = out.controls.E_ground_plane || {};
+  if (E.fatal || (E.fixed && E.fixed.fatal) || (E.broken && E.broken.fatal)) fails.push(`control E: ${E.fatal || E.fixed.fatal || E.broken.fatal}`);
+  else {
+    const castStarted = (a) => (a.events || []).some((x) => x.t === 'ACTION_START' && x.mv === 'CAST');
+    const droppedAirborne = (a) => (a.events || []).some((x) => x.t === 'INPUT_DROPPED' && x.reason === 'airborne');
+    if (!castStarted(E.fixed)) fails.push('control E: with the fix present the cast did not start in Lilmoth');
+    if (!droppedAirborne(E.broken)) fails.push(`INERT CONTROL E: with the ground plane restored to 0 the cast was not refused as airborne (${JSON.stringify(E.broken.events)})`);
+  }
 }
 push(out.controls.C_enchanter_not_spellwright && !!out.controls.C_enchanter_not_spellwright.said_text,
   'the enchanter said nothing when the subject was raised — a refusal that is silent is not a refusal');
@@ -408,7 +451,10 @@ log(`counter opened: ${out.counter_opened}   "${String(out.opening_line).slice(0
 log(`commissioned ${made.length} of ${out.results.length}; refusal row = ${refusedRow && refusedRow.refused}`);
 for (const r of out.results) log(`  ${r.commissioned || 'REFUSED ' + r.refused}  base ${r.quote && r.quote.focus_base} cost ${r.quote && r.quote.focus_cost} gold ${r.quote && r.quote.gold} paid ${r.gold_delta}  — ${r.why}`);
 log(`cast: ${JSON.stringify(out.cast)}`);
-for (const [k, c] of Object.entries(out.controls)) log(`control ${k}: counter=${c.counter} said="${String(c.said_text || '').slice(0, 70)}"`);
+for (const [k, c] of Object.entries(out.controls)) {
+  if (k === 'E_ground_plane') log(`control E ground plane: fixed ${JSON.stringify(c.fixed && c.fixed.events)} | broken ${JSON.stringify(c.broken && c.broken.events)}`);
+  else log(`control ${k}: counter=${c.counter} said="${String(c.said_text || '').slice(0, 70)}"`);
+}
 for (const f of fails) log(`FAIL: ${f}`);
 log(`report: ${path.join(outDir, 'commission-through-play.json')}`);
 process.exit(fails.length ? EXIT.MEASUREMENT_FAIL : 0);

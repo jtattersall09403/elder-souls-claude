@@ -74,9 +74,26 @@ const matchLen = (decl, path) => {
 // agent how to behave and says nothing to a *waiting* one. This is the orchestrator's half of
 // that. It is not airtight (the lock exists only for the moments git holds it), but it converts
 // the most common collision into a retry.
-if (existsSync(join(ROOT, '.git', 'index.lock'))) {
-  console.log('bank: another commit is in progress — not staging over it. Retry in a moment.');
-  process.exit(1);
+// Wait for the lock rather than giving up on it. The first version exited immediately, which was
+// right in principle and useless in practice: with a dozen agents committing, `.git/index.lock`
+// exists most of the time, and eight consecutive refusals meant the tree went unbanked for a
+// quarter of an hour — the exact outcome banking exists to prevent. Poll instead, briefly.
+{
+  const lock = join(ROOT, '.git', 'index.lock');
+  const deadline = Date.now() + 300_000;
+  let waited = 0;
+  while (existsSync(lock) && Date.now() < deadline) {
+    execFileSync('sleep', ['1.5']);
+    waited += 1.5;
+  }
+  if (existsSync(lock)) {
+    // Ninety seconds of continuous lock is not contention, it is a crashed commit or a very slow
+    // hook. Say which is more likely rather than silently proceeding over it.
+    console.log('bank: `.git/index.lock` held for 300s — either a hook is still running or a commit');
+    console.log('      crashed and left the lock behind. Not staging over it. Check with `ls -l .git/index.lock`.');
+    process.exit(1);
+  }
+  if (waited) console.log(`bank: waited ${waited.toFixed(0)}s for another commit to finish.`);
 }
 
 git('add', '-A');

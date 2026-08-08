@@ -1,0 +1,20 @@
+{
+  "task_id": "critic-w1-25",
+  "role": "critic",
+  "subject": "W1-25",
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "next_step": "read RULES/INDEX/ARBITRATION/PLAN W1-25/RI items/status W1-25",
+  "contention_gate": "WAIT at start (12 browser instances, load 7.08/core, ceilings 6 and 4.0). Offline work first.",
+  "files_touched": [
+    "orchestration/status/critic-w1-25.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-25-r1.md",
+    "corpus/90-verdicts/wave1/W1-25-r1.json",
+    "orchestration/status/critic-w1-25.json",
+    "tools/experience/critic-",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": []
+}

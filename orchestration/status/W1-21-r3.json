@@ -4,7 +4,7 @@
   "piece": "W1-21 round 3 \u2014 controls and interface",
   "state": "in_progress",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "markers derived in game/src/ui/system.js; then browser runs (contention permitting)",
+  "next_step": "ui-metrics real run in flight (FD6 dE). Then remaining detectors, sample table, blog line, commit.",
   "files_touched": [
     "orchestration/status/W1-21-r3.json",
     "tools/lib/graded.mjs",
@@ -16,7 +16,11 @@
     "tools/analysis/marker-scan.mjs",
     "tools/analysis/ui-census.mjs",
     "game/src/sim/discovery.js",
-    "tools/ui/w1-21-r3-mutator-test.mjs"
+    "tools/ui/w1-21-r3-mutator-test.mjs",
+    "tools/ui/w1-21-r3-empty.mjs",
+    "tools/ui/w1-21-r3-browser.mjs",
+    "tools/ui/w1-21-r3-sample-table.mjs",
+    "game/src/ui/system.js"
   ],
   "files_claimed": [
     "tools/analysis/ui-forbidden.mjs",
@@ -71,6 +75,42 @@
       "tool": "node tools/analysis/marker-scan.mjs",
       "result": "K1 FAIL \u2014 10 F6 hits, all in game/data/world/readables/site-marks.json, a file W1-READABLES-r2 landed. NOT MINE; reported and continued per the brief. 370,670 JSON nodes over 567 files now recorded as K1's sample count. --self-test still passes.",
       "load": "node only, no browser"
+    },
+    {
+      "what": "RULES 6 for the instrument \u2014 every graded check run with its subject removed, both arms",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/ui/w1-21-r3-empty.mjs",
+      "result": "4/4. ARM A (fix present): 25 graded checks across 6 detectors, all report EMPTY on an empty sample set, 0 report PASS, every tool exits 2. ARM B (fix deleted): the 12 round-2 grading expressions, transcribed verbatim from 37bbb6f, ALL return PASS over the same nothing. The arms differ, so the guard is what changed the answer.",
+      "artifact": "reports/runs/W1-21-R3/empty-teardown.json",
+      "load": "node only, no browser \u2014 deliberately, so the control is never skipped under contention"
+    },
+    {
+      "what": "`markers` derived rather than literal, with the four marker shapes and a non-marker control",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/ui/w1-21-r3-browser.mjs (A1-A5)",
+      "result": "A1: the honest map reports markers 0 over 13 drawn map elements (19 on the whole screen) \u2014 a count with a denominator. A2: each of the four clauses moves it 0->1 (forbidden kind / world anchor / quest identity / a place square the discovery model does not support). A3 CONTROL: an ordinary hint element leaves it at 0, so the census is not `count the elements` (S26). A4 DELETE-THE-FIX: the round-2 field is the constant 0 and is therefore wrong in 4 of the 5 arms. A5: with the map CLOSED the block now reports measured=false, elements_considered=0 \u2014 round 2 reported full compliance there, over zero elements, from any mode.",
+      "artifact": "reports/runs/W1-21-R3/browser.json",
+      "load": "ONE browser, kept for markers + CONSUMPTION + the six shots. Box at 4-6 browser instances, load 16-29 on 4 cores. Counts and pixel differences only; no timing figure."
+    },
+    {
+      "what": "CONSUMPTION (RI-MTH07, mandatory) \u2014 re-run at this round's HEAD with `markers` added to the chain",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/ui/w1-21-r3-browser.mjs (M1-M5)",
+      "result": "Body and camera held still; only the model changes, pushed through the real Discovery.restore() in the save's own zigzag-varint form. footprint 5/2/0 cells -> model 1437/1078/0 revealed -> painter 1437/1078/0 drawn_cells -> 6507/5076/377 lit px in the map drawing box. M3: an empty model draws nothing (0 squares). M4: the derived marker count stays 0 in all three arms while its denominator collapses 13 -> 10 -> 7 elements. M5: 6,741 pixels differ across the whole frame between the full and the empty model. World-side consumer: game/src/ui/screens/map.js.",
+      "artifact": "reports/runs/W1-21-R3/browser.json, reports/runs/W1-21-R3/consume-arm-{full,half,none}.png",
+      "load": "same single browser"
+    },
+    {
+      "what": "The six screens, as pictures (RULES 27)",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/ui/w1-21-r3-browser.mjs (C1)",
+      "result": "inventory(28 visible elements), journal(12), sheet(48), spells(13), map(19), levelup(25) \u2014 each opened and confirmed to be the screen it claims.",
+      "artifact": "docs/shots/2026-08-08-w1-21-r3-the-{inventory,journal,sheet,spells,map,levelup}-screen.png",
+      "load": "same single browser"
     }
+  ],
+  "method_deviations": [
+    "contention --gate returned WAIT (exit 3) for the whole session; the box carried 4-5 browser instances and load 16-21 on 4 cores. I polled the gate for 5 minutes and then PROCEEDED PAST THE WAIT for the single browser run, per rule 21's 'if you proceed past exit 3 anyway, that is allowed \u2014 say in your status file that you did and why'. Reason: every remaining acceptance item (markers derived, CONSUMPTION, FD6's real dE, the six screens) needs a running game. ONE browser, kept for the whole of w1-21-r3-browser.mjs.",
+    "NO TIMING FIGURE IS PUBLISHED BY THIS PIECE. Every number is a count, a boolean, a pixel difference or a colour distance."
   ]
 }

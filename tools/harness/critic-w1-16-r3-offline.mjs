@@ -86,7 +86,15 @@ function mkEngine(opts = {}) {
       tierOf(b) { return equipTier(b.equipLoadPct, B); },
     },
   };
-  for (const m of ['_recomputeEquipLoad', '_recomputeBurden', '_equipCapacity', '_equipLoadMax', '_slotForItem']) {
+  // W1-16 ROUND 4, MECHANICAL REPAIR ONLY — nothing this instrument ASSERTS is touched. Round 4
+  // moved the hands term into `Engine._handWeights()` (so burden and the equip ratio read one
+  // number) and made `_publishEquipLoad()`/`_addEquipLoadOffset()` the writers of `equipLoadPct`.
+  // This fixture binds methods by an explicit list, so without those three names it threw
+  // `this._handWeights is not a function` and the whole file reported nothing at all instead of
+  // reporting X1 and X6 going red — which is what they should now do, and is the delete-the-fix
+  // evidence for round 4. The bind list is the only line changed; every check is verbatim.
+  for (const m of ['_recomputeEquipLoad', '_recomputeBurden', '_equipCapacity', '_equipLoadMax', '_slotForItem',
+    '_handWeights', '_publishEquipLoad', '_addEquipLoadOffset']) {
     e[m] = Engine.prototype[m].bind(e);
   }
   return e;
