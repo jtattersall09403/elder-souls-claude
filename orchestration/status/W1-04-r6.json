@@ -4,11 +4,37 @@
   "piece": "W1-04 round 6 — settlements, interiors and the people in them",
   "started_at": "2026-08-08",
   "base_commit": "bebc411",
-  "state": "starting",
-  "next_step": "read verdict corpus/90-verdicts/wave1/W1-04-r5.md, run ownership, run contention gate",
-  "files_touched": [
-    "orchestration/status/W1-04-r6.json"
+  "state": "building",
+  "spec": "corpus/90-verdicts/wave1/W1-04-r5.md (FAIL 4.8/10)",
+  "contention": "node tools/contention.mjs --gate returned GO (2 browser instances, load 1.25/core, ceiling 6). Offline work first.",
+  "next_step": "boot-check, then rewrite tools/check-building-fits-room.mjs to enumerate from interiors, then the r6 census, live sweep, deletefix, consumption, prop predicate, generator",
+  "done_so_far": [
+    "ROOT CAUSE of the settle defect, found offline and stated as arithmetic: insideBuilding() tests the FOOTPRINT; the body is solved against settlementSolids(), whose wall slabs are SHELL_WALL_T=0.36 thick and CENTRED ON the footprint edge (so they reach 0.18 m outside it), by resolveSphere() with a body radius of 0.32 m. A doorstep clearing the footprint by less than 0.50 m is a point the solver MOVES. That is the 0.50-0.61 m slides in the r5 verdict's table.",
+    "FIX 1: exterior.js horizontalClearance(shapes,x,z) + a standability predicate — outside every footprint AND >= BODY_RADIUS_M + 0.05 clear of every wall slab, which is the exact fixed-point condition of resolveSphere(). Offline: 0 of 112 doorsteps inside a footprint AND 0 within the player radius of a solid, verified against a real CollisionCell built from the shipped shapes.",
+    "FIX 2: applyInteriorBounds() split into (a) a per-building pass that queues, (b) a per-settlement pass that writes all doors and only then derives doorsteps against the whole door table. nearestDoor() reimplements doorAt()'s rule; the doorstep must be the one whose OWN door is nearest within DOOR_REACH_M.",
+    "FIX 3: the door itself now moves ALONG its entry wall (b.door_along_m), with the drawn doorway hole and the collision doorway hole both following doorAlongLocal(b) through one shared doorwaySegments() helper. 16 doors slid.",
+    "FIX 4: where the whole declared entry wall is buried in a neighbour (5 buildings), the entry SIDE rotates — written to BOTH b.entry_side and rec.continuity.entry_side, which render/interior.js:478 reads, so both ends of the door move together and RI-WLD13 N2 holds by construction. 5 rotated, all south->north.",
+    "FIX 5: the orphan pass counts ABOVE every continue and enumerates from Object.keys(interiors); barge-hold and writ-house (settlement 'tidewrack', which is not one of the eight documents) are now named in orphans_unreachable rather than silently skipped.",
+    "LATENT BUG FOUND: planSettlement()'s door_declared took the settlement document's b.door BY REFERENCE, and applyInteriorBounds() mutates that array element by element, so 'what the record said before the join touched it' became 'what the join last wrote'. entrySideLocal()'s fallback reads exactly that field. .slice() added. Found by a counter that read 0 doors moved after moving 112.",
+    "OFFLINE NUMBERS at working tree: 112 of 112 doorsteps standable-with-own-door-nearest, 0 other, 0 no-door, 0 not-standable, 0 inside a footprint. Over all 115 interiors: 112 own / 1 other (thorn-house-0, an orphan with no door row of its own) / 2 none (barge-hold, writ-house in tidewrack). Derivation verified IDEMPOTENT (second call byte-identical to the first)."
   ],
-  "files_claimed": [],
-  "notes": []
+  "files_touched": [
+    "orchestration/status/W1-04-r6.json",
+    "game/src/render/exterior.js"
+  ],
+  "files_claimed": [
+    "tools/check-building-fits-room.mjs",
+    "tools/world/w1-04-r6-census.mjs",
+    "tools/world/w1-04-r6-live.mjs",
+    "tools/world/w1-04-r6-deletefix.mjs",
+    "tools/world/w1-04-r6-shot.mjs",
+    "tools/world/w1-04-consumption.mjs",
+    "tools/world/build-settlements.mjs",
+    "reports/w1-04-r6/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "ownership_notes": "game/data/world/{settlements,interiors}/ and tools/world/build-settlements.mjs are claimed by W1-15-r3 [building], whose status file was last written at 01:43 today. I do NOT touch the data files. For item 5 of the dispatch (the generator's second definition of the doorstep) I touch build-settlements.mjs only, by deleting the line that authors exterior_spawn, and I do not regenerate any data. Declared redundant_with W1-15-r3 rather than left to read as a collision. game/src/render/exterior.js is declared by nobody live.",
+  "redundant_with": ["W1-15-r3"],
+  "not_done_yet": []
 }

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `0b16085`: 712 tools, 153 reference
+so it cannot drift. Generated at `a3dd6f6`: 713 tools, 153 reference
 items, 59 pieces in flight.
 
 Its purpose is to stop 59+ concurrent agents each paying separately to discover the
@@ -718,7 +718,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 137
+### `tools/world/` — 138
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -845,6 +845,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r5-deletefix.mjs` — **no header comment**
 - `tools/world/w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/w1-04-r5-shot.mjs` — **no header comment**
+- `tools/world/w1-04-r6-census.mjs` — W1-04 ROUND 6 — THE OFFLINE CENSUS, ENUMERATED FROM THE INTERIORS.
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
 - `tools/world/w1-crossing-r2-bothways-gate.mjs` — **no header comment**

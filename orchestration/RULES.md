@@ -24,6 +24,13 @@ right now). Between these two you should not need to go looking for anything.
    The owner overrules by reading, not by being asked. That is how the map exists: S30 said there
    would be none, they read a blog post, and S35 replaced it.
 
+   **If you need a fresh pair of eyes, say so and stop — do not try to summon one.** `create_session`
+   is approval-gated here and returns `MCP error -32003`; two audio rounds have now lost their blind
+   judgement to it, and rule 25 forbids judging a pack you built. The orchestrator dispatches a
+   judge **agent**, which needs no approval. Build the pack, audit it for tells, write down what you
+   checked for, score the item `not_run`, and hand it back. That is a complete result, not a
+   failure.
+
 ## Survive
 
 1. **Write your status file first, before you read anything**, at `orchestration/status/<task>.json`,

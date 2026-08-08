@@ -280,6 +280,14 @@ is half of a registered contradiction pair. Not crowding (2.60 m separation hold
 --check`, `boot-check`, the reach test and two purpose-built instruments are **all green on it**.
 **4 is a lower bound: 77 rooms were not walked.**
 
+**Q17. The default player race throws in the fixed step whenever a guard is stepped.** `argonian`
+is not in `law_factor`, which calls the same people `saxhleel`, so `thresholds()` throws. Found by
+the audio critic, whose fixture it weakened, in a file that is not theirs. It is the third defect
+today from the same root: a race id that is really a tag. `bodyRace()` returns `null` silently for
+the same reason, and `raceTerm()` throws on `"argonian"` in 179 of 347 shipped NPC records. **One
+of these is worth fixing properly rather than three times separately** — there is a canonical id and
+a family of aliases, and nothing arbitrates between them.
+
 **Q15. Five of the six enchanter posts are unreachable on foot** — 6.17 to 49.57 m short, every
 one of them `stuck`. Only Lilmoth arrives. Found by the magic round while walking to its own
 spellwrights; not its file to fix. Any piece that places a person and expects a player to reach them

@@ -49,31 +49,92 @@ function load(dir) {
  * `opts` lets `--self-break` cut ONE leg of the join instead of all of it, so the doorstep
  * assertion added in round 5 has a control of its own rather than borrowing the bounds one's.
  */
+/**
+ * ROUND 6 — ENUMERATE FROM THE INTERIORS, NOT FROM THE PLANS.
+ *
+ * The round-5 verdict's attack B: this check iterated `plan.buildings` and could therefore not see
+ * `thorn-house-0`, `barge-hold` or `writ-house` — three interior records whose
+ * `continuity.building` no settlement document contains. It reached 112 of 115 and could not say
+ * which three it had missed. It was shipped as the fail-closed assertion that stops the doorstep
+ * defect coming back, and it was blind to the same class of record the defect had already hidden
+ * in once.
+ *
+ * The general rule the verdict draws out of it, and it is the useful form of RULES rule 11: the
+ * question is not "is this field read" but **"which records can this loop reach at all"**. So the
+ * outer loop below is over `Object.keys(interiors)`, every record is accounted for, and a record
+ * this check cannot test is REPORTED with its reason rather than skipped.
+ */
 function run(join, opts) {
   const S = load('game/data/world/settlements');
   const I = load('game/data/world/interiors');
   const plans = Object.keys(S).sort().map((id) => EX.planSettlement(S[id], I));
   if (join) EX.applyInteriorBounds(plans, I, Object.values(S), opts || {});
-  const bad = [], doorBad = [];
+  const bad = [], doorBad = [], reEntry = [];
   let checked = 0;
+  // interior id -> {plan, building}, built from the plans; every interior NOT in this map is an
+  // orphan and is counted below by name.
+  const placed = new Map();
+  const planById = new Map();
   for (const plan of plans) {
-    for (const b of plan.buildings) {
-      if (!b.enterable || !b.interior) continue;
-      const rec = I[b.interior];
-      if (!rec) { bad.push(`${b.id}: enterable, but no interior record ${JSON.stringify(b.interior)} — the door opens on nothing`); continue; }
-      if (!rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) { bad.push(`${rec.id}: no bounds_m`); continue; }
-      checked++;
-      // ---- ROUND 5: A DOORSTEP MAY NOT BE INSIDE A BUILDING -----------------------------------
-      // The round-4 verdict's blocking gap. `buildings[].door` was the building's CENTRE on 112 of
-      // 112 and every declared `continuity.exterior_spawn` fell inside its own building's wall box,
-      // so walking out of a door left you under the roof round 4 had just added. This is the
-      // assertion the verdict's own remedy asks for, stated on the point `leaveInterior()` puts the
-      // body on: `insideBuilding()` must return null for it.
-      const sp = rec.continuity && rec.continuity.exterior_spawn;
-      if (Array.isArray(sp)) {
-        const hit = EX.insideBuilding(plan, sp[0], sp[2], 0);
-        if (hit) doorBad.push(`${b.id} (${rec.id}): the doorstep you are put on when you leave is inside ${hit === b.id ? 'THE BUILDING YOU JUST LEFT' : hit}`);
+    planById.set(plan.id, plan);
+    for (const b of plan.buildings) if (b.interior) placed.set(b.interior, { plan, b });
+  }
+  const orphans = [];
+  const seen = new Set();
+  for (const id of Object.keys(I).sort()) {
+    const rec = I[id];
+    const at = placed.get(id);
+    if (!at) { orphans.push({ interior: id, settlement: (rec && rec.settlement) || null, in_a_plan: false }); }
+    const plan = at ? at.plan : planById.get(rec && rec.settlement);
+    // ---- ROUND 5/6: A DOORSTEP MAY NOT BE INSIDE A BUILDING, AND MAY NOT BE IN A WALL ---------
+    // The round-4 verdict's blocking gap and the round-5 verdict's. `buildings[].door` was the
+    // building's CENTRE on 112 of 112 and every declared `continuity.exterior_spawn` fell inside
+    // its own building's wall box, so walking out of a door left you under the roof round 4 had
+    // just added. Round 5 fixed containment at ONE FRAME and the collision solver then slid ten
+    // bodies indoors, because a point outside the footprint can still be inside the wall slab.
+    // Both are asserted here, on the point `leaveInterior()` actually puts the body on.
+    const sp = rec && rec.continuity && rec.continuity.exterior_spawn;
+    if (plan && Array.isArray(sp)) {
+      const hit = EX.insideBuilding(plan, sp[0], sp[2], 0);
+      if (hit) doorBad.push(`${id}: the doorstep you are put on when you leave is inside ${hit === (at && at.b.id) ? 'THE BUILDING YOU JUST LEFT' : hit}`);
+      else {
+        const solids = EX.settlementSolids(plan, 0, 0, 1e9, null);
+        const clear = EX.horizontalClearance(solids, sp[0], sp[2]);
+        if (clear < EX.BODY_RADIUS_M) {
+          doorBad.push(`${id}: the doorstep is outside every footprint but only ${clear.toFixed(3)} m clear of a wall slab, and the body is ${EX.BODY_RADIUS_M} m wide — the collision solver will move it`);
+        }
       }
+      // ---- ROUND 6: AND THE DOOR IN REACH MUST OPEN THIS BUILDING ------------------------------
+      // The round-5 verdict's blocking gap. `doorAt()` returns the NEAREST door, so "a door is in
+      // reach" and "your door is in reach" are different questions and only the second one is
+      // interior/exterior continuity. Reimplemented here from the settlement document's own rows,
+      // which is the array `SettlementSystem`'s reach table holds.
+      const doc = S[rec.settlement];
+      const rows = ((doc && doc.buildings) || []).filter((r) => r.kind === 'interior' && r.door);
+      let near = null, nd = Infinity;
+      for (const r of rows) {
+        const d = Math.hypot(r.door[0] - sp[0], r.door[2] - sp[2]);
+        if (d <= EX.DOOR_REACH_M && d < nd) { nd = d; near = r; }
+      }
+      if (at) {
+        if (near !== rows.find((r) => r.id === at.b.id)) {
+          reEntry.push(`${id}: pressing interact on this doorstep opens ${near ? near.interior : 'NOTHING'}, not the room you left`);
+        }
+      } else {
+        // An orphan has no row in any door table, so there is no door of its own to be nearest and
+        // no derivation can give it one. Stated by name rather than skipped — that omission is what
+        // the round-5 verdict caught the last version of this check doing.
+        orphans[orphans.length - 1].reentry = near ? `opens ${near.interior}` : 'opens nothing — no door row anywhere names this interior';
+      }
+    }
+    seen.add(id);
+    if (!at) continue;
+    const b = at.b;
+    if (!b.enterable) continue;
+    if (!rec) { bad.push(`${b.id}: enterable, but no interior record ${JSON.stringify(b.interior)} — the door opens on nothing`); continue; }
+    if (!rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) { bad.push(`${rec.id}: no bounds_m`); continue; }
+    checked++;
+    {
       const W = rec.bounds_m.x[1] - rec.bounds_m.x[0];
       const D = rec.bounds_m.z[1] - rec.bounds_m.z[0];
       const availX = b.drawn_footprint_m[0] - EX.SHELL_WALL_T;
@@ -86,7 +147,30 @@ function run(join, opts) {
       }
     }
   }
-  return { checked, bad, doorBad };
+  return { checked, bad, doorBad, reEntry, orphans, records: Object.keys(I).length, reached: seen.size };
+}
+
+/* ---- ROUND 6: THE MIRRORS, CHECKED ----------------------------------------------------------
+ * `render/exterior.js` must not import `sim/`, so it restates two numbers that live there:
+ * `BODY_RADIUS_M` (= `sim/world-collision.js#PLAYER_RADIUS_M`, the radius the collision solver
+ * depenetrates the body at) and `DOOR_REACH_M` (= `sim/settlement.js#DOOR_REACH_M`, how close your
+ * hand has to be to a door). An unchecked copy of a number is the shape this project has now found
+ * five times — two soul ledgers, `magic.gold`, a gold write bypassing its setter, and the
+ * generator's second doorstep. So they are checked here, in the gate, and this exits non-zero if
+ * either has drifted.
+ */
+const WC = await import(path.join(ROOT, 'game/src/sim/world-collision.js'));
+const SETT = await import(path.join(ROOT, 'game/src/sim/settlement.js'));
+const mirrors = [];
+if (EX.BODY_RADIUS_M !== WC.PLAYER_RADIUS_M) mirrors.push(`exterior.js BODY_RADIUS_M = ${EX.BODY_RADIUS_M} but world-collision.js PLAYER_RADIUS_M = ${WC.PLAYER_RADIUS_M}`);
+if (EX.DOOR_REACH_M !== SETT.DOOR_REACH_M) mirrors.push(`exterior.js DOOR_REACH_M = ${EX.DOOR_REACH_M} but settlement.js DOOR_REACH_M = ${SETT.DOOR_REACH_M}`);
+if (mirrors.length) {
+  console.error('check-building-fits-room: the doorstep derivation is using a stale copy of a number that lives in sim/:');
+  for (const m of mirrors) console.error(`  ${m}`);
+  console.error('\nThe derivation decides where a body stands by comparing against these. A copy that has');
+  console.error('drifted from its source derives doorsteps against a world that is not the one the body');
+  console.error('is solved in. Fix the copy in game/src/render/exterior.js.');
+  process.exit(1);
 }
 
 const live = run(true);
@@ -109,8 +193,21 @@ if (has('--self-break')) {
     console.error('SELF-BREAK FAILED: the doorstep assertion passes even with the doorstep derivation removed, so it is not measuring it.');
     process.exit(1);
   }
-  console.log('SELF-BREAK OK: both assertions see the defect they exist for.');
+  // ROUND 6: a THIRD red arm, for the third assertion. The re-entry check must go red when the
+  // doorstep derivation is cut, or it is a second copy of the containment experiment.
+  console.log(`check-building-fits-room --self-break: with ONLY the doorstep derivation cut, ${cutDoor.reEntry.length} of ${cutDoor.records} doorsteps open a room other than the one you left.`);
+  for (const b of cutDoor.reEntry.slice(0, 3)) console.log(`  ${b}`);
+  if (!cutDoor.reEntry.length) {
+    console.error('SELF-BREAK FAILED: the re-entry assertion passes even with the doorstep derivation removed, so it is not measuring it.');
+    process.exit(1);
+  }
+  console.log('SELF-BREAK OK: all three assertions see the defect they exist for.');
 }
+
+// ROUND 6: enumeration, said out loud. A check that silently reaches 112 of 115 records is how the
+// last blind set survived five rounds.
+console.log(`check-building-fits-room: ${live.reached} of ${live.records} interior records enumerated; ${live.orphans.length} are in no settlement plan and are named here rather than skipped:`);
+for (const o of live.orphans) console.log(`  ${o.interior} (settlement ${JSON.stringify(o.settlement)}): ${o.reentry || 'no doorstep to test — no settlement document for this town'}`);
 
 if (live.doorBad.length) {
   console.error(`check-building-fits-room: ${live.doorBad.length} of ${live.checked} doorsteps put the body inside a building:`);
@@ -118,6 +215,17 @@ if (live.doorBad.length) {
   if (live.doorBad.length > 20) console.error(`  ... and ${live.doorBad.length - 20} more`);
   console.error('\nRI-WLD13. render/exterior.js#applyInteriorBounds() re-derives the door onto the');
   console.error('entry wall and the doorstep to the nearest standable point outside it.');
+  process.exit(1);
+}
+
+if (live.reEntry.length) {
+  console.error(`check-building-fits-room: ${live.reEntry.length} of ${live.records} doorsteps do not put your hand on your own door:`);
+  for (const b of live.reEntry.slice(0, 20)) console.error(`  ${b}`);
+  if (live.reEntry.length > 20) console.error(`  ... and ${live.reEntry.length - 20} more`);
+  console.error('\nRI-WLD13. "The door I came out of is the door I go back in by" is the other end of the');
+  console.error('doorstep. sim/settlement.js#doorAt() returns the NEAREST door, so a doorstep nearer to a');
+  console.error('neighbour\'s door opens the neighbour. render/exterior.js#applyInteriorBounds() derives the');
+  console.error('doorstep against the door table for exactly this reason.');
   process.exit(1);
 }
 
