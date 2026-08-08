@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `255e97d`: 566 tools, 153 reference
+so it cannot drift. Generated at `787afd1`: 567 tools, 153 reference
 items, 39 pieces in flight.
 
 Its purpose is to stop 39+ concurrent agents each paying separately to discover the
@@ -228,7 +228,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/sabotage.mjs` — THE SABOTAGE CONTROL, as a command any piece can run.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 198
+### `tools/harness/` — 199
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -333,6 +333,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r3-seam.mjs` — W1-14 round-3 CRITIC.
 - `tools/harness/critic-w1-14-r3-vfx.mjs` — W1-14 round-3 CRITIC, RI-MAG05.
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
+- `tools/harness/critic-w1-16-live.mjs` — W1-16 ROUND-2 CRITIC's stepping instrument.
 - `tools/harness/critic-w1-16-offline.mjs` — W1-16 ROUND-2 CRITIC's own instrument.
 - `tools/harness/critic-w1-21-r1-shots.mjs` — the W1-21 critic's picture, taken through `tools/capture/`.
 - `tools/harness/critic-w1-21-r1.mjs` — the W1-21 round-1 CRITIC's own instrument.
@@ -872,10 +873,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `W1-25` | building | Build RI-CMP01: tools/composition/cells-from-md.mjs -> corpus/95-experience/RI-CMP01.cells | `orchestration/status/W1-25.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `reports/experience/w1/sabotage.json` |
 | `critic-w1-23-r3` | ? | measurement complete; writing corpus/90-verdicts/wave1/W1-23-r3.md + .json, then blog line | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` |
-| `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-ban | `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `tools/analysis/critic-w1-22-r2-determinism.mjs` `tools/audio/critic-w1-22-r2-bands.mjs` `tools/audio/critic-w1-22-r2-probe.mjs` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
