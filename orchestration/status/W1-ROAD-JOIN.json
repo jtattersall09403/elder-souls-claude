@@ -1,9 +1,9 @@
 {
   "task_id": "W1-ROAD-JOIN",
   "title": "Join road generation and settlement planting so roads do not terminate in walls",
-  "status": "reported",
+  "status": "done",
   "started_at": "2026-08-08T02:08:46Z",
-  "updated_at": "2026-08-08T03:28:25.298Z",
+  "updated_at": "2026-08-08T03:31:58.133Z",
   "owner": "builder",
   "decision": {
     "which_side_yields": "ROADS. Routing consumes the settlement plan; buildings never move.",
@@ -100,5 +100,17 @@
       "detail": "If anyone edits game/data/world/settlements/*.json or an interior s continuity.exterior_footprint_m without re-running node tools/world/build-roads.mjs, a house can land back on the road. node tools/world/road-through-building.mjs is the check and it is cheap and offline; it belongs in the gate list in INDEX.md. I did not add it there because that table is generated and the gate set is not mine to change."
     }
   ],
-  "w1_05_soulrest_leg": "PARTIAL RESULT, arms A and B landed (C and D still walking). The tree boot was fixed by its owner at ~03:2xZ so this became possible. WITH THE JOIN IN, WALLS ON AND WALLS OFF ARE NOW IDENTICAL: both arms travel 6459.8 m of an 1841 m leg and stop at exactly (1744.1, 4876) on DRY ground (depth 0 m, band W1) at hp 7. Before the join, walls-on stopped the body after 11.6 m and walls-off ran 6458 m and ended in 18 m of sea. So (a) the wall WAS the walls-on stall and it is gone, (b) the walls are now exonerated as a cause of anything on this leg - taking them out changes nothing at all, and (c) what is left is not a drowning: the body ends on dry ground, having orbited a waypoint it cannot reach. W1-05 should re-read its hypothesis against this. reports/w1-road-join/soulrest-leg-after-join.json"
+  "w1_05_soulrest_leg": {
+    "verdict": "The finder was HALF right, and the half that matters to W1-05 is the half that is wrong. The wall WAS the walls-on stall and it is gone. The drowning is NOT the road-through-building defect: it survives the join intact.",
+    "tool": "tools/world/w1-01-r4-soulrest-leg.mjs (W1-01-r4s, unmodified), reports/w1-road-join/soulrest-leg-after-join.json",
+    "before_the_join": "walls ON stopped the body after 11.6 m and 18.7 m of an 1841 m leg on dry ground at full HP; walls OFF ran 6458 m off-road and ended in 18 m of sea.",
+    "after_the_join": {
+      "A_soulrest_to_blackrose_walls_on": "6459.8 m of 1841, stopped (1744.1, 4876), dry (0 m, W1), hp 7",
+      "B_soulrest_to_blackrose_walls_off": "6459.8 m, stopped (1744.1, 4876), dry, hp 7 — IDENTICAL to A",
+      "C_blackrose_to_soulrest_walls_on": "6269 m of 1841, stopped (2222, 4960.1), 15.962 m of water (W5), hp 379",
+      "D_blackrose_to_soulrest_walls_off": "6269 m, stopped (2222, 4960.1), 15.962 m of water, hp 379 — IDENTICAL to C"
+    },
+    "headline": "walls_change_the_answer: FALSE. All four arms are pairwise identical with the walls in and with them out, mean path 6364.4 m either way. any_arm_drowned: false; any_arm_arrived: false.",
+    "what_this_unblocks": "W1-05 can stop testing the walls: they are now a proven non-cause on this leg, by a control that used to bite and no longer does. The 11.6 m stall is gone. What is left is the SAME off-road wander the walls-off arm always showed - the body orbits a waypoint it cannot reach and racks up 6.3 km on an 1.8 km leg - and in the blackrose->soulrest direction it still ends in 16 m of sea. That is a navigation/steering defect, not a wall and not a settlement one, and it is the same shape as the Valus Ridge stall in H1: a body that leaves the road cannot get back on it."
+  }
 }

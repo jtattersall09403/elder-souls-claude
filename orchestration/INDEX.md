@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `aa542ec`: 624 tools, 153 reference
+so it cannot drift. Generated at `6803a05`: 626 tools, 153 reference
 items, 49 pieces in flight.
 
 Its purpose is to stop 49+ concurrent agents each paying separately to discover the
@@ -493,7 +493,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 20
+### `tools/lore/` — 21
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -506,6 +506,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r3-reach.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
 - `tools/lore/critic-w1-23-r4-band.mjs` — **no header comment**
+- `tools/lore/critic-w1-23-r4-blind.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r4-lor04-lib.mjs` — **no header comment**
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/lor04-validate.mjs` — **no header comment**
@@ -659,7 +660,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 102
+### `tools/world/` — 103
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -756,6 +757,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r3-collision.mjs` — W1-04 round 3 — CAN YOU WALK THROUGH A WALL, AND IS ANYBODY STANDING IN ONE?
 - `tools/world/w1-04-r3-consume.mjs` — W1-04 round 3 — THE CONSUMPTION CHECK, and the picture.
 - `tools/world/w1-04-r3-exterior.mjs` — W1-04 round 3 — THE EXTERIOR HALF, MEASURED.
+- `tools/world/w1-04-r4-join.mjs` — W1-04 round 4 — THE JOIN: can a building's outside contain its inside?
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
@@ -765,7 +767,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **138 tools have no header comment**, so nobody can tell what they do without
+> **139 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -939,6 +941,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
+| `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-04-r4` | starting | read INDEX.md and corpus/90-verdicts/wave1/W1-04-r3.md | `orchestration/status/W1-04-r4.json` |
@@ -946,11 +950,9 @@ work is the difference between resuming and starting over.
 | `W1-14-r4` | building | read RULES/INDEX/ARBITRATION, then ownership --for on target files | `orchestration/status/W1-14-r4.json` |
 | `critic-w1-map-r2` | running | read INDEX.md, ARBITRATION.md S35, W1-MAP-r1.md, status files | `orchestration/status/critic-w1-map-r2.json` |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
-| `critic-w1-23-r4` | running | read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G | — |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
 | `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
-| `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
