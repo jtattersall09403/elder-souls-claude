@@ -14,7 +14,7 @@ import { arrangeAt } from './arrangement.js';
 import { SIGNATURE_KINDS } from './signature.js';
 import { signatureGeometry, signatureMaterials, mergeAll } from './signature-geo.js';
 import { thresholdGeometry, thresholdMaterials, remainsGeometry, remainsMaterial } from './threshold-geo.js';
-import { planSettlement, buildSettlementExterior, settlementSolids, insideBuilding } from '../render/exterior.js';
+import { planSettlement, buildSettlementExterior, settlementSolids, insideBuilding, applyInteriorBounds } from '../render/exterior.js';
 
 const TILE_M = 300;
 // 5.36 m per quad. Raised from 40 (7.5 m) in round 4 for one reason, and it is a Nyquist reason
@@ -825,6 +825,22 @@ export class Province {
    */
   setSettlements(docs, interiors) {
     this.settlementPlans = (docs || []).map((d) => planSettlement(d, interiors || {}));
+    // ---- THE JOIN — W1-04 round 4, RI-WLD13 N1 ------------------------------------------------
+    //
+    // Round 3 shrank the drawn exteriors to keep buildings out of one another and left every
+    // interior at its declared footprint, and the round-3 verdict measured what that meant:
+    // *"41 of 112 enterable buildings now draw an exterior smaller than their own interior.
+    // blackrose-inn is a 3.4 m shed over a 13.6 m hall — 6.3% of the area."* N1 went from
+    // vacuous to false, and this line is where it is put right.
+    //
+    // This is the only place in the build where the plan and the interior records meet, which is
+    // why the reconciliation belongs here and not in either renderer. `interiors` is
+    // `Engine.data.interiors` BY REFERENCE — the same objects `renderer.setInteriorRecord()`
+    // builds rooms from, `sim/npc.js` places people inside and `settlement.js` spawns the player
+    // in — so a room that shrank shrank for the simulation too, and not only for the picture.
+    // The report is published on the province because the acceptance number ("how many rooms did
+    // the plan have to take space from, and how much") must be readable from a probe.
+    this.interiorJoin = applyInteriorBounds(this.settlementPlans, interiors || {});
     this._solidCache = null;
     // Anything already built was built without these; drop it so the next request rebuilds.
     for (const [k, t] of [...this.tiles]) this._release(k, t);

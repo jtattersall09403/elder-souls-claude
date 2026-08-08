@@ -386,6 +386,76 @@ export function planSettlement(rec, interiors) {
   };
 }
 
+/**
+ * THE JOIN, APPLIED — round 4. Give every interior record the room its own building can hold.
+ *
+ * `planSettlement()` decides how big each building is drawn; this decides how big the room behind
+ * its door is. It is the only place in the build where the two halves of RI-WLD13 meet, and it is
+ * called once, from `world/province.js#setSettlements()`, on the SAME record objects the renderer
+ * builds rooms from and `sim/npc.js` places people inside — so a room that shrank shrank for
+ * everybody, not just for the picture.
+ *
+ * Three properties worth stating, because each of them is a way this could have been wrong:
+ *
+ *  * IT NEVER GROWS A ROOM. `interior_bounds_m` is `min(declared, what the building can hold)`.
+ *    A settlement of identical boxes would be a worse world than a settlement with a wrong
+ *    number in it, so a building drawn at its declared footprint keeps the room its record
+ *    declares, mesh for mesh.
+ *  * IT IS IDEMPOTENT AND REVERSIBLE. The first call stashes the record's declared bounds under
+ *    `bounds_m_declared`; every later call re-derives from that, so re-running `setSettlements()`
+ *    (which the consumption probes do, repeatedly) cannot ratchet a room down to nothing.
+ *  * IT MOVES THE DOORSTEP. `continuity.interior_spawn` is a point a metre inside the entry wall
+ *    of the DECLARED room; leave it where it is and a shrunk room spawns the player inside its
+ *    own masonry. It is clamped to a metre inside the room that now exists.
+ *
+ * @returns {object} a report: how many rooms were reduced, by how much, and the worst.
+ */
+export function applyInteriorBounds(plans, interiors) {
+  const I = interiors || {};
+  const out = { rooms: 0, rooms_reduced: 0, rooms_at_declared_bounds: 0, spawns_moved: 0, worst: null, reduced: [] };
+  const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
+  for (const plan of plans || []) {
+    for (const b of plan.buildings) {
+      const rec = b.interior ? I[b.interior] : null;
+      if (!rec || !rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) continue;
+      out.rooms++;
+      if (!rec.bounds_m_declared) {
+        rec.bounds_m_declared = { x: rec.bounds_m.x.slice(), y: (rec.bounds_m.y || [0, 3.2]).slice(), z: rec.bounds_m.z.slice() };
+      }
+      const dec = rec.bounds_m_declared;
+      const cx = (dec.x[0] + dec.x[1]) / 2, cz = (dec.z[0] + dec.z[1]) / 2;
+      const decW = dec.x[1] - dec.x[0], decD = dec.z[1] - dec.z[0];
+      let W = decW, D = decD;
+      if (b.interior_bounds_m) {
+        W = Math.min(decW, b.interior_bounds_m[0]);
+        D = Math.min(decD, b.interior_bounds_m[1]);
+      }
+      const reduced = W < decW - 0.01 || D < decD - 0.01;
+      rec.bounds_m = {
+        x: [+(cx - W / 2).toFixed(3), +(cx + W / 2).toFixed(3)],
+        y: dec.y.slice(),
+        z: [+(cz - D / 2).toFixed(3), +(cz + D / 2).toFixed(3)],
+      };
+      const cont = rec.continuity;
+      if (cont && Array.isArray(cont.interior_spawn)) {
+        if (!cont.interior_spawn_declared) cont.interior_spawn_declared = cont.interior_spawn.slice();
+        const s0 = cont.interior_spawn_declared;
+        const mx = Math.max(0.2, W / 2 - 1.0), mz = Math.max(0.2, D / 2 - 1.0);
+        const s = [+clamp(s0[0], cx - mx, cx + mx).toFixed(3), s0[1], +clamp(s0[2], cz - mz, cz + mz).toFixed(3)];
+        if (s[0] !== cont.interior_spawn[0] || s[2] !== cont.interior_spawn[2]) out.spawns_moved++;
+        cont.interior_spawn = s;
+      }
+      if (!reduced) { out.rooms_at_declared_bounds++; continue; }
+      out.rooms_reduced++;
+      const frac = +((W * D) / (decW * decD)).toFixed(4);
+      out.reduced.push({ id: rec.id, building: b.id, declared_m: [+decW.toFixed(2), +decD.toFixed(2)], room_m: [+W.toFixed(2), +D.toFixed(2)], area_kept: frac });
+      if (!out.worst || frac < out.worst.area_kept) out.worst = out.reduced[out.reduced.length - 1];
+    }
+  }
+  out.reduced.sort((a, c) => a.area_kept - c.area_kept);
+  return out;
+}
+
 /* ================================================================================================
  * THE BUILDING
  * ==============================================================================================*/
@@ -435,7 +505,11 @@ const WALL_T = 0.36;
  */
 function hipRoof(P, w, d, rise, mat, overhang = 0.5) {
   const c = cyl(0.001, Math.SQRT1_2, rise, 4, mat);
-  c.rotation.y = Math.PI / 4;
+  // The turn goes into the GEOMETRY, not into the node. `Object3D` composes its matrix as
+  // T·R·S, so a node rotation of 45 degrees would turn the already-scaled base and hand back a
+  // diamond over a rectangle — which is the same corners-open defect wearing a different shape,
+  // and it is what the first version of this function shipped until the raycast caught it.
+  c.geometry.rotateY(Math.PI / 4);
   c.scale.set(w + overhang, 1, d + overhang);
   return c;
 }

@@ -123,6 +123,12 @@ export const EVENT_TYPES = new Set([
   // outright in combat, exactly as S27 refuses a Focus refill. The refusal is an event because
   // a silent refusal is indistinguishable from a broken spell.
   'travel_refused',
+  // W1-14 round 4 — a spell was COMMISSIONED, at a counter, from a named person, for gold.
+  // ADDITIVE (RULES.md #15): nothing is removed and no existing name changes meaning. It exists
+  // because `makeSpell` had one caller in the build and it was the harness, so there was no
+  // world-side act to record; now there is, and a probe that never touches `H.makeSpell` needs
+  // an observable that says the transaction happened and what it cost.
+  'spell_made',
   // ---- W1-15 / AMENDMENT AM-W1-15-02 — stealth, theft, crime and justice ------------------
   // HARNESS.md §5 declares the vocabulary "a closed vocabulary, EXTENSIBLE BY AMENDMENT", and
   // four reference items name these events by string in their Comparison methods:

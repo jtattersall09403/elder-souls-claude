@@ -10,6 +10,9 @@ import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
 import { CombatSystem } from './combat/system.js';
 import { MagicSystem } from './sim/magic/system.js';
+// W1-14 r4 — the door into spellmaking. See `sim/magic/commission.js` for why it is a topic list
+// and not a menu.
+import { CommissionCounter, spellwrightOf, SPELLMAKING_TOPIC } from './sim/magic/commission.js';
 // W1-14 round 2. These three modules have existed, complete, since the quest piece landed and
 // nothing has ever constructed them — which is why the W1-14 verdict recorded AR-2 B7 as
 // `not_run` ("no quest in this build can be started, advanced or completed by playing") and
@@ -522,6 +525,11 @@ export class Engine {
     this.topicIndex = buildTopicIndex(this.data.character.topicDocs);
     this.conversation = new Conversation(this.data.character, this.topicIndex);
     this._greetCount = new Map();
+    // W1-14 r4. The spellmaking counter, when one is open. Null the rest of the time, which is
+    // every frame the player is not standing in front of one of the seven spellwrights having
+    // raised the subject. See `_commissionOpens`.
+    this.commission = null;
+    this._commissionDisabled = false;
     this.writReader = { open: false, lines: [], top: 0 };
     // W1-05, RI-WLD06 L2. The post you are standing at, if you have reached for one. Same shape
     // as the writ reader, on purpose: a document you hold and a board you stand under are the
@@ -2420,6 +2428,7 @@ export class Engine {
     if (!n) throw new Error(`talkTo('${eid}'): nobody by that name is in the world`);
     if (this.censusSurface && this.censusSurface.takesInput) throw new Error('talkTo: the census has the conversation');
     const p = this._talkPlayer();
+    this.commission = null;                       // W1-14 r4: a new conversation, an empty slate
     const d = this.npcDisposition(eid);
     const nth = this._greetCount.get(eid) || 0;
     this._greetCount.set(eid, nth + 1);
@@ -2686,6 +2695,27 @@ export class Engine {
   /** Say a topic. Returns the info, or a refusal naming why there is nothing to hear. */
   conversationSay(topicId) {
     const p = this._talkPlayer();
+    // ---- W1-14 r4: THE SPELLMAKING COUNTER -------------------------------------------------
+    //
+    // Two branches, and both of them are on the ordinary talking path on purpose. A player
+    // reaches spellmaking exactly the way they reach everything else in this province: they walk
+    // to a town, greet somebody, and raise a subject. There is no menu key, no vendor grid and
+    // no second input path — the counter borrows the topic list it is standing in.
+    if (this.commission && this.commission.open) {
+      const r = this.commission.choose(topicId);
+      if (r.closed) { this.commission = null; this._commissionSurface(); return this.conversation.state(); }
+      this._commissionSurface();
+      const st = this.conversation.state();
+      st.commission = this.commission.state();
+      if (r.made) st.commissioned = r.made.id;
+      if (r.refused) st.refused = r.refused;
+      return st;
+    }
+    if (this._commissionOpens(topicId)) {
+      const st = this.conversation.state();
+      st.commission = this.commission.state();
+      return st;
+    }
     const info = this.conversation.say(topicId, p);
     if (!info) return { refused: 'no_info', topic: topicId, npc: this.conversation.npc ? this.conversation.npc.eid : null };
     // W1-19 round 2 — ASKING IS HOW YOU COME TO KNOW THE WORDS. Two edges fire here:
@@ -2813,6 +2843,7 @@ export class Engine {
 
   conversationClose() {
     const n = this.conversation.npc;
+    this.commission = null;                       // W1-14 r4: you cannot buy from across the square
     this.conversation.close();
     for (const x of this.sim.npcs) x.speaking = false;
     if (n) { const ev = this.bus.emit(this.sim.frame, 'dialogue_close'); ev.npc = n.eid; ev.scene = 'talk'; }
@@ -2820,7 +2851,68 @@ export class Engine {
     return { open: false };
   }
 
-  getConversationState() { return this.conversation.state(); }
+  getConversationState() {
+    const st = this.conversation.state();
+    if (this.commission && this.commission.open) st.commission = this.commission.state();
+    return st;
+  }
+
+  // ---- W1-14 round 4: SPELLMAKING, REACHED BY WALKING UP TO SOMEBODY -------------------------
+  //
+  // `GAP-W1-magic-spellmaking-has-no-world-side-surface`. `makeSpell` and `enchantQuote` each
+  // had exactly one caller in the whole build and it was `window.__HARNESS`; `enchanting.json`
+  // named seven people and none of the seven existed as a person anywhere in `game/data/npcs/**`.
+  // These three methods are the door. Everything they do is done through
+  // `sim/magic/commission.js`, which is where the reasoning lives.
+
+  /**
+   * Did raising this subject with this person open a counter? True only when ALL of it holds:
+   * a conversation is open, the person's record carries a `spellwright` key that resolves to a
+   * row of `enchanting.json`, their quest gate (if any) is passed, and the subject raised is the
+   * spellmaking keyword. Anything else falls through to ordinary dialogue untouched.
+   */
+  _commissionOpens(topicId) {
+    if (this._commissionDisabled) return false;      // H.__breakCommissionCounter, rule 6
+    if (!this.conversation.open || !this.conversation.npc) return false;
+    if (topicKey(String(topicId)) !== topicKey(SPELLMAKING_TOPIC)) return false;
+    const n = this.conversation.npc;
+    const rec = this._anyNpcRecord(n.eid) || n.record || n;
+    const wright = spellwrightOf(rec, this.data.magic.enchanting);
+    if (!wright) return false;
+    // The Stone Wastes recluse is quest-gated in the data and always has been; until now the
+    // gate had nothing to shut, because there was no counter behind it.
+    if (wright.quest_gated && !this.sim.quest.flags[wright.quest_gated]) return false;
+    this.commission = new CommissionCounter(this.magic, n, wright, {
+      gold: () => this._gold(),
+      emit: (kind, detail) => {
+        // `spell_made` is already in the closed event vocabulary (`sim/events.js`); a new name
+        // would throw inside the fixed step and kill every stepping probe in the project
+        // (RULES.md #15). Reuse it and carry the world-side facts in the detail.
+        const ev = this.bus.emit(this.sim.frame, 'spell_made');
+        Object.assign(ev, detail, { via: kind });
+      },
+    });
+    this._commissionSurface();
+    return true;
+  }
+
+  /**
+   * Put the counter's rows on the conversation surface — which is what makes it drawn by
+   * `buildConversationModel()`, walked by `_conversationStep()`'s d-pad and picked by the same
+   * `interact` press that picks a topic. No new UI mode; see commission.js §WHAT THIS IS NOT.
+   */
+  _commissionSurface() {
+    const c = this.commission;
+    if (!c || !c.open) { this._conversationSync(); return null; }
+    this.conversation.list = c.options();
+    this.conversation.said = { topic: SPELLMAKING_TOPIC, actor: null, text: c.line(), gated: false, source: 'commission', to: [] };
+    this.conversation.sel = 0;
+    this._conversationSync();
+    return c.state();
+  }
+
+  /** Read the counter without touching it. Null when nobody has one open. */
+  commissionState() { return this.commission && this.commission.open ? this.commission.state() : null; }
 
   // ---- the writ you carry (RI-JRN01 O10 / M8) ---------------------------------------------
 

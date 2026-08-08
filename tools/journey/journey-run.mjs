@@ -1056,16 +1056,19 @@ async function driveBeats(handle, o) {
     }
     surface.census_walk = censusWalk;
     await record('census_walk', censusWalk);
-    if (censusWalk.throw_at) {
-      led.fail('census_walk', 'the creation scene can be walked to the end',
-        `the scene threw at '${censusWalk.throw_at}': ${censusWalk.throw_reason}. ${censusWalk.nodes} node(s) reached, `
-        + `field(s) written: ${censusWalk.fields.join(', ') || 'none'}.`,
-        'the build');
-    } else {
-      led.ok('census_walk', 'the creation scene walked to the end', {
-        nodes: censusWalk.nodes, fields_written: censusWalk.fields, stopped_by: censusWalk.stopped_by,
-      });
-    }
+    // Reported through this file's own failure idiom — `status: 'measured'` with
+    // `value.pass === false`, which is what the ledger printer at `printLedger` reads — so a
+    // broken scene comes out as `FAIL`, never as `N/A`. The distinction is the whole point:
+    // `N/A` says "this could not be measured" and sends the reader looking for a missing tool;
+    // `FAIL` says "it was measured and the build is broken", which is what r2 actually had.
+    led.ok('census_walk', 'the creation scene can be walked from the hold to the stamp', {
+      pass: !censusWalk.throw_at,
+      nodes_reached: censusWalk.nodes,
+      fields_written: censusWalk.fields,
+      stopped_by: censusWalk.stopped_by,
+      threw_at: censusWalk.throw_at,
+      reason: censusWalk.throw_reason,
+    });
 
     // Dismiss with a real input and time it. This is M2's measurement, and it needs a REAL
     // input on the surface's first rendered frame — not a queueInputs at a frame index.

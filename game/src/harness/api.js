@@ -1030,6 +1030,13 @@ export function installHarness(engine, bootPromise) {
      */
     conversationPersuade(verb) { return engine.conversationPersuade(String(verb)); },
     getConversationState() { return engine.getConversationState(); },
+    /**
+     * W1-14 round 4. READ-ONLY view of the spellmaking counter, or null when nobody has one
+     * open. This is an OBSERVABLE, not a door: it cannot open a counter, cannot edit a draft and
+     * cannot buy anything. The only way in is `talkTo` a spellwright and `conversationSay` the
+     * subject, which is the only way a player has either.
+     */
+    commissionState() { return engine.commissionState(); },
 
     /**
      * RI-WLD09 §B1's opacity register, as the running world sees it: which of the twenty-four

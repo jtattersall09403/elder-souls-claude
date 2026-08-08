@@ -124,11 +124,14 @@ const PROBES = {
         H.__breakW116(broken);
         H.setSeed(1337); H.loadState('default'); H.stepFrames(4);   // boundary INSIDE the arm
         H.setBurden(0.95); H.stepFrames(2);
-        const svc = (H.listTravel ? H.listTravel() : null);
-        r.services = svc ? (svc.services || svc).length : null;
-        const first = svc ? (svc.services || svc)[0] : null;
-        r.service = first ? (first.id || first.service || null) : null;
-        r.burden_travel_mult = H.getBurden().travel_time_mult;
+        const net = H.getTravelNetwork ? H.getTravelNetwork() : null;
+        const svcs = net ? (net.services || []) : [];
+        r.services = svcs.length;
+        r.service = svcs.length ? (svcs[0].id || null) : null;
+        r.burden_travel_mult_reported = H.getBurden().travel_time_mult;
+        // The arm's read site is `engine.boardTravel()`'s `bt.travel_time`. Quote a ride and
+        // read the frames the world would charge for it.
+        if (r.service) { try { r.quote = H.travelQuote(r.service); } catch (e) { r.quote_err = String(e && e.message || e); } }
       } catch (e) { r.err = String(e && e.message || e); }
       H.__breakW116(null);
       return r;
@@ -434,12 +437,20 @@ const PROBES = {
     out.before = { pct: b0.pct, weapon: b0.weapon_the_fight_swings, equipped_kg: b0.equipped_weight,
       carried_kg: b0.carried_weight,
       hud: (() => { try { const u = H.getUIState ? H.getUIState() : null; return u ? { toast: u.toast || null } : null; } catch (e) { return null; } })() };
-    // Watch the event bus across the equip, which is where the reason is written.
-    let events = null;
-    try { H.clearEvents && H.clearEvents(); } catch (e) { /* optional */ }
+    // Watch the event bus across the equip, which is the ONLY place the reason is written.
+    // The bus is cleared every step, so it has to be drained frame by frame.
+    const E = window.__ENGINE;
+    const events = [];
     H.equipItem('hist-sap-bow');
-    H.stepFrames(40);
-    try { events = (H.getEvents ? H.getEvents() : []).filter((e) => /equip/.test(e.kind || e.name || '')); } catch (e) { events = { err: String(e && e.message || e) }; }
+    for (let i = 0; i < 40; i++) {
+      H.stepFrames(1);
+      for (let j = 0; j < E.bus.count; j++) {
+        const e = E.bus.pool[j];
+        if (e.type === 'equip_end' || e.type === 'equip_start') {
+          events.push({ f: e.f, type: e.type, item: e.item, slot: e.slot, equipped: e.equipped, refused: e.refused || null });
+        }
+      }
+    }
     const b1 = H.getBurden().equip_load;
     out.after = { pct: b1.pct, weapon: b1.weapon_the_fight_swings, equipped_kg: b1.equipped_weight,
       carried_kg: b1.carried_weight,

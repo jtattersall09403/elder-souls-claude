@@ -4,18 +4,35 @@
   "piece": "W1-16 round 3 — progression and encumbrance",
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION/spec/producer status; then attacks A-H",
-  "contention_gate": "GO (2 instances, load 2.97/core) at start",
+  "git_at_measure": "2032744",
+  "next_step": "run tools/harness/critic-w1-16-r3-live.mjs (one browser), then write the verdict",
+  "contention": "GO at start (2 instances, 2.97/core). WAIT before the stepping half (5 instances, 4.27/core against a 4.0 ceiling). The whole offline half was done first. If the gate is still WAIT when the stepping half runs I will PROCEED PAST EXIT 3 and this is that declaration (rule 21): every figure I take is an f@60 frame count, metres of capsule travel over a declared f@60 count, a kilogram or a percentage — all load-independent by construction (S22). One browser, launched once, kept for the whole run. No wall-clock timing figure appears anywhere in my verdict.",
   "files_touched": [
-    "orchestration/status/critic-w1-16-r3.json"
+    "orchestration/status/critic-w1-16-r3.json",
+    "tools/harness/critic-w1-16-r3-offline.mjs",
+    "tools/harness/critic-w1-16-r3-live.mjs",
+    "reports/w1-16/critic-r3-offline.json"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-16-r3.md",
     "corpus/90-verdicts/wave1/W1-16-r3.json",
     "orchestration/status/critic-w1-16-r3.json",
-    "tools/harness/critic-w1-16-",
+    "tools/harness/critic-w1-16-r3-offline.mjs",
+    "tools/harness/critic-w1-16-r3-live.mjs",
+    "reports/w1-16/critic-r3-offline.json",
+    "reports/w1-16/critic-r3-live.json",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "notes": []
+  "redundant_with": ["W1-16-r3"],
+  "redundant_note": "docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces; reports/w1-16/ is the piece's own report directory and I write only critic-r3-* files in it. I edit no game/ source.",
+  "findings_so_far": [
+    "OFFLINE HALF COMPLETE — tools/harness/critic-w1-16-r3-offline.mjs, six checks, all six PASS on HEAD and all six go RED under --selftest.",
+    "X1 ADJUDICATES C5: round 3 is RIGHT that C5 cannot pass as written and WRONG about why. `_buildCombat` assigns `_equipLoadBase` unconditionally one statement after `createPlayer` (engine.js:1104, not inside an `if`), so C5's `_equipLoadBase: null` at first engagement is now UNREACHABLE in the shipped engine — a stale fixture, not an unpassable check. Repaired: seeded as the engine seeds it the arm PASSES (14 -> 4 -> 14); null-seeded, the SAME arm still FAILS (14 -> 14 -> 24, ten points wrong and stuck). The claim that 'only the construction site holds the missing information' is false: storing the spell offset in its own field makes the producer idempotent and needs no delta origin anywhere.",
+    "X1 SECONDARY: the seed is `b.equipLoadPct` at createPlayer, which for an unpinned state is the hardcoded 24.0 and NOT the equipment base the source comment claims. The first engagement is still an assignment; it is a correct one only because prev === pct at that instant.",
+    "X2 ADJUDICATES C7: round 3 is RIGHT. carried.json fills one of RI-PRG07 §2's four terms (armour); weapon weight is in weapons/classes.json and shield weight in weapons/offhand.json + combat/stamina.json. C7 sums a third of the formula. BUT the round still owed the tier a number and did not give one: RI-PRG07 §4 declares weights for the same objects that are heavier at EVERY comparable row (greatshield 18 vs shipped 12, kite 9 vs 5, buckler 4 vs 1.5, straight sword 6 vs 4). At §4's own weights the heaviest legal set is 119 kg = OVERLOADED on both low sheets. The tier is not unreachable in the corpus; it is short 15.21 kg of CONTENT at the base sheet.",
+    "X4 CENSUS MISS FOUND: RI-PRG07 §2's FOURTH TERM, talismans, appears in game/src only inside two comments quoting §2. No slot, no weight column, no reader — and it is not even declared `null` in getBurden()'s consumer table the way fall_damage_mult is. The build ships catalysts as first-class objects (game/data/magic/cast-classes.json `catalysts`, engine `setCatalyst`, `loadout.catalyst`) and RI-PRG07 §4 prices a talisman/catalyst at 3 kg.",
+    "X5: the hist-sap-bow refusal reaches a probe and not a player. Nothing under game/src/ui or game/src/render reads `equip_end` or `.refused`; the shipped player-visible channel (engine.uiToast, ui/hud.js E11) exists and is not called. From the chair: press interact on the Sapwood bow and nothing happens at all.",
+    "X6 NEW DEFECT: RI-PRG07 §3 reads 'weight of ALL carried items, EQUIPPED OR NOT'. `_recomputeBurden()` sums sim.inventory only, and round 3 moved the hands OUT of the inventory sum and INTO the equip term — so an ultra greatsword and a Naga tower are 33 kg to the roll and 0 kg to burden. The same maul also has two weights at once: 11.5 kg in carried.json and 16 kg as GHM in weapons/classes.json."
+  ]
 }

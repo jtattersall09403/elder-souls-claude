@@ -132,6 +132,22 @@ casualty** and there may be others. Rule 10 exists for exactly this shape (two i
 one system, one good and one broken, live at the same time). If your piece denies, gates or
 throttles an action, check which of the two paths actually carries it.
 
+**Q6. Two dialogue critic tools model the algorithm S37 deleted, and a published verdict rests on
+them.** `tools/dialogue/critic-reach.mjs` and `critic-semantics.mjs` both reimplement the specificity
+score `converse.js` no longer uses. `critic-reach`'s output is **byte-identical before and after the
+S37 landing** — it still reports lines as "always outscored" when nothing is outscored any more.
+W1-17-r2's published 136 → 6 rests on them. The S37 builder found this in someone else's finished
+work and reported rather than touched it. **Re-take that number against the shipped reader.**
+
+**Q7. The engine and every instrument measuring it disagreed about 5,760 answers.** Topic-file merge
+order came from two sorts that did not agree: tools used `readdirSync().sort()` on filename, the
+engine used `Object.keys().sort()` keyed on `doc.id || basename`, and three of 21 files carry an
+`id` — 36 of the 92 multi-file topic ids involve one. So a Soulrest clerk genuinely said one thing
+in play and another in every check, and no instrument could see it, because the disagreement was
+between the instruments and the game rather than inside either. Closed by
+`game/data/dialogue/topics/_manifest.json`; 0 differing, and still 0 from a reversed arrival order.
+**If your piece loads a directory and sorts it, check the engine sorts it the same way.**
+
 **Q0. FLEET HAZARD — a save/load with a hostile present kills every stepping probe, silently.**
 `save/fight.js`'s `SKIP` list omits `ai`, so `saveActor(ctl)` serialises the live `SoulsAI` as a
 plain object. After any round trip with a hostile in the world, the next fixed step throws

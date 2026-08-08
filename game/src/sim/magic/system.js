@@ -1613,7 +1613,11 @@ export class MagicSystem {
     const q = this.quoteSpell(spec);
     if (q.refused) return q;
     if (this.gold < q.gold) return { refused: true, gate: 'gold', reason: `costs ${q.gold} g; you have ${this.gold} g`, quote: q };
-    this.gold -= q.gold;
+    // W1-14 r4. `this.gold` is a MIRROR of the engine's purse (`Engine._setGold`), so spending it
+    // here moved a copy and left `getGold()`, the save and every other mirror untouched. The
+    // engine installs `_spendGold` at `bindWorld` time; a bare MagicSystem in a unit test has no
+    // engine and keeps the old arithmetic, which is why the fallback is here rather than a throw.
+    if (this._spendGold) this._spendGold(q.gold); else this.gold -= q.gold;
     const id = `custom_${this.custom.length + 1}_${(name || 'unnamed').toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 24)}`;
     const cls = this.classes[spec.class];
     const rec = {

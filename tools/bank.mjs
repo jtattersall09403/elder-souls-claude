@@ -83,6 +83,32 @@ git('add', '-A');
 const staged = git('diff', '--cached', '--name-only').split('\n').map(s => s.trim()).filter(Boolean);
 if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
 
+// Parse-check every staged JavaScript file before committing it. The bank stages the tree
+// mid-write on purpose, and that is usually harmless — a half-written status file or an
+// unfinished tool costs nothing. But it committed `converse.js` mid-edit once, and HEAD threw
+// `ReferenceError` on import for the window between two banks: every agent that pulled in that
+// window got a broken engine, from a commit whose whole purpose was to protect their work.
+//
+// `node --check` is a parse, not a review. It cannot tell a finished edit from an unfinished one
+// that happens to parse, and it is not meant to — it catches the case that actually happened, in
+// about a millisecond per file, and it un-stages the offender rather than refusing the whole bank,
+// because the other forty files still need saving.
+{
+  const risky = staged.filter(p => /\.(mjs|cjs|js)$/.test(p) && existsSync(join(ROOT, p)));
+  const broken = [];
+  for (const p of risky) {
+    try { execFileSync('node', ['--check', join(ROOT, p)], { stdio: 'pipe' }); }
+    catch { broken.push(p); }
+  }
+  if (broken.length) {
+    console.log(`bank: ${broken.length} staged file(s) do not parse — un-staging them rather than committing a broken tree:`);
+    for (const p of broken) console.log(`    ${p}`);
+    try { execFileSync('git', ['restore', '--staged', ...broken], { cwd: ROOT, stdio: 'pipe' }); } catch { }
+    for (const p of broken) staged.splice(staged.indexOf(p), 1);
+    if (!staged.length) { console.log('bank: nothing left to bank.'); process.exit(0); }
+  }
+}
+
 const owners = claims();
 const byPiece = new Map();
 const unclaimed = [];
