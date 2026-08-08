@@ -225,24 +225,33 @@ const PROBES = {
   // =========================================================================================
   // D5 — THE SPELL, LIVE.
   // =========================================================================================
+  // The round-2 critic could not land this: `castNow` refused `not_attuned` even after
+  // `setWillpower(70)` and "every magic skill at 100". The reason is a NAME mismatch, and it is
+  // worth recording because it will cost the next probe the same hour: this build's four schools
+  // are `sorcery`, `root_speech`, `warding` and `veiling` (game/data/magic/spells.json), not the
+  // Morrowind/Oblivion set. `setMagicSkills({alteration: 100, ...})` writes keys nothing reads and
+  // returns them in the sheet, so it LOOKS like it worked. Feather is `warding`, skill_req 25, and
+  // its own note in the shipped data reads "X4: moves the player across RI-CMB01's LIGHT/MEDIUM
+  // roll cliff mid-fight" — which is exactly the claim this arm tests.
   spell() {
     const H = window.__HARNESS;
     const cs = () => H.getCombatState();
-    const out = { attempts: [] };
-    const tryOn = (state) => {
-      const a = { state };
+    const out = { attempts: [], schools_in_this_build: ['sorcery', 'root_speech', 'warding', 'veiling'] };
+    const tryOn = (state, spellId) => {
+      const a = { state, spell: spellId };
       try {
         H.setSeed(1337); H.loadState(state); H.stepFrames(8);
         const b0 = H.getBurden().equip_load;
         a.pct_at_start = b0.pct; a.source_at_start = b0.source;
         try { a.willpower = H.setWillpower(80); } catch (e) { a.willpower_err = String(e && e.message || e); }
-        try { a.skills = H.setMagicSkills ? H.setMagicSkills({ alteration: 100, mysticism: 100, restoration: 100, destruction: 100, illusion: 100, conjuration: 100 }) : null; } catch (e) { a.skills_err = String(e && e.message || e); }
-        try { a.learn = H.learnSpell('burden'); } catch (e) { a.learn_err = String(e && e.message || e); }
-        try { a.attune = H.setAttuned(['burden']); } catch (e) { a.attune_err = String(e && e.message || e); }
-        try { a.magic_state = H.getMagicState ? H.getMagicState() : null; } catch (e) { /* optional */ }
-        a.cast = H.castNow('burden');
-        H.stepFrames(2);
+        try { a.skills = H.setMagicSkills ? H.setMagicSkills({ sorcery: 100, root_speech: 100, warding: 100, veiling: 100 }) : null; } catch (e) { a.skills_err = String(e && e.message || e); }
+        try { a.learn = H.learnSpell(spellId); } catch (e) { a.learn_err = String(e && e.message || e); }
+        try { a.attune = H.setAttuned([spellId]); } catch (e) { a.attune_err = String(e && e.message || e); }
+        try { a.magic_state = H.getMagicState ? { attuned: H.getMagicState().attuned, focus: H.getMagicState().focus, catalyst: H.getMagicState().catalyst } : null; } catch (e) { /* optional */ }
+        a.cast = H.castNow(spellId);
+        H.stepFrames(4);
         a.pct_after_cast = H.getBurden().equip_load.pct;
+        a.tier_after_cast = H.getBurden().equip_load.tier;
         a.offset_observed = +(a.pct_after_cast - a.pct_at_start).toFixed(6);
         // The producer's FIRST engagement in this scenario: put one piece of armour on.
         const q = cs().player.pos;
@@ -251,13 +260,27 @@ const PROBES = {
         const b = H.getBurden().equip_load;
         a.equipped_weight = b.equipped_weight; a.equip_load_max = b.equip_load_max;
         a.pct_after_equip = b.pct;
-        a.pct_expected_after_equip = +((b.equipped_weight / b.equip_load_max) * 100 + a.offset_observed).toFixed(6);
+        // A scenario that pins its own equip load has NO producer running, so there is no first
+        // engagement for the offset to survive. `arena_flat` is one; it is kept in the sweep as
+        // the negative case rather than dropped, because a probe that quietly skips the states
+        // that would not answer is a probe that only ever asks questions it likes.
+        a.producer_pinned = /pinned/.test(b.source || '');
+        a.pct_expected_after_equip = a.producer_pinned ? a.pct_after_cast
+          : +((b.equipped_weight / b.equip_load_max) * 100 + a.offset_observed).toFixed(6);
         a.the_spell_survived_the_equip = Math.abs(a.pct_after_equip - a.pct_expected_after_equip) < 1e-3;
+        // The one thing the round-2 verdict actually claimed: the load is not left 10 points
+        // wrong and stuck. The clamp at zero is a SEPARATE, pre-existing asymmetry in
+        // sim/magic/apply.js and is reported rather than folded in here.
+        a.offset_was_clamped_at_zero = Math.abs(a.offset_observed) + 1e-6 < 30 && a.pct_after_cast === 0;
       } catch (e) { a.err = String(e && e.message || e); }
       return a;
     };
-    out.attempts.push(tryOn('default'));
-    out.attempts.push(tryOn('arena_flat'));
+    // `default` is a state where the producer has ALREADY engaged (the hands are in it), which is
+    // the round-3 world; `arena_flat` pins its own load. Both are run because the round-2 defect
+    // was invisible wherever the producer had engaged before the cast.
+    out.attempts.push(tryOn('default', 'feather'));
+    out.attempts.push(tryOn('default', 'burden'));
+    out.attempts.push(tryOn('arena_flat', 'feather'));
     const landed = out.attempts.filter((a) => !a.err && a.offset_observed !== undefined && Math.abs(a.offset_observed) > 1e-6);
     out.cast_landed_on = landed.map((a) => a.state);
     out.coupled = landed.length > 0 && landed.every((a) => a.the_spell_survived_the_equip);

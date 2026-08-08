@@ -573,9 +573,10 @@ export class Engine {
     // evidence id and false-account id against the data that actually loaded and THROWS on a
     // dangle, then hands the register to the conversation so the world can decline.
     this._installOpacity();
-    // W1-23. RI-LOR06 / RI-MTH07: the canon register. Same discipline as the line above —
-    // it resolves every source the registry says holds a position and throws if one of them is
-    // not in this build, then installs itself on the conversation so a speaker's registered
+    // W1-23. RI-LOR06 / RI-MTH07: the canon register. It resolves every source the registry says
+    // holds a position, DROPS the rows that name something not in this build (it used to throw,
+    // and the throw stopped fourteen agents booting — see `_installCanon` below and RULES rule
+    // 14), then installs itself on the conversation so a speaker's registered
     // stance decides which side of a dispute the player hears.
     this._installCanon();
     this.sim.questEngine = this.questEngine;

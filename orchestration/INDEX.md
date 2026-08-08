@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9b7f162`: 619 tools, 153 reference
-items, 46 pieces in flight.
+so it cannot drift. Generated at `dea6517`: 619 tools, 153 reference
+items, 45 pieces in flight.
 
-Its purpose is to stop 46+ concurrent agents each paying separately to discover the
+Its purpose is to stop 45+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -74,7 +74,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gen-index.mjs` — regenerate orchestration/INDEX.md, the one page an agent reads to orient.
 - `tools/orchestrate.mjs` — Dispatch registry + resume planner.
 - `tools/ownership.mjs` — the file-ownership registry: who is touching what, right now.
-- `tools/play.mjs` — serve the game for a person, and say so in plain words.
+- `tools/play.mjs` — serve the game and print the URL a person opens.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
@@ -931,13 +931,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `critic-w1-23-r4` | running | read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G | — |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
+| `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
+| `critic-w1-23-r4` | running | read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G | — |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
 | `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
-| `W1-CHARTFONT` | ? | Wire the seven editable chart tools to the shared module; hand off the two owned by live p | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` |
 | `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
@@ -948,7 +948,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
-| `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/world/property/archon.json` `game/data/world/property/blackrose.json` |
 | `W1-17` | partial | (1) the twelve RI-DLG06 misses voice-metrics.mjs now reports — mudborn and legionary have  | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `critic-w1-12` | done | none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A | `orchestration/status/critic-w1-12.json` `corpus/90-verdicts/wave1/W1-12-r1.md` `corpus/90-verdicts/wave1/W1-12-r1.json` `tools/combat/critic-w1-12-census.mjs` `tools/combat/critic-w1-12-s22.mjs` `tools/combat/critic-w1-12-chart.mjs` |

@@ -3,7 +3,7 @@
   "title": "W1-16 round 3 \u2014 progression and encumbrance",
   "round": 3,
   "successor_of": "W1-16 round 2 (orchestration/status/W1-16.json), FAIL 3/10 at corpus/90-verdicts/wave1/W1-16-r2.md",
-  "state": "measuring",
+  "state": "complete",
   "started": "2026-08-08",
   "git_at_start": "4a17ec3",
   "contention_at_start": "GO \u2014 4 browser instances, 24 processes, load 14.19/4 cores = 3.55 per core, ceilings 6 instances / 4.0 per core. Offline half first regardless.",
@@ -14,7 +14,7 @@
     "3. OVERLOADED forbids sprinting, measured in metres against a button-up control",
     "4. CONSUMPTION (RI-MTH07) and delete-the-fix per rule 6, with a teardown watched going red"
   ],
-  "next_step": "live stepping run: critic-w1-16-live.mjs --probe parallel,oversprint,separation,spell + delete-the-fix arms",
+  "next_step": "none \u2014 round 3 complete.",
   "files_touched": [
     "orchestration/status/W1-16-r3.json",
     "game/src/engine.js",
@@ -22,7 +22,16 @@
     "game/src/harness/api.js",
     "game/data/items/carried.json",
     "tools/harness/w1-16-r3-reach.mjs",
-    "reports/w1-16/r3-reach.json"
+    "tools/harness/w1-16-r3-live.mjs",
+    "tools/harness/w1-16-r3-chart.mjs",
+    "reports/w1-16/r3-reach.json",
+    "reports/w1-16/r3-live.json",
+    "reports/w1-16/r3-spell.json",
+    "reports/w1-16/critic-live-final.json",
+    "reports/w1-16/critic-offline.json",
+    "reports/w1-16/critic-live.json",
+    "docs/shots/2026-08-08-w1-16-r3-the-sword-in-your-hand-used-to-weigh-nothing.png",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "orchestration/status/W1-16-r3.json",
@@ -31,10 +40,15 @@
     "game/src/harness/api.js",
     "game/data/items/carried.json",
     "tools/harness/w1-16-r3-reach.mjs",
+    "tools/harness/w1-16-r3-live.mjs",
+    "tools/harness/w1-16-r3-chart.mjs",
     "reports/w1-16/r3-reach.json",
-    "tools/harness/critic-w1-16-offline.mjs",
-    "reports/w1-16/",
-    "docs/shots/",
+    "reports/w1-16/r3-live.json",
+    "reports/w1-16/r3-spell.json",
+    "reports/w1-16/critic-live-final.json",
+    "reports/w1-16/critic-offline.json",
+    "reports/w1-16/critic-live.json",
+    "docs/shots/2026-08-08-w1-16-r3-the-sword-in-your-hand-used-to-weigh-nothing.png",
     "reports/blog-feed.jsonl"
   ],
   "redundant_with": [
@@ -53,7 +67,215 @@
     "BUILT (RI-CMB01 \u00a7B, the census miss the round-2 verdict found): OVERLOADED forbids sprinting, at combat/player.js's locomotion gate -- the SAME single line round 2 made the one place locomotion is decided. NOT routed through worldDeny.sprint, deliberately: worldDeny carries the WORLD's denials (water, burden) and both are guarded inert inside a fight (AR-1). Equip load is RI-CMB01's and must apply inside the fight above all, so borrowing burden's channel would have put an in-fight effect behind an out-of-fight guard. No third sprint path: sim/player.js stepPlayer is imported by nothing.",
     "BUILT (round-2 verdict \u00a7E, the false claim in the predecessor's own header): _buildCombat() seeds _equipLoadBase from the freshly built body -- the one moment the body's equip load is provably the bare equipment base with no effect offsets on it. The header claimed a Feather offset 'survives untouched'; on the first engagement _equipLoadBase was null, prev was read off the body (offset and all) and the delta collapsed to an assignment. Measured offline as a 2-arm control (R5): seeded arm 14 -> 4 -> 14 (correct); unseeded arm 14 -> 14 -> 24, i.e. 10 points wrong and stuck, exactly as the verdict described.",
     "FIXED, and it is a consequence of the above: setLoadout() left sim.combatBody pointing at the DISCARDED body. sim/route.js and render/spell-vfx.js steer the player through that reference, so a scripted route would have been writing a corpse. It never mattered while setLoadout was a probe-only verb; round 3 makes it the way an ordinary player puts a sword in their hand.",
-    "DATA DEFECT FOUND: game/data/items/carried.json declares `moveset` on all five weapon rows and NOTHING in game/src read the field -- a grep for `.moveset` over the whole source tree returns the enemy-encounter census and nothing else. Two of the five named a moveset that does not exist: the loader keys weaponMovesets by weapon_id off combat/movesets/ (87 roster weapons) and movesets by id off combat/spine/ (seven class documents), and 'great-hammer' and 'bow' are neither, nor one of moveset.js SPINE_ALIASES' seven names. Fixed bog-iron-maul -> ghm_bog_maul (exact name and class match: 'Bog maul', GHM). hist-sap-bow still declares 'bow' and is now REFUSED at equip with a reason on the equip_end event rather than silently weighed as though held -- reported, not guessed at."
+    "DATA DEFECT FOUND: game/data/items/carried.json declares `moveset` on all five weapon rows and NOTHING in game/src read the field -- a grep for `.moveset` over the whole source tree returns the enemy-encounter census and nothing else. Two of the five named a moveset that does not exist: the loader keys weaponMovesets by weapon_id off combat/movesets/ (87 roster weapons) and movesets by id off combat/spine/ (seven class documents), and 'great-hammer' and 'bow' are neither, nor one of moveset.js SPINE_ALIASES' seven names. Fixed bog-iron-maul -> ghm_bog_maul (exact name and class match: 'Bog maul', GHM). hist-sap-bow still declares 'bow' and is now REFUSED at equip with a reason on the equip_end event rather than silently weighed as though held -- reported, not guessed at.",
+    "I WATCHED MY OWN TEARDOWN GO RED, AND IT WAS INERT (RULES #6, the W1-04 failure). The first run of the oversprint control returned byte-identical metres in the cut arm and the fix arm, in both orders \u2014 which is exactly what a clean negative result looks like from the outside. Cause: the arm is carried on `combat.d` because combat/player.js holds the data object and no reference to the engine, and `_combatData()` builds a FRESH object literal on every `_buildCombat`. The probe loads a scenario INSIDE each arm, so the flag was dropped between being set and being read and both arms measured the fixed code. Fixed by re-publishing the flag in `_buildCombat`; the control then showed 10.000 m cut against 6.400 m fixed, in both orders. This is the single most useful thing in the round: without the null control at every tier plus the both-orders discipline, I would have published an inert control as evidence.",
+    "MEASURED, THE CALIBRATION QUESTION THE FIX RAISES, and it is the check that made this safe to land: the producer now engages in every scenario that puts a weapon in the hands, which is all of them, so the 25 unpinned states that answered a hardcoded 24.0 now answer a real number. All 49 states were loaded and read: ZERO changed roll tier (all LIGHT, before and after), and ZERO still answer a hardcoded default. No TTK, hitstop or exemplar figure W1-09/10/11 pinned has moved.",
+    "LANDED LIVE WHAT ROUND 2's CRITIC COULD ONLY DO OFFLINE, and the blocker is worth recording because it will cost the next probe the same hour: castNow refused not_attuned because this build's four magic schools are sorcery / root_speech / warding / veiling, not the Morrowind set. setMagicSkills({alteration:100,...}) writes keys nothing reads and RETURNS THEM IN THE SHEET, so it looks like it worked. With the real names, Burden casts and moves the load 13.013699 -> 70.12481 (LIGHT -> HEAVY), and the producer's first engagement afterwards leaves the +57.111111 offset exactly intact.",
+    "NOT MINE, FOUND WHILE WORKING, RECORDED SO NOBODY RE-DERIVES IT: sim/magic/apply.js's load handler clamps at zero on BOTH the apply and the undo (`Math.max(0, pct + delta)` / `Math.max(0, pct - delta)`). Cast Feather (magnitude 30) at a 13.01% load and the load clamps to 0, losing 16.99 points; the expiry then adds the full 30 back and the character ends HEAVIER than they started. Measured: default/feather goes 13.013699 -> 0 on cast. It is a pre-existing asymmetry in W1-14's file, it is orthogonal to the delta-collapse this round fixed, and I did not touch it.",
+    "NOT MINE, ENCOUNTERED TWICE, RECORDED FOR THE ORCHESTRATOR: (1) game/src/character/converse.js was modified in the working tree by a live neighbour with a fail-closed assertion that throws at Engine._boot ('dialogue topic merge order is undeclared: _manifest.json was not in the doc list, but 21 grouped topic doc(s) were'). boot-check was RED tree-wide for roughly ten minutes and every stepping probe in the project would have died. That is RULES #13 verbatim. It resolved on its own and I did not touch the file. (2) game/data/npcs/pop-trades.json was deleted in the working tree for a while, failing check-data. Also resolved on its own. All four gates are green at the commit these numbers are stamped at."
   ],
-  "did_not_do": []
+  "did_not_do": [
+    "DID NOT make OVERLOADED reachable by dressing. Three of four tiers are reachable now (up from one); OVERLOADED needs more than 65 kg of equipment against a 49.8 kg ceiling of everything the game declares. Closing it means authoring armour \u2014 RI-PRG07 \u00a74 declares a plate set at 78 kg that carried.json does not ship, and splitting 78 across five slots is a distribution nobody has declared. The dispatch's own words: do the class-weight fix 'rather than adding heavier armour'. Reported with the exact shortfall instead.",
+    "DID NOT make the critic's C7 pass, and it cannot pass as written: C7 models 'dressing' as carried.json rows only, and carried.json ships no shield row at all, so the term that actually reaches HEAVY (a 13 kg Naga tower) is invisible to it. My R3 measures the same question over the whole \u00a72 set and reports the range per tier.",
+    "DID NOT make the critic's C5 pass, and no change confined to the producer can: C5 hand-builds a synthetic `this` with `_equipLoadBase: null` and calls _recomputeEquipLoad directly. That state IS the defect, and the missing information (what the base was before the offset landed) can only come from the construction site. The fix is in _buildCombat; my R5 runs C5's exact scenario as the CONTROL arm and asserts it goes wrong, beside a seeded arm that goes right, and the live arm demonstrates it in a running fight.",
+    "DID NOT resolve `hist-sap-bow`'s declared moveset. It names 'bow', which is neither a roster weapon_id nor one of the seven spine aliases, and none of the five shipped bows matches 'Sapwood bow' by name. Rather than pick one \u2014 which is authoring \u2014 the equip is REFUSED with the reason on the equip_end event. A bow you cannot pick up is a named content gap; a bow that is weighed as though you were holding it while the fight swings a sword is the defect this round exists to close.",
+    "DID NOT add an event for the sprint refusal. game/src/sim/events.js is a closed vocabulary (RULES #15) and the only near-fit is `action_denied_by_water`, which this is not. The denial is legible in getBurden().equip_load.overloaded_denies_sprint and in the metres; a named event belongs to whoever next opens that file.",
+    "DID NOT re-tune the ladder, as instructed. The critic verified it exact to the frame at 13 loads with three cliffs at 30.00->30.01, 70.00->70.01 and 100.00->100.01 and verified S22 in both directions. C1 and C2 still pass unchanged and I changed nothing in roll.json or combat/moves.js.",
+    "DID NOT fix the four parameters round 2 reported unread (burden.fatigue, burden.sneak, burden.jump, equip_load.fall_damage_mult). Each sits in a sibling piece's live file and each is a one-line coupling for a round with the owning piece present. fall_damage_mult is now enumerated in getBurden()'s consumer table with an explicit null, so the census counts it.",
+    "DID NOT re-run tools/run-all.mjs. The gate was at or over its per-core ceiling for the whole window and run-all launches many browsers; I ran the four offline gates (all green), both offline instruments with their --selftest arms, and the round-2 critic's own live instrument as the acceptance.",
+    "DID NOT re-measure the roll ladder, the stamina slopes, the road or the barge. Round 2 measured them and the round-2 critic reproduced them exactly; nothing this round touches them, and the separation arm confirms the roll is unchanged where it should be."
+  ],
+  "blockers": [
+    "TREE-WIDE, NOT MINE: game/src/character/converse.js (modified in the working tree by a live neighbour) throws at Engine._boot -- 'dialogue topic merge order is undeclared: game/data/dialogue/topics/_manifest.json was not in the doc list, but 21 grouped topic doc(s) were'. boot-check is RED for every agent. This is RULES #13 verbatim (a fail-closed assertion landed before the data it demands exists). I did not touch that file and did not fix it. My acceptance measurements were all taken before it landed.",
+    "TREE-WIDE, NOT MINE: game/data/npcs/pop-trades.json is deleted in the working tree (unstaged), so tools/check-data.mjs fails. Not mine; not restored."
+  ],
+  "git_at_measure": "322f708 (working tree dirty; several files moving under me from concurrent pieces throughout)",
+  "contention_throughout": "The gate said GO once at the start (4 instances, 3.55/core) and WAIT for most of the run: 3-8 browser instances against a ceiling of 6, and load 4.7-5.9 per core against a ceiling of 4.0. I did the whole offline half first (five checks against the real Engine.prototype methods, a --selftest arm that fails all five). I then PROCEEDED PAST EXIT 3 for the stepping probes, which rule 21 permits provided it is declared: this is that declaration. Reason: every claim in this round is a frame count, a metre count over a declared fixed frame count, or a percentage, all load-independent by construction (S22), and the pooled capture daemon cannot step. Browsers were launched STRICTLY SEQUENTIALLY, never two at once. The illustrative image is a chart drawn from the report JSONs with no browser at all. No wall-clock timing figure appears anywhere in this record except probe durations, which were taken under that load.",
+  "headline_numbers": {
+    "unit_note": "Every frame figure is f@60 \u2014 frames of our fixed 60 Hz step (ARBITRATION S22). Metres are metres of capsule travel over a declared f@60 count. Percentages are of RI-PRG07 \u00a71's maxLoad.",
+    "measured_at": "322f708 (dirty)",
+    "the_producer_now_reads_the_hand_it_holds": {
+      "source": "reports/w1-16/critic-live-final.json probes.parallel \u2014 the round-2 critic's OWN instrument, unmodified",
+      "before_from_the_round_2_verdict": {
+        "holding_garrison_sword_and_medium_shield_pct": 0.0,
+        "equipping_a_maul_changed_the_fight_weapon": false,
+        "setLoadout_ultra_greatsword_moved_the_ratio_by": "nothing, to six decimal places"
+      },
+      "after": {
+        "holding_garrison_sword_and_medium_shield_pct": 13.013699,
+        "equipped_weight_kg": 9.5,
+        "weapon_after_equipping_bog_iron_maul": "ghm_bog_maul (was ssw_garrison_sword and stayed there in round 2)",
+        "pct_after_equipping_the_maul": 29.452055,
+        "pct_after_setLoadout_ultra_greatsword": 34.931507,
+        "inventory_equip_changed_the_weapon_the_fight_swings": true,
+        "swapping_the_fight_weapon_changed_the_ratio": true,
+        "coupled": true
+      },
+      "with_the_heaviest_hands_the_game_declares": {
+        "ultra_greatsword_20kg_plus_naga_tower_13kg": 33.0,
+        "pct": 45.20548,
+        "tier": "MEDIUM",
+        "source": "reports/w1-16/r3-live.json probes.hands"
+      }
+    },
+    "the_anti_merge_check_still_holds": {
+      "source": "reports/w1-16/critic-live-final.json probes.separation",
+      "A_empty_pack": {
+        "carried_kg": 0,
+        "equipped_kg": 9.5,
+        "burden": 0,
+        "pct": 13.013699,
+        "iframes_f60": 26,
+        "recovery_f60": 22,
+        "total_f60": 52,
+        "tier": "LIGHT"
+      },
+      "B_460kg_in_the_pack": {
+        "carried_kg": 460,
+        "equipped_kg": 9.5,
+        "burden": 2.520548,
+        "burden_tier": "IMMOBILE",
+        "pct": 13.013699,
+        "iframes_f60": 26,
+        "recovery_f60": 22,
+        "total_f60": 52,
+        "tier": "LIGHT"
+      },
+      "C_same_pack_five_pieces_WORN": {
+        "carried_kg": 476.8,
+        "equipped_kg": 26.3,
+        "pct": 36.027397,
+        "iframes_f60": 22,
+        "recovery_f60": 34,
+        "total_f60": 60,
+        "tier": "MEDIUM"
+      },
+      "note": "Arm C is the round-2 verdict \u00a7D headline reversed. The SAME five wearable pieces the critic measured at 23.01% LIGHT now read 36.027397% MEDIUM and roll 22 i-frames instead of 26 \u2014 with NOTHING in the inventory's right slot. The cliff is crossed on clothing plus the hands the scenario already dealt, not on a maul in a slot the fight does not read."
+    },
+    "OVERLOADED_forbids_sprinting": {
+      "source": "reports/w1-16/critic-live-final.json probes.oversprint and reports/w1-16/r3-live.json probes.oversprint",
+      "unit": "metres of capsule travel over 120 f@60",
+      "button_up_control_every_tier": 6.4,
+      "LIGHT_held": {
+        "m": 10.0,
+        "stamina": 18
+      },
+      "MEDIUM_held": {
+        "m": 10.0,
+        "stamina": 18
+      },
+      "HEAVY_held": {
+        "m": 10.0,
+        "stamina": 18
+      },
+      "OVERLOADED_held": {
+        "m": 6.4,
+        "stamina": 0
+      },
+      "before_from_the_round_2_verdict": {
+        "OVERLOADED_held": {
+          "m": 10.0,
+          "stamina": 18
+        }
+      },
+      "the_denial_does_not_fire_a_tier_early": "HEAVY still sprints 10.000 m for 18 stamina with the fix in"
+    },
+    "tier_reachability_by_dressing": {
+      "source": "reports/w1-16/r3-reach.json R3 \u2014 the whole RI-PRG07 \u00a72 set (armour + weapon class + shield), not the clothing shelf alone",
+      "at_the_base_sheet_STR10_END10_maxLoad_65kg": {
+        "lightest_possible": {
+          "kg": 0.5,
+          "pct": 0.7692,
+          "tier": "LIGHT",
+          "what": "fists, no shield, nothing worn"
+        },
+        "heaviest_from_the_pack_alone": {
+          "kg": 38.3,
+          "pct": 58.9231,
+          "tier": "MEDIUM"
+        },
+        "heaviest_possible": {
+          "kg": 49.8,
+          "pct": 76.6154,
+          "tier": "HEAVY"
+        }
+      },
+      "at_the_default_sheet_STR14_END14_maxLoad_73kg": {
+        "lightest_possible": {
+          "kg": 0.5,
+          "pct": 0.6849,
+          "tier": "LIGHT"
+        },
+        "heaviest_from_the_pack_alone": {
+          "kg": 38.3,
+          "pct": 52.4658,
+          "tier": "MEDIUM"
+        },
+        "heaviest_possible": {
+          "kg": 49.8,
+          "pct": 68.2192,
+          "tier": "MEDIUM"
+        }
+      },
+      "at_the_Shell_Warden_sheet_STR55_END30_maxLoad_142.5kg": {
+        "heaviest_possible": {
+          "kg": 49.8,
+          "pct": 34.9474,
+          "tier": "MEDIUM"
+        }
+      },
+      "tiers_reachable": [
+        "LIGHT",
+        "MEDIUM",
+        "HEAVY"
+      ],
+      "tiers_NOT_reachable": [
+        "OVERLOADED"
+      ],
+      "before_this_round": "ONE tier (LIGHT). The round-2 verdict measured every wearable slot at its heaviest as 16.8 kg = 23.01% = LIGHT, and its own headline MEDIUM arm crossed the 30% cliff entirely on an 11.5 kg maul in the `right` slot \u2014 the slot the fight does not read.",
+      "why_OVERLOADED_is_still_out_of_reach": "It needs more than 100% of maxLoad. The lowest capacity any character has is 65 kg and the heaviest legal set the game DECLARES is 49.8 kg (16.8 worn + 20 ultra greatsword + 13 Naga tower). carried.json ships no plate set (RI-PRG07 \u00a74 declares one at 78 kg) and no hands, arms or talisman slot. Closing it is CONTENT. I did not invent a per-piece weight to land on a tier; that is tuning to a target and the dispatch forbids it."
+    },
+    "no_shipped_state_changed_its_roll_tier": {
+      "source": "reports/w1-16/r3-live.json probes.states \u2014 all 49 named states loaded and read",
+      "pinned_by_the_scenario": 24,
+      "derived_from_the_world": 25,
+      "states_still_answering_a_hardcoded_default": 0,
+      "states_whose_tier_is_not_LIGHT": 0,
+      "note": "The producer now engages wherever there is a weapon in the hands, which is everywhere, so the 25 unpinned states that used to answer a hardcoded 24.0 now answer a real number: 13.013699% for a garrison sword and a marsh-oak medium (9.5 kg / 73 kg), and 23.287671% for ui-journal which already wears a chitin cuirass. Every one of them is still LIGHT, so no TTK, hitstop or exemplar figure W1-09/10/11 pinned has moved. That is the check that makes this fix safe to land and it is measured, not asserted. It also closes the round-2 verdict's secondary observation that 21 of 49 states answered a hardcoded 24.0."
+    },
+    "the_spell_the_producer_used_to_eat_LIVE": {
+      "source": "reports/w1-16/r3-spell.json \u2014 the round-2 critic could only do this offline",
+      "why_round_2_could_not": "castNow refused not_attuned. The cause is a NAME mismatch and it cost the critic its budget: this build's four magic schools are sorcery / root_speech / warding / veiling, not the Morrowind set. setMagicSkills({alteration:100,...}) writes keys nothing reads and returns them in the sheet, so it looks like it worked. Feather and Burden are both `warding`.",
+      "default_plus_burden": {
+        "pct_at_start": 13.013699,
+        "pct_after_cast": 70.12481,
+        "tier_after_cast": "HEAVY",
+        "pct_after_first_equip": 82.590563,
+        "expected": 82.590563,
+        "offset_survived": true
+      },
+      "reading": "A shipped spell moves the player from LIGHT to HEAVY mid-scenario, and the producer's FIRST engagement afterwards leaves the +57.111111 offset exactly intact on top of the equipment's 25.479452. The round-2 header's claim is true now; it was not before."
+    },
+    "delete_the_fix": {
+      "source": "reports/w1-16/r3-live.json probes.hands / probes.onehand / probes.oversprint \u2014 every arm run in BOTH orders",
+      "hands": {
+        "cut": "0.000000% with an ultra greatsword and a Naga tower in hand \u2014 the round-2 defect exactly",
+        "fix": "13.013699% -> 45.205480% MEDIUM",
+        "arms_differ_in_both_orders": true,
+        "switch_is_observable": true
+      },
+      "onehand": {
+        "cut": "equipping the maul leaves the fight swinging ssw_garrison_sword and moves the ratio to 28.767124% on the pack row's 11.5 kg \u2014 round 2's world, reproduced on demand",
+        "fix": "the fight swings ghm_bog_maul and the ratio is 29.452055% on the class's 16 kg",
+        "arms_differ_in_both_orders": true
+      },
+      "oversprint": {
+        "cut": "OVERLOADED covers 10.000 m holding sprint",
+        "fix": "6.400 m, byte-identical to the button-up control",
+        "arms_differ_in_both_orders": true,
+        "HEAVY_still_sprints_with_the_fix_in": true
+      }
+    }
+  },
+  "notes_for_successor": "1. OVERLOADED is the last unreachable tier and it is a CONTENT job, not a code one: 49.8 kg of everything the game declares against a 65 kg floor. Whoever owns item content should read RI-PRG07 \u00a74 and \u00a75 first \u2014 \u00a75's Shell-Warden assumes 126 kg equipped and \u00a74 declares a plate set at 78. 2. sim/magic/apply.js's load handler clamps at zero on both apply and undo, so a Feather bigger than your load leaves you HEAVIER when it expires. Measured, not fixed, not mine. 3. The four magic schools are sorcery / root_speech / warding / veiling. setMagicSkills accepts and echoes any key you give it, so a wrong name reads as a success. This cost the round-2 critic its budget. 4. carried.json's `moveset` field is LIVE now. Any new weapon row must name a roster weapon_id from game/data/combat/movesets/ or one of moveset.js SPINE_ALIASES' seven names, or it cannot be picked up. tools/harness/w1-16-r3-reach.mjs R4 is the check. 5. Round 2's notes 1, 4 and 5 still stand: GAP-W1-skill-and-attribute-scaling-never-reaches-damage is still the biggest thing in this area, and setWorldKnowledge({gold}) still writes only combat.world.gold."
 }
