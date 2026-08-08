@@ -94,13 +94,38 @@ const DETECTORS = [
     [{ what: 'a clamp on the disposition-price curve itself', re: /disposition_price_clamp|max_disposition_discount|price_curve_cap/i }]),
   D('B-10', 'Red if bosses become parley-exempt, if the boss despawns, or if souls are awarded anyway',
     [{ what: 'a parley verb on bodies that can speak', re: /\bparley\b/i }],
-    [{ what: 'a parley exemption list or souls awarded on a parley', re: /parley_exempt|no_parley|souls_on_parley|parley_awards_souls/i }]),
+    [{
+      what: 'a NAMED, FACTIONED, HUMANOID boss with no parley path (S13 calls that a DEFECT), ' +
+        'or souls awarded on a parley',
+      data: (files, inject) => {
+        const out = [];
+        for (const f of files) {
+          if (!/^game\/data\/combat\/enemies\/.*\.json$/.test(f.rel)) continue;
+          let j; try { j = JSON.parse(f.text); } catch { continue; }
+          if (String(j.archetype || '').toUpperCase() === 'DUMMY') continue;      // camera fixtures
+          const humanoid = /humanoid|infantry|legion|guard|ordinator|champion|officer/i.test(String(j.archetype || '') + ' ' + String(j.id || '') + ' ' + String(j.name || ''));
+          const boss = /boss|champion|great|elite|lord/i.test(String(j.archetype || '') + ' ' + String(j.id || ''));
+          if (!(boss && humanoid)) continue;
+          const p = j.parley;
+          const speaks = p && typeof p === 'object' && (p.npc_id || p.true_name_topic || p.faction);
+          if (!speaks) out.push({ file: f.rel, line: null, text: `${j.id}: archetype ${j.archetype}, parley ${JSON.stringify(p)}` });
+        }
+        if (inject && /parley/i.test(inject.text)) out.push({ file: inject.rel, line: 1, text: inject.text });
+        return out;
+      },
+    }]),
   D('B-11', 'Red if hostiles de-aggro on entering a settlement volume, if NPCs become non-combatant to each other, or if a "no monsters in town" despawn rule appears',
     [{ what: 'a leash rule (RI-AI01)', re: /\bleash\b/i }],
     [{ what: 'a settlement de-aggro or no-monsters-in-town despawn rule', re: /deaggro_in_settlement|no_monsters_in_town|despawn_in_settlement|settlement_safe_volume/i }]),
   D('B-12', 'Red the day an `is_quest_item` sell-block is added',
     [{ what: 'an inventory with sellable items', re: /"gold_price"|"sell"|barter/i }],
-    [{ what: 'an is_quest_item sell block', re: /is_quest_item|quest_item_locked|cannot_sell_quest|unsellable/i }]),
+    [{
+      what: 'an is_quest_item sell block',
+      re: /is_quest_item|quest_item_locked|cannot_sell_quest|quest_items?_unsellable/i,
+      benign: [
+        { re: /soul[_ ]?gem|filled gems|SG-3/i, why: 'the soul-gem economy\'s own unsellable rule (SG-3), which is not a quest-item sell block' },
+      ],
+    }]),
   D('B-13', 'Red if a "quest locks cannot be opened by magic" exception list appears',
     [{ what: 'an open_lock effect and tiered locks', re: /open_lock/i }],
     [{ what: 'an unopenable-by-effect lock flag or exception list', re: /unopenable_by_effect|no_magic_unlock|quest_lock_exempt|magic_immune_lock/i }]),
@@ -129,15 +154,43 @@ function loadTree() {
   return files;
 }
 
-function hits(files, re, inject) {
-  const out = [];
+/**
+ * Line-level, and it has to be.
+ *
+ * The first version of this file matched whole FILES and produced two false CLOSED verdicts on
+ * the shipped tree, both of which read as findings and neither of which was one:
+ *
+ *   B-10  `PARLEY_EXEMPT` in `combat/parley.json` and `beast_slitherfang.json` is seam S13
+ *         working correctly — "beasts and mindless things are exempt ... the exemption is a
+ *         declaration, not an omission". The entry's "Red if" is about BOSSES becoming exempt.
+ *   B-12  "Filled gems unsellable (SG-3)" in `magic/enchanting.json` is a soul-gem economy rule
+ *         and has nothing to do with an `is_quest_item` sell block.
+ *
+ * A regression detector that cries wolf twice on its first run is a detector nobody reads by the
+ * third wave. So a match is a match on a LINE, every match is reported with its file and line
+ * number, and a pattern may declare `benign` contexts — which are NOT dropped silently: they are
+ * carried in `benign_matches` with the reason, so a critic can disagree with the exclusion.
+ */
+function hits(files, spec, inject) {
+  const re = spec.re, benign = spec.benign || [];
+  const found = [], excluded = [];
+  const scan = (rel, text) => {
+    const lines = text.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (!re.test(lines[i])) continue;
+      const b = benign.find((x) => x.re.test(lines[i]));
+      const row = { file: rel, line: i + 1, text: lines[i].trim().slice(0, 160) };
+      if (b) excluded.push({ ...row, benign_because: b.why });
+      else found.push(row);
+      if (found.length >= 8) return;
+    }
+  };
   for (const f of files) {
-    const text = inject && inject.rel === f.rel ? f.text + '\n' + inject.text : f.text;
-    if (re.test(text)) out.push(f.rel);
-    if (out.length >= 8) break;
+    scan(f.rel, inject && inject.rel === f.rel ? f.text + '\n' + inject.text : f.text);
+    if (found.length >= 8) break;
   }
-  if (inject && !files.some((f) => f.rel === inject.rel) && re.test(inject.text)) out.push(inject.rel);
-  return out;
+  if (inject && !files.some((f) => f.rel === inject.rel)) scan(inject.rel, inject.text);
+  return { found, excluded };
 }
 
 /**
@@ -145,8 +198,18 @@ function hits(files, re, inject) {
  * closure detector can fire. Returns a row with the two axes kept apart.
  */
 export function runEntry(det, entry, files, inject = null) {
-  const substrate = det.substrate.map((s) => ({ what: s.what, found: hits(files, s.re, inject) }));
-  const closure = det.closure.map((c) => ({ what: c.what, found: hits(files, c.re, inject) }));
+  const one = (spec) => {
+    // A `data` check reads the parsed records instead of grepping text. Text is the cheap way
+    // to find an arriving mechanism and it is what produced this file's two false positives on
+    // its first run; where the entry's claim is really about the SHAPE OF THE DATA, say so in
+    // data. B-10 is the case: the entry warns that BOSSES become parley-exempt, and the tree is
+    // full of correct S13 exemptions for beasts that no regex can tell apart from the wrong one.
+    if (spec.data) { const found = spec.data(files, inject) || []; return { what: spec.what, found, benign: [], kind: 'data' }; }
+    const h = hits(files, spec, inject);
+    return { what: spec.what, found: h.found, benign: h.excluded, kind: 'text' };
+  };
+  const substrate = det.substrate.map(one);
+  const closure = det.closure.map(one);
   const substrateOk = substrate.every((s) => s.found.length > 0);
   const closed = closure.some((c) => c.found.length > 0);
   const status = !substrateOk ? 'absent_system' : closed ? 'closed' : 'live';
@@ -308,7 +371,9 @@ async function main() {
     say(`  ${(r.status === 'live' ? 'live ' : r.status === 'closed' ? 'CLOSED' : 'ABSENT').padEnd(7)} ${r.id}  ` +
       `${r.systemic ? 'Sys ' : '    '}${r.permanent ? 'Perm ' : '     '} ${r.title}`);
     if (r.status === 'absent_system') say(`          substrate missing: ${r.substrate.filter((s) => !s.found.length).map((s) => s.what).join('; ')}`);
-    if (r.status === 'closed') say(`          CLOSED BY: ${r.closure.filter((c) => c.found.length).map((c) => `${c.what} (${c.found.slice(0, 3).join(', ')})`).join('; ')}`);
+    if (r.status === 'closed') say(`          CLOSED BY: ${r.closure.filter((c) => c.found.length).map((c) => `${c.what} @ ${c.found.slice(0, 3).map((f) => f.file + ':' + f.line).join(', ')}`).join('; ')}`);
+    const ben = r.closure.flatMap((c) => c.benign);
+    if (ben.length) say(`          (${ben.length} match(es) excluded as benign: ${[...new Set(ben.map((b) => b.benign_because))].join('; ')})`);
   }
   say('');
   for (const [k, v] of Object.entries(bars)) say(`  ${v ? 'ok  ' : 'BELOW'} ${k.padEnd(20)} ${JSON.stringify(metrics[k])}`);
