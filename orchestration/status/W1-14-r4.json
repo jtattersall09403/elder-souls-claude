@@ -1,10 +1,10 @@
 {
   "task_id": "W1-14-r4",
   "piece": "W1-14 round 4 — magic",
-  "state": "building",
+  "state": "measuring",
   "started": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-14-r3.md",
-  "next_step": "objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission door",
+  "next_step": "await nulldial/nocast dial arms, then blog line + commit",
   "objectives": [
     {
       "id": "O1",
@@ -15,27 +15,38 @@
     {
       "id": "O2",
       "what": "touch spell applies once per cast, not once per active frame; re-check censuses that ranked ranges",
-      "state": "todo"
+      "state": "done",
+      "result": "FIXED: all 9 rows (touch/target/projectile x CANTRIP/LIGHT/HEAVY) applied 1, damage 44. BROKEN (H.__breakTouchDedupe): touch 4/176, 5/220, 7/308 — the critic's numbers exactly — while target and projectile stay 1/44, so the teardown is exactly as wide as the fix. Fix: one line in MagicSystem.step's volume loop, `if (v.hits.includes(t.id)) continue`, the same dedupe the projectile loop has always had; the `hits` array already existed and was written and never read. NO AREA SPELL CHANGES: every volume in the build is active_f 6 / ticks_every_f 12 (one tick), verified across all 72 shipped spells."
     },
     {
       "id": "O3",
       "what": "--break arms (nocast/bindblind/fleeblind) must each break what they name and be run+published; nocast exits before readDial(), fleeblind is a partial teardown",
-      "state": "todo"
+      "state": "done",
+      "result": "All four arms run and published under reports/w1-14-r4/. bindblind: bind_lesser + bind_greater magnitude COUPLED -> BLIND, self-test PASS. fleeblind: demoralise magnitude COUPLED -> BLIND — it could NOT before, because __breakFleeMotion left h_demoralise's `fleeLeashM = clamp(magnitude*0.9, 6, 45)` writes standing and statusReport() published a pure function of the dial; apply.js now suppresses those four writes (and the event payload) under the break. NEW ARM `--break=nulldial`: the comparator's real null — every knock-down arm casts the BASE tuple, so two identical arms must read BLIND on every separable dial. nocast is KEPT but relabelled in its own report as controlling the DELIVERY GATE only, because it exits at NOT_DELIVERED before readDial() is reached. `--assert` turns each arm's expectation into an exit code."
     },
     {
       "id": "O4",
       "what": "GAP-W1-magic-spellmaking-has-no-world-side-surface: seven spellwrights as people in the world, commission a spell by talking to one",
-      "state": "todo"
+      "state": "done",
+      "result": "Seven people in game/data/npcs/spellwrights.json, at the settlements enchanting.json names. Four carry a `spellwright` key and open a COMMISSION COUNTER; three are enchanters who refuse the work by name and say which town does it. The counter (game/src/sim/magic/commission.js) borrows the conversation's own topic list, so it is drawn by buildConversationModel(), walked by the d-pad and picked by `interact` — no new UI mode, no second input path. Measured by tools/harness/w1-14-r4-commission.mjs, which reads its own bytes and refuses to run if it names makeSpell/quoteSpell/enchantQuote/enchanterOpen/__ENGINE: walks 152 f@60 through Lilmoth and stands 1.6 m from Tsona-Ixtu, talkTo + conversationSay('spellmaking'), commissions 19 of 20 tuples, the 20th (six effects) refused on effect_count with its number, every focus_base equal to RI-MAG02 §D recomputed independently in the tool, gold down by exactly the quote on all 19, all 19 in saveState(), and the commissioned spell cast in the same street for 46 damage, applied once. FIVE controls, all live."
     },
     {
       "id": "O5",
       "what": "CONSUMPTION arm (avoid engine.spawn dropping opts.side — NEXT-DISPATCH.md Q4)",
-      "state": "todo"
+      "state": "done",
+      "result": "Did NOT use H.aggro on my own summon. The summon fix's CONSUMPTION arm is the LEAK: after six binds, a plain H.spawn('drowned_lesser') — a body no spell has touched — carries 86 with the fix and 10296 without it, and the player it attacks takes a worst wound of 227.04 (0 deaths) against 300 (1 death). The entity that changes behaviour is an ordinary hostile, not the caster's own summon. The commission door's CONSUMPTION arm is the commissioned spell landing on a body in Lilmoth (412 -> 366 hp), with the door removed as the control."
     },
     {
       "id": "O6",
       "what": "delete-the-fix per rule 6, with non-inert controls",
-      "state": "todo"
+      "state": "done",
+      "result": "Five delete-the-fix arms, each a first-class harness switch rather than a git stash on a shared tree: __breakSummonAlias, __breakTouchDedupe, __breakCommissionCounter, __breakGroundPlane, plus the pre-existing __breakBindMagnitude/__breakFleeMotion. EVERY ONE WAS WATCHED GOING RED and the tools fail if it does not (`INERT CONTROL` is a named failure in all three probes). All single fixes with live controls — no two-guards-for-one-defect anywhere in this round."
+    },
+    {
+      "id": "O7",
+      "what": "NEW AND NOT IN THE BRIEF: no spell could be cast anywhere in the province",
+      "state": "done",
+      "result": "MagicSystem.stepFall is called every frame as `M.stepFall(frame, M.groundY || 0)` and `M.groundY` is written in exactly ONE place (beginLevitation), so on a tree where nobody has levitated the ground plane of the whole world is 0. Lilmoth's quay is y=2.68, Stormhold's street is y=141.12. A body standing still in a town was therefore permanently above its ground plane, `magic.airborne` was permanently true, and `castDropReason` returns 'airborne' for every spell but slowfall: measured at town-lilmoth with focus 124/124, catalyst in hand, spark_dart attuned — INPUT_DROPPED reason:airborne, zero cast_start, zero focus spent. The same press in arena_flat casts. FOUR ROUNDS of magic measurement were taken in arenas whose floor happens to be 0, which is why nobody saw it. Fixed by asking Engine.groundInActiveCell where the floor is. Control: H.__breakGroundPlane restores the 0 and the same press in the same street is refused as airborne again."
     }
   ],
   "do_not_undo": [
@@ -46,30 +57,44 @@
     "absorb_health DOES absorb (round-3 finding retracted by critic)"
   ],
   "files_touched": [
-    "orchestration/status/W1-14-r4.json",
+    "docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png",
+    "game/data/dialogue/rumours.json",
+    "game/data/index.json",
+    "game/data/npcs/spellwrights.json",
     "game/src/combat/enemy.js",
     "game/src/combat/moves.js",
     "game/src/engine.js",
-    "game/src/sim/magic/system.js",
+    "game/src/harness/api.js",
+    "game/src/sim/events.js",
     "game/src/sim/magic/apply.js",
     "game/src/sim/magic/commission.js",
-    "game/src/sim/events.js",
-    "game/src/harness/api.js",
-    "game/data/npcs/spellwrights.json",
-    "game/data/index.json",
-    "tools/harness/w1-14-r4-summon.mjs"
+    "game/src/sim/magic/system.js",
+    "orchestration/status/W1-14-r4.json",
+    "reports/w1-14-r4/",
+    "tools/harness/w1-14-r3-dials.mjs",
+    "tools/harness/w1-14-r4-commission.mjs",
+    "tools/harness/w1-14-r4-shot.mjs",
+    "tools/harness/w1-14-r4-summon.mjs",
+    "tools/harness/w1-14-r4-touch.mjs"
   ],
   "files_claimed": [
-    "tools/harness/w1-14-r4-touch.mjs",
-    "tools/harness/w1-14-r4-commission.mjs",
-    "tools/harness/w1-14-r3-dials.mjs",
-    "game/data/dialogue/rumours.json",
-    "reports/w1-14-r4/",
-    "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
   "notes": [
-    "contention --gate at start: GO (3 instances, room for 3 more)"
+    "CONTENTION, per rule 21 and rule 26. `node tools/contention.mjs --gate` returned GO for the first three runs and WAIT (exit 3) for most of the rest, and I PROCEEDED PAST EXIT 3 — repeatedly — because every figure in this piece is a hit point, a frame count, an event count, a gold price or a boolean, and none of them moves with load. NO TIMING FIGURE IS PUBLISHED ANYWHERE IN THIS PIECE. One browser was launched and kept per run; the summon and touch probes open a SECOND PAGE in the same browser for their broken arm, because the sabotage they arm edits loaded data and a second arm sharing the page would start from what the first left behind.",
+    "OWNERSHIP. `node tools/ownership.mjs --for game/src/combat/enemy.js` named W1-03 [fixed] and W1-12 [done], declared redundant with each other; both are finished and my edit there is one expression plus a comment. `redundant_with` also names W1-READABLES-r2 and W1-23-r4 because game/data/index.json and the settlement-placement machinery are theirs and I reused rather than forked them.",
+    "WHAT I REUSED RATHER THAN REBUILT, per the brief. W1-READABLES-r2 and W1-23-r4's placement rule is `a thing lives where the person who owns it stands, from npc.post.at_building`, and their machinery is `populateSettlement` reading `post.pos` for a schedule slot whose `at` is null. The seven spellwrights are placed by exactly that and nothing new was written for it: no second spawner, no second index, no second reader. The one thing I added is the `spellwright` foreign key on the record.",
+    "A W1-04 WORLD FINDING, NOT MINE TO FIX, reported because it moved my own placement. No walked route from the `town-lilmoth` spawn reaches the market side of Lilmoth: to the scribe's stair `walkPath` aborts `stuck` after 8.5 m of 25.9, to the smithy 10.35 m short, to the market 7.93 m short. The yard and then the ledger house arrives. The Lilmoth spellwright therefore stands on the quay side, and the position is measured rather than chosen.",
+    "A SECOND PLACEMENT FINDING. Lilmoth's authored posts use y = 0.37 and y = 7.37, which are the stilt town's two deck levels, while the heightfield at the quay is 2.68. A person authored at 0.37 stands 2.3 m under the street. I authored the Lilmoth spellwright at the heightfield value and left the other 45 records alone.",
+    "THE PICTURE IS TAKEN AT GIDEON AND THE REASON IS LIGHT. Three takes at Lilmoth and one at Helstrom came back as black rectangles with a health bar on them, correctly: the clock reads 11:00 in `high_clear` and those two towns are under a deck and under a canopy respectively. The commission in the picture is made at Gideon's counter, on foot, and the cast is on open ground outside the town — the teleport for those last metres is declared in the tool's header, and the WALKED claim is made by the commission probe, which arrives 1.6 m from the Lilmoth spellwright and fails if it does not.",
+    "NOT DONE, PLAINLY. (1) THE ENCHANTING COUNTER IS NOT BUILT. `enchantQuote` still has exactly one caller and it is the harness; all seven people advertise the service and answer on the subject, and that is all. Half of the round-3 gap statement is therefore still open and I am not claiming it. (2) No `spellmaking` mode was added to `ui/system.js`'s OPENABLE list (remedy point 3): the counter reuses the conversation surface instead, which I argue is the better reading of remedy point 2 — 'the entry point is Morrowind's (a topic list) and not Souls' (a vendor grid)' — but it is a deviation from the written remedy and it is a deviation, not a completion. (3) The four spellwrights keep no hours: their schedule is `at: null` all day. (4) The remaining round-3 gaps are untouched and were not in my brief: duration is still not read on the four effects it matters for (§8), a spell still does not connect with a MOVING body (§7), `engine.spawn` still drops `opts.side` (§6), a cast over the Focus reservoir is still a silent drop (§9), `frenzy` still writes a target nothing reads, and the dial census still has no world-side-only signature (§2, the 12 `world.*`-only COUPLED readings). (5) I did not re-measure RI-MAG04, RI-MAG05, RI-PRG03 or RI-QST05.",
+    "A DOUBLE-GRAVITY HAZARD I DID NOT CLOSE. `sim/traversal.js` and `MagicSystem.stepFall` are two independent gravity implementations over the same body. With the ground plane fixed, the magic one returns on its first line for a body that is standing, which is the common case and the one that mattered; during a genuine fall in the province both still run. Before this round the magic one pulled every body in the world toward y = 0 on every frame, so this is strictly better and still not right."
   ],
-  "start_commit": "aa542ec"
+  "start_commit": "aa542ec",
+  "redundant_with": [
+    "W1-03",
+    "W1-12",
+    "W1-READABLES-r2",
+    "W1-23-r4"
+  ]
 }

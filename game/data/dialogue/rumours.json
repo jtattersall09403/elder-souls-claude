@@ -457,6 +457,14 @@
         "adds_topics": [
           "the-weigh-house"
         ]
+      },
+      {
+        "id": "stormhold-enchanter",
+        "x": "The Imperial woman at the rootpost will put a spell into a blade for you, and she will tell you plainly that she cannot write you one. Helstrom, she says. Helstrom or nothing.",
+        "adds_topics": [
+          "enchanting",
+          "spellmaking"
+        ]
       }
     ],
     "soulrest": [
@@ -599,6 +607,13 @@
         "x": "A stranger counted the dead again, properly, and the two books came out the same, and the Court has not thanked anyone for it.",
         "adds_topics": [
           "the-tally-of-the-dead"
+        ]
+      },
+      {
+        "id": "soulrest-enchanter",
+        "x": "Wux-Shekh counts points the way the Court counts the dead, except that his count is right. He will say that to your face and he will say it to theirs.",
+        "adds_topics": [
+          "enchanting"
         ]
       }
     ],
@@ -862,6 +877,14 @@
         "x": "The lease vote got counted out loud in front of the room. That has not happened here in living memory and two of the chairs have not been back.",
         "adds_topics": [
           "the-lease-vote"
+        ]
+      },
+      {
+        "id": "gideon-spellwright",
+        "x": "There is a Dunmer at the apothecary who writes spells to order and is rude about it. He is also the only one between here and Lilmoth, so people put up with him.",
+        "adds_topics": [
+          "spellmaking",
+          "gideon"
         ]
       }
     ],
@@ -1300,6 +1323,13 @@
         "adds_topics": [
           "blackrose-prison"
         ]
+      },
+      {
+        "id": "blackrose-enchanter",
+        "x": "A prison town is the right town for an enchanter, is what Drelas Beleth says, because nobody here asks where a soul came from. He says it like it is a joke.",
+        "adds_topics": [
+          "enchanting"
+        ]
       }
     ],
     "helstrom": [
@@ -1634,6 +1664,14 @@
           "the-mudcrab-money"
         ],
         "_note": "false_or_misleading"
+      },
+      {
+        "id": "helstrom-spellwright",
+        "x": "Ashul-Vei works under the hollow bole and says the bole does the writing. Nobody has ever seen the bole hold a chalk. Nobody has asked twice, either.",
+        "adds_topics": [
+          "spellmaking",
+          "helstrom"
+        ]
       }
     ],
     "lilmoth": [
@@ -1957,6 +1995,14 @@
         "adds_topics": [
           "the-drowned-court"
         ]
+      },
+      {
+        "id": "lilmoth-spellwright",
+        "x": "Tsona-Ixtu keeps a slate by the ledger house and will write you a spell that has never been written, if you can say what it should do and pay for it. Most people cannot do the first part.",
+        "adds_topics": [
+          "spellmaking",
+          "lilmoth"
+        ]
       }
     ],
     "tidewrack": [
@@ -2255,5 +2301,6 @@
     }
   ],
   "w1_19_gen3_note": "W1-19 round 2, gen 3 added 32 rumour rows, one per quest, for the 33 keywords that `tools/quests/topic-supply-audit.mjs` reported as demanded by a quest and spoken by nobody. Round 2 fixed this for the 32 main quests; these are the rest of the tree — Q-SOUL-02, Q-BLAK-01, Q-STRM-01, Q-LILM-01, Q-SAP-01, Q-DOCK-01 and the 28 Q-MAG utility quests, every one of which could be walked up to and none of which could be opened, because a body in dialogue/topics/** makes a keyword ANSWERABLE and only a supplier makes it REACHABLE. Each row carries `adds_topics`, which `sim/quest/topic-supply.js RumourBook` puts into `sim.quest.topicsKnown`, and each is keyed to the settlement the quest's giver actually stands in, so the gossip is local. Nothing here is decoration: under S8 there are no markers and under S35 the map may carry nothing a quest put there, so a line in somebody's mouth is the only route in.",
-  "w1_17_successor_note": "RI-DLG03 §C top-up. Act gates (`requires.knows` / `forbids.knows`) are read by `RumourBook.for()` in game/src/sim/quest/topic-supply.js, which filtered on race and upbringing ONLY until this round — the flag set was already being passed in from Engine._talkPlayer() and the reader never looked, so an act-gated rumour authored before this change would have been decorative. `_note` is authorial bookkeeping for a critic and is read by nothing, deliberately."
+  "w1_17_successor_note": "RI-DLG03 §C top-up. Act gates (`requires.knows` / `forbids.knows`) are read by `RumourBook.for()` in game/src/sim/quest/topic-supply.js, which filtered on race and upbringing ONLY until this round — the flag set was already being passed in from Engine._talkPlayer() and the reader never looked, so an act-gated rumour authored before this change would have been decorative. `_note` is authorial bookkeeping for a critic and is read by nothing, deliberately.",
+  "w1_14_r4_note": "W1-14 round 4: six rumours that name the province's spellwrights and enchanters and teach the `spellmaking` / `enchanting` keywords. Until this round the seven people did not exist and the two words were spoken by nobody, so there was no way to learn that spell-making was a thing you could walk to. `adds_topics` is read by `conversationSay` -> `learnTopics`, so hearing the gossip is how you come to hold the word."
 }

@@ -37,7 +37,8 @@
     "The four spellwrights keep NO HOURS: their schedule is `at: null` for the whole day, which",
     "`populateSettlement` reads as 'at the authored post'. No interior in this build is a",
     "spellwright's shop, and inventing one would have been a second piece of work hiding inside",
-    "this one. A person standing at a post all day is what W1-04's street life already models."
+    "this one. A person standing at a post all day is what W1-04's street life already models.",
+    "THE TOWN TOPIC WAS REMOVED FROM ALL SEVEN RECORDS. A first draft listed the speaker's own settlement (`lilmoth`, `gideon`, ...) alongside the two service subjects. `topicsFor()` drops a topic the speaker has no info for, so it was never offered to anybody and the probe's topic list showed it absent: a dead entry on the record that reads, to anyone auditing the data, like a subject these people will discuss. They will not. Two subjects each, and both of them answer."
   ],
   "npcs": [
     {
@@ -57,8 +58,7 @@
       "enchanter": "journeyman_lilmoth",
       "topics": [
         "spellmaking",
-        "enchanting",
-        "lilmoth"
+        "enchanting"
       ],
       "services": [
         "spellmaking",
@@ -107,8 +107,7 @@
       "enchanter": "journeyman_gideon",
       "topics": [
         "spellmaking",
-        "enchanting",
-        "gideon"
+        "enchanting"
       ],
       "services": [
         "spellmaking",
@@ -157,8 +156,7 @@
       "enchanter": "journeyman_helstrom",
       "topics": [
         "spellmaking",
-        "enchanting",
-        "helstrom"
+        "enchanting"
       ],
       "services": [
         "spellmaking",
@@ -244,8 +242,7 @@
       "enchanter": "journeyman_stormhold",
       "topics": [
         "enchanting",
-        "spellmaking",
-        "stormhold"
+        "spellmaking"
       ],
       "services": [
         "enchanting"
@@ -292,8 +289,7 @@
       "enchanter": "master_blackrose",
       "topics": [
         "enchanting",
-        "spellmaking",
-        "blackrose"
+        "spellmaking"
       ],
       "services": [
         "enchanting"
@@ -340,8 +336,7 @@
       "enchanter": "master_soulrest",
       "topics": [
         "enchanting",
-        "spellmaking",
-        "soulrest"
+        "spellmaking"
       ],
       "services": [
         "enchanting"

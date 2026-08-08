@@ -15,8 +15,27 @@ known to be broken, and what is simply not built yet — and tell them.
 
 1. **It starts.** Clone, one command, a browser window, a character, a world. No harness verbs, no
    probe, no flags.
-2. **The new-game flow plays as a scene** — W1-26 is at 1.3/10 today and is the lowest score in the
-   project. This is the binding one.
+2. **The new-game flow plays as a scene** — was 1.3/10 twice, the lowest score in the project.
+   **The three blocking defects are closed** and each was measured in play mode with no flags and
+   no harness verbs, with every instrument watched red first: `census-newgame` exit 1 → 0,
+   `name-entry` `"Silt-Under-Salt" → "il-Un"` → three arms verbatim, `jrn09-exchange` `DTR(hold.out)`
+   0.000 → 1.000. Creation observes the body the player is standing in rather than a literal
+   (a hardcoded default would have betrayed RI-CHR01 §1 row 2), and a caught throw can no longer
+   render as dialogue — `fault` holds the exception and never enters the model.
+
+   **Orchestrator's own check:** `census-newgame` and `name-entry` reproduce at exit 0 here. The
+   full `opening-play` run reached **6 pass / 1 fail**, and the failure is the probe's page closing
+   under 3.74 sim fps at loadavg 20.9 — contention, not the build. So P7–P10 are the builder's
+   numbers, not independently reproduced, and this item needs **a fresh critic on a quiet box**
+   before it is called met.
+
+   Two things the round found that are worth keeping: round 2's "pinned on geometry" reading was
+   **wrong** — a body on the frozen coordinate moves in all eight directions to 7 distinct
+   destinations; the walker had met a *stopped world* and its instrument could not tell that from a
+   crate. And closing HF1 turned P9 red honestly, because the newly-drawn line opened *"Go up."* —
+   the exact imperative P9 tests for, which the earlier verdict had excused as costing nothing
+   *because it was never drawn*.
+
 3. **The controls are drawn.** W1-08/W1-29 found them "correctly laid out and drawn nowhere". A
    player who cannot see the controls has not been given a game.
 
@@ -27,20 +46,31 @@ known to be broken, and what is simply not built yet — and tell them.
    is the half of this item about *reaching* the screens; whether what is on them is drawn well is
    still open, and **FD6 has been red across two rounds** (114, now 99.9, all 28 captures over) with
    no verdict ever naming it.
-4. **You can walk between regions and the ground is there.** ~~Met~~ **NOT MET — retracted.** The
-   streaming half is real (6,615 m walked with zero samples missing ground, a 133.8 ms worst frame
-   as the residual). But W1-01 r4 put a *body* on THE CROSSING — Stormhold to Lilmoth, 6,816 m,
-   declared ~57 min on foot — and it gets **39 m**, then stands at (2190.7, 794.3) for 60,001
-   frames on flat dry FIRM ground with 59 solid shapes of `settlement:stormhold` in front of it.
-   It is stopped at a wall: the leg runs through `stormhold-scribe`'s footprint from 43 m to 53 m.
+4. **You can walk between regions and the ground is there.** **MET.** A body walked Stormhold to
+   Lilmoth: **6,646.7 m, 199,433 frames, 55.398 in-world minutes**, settlement collision ON, mean
+   ground speed 1.9991 m/s, worst deviation from the road 1.39 m of a 6 m carriageway, **zero
+   frames off the road and zero teleports**. Against RI-WLD01's own bars — time 52–65 ✓, distance
+   6,300–7,600 ✓, speed honesty ≤8% ✓, mean speed 2.0±0.05 ✓. **The hour came from distance**,
+   which is the whole design.
 
-   `build-roads.mjs` routes over terrain. `planSettlement()` plants houses on the same ground
-   afterwards. **Neither generator has ever been shown the other's output and nothing performs the
-   join.** `tools/world/road-through-building.mjs` reports 6 blocks on THE CROSSING, 10 on THE LONG
-   WAY, and **10 of 10 built legs blocked**. Dispatched as §W below.
+   The history is worth keeping, because two premises this project acted on were wrong. It was
+   first marked Met on a walker not subject to settlement collision; retracted when a *body* got
+   39 m and stopped at a wall. Then the wall was cleared and a "57.5° skirt on the Valus Ridge"
+   was blamed — **and there is no skirt.** The road's worst gradient anywhere in the province is
+   **24.27°** against a 40° limit, and the slope gate refuses zero samples of any centreline,
+   before the fix as well as after. The 57.5/61.09/64.6° readings were `field.slopeAt()` taken
+   *beside a viaduct*, where the ±5 m central difference straddles a slab edge. What is actually
+   on the ridge is a **471 m viaduct standing 50.6 m above the mountainside** — 918 m of a 2,921 m
+   leg is bridge — and the body was 4.98 m off the centreline and **15.3 m below the deck**. It
+   had fallen off.
 
-   The earlier "met" was measured with a walker that was not subject to settlement collision, which
-   is why streaming looked sufficient. A crossing nobody has walked as a body is not a crossing.
+   The fix is steering, proved by a 2×2 with the pre-fix code restored: old steering reproduces
+   the published stall **to the metre and the coordinate** (550.1 m, ending 2153.7, 1197.8), and
+   the parapet turns out not to be load-bearing for this walk at all.
+
+   Residual: a 133.8 ms worst frame, unmeasured since. `--stair-grade` is swept but not landed —
+   nobody has ruled whether a 31° road is a road.
+
 5. **A fight is survivable and a level is spendable.** The hearth opens; **souls have no source**,
    so the loop does not close yet. Dispatched.
 6. **An unassisted play session by a fresh critic** — start to a first quest to a first fight to a
@@ -155,6 +185,19 @@ in play and another in every check, and no instrument could see it, because the 
 between the instruments and the game rather than inside either. Closed by
 `game/data/dialogue/topics/_manifest.json`; 0 differing, and still 0 from a reversed arrival order.
 **If your piece loads a directory and sorts it, check the engine sorts it the same way.**
+
+**Q10. `path_m` counted teleports as walked distance.** A 3,484.9 m respawn made a 1,277 m walk
+report 4,812 m. It is excluded and reported separately now, but in the finder's own words: **every
+`path_m` this project published before may contain them.** If your piece quotes a walked distance,
+check whether the run could have respawned.
+
+**Q11. A check can be true for twenty-four minutes and stay false for twenty-four commits.** The
+settlement/road join reported `0 of 10 legs blocked, 0 offences`, honestly, at `322f708`. By
+`0dc0703` it was **3 of 10 legs, 5 buildings on the trunk road** — and no data under `settlements/`
+or `interiors/` had changed. `exterior.js` had: a per-axis shrink pass **grew 54 of 202 exteriors
+and shrank none**. The join's own handoff named the staleness door and declined to gate the check,
+and that decision was the sole reason the tree was red. **If your piece's headline depends on a
+generator someone else owns, gate the check or expect the number to rot.**
 
 **Q8. "The harness cannot see that screen" has been wrong at least once — re-check yours.**
 `getRenderedText()` was written off by a builder as blind to the book screen, and the round after it

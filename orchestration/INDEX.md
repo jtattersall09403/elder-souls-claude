@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b6d5ca0`: 669 tools, 153 reference
+so it cannot drift. Generated at `7b7ce4a`: 669 tools, 153 reference
 items, 52 pieces in flight.
 
 Its purpose is to stop 52+ concurrent agents each paying separately to discover the
@@ -987,15 +987,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-21-r3` | in_progress | remaining detectors in flight; then sample table, blog line, commit | `orchestration/status/W1-21-r3.json` `tools/lib/graded.mjs` `tools/lib/colour.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/ui-layer.mjs` |
+| `W1-14-r4` | measuring | await nulldial/nocast dial arms, then blog line + commit | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` |
 | `critic-w1-25` | done | Round 2 on W1-25: fix the four cascade defects in lib/sabotage.mjs against the acceptance  | `corpus/90-verdicts/wave1/W1-25-r1.md` `corpus/90-verdicts/wave1/W1-25-r1.json` `orchestration/status/critic-w1-25.json` `tools/experience/critic-w1-25.mjs` `tools/experience/critic-w1-25-chart.mjs` `reports/experience/critic-w1-25.json` |
-| `W1-21-r3` | in_progress | ui-metrics real run in flight (FD6 dE). Then remaining detectors, sample table, blog line, | `orchestration/status/W1-21-r3.json` `tools/lib/graded.mjs` `tools/lib/colour.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/ui-layer.mjs` |
 | `critic-road-join` | ? | none — verdict, tools, report, picture and blog line are on disk and committed | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `W1-26-r3` | ? | none — handing to a critic | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `critic-w1-23-r4` | done | committed; hand to the orchestrator | `orchestration/status/critic-w1-23-r4.json` `corpus/90-verdicts/wave1/W1-23-r4.md` `corpus/90-verdicts/wave1/W1-23-r4.json` `tools/lore/critic-w1-23-r4-onscreen.mjs` `tools/lore/critic-w1-23-r4-shelf.mjs` `tools/lore/critic-w1-23-r4-blocked.mjs` |
 | `W1-04-r4` | fixes landed and committed by the bank sweep; S3/S4 of the live arm being re-taken | land S3/S4, then commit status + blog + reports | `docs/shots/2026-08-08-w1-04-r4-blackrose-inn-outside-now-contains-inside.png` `docs/shots/2026-08-08-w1-04-r4-helstrom-roofs-now-cover-the-buildings.png` `game/src/harness/api.js` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` |
 | `W1-CHARTFONT-r2` | ? | none — handoffs below. W1-18-r2, W1-19-r3, W1-READABLES, W1-22-r2, W1-22-r3 and W1-01-r4 e | `orchestration/status/W1-CHARTFONT-r2.json` `tools/analysis/w1-15-r3-chart.mjs` `tools/harness/w1-16-r3-chart.mjs` `tools/world/road-join-chart.mjs` `tools/world/w1-01-r4-crossing-chart.mjs` `tools/audio/critic-w1-22-r2-chart.mjs` |
 | `arbiter-map-s38` | done | none — ruling landed, gate green, S35 amended in place | `corpus/00-doctrine/ARBITRATION.md` `tools/map/arbiter-map-s38.mjs` `orchestration/status/arbiter-map-s38.json` `reports/blog-feed.jsonl` `docs/shots/2026-08-08-s38-what-a-forged-save-can-and-cannot-put-on-the-map.png` |
-| `W1-14-r4` | building | objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission  | `orchestration/status/W1-14-r4.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` `game/src/engine.js` `game/src/sim/magic/system.js` `game/src/sim/magic/apply.js` |
 | `critic-w1-21-r2` | done | orchestrator. Three arbitration questions are filed in the verdict JSON and need a ruling: | `corpus/90-verdicts/wave1/W1-21-r2.md` `corpus/90-verdicts/wave1/W1-21-r2.json` `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` `tools/ui/critic-w1-21-r2-b.mjs` `tools/ui/critic-w1-21-r2-consume.mjs` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |

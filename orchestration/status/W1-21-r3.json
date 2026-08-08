@@ -4,7 +4,7 @@
   "piece": "W1-21 round 3 \u2014 controls and interface",
   "state": "in_progress",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "ui-metrics real run in flight (FD6 dE). Then remaining detectors, sample table, blog line, commit.",
+  "next_step": "remaining detectors in flight; then sample table, blog line, commit",
   "files_touched": [
     "orchestration/status/W1-21-r3.json",
     "tools/lib/graded.mjs",
@@ -107,6 +107,14 @@
       "result": "inventory(28 visible elements), journal(12), sheet(48), spells(13), map(19), levelup(25) \u2014 each opened and confirmed to be the screen it claims.",
       "artifact": "docs/shots/2026-08-08-w1-21-r3-the-{inventory,journal,sheet,spells,map,levelup}-screen.png",
       "load": "same single browser"
+    },
+    {
+      "what": "FD6 RE-MEASURED IN THE ITEM'S OWN UNIT \u2014 the verdict-ready answer the round-2 verdict asked for",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/metrics/ui-metrics.mjs --scales 1920x1080 --dpr 1,2 --out W1-21-R3-UI-METRICS",
+      "result": "FD6 IS A HARD FAIL. Worst edge deviation 58.291 dE2000 against RI-UIX06 \u00a7Scoring's pass bar of 3 and hard-fail bar of >8. It is not one outlier pixel: 14 of 14 captures are over 8, and 31,322 of 98,659 graded edge pixels (31.7%) are over 3 with 9,711 (9.8%) over 8. Under \u00a7Scoring that caps RI-UIX06 FIDELITY at 2. The round-2 luma figure on this capture set is 151 (round 1: 114, round 2: 99.9 on a different set) and is still reported beside it so the record lines up. FD8 now PASSES with the map declaration withdrawn: the map produced 659 and 2,113 stem samples in the two configurations, exactly as the critic said. Native 7/8, 0 not graded.",
+      "artifact": "reports/runs/W1-21-R3-UI-METRICS/ui-metrics.json, reports/runs/W1-21-R3-UI-METRICS/sample-table.md",
+      "load": "ONE browser per capture configuration, 2 sequentially. REDUCED FROM ROUND 2'S 28 CAPTURES TO 14: --scales 1920x1080 only, both DPRs, declared here rather than implied. 1280x720 was dropped because the box was at its contention ceiling all session; 1920x1080@1 and @2 carry round 2's worst FD6 captures and its FD2 headline."
     }
   ],
   "method_deviations": [

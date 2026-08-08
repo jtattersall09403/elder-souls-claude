@@ -30,16 +30,19 @@ try {
     const H = window.__HARNESS;
     await H.ready();
     H.setSeed(4242);
-    // HELSTROM, not Lilmoth, and the reason is light. Lilmoth is a stilt town: the quay where its
-    // spellwright stands is UNDER the upper deck, and three takes there came back as a black
-    // rectangle with a health bar on it. The picture is of a mechanism, not of a town, so it is
-    // taken at the one that has sky over it. The counter, the person and the money are identical.
-    H.loadState('town-helstrom');
+    // GIDEON, and the reason is light rather than taste. Lilmoth is a stilt town whose quay is
+    // UNDER the upper deck and Helstrom is under a canopy: takes at both came back as a black
+    // rectangle with a health bar on it, correctly — the clock reads 11:00 in `high_clear` and
+    // those two towns really are that dark. Gideon is the open one. The counter, the person, the
+    // gates and the money are identical at all four spellwrights; only the roof differs.
+    H.loadState('town-gideon');
     const start = H.getPlayerStats().pos.slice();
-    const walk = H.walkPath([[start[0], start[2]], [2287.48, 2799.29], [2283.8, 2777.2], [2281.4, 2777.2]], { speed: 'walk', arrive_m: 2.0, stuckAbort: 400 });
-    // If the town's own collision stops the walk short, say so and close the last metres rather
-    // than reporting a walk that did not happen.
-    if (!walk.arrived) H.teleport(2282.6, 2778.6);
+    const walk = H.walkPath([[start[0], start[2]], [431.71, 2898.48], [449.27, 2938.99], [446.9, 2937.4]], { speed: 'walk', arrive_m: 2.0, stuckAbort: 400 });
+    // DECLARED: if the town's own collision stops the walk short, the last metres are closed with
+    // a teleport and the report says `walk_arrived: false`. The WALKED claim is made by
+    // `w1-14-r4-commission.mjs`, which arrives on foot 1.6 m from the Lilmoth spellwright and
+    // fails if it does not. This tool exists to take a photograph.
+    if (!walk.arrived) H.teleport(445.6, 2936.2);
 
     H.setCharacter({ race: 'breton', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
     for (let i = 0; i < 700; i++) {
@@ -53,7 +56,7 @@ try {
     for (const s of H.getMagicData().spells.spells) H.learnSpell(s.id);
 
     // ---- the commission, through the topic list ----------------------------------------------
-    H.talkTo('spellwright-helstrom');
+    H.talkTo('spellwright-gideon');
     H.conversationSay('spellmaking');
     const say = (id) => H.conversationSay(id);
     const st = () => H.commissionState();
@@ -94,20 +97,25 @@ try {
     // Noon and clear: the first take was at 12:30 in `heavy_rain` and the frame was a black
     // rectangle with a health bar on it. The weather is the world's own and it is right that it
     // rains in Lilmoth; a picture of it is not the place to prove that.
-    H.setTimeOfDay(11);
-    H.setWeather('clear');
     // BACK OUT ONTO THE QUAY, on foot, the way they came. Two takes were photographed with the
     // player's shoulder against the ledger house: the spring arm collides into the wall, the
     // camera ends up inside the character, and the frame is a black rectangle with a health bar
     // on it. You buy the spell at the counter and you walk into the open to cast it.
-    {
-      const p0 = H.getPlayerStats().pos;
-      H.walkPath([[p0[0], p0[2]], [2287.48, 2799.29]], { speed: 'walk', arrive_m: 2.0, stuckAbort: 400 });
-    }
+    // OUT OF THE TOWN to cast it, because a spring arm inside a street photographs a wall.
+    // Teleported and declared: the walk that matters is the one to the counter, above.
+    H.teleport(470.0, 2975.0);
+    H.stepFrames(30);
     H.hearthRest();
+    // THE CLOCK LAST, and this is why three takes came back black. `hearthRest()` ADVANCES THE
+    // WORLD CLOCK, and this tool calls it seven hundred times to bank the skill uses the counter's
+    // effect-count gate reads. Setting the hour before the rests set the hour of a day that the
+    // rests then walked out of; the frames were night frames and the town was correctly unlit.
+    H.setTimeOfDay(11);
+    H.setWeather('clear');
+    H.stepFrames(2);
     const ps = H.getPlayerStats();
     // Out over the water side, where there is sky and nothing to clip the arm on.
-    const rad = Math.atan2(2287.48 - ps.pos[0], 2799.29 - ps.pos[2]);
+    const rad = Math.atan2(505.0 - ps.pos[0], 3005.0 - ps.pos[2]);
     const eid0 = H.spawn('inf_trash', ps.pos[0] + Math.sin(rad) * 9.0, ps.pos[2] + Math.cos(rad) * 9.0);
     const eid1 = H.spawn('inf_trash', ps.pos[0] + Math.sin(rad) * 9.0 + 3.0, ps.pos[2] + Math.cos(rad) * 9.0 + 1.0);
     const id0 = eid0 && eid0.eid ? eid0.eid : eid0;

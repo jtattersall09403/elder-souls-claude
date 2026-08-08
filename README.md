@@ -29,20 +29,24 @@ built on it holding.
 
 ## What is broken today, plainly
 
-**This is not finished, and the honest summary is that you probably cannot get out of the first
-room yet.** Everything below is measured and has a verdict behind it; none of it is a guess.
+**This is not finished, but you can now make a character and walk out of the room.** Everything
+below is measured and has a verdict behind it; none of it is a guess.
 
-- **Character creation cannot be completed by a player.** The census that sets your race is never
-  called on the play path, it throws, the throw is caught, and you read an engine error string as
-  the scribe's dialogue with the door held shut. Being fixed now; it is the single highest-priority
-  item on the board. (`corpus/90-verdicts/wave1/W1-26-r2.md`)
-- **You cannot type your own name.** The input layer consults the movement keys before the text
-  field, so 14 of 26 letters never arrive and `E` commits the name mid-word. "Silt-Under-Salt"
-  comes out as "il-Un". Same fix, same agent.
-- **The province is not crossable on foot.** Roads are routed over terrain and buildings are planted
-  afterwards, and the two generators have never been shown each other's output — so **10 of 10 road
-  legs run through a house**. A body walking the main crossing gets 39 m of 6,816 and stops at a
-  wall. Being fixed now. (`orchestration/NEXT-DISPATCH.md` §W)
+Two things that were broken this morning are fixed: **character creation completes** (the census
+that sets your race is driven from the play path, and a caught error can no longer render as an
+NPC's dialogue), and **you can type your own name** — every letter arrives, and `E` no longer
+commits the name mid-word. Both were measured through real keyboard input with no test hooks.
+
+And **a body has now walked the province**: Stormhold to Lilmoth, 6,646.7 m in 55.4 in-world
+minutes, with settlement collision on, no teleports, and never once leaving the road. That is the
+"about an hour on foot" this whole world is built around, and it came from the distance rather than
+from anything slowing you down.
+
+- **The opening has not been graded since it was fixed.** A fresh critic is owed one, and until
+  then the claim that it plays as a scene is the builder's, not a judge's.
+- **41 of 112 buildings are smaller outside than in.** One inn is a 3.4 m shed over a 13.6 m hall.
+  Every building is also an open-topped tray with a dome loose inside it, so do not look down at a
+  roof. Being fixed now.
 - **An enemy cannot catch you if you walk away.** Five of seven close at 0.20 m/s, never get nearer
   than 8 m, hit their leash and go home. (`corpus/90-verdicts/wave1/W1-12-r1.md`)
 - **Interiors are lit wrongly.** 1,584 floor tiles are drawn lit and simulated pitch black, because
@@ -63,7 +67,7 @@ missing, which is a worse defect than the bug.
 - **[The build status page](docs/progress.html)** — critic scores per domain over time. A dot
   appears every time a verdict lands. Scores fall as well as rise.
 - `corpus/90-verdicts/` — every verdict, in full.
-- `corpus/00-doctrine/ARBITRATION.md` — the doctrine and the 37 seam rulings.
+- `corpus/00-doctrine/ARBITRATION.md` — the doctrine and the 38 seam rulings.
 - `orchestration/RULES.md` — the 28 rules every agent reads. Each one has already cost this project
   a wasted round.
 
