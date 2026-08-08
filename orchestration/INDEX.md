@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `8043f15`: 618 tools, 153 reference
-items, 47 pieces in flight.
+so it cannot drift. Generated at `322f708`: 619 tools, 153 reference
+items, 46 pieces in flight.
 
-Its purpose is to stop 47+ concurrent agents each paying separately to discover the
+Its purpose is to stop 46+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -85,7 +85,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
 
-### `tools/analysis/` — 45
+### `tools/analysis/` — 46
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -132,6 +132,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 - `tools/analysis/w1-15-r3-chart.mjs` — THE PICTURE FOR W1-15 ROUND 3: the light in one room, before and after it was told about the lamps.
 - `tools/analysis/w1-chartfont-deletefix.mjs` — RULE 6 for the shared chart font, both halves of it.
+- `tools/analysis/w1-chartfont-shot.mjs` — the rule-27 picture for W1-CHARTFONT: the same strings drawn with the pre-fix table and with the fixed one, side by side, at the size a chart actually uses them
 
 ### `tools/audio/` — 8
 
@@ -930,16 +931,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-23-r4` | running | read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G | — |
+| `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
 | `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
-| `W1-16-r3` | measured (acceptance taken); waiting on a tree-wide boot break to finish the optional spell arm | retry the live spell arm when boot-check is green again; then screenshot, blog line, commi | `orchestration/status/W1-16-r3.json` `game/src/engine.js` `game/src/combat/player.js` `game/src/harness/api.js` `game/data/items/carried.json` `tools/harness/w1-16-r3-reach.mjs` |
 | `W1-CHARTFONT` | ? | Wire the seven editable chart tools to the shared module; hand off the two owned by live p | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` |
-| `W1-SAVE-AI` | fix_landed | extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the  | `orchestration/status/W1-SAVE-AI.json` `game/src/save/fight.js` `game/src/combat/ai.js` `game/src/combat/enemy.js` `tools/check-save-shape.mjs` `tools/check-data.mjs` |
 | `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
-| `critic-w1-14-r3` | running | finish parts H/C/D, then A and F; write verdict md+json; blog line; commit | `orchestration/status/critic-w1-14-r3.json` `tools/harness/critic-w1-14-r3.mjs` `reports/critic-w1-14-r3/` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |

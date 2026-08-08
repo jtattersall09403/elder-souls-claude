@@ -140,6 +140,7 @@
     "reading": "The round improves the number under EITHER ruling (136->6 scoring, 139->12 first-match) and no info is worse off under either. DISCLOSED: 3 of my 20 re-homes (the-xanmeers#3, the-man-off-the-quay#1, reading-the-count#4) are reachable under scoring and not under first-match, because they use the `cell`/`d` narrowing that outranks an earlier ungated sibling. Under first-match those three are dead \u2014 but they were dead under BOTH rules before this round (they named actors with no body), so the change is strictly non-negative under either ruling. If S37 rules for first-match-wins, those three need to move earlier in authored order, which is S37 territory and I left it alone."
   },
   "not_done": [
+    "THE HEADLINE MOVED UNDER ME. S37 landed near the end of this round and ruled for first-match-wins; see S37_LANDED_MID_ROUND. Under the ruled algorithm the number is 139 -> 11, not 136 -> 6. Two of my twenty re-homes are shadowed under the new rule and need the ordering pass S37 has made meaningful.",
     "NO BROWSER AT ALL. contention --gate exit 3 (5 instances, load 6.30/core). I changed no engine .js file \u2014 only data, tools and one shared data index \u2014 so no boot-check was owed; I did not run one and nothing here depends on one. The figure in docs/shots was drawn offline with pngjs, deliberately.",
     "The 6 remaining unhearable infos are NOT closed. All 6 are \"always outscored\", all 6 are present unchanged in ALL FOUR cells of the 2x2 (so none is mine), and closing them means changing which of two siblings wins \u2014 which is exactly the question S37 is deciding. Left alone on purpose.",
     "voice-metrics still exits 1 with 10 requirements missed (was 12). The 10 are w/sent, <=6w, >20w, w/entry and STTR band misses across five archetypes. Closing them is a corpus-wide prose rewrite, which this round was explicitly told not to do.",
@@ -148,6 +149,28 @@
     "RI-DLG09 parley vs W1-09 game/data/combat/parley.json (78 f@60 / stamina 0 vs 102 / 20): still unresolved, still a cross-piece debt, not touched.",
     "Time-of-day variation for greetings/rumours: still absent, still no reader. The round-1 critic ruled it not owed and said do not build it until an item requires one. I did not.",
     "PRE-EXISTING DEFECT I FOUND AND DID NOT FIX: 181 of 347 shipped NPC records carry a `race` that character/reaction.js raceTerm() THROWS on (\"argonian\" x179, \"none\", \"mixed\") \u2014 the canonical id is \"saxhleel\". It is in game/data/npcs/pop-*.json, which W1-23-r4 has claimed. My own 22 records all use canonical ids and are asserted constructible.",
-    "check-dialogue-topics warnings went 30 -> 32. Both new ones are mine and both are the documented specificity ladder (a re-homed info carrying a `cell` the merged sibling lacks). Exit 0; no shared gate was weakened."
-  ]
+    "check-dialogue-topics warnings went 30 -> 32. Both new ones are mine and both are the documented specificity ladder (a re-homed info carrying a `cell` the merged sibling lacks). Exit 0; no shared gate was weakened.",
+    "critic-reach.mjs still embeds a copy of the SCORING rule and so now measures a superseded algorithm. It should be rewritten to call the shipped infoFor() (or to take the rule as a flag). I repaired its memo-key defect but did not re-point it at the new engine \u2014 that lands after S37's implementation settles, and doing it now would have meant publishing a number against an engine that changed twice in an hour."
+  ],
+  "S37_LANDED_MID_ROUND": {
+    "what": "ARBITRATION.md S37 landed at ~03:07 today, AFTER almost all of this round was built. It ruled FOR first-match-wins: \"RI-DLG01 \u00a7A GOVERNS. THE ENGINE YIELDS.\" converse.js infoFor() no longer scores specificity, and buildTopicIndex() now requires game/data/dialogue/topics/_manifest.json to declare the merge order.",
+    "effect_on_my_headline": "My headline of 6 was measured by tools/dialogue/critic-reach.mjs, which embeds its own COPY of the scoring rule and is therefore now measuring a SUPERSEDED algorithm. Do not cite the 6 without this note. The figure under the ruled algorithm is 11, from a baseline of 139, measured by tools/dialogue/w1-17-r2-s37-invariance.mjs, which evaluates both rules over identical data and whose first-match arm reads info order through the shipped, manifest-ordered buildTopicIndex().",
+    "headline_under_the_ruling": {
+      "before": 139,
+      "after": 11
+    },
+    "headline_under_the_superseded_rule": {
+      "before": 136,
+      "after": 6
+    },
+    "my_own_tool_caught_it": "tools/dialogue/rehome-actors.mjs verifies each re-homed line against the SHIPPED infoFor() rather than a copy, so when the engine changed under it, it went red by itself and named the three rows that had stopped being spoken. That is the whole reason the verify was written that way.",
+    "fixed_after_the_ruling": "the-man-off-the-quay: both infos live in one file, so the narrower one was moved FIRST and its d:30 restored (the S37 landing had dropped it). Under first-match a player at d>=30 hears the confiding half and a colder one falls through to the guarded half; both reachable, neither shadowing. 12 -> 11.",
+    "NOT_fixed_and_why": "the-xanmeers#3 and reading-the-count#4 are in 70-disputes.json and are shadowed by ungated archivist infos in 10-global.json and 50-mainline.json, which the new _manifest.json merges EARLIER. Under first-match-wins the only reader-honoured fix is authored order \u2014 either the manifest order or a corpus-wide most-constrained-first pass (tools/dialogue/order-infos.mjs, which S37 has just made meaningful for the first time; the round-1 critic proved it was arithmetically incapable of changing an answer under the scoring rule). Both are S37-implementation work across many agents' files and the manifest is the arbiter's own new file. I did not touch either. NOTE these two were dead under BOTH rules before this round (they named `notary`, an actor with no body), so they are not a regression I introduced \u2014 they are a repair that the ruling has partially undone.",
+    "pre_existing_first_match_casualties_not_mine": [
+      "the-witness#3",
+      "reading-the-count#3",
+      "the-cutters-terms#3"
+    ],
+    "broken_shared_gate_not_mine": "node tools/check-dialogue-topics.mjs now EXITS 1 \u2014 \"dialogue topic merge order is undeclared: _manifest.json was not in the doc list\". Its loader predates the manifest requirement converse.js just added. I did not touch check-dialogue-topics.mjs or converse.js (git log confirms: both last moved in bank commit bf4ec20, not by me). Reporting it rather than editing another piece's in-flight landing."
+  }
 }

@@ -944,22 +944,23 @@
         {
           "a": "townsman",
           "cell": "gideon",
-          "x": "There was a man who said what he'd seen at the gate, once, out loud, and he isn't on the quay any more. Everyone here can tell you that, and not one of us can tell you where he went.",
-          "to": [
-            "the-tolls",
-            "the-ninth-column"
-          ]
-        },
-        {
-          "a": "townsman",
-          "cell": "gideon",
           "x": "His room is still paid for. Four seasons! If they'd done what you think they did, why would they still be paying the rent on it?",
           "to": [
             "the-quiet-partner"
           ],
           "d": 30
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "There was a man who said what he'd seen at the gate, once, out loud, and he isn't on the quay any more. Everyone here can tell you that, and not one of us can tell you where he went.",
+          "to": [
+            "the-tolls",
+            "the-ninth-column"
+          ]
         }
-      ]
+      ],
+      "order_note": "W1-17 r2, after S37. Under first-match-wins the narrower info must be authored FIRST or it is never reached. The confiding half of this pair carries d:30, so a player the porter does not trust falls through to the guarded half below it. Both are reachable; neither shadows the other."
     },
     {
       "id": "the-second-refusal",
