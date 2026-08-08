@@ -31,7 +31,7 @@
       { "command": "node tools/world/critic-deploy-r2-drift.mjs --n 60", "exit_code": 0 },
       { "command": "node tools/world/verify-live-site.mjs --self-test", "exit_code": 0 },
       { "command": "node tools/world/verify-live-site.mjs   (715 files)", "exit_code": 0 },
-      { "command": "node tools/world/verify-playable.mjs --self-test --local --json reports/w1-deploy-r2/selftest-local.json", "exit_code": 1, "stdout_artifact": "reports/w1-deploy-r2/selftest-local.json" },
+      { "command": "node tools/world/verify-playable.mjs --self-test --local --json reports/w1-deploy-r2/selftest-local.json", "exit_code": 1, "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/verify-playable-selftest-local.json" },
       { "command": "node tools/world/critic-deploy-r2-notice.mjs --notice --shot docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis", "exit_code": 0 },
       { "command": "node tools/world/critic-deploy-r2-notice.mjs --boot --reps 2", "exit_code": 0 },
       { "command": "node tools/harness/boot-check.mjs", "exit_code": 0 },
@@ -63,7 +63,7 @@
         { "id": "M8-analogue: the instrument does not perturb what it measures", "result": "fail", "value": "verify-playable's screenshot sampling makes the boot it times 1.4x to 6.5x slower in 3 of 3 paired runs, and 3 of 6 screenshots time out", "hard_fail": false }
       ],
       "evidence": [
-        "reports/w1-deploy-r2/selftest-local.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/verify-playable-selftest-local.json",
         "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
         "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
         "tools/world/critic-deploy-r2-gate.mjs",
@@ -82,11 +82,18 @@
       "source": "ours"
     },
     {
-      "path": "reports/w1-deploy-r2/selftest-local.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/verify-playable-selftest-local.json",
       "kind": "log",
       "produced_by": "node tools/world/verify-playable.mjs --self-test --local --json reports/w1-deploy-r2/selftest-local.json",
       "source": "ours",
-      "note": "The subject's own output. Contains the red control and the four sabotage arms measuring litFraction 1.0 on dead pages."
+      "note": "The subject's own output. Contains the red control and the four sabotage arms measuring litFraction 1.0 on dead pages. Copied out of reports/, which is gitignored, so the evidence a verdict rests on is actually published."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/loader-retry-selftest.json",
+      "kind": "log",
+      "produced_by": "node tools/playability/loader-retry.mjs --self-test --json reports/w1-deploy-r2/loader-retry-critic-w1-deploy-r2.json",
+      "source": "ours",
+      "note": "All eight arms, re-run by this critic on the current tree: clean, flaky, persistent, notfound, null-control, control-sane, instrument-404, instrument-lie. 8/8."
     },
     {
       "path": "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
@@ -163,7 +170,7 @@
     "what": "Four instruments now guard the one defect that has already been fixed (an untracked module plainly imported by `import … from`), while six deployment failure classes have zero instruments: a transient 5xx on the module graph, cache headers and a returning visitor, HTTP/2, the CDN's TLS as a browser sees it, a slow connection, and whether the Pages build ran at all. Two of those six — a warm cache on a second visit, and a slow connection — are precisely the conditions the owner's phone was in when it showed a black screen. Meanwhile the instruments that do exist fail in the direction of the tester: verify-playable's control is red because of its own screenshots (boot 10.7 s unobserved vs 69.7 s observed, slower in 3 of 3 paired runs, 3 of 6 screenshots timing out); verify-live-site's staleness check hashes against the dirty working tree rather than HEAD (3 of 60 sampled files differ from the worktree, 0 from HEAD) and looks at 2 of 715 files; and the aggregation that would run them all together is called by nothing.",
     "why_it_matters": "The owner opens the link on a phone on a real network for the second time; every instrument in this project has only ever measured a cold first load on a fast local wire, so the next black screen is as invisible as the first two were.",
     "evidence": [
-      "reports/w1-deploy-r2/selftest-local.json",
+      "corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/verify-playable-selftest-local.json",
       "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
       "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
       "tools/world/critic-deploy-r2-drift.mjs",

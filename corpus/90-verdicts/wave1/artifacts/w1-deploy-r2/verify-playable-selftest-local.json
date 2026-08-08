@@ -1,0 +1,118 @@
+{
+  "tool": "verify-playable",
+  "mode": "local",
+  "url": "http://127.0.0.1:41751/game/index.html",
+  "commit": "6dece5e",
+  "date": "2026-08-08",
+  "thresholds": {
+    "MIN_LIT_FRACTION": 0.005,
+    "MIN_LIT_BLOCKS": 0.3,
+    "GRID": 12
+  },
+  "rows": [],
+  "selfTest": [
+    {
+      "sabotage": null,
+      "control": true,
+      "red": true,
+      "litFraction": 0,
+      "litBlocks": 0,
+      "moved": false,
+      "why": [
+        "the boot promise had not resolved after 146s at load 7.83 and the page reports no error — this is STILL LOADING, not a black screen; re-run with a larger --cap-ms on a quieter box before blaming the renderer",
+        "CANNOT MEASURE PIXELS: preserveDrawingBuffer is off, so readPixels after compositing returns zeros — this is NOT a black screen, it is an unmeasurable one. Re-run against a build whose renderer preserves the drawing buffer, or teach this tool to read inside requestAnimationFrame. Do not read the lit figures below as a verdict."
+      ],
+      "notice": ""
+    },
+    {
+      "sabotage": "missing-renderer",
+      "red": true,
+      "on": "desktop-1920",
+      "litFraction": 1,
+      "litBlocks": 1,
+      "moved": false,
+      "why": [
+        "the page gave up and said so: \"ELDER SOULS The game stopped while loading. an unknown error Please send this line: canvas 1920x1080 css 1920x1080 · vp 1920x1080@1 · mem 8G\"",
+        "boot notice still up: \"ELDER SOULS The game stopped while loading. an unknown error Please send this line: canvas 1920x1080 css 1920x\"",
+        "the picture never changed across the settled instants — frozen",
+        "2 request(s) 4xx/failed: 404 /game/vendor/three/three.module.js, net::ERR_ABORTED /game/vendor/three/three.module.js"
+      ],
+      "notice": "ELDER SOULS The game stopped while loading. an unknown error Please send this line: canvas 1920x1080 css 1920x1080 · vp "
+    },
+    {
+      "sabotage": "missing-submodule",
+      "red": true,
+      "on": "desktop-1920",
+      "litFraction": 1,
+      "litBlocks": 1,
+      "moved": false,
+      "why": [
+        "the page gave up and said so: \"ELDER SOULS The game stopped while loading. an unknown error Please send this line: canvas 1920x1080 css 1920x1080 · vp 1920x1080@1 · mem 8G\"",
+        "boot notice still up: \"ELDER SOULS The game stopped while loading. an unknown error Please send this line: canvas 1920x1080 css 1920x\"",
+        "the picture never changed across the settled instants — frozen",
+        "2 request(s) 4xx/failed: 404 /game/src/input/hold-gate.js, net::ERR_ABORTED /game/src/input/hold-gate.js"
+      ],
+      "notice": "ELDER SOULS The game stopped while loading. an unknown error Please send this line: canvas 1920x1080 css 1920x1080 · vp "
+    },
+    {
+      "sabotage": "missing-data",
+      "red": true,
+      "on": "desktop-1920",
+      "litFraction": 1,
+      "litBlocks": 1,
+      "moved": false,
+      "why": [
+        "the page gave up and said so: \"ELDER SOULS The game stopped while loading. data file MISSING: world/borders.json — HTTP 404 on http://127.0.0.1:41751/game/data/world/borde\"",
+        "boot notice still up: \"ELDER SOULS The game stopped while loading. data file MISSING: world/borders.json — HTTP 404 on http://127.0.0\"",
+        "the picture never changed across the settled instants — frozen",
+        "1 request(s) 4xx/failed: 404 /game/data/world/borders.json",
+        "page error: data file MISSING: world/borders.json — HTTP 404 on http://127.0.0.1:41751/game/data/world/borders.json, after 1 attempt. A 404 is never retried: the file is genuinely not published. Check tools/check"
+      ],
+      "notice": "ELDER SOULS The game stopped while loading. data file MISSING: world/borders.json — HTTP 404 on http://127.0.0.1:41751/g"
+    },
+    {
+      "sabotage": "no-webgl",
+      "red": true,
+      "on": "phone-small-portrait",
+      "litFraction": 1,
+      "litBlocks": 1,
+      "moved": false,
+      "why": [
+        "the page gave up and said so: \"ELDER SOULS This browser will not give the game a 3D canvas. WebGL is unavailable or disabled. On iOS try Safari; on Android try Chrome. If \"",
+        "boot notice still up: \"ELDER SOULS This browser will not give the game a 3D canvas. WebGL is unavailable or disabled. On iOS try Safa\"",
+        "framebuffer 1920x1080 is not this device's shape (360x740) — the reading is not about this profile",
+        "the picture never changed across the settled instants — frozen",
+        "page error: Error creating WebGL context."
+      ],
+      "notice": "ELDER SOULS This browser will not give the game a 3D canvas. WebGL is unavailable or disabled. On iOS try Safari; on And"
+    },
+    {
+      "sabotage": "draws-nothing",
+      "red": true,
+      "on": "desktop-1920",
+      "litFraction": 0,
+      "litBlocks": 0,
+      "moved": false,
+      "why": [
+        "the boot promise had not resolved after 48s at load 17.27 and the page reports no error — this is STILL LOADING, not a black screen; re-run with a larger --cap-ms on a quieter box before blaming the renderer",
+        "only 0.00% of pixels lit (floor 0.5%)",
+        "the picture never changed across the settled instants — frozen"
+      ],
+      "notice": ""
+    },
+    {
+      "sabotage": "frozen",
+      "red": true,
+      "on": "desktop-1920",
+      "litFraction": 0,
+      "litBlocks": 0,
+      "moved": false,
+      "why": [
+        "the boot promise had not resolved after 119s at load 21.61 and the page reports no error — this is STILL LOADING, not a black screen; re-run with a larger --cap-ms on a quieter box before blaming the renderer",
+        "CANNOT MEASURE PIXELS: preserveDrawingBuffer is off, so readPixels after compositing returns zeros — this is NOT a black screen, it is an unmeasurable one. Re-run against a build whose renderer preserves the drawing buffer, or teach this tool to read inside requestAnimationFrame. Do not read the lit figures below as a verdict."
+      ],
+      "notice": ""
+    }
+  ],
+  "failed": 1
+}

@@ -39,6 +39,11 @@ of those files. All three are declared `redundant_with` in my status file. GATE-
 `done` **during** this round and its new gate landed in the worktree mid-measurement, so §1 reports
 both versions.
 
+**Artifacts.** The two subject outputs this verdict rests on are copied to
+`corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/`, because `reports/` is gitignored and a verdict
+whose evidence is never published is a verdict nobody can check — which is the class
+`check-image-refs.mjs`, one of the subjects, exists to catch.
+
 Instruments built for this round, each with a control that is shown able to fail:
 
 | tool | what it does |

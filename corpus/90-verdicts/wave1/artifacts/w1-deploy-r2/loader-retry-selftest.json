@@ -1,0 +1,389 @@
+{
+  "tool": "tools/playability/loader-retry.mjs",
+  "defect": "P10 — the data loader had no retry; a 503 killed boot and was reported as a missing file",
+  "commit": "3675320d2d0fbc514e80825d26b6f17edb82c388",
+  "at": "2026-08-08T12:50:51.092Z",
+  "faulted_file": "world/hazards.json",
+  "retry_policy_under_test": "engine.js LOAD_RETRY: 4 attempts, 250/750/1750 ms +-40% jitter, 12000 ms whole-load sleep budget, 24 retry ceiling",
+  "arms": [
+    {
+      "arm": "clean",
+      "what": "no faults — the fixture serves the real game and it boots",
+      "pass": true,
+      "why": null,
+      "booted": true,
+      "elapsed_ms": 49387,
+      "requests_for_faulted_path": 1,
+      "loader_error": null,
+      "notice": "Elder Souls Loading the province… About 17 MB. 17s so far. Copy this for the report",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 10s so far. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 17s so far. Copy this for the report"
+      ],
+      "diagnostic": null,
+      "transient_seen_by_notice": null,
+      "loader_retry_log": {
+        "attempts": 569,
+        "retries": 0,
+        "sleptMs": 0,
+        "events": [],
+        "stopped": null,
+        "failure": null
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "flaky",
+      "what": "503 on the first 2 requests for world/hazards.json, 200 after — the game must boot through it",
+      "pass": true,
+      "why": null,
+      "booted": true,
+      "elapsed_ms": 37234,
+      "requests_for_faulted_path": 3,
+      "loader_error": null,
+      "notice": "Elder Souls Loading the province… About 17 MB. 21s so far.The server refused 2 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 1 request (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 2 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 11s so far.The server refused 2 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 21s so far.The server refused 2 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report"
+      ],
+      "diagnostic": null,
+      "transient_seen_by_notice": {
+        "count": 2,
+        "last": "503 on data/world/hazards.json",
+        "status": 503
+      },
+      "loader_retry_log": {
+        "attempts": 571,
+        "retries": 2,
+        "sleptMs": 1112,
+        "events": [
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 1,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 2,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "recovered",
+            "on_attempt": 3
+          }
+        ],
+        "stopped": null,
+        "failure": null
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "persistent",
+      "what": "503 for ever on world/hazards.json — must give up and say 503, the URL and the attempt count",
+      "pass": true,
+      "why": null,
+      "booted": false,
+      "elapsed_ms": 8803,
+      "requests_for_faulted_path": 4,
+      "loader_error": "data file UNAVAILABLE: world/hazards.json — HTTP 503 on http://127.0.0.1:36601/game/data/world/hazards.json, unchanged after 4 attempts spanning 3020 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload.",
+      "notice": "Elder Souls The world failed to build. data file UNAVAILABLE: world/hazards.json — HTTP 503 on http://127.0.0.1:36601/game/data/world/hazards.json, unchanged after 4 attempts spanning 3020 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload.Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 420 requests, 3 r",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 1 request (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 2 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 3 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 4 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls The world failed to build. data file UNAVAILABLE: world/hazards.json — HTTP 503 on http://127.0.0.1:36601/game/data/world/hazards.json, unchanged after 4 attempts spanning 3020 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload.Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 420 requests, 3 retries, 3020ms waiting, gave up at 4 attempts, last 503 on world/hazards.json · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report"
+      ],
+      "diagnostic": "The world failed to build. :: data file UNAVAILABLE: world/hazards.json — HTTP 503 on http://127.0.0.1:36601/game/data/world/hazards.json, unchanged after 4 attempts spanning 3020 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload. :: canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0",
+      "transient_seen_by_notice": {
+        "count": 4,
+        "last": "503 on data/world/hazards.json",
+        "status": 503
+      },
+      "loader_retry_log": {
+        "attempts": 420,
+        "retries": 3,
+        "sleptMs": 3020,
+        "events": [
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 1,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 2,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 3,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 4,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "gave-up",
+            "status": 503,
+            "attempt": 4,
+            "stopped": "4 attempts"
+          }
+        ],
+        "stopped": "4 attempts",
+        "failure": {
+          "file": "world/hazards.json",
+          "url": "http://127.0.0.1:36601/game/data/world/hazards.json",
+          "status": 503,
+          "attempts": 4,
+          "kind": "transient",
+          "stopped": "4 attempts"
+        }
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "notfound",
+      "what": "404 for ever on world/hazards.json — must fail on the FIRST request, no retry",
+      "pass": true,
+      "why": null,
+      "booted": false,
+      "elapsed_ms": 6835,
+      "requests_for_faulted_path": 1,
+      "loader_error": "data file MISSING: world/hazards.json — HTTP 404 on http://127.0.0.1:43271/game/data/world/hazards.json, after 1 attempt. A 404 is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.",
+      "notice": "Elder Souls The world failed to build. data file MISSING: world/hazards.json — HTTP 404 on http://127.0.0.1:43271/game/data/world/hazards.json, after 1 attempt. A 404 is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 417 requests, 0 retries, 0ms waiting, last 404 on world/hazards.json · buil",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 404 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 417 requests, 0 retries, 0ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+        "Elder Souls The world failed to build. data file MISSING: world/hazards.json — HTTP 404 on http://127.0.0.1:43271/game/data/world/hazards.json, after 1 attempt. A 404 is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 417 requests, 0 retries, 0ms waiting, last 404 on world/hazards.json · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report"
+      ],
+      "diagnostic": "The world failed to build. :: data file MISSING: world/hazards.json — HTTP 404 on http://127.0.0.1:43271/game/data/world/hazards.json, after 1 attempt. A 404 is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs. :: canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 41",
+      "transient_seen_by_notice": null,
+      "loader_retry_log": {
+        "attempts": 417,
+        "retries": 0,
+        "sleptMs": 0,
+        "events": [
+          {
+            "file": "world/hazards.json",
+            "outcome": "permanent",
+            "status": 404,
+            "attempt": 1
+          }
+        ],
+        "stopped": null,
+        "failure": {
+          "file": "world/hazards.json",
+          "url": "http://127.0.0.1:43271/game/data/world/hazards.json",
+          "status": 404,
+          "attempts": 1,
+          "kind": "permanent"
+        }
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "null-control",
+      "what": "arm 2 with the retry deleted from the served engine.js — MUST FAIL (rule 6)",
+      "pass": true,
+      "why": null,
+      "booted": false,
+      "elapsed_ms": 5595,
+      "requests_for_faulted_path": 1,
+      "loader_error": "data file missing: world/hazards.json (503)",
+      "notice": "Elder Souls The world failed to build. data file missing: world/hazards.json (503)Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB.The server refused 1 request (503 on data/world/hazards.json). Nothing is missing — the game is asking again. Copy this for the report",
+        "Elder Souls The world failed to build. data file missing: world/hazards.json (503)Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report"
+      ],
+      "diagnostic": "The world failed to build. :: data file missing: world/hazards.json (503) :: canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.",
+      "transient_seen_by_notice": {
+        "count": 1,
+        "last": "503 on data/world/hazards.json",
+        "status": 503
+      },
+      "loader_retry_log": {
+        "attempts": 0,
+        "retries": 0,
+        "sleptMs": 0,
+        "events": [],
+        "stopped": null,
+        "failure": null
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "control-sane",
+      "what": "no faults, retry deleted — MUST BOOT, or arm 5 proves only that the strip broke the file",
+      "pass": true,
+      "why": null,
+      "booted": true,
+      "elapsed_ms": 29602,
+      "requests_for_faulted_path": 1,
+      "loader_error": null,
+      "notice": "Elder Souls Loading the province… About 17 MB. 16s so far. Copy this for the report",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 10s so far. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 15s so far. Copy this for the report",
+        "Elder Souls Loading the province… About 17 MB. 16s so far. Copy this for the report"
+      ],
+      "diagnostic": null,
+      "transient_seen_by_notice": null,
+      "loader_retry_log": {
+        "attempts": 0,
+        "retries": 0,
+        "sleptMs": 0,
+        "events": [],
+        "stopped": null,
+        "failure": null
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "instrument-404",
+      "what": "SABOTAGE: make the loader retry a 404 — arm 4 must go RED, or arm 4 cannot see a retried 404 at all",
+      "pass": true,
+      "why": null,
+      "booted": false,
+      "elapsed_ms": 8257,
+      "requests_for_faulted_path": 4,
+      "loader_error": "data file UNAVAILABLE: world/hazards.json — HTTP 404 on http://127.0.0.1:43711/game/data/world/hazards.json, unchanged after 4 attempts spanning 2665 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload.",
+      "notice": "Elder Souls The world failed to build. data file UNAVAILABLE: world/hazards.json — HTTP 404 on http://127.0.0.1:43711/game/data/world/hazards.json, unchanged after 4 attempts spanning 2665 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload.Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 420 requests, 3 r",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 404 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 417 requests, 0 retries, 0ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 404 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 418 requests, 1 retries, 185ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 404 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 419 requests, 2 retries, 921ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 404 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 420 requests, 3 retries, 2665ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+        "Elder Souls The world failed to build. data file UNAVAILABLE: world/hazards.json — HTTP 404 on http://127.0.0.1:43711/game/data/world/hazards.json, unchanged after 4 attempts spanning 2665 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload.Please send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 420 requests, 3 retries, 2665ms waiting, gave up at 4 attempts, last 404 on world/hazards.json · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report"
+      ],
+      "diagnostic": "The world failed to build. :: data file UNAVAILABLE: world/hazards.json — HTTP 404 on http://127.0.0.1:43711/game/data/world/hazards.json, unchanged after 4 attempts spanning 2665 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it. This usually clears on a reload. :: canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0",
+      "transient_seen_by_notice": null,
+      "loader_retry_log": {
+        "attempts": 420,
+        "retries": 3,
+        "sleptMs": 2665,
+        "events": [
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 404,
+            "attempt": 1,
+            "detail": "HTTP 404"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 404,
+            "attempt": 2,
+            "detail": "HTTP 404"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 404,
+            "attempt": 3,
+            "detail": "HTTP 404"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 404,
+            "attempt": 4,
+            "detail": "HTTP 404"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "gave-up",
+            "status": 404,
+            "attempt": 4,
+            "stopped": "4 attempts"
+          }
+        ],
+        "stopped": "4 attempts",
+        "failure": {
+          "file": "world/hazards.json",
+          "url": "http://127.0.0.1:43711/game/data/world/hazards.json",
+          "status": 404,
+          "attempts": 4,
+          "kind": "transient",
+          "stopped": "4 attempts"
+        }
+      },
+      "page_errors": []
+    },
+    {
+      "arm": "instrument-lie",
+      "what": "SABOTAGE: put the original \"A file the game needs is missing\" back for 5xx — arm 2 must go RED",
+      "pass": true,
+      "why": null,
+      "booted": true,
+      "elapsed_ms": 33384,
+      "requests_for_faulted_path": 3,
+      "loader_error": null,
+      "notice": "Elder Souls A file the game needs is missing. 503 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 418 requests, 1 retries, 348ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+      "notice_lines": [
+        "Elder Souls Loading the province… About 17 MB. The first load is the slow one. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 503 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 417 requests, 0 retries, 0ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report",
+        "Elder Souls A file the game needs is missing. 503 on data/world/hazards.jsonPlease send this line:canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 418 requests, 1 retries, 348ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141. Copy this for the report"
+      ],
+      "diagnostic": "A file the game needs is missing. :: 503 on  data/world/hazards.json  :: canvas 1920x1080 css 360x640 · vp 360x640@1 · mem 8GB · cores 4 · webgl2 · maxTex 8192 · maxRB 8192 · varyings 31 · vtex 32 · float-rt yes · Google Inc. (Google)/ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero · game-ctx not-yet · load 418 requests, 1 retries, 348ms waiting · build ? /game/index.html · ua Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.",
+      "transient_seen_by_notice": null,
+      "loader_retry_log": {
+        "attempts": 571,
+        "retries": 2,
+        "sleptMs": 1234,
+        "events": [
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 1,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "transient",
+            "status": 503,
+            "attempt": 2,
+            "detail": "HTTP 503"
+          },
+          {
+            "file": "world/hazards.json",
+            "outcome": "recovered",
+            "on_attempt": 3
+          }
+        ],
+        "stopped": null,
+        "failure": null
+      },
+      "page_errors": []
+    }
+  ],
+  "passed": 8,
+  "total": 8,
+  "screenshot": null
+}
