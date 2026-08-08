@@ -16,7 +16,7 @@
     "role": "critic.lore.canon",
     "model": "claude-opus-5",
     "started_at": "2026-08-08T02:55:00Z",
-    "finished_at": "2026-08-08T04:07:12Z",
+    "finished_at": "2026-08-08T04:21:01Z",
     "conflict_of_interest": false,
     "saw_builder_notes_before_blind": true,
     "blind_pack_built_by_critic": true,
@@ -91,6 +91,16 @@
         "command": "node tools/contention.mjs --gate",
         "exit_code": 3,
         "stdout_artifact": "WAIT at the start of this run (4 instances, load 4.60 per core over a 4.0 ceiling). I did NOT proceed past it: the whole of the offline work was done first and the gate returned GO (1 instance, 0.99 per core) before any browser was launched."
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r4-shelf.mjs --shot <png>",
+        "exit_code": 1,
+        "stdout_artifact": "Every document in the six most loaded rooms walked to and opened separately, 45 legs. soulrest-court-steps declared 14 spawned 14 min separation 2.60 m openable 14/14; gideon-grange 9/9 at 2.66 m; gideon-court 4/6 at 3.53 m; lilmoth-customs 6/6 at 3.92 m; archon-guild-office 5/5 at 3.42 m; helstrom-undertemple 3/5 at 3.32 m. Crowding holds; four documents do not open. Exit 1."
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r4-blocked.mjs --shot docs/shots/2026-08-08-w1-23-r4-critic-a-book-open-in-the-lilmoth-customs-house.png",
+        "exit_code": 1,
+        "stdout_artifact": "The four failures diagnosed, with two controls that opened. The pre-registered hypothesis — the 2.6 m exit-door reach — is REFUTED: the four objects are 10.16 to 12.18 m from continuity.interior_spawn. The cause is a nearer prop: a site-marks.json entry at a hard-coded coordinate 0.50-0.90 m from where a player stands to read the book, and engine.js:3270 takes the nearest prop inside reach. '4 of 6 legs did not open their book; 0 of those are explained by the door taking the press.' Exit 1."
       }
     ]
   },
@@ -358,7 +368,7 @@
       "hard_fails": [],
       "evidence": [
         "tools/lore/critic-w1-23-r4-onscreen.mjs",
-        "reports/w1-23-r4/critic-onscreen.json",
+        "reports/w1-23-r4-critic-survey.md",
         "tools/lore/critic-w1-23-r4-shelf.mjs",
         "tools/lore/critic-w1-23-r4-blocked.mjs",
         "reports/w1-23-r4/consume.json",
@@ -372,12 +382,6 @@
       "kind": "report",
       "produced_by": "node tools/lore/critic-w1-23-r4-onscreen.mjs",
       "note": "Twelve legs, both halves of six registered contradiction pairs, through the input pipeline. Asserts three things per leg: the id that opened, non-zero drawn characters, and that long words out of that book's own record are among the strings the frame drew. Carries a cross-talk arm and a control that asserts the prop is present before it presses. Refuses to run if its own bytes name the harness door into the book screen or the documented engine back door."
-    },
-    {
-      "path": "reports/w1-23-r4/critic-onscreen.json",
-      "kind": "trace",
-      "produced_by": "node tools/lore/critic-w1-23-r4-onscreen.mjs",
-      "note": "Per-leg record: prop eid and reach, distance stood, id opened, characters drawn, which of the book's own words were on the screen, nearest other document in the room."
     },
     {
       "path": "tools/lore/critic-w1-23-r4-shelf.mjs",
@@ -407,7 +411,9 @@
       "path": "docs/shots/2026-08-08-w1-23-r4-critic-a-book-open-in-the-lilmoth-customs-house.png",
       "kind": "screenshot",
       "produced_by": "node tools/lore/critic-w1-23-r4-shelf.mjs --shot",
-      "note": "The Blessings of the Coast, open, one metre from the shelf in the Lilmoth customs house — the Empire's own answer to whether subjects of the Empire are held as property. Round 3 found this book reachable from nowhere in the world."
+      "note": "The Blessings of the Coast, open, one metre from the shelf in the Lilmoth customs house — the Empire's own answer to whether subjects of the Empire are held as property. Round 3 found this book reachable from nowhere in the world.",
+      "resolution": "1280x720",
+      "camera_pose": "n/a as a world viewpoint — this is the BOOK SCREEN, a full-canvas 2D UI surface, and its being on the screen at all is the thing under test. World state behind it: interior lilmoth-customs, player teleported to 1.0 m from the prop interior-readable:the-blessings-of-the-coast toward the room centre (object 11.10 m from continuity.interior_spawn, so well outside the 2.6 m exit-door reach), `interact` pressed and released through queueInputs on frames 1 and 3, 10 fixed steps, then renderFrame(). setRenderRate 0, deviceScaleFactor 1, colorScheme light, reducedMotion reduce, locale en-GB, timezone UTC. Canvas element captured rather than the page, because two full-page captures timed out at 30 s and 120 s on a box at 7.6 load per core. No harness door into the book screen and no engine back door — asserted against the capturing tool's own bytes."
     },
     {
       "path": "tools/lore/critic-w1-23-r3-reach.mjs",
@@ -464,10 +470,10 @@
       "note": "Diagnoses the four documents the shelf census found inert: stands at each, presses, and reads back the world state that decided what the press did — player position, the room's interior_spawn, the 2.6 m door reach, and everything else inside the interact radius. Carries two controls, one in the same room that does open and one in a clean room. Also takes the screenshot, at a smaller viewport, because the full-size one timed out twice on a loaded box."
     },
     {
-      "path": "reports/w1-23-r4/critic-shelf.json",
-      "kind": "trace",
-      "produced_by": "node tools/lore/critic-w1-23-r4-shelf.mjs",
-      "note": "Per-room census: declared documents, spawned props, real pairwise minimum separation measured in the built room, and how many are separately openable."
+      "path": "reports/w1-23-r4-critic-survey.md",
+      "kind": "report",
+      "produced_by": "written by the critic from the three instruments' stdout",
+      "note": "Every measurement behind this verdict, with the command that produced it above each block. The per-run .json artifacts live at reports/w1-23-r4/critic-onscreen.json, critic-shelf.json and critic-blocked.json and are UNTRACKED BY DESIGN — reports/.gitignore drops run artifacts because they are regenerable from the tools and keeps the written report, which is this file. That is the project's own stated rule and the reason this file exists."
     }
   ],
   "arbitration": {
@@ -512,35 +518,40 @@
   "status": "FAIL",
   "status_reasons": [
     "min-over-axes 4 against a wave-1 gate of 7.0",
+    "4 of 45 documents in the six most loaded rooms are placed, drawn and inert under the interact button, because two placement mechanisms in the same room do not see each other's coordinates — one of the four is half of a registered contradiction pair",
     "RI-LOR04 bands 0 native on the shipped tree — its own §Scoring 0-row, 2.37% unclassifiable against a 2.00% line — which SCORING.md §1.2 step 1 caps at ladder 4",
-    "4 of 45 documents in the six most loaded rooms are placed, drawn and inert under the interact button — one of them half of a registered contradiction pair",
     "13 of 28 registered disputes still change nothing anybody says",
     "5 of 10 taxa remain below RI-LOR03 §2's stated minimums, and T4 is at 61 against a floor of 16"
   ],
   "biggest_gap": {
-    "id": "GAP-W1-lor04-eight-unclassifiable-names",
-    "gap_id": "GAP-W1-lor04-eight-unclassifiable-names",
-    "what": "RI-LOR04 bands 0 on the shipped tree — its own §Scoring 0-row, 'unknown / total > 0.02' — on eight names out of 337, five of which are not naming defects at all. Four are Imperial officers stored as bare mononyms because their rank lives in the record id (prefect-hallow, quartermaster-sedd, harbourmistress-tesh, innkeeper-veth), so the validator is shown 'Sedd' where RI-LOR04 §5's Imperial row wants praenomen + nomen. One is `Archein Weighs-The-Season`, a good Argonian name whose title prefix `Archein` is simply missing from jel-lexicon.json's tamrielic_name_grammar.title_prefixes array, where the other fifteen attested prefixes all are, even though §4 says a title prefix is stripped before classification. The remaining three — Ashul, Mek, Eshi — are one-word Argonian names too short for any culture rule to grip, and round 3 said explicitly that the hand-authored names are good.",
-    "why_it_matters": "RI-LOR04 §Scoring says 'Failure threshold: below 3 blocks the wave', and this is the axis that sets the min-over-axes score. Everything else in the item now passes: §4 held at 9.1% against an attested 11%, zero apostrophes, zero reuse, zero template slugs, 521 real renames, and blind culture-attribution at 100%, which is the band-5 row. The round declined to touch these eight on the reasonable ground that 'gaming a band by rewriting the cast is the opposite of the job' — and that ground does not apply, because the repair is not a rewrite. Round 3 said the hand-authored names are good; they are, and the fix keeps every one of them intact.",
+    "id": "GAP-W1-two-placement-mechanisms-collide",
+    "gap_id": "GAP-W1-two-placement-mechanisms-collide",
+    "what": "Two placement mechanisms put objects into the same interior without either knowing where the other's are, and four documents — one of them half of a registered contradiction pair — are placed, drawn, standable-at, and open NOTHING when a player presses interact at them. render/interior.js allocates a wall slot per `readable[]` entry with a 2.6 m minimum separation computed over that list AND NOTHING ELSE. game/data/world/readables/site-marks.json puts twenty-five quest documents into interiors at hard-coded coordinates by a different route. engine.js:3270 gives the press to the nearest prop inside its reach. Measured: gideon-court/a-short-account-of-the-pacification loses to a site-mark 0.72 m away, gideon-court/the-legates-seal-register to one 0.50 m away, helstrom-undertemple/the-coast-survey-line to one 0.90 m away, helstrom-undertemple/the-helstrom-kin-list to one 0.77 m away. Two controls opened: the-casebook-i in the same room, and the-blessings-of-the-coast in a clean one.",
+    "why_it_matters": "It is invisible to every instrument in the tree, including two I wrote. place-library --check is green. The substring reach test says 163 of 163. boot-check and check-content are green. Nineteen of nineteen pairs report both sides reachable. My own twelve chosen legs were 12/12. Only walking all forty-five documents in the loaded rooms found it — and the same collision will silently eat the next piece's placements, because nothing checks it. a-short-account-of-the-pacification is one half of the drowning-at-the-ford dispute, so the round's headline claim contains a counter-example nobody could have seen. This is the failure shape ARBITRATION §3 exists for, one layer further in than usual: not unplaced, and not unread, but placed, drawn and inert under the button. The pre-registered hypothesis was the 2.6 m exit-door reach and it was WRONG — the four are 10.2 to 12.2 m from the interior spawn — which is recorded because a hypothesis stated before the run and then refuted is the only reason to believe the one that survived.",
     "evidence": [
-      "tools/lore/lor04-validate.mjs",
-      "tools/lore/critic-w1-23-r4-band.mjs",
+      "tools/lore/critic-w1-23-r4-shelf.mjs",
+      "tools/lore/critic-w1-23-r4-blocked.mjs",
+      "reports/w1-23-r4-critic-survey.md",
       "corpus/90-verdicts/wave1/W1-23-r4.md"
     ],
-    "evidence_note": "The remedy was not estimated. lor04-validate reports BAND 0 with 'hard 0: 2.4% unclassifiable > 2%' and names the eight: Hallow, Sedd, Tesh, Ashul, Veth, Mek, Eshi, Archein Weighs-The-Season. critic-w1-23-r4-band.mjs applies exactly those eight edits to the shipped population and bands it with the shipped code: 0 -> 3 (ladder 6), and an apostrophe puts it back to 0 by a different clause, so the band is live in both directions. The cheapest possible variant — a praenomen prefixed to five existing words, one Jel element, one title stripped — was run separately and lands on band 3, ladder 6, M2 3.49%, M3 0.00%. The prefix rather than replace choice is because grep -rlw over game/data/books, game/data/dialogue and game/data/quests finds Sedd named in 9 authored files, Tesh in 8 and Ashul in 13, all reported in the verdict §7.",
+    "evidence_note": "The census is 45 legs across the six most loaded rooms: soulrest-court-steps 14/14 openable at exactly the 2.60 m minimum, gideon-grange 9/9 at 2.66 m, lilmoth-customs 6/6, archon-guild-office 5/5, gideon-court 4/6, helstrom-undertemple 3/5. The diagnostic then stands at each failure, presses, and reads back the player position, the room's interior_spawn, the 2.6 m door reach and everything else inside the interact radius, with a control in the same room and a control in a clean room.",
     "remedy": {
-      "action": "Put a praenomen in front of the four Imperial mononyms, keeping the existing word intact as the nomen: Hallow -> Aurelia Hallow, Sedd -> Marcus Sedd, Tesh -> Ottavia Tesh, Veth -> Gaius Veth. Give the three short Argonian names a second element out of the lexicon's own roots: Ashul -> Ashul-Vei, Mek -> Mek-Tei, Eshi -> Eshi-Kha. Add `Archein` to jel-lexicon.json -> tamrielic_name_grammar.title_prefixes, where the other fifteen attested title-prefixes already are. Nothing is replaced, so the prose in the twenty-two dialogue, book and quest files that name these people by their existing word still reads correctly — a Roman is referred to by his nomen. Then arm the gate: lor04-validate already exits 1 below band 3, so calling it from tools/check-content.mjs turns the next roster regression into a CI failure instead of a critic's finding. While in the file, fix the two things a phonotactic validator cannot see: flag `kaoc`, `naga`, `hist`, `jel` and `lukiul` as no_coin in jel-lexicon.json and skip them in jelCompoundCandidates(), which removes Lukiul-Skei, Lukiul-Teekh, Xan-Jel, Shal-Naga, Wux-Naga, Haj-Saxhleel, Histlith and Shaa-Hist; and hand-pick the twenty Tamrielic-facing descriptive names instead of drawing them from a verb x noun cross-product, which removes Sleeps-Doors, Bites-Ledgers and Paints-Flies.",
-      "acceptance": "node tools/lore/lor04-validate.mjs exits 0 with BAND >= 3 and M3 = 0.00% at the fix commit (today: exit 1, BAND 0, M3 2.37%). node tools/lore/critic-w1-23-r4-band.mjs still reports the band going back to 0 when an apostrophe is introduced, so the gate has not been loosened to reach the number. No name in game/data/npcs/** matches /^(Lukiul|Xan-Jel|Shal-Naga|Wux-Naga|Haj-Saxhleel|Histlith|Shaa-Hist)/. tools/check-content.mjs calls lor04-validate and fails the build below band 3.",
+      "action": "Seed render/interior.js's `taken` array — the one `farEnough(s)` tests candidate wall slots against — with every site-marks.json entry whose `at.interior` is this room, before the readable loop runs. The coordinates are static data in a file that is already loaded, so this is a read and a concat, not a new system. Do the same for `unique_item` and `containers`, which are placed by the same function a few lines above and have the identical problem waiting. Then arm it where a check can see it, because a separation rule with no test is how this happened: extend tools/check-content.mjs (which runs for everybody, not just this piece) with the assertion the census makes — for every interior carrying a `readable`, no two interactable props within min(reach_m) of each other. That is a pure-data check, it needs no browser, and it would have failed on this tree today.",
+      "acceptance": "node tools/lore/critic-w1-23-r4-shelf.mjs reports 45/45 separately openable across the six most loaded rooms (today 41/45, with gideon-court 4/6 and helstrom-undertemple 3/5), and node tools/lore/critic-w1-23-r4-blocked.mjs exits 0 with all six legs opening their book (today it exits 1 with four unexplained). The new data check in tools/check-content.mjs fails on a tree where the render/interior.js change is reverted, so the guard is watched failing rather than assumed.",
       "targets": [
-        "game/data/npcs/quest-givers.json",
-        "corpus/60-lore/data/jel-lexicon.json",
-        "tools/lore/lib/namegen.mjs",
-        "tools/check-content.mjs"
+        "game/src/render/interior.js",
+        "tools/check-content.mjs",
+        "game/data/world/readables/site-marks.json",
+        "game/data/world/interiors/"
       ]
     },
     "severity": "blocking"
   },
   "secondary_observations": [
+    {
+      "what": "RUNNER-UP GAP, and it is the axis that pins the score. RI-LOR04 bands 0 on the shipped tree — its own §Scoring 0-row, 2.37% unclassifiable against a 2.00% line, 8 names of 337 — and the item says below band 3 blocks the wave. Five of the eight are not naming defects at all: four are Imperial officers stored as bare mononyms because their rank lives in the record id (prefect-hallow, quartermaster-sedd, harbourmistress-tesh, innkeeper-veth), and one is a good Argonian name whose title prefix `Archein` is missing from jel-lexicon.json's title_prefixes array even though RI-LOR04 §4 says a title prefix is stripped before classification. REMEDY, VERIFIED WITH THE SHIPPED VALIDATOR RATHER THAN ESTIMATED: prefix a praenomen to the four Imperial mononyms keeping the existing word intact as the nomen (Aurelia Hallow, Marcus Sedd, Ottavia Tesh, Gaius Veth — nothing breaks, because the nine dialogue files that say Sedd and the thirteen that say Ashul still read correctly), give the three short Argonian names a second element from the lexicon's own roots (Ashul-Vei, Mek-Tei, Eshi-Kha), and add Archein to title_prefixes. Applied to the shipped population and banded by the shipped tool: band 0 -> 3, ladder 6, M2 5.93% -> 3.49%, M3 2.37% -> 0.00%, M3 list empty. Then call lor04-validate from tools/check-content.mjs, where it already exits 1 below band 3. Full write-up in the verdict §7a.",
+      "severity": "blocking"
+    },
     {
       "what": "tools/lore/lor04-validate.mjs ends with a bare `process.exit(argv.includes('--self-test') ? selfTest() : run(argv));` and no IS_MAIN guard, so importing it runs the whole validation and exits the importer — the exact defect this same round found, documented and fixed one file over in place-library.mjs ('the consumption run reported exit 0 having measured nothing'). tools/lore/name-rosters.mjs has it too. Nothing in the tree imports either today, so no published number is wrong; it is a trap, not a wound, and it cost me a run and a workaround.",
       "severity": "major"
@@ -582,7 +593,7 @@
       "evidence": [
         "tools/lore/critic-w1-23-r3-reach.mjs",
         "tools/lore/critic-w1-23-r4-onscreen.mjs",
-        "reports/w1-23-r4/critic-onscreen.json"
+        "reports/w1-23-r4-critic-survey.md"
       ],
       "evidence_note": "Round 3's gap was that 3 of 19 registered contradiction pairs had both sides reachable and 15 had neither. Re-measured with round 3's own instrument after re-running its self-test: 19 of 19, and 163 of 163 texts. Then checked past the instrument, because its reachability test is a substring match: 157 of 163 are a `readable` entry in an interior record and the other 6 are named by a book_id on an item, so not one is reachable only by the substring. Then checked past that, in a browser: twelve books, both halves of six pairs including the ford and held-as-property, opened by standing at the object and pressing interact, each drawing its own words onto the screen."
     }
@@ -672,7 +683,7 @@
     "remedy_is_buildable": true,
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "ran_every_assigned_method is false and the omissions are named in the markdown §10: no blind prose comparison (no reveal key exists on disk for any RI-LOR03 pack), RI-LOR06 methods 2 and 3 (657 hits, unreviewable, unchanged since round 1), and the eleven texts written this round were not walked to. The escalation ladder applies to the biggest gap: eight names out of 337 is a small-looking finding, and it is named as blocking because RI-LOR04's own §Scoring says below band 3 blocks the wave and because the repair was applied and banded rather than estimated."
+    "self_audit_note": "ran_every_assigned_method is false and the omissions are named in the markdown §10: no blind prose comparison (no reveal key exists on disk for any RI-LOR03 pack), RI-LOR06 methods 2 and 3 (657 hits, unreviewable, unchanged since round 1), and the eleven texts written this round were not walked to. The escalation ladder applies to the biggest gap: eight names out of 337 is a small-looking finding, and it is named as blocking because RI-LOR04's own §Scoring says below band 3 blocks the wave and because the repair was applied and banded rather than estimated. One further limit, stated here because it bounds the biggest gap: only the six rooms carrying four or more documents were censused (45 legs, 41 opened). The other 77 rooms with readables were not walked, and because the four failures are a COLLISION with a second placement mechanism rather than crowding, 4 is a LOWER BOUND on the number of unopenable documents in this build and I do not know the real one. The pure-data check in the remedy would answer it in a second without a browser, which is the main reason to write it."
   },
   "notes": "This round did the thing this project keeps failing to do: it took a critic's remedy literally, implemented it with no new mechanism, and then measured itself hard enough to find two defects in its own tools and write them down. I tried to break the headline four ways — what 'referenced' means, whether the pairs really are split across rooms, whether the naming percentage moved by renaming or by reclassifying, and whether any of it is on a screen — and it held on all four. The one thing it declared it could not do turned out to be a two-line diagnosis, and I closed it rather than repeating it. The score is flat at 4 and the work is not: round 3 could not compute RI-LOR04's band, round 4 built the tool that can, and the first thing that tool did was report 0 on eight names. That is the correct behaviour of an honest instrument and it is also why the number did not move. What is left is those eight names, a semantic filter the name generator does not have, and half a register that still says nothing."
 }

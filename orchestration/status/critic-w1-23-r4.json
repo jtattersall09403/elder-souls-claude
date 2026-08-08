@@ -3,27 +3,27 @@
   "role": "critic",
   "piece": "W1-23",
   "round": 4,
-  "state": "writing",
+  "state": "done",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "shelf/crowding run + screenshot in flight; then blog line and commit",
+  "next_step": "committed; hand to the orchestrator",
   "files_touched": [
     "orchestration/status/critic-w1-23-r4.json",
     "corpus/90-verdicts/wave1/W1-23-r4.md",
     "corpus/90-verdicts/wave1/W1-23-r4.json",
     "tools/lore/critic-w1-23-r4-onscreen.mjs",
     "tools/lore/critic-w1-23-r4-shelf.mjs",
+    "tools/lore/critic-w1-23-r4-blocked.mjs",
     "tools/lore/critic-w1-23-r4-band.mjs",
     "tools/lore/critic-w1-23-r4-blind.mjs",
     "tools/lore/critic-w1-23-r4-lor04-lib.mjs",
-    "reports/w1-23-r4/critic-onscreen.json"
-  ],
-  "files_claimed": [
     "docs/shots/2026-08-08-w1-23-r4-critic-a-book-open-in-the-lilmoth-customs-house.png",
-    "reports/w1-23-r4/critic-shelf.json",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "reports/w1-23-r4-critic-survey.md"
   ],
+  "files_claimed": [],
   "notes": "contention --gate reported WAIT at start (4 instances, load 4.60/core over 4.0 ceiling). Doing offline work first.",
   "findings_so_far": [
+    "BIGGEST GAP, found by walking all 45 documents in the six most loaded rooms rather than the 12 I chose: 4 are placed, drawn and open NOTHING. Cause is NOT crowding (min separation 3.53 m and 3.32 m in those rooms) and NOT the exit door (pre-registered hypothesis, refuted \u2014 the four are 10.2-12.2 m from the interior spawn). Cause is a site-marks.json document at a hard-coded coordinate 0.50-0.90 m away winning engine.js:3270's nearest-prop test. Two controls opened.",
     "REPRODUCED at HEAD: reach 19/19 BOTH, 163/163 texts, self-test 14/14. place-library --self-test 7/7, --check exit 0.",
     "PLACEMENT IS REAL, NOT A SUBSTRING: 157 of 163 books are a `readable` entry in an interior record and the other 6 are named by a book_id on an item. Zero are reachable only by the instrument's substring test.",
     "ON SCREEN, 12 legs in a browser: 12/12 opened the right book by pressing interact at the shelf, 12/12 drew that book's OWN words (1328-1754 chars), 0 cross-talk, control 4/4 prop present and 4/4 stayed shut, 0 of 12 had another document within 1 m.",
@@ -51,8 +51,10 @@
   "axes": {
     "RI-LOR03": 6,
     "RI-LOR06": 6,
-    "RI-MTH07": 7,
+    "RI-MTH07": 6,
     "RI-LOR04": 4
   },
-  "biggest_gap": "RI-LOR04 bands 0 on the shipped tree on 8 names of 337, five of which are not naming defects; the verified repair lifts it to native 3 / ladder 6."
+  "biggest_gap": "Two placement mechanisms put objects into the same interior without either knowing the other's coordinates. 4 of 45 documents in the six most loaded rooms are placed, drawn and inert under the interact button \u2014 one of them half of a registered contradiction pair. Diagnosed: a site-marks.json entry at a hard-coded coordinate 0.50-0.90 m from where a player stands, and engine.js:3270 takes the nearest prop. Remedy in the verdict \u00a77, acceptance re-measurable with my own two instruments.",
+  "finished_at": "2026-08-08T04:22:06Z",
+  "note_on_reports": "reports/w1-23-r4/critic-{onscreen,shelf,blocked}.json are on disk and untracked by design \u2014 reports/.gitignore drops run artifacts as regenerable and keeps the written report. The written report is reports/w1-23-r4-critic-survey.md and it is committed."
 }
