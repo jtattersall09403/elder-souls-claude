@@ -464,37 +464,63 @@ function fxBlockFar(data, id) {
   return rows;
 }
 
+// EACH LEAF IS ROUTED TO THE ONE FIXTURE THAT CAN REACH THE STATE IT GOVERNS, and to one
+// statblock that selects it. A generic sweep of 36 leaves x 4 variants x 6 fixtures x 4
+// statblocks is 3,456 runs and did not finish; routing is 36 x <=4 x 1 and finishes in minutes.
+// It is also the more honest instrument: naming the fixture is naming the claim. A leaf with no
+// route is a leaf I could not think of a way to reach, and it is reported as exactly that.
 const RESCUE_FX = {
-  ladder: { fn: fxLadder, ids: ['inf_trash', 'guard_legion'] },
-  losonly: { fn: fxLosOnly, ids: ['inf_trash', 'drowned_lesser'] },
-  leash: { fn: fxLeash, ids: ['inf_trash', 'drowned_lesser', 'champion_hist_marked', 'cst_sap_speaker'] },
-  swarm: { fn: fxSwarm, ids: ['beast_slitherfang', 'inf_trash'] },
-  blockfar: { fn: fxBlockFar, ids: ['guard_legion'] },
-  duel: { fn: fxDuel, ids: ['inf_trash', 'guard_legion', 'cst_sap_speaker'] },
+  ladder:   { fn: fxLadder,   id: 'inf_trash' },
+  losonly:  { fn: fxLosOnly,  id: 'inf_trash' },
+  leash:    { fn: fxLeash,    id: 'inf_trash' },
+  leashE:   { fn: fxLeash,    id: 'champion_hist_marked' },
+  leashA:   { fn: fxLeash,    id: 'drowned_lesser' },
+  swarm:    { fn: fxSwarm,    id: 'beast_slitherfang' },
+  blockfar: { fn: fxBlockFar, id: 'guard_legion' },
+  duel:     { fn: fxDuel,     id: 'inf_trash' },
+  healduel: { fn: fxHeal,     id: 'inf_trash' },
 };
+/** leaf path (or prefix) -> the fixtures that could possibly exercise it. */
+const ROUTES = [
+  ['perception.search_to_leash_frames', ['ladder']],
+  ['perception.suspicious_min_dwell_f', ['ladder']],
+  ['movement.max_yaw_rate_windup_dps', ['duel']],
+  ['movement.max_yaw_rate_active_dps', ['duel']],
+  ['commit.token_hold_cap_f', ['swarm']],
+  ['commit.tokens_by_group', ['swarm']],
+  ['commit.swarm_max_omega_m', ['swarm']],
+  ['block.', ['blockfar']],
+  ['leash.hard_m.trash', ['leash']],
+  ['leash.hard_m.elite', ['leashE']],
+  ['leash.hard_m.ambusher', ['leashA']],
+  ['leash.hard_m.boss', ['leashE']],
+  ['leash.no_los_seconds', ['losonly']],
+  ['leash.dist_multiple_of_sight', ['losonly']],
+  ['leash.return_heal_seconds', ['leash']],
+  ['punish_read.', ['healduel']],
+  ['archetype.', ['duel', 'leash']],
+];
+const routeFor = (p) => (ROUTES.find(([pre]) => p === pre || p.startsWith(pre)) || [null, []])[1];
 
 function rescue(data, paths) {
+  const used = new Set(paths.flatMap(routeFor));
   const base = {};
-  for (const [fx, cfg] of Object.entries(RESCUE_FX)) {
-    base[fx] = {};
-    for (const id of cfg.ids) base[fx][id] = hash(cfg.fn(loadCombatData(), id));
-  }
+  for (const fx of used) base[fx] = hash(RESCUE_FX[fx].fn(loadCombatData(), RESCUE_FX[fx].id));
   const out = [];
   for (const p of paths) {
+    const fxs = routeFor(p);
     const cur = getIn(loadCombatData().ai, p);
-    const moved = {};
+    let moved = null;
     outer:
     for (const variant of rescueVariants(cur)) {
-      for (const [fx, cfg] of Object.entries(RESCUE_FX)) {
-        for (const id of cfg.ids) {
-          const d2 = loadCombatData();
-          setIn(d2.ai, p, variant);
-          let h; try { h = hash(cfg.fn(d2, id)); } catch (e) { h = `throw:${e.message.slice(0, 30)}`; }
-          if (h !== base[fx][id]) { moved[fx] = { variant, id }; break outer; }
-        }
+      for (const fx of fxs) {
+        const d2 = loadCombatData();
+        setIn(d2.ai, p, variant);
+        let h; try { h = hash(RESCUE_FX[fx].fn(d2, RESCUE_FX[fx].id)); } catch (e) { h = `throw:${e.message.slice(0, 30)}`; }
+        if (h !== base[fx]) { moved = { fixture: fx, statblock: RESCUE_FX[fx].id, variant }; break outer; }
       }
     }
-    out.push({ path: p, value: cur, consumed: Object.keys(moved).length > 0, moved });
+    out.push({ path: p, value: cur, routed_to: fxs, consumed: !!moved, moved });
   }
   return out;
 }
