@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3b0cc43`: 741 tools, 153 reference
+so it cannot drift. Generated at `1028ba8`: 742 tools, 153 reference
 items, 72 pieces in flight.
 
 Its purpose is to stop 72+ concurrent agents each paying separately to discover the
@@ -683,8 +683,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
-### `tools/touch/` — 1
+### `tools/touch/` — 2
 
+- `tools/touch/critic-fight.mjs` — ================================================================================================= critic-fight.mjs — W1-TOUCH critic round 1.
 - `tools/touch/touch-run.mjs` — CAN A PHONE PLAY THIS?
 
 ### `tools/uesp/` — 8

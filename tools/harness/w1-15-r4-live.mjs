@@ -67,29 +67,42 @@ const OUT = await h.page.evaluate(async () => {
     H.stepFrames(3);
     const st = H.getStealthState();
     O.dark_room.hours[hour] = {
-      L: r4(st.L), V: r4(st.V),
+      L: r4(st.terms.L), V: r4(st.V),
       lights: st.lights ? { world_sources: st.lights.world_sources, ambient_L: r4(st.lights.ambient_L),
         synthesized: st.lights.synthesized_lamps, interior_ambient: st.lights.interior_ambient } : null,
     };
   }
   // A windowless room must NOT move with the clock — the `unlit` row's honest use.
-  H.enterInterior('stormhold-gaol');
+  // NOTE: `enterInterior` from INSIDE another interior does not switch cells — the first run of
+  // this tool reported stormhold-gaol's ambient as helstrom-apothecary's, which is a probe
+  // measuring the probe. Every room change here goes out through the door first.
+  try { H.exitInterior(); } catch { /* already outside */ }
+  H.setTimeOfDay(12);              // a gaol is not open at 21:00, and `useDoor` says so
+  H.stepFrames(2);
+  const gaolEnter = H.enterInterior('stormhold-gaol');
   H.stepFrames(3);
-  O.windowless = { id: 'stormhold-gaol', hours: {} };
+  O.windowless = { id: 'stormhold-gaol', entered: gaolEnter, hours: {} };
   for (const hour of [3, 12]) { H.setTimeOfDay(hour); H.stepFrames(3); const st = H.getStealthState(); O.windowless.hours[hour] = { ambient_L: r4(st.lights.ambient_L), windowless: st.lights.interior_ambient && st.lights.interior_ambient.windowless }; }
 
   // A LAMP-LIT room must still DISCRIMINATE — the round-3 critic's 2x2 arm 01 read a flat 1.0000
   // with the lamps kept and the old ambient restored, and that must not come back.
-  const LIT_ROOM = 'archon-apothecary';
+  // `thorn-inn` rather than `archon-apothecary`, and the reason is a measurement rather than a
+  // preference: after `render/exterior.js` fits each room to its building, archon-apothecary is a
+  // 9.83 x 4.98 m room holding EIGHT lamps and every cell in it saturates at L 1.0000 — under the
+  // round-3 flat 0.04 constant as well as under this round's derived ambient, so it is not a room
+  // in which any light model can be shown to discriminate. thorn-inn is a 10-lamp tavern that does.
+  const LIT_ROOM = 'thorn-inn';
   H.setTimeOfDay(12);
+  try { H.exitInterior(); } catch { /* already outside */ }
+  H.stepFrames(2);
   H.enterInterior(LIT_ROOM);
   H.stepFrames(3);
   {
     const rec = E.sim.settlements.interior(LIT_ROOM);
     const b = rec.bounds_m;
     let min = Infinity, max = -Infinity, minAt = null, maxAt = null;
-    for (let x = b.x[0] + 0.5; x <= b.x[1] - 0.5; x += 1) {
-      for (let z = b.z[0] + 0.5; z <= b.z[1] - 0.5; z += 1) {
+    for (let x = b.x[0] + 0.2; x <= b.x[1] - 0.2; x += 0.4) {
+      for (let z = b.z[0] + 0.2; z <= b.z[1] - 0.2; z += 0.4) {
         const L = H.getLightAt(x, b.y[0] + 1.35, z);
         if (L < min) { min = L; minAt = [x, z]; }
         if (L > max) { max = L; maxAt = [x, z]; }
@@ -102,7 +115,7 @@ const OUT = await h.page.evaluate(async () => {
     // And at 03:00 the same room must be darker, which round 3's flat constant could not say.
     H.setTimeOfDay(3); H.stepFrames(3);
     let min3 = Infinity;
-    for (let x = b.x[0] + 0.5; x <= b.x[1] - 0.5; x += 1) for (let z = b.z[0] + 0.5; z <= b.z[1] - 0.5; z += 1) min3 = Math.min(min3, H.getLightAt(x, b.y[0] + 1.35, z));
+    for (let x = b.x[0] + 0.2; x <= b.x[1] - 0.2; x += 0.4) for (let z = b.z[0] + 0.2; z <= b.z[1] - 0.2; z += 0.4) min3 = Math.min(min3, H.getLightAt(x, b.y[0] + 1.35, z));
     O.lit_room.L_min_at_0300 = r4(min3);
     O.lit_room.ambient_at_0300 = r4(H.getStealthState().lights.ambient_L);
     H.setTimeOfDay(12); H.stepFrames(3);
@@ -156,13 +169,15 @@ const OUT = await h.page.evaluate(async () => {
   // ---- C. THE ZONE, WALKED ------------------------------------------------------------------
   // Not a fixed instant (RULES.md 8): the body is moved across the room and the zone the world
   // reports is read at every step, then the body is taken outside and the zone must go null.
+  try { H.exitInterior(); } catch { /* already outside */ }
+  H.stepFrames(2);
   H.enterInterior(LIT_ROOM);
   H.stepFrames(3);
   {
     const rec = E.sim.settlements.interior(LIT_ROOM);
     const b = rec.bounds_m;
     const walk = [];
-    for (let z = b.z[0] + 0.5; z <= b.z[1] - 0.5; z += 2) {
+    for (let z = b.z[0] + 0.4; z <= b.z[1] - 0.4; z += 0.8) {
       E.sim.player.pos[0] = 0; E.sim.player.pos[2] = z;
       H.stepFrames(1);
       const st = H.getStealthState();
@@ -185,6 +200,8 @@ const OUT = await h.page.evaluate(async () => {
   }
 
   // ---- D. THE COVER VOLUMES -----------------------------------------------------------------
+  try { H.exitInterior(); } catch { /* already outside */ }
+  H.stepFrames(2);
   H.enterInterior(LIT_ROOM);
   H.stepFrames(3);
   {
@@ -193,14 +210,13 @@ const OUT = await h.page.evaluate(async () => {
       volumes: E.sim.stealth.coverVolumes.slice(0, 6).map((v) => ({ id: v.id, pos: v.pos.map(r4), from: v.from })) };
     // AND THE THING THAT READS THEM. A searcher's plan, built by the world rather than by a probe.
     const eid = 'cover-probe';
-    H.clearEnemies && H.clearEnemies();
     const rec = E.sim.settlements.interior(LIT_ROOM);
     const b = rec.bounds_m;
     E.sim.player.pos[0] = 0; E.sim.player.pos[1] = b.y[0]; E.sim.player.pos[2] = 0;
     H.stepFrames(1);
     let plan = null;
     try {
-      H.spawnEnemy({ eid, archetype: 'inf_trash', pos: [2.0, b.y[0], 3.0], yaw: 180 });
+      H.spawn('inf_trash', 2.0, 2.0, { as: eid, yaw: 180 });
       H.stepFrames(1);
       const ent = E.sim.entities.find((x) => x.eid === eid);
       ent.alert = 80; ent.alertState = 'SEARCH';
@@ -233,6 +249,8 @@ const OUT = await h.page.evaluate(async () => {
   H.loadState('default');
   H.setSeed(1337);
   H.setRenderRate(0);
+  try { H.exitInterior(); } catch { /* already outside */ }
+  H.stepFrames(2);
   H.enterInterior(LIT_ROOM);
   H.stepFrames(3);
   {
@@ -297,11 +315,11 @@ A('R4-A2', 'a windowed interior is brighter at noon than at 03:00',
   `${dr.id} ambient ${dr.hours[3].lights.ambient_L} at 03:00 -> ${dr.hours[12].lights.ambient_L} at noon`,
   dr.hours[12].lights.ambient_L > dr.hours[3].lights.ambient_L, 'noon strictly brighter; round 3 was flat 0.0400 at every hour');
 A('R4-A3', 'a WINDOWLESS interior does not move with the clock',
-  `${OUT.windowless.id}: ${OUT.windowless.hours[3].ambient_L} at 03:00, ${OUT.windowless.hours[12].ambient_L} at noon, windowless=${OUT.windowless.hours[3].windowless}`,
+  `${OUT.windowless.id} (entered=${JSON.stringify(OUT.windowless.entered && OUT.windowless.entered.entered)}): ${OUT.windowless.hours[3].ambient_L} at 03:00, ${OUT.windowless.hours[12].ambient_L} at noon, windowless=${OUT.windowless.hours[3].windowless}`,
   OUT.windowless.hours[3].ambient_L === OUT.windowless.hours[12].ambient_L && OUT.windowless.hours[12].ambient_L === 0.04,
   'flat 0.0400 — the `unlit interior / xanmeer depth` row, used on the 3 rooms it describes');
 A('R4-A4', 'a lamp-lit room still DISCRIMINATES (the r3 critic 2x2 arm-01 trap)',
-  `${OUT.lit_room.id}: ambient ${OUT.lit_room.ambient_L}, L ${OUT.lit_room.L_min}..${OUT.lit_room.L_max}, spread ${OUT.lit_room.spread}; darkest spot ${OUT.lit_room.L_min_at_0300} at 03:00`,
+  `${OUT.lit_room.id}: ${OUT.lit_room.world_sources} lamps, ambient ${OUT.lit_room.ambient_L} at noon / ${OUT.lit_room.ambient_at_0300} at 03:00; L ${OUT.lit_room.L_min}..${OUT.lit_room.L_max}, spread ${OUT.lit_room.spread}; darkest spot ${OUT.lit_room.L_min_at_0300} at 03:00`,
   OUT.lit_room.spread > 0.3 && OUT.lit_room.L_min_at_0300 < OUT.lit_room.L_min,
   'spread > 0.30 and the dark corner is darker at night — arm 01 read a flat 1.0000, spread 0');
 
@@ -343,8 +361,8 @@ A('R4-D2', 'and the searcher that reads them plans more than a two-second stare'
 const u = OUT.unidentified;
 const lastU = u.unidentified_rows[u.unidentified_rows.length - 1];
 A('R4-E1', 'guards do not approach you for a bounty nobody could pin on you',
-  `${u.unidentified_rows.length} unidentified reports -> total ${lastU.bounty_total} g, unattributed ${lastU.unattributed} g, attributed ${lastU.attributed_bounty} g, band ${lastU.band} (${lastU.behaviour}); arrest threshold ${u.thresholds.arrest}`,
-  lastU.bounty_total > u.thresholds.arrest && lastU.band === u.band_before,
+  `${u.unidentified_rows.length} unidentified reports -> total ${lastU.bounty_total} g, unattributed ${lastU.unattributed} g, attributed ${lastU.attributed_bounty} g, band ${lastU.band} (${lastU.behaviour}); arrest threshold ${u.thresholds.arrest_at}`,
+  lastU.bounty_total > u.thresholds.arrest_at && lastU.band === u.band_before,
   'the ledger crosses the arrest threshold and the band does not move — round 3: magnitude only');
 A('R4-E2', 'one IDENTIFIED report of the same size does move it',
   `+${u.identified.delta} g identified -> total ${u.identified.bounty_total} g, attributed ${u.identified.attributed_bounty} g, band ${u.identified.band} (${u.identified.behaviour})`,
@@ -366,6 +384,8 @@ try {
     H.setRenderRate(1);
     H.setTimeOfDay(3);
     H.setWeather && H.setWeather('clear');
+    try { H.exitInterior(); } catch { /* already outside */ }
+    H.stepFrames(2);
     H.enterInterior('helstrom-apothecary');
     H.stepFrames(6);
   });
@@ -376,7 +396,7 @@ try {
   const shotState = await h.page.evaluate(() => {
     const H = window.__HARNESS;
     const st = H.getStealthState();
-    return { L: Math.round(st.L * 1e4) / 1e4, V: Math.round(st.V * 1e4) / 1e4, ambient: st.lights.ambient_L,
+    return { L: Math.round(st.terms.L * 1e4) / 1e4, V: Math.round(st.V * 1e4) / 1e4, ambient: Math.round(st.lights.ambient_L * 1e4) / 1e4,
       sources: st.lights.world_sources, hour: 3, interior: st.lights.interior, ia: st.lights.interior_ambient };
   });
   OUT.shot = { path: shotPath, bytes: buf.length, state: shotState };

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elder Souls — Argonia</title>
+<!--
+  The landing page. GitHub Pages now publishes this repository from its root, so a visitor who
+  types the bare Pages URL lands here rather than on a directory listing or a 404.
+
+  It is deliberately three links and no cleverness: the game, the record of what was found, and the
+  scores. It loads nothing, fetches nothing and has no script, so it cannot itself be the reason
+  somebody sees a blank page — which is a lesson this project paid for.
+-->
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0; min-height: 100vh; background: #05070a; color: #c8bda4;
+    font: 17px/1.7 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 32px;
+  }
+  main { max-width: 40rem; }
+  h1 { font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: #7d7259;
+       font-weight: 600; margin: 0 0 22px; }
+  p { margin: 0 0 20px; }
+  .lede { color: #d8cdb2; font-size: 19px; }
+  a { color: #c8a253; }
+  ul { list-style: none; padding: 0; margin: 28px 0 0; }
+  li { margin-bottom: 18px; }
+  li a { font-size: 19px; text-decoration: none; border-bottom: 1px solid #4a4133; }
+  li a:hover { border-bottom-color: #c8a253; }
+  .note { display: block; color: #7d7259; font-size: 14px; margin-top: 4px; }
+  footer { margin-top: 36px; color: #6b6252; font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Elder Souls — Argonia</h1>
+  <p class="lede">Morrowind in almost every system, set in Black Marsh, with Dark Souls' combat.
+     Souls are for levelling; gold is the money. The world takes about an hour to cross on foot.</p>
+  <p>Where the two disagree: Souls wins inside the fight — frames, stamina, hitboxes, animation,
+     enemy behaviour. Morrowind wins everywhere else.</p>
+  <ul>
+    <li><a href="./game/index.html">Play it</a>
+        <span class="note">Desktop with a keyboard or a gamepad. It is unfinished, and the
+        README says exactly what is broken.</span></li>
+    <li><a href="./docs/index.html">The blog</a>
+        <span class="note">What was found, written as it happened. The good posts are about
+        mistakes.</span></li>
+    <li><a href="./docs/progress.html">Build status</a>
+        <span class="note">Critic scores per domain over time. Scores fall as well as rise.</span></li>
+  </ul>
+  <footer><a href="https://github.com/jtattersall09403/elder-souls-claude">The repository</a>,
+    including every verdict in full.</footer>
+</main>
+</body>
+</html>

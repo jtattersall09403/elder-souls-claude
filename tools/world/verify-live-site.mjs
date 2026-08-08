@@ -7,6 +7,10 @@
 // static host: the host can be a commit behind, it can be mid-deploy, it can 404 a path that
 // exists on disk, and it can serve a directory listing where a file is expected.
 //
+// Pages now publishes this repository from its ROOT, so `game/` is served directly and there is no
+// mirror to keep in step. That deleted a whole class of defect — the copy going stale, somebody
+// editing the copy, the copy and the source disagreeing — at the cost of nothing.
+//
 // So this asks the deployed site three questions that a local server cannot answer:
 //   1. Is every file we published actually retrievable there?   (a 404 is silent to the page)
 //   2. Is it the same bytes we published?                       (staleness)
@@ -25,10 +29,10 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
-const LOCAL = join(ROOT, 'docs', 'play');
+const LOCAL = join(ROOT, 'game');
 const argv = process.argv.slice(2);
 const at = (f, d) => { const i = argv.indexOf(f); return i >= 0 && argv[i + 1] ? argv[i + 1] : d; };
-const BASE = at('--url', 'https://jtattersall09403.github.io/elder-souls-claude/play/').replace(/\/?$/, '/');
+const BASE = at('--url', 'https://jtattersall09403.github.io/elder-souls-claude/game/').replace(/\/?$/, '/');
 const selfTest = argv.includes('--self-test');
 
 function walk(dir, out = []) {
@@ -82,7 +86,7 @@ if (selfTest) {
 }
 
 const files = walk(LOCAL).map((f) => relative(LOCAL, f).split('\\').join('/'));
-if (!files.length) { console.error('verify-live-site: docs/play is empty — run `node tools/publish-game.mjs`.'); process.exit(2); }
+if (!files.length) { console.error('verify-live-site: game/ is empty.'); process.exit(2); }
 
 console.log(`verify-live-site: ${BASE}`);
 console.log(`verify-live-site: checking ${files.length} published file(s) …`);

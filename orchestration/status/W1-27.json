@@ -1,6 +1,6 @@
 {
   "task_id": "W1-27",
-  "state": "starting",
+  "state": "measuring",
   "role": "builder",
   "piece": "W1-27 — density, loot and the coherence pass",
   "paths": [
@@ -15,10 +15,26 @@
     "coherence.economy",
     "coherence.systems"
   ],
-  "items": ["RI-AI07","RI-CMP01","RI-DLG08","RI-LOR05","RI-LOR06","RI-MTH05","RI-PRG04","RI-PRG08","RI-QST08","RI-WLD01","RI-WLD02","RI-WLD05","RI-WLD09"],
-  "next_step": "read RULES/INDEX/PLAN W1-27 and the 13 items; then offline: procedural-loot hunt, then coherence reads across corpus/90-verdicts/wave1",
+  "items": [
+    "RI-AI07",
+    "RI-CMP01",
+    "RI-DLG08",
+    "RI-LOR05",
+    "RI-LOR06",
+    "RI-MTH05",
+    "RI-PRG04",
+    "RI-PRG08",
+    "RI-QST08",
+    "RI-WLD01",
+    "RI-WLD02",
+    "RI-WLD05",
+    "RI-WLD09"
+  ],
+  "next_step": "finish lore/faction/tone/difficulty reads, then build tools/coherence/w1-27-coherence.mjs with --self-test",
   "contention": "gate exit WAIT at start (4 instances, load 4.23/core) — doing offline work first per brief",
-  "files_touched": ["orchestration/status/W1-27.json"],
+  "files_touched": [
+    "orchestration/status/W1-27.json"
+  ],
   "files_claimed": [
     "tools/coherence/",
     "reports/w1-27/",
@@ -26,5 +42,12 @@
     "reports/blog-feed.jsonl",
     "corpus/90-verdicts/wave1/W1-27.md"
   ],
-  "notes": []
+  "notes": [],
+  "findings_so_far": [
+    "LOOT: 1,827 of 1,950 placed takeable objects (93.7%) are emitted by a 10-palette hash-indexed table in tools/world/build-property.mjs:38-49,152-175. 83 unique hand-authored, 40 identical well buckets. Runtime procedural loot: 0.",
+    "NAMING REGRESSION HAZARD: build-property.mjs GIVEN/EPITHET still contain the pre-fix stock (incl. Sedura, a Dunmer honorific) and the tool writes game/data/world/property/*.json unconditionally with no flag. Re-running it un-names 280 people and reinstates the 55.8% defect.",
+    "ECONOMY 4th mirror already found and named by W1-14 r5: save/state.js bare restore; goldMirrors() is the read-only surface (game/src/harness/api.js:1736).",
+    "DENSITY: pois.json holds 42 POIs vs RI-WLD02 target 1,060 / floor 636; 115 interiors vs Tier A floor 150; regions hive and valus-ridge hold 0 POIs. pois.json is declared_incomplete.",
+    "WAVE-1 VERDICTS: 68 scored verdicts, only 6 at or above the pass threshold of 6."
+  ]
 }

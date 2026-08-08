@@ -1,0 +1,23 @@
+{
+  "task_id": "critic-w1-touch",
+  "role": "critic",
+  "piece": "W1-TOUCH — touch input",
+  "started_at": "2026-08-08T00:00:00Z",
+  "state": "running",
+  "next_step": "read RULES/INDEX/ARBITRATION/RI-JRN04, verify the main.js->TouchInput import chain (attack A0)",
+  "head_commit": "fa964554de40783866f1696b2514593fc6aff4e2",
+  "contention_at_start": "4 browser instances, load 4.37/core over ceiling 4.0 — WAIT. Doing offline work first; will take ONE browser and keep it.",
+  "files_touched": [
+    "orchestration/status/critic-w1-touch.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.json",
+    "orchestration/status/critic-w1-touch.json",
+    "tools/touch/critic-*",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-TOUCH"],
+  "notes": []
+}

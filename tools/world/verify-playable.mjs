@@ -14,8 +14,7 @@
 // not throw — the fetch resolves and the caller quietly gets nothing — which is the single most
 // likely cause of a silent black screen and the one a page-error check cannot see.
 //
-//   node tools/world/verify-playable.mjs                 # the local docs/play copy
-//   node tools/world/verify-playable.mjs --game          # the source tree at game/
+//   node tools/world/verify-playable.mjs                 # game/, which is what Pages serves
 //   node tools/world/verify-playable.mjs --self-test     # prove it can go red
 //
 // Exit 0 only if every viewport drew something.
@@ -27,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 const argv = process.argv.slice(2);
 const selfTest = argv.includes('--self-test');
-const useGame = argv.includes('--game');
+// Pages serves the repository root, so `game/` IS what is published — there is no second copy.
 
 // Four shapes, chosen because each has broken something in some project at some point: a desktop,
 // a portrait phone, the same phone in landscape (which is how anyone actually plays), and a tablet.
@@ -97,7 +96,7 @@ async function measure(browser, origin, vp, { breakPage } = {}) {
            ok: drew && fills && !read.noticeVisible && errors.length === 0 && badRequests.length === 0 };
 }
 
-const dir = useGame ? join(ROOT, 'game') : join(ROOT, 'docs', 'play');
+const dir = join(ROOT, 'game');
 const { origin, close } = await serveDir(dir, { port: 0 });
 const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--no-sandbox'] });
 

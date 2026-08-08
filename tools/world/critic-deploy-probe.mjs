@@ -547,8 +547,10 @@ try {
       if (cond.cpu > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: cond.cpu });
       await page.goto(url, { waitUntil: 'load', timeout: 180000 });
       const readyAt = await page.evaluate(async () => {
+        for (let i = 0; i < 600 && !window.__HARNESS; i++) await new Promise((r) => setTimeout(r, 100));
+        if (!window.__HARNESS) return -1;
         await window.__HARNESS.ready(); return Date.now() - window.__nt.t0;
-      });
+      }).catch(() => -1);
       // How long after the notice hid did the first drawn frame appear? Read on a fresh timeline:
       // sample the framebuffer only now, so the read cannot latch (see SETTLE).
       const nt = await page.evaluate(() => ({ ...window.__nt }));

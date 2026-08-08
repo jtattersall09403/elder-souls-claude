@@ -1,19 +1,80 @@
 {
-  "piece": "W1-20",
+  "task_id": "W1-20",
   "title": "Faction skeleton - every line present, one quest deep",
   "role": "builder",
-  "state": "surveying",
-  "phase": "reading prior W1-FACTIONS r1-r3 status + critic verdicts to find the real gap",
-  "judged_by": ["RI-CRM02","RI-LOR01","RI-LOR02","RI-QST01","RI-QST03"],
-  "subsystem_paths": ["quests.faction.joining","quests.faction.rankgating"],
-  "found_so_far": {
-    "faction_gates_json_factions": 8,
-    "standing_only": ["house_dres","ixtu_vakh"],
-    "faction_quest_files": ["faction-imperial-assize.json","faction-wet-ledger.json","faction-xul-aneekh.json"],
-    "note": "3 of 8 laddered factions have a quest file on first glance - width gap suspected"
-  },
-  "files_claimed": ["orchestration/status/W1-20.json"],
-  "files_touched": ["orchestration/status/W1-20.json"],
+  "state": "building",
+  "commit_at_start": "3b0cc43",
+  "box_at_start": "contention.mjs --gate exit 3 (4 browser instances, load 19.71 over 4 cores). All data/code/prose work first; browser phase last, via tools/capture/ if still over.",
+  "judged_by": ["RI-CRM02", "RI-LOR01", "RI-LOR02", "RI-QST01", "RI-QST03"],
+  "subsystem_paths": ["quests.faction.joining", "quests.faction.rankgating"],
   "redundant_with": ["W1-FACTIONS-r3"],
-  "next_step": "read critic-w1-factions-r2 verdict + W1-FACTIONS-r3 status; measure joinability through play"
+
+  "the_gap_measured_before_building": {
+    "laddered_factions_in_faction_gates_json": 8,
+    "joinable_bodies_per_FACTION-ROSTER-DESIGN_s1": 7,
+    "lines_carried_deep_by_W1-FACTIONS": ["the_wet_ledger", "the_imperial_assize", "the_xul_aneekh"],
+    "lines_with_a_ladder_and_NO_joining_quest_of_their_own": ["the_rootkeepers", "the_ixtu_vakh", "the_drowned_court", "the_dockhands"],
+    "joins_faction_census_at_3b0cc43": {
+      "the_wet_ledger": 4, "the_imperial_assize": 3, "the_xul_aneekh": 3,
+      "the_dockhands": 1, "the_ixtu_vakh": 1,
+      "the_rootkeepers": 0, "the_drowned_court": 0
+    },
+    "note_on_the_two_ones": "the_dockhands and the_ixtu_vakh are joinable ONLY as a side effect of mainline Act IV (Q-MAIN-21 res_dockhand_rank, Q-MAIN-19 res_cutters_rank). That is the main quest's voice, not the faction's, and it is unreachable to a player who has not reached Act IV.",
+    "two_dead_rank_gates_found": [
+      "blackmarsh-coast.json Q-SOUL-02 is rank_gate the_drowned_court min_rank 2 — and NOTHING in the build joins the_drowned_court, so that gate can never open.",
+      "blackmarsh-coast.json Q-SAP-01 is rank_gate the_ixtu_vakh min_rank 1 — reachable only via Act IV."
+    ]
+  },
+
+  "rulings_rule_0_decide_and_record": [
+    {
+      "id": "S-W1-20-A",
+      "ruling": "Width = every JOINABLE body has a joining route in its own voice. I author one joining quest each for the_rootkeepers, the_ixtu_vakh, the_drowned_court, the_dockhands. Four quests, rank 0 -> 1, no more.",
+      "reversible": true,
+      "what_would_overturn_it": "A critic showing that the Act-IV route already counts as a joining route for the_dockhands / the_ixtu_vakh. Then delete those two quests; the Rootkeepers and the Drowned Court still had none by any reading."
+    },
+    {
+      "id": "S-W1-20-B",
+      "ruling": "deep_kin is a DUPLICATE ladder id for the Xul-Aneekh (faction-reactions.json aliases deep_kin -> xul-aneekh; FACTION-ROSTER-DESIGN resolved it). I build no line for it and delete nothing (deleting orphans Q-MAG-07). It is recorded as not-joinable in the roster of record.",
+      "reversible": true,
+      "what_would_overturn_it": "Lore naming deep_kin as a body distinct from the Xul-Aneekh with its own hall."
+    },
+    {
+      "id": "S-W1-20-C",
+      "ruling": "I do NOT author a second quest per line. The rank-gating demonstration uses the TWO DEAD GATES already in the tree (Q-SOUL-02 at drowned_court r2, Q-SAP-01 at ixtu_vakh r1), which my joining quests bring to life. Width beats depth; the brief is explicit.",
+      "reversible": true,
+      "what_would_overturn_it": "RI-QST01's mean-quests-per-rank hard fail being applied to a wave-1 skeleton line rather than to a carried line."
+    }
+  ],
+
+  "plan": [
+    "1. game/data/quests/faction-joining-wave1.json — 4 joining quests, one per missing line, each with a discoverable opens_by topic that already exists in the shipped topic set, >=2 resolutions, joins_faction, reputation >= the rank-1 demand of 10.",
+    "2. game/data/npcs/faction-recruiters.json — the four recruiters, with reaction_group (Engine._assertGiversAreVisibleToRace throws otherwise) and a real place.",
+    "3. Refusals IN VOICE: game/data/dialogue/faction-refusals.json + an engine reader that turns gate.evaluate()'s unmet terms into the recruiter's own words, exposed on the harness and rendered where a player sees it.",
+    "4. The crime seam for the two NEW joinables: sanction.json standing_ids + rows, standingKey() branches. check-data.mjs asserts both directions and will fail the commit if I skip it.",
+    "5. game/data/progression/factions.json — promote the wave-0 two-faction skeleton to the roster of record, with a world-side consumer.",
+    "6. tools/quests/faction-joining-probe.mjs — joinability measured THROUGH PLAY; CONSUMPTION by rank perturbation; delete-the-fix with a control that is checked for inertness.",
+    "7. index.json regen, gates, blog line, shot, commit."
+  ],
+
+  "files_claimed": [
+    "game/data/quests/faction-joining-wave1.json",
+    "game/data/npcs/faction-recruiters.json",
+    "game/data/dialogue/faction-refusals.json",
+    "game/data/dialogue/topics/51-faction-joining.json",
+    "game/data/progression/factions.json",
+    "game/data/crime/sanction.json",
+    "game/src/sim/crime/sanction.js",
+    "game/src/sim/quest/roster.js",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/data/quests/hooks.json",
+    "game/data/index.json",
+    "tools/quests/faction-joining-probe.mjs",
+    "reports/w1-20/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": ["orchestration/status/W1-20.json"],
+  "next_step": "author the four joining quests"
 }

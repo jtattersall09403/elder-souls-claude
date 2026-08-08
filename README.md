@@ -7,33 +7,23 @@ levelling only; gold is the currency. The world takes about an hour to cross on 
 The rule that settles every argument: **where Morrowind and Souls conflict, Souls wins inside the
 fight — frames, stamina, hitboxes, animation, enemy behaviour. Morrowind wins everywhere else.**
 
-## Playing it
+## The links
 
-There are three ways in, depending on what you are holding.
+| | |
+|---|---|
+| **Play it** | **https://jtattersall09403.github.io/elder-souls-claude/game/index.html** |
+| **The blog and the build status** | **https://jtattersall09403.github.io/elder-souls-claude/docs/index.html** |
 
-### 1. On a phone or tablet — a link, and it is half-working
+Or just **https://jtattersall09403.github.io/elder-souls-claude/**, which is a landing page with both.
 
-**https://jtattersall09403.github.io/elder-souls-claude/play/index.html**
+GitHub Pages publishes this repository from its root, so `game/` on the web is the same directory
+the instruments test — there is no copy to go stale. (There briefly was one, and deleting it removed
+a whole class of defect at the cost of nothing.)
 
-**The touch controls are wired and working** — that is corrected: an earlier version of this file
-said they were not, and it was wrong. On a phone-shaped browser the game boots into handheld mode
-with 11 controls drawn, and a real touch opens a floating stick exactly where the thumb lands.
+### On a desktop or laptop
 
-**But the screen is black on a real phone and I do not yet know why.** It is not the controls and it
-is not a missing file. Every check I have passes on this machine, and a desktop browser at a
-phone-sized window is not a phone. The page now tells you what your phone says about itself when it
-fails — if you get a red message with a line of technical detail, **that line is the thing I need.**
-
-If you get a black screen, **it will now tell you why** rather than sitting there. A loading line, a
-message if a file is missing, a message if the browser refuses 3D. If it says something unexpected,
-that sentence is worth more than a description of the black.
-
-### 2. On a desktop or laptop — the same link, no clone, nothing to install
-
-**https://jtattersall09403.github.io/elder-souls-claude/play/index.html**
-
-Open it in Chrome, Edge, Firefox or Safari. Nothing to download, no Node, no git. It takes a few
-seconds to load — it is about 17 MB of world.
+Open the play link in Chrome, Edge, Firefox or Safari. Nothing to download, no Node, no git. It is
+about 17 MB of world, so give it a few seconds.
 
 **New** to start. You wake in a barge hold with a woman on the other bench. Walk over and press
 **E**. Nothing will tell you to.
@@ -64,10 +54,19 @@ The controls, read out of `game/data/input/profiles.json` rather than from memor
 you plug one in — the entire opening plays on a pad alone, and the sticks are analogue rather than
 on/off.
 
-This is the same build the instruments test, on the same commit, because it is copied from `game/`
-by a script on every commit and a check fails if the two ever differ.
+### On a phone or tablet
 
-### 3. From a clone — only if you want to change something or run the tools
+Same link. **The touch controls are wired and working** — a floating stick under your left thumb,
+camera drag on the right, the same roll/sprint timing the gamepad uses, and eleven controls drawn.
+An earlier version of this file said they were not; that was wrong and this is the correction.
+
+**But the last time you tried, the screen was black, and I still do not know why.** It is not the
+controls and it is not a missing file. Every check passes on the build machine, and a desktop
+browser at a phone-sized window is not a phone. The page now tells you what your phone says about
+itself when it fails — **if you get a red message with a line of technical detail, that line is the
+thing I need.** An agent is testing the real link on real mobile and desktop profiles.
+
+### From a clone — only if you want to change something
 
 ```sh
 git clone https://github.com/jtattersall09403/elder-souls-claude.git
@@ -75,12 +74,10 @@ cd elder-souls-claude
 ./play.sh
 ```
 
-Then open the URL it prints (`http://127.0.0.1:8080/index.html`). You need **Node 20 or newer** and
-nothing else — no `npm install`, no build step. `./play.sh --port 9000` if 8080 is taken;
-`./play.sh --host 0.0.0.0` to reach it from a phone on the same wifi.
-
-The only reason to prefer this over the link is that it serves whatever is in your working copy, so
-it is the one that shows uncommitted work.
+Then open the URL it prints. **Node 20 or newer** and nothing else — no `npm install`, no build
+step. `./play.sh --port 9000` if 8080 is taken; `./play.sh --host 0.0.0.0` to reach it from a phone
+on the same wifi. The only reason to prefer this over the link is that it serves your working copy,
+so it shows uncommitted work.
 
 ## What to expect
 
@@ -141,9 +138,9 @@ missing, which is a worse defect than the bug.
 
 ## Where the real record is
 
-- **[The blog](docs/blog/)** — what was found, in plain words, written as it happened. The good
+- **[The blog](https://jtattersall09403.github.io/elder-souls-claude/docs/index.html)** — what was found, in plain words, written as it happened. The good
   posts are the ones about mistakes.
-- **[The build status page](docs/progress.html)** — critic scores per domain over time. A dot
+- **[The build status page](https://jtattersall09403.github.io/elder-souls-claude/docs/progress.html)** — critic scores per domain over time. A dot
   appears every time a verdict lands. Scores fall as well as rise.
 - `corpus/90-verdicts/` — every verdict, in full.
 - `corpus/00-doctrine/ARBITRATION.md` — the doctrine and the 38 seam rulings.

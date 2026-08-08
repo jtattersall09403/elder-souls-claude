@@ -1,13 +1,27 @@
 {
   "task_id": "W1-24",
   "role": "builder",
-  "state": "reading",
+  "state": "building",
   "started": "2026-08-08",
   "piece": "W1-24 - the visual protocol and the player's body",
   "paths": ["render.process.bifurcation", "render.process.measurement"],
   "items": ["RI-CAM07", "RI-UIX06", "RI-VIS01", "RI-VIS03", "RI-VIS06", "RI-VIS09"],
-  "next_step": "read RULES (done), INDEX, PLAN W1-24, the six items, sabotage.mjs",
+  "contention": "gate returned exit 3 at start (3 browser instances, load 4.10/core). All offline work first; browser work only after a re-gate.",
+  "plan": [
+    "1. corpus/80-methods/cc-scan.mjs - the RI-VIS01 tool the item names as owed and which does not exist (rule 24). Structural declaration validation + CC-1..CC-7 lint.",
+    "2. tools/render/visual-reading.mjs - render.process.measurement. A reading carries surface class, unit, band-unit conformance, a mechanism null (via tools/experience/lib/sabotage.mjs), a CLOCK control, and a DEGENERATE-SUBJECT control.",
+    "3. RI-CAM07: the back-capture path (player_back_closeup / player_front_closeup viewpoints, HARNESS §6 append-only).",
+    "4. Apply the protocol to >= 3 published visual claims and report which survive."
+  ],
+  "next_step": "write cc-scan.mjs",
   "files_touched": ["orchestration/status/W1-24.json"],
-  "files_claimed": [],
+  "files_claimed": [
+    "corpus/80-methods/cc-scan.mjs",
+    "tools/render/",
+    "reports/w1-24/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl",
+    "tools/harness/viewpoints.json"
+  ],
   "notes": []
 }

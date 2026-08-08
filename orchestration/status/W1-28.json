@@ -7,15 +7,23 @@
   "piece": "W1-28 — the first hour as interaction",
   "paths": ["journey.firsthour.interaction", "journey.firsthour.competence"],
   "reference_items": ["RI-JRN02"],
-  "next_step": "read RULES.md, INDEX.md, docs/PLAN.md W1-28, corpus RI-JRN02 in full, W1-25-r2.json, game/data/input/profiles.json",
+  "next_step": "build tools/journey/jrn02-hour.mjs — the hour driver. journey-run.mjs registers jrn02-first-hour but NOTHING DRIVES IT: driveBeats() ends with `stepFrames(min(frames,20000))` and no inputs, and journeyLegs() has no jrn02 branch. That is the empty-ops.json shape the brief warned about, found before any measurement was trusted.",
   "files_touched": ["orchestration/status/W1-28.json"],
   "files_claimed": [
-    "tools/journey/",
+    "tools/journey/jrn02-hour.mjs",
+    "tools/journey/jrn02-competence.mjs",
+    "tools/journey/jrn02-chart.mjs",
     "reports/w1-28/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
+  "contention": "tools/contention.mjs --gate returned exit 3 (5 browser instances, load 4.83/core against a 4.0 ceiling) at start. Offline work first; browser work only after a re-gate, and if I proceed past exit 3 it will be said here.",
   "notes": [
-    "Declared seam: RI-JRN02 also judges input.discoverability which is W1-08's. Cited here, scored against W1-08."
+    "Declared seam: RI-JRN02 also judges input.discoverability which is W1-08's. Cited here, scored against W1-08.",
+    "Narrowed files_claimed from tools/journey/ to three named new files: W1-26-r3/r4 and W1-13-r3 are live on tools/journey/journey-run.mjs and a directory claim read as a conflict against all three."
+  ],
+  "found_before_measuring": [
+    "journey-run.mjs JOURNEYS['jrn02-first-hour'] exists (216000 frames, durationMin 60) and cadence.mjs/competence.mjs are built and hardened over four rounds — but no code anywhere drives an hour of play. driveBeats() drives the OPENING (first input, first control, a still window, the census walk) and then runs the remaining budget out with `stepAndSample(handle, min(o.frames, 20000))` and zero inputs. journeyLegs() branches on jrn03..jrn08 and has no jrn02 case. So a jrn02 run today = the opening + 5.5 minutes of nobody playing, capped at 20000 frames regardless of --duration-min.",
+    "Consequence if that had been trusted: cadence.mjs would have reported gap_max ~= the whole run and combat_fraction 0 — HF3 twice over — as a fact about the BUILD, when it is a fact about the DRIVER. Same shape as the 36,000-frame/0-event session (empty ops.json)."
   ]
 }

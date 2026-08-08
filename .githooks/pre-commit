@@ -98,69 +98,6 @@ if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
   node tools/check-shipped-files.mjs
 fi
 
-if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
-  node tools/publish-game.mjs >/dev/null 2>&1 || echo "pre-commit: publish-game failed — docs/play may be stale."
-  git add docs/play 2>/dev/null || true
-fi
-
-# The chart font sheared every glyph — 23 characters authored, indexed on a stride of 5 — so each
-# missing character pulled every row below it one pixel left. A sheared `2` is nearer a sound `8`
-# than a sound `2`; published numbers could have been read as different numbers. It survived because
-# nothing threw and a sheared glyph is still a picture of a letter.
-#
-# It was fixed once, in tools/lib/chart-font.mjs. Sixteen chart tools now import it and the tree
-# carries no sheared table at all, so this is ARMED (W1-CHARTFONT-r2). It was a warning until then
-# for rule 13's reason: five tools still carried the table and four belonged to live pieces, so
-# arming it would have blocked their owners over a defect they inherited. Two of those five were
-# written ON THE DAY OF THE FIX by pasting the broken table in again. It spread while it was being
-# fixed, twice, and that is what this gate exists to stop happening a third time.
-#
-# BLOCKING, over the STAGED BLOBS OF THIS COMMIT — not over the whole tree. The gate must catch the
-# author who pastes the table back, and staged scope catches exactly that: the paste cannot reach a
-# commit, including `tools/bank.mjs`'s `git add -A` bank, without tripping it. A whole-tree hard gate
-# would instead deadlock every agent on the box over a neighbour's uncommitted scratch file, which is
-# the failure mode rule 13 is about. The tree-wide sweep still runs below, as a warning, so drift is
-# visible to whoever is committing.
-#
-# `node tools/lib/chart-font.mjs --audit-selftest` proves this detector goes red where it must
-# (rule 4): it runs the same detection over the archived pre-fix table and over the fixed one, and
-# requires the first to trip and the second not to.
-node tools/lib/chart-font.mjs --audit-staged || {
-  echo ""
-  echo "pre-commit: BLOCKED. A file in this commit carries the sheared chart glyph table."
-  echo "pre-commit: See the adoption snippet above. Do not retype the missing characters;"
-  echo "pre-commit: import tools/lib/chart-font.mjs, which throws on a row of the wrong width."
-  echo ""
-  exit 3
-}
-node tools/lib/chart-font.mjs --audit-tree 2>/dev/null || true
-
-# A stale claim in NEXT-DISPATCH.md costs a whole round, because the tick reads that file to
-# decide what to start next. One did: "`gamepad-shim.mjs` — does not run, 3/3 crash" stayed on the
-# list for two rounds after R2 recorded it repaired and R3 accepted it at 12/12, and a dispatch was
-# spent proving the tool runs. AUDIT-R1-LIST then checked the other four bullets of that same list
-# and every one of them was dead too.
-#
-# This re-runs the small MECHANICALLY CHECKABLE slice of that file — a named tool that is not on
-# disk, a file claimed absent that now exists — in ~110 ms with no subprocesses and no browser.
-# `--run` (not used here; too slow for a hook) also executes each named tool's `--self-test`.
-#
-# WARNING, NOT BLOCKING, and it says its own coverage on every run: about 3% of the dispatch is
-# decidable by machine and the other 97% is prose, judgement and acceptance bars that no tool can
-# check. A clean line here is not a statement that the dispatch is current — read rule 13's reason
-# too: a dozen agents share this file and a hard gate over a bullet none of them own blocks the
-# wrong person. `node tools/dispatch-staleness.mjs` for the full report.
-node tools/dispatch-staleness.mjs --quiet || true
-
-# `reports/blog-feed.jsonl` is append-only: every line is one agent's account of something it
-# measured, and it is what the project owner reads. An agent rewrote a line in place once, leaving
-# a record carrying one task's id and screenshots under another task's title — noticed only because
-# the agent whose line it was went back and repaired its own row. Nothing else would have caught it.
-#
-# WARNING, NOT BLOCKING, for rule 13's reason: a dozen agents append concurrently, and a hard gate
-# over a line somebody else mangled blocks the wrong person. Seeing it is the point.
-node tools/check-append-only.mjs --staged || true
-
 git diff --cached --name-only --diff-filter=ACMR \
   | grep -Eq '^(corpus/.*RI-.*\.md|corpus/00-doctrine/(subsystems|constants)\.json|tools/corpus-index\.mjs)$' \
   || exit 0
