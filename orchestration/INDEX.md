@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `97bb918`: 587 tools, 153 reference
+so it cannot drift. Generated at `9126e02`: 591 tools, 153 reference
 items, 44 pieces in flight.
 
 Its purpose is to stop 44+ concurrent agents each paying separately to discover the
@@ -218,16 +218,18 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 19
+### `tools/experience/` — 22
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/anecdote-trace.mjs` — `experience.memory.anecdote`.
+- `tools/experience/anecdote-verify.mjs` — `experience.memory.recall`.
 - `tools/experience/beat-diff.mjs` — RI-EXP01 steps 3 and 5: diff an observed beat log against the beat sheet.
 - `tools/experience/beat-extract.mjs` — RI-EXP01 step 2: scan a session trace for the beat signatures.
 - `tools/experience/beats-from-md.mjs` — RI-EXP01 §D (prose) -> RI-EXP01.beats.json (machine-readable).
 - `tools/experience/breakage-probe.mjs` — RI-EXP06 Steps 1 and 2: the register, run, and diffed against its own past.
 - `tools/experience/ending-diff.mjs` — RI-EXP05 "Comparison method" Step 3, executed as far as this build allows.
 - `tools/experience/ending-specificity.mjs` — RI-EXP05 "Comparison method" Step 4.
+- `tools/experience/event-histogram.mjs` — `experience.session.shape`.
 - `tools/experience/isolation-check.mjs` — RI-EXP01 step 0 / RI-EXP02: did the driving agent stay in its box?
 - `tools/experience/lib/capabilities.mjs` — the harness surface, classified by WHAT A METHOD LETS YOU DO.
 - `tools/experience/lib/md.mjs` — read the corpus's own markdown tables into machine-readable specs.
@@ -239,6 +241,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/sabotage-cases.mjs` — THE THREE REAL FAILURES, REPLAYED THROUGH THE FACILITY.
 - `tools/experience/sabotage.mjs` — THE SABOTAGE CONTROL, as a command any piece can run.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
+- `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
 ### `tools/harness/` — 200
 
@@ -470,7 +473,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 13
+### `tools/lore/` — 14
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -483,6 +486,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r3-reach.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
+- `tools/lore/lor04-validate.mjs` — **no header comment**
 - `tools/lore/name-rosters.mjs` — **no header comment**
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
 
@@ -725,7 +729,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **130 tools have no header comment**, so nobody can tell what they do without
+> **131 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -899,19 +903,19 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-15-r3` | writing the verdict | done — verdict, JSON, shot and blog line written and committed with git commit --only | `orchestration/status/critic-w1-15-r3.json` `tools/stealth/critic-w1-15-r3.mjs` `tools/stealth/critic-w1-15-r3-live.mjs` `tools/stealth/critic-w1-15-r3-dtf2x2.mjs` `reports/w1-15/critic-r3.json` `reports/w1-15/critic-r3-live.json` |
+| `W1-17-r2` | building | write game/data/npcs/pop-trades.json (22 bodies) + index.json entry; then re-home 17 job-n | `orchestration/status/W1-17-r2.json` `tools/dialogue/answer-census.mjs` `reports/w1-17-r2/answers-fixture10.json` |
 | `critic-w1-readables` | running | browser: attack D (CONSUMPTION re-run + delete-the-fix teardown bite) and F (slot allocato | `orchestration/status/critic-w1-readables.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `critic-w1-14-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then attack A-G | `orchestration/status/critic-w1-14-r3.json` |
 | `critic-w1-26` | running | finish the live P10 confirmation of the race soft-lock; run journey-run.mjs for RI-JRN01;  | `orchestration/status/critic-w1-26.json` `tools/journey/opening-play.mjs` `tools/journey/census-newgame.mjs` `reports/journeys/w1-26-r2-play.json` `reports/journeys/w1-26-r2-jrn09.json` `reports/journeys/w1-26-r2-census-newgame.json` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 2 | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` |
-| `W1-17-r2` | building | read RULES/INDEX/verdict/r1 status; then reproduce the 133 unhearable count from a tool | `orchestration/status/W1-17-r2.json` |
 | `arbiter-dlg-s37` | starting | read RULES.md, INDEX.md, ARBITRATION.md, W1-17-r1.md, converse.js | `orchestration/status/arbiter-dlg-s37.json` |
 | `W1-23-r4` | building | baseline taken; find the roster generator | `orchestration/status/W1-23-r4.json` |
 | `W1-25` | building | RI-EXP06 (probes-from-md + breakage-probe + pbrule-audit + durability compare), then RI-EX | `corpus/95-experience/RI-CMP01.cells.json` `orchestration/status/W1-25.json` `reports/composition/w1/stage1.md` `reports/experience/w1/sabotage.json` `reports/experience/w1/sabotage.md` `tools/composition/cells-from-md.mjs` |
 | `critic-w1-17` | done | Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-w | `orchestration/status/critic-w1-17.json` `corpus/90-verdicts/wave1/W1-17-r1.md` `corpus/90-verdicts/wave1/W1-17-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-r1/` `tools/dialogue/critic-field-census.mjs` `tools/dialogue/critic-semantics.mjs` |
 | `W1-ROAD-JOIN` | ? | probe the settlement geometry, then implement the thread in build-roads.mjs | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
-| `critic-w1-15-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G | `orchestration/status/critic-w1-15-r3.json` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |

@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-16-r2",
+  "piece_title": "Progression and encumbrance — round 2 critique",
+  "subsystem_paths": [
+    "progression.equipment.encumbrance",
+    "combat.dodge.equipload",
+    "combat.dodge.iframes",
+    "progression.inventory.model",
+    "world.traversal.locomotion"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-16-r2-3c19",
+    "role": "critic.progression",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T01:55:00Z",
+    "finished_at": "2026-08-08T02:45:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "5d88b7e",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "note": "Judged at 5d88b7e with the working tree as found; 13 agents in flight and 12 files carrying other agents' uncommitted work, none of them under game/src/combat/, game/src/character/ or game/data/combat/ (`git status --porcelain` checked before and after every measurement). NO game/ FILE WAS EDITED BY ME. The capture in this verdict carries build key game@df03085f961bada0. `node tools/contention.mjs --gate` returned exit 3 (WAIT) at the start (9 browser instances, 4.70 per core) and again at the end; the whole offline half was done first, the gate returned exit 0 (GO — 5 instances, 3.96 per core) before any stepping work, and one browser was used for the stepping run with the screenshot taken through the pooled capture daemon. NO TIMING FIGURE APPEARS IN THIS VERDICT: every number is a fixed-step f@60 frame count, a kilogram, a percentage or metres over a declared frame count."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any artifact was opened. This piece is two ratios and a frame table; it makes no art-direction or fidelity claim. The one rendered frame cited is a HUD readout used as evidence that a number is zero, not as evidence about how anything looks, and no visual reference of either era is cited anywhere."
+  },
+  "reference_items": [
+    {
+      "id": "RI-PRG07",
+      "path": "corpus/20-progression/RI-PRG07-equip-load-encumbrance.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "seven axes, 0-10 each, min-over-axes (the item's own declared aggregation); ladder anchors are native = ladder",
+      "native_score": 2,
+      "native_max": 10,
+      "native_verdict": "maxLoad 10 (all 48 published grid cells reproduce at 0.0000% error, strictly increasing in both stats, maxLoad(99)-maxLoad(60) = 58.5 = 1.50 x 39 exactly, uncapped). Tier discreteness 10 (three cliffs at exactly 30.00->30.01, 70.00->70.01, 100.00->100.01 over 12,000 hundredth-percent samples, zero variance inside every band at 50 samples per band). Ratio separation 10 (460 kg in the pack moves burden 0 -> 2.520548 and leaves the roll byte-identical at 26 i-frames / f5-f30 / 22 recovery / 52 total / LIGHT). AR-1 guard 10 (all four multipliers exactly 1.00 with a real hostile woken, and the probe reports `tested` separately from `passes`). Burden tiers 9 (three transitions, move 1.00/0.90/0.72 and travel 1.12/1.35 exact). SIX BUILDS 2 — method 6 says `instantiate the §5 loadouts` and four of the six cannot be instantiated: the Fence needs 30 kg equipped and the Shell-Warden 126, and the entire wearable shelf is 16.8 kg. The arithmetic reproduces on paper; the fixture that is the item's own regression test for the 30% breakpoint does not exist. Heavy viability UNMEASURABLE and excluded from the min rather than scored 0 — no legal character can wear plate, so method 7 cannot be run by any wave until item content exists. Min over the seven scored axes is the six-build axis at 2.",
+      "score_0_10": 2,
+      "measured": "partial",
+      "justification": "The item's own aggregation is min-over-axes and its own method 6 is the binding minimum. Four of its five arithmetic axes are perfect and I measured every one of them myself, offline against the shipped methods and live by rolling; the failure is that the two axes about whether a CHARACTER can reach the tiers cannot be evaluated on shipped content. §2's formula is also not implemented as written — the weapon and shield terms are absent — which is recorded as the biggest gap rather than as a separate axis.",
+      "hard_fails": [],
+      "evidence": [
+        "reports/w1-16/critic-offline.json",
+        "reports/w1-16/critic-live.json",
+        "reports/w1-16/critic-live3.json",
+        "docs/shots/2026-08-08-critic-w1-16-r2-greatshield-and-ultra-greatsword-weigh-nothing.png"
+      ]
+    },
+    {
+      "id": "RI-CMB01",
+      "path": "corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "weighted sum of passed check weights, max 100; item's ladder anchors 70/100 = 4, 80/100 = 6, 92/100 = 8",
+      "native_score": 75,
+      "native_max": 100,
+      "native_verdict": "M1 animation census 20/20 PASS, measured by me by rolling at all four tiers: LIGHT startup 4 / i-frames f5-f30 (26 f@60) / recovery 22 / total 52 / stamina 22; MEDIUM 4 / f5-f26 (22) / 34 / 60 / 26; HEAVY 6 / f7-f16 (10) / 72 / 88 / 34; OVERLOADED 0 i-frames / 120 f@60 / 40 stamina. Every value exact to the frame, i-frames one contiguous run in every tier. M5 threshold cliff 10/10 PASS, measured: exactly three transitions, at 30.00->30.01, 70.00->70.01 and 100.00->100.01, no interpolation anywhere. M2 35 AWARDED WITHOUT RE-MEASUREMENT — the hit-offset sweep belongs to W1-09/W1-10 and is not what this progression round changed; I verified only that combat/actor.js:201 evaluates `f >= m.iframes[0] && f <= m.iframes[1]` every fixed step, which is §C1's shape, and that the run is contiguous. M3 root motion 10/20 and M4 uncancellability 0/15 NOT MEASURED HERE. Total awarded 75. Separately, §B's clause `OVERLOADED additionally forbids sprinting and jump-attacks` is half-implemented: the jump-attack half has a reader in combat/moveset.js, the sprint half has none, measured at 10.000 m and 18 stamina over 120 f@60 at LIGHT, HEAVY and OVERLOADED alike against 6.400 m with the button up.",
+      "score_0_10": 7,
+      "measured": "partial",
+      "justification": "75/100 sits between the item's 6 anchor (80) and its 4 anchor (70), and M2/M3/M4 carry 70 of the 100 weight and are W1-09/W1-10's, not this round's. Scored 7 rather than 4 because the two checks this piece actually touches — the animation census and the threshold cliff — are perfect and I re-measured both, and because the ladder data is transcribed from §B verbatim with its unit stated. The unimplemented sprint prohibition is charged to the CONSUMPTION axis, not to a check weight, because §B states it as a clause rather than as an M-check.",
+      "hard_fails": [],
+      "evidence": [
+        "reports/w1-16/critic-live2.json",
+        "reports/w1-16/critic-live-spell.json",
+        "reports/w1-16/critic-offline.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/shots/2026-08-08-critic-w1-16-r2-greatshield-and-ultra-greatsword-weigh-nothing.png",
+      "kind": "screenshot",
+      "produced_by": "tools/capture/ pooled daemon — state 'default', ops [['setLoadout',{weapon:'ultra-greatsword',shield:'greatshield_xanmeer'}]], ui:true, 1280x720",
+      "seed": 1337,
+      "camera_pose": "placed capture (teleport + camera pose); ARBITRATION S34(a) — admissible as evidence of APPEARANCE only. Cited for one fact only: the bottom-right HUD equip-load bar is empty and reads LIGHT while the character holds the heaviest weapon class and the heaviest shield the game declares. Not cited for any arrival, reachability or timing claim.",
+      "resolution": "1280x720"
+    },
+    {
+      "path": "reports/w1-16/critic-offline.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-16-offline.mjs",
+      "seed": null
+    },
+    {
+      "path": "reports/w1-16/critic-live.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-16-live.mjs --probe separation,parallel",
+      "seed": 1337
+    },
+    {
+      "path": "reports/w1-16/critic-live2.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-16-live.mjs --probe ladder,pin",
+      "seed": 1337
+    },
+    {
+      "path": "reports/w1-16/critic-live3.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-16-live.mjs --probe pin,deletefix,burden",
+      "seed": 1337
+    },
+    {
+      "path": "reports/w1-16/critic-live-pin.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-16-live.mjs --probe pin",
+      "seed": 1337
+    },
+    {
+      "path": "reports/w1-16/critic-live-spell.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-16-live.mjs --probe spell,oversprint",
+      "seed": 1337
+    },
+    {
+      "path": "reports/w1-16/critic-repro-builder.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/prg-encumbrance.mjs --probe census,separation (the builder's own instrument, unmodified)",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-16-r2.md",
+      "kind": "text-excerpt",
+      "produced_by": "this critic",
+      "seed": null
+    },
+    {
+      "path": "reports/w1-16/prg-encumbrance.json",
+      "kind": "report",
+      "produced_by": "the BUILDER's own instrument, node tools/harness/prg-encumbrance.mjs --probe all — cited only where I read the builder's published rows rather than my own",
+      "seed": 1337
+    }
+  ],
+  "blind_comparisons": [],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        "THE ANTI-MERGE CHECK, RE-TAKEN INDEPENDENTLY AND NOT ACCEPTED FROM THE BUILDER. 40 bog-iron mauls (460 kg) in the pack move burden 0 -> 2.520548 (IMMOBILE) and leave the equip ratio at 0.000000% and the roll byte-identical: 26 i-frames, window f5-f30, 22 f@60 recovery, 52 f@60 total, LIGHT, on both arms. RI-PRG07 method 3 and its How-we-lose #1.",
+        "THE TWO DIVISORS ARE DISTINCT AND NAMED. Offline, against the shipped methods: _equipLoadMax() is exactly 2.5 x _equipCapacity(); doubling the pack from 40 mauls to 80 moves _recomputeBurden() and leaves _recomputeEquipLoad() bit-identical. RI-PRG07 §2 divides by the bare maxLoad and §3 by maxLoad x 2.5, and the code gives them two names with a comment explaining why.",
+        "THE BURDEN GUARD INSIDE COMBAT IS TESTED, NOT ASSERTED. With burden pinned at 0.95 and a real hostile woken on arena_duel, move_mult_applied 1.00, sprint true, fatigue_drain_mult 1.00, sneak_detection_mult 1.00, travel_time_mult 1.00; the probe reports `tested: true` separately from `passes` so a guard that never entered a fight cannot read as a pass. _burdenTierNow() carries the guard in one place.",
+        "NO CONTINUOUS ROLL QUALITY. Swept equipTier() over 12,000 hundredth-of-a-percent samples: exactly three transitions, zero variance inside every band across 50 samples per band. An i-frame count of 12 at 60% load — the lerped cliff RI-CMB01 How-we-lose #6 names — does not occur.",
+        "NO DICE, NO SKILL-MODIFIED EVASION. The i-frame window is combat/actor.js:201, `f >= m.iframes[0] && f <= m.iframes[1]`, evaluated every fixed step off the animation frame; there is no setTimeout, no seconds comparison and no stat term anywhere on the path. Equip load is latched at the press (the move key is `roll_${tier}` chosen in _tryStart), which is §C8.",
+        "NOTE, and it is the one place this could have gone wrong: the round's FIRST implementation divided the equip ratio by the burden divisor, which is the merge itself. The builder's own offline unit check caught it before a browser and the fix is the two-name split above. I re-derived the corrected arithmetic independently rather than taking that account on trust."
+      ],
+      "note": "Pass, on my own measurements. Recorded in detail because this is the check RI-PRG07 says the build is most likely to lose, and it is the one thing this round unambiguously got right."
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        "No objective marker, no bonfire warp, no procedural loot and no soul-currency purchase is added or reachable from anything this round wrote. The travel coupling scales the RIDE (frames and world clock) and deliberately does NOT scale the fare — the tariff stays RI-PRG05's, so weight does not become a price.",
+        "Levelling stays Souls-shaped and money stays Morrowind-shaped: _spendSouls() debits progression.soulsHeld and never touches gold, and the screen is reached at a hearth.",
+        "Encumbrance stays Morrowind-shaped outside the fight — a continuous ratio over the whole pack feeding speed, sprint and travel time, with prose in getBurden().reason rather than a red icon — and Souls-shaped inside it, four discrete tiers over worn weight only. That is seam S23's split implemented on both halves.",
+        "The one place a Souls convention could have leaked outward is the equip-load tier reaching world locomotion. It does not: nothing on sim/player.js's sprint path reads the equip-load tier at all — which is also, separately, why RI-CMB01 §B's OVERLOADED sprint prohibition is unimplemented."
+      ],
+      "note": "Pass on my own greps and measurements over game/src and game/data."
+    },
+    "ar3": {
+      "status": "pass",
+      "checks": [
+        "NOT sterile, and the crossing runs both ways through one field. Outward: an object picked up in the Morrowind half is worn and decides how many frames the player is invulnerable for in the Souls half — inventory row -> `slot` -> _recomputeEquipLoad() -> equipLoadPct -> equipTier() -> the roll row. Measured: 0.00% / 26 i-frames / 52 f@60 becomes 38.767123% / 22 / 60 when 28.3 kg goes on, and returns exactly when the producer is cut.",
+        "Inward: nothing carried may touch the fight, and the guard that enforces it is measured rather than asserted (see ar1).",
+        "A third crossing: a logistics decision made in the Morrowind half (how much loot to haul) is paid for in world time on the fast-travel network S7 protects — 7555 f@60 and 40.20 world minutes unburdened against 10199 f@60 and 54.27 minutes overladen, same service, same fare.",
+        "The crossing is however NARROWER than the piece claims, and that is the biggest gap: the objects a Souls player thinks of first when they hear `equip load` — the weapon and the shield — do not cross it at all."
+      ],
+      "note": "seam_sterile: false."
+    }
+  },
+  "score": {
+    "overall_0_10": 3,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "weights": {
+      "A_s22_and_the_ladder": 1,
+      "B_ratio_separation": 1,
+      "C_producer_reads_the_declared_set": 1,
+      "D_tier_reachability": 1,
+      "E_consumption": 1,
+      "F_delete_the_fix": 1,
+      "G_the_pin_and_the_load_path": 1,
+      "H_ar3": 1
+    },
+    "band_label": "The producer that never existed now exists, is correctly separated from burden, and moves a real i-frame window — and it cannot see the weapon or the shield in the character's hands, while the only objects it CAN see add up to 23% of one tier",
+    "confidence": "high",
+    "axes": {
+      "A_s22_and_the_ladder": 9,
+      "B_ratio_separation": 9,
+      "C_producer_reads_the_declared_set": 3,
+      "D_tier_reachability": 3,
+      "E_consumption": 4,
+      "F_delete_the_fix": 9,
+      "G_the_pin_and_the_load_path": 8,
+      "H_ar3": 8
+    },
+    "alternative_aggregation_published_so_it_is_not_a_hidden_choice": {
+      "reference_item_weighted_mean": 4,
+      "how": "RI-PRG07 2.0 x 0.6 + RI-CMB01 7.0 x 0.4 = 4.0"
+    }
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "3/10 min-over-axes against a 7.0 wave-1 gate; the reference-item weighted mean is 4.0 and is published alongside so the aggregation is not a hidden choice.",
+    "No AR-1 failure, no AR-2 failure, no RI-CMB01 hard fail, and no RI-PRG07 axis at 0 on any axis a wave can evaluate. This is below bar with a named, buildable remedy — not a void.",
+    "The two lowest axes are the same defect seen twice. C: RI-PRG07 §2's ratio is over `equipped weapons, shields, armour, talismans` and the producer sums only inventory rows carrying a `slot`, so a character holding an ultra greatsword and a greatshield reads 0.00% and swapping the heaviest declared weapon class onto the body moves the ratio by zero to six decimal places. D: the set the producer CAN see tops out at 16.8 kg = 23.01% — LIGHT — so three of RI-CMB01's four tiers are reachable only through a harness pin, not two as reported.",
+    "CONSUMPTION at 4: the 26-row census is honest about the four it names and misses two more, both on the equip-load side it declared already coupled — `weapons/classes.json equip_weight` (15 rows, no reader anywhere in game/src) and RI-CMB01 §B's `OVERLOADED additionally forbids sprinting` (measured absent: 10.000 m and 18 stamina over 120 f@60 at LIGHT, HEAVY and OVERLOADED alike, against 6.400 m with the button up).",
+    "What the round claims is TRUE and I reproduced it with a working control: equipLoadPct had no producer, it has one now, and the delete-the-fix arms genuinely differ in both orders with the old hardcoded 24.0 returning exactly. The FAIL is about how far the producer reaches, not about whether it exists."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands",
+    "subsystem_path": "progression.equipment.encumbrance",
+    "severity": "blocking",
+    "what": "Engine._recomputeEquipLoad() implements RI-PRG07 §2's formula minus its first two terms. §2 reads `equipRatio = (weight of equipped weapons, shields, armour, talismans) / maxLoad`; the producer iterates sim.inventory and sums the carried.json weight of rows carrying a `slot`. The weapon the fight swings is combat.player.weaponId, set by CombatSystem.setLoadout() from loadout.weapon, and is not an inventory row; neither is the shield. Measured live on one fixture: a character holding ssw_garrison_sword and marsh_oak_medium reads 0.000000%; equipping a bog-iron-maul through the real equip queue moves the ratio to 15.753425% AND LEAVES combat.player.weapon AT ssw_garrison_sword; setLoadout({weapon:'ultra-greatsword', shield:'greatshield_xanmeer'}) then leaves the ratio at 15.753425%, unchanged to six decimal places. There are two right hands — one that is weighed and one that fights — which is RULES 10's `two parallel implementations of one system`, the same shape this round found for sprint and walked past for the weapon. The weight is not missing from the tree: game/data/weapons/classes.json ships an `equip_weight` column on all fifteen classes (Dagger 1 ... Ultra greatsword 20), combat/moveset.js:187 copies it onto the move table, and nothing in game/src ever reads it. The shields block carries guard angle and parry windows and no weight column at all, while RI-PRG07 §4 declares buckler 4 / kite 9 / greatshield 18.",
+    "why_it_matters": "It is the round's own headline, narrowed until it is nearly untrue from the player's chair. `Encumbrance now moves the roll from the world` holds only for five clothing slots whose heaviest legal contents total 16.8 kg = 23.01% of the base sheet, which is LIGHT — so MEDIUM is unreachable by armour, not just HEAVY and OVERLOADED as reported, and the builder's own headline arm crosses the 30% cliff entirely on the strength of an 11.5 kg maul sitting in a slot the fight does not read. RI-PRG07's whole tuning target for the 30% breakpoint (`the Fence's one extra armour piece costs them Light`) and its §5 six-build regression fixture cannot be instantiated. And it is fixable without inventing a single weight: counting the declared weapon class weight moves the base sheet from 43.54% to 56.62%, most of the way to the HEAVY cliff on shipped data alone.",
+    "evidence": [
+      "reports/w1-16/critic-live.json",
+      "reports/w1-16/critic-offline.json",
+      "docs/shots/2026-08-08-critic-w1-16-r2-greatshield-and-ultra-greatsword-weigh-nothing.png"
+    ],
+    "remedy": {
+      "action": "1. In Engine._recomputeEquipLoad(), add this.combat.player.moves.equip_weight (already carried by combat/moveset.js:187) and the shield's weight into `w`, beside the inventory `slot` sum. Do not touch the divisor — _equipCapacity() is correct and the two-name split must survive. 2. Add a `weight` field to every row of game/data/weapons/classes.json's `shields` block from RI-PRG07 §4: buckler 4, small 4, medium 9, greatshield 18, parry_tool 1. 3. Make Engine._finishEquipCommit(), on a row whose slot resolves to 'right' or 'left', call setLoadout({weapon}) / setLoadout({shield}) so the hand that is weighed and the hand that fights are one object — this is the RULES 10 half and it is what stops the defect returning. 4. Add equip_load.weapon_weight, equip_load.shield_weight and equip_load.overloaded_denies_sprint to getBurden()'s consumer table, and implement the third (RI-CMB01 §B) at the same action gate sim/player.js already uses for worldDeny.sprint. 5. Seed _equipLoadBase to the computed base on the frame the producer first engages, BEFORE applying any delta, so a live Feather (magnitude 30) or Burden (magnitude 40) offset is not destroyed by the first equip and then subtracted a second time by its own _undo.",
+      "acceptance": "node tools/harness/critic-w1-16-live.mjs --probe parallel,oversprint reports inventory_equip_changed_the_weapon_the_fight_swings: true, swapping_the_fight_weapon_changed_the_ratio: true, an_OVERLOADED_player_still_sprints: false, and coupled: true on both probes. node tools/harness/critic-w1-16-offline.mjs passes C5, C6 and C7 with exit 0 — C7 meaning a legal character can dress into HEAVY from shipped data with no item weight invented. node tools/harness/prg-encumbrance.mjs --probe separation still reports coupled: true, so the fix has not merged the two ratios.",
+      "targets": [
+        "game/src/engine.js",
+        "game/src/combat/moveset.js",
+        "game/data/weapons/classes.json"
+      ]
+    }
+  },
+  "secondary_observations": [
+    "21 of the 49 shipped named states begin at a hardcoded 24% equip load with nothing equipped (getBurden().equip_load.source reads 'engine default — nothing is equipped yet'). The producer engages the moment anything is worn, so this is a residue of the old defect rather than the defect itself, but 24.0 is still the game's answer in nearly half its states.",
+    "The builder's headline table publishes a `reference_t30` column that is our own pre-rebase constructed values, not Souls figures — MEDIUM recovery '17 t@30' and HEAVY recovery '36 t@30' are nobody's upstream number. The conversion is arithmetically correct in both directions; the column name invites the next reader to believe DS3 has a 36-tick fat-roll recovery. Rename it.",
+    "_recomputeEquipLoad()'s header claims it 'applies its result as a DELTA rather than an assignment, so the feather effect's own additive offset survives untouched'. On the FIRST engagement after a scenario boundary _equipLoadBase is null, so `prev` is read off the body — which already carries the offset — and the delta collapses to an assignment; the spell's own _undo then subtracts the offset a second time and the load stays wrong, because `base` never changes again and the guard is `if (base !== this._equipLoadBase)`. Demonstrated offline against the real Engine.prototype method; NOT demonstrated live, because castNow('burden') refused not_attuned on both states I tried.",
+    "RI-CMB01 §B asks for a menu readout that changes colour at the fat-roll threshold. The HUD carries an equip_load element; the pack screen shows the burden bar and no equip-load percentage. The builder named this rather than building it, which is correct — it is RI-UIX03's.",
+    "NOT THIS PIECE'S, recorded so nobody re-derives them. (a) game/src/save/fight.js's SKIP set does not list `ai`, so saveActor(ctl) serialises the live SoulsAI as a plain object and loadActor assigns it back over the instance; after any save/load with a hostile on the floor the first fixed step throws `this.ai.step is not a function`. Measured on arena_duel via saveRoundTrip() + stepFrames(4). It kills every stepping probe after a load while boot-check stays green, because boot does not step — RULES 15's shape in a different file. (b) saveRoundTrip() reports hash_equal:false on every state I tried."
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "equipLoadPct has no producer (NEXT-DISPATCH.md §Q3, W1-16 round 1 notes_for_successor #2)",
+      "closure": "partially-closed",
+      "note": "A producer now exists, runs every fixed step, is correctly separated from burden, survives every load path and moves a real i-frame window — all of which I verified with the round's own control arms run in both orders. It closes the defect for armour and clothing and does not close it for the weapon or the shield, which are the two terms RI-PRG07 §2 names first.",
+      "status": "partially-closed",
+      "acceptance_restated": "combat.player.equipLoadPct is written by something in the running world other than setEquipLoad(), the hardcoded 24.0 and the feather spell, and moving it moves an entity-side observable.",
+      "measured_value": "With the producer live, wearing 28.3 kg gives 38.767123% / MEDIUM / 22 i-frames / 34 f@60 recovery / 60 f@60 total; with __breakW116('producer,slots') the same 28.3 kg leaves 24.00% / LIGHT / 26 / 22 / 52 before AND after, in both arm orders. The producer also survives all four load paths (undressing after a load moves 20.410959% -> 7.945206%). It reads inventory rows carrying a `slot` only: the fight's own weapon and shield contribute 0.00%, and setLoadout to the heaviest declared weapon class leaves the ratio unchanged to six decimal places.",
+      "evidence": [
+        "reports/w1-16/critic-live3.json",
+        "reports/w1-16/critic-live.json",
+        "reports/w1-16/critic-live-pin.json"
+      ],
+      "closed_by_builder_of_fix": false
+    },
+    {
+      "gap_id": "_finishEquipCommit() could fill only the `right` slot",
+      "closure": "closed",
+      "note": "Verified by control: with __breakW116('slots') the equipped rows after wearing six pieces are ['bog-iron-maul@right'] and nothing else, because every piece went into the sword hand and evicted the last; with the fix they are all six, in chest/legs/head/feet/waist/right. The toggle-off path works too — re-equipping a worn row clears its slot and the ratio falls, which is what makes the model two-way.",
+      "status": "closed",
+      "acceptance_restated": "An armour row declaring slot: chest lands in the chest slot rather than in the sword hand, and the slot can be cleared again.",
+      "measured_value": "Fix present: wearing six pieces gives equipped_rows ['bog-iron-maul@right','legion-greaves@legs','rootweave-cowl@head','shell-scale-hauberk@chest','silt-strider-silk-sash@waist','wet-season-boots@feet']. __breakW116('slots'): the same six give ['bog-iron-maul@right'] alone, each having evicted the last from the sword hand. Toggle-off works: re-equipping a worn row clears its slot and the ratio falls 20.410959% -> 7.945206%.",
+      "evidence": [
+        "reports/w1-16/critic-live3.json",
+        "reports/w1-16/critic-live-pin.json"
+      ],
+      "closed_by_builder_of_fix": false
+    },
+    {
+      "gap_id": "NEXT-DISPATCH.md §Q1 — setBurden() inert on any stepping run",
+      "closure": "closed",
+      "note": "Set 0.95, stepped 180 f@60, still exactly 0.95, burden_source 'pinned by setBurden()', tier OVERLADEN. The builder's own travel and road rows each carry the correct tier, so W1-16's own figures are NOT contaminated by the defect it found.",
+      "status": "closed",
+      "acceptance_restated": "A value handed to setBurden() survives a stepping run instead of being overwritten by _recomputeBurden() on the next frame.",
+      "measured_value": "setBurden(0.95), stepFrames(180): ratio still exactly 0.95, burden_source 'pinned by setBurden()', tier OVERLADEN. The builder's own travel and road rows each carry the correct tier (UNBURDENED/LADEN/OVERLADEN), so W1-16's published figures are not contaminated by the defect it found.",
+      "evidence": [
+        "reports/w1-16/critic-live3.json",
+        "reports/w1-16/prg-encumbrance.json"
+      ],
+      "closed_by_builder_of_fix": false
+    },
+    {
+      "gap_id": "NEXT-DISPATCH.md §Q2 — two parallel sprint implementations, worldDeny.sprint read only at the press gate",
+      "closure": "closed",
+      "note": "Tested the way it actually failed rather than from a fresh press: button held from before the transition, then Overladen applied with the button still down. Unburdened covers 11.667 m after the transition, Overladen 5.398 m. The denial applies to a player who was already sprinting, which is W1-03's water clause as much as this round's.",
+      "status": "closed",
+      "acceptance_restated": "A sprint denial refuses a player who is ALREADY sprinting, not only the frame the button went down on.",
+      "measured_value": "Button held from 40 frames before the transition, then the burden applied with the button still down: unburdened covers 11.667 m after the transition, overladen 5.398 m (a fresh overladen press covers 4.685 m). The denial is read where locomotion is decided, not only at the press gate.",
+      "evidence": [
+        "reports/w1-16/critic-live3.json"
+      ],
+      "closed_by_builder_of_fix": false
+    }
+  ],
+  "corpus_extended": [
+    {
+      "what": "RI-PRG07 §2's formula and RI-CMB01 §B's OVERLOADED clause both name terms the build does not implement, and neither item's comparison method asks for them.",
+      "detail": "RI-PRG07 method 3 asserts inventory does not affect the roll and method 2 asserts the breakpoints; NEITHER asserts that equipping a heavier WEAPON moves the ratio, so a build can pass every method in the item with a producer that ignores the first term of its own formula. Likewise RI-CMB01 §B states `OVERLOADED additionally forbids sprinting and jump-attacks` in prose and none of M1-M5 tests it, so half of it shipped unimplemented and invisible. Suggested amendment for a corpus round: add to RI-PRG07's methods `swap the equipped weapon between the lightest and heaviest declared classes with the pack and armour held fixed; assert the ratio moves by exactly the declared weight difference over maxLoad`, and add to RI-CMB01's M1 `at OVERLOADED, assert the sprint input is refused`."
+    }
+  ],
+  "method_deviations": [
+    {
+      "what": "Wrote my own instruments rather than only re-running the builder's.",
+      "why": "RULES 22/23 and ARBITRATION §3: a probe that calls a function measures the function, and the builder's probe diffs the ladder against a hard-coded copy of the same table it was written from. tools/harness/critic-w1-16-offline.mjs runs the real Engine.prototype methods against a synthetic `this` with no browser; tools/harness/critic-w1-16-live.mjs is eight stepping probes. Both go red on demand — `--selftest` fails all nine offline checks, and the live tool exits non-zero on any uncoupled probe.",
+      "impact": "None adverse. Where my numbers and the builder's overlap they agree exactly (38.767123% at 28.3 kg, burden 2.520548 at 460 kg, the whole ladder). I also re-ran the builder's own probe unmodified and reproduced its census (26 parameters, 4 unread, exit 12) and its separation arm."
+    },
+    {
+      "what": "I almost shipped a vacuous control arm and am recording it rather than quietly fixing it.",
+      "why": "The first version of the pin probe called engine.readSave() and engine.writeSave() synchronously. Both are async (IndexedDB), and the harness verbs return the promise unchanged, so the probe read the world back BEFORE the load had run and recorded a pass for a load that never happened — the exact inert-control shape this project has shipped three times. It surfaced only because two other arms on the same run threw and that one did not.",
+      "impact": "The arm is async now and reports what each verb returned, so a reader can see the load completed ({ok:true, gen:1} and {ok:true, frame:0, seed:1337}). The conclusion did not change, but it was not evidence until the fix."
+    },
+    {
+      "what": "RI-CMB01 M2 (i-frame hit-offset sweep), M3 (root motion) and M4 (uncancellability + buffer) were not re-measured.",
+      "why": "They carry 70 of RI-CMB01's 100 weight and none of them is what this progression round changed; they belong to W1-09/W1-10. I verified the shape §C1 demands (combat/actor.js:201 evaluates `f >= m.iframes[0] && f <= m.iframes[1]` every fixed step, no timer, no seconds comparison) and that the invulnerable run is contiguous at all four tiers.",
+      "impact": "RI-CMB01 is recorded `measured: partial` at 7/10 and M2's 35 weight is awarded without re-measurement, which is stated in its native_verdict. If M2 or M3 has since regressed, RI-CMB01 falls; nothing in my FAIL rests on it, because the FAIL rests on axes C, D and E, all of which I measured myself."
+    },
+    {
+      "what": "RI-PRG07 method 7 (Shell-Warden viability, 200 boss sims in plate) is recorded UNMEASURABLE and excluded from the min rather than scored 0.",
+      "why": "No legal character can wear the loadout method 7 names — carried.json ships no plate, no shield and no talisman — so the method cannot be run by any wave until item content exists. Scoring at 0 an axis that no wave can evaluate would fail this item forever regardless of the build.",
+      "impact": "The binding minimum for RI-PRG07 is the six-build axis at 2 rather than method 7 at 0. RI-PRG07's native score would be 0 on a strictly mechanical reading; 2 is the honest one and both are stated."
+    },
+    {
+      "what": "The Feather/Burden offset defect is an offline result, not a live one.",
+      "why": "castNow('burden') refused `not_attuned` on both states tried, even after setWillpower(70) (6 slots, 117 focus) and every magic school at 100; setAttuned(['burden']) returned an empty accepted list without an error I could read. I ran out of budget chasing the attunement gate rather than the encumbrance question.",
+      "impact": "The mechanism is demonstrated against the real Engine.prototype._recomputeEquipLoad with a synthetic `this` and is arithmetically certain from the source, but it is not shown moving a live spell. If the attunement gate makes Feather and Burden unreachable in play the defect is latent rather than live, and the CONSUMPTION axis should move from 4 to 5. It would not change the verdict."
+    },
+    {
+      "what": "run-all.mjs (RULES 9, the aggregation) was not run.",
+      "why": "The contention gate was at or over its ceiling for most of the window and run-all launches many browsers.",
+      "impact": "I ran boot-check, check-data, check-content and check-quests (all green at 5d88b7e) and the builder's own probe. Nothing in this verdict depends on a cross-subsystem aggregate."
+    },
+    {
+      "what": "I ran git commit, which departs from RULES 28's older reading.",
+      "why": "My dispatch instructed it and RULES 28 as it now stands prescribes it: `git commit --only <the paths you declared>`, after `node tools/ownership.mjs --staged critic-w1-16`.",
+      "impact": "Only the paths declared in orchestration/status/critic-w1-16.json were committed. No game/ file was edited or committed by me."
+    }
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read _recomputeEquipLoad, _recomputeBurden, _equipCapacity/_equipLoadMax, _slotForItem, _finishEquipCommit, _buildCombat, _restoreFightFromSave, setEquipLoad/setBurden/getBurden AFTER measuring the behaviour in the running game, to name the mechanism rather than to find it."
+    },
+    {
+      "path": "game/src/combat/moves.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "equipTier() and the roll/backstep move-table construction, read after the cliff sweep to confirm the boundaries are `>` comparisons against roll.json and not a second copy of the table."
+    },
+    {
+      "path": "game/src/combat/actor.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Line 201, the i-frame window, read after measuring that the invulnerable run is contiguous — to establish RI-CMB01 §C1's `frame window, never a flag with a timer` as a property of the code shape."
+    },
+    {
+      "path": "game/data/weapons/classes.json",
+      "purpose": "quote-written-content",
+      "note": "The equip_weight column, quoted as the shipped model with no reader."
+    },
+    {
+      "path": "game/data/items/carried.json",
+      "purpose": "quote-written-content",
+      "note": "The 44 rows and the 9 that carry a slot, quoted for the reachability arithmetic."
+    },
+    {
+      "path": "game/src/sim/magic/apply.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "loadHandler(sign) and its _undo closure, read to establish the exact mutation the offline Feather arm reproduces."
+    },
+    {
+      "path": "game/src/save/fight.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "SKIP and saveActor/loadActor, read after measuring `this.ai.step is not a function` after a save round trip on arena_duel."
+    },
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness",
+      "note": "__breakW116, setEquipLoad, setBurden, the save verbs — to find the verbs and, for the save verbs, to discover they are async."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE: RI-CMB01 M2, M3 and M4 were not re-measured (they are W1-09/W1-10's and carry 70 of that item's 100 weight), RI-PRG07 method 7 cannot be run by any wave on shipped content, and the Feather arm could not be landed live because attunement refused. All three are in method_deviations with their impact, and none is load-bearing for the FAIL, which rests on three things I measured myself in the running game: the weapon and shield contributing 0.00% to the ratio while the heaviest declared class moves it by zero to six decimals; the whole wearable shelf reaching 23.01%; and an OVERLOADED player sprinting 10.000 m for 18 stamina exactly as a LIGHT one does, against a 6.400 m null control. blind_done_where_required is FALSE: RI-CMB01 specifies a blind pair over M2 i-frame vectors and I neither built nor judged one — absent evidence, not negative evidence, and RULES 25 is not breached because I built no pack. judged_output_not_source is TRUE: every claim here was measured first and the source read afterwards to name the mechanism, which is why source_reads are all marked diagnose-after-demonstrating or quote-written-content."
+  },
+  "notes": "The round's own account (orchestration/status/W1-16.json, round2) is unusually detailed and unusually honest — it reports its own instrument going red three times, names a defect it introduced and caught, declares the tiers it cannot reach rather than inventing weights to reach them, and files two cross-piece defects against other people's numbers. I reproduced every headline figure it publishes and found none of them wrong. The FAIL is not a correction of what it measured; it is a measurement of how much of RI-PRG07 §2 the producer actually implements, which is a question the round did not ask itself and neither item's comparison method forces."
+}
