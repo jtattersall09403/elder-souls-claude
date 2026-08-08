@@ -132,7 +132,10 @@ alone; `canon-consumption.mjs`'s failing arm was not investigated (W1-23 territo
 established). **No browser** — `tools/contention.mjs --gate` returned exit 3 (WAIT) at the start and
 none was launched; the figure was rendered pixel-by-pixel with `pngjs`.
 
-**One hazard for whoever reads HEAD:** `tools/bank.mjs` committed `converse.js` mid-edit at
-`bf4ec20`, leaving HEAD with a file that threw `ReferenceError: bestScore is not defined` on import.
-Confirmed by running it. The commit carrying this report repairs it. Documented bank behaviour
-(RULES 17), not a neighbour's error.
+**One hazard, recorded for whoever archaeologises this range:** `tools/bank.mjs` committed
+`converse.js` mid-edit at `bf4ec20`, leaving HEAD with a file that threw
+`ReferenceError: bestScore is not defined` on import. Confirmed by running it — the arbiter gate
+crashed against it. **The window was `bf4ec20` → `f291b01`**, and it was closed by a *later bank
+commit* that picked up my finished working tree, not by my own commit; I had originally written
+that my commit repaired it and that was wrong, so it is corrected here. My working tree was correct
+throughout. This is documented bank behaviour (RULES 17), not a neighbour's error and not mine.

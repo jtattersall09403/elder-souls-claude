@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `cc70ad2`: 627 tools, 153 reference
+so it cannot drift. Generated at `6c54c3b`: 628 tools, 153 reference
 items, 52 pieces in flight.
 
 Its purpose is to stop 52+ concurrent agents each paying separately to discover the
@@ -494,7 +494,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 21
+### `tools/lore/` — 22
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -509,6 +509,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r4-band.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r4-blind.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r4-lor04-lib.mjs` — **no header comment**
+- `tools/lore/critic-w1-23-r4-onscreen.mjs` — **no header comment**
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/lor04-validate.mjs` — **no header comment**
 - `tools/lore/mk-short-measures.mjs` — **no header comment**
@@ -768,7 +769,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **139 tools have no header comment**, so nobody can tell what they do without
+> **140 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -942,11 +943,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
 | `critic-road-join` | ? | read RULES/INDEX/ARBITRATION S28/NEXT-DISPATCH W/W1-ROAD-JOIN.json | `orchestration/status/critic-road-join.json` |
 | `W1-CROSSING` | in_progress | read NEXT-DISPATCH SS W and P.4, W1-ROAD-JOIN.json, W1-05.json; run ownership + contention | `orchestration/status/W1-CROSSING.json` |
 | `W1-26-r3` | ? | run jrn09-exchange (HF1) and opening-play (P10) on the fixed tree | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-CHARTFONT-r2` | ? | read reports/w1-chartfont-damage.md and orchestration/status/W1-CHARTFONT.json; run --audi | `orchestration/status/W1-CHARTFONT-r2.json` |
-| `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
 | `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
