@@ -1,0 +1,38 @@
+{
+  "task_id": "blog-2026-08-08-a",
+  "brief": "orchestration/briefs/blog.md (inline dispatch: rule 21's contention ceiling, the two verdicts plotted at x=0, and one deep dive from reports/blog-feed.jsonl)",
+  "started": "2026-08-08",
+  "state": "complete",
+  "files_touched": [
+    "docs/blog/2026-08-08-one-and-a-third-browsers.md",
+    "docs/blog/2026-08-08-the-verdict-filed-before-the-project-began.md",
+    "docs/blog/2026-08-08-the-shrine-and-the-smithy-are-the-same-darkness.md",
+    "docs/blog/COVERED.md",
+    "orchestration/status/blog-2026-08-08-a.json",
+    "docs/index.html",
+    "docs/progress.html"
+  ],
+  "files_claimed": [],
+  "outputs_written": [
+    "docs/blog/2026-08-08-one-and-a-third-browsers.md",
+    "docs/blog/2026-08-08-the-verdict-filed-before-the-project-began.md",
+    "docs/blog/2026-08-08-the-shrine-and-the-smithy-are-the-same-darkness.md",
+    "docs/blog/COVERED.md (3 lines appended)",
+    "docs/index.html + docs/progress.html (node tools/publish.mjs)"
+  ],
+  "findings": [
+    "ERROR IN BRIEF (post 1): the brief states 'Measured: 36 processes were 6 browsers.' That is the fix commit's (e74df06) commit-message figure, but tools/contention.mjs's own header comment, written in that same commit, says '43 processes were SIX browsers' instead — 43 does not divide evenly by 6. The two numbers disagree inside one diff and I could not determine which was the real reading. Reported both, named the discrepancy directly, and did not silently pick one.",
+    "VERIFIED (post 1): ran `node tools/contention.mjs` live — 4 browser instances, 24 processes (exactly 6.0/instance), load 22.11/4 cores = 5.53/core against a 4.0 ceiling, result WAIT. Used this as the 'getting the reason right did not change the answer today' beat instead of inventing a hypothetical.",
+    "VERIFIED (post 1): orchestration/RULES.md rule 21 and AGENT-PROTOCOL.md both checked directly; the '36 headless_shell / loadavg 38-48 / eleven agents' incident that justified the ORIGINAL cap is a separate, earlier measurement (AGENT-PROTOCOL.md line 159) from the contention.mjs fix's own re-measurement — kept these two distinct in the post rather than conflating them.",
+    "ERROR IN BRIEF (post 2): brief says the two unstamped verdicts pulled Controls & interface to '2 -> 5 -> 6, when the truth is 5 -> 6 -> 4'. Checked tools/scores.mjs's actual collect() output: the domain mean at each point is correct as stated (5, then 6, then (6+2)/2=4 once W1-21-r1's own raw score of 2 arrives) — confirmed by reading the chart-mean logic, not just trusting the commit message.",
+    "CORRECTED, NOT IN BRIEF (post 2): re-ran collect() live. It is now 43 verdicts / 3 uninferred (not 37 of 39 / 'the two'). The third is W1-PROSE-TICS-r4, committed 2026-08-07T23:44:52Z, nine minutes after the fix commit (652b1d7, 23:35:49Z) that was supposed to close this exact gap. Both the fix's commit message and tools/scores.mjs's own header comment still say '37 of 39' — already stale within ten minutes of being written. Did not edit tools/scores.mjs (not my file); named the staleness in the post instead.",
+    "VERIFIED (post 2): exact timestamps used in the post (16:57 for W1-FACTIONS-r2, 22:10 for W1-21-r1) are collect()'s own resolved fallback times (git --diff-filter=A add-commit), not a plain `git log -1` last-touch time — the latter gives different, later timestamps for both files because unrelated later commits touched them again. Used the times the tool actually plots on, not the more easily-grepped ones.",
+    "VERIFIED (post 3): counted game/data/world/interiors/*.json lights[] directly — 827 across 115 files, matching both the critic verdict (W1-04-r2.md) and its reports/blog-feed.jsonl entry (critic-W1-04-r2, 2026-08-08T00:25:00Z). Confirmed the addSource() call-site claim myself: grep across game/src finds exactly the method definition (light.js:40) and the harness verb (harness/api.js addLightSource) — no third caller, as the critic claimed.",
+    "VERIFIED (post 3): the RI-STL01 corpus item's exact language ('Light is never implemented... Overwhelmingly the likeliest failure') quoted from corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md directly, not paraphrased from the code comment that cites it.",
+    "NOTED, NOT CLAIMED FIXED (post 3): as of this session, game/src/sim/stealth/{light,system}.js, game/src/harness/api.js and game/data/stealth/detection.json sit modified-and-uncommitted in the shared working tree, in the direction of wiring interiors[].lights into LightField (a syncInteriorLights() method with a derived intensity scale is present in the working copy). This is NOT committed, NOT reviewed by a fresh critic, and the tree is shared with ~9 other concurrent agents, so it could be committed, changed, or reverted by the time this posts. Described it as 'someone is visibly working on it' and explicitly declined to call it fixed, per the rule about unreviewed work. Did not touch or stage any of these files — out of scope for this piece's file ownership.",
+    "Image used: docs/shots/2026-08-08-w1-04-r2-critic-two-files-one-room.png (already existed, from the critic's own run). No image existed for posts 1 or 2 and none was fabricated; post 2 would benefit from a screenshot of the corrected Controls & interface chart panel (with the dashed run-in and the inferred-dot note visible) but nothing in docs/shots/ shows that panel, so the post ran without one.",
+    "Did not launch a browser. All three posts were written from git history, JSON verdicts, and running tools/contention.mjs and tools/scores.mjs's collect() function directly under Node — no page was opened. `node tools/contention.mjs --gate` was run before deciding this and returned exit 3 (WAIT, load 5.53/core), which is itself the live number quoted in post 1."
+  ],
+  "next_step": "none - complete",
+  "notes_for_successor": "Once a fresh critic grades whatever lands the interior-lamp wiring (game/src/sim/stealth/light.js / system.js, uncommitted as of this session), that is a clean, ready follow-up for docs/blog/2026-08-08-the-shrine-and-the-smithy-are-the-same-darkness.md's open thread — the verdict should say whether standing beside a lit hearth actually reads differently from standing in an unlit corner now, not just whether the function is wired. Also still uncovered and good, from reports/blog-feed.jsonl: the r4 blind prose pack voided by its own judge because the redaction marks gave the answer away, S36's ruling that the arc governs tip speed and the '107 unsatisfiable slots' was a severity bucket relabelled as an impossibility proof, and the container restart that killed nine agents mid-run (e97347f) — all three were live candidates for post 3 and were set aside only because the lamps story was, on inspection, the deepest verified mechanism of the four."
+}
