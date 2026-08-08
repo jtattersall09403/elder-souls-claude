@@ -228,7 +228,7 @@
    "side": "neutral",
    "kind": "structure",
    "native_scale": "CONSUMPTION: name the world-side consumer and demonstrate it by perturbation",
-   "native_score": "6 / 10. The models are consumed and I verified the two round 3 graded 0. The census hole is closed and the 2x2 was run. But the VACUITY guard cannot go red on an inert producer, both rule-6 shape labels are wrong against rule 6's own text, and the round's own reversible ruling has an unmeasured reversal condition.",
+   "native_score": "6 / 10. The models are consumed and I verified the two round 3 graded 0. The census hole is closed and the 2x2 was run. But the VACUITY guard cannot go red on an inert producer, both rule-6 shape labels are wrong against rule 6's own text, and the round's own reversible ruling shipped with an unmeasured reversal condition \u2014 which this critic then measured at 3.34x, on a box too loaded for the number to settle it.",
    "native_max": 10,
    "native_verdict": "Below bar \u2014 named remedy required",
    "score_0_10": 6,
@@ -259,8 +259,8 @@
     },
     {
      "id": "M-reversal-condition-measured",
-     "result": "unmeasurable",
-     "value": "LIT_CAP deleted, reversible against 'a measured frame-time regression'; the round published no timing figure and this critic's own attempt was killed by its timeout at load 7.54/core",
+     "result": "marginal",
+     "value": "TAKEN. thorn-hall through the shipped render path: 5 point lights median 3,240.9 ms (n=40), 14 point lights median 10,813.8 ms (n=40) \u2014 3.34x. As literally worded the round's reversal condition is MET. But under rule 26: 4-7 concurrent browser instances and 5.0-7.5 load per core throughout, a 3.2 s frame at five lights is not a GPU, and my probe could not identify the rasteriser (E.renderer.renderer is not the WebGLRenderer on this build \u2014 a defect in my instrument). The absolute numbers are worthless and the ratio overstates a GPU. The 40-lamp control did not complete inside the timeout at this load.",
      "threshold": "a frame-time number under a stated load"
     }
    ]
@@ -492,7 +492,7 @@
  "method_deviations": [
   {
    "what": "The LIT_CAP frame-time measurement",
-   "why": "The round deleted LIT_CAP and marked the deletion reversible against 'a measured frame-time regression attributable to >5 point lights in one room', then published no timing figure. I built the instrument (thorn-hall at 5, 14 and a 40-lamp control, interleaved A-B-A so box drift is visible) and the first run was killed by its own 900 s timeout at load 7.54 per core. Whether the second run returned is recorded in the verdict's \u00a710 and in this file's notes."
+   "why": "The round deleted LIT_CAP and marked the deletion reversible against 'a measured frame-time regression attributable to >5 point lights in one room', then published no timing figure. The first run of my instrument was killed by its own 900 s timeout at load 7.54 per core with no partial result, which is why the tool now drives one arm per page.evaluate and prints as it goes. The retry returned two of four arms: 5 point lights 3,240.9 ms median and 14 point lights 10,813.8 ms median, n=40 each, at 4-7 browser instances and 5.0-7.5 load per core. The 40-lamp control did not finish. See the verdict's \u00a710.5 for what the number can and cannot support."
   },
   {
    "what": "RI-QST05 was not re-measured",
@@ -573,14 +573,14 @@
    "kind": "report",
    "produced_by": "the command above",
    "seed": null,
-   "note": "apertures, the 16,996-cell disagreement grid (0), the five places.js cells, and the saturation table."
+   "note": "apertures, the 16,996-cell disagreement grid (0), the five places.js cells, and the saturation table. The two completed LIT_CAP frame-time arms are folded in under `frametime_LIT_CAP`, transcribed from the live tool's stdout because that run was cut at its timeout before it could write its own JSON."
   },
   {
    "path": "tools/stealth/critic-w1-15-r4-live.mjs",
    "kind": "perf",
    "produced_by": "node tools/stealth/critic-w1-15-r4-live.mjs --renders 40 --json reports/w1-15/critic-r4-live.json",
    "seed": 1337,
-   "note": "One browser, kept. Arm A is the LIT_CAP frame-time number the round's own reversal condition needs, with a 40-lamp control that must be slower than 5 or the instrument cannot see point-light cost at all. Arm B walks the player into writ-house, barge-hold and thorn-hall and reads which cell the renderer drew against what the stealth system thinks is lighting it."
+   "note": "One browser, kept. Arm A is the LIT_CAP frame-time number the round's own reversal condition needs, with a 40-lamp control that must be slower than 5 or the instrument cannot see point-light cost at all. Arm B walks the player into writ-house, barge-hold and thorn-hall and reads which cell the renderer drew against what the stealth system thinks is lighting it. RUN PARTIALLY: two of four frame-time arms returned before the timeout at load 5.0-7.5 per core; the third-site arm B did not run live and its findings in this verdict are offline."
   },
   {
    "path": "reports/w1-15/r4-deletefix.json",
@@ -660,5 +660,5 @@
    "note": "attributedIn()/unattributedIn() are real; crime.writs is initialised, serialised and deserialised and pushed to nowhere"
   }
  ],
- "notes": "The frame-time figure for the LIT_CAP ruling is the one thing this verdict set out to take and could not take cleanly. See \u00a710 and method_deviations."
+ "notes": "The frame-time figure for the LIT_CAP ruling was taken and is 3.34x from 5 to 14 point lights, on a box at 5-7.5 load per core through a rasteriser my own probe failed to identify. It meets the round's reversal condition as worded and is not strong enough to reverse the ruling. \u00a710.5 says so and names the re-measurement that would settle it."
 }

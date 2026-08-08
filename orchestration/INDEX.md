@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3675320`: 801 tools, 153 reference
+so it cannot drift. Generated at `09a5b80`: 801 tools, 153 reference
 items, 93 pieces in flight.
 
 Its purpose is to stop 93+ concurrent agents each paying separately to discover the
@@ -1140,6 +1140,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
+| `PLT01-STEPRATE-critic` | reading | Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myse | `orchestration/status/PLT01-STEPRATE-critic.json` |
 | `judge-prose-r5` | running | read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding | `orchestration/status/judge-prose-r5.json` |
 | `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
 | `critic-w1-15-r4` | ? | the LIT_CAP frame-time arm is still running under load ~7/core; fold its numbers into §10  | `orchestration/status/critic-w1-15-r4.json` `tools/stealth/critic-w1-15-r4.mjs` `tools/stealth/critic-w1-15-r4-live.mjs` `tools/stealth/critic-w1-15-r4-figure.mjs` `reports/w1-15/critic-r4.json` `corpus/90-verdicts/wave1/W1-15-r4.md` |
@@ -1150,12 +1152,10 @@ work is the difference between resuming and starting over.
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-PROSE-TICS-r4-instrument` | ? | Dispatch a fresh judge to reports/packs/prose-tics-r5 (NOT the builder of the prose, NOT m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` `tools/blind/leakcheck.mjs` `tools/blind/mask-text.mjs` `tools/prose/build-r2-packs.mjs` `corpus/80-methods/RI-MTH03-blind-comparison-protocol.md` `reports/packs/prose-tics-r2/SUPERSEDED.md` |
 | `critic-w1-20` | running | write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank | `orchestration/status/critic-w1-20.json` `tools/quests/critic-w1-20-reach.mjs` |
-| `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
 | `critic-w1-attr-scale` | running | SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usag | `orchestration/status/critic-w1-attr-scale.json` |
 | `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The three things to attack: (1)  | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
 | `critic-w1-deploy-r2` | measuring (successor 2) | run tools/world/critic-deploy-r2-notice.mjs --notice --boot when contention allows; then w | `orchestration/status/critic-w1-deploy-r2.json` `tools/world/critic-deploy-r2-gate.mjs` `tools/world/critic-deploy-r2-drift.mjs` `tools/world/critic-deploy-r2-imgref-fixture.mjs` `tools/world/critic-deploy-r2-notice.mjs` `reports/w1-deploy-r2/selftest-local.json` |
 | `COST-G3` | running | verify the 2-of-95 diagnosis; count verdicts myself | — |
-| `COST-INSTRUMENT-plancritic` | ? | independently verify coverage, dedup, prices, 81% claim, CV arithmetic; then write critiqu | — |
 | `GATE-BLAST-RADIUS` | done | done. Follow-up NOT done here, named only: tools/check-data.mjs and tools/check-content.mj | `.githooks/pre-commit` `tools/check-shipped-files.mjs` `tools/bank.mjs` `game/src/sim/quest/defs.js` `tools/check-quests.mjs` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
