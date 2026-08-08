@@ -253,6 +253,91 @@ export function interiorAmbientL(rec, skyL, opts) {
   };
 }
 
+// ---- WHERE THE FURNITURE STANDS, AND THEREFORE WHERE YOU CAN HIDE -----------------------------
+//
+// `wallSlots` and `floorSlots` were `render/interior.js`'s private placement grid. They are here
+// for the same reason the lit set is: `sim/stealth/search.js`'s S-1 "plausible set" needs to know
+// where in a room there is something to get behind, and the round-3 critic measured what happened
+// while it could not:
+//
+// > *"`s1.max_cover_volumes` is read. `s1.radius_m` is read. `s1.per_volume_s` is read. They slice
+// > and time a list that is **always empty**, because `StealthCrime.coverVolumes` is initialised to
+// > `[]` and has exactly one producer in `game/src` — `engine.js:8139 addCoverVolume()`, whose only
+// > callers are the harness. ... a searcher who loses you walks to your last known position, stands
+// > there for two seconds, and gives up."*
+//
+// That is the identical defect shape round 3 fixed for `LightField.addSource()`, one module over.
+// `coverSpots()` below is the world-side producer, and `sim/stealth/system.js#syncCoverVolumes()`
+// is its caller in the fixed step.
+
+/** The line against the walls, where a counter, a shelf or a crate goes. */
+export function wallSlots(bx, bz, step) {
+  const slots = [];
+  const inset = 0.55;
+  const x0 = bx[0] + inset, x1 = bx[1] - inset, z0 = bz[0] + inset, z1 = bz[1] - inset;
+  const nx = Math.max(2, Math.floor((x1 - x0) / step));
+  const nz = Math.max(2, Math.floor((z1 - z0) / step));
+  for (let i = 0; i < nx; i++) slots.push({ x: x0 + (i + 0.5) * ((x1 - x0) / nx), z: z0, yaw: 0 });          // north wall, facing +z
+  for (let i = 0; i < nz; i++) slots.push({ x: x1, z: z0 + (i + 0.5) * ((z1 - z0) / nz), yaw: -Math.PI / 2 }); // east wall
+  for (let i = 0; i < nx; i++) slots.push({ x: x1 - (i + 0.5) * ((x1 - x0) / nx), z: z1, yaw: Math.PI });      // south wall
+  for (let i = 0; i < nz; i++) slots.push({ x: x0, z: z1 - (i + 0.5) * ((z1 - z0) / nz), yaw: Math.PI / 2 });  // west wall
+  return slots;
+}
+
+/** A grid of clear floor, for things that are not against anything. */
+export function floorSlots(bx, bz, step) {
+  const slots = [];
+  const x0 = bx[0] + 1.5, x1 = bx[1] - 1.5, z0 = bz[0] + 1.5, z1 = bz[1] - 1.5;
+  for (let x = x0; x <= x1; x += step) for (let z = z0; z <= z1; z += step) slots.push({ x, z, yaw: 0 });
+  return slots.length ? slots : [{ x: 0, z: 0, yaw: 0 }];
+}
+
+/**
+ * S-1's cover volumes, derived from the room the record describes.
+ *
+ * A cover volume in RI-STL01 §7 is a PLACE, not a mesh: *"the volumes you could actually have
+ * REACHED from the LKP without crossing the searcher's own cone."* So this derives them from the
+ * grid the furniture is placed on rather than from individual prop meshes — the wall line first
+ * (a counter, a shelf, a crate stack; `props[]` fills these slots in order and every shipped room
+ * declares between 6 and 24 of them), then the open floor, and the service partition if the record
+ * declares one. `render/interior.js` places its furniture on this same grid, imported from here, so
+ * the searcher checks behind things that are actually drawn there.
+ *
+ * `zone: null` for the same reason the lamps are zone-free: the deduped fittings and the furniture
+ * are all in one room, and `Search`'s filter passes a null-zone volume in every zone.
+ */
+export function coverSpots(rec, opts) {
+  const o = opts || {};
+  const b = boundsOf(rec);
+  const id = (rec && rec.id) || 'interior';
+  const declared = ((rec && rec.props) || []).length;
+  if (!declared) return [];
+  const out = [];
+  const wall = wallSlots(b.x, b.z, 2.2);
+  // Only as many wall spots as there is furniture to stand in them — a bare room is not full of
+  // hiding places, and this is the one place the prop COUNT changes the answer.
+  const nWall = Math.min(wall.length, declared);
+  for (let i = 0; i < nWall; i++) {
+    const s = wall[i];
+    out.push({ id: `${id}.cover.w${i}`, pos: [s.x, b.y[0], s.z], zone: null, from: 'wall_slot' });
+  }
+  const floor = floorSlots(b.x, b.z, 2.4);
+  const nFloor = Math.min(floor.length, Math.max(0, declared - nWall) + 2);
+  for (let i = 0; i < nFloor; i++) {
+    const s = floor[i];
+    out.push({ id: `${id}.cover.f${i}`, pos: [s.x, b.y[0], s.z], zone: null, from: 'floor_slot' });
+  }
+  // The back room. `render/interior.js` builds a partition with a door through it for a serviced
+  // room with the depth to spare, and the far side of a partition is the best cover in the house.
+  const SERVICED = new Set(['shop', 'guild', 'tavern', 'travel']);
+  if (SERVICED.has((rec && rec.interior_kind) || '') && b.D >= 11 && rec && rec.service) {
+    const pz = b.z[0] + b.D * 0.28;
+    out.push({ id: `${id}.cover.backroom`, pos: [(b.x[0] + b.x[1]) / 2, b.y[0], pz - 1.0], zone: null, from: 'service_partition' });
+  }
+  const cap = o.max === undefined ? 24 : o.max;
+  return out.slice(0, cap);
+}
+
 /**
  * The eleven rooms the fail-open above is currently rescuing, by name. A CONTENT debt, not a code
  * one: the right long-term fix is that they declare their own `lights[]` like the other 104, and

@@ -157,38 +157,81 @@ try {
   }
 
   // ---- SETTLE (rule 8) ------------------------------------------------------------------------
+  //
+  // ONE FRESH PAGE PER SAMPLE, and this is not fastidiousness — it is the finding. Reading the
+  // framebuffer once on a page latches the answer for that page forever: a read taken before the
+  // engine's renderer exists returns 0 and every later read on the same page returns 0 too, no
+  // matter how long you wait. Isolated: at 2 s `window.__ENGINE.renderer` does not exist yet, so
+  // `canvas.getContext('webgl2')` from the probe CREATES the context with default attributes;
+  // THREE then gets that context back and its own attributes never apply. Merely calling
+  // getContext early — with no readPixels at all — is enough to zero the number (arm A below).
+  //
+  // The first version of this probe read eleven times on one page and reported 0.00% at every
+  // timestamp for a game that draws 99.1%. That was an artifact of the probe, not a property of
+  // the game, and it is recorded here rather than deleted because it is the same defect the
+  // subject has: a single read whose value depends on what touched the canvas beforehand.
   if (all || has('--settle')) {
-    const { ctx, page } = await openPage(browser, origin, VIEWPORTS[1]);
-    const t0 = Date.now();
-    await page.goto(url, { waitUntil: 'load', timeout: 120000 });
     const series = [];
-    for (const t of [2000, 4000, 6000, 8000, 10000, 12000, 15000, 20000, 25000, 30000, 40000]) {
-      const wait = t - (Date.now() - t0);
-      if (wait > 0) await page.waitForTimeout(wait);
+    const times = [2000, 4000, 6000, 8000, 9000, 10000, 12000, 15000, 20000, 30000];
+    for (const t of times) {
+      const { ctx, page } = await openPage(browser, origin, VIEWPORTS[1]);
+      await page.goto(url, { waitUntil: 'load', timeout: 120000 });
+      await page.waitForTimeout(t);
       const s = await page.evaluate(() => {
-        const r = window.__criticSample();
+        const c = document.querySelector('canvas');
         const n = document.getElementById('boot-notice');
-        r.notice = n ? (n.className || 'visible') : 'absent';
-        r.harness = typeof window.__HARNESS;
-        return r;
+        const rendererUp = !!(window.__ENGINE && window.__ENGINE.renderer);
+        const r = window.__criticSample();
+        return { ...r, notice: n ? (n.className || 'visible') : 'absent',
+                 harness: typeof window.__HARNESS, rendererUp };
       });
+      await ctx.close();
       series.push({ t, ...s });
     }
-    const ready = await page.evaluate(async () => {
-      try { await window.__HARNESS.ready(); return true; } catch { return false; }
-    });
-    await ctx.close();
-    results.settle = { series, ready };
-    console.log('\n--- SETTLE: is 15 s a measurement or a guess? (phone-portrait) ---');
-    console.log('     t(ms)   corner%   full%   notice     harness');
+
+    // How long does boot actually take, here and on a device shaped like the owner's phone?
+    // Rule 26: every timing figure gets its load stated. `contention.mjs` is printed by the
+    // caller; the CPU/network multipliers are stated per row.
+    const bootTimes = [];
+    for (const cond of [
+      { label: 'unthrottled',                cpu: 1, net: null },
+      { label: 'CPU x4 (a mid-range phone)',  cpu: 4, net: null },
+      { label: 'CPU x4 + 8 Mbit/s, 80 ms RTT', cpu: 4, net: { downloadThroughput: 8e6 / 8, uploadThroughput: 1e6 / 8, latency: 80 } },
+      { label: 'CPU x6 + 4 Mbit/s, 150 ms RTT', cpu: 6, net: { downloadThroughput: 4e6 / 8, uploadThroughput: 1e6 / 8, latency: 150 } },
+    ]) {
+      const { ctx, page } = await openPage(browser, origin, VIEWPORTS[1]);
+      const cdp = await ctx.newCDPSession(page);
+      if (cond.cpu > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: cond.cpu });
+      if (cond.net) await cdp.send('Network.emulateNetworkConditions', { offline: false, ...cond.net });
+      const t0 = Date.now();
+      let readyMs = null, err = null;
+      try {
+        await page.goto(url, { waitUntil: 'load', timeout: 180000 });
+        await page.evaluate(async () => { await window.__HARNESS.ready(); }, { timeout: 180000 });
+        readyMs = Date.now() - t0;
+      } catch (e) { err = String(e.message || e).slice(0, 70); }
+      // And what the shipped tool would have measured: read once at its 15 s mark.
+      const wait = SHIPPED_WAIT_MS - (Date.now() - t0);
+      if (wait > 0) await page.waitForTimeout(wait);
+      const s = await page.evaluate(() => window.__criticSample()).catch(() => ({ cornerFrac: 0 }));
+      await ctx.close();
+      bootTimes.push({ ...cond, readyMs, err, cornerAt15: s.cornerFrac,
+                       verdictAt15: s.cornerFrac >= MIN_NONBLACK_FRACTION ? 'DREW' : 'BLANK' });
+    }
+
+    results.settle = { series, bootTimes };
+    console.log('\n--- SETTLE: is 15 s a measurement or a guess? (phone-portrait, one fresh page per row) ---');
+    console.log('     t(ms)   corner%   full%   renderer up   notice');
     for (const s of series) {
       console.log(`   ${String(s.t).padStart(6)}   ${(s.cornerFrac * 100).toFixed(2).padStart(6)}   ` +
-        `${(s.fullFrac * 100).toFixed(2).padStart(6)}   ${String(s.notice).padEnd(9)}  ${s.harness}`);
+        `${(s.fullFrac * 100).toFixed(2).padStart(6)}   ${String(s.rendererUp).padEnd(11)}   ${s.notice}`);
     }
-    const at15 = series.find((s) => s.t === 15000);
-    const at40 = series[series.length - 1];
-    console.log(`   the shipped tool reads at ${SHIPPED_WAIT_MS} ms: corner ${(at15.cornerFrac * 100).toFixed(2)}% ` +
-      `— at 40000 ms it is ${(at40.cornerFrac * 100).toFixed(2)}%.`);
+    console.log('\n   boot time, and what verify-playable would have concluded at its 15 s mark:');
+    console.log('     condition                        boot ready   corner% @15s   verify-playable would say');
+    for (const b of bootTimes) {
+      console.log(`   ${b.label.padEnd(32)} ${String(b.readyMs === null ? b.err : b.readyMs + ' ms').padEnd(12)} ` +
+        `${(b.cornerAt15 * 100).toFixed(2).padStart(9)}      ${b.verdictAt15}`);
+    }
   }
 
   // ---- FRAME: where the sampler looks ---------------------------------------------------------
@@ -261,7 +304,15 @@ try {
       { label: 'hold-gate.js     (the real defect)',      glob: '**/hold-gate.js' },
       { label: 'engine.js        (a mid-graph module)',   glob: '**/engine.js' },
       { label: 'data/index.json  (a data 404)',           glob: '**/data/index.json' },
-      { label: 'one data file    (a leaf 404)',           glob: '**/data/regions/**' },
+      // `data/regions/**` was the first choice here and matched NOTHING — that directory does not
+      // exist — so the arm was inert and its PASS meant nothing (rule 6). `progression/` is a
+      // directory the engine names in its own boot error, so it is certainly fetched.
+      { label: 'one data dir     (a leaf 404)',           glob: '**/data/progression/**' },
+      // The question this arm answers is whether 99.1% non-black means "the game loaded" or
+      // merely "a WebGL context exists and was cleared to something that is not black". Block
+      // every data file: the renderer comes up, the world does not. If the corner still reads
+      // over 2%, the threshold is not measuring what the tool's header says it measures.
+      { label: 'ALL of data/     (renderer up, no world)', glob: '**/data/**' },
     ];
     const rows = [];
     for (const a of arms) {

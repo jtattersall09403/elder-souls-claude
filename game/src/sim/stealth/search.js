@@ -40,6 +40,18 @@ export class ZoneMemory {
     return z;
   }
 
+  /**
+   * W1-15 r4. The third of `justice.json`'s `unidentified_effect` promises: an unattributed report
+   * *"counts toward RI-STL01 §7's S-4 zone memory."*
+   *
+   * It is the same consequence a failed search has, for the same reason: something happened in this
+   * room and nobody knows who. `onSearchEnded(zone, frame, false)` is exactly that state, so this
+   * routes to it rather than minting a second decay clock — one memory, one set of constants.
+   */
+  onUnattributedReport(zone, frame) {
+    return this.onSearchEnded(zone, frame, false);
+  }
+
   baselineAlert(zone, frame) {
     const z = this.get(zone);
     return frame < z.baselineUntilF ? z.baseline : 0;

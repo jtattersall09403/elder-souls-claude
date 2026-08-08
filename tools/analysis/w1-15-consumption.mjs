@@ -31,9 +31,66 @@ const args = new Set(process.argv.slice(2));
 const jsonIdx = process.argv.indexOf('--json');
 const jsonOut = jsonIdx >= 0 ? process.argv[jsonIdx + 1] : null;
 
-const FILES = [
-  'stealth/detection.json', 'stealth/theft.json', 'stealth/locks.json',
+// W1-15 ROUND 4 — THE CENSUS MISSED A WHOLE FILE, AND IT WAS THE ONE THAT MATTERED.
+//
+// Round 3 hardcoded seven entries here. `game/data/{stealth,crime}` holds EIGHT. The absentee was
+// `stealth/search.json`, read by `sim/stealth/system.js` as `this.d.search` in six places and
+// unambiguously this piece's. The round-3 critic:
+//
+// > *"All 28 of its parameters come back 'read by name,' which is why omitting it costs the 116
+// > nothing — and that is the entire point. RULES.md 11 says a field census cannot prove a read
+// > DEAD; this is the same rule running in the direction nobody checks, where a census proves a
+// > read LIVE that isn't."*
+//
+// So there are two fixes here and the list is only the first.
+//
+// (1) THE LIST IS NO LONGER A LIST. It is discovered from disk and then ASSERTED against a
+//     declared set, so adding a data file to either directory without adding it to this census
+//     makes the tool go red instead of silently shrinking its own denominator.
+// (2) A PARAMETER THAT SLICES AN EMPTY LIST IS NOT LIVE, and `VACUITY_GUARDS` below is the check
+//     that says so. `s1.max_cover_volumes`, `s1.radius_m` and `s1.per_volume_s` were all "read by
+//     name" while `search.js:85` sliced `coverVolumes`, which had exactly one producer in
+//     `game/src` and it was the harness verb — the identical defect round 3 fixed for
+//     `LightField.addSource()`, one module over. Each guard names a parameter, the collection its
+//     reader indexes, and the world-side producer that must fill it; the tool EXITS NON-ZERO if
+//     that producer does not exist outside `game/src/harness/`.
+const DATA_DIRS = ['stealth', 'crime'];
+const DECLARED = [
+  'stealth/detection.json', 'stealth/theft.json', 'stealth/locks.json', 'stealth/search.json',
   'crime/bounty.json', 'crime/justice.json', 'crime/sanction.json', 'crime/fences.json',
+];
+function discoverDataFiles() {
+  const found = [];
+  for (const d of DATA_DIRS) {
+    const abs = path.join(ROOT, 'game/data', d);
+    for (const f of fs.readdirSync(abs)) if (f.endsWith('.json')) found.push(`${d}/${f}`);
+  }
+  return found.sort();
+}
+const FOUND = discoverDataFiles();
+const MISSING_FROM_CENSUS = FOUND.filter((f) => !DECLARED.includes(f));
+const DECLARED_NOT_ON_DISK = DECLARED.filter((f) => !FOUND.includes(f));
+const FILES = FOUND.slice();
+
+/**
+ * The parameters whose reader indexes a collection the WORLD has to fill, and the producer that
+ * fills it. A parameter behind an empty collection is read by name and dead in play.
+ */
+const VACUITY_GUARDS = [
+  { param: 's1.max_cover_volumes', collection: 'StealthCrime.coverVolumes',
+    reader: 'game/src/sim/stealth/search.js', producer: 'syncCoverVolumes',
+    note: 'round 3: only producer was Engine.addCoverVolume(), called only from the harness' },
+  { param: 's1.radius_m', collection: 'StealthCrime.coverVolumes',
+    reader: 'game/src/sim/stealth/search.js', producer: 'syncCoverVolumes', note: 'same list' },
+  { param: 's1.per_volume_s', collection: 'StealthCrime.coverVolumes',
+    reader: 'game/src/sim/stealth/search.js', producer: 'syncCoverVolumes', note: 'same list' },
+  { param: 'trespass.classes', collection: 'p.zone',
+    reader: 'game/src/sim/stealth/theft.js', producer: 'syncPlayerZone',
+    note: 'round 3: zero assignments to p.zone anywhere in game/src, harness included' },
+  { param: 's4.baseline_alert', collection: 'p.zone',
+    reader: 'game/src/sim/stealth/search.js', producer: 'syncPlayerZone', note: 'ZoneMemory is keyed on the zone' },
+  { param: 'interior_ambient_L', collection: 'sim.env.interior',
+    reader: 'game/src/sim/stealth/system.js', producer: 'syncInteriorLights', note: 'round 3 built this one' },
 ];
 
 // The source tree that counts as "the world". A read inside tools/ or inside the data file's own
@@ -143,8 +200,42 @@ if (args.has('--selftest')) {
   // And a parameter that IS unmistakably read must come back read.
   const known = readersOf('light_exponent');
   if (!known.rows.some((r) => !r.harness)) { process.stderr.write('SELFTEST FAILED: `light_exponent` reported unread; it is read by sim/stealth/detection.js.\n'); process.exit(21); }
-  process.stdout.write('selftest: PASS — the canary is unread and a known-live parameter is read.\n');
+  // W1-15 r4. Arm 3: the file-coverage assertion must be able to go red. A file that exists on
+  // disk and is not in DECLARED is the exact defect that hid `search.json` for a whole round.
+  const fakeFound = FOUND.concat('stealth/zzz-a-file-nobody-declared.json');
+  const wouldMiss = fakeFound.filter((f) => !DECLARED.includes(f));
+  if (wouldMiss.length !== 1) { process.stderr.write('SELFTEST FAILED: the file-coverage assertion cannot see an undeclared file.\n'); process.exit(21); }
+  // Arm 4: the vacuity guard must be able to go red. Run the guard machinery over a producer name
+  // that exists nowhere and assert it reports ZERO world producers — if a missing producer can
+  // come back present, this check would have green-lit round 3's harness-only `coverVolumes` too.
+  const ghost = readersOf('zzz_producer_no_file_defines').rows.filter((r) => !r.harness);
+  if (ghost.length !== 0) { process.stderr.write('SELFTEST FAILED: a producer nobody defines was reported present.\n'); process.exit(21); }
+  // ...and over one that unmistakably does exist, so the probe is not simply blind.
+  const real = readersOf('syncInteriorLights').rows.filter((r) => !r.harness);
+  if (!real.length) { process.stderr.write('SELFTEST FAILED: syncInteriorLights reported absent; the vacuity probe is blind.\n'); process.exit(21); }
+  process.stdout.write('selftest: PASS — the canary is unread, a known-live parameter is read, an undeclared data file is caught, and the vacuity probe can see a harness-only producer.\n');
 }
+
+// ---- THE TWO FAILURES ROUND 3'S CENSUS COULD NOT HAVE SEEN --------------------------------
+// `--control` adds one guard naming a producer that does not exist, so the RED path can be watched
+// rather than assumed (RULES.md 4: a probe that cannot fail is worse than no probe). It must
+// exit 1; the same run without it must exit 0.
+if (args.has('--control')) {
+  VACUITY_GUARDS.push({ param: 'CONTROL.deliberately_broken', collection: 'nothing',
+    reader: 'nowhere', producer: 'zzz_control_producer_that_does_not_exist',
+    note: 'RULES.md 4 — this row must make the tool go red' });
+}
+let hard = 0;
+const vacuity = [];
+for (const g of VACUITY_GUARDS) {
+  const rows = readersOf(g.producer).rows;
+  const world = rows.filter((x) => !x.harness);
+  const ok = world.length > 0;
+  if (!ok) hard++;
+  vacuity.push({ ...g, world_producers: world.length, harness_producers: rows.length - world.length,
+    at: world.length ? `${world[0].file}:${world[0].line}` : (rows.length ? `${rows[0].file}:${rows[0].line} (HARNESS ONLY)` : 'NOWHERE'), ok });
+}
+if (MISSING_FROM_CENSUS.length || DECLARED_NOT_ON_DISK.length) hard++;
 
 const byStatus = {};
 for (const r of report) byStatus[r.status] = (byStatus[r.status] || 0) + 1;
@@ -181,8 +272,22 @@ process.stdout.write('\n  RULES.md rule 11: a field census over data cannot prov
   '  Object.values() walk is invisible to a name search. The demonstration half of RI-MTH07 (a\n' +
   '  perturbation of the model observed on an ENTITY) is tools/harness/w1-15-r3-live.mjs.\n');
 
+process.stdout.write(`\n  CENSUS COVERAGE — ${FOUND.length} data file(s) on disk in game/data/{${DATA_DIRS.join(',')}}\n`);
+if (MISSING_FROM_CENSUS.length) process.stdout.write(`  FAIL  ${MISSING_FROM_CENSUS.length} on disk and NOT declared: ${MISSING_FROM_CENSUS.join(', ')}\n`);
+if (DECLARED_NOT_ON_DISK.length) process.stdout.write(`  FAIL  ${DECLARED_NOT_ON_DISK.length} declared and NOT on disk: ${DECLARED_NOT_ON_DISK.join(', ')}\n`);
+if (!MISSING_FROM_CENSUS.length && !DECLARED_NOT_ON_DISK.length) process.stdout.write('  PASS  every file on disk is in the census and every declared file exists.\n');
+
+process.stdout.write('\n  VACUITY — a parameter read by name that indexes a collection the world never fills is DEAD IN\n  PLAY, and a name census reports it as live. Each row names the world-side producer that must exist.\n');
+for (const v of vacuity) {
+  process.stdout.write(`  ${v.ok ? 'PASS' : 'FAIL'}  ${v.param.padEnd(24)} needs ${v.collection.padEnd(28)} produced by ${v.producer}()  ->  ${v.at}\n`);
+}
+
 if (jsonOut) {
   fs.mkdirSync(path.dirname(path.join(ROOT, jsonOut)), { recursive: true });
-  fs.writeFileSync(path.join(ROOT, jsonOut), JSON.stringify({ total: report.length, by_status: byStatus, unread, harness_only: harnessOnly, ambiguous, all: report }, null, 2) + '\n');
+  fs.writeFileSync(path.join(ROOT, jsonOut), JSON.stringify({ total: report.length, by_status: byStatus, files_on_disk: FOUND, missing_from_census: MISSING_FROM_CENSUS, declared_not_on_disk: DECLARED_NOT_ON_DISK, vacuity, unread, harness_only: harnessOnly, ambiguous, all: report }, null, 2) + '\n');
   process.stdout.write(`\n  wrote ${jsonOut}\n`);
 }
+
+// A census that cannot see a file, or a parameter behind a collection only the harness fills, is
+// the defect this tool exists to find — so finding one is a non-zero exit, not a printed remark.
+if (hard) { process.stderr.write(`\nw1-15-consumption: ${hard} hard failure(s) — see CENSUS COVERAGE and VACUITY above.\n`); process.exit(1); }

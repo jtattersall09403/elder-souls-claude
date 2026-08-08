@@ -150,11 +150,90 @@
     else if (s > 8) say('Loading the province…', 'About 17 MB. ' + s + 's so far.');
   }, 1000);
 
-  // The world is up when the harness says it is. Poll rather than wait on an event, because the
-  // module may install the harness before or after this script runs.
-  var poll = setInterval(function () {
+  // Hiding on "the harness object exists" was WRONG and it cost the owner a second black screen.
+  // `main.js` installs the harness IMMEDIATELY, before boot resolves — it says so in a comment —
+  // so the notice vanished a few hundred milliseconds in and left exactly the silent black
+  // rectangle it exists to prevent. It flashed, and then it was gone, and the screen was black.
+  //
+  // Two conditions now, and both are necessary:
+  //   * `ready()` resolves, which awaits the boot promise rather than the object's existence;
+  //   * the canvas has actually drawn something — pixels a person could see.
+  // A world that boots and draws nothing is a real state of this game and it must not read as
+  // success. If that happens the notice says so, which is the diagnosis rather than the silence.
+  function painted() {
+    var c = document.querySelector('canvas');
+    if (!c) return false;
+    try {
+      var gl = c.getContext('webgl2') || c.getContext('webgl');
+      if (!gl) return false;
+      var w = Math.min(c.width, 64), h = Math.min(c.height, 64);
+      var buf = new Uint8Array(w * h * 4);
+      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+      var lit = 0;
+      for (var i = 0; i < buf.length; i += 4) if (buf[i] > 8 || buf[i + 1] > 8 || buf[i + 2] > 8) lit++;
+      return lit > (w * h) * 0.01;
+    } catch (e) { return false; }
+  }
+
+  // Everything a phone can tell us about why it will not draw. Deliberately terse: it has to be
+  // readable in a screenshot on a small screen.
+  function deviceLine() {
+    var bits = [];
+    try {
+      var c = document.querySelector('canvas');
+      bits.push('canvas ' + (c ? c.width + 'x' + c.height + ' css ' + c.clientWidth + 'x' + c.clientHeight : 'none'));
+      bits.push('vp ' + window.innerWidth + 'x' + window.innerHeight + '@' + (window.devicePixelRatio || 1));
+      var gl = c && (c.getContext('webgl2') || c.getContext('webgl'));
+      if (!gl) { bits.push('NO GL CONTEXT'); }
+      else {
+        bits.push(gl instanceof WebGL2RenderingContext ? 'webgl2' : 'webgl1');
+        bits.push('maxTex ' + gl.getParameter(gl.MAX_TEXTURE_SIZE));
+        bits.push('maxRB ' + gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
+        var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+        if (dbg) bits.push(String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)).slice(0, 60));
+        if (gl.isContextLost && gl.isContextLost()) bits.push('CONTEXT LOST');
+      }
+    } catch (e) { bits.push('probe threw: ' + String(e && e.message || e).slice(0, 60)); }
+    return bits.join(' · ');
+  }
+
+  // A lost WebGL context is a phone's usual way of refusing, and it fires an event rather than
+  // throwing, so nothing else here would ever see it.
+  var cv = document.querySelector('canvas');
+  if (cv) cv.addEventListener('webglcontextlost', function (ev) {
+    ev.preventDefault();
+    say('The browser took the 3D context away.',
+        'This usually means the page asked for more graphics memory than the device would give it. ' +
+        '<b>Please send this line:</b><br><code>' + deviceLine() + '</code>', true);
+  });
+
+  var booted = false;
+  var waitReady = setInterval(function () {
     var h = window.__HARNESS;
-    if (h && (h.ready || h.engine || h.getState)) { clearInterval(poll); clearInterval(tick); hide(); }
+    if (!h || typeof h.ready !== 'function') return;
+    clearInterval(waitReady);
+    try {
+      h.ready().then(function () { booted = true; }, function (err) {
+        say('The world failed to build.', (err && (err.message || String(err))) || 'no reason given', true);
+      });
+    } catch (e) { say('The world failed to build.', String(e && e.message || e), true); }
+  }, 150);
+
+  var sinceBoot = 0;
+  var poll = setInterval(function () {
+    if (done) { clearInterval(poll); return; }
+    if (!booted) return;
+    if (painted()) { clearInterval(poll); clearInterval(tick); hide(); return; }
+    // Booted but nothing on the screen. Give the first frame a moment, then say what is true.
+    sinceBoot += 0.2;
+    if (sinceBoot > 6) {
+      // Print what the device says about itself. A phone-only failure cannot be reproduced on the
+      // build machine — desktop Chromium at a phone-sized viewport is not a phone — so the only
+      // way anyone learns why is if the phone says so on its own screen.
+      say('The world loaded, but nothing is being drawn.',
+          'The game built itself and the screen stayed black, so this is the renderer rather than a ' +
+          'missing file. <b>Please send this line:</b><br><code>' + deviceLine() + '</code>', true);
+    }
   }, 200);
 })();
 </script>

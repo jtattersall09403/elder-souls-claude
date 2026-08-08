@@ -2,9 +2,38 @@
   "task_id": "W1-12-r2",
   "state": "building",
   "started": "2026-08-08",
-  "headline": "Enemy behaviour round 2: make an enemy able to catch a walking player; differentiate archetypes; RECOVER state; kill dead params; S22 units.",
-  "next_step": "read spec W1-12-r1.md, ai.json, enemy AI source",
-  "files_touched": ["orchestration/status/W1-12-r2.json"],
-  "files_claimed": [],
-  "notes": ["contention gate GO at start (1 browser live, load 1.04/core)"]
+  "base_commit": "09e11d0",
+  "headline": "Enemy behaviour round 2. The closure rule (an enemy that wants you can reach you), RECOVER, seven distinct behaviours, dead parameters wired or removed, S22 units.",
+  "next_step": "write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, delete-the-fix, screenshot, report, commit",
+  "done": [
+    "closure rule: TARGET RECESSION, not closure. inf_trash vs a walking player min gap 8.138 -> 1.612 m; RUSH entered on every statblock at every speed",
+    "measured and REJECTED the round-1 verdict's own proposed remedy (gate on closure): closure is a property of the pair and the enemy's own sprint restores it, so the rule switches itself off — 37-frame RUSH/APPROACH oscillation, trace published",
+    "found and fixed a sample-window contiguity defect that improved a number the wrong way (rule 6, third shape): the window spanned frames the AI is not stepped, inflating recession 3x and making every enemy a chase-bot (M3 dwell 0.2521 -> 0.2980, two statblocks over the 0.35 HARD FAIL)",
+    "RECOVER (T15) implemented; M3 dwell now 0.2521 on inf_trash, exactly the critic's predicted honest number, and both readings of M3 now agree",
+    "behaviour_archetype table: 7 distinct behaviour shapes over 7 fighting statblocks (was 4, with 4 bit-identical)",
+    "BLOCK_HOLD (T18) and DISENGAGE (T24) implemented; prefers_band and blocks now have readers",
+    "leash tier resolved from statblock boss/tier; noLosSinceF assigned from the one LOS model; swarm omega bound declared; SEARCH->LEASH_RETURN and suspicious dwell wired; cone_deg and 3 duplicate perception constants removed; react_within_f moved to the probe",
+    "S22: ruled RI-AI01's bare `f` is f@60 from three internal seconds/frame pairs; units block added"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-12-r2.json",
+    "game/data/combat/ai.json",
+    "game/src/combat/ai.js",
+    "game/src/combat/enemy.js",
+    "game/src/combat/system.js",
+    "tools/harness/ai-probe.mjs"
+  ],
+  "files_claimed": [
+    "tools/combat/w1-12-r2-probe.mjs",
+    "tools/combat/check-ai-units.mjs",
+    "reports/w1-12-r2/",
+    "docs/shots/2026-08-08-w1-12-r2-an-enemy-catching-a-walking-player.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-12"],
+  "notes": [
+    "successor to W1-12 (state `done`) against verdict corpus/90-verdicts/wave1/W1-12-r1.md (FAIL 3/10). W1-12's own files_touched overlap is deliberate: this is round 2 of the same piece.",
+    "contention gate GO throughout; browser work still to do",
+    "reports/blog-feed.jsonl is append-only"
+  ]
 }

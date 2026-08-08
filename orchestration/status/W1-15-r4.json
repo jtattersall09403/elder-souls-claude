@@ -5,16 +5,26 @@
   "status": "building",
   "started_at": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-15-r3.md",
-  "next_step": "survey engine.fenceQuote, zone data shape, justice/state.js, search.js coverVolumes",
+  "next_step": "update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4-lights.mjs (the 22,751-cell grid); then live browser measurement + delete-the-fix + the shot",
   "defects": {
-    "D1_lit_policy_divergence": "open",
-    "D2_darkness_constant_cellar": "open",
-    "D3_fence_npcById_stub": "open",
-    "D4_unidentified_no_consequence": "open",
-    "D5_trespass_no_zone_producer": "open",
-    "D6_census_missing_search_json_and_coverVolumes": "open"
+    "D1_lit_policy_divergence": "code landed \u2014 game/src/world/interior-lighting.js is the one policy; render/interior.js and sim/stealth/system.js both import litLights()/windowPlan()/wallSlots()/floorSlots(). Cap removed as an illumination cap (shadow cap of 1 kept), fail-open moved into the shared module. NEEDS MEASUREMENT.",
+    "D2_darkness_constant_cellar": "code+data landed \u2014 interiorAmbientL() derived from the aperture the renderer draws; detection.json carries window_daylight_k 8.0595 and its derivation. NEEDS MEASUREMENT.",
+    "D3_fence_npcById_stub": "code landed \u2014 Engine._npcIndex()/npcById()/dispositionBetween(); fenceQuote passes real world; buyer.id is now the fence NPC id. NEEDS MEASUREMENT.",
+    "D4_unidentified_no_consequence": "code+data landed \u2014 CrimeWorld.unattributed/alarm ledgers, attributedIn(), guardBandNow() reads attributed, ZoneMemory.onUnattributedReport(), civilian contextWeight x alarm. justice.json unidentified_consequence block. NEEDS MEASUREMENT.",
+    "D5_trespass_no_zone_producer": "code landed \u2014 StealthCrime.syncPlayerZone()/zoneCandidatesFor() in the fixed step; strictest-class tie-break, ruled and reversible. NEEDS MEASUREMENT.",
+    "D6_census_missing_search_json_and_coverVolumes": "coverVolumes producer landed (syncCoverVolumes + coverSpots). census tool NOT YET updated."
   },
-  "files_touched": [],
+  "files_touched": [
+    "orchestration/status/W1-15-r4.json",
+    "game/src/world/interior-lighting.js",
+    "game/src/render/interior.js",
+    "game/src/sim/stealth/system.js",
+    "game/src/sim/stealth/search.js",
+    "game/src/sim/crime/state.js",
+    "game/src/engine.js",
+    "game/data/stealth/detection.json",
+    "game/data/crime/justice.json"
+  ],
   "files_claimed": [
     "orchestration/status/W1-15-r4.json",
     "game/src/sim/stealth/interior-lights.js",
@@ -42,5 +52,6 @@
   },
   "redundant_with": [
     "W1-15-r3"
-  ]
+  ],
+  "checks_green": "node tools/check-data.mjs exit 0 (566 files); node tools/analysis/crime-audit.mjs 41/41"
 }

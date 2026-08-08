@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `d6265a8`: 742 tools, 153 reference
+so it cannot drift. Generated at `ced0a03`: 743 tools, 153 reference
 items, 67 pieces in flight.
 
 Its purpose is to stop 67+ concurrent agents each paying separately to discover the
@@ -189,7 +189,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/capture/settle-shapes.mjs` — **no header comment**
 - `tools/capture/settle.mjs` — the anti-loophole half of S34, and the thing that makes placed captures safe.
 
-### `tools/combat/` — 6
+### `tools/combat/` — 7
 
 - `tools/combat/check-ai-units.mjs` — S22 for game/data/combat/ai.json — a CHECK, not a constructor (RULES 14).
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
@@ -197,6 +197,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
 - `tools/combat/w1-12-r2-chart.mjs` — W1-12 ROUND 2 — the picture, and the delete-the-fix control, in one run.
 - `tools/combat/w1-12-r2-probe.mjs` — W1-12 ROUND 2 — the builder's instrument.
+- `tools/combat/w1-12-r2-teardown.mjs` — W1-12 ROUND 2 — DELETE-THE-FIX (RULES 6), four arms, run on scratch copies of the tree.
 
 ### `tools/composition/` — 3
 

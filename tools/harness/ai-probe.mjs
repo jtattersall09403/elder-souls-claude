@@ -25,6 +25,16 @@
 // to be made in a browser; see reports/w1-12/survey.md.
 'use strict';
 
+/**
+ * M9's PASS THRESHOLD, in f@60. THIS IS AN INSTRUMENT'S BAR, NOT A GAME PARAMETER, and until
+ * W1-12 round 2 it lived in `game/data/combat/ai.json` as `punish_read.react_within_f`. Its only
+ * reader in the whole repo was this line. A scoring threshold that ships inside the data file the
+ * thing under test reads is a threshold anybody can move to make the probe pass, so it moved here
+ * and the data file records where it went. Provenance: RI-AI01 T22, "closes at sprint" — twelve
+ * frames is 0.2 s, the reaction the item asks the anti-chug contract to have.
+ */
+const PUNISH_REACT_WITHIN_F = 12;
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -411,9 +421,9 @@ function m9PunishRead(data, behaviour, hard) {
     if (arena.player.move && arena.player.move.kind === 'heal') healFrames++;
     if (reacted < 0 && ctl.ai.state === 'PUNISH_READ') reacted = i;
   }
-  const ok = reacted >= 0 && reacted <= data.ai.punish_read.react_within_f;
+  const ok = reacted >= 0 && reacted <= PUNISH_REACT_WITHIN_F;
   return chk('M9', ok ? 2 : reacted >= 0 ? 1 : 0,
-    `player began a real \`heal\` at 5.0*omega; PUNISH_READ entered ${reacted < 0 ? 'never' : `${reacted} f`} after (<= ${data.ai.punish_read.react_within_f} f); the drink occupied ${healFrames} frames`,
+    `player began a real \`heal\` at 5.0*omega; PUNISH_READ entered ${reacted < 0 ? 'never' : `${reacted} f`} after (<= ${PUNISH_REACT_WITHIN_F} f@60); the drink occupied ${healFrames} f@60`,
     { punish_read_latency_f: reacted, heal_frames: healFrames });
 }
 

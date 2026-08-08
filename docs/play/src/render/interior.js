@@ -53,7 +53,7 @@ import * as THREE from '../../vendor/three/three.module.js';
 // W1-15 round 4. The lit set and the window aperture are POLICY, and policy that two files
 // implement is policy that drifts — RULES.md rule 10, and it cost 1,659 disagreeing floor cells.
 // Both this file and `sim/stealth/system.js` read the answer from here and neither invents one.
-import { litLights, windowPlan, PANE_W_M, PANE_H_M } from '../world/interior-lighting.js';
+import { litLights, windowPlan, wallSlots, floorSlots, PANE_W_M, PANE_H_M } from '../world/interior-lighting.js';
 
 /** The same string hash the Engine uses for NPC offsets, so the two agree on their arithmetic. */
 function hashStr(s) {
@@ -410,26 +410,10 @@ function fallbackProp(P, id) {
  * ==============================================================================================*/
 
 /** The four walls, as slot rings a prop can be stood against. */
-function wallSlots(bx, bz, step) {
-  const slots = [];
-  const inset = 0.55;
-  const x0 = bx[0] + inset, x1 = bx[1] - inset, z0 = bz[0] + inset, z1 = bz[1] - inset;
-  const nx = Math.max(2, Math.floor((x1 - x0) / step));
-  const nz = Math.max(2, Math.floor((z1 - z0) / step));
-  for (let i = 0; i < nx; i++) slots.push({ x: x0 + (i + 0.5) * ((x1 - x0) / nx), z: z0, yaw: 0 });          // north wall, facing +z
-  for (let i = 0; i < nz; i++) slots.push({ x: x1, z: z0 + (i + 0.5) * ((z1 - z0) / nz), yaw: -Math.PI / 2 }); // east wall
-  for (let i = 0; i < nx; i++) slots.push({ x: x1 - (i + 0.5) * ((x1 - x0) / nx), z: z1, yaw: Math.PI });      // south wall
-  for (let i = 0; i < nz; i++) slots.push({ x: x0, z: z1 - (i + 0.5) * ((z1 - z0) / nz), yaw: Math.PI / 2 });  // west wall
-  return slots;
-}
-
-/** A grid of clear floor, for things that are not against anything. */
-function floorSlots(bx, bz, step) {
-  const slots = [];
-  const x0 = bx[0] + 1.5, x1 = bx[1] - 1.5, z0 = bz[0] + 1.5, z1 = bz[1] - 1.5;
-  for (let x = x0; x <= x1; x += step) for (let z = z0; z <= z1; z += step) slots.push({ x, z, yaw: 0 });
-  return slots.length ? slots : [{ x: 0, z: 0, yaw: 0 }];
-}
+// W1-15 round 4: MOVED to `world/interior-lighting.js` and imported above, unchanged. The stealth
+// system derives S-1's cover volumes from this same grid — a searcher that checks behind the
+// counter has to agree with the file that drew the counter, and two copies of a placement grid is
+// the same rule-10 defect the lit set had.
 
 /**
  * Build the room this record describes into `root`.

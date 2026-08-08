@@ -18,6 +18,33 @@ export class CrimeWorld {
     this.bd = bountyData;
     this.jd = justiceData;
     this.bounty = { imperial: 0, settlement: {}, interior: 0 };
+    /**
+     * W1-15 ROUND 4 — 'PERSON OR PERSONS UNKNOWN', AS A LEDGER AND NOT AS A PROSE STRING.
+     *
+     * `justice.json`'s own `unidentified_effect` promised three things and implemented none:
+     *
+     * > *"bounty lands as 'person or persons unknown'; **guards do not approach you for it**, but
+     * > it counts toward the settlement's alarm state and toward RI-STL01 §7's S-4 zone memory."*
+     *
+     * The round-3 critic classified all 16 occurrences of `identified` in `game/src` and found
+     * **exactly one that changes a decision** — the 0.4x `partial_report.multiplier` on the line
+     * below — and put it plainly: *"Being **suspected** and being **wanted** are the same state,
+     * held at different magnitudes. ... the file promises kind."*
+     *
+     * These two registers are the kind. `unattributed` is the part of the ledger nobody can pin on
+     * you; `attributedIn()` is total minus that, and it is what `guardBandNow()` now reads, so a
+     * guard genuinely cannot approach you for a crime nobody could name you for. `alarm` is the
+     * settlement's own memory of unattributed crime — the second promise — and the third
+     * (`ZoneMemory`) is raised from `StealthCrime.stepReports()`, which is the only place that
+     * knows which zone the report happened in.
+     *
+     * The TOTAL is deliberately unchanged: paying a bounty, a writ, a jail sentence and every
+     * existing assertion about `bounty.imperial` all still see the same number they saw before.
+     * What moved is who the world thinks did it.
+     */
+    this.unattributed = { imperial: 0, settlement: {} };
+    /** settlement -> {level, until_f, reports}. Raised by unattributed reports, decays on a clock. */
+    this.alarm = {};
     this.bloodprice = {};                 // family -> gold
     this.crimes = [];                     // {crime_id, id, frame, jurisdiction, value_g, victim, lawful}
     this.witnesses = [];                  // {eid, crime_id, frame_seen, identified, reported, kind}
@@ -154,12 +181,16 @@ export class CrimeWorld {
     const partial = !witnessRec.identified || witnessRec.kind === 'hearing';
     const mult = partial ? this.bd.partial_report.multiplier : 1.0;
     const delta = Math.round(crime.quote * mult);
-    this.addBounty(crime.jurisdiction, delta, crime.settlement);
+    // W1-15 r4. The `attributed: null` this log line has always written is now a fact about the
+    // ledger and not a decoration: an unattributed report's gold goes into `unattributed` as well
+    // as into the total, and `guardBandNow()` subtracts it. Before this, the log said "person or
+    // persons unknown" and the guard band could not tell.
+    this.addBounty(crime.jurisdiction, delta, crime.settlement, { attributed: !partial });
     crime.landed = true;
     const k = partial ? 'partial' : 'unlawful';
     this.log.push({ type: 'report', kind: k, crime_ref: crime.id, eid: witnessRec.eid, frame, bounty_delta: delta, attributed: partial ? null : 'player' });
-    this.log.push({ type: 'bounty_change', jurisdiction: crime.jurisdiction, delta, total: this.bountyIn(crime.jurisdiction, crime.settlement), frame });
-    return { kind: k, delta };
+    this.log.push({ type: 'bounty_change', jurisdiction: crime.jurisdiction, delta, total: this.bountyIn(crime.jurisdiction, crime.settlement), frame, attributed: !partial });
+    return { kind: k, delta, attributed: !partial, settlement: crime.settlement, jurisdiction: crime.jurisdiction, crime_ref: crime.id };
   }
 
   /**
@@ -196,15 +227,61 @@ export class CrimeWorld {
 
   // ---- bounty ---------------------------------------------------------------------------------
 
-  addBounty(jurisdiction, delta, settlement) {
+  addBounty(jurisdiction, delta, settlement, opts) {
     if (jurisdiction === 'interior') return 0;      // the interior has no bounty, by ruling
+    // W1-15 r4. `attributed !== false` keeps every existing caller exactly as it was: a bounty
+    // added without saying otherwise is a bounty with your name on it.
+    const unattributed = opts && opts.attributed === false;
     if (jurisdiction === 'settlement') {
       const key = settlement || 'unknown';
       this.bounty.settlement[key] = (this.bounty.settlement[key] || 0) + delta;
+      if (unattributed) this.unattributed.settlement[key] = (this.unattributed.settlement[key] || 0) + delta;
       return this.bounty.settlement[key];
     }
     this.bounty.imperial += delta;
+    if (unattributed) this.unattributed.imperial += delta;
     return this.bounty.imperial;
+  }
+
+  /** The part of the ledger a guard can act on: total, less what nobody could name you for. */
+  attributedIn(jurisdiction, settlement) {
+    if (jurisdiction === 'settlement') {
+      const key = settlement || 'unknown';
+      return Math.max(0, (this.bounty.settlement[key] || 0) - (this.unattributed.settlement[key] || 0));
+    }
+    if (jurisdiction === 'interior') return 0;
+    return Math.max(0, this.bounty.imperial - this.unattributed.imperial);
+  }
+
+  unattributedIn(jurisdiction, settlement) {
+    if (jurisdiction === 'settlement') return this.unattributed.settlement[settlement || 'unknown'] || 0;
+    if (jurisdiction === 'interior') return 0;
+    return this.unattributed.imperial;
+  }
+
+  /**
+   * The settlement's alarm state — the second of `unidentified_effect`'s three promises.
+   *
+   * A town that keeps losing things to a thief nobody can describe gets JUMPY, and that is the
+   * consequence of an unattributed report that is not a smaller number on your head. It is read by
+   * `StealthCrime.stepCivilians()` as a multiplier on every civilian's contextWeight in that
+   * settlement, so the town watches you harder without being able to arrest you.
+   */
+  raiseAlarm(settlement, frame, delta, holdFrames) {
+    const key = settlement || 'unknown';
+    const a = this.alarm[key] || (this.alarm[key] = { level: 0, until_f: -1, reports: 0 });
+    if (frame >= a.until_f) a.level = 0;             // it had decayed; start again
+    a.level = Math.min(100, a.level + delta);
+    a.until_f = frame + holdFrames;
+    a.reports++;
+    this.log.push({ type: 'settlement_alarm', settlement: key, level: a.level, until_f: a.until_f, frame });
+    return a;
+  }
+
+  alarmIn(settlement, frame) {
+    const a = this.alarm[settlement || 'unknown'];
+    if (!a || frame >= a.until_f) return 0;
+    return a.level;
   }
 
   bountyIn(jurisdiction, settlement) {
@@ -273,6 +350,11 @@ export class CrimeWorld {
   toJSON() {
     return {
       bounty: { imperial: this.bounty.imperial, settlement: { ...this.bounty.settlement }, interior: 0 },
+      // W1-15 r4. Seam S6: attribution is world state. A save that carried the total but not the
+      // split would launder every unidentified crime on load, which is exactly the shape of defect
+      // RULES.md 7 exists for — so it goes through the round trip with everything else.
+      unattributed: { imperial: this.unattributed.imperial, settlement: { ...this.unattributed.settlement } },
+      alarm: JSON.parse(JSON.stringify(this.alarm)),
       bloodprice: { ...this.bloodprice },
       crimes: this.crimes.map((c) => ({ ...c })),
       witnesses: this.witnesses.map((w) => ({ ...w })),
@@ -291,6 +373,9 @@ export class CrimeWorld {
     if (!o) return this;
     this.bounty.imperial = o.bounty.imperial;
     this.bounty.settlement = { ...o.bounty.settlement };
+    this.unattributed.imperial = (o.unattributed && o.unattributed.imperial) || 0;
+    this.unattributed.settlement = { ...((o.unattributed && o.unattributed.settlement) || {}) };
+    this.alarm = JSON.parse(JSON.stringify(o.alarm || {}));
     this.bloodprice = { ...o.bloodprice };
     this.crimes = (o.crimes || []).map((c) => ({ ...c }));
     this.witnesses = (o.witnesses || []).map((w) => ({ ...w }));

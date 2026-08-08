@@ -104,6 +104,14 @@ export class StealthCrime {
     this._litInterior = null;
     this._interiorLampCount = 0;
     this._interiorLit = false;
+    this._interiorRec = null;
+    this._interiorSynthesized = 0;
+    this._interiorAmbient = null;
+    /** W1-15 r4 — the cells whose zones and cover volumes are currently resolved. */
+    this._zoneCellId = undefined;
+    this._zoneCandidates = null;
+    this._coverCellId = undefined;
+    this._worldCoverCount = 0;
     /**
      * RI-PRG03 §3/§6, the seam this file's own constructor comment left unbuilt: `this.p`
      * started as "the player's stealth-side state" with `sneak`/`security`/`agility`/
@@ -287,6 +295,16 @@ export class StealthCrime {
     // 6. civilians. The CALM/WATCHING/CHALLENGE/ALARM machine, never the enemy one.
     const zoneCtx = this.zones.contextMultiplier(p.zone, f);
     const baseline = this.zones.baselineAlert(p.zone, f);
+    // W1-15 r4. THE TOWN IS JUMPY. `unidentified_effect`'s second promise — "it counts toward the
+    // settlement's alarm state" — consumed. An alarm of 100 is x1.5 on every civilian's
+    // contextWeight in this settlement, so a thief nobody can name is harder to work near even
+    // though no guard will approach them. This is the term that makes an unidentified crime cost
+    // something in KIND rather than in gold.
+    const alarmLvl = this.crime.alarmIn(p.settlement, f);
+    const alarmCtx = 1 + (alarmLvl / 100) * ((this.d.justice.unidentified_consequence
+      && this.d.justice.unidentified_consequence.alarm_context_multiplier_at_100) === undefined
+      ? 0.5 : this.d.justice.unidentified_consequence.alarm_context_multiplier_at_100 - 1);
+    this._alarmCtx = alarmCtx;
     for (const c of this.civilians) {
       if (!c.alive) continue;
       // W1-15 r3. A person in their bed is not a sensor. RI-CRM01's witness has to be somebody
@@ -306,7 +324,7 @@ export class StealthCrime {
       if (c.flee) this.stepFlight(sim, c, f);
       const per = PER.perceiveInto(this._per, this.d.detection, sim, { x: c.pos[0], y: c.pos[1], z: c.pos[2], yaw: c.yaw, R: c.R },
         { px: pos[0], py: pos[1], pz: pos[2], V: p.V, soundR: p.soundR, motion: p.motion });
-      const w = this.effectiveContextWeight() * zoneCtx;
+      const w = this.effectiveContextWeight() * zoneCtx * alarmCtx;
       // SIGHT is weighted by what you are doing and by who you are; HEARING is not. A footfall
       // is a footfall whether or not the hand it belongs to is holding someone else's cup, and
       // `contextWeight` 0.00 (sheathed, in a public street) must not silence a sprinting
@@ -352,8 +370,20 @@ export class StealthCrime {
         r.state = 'landed';
         const wc = this.civilians.find((c) => c.eid === r.w.eid);
         if (wc) { wc.flee = null; wc.reporting = false; }
-        if (bus && res) { const e = bus.emit(f, 'report'); e.kind = res.kind; e.bounty_delta = res.delta; e.eid = r.w.eid; e.route = r.route.route; }
-        this.events.push({ type: 'report', frame: f, eid: r.w.eid, route: r.route.route, kind: res ? res.kind : 'none', bounty_delta: res ? res.delta : 0 });
+        // W1-15 r4. `unidentified_effect`'s other two promises, and they fire HERE because this is
+        // the only place that knows both that the report was unattributed and which zone it
+        // happened in. A crime nobody could pin on you does not put a guard on your shoulder — it
+        // makes the town watch, and it makes the room remember.
+        let alarm = null;
+        if (res && res.attributed === false) {
+          const ue = this.d.justice.unidentified_consequence || {};
+          alarm = this.crime.raiseAlarm(res.settlement || this.p.settlement, f,
+            ue.alarm_step === undefined ? 20 : ue.alarm_step,
+            Math.round((ue.alarm_hold_s === undefined ? 600 : ue.alarm_hold_s) * 60));
+          if (this.p.zone) this.zones.onUnattributedReport(this.p.zone, f);
+        }
+        if (bus && res) { const e = bus.emit(f, 'report'); e.kind = res.kind; e.bounty_delta = res.delta; e.eid = r.w.eid; e.route = r.route.route; e.attributed = res.attributed !== false; e.settlement_alarm = alarm ? alarm.level : 0; }
+        this.events.push({ type: 'report', frame: f, eid: r.w.eid, route: r.route.route, kind: res ? res.kind : 'none', bounty_delta: res ? res.delta : 0, attributed: res ? res.attributed !== false : null, settlement_alarm: alarm ? alarm.level : 0, zone_remembers: !!(res && res.attributed === false && this.p.zone) });
       }
     }
     this.mirrorToSave(sim);
@@ -636,12 +666,32 @@ export class StealthCrime {
     this._guardBand = band;
   }
 
-  /** The band for the player as they stand, from the live ledger. */
+  /**
+   * The band for the player as they stand — from the ATTRIBUTED ledger, which is the first of
+   * `justice.json`'s three `unidentified_effect` promises made true.
+   *
+   * > *"bounty lands as 'person or persons unknown'; **guards do not approach you for it**"*
+   *
+   * Round 3 read `this.crime.bounty.imperial` — the total — so, in the round-3 critic's words,
+   * *"a guard cannot tell a 294 g identified bounty from two 118 g unidentified ones plus 58 g.
+   * Being suspected and being wanted are the same state, held at different magnitudes."* They are
+   * now different states: `attributedIn()` subtracts everything that landed as person-or-persons-
+   * unknown, so a thief nobody could describe can carry an arbitrarily large bounty and still be
+   * greeted rather than arrested. The total is unchanged and still what you pay.
+   *
+   * `bounty_total` and `bounty_unattributed` ride along so the trace can show the whole ledger and
+   * a critic can see WHY a guard is standing still next to a 600 g bounty.
+   */
   guardBandNow() {
     const th = JUS.thresholds(this.d.races, this.d.sanction, this.d.justice, {
       race: this.p.race, standing: SAN.standingKey(this.p.standings), authority: 'imperial_authority',
     });
-    return { ...JUS.guardBand(this.d.justice, this.crime.bounty.imperial, th, {}), thresholds: th, bounty: this.crime.bounty.imperial };
+    const acted = this.crime.attributedIn('imperial');
+    return {
+      ...JUS.guardBand(this.d.justice, acted, th, {}), thresholds: th,
+      bounty: acted, bounty_total: this.crime.bounty.imperial,
+      bounty_unattributed: this.crime.unattributedIn('imperial'),
+    };
   }
 
   // ---- THE WITNESS, DERIVED FROM THE WORLD — RI-CRM01 §2/§3 -------------------------------
@@ -808,6 +858,14 @@ export class StealthCrime {
     this.searches.length = 0;
     this.events.length = 0;
     this.coverVolumes.length = 0;
+    // W1-15 r4. `syncCoverVolumes()`/`syncPlayerZone()` cache on the cell id and skip when it has
+    // not changed, so a reset that empties the list without clearing the cache leaves the world's
+    // cover volumes GONE until the player walks through a different door — a field written and
+    // never read back (RULES.md 7) wearing a different hat. Invalidated here, both of them.
+    this._coverCellId = undefined;
+    this._zoneCellId = undefined;
+    this._zoneCandidates = null;
+    this._litInterior = null;
     this.occluders = new CollisionCell('stealth_occluders', []);
     for (const s of this.light.sources) { s.lit = true; s.relightAtF = -1; }
     Object.assign(this.p, {
@@ -846,6 +904,14 @@ export class StealthCrime {
     this.searches.length = 0;
     this.events.length = 0;
     this.coverVolumes.length = 0;
+    // W1-15 r4. `syncCoverVolumes()`/`syncPlayerZone()` cache on the cell id and skip when it has
+    // not changed, so a reset that empties the list without clearing the cache leaves the world's
+    // cover volumes GONE until the player walks through a different door — a field written and
+    // never read back (RULES.md 7) wearing a different hat. Invalidated here, both of them.
+    this._coverCellId = undefined;
+    this._zoneCellId = undefined;
+    this._zoneCandidates = null;
+    this._litInterior = null;
     this.occluders = new CollisionCell('stealth_occluders', []);
     for (const s of this.light.sources) { s.lit = true; s.relightAtF = -1; }
     Object.assign(this.p, {
@@ -1074,6 +1140,38 @@ export class StealthCrime {
     return this.p.zone;
   }
 
+  /**
+   * S-1's cover volumes, PRODUCED. The round-3 critic's runner-up gap, and the second half of the
+   * defect that round fixed for the lamps:
+   *
+   * > *"`coverVolumes.push()` has exactly one caller in `game/src` and it is the harness verb.
+   * > Measured live: **0** cover volumes in the world, and **0** inside a furnished interior with
+   * > props and an occluder set. So `plausibleSet` returns `[]`, `Search.plan` is `[]`, and a
+   * > searcher who loses you walks to your last known position, stands there for two seconds, and
+   * > gives up."*
+   *
+   * Rebuilt only when the cell changes, like the lamps. A scenario's hand-placed volumes
+   * (`Engine.addCoverVolume()`) are kept — the world's are tagged `world: true` and only those are
+   * cleared, exactly as `LightField.clearWorld()` does, so a probe's fixture survives a cell switch
+   * and a critic reading `getStealthState()` can still tell a fed volume from a found one.
+   */
+  syncCoverVolumes(sim) {
+    const id = (sim && sim.env && sim.env.interior) || null;
+    if (id === this._coverCellId) return this._worldCoverCount || 0;
+    this._coverCellId = id;
+    for (let i = this.coverVolumes.length - 1; i >= 0; i--) if (this.coverVolumes[i].world) this.coverVolumes.splice(i, 1);
+    this._worldCoverCount = 0;
+    if (!id) return 0;
+    const rec = sim.settlements && typeof sim.settlements.interior === 'function' ? sim.settlements.interior(id) : null;
+    if (!rec) return 0;
+    for (const v of INTLIGHT.coverSpots(rec)) {
+      if (this.coverVolumes.some((x) => x.id === v.id)) continue;
+      this.coverVolumes.push({ id: v.id, pos: v.pos.slice(), zone: v.zone, world: true, from: v.from });
+      this._worldCoverCount++;
+    }
+    return this._worldCoverCount;
+  }
+
   /** The zones of one cell, resolved once per cell change: id, class, its authored weight, its box. */
   zoneCandidatesFor(sim, interiorId) {
     if (!interiorId) return [];
@@ -1107,6 +1205,22 @@ export class StealthCrime {
     return {
       interior: this._litInterior || null,
       interior_ambient_applied: !!this._interiorLit,
+      // W1-15 r4. The derived ambient's own working, so a critic can check the number rather than
+      // read it: which room, how many windows, what the sky was doing, and what that let in.
+      interior_ambient: this._interiorAmbient
+        ? { L: +this._interiorAmbient.L.toFixed(4), windowless: this._interiorAmbient.windowless,
+            windows: this._interiorAmbient.windows, aperture_ratio: +this._interiorAmbient.aperture_ratio.toFixed(5),
+            sky_L: +this._interiorAmbient.sky_L.toFixed(4), daylight_bleed: +this._interiorAmbient.bleed.toFixed(4) }
+        : null,
+      // How many of this room's lit lamps the record did NOT declare. Nonzero in exactly the
+      // eleven rooms with no `lights[]`, and the number a content pass would drive to 0.
+      synthesized_lamps: this._interiorSynthesized || 0,
+      // W1-15 r4. The zone and the cover the world produced this cell. Both were 0 before it.
+      zone: this.p.zone,
+      zone_forced: this.p.zoneForced || null,
+      zone_candidates: (this._zoneCandidates || []).map((c) => c.id),
+      cover_volumes_world: this._worldCoverCount || 0,
+      cover_volumes_total: this.coverVolumes.length,
       ambient_L: this.light.defaultAmbient,
       world_sources: world.length,
       world_lit: world.filter((s) => s.lit).length,

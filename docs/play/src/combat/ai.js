@@ -177,10 +177,12 @@ export class SoulsAI {
     this.healUntil = 0;
     this.lastCommitF = -1;
     this.commitIntervals = [];
-    // ---- W1-12 round 2. The closure window: the last N frames of centre-to-centre distance,
-    // oldest first. This is the whole memory the closure rule needs and it is behavioural state,
-    // so `saveState()` carries it (arrays are carried by default; see the MACHINERY note).
-    this.distWindow = [];
+    // ---- W1-12 round 2. The closure window: the last N frames the AI actually decided on,
+    // flat as [f0,x0,z0,f1,x1,z1,...] oldest first. Flat because `saveState()` maps `r6` over any
+    // array it carries and a nested triple would come back as NaN — the kind of load-path defect
+    // rule 7 says re-serialises cleanly and passes forever. The frame is stored with the sample
+    // because the samples are NOT contiguous; see the note where it is pushed.
+    this.pWindow = [];
     this.blockUntil = 0;
     this.disengageUntil = 0;
   }
@@ -230,22 +232,25 @@ export class SoulsAI {
   }
 
   /**
-   * CLOSURE, in m/s: how fast the gap has been shrinking over the last
-   * `movement.rush_closure_window_f` frames. Positive means gaining.
+   * TARGET RECESSION, in m/s: how fast the PLAYER has been moving away along the line between
+   * them, over the last `rush_closure_window_f` frames. Positive means leaving.
    *
-   * Returns `null` until the window is full, and a null closure triggers nothing — an enemy does
-   * not get to conclude it is losing a foot race from three frames of data, and the acceleration
-   * ramp (§F, 14 f to sprint) means the first few frames of any approach look like a stall.
+   * Returns `null` until the window is full, and a null triggers nothing — an enemy does not get
+   * to conclude it is losing a foot race from three frames of data, and §F's 14-frame sprint
+   * ramp means the opening of any approach looks like a stall.
    */
-  _closureMps() {
-    const w = this.distWindow;
+  _targetRecedeMps(dx, dz, dist) {
+    const w = this.pWindow;                      // flat [f, x, z, f, x, z, ...], oldest first
     const W = this.cfg.movement.rush_closure_window_f;
-    if (w.length < W || W <= 0) return null;
-    return (w[0] - w[w.length - 1]) / (W / 60);
+    if (w.length < W * 3 || W <= 0 || dist < 1e-6) return null;
+    const df = w[w.length - 3] - w[0];           // the REAL elapsed frames, not the sample count
+    if (df <= 0) return null;
+    const ax = w[w.length - 2] - w[1], az = w[w.length - 1] - w[2];
+    return ((ax * dx + az * dz) / dist) / (df / 60);
   }
 
   /**
-   * THE CLOSURE RULE — the whole of round 2's headline, in five lines.
+   * THE CLOSURE RULE — the whole of round 2's headline, and it took two attempts.
    *
    * RI-AI01 T07/T09 gate the sprint on a distance band and round 1 implemented exactly that, so
    * an enemy 10 m from a player WALKING away closed at 0.20 m/s (its approach walk of 2.20
@@ -253,16 +258,48 @@ export class SoulsAI {
    * 8.14 m, hit its leash and went home. It did WORSE against a walk than against a jog, because
    * walking held the gap just inside the band boundary that would have triggered the sprint.
    *
-   * So: distance decides where the enemy wants to be; closure decides how fast it has to move to
-   * get there. Outside the DANCE band, an enemy that is not gaining at least
-   * `rush_when_closure_below_mps` sprints, whatever band it is in. Inside DANCE it never does —
-   * a shove is not a chase, and an enemy that sprints at a player it is already standing next to
-   * is the chase-bot RI-AI01 M3 exists to fail.
+   * THE FIRST ATTEMPT WAS THE OBVIOUS ONE AND IT IS THE ONE THE ROUND-1 VERDICT PROPOSED: gate
+   * the sprint on CLOSURE — d(dist)/dt over a rolling window — instead of on the band. It is
+   * better than the band and it is still wrong, and the frame trace says why in one line:
+   *
+   *     f  29 RUSH      dist 10.96  closure -1.93   spd 0.28
+   *     f  54 APPROACH  dist 10.32  closure  0.88   spd 4.60
+   *     f  79 RUSH      dist 10.13  closure  0.80   spd 2.20
+   *     f  91 APPROACH  dist  9.74  closure  0.82   spd 4.60      ... and so on for 350 frames
+   *
+   * CLOSURE IS A PROPERTY OF THE PAIR, AND THE ENEMY'S OWN SPRINT RESTORES IT. Twelve frames
+   * after the sprint starts working, the rule that started it reads "I am gaining now" and stops
+   * it — so the enemy flip-flops RUSH/APPROACH on a 37-frame cycle and closes at the *average*
+   * of its sprint and its walk. It reached 5.10 m from 10.96 m in 358 frames and then stalled at
+   * about 4.1 m forever. A control loop whose input is its own output oscillates; this one did.
+   *
+   * SO THE RULE MEASURES THE TARGET, NOT THE PAIR: the player's own displacement projected onto
+   * the line between them. That number does not move when the enemy sprints, so the sprint
+   * cannot switch itself off. If the player is receding faster than
+   * `rush_when_target_recedes_above_mps`, the enemy sprints, whatever band it is in, until the
+   * player stops receding or it is inside its own strike band.
+   *
+   * Distance still decides WHERE the enemy wants to be. Recession decides whether the player is
+   * fighting or leaving. Against a stationary player (RI-AI01 M3's fixture) recession is 0 and
+   * none of this fires, which is why round 1's spacing loop survives unchanged; against a player
+   * strafing in a circle around the enemy it is ~0 too, because a tangent has no radial part.
    */
-  _losingGround(dist) {
-    if (dist <= this.cfg.bands.dance * this.omega) return false;
-    const c = this._closureMps();
-    return c !== null && c < this.cfg.movement.rush_when_closure_below_mps;
+  _targetIsLeaving(dx, dz, dist) {
+    if (dist <= this.cfg.bands.strike * this.omega) return false;
+    const r = this._targetRecedeMps(dx, dz, dist);
+    // THE THRESHOLD IS NOT A TUNED CONSTANT, and the first draft's was, which cost a round of
+    // measurement: a flat 0.8 m/s made every enemy a chase-bot on RI-AI01 M3's own fixture
+    // (`min_dist_dwell` 0.041 -> 0.53 against a 0.35 HARD FAIL) because a player merely dancing
+    // about at 1.2 m/s recedes faster than 0.8 half the time. The question the enemy is actually
+    // asking is arithmetic and has an exact answer: WOULD WALKING IN STILL GAIN ME ANYTHING? Its
+    // walk is `this.walk`, the target is receding at `r`, so a walk closes at `walk - r`. If
+    // that is less than `walk_in_min_closure_mps` the walk is pointless and it runs.
+    //
+    // This is why the number is per-archetype without a per-archetype table: POISE_MONSTER
+    // (walk 1.7) starts running at a target receding above 1.2 m/s, BEAST (walk 2.6) not until
+    // 2.1 — a slow enemy has to commit to a sprint sooner, and a fast one can afford to walk
+    // after you. Nothing here was chosen against a fixture.
+    return r !== null && (this.walk - r) < this.cfg.movement.walk_in_min_closure_mps;
   }
 
   /** The near edge of a named band, in metres — where T24 re-spaces to. */
@@ -348,14 +385,22 @@ export class SoulsAI {
     const anchorD = Math.hypot(b.pos[0] - this.anchor[0], b.pos[2] - this.anchor[2]);
     const alert = ctl.alertState;
 
-    // ---- the closure window (round 2). Pushed every decision frame, oldest first, capped at
-    // `rush_closure_window_f`. `_closureMps()` reads it. It is deliberately fed on EVERY frame
-    // the AI decides on rather than only in APPROACH, so that a state change does not reset the
-    // enemy's memory of whether it is gaining — resetting it was the first draft's bug and it
-    // made the enemy re-earn the sprint after every strafe reseed.
+    // ---- the closure window (round 2). Fed on EVERY decision frame rather than only inside
+    // APPROACH, so that a state change does not wipe the enemy's memory of what the player has
+    // been doing — resetting it made the enemy re-earn the chase after every strafe reseed.
+    // THE WINDOW MUST BE CONTIGUOUS IN TIME, and the first draft's was not — which is the single
+    // most expensive mistake in this round and it improved a number while doing it. `step()` is
+    // not called on the frames a body is mid-attack (that is what makes an enemy attack
+    // uncancellable), so after a 154-frame chop the "last 30 samples" spanned 184 real frames.
+    // Dividing that displacement by 0.5 s reported a player strolling at 1.2 m/s as receding at
+    // 5 m/s, every enemy in the roster charged after every swing, and RI-AI01 M3's
+    // `min_dist_dwell` went from 0.2521 to 0.2980 — with two statblocks over the 0.35 CHASE-BOT
+    // HARD FAIL. A gap in the samples means the enemy was not watching, so the window is dropped
+    // and rebuilt: it re-reads the situation after its own swing, which is also what it should do.
     const W = this.cfg.movement.rush_closure_window_f;
-    this.distWindow.push(dist);
-    while (this.distWindow.length > W) this.distWindow.shift();
+    if (this.pWindow.length && this.pWindow[this.pWindow.length - 3] !== frame - 1) this.pWindow.length = 0;
+    this.pWindow.push(frame, p.pos[0], p.pos[2]);
+    while (this.pWindow.length > W * 3) this.pWindow.splice(0, 3);
 
     // ---- T25's second de-aggro clause needs to know whether this enemy can SEE the player, and
     // round 1 never assigned `noLosSinceF`, so the clause and both `leash` leaves behind it were
@@ -541,20 +586,26 @@ export class SoulsAI {
         // jog pushed the gap back over the boundary, and sprinted again — min gap 11.63 m over
         // 1,800 frames, oscillating on the band edge. It now gives up the sprint only when it
         // has ARRIVED (the DANCE band) or when it is genuinely gaining ground.
-        if (this.stateF >= 12
-            && (dist <= this.cfg.bands.dance * this.omega
-                || (band !== 'RUSH' && !this._losingGround(dist)))) this._enter('APPROACH', frame);
+        if (this.stateF >= 12 && !this._targetIsLeaving(dx, dz, dist)
+            && (dist <= this.cfg.bands.dance * this.omega || band !== 'RUSH')) this._enter('APPROACH', frame);
         break;
 
       case 'APPROACH':                                    // T08 / T10, amended by the closure rule
         this._advance(dx, dz, dist, this.walk);
-        if (band === 'RUSH' || this._losingGround(dist)) this._enter('RUSH', frame);
+        if (band === 'RUSH' || this._targetIsLeaving(dx, dz, dist)) this._enter('RUSH', frame);
         else if (dist <= this.cfg.bands.dance * this.omega && this.stateF >= 15) this._enter('CIRCLE', frame);
         break;
 
       case 'CIRCLE':                                      // T11 / T12
         this._circle(frame, ctx, dx, dz, dist);
-        if (band === 'RUSH' || band === 'CLOSE') { this._enter('APPROACH', frame); break; }
+        // The closure rule's other half. Round 2's first measurement stopped here: the enemy
+        // rushed from 10 m down to 2.9 m and then CIRCLED a player who was walking away, because
+        // CIRCLE only ever handed back to APPROACH on a BAND. A strafe is 0.62 of a walk
+        // (circle.strafe_speed_fraction), so an enemy dancing at a departing player loses about
+        // 2 m/s and the fight becomes a slow-motion escape. If the gap is opening, stop dancing.
+        if (band === 'RUSH' || band === 'CLOSE' || this._targetIsLeaving(dx, dz, dist)) {
+          this._enter('APPROACH', frame); break;
+        }
         if (this.stateF >= this.cfg.commit.feint_min_circle_dwell_f
             && frame >= this.cooldownUntil
             && dist <= this.cfg.bands.dance * this.omega
