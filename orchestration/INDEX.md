@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f94df62`: 660 tools, 153 reference
+so it cannot drift. Generated at `ecf4919`: 661 tools, 153 reference
 items, 53 pieces in flight.
 
 Its purpose is to stop 53+ concurrent agents each paying separately to discover the
@@ -648,12 +648,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 5
+### `tools/ui/` — 6
 
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 - `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
+- `tools/ui/w1-21-r3-empty.mjs` — RULES 6, FOR THE INSTRUMENT: run every graded check with its subject removed and confirm that none of them goes green.
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 
 ### `tools/w1-26-r3/` — 3

@@ -36,7 +36,8 @@
     "tools/w1-26-r3/created-by-keyboard.mjs",
     "reports/w1-26-r3/",
     "reports/blog-feed.jsonl",
-    "docs/shots/2026-08-08-w1-26-r3-a-character-made-on-a-keyboard-standing-in-the-world.png"
+    "docs/shots/2026-08-08-w1-26-r3-a-character-made-on-a-keyboard-standing-in-the-world.png",
+    "reports/w1-26-r3-survey.md"
   ],
   "files_claimed": [],
   "notes": [
@@ -57,7 +58,8 @@
       "jrn09-exchange": "ALL PASS \u2014 DTR_scene 0.9820 -> 1.0000, DTR(hold.out) 0.000 -> 1.000, no HF1. worst node DTR across the whole scene = 1.0",
       "w1-26-r3-verify": "12 pass / 0 fail. CONSUMPTION coupling 1 (4 bodies -> 4 distinct drawn sentences AND 4 distinct writs). All four teardowns watched go red: A4 the desk throws again, B3 the engine string reaches a drawn row again, C2 the name comes back empty, D3 hold.out drops to 0 drawn rows.",
       "created-by-keyboard": "4 pass / 0 fail. A WHOLE character made with nothing but real DOM key events from the title screen: Jekq-Vozbnu Twylfax, Saxhleel, Salt-Blade, raj-xul, raised interior, carrying the stamped writ, 11 nodes. This is RI-JRN01 M13's keyboard leg over the journey rather than over the title's first two button presses.",
-      "A-JRN1 journey-run": "census_walk pass, 12 nodes reached, 7 fields written (was: broke on iteration 1, wrote nothing, reported N/A). m4_clause1 is MEASURED for the first time in the project: 1.03 s, first_control 141 -> first_defining 203."
+      "A-JRN1 journey-run": "census_walk pass, 12 nodes reached, 7 fields written (was: broke on iteration 1, wrote nothing, reported N/A). m4_clause1 is MEASURED for the first time in the project: 1.03 s, first_control 141 -> first_defining 203.",
+      "opening-play (real DOM input, no flags)": "P10 PASSES \u2014 'the scene moved past the desk to writ.sex'. P1-P8 pass; P8 records hatchName 'Silt-Under-Salt' verbatim (RED run: 'il-Un-l'). P9 went RED as a direct consequence of closing HF1 \u2014 see findings."
     }
   },
   "findings": [
@@ -65,7 +67,8 @@
     "My own first corner control was inert (all 8 arms shared one contaminated state and returned the identical 4.816 m to the identical position). Caught and fixed before it was reported \u2014 rule 6, in the control written to detect rule 6.",
     "m4_clause1's N/A had a SECOND cause the brief did not know about, and repairing the bare `catch { break; }` was necessary but not sufficient. `sim/step.js:64` calls bus.clear() at the TOP of the step and `_afterStep()` builds the record afterwards, so an event emitted OUTSIDE a step - which is what the harness verb censusAnswer does - is wiped before any record can carry it. creation_field therefore reaches the trace on the PLAYER's path (queued as _censusPending, applied from inside _afterStep) and never on the harness's. The driver now presses Enter instead of calling the verb, and m4_clause1 measures.",
     "m4_clause1 = 1.03 s is the DRIVER's patience, not the build's restraint: hold.come-to asks nothing until the player reaches for Jeeh-Ei, so the interval is bounded by how long the driver waits. Recorded as `driver_paced: true` with a note in the ledger row so the first reader of a number that has been N/A for two waves cannot misread it. The piece's own probe measures 61.5 s at a human pace and the two do not disagree.",
-    "opening-play.mjs writes its four frames to docs/shots/2026-08-08-w1-26-r2-*.png, which are the ROUND-2 critic's named evidence. Re-running it overwrites them with this build's frames. The originals are in history at e00e6fe; I restore them and keep r3-named copies of my own."
+    "opening-play.mjs writes its four frames to docs/shots/2026-08-08-w1-26-r2-*.png, which are the ROUND-2 critic's named evidence. Re-running it overwrites them with this build's frames. The originals are in history at e00e6fe; I restore them and keep r3-named copies of my own.",
+    "Closing HF1 made P9 go red, and both instruments were right. hold.out's line opens 'Go up.' \u2014 a bare imperative, which is exactly what opening-play.mjs P9's start-anchored IMPERATIVE test is for. The r2 verdict had recorded that same line as wayfinding that 'costs nothing and delivers nothing' BECAUSE IT WAS NEVER DRAWN (r2 section 6), while HF1 fired on its absence (r2 section 4). The two readings could not collide until the line reached the frame. Remedy: the line now says the same thing as an observation by a person rather than a direction to a player, and carries a line_note saying why."
   ],
   "deliverables": {
     "survey": "reports/w1-26-r3-survey.md (committed 3cc1dfe)",
