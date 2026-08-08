@@ -1,0 +1,39 @@
+{
+  "task_id": "blog-2026-08-08-b",
+  "brief": "orchestration/briefs/blog.md (inline dispatch: a batch closing owed endings from docs/blog/COVERED.md + tools/blog-threads.mjs, the W1-04-r3 inert wall-collision control arm, the W1-17 race-field dialogue lint, and one free choice from reports/blog-feed.jsonl)",
+  "started": "2026-08-08",
+  "state": "complete",
+  "files_touched": [
+    "docs/blog/2026-08-08-what-we-said-was-broken-checked-again.md",
+    "docs/blog/2026-08-08-the-arm-that-never-cut-the-walls.md",
+    "docs/blog/2026-08-08-the-lint-that-called-the-best-writing-dead.md",
+    "docs/blog/2026-08-08-the-guard-you-can-outwalk.md",
+    "docs/blog/COVERED.md",
+    "orchestration/status/blog-2026-08-08-b.json",
+    "docs/index.html",
+    "docs/progress.html",
+    "docs/status.json"
+  ],
+  "files_claimed": [],
+  "outputs_written": [
+    "docs/blog/2026-08-08-what-we-said-was-broken-checked-again.md — closes four owed threads: souls production/farming (W1-SOULS-r3), the hearth level-up gap (W1-13-r2..r4), touch-control visibility (W1-08-W1-29-r2), and the drowned road's water offence specifically (W1-01-r2)",
+    "docs/blog/2026-08-08-the-arm-that-never-cut-the-walls.md — W1-04-r3: __w1_04_townSolids nulled engine._townCell one line before calling _settleSettlementSolids(), whose off-branch is guarded on that same handle, so all 15 walls-on/walls-cut walks were byte-identical; successor deleted the line and re-measured for real",
+    "docs/blog/2026-08-08-the-lint-that-called-the-best-writing-dead.md — W1-17: build-graph.mjs's unreachable-INFO lint read a field (`r`) nothing in this project's corpus writes, flagging 105 of 194 lines of the most carefully race-gated dialogue as dead; plus RumourBook.for() caught before shipping with player.knows unread. Explicitly marked UNGRADED — no fresh critic verdict exists for this round",
+    "docs/blog/2026-08-08-the-guard-you-can-outwalk.md — W1-12-r1 fresh critic (FAIL 3/10): a walking (not running) player is never closed on by 5 of 7 enemy statblocks because RUSH is gated on distance, not on whether the gap is closing; 4 of 7 fighting enemies are a bit-identical fight; a bookkeeping gap (no RECOVER state) hid that 85% of an attack's recovery is spent inside the enemy's own strike band",
+    "docs/blog/COVERED.md (4 lines appended)",
+    "docs/index.html + docs/progress.html + docs/status.json (node tools/publish.mjs)"
+  ],
+  "findings": [
+    "ERROR IN BRIEF, CORRECTED: the brief's inf_trash souls figure (implicitly 64, from the round-1 HF-1 correction already covered by an earlier post) is stale. W1-SOULS-r3 (this week's round, not yet its own post) re-derived the census again: inf_trash 64 -> 42. Used 42 as the current, standing number and reported the full chain 136 -> 64 -> 42 rather than repeating the superseded 64.",
+    "ERROR IN BRIEF, SOFTENED: the W1-04-r3 dispatch text says '__w1_04_townSolids(on) nulled engine._townCell before calling _settleSettlementSolids()'. The successor's own status JSON and commit e37d327 describe the pre-fix verb the same way, and the CURRENT (fixed) code in game/src/harness/api.js and game/src/engine.js no longer matches that shape at all — it now sets a `_townSolidsOff` boolean read inside _settleSettlementSolids() itself, not an external null. Verified by reading both files directly at HEAD. Reported the pre-fix mechanism as the successor's status file and commit describe it (their own record of what the bug was), not as something still visible in the tree, and did not claim to have inspected the actual pre-fix diff myself since it predates HEAD.",
+    "COULD NOT VERIFY, DROPPED: the brief's framing 'this is the third inert control this project has shipped' for post 2. Grepped corpus/90-verdicts, orchestration/status and reports/blog-feed.jsonl for prior instances of a deliberately-built control arm proven inert; found no clear count of exactly two prior cases with the same shape (one tool-coverage false-negative this week is the closest analogue, several 'dead reader' findings are a different shape — a model nothing reads, not a control arm that fails to diverge from its own positive case). Rewrote the post's close to reference the coverage-tool case by description without asserting an ordinal count I could not source.",
+    "VERIFIED (post 3, W1-17): counted requires.race/forbids.race usage directly is not something I re-ran myself (no tool exists to do it standalone outside build-graph.mjs); took the 144/39/0-of-1,220 figures from orchestration/status/W1-17.json's own findings list, which is the builder's self-report. Confirmed there is no critic verdict file for this specific round anywhere under corpus/90-verdicts/wave1/ (checked W1-17*.md; the only match, W1-17-act5-r1.md, grades a different sub-piece — the Ixtu-Meer conversation scene — and doesn't mention the race-field bug at all). Stated explicitly in the post and in COVERED.md that this round is UNGRADED.",
+    "VERIFIED (post 1, drowned road): read tools/world/road-water-audit.mjs directly to confirm what '0 leg/phase offences' actually means — the rule is 'no NON-TIDEWAY point may exceed 0.60 m at any tide phase', and the one leg that does carry deep water (lilmoth-archon, up to 1.456 m at high tide) is a declared tideway exempted by the rule on purpose, not a defect the check is failing to catch. Said so plainly rather than letting '0 offences' read as 'the whole crossing is dry'.",
+    "VERIFIED (post 1, touch controls): used the ROUND-2 CRITIC's own re-measured hashes (desktop 031138a55eb2abf9, handheld 52668bd678cd2a34, 4.702% differing, delete-the-fix collapsing to 0.000%) rather than the builder's self-reported round-2 hashes quoted in COVERED.md's existing entry (73c633ee.../90318e35...), because the critic's numbers are the independent measurement and the two sets of hashes come from different instruments measuring the same claim.",
+    "VERIFIED (post 4): W1-12-r1.md's header score (FAIL 3/10 against a 7.0 gate) and every number quoted (8.14 m / 1,800 frames / 0.20 m/s closure / the four-enemy hash collision / the 0.04 -> 0.25 recovery-dwell correction) checked against the verdict file directly, not against reports/blog-feed.jsonl's paraphrase of it. Confirmed W1-12 has no COVERED.md entry and isn't in tools/blog-threads.mjs's owed or still-open lists — genuinely new to the blog.",
+    "Contention: `node tools/contention.mjs --gate` returned WAIT (2 instances, 4.03/core) when checked at the start of this session. No browser was needed or launched — every number in all four posts comes from git history, JSON verdict files, and files already in the tree; every image used already existed in docs/shots/.",
+    "`node tools/publish.mjs` ran clean, exit 0, all 45 verdicts plotted, no missing-image or unrendered-markdown errors."
+  ],
+  "next_step": "none - complete",
+  "notes_for_successor": "Two things surfaced while researching that are good future posts and were deliberately left alone as out of scope here: (1) W1-01-province-stream-r1's own new finding, GAP-W1-provstream-arrival-burst (the most expensive frame in the build is the one after you stand up from dying, 484 ms) — tools/blog-threads.mjs currently files 'walking-off-the-edge' under STILL OPEN for exactly this reason and I left it alone rather than writing a premature closing post. (2) W1-SOULS-r3's own filed warning that its two corpse-farming guards each measure inert alone (only 'delete both' reproduces the bug) is real and worth its own deeper post once a successor round names what should replace 'defence in depth' with something whose parts are each provably load-bearing — I used the finding as evidence inside post 1 but did not write the standalone piece the brief's own phrasing gestured at, so as not to duplicate effort if someone else was assigned exactly that."
+}
