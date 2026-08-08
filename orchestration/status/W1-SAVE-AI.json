@@ -1,11 +1,16 @@
 {
   "task_id": "W1-SAVE-AI",
   "title": "save/fight.js serialises live SoulsAI as plain object; boot-check blind to it",
-  "state": "in_progress",
+  "state": "fix_landed",
   "started": "2026-08-08",
-  "next_step": "land the fix in save/fight.js + combat/ai.js + combat/enemy.js, then verify in one browser",
+  "next_step": "extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the damaged probes",
   "files_touched": [
-    "orchestration/status/W1-SAVE-AI.json"
+    "orchestration/status/W1-SAVE-AI.json",
+    "game/src/save/fight.js",
+    "game/src/combat/ai.js",
+    "game/src/combat/enemy.js",
+    "tools/check-save-shape.mjs",
+    "tools/check-data.mjs"
   ],
   "files_claimed": [
     "game/src/save/fight.js",
@@ -29,5 +34,26 @@
   "redundant_with": [
     "W1-12",
     "W1-03"
-  ]
+  ],
+  "fix": {
+    "what": "save/fight.js now classifies every actor field: a LIVE OBJECT (class instance) is carried through its own saveState()/loadState() -- the contract Rig already had in combat/skeleton.js -- or it is not carried at all and is named in __unsaved. loadActor never assigns a plain object over a live one. SoulsAI grew saveState/loadState with an explicit MACHINERY set (b, stat, cfg, A, omega, sightR, walk, sprint, leashHard -- all pure functions of the statblock and ai.json, all rebuilt by the constructor) and an AI_FRAME_STAMPS set so its nine clocks are rebased like the body's. EnemyController._resolveAI() re-resolves when behaviour is 'souls' but ai is null, which is the load path.",
+    "why_not_SKIP": "EnemyController._idleBehaviour() guards its whole souls branch with `if (this.ai)`, so adding `ai` to SKIP would have restored it as null and the enemy would stop thinking without throwing -- the quieter, worse half of the same defect. Same shape as `post` in save/state.js.",
+    "measured_before": {
+      "ctl_ai_ctor_after_round_trip": "Object",
+      "ai_step_is_fn": false,
+      "step_after_load": "this.ai.step is not a function",
+      "hash_equal": false,
+      "ai_record_bytes": 81892,
+      "save_bytes": 194161
+    },
+    "measured_after": {
+      "ctl_ai_ctor_after_round_trip": "SoulsAI",
+      "ai_step_is_fn": true,
+      "step_after_load": "ok (frame 1, then 5)",
+      "hash_equal": false,
+      "hash_equal_residual": "death.last_grounded ONLY -- engine.js:7182, not this piece's file",
+      "ai_record_bytes": 302,
+      "save_bytes": 112590
+    }
+  }
 }
