@@ -1,0 +1,821 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-15",
+ "piece_title": "Stealth, theft, crime and justice — round 3",
+ "subsystem_paths": [
+  "stealth.detection.model",
+  "stealth.sneak.state",
+  "stealth.npc.search",
+  "stealth.trespass.zones",
+  "stealth.theft.ownership",
+  "stealth.fence.economy",
+  "crime.witness.model",
+  "crime.guard.response",
+  "crime.bounty.schedule",
+  "crime.persistence.death"
+ ],
+ "wave": 1,
+ "round": 3,
+ "critic": {
+  "run_id": "crit-w1-15-r3-3c19",
+  "role": "critic.stealth-crime",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-08T02:12:00Z",
+  "finished_at": "2026-08-08T02:45:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true,
+  "instrument_independence": "Every number in this verdict came from tools/stealth/critic-w1-15-r3.mjs, critic-w1-15-r3-live.mjs and critic-w1-15-r3-dtf2x2.mjs, written by this critic. The builder's own graders (tools/harness/w1-15-r3-live.mjs, w1-15-coupling.mjs) were not used to produce any figure; tools/harness/w1-15-r3-deletefix.mjs WAS re-run independently, as a re-run of the round's own claim rather than as a source of a new number, and it reproduced 5/5."
+ },
+ "build": {
+  "commit_sha": "9126e02",
+  "branch": "main",
+  "boot": "confirmed: the live probe reached window.__HARNESS and drove eight assertions with 0 page errors; node tools/check-data.mjs clean at 561 indexed files; node tools/analysis/crime-audit.mjs 41/41",
+  "harness_commands": [
+   {
+    "command": "node tools/stealth/critic-w1-15-r3.mjs --selftest",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/stealth/critic-w1-15-r3.mjs --stamp 9126e02 --json reports/w1-15/critic-r3.json",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/stealth/critic-w1-15-r3-live.mjs --json reports/w1-15/critic-r3-live.json",
+    "seed": 1337,
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/stealth/critic-w1-15-r3-dtf2x2.mjs --json reports/w1-15/critic-r3-dtf2x2.json",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/harness/w1-15-r3-deletefix.mjs --json reports/w1-15/critic-r3-deletefix.json",
+    "seed": 1337,
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/analysis/w1-15-consumption.mjs --selftest",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/analysis/crime-audit.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/check-data.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   }
+  ],
+  "load_note": "tools/contention.mjs --gate was exit 3 for the entire run (3-6 browser instances against a ceiling of 6; load 5.15-7.23 per core against a ceiling of 4.0, ~30 agents live). All offline work was done first with no browser; the three browser tools were run ONE AT A TIME, past the gate, declared here and in orchestration/status/critic-w1-15-r3.json per RULES.md rule 21. NO TIMING FIGURE IS PUBLISHED anywhere in this verdict — every number is a frame count, a source count, a gold value or a model value, all load-independent (rule 26).",
+  "tree_moved_under_the_run": "HEAD went 4b48955 -> 9126e02 mid-run when W1-ROAD-JOIN regenerated game/data/world/interiors/ and property/. Every OFFLINE number was re-run at 9126e02 and reproduced identically. git diff --stat over game/src/sim/stealth, game/src/engine.js, game/src/render/interior.js and game/data/{stealth,crime} is EMPTY across that range, so the live numbers stand at 9126e02 too."
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "fidelity_refs": [],
+  "art_refs": [],
+  "note": "Unchanged from rounds 1 and 2. The one screenshot in this verdict is evidence of a NUMERIC disagreement (the simulated L in a room the renderer draws lit), not a judgement of appearance, and engages neither axis. getStealthState().hud_elements remains 0."
+ },
+ "reference_items": [
+  {
+   "id": "RI-STL01",
+   "path": "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
+   "side": "neutral",
+   "kind": "number",
+   "measured": "partial",
+   "native_scale": "min-over-axes across 10 axes; failure threshold: any axis below 6; OPENER-PURITY, BOSS-BYPASS and NO-METER binary",
+   "native_score": "0 / 10 — min-over-axes. Light 8 (was 0 — the round's real gain). Detection 9. Sound 8. Civilians 8. NO-METER 10. Search 0 (S-1's plausibleSet has no world-side producer, measured live this round). Trespass 0 (p.zone has no producer at all). Bypass 0 (the province is not built; cross-piece).",
+   "native_verdict": "we lose (min-over-axes: Search 0 and Trespass 0, both owned by W1-15 and both measured this round; Bypass 0 is a cross-piece debt)",
+   "score_0_10": 0,
+   "checks": [
+    {
+     "id": "light-reaches-detection",
+     "result": "pass",
+     "detail": "The round's headline, re-measured independently on the shipped tree. Outside a door the light field holds 0 world sources; inside archon-apothecary it holds 8, indoor ambient is 0.0400, and L over the floor runs 0.2988-1.0000 with spread 0.7012 — IDENTICAL at noon and at 03:00, which is what a lamp not caring about the sky looks like. Snuffing world:archon.factor9.r0.lamp1 takes L 1.0000 -> 0.5360 where the player stands. Every figure matches the builder's report exactly.",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json"
+     ]
+    },
+    {
+     "id": "one-list-read-twice",
+     "result": "partial",
+     "detail": "The RECORD is genuinely shared — engine.js:4533 hands render/interior.js the same object sim/stealth/system.js:943 reads, and sim/settlement.js:66 returns one reference. But the two files apply DIFFERENT LIT-SET POLICIES to it. render/interior.js caps illuminating lamps at LIT_CAP=5 (77 of 115 interiors are over it, max 14) and invents a fail-open hearth for a room declaring none (11 of 115); the simulation does neither. Over 22,751 indoor floor cells: 1,659 (7.29%) disagree about whether a player standing there is in shadow — 75 drawn dark and simulated lit, 1,584 drawn LIT and simulated BLACK. Control with the cap and fail-open removed: 0 disagreeing cells.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json",
+      "docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png"
+     ]
+    },
+    {
+     "id": "indoor-ambient-calibrated-on-a-room-that-does-not-exist",
+     "result": "fail",
+     "detail": "detection.json's interior_ambient_note justifies dropping indoor ambient to 0.04 with 'a windowless cellar at noon sampled L=1.00'. render/interior.js:498 has WINDOWLESS = new Set(['prison','hold']); the shipped corpus is 30 shop, 31 dwelling, 14 guild, 11 tavern, 8 travel, 8 shrine, 6 temple, 2 hall, 1 gate, 2 prison, 1 hold. 112 of 115 interiors are DRAWN WITH WINDOWS, up to four a side, and there are no cellars. The round replaced 'the sky reaches everywhere indoors' with 'the sky reaches nowhere indoors'; both are flat wrong answers and nothing in the build reads a window.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "S-1-search-plausible-set",
+     "result": "fail",
+     "detail": "StealthCrime.coverVolumes is initialised to [] and has exactly ONE producer in game/src — Engine.addCoverVolume() at engine.js:8139, whose only callers are harness/api.js:2160 and tools/harness/w1-15-coupling.mjs. That is the SAME hand-feed shape this round fixed for LightField.addSource(), one module over, untouched. Measured live: 0 cover volumes in the world and 0 inside a furnished interior with props and an occluder set. So plausibleSet() returns [], Search.plan is [], and planDoneF = startFrame + (lkp_dwell_s + 0 x per_volume_s) x 60 — a searcher who loses you walks to your last known position, stands for two seconds and gives up. Round 2 graded this coupling 0.0; round 3 did not move it.",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json",
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "trespass-zones-never-entered",
+     "result": "fail",
+     "detail": "ZERO assignments to p.zone anywhere in game/src — not in the world and not even in the harness. Ten reads, one absent writer. Live inside archon-apothecary, p.zone is null. Behind it: 233 authored property zones in 7 classes, the zone context multipliers, the zone baselines and the whole shop_closed/dwelling trespass ladder that this round's own predecessor pass fixed for 66/66 shop_closed zones. ARBITRATION §3: a model with no demonstrated consumer is unmeasurable => 0.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json",
+      "reports/w1-15/critic-r3-live.json"
+     ]
+    },
+    {
+     "id": "bypass-census",
+     "result": "unmeasurable",
+     "detail": "RI-STL01 §9's overworld/dungeon/cave bypass census still needs a province W1-01/W1-03/W1-12 own and that does not exist. Unchanged from round 2 and recorded as a cross-piece debt rather than scored against this piece's own work.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/W1-15-r2.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "reports/w1-15/critic-r3.json",
+    "reports/w1-15/critic-r3-live.json",
+    "reports/w1-15/critic-r3-dtf2x2.json"
+   ]
+  },
+  {
+   "id": "RI-STL02",
+   "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+   "side": "morrowind",
+   "kind": "number",
+   "measured": "full",
+   "native_scale": "min-over-axes: ownership coverage, theft chain, pickpocket, fence economy",
+   "native_score": "2 / 10 — ownership 7 (up: 72 interior unique items wired into property contents, one theft path), theft chain 8, pickpocket unchanged, FENCE ECONOMY 2",
+   "native_verdict": "we lose — the fence economy has no geography at all",
+   "score_0_10": 2,
+   "checks": [
+    {
+     "id": "fence-refusals-unreachable",
+     "result": "fail",
+     "detail": "Engine.fenceQuote() at engine.js:8541 passes `const world = { npcById: () => null, dispositionBetween: () => 0 }`. Driven LIVE on a real object owned by npc:archon-legionary-13 of archon: fence.archon.salvage — the owner's OWN town's fence — buys at 15 g, IDENTICAL to a clean-item control at 15 g, while three out-of-town fences pay MORE (16, 17, 17 g; the spread is `greed`, not provenance). All four willBuy() refusal branches are dead from this entry point for a person-owned object: same_settlement and same_faction need an owner string the stub cannot resolve, friend_of_the_owner needs dispositionBetween >= 60 against a stub returning 0, and not_a_fence cannot fire because fenceQuote constructs its buyer with is_fence: true unconditionally. CONTROL SEPARATES: the identical willBuy() call with a real npcById over game/data/npcs/ returns {buys:false, reason:'same_settlement', line:'That belongs to Ahnassi Dark-Water of terraces. I drink with Ahnassi Dark-Water of terraces. Take it elsewhere.'}",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json",
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "the-dead-set-is-1787-not-all-of-them",
+     "result": "pass",
+     "detail": "CORRECTION to the round's own account, derived rather than repeated. The round reports the refusals dead for 'anything owned by a person, which is all 1,878 property objects'. The property tree at 9126e02 holds 1,950 objects: 1,787 npc: (91.6%), 123 faction:, 40 settlement:. willBuy() parses the last two out of the owner string with a regex needing no npcById, and I measured them firing correctly under the shipped stub world — a settlement:-owned object at its own local fence returns buys:false, reason:same_settlement. The dead set is 1,787.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "unique-item-theft-chain",
+     "result": "pass",
+     "detail": "Re-measured. 72 interior unique items that carried an owner and appeared in no property zone's contents now do; engine.js spawnProp carries property_instance (1984), _furnishInterior sets it (4604), and takeProp calls takeObject rather than re-implementing a take (2113). Live: a furnished prop carries property_instance 'archon-apothecary-unique', taking it moves the stolen registry 0 -> 1 and the inventory row from stolen:false/owner:null to stolen:true/owner:npc:archon-priest-4. crime-audit 41/41 including the four new UNI drift guards; UNI-4 correctly reports the 11 unwired ones as genuinely ownerless rather than inventing owners for them.",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json",
+      "reports/w1-15/critic-r3-deletefix.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "reports/w1-15/critic-r3-live.json",
+    "reports/w1-15/critic-r3.json"
+   ]
+  },
+  {
+   "id": "RI-CRM01",
+   "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+   "side": "morrowind",
+   "kind": "number",
+   "measured": "full",
+   "native_scale": "min-over-axes: witness predicate, report chain, bounty schedule, guard response, arrest interaction",
+   "native_score": "3 / 10 — witness predicate 8 (up; the sleeping witness is a genuine derivation), report chain 8, bounty schedule 7, GUARD RESPONSE 3, arrest interaction 4",
+   "native_verdict": "we lose — the guard still cannot act on what the witness told it",
+   "score_0_10": 3,
+   "checks": [
+    {
+     "id": "dark-witness-is-real",
+     "result": "pass",
+     "detail": "Swept V continuously 0.000-1.300 in 0.005 steps against crime/witness.js::isWitness at 2.0 m with clear LOS. Exactly three outcomes and two edges: below V_min 0.100 not a witness (0 g); 0.100-0.295 witness but NOT identified (118 g); >= identified_at_V 0.300 identified (294 g). 118 = Math.round(294 x 0.4), the partial_report multiplier. The dark arm's measured V of 0.2720 sits correctly between the two. CONTROL: a deliberately continuous grader over the same sweep produces 200 edges, so the sweep can see a slope and the shipped model genuinely has none — it is a clean step, not a fitted curve or a coincidence.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "identified-has-one-consumer",
+     "result": "fail",
+     "detail": "Classified all 16 occurrences of `identified` in game/src. Exactly ONE changes a decision: sim/crime/state.js:154, `const partial = !witnessRec.identified || witnessRec.kind === 'hearing'` — the 0.4x bounty multiplier. stepGuards() derives its band from guardBandNow(), which reads crime.bounty.imperial plus the player's race and standing and nothing else, so a guard cannot distinguish one 294 g identified bounty from two 118 g unidentified ones plus 58 g. justice.json's own witness.unidentified_effect promises three further consequences — 'bounty lands as person or persons unknown; GUARDS DO NOT APPROACH YOU FOR IT, but it counts toward the settlement's alarm state and toward RI-STL01 §7's S-4 zone memory' — and NONE of the three is implemented: the report log writes attributed:null and nothing consults it, there is no settlement alarm state, and there is no path from an unattributed report to ZoneMemory. Being SUSPECTED and being WANTED are the same state at different magnitudes.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "sleeping-witness",
+     "result": "pass",
+     "detail": "A genuine and well-derived addition. The world's ~1,700 authored schedule rows take eight activity values and none of them is sleep, so before this nothing in the build could tell a resident in bed from a resident in the doorway and a 03:00 burglary was watched by every resident of the house with a full cone. asleepInWorld(sim,npc) reads `home` between 23:00 and 06:00 off the schedule the world already publishes rather than authoring a second source of truth. The round's four-witness staging holds up: same position and distance as the awake arm, opposite outcome.",
+     "evidence": [
+      "orchestration/status/W1-15-r3.json",
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "guard-response-still-a-free-win",
+     "result": "fail",
+     "detail": "Round 2's blocking gap is half closed and no further. guard_legion's gold_price went 0 -> 300, which is above the round-2 verdict's stated >= 200 g floor and is a real improvement. The other two legs are untouched and correctly declared untouched: the GOLD ground's disposition floor is shared by every parleying NPC in the data, and guard_legion's ai 'hold_ground' still means combat/enemy.js scripts nothing for it, so a band-3 attack-on-sight guard still cannot swing. Both files are owned elsewhere and were under concurrent edit; documenting rather than half-fixing was the right call.",
+     "evidence": [
+      "orchestration/status/W1-15-r3.json",
+      "corpus/90-verdicts/wave1/W1-15-r2.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "reports/w1-15/critic-r3.json",
+    "reports/w1-15/critic-r3-live.json"
+   ]
+  },
+  {
+   "id": "RI-CRM02",
+   "path": "corpus/23-stealth-crime/RI-CRM02-faction-crime-and-writs.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "measured": "partial",
+   "native_scale": "min-over-axes: writs, hunters, interception, jail, permanent death",
+   "native_score": "2 / 10 — unchanged from round 2; nothing in this round touched the item",
+   "native_verdict": "we lose",
+   "score_0_10": 2,
+   "checks": [
+    {
+     "id": "untouched-this-round",
+     "result": "unmeasurable",
+     "detail": "No change landed against this item this round and none was briefed. Carried forward from round 2 unaltered rather than re-litigated, and flagged so the score is not read as a fresh measurement.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/W1-15-r2.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r2.json"
+   ]
+  },
+  {
+   "id": "RI-QST05",
+   "path": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+   "side": "morrowind",
+   "kind": "number",
+   "measured": "partial",
+   "native_scale": "share of quests with a non-violent resolution, over a meaningful denominator",
+   "native_score": "3 / 10 — unchanged from round 2",
+   "native_verdict": "we lose",
+   "score_0_10": 3,
+   "checks": [
+    {
+     "id": "untouched-this-round",
+     "result": "unmeasurable",
+     "detail": "No change landed against this item this round. Carried forward from round 2 rather than re-measured, and flagged as such.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/W1-15-r2.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r2.json"
+   ]
+  },
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "side": "neutral",
+   "kind": "structure",
+   "measured": "full",
+   "native_scale": "min-over-axes: perturbation-to-entity demonstration, delete-the-fix, census honesty, instrument falsifiability",
+   "native_score": "6 / 10 — perturbation 9, delete-the-fix 7, instrument falsifiability 9, CENSUS 4",
+   "native_verdict": "we lose narrowly — the method is the best-executed part of the round and its census excluded the one file with a verdict-confirmed dead consumer",
+   "score_0_10": 6,
+   "checks": [
+    {
+     "id": "perturbation-observed-on-an-entity",
+     "result": "pass",
+     "detail": "Exemplary, and the standard RI-MTH07 asks for. Perturbation on the MODEL: snuff one authored lamp. Observation on an ENTITY: an inf_trash 6.00 m away with clear LOS takes 40 frames to reach alert 70 lit and 80 snuffed, with L 1.0000 -> 0.5360 and V 1.3000 -> 0.6023 in between. Not a probe calling the function it measures.",
+     "evidence": [
+      "reports/w1-15/r3-live.json",
+      "reports/w1-15/critic-r3-live.json"
+     ]
+    },
+    {
+     "id": "census-count-verified",
+     "result": "pass",
+     "detail": "Re-ran the round's own tool: 116 of 983 parameters with no reader (11.8%), 575 read by name, 270 reachable through a read container, 22 too short to attribute. --selftest is a real falsifier — it asserts a canary nobody can read comes back unread AND that light_exponent comes back read — and passes. The rule-11 caveat is printed in the tool's own output. I could not find a wrong row among the 116.",
+     "evidence": [
+      "reports/w1-15/r3-consumption.json"
+     ]
+    },
+    {
+     "id": "census-denominator-omits-search-json",
+     "result": "fail",
+     "detail": "THE ONE IT MISSED. The tool's FILES list has seven entries; game/data/{stealth,crime} holds eight. The absentee is game/data/stealth/search.json, read as this.d.search in six places in sim/stealth/system.js and unambiguously W1-15's. All 28 of its parameters come back 'read by name', which is the point: this is rule 11 running in the direction nobody checks, where a name census proves a read LIVE that isn't. search.js:85 reads s1.max_cover_volumes to slice a list that is always empty because coverVolumes has only a harness producer. Round 2 had already graded the model that file configures — plausibleSet, S-1 — at coupling 0.0. The one W1-15 data file with a verdict-confirmed dead consumer is the one the census excluded.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "delete-the-fix-reproduces-and-bites",
+     "result": "pass",
+     "detail": "Re-ran tools/harness/w1-15-r3-deletefix.mjs independently: 5/5. The teardown BITES rather than silently running the positive arm — the cut arm returns 0 world sources and L flat at 0.7500 (spread 0) at noon and 0.0900 at 03:00, theft null, registry 0 -> 0, inventory row stolen:false/owner:null. The stager throws unless each cut string occurs exactly once and all three still do at 9126e02. DTF-CTL (an uncut copy) reproduces the working tree, so the staging is not the variable. The round's report that its first DTF-LAMP-OLD run FAILED because it hardcoded clear-weather sky values against an overcast default is exactly the evidence rule 4 asks for.",
+     "evidence": [
+      "reports/w1-15/critic-r3-deletefix.json"
+     ]
+    },
+    {
+     "id": "the-2x2-rule-6-requires-was-not-run",
+     "result": "fail",
+     "detail": "The lamp fix has TWO edit sites and the round cuts both as ONE arm, so rule 6's third shape (two guards for one defect) was invisible to it and 'say which you have' could not be satisfied. I crossed them on four staged copies. 00 shipped: 8 sources, ambient 0.04, L 0.2988-1.0000, spread 0.7012. 10 call-site cut only: 0 sources, flat 0.7500, 0.0900 at 03:00. 01 ambient cut only: 8 sources, ambient 0.75, L FLAT AT 1.0000, spread 0. 11 both cut: byte-identical to 10. VERDICT: neither an inert fix nor two-guards-for-one-defect — two INDEPENDENT sites, each individually sufficient, so the round's arm is sound but over-broad. AND THE FINDING ONLY A 2x2 PRODUCES: arm 01 shows the lamps ALONE do not make the room discriminate — keep them and restore the old ambient and the room is as flat as before, just clamped at the other end. What bought the 0.7012 spread was the 0.75 -> 0.04 ambient decision, which §1 shows is calibrated on a windowless cellar that does not exist in this data.",
+     "evidence": [
+      "reports/w1-15/critic-r3-dtf2x2.json"
+     ]
+    }
+   ],
+   "evidence": [
+    "reports/w1-15/critic-r3.json",
+    "reports/w1-15/critic-r3-dtf2x2.json",
+    "reports/w1-15/critic-r3-deletefix.json"
+   ]
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-STL01",
+   "status": "not_possible",
+   "not_possible_reason": "The piece's bifurcation axis is not-visual, unchanged from rounds 1 and 2. There is no appearance judgement to make blind: every claim this round advances is a number, and the single screenshot is evidence of a numeric disagreement between the drawn and simulated lit sets rather than of how a room looks."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1-no-dice-entered-the-fight",
+     "result": "pass",
+     "detail": "Nothing this round touches the fight. LightField.sample() is a deterministic analytic sum with no RNG and no clock; syncInteriorLights() draws none; the witness predicate is four comparisons; asleepInWorld() is a clock-and-schedule test. The one die the piece owns remains the pickpocket notice check, which is outside the fight and is seam S21's explicitly preserved die.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "A2-light-does-not-scale-damage-or-to-hit",
+     "result": "pass",
+     "detail": "L enters exactly one place — visibilityAt's light term — and V feeds the alert meter. Neither appears in any damage or hit-resolution path. Snuffing a lamp changes WHEN an enemy notices you (40 -> 80 frames), never WHETHER an attack lands.",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json"
+     ]
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1-the-72-new-property-rows-are-not-procedural-loot",
+     "result": "pass",
+     "detail": "Examined rather than waved. tools/world/build-unique-property.mjs:90 sets value = band[0] + (hashStr(u.id) % range) — a BUILD-TIME, deterministic, permanently stable price derived from the item's own id and banded by interior kind. No runtime table, no roll, no drop; every value is fixed and inspectable in the data forever, and the rows describe objects a human authored. That is not procedural loot. It IS a content debt — a hash cannot tell a priceless heirloom from a chipped bowl, and 72 objects now carry prices nobody wrote — and it is filed under other_gaps because it is exactly the practice that becomes an AR-2 failure if it spreads to the other 1,878.",
+     "evidence": [
+      "reports/w1-15/critic-r3.json"
+     ]
+    },
+    {
+     "id": "B2-no-meter-and-no-markers",
+     "result": "pass",
+     "detail": "getStealthState().hud_elements remains 0 across every run recorded here. The lamps added no indicator, no visibility gem and no objective marker; the only surface a player reads is the world itself.",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json"
+     ]
+    }
+   ]
+  },
+  "ar3": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "C1-a-lamp-now-crosses-the-seam",
+     "result": "pass",
+     "detail": "NEW THIS ROUND and the piece's best seam crossing. An authored interior lamp — a world object placed by a settlement generator — now writes into the alert meter combat/enemy.js reads. Snuff it and an enemy's time-to-aggro doubles, 40 frames to 80, at the same distance with the same line of sight. Morrowind's world reaching into the Souls fight through a physical object you can act on.",
+     "evidence": [
+      "reports/w1-15/critic-r3-live.json",
+      "reports/w1-15/r3-live.json"
+     ]
+    },
+    {
+     "id": "C2-race-and-standing-govern-the-guard-band",
+     "result": "pass",
+     "detail": "Carried from round 2 and re-read at this commit: guardBandNow() computes JUS.thresholds from the player's race and faction standing, so an imperial bounty of 3,000 makes a militiaman attack a Naga on sight and merely greet an Imperial. The world's social position deciding whether a fight starts.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/W1-15-r2.json"
+     ]
+    }
+   ]
+  },
+  "seam_sterile": false
+ },
+ "world_coupling": [
+  {
+   "model": "LightField / interior lamps -> L",
+   "consumer": "sim/stealth/system.js::syncInteriorLights -> light.sample() -> p.L -> visibilityAt -> V -> stepPerception -> e.alert, read by combat/enemy.js",
+   "coupling": 1,
+   "evidence": "reports/w1-15/critic-r3-live.json — 0 world sources outside, 8 inside; snuffing one takes an inf_trash from 40 to 80 frames to alert 70"
+  },
+  {
+   "model": "indoor ambient (interior_ambient_L)",
+   "consumer": "the same chain, via the _interiorLit guard at sim/stealth/system.js:196",
+   "coupling": 1,
+   "evidence": "reports/w1-15/critic-r3-dtf2x2.json — arm 01 (ambient reverted, lamps kept) reads L flat at 1.0000, so the ambient is the term that produces the spread"
+  },
+  {
+   "model": "stolen registry / property_instance",
+   "consumer": "Engine.takeProp -> takeObject -> inventory + crime.stolenRegistry + save",
+   "coupling": 1,
+   "evidence": "reports/w1-15/critic-r3-deletefix.json — cut the branch and theft goes null, registry 0 -> 0, inventory row clean"
+  },
+  {
+   "model": "witness predicate incl. asleepInWorld and identification",
+   "consumer": "deriveWitnesses on the crime frame -> beginReport -> crime.land -> bounty",
+   "coupling": 1,
+   "evidence": "reports/w1-15/critic-r3.json — the V sweep produces exactly the two authored edges and the control shows the sweep can see a slope"
+  },
+  {
+   "model": "`identified` as a distinct WORLD STATE (not merely a multiplier)",
+   "consumer": "NONE beyond crime/state.js:154's 0.4x. stepGuards() reads bounty magnitude only; justice.json's own unidentified_effect promises three consequences and implements none.",
+   "coupling": 0.1,
+   "evidence": "reports/w1-15/critic-r3.json — 16 occurrences of `identified` in game/src, exactly one changes a decision"
+  },
+  {
+   "model": "plausibleSet / S-1 search plan",
+   "consumer": "NONE. StealthCrime.coverVolumes has one producer in game/src and it is the harness verb Engine.addCoverVolume().",
+   "coupling": 0,
+   "evidence": "reports/w1-15/critic-r3-live.json — 0 cover volumes in the world and 0 inside a furnished interior"
+  },
+  {
+   "model": "zone context multipliers, zone baselines, the whole trespass ladder",
+   "consumer": "NONE. Zero assignments to p.zone anywhere in game/src, including the harness.",
+   "coupling": 0,
+   "evidence": "reports/w1-15/critic-r3.json, reports/w1-15/critic-r3-live.json — p.zone is null live inside archon-apothecary; 233 authored zones in 7 classes sit behind it"
+  },
+  {
+   "model": "willBuy() same_settlement / same_faction / friend_of_the_owner refusals",
+   "consumer": "Engine.fenceQuote(), which passes { npcById: () => null, dispositionBetween: () => 0 } — so 0 of 4 branches can fire for the 1,787 npc:-owned objects",
+   "coupling": 0,
+   "evidence": "reports/w1-15/critic-r3-live.json — the owner's own local fence quotes 15 g, identical to a clean-item control"
+  }
+ ],
+ "score": {
+  "overall_0_10": 0,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "The round's headline is true and independently reproduced; the minimum is carried by two models this piece owns that have no world-side producer at all",
+  "confidence": "high",
+  "note": "READ THIS BEFORE QUOTING THE NUMBER. Round 2 scored 3.0 by MEAN; this critic was briefed to score MIN-OVER-AXES and scores 0.0. THE AGGREGATION CHANGED — 3.0 -> 0.0 IS NOT A REGRESSION SIGNAL. The like-for-like comparison is mean 3.0 -> 2.7, and the entire 0.3 is RI-STL02 moving 4 -> 2 because round 2 scored its fencing axis 8 on refusal lines this round measured unreachable in play. The min itself is RI-STL01's, and it is carried by two axes W1-15 owns and did not close: S-1's search plan (coverVolumes has only a harness producer — the SAME defect shape this round fixed for the lamps) and the trespass ladder (p.zone has no producer at all). Both are 0 by ARBITRATION §3's own rule that an unconsumed model is unmeasurable => 0. Meanwhile the light axis went 0 -> 8 and is the largest single consumption gain in this piece's history: 827 authored lamps that no part of the detection model had ever been told about now decide when an enemy notices you. A reader who takes 0.0 as 'nothing works' will be wrong about this round in both directions."
+ },
+ "status": "FAIL",
+ "biggest_gap": {
+  "gap_id": "GAP-W1-the-fence-buys-your-victims-own-furniture",
+  "subsystem_path": "stealth.fence.economy",
+  "severity": "blocking",
+  "what": "Engine.fenceQuote() (game/src/engine.js:8541) hands sim/stealth/theft.js::willBuy() a stub world — `const world = { npcById: () => null, dispositionBetween: () => 0 }`. willBuy() resolves an owner's settlement and faction through npcById and the friend-of-the-owner test through dispositionBetween, so for any object owned by a PERSON all four of its refusal branches are unreachable. Measured live at 9126e02: an object owned by npc:archon-legionary-13 of archon is bought by fence.archon.salvage — archon's own fence — at 15 g, EXACTLY the price it pays for a clean-item control, and LESS than three out-of-town fences pay (16, 17, 17 g). 1,787 of 1,950 property objects (91.6%) are affected; the 123 faction:- and 40 settlement:-owned rows do reach the refusals, because willBuy() parses those out of the owner string with a regex needing no npcById. The control separates cleanly: the identical willBuy() call with a real npcById over game/data/npcs/ returns {buys:false, reason:'same_settlement'} with an authored refusal line naming the victim.",
+  "why_it_matters": "This piece exists to make theft have geography and memory — witnesses who saw you, guards who know things, factions who care, consequences that persist. All of that is built, correct and measured, and every gram of it is discharged at the point of sale by a fence who will buy you your victim's own furniture at the honest-goods price, in the victim's own town, while the fence three towns away pays more. From the player's chair, stealing has no map: it is strictly optimal to rob the house next door and sell to the man who drinks with the owner, and the refusal lines somebody wrote for exactly that moment — 'That belongs to Ahnassi Dark-Water of terraces. I drink with Ahnassi Dark-Water of terraces. Take it elsewhere.' — can never be spoken. It also means round 2 scored two axes (ownership enforcement 8, fencing 8) partly on authored text that could not run, so this is a correction to the record as well as a defect. And it is the same failure this round's own headline is about, one system over: a model computed correctly, sitting behind a stubbed accessor, consumed by nothing.",
+  "evidence": [
+   "reports/w1-15/critic-r3-live.json",
+   "reports/w1-15/critic-r3.json",
+   "corpus/90-verdicts/wave1/W1-15-r3.md"
+  ],
+  "remedy": {
+   "action": "In Engine.fenceQuote() (game/src/engine.js:8541) replace the stub world with a real one: npcById resolving `npc:<id>` against this.data.npcs — the 347-record table the Engine already holds and already walks in populateSettlement() — and dispositionBetween reading the disposition model W1-18 owns, or, if that is not yet addressable, an explicit `() => 0` carrying a why_not note so the friend_of_the_owner branch is DECLARED dead rather than silently so. Then add a crime-audit assertion that quotes the same stolen object at the owner's local fence and at an out-of-town fence and REQUIRES THEM TO DIFFER — the current FNC-4 checks the authored refusal lines exist and never checks they can fire. Budget a regression pass: this moves existing stl-probe and crime-audit fencing assertions, which is exactly why the round correctly declined to attempt it without a browser.",
+   "acceptance": "A stolen object whose owner lives in the fence's own settlement must return buys:false with reason 'same_settlement'. Reachable today: 0 of 1,950 property objects. Required: >= 1,787 (91.6%, every npc:-owned object), plus the same_faction refusal firing for all 123 faction:-owned rows. Re-measure with `node tools/stealth/critic-w1-15-r3.mjs fence`, whose control already separates the two worlds.",
+   "targets": [
+    "game/src/engine.js (fenceQuote)",
+    "game/src/sim/stealth/theft.js (willBuy — read only; it is already correct)",
+    "tools/analysis/crime-audit.mjs (FNC-4 and a new local-vs-distant assertion)",
+    "stealth.fence.economy"
+   ]
+  },
+  "estimated_cost": "small — three lines in engine.js plus one new crime-audit assertion, and a regression pass over the fencing suites"
+ },
+ "other_gaps": [
+  {
+   "gap_id": "GAP-W1-cover-volumes-are-hand-fed-like-the-lamps-were",
+   "subsystem_path": "stealth.npc.search",
+   "severity": "blocking",
+   "what": "StealthCrime.coverVolumes is initialised to [] and has exactly one producer in game/src — Engine.addCoverVolume() at engine.js:8139 — whose only callers are harness/api.js:2160 and a probe tool. Measured live: 0 in the world, 0 inside a furnished interior. plausibleSet() therefore returns [], Search.plan is [], and a searcher who loses you walks to your last known position, dwells two seconds and gives up, never checking where you could have gone. This is the IDENTICAL defect shape the round fixed for LightField.addSource(), one module over, and the round's CONSUMPTION census could not have seen it because search.json is not in its denominator.",
+   "why_it_matters": "RI-STL01 §7's S-1 is what makes losing a pursuer a skill rather than a timer. Arguably co-equal with the biggest gap; filed second only because round 2 already named it at coupling 0.0 and the fence finding is new this round.",
+   "evidence": [
+    "reports/w1-15/critic-r3-live.json",
+    "reports/w1-15/critic-r3.json"
+   ],
+   "remedy": "Derive cover volumes from the same place the renderer gets its occluding furniture — the interior record's props[] and the property zones — at cell-switch time, exactly as syncInteriorLights() now does for lamps. The pattern is already written and proven in this very round; apply it to the twin.",
+   "estimated_cost": "small-to-medium"
+  },
+  {
+   "gap_id": "GAP-W1-eleven-rooms-drawn-lit-and-simulated-black",
+   "subsystem_path": "stealth.detection.light",
+   "severity": "major",
+   "what": "render/interior.js fires a fail-open branch for a room declaring no lights[] (one hearth, PointLight intensity 20, range 22) so the player is not looking at a black frame. syncInteriorLights() has no such branch: it returns 0 sources while still setting _interiorLit = true, pinning the room at ambient 0.0400. Eleven interiors — the ten hand-authored Helstrom cells and writ-house — are therefore drawn lit and simulated at the `unlit` row's value. Separately, render/interior.js caps illuminating lamps at LIT_CAP=5 and the simulation lights every deduped lamp, which affects 77 of 115 interiors (max 14 lamps). Together: 1,659 of 22,751 indoor floor cells (7.29%) disagree about whether a player standing there is in shadow — 1,584 of them drawn lit and simulated black. Control with cap and fail-open removed: 0 disagreeing cells.",
+   "why_it_matters": "'One list, read twice' is true of the record and false of the policy. In those eleven rooms this is a REGRESSION: they previously read skyAmbient (0.75 at noon), which at least roughly matched a lit room; they now read 0.04 at every hour and never match. A player is invisible in a room they can see themselves in.",
+   "evidence": [
+    "reports/w1-15/critic-r3.json",
+    "docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png"
+   ],
+   "remedy": "Move LIT_CAP and the fail-open hearth into shared data both files read, and give syncInteriorLights() the same fail-open branch — or, better, author lights[] for the eleven rooms that have none, which fixes it in the direction that also improves the drawn scene. render/interior.js belongs to W1-04, so this needs the two pieces to agree on one lit-set policy rather than two.",
+   "estimated_cost": "small"
+  },
+  {
+   "gap_id": "GAP-W1-indoor-ambient-is-calibrated-on-a-cellar-that-does-not-exist",
+   "subsystem_path": "stealth.detection.light",
+   "severity": "major",
+   "what": "detection.json's interior_ambient_note justifies dropping indoor ambient to 0.04 with 'a windowless cellar at noon sampled L=1.00'. render/interior.js:498 makes only 'prison' and 'hold' windowless; the shipped corpus is 30 shop, 31 dwelling, 14 guild, 11 tavern, 8 travel, 8 shrine, 6 temple, 2 hall, 1 gate against 2 prison and 1 hold. 112 of 115 interiors are DRAWN WITH WINDOWS, up to four a side, and there are no cellars at all. The 2x2 in §6 shows this ambient decision — not the lamps — is what produces the model's discrimination: keep the lamps and restore the old ambient and the room reads flat 1.0000.",
+   "why_it_matters": "The round replaced one flat wrong answer (the sky reaches everywhere indoors) with another (the sky reaches nowhere indoors), and the second is load-bearing for the headline. A shop at noon with four windows is not a sealed xanmeer depth, and nothing in the build reads a window.",
+   "evidence": [
+    "reports/w1-15/critic-r3.json",
+    "reports/w1-15/critic-r3-dtf2x2.json"
+   ],
+   "remedy": "Let interior ambient carry a daylight term scaled by the room's own window count and interior_kind — render/interior.js already computes the window count from bounds and kind, so the number exists and needs only to be published on the record both files read. Keep 0.04 for the three genuinely windowless kinds.",
+   "estimated_cost": "small"
+  },
+  {
+   "gap_id": "GAP-W1-unidentified-is-a-multiplier-not-a-state",
+   "subsystem_path": "crime.witness.model",
+   "severity": "major",
+   "what": "`identified` has exactly one decision-changing reader in game/src (crime/state.js:154's 0.4x bounty multiplier). justice.json's own witness.unidentified_effect promises that guards do not approach you for an unattributed bounty, that it feeds a settlement alarm state, and that it feeds RI-STL01 §7's S-4 zone memory. None of the three exists: the report log writes attributed:null and nothing consults it, there is no settlement alarm state, and there is no path to ZoneMemory.",
+   "why_it_matters": "Being suspected and being wanted are supposed to be different states and the data file says so. In the running build they are the same state at different magnitudes, so the beautiful thing the lamps just made possible — you were seen and not recognised — buys the player nothing but a smaller number.",
+   "evidence": [
+    "reports/w1-15/critic-r3.json"
+   ],
+   "remedy": "Carry `attributed` on the bounty ledger rather than only in the log line, and make guardBandNow() read the ATTRIBUTED share of the bounty rather than the total. An unattributed 3,000 g should leave a guard at band 1 while raising the settlement's suspicion of everyone.",
+   "estimated_cost": "medium"
+  },
+  {
+   "gap_id": "GAP-W1-seventy-two-hash-derived-prices",
+   "subsystem_path": "stealth.theft.ownership",
+   "severity": "minor",
+   "what": "build-unique-property.mjs:90 prices the 72 newly wired unique items as band[0] + (hashStr(id) % range), banded by interior_kind. Deterministic, build-time, permanently stable and inspectable — not procedural loot and not an AR-2 failure — but a hash cannot tell a priceless heirloom from a chipped bowl, and 72 named objects now carry prices nobody wrote.",
+   "why_it_matters": "This is the practice that becomes an AR-2 failure if it spreads to the other 1,878 objects. Named now, while it is 72.",
+   "evidence": [
+    "reports/w1-15/critic-r3.json"
+   ],
+   "remedy": "Author values for the 72, or narrow the bands per interior_kind until the hash cannot produce an absurd price for a named object.",
+   "estimated_cost": "small"
+  }
+ ],
+ "cross_piece_debts": [
+  {
+   "owed_by": "W1-01 / W1-03 / W1-12",
+   "what": "RI-STL01 §9's bypass census (13 overworld routes, 8 dungeons, 82 caves) needs a province that does not exist. It is RI-STL01's true minimum and is NOT counted against W1-15's own axes in §9 of the verdict text.",
+   "blocking": true
+  },
+  {
+   "owed_by": "W1-12 (enemy behaviour) and whoever owns combat/parley.js",
+   "what": "Round 2's GAP-W1-crime-enforcement-is-a-free-win. guard_legion's gold_price moved 0 -> 300 this round; the remaining legs — an ai that can actually swing, and a guard-specific disposition floor on the GOLD parley ground — are in files owned elsewhere and were under concurrent edit. Correctly declared rather than half-fixed.",
+   "blocking": true
+  },
+  {
+   "owed_by": "W1-04 (render/interior.js and the settlement generator)",
+   "what": "LIT_CAP and the fail-open hearth are the renderer's policy and the source of 1,659 disagreeing floor cells; the eleven lightless interiors are the generator's. Closing GAP-W1-eleven-rooms-drawn-lit-and-simulated-black requires one lit-set policy agreed between W1-04 and W1-15 rather than two.",
+   "blocking": false
+  },
+  {
+   "owed_by": "W1-18 (disposition)",
+   "what": "willBuy()'s friend_of_the_owner branch needs a real dispositionBetween. Until it exists the branch should carry a declared why_not rather than a silent stub.",
+   "blocking": false
+  }
+ ],
+ "amendments_assessed": [],
+ "regression_check": {
+  "verdict": "CLEAN on everything re-measured — no round-2 pass has regressed in the SIMULATION. One regression is recorded against the DRAWN world in eleven interiors and is filed as a gap rather than as a regression of a round-2 assertion, because no round-2 assertion covered it.",
+  "rows": [
+   {
+    "what": "the V-to-alert coupling headline",
+    "round_2": "0.9986",
+    "round_3": "not re-derived (the browser budget went to this brief's five arms); the underlying chain is intact and the lamp perturbation exercises it end to end — 40 -> 80 frames to alert 70 for a 0.464 drop in L",
+    "result": "not re-measured, declared"
+   },
+   {
+    "what": "NO-METER",
+    "round_2": "hud_elements 0 in every run",
+    "round_3": "hud_elements 0 in every run; the lamps added no indicator",
+    "result": "identical"
+   },
+   {
+    "what": "crime-audit",
+    "round_2": "37/37",
+    "round_3": "41/41 (+UNI-1..UNI-4), re-run by this critic",
+    "result": "improved"
+   },
+   {
+    "what": "check-data",
+    "round_2": "558 files clean",
+    "round_3": "561 files clean, re-run by this critic",
+    "result": "clean"
+   },
+   {
+    "what": "the stolen registry / save round trip",
+    "round_2": "round-trip hashes identical",
+    "round_3": "registry 0 -> 1 on a live take with the owner carried onto the inventory row; the delete-the-fix returns it to 0 -> 0",
+    "result": "live and consequential"
+   },
+   {
+    "what": "indoor L in the eleven lightless interiors",
+    "round_2": "skyAmbient — 0.75 at noon, roughly matching a room the renderer draws lit",
+    "round_3": "0.0400 at every hour, against a room the renderer still draws lit",
+    "result": "REGRESSED — filed as GAP-W1-eleven-rooms-drawn-lit-and-simulated-black"
+   }
+  ]
+ },
+ "corpus_extended": [
+  {
+   "what": "RI-STL01 §3 gives L for 'a torchlit interior' and 'unlit' and says nothing about a WINDOW, and RI-CRM01 §2's witness predicate gives `identified` a threshold and no consequence beyond the bounty multiplier. Both gaps were hit head-on this round: 112 of 115 shipped interiors are drawn with windows the light model cannot represent, and justice.json had to invent `unidentified_effect` in prose because no reference item says what being unrecognised DOES.",
+   "proposed": "Two additions, neither filed as an amendment because both are the builder-side of a corpus silence rather than a contradiction in it. (1) RI-STL01 §3 should carry a daylight-through-an-opening row, so an indoor ambient is a function of the room's own openings rather than a single constant chosen between 'sky' and 'cellar'. (2) RI-CRM01 §2 should say what a settlement does with an unattributed bounty — the difference between SUSPECTED and WANTED is the texture the whole system is for, and at present it is a 0.4x multiplier with a prose note attached.",
+   "status": "proposed by this critic, not ruled"
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/sim/stealth/system.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/stealth/light.js",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/src/sim/stealth/search.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/stealth/theft.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/crime/witness.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/crime/state.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/render/interior.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/data/stealth/detection.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "game/data/crime/justice.json",
+   "purpose": "quote-written-content"
+  }
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-crime-enforcement-is-a-free-win",
+   "detail": "Round 2's biggest gap. One of three legs closed: guard_legion.json's gold_price went 0 -> 300, above the round-2 verdict's own stated >= 200 g floor, so the parley surrender is no longer free. The other two — an ai that can actually attack (combat/enemy.js only scripts ai === 'scripted') and a guard-specific disposition floor on the GOLD parley ground — are untouched and explicitly declared untouched, in files owned by W1-12 and under concurrent edit this session. A guard at band 3 still cannot swing.",
+   "evidence": [
+    "orchestration/status/W1-15-r3.json",
+    "game/data/combat/enemies/guard_legion.json"
+   ],
+   "status": "partially-closed",
+   "closed_by_builder_of_fix": false
+  },
+  {
+   "gap_id": "GAP-W1-the-lamps-are-drawn-and-detection-has-never-been-told",
+   "detail": "Closed, and re-measured by this critic rather than accepted. 827 authored interior lamps now enter the LightField the detection model samples: 0 world sources outside a door, 8 inside archon-apothecary, indoor ambient 0.0400, L across the floor 0.2988-1.0000 with spread 0.7012 identical at noon and 03:00. Snuffing world:archon.factor9.r0.lamp1 takes L 1.0000 -> 0.5360 and doubles an inf_trash's time-to-aggro from 40 to 80 frames. The delete-the-fix reproduces 5/5 and the teardown bites. NOTE the 2x2 in §6: the ambient decision, not the lamps, is what produces the spread — and NOTE that the closure is partial in eleven interiors, filed separately as GAP-W1-eleven-rooms-drawn-lit-and-simulated-black.",
+   "evidence": [
+    "reports/w1-15/critic-r3-live.json",
+    "reports/w1-15/critic-r3-deletefix.json",
+    "reports/w1-15/critic-r3-dtf2x2.json"
+   ],
+   "status": "closed",
+   "closed_by_builder_of_fix": false
+  },
+  {
+   "gap_id": "GAP-W1-plausible-set-returns-empty",
+   "detail": "Round 2 graded plausibleSet at coupling 0.0. Unchanged. Re-measured live this round: 0 cover volumes in the world, 0 inside a furnished interior, because Engine.addCoverVolume() is a harness verb. Now understood as the same defect shape the lamps had, and re-filed as GAP-W1-cover-volumes-are-hand-fed-like-the-lamps-were with the remedy the lamp fix already demonstrates.",
+   "evidence": [
+    "reports/w1-15/critic-r3-live.json"
+   ],
+   "status": "open",
+   "closed_by_builder_of_fix": false
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and deliberately so. tools/contention.mjs --gate was exit 3 for the entire run; all offline work was done first with no browser and I then proceeded past the gate with ONE browser at a time, three times, declared here and in the status file per rule 21. NOT RUN: tools/run-all.mjs and the full 29-assertion stl-live.mjs (both launch many browsers); the round-2 coupling headline was not re-derived; and the PREDECESSOR round's two open probes (a live loadState round trip asserting civilians/searches/pending are empty, and a live answerArrest('pay') asserting sim.progression.gold falls) were not driven — the builder flagged both for a critic and they remain open. NO TIMING FIGURE IS PUBLISHED ANYWHERE. TWO OF MY OWN ERRORS ARE RECORDED RATHER THAN DELETED: (1) the first run of tools/stealth/critic-w1-15-r3.mjs printed four lines and exited 0 because its argument parser treated the value after --stamp as a subcommand — a green run that measured nothing, the exact shape rule 4 exists for; fixed, commented at the parser, and reported in §Instruments. (2) the first run of the live probe lost its entire JSON to a screenshot timeout under load because the write came after the picture; reordered so measurements bank first, per rule 2. The tree also moved under this run (4b48955 -> 9126e02) and every offline number was re-run at the later sha and reproduced identically."
+ },
+ "artifacts": [
+  {
+   "path": "tools/stealth/critic-w1-15-r3.mjs",
+   "kind": "log",
+   "produced_by": "node tools/stealth/critic-w1-15-r3.mjs --stamp 9126e02 --json reports/w1-15/critic-r3.json",
+   "note": "the critic's offline instrument — lights, ident, fence, zone, census. --selftest breaks all five arms on purpose (a 5-lamp room must show 0 disagreeing cells, a 14-lamp room must show some, an empty room must be all-dark in the sim and lit in the drawn arm, a doctored identified_at_V must flip the predicate, and a canary parameter must come back unread)."
+  },
+  {
+   "path": "reports/w1-15/critic-r3.json",
+   "kind": "report",
+   "produced_by": "node tools/stealth/critic-w1-15-r3.mjs --stamp 9126e02 --json reports/w1-15/critic-r3.json",
+   "note": "the offline numbers: 1,659/22,751 disagreeing floor cells, the V sweep's two edges, the owner-prefix census, the p.zone producer count and the census omission"
+  },
+  {
+   "path": "tools/stealth/critic-w1-15-r3-live.mjs",
+   "kind": "log",
+   "produced_by": "node tools/stealth/critic-w1-15-r3-live.mjs --json reports/w1-15/critic-r3-live.json",
+   "note": "the live arm, one browser. 4/8 — the four FAILs are the findings, not tool errors."
+  },
+  {
+   "path": "reports/w1-15/critic-r3-live.json",
+   "kind": "report",
+   "produced_by": "node tools/stealth/critic-w1-15-r3-live.mjs --json reports/w1-15/critic-r3-live.json",
+   "note": "the live numbers, including the fence quotes and the 0-cover-volume measurement"
+  },
+  {
+   "path": "tools/stealth/critic-w1-15-r3-dtf2x2.mjs",
+   "kind": "log",
+   "produced_by": "node tools/stealth/critic-w1-15-r3-dtf2x2.mjs --json reports/w1-15/critic-r3-dtf2x2.json",
+   "note": "rule 6's 2x2 on the lamp fix's two edit sites, on four full copies of game/ staged outside the repo. The stager throws unless each cut string occurs exactly once."
+  },
+  {
+   "path": "reports/w1-15/critic-r3-dtf2x2.json",
+   "kind": "report",
+   "produced_by": "node tools/stealth/critic-w1-15-r3-dtf2x2.mjs --json reports/w1-15/critic-r3-dtf2x2.json",
+   "note": "the four arms — and arm 01, which shows the lamps alone do not make the room discriminate"
+  },
+  {
+   "path": "reports/w1-15/critic-r3-deletefix.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/w1-15-r3-deletefix.mjs --json reports/w1-15/critic-r3-deletefix.json",
+   "note": "the round's OWN delete-the-fix, re-run independently by this critic: 5/5, teardown bites"
+  },
+  {
+   "path": "docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png",
+   "kind": "screenshot",
+   "produced_by": "node tools/stealth/critic-w1-15-r3-live.mjs --json reports/w1-15/critic-r3-live.json",
+   "note": "helstrom-apothecary at 03:00 — one of the eleven interiors that declare no lights[]. The renderer's fail-open hearth lights the walls and beams, two windows are bright enough to read by and three people are clearly visible; the light field holds 0 sources and scores every point in the room at L 0.0400, the `unlit` row. Evidence of a NUMERIC disagreement between the drawn and simulated lit sets, not a judgement of appearance (bifurcation axis is not-visual).",
+   "resolution": "960x600",
+   "camera_pose": "placed: H.enterInterior('helstrom-apothecary') then H.setTimeOfDay(3) and H.stepFrames(8) — the player's own third-person camera at the interior's authored spawn point, unmoved. Arrival is PLACED, not walked (ARBITRATION S34(b)): this frame is evidence of APPEARANCE — what a room the light field scores at L 0.0400 actually looks like — and is not cited for any claim about reaching that room."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/W1-15-r2.json",
+   "kind": "report",
+   "produced_by": "n/a — read, not produced by this critic",
+   "note": "the round-2 verdict, read as the baseline this round is measured against"
+  },
+  {
+   "path": "orchestration/status/W1-15-r3.json",
+   "kind": "report",
+   "produced_by": "n/a — read, not produced by this critic",
+   "note": "the builder's own account of the round, read and then re-measured rather than believed"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/W1-15-r3.md",
+   "kind": "report",
+   "produced_by": "node tools/stealth/critic-w1-15-r3.mjs --stamp 9126e02 --json reports/w1-15/critic-r3.json (its numbers)",
+   "note": "this verdict in full, with the tables the JSON summarises"
+  },
+  {
+   "path": "reports/w1-15/r3-live.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/w1-15-r3-live.mjs --json reports/w1-15/r3-live.json",
+   "note": "the ROUND's own live report, used only as a cross-check after the independent numbers were in"
+  },
+  {
+   "path": "reports/w1-15/r3-consumption.json",
+   "kind": "report",
+   "produced_by": "node tools/analysis/w1-15-consumption.mjs --json reports/w1-15/r3-consumption.json",
+   "note": "the round's own CONSUMPTION census, re-run by this critic"
+  },
+  {
+   "path": "game/data/combat/enemies/guard_legion.json",
+   "kind": "text-excerpt",
+   "produced_by": "n/a — data read at 9126e02",
+   "note": "gold_price 0 -> 300, the one leg of round 2's biggest gap this round closed"
+  }
+ ]
+}

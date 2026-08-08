@@ -2,7 +2,7 @@
   "task_id": "critic-w1-15-r3",
   "role": "critic",
   "piece": "W1-15 round 3 — stealth, crime and justice",
-  "state": "writing the verdict",
+  "state": "complete",
   "started_at": "2026-08-08T02:12:00Z",
   "head_at_start": "4b48955",
   "head_at_measurement": "9126e02 — every OFFLINE number was re-run at this sha after the tree moved under the run (W1-ROAD-JOIN regenerated interiors/ and property/ mid-run); all reproduced identically. The LIVE numbers were taken between 4b48955 and 9126e02, on a tree whose game/src/sim/stealth, game/src/engine.js, game/src/render/interior.js and game/data/{stealth,crime} were untouched across that range (git diff --stat is empty for those paths).",
@@ -66,7 +66,11 @@
     "docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-15-r3"],
+  "redundant_with": [
+    "W1-15-r3"
+  ],
   "ownership_note": "reports/blog-feed.jsonl and docs/shots/ overlap with ~30 live pieces by design (rule 27 requires both of every agent). reports/w1-15/ is declared by W1-15-r3; my four files there are all named critic-* and collide with none of its. Declared redundant_with W1-15-r3 per rule 16 — I am the critic of that piece and reading its outputs is the job.",
-  "next_step": "done — verdict, JSON, shot and blog line written and committed with git commit --only"
+  "next_step": "done — verdict, JSON, shot and blog line written and committed with git commit --only",
+  "finished_at": "2026-08-08T02:45:00Z",
+  "bank_note": "Most of my declared files were already swept into the orchestrator's bank commits 9126e02 and 34d1387 before I could commit them — the known rule-17 shape, from the bank side rather than a neighbour's. Nothing is lost; the work is banked under the bank's message. I committed the two paths that remained (the verdict JSON and my blog-feed line) with `git commit --only`, which is the flag that actually restricts the commit — the index at that moment also held W1-25's staged work (orchestration/status/W1-25.json, reports/composition/w1/stage1.md, tools/composition/matrix-probe.mjs), reported by `node tools/ownership.mjs --staged critic-w1-15-r3`, and --only is why none of it is in my commit."
 }
