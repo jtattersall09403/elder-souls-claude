@@ -24,7 +24,8 @@ own main thread. Every record in it has `isSidechain=false`; it contains **zero*
 The fleet's own transcripts are one directory down:
 
 ```
-.../3c195166-6f14-54d0-bf0f-867f7b39d84b/subagents/agent-<id>.jsonl   403 files, 540 MB
+.../3c195166-6f14-54d0-bf0f-867f7b39d84b/subagents/agent-<id>.jsonl   ~405 files, 540 MB
+.../3c195166-6f14-54d0-bf0f-867f7b39d84b/subagents/workflows/wf_*/                 (duplicates — exclude)
 .../3c195166-6f14-54d0-bf0f-867f7b39d84b/subagents/agent-<id>.meta.json
 ```
 
@@ -106,9 +107,11 @@ So there are exactly three multiplicative handles, and only the third is in `COS
 
 ### 0.4 Cost is roughly quadratic in tool calls, and nothing in the programme says so
 
-Traced through the single largest agent (`W1-10 remediation (ultracode)`, 473 priced requests): context
-grows near-linearly with request index — 23.8k at request 0, 245k at 118, 505k at 354, 578k at 472. Summed
-context read across the turn is 172.2 Mtok; `sum / (n × max) = 0.629` (0.5 would be exactly linear growth).
+Traced through the single largest agent (`W1-10 remediation (ultracode)`, 314 deduplicated priced
+requests): context grows near-linearly with request index — **23,757 tokens at request 0, 257,686 at 78,
+390,748 at 156, 513,409 at 234, 578,648 at 313**. Summed context read across the turn is **119.6 Mtok**;
+`sum / (n × max) = 0.658`, where 0.5 is exactly linear growth and 1.0 would be a flat context. Near-linear
+growth in per-request context means **total cost grows with the square of the tool-call count.**
 
 Across all 403 live agents, binned by request count (deduplicated, real USD):
 
@@ -154,7 +157,11 @@ depends on is stated in closed form in §3 and does not require them; they save 
 - `survey-PLAN-COST-EXPERIMENTS.mjs` — per-agent token totals by class and model, from `subagents/`.
 - `burst-PLAN-COST-EXPERIMENTS.mjs` — first-request cache behaviour, burst grouping, concurrency.
 - `growth-PLAN-COST-EXPERIMENTS.mjs` — context growth within a turn, per-request cost by bin.
-- `dollars-PLAN-COST-EXPERIMENTS.mjs` — the priced table in §0.2, splitting 5m and 1h cache writes.
+- `dollars-PLAN-COST-EXPERIMENTS.mjs` — the priced table, splitting 5m and 1h cache writes.
+- `dedup-PLAN-COST-EXPERIMENTS.mjs` — **the one that found my own double-count**; compares raw vs
+  deduplicated totals and counts duplicate priced requests. Run this before trusting any of the others.
+- `redo-PLAN-COST-EXPERIMENTS.mjs` — every §0 figure recomputed with deduplication (the numbers above).
+- `trace-PLAN-COST-EXPERIMENTS.mjs` — the §0.4 context-growth trace.
 
 **The 5m/1h split matters and the ledger schema omits it.** `usage.cache_creation` carries
 `ephemeral_5m_input_tokens` and `ephemeral_1h_input_tokens` separately, and they are priced 1.25× and 2×.
@@ -199,8 +206,8 @@ here and it is why the order is not the research report's §6 order.
 
 | # | Experiment | Expected size | Ease | Attributability | Lands |
 |---|---|---|---|---|---|
-| **E1** | Ruling C1 retrospective — did staggered dispatch help? | **≤0.20% of spend (measured ceiling)** | Trivial — already prototyped | **Perfect** — recorded control, no behaviour change | first |
-| **E2** | Context-composition profile — what is in the 77.7% | No saving itself; **sizes E4** | Cheap, no browser | **Perfect** — read-only | first |
+| **E1** | Ruling C1 retrospective — did staggered dispatch help? | **≤0.32% of spend (measured ceiling)** | Trivial — already prototyped | **Perfect** — recorded control, no behaviour change | first |
+| **E2** | Context-composition profile — what is in the 81.6% | No saving itself; **sizes E4** | Cheap, no browser | **Perfect** — read-only | first |
 | **E3** | Model routing: Sonnet for landed-plan builds | **Up to −60% on routed agents** (price ratio 2.5×, 1.67× after 31 Aug) | Moderate — policy exists | **Weak by default**; matched pairs required | second |
 | **E4** | Tool-call / context reduction | **Largest — superlinear** | Hard — new behaviour | Weak; needs replay pairs | third |
 | **E5** | Criteria injection on critics (rigour, not cost) | **+13.5pp claimed judge accuracy** | Moderate; needs shadow lane | Good if A/A-controlled | parallel with E3 |
@@ -275,7 +282,7 @@ order of magnitude below the 2%-of-spend ceiling. **378 of 403 agents (93.8%) al
 very first request**, because the shared prefix stays warm across the session regardless of dispatch
 timing.
 
-**Expected verdict: C1 is inert and should be reverted**, per its own stated tripwire. Its ceiling is 0.20%
+**Expected verdict: C1 is inert and should be reverted**, per its own stated tripwire. Its ceiling is 0.32%
 of spend; it cannot matter. The mechanism the research report identified is real in the API docs and
 essentially absent in this fleet, because the shared prefix is ~6k tokens, not the large corpus prefix the
 hypothesis assumed. **The builder must reproduce this independently before it is published** — a plan
@@ -308,7 +315,7 @@ trap `COST.md` §4 lever 1 warns about — route on decidability, not on how har
 
 ---
 
-### E2 — Context-composition profile: what is inside the 77.7%
+### E2 — Context-composition profile: what is inside the 81.6%
 
 **Hypothesis.** A large fraction of the context re-read on every request is **superseded tool output** —
 file reads later re-read, command output already acted on, search results already consumed — and that
@@ -411,7 +418,8 @@ Sonnet and *ran* Opus is rule 6's inert fix, and here it would silently report "
 **G1 — parallelism.** Pairs are dispatched **together in the same wave**, so the trial *adds* agents rather
 than serialising them; mean concurrent agents over the trial window must not fall below the baseline.
 **Caveat the instrument must resolve:** measured from agent first/last timestamps, mean concurrency over
-the 62.1 h span is **4.40** with a peak of 16 — apparently already below the floor of 12. That is either a
+the 62.1 h wall-clock span is **4.40** with a peak of 16 — apparently already below the floor of 12, and
+over `COST-INSTRUMENT`'s 52 *active* hours it is **5.3**, still less than half the floor. That is either a
 real standing G1 breach or an artefact of averaging across idle overnight periods. **This plan does not
 rule on it; it flags it as a blocking question for `COST-INSTRUMENT`,** because every experiment's G1 check
 compares against a baseline, and a baseline in breach makes "G1 holds" unanswerable. If the breach is real,
@@ -635,7 +643,7 @@ irreducibly a judgement call — the exact opposite of a machine-checkable accep
 3. **The G1 baseline.** Mean concurrency of 4.40 against a floor of 12 is either a standing breach nobody
    has noticed or an artefact of my averaging window. I flagged it rather than ruling it, which is the
    right call for a plan agent, but it leaves every G1 predicate in this document conditional.
-4. **That E1's ceiling argument generalises.** I measured first-request cache_write at 0.20% of spend *in
+4. **That E1's ceiling argument generalises.** I measured first-request cache_write at 0.32% of spend *in
    this session*, where a 1-hour cache kept the prefix warm throughout. A fresh session, or a much larger
    shared prefix, could make C1 matter. The result should be stated as "inert under these conditions",
    not "the mechanism is fake".

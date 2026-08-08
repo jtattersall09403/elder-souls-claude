@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ba23b88`: 797 tools, 153 reference
+so it cannot drift. Generated at `fbc4ff9`: 798 tools, 153 reference
 items, 90 pieces in flight.
 
 Its purpose is to stop 90+ concurrent agents each paying separately to discover the
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 36
+### `tools/` — 37
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -83,6 +83,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/play.mjs` — serve the game and print the URL a person opens.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
+- `tools/rigour.mjs` — **no header comment**
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
@@ -962,7 +963,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **177 tools have no header comment**, so nobody can tell what they do without
+> **178 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1136,6 +1137,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text | `orchestration/status/W1-HUD-TOAST-A.json` |
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-PROSE-TICS-r4-instrument` | ? | Dispatch a fresh judge to reports/packs/prose-tics-r5 (NOT the builder of the prose, NOT m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` `tools/blind/leakcheck.mjs` `tools/blind/mask-text.mjs` `tools/prose/build-r2-packs.mjs` `corpus/80-methods/RI-MTH03-blind-comparison-protocol.md` `reports/packs/prose-tics-r2/SUPERSEDED.md` |
 | `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
@@ -1148,7 +1150,6 @@ work is the difference between resuming and starting over.
 | `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The two things to attack: whethe | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
 | `critic-w1-20` | running | JOB1 DONE. Now: JOB2 sweep tree for self-referential expected values; JOB3 faction texture | — |
 | `W1-12-r2-critic` | running | teardown-arm audit; consumption perturbation of the 39; S22 contrary; write verdict | `orchestration/status/W1-12-r2-critic.json` |
-| `W1-HUD-TOAST-A` | starting | Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text | `orchestration/status/W1-HUD-TOAST-A.json` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
