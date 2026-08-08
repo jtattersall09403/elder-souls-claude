@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `fa96455`: 743 tools, 153 reference
+so it cannot drift. Generated at `3b0cc43`: 741 tools, 153 reference
 items, 72 pieces in flight.
 
 Its purpose is to stop 72+ concurrent agents each paying separately to discover the
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 35
+### `tools/` — 34
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -80,7 +80,6 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ownership.mjs` — the file-ownership registry: who is touching what, right now.
 - `tools/play.mjs` — serve the game and print the URL a person opens.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
-- `tools/publish-game.mjs` — put the playable game on the web, so playing it is a link and not a clone.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
@@ -742,7 +741,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 150
+### `tools/world/` — 149
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -857,7 +856,6 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/travel-audit.mjs` — **no header comment**
 - `tools/world/verify-live-site.mjs` — is the thing on the internet the thing we tested?
 - `tools/world/verify-playable.mjs` — is there a picture on the screen, on the devices people actually hold?
-- `tools/world/verify-published-game.mjs` — does the copy under docs/play actually PLAY?
 - `tools/world/w1-01-r3-probe.mjs` — **no header comment**
 - `tools/world/w1-01-r4-consumption.mjs` — **no header comment**
 - `tools/world/w1-01-r4-crossing-chart.mjs` — THE PICTURE FOR W1-01 ROUND 4: the road out of the capital goes through somebody's house.
@@ -1070,11 +1068,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-20` | building | author the four joining quests | `orchestration/status/W1-20.json` |
+| `W1-27` | measuring | finish lore/faction/tone/difficulty reads, then build tools/coherence/w1-27-coherence.mjs  | `orchestration/status/W1-27.json` |
+| `W1-24` | building | write cc-scan.mjs | `orchestration/status/W1-24.json` |
+| `W1-28` | starting | build tools/journey/jrn02-hour.mjs — the hour driver. journey-run.mjs registers jrn02-firs | `orchestration/status/W1-28.json` |
 | `critic-w1-touch` | running | read RULES/INDEX/ARBITRATION/RI-JRN04, verify the main.js->TouchInput import chain (attack | `orchestration/status/critic-w1-touch.json` |
-| `W1-20` | surveying | read critic-w1-factions-r2 verdict + W1-FACTIONS-r3 status; measure joinability through pl | `orchestration/status/W1-20.json` |
-| `W1-27` | starting | read RULES/INDEX/PLAN W1-27 and the 13 items; then offline: procedural-loot hunt, then coh | `orchestration/status/W1-27.json` |
-| `W1-28` | starting | read RULES.md, INDEX.md, docs/PLAN.md W1-28, corpus RI-JRN02 in full, W1-25-r2.json, game/ | `orchestration/status/W1-28.json` |
-| `W1-24` | reading | read RULES (done), INDEX, PLAN W1-24, the six items, sabotage.mjs | `orchestration/status/W1-24.json` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `W1-15-r4` | ? | update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4- | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
