@@ -107,6 +107,11 @@ for (const f of fs.readdirSync(IDIR).filter((x) => x.endsWith('.json'))) {
   if (withBooks.length) shelf.set(rec.id, withBooks.map((r) => ({ book: r.book, readable_id: r.id })));
 }
 
+// W1-READABLES round 2 — the MARKS, so the chain arm can also look at the things the
+// `environment` channel names. Same shape as `placement` above: a source id and a place.
+const marksDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/world/readables/site-marks.json'), 'utf8'));
+const marks = new Map(marksDoc.marks.map((m) => [m.id, m]));
+
 const QDIR = path.join(ROOT, 'game/data/quests');
 const cases = [];
 const defs = new Map();
@@ -125,6 +130,10 @@ for (const f of fs.readdirSync(QDIR).filter((x) => x.endsWith('.json'))) {
       docs: ((q.deceit && q.deceit.revealed_by) || [])
         .filter((rev) => DOCUMENT_CHANNELS.has(rev.channel) && demanded.has(rev.id) && bookForSource.get(rev.source))
         .map((rev) => ({ reveal: rev.id, book: bookForSource.get(rev.source) })),
+      // W1-READABLES round 2 — and the MARKS its resolutions demand, for the same reason.
+      marks: ((q.deceit && q.deceit.revealed_by) || [])
+        .filter((rev) => rev.channel === 'environment' && demanded.has(rev.id) && marks.has(rev.source))
+        .map((rev) => ({ reveal: rev.id, mark: rev.source })),
     });
   }
 }
@@ -165,7 +174,7 @@ const legs = [];
 const aside = [];
 try {
   await requireMethods(handle, ['reset', 'setRenderRate', 'travelToGiver', 'enterInterior', 'listEntities',
-    'teleport', 'queueInputs', 'stepFrames', 'getUIState', 'closeMenu', 'getQuestState',
+    'teleport', 'exitInterior', 'queueInputs', 'stepFrames', 'getUIState', 'closeMenu', 'getQuestState',
     'questOpen', 'questResolutions', 'learnTopic', 'whereAmI', 'getConversationState', 'conversationClose', 'listNPCs']);
 
   /** The refusals of every resolution of this quest that name this reveal, by name. */
@@ -233,11 +242,18 @@ try {
   if (CHAIN_MODE) {
     const order = [...defs.keys()].filter((k) => /^Q-MAIN-\d+$/.test(k))
       .sort((a, b) => Number(a.slice(7)) - Number(b.slice(7)));
+    // W1-READABLES round 2 — THREE ARMS, not two. Round 1 asked whether the main line moves when
+    // a player is allowed to read a ledger; this round adds the other half of the same question,
+    // which is whether it moves when a player is allowed to LOOK AT A THING. The three arms are
+    // the same chain, the same two verbs `viability-walk` allows itself, differing only in what
+    // the body is permitted to do when it gets to the room or the ground.
     const arms = {};
-    for (const mayRead of [true, false]) {
+    for (const mode of ['reading_and_looking', 'reading_only', 'neither']) {
+      const mayRead = mode !== 'neither';
+      const mayLook = mode === 'reading_and_looking';
       await handle.h('reset');
       await handle.h('setRenderRate', 0);
-      const done = [], readHere = [];
+      const done = [], readHere = [], lookedHere = [];
       let stop = null;
       for (const qid of order) {
         const d = defs.get(qid);
@@ -263,6 +279,33 @@ try {
             if ((await uiMode()).mode === 'book') { await handle.h('closeMenu'); readHere.push({ quest: qid, book: doc.book }); }
           }
         }
+        if (mayLook) {
+          for (const mk of d.marks) {
+            const m = marks.get(mk.mark);
+            if (!m) continue;
+            if (m.at.interior) {
+              await handle.h('enterInterior', m.at.interior);
+              await handle.h('stepFrames', 2);
+            } else {
+              const w = await handle.h('whereAmI');
+              if (w && w.interior) { try { await handle.h('exitInterior'); } catch { /* already outside */ } }
+              await handle.h('stepFrames', 2);
+              await handle.h('teleport', m.at.world[0], m.at.world[1]);
+              await handle.h('stepFrames', 4);
+            }
+            const pr = (await handle.h('listEntities')).find((e) => e.eid === `mark:${mk.mark}` || e.eid === `mark:${mk.mark}#0`);
+            if (!pr) continue;
+            const room = m.at.interior ? { spawn: (placement.get('__none') || {}).spawn || null } : null;
+            const cx = pr.pos[0] + 1, cz = pr.pos[2] + 1;
+            let vx = cx - pr.pos[0], vz = cz - pr.pos[2];
+            const L = Math.hypot(vx, vz) || 1; vx /= L; vz /= L;
+            await handle.h('teleport', pr.pos[0] + vx * 0.9, pr.pos[2] + vz * 0.9);
+            await handle.h('stepFrames', 2);
+            await pressInteract(`chain mode: ${qid} needs ${mk.mark}`);
+            lookedHere.push({ quest: qid, mark: mk.mark, room: m.at.interior || null });
+            void room;
+          }
+        }
         const list = (await handle.h('questResolutions', qid));
         const rs = list.resolutions || list || [];
         const pick = rs.find((r) => r.available && !r.violence_required) || rs.find((r) => r.available);
@@ -271,7 +314,7 @@ try {
         if (!(res && res.ok)) { stop = { quest: qid, phase: 'resolve', why: res && res.reason }; break; }
         done.push(`${qid}/${pick.id}`);
       }
-      arms[mayRead ? 'reading_allowed' : 'reading_refused'] = { completed: done.length, of: order.length, chain: done, documents_read: readHere, stopped_at: stop };
+      arms[mode] = { completed: done.length, of: order.length, chain: done, documents_read: readHere, marks_looked_at: lookedHere, stopped_at: stop };
     }
     const out2 = args.out ? String(args.out) : path.join(ROOT, 'reports/runs/W1-READABLES/document-route-chain.json');
     ensureDir(path.dirname(out2));
@@ -281,7 +324,7 @@ try {
       console.log(`  ${k.padEnd(18)} ${v.completed} of ${v.of} mainline quests`);
       console.log(`      stops at ${v.stopped_at ? v.stopped_at.quest + ' [' + v.stopped_at.phase + ']' : '(finished)'}`);
       if (v.stopped_at) console.log(`      because  ${String(v.stopped_at.why).slice(0, 200)}`);
-      console.log(`      read     ${v.documents_read.length} document(s)`);
+      console.log(`      read     ${v.documents_read.length} document(s), looked at ${(v.marks_looked_at || []).length} mark(s)`);
     }
     await handle.close();
     process.exit(0);

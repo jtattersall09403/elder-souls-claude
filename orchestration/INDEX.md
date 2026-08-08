@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `d30a3de`: 548 tools, 153 reference
+so it cannot drift. Generated at `c36653e`: 550 tools, 153 reference
 items, 38 pieces in flight.
 
 Its purpose is to stop 38+ concurrent agents each paying separately to discover the
@@ -37,7 +37,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 24
+### `tools/` — 25
 
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
@@ -48,6 +48,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-prose.mjs` — Prose-voice integrity for every player-facing register, checked over the JSON with no engine and no browser.
 - `tools/check-quests.mjs` — Content integrity for the quest layer, checked over the JSON with no engine and no browser.
 - `tools/check-souls-corpus.mjs` — the soul economy's CORPUS is internally consistent, checked over the markdown and the JSON with no engine and no browser.
+- `tools/check-souls-world.mjs` — the two soul ledgers must agree — the world's cached roll-up against the statblocks that pay.
 - `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
 - `tools/corpus-index.mjs` — **no header comment**
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
@@ -162,12 +163,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 14
+### `tools/dialogue/` — 15
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
 - `tools/dialogue/consume.mjs` — CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
 - `tools/dialogue/critic-field-census.mjs` — critic-w1-17 instrument 1 — an INDEPENDENT census of every filter field authored on every info in game/data/dialogue/topics/**, written without reading build-gr
+- `tools/dialogue/critic-semantics.mjs` — critic-w1-17 instrument 2 — FIRST-MATCH-WINS versus THE SHIPPED SCORING READER.
 - `tools/dialogue/disposition-oracle.py` — **no header comment**
 - `tools/dialogue/dump-engine-disposition.mjs` — RI-DLG04 step 1, our side: feed the oracle's cases through the SHIPPING engine module and emit the same four columns.
 - `tools/dialogue/gen-greetings.mjs` — build game/data/dialogue/greetings.json from the authored stems below.
@@ -838,7 +840,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-25` | started |  | — |
+| `W1-25` | building | Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (t | `orchestration/status/W1-25.json` |
+| `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |
 | `W1-SOULS-LEDGER` | building | Confirm statblocks are truth; diff regenerated population-posts vs cached; build tools/che | `orchestration/status/W1-SOULS-LEDGER.json` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2 resuming at predecessor next_step: (a) detector refusal + AMENDMENT item A ari | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
@@ -847,7 +850,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-17` | starting | read ARBITRATION §3, RI-DLG items, INDEX; then reproduce build-graph, the filt() race clai | `orchestration/status/critic-w1-17.json` |
 | `critic-w1-23-r3` | ? | A: count texts with a tool + read >=8 end to end, judge prose with quotes. B: prose-tic co | `orchestration/status/critic-w1-23-r3.json` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/world/property/archon.json` `game/data/world/property/blackrose.json` |
-| `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-17` | partial | (1) the twelve RI-DLG06 misses voice-metrics.mjs now reports — mudborn and legionary have  | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `critic-w1-12` | done | none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A | `orchestration/status/critic-w1-12.json` `corpus/90-verdicts/wave1/W1-12-r1.md` `corpus/90-verdicts/wave1/W1-12-r1.json` `tools/combat/critic-w1-12-census.mjs` `tools/combat/critic-w1-12-s22.mjs` `tools/combat/critic-w1-12-chart.mjs` |
 | `W1-READABLES-r2` | in_progress | browser proof of the mark reader, then the mainline chain numbers | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/data/world/readables/site-marks.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` |

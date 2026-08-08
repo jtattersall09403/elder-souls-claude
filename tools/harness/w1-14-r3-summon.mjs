@@ -88,14 +88,29 @@ try {
 
     /** Commission and cast one single-effect spell. Returns the effect_apply record. */
     const castBind = (effect, magnitude, duration_s) => {
-      const mk = H.makeSpell({ class: 'LIGHT', range: 'self', effects: [{ effect, magnitude, duration_s, area_r_m: 0 }] }, `sum_${effect}_${magnitude}`);
+      // AFFORDABILITY, CHECKED RATHER THAN ASSUMED. `bind_greater` at magnitude 90 for 60 s
+      // quotes over the whole reservoir, so the spell is MADE (spellmaking never refuses a legal
+      // tuple for Focus — RI-MAG03 §A) and then never fires. The first run of this file read that
+      // as "the mag-90 greater summon did 0 damage", which is a measurement of the reservoir, not
+      // of the dial. Back the DURATION off until the quote fits and record what was settled on.
+      let d = duration_s;
+      const spec = () => ({ class: 'LIGHT', range: 'self', effects: [{ effect, magnitude, duration_s: d, area_r_m: 0 }] });
+      const fits = () => { const q = H.quoteSpell(spec()); return !q.refused && q.castable_now; };
+      let guard = 0;
+      while (d > 5 && guard++ < 20 && !fits()) d = Math.max(5, Math.floor(d / 2));
+      const mk = H.makeSpell(spec(), `sum_${effect}_${magnitude}`);
       if (mk.refused) return { refused: mk.reason || mk.gate };
+      if (!fits()) return { refused: 'over_reservoir', quote: H.quoteSpell(spec()) };
       H.setAttuned([mk.spell.id]);
       H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
       H.stepFrames(70);
       const ev = H.magicEventsDrain();
       const ap = ev.find((x) => x.kind === 'effect_apply' && x.effect === effect);
-      return { spell: mk.spell.id, applied: !!ap, record: ap || null,
+      return { spell: mk.spell.id, applied: !!ap, record: ap || null, duration_s: d,
+               // `effect_apply` carries only consumer/before/after/changed — the handler's extra
+               // fields are dropped by `applyEffects`. `fight_ended` is where `demoralise` puts
+               // its leash, so a reader that wants the MODEL's own number reads that event.
+               fight_ended: ev.find((x) => x.kind === 'fight_ended') || null,
                dismissed: ev.filter((x) => x.kind === 'summon_dismissed') };
     };
 
@@ -118,7 +133,7 @@ try {
         if (cast.refused) return { refused: cast.refused };
         const bs = bodies();
         sid = bs.length ? bs[bs.length - 1].id : null;
-        if (sid) H.aggro(sid);
+        if (sid) { H.aggro(sid); if (playerAttacks) H.lockOn(sid); }
       } else {
         H.stepFrames(70);       // the same 70 f the cast consumes, so the arms line up in time
       }
@@ -127,7 +142,7 @@ try {
       const summon_hp = [];
       let f = 0;
       while (f < FRAMES) {
-        if (playerAttacks) H.queueInputs([{ f: 2, press: ['light'] }, { f: 6, release: ['light'] }]);
+        if (playerAttacks) H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }, { f: 16, press: ['light'] }, { f: 18, release: ['light'] }]);
         H.stepFrames(SAMPLE);
         f += SAMPLE;
         const ps = H.getPlayerStats();
@@ -210,6 +225,7 @@ try {
       const d0 = b0.dist_m;
       let applied = false;
       let rec = null;
+      let fe = null;
       if (effect) {
         const mk = H.makeSpell({ class: 'LIGHT', range: 'target', effects: [{ effect, magnitude, duration_s: 30, area_r_m: 0 }] }, `ctl_${effect}_${magnitude}`);
         if (mk.refused) return { refused: mk.reason || mk.gate };
@@ -219,6 +235,7 @@ try {
         H.stepFrames(90);
         const ev = H.magicEventsDrain();
         rec = ev.find((x) => x.kind === 'effect_apply' && x.effect === effect) || null;
+        fe = ev.find((x) => x.kind === 'fight_ended') || null;
         applied = !!rec;
       } else H.stepFrames(90);
       H.stepFrames(600);
@@ -226,7 +243,9 @@ try {
       const d1 = b1 ? b1.dist_m : null;
       return {
         effect, magnitude, applied,
-        model: rec ? { flee_leash_m: rec.flee_leash_m, flee_speed_mps: rec.flee_speed_mps, magnitude: rec.magnitude } : null,
+        model: fe ? { flee_leash_m: fe.flee_leash_m, flee_speed_mps: fe.flee_speed_mps, by: fe.by, deaths: fe.deaths } : null,
+        status: (() => { const st = H.getStatusState(); const r = (st.bodies || st).find ? (st.bodies || st).find((b) => b.id === eid) : null;
+                         return r ? { fleeing: r.fleeing, flee_leash_m: r.flee_leash_m, flee_dist_m: r.flee_dist_m, flee_arrived: r.flee_arrived, yielded: r.yielded } : null; })(),
         distance_before_m: Math.round(d0 * 100) / 100,
         distance_after_m: d1 === null ? null : Math.round(d1 * 100) / 100,
         moved_away_m: d1 === null ? null : Math.round((d1 - d0) * 100) / 100,
@@ -246,8 +265,15 @@ try {
     // ==========================================================================================
     // C1. The PRNG counter across a magic-heavy sequence. Nothing in the cast path may draw.
     arena();
+    // WHAT THIS ACTUALLY READS. `getDeterminismReport()` has no draw counter (`rngDraws` is
+    // `undefined` by construction); what it has is `violations`, and the guards it counts THROW
+    // rather than tally — `Math.random`, `Date.now`, `performance.now` and `new Date()` are armed
+    // for exactly one fixed step. So zero violations across a magic-heavy sequence is the
+    // stronger statement, not the weaker one: not "no die was rolled that we counted" but "a die
+    // could not have been rolled without the step failing loudly". The PRNG draw count is read
+    // separately, off the trace, which is where `sim/record.js` publishes it.
+    H.traceStart({ enemies: false, events: false });
     const d0 = H.getDeterminismReport();
-    const draws0 = d0.draws === undefined ? null : d0.draws;
     const mk = H.makeSpell({ class: 'LIGHT', range: 'self', effects: [{ effect: 'bind_lesser', magnitude: 45, duration_s: 30, area_r_m: 0 }] }, 'ar1_probe');
     H.setAttuned([mk.spell.id]);
     let casts = 0;
@@ -257,10 +283,19 @@ try {
       casts += H.magicEventsDrain().filter((x) => x.kind === 'effect_apply').length;
     }
     const d1 = H.getDeterminismReport();
-    out.ar1_prng = { draws_before: draws0, draws_after: d1.draws === undefined ? null : d1.draws,
-                     casts_applied: casts,
-                     note: 'A draw here would be a die rolled during casting. Entity spawn draws once per body per lifetime (sim/entities.js), which is why the delta is compared against the number of bodies summoned, not against zero.',
-                     bodies_summoned: casts };
+    const tr = H.traceDrain();
+    const frames = Array.isArray(tr) ? tr : (tr.frames || []);
+    const withRng = frames.filter((f) => f && f.rng);
+    out.ar1_prng = {
+      determinism_violations_before: d0.violations, determinism_violations_after: d1.violations,
+      guards: d1.guards, armed_during: d1.armedDuring,
+      trace_frames: frames.length,
+      rng_draws_first: withRng.length ? withRng[0].rng.draws : null,
+      rng_draws_last: withRng.length ? withRng[withRng.length - 1].rng.draws : null,
+      rng_draws_delta: withRng.length ? withRng[withRng.length - 1].rng.draws - withRng[0].rng.draws : null,
+      casts_applied: casts,
+      note: 'Entity spawn draws once per body per lifetime (sim/entities.js), so the delta is compared against the number of BODIES SUMMONED, not against zero. What must be zero is the determinism violation count: the guards throw, so a Math.random() anywhere under the cast path would have killed the step rather than been counted.',
+    };
 
     // C2. TWENTY IDENTICAL CASTS FROM AN IDENTICAL ARENA. A chance-to-cast roll or a skill check
     // deciding whether the spell fires produces a SPREAD. A rule produces 20/20 or 0/20.
@@ -346,9 +381,11 @@ for (const k of Object.keys(cv)) {
   const r = cv[k];
   log(`  ${k.padEnd(20)} ${r.refused ? 'REFUSED ' + r.refused : `${r.distance_before_m} -> ${r.distance_after_m} m (moved ${r.moved_away_m}); yielded=${r.enemy_yielded} state=${r.enemy_state} leash=${r.model ? r.model.flee_leash_m : '-'}`}`);
 }
-log(`AR-1 prng    draws ${report.ar1_prng.draws_before} -> ${report.ar1_prng.draws_after} over ${report.ar1_prng.casts_applied} applied casts`);
+
 log(`AR-1 repeat  permitted ${report.ar1_determinism.permitted.applied}/${report.ar1_determinism.permitted.n} applied, distinct hp_max ${JSON.stringify(report.ar1_determinism.permitted.distinct_hp_max)}`);
-log(`AR-1 gate    attunement all-or-nothing: ${report.ar1_skill_gate.all_or_nothing}`);
+const g = report.ar1_skill_gate;
+log(`AR-1 gate    under-skilled ${g.under_skilled.accepted_total} accepted of 60, all-or-nothing ${g.under_skilled.all_or_nothing};  practised ${g.practised.accepted_total} of 60, all-or-nothing ${g.practised.all_or_nothing}`);
+log(`AR-1 prng    determinism violations ${report.ar1_prng.determinism_violations_before} -> ${report.ar1_prng.determinism_violations_after};  rng draws delta ${report.ar1_prng.rng_draws_delta} over ${report.ar1_prng.casts_applied} applied casts`);
 
 const tag = report.break_mode ? `-break-${report.break_mode}` : '';
 const p = path.join(outDir, `summon${tag}.json`);
