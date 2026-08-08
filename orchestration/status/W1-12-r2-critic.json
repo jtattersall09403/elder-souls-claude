@@ -3,19 +3,24 @@
   "role": "critic",
   "item": "RI-AI01",
   "round": "W1-12 round 2",
-  "state": "running",
+  "state": "done",
   "started": "2026-08-08",
   "resumed_by": "successor after predecessor killed by usage limit",
-  "next_step": "teardown-arm audit; consumption perturbation of the 39; S22 contrary; write verdict",
+  "next_step": "none \u2014 verdict published. Hand to the orchestrator.",
   "files_touched": [
-    "orchestration/status/W1-12-r2-critic.json"
-  ],
-  "files_claimed": [
+    "orchestration/status/W1-12-r2-critic.json",
     "corpus/90-verdicts/wave1/W1-12-r2.md",
     "corpus/90-verdicts/wave1/W1-12-r2.json",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "tools/combat/critic-w1-12-r2-m3-chart.mjs",
+    "tools/gap-ledger.mjs",
+    "docs/shots/2026-08-08-w1-12-r2-critic-m3-on-the-fixture-the-item-specifies.png",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "reports/w1-12-r2-critic/ai-browser.json",
+    "reports/w1-12-r2-critic/consumption.json"
   ],
+  "files_claimed": [],
   "redundant_with": [],
   "progress": {
     "read_rules": true,
@@ -23,9 +28,9 @@
     "read_r1_verdict": true,
     "push1_closure_frametrace": true,
     "push2_M1_M2": true,
-    "push3_teardown_arms": false,
-    "push4_consumption_39": false,
-    "push5_S22_contrary": false
+    "push3_teardown_arms": true,
+    "push4_consumption_39": true,
+    "push5_S22_contrary": true
   },
   "notes": "Predecessor status showed only next_step=read; no partial artifacts found on disk or in git. Restarting the analysis but reusing nothing that was never written.",
   "contention_at_start": "GO \u2014 1 browser instance, load 0.57/core. The box is quiet NOW; M1/M2 browser work is available to me and was not to the round.",
@@ -36,5 +41,33 @@
     "F4 push-1 FULL RULING: closure-gating with HYSTERESIS (30 f min RUSH dwell) DOES catch the walking player (min gap 0.90 m, 144 strike frames) -- so the oscillation the round diagnosed is curable and its stated proof is the weaker half of its case. The STRONGER half, which the round did not measure: closure fires on a STATIONARY player too, and M3 min_dist_dwell goes 0.4373 (recession) -> 0.7448 (closure) -> 0.7064 (closure+hysteresis). The round's conclusion is right; its published argument is not the reason it is right.",
     "F5 M1/M2 MEASURED IN THE BROWSER (contention GO, 1 instance, 0.57/core). tools/harness/ai-browser.mjs b2/b3 -> reports/w1-12-r2-critic/ai-browser.json. M1: rear 180 never acquires (good), 1.5R never acquires (good), but 0.9R at bearing 0 NEVER acquires -- the item's PASS requires it in every trial. Only 0.5R acquires, at 2 of 7 bearings. M1 = 1, NOT 2. M2: median SUSPICIOUS dwell 244 f, idle->aggro jump fraction 0 -> M2 = 2. Both confirm r1's accepted numbers rather than overturning them; the round's refusal to adopt them was correct in principle and vindicated in fact.",
     "F6 PREDECESSOR ARM DISCARDED: reports/w1-12-r2-critic/closure-vs-recession.json arm `clFull` is byte-identical to `base` on 6 of 7 statblocks across both fixtures -- an INERT CONTROL (rule 6 shape 2). Its predicate computes |enemy_now - player_old| - |enemy_now - player_now|, which cancels the enemy's own motion and is therefore recession again, not closure. Not published as evidence; replaced by my own arms clA/clB/clHyst which do differ."
+  ],
+  "undeclared_files_and_why": [
+    "tools/combat/critic-w1-12-r2-m3-chart.mjs \u2014 new, mine, the instrument that draws the verdict's picture. Declared late; no other live piece claims it.",
+    "tools/gap-ledger.mjs \u2014 ONE guard added. `node tools/gap-ledger.mjs` was already dead at HEAD before I arrived: two shipped verdicts (W1-13-r2, W1-FACTIONS-r2) carry `gap_closure` as an object where the schema requires an array, and the loop died on the iterator protocol with a bare TypeError, no filename, and the ledger unregenerated for the whole fleet. It now names the offending file in `warnings` and keeps going. I did NOT edit either verdict \u2014 they are neighbours' files. Rule 24: the tool still reports the defect, it just no longer takes everyone else down with it."
+  ],
+  "verdict": {
+    "status": "FAIL",
+    "overall_0_10": 2,
+    "aggregation": "min-over-axes against a 7.0 wave-1 gate",
+    "axes": {
+      "A_s22": 7,
+      "B_ar1": 8,
+      "C_consumption": 5,
+      "D_closing_on_a_fleeing_player": 7,
+      "E_spacing_loop_M3": 2,
+      "F_delete_the_fix": 5,
+      "G_variety": 7,
+      "H_self_description": 4
+    },
+    "hard_fail": "RI-AI01 M3 chase-bot, TRIGGERED on 6 of 7 statblocks on the item's own fixture",
+    "not_a_regression": "round 1 scored 3; every axis that measures WORK went up. Round 2 built the RECOVER state that makes its own defect visible and the trajectory is identical to round 1's to 4 dp."
+  },
+  "could_not_do": [
+    "No blind pair. RI-AI01 specifies one; three rounds, none built, including mine.",
+    "Did not re-derive the round's --mode=states count or its yaw-ceiling sweep; accepted from its artifacts and said so in method_deviations.",
+    "Did not re-measure the LONG_RECOVERY punish leg (round 1's 7/12).",
+    "`node tools/publish.mjs` exits 1 through tools/blog.mjs, which imports tools/cost-report.mjs \u2014 a NEIGHBOUR'S file, modified at 12:45 while I was running, with a syntax error at line 796 (an unterminated string literal in a `hasNot` array). COST-DASHBOARD claims it. docs/progress.html regenerated fine; the blog page did not. I did not touch a file another agent is mid-write on.",
+    "Bearing-0 disagreement between the two M1 instruments left unresolved; it does not move the score."
   ]
 }

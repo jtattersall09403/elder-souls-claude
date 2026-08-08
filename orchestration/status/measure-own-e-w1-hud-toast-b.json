@@ -1,0 +1,21 @@
+{
+  "task_id": "measure-own-e-w1-hud-toast-b",
+  "role": "measurement (text-only, no browser, no build agent, no tool executed)",
+  "piece": "W1-HUD-TOAST / Piece B (W1-INSTRUMENT-COUPLING)",
+  "state": "running",
+  "started": "2026-08-08",
+  "commit_pinned": "9063779 (same commit the predecessor measured, so the population re-derivation is directly comparable)",
+  "the_question": "The stated overturn condition of ruling S-PLAN-HUD-B3: does each tool's OWN artifact publish a readable expected side? The verdict-quoted E measured by measure-quoted-e-w1-hud-toast-b is only the second source, so its 14 is a floor, not a ceiling.",
+  "deliverable": "orchestration/plans/W1-HUD-TOAST.md — a new section written where ruling S-PLAN-HUD-B3 sits, resolving it visibly rather than elsewhere",
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/measure-own-e-w1-hud-toast-b.json",
+    "orchestration/status/measure-quoted-e-w1-hud-toast-b.json"
+  ],
+  "redundant_with": ["measure-quoted-e-w1-hud-toast-b", "plan-critic-w1-hud-toast", "plan-w1-hud-toast"],
+  "overlap_note": "Third pass over the same plan file and the same counts, by design — the brief says disagreement is a legitimate and more useful outcome. Declared, not a collision. No game/ or tools/ source touched or claimed.",
+  "no_browser_launched": true,
+  "no_tool_executed": true,
+  "next_step": "1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify the 109. 4. rule on S-PLAN-HUD-B3 in the plan file."
+}

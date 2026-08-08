@@ -5,7 +5,7 @@
   "status": "in_progress",
   "started_at": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-15-r3.md + orchestration/status/W1-15-r4.json",
-  "next_step": "live probe (frame-time + third site live) running under load 7.5/core; then write verdict md+json, ledger, publish, bank, push",
+  "next_step": "the LIT_CAP frame-time arm is still running under load ~7/core; fold its numbers into \u00a710 of the verdict if it returns, then re-bank",
   "redundant_with": [
     "W1-15-r4"
   ],
@@ -13,12 +13,17 @@
     "orchestration/status/critic-w1-15-r4.json",
     "tools/stealth/critic-w1-15-r4.mjs",
     "tools/stealth/critic-w1-15-r4-live.mjs",
-    "reports/w1-15/critic-r4.json"
-  ],
-  "files_claimed": [
+    "tools/stealth/critic-w1-15-r4-figure.mjs",
+    "reports/w1-15/critic-r4.json",
     "corpus/90-verdicts/wave1/W1-15-r4.md",
     "corpus/90-verdicts/wave1/W1-15-r4.json",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "docs/shots/2026-08-08-critic-w1-15-r4-the-room-a-third-file-lights.png",
     "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "reports/w1-15/critic-r4-live.json"
   ],
   "findings": [
     "THIRD LIGHTING SITE, unclaimed: engine.js#cellFor() routes writ-house and barge-hold to render/places.js, which builds its own PointLights and never calls world/interior-lighting.js. writ-house: 47 of 108 floor cells drawn lit and simulated dark (43.5%) \u2014 the round-3 defect verbatim, in the game's second room. barge-hold: 2 drawn vs 3 simulated, brightest sources 3.8 m apart. 1 of the round's own eleven fail-open rooms (writ-house) does NOT get the shared fail-open.",
@@ -30,5 +35,6 @@
     "VERIFIED: 0 disagreeing cells of 16,996 on an instrument this critic wrote; renderer-side cut (which the round's 2x2 never ran) bites \u2014 706->500 point lights, 0->94 cells; fence 1,787/1,787 refusable with control 0, and 5-8 of 9 fences still buy so the economy has an out.",
     "CANOPY_DAY clamp is unreachable by construction (0 rooms), so interiorAmbientL().clamped can never be true on the shipped corpus."
   ],
-  "could_not_do": []
+  "could_not_do": [],
+  "note_on_shared_paths": "reports/blog-feed.jsonl and docs/shots/ are appended by every finishing piece; ownership --conflicts reports them against AUDIT-R1-LIST, P10-loader-retry and PLAYABILITY. One appended line and one new dated filename each \u2014 declared rather than left to read as a collision."
 }

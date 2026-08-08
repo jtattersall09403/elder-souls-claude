@@ -1,37 +1,49 @@
 {
   "task_id": "S39-falsifier",
   "role": "builder+runner (instrument only, not the remedy)",
-  "state": "instrument built; browser arms running",
+  "state": "ran; full four-arm run in flight",
   "started": "2026-08-08",
   "question": "Run the falsifier S39 specified and never ran: two-arm replay above and below the 12.00 Hz rAF floor; identical promoted actions and bit-identical replay hashes, or S39 falls.",
-  "next_step": "Run --self-test (A1 one-frame shift must go red; A4 lint must flip green when stamped), then the full four-arm run, then write the verdict into ARBITRATION.md under S39.",
+  "next_step": "Full four-arm run in flight (a1,a2,a3,a4). Then: append the falsifier result to S39 in ARBITRATION.md (SURVIVES, with the numbers), write the shot and the blog line, bank and push.",
   "read_so_far": [
     "ARBITRATION.md S39 (full row)",
     "NEXT-DISPATCH.md section U",
-    "game/src/core/loop.js (MAX_CATCHUP=5, 12.00 Hz floor, play|harness|play-instrumented)",
-    "game/src/core/guards.js (armSim window; wallNow)",
-    "game/src/input/hold-gate.js (REMEDY NOT LANDED: framesHeld is still frame - pressFrame + 1)",
-    "game/src/input/touch.js, real.js (gate call sites); sim/step.js:69 calls realInput.tick(sim.frame) INSIDE the fixed step",
-    "tools/touch/r2-framerate.mjs (patchedTree precedent, load stamping), tools/touch/critic-gate-wallclock.mjs (Finger/CDP press precedent), tools/harness/determinism.mjs (trace hash precedent)"
+    "game/src/core/loop.js, guards.js, sim/step.js:62-69",
+    "game/src/input/hold-gate.js, touch.js, real.js, gamepad.js (S39 remedy LANDED mid-task)",
+    "tools/touch/r2-framerate.mjs, critic-gate-wallclock.mjs, tools/harness/determinism.mjs"
   ],
   "findings_so_far": [
-    "THE BRIEF WAS OVERTAKEN: S39's remedy LANDED while I was reading. hold-gate.js now carries inputNow(), STEP_MS, framesHeld(tDownMs,tNowMs) and a fail-closed inFixedStep() throw; real.js/touch.js stamp from event.timeStamp and poll holds per rAF. So the falsifier no longer needs a patched copy to run predictions (a)/(b) -- it needs a DELETE-THE-FIX copy, and hold-gate.js's own header names the teardown (inputNow() -> frame*STEP_MS in play). A3 does exactly that.",
-    "A4 lint at db449a5: 2 of 16 reclassified figures stamped. All EIGHT data figures in data/input/profiles.json still publish frames with no ms twin -- the landed remedy's own comments say that is deliberate (the conversion is stamped, the datum stays f@60), so this half of the lint is a contested reading and is reported as such. Six of eight source sites still frame-counted at HEAD (gamepad 13/14 are stamped in the owner's UNCOMMITTED copy).",
-    "game/data frame-denominated duration figures at db449a5: 11,018 across 118 field names, against S39's 11,161 across 106 at 2d40c02. Reported, not reconciled -- the tree has moved.",
-    "Two frame-record fields are inert: input.dispatch_lag and input.catchup_steps are set once in the pipeline constructor/reset and never written again, so record.js publishes a constant 0 and a constant 1. Not S39's business; noted for whoever owns RI-CMB11."
+    "THE BRIEF WAS OVERTAKEN: S39's remedy LANDED while I was reading (hold-gate.js now has inputNow(), framesHeld(tDownMs,tNowMs) and a fail-closed inFixedStep() throw). So the falsifier runs predictions (a)/(b) on the shipped tree and uses a DELETE-THE-FIX copy as the control -- hold-gate.js's own header names that teardown (inputNow() -> frame*STEP_MS in play).",
+    "A2 CAPTURE, at ba23b88, below the floor at 2.22 rAF Hz / 11.11 fixed steps/s (18.5% of real time -- the referral's exact world): promoted action correct 5/5 (roll/roll/roll/sprint/sprint) and frames_held 2/5/8/16/31 against a want of 1/4/7/15/30, all within +-1. The sim advanced 0/0/5/5/5 frames during those presses, so the frame counter the old gate used was flat while the ms stamp was exact. Above the floor 5/5 too. The referral measured 5 of 5 WRONGLY ROLLED with frames_held constant at 1.",
+    "A1 REPLAY, the arm carrying the defeat condition: cold-realm run above the floor (49.9 rAF Hz) and below it (2.22 rAF Hz) hash BIT-IDENTICALLY, 4df0b92a5a7b7c8d63fc. The warm-realm pair also matches across the floor exactly (b46f93a63a043691c00d). One-frame shift self-test goes RED as required. S39's third prediction holds; the stated defeat condition is not met.",
+    "SEPARATE DEFECT FOUND BY THE FIRST NULL CONTROL, rate-independent and NOT S39's: H.loadState() in a warm page realm does not reproduce the cold-boot run -- run 1 and run 2 in one realm give different trace hashes, deterministically, at BOTH rates. The null control was rebuilt to use a fresh realm (page reload), matching the shape of the cross-rate arms. The warm/cold difference is reported as an RI-MTH02 / loadState finding.",
+    "A4 LINT at ba23b88: 4 of 16 reclassified figures stamped (real.js 9, gamepad 13/14, touch.js 15). Self-test flips it 4/16 -> 16/16 on a copy, so the lint can fail both ways. All EIGHT data figures in profiles.json still publish frames with no ms twin; the landed remedy's comments say that is deliberate, so that half is reported as a contested reading. game/data holds 11,018 frame-denominated duration figures across 118 field names at this commit against S39's 11,161/106 at 2d40c02.",
+    "An instrument fault worth recording: the first attempt measured the ABOVE-floor arm's rAF rate inside a post-ready() streaming stall and reported 0.15 Hz for a page whose sim was demonstrably running at ~59 steps/s moments later. Both arms would have been below the floor and the run would have been void while looking fine. The tool now warms up 2.5 s and takes the rate twice, before and after the presses.",
+    "Two frame-record fields are inert: input.dispatch_lag and input.catchup_steps are written once in the pipeline constructor/reset and never again, so record.js publishes a constant 0 and a constant 1."
   ],
   "files_claimed": [
     "tools/input/arbiter-clock-s39.mjs",
+    "tools/input/arbiter-clock-s39-shot.mjs",
     "orchestration/status/S39-falsifier.json",
-    "reports/s39/"
+    "reports/s39/",
+    "docs/shots/2026-08-08-s39-hold-gate-above-and-below-the-12hz-floor.svg",
+    "corpus/00-doctrine/ARBITRATION.md",
+    "reports/blog-feed.jsonl"
   ],
   "files_touched": [
-    "orchestration/status/S39-falsifier.json"
+    "orchestration/status/S39-falsifier.json",
+    "tools/input/arbiter-clock-s39.mjs",
+    "tools/input/arbiter-clock-s39-shot.mjs",
+    "reports/s39/arbiter-clock-s39.json",
+    "reports/s39/arbiter-clock-s39-selftest.json"
   ],
   "must_not_touch": [
     "game/src/input/hold-gate.js (owned by W1-TOUCH round 2, live -- confirmed by tools/ownership.mjs)",
     "game/src/input/touch.js, real.js, gamepad.js (same owner)"
   ],
   "no_browser": null,
-  "contention_note": "tools/contention.mjs said WAIT (load 7.0/core, 2 browser instances) before the capture smoke run and I proceeded anyway, one browser at a time, RULES 21 declared here. The rate arms are driven by a rAF SHIM (setTimeout pump at a fixed period), not by loading the box, precisely so a busy box cannot move the result."
+  "contention_note": "tools/contention.mjs said WAIT (load 7.0/core, 2 browser instances) before the capture smoke run and I proceeded anyway, one browser at a time, RULES 21 declared here. The rate arms are driven by a rAF SHIM (setTimeout pump at a fixed period), not by loading the box, precisely so a busy box cannot move the result.",
+  "redundant_with": [
+    "W1-TOUCH-r2"
+  ]
 }

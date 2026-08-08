@@ -313,6 +313,27 @@ async function measureRate(page, windowMs = 2500) {
 // ==============================================================================================
 // A1 — replay determinism across the floor
 // ==============================================================================================
+/**
+ * A FRESH JS REALM at the same rAF rate. `determinism.mjs` uses the same device for its R2 rung.
+ *
+ * WHY THIS EXISTS, and it is the most useful thing this tool found by accident. The first version
+ * of A1 took its null control as "the same script twice in the same page". It went RED — and the
+ * hashes showed why: run 1 and run 2 in one realm differ, but run 1 at 49.9 rAF Hz and run 1 at
+ * 2.22 rAF Hz are BIT-IDENTICAL, and so are the two run 2s. So the tree is rate-deterministic and
+ * `H.loadState()` is not a full reset; a scenario replayed a second time in a warm realm starts
+ * from somewhere else. Those are two completely different properties and the first null control
+ * could not tell them apart, which made it the wrong instrument for the question S39 asks. The
+ * cross-rate arms are each a fresh boot, so the null must be a fresh realm too — a control whose
+ * shape differs from the experiment is not a control.
+ */
+async function freshRealm(page) {
+  await page.reload({ waitUntil: 'load', timeout: 240000 });
+  await page.waitForFunction(() => window.__HARNESS && window.__HARNESS.version, null, { timeout: 240000 });
+  await page.evaluate(() => window.__HARNESS.ready());
+  await page.evaluate(() => window.__HARNESS.setRenderRate(0));
+  await page.waitForTimeout(2500);
+}
+
 async function replayOnce(page, script) {
   const start = await page.evaluate(async (o) => {
     const H = window.__HARNESS;
@@ -384,17 +405,20 @@ async function armA1(browser, server, capturedStream) {
   const hi = await openPage(browser, server, HI_MS);
   A.rate_above = await measureRate(hi.page);
   say(`  above-floor page: rAF ${A.rate_above.raf_hz} Hz, ${A.rate_above.sim_steps_per_s} fixed steps/s (${(A.rate_above.sim_time_ratio * 100).toFixed(1)}% of real time), ${A.rate_above.catchup_clamps} clamps, ${A.rate_above.dropped_ms_per_s} ms/s dropped`);
-  A.runs.hi_1 = await replayOnce(hi.page, script);
-  A.runs.hi_2 = await replayOnce(hi.page, script);
-  A.runs.hi_shift1 = await replayOnce(hi.page, shifted);
+  A.runs.hi_1 = await replayOnce(hi.page, script);          // fresh realm (the boot)
+  A.runs.hi_warm = await replayOnce(hi.page, script);       // SAME realm, second time
   if (capturedStream) A.runs.hi_cap = await replayOnce(hi.page, capturedStream);
+  await freshRealm(hi.page);
+  A.runs.hi_fresh2 = await replayOnce(hi.page, script);     // fresh realm again — THE NULL
+  await freshRealm(hi.page);
+  A.runs.hi_shift1 = await replayOnce(hi.page, shifted);    // fresh realm — THE SELF-TEST
   await hi.ctx.close();
 
   const lo = await openPage(browser, server, LO_MS);
   A.rate_below = await measureRate(lo.page, 4500);
   say(`  below-floor page: rAF ${A.rate_below.raf_hz} Hz, ${A.rate_below.sim_steps_per_s} fixed steps/s (${(A.rate_below.sim_time_ratio * 100).toFixed(1)}% of real time), ${A.rate_below.catchup_clamps} clamps, ${A.rate_below.dropped_ms_per_s} ms/s dropped`);
-  A.runs.lo_1 = await replayOnce(lo.page, script);
-  A.runs.lo_2 = await replayOnce(lo.page, script);
+  A.runs.lo_1 = await replayOnce(lo.page, script);          // fresh realm (the boot)
+  A.runs.lo_warm = await replayOnce(lo.page, script);       // SAME realm, second time
   if (capturedStream) A.runs.lo_cap = await replayOnce(lo.page, capturedStream);
   await lo.ctx.close();
 
@@ -412,28 +436,36 @@ async function armA1(browser, server, capturedStream) {
   A.checks.integer_only = control('A1/recorded-stream-carries-no-millisecond',
     A.canonical_stream_integer_only && (capturedStream ? A.captured_stream_integer_only : true),
     'every event in the replayed stream is a frame index and an action name. S39 §1 requires the record to carry the CONVERTED INTEGER and not the stamp; a stamp in here would kill the ruling on inspection');
-  A.checks.null_hi = control('A1/null-control-above',
-    A.runs.hi_1.hash === A.runs.hi_2.hash,
-    'same script, same rate, twice — if this fails the cross-rate comparison is measuring noise');
-  A.checks.null_lo = control('A1/null-control-below',
-    A.runs.lo_1.hash === A.runs.lo_2.hash,
-    'same script, same rate, twice, below the floor');
+  A.checks.null_hi = control('A1/null-control — same script, same rate, FRESH REALM',
+    A.runs.hi_1.hash === A.runs.hi_fresh2.hash,
+    'a reload of the page and the same script again at the same rate. This has the same shape as the cross-rate arms — each of those is a fresh boot too — so if it fails the cross-rate comparison is measuring realm state rather than the clock');
   A.checks.self_test = control('A1/SELF-TEST-must-go-red',
     A.runs.hi_1.hash !== A.runs.hi_shift1.hash,
-    'the SAME script shifted by ONE FRAME must produce a different hash. If it does not, this arm cannot fail and every other line in it is void', true);
-  A.checks.cross_rate = control('A1/cross-rate, canonical stream (S39 prediction 3)',
+    'the SAME script shifted by ONE FRAME, in a fresh realm, must produce a different hash. If it does not, this arm cannot fail and every other line in it is void', true);
+  A.checks.cross_rate = control('A1/cross-rate, canonical stream, cold realm (S39 prediction 3)',
     A.runs.hi_1.hash === A.runs.lo_1.hash,
     'an integer-only recorded stream replayed above and below the floor must be bit-identical');
+  A.checks.cross_rate_warm = control('A1/cross-rate, canonical stream, WARM realm (a second, independent crossing)',
+    A.runs.hi_warm.hash === A.runs.lo_warm.hash,
+    'the same comparison again from a completely different world state — the one a second `loadState()` in a used realm produces. Two crossings at two states is a stronger reading than one, and it costs one extra run per side');
   if (capturedStream) {
     A.checks.cross_rate_captured = control('A1/cross-rate, the stream A2 actually captured',
       A.runs.hi_cap.hash === A.runs.lo_cap.hash,
       'the literal reading of "record one input trace, replay it at two rates": the promoted actions a real hand produced, replayed above and below the floor');
   }
 
+  // NOT A PASS/FAIL — a finding, reported whichever way it falls. `loadState()` in a warm realm
+  // does not return the world to where a fresh boot puts it. That is rate-INDEPENDENT (the warm
+  // runs match each other across the floor exactly), so it is not S39's business and it is not
+  // this tool's to fix; it belongs to RI-MTH02 and to whoever owns `loadState`.
+  A.warm_realm_differs_from_cold = A.runs.hi_1.hash !== A.runs.hi_warm.hash;
+  A.warm_vs_cold_divergence = A.warm_realm_differs_from_cold ? firstDivergence(A.runs.hi_1, A.runs.hi_warm) : null;
+  say(`  note  loadState() in a warm realm ${A.warm_realm_differs_from_cold ? 'does NOT' : 'does'} reproduce the cold-boot run — and the warm runs match each other ACROSS the floor, so this is a reset defect and not a clock one. Reported, not scored.`);
+
   A.self_test_divergence = firstDivergence(A.runs.hi_1, A.runs.hi_shift1);
   if (!A.checks.cross_rate) A.cross_rate_divergence = firstDivergence(A.runs.hi_1, A.runs.lo_1);
-  if (!A.checks.null_hi) A.null_hi_divergence = firstDivergence(A.runs.hi_1, A.runs.hi_2);
-  if (!A.checks.null_lo) A.null_lo_divergence = firstDivergence(A.runs.lo_1, A.runs.lo_2);
+  if (!A.checks.cross_rate_warm) A.cross_rate_warm_divergence = firstDivergence(A.runs.hi_warm, A.runs.lo_warm);
+  if (!A.checks.null_hi) A.null_divergence = firstDivergence(A.runs.hi_1, A.runs.hi_fresh2);
   if (capturedStream && !A.checks.cross_rate_captured) A.captured_divergence = firstDivergence(A.runs.hi_cap, A.runs.lo_cap);
   for (const k of Object.keys(A.runs)) delete A.runs[k].records;
   return A;
@@ -1020,14 +1052,15 @@ if (a1) {
     rec.verdict = 'VOID — THE INSTRUMENT IS INERT. A one-frame shift in the input stream did NOT change the replay hash, so this arm cannot fail and no reading may be taken from it.';
   } else if (!a1.straddles) {
     rec.verdict = `VOID — the two arms did not straddle the ${FLOOR_HZ.toFixed(2)} Hz floor (above ${a1.rate_above.raf_hz} Hz, below ${a1.rate_below.raf_hz} Hz).`;
-  } else if (!a1.checks.null_hi || !a1.checks.null_lo) {
-    rec.verdict = 'UNTESTABLE, NOT FALSE — the same script at the SAME rate does not replay to the same hash, so the tree is not run-to-run deterministic here and S39 prediction 3 cannot be evaluated. That is an RI-MTH02 defect and it sits upstream of this ruling.';
-  } else if (a1.checks.cross_rate && a1.checks.cross_rate_captured !== false) {
+  } else if (!a1.checks.null_hi) {
+    rec.verdict = 'UNTESTABLE, NOT FALSE — the same script in a FRESH REALM at the SAME rate does not replay to the same hash, so the tree is not run-to-run deterministic here and S39 prediction 3 cannot be evaluated either way. That is an RI-MTH02 defect and it sits upstream of this ruling.';
+  } else if (a1.checks.cross_rate && a1.checks.cross_rate_warm && a1.checks.cross_rate_captured !== false) {
     rec.verdict = `S39 SURVIVES ITS OWN FALSIFIER on the prediction that carries its defeat condition. The recorded stream S39 prescribes — frame-indexed integers, no stamp — replays BIT-IDENTICALLY above (${a1.rate_above.raf_hz} rAF Hz, ${a1.rate_above.sim_steps_per_s} steps/s) and below (${a1.rate_below.raf_hz} rAF Hz, ${a1.rate_below.sim_steps_per_s} steps/s) the ${FLOOR_HZ.toFixed(2)} Hz floor: ${a1.runs.hi_1.hash}. Honouring a stamped press duration does not force a wall-clock quantity into the recorded stream, so determinism does not outrank the hand and the stated defeat condition is NOT met.`;
   } else {
     rec.verdict = 'S39 FALLS. The recorded stream S39 itself prescribes — frame-indexed integers, no stamp — does NOT replay to the same hash above and below the floor, while the same script at the same rate does. Determinism (RI-MTH02, HARNESS.md §8 D1-D3) outranks the hand: keep pure frame counting and treat an unreachable hold gate on a slow device wholly as an RI-PLT01 failure.';
   }
-  lines.push(`A1  canonical  above ${a1.runs.hi_1.hash.slice(0, 20)}   below ${a1.runs.lo_1.hash.slice(0, 20)}   equal=${a1.checks.cross_rate}`);
+  lines.push(`A1  cold realm above ${a1.runs.hi_1.hash.slice(0, 20)}   below ${a1.runs.lo_1.hash.slice(0, 20)}   equal=${a1.checks.cross_rate}`);
+  lines.push(`A1  warm realm above ${a1.runs.hi_warm.hash.slice(0, 20)}   below ${a1.runs.lo_warm.hash.slice(0, 20)}   equal=${a1.checks.cross_rate_warm}`);
   if (a1.runs.hi_cap) lines.push(`A1  captured   above ${a1.runs.hi_cap.hash.slice(0, 20)}   below ${a1.runs.lo_cap.hash.slice(0, 20)}   equal=${a1.checks.cross_rate_captured}`);
 }
 if (rec.arms.a2) {

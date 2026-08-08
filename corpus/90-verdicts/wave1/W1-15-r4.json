@@ -87,7 +87,7 @@
     {
      "id": "M-third-site",
      "result": "fail",
-     "value": "writ-house 47/108 cells drawn lit and simulated dark; barge-hold brightest sources 3.80 m apart",
+     "value": "writ-house 76 of 154 floor cells disagree (71 of them drawn lit and simulated dark) on the same wall-to-wall grid as the 16,996; barge-hold 13 of 136, brightest sources 3.80 m apart",
      "threshold": "one policy, all cells"
     },
     {
@@ -331,7 +331,7 @@
    "model": "render/places.js's private point lights for 5 named cells",
    "consumer": "NOTHING in the simulation \u2014 the stealth model lights writ-house and barge-hold from world/interior-lighting.js instead",
    "coupling": 0,
-   "evidence": "writ-house 2 drawn point lights + 1 DirectionalLight vs 1 simulated synthesized hearth 5.22 m away; 47 of 108 floor cells drawn lit and simulated dark"
+   "evidence": "writ-house 2 drawn point lights + 1 DirectionalLight vs 1 simulated synthesized hearth 5.22 m away; 71 of 154 floor cells drawn lit and simulated dark"
   }
  ],
  "score": {
@@ -344,7 +344,7 @@
  "status": "FAIL",
  "status_reasons": [
   "min-over-axes is 2.0 against a wave-1 gate of 7.0, carried by RI-CRM02 (faction crime and writs), untouched for three rounds \u2014 crime.writs is initialised, serialised and deserialised and pushed to nowhere in game/src.",
-  "The round's own headline claim, that only render/interior.js and sim/stealth/system.js decide what a room is lit by, is false: render/places.js draws writ-house and barge-hold \u2014 the game's opening two rooms \u2014 from its own private lamps, and writ-house disagrees with its own simulation over 47 of 108 floor cells.",
+  "The round's own headline claim, that only render/interior.js and sim/stealth/system.js decide what a room is lit by, is false: render/places.js draws writ-house and barge-hold \u2014 the game's opening two rooms \u2014 from its own private lamps, and writ-house disagrees with its own simulation over 71 of 154 floor cells.",
   "The light term is clamped at L = 1.0000 over 12,210 of 16,996 indoor floor cells at noon clear, so over roughly seven-tenths of the province's indoor floor it decides nothing. Standing rather than new: round 3 measured 11,800."
  ],
  "biggest_gap": {
@@ -374,7 +374,7 @@
    "gap_id": "GAP-W1-a-third-file-decides-what-the-first-two-rooms-are-lit-by",
    "subsystem_path": "stealth.detection.model",
    "severity": "blocking",
-   "what": "engine.js#cellFor() at 5394-5398 routes barge-hold, writ-house, helstrom-market, stormhold-street and rootlands-well to render/places.js, which builds point lights from its own private lamp() helper with hardcoded Three.js intensities and never imports world/interior-lighting.js. barge-hold and writ-house ARE records in game/data/world/interiors/, so syncInteriorLights() lights them from the shared policy while the player looks at a room that policy has never seen. writ-house: 2 drawn point lights plus a DirectionalLight the file calls 'the only daylight in the room', against 1 simulated synthesized fail-open hearth 5.22 m away, and 47 of 108 floor cells (43.5%) drawn lit and simulated dark. barge-hold: 2 drawn at hardcoded positions against the record's own 3, brightest sources 3.80 m apart, and the drawn hold is 7 x 12 m against the record's 7 x 16 m. These are the first two rooms of the game (engine.js:3420). writ-house is also on this round's own list of eleven rooms the shared fail-open is rescuing \u2014 and it is the one of the eleven that does not get it.",
+   "what": "engine.js#cellFor() at 5394-5398 routes barge-hold, writ-house, helstrom-market, stormhold-street and rootlands-well to render/places.js, which builds point lights from its own private lamp() helper with hardcoded Three.js intensities and never imports world/interior-lighting.js. barge-hold and writ-house ARE records in game/data/world/interiors/, so syncInteriorLights() lights them from the shared policy while the player looks at a room that policy has never seen. writ-house: 2 drawn point lights plus a DirectionalLight the file calls 'the only daylight in the room', against 1 simulated synthesized fail-open hearth 5.22 m away, and 76 of 154 floor cells disagreeing, 71 of them drawn lit and simulated dark (47 of 108 on a 1 m-inset grid). barge-hold: 2 drawn at hardcoded positions against the record's own 3, brightest sources 3.80 m apart, and the drawn hold is 7 x 12 m against the record's 7 x 16 m. These are the first two rooms of the game (engine.js:3420). writ-house is also on this round's own list of eleven rooms the shared fail-open is rescuing \u2014 and it is the one of the eleven that does not get it.",
    "remedy": "Either route those two ids through render/interior.js, or have render/places.js build its lamps from litLights(rec) and its window from windowPlan(rec). Then add all five cellFor() ids to tools/harness/w1-15-r4-lights.mjs's denominator so the next round cannot miss them."
   },
   {

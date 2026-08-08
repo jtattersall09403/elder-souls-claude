@@ -513,7 +513,10 @@ export function renderCost(load) {
     tip: `${when(p.t)}\n${key === 'agents' ? `${n1(p.agents)} agents` : usd(p[key]) + (key === 'ch' ? ' per hour' : ' per agent-hour')}` +
       `${p.commit ? `\ncommit ${p.commit.slice(0, 7)}` : ''}${p.windowHours !== null ? `\nmeasured over ${n1(p.windowHours)} h` : ''}${p.note ? `\n${p.note}` : ''}`,
   }));
-  const charts = ledger.series.length ? `
+  const provisional = cov && !cov.complete
+    ? '<div class="cost-problems">These charts are drawn from a <b>partial read</b> of the transcript. The instrument withholds the headline totals in this state; the series below are whatever it did publish, and they under-report by an unknown amount.</div>'
+    : '';
+  const charts = ledger.series.length ? provisional + `
 ${linePanel({
     title: 'C/H — model spend per hour of fleet runtime', unit: '$/h', pointUnit: '/h', colour: C.ch, points: mk('ch'), fmt: usdShort,
     refs: [
@@ -735,6 +738,21 @@ async function runSelfTest() {
     }),
   });
   const E = add('E stale — 3 h old', { [LEDGER_PATH]: fixture }, Date.parse('2026-08-08T14:02:00Z'));
+  // G: a PARTIAL read. The source is hundreds of transcript files and reading only some of them
+  // under-reports by roughly ten times while looking entirely plausible. The contract requires the
+  // instrument to null every headline field when coverage.complete is false; this arm proves the
+  // page then draws dashes and says PARTIAL READ, instead of a confident low number.
+  const G = add('G coverage incomplete', {
+    [LEDGER_PATH]: JSON.stringify({
+      ...JSON.parse(fixture),
+      coverage: { files_total: 403, files_read: 38, bytes_read: 31000000, complete: false },
+      headline: {
+        spend_to_date_usd: null, burn_usd_per_hour: null, burn_window_hours: null,
+        ch_usd_per_hour: null, ch_pct_of_baseline: null,
+        usd_per_agent_hour: null, usd_per_agent_hour_pct_of_baseline: null,
+      },
+    }),
+  });
   const F = add('F refresh failed', {
     [LEDGER_PATH]: fixture,
     [ERROR_PATH]: JSON.stringify({ at: '2026-08-08T11:18:00Z', message: 'tools/cost.mjs exited 1: transcript unreadable' }),
@@ -746,7 +764,13 @@ async function runSelfTest() {
       state: 'fresh',
       has: ['$1,234.56', 'Spend to date', '$42.10', '52.3%', '13.1', 'CH-02', 'reversed', 'claude-opus-5',
         'cache write', 'cache read', 'target $20.13', 'baseline $80.50', 'floor 12', '19 measurements',
-        'separate critic 41', 'executed on a copy', 'not yet executed'],
+        'separate critic 41', 'executed on a copy', 'not yet executed',
+        // The blocks COST-INSTRUMENT added to the contract on 2026-08-08.
+        'cache write 5m', 'cache write 1h', '11 alive on the second reading', 'alive and idle',
+        '1/5', 'not honestly measurable yet', 'grep counts the word, not the act',
+        'What drives it', 'Requests per agent-hour', 'active_clock_hours', 'Idle hours are excluded',
+        'sha1:9f2c1ab4de77', 'cache write 5m $6.25', '8 of 9 known findings recovered',
+        'Read <b>403</b> of 403 transcript files'],
       hasNot: ['STALE', 'FAILED', 'has not landed yet', 'Spend in this window'],
       stripHas: ['Spend to date', '$1,234.56', 'burn $42.10/h'], stripHasNot: ['STALE', 'REFRESH FAILED'],
     },
@@ -764,6 +788,14 @@ async function runSelfTest() {
     },
     E: { state: 'stale', has: ['STALE', '2026-08-08 11:02Z', '3.0 h ago', '$1,234.56'], hasNot: ['FAILED'],
       stripHas: ['STALE', '3.0 h ago'], stripHasNot: ['REFRESH FAILED'] },
+    G: {
+      state: 'fresh',
+      has: ['PARTIAL READ', '38 of 403 transcript files', 'reads as good news',
+        'cost-hero-n">&mdash;<', 'under-report by an unknown amount'],
+      // The whole point of the arm: no headline money at all when the read was partial.
+      hasNot: ['$1,234.56', 'cost-hero-n">' + '$'],
+      stripHasNot: ['$1,234.56'],
+    },
     F: {
       state: 'failed',
       has: ['FAILED', 'transcript unreadable', 'last good reading', '2026-08-08 11:02Z', 'They are not current'],
@@ -793,7 +825,7 @@ async function runSelfTest() {
   // partially-wrong arms, the assertions are vacuous and everything above is theatre.
   const crossFails = [
     { of: 'A', against: B }, { of: 'A', against: C_ }, { of: 'A', against: D },
-    { of: 'B', against: A }, { of: 'F', against: A },
+    { of: 'B', against: A }, { of: 'F', against: A }, { of: 'A', against: G }, { of: 'G', against: A },
   ];
   for (const x of crossFails) {
     const fails = check(x.against, expect[x.of]);

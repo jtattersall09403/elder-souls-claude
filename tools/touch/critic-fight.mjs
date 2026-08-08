@@ -237,11 +237,22 @@ async function sampleWhile(H, ms, everyMs = 16) {
   return s;
 }
 
+// A PICTURE MUST NOT BE ABLE TO KILL A MEASUREMENT (W1-TOUCH r2).
+// `--leg insets` died here on its first ever run: the measurement was taken, the check was one
+// line away, and `page.screenshot()` timed out after 30 s on SwiftShader at load 5+ per core and
+// took the whole leg with it — so RULING R2's declared consequence stayed unmeasured for a second
+// round because of an illustration. The shot is evidence FOR a verdict, not the verdict. It gets
+// a longer budget and its failure is recorded as data instead of thrown.
 const shot = async (H, name) => {
   const p = path.join(SHOTS, name);
-  await H.page.screenshot({ path: p });
-  out.shots.push(path.relative(REPO_ROOT, p));
-  say(`  [shot] ${path.relative(REPO_ROOT, p)}`);
+  try {
+    await H.page.screenshot({ path: p, timeout: 120000 });
+    out.shots.push(path.relative(REPO_ROOT, p));
+    say(`  [shot] ${path.relative(REPO_ROOT, p)}`);
+  } catch (e) {
+    (out.shots_failed || (out.shots_failed = [])).push({ name, why: String(e && e.message || e).split('\n')[0] });
+    say(`  [shot] SKIPPED ${name} — ${String(e && e.message || e).split('\n')[0]} (the measurement is unaffected; RULES 26)`);
+  }
 };
 
 /**

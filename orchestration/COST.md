@@ -149,6 +149,24 @@ merely believed to be. That is the delete-the-fix rule (rule 6) applied to cost.
 Written down so successors start from the evidence rather than re-deriving it. **Each is a
 hypothesis to be measured; none is a decision.**
 
+### 0. Cost is roughly QUADRATIC in tool calls — the largest structural lever, and it was missing
+
+Found by the `COST-EXPERIMENTS` plan, absent from this document's original ranking **and** from the
+external research: **$4.55 → $51.83 per agent across request-count bins**, because every tool call
+re-sends a context that the previous calls grew. One agent's context went **23,757 → 578,648 tokens
+over 314 requests**. Since cost is context volume × request count and the two are *coupled*, a long
+agent is not linearly more expensive than a short one — it is quadratically so.
+
+**This reframes the whole programme.** The 2.8× volume reduction that §2 says is required cannot come
+from writing less (output is ~1% of spend) or from cache tuning (already 98.3% hit). It has to come
+from **shorter agent lifetimes and fewer, better-chosen tool calls** — which points at splitting long
+pieces into several short agents rather than one marathon, at briefs that make the first three reads
+the right ones, and at instruments that answer in one call rather than ten.
+
+**It is also the lever most likely to collide with quality**, and therefore the one where G2 and G3
+matter most: an agent cut short is an agent that stops before the delete-the-fix. Nothing here
+authorises shortening an agent's *work* — only its *waste*. Measure, do not assume.
+
 1. **Model mix.** 3,230 Opus vs 29 Sonnet. Route by task shape, not by habit: measurement design,
    seam rulings, graded prose and every critic stay Opus; a build with a landed plan, an existing
    instrument and a machine-checkable acceptance is a Sonnet job. **Haiku is unproven here and no
@@ -225,6 +243,23 @@ lands. Adopting now costs one extra tool round per burst and destroys no measure
 **Reversal**: stop staggering — one line of orchestrator behaviour, no code. **Tripwire**: if the
 retrospective measurement shows no improvement in the cache-read fraction on shared prefixes, it is
 reverted and recorded as a failed hypothesis, with the number.
+
+> ### C1 IS REVERTED — the tripwire fired, and here is the number
+>
+> The `COST-EXPERIMENTS` plan measured it: **ceiling 0.32% of spend, against C1's own 2% bar.**
+> Tight versus staggered bursts give a warm fraction of **0.958 vs 0.965** against a 10pp bar, and
+> **378 of 403 agents already read cache on their first request** — there was almost no cold start to
+> remove. Staggering stops; bursts dispatch together again.
+>
+> **This is the first hypothesis this programme has killed, and it was the orchestrator's own.** It
+> was adopted on plausible external evidence and one turn's reasoning, and it did not survive
+> contact with the data. That is the discipline working, not a mistake to bury — the failure is
+> recorded here with its magnitude precisely so nobody re-adopts it next month on the same argument.
+>
+> **It is a revert, not a closed question.** The figure is from the plan agent's own prototype
+> parser, not the instrument, so experiment **E1** requires a builder to *reproduce it independently
+> rather than confirm it*, with a cold-start control that fails loudly if the builder reproduces the
+> prototype's bug instead of its finding. If E1 overturns this, staggering comes back.
 
 ## 5. What this programme may never do
 

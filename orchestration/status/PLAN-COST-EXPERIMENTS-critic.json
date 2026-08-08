@@ -1,0 +1,23 @@
+{
+  "task_id": "PLAN-COST-EXPERIMENTS-critic",
+  "role": "plan-critic",
+  "piece": "COST-EXPERIMENTS",
+  "state": "in_progress",
+  "started_at": "2026-08-08",
+  "measured_at_commit": "70d40ab",
+  "summary": "Plan critic for COST-EXPERIMENTS. Independently re-deriving the three load-bearing claims (C1 inert, cost quadratic in tool calls, the G1 concurrency disagreement with COST-INSTRUMENT) from the transcript tree, then critiquing E1-E5 against PLAN-LOOP.md's acceptance/null/reversal/tripwire/instrument bar and COST.md section 2's attribution constraint.",
+  "next_step": "Write BLOCKING/CARRIED critique into orchestration/plans/COST-EXPERIMENTS.md, state verdict, bank.",
+  "files_claimed": [
+    "orchestration/plans/COST-EXPERIMENTS.md",
+    "orchestration/status/PLAN-COST-EXPERIMENTS-critic.json"
+  ],
+  "files_touched": [
+    "orchestration/status/PLAN-COST-EXPERIMENTS-critic.json"
+  ],
+  "redundant_with": ["PLAN-COST-EXPERIMENTS"],
+  "blockers": [],
+  "key_findings": [],
+  "notes": [
+    "No browser. Nothing built. Read-only on the transcript tree; verification scripts in the scratchpad suffixed -PLAN-COST-EXPERIMENTS-critic."
+  ]
+}

@@ -178,6 +178,55 @@ export function findIdenticalArms(root) {
   return found;
 }
 
+// ─────────────────────────────────────────────────────────────────── a run of a real script
+//
+// The second act-residue, and in this corpus the more common one. The project's method builds a
+// TOOL per act — 38 files under tools/ match /consum/ alone — so "I ran the CONSUMPTION check" is
+// not only a sentence: it is a script that exists on disk, invoked with an exit code beside it.
+// A phrase cannot name a file that exists. (It can name someone ELSE'S file without running it,
+// which is why `--verify` exists and why this route is called strong, not proof.)
+
+/** Every string anywhere that invokes a repo script matching `pattern`, with any exit code beside it. */
+function findRunOfScript(v, pattern) {
+  const rows = [];
+  walk(v, (n, path, key, parent) => {
+    const s = typeof n === 'string' ? n : (typeof key === 'string' && /^node |\.mjs/.test(key) ? key : null);
+    if (!s) return;
+    const script = resolveCommand(s);
+    if (!script || !pattern.test(script)) return;
+    let exit = null;
+    if (parent && !Array.isArray(parent) && typeof parent.exit_code === 'number') exit = parent.exit_code;
+    else if (parent && !Array.isArray(parent) && typeof parent.exit === 'number') exit = parent.exit;
+    else {
+      const m = s.match(/exit(?:\s*code)?\s*[:=]?\s*(\d+)/i);
+      if (m) exit = Number(m[1]);
+    }
+    rows.push({ script, at: path, text: s.slice(0, 180), exit_code: exit });
+  });
+  return rows;
+}
+
+/**
+ * A numeric contrast recorded in prose, but ONLY inside a field whose own key already declares it
+ * to be about a teardown, a control or a perturbation. Deliberately narrow: it needs an explicit
+ * contrast marker AND two different numbers. "2 of 2 arms" is not a contrast; "0 -> 8" is.
+ */
+const ARM_FIELD = /teardown|control|arm|delete.?the.?fix|deletefix|ablat|revert|perturb|consum|break|null/i;
+const CONTRAST = /(-?\d[\d,.]*)\s*(?:→|->|=>|–>|\bvs\.?\b|\bversus\b|\bagainst\b|\bbecomes\b|\bfell to\b|\brose to\b)\s*(-?\d[\d,.]*)/i;
+
+function findProseArms(root) {
+  const found = [];
+  walk(root, (n, path, key) => {
+    if (typeof n !== 'string') return;
+    if (!ARM_FIELD.test(`${key} ${path}`)) return;
+    const m = n.match(CONTRAST);
+    if (!m) return;
+    if (m[1].replace(/[,.]/g, '') === m[2].replace(/[,.]/g, '')) return;   // identical = inert control
+    found.push({ at: path, contrast: `${m[1]} → ${m[2]}`, text: n.slice(0, 160) });
+  });
+  return found;
+}
+
 // ─────────────────────────────────────────────────────────────────── teardown mechanism
 
 const TEARDOWN_FLAG = /--(self[-_]?break|break|teardown|ablate|ablation|null|no[-_][a-z0-9-]+|revert|delete[-_]?fix|disable)\b/i;
@@ -270,7 +319,15 @@ function verifySelfTest(script, cmd, timeoutMs = 60000) {
 
 const CONSUMER_PATH = /\b(game\/src\/[A-Za-z0-9_./-]+\.(?:js|mjs))\b/;
 
+const CONSUMPTION_SCRIPT = /consum|couple/i;
+
 function findConsumption(v, fileIndex) {
+  // ROUTE A — the aggregation RAN. A consumption harness that exists on disk, with an exit code.
+  // This is the shape the project actually produced: one tool per piece, named in the verdict.
+  const runs = findRunOfScript(v, CONSUMPTION_SCRIPT).filter((r) => r.exit_code === 0);
+  if (runs.length) return { tier: 'act', route: 'harness', evidence: [{ ran: runs[0].script, at: runs[0].at, exit_code: 0, note: runs[0].text }] };
+
+  // ROUTE B — the perturbation is written down with both readings.
   // Any object anywhere that is *about* consumption. RI-MTH07 has been spelled ~30 ways.
   const blocks = [];
   walk(v, (n, path, key) => {
@@ -296,10 +353,10 @@ function findConsumption(v, fileIndex) {
     const perturbed = /perturb|ablat|pinned to|forced to|suspend|nulled|deleted|set to/i.test(text)
       || Object.keys(b.node).some((k) => /perturb|ablat/i.test(k));
     // 3. two entity observations that differ
-    const arms = findDisagreeingArms(b.node);
+    const arms = [...findDisagreeingArms(b.node), ...findProseArms(b.node)];
     if (consumer && perturbed && arms.length) {
       bestTier = 'act';
-      evidence.push({ at: b.at, consumer: consumer.path, arms: arms[0] });
+      evidence.push({ at: b.at, route: 'arms', consumer: consumer.path, arms: arms[0] });
     } else if (bestTier !== 'act' && (perturbed || consumer)) {
       bestTier = 'claim';
       evidence.push({ at: b.at, consumer: consumer ? consumer.path : null, perturbation_named: perturbed, arms: null });
@@ -435,10 +492,12 @@ export function scoreVerdict({ json, jsonPath, prose, fileIndex }) {
   // 1 — separate critic
   say('separate_critic', ...(() => { const r = judgeSeparateCritic(v || {}, out.path || ''); return [r.tier, r.evidence]; })());
 
-  // 2 — delete the fix: a named teardown AND two arms that differ.
+  // 2 — delete the fix: a named teardown AND two readings that differ.
+  // The teardown must be a MECHANISM (a flag on a script that exists, or a git reversal), and the
+  // two readings must actually differ. Either half alone is a claim; a phrase is neither half.
   {
-    const teardown = findTeardownMechanism(v || {});
-    const arms = findDisagreeingArms(v || {});
+    const teardown = findTeardownMechanism(v || {}).filter((t) => t.executable !== false);
+    const arms = [...findDisagreeingArms(v || {}), ...findProseArms(v || {})];
     const inert = findIdenticalArms(v || {});
     if (teardown.length && arms.length) say('delete_the_fix', 'act', [{ teardown: teardown[0], arms: arms[0], arm_pairs: arms.length }]);
     else if (arms.length) say('delete_the_fix', 'claim', [{ arms: arms[0], note: 'two arms differ but no teardown mechanism is named — the reversal is believed, not executed' }]);
@@ -718,16 +777,20 @@ const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
 const arg = (f, d) => { const i = argv.indexOf(f); return i > -1 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 
-if (has('--self-break')) selfBreak();
+// Importable as a library — the CLI must not run on import, or every consumer of `sweep()` pays
+// for a full corpus scan and a printed table it did not ask for.
+const IS_MAIN = process.argv[1] && (process.argv[1].endsWith('rigour.mjs'));
+if (!IS_MAIN) { /* library use */ }
+else if (has('--self-break')) selfBreak();
 
-if (has('--break-recogniser')) {
+else if (has('--break-recogniser')) {
   // Rule 6, the inert-control half: prove the control arm goes red by breaking the recogniser.
   // With arm detection disabled, arms B* still pass (they never had arms) but arms A1/A2 must FAIL.
   POSITIVE_ARM.test = () => false;
+  selfTest();
 }
-
-if (has('--self-test')) selfTest();
-else {
+else if (has('--self-test')) selfTest();
+else if (IS_MAIN) {
   const verify = has('--verify');
   const rows = sweep({ verify });
   const t = tally(rows);

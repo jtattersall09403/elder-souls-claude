@@ -1,6 +1,6 @@
 # Plan — `COST-INSTRUMENT`: the measurement, the baseline, and the experiment protocol
 
-**Piece:** `COST-INSTRUMENT` · **Plan agent:** `COST-INSTRUMENT-plan` · **Status:** ready for plan critic
+**Piece:** `COST-INSTRUMENT` · **Plan agent:** `COST-INSTRUMENT-plan` · **Status:** **BLOCKED pending items 1–6** (plan critic `COST-INSTRUMENT-plancritic`, exchange 1 of 2 — see §11)
 **Reads:** `orchestration/COST.md` (binding), `CLAUDE.md`, `orchestration/PLAN-LOOP.md`, `orchestration/RULES.md`
 **Deliverable of the build:** `tools/cost.mjs` + `tools/fixtures/cost-null/` + `docs/data/cost-ledger.json`
 
