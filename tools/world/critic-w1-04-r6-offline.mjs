@@ -151,7 +151,7 @@ function slabGeometry(plan) {
   // body exactly on the footprint edge and resolve. Predicted rest clearance from the edge, along
   // the wall's outward normal, is `slab_half_thickness * k + r`.
   const preds = [];
-  for (const planId of ['helstrom', 'blackrose', 'archon']) {
+  for (const planId of ['helstrom', 'blackrose', 'archon', 'lilmoth', 'soulrest', 'thorn', 'gideon', 'stormhold']) {
     const plan = SHIPPED.planById.get(planId);
     if (!plan) continue;
     const base = EX.settlementSolids(plan, plan.pos[0], plan.pos[2], 1e9, null);
@@ -159,27 +159,38 @@ function slabGeometry(plan) {
       const shapes = k === 1 ? base : scaleSlabs(base, k);
       for (const r of [0.16, 0.32, 0.48, 0.64]) {
         const cell = new COL.CollisionCell('pred', shapes, {});
-        // Pick, for each building, an ISOLATED wall midpoint: one whose only nearby slab is its
-        // own, so the prediction is about one slab and not about a pile-up.
         for (const b of plan.buildings) {
           const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
           const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
           const yaw = (b.yaw_deg || 0) * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
-          for (const [lx, lz, nlx, nlz] of [[0, -d / 2, 0, -1], [0, d / 2, 0, 1], [-w / 2, 0, -1, 0], [w / 2, 0, 1, 0]]) {
+          const entry = (() => {
+            const n = EX.entryOutwardWorld(b);
+            const cc = Math.cos(-yaw), ss = Math.sin(-yaw);
+            const lx = n[0] * cc + n[1] * ss, lz = -n[0] * ss + n[1] * cc;
+            return Math.abs(lx) > Math.abs(lz) ? (lx > 0 ? '+x' : '-x') : (lz > 0 ? '+z' : '-z');
+          })();
+          // Nothing but this building's own slabs, so the prediction is about ONE slab.
+          const others = shapes.filter((sh) => !sh.id || !sh.id.startsWith(`${b.id}:`));
+          for (const [lx, lz, nlx, nlz, tag] of [[0, -d / 2, 0, -1, '-z'], [0, d / 2, 0, 1, '+z'], [-w / 2, 0, -1, 0, '-x'], [w / 2, 0, 1, 0, '+x']]) {
+            // The entry wall's midpoint is the DOORWAY — a hole, not a slab. Excluded: my first
+            // run judged those and read "observed 0" for every one of them, which was the probe
+            // measuring a body standing in an open door and calling the law broken.
+            if (tag === entry) continue;
             const wx = b.x + lx * c + lz * s, wz = b.z - lx * s + lz * c;
             const nx = nlx * c + nlz * s, nz = -nlx * s + nlz * c;
-            const p = restPoint(cell, wx, wz, r, 12);
+            const p = restPoint(cell, wx, wz, r, 24);
             const alongNormal = (p[0] - wx) * nx + (p[2] - wz) * nz;
             const lateral = Math.hypot(p[0] - wx - alongNormal * nx, p[2] - wz - alongNormal * nz);
-            // Only judge the clean cases: pushed straight out, nothing else within 2 m of the
-            // rest point but this building's own slabs.
-            const near = shapes.filter((sh) => sh.id && !sh.id.startsWith(`${b.id}:`) && Math.hypot(sh.c[0] - p[0], sh.c[2] - p[2]) < 6).length;
+            // Isolation measured on the GEOMETRY, not on shape centres: no other building's slab
+            // within 3 m of the start or the rest point.
+            const iso = Math.min(EX.horizontalClearance(others, wx, wz), EX.horizontalClearance(others, p[0], p[2]));
             preds.push({
-              town: planId, building: b.id, k, r,
+              town: planId, building: b.id, wall: tag, k, r,
               predicted_m: +(EX.SHELL_WALL_T / 2 * k + r).toFixed(4),
               observed_m: +alongNormal.toFixed(4),
               lateral_m: +lateral.toFixed(4),
-              clean: near === 0 && lateral < 0.02,
+              isolation_m: +iso.toFixed(3),
+              clean: iso > 3,
             });
           }
         }
@@ -189,7 +200,7 @@ function slabGeometry(plan) {
   const clean = preds.filter((p) => p.clean);
   const wrong = clean.filter((p) => Math.abs(p.observed_m - p.predicted_m) > 0.01);
   A.prediction = {
-    what: 'a body placed exactly on the footprint edge, resolved against a real CollisionCell built from the shipped shapes',
+    what: 'a body placed exactly on the footprint edge of an ISOLATED wall, resolved against a real CollisionCell built from the shipped shapes',
     law: 'rest distance outside the footprint edge = SHELL_WALL_T/2 * k + r',
     varied: { body_radius_r: [0.16, 0.32, 0.48, 0.64], slab_thickness_scale_k: [1, 0.5, 2] },
     cases: preds.length, clean_cases: clean.length,
@@ -197,12 +208,45 @@ function slabGeometry(plan) {
     worst_error_m: clean.length ? +Math.max(...clean.map((p) => Math.abs(p.observed_m - p.predicted_m))).toFixed(5) : null,
     by_cell: [0.16, 0.32, 0.48, 0.64].flatMap((r) => [1, 0.5, 2].map((k) => {
       const g = clean.filter((p) => p.r === r && p.k === k);
-      return { r, k, n: g.length, predicted_m: +(EX.SHELL_WALL_T / 2 * k + r).toFixed(4), observed_mean_m: g.length ? +(g.reduce((a, p) => a + p.observed_m, 0) / g.length).toFixed(4) : null };
+      return { r, k, n: g.length, predicted_m: +(EX.SHELL_WALL_T / 2 * k + r).toFixed(4), observed_mean_m: g.length ? +(g.reduce((a, p) => a + p.observed_m, 0) / g.length).toFixed(4) : null, worst_err_m: g.length ? +Math.max(...g.map((p) => Math.abs(p.observed_m - p.predicted_m))).toFixed(4) : null, mean_lateral_m: g.length ? +(g.reduce((a, p) => a + p.lateral_m, 0) / g.length).toFixed(4) : null };
     })),
     examples_wrong: wrong.slice(0, 8),
   };
   if (!clean.length) out.probe_failures.push('A: no clean prediction case at all — the probe measured nothing');
   if (wrong.length) out.findings.push(`A: ${wrong.length} of ${clean.length} isolated-wall cases do NOT land where the arithmetic predicts`);
+
+  // ---- A1b: THE DIRECTION. The round says the solver "pushes down the steepest-ascent gradient,
+  // which between two close buildings points at the neighbour". But `shapeDistance()` returns 0
+  // EVERYWHERE inside a box, so a body inside a slab has NO gradient: `resolveSphere()` falls
+  // into its `gl < 1e-7` branch and nudges `p[0] += r * 0.5` — WORLD +X, whatever the wall is
+  // doing. One isolated slab, long in Z and thin in X, with the body at its centre, separates the
+  // two stories: steepest ascent leaves by the near (±X) face; the code leaves by whichever face
+  // the +X march reaches, and marches +X regardless.
+  {
+    const trials = [];
+    for (const [name, h] of [['thin in X, long in Z', [0.18, 3.7, 8]], ['thin in Z, long in X', [8, 3.7, 0.18]]]) {
+      for (const r of [0.32, 0.64]) {
+        const cell = new COL.CollisionCell('one', [{ k: 'box', c: [0, 3.7, 0], h, id: 'slab' }], {});
+        const p = [0, 0.9, 0];
+        cell.resolveSphere(p, r, 24);
+        trials.push({ slab: name, r, rest: [+p[0].toFixed(3), +p[2].toFixed(3)], left_by: Math.abs(p[0]) > Math.abs(p[2]) ? '+/-X face' : '+/-Z face', nearest_face_was: h[0] < h[2] ? '+/-X face' : '+/-Z face', travelled_m: +Math.hypot(p[0], p[2]).toFixed(3) });
+      }
+    }
+    A.direction = {
+      what: 'which way does resolveSphere() push a body that is INSIDE a slab?',
+      the_rounds_claim: 'down the steepest-ascent gradient',
+      the_code: "sim/collision.js shapeDistance() returns 0 everywhere inside a box, so the finite-difference gradient is 0 and resolveSphere() takes its `gl < 1e-7` branch: `p[0] += r * 0.5` — world +X, unconditionally",
+      trials,
+      gradient_is_zero_inside: (() => {
+        const cell = new COL.CollisionCell('one', [{ k: 'box', c: [0, 3.7, 0], h: [8, 3.7, 0.18], id: 'slab' }], {});
+        const h = 0.02;
+        return { d_at_centre: cell.distance(0, 0.9, 0), d_plus_h: cell.distance(h, 0.9, 0), d_minus_h: cell.distance(-h, 0.9, 0), gradient: cell.distance(h, 0.9, 0) - cell.distance(-h, 0.9, 0) };
+      })(),
+    };
+    const wrongWay = trials.filter((t) => t.left_by !== t.nearest_face_was);
+    A.direction.trials_that_left_by_the_FAR_face = wrongWay.length;
+    if (wrongWay.length) out.findings.push(`A: ${wrongWay.length} of ${trials.length} single-slab trials leave by the FAR face — the push inside a slab is world +X, not steepest ascent`);
+  }
 
   // ---- A2: does the arithmetic explain the ROUND-5 SLIDE it is offered as the cause of?
   // Reproduce round 5's doorsteps (`r6: false`), then resolve each against a real cell at three
@@ -273,7 +317,8 @@ function slabGeometry(plan) {
         const rx = sh.c[0] - b.x, rz = sh.c[2] - b.z;
         return { c: [rx * c - rz * s, rx * s + rz * c], h: [sh.h[0], sh.h[2]], id: sh.id };
       });
-      const key = (o) => `${o.c[0].toFixed(3)},${o.c[1].toFixed(3)},${o.h[0].toFixed(3)},${o.h[1].toFixed(3)}`;
+      const f3 = (v) => (Math.abs(v) < 5e-4 ? '0.000' : v.toFixed(3));
+      const key = (o) => `${f3(o.c[0])},${f3(o.c[1])},${f3(o.h[0])},${f3(o.h[1])}`;
       const dset = new Set(drawn.map(key));
       const sset = new Set(solidsLocal.map(key));
       const solidOnly = solidsLocal.filter((o) => !dset.has(key(o)));

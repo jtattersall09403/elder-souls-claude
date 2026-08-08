@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bea2684`: 720 tools, 153 reference
-items, 62 pieces in flight.
+so it cannot drift. Generated at `b89769a`: 720 tools, 153 reference
+items, 63 pieces in flight.
 
-Its purpose is to stop 62+ concurrent agents each paying separately to discover the
+Its purpose is to stop 63+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1044,6 +1044,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
 | `AUDIT-R1-LIST` | running | read NEXT-DISPATCH.md R1 list, enumerate the four remaining bullets | — |
 | `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `W1-GAMEPAD` | done | none — handing to a critic | `orchestration/status/W1-GAMEPAD.json` `tools/gamepad/pad-run.mjs` `tools/gamepad/deadzone-deletefix.mjs` `tools/journey/gamepad-shim.mjs` `game/src/engine.js` `orchestration/NEXT-DISPATCH.md` |
