@@ -129,7 +129,15 @@ try {
 
   await h.page.waitForFunction(() => window.__HARNESS && typeof window.__HARNESS.ready === 'function', { timeout: 180000 });
   await h.page.evaluate(() => window.__HARNESS.ready());
-  out.conditions.commit = String(process.env.ES_COMMIT || '');
+  // Rule 12: a measurement is a claim about a COMMIT. This read `process.env.ES_COMMIT`, which
+  // nothing in this project sets, so every artifact this tool has ever written carried
+  // `commit: ""` — the r3 verdict §0 caught it. The env var still wins (a CI runner that knows
+  // better than the working tree should be able to say so), and `git rev-parse` is the fallback.
+  out.conditions.commit = String(process.env.ES_COMMIT || (() => {
+    try { return execSync('git rev-parse --short HEAD', { cwd: REPO_ROOT }).toString().trim(); }
+    catch { return ''; }
+  })());
+  out.conditions.commit_source = process.env.ES_COMMIT ? 'ES_COMMIT' : 'git rev-parse --short HEAD';
 
   // ---- P1 — play mode, reached with no flag -----------------------------------------------
   const boot = await h.page.evaluate(() => ({

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9cc54da`: 712 tools, 153 reference
+so it cannot drift. Generated at `f242c57`: 712 tools, 153 reference
 items, 57 pieces in flight.
 
 Its purpose is to stop 57+ concurrent agents each paying separately to discover the
@@ -1033,10 +1033,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-CROSSING-r2` | in-progress | Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/posit | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` `tools/world/w1-crossing-r2-pursue-sim.mjs` `tools/world/w1-crossing-r2-parapet-trap.mjs` |
 | `W1-26-r4` | building | run tools/w1-26-r4/w1-26-r4-verify.mjs in a browser (gate GO), then blog line + shot + com | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `W1-14-r5` | done | commit; nothing outstanding | `docs/shots/2026-08-08-w1-14-r5-the-bolt-goes-where-the-body-is-going.png` `game/data/magic/cast-classes.json` `game/data/npcs/spellwrights.json` `game/src/combat/player.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `critic-w1-26-r3` | done | none — verdict written. A second critic should reproduce tools/harness/jrn09-exchange.mjs; | `orchestration/status/critic-w1-26-r3.json` `corpus/90-verdicts/wave1/W1-26-r3.md` `corpus/90-verdicts/wave1/W1-26-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-26-r3/` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` |
-| `W1-CROSSING-r2` | in-progress | Both-ways sweep running in one browser (background). Then: delete-the-fix arm (--roads pre | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/build-roads.mjs` `game/data/world/roads.json` `game/data/world/signposts.json` |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |
 | `W1-25-r2` | done | a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that | `orchestration/status/W1-25-r2.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `tools/experience/sabotage-corpus.mjs` `tools/experience/w1-25-r2-active-fixture.mjs` |
 | `W1-21-r3` | done | critic | `docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-map-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png` |

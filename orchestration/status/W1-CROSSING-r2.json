@@ -4,28 +4,41 @@
   "state": "in-progress",
   "started_at": "2026-08-08T00:00:00Z",
   "summary": "Round 2 on THE CROSSING (r1 FAIL 6/10) + closing W1-05's mandatory reachability proof. The reverse jam is a WORLD defect: the road passes over itself. Fixed in build-roads.mjs with a self-clearance pass.",
-  "next_step": "Both-ways sweep running in one browser (background). Then: delete-the-fix arm (--roads pre-fix), null/positive consumption arms, the picture, W1-05 reachability proof, survey, blog line, commit.",
+  "next_step": "Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/positive, picture, W1-05 phase B, survey, blog, commit.",
   "files_touched": [
     "orchestration/status/W1-CROSSING-r2.json",
     "tools/world/w1-crossing-r2-overpass.mjs",
     "tools/world/w1-crossing-r2-legs.mjs",
+    "tools/world/w1-crossing-r2-bothways-gate.mjs",
+    "tools/world/w1-crossing-r2-pursue-sim.mjs",
+    "tools/world/w1-crossing-r2-parapet-trap.mjs",
+    "tools/world/clamp-before-r2.js",
     "tools/world/build-roads.mjs",
-    "game/data/world/roads.json",
-    "game/data/world/signposts.json",
-    "game/src/engine.js"
-  ],
-  "files_claimed": [
-    "orchestration/status/W1-CROSSING-r2.json",
-    "orchestration/status/W1-05.json",
-    "tools/world/w1-crossing-r2-overpass.mjs",
-    "tools/world/w1-crossing-r2-legs.mjs",
-    "tools/world/build-roads.mjs",
+    "tools/world/wayfind-journey.mjs",
     "game/data/world/roads.json",
     "game/data/world/signposts.json",
     "game/src/engine.js",
+    "game/src/world/field.js",
+    "reports/w1-crossing-r2-survey.md"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-CROSSING-r2.json",
+    "tools/world/w1-crossing-r2-overpass.mjs",
+    "tools/world/w1-crossing-r2-legs.mjs",
+    "tools/world/w1-crossing-r2-bothways-gate.mjs",
+    "tools/world/w1-crossing-r2-pursue-sim.mjs",
+    "tools/world/w1-crossing-r2-parapet-trap.mjs",
+    "tools/world/clamp-before-r2.js",
+    "tools/world/build-roads.mjs",
+    "tools/world/wayfind-journey.mjs",
+    "game/data/world/roads.json",
+    "game/data/world/signposts.json",
+    "game/src/engine.js",
+    "game/src/world/field.js",
+    "reports/w1-crossing-r2-survey.md",
     "docs/shots/",
     "reports/blog-feed.jsonl",
-    "reports/w1-crossing-r2/"
+    "orchestration/status/W1-05.json"
   ],
   "notes": [
     "contention --gate at start: GO, 3 browser instances, load 2.21/core",
@@ -42,6 +55,9 @@
     "R2-F4 (`walkPath` RECONCILED WITH `_pursue`, and the round-1 verdict's framing needs one correction): the STEERING was never divergent. `walkPath` line 8392 already calls `this._pursue(points, st, o.lookahead_m, o.arrive_m)` \u2014 the same projection-onto-the-path steering `walkRoute` uses, the same function, one implementation. What `walkPath` did NOT have is the TELEPORT EXCLUSION: `dist += step` with no threshold, no `teleports`, no `teleported_m`. \u00a7A3 is right that the verb was unfixed and right that it is the biggest gap; it is the accounting that had not been ported, not the steering. Both are now the same: the `if (step > 1)` branch, the three return fields, plus `arrival_is_clean` \u2014 because `arrived` is answered against the body's position and a respawn moves that too.",
     "R2-F5 (what the fix cost, and one number went the wrong way \u2014 reported because it did): re-running the round-1 critic's own offline adjudicator `critic-crossing-grade.mjs` against both trees, with its `--self-test` still biting (I1 24.28 -> 89.17 deg on a bent leg): G3-REGAIN 63 -> 54, G4-NO-FALL 488 -> 491. The tool reproduces the critic's published 63/488 EXACTLY when pointed at the pre-fix roads, so the movement is the road and not the instrument. G3 is 14% better; G4 is three places worse.",
     "R2-F6 (the tautology, replaced, on the NEW tree): `zero slope-gate refusals on any centreline` is still structurally zero \u2014 25,071 of 25,071 centreline samples exempt via `onRoadAt`, 100.0000%. The replacement is the lateral sweep with the STRUCTURE-FREE control column: at 3.45 m 10 refusals of 17,316 gated (worst 58.61 deg) but 0 of 6,726 on legs with no deck_spans (worst 29.21); at 3.5 m 740 of 37,151 (worst 88.31) but 0 of 14,220 structure-free (worst 32.76); refusals on structure-free ground begin at 4 m (4 of 14,414). The 88 deg readings are the slab artefact and are labelled as such rather than published as terrain.",
-    "R2-F7 (--stair-grade 0.60, REFERRED not decided, re-derived on this tree by re-running the generator): deck span 1,714 -> 1,414 m, tallest fill 50.6 -> 32.7 m, trunk network 25,067.2 m in BOTH arms and THE CROSSING 6,728.5 m in BOTH arms (zero length cost), worst road grade atan(max_grade) 24.23 -> 30.96 deg against a 40 deg walkable limit. This is a design question \u2014 is a sustained one-in-six ramp a road \u2014 and a build must not answer it. Referred to RI-WLD01's owner with the numbers."
+    "R2-F7 (--stair-grade 0.60, REFERRED not decided, re-derived on this tree by re-running the generator): deck span 1,714 -> 1,414 m, tallest fill 50.6 -> 32.7 m, trunk network 25,067.2 m in BOTH arms and THE CROSSING 6,728.5 m in BOTH arms (zero length cost), worst road grade atan(max_grade) 24.23 -> 30.96 deg against a 40 deg walkable limit. This is a design question \u2014 is a sustained one-in-six ramp a road \u2014 and a build must not answer it. Referred to RI-WLD01's owner with the numbers.",
+    "R2-F8 (THE SECOND CAUSE, and it is not the one round 1 found): with the overpass removed, `stormhold-helstrom` still walks FORWARDS 2,784.8 m and arrives and BACKWARDS walks 3,393.7 m of 2,827.9 m and never arrives \u2014 pinned at (2298.8, 1842.7), `onRoad` true, `onDeck` true, slope gate never fires, 0 water, 0 teleports, longest stall 701 frames of a 900-frame abort. Traced with a per-frame flag recorder: 4,061 of 5,000 trace samples have `onDeck` true and the last 300 frames sit on one coordinate. The STEERING IS INNOCENT: `_pursue` transcribed into `tools/world/w1-crossing-r2-pursue-sim.mjs` and driven as a kinematic point with NO terrain, collision, gravity, parapet or slope gate walks all ten legs in BOTH directions, `stormhold-helstrom` reverse in 2,782.5 m. What holds the body is `field.clampToDeck`.",
+    "R2-F9 (WHY, and why it cannot be fixed in the road geometry): the leg hairpins at point 120 and the 13 m viaduct on segment 120-121 BEGINS AT THE APEX. Near any corner the two limbs are within a slab's width of each other whatever the turn angle, so the deck's slab lies over the earth approach; a body on the approach is `onDeckAt` true at t = 0.37 of the deck segment \u2014 neither end of the chain \u2014 so every step toward its own road reads as a step over the SIDE and is put back. Measured one metre off the slab edge: the carriageway continues at 80.07 against a deck at 80.83. A 0.76 m KERB. Fixed in `clampToDeck` with a deliberately narrow exemption: let the body go if the destination is `onRoadAt` AND the drop to `naturalHeightAt` (terrain + sites + road corridor, no slab) is under PARAPET_KERB_M = 1.0 m. Justified against the game's own numbers \u2014 `step_up_m` 0.55, airborne at 0.35, `fall.safe_m` 4.",
+    "R2-F10 (the parapet teardown, with the control watched red): `tools/world/w1-crossing-r2-parapet-trap.mjs`, offline, sweeps every leg centreline AND +/-1, 2, 3 m laterally, offering a one-frame step along the road in each direction. Round-1 parapet: 9 traps. Round-0 parapet (`old-clamp-345dcca.js`, an independent second control): 9. Shipped: 0. And the railing still works \u2014 1,705 of 1,720 sideways pushes over the side are still refused, worst drop saved 52.9 m, so the fix did not delete the parapet. MY FIRST CUT OF THIS TOOL REPORTED ZERO TRAPS ON BOTH ARMS AND ZERO RAILING REFUSALS: it sampled the centreline only (the trapped body was 1.97 m off it) and pushed sideways one eighth of a metre. A probe that cannot fail is worse than no probe; both defects are recorded in the tool's own comments rather than quietly fixed."
   ]
 }

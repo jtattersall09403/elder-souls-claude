@@ -239,7 +239,7 @@ try {
   say('  B. no HUD on the title screen (r3 §7 G5; named at r2, untouched at r3)');
   say('');
   // =============================================================================================
-  const b = await h.page.evaluate(() => {
+  const b = await h.page.evaluate(async () => {
     const e = window.__ENGINE;
     const H = window.__HARNESS;
     const reg = e.renderer.textRegister || null;
@@ -253,7 +253,13 @@ try {
           .map((x) => String(x.text)),
       };
     };
-    e.titleShow();
+    // `titleShow()` is async — it reads the save slots out of IndexedDB before it raises the
+    // surface. Called without an await it returns a pending promise and the title is still down
+    // when the next line reads it, which is how the first run of this probe reported
+    // `title_shown: false` and charged the build for a HUD it was drawing over a world.
+    e.renderer.title.inSession = false;
+    await e.titleShow();
+    e.ui.builtFrame = -1;
     const shownState = H.getTitleState();
     const withTitle = hudStrings();
     // THE TEARDOWN: lie to `build()` about the title. Same frame, same page, one field.
