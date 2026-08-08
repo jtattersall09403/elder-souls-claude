@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a698ed7`: 758 tools, 153 reference
-items, 73 pieces in flight.
+so it cannot drift. Generated at `726b487`: 761 tools, 153 reference
+items, 72 pieces in flight.
 
-Its purpose is to stop 73+ concurrent agents each paying separately to discover the
+Its purpose is to stop 72+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -521,7 +521,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 21
+### `tools/journey/` — 22
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
@@ -536,6 +536,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/gamepad-shim.mjs` — A-JRN2.
 - `tools/journey/input-checks.mjs` — the M-K table of RI-JRN03 and the M-P table of RI-JRN04, measured.
 - `tools/journey/journey-run.mjs` — A-JRN1.
+- `tools/journey/jrn02-competence.mjs` — W1-28 / RI-JRN02 §C.
 - `tools/journey/jrn02-hour.mjs` — W1-28.
 - `tools/journey/jrn06-death.mjs` — RI-JRN06's `## Comparison method`, M-D1 ..
 - `tools/journey/name-entry.mjs` — can a player type their own name?
@@ -613,9 +614,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/playability/` — 1
+### `tools/playability/` — 2
 
 - `tools/playability/live-mirror.mjs` — put a real browser in front of the REAL deployed site.
+- `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
 
 ### `tools/progression/` — 6
 
@@ -702,9 +704,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
-### `tools/touch/` — 7
+### `tools/touch/` — 8
 
 - `tools/touch/critic-block-roll.mjs` — W1-TOUCH critic.
+- `tools/touch/critic-consumption.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-fight-diag.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-fight.mjs` — ================================================================================================= critic-fight.mjs — W1-TOUCH critic round 1.
 - `tools/touch/critic-gate-wallclock.mjs` — W1-TOUCH critic.
@@ -1094,16 +1097,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-27` | done |  | `orchestration/status/W1-27.json` `tools/coherence/w1-27-coherence.mjs` `tools/coherence/w1-27-loot-consumption.mjs` `tools/coherence/w1-27-chart.mjs` `tools/world/build-property.mjs` `reports/w1-27/RULING.md` |
-| `critic-w1-touch` | measuring — fight leg done, roll/sprint gate under investigation | settle whether arm B's sprint promotion is a real gate defect or CDP latency; then the dif | `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` `tools/touch/critic-block-roll.mjs` `tools/touch/critic-roll-matrix.mjs` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
+| `critic-w1-touch` | measuring — fight leg done, roll/sprint gate under investigation | settle whether arm B's sprint promotion is a real gate defect or CDP latency; then the dif | `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` `tools/touch/critic-block-roll.mjs` `tools/touch/critic-roll-matrix.mjs` |
 | `W1-28` | building | hour driver smoke test, then the full 60-minute run; then cadence.mjs over its trace; then | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `reports/w1-28/verbcov/verb-coverage.json` |
 | `W1-20` | building | refusals in voice (faction-refusals.json + Engine.factionRefusal) then the probe | `orchestration/status/W1-20.json` `game/data/quests/faction-joining-wave1.json` `game/data/quests/hooks.json` `game/data/crime/sanction.json` `game/src/sim/crime/sanction.js` `game/data/index.json` |
 | `PLAYABILITY` | starting | read RULES/INDEX/README/W1-TOUCH; attempt to make headless chromium reach github.io throug | `orchestration/status/PLAYABILITY.json` |
-| `W1-24` | building | write cc-scan.mjs | `orchestration/status/W1-24.json` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
-| `critic-w1-deploy` | running | read RULES.md (done), INDEX.md, then the four subjects | `orchestration/status/critic-w1-deploy.json` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
 | `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |

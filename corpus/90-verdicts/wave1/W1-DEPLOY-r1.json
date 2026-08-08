@@ -1,0 +1,133 @@
+{
+  "item": "W1-DEPLOY",
+  "round": 1,
+  "role": "critic",
+  "verdict": "fail",
+  "score": 3.5,
+  "gate": 7.0,
+  "scoring": "min-over-axes",
+  "critic": {
+    "task_id": "critic-w1-deploy",
+    "finished_at": "2026-08-08T10:27:32Z",
+    "fresh_context": true,
+    "graded_own_work": false
+  },
+  "commits": {
+    "subjects_measured_at": "09e11d09f5c1aaa4a479bcd8ca4e8ac766cd59ec",
+    "boot_notice_measured_at": "fa964554de40783866f1696b2514593fc6aff4e2",
+    "head_at_write": "a698ed778c8484debe331522447947b6368650ab",
+    "note": "check-shipped-files.mjs is byte-identical between 09e11d0 and HEAD, so every finding against it is live. verify-playable and verify-live-site were retargeted from docs/play to game/ mid-round but their thresholds, waits and sampling are unchanged. verify-published-game.mjs was deleted mid-round."
+  },
+  "load_conditions": {
+    "tool": "node tools/contention.mjs",
+    "range_per_core": [1.03, 4.7],
+    "other_browsers": [1, 5],
+    "note": "Rule 26. Each browser figure in the verdict states the load it was taken under. The --notice2 run at 4.70/core produced nothing usable and is reported as not-run."
+  },
+  "axes": [
+    {
+      "axis": "tools/check-shipped-files.mjs",
+      "score": 3.5,
+      "blocking": true,
+      "detection": { "shapes_tested": 8, "caught": 4 },
+      "false_positives": { "sound_trees_tested": 6, "fired_on": 4 },
+      "findings": [
+        "The shipped --self-test never executes the scanner: both arms only query the Set built by tracked(). The tool had never been shown to detect the defect it was written for.",
+        "The missing arm was built (critic-deploy-gate-fixture.mjs, scenario A: a real file, really imported, really untracked) and the tool DOES catch it.",
+        "MISSED: an untracked module behind a >200-char binding list. Three real imports on the shipped tree are invisible to SPEC, including game/vendor/three/three.core.js — the renderer — plus game/src/sim/camera.js and game/src/sim/stealth/system.js, both from engine.js.",
+        "MISSED: a file named only by new URL('../data/', import.meta.url), which is how engine.js builds the data root.",
+        "MISSED: anything game/index.html references directly; the page's script tags and inline boot script are never scanned.",
+        "MISSED: a bare side-effect import './x.js' — SPEC requires `from`. Latent: the tree has none today.",
+        "FALSE POSITIVE, blocking: a neighbour's untracked scratch .mjs under game/ makes the gate exit 1 on everyone's commit, including tools/bank.mjs. walk(GAME) has no tracked-filter. Rule 13.",
+        "FALSE POSITIVE: an import inside a template literal; an extensionless import of a directory (reported as NOT IN GIT for a directory whose contents are all committed); a specifier carrying a query string."
+      ],
+      "rule_6_note": "The first fixture wrote four rule-13 traps as bare side-effect imports; all four passed vacuously because SPEC does not match that form. Rewritten with `from`, four go red. An inert control, caught in the critic's own instrument."
+    },
+    {
+      "axis": "tools/world/verify-playable.mjs",
+      "score": 5.0,
+      "findings": [
+        "Goes red on hold-gate.js (the real defect), engine.js, data/index.json and all of data/ — not just its own three.module.js arm.",
+        "Its self-test sabotages with route.abort(), a connection failure; a static host answers 404 with an HTML body. Both shapes tested against three targets: all six go red, so the wrong-shape self-test does not cost it detection.",
+        "readPixels(0,0,160,160) is the BOTTOM-LEFT corner, 1.23% of a 1920x1080 frame. Four legitimate states are called blank: default midnight (corner 0.00%, frame 52.86%), default 03:00 (0.00/52.88), dungeon_primary (0.02/33.30), dungeon_primary at night (0.00/5.04). The 2% threshold is defensible; the sampling window is not.",
+        "The four viewports render one identical 1920x1080 framebuffer: main.js skips the resize path under navigator.webdriver, so the pixel numbers agree to four decimal places across all four. The portrait phone framebuffer is never rendered.",
+        "The picture arrives at 6-8 s and boot() resolves at 8.76 s unthrottled; 21.9 s at CPU x4; 91.1 s at CPU x4 + 8 Mbit/s. The corner still reads 99.13% at 15 s in all three, so the wait survives a phone-shaped machine.",
+        "The framebuffer read LATCHES: a read (or merely a getContext call) before engine.renderer exists returns 0 and every later read on that page returns 0 forever. Isolated with a control that differs (getContext-at-2s -> 0.0000; touch-nothing -> 0.9913). If boot ever exceeds the flat 15 s the tool reports a working game blank and waiting longer cannot recover it. window.__HARNESS.ready() is the signal it should await."
+      ]
+    },
+    {
+      "axis": "tools/world/verify-live-site.mjs",
+      "score": 5.5,
+      "findings": [
+        "The curl claim is verified: node fetch returns 403 where curl returns 200 against the deployed URL.",
+        "The self-test does generalise to a transport that breaks differently — head() returns 0 on any throw, so the real-path arm goes red. It does NOT catch a transport that returns 200 for everything; a body assertion on the known-good arm would close that.",
+        "Byte drift is checked for index.html and src/main.js only. It should cover index.html, data/index.json, every .js under src/ and vendor/ (138 files, where staleness is silent and total), and a stable sample of data/ leaves (which fail loudly and individually).",
+        "It is not wired into anything. It belongs in the TICK loop, non-blocking, once per tick, plus a delayed follow-up after any commit touching the published tree; a --wait mode would let it distinguish 'Pages is still building' from 'the deployment is broken', two states it currently reports identically.",
+        "During this round the published game moved (c8414d7) and https://…/play/ now returns 404 while https://…/game/ returns 200. The old URL — the one in the blog — is dead and nothing noticed, because the only instrument that looks at the internet runs when a human types it."
+      ]
+    },
+    {
+      "axis": "boot notice in game/index.html",
+      "score": 4.0,
+      "findings": [
+        "CONFIRMED at 09e11d0: the notice hid on window.__HARNESS existing, which is 876 ms, while boot() resolved at 8.76 s (21.9 s at CPU x4, 91.1 s at CPU x4 + 8 Mbit/s). It flashed and left the black screen it exists to prevent.",
+        "The orchestrator found and fixed this independently at fa96455 and said so in the commit message. Credit; it does not change the grade, because rule 22 exists to catch it before arming.",
+        "THE FIX SHIPS THE SAME DEFECT INTO THE GAME: painted() is readPixels(0,0,64,64) at a 1% threshold — the same bottom-left corner. dungeon_primary draws 33.35% of the frame and the notice NEVER HIDES (2 runs of 2); dungeon_primary at night draws 5.03% and likewise. It is position:fixed inset:0 z-index:9999 with no dismiss, so a player loading into a dungeon cannot play. Screenshot: docs/shots/2026-08-08-critic-deploy-boot-notice-stuck-over-a-drawn-dungeon.png",
+        "The window.fetch monkey-patch is determinism-neutral, measured by delete-the-diagnostic with the wrapper stripped in the route handler: snapshot digest 3616911187 in both arms, frame 300 and seed 12345 in both, and the control genuinely differs (patched true vs false).",
+        "But the wrapper never fires: say() is gated on `done`, which became true at 876 ms in the shipped version, and every data file is fetched after that. In nine sabotage arms across two shapes, not one produced the wrapper's message. It also never uninstalls itself in hide().",
+        "Copy: a module 404 — the exact defect of this round — renders as 'The game stopped while loading. an unknown error', because a module ErrorEvent carries no message and no filename. Measured in six of six module-blocking arms. Also 'longer than it should take' is the developer's frame, and the lower-case detail line reads as a broken sentence."
+      ]
+    },
+    {
+      "axis": "method (rules 4, 13, 22)",
+      "score": 4.5,
+      "findings": [
+        "Two of the four self-tests cannot fail on the thing they are for.",
+        "A fail-closed gate was armed with four false-positive shapes, one of which blocks every agent on the box over a neighbour's file. Rule 13.",
+        "All four shipped ungraded. Rule 22.",
+        "Against that: the author caught their own worst defect within hours, said so plainly, and deleted verify-published-game.mjs, which was the probe that could not fail."
+      ]
+    }
+  ],
+  "verify_published_game": {
+    "recommendation": "delete",
+    "already_done": true,
+    "reason": "It asserted a canvas exists with non-zero dimensions and no page errors; all three were true of the black screen. Its one merit — loading from a subdirectory URL, which verify-playable does not do — is better served by verify-live-site fetching the real deployed URL."
+  },
+  "sibling_classes": {
+    "closed_on_this_machine": [
+      "case sensitivity — the filesystem here is case-sensitive like the deploy host, no tracked paths collide on case, and the gate catches a case mismatch anyway",
+      "Jekyll _ prefixes — docs/.nojekyll exists and is tracked; the one _-prefixed path the game needs is tracked",
+      "symlinks — none under game/",
+      ".gitignore — nothing ignored matches anything under game/, and the gate catches the case",
+      "game/ vs the deployed mirror — removed at the root by c8414d7, Pages now serves one copy"
+    ],
+    "still_open": [
+      "tools/lib/serve.mjs sends COOP/COEP require-corp, so crossOriginIsolated is true locally and false on Pages. Inert today (nothing reads it) and a live trap for anyone who adds a worker.",
+      "serve.mjs sends cache-control: no-store where Pages sends an ETag; a phone can hold a cached index.html pointing at modules that have moved, and no instrument here can see it.",
+      "THE MAIN ONE: a file the game needs at runtime named by anything other than `import … from`. Every miss above is an instance; widening the regex trades each blind spot for the next, and no import parser will ever see new URL()."
+    ],
+    "check_built": {
+      "path": "tools/world/critic-deploy-requested-files.mjs",
+      "approach": "run the game, record every path it requests from the server, require each to be tracked by git — parses nothing, so syntax is irrelevant",
+      "result_at_fa96455": { "paths_requested": 706, "non_javascript": 568, "untracked": 0, "non_200": 0, "frame_lit_fraction": 0.518 },
+      "self_test": "a real file, written into the served tree, really fetched by the page, never added to git, must be named; the same run without it must be clean; the game must have drawn in both arms. All three pass.",
+      "fails_closed_on": "exit 2 if the build drew nothing — a request list from a game that did not come up is a boot prefix, not a measurement",
+      "not_a_superset": "cannot see a lazy import behind a menu or an asset for a region never entered. The static gate covers paths never taken; this covers syntax never parsed. Run both."
+    }
+  },
+  "instruments_built": [
+    "tools/world/critic-deploy-gate-fixture.mjs",
+    "tools/world/critic-deploy-scan-coverage.mjs",
+    "tools/world/critic-deploy-probe.mjs",
+    "tools/world/critic-deploy-night-notice.mjs",
+    "tools/world/critic-deploy-requested-files.mjs"
+  ],
+  "could_not_do": [
+    "Did not reproduce the rule-13 false positive on the live tree — a planted untracked file under game/ would have blocked a neighbour's commit. Evidence is a byte-identical copy of the tool in a fixture repository.",
+    "barge-hold and cam_cistern never came up under the dark probe and are excluded.",
+    "The --notice2 timing run returned nothing usable at 4.70/core with 4 other browsers; hide-time figures come from the --settle run at 2.91/core and the --notice run.",
+    "game/ at HEAD did not boot during the night-notice run (QuestBook: 16 integrity failures, a neighbour's in-flight work), so every notice figure is pinned to a git archive of fa96455.",
+    "The first night-notice run printed PASS over six states that had drawn nothing — a fail-open in the critic's own instrument. It exits 2 with NOT RUN now."
+  ]
+}

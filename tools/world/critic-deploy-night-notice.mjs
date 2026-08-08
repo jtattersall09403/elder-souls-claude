@@ -49,7 +49,7 @@ const CASES = [
   { label: 'default, midday (control)', state: 'default', hour: 12 },
   { label: 'default, midnight',         state: 'default', hour: 0 },
   { label: 'default, 03:00',            state: 'default', hour: 3 },
-  { label: 'dungeon_primary',           state: 'dungeon_primary', hour: 12 },
+  { label: 'dungeon_primary',           state: 'dungeon_primary', hour: 12, shot: true },
   { label: 'dungeon_primary, night',    state: 'dungeon_primary', hour: 0 },
   { label: 'interior_firelit, night',   state: 'interior_firelit', hour: 0 },
 ];
@@ -107,6 +107,10 @@ async function run(c) {
   } catch (e) { note = String(e.message || e).slice(0, 60); }
   // Wait past the notice's own 6-second grace so its verdict is final, not in progress.
   await page.waitForTimeout(NOTICE_GRACE_MS + 2000);
+  // A picture of the defect, because "the overlay is over a drawn frame" is a claim a reader
+  // should be able to check with their eyes rather than take from a table.
+  const shot = at('--shot', null);
+  if (shot && c.shot) await page.screenshot({ path: shot }).catch(() => {});
   const out = await page.evaluate(() => {
     const s = window.__ns();
     const n = document.getElementById('boot-notice');
