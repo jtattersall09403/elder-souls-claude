@@ -1,0 +1,33 @@
+{
+  "task_id": "W1-HUD-TOAST-A",
+  "role": "builder",
+  "piece": "W1-HUD-TOAST-A (the HUD fit)",
+  "state": "starting",
+  "started": "2026-08-08",
+  "plan": "orchestration/plans/W1-HUD-TOAST.md",
+  "plan_status": "orchestration/status/plan-w1-hud-toast.json",
+  "dispatch_condition": "BLOCKING-1, -3, -6 folded into the plan text, then build. Piece B not touched.",
+  "redundant_with": ["W1-21", "W1-26", "critic-w1-20"],
+  "files_claimed": [
+    "game/src/ui/hud.js",
+    "game/src/ui/system.js",
+    "game/src/render/text-register.js",
+    "game/src/harness/api.js",
+    "tools/analysis/ui-census.mjs",
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/W1-HUD-TOAST-A.json",
+    "reports/w1-hud-toast-a/"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-HUD-TOAST-A.json"
+  ],
+  "must_not_touch": [
+    "orchestration/plans/W1-HUD-TOAST.md Piece B section (do not dispatch/build B)",
+    "tools/experience/lib/sabotage.mjs (Piece B's COUPLED_YARDSTICK verdict)"
+  ],
+  "next_step": "Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text) hardcodes (20,120)/bone/16/#fff at lines 939-949, three callers pass text only). Fold BLOCKING-1/3/6 resolutions into the plan file. Then build: corpus enumeration, wrap swap to type.wrap()+ellipsise(), generalise the getUIState() fit block via text-register owner ids, A1/A2a/A2b into ui-census.mjs with --self-test, extend harness drawOnMenus additively, null-control worktree, blog line.",
+  "verified_myself": [
+    "BLOCKING-6: game/src/harness/api.js:939-949 drawOnMenus(text) calls drawGlyphText(ctx, s, 20, 120, faceOf('bone'), 16, '#fff'); all three existing callers (w1-08-r2-probe.mjs, w1-26-opening.mjs, w1-26-r2-scene.mjs) pass text only. Confirmed additive extension is safe."
+  ],
+  "least_sure_of": []
+}

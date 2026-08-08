@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f38e362`: 786 tools, 153 reference
+so it cannot drift. Generated at `9790db8`: 788 tools, 153 reference
 items, 93 pieces in flight.
 
 Its purpose is to stop 93+ concurrent agents each paying separately to discover the
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 35
+### `tools/` — 36
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -72,6 +72,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-souls-world.mjs` — the two soul ledgers must agree — the world's cached roll-up against the statblocks that pay.
 - `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
 - `tools/corpus-index.mjs` — **no header comment**
+- `tools/cost-refresh.mjs` — Runs the cost instrument on the commit path, and never, ever blocks it.
 - `tools/cost-report.mjs` — The cost programme, drawn on the page the owner actually opens (COST.md §6).
 - `tools/dispatch-staleness.mjs` — re-run the MECHANICALLY CHECKABLE claims in a dispatch file and report which ones no longer hold.
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
@@ -155,11 +156,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/w1-22-r3-hive-bar.mjs` — THE HIVE'S BAR, RE-MEASURED WITHOUT THE EVENT THAT WAS OUTSIDE THE CAP.
 - `tools/audio/w1-22-r3-pack.mjs` — THE BLIND QUALITY PACK, WITH THE RECORDINGS IN IT.
 
-### `tools/blind/` — 4
+### `tools/blind/` — 5
 
 - `tools/blind/audio-pack-b2.mjs` — RI-AUD03 B2 PACK BUILDER.
 - `tools/blind/audio-pack-w1-22-r2.mjs` — W1-22 ROUND-2 CRITIC'S BLIND PACK BUILDER — THE HARDER PACK THE B2 JUDGE ASKED FOR.
 - `tools/blind/audio-pack.mjs` — ABSENCE-REPORTER.
+- `tools/blind/leakcheck.mjs` — tools/blind/leakcheck.mjs — the gate that must pass BEFORE a blind pack is handed to a judge.
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
 
 ### `tools/camera/` — 8

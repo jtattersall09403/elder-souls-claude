@@ -135,11 +135,23 @@ function armAccounting(mod, rafHz, ticks) {
       violations.push({ tick: i, kind: 'conservation', dt_ms: dtClamped, steps, dropped_ms: dropped,
         acc_before: accBefore, acc_after: accAfter, lhs, rhs, delta: lhs - rhs });
     }
-    // P14, half two: the iff. A clamp happens exactly when arrears reach MAX_CATCHUP+1 steps.
-    const shouldClamp = (accBefore + dtClamped) >= (MAX_CATCHUP + 1) * STEP_MS - EPS;
-    if (shouldClamp !== (clamped === 1)) {
+    // P14, half two: the iff. A clamp happens exactly when the arrears reach MAX_CATCHUP+1 steps.
+    //
+    // EVALUATED IN THE LOOP'S OWN FLOAT ORDER, and the closed form `arrears >= 6 * STEP_MS` is
+    // NOT good enough — that cost this tool a second false FAIL. STEP_MS = 1000/60 is not
+    // representable in binary, so at exactly 12.00 Hz the arrears come to 99.9999999999999 ms
+    // while `6 * STEP_MS` is 100, and five repeated subtractions leave 16.66666666666...6, a
+    // hair under STEP_MS. Whether that tick clamps is decided in the last bits of a double.
+    // Asserting the closed form would be asserting real arithmetic against a machine that is
+    // not doing real arithmetic; asserting the loop's own order is the honest predicate. It is
+    // still an independent statement — the mutants break it — and it is what the spec means.
+    let a = accBefore + dtClamped, n = 0;
+    while (a >= STEP_MS && n < MAX_CATCHUP) { a -= STEP_MS; n++; }
+    const shouldClamp = a >= STEP_MS;
+    if (shouldClamp !== (clamped === 1) || n !== steps) {
       violations.push({ tick: i, kind: 'clamp_iff', arrears_ms: accBefore + dtClamped,
-        threshold_ms: (MAX_CATCHUP + 1) * STEP_MS, expected_clamp: shouldClamp, observed_clamps: clamped });
+        closed_form_threshold_ms: (MAX_CATCHUP + 1) * STEP_MS,
+        expected_clamp: shouldClamp, observed_clamps: clamped, expected_steps: n, observed_steps: steps });
     }
     // R3 itself: never more than MAX_CATCHUP steps, never a step of another size.
     if (steps > MAX_CATCHUP) violations.push({ tick: i, kind: 'catchup_bound', steps, bound: MAX_CATCHUP });
@@ -175,7 +187,15 @@ function armLaw(mod, rafHz, ticks) {
   const wallMs = CLOCK - t0;
   const s = loop.stats;
   const worldMs = s.simStepsTotal * STEP_MS;
-  const measured = worldMs / wallMs;
+  // FIDELITY IS DEFINED ON THE COUNTER, NOT ON THE STEP TOTAL, and the first version of this
+  // file got that wrong in a way that produced a false FAIL at 12.00 Hz. `worldMs / wallMs`
+  // carries a window-boundary artefact: at the instant the window closes, up to STEP_MS of real
+  // time is sitting in the accumulator, neither simulated yet nor thrown away. Over a 33 s
+  // window that is 0.05% and it pushed the 12 Hz row under P10's 0.999 line on its own.
+  // Real time is in exactly one of three places — simulated, pending in the accumulator, or
+  // DROPPED — and only the third is a loss, so:
+  const measured = 1 - (s.catchupDroppedMs / wallMs);
+  const simTimeRatio = worldMs / wallMs;    // reported too; this is r2-framerate.mjs's `sim_time_ratio`
   const predicted = Math.min(1, MAX_CATCHUP * STEP_MS * rafHz / 1000);
   // TWO DIFFERENT FLOORS, and conflating them cost this tool a false FAIL on its first run.
   //
@@ -206,6 +226,7 @@ function armLaw(mod, rafHz, ticks) {
     catchup_dropped_ms: +s.catchupDroppedMs.toFixed(3),
     dropped_ms_per_s: +(s.catchupDroppedMs / (wallMs / 1000)).toFixed(2),
     world_time_fidelity: +measured.toFixed(6),
+    sim_time_ratio: +simTimeRatio.toFixed(6),
     predicted_fidelity: +predicted.toFixed(6),
     max_clamp_run: maxClampRun,
     at_or_above_sustained_floor: atOrAboveFloor,
@@ -287,11 +308,21 @@ const MUTANTS = [
     why: 'rAF drives the sim in every mode: no trace this fleet takes is reproducible any more',
     from: "  get rafDrivesSim() { return this.mode === 'play'; }",
     to:   '  get rafDrivesSim() { return true; }' },
-  { name: 'maxcatchup50', breaks: 'slow-motion law',
-    why: 'MAX_CATCHUP 5 -> 50: the 12.00 Hz floor moves and the predicted fidelity at 2.32 Hz stops matching',
+  // THE FOURTH CONTROL CAME OUT INERT ON RUN 1 AND IS REPORTED, NOT QUIETLY REPAIRED.
+  // Aimed at the slow-motion law, MAX_CATCHUP 5 -> 50 changed nothing: `predicted` is computed
+  // FROM the module's own MAX_CATCHUP, so the law self-adjusted and the mutant passed every arm.
+  // That is exactly RULES 6's inert control — a teardown that leaves both arms identical — and
+  // it is also a true statement about the law: **§C.5's law cannot detect a change to
+  // MAX_CATCHUP, because the constant appears on both sides.** R3 and M8 own that constant
+  // (max 5 steps per rAF, checked directly), and they catch it; the law does not and does not
+  // claim to. So the control keeps the mutation and changes what it is a control FOR: it now
+  // tests the HEADLINE — that 19.3% at 2.32 Hz is a consequence of MAX_CATCHUP = 5 and not an
+  // artefact of this harness. Raise the cap and the number must move.
+  { name: 'maxcatchup50', breaks: 'headline fidelity at 2.32 Hz',
+    why: 'MAX_CATCHUP 5 -> 50: if 19.3% is really a consequence of the cap, this must move it',
+    predicate: 'headline',
     from: 'export const MAX_CATCHUP = 5;',
-    to:   'export const MAX_CATCHUP = 5; // shipped value, overridden below by the null control',
-    extra: true },
+    to:   'export const MAX_CATCHUP = 50;' },
 ];
 
 async function loadMutant(m) {
@@ -302,7 +333,6 @@ async function loadMutant(m) {
       'positive arm (RULES 6). Fix the anchor, do not skip the control.');
   }
   src = src.replace(m.from, m.to);
-  if (m.name === 'maxcatchup50') src = src.replace('export const MAX_CATCHUP = 5;', 'export const MAX_CATCHUP = 50;');
   if (src === SHIPPED) throw new Error(`INERT CONTROL: mutant '${m.name}' produced byte-identical source.`);
   src = src.replace("from './guards.js'", `from ${JSON.stringify(pathToFileURL(GUARDS_SRC).href)}`);
   const p = path.join(SCRATCH, `loop.${m.name}.${TASK}.mjs`);
@@ -314,19 +344,27 @@ async function loadMutant(m) {
 const shippedMod = await import(pathToFileURL(LOOP_SRC).href);
 const shipped = runAll(shippedMod, 'shipped');
 
+const shippedHeadline = (shipped.law.find((l) => l.raf_hz === 2.32) || {}).world_time_fidelity;
 const controls = [];
 for (const m of MUTANTS) {
   let verdict, err = null;
   try { verdict = runAll(await loadMutant(m), `mutant:${m.name}`); }
   catch (e) { err = String(e && e.message || e); verdict = null; }
+  const fid232 = verdict ? (verdict.law.find((l) => l.raf_hz === 2.32) || {}).world_time_fidelity : null;
+  // Each control declares WHAT must move. A control that goes red on some other arm has not
+  // demonstrated the check it was aimed at, so `broke_the_right_arm` is scored separately from
+  // `went_red` and the run is VOID unless both hold.
+  const rightArm = m.predicate === 'headline'
+    ? (fid232 !== null && !near(fid232, shippedHeadline, 1e-6))
+    : !!(verdict && verdict.failed_arms.some((a) => a.startsWith(m.breaks.split(' ')[0])));
   controls.push({
-    name: m.name, why: m.why, expected_to_break: m.breaks,
+    name: m.name, why: m.why, expected_to_break: m.breaks, predicate: m.predicate || 'arm-goes-red',
     error: err,
-    went_red: !!(verdict && verdict.pass === false),
+    went_red: m.predicate === 'headline' ? rightArm : !!(verdict && verdict.pass === false),
     failed_arms: verdict ? verdict.failed_arms : [],
-    // The control is only meaningful if it broke the arm it was aimed at.
-    broke_the_right_arm: !!(verdict && verdict.failed_arms.some((a) => a.startsWith(m.breaks.split(' ')[0]))),
-    fidelity_at_2_32hz: verdict ? (verdict.law.find((l) => l.raf_hz === 2.32) || {}).world_time_fidelity : null,
+    broke_the_right_arm: rightArm,
+    fidelity_at_2_32hz: fid232,
+    shipped_fidelity_at_2_32hz: shippedHeadline,
   });
 }
 try { fs.rmSync(SCRATCH, { recursive: true, force: true }); } catch { /* scratch cleanup is best-effort */ }

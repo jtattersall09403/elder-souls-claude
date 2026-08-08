@@ -19,6 +19,7 @@ import { GamepadRouter } from './gamepad.js';
 import { TouchInput } from './touch.js';
 import { Viewport } from './viewport.js';
 import { Rebinder, labelOf } from './rebind.js';
+import { inputNow, holdGateFrames, shouldPromote, framesHeld, STEP_MS } from './hold-gate.js';
 
 /** RI-JRN03 §B: two-binding hold gates, `KeyG` for two_hand and `Mouse1` held for lock_on. */
 const HOLD_SUFFIX = /^(.*)Hold(\d+)$/;
@@ -55,8 +56,11 @@ export class RealInput {
     this.lookExponent = lk.exponent;
     this.moveDirs = { forward: false, back: false, left: false, right: false };
     this._handlers = [];
-    this._holds = Object.create(null);   // control -> {action, frames, since}
+    this._holds = Object.create(null);   // control -> {action, tDown (ms), frames (f@60), fired}
     this.frameOf = () => 0;              // set by the engine; the FIXED sim frame
+    // S39: the loop mode selects the input clock. Set by the engine alongside `frameOf`; the
+    // default is the harness clock, which is the safe one — it reads no wall clock at all.
+    this.modeOf = () => 'harness';
 
     // ---- gamepad (RI-JRN04). The translation layer, not a button table. -------------------
     this.pad = this.quirks ? new GamepadRouter(pipe, this.profiles, this.quirks) : null;
@@ -72,6 +76,7 @@ export class RealInput {
     this.viewport = new Viewport(canvas, this.profiles);
     this.touch = new TouchInput(pipe, canvas, this.profiles);
     this.touch.frame = () => this.frameOf();
+    this.touch.now = (event) => this.inputNow(event);
     this.touch.onActivity = () => { this.activeDevice = 'touch'; this.onDeviceChange && this.onDeviceChange('touch'); };
     this.viewport.onResize = (s, insets) => { this.touch.setViewport(s.w, s.h, s.dpr, insets); this.onViewportChange && this.onViewportChange(s, insets); };
 
@@ -140,15 +145,36 @@ export class RealInput {
    * identical code path. §D: the array is a SNAPSHOT and is never cached.
    */
   pollGamepad() {
+    // S39. This method is the rAF entry point in mode `play` (engine.js sets `loop.beforeTick`
+    // to call it), and rAF is OUTSIDE the fixed step — which makes it the one place a hand-clock
+    // millisecond may legally be read in play mode. So the touchscreen's and the keyboard's held
+    // presses are aged here too, from the same clock, in the same tick, as the pad's.
+    //
+    // In `harness` / `play-instrumented` the hand's clock is `frame * STEP_MS` and the ageing
+    // happens in `tick(frame)` instead, inside the step, where it is deterministic. One
+    // implementation (`hold-gate.js`), two call sites, selected by mode and by nothing else.
+    const play = this.modeOf() === 'play';
+    this.touch.playClock = play;
+    if (play) {
+      const nowMs = this.inputNow(null);
+      this.touch.pollHolds(nowMs);
+      this._pollHolds(nowMs);
+    }
     if (!this.pad) return null;
     const pads = this.syntheticPads
       ? this.syntheticPads
       : (typeof navigator !== 'undefined' && navigator.getGamepads ? navigator.getGamepads() : []);
-    const obs = this.pad.poll(pads, this.frameOf());
+    const obs = this.pad.poll(pads, this.frameOf(), this.inputNow(null));
     if (obs) { this.touch.setPadActive(true); }
     else if (!this.pad.connected) this.touch.setPadActive(false);
     return obs;
   }
+
+  /**
+   * S39's `inputNow()` for this input tree: ms, `event.timeStamp` in play, `frame * STEP_MS`
+   * otherwise. Every call site in `input/` goes through here so there is exactly one clock.
+   */
+  inputNow(event) { return inputNow(this.modeOf(), this.frameOf(), event); }
 
   /**
    * A-JRN2 / `__HARNESS.gamepad()`. Pushes a synthetic pad ABOVE the router but BELOW nothing:
@@ -253,7 +279,7 @@ export class RealInput {
       const dir = this.moveCodes[e.code];
       if (dir) { this.moveDirs[dir] = true; this._pushMove(); return; }
       const action = this.controlMap[e.code];
-      if (action) { this._down(e.code, action); return; }
+      if (action) { this._down(e.code, action, e); return; }
       // The fallback for a build that has an `onTextChar` but no `textFocus` predicate — the
       // shape this file shipped in before r3. Unreachable for a character the maps above claim,
       // which is precisely the defect; kept so a caller that sets only `onTextChar` still types.
@@ -267,7 +293,7 @@ export class RealInput {
       if (this._textConsumed.delete(e.code)) return;   // it was a character, not a button
       const dir = this.moveCodes[e.code];
       if (dir) { this.moveDirs[dir] = false; this._pushMove(); return; }
-      this._up(e.code);
+      this._up(e.code, e);
     });
 
     on(this.canvas, 'mousedown', (e) => {
@@ -276,7 +302,7 @@ export class RealInput {
       this.onDeviceChange && this.onDeviceChange('mouse');
       const control = 'Mouse' + e.button;
       if (this._captureControl(control)) return;
-      this._down(control, this.controlMap[control]);
+      this._down(control, this.controlMap[control], e);
       if (this.dragLook) { this.dragLook.dragging = true; this.dragLook.x = e.clientX; this.dragLook.y = e.clientY; }
       // PL1/PL3: the lock is requested on the gesture that starts the game and RE-requested on
       // THE NEXT USER CLICK after any loss, because Chrome rejects a re-request made inside its
@@ -295,7 +321,7 @@ export class RealInput {
     });
     on(window, 'mouseup', (e) => {
       const control = 'Mouse' + e.button;
-      this._up(control);
+      this._up(control, e);
       if (this.dragLook) this.dragLook.dragging = false;
     });
 
@@ -432,37 +458,71 @@ export class RealInput {
 
   // ---- hold-gated bindings (§B `KeyG` two_hand, `Mouse1Hold12` lock_on) ------------------
 
-  _down(control, action) {
+  _down(control, action, event) {
     // A control may be bound directly AND as a hold. `Mouse1` is `parry`; `Mouse1Hold12` is
-    // `lock_on`. Both are armed on the press; the hold fires 12 frames later if still down.
-    const holdControl = control + 'Hold' + (this.profiles.desktop.hold_gate_frames.lock_on_secondary || 12);
+    // `lock_on`. Both are armed on the press; the hold fires 12 f@60 later if still down.
+    //
+    // S39 FIGURES 7, 8 AND 9. Figures 7/8 are the two `desktop.hold_gate_frames` rows; figure 9
+    // was a BARE DUPLICATE LITERAL `12` on the `lock_on` line below, a second copy of the gate
+    // constant that `./hold-gate.js` was written to eliminate and never reached. It now goes
+    // through `holdGateFrames()` like every other gate in the tree, so there is one number and
+    // one place to break it (RULES 10). The gate is still 12 f@60; only the route changed.
+    const lockGate = { frames: this.profiles.desktop.hold_gate_frames.lock_on_secondary };
+    const twoHandGate = { frames: this.profiles.desktop.hold_gate_frames.two_hand };
+    const holdControl = control + 'Hold' + holdGateFrames(lockGate);
     const holdAction = this.controlMap[holdControl];
-    const gateFrames = this.profiles.desktop.hold_gate_frames.two_hand || 12;
+    const tDown = this.inputNow(event);            // ms — S39, stamped at the boundary
     if (action === 'two_hand') {
-      // §B: `G` (hold >= 12 frames). A stray tap must not change stance mid-fight.
-      this._holds[control] = { action: 'two_hand', at: this.frameOf() + gateFrames, fired: false };
+      // §B: `G` (hold >= 12 f@60 = 200 ms). A stray tap must not change stance mid-fight.
+      this._holds[control] = { action: 'two_hand', tDown, gate: twoHandGate, fired: false };
       return;
     }
-    if (holdAction) this._holds[control] = { action: holdAction, at: this.frameOf() + 12, fired: false, alsoTap: action };
+    if (holdAction) this._holds[control] = { action: holdAction, tDown, gate: lockGate, fired: false, alsoTap: action };
     if (action) this.pipe.edgeDown(action);
   }
 
-  _up(control) {
+  _up(control, event) {
     const h = this._holds[control];
     if (h) {
       delete this._holds[control];
-      if (h.fired) { this.pipe.edgeUp(h.action); if (!h.alsoTap) return; }
-      else if (h.action === 'two_hand') return;    // released before the gate: nothing happens
+      // S39, and this is the keyboard/mouse half of the touchscreen's headline fix: the release
+      // re-asks the question in ms rather than trusting `h.fired`, which is only ever set by a
+      // poll. A `KeyG` held for 400 ms that begins and ends between two rAF ticks used to be a
+      // tap — the two-handed stance simply never happened, however long the key was down.
+      const tUp = this.inputNow(event);
+      h.framesHeld = framesHeld(h.tDown, tUp);     // f@60, for the harness and the tools
+      const held = h.fired || shouldPromote(h.tDown, tUp, h.gate);
+      if (held) {
+        if (!h.fired) this.pipe.edgeDown(h.action);
+        this.pipe.edgeUp(h.action);
+        if (!h.alsoTap) return;
+      } else if (h.action === 'two_hand') return;  // released before the gate: nothing happens
     }
     const action = this.controlMap[control];
     if (action) this.pipe.edgeUp(action);
   }
 
+  /**
+   * S39: age the keyboard/mouse hold gates. One implementation; the caller supplies the clock.
+   * @param {number} nowMs ms
+   */
+  _pollHolds(nowMs) {
+    for (const control of Object.keys(this._holds)) {
+      const h = this._holds[control];
+      if (!h.fired && shouldPromote(h.tDown, nowMs, h.gate)) {
+        h.fired = true;
+        h.framesHeld = framesHeld(h.tDown, nowMs);   // f@60
+        this.pipe.edgeDown(h.action);
+      }
+    }
+  }
+
   /** Called once per fixed step by the engine, before the latch. */
   tick(frame) {
-    for (const [control, h] of Object.entries(this._holds)) {
-      if (!h.fired && frame >= h.at) { h.fired = true; this.pipe.edgeDown(h.action); }
-    }
+    // S39: in harness modes the hand's clock IS `frame * STEP_MS`, so ageing here is exact and
+    // deterministic. In mode `play` the rAF poll owns it (see `pollGamepad`) and this must not
+    // run, or a starved rAF ages a 500 ms press as one frame all over again.
+    if (this.modeOf() !== 'play') this._pollHolds(frame * STEP_MS);
     this.touch.tick(frame);
   }
 

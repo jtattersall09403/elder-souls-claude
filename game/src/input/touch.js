@@ -72,6 +72,8 @@ export class TouchInput {
      * has BOTH endpoints in the player's hand is measured with it, and nothing else.
      */
     this.now = () => 0;
+    /** True while `loop.mode === 'play'`: holds are aged from rAF, not from the fixed step. */
+    this.playClock = false;
     this.onActivity = null;
     this._assertLayout();
   }
@@ -314,16 +316,46 @@ export class TouchInput {
     }
   }
 
-  /** Called once per fixed step, before the latch. Promotes gates and pushes the stick. */
-  tick(frame) {
+  /**
+   * S39: THE ONLY PLACE A HELD PRESS IS AGED, and it runs OUTSIDE the fixed simulation step.
+   *
+   * `nowMs` is supplied by the caller, not read here, and that is the whole point: in mode
+   * `play` `RealInput` calls this from the rAF poll with a wall clock, and in `harness` /
+   * `play-instrumented` it calls it from `tick(frame)` with `frame * STEP_MS`. One
+   * implementation, one clock source, selected by loop mode — so a scripted press of N frames
+   * and a thumb held for N/60 s go through the identical arithmetic.
+   *
+   * Every duration below has BOTH endpoints in the player's hand (S39 category (b)): how long a
+   * button has been down, and how long since the last touch. Neither is the simulation's.
+   *
+   * @param {number} nowMs ms
+   */
+  pollHolds(nowMs) {
     for (const [action, h] of this.held) {
       // Frames HELD, press frame inclusive — the same quantity the pad uses, so T5's promise
       // that the semantics transfer is true to the frame and not just in spirit.
-      if (h.gate && !h.promoted && shouldPromote(frame, h.gateFrom, h.gate)) {
+      if (h.gate && !h.promoted && shouldPromote(h.tDown, nowMs, h.gate)) {
         h.promoted = true;
+        h.framesHeld = framesHeld(h.tDown, nowMs);           // f@60
         this.pipe.edgeDown(h.gate.hold);
       }
     }
+    // T7 / M-P22 — S39 figure 15. "Gone within 2 s of last touch", and 2 s means 2 s.
+    // A `reset()` or a save load rewinds the clock, which used to leave `lastTouch*` in the
+    // future and the overlay visible forever. Clamp rather than trust monotonicity.
+    if (this.lastTouchMs > nowMs) this.lastTouchMs = -1e9;
+    if (this.padActive && nowMs - this.lastTouchMs > this.hideAfterMs && !this.pointers.size) this.visible = false;
+  }
+
+  /** Called once per fixed step, before the latch. Pushes the stick; ages holds in harness mode. */
+  tick(frame) {
+    // S39: in `harness` and `play-instrumented` the hand's clock IS `frame * STEP_MS`, so ageing
+    // the holds here is legal, deterministic and exactly equivalent to the pre-S39 frame count
+    // (`framesHeld` = frame - gateFrom + 1). In mode `play` the poll runs from rAF instead and
+    // this must NOT run, or a starved rAF would age presses at 19% of real speed all over again.
+    // `this.now()` throws in `play` if it is ever reached from in here (`hold-gate.js`
+    // `inputNow`), which is how that mistake is caught rather than described.
+    if (!this.playClock) this.pollHolds(frame * (1000 / 60));
     // T6: the charged heavy is a hold on the heavy button, thresholded on DURATION, because a
     // finger has no analog travel. Above the pad's own charge window the intent is full.
     const hv = this.held.get('heavy');
@@ -338,11 +370,9 @@ export class TouchInput {
         this.pipe.setMove((this.stick.x / m) * mm, (this.stick.y / m) * mm);
       }
     }
-    // T7
-    // A `reset()` or a save load rewinds `sim.frame` to 0, which leaves `lastTouchFrame` in the
-    // future and the overlay visible forever. Clamp rather than trust the clock's monotonicity.
+    // T7's frame counter is kept purely so the harness and the tools can still print it; the
+    // RULE now lives in `pollHolds`, in ms (S39 figure 15). Clamp on a rewind as before.
     if (this.lastTouchFrame > frame) this.lastTouchFrame = -1e9;
-    if (this.padActive && frame - this.lastTouchFrame > this.hideAfterFrames && !this.pointers.size) this.visible = false;
   }
 
   releaseAll() {

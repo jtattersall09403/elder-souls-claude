@@ -52,21 +52,38 @@ enumerated toast channel (75 strings measured today; the builder must publish th
 enumeration, because the equip toast interpolates **2,113** `name` fields from `game/data` and
 the widest of those makes an **870.0 px** single run) plus the prompt, boss and slot-label sets.
 
+**FOLDED IN, post plan-critic exchange 1 — BLOCKING-1, -3, -6 applied to the table below as text
+edits, per the ruled resolutions in the critic section. This replaces the original A1/A2 row pair;
+nothing here was re-argued, only applied.**
+
 | id | predicate | acceptance | units |
 |---|---|---|---|
-| **A1** | `overflow_px = max(0, x1 − (rect.x + rect.w)) + max(0, rect.x − x0)`, where `[x0,x1]` is the horizontal extent of the drawn run **as recorded by `render/text-register.js`** — `x0` the draw call's own x with alignment applied, `x1 = x0 +` the pen advance accumulated by `glyphs.drawText` *while painting the glyphs* (`glyphs.js:255-256`) — and `rect` is the element's declared rect from `getUIState()`. Same clause vertically against `rect.y`/`rect.h`. | `overflow_px == 0` for **100%** of (element, string) pairs in C | CSS px, 1920×1080, `devicePixelRatio 1`, `s = 1.0` |
-| **A2** | `escaped_px = ` count of pixels differing by `>8` on any channel between `frame(uiToast(T))` and `frame(uiToast(null))` — same state, same seed, same frame index, nothing else changed — that lie **outside** `rect(T)` as declared on the T frame. | `escaped_px == 0` for a **sample of 8**: the 3 widest, the 3 narrowest, the widest single word, one 3-row string | pixels, 1920×1080 |
+| **A1** | `overflow_px = max(0, x1 − (rect.x + rect.w)) + max(0, rect.x − x0)`, where `[x0,x1]` is the horizontal extent of the drawn run **as recorded by `render/text-register.js`** on the `menus` surface. **`x0` is the `x` passed to `glyphs.drawText`** — the register records vector entries as left-aligned by construction (`text-register.js:217`), and this population's callers pre-centre each row themselves before calling `drawText`, so this is already the run's left edge; a caller that ever relied on `ctx.textAlign` is a register defect to report, not a thing this check compensates for. `x1 = x0 +` the pen advance accumulated by `glyphs.drawText` *while painting the glyphs* (`glyphs.js:255-256`). `rect` is the element's declared rect from `getUIState()`. Same clause vertically against `rect.y`/`rect.h`. **The register's `entries[].x`/`.w` are rounded to the integer px** (`text-register.js:246-247`) against a rect stored at 2 dp — so the acceptance below is stated as a ≤1 px band, not an exact zero, rather than trusting a 0.4 px overshoot to read as 0. | `overflow_px ≤ 1.0 px` for **100%** of (element, string) pairs in C | CSS px, 1920×1080, `devicePixelRatio 1`, `s = 1.0` |
+| **A2a** (BLOCKING-1, decisive) | `cut_px` = ink pixels present in a **clip-free reference render** of the same string at the same position, face and size, and absent in the element's own (clipped) render — inside a band of `rect` inflated by the stroke halo (CARRIED-3: `lineWidth = face.stem * u * weight`, round cap/join, so painted ink extends roughly half a stem beyond the advance box; the halo tolerance is derived once, from the face's own `stem` at the toast's size, and published, not tuned until the number passes). The reference draw goes through `__HARNESS.drawOnMenus(text, {x, y, face, size, color})` (BLOCKING-6: signature extended additively; see §3) at the row's own `x`/`y`/face `ink`/size, matching the element render exactly — a reference drawn at a different position or in a different face cannot be differenced against the element render, which is the defect the first resolution shipped with. | `cut_px == 0` | pixels, 1920×1080 |
+| **A2b** (BLOCKING-1, escaped-ink residue) | `escaped_px` = count of pixels differing by `>8` on any channel between `frame(uiToast(T1))` and `frame(uiToast(T2))`, **T1 and T2 chosen to have the same row count** (`rows.length`) so `h = max(toastH·s, rows·lineH + 20·s)` gives an identical rect, an identical `panel(...4242...)` seed and an identical deckle — outside `rect(T)`. **Not** toast-vs-null: `UISurface.el()` clips every element to its own declared rect (`surface.js:210-213`, *"The declared rect IS the clip. An element cannot paint outside what it declared"*), so `escaped_px == 0` is true **by construction** on both the fixed and the reverted arm when the comparison is toast-vs-null — that arm cannot fail and is retired as the acceptance's diff, kept only as informal colour. | `escaped_px == 0` | pixels, 1920×1080 |
 | **A3** | no silent loss: `rows.join(' ') === normalise(T)` **or** `meta.truncated === true` | 100% of C | strings |
 
-**Why two tiers.** A1 is cheap and can run over all of C; its extent comes from the painting loop,
-so **breaking the wrapper cannot move it** — that is the whole point. A2 is the decisive one and
-runs on a sample because it costs a frame pair each. A2 exists because A1 still shares one source
-with the wrapper: `advanceUnits()` inside `glyphs.js`. If *that* is wrong, wrap and register agree
-and the text still spills. Only the framebuffer can see it. **Declared, not closed** (carried risk).
+**Why the shape changed.** The original A2 measured escaped ink *outside* the rect and its null
+control could not go red: the clip makes escaped ink impossible by construction, and the
+parchment's own deckled outline (`parchmentPath()`, jitter amplitude ≤3.77 px at 1920×1080/s=1)
+would have made it unconditional the other way had there been no clip. **The real defect is missing
+ink inside the rect** (words cut at the panel edge), which is what A2a now measures, against a
+clip-free reference draw of the *same* string in the *same* face at the *same* position — not the
+generic harness sentinel at `(20,120)`/face `bone`, which BLOCKING-6 found A2a's first resolution
+had silently substituted.
 
-Vacuity guard on A2, mandatory: `changed_px_inside_rect > 0` for every sample and monotone
-non-decreasing with row count. A diff that saw nothing reports `escaped_px == 0` and looks
-exactly like a pass — the same mistake one layer down.
+**Why still two tiers, restated.** A1 is cheap and can run over all of C; its extent comes from the
+painting loop, so **breaking the wrapper cannot move it** — that is the whole point. A2a/A2b are the
+decisive checks and run on a sample because each costs a frame (A2a) or a frame pair (A2b). Both
+still share one source with the wrapper: `advanceUnits()` inside `glyphs.js` (CARRIED-4, narrowed
+but not closed by A2a — the clip-free reference draw uses the same advance function, so the residual
+is "the advance is wrong in the same direction in both draws", smaller than before).
+
+Vacuity guard, mandatory on A2b (and its analogue on A2a — `cut_px`'s reference render must show
+`ink_px > 0`, i.e. the clip-free draw must paint *something*, or the check is reading an empty
+canvas): `changed_px_inside_rect > 0` for every sample and monotone non-decreasing with row count. A
+diff that saw nothing reports `escaped_px == 0`/`cut_px == 0` and looks exactly like a pass — the
+same mistake one layer down.
 
 Soft target, CARRIED not blocking: `rect.w − (x1−x0) ≥ 24·s` (12 units of parchment each side).
 It is soft precisely because 12 is a number the drawing code chose, and an acceptance that reads a
@@ -144,8 +161,10 @@ stated explicitly because the defect under repair *is* a null computed from the 
 | `game/src/render/text-register.js` | the drawn-string extents (`x`, `w`, per surface). Extend its record with the owning element id; do **not** write a second register. Its `clipped` flag is canvas-clip only — that is why it said `clipped:false` on a run that left its panel. |
 | `game/src/ui/system.js` `getUIState()` | the declared rects, and the existing `toast.fits`/`overflow_px` block (lines 1154–1170). **Generalise that one block** to every text-bearing element. No per-element special case. |
 | `game/src/ui/type.js` `wrap()` / `ellipsise()` / `normalise()` | already exist. Replace hud.js's inline greedy wrap with them. |
-| `tools/analysis/ui-census.mjs` | the existing browser-driving UI instrument, already carrying a `--self-test` that goes red on purpose. A1/A2 go **here**. Do not write `toast-fit.mjs`. |
-| `tools/experience/lib/sabotage.mjs` | the control-integrity facility and its five verdicts. `COUPLED_YARDSTICK` is a **sixth verdict on this facility**, not a new tool. Its contract — *"a control FAILS when its arms agree"* — needs one more clause: *and when the two sides read one source.* |
+| `tools/analysis/ui-census.mjs` | the existing browser-driving UI instrument, already carrying a `--self-test` that goes red on purpose. A1/A2a/A2b go **here**. Do not write `toast-fit.mjs`. |
+| `game/src/harness/api.js` `__HARNESS.drawOnMenus()` (`:939-949`) | **added by BLOCKING-6.** The clip-free reference draw A2a needs. Extend the signature additively — `drawOnMenus(text, { x, y, face, size, color } = {})`, defaulting to today's five values (`20,120`, face `bone`, size 16, `#fff`) so the three existing callers (`w1-08-r2-probe.mjs`, `w1-26-opening.mjs`, `w1-26-r2-scene.mjs`) are untouched. A third owner declared against W1-21/W1-26. |
+| `tools/harness/ui-pause.mjs` (`M-P5`, `:129-192`) | the precedent for a UI-on/UI-off pixel diff with `pngjs`, decode + centre-box arithmetic, over a state where the sim frame is held still. A2b reuses this file's decode/diff rather than writing a third one. |
+| `tools/experience/lib/sabotage.mjs` | the control-integrity facility, now with **ten** verdicts (`:120-130`), not five/six as earlier drafts said. `COUPLED_YARDSTICK` is the **tenth**, not a new tool. Its contract — *"a control FAILS when its arms agree"* — needs one more clause: *and when the two sides read one source.* Piece B only; not touched by Piece A. |
 | `tools/analysis/impossibility-screen.mjs` | the precedent for a screen that may report a negative and may **never** report a positive, fenced in code with `--self-test-fence`. Piece B's static half copies that fence verbatim in shape. |
 | `tools/quests/faction-joining-probe.mjs`, `reports/w1-20/instrument-test.json` | the falsification record that found this. Cite it; do not re-derive it. |
 
@@ -183,20 +202,39 @@ verbs (those have a perturbation by construction). 5. B2 and B3. 6. Fix or ledge
 
 ---
 
-## 6. BLOCKING unknown — one, and one measurement closes it
+## 6. BLOCKING unknown — CLOSED IN TEXT by BLOCKING-2, no browser needed
 
-**Is the HUD surface's context instrumented by `render/text-register.js` in the state
-`ui-census.mjs` drives, with a non-zero `w` on the toast's run?** `glyphs.drawText` calls
-`ctx.__esNoteText` only `if (ctx.__esNoteText)`, and the register installs that hook only on
-contexts it owns and only while `reg.enabled`. If the HUD context is not instrumented in that
-state, **A1 does not exist** and everything falls back to A2, which is roughly 8× the cost per
-string and cannot run over all 75.
+**Superseded finding, kept for the record: this section originally proposed querying
+`getRenderedText({ surface: 'hud' })`. There is no surface named `hud`.** The renderer declares
+exactly three — `dialogue`, `title`, `menus` (`render/renderer.js:124-129`) — and the HUD is on
+`menus`, declared verbatim as *"ui/hud.js + ui/screens/* — the HUD and the menus, via
+ui/glyphs.js drawText"*. `coverage()` with an unknown surface name yields `scope = []`, so
+`complete = blind.length === 0 && scope.length > 0` is **false** and `entries` is `[]` — the
+original proposal was itself an empty-set query, in a piece about checks that cannot disagree with
+themselves. `complete: false` is the guard that catches it, but only if the caller branches on
+`complete`, never on `entries.length`.
 
-*The one measurement:* in `ui-census.mjs`'s existing state, raise a toast and call
-`getRenderedText({ surface: 'hud' })`; report the entry count and whether the toast's string is
-present with `w > 0`. One browser-minute. I could not take it without launching a browser, which
-this role does not do — so it is stated here rather than guessed (PLAN-LOOP: a wrong build is much
-more expensive than a named unknown).
+**Resolution, ruled, closed rather than carried: A1 exists.** The chain is static and complete:
+
+1. `renderer.js:106` constructs `this.menus = new UISurface(...)`; `:129` calls
+   `textRegister.instrument(this.menus.ctx, 'menus')` **unconditionally in the constructor** —
+   there is no state in which a Renderer exists and the menus context lacks the hook.
+2. `instrument()` installs `ctx.__esNoteText` (`text-register.js:216`).
+3. `glyphs.drawText()` ends `if (ctx.__esNoteText) ctx.__esNoteText(s, x, y, adv, size)`
+   (`glyphs.js:255-256`), with `adv` the accumulated pen advance — exactly the quantity A1 wants.
+4. `ui/system.js:624` calls `drawHUD(S, ...)` inside `build()`, and `build()` is called from
+   `getUIState()` as well as from `render()` (`:556-558`).
+5. `surface.js:190-215` `el()` invokes the draw callback immediately, so the toast's `drawText`
+   calls happen during `getUIState()`.
+
+The corrected recipe is `getRenderedText({ surface: 'menus' })`, branching on `complete`, never on
+`entries.length`. **The one real trap, which replaces the false one:** `build()` is cached per frame
+on `(builtFrame, mode, touch/focus/pending signature)` (`system.js:600`/`601`), so a probe that
+clears the register and then calls `getUIState()` twice on the same frame repaints nothing and gets
+an empty register — an empty result that reads exactly like a clean one. Clear, then force a
+rebuild (`ui.build(ctx, true)`, e.g. via `uiToast()` itself, which already forces one) or advance a
+frame, then read; and assert `entries.length > 0` (or `distinct_count > 0`) before computing
+anything from the entries.
 
 ## 7. CARRIED risks — write these into the build brief, do not argue them now
 

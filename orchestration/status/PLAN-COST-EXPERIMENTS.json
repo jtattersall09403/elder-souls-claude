@@ -1,0 +1,13 @@
+{
+  "task_id": "PLAN-COST-EXPERIMENTS",
+  "role": "plan",
+  "piece": "COST-EXPERIMENTS",
+  "state": "running",
+  "started_at": "2026-08-08",
+  "summary": "Plan agent for COST-EXPERIMENTS: turn external cost claims into runnable, attributable experiments. Plan only, no build.",
+  "next_step": "Read COST.md, research report, PLAN-LOOP.md, RULES.md; survey instruments; write orchestration/plans/COST-EXPERIMENTS.md",
+  "files_claimed": ["orchestration/plans/COST-EXPERIMENTS.md", "orchestration/status/PLAN-COST-EXPERIMENTS.json"],
+  "files_touched": ["orchestration/status/PLAN-COST-EXPERIMENTS.json"],
+  "blockers": [],
+  "notes": ["Depends on COST-INSTRUMENT (tools/cost.mjs -> docs/data/cost-ledger.json); nothing here is measurable before it lands."]
+}

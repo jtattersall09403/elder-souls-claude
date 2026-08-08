@@ -495,9 +495,10 @@ function selfTest() {
     && /<th style="text-align:center">center<\/th>/.test(armAHtml)
     && /<th style="text-align:right">right<\/th>/.test(armAHtml));
   check('table default (unaligned) column has no style attr', /<th>code<\/th>/.test(armAHtml));
-  check('table has exactly 2 body rows', (armAHtml.match(/<tbody>[\s\S]*<\/tbody>/)[0].match(/<tr>/g) || []).length === 2);
+  const tbodyM = armAHtml.match(/<tbody>[\s\S]*<\/tbody>/);
+  check('table has exactly 2 body rows', !!tbodyM && (tbodyM[0].match(/<tr>/g) || []).length === 2);
   check('pipe inside a code span in a cell does NOT split the cell', /<code>x\|y<\/code>/.test(armAHtml));
-  check('escaped pipe in a cell renders as a literal pipe, one cell', /<td>escaped \| pipe<\/td>/.test(armAHtml));
+  check('escaped pipe in a cell renders as a literal pipe, one cell', /<td[^>]*>escaped \| pipe<\/td>/.test(armAHtml));
   const armALeaks = detectMarkdownLeakage(armAHtml);
   check('detector finds zero leaks in a clean, fully-supported document', armALeaks.length === 0,
     armALeaks.length ? JSON.stringify(armALeaks) : undefined);
