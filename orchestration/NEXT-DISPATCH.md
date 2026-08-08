@@ -1,5 +1,55 @@
 # Next dispatches, in priority order
 
+## ~~Z. The blog embedded 12 images from a directory `.gitignore` will never publish~~ — FIXED
+
+The playability agent's live sweep found `docs/index.html` and `docs/progress.html` each embedding
+12 `<img>`s under `../reports/wld12-blind/f12.png` … `f23.png` — 12 distinct files, verified by
+`curl` against the live site (all 404) and against `git ls-files` (0 tracked; `reports/.gitignore`
+excludes the whole directory on purpose, 701 MB of run artifacts). `reports/wld12-blind/` is not a
+broken path, it is a **blind border-judging pack** (RI-WLD12, `tools/world/wld12-blind-pack.mjs`) —
+measurement material, deliberately shuffled for a fresh judge, never meant to be public. Confirmed
+count matches the dispatch's "12" exactly; no third page carried the same defect (root `index.html`
+and `README.md` have no image refs at all).
+
+**Root cause, one directory upstream of both broken pages:** `tools/progress.mjs`'s "Latest
+captures" section (embedded into `docs/index.html` too — `tools/blog.mjs` inlines
+`docs/progress.html`'s body) walked all of `reports/` and took whatever 12 files were newest by
+directory-read order — not by mtime, and not restricted to anything actually publishable. Twice a
+week that is a real screenshot from `tools/capture/`; this time it was the blind pack.
+
+**Fix — a source-directory change, not a per-file copy.** `docs/shots/` is this project's one
+directory that is *always* published (rule 27; 253 files, all git-tracked, all verified live 200):
+`tools/progress.mjs` now walks `docs/shots/` instead of `reports/`, sorted by real mtime. No image
+was moved into `docs/shots/` from the blind pack — those 12 frames are evaluation instruments with
+an answer key held separately (`KEY.json`) and publishing them is the "genuinely should not be
+published" case the dispatch asked to distinguish; the fix is that "Latest captures" now can only
+ever draw from what is already published, so this class cannot recur through this code path.
+Regenerated both pages (`node tools/progress.mjs && node tools/blog.mjs`); HEAD now has zero
+`reports/` references in either.
+
+**The check that stops it recurring:** `tools/playability/check-image-refs.mjs` — resolves every
+href/src in `index.html`, `docs/index.html`, `docs/progress.html`, `README.md` and all 67
+`docs/blog/*.md` posts (215 unique internal references currently), and asserts each is both
+git-tracked at HEAD and live-200 via `curl` (the proxy here 403s node `fetch`; curl is what
+actually reaches the host, same finding as `tools/world/verify-live-site.mjs`). `--self-test` has
+three arms, not two, because the third is the actual defect reproduced live: a real published shot
+comes back clean, a fabricated path is reported, and `reports/wld12-blind/f12.png` — while it still
+exists on this disk — comes back both untracked and gitignored, matched against `--url` live 404.
+All three currently PASS (`node tools/playability/check-image-refs.mjs --self-test`), and a full
+run against the live site currently reports 0 broken of 215.
+
+**Ruling, reversible: not wired into the pre-commit hook.** Rule 13 — a fail-closed gate that fires
+on a neighbour's in-flight screenshot commit stops the whole box, and this project already paid for
+that once. It is runnable on demand (`node tools/playability/check-image-refs.mjs`) and belongs in
+the same "run before every bank" habit as `verify-live-site.mjs` and `verify-links.mjs`, not in a
+gate nobody chose to arm. Overturn this if a week goes by with the manual habit visibly not
+happening and a second broken-image round lands — that is the evidence it would take.
+
+Note for whoever next edits `docs/index.html` or `docs/progress.html` by hand: both are on the
+pre-commit hook's regenerated-file list (rule 17.2) — edit `tools/progress.mjs` / `tools/blog.mjs`
+and regenerate, don't hand-patch the HTML, or the next `node tools/progress.mjs` run silently
+reverts it.
+
 ## P. The playable build — when the owner gets to have a go
 
 > Owner: *"once the game is 'playable' in some way (i.e. I could have a go at running it in the
