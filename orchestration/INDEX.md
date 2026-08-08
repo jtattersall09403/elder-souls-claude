@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bab2271`: 646 tools, 153 reference
-items, 53 pieces in flight.
+so it cannot drift. Generated at `bda8677`: 651 tools, 153 reference
+items, 52 pieces in flight.
 
-Its purpose is to stop 53+ concurrent agents each paying separately to discover the
+Its purpose is to stop 52+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -489,14 +489,16 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/state-diff.mjs` — RI-JRN05's round-trip instrument, named by the item (§ "Instruments", line 213) and absent until now: the W1-00 round-2 critic verified its absence.
 - `tools/journey/world-runs-gate.mjs` — one implementation of "is the simulation actually advancing?", used by every journey rather than by one.
 
-### `tools/lib/` — 10
+### `tools/lib/` — 12
 
 - `tools/lib/absence.mjs` — the third thing TOOL-LOOP rule 1 names, and the one this project keeps skipping.
 - `tools/lib/browser.mjs` — Boots the game in headless Chromium and hands back a live handle to window.__HARNESS.
 - `tools/lib/chart-font.mjs` — THE shared 5x5 bitmap font for this project's chart/figure tools.
 - `tools/lib/cli.mjs` — Shared CLI helpers for the Elder Souls measurement harness.
+- `tools/lib/colour.mjs` — sRGB -> CIELAB (D65) and ΔE, in the units the corpus actually specifies.
 - `tools/lib/combat-node.mjs` — build a CombatSystem in bare Node, from the same modules the game runs.
 - `tools/lib/gamedata.mjs` — load the shipped game/data/** trees the way game/src/engine.js assembles them, so a static tool and the running game cannot drift.
+- `tools/lib/graded.mjs` — A CHECK WITH AN EMPTY SAMPLE SET MUST REPORT `EMPTY`, NEVER `PASS`.
 - `tools/lib/run.mjs` — Scenario execution + artifact writing.
 - `tools/lib/scenario.mjs` — Scenario loading + input-script normalisation.
 - `tools/lib/serve.mjs` — Minimal static file server.
@@ -674,7 +676,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 109
+### `tools/world/` — 112
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -710,6 +712,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-prov-shot.mjs` — **no header comment**
 - `tools/world/critic-road-join-consume.mjs` — **no header comment**
 - `tools/world/critic-road-join-ingame.mjs` — **no header comment**
+- `tools/world/critic-road-join-ridge.mjs` — **no header comment**
 - `tools/world/critic-road-join-stale.mjs` — **no header comment**
 - `tools/world/critic-road-water-probe.mjs` — **no header comment**
 - `tools/world/critic-visual-dispersion.mjs` — **no header comment**
@@ -777,6 +780,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r3-consume.mjs` — W1-04 round 3 — THE CONSUMPTION CHECK, and the picture.
 - `tools/world/w1-04-r3-exterior.mjs` — W1-04 round 3 — THE EXTERIOR HALF, MEASURED.
 - `tools/world/w1-04-r4-join.mjs` — W1-04 round 4 — THE JOIN: can a building's outside contain its inside?
+- `tools/world/w1-04-r4-live.mjs` — W1-04 round 4 — THE LIVE ARM: is the join a thing the RUNNING GAME does?
+- `tools/world/w1-04-r4-shots.mjs` — W1-04 round 4 — THE LIVE ARM AND THE TWO PICTURES.
 - `tools/world/w1-04-r4-vp04.mjs` — W1-04 round 4 — WHERE VP04 SHOULD STAND.
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
@@ -787,7 +792,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **146 tools have no header comment**, so nobody can tell what they do without
+> **147 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -961,16 +966,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-CROSSING` | in_progress | browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consu | `orchestration/status/W1-CROSSING.json` `tools/world/road-grade.mjs` `tools/world/crossing-body.mjs` `game/src/engine.js` `game/src/world/field.js` `tools/world/build-roads.mjs` |
+| `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-21-r3` | in_progress | offline: add sample counts + EMPTY grading to all 15 checks; markers derived; withdraw NO_ | `orchestration/status/W1-21-r3.json` |
 | `arbiter-map-s38` | started | Read ARBITRATION.md in full, S35 text, W1-21-r2.md section C. | — |
 | `W1-14-r4` | building | objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission  | `orchestration/status/W1-14-r4.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` `game/src/engine.js` `game/src/sim/magic/system.js` `game/src/sim/magic/apply.js` |
 | `critic-w1-21-r2` | done | orchestrator. Three arbitration questions are filed in the verdict JSON and need a ruling: | `corpus/90-verdicts/wave1/W1-21-r2.md` `corpus/90-verdicts/wave1/W1-21-r2.json` `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` `tools/ui/critic-w1-21-r2-b.mjs` `tools/ui/critic-w1-21-r2-consume.mjs` |
-| `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `critic-road-join` | ? | B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F w | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `critic-w1-map-r2` | running | screenshots (docs/shots), then write the verdict | `orchestration/status/critic-w1-map-r2.json` `tools/harness/critic-map-r2.mjs` |
-| `critic-w1-16-r3` | running | run tools/harness/critic-w1-16-r3-live.mjs (one browser), then write the verdict | `orchestration/status/critic-w1-16-r3.json` `tools/harness/critic-w1-16-r3-offline.mjs` `tools/harness/critic-w1-16-r3-live.mjs` `reports/w1-16/critic-r3-offline.json` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
-| `W1-CROSSING` | in_progress | read NEXT-DISPATCH SS W and P.4, W1-ROAD-JOIN.json, W1-05.json; run ownership + contention | `orchestration/status/W1-CROSSING.json` |
 | `W1-CHARTFONT-r2` | ? | read reports/w1-chartfont-damage.md and orchestration/status/W1-CHARTFONT.json; run --audi | `orchestration/status/W1-CHARTFONT-r2.json` |
 | `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |

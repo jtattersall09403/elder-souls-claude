@@ -676,7 +676,23 @@ async function runJourney() {
     // M4 clause 1 — the >= 60 s bar nobody has ever measured.
     const fcFrame = fcTrace ? fcTrace.frame : firstControlDriverFrame;
     const m4 = m4Clause1(traceRecords, fcFrame);
-    if (m4.status === 'measured') led.ok('m4_clause1', 'control precedes definition (seconds of available play)', m4.value);
+    if (m4.status === 'measured') {
+      led.ok('m4_clause1', 'control precedes definition (seconds of available play)', {
+        ...m4.value,
+        // WHAT THIS NUMBER IS A NUMBER ABOUT. It was `unmeasurable` for two waves and is
+        // measurable for the first time at W1-26 r3, so the first reader of it deserves the
+        // caveat rather than the trap: the opening's first node hands the body back and asks
+        // NOTHING until the player walks over and speaks to Jeeh-Ei. So "available play before
+        // the first character-defining field" is bounded by how long the DRIVER chooses to be a
+        // body, and this driver reaches for her immediately. A low value here is this loop's
+        // impatience; it is not evidence that the build asks early. The piece's own probe
+        // (`tools/harness/w1-26-opening.mjs`) plays the opening at a human pace and measures the
+        // same interval at 61.5 s, and the two do not disagree — they are asking different
+        // questions of the same graph.
+        note: 'bounded by how long THIS DRIVER waited before reaching for the speaker, not by when the build first asks; hold.come-to asks nothing until the player acts',
+        driver_paced: true,
+      });
+    }
     else led.unmeasurable('m4_clause1', 'control precedes definition', m4.why, 'A-JRN1/A-JRN7');
 
     // --- the UI-text stream, and the accessor demonstration ---------------------------------
@@ -1040,17 +1056,54 @@ async function driveBeats(handle, o) {
       else if (inp.kind === 'pick') answer = opts.slice(0, inp.count || 2).map((x) => x.id);
       else answer = opts.length ? (opts[0].value ?? opts[0].id ?? 0) : null;
 
+      // ANSWER THE WAY A PLAYER DOES, OR M4 CLAUSE 1 CANNOT BE MEASURED AT ALL.
+      //
+      // This is the second, independent reason `m4_clause1` read N/A, and repairing the
+      // `catch { break; }` above was necessary and not sufficient — after that repair the walk
+      // reached all twelve nodes and wrote all seven fields, and the trace STILL carried no
+      // `creation_field`. The cause is plumbing, and it is worth stating exactly:
+      //
+      //   `sim/step.js` line 64 calls `bus.clear()` at the TOP of the step, and `_afterStep()`
+      //   builds the frame record afterwards. So an event emitted OUTSIDE a step — which is what
+      //   the harness verb `censusAnswer` does, synchronously, from outside the loop — is wiped
+      //   by the next `stepOnce()` before any record can carry it. On the PLAYER's path the same
+      //   answer is queued as `_censusPending` and applied by `_censusApplyPending()` from inside
+      //   `_afterStep`, strictly before the record is built, so its `creation_field` IS in that
+      //   frame. `engine.js` says so in its own comment.
+      //
+      // A driver in `--input-mode real` that answers with the verb is therefore taking a
+      // measurement the player's path would pass and its own path cannot. It presses the button.
+      let answeredBy = 'harness';
       try {
-        await handle.h('censusAnswer', answer);
-        // STEP A FRAME, OR THE EVENT NEVER REACHES THE TRACE.
-        //
-        // `Engine.censusAnswer()` emits `creation_field` onto the bus, and the bus is drained
-        // into a frame record by `_afterStep()`. A walk that answers every node back to back
-        // without advancing the simulation emits all seven and records none of them — which is
-        // why `m4_clause1` still read "no character-field-writing event in the trace" on the
-        // first run after this loop was repaired, on a build that had just written seven fields.
-        // The measurement M4 clause 1 makes is about FRAMES; the walk has to spend some.
-        await handle.h('stepFrames', 2);
+        if (o.inputMode === 'real') {
+          // `interact` is bound to `["KeyE","Enter"]`; Enter commits whatever the surface has
+          // highlighted, which at every node is a legal answer (at a text node, a ledger name).
+          const nodeBefore = st.node;
+          // Down, a frame, up, a frame — the press has to be HELD across a latch. `realKey`
+          // presses and releases inside 16 ms of wall clock with the render rate at 0, so no
+          // fixed step ever sees the key down.
+          const tap = async (k, after = 2) => {
+            await handle.page.keyboard.down(k);
+            await handle.h('stepFrames', 1);
+            await handle.page.keyboard.up(k);
+            await handle.h('stepFrames', after);
+          };
+          if (inp.kind === 'pick') {
+            for (let k = 0; k < (inp.count || 2); k++) { await tap('Enter'); await tap('ArrowDown'); }
+          } else {
+            await tap('Enter', 3);
+          }
+          const nodeAfter = (await handle.hOpt('getCensusState') || {}).node;
+          if (nodeAfter !== nodeBefore) answeredBy = 'real input';
+        }
+        if (answeredBy !== 'real input') {
+          // Fall back to the verb rather than stalling — and SAY that it was the fallback, so a
+          // reader is never left thinking a harness answer was a button press.
+          await handle.h('censusAnswer', answer);
+          await handle.h('stepFrames', 2);
+        }
+        censusWalk.answered_by = censusWalk.answered_by || {};
+        censusWalk.answered_by[answeredBy] = (censusWalk.answered_by[answeredBy] || 0) + 1;
       } catch (e) {
         // NOT SWALLOWED. The scene refusing an answer on the walk that a player takes is the
         // single most important thing this driver can find, and it used to be the one thing it

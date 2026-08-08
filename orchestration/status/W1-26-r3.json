@@ -30,25 +30,15 @@
     "tools/journey/census-newgame.mjs",
     "tools/journey/name-entry.mjs",
     "tools/journey/opening-play.mjs",
-    "tools/w1-26-r3/hold-walkout.mjs",
-    "reports/w1-26-r3/"
-  ],
-  "files_claimed": [
-    "game/src/input/real.js",
-    "game/src/character/census.js",
-    "game/src/character/scene.js",
-    "game/src/sim/state.js",
-    "game/src/engine.js",
-    "game/data/dialogue/topics/writ-house.json",
     "tools/journey/journey-run.mjs",
-    "tools/journey/census-newgame.mjs",
-    "tools/journey/name-entry.mjs",
-    "tools/w1-26-r3/",
+    "tools/w1-26-r3/hold-walkout.mjs",
+    "tools/w1-26-r3/w1-26-r3-verify.mjs",
+    "tools/w1-26-r3/created-by-keyboard.mjs",
     "reports/w1-26-r3/",
-    "play.sh",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/2026-08-08-w1-26-r3-a-character-made-on-a-keyboard-standing-in-the-world.png"
   ],
+  "files_claimed": [],
   "notes": [
     "engine.js has 8 live declarers (most [done]); edits there are minimal and additive.",
     "journey-run --self-test fails 13/14 on 'accessor empty before any surface' (3 HUD strings). Verified NOT mine: identical failure at e00e6fe in a clean worktree. It is the HUD-on-the-title-screen defect the r2 verdict named in its own section 6.",
@@ -65,11 +55,15 @@
       "name-entry": "exit 0 \u2014 N1/N2/N3 pass; all 26 letters + space + hyphen verbatim",
       "hold-walkout": "the hold is walkable and the (-1.342,3.862) corner is NOT a trap (7 distinct destinations over 8 directions)",
       "jrn09-exchange": "ALL PASS \u2014 DTR_scene 0.9820 -> 1.0000, DTR(hold.out) 0.000 -> 1.000, no HF1. worst node DTR across the whole scene = 1.0",
-      "w1-26-r3-verify": "12 pass / 0 fail. CONSUMPTION coupling 1 (4 bodies -> 4 distinct drawn sentences AND 4 distinct writs). All four teardowns watched go red: A4 the desk throws again, B3 the engine string reaches a drawn row again, C2 the name comes back empty, D3 hold.out drops to 0 drawn rows."
+      "w1-26-r3-verify": "12 pass / 0 fail. CONSUMPTION coupling 1 (4 bodies -> 4 distinct drawn sentences AND 4 distinct writs). All four teardowns watched go red: A4 the desk throws again, B3 the engine string reaches a drawn row again, C2 the name comes back empty, D3 hold.out drops to 0 drawn rows.",
+      "created-by-keyboard": "4 pass / 0 fail. A WHOLE character made with nothing but real DOM key events from the title screen: Jekq-Vozbnu Twylfax, Saxhleel, Salt-Blade, raj-xul, raised interior, carrying the stamped writ, 11 nodes. This is RI-JRN01 M13's keyboard leg over the journey rather than over the title's first two button presses.",
+      "A-JRN1 journey-run": "census_walk pass, 12 nodes reached, 7 fields written (was: broke on iteration 1, wrote nothing, reported N/A). m4_clause1 is MEASURED for the first time in the project: 1.03 s, first_control 141 -> first_defining 203."
     }
   },
   "findings": [
     "The r2 P10 'pinned on geometry' reading is wrong. tools/w1-26-r3/hold-walkout.mjs sweeps 8 directions from the exact frozen position with a per-arm scene reset: every direction moves, 7 distinct destinations. The r2 walker's twenty 0.000 m samples were a world that was not advancing, not a crate. opening-play.mjs now carries frames_advanced so the two can never be confused again.",
-    "My own first corner control was inert (all 8 arms shared one contaminated state and returned the identical 4.816 m to the identical position). Caught and fixed before it was reported \u2014 rule 6, in the control written to detect rule 6."
+    "My own first corner control was inert (all 8 arms shared one contaminated state and returned the identical 4.816 m to the identical position). Caught and fixed before it was reported \u2014 rule 6, in the control written to detect rule 6.",
+    "m4_clause1's N/A had a SECOND cause the brief did not know about, and repairing the bare `catch { break; }` was necessary but not sufficient. `sim/step.js:64` calls bus.clear() at the TOP of the step and `_afterStep()` builds the record afterwards, so an event emitted OUTSIDE a step - which is what the harness verb censusAnswer does - is wiped before any record can carry it. creation_field therefore reaches the trace on the PLAYER's path (queued as _censusPending, applied from inside _afterStep) and never on the harness's. The driver now presses Enter instead of calling the verb, and m4_clause1 measures.",
+    "m4_clause1 = 1.03 s is the DRIVER's patience, not the build's restraint: hold.come-to asks nothing until the player reaches for Jeeh-Ei, so the interval is bounded by how long the driver waits. Recorded as `driver_paced: true` with a note in the ledger row so the first reader of a number that has been N/A for two waves cannot misread it. The piece's own probe measures 61.5 s at a human pace and the two do not disagree."
   ]
 }
