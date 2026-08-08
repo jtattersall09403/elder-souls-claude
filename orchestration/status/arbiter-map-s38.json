@@ -1,25 +1,45 @@
 {
   "task_id": "arbiter-map-s38",
   "role": "arbiter",
-  "state": "measuring",
-  "commit_measured_at": "bda8677",
-  "summary": "S38: S35's 'no square for a place the player has not stood in' binds the DERIVATION, not the save file's authenticity. Enforceable: soundness of derivation. Not enforceable: authenticity of the primitive.",
-  "findings": [
-    "Province 193x222 = 42,846 cells at 25 m; 42 places in pois.json; 721 justifying cells (1.683% of province).",
-    "EXHAUSTIVE over all 42,846 single-cell footprints: 0 unjustified places, 0 unjustified revealed cells. Union law verified 40/40 => the result is a proof over all 2^42846 saves.",
-    "Maximal forgery: 42 places, 100% province, 57,128 B. Minimum forgery: 42 cells, 108 B, 42 places, 33.67%. Honest 7-place walk: 557 cells, 8 places, 28.09%.",
-    "Connectivity-constrained forgery (the only further derivable check): 848 cells, 1,464 B, 42 places, 46.41% - the constraint makes the forged map show MORE, not less.",
-    "pois.json is 16,110 B of plaintext naming all 42 places at float precision; the forger must read it to write the forgery.",
-    "Wrong assertion identified: tools/analysis/journal-ui.mjs:199-201 (JU8) asserts mapThrew && map_exists===false, both required FALSE by S35. Cannot pass."
+  "state": "done",
+  "commit_measured_at": "f94df62",
+  "ruling": "corpus/00-doctrine/ARBITRATION.md S38 \u2014 amends S35 in place",
+  "summary": "S35's 'no square for a place the player has not stood in' binds the map's DERIVATION and the game's own authoring surface, not the authenticity of a save file. Enforceable: one non-derived field, a map that is a pure function of it, no naming parameter or accessor, an itemised load audit. Not enforceable, and now explicitly not required: distinguishing a forged footprint from a real one. A critic may not fail a build for a forged footprint.",
+  "measured": {
+    "province": "193x222 = 42846 cells at 25 m; 42 places in pois.json",
+    "exhaustive_generator_sweep": "42846/42846 cells, each asserted alone AND carrying every claim an attacker can write: 0 unjustified squares, 0 out-of-sightline cells; 721 place-emissions from 721 cells (1.683%)",
+    "union_law": "40/40 random footprints agree with the union of their own cells => the sweep is a proof over all 2^42846 saves",
+    "pre_s38_control": "1,798,811 unjustified squares of 1,799,532 place-emissions (99.96%), from 100% of cells; 1,776,659,696 out-of-sightline cells; exit 1 on 4 of 6",
+    "forgery_cost": "honest 557c/980B/8p/28.09% (connected); minimum 42c/108B/42p/33.67% (NOT connected); connected tour 848c/1464B/42p/46.41%; maximal 42846c/57128B/42p/100%",
+    "contiguity_rejected": "requiring a connected footprint raises the forged map from 33.67% to 46.41% of the province \u2014 the tightening makes it show MORE",
+    "disclosure_bound": "the map's whole vocabulary is a 25 m quantisation of pois.json, 16,110 B of plaintext naming all 42 places at float precision on the same disk"
+  },
+  "instrument": {
+    "tool": "tools/map/arbiter-map-s38.mjs",
+    "shipped": "6/6, exit 0, 24 s, no browser",
+    "control": "--control=pre-s38 -> 4 of 6 FAIL, exit 1",
+    "self_test": "--self-test -> 5/5 arms went red as predicted, exit 0",
+    "broken_on_purpose": "leak removed from ARM3 in a scratch copy -> ARM3 GREEN, self-test exit 2 (RULES.md 4)"
+  },
+  "wrong_assertion_named": "tools/analysis/journal-ui.mjs:199-201 (JU8) asserts mapThrew && ui.map_exists === false \u2014 S35 requires both FALSE, so it cannot pass at HEAD. Secondary: tools/harness/w1-21-r2-forge.mjs R8 asserts placeCount === 42, i.e. green when the forgery works and red if the map got stricter.",
+  "does_not_decide": [
+    "whether footprint contiguity should ever be required (measured, referred; needs a running-world invariance measurement first)",
+    "the two independent 'where the body has been' records (travel.visited vs Discovery)",
+    "the non-map elements on the map screen (HUD numerals, markers: 0 literal)",
+    "the mutatorReport() accessor repair inside game/src/sim/discovery.js \u2014 a builder's",
+    "the W1-21-r2 score: AR-2 does not become a fail, and no number moves",
+    "save integrity as a product decision"
   ],
-  "next_step": "Write tools/map/arbiter-map-s38.mjs with --self-test, run it, then write S38 into ARBITRATION.md and amend S35.",
-  "browser": "none used - every measurement is bare Node against the shipped Discovery model",
-  "files_touched": ["orchestration/status/arbiter-map-s38.json"],
-  "files_claimed": [
+  "browser": "none \u2014 every measurement is bare Node against the shipped Discovery model; tools/contention.mjs --gate not needed",
+  "game_src_edited": false,
+  "next_step": "none \u2014 ruling landed, gate green, S35 amended in place",
+  "files_touched": [
     "corpus/00-doctrine/ARBITRATION.md",
     "tools/map/arbiter-map-s38.mjs",
-    "reports/arbiter-map-s38/",
+    "orchestration/status/arbiter-map-s38.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
-  ]
+    "docs/shots/2026-08-08-s38-what-a-forged-save-can-and-cannot-put-on-the-map.png"
+  ],
+  "files_claimed": [],
+  "note_on_report_json": "reports/arbiter-map-s38/{gate,gate-pre-s38,self-test}.json are written by the tool and are gitignored by reports/.gitignore as reproducible run artifacts. Re-run `node tools/map/arbiter-map-s38.mjs` (24 s, no browser) to regenerate them."
 }

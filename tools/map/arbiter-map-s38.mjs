@@ -52,8 +52,13 @@ const OUT = 'reports/arbiter-map-s38';
 const SRC = fileURLToPath(new URL('../../game/src/sim/discovery.js', import.meta.url));
 
 const argv = process.argv.slice(2);
-const has = (f) => argv.includes(f);
-const val = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
+const has = (f) => argv.some((a) => a === f || a.startsWith(f + '='));
+const val = (f, d) => {
+  const eq = argv.find((a) => a.startsWith(f + '='));
+  if (eq) return eq.slice(f.length + 1);
+  const i = argv.indexOf(f);
+  return i >= 0 ? argv[i + 1] : d;
+};
 
 // ---- the world, loaded once ------------------------------------------------------------------
 
@@ -202,17 +207,22 @@ function run(subject, { exhaustive = true } = {}) {
     { trials: unionTrials, mismatches: unionBad });
 
   // ---- S38-3 — GENERATOR SOUNDNESS, EXHAUSTIVE ------------------------------------------------
-  // For EVERY one of the province's cells, taken alone as a forged footprint: every place the map
-  // names must be a place whose OWN built pad contains that cell's centre, and every revealed cell
-  // must lie inside the region sightline cap of it. With S38-2 this is a complete statement about
-  // all 2^N saves, not a sample.
+  // For EVERY one of the province's cells, taken alone as a forged footprint AND accompanied by
+  // every claim an attacker can write into the same blob: every place the map names must be a
+  // place whose OWN built pad contains that cell's centre, and every revealed cell must lie inside
+  // the region sightline cap of it. With S38-2 this is a complete statement about all 2^N saves,
+  // not a sample — and carrying the claims is what makes it able to fail: a loader that believes
+  // any field but the footprint emits 42 unjustified squares on every one of the 42,846 cells.
   let gen = 0, badPlaces = 0, badCells = 0, emissions = 0, emitters = 0, worstDist = 0;
   const unjustifiedExamples = [];
   if (exhaustive) {
     const s = subject.make();
     const span = Math.ceil(MAX_R / CELL) + 1;
+    const allOnesRaster = Buffer.from(new Uint8Array((TOTAL + 7) >> 3).fill(0xFF)).toString('base64');
+    const allNames = SITES.map((x) => x.id);
     for (let i = 0; i < TOTAL; i++) {
-      const res = s.load({ stood: footprintBlob([i]) });
+      const res = s.load({ stood: footprintBlob([i]), cells: allOnesRaster, places: allNames,
+        revealed: TOTAL, derived_from: 'places' });
       gen++;
       if (res.places.length) emitters++;
       emissions += res.places.length;
