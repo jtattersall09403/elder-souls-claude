@@ -24,16 +24,33 @@ function readJSON(p) {
 // ---- the quest book ----------------------------------------------------------------------
 const quests = new Map();          // id -> quest
 const sourceOf = new Map();        // id -> file it came from
+const docsByFile = {};             // file -> parsed doc, the same shape QuestBook's constructor eats
 if (!existsSync(QDIR)) { console.error('check-quests: game/data/quests does not exist'); process.exit(2); }
 for (const f of readdirSync(QDIR).filter((f) => f.endsWith('.json'))) {
   const doc = readJSON(join(QDIR, f));
   if (!doc) continue;
+  docsByFile[f] = Array.isArray(doc) ? { quests: doc } : doc;
   const list = Array.isArray(doc) ? doc : (doc.quests || []);
   for (const q of list) {
     if (!q || typeof q.id !== 'string') { problems.push(`${f}: a quest with no id`); continue; }
     if (quests.has(q.id)) { problems.push(`${q.id}: defined twice (${sourceOf.get(q.id)} and ${f})`); continue; }
     quests.set(q.id, q);
     sourceOf.set(q.id, f);
+  }
+}
+
+// GATE-BLAST-RADIUS (RULES.md rule 14). `game/src/sim/quest/defs.js`'s `QuestBook` constructor
+// used to be the ONLY place these rules ran, and it threw — so this is the same rules, over the
+// same data, run here instead so a violation fails a commit rather than every agent's boot. The
+// engine's own `new QuestBook(...)` now defaults to non-throwing (RULES.md rule 13); `strict: true`
+// is this tool's, so a drift between the two is impossible by construction — there is one
+// implementation of the rules, not two that can quietly disagree.
+{
+  const { QuestBook } = await import('../game/src/sim/quest/defs.js');
+  try {
+    new QuestBook(docsByFile, { strict: true });
+  } catch (e) {
+    problems.push(`QuestBook constructor rules (RI-QST04/RI-QST09, game/src/sim/quest/defs.js): ${e.message}`);
   }
 }
 const journalHas = (q, ix) => (q.journal || []).some((e) => e.index === Number(ix));

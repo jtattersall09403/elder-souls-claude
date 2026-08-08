@@ -143,6 +143,54 @@ if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
   }
 }
 
+// GATE-BLAST-RADIUS (RULES.md rule 13). This is the push/deploy chokepoint the per-agent
+// pre-commit gate now defers to: `tools/check-shipped-files.mjs` blocks an individual `git commit
+// --only` only when THAT commit's own paths are the offending importer, and warns-and-passes
+// otherwise, on purpose — a fail-closed check that fired on a neighbour's in-flight work cost a
+// builder fourteen consecutive refused commits. But something has to actually keep a broken import
+// off the deployed site, and this is it: one actor, not a dozen racing ones.
+//
+// `git add -A` above already resolved the common case — a file that exists on disk anywhere gets
+// staged and tracked here regardless of who wrote it, so "NOT IN GIT" mostly self-heals under a
+// bank. What survives to this point is "MISSING ON DISK": a tracked importer names a path nothing
+// on this machine has written yet. That genuinely cannot ship.
+//
+// Same shape as the parse-check above, deliberately: un-stage the offender rather than refuse the
+// whole bank, because the other N files still need saving (rule 1) — a bank that stops entirely
+// over one broken import is the fail-closed-for-everyone failure moved one level up, not fixed. If
+// the offending importer is part of THIS bank's own diff, unstaging it keeps the NEW brokenness out
+// of what ships this round; the importer's other changes wait for a later bank once the target
+// exists. If the importer predates this bank (unchanged, already at HEAD), there is nothing to
+// unstage — that breakage was already live before this bank ran, and unstaging a no-op would hide
+// it rather than fix it, so it is reported exactly as loudly instead, for the orchestrator to act on.
+{
+  const { scan, ownerOf } = await import('./check-shipped-files.mjs');
+  const { problems } = scan();
+  if (problems.length) {
+    const seen = new Set();
+    const uniq = problems.filter((p) => { const k = p.kind + p.rel + p.importer; if (seen.has(k)) return false; seen.add(k); return true; });
+    const stillStaged = new Set(execFileSync('git', ['diff', '--cached', '--name-only'], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean));
+    const toUnstage = [...new Set(uniq.filter((p) => stillStaged.has(p.importer)).map((p) => p.importer))];
+    console.log(`bank: PUSH GATE — ${uniq.length} unresolved import problem(s) the deployed site would 404 on:`);
+    for (const p of uniq) {
+      const owner = ownerOf(p.rel);
+      const fixable = stillStaged.has(p.importer);
+      console.log(`  ${p.kind.padEnd(15)} ${p.rel}  (imported by ${p.importer})${owner ? `  — claimed by (live): ${owner}` : ''}`);
+      console.log(`  ${''.padEnd(15)}   ${fixable ? 'part of this bank — excluding it from the commit' : 'ALREADY AT HEAD — this is live on the deployed site right now'}`);
+    }
+    if (toUnstage.length) {
+      try { execFileSync('git', ['restore', '--staged', ...toUnstage], { cwd: ROOT, stdio: 'pipe' }); } catch { }
+      for (const p of toUnstage) { const i = staged.indexOf(p); if (i !== -1) staged.splice(i, 1); }
+      console.log(`bank: excluded ${toUnstage.length} path(s) from this commit; the rest of the tree still banks.`);
+    }
+    if (uniq.some((p) => !stillStaged.has(p.importer))) {
+      console.log('bank: at least one of the above predates this bank and cannot be fixed by unstaging —');
+      console.log('      it is a standing defect on the shipped tree. Dispatch its owner (named above where known).');
+    }
+    if (!staged.length) { console.log('bank: nothing left to bank.'); process.exit(0); }
+  }
+}
+
 const owners = claims();
 const byPiece = new Map();
 const unclaimed = [];

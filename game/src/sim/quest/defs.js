@@ -59,8 +59,20 @@ export const RES_METHODS_KNOWN = new Set([...RES_METHODS_NONVIOLENT, ...RES_METH
 export class QuestBook {
   /**
    * @param {object} docs  engine.data.quests — id -> parsed game/data/quests/*.json
+   * @param {{strict?: boolean}} [opts]  GATE-BLAST-RADIUS (RULES.md rule 14): this used to throw
+   *   unconditionally, so ANY quest content problem — anywhere in the tree, authored by anyone —
+   *   killed engine construction, and "every agent boot-checks before it measures" (rule 13) meant
+   *   one author's unfinished quest failed every OTHER agent's boot, repeatedly (`QuestBook: 16
+   *   integrity failure(s)` from a neighbour's data took down a whole fleet's browser probes).
+   *   Content integrity belongs in a check, not a constructor. Default is now non-throwing: the
+   *   live engine (every `new QuestBook(...)` call in game/src) logs the same message loudly and
+   *   proceeds with the data as loaded, so a broken quest degrades that quest, not everyone's boot.
+   *   `strict: true` restores the throw for the one caller that should actually block on it:
+   *   `tools/check-quests.mjs`, run at commit/push time against a single tree by a single actor,
+   *   which is where rule 13 says a repo-wide assertion belongs.
    */
-  constructor(docs) {
+  constructor(docs, opts) {
+    const strict = !!(opts && opts.strict);
     this.byId = new Map();
     this.sourceOf = new Map();
     this.problems = [];
@@ -71,10 +83,19 @@ export class QuestBook {
       for (const q of list) this._add(q, key);
     }
     this._check();
-    if (this.problems.length) {
-      throw new Error(`QuestBook: ${this.problems.length} integrity failure(s) in game/data/quests/**\n  - ${this.problems.slice(0, 24).join('\n  - ')}`);
-    }
     this.ids = [...this.byId.keys()].sort();
+    if (this.problems.length) {
+      const msg = `QuestBook: ${this.problems.length} integrity failure(s) in game/data/quests/**\n  - ${this.problems.slice(0, 24).join('\n  - ')}`;
+      if (strict) throw new Error(msg);
+      // eslint-disable-next-line no-console
+      console.error(msg);
+      // eslint-disable-next-line no-console
+      console.error('QuestBook: continuing with the data as loaded — this used to throw here and take');
+      // eslint-disable-next-line no-console
+      console.error('every agent\'s boot-check down over quest content none of them own (RULES.md rule');
+      // eslint-disable-next-line no-console
+      console.error('13/14). `node tools/check-quests.mjs` is the blocking form, run over the same rules.');
+    }
   }
 
   _add(q, source) {

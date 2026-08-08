@@ -77,23 +77,42 @@ git add orchestration/INDEX.md 2>/dev/null || true
 # Keep the published page current on EVERY commit. GitHub Pages serves /docs from this
 # branch, so a stale page is a silent lie about where the project is — and gating this on
 # which paths changed is how it went stale in the first place. Both generators are cheap.
+# publish.mjs also refreshes the cost ledger (tools/cost-refresh.mjs -> docs/data/cost-ledger.json)
+# so the published cost figure is never more than one bank old — COST.md §6, "refresh cadence:
+# every bank". Both the ledger and its failure marker are staged: an unstaged failure marker means
+# the page on the site claims a reading is current when the local tree knows it is not.
 node tools/publish.mjs >/dev/null 2>&1 || true
 git add docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
+# -A is scoped to docs/data/ deliberately (rule 17 forbids an unscoped one): the failure marker is
+# DELETED on a successful refresh, and `git add <path>` cannot stage a deletion, so a cleared
+# failure would otherwise stay committed and the page would keep crying wolf.
+git add -A docs/data 2>/dev/null || true
 
 # Keep the PLAYABLE copy current. GitHub Pages serves docs/, and the game lives in game/, so until
 # this existed the game was not on the web at all and the answer to "how do I play this on a phone"
 # was "you can't". docs/play/ is generated from game/ and is never a source; --check fails loudly if
 # somebody edits it, which is the reader that stops this becoming the fifth mirror in this project.
 # Only regenerate when game/ actually changed — it is 710 files and every commit does not need it.
-# BLOCKING. Everything the game imports must be IN the repository, not merely on this disk.
+# Everything the game imports must be IN the repository, not merely on this disk.
 # `game/src/input/hold-gate.js` was written, imported by two modules, and never committed: it ran
 # perfectly here and 404'd on the deployed site, where a failed ES module import draws nothing and
 # reports nothing. The owner got a black screen on their phone and no instrument could have seen
-# why, because every check ran against a machine where the file existed.
+# why, because every check ran against a machine where the file existed. THAT PROTECTION STAYS.
 #
-# This one is blocking, unlike its neighbours, because the failure is invisible from the game and
-# only appears after a push. Rule 13 was honoured in order: the tree was made green first (by
-# committing the missing file) and the gate armed in the same commit.
+# GATE-BLAST-RADIUS (rule 13, second offence): this WAS unconditionally blocking, over every
+# tracked-or-staged file in the whole tree, not just this commit's own paths. A builder hit
+# fourteen consecutive refusals over two files belonging to a different, concurrently running
+# agent — untracked on disk, imported by a file tracked in some earlier, unrelated commit. Narrowing
+# the SCAN (tracked-or-staged only) had already happened and did not touch this, because the
+# importer in that shape is itself tracked; the fix has to be about which PROBLEMS block, not which
+# files are scanned. So: `check-shipped-files.mjs` now blocks only a problem THIS commit can fix —
+# the offending importer or target is among the paths this very commit is writing (verified: `git
+# commit --only <paths>` runs this hook against a temporary index containing exactly those paths,
+# so the check sees precisely what is about to be committed). Everything else prints loudly, names
+# the importer and (via `tools/ownership.mjs --for`) whoever owns it if known, and lets the commit
+# through. The single blocking gate over EVERYTHING, self-introduced or not, is `tools/bank.mjs`
+# (`--strict`) at push/deploy time — one actor who can actually act on it, not a dozen racing agents
+# each hitting a wall over work that is not theirs.
 if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
   node tools/check-shipped-files.mjs
 fi

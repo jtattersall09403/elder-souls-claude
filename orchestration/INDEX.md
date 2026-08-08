@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3979d78`: 790 tools, 153 reference
-items, 91 pieces in flight.
+so it cannot drift. Generated at `db449a5`: 795 tools, 153 reference
+items, 90 pieces in flight.
 
-Its purpose is to stop 91+ concurrent agents each paying separately to discover the
+Its purpose is to stop 90+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -92,7 +92,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
 
-### `tools/analysis/` — 47
+### `tools/analysis/` — 48
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -122,6 +122,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/gen-quest-hooks.mjs` — emit game/data/quests/hooks.json, the systems layer RI-QST04 requires.
 - `tools/analysis/gen-quest-knowledge.mjs` — make every `requires.knowledge` key in the magic quests LEARNABLE.
 - `tools/analysis/gen-spells.mjs` — author the shipped spell shelf, price it with the ONE cost formula, and emit game/data/magic/spells.json plus one game/data/combat/movesets/spell-<id>.json per 
+- `tools/analysis/hud-toast-corpus.mjs` — W1-HUD-TOAST-A.
 - `tools/analysis/impossibility-screen.mjs` — A SCREEN.
 - `tools/analysis/journal-ui.mjs` — RI-UIX04.
 - `tools/analysis/magic-audit.mjs` — the static half of seam S19's measurement.
@@ -156,13 +157,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/w1-22-r3-hive-bar.mjs` — THE HIVE'S BAR, RE-MEASURED WITHOUT THE EVENT THAT WAS OUTSIDE THE CAP.
 - `tools/audio/w1-22-r3-pack.mjs` — THE BLIND QUALITY PACK, WITH THE RECORDINGS IN IT.
 
-### `tools/blind/` — 5
+### `tools/blind/` — 6
 
 - `tools/blind/audio-pack-b2.mjs` — RI-AUD03 B2 PACK BUILDER.
 - `tools/blind/audio-pack-w1-22-r2.mjs` — W1-22 ROUND-2 CRITIC'S BLIND PACK BUILDER — THE HARDER PACK THE B2 JUDGE ASKED FOR.
 - `tools/blind/audio-pack.mjs` — ABSENCE-REPORTER.
 - `tools/blind/leakcheck.mjs` — tools/blind/leakcheck.mjs — the gate that must pass BEFORE a blind pack is handed to a judge.
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
+- `tools/blind/mask-text.mjs` — tools/blind/mask-text.mjs — hide provenance in a text artifact WITHOUT leaving a countable scar.
 
 ### `tools/camera/` — 8
 
@@ -197,7 +199,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/coherence/w1-27-coherence.mjs` — **no header comment**
 - `tools/coherence/w1-27-loot-consumption.mjs` — RI-MTH07 / RULES #5 and #11 FOR THE PLACED-OBJECT LAYER.
 
-### `tools/combat/` — 10
+### `tools/combat/` — 11
 
 - `tools/combat/check-ai-units.mjs` — S22 for game/data/combat/ai.json — a CHECK, not a constructor (RULES 14).
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
@@ -205,6 +207,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/combat/critic-w1-12-r2-closure.mjs` — W1-12 round-2 CRITIC — did the round have the right to overrule its own critic?
 - `tools/combat/critic-w1-12-r2-consume.mjs` — W1-12 round-2 CRITIC — CONSUMPTION (RI-MTH07 / ARBITRATION §3), the contested leaves only.
 - `tools/combat/critic-w1-12-r2-m12.mjs` — W1-12 round-2 CRITIC — RI-AI01 M1 and M2, measured in bare Node.
+- `tools/combat/critic-w1-12-r2-m3-chart.mjs` — W1-12 round-2 CRITIC — the picture for the one finding that decides the verdict.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
 - `tools/combat/w1-12-r2-chart.mjs` — W1-12 ROUND 2 — the picture, and the delete-the-fix control, in one run.
 - `tools/combat/w1-12-r2-probe.mjs` — W1-12 ROUND 2 — the builder's instrument.
@@ -652,7 +655,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/apply-info-rewrites.mjs` — tools/prose/apply-info-rewrites.mjs — apply authored rewrites to dialogue topic infos, by (file, topic id, info index), and record every one to a JSONL so the p
 - `tools/prose/apply-rewrites.mjs` — tools/prose/apply-rewrites.mjs — apply AUTHORED sentence rewrites to game/data JSON.
 - `tools/prose/apply-source-rewrites.mjs` — apply authored rewrites to a SOURCE file (a .mjs generator), by exact string match, refusing anything it is not certain about.
-- `tools/prose/build-r2-packs.mjs` — tools/prose/build-r2-packs.mjs — build BLIND packs for a round-2 judge of W1-PROSE-TICS.
+- `tools/prose/build-r2-packs.mjs` — tools/prose/build-r2-packs.mjs — build BLIND prose packs for a judge of W1-PROSE-TICS.
 - `tools/prose/judge-fragment-openers.mjs` — Written by the BLIND JUDGE of W1-PROSE-BLIND-r1, declared under method_deviations.
 - `tools/prose/mkspec.mjs` — tools/prose/mkspec.mjs — turn a compact authored-rewrite table into a full rewrites spec for apply-info-rewrites.mjs, filling `before` from disk and CHECKING it
 - `tools/prose/spoken-register.mjs` — the dialogue-voice half of W1-PROSE-TICS.
@@ -732,7 +735,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/stealth/critic-w1-15-r4-live.mjs` — W1-15 ROUND 4 CRITIC — THE TWO THINGS THAT NEED A REAL BROWSER.
 - `tools/stealth/critic-w1-15-r4.mjs` — W1-15 ROUND 4 — THE CRITIC'S OWN INSTRUMENT.
 
-### `tools/touch/` — 10
+### `tools/touch/` — 11
 
 - `tools/touch/critic-block-roll.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-consumption.mjs` — W1-TOUCH critic.
@@ -743,6 +746,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/touch/critic-roll-matrix.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-title-probe.mjs` — W1-TOUCH critic.
 - `tools/touch/r2-framerate.mjs` — W1-TOUCH round 2, work item A.
+- `tools/touch/r2-gate-clock.mjs` — W1-TOUCH round 2.
 - `tools/touch/touch-run.mjs` — CAN A PHONE PLAY THIS?
 
 ### `tools/uesp/` — 8
@@ -799,7 +803,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 152
+### `tools/world/` — 153
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -834,6 +838,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-deploy-night-notice.mjs` — does the boot notice's own "is anything drawn?" test call a working night scene undrawn, and refuse to get out of the player's way?
 - `tools/world/critic-deploy-probe.mjs` — the browser half of the deploy-instrument critique.
 - `tools/world/critic-deploy-r2-drift.mjs` — how much of the deployed site does verify-live-site's staleness check actually look at, and is anything drifted right now that it cannot see?
+- `tools/world/critic-deploy-r2-gate.mjs` — re-take W1-DEPLOY r1's gate measurement against the version of `tools/check-shipped-files.mjs` that exists NOW, in BOTH of its modes.
 - `tools/world/critic-deploy-r2-imgref-fixture.mjs` — run tools/playability/check-image-refs.mjs against real repositories that really have a broken published reference, and against ones that do not.
 - `tools/world/critic-deploy-requested-files.mjs` — every file the running game actually asks for must be in git.
 - `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
@@ -1129,12 +1134,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
+| `GATE-BLAST-RADIUS` | done | done. Follow-up NOT done here, named only: tools/check-data.mjs and tools/check-content.mj | `.githooks/pre-commit` `tools/check-shipped-files.mjs` `tools/bank.mjs` `game/src/sim/quest/defs.js` `tools/check-quests.mjs` |
 | `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The two things to attack: whethe | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
 | `critic-w1-20` | running | JOB1 DONE. Now: JOB2 sweep tree for self-referential expected values; JOB3 faction texture | — |
 | `W1-12-r2-critic` | running | teardown-arm audit; consumption perturbation of the 39; S22 contrary; write verdict | `orchestration/status/W1-12-r2-critic.json` |
 | `W1-HUD-TOAST-A` | starting | Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text | `orchestration/status/W1-HUD-TOAST-A.json` |
-| `PLAN-COST-EXPERIMENTS` | running | Read COST.md, research report, PLAN-LOOP.md, RULES.md; survey instruments; write orchestra | `orchestration/status/PLAN-COST-EXPERIMENTS.json` |
-| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `measure-quoted-e-w1-hud-toast-b` | running | Re-derive 786/244/459/133/326, then measure the quoted-E fraction over the 133. | `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
 | `S39-falsifier` | designing | Build tools/input/arbiter-clock-s39.mjs: (A) capture arm, real DOM presses 20/60/120/250/5 | `orchestration/status/S39-falsifier.json` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
@@ -1144,7 +1149,6 @@ work is the difference between resuming and starting over.
 | `COST-DASHBOARD` | running | agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report. | `orchestration/status/COST-DASHBOARD.json` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r4` | ? | read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a fram | `orchestration/status/critic-w1-15-r4.json` |
-| `GATE-BLAST-RADIUS` | in_progress | checked orchestration/status/ for a predecessor status file on this exact task and found n | — |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
 | `critic-w1-attr-scale` | running | write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md | `orchestration/status/critic-w1-attr-scale.json` |

@@ -1,5 +1,59 @@
 # Next dispatches, in priority order
 
+## GATE-BLAST-RADIUS. Orchestrator ruling: fail-closed gates split by actor count, not by content — FIXED, one arm; two named, not built
+
+Rule 13, second offence. A builder hit **fourteen consecutive `git commit --only` refusals** over
+two files it had never touched — a neighbour's in-flight pair, untracked on disk, imported by a
+file tracked in some earlier, unrelated commit. `check-shipped-files.mjs` had already been narrowed
+once (scan only tracked-or-staged importers), which fixed *which files are scanned* and did nothing
+about *which problems block*, because the offending importer was itself tracked.
+
+**The ruling: split by who can act, not by what the problem touches.** A dozen agents hitting the
+same fail-closed wall over content none of them own is not a dozen problems, it is the same
+non-decision made a dozen times; one actor (the orchestrator, at its one push/deploy chokepoint)
+hitting it once is a decision that gets made. So:
+
+- **`tools/check-shipped-files.mjs`**: advisory at commit time unless the offending importer or
+  target is among the paths *this specific commit* is writing — proved empirically that `git commit
+  --only <paths>` runs the hook against a temporary index containing exactly those paths, so this is
+  precise, not a guess. `--strict` (unconditional) is the form `tools/bank.mjs` calls.
+- **`tools/bank.mjs`**, the actual push/deploy chokepoint: runs the same scan after its `git add -A`
+  (which already resolves most "untracked but present" cases for free) and, for what survives —
+  genuinely missing files — **unstages the offending path and excludes it from that round's commit**
+  rather than refusing the whole bank, matching the precedent already set there for files that fail
+  `node --check`. A problem that predates this bank (already at HEAD, already live) can't be fixed by
+  unstaging a no-op, so it is reported as loudly as possible instead rather than silently passed or
+  used to freeze all future banking — freezing banking to punish one neighbour's unfinished import
+  would just move rule 13's failure up one level, not fix it.
+- **`game/src/sim/quest/defs.js` `QuestBook`**, named directly by the dispatch as a live third
+  instance (`QuestBook: 16 integrity failure(s)` from a neighbour's data took down every browser
+  probe in the fleet, repeatedly, per `orchestration/status/W1-15-r4.json` and others): no longer
+  throws by default. Logs the same message loudly and continues. `tools/check-quests.mjs` now
+  constructs the SAME class with `{ strict: true }` — imported, not reimplemented, so the rules
+  cannot drift between the throwing and non-throwing paths — closing the gap where it previously
+  covered only `hooks.json`/journal rules and not the constructor's own duplicate-id / cross-file
+  `consequences` / mutual-exclusion checks, which were exactly the ones still throwing at boot.
+
+**Named, not fixed — the same shape, judged not cheap enough to touch in this pass:**
+`tools/check-data.mjs` (blocks any commit touching `game/data/` if ANY file the index references is
+missing anywhere in the tree, not just what the commit adds) and `tools/check-content.mjs` (blocks
+any commit touching `game/data/quests/` if ANY quest resolution anywhere has vanished since the
+baseline, not just the touched file) are both still unconditionally repo-wide and blocking. So is the
+`corpus-index.mjs --check` gate at the bottom of the hook, for `corpus/` commits. Each already carries
+a deliberate, documented rationale for staying blocking (a deleted indexed file or a silently
+regenerated-away quest resolution is exactly the kind of defect that must not survive a commit,
+argued in each file's own header) and each is a bigger, riskier rewrite than the two above — narrowing
+them the same way requires deciding what "the committer's own doing" means for a *generated index*
+and a *baseline diff*, not just an import graph, and getting that wrong reintroduces silent breakage
+rather than a false block. Left alone rather than rushed.
+
+**Reversible. Evidence that would overturn it:** if `tools/bank.mjs`'s push-gate stalls repeatedly on
+pre-existing (not self-introduced) problems it can't unstage — i.e. the "report loudly and proceed"
+branch turns out to need to block after all — tighten it to refuse the bank instead, and say so here.
+If `check-data.mjs` or `check-content.mjs` produce their own multi-agent pile-up (the same fourteen-
+refusals shape), that is the trigger to give them the same self-introduced/foreign split, not to wait
+for a fifth instance.
+
 ## ~~Z. The blog embedded 12 images from a directory `.gitignore` will never publish~~ — FIXED
 
 The playability agent's live sweep found `docs/index.html` and `docs/progress.html` each embedding
