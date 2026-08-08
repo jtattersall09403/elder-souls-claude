@@ -51,12 +51,10 @@ from anything slowing you down.
 
 - **The opening has not been graded since it was fixed.** A fresh critic is owed one, and until
   then the claim that it plays as a scene is the builder's, not a judge's.
-- **Doors half work.** They used to leave you *inside* the building you had just walked out of —
-  every one was recorded at the building's centre. Now, one frame after you step out, 0 of 115 do.
-  But let the world run and the collision solver slides you into a neighbouring building on 10 of
-  them, and **re-entry got worse**: pressing to go back in takes you into the room you left 96
-  times, into a *different* building 10 times, and into nothing 9 times — against 108 / 5 / 2
-  before. Being fixed now.
+- Doors now work and are **ungraded**: 115 of them, 0 bodies inside a building at 1, 30, 120 and
+  600 frames after you step out, and re-entry takes you back into the room you left 112 times out
+  of 115. A critic is checking it. Two rounds ago every door was recorded at its building's centre
+  and 39 of 40 left you standing inside the room you had just walked out of.
 - **An enemy cannot catch you if you walk away.** Five of seven close at 0.20 m/s, never get nearer
   than 8 m, hit their leash and go home. (`corpus/90-verdicts/wave1/W1-12-r1.md`)
 - **Interiors are lit wrongly.** 1,584 floor tiles are drawn lit and simulated pitch black, because

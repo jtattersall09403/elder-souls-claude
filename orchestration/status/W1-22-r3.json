@@ -2,9 +2,40 @@
   "task_id": "W1-22-r3",
   "state": "building",
   "started": "2026-08-08",
-  "piece": "W1-22 round 3 — audio",
-  "next_step": "read judge report + r2 verdict + INDEX; survey audio tooling",
-  "files_touched": ["orchestration/status/W1-22-r3.json"],
-  "files_claimed": [],
-  "notes": ["status written before reading anything, per rule 1"]
+  "piece": "W1-22 round 3 — regional ambience (audio.ambience.region), RI-AUD03",
+  "role": "builder",
+  "spec": [
+    "corpus/90-verdicts/wave1/W1-22-r2.md",
+    "reports/packs/w1-22-r3-hard-judgement.md"
+  ],
+  "plan": [
+    "P1 world fix: night must differ from day for the 9 regions where it is byte-identical (R5). Instrument first, watch it go red at HEAD.",
+    "P2 per-event gain in band: the trim is per-layer while gain is per-event. Make it per-event, publish the count.",
+    "P3 Hive bar re-measured with the +10.6 dB out-of-cap event removed.",
+    "P4 refusal guard: assert full.fired>0 and size the fixture past the longest interval band.",
+    "P5 pack: real WAV recordings + spectrogram PNGs, ours vs a defensible comparison, quality question, no recording reused, tod stratum backed by audio that differs.",
+    "P6 CONSUMPTION RI-MTH07 + delete-the-fix per rule 6, teardown watched red.",
+    "P7 blog line, shot, commit, hand pack back UNJUDGED (rule 25; create_session is approval-gated, rule 0)."
+  ],
+  "next_step": "P1 — build tools/audio/w1-22-r3-daynight.mjs and measure day-vs-night at HEAD",
+  "contention": "node tools/contention.mjs --gate => exit 0 (2 browser instances, 1.33/core) before browser work",
+  "files_touched": [
+    "orchestration/status/W1-22-r3.json"
+  ],
+  "files_claimed": [
+    "tools/audio/w1-22-r3-daynight.mjs",
+    "tools/audio/w1-22-r3-pack.mjs",
+    "tools/audio/w1-22-r3-events.mjs",
+    "tools/audio/w1-22-r3-consumption.mjs",
+    "game/data/audio/ambience/",
+    "tools/analysis/ambience-onsets.mjs",
+    "reports/w1-22-r3/",
+    "reports/packs/w1-22-r4-quality/",
+    "reports/packs/w1-22-r4-quality.reveal/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "notes": [
+    "status written before reading anything, per rule 1"
+  ]
 }

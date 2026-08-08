@@ -325,12 +325,28 @@ try {
       return { d: +Math.hypot(p1[0] - p0[0], p1[2] - p0[2]).toFixed(3), p0: p0.map((v) => +v.toFixed(2)), p1: p1.map((v) => +v.toFixed(2)) };
     };
     const N = 60;
-    const still = await measure({}, N);
-    const walk = await measure({ ly: -1 }, N);
+    // WHERE THIS IS MEASURED, DECLARED. When the opening leg has run, the body is the one the pad
+    // just created and it is standing in the writ-house — four walls and about six metres of
+    // floor. A 60-frame sprint is 5 m, so an indoor measurement is a measurement of the wall.
+    // Try in place first, and if the room is too small to hold a sprint, step out to open ground
+    // and SAY SO rather than publishing a number the geometry chose.
+    const where0 = await W();
+    let venue = { interior: where0.interior, moved_out: false };
+    let still = await measure({}, N);
+    let walk = await measure({ ly: -1 }, N);
+    if (walk.d < 1.0) {
+      await h.page.evaluate(() => { window.__HARNESS.teleport(2766.5, 5011); });
+      await hold({}, 4);
+      venue = { interior: where0.interior, moved_out: true, to: [2766.5, 5011], why: `the walk covered only ${walk.d} m where the body was standing, which is a room and not a walk` };
+      say(`     the body created on the pad is in '${where0.interior}' and the room is too small to hold a 60-frame sprint; measuring in open ground instead (declared, not hidden)`);
+      still = await measure({}, N);
+      walk = await measure({ ly: -1 }, N);
+    }
+    out.locomotion_venue = venue;
     // Sprint: index 1 held. The gate promotes at 12 sim frames, which needs 12 POLLS, which is
     // the whole reason this file interleaves poll and step.
     const sprint = await measure({ ly: -1, down: [B.roll] }, N);
-    out.locomotion = { frames: N, still, walk, sprint };
+    out.locomotion = { frames: N, venue, still, walk, sprint };
     say(`     still ${still.d} m · walk ${walk.d} m · stick+index1 held ${sprint.d} m over ${N} frames`);
     if (still.d < 0.05) pass('L0', `NULL CONTROL: nothing held, the body does not drift — ${still.d} m over ${N} frames`, still);
     else fail('L0', `the body drifts with nothing held: ${still.d} m over ${N} frames — every distance below is suspect`, still);
@@ -667,9 +683,17 @@ try {
       fail('C6', `the body does not go where the stick points — move-vector errors on ${mvWrong.length} row(s) (worst ${out.direction.worst_move_vec_deg}°), body-heading errors on ${bodyWrong.length} row(s) (worst ${out.direction.worst_body_deg}°)`, { mvWrong: mvWrong.map((r) => ({ b: r.commanded_bearing_deg, d: r.deflection, err: r.move_vec_error_deg })), bodyWrong: bodyWrong.map((r) => ({ b: r.commanded_bearing_deg, d: r.deflection, err: r.body_heading_error_deg })) });
     }
 
-    // -- C7 THE SECOND DEADZONE ---------------------------------------------------------------
+    // -- C7 THE SECOND DEADZONE, NOW A REGRESSION GUARD ---------------------------------------
     //
-    // The finding this leg exists to have found. `input/gamepad.js shapeMoveStick()` removes the
+    // The finding this leg had when it was written, and the guard it became once the fix landed.
+    // On the UNFIXED tree this check established the defect by A/B. On the fixed tree the two
+    // arms are identical by construction, so establishing it again is impossible and asking for
+    // it would be a check that fails on a correct build. It now asserts the CORRECT state — the
+    // body starts moving at the documented deadzone edge and not one rescale further out — and
+    // the historical A/B lives in tools/gamepad/deadzone-deletefix.mjs, which sets the old value
+    // back on a live body and watches the old number return.
+    //
+    // The original finding, for the record. `input/gamepad.js shapeMoveStick()` removes the
     // 0.15 inner deadzone and RESCALES what is left onto [0,1] — its own comment says the rescale
     // is there "so there is no dead step at the deadzone edge". `combat/player.js:994` then
     // applies `move_deadzone: 0.15` (engine.js:707) A SECOND TIME, to that already-rescaled
@@ -711,10 +735,14 @@ try {
     const recovered = gainedRows.filter((g) => g.shipped_m_per_s <= 0.01 && g.deadzone_zero_m_per_s > 0.01 && g.deflection > 0.15);
     say('     ARM COMPARISON (forward bearing):');
     for (const g of gainedRows) say(`        stick ${g.deflection.toFixed(2)}   shipped ${g.shipped_m_per_s.toFixed(3)} m/s   move_deadzone=0 ${String(g.deadzone_zero_m_per_s).padStart(6)} m/s`);
-    if (recovered.length >= 2 && firstLive && firstLiveFixed && firstLiveFixed.deflection < firstLive.deflection) {
-      pass('C7', `A SECOND DEADZONE IS APPLIED TO AN ALREADY-DEADZONED STICK. Shipped, the body does not move until deflection ${firstLive.deflection} — not the documented ${ls.inner}, and within rounding of the ${predicted} that double application predicts. With \`locomotion.move_deadzone\` set to 0 in the running world, the same body starts moving at ${firstLiveFixed.deflection} and ${recovered.length} previously dead deflections come alive (${recovered.map((g) => `${g.deflection}: 0 -> ${g.deadzone_zero_m_per_s} m/s`).join(', ')}). The keyboard cannot reach this branch; a pad and a touchscreen are the only devices that can.`, out.second_deadzone);
+    const shippedDeadzone = await h.page.evaluate(() => window.__ENGINE.combat.d.locomotion.move_deadzone);
+    out.second_deadzone.shipped_move_deadzone = shippedDeadzone;
+    if (shippedDeadzone === 0 && firstLive && firstLive.deflection <= 0.20 && recovered.length === 0) {
+      pass('C7', `NO SECOND DEADZONE. \`locomotion.move_deadzone\` is ${shippedDeadzone} on this tree, so the body starts moving at deflection ${firstLive.deflection} — the documented ${ls.inner} edge — and setting it to 0 explicitly changes nothing (${recovered.length} rows recovered), which is the arms being identical because the fix is already in. With the old 0.15 the first live deflection was 0.27, one rescale further out than the item says; that A/B is in tools/gamepad/deadzone-deletefix.mjs, run on a live body with the old value put back.`, out.second_deadzone);
+    } else if (shippedDeadzone > 0 && recovered.length >= 2 && firstLive && firstLiveFixed && firstLiveFixed.deflection < firstLive.deflection) {
+      fail('C7', `A SECOND DEADZONE IS APPLIED TO AN ALREADY-DEADZONED STICK. Shipped, the body does not move until deflection ${firstLive.deflection} — not the documented ${ls.inner}, and within rounding of the ${predicted} that double application predicts. With \`locomotion.move_deadzone\` set to 0 in the running world, the same body starts moving at ${firstLiveFixed.deflection} and ${recovered.length} previously dead deflections come alive (${recovered.map((g) => `${g.deflection}: 0 -> ${g.deadzone_zero_m_per_s} m/s`).join(', ')}). The keyboard cannot reach this branch; a pad and a touchscreen are the only devices that can.`, out.second_deadzone);
     } else {
-      fail('C7', `could not establish the second deadzone: shipped first-live ${firstLive && firstLive.deflection}, deadzone-zero first-live ${firstLiveFixed && firstLiveFixed.deflection}, ${recovered.length} recovered`, out.second_deadzone);
+      fail('C7', `neither state established: move_deadzone=${shippedDeadzone}, shipped first-live ${firstLive && firstLive.deflection}, deadzone-zero first-live ${firstLiveFixed && firstLiveFixed.deflection}, ${recovered.length} recovered`, out.second_deadzone);
     }
 
     if (args['break-dir']) {
@@ -736,21 +764,31 @@ try {
     // (a) MOVE `menu` FROM INDEX 9 TO INDEX 3, in the running world, and watch which button
     //     opens the screen change.
     const base9 = await (async () => { await tap({ down: [B.menu] }, 4, 8); const m = await modeNow(); await tap({ down: [B.menu] }, 4, 8); return m; })();
-    const base3 = await (async () => { await tap({ down: [3] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [B.menu] }, 4, 8); return m; })();
-    const perturbed = await h.page.evaluate(() => window.__HARNESS.perturbInput({ path: 'pad_profiles.souls-default.buttons.menu', value: 3 }));
+    // THE TARGET INDEX IS 8, AND THE CHOICE IS THE POINT.
+    // Index 8 is the one the screens leg already proved DEAD (S0: `journal` in souls-default's
+    // RESERVED table, bound to no action of the closed set, pressed twice and opened nothing).
+    // Perturbing `menu` onto it therefore does not merely move a binding — it brings back to life
+    // the exact index this run has already watched do nothing.
+    //
+    // The first draft of this check used index 3 and FAILED, correctly: index 3 carries a
+    // `hold_gate` (tap `spell_cycle` / hold `two_hand`), and `_applyButtons` takes the gate branch
+    // and `continue`s BEFORE it ever consults `actionFor(i)`. A gated index cannot take a plain
+    // button binding at all. That is a real property of the router and it was worth finding.
+    const base3 = await (async () => { await tap({ down: [UNBOUND_INDEX] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [B.menu] }, 4, 8); return m; })();
+    const perturbed = await h.page.evaluate((i) => window.__HARNESS.perturbInput({ path: 'pad_profiles.souls-default.buttons.menu', value: i }), UNBOUND_INDEX);
     await h.page.evaluate(() => { window.__ENGINE.real.pad.setProfile('souls-default'); });   // re-read the table
     await hold({}, 3);
-    const after9 = await (async () => { await tap({ down: [B.menu] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [3] }, 4, 8); return m; })();
-    const after3 = await (async () => { await tap({ down: [3] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [3] }, 4, 8); return m; })();
+    const after9 = await (async () => { await tap({ down: [B.menu] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [UNBOUND_INDEX] }, 4, 8); return m; })();
+    const after3 = await (async () => { await tap({ down: [UNBOUND_INDEX] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [UNBOUND_INDEX] }, 4, 8); return m; })();
     await h.page.evaluate(() => window.__HARNESS.perturbInputReset());
     await hold({}, 3);
     const restored9 = await (async () => { await tap({ down: [B.menu] }, 4, 8); const m = await modeNow(); if (m !== 'world') await tap({ down: [B.menu] }, 4, 8); return m; })();
-    out.consumption_remap = { base: { idx9: base9, idx3: base3 }, perturbed, after: { idx9: after9, idx3: after3 }, restored: { idx9: restored9 } };
-    say(`     shipped:   index 9 -> ${base9},  index 3 -> ${base3}`);
-    say(`     perturbed: index 9 -> ${after9},  index 3 -> ${after3}   (buttons.menu 9 -> 3)`);
+    out.consumption_remap = { target_index: UNBOUND_INDEX, base: { idx9: base9, idx3: base3 }, perturbed, after: { idx9: after9, idx3: after3 }, restored: { idx9: restored9 } };
+    say(`     shipped:   index 9 -> ${base9},  index ${UNBOUND_INDEX} -> ${base3}`);
+    say(`     perturbed: index 9 -> ${after9},  index ${UNBOUND_INDEX} -> ${after3}   (buttons.menu 9 -> ${UNBOUND_INDEX})`);
     say(`     restored:  index 9 -> ${restored9}`);
     if (base9 !== 'world' && base3 === 'world' && after9 === 'world' && after3 !== 'world' && restored9 !== 'world') {
-      pass('M1', `CONSUMPTION: moving \`menu\` from index 9 to index 3 in game/data/input/profiles.json, in the RUNNING world, moved which physical button opens the screen — index 9 went dead and index 3 came alive, and the reset put it back`, out.consumption_remap);
+      pass('M1', `CONSUMPTION: moving \`menu\` from index 9 to index ${UNBOUND_INDEX} in game/data/input/profiles.json, in the RUNNING world, moved which physical button opens the screen — index 9 went dead, and index ${UNBOUND_INDEX} (the very index S0 watched do nothing on this same body) came alive. The reset put it back. The data file is the map the pad reads, not paperwork about it`, out.consumption_remap);
     } else {
       fail('M1', `the profile edit did not change what the pad does: ${JSON.stringify(out.consumption_remap)}`, out.consumption_remap);
     }

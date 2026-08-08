@@ -711,7 +711,18 @@ The R1 list below is kept because parts of it are still open.
   consumes it; and **0 of 41 quest givers resolve to a reaction group**, so the permanent
   race-and-upbringing bar cannot fire at all. Two character dimensions stay `corpus_debt` until this
   is right.
-- **`gamepad-shim.mjs`** — does not run, 3/3 crash. This is the GameSir path the owner tests on.
+- ~~**`gamepad-shim.mjs`** — does not run, 3/3 crash. This is the GameSir path the owner tests on.~~
+  **STRUCK 2026-08-08 by W1-GAMEPAD. This line was stale by two rounds and it cost a dispatch.**
+  It is R1's finding, kept in a list whose own preamble says "parts of it are still open" — this
+  was not one of the open parts. TOOL-COVERAGE-**R2** recorded "`gamepad-shim` runs (8/8, was 3/3
+  crash)"; TOOL-COVERAGE-**R3** line 370 says **Accept, 12/12**. Re-run at `52cffa1` before
+  anything else was touched: `node tools/journey/gamepad-shim.mjs --self-test` → **PASS 12/12,
+  exit 0**. It is now 15/15 (W1-GAMEPAD added the direction check R3 named but did not charge).
+  There was never any contradiction with the W1-21 r2 critic driving a real pad, either: the
+  critic used `__HARNESS.gamepad()` and the shim injects one layer higher at the
+  `navigator.getGamepads()` seam — RI-JRN01 §0.1(a) struck the shim for the reachability legs
+  **deliberately** and kept it for the descriptor leg. Two instruments, two seams, both alive.
+  Evidence: `orchestration/status/W1-GAMEPAD.json`, `reports/w1-gamepad/`.
 - **`journey-run.mjs`** — `--sample-quests` and `--stratified` are inert while the leg reports `ok`.
 - **`cadence.mjs`** — its exclusion list is not the shipped action set.
 - **`competence.mjs`** — the gear clause cannot fail.

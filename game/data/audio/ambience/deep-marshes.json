@@ -16,17 +16,17 @@
     "living_dead": "dead"
   },
   "bed_lufs_target": -27.5,
-  "bed_lufs_target_note": "ROUND 3. Was -28, which is the exact bottom edge of RI-AUD03 B5's -28..-24 band, and the bed landed on -28.003 — three thousandths outside it, on rounding. This is the same defect round 2 found and fixed on marauders-coast (target -24, measured -23.991), stated there as \"a target on a fence fails on rounding\"; deep-marshes was the other fence-target and was left standing. The BAND IS UNCHANGED and nothing is loosened: the target moves half a decibel inboard so the bed sits inside the band with room either side, which is what every other bed in the province already had. This is still the quietest region after the Stone Wastes, and half a decibel does not change what the marsh sounds like.",
+  "bed_lufs_target_note": "ROUND 3. Was -28, which is the exact bottom edge of RI-AUD03 B5's -28..-24 band, and the bed landed on -28.003 \u2014 three thousandths outside it, on rounding. This is the same defect round 2 found and fixed on marauders-coast (target -24, measured -23.991), stated there as \"a target on a fence fails on rounding\"; deep-marshes was the other fence-target and was left standing. The BAND IS UNCHANGED and nothing is loosened: the target moves half a decibel inboard so the bed sits inside the band with room either side, which is what every other bed in the province already had. This is still the quietest region after the Stone Wastes, and half a decibel does not change what the marsh sounds like.",
   "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
       "class": "birdsong",
-      "why": "RI-AUD03 §B: \"NO birds.\" The Deep Marshes are tier 5 and the silence IS the lethality warning (§Seam 3). A bird here would undo the only warning the player is given that this region is beyond them."
+      "why": "RI-AUD03 \u00a7B: \"NO birds.\" The Deep Marshes are tier 5 and the silence IS the lethality warning (\u00a7Seam 3). A bird here would undo the only warning the player is given that this region is beyond them."
     },
     {
       "class": "birds",
-      "why": "as above — no avian content of any kind, day or night."
+      "why": "as above \u2014 no avian content of any kind, day or night."
     },
     {
       "class": "insect_layer",
@@ -76,7 +76,9 @@
       "voices": 1,
       "sublayers": [
         {
-          "when": {},
+          "when": {
+            "tod": "day"
+          },
           "classes": [
             "water"
           ],
@@ -95,13 +97,39 @@
               "lfo_hz": 0.021,
               "depth": 0.2
             }
+          },
+          "text": "still water, almost nothing \u2014 the daytime floor of the emptiest region in the province"
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "text": "after dark the water goes over to gas: a blistering just under the surface, lower and narrower than the daytime still-water floor and with nothing on top of it.",
+          "classes": [
+            "water"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "bandpass",
+              "hz": 118,
+              "q": 1.4
+            },
+            "gain_db": -12,
+            "width": 0.2,
+            "mod": {
+              "target": "filter_hz",
+              "lfo_hz": 0.011,
+              "depth": 0.45
+            }
           }
         }
       ]
     },
     "L3": {
       "id": "l3_near_empty",
-      "text": "NO birds. L3 is near-empty by design: 1 per 30–40 s",
+      "text": "NO birds. L3 is near-empty by design: 1 per 30\u201340 s",
       "interval_s": [
         30,
         40
@@ -135,11 +163,16 @@
           }
         }
       ],
-      "event_gain_db": 13.51
+      "event_gain_db": 13.51,
+      "night_interval_s": [
+        36,
+        40
+      ],
+      "night_interval_reason": "RI-AUD03 \u00a7B: \"NO birds. L3 is near-empty by design.\" R5 is answered here by taking away rather than adding \u2014 the Deep Marshes are emptier at night, not busier. The band stays inside \u00a7A's 8\u201340 s."
     },
     "L4": {
       "id": "l4_breathing_not_yours",
-      "text": "a sound like breathing that is not yours — sourceless, never resolves to an entity, and in no bestiary (RI-AUD03 R6)",
+      "text": "a sound like breathing that is not yours \u2014 sourceless, never resolves to an entity, and in no bestiary (RI-AUD03 R6)",
       "interval_s": [
         70,
         180
@@ -183,7 +216,8 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -3.68,
-  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
+  "r5_night_selection": "Day: still water, gas release every 30\u201340 s. Night: sub-surface gas floor, and the L3 clock slows to 36\u201340 s. The region gets quieter at night; that is the selection."
 }

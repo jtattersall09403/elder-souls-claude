@@ -22,7 +22,7 @@
   "layers": {
     "L1": {
       "id": "l1_vat_bubble",
-      "text": "vat-bubble — slow, organic, wet",
+      "text": "vat-bubble \u2014 slow, organic, wet",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -58,7 +58,9 @@
       "voices": 2,
       "sublayers": [
         {
-          "when": {},
+          "when": {
+            "tod": "day"
+          },
           "classes": [
             "water"
           ],
@@ -77,13 +79,39 @@
               "lfo_hz": 0.13,
               "depth": 0.55
             }
+          },
+          "text": "surf, damped \u2014 the sea working against the vat terraces in daylight"
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "text": "low water after dusk pulls the surf back off the terraces and the dye-vats come forward \u2014 a slow organic blistering where the surf was. R5 selection.",
+          "classes": [
+            "water"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 290,
+              "q": 0.8
+            },
+            "gain_db": -10,
+            "width": 0.4,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.19,
+              "depth": 0.72
+            }
           }
         }
       ]
     },
     "L3": {
       "id": "l3_lichen_scream",
-      "text": "the lichen's thin scream when trodden — L3 triggered by the PLAYER, not the clock",
+      "text": "the lichen's thin scream when trodden \u2014 L3 triggered by the PLAYER, not the clock",
       "interval_s": [
         10,
         34
@@ -158,6 +186,9 @@
               "decay_s": 0.5
             },
             "gain_db": -10
+          },
+          "when": {
+            "tod": "night"
           }
         },
         {
@@ -205,7 +236,8 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -5.78,
-  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
+  "r5_night_selection": "Day: damped surf + red cormorant. Night: vat-blister + dye-worm. The two L4 creatures were already written as a day/night pair; only the L2 half was missing."
 }

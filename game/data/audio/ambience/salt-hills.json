@@ -21,7 +21,7 @@
   "denies": [
     {
       "class": "insect_layer",
-      "why": "RI-AUD03 §B and regions.json both: \"wind with no insect layer under it\". The absence IS the identity — it is what separates the Salt Hills from every other open region in the province."
+      "why": "RI-AUD03 \u00a7B and regions.json both: \"wind with no insect layer under it\". The absence IS the identity \u2014 it is what separates the Salt Hills from every other open region in the province."
     }
   ],
   "layers": {
@@ -57,7 +57,9 @@
       "voices": 2,
       "sublayers": [
         {
-          "when": {},
+          "when": {
+            "tod": "day"
+          },
           "classes": [
             "flora"
           ],
@@ -76,13 +78,39 @@
               "lfo_hz": 0.37,
               "depth": 0.45
             }
+          },
+          "text": "grass hiss \u2014 dry blades moving in the daytime wind"
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "text": "the wind drops at dusk and the grass goes still; what replaces it is the salt rime cracking as the ground gives its heat back \u2014 sparse, brittle, and much higher up the spectrum.",
+          "classes": [
+            "earth"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 6100,
+              "q": 4.5
+            },
+            "gain_db": -14,
+            "width": 0.5,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.09,
+              "depth": 0.8
+            }
           }
         }
       ]
     },
     "L3": {
       "id": "l3_legion_horn",
-      "text": "legion horn on the hour — a diegetic clock",
+      "text": "legion horn on the hour \u2014 a diegetic clock",
       "interval_s": [
         12,
         38
@@ -156,6 +184,9 @@
               "gap_s": 0.33,
               "gap_jitter_s": 0.11
             }
+          },
+          "when": {
+            "tod": "day"
           }
         },
         {
@@ -187,6 +218,9 @@
               "decay_s": 1.3
             },
             "gain_db": -10
+          },
+          "when": {
+            "tod": "night"
           }
         }
       ],
@@ -196,7 +230,7 @@
   "emitters": [
     {
       "id": "legion_horn",
-      "text": "the legion horn on the hour: a diegetic clock at a fixed place, so hearing it tells you both the time and the bearing to the fort (R7). ROUND 2 — `phase` 0.002 puts the first strike 7.2 s into a capture, i.e. the §C clip is DELIBERATELY taken across the hour. That is a declared bias and it is declared because RI-AUD03 §C leans on it: the grading key gives Salt Hills (dry, open, living) and it gives The Clay Moor the same triple, so those two are separated by Q3 — horn versus kiln — exactly as the four (wet, open, living) regions are. An hourly event has a 0.6 % duty cycle in a 20 s window; a capture that does not phase it cannot separate the pair, and a capture that does must say so.",
+      "text": "the legion horn on the hour: a diegetic clock at a fixed place, so hearing it tells you both the time and the bearing to the fort (R7). ROUND 2 \u2014 `phase` 0.002 puts the first strike 7.2 s into a capture, i.e. the \u00a7C clip is DELIBERATELY taken across the hour. That is a declared bias and it is declared because RI-AUD03 \u00a7C leans on it: the grading key gives Salt Hills (dry, open, living) and it gives The Clay Moor the same triple, so those two are separated by Q3 \u2014 horn versus kiln \u2014 exactly as the four (wet, open, living) regions are. An hourly event has a 0.6 % duty cycle in a 20 s window; a capture that does not phase it cannot separate the pair, and a capture that does must say so.",
       "pos_m": [
         1982,
         706
@@ -234,7 +268,8 @@
       "phase": 0.002
     }
   ],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -2.25,
-  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
+  "r5_night_selection": "Day: grass hiss + guar-bells (the herds are out). Night: salt rime cracking + hill-wamasu at distance. \u00a7B already wrote these two creatures as a day/night pair."
 }

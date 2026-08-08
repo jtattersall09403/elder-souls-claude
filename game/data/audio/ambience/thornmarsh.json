@@ -21,17 +21,17 @@
   "denies": [
     {
       "class": "birdsong",
-      "why": "RI-AUD03 §B and regions.json both: \"NO birdsong inside the thicket\". Thornmarsh is one of the two most distinctive regions in the province precisely because the layer everyone would add is missing."
+      "why": "RI-AUD03 \u00a7B and regions.json both: \"NO birdsong inside the thicket\". Thornmarsh is one of the two most distinctive regions in the province precisely because the layer everyone would add is missing."
     },
     {
       "class": "wind",
-      "why": "a thicket this dense has no air movement and no distance — hence a dead-air room tone rather than an outdoor L1."
+      "why": "a thicket this dense has no air movement and no distance \u2014 hence a dead-air room tone rather than an outdoor L1."
     }
   ],
   "layers": {
     "L1": {
       "id": "l1_dead_air_room_tone",
-      "text": "dead-air room tone — a thicket has no distance",
+      "text": "dead-air room tone \u2014 a thicket has no distance",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -56,12 +56,14 @@
     },
     "L2": {
       "id": "l2_thorn_clatter_only",
-      "text": "NO birdsong inside the thicket → L2 is thorn-clatter only",
+      "text": "NO birdsong inside the thicket \u2192 L2 is thorn-clatter only",
       "level_db": -4,
       "voices": 2,
       "sublayers": [
         {
-          "when": {},
+          "when": {
+            "tod": "day"
+          },
           "classes": [
             "flora"
           ],
@@ -79,6 +81,32 @@
               "target": "gain",
               "lfo_hz": 2.7,
               "depth": 0.6
+            }
+          },
+          "text": "thorn-clatter only \u2014 no birdsong inside the thicket, by day the thorn is what moves"
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "text": "the clatter stops after dark and the dead-air room tone closes in \u2014 a thicket at night has less in it than a thicket by day, and that is the identity, not a quieter version of it.",
+          "classes": [
+            "pressure"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 365,
+              "q": 0.7
+            },
+            "gain_db": -15,
+            "width": 0.28,
+            "mod": {
+              "target": "filter_hz",
+              "lfo_hz": 0.023,
+              "depth": 0.32
             }
           }
         }
@@ -166,6 +194,38 @@
               "decay_s": 0.35
             },
             "gain_db": -13
+          },
+          "when": {
+            "tod": "day"
+          }
+        },
+        {
+          "id": "thicket_shift",
+          "classes": [
+            "unexplained"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.35,
+            0.35
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 520,
+              "q": 1.1
+            },
+            "env": {
+              "attack_s": 0.32,
+              "decay_s": 1.4
+            },
+            "gain_db": -10
+          },
+          "when": {
+            "tod": "night"
           }
         }
       ],
@@ -173,7 +233,8 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": 6.32,
-  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
+  "r5_night_selection": "Day: thorn-clatter + hackwing always above you. Night: the clatter goes out, the room tone tightens, and the only event is something at head height moving through thorn \u2014 never above."
 }

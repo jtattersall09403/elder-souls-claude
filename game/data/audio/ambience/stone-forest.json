@@ -21,13 +21,13 @@
   "denies": [
     {
       "class": "standing_water",
-      "why": "RI-WLD10 §7: no standing water. The Stone Forest is a dry petrified wood."
+      "why": "RI-WLD10 \u00a77: no standing water. The Stone Forest is a dry petrified wood."
     }
   ],
   "layers": {
     "L1": {
       "id": "l1_hist_choral_hum",
-      "text": "a low choral hum from the Hist — pitched, chord-like, unsettling. THE HEALTHY INSTRUMENT (R6): Stone Wastes L4 is this, broken.",
+      "text": "a low choral hum from the Hist \u2014 pitched, chord-like, unsettling. THE HEALTHY INSTRUMENT (R6): Stone Wastes L4 is this, broken.",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -65,7 +65,9 @@
       "voices": 2,
       "sublayers": [
         {
-          "when": {},
+          "when": {
+            "tod": "day"
+          },
           "classes": [
             "wind"
           ],
@@ -84,13 +86,39 @@
               "lfo_hz": 0.067,
               "depth": 0.4
             }
+          },
+          "text": "wind through petrified trunks \u2014 the daytime texture, broad and low"
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "text": "after dusk the trunks are contracting and the wind through them is narrower and more pitched \u2014 closer to the Hist chord it is blowing across.",
+          "classes": [
+            "wind"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 930,
+              "q": 2.3
+            },
+            "gain_db": -12,
+            "width": 0.5,
+            "mod": {
+              "target": "filter_hz",
+              "lfo_hz": 0.031,
+              "depth": 0.55
+            }
           }
         }
       ]
     },
     "L3": {
       "id": "l3_stone_tick",
-      "text": "stone tick as boles cool — rate RISES after dusk",
+      "text": "stone tick as boles cool \u2014 rate RISES after dusk",
       "interval_s": [
         9,
         32
@@ -173,6 +201,9 @@
               "gap_s": 0.8,
               "gap_jitter_s": 0.3
             }
+          },
+          "when": {
+            "tod": "day"
           }
         },
         {
@@ -199,6 +230,9 @@
               "decay_s": 0.2
             },
             "gain_db": -11
+          },
+          "when": {
+            "tod": "night"
           }
         }
       ],
@@ -206,7 +240,8 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -11.54,
-  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
+  "r5_night_selection": "Day: broad wind + the wamasu herd. Night: a narrower pitched wind, the stone-beetle, and the stone-tick clock already rising after dusk (night_interval_s, which this bed already had and which on its own moved the spectrum by 0.0157 \u2014 under the floor. A rate is not a selection)."
 }

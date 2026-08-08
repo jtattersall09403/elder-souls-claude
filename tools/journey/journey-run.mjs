@@ -1014,9 +1014,21 @@ async function driveBeats(handle, o) {
     for (let done = 0; done < stillFrames; done += CHUNK) {
       await handle.h('stepFrames', Math.min(CHUNK, stillFrames - done));
       if (o.stillFireAField && done === 0) {
-        // THE TEARDOWN. A field-writing surface opening while the driver is motionless — which is
+        // THE TEARDOWN. A character field WRITTEN while the driver is motionless — which is
         // precisely the build defect this row exists to catch. The assertion must go red.
+        //
+        // MEASURED, AND THE FIRST VERSION OF THIS TEARDOWN WAS INERT. It called `censusBegin({})`
+        // alone and the row stayed green, arm for arm identical to the untorn run — because the
+        // opening STARTS PAUSED at `hold.come-to`, and `censusBegin` emits `dialogue_open` only
+        // when the node it lands on is not paused. So the sabotage opened a scene that asked
+        // nothing and wrote nothing, and both arms were the positive arm: rule 6's inert control,
+        // exactly the shape W1-04's wall-collision control had.
+        //
+        // It now walks to the first field-writing node and answers it, which is the one thing
+        // that emits `creation_field` (`Engine.censusAnswer` -> `before.sets`).
         await handle.hOpt('censusBegin', {});
+        await handle.hOpt('censusEnter', 'talk');       // hold.come-to -> hold.hatch-name
+        await handle.hOpt('censusAnswer', 'Teardown-Name');
       }
     }
     const stillTo = await frameNow();

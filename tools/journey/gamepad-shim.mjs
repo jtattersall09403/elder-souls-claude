@@ -71,6 +71,12 @@ OPTIONS
                   (b) the ENGINE observes it through __HARNESS.gamepadPoll(), which is
                       RealInput.pollGamepad() — the same call the engine makes every frame for a
                       physical pad — and that moving the shim's stick moves getMoveVector().
+  --break-direction
+                  TEARDOWN for the DIRECTION half. Swaps the two movement axes at the seam, so
+                  the distance walked is unchanged and only the BEARING is wrong. The scalar
+                  entity-side check and its null control must stay GREEN and only the direction
+                  check may go red — TOOL-COVERAGE-R3's uncharged note, "the check is dist(p0,p1)
+                  — a scalar ... assert the DIRECTION, not just the distance."
   --break-router  install a SECOND init script that zeroes the axes where the engine's router
                   reads them, while gamepadPoll() keeps reporting a perfect observation. The
                   entity-side check must go RED and every descriptor/poll check must stay green
@@ -255,15 +261,48 @@ export const BREAK_ROUTER_SOURCE = `
 })();
 `;
 
+// ROUND 3 (W1-GAMEPAD) — the teardown for the DIRECTION half of the entity-side check.
+//
+// TOOL-COVERAGE-R3 accepted this tool 12/12 and left one note uncharged, which is the note this
+// source block exists to answer:
+//
+//   "Note, not charged: the check is dist(p0,p1) — a scalar. A router with inverted axes, or one
+//    that walks a fixed heading regardless of stick direction, passes green and control both.
+//    Assert the DIRECTION, not just the distance."
+//
+// `--break-router` cannot catch that class: it zeroes the axes, so the distance goes to 0 and the
+// SCALAR check already goes red. To falsify a direction check you need a break that keeps the
+// distance and destroys the bearing. This one SWAPS the two movement axes at the seam, so the
+// stick's magnitude is untouched and every metre still gets walked — just at 90° to where the
+// player pushed. Distance-only checks stay green; only `direction_matches` may go red.
+export const BREAK_DIRECTION_SOURCE = `
+(() => {
+  const realGet = navigator.getGamepads.bind(navigator);
+  Object.defineProperty(navigator, 'getGamepads', {
+    configurable: true,
+    value: function getGamepads() {
+      return Array.from(realGet() || []).map((p) => {
+        if (!p) return p;
+        const a = (p.axes || []).slice();
+        // swap axis 0 and axis 1 — the same |magnitude|, a bearing rotated off the command.
+        if (a.length >= 2) { const t = a[0]; a[0] = a[1]; a[1] = t; }
+        return { id: p.id, index: p.index, connected: p.connected, mapping: p.mapping, timestamp: p.timestamp, buttons: p.buttons, axes: a };
+      });
+    },
+  });
+})();
+`;
+
 export async function launchGameWithShim(padId, opts = {}) {
   const desc = typeof padId === 'string' ? PADS[padId] : padId;
   if (!desc) die(EXIT.USAGE, `unknown pad preset ${JSON.stringify(padId)}. Known: ${Object.keys(PADS).join(', ')}`);
+  const extra = [];
+  if (opts.breakRouter) extra.push(BREAK_ROUTER_SOURCE);
+  if (opts.breakDirection) extra.push(BREAK_DIRECTION_SOURCE);
   const handle = await launchGame({
     width: 320, height: 240,
     timeout: Number(opts.timeout || 90000),
-    initScripts: opts.breakRouter
-      ? [shimSource(desc, opts.index || 0), BREAK_ROUTER_SOURCE]
-      : [shimSource(desc, opts.index || 0)],
+    initScripts: [shimSource(desc, opts.index || 0), ...extra],
   });
   const installed = await handle.page.evaluate(() => !!window.__PAD_SHIM).catch(() => false);
   if (!installed) {
@@ -370,6 +409,51 @@ export async function entitySideCheck(handle, frames = 120) {
       H.stepFrames(n);
       const p2 = posOf();
 
+      // ---- DIRECTION (W1-GAMEPAD, closing TOOL-COVERAGE-R3's uncharged note) ----------------
+      //
+      // "the check is dist(p0,p1) — a scalar. A router with inverted axes, or one that walks a
+      //  fixed heading regardless of stick direction, passes green and control both."
+      //
+      // Four bearings, each driven from the SAME starting point so the four displacements are
+      // comparable, with the camera pinned to yaw 0 so "forward" is +z and "right" is +x. The
+      // claim is not "it moved" but "it moved THERE": the stick is pushed in four different
+      // directions and the four resulting bearings must be 90° apart in the right order.
+      // A fixed-heading router gives four identical bearings; an axis-swapped one gives four
+      // bearings rotated as a set. Both pass a distance check and both fail this.
+      const bearings = [];
+      let directionOk = null, worstErr = null;
+      if (typeof H.teleport === 'function' && window.__ENGINE) {
+        const home = window.__ENGINE.sim.player.pos.slice();
+        const cases = [
+          { name: 'forward', axes: [0, -1, 0, 0], want: 0 },
+          { name: 'right', axes: [1, 0, 0, 0], want: 90 },
+          { name: 'back', axes: [0, 1, 0, 0], want: 180 },
+          { name: 'left', axes: [-1, 0, 0, 0], want: -90 },
+        ];
+        for (const c of cases) {
+          H.teleport(home[0], home[2]);
+          window.__ENGINE.sim.camera.yaw = 0;
+          window.__PAD_SHIM.set({ axes: [0, 0, 0, 0] });
+          await twoFrames();
+          H.stepFrames(4);
+          const a0 = posOf();
+          window.__PAD_SHIM.set({ axes: c.axes });
+          await twoFrames();
+          H.stepFrames(45);
+          const a1 = posOf();
+          const dx = a1[0] - a0[0], dz = (a1[2] || 0) - (a0[2] || 0);
+          const d = Math.hypot(dx, dz);
+          const got = d > 0.05 ? Math.atan2(dx, dz) * 180 / Math.PI : null;
+          const err = got === null ? null : +(((got - c.want + 540) % 360) - 180).toFixed(2);
+          bearings.push({ pushed: c.name, commanded_deg: c.want, dist_m: +d.toFixed(4), heading_deg: got === null ? null : +got.toFixed(2), error_deg: err });
+        }
+        window.__PAD_SHIM.set({ axes: [0, 0, 0, 0] });
+        H.teleport(home[0], home[2]);
+        const usable = bearings.filter((b) => b.error_deg !== null);
+        worstErr = usable.length ? Math.max(...usable.map((b) => Math.abs(b.error_deg))) : null;
+        directionOk = usable.length === 4 && worstErr !== null && worstErr <= 10;
+      }
+
       return {
         available: true, frames: n,
         pos_before: p0, pos_with_stick: p1, pos_after_release: p2,
@@ -378,6 +462,8 @@ export async function entitySideCheck(handle, frames = 120) {
         // The pad moved the player, and nothing else did.
         pad_moves_the_player: dist(p0, p1) > 0.25,
         null_control_holds: dist(p1, p2) <= 0.05,
+        // ...and it moved the player WHERE THE STICK POINTED.
+        bearings, direction_matches: directionOk, worst_bearing_error_deg: worstErr,
       };
     } catch (e) {
       return { available: false, why: 'the entity-side check threw: ' + String(e && e.message || e) };
@@ -495,6 +581,17 @@ async function selfTest(opts) {
           `walking on its own`
         : std.world.why);
 
+    // DIRECTION (W1-GAMEPAD round 3). TOOL-COVERAGE-R3 accepted this tool and left exactly one
+    // note uncharged: "the check is dist(p0,p1) — a scalar. A router with inverted axes, or one
+    // that walks a fixed heading regardless of stick direction, passes green and control both."
+    // Four bearings from one starting point, and they must come back 90° apart in the right order.
+    ok('ENTITY-SIDE: and the player goes WHERE THE STICK POINTS, not merely somewhere',
+      std.world.available && std.world.direction_matches === true,
+      std.world.available && std.world.bearings
+        ? `${std.world.bearings.map((b) => `${b.pushed}: commanded ${b.commanded_deg}° got ${b.heading_deg}° (${b.dist_m} m)`).join('; ')} — ` +
+          `worst error ${std.world.worst_bearing_error_deg}°`
+        : std.world.why || 'no bearings collected');
+
     // RED. The exact build TOOL-COVERAGE-R2 §7 described: pollGamepad() returns a perfect
     // observation and the router discards the axes. Every check above must stay GREEN and only
     // the world-side one may go red — otherwise the entity-side check is just a second copy of
@@ -512,6 +609,25 @@ async function selfTest(opts) {
       `player moved ${broken.world.moved_m} m with the stick fully forward (unbroken run: ` +
       `${std.world.moved_m} m). RI-JRN04 M13 would have been reported green for a pad that ` +
       `moves nothing.`);
+
+    // RED, THE SECOND KIND — and it is a different kind, which is the whole point. `--break-router`
+    // zeroes the axes, so the DISTANCE check already catches it and the direction check adds
+    // nothing there. This break swaps the two movement axes: every metre is still walked, so the
+    // scalar check and its null control both stay green, and only the bearing is wrong. That is
+    // the failure TOOL-COVERAGE-R3 said would pass "green and control both" — so if the direction
+    // check does not go red HERE, it is decoration.
+    const bent = await verifyOne('x2s-standard', false, { ...opts, breakDirection: true });
+    ok('RED: with the two stick axes SWAPPED, the distance check and its null control STILL PASS',
+      bent.world.available && bent.world.pad_moves_the_player && bent.world.null_control_holds,
+      `player moved ${bent.world.moved_m} m (unbroken run: ${std.world.moved_m} m) and drifted ` +
+      `${bent.world.drift_m} m at rest — a scalar dist(p0,p1) check cannot tell this build from a ` +
+      `correct one`);
+    ok('RED: and the DIRECTION check catches it',
+      bent.world.available && bent.world.direction_matches === false,
+      bent.world.bearings
+        ? `${bent.world.bearings.map((b) => `${b.pushed}: commanded ${b.commanded_deg}° got ${b.heading_deg}°`).join('; ')} — ` +
+          `worst error ${bent.world.worst_bearing_error_deg}° (unbroken: ${std.world.worst_bearing_error_deg}°)`
+        : 'no bearings collected');
 
     // The one that matters for the descriptor leg: a non-standard descriptor must NOT arrive
     // as 'standard'. If it does, the leg passes without the build's mapping code ever running.
@@ -556,7 +672,7 @@ if (isMain) {
   // `--break-router` is the falsification handle for the entity-side check. It installs a second
   // init script that zeroes the axes where the engine's router reads them while `gamepadPoll()`
   // goes on reporting a perfect observation — the build TOOL-COVERAGE-R2 §7 said would pass 8/8.
-  const opts = { timeout: args.timeout, breakRouter: !!args['break-router'] };
+  const opts = { timeout: args.timeout, breakRouter: !!args['break-router'], breakDirection: !!args['break-direction'] };
 
   if (args.list) {
     for (const [k, v] of Object.entries(PADS)) {
