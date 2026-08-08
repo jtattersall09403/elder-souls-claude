@@ -1,0 +1,16 @@
+{
+  "task_id": "arbiter-s39-duration-clock",
+  "role": "arbiter",
+  "state": "in_progress",
+  "started": "2026-08-08",
+  "question": "When a Souls-derived duration is specified, is it a count of simulation steps or a span of wall-clock?",
+  "seam_source": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md §3 and §4",
+  "next_step": "append S39 to corpus/00-doctrine/ARBITRATION.md, add NEXT-DISPATCH section, bank",
+  "files_claimed": [
+    "corpus/00-doctrine/ARBITRATION.md",
+    "orchestration/NEXT-DISPATCH.md",
+    "orchestration/status/arbiter-s39-duration-clock.json"
+  ],
+  "files_touched": ["orchestration/status/arbiter-s39-duration-clock.json"],
+  "no_browser": true
+}

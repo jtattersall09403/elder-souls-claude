@@ -10185,14 +10185,133 @@ function deepAssign(target, src) {
 
 // ---- data loading -------------------------------------------------------------------------
 
+// P10 — THE LOADER HAD NO RETRY, AND ONE HICCUP ON ONE OF 569 FILES WAS A BLACK SCREEN.
+//
+// The playability agent ran the deployed site twice on a real network and both runs died on
+// `world/hazards.json` answering **503**. GitHub Pages' CDN wobbled again, unprompted, during a
+// later run: 1 retried 5xx across 2828 requests. On this build machine — localhost, one client,
+// no CDN — it essentially never happens, which is exactly why it reached the owner and not us.
+//
+// The old code was `if (!res.ok) throw new Error('data file missing: ...')`, and the boot notice
+// then told the player *"A file the game needs is missing."* The file was not missing. That
+// sentence sent an investigator down the wrong path for a whole session, which is the real cost:
+// **a diagnostic that lies is worse than no diagnostic.**
+//
+// Two failure classes, and they must never be confused, because the fix for one is the poison
+// for the other:
+//
+//   * **transient** — 5xx, 408, 429, or the fetch rejecting outright (DNS, TLS, a dropped
+//     connection). The file is there and the server is having a moment. Retry it.
+//   * **permanent** — 404. The file is genuinely not published. This is the OTHER black-screen
+//     class on this project (`tools/check-shipped-files.mjs` exists because a module 404'd on the
+//     deployed tree and every check on the build machine stayed green). Retrying a 404 would
+//     spend four requests and 2.75 s to arrive at the same answer while burying the one word that
+//     names the bug. **Never retried, and the message says so.**
+//
+// THE CAP ON ADDED BOOT LATENCY. The ladder sleeps 250/750/1750 ms before retries 1, 2 and 3
+// (±40% jitter), so a single unlucky file costs at most ~3.85 s. Across the WHOLE load the
+// loader will sleep at most `totalSleepBudgetMs` (12 s) and issue at most `maxRetriesTotal` (24)
+// extra requests; past either the ladder stops and the next transient failure is fatal, and the
+// message says which limit ran out. So: **a boot on a flaky network is at most 12 s slower than a
+// boot on a good one, plus the round-trip cost of up to 24 extra requests.** A boot on a good
+// network is not slower at all — nothing sleeps unless something has already failed.
+//
+// Deliberately NOT added: a per-request timeout. A 17 MB world on a slow phone is a long, slow,
+// perfectly healthy download, and a timeout tuned on this machine would abort it. That leaves a
+// genuinely hung socket hanging, as it does today; it is a different defect and pretending to fix
+// it here would be worse than saying so.
+const LOAD_RETRY = Object.freeze({
+  attempts: 4,                    // one try plus three retries, per file
+  backoffMs: [250, 750, 1750],    // before retry 1, 2, 3
+  jitter: 0.4,
+  totalSleepBudgetMs: 12000,      // across the entire load, not per file
+  maxRetriesTotal: 24,            // across the entire load, not per file
+});
+
+/** Is this HTTP status the server saying "not now" rather than "not here"? */
+function isTransientStatus(status) {
+  return status >= 500 || status === 408 || status === 429;
+}
+
+// A RETRY YOU CANNOT WATCH WORK IS NOT A FIX. Every attempt, every wait and every recovery is
+// recorded here, on the global, where `tools/playability/loader-retry.mjs` reads it to prove the
+// retry fired, where the boot notice reads it to tell the player the host is being slow rather
+// than that their game is broken, and where a bug report can quote it.
+const loadRetryLog = { attempts: 0, retries: 0, sleptMs: 0, events: [], stopped: null, failure: null };
+if (typeof globalThis !== 'undefined') globalThis.__ES_LOAD_RETRIES = loadRetryLog;
+
 async function loadData(onBytes) {
   const root = new URL('../data/', import.meta.url);
+  const log = loadRetryLog;
+  log.attempts = 0; log.retries = 0; log.sleptMs = 0; log.events.length = 0;
+  log.stopped = null; log.failure = null;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
   const fetchJson = async (rel) => {
-    const res = await fetch(new URL(rel, root));
-    if (!res.ok) throw new Error(`data file missing: ${rel} (${res.status})`);
-    const text = await res.text();
-    onBytes(text.length);
-    return JSON.parse(text);
+    const url = new URL(rel, root);
+    const href = url.href;
+    let attempt = 0, sleptHere = 0;
+    for (;;) {
+      attempt++;
+      log.attempts++;
+      let res = null, netErr = null;
+      try {
+        res = await fetch(url);
+      } catch (e) {
+        netErr = e;
+      }
+
+      if (res && res.ok) {
+        const text = await res.text();
+        onBytes(text.length);
+        if (attempt > 1) log.events.push({ file: rel, outcome: 'recovered', on_attempt: attempt });
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          // 200 with a body that is not JSON is not a network problem and retrying cannot help.
+          throw new Error(`data file UNREADABLE: ${rel} — HTTP 200 from ${href} but the body is not JSON (${e.message}). This is not a network failure; the published file is corrupt.`);
+        }
+      }
+
+      const status = res ? res.status : 0;
+      const what = res ? `HTTP ${status}` : `network error (${(netErr && netErr.message) || 'no message'})`;
+
+      // A 404 IS AN ANSWER, NOT A HICCUP. Fail on the first one, loudly, and name the tool that
+      // diagnoses it — masking a genuinely unpublished file behind four retries would be strictly
+      // worse than the bug this whole block fixes.
+      if (res && !isTransientStatus(status)) {
+        log.failure = { file: rel, url: href, status, attempts: attempt, kind: 'permanent' };
+        log.events.push({ file: rel, outcome: 'permanent', status, attempt });
+        throw new Error(`data file MISSING: ${rel} — HTTP ${status} on ${href}, after ${attempt} attempt${attempt === 1 ? '' : 's'}. A ${status} is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.`);
+      }
+
+      log.events.push({ file: rel, outcome: 'transient', status, attempt, detail: what });
+
+      const nextIdx = attempt - 1;
+      const base = LOAD_RETRY.backoffMs[Math.min(nextIdx, LOAD_RETRY.backoffMs.length - 1)];
+      // Jitter so a hundred files failing against the same wobbling edge node do not all come
+      // back at the same instant. Math.random is legal here: this is the network path, it runs
+      // before installGuards(), and nothing it produces can reach a traced value.
+      const delay = Math.round(base * (1 + (Math.random() * 2 - 1) * LOAD_RETRY.jitter));
+
+      let stop = null;
+      if (attempt >= LOAD_RETRY.attempts) stop = `${LOAD_RETRY.attempts} attempts`;
+      else if (log.retries >= LOAD_RETRY.maxRetriesTotal) stop = `the whole-load ceiling of ${LOAD_RETRY.maxRetriesTotal} retries`;
+      else if (log.sleptMs + delay > LOAD_RETRY.totalSleepBudgetMs) stop = `the whole-load retry budget of ${LOAD_RETRY.totalSleepBudgetMs} ms (${Math.round(log.sleptMs)} ms already spent waiting)`;
+
+      if (stop) {
+        log.stopped = stop;
+        log.failure = { file: rel, url: href, status, attempts: attempt, kind: 'transient', stopped: stop };
+        log.events.push({ file: rel, outcome: 'gave-up', status, attempt, stopped: stop });
+        // NOT "missing". Say the status, say the URL, say how many times we asked.
+        throw new Error(`data file UNAVAILABLE: ${rel} — ${what} on ${href}, unchanged after ${attempt} attempt${attempt === 1 ? '' : 's'} spanning ${Math.round(sleptHere)} ms of waiting; gave up at ${stop}. The file is NOT missing — the server would not serve it. This usually clears on a reload.`);
+      }
+
+      log.retries++;
+      log.sleptMs += delay;
+      sleptHere += delay;
+      await sleep(delay);
+    }
   };
   const index = await fetchJson('index.json');
   const out = { index, enemies: {}, npcs: {}, interiors: {}, settlements: {}, states: {}, topics: {}, quests: {}, books: {}, items: {}, combat: {}, movesets: {}, weapons: {}, weaponMovesets: {}, spellMovesets: {} };

@@ -210,5 +210,25 @@
     "P11_followup": "TWO of the three files P11 named are now committed at HEAD (game/src/sim/quest/refusal.js, game/data/dialogue/faction-refusals.json). game/src/__gatecheck.js is NOT in HEAD \u2014 check whether anything imports it before calling that fixed.",
     "contention_at_start": "GO \u2014 3 browser instances, load 11.63 over 4 cores",
     "next_step": "self-test matrix -> paste seven lines -> standing live run on phone+desktop shapes -> boot-notice-over-working-game check -> screenshot -> blog line -> commit"
+  },
+  "defect_P13_LIVE_RIGHT_NOW": {
+    "id": "P13",
+    "severity": "the boot notice is a full-screen RED ERROR over a working game, on the deployed bytes, right now",
+    "where": "game/index.html painted(), against game/src/render/renderer.js:59 (`preserveDrawingBuffer: automated`)",
+    "found_by": "reading, then measured \u2014 tools/playability/notice-over-game.mjs (NEW)",
+    "what": "painted() decides whether the game has drawn by calling gl.readPixels on the GAME'S OWN drawing buffer, from a setInterval. Commit a52113c set preserveDrawingBuffer:false for anyone who is not automated - correctly, it is a known way to lose a phone's context. After compositing, a non-preserved drawing buffer is specified to be undefined and is zero in practice. So for EVERY REAL PLAYER painted() returns false on a game drawing perfectly, forever.",
+    "consequence": "the notice's poll then runs: at sinceBoot > 6 s it calls say('The world loaded, but nothing is being drawn.', ..., bad=true) - the RED state, with the copy button and the device line - and only at sinceBoot > 20 s does the ceiling hide it. #boot-notice is position:fixed; inset:0; z-index:9999 with NO pointer-events:none, so for those ~14 seconds it covers the whole screen, eats every tap and click, and tells the player the game is broken while the game is running underneath it.",
+    "why_nothing_caught_it": "this is the SAME defect class as the corner-sampled painted() the W1-DEPLOY critic found, arriving by a different route, and it lives in a window every instrument stops short of. verify-playable's last sample is ~3-4 s after boot; the notice's own timer needs 6 s. Rule 8 in the small: the check measured the one interval at which its number is zero. The predecessor moved THE INSTRUMENT to a screenshot for exactly this coupling and left THE SHIPPED PAGE reading readPixels.",
+    "on_the_live_site": "YES. curl of the deployed game/index.html has the readPixels painted() at line 229 and the deployed game/src/render/renderer.js has `preserveDrawingBuffer: automated` at line 59. Both halves are published.",
+    "owner": "game/index.html is mine for the boot notice (item 4 of the standing brief). renderer.js is NOT mine and does not need to change - a52113c is right.",
+    "fix": "painted() must not read the GL buffer. Either read a 2-D canvas copy of the composited page, or - cheaper and with no pixel read at all - treat 'the renderer exists and its frame counter has advanced since the last poll' as painted, which is what the notice actually wants to know.",
+    "status": "measuring now"
+  },
+  "P11_resolved": "YES. game/src/sim/quest/refusal.js and game/data/dialogue/faction-refusals.json are both in HEAD (3d4c88d). game/src/__gatecheck.js is gone from disk and from the index, and nothing anywhere imports it - it was another agent's gate-falsification fixture. P11 is closed.",
+  "live_links_http": {
+    "game": "200 19965b",
+    "landing": "200 2657b",
+    "blog": "200 497797b",
+    "checked": "2026-08-08 via curl (Chromium cannot reach github.io from here)"
   }
 }

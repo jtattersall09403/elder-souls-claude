@@ -151,7 +151,23 @@ const srcFiles = walk(P('game')).filter(f => ['.js', '.mjs', '.ts'].includes(ext
 let loc = 0;
 for (const f of srcFiles) { try { loc += readFileSync(f, 'utf8').split('\n').length; } catch { } }
 
-const shots = walk(P('reports')).filter(f => ['.png', '.jpg'].includes(extname(f)));
+// PUBLISHED SHOTS ONLY. This used to walk `reports/` — which is gitignored on purpose
+// (reports/.gitignore, 701 MB of run artifacts) — and pick whatever files happened to be newest
+// there by directory order. That is how the blog ended up embedding 12 frames from
+// `reports/wld12-blind/`, a blind border-judging pack (RI-WLD12, tools/world/wld12-blind-pack.mjs):
+// no commit will ever publish that directory, so every reader got a 404 for all 12, on both
+// docs/progress.html and docs/index.html (which inlines progress.html's body — tools/blog.mjs).
+// Caught live: `node tools/playability/verify-links.mjs` and `curl` against
+// https://jtattersall09403.github.io/elder-souls-claude/docs/../reports/wld12-blind/f12.png (404).
+//
+// `docs/shots/` is the one directory this project treats as "published": rule 27 puts every
+// dated illustrative capture there, and check-image-refs.mjs (below) asserts every file in it is
+// both git-tracked and live-retrievable. Sourcing "Latest captures" from it means the section can
+// only ever show images that actually exist on the site. Sorted by mtime, newest first, because
+// the walk below does not sort directory entries and "latest" was never true of readdir order.
+const shots = walk(P('docs', 'shots'))
+  .filter(f => ['.png', '.jpg'].includes(extname(f)))
+  .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs);
 
 // ---------- derive ----------
 const bySide = {}; for (const i of items) bySide[i.side] = (bySide[i.side] || 0) + 1;
@@ -299,7 +315,7 @@ ${Object.entries(dataStats).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${typeof 
 </table>
 
 <h2>Latest captures</h2>
-${shots.length ? `<div class="shots">${shots.slice(-12).map(s => `<figure><img src="${esc(relative(P('docs'), s))}"><figcaption>${esc(basename(s))}</figcaption></figure>`).join('')}</div>` : '<div class="empty">no screenshots captured yet</div>'}
+${shots.length ? `<div class="shots">${shots.slice(0, 12).map(s => `<figure><img src="${esc(relative(P('docs'), s))}"><figcaption>${esc(basename(s))}</figcaption></figure>`).join('')}</div>` : '<div class="empty">no screenshots captured yet</div>'}
 
 </div>
 <footer>

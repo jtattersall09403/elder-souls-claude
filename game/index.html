@@ -178,13 +178,45 @@
 
   // A file that 404s is the single most likely cause of a silent black screen on a static host,
   // and it does not throw — the fetch resolves and the caller gets nothing useful.
+  //
+  // P10. THIS PANEL CALLED A 503 A MISSING FILE, TWICE, ON THE OWNER'S OWN LINK. Two live runs
+  // died on `world/hazards.json` answering 503 from Pages' CDN and this screen said "A file the
+  // game needs is missing." It was not missing. That sentence is the reason a whole session was
+  // spent hunting an unpublished file that was published all along. So the two classes are now
+  // separated here as well as in the loader:
+  //
+  //   * 5xx / 408 / 429 — the host is wobbling. The loader retries (see `LOAD_RETRY` in
+  //     engine.js). This is NOT a failure yet, so it must not be dressed as one: it is reported
+  //     as weather, in the progress line, with the status and the file, and the boot carries on.
+  //     If the retries are eventually exhausted the loader's own rejection lands below with the
+  //     status, the URL and the attempt count in it — nothing is swallowed.
+  //   * anything else, 404 above all — the file is genuinely not there. Loud, immediately, with
+  //     the device line. That is a different bug with a different fix and it must stay loud.
+  var transientCount = 0, transientLast = '';
+  function transientNote() {
+    if (!transientCount) return '';
+    return '<br><br>The server hiccuped on ' + transientCount + ' file' + (transientCount === 1 ? '' : 's') +
+           ' (' + transientLast + '). Those files are not missing — the game is asking again.';
+  }
   if (window.fetch) {
     var real = window.fetch;
     window.fetch = function () {
       return real.apply(this, arguments).then(function (res) {
         if (!res.ok && !done) {
-          say('A file the game needs is missing.',
-              res.status + ' on <code>' + String(res.url).split('/').slice(-3).join('/') + '</code>', true);
+          var where = String(res.url || '').split('/').slice(-3).join('/');
+          if (res.status >= 500 || res.status === 408 || res.status === 429) {
+            transientCount++;
+            transientLast = res.status + ' on ' + where;
+            // Observable after the fact, the way `__BOOT_DIAGNOSTIC` is: a transient that the
+            // loader recovered from leaves no trace on the screen once the game is up, and
+            // `tools/playability/loader-retry.mjs` has to be able to prove it happened.
+            window.__BOOT_TRANSIENT = { count: transientCount, last: transientLast, status: res.status };
+            // Not `bad`: the boot has not failed and saying it has is the defect being fixed.
+            if (el.className !== 'bn-bad') say('Loading the province…', 'About 17 MB.' + transientNote(), false);
+          } else {
+            say('A file the game needs is missing.',
+                res.status + ' on <code>' + where + '</code>', true);
+          }
         }
         return res;
       });
@@ -198,8 +230,8 @@
     var s = Math.round((Date.now() - t0) / 1000);
     if (el.className === 'bn-bad') return;
     if (s > 90) say('Still loading, and this is longer than it should take.',
-                    'If it never finishes, the console will say why. This is worth reporting.', false);
-    else if (s > 8) say('Loading the province…', 'About 17 MB. ' + s + 's so far.');
+                    'If it never finishes, the console will say why. This is worth reporting.' + transientNote(), false);
+    else if (s > 8) say('Loading the province…', 'About 17 MB. ' + s + 's so far.' + transientNote());
   }, 1000);
 
   // Hiding on "the harness object exists" was WRONG and it cost the owner a second black screen.
@@ -292,6 +324,16 @@
       add('glErr', function () { var e = real.getError(); return e ? '0x' + e.toString(16) : null; });
       add('', function () { return (real.isContextLost && real.isContextLost()) ? 'CONTEXT LOST' : null; });
     }
+    // P10. How the NETWORK behaved, which no other fact in this line captures and which is the
+    // whole diagnosis when the host is wobbling rather than the device. `__ES_LOAD_RETRIES` is
+    // written by the data loader in engine.js on every attempt.
+    add('load', function () {
+      var L = window.__ES_LOAD_RETRIES;
+      if (!L || !L.attempts) return null;
+      return L.attempts + ' requests, ' + L.retries + ' retries, ' + Math.round(L.sleptMs) + 'ms waiting' +
+             (L.stopped ? ', gave up at ' + L.stopped : '') +
+             (L.failure ? ', last ' + L.failure.status + ' on ' + L.failure.file : '');
+    });
     // Which build they are looking at. Without it a report is about "the game", and the game
     // changes several times an hour.
     add('build', function () { return (window.__ES_COMMIT || '?') + ' ' + location.pathname; });

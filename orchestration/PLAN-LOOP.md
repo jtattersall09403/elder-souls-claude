@@ -83,6 +83,34 @@ removes **one** round per piece it repays roughly sixfold; the 4-to-6-round piec
 more than one. Speed: it adds ~15 minutes in series and removes 40–90 minute rounds — and because
 planning needs no browser, **a whole wave can plan in parallel while builds queue on the box.**
 
+### The first measured run — the estimate above was wrong, and low
+
+**W1-HUD-TOAST, the first piece to use this loop.** The plan half alone cost **131k tokens, 40 tool
+calls, 10 minutes, no browser** — more than the 60–100k this document estimated for *plan and critic
+together*. Assume a full exchange is **200–260k**, not 100k. That is still roughly a quarter of a
+build round and it still needs no browser, so the case holds; but the number in the paragraph above
+was written before anything had run and it should be read as what it was.
+
+**What the plan bought, which is the part that decides whether the loop survives.** Before any build
+agent was dispatched, offline reading alone established:
+
+- The repair the piece was dispatched for **had already landed**. A build agent would have spent its
+  first hour discovering that. This is exactly the waste rule 3z was written for, caught a layer
+  earlier and for a tenth of the cost.
+- The defect was **not** the faction-quest edge case it was dispatched as: **58 of 75 strings (77%)**
+  on that toast channel overflow the 400 px panel, widest 1013.5 px. The brief's framing was wrong
+  and the plan corrected it before anyone paid to build against it.
+- The landed fix is a **second implementation** — `ui/type.js` already exports `wrap()`,
+  `ellipsise()` and `normalise()`, and `hud.js` imports `measure`/`drawText` from that same file
+  before re-implementing greedy wrapping inline. Rule 10 violated *inside the fix*. A build critic
+  would have found this in round 2; the plan found it in round 0.
+
+**And the shape to keep.** The plan agent wrote down what it was **least sure of** and named the
+critic's strongest move against its own document. That is not modesty, it is the cheapest possible
+way to spend the critic's exchange — the critic starts at the weakest joint instead of finding it.
+Every plan should end with that section, and a plan that claims no weak joint has failed the same
+way a critic that finds no gap has failed.
+
 None of this replaces anything. One builder, one separate critic with fresh context, delete-the-fix,
 the CONSUMPTION check, the self-test that goes red on purpose — all unchanged. This adds a cheap
 argument in front of an expensive one.

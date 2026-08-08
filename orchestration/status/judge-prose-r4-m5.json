@@ -14,8 +14,14 @@
     "KNOWN RESIDUAL CONTAMINATION, declared up front: I know from the status summary that judge 1 scored 15/15 on provenance and judge 2 scored 15/15 on provenance. That is a base-rate prior that the reference side IS distinguishable. It does not tell me WHICH side in any single trial. It does mean my own accuracy cannot be read as an independent replication of 'is this pack decidable' - only as an independent replication of WHICH side is which.",
     "I write my answers to JUDGEMENT-judge-prose-r4-m5.md, NOT into the existing answer.md files, so the pre-existing record stays byte-untouched."
   ],
-  "outputs_written": [],
-  "files_touched": ["orchestration/status/judge-prose-r4-m5.json"],
+  "m3_commit_before_reveal": {
+    "file": "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md",
+    "sha256_at_moment_of_commit": "358a76e55495c7bd1a7549fa39f18170499f7665fb636fe74ccc5ade626f7cde",
+    "tree_commit": "cca44e0980acbde39e395e8e654a62e8934c6cfa",
+    "note": "All 15 PROV/QUAL rows, the M5 pass and the WEAKEST POINT existed on disk at this hash BEFORE prose-tics-r4.reveal/ was opened. Sections after this point are appended post-reveal, so the file's later hash will differ by design; this hash is the auditable pre-reveal one."
+  },
+  "outputs_written": ["reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md"],
+  "files_touched": ["orchestration/status/judge-prose-r4-m5.json", "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md"],
   "files_claimed": [
     "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md",
     "reports/blog-feed.jsonl"

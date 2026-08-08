@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2d40c02`: 769 tools, 153 reference
-items, 77 pieces in flight.
+so it cannot drift. Generated at `77439c0`: 771 tools, 153 reference
+items, 79 pieces in flight.
 
-Its purpose is to stop 77+ concurrent agents each paying separately to discover the
+Its purpose is to stop 79+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -615,9 +615,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/playability/` — 4
+### `tools/playability/` — 6
 
+- `tools/playability/check-image-refs.mjs` — every image and link a published page points at must actually be on the published site.
 - `tools/playability/live-mirror.mjs` — put a real browser in front of the REAL deployed site.
+- `tools/playability/loader-retry.mjs` — does the game survive a server having a bad moment, and does it still fail loudly when a file is genuinely not there?
 - `tools/playability/notice-over-game.mjs` — Does the boot notice appear OVER A WORKING GAME?
 - `tools/playability/standing-check.mjs` — THE one command.
 - `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
@@ -1105,9 +1107,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
+| `PLAYABILITY` | measuring (successor 2) | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
+| `arbiter-s39-duration-clock` | in_progress | append S39 to corpus/00-doctrine/ARBITRATION.md, add NEXT-DISPATCH section, bank | `orchestration/status/arbiter-s39-duration-clock.json` |
 | `judge-prose-r4-m5` | researching | Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal. | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
-| `PLAYABILITY` | measuring (successor 2) | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `P10-loader-retry` | starting | read loadData in game/src/engine.js and the boot notice in game/index.html | — |
 | `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |

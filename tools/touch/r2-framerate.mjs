@@ -38,6 +38,22 @@
 // step rate does NOT collapse in that arm, this instrument is measuring something other than the
 // thing it claims to and every other row is void. It is checked, not assumed: `--gate` exits 3
 // when the stall arm is not the slowest arm by a clear margin.
+//
+// LOAD IS A CONFOUND AND THE FIRST VERSION OF THIS FILE FELL FOR IT. Run 1 took the six arms in
+// order on a box whose load per core drifted 2.70 -> 4.07 while they ran, so the stall arm was
+// measured at 1.5x the baseline's load and "the control went red" was partly the box getting
+// busier. That is not an inert control — it is worse, a control that would have looked healthy
+// whatever the stall did. So arms are now given as an explicit SEQUENCE WITH REPEATS and the
+// intended shape is A-B-A: `--arm phone,phone-stall,phone` scores the stall against the mean of
+// the two baselines that bracket it, and reports the baseline drift between them so a reader can
+// see how much of any difference the box could account for on its own.
+//
+// THE CAUSAL TEST. Everything above is correlational. `--max-catchup N` serves a COPY of the tree
+// with `core/loop.js`'s MAX_CATCHUP changed and refuses to run if the edit did not apply, which
+// turns "the accumulator cap is the mechanism" from an inference into an experiment. It is a
+// counterfactual and NOT a proposed change: RI-PLT01 §C.4 R3 and M8 specify "max 5 steps, then
+// time is dropped" as a Tier-S structural requirement, so 5 is a bar this piece builds against
+// rather than a knob it may turn.
 'use strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -49,7 +65,8 @@ const args = parseArgs(process.argv.slice(2));
 const SERVE_ROOT = String(process.env.ES_SERVE_ROOT || '') || REPO_ROOT;
 const WINDOW_MS = Number(args.window || 6000);
 const STATE = String(args.state || 'arena_duel');
-const ONLY = args.arm ? String(args.arm).split(',') : null;
+const SEQ = args.arm ? String(args.arm).split(',').map((s) => s.trim()).filter(Boolean) : null;
+const MAX_CATCHUP_OVERRIDE = args['max-catchup'] ? Number(args['max-catchup']) : null;
 const OUT = path.join(REPO_ROOT, 'reports', 'w1-touch-r2');
 ensureDir(OUT);
 const say = (s) => process.stdout.write(s + '\n');
@@ -64,11 +81,13 @@ function loadPerCore() {
 }
 
 const rec = {
-  schema: 'elder-souls/w1-touch-r2-framerate@1',
+  schema: 'elder-souls/w1-touch-r2-framerate@2',
   commit: null,
   serve_root: SERVE_ROOT,
   window_ms: WINDOW_MS,
   state: STATE,
+  max_catchup: MAX_CATCHUP_OVERRIDE === null ? 5 : MAX_CATCHUP_OVERRIDE,
+  max_catchup_is_shipped: MAX_CATCHUP_OVERRIDE === null,
   arms: [],
   taken_at: new Date().toISOString(),
 };
@@ -76,7 +95,27 @@ try {
   rec.commit = (await import('node:child_process')).execSync('git rev-parse --short HEAD', { cwd: REPO_ROOT }).toString().trim();
 } catch { /* stamped null; a number without a commit is a claim about nothing (RULES 12) */ }
 
-const server = await serveDir(SERVE_ROOT);
+/**
+ * A copy of the tree with MAX_CATCHUP changed, for the counterfactual arm. It THROWS when the
+ * edit does not apply, because a patched tree that is byte-identical to the shipped one is the
+ * inert-teardown shape RULES 6 names and every number taken from it would be the shipped number
+ * wearing a label.
+ */
+function patchedTree(n) {
+  const dst = path.join(OUT, `tree-maxcatchup-${n}`);
+  fs.rmSync(dst, { recursive: true, force: true });
+  fs.mkdirSync(dst, { recursive: true });
+  fs.cpSync(path.join(SERVE_ROOT, 'game'), path.join(dst, 'game'), { recursive: true });
+  const p = path.join(dst, 'game', 'src', 'core', 'loop.js');
+  const src = fs.readFileSync(p, 'utf8');
+  const out = src.replace('export const MAX_CATCHUP = 5;', `export const MAX_CATCHUP = ${n};   // COUNTERFACTUAL: tools/touch/r2-framerate.mjs --max-catchup ${n}`);
+  if (out === src) throw new Error(`--max-catchup: the edit did NOT apply — core/loop.js does not contain 'export const MAX_CATCHUP = 5;'. The counterfactual is inert and every number would be void.`);
+  fs.writeFileSync(p, out);
+  return dst;
+}
+
+const ROOT = MAX_CATCHUP_OVERRIDE === null ? SERVE_ROOT : patchedTree(MAX_CATCHUP_OVERRIDE);
+const server = await serveDir(ROOT);
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch({ headless: true, args: DETERMINISTIC_CHROMIUM_ARGS });
 
