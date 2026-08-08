@@ -25,9 +25,21 @@ data audits, corpus work, blog.
 
 ## 2. Bank
 
-`node tools/harness/boot-check.mjs`, then commit and push. In-flight work is banked, not withheld —
-the container has restarted twice in a day and killed every agent both times. A half-written tree
-that boots is worth more than a clean tree that is gone.
+`node tools/harness/boot-check.mjs`, then:
+
+```
+node tools/bank.mjs "<headline>" "<body>"
+```
+
+which stages everything, reads the ownership registry, and **names in the commit message whose work
+it is carrying**. Do that rather than a bare `git add -A`: the bank has three times absorbed an
+agent's finished work under a message that named none of them, and both the W1-16 builder and the
+W1-12 critic had to go looking to find their own output at HEAD. Nothing was lost either time; the
+cost was entirely avoidable and now it is paid by a tool.
+
+In-flight work is banked, not withheld — the container has restarted twice in a day and killed every
+agent both times. A half-written tree that boots is worth more than a clean tree that is gone. Retry
+on a lock: with a dozen agents committing, the index is often held for a few seconds.
 
 If `boot-check` is red, find the call site that landed ahead of its method and guard it *at the call
 site* with a note to remove the guard. Do not wait: every agent boot-checks, so a broken engine is
