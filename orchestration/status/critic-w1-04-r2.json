@@ -81,5 +81,23 @@
     "AR-2 census not re-measured (instrument written, section 4 of critic-w1-04-r2b.mjs).",
     "RI-WLD03 M13 blind layout is not_possible for round 2 own work: there is no settlement plan to render orthographically."
   ],
-  "one_error_i_made": "I first reported RI-WLD13 N1 as \"absent — 0 of 115 declare exterior_footprint_m\". Wrong: the field lives under `continuity`. Re-measured, 115 of 115 declare it and on 115 of 115 bounds_m equals it exactly, so N1 is vacuous exactly as round 1 said. Corrected in the verdict and recorded in reports/critic-w1-04-r2-offline.json under `corrections`."
+  "one_error_i_made": "I first reported RI-WLD13 N1 as \"absent — 0 of 115 declare exterior_footprint_m\". Wrong: the field lives under `continuity`. Re-measured, 115 of 115 declare it and on 115 of 115 bounds_m equals it exactly, so N1 is vacuous exactly as round 1 said. Corrected in the verdict and recorded in reports/critic-w1-04-r2-offline.json under `corrections`.",
+  "runs_still_in_flight_when_i_finished": {
+    "note": "Two browser arms were still running when I finished, and a queue behind them will run three more unattended. They write to disk. A successor should LOOK FOR THESE FILES before re-running anything.",
+    "expected_artifacts": [
+      "reports/critic-w1-04-r2a.json      (my 115-interior instrument, live arm, against the frozen snapshot)",
+      "reports/critic-w1-04-r2-sweep.json (the pixel sweep, both arms, against the frozen snapshot)",
+      "reports/critic-w1-04-r2a-cut.json  (the delete-the-fix arm, source-level cut of the same snapshot)",
+      "reports/critic-w1-04-r2-r1c-rerun.json       (the round-1 acceptance instrument; NOTE it ignores --entry and ran against the LIVE tree)",
+      "reports/critic-w1-04-r2b.json                (readable-after-load, walls, theft chain, unique-item respawn, AR-2, lamps->stealth)",
+      "reports/critic-w1-04-r2-consumption-rerun.json (the builder tool re-run against the frozen snapshot)"
+    ],
+    "frozen_snapshot_paths": {
+      "live": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/live/game/index.html",
+      "cut": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/cut/game/index.html",
+      "digest": "fd893c5524b35b2334baac19cff93b10",
+      "warning": "These live in the scratchpad and do not survive a container restart. If they are gone, take a new snapshot, record its digest, and re-derive the cut arm — the two edits are named in the verdict §0."
+    },
+    "if_they_landed": "The verdict says the two acceptance numbers did not land. If these files exist and are consistent, a successor should amend corpus/90-verdicts/wave1/W1-04-r2.md §2/§3/§4/§5 and the gap_closure row in the .json, and note in the .json that the numbers were taken after the verdict was filed and against which digest."
+  }
 }
