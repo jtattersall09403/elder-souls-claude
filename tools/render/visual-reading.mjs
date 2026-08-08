@@ -165,6 +165,7 @@ export const READING = {
   READS_THE_CLOCK: 'READS_THE_CLOCK',
   BLIND_TO_SUBJECT: 'BLIND_TO_SUBJECT',
   PASSES_ON_DEGENERATE: 'PASSES_ON_DEGENERATE',
+  DEGENERATE_NOT_GRADEABLE: 'DEGENERATE_NOT_GRADEABLE',
   NULL_CONTROL_FAILED: 'NULL_CONTROL_FAILED',
   UNDECLARED: 'UNDECLARED',
   ERROR: 'ERROR',
@@ -181,6 +182,7 @@ export const EXIT_FOR = {
   PASSES_ON_DEGENERATE: 8,
   NULL_CONTROL_FAILED: 9,
   ERROR: 10,
+  DEGENERATE_NOT_GRADEABLE: 11,
 };
 
 // ---------------------------------------------------------------------------------------------
@@ -347,7 +349,21 @@ export async function takeReading(spec) {
     let dcell;
     try { dcell = await call({ subject: S[0].id, t: 0, degenerate: true }); }
     catch (e) { dcell = { value: null, support: null, error: String((e && e.message) || e) }; }
-    degenerate = { what: spec.degenerate.what, value: dcell.value, support: dcell.support, in_band: gradeBand(spec.band, dcell.value) };
+    // EMPTY IS NOT A PASS AND IT IS NOT A FAIL EITHER. `tools/lib/graded.mjs` was written for
+    // exactly this law after eleven of fifteen graded checks in one piece returned PASS on an
+    // empty sample set — FD6 among them, whose `edgeFringe()` returns `{worst: 0}` over zero edge
+    // pixels and then compares 0 against a maximum. A degenerate subject that produced no samples
+    // has not shown the predicate can say no; it has shown nothing, and calling that either a
+    // pass or a demonstrated red would be the same mistake in two directions.
+    const gradeable = Number.isFinite(dcell.support) && dcell.support >= 1;
+    degenerate = {
+      what: spec.degenerate.what,
+      value: dcell.value,
+      support: dcell.support,
+      gradeable,
+      in_band: gradeable ? gradeBand(spec.band, dcell.value) : null,
+      status: gradeable ? 'GRADED' : 'EMPTY',
+    };
   }
 
   // ---- Q3 the NULL CONTROL, through sabotage.mjs (not re-implemented here) ---------------------
@@ -384,6 +400,7 @@ export async function takeReading(spec) {
   // sabotage.mjs's own round-2 lesson and it applies here unchanged.
   const held = [];
   if (degenerate && degenerate.in_band === true) held.push(READING.PASSES_ON_DEGENERATE);
+  if (degenerate && degenerate.gradeable === false) held.push(READING.DEGENERATE_NOT_GRADEABLE);
   if (!BREAKS.has('clock') && timeMoved) held.push(READING.READS_THE_CLOCK);
   if (!BREAKS.has('subject') && !subjectMoved) held.push(READING.BLIND_TO_SUBJECT);
   if (nul && !nul.passed) held.push(READING.NULL_CONTROL_FAILED);
@@ -396,6 +413,14 @@ export async function takeReading(spec) {
         `${JSON.stringify(degenerate.value)} ${spec.unit}, which is INSIDE the band ${JSON.stringify(spec.band)}. THE PREDICATE CANNOT SAY NO. ` +
         `This is the "a canvas exists, it has non-zero dimensions, and there are no page errors" shape: all three were true of a black screen.` +
         (held.length > 1 ? ` ALSO HELD: ${held.filter((h) => h !== READING.PASSES_ON_DEGENERATE).join(', ')}.` : '') };
+  }
+  if (held.includes(READING.DEGENERATE_NOT_GRADEABLE)) {
+    return { ...common, verdict: READING.DEGENERATE_NOT_GRADEABLE, passed: false,
+      why: `the degenerate subject (${spec.degenerate.what}) produced ${degenerate.support} sample(s), so Q5 was never answered: ` +
+        `the predicate has not been shown able to say no. EMPTY is not a pass and it is not a demonstrated red — ` +
+        `tools/lib/graded.mjs exists because eleven of fifteen checks in one piece returned PASS over an empty sample set. ` +
+        `Supply a degenerate subject the reading can actually grade, or say plainly that Q5 is unanswerable for this claim.` +
+        (held.length > 1 ? ` ALSO HELD: ${held.filter((h) => h !== READING.DEGENERATE_NOT_GRADEABLE).join(', ')}.` : '') };
   }
   if (held.includes(READING.READS_THE_CLOCK)) {
     return { ...common, verdict: READING.READS_THE_CLOCK, passed: false,
@@ -511,11 +536,11 @@ function cases() {
       claim_class: CLAIM.ON_SCREEN, surface: SURFACE.FRAMEBUFFER,
       unit: 'count', band: { unit: 'count', min: 8 }, support_unit: 'captures compared',
       subjects: twoSubjects, factors: oneFactor,
-      degenerate: { what: 'a capture set with no captures in it' },
+      degenerate: { what: 'the same eight captures taken from one unmoved pose' },
       // The real one held TWO defects at once — a step-counter hash also produces distinct values
       // over an emptied scene — and `concurrent_failures` is where that is recorded. Here the
       // degenerate arm is the empty capture set, so the clock defect is isolated.
-      read: async ({ t, degenerate }) => (degenerate ? { value: 0, support: 0 } : { value: 8 + t, support: 8 }),
+      read: async ({ t, degenerate }) => (degenerate ? { value: 1, support: 8 } : { value: 8 + t, support: 8 }),
       expect: READING.READS_THE_CLOCK },
 
     // FAILURE 3 — `interior.meshes` as a renderer read. Refused before it is ever run.
@@ -571,7 +596,7 @@ function cases() {
       subjects: twoSubjects, factors: [{ id: 'shear', what: 'apply the shear transform to every glyph' }],
       degenerate: { what: 'a chart with no glyphs drawn at all' },
       read: async ({ subject, degenerate }) => {
-        if (degenerate) return { value: 0, support: 0 };
+        if (degenerate) return { value: 0, support: 240 };
         return { value: subject === 'room-A' ? 0.97 : 0.93, support: 240 };
       },
       expect: READING.NULL_CONTROL_FAILED },
@@ -583,6 +608,21 @@ function cases() {
       subjects: twoSubjects, factors: oneFactor, degenerate: null,
       read: async () => ({ value: 0.5, support: 10 }),
       expect: READING.UNDECLARED },
+
+    // The degenerate subject produced no samples. This is FD6's own shape — `edgeFringe()`
+    // returns `{worst: 0}` over zero edge pixels and 0 is inside a `max` band — and the answer is
+    // neither "it passed" nor "it went red". It is EMPTY.
+    { id: 'degenerate-empty--zero-samples-is-not-a-red',
+      claim: 'UI edge fringing is inside the ΔE bar', claim_class: CLAIM.ON_SCREEN, surface: SURFACE.FRAMEBUFFER,
+      unit: 'dE2000', band: { unit: 'dE2000', max: 8 }, support_unit: 'edge pixels graded',
+      subjects: twoSubjects, factors: [{ id: 'colourspace', what: 'grade in luma instead of ΔE' }],
+      degenerate: { what: 'a capture set with zero graded edge pixels' },
+      read: async ({ subject, degenerate, broken }) => {
+        if (degenerate) return { value: 0, support: 0 };
+        if (broken.includes('colourspace')) return { value: 151, support: 98659 };
+        return { value: subject === 'room-A' ? 58.291 : 41.2, support: 98659 };
+      },
+      expect: READING.DEGENERATE_NOT_GRADEABLE },
 
     // Nothing read at all — a misspelt field.
     { id: 'nothing-read--misspelt-field',
