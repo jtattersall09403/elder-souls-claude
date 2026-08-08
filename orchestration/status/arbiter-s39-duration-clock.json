@@ -1,16 +1,42 @@
 {
   "task_id": "arbiter-s39-duration-clock",
   "role": "arbiter",
-  "state": "in_progress",
+  "state": "complete",
   "started": "2026-08-08",
-  "question": "When a Souls-derived duration is specified, is it a count of simulation steps or a span of wall-clock?",
+  "finished": "2026-08-08",
+  "commit_measured": "2d40c02",
+  "artifacts_measured_at": "fa96455 (the W1-TOUCH critic's browser numbers; no browser used by this arbiter)",
+  "question": "When a Souls-derived duration is specified, is it a count of simulation steps or a span of wall-clock, and which does the player feel?",
   "seam_source": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md §3 and §4",
-  "next_step": "append S39 to corpus/00-doctrine/ARBITRATION.md, add NEXT-DISPATCH section, bank",
-  "files_claimed": [
+  "ruling": "ARBITRATION S39 — the line is the INPUT BOUNDARY, not the fight boundary. Both endpoints in the sim => f@60 forever, never a wall-clock read. Both endpoints in the hand => stamped ms from event.timeStamp, converted to f@60 once at the boundary. One endpoint each => the simulation owns it (S33's family).",
+  "key_findings": [
+    "loop.js is a bounded catch-up accumulator (MAX_CATCHUP=5): the sim tracks wall clock exactly at any rAF rate >= 12.00 Hz, and enters UNIFORM slow motion below it. The referral's 11.6 steps/s is the world at 19.3% of real time, implying rAF at 2.32 Hz.",
+    "The referral understated its own finding by ~19x. Five presses asked at 20/60/120/250/500 ms all reported frames_held=1; their wall spans should have consumed 18.3-24.4 sim frames even at 11.6 steps/s. Pearson r(asked_ms, frames_held) = 0.596 over 10 rows, undefined over the 5 clean rows.",
+    "At 60 Hz those five presses split roll/roll/roll/sprint/sprint across the 12-frame gate. Measured: 5 of 5 rolled. The discriminator inverted on 2 of 5.",
+    "S22's REBASE-S22-REPORT.md already named the category ('wall-clock human bar', NOT rebased) and combat/player.js:919 says it in the source ('a property of human hands'). S22 said which figures do not rebase; S39 says which clock they are read on.",
+    "RI-JRN04 M-P22 asks for 'gone within 2 s of last touch' while touch.js:46 implements it as hideAfterFrames=120. The corpus already wanted both clocks and never said so.",
+    "Stretched i-frames on a slow device are CORRECT (uniform slow motion, the fight stays fair) and are scored on RI-PLT01, not as a seam violation."
+  ],
+  "blast_radius": "16 figures reclassified; 11,161 frame-denominated durations across 106 field names in game/data/** unchanged (0.14%).",
+  "falsifier": "Two-arm replay above and below the 12.00 Hz rAF floor. S39 predicts identical promoted actions at both rates, frames_held within +/-1 f@60 of round(asked_ms/16.667), and bit-identical replay hashes. Overturned if the third cannot be made true (determinism outranks the hand), or by a hands-on 60 Hz measurement showing the frame-counted gate was never the complaint. REVERSIBLE.",
+  "instrument_owed": "tools/input/arbiter-clock-s39.mjs — NOT built by this arbiter (dispatch forbade building; the falsifier needs a browser at two frame rates). Owned by whoever lands the change. S39 is not satisfied by argument (S26's lesson).",
+  "not_decided": [
+    "The W1-TOUCH §2 roll asymmetry (a routing fault: sprint:down where roll:down belongs). A stamped gate will not fix it.",
+    "Whether 12 f@60 / 200 ms is the right threshold (RI-JRN04 §C owns that).",
+    "The frame budget itself (RI-PLT01; never measured on a real device).",
+    "MAX_CATCHUP=5 and the 12.00 Hz floor (RI-PLT01 R3)."
+  ],
+  "could_not_do": [
+    "No browser and no real device: every browser figure quoted is the W1-TOUCH critic's, re-derived arithmetically from its published artifact, not re-taken.",
+    "The falsifier is specified and not run. It needs two frame rates on a quiet box.",
+    "The S39 lint and the two-rate gate do not exist. Named as a required deliverable rather than built."
+  ],
+  "files_claimed": [],
+  "files_touched": [
     "corpus/00-doctrine/ARBITRATION.md",
     "orchestration/NEXT-DISPATCH.md",
-    "orchestration/status/arbiter-s39-duration-clock.json"
+    "orchestration/status/arbiter-s39-duration-clock.json",
+    "reports/blog-feed.jsonl"
   ],
-  "files_touched": ["orchestration/status/arbiter-s39-duration-clock.json"],
   "no_browser": true
 }

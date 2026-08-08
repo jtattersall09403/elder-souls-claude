@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `77e98f5`: 771 tools, 153 reference
-items, 80 pieces in flight.
+so it cannot drift. Generated at `588b783`: 772 tools, 153 reference
+items, 79 pieces in flight.
 
-Its purpose is to stop 80+ concurrent agents each paying separately to discover the
+Its purpose is to stop 79+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -562,7 +562,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 24
+### `tools/lore/` — 25
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -580,6 +580,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r4-lor04-lib.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r4-onscreen.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r4-shelf.mjs` — **no header comment**
+- `tools/lore/critic-w1-23-r5-consume.mjs` — CONSUMPTION (RI-MTH07 §B) for the eleven texts ROUND 4 ITSELF WROTE.
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/lor04-validate.mjs` — **no header comment**
 - `tools/lore/mk-short-measures.mjs` — **no header comment**
@@ -1107,12 +1108,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
+| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-12-r2-critic` | running | read RULES, CLAUDE.md, r1 verdict, reports/w1-12-r2/survey.md, status/W1-12-r2.json | `orchestration/status/W1-12-r2-critic.json` |
 | `P10-loader-retry` | measuring | run the full six-arm --self-test, screenshot the persistent-503 notice, blog line, commit | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `orchestration/status/P10-loader-retry.json` |
 | `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
-| `PLAYABILITY` | measuring (successor 2) | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
-| `arbiter-s39-duration-clock` | in_progress | append S39 to corpus/00-doctrine/ARBITRATION.md, add NEXT-DISPATCH section, bank | `orchestration/status/arbiter-s39-duration-clock.json` |
-| `judge-prose-r4-m5` | researching | Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal. | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
