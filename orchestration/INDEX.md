@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b376ac4`: 802 tools, 153 reference
+so it cannot drift. Generated at `10c16ec`: 802 tools, 153 reference
 items, 93 pieces in flight.
 
 Its purpose is to stop 93+ concurrent agents each paying separately to discover the
@@ -1141,13 +1141,14 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-deploy-r2` | done |  | `orchestration/status/critic-w1-deploy-r2.json` `corpus/90-verdicts/wave1/W1-DEPLOY-r2.md` `corpus/90-verdicts/wave1/W1-DEPLOY-r2.json` `corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |
+| `critic-w1-15-r4` | ? | none — verdict, ledger, publish and blog line are landed. The one open re-measurement is n | `orchestration/status/critic-w1-15-r4.json` `tools/stealth/critic-w1-15-r4.mjs` `tools/stealth/critic-w1-15-r4-live.mjs` `tools/stealth/critic-w1-15-r4-figure.mjs` `reports/w1-15/critic-r4.json` `corpus/90-verdicts/wave1/W1-15-r4.md` |
 | `PLAYABILITY` | measuring (successor 3) — six-sabotage matrix's 6 non-control arms verified twice; control unconfirmed green all session (persistent heavy fleet load, not a defect); standing live check ran but SLOW/UNMEASURED under the same load, not PLAYS/FAILS | SUPERSEDED — see successor_run_3_FINAL_live_results and conclusion_job_1 below. P13 is fix | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `S39-falsifier` | done | none — instrument built, run, and its verdict written into ARBITRATION.md under S39. | `orchestration/status/S39-falsifier.json` `tools/input/arbiter-clock-s39.mjs` `tools/input/arbiter-clock-s39-shot.mjs` `reports/s39/arbiter-clock-s39.json` `reports/s39/arbiter-clock-s39-selftest.json` `corpus/00-doctrine/ARBITRATION.md` |
 | `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
 | `PLT01-STEPRATE-critic` | reading | Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myse | `orchestration/status/PLT01-STEPRATE-critic.json` |
 | `judge-prose-r5` | running | read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding | `orchestration/status/judge-prose-r5.json` |
 | `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
-| `critic-w1-15-r4` | ? | the LIT_CAP frame-time arm is still running under load ~7/core; fold its numbers into §10  | `orchestration/status/critic-w1-15-r4.json` `tools/stealth/critic-w1-15-r4.mjs` `tools/stealth/critic-w1-15-r4-live.mjs` `tools/stealth/critic-w1-15-r4-figure.mjs` `reports/w1-15/critic-r4.json` `corpus/90-verdicts/wave1/W1-15-r4.md` |
 | `PLAN-COST-EXPERIMENTS-critic` | in_progress | Write BLOCKING/CARRIED critique into orchestration/plans/COST-EXPERIMENTS.md, state verdic | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` |
 | `measure-own-e-w1-hud-toast-b` | running | 1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify th | — |
 | `W1-12-r2-critic` | done | none — verdict published. Hand to the orchestrator. | `orchestration/status/W1-12-r2-critic.json` `corpus/90-verdicts/wave1/W1-12-r2.md` `corpus/90-verdicts/wave1/W1-12-r2.json` `corpus/90-verdicts/GAP-LEDGER.json` `corpus/90-verdicts/GAP-LEDGER.md` `tools/combat/critic-w1-12-r2-m3-chart.mjs` |
@@ -1155,7 +1156,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-20` | running | write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank | `orchestration/status/critic-w1-20.json` `tools/quests/critic-w1-20-reach.mjs` |
 | `critic-w1-attr-scale` | running | SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usag | `orchestration/status/critic-w1-attr-scale.json` |
 | `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The three things to attack: (1)  | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
-| `critic-w1-deploy-r2` | measuring (successor 2) | run tools/world/critic-deploy-r2-notice.mjs --notice --boot when contention allows; then w | `orchestration/status/critic-w1-deploy-r2.json` `tools/world/critic-deploy-r2-gate.mjs` `tools/world/critic-deploy-r2-drift.mjs` `tools/world/critic-deploy-r2-imgref-fixture.mjs` `tools/world/critic-deploy-r2-notice.mjs` `reports/w1-deploy-r2/selftest-local.json` |
 | `COST-G3` | running | verify the 2-of-95 diagnosis; count verdicts myself | — |
 | `GATE-BLAST-RADIUS` | done | done. Follow-up NOT done here, named only: tools/check-data.mjs and tools/check-content.mj | `.githooks/pre-commit` `tools/check-shipped-files.mjs` `tools/bank.mjs` `game/src/sim/quest/defs.js` `tools/check-quests.mjs` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |

@@ -2,10 +2,10 @@
   "task_id": "critic-w1-15-r4",
   "role": "critic",
   "piece": "W1-15 round 4 critic \u2014 interior lighting, stealth, fencing, crime",
-  "status": "in_progress",
+  "status": "complete",
   "started_at": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-15-r3.md + orchestration/status/W1-15-r4.json",
-  "next_step": "the LIT_CAP frame-time arm is still running under load ~7/core; fold its numbers into \u00a710 of the verdict if it returns, then re-bank",
+  "next_step": "none \u2014 verdict, ledger, publish and blog line are landed. The one open re-measurement is named in the verdict: retake the LIT_CAP frame time on an idle box with a real GPU context.",
   "redundant_with": [
     "W1-15-r4"
   ],
@@ -33,8 +33,20 @@
     "RULE-6 SHAPE LABELS INVERTED against rule 6's own text: on the disagreement measurement only site A bites (0->1215; B is 0->0), which is ONE site; on the eleven-rooms measurement BOTH bite alone (0.1676->0.1102 and ->0.0974), which is two INDEPENDENT sites, not \"two guards for one defect\" (rule 6: \"deleting either alone changes nothing\").",
     "FOURTH RAW-TOTAL CONSUMER: disposition.js:313 `-G.fDispCrimeMod * player.bounty` where _questPlayerView() (engine.js:9074) sums ALL bounty jurisdictions with no unattributed subtraction. fDispCrimeMod=0.02, so the round's own 680 g unattributed scenario costs -13.6 disposition with every person in the province.",
     "VERIFIED: 0 disagreeing cells of 16,996 on an instrument this critic wrote; renderer-side cut (which the round's 2x2 never ran) bites \u2014 706->500 point lights, 0->94 cells; fence 1,787/1,787 refusable with control 0, and 5-8 of 9 fences still buy so the economy has an out.",
-    "CANOPY_DAY clamp is unreachable by construction (0 rooms), so interiorAmbientL().clamped can never be true on the shipped corpus."
+    "CANOPY_DAY clamp is unreachable by construction (0 rooms), so interiorAmbientL().clamped can never be true on the shipped corpus.",
+    "FRAME TIME, the round's own unmeasured reversal condition: thorn-hall through the shipped render path, 5 point lights median 3,240.9 ms vs 14 point lights median 10,813.8 ms (n=40 each) = 3.34x. As worded the reversal condition is MET. NOT reversing the ruling on it: 4-7 browser instances and 5.0-7.5 load per core throughout, a 3.2 s frame at five lights is not a GPU, my probe failed to identify the rasteriser, and the 40-lamp control did not finish. Named the re-measurement that would settle it."
   ],
-  "could_not_do": [],
-  "note_on_shared_paths": "reports/blog-feed.jsonl and docs/shots/ are appended by every finishing piece; ownership --conflicts reports them against AUDIT-R1-LIST, P10-loader-retry and PLAYABILITY. One appended line and one new dated filename each \u2014 declared rather than left to read as a collision."
+  "could_not_do": [
+    "The live third-site arm never ran \u2014 the probe was cut at its timeout after two of four frame-time arms. \u00a71's writ-house and barge-hold findings are OFFLINE, from the real render/places.js and the real litLights(), not from a live walk. The verdict's provenance line says so.",
+    "The 40-lamp control arm (the check that the frame-time instrument can see lamp cost at all) did not complete at load 5-7.5/core. The instrument's credibility rests on the weaker 5->14 monotone step.",
+    "tools/run-all.mjs and the 29-assertion stl-live.mjs \u2014 both launch many browsers; the box was over its instance ceiling for most of the run.",
+    "RI-QST05 was not re-measured; its 3 is inherited from round 3 and is the weakest number in the score table. RI-CRM02 rests on one spot-check (crime.writs has no producer in game/src).",
+    "The round's predecessor's two open probes (a live loadState round trip and a live answerArrest('pay')) are STILL OPEN, open since round 2, and I did not attempt them either.",
+    "My own instrument has a defect I am recording rather than hiding: the WEBGL_debug_renderer_info probe reported `none` because E.renderer.renderer is not the WebGLRenderer on this build, so I cannot say which rasteriser produced the frame times.",
+    "COMMIT MESSAGE / CONTENT MISMATCH, recorded rather than rewritten: commit 64a4b01's message says the frame-time retry was 'still running', but the verdict file that commit carries already contains \u00a710.5 with the numbers. The index was locked by two concurrent banks for ~20 minutes and the retry loop landed after the message was written. Correcting the record here rather than rewriting a shared tree.",
+    "node tools/publish.mjs exits 1, on a NEIGHBOUR's verdict: 'w1-attr-scale-r1 plots on no chart because its piece id maps to no domain'. w1-15 is in tools/scores.mjs's DOMAIN at line 50 and this verdict charts. Pre-existing and not mine; recorded because a non-zero publish is worth someone's minute."
+  ],
+  "note_on_shared_paths": "reports/blog-feed.jsonl and docs/shots/ are appended by every finishing piece; ownership --conflicts reports them against AUDIT-R1-LIST, P10-loader-retry and PLAYABILITY. One appended line and one new dated filename each \u2014 declared rather than left to read as a collision.",
+  "verdict": "corpus/90-verdicts/wave1/W1-15-r4.md \u2014 FAIL, 2.0/10 min-over-axes against a gate of 7.0 (mean 4.7). Min carried by RI-CRM02, untouched for three rounds. RI-STL01 0->5, RI-STL02 2->7, RI-CRM01 3->5.",
+  "commit_stamp": "9063779 (measured) / 64a4b01 (verdict landed)"
 }

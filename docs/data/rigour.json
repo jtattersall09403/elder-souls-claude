@@ -1,0 +1,4932 @@
+{
+  "schema": "elder-souls/rigour@1",
+  "generated_at": "2026-08-08T12:59:26.354Z",
+  "generator": "tools/rigour.mjs",
+  "commit": "10c16ec",
+  "measures": "the five non-negotiables of COST.md §1, counted as ACTS (an observable the act produced) rather than as WORDS (the phrase in prose)",
+  "population": {
+    "verdicts": 77,
+    "with_structured_json": 76,
+    "declaring_rigour_block": 0,
+    "source": "corpus/90-verdicts/<wave>/*.json + .md"
+  },
+  "tiers": {
+    "act": "an observable the act itself produced, re-derived here from the verdict and the repo. COUNTED.",
+    "claim": "a self-report — a boolean or a status with no numbers behind it. Published, NOT counted.",
+    "word": "the phrase appears and nothing else. Published as the gameability meter, NOT counted."
+  },
+  "counts": {
+    "separate_critic": 68,
+    "delete_the_fix": 5,
+    "consumption": 10,
+    "self_test": 21,
+    "arms_disagree": 4,
+    "read_the_file": 23
+  },
+  "claimed_only": {
+    "separate_critic": 4,
+    "delete_the_fix": 22,
+    "consumption": 16,
+    "self_test": 1,
+    "arms_disagree": 4,
+    "read_the_file": 42
+  },
+  "word_only": {
+    "separate_critic": 0,
+    "delete_the_fix": 23,
+    "consumption": 36,
+    "self_test": 12,
+    "arms_disagree": 17,
+    "read_the_file": 2
+  },
+  "word_to_act_gap": {
+    "separate_critic": 4,
+    "delete_the_fix": 45,
+    "consumption": 52,
+    "self_test": 13,
+    "arms_disagree": 21,
+    "read_the_file": 44
+  },
+  "by_wave": {
+    "wave1": {
+      "verdicts": 77,
+      "counts": {
+        "separate_critic": 68,
+        "delete_the_fix": 5,
+        "consumption": 10,
+        "self_test": 21,
+        "arms_disagree": 4,
+        "read_the_file": 23
+      }
+    }
+  },
+  "strength": {
+    "separate_critic": "medium — the commit separation is structural, but `conflict_of_interest` is self-reported",
+    "delete_the_fix": "strong — two recorded readings that differ cannot be produced by writing a phrase",
+    "consumption": "strong — the consumer path is checked against disk and the arms must differ",
+    "self_test": "strong — the script must exist on disk and carry an exit code (run with --verify to re-execute)",
+    "arms_disagree": "medium-strong — a non-zero exit is strong; a \"watched red\" note beside a green run is weaker",
+    "read_the_file": "strong where a quote verifies at the judged commit; weak where only a line number is cited"
+  },
+  "weak": [
+    "separate_critic"
+  ],
+  "limits": [
+    "No instrument here can detect a FABRICATED pair of arms. It can only detect their absence. Rigour ultimately rests on the honesty of the numbers a critic writes down.",
+    "Backfilled counts read ~200 ad-hoc key spellings and will under-count acts that were recorded in prose only. An under-count is the safe direction for a guard; it is never inflated to compensate.",
+    "A verdict predating the rigour block is scored by recognisers, not by its own declaration. Forward verdicts carrying `rigour` are scored from it directly and are strictly more reliable.",
+    "THE UNDER-COUNT IS DEMONSTRABLE, AND THIS IS THE WORKED CASE. W1-02-r1 scores `word` for delete-the-fix, yet its build.harness_commands reads `node /scratch/c-evt.mjs --drop-vocab   (delete-the-fix arm)`. The deed was done; the instrument was written to a scratch directory that no longer exists, so no residue survives and nothing here can see it. Treat low historical counts as \"the residue did not survive\", never as \"the work was not done\".",
+    "A raw COUNT rises simply because verdicts accumulate, so a guard read off counts alone always looks like it is improving. Read `rate` (acts per verdict) and the daily `series`; the counts are published beside them for auditing, not for trending."
+  ],
+  "status": "measured",
+  "rate": {
+    "separate_critic": 0.883,
+    "delete_the_fix": 0.065,
+    "consumption": 0.13,
+    "self_test": 0.273,
+    "arms_disagree": 0.052,
+    "read_the_file": 0.299
+  },
+  "series": [
+    {
+      "t": "2026-08-06",
+      "verdicts": 12,
+      "counts": {
+        "separate_critic": 12,
+        "delete_the_fix": 1,
+        "consumption": 0,
+        "self_test": 0,
+        "arms_disagree": 0,
+        "read_the_file": 3
+      },
+      "rate": {
+        "separate_critic": 1,
+        "delete_the_fix": 0.083,
+        "consumption": 0,
+        "self_test": 0,
+        "arms_disagree": 0,
+        "read_the_file": 0.25
+      }
+    },
+    {
+      "t": "2026-08-07",
+      "verdicts": 28,
+      "counts": {
+        "separate_critic": 26,
+        "delete_the_fix": 0,
+        "consumption": 5,
+        "self_test": 6,
+        "arms_disagree": 0,
+        "read_the_file": 8
+      },
+      "rate": {
+        "separate_critic": 0.929,
+        "delete_the_fix": 0,
+        "consumption": 0.179,
+        "self_test": 0.214,
+        "arms_disagree": 0,
+        "read_the_file": 0.286
+      }
+    },
+    {
+      "t": "2026-08-08",
+      "verdicts": 32,
+      "counts": {
+        "separate_critic": 28,
+        "delete_the_fix": 4,
+        "consumption": 4,
+        "self_test": 15,
+        "arms_disagree": 4,
+        "read_the_file": 11
+      },
+      "rate": {
+        "separate_critic": 0.875,
+        "delete_the_fix": 0.125,
+        "consumption": 0.125,
+        "self_test": 0.469,
+        "arms_disagree": 0.125,
+        "read_the_file": 0.344
+      }
+    }
+  ],
+  "g3_rigour": {
+    "counts": {
+      "separate_critic": 68,
+      "delete_the_fix": 5,
+      "consumption": 10,
+      "self_test": 21,
+      "arms_disagree": 4,
+      "read_the_file": 23
+    },
+    "rate": {
+      "separate_critic": 0.883,
+      "delete_the_fix": 0.065,
+      "consumption": 0.13,
+      "self_test": 0.273,
+      "arms_disagree": 0.052,
+      "read_the_file": 0.299
+    },
+    "n_verdicts": 77,
+    "claimed_only": {
+      "separate_critic": 4,
+      "delete_the_fix": 22,
+      "consumption": 16,
+      "self_test": 1,
+      "arms_disagree": 4,
+      "read_the_file": 42
+    },
+    "word_only": {
+      "separate_critic": 0,
+      "delete_the_fix": 23,
+      "consumption": 36,
+      "self_test": 12,
+      "arms_disagree": 17,
+      "read_the_file": 2
+    },
+    "unmeasured": [],
+    "unmeasured_reason": null,
+    "weak_measurement": [
+      "separate_critic"
+    ],
+    "measured_as": "acts, not words — see tools/rigour.mjs and corpus/00-doctrine/RIGOUR-BLOCK.md",
+    "baseline_counts": {
+      "separate_critic": 68,
+      "delete_the_fix": 5,
+      "consumption": 10,
+      "self_test": 21,
+      "arms_disagree": 4,
+      "read_the_file": 23
+    },
+    "baseline_rate": {
+      "separate_critic": 0.883,
+      "delete_the_fix": 0.065,
+      "consumption": 0.13,
+      "self_test": 0.273,
+      "arms_disagree": 0.052,
+      "read_the_file": 0.299
+    },
+    "baseline_taken_at": "2026-08-08T12:59:26.355Z",
+    "baseline_note": "The baseline starts today, on a full backfill of every verdict in the corpus. There is no honest hour-by-hour retrospective: verdicts carry a critic timestamp but the fleet-hours they belong to are not recorded in them, so a per-hour history would have to be invented. A baseline that only starts today is still a baseline.",
+    "status": "ok"
+  },
+  "verdicts": [
+    {
+      "piece_id": "w1-00-r2",
+      "path": "corpus/90-verdicts/wave1/W1-00-r2.json",
+      "commit": "445bfa69412bf2f80ea8334e3b9c6a2d1a341ab4",
+      "finished_at": "2026-08-06T15:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-00-r2-k4m9",
+              "build_commit": "445bfa6",
+              "verdict_commit": "44ac73e",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "blind_comparisons[0].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "ours"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "reference"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 1,
+              "first": {
+                "raw": "corpus/85-platform/RI-PLT01-frame-budget.md",
+                "path": "corpus/85-platform/RI-PLT01-frame-budget.md",
+                "line": 127,
+                "status": "quote-verified",
+                "quote": "phone-mid"
+              },
+              "quote_mismatches": 0
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-00-r2.md"
+    },
+    {
+      "piece_id": "w1-00",
+      "path": "corpus/90-verdicts/wave1/W1-00.json",
+      "commit": "8714e382941dbd4fdc9341dcd2692bff13f04648",
+      "finished_at": "2026-08-06T13:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-00-h7q2",
+              "build_commit": "8714e38",
+              "verdict_commit": "be7e9d4",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "blind_comparisons[0].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "ours"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "reference"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "word",
+          "evidence": [
+            {
+              "note": "22 citation(s), none verifiable",
+              "first": {
+                "raw": "engine.js",
+                "line": 217,
+                "status": "unresolved"
+              }
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-00.md"
+    },
+    {
+      "piece_id": "w1-01-province-stream-pump",
+      "path": "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json",
+      "commit": "8734986",
+      "finished_at": "2026-08-07T13:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-01-provstream-r1-3c19",
+              "build_commit": "8734986",
+              "verdict_commit": "2f75442",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "build.harness_commands",
+                "text": "node tools/world/critic-prov-r1.mjs --mode modality --break-fix --out <path>",
+                "script": "tools/world/critic-prov-r1.mjs",
+                "executable": true
+              },
+              "note": "a teardown is named but no pair of disagreeing readings is recorded"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 13,
+              "red": 0,
+              "first": {
+                "command": "node tools/world/critic-prov-r1.mjs --mode modality --break-fix --out <path>",
+                "script": "tools/world/critic-prov-r1.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json",
+                "red_unproven": true
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 8
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-01-province-stream-r1.md"
+    },
+    {
+      "piece_id": "w1-01-r2",
+      "path": "corpus/90-verdicts/wave1/W1-01-r2.json",
+      "commit": "b17121cb1e9a0d8f4e8bb0a3b7c0e6a0e3a3f0aa",
+      "finished_at": "2026-08-06T21:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-01-r2-world-b4e2",
+              "build_commit": "b17121c",
+              "verdict_commit": "b88e439",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "arms are present and IDENTICAL — rule 6 calls that an inert control, not a result",
+              "inert": {
+                "at": "blind_comparisons[0].reveal",
+                "keys": [
+                  "A",
+                  "B"
+                ],
+                "value": "ours"
+              }
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-01-r2.md"
+    },
+    {
+      "piece_id": "W1-01",
+      "path": "corpus/90-verdicts/wave1/W1-01.json",
+      "commit": "341cd48534774797c7949922b451ee9ff00745af",
+      "finished_at": "2026-08-06T18:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-01-world-7c1a",
+              "build_commit": "341cd48",
+              "verdict_commit": "a96e315",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-01.md"
+    },
+    {
+      "piece_id": "W1-02-r1",
+      "path": "corpus/90-verdicts/wave1/W1-02-r1.json",
+      "commit": "6b1a142",
+      "finished_at": "2026-08-07T21:25:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-02-r1-3c19",
+              "build_commit": "6b1a142",
+              "verdict_commit": "e06f551",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "note": "a consumption block exists but names no surviving consumer, no perturbation and no disagreeing arms"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 23,
+              "first": {
+                "raw": "tools/verdict-validate.mjs",
+                "path": "tools/verdict-validate.mjs",
+                "line": 336,
+                "status": "quote-verified",
+                "quote": "Array.isArray"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-02-r1.md"
+    },
+    {
+      "piece_id": "W1-03-r1",
+      "path": "corpus/90-verdicts/wave1/W1-03-r1.json",
+      "commit": "652b1d7",
+      "finished_at": "2026-08-07T23:50:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-03-r1-3c19",
+              "build_commit": "652b1d7",
+              "verdict_commit": "e97347f",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 40,
+              "first": {
+                "raw": "game/src/world/field.js",
+                "path": "game/src/world/field.js",
+                "line": 556,
+                "status": "quote-verified",
+                "quote": "|| !this.isLandAt(x, z)"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-03-r1.md"
+    },
+    {
+      "piece_id": "W1-04-r1",
+      "path": "corpus/90-verdicts/wave1/W1-04-r1.json",
+      "commit": "3ba93e04f53e8827153134ebe255085b84682acf",
+      "finished_at": "2026-08-07T22:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-04-r1-3c19",
+              "build_commit": "3ba93e0",
+              "verdict_commit": "9de200e",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-04-r1.md"
+    },
+    {
+      "piece_id": "W1-04-r2",
+      "path": "corpus/90-verdicts/wave1/W1-04-r2.json",
+      "commit": null,
+      "finished_at": "2026-08-08T00:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "run_id": "crit-w1-04-r2-3c19",
+              "note": "critic.run_id present, no build.commit_sha to separate it from"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "note": "a consumption block exists but names no surviving consumer, no perturbation and no disagreeing arms"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-04-r2.md"
+    },
+    {
+      "piece_id": "W1-04",
+      "path": "corpus/90-verdicts/wave1/W1-04-r3.json",
+      "commit": "c36653e",
+      "finished_at": "2026-08-08T03:19:15Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-04-r3-3c19",
+              "build_commit": "c36653e",
+              "verdict_commit": "f291b01",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "arbitration.consumption.models[0].demonstrated",
+                "contrast": "15 → 1",
+                "text": "thorn buildings[] 15->1: drawn 15->1 AND the live collision set 67->5; 15->5 gives 67->25; restores exactly"
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 22,
+              "first": {
+                "raw": "game/src/harness/api.js",
+                "path": "game/src/harness/api.js",
+                "line": 2264,
+                "status": "quote-verified",
+                "quote": "engine.renderer"
+              },
+              "quote_mismatches": 0
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-04-r3.md"
+    },
+    {
+      "piece_id": "W1-04",
+      "path": "corpus/90-verdicts/wave1/W1-04-r4.json",
+      "commit": "3ee6ada",
+      "finished_at": "2026-08-08T07:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-04-r4-3c19",
+              "build_commit": "3ee6ada",
+              "verdict_commit": "7bdc979",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 11,
+              "cited": 13
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-04-r4.md"
+    },
+    {
+      "piece_id": "W1-04",
+      "path": "corpus/90-verdicts/wave1/W1-04-r5.json",
+      "commit": "1fda355",
+      "finished_at": "2026-08-08T07:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-04-r5-3c19",
+              "build_commit": "1fda355",
+              "verdict_commit": "f242c57",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "act",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "gates_run[5]",
+                "text": "node tools/check-building-fits-room.mjs -> 0; --self-break -> 112 of 112 red",
+                "script": "tools/check-building-fits-room.mjs",
+                "executable": true
+              },
+              "arms": {
+                "at": "gates_run[5]",
+                "contrast": "0 → 112",
+                "text": "node tools/check-building-fits-room.mjs -> 0; --self-break -> 112 of 112 red"
+              },
+              "arm_pairs": 2
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/world/w1-04-consumption.mjs",
+              "at": "gates_run[0]",
+              "exit_code": 0,
+              "note": "node tools/world/w1-04-consumption.mjs -> exit 0, 23/23 CONSUMED, 9 paths, 0 skipped"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "act",
+          "evidence": [
+            {
+              "red_arm_recorded": {
+                "at": "gates_run[5]",
+                "text": "node tools/check-building-fits-room.mjs -> 0; --self-break -> 112 of 112 red"
+              },
+              "green_selftests": 0
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 17,
+              "first": {
+                "raw": "tools/world/build-settlements.mjs",
+                "path": "tools/world/build-settlements.mjs",
+                "line": 506,
+                "status": "quote-verified",
+                "quote": "exterior_spawn"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-04-r5.md"
+    },
+    {
+      "piece_id": "w1-07-r2",
+      "path": "corpus/90-verdicts/wave1/W1-07-r2.json",
+      "commit": "4a5f13f",
+      "finished_at": "2026-08-06T23:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-07-r2-3e7c",
+              "build_commit": "4a5f13f",
+              "verdict_commit": "b393d23",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 2,
+              "cited": 8,
+              "first": {
+                "raw": "game/src/character/scene.js",
+                "path": "game/src/character/scene.js",
+                "line": 267,
+                "status": "quote-verified",
+                "quote": "line: state.line"
+              },
+              "quote_mismatches": 3
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-07-r2.md"
+    },
+    {
+      "piece_id": "w1-07-r3",
+      "path": "corpus/90-verdicts/wave1/W1-07-r3.json",
+      "commit": "b48859f4b4523274463ac875fc337c15a152e48b",
+      "finished_at": "2026-08-07T09:10:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-07-r3-3c19",
+              "build_commit": "b48859f",
+              "verdict_commit": "3f4dcd0",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "arbitration.consumption.checks[1].observed",
+                "contrast": "33 → 0",
+                "text": "Stripping all 153 requires/forbids race clauses collapses race-varying answers 33 -> 0; restoring returns exactly 33. A null control with the gates present retu"
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-07-r3.md"
+    },
+    {
+      "piece_id": "w1-07",
+      "path": "corpus/90-verdicts/wave1/W1-07.json",
+      "commit": "65275dcd5fca9b1bf21e16999c8295fb109b6353",
+      "finished_at": "2026-08-06T20:55:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-07-a91c",
+              "build_commit": "65275dc",
+              "verdict_commit": "28fb281",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "blind_comparisons[0].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "ours"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "reference"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-07.md"
+    },
+    {
+      "piece_id": "w1-08-w1-29-r1",
+      "path": "corpus/90-verdicts/wave1/W1-08-W1-29-r1.json",
+      "commit": "be177539c26afa33454e36d5bc6d3cb57a26a689",
+      "finished_at": "2026-08-07T13:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-08-29-r1-resume-2",
+              "build_commit": "be17753",
+              "verdict_commit": "0a1b02e",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/journey/input-checks.mjs --group pad --self-test --out <dir> (predecessor critic, 2026-08-07T12:03:04Z)",
+                "script": "tools/journey/input-checks.mjs",
+                "exit_code": null,
+                "at": "artifacts.produced_by",
+                "note": "TRUSTED, not re-run. Carries the 5-leg --self-test: M-P5, M-P3, M-P1, M-P6, M-P17 each perturbed and each went red, vacuous []. Note the five self-tested instruments do NOT include either instrument I"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 6,
+              "cited": 7
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-08-W1-29-r1.md"
+    },
+    {
+      "piece_id": "w1-08-w1-29-r2",
+      "path": "corpus/90-verdicts/wave1/W1-08-W1-29-r2.json",
+      "commit": "dcf1d36",
+      "finished_at": "2026-08-07T17:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-08-29-r2",
+              "build_commit": "dcf1d36",
+              "verdict_commit": "0b2d6ef",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": "game/src/ui/touch-overlay.js",
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 3,
+              "red": 0,
+              "first": {
+                "command": "node tools/journey/input-checks.mjs --self-test   (pinned tree, load 20-22, 26 concurrent browsers)",
+                "script": "tools/journey/input-checks.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "out/selftest.log — re-run because the artifact the builder's report cites carries an EMPTY, errored self_test block"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a self-audit boolean asserts the instrument went red; no red arm is recorded anywhere with it"
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-08-W1-29-r2.md"
+    },
+    {
+      "piece_id": "w1-09-combat-core-r2",
+      "path": "corpus/90-verdicts/wave1/W1-09-r2.json",
+      "commit": "04d8208089ecc1fa86e56b86c340b8888ebf0884",
+      "finished_at": "2026-08-06T21:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-09-r2-3c19",
+              "build_commit": "04d8208",
+              "verdict_commit": "9eb11f3",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "blind_comparisons[0].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "ours"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "reference"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-09-r2.md"
+    },
+    {
+      "piece_id": "w1-09-r3",
+      "path": "corpus/90-verdicts/wave1/W1-09-r3.json",
+      "commit": "93f3d2d99b23af862a57d78239fc639b577920ee",
+      "finished_at": "2026-08-06T22:55:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-09-r3-3c19",
+              "build_commit": "93f3d2d",
+              "verdict_commit": "54a4145",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "blind_comparisons[0].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "ours"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "reference"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 1,
+              "first": {
+                "raw": "game/src/combat/enemy.js",
+                "path": "game/src/combat/enemy.js",
+                "line": 253,
+                "status": "quote-verified",
+                "quote": "alertState"
+              },
+              "quote_mismatches": 0
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-09-r3.md"
+    },
+    {
+      "piece_id": "W1-09",
+      "path": "corpus/90-verdicts/wave1/W1-09.json",
+      "commit": "f7b5468840fc93d01a7ef4bbd5a87f6d6a071979",
+      "finished_at": "2026-08-06T19:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-09-7c41",
+              "build_commit": "f7b5468",
+              "verdict_commit": "f91169b",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "act",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "build.harness_commands",
+                "text": "sed -i 's/\"substeps\": 4/\"substeps\": 1/' game/data/combat/hitgeometry.json && node tools/harness/critic-w1-09.mjs --probe geo2 && git checkout game/data/combat/h",
+                "script": null,
+                "executable": true
+              },
+              "arms": {
+                "at": "blind_comparisons[2].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "ours"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "reference"
+                }
+              },
+              "arm_pairs": 1
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-09.md"
+    },
+    {
+      "piece_id": "W1-10-r2",
+      "path": "corpus/90-verdicts/wave1/W1-10-r2.json",
+      "commit": "5e1a861",
+      "finished_at": "2026-08-07T00:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-10-r2-weapons-kritik",
+              "build_commit": "5e1a861",
+              "verdict_commit": "41df551",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 2,
+              "cited": 10,
+              "first": {
+                "raw": "game/src/combat/moves.js",
+                "path": "game/src/combat/moves.js",
+                "line": 165,
+                "status": "quote-verified",
+                "quote": "hitstop_f_table"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-10-r2.md"
+    },
+    {
+      "piece_id": "W1-10",
+      "path": "corpus/90-verdicts/wave1/W1-10-r3.json",
+      "commit": "6eb8f04",
+      "finished_at": "2026-08-07T08:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-10-r3-weapons-kritik3",
+              "build_commit": "6eb8f04",
+              "verdict_commit": "bcc2567",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 2,
+              "cited": 5
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-10-r3.md"
+    },
+    {
+      "piece_id": "W1-10",
+      "path": "corpus/90-verdicts/wave1/W1-10.json",
+      "commit": "65275dc",
+      "finished_at": "2026-08-06T21:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-10-weapons-9c41",
+              "build_commit": "65275dc",
+              "verdict_commit": "28fb281",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-10.md"
+    },
+    {
+      "piece_id": "W1-11",
+      "path": "corpus/90-verdicts/wave1/W1-11-r1.json",
+      "commit": "5c4c5b0",
+      "finished_at": "2026-08-07T22:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-11-r1",
+              "build_commit": "5c4c5b0",
+              "verdict_commit": "b2ac587",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "consumption",
+              "consumer": "game/src/audio/impact-audio.js",
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 3,
+              "cited": 21,
+              "first": {
+                "raw": "game/src/combat/impact.js",
+                "path": "game/src/combat/impact.js",
+                "line": 110,
+                "status": "quote-verified",
+                "quote": "hitstop_f"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-11-r1.md"
+    },
+    {
+      "piece_id": "W1-12-r1",
+      "path": "corpus/90-verdicts/wave1/W1-12-r1.json",
+      "commit": "e97347f",
+      "finished_at": "2026-08-08T01:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-12-r1-3c19",
+              "build_commit": "e97347f",
+              "verdict_commit": "e8ccf31",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-12-r1.md"
+    },
+    {
+      "piece_id": "W1-12-r2",
+      "path": "corpus/90-verdicts/wave1/W1-12-r2.json",
+      "commit": "9063779",
+      "finished_at": "2026-08-08T14:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-12-r2-3c19",
+              "build_commit": "9063779",
+              "verdict_commit": "70d40ab",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 6,
+              "first": {
+                "raw": "tools/combat/w1-12-r2-teardown.mjs",
+                "path": "tools/combat/w1-12-r2-teardown.mjs",
+                "line": 232,
+                "status": "quote-verified",
+                "quote": "inf_trash"
+              },
+              "quote_mismatches": 0
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-12-r2.md"
+    },
+    {
+      "piece_id": "w1-13-death-and-the-hearth-loop",
+      "path": "corpus/90-verdicts/wave1/W1-13-r1.json",
+      "commit": "0a8a4d0f747df8d99cc2c55481141f579bcdd09d",
+      "finished_at": "2026-08-07T12:50:22Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-13-r1-death-hearth",
+              "build_commit": "0a8a4d0",
+              "verdict_commit": "0a1b02e",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 3,
+              "cited": 11,
+              "first": {
+                "raw": "game/src/engine.js",
+                "path": "game/src/engine.js",
+                "line": 2011,
+                "status": "quote-verified",
+                "quote": "!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)) || "
+              },
+              "quote_mismatches": 5
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-13-r1.md"
+    },
+    {
+      "piece_id": "w1-13-death-and-the-hearth-loop",
+      "path": "corpus/90-verdicts/wave1/W1-13-r2.json",
+      "commit": null,
+      "finished_at": "2026-08-07T16:55:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "run_id": "crit-w1-13-r2-death-hearth",
+              "note": "critic.run_id present, no build.commit_sha to separate it from"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "consumption.re_derivations[0]",
+                "positive": {
+                  "key": "shipped",
+                  "value": "{\"gates_boss\":null,\"hp_after_player_death\":412,\"stood_back_up\":true}"
+                },
+                "negative": {
+                  "key": "perturbed",
+                  "value": "{\"gates_boss\":\"inf_trash\",\"hp_after_player_death\":0,\"stood_back_up\":false}"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 4
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-13-r2.md"
+    },
+    {
+      "piece_id": "w1-13-r3",
+      "path": "corpus/90-verdicts/wave1/W1-13-r3.json",
+      "commit": "37d64e3fe757b2909ee6f29250f81713cd654f23",
+      "finished_at": "2026-08-07T22:45:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-13-r3-death-hearth",
+              "build_commit": "37d64e3",
+              "verdict_commit": "cbd1a49",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 3,
+              "cited": 23,
+              "first": {
+                "raw": "journey-run.mjs",
+                "path": "tools/journey/journey-run.mjs",
+                "line": 790,
+                "status": "quote-verified",
+                "quote": "ok: !led.anyUnmeasurable"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-13-r3.md"
+    },
+    {
+      "piece_id": "w1-13-r4",
+      "path": "corpus/90-verdicts/wave1/W1-13-r4.json",
+      "commit": "e74df06e3219440f5259a12536f0788d8834af05",
+      "finished_at": "2026-08-08T01:10:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-13-r4-clock-and-ar1",
+              "build_commit": "e74df06",
+              "verdict_commit": "b900460",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 20,
+              "first": {
+                "raw": "game/data/quests/hooks.json",
+                "path": "game/data/quests/hooks.json",
+                "line": 1106,
+                "status": "quote-verified",
+                "quote": "\"deadlines\": []"
+              },
+              "quote_mismatches": 2
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-13-r4.md"
+    },
+    {
+      "piece_id": "W1-14-r2",
+      "path": "corpus/90-verdicts/wave1/W1-14-r2.json",
+      "commit": "7e7993d54c61e21c07ac5af99ea3eb63bb12b9f9",
+      "finished_at": "2026-08-07T00:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-14-r2-7c31",
+              "build_commit": "7e7993d",
+              "verdict_commit": "54a4145",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 6
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-14-r2.md"
+    },
+    {
+      "piece_id": "W1-14-r3",
+      "path": "corpus/90-verdicts/wave1/W1-14-r3.json",
+      "commit": "34d1387",
+      "finished_at": "2026-08-08T04:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-14-r3c-4d18",
+              "build_commit": "34d1387",
+              "verdict_commit": "3f4dcd0",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "artifacts.produced_by",
+                "text": "node tools/harness/w1-14-r3-dials.mjs --break=nocast   (THE BUILDER'S)",
+                "script": "tools/harness/w1-14-r3-dials.mjs",
+                "executable": true
+              },
+              "note": "a teardown is named but no pair of disagreeing readings is recorded"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/harness/w1-14-r3-dials.mjs --break=nocast   (THE BUILDER'S)",
+                "script": "tools/harness/w1-14-r3-dials.mjs",
+                "exit_code": null,
+                "at": "artifacts.produced_by",
+                "note": "The control arm under audit. Every row reads NOT_DELIVERED, which is why coupled and blind are 0: the rows exit before readDial() is called.",
+                "red_unproven": true
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-14-r3.md"
+    },
+    {
+      "piece_id": "W1-14-r4",
+      "path": "corpus/90-verdicts/wave1/W1-14-r4.json",
+      "commit": "9fadada",
+      "finished_at": "2026-08-08T06:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-14-r4",
+              "build_commit": "9fadada",
+              "verdict_commit": "f39eb60",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "note": "a consumption block exists but names no surviving consumer, no perturbation and no disagreeing arms"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 2,
+              "cited": 19,
+              "first": {
+                "raw": "game/src/save/state.js",
+                "path": "game/src/save/state.js",
+                "line": 592,
+                "status": "quote-verified",
+                "quote": "sim.progression.gold = blob.progression.gold"
+              },
+              "quote_mismatches": 2
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-14-r4.md"
+    },
+    {
+      "piece_id": "W1-14",
+      "path": "corpus/90-verdicts/wave1/W1-14.json",
+      "commit": "75c8e3a8fbf04116f19f58bd197edf3bdb083841",
+      "finished_at": "2026-08-06T21:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-14-e9a2",
+              "build_commit": "75c8e3a",
+              "verdict_commit": "28fb281",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "blind_comparisons[0].reveal",
+                "positive": {
+                  "key": "A",
+                  "value": "reference"
+                },
+                "negative": {
+                  "key": "B",
+                  "value": "ours"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-14.md"
+    },
+    {
+      "piece_id": "w1-15",
+      "path": "corpus/90-verdicts/wave1/W1-15-r2.json",
+      "commit": "7e7993d",
+      "finished_at": "2026-08-07T01:10:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-15-r2-3c19",
+              "build_commit": "7e7993d",
+              "verdict_commit": "54a4145",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.mjs",
+              "at": "build.harness_commands[7].command",
+              "exit_code": 0,
+              "note": "node corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.mjs --json corpus/90-verdicts/wave1/artifacts/W1-15-r2/kritik-consume.json"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-15-r2.md"
+    },
+    {
+      "piece_id": "w1-15",
+      "path": "corpus/90-verdicts/wave1/W1-15-r3.json",
+      "commit": "9126e02",
+      "finished_at": "2026-08-08T02:45:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-15-r3-3c19",
+              "build_commit": "9126e02",
+              "verdict_commit": "b13724d",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/analysis/w1-15-consumption.mjs",
+              "at": "build.harness_commands[5].command",
+              "exit_code": 0,
+              "note": "node tools/analysis/w1-15-consumption.mjs --selftest"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 2,
+              "red": 0,
+              "first": {
+                "command": "node tools/stealth/critic-w1-15-r3.mjs --selftest",
+                "script": "tools/stealth/critic-w1-15-r3.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": null
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 32,
+              "first": {
+                "raw": "game/src/engine.js",
+                "path": "game/src/engine.js",
+                "line": 8541,
+                "status": "quote-verified",
+                "quote": "const world = { npcById: () => null, dispositionBetween: () => 0 }"
+              },
+              "quote_mismatches": 5
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-15-r3.md"
+    },
+    {
+      "piece_id": "w1-15",
+      "path": "corpus/90-verdicts/wave1/W1-15-r4.json",
+      "commit": "9063779",
+      "finished_at": "2026-08-08T13:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-15-r4-3c19",
+              "build_commit": "9063779",
+              "verdict_commit": "70d40ab",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/analysis/w1-15-consumption.mjs",
+              "at": "artifacts[6].produced_by",
+              "exit_code": 0,
+              "note": "node tools/analysis/w1-15-consumption.mjs (re-run by this critic, exit 0) and again on a staged copy whose syncCoverVolumes() returns []"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/stealth/critic-w1-15-r4.mjs --selftest",
+                "script": "tools/stealth/critic-w1-15-r4.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": null
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 34,
+              "first": {
+                "raw": "game/src/sim/dialogue/disposition.js",
+                "path": "game/src/sim/dialogue/disposition.js",
+                "line": 313,
+                "status": "quote-verified",
+                "quote": "fDispCrimeMod"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-15-r4.md"
+    },
+    {
+      "piece_id": "w1-15",
+      "path": "corpus/90-verdicts/wave1/W1-15.json",
+      "commit": "21c9566",
+      "finished_at": "2026-08-06T21:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-15-3c19",
+              "build_commit": "21c9566",
+              "verdict_commit": "b88e439",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-15.md"
+    },
+    {
+      "piece_id": "W1-16-r2",
+      "path": "corpus/90-verdicts/wave1/W1-16-r2.json",
+      "commit": "5d88b7e",
+      "finished_at": "2026-08-08T02:45:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-16-r2-3c19",
+              "build_commit": "5d88b7e",
+              "verdict_commit": "f89a60c",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-16-r2.md"
+    },
+    {
+      "piece_id": "W1-16-r3",
+      "path": "corpus/90-verdicts/wave1/W1-16-r3.json",
+      "commit": "2032744",
+      "finished_at": "2026-08-08T04:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-16-r3-3c19",
+              "build_commit": "2032744",
+              "verdict_commit": "8b1295b",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "13 citation(s), none verifiable",
+              "first": {
+                "raw": "engine.js",
+                "line": 1039,
+                "status": "unresolved"
+              }
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-16-r3.md"
+    },
+    {
+      "piece_id": "w1-17-act5-argument",
+      "path": "corpus/90-verdicts/wave1/W1-17-act5-r1.json",
+      "commit": "3ba93e0",
+      "finished_at": "2026-08-07T22:00:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-17-act5-r1-3c19",
+              "build_commit": "3ba93e0",
+              "verdict_commit": "9de10c3",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/check-prose.mjs --self-test",
+                "script": "tools/check-prose.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "rule 4 — confirmed the instrument goes red before trusting its green result on this file"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 2,
+              "cited": 2
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-17-act5-r1.md"
+    },
+    {
+      "piece_id": "w1-17",
+      "path": "corpus/90-verdicts/wave1/W1-17-r1.json",
+      "commit": "6c979e3",
+      "finished_at": "2026-08-08T02:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-17-r1-3c19",
+              "build_commit": "6c979e3",
+              "verdict_commit": "24a82aa",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "build.harness_commands",
+                "text": "node tools/dialogue/critic-field-census.mjs --break",
+                "script": "tools/dialogue/critic-field-census.mjs",
+                "executable": true
+              },
+              "note": "a teardown is named but no pair of disagreeing readings is recorded"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/dialogue/consume.mjs",
+              "at": "build.harness_commands[12].command",
+              "exit_code": 0,
+              "note": "node tools/dialogue/consume.mjs"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 3,
+              "red": 2,
+              "first": {
+                "command": "node tools/dialogue/critic-reach.mjs --break",
+                "script": "tools/dialogue/critic-reach.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": null,
+                "red_unproven": true
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "act",
+          "evidence": [
+            {
+              "red_exit": {
+                "command": "node tools/dialogue/critic-field-census.mjs --break",
+                "script": "tools/dialogue/critic-field-census.mjs",
+                "exit_code": 1,
+                "at": "build.harness_commands",
+                "note": null
+              },
+              "green": 3
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-17-r1.md"
+    },
+    {
+      "piece_id": "w1-19",
+      "path": "corpus/90-verdicts/wave1/W1-19-r1.json",
+      "commit": "be17753",
+      "finished_at": "2026-08-07T12:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-19-r1-3c19",
+              "build_commit": "be17753",
+              "verdict_commit": "bd3630e",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 3
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-19-r1.md"
+    },
+    {
+      "piece_id": "w1-19",
+      "path": "corpus/90-verdicts/wave1/W1-19-r2.json",
+      "commit": "86c0ff7",
+      "finished_at": "2026-08-07T15:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-19-r2-3c19",
+              "build_commit": "86c0ff7",
+              "verdict_commit": "e7ed252",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "reproduced_builder_claims.no_rumours_control",
+                "contrast": "10 → 0,",
+                "text": "10 -> 0, keywords 9 -> 0 — REPRODUCES"
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-19-r2.md"
+    },
+    {
+      "piece_id": "W1-20",
+      "path": "corpus/90-verdicts/wave1/W1-20-r1.json",
+      "commit": "d98ca28",
+      "finished_at": "2026-08-08T13:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-20",
+              "build_commit": "d98ca28",
+              "verdict_commit": "b376ac4",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a self-audit boolean asserts the instrument went red; no red arm is recorded anywhere with it"
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 6,
+              "cited": 17
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-20-r1.md"
+    },
+    {
+      "piece_id": "W1-21",
+      "path": "corpus/90-verdicts/wave1/W1-21-r1.json",
+      "commit": "07f8b75",
+      "finished_at": null,
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-21-r1",
+              "build_commit": "07f8b75",
+              "verdict_commit": "b2ac587",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-21-r1.md"
+    },
+    {
+      "piece_id": "W1-21",
+      "path": "corpus/90-verdicts/wave1/W1-21-r2.json",
+      "commit": "e97347f",
+      "finished_at": "2026-08-08T03:46:17Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-21-r2",
+              "build_commit": "e97347f",
+              "verdict_commit": "0dc0703",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": "game/src/sim/discovery.js",
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 2,
+              "red": 0,
+              "first": {
+                "command": "node tools/analysis/ui-forbidden.mjs --self-test --out CRITIC-W1-21-R2-UI-FORBIDDEN",
+                "script": "tools/analysis/ui-forbidden.mjs",
+                "exit_code": null,
+                "at": "artifacts.produced_by",
+                "note": null
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 2,
+              "cited": 6,
+              "first": {
+                "raw": "tools/analysis/journal-ui.mjs",
+                "path": "tools/analysis/journal-ui.mjs",
+                "line": 199,
+                "status": "quote-verified",
+                "quote": "mapThrew && ui.map_exists === false"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-21-r2.md"
+    },
+    {
+      "piece_id": "W1-22-B2-blind",
+      "path": "corpus/90-verdicts/wave1/W1-22-B2-blind.json",
+      "commit": "72baa12",
+      "finished_at": "2026-08-07T18:55:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "judge-audio-b2",
+              "build_commit": "72baa12",
+              "verdict_commit": "3757b02",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-22-B2-blind.md"
+    },
+    {
+      "piece_id": "w1-22-r1",
+      "path": "corpus/90-verdicts/wave1/W1-22-r1.json",
+      "commit": "78aebc7",
+      "finished_at": "2026-08-07T04:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-22-r1-a9f2",
+              "build_commit": "78aebc7",
+              "verdict_commit": "5872658",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 5,
+              "cited": 8
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-22-r1.md"
+    },
+    {
+      "piece_id": "w1-22-r2",
+      "path": "corpus/90-verdicts/wave1/W1-22-r2.json",
+      "commit": "5d88b7e",
+      "finished_at": "2026-08-08T07:46:12Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-22-r2-s2",
+              "build_commit": "5d88b7e",
+              "verdict_commit": "f78378d",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": "game/src/sim/stealth/detection.js",
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-22-r2.md"
+    },
+    {
+      "piece_id": "w1-23-lore-registry-and-the-provinces-canon",
+      "path": "corpus/90-verdicts/wave1/W1-23-r1.json",
+      "commit": "5c4c5b004ec890d6a2e93f864563f0075137e15c",
+      "finished_at": "2026-08-07T20:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-23-r1",
+              "build_commit": "5c4c5b0",
+              "verdict_commit": "dc713e4",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/lore/canon-consumption.mjs",
+              "at": "build.harness_commands[6].command",
+              "exit_code": 0,
+              "note": "node tools/lore/canon-consumption.mjs"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 3,
+              "red": 0,
+              "first": {
+                "command": "node tools/lore/critic-w1-23-r1.mjs --self-test",
+                "script": "tools/lore/critic-w1-23-r1.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "SELF-TEST: PASS — 6/6, each of the five checks broken on purpose (seal invertible / seal not invertible, untagged voice caught / clean voice silent, falsified `measured: ZERO` caught / true one silent"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 3,
+              "cited": 12
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-23-r1.md"
+    },
+    {
+      "piece_id": "w1-23-lore-registry-and-the-provinces-canon",
+      "path": "corpus/90-verdicts/wave1/W1-23-r3.json",
+      "commit": "0f5f456ee6d224725eac81e75845de09656e57bd",
+      "finished_at": "2026-08-08T11:55:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-23-r3",
+              "build_commit": "0f5f456",
+              "verdict_commit": "067ba53",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 2,
+              "red": 0,
+              "first": {
+                "command": "node tools/lore/critic-w1-23-r3-reach.mjs --self-test",
+                "script": "tools/lore/critic-w1-23-r3-reach.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "self-test PASS — 14/14. Each measure broken on purpose: pair reach re-run with everything placed / nothing placed / one side placed; the naming classifier run against a Jel roster and a descriptive ro"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-23-r3.md"
+    },
+    {
+      "piece_id": "w1-23-lore-registry-and-the-provinces-canon",
+      "path": "corpus/90-verdicts/wave1/W1-23-r4.json",
+      "commit": "37bbb6f61c5279d884bc49b3fc17caf06fdc1928",
+      "finished_at": "2026-08-08T04:21:01Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-23-r4",
+              "build_commit": "37bbb6f",
+              "verdict_commit": "021e803",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 4,
+              "red": 0,
+              "first": {
+                "command": "node tools/lore/critic-w1-23-r3-reach.mjs --self-test",
+                "script": "tools/lore/critic-w1-23-r3-reach.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "self-test PASS — 14/14, re-run by me before using round 3's instrument to judge round 4."
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-23-r4.md"
+    },
+    {
+      "piece_id": "W1-25",
+      "path": "corpus/90-verdicts/wave1/W1-25-r1.json",
+      "commit": "fdef3d6e2e141c1a09c0d5276d2421b790580a45",
+      "finished_at": "2026-08-08T04:52:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-25-r1-sabotage-facility-8b14",
+              "build_commit": "fdef3d6",
+              "verdict_commit": "7b7ce4a",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "artifacts.produced_by",
+                "text": "node tools/harness/w1-14-r3-dials.mjs --break=nocast (the W1-14-r3 BUILDER's)",
+                "script": "tools/harness/w1-14-r3-dials.mjs",
+                "executable": true
+              },
+              "note": "a teardown is named but no pair of disagreeing readings is recorded"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/harness/w1-14-r3-dials.mjs --break=nocast (the W1-14-r3 BUILDER's)",
+                "script": "tools/harness/w1-14-r3-dials.mjs",
+                "exit_code": null,
+                "at": "artifacts.produced_by",
+                "note": "summary.magnitude_coupled 0, summary.active 0. Untracked.",
+                "red_unproven": true
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-25-r1.md"
+    },
+    {
+      "piece_id": "w1-26-r1",
+      "path": "corpus/90-verdicts/wave1/W1-26-r1.json",
+      "commit": "8744eadeb9771f511e584407024c3ce1b681143c",
+      "finished_at": "2026-08-07T13:20:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-26-r1-3c19",
+              "build_commit": "8744ead",
+              "verdict_commit": "bd3630e",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-26-r1.md"
+    },
+    {
+      "piece_id": "w1-26-r2",
+      "path": "corpus/90-verdicts/wave1/W1-26-r2.json",
+      "commit": "402d01a22f58a8793b1680ac088ce03161dc56d6",
+      "finished_at": "2026-08-08T02:53:01Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-26-r2-3c19",
+              "build_commit": "402d01a",
+              "verdict_commit": "b5eb3f0",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-26-r2.md"
+    },
+    {
+      "piece_id": "w1-26-r3",
+      "path": "corpus/90-verdicts/wave1/W1-26-r3.json",
+      "commit": "ec0b767",
+      "finished_at": "2026-08-08T07:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-26-r3",
+              "build_commit": "ec0b767",
+              "verdict_commit": "97d6eb0",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a teardown is declared in a teardown-named field but names no command and no pair of readings — described, not re-derivable",
+              "first": {
+                "at": "arbitration.consumption.null_control",
+                "text": "the same body twice — byte-identical drawn text and identical writ"
+              }
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a self-audit boolean asserts the instrument went red; no red arm is recorded anywhere with it"
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "word",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-26-r3.md"
+    },
+    {
+      "piece_id": "w1-attr-scale-r1",
+      "path": "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json",
+      "commit": "692bcc8",
+      "finished_at": "2026-08-08T13:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "run_id": "critic-w1-attr-scale",
+              "note": "verdict file has no introducing commit in git (uncommitted)"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 4,
+              "red": 0,
+              "first": {
+                "command": "node tools/quests/attr-scale-audit.mjs --self-test",
+                "script": "tools/quests/attr-scale-audit.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-selftest.txt"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 31,
+              "first": {
+                "raw": "game/src/engine.js",
+                "path": "game/src/engine.js",
+                "line": 2984,
+                "status": "quote-verified",
+                "quote": "_talkPersuader()"
+              },
+              "quote_mismatches": 6
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.md"
+    },
+    {
+      "piece_id": "W1-CROSSING",
+      "path": "corpus/90-verdicts/wave1/W1-CROSSING-r1.json",
+      "commit": "2fe47f5",
+      "finished_at": "2026-08-08T07:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-crossing",
+              "build_commit": "2fe47f5",
+              "verdict_commit": "55a0a06",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "act",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "artifacts.produced_by",
+                "text": "node tools/world/critic-crossing-probe.mjs --null --out reports/critic-w1-crossing/null.json",
+                "script": "tools/world/critic-crossing-probe.mjs",
+                "executable": true
+              },
+              "arms": {
+                "at": "measurements.deletefix_2x2_reversed_and_reseeded",
+                "positive": {
+                  "key": "NEW_NEW",
+                  "value": "{\"path_m\":1779.2,\"end\":[2568.6,4735]}"
+                },
+                "negative": {
+                  "key": "OLD_OLD",
+                  "value": "{\"path_m\":550.1,\"end\":[2153.7,1197.8],\"ran\":\"FIRST, from a re-seeded world\"}"
+                }
+              },
+              "arm_pairs": 4
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/world/critic-crossing-grade.mjs --self-test",
+                "script": "tools/world/critic-crossing-grade.mjs",
+                "exit_code": null,
+                "at": "artifacts.produced_by",
+                "note": null
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "act",
+          "evidence": [
+            {
+              "red_arm_recorded": {
+                "at": "self_audit.my_own_instrument_failures_found_and_reported[0]",
+                "text": "My first --null cut put the road bump at the perturbed leg's MIDPOINT (1,450 m in) and compared 14,000-frame walks that cover 466 m, so the "
+              },
+              "green_selftests": 1
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-CROSSING-r1.md"
+    },
+    {
+      "piece_id": "W1-DEPLOY-r1",
+      "path": "corpus/90-verdicts/wave1/W1-DEPLOY-r1.json",
+      "commit": null,
+      "finished_at": "2026-08-08T10:27:32Z",
+      "items": {
+        "separate_critic": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "no critic.run_id"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a teardown is declared in a teardown-named field but names no command and no pair of readings — described, not re-derivable",
+              "first": {
+                "at": "axes[0].rule_6_note",
+                "text": "The first fixture wrote four rule-13 traps as bare side-effect imports; all four passed vacuously because SPEC does not match that form. Rewritten with `from`, "
+              }
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-DEPLOY-r1.md"
+    },
+    {
+      "piece_id": "w1-deploy-r2",
+      "path": "corpus/90-verdicts/wave1/W1-DEPLOY-r2.json",
+      "commit": "db449a5",
+      "finished_at": "2026-08-08T13:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-deploy-r2-3c19",
+              "build_commit": "db449a5",
+              "verdict_commit": "09a5b80",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 6,
+              "red": 0,
+              "first": {
+                "command": "node tools/check-shipped-files.mjs --self-test",
+                "script": "tools/check-shipped-files.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": null
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-DEPLOY-r2.md"
+    },
+    {
+      "piece_id": "W1-FACTIONS-r1",
+      "path": "corpus/90-verdicts/wave1/W1-FACTIONS-r1.json",
+      "commit": "44f8432a0433ea0c55c0f7bea5235b83fa17aefa",
+      "finished_at": "2026-08-07T00:00:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-factions-r1",
+              "build_commit": "44f8432",
+              "verdict_commit": "61aa116",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 18,
+              "first": {
+                "raw": "faction-probe.mjs",
+                "path": "tools/quests/faction-probe.mjs",
+                "line": 207,
+                "status": "quote-verified",
+                "quote": "H.questReveal(id, rev)"
+              },
+              "quote_mismatches": 1
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-FACTIONS-r1.md"
+    },
+    {
+      "piece_id": "W1-FACTIONS",
+      "path": "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json",
+      "commit": null,
+      "finished_at": null,
+      "items": {
+        "separate_critic": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "no critic.run_id"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "arbitration.consumption.models[7].perturbation",
+                "contrast": "16 → 9",
+                "text": "bit the builder's own walk unprompted, 16/16 -> 9/16"
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "note": "a consumption block exists but names no surviving consumer, no perturbation and no disagreeing arms"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 4,
+              "cited": 16
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-FACTIONS-r2.md"
+    },
+    {
+      "piece_id": "w1-library-martial-r4",
+      "path": "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.json",
+      "commit": "3d4c88d",
+      "finished_at": "2026-08-08T12:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-library-martial-r4-prose",
+              "build_commit": "3d4c88d",
+              "verdict_commit": "9063779",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "word",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 2,
+              "red": 0,
+              "first": {
+                "command": "node tools/lore/critic-martial-r4-fingerprint.mjs --mw=<scratch>/mwbooks --selftest",
+                "script": "tools/lore/critic-martial-r4-fingerprint.mjs",
+                "exit_code": 1,
+                "at": "build.harness_commands",
+                "note": "RED on the tree. Selftest arm fed the martial slot the reference texts and the row collapsed onto the Morrowind row, so the arm reads text and not label."
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 8,
+              "first": {
+                "raw": "game/src/engine.js",
+                "path": "game/src/engine.js",
+                "line": 5504,
+                "status": "quote-verified",
+                "quote": "readable_book"
+              },
+              "quote_mismatches": 3
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.md"
+    },
+    {
+      "piece_id": "w1-library-books-and-the-reading-surface",
+      "path": "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json",
+      "commit": "4c904020",
+      "finished_at": "2026-08-07T13:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "run_id": "crit-w1-library-r1",
+              "build_commit": "4c904020",
+              "note": "build.commit_sha does not resolve in this repo"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/harness/critic-w1-library-consume.mjs",
+              "at": "build.harness_commands[1].command",
+              "exit_code": 0,
+              "note": "node tools/harness/critic-w1-library-consume.mjs --out reports/critic-w1-library-consume.json"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 4,
+              "cited": 14
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-LIBRARY-r1.md"
+    },
+    {
+      "piece_id": "W1-MAP-r1",
+      "path": "corpus/90-verdicts/wave1/W1-MAP-r1.json",
+      "commit": null,
+      "finished_at": null,
+      "items": {
+        "separate_critic": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "no critic.run_id"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "consumption.ablation",
+                "positive": {
+                  "key": "arm_full",
+                  "value": "5094c15a:442141, 2209 cells revealed"
+                },
+                "negative": {
+                  "key": "arm_ablated",
+                  "value": "5094c15a:442141, 0 cells revealed"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "at": "consumption",
+              "route": "arms",
+              "consumer": "game/src/sim/discovery.js",
+              "arms": {
+                "at": "ablation",
+                "positive": {
+                  "key": "arm_full",
+                  "value": "5094c15a:442141, 2209 cells revealed"
+                },
+                "negative": {
+                  "key": "arm_ablated",
+                  "value": "5094c15a:442141, 0 cells revealed"
+                }
+              }
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a self-test command is named but its script does not exist in this repo",
+              "first": {
+                "command": "critic-w1-map-r1 --break unrendered",
+                "script": null,
+                "exit_code": null,
+                "at": "self_tests.critic-w1-map-r1 --break unrendered",
+                "note": "C1,C2,C3 red - OK"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 14,
+              "first": {
+                "raw": "game/src/harness/api.js",
+                "path": "game/src/harness/api.js",
+                "line": 272,
+                "status": "quote-verified",
+                "quote": "\"questEngine writes sim.discovery = forged\""
+              },
+              "quote_mismatches": 0
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-MAP-r1.md"
+    },
+    {
+      "piece_id": "w1-map-r2",
+      "path": "corpus/90-verdicts/wave1/W1-MAP-r2.json",
+      "commit": "f291b01",
+      "finished_at": "2026-08-08T04:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-map-r2-a91f",
+              "build_commit": "f291b01",
+              "verdict_commit": "021e803",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "build.harness_commands",
+                "text": "node tools/harness/critic-map-r2.mjs --break all",
+                "script": "tools/harness/critic-map-r2.mjs",
+                "executable": true
+              },
+              "note": "a teardown is named but no pair of disagreeing readings is recorded"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 2,
+              "red": 0,
+              "first": {
+                "command": "node tools/harness/critic-map-r2.mjs --break all",
+                "script": "tools/harness/critic-map-r2.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "three SELF-TEST OK",
+                "red_unproven": true
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 17,
+              "first": {
+                "raw": "map-probe.mjs",
+                "path": "tools/harness/map-probe.mjs",
+                "line": 440,
+                "status": "quote-verified",
+                "quote": "world.discovery.places"
+              },
+              "quote_mismatches": 0
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-MAP-r2.md"
+    },
+    {
+      "piece_id": "w1-population",
+      "path": "corpus/90-verdicts/wave1/W1-POPULATION-r1.json",
+      "commit": "28909e1",
+      "finished_at": "2026-08-07T21:15:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-population-r1-3c19",
+              "build_commit": "28909e1",
+              "verdict_commit": "5de8f79",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+    },
+    {
+      "piece_id": "w1-prose-blind-in-world-prose-and-npc-voice",
+      "path": "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.json",
+      "commit": "d750b6c",
+      "finished_at": "2026-08-07T17:35:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "judge-prose-packs-r1",
+              "build_commit": "d750b6c",
+              "verdict_commit": "066a9f2",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 1,
+              "red": 0,
+              "first": {
+                "command": "node tools/prose/judge-fragment-openers.mjs --self-test",
+                "script": "tools/prose/judge-fragment-openers.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "SELF-TEST 7/7 pass"
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md"
+    },
+    {
+      "piece_id": "w1-prose-tics-r4-blind-pack-judged-and-voided",
+      "path": "corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.json",
+      "commit": "652b1d7",
+      "finished_at": null,
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "judge-prose-r4",
+              "build_commit": "652b1d7",
+              "verdict_commit": "4698888",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.md"
+    },
+    {
+      "piece_id": "W1-READABLES-r2",
+      "path": "corpus/90-verdicts/wave1/W1-READABLES-r2.json",
+      "commit": "64dd5f9",
+      "finished_at": "2026-08-08T02:50:01Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-readables-r2-3c19",
+              "build_commit": "64dd5f9",
+              "verdict_commit": "388f480",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "act",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "build.harness_commands",
+                "text": "node tools/quests/critic-chain-headless.mjs --no-topic-grant [--questnote]",
+                "script": "tools/quests/critic-chain-headless.mjs",
+                "executable": true
+              },
+              "arms": {
+                "at": "arbitration.consumption.models[0].demonstrated",
+                "contrast": "2 → 0",
+                "text": "4 of 4 legs: knows [] -> [reveal], refusals 2 -> 0; teardown 4 of 4 -> 0 of 3"
+              },
+              "arm_pairs": 2
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "note": "a consumption block exists but names no surviving consumer, no perturbation and no disagreeing arms"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 4,
+              "red": 0,
+              "first": {
+                "command": "node tools/quests/critic-unrouted-census.mjs --self-test",
+                "script": "tools/quests/critic-unrouted-census.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": null
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 1,
+              "cited": 2
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-READABLES-r2.md"
+    },
+    {
+      "piece_id": "W1-ROAD-JOIN",
+      "path": "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
+      "commit": "a2031bb",
+      "finished_at": "2026-08-08T04:30:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-road-join",
+              "build_commit": "a2031bb",
+              "verdict_commit": "9cd4bfa",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "arbitration.consumption.first_attempt_rejected",
+                "contrast": "11 → 19.",
+                "text": "My first BITES criterion was a leg count, copied from the builder's probe. It cannot work on today's tree: Blackrose is ALREADY red, so moving another building "
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "consumer": "game/src/render/exterior.js",
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "word",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": []
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md"
+    },
+    {
+      "piece_id": "W1-SAVE-r1",
+      "path": "corpus/90-verdicts/wave1/W1-SAVE-r1.json",
+      "commit": "b27373f",
+      "finished_at": "2026-08-07T11:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "crit-w1-save-r1-live-audit",
+              "build_commit": "b27373f",
+              "verdict_commit": "c93046d",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/harness/save-consume-critic.mjs",
+              "at": "build.harness_commands[2].command",
+              "exit_code": 0,
+              "note": "node tools/harness/save-consume-critic.mjs --seeds 4711"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "word",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "act",
+          "evidence": [
+            {
+              "verified": 1,
+              "cited": 11,
+              "first": {
+                "raw": "game/src/save/fight.js",
+                "path": "game/src/save/fight.js",
+                "line": 183,
+                "status": "quote-verified",
+                "quote": "sim.progression.gold"
+              },
+              "quote_mismatches": 3
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-SAVE-r1.md"
+    },
+    {
+      "piece_id": "?",
+      "path": null,
+      "commit": null,
+      "finished_at": null,
+      "items": {
+        "separate_critic": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "no critic.run_id"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": []
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "5 citation(s), none verifiable",
+              "first": {
+                "raw": "sim/player.js",
+                "line": 233,
+                "status": "unresolved"
+              }
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": false,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-SOULS-r1.md"
+    },
+    {
+      "piece_id": "w1-souls-r2",
+      "path": "corpus/90-verdicts/wave1/W1-SOULS-r2.json",
+      "commit": "a5a637d",
+      "finished_at": "2026-08-07T22:05:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-souls-r2",
+              "build_commit": "a5a637d",
+              "verdict_commit": "3b9b4de",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "arbitration.consumption.models[0].consumer",
+                "contrast": "196 → 222",
+                "text": "sim/souls.js awardFor() -> sim.progression.soulsHeld -> engine._spendSouls() -> attributes.vigour -> derived pools -> combat body hp_max 196 -> 222"
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "act",
+          "evidence": [
+            {
+              "ran": "tools/progression/souls-consumption.mjs",
+              "at": "build.harness_commands[7].command",
+              "exit_code": 0,
+              "note": "node tools/progression/souls-consumption.mjs --out reports/critic-r2-souls-consumption-INTACT.json  (theirs, re-run by me)"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "a self-audit boolean asserts the instrument went red; no red arm is recorded anywhere with it"
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-SOULS-r2.md"
+    },
+    {
+      "piece_id": "w1-souls-r3",
+      "path": "corpus/90-verdicts/wave1/W1-SOULS-r3.json",
+      "commit": "e97347f",
+      "finished_at": "2026-08-08T01:40:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "act",
+          "evidence": [
+            {
+              "run_id": "critic-w1-souls",
+              "build_commit": "e97347f",
+              "verdict_commit": "3124790",
+              "coi_self_reported": true
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "act",
+          "evidence": [
+            {
+              "teardown": {
+                "kind": "build.harness_commands",
+                "text": "node tools/economy/critic-souls-r3.mjs --self-break",
+                "script": "tools/economy/critic-souls-r3.mjs",
+                "executable": true
+              },
+              "arms": {
+                "at": "arbitration.consumption.note",
+                "contrast": "42 → 999",
+                "text": "per-statblock souls (42 -> 999 moves a six-body fight 252 -> 5,994); night x1.35 (252 at 14:00, 342 at 23:00 and 04:00); the level curve, funded by killing (504"
+              },
+              "arm_pairs": 1
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "word",
+          "evidence": [
+            {
+              "at": "arbitration.consumption",
+              "note": "a consumption block exists but names no surviving consumer, no perturbation and no disagreeing arms"
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "act",
+          "evidence": [
+            {
+              "green": 3,
+              "red": 1,
+              "first": {
+                "command": "node tools/economy/critic-souls-r3.mjs --self-break",
+                "script": "tools/economy/critic-souls-r3.mjs",
+                "exit_code": 0,
+                "at": "build.harness_commands",
+                "note": "2/9; all 7 paying arms red. The instrument can fail.",
+                "red_unproven": true
+              }
+            }
+          ]
+        },
+        "arms_disagree": {
+          "tier": "act",
+          "evidence": [
+            {
+              "red_exit": {
+                "command": "node tools/progression/souls-ledger-oracle.mjs --self-break --len 2 --samples 10 (theirs, run by me)",
+                "script": "tools/progression/souls-ledger-oracle.mjs",
+                "exit_code": null,
+                "at": "artifacts.produced_by",
+                "note": "The falsifier the builder declared it had skipped. 59 routes: I2 goes RED with 21 violations, I3 0, I1 0. 16 routes threw on the non-atomic spawnEncounter."
+              },
+              "green": 3
+            }
+          ]
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "source_reads[] names files that exist — a self-report, not a residue of reading"
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-SOULS-r3.md"
+    },
+    {
+      "piece_id": "W1-TOUCH-r1",
+      "path": "corpus/90-verdicts/wave1/W1-TOUCH-r1.json",
+      "commit": null,
+      "finished_at": "2026-08-08T11:12:00Z",
+      "items": {
+        "separate_critic": {
+          "tier": "absent",
+          "evidence": [
+            {
+              "note": "no critic.run_id"
+            }
+          ]
+        },
+        "delete_the_fix": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "arms": {
+                "at": "consumption.models.M1 profiles.json touch.buttons[] geometry",
+                "positive": {
+                  "key": "shipped",
+                  "value": "(737,242) -> swings r1.1"
+                },
+                "negative": {
+                  "key": "perturbed",
+                  "value": "same point -> NOTHING; new centre (537,182) -> swings"
+                }
+              },
+              "note": "two arms differ but no teardown mechanism is named — the reversal is believed, not executed"
+            }
+          ]
+        },
+        "consumption": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "at": "consumption",
+              "consumer": null,
+              "perturbation_named": true,
+              "arms": null
+            }
+          ]
+        },
+        "self_test": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "arms_disagree": {
+          "tier": "absent",
+          "evidence": []
+        },
+        "read_the_file": {
+          "tier": "claim",
+          "evidence": [
+            {
+              "note": "lines are cited and exist at the judged commit, but nothing is quoted, so a summary could have produced them",
+              "in_range": 7,
+              "cited": 28
+            }
+          ]
+        }
+      },
+      "wave": "wave1",
+      "has_structured_json": true,
+      "declares_rigour_block": false,
+      "prose_path": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md"
+    }
+  ]
+}
