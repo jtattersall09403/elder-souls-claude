@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b89769a`: 720 tools, 153 reference
-items, 63 pieces in flight.
+so it cannot drift. Generated at `b4da273`: 729 tools, 153 reference
+items, 64 pieces in flight.
 
-Its purpose is to stop 63+ concurrent agents each paying separately to discover the
+Its purpose is to stop 64+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 31
+### `tools/` — 34
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -71,6 +71,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-souls-world.mjs` — the two soul ledgers must agree — the world's cached roll-up against the statblocks that pay.
 - `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
 - `tools/corpus-index.mjs` — **no header comment**
+- `tools/dispatch-staleness.mjs` — re-run the MECHANICALLY CHECKABLE claims in a dispatch file and report which ones no longer hold.
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
 - `tools/gap-ledger.mjs` — **no header comment**
 - `tools/gen-index.mjs` — regenerate orchestration/INDEX.md, the one page an agent reads to orient.
@@ -78,11 +79,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ownership.mjs` — the file-ownership registry: who is touching what, right now.
 - `tools/play.mjs` — serve the game and print the URL a person opens.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
+- `tools/publish-game.mjs` — put the playable game on the web, so playing it is a link and not a clone.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
 - `tools/souls-consumption-ledger.mjs` — WHICH LEDGER DOES A KILL CONSULT?
+- `tools/tmp-bootpub.mjs` — **no header comment**
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
@@ -137,7 +140,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-chartfont-shot-sweep.mjs` — SWEEP docs/shots/ FOR FIGURES DRAWN WITH THE SHEARED CHART FONT — by reading the PIXELS.
 - `tools/analysis/w1-chartfont-shot.mjs` — the rule-27 picture for W1-CHARTFONT: the same strings drawn with the pre-fix table and with the fixed one, side by side, at the size a chart actually uses them
 
-### `tools/audio/` — 9
+### `tools/audio/` — 11
 
 - `tools/audio/critic-m6-fixture-sweep.mjs` — is RI-AUD01 M6's PASS a property of the PANNER or of the FIXTURE?
 - `tools/audio/critic-w1-22-r2-bands.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
@@ -148,6 +151,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/impact-probe.mjs` — drive `aud-impact-matrix` and write the run artifacts RI-AUD01's Comparison method reads.
 - `tools/audio/make-impact-classes.mjs` — Authoring tool for `game/data/audio/impact/classes.json` — RI-AUD01 §A/§C, W1-11.
 - `tools/audio/w1-22-r3-daynight.mjs` — RI-AUD03 R5 — "Night is a different L2/L4 SELECTION, not a filter." W1-22 round 3.
+- `tools/audio/w1-22-r3-hive-bar.mjs` — THE HIVE'S BAR, RE-MEASURED WITHOUT THE EVENT THAT WAS OUTSIDE THE CAP.
+- `tools/audio/w1-22-r3-pack.mjs` — THE BLIND QUALITY PACK, WITH THE RECORDINGS IN IT.
 
 ### `tools/blind/` — 4
 
@@ -503,7 +508,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/wpn-render-motion.mjs` — how much of the character box does a 60-frame attack actually move?
 - `tools/harness/wpn-render-probe.mjs` — does the swing reach a screen, and does what you see hit you?
 
-### `tools/journey/` — 18
+### `tools/journey/` — 20
 
 - `tools/journey/beat-extract.mjs` — the blind-pack producer RI-MTH06 §C specifies.
 - `tools/journey/cadence.mjs` — RI-JRN02 §B, checks C1..C10: how busy the hour was, and in what.
@@ -513,6 +518,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/critic-w1-26-r3-consume.mjs` — RI-MTH07 on the round's load-bearing model, and the stopped-world/crate discrimination the round claims to have fixed.
 - `tools/journey/critic-w1-26-r3-input.mjs` — the OTHER half of the text-focus fix: did it break the world?
 - `tools/journey/critic-w1-26-r3-leak.mjs` — try to get an engine string onto a drawn row.
+- `tools/journey/critic-w1-26-r4-fleet.mjs` — IS THE THROW A FIX OR A FLEET HAZARD, AND DOES THE CONTROL BITE?
+- `tools/journey/critic-w1-26-r4-signpost.mjs` — ATTACKING THE DECLARED LIST.
 - `tools/journey/gamepad-shim.mjs` — A-JRN2.
 - `tools/journey/input-checks.mjs` — the M-K table of RI-JRN03 and the M-P table of RI-JRN04, measured.
 - `tools/journey/journey-run.mjs` — A-JRN1.
@@ -724,7 +731,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 142
+### `tools/world/` — 144
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -796,6 +803,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-offline.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-shots.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r6-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r6-offline.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing-consumption.mjs` — **no header comment**
@@ -832,6 +840,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/threshold-shots.mjs` — W1-02 round 2 — the border markers, photographed.
 - `tools/world/tier-announcement.mjs` — `RI-WLD12` M66 — is a jump in danger announced BEFORE the player is in it?
 - `tools/world/travel-audit.mjs` — **no header comment**
+- `tools/world/verify-published-game.mjs` — does the copy under docs/play actually PLAY?
 - `tools/world/w1-01-r3-probe.mjs` — **no header comment**
 - `tools/world/w1-01-r4-consumption.mjs` — **no header comment**
 - `tools/world/w1-01-r4-crossing-chart.mjs` — THE PICTURE FOR W1-01 ROUND 4: the road out of the capital goes through somebody's house.
@@ -870,7 +879,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **173 tools have no header comment**, so nobody can tell what they do without
+> **175 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1044,8 +1053,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-TOUCH` | reading | Read RULES, INDEX, RI-JRN04 §G, game/src/input/touch.js, game/src/main.js, W1-GAMEPAD.json | `orchestration/status/W1-TOUCH.json` |
+| `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
-| `AUDIT-R1-LIST` | running | read NEXT-DISPATCH.md R1 list, enumerate the four remaining bullets | — |
 | `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `W1-GAMEPAD` | done | none — handing to a critic | `orchestration/status/W1-GAMEPAD.json` `tools/gamepad/pad-run.mjs` `tools/gamepad/deadzone-deletefix.mjs` `tools/journey/gamepad-shim.mjs` `game/src/engine.js` `orchestration/NEXT-DISPATCH.md` |
 | `W1-22-r3` | building | P2 per-event gain in band + P3 hive bar + P4 refusal guard fixture | `orchestration/status/W1-22-r3.json` `tools/audio/w1-22-r3-daynight.mjs` `game/src/audio/ambience.js` `game/data/audio/ambience/clay-moor.json` `game/data/audio/ambience/crimson-coast.json` `game/data/audio/ambience/deep-marshes.json` |

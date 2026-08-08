@@ -1,0 +1,184 @@
+{
+  "schema": "elder-souls/book@2",
+  "group": "the-occupation",
+  "owner": "W1-LIBRARY — the in-world library",
+  "note": "A history written by the occupier and a history written by the occupied, on the same events, in the same province, with nothing standing between them. `A Short Account of the Pacification` and `The Account the Marsh Keeps` disagree about the drowning at the ford, about who holds the interior and about what a treaty is; `The Knahaten Years` and `What the Water Took` hold the two positions of CF-D005, which canon itself leaves standing. No text here corrects another and none of them is the reliable one. The Imperial chronicle is the better-organised document and is wrong more often, which is the arrangement.",
+  "books": [
+    {
+      "id": "a-short-account-of-the-pacification",
+      "title": "A Short Account of the Pacification of the Argonian Coast",
+      "author": "Tribune Marcus Sallustian Vell, retired, of Anvil",
+      "kind": "volume",
+      "taxon": "T7",
+      "argonian_authored": false,
+      "unreliability": "Confident, orderly, dated to the year, and it has never once asked anyone in the province what happened. Its dates are largely right and its causes are almost entirely the Empire's own paperwork read back as history.",
+      "registry": {
+        "cf": "CF-060"
+      },
+      "contradicts": [
+        {
+          "book": "the-account-the-marsh-keeps",
+          "on": "the drowning at the ford, and who holds the interior",
+          "cf": "CF-060"
+        },
+        {
+          "book": "the-drowned-ford",
+          "on": "what drowned the column at the ford",
+          "cf": null
+        }
+      ],
+      "topics_taught": [
+        "the-blackwater-treaty",
+        "the-ninth-cohort",
+        "the-drowned-ford",
+        "the-pacification"
+      ],
+      "text": "Written for the young men of the officer schools, who are given a great deal about Skyrim and almost nothing about a province in which the Empire has kept a cohort for three hundred years.\n\nThe first thing to be understood about Argonia is that it was not conquered. It was contracted for. There is no year of the conquest because there was no conquest; there is a sequence of harbour agreements, made one at a time, each with a different party, over the course of a century, and the province as the Empire holds it today is the sum of those agreements and nothing else.\n\nThe second thing is that the agreements are all coastal. Every one. Not one of them concerns ground more than a day inland, and the reason is not that the Empire was refused. The reason is that inland there was no authority to agree with. A charter requires a signatory. The interior of this province does not produce signatories; it produces people who will talk to you courteously for an afternoon and then decline, on behalf of no office at all, in a manner that cannot be appealed.\n\nThe third thing is the Blackwater Treaty, which every officer has heard of and almost none has read. It is four clauses and it concerns fishing rights on one river. It has been cited in the Council as the instrument by which the Empire holds Black Marsh. It is not that instrument. It is not any instrument. It is a fishing agreement, and the reason it has grown into a treaty of empire is that it is the only document in the whole file that was signed by an Argonian whose name we could spell.\n\nNow the events themselves, in order, briefly.\n\nThe harbour agreements: 2E 800s onward, Archon first, then Gideon, then Stormhold from the landward side, which was a different sort of arrangement and involved a garrison. Lilmoth was never agreed at all and was simply occupied, in a manner the Office has been embarrassed about ever since and has never undone.\n\nThe establishment of the Cohorts: three at first, reduced to two, reduced to one. The Ninth alone has held the province since the middle of the last century, at a paper strength that has not been true since before I was posted, the reserves having gone east to Morrowind for the Vvardenfell business and not come back. Any officer who is posted here should be told this on the boat and not discover it at his first muster.\n\nThe drowning at the ford: 3E 391. A column of the Ninth, moving inland to relieve a survey party, was lost crossing at the old Reman ford in the dry season. The received figure is two hundred at muster and forty-nine at the far bank. The cause was a flood surge of the kind these rivers produce without warning, the dry season being no protection whatever, as any man who has served a wet year here will tell you.\n\nI am obliged to record that the province tells this differently. It is said, and said with some enjoyment, that the fish-weirs upstream were opened by a woman who understood water better than the column understood rivers. I have read the survey of the reach. The weirs in question could not have held enough water to lift a boat, let alone drown a column, and the arithmetic of it is in the appendix of the third issue of the survey and can be checked by a reader who is minded to.\n\nI record also, since I am recording, that it is possible for a story to be false and for the telling of it to be the more important fact. That column was lost, and the province decided within a season that it had been killed on purpose by one old woman with a sluice gate, and it has been telling itself that for thirty-six years. Whatever drowned those men, what has held the interior since is the story.\n\nThe consequence, which is the only lesson in this book. No Imperial column has gone more than two days inland since 3E 391. Not because of an order — there is no such order, and I have looked for it, and officers who are certain it exists are thinking of a standing instruction about surveys. It has simply not been done. Thirty-six years of officers have each independently decided that whatever is inland can wait, and thirty-six years of that is a policy.\n\nWe hold eight harbours, one hill fort, one prison, and the roads between them in daylight. We call this a province because we have a Provincial Office. The Office has a map of the interior. It is a good map, and it was drawn from the coast."
+    },
+    {
+      "id": "the-account-the-marsh-keeps",
+      "title": "The Account the Marsh Keeps",
+      "author": "Marsh-of-Nine, of Hollow-Reeds, who has been asked for this by three Imperials and has given it to none of them",
+      "kind": "volume",
+      "taxon": "T7",
+      "argonian_authored": true,
+      "unreliability": "Told from inside, with a grievance, by someone who was not born for most of it. She is right about what the Empire did and unreliable about how anybody felt at the time, which she supplies.",
+      "registry": {
+        "cf": "CF-060"
+      },
+      "contradicts": [
+        {
+          "book": "a-short-account-of-the-pacification",
+          "on": "the drowning at the ford, and who holds the interior",
+          "cf": "CF-060"
+        },
+        {
+          "book": "the-blessings-of-the-coast",
+          "on": "who the coast belongs to",
+          "cf": "CF-060"
+        }
+      ],
+      "topics_taught": [
+        "the-blackwater-treaty",
+        "the-drowned-ford",
+        "the-pacification",
+        "hollow-reeds"
+      ],
+      "text": "Three Imperials have asked me for this. One was a poet and one was a surveyor and one was a decent man from the Office who wanted it for a file. I said no to all three and I am writing it for my own people, in your language, because my own people can read your language and yours cannot read ours, and I would like this to be a thing you have to be told about rather than a thing you can pick up.\n\nHere is what they call the agreements.\n\nA ship comes into a landing. It wants water, then it wants a warehouse, then it wants a wall round the warehouse, then it wants the wall garrisoned, then it wants the road to the wall kept clear. Each of those is a small reasonable request and each is agreed to by whoever is standing at the landing that morning, because refusing a small reasonable request in front of a ship is how you find out what the ship is for. At the end there is a fort, and a paper, and the paper is signed by a person who never in their life thought they were signing for a province, because in this country a province is not a thing that gets signed for. There is no such person. Your Empire has looked for one for three hundred years and it has settled, every time, for whoever would hold the pen.\n\nThey are not wrong that this was not a conquest. It was not. It was a purchase from people who did not know they owned anything and could not have sold it if they had.\n\nAbout Lilmoth I will say only that Lilmoth was not agreed and everyone knows Lilmoth was not agreed and there is a customs house there anyway, and that the Office's own writers put this in their books, in a small sad voice, as a thing that is regrettable, in the way a man regrets the weather.\n\nNow the ford.\n\nMy grandmother's cousin's people held the weirs above the crossing. That is not a story; it is a thing you can go and look at, the posts are still there. The column came down in the dry month because they had been told the dry month was safe, and they had been told that by a survey made by a man who had seen the reach in the dry month once.\n\nThe weirs were opened. This is not in dispute among us and I am not going to pretend it is. What is in dispute is what happened next, and the honest answer, which neither side likes, is that opening the weirs put a great deal of water into a channel that was already carrying a great deal of water, and the men standing at the weirs could not have known what the reach would do with it. How many died is given as one hundred and fifty-one in their books and as a dozen in ours, and there is a woman at Lilmoth who was closer to it than any of us and who says the loss was the carts. I do not know. The ones who tell you they know were not there.\n\nYour Tribune has written that the weirs could not have drowned a column, and he has an appendix. I have read his appendix. It is arithmetic done on the volume of the weir ponds, and it is correct, and it is arithmetic about the wrong thing: it is not the water in the ponds that kills a man crossing, it is the shoulder of water that goes down the channel when the ponds go at once, and I have watched a small pond do that to a boat.\n\nSo: he says a flood. We say a woman. The truth appears to be a woman who caused a flood and did not know she could, and both sides have arranged that story into the shape they wanted, and his shape lets the Empire keep its dignity and ours lets us keep something we needed more than dignity.\n\nAnd here is the part he half sees and cannot say.\n\nHe writes that no column has gone inland in thirty-six years and that there is no order to that effect. That is true. He thinks this is a curious administrative fact. It is the whole settlement. Your Empire holds the coast because we let it hold the coast, and it does not go inland because it found out once what inland is, and both of us have agreed to call that arrangement a province so that neither of us has to do anything about it.\n\nWe are not free. I want to be very clear, because there are young ones who read this sort of thing and get an idea. They take our people north out of Blackrose under a lease that your own Assize signs. They take them off the coast entirely in ships out of Tear and your law says that is nothing to do with your law. A people who are not invaded and are still carried off in boats are not a people who have won anything.\n\nWhat we have is a border that is not on any of their maps, and it runs about two days inland, and it holds because of a woman with a sluice gate and a column of men who were told the dry month was safe."
+    },
+    {
+      "id": "the-knahaten-years",
+      "skill_book": "alchemy",
+      "title": "The Knahaten Years: a Chronicle of the Silver Coast",
+      "author": "Sister Anthea Corbus, of the Chapel at Gideon",
+      "kind": "volume",
+      "taxon": "T7",
+      "argonian_authored": false,
+      "unreliability": "Its dates are exact and its cause is a rumour it has heard so often it has stopped attributing it. It also cannot let go of the fact that the Argonians did not die, and returns to it four times.",
+      "registry": {
+        "cf": "CF-D005",
+        "position": "A"
+      },
+      "contradicts": [
+        {
+          "book": "what-the-water-went-round",
+          "on": "what caused the Knahaten Flu",
+          "cf": "CF-D005"
+        }
+      ],
+      "topics_taught": [
+        "the-knahaten-flu",
+        "the-kothringi",
+        "the-lilmothiit",
+        "stormhold"
+      ],
+      "text": "It began at Stormhold in the five hundred and sixtieth year of the Second Era and it ran for forty-one years and it stopped in the six hundred and first, and those three numbers are the only part of this that goes unargued.\n\nWhat it took. The Kothringi, entire — a silver-skinned people, of Nedic stock, who kept the river landings and built the best small boats on this coast and are now a word. The Lilmothiit, entire, of whom we have less: a fox-formed folk of the southern reaches who were already thin before it came. Orma. The Horwalli. Nine peoples are named in the chapel's own list and I can find independent record of six.\n\nWhat it did not take: the Argonians. Not thinned. Not marked. Not one recorded death in forty-one years, in the same villages, drinking the same water, burying the neighbours.\n\nI have set that sentence down four times in this chronicle and struck it three, because every way I write it, it reads as an accusation, and I am not sure it should not.\n\nThe account that is given, and that has been given for so long that its origin cannot now be found, is that the thing was made. That a shaman of the interior, in a season when the Empire's predecessors were pressing on the coast, went to the trees and asked for a sickness, and was given one, and that it was cut to leave his own people standing. This is repeated in every Imperial history of the province I have read, including three that repeat it while noting that there is no source for it.\n\nI have looked for the source. It is not in the chapel's records. It is not in the Office's. It is not in any Kothringi document that survives, which is a small number of documents but not none, and their own accounts of the years when they were dying do not name a shaman, do not name a tree, and do not name anyone at all. They record symptoms, and weather, and the failure of a boat to arrive.\n\nAgainst that, and I set it down because a chronicle that only carries one side is a pamphlet: forty-one years, nine peoples, and one people untouched, is not what a sickness does. I have read the physicians on this and they say that a pestilence spares whom it spares and that the marsh people are known to resist disease as a matter of their nature and that this is sufficient. It may be sufficient. It has never once satisfied a reader who has stood in what is left of a Kothringi landing and counted the doorways.\n\nWhat I can say from the chapel's own material, which is my proper business.\n\nThat it moved along the water and not along the roads. That it went downriver faster than it went up. That in three places it stopped at a boundary that has no natural meaning — the far bank, the second bridge, the line of the old weirs — and stopped there for a season and then went round. That it did not come back to a place it had emptied.\n\nAnd that in the fortieth year it simply began to fail, in every district at once, and by the following spring there was no new case anywhere, and nothing had been done. No cure was found. No rite was performed. Nine peoples had ended and the thing that ended them stopped as though it had been called in.\n\nThe chapel teaches that pestilence is a natural evil and that to look for an author in it is a sin against providence. I have taught this. I taught it for most of my life before I was set to the chronicle, and I would teach it again to a class of children, and I record here, in my own book, in my own hand, that I do not believe it in this case and that I have no evidence, and that the absence of evidence is exactly what a made thing would leave.",
+      "registry_facts": [
+        "CF-D005"
+      ]
+    },
+    {
+      "id": "what-the-water-went-round",
+      "title": "What the Water Went Round",
+      "author": "told by Ei-Shanaan of Stormhold, set down by her grandson",
+      "kind": "folk-tale",
+      "taxon": "T8",
+      "argonian_authored": true,
+      "unreliability": "A family's telling, four generations from the event, and it is about the wrong thing on purpose: it is not about the sickness, it is about the neighbours, and the sickness is scenery.",
+      "registry": {
+        "cf": "CF-D005",
+        "position": "B"
+      },
+      "contradicts": [
+        {
+          "book": "the-knahaten-years",
+          "on": "what caused the Knahaten Flu",
+          "cf": "CF-D005"
+        }
+      ],
+      "topics_taught": [
+        "the-knahaten-flu",
+        "the-kothringi",
+        "stormhold"
+      ],
+      "text": "My grandmother tells it and I am writing it because she is old and because the Imperials have a version and theirs is written down and ours is not, and a thing that is not written down loses.\n\nShe says: the silver people lived at the landing and we lived above it, and there was no love and no hate, there was trade and there was a daughter of ours marrying a son of theirs about once in a generation and the whole landing complaining about it.\n\nShe says: it came in the wet and for a season it had no name. The first ones to go were old and old ones go. Then it was not old ones.\n\nShe says: we carried them. This is the part she wants written. Year on year the silver people were dying at the landing and it was our people who carried the water down and our people who carried the dead up, because we did not take it, and we knew by the second year that we did not take it, and there was no one else to do it. She says her grandmother's hands were bad for the rest of her life from the lime.\n\nShe says: they did not blame us at first. That came later and it came from the coast, from ships, from people who had not been there, and by then there were few enough of the silver people left that it did not matter what they thought, and the ones who were left were too tired to argue with a ship.\n\nShe says: they ask us why we did not die. She says: that has never once been put to us as a question. It is always said the way you say a thing you have already decided.\n\nShe says: and we do not know. That is the answer and it has always been the answer. The trees did not tell us anything. The keepers of that time wrote nothing down because they did not write. There was no meeting, there was no asking, there was no deed done at all. It came and it went round us and it took our neighbours and left us standing in a country full of empty houses, and if you want to know what that is like, it is not like being spared. Being spared is a thing that happens to you. This happened to them.\n\nShe says: the Imperials have a man in their story. A shaman, who went to a tree and asked. She says she has heard this told by three Imperials and once by a lukiul from Gideon who was showing off, and every time the shaman has a different name and no village, and that a man with three names and no village is a hole with a story stuffed into it.\n\nShe says: and if there were such a man, then he made a thing that killed everyone who could not breathe water and left everyone who could, and I would like the Imperials to think for one moment about what that would mean about the trees, and then to notice that they have never once thought about it, because for them it is a story about us being wicked and not a story about anything being possible.\n\nShe says, last, and this is the part I did not want to write and she made me: the empty houses at the landing stood for six generations and we did not go into them. Not out of respect. She says we should not pretend it was respect. She says we did not go into them because we were ashamed, and she does not know of what, and she has thought about it for eighty years.",
+      "registry_facts": [
+        "CF-D005"
+      ]
+    },
+    {
+      "id": "the-lease-and-what-it-costs",
+      "skill_book": "mercantile",
+      "title": "Of the Labour-Lease at Blackrose, and Why It Is Not What You Have Been Told",
+      "author": "Prefect Galvus Arn, to the Assize at Gideon, copied and circulated without his leave",
+      "kind": "letter",
+      "taxon": "T2",
+      "argonian_authored": false,
+      "unreliability": "A defence written by the man being defended, in his own hand, to an office that has not yet accused him. Everything he denies, he denies precisely, and the precision is the tell.",
+      "registry": {
+        "cf": "CF-C007"
+      },
+      "contradicts": [
+        {
+          "book": "the-account-the-marsh-keeps",
+          "on": "whether the lease is a form of slavery",
+          "cf": "CF-C007"
+        }
+      ],
+      "topics_taught": [
+        "blackrose",
+        "the-labour-lease",
+        "galvus-arn",
+        "the-assize"
+      ],
+      "text": "To the Assize at Gideon. This is not an answer to a charge; there is no charge, and I would ask that this be filed as what it is, which is a statement made by an officer before anyone has asked him for one.\n\nThe facts of the lease.\n\nBlackrose holds, at present, nine hundred and forty persons under sentence. Of those, four hundred and eleven are, or have been, leased out to holdings on the coastal flats under the arrangement I inherited and have continued. The lease pays the prison eight drakes a head a month. That money is not mine and does not touch my hand; it goes to the prison's account and it is what the prison eats on, the Office's grant having been fixed in the four hundred and second year and never raised.\n\nWhat the lease is. A prisoner under sentence works. That is the sentence. The only question the lease answers is whether the work is done inside the wall, where there is no work, or outside it, where there is. A man on the flats is fed better, is out of doors, and comes back. That is not a defence of the arrangement, it is a description of it.\n\nWhat the lease is not. It is not a sale. Title in a person does not pass, cannot pass, and no instrument in my office purports to pass it. A leased prisoner remains under sentence and under my authority and is returned at the end of the term.\n\nNow, because the Assize will hear it from a less careful mouth than mine, I shall put the difficulties myself.\n\nThe first. The lease is paid by the head and the head is counted at the start of the term. A holding that loses a man on the flats has an interest in not reporting it, and I have no means of counting them out there and no man to send. I have written to the Office about this three times, in the four hundred and twenty-third, the fifth and the sixth years, and I have the copies.\n\nThe second. Some of the holdings are held through factors, and some of those factors hold for houses in Morrowind. This is lawful. I have satisfied myself that it is lawful in each case and I have the instruments. I am aware of what it looks like. I would observe that a thing looking like another thing is not the same as being it, and that if the Assize wishes to make the lease unlawful where a Morrowind interest stands behind the factor, the Assize may do so by a stroke of the pen and I would welcome it and my successor would curse me.\n\nThe third, which I shall state plainly because half-stating it is worse. There are four hundred and eleven leased. There are, on the yard's own figures, fewer than four hundred and eleven accounted for. The difference is not large as a proportion and it is not small as a number of people, and I do not know where they are, and I have known that I do not know for two years.\n\nI am not writing to be absolved. I am writing because I have watched this office a long time and I know exactly how this ends: it ends with a file, and the file ends with my name in it, and I would rather my name went in with my own account beside it than be entered later by a clerk who was not here and who will be entirely right about everything except how it happened.\n\nGalvus Arn, Prefect, at Blackrose."
+    },
+    {
+      "id": "what-the-hollow-has-to-trade",
+      "skill_book": "mercantile",
+      "title": "What the Hollow Has to Trade",
+      "author": "Ashaan-Hulei, of the eastern hollow, dictated",
+      "kind": "letter",
+      "taxon": "T4",
+      "argonian_authored": true,
+      "unreliability": "Honest and self-serving at once, and she does not distinguish. She is right that the hollow has nothing else and wrong that the tree has not objected, and she cannot know she is wrong.",
+      "registry": {
+        "cf": "CF-C005"
+      },
+      "contradicts": [
+        {
+          "book": "the-sap-and-the-knife",
+          "on": "whether a well may be cut for sale at all",
+          "cf": "CF-C005"
+        }
+      ],
+      "topics_taught": [
+        "the-cutting",
+        "the-eastern-hollow",
+        "the-sap-cutters",
+        "depth-and-season"
+      ],
+      "text": "This is dictated because I do not write and because Teel-Ashaan has been telling people what I think, and what he has been telling them is close enough to be worse than a lie.\n\nThe hollow has seven households. We had more than twice that when I was hatched. The eight that went did not die; they walked out, to Helstrom, to the barge crews, to the kiln camp, because there is nothing here.\n\nHere is what the hollow has to trade. Reed, which everyone has. Fish, which everyone has and which will not keep a day's walk. Two hands' worth of hide in a good season. That is the list. I have been to Helstrom market with the whole of the hollow's year on one barge and come back with salt and nothing else, twice.\n\nAnd here is what the hollow also has, which is a well, cut long before me, kept by my mother and by me, running clean at the joint, on the shaded side, drawn once between the sap-fall and the turn of the wet. And a phial of what it gives is worth more in Lilmoth than my whole barge.\n\nTeel-Ashaan says this is theft. He says it in a village that has a road to it.\n\nNow I will say the true things that go against me, because I have heard what the Deep-Kin say about people who only say their own side.\n\nIt is true that I sell to the Ixtu-Vakh and that the Ixtu-Vakh sell to outlanders and that I know what happens to an outlander who drinks it. I have thought about that and I have not stopped, and the reason I have not stopped is not a reason, it is seven households.\n\nIt is true that the well has been drawn four seasons running and that the old terms give a rest year in nine, and that I have not given it one, and that I do not know why the terms say nine.\n\nIt is not true that I cut deep. Anyone may come and look. It is at the joint and it has been at the joint every time and I would put my hand under the knife of the cutter who says otherwise.\n\nAnd here is the thing I say to Teel-Ashaan when he is in front of me and which he does not put in his account of what I think. He asks how I dare. I ask him what he would have the hollow do instead, and he tells me that the marsh has fed people for longer than the Empire has existed, which is true, and which is not a thing you can put on a barge.\n\nI have asked the tree. He tells people I have not. I have asked it every season, in the form, with my hands in the water, and it has not objected, and he says that a tree that does not object has not consented. Perhaps. He is a keeper and I am not. But I notice that when he wants a thing from the well he asks it and takes the silence for a yes, and when I do the same thing he calls it a heresy, and one of us is being consistent."
+    }
+  ]
+}

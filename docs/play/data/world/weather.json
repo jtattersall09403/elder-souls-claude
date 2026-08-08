@@ -1,0 +1,960 @@
+{
+ "schema": "elder-souls/weather@1",
+ "generator": "tools/world/build-weather.mjs",
+ "owner": "W1-02",
+ "source": "corpus/50-world/RI-WLD08-the-living-world.md §1 and §5",
+ "what_this_is": "The thirteen per-region weather state machines and the clock they run on. Before this file the build had no weather SYSTEM at all: sim.env.weather's only writers in the whole tree were the harness verb Engine.setWeather() and the save loader, which is the RI-MTH07 failure mode exactly. The machine now runs inside the fixed step.",
+ "consumed_by": [
+  "game/src/sim/environment.js — Clock + WeatherMachine, stepped from sim/step.js",
+  "game/src/sim/stealth/system.js#skyAmbient — `light` sets the outdoor ambient, which sets L, which sets V",
+  "game/src/render/sky.js — `sightline_m` as a Beer-Lambert extinction, and the named-state table",
+  "game/src/engine.js#getEnvironment — the read-back a critic measures"
+ ],
+ "timescale": 20,
+ "frames_per_game_day": 259200,
+ "real_minutes_per_game_day": 72,
+ "tick_game_minutes": 400,
+ "tick_frames": 72000,
+ "dawn_dusk_real_minutes": 6,
+ "deviations": [
+  "The Hive. RI-WLD08 §5 gives it \"still (only state) + queen-agitation\"; M43 asserts >= 4 states with no transition probability of 0 or 1, which one state cannot satisfy. Built with four states and the province's highest stationary probability (0.62) so it still reads as the region whose weather does not change. Flagged rather than silently resolved."
+ ],
+ "counts": {
+  "regions": 13,
+  "distinct_states": 41
+ },
+ "regions": [
+  {
+   "region": "blackwood",
+   "region_name": "Blackwood",
+   "initial": "canopy_dim",
+   "states": [
+    {
+     "id": "canopy_dim",
+     "light": "overcast",
+     "sightline_m": 260,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "downpour",
+     "light": "dark",
+     "sightline_m": 150,
+     "effect": {
+      "tracks_washed": true,
+      "stamina_regen_mult": 0.86,
+      "navigation_degraded": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "steam",
+     "light": "overcast",
+     "sightline_m": 130,
+     "effect": {
+      "stamina_regen_mult": 0.88
+     },
+     "diurnal": {
+      "night": 0.5,
+      "day": 1.4
+     }
+    },
+    {
+     "id": "still",
+     "light": "sun",
+     "sightline_m": 800,
+     "effect": {},
+     "diurnal": null
+    }
+   ],
+   "worst": "downpour",
+   "transitions": {
+    "canopy_dim": {
+     "canopy_dim": 0.42,
+     "downpour": 0.2148,
+     "steam": 0.1933,
+     "still": 0.1719
+    },
+    "downpour": {
+     "downpour": 0.42,
+     "canopy_dim": 0.2983,
+     "steam": 0.1491,
+     "still": 0.1326
+    },
+    "steam": {
+     "steam": 0.42,
+     "canopy_dim": 0.29,
+     "downpour": 0.1611,
+     "still": 0.1289
+    },
+    "still": {
+     "still": 0.42,
+     "canopy_dim": 0.2822,
+     "downpour": 0.1568,
+     "steam": 0.1411
+    }
+   }
+  },
+  {
+   "region": "clay-moor",
+   "region_name": "The Clay Moor",
+   "initial": "dry_heat",
+   "states": [
+    {
+     "id": "dry_heat",
+     "light": "sun",
+     "sightline_m": 1100,
+     "effect": {
+      "stamina_regen_mult": 0.9
+     },
+     "diurnal": {
+      "night": 0.25,
+      "day": 1.8
+     }
+    },
+    {
+     "id": "dust_devil",
+     "light": "sun",
+     "sightline_m": 340,
+     "effect": {
+      "knockback": true
+     },
+     "diurnal": {
+      "night": 0.3,
+      "day": 1.5
+     }
+    },
+    {
+     "id": "haze",
+     "light": "overcast",
+     "sightline_m": 380,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "night_cold",
+     "light": "dark",
+     "sightline_m": 560,
+     "effect": {
+      "stamina_regen_mult": 0.86
+     },
+     "diurnal": {
+      "night": 3.2,
+      "day": 0.1
+     }
+    }
+   ],
+   "worst": "dust_devil",
+   "transitions": {
+    "dry_heat": {
+     "dry_heat": 0.43,
+     "dust_devil": 0.1754,
+     "haze": 0.2192,
+     "night_cold": 0.1754
+    },
+    "dust_devil": {
+     "dust_devil": 0.43,
+     "dry_heat": 0.285,
+     "haze": 0.1583,
+     "night_cold": 0.1267
+    },
+    "haze": {
+     "haze": 0.43,
+     "dry_heat": 0.3018,
+     "dust_devil": 0.1341,
+     "night_cold": 0.1341
+    },
+    "night_cold": {
+     "night_cold": 0.43,
+     "dry_heat": 0.285,
+     "dust_devil": 0.1267,
+     "haze": 0.1583
+    }
+   }
+  },
+  {
+   "region": "crimson-coast",
+   "region_name": "Crimson Coast",
+   "initial": "clear",
+   "states": [
+    {
+     "id": "clear",
+     "light": "sun",
+     "sightline_m": 1200,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "sea_squall",
+     "light": "dark",
+     "sightline_m": 200,
+     "effect": {
+      "stamina_regen_mult": 0.88
+     },
+     "diurnal": null
+    },
+    {
+     "id": "red_haze",
+     "light": "overcast",
+     "sightline_m": 300,
+     "effect": {
+      "disease_buildup_per_s": 0.55
+     },
+     "diurnal": null
+    },
+    {
+     "id": "storm",
+     "light": "dark",
+     "sightline_m": 220,
+     "effect": {
+      "stamina_regen_mult": 0.85,
+      "navigation_degraded": true
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "red_haze",
+   "transitions": {
+    "clear": {
+     "clear": 0.36,
+     "sea_squall": 0.237,
+     "red_haze": 0.2607,
+     "storm": 0.1422
+    },
+    "sea_squall": {
+     "sea_squall": 0.36,
+     "clear": 0.2773,
+     "red_haze": 0.2347,
+     "storm": 0.128
+    },
+    "red_haze": {
+     "red_haze": 0.36,
+     "clear": 0.2869,
+     "sea_squall": 0.2207,
+     "storm": 0.1324
+    },
+    "storm": {
+     "storm": 0.36,
+     "clear": 0.2447,
+     "sea_squall": 0.1882,
+     "red_haze": 0.2071
+    }
+   }
+  },
+  {
+   "region": "deep-marshes",
+   "region_name": "The Deep Marshes",
+   "initial": "fever_fog",
+   "states": [
+    {
+     "id": "fever_fog",
+     "light": "overcast",
+     "sightline_m": 110,
+     "effect": {
+      "disease_buildup_per_s": 0.4
+     },
+     "diurnal": null
+    },
+    {
+     "id": "black_clear",
+     "light": "dark",
+     "sightline_m": 520,
+     "effect": {},
+     "diurnal": {
+      "night": 2.8,
+      "day": 0.15
+     }
+    },
+    {
+     "id": "heavy_rain",
+     "light": "dark",
+     "sightline_m": 190,
+     "effect": {
+      "tracks_washed": true,
+      "stamina_regen_mult": 0.9,
+      "navigation_degraded": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "thick_fog",
+     "light": "overcast",
+     "sightline_m": 25,
+     "effect": {
+      "navigation_degraded": true,
+      "hides_enemies": true
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "thick_fog",
+   "transitions": {
+    "fever_fog": {
+     "fever_fog": 0.45,
+     "black_clear": 0.1833,
+     "heavy_rain": 0.2037,
+     "thick_fog": 0.163
+    },
+    "black_clear": {
+     "black_clear": 0.45,
+     "fever_fog": 0.2671,
+     "heavy_rain": 0.1571,
+     "thick_fog": 0.1257
+    },
+    "heavy_rain": {
+     "heavy_rain": 0.45,
+     "fever_fog": 0.275,
+     "black_clear": 0.1456,
+     "thick_fog": 0.1294
+    },
+    "thick_fog": {
+     "thick_fog": 0.45,
+     "fever_fog": 0.2597,
+     "black_clear": 0.1375,
+     "heavy_rain": 0.1528
+    }
+   }
+  },
+  {
+   "region": "eastern-rootlands",
+   "region_name": "Eastern Rootlands",
+   "initial": "humid_clear",
+   "states": [
+    {
+     "id": "humid_clear",
+     "light": "sun",
+     "sightline_m": 640,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "warm_rain",
+     "light": "overcast",
+     "sightline_m": 420,
+     "effect": {
+      "tracks_washed": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "night_bloom",
+     "light": "sun",
+     "sightline_m": 520,
+     "effect": {
+      "bioluminescent": true,
+      "sight_aid": true
+     },
+     "diurnal": {
+      "night": 3.6,
+      "day": 0.08
+     }
+    },
+    {
+     "id": "sea_squall",
+     "light": "dark",
+     "sightline_m": 200,
+     "effect": {
+      "stamina_regen_mult": 0.88
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "sea_squall",
+   "transitions": {
+    "humid_clear": {
+     "humid_clear": 0.38,
+     "warm_rain": 0.2566,
+     "night_bloom": 0.2138,
+     "sea_squall": 0.1497
+    },
+    "warm_rain": {
+     "warm_rain": 0.38,
+     "humid_clear": 0.2906,
+     "night_bloom": 0.1937,
+     "sea_squall": 0.1356
+    },
+    "night_bloom": {
+     "night_bloom": 0.38,
+     "humid_clear": 0.2735,
+     "warm_rain": 0.2188,
+     "sea_squall": 0.1276
+    },
+    "sea_squall": {
+     "sea_squall": 0.38,
+     "humid_clear": 0.2514,
+     "warm_rain": 0.2011,
+     "night_bloom": 0.1676
+    }
+   }
+  },
+  {
+   "region": "hive",
+   "region_name": "The Hive",
+   "initial": "still",
+   "states": [
+    {
+     "id": "still",
+     "light": "sun",
+     "sightline_m": 800,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "queen_agitation",
+     "light": "sun",
+     "sightline_m": 700,
+     "effect": {
+      "aggro_radius_mult": 2
+     },
+     "diurnal": null
+    },
+    {
+     "id": "comb_swelter",
+     "light": "sun",
+     "sightline_m": 760,
+     "effect": {
+      "stamina_regen_mult": 0.9
+     },
+     "diurnal": {
+      "night": 0.3,
+      "day": 1.6
+     }
+    },
+    {
+     "id": "drone_haze",
+     "light": "overcast",
+     "sightline_m": 420,
+     "effect": {
+      "aggro_radius_mult": 1.35
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "queen_agitation",
+   "transitions": {
+    "still": {
+     "still": 0.62,
+     "queen_agitation": 0.1056,
+     "comb_swelter": 0.1478,
+     "drone_haze": 0.1267
+    },
+    "queen_agitation": {
+     "queen_agitation": 0.62,
+     "still": 0.2533,
+     "comb_swelter": 0.0682,
+     "drone_haze": 0.0585
+    },
+    "comb_swelter": {
+     "comb_swelter": 0.62,
+     "still": 0.267,
+     "queen_agitation": 0.0514,
+     "drone_haze": 0.0616
+    },
+    "drone_haze": {
+     "drone_haze": 0.62,
+     "still": 0.26,
+     "queen_agitation": 0.05,
+     "comb_swelter": 0.07
+    }
+   }
+  },
+  {
+   "region": "marauders-coast",
+   "region_name": "Marauder's Coast",
+   "initial": "clear",
+   "states": [
+    {
+     "id": "clear",
+     "light": "sun",
+     "sightline_m": 1200,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "sea_fog",
+     "light": "overcast",
+     "sightline_m": 90,
+     "effect": {
+      "navigation_degraded": true
+     },
+     "diurnal": {
+      "night": 1.4,
+      "day": 1,
+      "dawn": 2.2
+     }
+    },
+    {
+     "id": "sea_squall",
+     "light": "dark",
+     "sightline_m": 200,
+     "effect": {
+      "stamina_regen_mult": 0.88
+     },
+     "diurnal": null
+    },
+    {
+     "id": "gale",
+     "light": "dark",
+     "sightline_m": 260,
+     "effect": {
+      "knockback": true,
+      "stamina_regen_mult": 0.84
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "gale",
+   "transitions": {
+    "clear": {
+     "clear": 0.33,
+     "sea_fog": 0.3242,
+     "sea_squall": 0.2161,
+     "gale": 0.1297
+    },
+    "sea_fog": {
+     "sea_fog": 0.33,
+     "clear": 0.3003,
+     "sea_squall": 0.231,
+     "gale": 0.1386
+    },
+    "sea_squall": {
+     "sea_squall": 0.33,
+     "clear": 0.2562,
+     "sea_fog": 0.2956,
+     "gale": 0.1182
+    },
+    "gale": {
+     "gale": 0.33,
+     "clear": 0.2292,
+     "sea_fog": 0.2645,
+     "sea_squall": 0.1763
+    }
+   }
+  },
+  {
+   "region": "salt-hills",
+   "region_name": "The Salt Hills",
+   "initial": "clear",
+   "states": [
+    {
+     "id": "clear",
+     "light": "sun",
+     "sightline_m": 1200,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "cold_rain",
+     "light": "overcast",
+     "sightline_m": 340,
+     "effect": {
+      "stamina_regen_mult": 0.9
+     },
+     "diurnal": null
+    },
+    {
+     "id": "hill_mist",
+     "light": "overcast",
+     "sightline_m": 90,
+     "effect": {
+      "navigation_degraded": true
+     },
+     "diurnal": {
+      "night": 0.9,
+      "day": 1,
+      "dawn": 2.6
+     }
+    },
+    {
+     "id": "sleet",
+     "light": "dark",
+     "sightline_m": 240,
+     "effect": {
+      "stamina_regen_mult": 0.8
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "sleet",
+   "transitions": {
+    "clear": {
+     "clear": 0.4,
+     "cold_rain": 0.2571,
+     "hill_mist": 0.2143,
+     "sleet": 0.1286
+    },
+    "cold_rain": {
+     "cold_rain": 0.4,
+     "clear": 0.2903,
+     "hill_mist": 0.1935,
+     "sleet": 0.1161
+    },
+    "hill_mist": {
+     "hill_mist": 0.4,
+     "clear": 0.2727,
+     "cold_rain": 0.2182,
+     "sleet": 0.1091
+    },
+    "sleet": {
+     "sleet": 0.4,
+     "clear": 0.2432,
+     "cold_rain": 0.1946,
+     "hill_mist": 0.1622
+    }
+   }
+  },
+  {
+   "region": "stone-forest",
+   "region_name": "The Stone Forest",
+   "initial": "high_clear",
+   "states": [
+    {
+     "id": "high_clear",
+     "light": "sun",
+     "sightline_m": 1600,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "dry_thunder",
+     "light": "overcast",
+     "sightline_m": 640,
+     "effect": {
+      "lightning_damage_mult": 1.5
+     },
+     "diurnal": null
+    },
+    {
+     "id": "overcast",
+     "light": "overcast",
+     "sightline_m": 700,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "hail",
+     "light": "dark",
+     "sightline_m": 210,
+     "effect": {
+      "chip_dps": 1.2,
+      "stamina_regen_mult": 0.88
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "dry_thunder",
+   "transitions": {
+    "high_clear": {
+     "high_clear": 0.44,
+     "dry_thunder": 0.2016,
+     "overcast": 0.2464,
+     "hail": 0.112
+    },
+    "dry_thunder": {
+     "dry_thunder": 0.44,
+     "high_clear": 0.2885,
+     "overcast": 0.1867,
+     "hail": 0.0848
+    },
+    "overcast": {
+     "overcast": 0.44,
+     "high_clear": 0.3071,
+     "dry_thunder": 0.1626,
+     "hail": 0.0903
+    },
+    "hail": {
+     "hail": 0.44,
+     "high_clear": 0.2573,
+     "dry_thunder": 0.1362,
+     "overcast": 0.1665
+    }
+   }
+  },
+  {
+   "region": "stone-wastes",
+   "region_name": "Stone Wastes",
+   "initial": "white_clear",
+   "states": [
+    {
+     "id": "white_clear",
+     "light": "sun",
+     "sightline_m": 1500,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "heat_shimmer",
+     "light": "sun",
+     "sightline_m": 900,
+     "effect": {
+      "stamina_regen_mult": 0.92
+     },
+     "diurnal": {
+      "night": 0.04,
+      "day": 1.9
+     }
+    },
+    {
+     "id": "salt_storm",
+     "light": "dark",
+     "sightline_m": 60,
+     "effect": {
+      "chip_dps": 2,
+      "navigation_degraded": true,
+      "hides_enemies": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "night_freeze",
+     "light": "dark",
+     "sightline_m": 600,
+     "effect": {
+      "stamina_regen_mult": 0.78,
+      "chip_dps": 0.4
+     },
+     "diurnal": {
+      "night": 3.2,
+      "day": 0.1
+     }
+    }
+   ],
+   "worst": "salt_storm",
+   "transitions": {
+    "white_clear": {
+     "white_clear": 0.42,
+     "heat_shimmer": 0.2677,
+     "salt_storm": 0.1338,
+     "night_freeze": 0.1785
+    },
+    "heat_shimmer": {
+     "heat_shimmer": 0.42,
+     "white_clear": 0.3,
+     "salt_storm": 0.12,
+     "night_freeze": 0.16
+    },
+    "salt_storm": {
+     "salt_storm": 0.42,
+     "white_clear": 0.2486,
+     "heat_shimmer": 0.1989,
+     "night_freeze": 0.1326
+    },
+    "night_freeze": {
+     "night_freeze": 0.42,
+     "white_clear": 0.2636,
+     "heat_shimmer": 0.2109,
+     "salt_storm": 0.1055
+    }
+   }
+  },
+  {
+   "region": "thornmarsh",
+   "region_name": "Thornmarsh",
+   "initial": "ashfall",
+   "states": [
+    {
+     "id": "ashfall",
+     "light": "overcast",
+     "sightline_m": 300,
+     "effect": {
+      "navigation_degraded": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "clear",
+     "light": "sun",
+     "sightline_m": 1200,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "ash_storm",
+     "light": "dark",
+     "sightline_m": 50,
+     "effect": {
+      "navigation_degraded": true,
+      "hides_enemies": true,
+      "chip_dps": 0.6
+     },
+     "diurnal": null
+    },
+    {
+     "id": "drizzle",
+     "light": "overcast",
+     "sightline_m": 460,
+     "effect": {},
+     "diurnal": null
+    }
+   ],
+   "worst": "ash_storm",
+   "transitions": {
+    "ashfall": {
+     "ashfall": 0.41,
+     "clear": 0.2496,
+     "ash_storm": 0.1362,
+     "drizzle": 0.2042
+    },
+    "clear": {
+     "clear": 0.41,
+     "ashfall": 0.3045,
+     "ash_storm": 0.1142,
+     "drizzle": 0.1713
+    },
+    "ash_storm": {
+     "ash_storm": 0.41,
+     "ashfall": 0.2622,
+     "clear": 0.1803,
+     "drizzle": 0.1475
+    },
+    "drizzle": {
+     "drizzle": 0.41,
+     "ashfall": 0.2861,
+     "clear": 0.1967,
+     "ash_storm": 0.1073
+    }
+   }
+  },
+  {
+   "region": "valus-ridge",
+   "region_name": "Valus Ridge",
+   "initial": "clear",
+   "states": [
+    {
+     "id": "clear",
+     "light": "sun",
+     "sightline_m": 1200,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "cloud_below",
+     "light": "sun",
+     "sightline_m": 1400,
+     "effect": {
+      "navigation_degraded": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "cold_rain",
+     "light": "overcast",
+     "sightline_m": 340,
+     "effect": {
+      "stamina_regen_mult": 0.9
+     },
+     "diurnal": null
+    },
+    {
+     "id": "rockfall_wind",
+     "light": "overcast",
+     "sightline_m": 480,
+     "effect": {
+      "falling_hazards_active": true,
+      "knockback": true
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "rockfall_wind",
+   "transitions": {
+    "clear": {
+     "clear": 0.38,
+     "cloud_below": 0.248,
+     "cold_rain": 0.2273,
+     "rockfall_wind": 0.1447
+    },
+    "cloud_below": {
+     "cloud_below": 0.38,
+     "clear": 0.26,
+     "cold_rain": 0.22,
+     "rockfall_wind": 0.14
+    },
+    "cold_rain": {
+     "cold_rain": 0.38,
+     "clear": 0.2519,
+     "cloud_below": 0.2325,
+     "rockfall_wind": 0.1356
+    },
+    "rockfall_wind": {
+     "rockfall_wind": 0.38,
+     "clear": 0.2239,
+     "cloud_below": 0.2067,
+     "cold_rain": 0.1894
+    }
+   }
+  },
+  {
+   "region": "western-rootlands",
+   "region_name": "Western Rootlands",
+   "initial": "clear",
+   "states": [
+    {
+     "id": "clear",
+     "light": "sun",
+     "sightline_m": 1200,
+     "effect": {},
+     "diurnal": null
+    },
+    {
+     "id": "warm_rain",
+     "light": "overcast",
+     "sightline_m": 420,
+     "effect": {
+      "tracks_washed": true
+     },
+     "diurnal": null
+    },
+    {
+     "id": "dawn_mist",
+     "light": "overcast",
+     "sightline_m": 140,
+     "effect": {},
+     "diurnal": {
+      "night": 0.6,
+      "day": 1,
+      "dawn": 4
+     }
+    },
+    {
+     "id": "heavy_rain",
+     "light": "dark",
+     "sightline_m": 190,
+     "effect": {
+      "tracks_washed": true,
+      "stamina_regen_mult": 0.9,
+      "navigation_degraded": true
+     },
+     "diurnal": null
+    }
+   ],
+   "worst": "heavy_rain",
+   "transitions": {
+    "clear": {
+     "clear": 0.4,
+     "warm_rain": 0.2786,
+     "dawn_mist": 0.1929,
+     "heavy_rain": 0.1286
+    },
+    "warm_rain": {
+     "warm_rain": 0.4,
+     "clear": 0.3097,
+     "dawn_mist": 0.1742,
+     "heavy_rain": 0.1161
+    },
+    "dawn_mist": {
+     "dawn_mist": 0.4,
+     "clear": 0.2743,
+     "warm_rain": 0.2229,
+     "heavy_rain": 0.1029
+    },
+    "heavy_rain": {
+     "heavy_rain": 0.4,
+     "clear": 0.2526,
+     "warm_rain": 0.2053,
+     "dawn_mist": 0.1421
+    }
+   }
+  }
+ ]
+}

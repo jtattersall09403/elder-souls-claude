@@ -1,0 +1,152 @@
+{
+  "schema": "elder-souls/races@1",
+  "id": "races",
+  "owner": "W1-07 — character creation",
+  "source": "corpus/22-character/RI-CHR02-race-and-standing.md §1 (as amended by AMENDMENT-W1-07-01)",
+  "provenance": "constructed",
+  "invariant": "sum(attribute_deltas) == 12 for every race. Race is the only source of net attribute gain at creation.",
+  "skill_rule": "Skill bonuses set the named skills to their listed value if currently lower (base 5).",
+  "not_playable": {
+    "altmer": "A race earns a row in the reaction matrix only if enough NPCs in 3E 427 Black Marsh have an opinion about it to fill one. Altmer presence in the province is a handful of Mages Guild scholars; the honest row would be ten zeroes. RI-CHR02 §1."
+  },
+  "races": [
+    {
+      "id": "saxhleel",
+      "name": "Saxhleel",
+      "gloss": "Argonian, marsh-form",
+      "argonian": true,
+      "attribute_deltas": { "strength": 0, "endurance": 2, "agility": 3, "speed": 1, "vigour": 0, "willpower": 0, "intellect": 1, "hist-bond": 4, "personality": 0, "luck": 1 },
+      "skills": { "sneak": 20, "security": 15, "survival": 20, "athletics": 15, "root-speech": 10 },
+      "abilities": [
+        { "id": "amphibious", "name": "Amphibious", "kind": "passive", "combat": false, "effect": "Unlimited water breathing; no swim stamina drain; stand and act in deep water." },
+        { "id": "root-listener", "name": "Root-listener", "kind": "passive", "combat": false, "effect": "Sapwell rests cost 0 taint and yield one Hist line per new well." }
+      ],
+      "resistances": { "disease": "immune", "poison": 0.75 },
+      "writ_line": "Saxhleel. Marsh-form. The scribe does not write this down; she writes down that she did not have to ask."
+    },
+    {
+      "id": "naga",
+      "name": "Naga",
+      "gloss": "Argonian, naga-form",
+      "argonian": true,
+      "attribute_deltas": { "strength": 4, "endurance": 3, "agility": 2, "speed": 1, "vigour": 2, "willpower": 0, "intellect": 0, "hist-bond": 0, "personality": -2, "luck": 2 },
+      "skills": { "claw-fang": 25, "athletics": 20, "survival": 15, "sneak": 10, "marksman": 10 },
+      "abilities": [
+        { "id": "amphibious", "name": "Amphibious", "kind": "passive", "combat": false, "effect": "Unlimited water breathing; no swim stamina drain; stand and act in deep water." },
+        { "id": "shed", "name": "Shed", "kind": "once_per_hearth", "combat": true, "effect": "Break out of grapple, paralysis or bind and gain 3 s of poise immunity." }
+      ],
+      "resistances": { "disease": "immune", "poison": 0.75, "frost": -0.25 },
+      "writ_line": "Naga. She writes the form down twice, and looks at the door once while she does it."
+    },
+    {
+      "id": "dunmer",
+      "name": "Dunmer",
+      "gloss": "Dark Elf, of Morrowind",
+      "argonian": false,
+      "attribute_deltas": { "strength": 2, "endurance": 0, "agility": 2, "speed": 2, "vigour": 0, "willpower": 1, "intellect": 2, "hist-bond": 0, "personality": 0, "luck": 3 },
+      "skills": { "blades": 20, "marksman": 15, "sorcery": 15, "athletics": 10, "veiling": 10 },
+      "abilities": [
+        { "id": "ancestor-guardian", "name": "Ancestor Guardian", "kind": "once_per_rest", "combat": true, "effect": "Summon a spirit that fights for 30 s." }
+      ],
+      "resistances": { "fire": 0.75 },
+      "writ_line": "Dunmer. She writes it, then puts the pen down, then picks it up again."
+    },
+    {
+      "id": "imperial",
+      "name": "Imperial",
+      "gloss": "Cyrodilic",
+      "argonian": false,
+      "attribute_deltas": { "strength": 1, "endurance": 1, "agility": 1, "speed": 1, "vigour": 1, "willpower": 1, "intellect": 1, "hist-bond": 0, "personality": 5, "luck": 0 },
+      "amended_by": "AMENDMENT-W1-07-01 — PER +4 -> +5; the original row summed to 11 and failed RI-CHR02 method 1.",
+      "skills": { "speechcraft": 25, "mercantile": 20, "blades": 15, "shieldcraft": 15, "warding": 10 },
+      "abilities": [
+        { "id": "star-of-the-west", "name": "Star of the West", "kind": "once_per_rest", "combat": false, "effect": "Absorb 30 stamina from a target. Out of combat only — an intimidation tool, not a fight tool." },
+        { "id": "voice-of-the-empire", "name": "Voice of the Empire", "kind": "once_per_day", "combat": false, "effect": "One Admire attempt cannot fail." }
+      ],
+      "resistances": {},
+      "writ_line": "Imperial. She writes it in the same hand as the rest of the page, which is the only courtesy in the room."
+    },
+    {
+      "id": "nord",
+      "name": "Nord",
+      "gloss": "of Skyrim",
+      "argonian": false,
+      "attribute_deltas": { "strength": 4, "endurance": 4, "agility": 0, "speed": 0, "vigour": 3, "willpower": 0, "intellect": 0, "hist-bond": 0, "personality": -1, "luck": 2 },
+      "skills": { "greatweapons": 25, "axes-maces": 20, "shieldcraft": 15, "survival": 10, "athletics": 10 },
+      "abilities": [
+        { "id": "thunder-fist", "name": "Thunder Fist", "kind": "once_per_rest", "combat": true, "effect": "60 shock damage on the next connecting hit." },
+        { "id": "woad", "name": "Woad", "kind": "once_per_rest", "combat": true, "effect": "30 s of +20 poise." }
+      ],
+      "resistances": { "frost": 0.90, "shock": 0.50 },
+      "writ_line": "Nord. She asks how long you intend to stay, and writes down whatever you say without believing it."
+    },
+    {
+      "id": "breton",
+      "name": "Breton",
+      "gloss": "of High Rock",
+      "argonian": false,
+      "attribute_deltas": { "strength": -1, "endurance": 0, "agility": 0, "speed": 1, "vigour": 0, "willpower": 4, "intellect": 4, "hist-bond": 1, "personality": 2, "luck": 1 },
+      "skills": { "sorcery": 20, "warding": 20, "veiling": 15, "alchemy": 15, "speechcraft": 10 },
+      "abilities": [
+        { "id": "dragon-skin", "name": "Dragon Skin", "kind": "once_per_rest", "combat": true, "effect": "40 points of magic shield." }
+      ],
+      "resistances": { "magic": 0.50 },
+      "resistance_note": "Magic 50% applies to ALL schools, including your own spells.",
+      "writ_line": "Breton. She asks whether you are with the Guild. She does not write the answer."
+    },
+    {
+      "id": "redguard",
+      "name": "Redguard",
+      "gloss": "of Hammerfell",
+      "argonian": false,
+      "attribute_deltas": { "strength": 3, "endurance": 4, "agility": 3, "speed": 2, "vigour": 2, "willpower": -1, "intellect": -2, "hist-bond": 0, "personality": 0, "luck": 1 },
+      "skills": { "blades": 25, "axes-maces": 15, "athletics": 20, "acrobatics": 10, "marksman": 10 },
+      "abilities": [
+        { "id": "adrenaline-rush", "name": "Adrenaline Rush", "kind": "once_per_rest", "combat": true, "effect": "30 s of doubled stamina regen." }
+      ],
+      "resistances": { "disease": 0.75, "poison": 0.75 },
+      "writ_line": "Redguard. She writes it and asks nothing else, which for a Redguard in this office is unusual and you will find out why."
+    },
+    {
+      "id": "khajiit",
+      "name": "Khajiit",
+      "gloss": "of Elsweyr",
+      "argonian": false,
+      "attribute_deltas": { "strength": 0, "endurance": 0, "agility": 5, "speed": 3, "vigour": 0, "willpower": 0, "intellect": 1, "hist-bond": 0, "personality": 0, "luck": 3 },
+      "skills": { "sneak": 25, "acrobatics": 20, "security": 20, "claw-fang": 15, "marksman": 10 },
+      "abilities": [
+        { "id": "night-eye", "name": "Night Eye", "kind": "toggle", "combat": false, "effect": "Toggleable, no cost, permanent." },
+        { "id": "land-on-your-feet", "name": "Land on Your Feet", "kind": "passive", "combat": false, "effect": "Fall-damage-free height x2." }
+      ],
+      "resistances": {},
+      "writ_line": "Khajiit. She writes the word and then a second word after it, in a smaller hand, and turns the page before you can read it."
+    },
+    {
+      "id": "orsimer",
+      "name": "Orsimer",
+      "gloss": "Orc",
+      "argonian": false,
+      "attribute_deltas": { "strength": 5, "endurance": 5, "agility": 0, "speed": -1, "vigour": 4, "willpower": 1, "intellect": 0, "hist-bond": 0, "personality": -3, "luck": 1 },
+      "skills": { "axes-maces": 25, "greatweapons": 20, "shieldcraft": 20, "survival": 10, "athletics": 5 },
+      "abilities": [
+        { "id": "berserk", "name": "Berserk", "kind": "once_per_rest", "combat": true, "effect": "30 s of +30% melee damage and -30% damage resistance." }
+      ],
+      "resistances": { "magic": 0.25 },
+      "writ_line": "Orsimer. She writes 'Orc' and then crosses it out and writes 'Orsimer', which is either respect or the ledger's rules."
+    },
+    {
+      "id": "bosmer",
+      "name": "Bosmer",
+      "gloss": "Wood Elf, of Valenwood",
+      "argonian": false,
+      "attribute_deltas": { "strength": -1, "endurance": 0, "agility": 5, "speed": 2, "vigour": 0, "willpower": 0, "intellect": 1, "hist-bond": 0, "personality": 0, "luck": 5 },
+      "skills": { "marksman": 25, "sneak": 20, "acrobatics": 15, "alchemy": 15, "survival": 10 },
+      "abilities": [
+        { "id": "beast-tongue", "name": "Beast Tongue", "kind": "once_per_rest", "combat": true, "anti_combat": true, "effect": "Calm one beast-archetype enemy for 60 s. A real S13 non-lethal exit against the roster's animals, which have no parley." }
+      ],
+      "resistances": { "disease": 0.50, "poison": 0.50 },
+      "writ_line": "Bosmer. She asks if you have been to Blackwood. Everyone asks a Bosmer that."
+    }
+  ],
+  "non_combat_abilities_note": "Two abilities are deliberately non-combat (Star of the West, Night Eye / Land on Your Feet) and one is deliberately anti-combat (Beast Tongue). RI-CHR02 §1; mirrors RI-PRG02's rule that not every line on the sheet may be a damage line."
+}

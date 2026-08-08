@@ -1,0 +1,693 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "ui-journal",
+  "title": "RI-UIX04's mandated fixture, seed 1337: five quests started on overlapping dates, 19 journal entries interleaved as the fortnight actually happened, and a full carried inventory so the same state serves RI-UIX03. The entries are verbatim from game/data/quests/**; nothing here composed a line of journal text.",
+  "env": {
+    "timeOfDay": 2.25,
+    "weather": "storm",
+    "region": "thornmarsh",
+    "interior": "thorn-hall"
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      0
+    ],
+    "yaw": 0,
+    "stamina": 120,
+    "hp": 420
+  },
+  "camera": {
+    "yaw": 0,
+    "pitch": -8,
+    "mode": "free"
+  },
+  "progression": {
+    "soulsHeld": 9400,
+    "soulsSpent": 4200,
+    "level": 6,
+    "hearthsDiscovered": [
+      "hearth-thorn"
+    ],
+    "hearthLastRested": "hearth-thorn"
+  },
+  "inventory": [
+    {
+      "id": "reed-cutter",
+      "count": 1,
+      "condition": 0.86,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": "right",
+      "quickSlot": null
+    },
+    {
+      "id": "warden-issue-sabre",
+      "count": 1,
+      "condition": 0.97,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "hooked-gutting-knife",
+      "count": 1,
+      "condition": 0.62,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "bog-iron-maul",
+      "count": 1,
+      "condition": 0.74,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "hist-sap-bow",
+      "count": 1,
+      "condition": 0.91,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "chitin-cuirass",
+      "count": 1,
+      "condition": 0.88,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": "chest",
+      "quickSlot": null
+    },
+    {
+      "id": "boiled-hide-jack",
+      "count": 1,
+      "condition": 0.7,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "legion-greaves",
+      "count": 1,
+      "condition": 0.51,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "shell-scale-hauberk",
+      "count": 1,
+      "condition": 0.95,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "rootweave-cowl",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "factors-coat",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "wet-season-boots",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "silt-strider-silk-sash",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": true,
+      "owner": "someone",
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "black-water-draught",
+      "count": 3,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": "item"
+    },
+    {
+      "id": "fever-cut",
+      "count": 2,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "sleeper-draught",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "marsh-marrow",
+      "count": 7,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "hackle-lo-leaf",
+      "count": 12,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "kwama-cuttle",
+      "count": 4,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "resin-of-the-comb",
+      "count": 2,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "the-drowned-ford",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "pilots-chart-book",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "ledger-fragment",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "reed-lantern",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "shore-compass",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "bone-picks",
+      "count": 5,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "weighing-stone",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "fire-drill",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "salt-brick",
+      "count": 2,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "carved-egg",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "cracked-shell-cup",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "coil-of-twine",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "guar-jerky",
+      "count": 6,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "stamped-writ",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "rotted-hall-key",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "sealed-letter-stormhold",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "hist-bark-token",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "counted-crate-tally",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "resin-lamp-oil",
+      "count": 2,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "netting-needle",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "warden-whistle",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": true,
+      "owner": "someone",
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "moth-silk-robe",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "mud-slip-bowl",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "iron-gall-inkhorn",
+      "count": 1,
+      "condition": 1,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    }
+  ],
+  "quest": {
+    "death": {
+      "bloodstain": {
+        "pos": [
+          -1.5,
+          0,
+          -3.25
+        ],
+        "souls": 3400,
+        "death_index": 4
+      }
+    },
+    "afflictions": [
+      {
+        "id": "swamp-rot",
+        "kind": "disease",
+        "incubation_in_frames": 1296000,
+        "duration_in_frames": 0
+      }
+    ],
+    "travel": {
+      "nodesVisited": [
+        "thorn-landing",
+        "stormhold-gate"
+      ],
+      "mark": [
+        3820,
+        0,
+        865
+      ]
+    },
+    "crime": {
+      "bounty": {
+        "thornmarsh": 540,
+        "salt-hills": 0
+      },
+      "witnesses": [
+        "warden-eshi",
+        "ghen-the-younger"
+      ],
+      "stolen": [
+        "eshis-knife"
+      ],
+      "hunting": [
+        "thorn-guard-01",
+        "thorn-guard-02"
+      ]
+    },
+    "topicsKnown": [
+      "thorn",
+      "the-marsh",
+      "little-advice",
+      "my-kingdom",
+      "the-drowned-ford"
+    ],
+    "dispositions": {
+      "warden-eshi": 18,
+      "king-hlaalu-teeth": 31
+    },
+    "flags": {
+      "met_eshi": true,
+      "entered_thorn": true,
+      "read_drowned_ford": false
+    },
+    "journal": [
+      {
+        "n": 3,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-MAIN-01",
+        "text": "A clerk on the Soulrest customs bench told me the Drowned Court has been paying outlanders to carry its books, and paying well, because it will not put its own people on the road. He said it as though it were a joke about the Court and not about the road."
+      },
+      {
+        "n": 10,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-MAIN-01",
+        "text": "Undersexton Aveline Rell has given me a sealed quarterly return to carry from Soulrest to the Court's factor in Gideon. She pays a hundred and twenty in advance, which is more than the work is worth, and she asked twice whether anyone had spoken to me on the stair."
+      },
+      {
+        "n": 10,
+        "date": "2 Second Seed, 3E 427",
+        "quest": "Q-MAIN-02",
+        "text": "Rell wants eleven burial boxes counted and their weights written down. They came back from the wells at Bone Ladder and Salt-Egg Camp with nothing in them, which she says happens, and which she is nonetheless paying me to write down."
+      },
+      {
+        "n": 8,
+        "date": "3 Second Seed, 3E 427",
+        "quest": "Q-SOUL-02",
+        "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, and the number for last season is written twice in two different hands."
+      },
+      {
+        "n": 8,
+        "date": "4 Second Seed, 3E 427",
+        "quest": "Q-LILM-01",
+        "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on it at all. Nobody in Lilmoth has reported a body in nine years."
+      },
+      {
+        "n": 20,
+        "date": "5 Second Seed, 3E 427",
+        "quest": "Q-MAIN-02",
+        "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not come out as anything, not as sap, not as heat, not as the smell they expect. One of them would not go on talking about it inside."
+      },
+      {
+        "n": 30,
+        "date": "5 Second Seed, 3E 427",
+        "quest": "Q-MAIN-02",
+        "text": "I sat on the burial stair after dark and there is a sound under the Stone Wastes. It is not surf and it is not wind in the salt-store. It is regular, and slow, and it has been going on longer than anyone in Soulrest has been paying attention to it."
+      },
+      {
+        "n": 20,
+        "date": "6 Second Seed, 3E 427",
+        "quest": "Q-MAIN-01",
+        "text": "The seal on the return is a mortuary seal and it is not fresh. Whatever is in it was closed up before I was hired. At the Bone Ladder the keeper asked me whose count I was carrying and would not say what she meant."
+      },
+      {
+        "n": 10,
+        "date": "7 Second Seed, 3E 427",
+        "quest": "Q-DOCK-01",
+        "text": "Eeja says the porters have been paid eleven gold a week short since Rain's Hand and that nobody will put a name to it. She is not asking me to fix it. She is asking me to count."
+      },
+      {
+        "n": 10,
+        "date": "7 Second Seed, 3E 427",
+        "quest": "Q-SOUL-02",
+        "text": "Vaskh says the Court's count has been wrong for two years and that she wants it counted again from the yard's own tallies, by somebody who is not of the Court."
+      },
+      {
+        "n": 10,
+        "date": "8 Second Seed, 3E 427",
+        "quest": "Q-LILM-01",
+        "text": "The charter is a trading licence for a company I have not heard of, endorsed for the acquisition of botanical specimens. It names a tree."
+      },
+      {
+        "n": 20,
+        "date": "10 Second Seed, 3E 427",
+        "quest": "Q-DOCK-01",
+        "text": "I counted. Forty-one porters, and the pay shed's book says thirty. The eleven who are not in the book are all Naga, and all of them work."
+      },
+      {
+        "n": 30,
+        "date": "10 Second Seed, 3E 427",
+        "quest": "Q-MAIN-01",
+        "text": "A man in a good coat walked the coast track behind me from the Ladder to Hollow-Reeds and turned back when I stopped to sit. He was not a carter and he was not going to Gideon."
+      },
+      {
+        "n": 20,
+        "date": "12 Second Seed, 3E 427",
+        "quest": "Q-LILM-01",
+        "text": "Tesh has seen three of these. She has been putting them in a drawer for two years because there is nobody in Lilmoth whose job it is to care."
+      },
+      {
+        "n": 20,
+        "date": "13 Second Seed, 3E 427",
+        "quest": "Q-SOUL-02",
+        "text": "The yard's tallies and the customs book differ by four hundred and eleven. Vaskh knew the number before I said it."
+      },
+      {
+        "n": 45,
+        "date": "13 Second Seed, 3E 427",
+        "quest": "Q-MAIN-02",
+        "text": "The mortuary hand's name is Ojal-Weeth and outside, where the sound is, she said the boxes have been coming back empty for longer than eleven. She has been counting them herself since her mother died and it is not eleven, it is closer to ninety."
+      },
+      {
+        "n": 45,
+        "date": "14 Second Seed, 3E 427",
+        "quest": "Q-MAIN-01",
+        "text": "The factor's name for the man in the coat is Sedd Ravano and he takes money from the Wet Ledger to know what the Court is writing down. The factor says this is neither news nor a secret and that Rell has been trying to put a face to it for two seasons."
+      },
+      {
+        "n": 30,
+        "date": "15 Second Seed, 3E 427",
+        "quest": "Q-DOCK-01",
+        "text": "The pay clerk says the eleven were never taken on, that they turn up and carry and get paid out of the shortfall by the other thirty. He says this as though it explains something."
+      },
+      {
+        "n": 30,
+        "date": "16 Second Seed, 3E 427",
+        "quest": "Q-LILM-01",
+        "text": "The rootkeepers under the old temple will not talk to me about the Empire and will talk about very little else. One of them asked whether the men with the licences had come back yet, as though I would know."
+      }
+    ]
+  },
+  "world": {
+    "containersEmptied": [
+      "thorn-hall-chest-01"
+    ],
+    "doorsUnlocked": [
+      "thorn-hall-door-01"
+    ],
+    "shortcutsOpened": [
+      "ford-ladder"
+    ],
+    "itemsTaken": [
+      "eshis-knife"
+    ],
+    "npcsDead": [],
+    "enemiesDeadUntilRest": [
+      "ford-sentry-01",
+      "ford-sentry-02",
+      "ford-sentry-03",
+      "ford-sentry-04"
+    ],
+    "fogGatesPassed": [
+      "ford-gate"
+    ],
+    "droppedItems": [
+      {
+        "id": "torch",
+        "pos": [
+          -6,
+          0,
+          1.5
+        ]
+      }
+    ]
+  },
+  "spawn": []
+}

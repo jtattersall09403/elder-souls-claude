@@ -1,0 +1,291 @@
+{
+  "schema": "elder-souls/interior@1",
+  "id": "soulrest-quay",
+  "name": "The Silted Quay House",
+  "settlement": "soulrest",
+  "cell_kind": "named",
+  "interior_kind": "travel",
+  "service": "travel",
+  "faction": "rootkeepers",
+  "exterior_door": [
+    599.5,
+    7.91,
+    4896.05
+  ],
+  "continuity": {
+    "building": "soulrest-quay",
+    "building_offset_m": [
+      -11,
+      0,
+      19.05
+    ],
+    "building_yaw_deg": 150,
+    "exterior_footprint_m": [
+      14.8,
+      16.8
+    ],
+    "entry_side": "south",
+    "interior_spawn": [
+      0,
+      0,
+      7.2
+    ],
+    "exterior_spawn": [
+      599.5,
+      7.91,
+      4897.85
+    ]
+  },
+  "bounds_m": {
+    "x": [
+      -7.4,
+      7.4
+    ],
+    "y": [
+      0,
+      3.2
+    ],
+    "z": [
+      -8.4,
+      8.4
+    ]
+  },
+  "floor_area_m2": 248.6,
+  "light": {
+    "kind": "lamp",
+    "pos": [
+      0,
+      0.6,
+      3.36
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.2
+  },
+  "lights": [
+    {
+      "id": "soulrest.smith2.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.smith2.r1.lamp0",
+      "pos": [
+        -2.3,
+        1.6,
+        1.2999999999999998
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.smith2.r1.lamp1",
+      "pos": [
+        -0.3999999999999999,
+        1.6,
+        1.2000000000000002
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.boatwright6.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.boatwright6.r0.lamp0",
+      "pos": [
+        2.5999999999999996,
+        1.6,
+        -3.8
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.boatwright6.r0.lamp1",
+      "pos": [
+        0.7000000000000002,
+        1.6,
+        -3.7
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.boatwright6.r0.lamp2",
+      "pos": [
+        -1.2000000000000002,
+        1.6,
+        -4
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.boatwright9.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.boatwright9.r1.lamp0",
+      "pos": [
+        -1,
+        1.6,
+        -4.2
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.boatwright9.r1.lamp1",
+      "pos": [
+        -2.9,
+        1.6,
+        -4.1
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.boatwright9.r1.lamp2",
+      "pos": [
+        2.2,
+        1.6,
+        -4.4
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.warder13.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "soulrest.warder13.r0.lamp0",
+      "pos": [
+        3.2,
+        1.6,
+        4.199999999999999
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.warder13.r0.lamp1",
+      "pos": [
+        1.2999999999999998,
+        1.6,
+        4.300000000000001
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "soulrest.warder13.r0.lamp2",
+      "pos": [
+        0,
+        1.6,
+        4.4
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    }
+  ],
+  "props": [
+    "fare_board",
+    "root_socket",
+    "bench_wait",
+    "baggage_rail",
+    "ledger_stand",
+    "lamp_hanging",
+    "water_butt",
+    "rope_coil",
+    "tally_brass",
+    "stool_low",
+    "notice_board",
+    "map_table",
+    "sack_row",
+    "lantern_signal",
+    "sou_rib_frame",
+    "sou_salt_block",
+    "sou_bleached_wall",
+    "sou_bone_stack"
+  ],
+  "property_zones": [
+    "soulrest.smith2.r1",
+    "soulrest.boatwright6.r0",
+    "soulrest.boatwright9.r1",
+    "soulrest.warder13.r0"
+  ],
+  "containers": [
+    "soulrest.smith2.r1.0",
+    "soulrest.smith2.r1.1",
+    "soulrest.smith2.r1.5",
+    "soulrest.boatwright6.r0.7",
+    "soulrest.boatwright9.r1.5"
+  ],
+  "unique_item": {
+    "id": "soulrest-quay-unique",
+    "name": "a sailing list for a port that closed",
+    "unique": true,
+    "takeable": true,
+    "owner": "npc:soulrest-smith-2"
+  },
+  "readable": [
+    {
+      "id": "soulrest-quay-readable",
+      "title": "Fares, Soulrest"
+    },
+    {
+      "id": "note-left-in-a-boot",
+      "title": "A note found folded in a boot",
+      "book": "note-left-in-a-boot"
+    },
+    {
+      "id": "a-page-out-of-something",
+      "title": "A page, torn at both edges",
+      "book": "a-page-out-of-something"
+    }
+  ],
+  "inhabitants": [],
+  "anchor": "interior_firelit",
+  "open_h": 8,
+  "close_h": 19
+}

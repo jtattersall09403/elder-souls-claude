@@ -1,0 +1,378 @@
+{
+  "schema": "elder-souls/camera@1",
+  "id": "ES-CAM/1",
+  "unit": "f@60",
+  "owner": "RI-CAM01 §A–§E, RI-CAM02 §A–§E, RI-CAM03 §B–§G, RI-CAM05 §A–§F, RI-CAM06 §A–§I. Seam S18.",
+  "note": "Every constant the camera rig uses, transcribed from the reference items so a critic can diff the DECLARATION (this file) against the OBSERVATION (the camera trace channel) without reading JavaScript — HARNESS.md §5 and §7 rule 4. No number below is computed at runtime from another number in a way that could drift: the derived table at the bottom is recomputed by the code at boot and asserted against these cells.",
+  "rig": {
+    "_source": "RI-CAM01 §A",
+    "pivot_height_m": 1.55,
+    "pivot_height_is_above": "the character's GROUND CONTACT (feet), not the root",
+    "pivot_horizontal_offset_m": 0.0,
+    "shoulder_right_free_m": 0.42,
+    "shoulder_up_free_m": 0.1,
+    "shoulder_right_locked_m": 0.26,
+    "shoulder_up_locked_m": 0.1,
+    "arm_free_m": 4.1,
+    "arm_locked_near_m": 3.6,
+    "arm_locked_near_at_target_dist_m": 4.0,
+    "arm_locked_far_m": 5.2,
+    "arm_locked_far_at_target_dist_m": 14.0,
+    "arm_max_m": 7.5,
+    "arm_min_m": 0.9,
+    "pitch_arm_scale": [
+      {
+        "pitch_deg": -55.0,
+        "scale": 0.82
+      },
+      {
+        "pitch_deg": 0.0,
+        "scale": 1.0
+      },
+      {
+        "pitch_deg": 38.0,
+        "scale": 0.94
+      }
+    ],
+    "cast_radius_m": 0.28,
+    "fov_deg": 50.0,
+    "aspect_canonical": 1.7777777777777777,
+    "near_m": 0.1,
+    "far_m": 1200.0,
+    "cast_backoff_m": 0.02
+  },
+  "pivot_follow": {
+    "_source": "RI-CAM01 §B",
+    "horizontal": "RIGID. pivot.xz == controller.xz every frame. No spring, no lag, no lead.",
+    "vertical_half_life_s": 0.25,
+    "vertical_half_life_airborne_s": 0.4,
+    "vertical_lag_clamp_m": 0.55,
+    "snap_on": [
+      "teleport",
+      "load",
+      "hearth_rest",
+      "death_respawn"
+    ]
+  },
+  "spring_arm": {
+    "_source": "RI-CAM01 §C — the load-bearing section",
+    "pull_in_mps": 40.0,
+    "pull_in_m_per_frame": 0.6666666666666666,
+    "push_out_mps": 3.0,
+    "push_out_m_per_frame": 0.05,
+    "push_out_dwell_frames": 6,
+    "asymmetry_ratio_declared": 13.333333333333334,
+    "asymmetry_ratio_min": 8.0,
+    "cast_origin": "the pivot, never the current camera position",
+    "cast_layers_excluded": [
+      "character",
+      "creature",
+      "projectile",
+      "vfx",
+      "foliage_card",
+      "trigger",
+      "water_surface",
+      "item_pickup"
+    ],
+    "fade_start_m": 1.3,
+    "fade_zero_m": 0.9,
+    "fade_keeps_shadow": true,
+    "penetration_guard": {
+      "_source": "RI-CAM01 §C step 7 — 'the rate limit is a smoothing device, never a correctness device'",
+      "guard_radius_m": 0.18,
+      "guard_radius_rationale": "The near-plane corner of a 50° / 16:9 / 0.10 m frustum lies 0.1383 m from the camera origin. A guard sphere strictly larger than that makes `clip_through == false` a STRUCTURAL property of an overlap-free camera sphere rather than a test that happens to pass.",
+      "near_corner_radius_m": 0.13834,
+      "arm_hard_min_m": 0.3,
+      "camera_to_head_min_m": 0.35,
+      "declared_deviation": "RI-CAM05 §F states the 0.90 m arm floor holds 'on every frame of every state, forever'. RI-CAM01 §C step 7 places the penetration guard AFTER the 0.90 m clamp of step 5 and says correctness wins. Those two lines are over-determined the moment a character with a 0.55 m collision radius puts its back flat against a wall: the obstruction is then 0.55 m from the pivot, a 0.90 m arm is 0.35 m inside the rock, and `clip_through` — an automatic fail with weight 25 — becomes true. This build resolves it in the corpus's own stated order: the 0.90 m floor governs, the guard overrides it when and only when the near-plane volume would be inside solid geometry, and every such frame is flagged `arm_penetration_guard: true` (a flag RI-CAM01 M4 already anticipates). The floor is never breached on any authored interior or any of the three worst-geometry routes, because those obey RI-CAM05 §D's architecture minimums — which is the corpus's own remedy: the fix for a jammed camera is a wider corridor."
+    }
+  },
+  "look": {
+    "_source": "RI-CAM02 §A",
+    "stick_deadzone_radial": 0.15,
+    "stick_saturation": 0.95,
+    "magnitude_exponent": 2.0,
+    "max_yaw_rate_dps": 180.0,
+    "max_pitch_rate_dps": 120.0,
+    "max_yaw_deg_per_frame": 3.0,
+    "max_pitch_deg_per_frame": 2.0,
+    "mouse_deg_per_px_yaw": 0.12,
+    "mouse_deg_per_px_pitch": 0.1,
+    "mouse_acceleration": "none, at any sensitivity",
+    "cap_yaw_deg_per_frame": 30.0,
+    "cap_pitch_deg_per_frame": 20.0,
+    "cap_surplus": "DISCARDED, never accumulated",
+    "input_to_camera_lag_frames": 0,
+    "output_smoothing": "none"
+  },
+  "pitch_clamp": {
+    "_source": "RI-CAM02 §B",
+    "min_deg": -55.0,
+    "max_deg": 38.0,
+    "min_locked_deg": -50.0,
+    "max_locked_deg": 32.0,
+    "behaviour_at_bound": "saturates: no overshoot, no bounce, no easing back, no rubber band"
+  },
+  "movement": {
+    "_source": "RI-CAM02 §C",
+    "move_deadzone_radial": 0.15,
+    "walk_run_threshold": 0.55,
+    "walk_mps": 2.0,
+    "turn_rate_moving_dps": 720.0,
+    "turn_rate_stationary_dps": 480.0,
+    "turn_in_place_threshold_deg": 100.0,
+    "turn_in_place_frames": 18,
+    "facing_never_assigned": "There is no frame on which facing := facing_target. The only instant facing changes in the game are the attack frame-1 snap and the unlocked roll frame-1 snap."
+  },
+  "auto_recentre": {
+    "_source": "RI-CAM02 §D/§E — the gate",
+    "active_only_when": "sprinting",
+    "gate_frames": 20,
+    "gate_speed_fraction_of_sprint": 0.9,
+    "gate_forward_dominance": 0.7,
+    "gate_requires_no_look_input_for_frames": 20,
+    "gate_requires_grounded": true,
+    "gate_forbidden_when_locked": true,
+    "yaw_half_life_s": 0.35,
+    "yaw_rate_clamp_dps": 90.0,
+    "pitch_target_deg": -6.0,
+    "pitch_half_life_s": 0.6,
+    "disengage": "IMMEDIATE, same frame, on look input / sprint release / speed drop / lock-on / committed state / leaving grounded",
+    "residual_after_disengage": "none"
+  },
+  "lock_framing": {
+    "_source": "RI-CAM03 §B–§F; springs and boom ramp are [CMB06] and live in game/data/combat/lockon.json",
+    "safe_rect_ndc_x": 0.75,
+    "safe_rect_ndc_y": 0.7,
+    "containment_arm_extend_m_per_frame": 0.15,
+    "containment_arm_retract_m_per_frame": 0.08,
+    "containment_pitch_deg_per_frame": 1.5,
+    "containment_release_m_per_frame": 0.08,
+    "containment_grab_m_per_frame": 0.15,
+    "containment_drivers": {
+      "_why": "RI-CAM03 SC step 5 reads 'if P_a outside safe_rect OR T_a outside safe_rect: arm_want += 0.15 (per frame, cumulative)'. Implemented literally that is a ratchet: measured off the reference clip (reference-framing.json R2), the PLAYER anchor sits at NDC y between -0.40 and -0.75 for a whole large-boss fight, so the arm would run to the 7.50 m cap and stay there -- RI-CAM03's own 'How we lose' #5, the strategy-game camera. Resolved by the item's own text: SC's priority order makes safe-rect containment priority (4) while the two on-screen guarantees are (1) and (2), and SE carries a safe-rect bar for T_a and NO safe-rect bar for P_a at all.",
+      "hard_driver": "either anchor OFF SCREEN (|ndc| > 1). May grab the full range up to arm_max_m 7.50.",
+      "soft_driver": "TARGET outside safe_rect while on screen. Bounded at contain_soft_cap_m so it cannot ratchet.",
+      "no_driver": "PLAYER outside safe_rect while on screen. No correction: that is the reference framing, not a fault.",
+      "contain_soft_cap_m": 1.2,
+      "contain_pitch_max_deg": 18.0,
+      "contain_pitch_soft_deg": 6.0,
+      "worst_case_arm_under_soft_driver_m": 6.4
+    },
+    "arm_half_life_s": 0.25,
+    "yaw_half_life_s": 0.12,
+    "pitch_half_life_s": 0.18,
+    "half_life_source": "[CMB06] §B. Stated here because the camera reads its springs from this file; feel.half_life_alphas_at_60hz is a TABLE OF ALPHAS and names no spring.",
+    "yaw_rate_clamp_deg_per_frame": 7.0,
+    "pitch_base": "clamp(-16.0 + 0.80*(d - 3.0), -16.0, -2.0)",
+    "pitch_base_min_deg": -16.0,
+    "pitch_base_max_deg": -2.0,
+    "pitch_base_slope_deg_per_m": 0.8,
+    "pitch_base_ref_dist_m": 3.0,
+    "size_bias_per_m": 2.2,
+    "size_bias_height_ref_m": 2.5,
+    "aim_k_divisor_m": 4.0,
+    "aim_k_max": 0.75,
+    "aim_base_weight": 0.35,
+    "aim_k_span": 0.65,
+    "priority_order": [
+      "target on screen",
+      "player on screen",
+      "target head on screen",
+      "anchors inside safe_rect"
+    ],
+    "onscreen_bars": {
+      "target_chest_pass": 0.995,
+      "player_chest_pass": 0.98,
+      "target_head_small_pass": 0.97,
+      "target_head_large_pass": 0.88,
+      "safe_rect_pass": 0.96,
+      "vertical_band_pass": 0.9
+    },
+    "latency_frames": {
+      "acquire": 30,
+      "reframe": 22,
+      "switch": 18,
+      "head_return": 24
+    },
+    "reticle": {
+      "max_px_at_1080p": 24,
+      "scales_with_distance": false,
+      "fade_in_frames": 6,
+      "fade_out_frames": 6,
+      "draw_when_offscreen": false,
+      "lead_prediction": "none"
+    }
+  },
+  "modes": {
+    "_source": "RI-CAM05 §F — closed vocabulary. Anything else in a trace is a fail.",
+    "vocabulary": [
+      "free",
+      "locked",
+      "dialogue",
+      "menu",
+      "rest",
+      "death",
+      "fog_gate"
+    ],
+    "perspective_modes": [
+      "third"
+    ],
+    "zoom_input": "none — the wheel and every zoom axis are unbound for the gameplay camera"
+  },
+  "dialogue": {
+    "_source": "RI-CAM05 §B",
+    "accommodation_max_yaw_deg": 12.0,
+    "accommodation_max_arm_m": 0.6,
+    "accommodation_max_pitch_deg": 0.0,
+    "accommodation_frames": 12,
+    "accommodation_fires": "once, at open — never on a topic change",
+    "npc_head_ndc_x_band": [
+      0.1,
+      0.92
+    ],
+    "drift_bar_pos_m": 0.01,
+    "drift_bar_angle_deg": 0.05,
+    "forbidden": [
+      "shot-reverse-shot",
+      "any cut",
+      "reverse angle",
+      "dolly-in",
+      "FOV change",
+      "DOF rack",
+      "letterbox",
+      "reposition on topic change",
+      "hiding the player",
+      "fixed conversation camera",
+      "lip-sync framing"
+    ]
+  },
+  "menu": {
+    "_source": "RI-CAM05 §C",
+    "drift_bar_pos_m": 0.001,
+    "drift_bar_angle_deg": 0.001,
+    "accommodation": "none",
+    "item_inspection": "separate render target with its own camera; the world camera does not move"
+  },
+  "rest": {
+    "_source": "RI-CAM05 §E",
+    "arm_from_m": 4.1,
+    "arm_to_m": 4.9,
+    "pitch_to_deg": -12.0,
+    "ease_frames": 30,
+    "collision_active": true
+  },
+  "interior_architecture": {
+    "_source": "RI-CAM05 §D — binding on the WORLD builder, measured by the camera",
+    "combat_interior": {
+      "min_clear_width_m": 2.6,
+      "min_clear_ceiling_m": 3.2,
+      "enemies": true
+    },
+    "traversal_interior": {
+      "min_clear_width_m": 2.2,
+      "min_clear_ceiling_m": 2.8,
+      "enemies": false
+    },
+    "crawl_space": {
+      "min_clear_width_m": 1.4,
+      "min_clear_ceiling_m": 1.6,
+      "max_length_m": 12.0,
+      "enemies": false
+    },
+    "spiral_stair_clear_radius_m": 2.4,
+    "doorway_clear_width_m": 1.8,
+    "bands": {
+      "combat_interior": {
+        "arm_lt_160_max": 0.15,
+        "arm_pinned_max": 0.02,
+        "p95_darm_max": 0.1,
+        "sign_changes_per_s_max": 3.0
+      },
+      "traversal_interior": {
+        "arm_lt_160_max": 0.25,
+        "arm_pinned_max": 0.08,
+        "p95_darm_max": 0.1,
+        "sign_changes_per_s_max": 3.0
+      },
+      "crawl_space": {
+        "arm_lt_160_max": 1.0,
+        "arm_pinned_max": 1.0,
+        "p95_darm_max": 0.2,
+        "sign_changes_per_s_max": 6.0
+      }
+    },
+    "stairs": {
+      "p99_dy_m": 0.02,
+      "residual_pp_m": 0.045,
+      "fft_peak_ratio_max": 1.5
+    }
+  },
+  "feel": {
+    "_source": "RI-CAM06 §A–§I",
+    "half_life_alphas_at_60hz": {
+      "0.080": 0.083,
+      "0.120": 0.05604,
+      "0.180": 0.03779,
+      "0.250": 0.02734,
+      "0.350": 0.0196,
+      "0.400": 0.01718,
+      "0.600": 0.01148
+    },
+    "roll_deg": 0.0,
+    "head_bob": "none — the pivot height is a constant",
+    "fov_variance_bar": 0.001,
+    "hitstop": {
+      "pos_drift_bar_m": 0.001,
+      "angle_drift_bar_deg": 0.01,
+      "look_is": "BUFFERED, not dropped",
+      "buffer_latency_frames": 1
+    },
+    "shake": {
+      "max_deg": 0.9,
+      "amplitude_formula": "0.90 * min(1, dmg / (0.25 * hp_max))",
+      "half_life_s": 0.08,
+      "max_frames": 12,
+      "rotational_only": true,
+      "energy_bar_deg2_frames": 3.6,
+      "fires_on": [
+        "player taking damage"
+      ],
+      "never_fires_on": [
+        "block",
+        "parry",
+        "enemy death",
+        "landing",
+        "boss stomp",
+        "ambient"
+      ]
+    },
+    "death": {
+      "arm_to_m": 5.2,
+      "pitch_to_deg": -22.0,
+      "ease_frames": 45,
+      "orbit_dps": 6.0,
+      "orbit_deg_per_frame": 0.1,
+      "orbit_until_frame": 150,
+      "arm_rate_m_per_frame": 0.15,
+      "pitch_rate_deg_per_frame": 1.5,
+      "pivot_detaches": true
+    },
+    "fog_gate": {
+      "frames": 90,
+      "input_lockout_frames": 90,
+      "yaw_half_life_s": 0.18,
+      "yaw_rate_clamp_dps": 90.0,
+      "arm_to_m": 6.4,
+      "arm_ease_frames": 40
+    }
+  },
+  "player_body": {
+    "_source": "this piece — the world-collision radius the camera's floor arithmetic depends on",
+    "world_collision_radius_m": 0.55,
+    "eye_height_m": 1.66,
+    "chest_height_m": 1.38,
+    "reference_height_m": 1.8,
+    "rationale": "0.55 m is what makes the penetration guard's worst case (back flat against a wall) land at arm 0.37 m with a camera-to-head distance of 0.386 m, which clears RI-CAM05 §F's 0.35 m invariant. A smaller body radius puts the camera inside the character's head in that pose; a larger one does not fit RI-CAM05 §D's 1.80 m doorway with comfortable clearance."
+  }
+}

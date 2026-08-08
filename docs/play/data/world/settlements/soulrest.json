@@ -1,0 +1,380 @@
+{
+ "schema": "elder-souls/settlement@2",
+ "id": "soulrest",
+ "name": "Soulrest",
+ "tier": "village",
+ "region": "stone-wastes",
+ "pos": [
+  610.5,
+  7.91,
+  4877
+ ],
+ "radius_m": 44,
+ "identity": "A dying village around a dying Hist. It was a port; the bay silted; now it mines salt and old bones out of the Wastes. Tension: the villagers are openly debating whether to burn their Hist before it dies on its own — the single most blasphemous conversation in Argonia, and they are having it in the street.",
+ "power_reading": "Every house faces the tree, and the tree is grey.",
+ "layout": {
+  "plan": "facing",
+  "proof": "Every dwelling is yawed to within ten degrees of the Hist at the centre, in a ring, with no building behind another. It is the only plan where the buildings are all looking at the same thing, and the thing they are looking at is dead."
+ },
+ "architecture_kit": {
+  "material_rule": "Whale-bone frames and salt-block walls, bleached white. The only settlement in Argonia with no green in it — no reed, no thatch, no living wood anywhere.",
+  "silhouette": "the rib-frame — a whale rib used as a roof truss, ends visible above the wall",
+  "meshes": [
+   "sou_rib_frame",
+   "sou_salt_block",
+   "sou_bleached_wall",
+   "sou_bone_stack",
+   "sou_grey_hist",
+   "sou_silt_quay",
+   "sou_salt_pan",
+   "sou_drowned_court_step"
+  ]
+ },
+ "quarters": [
+  "drowned-court",
+  "fishery",
+  "the-steps"
+ ],
+ "targets": {
+  "buildings": 10,
+  "named_interiors": 7,
+  "enterable_pct": 70,
+  "named_npcs": 12,
+  "scheduled_npc_pct": 70,
+  "shops": 2,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 0,
+  "trainers": 1,
+  "quest_givers": 3,
+  "rumour_variants": 6,
+  "bonfire": 1,
+  "road_gates": 2,
+  "unique_architecture_kit": "shared+2 unique props",
+  "souls_loop_dungeon_attached": 0
+ },
+ "counts": {
+  "buildings": 15,
+  "interior": 7,
+  "sealed_with_reason": 3,
+  "structure": 5,
+  "named_interiors": 7,
+  "enterable_pct": 70,
+  "property_zones": 28,
+  "shops": 4,
+  "taverns": 0,
+  "temple_shrine": 2,
+  "guild_halls": 0,
+  "road_gates": 2
+ },
+ "services": {
+  "bonfire": [
+   "soulrest-grey-hist"
+  ],
+  "trader": [
+   "soulrest-market",
+   "soulrest-boneyard"
+  ],
+  "smith": [
+   "soulrest-smithy"
+  ],
+  "fence": [
+   "soulrest-pawn"
+  ],
+  "travel": [
+   "soulrest-quay"
+  ]
+ },
+ "buildings": [
+  {
+   "id": "soulrest-grey-hist",
+   "name": "The Grey Hist",
+   "kind": "interior",
+   "building_kind": "shrine",
+   "interior": "soulrest-grey-hist",
+   "enterable": true,
+   "quarter": "the-steps",
+   "offset_m": [
+    15,
+    0,
+    0
+   ],
+   "yaw_deg": 270,
+   "door": [
+    625.5,
+    7.91,
+    4877
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers"
+  },
+  {
+   "id": "soulrest-court-steps",
+   "name": "The Drowned Court Steps",
+   "kind": "interior",
+   "building_kind": "temple",
+   "interior": "soulrest-court-steps",
+   "enterable": true,
+   "quarter": "drowned-court",
+   "offset_m": [
+    20.1,
+    0,
+    8.95
+   ],
+   "yaw_deg": 246,
+   "door": [
+    630.6,
+    7.91,
+    4885.95
+   ],
+   "service": null,
+   "faction": "drowned-court"
+  },
+  {
+   "id": "soulrest-market",
+   "name": "The Salt Stall",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "soulrest-market",
+   "enterable": true,
+   "quarter": "the-steps",
+   "offset_m": [
+    10.04,
+    0,
+    11.15
+   ],
+   "yaw_deg": 222,
+   "door": [
+    620.54,
+    7.91,
+    4888.15
+   ],
+   "service": "trader",
+   "faction": null
+  },
+  {
+   "id": "soulrest-smithy",
+   "name": "The Bone Forge",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "soulrest-smithy",
+   "enterable": true,
+   "quarter": "the-steps",
+   "offset_m": [
+    6.8,
+    0,
+    20.92
+   ],
+   "yaw_deg": 198,
+   "door": [
+    617.3,
+    7.91,
+    4897.92
+   ],
+   "service": "smith",
+   "faction": null
+  },
+  {
+   "id": "soulrest-pawn",
+   "name": "The Silt Pawn",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "soulrest-pawn",
+   "enterable": true,
+   "quarter": "fishery",
+   "offset_m": [
+    -1.57,
+    0,
+    14.92
+   ],
+   "yaw_deg": 174,
+   "door": [
+    608.93,
+    7.91,
+    4891.92
+   ],
+   "service": "fence",
+   "faction": null
+  },
+  {
+   "id": "soulrest-quay",
+   "name": "The Silted Quay House",
+   "kind": "interior",
+   "building_kind": "travel",
+   "interior": "soulrest-quay",
+   "enterable": true,
+   "quarter": "the-steps",
+   "offset_m": [
+    -11,
+    0,
+    19.05
+   ],
+   "yaw_deg": 150,
+   "door": [
+    599.5,
+    7.91,
+    4896.05
+   ],
+   "service": "travel",
+   "faction": "rootkeepers"
+  },
+  {
+   "id": "soulrest-boneyard",
+   "name": "The Boneyard Shed",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "soulrest-boneyard",
+   "enterable": true,
+   "quarter": "drowned-court",
+   "offset_m": [
+    -12.14,
+    0,
+    8.82
+   ],
+   "yaw_deg": 126,
+   "door": [
+    598.36,
+    7.91,
+    4885.82
+   ],
+   "service": "trader",
+   "faction": null
+  },
+  {
+   "id": "soulrest-old-harbourmaster",
+   "name": "The Harbourmaster’s House",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "fishery",
+   "offset_m": [
+    -21.52,
+    0,
+    4.57
+   ],
+   "yaw_deg": 102,
+   "seal_state": "visible",
+   "reason": "the last harbourmaster locked it the day the bay silted and took the key with him",
+   "told_by_trade": "fisher"
+  },
+  {
+   "id": "soulrest-salt-house",
+   "name": "The Salt House",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "drowned-court",
+   "offset_m": [
+    -14.67,
+    0,
+    -3.12
+   ],
+   "yaw_deg": 78,
+   "seal_state": "visible",
+   "reason": "the roof went and the salt took the walls; it is a hole full of white now",
+   "told_by_trade": "trader"
+  },
+  {
+   "id": "soulrest-burnt-shrine",
+   "name": "The Burnt Shrine",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "the-steps",
+   "offset_m": [
+    -17.8,
+    0,
+    -12.93
+   ],
+   "yaw_deg": 54,
+   "seal_state": "visible",
+   "reason": "somebody tried to burn a Hist here once already, and the village keeps the ruin as an argument",
+   "told_by_trade": "rootkeeper"
+  },
+  {
+   "id": "soulrest-struct-the-grey-hist",
+   "name": "The Grey Hist",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-steps",
+   "offset_m": [
+    -7.5,
+    0,
+    -12.99
+   ],
+   "yaw_deg": 30,
+   "residential_props": false
+  },
+  {
+   "id": "soulrest-struct-the-silt-quay",
+   "name": "The Silt Quay",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-steps",
+   "offset_m": [
+    -2.3,
+    0,
+    -21.88
+   ],
+   "yaw_deg": 6,
+   "residential_props": false
+  },
+  {
+   "id": "soulrest-struct-the-salt-pans",
+   "name": "The Salt Pans",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "fishery",
+   "offset_m": [
+    4.64,
+    0,
+    -14.27
+   ],
+   "yaw_deg": 342,
+   "residential_props": false
+  },
+  {
+   "id": "soulrest-struct-the-bone-stacks",
+   "name": "The Bone Stacks",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "drowned-court",
+   "offset_m": [
+    14.72,
+    0,
+    -16.35
+   ],
+   "yaw_deg": 318,
+   "residential_props": false
+  },
+  {
+   "id": "soulrest-struct-the-court-steps",
+   "name": "The Court Steps",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-steps",
+   "offset_m": [
+    13.7,
+    0,
+    -6.1
+   ],
+   "yaw_deg": 294,
+   "residential_props": false
+  }
+ ],
+ "interiors": [
+  "soulrest-grey-hist",
+  "soulrest-court-steps",
+  "soulrest-market",
+  "soulrest-smithy",
+  "soulrest-pawn",
+  "soulrest-quay",
+  "soulrest-boneyard"
+ ],
+ "generated_by": "tools/world/build-settlements.mjs"
+}

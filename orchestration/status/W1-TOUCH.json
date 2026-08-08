@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-TOUCH",
+  "state": "reading",
+  "headline": "Touch input module exists but main.js never imports it — a phone gets a title screen and no controls.",
+  "started": "2026-08-08",
+  "next_step": "Read RULES, INDEX, RI-JRN04 §G, game/src/input/touch.js, game/src/main.js, W1-GAMEPAD.json",
+  "files_touched": [
+    "orchestration/status/W1-TOUCH.json"
+  ],
+  "files_claimed": [
+    "game/src/input/touch.js",
+    "game/src/main.js",
+    "tools/world/touch-opening.mjs",
+    "reports/w1-touch/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": []
+}

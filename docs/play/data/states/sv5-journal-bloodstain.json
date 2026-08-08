@@ -1,0 +1,429 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "sv5-journal-bloodstain",
+  "title": "RI-JRN05 SV5. 40+ journal entries, a bloodstain two rooms back holding 3,400 souls, a disease with 6 in-world hours of incubation left, an unread book in inventory, a Mark set.",
+  "env": {
+    "timeOfDay": 2.25,
+    "weather": "storm",
+    "region": "thornmarsh",
+    "interior": "thorn-hall"
+  },
+  "player": {
+    "pos": [
+      -2.5,
+      0,
+      4.25
+    ],
+    "yaw": 18.0,
+    "stamina": 120,
+    "hp": 312
+  },
+  "camera": {
+    "yaw": 18.0,
+    "pitch": -4.0,
+    "mode": "free"
+  },
+  "progression": {
+    "soulsHeld": 180,
+    "soulsSpent": 11240,
+    "level": 9,
+    "hearthsDiscovered": [
+      "hearth-thorn",
+      "hearth-drowned-ford"
+    ],
+    "hearthLastRested": "hearth-thorn"
+  },
+  "inventory": [
+    {
+      "id": "eshis-knife",
+      "count": 1,
+      "condition": 0.74,
+      "charge": 0,
+      "stolen": true,
+      "owner": "warden-eshi",
+      "slot": "right",
+      "quickSlot": null
+    },
+    {
+      "id": "the-drowned-ford",
+      "count": 1,
+      "condition": 1.0,
+      "charge": 0,
+      "stolen": false,
+      "owner": null,
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "rotted-hall-key",
+      "count": 1,
+      "condition": 1.0,
+      "charge": 0,
+      "stolen": false,
+      "owner": "king-hlaalu-teeth",
+      "slot": null,
+      "quickSlot": 1
+    }
+  ],
+  "quest": {
+    "death": {
+      "bloodstain": {
+        "pos": [
+          -1.5,
+          0,
+          -3.25
+        ],
+        "souls": 3400,
+        "death_index": 4
+      }
+    },
+    "afflictions": [
+      {
+        "id": "swamp-rot",
+        "kind": "disease",
+        "incubation_in_frames": 1296000,
+        "duration_in_frames": 0
+      }
+    ],
+    "travel": {
+      "nodesVisited": [
+        "thorn-landing",
+        "stormhold-gate"
+      ],
+      "mark": [
+        3820.0,
+        0,
+        865.0
+      ]
+    },
+    "crime": {
+      "bounty": {
+        "thornmarsh": 540,
+        "salt-hills": 0
+      },
+      "witnesses": [
+        "warden-eshi",
+        "ghen-the-younger"
+      ],
+      "stolen": [
+        "eshis-knife"
+      ],
+      "hunting": [
+        "thorn-guard-01",
+        "thorn-guard-02"
+      ]
+    },
+    "topicsKnown": [
+      "thorn",
+      "the-marsh",
+      "little-advice",
+      "my-kingdom",
+      "the-drowned-ford"
+    ],
+    "dispositions": {
+      "warden-eshi": 18,
+      "king-hlaalu-teeth": 31
+    },
+    "flags": {
+      "met_eshi": true,
+      "entered_thorn": true,
+      "read_drowned_ford": false
+    },
+    "journal": [
+      {
+        "n": 1,
+        "date": "10 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 1. The water is higher than the boards again."
+      },
+      {
+        "n": 2,
+        "date": "10 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 2. I asked about the ford and got a different story."
+      },
+      {
+        "n": 3,
+        "date": "10 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 3. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 4,
+        "date": "10 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 4. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 5,
+        "date": "11 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 5. The water is higher than the boards again."
+      },
+      {
+        "n": 6,
+        "date": "11 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 6. I asked about the ford and got a different story."
+      },
+      {
+        "n": 7,
+        "date": "11 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 7. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 8,
+        "date": "11 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 8. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 9,
+        "date": "12 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 9. The water is higher than the boards again."
+      },
+      {
+        "n": 10,
+        "date": "12 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 10. I asked about the ford and got a different story."
+      },
+      {
+        "n": 11,
+        "date": "12 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 11. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 12,
+        "date": "12 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 12. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 13,
+        "date": "13 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 13. The water is higher than the boards again."
+      },
+      {
+        "n": 14,
+        "date": "13 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 14. I asked about the ford and got a different story."
+      },
+      {
+        "n": 15,
+        "date": "13 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 15. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 16,
+        "date": "13 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 16. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 17,
+        "date": "14 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 17. The water is higher than the boards again."
+      },
+      {
+        "n": 18,
+        "date": "14 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 18. I asked about the ford and got a different story."
+      },
+      {
+        "n": 19,
+        "date": "14 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 19. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 20,
+        "date": "14 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 20. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 21,
+        "date": "15 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 21. The water is higher than the boards again."
+      },
+      {
+        "n": 22,
+        "date": "15 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 22. I asked about the ford and got a different story."
+      },
+      {
+        "n": 23,
+        "date": "15 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 23. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 24,
+        "date": "15 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 24. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 25,
+        "date": "16 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 25. The water is higher than the boards again."
+      },
+      {
+        "n": 26,
+        "date": "16 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 26. I asked about the ford and got a different story."
+      },
+      {
+        "n": 27,
+        "date": "16 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 27. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 28,
+        "date": "16 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 28. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 29,
+        "date": "17 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 29. The water is higher than the boards again."
+      },
+      {
+        "n": 30,
+        "date": "17 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 30. I asked about the ford and got a different story."
+      },
+      {
+        "n": 31,
+        "date": "17 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 31. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 32,
+        "date": "17 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 32. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 33,
+        "date": "18 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 33. The water is higher than the boards again."
+      },
+      {
+        "n": 34,
+        "date": "18 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 34. I asked about the ford and got a different story."
+      },
+      {
+        "n": 35,
+        "date": "18 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 35. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 36,
+        "date": "18 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 36. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 37,
+        "date": "19 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 37. The water is higher than the boards again."
+      },
+      {
+        "n": 38,
+        "date": "19 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 38. I asked about the ford and got a different story."
+      },
+      {
+        "n": 39,
+        "date": "19 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 39. Something followed me as far as the reeds and then did not."
+      },
+      {
+        "n": 40,
+        "date": "19 Last Seed, 3E 427",
+        "quest": "wandering",
+        "text": "Entry 40. I slept badly and dreamt of the Hist."
+      },
+      {
+        "n": 41,
+        "date": "20 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 41. The water is higher than the boards again."
+      },
+      {
+        "n": 42,
+        "date": "20 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Entry 42. I asked about the ford and got a different story."
+      }
+    ]
+  },
+  "world": {
+    "containersEmptied": [
+      "thorn-hall-chest-01"
+    ],
+    "doorsUnlocked": [
+      "thorn-hall-door-01"
+    ],
+    "shortcutsOpened": [
+      "ford-ladder"
+    ],
+    "itemsTaken": [
+      "eshis-knife"
+    ],
+    "npcsDead": [],
+    "enemiesDeadUntilRest": [
+      "ford-sentry-01",
+      "ford-sentry-02",
+      "ford-sentry-03",
+      "ford-sentry-04"
+    ],
+    "fogGatesPassed": [
+      "ford-gate"
+    ],
+    "droppedItems": [
+      {
+        "id": "torch",
+        "pos": [
+          -6.0,
+          0,
+          1.5
+        ]
+      }
+    ]
+  },
+  "spawn": [
+    {
+      "id": "dummy_passive",
+      "x": 0.0,
+      "z": 3.0,
+      "as": "e0"
+    }
+  ]
+}

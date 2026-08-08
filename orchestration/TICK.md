@@ -102,7 +102,24 @@ discipline means not paying twice for the same work — never paying less for th
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the
    loop stalled. This outranks starting anything new.
-2. **The next thing in `NEXT-DISPATCH.md`.**
+2. **The next thing in `NEXT-DISPATCH.md`** — but run this first, it costs ~110 ms:
+
+   ```
+   node tools/dispatch-staleness.mjs        # which claims in that file no longer hold
+   node tools/dispatch-staleness.mjs --run  # slower: also executes each named tool's --self-test
+   ```
+
+   A bullet reading "`gamepad-shim.mjs` — does not run, 3/3 crash" sat on that list for two rounds
+   after TOOL-COVERAGE-**R2** recorded it repaired and **R3** accepted it at 12/12. A dispatch was
+   spent, and the agent's first action — running the self-test before touching anything — returned
+   PASS 12/12. AUDIT-R1-LIST then checked the other four bullets of the same list: **five of five
+   were dead.** One tool had been renamed and the bullet still named the old path.
+
+   The tool decides only the mechanical slice — a named path that is not on disk, a file claimed
+   absent that now exists, a self-test claimed broken that exits 0, a score that has moved — and it
+   **prints its own coverage fraction on every run** (about 3% of that file). The other 97% is
+   prose and judgement, and nothing checks it but you. A clean run is not permission to skip
+   reading; it is one class of wasted round removed.
 3. **An unstarted wave-1 piece** from `docs/PLAN.md` §3. Wide before deep. Over half own no path any
    dispatched verdict declares.
 4. **A blog writer**, if none is running and there is anything in `reports/blog-feed.jsonl` the

@@ -1,0 +1,584 @@
+{
+ "schema": "elder-souls/hearths@1",
+ "generator": "tools/world/build-hearths.mjs",
+ "in_world_name": "sapwell (ixtu-xul) — RI-LOR05 §4. HEARTH is RI-PRG04's placeholder; the rename is find-and-replace and moves no number.",
+ "provenance": "Positions are MEASURED placements on the built province (game/src/world/field.js). Spacing is walk time over a seconds-per-metre field derived from game/data/world/traversal.json (water band speed_mult, substrate speed_mult, max_walkable_deg) at walk speed 2.0 m/s, low tide (phase 0.75). RI-PRG04 §5's COUNTS were declared derived and re-measurable; its RULES are binding and are checked below.",
+ "walk_model": {
+  "walk_mps": 2,
+  "tide_phase": 0.75,
+  "max_slope_deg": 40,
+  "max_depth_m": 1.35,
+  "band_speed_mult": {
+   "W0": 1,
+   "W1": 0.97,
+   "W2": 0.85,
+   "W3": 0.65,
+   "W4": 0.43,
+   "W5": 0.55
+  },
+  "substrate_speed_mult": {
+   "FIRM": 1,
+   "SILT": 0.92,
+   "SUCK": 0.7
+  },
+  "cell_m": 25
+ },
+ "count": 29,
+ "hearths": [
+  {
+   "id": "hearth-archon",
+   "name": "The Archon Well",
+   "kind": "settlement",
+   "region": "eastern-rootlands",
+   "pos": [
+    3784.57,
+    3.386,
+    3941.5
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-blackrose",
+   "name": "The Blackrose Well",
+   "kind": "settlement",
+   "region": "western-rootlands",
+   "pos": [
+    1905.13,
+    2.609,
+    4568
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-ceyatatar-vault",
+   "name": "Ceyatatar-zel Ayleid Vault Well",
+   "kind": "fog-gate",
+   "region": "blackwood",
+   "pos": [
+    1562.5,
+    2.737,
+    2962.5
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every boss fog gate has a HEARTH 60-110 s away. Measured 85.8 s of walk time from gate-ceyatatar-vault."
+  },
+  {
+   "id": "hearth-cross-01",
+   "name": "Wayside Well 1",
+   "kind": "critical-path",
+   "region": "valus-ridge",
+   "pos": [
+    2182.28,
+    186.64,
+    1150.62
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-02",
+   "name": "Wayside Well 2",
+   "kind": "critical-path",
+   "region": "stone-forest",
+   "pos": [
+    2369.17,
+    73.044,
+    1412.3
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-03",
+   "name": "Wayside Well 3",
+   "kind": "critical-path",
+   "region": "stone-forest",
+   "pos": [
+    2419.3,
+    45.117,
+    1716.78
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-04",
+   "name": "Wayside Well 4",
+   "kind": "critical-path",
+   "region": "stone-forest",
+   "pos": [
+    2227.18,
+    111.938,
+    1978.66
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-05",
+   "name": "Wayside Well 5",
+   "kind": "critical-path",
+   "region": "stone-forest",
+   "pos": [
+    2257.85,
+    75.513,
+    2310.08
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-06",
+   "name": "Wayside Well 6",
+   "kind": "critical-path",
+   "region": "stone-forest",
+   "pos": [
+    2401.48,
+    29.093,
+    2574.57
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-07",
+   "name": "Wayside Well 7",
+   "kind": "critical-path",
+   "region": "blackwood",
+   "pos": [
+    2141.11,
+    5.595,
+    3196.61
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-08",
+   "name": "Wayside Well 8",
+   "kind": "critical-path",
+   "region": "blackwood",
+   "pos": [
+    2090.68,
+    6.256,
+    3474.07
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-09",
+   "name": "Wayside Well 9",
+   "kind": "critical-path",
+   "region": "western-rootlands",
+   "pos": [
+    2069.28,
+    6.001,
+    3751.28
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-10",
+   "name": "Wayside Well 10",
+   "kind": "critical-path",
+   "region": "western-rootlands",
+   "pos": [
+    1856.43,
+    6.149,
+    3883.16
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-11",
+   "name": "Wayside Well 11",
+   "kind": "critical-path",
+   "region": "western-rootlands",
+   "pos": [
+    1922.66,
+    1.209,
+    4212.3
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-12",
+   "name": "Wayside Well 12",
+   "kind": "critical-path",
+   "region": "western-rootlands",
+   "pos": [
+    2269.96,
+    1.653,
+    4627.33
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-cross-13",
+   "name": "Wayside Well 13",
+   "kind": "critical-path",
+   "region": "eastern-rootlands",
+   "pos": [
+    2532.33,
+    2.2,
+    4737.6
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: consecutive HEARTHs on the critical path 3.0-5.5 min. Laid at 3.6 min of walk time along roads.json named_routes.crossing."
+  },
+  {
+   "id": "hearth-drowned-xanmeer",
+   "name": "The Drowned Xanmeer Well",
+   "kind": "fog-gate",
+   "region": "deep-marshes",
+   "pos": [
+    3550,
+    3.371,
+    2812.5
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every boss fog gate has a HEARTH 60-110 s away. Measured 84.0 s of walk time from gate-drowned-xanmeer."
+  },
+  {
+   "id": "hearth-gideon",
+   "name": "The Gideon Well",
+   "kind": "settlement",
+   "region": "blackwood",
+   "pos": [
+    438.43,
+    2.689,
+    3031.5
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-helstrom",
+   "name": "The Helstrom Well",
+   "kind": "settlement",
+   "region": "stone-forest",
+   "pos": [
+    2261.9,
+    27.2,
+    2891.5
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-ixtaxh-tzil",
+   "name": "Ixtaxh-Tzil Well",
+   "kind": "minor-settlement",
+   "region": "thornmarsh",
+   "pos": [
+    3088.6,
+    26.342,
+    929.8
+   ],
+   "interact_radius_m": 3,
+   "why": "Candidate at POI ixtaxh-tzil (minor-settlement)."
+  },
+  {
+   "id": "hearth-kiln-camp",
+   "name": "Kiln Camp Well",
+   "kind": "minor-settlement",
+   "region": "eastern-rootlands",
+   "pos": [
+    3589.8,
+    1.768,
+    3534.9
+   ],
+   "interact_radius_m": 3,
+   "why": "Candidate at POI kiln-camp (minor-settlement)."
+  },
+  {
+   "id": "hearth-lilmoth",
+   "name": "The Lilmoth Well",
+   "kind": "settlement",
+   "region": "western-rootlands",
+   "pos": [
+    2766.17,
+    2.68,
+    5145.5
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-remote-01",
+   "name": "Remote Well 1",
+   "kind": "ceiling",
+   "region": "thornmarsh",
+   "pos": [
+    4555,
+    11.541,
+    480
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5 absolute maximum: no reachable point further than 11.0 min from a HEARTH. The worst-served walkable cell before this well was 11.90 min out."
+  },
+  {
+   "id": "hearth-rootway-post",
+   "name": "Rootway Post Well",
+   "kind": "minor-settlement",
+   "region": "blackwood",
+   "pos": [
+    1717.4,
+    53.067,
+    2732.8
+   ],
+   "interact_radius_m": 3,
+   "why": "Candidate at POI rootway-post (minor-settlement)."
+  },
+  {
+   "id": "hearth-soulrest",
+   "name": "The Soulrest Well",
+   "kind": "settlement",
+   "region": "stone-wastes",
+   "pos": [
+    610.16,
+    8.132,
+    4995
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-stormhold",
+   "name": "The Stormhold Well",
+   "kind": "settlement",
+   "region": "salt-hills",
+   "pos": [
+    2168.84,
+    141.05,
+    878.97
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-tenmarch-bridge",
+   "name": "Tenmarch Bridge Well",
+   "kind": "minor-settlement",
+   "region": "blackwood",
+   "pos": [
+    1087.19,
+    0.813,
+    2957.18
+   ],
+   "interact_radius_m": 3,
+   "why": "Candidate at POI tenmarch-bridge (minor-settlement)."
+  },
+  {
+   "id": "hearth-thorn",
+   "name": "The Thorn Well",
+   "kind": "settlement",
+   "region": "thornmarsh",
+   "pos": [
+    3773.05,
+    13.195,
+    967.26
+   ],
+   "interact_radius_m": 3,
+   "why": "RI-PRG04 §5: every settlement with a merchant has exactly one HEARTH, at the settlement edge. 118 m from the centre, bearing away from the quay."
+  },
+  {
+   "id": "hearth-xal-ithix",
+   "name": "Xal-Ithix Well",
+   "kind": "minor-settlement",
+   "region": "deep-marshes",
+   "pos": [
+    3038,
+    1.436,
+    3347.5
+   ],
+   "interact_radius_m": 3,
+   "why": "Candidate at POI xal-ithix (minor-settlement)."
+  }
+ ],
+ "fog_gates": [
+  {
+   "id": "gate-drowned-xanmeer",
+   "name": "The Drowned Xanmeer",
+   "boss": "champion_hist_marked",
+   "region": "deep-marshes",
+   "pos": [
+    3477,
+    3.82,
+    2857.5
+   ],
+   "radius_m": 26,
+   "hearth": "hearth-drowned-xanmeer",
+   "hearth_walk_s": 84,
+   "note": "RI-AI06/RI-CMB08: the arena the main quest ends in. RI-PRG04 §5: a HEARTH 60-110 s away with no respawning enemy between."
+  },
+  {
+   "id": "gate-ceyatatar-vault",
+   "name": "Ceyatatar-zel Ayleid Vault",
+   "boss": "cst_sap_speaker",
+   "region": "blackwood",
+   "pos": [
+    1433,
+    5.32,
+    2906.5
+   ],
+   "radius_m": 26,
+   "hearth": "hearth-ceyatatar-vault",
+   "hearth_walk_s": 85.8,
+   "note": "RI-PRG04 §5 second fog gate. A boss retry must cost under two minutes and zero combat."
+  }
+ ],
+ "measured": {
+  "critical_path": {
+   "route": "roads.json named_routes.crossing",
+   "total_walk_min": 56.91,
+   "hearths_on_path": 17,
+   "consecutive_gaps_min": [
+    {
+     "from": "hearth-stormhold",
+     "to": "hearth-cross-01",
+     "walk_min": 3.07,
+     "direct_min": 2.63
+    },
+    {
+     "from": "hearth-cross-01",
+     "to": "hearth-cross-02",
+     "walk_min": 3.98,
+     "direct_min": 2.98
+    },
+    {
+     "from": "hearth-cross-02",
+     "to": "hearth-cross-03",
+     "walk_min": 3.37,
+     "direct_min": 2.67
+    },
+    {
+     "from": "hearth-cross-03",
+     "to": "hearth-cross-04",
+     "walk_min": 3.96,
+     "direct_min": 2.9
+    },
+    {
+     "from": "hearth-cross-04",
+     "to": "hearth-cross-05",
+     "walk_min": 3.27,
+     "direct_min": 2.79
+    },
+    {
+     "from": "hearth-cross-05",
+     "to": "hearth-cross-06",
+     "walk_min": 3.49,
+     "direct_min": 2.6
+    },
+    {
+     "from": "hearth-cross-06",
+     "to": "hearth-helstrom",
+     "walk_min": 3.44,
+     "direct_min": 3.23
+    },
+    {
+     "from": "hearth-helstrom",
+     "to": "hearth-cross-07",
+     "walk_min": 3.19,
+     "direct_min": 3.05
+    },
+    {
+     "from": "hearth-cross-07",
+     "to": "hearth-cross-08",
+     "walk_min": 3.48,
+     "direct_min": 2.74
+    },
+    {
+     "from": "hearth-cross-08",
+     "to": "hearth-cross-09",
+     "walk_min": 3.17,
+     "direct_min": 3.15
+    },
+    {
+     "from": "hearth-cross-09",
+     "to": "hearth-cross-10",
+     "walk_min": 3.43,
+     "direct_min": 2.1
+    },
+    {
+     "from": "hearth-cross-10",
+     "to": "hearth-cross-11",
+     "walk_min": 3.26,
+     "direct_min": 2.88
+    },
+    {
+     "from": "hearth-cross-11",
+     "to": "hearth-blackrose",
+     "walk_min": 3.35,
+     "direct_min": 2.92
+    },
+    {
+     "from": "hearth-blackrose",
+     "to": "hearth-cross-12",
+     "walk_min": 3.93,
+     "direct_min": 3.18
+    },
+    {
+     "from": "hearth-cross-12",
+     "to": "hearth-cross-13",
+     "walk_min": 3.92,
+     "direct_min": 3.35
+    },
+    {
+     "from": "hearth-cross-13",
+     "to": "hearth-lilmoth",
+     "walk_min": 3.8,
+     "direct_min": 4.49
+    }
+   ],
+   "mean_gap_min": 3.51
+  },
+  "min_pair": {
+   "a": "hearth-cross-09",
+   "b": "hearth-cross-10",
+   "walk_min": 2.1
+  },
+  "station_separation": {
+   "keep_out_m": 90,
+   "nearest_station_m": "90.3",
+   "why": "Seam S7 and RI-PRG04 §5. A hearth is not a node of the transport network and a settlement well sits at the edge, not on the quay."
+  },
+  "coverage": {
+   "land_cells_sampled": 22068,
+   "worst_time_to_nearest_min": 10.42,
+   "mean_time_to_nearest_min": 4.07,
+   "cells_with_no_hearth_reachable": 1,
+   "cells_unreachable_from_a_single_settlement": 1,
+   "island_note": "Cells the province itself cannot connect on foot from one settlement. Not a hearth defect; reported so the two causes are never confused."
+  },
+  "rules": {
+   "count_in_24_32": true,
+   "min_pair_ge_2min": true,
+   "cp_consecutive_in_3_5p5": true,
+   "cp_mean_in_3_4": true,
+   "worst_to_nearest_le_11min": true,
+   "no_land_orphaned_by_hearth_placement": true,
+   "every_settlement_has_one": true,
+   "every_fog_gate_60_110s": true,
+   "no_hearth_on_a_travel_station": true
+  }
+ },
+ "ri_prg04_table_discrepancy": {
+  "declared_regions": 6,
+  "built_regions": 13,
+  "declared_critical_path_min": 95,
+  "built_crossing_min": 56.91,
+  "declared_count": 28,
+  "built_count": 29,
+  "ruling": "RI-PRG04 provenance note: \"the counts are derived and should move if the map says so\". The RULES are checked in measured.rules and are the binding half. Filed, not resolved here."
+ },
+ "layout_repairs": [],
+ "rejected_candidates": []
+}

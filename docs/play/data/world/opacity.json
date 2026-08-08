@@ -1,0 +1,1151 @@
+{
+  "schema": "opacity@1",
+  "id": "opacity",
+  "owner": "W1-OPACITY",
+  "source": "corpus/50-world/RI-WLD09-the-opacity-budget.md §B1",
+  "sealed_half": "corpus/50-world/sealed/SEALED-ANSWERS.md — NEVER shipped, NEVER quoted here",
+  "what_this_is": "The 24 things this world refuses to explain. This file carries the PUBLIC half only: what the mystery is called, where the player meets it, which shipped records constitute its evidence, and the sha256 of the authored answer. It carries no answers. A critic proves the mystery was authored WITH an answer by re-hashing the corpus half against the seals here, proves the game never states it with opacity-audit.py --leak-scan, and proves the evidence under-determines it with RI-WLD09 M-OP3.",
+  "consumed_by": [
+    "game/src/world/opacity.js — OpacityRegister; built at boot from engine.data.opacity",
+    "game/src/engine.js — resolves every anchor/evidence/false-account id against the loaded data at boot and THROWS on a dangle; installs the register on the conversation",
+    "game/src/character/converse.js — Conversation.say() returns a registered refusal instead of silence when a registered-opaque topic is put to somebody with nothing to say",
+    "game/src/engine.js getOpacityState() — the harness surface: per-mystery evidence met, refusals heard, and the split",
+    "tools/world/opacity-resolve.mjs — the id resolver and the split check, fail-closed",
+    "tools/world/opacity-reseal.py — the only writer of `seal`"
+  ],
+  "id_scheme": {
+    "book:": "a book id in game/data/books/**",
+    "dialogue:": "a topic id in game/data/dialogue/topics/**",
+    "npc:": "an npc id in game/data/npcs/**",
+    "poi:": "a poi id in game/data/world/pois.json",
+    "region:": "a region id in game/data/world/regions.json",
+    "item:": "an item id in game/data/items/**",
+    "note": "the prefix IS the content class; see `evidence_classes`."
+  },
+  "schema_extensions": {
+    "why": "RI-WLD09 §B1's worked JSON block declares id/name/kind/anchors/evidence/reachable_hours/has_reward/answer_words/seal and nothing else, but §B1's own table and §B3 require properties that block cannot express. These five fields are PROPOSED, not silently invented; see the W1-OPACITY report.",
+    "false_accounts": "§B3: >=8 mysteries must carry >=2 mutually incompatible in-world explanations, each sincerely held. §B1's block has no field for them.",
+    "encounterable": "§B1 requires >=18 'encounterable in ordinary play' and >=6 within three hours. `reachable_hours` alone cannot say whether the anchor is on a route; a region with no POI in pois.json is honestly false here.",
+    "evidence_classes": "§B1 requires evidence in >=2 content classes. The block's bare id strings carry the class in their prefix but nothing states it.",
+    "resolution": "Not in RI-WLD09 at all. The dispatching brief requires the resolvable / not-resolvable split to be explicit and recorded. `settleable` means the player can close a FACTUAL sub-question by acting; it never means the game explains anything, and `stays_open` is the sentence that must remain unclosed either way.",
+    "refusal_topics/refusals": "Not in RI-WLD09. They are what makes the register load-bearing rather than a text file: the world declines, in authored words, about exactly the things the register lists. Delete a mystery and the decline becomes silence."
+  },
+  "counts": {
+    "mysteries": 24,
+    "by_kind": {
+      "place": 8,
+      "object": 6,
+      "creature": 4,
+      "phenomenon": 3,
+      "person": 3
+    },
+    "settleable": 12,
+    "sealed": 12,
+    "encounterable": 22,
+    "within_three_hours": 6,
+    "with_reward": 3,
+    "with_two_false_accounts": 24,
+    "refusal_lines": 48
+  },
+  "mysteries": [
+    {
+      "id": "M-01",
+      "name": "The Counting Obelisk",
+      "kind": "object",
+      "anchors": [
+        "poi:the-counting-obelisk"
+      ],
+      "evidence": [
+        "npc:keeper-teeja-lun",
+        "book:on-the-tally-stones",
+        "poi:the-counting-obelisk",
+        "dialogue:the-hist-that-stopped",
+        "dialogue:the-quiet-wells"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "geometry"
+      ],
+      "false_accounts": [
+        "npc:keeper-teeja-lun",
+        "book:on-the-tally-stones"
+      ],
+      "reachable_hours": 13,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what is being counted, and who is doing the counting through her hands"
+      },
+      "refusal_topics": [
+        "the-village-tally",
+        "counting-by-tides"
+      ],
+      "refusals": [
+        {
+          "a": "rootkeeper",
+          "x": "You have been to the stone. Then you know it is being written on and you do not know by whom. Forty years, and this one has got no further than you did in an afternoon."
+        },
+        {
+          "a": null,
+          "x": "It gets cut. It has always been cut. I've never met a soul who wanted to know more than that. Why do you?"
+        }
+      ],
+      "answer_words": 106,
+      "seal": "7f7b6cee541869451a064b29c1cce75ab50edd5613f1304e5961851bae49225c"
+    },
+    {
+      "id": "M-02",
+      "name": "The Kothringi mirror-town",
+      "kind": "place",
+      "anchors": [
+        "region:stone-wastes"
+      ],
+      "evidence": [
+        "book:the-oliis-bargain",
+        "dialogue:the-stone-wastes",
+        "dialogue:the-drowned-kin",
+        "book:what-the-water-went-round",
+        "book:the-knahaten-years"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "book:what-the-water-went-round",
+        "book:the-knahaten-years"
+      ],
+      "reachable_hours": 17.5,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what the Kothringi agreed to, with whom, and whether any of them consented"
+      },
+      "refusal_topics": [
+        "the-old-ground"
+      ],
+      "refusals": [
+        {
+          "a": "fisher",
+          "x": "The water kept them. It is all I will say in front of a warmblood, and it is more than my mother would have said."
+        },
+        {
+          "a": null,
+          "x": "There's a town out there with no one in it and no bones in it either. And I'd rather talk about the weather. Shall we?"
+        }
+      ],
+      "answer_words": 103,
+      "seal": "30e55f2105a9e611b2d2ad5257530e40110839a7325de0be863866b862520530",
+      "anchor_pending": [
+        "poi:mirror-town"
+      ]
+    },
+    {
+      "id": "M-03",
+      "name": "The rock flutes of Valus Ridge",
+      "kind": "place",
+      "anchors": [
+        "region:valus-ridge"
+      ],
+      "evidence": [
+        "book:valus-survey-fragment",
+        "dialogue:the-valus-ridge",
+        "book:the-stone-nests-i",
+        "book:the-stone-nests-ii",
+        "book:a-progress-iii"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "book:valus-survey-fragment",
+        "book:the-stone-nests-ii"
+      ],
+      "reachable_hours": 26,
+      "encounterable": false,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "there are fourteen flutes and the survey lists thirteen, and the chord does not change with the wind.",
+        "stays_open": "who cut the shafts, what they capped, and why the chord has not changed"
+      },
+      "refusal_topics": [
+        "the-valus-ridge"
+      ],
+      "refusals": [
+        {
+          "a": "sapcutter",
+          "x": "Holes in a ridge. Friend, this one has stopped putting a rope down holes. Have you got a rope?"
+        },
+        {
+          "a": null,
+          "x": "The survey says thirteen. Count them yourself and then come back and tell me what you want me to do about it."
+        }
+      ],
+      "answer_words": 90,
+      "seal": "7464e8b3f0e22d0d6eb10e2415ce37776e3f91c85001c6b21174aac7d25bb95a",
+      "anchor_pending": [
+        "poi:rock-flutes",
+        "poi:capped-shaft"
+      ]
+    },
+    {
+      "id": "M-04",
+      "name": "The breathing under the Deep Marshes",
+      "kind": "phenomenon",
+      "anchors": [
+        "region:deep-marshes"
+      ],
+      "evidence": [
+        "dialogue:the-deep-marshes",
+        "dialogue:the-voriplasm",
+        "dialogue:the-hist-that-stopped",
+        "book:the-egg-speaks-twice",
+        "npc:rootlands-drowned-speaker"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-deep-marshes",
+        "dialogue:the-voriplasm"
+      ],
+      "reachable_hours": 18,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what is breathing, whether it is alive in any useful sense, and why the birds are gone"
+      },
+      "refusal_topics": [
+        "breathing-here"
+      ],
+      "refusals": [
+        {
+          "a": "healer",
+          "x": "Everyone asks in their first fortnight and stops asking in their second. I have not worked out whether that is the marsh or us."
+        },
+        {
+          "a": null,
+          "x": "You have heard it too, then. Good. No, I am not going to help you decide what it is."
+        }
+      ],
+      "answer_words": 99,
+      "seal": "d5dd038efa8bcc1b582bb0466e1aef5ae8bbb0a51c0d857d60ed35c195ab0cb2"
+    },
+    {
+      "id": "M-05",
+      "name": "The Glassed Crater",
+      "kind": "place",
+      "anchors": [
+        "poi:the-glassed-crater"
+      ],
+      "evidence": [
+        "poi:the-glassed-crater",
+        "dialogue:the-quiet-wells",
+        "book:the-house-built-in-fear",
+        "dialogue:the-stone-wastes"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "geometry"
+      ],
+      "false_accounts": [
+        "book:the-house-built-in-reverence",
+        "book:the-house-built-in-fear"
+      ],
+      "reachable_hours": 15,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the crater is not an impact and not natural; the glass is a ring of even depth, laid, not splashed.",
+        "stays_open": "what made the ring, and why the Stone Wastes have no keepers of their own"
+      },
+      "refusal_topics": [
+        "the-stone-wastes"
+      ],
+      "refusals": [
+        {
+          "a": "rootkeeper",
+          "x": "This one does not go into the Wastes and this one's teacher did not, and neither of us was ever told the reason, only the rule."
+        },
+        {
+          "a": null,
+          "x": "Glass, for a quarter of a mile, in a ring. You have seen it. What would you like me to add?"
+        }
+      ],
+      "answer_words": 93,
+      "seal": "099f2161e42deeb843b36839bddf3a1d63202693545a70d0fcb1ec9d31afad68"
+    },
+    {
+      "id": "M-06",
+      "name": "The sunken well under Lilmoth",
+      "kind": "place",
+      "anchors": [
+        "poi:lilmoth"
+      ],
+      "evidence": [
+        "dialogue:the-sunken-well",
+        "dialogue:the-swimmers",
+        "book:what-the-water-took",
+        "npc:dockmaster-weeja-sen"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-swimmers",
+        "dialogue:the-made-ground"
+      ],
+      "reachable_hours": 0.8,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what the well wants, and what answering it would cost"
+      },
+      "refusal_topics": [
+        "the-sunken-well"
+      ],
+      "refusals": [
+        {
+          "a": "rootkeeper",
+          "x": "It is not dead and it is not reachable. If you have a third thing to say about it I will listen and I doubt you do."
+        },
+        {
+          "a": null,
+          "x": "Under the made ground. Everyone knows. None go. I did not make that arrangement and I am not going to explain it."
+        }
+      ],
+      "answer_words": 102,
+      "seal": "27d48226a0d920190798d31ff078a9e660386da972e47c0ddf446bfad1f1d565"
+    },
+    {
+      "id": "M-07",
+      "name": "The listening floor at Helstrom",
+      "kind": "place",
+      "anchors": [
+        "poi:helstrom"
+      ],
+      "evidence": [
+        "dialogue:the-listening-floor",
+        "dialogue:the-great-hist",
+        "book:the-egg-speaks-twice",
+        "npc:helstrom-gallery-keepers"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-great-hist",
+        "dialogue:the-third-root"
+      ],
+      "reachable_hours": 12,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the floor carries sound from outside the city, and the keepers who lie on it are listening in a fixed direction.",
+        "stays_open": "what the tree is answering, and why the keepers are ashamed of listening"
+      },
+      "refusal_topics": [
+        "the-listening-floor"
+      ],
+      "refusals": [
+        {
+          "a": "rootkeeper",
+          "x": "You may lie on it. You may not ask me what I heard. And if you ask again I will have you taken up!"
+        },
+        {
+          "a": null,
+          "x": "They lie on the floor down there. They come up. They do not say. It has been that way since before my grandmother."
+        }
+      ],
+      "answer_words": 102,
+      "seal": "676fc0bd33eeee3cc324069c21fb30dcdf6da1fe28b4a8ead1e6016380635de6"
+    },
+    {
+      "id": "M-08",
+      "name": "Ceyatatar-Zel, the vault in the Blackwood",
+      "kind": "place",
+      "anchors": [
+        "poi:ceyatatar-zel-ayleid-vault"
+      ],
+      "evidence": [
+        "poi:ceyatatar-zel-ayleid-vault",
+        "book:a-progress-i",
+        "dialogue:the-xanmeers",
+        "book:a-page-out-of-something"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "geometry"
+      ],
+      "false_accounts": [
+        "book:a-progress-i",
+        "dialogue:the-xanmeers"
+      ],
+      "reachable_hours": 9.5,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the vault is Ayleid, it is intact, and it was sealed from the outside by people who were not Ayleid.",
+        "stays_open": "what is inside, and why a family in Tenmarch keeps the seal up"
+      },
+      "refusal_topics": [
+        "the-xanmeers"
+      ],
+      "refusals": [
+        {
+          "a": "clerk",
+          "x": "The vault is not on the schedule of monuments. So it is not mine. I have never been asked about it and I have never volunteered."
+        },
+        {
+          "a": null,
+          "x": "Elf-work with marsh pitch across it. It gets kept fresh. I haven't asked who. Are you going to?"
+        }
+      ],
+      "answer_words": 105,
+      "seal": "9a9c360a4f2f1864be6c8cc0adac8ac4d19cc7183f589c08a4b64542fba6f9de"
+    },
+    {
+      "id": "M-09",
+      "name": "Bloodmarl Isle",
+      "kind": "place",
+      "anchors": [
+        "poi:bloodmarl-isle"
+      ],
+      "evidence": [
+        "poi:bloodmarl-isle",
+        "book:the-knahaten-years",
+        "dialogue:the-crimson-coast",
+        "npc:harbourmaster-cuiro-vaneth"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "geometry"
+      ],
+      "false_accounts": [
+        "book:the-knahaten-years",
+        "book:a-short-account-of-the-pacification"
+      ],
+      "reachable_hours": 11,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what the red marl is and how it got onto an island with no river"
+      },
+      "refusal_topics": [
+        "the-crimson-coast"
+      ],
+      "refusals": [
+        {
+          "a": "clerk",
+          "x": "I have the soundings. I have had them twenty years. No one has ever paid for a survey and I am not going to fund one out of curiosity."
+        },
+        {
+          "a": null,
+          "x": "Red island, grey coast. It has been asked before and the asking has never gone anywhere."
+        }
+      ],
+      "answer_words": 97,
+      "seal": "cdf545806ce32755e3f7529414ccf4eeaa71164f7be8448a43528e934f084170"
+    },
+    {
+      "id": "M-10",
+      "name": "The place the milestones measure to",
+      "kind": "place",
+      "anchors": [
+        "poi:way-stormhold-thorn-0"
+      ],
+      "evidence": [
+        "dialogue:the-milestones",
+        "dialogue:the-removed-name",
+        "book:a-page-out-of-something",
+        "book:a-progress-iii"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-milestones",
+        "dialogue:the-removed-name"
+      ],
+      "reachable_hours": 8,
+      "encounterable": true,
+      "has_reward": true,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the distances on the southern trunk are consistent with each other and converge on a point that has nothing on it.",
+        "stays_open": "what the town had done, and who wanted its name struck"
+      },
+      "refusal_topics": [
+        "the-milestones"
+      ],
+      "refusals": [
+        {
+          "a": "archivist",
+          "x": "Eleven sheets, one hand, one instruction. I can show you the sheets. I cannot show you the minute and I have looked for eleven years."
+        },
+        {
+          "a": "legionary",
+          "x": "Milestone says a place. There is no place. A mason cut a bad stone. Next question."
+        }
+      ],
+      "answer_words": 93,
+      "seal": "208e888e369547ab702dcd82faa18fad5d5cc33379d1a7859af1947434739fb5"
+    },
+    {
+      "id": "M-11",
+      "name": "The marker at the second bend",
+      "kind": "object",
+      "anchors": [
+        "poi:the-weeping-ford"
+      ],
+      "evidence": [
+        "book:the-marker-at-the-second-bend",
+        "book:the-polers-book",
+        "dialogue:the-quiet-route",
+        "item:shore-compass"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "item"
+      ],
+      "false_accounts": [
+        "book:the-polers-book",
+        "dialogue:the-quiet-route"
+      ],
+      "reachable_hours": 7.5,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the marker is legible for four months of the year, it is a warning, and it is older than the channel it stands beside.",
+        "stays_open": "who cut the second channel, what they were digging toward, and what stopped them"
+      },
+      "refusal_topics": [
+        "the-quiet-route"
+      ],
+      "refusals": [
+        {
+          "a": "smuggler",
+          "x": "I use it. I do not read it. A stone that has been shouting at people for four hundred years is not shouting at me in particular."
+        },
+        {
+          "a": null,
+          "x": "There's writing on it in the dry months. Not one I have met can tell you what it is warning about, and all of them have an opinion. Do you want to hear mine?"
+        }
+      ],
+      "answer_words": 94,
+      "seal": "807afed86acd2673639e961cb62994e25fc93a7e2fb68e69c64a855275315ba1"
+    },
+    {
+      "id": "M-12",
+      "name": "The list of names that is not a register",
+      "kind": "object",
+      "anchors": [
+        "item:ledger-fragment"
+      ],
+      "evidence": [
+        "book:the-list-of-names-that-is-not-a-register",
+        "book:the-counting-rhyme",
+        "dialogue:the-count-of-the-taken",
+        "npc:ledgerer-hosk-vei"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-count-of-the-taken",
+        "book:the-counting-rhyme"
+      ],
+      "reachable_hours": 2.4,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "whose the eleven names are, and what the missing heading said"
+      },
+      "refusal_topics": [
+        "the-second-ledger"
+      ],
+      "refusals": [
+        {
+          "a": "archivist",
+          "x": "I can date the paper. I can date the ink. I cannot tell you what a list is for when the only thing that said so has been cut off, and I will not guess in writing."
+        },
+        {
+          "a": null,
+          "x": "Eleven names and no heading. I have counted them more times than is good for me."
+        }
+      ],
+      "answer_words": 100,
+      "seal": "94d7e160cbb802b86a890e7da754bf6900da179f03b5ece1d0360a88f7ec8aad"
+    },
+    {
+      "id": "M-13",
+      "name": "The bright bolts on the under-drain grating",
+      "kind": "object",
+      "anchors": [
+        "poi:stormhold"
+      ],
+      "evidence": [
+        "dialogue:the-under-drain",
+        "dialogue:the-drains",
+        "item:iron-gall-inkhorn",
+        "npc:prefect-galvus-arn"
+      ],
+      "evidence_classes": [
+        "dialogue",
+        "item"
+      ],
+      "false_accounts": [
+        "dialogue:the-under-drain",
+        "dialogue:the-drains"
+      ],
+      "reachable_hours": 14,
+      "encounterable": true,
+      "has_reward": true,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "two bolts on the north grating are new, the rest are not, and the grating has been opened and reclosed within the last two winters.",
+        "stays_open": "who opens the grating, what they take down, and where the number goes"
+      },
+      "refusal_topics": [
+        "the-under-drain"
+      ],
+      "refusals": [
+        {
+          "a": "legionary",
+          "x": "Sealed drain. Bolts are bolts. But if you want to stand in the rain and watch a grating, that's your evening and not mine."
+        },
+        {
+          "a": "clerk",
+          "x": "If a thing is done annually there is an order for it. I have not found the order and I have stopped looking where I am allowed to look."
+        }
+      ],
+      "answer_words": 98,
+      "seal": "7bb6530ceca19fb66bcd16b3cb11786a20f3bcfb8b172af0100d3be994014e6a"
+    },
+    {
+      "id": "M-14",
+      "name": "The bark token",
+      "kind": "object",
+      "anchors": [
+        "item:hist-bark-token"
+      ],
+      "evidence": [
+        "item:hist-bark-token",
+        "dialogue:the-hist",
+        "dialogue:hist-debt",
+        "book:the-sap-and-the-ledger"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "item"
+      ],
+      "false_accounts": [
+        "book:the-sap-and-the-ledger",
+        "dialogue:the-hist"
+      ],
+      "reachable_hours": 0.4,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what was asked at the first molt, and by whom"
+      },
+      "refusal_topics": [
+        "hist-debt"
+      ],
+      "refusals": [
+        {
+          "a": "rootkeeper",
+          "x": "You are asking a question that has an answer, supplicant, and this one is not the one who is permitted to give it, and this one does not know who is."
+        },
+        {
+          "a": "villager",
+          "x": "Everyone has one. I have had mine since I was small. No, I have never asked, and now that you say it out loud, no, none have."
+        }
+      ],
+      "answer_words": 104,
+      "seal": "5cb7316d486eafa68e47431c3d9f64204b49b8da5ea5787820959e2fb9957203"
+    },
+    {
+      "id": "M-15",
+      "name": "The hearths that have never gone out",
+      "kind": "object",
+      "anchors": [
+        "poi:way-stormhold-helstrom-2"
+      ],
+      "evidence": [
+        "dialogue:the-hearths",
+        "dialogue:the-shrine-return",
+        "item:fire-drill",
+        "book:instructions-for-the-lamp"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue",
+        "item"
+      ],
+      "false_accounts": [
+        "dialogue:the-hearths",
+        "dialogue:the-shrine-return"
+      ],
+      "reachable_hours": 2.8,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the fires at the crossings are older than the roads, nobody tends them, and they do not go out in rain.",
+        "stays_open": "what the crossing fires are, and why the roads were laid to reach them"
+      },
+      "refusal_topics": [
+        "the-hearths"
+      ],
+      "refusals": [
+        {
+          "a": "mudborn",
+          "x": "I have decided not to think about it too hard, dry-one, and I would take it kindly if you did not undecide it for me."
+        },
+        {
+          "a": null,
+          "x": "It burns. It has always burned. Sit down and be glad of it!"
+        }
+      ],
+      "answer_words": 97,
+      "seal": "99c2dc4f58c2b5c90e079999dcb732a9dbbbae2b59a84c9dff5a76ca871c69fd"
+    },
+    {
+      "id": "M-16",
+      "name": "The thing in the cistern",
+      "kind": "creature",
+      "anchors": [
+        "poi:archon"
+      ],
+      "evidence": [
+        "dialogue:the-thing-in-the-cistern",
+        "dialogue:the-vat-cough",
+        "book:the-yard-tally-blackrose",
+        "npc:archon-crane-crew"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "book:the-yard-tally-blackrose",
+        "dialogue:the-vat-cough"
+      ],
+      "reachable_hours": 9,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "what is in the bay, and what would happen if somebody fed it"
+      },
+      "refusal_topics": [
+        "the-thing-in-the-cistern"
+      ],
+      "refusals": [
+        {
+          "a": "townsman",
+          "x": "Third bay is not drawn from. That is the rule, I had it off my father, he had it off his, and none of us has ever been told why."
+        },
+        {
+          "a": "villager",
+          "x": "It was here before the town. The town was built around not mentioning it and you are in the town."
+        }
+      ],
+      "answer_words": 103,
+      "seal": "a170319fbfa5ed87c658265dbb23c04ac017e23fed863aba1d85bd6f1fa19670"
+    },
+    {
+      "id": "M-17",
+      "name": "What asks the root-golems to stand",
+      "kind": "creature",
+      "anchors": [
+        "region:stone-forest"
+      ],
+      "evidence": [
+        "dialogue:the-root-golem",
+        "dialogue:the-marsh-magic",
+        "book:the-egg-speaks-twice",
+        "npc:rootkeeper-ashul-tei"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-root-golem",
+        "dialogue:the-marsh-magic"
+      ],
+      "reachable_hours": 10.5,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "who else is asking, and whether anything is there to answer"
+      },
+      "refusal_topics": [
+        "the-root-golem"
+      ],
+      "refusals": [
+        {
+          "a": "rootkeeper",
+          "x": "This one will show you an asking. This one will not discuss a standing that was never asked for. This one likes you. Do not make this one say it twice."
+        },
+        {
+          "a": null,
+          "x": "They get up. Sometimes they have not been asked to. I walk the other way and so should you."
+        }
+      ],
+      "answer_words": 98,
+      "seal": "5382521782ecb395b0d088e98b490f0aacdddcdbdb3c72e682717428734a8ebe"
+    },
+    {
+      "id": "M-18",
+      "name": "The hackwings that are not frightened",
+      "kind": "creature",
+      "anchors": [
+        "poi:lilmoth"
+      ],
+      "evidence": [
+        "dialogue:the-hackwing",
+        "book:of-the-beasts-of-the-southern-marsh",
+        "book:a-short-account-of-the-pacification",
+        "dialogue:the-arnesian-war"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-hackwing",
+        "book:of-the-beasts-of-the-southern-marsh"
+      ],
+      "reachable_hours": 1.2,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the flock flies a fixed route, it is not the current supply route, and it turns inland at a place with nothing on it.",
+        "stays_open": "why the route exists, and what the birds are still expecting to find on it"
+      },
+      "refusal_topics": [
+        "the-hackwing"
+      ],
+      "refusals": [
+        {
+          "a": "legionary",
+          "x": "It is a bird. The men call it an omen because the men will call anything an omen. I am not going to indulge it and neither should you."
+        },
+        {
+          "a": "mudborn",
+          "x": "They are not frightened of us at all, dry-one, and I have told you what that means and I am not going to say the rest of it."
+        }
+      ],
+      "answer_words": 95,
+      "seal": "1203acfd88c90c5f50f247b3511f32452e3a30f34cae9def68f46e936b6b160c"
+    },
+    {
+      "id": "M-19",
+      "name": "The wamasu that is walked around",
+      "kind": "creature",
+      "anchors": [
+        "region:western-rootlands"
+      ],
+      "evidence": [
+        "dialogue:the-wamasu",
+        "dialogue:the-marsh-creatures",
+        "book:of-the-beasts-of-the-southern-marsh",
+        "npc:rootlands-band-elder"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-wamasu",
+        "dialogue:the-marsh-creatures"
+      ],
+      "reachable_hours": 6,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "why a wamasu is walked around rather than avoided, and what the courtesy is owed to"
+      },
+      "refusal_topics": [
+        "the-wamasu"
+      ],
+      "refusals": [
+        {
+          "a": "naga-elder",
+          "x": "You go around. This one has a rule for every animal in the province and for this one there is only a manner, and this one cannot tell you the difference."
+        },
+        {
+          "a": null,
+          "x": "Walk around it. There is no more to have. People who want more than that tend to get it."
+        }
+      ],
+      "answer_words": 105,
+      "seal": "4e02fdc5bdfa5a490104f55369a67582179116feddad8888be20924819c748a1"
+    },
+    {
+      "id": "M-20",
+      "name": "The marsh lights",
+      "kind": "phenomenon",
+      "anchors": [
+        "region:western-rootlands"
+      ],
+      "evidence": [
+        "dialogue:the-marsh-lights",
+        "dialogue:the-sapwells",
+        "book:a-practical-handling-of-the-marsh-fevers",
+        "dialogue:the-quiet-wells"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-marsh-lights",
+        "book:a-practical-handling-of-the-marsh-fevers"
+      ],
+      "reachable_hours": 1.6,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the lights stand still, they recur in the same places every year, and they are not over water.",
+        "stays_open": "what the lights are, and why everybody stops walking"
+      },
+      "refusal_topics": [
+        "the-marsh-lights"
+      ],
+      "refusals": [
+        {
+          "a": "healer",
+          "x": "Gas, they tell the children. I have told children that. I stop walking too and I have never once worked out what I think I am stopping for."
+        },
+        {
+          "a": null,
+          "x": "Green, low, and you will stop when you see one. Everyone does. Ask me again after you have."
+        }
+      ],
+      "answer_words": 101,
+      "seal": "c971b6f9df5f260ef81b453e95f97eb209d483d44857a3d45296aa2a2aea427c"
+    },
+    {
+      "id": "M-21",
+      "name": "The drums from the interior",
+      "kind": "phenomenon",
+      "anchors": [
+        "region:thornmarsh"
+      ],
+      "evidence": [
+        "dialogue:the-drums",
+        "dialogue:the-naga-bands",
+        "dialogue:the-count-of-the-taken",
+        "book:the-duskfall-chronicle"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-drums",
+        "book:the-duskfall-chronicle"
+      ],
+      "reachable_hours": 19,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the drums are a relay, they are not signals, and the interval between stations is about four miles.",
+        "stays_open": "what is being counted inland, and since when"
+      },
+      "refusal_topics": [
+        "the-drums"
+      ],
+      "refusals": [
+        {
+          "a": "sapcutter",
+          "x": "This one asked once. This one was answered. Friend, this one did not understand the answer and has not asked twice."
+        },
+        {
+          "a": null,
+          "x": "Interior. At night. Not signals. Three things I am sure of, and there is not a fourth."
+        }
+      ],
+      "answer_words": 100,
+      "seal": "bbbdc2676e6717f542a5a68b68e6d6624dea89706198506b23b979d09673e30e"
+    },
+    {
+      "id": "M-22",
+      "name": "The fourth line of the counting rhyme",
+      "kind": "person",
+      "anchors": [
+        "poi:soulrest"
+      ],
+      "evidence": [
+        "book:the-counting-rhyme",
+        "dialogue:the-tide-turn-walk",
+        "book:the-boy-who-counted-the-tide",
+        "npc:sexton-ivrenne-mour"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "book:the-counting-rhyme",
+        "book:the-boy-who-counted-the-tide"
+      ],
+      "reachable_hours": 16,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "settleable",
+        "settles": "the fourth line is a name, the rhyme is in a fixed order, and the order matches the stones of the tide-turn walk.",
+        "stays_open": "whose name is in the fourth line, and why the order of the rhyme never varies"
+      },
+      "refusal_topics": [
+        "the-tide-turn-walk"
+      ],
+      "refusals": [
+        {
+          "a": "mudborn",
+          "x": "I have sung it since I was four. It is a name and it is no one's name and I have never in my life wondered about it until you asked."
+        },
+        {
+          "a": null,
+          "x": "Children's nonsense. Walk the stones in the order everyone walks them and do not get clever about it."
+        }
+      ],
+      "answer_words": 94,
+      "seal": "8c559e1f970ccf5a21761818ca0798378fd204c22e9eabf58f8ea489185a374c"
+    },
+    {
+      "id": "M-23",
+      "name": "The man whose name was cut out of the survey sheet",
+      "kind": "person",
+      "anchors": [
+        "region:valus-ridge"
+      ],
+      "evidence": [
+        "dialogue:the-unfinished-survey",
+        "book:valus-survey-fragment",
+        "book:the-stone-nests-ii",
+        "npc:factor-ruvela-sath"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "dialogue:the-unfinished-survey",
+        "book:the-stone-nests-ii"
+      ],
+      "reachable_hours": 24,
+      "encounterable": false,
+      "has_reward": true,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "whose name was cut out of the sheet, and who ordered the withdrawal"
+      },
+      "refusal_topics": [
+        "the-unfinished-survey"
+      ],
+      "refusals": [
+        {
+          "a": "clerk",
+          "x": "The sheet is in the annexe and you may read it. The name is not in the annexe because it is not anywhere, and I have been asked this once before."
+        },
+        {
+          "a": "legionary",
+          "x": "Survey went east, survey came back. Weather. It is in the record as weather and I was not born."
+        }
+      ],
+      "answer_words": 103,
+      "seal": "89e103ac03ed598326e06745906995548d01c6bd273116ee532a7365364d87f8"
+    },
+    {
+      "id": "M-24",
+      "name": "The hand in the margins of the Drowned Tally",
+      "kind": "person",
+      "anchors": [
+        "poi:soulrest"
+      ],
+      "evidence": [
+        "book:the-drowned-tally-fourth-volume",
+        "book:for-the-ninth-clause",
+        "book:against-the-ninth-clause",
+        "npc:ledgerer-hosk-vei"
+      ],
+      "evidence_classes": [
+        "book",
+        "dialogue"
+      ],
+      "false_accounts": [
+        "book:for-the-ninth-clause",
+        "book:against-the-ninth-clause"
+      ],
+      "reachable_hours": 16.5,
+      "encounterable": true,
+      "has_reward": false,
+      "resolution": {
+        "kind": "sealed",
+        "settles": null,
+        "stays_open": "whose hand writes in the margins, and why it only ever corrects an inference"
+      },
+      "refusal_topics": [
+        "the-ninth-clause-of-the-drowned-tally"
+      ],
+      "refusals": [
+        {
+          "a": "archivist",
+          "x": "Eleven years against the clerks' roll and no match. I have stopped saying so at meetings because of the face people make."
+        },
+        {
+          "a": null,
+          "x": "A hand writes in the margins. A hand has always written in the margins. It is a library; things get written in."
+        }
+      ],
+      "answer_words": 99,
+      "seal": "efefc4313164659f7b8a1917b1010099bb89a84ec6fd2a92e6b36f433061687b"
+    }
+  ]
+}

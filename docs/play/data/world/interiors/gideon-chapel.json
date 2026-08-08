@@ -1,0 +1,242 @@
+{
+  "schema": "elder-souls/interior@1",
+  "id": "gideon-chapel",
+  "name": "The Chapel of the Nine",
+  "settlement": "gideon",
+  "cell_kind": "named",
+  "interior_kind": "temple",
+  "service": "healer",
+  "faction": "the-imperial-assize",
+  "exterior_door": [
+    432,
+    2.72,
+    2901.5
+  ],
+  "continuity": {
+    "building": "gideon-chapel",
+    "building_offset_m": [
+      -7,
+      0,
+      -12
+    ],
+    "building_yaw_deg": 270,
+    "exterior_footprint_m": [
+      13.6,
+      15.6
+    ],
+    "entry_side": "south",
+    "interior_spawn": [
+      0,
+      0,
+      6.6
+    ],
+    "exterior_spawn": [
+      432,
+      2.72,
+      2903.3
+    ]
+  },
+  "bounds_m": {
+    "x": [
+      -6.8,
+      6.8
+    ],
+    "y": [
+      0,
+      3.2
+    ],
+    "z": [
+      -7.8,
+      7.8
+    ]
+  },
+  "floor_area_m2": 212.2,
+  "light": {
+    "kind": "lamp",
+    "pos": [
+      0,
+      0.6,
+      3.12
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.2
+  },
+  "lights": [
+    {
+      "id": "gideon.fisher3.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "gideon.fisher3.r1.lamp0",
+      "pos": [
+        -3.1,
+        1.6,
+        -4.1
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.fisher3.r1.lamp1",
+      "pos": [
+        -1.2000000000000002,
+        1.6,
+        -4.2
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.apothecary8.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "gideon.apothecary8.r0.lamp0",
+      "pos": [
+        2.4000000000000004,
+        1.6,
+        -3.8
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.apothecary8.r0.lamp1",
+      "pos": [
+        0.5,
+        1.6,
+        -3.7
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.apothecary8.r0.lamp2",
+      "pos": [
+        -1.4,
+        1.6,
+        -4
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.cook13.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "gideon.cook13.r0.lamp0",
+      "pos": [
+        0,
+        1.6,
+        2.2
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.cook13.r0.lamp1",
+      "pos": [
+        -1.9,
+        1.6,
+        2.3
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "gideon.cook13.r0.lamp2",
+      "pos": [
+        -3.2,
+        1.6,
+        2.4000000000000004
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    }
+  ],
+  "props": [
+    "altar_low",
+    "kneel_step",
+    "censer_stand",
+    "offering_bowl",
+    "candle_rack",
+    "sermon_lectern",
+    "water_stoup",
+    "bench_row",
+    "wall_niche",
+    "cloth_hanging",
+    "reliquary_case",
+    "lamp_votive",
+    "bell_small",
+    "ash_tray",
+    "gid_timber_frame",
+    "gid_tile_roof",
+    "gid_market_cross",
+    "gid_square_arcade"
+  ],
+  "property_zones": [
+    "gideon.fisher3.r1",
+    "gideon.apothecary8.r0",
+    "gideon.cook13.r0"
+  ],
+  "containers": [
+    "gideon.fisher3.r1.9"
+  ],
+  "unique_item": {
+    "id": "gideon-chapel-unique",
+    "name": "a chapel plate given by a family that left",
+    "unique": true,
+    "takeable": true,
+    "owner": "npc:gideon-fisher-3"
+  },
+  "readable": [
+    {
+      "id": "gideon-chapel-readable",
+      "title": "On The Nine, In Blackwood"
+    },
+    {
+      "id": "the-knahaten-years",
+      "title": "The Knahaten Years: a chronicle of the silver coast",
+      "book": "the-knahaten-years"
+    },
+    {
+      "id": "the-fingers-and-the-hand",
+      "title": "What the Lilmoth keepers hold",
+      "book": "the-fingers-and-the-hand"
+    }
+  ],
+  "inhabitants": [],
+  "anchor": "interior_firelit",
+  "open_h": 8,
+  "close_h": 19
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "elder-souls/poise@1",
+  "id": "ES-POISE/1",
+  "unit": "f@60",
+  "owner": "RI-CMB05 §A/§B/§C/§D",
+  "provenance_correction": {
+    "ruling": "orchestrator R3",
+    "statement": "The model below — an always-on depleting poise pool PLUS hyperarmour on declared heavy frames — is ELDEN RING's combination, not DS3's. RI-CMB05's own provenance note cites DS3 exclusively and is simply wrong about which game it copied. This is a CITATION FIX, not a redesign: the model is unchanged and is implemented exactly as written.",
+    "evidence": "corpus/10-combat/data/souls-frame-data.json poise.ER.model — 'always-active poise HP pool equal to the visible poise stat; stagger when it reaches 0; resets to max instantly on stagger'. DS3's model is the opposite (hidden 100 poise health, stagger resistable ONLY during active-poise frames)."
+  },
+
+  "pool": {
+    "formula": {
+      "poise_resist": "clamp(armour_poise / 120, 0.00, 0.60)",
+      "poise_health_max": "20 + armour_poise",
+      "effective_pd": "incoming_poise_damage * (1 - poise_resist)",
+      "stagger_when": "poise_health <= 0",
+      "reset": "poise_health := poise_health_max on the frame the stagger animation ENDS"
+    },
+    "player_base_poise_health_naked": 20,
+    "armour_poise_range": [0, 72],
+    "poise_resist_cap": 0.60,
+    "regen_delay_f": 90,
+    "regen_delay_not_rebased": "RI-CMB05 §A — authored as a duration (1.500 s), like RI-CMB03's 42 f. A wall-clock condition on the player's behaviour, not an animation length.",
+    "regen_per_second": 20.0,
+    "regen_not_rebased": "a per-second rate is unit-invariant",
+    "irrelevant_while": ["rolling / i-framed (IFRAME_NEGATE fires first)", "blocking successfully (poise damage = 0)", "guard-broken (bypassed entirely)"],
+    "exemplar_player": { "armour_poise": 28, "poise_health_max": 48, "poise_resist": 0.2333 }
+  },
+
+  "stagger": {
+    "_source": "RI-CMB05 §B, REBASED under S22",
+    "tiers": [
+      { "tier": "light",   "poise_damage": [1, 19],   "frames": 32, "ms": 533,  "was_pre_s22": 16, "pushback_m": 0.0 },
+      { "tier": "medium",  "poise_damage": [20, 39],  "frames": 44, "ms": 733,  "was_pre_s22": 22, "pushback_m": 0.0 },
+      { "tier": "heavy",   "poise_damage": [40, 69],  "frames": 64, "ms": 1067, "was_pre_s22": 32, "pushback_m": 0.6 },
+      { "tier": "massive", "poise_damage": [70, 9999], "frames": 96, "ms": 1600, "was_pre_s22": 48, "pushback_m": 0.6, "knockdown": true, "getup_frames": 60, "getup_iframes": 16 }
+    ],
+    "thresholds_not_rebased": "The 1-19 / 20-39 / 40-69 / >=70 poise-damage thresholds are quantities of a pool, not frame counts. Only the LENGTHS of the animations they select moved.",
+    "rules": [
+      "No input is accepted during stagger.",
+      "Stamina regeneration is 0 during stagger.",
+      "The target is fully vulnerable.",
+      "Hurtboxes continue to follow the stagger animation's skeleton.",
+      "Stagger is NOT cancellable by anything, INCLUDING further hits — a target already staggered takes damage from subsequent hits but the stagger timer does not restart. This is what prevents infinite stunlock and it is a rule, not an optimisation."
+    ]
+  },
+
+  "hyperarmour": {
+    "_source": "RI-CMB05 §C. Windows come from frames.json (RI-CMB02 §B); pools are poise quantities and were NOT rebased.",
+    "pools": {
+      "dagger":           { "one_handed": null, "two_handed": null },
+      "straight_sword":   { "one_handed": 22, "two_handed": 29 },
+      "spear":            { "one_handed": 20, "two_handed": 26 },
+      "axe":              { "one_handed": 30, "two_handed": 39 },
+      "halberd":          { "one_handed": 36, "two_handed": 47 },
+      "greatsword":       { "one_handed": 46, "two_handed": 60 },
+      "ultra_greatsword": { "one_handed": 62, "two_handed": 81 }
+    },
+    "rules": [
+      "Inside the window, incoming poise damage depletes the HA pool, not the normal pool. The pool refills instantly when the window ends; a window is not a shared budget across the animation's life.",
+      "Hyperarmour prevents STAGGER. It does not prevent DAMAGE. You trade, you win the exchange, and you may still die doing it.",
+      "A fully charged R2 multiplies the HA pool by 1.50 and extends the window forward across all charge frames.",
+      "Never during startup before the declared window, never during recovery, and never on light attacks except the three two-handed exceptions in frames.json.",
+      "Guard break and criticals bypass hyperarmour completely.",
+      "Enemies obey the identical rule with their own declared windows. Permanent hyperarmour on an enemy is a design error, not a difficulty setting."
+    ]
+  },
+
+  "criticals": {
+    "_note": "Criticals are GEOMETRY plus STATE. There is no chance component anywhere (ARBITRATION S1, RI-CMB04 §E).",
+    "backstab": {
+      "rear_arc_deg": 35,
+      "max_distance_m": 1.20,
+      "attacker_facing_deg": 45,
+      "forbidden_target_states": ["IFRAME", "HYPERARMOUR", "CRIT_ATTACK", "DEAD"],
+      "input": "light attack (R1) while all conditions hold on the same frame",
+      "animation_f": 124,
+      "ms": 2067,
+      "attacker_invulnerable": [15, 108],
+      "attacker_vulnerable": [[1, 14], [109, 124]],
+      "damage_frame": 60,
+      "stamina": 24,
+      "crit_multiplier": { "dagger": 1.40, "straight_sword": 1.10, "spear": 1.15, "axe": 1.10, "halberd": 1.08, "greatsword": 1.05, "ultra_greatsword": 1.00 },
+      "target_release": { "getup_f": 48, "getup_iframes_f": 12 },
+      "was_pre_s22": { "animation": 62, "invuln": [8, 54], "damage_frame": 30, "getup": 24, "getup_iframes": 6 }
+    },
+    "parry": {
+      "by_class": {
+        "small":  { "animation_f": 68, "active": [9, 26],  "whiff_recovery_f": 42, "stamina": 22, "was_pre_s22": { "animation": 34, "active": [5, 13] } },
+        "tool":   { "animation_f": 64, "active": [5, 28],  "whiff_recovery_f": 36, "stamina": 22, "was_pre_s22": { "animation": 32, "active": [3, 14] } },
+        "medium": { "animation_f": 80, "active": [15, 28], "whiff_recovery_f": 52, "stamina": 22, "was_pre_s22": { "animation": 40, "active": [8, 14] } },
+        "great":  null
+      },
+      "stamina_is_flat_by_class": "RI-CMB03 \u00a7B: \"Parry attempt | 22 flat\". A per-shield-class parry cost is not authorised by any reference item; the medium shield carried 26 here and in stamina.json \u00a7costs.parry_medium_shield, so the number a player with the default loadout actually paid was 26 and not the declared 22 (W1-09 verdict \u00a72.3). Both are now 22. If a class-dependent cost is ever wanted it needs an amendment to RI-CMB03 \u00a7B first.",
+  "window_map_rule": "[a,b] -> [2a-1, 2b], which preserves 1-based inclusive indexing and doubles the length exactly.",
+      "upstream_sanity_check": "The corpus's recalled Souls parry window of 8-12 t@30 is 267-400 ms. Our rebased windows are 233-400 ms. Before the rebase they were 117-200 ms — half. The rebase lands us on the upstream figure.",
+      "no_partial_parry": "DS3 has a partial-parry window (a near-miss treated as a normal block). Our corpus has no analogue and this build does not invent one — declared, not silently omitted.",
+      "parried_state": { "frames": 56, "riposte_window": [7, 52], "fully_vulnerable": true }
+    },
+    "riposte": {
+      "available_on": { "PARRIED": [7, 52], "GUARD_BREAK": [6, 34] },
+      "animation_f": 156,
+      "ms": 2600,
+      "attacker_invulnerable": [19, 136],
+      "damage_frame": 80,
+      "stamina": 28,
+      "damage": "backstab damage * 1.50",
+      "was_pre_s22": { "animation": 78, "invuln": [10, 68], "damage_frame": 40 }
+    }
+  }
+}

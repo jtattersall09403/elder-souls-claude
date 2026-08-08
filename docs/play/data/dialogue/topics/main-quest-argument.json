@@ -1,0 +1,597 @@
+{
+  "schema": "elder-souls/dialogue-topics@2",
+  "id": "main-quest-argument",
+  "group": "main-quest-argument",
+  "owner": "W1-17 (dialogue), for W1-19's Q-MAIN-26 'The Count Itself'. Dispatched by orchestration/NEXT-DISPATCH.md §2b.",
+  "source": "RI-EXP05 LH6 (>= 12 topics, >= 4 knowledge-gated), LH7 (the antagonist is right about >= 2 independently verified things), LH8 (the game never refutes him); RI-QST02 D6 / D11 / D7; RI-DLG01 §A (one topic, many filtered answers, first-match-wins, AddTopic edges); RI-DLG04 §E (disposition bands); RI-CHR02 §5 (race gates what people will discuss); ARBITRATION §1 (dialogue is Morrowind's) and S8 (no markers — directions are prose).",
+  "key_legend_ref": "topics/00-roots.json §key_legend",
+  "hand_authored": true,
+  "generated_by": null,
+  "do_not_regenerate": "Every line in this file is hand-written. No generator in tools/ may target it. Nine quest routes were lost to a regeneration once already; tools/check-content.mjs exists because of that and this file is on the same footing.",
+  "what_this_is": "The climax of the main quest is a conversation and this file is the conversation. Ixtu-Meer is a Saxhleel clerk who has kept a ledger under the Stone Wastes for four hundred years. He does not hide, he does not fight, he does not lie, he answers everything he is asked except one question, and he tells the player — unprompted, in detail — how to open the thing he has spent his life keeping shut. Two of the game's six endings are unreachable without this conversation, and neither of them requires a weapon.",
+  "voice_note": "Speaker slot `rootkeeper` (RI-DLG06 §B row 1 — the zealot/law-enforcer fingerprint: long sentences, impersonal passive, agency placed in an institution rather than in the speaker, address form `supplicant`). He is not clergy, but the fingerprint is exactly right for him and was chosen deliberately: a man who has spent four centuries removing himself from his own sentences. `w_entry` runs long against the archetype target of 20-30 — deliberately, and only here. This is the game's Dagoth Ur conversation; RI-DLG08 §tonal range permits the climax to be the longest thing in the corpus and Morrowind's own final argument is longer than any other INFO in Morrowind.",
+  "prose_register_exemption": {
+    "questions": "Ixtu-Meer answers; he does not interrogate. He has been alone under the Stone Wastes for four hundred years and the player is the first person to ask him anything. A speaker who put questions back to the player here would be a different character, and the two endings this conversation unlocks both turn on him NOT asking anything of you.",
+    "exclamations": "See voice_note: RI-DLG06 section B row 1, impersonal passive with the agency placed in an institution rather than in the speaker. Four hundred years underground is the characterisation; an exclamation mark anywhere in this file would be the loudest thing in the game and would land on the wrong line.",
+    "contractions": "The same note. He is a clerk who has spent four centuries removing himself from his own sentences, and the uncontracted register IS that removal. This file is the corpus-wide contraction undershoot's most defensible instance, not an example of it.",
+    "andopen": "Sentence-initial And/But/So is a spoken-cadence marker and this speaker has had no one to speak to. The long subordinated periods are the point; see voice_note on w_entry running deliberately long against the archetype target, permitted for the climax alone by RI-DLG08 section tonal range."
+  },
+  "prose_register_exemption_note": "Read tools/check-prose.mjs EXEMPTIBLE before adding to this. Only questions/exclamations/contractions/andopen can ever be waived; `sting`, `fragopen` and the tic list are NOT waivable from here and were fixed in the prose rather than declared away — this file's four closing stings and six house-cadence tics were rewritten by W1-PROSE-R2's successor, not exempted.",
+  "how_the_offer_is_filtered": {
+    "speaker": "ixtu-meer (game/data/npcs/mainline.json) — race saxhleel, reaction_group RG-DEEP, actor rootkeeper, base disposition 50.",
+    "derived_disposition_worked": "RG-DEEP race term + upbringing term, on base 50 (game/data/progression/race-reactions.json, applied by character/reaction.js derivedDisposition and installed on the quest offer gate by engine.js _questDispositionModel): interior Saxhleel 74; interior Naga 66; lukiul Saxhleel 48; blackrose Khajiit 36; foreign-born Nord 30; foreign-born Imperial 24; interior Dunmer 20; lukiul Nord 18; lukiul Imperial 12; foreign-born Dunmer 6; lukiul Dunmer 0.",
+    "so": "The bands below are not decoration. An interior-raised Saxhleel gets the d60 answer to nine of the twelve topics. An assimilated Dunmer gets the ungated answer to all of them and is refused the Recension outright, because res_press_him_on_the_clause carries `requires: {disposition: 20}` and gate.js canResolve() enforces it. The gap between an interior Dunmer and a lukiul Dunmer is 26 points and it lands exactly on that threshold.",
+    "what_a_low_standing_character_still_gets": "Everything that decides an ending. `how-the-count-opens` carries NO disposition floor and no race gate at any tier, because he would rather it were done properly than badly by anyone at all, and because gating the non-violent route on standing would make the game's kindest ending a privilege. What standing buys is his reasons, not his method."
+  },
+  "the_twelve": [
+    "the-steward-of-the-count — the entry. Q-MAIN-26 opens_by.topic. Five race/upbringing answers; he places you before you place him.",
+    "the-count-itself — what the reservoir is, and (d30) the two surviving texts that disagree about what it was cut for. UA-02; answered by evidence rather than by an answer.",
+    "the-chain-on-the-wall — KNOWLEDGE-GATED. Forty-three keepers, Vei-Anaat above him, the earliest names cut rather than written. Seeds res_take_his_place by making succession an ordinary procedure rather than a twist.",
+    "the-allowance — the ledger, and his case, made in arithmetic. The wells give because he lets an allowance past.",
+    "the-three-things-i-checked-myself — KNOWLEDGE-GATED on all three verified-claim flags. LH7: he does not argue, he asks what you found and agrees with it. This is the only topic in the game where the antagonist is handed the player's own proof.",
+    "why-it-is-filling-now — the refusal. He gives an answer, sees it is not believed, and declines to try a second time. Journal 44.",
+    "how-the-count-opens — rev_how_the_count_opens. The method, in prose, ungated at every tier. This topic alone unlocks res_hear_him_out, res_open_the_count and res_take_his_place.",
+    "the-ninth-clause-of-the-drowned-tally — KNOWLEDGE-GATED on carrying Bel Mourne's gapped copies, and disposition-banded at 20. Above the line: rev_he_never_wrote_the_recension, which settles nothing. Below it: a refusal that says what it is declining and why.",
+    "the-sill — Q-MAIN-27 opens_by.topic. The step, and the sentence about it he has never been able to resolve.",
+    "the-opening-of-the-count — Q-MAIN-28 opens_by.topic. The three accounts of what opening it does, which do not agree; and, for a player who has not been down to the counting floor, the directions there in prose.",
+    "whose-count-are-you — UA-03, the question the antagonist asks about the player. Five answers by upbringing and race, none of them an answer.",
+    "what-does-the-marsh-owe-you — KNOWLEDGE-GATED on carrying Ashul-Tei's question. Journal 52. The only thing anyone has asked him in four hundred years that was not about the machine, and the journal declines to write down what he said, so this text is the only place it exists."
+  ],
+  "knowledge_gated": {
+    "count": 4,
+    "bar": "RI-EXP05 LH6 requires >= 4 topics unlocked by things learned elsewhere.",
+    "topics": {
+      "the-chain-on-the-wall": [
+        "player_heard_the_eleven_keepers",
+        "approach_through_the_third_bay"
+      ],
+      "the-three-things-i-checked-myself": [
+        "player_knows_the_curve_is_older",
+        "player_proved_the_wells_drink_the_overflow",
+        "player_knows_the_gem_trade_cannot_account_for_the_curve"
+      ],
+      "the-ninth-clause-of-the-drowned-tally": [
+        "player_carries_the_gapped_copies"
+      ],
+      "what-does-the-marsh-owe-you": [
+        "player_carries_ashul_teis_question"
+      ]
+    },
+    "none_of_these_carries_an_ungated_info": "A player who did not do the work is not offered the subject. The other side of each gate is written where it belongs — `the-opening-of-the-count` carries a `forbids.knows` info in which he sends a player who has not met the keepers back down to meet them, in prose, with no marker, which is the S8 form of a signpost."
+  },
+  "how_this_conversation_is_lost": [
+    "Kill him. `fail_killed_him_first` fires if he dies before journal index 20, it is not recoverable, and it takes rev_how_the_count_opens with it — which removes res_hear_him_out, res_press_him_on_the_clause, res_open_the_count and res_take_his_place. Two of the four Act V endings and both non-violent uses of the reservoir stop existing. The Count can still be opened from the working parts, badly, and Q-MAIN-28's `fail_the_gear_jammed` is what that looks like.",
+    "Arrive as the wrong person. RI-DLG04 §A `fDispWeaponDrawn` is -5 and it is enough, at the margin, to put an interior-raised Dunmer under the 20 the clause needs. He says so, once, in the d-banded info on `the-steward-of-the-count`, and does not say it again.",
+    "Never go down to the counting floor. Q-MAIN-25 res_intake_stair is two hours instead of a day and a half and it is a perfectly good route, and it costs `the-chain-on-the-wall` and the keepers' half of `the-opening-of-the-count`. He will tell you what you traded and how to go back for it, and going back is possible until the sill.",
+    "Leave Bel Mourne's copies in the chapel. Q-MAIN-09 res_hold_both is the honest resolution and it does not put the three gapped copies in your pack, so `the-ninth-clause-of-the-drowned-tally` is never offered and res_press_him_on_the_clause is unavailable no matter how much he likes you.",
+    "Stand too low. Carrying the copies is not sufficient; the resolution wants disposition 20 as well. A lukiul Dunmer sits at 0 and gets the refusal, and the refusal names what it is refusing.",
+    "Take the wrong one first. res_hear_him_out and res_press_him_on_the_clause are `exclusive_with` each other. Closing the conversation on the one you had is how you find out you cannot have the other."
+  ],
+  "no_refutation_audit": "RI-EXP05 LH8 is a hard fail on one authored refutation. Checked line by line across this file: no info asserts he is wrong. He is contradicted by nobody here; he agrees with the player's arithmetic where the player did it, declines where he cannot answer, and states the one fact about the Recension that serves both sides of the argument equally. The only reply the game makes to his case is what the player does on the reservoir floor. game/data/quests/mainline.json antagonist.refutation_audit names this file by path and this note is the audit it was asserting.",
+  "topics": [
+    {
+      "id": "the-steward-of-the-count",
+      "quest": "Q-MAIN-26",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ],
+            "upbringing": [
+              "interior"
+            ]
+          },
+          "d": 60,
+          "x": "Sit down. Root and river, and it is ninety years since anyone said it to me in that order; the last one who did was carrying a lamp and did not stay. I am the Steward of the Count. No living hand gave me the title, and I have never established who gave it to the woman before me, and you may take that as the shape of the whole business before we start on the details.",
+          "to": [
+            "the-count-itself",
+            "the-allowance",
+            "the-chain-on-the-wall",
+            "whose-count-are-you"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "x": "Sit down, supplicant. You came out of the water and you were not raised at it — the vowels are wrong, and I am four hundred years out of practice at hearing anything, so they must be very wrong indeed. That is not held against you here. It is only that you have been counted twice, once by the pool and once by an office, and I have spent my whole life on what becomes of a thing that is counted twice by two people who do not speak.",
+          "to": [
+            "the-count-itself",
+            "the-allowance",
+            "whose-count-are-you"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          },
+          "x": "Sit down, supplicant. You are Chimer-get, and the word for your people has been changed twice while I have been at this desk, so you will forgive me if I reach for an old one. Whatever is between us is four centuries out of date. I am told the current version is a great deal worse than the one I remember, and I am not going to pretend to an opinion I have not earned. Put the blade down where I can see it and we will get on faster; it is not fear, it is arithmetic, and you will find that everything down here is.",
+          "to": [
+            "the-count-itself",
+            "the-allowance",
+            "whose-count-are-you"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga",
+              "dunmer"
+            ]
+          },
+          "x": "Sit down, supplicant. You are a warmblood and you have come a very long way down, and neither of those is held against you here — nothing is held against a soul here, which is the whole difficulty with the place, and it took me two hundred years to notice it. I wrote the letter you are carrying. I am glad it was read. Before anything else I would like to know whether Ashul-Tei is well.",
+          "to": [
+            "the-count-itself",
+            "the-allowance",
+            "whose-count-are-you"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "I am the Steward of the Count. I wrote the letter you are carrying and I am glad it was read, and before anything else I would like to know whether Ashul-Tei is well. After that you may ask me whatever you came down to ask, in any order, and I will answer it. There is a chair. We have time; time is the only thing kept down here in any quantity.",
+          "to": [
+            "the-count-itself",
+            "the-allowance",
+            "whose-count-are-you"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-count-itself",
+      "quest": "Q-MAIN-26",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "d": 60,
+          "x": "You will want to know whether it is a shrine, and it is shaped like one: there is a bay in the working parts with a step worn hollow in front of it and nothing whatever in the bay to kneel to. Reverence or fear. Two texts survive that say what the room was cut for and they do not agree, and I have read both more times than either deserves — one has it cut so that what was owed to Sithis could be counted properly before it was given up, the other so that it could not be given up at all. Say the Wastes' sentence to yourself. What is held is not lost. Then say the half that does not get said: what is held is not returned. Both were cut into this floor by the same hand and I have never got a third opinion out of a living soul.",
+          "to": [
+            "why-it-is-filling-now",
+            "how-the-count-opens",
+            "the-chain-on-the-wall",
+            "the-house-under-the-wastes"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "d": 60,
+          "x": "Reverence or fear. Two texts survive that say what this room was cut for and they do not agree, and I have read both of them more times than either deserves. One has it cut in reverence, so that what was owed to Sithis could be counted properly before it was given up. The other has it cut in fear, so that it could not be given up at all. It is the same room in both accounts and the same water, and in four hundred years no third opinion has arrived, and I am not one — I am only the person who has been here longest.",
+          "to": [
+            "why-it-is-filling-now",
+            "how-the-count-opens",
+            "the-chain-on-the-wall",
+            "the-house-under-the-wastes"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "A floor was cut under the Wastes to catch what the roots do not catch. Below the roots there is no root, supplicant; whatever misses goes down and keeps going, and a hand four thousand years ago decided that this was not to be permitted and put a floor across the bottom of it. It has been catching ever since. I did not build it. I have never met a soul who met a soul who did, and the chain of us is long enough that this should tell you something.",
+          "to": [
+            "why-it-is-filling-now",
+            "how-the-count-opens"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "It is a room that catches what falls past the roots, and it is very large, and it is nearly full. I am not going to make more of it than that standing up. If you want the rest of it you will have to sit, and you will have to be willing to be here a while.",
+          "to": [
+            "how-the-count-opens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-chain-on-the-wall",
+      "quest": "Q-MAIN-26",
+      "knowledge_gated": true,
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_heard_the_eleven_keepers",
+              "approach_through_the_third_bay"
+            ]
+          },
+          "d": 60,
+          "x": "Vei-Anaat gave me the work and did not ask whether I wanted it, and I did not ask her the question either, and it has been done that way every time. Her name is above mine and there are forty-one above hers, and above those the wall stops being written and starts being cut. You have heard the keepers below tell you what year they think it is. Set their answers down in the order they gave them to you and you will have read this wall from the bottom. It has never once been read in the other direction. You will find that the disagreements are in the right places.",
+          "to": [
+            "the-allowance",
+            "whose-count-are-you",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_heard_the_eleven_keepers",
+              "approach_through_the_third_bay"
+            ]
+          },
+          "x": "Forty-three names. Mine is the last of them and the earliest are cut rather than written, which means they were made by people who expected the list to outlast the ink trade. Vei-Anaat handed the work to me; a hand gave it to her; not one of the forty-three has ever been able to say who began it, and every one of us wrote that down, and the sentence is very nearly the same in all forty-three hands. It is the only thing in this room that has ever frightened me.",
+          "to": [
+            "the-allowance",
+            "whose-count-are-you",
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-allowance",
+      "quest": "Q-MAIN-26",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 60,
+          "x": "Here is the ledger and you may take it to the light. The eleven intakes bring it down; the sill-gate lets a measured part of it back out into the root water; the roots drink what is let past and the wells give because of it. That is the arrangement and it is the whole of my work — I do not make souls and I bar no soul from anything. I decide, four times a year, how much goes back, and I write down why, and forty-two people wrote down why before me. The province has been drinking my handwriting for four hundred years and has never once been told.",
+          "to": [
+            "the-three-things-i-checked-myself",
+            "why-it-is-filling-now",
+            "how-the-count-opens"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "The wells give because an allowance is let past. Close the sill-gate entirely and every well in the province goes cold within the season, and I can show you the year it was tried and the hand of the man who tried it and what he wrote at the end of it. Open it entirely and the wells will have all of it at once and then have nothing, ever, because there will be nothing left to allow. Between those two there is a number, and the number is my work, and it is not a large number and it has never been a comfortable one.",
+          "to": [
+            "the-three-things-i-checked-myself",
+            "why-it-is-filling-now",
+            "how-the-count-opens"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "An allowance is let past and the wells drink it. That is the arrangement. It is written in the ledger on the table in a hand you have been reading since the Court's fourth volume, and you are welcome to check my addition, and I would rather you did than took my word.",
+          "to": [
+            "the-three-things-i-checked-myself",
+            "how-the-count-opens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-three-things-i-checked-myself",
+      "quest": "Q-MAIN-26",
+      "knowledge_gated": true,
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows_all": [
+              "player_knows_the_curve_is_older",
+              "player_proved_the_wells_drink_the_overflow",
+              "player_knows_the_gem_trade_cannot_account_for_the_curve"
+            ]
+          },
+          "d": 30,
+          "x": "Then tell me what you found and I will tell you where you are wrong. — You are not wrong. The curve is older than the cutting; you added four hundred years of the Tally yourself and the deficit starts eight years before the first licence, and I have that same eight and I got it from the other end. The wells drink what is let past; you shut the sixth intake with your own hand and watched a well go cold, and a man is buried for it, and I am sorry, and I would have told you not to and you would have done it anyway because you would not have believed me. The gem trade is too small; you counted the tonnage on the quay at Archon. Three things, and you brought all three of them down that stair yourself, and I did not have to tell you any of them. So I am not going to argue with you about any of it.",
+          "to": [
+            "why-it-is-filling-now",
+            "how-the-count-opens",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows_all": [
+              "player_knows_the_curve_is_older",
+              "player_proved_the_wells_drink_the_overflow",
+              "player_knows_the_gem_trade_cannot_account_for_the_curve"
+            ]
+          },
+          "x": "You have done the work. I can tell from the order you asked things in. Three of the things you are carrying are true and I did not give you any of them, and I want that noted, supplicant, because all who come down here expect to be lied to and then finds that the lying would have been unnecessary.",
+          "to": [
+            "why-it-is-filling-now",
+            "how-the-count-opens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "why-it-is-filling-now",
+      "quest": "Q-MAIN-26",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "It has always been filling. What has changed is that there are enough of you now to notice. — No. You have that face. I said it, you did not believe it, and you are right not to, and I am not going to say the same thing again in different words to see whether the second version takes. I will not answer that one. Ask me anything else and I will answer it properly. You may write down that I refused, and you may write down that I did not pretend to have a reason for refusing, because I would rather be recorded as a man who declined than as a man who explained.",
+          "to": [
+            "how-the-count-opens",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "It was always filling. The province has grown enough to notice, and no more than that. — You do not believe that. Good. I will not put it to you a second time and I am not going to answer the question, and those are two different sentences and I would like you to keep them apart.",
+          "to": [
+            "how-the-count-opens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how-the-count-opens",
+      "quest": "Q-MAIN-26",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "You will want this and I would rather you had it properly than went at it with a bar. The gear is at the far end of the floor where the eleven come together, and it was built to be worked by one pair of hands because one pair is all there has ever been. Walk the counterweight up; do not drop it, it is not a counterweight for dropping and the man who found that out is on the wall. Shut the eleven intakes in the ledger's order, six and then five, and the sixth last of the first six — the order is not decoration, it is the order they silt in. Then the sill-gate a quarter turn, and leave it a full hour, and go and sit down where you cannot reach it. After the hour, the rest of the turn. Ivo Sarn's flow tables give you the same order from the other end if you would rather trust arithmetic than an old man, and I would.",
+          "to": [
+            "the-sill",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "I will tell you again and I will tell you shorter, because I would rather you did it properly than badly, and because I have watched it done badly. Counterweight walked up, never dropped. The eleven shut in the ledger's order — six, then five, and the sixth last of the first six. Sill-gate a quarter turn, one hour, and your hands off it for the whole hour. Then the rest of the turn. Take it whole or take it in the wrong order and the gear jams half open and it bleeds at a rate that was not chosen, and you will be climbing back out of that room looking for something to lever it with. The room will let you climb out. It will still be bleeding when you come back down.",
+          "to": [
+            "the-sill",
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ninth-clause-of-the-drowned-tally",
+      "quest": "Q-MAIN-26",
+      "knowledge_gated": true,
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_carries_the_gapped_copies"
+            ]
+          },
+          "d": 20,
+          "x": "Put them down where the light is and give me a moment; I read slowly now and I read everything. — Yes. The gap is real. The eighth ends and the ninth begins and there is a seam, and whoever closed it was in a hurry or was very tired, and I have made that seam myself in my own books and I know what it looks like from the inside. Now I will tell you the one thing I have, and it is going to disappoint you. I have been in the margins of the Drowned Tally for three hundred years. I have corrected the return column of the fourth volume in four different hands, because I have outlived four of my own. I have never written in the Recension. Not this one; not the seventh; not a fair copy, not a marginal note, not a single figure. If the clause was made, it was not made down here, and I am the only person who could have made it down here. It is the whole of what I have, and I am sorry it is not more, and you will notice that it serves either argument exactly as well as the other.",
+          "to": [
+            "whose-count-are-you",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_carries_the_gapped_copies"
+            ]
+          },
+          "x": "You are carrying three copies of a book belonging to a court I have never stood in, and you have brought them down four thousand feet because you want a fourth opinion that ends the argument. I am going to decline, and I would like you to understand what I am declining. It is not that I think you a liar. It is that I do not know yet what you would do with the answer, and every other person who has come down that stair was at least a person I could have found out about afterwards. Ask me the other things. I will answer all of them and I will not make you ask twice.",
+          "to": [
+            "whose-count-are-you",
+            "how-the-count-opens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-sill",
+      "quest": "Q-MAIN-27",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "Through the arch at the far end and down eleven steps. There is a cut stone across the bottom of the arch, about as high as your ankle, worn hollow in the middle where four thousand years of feet have gone over it. It is a step. Everyone who has gone over it has come back up, and I have never been able to establish whether that is because the room lets them or because none of them did anything, and I have had a long time to think about it and no way at all to test it.",
+          "to": [
+            "the-opening-of-the-count",
+            "how-the-count-opens"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "The arch at the far end, eleven steps down, and a cut stone across the bottom of it at ankle height. It is a step and it is worn in the middle. It is nothing beyond that, and I notice that everyone stands in front of it a good deal longer than a step is worth.",
+          "to": [
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-opening-of-the-count",
+      "quest": "Q-MAIN-28",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_heard_the_eleven_keepers"
+            ]
+          },
+          "d": 30,
+          "x": "Then you have heard two of the three accounts and you should have mine plainly. The keepers below think that opening it drowns the roots — four thousand years at once, and the roots take what they can hold and burst on the rest. The Court thinks the tide simply resumes and the province wakes up. I think both of them are describing the same hour and disagreeing about the morning after it, and I think the wells will work afterwards and will not work the way they did, and I have been wrong before about smaller things than this. Three accounts, supplicant, and not one of us has ever seen it done, and it is not going to be settled for you. I was the last person who might have and I have just declined.",
+          "to": [
+            "how-the-count-opens",
+            "whose-count-are-you"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "forbids": {
+            "knows": [
+              "player_heard_the_eleven_keepers"
+            ]
+          },
+          "d": 30,
+          "x": "Before you ask me that you should go and hear the ones who will have to live in the answer. Back through the arch, along the gallery, and take the long lit way rather than the stair through the working parts — the eleven bays are all off it, there is a keeper in each of them, and not one will refuse you. It costs you a day and a half and you will not get it back, and I would spend it. Then ask me again, and I will tell you where I differ from them, and you will be able to hear that I am differing rather than deciding.",
+          "to": [
+            "how-the-count-opens",
+            "the-sill"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "There are three accounts of what opening it does and they do not agree, and mine is only one of them and is not improved by being the oldest. I believe the wells will give afterwards and will give less, permanently, everywhere, and that the province will call that a failure for about a generation and then stop calling it anything. I may be wrong. I would like to be wrong in the direction that is kinder and I have no reason to think the room cares which direction that is.",
+          "to": [
+            "how-the-count-opens",
+            "whose-count-are-you"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "forbids": {
+            "knows": [
+              "player_heard_the_eleven_keepers"
+            ]
+          },
+          "x": "Ask the keepers first. The long lit gallery, not the stair through the working parts; there is one of them in each of the eleven bays and they will all talk. Come back when you have heard them and I will tell you where I differ.",
+          "to": [
+            "how-the-count-opens",
+            "the-sill"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "Three accounts and they disagree, and mine is the oldest and that is the only thing to recommend it. None down here has seen it done. None above ground has either. You are going to have to decide this on a disagreement. Everyone who has ever done anything has had to do the same.",
+          "to": [
+            "how-the-count-opens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whose-count-are-you",
+      "quest": "Q-MAIN-26",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ],
+            "upbringing": [
+              "interior"
+            ]
+          },
+          "x": "There is a count being kept on you. Your clutch keeps one and will keep it whether or not you ever go back, and there is a rootkeeper who could tell me your egg-year without looking it up, and the Court has opened a column for you and is filling it, and I do not think you have asked either of them what the column is for. I am not accusing you of anything, supplicant. I am telling you that I have spent four hundred years being a column in another's book and I recognise the handwriting.",
+          "to": [
+            "what-does-the-marsh-owe-you",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "x": "There is a count being kept on you, and in your case there are two of them and they use different hands. The pool has you under one name and an office has you under a shorter one, and the office's copy is the one that travels. That is not a small thing and you will never be told it is happening. You have never asked whose count you are. Every one who comes down that stair belongs to a count, and the ones who do not know it belong to two.",
+          "to": [
+            "what-does-the-marsh-owe-you",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          },
+          "x": "There is a count being kept on you. A House keeps one whether you have ever stood in its hall or not — a House is a ledger with soldiers — and the Court has opened a column for you and is filling it in a hand I could identify from here. You have not asked either of them what the column is for, and you are not going to, and I would like you to notice that you are not going to.",
+          "to": [
+            "what-does-the-marsh-owe-you",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "upbringing": [
+              "foreign-born"
+            ]
+          },
+          "x": "There is a count being kept on you, and it is not being kept where you can read it, and it is not being kept in this province. You crossed a border and a page was started and you have never seen the page. The Court has opened a second one and thinks it is the first. I ask everyone this and I have never had an answer and I do not expect one from you; I only want you to have been asked once by a man who had nothing to gain by it.",
+          "to": [
+            "what-does-the-marsh-owe-you",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "Whose count are you? — There is one being kept on you. That is not a threat and it is not a riddle; it is the ordinary condition of any person who has been sent anywhere by any office, and you have been sent here. You have never once asked who is keeping it. Eleven people have come down that stair in four hundred years and I have put this to all eleven and not one of them had an answer, and I want you to understand that I am not being clever. It is the only question I have that is not about the machine.",
+          "to": [
+            "what-does-the-marsh-owe-you",
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what-does-the-marsh-owe-you",
+      "quest": "Q-MAIN-26",
+      "knowledge_gated": true,
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_carries_ashul_teis_question"
+            ]
+          },
+          "d": 30,
+          "x": "Say it again. — Ashul-Tei sent that. I have never met her and she is the first person in four hundred years to ask me anything that was not about the machine, and I am going to need a moment, and you are going to have to sit through it. — Nothing. That is the answer and it is not modesty. A thing that is owed can be counted, and I have counted everything down here that can be counted, and I am not on any of the lists; I checked, early on, when I still thought that was the sort of thing that got put right. I would have liked a season. Not a life — a season. One season above the ground with nothing held, and a voice to say afterwards that I had been away and had come back. There is no arrangement under which the marsh could give me that, because the arrangement is that one of us is always here. So: nothing. Tell her nothing. Tell her it took me a very long time to arrive at it. Tell her I did not mind arriving.",
+          "to": [
+            "the-chain-on-the-wall",
+            "the-opening-of-the-count",
+            "how-the-count-opens"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "requires": {
+            "knows": [
+              "player_carries_ashul_teis_question"
+            ]
+          },
+          "x": "Ashul-Tei asked that. That has not been asked of me. — Nothing. The marsh owes me nothing and I have checked, and a thing that is owed can be counted and I am not on any of the lists. Do not look like that. It is the first restful answer I have had out of my own arithmetic in three hundred years and I would not trade it for a better one.",
+          "to": [
+            "the-chain-on-the-wall",
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    }
+  ],
+  "engine_notes": {
+    "topic_ids": "Slug form, matching the 313 topic ids already in game/data/dialogue/topics/ and matching hooks.json's entry_topics AddTopic edges. `the-steward-of-the-count`, `the-sill` and `the-opening-of-the-count` are also the `opens_by.topic` of Q-MAIN-26 / 27 / 28, which the quest files write in space form ('the steward of the count'); game/src/core/topics.js folds the two forms to one key so the dialogue index, the NPC records and the quest gates all join.",
+    "speaker": "Every info carries `a: \"rootkeeper\"`, which is ixtu-meer's actor slot. converse.js infoFor() will not hand an info written for one actor to another mouth, so nothing in this file can be spoken by anyone else.",
+    "filters_used": "`requires.race`, `requires.upbringing`, `forbids.race`, `forbids.knows`, `requires.knows` (any-of), `requires.knows_all` (all-of), `d` (disposition >= N). All seven are read by character/converse.js infoAllowed(); `d`, `requires` and `forbids` are also in tools/dialogue/build-graph.mjs's filter set for the unreachable-INFO lint.",
+    "converges_with_the_library": "Both d60 answers to `the-count-itself` carry an AddTopic edge to `the-house-under-the-wastes`, which is the subject of the two incompatible accounts in game/data/books/deep-time.json (`the-house-built-in-reverence`, `the-house-built-in-fear`). He says two texts survive and disagree; the player can go and read both of them and find that he is right and that it does not help. RI-DLG01 §B property 2 — two independent paths reaching the same node is what stops a topic web being a tree.",
+    "ordering": "Most-constrained first in every topic, per RI-DLG01 §A's authoring convention, so that no info in this file is shadowed by an earlier looser one. converse.js additionally scores specificity, so the two agree."
+  }
+}

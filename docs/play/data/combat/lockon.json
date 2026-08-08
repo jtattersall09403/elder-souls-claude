@@ -1,0 +1,125 @@
+{
+  "schema": "elder-souls/lockon@1",
+  "id": "ES-LOCK/1",
+  "unit": "f@60",
+  "owner": "RI-CMB06 \u00a7A/\u00a7B/\u00a7C/\u00a7D/\u00a7E; camera containment law RI-CAM03",
+  "acquisition": {
+    "range_m": 14.0,
+    "cone_horizontal_deg": 40,
+    "cone_vertical_deg": 30,
+    "line_of_sight_required": true,
+    "los_ray": "camera node -> target chest node",
+    "break_range_m": 18.0,
+    "los_grace_frames": 30,
+    "break_on_target_death": "on the target's death frame",
+    "auto_reacquire": false,
+    "auto_reacquire_rationale": "Auto-hopping to the next enemy is FORBIDDEN: it steals the player's decision at the most dangerous moment of a group fight.",
+    "break_on": [
+      "player death",
+      "rest at a Hist-stump",
+      "cutscene",
+      "area transition"
+    ],
+    "manual_toggle": "lock button press to acquire nearest valid; press again to release",
+    "valid_targets": "hostile, alive, not DORMANT, not a friendly NPC. Merchants and quest actors are NEVER lockable \u2014 ARBITRATION \u00a71 keeps the world Morrowind's.",
+    "selection_score": "angle_from_camera_forward_deg + 2.0 * distance_m, minimised",
+    "switch": {
+      "stick_displacement_min": 0.6,
+      "screen_direction_cone_deg": 55,
+      "cooldown_frames": 12,
+      "forbidden_during_committed_animation": true
+    }
+  },
+  "camera": {
+    "_source": "RI-CMB06 \u00a7B; the containment law is RI-CAM03",
+    "aim_point": "lerp(player_chest, target_chest, 0.35) + (0, 0.25, 0)",
+    "yaw_spring_half_life_s": 0.12,
+    "pitch_spring_half_life_s": 0.18,
+    "boom_near_m": 3.6,
+    "boom_near_at_target_dist_m": 4.0,
+    "boom_far_m": 5.2,
+    "boom_far_at_target_dist_m": 14.0,
+    "boom_collision_radius_m": 0.28,
+    "boom_min_m": 0.9,
+    "vertical_framing_band": [
+      0.38,
+      0.62
+    ],
+    "right_stick_while_locked": "ignored for camera; used for target switching only",
+    "fov_change_on_lock": 0,
+    "max_camera_yaw_rate_dps": 420,
+    "never_teleports": "On acquisition the camera SPRINGS from its current orientation. No cut, no snap, no instant look-at.",
+    "containment_law": {
+      "source": "RI-CAM03",
+      "requirement": "both combatants stay framed",
+      "implementation": "the aim point is a 0.35 lerp toward the target rather than the target itself, and the boom lengthens with target distance, so the player's own body and the target both project inside the frame. The trace emits `both_framed` per frame, computed by projecting both chest nodes through the camera basis and testing the normalised screen box, so the law is MEASURED rather than asserted."
+    }
+  },
+  "directional": {
+    "_source": "RI-CMB06 \u00a7C",
+    "no_lock_move": "camera-relative: dir = cam.right * stick.x + cam.forward * stick.y; character turns to dir at <= 720 deg/s",
+    "no_lock_roll": "dir as above, latched on frame 1; if stick == 0, backstep; facing snaps to dir on roll frame 1",
+    "locked_move": "TARGET-RELATIVE: forward = tgt, right = tgt x up; facing held on the target",
+    "locked_roll_stick_ge_0_5": "TARGET-RELATIVE, latched on frame 1, QUANTISED TO 8 DIRECTIONS (45 deg bins); facing held on the target for the whole roll",
+    "locked_roll_stick_lt_0_5": "backstep, directly away from target; facing held on the target",
+    "locked_sprint": "camera-relative; character faces travel direction; lock RETAINED and the camera stays framed on the target",
+    "locked_sprint_released": "returns to target-relative strafing within 6 frames; re-faces target at <= 720 deg/s",
+    "load_bearing_row": "A LEFT ROLL UNDER LOCK CIRCLES THE TARGET. It does not move toward camera-left and it does not move toward world -X. The player's mental model is polar coordinates centred on the enemy.",
+    "quantise_bins_deg": 45,
+    "stick_threshold": 0.5,
+    "speed_multipliers": {
+      "forward": 1.0,
+      "diagonal_forward": 0.92,
+      "lateral": 0.85,
+      "diagonal_back": 0.78,
+      "backward": 0.7
+    },
+    "roll_distance_is_not_directional": "A lateral roll under lock covers the same distance as a forward roll. Only walk/run speed is directional."
+  },
+  "soft_lock": {
+    "_source": "RI-CMB06 \u00a7D \u2014 the rule that decides whether spacing is a skill",
+    "frame_1_snap": "instant, one frame, both locked and soft-locked",
+    "unlocked_radius_m": 4.0,
+    "unlocked_cone_deg": 30,
+    "steering_schedule": [
+      {
+        "frames": "2 .. 0.40*startup",
+        "yaw_rate_dps": 180
+      },
+      {
+        "frames": "0.40*startup .. 0.80*startup",
+        "yaw_rate_dps": 45
+      },
+      {
+        "frames": "0.80*startup .. end",
+        "yaw_rate_dps": 0
+      }
+    ],
+    "steering_during": {
+      "roll": 0,
+      "backstep": 0,
+      "heal": 0,
+      "stagger": 0,
+      "critical": 0
+    },
+    "worked_ultra_greatsword_r1": {
+      "startup_f": 58,
+      "note": "RI-CMB06 \u00a7D's worked example predates the S22 rebase and cites 29 startup frames; the rebased UGS R1 startup is 58 f@60. The ANGULAR BUDGET is what the rule is about and it is invariant: 180 deg/s over frames 2..23 (22 f = 0.367 s) gives 66.0 deg, and 45 deg/s over frames 24..46 (23 f = 0.383 s) gives 17.3 deg. Pre-rebase the same rule gave 33 deg + 8.3 deg over half the wall clock. The TIME doubled, so the ANGLE doubles too \u2014 a player strafing at a fixed angular rate is missed by the same margin, which is the invariance the rule wants. Total post-snap correction: 83.3 deg over 0.75 s = the same 111 deg/s average as before.",
+      "corpus_figure_pre_rebase": "41.3 deg over 29 f"
+    },
+    "steering_is_rate_limited_not_lookAt": "Steering is toward the target's CURRENT position each frame, but rate-limited. It never exceeds the caps no matter how far the target has moved.",
+    "global_cap_deg": 45.0,
+    "cutoff_formula": "b1 = ceil(0.40*W); Tc = min(floor(0.80*W), W - 8); frames 2..b1 <= 180 deg/s, b1+1..Tc <= 45 deg/s, Tc+1..end = 0 deg/s",
+    "cutoff_source": "RI-CAM04 \u00a7D \u2014 the reconciliation of RI-CMB06 \u00a7D's band fractions with RI-AI02 \u00a7C's hard rule Tc <= W-8 and its total-yaw budget, applied to the PLAYER. The 45 deg cap makes the player stricter than any enemy in the game (AI02 allows trash 60, elites 90, bosses 100), which is deliberate: the player has a camera, a lock-on and a stick."
+  },
+  "forbidden": {
+    "_source": "RI-CMB06 \u00a7E",
+    "enlarge_hitboxes_or_hurtboxes": "no aim assist, ever",
+    "increase_damage_poise_or_reach": "lock is a camera and input mode, not a buff",
+    "auto_face_during_active_or_recovery": "yaw is frozen; the swing goes where it was aimed",
+    "slow_time_or_ease_enemy_timing": "never",
+    "auto_hop_on_target_death": "never",
+    "prevent_walking_off_a_ledge": "lock does not restrict movement",
+    "persist_through_rest_death_or_area_transition": "never"
+  }
+}

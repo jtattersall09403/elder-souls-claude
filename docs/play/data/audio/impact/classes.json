@@ -1,0 +1,2722 @@
+{
+  "id": "impact-classes",
+  "schema": "elder-souls/impact-audio@1",
+  "spec": "RI-AUD01 §A (twelve resolution classes), §C (the gain table)",
+  "owner": "W1-11 — audio.combat.impact",
+  "note": [
+    "Every class is SYNTHESISED. There is not one sampled audio asset in this repository and",
+    "RI-AUD02 §D is a budget document, so thirteen megabytes of impact samples were never an",
+    "option. The consequence is better than the constraint: a synth spec can be PERTURBED and",
+    "the change heard in a rendered buffer, which is what RI-MTH07 asks of a model and what an",
+    "opaque .wav can never provide.",
+    "The dry peak of every class is measured through the live gain path and normalised to",
+    "peak_dbfs by norm_db. That single place is the mix bus RI-AUD02 \"How we lose\" #7 names."
+  ],
+  "buses": [
+    "sfx",
+    "music",
+    "ambience",
+    "voice",
+    "ui"
+  ],
+  "classes": {
+    "hit_flesh_light": {
+      "code": "C01",
+      "mandatory": true,
+      "trace_event": "HIT",
+      "brief": "Wet, short, low-mid body (200-800 Hz), fast decay <120 ms",
+      "not_confusable_with": [
+        "hit_chitin_light",
+        "whiff"
+      ],
+      "peak_dbfs": -8,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "hit_flesh_light.v1",
+          "norm_db": 2.14,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -9,
+              "filter": {
+                "type": "bandpass",
+                "hz": 765,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.0015,
+                "decay_s": 0.0413
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 184.8,
+              "glide_hz": [
+                228.8,
+                105.6
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.1003
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -14,
+              "filter": {
+                "type": "lowpass",
+                "hz": 527,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.1121
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_flesh_light.v2",
+          "norm_db": 2.16,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -9,
+              "filter": {
+                "type": "bandpass",
+                "hz": 855,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.0015,
+                "decay_s": 0.0371
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 201.6,
+              "glide_hz": [
+                249.6,
+                115.2
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0901
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -14,
+              "filter": {
+                "type": "lowpass",
+                "hz": 589,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.1007
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_flesh_light.v3",
+          "norm_db": 2.19,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -9,
+              "filter": {
+                "type": "bandpass",
+                "hz": 945,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.0015,
+                "decay_s": 0.0329
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 218.4,
+              "glide_hz": [
+                270.4,
+                124.8
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0799
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -14,
+              "filter": {
+                "type": "lowpass",
+                "hz": 651,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0893
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_flesh_light.v4",
+          "norm_db": 2.17,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -9,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1035,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.0015,
+                "decay_s": 0.0287
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 235.2,
+              "glide_hz": [
+                291.2,
+                134.4
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0697
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -14,
+              "filter": {
+                "type": "lowpass",
+                "hz": 713,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0779
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "hit_chitin_light": {
+      "code": "C02",
+      "mandatory": true,
+      "trace_event": "HIT",
+      "brief": "Bright hard skid, high transient (2-6 kHz), ringing tail, less low body than C01",
+      "not_confusable_with": [
+        "hit_flesh_light",
+        "blocked"
+      ],
+      "peak_dbfs": -8,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "hit_chitin_light.v1",
+          "norm_db": 2.73,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -3,
+              "filter": {
+                "type": "highpass",
+                "hz": 2132,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.0268
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                2924,
+                4136.6,
+                5263.2
+              ],
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 3444,
+                "q": 3
+              },
+              "env": {
+                "attack_s": 0.001,
+                "decay_s": 0.2562
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 275.2,
+              "gain_db": -18,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0488
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_chitin_light.v2",
+          "norm_db": 3.24,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -3,
+              "filter": {
+                "type": "highpass",
+                "hz": 2444,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.0236
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                3241.3333,
+                4585.5333,
+                5834.4
+              ],
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 3948,
+                "q": 3
+              },
+              "env": {
+                "attack_s": 0.001,
+                "decay_s": 0.2254
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 305.0667,
+              "gain_db": -18,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0429
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_chitin_light.v3",
+          "norm_db": 3.21,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -3,
+              "filter": {
+                "type": "highpass",
+                "hz": 2756,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.0204
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                3558.6667,
+                5034.4667,
+                6405.6
+              ],
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 4452,
+                "q": 3
+              },
+              "env": {
+                "attack_s": 0.001,
+                "decay_s": 0.1946
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 334.9333,
+              "gain_db": -18,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0371
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_chitin_light.v4",
+          "norm_db": 4.6,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -3,
+              "filter": {
+                "type": "highpass",
+                "hz": 3068,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.0172
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                3876,
+                5483.4,
+                6976.8
+              ],
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 4956,
+                "q": 3
+              },
+              "env": {
+                "attack_s": 0.001,
+                "decay_s": 0.1638
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 364.8,
+              "gain_db": -18,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0312
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "hit_flesh_heavy": {
+      "code": "C03",
+      "mandatory": false,
+      "trace_event": "HIT",
+      "brief": "C01 an octave down, longer decay, a crack layer underneath",
+      "not_confusable_with": [
+        "hit_flesh_light"
+      ],
+      "peak_dbfs": -6,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "hit_flesh_heavy.v1",
+          "norm_db": 1.68,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 442,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.066
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 94.5,
+              "glide_hz": [
+                117,
+                55.8
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.228
+              }
+            },
+            {
+              "role": "crack",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -11,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1530,
+                "q": 2.2
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.054
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -13,
+              "filter": {
+                "type": "lowpass",
+                "hz": 323,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.312
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_flesh_heavy.v2",
+          "norm_db": 1.74,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 494,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0587
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 101.5,
+              "glide_hz": [
+                125.6667,
+                59.9333
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.2027
+              }
+            },
+            {
+              "role": "crack",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -11,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1710,
+                "q": 2.2
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.048
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -13,
+              "filter": {
+                "type": "lowpass",
+                "hz": 361,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.2773
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_flesh_heavy.v3",
+          "norm_db": 1.65,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 546,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0513
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 108.5,
+              "glide_hz": [
+                134.3333,
+                64.0667
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.1773
+              }
+            },
+            {
+              "role": "crack",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -11,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1890,
+                "q": 2.2
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.042
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -13,
+              "filter": {
+                "type": "lowpass",
+                "hz": 399,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.2427
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "hit_flesh_heavy.v4",
+          "norm_db": 1.5,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 598,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.044
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 115.5,
+              "glide_hz": [
+                143,
+                68.2
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.152
+              }
+            },
+            {
+              "role": "crack",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -11,
+              "filter": {
+                "type": "bandpass",
+                "hz": 2070,
+                "q": 2.2
+              },
+              "env": {
+                "attack_s": 0.0008,
+                "decay_s": 0.036
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -13,
+              "filter": {
+                "type": "lowpass",
+                "hz": 437,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.208
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "blocked": {
+      "code": "C04",
+      "mandatory": true,
+      "trace_event": "BLOCK",
+      "brief": "Damped thud, absorbed — energy present but NO high transient; shield timbre",
+      "not_confusable_with": [
+        "hit_chitin_light",
+        "guard_break"
+      ],
+      "peak_dbfs": -12,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "blocked.v1",
+          "norm_db": 1.73,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 128.76,
+              "glide_hz": [
+                149.64,
+                83.52
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.156
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -9,
+              "filter": {
+                "type": "lowpass",
+                "hz": 252,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.192
+              }
+            },
+            {
+              "role": "timbre",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                374.1,
+                556.8
+              ],
+              "gain_db": -16,
+              "filter": {
+                "type": "lowpass",
+                "hz": 756,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.102
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "blocked.v2",
+          "norm_db": 2.14,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 141.5867,
+              "glide_hz": [
+                164.5467,
+                91.84
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.1387
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -9,
+              "filter": {
+                "type": "lowpass",
+                "hz": 284,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.1707
+              }
+            },
+            {
+              "role": "timbre",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                411.3667,
+                612.2667
+              ],
+              "gain_db": -16,
+              "filter": {
+                "type": "lowpass",
+                "hz": 852,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0907
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "blocked.v3",
+          "norm_db": 3.28,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 154.4133,
+              "glide_hz": [
+                179.4533,
+                100.16
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.1213
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -9,
+              "filter": {
+                "type": "lowpass",
+                "hz": 316,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.1493
+              }
+            },
+            {
+              "role": "timbre",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                448.6333,
+                667.7333
+              ],
+              "gain_db": -16,
+              "filter": {
+                "type": "lowpass",
+                "hz": 948,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0793
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "blocked.v4",
+          "norm_db": 3.48,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 167.24,
+              "glide_hz": [
+                194.36,
+                108.48
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.006,
+                "decay_s": 0.104
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -9,
+              "filter": {
+                "type": "lowpass",
+                "hz": 348,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.128
+              }
+            },
+            {
+              "role": "timbre",
+              "source": "osc",
+              "waveform": "triangle",
+              "partials_hz": [
+                485.9,
+                723.2
+              ],
+              "gain_db": -16,
+              "filter": {
+                "type": "lowpass",
+                "hz": 1044,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.068
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "guard_break": {
+      "code": "C05",
+      "mandatory": true,
+      "trace_event": "GUARD_BREAK",
+      "brief": "The block timbre failing: thud that collapses into a scrape and a body sound",
+      "not_confusable_with": [
+        "blocked"
+      ],
+      "peak_dbfs": -9,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "guard_break.v1",
+          "norm_db": 5.02,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 131.72,
+              "glide_hz": [
+                153.08,
+                65.86
+              ],
+              "gain_db": -4,
+              "env": {
+                "attack_s": 0.005,
+                "decay_s": 0.1488
+              }
+            },
+            {
+              "role": "scrape",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1200,
+                "q": 1.1
+              },
+              "filter_sweep_hz": [
+                560,
+                2080
+              ],
+              "env": {
+                "attack_s": 0.03,
+                "decay_s": 0.372
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                169.1,
+                253.65
+              ],
+              "gain_db": -15,
+              "filter": {
+                "type": "lowpass",
+                "hz": 880,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.2976
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "guard_break.v2",
+          "norm_db": 4.89,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 142.5733,
+              "glide_hz": [
+                165.6933,
+                71.2867
+              ],
+              "gain_db": -4,
+              "env": {
+                "attack_s": 0.005,
+                "decay_s": 0.1296
+              }
+            },
+            {
+              "role": "scrape",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1400,
+                "q": 1.1
+              },
+              "filter_sweep_hz": [
+                653.3333,
+                2426.6667
+              ],
+              "env": {
+                "attack_s": 0.03,
+                "decay_s": 0.324
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                183.0333,
+                274.55
+              ],
+              "gain_db": -15,
+              "filter": {
+                "type": "lowpass",
+                "hz": 1026.6667,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.2592
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "guard_break.v3",
+          "norm_db": 4.77,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 153.4267,
+              "glide_hz": [
+                178.3067,
+                76.7133
+              ],
+              "gain_db": -4,
+              "env": {
+                "attack_s": 0.005,
+                "decay_s": 0.1104
+              }
+            },
+            {
+              "role": "scrape",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1600,
+                "q": 1.1
+              },
+              "filter_sweep_hz": [
+                746.6667,
+                2773.3333
+              ],
+              "env": {
+                "attack_s": 0.03,
+                "decay_s": 0.276
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                196.9667,
+                295.45
+              ],
+              "gain_db": -15,
+              "filter": {
+                "type": "lowpass",
+                "hz": 1173.3333,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.2208
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "guard_break.v4",
+          "norm_db": 4.65,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 164.28,
+              "glide_hz": [
+                190.92,
+                82.14
+              ],
+              "gain_db": -4,
+              "env": {
+                "attack_s": 0.005,
+                "decay_s": 0.0912
+              }
+            },
+            {
+              "role": "scrape",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1800,
+                "q": 1.1
+              },
+              "filter_sweep_hz": [
+                840,
+                3120
+              ],
+              "env": {
+                "attack_s": 0.03,
+                "decay_s": 0.228
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                210.9,
+                316.35
+              ],
+              "gain_db": -15,
+              "filter": {
+                "type": "lowpass",
+                "hz": 1320,
+                "q": 0.8
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.1824
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "parried": {
+      "code": "C06",
+      "mandatory": true,
+      "trace_event": "PARRY",
+      "brief": "The single brightest, cleanest transient in the game. Metallic chime 3-8 kHz",
+      "not_confusable_with": [
+        "everything — this is the readability keystone"
+      ],
+      "peak_dbfs": -3,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "parried.v1",
+          "norm_db": -3.28,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -6,
+              "filter": {
+                "type": "highpass",
+                "hz": 3780,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.0004,
+                "decay_s": 0.0137
+              }
+            },
+            {
+              "role": "chime",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                2989.2,
+                4596.6,
+                6025.4,
+                7256.8
+              ],
+              "gain_db": 0,
+              "filter": {
+                "type": "bandpass",
+                "hz": 4680,
+                "q": 1.4
+              },
+              "env": {
+                "attack_s": 0.0006,
+                "decay_s": 0.627
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                1494.6
+              ],
+              "gain_db": -17,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.3876
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "parried.v2",
+          "norm_db": -2.48,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -6,
+              "filter": {
+                "type": "highpass",
+                "hz": 4060,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.0004,
+                "decay_s": 0.0126
+              }
+            },
+            {
+              "role": "chime",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                3116.4,
+                4792.2,
+                6281.8,
+                7565.6
+              ],
+              "gain_db": 0,
+              "filter": {
+                "type": "bandpass",
+                "hz": 5026.6667,
+                "q": 1.4
+              },
+              "env": {
+                "attack_s": 0.0006,
+                "decay_s": 0.5757
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                1558.2
+              ],
+              "gain_db": -17,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.3559
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "parried.v3",
+          "norm_db": -2.7,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -6,
+              "filter": {
+                "type": "highpass",
+                "hz": 4340,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.0004,
+                "decay_s": 0.0114
+              }
+            },
+            {
+              "role": "chime",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                3243.6,
+                4987.8,
+                6538.2,
+                7874.4
+              ],
+              "gain_db": 0,
+              "filter": {
+                "type": "bandpass",
+                "hz": 5373.3333,
+                "q": 1.4
+              },
+              "env": {
+                "attack_s": 0.0006,
+                "decay_s": 0.5243
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                1621.8
+              ],
+              "gain_db": -17,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.3241
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "parried.v4",
+          "norm_db": -2.43,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -6,
+              "filter": {
+                "type": "highpass",
+                "hz": 4620,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.0004,
+                "decay_s": 0.0103
+              }
+            },
+            {
+              "role": "chime",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                3370.8,
+                5183.4,
+                6794.6,
+                8183.2
+              ],
+              "gain_db": 0,
+              "filter": {
+                "type": "bandpass",
+                "hz": 5720,
+                "q": 1.4
+              },
+              "env": {
+                "attack_s": 0.0006,
+                "decay_s": 0.473
+              }
+            },
+            {
+              "role": "tail",
+              "source": "osc",
+              "waveform": "sine",
+              "partials_hz": [
+                1685.4
+              ],
+              "gain_db": -17,
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.2924
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "riposte": {
+      "code": "C07",
+      "mandatory": true,
+      "trace_event": "RIPOSTE",
+      "brief": "Deep single impact with a long tail; deliberately SLOWER than C01",
+      "not_confusable_with": [
+        "hit_flesh_light",
+        "backstab"
+      ],
+      "peak_dbfs": -4.5,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "riposte.v1",
+          "norm_db": 0.11,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 369.8,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.009,
+                "decay_s": 0.1044
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 80.08,
+              "glide_hz": [
+                101.92,
+                47.32
+              ],
+              "gain_db": 0,
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.4872
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -12,
+              "filter": {
+                "type": "lowpass",
+                "hz": 223.6,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.7192
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "riposte.v2",
+          "norm_db": 0.03,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 409.9333,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.009,
+                "decay_s": 0.0948
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 85.36,
+              "glide_hz": [
+                108.64,
+                50.44
+              ],
+              "gain_db": 0,
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.4424
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -12,
+              "filter": {
+                "type": "lowpass",
+                "hz": 247.8667,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.6531
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "riposte.v3",
+          "norm_db": 0.36,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 450.0667,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.009,
+                "decay_s": 0.0852
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 90.64,
+              "glide_hz": [
+                115.36,
+                53.56
+              ],
+              "gain_db": 0,
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.3976
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -12,
+              "filter": {
+                "type": "lowpass",
+                "hz": 272.1333,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.5869
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "riposte.v4",
+          "norm_db": 0.2,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -8,
+              "filter": {
+                "type": "bandpass",
+                "hz": 490.2,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.009,
+                "decay_s": 0.0756
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 95.92,
+              "glide_hz": [
+                122.08,
+                56.68
+              ],
+              "gain_db": 0,
+              "env": {
+                "attack_s": 0.008,
+                "decay_s": 0.3528
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -12,
+              "filter": {
+                "type": "lowpass",
+                "hz": 296.4,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.5208
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "backstab": {
+      "code": "C08",
+      "mandatory": true,
+      "trace_event": "BACKSTAB",
+      "brief": "Like C07 but drier and with a distinct PRE-transient (the blade entering)",
+      "not_confusable_with": [
+        "riposte"
+      ],
+      "peak_dbfs": -5,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "backstab.v1",
+          "norm_db": 1.09,
+          "layers": [
+            {
+              "role": "pre",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -13,
+              "pre_delay_s": -0.028,
+              "filter": {
+                "type": "bandpass",
+                "hz": 2040,
+                "q": 1.6
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0348
+              }
+            },
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 527,
+                "q": 1.2
+              },
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.0638
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 86.4,
+              "glide_hz": [
+                108,
+                52.2
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.232
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "backstab.v2",
+          "norm_db": 1,
+          "layers": [
+            {
+              "role": "pre",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -13,
+              "pre_delay_s": -0.028,
+              "filter": {
+                "type": "bandpass",
+                "hz": 2280,
+                "q": 1.6
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0316
+              }
+            },
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 589,
+                "q": 1.2
+              },
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.0579
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 92.8,
+              "glide_hz": [
+                116,
+                56.0667
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.2107
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "backstab.v3",
+          "norm_db": 0.89,
+          "layers": [
+            {
+              "role": "pre",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -13,
+              "pre_delay_s": -0.028,
+              "filter": {
+                "type": "bandpass",
+                "hz": 2520,
+                "q": 1.6
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0284
+              }
+            },
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 651,
+                "q": 1.2
+              },
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.0521
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 99.2,
+              "glide_hz": [
+                124,
+                59.9333
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.1893
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "backstab.v4",
+          "norm_db": 0.76,
+          "layers": [
+            {
+              "role": "pre",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -13,
+              "pre_delay_s": -0.028,
+              "filter": {
+                "type": "bandpass",
+                "hz": 2760,
+                "q": 1.6
+              },
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.0252
+              }
+            },
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -7,
+              "filter": {
+                "type": "bandpass",
+                "hz": 713,
+                "q": 1.2
+              },
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.0462
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 105.6,
+              "glide_hz": [
+                132,
+                63.8
+              ],
+              "gain_db": -1,
+              "env": {
+                "attack_s": 0.004,
+                "decay_s": 0.168
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "whiff": {
+      "code": "C09",
+      "mandatory": true,
+      "trace_event": "WHIFF",
+      "brief": "Air only. Broadband swish, NO transient peak. Quietest class in the table",
+      "not_confusable_with": [
+        "hit_flesh_light"
+      ],
+      "peak_dbfs": -20,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "whiff.v1",
+          "norm_db": 12.91,
+          "layers": [
+            {
+              "role": "air",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -2,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1008,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                432,
+                2304
+              ],
+              "env": {
+                "attack_s": 0.04,
+                "decay_s": 0.1098
+              }
+            },
+            {
+              "role": "air_low",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 374.4,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.055,
+                "decay_s": 0.0915
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "whiff.v2",
+          "norm_db": 11.91,
+          "layers": [
+            {
+              "role": "air",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -2,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1269.3333,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                544,
+                2901.3333
+              ],
+              "env": {
+                "attack_s": 0.04,
+                "decay_s": 0.0966
+              }
+            },
+            {
+              "role": "air_low",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 471.4667,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.055,
+                "decay_s": 0.0805
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "whiff.v3",
+          "norm_db": 11.24,
+          "layers": [
+            {
+              "role": "air",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -2,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1530.6667,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                656,
+                3498.6667
+              ],
+              "env": {
+                "attack_s": 0.04,
+                "decay_s": 0.0834
+              }
+            },
+            {
+              "role": "air_low",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 568.5333,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.055,
+                "decay_s": 0.0695
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "whiff.v4",
+          "norm_db": 10.41,
+          "layers": [
+            {
+              "role": "air",
+              "source": "noise",
+              "colour": "white",
+              "gain_db": -2,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1792,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                768,
+                4096
+              ],
+              "env": {
+                "attack_s": 0.04,
+                "decay_s": 0.0702
+              }
+            },
+            {
+              "role": "air_low",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 665.6,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.055,
+                "decay_s": 0.0585
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "player_hurt": {
+      "code": "C10",
+      "mandatory": true,
+      "trace_event": "HIT",
+      "brief": "Player-side: impact + a vocal effort layer",
+      "not_confusable_with": [
+        "hit_flesh_light"
+      ],
+      "peak_dbfs": -8.5,
+      "bus": "sfx",
+      "spatialised": false,
+      "variants": [
+        {
+          "sample_id": "player_hurt.v1",
+          "norm_db": 4.42,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 638.4,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.048
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 153,
+              "glide_hz": [
+                187,
+                93.5
+              ],
+              "gain_db": -5,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.108
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                125.8,
+                518.5
+              ],
+              "gain_db": -3,
+              "glide_hz": [
+                142.8,
+                103.7
+              ],
+              "filter": {
+                "type": "bandpass",
+                "hz": 655.2,
+                "q": 1.3
+              },
+              "env": {
+                "attack_s": 0.012,
+                "decay_s": 0.312
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "player_hurt.v2",
+          "norm_db": 4.74,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 719.4667,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0427
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 171,
+              "glide_hz": [
+                209,
+                104.5
+              ],
+              "gain_db": -5,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.096
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                140.6,
+                579.5
+              ],
+              "gain_db": -3,
+              "glide_hz": [
+                159.6,
+                115.9
+              ],
+              "filter": {
+                "type": "bandpass",
+                "hz": 738.4,
+                "q": 1.3
+              },
+              "env": {
+                "attack_s": 0.012,
+                "decay_s": 0.2773
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "player_hurt.v3",
+          "norm_db": 5.53,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 800.5333,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.0373
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 189,
+              "glide_hz": [
+                231,
+                115.5
+              ],
+              "gain_db": -5,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.084
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                155.4,
+                640.5
+              ],
+              "gain_db": -3,
+              "glide_hz": [
+                176.4,
+                128.1
+              ],
+              "filter": {
+                "type": "bandpass",
+                "hz": 821.6,
+                "q": 1.3
+              },
+              "env": {
+                "attack_s": 0.012,
+                "decay_s": 0.2427
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "player_hurt.v4",
+          "norm_db": 4.79,
+          "layers": [
+            {
+              "role": "transient",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -10,
+              "filter": {
+                "type": "bandpass",
+                "hz": 881.6,
+                "q": 0.9
+              },
+              "env": {
+                "attack_s": 0.002,
+                "decay_s": 0.032
+              }
+            },
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 207,
+              "glide_hz": [
+                253,
+                126.5
+              ],
+              "gain_db": -5,
+              "env": {
+                "attack_s": 0.003,
+                "decay_s": 0.072
+              }
+            },
+            {
+              "role": "voice",
+              "source": "osc",
+              "waveform": "sawtooth",
+              "partials_hz": [
+                170.2,
+                701.5
+              ],
+              "gain_db": -3,
+              "glide_hz": [
+                193.2,
+                140.3
+              ],
+              "filter": {
+                "type": "bandpass",
+                "hz": 904.8,
+                "q": 1.3
+              },
+              "env": {
+                "attack_s": 0.012,
+                "decay_s": 0.208
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "stamina_break": {
+      "code": "C11",
+      "mandatory": false,
+      "trace_event": "STAMINA_EMPTY",
+      "brief": "Non-diegetic dull negative cue; the \"you have nothing left\" sound",
+      "not_confusable_with": [
+        "blocked"
+      ],
+      "peak_dbfs": -16,
+      "bus": "ui",
+      "spatialised": false,
+      "variants": [
+        {
+          "sample_id": "stamina_break.v1",
+          "norm_db": 0.62,
+          "layers": [
+            {
+              "role": "tone",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 180.32,
+              "glide_hz": [
+                180.32,
+                126.96
+              ],
+              "gain_db": -3,
+              "env": {
+                "attack_s": 0.015,
+                "decay_s": 0.3876
+              }
+            },
+            {
+              "role": "tone2",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 286.12,
+              "gain_db": -11,
+              "filter": {
+                "type": "lowpass",
+                "hz": 810,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.3192
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "stamina_break.v2",
+          "norm_db": 1.53,
+          "layers": [
+            {
+              "role": "tone",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 190.7733,
+              "glide_hz": [
+                190.7733,
+                134.32
+              ],
+              "gain_db": -3,
+              "env": {
+                "attack_s": 0.015,
+                "decay_s": 0.3559
+              }
+            },
+            {
+              "role": "tone2",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 302.7067,
+              "gain_db": -11,
+              "filter": {
+                "type": "lowpass",
+                "hz": 870,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.2931
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "stamina_break.v3",
+          "norm_db": 2.09,
+          "layers": [
+            {
+              "role": "tone",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 201.2267,
+              "glide_hz": [
+                201.2267,
+                141.68
+              ],
+              "gain_db": -3,
+              "env": {
+                "attack_s": 0.015,
+                "decay_s": 0.3241
+              }
+            },
+            {
+              "role": "tone2",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 319.2933,
+              "gain_db": -11,
+              "filter": {
+                "type": "lowpass",
+                "hz": 930,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.2669
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "stamina_break.v4",
+          "norm_db": 2.07,
+          "layers": [
+            {
+              "role": "tone",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 211.68,
+              "glide_hz": [
+                211.68,
+                149.04
+              ],
+              "gain_db": -3,
+              "env": {
+                "attack_s": 0.015,
+                "decay_s": 0.2924
+              }
+            },
+            {
+              "role": "tone2",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 335.88,
+              "gain_db": -11,
+              "filter": {
+                "type": "lowpass",
+                "hz": 990,
+                "q": 0.7
+              },
+              "env": {
+                "attack_s": 0.02,
+                "decay_s": 0.2408
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "death": {
+      "code": "C12",
+      "mandatory": false,
+      "trace_event": "DEATH",
+      "brief": "Class-appropriate collapse; terminal, no loop",
+      "not_confusable_with": [],
+      "peak_dbfs": -7,
+      "bus": "sfx",
+      "spatialised": true,
+      "variants": [
+        {
+          "sample_id": "death.v1",
+          "norm_db": 2.25,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 65.12,
+              "glide_hz": [
+                84.48,
+                38.72
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.01,
+                "decay_s": 0.649
+              }
+            },
+            {
+              "role": "collapse",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -6,
+              "filter": {
+                "type": "lowpass",
+                "hz": 344.4,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                574,
+                131.2
+              ],
+              "env": {
+                "attack_s": 0.05,
+                "decay_s": 0.944
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -16,
+              "filter": {
+                "type": "bandpass",
+                "hz": 902,
+                "q": 1
+              },
+              "env": {
+                "attack_s": 0.09,
+                "decay_s": 0.767
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "death.v2",
+          "norm_db": 2.1,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 71.04,
+              "glide_hz": [
+                92.16,
+                42.24
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.01,
+                "decay_s": 0.583
+              }
+            },
+            {
+              "role": "collapse",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -6,
+              "filter": {
+                "type": "lowpass",
+                "hz": 394.8,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                658,
+                150.4
+              ],
+              "env": {
+                "attack_s": 0.05,
+                "decay_s": 0.848
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -16,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1034,
+                "q": 1
+              },
+              "env": {
+                "attack_s": 0.09,
+                "decay_s": 0.689
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "death.v3",
+          "norm_db": 2.05,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 76.96,
+              "glide_hz": [
+                99.84,
+                45.76
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.01,
+                "decay_s": 0.517
+              }
+            },
+            {
+              "role": "collapse",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -6,
+              "filter": {
+                "type": "lowpass",
+                "hz": 445.2,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                742,
+                169.6
+              ],
+              "env": {
+                "attack_s": 0.05,
+                "decay_s": 0.752
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -16,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1166,
+                "q": 1
+              },
+              "env": {
+                "attack_s": 0.09,
+                "decay_s": 0.611
+              }
+            }
+          ]
+        },
+        {
+          "sample_id": "death.v4",
+          "norm_db": 2.25,
+          "layers": [
+            {
+              "role": "body",
+              "source": "osc",
+              "waveform": "sine",
+              "freq_hz": 82.88,
+              "glide_hz": [
+                107.52,
+                49.28
+              ],
+              "gain_db": -2,
+              "env": {
+                "attack_s": 0.01,
+                "decay_s": 0.451
+              }
+            },
+            {
+              "role": "collapse",
+              "source": "noise",
+              "colour": "brown",
+              "gain_db": -6,
+              "filter": {
+                "type": "lowpass",
+                "hz": 495.6,
+                "q": 0.8
+              },
+              "filter_sweep_hz": [
+                826,
+                188.8
+              ],
+              "env": {
+                "attack_s": 0.05,
+                "decay_s": 0.656
+              }
+            },
+            {
+              "role": "tail",
+              "source": "noise",
+              "colour": "pink",
+              "gain_db": -16,
+              "filter": {
+                "type": "bandpass",
+                "hz": 1298,
+                "q": 1
+              },
+              "env": {
+                "attack_s": 0.09,
+                "decay_s": 0.533
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

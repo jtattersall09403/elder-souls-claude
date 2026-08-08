@@ -1,0 +1,133 @@
+{
+  "schema": "elder-souls/enemy-ai@1",
+  "id": "enemy-ai",
+  "owner": "W1-12",
+  "source": "RI-AI01 §B (perception), §C (distance bands), §D (transition table), §E (attack tokens), §F (movement legality); RI-AI05 §B (per-archetype Ω, sight radius, walk/sprint).",
+  "provenance": "constructed",
+
+  "_why_this_file_and_not_the_statblocks": "Every number below is a property of an ARCHETYPE's behaviour, not of an individual. game/data/combat/enemies/ is claimed by W1-03 (water) and neighboured by a population builder, and RULES.md §16 says to declare rather than collide — so this piece writes one new file it owns outright instead of seven it does not. When the statblock directory is free, `behaviour` belongs on the statblock and `override` below becomes empty. Nothing here is a stat: no hp, no poise, no damage, no frame data, no reach. Those stay where they are.",
+
+  "_consumption": "RI-MTH07. The world-side consumer is game/src/combat/ai.js, constructed by game/src/combat/enemy.js::EnemyController when the resolved behaviour is `souls`, and stepped every fixed frame from stepCombat(). Perturb any band multiple, any dwell, `walk_mps`/`sprint_mps` or `leash.hard_m` and the enemy's dist_m time series in the trace changes shape. tools/harness/ai-probe.mjs --consume runs exactly that ablation.",
+
+  "enabled": true,
+
+  "override": {
+    "_what": "statblock id -> behaviour. Resolved BEFORE the statblock's own `ai` field, which is why this piece needs no write into game/data/combat/enemies/. `scripted` is never overridden away from a body that has actually been given a script — see ai.js::resolveBehaviour — so RI-CMB07 M1's Mode-A frame-exact instrument is untouched.",
+    "inf_trash": "souls",
+    "guard_legion": "souls",
+    "drowned_lesser": "souls",
+    "drowned_greater": "souls",
+    "beast_slitherfang": "souls",
+    "champion_hist_marked": "souls",
+    "cst_sap_speaker": "souls"
+  },
+
+  "_archetypes_absent": {
+    "_declared_rather_than_hidden": "RI-AI05 §B names ten archetypes. This build ships three of them — INFANTRY, BEAST and CASTER — and the tables below therefore describe seven roles that no statblock selects. They are authored anyway, and left visibly unused, because the alternative is a data file that silently agrees with the roster's gaps. tools/harness/ai-probe.mjs reports `archetypes_unrealised` off this list and it is a FINDING, not a pass.",
+    "unrealised": ["TURTLE", "DUELIST", "POISE_MONSTER", "RANGED", "AMBUSHER", "SWARM", "ELITE", "BOSS", "GANK_DUO"],
+    "partly_realised": {
+      "ELITE": "champion_hist_marked declares tier `elite` but archetype INFANTRY: it is an INFANTRY with 7x the HP, which is RI-AI05 §D lever 6 (the health-sponge failure) used in place of lever 1.",
+      "SWARM": "beast_slitherfang is the nearest thing and is placed in `wl-slitherfang-pack`/`-swarm`, but its archetype string is BEAST and RI-AI01 §C has no BEAST row; it is given SWARM's bands below and that substitution is declared, not silent."
+    }
+  },
+
+  "bands": {
+    "_source": "RI-AI01 §C. Multiples of the enemy's own reach Ω, centre-to-centre, horizontal only.",
+    "strike": 0.85,
+    "poke": 1.25,
+    "dance": 2.2,
+    "close": 5.0
+  },
+
+  "perception": {
+    "_source": "RI-AI01 §B. The fill rates live in game/data/stealth/detection.json and are applied by sim/stealth/perception.js, which OWNS the meter (see the note in combat/enemy.js). What is owned here is only the ladder's shape and what the AI does with it.",
+    "suspicious_at": 50,
+    "aggro_at": 100,
+    "decay_per_s": 12,
+    "aggro_entry_frames": [20, 30],
+    "_aggro_entry_note": "RI-AI01 T05: a mandatory 20-30 f aggro roar/stance change during which the enemy MAY NOT ATTACK. Without it a 100-alert frame is also a swing frame and there is no moment in which the player is told the fight has begun.",
+    "search_to_leash_frames": 720,
+    "suspicious_min_dwell_f": 90
+  },
+
+  "movement": {
+    "_source": "RI-AI01 §F.",
+    "max_yaw_rate_free_dps": 300,
+    "max_yaw_rate_windup_dps": 120,
+    "max_yaw_rate_active_dps": 0,
+    "accel_frames_to_walk": 8,
+    "accel_frames_to_sprint": 14,
+    "decel_frames_to_stop": 10,
+    "min_standoff_m": 0.9,
+    "_min_standoff_note": "RI-AI01 §F: 'separation force applies below 0.9 m'. The force itself is W1-09's, in game/data/combat/hitgeometry.json §bodies.separation, and this AI does not duplicate it — it simply refuses to STEER inside 0.9 m, so the separation force is never asked to undo a deliberate approach."
+  },
+
+  "circle": {
+    "_source": "RI-AI01 T11 — reseed on a 48-96 f timer from the seeded PRNG.",
+    "reseed_frames": [48, 96],
+    "strafe_speed_fraction": 0.62,
+    "preferred_band_multiple": 1.6,
+    "_preferred_note": "Where CIRCLE tries to sit, as a multiple of the enemy's own reach. 1.6 is inside RI-AI01 §C's DANCE band (1.25-2.2) and near its lower edge on purpose: the feint step (T13) has 36 frames to cross from here to STRIKE (0.85), and at the archetype sprint that is only possible from about 1.8 or nearer. An enemy that circles at the TOP of DANCE can never reach a commit inside the window the item allows, which is the difference between a fight and a standoff.",
+    "_strafe_note": "A strafe is slower than a forward walk; at 1.0 the enemy orbits at walking pace and the circle reads as a charge that missed.",
+    "radial_drift_mps": 0.35,
+    "_radial_note": "CIRCLE is not a fixed-radius orbit. A small in/out drift is what makes dist_m have a standard deviation at all, and RI-AI01 M3 measures exactly that (spacing_variance >= 0.8 m)."
+  },
+
+  "commit": {
+    "_source": "RI-AI01 T12/T13/T14 and §E.",
+    "feint_step_max_frames": 36,
+    "feint_min_circle_dwell_f": 24,
+    "feint_release_cooldown_f": 36,
+    "_cooldown_note": "T14: +0.6 s (36 f@60) after a released feint.",
+    "token_hold_cap_f": 180,
+    "token_cooldown_f": [54, 90],
+    "_token_cooldown_note": "T-token: 1.2 s +/- 0.3 s = 72 +/- 18 f@60.",
+    "tokens_by_group": [
+      { "max_size": 2, "tokens": 1 },
+      { "max_size": 4, "tokens": 2 },
+      { "max_size": 99, "tokens": 3 }
+    ],
+    "tokens_when_elite_present": 1,
+    "swarm_tokens_at_5_plus": 3
+  },
+
+  "leash": {
+    "_source": "RI-AI01 T25/T26 and RI-AI05 §B (ELITE 45 m).",
+    "hard_m": { "trash": 32, "elite": 45, "ambusher": 20, "boss": 1e9 },
+    "no_los_seconds": 6.0,
+    "dist_multiple_of_sight": 1.6,
+    "return_heal_seconds": 4.0,
+    "_return_note": "T26: heal to full over 4.0 s AFTER arrival within 1.5 m of spawn_anchor, and never invulnerable while returning. M6 fails a build that heals en route or that goes untouchable."
+  },
+
+  "punish_read": {
+    "_source": "RI-AI01 T22 — the anti-chug contract.",
+    "trigger_player_states": ["HEAL", "ITEM", "LONG_RECOVERY"],
+    "band_multiple": 6.0,
+    "react_within_f": 12
+  },
+
+  "archetype": {
+    "_columns": "omega_m = reach (RI-AI01 §C); sight_r_m and cone_deg (RI-AI01 §B / RI-AI05 §B); walk_mps and sprint_mps (RI-AI05 §B). Where a statblock declares its own reach_m or sight_radius_m the STATBLOCK WINS — this table is the archetype default and the fallback, never an override of a shipped number.",
+    "INFANTRY":       { "omega_m": 2.4, "sight_r_m": 16, "cone_deg": 110, "walk_mps": 2.2, "sprint_mps": 4.6, "leash_tier": "trash" },
+    "TURTLE":         { "omega_m": 2.2, "sight_r_m": 14, "cone_deg": 110, "walk_mps": 2.0, "sprint_mps": 4.0, "leash_tier": "trash", "blocks": true },
+    "DUELIST":        { "omega_m": 2.0, "sight_r_m": 18, "cone_deg": 110, "walk_mps": 2.5, "sprint_mps": 5.4, "leash_tier": "trash" },
+    "POISE_MONSTER":  { "omega_m": 4.1, "sight_r_m": 12, "cone_deg": 110, "walk_mps": 1.7, "sprint_mps": 3.4, "leash_tier": "trash" },
+    "RANGED":         { "omega_m": 1.6, "sight_r_m": 26, "cone_deg": 110, "walk_mps": 2.2, "sprint_mps": 4.6, "leash_tier": "trash", "prefers_band": "close" },
+    "AMBUSHER":       { "omega_m": 2.0, "sight_r_m": 7,  "cone_deg": 110, "walk_mps": 2.4, "sprint_mps": 5.0, "leash_tier": "ambusher" },
+    "SWARM":          { "omega_m": 1.6, "sight_r_m": 20, "cone_deg": 160, "walk_mps": 2.6, "sprint_mps": 5.6, "leash_tier": "trash" },
+    "CASTER":         { "omega_m": 1.8, "sight_r_m": 24, "cone_deg": 110, "walk_mps": 2.0, "sprint_mps": 3.8, "leash_tier": "trash", "prefers_band": "close" },
+    "ELITE":          { "omega_m": 3.0, "sight_r_m": 20, "cone_deg": 110, "walk_mps": 2.2, "sprint_mps": 4.8, "leash_tier": "elite" },
+    "BEAST":          { "omega_m": 1.6, "sight_r_m": 20, "cone_deg": 160, "walk_mps": 2.6, "sprint_mps": 5.6, "leash_tier": "trash",
+                        "_substitution": "RI-AI01 §C has no BEAST row. SWARM's is used, and the substitution is declared here rather than hidden in code." },
+    "DUMMY":          { "omega_m": 1.0, "sight_r_m": 0,  "cone_deg": 0,   "walk_mps": 0.0, "sprint_mps": 0.0, "leash_tier": "trash" },
+    "FIXTURE":        { "omega_m": 1.0, "sight_r_m": 0,  "cone_deg": 0,   "walk_mps": 0.0, "sprint_mps": 0.0, "leash_tier": "trash" }
+  },
+
+  "declared_incomplete": [
+    "BLOCK_HOLD (T18) is implemented but unreachable: it is TURTLE-only and no shipped statblock declares archetype TURTLE. The code path exists and the probe reports it as unexercised rather than as passing.",
+    "PATROL (T01) is not implemented. There are no patrol routes in game/data for wilderness posts to walk, so an enemy at rest is IDLE at its anchor. Implementing PATROL against a route set that does not exist would be a stub that passes.",
+    "Attack STRINGS (RI-AI04) are not selected here. This piece ships single COMMITs and T17 (RECOVER -> COMMIT continuation) is declared unbuilt; the moveset data has no string declarations to read.",
+    "Mid-fight save/load does not restore AI timers. game/src/save/state.js is not this piece's file and was not extended; a load resets an enemy to CIRCLE with a fresh strafe timer. Positions, hp, poise and alert all restore as before."
+  ]
+}

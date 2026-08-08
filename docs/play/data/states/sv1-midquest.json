@@ -1,0 +1,88 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "sv1-midquest",
+  "title": "RI-JRN05 SV1. Three stages into a five-stage faction quest with a branch taken, the giver's disposition raised, one topic learned from the giver, one quest-local flag set by an optional conversation.",
+  "env": {
+    "timeOfDay": 16.5,
+    "weather": "rain",
+    "region": "thornmarsh",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      6.5,
+      0,
+      3.25
+    ],
+    "yaw": 134.0,
+    "stamina": 86.5,
+    "hp": 455
+  },
+  "camera": {
+    "yaw": 134.0,
+    "pitch": -11.0,
+    "mode": "free"
+  },
+  "quest": {
+    "quests": {
+      "the-boards": {
+        "stage": 30,
+        "branch": "reported",
+        "failed": false,
+        "giverDispositionDelta": 9,
+        "timeLimitInFrames": null,
+        "flags": {
+          "boards_cut_seen": true,
+          "boards_told_eshi": true,
+          "optional_talk_done": true
+        }
+      }
+    },
+    "topicsKnown": [
+      "the-boards",
+      "the-marsh",
+      "little-advice",
+      "thorn"
+    ],
+    "dispositions": {
+      "warden-eshi": 49,
+      "king-hlaalu-teeth": 40
+    },
+    "factions": {
+      "house-dres": {
+        "member": true,
+        "rank": 1,
+        "reputation": 12,
+        "expelled": false,
+        "rivalry_locked": [
+          "shadowscale-order"
+        ]
+      }
+    },
+    "journal": [
+      {
+        "n": 1,
+        "date": "16 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "Eshi the warden says the walkway east of Thorn has gone under. She did not ask me to fix it. She mentioned it the way you mention weather."
+      },
+      {
+        "n": 2,
+        "date": "16 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "I found the break. Someone cut it. The cut is clean and it is on the Thorn side."
+      },
+      {
+        "n": 3,
+        "date": "17 Last Seed, 3E 427",
+        "quest": "the-boards",
+        "text": "I told Eshi. She stopped looking at me while I said it."
+      }
+    ],
+    "flags": {
+      "met_eshi": true,
+      "entered_thorn": true
+    }
+  },
+  "spawn": []
+}

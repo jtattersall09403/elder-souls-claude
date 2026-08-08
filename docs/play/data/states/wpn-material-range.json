@@ -1,0 +1,88 @@
+{
+ "schema": "elder-souls/state@1",
+ "id": "wpn-material-range",
+ "title": "One target of every material in RI-WPN05 §A/§B, in a line at 1.5 m, so the 5x7 hitstop grid, the 18 material multipliers and the deflection rule are DRIVEN rather than declared.",
+ "env": {
+  "timeOfDay": 12.0,
+  "weather": "clear",
+  "region": "arena",
+  "interior": null,
+  "showcase": true
+ },
+ "player": {
+  "pos": [
+   0,
+   0,
+   0
+  ],
+  "yaw": 0.0
+ },
+ "camera": {
+  "yaw": 0.0,
+  "pitch": -8.0,
+  "mode": "free"
+ },
+ "loadout": {
+  "weapon": "straight-sword",
+  "shield": "marsh_oak_medium",
+  "endurance": 20,
+  "hpMax": 620,
+  "armourPoise": 28,
+  "equipLoadPct": 24.0,
+  "flaskLevel": 0,
+  "estus": 5,
+  "gold": 0,
+  "_note": "The exemplar build. Materials are set per spawn; RI-WPN05 §B owns the multipliers."
+ },
+ "spawn": [
+  {
+   "id": "mat_flesh",
+   "x": -3.5,
+   "z": 1.5,
+   "as": "M1"
+  },
+  {
+   "id": "mat_chitin",
+   "x": -2.5,
+   "z": 1.5,
+   "as": "M2"
+  },
+  {
+   "id": "mat_stone",
+   "x": -1.5,
+   "z": 1.5,
+   "as": "M3"
+  },
+  {
+   "id": "mat_metal",
+   "x": -0.5,
+   "z": 1.5,
+   "as": "M4"
+  },
+  {
+   "id": "mat_plant",
+   "x": 0.5,
+   "z": 1.5,
+   "as": "M5"
+  },
+  {
+   "id": "mat_water",
+   "x": 1.5,
+   "z": 1.5,
+   "as": "M6"
+  },
+  {
+   "id": "mat_wood",
+   "x": 2.5,
+   "z": 1.5,
+   "as": "M7"
+  },
+  {
+   "id": "mat_shield",
+   "x": 3.5,
+   "z": 1.5,
+   "as": "M8"
+  }
+ ],
+ "note": "W1-10 round 3 fixture. Eight passive dummies, one per material row, each at defence 0 and poise 9999 so nothing staggers and the hitstop is isolated from the stagger (RI-WPN05 harness request 6). Round 2's declared limitation — 'no enemy statblock in this build carries a material, so all five are flesh' — is closed: every statblock in game/data/combat/enemies/ now declares one, three of them per hurtbox region, and the fight reads it at hit time through game/src/combat/impact.js. Step to 1.5 m of any of these and swing, and the IMPACT event carries the material, both hitstop clocks, the knockback sign, the deflect flag and the decal."
+}

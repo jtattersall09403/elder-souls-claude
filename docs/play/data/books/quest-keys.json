@@ -1,0 +1,106 @@
+{
+  "schema": "elder-souls/book@2",
+  "group": "quest-keys",
+  "owner": "W1-LIBRARY — the in-world library",
+  "note": "Four books that shipped quests already require and that did not exist. `book_the_court_and_the_tide` gates Q-SOUL-02 res_seal, `book_the_rootless_egg` gates Q-LILM-01 res_rootkeepers and `book_the_sap_and_the_knife` gates Q-DEEP-01 res_broker — three non-violent resolutions whose `requires.knowledge` pointed at nothing on disk. `book_the_leave_book_of_thorn` is Q-MAIN-20's `revealed_by` source of channel `book`. Each teaches a FORM — how a count is sealed, how a matter is brought without the Empire in it, what depth and season mean, what a leave costs — so that a player who has read it can do a thing they could not do before. None of them names an objective, a destination to travel to for the quest, or a marker of any kind (S8); the one direction any of them carries is prose under RI-WLD06 §4 grammar and is about a road, not about a task.",
+  "books": [
+    {
+      "id": "the-court-and-the-tide",
+      "skill_book": "speechcraft",
+      "knowledge_key": "book_the_court_and_the_tide",
+      "title": "The Court and the Tide: On the Sealing of a Count",
+      "author": "Undersexton Aveline Rell, for the instruction of clerks",
+      "kind": "manual",
+      "taxon": "T6",
+      "argonian_authored": false,
+      "unreliability": "Accurate about procedure and silent about why the procedure exists, which is the more interesting question and the one she is not going to answer in a clerk's handbook.",
+      "readable_before": "Q-SOUL-02",
+      "gates": [
+        "Q-SOUL-02/res_seal"
+      ],
+      "topics_taught": [
+        "the-drowned-court",
+        "the-sealing",
+        "the-assize",
+        "the-return-column"
+      ],
+      "text": "For clerks of the Court, and for whoever is doing a clerk's work this season because we are short.\n\nA count is not a number. A count is a number that can be stood behind. Anyone can add; the Court's whole value to this coast is that when we hand a figure to the Assize at Gideon, the Assize does not have to go and check it, and that has been true for four hundred years and would take one season to stop being true.\n\nSo. What makes a count sealed.\n\nFirst, the source. A count must be made from a primary tally and not from another count. A primary tally is a book kept at the place and at the time by the person who did the thing: the yard book kept by the hands who burned, the mortuary book kept by the sexton who received, the toll book kept at the gate. A customs return is not a primary tally. A customs return is a copy of a clerk's shortened version of a factor's book, and it is the most confidently wrong document in this province.\n\nSecond, the two hands. Every column is added by two people who do not add it together and who do not see each other's working. If they agree, the figure stands. If they disagree, both figures are written, with both names, and the disagreement goes to the third place under the seventh clause. It does not get quietly re-added until it agrees, which is the temptation and which is how a house loses four hundred years of usefulness in an afternoon.\n\nThird, the gap. Where the tally is missing — burned, wet, taken, never made — the count says so, in the column, in the place where the figure would have gone, in the words the tally is wanting for this season and the reason as given to me by, and then a name. A count with a silent gap in it is worthless, because a reader cannot tell a hole from a nought. This is the rule that clerks break, always, out of embarrassment, and it is the rule the Assize actually reads for.\n\nFourth, the seal. Three of the Court set their names to it: the one who made it, the one who checked it, and one who did neither and has read it. The third name is the one that matters and it is the one people think is a formality. It is not. The third signatory is saying that they have read the whole document and would repeat it in front of the person it is about.\n\nFifth, the carriage. A sealed count goes to Gideon by the Court's own barge and by no other means, and it does not go in the hand of the person who made it. This looks like distrust of our own clerks and it is not. It is so that no purse on this coast can make it worth a clerk's while to have an accident on the road, because there is no point: the clerk is not carrying anything.\n\nA word on the carriage itself, since a clerk who has never done it will be sent to do it. The Court's barge leaves Soulrest on the ninth of the month from the foot of the burial stair, and takes the coast water north with the Stone Wastes on the right until the Bone Ladder, where it ties up whether or not it needs to, because the crews will not pass the Ladder without stopping. From the Ladder the water is on the left as far as Hollow-Reeds; then it turns inland at the willows and goes up to Gideon's market cross, and you hand the count in at the toll gate and not at the Assize, which is up the hill and will send you back down.\n\nNow the part clerks ask about after their third month, so I shall answer it once here.\n\nA count that has been sealed cannot be withdrawn. Not by the maker, not by the chapter, not by me. The Assize opens a file, and a file at Gideon is not a decision, it is a place where things are put, and things that are put there stay put for longer than the people in them. I have sealed a good many counts in my time and two of them have done what I hoped and one of them ruined a man I liked, who deserved it, which did not help as much as I expected it to.\n\nIf you are not prepared for that, do not seal. Bring it to me unsealed and I will take the decision off you, and I will not think less of you, and I will not tell you what I decided.\n\nThe last thing. You will at some point hold a tally that proves something about this house. When that happens the rules above do not change. There is no clause anywhere in our books that treats the Court differently from a toll gate, and if there were, we would be a toll gate."
+    },
+    {
+      "id": "the-rootless-egg",
+      "skill_book": "root-speech",
+      "knowledge_key": "book_the_rootless_egg",
+      "title": "The Rootless Egg, and How a Matter Is Brought",
+      "author": "Sesh-Anaat, keeper, put into Tamrielic for an outlander who kept asking",
+      "kind": "treatise",
+      "taxon": "T3",
+      "argonian_authored": true,
+      "unreliability": "A teaching text written down under protest by someone who thinks writing it down is most of what is wrong with it. She says so twice and writes it anyway.",
+      "registry": {
+        "cf": "CF-C014"
+      },
+      "readable_before": "Q-LILM-01",
+      "gates": [
+        "Q-LILM-01/res_rootkeepers"
+      ],
+      "topics_taught": [
+        "the-rootless-egg",
+        "the-sapwells",
+        "how-a-matter-is-brought",
+        "the-covenant"
+      ],
+      "text": "You have asked me four times how to speak to a keeper who will not speak to you, and I have told you four times that the question is wrong, and you have gone on asking, which is the first thing about you I have liked. So here it is written down, which is a bad way to hold it, and you will hold it badly, and that is better than not holding it.\n\nFirst you must know what a keeper is not. A keeper is not a priest. A keeper does not represent the tree and cannot speak for it and has no authority over the well beyond the authority that comes of sitting up all night. A keeper is the one who is there. That is the whole of the office. If you come to a keeper as though you were coming to an office, you will be given the courtesy owed to a stranger, which is silence, and you will think you have been refused when you have only been answered.\n\nSecond, the Rootless Egg, since you asked about that too and since everything else depends on it.\n\nWe count the years from a hatching that had no tree. It is old. Nine sap-falls have gone since, and a sap-fall is not a year of yours and I will not pretend it converts. What is remembered is this: an egg came up in a season when there was no root to bring it to, because the root of that place had gone quiet, and the ones who had the egg did not know what to do, and there was no keeper to ask because the keeper of a quiet root is not a keeper of anything. And they brought it to another people's well. And that well took it.\n\nThat is the whole story, and it is the founding of everything I am telling you. It established that a well may receive what is not its own. It established that the receiving is done by the well and not by the people standing round it. And it established the form, which is why you are reading this.\n\nThe form has three parts and it has not changed in nine sap-falls.\n\nThe first part: you say what you are bringing, plainly, and you do not say what you want done with it. This is the part outlanders cannot do. You will want to explain. Explaining is asking, and asking puts the keeper in the position of granting, and a keeper cannot grant, and you will have made her refuse you in order to be honest.\n\nThe second part: you say who else has it. Not who else knows — who else holds the thing, or a copy of the thing, or the same news from another mouth. This is the part that seems strange and it is the most practical thing in the form. A keeper's only real question about anything an outlander brings is whether accepting it makes her the only one holding it, because the only one holding a thing is the one it is taken from.\n\nThe third part: you stop. You do not fill the silence. The silence is not an invitation and it is not a rebuke; it is the keeper deciding whether this is a matter for the well or a matter for the town, and those go to different places, and if you talk through it she will have to put it in the town pile because you have made it a conversation.\n\nWhat you get back is never a yes. There is no yes. You will get one of three things: she will take what you brought out of your hands, which is the whole of a yes; or she will tell you where the town keeps such things, which is a real answer and not a brush-off; or she will say nothing at all, which means come back when you know who else has it.\n\nAnd since you will ask: no, none of this works if there is an Empire in the room. Not because we hate your Empire, though some of us do, but because the form requires that a keeper be able to take a thing into her hands, and anything the Empire has touched cannot be taken into anyone's hands, it can only be filed. If you want a keeper to hold a thing, the thing must be capable of being held, and a charter that has been to a customs house is not.\n\nAnd since you have asked where: the keepers you mean are under the old temple at Lilmoth, in the quarter that is standing in the sea. You go by boat and not on foot and you will not get a boat from the wharf; you get one at the third mooring, from whoever is sitting idle, and you go south past the collapsed arcade and keep the crane arm behind you, and the third courtyard where the water stands chest-high is the one with the temple over it. Money will not get you taken there. Two people will take you there for a reason.\n\nYou will get this wrong the first time. Everyone does. The keepers of the rotting quarter at Lilmoth have had it got wrong at them since the quarter went under and they are still there, which should tell you how much of an offence it is."
+    },
+    {
+      "id": "the-sap-and-the-knife",
+      "skill_book": "survival",
+      "knowledge_key": "book_the_sap_and_the_knife",
+      "title": "The Sap and the Knife: the Old Terms of Cutting",
+      "author": "collected by Neeja-Xul of the Ixtu-Vakh, who says he is not a heretic and is",
+      "kind": "treatise",
+      "taxon": "T6",
+      "argonian_authored": true,
+      "unreliability": "A cutter's book about the rules for cutting, written to prove that cutting has rules. Everything in it about depth and season is true and old. Everything in it about who is permitted to do the cutting is Neeja-Xul.",
+      "registry": {
+        "cf": "CF-C005"
+      },
+      "readable_before": "Q-DEEP-01",
+      "gates": [
+        "Q-DEEP-01/res_broker"
+      ],
+      "contradicts": [
+        {
+          "book": "what-the-hollow-has-to-trade",
+          "on": "whether a well may be cut for sale at all",
+          "cf": "CF-C005"
+        }
+      ],
+      "topics_taught": [
+        "the-sap-cutters",
+        "the-cutting",
+        "depth-and-season",
+        "the-covenant"
+      ],
+      "text": "Everyone who talks about the cutting talks about whether. How is not talked about, and how is four hundred years old and is written down in three places and I have put the three together here, and if that makes me a heretic then the keepers who taught me the three places are heretics too.\n\nThere are two numbers. There have only ever been two numbers. Depth, and season.\n\nDEPTH.\n\nA root is cut to the wood and not into it. The old measure is a thumb to the first joint from the outer skin, and the reason is not mystical: below that the root carries and above that it only weeps. A cut to the joint runs for a season and closes clean. A cut past the joint runs faster for a fortnight, then runs thin, then stops, and the length of root above the cut goes grey in the third year. Every rootkeeper on this coast knows this. Every cutter who has been at it more than two seasons knows it. The people who cut deep are new, and they are new every time, because the ones who cut deep do not last.\n\nA well is cut on the shaded side. Always. A cut on the sunward side scars proud and the scar does not take a second cut, so a sunward cut is a well used once, which is theft even by my standards.\n\nA well takes one cut. Not one cut a season — one cut, and then it is a well, and it is kept open by the keeper's tending and not by the knife. A cutter who returns and cuts again beside the first has not taken more sap; they have made a second well with no keeper sitting at it. That is the whole of what the keepers mean when they say the cutting kills. They do not mean the knife. They mean the unattended wound.\n\nSEASON.\n\nThe old terms give a well one drawing between the first sap-fall and the turn of the wet, and none at all in the dry. Two reasons are given and both are true. The tree is thin in the dry and takes longer to close. And a well drawn in the dry is drawn by a cutter who has run out of anything else to sell, which is when people cut deep.\n\nThe terms also give a well a rest year in nine. This is not kept. I do not keep it. I record it because it is in all three of my sources and because I should very much like to be told why it is nine.\n\nWHAT THIS IS FOR.\n\nHere is the use of the two numbers, and it is not the use you would expect.\n\nWhen a keeper and a cutter are standing at a well shouting at each other, they are not disagreeing about whether. They already know the answer to whether and it is different for each of them and neither will move. But if you can get them to argue about depth and season instead, they will argue, because both of them have opinions about depth and season, and the two of them arguing about a number in front of a well is a negotiation whether they intended one or not.\n\nI have seen this done twice by people cleverer than me. Both times what came out of it was a depth and a season, said out loud, in front of the well, with both of them there. Neither side liked it. Neither side has broken it either, and one of those wells was cut before I was born and is still running.\n\nA thing agreed in front of the well is not a contract and there is nowhere to enforce it. It holds because both of them said it where the well could hear, and if you think that is soft, go and stand at one at the turn of the tide and tell me it is soft.\n\nWHAT I AM NOT SAYING.\n\nI am not saying the cutting is good. I am saying it is happening, and that it is happening at a depth and in a season, and that those two numbers are the only things in this entire quarrel that have ever changed a mind."
+    },
+    {
+      "id": "the-leave-book-of-thorn",
+      "knowledge_key": "book_the_leave_book_of_thorn",
+      "title": "The Leave Book of Thorn",
+      "author": "the keepers of Thorn, eleven hands over four hundred years",
+      "kind": "ledger",
+      "taxon": "T4",
+      "argonian_authored": true,
+      "unreliability": "Eleven entries, each written by the keeper who granted the leave, each defending it. One of them stops defending it halfway through and does not start again.",
+      "readable_before": "Q-MAIN-20",
+      "revealed_by_id": "rev_the_eleven_leaves",
+      "topics_taught": [
+        "the-leave-book",
+        "thorn",
+        "the-covenant",
+        "the-eleven-leaves"
+      ],
+      "text": "Leave to open a live root is given by the keeper of the place, alone, and is written here on the day it is given with the reason as the keeper understood it at the time. The reason is not amended afterwards. Whether the reason held is written below it, once, by whoever is keeping the book when it is plain.\n\nTHE FIRST. Leave to Ix-Vashaan, for a hatching at Nine-Mud where the root had gone quiet and there were four eggs.\nIt held.\n\nTHE SECOND. Leave to the same, for the same, the following season.\nIt held. Ix-Vashaan asked that it be written that she did not want to be asked a third time.\n\nTHE THIRD. Leave to the Cohort's surgeon, for the fevers, on his word that men were dying at the crossing and that the sap was the only thing to hand.\nIt did not hold. Nine men took it and four of them killed the other five and the surgeon wrote to us afterwards and we did not answer him. No leave has been given to an outlander since and none will be.\n\nTHE FOURTH. Leave to the town, for the salt year, when there was nothing to eat and the thicket had not fruited.\nIt held. The town buried its dead anyway.\n\nTHE FIFTH. Leave to Ashaan-Meer, for her mother, who was in the Silence and had eight days.\nIt did not hold. She came out of the Silence and did not speak again and lived a long while after.\n\nTHE SIXTH. Leave to the town, for the salt year, second time.\nIt held.\n\nTHE SEVENTH. Leave to Teeus-Ei, keeper of the eastern hollow, whose own root had been cut past the joint and would not carry, so that the hollow's hatching was brought here.\nIt held, and the hollow has brought its hatchings here ever since, and the eastern root has never come back.\n\nTHE EIGHTH. Leave to the Court at Soulrest, for their measuring, on their undertaking that the measuring would be done once.\nIt held. The measuring was done once. This is written down because the writing of it was not expected.\n\nTHE NINTH. Leave to Sesh-Weth, for a reason she gave and which I am required to write as she gave it: we did not know what else to do. She would not put more than that and I did not press her and I have thought about it every season since.\nIt held. I do not know what it held.\n\nTHE TENTH. Leave to the town, for the fever, against my own judgement and against the chapter of keepers at Helstrom who wrote to say I should not.\nIt did not hold. I was wrong and they were right and I have signed this myself so that there is no call for delicacy about it later.\nEi-Vashan.\n\nTHE ELEVENTH. Leave to the barge crews, for the passage in the wet, on the argument that the road was under water and the crews would not go without it.\nIt held, in the sense that the crews went. Two of them have not stopped taking it. I am told this is my doing and I accept that it is.\n\nThe book is kept at the black wall and is not carried out of Thorn. A leave is one root, once, for the reason written, and a keeper who gives a leave gives it in their own name and not the town's, and every one of the leaves above was given by someone who thought at the time that theirs was the obvious case.\n\nBelow the eleventh, in a hand that has not written elsewhere in the book: a twelfth will be asked for. It always is. Read the third and the tenth before you answer, and do not read them in the order they are written, because the third makes you cautious and the tenth makes you certain and the order you take them in is the whole of your decision."
+    }
+  ]
+}

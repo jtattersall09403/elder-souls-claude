@@ -1,0 +1,178 @@
+{
+ "schema": "elder-souls/enemy@1",
+ "id": "cst_sap_speaker",
+ "name": "Sap-speaker",
+ "archetype": "CASTER",
+ "tier": "elite",
+ "ai": "scripted",
+ "unit": "f@60",
+ "hp": 380,
+ "poise": 26,
+ "material": "plant",
+ "material_note": "RI-WPN05 \u00a7B: 'plant / root \u2014 root-wardens'. A sap-speaker is more Hist than Kothringi.",
+ "stamina_max": 100,
+ "radius_m": 0.4,
+ "sight_radius_m": 22,
+ "sight_cone_deg": 130,
+ "reach_m": 2,
+ "water_native": false,
+ "water_max_band": "W2",
+ "_water_note": "RI-WLD10 §5 R5 (S25). A root-warden stays close to the Hist but is a caster, not a swimmer — it leashes at shin-deep (W2) like the roster's other land archetypes rather than following a retreating player into the wade band.",
+ "idle_anim_frames": 52,
+ "reads_exhaustion": true,
+ "soul_grade": "common",
+ "weapon": {
+  "radius_m": 0.085,
+  "socket_a_dist_m": 0.1,
+  "socket_b_dist_m": 1.05,
+  "attack_rating": 96,
+  "socket_a": "wpn_guard",
+  "socket_b": "wpn_tip",
+  "capsule_length_m": 0.95,
+  "length_m": 1.05,
+  "peak_tip_speed_mps_declared": 18.5,
+  "_socket_rule_note": "socket_a_dist_m is skeleton.json \u00a7weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
+  "_peak_declared_note": "RI-CMB04 \u00a7B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the \u00a7B row whose capsule_length_m is nearest this weapon's (straight_sword, 0.95 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
+ },
+ "_declared_incomplete": {
+  "owner": "W1-14 (this piece) declares it; enemy DECISION-MAKING is RI-AI01..07 / wave-1 piece W1-12",
+  "what_is_real": [
+   "the statblock, the melee move and the reposition are real and this archetype spawns",
+   "the `spells` block is a DECLARATION with every RI-AI02 / RI-MAG01 \u00a7F number stated, so AP-M1..AP-M6 are statically checkable against it and tools/analysis/magic-audit.mjs does check them"
+  ],
+  "what_is_NOT_real": [
+   "this enemy does not cast. The player's cast state machine is implemented; the ENEMY's is not, because enemy action selection is W1-12's and this build's enemies execute scripted actions on declared frames (the RI-CMB07 M1 Mode-A instrument), not decisions.",
+   "therefore RI-MAG01 M7 (the live enemy-caster sweep, RI-AI02 M1/M2/M3/M5/M6 against real cast traces) is UNMEASURABLE in this piece and scores 0, fail-closed."
+  ]
+ },
+ "attacks": {
+  "staff_jab": {
+   "anim": "e_staff_jab",
+   "archetype": "thrust",
+   "startup": 40,
+   "active": 8,
+   "recovery": 52,
+   "poise_damage": 18,
+   "motion_value": 0.5,
+   "stamina": 16,
+   "root_dz_m": 0.7,
+   "hitstop_frames": 5,
+   "hitbox_radius_m": 0.085,
+   "amplitude": 0.9,
+   "note": "RI-MAG01 \u00a7F: 'The caster is also a fighter.' A caster whose only behaviour is back-away-and-cast converts every fight into a chase. This is the required melee move.",
+   "reactable": true
+  },
+  "shoulder_turn": {
+   "anim": "e_shoulder_turn",
+   "archetype": "sweep_wide",
+   "startup": 26,
+   "active": 6,
+   "recovery": 34,
+   "poise_damage": 12,
+   "motion_value": 0.3,
+   "stamina": 12,
+   "root_dz_m": 1.6,
+   "hitstop_frames": 4,
+   "hitbox_radius_m": 0.085,
+   "amplitude": 0.7,
+   "reposition": true,
+   "reposition_kind": "advance",
+   "note": "The required NON-RETREAT reposition: it closes 1.6 m and it hits on the way. A caster that only backs away is a bad enemy.",
+   "reactable": true
+  }
+ },
+ "spells": {
+  "sap_dart": {
+   "spell": "spark_dart",
+   "class": "CANTRIP",
+   "windup_f": 14,
+   "active_f": 3,
+   "recovery_f": 20,
+   "severity": "S3",
+   "min_windup_required_f": 12,
+   "silhouette": "cast_point + sorcery hand shape \u2014 one hand snapped forward from the hip, elbow locked",
+   "geometry": {
+    "kind": "projectile",
+    "speed_mps": 22,
+    "radius_m": 0.14,
+    "turn_rate_dps": 0,
+    "tracking_cutoff": null,
+    "lifetime_s": 1.5
+   },
+   "design_range_m": 12,
+   "min_dodge_window_f": 33,
+   "ap_checks": {
+    "AP-M1_hitscan": false,
+    "AP-M3_homing": false,
+    "AP-M4_instant_status": false
+   }
+  },
+  "sap_bolt": {
+   "spell": "marshfire",
+   "class": "LIGHT",
+   "windup_f": 24,
+   "active_f": 4,
+   "recovery_f": 28,
+   "severity": "S6",
+   "min_windup_required_f": 24,
+   "silhouette": "cast_draw + sorcery hand shape \u2014 the catalyst drawn ACROSS the centreline, which no other move in this kit does",
+   "geometry": {
+    "kind": "projectile",
+    "speed_mps": 16,
+    "radius_m": 0.22,
+    "turn_rate_dps": 60,
+    "tracking_cutoff": 0.35,
+    "lifetime_s": 2.5
+   },
+   "design_range_m": 14,
+   "min_dodge_window_f": 52,
+   "ap_checks": {
+    "AP-M1_hitscan": false,
+    "AP-M3_homing": false,
+    "AP-M4_instant_status": false
+   }
+  },
+  "the_still_ground": {
+   "spell": "rot_bloom",
+   "class": "HEAVY",
+   "windup_f": 36,
+   "active_f": 6,
+   "recovery_f": 40,
+   "severity": "S6",
+   "min_windup_required_f": 24,
+   "silhouette": "cast_gather + sorcery hand shape \u2014 HEAD DOWN, both arms low and wide, the only move in this kit that lowers the head",
+   "geometry": {
+    "kind": "volume",
+    "shape": "sphere",
+    "radius_m": 3,
+    "decal_lead_f": 20,
+    "active_f": 6,
+    "ticks_every_f": 12,
+    "decal_footprint_ratio": 1
+   },
+   "design_range_m": 9,
+   "min_dodge_window_f": 20,
+   "ap_checks": {
+    "AP-M2_untelegraphed_aoe": false,
+    "AP-M4_instant_status": false
+   },
+   "status": {
+    "kind": "rot",
+    "per_contact": 8,
+    "note": "A fixed integer of buildup on S11's meter per contact. Never a coin flip."
+   }
+  }
+ },
+ "silhouette_distinctness": {
+  "rule": "RI-AI02 \u00a7D / AP-M6: two spells in one caster's kit may not share a windup silhouette and be distinguished only by particle colour.",
+  "how": "The three spells are three different CLASSES, so they are three different class archetypes in game/data/magic/cast-clips.json: cast_point (arm forward, head level, still walking), cast_draw (arms across the centreline, torso rotated), cast_gather (head DOWN, arms low and wide, feet planted). The differences are in the spine, the neck and the shoulders \u2014 measurable off the bone transforms with the particles switched off."
+ },
+ "armour_rating": 14,
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react.",
+ "boss": true,
+ "unique": true,
+ "_s5_note": "W1-13 r2. The two fog-gate bosses declare their own S5 classification. game/data/world/respawn.json's never_respawn_entity_flags is the enumeration; engine._classifyOnSpawn() copies any of them a statblock declares onto the entity, so a boss is content by DATA rather than because a caller remembered to pass {boss:true}. never_respawn_ids still lists both \u2014 two independent guards on the same fact, which is the fail-closed direction seam S5 asks for.",
+ "souls": 188,
+ "_souls_note": "DERIVED by tools/progression/derive-soul-values.mjs from this statblock's own hp/poise/armour_rating/attack_rating/tier, scaled by RI-PRG06 §7's census normalisation (576/world.enemy_census, read from corpus/00-doctrine/constants.json) — do not hand-edit, re-run the tool (it has a --check mode that fails if the field and the derivation have drifted, and binds the value to the band of the region the statblock is actually placed in). Read by game/src/sim/souls.js, which is the ONLY producer of soulsHeld apart from recovering your own bloodstain. RI-PRG06 §3 owns the soul budget, RI-PRG01 owns the curve it is spent on, and seam S15 forbids souls buying anything but a level. Props are zero so a 99,999-hp training dummy is not an infinite farm."
+}

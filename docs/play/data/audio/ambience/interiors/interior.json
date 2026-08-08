@@ -1,0 +1,125 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "interior",
+  "cell": "interior",
+  "bed_kind": "interior",
+  "region_name": "Interiors, generic",
+  "brief": "the fallback room: a built space with a roof on it, for every interior that has not been given its own bed yet",
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "enclosed",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -27,
+  "crossfade_s": 4,
+  "max_voices": 8,
+  "denies": [],
+  "layers": {
+    "L1": {
+      "id": "l1_generic_room_tone",
+      "text": "a room with a roof: bounded, small, no weather",
+      "level_db": 0,
+      "classes": [
+        "pressure"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 210,
+          "q": 0.6
+        },
+        "gain_db": -8,
+        "width": 0.18,
+        "mod": {
+          "target": "filter_hz",
+          "lfo_hz": 0.026,
+          "depth": 0.15
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_structure",
+      "text": "the building holding itself up",
+      "level_db": -5,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "timber"
+          ],
+          "synth": {
+            "kind": "drone",
+            "partials_hz": [
+              71,
+              106.5
+            ],
+            "partial_gains_db": [
+              -11,
+              -18
+            ],
+            "waveform": "sine",
+            "detune_cents": 7,
+            "gain_db": -15,
+            "filter": {
+              "type": "lowpass",
+              "hz": 340,
+              "q": 0.9
+            },
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.043,
+              "depth": 0.3
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_settling",
+      "text": "a joint settling; something small falling over",
+      "interval_s": [
+        11,
+        34
+      ],
+      "level_db": -2,
+      "events": [
+        {
+          "id": "joint_settle",
+          "classes": [
+            "timber"
+          ],
+          "weight": 3,
+          "pan": [
+            -0.6,
+            0.6
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "bandpass",
+              "hz": 230,
+              "q": 3.5
+            },
+            "env": {
+              "attack_s": 0.015,
+              "decay_s": 0.4
+            },
+            "gain_db": -8
+          }
+        }
+      ],
+      "event_gain_db": 14.79
+    },
+    "L4": null
+  },
+  "emitters": [],
+  "provenance": "W1-22 round 2. RI-AUD03 R4 (\"Interiors get their own bed, not the exterior bed at -12 dB\") and RI-WLD08 §6 (\">=13 (one per region) + >=8 settlement beds + >=4 interior beds\"). Round 1 read R4 as permitting silence and shipped `suppressed` for every interior in the build; the round-1 critic ruled that R4 mandates a bed, and this round agrees on the item's own \"How we lose\" wording — the named failure is that a low-passed exterior \"is not wrong, it is just nothing\", and silence is that failure at its limit rather than an escape from it. Cells are `Engine.cellFor()`'s names. This build has no audio assets, so a synth spec IS the asset; parameters constructed here.",
+  "L4_null_reason": "The generic fallback room stands for interiors that have not been given their own bed, and it must not invent a creature for a place nobody has designed yet. A named interior that needs an L4 gets its own bed rather than borrowing this one's.",
+  "declared_incomplete": true,
+  "bed_gain_db": -0.34,
+  "bed_gain_db_note": "Master trim, in dB, that lands this interior bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-onsets.mjs --calibrate), not guessed. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
+}

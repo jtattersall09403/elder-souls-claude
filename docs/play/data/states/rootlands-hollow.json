@@ -1,0 +1,30 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "rootlands-hollow",
+  "owner": "W1-GIVER-PRESENCE — GAP-W1-quest-givers-not-in-the-world",
+  "title": "The hollow above the sap-line, a day east of Helstrom on the root track. Eight faction quests and one utility quest are given here by two people who, until this state existed, stood nowhere in the build: Speaker Teel-Ashaan (Q-DEEP-01, Q-XULA-01/02/03/10) and the Xul-Aneekh speaker (Q-XULA-04/15, Q-MAG-07). Their records carry settlement:null and that is CORRECT — W1-04 established that a hermit is not a signpost and a junk town string is worse than none — so they are placed by `site` instead, and Engine.populateSite() reads it.",
+  "site": "rootlands-hollow",
+  "env": {
+    "timeOfDay": 9.5,
+    "weather": "overcast",
+    "region": "eastern-rootlands",
+    "settlement": null,
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      -3
+    ],
+    "yaw": 180
+  },
+  "camera": {
+    "yaw": 180,
+    "pitch": -5,
+    "mode": "free"
+  },
+  "npcs": [],
+  "props": [],
+  "spawn": []
+}

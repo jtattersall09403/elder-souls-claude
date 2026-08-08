@@ -1,0 +1,317 @@
+{
+  "schema": "elder-souls/greetings@2",
+  "group": "priority-classes",
+  "owner": "W1-17. RI-DLG01 §A — 'Greetings are not one topic. They are ten topics, Greeting 0 through Greeting 9, evaluated in ascending numeric order, first-match-wins within each. The number is a PRIORITY CLASS, not a disposition band.'",
+  "classes": {
+    "0": "scripted / forced states",
+    "1": "hostility and crime",
+    "2": "rare global states — disease, expulsion",
+    "3": "rare global states — continued",
+    "4": "quest-state greetings, filtered on journal index",
+    "5": "quest-state greetings — the actor who is waiting for you",
+    "6": "faction and service greetings",
+    "7": "SETTLEMENT-LOCAL greetings, filtered on Cell — the town's own voice",
+    "8": "class / race / disposition generic — the disposition banding lives mostly here",
+    "9": "last-resort catch-all; MUST never be empty"
+  },
+  "key_legend": "class = greeting priority class; cell = settlement prefix filter; d = Disposition >= N; a = archetype; f/fr = speaker faction and rank; pf/pr = player faction and rank; j/nj = journal condition; act = main-quest act; to = the root topics the line offers by name (graph edges, RI-DLG01 §C row 1)",
+  "greetings": [
+    {
+      "id": "g0-chargen",
+      "class": 0,
+      "x": "Stand up. You're on a barge, and it isn't going back. The Office at Lilmoth will want your name, and they'll spell it wrong.",
+      "to": [
+        "lilmoth",
+        "the-provincial-office"
+      ],
+      "scripted": true
+    },
+    {
+      "id": "g0-arrest",
+      "class": 0,
+      "a": "legionary",
+      "flag": "under_arrest",
+      "x": "Stop there. Hands where I can see them. You are in custody, citizen. Save the speech.",
+      "to": [
+        "the-sanction"
+      ]
+    },
+    {
+      "id": "g1-hostile-attacked",
+      "class": 1,
+      "a": "legionary",
+      "flag": "player_attacked_me",
+      "x": "Blade! Blade in the street! Stand down or be put down.",
+      "to": []
+    },
+    {
+      "id": "g1-bounty-high",
+      "class": 1,
+      "a": "legionary",
+      "bounty_min": 1000,
+      "x": "Halt. You are the one from the notice. There is a price and I intend to collect it.",
+      "to": [
+        "the-sanction"
+      ]
+    },
+    {
+      "id": "g1-bounty-mid",
+      "class": 1,
+      "a": "legionary",
+      "bounty_min": 200,
+      "x": "Halt. You owe the Office a fine. Pay it here or pay it in a cell.",
+      "to": [
+        "the-sanction",
+        "the-gate-fee"
+      ]
+    },
+    {
+      "id": "g1-bloodprice",
+      "class": 1,
+      "a": "rootkeeper",
+      "flag": "blood_price_open",
+      "x": "You are carrying a death that has not been put down, and you are standing at a well, and one of those two things is going to have to change before I will speak to you further.",
+      "to": [
+        "the-blood-price",
+        "the-arbiters"
+      ]
+    },
+    {
+      "id": "g2-disease",
+      "class": 2,
+      "a": "mudborn",
+      "flag": "player_diseased",
+      "x": "You've got the fever on you, dry-one. I can see it in the eye. And I'm not moving away from you, because that wasn't done for me. But you want the bone-setter, and you want her today.",
+      "to": [
+        "the-marsh-fever",
+        "the-physicians"
+      ]
+    },
+    {
+      "id": "g2-expelled",
+      "class": 2,
+      "a": "legionary",
+      "f": "ninth-cohort",
+      "flag": "expelled_from_my_faction",
+      "x": "You were one of ours. You're not now. Nothing to say to you, citizen.",
+      "to": []
+    },
+    {
+      "id": "g3-yielded",
+      "class": 3,
+      "flag": "has_yielded_to_player",
+      "a": "legionary",
+      "x": "You. I put my blade down in front of you and I have had to live in this town since. State your business and go.",
+      "to": []
+    },
+    {
+      "id": "g3-yielded-warm",
+      "class": 3,
+      "flag": "has_yielded_to_player",
+      "a": "sapcutter",
+      "d": 50,
+      "x": "The one who let this one walk away. Friend, this one has not forgotten. Ask.",
+      "to": [
+        "latest-rumors"
+      ]
+    },
+    {
+      "id": "g4-title-generic",
+      "class": 4,
+      "act": 4,
+      "a": "archivist",
+      "x": "%PCTitle. The name has reached the annexe, which means it has reached everywhere, since the annexe is generally the last to hear anything. What is it you need?",
+      "to": [
+        "latest-rumors",
+        "the-office-annexe"
+      ]
+    },
+    {
+      "id": "g4-mq-return",
+      "class": 4,
+      "j": [
+        "mq",
+        ">=",
+        30
+      ],
+      "a": "rootkeeper",
+      "d": 40,
+      "x": "You went east and you came back, supplicant. That is not what was expected. There are three of us here who would very much like to be told what you saw, before the story is tidied.",
+      "to": [
+        "the-thinning",
+        "the-quiet-wells"
+      ]
+    },
+    {
+      "id": "g4-mq-early",
+      "class": 4,
+      "j": [
+        "mq",
+        ">=",
+        10
+      ],
+      "nj": [
+        "mq",
+        ">=",
+        30
+      ],
+      "a": "sapcutter",
+      "d": 30,
+      "x": "This one heard you were asking about wells. Friend, be careful who hears that.",
+      "to": [
+        "the-quiet-wells"
+      ]
+    },
+    {
+      "id": "g5-caller-waiting",
+      "class": 5,
+      "actor": "naheesh-tul",
+      "j": [
+        "mq",
+        ">=",
+        20
+      ],
+      "x": "You are late, and I am old, and only one of those is going to correct itself. Sit down on the floor. It carries sound.",
+      "to": [
+        "the-listening-floor",
+        "the-thinning"
+      ]
+    },
+    {
+      "id": "g5-quest-giver",
+      "class": 5,
+      "actor": "an-deesei",
+      "j": [
+        "q-lung-wage",
+        ">=",
+        10
+      ],
+      "x": "You came back. They don't come back. Shut the door.",
+      "to": [
+        "the-lung-wage",
+        "the-yard-office"
+      ]
+    },
+    {
+      "id": "g6-faction-cohort",
+      "class": 6,
+      "f": "ninth-cohort",
+      "pf": "ninth-cohort",
+      "pr": 3,
+      "x": "Sir. Or ma'am. The muster is on the board and it is short again. Orders?",
+      "to": [
+        "the-muster-board",
+        "duties"
+      ]
+    },
+    {
+      "id": "g6-faction-ledger",
+      "class": 6,
+      "f": "wet-ledger",
+      "pf": "wet-ledger",
+      "pr": 2,
+      "a": "sapcutter",
+      "x": "One of ours. Friend, the room's yours. The book isn't.",
+      "to": [
+        "the-wet-ledger",
+        "services"
+      ]
+    },
+    {
+      "id": "g6-faction-root",
+      "class": 6,
+      "f": "rootkeepers",
+      "pf": "rootkeepers",
+      "pr": 1,
+      "a": "rootkeeper",
+      "x": "You are counted, supplicant, so I will not count you again. The well was tended at dawn and the columns did not meet, and I would rather say that to you than to the naheesh.",
+      "to": [
+        "the-count-of-hands",
+        "duties"
+      ]
+    },
+    {
+      "id": "g6-merchant",
+      "class": 6,
+      "a": "sapcutter",
+      "d": 40,
+      "service": "barter",
+      "x": "Cart is open. Friend, coin first, then talk.",
+      "to": [
+        "services",
+        "my-trade"
+      ]
+    },
+    {
+      "id": "g6-trainer",
+      "class": 6,
+      "a": "archivist",
+      "d": 60,
+      "service": "training",
+      "x": "I take one student at a time, and I haven't had one in two years. So either I'm selective or I'm difficult. Both, as it happens.",
+      "to": [
+        "services"
+      ]
+    },
+    {
+      "id": "g8-band5-generic",
+      "class": 8,
+      "d": 80,
+      "a": "mudborn",
+      "x": "There you are, dry-one. I've been telling people about you, which I don't usually do. And I've been telling them the good version.",
+      "to": [
+        "little-secret",
+        "latest-rumors",
+        "little-advice"
+      ]
+    },
+    {
+      "id": "g8-band4-generic",
+      "class": 8,
+      "d": 60,
+      "a": "archivist",
+      "x": "You again. Good. Sit. There is a question I have been unable to settle and you are the only person who has ever asked me about it twice.",
+      "to": [
+        "little-advice",
+        "background"
+      ]
+    },
+    {
+      "id": "g8-band3-generic",
+      "class": 8,
+      "d": 40,
+      "a": "legionary",
+      "x": "Citizen. Ask your question. I have a watch to walk.",
+      "to": [
+        "specific-place",
+        "someone-in-particular",
+        "services"
+      ]
+    },
+    {
+      "id": "g8-band2-generic",
+      "class": 8,
+      "d": 20,
+      "a": "sapcutter",
+      "x": "What. This one is working.",
+      "to": [
+        "services",
+        "my-trade"
+      ]
+    },
+    {
+      "id": "g8-band1-generic",
+      "class": 8,
+      "a": "magister",
+      "x": "Business? State it. If not, you're in the way.",
+      "to": []
+    },
+    {
+      "id": "g9-catchall",
+      "class": 9,
+      "x": "Yes?",
+      "to": [],
+      "note": "RI-DLG01 §A: Greeting 9 'must never be empty'. This is the entry that guarantees a speaker always has a line even if every filter above fails."
+    }
+  ]
+}

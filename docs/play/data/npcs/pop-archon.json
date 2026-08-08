@@ -1,0 +1,2303 @@
+{
+  "schema": "elder-souls/npc-group@1",
+  "group": "pop-archon",
+  "id": "pop-archon",
+  "settlement": "archon",
+  "generated_by": "tools/world/build-population.mjs",
+  "source": "the household roster in game/data/world/property/archon.json — these are the people who already owned the objects",
+  "npcs": [
+    {
+      "id": "archon-priest-0",
+      "name": "Vosh-Vastei",
+      "race": "argonian",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-priest-0",
+      "role": "head",
+      "disposition": 49,
+      "interior": "archon-house-0",
+      "home_interior": "archon-house-0",
+      "work_interior": "archon-ward",
+      "owns_zones": [
+        "archon.priest0.r0",
+        "archon.priest0.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-market",
+        "at_building_name": "The Stain Market",
+        "pos": [
+          3814.52,
+          3.42,
+          3843.27
+        ],
+        "yaw": 52,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-weaver-1",
+      "name": "Xul-Shu",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-weaver-1",
+      "role": "head",
+      "disposition": 41,
+      "interior": "archon-house-1",
+      "home_interior": "archon-house-1",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [
+        "archon.weaver1.r0",
+        "archon.weaver1.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3818.28,
+          3.42,
+          3843.42
+        ],
+        "yaw": 57,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-smith-2",
+      "name": "Sleeps-Eggs",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-smith-2",
+      "role": "head",
+      "disposition": 42,
+      "interior": "archon-house-2",
+      "home_interior": "archon-house-2",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [
+        "archon.smith2.r0",
+        "archon.smith2.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3818.33,
+          3.42,
+          3840.89
+        ],
+        "yaw": 57,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-priest-3",
+      "name": "Falco Aldeyn",
+      "race": "imperial",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-priest-3",
+      "role": "head",
+      "disposition": 52,
+      "interior": "archon-guild-office",
+      "home_interior": "archon-guild-office",
+      "work_interior": "archon-ward",
+      "owns_zones": [
+        "archon.priest3.r0",
+        "archon.priest3.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-guild-office",
+        "at_building_name": "The Dyers’ Guild Office",
+        "pos": [
+          3786.06,
+          3.42,
+          3787.66
+        ],
+        "yaw": 180,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-guild-office's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-priest-4",
+      "name": "Tuls Andas",
+      "race": "dunmer",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-priest-4",
+      "role": "head",
+      "disposition": 46,
+      "interior": "archon-market",
+      "home_interior": "archon-market",
+      "work_interior": "archon-ward",
+      "owns_zones": [
+        "archon.priest4.r0",
+        "archon.priest4.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-market",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "archon-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-market",
+        "at_building_name": "The Stain Market",
+        "pos": [
+          3812.78,
+          3.42,
+          3844.11
+        ],
+        "yaw": 52,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-cook-5",
+      "name": "Tsith-Zuka",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-cook-5",
+      "role": "head",
+      "disposition": 46,
+      "interior": "archon-inn",
+      "home_interior": "archon-inn",
+      "work_interior": "archon-inn",
+      "owns_zones": [
+        "archon.cook5.r0",
+        "archon.cook5.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "archon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "13:00",
+          "at": "archon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-inn",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3808.71,
+          3.42,
+          3855.78
+        ],
+        "yaw": 40,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-scribe-6",
+      "name": "Petronia Menandra",
+      "race": "imperial",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-scribe-6",
+      "role": "head",
+      "disposition": 36,
+      "interior": "archon-shrine",
+      "home_interior": "archon-shrine",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [
+        "archon.scribe6.r0",
+        "archon.scribe6.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-apothecary",
+        "at_building_name": "The Crimson Apothecary",
+        "pos": [
+          3813.84,
+          3.42,
+          3846.72
+        ],
+        "yaw": 46,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-factor-7",
+      "name": "Neloth Sedran",
+      "race": "dunmer",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-factor-7",
+      "role": "head",
+      "disposition": 33,
+      "interior": "archon-kiln-house",
+      "home_interior": "archon-kiln-house",
+      "work_interior": "archon-guild-office",
+      "owns_zones": [
+        "archon.factor7.r0",
+        "archon.factor7.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-kiln-house",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-kiln-house",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3809.45,
+          3.42,
+          3855.56
+        ],
+        "yaw": 40,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-scribe-8",
+      "name": "Velas Uveran",
+      "race": "dunmer",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-scribe-8",
+      "role": "head",
+      "disposition": 36,
+      "interior": "archon-vat-house",
+      "home_interior": "archon-vat-house",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [
+        "archon.scribe8.r0",
+        "archon.scribe8.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-vat-house",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-vat-house",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3816.83,
+          3.42,
+          3845.06
+        ],
+        "yaw": 57,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-factor-9",
+      "name": "Neloth Solas",
+      "race": "dunmer",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-factor-9",
+      "role": "head",
+      "disposition": 34,
+      "interior": "archon-apothecary",
+      "home_interior": "archon-apothecary",
+      "work_interior": "archon-guild-office",
+      "owns_zones": [
+        "archon.factor9.r0",
+        "archon.factor9.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-apothecary",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3813.08,
+          3.42,
+          3853.06
+        ],
+        "yaw": 40,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-apothecary-10",
+      "name": "Yakum Dram",
+      "race": "dunmer",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-apothecary-10",
+      "role": "head",
+      "disposition": 50,
+      "interior": "archon-ward",
+      "home_interior": "archon-ward",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [
+        "archon.apothecary10.r0",
+        "archon.apothecary10.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-ward",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-ward",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-kiln-house",
+        "at_building_name": "The Kiln House",
+        "pos": [
+          3792.91,
+          3.42,
+          3851.78
+        ],
+        "yaw": 17,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-kiln-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-apothecary-11",
+      "name": "Rajxal",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-apothecary-11",
+      "role": "head",
+      "disposition": 45,
+      "interior": "archon-rootpost",
+      "home_interior": "archon-rootpost",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [
+        "archon.apothecary11.r0",
+        "archon.apothecary11.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-rootpost",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3816.29,
+          3.42,
+          3846.12
+        ],
+        "yaw": 57,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-legionary-12",
+      "name": "Nuxei",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-legionary-12",
+      "role": "head",
+      "disposition": 34,
+      "interior": "archon-guild-office",
+      "home_interior": "archon-guild-office",
+      "work_interior": "archon-guild-office",
+      "owns_zones": [
+        "archon.legionary12.r0",
+        "archon.legionary12.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-kiln-house",
+        "at_building_name": "The Kiln House",
+        "pos": [
+          3791.16,
+          3.42,
+          3851.77
+        ],
+        "yaw": 17,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-kiln-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-legionary-13",
+      "name": "Octavia Silvanus",
+      "race": "imperial",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-legionary-13",
+      "role": "head",
+      "disposition": 29,
+      "interior": "archon-market",
+      "home_interior": "archon-market",
+      "work_interior": "archon-guild-office",
+      "owns_zones": [
+        "archon.legionary13.r0",
+        "archon.legionary13.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "archon-market",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "archon-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3818.74,
+          3.42,
+          3841.35
+        ],
+        "yaw": 57,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-priest-0-elder0",
+      "name": "Onwen Andas",
+      "race": "dunmer",
+      "class": "elder",
+      "actor": "town-elder",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-priest-0",
+      "role": "elder",
+      "disposition": 51,
+      "interior": "archon-house-0",
+      "home_interior": "archon-house-0",
+      "work_interior": "archon-house-0",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3815.56,
+          3.42,
+          3845.63
+        ],
+        "yaw": 57,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-priest-0-sibling1",
+      "name": "Paints-Flies",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-priest-0",
+      "role": "sibling",
+      "disposition": 44,
+      "interior": "archon-house-0",
+      "home_interior": "archon-house-0",
+      "work_interior": "archon-house-0",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "archon-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "archon-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-market",
+        "at_building_name": "The Stain Market",
+        "pos": [
+          3811.06,
+          3.42,
+          3847.17
+        ],
+        "yaw": 52,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-weaver-1-apprentice0",
+      "name": "Neekhuj",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-weaver-1",
+      "role": "apprentice",
+      "disposition": 50,
+      "interior": "archon-house-1",
+      "home_interior": "archon-house-1",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "archon-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3815.68,
+          3.42,
+          3844.36
+        ],
+        "yaw": 57,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-smith-2-child0",
+      "name": "Deekbok",
+      "race": "argonian",
+      "class": "child",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-smith-2",
+      "role": "child",
+      "disposition": 53,
+      "interior": "archon-house-2",
+      "home_interior": "archon-house-2",
+      "work_interior": "archon-house-2",
+      "owns_zones": [],
+      "behaviour": "attend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-house-2",
+        "at_building_name": "Onwen Quick-Tally's house",
+        "pos": [
+          3784.52,
+          3.42,
+          3859.36
+        ],
+        "yaw": 0,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-house-2's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-smith-2-partner1",
+      "name": "Tsanaheesh",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-smith-2",
+      "role": "partner",
+      "disposition": 47,
+      "interior": "archon-house-2",
+      "home_interior": "archon-house-2",
+      "work_interior": "archon-house-2",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "archon-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-market",
+        "at_building_name": "The Stain Market",
+        "pos": [
+          3813.58,
+          3.42,
+          3843.36
+        ],
+        "yaw": 52,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-priest-3-sibling0",
+      "name": "Xanvokh",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-priest-3",
+      "role": "sibling",
+      "disposition": 43,
+      "interior": "archon-guild-office",
+      "home_interior": "archon-guild-office",
+      "work_interior": "archon-guild-office",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-market",
+        "at_building_name": "The Stain Market",
+        "pos": [
+          3813.19,
+          3.42,
+          3843.27
+        ],
+        "yaw": 52,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-guild-office",
+      "name": "Ivrys Sarethi",
+      "title": "Clerk",
+      "race": "dunmer",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-keeper-guild-office",
+      "role": "keeper",
+      "disposition": 33,
+      "interior": "archon-guild-office",
+      "home_interior": "archon-guild-office",
+      "work_interior": "archon-guild-office",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-guild-office",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-guild-office",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3809.76,
+          3.42,
+          3855.96
+        ],
+        "yaw": 40,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-vat-house",
+      "name": "Ixuxith",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": "wet-ledger",
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-keeper-vat-house",
+      "role": "keeper",
+      "disposition": 39,
+      "interior": "archon-vat-house",
+      "home_interior": "archon-vat-house",
+      "work_interior": "archon-vat-house",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "archon-vat-house",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-vat-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3818.23,
+          3.42,
+          3841.07
+        ],
+        "yaw": 57,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-vat-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-market",
+      "name": "Aulus Nerentius",
+      "title": "Trader",
+      "race": "imperial",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-keeper-market",
+      "role": "keeper",
+      "disposition": 40,
+      "interior": "archon-market",
+      "home_interior": "archon-market",
+      "work_interior": "archon-market",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-market",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "archon-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "archon-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-market",
+        "at_building_name": "The Stain Market",
+        "pos": [
+          3813.68,
+          3.42,
+          3844.56
+        ],
+        "yaw": 52,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-apothecary",
+      "name": "Vitellia Nerentius",
+      "title": "Apothecary",
+      "race": "imperial",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-keeper-apothecary",
+      "role": "keeper",
+      "disposition": 52,
+      "interior": "archon-apothecary",
+      "home_interior": "archon-apothecary",
+      "work_interior": "archon-apothecary",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "archon-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-apothecary",
+        "at_building_name": "The Crimson Apothecary",
+        "pos": [
+          3811.1,
+          3.42,
+          3846.87
+        ],
+        "yaw": 46,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-inn",
+      "name": "Xal-Haj",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-keeper-inn",
+      "role": "keeper",
+      "disposition": 52,
+      "interior": "archon-inn",
+      "home_interior": "archon-inn",
+      "work_interior": "archon-inn",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "archon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "10:00",
+          "at": "archon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "00:00",
+          "at": "archon-inn",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3811.01,
+          3.42,
+          3853.72
+        ],
+        "yaw": 40,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-ward",
+      "name": "Bevene Rethan",
+      "title": "Healer",
+      "race": "dunmer",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "archon",
+      "quarter": "salvage-yard",
+      "household": "archon-keeper-ward",
+      "role": "keeper",
+      "disposition": 48,
+      "interior": "archon-ward",
+      "home_interior": "archon-ward",
+      "work_interior": "archon-ward",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "06:00",
+          "at": "archon-ward",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "archon-ward",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "archon-ward",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "22:00",
+          "at": "archon-ward",
+          "activity": "home"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-ward",
+        "at_building_name": "The Harvesters’ Ward",
+        "pos": [
+          3809.61,
+          3.42,
+          3857.33
+        ],
+        "yaw": 34,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-ward's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-shrine",
+      "name": "Aemilia Bellandus",
+      "title": "Rootkeeper",
+      "race": "imperial",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-keeper-shrine",
+      "role": "keeper",
+      "disposition": 49,
+      "interior": "archon-shrine",
+      "home_interior": "archon-shrine",
+      "work_interior": "archon-shrine",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "archon-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "archon-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "archon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "17:00",
+          "at": "archon-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "20:00",
+          "at": "archon-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "archon-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-shrine",
+        "at_building_name": "The Crimson-Coast Hist-Shrine",
+        "pos": [
+          3805.74,
+          3.42,
+          3855.82
+        ],
+        "yaw": 29,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-shrine's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-rootpost",
+      "name": "Meertei",
+      "title": "Postmaster",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "archon",
+      "quarter": "old-quay",
+      "household": "archon-keeper-rootpost",
+      "role": "keeper",
+      "disposition": 48,
+      "interior": "archon-rootpost",
+      "home_interior": "archon-rootpost",
+      "work_interior": "archon-rootpost",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "archon-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "archon-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "archon-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "19:00",
+          "at": "archon-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-rootpost",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3809.8,
+          3.42,
+          3856.81
+        ],
+        "yaw": 40,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "archon-keeper-kiln-house",
+      "name": "Sleeps-Doors",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "archon",
+      "quarter": "terraces",
+      "household": "archon-keeper-kiln-house",
+      "role": "keeper",
+      "disposition": 40,
+      "interior": "archon-kiln-house",
+      "home_interior": "archon-kiln-house",
+      "work_interior": "archon-kiln-house",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "archon-kiln-house",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "archon-kiln-house",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "archon-kiln-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "archon-kiln-house",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "archon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-inn",
+        "at_building_name": "The Stained Hand",
+        "pos": [
+          3810.02,
+          3.42,
+          3856.27
+        ],
+        "yaw": 40,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from archon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    }
+  ],
+  "street_life_note": "Some records in this file carry a `post` block and outdoor `at: null` schedule rows written by tools/world/build-street-life.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
+}

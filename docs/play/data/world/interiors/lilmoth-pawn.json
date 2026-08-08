@@ -1,0 +1,140 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "lilmoth-pawn",
+ "name": "The Low Pawn",
+ "settlement": "lilmoth",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "fence",
+ "faction": "wet-ledger",
+ "exterior_door": [
+  2774.28,
+  7.37,
+  5059.57
+ ],
+ "continuity": {
+  "building": "lilmoth-pawn",
+  "building_offset_m": [
+   7.78,
+   4.6,
+   32.07
+  ],
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.4
+  ],
+  "exterior_spawn": [
+   2774.28,
+   7.37,
+   5061.37
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "lilmoth.priest8.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "lilmoth.priest8.r1.lamp0",
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    4.300000000000001
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.priest8.r1.lamp1",
+   "pos": [
+    -3.2,
+    1.6,
+    4.199999999999999
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "lil_sunk_facade",
+  "lil_drowned_window",
+  "lil_stilt_platform",
+  "lil_reed_shack"
+ ],
+ "property_zones": [
+  "lilmoth.priest8.r1"
+ ],
+ "containers": [
+  "lilmoth.priest8.r1.7"
+ ],
+ "unique_item": {
+  "id": "lilmoth-pawn-unique",
+  "name": "a ring three families have reported stolen",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:lilmoth-priest-8"
+ },
+ "readable": {
+  "id": "lilmoth-pawn-readable",
+  "title": "What We Do Not Ask"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

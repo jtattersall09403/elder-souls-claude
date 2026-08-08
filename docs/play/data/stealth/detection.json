@@ -1,0 +1,427 @@
+{
+ "schema": "elder-souls/stealth-detection@1",
+ "id": "detection",
+ "source": "RI-STL01 \u00a72 \u00a73 \u00a74 \u00a75 \u00a76, transcribed verbatim. Perception geometry (cones, radii, decay, thresholds) is RI-AI01 \u00a7B and is NOT re-opened here.",
+ "note_on_units": "Every rate is per SECOND in this file and is divided by 60 exactly once, in sim/stealth/detection.js, to reach f@60. Frame figures elsewhere in this piece carry the f@60 suffix per seam S22.",
+ "visibility": {
+  "formula": "V = clamp( L^gamma * M * S * E * A , 0.05 , 1.30 )",
+  "light_exponent": 1.36,
+  "light_exponent_defect": {
+   "ruling": "RI-STL01 \u00a72 STATES gamma = 0.7 and then publishes a five-row worked table that gamma = 0.7 cannot produce. gamma = 1.36 reproduces all five rows within 0.5%. The worked table is authoritative here and the stated exponent is a transcription defect. AMENDMENT-W1-15-01 files it.",
+   "arithmetic": {
+    "row_2_walking_dim_medium_Sneak5": {
+     "item_V": 0.339,
+     "at_gamma_0.7": 0.6745,
+     "at_gamma_1.36": 0.3373,
+     "item_t_aggro_s": 3.94,
+     "t_at_0.7": 1.977,
+     "t_at_1.36": 3.952
+    },
+    "row_3_crouched_dim_light_Sneak45": {
+     "item_V": 0.157,
+     "at_gamma_0.7": 0.3151,
+     "at_gamma_1.36": 0.1576,
+     "item_t_aggro_s": 8.5,
+     "t_at_0.7": 4.232,
+     "t_at_1.36": 8.461
+    },
+    "row_4_crouched_unlit_light_Sneak45_cover": {
+     "item_V": 0.05,
+     "item_annotation": "(clamped)",
+     "at_gamma_0.7": 0.0733,
+     "at_gamma_1.36": 0.05,
+     "note": "The item ANNOTATES this row as clamped at the 0.05 floor. At gamma = 0.7 the raw value is 0.0733 and the floor never fires, so the item's own annotation is false at its own stated exponent. This is the decisive tell."
+    },
+    "rows_1_and_5": "clamped at both exponents; they discriminate nothing."
+   },
+   "implied_exponent_from_the_two_unclamped_rows": [
+    1.35533,
+    1.36351
+   ],
+   "why_this_direction": "gamma > 1 makes darkness matter MORE, which is the direction RI-STL01 \u00a73 argues for in prose ('the lighting artist is a stealth designer') and the direction its DARK-COVERAGE metric assumes. At gamma 0.7 an L = 0.10 floor tile reads as V-multiplier 0.20; at 1.36 it reads 0.044.",
+   "how_to_disagree": "This value is DATA. Set it to 0.7 here, re-run tools/harness/stl-probe.mjs, and the five worked rows fail instead. Nothing in the code hardcodes it."
+  },
+  "clamp": [
+   0.05,
+   1.3
+  ],
+  "motion_M": {
+   "still": 0.55,
+   "crouch_move": 1.0,
+   "walk": 1.45,
+   "sprint": 2.1
+  },
+  "sneak_S": {
+   "formula": "1.00 - 0.006 * Sneak",
+   "floor": 0.4,
+   "source": "RI-PRG03 \u00a76, adopted verbatim"
+  },
+  "equip_E": {
+   "light": 0.9,
+   "medium": 1.0,
+   "heavy": 1.25,
+   "overloaded": 1.55,
+   "source": "RI-PRG07 bands"
+  },
+  "cover_A": {
+   "default": 1.0,
+   "in_cover": 0.8,
+   "cover_test": "any collider between chest node and eye node for >= 60% of the cone"
+  },
+  "applies_to": [
+   "primary_cone",
+   "peripheral_cone"
+  ],
+  "never_applies_to": [
+   "damage_taken",
+   "ally_death_shout",
+   "weapon_impact"
+  ],
+  "never_applies_to_note": "Nothing hides you from being hit."
+ },
+ "perception_inherited_from_RI_AI01": {
+  "primary_cone_deg": 55,
+  "peripheral_cone_deg": 100,
+  "rear_arc_deg": 100,
+  "peripheral_rate_scale": 0.35,
+  "peripheral_rate_scale_source": "RI-AI01 \u00a7B row 2: the peripheral cone fills at 0.35x the primary rate. Round 1 shipped 0.45, which is in neither item; RI-STL01 \u00a71 states RI-AI01's perception geometry is NOT re-opened here, so RI-AI01's number stands.",
+  "peripheral_alert_cap": 70,
+  "peripheral_alert_cap_source": "RI-AI01 \u00a7B row 2 note: the peripheral cone 'cannot exceed alert 70 on its own'.",
+  "hearing_rate_per_s": {
+   "sprint": 60,
+   "walk": 40,
+   "crouch_move": 25,
+   "still": 0
+  },
+  "hearing_rate_source": "RI-AI01 \u00a7B hearing rows. RI-STL01 \u00a74 scales the RADIUS of the sphere; RI-AI01 owns the RATE inside it. Flat within the sphere \u2014 RI-AI01 gives one number per movement mode and no distance term.",
+  "hearing_wall_attenuation": 0.4,
+  "base_fill_conflict_with_RI_AI01": {
+   "ruling": "RI-AI01 \u00a7B states the primary sight rate as '100/s at <= 0.5R, 50/s at 1.0R, 0 at > R', i.e. 100 on a plateau then 150 - 100*d/R. RI-STL01 \u00a72's worked table states 97.5/s for V = 1.30 at d = 0.5R, i.e. a base of 75/s at 0.5R. The two are irreconcilable at 0.5R (100 vs 75). This build uses 150*(1 - d/R), which reproduces RI-STL01 \u00a72's five-row table exactly \u2014 the table RI-STL01 method 2 asserts against within 5%. The conflict is real, is not the builder's to settle, and is filed as a corpus-coherence defect in AMENDMENT-W1-15-01 \u00a74 for the bar critic.",
+   "RI_AI01_form": "d <= 0.5R -> 100/s; 0.5R < d <= R -> 150 - 100*d/R; d > R -> 0",
+   "RI_STL01_form": "150 * (1 - d/R), pinned by 150 * 1.30 * (1 - 8/16) = 97.5",
+   "chosen": "RI_STL01_form"
+  },
+  "hearing_r_m": {
+   "sprint": 14.0,
+   "walk": 6.0,
+   "crouch_move": 2.5,
+   "still": 0.0
+  },
+  "decay_per_s": 12,
+  "suspicious_at": 50,
+  "aggro_at": 100,
+  "sight_radius_R_m": {
+   "INFANTRY": 16.0,
+   "SKIRMISHER": 18.0,
+   "ELITE": 20.0,
+   "DUELIST": 20.0,
+   "BEAST": 12.0,
+   "CIVILIAN": 14.0,
+   "GUARD": 18.0
+  },
+  "base_fill_at_R_note": "fill = 150 * V * (1 - d/R) per second in the primary cone; the constant is set so the RI-STL01 \u00a72 worked table reproduces exactly. See sim/stealth/detection.js baseFill()."
+ },
+ "light_table_L": [
+  {
+   "condition": "direct sun, open marsh, midday",
+   "L": 1.0,
+   "key": "sun_open"
+  },
+  {
+   "condition": "overcast day, open",
+   "L": 0.75,
+   "key": "overcast_open"
+  },
+  {
+   "condition": "deep canopy, day (The Hive, Stone Forest)",
+   "L": 0.3,
+   "key": "canopy_day"
+  },
+  {
+   "condition": "torchlit interior, within 4 m of a flame",
+   "L": 0.6,
+   "key": "flame_near"
+  },
+  {
+   "condition": "torchlit interior, 4-9 m from a flame",
+   "L": 0.25,
+   "key": "flame_far"
+  },
+  {
+   "condition": "unlit interior / xanmeer depth",
+   "L": 0.04,
+   "key": "unlit"
+  },
+  {
+   "condition": "night, open, clear, moons up",
+   "L": 0.22,
+   "key": "night_clear"
+  },
+  {
+   "condition": "night, open, overcast",
+   "L": 0.09,
+   "key": "night_overcast"
+  },
+  {
+   "condition": "night, under canopy",
+   "L": 0.04,
+   "key": "night_canopy"
+  }
+ ],
+ "torch": {
+  "carried_torch_floor_L": 0.8,
+  "alert_source_radius_m": 18.0,
+  "note": "L = max(L, 0.80) at all times while carried, and the torch is a hearing-independent alert source at 18 m."
+ },
+ "light_falloff": {
+  "model": "inverse-square with a 0.35 m core, summed over sources, clamped to [0,1]",
+  "formula": "L = clamp( ambient + sum_i( intensity_i / (0.35 + d_i^2) ) , 0, 1 )",
+  "note": "The renderer and getLightAt() read this same function. RI-STL01's How-we-lose #1 is that light is never sampled at all; sim/stealth/light.js is the answer and getLightAt(x,y,z) is the instrument."
+ },
+ "sound": {
+  "formula": "r_effective = r_base * E_sound * S_sound * surface",
+  "E_sound": {
+   "light": 0.75,
+   "medium": 1.0,
+   "heavy": 1.4,
+   "overloaded": 1.8
+  },
+  "S_sound": {
+   "formula": "1.00 - 0.005 * Sneak",
+   "floor": 0.5
+  },
+  "surface": {
+   "mud": 0.7,
+   "moss": 0.7,
+   "earth": 1.0,
+   "timber": 1.0,
+   "stone": 1.35,
+   "tile": 1.35,
+   "shallow_water": 1.6,
+   "dry_reed": 1.9
+  },
+  "discrete_events": [
+   {
+    "event": "drop_landing",
+    "condition": "drop > 2 m",
+    "radius_m": 12,
+    "alert": 45,
+    "directed": "player"
+   },
+   {
+    "event": "lock_attempt",
+    "radius_m": 8,
+    "alert": 30,
+    "directed": "player"
+   },
+   {
+    "event": "pick_break",
+    "radius_m": 11,
+    "alert": 55,
+    "directed": "player"
+   },
+   {
+    "event": "throw_impact",
+    "radius_m": 10,
+    "alert": 70,
+    "directed": "impact_point"
+   }
+  ],
+  "discrete_events_note": "None of the four is scaled by Sneak \u2014 they are not you moving. The throw is the only offensive stealth tool in the base kit and it directs alert at the impact point, not at you."
+ },
+ "sneak_state": {
+  "input": "crouch",
+  "input_amendment": "AM-W1-15-01 \u2014 added to the closed action set in game/src/input/actions.js",
+  "speed_mps": 0.85,
+  "walk_mps": 2.0,
+  "stamina_cost": 0.0,
+  "stamina_regen_while_crouched": "normal out-of-combat rate",
+  "camera": "unchanged third-person (S18)",
+  "roll_permitted": true,
+  "roll_exits_sneak": true,
+  "opener_permitted": true,
+  "blocked_while": "any enemy at alert_state == AGGRO within 8 m",
+  "blocked_while_note": "You may not crouch your way out of an active fight; break line of sight and let RI-AI01's de-aggro run first.",
+  "opener_sneak_requirement": 20,
+  "opener_gate_note": "RI-PRG03 \u00a76. Deterministic. Below 20 the rear attack is an ordinary light attack that still HITS, because geometry decides hits (S1); it simply is not a critical.",
+  "skill_accrual_per_10s_in_cone": 4,
+  "skill_accrual_in_empty_room": 0
+ },
+ "civilian": {
+  "states": [
+   "CALM",
+   "WATCHING",
+   "CHALLENGE",
+   "ALARM"
+  ],
+  "thresholds": {
+   "WATCHING": 35,
+   "CHALLENGE": 70,
+   "ALARM": 100
+  },
+  "hearing_suspicion_scale": 0.35,
+  "hearing_suspicion_scale_source": "RI-STL01 \u00a76 gives civilians a sight fill and no hearing term at all; RI-AI01 \u00a7B gives ENEMIES hearing at 60/40/25 per second. A civilian who reacted to a footfall at an enemy's rate would reach ALARM in 1.67 s of someone sprinting past, which is not a townsperson. 0.35 is this build's declared scale: a sprinting heavy-armoured stranger on dry reed reaches WATCHING in 1.7 s and CHALLENGE in 3.3 s. It is DATA \u2014 change it here and nothing in code moves.",
+  "hearing_ceiling": 70,
+  "hearing_ceiling_source": "A sound makes a townsperson turn round and say something; only SEEING you raises the alarm. Hearing alone is capped at the CHALLENGE threshold, which is RI-STL01 \u00a76's 'last off-ramp' and must stay reachable for a player who was heard and never seen.",
+  "formula": "suspicion_fill = base_fill(V, distance, cone) * raceSuspicion[group][race] * contextWeight",
+  "challenge_is_dialogue": true,
+  "challenge_window_s": 2.5,
+  "challenge_offramps": [
+   "speechcraft",
+   "bribe",
+   "faction_token",
+   "leave"
+  ],
+  "context_weight": [
+   {
+    "context": "public_street_sheathed",
+    "weight": 0.0,
+    "threshold": "never"
+   },
+   {
+    "context": "weapon_drawn_settlement",
+    "weight": 1.0,
+    "threshold": "CHALLENGE"
+   },
+   {
+    "context": "crouched_public",
+    "weight": 1.6,
+    "threshold": "CHALLENGE"
+   },
+   {
+    "context": "trespass_zone",
+    "weight": 2.2,
+    "threshold": "CHALLENGE"
+   },
+   {
+    "context": "handling_owned_object",
+    "weight": 3.0,
+    "threshold": "CRIME"
+   },
+   {
+    "context": "lockpicking",
+    "weight": 4.0,
+    "threshold": "CRIME"
+   },
+   {
+    "context": "over_fresh_corpse",
+    "weight": 3.5,
+    "threshold": "CRIME"
+   },
+   {
+    "context": "wearing_item_stolen_from_this_npc",
+    "weight": 2.5,
+    "threshold": "CHALLENGE"
+   },
+   {
+    "context": "restricted_zone",
+    "weight": 3.0,
+    "threshold": "ALARM_ON_SIGHT"
+   },
+   {
+    "context": "dragging_corpse",
+    "weight": 3.5,
+    "threshold": "CRIME"
+   }
+  ],
+  "decay_per_s": 12,
+  "note": "Civilians NEVER use the enemy state machine. RI-STL01 How-we-lose: a shopkeeper who enters SUSPICIOUS then AGGRO collapses the whole crime system into combat and destroys the CHALLENGE off-ramp."
+ },
+ "worked_rows": [
+  {
+   "label": "sprinting, torchlit, heavy, Sneak 5",
+   "L": 0.85,
+   "M": "sprint",
+   "sneak": 5,
+   "load": "heavy",
+   "cover": false,
+   "V": 1.3,
+   "fill_per_s": 97.5,
+   "t_aggro_s": 1.03
+  },
+  {
+   "label": "walking, dim, medium, Sneak 5",
+   "L": 0.35,
+   "M": "walk",
+   "sneak": 5,
+   "load": "medium",
+   "cover": false,
+   "V": 0.339,
+   "fill_per_s": 25.4,
+   "t_aggro_s": 3.94
+  },
+  {
+   "label": "crouched, dim, light, Sneak 45",
+   "L": 0.35,
+   "M": "crouch_move",
+   "sneak": 45,
+   "load": "light",
+   "cover": false,
+   "V": 0.157,
+   "fill_per_s": 11.8,
+   "t_aggro_s": 8.5
+  },
+  {
+   "label": "crouched, unlit, light, Sneak 45, in cover",
+   "L": 0.06,
+   "M": "crouch_move",
+   "sneak": 45,
+   "load": "light",
+   "cover": true,
+   "V": 0.05,
+   "fill_per_s": 3.75,
+   "t_aggro_s": 26.7
+  },
+  {
+   "label": "still, unlit, light, Sneak 100, in cover",
+   "L": 0.06,
+   "M": "still",
+   "sneak": 100,
+   "load": "light",
+   "cover": true,
+   "V": 0.05,
+   "fill_per_s": 3.75,
+   "t_aggro_s": 26.7
+  }
+ ],
+ "worked_rows_context": {
+  "archetype": "INFANTRY",
+  "R_m": 16.0,
+  "distance_m": 8.0,
+  "cone": "primary"
+ },
+ "no_meter": {
+  "hud_elements": 0,
+  "permitted_feedback": [
+   "enemy 18 f@60 head-turn tell at SUSPICIOUS (RI-AI01 T02)",
+   "audible grunt"
+  ],
+  "banned": [
+   "stealth eye icon",
+   "hidden/detected HUD word",
+   "visibility bar"
+  ],
+  "rule": "AR-2 / ui.hud.minimalism. The correct fix for 'I cannot tell if I am hidden' is more legible darkness and a clearer head-turn tell, never a HUD."
+ },
+ "interior_lamps": {
+  "why": "RI-STL01 \u00a73's How-we-lose #1 is 'light is never implemented'. It was implemented \u2014 and then, for the whole of wave 1, nothing ever put a light in it outside a scenario. 827 authored interior lamps were DRAWN by render/interior.js and the LightField held zero sources in the running world, so the detection model read the same ambient in a hearth-lit taproom as in a sealed cellar. This block is what turns an authored lamp into an L.",
+  "authored_intensity_to_L_scale": 9.3275,
+  "scale_derivation": "The `intensity` on an interiors/*.json lamp is an AUTHORING weight (0.55 oil-lamp, 0.9 or 1.4 hearth), not an L. render/interior.js already rescales it for Three.js (x9 lamp, x22 hearth); the simulation needs its own scale, pinned to RI-STL01 \u00a73's own table rather than to the renderer's. Two rows pin it: 'torchlit interior, within 4 m of a flame' L=0.60 and 'torchlit interior, 4-9 m from a flame' L=0.25 (read at 6 m). With ambient 0.04 and the 0.35 m core those need intensity 9.1560 and 7.6335; the mean is 8.3948. THE FLAME OF THOSE ROWS IS THE ROOM'S FIRE, not a wall sconce, so the mean is divided by the authored hearth weight 0.9 rather than by the oil-lamp's 0.55: 9.3275. A hearth then reads 0.60 at 4 m and 0.27 at 6 m exactly as the item says, and a 0.55 oil-lamp reads 0.39 and 0.20 \u2014 dimmer than the room's fire, which is what it is.",
+  "interior_ambient_L": 0.04,
+  "interior_ambient_note": "An interior is lit BY ITS LAMPS. Before this, sim/stealth/system.js set defaultAmbient from skyAmbient(env) whenever the player carried no explicit zone \u2014 which is the case in every one of the 115 interiors \u2014 so a windowless cellar at noon sampled L=1.00 (direct sun) and the same cellar at 03:00 sampled 0.22. Indoors the sky does not reach in; the floor is light_table_L's `unlit` row and every lamp above it is a source.",
+  "sleeping_witness": {
+   "asleep_between_h": [
+    23,
+    6
+   ],
+   "asleep_activity": "home",
+   "why": "RI-CRM01's witness must be someone who was there and could see. The world's NPC schedules (game/data/world/settlements/*.json, activity home|work|tavern|market|errand|watch|street|post) have no `sleep` value at all, so nothing in the build could distinguish a person in their bed from a person standing in their doorway at 03:00 \u2014 and a thief robbing a house at night was seen by every resident of it. A person at `home` in these hours is asleep: not a sensor, not an observer, not a witness. It is derived from the schedule the world already publishes rather than authored a second time."
+  },
+  "reach_m": {
+   "flame": 9.0,
+   "hearth": 18.0
+  },
+  "reach_derivation": "RI-STL01 \u00a73's interior rows stop at '4-9 m from a flame'; past 9 m the item's own answer for an interior is the `unlit` row, 0.04. So 9 m is where a flame stops counting, and it is the ITEM's number. A HEARTH is the one fire in the room rather than a fitting on a wall, and gets twice the reach \u2014 the same 2:1 the renderer already uses between its hearth and lamp point lights (22 m vs 11 m), so the drawn room and the simulated room agree about which light is the big one. Without a reach the sum over every lamp in a 200 m2 shop clamps 91% of the floor to L=1.00 and the light term stops discriminating anywhere indoors.",
+  "known_divergence_from_the_renderer": "render/interior.js caps ILLUMINATING lamps at LIT_CAP=5 per interior and builds the rest as visible but unlit fittings; the simulation lights every deduped lamp. That cap is a rendering budget (591 shadow-casting oil lamps is a slideshow), not a world fact, so it is not copied here \u2014 but it means a room with more than five deduped lamps is simulated slightly brighter than it is drawn. Recorded rather than hidden: closing it needs the cap to move into data both files read, and render/interior.js belongs to W1-04."
+ }
+}

@@ -1,0 +1,232 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "archon-market",
+ "name": "The Stain Market",
+ "settlement": "archon",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "trader",
+ "faction": null,
+ "exterior_door": [
+  3810.06,
+  3.42,
+  3843.4
+ ],
+ "continuity": {
+  "building": "archon-market",
+  "building_offset_m": [
+   25.06,
+   0,
+   19.9
+  ],
+  "building_yaw_deg": 231.5,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6.6
+  ],
+  "exterior_spawn": [
+   3810.06,
+   3.42,
+   3845.2
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.8,
+   6.8
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "archon.priest4.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.priest4.r0.lamp0",
+   "pos": [
+    3.4000000000000004,
+    1.6,
+    -1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.priest4.r0.lamp1",
+   "pos": [
+    1.5,
+    1.6,
+    -1.2999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.priest4.r0.lamp2",
+   "pos": [
+    0.20000000000000018,
+    1.6,
+    -1.2000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.scribe8.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.scribe8.r1.lamp0",
+   "pos": [
+    -2.4,
+    1.6,
+    3.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.scribe8.r1.lamp1",
+   "pos": [
+    2.7,
+    1.6,
+    3.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.scribe8.r1.lamp2",
+   "pos": [
+    0.7999999999999998,
+    1.6,
+    3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary13.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.legionary13.r0.lamp0",
+   "pos": [
+    2.7,
+    1.6,
+    -1.2999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary13.r0.lamp1",
+   "pos": [
+    -2.4,
+    1.6,
+    -1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "arc_clay_dome",
+  "arc_stain_line",
+  "arc_dye_vat",
+  "arc_drying_rack"
+ ],
+ "property_zones": [
+  "archon.priest4.r0",
+  "archon.scribe8.r1",
+  "archon.legionary13.r0"
+ ],
+ "containers": [
+  "archon.scribe8.r1.0",
+  "archon.scribe8.r1.4",
+  "archon.scribe8.r1.8"
+ ],
+ "unique_item": {
+  "id": "archon-market-unique",
+  "name": "a white cloth, which is worth more here",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:archon-priest-4"
+ },
+ "readable": {
+  "id": "archon-market-readable",
+  "title": "Prices At The Vats"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

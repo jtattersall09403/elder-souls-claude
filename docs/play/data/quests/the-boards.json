@@ -1,0 +1,59 @@
+{
+  "schema": "elder-souls/quest@1",
+  "id": "the-boards",
+  "title": "The Boards",
+  "giver": "warden-eshi",
+  "region": "thornmarsh",
+  "stages": [
+    {
+      "index": 10,
+      "journal": "Eshi the warden says the walkway east of Thorn has gone under. She did not ask me to fix it. She mentioned it the way you mention weather.",
+      "flags": []
+    },
+    {
+      "index": 20,
+      "journal": "I found the break. Someone cut it. The cut is clean and it is on the Thorn side.",
+      "flags": [
+        "boards_cut_seen"
+      ]
+    },
+    {
+      "index": 30,
+      "journal": "I told Eshi. She stopped looking at me while I said it.",
+      "flags": [
+        "boards_told_eshi"
+      ]
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "repaired",
+      "journal": "I laid new boards. Nobody thanked me and the way east is open.",
+      "requires": [
+        "boards_cut_seen"
+      ]
+    },
+    {
+      "id": "reported",
+      "journal": "I said whose knife it was. The hall is quieter now.",
+      "requires": [
+        "boards_told_eshi"
+      ]
+    },
+    {
+      "id": "ignored",
+      "journal": "I left it under water. It is not my walkway.",
+      "requires": []
+    }
+  ],
+  "flags": [
+    "boards_cut_seen",
+    "boards_told_eshi"
+  ],
+  "declared_incomplete": {
+    "owner": "wave-1 pieces W1-14..W1-16 (quests)",
+    "missing": [
+      "the quest RUNTIME — no quest in this build can be started, advanced or completed; this file is data with no interpreter yet"
+    ]
+  }
+}

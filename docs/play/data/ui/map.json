@@ -1,0 +1,51 @@
+{
+  "schema": "elder-souls/map@1",
+  "id": "map",
+  "owner": "W1-MAP",
+  "binding": "ARBITRATION.md seam S35; corpus/00-doctrine/AMENDMENT-W1-MAP-01.md",
+
+  "what_this_is": "The numbers the discovery map runs on, as data rather than as constants in the screen, so that a critic can perturb them and watch the map change (RI-MTH07 CONSUMPTION). Nothing here is a marker, a route or a destination. There is no field in this file, and no field in any file, by which a quest can name a place to reveal.",
+
+  "reveal": {
+    "note": "How much ground one stop reveals. NOT invented: it is the REGION'S OWN declared sightline (game/data/world/regions.json `sightline_m`), clamped. Blackwood declares 18 m under a 0.965 canopy and the Stone Wastes declare 1400 m of open pan, so a walk through the forest leaves a thread on the map and the same walk across the wastes leaves a swathe. The province decides what the map looks like, which is the point of drawing the map from the province.",
+    "source": "regions.json[].sightline_m, sampled at the player's own position",
+    "min_m": 40,
+    "max_m": 450,
+    "min_m_why": "You always reveal the ground under your feet and the cell around it. Below ~40 m the 25 m raster cannot represent the disc at all and the map becomes a dotted line of single cells, which reads as damage rather than as darkness.",
+    "max_m_why": "Above ~450 m the map stops being a record of where you have been and becomes a record of which direction you once faced. Valus Ridge declares 2200 m; honouring it literally would reveal a fifth of the province from one hilltop.",
+    "occlusion": "NOT modelled. A hill between you and the ground does not stop that ground being revealed. This is deliberate and is recorded rather than hidden: per-cell line-of-sight over the height raster is affordable but it would make the revealed shape depend on terrain the player cannot see on the map, and the result would read as a rendering fault. If this is ever wrong, it is wrong in the direction of revealing MORE than was strictly seen.",
+    "how_to_disagree": "Set min_m and max_m equal to make the reveal uniform across the province, or set both to 0 to reveal only the cell the player stands in. tools/harness/map-probe.mjs C1 reads the revealed-cell count and the drawn terrain area at three settings and asserts they differ; a build in which changing these numbers changes nothing has a disconnected model and the probe says so."
+  },
+
+  "places": {
+    "note": "When a place is DISCOVERED. S35: 'any square for a place the player has not personally stood in' is a hard fail, so the test is standing, not seeing, not being told, and not being sent. The radius is the site's OWN built pad from game/data/world/terrain.json `sites[].r_flat` — the flat ground the settlement or landmark is built on — so 'stood in Stormhold' means 'stood on Stormhold's ground' and no number here was chosen by this piece.",
+    "source": "terrain.json sites[].r_flat, matched to pois.json by id",
+    "fallback_radius_m": 25,
+    "fallback_radius_why": "The 8 waystations in pois.json have no entry in terrain.json `sites` — they are not built pads, they are a shelter and a well. 25 m is one terrain cell: you have to be at it, not near it.",
+    "interiors": "Discovery is SUSPENDED while sim.env.interior is set. An interior is a separate space whose exterior coordinates are meaningless, and observing there would paint the raster at whatever the body's exterior position happens to be. You discover a settlement by standing in it, which you did on the way to the door.",
+    "how_to_disagree": "Raise fallback_radius_m to 500 and the waystations discover themselves from the road. map-probe C4 walks to a place and asserts the square appears, and asserts it was absent one frame before arrival."
+  },
+
+  "draw": {
+    "note": "Colour comes from the region raster and the region palette, so the map cannot drift from the province: recolour a region in regions.json and the map recolours. There is no authored map image anywhere in this build.",
+    "ground_from": "regions.json[].palette_hex[0], indexed by terrain.json channels.region",
+    "shade_from": "terrain.json channels.base_dm — the same height the collision surface uses",
+    "shade_range": [0.72, 1.18],
+    "ocean_hex": "#243542",
+    "undiscovered_hex": "#0B0A09",
+    "undiscovered_why": "S35: 'Undiscovered is not merely unlabelled, it is unrendered.' This colour is the screen's own ground, not a fogged or dimmed version of the terrain — there is nothing underneath it to dim. A build that draws the province at 15% opacity and calls it undiscovered has drawn the province.",
+    "place_square_px": 5,
+    "place_hex": "#C9A54B",
+    "player_hex": "#E8E2D2",
+    "player_chevron_px": 7,
+    "local_span_m": 500,
+    "local_span_why": "S35 permits 'a local view for the cell you are in'. 500 m across is the settlement and its approach — Stormhold's built pad is 135 m — at a scale where individual revealed cells are legible instead of being one pixel each.",
+    "forbidden_by_construction": [
+      "roads: game/data/world/roads.json is NOT loaded by the map screen. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is a line. Wayfinding is the signposts' job (world/signposts.json) and the spoken directions' (dialogue/road-directions.json), both of which work with the map closed.",
+      "no distances, no bearings, no coordinates, and no numerals of any kind are drawn on either view",
+      "no place can be selected to travel to; the map's only input is which discovered place is being named"
+    ]
+  },
+
+  "provenance": "reveal.source and places.source are read off the BUILT world at runtime, not transcribed. min_m, max_m, fallback_radius_m, shade_range and local_span_m are constructed by W1-MAP and each carries its reason above."
+}

@@ -1,0 +1,138 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "lilmoth-apothecary",
+ "name": "The Rot-Quarter Apothecary",
+ "settlement": "lilmoth",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "alchemist",
+ "faction": null,
+ "exterior_door": [
+  2786.8,
+  7.37,
+  5056.01
+ ],
+ "continuity": {
+  "building": "lilmoth-apothecary",
+  "building_offset_m": [
+   20.3,
+   4.6,
+   28.51
+  ],
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.4
+  ],
+  "exterior_spawn": [
+   2786.8,
+   7.37,
+   5057.81
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "lilmoth.weaver7.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "lilmoth.weaver7.r1.lamp0",
+   "pos": [
+    2.7,
+    1.6,
+    -1.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.weaver7.r1.lamp1",
+   "pos": [
+    -2.4,
+    1.6,
+    -1.2000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "lil_sunk_facade",
+  "lil_drowned_window",
+  "lil_stilt_platform",
+  "lil_reed_shack"
+ ],
+ "property_zones": [
+  "lilmoth.weaver7.r1"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "lilmoth-apothecary-unique",
+  "name": "swamp-fever tincture, unlabelled",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:lilmoth-weaver-7"
+ },
+ "readable": {
+  "id": "lilmoth-apothecary-readable",
+  "title": "Fevers of the Landing"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

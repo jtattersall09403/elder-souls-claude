@@ -1,0 +1,30 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "town-blackrose",
+  "owner": "W1-GIVER-PRESENCE — GAP-W1-quest-givers-not-in-the-world",
+  "title": "Blackrose at midday, standing in the town itself. Nobody is placed here by hand: env.settlement names the town and Engine.populateSettlement() spawns everyone whose record says they live in it, at the cell the clock has them in. 4 of them are quest givers standing at an authored post outside a real building's door.",
+  "generated_by": "tools/world/build-town-states.mjs",
+  "env": {
+    "timeOfDay": 12.5,
+    "weather": "clear",
+    "region": "western-rootlands",
+    "settlement": "blackrose",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      1869.17,
+      2.68,
+      4445.85
+    ],
+    "yaw": 83
+  },
+  "camera": {
+    "yaw": 83,
+    "pitch": -4,
+    "mode": "free"
+  },
+  "npcs": [],
+  "props": [],
+  "spawn": []
+}

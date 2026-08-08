@@ -1,0 +1,1408 @@
+{
+ "schema": "elder-souls/moveset@1",
+ "weapon_id": "cgs_mire_scythe",
+ "name": "Mire scythe",
+ "class": "CGS",
+ "weight_tier": "heavy",
+ "baseline_ref": "cgs_drowned_reaper",
+ "stance": {
+  "one_hand": {
+   "stamina_mult": 1,
+   "motion_value_mult": 1,
+   "poise_damage_mult": 1
+  },
+  "two_hand": {
+   "stamina_mult": 1.15,
+   "motion_value_mult": 1.15,
+   "poise_damage_mult": 1.3,
+   "exclusive_slots": [
+    "2h.r1.4",
+    "2h.roll.r2"
+   ]
+  }
+ },
+ "parry_capable": false,
+ "guardbreak_kind": "shoulder",
+ "reach_m": 2.854,
+ "arc_sweep_deg": 315.1,
+ "slots": {
+  "r1.1": {
+   "anim": "clip_scythe_r1_1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": "r1.2",
+   "chain_index": 1,
+   "startup_f": 47,
+   "active_f": 18,
+   "recovery_f": 69,
+   "stamina": 34,
+   "motion_value": 1.35,
+   "poise_damage": 38,
+   "root_dz_m": 0.598,
+   "arc_sweep_deg": 315.1,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 78.5,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "INFANTRY",
+    "SWARM"
+   ]
+  },
+  "r1.2": {
+   "anim": "clip_w_cgs_mire_scythe_r1_2",
+   "anim_owner": "cgs_mire_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 37,
+   "active_f": 18,
+   "recovery_f": 72,
+   "stamina": 37,
+   "motion_value": 1.28,
+   "poise_damage": 36,
+   "root_dz_m": 0.598,
+   "arc_sweep_deg": 129,
+   "shape": "slash_v",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "INFANTRY",
+    "DUELIST"
+   ]
+  },
+  "r1.3": {
+   "anim": "clip_scythe_r1_3",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 3,
+   "startup_f": 37,
+   "active_f": 18,
+   "recovery_f": 93,
+   "stamina": 39,
+   "motion_value": 1.42,
+   "poise_damage": 44,
+   "root_dz_m": 0.598,
+   "arc_sweep_deg": 200,
+   "shape": "sweep",
+   "peak_tip_speed_mps_implied": 49.8,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip",
+    "multi_hit": 1
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "INFANTRY"
+   ]
+  },
+  "r2": {
+   "anim": "clip_scythe_r2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": "r2.follow",
+   "chain_index": 1,
+   "startup_f": 87,
+   "active_f": 19,
+   "recovery_f": 106,
+   "stamina": 58,
+   "motion_value": 2.09,
+   "poise_damage": 70,
+   "root_dz_m": 1.326,
+   "arc_sweep_deg": 323.1,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 76.2,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 53,
+    "to_f": 106,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "POISE_MONSTER",
+    "INFANTRY"
+   ]
+  },
+  "r2.charged": {
+   "anim": "clip_scythe_r2_charged",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "hold",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 87,
+   "active_f": 19,
+   "recovery_f": 106,
+   "charge_max_f": 50,
+   "charge_ramp": {
+    "motion_value_at_full": 1.3,
+    "poise_damage_at_full": 1.5,
+    "hyperarmour_at_full": true
+   },
+   "stamina": 58,
+   "motion_value": 2.09,
+   "poise_damage": 70,
+   "root_dz_m": 1.266,
+   "arc_sweep_deg": 129,
+   "shape": "slash_v",
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 53,
+    "to_f": 106,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "TURTLE",
+    "POISE_MONSTER"
+   ]
+  },
+  "r2.follow": {
+   "anim": "clip_scythe_r2_follow",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 68,
+   "active_f": 19,
+   "recovery_f": 110,
+   "stamina": 51,
+   "motion_value": 1.89,
+   "poise_damage": 61,
+   "root_dz_m": 0.626,
+   "arc_sweep_deg": 289.1,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 68.2,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
+   ]
+  },
+  "run.r1": {
+   "anim": "clip_scythe_run_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "SPRINT"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 33,
+   "active_f": 18,
+   "recovery_f": 68,
+   "stamina": 37,
+   "motion_value": 1.42,
+   "poise_damage": 42,
+   "root_dz_m": 1.298,
+   "arc_sweep_deg": 200,
+   "shape": "slash_h",
+   "peak_tip_speed_mps_implied": 49.8,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "sprinting"
+   ],
+   "answers": [
+    "RANGED",
+    "CASTER"
+   ]
+  },
+  "run.r2": {
+   "anim": "clip_scythe_run_r2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "SPRINT"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 61,
+   "active_f": 19,
+   "recovery_f": 105,
+   "stamina": 64,
+   "motion_value": 2.2,
+   "poise_damage": 77,
+   "root_dz_m": 2.159,
+   "arc_sweep_deg": 129,
+   "shape": "smash",
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 37,
+    "to_f": 80,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "sprinting"
+   ],
+   "answers": [
+    "POISE_MONSTER",
+    "RANGED"
+   ]
+  },
+  "roll.r1": {
+   "anim": "clip_scythe_roll_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ROLL",
+     "from_f": 31,
+     "to_f": 52
+    }
+   },
+   "chains_to": "r1.3",
+   "chain_index": 1,
+   "startup_f": 28,
+   "active_f": 18,
+   "recovery_f": 74,
+   "stamina": 29,
+   "motion_value": 1.15,
+   "poise_damage": 32,
+   "root_dz_m": 0.458,
+   "arc_sweep_deg": 340.1,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 84.7,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "INFANTRY",
+    "DUELIST",
+    "POISE_MONSTER",
+    "ELITE"
+   ]
+  },
+  "backstep.r1": {
+   "anim": "clip_scythe_backstep_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "BACKSTEP",
+     "from_f": 13,
+     "to_f": 42
+    }
+   },
+   "chains_to": "r1.3",
+   "chain_index": 1,
+   "startup_f": 30,
+   "active_f": 18,
+   "recovery_f": 65,
+   "stamina": 27,
+   "motion_value": 1.08,
+   "poise_damage": 29,
+   "root_dz_m": 1.221,
+   "arc_sweep_deg": 230,
+   "shape": "slash_d",
+   "peak_tip_speed_mps_implied": 57.3,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "DUELIST",
+    "GANK_DUO"
+   ]
+  },
+  "jump.r1": {
+   "anim": "clip_scythe_jump_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "AIRBORNE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 61,
+   "active_f": 23,
+   "recovery_f": 83,
+   "stamina": 44,
+   "motion_value": 1.82,
+   "poise_damage": 68,
+   "root_dz_m": 0.15,
+   "arc_sweep_deg": 129,
+   "shape": "slash_v",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "airborne",
+    "descending"
+   ],
+   "answers": [
+    "TURTLE",
+    "POISE_MONSTER",
+    "ELITE"
+   ]
+  },
+  "jump.r2": {
+   "anim": "clip_scythe_jump_r2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "AIRBORNE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 61,
+   "active_f": 23,
+   "recovery_f": 83,
+   "stamina": 44,
+   "motion_value": 1.82,
+   "poise_damage": 68,
+   "root_dz_m": 0.108,
+   "arc_sweep_deg": 51.1,
+   "shape": "smash",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "airborne",
+    "descending"
+   ],
+   "answers": [
+    "POISE_MONSTER"
+   ]
+  },
+  "guard.counter": {
+   "anim": "clip_scythe_guard_counter",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "BLOCK_SUCCESS",
+     "from_f": 1,
+     "to_f": 40
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 40,
+   "active_f": 18,
+   "recovery_f": 72,
+   "stamina": 41,
+   "motion_value": 1.76,
+   "poise_damage": 61,
+   "root_dz_m": 0.346,
+   "arc_sweep_deg": 200.7,
+   "shape": "slash_d",
+   "peak_tip_speed_mps_implied": 50,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "post_block"
+   ],
+   "answers": [
+    "INFANTRY",
+    "TURTLE",
+    "POISE_MONSTER"
+   ]
+  },
+  "plunge": {
+   "anim": "clip_scythe_plunge",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "AIRBORNE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 52,
+   "active_f": 25,
+   "recovery_f": 89,
+   "stamina": 44,
+   "motion_value": 2.43,
+   "poise_damage": 84,
+   "root_dz_m": 0.01,
+   "arc_sweep_deg": 0,
+   "shape": "thrust",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "airborne",
+    "descending"
+   ],
+   "answers": [
+    "AMBUSHER",
+    "ELITE"
+   ]
+  },
+  "guardbreak": {
+   "anim": "clip_scythe_guardbreak",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "forward",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 25,
+   "active_f": 8,
+   "recovery_f": 33,
+   "stamina": 16,
+   "motion_value": 0.35,
+   "poise_damage": 32,
+   "root_dz_m": 1.338,
+   "arc_sweep_deg": 0,
+   "shape": "grab",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "TURTLE"
+   ]
+  },
+  "art.1": {
+   "anim": "clip_scythe_art_1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "two_hand",
+    "modifier": "hold",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 100,
+   "active_f": 25,
+   "recovery_f": 127,
+   "stamina": 65,
+   "motion_value": 2.36,
+   "poise_damage": 76,
+   "root_dz_m": 1.662,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 64.6,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "ELITE",
+    "GANK_DUO"
+   ]
+  },
+  "art.2": {
+   "anim": "clip_scythe_art_2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "two_hand",
+    "modifier": "double_tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 118,
+   "active_f": 25,
+   "recovery_f": 149,
+   "stamina": 75,
+   "motion_value": 2.7,
+   "poise_damage": 87,
+   "root_dz_m": 2.25,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 71,
+    "to_f": 143,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "answers": [
+    "ELITE",
+    "SWARM"
+   ]
+  },
+  "2h.r1.1": {
+   "anim": "clip_scythe_2h_r1_1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": "2h.r1.2",
+   "chain_index": 1,
+   "startup_f": 52,
+   "active_f": 21,
+   "recovery_f": 74,
+   "stamina": 39,
+   "motion_value": 1.55,
+   "poise_damage": 49,
+   "root_dz_m": 0.542,
+   "arc_sweep_deg": 341.1,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 61.7,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 32,
+    "to_f": 73,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "SWARM"
+   ]
+  },
+  "2h.r1.2": {
+   "anim": "clip_scythe_2h_r1_2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": "2h.r1.3",
+   "chain_index": 2,
+   "startup_f": 37,
+   "active_f": 21,
+   "recovery_f": 72,
+   "stamina": 43,
+   "motion_value": 1.47,
+   "poise_damage": 47,
+   "root_dz_m": 0.864,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 69,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 23,
+    "to_f": 58,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "DUELIST"
+   ]
+  },
+  "2h.r1.3": {
+   "anim": "clip_scythe_2h_r1_3",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": "2h.r1.4",
+   "chain_index": 3,
+   "startup_f": 37,
+   "active_f": 21,
+   "recovery_f": 93,
+   "stamina": 45,
+   "motion_value": 1.63,
+   "poise_damage": 57,
+   "root_dz_m": 0.703,
+   "arc_sweep_deg": 236,
+   "shape": "sweep",
+   "peak_tip_speed_mps_implied": 42.7,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 23,
+    "to_f": 58,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip",
+    "multi_hit": 1
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY"
+   ]
+  },
+  "2h.r2": {
+   "anim": "clip_scythe_2h_r2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": "2h.r2.follow",
+   "chain_index": 1,
+   "startup_f": 96,
+   "active_f": 22,
+   "recovery_f": 115,
+   "stamina": 67,
+   "motion_value": 2.41,
+   "poise_damage": 91,
+   "root_dz_m": 1.54,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 65.8,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 58,
+    "to_f": 118,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "POISE_MONSTER",
+    "INFANTRY"
+   ]
+  },
+  "2h.r2.charged": {
+   "anim": "clip_scythe_2h_r2_charged",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "hold",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 96,
+   "active_f": 22,
+   "recovery_f": 115,
+   "charge_max_f": 50,
+   "charge_ramp": {
+    "motion_value_at_full": 1.3,
+    "poise_damage_at_full": 1.5,
+    "hyperarmour_at_full": true
+   },
+   "stamina": 67,
+   "motion_value": 2.41,
+   "poise_damage": 91,
+   "root_dz_m": 1.471,
+   "arc_sweep_deg": 152.2,
+   "shape": "slash_v",
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 58,
+    "to_f": 118,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "TURTLE",
+    "POISE_MONSTER"
+   ]
+  },
+  "2h.r2.follow": {
+   "anim": "clip_scythe_2h_r2_follow",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "ATTACK_RECOVERY"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 2,
+   "startup_f": 75,
+   "active_f": 22,
+   "recovery_f": 119,
+   "stamina": 59,
+   "motion_value": 2.17,
+   "poise_damage": 79,
+   "root_dz_m": 0.735,
+   "arc_sweep_deg": 341.1,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 58.9,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "ELITE"
+   ]
+  },
+  "2h.run.r1": {
+   "anim": "clip_scythe_2h_run_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "SPRINT"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 36,
+   "active_f": 21,
+   "recovery_f": 74,
+   "stamina": 43,
+   "motion_value": 1.63,
+   "poise_damage": 55,
+   "root_dz_m": 1.508,
+   "arc_sweep_deg": 236,
+   "shape": "slash_h",
+   "peak_tip_speed_mps_implied": 42.7,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "sprinting",
+    "two_handed"
+   ],
+   "answers": [
+    "RANGED",
+    "CASTER"
+   ]
+  },
+  "2h.run.r2": {
+   "anim": "clip_scythe_2h_run_r2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "none",
+    "state_window": {
+     "state": "SPRINT"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 67,
+   "active_f": 22,
+   "recovery_f": 114,
+   "stamina": 74,
+   "motion_value": 2.53,
+   "poise_damage": 100,
+   "root_dz_m": 2.497,
+   "arc_sweep_deg": 152.2,
+   "shape": "smash",
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 41,
+    "to_f": 89,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "sprinting",
+    "two_handed"
+   ],
+   "answers": [
+    "POISE_MONSTER",
+    "RANGED"
+   ]
+  },
+  "2h.roll.r1": {
+   "anim": "clip_scythe_2h_roll_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "ROLL",
+     "from_f": 31,
+     "to_f": 52
+    }
+   },
+   "chains_to": "2h.r1.2",
+   "chain_index": 1,
+   "startup_f": 31,
+   "active_f": 21,
+   "recovery_f": 80,
+   "stamina": 33,
+   "motion_value": 1.32,
+   "poise_damage": 42,
+   "root_dz_m": 0.542,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 72.6,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 19,
+    "to_f": 52,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "DUELIST",
+    "POISE_MONSTER",
+    "ELITE"
+   ]
+  },
+  "2h.backstep.r1": {
+   "anim": "clip_scythe_2h_backstep_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "BACKSTEP",
+     "from_f": 13,
+     "to_f": 42
+    }
+   },
+   "chains_to": "2h.r1.2",
+   "chain_index": 1,
+   "startup_f": 33,
+   "active_f": 21,
+   "recovery_f": 70,
+   "stamina": 31,
+   "motion_value": 1.24,
+   "poise_damage": 38,
+   "root_dz_m": 1.42,
+   "arc_sweep_deg": 271.4,
+   "shape": "slash_d",
+   "peak_tip_speed_mps_implied": 49.1,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "DUELIST",
+    "GANK_DUO"
+   ]
+  },
+  "2h.jump.r1": {
+   "anim": "clip_scythe_2h_jump_r1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "AIRBORNE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 67,
+   "active_f": 26,
+   "recovery_f": 90,
+   "stamina": 51,
+   "motion_value": 2.1,
+   "poise_damage": 88,
+   "root_dz_m": 0.188,
+   "arc_sweep_deg": 152.2,
+   "shape": "slash_v",
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "airborne",
+    "descending",
+    "two_handed"
+   ],
+   "answers": [
+    "TURTLE",
+    "POISE_MONSTER",
+    "ELITE"
+   ]
+  },
+  "2h.guard.counter": {
+   "anim": "clip_scythe_2h_guard_counter",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "light",
+    "modifier": "none",
+    "state_window": {
+     "state": "BLOCK_SUCCESS",
+     "from_f": 1,
+     "to_f": 40
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 44,
+   "active_f": 21,
+   "recovery_f": 78,
+   "stamina": 47,
+   "motion_value": 2.02,
+   "poise_damage": 79,
+   "root_dz_m": 0.413,
+   "arc_sweep_deg": 236.8,
+   "shape": "slash_d",
+   "peak_tip_speed_mps_implied": 42.8,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "post_block",
+    "two_handed"
+   ],
+   "answers": [
+    "INFANTRY",
+    "TURTLE",
+    "POISE_MONSTER"
+   ]
+  },
+  "2h.art.1": {
+   "anim": "clip_scythe_2h_art_1",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "two_hand",
+    "modifier": "hold",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 110,
+   "active_f": 29,
+   "recovery_f": 137,
+   "stamina": 75,
+   "motion_value": 2.72,
+   "poise_damage": 99,
+   "root_dz_m": 1.927,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 55.7,
+   "hyperarmour": {
+    "enabled": false
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "ELITE",
+    "GANK_DUO"
+   ]
+  },
+  "2h.r1.4": {
+   "anim": "clip_scythe_2h_r1_4",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 103,
+   "active_f": 23,
+   "recovery_f": 121,
+   "stamina": 67,
+   "motion_value": 2.53,
+   "poise_damage": 91,
+   "root_dz_m": 1.266,
+   "arc_sweep_deg": 236,
+   "shape": "sweep",
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 62,
+    "to_f": 126,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip",
+    "multi_hit": 1
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "POISE_MONSTER",
+    "INFANTRY"
+   ]
+  },
+  "2h.roll.r2": {
+   "anim": "clip_scythe_2h_roll_r2",
+   "anim_owner": "lin_scythe",
+   "trigger": {
+    "button": "heavy",
+    "modifier": "tap",
+    "state_window": {
+     "state": "IDLE"
+    }
+   },
+   "chains_to": null,
+   "chain_index": 1,
+   "startup_f": 103,
+   "active_f": 23,
+   "recovery_f": 121,
+   "stamina": 67,
+   "motion_value": 2.53,
+   "poise_damage": 91,
+   "root_dz_m": 0.993,
+   "arc_sweep_deg": 360,
+   "shape": "spin",
+   "peak_tip_speed_mps_implied": 66.3,
+   "hyperarmour": {
+    "enabled": true,
+    "from_f": 62,
+    "to_f": 126,
+    "poise_multiplier": 1.7
+   },
+   "hitbox": {
+    "kind": "capsule_swept",
+    "radius_m": 0.11,
+    "bone_a": "wpn_guard",
+    "bone_b": "wpn_tip"
+   },
+   "cancels_into": [
+    "dodge"
+   ],
+   "requires": [
+    "two_handed"
+   ],
+   "answers": [
+    "POISE_MONSTER",
+    "INFANTRY"
+   ]
+  }
+ },
+ "notes": "The blade tips downward: its second light ploughs rather than sweeps, and it is the curved greatsword that works against something on the floor.\n\nLineage: scythe — A harvest scythe re-hafted for war: the blade tips downward and the spin ploughs rather than sweeps.\nMandatory slots present: 25/25. Total slots: 32.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."
+}

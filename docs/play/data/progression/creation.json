@@ -1,0 +1,144 @@
+{
+  "schema": "elder-souls/creation@1",
+  "id": "creation",
+  "owner": "W1-07 — character creation",
+  "source": "corpus/22-character/RI-CHR01-character-creation.md §1-§7; presentation contract RI-JRN01 §C O6-O10",
+  "provenance": "constructed",
+  "place": { "interior": "writ-house", "settlement": "tidewrack", "name": "The Writ House at Tidewrack" },
+  "starting_body": {
+    "note": "THE BODY THE PLAYER WAKES UP IN, before anything defines them. RI-JRN01 O6 requires a controllable body before a character exists, and RI-CHR01 §1 row 2 says race is OBSERVED rather than asked — so something has to decide what the Warden-Scribe is looking at, and it cannot be the question she never asks. Until W1-26 r3 nothing did: `Engine._titleApply('new')` called `censusBegin({})`, `Census.observe()` was reached from nowhere on the play path, and the scene threw at `writ.race-observed` in front of the desk with the door held shut. This row is that decision, in data, so it is one line to change and one line to read. `Engine._boot` writes it to `sim.identity.race` — the live field the dialogue offer gates and the disposition matrix already read — and `Engine.bodyRace()` reads it back at the desk. CHOOSING it is W1-07's, and when a chooser exists it writes the same field; nothing in the engine changes.",
+    "race": "saxhleel",
+    "why_this_race": "You are coming up the river on a tithe-barge into Black Marsh, in irons, two days out of Gideon. Saxhleel is the province's own people and the only starting body that needs no explanation for being on that boat. It is a default in the sense that a starting sword is a default, not in the sense of a value nobody chose."
+  },
+  "diegesis": {
+    "full_screen_panels": 0,
+    "world_rendered_behind": true,
+    "every_input_has_a_named_asker": true,
+    "control_before_definition_s": 60,
+    "terminates_with": "item:stamped-writ",
+    "rule": "RI-JRN01 O7/O8. There is no character creation screen. There is a room, a desk, a woman with a pen, and a form. Every field below is set by answering her."
+  },
+  "inputs": [
+    {
+      "order": 1, "id": "hatch_name", "label": "Hatch-name",
+      "asked_at": "B01", "asked_at_place": "the barge hold", "asked_by": "jeeh-ei",
+      "question": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "form": "free text, or a refusal",
+      "reversible": false,
+      "displayed_in_hud": false,
+      "consequence": { "attributes": null, "skills": null, "social": "11 NPCs use it — rootkeepers, a Deep-Kin war-leader, the Hist at sap-taint band 4, and one person you will not expect", "content": "1 topic chain", "fight": false },
+      "refusal_allowed": true,
+      "refusal_is_recorded": true,
+      "note": "A non-Argonian player is asked for it too and may refuse; refusing is recorded and is itself referenced later."
+    },
+    {
+      "order": 2, "id": "race", "label": "Race",
+      "asked_at": "B03", "asked_at_place": "the Writ House", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": null,
+      "form": "Not asked. OBSERVED, and read back to you wrongly at least once.",
+      "reversible": false,
+      "consequence": { "attributes": "+12 total, shaped", "skills": "5 skills raised", "social": "the whole 12x10 reaction matrix; price surcharge; guard lawFactor", "content": "34 race-gated quests", "fight": true },
+      "fight_note": "AR-3. Encounter composition and aggro — RI-CHR02 §4e."
+    },
+    {
+      "order": 3, "id": "sex", "label": "Sex",
+      "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "form": "recorded on the writ",
+      "reversible": false,
+      "consequence": { "attributes": null, "skills": null, "social": null, "content": null, "fight": false },
+      "mechanical_terms": 0,
+      "note": "Sex has zero mechanical terms and this is deliberate and stated, so that a critic does not go looking for a hidden one and a builder does not invent one to make the field feel earned."
+    },
+    {
+      "order": 4, "id": "upbringing", "label": "Upbringing",
+      "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": "Where were you a child? Answer in the name of a water, not a country.",
+      "form": "four answers, all legal for all ten races",
+      "reversible": false,
+      "consequence": { "attributes": null, "skills": null, "social": "6 reaction-group rows", "content": "9 upbringing-gated topics, 2 quests", "fight": "via disposition-gated parley only" },
+      "table": "progression/race-reactions.json#upbringings"
+    },
+    {
+      "order": 5, "id": "given_name", "label": "Given name",
+      "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": "And the name they will use.",
+      "form": "free text",
+      "reversible": "once",
+      "reversal": { "cost_gold": 250, "where": "any Provincial Office", "as": "a writ amendment", "uses": 1, "note": "NPCs who knew the old name keep using it, and one of them says so." },
+      "consequence": { "attributes": null, "skills": null, "social": "used in ~2,400 dialogue lines via %PCName", "content": null, "fight": false }
+    },
+    {
+      "order": 6, "id": "class", "label": "Class / profession",
+      "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": "And what is it you do? Name it, or make one up and I will write it, or sit there and answer me and I will tell you what you are.",
+      "form": "three routes: name a profession, declare a custom one, or answer the questions",
+      "routes": ["named", "custom", "questionnaire"],
+      "questionnaire_mandatory": true,
+      "reversible": false,
+      "reversible_note": "Never — AND IT DOES NOT MATTER THAT IT IS NEVER. Costless by construction: nothing is locked, so nothing needs unlocking.",
+      "consequence": { "attributes": "+/-4 across <=4 attributes, net zero", "skills": "5 skills set to 15-25", "social": "3 caste topics", "content": "0 gates", "fight": false }
+    },
+    {
+      "order": 7, "id": "birthsign", "label": "Birthsign",
+      "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": "Which tide were you drawn on?",
+      "form": "nine tides in three families",
+      "reversible": "once",
+      "reversal": { "where": "the great Hist at Helstrom", "terms": "progression/birthsigns.json#recut", "uses": 1 },
+      "consequence": { "attributes": null, "skills": null, "social": "2 topics; rootkeepers can read it off you", "content": "4 birthsign-gated topics, 1 quest", "fight": true },
+      "fight_note": "AR-3. The power and the drawback — RI-CHR03."
+    },
+    {
+      "order": 8, "id": "favoured_attributes", "label": "Favoured attributes",
+      "asked_at": "B03", "asked_by": "warden-scribe-tuleeh-ma",
+      "question": "What has carried you this far?",
+      "form": "custom route only; two favoured and two neglected",
+      "only_on_route": "custom",
+      "reversible": false,
+      "consequence": { "attributes": "+4/+4/-4/-4", "skills": null, "social": null, "content": null, "fight": false }
+    }
+  ],
+  "composition": {
+    "attribute_formula": "attribute_at_creation(a) = 10 + raceDelta[race][a] + classDelta[class][a]",
+    "attribute_total_invariant": 112,
+    "attribute_rule": "Race is the only source of net attribute gain at creation; class only redistributes.",
+    "skill_formula": "skill_at_creation(s) = max(5, raceSkill[race][s], classSkill[class][s])",
+    "skills_above_baseline_range": [5, 10],
+    "skill_overlap_note": "Five if race and class overlap completely (a Khajiit Wet-Foot: both push Sneak/Security/Acrobatics), ten if they do not overlap at all (an Orsimer Sap-Reader). Overlapping starts are deeper, non-overlapping starts are wider, and neither is better."
+  },
+  "signature": {
+    "definition": "( race, class_family, birthsign_family, upbringing_class )",
+    "cardinality": { "race": 10, "class_family": 6, "birthsign_family": 3, "upbringing_class": 3 },
+    "total": 540,
+    "upbringing_classes": { "interior": "interior", "lukiul": "assimilated", "blackrose": "assimilated", "foreign-born": "foreign" },
+    "why": "Each of the four components is read by a different subsystem — encounters and prices; skills and attributes; a power and a drawback; disposition rows — and a difference in any one is observable in play without inspecting a menu.",
+    "raw_named_route_starts": 5040,
+    "raw_custom_route_starts": 146588400
+  },
+  "irreversibility": [
+    { "field": "hatch_name", "reversible": false, "why": "It is the name the world did not give you. Nothing may take it or trade it." },
+    { "field": "race", "reversible": false, "why": "The entire RI-CHR02 matrix reads it; a race-change item would delete the item." },
+    { "field": "upbringing", "reversible": false, "why": "It is a fact about a past, and the game contains people who were there." },
+    { "field": "sex", "reversible": false, "why": "No mechanical term; a cosmetic-only change would be a UI feature, not a system." },
+    { "field": "given_name", "reversible": true, "uses": 1, "cost_gold": 250, "where": "any Provincial Office", "why": "Writ amendment." },
+    { "field": "class", "reversible": false, "why": "Costless by construction. Nothing is locked, so nothing needs unlocking." },
+    { "field": "birthsign", "reversible": true, "uses": 1, "where": "the great Hist at Helstrom", "why": "The tide can be re-cut; it is vastei-eixa on the largest scale, and it is a quest, not a menu." },
+    { "field": "attributes_skills", "reversible": false, "why": "RI-PRG02: no attribute may be reduced after allocation. Souls-side respec would flatten S2's earned stream." }
+  ],
+  "no_respec": "There is no respec and no rebuild. A player who has built badly at level 40 fixes it by levelling INTO what they need — which the soul curve makes expensive and the use-based skill system makes possible.",
+  "strange_combinations": [
+    { "race": "dunmer", "upbringing": "interior", "exchange": "writ-house.strange.interior-dunmer" },
+    { "race": "saxhleel", "upbringing": "foreign-born", "exchange": "writ-house.strange.foreign-saxhleel" },
+    { "race": "khajiit", "upbringing": "blackrose", "exchange": "writ-house.strange.blackrose-khajiit" }
+  ],
+  "declared_incomplete": {
+    "owner_of_the_rest": "The consequence COUNTS in this file (34 race-gated quests, 2,400 %PCName lines, 11 hatch-name NPCs, 3 caste topics on >= 25 NPCs each) are the corpus's targets and are owned by wave-1 pieces W1-11..W1-16 (dialogue, quests) and W1-04 (settlement population).",
+    "shipped_by_W1-07": [
+      "every creation input, its asker, its question and its consequence table",
+      "the composition arithmetic and the 540-signature enumeration",
+      "the Writ House scene: interior, two named NPCs, the full census dialogue graph, the stamped writ item",
+      "the reaction matrix, the price surcharge, and the AR-3 encounter rules that read race",
+      "a worked sample of each downstream channel rather than its full volume"
+    ]
+  }
+}

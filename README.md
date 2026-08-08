@@ -7,14 +7,73 @@ levelling only; gold is the currency. The world takes about an hour to cross on 
 The rule that settles every argument: **where Morrowind and Souls conflict, Souls wins inside the
 fight — frames, stamina, hitboxes, animation, enemy behaviour. Morrowind wins everywhere else.**
 
-## Running it
+## Playing it
+
+There are three ways in, depending on what you are holding.
+
+### 1. On a phone or tablet — a link, and it does not work yet
+
+**https://jtattersall09403.github.io/elder-souls-claude/play/index.html**
+
+It will load and you will get the title screen. **You will not be able to move**, and that is a real
+gap rather than your phone: the touch controls are written — a floating stick under your left thumb,
+camera drag on the right, the same roll/sprint discriminator the gamepad uses — and they are **not
+wired into the game's startup**, so nothing is listening to your fingers. Somebody is fixing that
+now. Until they have, the link is worth opening only to see that it exists.
+
+### 2. On a desktop or laptop — the same link, no clone, nothing to install
+
+**https://jtattersall09403.github.io/elder-souls-claude/play/index.html**
+
+Open it in Chrome, Edge, Firefox or Safari. Nothing to download, no Node, no git. It takes a few
+seconds to load — it is about 17 MB of world.
+
+**New** to start. You wake in a barge hold with a woman on the other bench. Walk over and press
+**E**. Nothing will tell you to.
+
+The controls, read out of `game/data/input/profiles.json` rather than from memory:
+
+| | |
+|---|---|
+| Walk | **W A S D** (or the arrow keys) |
+| Look | **mouse** |
+| Sprint | **hold Left Shift** |
+| Roll | **Space** |
+| Jump | **X** |
+| Crouch | **C** or **Z** |
+| Talk, open a door, pick something up | **E** or **Enter** |
+| Light attack | **left click** |
+| Heavy attack | **R** |
+| Block | **hold right click**, or **F** |
+| Parry | **middle click**, or **V** |
+| Lock on | **Tab** |
+| Two-hand your weapon | **G** |
+| Swap weapon | **3** / **4**, or the **scroll wheel** |
+| Use item | **1** |
+| Cycle spell | **T** or **2** |
+| Menus, and back out of anything | **Escape** or **M** |
+
+**Escape gives you your cursor back**, which is also how you leave a menu. **A gamepad works** if
+you plug one in — the entire opening plays on a pad alone, and the sticks are analogue rather than
+on/off.
+
+This is the same build the instruments test, on the same commit, because it is copied from `game/`
+by a script on every commit and a check fails if the two ever differ.
+
+### 3. From a clone — only if you want to change something or run the tools
 
 ```sh
+git clone https://github.com/jtattersall09403/elder-souls-claude.git
+cd elder-souls-claude
 ./play.sh
 ```
 
-Then open the URL it prints. Node 20+ and a browser with WebGL; nothing to install, no build step.
-`./play.sh --port 9000` if 8080 is taken.
+Then open the URL it prints (`http://127.0.0.1:8080/index.html`). You need **Node 20 or newer** and
+nothing else — no `npm install`, no build step. `./play.sh --port 9000` if 8080 is taken;
+`./play.sh --host 0.0.0.0` to reach it from a phone on the same wifi.
+
+The only reason to prefer this over the link is that it serves whatever is in your working copy, so
+it is the one that shows uncommitted work.
 
 ## What to expect
 

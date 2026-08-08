@@ -1,0 +1,288 @@
+{
+  "commit": "b4da273",
+  "self_break": false,
+  "arm": {
+    "r6": false,
+    "no_join": false,
+    "prop_inset": true
+  },
+  "findings": [
+    "0 doorstep(s) inside a footprint, 10 inside a wall slab"
+  ],
+  "mirrors": {
+    "body_radius_m": {
+      "in_render": 0.32,
+      "in_sim": 0.32,
+      "agree": true
+    },
+    "door_reach_m": {
+      "in_render": 2.6,
+      "in_sim": 2.6,
+      "agree": true
+    }
+  },
+  "E": {
+    "what": "which interior records can this loop reach at all — the general form of RULES rule 11",
+    "interior_records": 115,
+    "reached_by_this_census": 115,
+    "in_a_settlement_plan": 112,
+    "orphans": [
+      {
+        "interior": "barge-hold",
+        "settlement": "tidewrack",
+        "has_settlement_document": false,
+        "why": "its declared settlement is not one of the eight documents"
+      },
+      {
+        "interior": "thorn-house-0",
+        "settlement": "thorn",
+        "has_settlement_document": true,
+        "why": "no building row in its town names this interior"
+      },
+      {
+        "interior": "writ-house",
+        "settlement": "tidewrack",
+        "has_settlement_document": false,
+        "why": "its declared settlement is not one of the eight documents"
+      }
+    ],
+    "join_pass_reported": {
+      "interiors_total": 115,
+      "orphans": 3,
+      "orphans_without_a_settlement_document": 2,
+      "unreachable": [
+        {
+          "interior": "barge-hold",
+          "settlement": "tidewrack",
+          "why": "no settlement document — nothing to test the doorstep against"
+        },
+        {
+          "interior": "writ-house",
+          "settlement": "tidewrack",
+          "why": "no settlement document — nothing to test the doorstep against"
+        }
+      ]
+    }
+  },
+  "S": {
+    "what": "is the point leaveInterior() puts the body on a FIXED POINT of the collision solver",
+    "predicate": "insideBuilding() === null AND CollisionCell.distance(x, y+0.90, z) >= BODY_RADIUS_M (0.32)",
+    "tested": 113,
+    "untestable_no_settlement_document": 2,
+    "inside_a_footprint": 0,
+    "in_a_wall_slab": 10,
+    "horizontal_vs_cell_disagreements": 0,
+    "rows": [
+      {
+        "interior": "archon-house-0",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0.261
+      },
+      {
+        "interior": "archon-inn",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0.114
+      },
+      {
+        "interior": "archon-market",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "archon-vat-house",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "barge-hold",
+        "verdict": "no settlement document — untestable",
+        "settlement": "tidewrack"
+      },
+      {
+        "interior": "gideon-chapel",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "gideon-court",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "gideon-house-0",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "gideon-shrine",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "gideon-tollhouse",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "lilmoth-customs",
+        "verdict": "IN A WALL SLAB — the solver will move it",
+        "cell_m": 0
+      },
+      {
+        "interior": "writ-house",
+        "verdict": "no settlement document — untestable",
+        "settlement": "tidewrack"
+      }
+    ]
+  },
+  "R": {
+    "what": "pressing interact on the doorstep — which interior does doorAt() hand to useDoor()",
+    "records": 115,
+    "back_in_the_room_you_left": 96,
+    "into_a_different_building": 10,
+    "into_nothing": 9,
+    "rows": [
+      {
+        "interior": "barge-hold",
+        "opens": null,
+        "why": "no settlement document"
+      },
+      {
+        "interior": "blackrose-house-0",
+        "opens": "blackrose-house-1",
+        "dist_m": 0.5
+      },
+      {
+        "interior": "blackrose-inn",
+        "opens": "blackrose-warders-hall",
+        "dist_m": 0.5
+      },
+      {
+        "interior": "blackrose-market",
+        "opens": "blackrose-smithy",
+        "dist_m": 0.5
+      },
+      {
+        "interior": "blackrose-rootpost",
+        "opens": "blackrose-clerk",
+        "dist_m": 0.5
+      },
+      {
+        "interior": "gideon-chapel",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "gideon-house-0",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "gideon-tollhouse",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "lilmoth-customs",
+        "opens": "lilmoth-yard",
+        "dist_m": 1.56
+      },
+      {
+        "interior": "lilmoth-house-3",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "lilmoth-ledger-house",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "lilmoth-market",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "soulrest-boneyard",
+        "opens": "soulrest-pawn",
+        "dist_m": 2.12
+      },
+      {
+        "interior": "soulrest-court-steps",
+        "opens": "soulrest-market",
+        "dist_m": 0.88
+      },
+      {
+        "interior": "soulrest-grey-hist",
+        "opens": "soulrest-court-steps",
+        "dist_m": 0.45
+      },
+      {
+        "interior": "thorn-hall",
+        "opens": "thorn-apothecary",
+        "dist_m": 0.16
+      },
+      {
+        "interior": "thorn-house-0",
+        "opens": "thorn-gate",
+        "dist_m": 0.46
+      },
+      {
+        "interior": "thorn-inn",
+        "opens": null,
+        "why": "no door within DOOR_REACH_M"
+      },
+      {
+        "interior": "writ-house",
+        "opens": null,
+        "why": "no settlement document"
+      }
+    ]
+  },
+  "probe": {
+    "rooms_with_meshes": 115,
+    "rooms_with_zero_meshes": 0,
+    "zero_mesh_rooms": [],
+    "meshes_traversed": 14878,
+    "assertion": "a room that traverses zero meshes is a PROBE FAILURE, not a clean result"
+  },
+  "P": {
+    "tolerance_m": 0.6,
+    "predicate_this_round_publishes": "OVERHANG",
+    "why": "RI-WLD13 N1 is footprint containment; the failure it exists to catch is inside geometry that does not fit inside the building. CLEARANCE scores a mesh 1.9 m through a wall as zero, so it cannot see that failure. The item states no per-mesh bar — the 0.6 m predicate is this piece's own instrument — and this round names which one it is using rather than describing one and computing the other.",
+    "overhang": {
+      "meshes": 0,
+      "rooms": 0,
+      "by_label": {},
+      "worst": null
+    },
+    "clearance": {
+      "meshes": 0,
+      "rooms": 0,
+      "by_label": {},
+      "worst": null
+    }
+  },
+  "L": {
+    "what": "authored lights[].pos outside their own room bounds_m — the positions render/interior.js draws and sim/stealth/system.js#syncInteriorLights() feeds the detection model",
+    "lamps_outside_their_room": 0,
+    "rooms": 0,
+    "hearths": 0,
+    "worst": null
+  },
+  "join": {
+    "rooms": 112,
+    "doors_moved": 112,
+    "doors_slid_along_wall": 0,
+    "entry_sides_rotated": 0,
+    "rotated": [],
+    "doorsteps_moved": 112,
+    "doorsteps_standable_own_door": 75,
+    "doorsteps_standable_other_door": 4,
+    "doorsteps_standable_no_door": 0,
+    "doorsteps_not_standable": 33,
+    "doorsteps_unresolved": 0,
+    "lamps": 817,
+    "lamps_moved": 461
+  }
+}

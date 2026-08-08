@@ -1,0 +1,27 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "swamp_canopy",
+  "title": "Anchor for VP03. Under the canopy east of the street; the camera looks east into the trees.",
+  "note": "Named states double as the viewpoint anchors in tools/harness/viewpoints.json: shoot.mjs calls loadState(viewpoint.anchor) before posing the camera, so every anchor id MUST be a loadable state or the viewpoint is unshootable and the metric it feeds scores 0, fail-closed (HARNESS.md \u00a76). | W1-01: `showcase: true` keeps this anchor on W1-00's 420 m origin neighbourhood. HARNESS.md \u00a76 poses for VP01-VP12 are absolute and within 130 m of the world origin, and the world origin is 250 m out in the Topal Bay, so the province cannot host them without changing a pose \u2014 which HARNESS.md \u00a76 says invalidates every cross-wave comparison. The province has its own viewpoint set: tools/harness/viewpoints-province.json.",
+  "env": {
+    "timeOfDay": 13.0,
+    "weather": "clear",
+    "region": "thornmarsh",
+    "interior": null,
+    "showcase": true
+  },
+  "player": {
+    "pos": [
+      8.0,
+      0,
+      12.0
+    ],
+    "yaw": 45.0
+  },
+  "camera": {
+    "yaw": 45.0,
+    "pitch": -6.0,
+    "mode": "free"
+  },
+  "spawn": []
+}

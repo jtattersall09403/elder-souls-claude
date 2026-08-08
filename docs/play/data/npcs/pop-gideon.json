@@ -1,0 +1,2422 @@
+{
+  "schema": "elder-souls/npc-group@1",
+  "group": "pop-gideon",
+  "id": "pop-gideon",
+  "settlement": "gideon",
+  "generated_by": "tools/world/build-population.mjs",
+  "source": "the household roster in game/data/world/property/gideon.json — these are the people who already owned the objects",
+  "npcs": [
+    {
+      "id": "gideon-fisher-0",
+      "name": "Wuxnorg",
+      "race": "argonian",
+      "class": "fisher",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-fisher-0",
+      "role": "head",
+      "disposition": 43,
+      "interior": "gideon-house-0",
+      "home_interior": "gideon-house-0",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.fisher0.r0",
+        "gideon.fisher0.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "gideon-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          413.52,
+          2.72,
+          2902.9
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-apothecary-1",
+      "name": "Naheeshtei",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-apothecary-1",
+      "role": "head",
+      "disposition": 49,
+      "interior": "gideon-house-1",
+      "home_interior": "gideon-house-1",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.apothecary1.r0",
+        "gideon.apothecary1.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          413.16,
+          2.72,
+          2905.68
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-trader-2",
+      "name": "Corvus Maronius",
+      "race": "imperial",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-trader-2",
+      "role": "head",
+      "disposition": 41,
+      "interior": "gideon-court",
+      "home_interior": "gideon-court",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.trader2.r0",
+        "gideon.trader2.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-court",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-court",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-court",
+        "at_building_name": "The County Court",
+        "pos": [
+          454.9,
+          2.72,
+          2920.97
+        ],
+        "yaw": 60,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-court's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-fisher-3",
+      "name": "Wuxvakh",
+      "race": "argonian",
+      "class": "fisher",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-fisher-3",
+      "role": "head",
+      "disposition": 49,
+      "interior": "gideon-tollhouse",
+      "home_interior": "gideon-tollhouse",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.fisher3.r0",
+        "gideon.fisher3.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          422.37,
+          2.72,
+          2907.24
+        ],
+        "yaw": 240,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-publican-4",
+      "name": "Xanei",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-publican-4",
+      "role": "head",
+      "disposition": 56,
+      "interior": "gideon-inn",
+      "home_interior": "gideon-inn",
+      "work_interior": "gideon-inn",
+      "owns_zones": [
+        "gideon.publican4.r0",
+        "gideon.publican4.r1",
+        "gideon.publican4.r2"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "gideon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          414.37,
+          2.72,
+          2904.39
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-trader-5",
+      "name": "Nux-Ojel",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-trader-5",
+      "role": "head",
+      "disposition": 41,
+      "interior": "gideon-shrine",
+      "home_interior": "gideon-shrine",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.trader5.r0",
+        "gideon.trader5.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.82,
+          2.72,
+          2904.51
+        ],
+        "yaw": 240,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-warder-6",
+      "name": "Drelas Sarethi",
+      "race": "dunmer",
+      "class": "warder",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-warder-6",
+      "role": "head",
+      "disposition": 28,
+      "interior": "gideon-grange",
+      "home_interior": "gideon-grange",
+      "work_interior": "gideon-grange",
+      "owns_zones": [
+        "gideon.warder6.r0",
+        "gideon.warder6.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "gideon-grange",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "10:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "17:00",
+          "at": "gideon-grange",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "21:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          402.66,
+          2.72,
+          2908.95
+        ],
+        "yaw": 258,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-grange's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-legionary-7",
+      "name": "Deekskei",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-legionary-7",
+      "role": "head",
+      "disposition": 27,
+      "interior": "gideon-lowmarket",
+      "home_interior": "gideon-lowmarket",
+      "work_interior": "gideon-court",
+      "owns_zones": [
+        "gideon.legionary7.r0",
+        "gideon.legionary7.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "gideon-court",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "gideon-court",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          412.81,
+          2.72,
+          2907.83
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-apothecary-8",
+      "name": "Julia Carinus",
+      "race": "imperial",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-apothecary-8",
+      "role": "head",
+      "disposition": 51,
+      "interior": "gideon-chapel",
+      "home_interior": "gideon-chapel",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.apothecary8.r0",
+        "gideon.apothecary8.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          426.15,
+          2.72,
+          2903.53
+        ],
+        "yaw": 240,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-legionary-9",
+      "name": "Lucia Drusius",
+      "race": "imperial",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-legionary-9",
+      "role": "head",
+      "disposition": 33,
+      "interior": "gideon-smithy",
+      "home_interior": "gideon-smithy",
+      "work_interior": "gideon-court",
+      "owns_zones": [
+        "gideon.legionary9.r0",
+        "gideon.legionary9.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "gideon-court",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "gideon-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "10:00",
+          "at": "gideon-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "17:00",
+          "at": "gideon-court",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "21:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "gideon-smithy",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-court",
+        "at_building_name": "The County Court",
+        "pos": [
+          454.05,
+          2.72,
+          2920.75
+        ],
+        "yaw": 60,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-court's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-smith-10",
+      "name": "Deekjul",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-smith-10",
+      "role": "head",
+      "disposition": 44,
+      "interior": "gideon-shrine",
+      "home_interior": "gideon-shrine",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.smith10.r0",
+        "gideon.smith10.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-apothecary",
+        "at_building_name": "The Physick",
+        "pos": [
+          449.27,
+          2.72,
+          2938.99
+        ],
+        "yaw": 17,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-smith-11",
+      "name": "Lucia Sabinus",
+      "race": "imperial",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-smith-11",
+      "role": "head",
+      "disposition": 37,
+      "interior": "gideon-grange",
+      "home_interior": "gideon-grange",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.smith11.r0",
+        "gideon.smith11.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          423.4,
+          2.72,
+          2905.65
+        ],
+        "yaw": 240,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-weaver-12",
+      "name": "Lucius Menandra",
+      "race": "imperial",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-weaver-12",
+      "role": "head",
+      "disposition": 43,
+      "interior": "gideon-lowmarket",
+      "home_interior": "gideon-lowmarket",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [
+        "gideon.weaver12.r0",
+        "gideon.weaver12.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          423.78,
+          2.72,
+          2906.35
+        ],
+        "yaw": 240,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-cook-13",
+      "name": "Vosh-Uxith",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-cook-13",
+      "role": "head",
+      "disposition": 47,
+      "interior": "gideon-chapel",
+      "home_interior": "gideon-chapel",
+      "work_interior": "gideon-inn",
+      "owns_zones": [
+        "gideon.cook13.r0",
+        "gideon.cook13.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "gideon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.47,
+          2.72,
+          2905.57
+        ],
+        "yaw": 240,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-fisher-0-sibling0",
+      "name": "Xeech-Thith",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-fisher-0",
+      "role": "sibling",
+      "disposition": 40,
+      "interior": "gideon-house-0",
+      "home_interior": "gideon-house-0",
+      "work_interior": "gideon-house-0",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "gideon-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "gideon-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-apothecary",
+        "at_building_name": "The Physick",
+        "pos": [
+          448.53,
+          2.72,
+          2938.1
+        ],
+        "yaw": 17,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-apothecary-1-lodger0",
+      "name": "Tsith-Thek",
+      "race": "argonian",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-apothecary-1",
+      "role": "lodger",
+      "disposition": 41,
+      "interior": "gideon-house-1",
+      "home_interior": "gideon-house-1",
+      "work_interior": "gideon-house-1",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "gideon-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "gideon-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "gideon-house-1",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          423.95,
+          2.72,
+          2907.12
+        ],
+        "yaw": 240,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-apothecary-1-apprentice1",
+      "name": "Nuxanmeer",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-apothecary-1",
+      "role": "apprentice",
+      "disposition": 42,
+      "interior": "gideon-house-1",
+      "home_interior": "gideon-house-1",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-inn",
+        "at_building_name": "The Wheel and Barge",
+        "pos": [
+          465.09,
+          2.72,
+          2920.05
+        ],
+        "yaw": 73,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-trader-2-apprentice0",
+      "name": "Tsashu",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-trader-2",
+      "role": "apprentice",
+      "disposition": 44,
+      "interior": "gideon-court",
+      "home_interior": "gideon-court",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-court",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-court",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          412.39,
+          2.72,
+          2906.52
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-fisher-3-lodger0",
+      "name": "Sethan Vorin",
+      "race": "dunmer",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-fisher-3",
+      "role": "lodger",
+      "disposition": 39,
+      "interior": "gideon-tollhouse",
+      "home_interior": "gideon-tollhouse",
+      "work_interior": "gideon-tollhouse",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "gideon-tollhouse",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "gideon-tollhouse",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "gideon-tollhouse",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          413.2,
+          2.72,
+          2902.97
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-fisher-3-apprentice1",
+      "name": "Sells-Paper",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-fisher-3",
+      "role": "apprentice",
+      "disposition": 49,
+      "interior": "gideon-tollhouse",
+      "home_interior": "gideon-tollhouse",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-tollhouse",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-tollhouse",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          423.79,
+          2.72,
+          2904.93
+        ],
+        "yaw": 240,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-court",
+      "name": "Tuk-Wuxal",
+      "title": "Clerk",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "the-imperial-assize",
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-keeper-court",
+      "role": "keeper",
+      "disposition": 31,
+      "interior": "gideon-court",
+      "home_interior": "gideon-court",
+      "work_interior": "gideon-court",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-court",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "gideon-court",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "gideon-court",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-court",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-inn",
+        "at_building_name": "The Wheel and Barge",
+        "pos": [
+          465.26,
+          2.72,
+          2918.94
+        ],
+        "yaw": 73,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-lowmarket",
+      "name": "Anvokh",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-keeper-lowmarket",
+      "role": "keeper",
+      "disposition": 43,
+      "interior": "gideon-lowmarket",
+      "home_interior": "gideon-lowmarket",
+      "work_interior": "gideon-lowmarket",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-lowmarket",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          413.17,
+          2.72,
+          2902.37
+        ],
+        "yaw": 253,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-tollhouse",
+      "name": "Yakum Uveran",
+      "title": "Clerk",
+      "race": "dunmer",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "the-imperial-assize",
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-keeper-tollhouse",
+      "role": "keeper",
+      "disposition": 29,
+      "interior": "gideon-tollhouse",
+      "home_interior": "gideon-tollhouse",
+      "work_interior": "gideon-tollhouse",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-tollhouse",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "gideon-tollhouse",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "gideon-tollhouse",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-tollhouse",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-apothecary",
+        "at_building_name": "The Physick",
+        "pos": [
+          445.24,
+          2.72,
+          2938.63
+        ],
+        "yaw": 17,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-chapel",
+      "name": "Muul-Nalpa",
+      "title": "Healer",
+      "race": "argonian",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "the-imperial-assize",
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-keeper-chapel",
+      "role": "keeper",
+      "disposition": 53,
+      "interior": "gideon-chapel",
+      "home_interior": "gideon-chapel",
+      "work_interior": "gideon-chapel",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "gideon-chapel",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "gideon-chapel",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "17:00",
+          "at": "gideon-chapel",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "20:00",
+          "at": "gideon-chapel",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "gideon-chapel",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-chapel",
+        "at_building_name": "The Chapel of the Nine",
+        "pos": [
+          431.71,
+          2.72,
+          2898.48
+        ],
+        "yaw": 210,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-chapel's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-inn",
+      "name": "Wuxnux",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-keeper-inn",
+      "role": "keeper",
+      "disposition": 56,
+      "interior": "gideon-inn",
+      "home_interior": "gideon-inn",
+      "work_interior": "gideon-inn",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "gideon-inn",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.28,
+          2.72,
+          2905.32
+        ],
+        "yaw": 240,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-smithy",
+      "name": "Xeechlith",
+      "title": "Smith",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-keeper-smithy",
+      "role": "keeper",
+      "disposition": 37,
+      "interior": "gideon-smithy",
+      "home_interior": "gideon-smithy",
+      "work_interior": "gideon-smithy",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "gideon-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "gideon-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-smithy",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-smithy",
+        "at_building_name": "The Square Forge",
+        "pos": [
+          413.7,
+          2.72,
+          2905.36
+        ],
+        "yaw": 253,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-apothecary",
+      "name": "Marius Balbinus",
+      "title": "Apothecary",
+      "race": "imperial",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "gideon",
+      "quarter": "provincial-office",
+      "household": "gideon-keeper-apothecary",
+      "role": "keeper",
+      "disposition": 47,
+      "interior": "gideon-apothecary",
+      "home_interior": "gideon-apothecary",
+      "work_interior": "gideon-apothecary",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "gideon-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "gideon-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "gideon-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-apothecary",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-inn",
+        "at_building_name": "The Wheel and Barge",
+        "pos": [
+          465.65,
+          2.72,
+          2918.62
+        ],
+        "yaw": 73,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-shrine",
+      "name": "Casimir Balbinus",
+      "title": "Rootkeeper",
+      "race": "imperial",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-keeper-shrine",
+      "role": "keeper",
+      "disposition": 50,
+      "interior": "gideon-shrine",
+      "home_interior": "gideon-shrine",
+      "work_interior": "gideon-shrine",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "gideon-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "19:00",
+          "at": "gideon-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-inn",
+        "at_building_name": "The Wheel and Barge",
+        "pos": [
+          466.05,
+          2.72,
+          2919.01
+        ],
+        "yaw": 73,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-rootpost",
+      "name": "Kaal-Ixt",
+      "title": "Postmaster",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "gideon",
+      "quarter": "docks",
+      "household": "gideon-keeper-rootpost",
+      "role": "keeper",
+      "disposition": 48,
+      "interior": "gideon-rootpost",
+      "home_interior": "gideon-rootpost",
+      "work_interior": "gideon-rootpost",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "gideon-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "gideon-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "gideon-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "gideon-rootpost",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.81,
+          2.72,
+          2905.39
+        ],
+        "yaw": 240,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-lowmarket's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "gideon-keeper-grange",
+      "name": "Onwen Dares",
+      "title": "Clerk",
+      "race": "dunmer",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "gideon",
+      "quarter": "high-street",
+      "household": "gideon-keeper-grange",
+      "role": "keeper",
+      "disposition": 33,
+      "interior": "gideon-grange",
+      "home_interior": "gideon-grange",
+      "work_interior": "gideon-grange",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "gideon-grange",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "gideon-grange",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "gideon-grange",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "gideon",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          401.66,
+          2.72,
+          2905.41
+        ],
+        "yaw": 258,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from gideon-grange's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    }
+  ],
+  "street_life_note": "Some records in this file carry a `post` block and outdoor `at: null` schedule rows written by tools/world/build-street-life.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
+}

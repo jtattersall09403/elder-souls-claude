@@ -1,0 +1,276 @@
+{
+  "schema": "elder-souls/magic-cast-classes@1",
+  "id": "magic-cast-classes",
+  "corpus_item": "RI-MAG01 §B `ES-CAST/1`, §C, §E",
+  "unit_note": "EVERY frame figure in this file is f@60 — frames of the fixed 1/60 s simulation step. Seam S22: a Souls community frame count is t@30 and is HALF of ours. No number here may be compared to a t@30 figure without the factor of 2.",
+  "provenance": "constructed — RI-MAG01 is explicit that no frame count, cost, speed or threshold in it is measured in or recalled from Dark Souls, Elden Ring or Morrowind.",
+  "commitment": {
+    "hard_recovery_fraction": 0.6,
+    "hard_recovery_note": "RI-MAG01 §C. Harsher than RI-CMB02 §D's 0.45 for weapons, deliberately: a caster is already spending the fight at range with the spacing advantage, and the recovery tail is what the range costs. hard_until = startup + active + ceil(0.60 × recovery); after that DODGE-cancellable and nothing else.",
+    "aim_latch_fraction": 0.65,
+    "aim_latch_note": "Tc = ceil(0.65 × startup). RI-AI02's tracking-cutoff law applied to the PLAYER. After Tc the spell goes where it was aimed, not where the target now is.",
+    "yaw_rate_cap_dps": 120,
+    "yaw_budget_deg": 100,
+    "yaw_after_tc_dps": 2,
+    "acquire_cone_deg": 20,
+    "_acquire_cone_note": "The half-angle inside which a LIGHT or HEAVY bolt may acquire the body it then tracks, before the tracking cutoff. It exists so that the arc RI-MAG01 §E declares (60 deg/s LIGHT, 45 HEAVY) is a real number rather than a table nobody can check: wave 1 never set a target on a projectile and the trace measured 0.000 deg/s, which the W1-14 verdict recorded as a declared-vs-observed mismatch under M8. It is deliberately narrow, and acquisition happens ONCE at spawn against the aim the latch already fixed, so RI-MAG01 M4 (median residual aim error >= 25 deg, measured at the RELEASE frame) is untouched and AP-M3 (still turning past the cutoff) stays impossible."
+  },
+  "classes": [
+    {
+      "id": "CANTRIP",
+      "startup": 14,
+      "active": 3,
+      "recovery": 20,
+      "total": 37,
+      "Ps": 15,
+      "Tc": 10,
+      "hard_until": 29,
+      "stamina": 10,
+      "focus_mult": 0.5,
+      "hyperarmour_window": null,
+      "move_speed_startup_mps": 1.1,
+      "move_speed_after_mps": 1.1,
+      "clip": "cast_point",
+      "silhouette": "one hand snapped forward from the hip, elbow locked, body square — the only cast class that keeps walking"
+    },
+    {
+      "id": "LIGHT",
+      "startup": 24,
+      "active": 4,
+      "recovery": 28,
+      "total": 56,
+      "Ps": 25,
+      "Tc": 16,
+      "hard_until": 45,
+      "stamina": 16,
+      "focus_mult": 1,
+      "hyperarmour_window": null,
+      "move_speed_startup_mps": 0.55,
+      "move_speed_after_mps": 0,
+      "clip": "cast_draw",
+      "silhouette": "catalyst drawn across the chest and released outward, shoulders opening — a shove"
+    },
+    {
+      "id": "HEAVY",
+      "startup": 36,
+      "active": 6,
+      "recovery": 40,
+      "total": 82,
+      "Ps": 37,
+      "Tc": 24,
+      "hard_until": 66,
+      "stamina": 24,
+      "focus_mult": 2.1,
+      "hyperarmour_window": [
+        22,
+        42
+      ],
+      "move_speed_startup_mps": 0,
+      "move_speed_after_mps": 0,
+      "clip": "cast_gather",
+      "silhouette": "both arms low and wide, weight sunk onto the back foot, catalyst held at the hip and the head down — a gather, feet planted"
+    },
+    {
+      "id": "GREAT",
+      "startup": 52,
+      "active": 8,
+      "recovery": 60,
+      "total": 120,
+      "Ps": 53,
+      "Tc": 34,
+      "hard_until": 96,
+      "stamina": 34,
+      "focus_mult": 4.4,
+      "hyperarmour_window": [
+        32,
+        60
+      ],
+      "move_speed_startup_mps": 0,
+      "move_speed_after_mps": 0,
+      "clip": "cast_raise",
+      "silhouette": "catalyst raised vertically overhead in both hands with the spine arched back, then driven down — the single tallest silhouette in the player's kit, readable at any range",
+      "reference_note": "Behavioural reference (A5 rule 2, behaviour only, never art direction): souls-behaviour/anim/telegraph/er-ER_Leyndell_Knight_w_The_Flame_of_Frenzy.gif — 34 GIF frames at 100 ms. The weapon goes vertically overhead and is HELD there for roughly the first 41% of the clip before the slam. Our GREAT startup is 52 of 120 f@60 = 43%. The silhouette change, not the glow, is the tell."
+    },
+    {
+      "id": "RITUAL",
+      "startup": 150,
+      "active": 12,
+      "recovery": 48,
+      "total": 210,
+      "Ps": null,
+      "Tc": 98,
+      "hard_until": 191,
+      "stamina": 0,
+      "focus_mult": 1,
+      "hyperarmour_window": null,
+      "move_speed_startup_mps": 0,
+      "move_speed_after_mps": 0,
+      "clip": "cast_kneel",
+      "aborts_on": [
+        "damage",
+        "enter_combat",
+        "movement_input"
+      ],
+      "abort_refunds_focus": true,
+      "silhouette": "kneeling, both palms flat on the ground — the only cast in the game that puts the caster below standing height",
+      "ruling_note": "RI-MAG01 §B: `RITUAL` is uncastable inside the fight BY CONSTRUCTION, not by a rule. 150 f@60 of startup with zero hyperarmour and zero movement cannot survive contact. There is no `can_cast_in_combat: false` flag anywhere in this build — grep for one and you will not find it. The clock does it."
+    }
+  ],
+  "catalysts": [
+    {
+      "id": "great_staff",
+      "focus_mult": 0.8,
+      "hands": 2,
+      "grants_hyperarmour": true,
+      "note": "The efficiency build; costs you a shield.",
+      "equip_weight": 3,
+      "equip_weight_note": "RI-PRG07 §4, \"Talisman / catalyst\": 3. Read from the corpus, not chosen — this is §2's fourth term and it had no weight column at all before W1-16 round 4."
+    },
+    {
+      "id": "rod",
+      "focus_mult": 1,
+      "hands": 1,
+      "grants_hyperarmour": false,
+      "note": "Baseline.",
+      "equip_weight": 3,
+      "equip_weight_note": "RI-PRG07 §4, \"Talisman / catalyst\": 3. Read from the corpus, not chosen — this is §2's fourth term and it had no weight column at all before W1-16 round 4."
+    },
+    {
+      "id": "enchanted_weapon",
+      "focus_mult": 1.15,
+      "hands": 1,
+      "grants_hyperarmour": false,
+      "note": "Sword-and-board caster tax.",
+      "equip_weight": 0,
+      "equip_weight_note": "RI-PRG07 §2 counts weapons and talismans separately; this catalyst IS the equipped weapon, already weighed by weapons/classes.json equip_weight. Weighing it again would weigh one object twice."
+    },
+    {
+      "id": "none",
+      "focus_mult": 1.35,
+      "hands": 2,
+      "grants_hyperarmour": true,
+      "note": "Bare-handed Root-Speech. Always possible; always worst. Two-handed by construction, so it keeps the hyperarmour.",
+      "equip_weight": 0,
+      "equip_weight_note": "No object in the hand, no weight. RI-PRG07 §2 term 4 is empty here."
+    }
+  ],
+  "hyperarmour_rule": "RI-MAG01 §B: HA = [ceil(0.60 × startup), startup + active], DERIVED by RI-CMB02's own formula, and applies ONLY when two-handing a catalyst. One-handed casting with a shield or an off-hand weapon has no hyperarmour at any class.",
+  "iframe_rule": "Casting grants NO i-frames at any class, at any time, under any catalyst, ever. A cast with i-frames is a dodge with damage attached (RI-MAG01 §D, automatic fail).",
+  "ballistics": {
+    "turn_rate_law": "W1-14 ROUND 5 — WHY THE TWO TRACKING CLASSES' ARCS ARE DERIVED RATHER THAN CHOSEN. Wave 1 never set a target on a projectile, so the trace measured 0.000 deg/s and the W1-14 verdict recorded a declared-vs-observed mismatch under M8: `turn_rate_dps` was a number in a file that nothing had ever had to satisfy. Round 4's verdict then found that a bolt misses a body walking sideways at 14 m, and round 5's fix is LEAD — a bolt aims at where the body will be and then coasts, rather than chasing where it is. Under lead the arc has ONE job with a closed-form size: swing from the line of sight onto the collision course, which sits `atan(v_cross / speed_mps)` off it. The window it has to do that in is the class's own `tracking_cutoff` fraction of the flight, which SHRINKS WITH RANGE while the angle does not — so a fraction alone cannot be right at every range, and the binding case is the CLOSEST one. Hence: turn_rate_dps >= atan(v_cross / speed_mps) / (tracking_cutoff * (d_min - radius_m - 0.45) / speed_mps), with v_cross = 3.0 m/s (a body jogging across you; RI-MAG01's Souls enemy circling) and d_min = 6 m (inside that a ranged class is not what you are holding). This RAISES the arc and does NOT weaken any fence: `tracking_cutoff` is untouched, so AP-M3's 'turn_rate_dps > 2 past 0.35 x travel_f' is exactly as tight as it was, and a higher rate under a lead means the bolt reaches its collision course SOONER and then turns 0 deg/s for the rest of the flight — it does not mean it steers for longer. What it does not buy: a body crossing at 5.0 m/s inside 10 m is still missed, measured, and that is the dodge doing its job rather than a defect (reports/w1-14-r5/lead-fix.json).",
+    "absolute_speed_ceiling_mps": 30,
+    "min_dodge_window_f": 20,
+    "volume_decal_lead_f": 20,
+    "volume_decal_area_tolerance": 0.05,
+    "classes": {
+      "CANTRIP": {
+        "speed_mps": 22,
+        "turn_rate_dps": 0,
+        "tracking_cutoff": null,
+        "radius_m": 0.14,
+        "lifetime_s": 1.5,
+        "min_dodge_window_at_12m_f": 33
+      },
+      "LIGHT": {
+        "speed_mps": 16,
+        "turn_rate_dps": 95,
+        "turn_rate_derivation": "W1-14 r5. Was 60, invented. See ballistics.turn_rate_law: atan(3/16)=10.62 deg over a window of 0.35 x (6 - 0.67)/16 = 0.1166 s gives 91.1 deg/s; 95 is that with a small margin for the aim the lock-on has not finished closing. Measured at 60 the bolt fell 0.06 m short of a 3 m/s crosser at 6 m with a 0.67 m hit radius, on all five damage effects, deterministically.",
+        "tracking_cutoff": 0.35,
+        "radius_m": 0.22,
+        "lifetime_s": 2.5,
+        "min_dodge_window_at_12m_f": 45
+      },
+      "HEAVY": {
+        "speed_mps": 11,
+        "turn_rate_dps": 115,
+        "turn_rate_derivation": "W1-14 r5. Was 45, invented. atan(3/11)=15.26 deg over 0.30 x (6 - 0.90)/11 = 0.1391 s gives 109.7 deg/s; 115 with the same margin.",
+        "tracking_cutoff": 0.3,
+        "radius_m": 0.45,
+        "lifetime_s": 4,
+        "min_dodge_window_at_12m_f": 65
+      },
+      "GREAT": {
+        "speed_mps": 8,
+        "turn_rate_dps": 0,
+        "tracking_cutoff": null,
+        "radius_m": 0.9,
+        "lifetime_s": 5,
+        "min_dodge_window_at_12m_f": 90
+      },
+      "RITUAL": {
+        "speed_mps": 0,
+        "turn_rate_dps": 0,
+        "tracking_cutoff": null,
+        "radius_m": 0,
+        "lifetime_s": 0,
+        "min_dodge_window_at_12m_f": null
+      }
+    }
+  },
+  "drop_rules": [
+    {
+      "condition": "focus < cost",
+      "result": "input dropped; no partial cast, no debt, no queue"
+    },
+    {
+      "condition": "stamina < cost",
+      "result": "input dropped; identical to RI-CMB01 rule 7"
+    },
+    {
+      "condition": "SILENCE status active",
+      "result": "input dropped, no Focus spent — silence acts on the input, not the reservoir"
+    },
+    {
+      "condition": "spell not attuned",
+      "result": "there is nothing to drop; a spell below its skill requirement could not have been attuned (RI-PRG03 §6)"
+    }
+  ],
+  "interrupt": {
+    "startup": {
+      "focus": "consumed, never refunded",
+      "stamina": "consumed",
+      "effect": "none — the spell did not happen"
+    },
+    "active": {
+      "focus": "consumed",
+      "stamina": "consumed",
+      "effect": "the spell RELEASED; geometry already exists and resolves normally"
+    },
+    "recovery": {
+      "focus": "consumed",
+      "stamina": "consumed",
+      "effect": "spell resolved; you are staggered on top of it"
+    },
+    "ritual_abort": {
+      "focus": "REFUNDED — the only refund in this item",
+      "stamina": "n/a",
+      "effect": "none"
+    }
+  },
+  "levitation": {
+    "corpus_item": "RI-MAG02 §F",
+    "horizontal_drift_mps": 1.4,
+    "climb_rate_mps": 0.8,
+    "focus_per_metre_ascent": 1.5,
+    "walk_speed_reference_mps": 2,
+    "ends_on_damage": true,
+    "airborne_denies": [
+      "light",
+      "heavy",
+      "block",
+      "roll",
+      "parry",
+      "sprint",
+      "use_item"
+    ],
+    "airborne_permits_cast": [
+      "slowfall"
+    ],
+    "iframes": false,
+    "no_fence_declaration": "There is no altitude clamp, no `no_levitation_zone`, no ceiling plane and no prohibition flag anywhere in game/src or game/data. RI-MAG02 M4.2 greps for one and asserts ZERO hits. The bounds are (F1) drift slower than walking, (F2) 1.5 Focus per metre out of a reservoir that never refills, (F3) AIRBORNE is defenceless, (F4) real ceilings and a real canopy with real gaps."
+  },
+  "slowfall": {
+    "terminal_velocity_mps": 3.5,
+    "fall_damage": 0
+  }
+}

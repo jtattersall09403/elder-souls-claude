@@ -1,0 +1,7313 @@
+{
+  "schema": "elder-souls/property@1",
+  "id": "property-stormhold",
+  "settlement": "stormhold",
+  "jurisdiction": "imperial",
+  "source": "RI-STL02 §1 (ownership), §4 (trespass classes), §3 (ward-collar locks). Built by tools/world/build-property.mjs; the roster, palettes and classes in that file are the authored part.",
+  "households": [
+    {
+      "npc": "npc:stormhold-publican-0",
+      "name": "Uxithuj",
+      "trade": "publican",
+      "faction": null,
+      "quarter": "inside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-0",
+          "name": "Uxithuj",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-0-apprentice0",
+          "name": "Ivrys Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "zones": [
+        "stormhold.publican0.r0",
+        "stormhold.publican0.r1",
+        "stormhold.publican0.r2"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-apothecary-1",
+      "name": "Drelas Andas",
+      "trade": "apothecary",
+      "faction": null,
+      "quarter": "outside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-1",
+          "name": "Drelas Andas",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-1-child0",
+          "name": "Xantuk",
+          "role": "child"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-1-partner1",
+          "name": "Ties-Boats",
+          "role": "partner"
+        }
+      ],
+      "zones": [
+        "stormhold.apothecary1.r0",
+        "stormhold.apothecary1.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-apothecary-2",
+      "name": "Deektuk",
+      "trade": "apothecary",
+      "faction": null,
+      "quarter": "garrison",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-2",
+          "name": "Deektuk",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-2-sibling0",
+          "name": "Thek-Vastei",
+          "role": "sibling"
+        }
+      ],
+      "zones": [
+        "stormhold.apothecary2.r0",
+        "stormhold.apothecary2.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-publican-3",
+      "name": "Marius Nerentius",
+      "trade": "publican",
+      "faction": null,
+      "quarter": "inside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-3",
+          "name": "Marius Nerentius",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-elder0",
+          "name": "Keshmeer",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-sibling1",
+          "name": "Shal-Nux",
+          "role": "sibling"
+        }
+      ],
+      "zones": [
+        "stormhold.publican3.r0",
+        "stormhold.publican3.r1",
+        "stormhold.publican3.r2"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-publican-4",
+      "name": "Shekh-Thtithil",
+      "trade": "publican",
+      "faction": null,
+      "quarter": "outside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-4",
+          "name": "Shekh-Thtithil",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-4-apprentice0",
+          "name": "Vaman Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "zones": [
+        "stormhold.publican4.r0",
+        "stormhold.publican4.r1",
+        "stormhold.publican4.r2"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-publican-5",
+      "name": "Nekhlith",
+      "trade": "publican",
+      "faction": null,
+      "quarter": "garrison",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-5",
+          "name": "Nekhlith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-elder0",
+          "name": "Ravel Indoril",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-sibling1",
+          "name": "Deelithei",
+          "role": "sibling"
+        }
+      ],
+      "zones": [
+        "stormhold.publican5.r0",
+        "stormhold.publican5.r1",
+        "stormhold.publican5.r2"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-warder-6",
+      "name": "Marcia Bellandus",
+      "trade": "warder",
+      "faction": "ninth-cohort",
+      "quarter": "inside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-warder-6",
+          "name": "Marcia Bellandus",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-warder-6-sibling0",
+          "name": "Kaan-Bok",
+          "role": "sibling"
+        }
+      ],
+      "zones": [
+        "stormhold.warder6.r0",
+        "stormhold.warder6.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-trader-7",
+      "name": "Fals Uveran",
+      "trade": "trader",
+      "faction": null,
+      "quarter": "outside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-trader-7",
+          "name": "Fals Uveran",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-trader-7-lodger0",
+          "name": "Deekmuul",
+          "role": "lodger"
+        },
+        {
+          "npc": "npc:stormhold-trader-7-apprentice1",
+          "name": "Nux-Kaan",
+          "role": "apprentice"
+        }
+      ],
+      "zones": [
+        "stormhold.trader7.r0",
+        "stormhold.trader7.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-apothecary-8",
+      "name": "Rajdeelith",
+      "trade": "apothecary",
+      "faction": null,
+      "quarter": "garrison",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-8",
+          "name": "Rajdeelith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-8-sibling0",
+          "name": "Yakum Rethan",
+          "role": "sibling"
+        }
+      ],
+      "zones": [
+        "stormhold.apothecary8.r0",
+        "stormhold.apothecary8.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-warder-9",
+      "name": "Fals Sedran",
+      "trade": "warder",
+      "faction": "ninth-cohort",
+      "quarter": "inside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-warder-9",
+          "name": "Fals Sedran",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-warder-9-lodger0",
+          "name": "Jul-Vei",
+          "role": "lodger"
+        },
+        {
+          "npc": "npc:stormhold-warder-9-apprentice1",
+          "name": "Drelas Solas",
+          "role": "apprentice"
+        }
+      ],
+      "zones": [
+        "stormhold.warder9.r0",
+        "stormhold.warder9.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-smith-10",
+      "name": "Cornelia Voranus",
+      "trade": "smith",
+      "faction": null,
+      "quarter": "outside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-smith-10",
+          "name": "Cornelia Voranus",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-smith-10-elder0",
+          "name": "Neekhtei",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-smith-10-sibling1",
+          "name": "Livia Maronius",
+          "role": "sibling"
+        }
+      ],
+      "zones": [
+        "stormhold.smith10.r0",
+        "stormhold.smith10.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-boatwright-11",
+      "name": "Wux-Naga",
+      "trade": "boatwright",
+      "faction": null,
+      "quarter": "garrison",
+      "residents": [
+        {
+          "npc": "npc:stormhold-boatwright-11",
+          "name": "Wux-Naga",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-boatwright-11-apprentice0",
+          "name": "Kaaltei",
+          "role": "apprentice"
+        }
+      ],
+      "zones": [
+        "stormhold.boatwright11.r0",
+        "stormhold.boatwright11.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-factor-12",
+      "name": "Velas Reln",
+      "trade": "factor",
+      "faction": "wet-ledger",
+      "quarter": "inside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-factor-12",
+          "name": "Velas Reln",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-factor-12-child0",
+          "name": "Dram Andas",
+          "role": "child"
+        },
+        {
+          "npc": "npc:stormhold-factor-12-partner1",
+          "name": "Vaman Sedran",
+          "role": "partner"
+        }
+      ],
+      "zones": [
+        "stormhold.factor12.r0",
+        "stormhold.factor12.r1"
+      ]
+    },
+    {
+      "npc": "npc:stormhold-smith-13",
+      "name": "Shekh-Skei",
+      "trade": "smith",
+      "faction": null,
+      "quarter": "outside-the-wall",
+      "residents": [
+        {
+          "npc": "npc:stormhold-smith-13",
+          "name": "Shekh-Skei",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-smith-13-apprentice0",
+          "name": "Anixt",
+          "role": "apprentice"
+        }
+      ],
+      "zones": [
+        "stormhold.smith13.r0",
+        "stormhold.smith13.r1"
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "id": "stormhold.publican0.r0",
+      "name": "Uxithuj's publican",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "shop_open",
+      "owner": "npc:stormhold-publican-0",
+      "owner_name": "Uxithuj",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-0",
+          "name": "Uxithuj",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-0-apprentice0",
+          "name": "Ivrys Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican0.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican0.r0.lamp0",
+          "pos": [
+            1,
+            1.6,
+            -2.8
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican0.r0.lamp1",
+          "pos": [
+            -0.8999999999999999,
+            1.6,
+            -2.7
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican0.r0.lamp2",
+          "pos": [
+            -2.2,
+            1.6,
+            -2.6
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican0.r0.0",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.1",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.2",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.3",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.4",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.5",
+          "id": "iron_ladle",
+          "name": "iron ladle",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.6",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r0.commons",
+          "id": "well_bucket",
+          "name": "well bucket",
+          "owner": "settlement:stormhold",
+          "owner_scope": "public",
+          "value_g": 3,
+          "weight_kg": 1.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "stormhold.publican0.r1",
+      "name": "Uxithuj's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-0",
+      "owner_name": "Uxithuj",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-0",
+          "name": "Uxithuj",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-0-apprentice0",
+          "name": "Ivrys Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican0.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican0.r1.lamp0",
+          "pos": [
+            -1.1,
+            1.6,
+            4.300000000000001
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican0.r1.lamp1",
+          "pos": [
+            0.7999999999999998,
+            1.6,
+            4.199999999999999
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican0.r1.0",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.1",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.2",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.3",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.4",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.5",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.6",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.7",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r1.8",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican0.r1.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            120,
+            313
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican0.r2",
+      "name": "Uxithuj's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-0",
+      "owner_name": "Uxithuj",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-0",
+          "name": "Uxithuj",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-0-apprentice0",
+          "name": "Ivrys Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican0.r2.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican0.r2.lamp0",
+          "pos": [
+            -1.6,
+            1.6,
+            -3.4
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican0.r2.lamp1",
+          "pos": [
+            -3.5,
+            1.6,
+            -3.3
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican0.r2.lamp2",
+          "pos": [
+            1.5999999999999996,
+            1.6,
+            -2.2
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican0.r2.0",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r2.1",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r2.2",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r2.3",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r2.4",
+          "id": "flin_bottle",
+          "name": "flin bottle",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r2.5",
+          "id": "iron_ladle",
+          "name": "iron ladle",
+          "owner": "npc:stormhold-publican-0-apprentice0",
+          "owner_name": "Ivrys Hlarel",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican0.r2.6",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-0",
+          "owner_name": "Uxithuj",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican0.r2.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            39,
+            210
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.apothecary1.r0",
+      "name": "Drelas Andas's apothecary",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-apothecary-1",
+      "owner_name": "Drelas Andas",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-1",
+          "name": "Drelas Andas",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-1-child0",
+          "name": "Xantuk",
+          "role": "child"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-1-partner1",
+          "name": "Ties-Boats",
+          "role": "partner"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.apothecary1.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.apothecary1.r0.lamp0",
+          "pos": [
+            -2.3,
+            1.6,
+            0.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary1.r0.lamp1",
+          "pos": [
+            -0.3999999999999999,
+            1.6,
+            0.40000000000000036
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.apothecary1.r0.0",
+          "id": "swamp_fever_tincture",
+          "name": "swamp-fever tincture",
+          "owner": "npc:stormhold-apothecary-1-child0",
+          "owner_name": "Xantuk",
+          "owner_scope": "personal",
+          "value_g": 41,
+          "weight_kg": 0.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r0.1",
+          "id": "ledger_book",
+          "name": "ledger book",
+          "owner": "npc:stormhold-apothecary-1-partner1",
+          "owner_name": "Ties-Boats",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r0.2",
+          "id": "swamp_fever_tincture",
+          "name": "swamp-fever tincture",
+          "owner": "npc:stormhold-apothecary-1-partner1",
+          "owner_name": "Ties-Boats",
+          "owner_scope": "personal",
+          "value_g": 41,
+          "weight_kg": 0.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r0.3",
+          "id": "ledger_book",
+          "name": "ledger book",
+          "owner": "npc:stormhold-apothecary-1",
+          "owner_name": "Drelas Andas",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r0.4",
+          "id": "mortar",
+          "name": "mortar",
+          "owner": "npc:stormhold-apothecary-1",
+          "owner_name": "Drelas Andas",
+          "owner_scope": "personal",
+          "value_g": 28,
+          "weight_kg": 1.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r0.5",
+          "id": "ledger_book",
+          "name": "ledger book",
+          "owner": "npc:stormhold-apothecary-1-child0",
+          "owner_name": "Xantuk",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r0.6",
+          "id": "mortar",
+          "name": "mortar",
+          "owner": "npc:stormhold-apothecary-1-child0",
+          "owner_name": "Xantuk",
+          "owner_scope": "personal",
+          "value_g": 28,
+          "weight_kg": 1.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.apothecary1.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            56,
+            224,
+            250
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.apothecary1.r1",
+      "name": "Drelas Andas's back room",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-apothecary-1",
+      "owner_name": "Drelas Andas",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-1",
+          "name": "Drelas Andas",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-1-child0",
+          "name": "Xantuk",
+          "role": "child"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-1-partner1",
+          "name": "Ties-Boats",
+          "role": "partner"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.apothecary1.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.apothecary1.r1.lamp0",
+          "pos": [
+            0.20000000000000018,
+            1.6,
+            -3.8
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary1.r1.lamp1",
+          "pos": [
+            -1.7,
+            1.6,
+            -3.7
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary1.r1.lamp2",
+          "pos": [
+            -3,
+            1.6,
+            -3.6
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.apothecary1.r1.0",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-1-child0",
+          "owner_name": "Xantuk",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.1",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-1",
+          "owner_name": "Drelas Andas",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.2",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-1",
+          "owner_name": "Drelas Andas",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.3",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-1-partner1",
+          "owner_name": "Ties-Boats",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.4",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-1",
+          "owner_name": "Drelas Andas",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.5",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-1-partner1",
+          "owner_name": "Ties-Boats",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.6",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-1-partner1",
+          "owner_name": "Ties-Boats",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary1.r1.7",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-1-child0",
+          "owner_name": "Xantuk",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.apothecary1.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            74,
+            206,
+            237
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.apothecary2.r0",
+      "name": "Deektuk's apothecary",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-apothecary-2",
+      "owner_name": "Deektuk",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-2",
+          "name": "Deektuk",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-2-sibling0",
+          "name": "Thek-Vastei",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.apothecary2.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.apothecary2.r0.lamp0",
+          "pos": [
+            -3.2,
+            1.6,
+            0.5999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary2.r0.lamp1",
+          "pos": [
+            1.9000000000000004,
+            1.6,
+            0.7000000000000002
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary2.r0.lamp2",
+          "pos": [
+            0.5999999999999996,
+            1.6,
+            0.7999999999999998
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.apothecary2.r0.0",
+          "id": "dried_marshmerrow",
+          "name": "dried marshmerrow",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 13,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.1",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.2",
+          "id": "dried_marshmerrow",
+          "name": "dried marshmerrow",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 13,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.3",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.4",
+          "id": "dried_marshmerrow",
+          "name": "dried marshmerrow",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 13,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.5",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.6",
+          "id": "dried_marshmerrow",
+          "name": "dried marshmerrow",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 13,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.7",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.8",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r0.9",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.apothecary2.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            74,
+            206,
+            237
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.apothecary2.r1",
+      "name": "Deektuk's back room",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-apothecary-2",
+      "owner_name": "Deektuk",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-2",
+          "name": "Deektuk",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-2-sibling0",
+          "name": "Thek-Vastei",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.apothecary2.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.apothecary2.r1.lamp0",
+          "pos": [
+            -0.5,
+            1.6,
+            -2.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary2.r1.lamp1",
+          "pos": [
+            1.4000000000000004,
+            1.6,
+            -2.6
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.apothecary2.r1.0",
+          "id": "swamp_fever_tincture",
+          "name": "swamp-fever tincture",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 41,
+          "weight_kg": 0.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r1.1",
+          "id": "ledger_book",
+          "name": "ledger book",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r1.2",
+          "id": "swamp_fever_tincture",
+          "name": "swamp-fever tincture",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 41,
+          "weight_kg": 0.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r1.3",
+          "id": "ledger_book",
+          "name": "ledger book",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r1.4",
+          "id": "mortar",
+          "name": "mortar",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 28,
+          "weight_kg": 1.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r1.5",
+          "id": "ledger_book",
+          "name": "ledger book",
+          "owner": "npc:stormhold-apothecary-2",
+          "owner_name": "Deektuk",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary2.r1.6",
+          "id": "mortar",
+          "name": "mortar",
+          "owner": "npc:stormhold-apothecary-2-sibling0",
+          "owner_name": "Thek-Vastei",
+          "owner_scope": "personal",
+          "value_g": 28,
+          "weight_kg": 1.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.apothecary2.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            106,
+            132,
+            295
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican3.r0",
+      "name": "Marius Nerentius's publican",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "shop_open",
+      "owner": "npc:stormhold-publican-3",
+      "owner_name": "Marius Nerentius",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-3",
+          "name": "Marius Nerentius",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-elder0",
+          "name": "Keshmeer",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-sibling1",
+          "name": "Shal-Nux",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican3.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican3.r0.lamp0",
+          "pos": [
+            1.5,
+            1.6,
+            3.9000000000000004
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican3.r0.lamp1",
+          "pos": [
+            3.4000000000000004,
+            1.6,
+            3.8000000000000007
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican3.r0.0",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-3-sibling1",
+          "owner_name": "Shal-Nux",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.1",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.2",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.3",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.4",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.5",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.6",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r0.commons",
+          "id": "well_bucket",
+          "name": "well bucket",
+          "owner": "settlement:stormhold",
+          "owner_scope": "public",
+          "value_g": 3,
+          "weight_kg": 1.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "stormhold.publican3.r1",
+      "name": "Marius Nerentius's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-3",
+      "owner_name": "Marius Nerentius",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-3",
+          "name": "Marius Nerentius",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-elder0",
+          "name": "Keshmeer",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-sibling1",
+          "name": "Shal-Nux",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican3.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican3.r1.lamp0",
+          "pos": [
+            1.4000000000000004,
+            1.6,
+            -3.8
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican3.r1.lamp1",
+          "pos": [
+            -0.5,
+            1.6,
+            -3.7
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican3.r1.lamp2",
+          "pos": [
+            -1.8,
+            1.6,
+            -3.6
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican3.r1.0",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r1.1",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r1.2",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r1.3",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-publican-3-sibling1",
+          "owner_name": "Shal-Nux",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r1.4",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-3-sibling1",
+          "owner_name": "Shal-Nux",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r1.5",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r1.6",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican3.r1.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            59,
+            253
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican3.r2",
+      "name": "Marius Nerentius's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-3",
+      "owner_name": "Marius Nerentius",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-3",
+          "name": "Marius Nerentius",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-elder0",
+          "name": "Keshmeer",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-3-sibling1",
+          "name": "Shal-Nux",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican3.r2.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican3.r2.lamp0",
+          "pos": [
+            1.5,
+            1.6,
+            2.7
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican3.r2.lamp1",
+          "pos": [
+            3.4000000000000004,
+            1.6,
+            2.5999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican3.r2.0",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r2.1",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-3-sibling1",
+          "owner_name": "Shal-Nux",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r2.2",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r2.3",
+          "id": "reed_basket",
+          "name": "reed basket",
+          "owner": "npc:stormhold-publican-3-elder0",
+          "owner_name": "Keshmeer",
+          "owner_scope": "personal",
+          "value_g": 3,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r2.4",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-3-sibling1",
+          "owner_name": "Shal-Nux",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican3.r2.5",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-3",
+          "owner_name": "Marius Nerentius",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican3.r2.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            25,
+            221
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican4.r0",
+      "name": "Shekh-Thtithil's publican",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_open",
+      "owner": "npc:stormhold-publican-4",
+      "owner_name": "Shekh-Thtithil",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-4",
+          "name": "Shekh-Thtithil",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-4-apprentice0",
+          "name": "Vaman Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican4.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican4.r0.lamp0",
+          "pos": [
+            1,
+            1.6,
+            0
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican4.r0.lamp1",
+          "pos": [
+            -0.8999999999999999,
+            1.6,
+            0.09999999999999964
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican4.r0.lamp2",
+          "pos": [
+            -2.2,
+            1.6,
+            0.20000000000000018
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican4.r0.0",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.1",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.2",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.3",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.4",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.5",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.6",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.7",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r0.8",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "stormhold.publican4.r1",
+      "name": "Shekh-Thtithil's back room",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-4",
+      "owner_name": "Shekh-Thtithil",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-4",
+          "name": "Shekh-Thtithil",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-4-apprentice0",
+          "name": "Vaman Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican4.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican4.r1.lamp0",
+          "pos": [
+            0.2999999999999998,
+            1.6,
+            2.0999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican4.r1.lamp1",
+          "pos": [
+            2.2,
+            1.6,
+            2
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican4.r1.0",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.1",
+          "id": "clay_pitcher",
+          "name": "clay pitcher",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.9,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.2",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.3",
+          "id": "clay_pitcher",
+          "name": "clay pitcher",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.9,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.4",
+          "id": "greef_bottle",
+          "name": "greef bottle",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.5",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.6",
+          "id": "greef_bottle",
+          "name": "greef bottle",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.7",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r1.8",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican4.r1.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            135,
+            298
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican4.r2",
+      "name": "Shekh-Thtithil's back room",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-4",
+      "owner_name": "Shekh-Thtithil",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-4",
+          "name": "Shekh-Thtithil",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-4-apprentice0",
+          "name": "Vaman Hlarel",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican4.r2.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican4.r2.lamp0",
+          "pos": [
+            -1,
+            1.6,
+            -3.2
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican4.r2.lamp1",
+          "pos": [
+            -2.9,
+            1.6,
+            -3.1
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican4.r2.lamp2",
+          "pos": [
+            2.2,
+            1.6,
+            -2
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican4.r2.0",
+          "id": "flin_bottle",
+          "name": "flin bottle",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.1",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.2",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.3",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.4",
+          "id": "flin_bottle",
+          "name": "flin bottle",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.5",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.6",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-4",
+          "owner_name": "Shekh-Thtithil",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican4.r2.7",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-4-apprentice0",
+          "owner_name": "Vaman Hlarel",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican4.r2.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            148,
+            341
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican5.r0",
+      "name": "Nekhlith's publican",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_open",
+      "owner": "npc:stormhold-publican-5",
+      "owner_name": "Nekhlith",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-5",
+          "name": "Nekhlith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-elder0",
+          "name": "Ravel Indoril",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-sibling1",
+          "name": "Deelithei",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican5.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican5.r0.lamp0",
+          "pos": [
+            2.5,
+            1.6,
+            1.7000000000000002
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican5.r0.lamp1",
+          "pos": [
+            -2.6,
+            1.6,
+            1.5999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican5.r0.0",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.1",
+          "id": "clay_pitcher",
+          "name": "clay pitcher",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.9,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.2",
+          "id": "greef_bottle",
+          "name": "greef bottle",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.3",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.4",
+          "id": "stool",
+          "name": "stool",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.5",
+          "id": "clay_pitcher",
+          "name": "clay pitcher",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.9,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.6",
+          "id": "greef_bottle",
+          "name": "greef bottle",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.7",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.8",
+          "id": "greef_bottle",
+          "name": "greef bottle",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 15,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r0.9",
+          "id": "reed_basket",
+          "name": "reed basket",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 3,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-archive-unique",
+          "id": "stormhold_archive_unique",
+          "name": "the muster roll of a cohort that does not exist",
+          "owner": "npc:stormhold-publican-5",
+          "owner_scope": "personal",
+          "value_g": 156,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-archive"
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "stormhold.publican5.r1",
+      "name": "Nekhlith's back room",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-5",
+      "owner_name": "Nekhlith",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-5",
+          "name": "Nekhlith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-elder0",
+          "name": "Ravel Indoril",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-sibling1",
+          "name": "Deelithei",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican5.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican5.r1.lamp0",
+          "pos": [
+            -2,
+            1.6,
+            1
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican5.r1.lamp1",
+          "pos": [
+            3.0999999999999996,
+            1.6,
+            1.0999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican5.r1.lamp2",
+          "pos": [
+            1.2000000000000002,
+            1.6,
+            0.7999999999999998
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican5.r1.0",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.1",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.2",
+          "id": "flin_bottle",
+          "name": "flin bottle",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.3",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.4",
+          "id": "barrel_tap",
+          "name": "barrel tap",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.5",
+          "id": "iron_ladle",
+          "name": "iron ladle",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.6",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.7",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.8",
+          "id": "dice_cup",
+          "name": "dice cup",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r1.9",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-praetorium-unique",
+          "id": "stormhold_praetorium_unique",
+          "name": "the prefect's unsent request for men",
+          "owner": "npc:stormhold-publican-5",
+          "owner_scope": "personal",
+          "value_g": 163,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-praetorium"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican5.r1.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            43,
+            209
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.publican5.r2",
+      "name": "Nekhlith's back room",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "dwelling",
+      "owner": "npc:stormhold-publican-5",
+      "owner_name": "Nekhlith",
+      "residents": [
+        {
+          "npc": "npc:stormhold-publican-5",
+          "name": "Nekhlith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-elder0",
+          "name": "Ravel Indoril",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-publican-5-sibling1",
+          "name": "Deelithei",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.publican5.r2.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.publican5.r2.lamp0",
+          "pos": [
+            2.5,
+            1.6,
+            1.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.publican5.r2.lamp1",
+          "pos": [
+            -2.6,
+            1.6,
+            1.4000000000000004
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.publican5.r2.0",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.1",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.2",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.3",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.4",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-5-sibling1",
+          "owner_name": "Deelithei",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.5",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.6",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.7",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.8",
+          "id": "pewter_tankard",
+          "name": "pewter tankard",
+          "owner": "npc:stormhold-publican-5",
+          "owner_name": "Nekhlith",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.publican5.r2.9",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-publican-5-elder0",
+          "owner_name": "Ravel Indoril",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-customs-unique",
+          "id": "stormhold_customs_unique",
+          "name": "a Dunmer slave-collar entered as cargo",
+          "owner": "npc:stormhold-publican-5",
+          "owner_scope": "personal",
+          "value_g": 155,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-customs"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.publican5.r2.lock",
+          "tier": 2,
+          "wards": 2,
+          "ward_angles": [
+            195,
+            356
+          ],
+          "security_req": 20,
+          "agility_req": 18,
+          "picks_per_attempt": 1,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.warder6.r0",
+      "name": "Marcia Bellandus's warder",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "prison",
+      "owner": "npc:stormhold-warder-6",
+      "owner_name": "Marcia Bellandus",
+      "residents": [
+        {
+          "npc": "npc:stormhold-warder-6",
+          "name": "Marcia Bellandus",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-warder-6-sibling0",
+          "name": "Kaan-Bok",
+          "role": "sibling"
+        }
+      ],
+      "faction": "ninth-cohort",
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.warder6.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.warder6.r0.lamp0",
+          "pos": [
+            -0.8999999999999999,
+            1.6,
+            -2.7
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.warder6.r0.lamp1",
+          "pos": [
+            1,
+            1.6,
+            -2.8
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.warder6.r0.0",
+          "id": "strap_of_hide",
+          "name": "strap of hide",
+          "owner": "faction:ninth-cohort",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.1",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-warder-6",
+          "owner_name": "Marcia Bellandus",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.2",
+          "id": "legion_ration",
+          "name": "legion ration",
+          "owner": "npc:stormhold-warder-6-sibling0",
+          "owner_name": "Kaan-Bok",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.3",
+          "id": "marsh_rice_sack",
+          "name": "marsh-rice sack",
+          "owner": "faction:ninth-cohort",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 9,
+          "weight_kg": 2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.4",
+          "id": "strap_of_hide",
+          "name": "strap of hide",
+          "owner": "npc:stormhold-warder-6-sibling0",
+          "owner_name": "Kaan-Bok",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.5",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-warder-6",
+          "owner_name": "Marcia Bellandus",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.6",
+          "id": "legion_ration",
+          "name": "legion ration",
+          "owner": "faction:ninth-cohort",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 5,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r0.commons",
+          "id": "well_bucket",
+          "name": "well bucket",
+          "owner": "settlement:stormhold",
+          "owner_scope": "public",
+          "value_g": 3,
+          "weight_kg": 1.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-market-unique",
+          "id": "stormhold_market_unique",
+          "name": "salt cut with something else",
+          "owner": "npc:stormhold-warder-6",
+          "owner_scope": "personal",
+          "value_g": 102,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-market"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.warder6.r0.lock",
+          "tier": 4,
+          "wards": 4,
+          "ward_angles": [
+            13,
+            146,
+            177,
+            339
+          ],
+          "security_req": 60,
+          "agility_req": 38,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "key_on_named_npc",
+              "who": "npc:stormhold-warder-6"
+            },
+            {
+              "kind": "window",
+              "from": "inside-the-wall"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.warder6.r1",
+      "name": "Marcia Bellandus's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "prison",
+      "owner": "npc:stormhold-warder-6",
+      "owner_name": "Marcia Bellandus",
+      "residents": [
+        {
+          "npc": "npc:stormhold-warder-6",
+          "name": "Marcia Bellandus",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-warder-6-sibling0",
+          "name": "Kaan-Bok",
+          "role": "sibling"
+        }
+      ],
+      "faction": "ninth-cohort",
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.warder6.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.warder6.r1.lamp0",
+          "pos": [
+            2.8,
+            1.6,
+            0
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.warder6.r1.lamp1",
+          "pos": [
+            0.9000000000000004,
+            1.6,
+            0.09999999999999964
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.warder6.r1.lamp2",
+          "pos": [
+            -1,
+            1.6,
+            -0.20000000000000018
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.warder6.r1.0",
+          "id": "oil_flask",
+          "name": "oil flask",
+          "owner": "npc:stormhold-warder-6",
+          "owner_name": "Marcia Bellandus",
+          "owner_scope": "personal",
+          "value_g": 13,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r1.1",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-warder-6-sibling0",
+          "owner_name": "Kaan-Bok",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r1.2",
+          "id": "signal_horn",
+          "name": "signal horn",
+          "owner": "npc:stormhold-warder-6",
+          "owner_name": "Marcia Bellandus",
+          "owner_scope": "personal",
+          "value_g": 47,
+          "weight_kg": 1.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r1.3",
+          "id": "iron_ladle",
+          "name": "iron ladle",
+          "owner": "npc:stormhold-warder-6-sibling0",
+          "owner_name": "Kaan-Bok",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r1.4",
+          "id": "despatch_case",
+          "name": "despatch case",
+          "owner": "npc:stormhold-warder-6",
+          "owner_name": "Marcia Bellandus",
+          "owner_scope": "personal",
+          "value_g": 34,
+          "weight_kg": 1.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r1.5",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-warder-6-sibling0",
+          "owner_name": "Kaan-Bok",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder6.r1.6",
+          "id": "oil_flask",
+          "name": "oil flask",
+          "owner": "npc:stormhold-warder-6",
+          "owner_name": "Marcia Bellandus",
+          "owner_scope": "personal",
+          "value_g": 13,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-smithy-unique",
+          "id": "stormhold_smithy_unique",
+          "name": "a legion blade with the stamp filed off",
+          "owner": "npc:stormhold-warder-6",
+          "owner_scope": "personal",
+          "value_g": 100,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-smithy"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.warder6.r1.lock",
+          "tier": 4,
+          "wards": 4,
+          "ward_angles": [
+            42,
+            71,
+            208,
+            239
+          ],
+          "security_req": 60,
+          "agility_req": 38,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "key_on_named_npc",
+              "who": "npc:stormhold-warder-6"
+            },
+            {
+              "kind": "window",
+              "from": "inside-the-wall"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.trader7.r0",
+      "name": "Fals Uveran's trader",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-trader-7",
+      "owner_name": "Fals Uveran",
+      "residents": [
+        {
+          "npc": "npc:stormhold-trader-7",
+          "name": "Fals Uveran",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-trader-7-lodger0",
+          "name": "Deekmuul",
+          "role": "lodger"
+        },
+        {
+          "npc": "npc:stormhold-trader-7-apprentice1",
+          "name": "Nux-Kaan",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.trader7.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.trader7.r0.lamp0",
+          "pos": [
+            -2.7,
+            1.6,
+            -3.3
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.trader7.r0.lamp1",
+          "pos": [
+            -0.7999999999999998,
+            1.6,
+            -3.4
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.trader7.r0.0",
+          "id": "brass_scale",
+          "name": "brass scale",
+          "owner": "npc:stormhold-trader-7-apprentice1",
+          "owner_name": "Nux-Kaan",
+          "owner_scope": "personal",
+          "value_g": 44,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.1",
+          "id": "common_shirt",
+          "name": "common shirt",
+          "owner": "npc:stormhold-trader-7",
+          "owner_name": "Fals Uveran",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.2",
+          "id": "tally_stick_bundle",
+          "name": "tally stick bundle",
+          "owner": "npc:stormhold-trader-7-lodger0",
+          "owner_name": "Deekmuul",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.3",
+          "id": "tallow_candle",
+          "name": "tallow candle",
+          "owner": "npc:stormhold-trader-7-apprentice1",
+          "owner_name": "Nux-Kaan",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.4",
+          "id": "brass_scale",
+          "name": "brass scale",
+          "owner": "npc:stormhold-trader-7-lodger0",
+          "owner_name": "Deekmuul",
+          "owner_scope": "personal",
+          "value_g": 44,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.5",
+          "id": "lockbox",
+          "name": "lockbox",
+          "owner": "npc:stormhold-trader-7-apprentice1",
+          "owner_name": "Nux-Kaan",
+          "owner_scope": "personal",
+          "value_g": 26,
+          "weight_kg": 3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.6",
+          "id": "tally_stick_bundle",
+          "name": "tally stick bundle",
+          "owner": "npc:stormhold-trader-7",
+          "owner_name": "Fals Uveran",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.7",
+          "id": "reed_mat",
+          "name": "reed mat",
+          "owner": "npc:stormhold-trader-7-lodger0",
+          "owner_name": "Deekmuul",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 1.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r0.8",
+          "id": "brass_scale",
+          "name": "brass scale",
+          "owner": "npc:stormhold-trader-7-lodger0",
+          "owner_name": "Deekmuul",
+          "owner_scope": "personal",
+          "value_g": 44,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-scribe-unique",
+          "id": "stormhold_scribe_unique",
+          "name": "a letter home nobody sent",
+          "owner": "npc:stormhold-trader-7",
+          "owner_scope": "personal",
+          "value_g": 141,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-scribe"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.trader7.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            164,
+            192,
+            327
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.trader7.r1",
+      "name": "Fals Uveran's back room",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-trader-7",
+      "owner_name": "Fals Uveran",
+      "residents": [
+        {
+          "npc": "npc:stormhold-trader-7",
+          "name": "Fals Uveran",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-trader-7-lodger0",
+          "name": "Deekmuul",
+          "role": "lodger"
+        },
+        {
+          "npc": "npc:stormhold-trader-7-apprentice1",
+          "name": "Nux-Kaan",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.trader7.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.trader7.r1.lamp0",
+          "pos": [
+            -0.6000000000000001,
+            1.6,
+            -2.6
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.trader7.r1.lamp1",
+          "pos": [
+            -2.5,
+            1.6,
+            -2.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.trader7.r1.lamp2",
+          "pos": [
+            2.5999999999999996,
+            1.6,
+            -2.8
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.trader7.r1.0",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-trader-7-apprentice1",
+          "owner_name": "Nux-Kaan",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.1",
+          "id": "common_pants",
+          "name": "common pants",
+          "owner": "npc:stormhold-trader-7-lodger0",
+          "owner_name": "Deekmuul",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.2",
+          "id": "sealed_crate",
+          "name": "sealed crate",
+          "owner": "npc:stormhold-trader-7",
+          "owner_name": "Fals Uveran",
+          "owner_scope": "personal",
+          "value_g": 52,
+          "weight_kg": 8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.3",
+          "id": "wool_blanket",
+          "name": "wool blanket",
+          "owner": "npc:stormhold-trader-7-apprentice1",
+          "owner_name": "Nux-Kaan",
+          "owner_scope": "personal",
+          "value_g": 14,
+          "weight_kg": 1.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.4",
+          "id": "counting_stones",
+          "name": "counting stones",
+          "owner": "npc:stormhold-trader-7",
+          "owner_name": "Fals Uveran",
+          "owner_scope": "personal",
+          "value_g": 11,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.5",
+          "id": "common_pants",
+          "name": "common pants",
+          "owner": "npc:stormhold-trader-7-apprentice1",
+          "owner_name": "Nux-Kaan",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.6",
+          "id": "sealed_crate",
+          "name": "sealed crate",
+          "owner": "npc:stormhold-trader-7-lodger0",
+          "owner_name": "Deekmuul",
+          "owner_scope": "personal",
+          "value_g": 52,
+          "weight_kg": 8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.trader7.r1.7",
+          "id": "wool_blanket",
+          "name": "wool blanket",
+          "owner": "npc:stormhold-trader-7",
+          "owner_name": "Fals Uveran",
+          "owner_scope": "personal",
+          "value_g": 14,
+          "weight_kg": 1.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-inn-pass-unique",
+          "id": "stormhold_inn_pass_unique",
+          "name": "a collar hung over the bar as a joke",
+          "owner": "npc:stormhold-trader-7",
+          "owner_scope": "personal",
+          "value_g": 62,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-inn-pass"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.trader7.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            25,
+            58,
+            221
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.apothecary8.r0",
+      "name": "Rajdeelith's apothecary",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-apothecary-8",
+      "owner_name": "Rajdeelith",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-8",
+          "name": "Rajdeelith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-8-sibling0",
+          "name": "Yakum Rethan",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.apothecary8.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.apothecary8.r0.lamp0",
+          "pos": [
+            -1.8,
+            1.6,
+            0.20000000000000018
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary8.r0.lamp1",
+          "pos": [
+            3.3,
+            1.6,
+            0.2999999999999998
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary8.r0.lamp2",
+          "pos": [
+            1.4000000000000004,
+            1.6,
+            0
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.apothecary8.r0.0",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_name": "Rajdeelith",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r0.1",
+          "id": "coin_tray",
+          "name": "coin tray",
+          "owner": "npc:stormhold-apothecary-8-sibling0",
+          "owner_name": "Yakum Rethan",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r0.2",
+          "id": "pestle",
+          "name": "pestle",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_name": "Rajdeelith",
+          "owner_scope": "personal",
+          "value_g": 16,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r0.3",
+          "id": "ink_pot",
+          "name": "ink pot",
+          "owner": "npc:stormhold-apothecary-8-sibling0",
+          "owner_name": "Yakum Rethan",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r0.4",
+          "id": "corkscrew_root",
+          "name": "corkscrew root",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_name": "Rajdeelith",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r0.5",
+          "id": "coin_tray",
+          "name": "coin tray",
+          "owner": "npc:stormhold-apothecary-8-sibling0",
+          "owner_name": "Yakum Rethan",
+          "owner_scope": "personal",
+          "value_g": 19,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-inn-lean-unique",
+          "id": "stormhold_inn_lean_unique",
+          "name": "a bed against the outside of the wall",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_scope": "personal",
+          "value_g": 112,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-inn-lean"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.apothecary8.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            29,
+            57,
+            220
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.apothecary8.r1",
+      "name": "Rajdeelith's back room",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-apothecary-8",
+      "owner_name": "Rajdeelith",
+      "residents": [
+        {
+          "npc": "npc:stormhold-apothecary-8",
+          "name": "Rajdeelith",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-apothecary-8-sibling0",
+          "name": "Yakum Rethan",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.apothecary8.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.apothecary8.r1.lamp0",
+          "pos": [
+            -2.1,
+            1.6,
+            -3.9
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.apothecary8.r1.lamp1",
+          "pos": [
+            -0.20000000000000018,
+            1.6,
+            -4
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.apothecary8.r1.0",
+          "id": "empty_vial",
+          "name": "empty vial",
+          "owner": "npc:stormhold-apothecary-8-sibling0",
+          "owner_name": "Yakum Rethan",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r1.1",
+          "id": "tally_stick_bundle",
+          "name": "tally stick bundle",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_name": "Rajdeelith",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r1.2",
+          "id": "mortar",
+          "name": "mortar",
+          "owner": "npc:stormhold-apothecary-8-sibling0",
+          "owner_name": "Yakum Rethan",
+          "owner_scope": "personal",
+          "value_g": 28,
+          "weight_kg": 1.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r1.3",
+          "id": "brass_scale",
+          "name": "brass scale",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_name": "Rajdeelith",
+          "owner_scope": "personal",
+          "value_g": 44,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r1.4",
+          "id": "swamp_fever_tincture",
+          "name": "swamp-fever tincture",
+          "owner": "npc:stormhold-apothecary-8-sibling0",
+          "owner_name": "Yakum Rethan",
+          "owner_scope": "personal",
+          "value_g": 41,
+          "weight_kg": 0.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.apothecary8.r1.5",
+          "id": "tally_stick_bundle",
+          "name": "tally stick bundle",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_name": "Rajdeelith",
+          "owner_scope": "personal",
+          "value_g": 6,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "sealed.stormhold-paychest.item",
+          "id": "sealed_stormhold_paychest",
+          "name": "the Ninth Cohort paychest",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_scope": "personal",
+          "value_g": 2600,
+          "weight_kg": 2,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-chapel-unique",
+          "id": "stormhold_chapel_unique",
+          "name": "an Imperial rite copied in Jel",
+          "owner": "npc:stormhold-apothecary-8",
+          "owner_scope": "personal",
+          "value_g": 200,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-chapel"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.apothecary8.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            164,
+            192,
+            327
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        },
+        {
+          "id": "sealed.stormhold-paychest",
+          "tier": 5,
+          "wards": 5,
+          "ward_angles": [
+            88,
+            121,
+            283,
+            309,
+            342
+          ],
+          "security_req": 80,
+          "agility_req": 50,
+          "picks_per_attempt": 3,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "key_on_named_npc",
+              "who": "npc:stormhold-apothecary-8"
+            },
+            {
+              "kind": "quest",
+              "id": "quest.sealed.stormhold-paychest"
+            },
+            {
+              "kind": "unbind_spell",
+              "tier": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.warder9.r0",
+      "name": "Fals Sedran's warder",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "prison",
+      "owner": "npc:stormhold-warder-9",
+      "owner_name": "Fals Sedran",
+      "residents": [
+        {
+          "npc": "npc:stormhold-warder-9",
+          "name": "Fals Sedran",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-warder-9-lodger0",
+          "name": "Jul-Vei",
+          "role": "lodger"
+        },
+        {
+          "npc": "npc:stormhold-warder-9-apprentice1",
+          "name": "Drelas Solas",
+          "role": "apprentice"
+        }
+      ],
+      "faction": "ninth-cohort",
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.warder9.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.warder9.r0.lamp0",
+          "pos": [
+            0.5999999999999996,
+            1.6,
+            2.5999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.warder9.r0.lamp1",
+          "pos": [
+            -1.2999999999999998,
+            1.6,
+            2.7
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.warder9.r0.lamp2",
+          "pos": [
+            -3.2,
+            1.6,
+            2.4000000000000004
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.warder9.r0.0",
+          "id": "oil_flask",
+          "name": "oil flask",
+          "owner": "faction:ninth-cohort",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 13,
+          "weight_kg": 0.7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r0.1",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-warder-9-apprentice1",
+          "owner_name": "Drelas Solas",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r0.2",
+          "id": "signal_horn",
+          "name": "signal horn",
+          "owner": "npc:stormhold-warder-9-lodger0",
+          "owner_name": "Jul-Vei",
+          "owner_scope": "personal",
+          "value_g": 47,
+          "weight_kg": 1.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r0.3",
+          "id": "salt_jar",
+          "name": "salt jar",
+          "owner": "faction:ninth-cohort",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 6,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r0.4",
+          "id": "despatch_case",
+          "name": "despatch case",
+          "owner": "npc:stormhold-warder-9-apprentice1",
+          "owner_name": "Drelas Solas",
+          "owner_scope": "personal",
+          "value_g": 34,
+          "weight_kg": 1.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r0.5",
+          "id": "smoked_eel",
+          "name": "smoked eel",
+          "owner": "npc:stormhold-warder-9-lodger0",
+          "owner_name": "Jul-Vei",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r0.commons",
+          "id": "well_bucket",
+          "name": "well bucket",
+          "owner": "settlement:stormhold",
+          "owner_scope": "public",
+          "value_g": 3,
+          "weight_kg": 1.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-shrine-unique",
+          "id": "stormhold_shrine_unique",
+          "name": "a sapling that will not take in salt",
+          "owner": "npc:stormhold-warder-9",
+          "owner_scope": "personal",
+          "value_g": 215,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-shrine"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.warder9.r0.lock",
+          "tier": 4,
+          "wards": 4,
+          "ward_angles": [
+            86,
+            119,
+            281,
+            312
+          ],
+          "security_req": 60,
+          "agility_req": 38,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "key_on_named_npc",
+              "who": "npc:stormhold-warder-9"
+            },
+            {
+              "kind": "window",
+              "from": "inside-the-wall"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.warder9.r1",
+      "name": "Fals Sedran's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "prison",
+      "owner": "npc:stormhold-warder-9",
+      "owner_name": "Fals Sedran",
+      "residents": [
+        {
+          "npc": "npc:stormhold-warder-9",
+          "name": "Fals Sedran",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-warder-9-lodger0",
+          "name": "Jul-Vei",
+          "role": "lodger"
+        },
+        {
+          "npc": "npc:stormhold-warder-9-apprentice1",
+          "name": "Drelas Solas",
+          "role": "apprentice"
+        }
+      ],
+      "faction": "ninth-cohort",
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.warder9.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.warder9.r1.lamp0",
+          "pos": [
+            2.7,
+            1.6,
+            1.9000000000000004
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.warder9.r1.lamp1",
+          "pos": [
+            -2.4,
+            1.6,
+            1.7999999999999998
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.warder9.r1.0",
+          "id": "strap_of_hide",
+          "name": "strap of hide",
+          "owner": "npc:stormhold-warder-9-lodger0",
+          "owner_name": "Jul-Vei",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r1.1",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-warder-9-apprentice1",
+          "owner_name": "Drelas Solas",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r1.2",
+          "id": "legion_ration",
+          "name": "legion ration",
+          "owner": "npc:stormhold-warder-9",
+          "owner_name": "Fals Sedran",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r1.3",
+          "id": "reed_basket",
+          "name": "reed basket",
+          "owner": "npc:stormhold-warder-9-lodger0",
+          "owner_name": "Jul-Vei",
+          "owner_scope": "personal",
+          "value_g": 3,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r1.4",
+          "id": "strap_of_hide",
+          "name": "strap of hide",
+          "owner": "npc:stormhold-warder-9-apprentice1",
+          "owner_name": "Drelas Solas",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r1.5",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-warder-9",
+          "owner_name": "Fals Sedran",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.warder9.r1.6",
+          "id": "legion_ration",
+          "name": "legion ration",
+          "owner": "npc:stormhold-warder-9-lodger0",
+          "owner_name": "Jul-Vei",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "sealed.stormhold-signals.item",
+          "id": "sealed_stormhold_signals",
+          "name": "the signal cipher",
+          "owner": "npc:stormhold-warder-9",
+          "owner_scope": "personal",
+          "value_g": 1000,
+          "weight_kg": 2,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-rootpost-unique",
+          "id": "stormhold_rootpost_unique",
+          "name": "a fare table in Legion script",
+          "owner": "npc:stormhold-warder-9",
+          "owner_scope": "personal",
+          "value_g": 96,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-rootpost"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.warder9.r1.lock",
+          "tier": 4,
+          "wards": 4,
+          "ward_angles": [
+            26,
+            59,
+            222,
+            253
+          ],
+          "security_req": 60,
+          "agility_req": 38,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "key_on_named_npc",
+              "who": "npc:stormhold-warder-9"
+            },
+            {
+              "kind": "window",
+              "from": "inside-the-wall"
+            }
+          ]
+        },
+        {
+          "id": "sealed.stormhold-signals",
+          "tier": 5,
+          "wards": 5,
+          "ward_angles": [
+            27,
+            60,
+            195,
+            223,
+            249
+          ],
+          "security_req": 80,
+          "agility_req": 50,
+          "picks_per_attempt": 3,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "key_on_named_npc",
+              "who": "npc:stormhold-warder-9"
+            },
+            {
+              "kind": "quest",
+              "id": "quest.sealed.stormhold-signals"
+            },
+            {
+              "kind": "unbind_spell",
+              "tier": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.smith10.r0",
+      "name": "Cornelia Voranus's smith",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-smith-10",
+      "owner_name": "Cornelia Voranus",
+      "residents": [
+        {
+          "npc": "npc:stormhold-smith-10",
+          "name": "Cornelia Voranus",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-smith-10-elder0",
+          "name": "Neekhtei",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-smith-10-sibling1",
+          "name": "Livia Maronius",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.smith10.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.smith10.r0.lamp0",
+          "pos": [
+            1.4000000000000004,
+            1.6,
+            3
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.smith10.r0.lamp1",
+          "pos": [
+            -0.5,
+            1.6,
+            3.0999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.smith10.r0.lamp2",
+          "pos": [
+            -1.8,
+            1.6,
+            3.2
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.smith10.r0.0",
+          "id": "leather_apron",
+          "name": "leather apron",
+          "owner": "npc:stormhold-smith-10",
+          "owner_name": "Cornelia Voranus",
+          "owner_scope": "personal",
+          "value_g": 26,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.1",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-smith-10-sibling1",
+          "owner_name": "Livia Maronius",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.2",
+          "id": "whetstone",
+          "name": "whetstone",
+          "owner": "npc:stormhold-smith-10-sibling1",
+          "owner_name": "Livia Maronius",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.3",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-smith-10-elder0",
+          "owner_name": "Neekhtei",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.4",
+          "id": "tongs",
+          "name": "tongs",
+          "owner": "npc:stormhold-smith-10-sibling1",
+          "owner_name": "Livia Maronius",
+          "owner_scope": "personal",
+          "value_g": 17,
+          "weight_kg": 2.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.5",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-smith-10-elder0",
+          "owner_name": "Neekhtei",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.6",
+          "id": "bellows_handle",
+          "name": "bellows handle",
+          "owner": "npc:stormhold-smith-10-elder0",
+          "owner_name": "Neekhtei",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 1.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r0.7",
+          "id": "tin_cup",
+          "name": "tin cup",
+          "owner": "npc:stormhold-smith-10",
+          "owner_name": "Cornelia Voranus",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-gaol-unique",
+          "id": "stormhold_gaol_unique",
+          "name": "a cell key worn smooth",
+          "owner": "npc:stormhold-smith-10",
+          "owner_scope": "personal",
+          "value_g": 118,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-gaol"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.smith10.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            195,
+            325,
+            356
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.smith10.r1",
+      "name": "Cornelia Voranus's back room",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-smith-10",
+      "owner_name": "Cornelia Voranus",
+      "residents": [
+        {
+          "npc": "npc:stormhold-smith-10",
+          "name": "Cornelia Voranus",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-smith-10-elder0",
+          "name": "Neekhtei",
+          "role": "elder"
+        },
+        {
+          "npc": "npc:stormhold-smith-10-sibling1",
+          "name": "Livia Maronius",
+          "role": "sibling"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.smith10.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.smith10.r1.lamp0",
+          "pos": [
+            -0.2999999999999998,
+            1.6,
+            2.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.smith10.r1.lamp1",
+          "pos": [
+            1.5999999999999996,
+            1.6,
+            2.4000000000000004
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.smith10.r1.0",
+          "id": "leather_apron",
+          "name": "leather apron",
+          "owner": "npc:stormhold-smith-10-sibling1",
+          "owner_name": "Livia Maronius",
+          "owner_scope": "personal",
+          "value_g": 26,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.1",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-smith-10",
+          "owner_name": "Cornelia Voranus",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.2",
+          "id": "whetstone",
+          "name": "whetstone",
+          "owner": "npc:stormhold-smith-10",
+          "owner_name": "Cornelia Voranus",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.3",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-smith-10-elder0",
+          "owner_name": "Neekhtei",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.4",
+          "id": "whetstone",
+          "name": "whetstone",
+          "owner": "npc:stormhold-smith-10-elder0",
+          "owner_name": "Neekhtei",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.5",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-smith-10-sibling1",
+          "owner_name": "Livia Maronius",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.6",
+          "id": "tongs",
+          "name": "tongs",
+          "owner": "npc:stormhold-smith-10-sibling1",
+          "owner_name": "Livia Maronius",
+          "owner_scope": "personal",
+          "value_g": 17,
+          "weight_kg": 2.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.7",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-smith-10",
+          "owner_name": "Cornelia Voranus",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith10.r1.8",
+          "id": "tongs",
+          "name": "tongs",
+          "owner": "npc:stormhold-smith-10-elder0",
+          "owner_name": "Neekhtei",
+          "owner_scope": "personal",
+          "value_g": 17,
+          "weight_kg": 2.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold-kiln-unique",
+          "id": "stormhold_kiln_unique",
+          "name": "a block of salt with a hand-print in it",
+          "owner": "npc:stormhold-smith-10",
+          "owner_scope": "personal",
+          "value_g": 103,
+          "weight_kg": 1.5,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true,
+          "from_interior": "stormhold-kiln"
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.smith10.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            59,
+            222,
+            253
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.boatwright11.r0",
+      "name": "Wux-Naga's boatwright",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-boatwright-11",
+      "owner_name": "Wux-Naga",
+      "residents": [
+        {
+          "npc": "npc:stormhold-boatwright-11",
+          "name": "Wux-Naga",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-boatwright-11-apprentice0",
+          "name": "Kaaltei",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.boatwright11.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.boatwright11.r0.lamp0",
+          "pos": [
+            -2.1,
+            1.6,
+            -4.1
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.boatwright11.r0.lamp1",
+          "pos": [
+            -0.20000000000000018,
+            1.6,
+            -4.2
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.boatwright11.r0.0",
+          "id": "fish_hook_box",
+          "name": "fish hook box",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.1",
+          "id": "nail_keg",
+          "name": "nail keg",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 14,
+          "weight_kg": 5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.2",
+          "id": "fish_hook_box",
+          "name": "fish hook box",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.3",
+          "id": "iron_ingot",
+          "name": "iron ingot",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 30,
+          "weight_kg": 4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.4",
+          "id": "fish_hook_box",
+          "name": "fish hook box",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.5",
+          "id": "hammer",
+          "name": "hammer",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 22,
+          "weight_kg": 3.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.6",
+          "id": "fish_hook_box",
+          "name": "fish hook box",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 7,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.7",
+          "id": "leather_apron",
+          "name": "leather apron",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 26,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.8",
+          "id": "coil_of_rope",
+          "name": "coil of rope",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 3.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r0.9",
+          "id": "hammer",
+          "name": "hammer",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 22,
+          "weight_kg": 3.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.boatwright11.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            41,
+            75,
+            238
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.boatwright11.r1",
+      "name": "Wux-Naga's back room",
+      "settlement": "stormhold",
+      "quarter": "garrison",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-boatwright-11",
+      "owner_name": "Wux-Naga",
+      "residents": [
+        {
+          "npc": "npc:stormhold-boatwright-11",
+          "name": "Wux-Naga",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-boatwright-11-apprentice0",
+          "name": "Kaaltei",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.boatwright11.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.boatwright11.r1.lamp0",
+          "pos": [
+            -0.20000000000000018,
+            1.6,
+            3.5999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.boatwright11.r1.lamp1",
+          "pos": [
+            -2.1,
+            1.6,
+            3.6999999999999993
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.boatwright11.r1.lamp2",
+          "pos": [
+            -3.4,
+            1.6,
+            3.8000000000000007
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.boatwright11.r1.0",
+          "id": "net_float",
+          "name": "net float",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r1.1",
+          "id": "nail_keg",
+          "name": "nail keg",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 14,
+          "weight_kg": 5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r1.2",
+          "id": "net_float",
+          "name": "net float",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 4,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r1.3",
+          "id": "iron_ingot",
+          "name": "iron ingot",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 30,
+          "weight_kg": 4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r1.4",
+          "id": "crate_of_salt",
+          "name": "crate of salt",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 33,
+          "weight_kg": 7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r1.5",
+          "id": "iron_ingot",
+          "name": "iron ingot",
+          "owner": "npc:stormhold-boatwright-11-apprentice0",
+          "owner_name": "Kaaltei",
+          "owner_scope": "personal",
+          "value_g": 30,
+          "weight_kg": 4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.boatwright11.r1.6",
+          "id": "crate_of_salt",
+          "name": "crate of salt",
+          "owner": "npc:stormhold-boatwright-11",
+          "owner_name": "Wux-Naga",
+          "owner_scope": "personal",
+          "value_g": 33,
+          "weight_kg": 7,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.boatwright11.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            133,
+            268,
+            296
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.factor12.r0",
+      "name": "Velas Reln's factor",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "faction_interior",
+      "owner": "npc:stormhold-factor-12",
+      "owner_name": "Velas Reln",
+      "residents": [
+        {
+          "npc": "npc:stormhold-factor-12",
+          "name": "Velas Reln",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-factor-12-child0",
+          "name": "Dram Andas",
+          "role": "child"
+        },
+        {
+          "npc": "npc:stormhold-factor-12-partner1",
+          "name": "Vaman Sedran",
+          "role": "partner"
+        }
+      ],
+      "faction": "wet-ledger",
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.factor12.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.factor12.r0.lamp0",
+          "pos": [
+            -0.20000000000000018,
+            1.6,
+            -3.6
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.factor12.r0.lamp1",
+          "pos": [
+            -2.1,
+            1.6,
+            -3.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.factor12.r0.lamp2",
+          "pos": [
+            -3.4,
+            1.6,
+            -3.4
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.factor12.r0.0",
+          "id": "ink_pot",
+          "name": "ink pot",
+          "owner": "faction:wet-ledger",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 9,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r0.1",
+          "id": "signal_horn",
+          "name": "signal horn",
+          "owner": "npc:stormhold-factor-12-child0",
+          "owner_name": "Dram Andas",
+          "owner_scope": "personal",
+          "value_g": 47,
+          "weight_kg": 1.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r0.2",
+          "id": "ink_pot",
+          "name": "ink pot",
+          "owner": "npc:stormhold-factor-12-child0",
+          "owner_name": "Dram Andas",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r0.3",
+          "id": "signal_horn",
+          "name": "signal horn",
+          "owner": "faction:wet-ledger",
+          "owner_name": null,
+          "owner_scope": "shared",
+          "value_g": 47,
+          "weight_kg": 1.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r0.4",
+          "id": "ink_pot",
+          "name": "ink pot",
+          "owner": "npc:stormhold-factor-12-child0",
+          "owner_name": "Dram Andas",
+          "owner_scope": "personal",
+          "value_g": 9,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r0.5",
+          "id": "signal_horn",
+          "name": "signal horn",
+          "owner": "npc:stormhold-factor-12",
+          "owner_name": "Velas Reln",
+          "owner_scope": "personal",
+          "value_g": 47,
+          "weight_kg": 1.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r0.commons",
+          "id": "well_bucket",
+          "name": "well bucket",
+          "owner": "settlement:stormhold",
+          "owner_scope": "public",
+          "value_g": 3,
+          "weight_kg": 1.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.factor12.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            75,
+            207,
+            238
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.factor12.r1",
+      "name": "Velas Reln's back room",
+      "settlement": "stormhold",
+      "quarter": "inside-the-wall",
+      "class": "faction_interior",
+      "owner": "npc:stormhold-factor-12",
+      "owner_name": "Velas Reln",
+      "residents": [
+        {
+          "npc": "npc:stormhold-factor-12",
+          "name": "Velas Reln",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-factor-12-child0",
+          "name": "Dram Andas",
+          "role": "child"
+        },
+        {
+          "npc": "npc:stormhold-factor-12-partner1",
+          "name": "Vaman Sedran",
+          "role": "partner"
+        }
+      ],
+      "faction": "wet-ledger",
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.factor12.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.factor12.r1.lamp0",
+          "pos": [
+            3.3,
+            1.6,
+            3.0999999999999996
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.factor12.r1.lamp1",
+          "pos": [
+            -1.8,
+            1.6,
+            3
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.factor12.r1.0",
+          "id": "bolt_of_cloth",
+          "name": "bolt of cloth",
+          "owner": "npc:stormhold-factor-12",
+          "owner_name": "Velas Reln",
+          "owner_scope": "personal",
+          "value_g": 38,
+          "weight_kg": 2.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.1",
+          "id": "legion_ration",
+          "name": "legion ration",
+          "owner": "npc:stormhold-factor-12-child0",
+          "owner_name": "Dram Andas",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.2",
+          "id": "bolt_of_cloth",
+          "name": "bolt of cloth",
+          "owner": "npc:stormhold-factor-12-child0",
+          "owner_name": "Dram Andas",
+          "owner_scope": "personal",
+          "value_g": 38,
+          "weight_kg": 2.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.3",
+          "id": "legion_ration",
+          "name": "legion ration",
+          "owner": "npc:stormhold-factor-12-partner1",
+          "owner_name": "Vaman Sedran",
+          "owner_scope": "personal",
+          "value_g": 5,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.4",
+          "id": "bolt_of_cloth",
+          "name": "bolt of cloth",
+          "owner": "npc:stormhold-factor-12-partner1",
+          "owner_name": "Vaman Sedran",
+          "owner_scope": "personal",
+          "value_g": 38,
+          "weight_kg": 2.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.5",
+          "id": "strap_of_hide",
+          "name": "strap of hide",
+          "owner": "npc:stormhold-factor-12",
+          "owner_name": "Velas Reln",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.6",
+          "id": "bolt_of_cloth",
+          "name": "bolt of cloth",
+          "owner": "npc:stormhold-factor-12",
+          "owner_name": "Velas Reln",
+          "owner_scope": "personal",
+          "value_g": 38,
+          "weight_kg": 2.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.7",
+          "id": "strap_of_hide",
+          "name": "strap of hide",
+          "owner": "npc:stormhold-factor-12-child0",
+          "owner_name": "Dram Andas",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.8",
+          "id": "bolt_of_cloth",
+          "name": "bolt of cloth",
+          "owner": "npc:stormhold-factor-12-partner1",
+          "owner_name": "Vaman Sedran",
+          "owner_scope": "personal",
+          "value_g": 38,
+          "weight_kg": 2.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.factor12.r1.9",
+          "id": "field_ledger",
+          "name": "field ledger",
+          "owner": "npc:stormhold-factor-12",
+          "owner_name": "Velas Reln",
+          "owner_scope": "personal",
+          "value_g": 21,
+          "weight_kg": 0.6,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.factor12.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            10,
+            179,
+            341
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.smith13.r0",
+      "name": "Shekh-Skei's smith",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-smith-13",
+      "owner_name": "Shekh-Skei",
+      "residents": [
+        {
+          "npc": "npc:stormhold-smith-13",
+          "name": "Shekh-Skei",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-smith-13-apprentice0",
+          "name": "Anixt",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": 8,
+        "close_h": 19
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.smith13.r0.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.smith13.r0.lamp0",
+          "pos": [
+            -1.5,
+            1.6,
+            2.5
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.smith13.r0.lamp1",
+          "pos": [
+            0.3999999999999999,
+            1.6,
+            2.4000000000000004
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.smith13.r0.0",
+          "id": "nail_keg",
+          "name": "nail keg",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 14,
+          "weight_kg": 5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.1",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.2",
+          "id": "iron_ingot",
+          "name": "iron ingot",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 30,
+          "weight_kg": 4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.3",
+          "id": "clay_bowl",
+          "name": "clay bowl",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 2,
+          "weight_kg": 0.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.4",
+          "id": "iron_ingot",
+          "name": "iron ingot",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 30,
+          "weight_kg": 4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.5",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.6",
+          "id": "hammer",
+          "name": "hammer",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 22,
+          "weight_kg": 3.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r0.7",
+          "id": "hackle_lo_leaf_bundle",
+          "name": "hackle-lo leaf bundle",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 8,
+          "weight_kg": 0.3,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.smith13.r0.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            12,
+            176,
+            338
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stormhold.smith13.r1",
+      "name": "Shekh-Skei's back room",
+      "settlement": "stormhold",
+      "quarter": "outside-the-wall",
+      "class": "shop_closed",
+      "owner": "npc:stormhold-smith-13",
+      "owner_name": "Shekh-Skei",
+      "residents": [
+        {
+          "npc": "npc:stormhold-smith-13",
+          "name": "Shekh-Skei",
+          "role": "head"
+        },
+        {
+          "npc": "npc:stormhold-smith-13-apprentice0",
+          "name": "Anixt",
+          "role": "apprentice"
+        }
+      ],
+      "faction": null,
+      "schedule": {
+        "open_h": null,
+        "close_h": null
+      },
+      "bounds_m": {
+        "x": [
+          -4,
+          4
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [
+        {
+          "id": "stormhold.smith13.r1.hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "intensity": 0.9,
+          "snuffable": false,
+          "kind": "hearth"
+        },
+        {
+          "id": "stormhold.smith13.r1.lamp0",
+          "pos": [
+            1.7999999999999998,
+            1.6,
+            -1
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.smith13.r1.lamp1",
+          "pos": [
+            -0.10000000000000009,
+            1.6,
+            -0.8999999999999999
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        },
+        {
+          "id": "stormhold.smith13.r1.lamp2",
+          "pos": [
+            -1.4,
+            1.6,
+            -0.7999999999999998
+          ],
+          "intensity": 0.55,
+          "snuffable": true,
+          "kind": "oil-lamp"
+        }
+      ],
+      "contents": [
+        {
+          "instance": "stormhold.smith13.r1.0",
+          "id": "hammer",
+          "name": "hammer",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 22,
+          "weight_kg": 3.1,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r1.1",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r1.2",
+          "id": "leather_apron",
+          "name": "leather apron",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 26,
+          "weight_kg": 2.2,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r1.3",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r1.4",
+          "id": "whetstone",
+          "name": "whetstone",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 12,
+          "weight_kg": 0.8,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r1.5",
+          "id": "bone_handled_knife",
+          "name": "bone-handled knife",
+          "owner": "npc:stormhold-smith-13-apprentice0",
+          "owner_name": "Anixt",
+          "owner_scope": "personal",
+          "value_g": 18,
+          "weight_kg": 0.5,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        },
+        {
+          "instance": "stormhold.smith13.r1.6",
+          "id": "tongs",
+          "name": "tongs",
+          "owner": "npc:stormhold-smith-13",
+          "owner_name": "Shekh-Skei",
+          "owner_scope": "personal",
+          "value_g": 17,
+          "weight_kg": 2.4,
+          "unique": false,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": [
+        {
+          "id": "stormhold.smith13.r1.lock",
+          "tier": 3,
+          "wards": 3,
+          "ward_angles": [
+            75,
+            207,
+            238
+          ],
+          "security_req": 40,
+          "agility_req": 26,
+          "picks_per_attempt": 2,
+          "quest_variant": false,
+          "alt_routes": [
+            {
+              "kind": "unbind_spell",
+              "tier": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

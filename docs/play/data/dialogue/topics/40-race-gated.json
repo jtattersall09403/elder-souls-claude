@@ -1,0 +1,1671 @@
+{
+  "schema": "elder-souls/topics@1",
+  "group": "race-gated",
+  "owner": "W1-07 — race and standing",
+  "source": "corpus/22-character/RI-CHR02-race-and-standing.md §4c: '>= 90 race-filtered topic records, >= 30 of them forbids'. Round 1 shipped 0 of each.",
+  "note": "A `requires.race` info is one only that race is offered; a `forbids.race` info is one that race is NEVER offered, which is the harder and more interesting half — it is the town declining to say a thing in front of you. Every line is written to be said aloud by the speaker class named in `a`.",
+  "topics": [
+    {
+      "id": "the-hatching-pool",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "The pool you came out of is still there, and it's smaller than you remember. They all are. It wasn't moved. You got bigger and the water didn't. When were you last back?",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "your-egg-year",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Egg-year matters for two things: who you may not marry, and who has to carry you home when you are old. Warmbloods think it's a birthday. What's yours?",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-sap-says",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Sap doesn't say. Sap shows, and then you spend a season deciding what it showed. And anyone who tells you the Hist spoke to them in sentences is selling something.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-second-name",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "Everyone has one. Almost none use it. It is the one your egg-clutch called you before the Office wrote a shorter one down.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "root-water",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "It isn't a drink. It's the tree agreeing to be in the same room as you for a while.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-drowned-kin",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "We don't say they died. We say the water kept them. Have you ever had to explain that to a warmblood?",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "standing-in-the-shallows",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "You'll have done it as a hatchling without being taught. It isn't taught anywhere. Do you still do it?",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-marsh-fever",
+      "infos": [
+        {
+          "a": "healer",
+          "x": "It goes through the villages every second summer and it takes the very old and the very new and leaves the rest of us tired for a year.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-old-tongue",
+      "infos": [
+        {
+          "a": "archivist",
+          "x": "Jel isn't a code. Jel's a language whose grammar has tenses for things that haven't decided whether they happened.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "counting-by-tides",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "Two tides is a day. None outside the marsh accept this and none inside it accept anything else.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-warmbloods-ask",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "They ask whether we lay eggs, whether we can breathe water, and whether we are cold. In that order. Always in that order.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-village-that-moved",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "The whole of it, boards and roofs and the shrine, four hundred paces west, because the water asked. Took a season. There was no argument.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "your-clutch-mark",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "On the inside of the arm, where you can't see it without turning your wrist over. It is put there deliberately.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-first-molt",
+      "infos": [
+        {
+          "a": "healer",
+          "x": "It is worse than they tell you and then it is over and then you are slightly different.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "hist-debt",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "You owe the tree nothing. A House would have written down what you owe. The tree keeps no book.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-river-bands",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Nine bands on this river. Six will feed you. Two will take your boat. One will do both and be offended if you mention it. Which bend did you come round?",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-towns-say-about-us",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "That we eat people. We don't, mostly. And the mostly is doing more work than I'd like.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-long-swim",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Mouth to headwater in one go. It isn't a rite. It's just something that's happened to most of us by thirty.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "bank-law",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Below the waterline is ours. Above it is an argument. It has held for six hundred years and no house has ever put it in writing.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-third-person",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "They speak about us while we are standing there. We have stopped correcting it. It is useful to be furniture.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "house-business",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "You will know the shape of it. Three Houses trade here and one of them owns the road you came in on.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-factor-house",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Back room, second bell. Bring nothing in writing and take nothing out in writing.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-we-are-owed",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "The Arnesian War is a hundred and twenty years old and the ledgers from it are still open. Every entry is carried forward each year by a clerk who is paid to do it.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-wine",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Comes up from Tear by boat and tastes of the boat. Drink it anyway; refusing is a statement.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "your-people-here",
+      "infos": [
+        {
+          "a": "town-elder",
+          "x": "There are fourteen of you in this town, and nine of them keep very quiet. And I don't think you're one of the nine.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-word-they-use",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "Ash-man. They'll say it to your face and mean nothing by it. Then a man will say it and mean everything by it. And you won't be able to tell which until after.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-surcharge",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "You noticed. Everyone notices. There's a man in Helstrom who can have it struck off, once, for a piece of work the rest won't do. Are you interested?",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-marsh-remembers",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "It remembers your grandfather's House and not your grandfather. It isn't personal. Nothing this old is personal.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cohort-business",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Ninth Cohort. And if you're going to ask about the pay, the answer's in Sun's Height, and the year isn't this one. What do you want, citizen?",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-muster-board",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Four hundred names. Two hundred and six of them are men. The rest is establishment.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-provincial-office",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "It exists to be the reason a thing can't be done today. That isn't cynicism. Its charter is four lines long and three of them are conditions.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "citizenship",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "You have it. None here does, technically. All here are subject to it. It has stood that way for ninety years.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-tribune-wants",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "To retire in Anvil. He has wanted it for twelve years and the wanting is the only thing keeping him at the post.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "home-leave",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Two men in the cohort have had it. One came back. We don't discuss the other one, and it isn't what you're thinking.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "breathing-here",
+      "infos": [
+        {
+          "a": "healer",
+          "x": "The air's water with opinions. Give it a fortnight. Still coughing after a fortnight? Then it isn't the air.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-to-drink",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "x": "Not the water. Not the beer either, but at least the beer's honest about it. What'll you have?",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-boards",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "Stay on them! Everything under them is either water or something in the water, and you won't enjoy learning which.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "warmblood",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "It isn't an insult. It's a fact about your blood, and they're a very literal people about facts.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-fever",
+      "infos": [
+        {
+          "a": "healer",
+          "x": "You'll get it. Everyone from outside gets it. It's survivable, it isn't pleasant, and it comes back.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "why-anyone-comes-here",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "x": "Debt, a warrant, or a posting. Occasionally love. Which is it with you?",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-smell",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "x": "Four days. Then you stop noticing. By then you smell of it yourself.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "boots",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "Buy the local ones. Yours will rot off at the seam in a month and you'll walk home barefoot. What size are you?",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-net-price",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Forty a head at the road, eighty at the coast, and the difference is the risk of the road.",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "who-buys",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Plantations south. And two names in Helstrom I won't say out loud.",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-quiet-route",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "x": "Up the second channel, past the drowned stones, and you never saw me.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-tribune-drinks",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Every night since the summer and twice on muster days.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-cohort-sells",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Grain, mostly. Some of it ours. Some of it not ours yet.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-lukiul-problem",
+      "infos": [
+        {
+          "a": "deep-elder",
+          "x": "They come back with the coast in their mouths and they want the village to be the way they described it to a stranger.",
+          "forbids": {
+            "race": [
+              "saxhleel"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "about-the-naga",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "We don't go past the second bend. None go past the second bend. Don't you go either!",
+          "forbids": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-shadowscale-list",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "There's a list, and it's kept where the Office can't read it. And if your name's on it, you weren't asked.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-house-pays-us",
+      "infos": [
+        {
+          "a": "town-elder",
+          "x": "Enough that the town has stopped asking where the wagons go.",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga",
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-arrangement",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Two writs a month go out unstamped and one comes back with a different name on it.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-fence-at-helstrom",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "Second cellar off the fish market, and he will not see you if you have a Legion walk.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-warden-scribes-file",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "She keeps one that is not the Office's. I have seen the box and I have not seen inside it.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-happens-to-the-old-ones",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "They stop being an asset and start being a cost, and the House is very good at costs.",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "our-losses",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Fourteen this season and nine of them to fever. The return I sent said four. Don't repeat that.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-second-ledger",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "One for the Office and one for the truth, and I will show you neither.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-bank-toll",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "We take a third off anything with a House mark on it and nothing off a village boat.",
+          "forbids": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "who-informs",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "One of them in the square does. We have narrowed it to four and we are being patient.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-thing-in-the-cistern",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "It was here before the town and the town was built around not mentioning it.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-we-do-with-the-writs",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "Soak, scrape, re-ink. Four days and you are a person with a clean road.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-drowned-road",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "It is walkable at the low tide of the third day and it does not want warmbloods on it.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-hist-that-stopped",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "One did. In the deep marsh. None say why. The village around it did not move away and they are still there now.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "our-arrangement-with-the-legion",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "They do not come down the fish market and we do not put anything in the river above the barracks.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-count-of-the-taken",
+      "infos": [
+        {
+          "a": "deep-elder",
+          "x": "Two hundred and six since the year of the low water, and this one has all of the names.",
+          "forbids": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "why-the-village-is-empty",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "Because a wagon came through in the spring and the wagon had a House mark on it.",
+          "forbids": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-band-eats",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Ask a town and they will tell you. Ask us and we will change the subject. I would rather talk about the river.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-price-of-a-name",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "Three hundred for a plain one, a thousand for one with a history that holds up.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-warehouse-key",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "Second nail from the left, under the sill. Do not go on a Turdas.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-we-keep-from-the-office",
+      "infos": [
+        {
+          "a": "town-elder",
+          "x": "The tally of who left and did not write. It is a long tally and it is not a mystery.",
+          "forbids": {
+            "race": [
+              "imperial",
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-old-cages",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "Down under the pilings. They left them because pulling them out would have been admitting they were there.",
+          "forbids": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-quiet-grave",
+      "infos": [
+        {
+          "a": "healer",
+          "x": "Behind the sapwell, unmarked, and it is not one person.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-hatch-name-list",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Fourteen names of people the Office has and the village wants back. You will not be told them if you smell of paper.",
+          "forbids": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-sap-showed-me",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "A road with no water on it and every one I know walking down it. This one has not told an outsider and is not starting.",
+          "forbids": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-writ-house",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "They took your other name there. They take them all.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "villager",
+          "x": "They will spell it wrong and you will answer to the wrong one for a year.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        },
+        {
+          "a": "clerk",
+          "x": "It is a desk and a woman with a stamp and it decides what you are."
+        }
+      ]
+    },
+    {
+      "id": "the-road-south",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "Wagons go down it and not everything on the wagons is grain.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "merchant",
+          "x": "Good road. Fast. Ask no questions at the third bridge.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        },
+        {
+          "a": "merchant",
+          "x": "Patrolled as far as the bridge and after that it is between you and the marsh.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "helstrom",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "Do not walk the quiet street after dark. This one is not being poetic.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "townsman",
+          "x": "Your House keeps a room there. You will be expected to use it.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        },
+        {
+          "a": "townsman",
+          "x": "A market and a factor house and one very quiet street."
+        }
+      ]
+    },
+    {
+      "id": "the-tides",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "You will feel it before the water does. All from the interior do.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "fisher",
+          "x": "You will not feel it at all and you will get caught out. Watch the birds.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        },
+        {
+          "a": "fisher",
+          "x": "Two a day and the second is the one that matters."
+        }
+      ]
+    },
+    {
+      "id": "the-office",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "It will have you on a list. Everyone is on a list. Do you know which one you are on?",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "clerk",
+          "x": "It will find you a posting if you smile at the right window.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        },
+        {
+          "a": "clerk",
+          "x": "It is the Empire's hand and the Empire's hand is very slow."
+        }
+      ]
+    },
+    {
+      "id": "the-blackwood-company",
+      "infos": [
+        {
+          "a": "mercenary",
+          "x": "They will hire you and then send you at your own villages. Some take it.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "mercenary",
+          "x": "They will take you for the north road and give you a contract you should read.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        },
+        {
+          "a": "mercenary",
+          "x": "They hire and they pay and they do not ask twice."
+        }
+      ]
+    },
+    {
+      "id": "the-hist",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "You know what it is. You do not need this one to say it.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "rootkeeper",
+          "x": "You will be told it is a religion. It is closer to a relative.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        },
+        {
+          "a": "rootkeeper",
+          "x": "It is the tree and it is not a god and both halves of that offend a party."
+        }
+      ]
+    },
+    {
+      "id": "slavery",
+      "infos": [
+        {
+          "a": "townsman",
+          "cf": "CF-D008",
+          "pos": "C",
+          "x": "This one will not discuss it with you standing there, and this one is sorry.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "townsman",
+          "x": "Your House ran it and your House is still owed for it, depending which ledger.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        },
+        {
+          "a": "townsman",
+          "x": "The Empire abolished it and then declined to enforce the abolition. Neither instrument has been withdrawn.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        },
+        {
+          "a": "townsman",
+          "x": "It is illegal in the Empire and it happens on the road twice a month."
+        }
+      ]
+    },
+    {
+      "id": "the-arnesian-war",
+      "note": "W1-DLG-SHADOWS. The ungated archivist fallback that used to open this list is retired: 10-global.json also declares an ungated archivist info for this id, it is a real tie under `infoFor()`'s specificity score (neither carries `requires`/`cell`/`d`), and Map iteration order (10-global.json loads before 40-race-gated.json) made the global line win for EVERY race including the two race-gated ones below when their own requires missed — this file's own race-neutral fallback was dead text for all ten playable races. 10-global.json's line now serves as the sole race-neutral fallback for races outside {saxhleel, naga, dunmer}; the two requires-gated lines below are unaffected and still win for their races.",
+      "infos": [
+        {
+          "a": "archivist",
+          "x": "Your grandmother's grandmother was in it and the marsh has not put it down.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "archivist",
+          "x": "Your House lost it and has been trading its way back ever since.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-fee",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "And it will be two hundred and fifty for you as well, whatever you have heard.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        },
+        {
+          "a": "clerk",
+          "x": "For you it is two hundred and fifty and a wait, and the wait is the part that is for you.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        },
+        {
+          "a": "clerk",
+          "x": "Two hundred and fifty and it is once, ever."
+        }
+      ]
+    },
+    {
+      "id": "the-boat-tax",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "A third of what is on it, and nothing if the boat belongs to a village.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-the-band-owes",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Nothing to any house upstream and one favour to a house downstream, and the favour has been outstanding for forty years.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-mud-season",
+      "infos": [
+        {
+          "a": "fisher",
+          "x": "Six weeks when the marsh is neither water nor ground and all stay where they are.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "egg-tending",
+      "infos": [
+        {
+          "a": "healer",
+          "x": "Warm, dark, and turned twice a day, and it is the most boring important work there is.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-village-tally",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "Who is here, who left, who was taken. Three columns and the third one is the long one.",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-legion-quartermaster",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "He will sell you anything on the establishment and half of what is not.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "bridge-duty",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Twelve hours on the third bridge and the only thing that crosses is fever.",
+          "requires": {
+            "race": [
+              "imperial"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-tear-thinks",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "That the marsh is a warehouse with weather. They have never been.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-vintage",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Comes off the same slope every year and every year they tell you it is different.",
+          "requires": {
+            "race": [
+              "dunmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "your-accent",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "x": "It is not the words. It is that you stop at the end of the sentence, and none here do.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-lodging-price",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "x": "Same for everyone, and you may believe that or not.",
+          "requires": {
+            "race": [
+              "dunmer",
+              "imperial",
+              "nord",
+              "breton",
+              "redguard",
+              "khajiit",
+              "orsimer",
+              "bosmer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-crossing-fee",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Free for kin, coin for towns, and a story for whoever has one.",
+          "requires": {
+            "race": [
+              "naga"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "schema": "elder-souls/book@2",
+  "group": "the-books-in-evidence",
+  "owner": "W1-READABLES — the documents the quests name as sources",
+  "note": "THE OBJECTS 44 `deceit.revealed_by` ROWS ALREADY POINTED AT. Every quest in this build declares, for each truth a resolution demands, the channel it arrives through and the source that carries it. `game/src/sim/quest/reveal-routes.js` and `Engine._bookKnowledgeIndex()` read those two fields; what they could not do was route a `ledger` or a `letter`, because 33 of the 34 ledger sources and all 10 letter sources named an `item_*` id that was not an object anywhere in `game/data/`. A reader wired to a source that does not exist is a route to nothing, so the last round deliberately did not wire it. These are the objects. Each one’s `knowledge_key` IS the id the quest file names, which is the same linkage the five `channel: book` rows have used since W1-LIBRARY round 2 — one reader, three nouns. Where each is placed and how it is read is in `game/data/world/interiors/**` under `readable`: a ledger is a prop with `readable_book` that is read where it stands and cannot be carried off, because the archive Q-MAIN-06 sends you to has a failure state for carrying a volume out of the room. A letter is carried. THIS FILE IS NOT COMPLETE and does not pretend to be: it holds the mainline documents. The faction ledgers (the Assize’s registers, the Wet Ledger’s harbour books, the Xul-Aneekh’s crew rolls) are still unwritten and `tools/quests/reveal-route-audit.mjs` counts every one of them UNROUTED and names it.",
+  "books": [
+    {
+      "id": "the-grandmother-yard-book",
+      "knowledge_key": "item_the_grandmother_yard_book",
+      "skill_book": "survival",
+      "title": "The Yard Book of Ixeeja-Xul, kept at Blackrose",
+      "author": "Ixeeja-Xul, cutter, and two hands after her",
+      "kind": "ledger",
+      "taxon": "T4",
+      "argonian_authored": true,
+      "unreliability": "A working book, kept to settle arguments inside one family, and therefore honest about the only thing it was ever meant to record. It has no opinion about the province and would not recognise the question.",
+      "readable_before": "Q-MAIN-07",
+      "topics_taught": [
+        "the-cutting",
+        "the-sapwells",
+        "the-lease",
+        "blackrose"
+      ],
+      "text": "Ruled in three columns, because that is the number my mother's was ruled in: what was opened, what it gave at the first drawing, and what it gave at the drawing after. There is no column for the year. The year goes across the head of a leaf when the leaf is begun, and a leaf is begun when the last one is full, so a leaf may hold two years or half of one, and a reader who wants a date counts backward from the top of the book.\n\nLeaf the first, in the hand of Ixeeja-Xul. At the head: the year forty-one.\n\nThe well at the second bend, opened at low water. First drawing, four measures. Second drawing at the turn, three.\nThe well under the leaning hist by the crossing, opened the same season. First, four. Second, three and a part.\nThe well the eel-men call theirs, opened without asking them, which I will hear about. First, five. Second, four.\n\nAt the foot of the leaf, in the same hand: my father drew six from the second bend and his father drew seven from it, and neither of them wrote a figure down, so I have their word and no book. The wells give less than they did. I have asked four people why and had four answers and not one of the four was a number. I am starting a book.\n\nLeaf the second. The year forty-three.\n\nNine wells opened, of which six are entered here and three are not, because the three were opened for a man from Lilmoth who paid for the work and for the silence and got both. The six: first drawings of four, four, four, three, four and three. Second drawings a part under each.\n\nLeaf the fourth. The year forty-seven.\n\nA man of the Provincial Office came out from Gideon with a paper and stood in the yard in good boots and said that from this year a well may be opened for sale under licence and not otherwise, that the fee is nine a year, and that the licence is the Empire's leave. Nine a year!\n\nUnder it, in the same hand: leave from whom? We have opened wells for sale since before my grandmother's grandmother and the leave was not the Empire's to give or to withhold. I have paid the nine, because nine is cheaper than an argument with a man who has soldiers behind him. Nothing about the work has changed. The paper does not go down into the well.\n\nLeaf the eleventh. The year fifty-four. Last leaf in the first hand.\n\nFourteen opened. First drawings: three, three, four, three, three, three, two, three, three, three, four, three, three and three. My hands are bad now and the numbers are Neeja's from here, and she writes better than I did and asks worse questions.\n\nLeaf the twelfth, in the second hand. The year fifty-five.\n\nI have been through the whole of this book twice. Was she complaining, or was she counting? She was counting. Four measures at the first drawing in the year forty-one; three at the first drawing in the year fifty-four; and the licence the Empire is so pleased with itself about sits in the middle of that, in the year forty-seven, six years after the first leaf and seven before the last of hers.\n\nLeaf the thirtieth. The current leaf, third hand and second hand together.\n\nTwo hundred and forty wells opened by this yard since the licence. Eighty still giving as of this season, sixty-one closed by us, the rest we have lost the reading of because the ground moved or the family stopped answering.\n\nWritten across the foot of the current leaf, and not in the columns: when the Court's people come, and they will, they will want the twenty-eight years since the paper. The twenty-eight years are in the second half of this book and they are bad enough. The first half is under it and it is older than the paper, and the first leaf of it says the wells were already going. And both halves are the same book, and it has never left this bench."
+    },
+    {
+      "id": "the-archon-true-manifest",
+      "knowledge_key": "item_archon_true_manifest",
+      "skill_book": "mercantile",
+      "title": "Outbound, Archon: the book that balances",
+      "author": "Cuiro-Vaneth, harbourmaster, in his own hand and not the office’s",
+      "kind": "ledger",
+      "taxon": "T4",
+      "argonian_authored": false,
+      "unreliability": "Exact to the ton and silent about every name that matters. The man who kept it was protecting himself from one party and did not write down which.",
+      "readable_before": "Q-MAIN-08",
+      "topics_taught": [
+        "archon",
+        "the-soul-gem-trade",
+        "the-bond",
+        "the-crimson-coast"
+      ],
+      "text": "Not the office book. This one is mine and it does not leave the house.\n\nThe office book is the one the Assize reads and the one the fair copies are cut from, and there is nothing false in it. What is in here is the difference, and the difference is not a lie told in the office book. A crate entered as cordage is cordage. It is cordage on the outside, and the outside is what a harbourmaster is paid to enter.\n\nBonded weight in tons, gem and gem-bearing, ten years. Declared is what the office book carries. Gone is what crossed my quay.\n\n  sixty-five    declared 41    gone 44\n  sixty-six     declared 39    gone 47\n  sixty-seven   declared 44    gone 58\n  sixty-eight   declared 46    gone 71\n  sixty-nine    declared 47    gone 88\n  seventy       declared 51    gone 103\n  seventy-one   declared 52    gone 129\n  seventy-two   declared 55    gone 152\n  seventy-three declared 58    gone 171\n  seventy-four  declared 60    gone 196\n  seventy-five  declared 62    gone 214\n\nRead the right-hand column on its own and it is five times over in ten years. Read the two together and the office book is carrying about a third of what goes out of here, and it has carried about a third for as long as I have kept this.\n\nWhere the other two thirds go on paper: cordage, vat-dye in stoppered jars, salt coarse, ballast declared as ballast, and the master's own sundries under the standing arrangement, which is a chest, sealed, that I do not open and am not asked to.\n\nWhere it goes in the water: Imperial bottoms, out of the third mooring, at the turn, and the Empire does not search its own hulls at a provincial quay. That is not a discovery. Anyone on this coast could tell you that much and most of them would rather.\n\nThe seals. Crates that go into the bonded store behind the crane and come out again are not sealed with the Imperial stamp. They carry a plain lead disc, cast thin, with a ring pressed into the face of it, and the ring is a plain band with no device on it at all. I have asked four men on this quay whose seal it is. Two said they did not know. One said the Provincial Office. One walked off and has since taken work at Lilmoth.\n\nWhy keep a book of this kind, when a book of this kind is the thing that hangs a man?\n\nBecause the fee I charge for the fair copies is a hundred and fifty and I am worth more than that, and because if it is ever read out I would rather it were read out with my arithmetic in it and not a stranger's. The Empire will fine me and take the post. But the Empire is not the party I'm careful of. The party I am careful of is whoever cast the discs, and no fine has ever been the worst thing that could happen to a harbourmaster.\n\nLast entry, this season: eleven crates went into the store on the ninth that are not in the office book and are not in this one either, and I have written that sentence instead of the tonnage because I was not given the tonnage. I stood on the crane platform and counted the lids and went home."
+    },
+    {
+      "id": "the-wet-ledger-private-book",
+      "knowledge_key": "item_wet_ledger_private_book",
+      "skill_book": "mercantile",
+      "title": "The Wet Ledger, the book behind the counter",
+      "author": "the Ledger’s own clerks, for the Ledger’s own reading",
+      "kind": "ledger",
+      "taxon": "T4",
+      "argonian_authored": false,
+      "unreliability": "Accurate about money and deliberately incomplete about people. The names live on a leaf that is kept in a different room, which is the whole of the Ledger’s discretion and the whole of its leverage.",
+      "readable_before": "Q-MAIN-16",
+      "topics_taught": [
+        "the-wet-ledger",
+        "the-first-chair",
+        "lilmoth",
+        "the-ledger"
+      ],
+      "text": "The working book. Sums, terms, and the standing of each account at the last reading. No names.\n\nNames are on the back leaf and the back leaf is kept in the first chair's room and is fetched when a debt is called and at no other time. A clerk who writes a name in this book is dismissed the same day, and the rule is not for the debtor's sake. It is so that this book can be shown to an Assize officer with the terms in it and nothing else, and it has been shown twice and both times the officer went away satisfied and with no name in his head.\n\nThe form of an entry: number, office or trade of the debtor, principal, rate, the season it was taken, the seasons it has been renewed, and what stands against it.\n\n  Entry 38. A yard master at Lilmoth. Four hundred, at the ordinary rate, taken in the wet season, renewed once. Against it: the yard's own gear.\n  Entry 39. A pilot of the Topal run. Two hundred and twenty, at the ordinary rate, taken at the turn of the dry, cleared in one season. Closed.\n  Entry 40. A factor of this house, which the compact permits and the first chair dislikes. Nine hundred. Against it: his share.\n  Entry 41. A sexton of the Court's chapter at Soulrest. Eleven hundred, at the ordinary rate, taken three dry seasons ago, renewed three times and not reduced. Against it: nothing. Note against the entry, in the first chair's hand: this account is not to be called, is not to be mentioned in the hall, and is not to be cleared by any hand but mine.\n  Entry 42. A widow of Stilt-Row, sixty. At no rate at all, by the first chair's leave, which is not written in any of our terms and is written here.\n\nOn entry 41, because a clerk asked it out loud in the hall, and because he was right to ask and wrong about where. What he said was: if it's never going to be called, what is it?\n\nAn account that is renewed and never reduced is not a loan and this house knows it. It is a rent paid in advance for something the house has not yet asked for. The Ledger has four of them. Three are with men who move goods for us and one is with a man who votes.\n\nWhat the Ledger will say if it is ever put to us: that we lend to whoever comes to the counter, that clergy are not exempted from arithmetic, and that the terms are the same terms as entry 38. All three are true. The true sentences are the ones to have ready.\n\nWhat is actually the case, entered here because a working book that flatters the house is no use to the house: a sexton who owes eleven hundred to a trading company votes on the crypt road with eleven hundred in the room. He has never been asked for anything. He doesn't need to be asked. So it costs this house one renewal a year and a clerk who can keep his mouth shut, and it is entered here as costing that.\n\nStanding at the last reading: fourteen accounts open, six thousand three hundred and forty out, none in arrears, one not to be called."
+    },
+    {
+      "id": "the-compact-share-book",
+      "knowledge_key": "item_compact_share_book",
+      "title": "The compact’s share book, Gideon",
+      "author": "the compact’s clerk, whichever of them was sober",
+      "kind": "ledger",
+      "taxon": "T4",
+      "argonian_authored": false,
+      "unreliability": "Entered by bottom and not by name, which the compact calls a courtesy and which means a reader has to know the river to read the book at all.",
+      "readable_before": "Q-MAIN-17",
+      "topics_taught": [
+        "the-wet-ledger",
+        "gideon",
+        "the-soul-gem-trade",
+        "the-barge-roads"
+      ],
+      "text": "Nineteen shares. The compact enters a member by the bottom he holds his share in and not by his name, which is a courtesy of some standing and means a stranger cannot read this book without first learning the river. A member who sells his bottom sells his seat with it.\n\nShares held, and in what.\n\n  the Gull of Ebonheart              river freight, salt, gem out of Archon\n  the Long Nine                      river freight, salt\n  the Third Mooring                  river freight, gem out of Archon\n  the Heron                          river freight, hides, gem out of Archon\n  the Two Holds                      river freight, timber\n  the Weir-Gate                      river freight, gem out of Archon\n  the Bittern                        coast water, gem out of Archon\n  the Salt Sister                    river freight, salt, gem out of Archon\n  the Reed Knife                     river freight\n  the Ninth Clause, so named for a joke the river has stopped finding funny\n                                     river freight, gem out of Archon\n  the Cold Well                      coast water, gem out of Archon\n  the Grey Hist                      river freight, timber, gem out of Archon\n  the Ledgerer                       river freight\n  the Fourth Day                     river freight, gem out of Archon\n  the Tide-Pole                      coast water, salt\n  the Drowned Reaper                 river freight, gem out of Archon\n  the Stilt                          river freight\n  the Bone Ladder                    coast water, timber\n  the Quiet Woman                    river freight, gem out of Archon\n\nCounted at the last reading: eleven of the nineteen carry a share in the Archon gem freight. Six of the eleven took that share inside the last four years. Two of the six borrowed against the bottom to take it.\n\nThe clerk's note, which the compact instructs him to keep and does not instruct him to show.\n\nThe gem share is not declared to the Provincial Office as a share. It is declared as freight, because a share in a cargo is a share and a share in the carriage of it is a fee, and the difference is a word. The compact has been advised twice that the word will hold. No one has ever asked the man who advised us how much of his own money is in it.\n\nWhat a reader should not take from this book. It does not say that the gem trade did anything to the wells, and there is nothing in it that could. It is a list of who is holding what, and the only thing a list of that kind can prove is who is frightened of a particular question. Eleven of us are, and the eleven are the eleven above, and the six who came late are the loudest of them in the hall.\n\nVoting: a share is a vote and the compact meets when eleven of the nineteen are in Gideon, which is most weeks of the dry and no week of the wet. Eleven is also the number that carries a motion, which the compact has been told is a coincidence and has never troubled to check."
+    },
+    {
+      "id": "the-cutters-list",
+      "knowledge_key": "item_the_cutters_list",
+      "title": "Those Who Have Opened a Well and Were Not Keepers",
+      "author": "kept at Thorn by the order, in the hand of whichever keeper is youngest",
+      "kind": "record",
+      "taxon": "T4",
+      "argonian_authored": true,
+      "unreliability": "The order says this list is not a judgement and keeps a column for how each of them died, which is a judgement with the word taken off it.",
+      "readable_before": "Q-MAIN-22",
+      "topics_taught": [
+        "the-sapwells",
+        "thorn",
+        "the-eleven-keepers",
+        "the-cutting"
+      ],
+      "text": "The order does not recognise a well opened by a hand that was never taught. The book recognises it, because a thing that happened has to be written down whether or not it should have.\n\nKept since the order kept anything. Each entry: who, what was opened, whether the well gave after, and the end of them. The last column is not a warning. The youngest keeper writes this book and the youngest keeper has always been told it is not a warning.\n\n  Uneel-Sa, of the reed country. Opened one well at the second bend in a season of no water, to fill a cistern for a village of forty. The well gave for nine years and closed. She was made a keeper afterward, which has happened once and is why the order will not say it cannot happen. Died old, at the well she opened, of nothing in particular.\n\n  Hleen-Ei, a bargeman. Opened three above Hollow-Reeds for sale. All three closed inside two seasons. Taken out of the water below the weir with no marks on him, in the year after the third.\n\n  Ojal-Aneesh, a sexton of the Drowned Court, which the Court has never admitted and this book has never taken out. Opened one well and did not draw from it, and the order has argued for two hundred years about whether that counts. It has never once struck the entry. Died in his bed at Soulrest.\n\n  Teeus-Ahai, of no place he would name. Opened eleven and sold what came out of them at Lilmoth. Nine closed. The other two are the wells at the crossing and they still give, and every keeper who has stood at them has had to decide privately what to make of that. Hanged at Gideon under the Provincial Office, for a different matter.\n\n  Weeth-Ei-Vakh, a rootkeeper struck from the order first and a cutter after, which the book keeps as one entry because it was one life. Opened four. Two gave better than any well she ever tended. Walked into the marsh in the wet season and was not looked for.\n\n  Sesh-Weth, a girl of the kiln camp, eleven years old and told to. Opened one. It gave for a season. Alive, and she is a potter at Archon now, and the order has never approached her and has argued about that for as long as it argued about the sexton.\n\n  Ganeeth-Ei, of the Xul-Aneekh. Opened two at the Bone Ladder in the sap-fall, to reach a road. Both still give. Killed at the Bone Ladder in the same season by people who were not keepers and were not cutters either.\n\nAt the foot of the book, in an old hand, and copied forward by every youngest keeper since without a word added:\n\nSeven, in four hundred years, and one of them was made a keeper and one of them is a potter. The order teaches that a well is opened by three keepers standing at the root or it is not opened. The book teaches that it has been opened otherwise seven times and that the ground did not know the difference. Both of these are kept at Thorn and only one of them is read out."
+    },
+    {
+      "id": "the-stewards-letter",
+      "knowledge_key": "item_stewards_letter",
+      "title": "A letter of instruction, in Jel, taken off a body in the Deep Marshes",
+      "author": "signed Ixtu-Meer, Steward of the Count",
+      "kind": "letter",
+      "taxon": "T4",
+      "argonian_authored": true,
+      "unreliability": "A working letter to a subordinate, written by someone with no reason to lie to him and every reason not to explain himself. What it leaves out, it leaves out because the reader already knew.",
+      "readable_before": "Q-MAIN-10",
+      "topics_taught": [
+        "the-steward-of-the-count",
+        "the-intakes",
+        "the-deep-kin",
+        "the-count"
+      ],
+      "text": "Rendered out of Jel by a rootkeeper of Helstrom, who notes that the original uses the deep forms throughout and that the writer is comfortable in them.\n\nTo the keeper at the fourth intake.\n\nThe year's work is received and is in order. It is the ninth year you have sent it and the ninth year it has come in on the day it was due, and I would rather have that from you than a better figure sent late.\n\nOne correction. The draw you have entered for the third quarter is set against the standing measure of your own house, which is a measure of twelve, and everything below is kept in ninths. I have altered your third quarter from eleven to eight and a part and have left your hand under mine so that a reader can see which of us wrote which. This is not a fault. It is the second time it has happened at your intake and the first time was mine.\n\nYou ask, and you have asked before, why what is held is held.\n\nIt is held so that the wells will give. What comes down does not come down evenly, and a thing that arrives in a flood and then not at all is no use to a root and no use to a well. What is held is let go at a rate. The rate is the whole of the work and it is the only part of the work that anyone would call a decision.\n\nThe arrangement is older than I am. It was in use when I came to it and I have altered nothing in it but the arithmetic. I want you to have that in writing because you asked me twice in person and I did not answer you either time, and because a man doing the ninth year of a thing is owed the reason.\n\nYou may tell your own people this much and no more. If they ask you who I am, tell them that the Steward of the Count is an office and that offices outlast the people in them, which is true, and is also the answer I was given.\n\nSend the fourth quarter at the ordinary time. Don't come up.\n\nIxtu-Meer, Steward of the Count.\n\nBelow the signature, in a second hand, in the same ink as the rendering: the body this was found on had been in the water eleven days and was a rootkeeper of no gallery any of us knows. He was carrying nothing else. He had been going up."
+    }
+  ]
+}

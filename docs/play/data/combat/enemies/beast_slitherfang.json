@@ -1,0 +1,82 @@
+{
+ "schema": "elder-souls/enemy@1",
+ "id": "beast_slitherfang",
+ "name": "Slitherfang",
+ "archetype": "BEAST",
+ "tier": "trash",
+ "ai": "scripted",
+ "unit": "f@60",
+ "hp": 286,
+ "poise": 24,
+ "material": "chitin",
+ "material_by_region": {
+  "head": "flesh",
+  "jaw": "flesh"
+ },
+ "material_note": "RI-WPN05 \u00a7B: 'mire-crab, chitin-armoured'. A slitherfang is plated along the body and soft at the head, which is the whole reason material is per-REGION and not per-body: a thrust to the head beats a slash along the flank.",
+ "stamina_max": 0,
+ "radius_m": 0.5,
+ "sight_radius_m": 16,
+ "sight_cone_deg": 160,
+ "reach_m": 2,
+ "water_native": true,
+ "water_max_band": "W5",
+ "_water_note": "RI-WLD10 §5 R5/R6 (S25), absent from the roster until now. A slitherfang is the material note's own 'mire-crab, chitin-armoured' — one of the >=4 archetypes R6 requires to be genuinely dangerous in W5, and R1 means nothing here touches its frame data to make that true: it is exactly as fast and exactly as hard-hitting in open water as on the bank.",
+ "idle_anim_frames": 36,
+ "winded_after": 3,
+ "winded_frames": 75,
+ "reads_exhaustion": false,
+ "weapon": {
+  "radius_m": 0.11,
+  "socket_a_dist_m": 0.1,
+  "socket_b_dist_m": 0.9,
+  "attack_rating": 104,
+  "socket_a": "wpn_head_a",
+  "socket_b": "wpn_head_b",
+  "capsule_length_m": 0.8,
+  "length_m": 0.9,
+  "peak_tip_speed_mps_declared": 22,
+  "_socket_rule_note": "socket_a_dist_m is skeleton.json \u00a7weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
+  "_peak_declared_note": "RI-CMB04 \u00a7B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the \u00a7B row whose capsule_length_m is nearest this weapon's (halberd, 0.75 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
+ },
+ "attacks": {
+  "lunge": {
+   "anim": "e_lunge",
+   "archetype": "thrust",
+   "startup": 36,
+   "active": 8,
+   "recovery": 48,
+   "poise_damage": 18,
+   "motion_value": 0.66,
+   "root_dz_m": 2.2,
+   "hitstop_frames": 5,
+   "hitbox_radius_m": 0.11,
+   "reactable": true
+  },
+  "whip": {
+   "anim": "e_whip",
+   "archetype": "sweep_wide",
+   "startup": 30,
+   "active": 12,
+   "recovery": 42,
+   "poise_damage": 14,
+   "motion_value": 0.48,
+   "root_dz_m": 0.3,
+   "hitstop_frames": 4,
+   "hitbox_radius_m": 0.11,
+   "unblockable": false,
+   "reactable": true
+  }
+ },
+ "parley": null,
+ "provenance": {
+  "parley": "parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt \u2014 they have no parley and Souls owns them entirely.' The exemption is a declaration, not an omission: the input is dropped with a named reason and a PARLEY_EXEMPT event, so a critic can tell a designed exemption from a forgotten one.",
+  "winded": "RI-CMB09 \u00a74 enemy symmetry: beasts have no stamina bar and instead go WINDED after >= 3 attacks in 6 s, with the same tell and the same x0.50 poise, for 75 f@60.",
+  "frame_data": "PROVISIONAL. Owner RI-AI05 / wave-1 piece W1-12."
+ },
+ "armour_rating": 18,
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react.",
+ "souls": 22,
+ "_souls_note": "DERIVED by tools/progression/derive-soul-values.mjs from this statblock's own hp/poise/armour_rating/attack_rating/tier, scaled by RI-PRG06 §7's census normalisation (576/world.enemy_census, read from corpus/00-doctrine/constants.json) — do not hand-edit, re-run the tool (it has a --check mode that fails if the field and the derivation have drifted, and binds the value to the band of the region the statblock is actually placed in). Read by game/src/sim/souls.js, which is the ONLY producer of soulsHeld apart from recovering your own bloodstain. RI-PRG06 §3 owns the soul budget, RI-PRG01 owns the curve it is spent on, and seam S15 forbids souls buying anything but a level. Props are zero so a 99,999-hp training dummy is not an infinite farm."
+}

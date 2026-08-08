@@ -1,0 +1,3773 @@
+{
+  "schema": "elder-souls/npc-group@1",
+  "group": "pop-helstrom",
+  "id": "pop-helstrom",
+  "settlement": "helstrom",
+  "generated_by": "tools/world/build-population.mjs",
+  "source": "the household roster in game/data/world/property/helstrom.json — these are the people who already owned the objects",
+  "npcs": [
+    {
+      "id": "helstrom-warder-0",
+      "name": "Sigurd",
+      "race": "nord",
+      "class": "warder",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-warder-0",
+      "role": "head",
+      "disposition": 28,
+      "interior": "helstrom-house-0",
+      "home_interior": "helstrom-house-0",
+      "work_interior": "helstrom-house-0",
+      "owns_zones": [
+        "helstrom.warder0.r0",
+        "helstrom.warder0.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "helstrom-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "helstrom-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-0",
+        "at_building_name": "Deek Slow-Rain's house",
+        "pos": [
+          2229.38,
+          27.22,
+          2814.84
+        ],
+        "yaw": 320,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-0's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-warder-1",
+      "name": "Kutsith",
+      "race": "argonian",
+      "class": "warder",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-warder-1",
+      "role": "head",
+      "disposition": 31,
+      "interior": "helstrom-house-1",
+      "home_interior": "helstrom-house-1",
+      "work_interior": "helstrom-house-1",
+      "owns_zones": [
+        "helstrom.warder1.r0",
+        "helstrom.warder1.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "helstrom-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "helstrom-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "19:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-egg",
+        "at_building_name": "The Egg-Terrace Rest",
+        "pos": [
+          2247.34,
+          27.22,
+          2840.6
+        ],
+        "yaw": 345,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-egg's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-2",
+      "name": "Rajteekh",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-legionary-2",
+      "role": "head",
+      "disposition": 27,
+      "interior": "helstrom-house-2",
+      "home_interior": "helstrom-house-2",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [
+        "helstrom.legionary2.r0",
+        "helstrom.legionary2.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "helstrom-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "10:00",
+          "at": "helstrom-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "17:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-legation",
+        "at_building_name": "The Imperial Legation",
+        "pos": [
+          2322.58,
+          27.22,
+          2808.96
+        ],
+        "yaw": 57,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-legation's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-fisher-3",
+      "name": "Halgrid",
+      "race": "nord",
+      "class": "fisher",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-fisher-3",
+      "role": "head",
+      "disposition": 46,
+      "interior": "helstrom-house-3",
+      "home_interior": "helstrom-house-3",
+      "work_interior": "helstrom-deep-market",
+      "owns_zones": [
+        "helstrom.fisher3.r0",
+        "helstrom.fisher3.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-smithy",
+        "at_building_name": "The Lashed Forge",
+        "pos": [
+          2292.66,
+          27.22,
+          2816.4
+        ],
+        "yaw": 32,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-warder-4",
+      "name": "Bites-Ledgers",
+      "race": "argonian",
+      "class": "warder",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-warder-4",
+      "role": "head",
+      "disposition": 24,
+      "interior": "helstrom-house-4",
+      "home_interior": "helstrom-house-4",
+      "work_interior": "helstrom-house-4",
+      "owns_zones": [
+        "helstrom.warder4.r0",
+        "helstrom.warder4.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "helstrom-house-4",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "helstrom-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "19:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-4",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-egg",
+        "at_building_name": "The Egg-Terrace Rest",
+        "pos": [
+          2247.5,
+          27.22,
+          2841.72
+        ],
+        "yaw": 345,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-egg's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-apothecary-5",
+      "name": "Ixthek",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-apothecary-5",
+      "role": "head",
+      "disposition": 46,
+      "interior": "helstrom-house-5",
+      "home_interior": "helstrom-house-5",
+      "work_interior": "helstrom-deep-market",
+      "owns_zones": [
+        "helstrom.apothecary5.r0",
+        "helstrom.apothecary5.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2287.48,
+          27.22,
+          2799.29
+        ],
+        "yaw": 43,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-6",
+      "name": "Uxithlith",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-legionary-6",
+      "role": "head",
+      "disposition": 29,
+      "interior": "helstrom-house-6",
+      "home_interior": "helstrom-house-6",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [
+        "helstrom.legionary6.r0",
+        "helstrom.legionary6.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "helstrom-house-6",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-6",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-scriptorium",
+        "at_building_name": "The Scriptorium of Roots",
+        "pos": [
+          2269.73,
+          27.22,
+          2793.1
+        ],
+        "yaw": 18,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-scriptorium's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-7",
+      "name": "Beekoei",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-legionary-7",
+      "role": "head",
+      "disposition": 27,
+      "interior": "helstrom-house-7",
+      "home_interior": "helstrom-house-7",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [
+        "helstrom.legionary7.r0",
+        "helstrom.legionary7.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "helstrom-house-7",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-7",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2287.48,
+          27.22,
+          2800.91
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-publican-8",
+      "name": "Shekh-Neekh",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-publican-8",
+      "role": "head",
+      "disposition": 57,
+      "interior": "helstrom-house-8",
+      "home_interior": "helstrom-house-8",
+      "work_interior": "helstrom-inn-tide",
+      "owns_zones": [
+        "helstrom.publican8.r0",
+        "helstrom.publican8.r1",
+        "helstrom.publican8.r2"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "helstrom-inn-tide",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "10:00",
+          "at": "helstrom-house-8",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "00:00",
+          "at": "helstrom-inn-tide",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-tide",
+        "at_building_name": "The Turning Tide",
+        "pos": [
+          2264.47,
+          27.22,
+          2810.09
+        ],
+        "yaw": 7,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-tide's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-9",
+      "name": "Nekhei",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-legionary-9",
+      "role": "head",
+      "disposition": 32,
+      "interior": "helstrom-house-9",
+      "home_interior": "helstrom-house-9",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [
+        "helstrom.legionary9.r0",
+        "helstrom.legionary9.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "helstrom-house-9",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "19:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-9",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-egg",
+        "at_building_name": "The Egg-Terrace Rest",
+        "pos": [
+          2245.71,
+          27.22,
+          2839.21
+        ],
+        "yaw": 345,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-egg's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-factor-10",
+      "name": "Anxal",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-factor-10",
+      "role": "head",
+      "disposition": 30,
+      "interior": "helstrom-house-10",
+      "home_interior": "helstrom-house-10",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [
+        "helstrom.factor10.r0",
+        "helstrom.factor10.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-house-10",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-10",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-tide",
+        "at_building_name": "The Turning Tide",
+        "pos": [
+          2265.94,
+          27.22,
+          2810.11
+        ],
+        "yaw": 7,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-tide's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-weaver-11",
+      "name": "Anshaneekh",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-weaver-11",
+      "role": "head",
+      "disposition": 48,
+      "interior": "helstrom-house-11",
+      "home_interior": "helstrom-house-11",
+      "work_interior": "helstrom-deep-market",
+      "owns_zones": [
+        "helstrom.weaver11.r0",
+        "helstrom.weaver11.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-11",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-11",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2287.59,
+          27.22,
+          2799.56
+        ],
+        "yaw": 43,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-factor-12",
+      "name": "Tsithmeer",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-factor-12",
+      "role": "head",
+      "disposition": 36,
+      "interior": "helstrom-hollow-bole",
+      "home_interior": "helstrom-hollow-bole",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [
+        "helstrom.factor12.r0",
+        "helstrom.factor12.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-smithy",
+        "at_building_name": "The Lashed Forge",
+        "pos": [
+          2291.67,
+          27.22,
+          2816.97
+        ],
+        "yaw": 32,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-boatwright-13",
+      "name": "Tsagul",
+      "race": "argonian",
+      "class": "boatwright",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-boatwright-13",
+      "role": "head",
+      "disposition": 46,
+      "interior": "helstrom-hist-shrine",
+      "home_interior": "helstrom-hist-shrine",
+      "work_interior": "helstrom-deep-market",
+      "owns_zones": [
+        "helstrom.boatwright13.r0",
+        "helstrom.boatwright13.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2290.47,
+          27.22,
+          2836.5
+        ],
+        "yaw": 21,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-warder-0-apprentice0",
+      "name": "Lifts-Bones",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-warder-0",
+      "role": "apprentice",
+      "disposition": 44,
+      "interior": "helstrom-house-0",
+      "home_interior": "helstrom-house-0",
+      "work_interior": "helstrom-house-0",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "helstrom-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-0",
+        "at_building_name": "Deek Slow-Rain's house",
+        "pos": [
+          2227.55,
+          27.22,
+          2814.25
+        ],
+        "yaw": 320,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-0's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-warder-1-lodger0",
+      "name": "Hrefna",
+      "race": "nord",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-warder-1",
+      "role": "lodger",
+      "disposition": 35,
+      "interior": "helstrom-house-1",
+      "home_interior": "helstrom-house-1",
+      "work_interior": "helstrom-house-1",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "helstrom-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "10:00",
+          "at": "helstrom-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "00:00",
+          "at": "helstrom-house-1",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-1",
+        "at_building_name": "Weel Quick-Tally's house",
+        "pos": [
+          2207.13,
+          27.22,
+          2814.53
+        ],
+        "yaw": 309,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-1's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-warder-1-apprentice1",
+      "name": "Bjarni",
+      "race": "nord",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-warder-1",
+      "role": "apprentice",
+      "disposition": 47,
+      "interior": "helstrom-house-1",
+      "home_interior": "helstrom-house-1",
+      "work_interior": "helstrom-house-1",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "helstrom-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2287.52,
+          27.22,
+          2801.09
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-2-apprentice0",
+      "name": "Buries-Nets",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-legionary-2",
+      "role": "apprentice",
+      "disposition": 50,
+      "interior": "helstrom-house-2",
+      "home_interior": "helstrom-house-2",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "helstrom-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-legation",
+        "at_building_name": "The Imperial Legation",
+        "pos": [
+          2321.7,
+          27.22,
+          2809.45
+        ],
+        "yaw": 57,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-legation's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-fisher-3-child0",
+      "name": "Deekshaneekh",
+      "race": "argonian",
+      "class": "child",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-fisher-3",
+      "role": "child",
+      "disposition": 54,
+      "interior": "helstrom-house-3",
+      "home_interior": "helstrom-house-3",
+      "work_interior": "helstrom-house-3",
+      "owns_zones": [],
+      "behaviour": "attend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-3",
+        "at_building_name": "Veek Dark-Water's house",
+        "pos": [
+          2229.92,
+          27.22,
+          2791.52
+        ],
+        "yaw": 295,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-3's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-fisher-3-partner1",
+      "name": "Tsawux",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-fisher-3",
+      "role": "partner",
+      "disposition": 43,
+      "interior": "helstrom-house-3",
+      "home_interior": "helstrom-house-3",
+      "work_interior": "helstrom-house-3",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "09:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "helstrom-house-3",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "18:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "22:00",
+          "at": "helstrom-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-warders",
+        "at_building_name": "The Warders' Room",
+        "pos": [
+          2257.08,
+          27.22,
+          2794.46
+        ],
+        "yaw": 342,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-warders's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-warder-4-sibling0",
+      "name": "Ingunn",
+      "race": "nord",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-warder-4",
+      "role": "sibling",
+      "disposition": 45,
+      "interior": "helstrom-house-4",
+      "home_interior": "helstrom-house-4",
+      "work_interior": "helstrom-house-4",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "04:00",
+          "to": "08:00",
+          "at": "helstrom-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "04:00",
+          "at": "helstrom-house-4",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-4",
+        "at_building_name": "Tul Two-Skins's house",
+        "pos": [
+          2211.05,
+          27.22,
+          2789.06
+        ],
+        "yaw": 284,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-4's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-apothecary-5-child0",
+      "name": "Gunhild",
+      "race": "nord",
+      "class": "child",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-apothecary-5",
+      "role": "child",
+      "disposition": 59,
+      "interior": "helstrom-house-5",
+      "home_interior": "helstrom-house-5",
+      "work_interior": "helstrom-house-5",
+      "owns_zones": [],
+      "behaviour": "attend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-5",
+        "at_building_name": "Onwen Quick-Tally's house",
+        "pos": [
+          2193.26,
+          27.22,
+          2778.19
+        ],
+        "yaw": 273,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-5's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-apothecary-5-partner1",
+      "name": "Keth-Omu",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-apothecary-5",
+      "role": "partner",
+      "disposition": 47,
+      "interior": "helstrom-house-5",
+      "home_interior": "helstrom-house-5",
+      "work_interior": "helstrom-house-5",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-5",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2287.63,
+          27.22,
+          2801.64
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-6-sibling0",
+      "name": "Ixvakh",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-legionary-6",
+      "role": "sibling",
+      "disposition": 43,
+      "interior": "helstrom-house-6",
+      "home_interior": "helstrom-house-6",
+      "work_interior": "helstrom-house-6",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "helstrom-house-6",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "helstrom-house-6",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-house-6",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-6",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2288.52,
+          27.22,
+          2800.1
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-7-lodger0",
+      "name": "Xantsith",
+      "race": "argonian",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-legionary-7",
+      "role": "lodger",
+      "disposition": 42,
+      "interior": "helstrom-house-7",
+      "home_interior": "helstrom-house-7",
+      "work_interior": "helstrom-house-7",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "helstrom-house-7",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "helstrom-house-7",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "helstrom-house-7",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2286.51,
+          27.22,
+          2802.42
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-7-apprentice1",
+      "name": "Xanwuxal",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-legionary-7",
+      "role": "apprentice",
+      "disposition": 50,
+      "interior": "helstrom-house-7",
+      "home_interior": "helstrom-house-7",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-house-7",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-7",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-scriptorium",
+        "at_building_name": "The Scriptorium of Roots",
+        "pos": [
+          2268.96,
+          27.22,
+          2792.55
+        ],
+        "yaw": 18,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-scriptorium's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-publican-8-apprentice0",
+      "name": "Xthari-Shuja",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-publican-8",
+      "role": "apprentice",
+      "disposition": 45,
+      "interior": "helstrom-house-8",
+      "home_interior": "helstrom-house-8",
+      "work_interior": "helstrom-inn-tide",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-8",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "helstrom-inn-tide",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "helstrom-inn-tide",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-8",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-tide",
+        "at_building_name": "The Turning Tide",
+        "pos": [
+          2269.48,
+          27.22,
+          2808.82
+        ],
+        "yaw": 7,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-tide's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-9-lodger0",
+      "name": "Histlith",
+      "race": "argonian",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-legionary-9",
+      "role": "lodger",
+      "disposition": 39,
+      "interior": "helstrom-house-9",
+      "home_interior": "helstrom-house-9",
+      "work_interior": "helstrom-house-9",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "helstrom-house-9",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "07:00",
+          "at": "helstrom-house-9",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "10:00",
+          "at": "helstrom-house-9",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "17:00",
+          "at": "helstrom-house-9",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-house-9",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-9",
+        "at_building_name": "Weel Quick-Tally's house",
+        "pos": [
+          2204.83,
+          27.22,
+          2735.04
+        ],
+        "yaw": 237,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-9's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-legionary-9-apprentice1",
+      "name": "Vokh-Xthari",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-legionary-9",
+      "role": "apprentice",
+      "disposition": 43,
+      "interior": "helstrom-house-9",
+      "home_interior": "helstrom-house-9",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-house-9",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-house-9",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-smithy",
+        "at_building_name": "The Lashed Forge",
+        "pos": [
+          2292.57,
+          27.22,
+          2816.45
+        ],
+        "yaw": 32,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-factor-10-elder0",
+      "name": "Ixnaheesh",
+      "race": "argonian",
+      "class": "elder",
+      "actor": "town-elder",
+      "faction": "wet-ledger",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-factor-10",
+      "role": "elder",
+      "disposition": 53,
+      "interior": "helstrom-house-10",
+      "home_interior": "helstrom-house-10",
+      "work_interior": "helstrom-house-10",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-house-10",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "helstrom-house-10",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "17:00",
+          "at": "helstrom-house-10",
+          "activity": "home"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-10",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-10",
+        "at_building_name": "Dram the Quiet's house",
+        "pos": [
+          2245.98,
+          27.22,
+          2760.28
+        ],
+        "yaw": 234,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-10's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-factor-10-sibling1",
+      "name": "Jul-Kaan",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": "wet-ledger",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-factor-10",
+      "role": "sibling",
+      "disposition": 45,
+      "interior": "helstrom-house-10",
+      "home_interior": "helstrom-house-10",
+      "work_interior": "helstrom-house-10",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "04:00",
+          "to": "08:00",
+          "at": "helstrom-house-10",
+          "activity": "work"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-house-10",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-house-10",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "04:00",
+          "at": "helstrom-house-10",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-house-10",
+        "at_building_name": "Dram the Quiet's house",
+        "pos": [
+          2246.16,
+          27.22,
+          2759.54
+        ],
+        "yaw": 234,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-house-10's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-weaver-11-partner0",
+      "name": "Thtithil-Keth",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-weaver-11",
+      "role": "partner",
+      "disposition": 44,
+      "interior": "helstrom-house-11",
+      "home_interior": "helstrom-house-11",
+      "work_interior": "helstrom-house-11",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "helstrom-house-11",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "helstrom-house-11",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-house-11",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2285.7,
+          27.22,
+          2837.93
+        ],
+        "yaw": 21,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-factor-12-child0",
+      "name": "Nutsith",
+      "race": "argonian",
+      "class": "child",
+      "actor": "villager",
+      "faction": "wet-ledger",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-factor-12",
+      "role": "child",
+      "disposition": 53,
+      "interior": "helstrom-hollow-bole",
+      "home_interior": "helstrom-hollow-bole",
+      "work_interior": "helstrom-hollow-bole",
+      "owns_zones": [],
+      "behaviour": "attend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hollow-bole",
+        "at_building_name": "The Hollow Bole",
+        "pos": [
+          2283.8,
+          27.22,
+          2775.56
+        ],
+        "yaw": 90,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hollow-bole's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-factor-12-partner1",
+      "name": "Shu-Kaan",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": "wet-ledger",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-factor-12",
+      "role": "partner",
+      "disposition": 41,
+      "interior": "helstrom-hollow-bole",
+      "home_interior": "helstrom-hollow-bole",
+      "work_interior": "helstrom-hollow-bole",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "18:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hollow-bole",
+        "at_building_name": "The Hollow Bole",
+        "pos": [
+          2284.31,
+          27.22,
+          2771.59
+        ],
+        "yaw": 90,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hollow-bole's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-boatwright-13-sibling0",
+      "name": "Kaanlith",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-boatwright-13",
+      "role": "sibling",
+      "disposition": 41,
+      "interior": "helstrom-hist-shrine",
+      "home_interior": "helstrom-hist-shrine",
+      "work_interior": "helstrom-hist-shrine",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "07:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hist-shrine",
+        "at_building_name": "The Hist Shrine at the Mound",
+        "pos": [
+          2312.65,
+          27.22,
+          2792.73
+        ],
+        "yaw": 68,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hist-shrine's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-hollow-bole",
+      "name": "Astrid",
+      "title": "Steward",
+      "race": "nord",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": "rootkeepers",
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-keeper-hollow-bole",
+      "role": "keeper",
+      "disposition": 34,
+      "interior": "helstrom-hollow-bole",
+      "home_interior": "helstrom-hollow-bole",
+      "work_interior": "helstrom-hollow-bole",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hollow-bole",
+        "at_building_name": "The Hollow Bole",
+        "pos": [
+          2284.27,
+          27.22,
+          2775.41
+        ],
+        "yaw": 90,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hollow-bole's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-undertemple",
+      "name": "Wades-Rain",
+      "title": "Healer",
+      "race": "argonian",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "rootkeepers",
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-keeper-undertemple",
+      "role": "keeper",
+      "disposition": 47,
+      "interior": "helstrom-undertemple",
+      "home_interior": "helstrom-undertemple",
+      "work_interior": "helstrom-undertemple",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-undertemple",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "helstrom-undertemple",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "helstrom-undertemple",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "helstrom-undertemple",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "helstrom-undertemple",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2298.39,
+          27.22,
+          2780.28
+        ],
+        "yaw": 79,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-undertemple's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-hist-shrine",
+      "name": "Muul-Thtithil",
+      "title": "Rootkeeper",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-keeper-hist-shrine",
+      "role": "keeper",
+      "disposition": 56,
+      "interior": "helstrom-hist-shrine",
+      "home_interior": "helstrom-hist-shrine",
+      "work_interior": "helstrom-hist-shrine",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "helstrom-hist-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hist-shrine",
+        "at_building_name": "The Hist Shrine at the Mound",
+        "pos": [
+          2312.92,
+          27.22,
+          2791.42
+        ],
+        "yaw": 68,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hist-shrine's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-legation",
+      "name": "Ulfar",
+      "title": "Clerk",
+      "race": "nord",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "the-imperial-assize",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-keeper-legation",
+      "role": "keeper",
+      "disposition": 32,
+      "interior": "helstrom-legation",
+      "home_interior": "helstrom-legation",
+      "work_interior": "helstrom-legation",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-legation",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "helstrom-legation",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-legation",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-legation",
+        "at_building_name": "The Imperial Legation",
+        "pos": [
+          2320.27,
+          27.22,
+          2811.55
+        ],
+        "yaw": 57,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-legation's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-rootpost",
+      "name": "Maat-Shekh",
+      "title": "Postmaster",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-keeper-rootpost",
+      "role": "keeper",
+      "disposition": 55,
+      "interior": "helstrom-rootpost",
+      "home_interior": "helstrom-rootpost",
+      "work_interior": "helstrom-rootpost",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "helstrom-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "helstrom-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "helstrom-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "helstrom-rootpost",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-scriptorium",
+        "at_building_name": "The Scriptorium of Roots",
+        "pos": [
+          2269.9,
+          27.22,
+          2792.66
+        ],
+        "yaw": 18,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-scriptorium's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-deep-market",
+      "name": "Thuxis-Uxith",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-keeper-deep-market",
+      "role": "keeper",
+      "disposition": 42,
+      "interior": "helstrom-deep-market",
+      "home_interior": "helstrom-deep-market",
+      "work_interior": "helstrom-deep-market",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-deep-market",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-deep-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-deep-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2290.57,
+          27.22,
+          2836.16
+        ],
+        "yaw": 21,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-smithy",
+      "name": "Wuxaluj",
+      "title": "Smith",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-keeper-smithy",
+      "role": "keeper",
+      "disposition": 41,
+      "interior": "helstrom-smithy",
+      "home_interior": "helstrom-smithy",
+      "work_interior": "helstrom-smithy",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "helstrom-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hollow-bole",
+        "at_building_name": "The Hollow Bole",
+        "pos": [
+          2282.57,
+          27.22,
+          2772.15
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hollow-bole's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-apothecary",
+      "name": "Thithmeer",
+      "title": "Apothecary",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-keeper-apothecary",
+      "role": "keeper",
+      "disposition": 52,
+      "interior": "helstrom-apothecary",
+      "home_interior": "helstrom-apothecary",
+      "work_interior": "helstrom-apothecary",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "helstrom-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-apothecary",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2286.13,
+          27.22,
+          2838.14
+        ],
+        "yaw": 21,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-scriptorium",
+      "name": "Anxthari",
+      "title": "Scribe",
+      "race": "argonian",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-keeper-scriptorium",
+      "role": "keeper",
+      "disposition": 41,
+      "interior": "helstrom-scriptorium",
+      "home_interior": "helstrom-scriptorium",
+      "work_interior": "helstrom-scriptorium",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-scriptorium",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "helstrom-scriptorium",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "helstrom-scriptorium",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-scriptorium",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-scriptorium",
+        "at_building_name": "The Scriptorium of Roots",
+        "pos": [
+          2269.23,
+          27.22,
+          2794.36
+        ],
+        "yaw": 18,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-scriptorium's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-inn-tide",
+      "name": "Nalpa-Seil",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-keeper-inn-tide",
+      "role": "keeper",
+      "disposition": 53,
+      "interior": "helstrom-inn-tide",
+      "home_interior": "helstrom-inn-tide",
+      "work_interior": "helstrom-inn-tide",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "10:00",
+          "at": "helstrom-inn-tide",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "work"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-hollow-bole",
+        "at_building_name": "The Hollow Bole",
+        "pos": [
+          2283.89,
+          27.22,
+          2775.86
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-hollow-bole's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-inn-gate",
+      "name": "Wuxteekh",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-keeper-inn-gate",
+      "role": "keeper",
+      "disposition": 51,
+      "interior": "helstrom-inn-gate",
+      "home_interior": "helstrom-inn-gate",
+      "work_interior": "helstrom-inn-gate",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "helstrom-inn-gate",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "helstrom-inn-gate",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "helstrom-inn-gate",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2287.34,
+          27.22,
+          2799.51
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-inn-egg",
+      "name": "Ixshaneekh",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "helstrom",
+      "quarter": "the-mound",
+      "household": "helstrom-keeper-inn-egg",
+      "role": "keeper",
+      "disposition": 52,
+      "interior": "helstrom-inn-egg",
+      "home_interior": "helstrom-inn-egg",
+      "work_interior": "helstrom-inn-egg",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "helstrom-inn-egg",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "helstrom-inn-egg",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "helstrom-inn-egg",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-deep-market",
+        "at_building_name": "The Deep Market",
+        "pos": [
+          2290.11,
+          27.22,
+          2798.67
+        ],
+        "yaw": 43,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-deep-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-warders",
+      "name": "Wuxhaj",
+      "title": "Clerk",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "ninth-cohort",
+      "settlement": "helstrom",
+      "quarter": "deep-gate",
+      "household": "helstrom-keeper-warders",
+      "role": "keeper",
+      "disposition": 33,
+      "interior": "helstrom-warders",
+      "home_interior": "helstrom-warders",
+      "work_interior": "helstrom-warders",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-warders",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "helstrom-warders",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "helstrom-warders",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-warders",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-smithy",
+        "at_building_name": "The Lashed Forge",
+        "pos": [
+          2291.09,
+          27.22,
+          2817.95
+        ],
+        "yaw": 32,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "helstrom-keeper-archive",
+      "name": "Wuxlukiul",
+      "title": "Clerk",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "rootkeepers",
+      "settlement": "helstrom",
+      "quarter": "egg-terrace",
+      "household": "helstrom-keeper-archive",
+      "role": "keeper",
+      "disposition": 28,
+      "interior": "helstrom-archive",
+      "home_interior": "helstrom-archive",
+      "work_interior": "helstrom-archive",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "helstrom-archive",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "helstrom-archive",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "helstrom-inn-tide",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "helstrom-archive",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "helstrom-archive",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "helstrom",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-inn-egg",
+        "at_building_name": "The Egg-Terrace Rest",
+        "pos": [
+          2246.2,
+          27.22,
+          2839.66
+        ],
+        "yaw": 345,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from helstrom-inn-egg's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    }
+  ],
+  "street_life_note": "Some records in this file carry a `post` block and outdoor `at: null` schedule rows written by tools/world/build-street-life.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
+}

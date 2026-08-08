@@ -1,0 +1,1313 @@
+{
+  "schema": "elder-souls/quest-file@1",
+  "id": "mainline-act5",
+  "element_schema": "corpus/30-quests/quest.schema.json",
+  "piece": "W1-19 — the main quest, end to end",
+  "corpus_item": "RI-QST06 §B Act V — The Argument, and RI-EXP05 §D LH1-LH16. Five quests, stakes 10, a pressable pre-violence conversation, the point of no return at quest 4, at least one non-violent resolution to the final confrontation, and an aftermath the player stands in.",
+  "note": "The approach is a place (Q-MAIN-24 and Q-MAIN-25), the conversation precedes the violence (Q-MAIN-26), the point of no return is a sill you walk over with no confirmation of any kind (Q-MAIN-27), and the ending is short (Q-MAIN-28). Nothing in this file refutes the antagonist and nothing in it adjudicates the mandate.",
+  "quests": [
+    {
+      "id": "Q-MAIN-24",
+      "title": "The Works at the Bone Ladder",
+      "category": "main",
+      "faction": null,
+      "act": 5,
+      "rank_gate": null,
+      "discovery": "given",
+      "giver": {
+        "npc_id": "undersexton-aveline-rell",
+        "location": "The Bone Ladder, the works camp under the rib",
+        "disposition_min": 30,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the works",
+        "prerequisite_quests": [
+          "Q-MAIN-16",
+          "Q-MAIN-17",
+          "Q-MAIN-18",
+          "Q-MAIN-19",
+          "Q-MAIN-20",
+          "Q-MAIN-21",
+          "Q-MAIN-22",
+          "Q-MAIN-23"
+        ]
+      },
+      "task_kind": "succession",
+      "stakes": 10,
+      "directions": "The camp is at the Bone Ladder, where the coast track passes the rib, and it is the largest thing anyone has built in the Stone Wastes in four hundred years. The shaft under the rib is the way down now; the Court's crypt road is for the sextons and the barges are at the Archon end. Teeja-Lun still keeps the well and there are sixty people camped around her who all want to sit at it.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Eight voices, and they are all in. There is a works camp at the Bone Ladder with sixty hands, four cutting yards, the Ledger's barges at the Archon end and an Imperial writ nailed to a post, and none of it can go down until the eleven roots are opened and the shaft is shored, and that is a fortnight of ordinary work. I did not build any of it and it is mine to answer for.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The camp has become a place. There is a cook fire the Deep-Kin keepers will not sit at and a second one they will, and a bonded store for the writ's paperwork, and a sick-tent, and a hand has cut a step into the rib so that Teeja-Lun does not have to climb. None of that was planned. I have been walking through it every evening and counting who is still here.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The eleventh root would not open. Three keepers stood at it for two days and it would not, and on the third morning it had opened itself in the night, which Sesh-Anaat says has never happened and which she will not discuss further. I was not there when it opened and neither was anyone else.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The Blackwood Company's people are here. Not hiding — camped, on the far side of the rib, with a writ of their own out of Leyawiin that says nothing about the Stone Wastes and looks impressive at a distance. Their factor sent a jar of Cyrodiilic wine over with a note asking to be told when we go down. The Company's camp is left where it is or it is opened up, and once I have their factor in my tent they know exactly who I am, which closes the possibility of going down without them knowing.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "Teeja-Lun asked me, at her own well, in front of the whole camp, whether I was going to put the Bone Ladder out. She has kept a wound open with a knife for eleven days for people who walk past her. I said I did not know what opening the Count does to the wells. She said that she knew that, and that she had asked anyway, and that I should remember she asked.",
+          "records_belief": false
+        },
+        {
+          "index": 70,
+          "state": "failure",
+          "text": "The shoring gave in the night of the eleventh day and took four of the hands and most of the shaft with it. The camp is breaking up. What is left of the works could not get a rope down there, let alone sixty people.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "The shaft is shored and the eleven are open and the way down is walkable. Fifteen days. The camp is still standing and the Company's camp is still standing beside it, and tomorrow I go down and I have written tonight's date here because I do not think I will be writing much for a while.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "The shaft is shored and I have the Company's factor sitting in my sick-tent with a broken leg, because his people went down the eleventh root ahead of us the night it opened itself and only one of them came back up. He has told me what he was paid to fetch and who told him it was down there, and I do not believe the second half.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_company_camp",
+          "at_journal_index": 40,
+          "condition": "The player deals with the Blackwood Company camp: ignore it and go down first, or find out what happened to the people it sent down the eleventh root",
+          "leads_to": [
+            "rev_the_company_went_first",
+            "res_shore_and_go",
+            "res_the_factors_leg"
+          ],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_shore_and_go",
+          "method": "wait",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "Fifteen days of ordinary work and the way down is open. The camp stands, the Company's camp stands beside it, and the approach is a populated place rather than a corridor.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": [
+            "res_the_factors_leg"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": 6,
+              "the_dockhands": 6
+            },
+            "world_flags": [
+              "the_works_are_open",
+              "the_way_down_is_walkable",
+              "the_company_camp_stands",
+              "fifteen_days_of_ordinary_work"
+            ],
+            "npc_disposition": {
+              "keeper-teeja-lun": 10,
+              "dockmaster-weeja-sen": 10
+            }
+          }
+        },
+        {
+          "id": "res_the_factors_leg",
+          "method": "persuade",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The way down is open and the Company's factor is in the player's sick-tent with a broken leg and an account of who told him what was under the Wastes. His account is one of two and the game never says which is true.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_the_company_went_first"
+          ],
+          "exclusive_with": [
+            "res_shore_and_go"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": 6,
+              "the_wet_ledger": -6
+            },
+            "world_flags": [
+              "the_works_are_open",
+              "the_way_down_is_walkable",
+              "the_company_factor_is_a_prisoner",
+              "the_factors_account_of_who_told_him",
+              "the_company_lost_a_factor_and_a_party"
+            ],
+            "npc_disposition": {
+              "blackwood-company-factor": -30,
+              "keeper-teeja-lun": 6
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_shoring_gave",
+          "cause": "The shaft is driven without the fortnight of shoring",
+          "journal_index": 70,
+          "recoverable": false,
+          "consequence": "Four hands die and the shaft is lost. The gallery can only be reached by the Court's crypt road, which means the Court's terms, and if the Court's voice was lost the mainline can only be finished on the backpath.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D8",
+          "D10"
+        ],
+        "stated_objective": "Open the way down to the gallery",
+        "actual_objective": "Open the way down to the gallery",
+        "truth": "The eleventh root opened itself in the night and nobody will discuss it. The Blackwood Company sent people down it before anyone else went down, and only one came back, and what he says about who told the Company is not corroborated by anything in this game.",
+        "revealed_by": [
+          {
+            "id": "rev_the_company_went_first",
+            "channel": "eavesdrop",
+            "source": "blackwood-company-camp",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_teeja_luns_question",
+            "channel": "talk_to_target",
+            "source": "keeper-teeja-lun",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": true
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": [
+          "act_five_opened"
+        ],
+        "unlocks": [
+          "Q-MAIN-25"
+        ]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "loc_the_works_camp",
+          "name": "the works camp at the Bone Ladder"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_teeja_luns_question",
+          "name": "the question Teeja-Lun asked at her own well"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_who_cut_the_step_into_the_rib",
+          "name": "who cut the step into the rib",
+          "on_resolution": [
+            "res_shore_and_go"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "blackwood-company-factor",
+          "name": "a Company factor with a broken leg",
+          "on_resolution": [
+            "res_the_factors_leg"
+          ]
+        }
+      ],
+      "notes": "Act V quest 1. RI-EXP05 LH1: the approach is a place. Six named entities stand in the camp — Teeja-Lun, Sesh-Anaat, Neeja-Xul, Weeja-Sen, Rell and the Company's factor — two optional interiors (the bonded store and the sick-tent), a route choice at the eleventh root, and a whole Company camp that can be avoided entirely. LH15: the works camp and everything below it is the last new place and is never loaded before Act V."
+    },
+    {
+      "id": "Q-MAIN-25",
+      "title": "The Ash Gallery",
+      "category": "main",
+      "faction": null,
+      "act": 5,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "undersexton-bel-mourne",
+        "location": "The Bone Ladder, the head of the shaft",
+        "disposition_min": 25,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the ash gallery",
+        "prerequisite_quests": [
+          "Q-MAIN-24"
+        ]
+      },
+      "task_kind": "pilgrimage",
+      "stakes": 10,
+      "directions": "Down the shaft under the rib, past the eleven opened roots, to where the old work starts and the water stops. The gallery beyond is dry, and it is the only dry place under the Stone Wastes, and there is grey ash on the floor of it that is not ash. Two ways lead on from the far end: the counting floor, which is longer and has people on it, and the intake stair, which is shorter and goes through the working parts.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Below the eleventh root the water stops and there is a dry gallery under the Wastes with grey dust on the floor of it, ankle deep, that is not dust. It is what four thousand years of held pattern leaves behind when it is held too long. Bel Mourne came down with me and would not walk in it.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "There are people down here. Not many and not soldiers. They keep the intakes, they are extremely old, they have been re-issued so many times that Bel Mourne says they are barely the same people, and they are not surprised to see us. One of them has been expecting a tally-reader for a hundred and forty years and told me so as though we had an appointment.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "Two ways on. The counting floor is long and lit and there are eleven keepers on it who will each want to say something. The intake stair is shorter and goes through the working parts of the machine, where the wards are still live and the thing that has been sitting in the third bay since the Duskfall is still sitting in it. I stood at the fork for longer than I would like to admit.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The keeper in the fifth bay is called Ei-Vashan and she wants to leave. She has kept the fifth intake for two hundred years and she has worked out, on her own, from her own count, roughly what I have come to do, and she would like to be above ground when it happens. None down here has ever left.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "The thing in the third bay is not a keeper and is not a guard. It was put there. It does not follow and it does not leave the bay and if you go through the bay it will do what it was left there to do, and there is a corridor round it that adds an hour and that the whole floor uses. I asked what it was and not one of them would give me a word for it.",
+          "records_belief": false
+        },
+        {
+          "index": 72,
+          "state": "failure",
+          "text": "I went through the third bay and I was carried back to the works camp by two cutters and I do not remember the middle of it. A fortnight in the sick-tent and the way down is still there and I am going back, and Teeja-Lun says I should sleep first.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I took the counting floor and heard eleven keepers out, one at a time, which took a day and a half. Not one of them argued with me. They told me what their bay does and how long they have kept it and, most of them, what year they think it is.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I took the intake stair and went round the third bay by the corridor they all use, which is what it is there for. Two hours instead of a day and a half and I have not spoken to anyone down here except Ei-Vashan, who asked to come up, and who is sitting at the Bone Ladder well now, above ground, for the first time in two hundred years.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I went through the third bay, killed what was left there in the Duskfall to sit in it, and came out the other side in a quarter of an hour with a great deal of the grey dust on me. Every keeper on the counting floor knew before I got there. It has changed what they are willing to say to me and not in the direction I expected.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_route",
+          "at_journal_index": 30,
+          "condition": "The player chooses the counting floor, the intake stair round the third bay, or the third bay itself",
+          "leads_to": [
+            "rev_the_keepers_accounts",
+            "res_counting_floor",
+            "res_intake_stair",
+            "res_through_the_third_bay"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_ei_vashan",
+          "at_journal_index": 40,
+          "condition": "The player takes Ei-Vashan up, or leaves her at her intake",
+          "leads_to": [
+            "rev_ei_vashans_count",
+            "res_counting_floor",
+            "res_intake_stair"
+          ],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_counting_floor",
+          "method": "persuade",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "Eleven keepers heard out, one at a time. The longest route and the one that supplies four of the twelve topics in the final conversation, because the keepers say things the antagonist assumes the player does not know.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_the_keepers_accounts"
+          ],
+          "exclusive_with": [
+            "res_intake_stair",
+            "res_through_the_third_bay"
+          ],
+          "consequences": {
+            "faction_reputation": {},
+            "world_flags": [
+              "approach_by_the_counting_floor",
+              "player_heard_the_eleven_keepers",
+              "third_bay_avoided",
+              "a_day_and_a_half_on_the_counting_floor"
+            ],
+            "npc_disposition": {
+              "gallery-intake-keepers": 25,
+              "keeper-ei-vashan": 10
+            }
+          }
+        },
+        {
+          "id": "res_intake_stair",
+          "method": "sneak",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "Two hours, round the third bay by the corridor everybody uses. Nothing is killed, nobody is spoken to, and the final conversation has four fewer pressable topics.",
+          "morally_better": null,
+          "requires": {
+            "skills": {
+              "sneak": 30
+            }
+          },
+          "exclusive_with": [
+            "res_counting_floor",
+            "res_through_the_third_bay"
+          ],
+          "consequences": {
+            "faction_reputation": {},
+            "world_flags": [
+              "approach_by_the_intake_stair",
+              "third_bay_avoided",
+              "two_hours_and_nobody_spoken_to",
+              "ei_vashan_came_up"
+            ],
+            "npc_disposition": {
+              "keeper-ei-vashan": 25
+            }
+          }
+        },
+        {
+          "id": "res_through_the_third_bay",
+          "method": "combat",
+          "violence_required": true,
+          "journal_index": 94,
+          "outcome": "The thing left in the third bay in the Duskfall is killed and the gallery knows within the hour. The keepers become more forthcoming rather than less, which is not what the player expects and is not commented on.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": [
+            "res_counting_floor",
+            "res_intake_stair"
+          ],
+          "consequences": {
+            "faction_reputation": {},
+            "world_flags": [
+              "approach_through_the_third_bay",
+              "the_third_bay_is_empty",
+              "the_gallery_knows_what_the_player_did",
+              "the_keepers_will_say_more_not_less"
+            ],
+            "kills_npc": [
+              "npc-the-thing-in-the-third-bay"
+            ],
+            "npc_disposition": {
+              "gallery-intake-keepers": -10
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_third_bay_beat_me",
+          "cause": "The player enters the third bay and loses",
+          "journal_index": 72,
+          "recoverable": true,
+          "consequence": "A fortnight in the sick-tent at the works camp. Nothing is closed; the corridor round the bay is still there and so is the counting floor.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D10",
+          "D12"
+        ],
+        "stated_objective": "Cross the ash gallery to the Count",
+        "actual_objective": "Cross the ash gallery to the Count",
+        "truth": "The keepers of the intakes are people, extremely old, re-issued past recognition, and none of them is hostile. One of them has been expecting a tally-reader for a hundred and forty years. One of them wants to leave and has worked out on her own what is coming.",
+        "revealed_by": [
+          {
+            "id": "rev_the_keepers_accounts",
+            "channel": "talk_to_target",
+            "source": "gallery-intake-keepers",
+            "before_point_of_no_return": true,
+            "journal": 30
+          },
+          {
+            "id": "rev_ei_vashans_count",
+            "channel": "talk_to_target",
+            "source": "keeper-ei-vashan",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": [
+          "the_ash_gallery_crossed"
+        ],
+        "unlocks": [
+          "Q-MAIN-26"
+        ]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_eleven_keepers",
+          "name": "what the keepers of the intakes say",
+          "on_resolution": [
+            "res_counting_floor"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "keeper-ei-vashan",
+          "name": "Ei-Vashan of the fifth intake"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_what_year_they_think_it_is",
+          "name": "what year the keepers think it is",
+          "on_resolution": [
+            "res_counting_floor"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_the_corridor_round_the_bay",
+          "name": "the corridor everybody uses",
+          "on_resolution": [
+            "res_intake_stair"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_duskfall_ward_fragment",
+          "name": "a fragment of what was left in the third bay",
+          "on_resolution": [
+            "res_through_the_third_bay"
+          ]
+        }
+      ],
+      "notes": "Act V quest 2. RI-EXP05 LH1's route choice with different composition, and the non-boss encounter that can be avoided entirely: the thing in the third bay has a corridor round it that the inhabitants use, and killing it is a choice with a consequence rather than a gate. This is the only violence_required resolution anywhere in the mainline's 31 quests and it is optional on a quest that has two non-violent alternatives."
+    },
+    {
+      "id": "Q-MAIN-26",
+      "title": "The Count Itself",
+      "category": "main",
+      "faction": null,
+      "act": 5,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "ixtu-meer",
+        "location": "Under the Stone Wastes, the counting chamber above the reservoir",
+        "disposition_min": 0,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the steward of the count",
+        "prerequisite_quests": [
+          "Q-MAIN-25"
+        ]
+      },
+      "task_kind": "succession",
+      "stakes": 10,
+      "directions": "Past the gallery, past the bays, up the short stair at the end that is cut for a person and not for a machine. He is in the counting chamber and he is not hiding and there is nothing between the stair and him. He will talk for as long as anyone wants to talk, and there is a chair.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Ixtu-Meer is a very old Argonian in a room with a chair in it and he stood up when I came in. He said that he had read the letter I am carrying, because he wrote it, and asked whether Ashul-Tei was well. Then he asked what I wanted to know and said that we had time, which under the circumstances was a strange thing to find comforting.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "He does not deny anything. The reservoir holds what the roots do not get. It has held it since before the Duskfall. He did not build it, he does not know who did, and he took the work over from a keeper called Vei-Anaat who took it from someone else, and the chain of them is written on the wall of the chamber and it is long. He answered everything I put to him and did not once ask what I intended.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "His case, as he put it: the wells give because he lets an allowance past. He showed me the ledger of it. It is the same arithmetic I did in the Court's archive from the other end, and it comes out the same, and I did mine first and he did not know I had done it.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "Three things he is right about, and I checked all three myself before I met him. The curve is older than the cutting; I read that in the Tally. The wells drink what the machine lets past; I proved that with my own hand on the sixth intake and a man is buried for it. The gem trade cannot account for the curve; I counted the tonnage at Archon. He did not tell me any of these. He asked me what I had found and then agreed with it.",
+          "records_belief": false
+        },
+        {
+          "index": 44,
+          "state": "active",
+          "text": "What he will not say is why it is filling now rather than holding. He says the answer is that it was always filling and the difference is that the province has grown enough to notice, and I do not believe him, and he knows I do not, and he did not try again.",
+          "records_belief": false
+        },
+        {
+          "index": 48,
+          "state": "active",
+          "text": "He asked me a question and I have written it down because I have not been able to stop turning it over. He asked: whose count are you? There is a count being kept on you, he said, and you have never once asked whose, and he is right and I do not know the answer.",
+          "records_belief": false
+        },
+        {
+          "index": 52,
+          "state": "active",
+          "text": "I asked him Ashul-Tei's question, the one I was made to say back twice: what does the marsh owe you. He was quiet for a while and then he said that this is the only question anyone has brought him in four hundred years that was not about the machine, and he answered it, and the answer is his and I am not going to write it here.",
+          "records_belief": false
+        },
+        {
+          "index": 56,
+          "state": "active",
+          "text": "There is a way to open it that does not involve killing him and he told me what it is himself, unprompted, in detail, twice, because he would rather I did it properly than badly. He would still prefer I did not do it. Both of those were true at the same time in the same voice and I have met priests who could not manage that.",
+          "records_belief": false
+        },
+        {
+          "index": 60,
+          "state": "active",
+          "text": "He has not asked me not to. He has asked me to be able to say, afterwards, what I thought would happen, and to be wrong in a way that I chose rather than in a way I drifted into. That is the whole of his request and he made it once.",
+          "records_belief": false
+        },
+        {
+          "index": 70,
+          "state": "failure",
+          "text": "He is dead on the floor of the counting chamber and I did that before he had finished standing up. There is a ledger on the table in a hand I have been reading since the Court's fourth volume and I cannot make any sense of it, and the eleven keepers below are waiting to be told something.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "We talked for most of a day. I know how the Count opens, I know what he thinks it will do, I know what the keepers on the floor below think it will do, and the three accounts do not agree. This is not going to be settled for me and he was the last person who might have.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I put Bel Mourne's copies in front of him, the three with the gap in them, and asked whether the ninth clause was written for me. He read them properly, taking his time, and then said that he has been in the margins of that book for three hundred years and has never once written in the Recension, and that this is the only thing he can tell me about it and that he is sorry it is not more.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_press",
+          "at_journal_index": 40,
+          "condition": "The player presses him on the Recension with Bel Mourne's copies, or does not",
+          "leads_to": [
+            "rev_he_never_wrote_the_recension",
+            "res_hear_him_out",
+            "res_press_him_on_the_clause"
+          ],
+          "irreversible": false
+        },
+        {
+          "id": "br_the_method",
+          "at_journal_index": 56,
+          "condition": "He explains, unprompted, how the Count is opened without violence; the player may take the method or leave it",
+          "leads_to": [
+            "rev_how_the_count_opens",
+            "res_hear_him_out",
+            "res_press_him_on_the_clause"
+          ],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_hear_him_out",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The conversation is had in full. The player leaves knowing how the Count opens, what he thinks it does, and that the three accounts of the consequence do not agree. Nothing is settled and nobody is refuted.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_how_the_count_opens"
+          ],
+          "exclusive_with": [
+            "res_press_him_on_the_clause"
+          ],
+          "consequences": {
+            "faction_reputation": {},
+            "world_flags": [
+              "the_argument_was_heard",
+              "player_knows_how_the_count_opens",
+              "the_three_accounts_do_not_agree"
+            ],
+            "npc_disposition": {
+              "ixtu-meer": 15
+            }
+          }
+        },
+        {
+          "id": "res_press_him_on_the_clause",
+          "method": "persuade",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The player presses him on the mandate with the Court's own gapped copies. He says he has never written in the Recension. This neither proves nor disproves anything about the ninth clause and is the last word anyone in this game offers on it.",
+          "morally_better": null,
+          "requires": {
+            "disposition": 20
+          },
+          "requires_knowing": [
+            "rev_how_the_count_opens",
+            "rev_he_never_wrote_the_recension"
+          ],
+          "exclusive_with": [
+            "res_hear_him_out"
+          ],
+          "consequences": {
+            "faction_reputation": {},
+            "world_flags": [
+              "the_argument_was_heard",
+              "player_knows_how_the_count_opens",
+              "the_clause_was_put_to_him",
+              "he_never_wrote_in_the_recension",
+              "the_last_word_on_the_clause_settles_nothing"
+            ],
+            "npc_disposition": {
+              "ixtu-meer": 25,
+              "undersexton-bel-mourne": 10
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_killed_him_first",
+          "cause": "Ixtu-Meer dies before journal index 20",
+          "journal_index": 70,
+          "recoverable": false,
+          "consequence": "The conversation never happens. The Count can still be opened, badly, from the working parts, and every ending reached that way is reached without knowing what any of it was for. The journal records this in the player's own voice and the game says nothing else about it.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D6",
+          "D11",
+          "D7"
+        ],
+        "stated_objective": "Reach the Steward of the Count",
+        "actual_objective": "Reach the Steward of the Count",
+        "truth": "He is right about three things the player verified independently before meeting him, he declines to explain the one thing he cannot account for, and he asks the player a question about themselves that nothing in this game answers.",
+        "revealed_by": [
+          {
+            "id": "rev_how_the_count_opens",
+            "channel": "talk_to_target",
+            "source": "ixtu-meer",
+            "before_point_of_no_return": true,
+            "journal": 56
+          },
+          {
+            "id": "rev_he_never_wrote_the_recension",
+            "channel": "talk_to_target",
+            "source": "ixtu-meer",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_chain_on_the_wall",
+            "channel": "environment",
+            "source": "loc_the_counting_chamber_wall",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": true
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": [
+          "the_conversation_happened"
+        ],
+        "unlocks": [
+          "Q-MAIN-27"
+        ]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_how_the_count_opens",
+          "name": "how the Count opens"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_whose_count_are_you",
+          "name": "whose count are you"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_chain_on_the_wall",
+          "name": "the chain of names on the chamber wall",
+          "on_resolution": [
+            "res_hear_him_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_he_has_never_written_in_the_recension",
+          "name": "he has never written in the Recension",
+          "on_resolution": [
+            "res_press_him_on_the_clause"
+          ]
+        }
+      ],
+      "notes": "Act V quest 3. RI-EXP05 LH6, LH7, LH8 and RI-QST02 D6/D11. The conversation precedes the violence and there is no fight in this quest at all. Twelve topics live on this quest in game/data/dialogue/topics/main-quest-argument.json, four of them gated on knowledge learned elsewhere. He is right about three things the player verified with their own hands in Acts II and III. Nothing anywhere in the game asserts he was simply wrong: no ally line, no journal entry, no closing text, no book."
+    },
+    {
+      "id": "Q-MAIN-27",
+      "title": "The Sill",
+      "category": "main",
+      "faction": null,
+      "act": 5,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "ixtu-meer",
+        "location": "Under the Stone Wastes, the counting chamber above the reservoir",
+        "disposition_min": 0,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the sill",
+        "prerequisite_quests": [
+          "Q-MAIN-26"
+        ]
+      },
+      "task_kind": "succession",
+      "stakes": 10,
+      "directions": "The reservoir floor is through the arch at the far end of the counting chamber and down eleven steps. There is a cut stone sill across the bottom of the arch, ankle high, worn in the middle where four thousand years of feet have gone over it. It is a step. There is nothing else there.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "The reservoir floor is down eleven steps through the arch. There is a stone sill across the bottom of the arch, ankle high, worn in the middle. Ixtu-Meer said that everyone who has gone over it has come back up, and that he has never been able to work out whether that is because it lets them or because none of them did anything. I have been standing on this side of it for most of an hour.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "Ei-Vashan told me at the Bone Ladder well, three weeks ago, that once the working parts have your weight on the floor they will not accept a hand on the intakes from above any more. She said it as an ordinary fact about her job. It is the only warning I was given and it was given before I knew what it was about.",
+          "records_belief": false
+        },
+        {
+          "index": 24,
+          "state": "active",
+          "text": "The camp knew before I did. Rell has moved the barges to the deep-water berth and the cutters have stopped work on the twelfth root and the sick-tent has been struck. They were not told to. They have all read the same thing off the same fortnight and they are behaving like people who expect the road to close behind a person.",
+          "records_belief": false
+        },
+        {
+          "index": 28,
+          "state": "active",
+          "text": "The Court's chapter has been sitting for four days over whether the crypt road stays open after. The Deep-Kin have withdrawn to the eleventh root. Weeja-Sen has paid off thirty of the sixty and sent them home with the season's money, which is not what a dockmaster does when she expects the work to continue. None of them has said any of this to me.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "I am standing on the near side of the sill. Everything above me stops being reachable when I put my weight on the other side of it: the crypt road, the intakes from above, the camp, the eight voices and whatever any of them still owed me. None of this has been said to me. I have worked it out from a keeper's remark and a dockmaster paying people off, which is how I have found out everything else in this business.",
+          "records_belief": false
+        },
+        {
+          "index": 76,
+          "state": "failure",
+          "text": "I went back up the stair without crossing it. The chamber is still there and the chair is still in it and he said he would be here, which is either a promise or the plainest description of his situation I have been given.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I stepped over it. It is a stone about as high as my ankle and it took less than a second and nothing happened at all.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_sill",
+          "at_journal_index": 40,
+          "condition": "The player crosses the sill onto the reservoir floor, which nothing prevents, warns or confirms, and after which four threads above are permanently unreachable",
+          "leads_to": [
+            "rev_what_the_sill_closes",
+            "res_cross",
+            "fail_turned_back"
+          ],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_cross",
+          "method": "wait",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The player is on the reservoir floor. The crypt road, the intakes from above, the works camp and every unfinished thread with the eight voices are permanently closed, and each of them says so in fiction when the player next asks about it.",
+          "morally_better": null,
+          "requires": {},
+          "consequences": {
+            "faction_reputation": {},
+            "world_flags": [
+              "point_of_no_return_crossed",
+              "crypt_road_closed_behind",
+              "intakes_from_above_closed",
+              "works_camp_unreachable",
+              "the_eight_voices_are_finished",
+              "the_sill_is_behind_me"
+            ],
+            "locks": [
+              "Q-MAIN-29"
+            ]
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_turned_back",
+          "cause": "The player leaves the counting chamber without crossing",
+          "journal_index": 76,
+          "recoverable": true,
+          "consequence": "Nothing is lost. The sill is still a step and the chamber is still a room with a chair in it and Ixtu-Meer is still in it and will talk again.",
+          "silent": true
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D8"
+        ],
+        "stated_objective": "Go down onto the reservoir floor",
+        "actual_objective": "Go down onto the reservoir floor",
+        "truth": "The sill is the point of no return. Nothing announces it. It is signalled by a keeper's ordinary remark about her job three weeks earlier, by a dockmaster paying off half her hands, and by the Court's chapter sitting for four days over what happens to the road afterwards.",
+        "revealed_by": [
+          {
+            "id": "rev_what_the_sill_closes",
+            "channel": "talk_to_target",
+            "source": "keeper-ei-vashan",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_camp_knows",
+            "channel": "environment",
+            "source": "loc_the_works_camp",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": [
+          "on_the_reservoir_floor"
+        ],
+        "unlocks": [
+          "Q-MAIN-28"
+        ]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "loc_the_reservoir_floor",
+          "name": "the reservoir floor"
+        }
+      ],
+      "notes": "Act V quest 4, the point of no return. RI-EXP05 LH2: 27 of the mainline's 28 acted quests sit behind it, 0.964. LH3: three independent diegetic channels — Ei-Vashan's remark at journal 20, the camp's behaviour at journal 24, the chapter and the dockmaster at journal 28 — the earliest of them delivered three weeks of simulated time before the sill can be reached. LH4: there is no confirmation dialog, no UI string, no autosave prompt and no modal of any kind; the crossing is a resolution called res_cross whose method is wait. LH5: six world flags and four named threads close, each with an in-fiction acknowledgement."
+    },
+    {
+      "id": "Q-MAIN-28",
+      "title": "What the Tide Does Now",
+      "category": "main",
+      "faction": null,
+      "act": 5,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "ixtu-meer",
+        "location": "Under the Stone Wastes, the reservoir floor",
+        "disposition_min": 0,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the opening of the count",
+        "prerequisite_quests": [
+          "Q-MAIN-27"
+        ]
+      },
+      "task_kind": "succession",
+      "stakes": 10,
+      "directions": "The reservoir floor is one room and it is very large and it is nearly dark. The sluice gear is at the far end where the eleven intakes come together, and it is worked by hand, and it was built to be worked by one person because one person is all there has ever been.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "The floor of the reservoir is a room the size of a settlement and it is nearly dark and the sluice gear at the end of it was built to be worked by one pair of hands. He came down after me and did not try to stop me and stood where I could see him.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "Four ways out of this room, and I have been told about all four by people who disagreed about every one of them. Open it. Keep it and take his place. Kill him and let the working parts run untended until they stop. Or go back up the eleven steps, which is a thing I can physically do and which has not been offered as an answer. Each of the four closes the other three the moment it is begun.",
+          "records_belief": false
+        },
+        {
+          "index": 78,
+          "state": "failure",
+          "text": "I worked the sluice gear without knowing what I was doing and it has jammed half open. The reservoir is bleeding at a rate that was not chosen. I have had to climb back out of the room to find something to lever it with, and the sill lets me back down, which I had not expected and which is not a comfort.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I opened the Count. Four thousand years of held pattern went down into the root water in about two hours and the roots took what they could and the rest went past them into the dark, and the wells in this province will never work the way they did. Ixtu-Meer sat down on the steps while it happened and did not watch. Afterwards he thanked me, which I had not expected and did not want.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I did not open it. I took the ledger out of his hands and the allowance is mine to let past now, and he has gone up the eleven steps and out through the ash gallery and above ground for the first time in four hundred years. The tide goes on failing at a rate I set. I have written down what I told myself I was doing, so that I can check it later.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I killed him on the reservoir floor. It took a while and he did not fight well and he did not stop talking until nearly the end of it. The working parts run untended now. There is not a keeper down here who knows how to keep them and every keeper on the counting floor has asked me what happens next and I do not have anything to tell them.",
+          "records_belief": false
+        },
+        {
+          "index": 96,
+          "state": "success",
+          "text": "I went back up the eleven steps and over the sill and out. The Count is exactly as it was, and the province is exactly as it was, and I am the only person alive who has stood on that floor and chosen to leave it running on purpose. Ei-Vashan asked me at the Bone Ladder what I had decided and I told her and she said: that is a decision. She did not say it kindly and she did not say it unkindly.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_four_ways",
+          "at_journal_index": 20,
+          "condition": "The player opens the Count, takes the Steward's place, kills him, or climbs back out and leaves it running",
+          "leads_to": [
+            "res_open_the_count",
+            "res_take_his_place",
+            "res_kill_him",
+            "res_walk_out"
+          ],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_open_the_count",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The reservoir is opened by the method he described. The tide resumes and four thousand years of held pattern goes down at once; the roots take what they can hold and the rest goes past. Sapwells across the province still take a tithe and re-issue slower and hold less, and the tithe-gourd carries fewer charges from this day forward, for everyone, permanently.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_how_the_count_opens"
+          ],
+          "exclusive_with": [
+            "res_take_his_place",
+            "res_kill_him",
+            "res_walk_out"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": 20,
+              "the_xul_aneekh": 15,
+              "the_rootkeepers": 10,
+              "the_wet_ledger": -10,
+              "the_ixtu_vakh": 8
+            },
+            "world_flags": [
+              "ending_the_count_was_opened",
+              "the_tide_runs_again",
+              "the_reservoir_is_empty",
+              "wells_reissue_degraded_province_wide",
+              "tithe_gourd_charges_reduced",
+              "ixtu_meer_alive_and_above_ground",
+              "the_working_parts_are_stopped",
+              "soulrest_burial_ground_takes_again",
+              "bone_ladder_well_gives_again",
+              "the_hist_is_drinking_what_it_forgot",
+              "province_hatchings_recover_slowly",
+              "gem_trade_collapsed",
+              "blackwood_company_left_the_province",
+              "the_court_is_vindicated",
+              "the_deep_kin_stood_down",
+              "the_recension_is_still_unsettled"
+            ],
+            "npc_disposition": {
+              "ixtu-meer": 20,
+              "keeper-teeja-lun": -20
+            }
+          }
+        },
+        {
+          "id": "res_take_his_place",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The player takes the ledger and the work. The reservoir goes on filling, the wells go on giving at their present rate, the crisis is managed rather than ended, and Ixtu-Meer walks out of the Stone Wastes after four hundred years. The player is now the thing at the bottom of the shaft.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": [
+            "rev_how_the_count_opens"
+          ],
+          "exclusive_with": [
+            "res_open_the_count",
+            "res_kill_him",
+            "res_walk_out"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": -15,
+              "the_xul_aneekh": -20,
+              "the_rootkeepers": -10,
+              "the_wet_ledger": 15
+            },
+            "world_flags": [
+              "ending_the_count_was_kept",
+              "the_tide_still_fails",
+              "the_player_is_the_steward",
+              "wells_unchanged",
+              "ixtu_meer_alive_and_above_ground",
+              "the_working_parts_run_tended",
+              "soulrest_burial_ground_still_gives_nothing",
+              "the_curve_continues",
+              "gem_trade_continues",
+              "blackwood_company_stayed",
+              "the_court_is_discredited",
+              "the_deep_kin_are_mobilising",
+              "the_recension_is_still_unsettled",
+              "the_player_does_not_come_up"
+            ],
+            "npc_disposition": {
+              "ixtu-meer": 40,
+              "keeper-ei-vashan": -20,
+              "gallery-intake-keepers": 25
+            },
+            "locks": [
+              "Q-MAIN-32"
+            ]
+          }
+        },
+        {
+          "id": "res_kill_him",
+          "method": "combat",
+          "violence_required": true,
+          "journal_index": 94,
+          "outcome": "The Steward is dead and the working parts run untended. Nobody knows how to keep them; the intakes silt, the allowance drifts, and the province gets a slower and less predictable version of the same failure with nobody at the ledger.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": [
+            "res_open_the_count",
+            "res_take_his_place",
+            "res_walk_out"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": -5,
+              "the_xul_aneekh": 10,
+              "the_rootkeepers": -20
+            },
+            "world_flags": [
+              "ending_the_steward_is_dead",
+              "the_tide_still_fails",
+              "the_working_parts_run_untended",
+              "wells_unchanged",
+              "ixtu_meer_dead",
+              "the_allowance_drifts",
+              "soulrest_burial_ground_still_gives_nothing",
+              "the_curve_steepens",
+              "the_court_is_discredited",
+              "the_deep_kin_are_mobilising",
+              "the_recension_is_still_unsettled",
+              "nobody_keeps_the_count"
+            ],
+            "kills_npc": [
+              "ixtu-meer"
+            ],
+            "npc_disposition": {
+              "gallery-intake-keepers": -40
+            }
+          }
+        },
+        {
+          "id": "res_walk_out",
+          "method": "refuse",
+          "violence_required": false,
+          "journal_index": 96,
+          "outcome": "The player climbs back up the eleven steps and leaves it running, on purpose, having seen all of it. Nothing changes anywhere. This is a resolution and not a failure state and the journal records it as a decision.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": [
+            "res_open_the_count",
+            "res_take_his_place",
+            "res_kill_him"
+          ],
+          "consequences": {
+            "faction_reputation": {
+              "the_drowned_court": -25,
+              "the_xul_aneekh": -15
+            },
+            "world_flags": [
+              "ending_the_player_walked_out",
+              "the_tide_still_fails",
+              "wells_unchanged",
+              "ixtu_meer_alive_and_at_his_post",
+              "the_working_parts_run_tended",
+              "soulrest_burial_ground_still_gives_nothing",
+              "the_curve_continues",
+              "the_court_is_discredited",
+              "the_recension_is_still_unsettled",
+              "the_player_came_back_up"
+            ],
+            "npc_disposition": {
+              "keeper-ei-vashan": -10,
+              "ixtu-meer": 10,
+              "keeper-teeja-lun": -15
+            }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_the_gear_jammed",
+          "cause": "The sluice gear is worked without the method Ixtu-Meer described and without Sarn's flows",
+          "journal_index": 78,
+          "recoverable": true,
+          "consequence": "The gear jams half open. The reservoir bleeds at a rate nobody chose and the room has to be left and re-entered, which the player can do, because the sill only closes the way up and not the way back down.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": [
+          "D11",
+          "D12"
+        ],
+        "stated_objective": "Decide what happens to the Count",
+        "actual_objective": "Decide what happens to the Count",
+        "truth": "Three accounts of what opening it does — his, the keepers', and the Court's — do not agree, and none of them is confirmed by the outcome, because the outcome is that the wells work differently and nobody in the province can say whether that is better.",
+        "revealed_by": [
+          {
+            "id": "rev_the_three_accounts",
+            "channel": "talk_to_target",
+            "source": "gallery-intake-keepers",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_how_the_count_opens",
+            "channel": "later_quest",
+            "source": "Q-MAIN-26",
+            "before_point_of_no_return": true
+          }
+        ],
+        "never_revealed": true
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": [
+          "the_main_quest_is_finished",
+          "act_five_closed"
+        ]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_what_the_tide_does_now",
+          "name": "what the tide does now"
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_the_aftermath",
+          "name": "the province afterwards"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_he_thanked_me",
+          "name": "he thanked me, which I had not expected",
+          "on_resolution": [
+            "res_open_the_count"
+          ]
+        },
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_the_ledger_of_the_count",
+          "name": "the ledger of the Count",
+          "on_resolution": [
+            "res_take_his_place"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_the_stewards_ledger_unreadable",
+          "name": "a ledger in a hand nobody can now read",
+          "on_resolution": [
+            "res_kill_him"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_that_is_a_decision",
+          "name": "“that is a decision”",
+          "on_resolution": [
+            "res_walk_out"
+          ]
+        }
+      ],
+      "notes": "Act V quest 5, the ending. RI-EXP05: LH9 is res_open_the_count, a tool-use route the antagonist explains himself, and res_take_his_place and res_walk_out are also non-violent, so three of four endings require no violence at all. LH10: no scripted seconds, no phases, the only fight is optional and short. LH13: the world is playable afterwards and the aftermath quest is Q-MAIN-32 in mainline-aftermath.json. RI-LOR05 §6: opening the Count is the Morrowind quest decision that reaches into the Souls checkpoint system and changes it, permanently and for everyone."
+    }
+  ]
+}

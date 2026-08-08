@@ -1,0 +1,12 @@
+{
+ "schema": "elder-souls/fp-sd@1",
+ "id": "fp-sd",
+ "note": "Measured standard deviations of the five numeric fingerprint dimensions across the shipped 87 weapons. Read back by build-movesets.mjs so that a weapon deviation budget is expressed in the units RI-WPN03 §D.2 measures in. Regenerated on every build; a fixed point after one iteration.",
+ "sd": {
+  "f": 13.5489,
+  "reach": 0.7147,
+  "arc": 83.063,
+  "root": 0.347,
+  "hitstop": 3.858
+ }
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "wld-dres-raid-road",
+  "title": "The salt road, a Dres raid party on it, and a created character walking down it. The fixture for RI-CHR02 method 8 \u2014 the AR-3 assertion.",
+  "owner": "W1-07",
+  "note": "The character block is overwritten by the scenario's --state race=<r> argument. Every race gets the SAME encounter id, the SAME statblocks and the SAME movesets; only whether, when and how it opens differs. ROUND 2 FIX: the fixture used to sit at the province origin, which is 250 m out in the Topal \u2014 the player was walking in standing water and RI-WLD10's band retraction held them to ~1.47 m/s, so 480 frames of forward input closed only 11.8 m of a 30 m gap and the Khajiit 12 m band was never entered. The W1-07 verdict measured that as 'closest approach 18.198 m in all three runs, identically'. The road is now on dry salt-hills ground at (1544, 607), which is the region this encounter declares, and the same input closes the gap.",
+  "env": {
+    "timeOfDay": 14.0,
+    "weather": "clear",
+    "region": "salt-hills",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      1544.0,
+      0,
+      607.0
+    ],
+    "yaw": 0.0
+  },
+  "camera": {
+    "yaw": 0.0,
+    "pitch": -8.0,
+    "mode": "free"
+  },
+  "character": {
+    "race": "saxhleel",
+    "upbringing": "foreign-born",
+    "class": "reed-walker",
+    "birthsign": "raj-xul",
+    "given_name": "Unwritten",
+    "sex": "unrecorded"
+  },
+  "encounters": [
+    {
+      "id": "dres-raid-party",
+      "x": 1544.0,
+      "z": 637.0
+    }
+  ],
+  "spawn": [],
+  "loadout": {
+    "weapon": "straight-sword",
+    "shield": "marsh_oak_medium",
+    "endurance": 20,
+    "hpMax": 620,
+    "armourPoise": 28,
+    "equipLoadPct": 24.0,
+    "flaskLevel": 0,
+    "estus": 5,
+    "gold": 0
+  }
+}

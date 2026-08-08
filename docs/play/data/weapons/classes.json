@@ -1,0 +1,1003 @@
+{
+ "schema": "elder-souls/weapon-classes@1",
+ "id": "weapon-classes",
+ "unit": "f@60",
+ "owner": "RI-WPN02 \u00a7A/\u00a7B (fifteen classes, the differentiation matrix). Seven rows marked anchor are reproduced UNCHANGED from RI-CMB02 \u00a7A/\u00a7B via RI-WPN02's authority note; eight rows marked ext are RI-WPN02's extension.",
+ "note": "Every frame column is f@60 under ARBITRATION seam S22. Reach (m), arc sweep (deg), motion value, poise damage, stamina, max chain and root displacement are NOT frame data and are unrebased. This file is the single source W1-10's generator reads; nothing here is re-derived anywhere else.",
+ "r2_active_reconciliation": "WAVE 1 ROUND 2. RI-WPN02 \u00a7B publishes R2 startup and R2 TOTAL and does not publish an R2 active/recovery split; the split was originally derived here. On the seven anchor classes that split is owned by RI-CMB02 \u00a7B, transcribed in game/data/combat/frames.json, and RI-WPN02 \u00a7B's own authority note says 'if a cell here ever disagrees with RI-CMB02, RI-CMB02 wins'. Six of seven disagreed (DGR 7\u21926, SPR 9\u219210, AXE 13\u219214, HLB 15\u219216, GSW 17\u219220, UGS 21\u219224; SSW 12 already agreed) and 46 of 47 weapons in those classes inherited the wrong split. They are now reconciled TO frames.json, totals unchanged. The eight ext classes have no RI-CMB02 row and keep the derived split.",
+ "classes": {
+  "DGR": {
+   "name": "Dagger",
+   "src": "anchor",
+   "tier": "light",
+   "r1_startup": 12,
+   "r1_active": 6,
+   "r1_total": 42,
+   "r2_startup": 28,
+   "r2_active": 6,
+   "r2_total": 78,
+   "reach_m": 1.05,
+   "arc_sweep_deg": 70,
+   "mv_r1": 0.72,
+   "poise_dmg_r1": 8,
+   "stamina_r1": 12,
+   "max_chain": 4,
+   "root_dz_r1": 0.15,
+   "r1_shape": "slash_d",
+   "r2_ha": null,
+   "guardbreak_kind": "kick",
+   "parry_capable": true,
+   "roll_r2": false,
+   "attack_rating": 96,
+   "equip_weight": 1.0,
+   "hitbox_span_m": 0.28,
+   "parry_class": "tool",
+   "problem": "Can you get behind it?",
+   "haft_damage_mult": 0.7,
+   "peak_tip_speed_mps": 14.0,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.68,
+     "recovery": 1.0
+    },
+    "r1_3": {
+     "startup": 0.72,
+     "recovery": 1.2
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "FST": {
+   "name": "Fist / claw",
+   "src": "ext",
+   "tier": "light",
+   "r1_startup": 14,
+   "r1_active": 4,
+   "r1_total": 44,
+   "r2_startup": 32,
+   "r2_active": 5,
+   "r2_total": 82,
+   "reach_m": 0.9,
+   "arc_sweep_deg": 45,
+   "mv_r1": 0.55,
+   "poise_dmg_r1": 5,
+   "stamina_r1": 9,
+   "max_chain": 5,
+   "root_dz_r1": 0.1,
+   "r1_shape": "smash",
+   "r2_ha": null,
+   "guardbreak_kind": "kick",
+   "parry_capable": false,
+   "roll_r2": false,
+   "attack_rating": 72,
+   "equip_weight": 0.5,
+   "hitbox_span_m": 0.22,
+   "parry_class": "tool",
+   "problem": "Can you live at zero range?",
+   "haft_damage_mult": 0.9,
+   "peak_tip_speed_mps": 13.0,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.9,
+     "recovery": 0.95
+    },
+    "r1_3": {
+     "startup": 0.9,
+     "recovery": 1.18
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "CSW": {
+   "name": "Curved sword",
+   "src": "ext",
+   "tier": "light",
+   "r1_startup": 20,
+   "r1_active": 10,
+   "r1_total": 64,
+   "r2_startup": 44,
+   "r2_active": 11,
+   "r2_total": 114,
+   "reach_m": 1.75,
+   "arc_sweep_deg": 155,
+   "mv_r1": 0.9,
+   "poise_dmg_r1": 16,
+   "stamina_r1": 17,
+   "max_chain": 4,
+   "root_dz_r1": 0.3,
+   "r1_shape": "slash_h",
+   "r2_ha": null,
+   "guardbreak_kind": "kick",
+   "parry_capable": true,
+   "roll_r2": true,
+   "attack_rating": 109,
+   "equip_weight": 3.0,
+   "hitbox_span_m": 1.3,
+   "parry_class": "small",
+   "problem": "Can you fight a crowd without a big weapon?",
+   "haft_damage_mult": 0.6,
+   "peak_tip_speed_mps": 19.5,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.7,
+     "recovery": 1.0
+    },
+    "r1_3": {
+     "startup": 0.74,
+     "recovery": 1.22
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "TSW": {
+   "name": "Thrusting sword",
+   "src": "ext",
+   "tier": "light",
+   "r1_startup": 22,
+   "r1_active": 8,
+   "r1_total": 66,
+   "r2_startup": 46,
+   "r2_active": 9,
+   "r2_total": 110,
+   "reach_m": 2.2,
+   "arc_sweep_deg": 10,
+   "mv_r1": 0.95,
+   "poise_dmg_r1": 12,
+   "stamina_r1": 16,
+   "max_chain": 3,
+   "root_dz_r1": 0.65,
+   "r1_shape": "thrust",
+   "r2_ha": null,
+   "guardbreak_kind": "thrust_through",
+   "parry_capable": true,
+   "roll_r2": false,
+   "attack_rating": 115,
+   "equip_weight": 3.5,
+   "hitbox_span_m": 1.45,
+   "parry_class": "medium",
+   "problem": "Can you attack from inside a guard?",
+   "haft_damage_mult": 0.55,
+   "peak_tip_speed_mps": 18.0,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+  },
+  "SSW": {
+   "name": "Straight sword",
+   "src": "anchor",
+   "tier": "light",
+   "r1_startup": 24,
+   "r1_active": 10,
+   "r1_total": 74,
+   "r2_startup": 50,
+   "r2_active": 12,
+   "r2_total": 122,
+   "reach_m": 1.95,
+   "arc_sweep_deg": 110,
+   "mv_r1": 1.0,
+   "poise_dmg_r1": 22,
+   "stamina_r1": 20,
+   "max_chain": 3,
+   "root_dz_r1": 0.35,
+   "r1_shape": "slash_h",
+   "r2_ha": [
+    30,
+    62
+   ],
+   "guardbreak_kind": "kick",
+   "parry_capable": false,
+   "roll_r2": false,
+   "attack_rating": 118,
+   "equip_weight": 4.0,
+   "hitbox_span_m": 0.95,
+   "parry_class": "medium",
+   "problem": "The control: every other class is a deviation from this one",
+   "haft_damage_mult": 0.6,
+   "peak_tip_speed_mps": 18.5,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+  },
+  "SPR": {
+   "name": "Spear",
+   "src": "anchor",
+   "tier": "medium",
+   "r1_startup": 28,
+   "r1_active": 8,
+   "r1_total": 80,
+   "r2_startup": 54,
+   "r2_active": 10,
+   "r2_total": 128,
+   "reach_m": 3.1,
+   "arc_sweep_deg": 8,
+   "mv_r1": 1.0,
+   "poise_dmg_r1": 18,
+   "stamina_r1": 18,
+   "max_chain": 3,
+   "root_dz_r1": 0.55,
+   "r1_shape": "thrust",
+   "r2_ha": [
+    33,
+    64
+   ],
+   "guardbreak_kind": "thrust_through",
+   "parry_capable": false,
+   "roll_r2": false,
+   "attack_rating": 112,
+   "equip_weight": 4.5,
+   "hitbox_span_m": 0.7,
+   "parry_class": "medium",
+   "problem": "Can you win by never being reached?",
+   "haft_damage_mult": 0.35,
+   "peak_tip_speed_mps": 21.0,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+  },
+  "AXE": {
+   "name": "Axe",
+   "src": "anchor",
+   "tier": "medium",
+   "r1_startup": 32,
+   "r1_active": 12,
+   "r1_total": 92,
+   "r2_startup": 60,
+   "r2_active": 14,
+   "r2_total": 146,
+   "reach_m": 1.8,
+   "arc_sweep_deg": 130,
+   "mv_r1": 1.15,
+   "poise_dmg_r1": 28,
+   "stamina_r1": 24,
+   "max_chain": 3,
+   "root_dz_r1": 0.3,
+   "r1_shape": "slash_d",
+   "r2_ha": [
+    36,
+    74
+   ],
+   "guardbreak_kind": "kick",
+   "parry_capable": false,
+   "roll_r2": true,
+   "attack_rating": 124,
+   "equip_weight": 6.0,
+   "hitbox_span_m": 0.32,
+   "parry_class": "medium",
+   "problem": "Can you trade once and win?",
+   "haft_damage_mult": 0.3,
+   "peak_tip_speed_mps": 17.0,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.72,
+     "recovery": 1.1
+    },
+    "r1_3": {
+     "startup": 0.65,
+     "recovery": 1.5
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "MCE": {
+   "name": "Mace",
+   "src": "ext",
+   "tier": "medium",
+   "r1_startup": 34,
+   "r1_active": 12,
+   "r1_total": 96,
+   "r2_startup": 64,
+   "r2_active": 13,
+   "r2_total": 156,
+   "reach_m": 1.7,
+   "arc_sweep_deg": 95,
+   "mv_r1": 1.2,
+   "poise_dmg_r1": 32,
+   "stamina_r1": 25,
+   "max_chain": 3,
+   "root_dz_r1": 0.28,
+   "r1_shape": "smash",
+   "r2_ha": [
+    39,
+    80
+   ],
+   "guardbreak_kind": "shoulder",
+   "parry_capable": false,
+   "roll_r2": false,
+   "attack_rating": 133,
+   "equip_weight": 6.0,
+   "hitbox_span_m": 0.3,
+   "parry_class": null,
+   "problem": "Can you fight armour and stone?",
+   "haft_damage_mult": 0.3,
+   "peak_tip_speed_mps": 16.5,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+  },
+  "HLB": {
+   "name": "Halberd",
+   "src": "anchor",
+   "tier": "medium",
+   "r1_startup": 38,
+   "r1_active": 14,
+   "r1_total": 108,
+   "r2_startup": 68,
+   "r2_active": 16,
+   "r2_total": 168,
+   "reach_m": 2.85,
+   "arc_sweep_deg": 145,
+   "mv_r1": 1.25,
+   "poise_dmg_r1": 34,
+   "stamina_r1": 28,
+   "max_chain": 3,
+   "root_dz_r1": 0.45,
+   "r1_shape": "sweep",
+   "r2_ha": [
+    41,
+    84
+   ],
+   "guardbreak_kind": "thrust_through",
+   "parry_capable": false,
+   "roll_r2": true,
+   "attack_rating": 132,
+   "equip_weight": 9.0,
+   "hitbox_span_m": 0.75,
+   "parry_class": null,
+   "problem": "Can you control a lane?",
+   "haft_damage_mult": 0.35,
+   "peak_tip_speed_mps": 22.0,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.85,
+     "recovery": 1.0
+    },
+    "r1_3": {
+     "startup": 0.9,
+     "recovery": 1.25
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "WHP": {
+   "name": "Whip",
+   "src": "ext",
+   "tier": "medium",
+   "r1_startup": 40,
+   "r1_active": 10,
+   "r1_total": 108,
+   "r2_startup": 60,
+   "r2_active": 11,
+   "r2_total": 148,
+   "reach_m": 3.6,
+   "arc_sweep_deg": 200,
+   "mv_r1": 0.8,
+   "poise_dmg_r1": 6,
+   "stamina_r1": 22,
+   "max_chain": 3,
+   "root_dz_r1": 0.2,
+   "r1_shape": "lash",
+   "r2_ha": null,
+   "guardbreak_kind": "kick",
+   "parry_capable": false,
+   "roll_r2": true,
+   "attack_rating": 86,
+   "equip_weight": 3.0,
+   "hitbox_span_m": 2.6,
+   "parry_class": null,
+   "problem": "Can you use a weapon with no defensive answer?",
+   "haft_damage_mult": 0.45,
+   "peak_tip_speed_mps": 24.0,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.62,
+     "recovery": 0.92
+    },
+    "r1_3": {
+     "startup": 0.6,
+     "recovery": 1.16
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "GSW": {
+   "name": "Greatsword",
+   "src": "anchor",
+   "tier": "heavy",
+   "r1_startup": 44,
+   "r1_active": 16,
+   "r1_total": 126,
+   "r2_startup": 80,
+   "r2_active": 20,
+   "r2_total": 196,
+   "reach_m": 2.6,
+   "arc_sweep_deg": 175,
+   "mv_r1": 1.45,
+   "poise_dmg_r1": 42,
+   "stamina_r1": 32,
+   "max_chain": 3,
+   "root_dz_r1": 0.85,
+   "r1_shape": "slash_d",
+   "r2_ha": [
+    48,
+    100
+   ],
+   "guardbreak_kind": "shoulder",
+   "parry_capable": false,
+   "roll_r2": true,
+   "attack_rating": 146,
+   "equip_weight": 12.0,
+   "hitbox_span_m": 1.35,
+   "parry_class": null,
+   "problem": "Can you commit?",
+   "haft_damage_mult": 0.55,
+   "peak_tip_speed_mps": 23.5,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+  },
+  "CGS": {
+   "name": "Curved greatsword",
+   "src": "ext",
+   "tier": "heavy",
+   "r1_startup": 48,
+   "r1_active": 18,
+   "r1_total": 136,
+   "r2_startup": 88,
+   "r2_active": 19,
+   "r2_total": 214,
+   "reach_m": 2.75,
+   "arc_sweep_deg": 340,
+   "mv_r1": 1.35,
+   "poise_dmg_r1": 38,
+   "stamina_r1": 34,
+   "max_chain": 2,
+   "root_dz_r1": 0.7,
+   "r1_shape": "spin",
+   "r2_ha": [
+    53,
+    110
+   ],
+   "guardbreak_kind": "shoulder",
+   "parry_capable": false,
+   "roll_r2": true,
+   "attack_rating": 137,
+   "equip_weight": 14.0,
+   "hitbox_span_m": 1.55,
+   "parry_class": null,
+   "problem": "Can you fight three things at once?",
+   "haft_damage_mult": 0.5,
+   "peak_tip_speed_mps": 24.5,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+  },
+  "GHM": {
+   "name": "Great hammer",
+   "src": "ext",
+   "tier": "heavy",
+   "r1_startup": 52,
+   "r1_active": 16,
+   "r1_total": 148,
+   "r2_startup": 96,
+   "r2_active": 17,
+   "r2_total": 232,
+   "reach_m": 2.3,
+   "arc_sweep_deg": 120,
+   "mv_r1": 1.6,
+   "poise_dmg_r1": 52,
+   "stamina_r1": 38,
+   "max_chain": 2,
+   "root_dz_r1": 0.6,
+   "r1_shape": "smash",
+   "r2_ha": [
+    58,
+    116
+   ],
+   "guardbreak_kind": "shoulder",
+   "parry_capable": false,
+   "roll_r2": false,
+   "attack_rating": 158,
+   "equip_weight": 16.0,
+   "hitbox_span_m": 0.34,
+   "parry_class": null,
+   "problem": "Can you break something that will not break?",
+   "haft_damage_mult": 0.25,
+   "peak_tip_speed_mps": 22.0,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.9,
+     "recovery": 1.18
+    },
+    "r1_3": {
+     "startup": 0.95,
+     "recovery": 1.5
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "UGS": {
+   "name": "Ultra greatsword",
+   "src": "anchor",
+   "tier": "ultra",
+   "r1_startup": 58,
+   "r1_active": 20,
+   "r1_total": 166,
+   "r2_startup": 104,
+   "r2_active": 24,
+   "r2_total": 252,
+   "reach_m": 2.95,
+   "arc_sweep_deg": 210,
+   "mv_r1": 1.75,
+   "poise_dmg_r1": 58,
+   "stamina_r1": 42,
+   "max_chain": 3,
+   "root_dz_r1": 1.4,
+   "r1_shape": "slash_v",
+   "r2_ha": [
+    63,
+    128
+   ],
+   "guardbreak_kind": "shoulder",
+   "parry_capable": false,
+   "roll_r2": true,
+   "attack_rating": 168,
+   "equip_weight": 20.0,
+   "hitbox_span_m": 1.7,
+   "parry_class": null,
+   "problem": "Can you be right once?",
+   "haft_damage_mult": 0.5,
+   "peak_tip_speed_mps": 26.0,
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.92,
+     "recovery": 1.2
+    },
+    "r1_3": {
+     "startup": 0.98,
+     "recovery": 1.52
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
+  },
+  "BOW": {
+   "name": "Bow",
+   "src": "ext",
+   "tier": "ranged",
+   "r1_startup": 48,
+   "r1_active": 4,
+   "r1_total": 92,
+   "r2_startup": 48,
+   "r2_active": 4,
+   "r2_total": 236,
+   "reach_m": 22.0,
+   "arc_sweep_deg": 0,
+   "mv_r1": 0.85,
+   "poise_dmg_r1": 4,
+   "stamina_r1": 14,
+   "max_chain": 1,
+   "root_dz_r1": 0.0,
+   "r1_shape": "shoot",
+   "r2_ha": null,
+   "guardbreak_kind": "none",
+   "parry_capable": false,
+   "roll_r2": false,
+   "attack_rating": 95,
+   "equip_weight": 3.0,
+   "hitbox_span_m": 0.4,
+   "parry_class": null,
+   "problem": "Can you answer a thing that will not come to you?",
+   "aimed_charge_max_f": 90,
+   "aimed_mv": 1.6,
+   "quick_startup_f": 36,
+   "melee_reach_m": 1.6,
+   "melee_reach_note": "RI-WPN02 \u00a7B's 22.0 m is a PROJECTILE range, not a weapon reach: moveset.schema.json caps reach_m at 6.0 and RI-WPN02 \u00a7D's dimension D5 is 'distance at which r1.1 first connects with a dummy'. The bow's own hitbox (the bash and the guardbreak) reaches 1.60 m; 22.0 m is carried as projectile_range_m. Leaving 22.0 in reach_m raised the standard deviation of D5 across the fifteen classes from 0.75 to 5.2 and deleted reach as a differentiator for the fourteen melee classes.",
+   "projectile_range_m": 22.0,
+   "budget_mult": 1.35,
+   "budget_mult_note": "BOW has no arc and no root displacement (a shot's geometry is the projectile's), so only three of the five numeric fingerprint dimensions are live for it. Its deviation budget is scaled up so that two bows are as far apart in RI-WPN03 \u00a7D.2's F87 space as two swords are.",
+   "haft_damage_mult": 0.5,
+   "peak_tip_speed_mps": null,
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+  }
+ },
+ "contextual_multipliers": {
+  "owner": "RI-WPN04 \u00a7A. Applied to the class R1 base row, round-half-up, once, per RI-CMB02's rounding rule. The 6 f@60 startup floor is applied AFTER the multiplier and currently binds nothing (RI-WPN04 \u00a7A rebase note).",
+  "startup_floor_f": 6,
+  "roll": {
+   "startup": 0.6,
+   "active": 1.0,
+   "recovery": 1.1,
+   "stamina": 0.85,
+   "mv": 0.85,
+   "poise": 0.85,
+   "root": 1.0
+  },
+  "run": {
+   "startup": 0.7,
+   "active": 1.0,
+   "recovery": 1.0,
+   "stamina": 1.1,
+   "mv": 1.05,
+   "poise": 1.1,
+   "root": 2.0
+  },
+  "jump": {
+   "startup": 1.3,
+   "active": 1.25,
+   "recovery": 1.2,
+   "stamina": 1.3,
+   "mv": 1.35,
+   "poise": 1.8,
+   "root": 0.6
+  },
+  "backstep": {
+   "startup": 0.65,
+   "active": 1.0,
+   "recovery": 0.95,
+   "stamina": 0.8,
+   "mv": 0.8,
+   "poise": 0.75,
+   "root": 1.4
+  },
+  "guard_counter": {
+   "startup": 0.85,
+   "active": 1.0,
+   "recovery": 1.05,
+   "stamina": 1.2,
+   "mv": 1.3,
+   "poise": 1.6,
+   "root": 0.8
+  }
+ },
+ "chain_multipliers": {
+  "owner": "RI-CMB02 \u00a7C via RI-WPN01 \u00a7A slots 2-3.",
+  "r1_2": {
+   "startup": 0.78,
+   "recovery": 1.05,
+   "mv": 0.95
+  },
+  "r1_3": {
+   "startup": 0.78,
+   "recovery": 1.35,
+   "mv": 1.05
+  },
+  "r1_4": {
+   "startup": 0.72,
+   "recovery": 1.15,
+   "mv": 0.9
+  },
+  "r1_5": {
+   "startup": 0.7,
+   "recovery": 1.4,
+   "mv": 0.85
+  },
+  "_per_class_override": "RI-CMB02 \u00a7C AMENDED wave 1. These four rows are now DEFAULTS. A class may declare `chain.r1_2` / `chain.r1_3` startup and recovery multipliers within \u00b10.20 and must prove the realised per-link `recovery/startup` clears 1.40 on its OWN base row \u2014 the worst legal corner of the budget (startup \u00d70.98 with recovery \u00d70.85) is illegal. \u22656 of the 14 melee classes must deviate or chain tempo is a permission nobody used; 8 do. Verified and reported by tools/harness/cmb-chain.mjs."
+ },
+ "two_hand_multipliers": {
+  "owner": "RI-CMB02 \u00a7C two-handed row. RI-WPN06 \u00a7B: these apply ONLY to slots that do not diverge; a diverging slot carries its own authored table.",
+  "stamina": 1.15,
+  "motion_value": 1.15,
+  "poise_damage": 1.3
+ },
+ "contextual_windows": {
+  "owner": "RI-WPN04 \u00a7B. Frames are inside the enclosing state's own animation, f@60.",
+  "roll": {
+   "LIGHT": [
+    31,
+    52
+   ],
+   "MEDIUM": [
+    27,
+    58
+   ],
+   "HEAVY": [
+    17,
+    48
+   ],
+   "OVERLOADED": null
+  },
+  "backstep": {
+   "LIGHT": [
+    13,
+    42
+   ],
+   "MEDIUM": [
+    13,
+    42
+   ],
+   "HEAVY": [
+    7,
+    38
+   ],
+   "OVERLOADED": null
+  },
+  "sprint_hold_f": 24,
+  "sprint_grace_f": 8,
+  "buffer_f": 8,
+  "guard_counter_f": 40,
+  "guard_counter_collision_note": "RI-CMB02 \u00a7C says 24 f@60. RI-WPN04 \u00a7B / RI-WPN01 \u00a7A / RI-WPN06 \u00a7E all say 40 f@60 and flag the collision as pre-existing and unresolved (REBASE-S22-REPORT \u00a77). This build implements 40 and reports the collision rather than silently picking.",
+  "plunge_min_fall_m": 3.0,
+  "plunge_target_radius_m": 2.0,
+  "guardbreak_forward_mag": 0.9
+ },
+ "hitstop": {
+  "owner": "RI-WPN05 \u00a7A, S22-rebased. Attacker hitstop in f@60 by weight tier x material.",
+  "attacker": {
+   "light": {
+    "flesh": 4,
+    "chitin": 6,
+    "stone": 10,
+    "metal": 8,
+    "shield": 8,
+    "wood": 4,
+    "water": 2
+   },
+   "medium": {
+    "flesh": 8,
+    "chitin": 10,
+    "stone": 16,
+    "metal": 12,
+    "shield": 14,
+    "wood": 6,
+    "water": 2
+   },
+   "heavy": {
+    "flesh": 12,
+    "chitin": 16,
+    "stone": 22,
+    "metal": 18,
+    "shield": 20,
+    "wood": 10,
+    "water": 4
+   },
+   "ultra": {
+    "flesh": 16,
+    "chitin": 20,
+    "stone": 28,
+    "metal": 24,
+    "shield": 26,
+    "wood": 12,
+    "water": 4
+   },
+   "ranged": {
+    "flesh": 2,
+    "chitin": 4,
+    "stone": 6,
+    "metal": 4,
+    "shield": 6,
+    "wood": 2,
+    "water": 2
+   }
+  },
+  "victim_delta": {
+   "flesh": 4,
+   "wood": 4,
+   "chitin": 2,
+   "water": 0,
+   "stone": 0,
+   "metal": 0,
+   "shield": 0
+  },
+  "victim_hitstop_mode": {
+   "flesh": "delta",
+   "wood": "delta",
+   "chitin": "delta",
+   "water": "zero",
+   "stone": "zero",
+   "metal": "zero",
+   "shield": "zero"
+  },
+  "knockback_m": {
+   "light": {
+    "flesh": 0.05,
+    "wood": 0.05,
+    "chitin": 0.03,
+    "stone": -0.1,
+    "metal": -0.1,
+    "shield": -0.1,
+    "water": 0.0
+   },
+   "medium": {
+    "flesh": 0.15,
+    "wood": 0.15,
+    "chitin": 0.1,
+    "stone": -0.2,
+    "metal": -0.2,
+    "shield": -0.2,
+    "water": 0.0
+   },
+   "heavy": {
+    "flesh": 0.35,
+    "wood": 0.35,
+    "chitin": 0.25,
+    "stone": -0.3,
+    "metal": -0.3,
+    "shield": -0.3,
+    "water": 0.0
+   },
+   "ultra": {
+    "flesh": 0.6,
+    "wood": 0.6,
+    "chitin": 0.45,
+    "stone": -0.35,
+    "metal": -0.35,
+    "shield": -0.35,
+    "water": 0.0
+   },
+   "ranged": {
+    "flesh": 0.02,
+    "wood": 0.02,
+    "chitin": 0.01,
+    "stone": -0.05,
+    "metal": -0.05,
+    "shield": -0.05,
+    "water": 0.0
+   }
+  },
+  "knockback_sign_note": "Negative means the ATTACKER is pushed back and the victim is unmoved (RI-WPN05 \u00a7A: 'The target does not move. You do.').",
+  "deflect": {
+   "material": "stone",
+   "shape_exempt": [
+    "smash"
+   ],
+   "poise_damage_below": 30,
+   "hitstop_multiplier": 1.5,
+   "added_recovery_f": 16,
+   "class_bypass": [
+    "MCE",
+    "GHM"
+   ]
+  },
+  "camera_shake_deg_per_tier": 0.25,
+  "trail_persist_f": 12,
+  "victim_delta_note": "RI-WPN05 \u00a7A's victim-hitstop table mixes two kinds of row and a single `victim_delta` map could not tell them apart: flesh/wood are 'attacker + 4' and chitin is 'attacker + 2' (DELTAS), while water and stone/metal/shield are a flat **0** ('The target does not move. You do.') \u2014 an ABSOLUTE, not a delta of zero. Encoded as a delta of 0 they came out as 'attacker + 0', i.e. 16 frames of victim hitstop on stone where the item says none, which deletes the asymmetry that IS the bounce. `victim_hitstop_mode` makes the distinction explicit and game/src/combat/impact.js reads it."
+ },
+ "materials": {
+  "owner": "RI-WPN05 \u00a7B. Deterministic table-driven multipliers, no dice (ARBITRATION S1).",
+  "damage_type_of_shape": {
+   "slash_h": "slash",
+   "slash_d": "slash",
+   "slash_v": "slash",
+   "sweep": "slash",
+   "spin": "slash",
+   "lash": "slash",
+   "thrust": "thrust",
+   "shoot": "thrust",
+   "smash": "strike",
+   "grab": "strike"
+  },
+  "multipliers": {
+   "flesh": {
+    "slash": 1.1,
+    "thrust": 1.05,
+    "strike": 0.9
+   },
+   "chitin": {
+    "slash": 0.85,
+    "thrust": 1.15,
+    "strike": 1.2
+   },
+   "stone": {
+    "slash": 0.45,
+    "thrust": 0.55,
+    "strike": 1.35
+   },
+   "metal": {
+    "slash": 0.75,
+    "thrust": 0.95,
+    "strike": 1.2
+   },
+   "plant": {
+    "slash": 1.25,
+    "thrust": 0.8,
+    "strike": 0.85
+   },
+   "water": {
+    "slash": 1.0,
+    "thrust": 1.0,
+    "strike": 1.1
+   },
+   "wood": {
+    "slash": 1.15,
+    "thrust": 0.9,
+    "strike": 1.05
+   },
+   "shield": {
+    "slash": 0.1,
+    "thrust": 0.1,
+    "strike": 0.25
+   }
+  }
+ },
+ "shields": {
+  "owner": "RI-WPN06 \u00a7D. Guard angle is this project's addition; parry windows are cited from RI-CMB05 \u00a7D via RI-WPN06 and are not re-derived.",
+  "buckler": {
+   "guard_angle_deg": 50,
+   "parry_capable": true,
+   "parry_anim_f": 68,
+   "parry_active_f": [
+    9,
+    26
+   ],
+   "slots": [
+    "shield.bash"
+   ]
+  },
+  "small": {
+   "guard_angle_deg": 60,
+   "parry_capable": true,
+   "parry_anim_f": 68,
+   "parry_active_f": [
+    9,
+    26
+   ],
+   "slots": [
+    "shield.bash"
+   ]
+  },
+  "medium": {
+   "guard_angle_deg": 75,
+   "parry_capable": true,
+   "parry_anim_f": 80,
+   "parry_active_f": [
+    15,
+    28
+   ],
+   "slots": [
+    "shield.bash"
+   ]
+  },
+  "greatshield": {
+   "guard_angle_deg": 95,
+   "parry_capable": false,
+   "parry_anim_f": null,
+   "parry_active_f": null,
+   "slots": [
+    "shield.bash",
+    "shield.charge"
+   ]
+  },
+  "parry_tool": {
+   "guard_angle_deg": 0,
+   "parry_capable": true,
+   "parry_anim_f": 64,
+   "parry_active_f": [
+    5,
+    28
+   ],
+   "slots": []
+  }
+ },
+ "stance_switch": {
+  "owner": "RI-WPN06 \u00a7A",
+  "anim_f": 36,
+  "cancellable": false,
+  "legal_from": [
+   "IDLE",
+   "WALK",
+   "RUN"
+  ],
+  "illegal_from": [
+   "ATTACK",
+   "ROLL",
+   "BACKSTEP",
+   "AIRBORNE",
+   "STAGGER",
+   "GUARD_BREAK",
+   "HEAL"
+  ],
+  "buffer_f": 8,
+  "stamina": 0,
+  "effective_strength_mult": 1.5
+ },
+ "delta_scale": 1.0,
+ "delta_scale_note": "Global magnitude on every per-weapon numeric delta in roster.json. roster.json authors the DIRECTION and the RANK of each weapon's deviation; this scalar sets how far. Tuned against RI-WPN03 \u00a7D.2's two-sided band (W_med in [0.35,1.00], W_min>=0.20) and SEP = B_min/W_max >= 1.4 \u2014 see reports/W1-10-MEASUREMENTS.md \u00a7sweep for the sweep that chose it.",
+ "lineage_arc_scale": 0.35,
+ "deviation_budget": 0.36,
+ "deviation_budget_signature": 0.48,
+ "fingerprint_sd": {
+  "f": 13.534,
+  "reach": 0.715,
+  "arc": 83.049,
+  "root": 0.347,
+  "hitstop": 3.877
+ },
+ "fingerprint_sd_note": "PINNED. The standard deviations of the five numeric fingerprint dimensions across the shipped 87-weapon roster, measured once and frozen here so that build-movesets.mjs is a PURE FUNCTION of its inputs. An earlier version read them back from the previous build's output, which made the generator a feedback loop with a 2-cycle: six weapon files alternated between two states on successive runs and `--check` reported drift forever. game/data/weapons/fp-sd.json is still written on every build as a REPORT, so if the roster changes enough for these to be wrong it is visible in a diff.",
+ "haft_damage_mult_note": "S26 contiguity, W1-10 round 3. `hitbox_span_m` is the EDGED span of the weapon. Wave 1 spent it by starting the hit capsule at `capsule_length - hitbox_span_m`, which put an interior hole in eleven weapons' reachable bands (a spear could not hit a man at 1.4 m) and left five classes unable to hit a target standing against them. The capsule now runs from the grip to the tip and is contiguous by construction; `hitbox_span_m` is consumed instead as the point beyond which the weapon is edged, and a contact INBOARD of it deals `haft_damage_mult` of the blow. That keeps the design fact the span column was written for -- an axe hurts at the head and a sword hurts along its length -- as a damage fact rather than as a geometry hole. Consumed at game/src/combat/resolve.js, and perturbing any of these fifteen values changes the damage of a close-in hit: tools/weapons/impact-consumption.mjs proves it.",
+ "peak_tip_speed_note": "RI-CMB04 \u00a7B owns `peak_tip_speed_mps`. It is a CEILING on the blade tip's speed in the attacker's own frame, on EVERY frame of a clip and not only its active window, and it is enforced in game/src/combat/moveset.js clipFor() by swing.js calibrateExcursion(). Before that join existed the column was a number in a table: a swing profile is authored in phase space and the column constrains frame space, so the same profile at a 6-frame startup ran four times faster than at a 24-frame startup and 1,310 of the 2,713 clips the game can play exceeded their own class ceiling, peaking at 158.1 m/s (tools/harness/cmb-tipspeed.mjs). The seven spine values are RI-CMB04 \u00a7B verbatim; the eight extension classes are PROVISIONAL and constructed here, marked per row, and owed back to RI-CMB04 as an amendment."
+}

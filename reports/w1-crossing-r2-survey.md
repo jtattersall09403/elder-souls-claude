@@ -267,3 +267,79 @@ one-directional is the cleanest statement of rule 8 this round produced: a quant
 way and 62.92° the other, sampled one way, reads as zero. The three-arm self-test (built road /
 every `deck_span` removed / no roads at all — 78 refusals on the bare hillside, worst 57.3°) proves
 the sweep is measuring the road and not the mountain.
+
+---
+
+## 4. EVERY LEG, BOTH WAYS — and the province crosses in both directions
+
+`tools/world/w1-crossing-r2-legs.mjs`. One browser, kept. Re-seeded (`setSeed`, `loadState`,
+`setTide`) before every walk, so no arm inherits another's world clock — round 1 §C3 found four grid
+arms whose 6 m spread was accumulated state and not a measurement. Artifact written after every
+walk. **`hp_pinned: true`, and the pin writes BOTH `sim.player.hp` and `combat.player.hp`** (round 1
+§C4: the weaker pin does not hold). Speed `walk`, noon, clear, unencumbered, `--survive`.
+
+**The counter is not the engine's.** Every row carries `walkPath`'s `path_m` *and* a second
+accumulator hung off `Engine._afterStep` that re-derives the distance from the capsule's own
+position deltas, keeping both the excluded sum (`walked_m`) and the **naive** sum with no upper
+bound (`naive_sum_m`) — the old, broken accounting. Where all three agree, the zero teleports is
+zero because nothing jumped.
+
+### 4.1 THE CROSSING, three numbers each way
+
+| | **forwards** (Stormhold → Lilmoth) | **backwards** (Lilmoth → Stormhold) |
+|---|---|---|
+| **distance walked** | **6,589.0 m** | **6,586.7 m** |
+| **in-world time** | **54.923 min** | **54.907 min** |
+| **arrived** | **YES** | **YES** |
+| worst deviation from the road | 1.22 m | 1.26 m |
+| frames off the road (> 3.5 m) | **0** | **0** |
+| longest stall | 18 frames | 18 frames |
+| deepest water | **0.00 m** | **0.00 m** |
+| teleports (engine) / (my own counter) | **0 / 0** | **0 / 0** |
+| my counter's `walked_m` (naive sum) | 6,589.0 (6,589.0) | 6,586.7 (6,586.7) |
+
+Against RI-WLD01 M2: time **52–65 min** ✓ both ways; distance **6,300–7,600 m** ✓ both ways.
+Round 1's forward figure was 6,646.7 m / 55.398 min on a route declared at 6,903.6 m; this round's
+route is 6,728.5 m declared after the splice, and the walk is 6,589.0 m / 54.923 min. **The
+backwards walk is 2.3 m and 0.016 min from the forwards one over 6.6 km.**
+
+### 4.2 Every leg, both ways, with the worst case named
+
+All twenty-two walks arrive. `path_m` and my independent `walked_m` agree on **all 22** — the
+`counters_disagree` list is empty.
+
+| leg | forwards | backwards | Δ |
+|---|---|---|---|
+| `stormhold-thorn` | 2,216.0 m / 18.481 min | 2,215.9 m / 18.466 min | 0.1 m |
+| `stormhold-helstrom` | 2,784.9 m / 23.215 min | **2,783.0 m / 23.200 min** | 1.9 m |
+| `helstrom-archon` | 2,540.3 m / 21.204 min | 2,540.4 m / 21.186 min | 0.1 m |
+| `helstrom-blackrose` | 2,347.4 m / 19.563 min | 2,343.8 m / 19.534 min | 3.6 m |
+| `helstrom-gideon` | 2,414.8 m / 20.138 min | 2,414.8 m / 20.135 min | 0.0 m |
+| `gideon-soulrest` | 2,534.0 m / 21.121 min | 2,533.8 m / 21.115 min | 0.2 m |
+| `soulrest-blackrose` | 1,754.9 m / 14.627 min | 1,755.3 m / 14.629 min | 0.4 m |
+| `blackrose-lilmoth` | 1,461.6 m / 12.180 min | 1,461.6 m / 12.185 min | 0.0 m |
+| `archon-thorn` | 4,198.4 m / 35.008 min | 4,202.3 m / 35.042 min | 3.9 m |
+| `lilmoth-archon` | 2,495.3 m / 26.010 min | 2,494.2 m / 26.079 min | 1.1 m |
+
+**THE WORST CASE, NAMED:**
+
+| | worst | where |
+|---|---|---|
+| deviation from the road | **1.26 m** of a 6 m carriageway | `stormhold-helstrom:rev` (and three other reverse walks at 1.25–1.26) |
+| frames more than 3.5 m off the road | **0** | everywhere |
+| longest stall | **24 frames** (0.4 s) | `lilmoth-archon:rev` |
+| deepest water | **0.929 m** — W3 WADE, not swimming | `lilmoth-archon:fwd` (a declared tideway leg; every other leg is 0.00 m) |
+| teleports | **0** | everywhere, on both counters |
+
+Two things in that table are worth saying out loud. **The worst deviation is always a reverse
+walk** — 1.21–1.23 m forwards against 1.24–1.26 m backwards on every leg that differs — which is
+the residue of the same asymmetry this round chased, now down to three centimetres. And
+`lilmoth-archon` is the one leg that puts a body in water at all: 0.93 m, knee-to-thigh, on a leg
+`roads.json` declares as `tideway`. Nothing swims.
+
+### 4.3 What this cost, and under what load (rule 26)
+
+The sweep is 22 walks and roughly 1.9 million fixed steps in one browser. That is the only
+wall-clock figure in this document and it is not a performance claim: it was taken while between
+one and five other agents' browsers were resident, `contention.mjs` reporting GO throughout. None of
+the measured quantities — metres, frames, in-world minutes, angles, counts — moves with load.

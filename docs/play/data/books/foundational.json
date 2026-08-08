@@ -1,0 +1,196 @@
+{
+  "schema": "elder-souls/book@2",
+  "group": "foundational",
+  "owner": "W1-LIBRARY — the in-world library",
+  "note": "The seven exemplars of RI-LOR03 §3, moved out of the corpus markdown and into the game. RI-LOR03's provenance note says exemplars 1, 2, 4 and 6 are intended to ship; canon-facts.json names all seven as in_world_sources for CF-D001, CF-006, CF-062, CF-040/041 and CF-C011, and until now those references pointed at a design document rather than at anything a player could open. Nothing here is corrected by anything else in the game. Exemplar 6 §7 contains a lethal error on purpose and is registered as such in RI-LOR03; no book fixes it and no UI annotates it (RI-UIX05 R8).",
+  "books": [
+    {
+      "id": "the-sap-and-the-ledger",
+      "skill_book": "root-speech",
+      "title": "The Sap and the Ledger",
+      "author": "Sergius Verrent, formerly Quartermaster of the Ninth Cohort, Gideon",
+      "kind": "volume",
+      "taxon": "T1",
+      "argonian_authored": false,
+      "unreliability": "An honest man reasoning carefully from a true observation to a conclusion he cannot support. He is right that nothing is recalled and wrong that nothing persists.",
+      "registry": {
+        "cf": "CF-D001",
+        "position": "A"
+      },
+      "contradicts": [
+        {
+          "book": "the-egg-speaks-twice",
+          "on": "what survives when a soul returns to the Hist",
+          "cf": "CF-D001"
+        }
+      ],
+      "topics_taught": [
+        "the-sapwells",
+        "the-drinking",
+        "sergius-verrent"
+      ],
+      "text": "Being an Attempt at an Honest Accounting of the Argonian Soul.\n\nI am not a philosopher. I counted grain for nineteen years and I found that a man who counts grain honestly learns more about a province than a man who writes about its spirit, because grain does not flatter and spirit does. What follows is therefore an accounting, and I ask the reader to judge it as one: not by whether it is beautiful, but by whether it balances.\n\nThe natives of this province hold that a hatchling receives its soul by drinking the sap of a tree. I have seen this done. It is not a metaphor and it is not a rite in the sense that the Temple would recognise a rite. There is no priest. There is a pool, there is a root that has been opened, and there are the young, and they drink as calves drink, and afterwards they are different. I say different and I mean it in the plain way: before the drinking they are animals that move; after it they look at you. I have watched it four times and I would watch it again, and I say without embarrassment that it is the only thing in nineteen years of this province that frightened me.\n\nNow. Where I differ from every author who has written on this before me — and I include Serjo Fals Rethan, whose Meditations on the Trees of Argonia is a long book of a man agreeing with himself — is on the question of what returns.\n\nThe natives say the soul goes back into the tree when the body fails, and waits, and is given out again to a new egg. They will tell you this as calmly as a farmer tells you where he keeps his seed corn. Fals Rethan takes them at their word and builds a cathedral on it. I say: count.\n\nIf a soul returned entire, it would return knowing. That is what a soul is; a thing that knows it is itself. And a returned soul would carry the whole account of its former life into the new body, and the marsh would be full of the young speaking of dead people's business, and the tribes would keep records of it, and the records would be worth more than salt. There are no such records. I have looked. I have paid to look. I sat with a rootkeeper at Ixt-Shaneekh for as long as the Cohort's money would run to, which was ninety drakes of it, and I asked her every way a man can ask, and what she told me was this: the tree keeps the shape, not the story.\n\nThat is the whole of it, and she said it as though it were obvious, and to her it was.\n\nSo here is my accounting. The sap is a solvent. It does not preserve the soul; it dissolves it, as water dissolves salt, and the dissolved matter is held in common in the body of the tree, and when a new egg is opened, some measure of that common stock is drawn off and poured in. What comes out is not the man who died. It is made of him, as a second loaf is made of the same flour. The tribes are not lying to us. They are using a word — return — that does not survive translation, and we hear resurrection because our own religion has taught us no other shape for the idea.\n\nThe consequence, which I set down plainly because no one else will: the Argonian does not have a life after this one. He has a contribution. He goes into the pool and the pool goes on, and this is a consolation of a sort but it is not the consolation he is understood to have, and every Imperial chaplain who has told a dying Argonian auxiliary that he is going home to his tree has told him a kindness that is not true.\n\nI have been told that this is a cold conclusion. It is. I would rather have a cold ledger than a warm one that does not balance.\n\nTwo objections must be met.\n\nFirst, it is said that the trees speak to their people, and that this proves memory. It proves nothing of the sort. A ledger speaks to me, and it remembers nothing; it is written on. The sap carries instruction, warning, sometimes an image — I have seen a village empty three days before a flood on no other authority — but instruction is not recollection, and I would remind the reader that the tree is present and the dead are not.\n\nSecond, and this is the objection I cannot fully answer, so I record it against myself: there are the wells. The opened roots. Every settlement in the interior has one and every one of them is a wound that was cut on purpose and has been kept open for longer than the Empire has existed. The rootkeepers will not say who cut the first, and they become genuinely angry when pressed, which is not a thing an Argonian usually consents to become in front of a foreigner. And I have heard it said — only by the drunk, only ever by the drunk, and always in the same words — that the wells remember what the tree forgets.\n\nI do not know what that means. I have written down that I do not know. If the reader can do better, the reader is welcome to the ledger; I am too old and this province has taken enough of my eyes.",
+      "registry_facts": [
+        "CF-D001",
+        "CF-D002"
+      ]
+    },
+    {
+      "id": "the-egg-speaks-twice",
+      "skill_book": "root-speech",
+      "title": "The Egg Speaks Twice: Nine Root-Songs of the Deep Marshes",
+      "author": "set down in Tamrielic by Deelith-Who-Waits-For-Rain, of Helstrom, at the request of the Provincial Office, and against her own judgement",
+      "kind": "volume",
+      "taxon": "T3",
+      "argonian_authored": true,
+      "unreliability": "True in kind, not in letter. The translator says so herself, four times, and the Provincial Office paid for it anyway.",
+      "registry": {
+        "cf": "CF-D001",
+        "position": "B"
+      },
+      "contradicts": [
+        {
+          "book": "the-sap-and-the-ledger",
+          "on": "what survives when a soul returns to the Hist",
+          "cf": "CF-D001"
+        },
+        {
+          "book": "the-stone-nests-ii",
+          "on": "who built the xanmeers",
+          "cf": "CF-D003"
+        }
+      ],
+      "topics_taught": [
+        "the-root-songs",
+        "the-naming",
+        "the-sapwells",
+        "deelith-who-waits-for-rain"
+      ],
+      "text": "A word first. I was asked for these in Tamrielic and I have given them in Tamrielic and they are ruined. I say this not to be difficult but so the reader does not mistake what he is holding. A root-song is sung standing in water at a particular depth, at a particular hour, by people who are related to each other in a way your language has one word for and mine has a dozen. What I can carry across is the meaning of the words. The song is not in the words. I have marked with brackets the places where I have failed.\n\nTHE FIRST SONG. OF THE DRINKING.\n\nBefore the drinking you were water.\nThe tree put its finger in the water and the water stood up.\n[ixt-jul-vakh — \"the standing-water.\" There is no Tamrielic word. It is not \"birth.\"]\nNow you are a shape the tree is holding.\nDo not be proud of the shape.\nIt has been held before.\n\nTHE SECOND SONG. OF THE NAME.\n\nThe name is a rope, not a root.\nA rope is for the living to hold you by.\nWhen they let go, the rope is on the ground,\nand you have gone down where ropes do not go.\nSing your name loudly while you have one.\nIt is not listened for below.\n\nTHE THIRD SONG. OF THE RETURN.\n\nThey say the drowned man comes back and does not know his wife.\nThis is told as a sad story. It is not a sad story.\nThe tree gave him out again. That is the whole promise.\nThe promise was never that he would know his wife.\n[The Imperial reader will want me to say whether the man is the same man. My language does not have the question. I have tried four times to write the question in Tamrielic and each time I wrote something my grandmother would have found stupid.]\n\nTHE FOURTH SONG. OF THE WOUND.\n\nThe tree does not remember you.\nThe cut in the tree remembers you.\nThis is why we do not let the cut close.\nThis is why the keeper sits by it and does not sleep,\nand why the keeper is chosen from those who can bear\nto be looked at by something that is not looking.\n\nTHE FIFTH SONG. OF THE TAKERS.\n\nA man came with a jar.\nHe said: the tree is generous, the tree will not miss it.\nThe tree is generous. The tree did not miss it.\nThe child born that year was born with no mouth\nand we did not blame the man, because blame is a rope\nand he had already gone home along it.\n\nTHE SIXTH SONG. OF THE SALT.\n\nThey take us north in the wet season because we do not die on the water.\nRemember that they discovered this by testing it.\n[lukiul is here, and I will not translate it, and the Provincial Office may strike this line.]\n\nTHE SEVENTH SONG. OF THE STONE NESTS.\n\nOur grandmothers stacked the world into steps and walked up it.\nWe do not know how. We do not know why they stopped.\nWhen you stand in a stone nest and feel that you are small,\nunderstand that you are not small, you are late.\n\nTHE EIGHTH SONG. OF SITHIS.\n\nAll roots go down.\nBelow the roots there is no root.\nThis is not a punishment and it is not a reward\nand the people who made it a punishment came here on ships.\n\nTHE NINTH SONG. WHICH IS NOT SUNG.\n\n[The ninth is sung only when a tree has stopped answering. I have heard it once. I was nine. I will not write it down, and the Provincial Office may keep its money.]",
+      "registry_facts": [
+        "CF-D001",
+        "CF-D003"
+      ]
+    },
+    {
+      "id": "the-blessings-of-the-coast",
+      "title": "The Blessings of the Coast: An Address to the Free Peoples of Argonia",
+      "author": "the Provincial Office at Gideon",
+      "kind": "pamphlet",
+      "taxon": "T2",
+      "argonian_authored": false,
+      "unreliability": "Deliberately false in its central claim, and the falsehood is legal rather than factual. Slavery is lawful in Morrowind, and Morrowind is in the Empire.",
+      "registry": {
+        "cf": "CF-062",
+        "position": "denies it"
+      },
+      "contradicts": [
+        {
+          "book": "ledger-and-journal-of-andrel-vorin",
+          "on": "whether subjects of the Empire are held as property",
+          "cf": "CF-062"
+        },
+        {
+          "book": "a-short-account-of-the-pacification",
+          "on": "whether the Legion goes inland",
+          "cf": "CF-C001"
+        }
+      ],
+      "topics_taught": [
+        "the-provincial-office",
+        "the-chartered-markets",
+        "the-ninth-cohort"
+      ],
+      "text": "Published for distribution at all chartered markets, in the four-hundred-and-twenty-sixth year of the Third Era.\n\nCitizens and friends!\n\nThere was a time, within the memory of your grandparents, when the coast of this province was a place of fear. Ships came and went as they pleased. Whole villages vanished between one season and the next and no man could say where. There was no law from the Padomaic to the Topal but the law of whoever held the knife.\n\nConsider the coast today.\n\nAt Archon, the harbour is measured, the moorings are numbered, and every keel that touches the quay is entered in a register that any citizen may inspect. At Gideon, the tolls are posted in three tongues. At Stormhold, the granary has not been empty in living memory. At Lilmoth — and let no one say the Empire has forgotten Lilmoth — the customs house stands open six days in seven.\n\nThis is what the Empire has given, and it has asked in return only what any household asks: an honest share, and quiet at the door.\n\nSome among you have heard otherwise. It is said in the interior that the Empire takes hatchlings. This is a slander, and we name it as one. No subject of the Empire may be held as property within the borders of the Empire's law. Where irregularities have occurred, they have occurred beyond that law, at the hands of foreign vessels, and the Provincial Office has made and continues to make the strongest representations to the government of Morrowind on this matter.\n\nIt is further said that the Legion does not go inland. This is true, and we say so proudly. The Empire does not go where it is not needed. The interior governs itself, as it has always governed itself, and the Empire has never wished it otherwise. Those who tell you the Legion is coming for your trees are selling you a fear so that they may sell you the cure.\n\nAsk instead: who has built you a granary? Who has posted a toll you may read? Who has hanged a pirate this year?\n\nCome to the chartered markets. Bring rice, bring hide, bring pearl. Take away salt, iron, and paper. Learn the Tamrielic tongue, for it costs nothing and opens every door from here to Anvil. Enrol your young in the Legion auxiliaries, where they will be fed, paid, and honoured, and where an Argonian of merit may rise as high as any man.\n\nThe marsh is old. The Empire is patient. Between them there is room for every honest people.\n\nLong live the Emperor Uriel Septim VII.\nLong live the Provinces.",
+      "wrong_on_purpose": "The claim that no subject of the Empire may be held as property within the Empire's law is false and is known to be false by the office that printed it: slavery is lawful in Morrowind and Morrowind is in the Empire (CF-062). The lie is legal rather than factual, which is why it has survived eleven printings.",
+      "registry_facts": [
+        "CF-062"
+      ]
+    },
+    {
+      "id": "ledger-and-journal-of-andrel-vorin",
+      "skill_book": "mercantile",
+      "title": "Ledger and Journal of Andrel Vorin, Salt-Factor",
+      "author": "Andrel Vorin, of Tear",
+      "kind": "journal",
+      "taxon": "T4",
+      "argonian_authored": false,
+      "unreliability": "Every figure in it is true and the book is a lie about its author, which he works out himself on the second-to-last page and does not act on.",
+      "registry": {
+        "cf": "CF-062"
+      },
+      "contradicts": [
+        {
+          "book": "the-blessings-of-the-coast",
+          "on": "whether subjects of the Empire are held as property",
+          "cf": "CF-062"
+        }
+      ],
+      "topics_taught": [
+        "house-dres",
+        "the-crimson-coast",
+        "the-rootward-tide"
+      ],
+      "text": "Recovered at the Crimson Coast; the first several leaves are water-spoiled and omitted.\n\n12 Rain's Hand. Anchored off the red shore. Sea the colour of a bad tooth. Sixty-one head expected from the Deep Marshes party, forty-four delivered. Ivrys says the difference is the fever. Ivrys says the difference is the fever every year and every year I write it down and every year the Council in Tear reads it and nods. Cost of the party: 900 drakes. Value delivered: 3,100. We are not, whatever my brother says at dinner, in a profitable trade. We are in a bulk trade.\n\n17 Rain's Hand. Two of the forty-four are Naga-formed, which fetches more in Tear as a curiosity and which I have always thought a poor business, since a curiosity is bought once. Entered at 140 each regardless.\n\n21 Rain's Hand. The old one will not eat. Not a hunger strike; she eats when the bowl is put in her hands but she does not take it. Ivrys wanted to open her mouth with the funnel. I said no, on the grounds of the throat damage, and Ivrys thinks me soft, and Ivrys is right that I am soft and wrong about the reason.\n\n2 Second Seed. Squall. Lost a man overboard, one of ours, Vandas, who owed me a month of wine and has now settled it. Cargo lost none. They do not drown. I have watched them go under the water in the hold when it flooded to the waist and come up and look at me, and it is the looking at me, and this is the third time I have written that in this book and I am going to stop writing it.\n\n9 Second Seed. Put in at Archon for water. Captain there has a new price. Everyone has a new price. Wrote a letter to Serjo Dram which I did not send.\n\n14 Second Seed. The old one spoke to me. Tamrielic, clean as a clerk's, which I did not expect and which I should have expected because we take them from the river roads and the river roads trade. She asked me whether I knew where a soul goes when it is taken far from where it should be.\n\nI said I supposed it went to whatever god had it.\n\nShe said no. She said it goes where it can. She said there is a tide in this country and it runs downward into the roots, and everything that dies here is drunk and given back out, and this is not a belief, it is plumbing, and when you take her people north and they die in Tear, they die outside the tide, and the tide is short by that much.\n\nI asked her whether she meant that we were stealing souls, since we hear this said and I wanted to know if it was the standard thing.\n\nShe said: no. Stealing would be better. Stealing means it went into a hand. She said: you are spilling.\n\nI have thought about that word for two days.\n\n16 Second Seed. Ivrys says the last three parties have all come back light and all with the same story from the trackers — that the villages inland are moving, not fleeing, moving, and that the rootkeepers have started sitting with their wells day and night in shifts, and that a tracker who asked why was told to go home in a tone that made a man who has done this fourteen years come back and say he did not want the work.\n\n19 Second Seed. Forty-one head. Three dead in the hold since Archon of no cause anyone can name. Not fever. Not thirst. Ivrys opened one and said the meat was sound.\n\n20 Second Seed. I want to record, because this book will be read by the Council and by my brother and possibly by my son, that I have kept an honest ledger for twenty-two years and that every figure in it is true, and that this is the only defence I have ever had and I now understand it is not one.\n\nThe old one died last night. She was not sick. She sat down against the hull and looked at the shore and went out like a lamp being carried into another room.\n\nEntered at nil.\n\n21 Second Seed. Ivrys wants to put in at the red shore again for water and I have said no. I do not want to be near the shore. I have no reason and I am the factor and I do not need one.\n\n23 Sec"
+    },
+    {
+      "id": "nine-stanzas-upon-the-drowning",
+      "title": "Nine Stanzas Upon the Drowning of Reman's Ford",
+      "author": "Casimir Bellandus, Poet, of Chorrol and Anvil",
+      "kind": "verse",
+      "taxon": "T5",
+      "argonian_authored": false,
+      "unreliability": "Bad on purpose, in a specific direction. He is homesick, he is being paid by the month, and he never found his rhyme.",
+      "contradicts": [
+        {
+          "book": "the-drowned-ford",
+          "on": "what happened at the ford and who did it",
+          "cf": null
+        }
+      ],
+      "topics_taught": [
+        "the-drowned-ford",
+        "casimir-bellandus"
+      ],
+      "text": "Only five stanzas are extant. The poet's own note on the manuscript reads: \"The remainder were lost in the same water, which I consider a criticism.\"\n\nI.\n\nO Ford! O gallant Ford of Reman's name!\nWhere once the Legion's noble hobnails rang,\nNow silt, now slime, now soft ignoble shame,\nAnd frogs where once the trumpet-players sang!\n\nII.\n\nTwo hundred souls were counted at the muster,\nTwo hundred souls were counted at the meal,\nAnd of the flower of that martial cluster\nBut nine and forty answered to the peal.\n\nIII.\n\nThey say the Argonaut, that scaly fellow,\nCan breathe beneath the water like a fish;\nHow fortunate! How enviably mellow!\nWhile we good men must perish as we wish.\n\nIV.\n\nThe Governor has writ that all is well,\nThe Governor is doubtless well informed;\nI have not seen the Governor, I dwell\nWhere nothing dries and everything is warmed.\n\nV.\n\nReturn me, gods, to Chorrol's honest stone,\nTo wine, to walls, to women who are dry;\nI came to sing of Empire and have grown\nAcquainted with a beetle three feet high.\n\nBellandus was attached to the Ninth Cohort as a poet of the province at a stipend of forty drakes a month for two years. The Provincial Office declined to renew the appointment. He is understood to have died at Gideon of Brown Rot, having outlived his patron, his reputation, and — by his own account in a letter to his sister — his rhyme for Argonian, which he never found."
+    },
+    {
+      "id": "a-practical-handling-of-the-marsh-fevers",
+      "skill_book": "alchemy",
+      "title": "A Practical Handling of the Marsh-Fevers",
+      "author": "the Provincial Office, Gideon. Fourth issue.",
+      "kind": "manual",
+      "taxon": "T6",
+      "argonian_authored": false,
+      "unreliability": "Mostly reliable, which is what makes section seven dangerous. Nothing in this game corrects section seven.",
+      "registry": {
+        "cf": "CF-006"
+      },
+      "wrong_on_purpose": "§7. Scraping bloomrot and applying alcohol drives spores into broken skin and is the standard route to systemic infection. Interior rootkeepers smother it with clay and never break the surface. No book corrects it; an Argonian NPC, asked, will.",
+      "topics_taught": [
+        "the-marsh-fevers",
+        "the-nine-day-silence",
+        "hist-sap",
+        "waters-edge"
+      ],
+      "text": "For Field Surgeons and Serjeants of the Cohorts of Argonia. Supersedes the third issue, which is to be burned, not corrected.\n\n1. General.\n\nA man posted to this province will get sick. Plan the roster on that basis and not on the strength returns. In a wet season assume one man in four unfit and you will not be far wrong.\n\n2. The order of your work.\n\nWet, warm, fed, dry — in that order, and dry is last because you will not achieve it. Do not begin with the cure. Begin with the boots.\n\n3. Swamp fever.\n\nOnset two to five days after standing water above the knee. Shaking, heat, and a smell off the sweat like old bread. Not usually fatal in a fed man. Cure potion where you have it; where you do not, keep the man drinking and keep him out of the sun. Do not bleed. The third issue of this manual instructed bleeding. The third issue is to be burned.\n\n4. Brown rot.\n\nSlower. Begins in the gums. If the gums are receding and the man says his teeth feel long, treat immediately and enter it in the book, because brown rot in one man in a barrack is brown rot in the barrack.\n\n5. Rockjoint.\n\nCommon inland, rare on the coast. Stiffness at the large joints on waking that does not free after a hundred paces. Cured easily and early; not cured at all late. Any man who says his knees are just cold in this climate is lying to stay on the roster and is to be inspected.\n\n6. Yellow tick.\n\nFrom the tick, obviously. Ring of yellowed skin at the bite, spreading. The ring is not the disease; the ring is the sign. Burn the tick off with a coal — do not pull it — and dress it.\n\n7. Bloomrot.\n\nFungal. Grey fruiting bodies at the armpit, groin and the web of the fingers, and a sweet smell. Scrape, do not cut. Alcohol on the scrape. Bloomrot alone will not kill a healthy man but it opens the skin for everything else and a man with bloomrot and a wound is a man in serious trouble.\n\n8. Wet lung.\n\nBubbling on the breath. Sit him up. Do not lie him down flat, whatever he asks. If a man with wet lung is laid flat at night you may find him dead in the morning and the death will be yours.\n\n9. The Nine-Day Silence.\n\nRare, inland, and the natives will not discuss it. Begins with a loss of speech — not of understanding — and ends either in recovery on the ninth day or not at all. There is no treatment. Keep the man warm, keep him company, and put a slate and chalk in his hands, because in the six cases this office has recorded, four of the men wrote something on the eighth day and in two cases what was written was of interest to this office.\n\n10. Sap.\n\nThis section is issued on the authority of the Provincial Office and is not open to the discretion of the surgeon.\n\nNo man of the Cohorts is to consume the sap of a Hist tree in any quantity, in any preparation, for any reason, including on the advice of a native guide and including as a treatment for the fevers above. The sap is not a medicine. In the Argonian it is food and something more than food. In a man it is a poison of the mind. The affected do not know what they are looking at. They will report, afterwards and sincerely, having fought beasts, and the bodies will not be beasts.\n\nThere is no cure and there is no test. A man who has taken it once will take it again if it is near him. Where sap is found in a man's kit, the kit is burned and the man is confined, and this office would rather answer for a hundred wrongful confinements than for one more Water's Edge.\n\n11. On native medicine.\n\nThe rootkeepers can do things this office cannot explain and does not intend to try to explain in a field manual. If a native offers to treat your man and your man is dying, let them. If your man is not dying, do not. The distinction is the whole of the policy and you are trusted to make it.\n\n12. Last.\n\nYou will lose men to this province who were never struck by anything. Write down what you saw. Write it down even where it makes you look a fool, because the fourth issue of this manual exists only because a serjeant at Thorn wrote down something foolish in 3E 399 and there are men alive on the strength of it."
+    },
+    {
+      "id": "inscription-third-terrace",
+      "title": "Inscription, Third Terrace, Ixt-Shaneekh",
+      "author": "transcribed and rendered by an unknown hand; the stone is broken at the fourth line",
+      "kind": "inscription",
+      "taxon": "T10",
+      "argonian_authored": true,
+      "unreliability": "A transcription of a broken stone with a later reader's note underneath. Neither the stone nor the reader knows what the count was of.",
+      "registry": {
+        "cf": "CF-040"
+      },
+      "topics_taught": [
+        "ixt-shaneekh",
+        "the-counting"
+      ],
+      "text": "HERE THE WATER WAS TOLD TO STOP AND IT STOPPED\nHERE THE COUNT WAS KEPT BY [name effaced] WHO KEPT IT WRONGLY ONCE\nAND WAS FORGIVEN, AND KEPT IT WRONGLY TWICE, AND WAS NOT\n[break]\n\nWE STACKED IT IN THE DRY SEASON OF THE NINE-HUNDREDTH\nWE STACKED IT AGAIN WHEN IT SANK\nWE DID NOT STACK IT THE THIRD TIME\n\nMarginal note in a later hand, in Cyrodilic: \"Ask them what the count was of. Asked four. Two would not answer, one said 'the ones going down', one laughed. — S.V.\""
+    }
+  ]
+}

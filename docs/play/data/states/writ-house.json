@@ -1,0 +1,90 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "writ-house",
+  "title": "The Writ House at Tidewrack, the moment the player steps up to the desk. RI-JRN01 O6-O10 and RI-CHR01 method 1 load this. No character is created in this state — that is the point of it. ROUND 2: the two people the scene names are now IN it. Round 1's verdict: 'writ-house — the piece's own interior — instantiates 0 entities. There is no NPC whose disposition could be derived.'",
+  "owner": "W1-07",
+  "env": {
+    "timeOfDay": 10.0,
+    "weather": "overcast",
+    "region": "coast",
+    "interior": "writ-house"
+  },
+  "player": {
+    "pos": [
+      1.9,
+      0,
+      0.3
+    ],
+    "yaw": 320.0
+  },
+  "camera": {
+    "yaw": 350.0,
+    "pitch": -3.0,
+    "mode": "free"
+  },
+  "spawn": [],
+  "loadout": {
+    "weapon": "dagger",
+    "shield": null,
+    "endurance": 10,
+    "hpMax": 300,
+    "armourPoise": 0,
+    "equipLoadPct": 8.0,
+    "flaskLevel": 0,
+    "estus": 0,
+    "gold": 0,
+    "_note": "A prisoner off a barge. VIG 10 = 300 HP (RI-PRG02 §3), no shield, no flask, and one knife somebody did not find."
+  },
+  "npcs": [
+    {
+      "from_record": "warden-scribe-tuleeh-ma",
+      "pos": [
+        -1.0,
+        0,
+        3.5
+      ],
+      "yaw": 165,
+      "behaviour": "stand",
+      "notice_radius_m": 7,
+      "height_scale": 1.02
+    },
+    {
+      "from_record": "clerk-avelia-doren",
+      "pos": [
+        -4.1,
+        0,
+        1.4
+      ],
+      "yaw": 120,
+      "behaviour": "stand",
+      "notice_radius_m": 4,
+      "height_scale": 0.98
+    }
+  ],
+  "props": [
+    {
+      "eid": "writ-house-ledger",
+      "name": "The open ledger",
+      "item": "ledger",
+      "takeable": false,
+      "pos": [
+        -0.35,
+        1.17,
+        2.55
+      ],
+      "material": "reed"
+    },
+    {
+      "eid": "writ-house-stamp",
+      "name": "The Office stamp",
+      "item": "office-stamp",
+      "pos": [
+        0.55,
+        1.28,
+        2.5
+      ],
+      "material": "metal",
+      "shape": "tall"
+    }
+  ]
+}

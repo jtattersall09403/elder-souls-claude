@@ -1,0 +1,379 @@
+{
+ "schema": "elder-souls/settlement@2",
+ "id": "thorn",
+ "name": "Thorn",
+ "tier": "village",
+ "region": "thornmarsh",
+ "pos": [
+  3820,
+  13.31,
+  859
+ ],
+ "radius_m": 44,
+ "identity": "A kingdom that shrank. Thorn’s king is an old Argonian holding court in a rotted hall with eleven subjects and a genuine, legally valid Imperial charter. Industry: thornwood cut for Dunmer bows and Imperial spears. Tension: Morrowind is one day’s walk north and remembers what it used to take from here.",
+ "power_reading": "The hall is central and everything else leans against it. Built for a court that no longer exists.",
+ "layout": {
+  "plan": "leaning",
+  "proof": "The Rotted Hall has the largest footprint by a factor of four and every other building shares a wall with it or with something that does. Remove the hall from the plan and nothing else stands up."
+ },
+ "architecture_kit": {
+  "material_rule": "Thatch of black thorn over a rotted Argonian great-hall; the whole village is a thicket you walk into and cannot see out of. Every structure is a lean-to and none is free-standing.",
+  "silhouette": "the thorn thatch — black needle-wood laid in courses, which no other settlement uses",
+  "meshes": [
+   "tho_rotted_hall",
+   "tho_thorn_thatch",
+   "tho_lean_to",
+   "tho_stilt_house",
+   "tho_needle_stack",
+   "tho_charter_post",
+   "tho_bow_rack",
+   "tho_sapwell_kerb"
+  ]
+ },
+ "quarters": [
+  "rotted-hall",
+  "the-boards",
+  "sapwell"
+ ],
+ "targets": {
+  "buildings": 10,
+  "named_interiors": 7,
+  "enterable_pct": 70,
+  "named_npcs": 12,
+  "scheduled_npc_pct": 70,
+  "shops": 2,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 0,
+  "trainers": 1,
+  "quest_givers": 3,
+  "rumour_variants": 6,
+  "bonfire": 1,
+  "road_gates": 2,
+  "unique_architecture_kit": "shared+2 unique props",
+  "souls_loop_dungeon_attached": 0
+ },
+ "counts": {
+  "buildings": 15,
+  "interior": 7,
+  "sealed_with_reason": 3,
+  "structure": 5,
+  "named_interiors": 7,
+  "enterable_pct": 70,
+  "property_zones": 29,
+  "shops": 2,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 0,
+  "road_gates": 2
+ },
+ "services": {
+  "inn": [
+   "thorn-inn"
+  ],
+  "trader": [
+   "thorn-trader"
+  ],
+  "alchemist": [
+   "thorn-apothecary"
+  ],
+  "bonfire": [
+   "thorn-sapwell"
+  ],
+  "travel": [
+   "thorn-rootpost"
+  ]
+ },
+ "buildings": [
+  {
+   "id": "thorn-hall",
+   "name": "The Rotted Hall",
+   "kind": "interior",
+   "building_kind": "hall",
+   "interior": "thorn-hall",
+   "enterable": true,
+   "quarter": "the-boards",
+   "offset_m": [
+    0,
+    0,
+    0
+   ],
+   "yaw_deg": 180,
+   "door": [
+    3820,
+    13.31,
+    859
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "thorn-inn",
+   "name": "The Needle and Charter",
+   "kind": "interior",
+   "building_kind": "tavern",
+   "interior": "thorn-inn",
+   "enterable": true,
+   "quarter": "the-boards",
+   "offset_m": [
+    17,
+    0,
+    0
+   ],
+   "yaw_deg": 270,
+   "door": [
+    3837,
+    13.31,
+    859
+   ],
+   "service": "inn",
+   "faction": null
+  },
+  {
+   "id": "thorn-trader",
+   "name": "The Boards",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "thorn-trader",
+   "enterable": true,
+   "quarter": "sapwell",
+   "offset_m": [
+    20.72,
+    0,
+    9.98
+   ],
+   "yaw_deg": 244.3,
+   "door": [
+    3840.72,
+    13.31,
+    868.98
+   ],
+   "service": "trader",
+   "faction": "wet-ledger"
+  },
+  {
+   "id": "thorn-apothecary",
+   "name": "The Needle Apothecary",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "thorn-apothecary",
+   "enterable": true,
+   "quarter": "rotted-hall",
+   "offset_m": [
+    6.86,
+    0,
+    8.6
+   ],
+   "yaw_deg": 218.6,
+   "door": [
+    3826.86,
+    13.31,
+    867.6
+   ],
+   "service": "alchemist",
+   "faction": null
+  },
+  {
+   "id": "thorn-sapwell",
+   "name": "The Thorn Sapwell",
+   "kind": "interior",
+   "building_kind": "shrine",
+   "interior": "thorn-sapwell",
+   "enterable": true,
+   "quarter": "the-boards",
+   "offset_m": [
+    3.78,
+    0,
+    16.57
+   ],
+   "yaw_deg": 192.9,
+   "door": [
+    3823.78,
+    13.31,
+    875.57
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers"
+  },
+  {
+   "id": "thorn-rootpost",
+   "name": "The Thorn Rootpost",
+   "kind": "interior",
+   "building_kind": "travel",
+   "interior": "thorn-rootpost",
+   "enterable": true,
+   "quarter": "the-boards",
+   "offset_m": [
+    -5.12,
+    0,
+    22.42
+   ],
+   "yaw_deg": 167.1,
+   "door": [
+    3814.88,
+    13.31,
+    881.42
+   ],
+   "service": "travel",
+   "faction": "rootkeepers"
+  },
+  {
+   "id": "thorn-gate",
+   "name": "The Thorn Gate",
+   "kind": "interior",
+   "building_kind": "gate",
+   "interior": "thorn-gate",
+   "enterable": true,
+   "quarter": "the-boards",
+   "offset_m": [
+    -6.86,
+    0,
+    8.6
+   ],
+   "yaw_deg": 141.4,
+   "door": [
+    3813.14,
+    13.31,
+    867.6
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "thorn-north-lean",
+   "name": "The North Lean",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "the-boards",
+   "offset_m": [
+    -15.32,
+    0,
+    7.38
+   ],
+   "yaw_deg": 115.7,
+   "seal_state": "visible",
+   "reason": "the thorn grew through the roof and the family moved into the hall; the thicket has closed over the door",
+   "told_by_trade": "cook"
+  },
+  {
+   "id": "thorn-court-store",
+   "name": "The Court Store",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "the-boards",
+   "offset_m": [
+    -23,
+    0,
+    0
+   ],
+   "yaw_deg": 90,
+   "seal_state": "visible",
+   "reason": "the hall’s store, shut since the court had anything to store",
+   "told_by_trade": "scribe"
+  },
+  {
+   "id": "thorn-burnt-stilt",
+   "name": "The Burnt Stilt House",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "sapwell",
+   "offset_m": [
+    -9.91,
+    0,
+    -4.77
+   ],
+   "yaw_deg": 64.3,
+   "seal_state": "visible",
+   "reason": "a Dunmer raiding party burnt it and the village left it standing as a marker",
+   "told_by_trade": "publican"
+  },
+  {
+   "id": "thorn-struct-the-charter-post",
+   "name": "The Charter Post",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-boards",
+   "offset_m": [
+    -10.6,
+    0,
+    -13.29
+   ],
+   "yaw_deg": 38.6,
+   "residential_props": false
+  },
+  {
+   "id": "thorn-struct-the-needle-stacks",
+   "name": "The Needle Stacks",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-boards",
+   "offset_m": [
+    -5.12,
+    0,
+    -22.42
+   ],
+   "yaw_deg": 12.9,
+   "residential_props": false
+  },
+  {
+   "id": "thorn-struct-the-bow-racks",
+   "name": "The Bow Racks",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-boards",
+   "offset_m": [
+    2.45,
+    0,
+    -10.72
+   ],
+   "yaw_deg": 347.1,
+   "residential_props": false
+  },
+  {
+   "id": "thorn-struct-the-sapwell-kerb",
+   "name": "The Sapwell Kerb",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "sapwell",
+   "offset_m": [
+    10.6,
+    0,
+    -13.29
+   ],
+   "yaw_deg": 321.4,
+   "residential_props": false
+  },
+  {
+   "id": "thorn-struct-the-thicket-wall",
+   "name": "The Thicket Wall",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "sapwell",
+   "offset_m": [
+    20.72,
+    0,
+    -9.98
+   ],
+   "yaw_deg": 295.7,
+   "residential_props": false
+  }
+ ],
+ "interiors": [
+  "thorn-hall",
+  "thorn-inn",
+  "thorn-trader",
+  "thorn-apothecary",
+  "thorn-sapwell",
+  "thorn-rootpost",
+  "thorn-gate"
+ ],
+ "generated_by": "tools/world/build-settlements.mjs"
+}

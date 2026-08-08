@@ -1,0 +1,396 @@
+{
+  "schema": "elder-souls/frames@1",
+  "id": "ES-FRAMES/1",
+  "unit": "f@60",
+  "unit_note": "EVERY frame figure in this file is at our fixed 60 Hz simulation step and is written f@60. A Souls community tick is t@30 and is a DIFFERENT UNIT: a Souls figure of N is 2N of ours (ARBITRATION S22). A frame count with no stated framerate is a defect.",
+  "owner": "RI-CMB02 §A/§B/§C/§D/§E",
+  "provenance": "Transcribed verbatim from corpus/10-combat/RI-CMB02 with the S22 rebase already applied. RI-CMB02 owns these NUMBERS; game/src/combat/** owns the MACHINE that runs them. A mismatch between this declaration and the observed trace is a hard fail (HARNESS.md §7 rule 4).",
+  "index_convention": "Frame indices are 1-based and inclusive. first_active = startup + 1. Ps = startup + 1 (an INDEX, not a duration — S22 re-derives it, never doubles it).",
+  "derivations": {
+    "hyperarmour_window": "[ceil(0.60 * startup), startup + active]  — RI-CMB02 §B. ceil() does not commute with doubling, so these are re-derived from the rebased startups, never scaled.",
+    "commitment": "STARTUP and ACTIVE are hard-committed. RECOVERY splits: the first ceil(0.45 * recovery) frames are hard, the remainder is DODGE-cancellable only. RI-CMB02 §D.",
+    "buffer": "8 f@60, one slot. NOT rebased — it is a wall-clock allowance for human input error (RI-CMB01 C6, RI-CMB09 §1).",
+    "min_startup_frames": "6 f@60 = 100 ms. NOT rebased — a property of human reaction time. §C startup multipliers clamp to it; post-rebase nothing clamps (RI-CMB02 §C boxed note)."
+  },
+  "min_startup_frames": 6,
+  "buffer_frames": 8,
+  "buffer_slots": 1,
+  "light": {
+    "_columns": [
+      "startup",
+      "Ps",
+      "active",
+      "recovery",
+      "total",
+      "stamina",
+      "poise_damage",
+      "motion_value",
+      "reach_m",
+      "root_dz_m"
+    ],
+    "_source": "RI-CMB02 §A",
+    "dagger": {
+      "startup": 12,
+      "Ps": 13,
+      "active": 6,
+      "recovery": 24,
+      "total": 42,
+      "stamina": 12,
+      "poise_damage": 8,
+      "motion_value": 0.72,
+      "reach_m": 1.05,
+      "root_dz_m": 0.15
+    },
+    "straight_sword": {
+      "startup": 24,
+      "Ps": 25,
+      "active": 10,
+      "recovery": 40,
+      "total": 74,
+      "stamina": 20,
+      "poise_damage": 22,
+      "motion_value": 1.0,
+      "reach_m": 1.95,
+      "root_dz_m": 0.35
+    },
+    "spear": {
+      "startup": 28,
+      "Ps": 29,
+      "active": 8,
+      "recovery": 44,
+      "total": 80,
+      "stamina": 18,
+      "poise_damage": 18,
+      "motion_value": 1.0,
+      "reach_m": 3.1,
+      "root_dz_m": 0.55
+    },
+    "axe": {
+      "startup": 32,
+      "Ps": 33,
+      "active": 12,
+      "recovery": 48,
+      "total": 92,
+      "stamina": 24,
+      "poise_damage": 28,
+      "motion_value": 1.15,
+      "reach_m": 1.8,
+      "root_dz_m": 0.3
+    },
+    "halberd": {
+      "startup": 38,
+      "Ps": 39,
+      "active": 14,
+      "recovery": 56,
+      "total": 108,
+      "stamina": 28,
+      "poise_damage": 34,
+      "motion_value": 1.25,
+      "reach_m": 2.85,
+      "root_dz_m": 0.45
+    },
+    "greatsword": {
+      "startup": 44,
+      "Ps": 45,
+      "active": 16,
+      "recovery": 66,
+      "total": 126,
+      "stamina": 32,
+      "poise_damage": 42,
+      "motion_value": 1.45,
+      "reach_m": 2.6,
+      "root_dz_m": 0.85
+    },
+    "ultra_greatsword": {
+      "startup": 58,
+      "Ps": 59,
+      "active": 20,
+      "recovery": 88,
+      "total": 166,
+      "stamina": 42,
+      "poise_damage": 58,
+      "motion_value": 1.75,
+      "reach_m": 2.95,
+      "root_dz_m": 1.4
+    }
+  },
+  "heavy": {
+    "_columns": [
+      "startup",
+      "Ps",
+      "active",
+      "recovery",
+      "total",
+      "stamina",
+      "poise_damage",
+      "motion_value",
+      "hyperarmour_window",
+      "root_dz_m"
+    ],
+    "_source": "RI-CMB02 §B. Hyperarmour windows re-derived from the formula, NOT scaled; the four marked ⚠ in the item disagree with a naive ×2 and are correct as written here.",
+    "dagger": {
+      "startup": 28,
+      "Ps": 29,
+      "active": 6,
+      "recovery": 44,
+      "total": 78,
+      "stamina": 20,
+      "poise_damage": 14,
+      "motion_value": 1.05,
+      "hyperarmour_window": null,
+      "root_dz_m": 0.2
+    },
+    "straight_sword": {
+      "startup": 50,
+      "Ps": 51,
+      "active": 12,
+      "recovery": 60,
+      "total": 122,
+      "stamina": 34,
+      "poise_damage": 40,
+      "motion_value": 1.55,
+      "hyperarmour_window": [
+        30,
+        62
+      ],
+      "root_dz_m": 0.6
+    },
+    "spear": {
+      "startup": 54,
+      "Ps": 55,
+      "active": 10,
+      "recovery": 64,
+      "total": 128,
+      "stamina": 30,
+      "poise_damage": 34,
+      "motion_value": 1.6,
+      "hyperarmour_window": [
+        33,
+        64
+      ],
+      "root_dz_m": 1.1
+    },
+    "axe": {
+      "startup": 60,
+      "Ps": 61,
+      "active": 14,
+      "recovery": 72,
+      "total": 146,
+      "stamina": 40,
+      "poise_damage": 48,
+      "motion_value": 1.8,
+      "hyperarmour_window": [
+        36,
+        74
+      ],
+      "root_dz_m": 0.5
+    },
+    "halberd": {
+      "startup": 68,
+      "Ps": 69,
+      "active": 16,
+      "recovery": 84,
+      "total": 168,
+      "stamina": 44,
+      "poise_damage": 56,
+      "motion_value": 1.9,
+      "hyperarmour_window": [
+        41,
+        84
+      ],
+      "root_dz_m": 0.7
+    },
+    "greatsword": {
+      "startup": 80,
+      "Ps": 81,
+      "active": 20,
+      "recovery": 96,
+      "total": 196,
+      "stamina": 50,
+      "poise_damage": 70,
+      "motion_value": 2.1,
+      "hyperarmour_window": [
+        48,
+        100
+      ],
+      "root_dz_m": 1.25
+    },
+    "ultra_greatsword": {
+      "startup": 104,
+      "Ps": 105,
+      "active": 24,
+      "recovery": 124,
+      "total": 252,
+      "stamina": 62,
+      "poise_damage": 92,
+      "motion_value": 2.6,
+      "hyperarmour_window": [
+        63,
+        128
+      ],
+      "root_dz_m": 1.9
+    }
+  },
+  "modifiers": {
+    "_source": "RI-CMB02 §C. Multipliers are dimensionless and did NOT move under S22; the base rows they multiply did.",
+    "_rounding": "round-half-up to integer frames, applied ONCE, to the final product. startup_final = max(6, round(base * modifier)).",
+    "two_handed": {
+      "startup": 1.0,
+      "active": 1.0,
+      "recovery": 1.0,
+      "stamina": 1.15,
+      "motion_value": 1.15,
+      "poise_damage": 1.3,
+      "enables_r1_hyperarmour": {
+        "axe": [
+          20,
+          44
+        ],
+        "greatsword": [
+          27,
+          60
+        ],
+        "ultra_greatsword": [
+          35,
+          78
+        ]
+      }
+    },
+    "chain_hit_2": {
+      "startup": 0.78,
+      "active": 1.0,
+      "recovery": 1.05,
+      "stamina": 1.0,
+      "motion_value": 0.95,
+      "poise_damage": 1.0
+    },
+    "chain_hit_3": {
+      "startup": 0.78,
+      "active": 1.0,
+      "recovery": 1.35,
+      "stamina": 1.0,
+      "motion_value": 0.9,
+      "poise_damage": 1.0,
+      "terminates_chain": true
+    },
+    "charged_r2": {
+      "charge_frames_max": 60,
+      "motion_value_ramp": [
+        1.0,
+        1.3
+      ],
+      "poise_damage_ramp": [
+        1.0,
+        1.5
+      ],
+      "ha_pool_mult": 1.5
+    },
+    "rolling": {
+      "startup": 0.6,
+      "active": 1.0,
+      "recovery": 1.1,
+      "stamina": 0.85,
+      "motion_value": 0.85,
+      "poise_damage": 0.85,
+      "legal_from_roll_frames": [
+        31,
+        52
+      ]
+    },
+    "running": {
+      "startup": 0.7,
+      "active": 1.0,
+      "recovery": 1.0,
+      "stamina": 1.1,
+      "motion_value": 1.05,
+      "poise_damage": 1.1,
+      "root_dz_mult": 2.0
+    },
+    "jump": {
+      "startup": 1.3,
+      "active": 1.25,
+      "recovery": 1.2,
+      "stamina": 1.3,
+      "motion_value": 1.35,
+      "poise_damage": 1.8,
+      "forbidden_when": "OVERLOADED"
+    },
+    "backstep_attack": {
+      "startup": 0.65,
+      "active": 1.0,
+      "recovery": 0.95,
+      "stamina": 1.0,
+      "motion_value": 1.0,
+      "poise_damage": 1.0,
+      "root_dz_mult": 1.4
+    },
+    "guard_counter": {
+      "startup": 0.85,
+      "active": 1.0,
+      "recovery": 1.05,
+      "stamina": 1.0,
+      "motion_value": 1.3,
+      "poise_damage": 1.6,
+      "window_after_block_f": 24,
+      "_contradiction_declared": "RI-CMB02 §C says 24 f@60; RI-WPN01/04/06 say 40 f@60. RI-WPN01's own cross-dependency clause says 'RI-CMB02 wins on frame values', so 24 stands here. Filed found-not-fixed in REBASE-S22-REPORT §7 — this build does not silently pick a different winner."
+    }
+  },
+  "readability_contract": {
+    "_source": "RI-CMB02 §E. Recomputed by tools/harness/cmb-probe.mjs --check=readability from the observed census, never trusted from this file.",
+    "recovery_over_startup_light_min": 1.4,
+    "recovery_over_startup_heavy_min": 1.15,
+    "startup_delta_light_vs_heavy_min_f": 16,
+    "active_over_total_max": 0.16,
+    "startup_spread_r1_min_f": 46,
+    "adjacent_class_startup_delta_min_f": 4,
+    "adjacent_rule_scope": "the 7-class spine of §A/§B only (RI-CMB02 §E ruling). The other 8 RI-WPN02 classes are separated by fingerprint distance, not timing.",
+    "min_startup_any_attack_f": 6,
+    "max_Ps_for_punish_weapon_f": 29
+  },
+  "actions": {
+    "_source": "CONSTRUCTED by W1-09 remediation. RI-CMB03 §B prices `jump` at 18 flat and HARNESS.md §4's closed action set names `jump`, `two_hand`, `swap_right`, `swap_left` and `menu`, but NO reference item gives any of them a frame count. The W1-09 verdict §2.3 found all five accepted and inert — 'jump costs 0 because jump does not exist' — which made RI-CMB02 §C's jump-attack row, RI-CMB01 §B's OVERLOADED jump-attack prohibition and RI-WPN06's whole stance contract structurally unmeasurable. These numbers are declared here, as constructed, so that they are measurable and falsifiable. Where an item DOES give a number (RI-WPN06 §A's 36 f@60 stance switch) that number is used verbatim and marked.",
+    "jump": {
+      "_provenance": "constructed. No corpus item gives jump frames. Shaped so the airborne window is long enough for RI-WPN04 §B's descending-only jump attack to be a real input window (26 f@60 airborne, of which the descending half is 13 f@60) and short enough that jumping is not a dodge (i-frames: NONE, ever).",
+      "startup": 8,
+      "airborne": 26,
+      "landing": 12,
+      "total": 46,
+      "apex_m": 0.62,
+      "iframes": null,
+      "stamina_source": "stamina.json §costs.jump = 18",
+      "forbidden_when": null,
+      "jump_attack_forbidden_when": "OVERLOADED — RI-CMB01 §B ('OVERLOADED additionally forbids sprinting and jump-attacks') and RI-CMB02 §C ('Forbidden at OVERLOADED')",
+      "attack_window": "descending frames only: anim_frame > startup + ceil(airborne/2). RI-WPN04 §B: 'AIRBORNE and vel_y < 0 … No rising jump attacks.'"
+    },
+    "stance_switch": {
+      "_provenance": "RI-WPN06 §A verbatim: 36 f@60, root-locked, uncancellable, legal from IDLE/WALK/RUN only, illegal from every attack phase / ROLL / BACKSTEP / AIRBORNE / STAGGER / GUARD_BREAK / HEAL, buffered by the standard 8 f@60 buffer, stamina 0.",
+      "total": 36,
+      "stamina": 0,
+      "legal_from": [
+        "IDLE",
+        "WALK",
+        "RUN",
+        "BLOCK_HOLD"
+      ],
+      "cancellable": false
+    },
+    "quick_swap": {
+      "_provenance": "constructed. RI-WPN01 §A gives the slots but no swap animation length. Deliberately given the SAME commitment shape as the stance switch and 2/3 its length, because RI-WPN06 §A's rationale — 'an instant, frame-zero stance toggle is a hard fail: it makes two-handing free in the middle of a fight' — applies verbatim to a frame-zero weapon swap. Making it instant would have been the same defect wearing a different button.",
+      "total": 24,
+      "stamina": 0,
+      "legal_from": [
+        "IDLE",
+        "WALK",
+        "RUN",
+        "BLOCK_HOLD"
+      ],
+      "cancellable": false
+    },
+    "menu": {
+      "_provenance": "AR-1 probe A3 ('pause mid-fight') was scored not_run in the W1-09 verdict because 'no menu surface exists in this piece'. The menu is therefore implemented as a UI surface that DOES NOT PAUSE: the fixed step keeps running, enemies keep swinging and stamina keeps regenerating while it is open. That is the Souls-side answer and it is now observable rather than absent.",
+      "total": 0,
+      "stamina": 0,
+      "pauses_the_simulation": false
+    }
+  }
+}

@@ -1,0 +1,1010 @@
+{
+  "schema": "elder-souls/npcs@1",
+  "group": "quest-givers",
+  "owner": "W1-07 round 4 — race and standing on the quest-offer path",
+  "source": "Every `giver.npc_id` under game/data/quests/** that had NO record anywhere in game/data/npcs/**. Nineteen people, nine of them carrying a `disposition_min`. `gate.js canOffer()` reads `num(undefined) === 0`, so each of those nine was a hard, race-invariant, UNPASSABLE gate that reported itself as an ordinary standing shortfall — the round-2 tool critic measured nine identical `disposition 0/N` clauses across six character signatures. The other ten give no disposition_min and were still invisible to RI-CHR02 method 4.",
+  "consumed_by": "Engine.seedDispositions() writes `disposition` into sim.quest.dispositions; Engine._questDispositionModel() reads `reaction_group`, `race` and `faction` to derive what the person actually feels; gate.js canOffer() checks the result against giver.disposition_min. Engine._assertGiversAreVisibleToRace() refuses to boot if any giver in the book is missing from here.",
+  "hand_authored": true,
+  "generated_by": null,
+  "do_not_regenerate": "Hand-authored. Every greeting, topic pair, reaction group and base disposition was chosen against a named quest and a named place. A generator that rewrites this file will silently re-open the defect it closed.",
+  "reaction_group_note": "Chosen from the person and the place, not from convenience. speaker-teel-ashaan is RG-DEEP at disposition 50 because RI-MTH06 §A's worked example is stated against exactly that record: a dunmer/lukiul reaches a ceiling of 34 against Q-DEEP-01's ask of 50 and is refused for good, while a dunmer/interior reaches 60 and is not.",
+  "topic_note": "Each record's topics are (actor, topic) pairs the shipped topic corpus can answer for all ten races, and at least one of each pair answers a different race differently — so these people are neither mute nor decorative under tools/analysis/creation-audit.mjs's dialogue section.",
+  "declared_incomplete": {
+    "owner": "W1-04 (settlement population) and W1-17 (dialogue volume)",
+    "missing": [
+      "schedules",
+      "the rest of each settlement around these people",
+      "quest-specific topic bodies"
+    ]
+  },
+  "npcs": [
+    {
+      "id": "dyer-sallis",
+      "actor": "townsman",
+      "name": "Sallis",
+      "race": "saxhleel",
+      "class": "dyer",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "archon",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "what-the-warmbloods-ask",
+        "the-boards"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Mind the run-off. It takes the colour out of boots and it does not come back."
+      },
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3817.12,
+          3.42,
+          3842.5
+        ],
+        "yaw": 57,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from archon-vat-house's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "archon-inn"
+    },
+    {
+      "id": "undertaker-vaskh",
+      "actor": "mudborn",
+      "name": "Vaskh",
+      "title": "Undertaker",
+      "race": "saxhleel",
+      "class": "undertaker",
+      "faction": "the_drowned_court",
+      "reaction_group": "RG-COURT",
+      "settlement": "soulrest",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "the-drowned-kin",
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Everyone comes down this yard eventually and the fee is the same for all of you."
+      },
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          632.25,
+          7.91,
+          4887.26
+        ],
+        "yaw": 66,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "soulrest-grey-hist"
+    },
+    {
+      "id": "prefect-hallow",
+      "actor": "legionary",
+      "name": "Hallow",
+      "title": "Prefect",
+      "race": "imperial",
+      "class": "prefect",
+      "faction": "the_imperial_assize",
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "blackrose",
+      "interior": "blackrose-prison",
+      "disposition": 40,
+      "topics": [
+        "blackrose-prison",
+        "citizenship"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The lease is up in seven months and no clerk in Cyrodiil has read the clause. Sit."
+      },
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-prison",
+        "at_building_name": "Blackrose Prison",
+        "pos": [
+          1863.4,
+          2.68,
+          4436.27
+        ],
+        "yaw": 252,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-prison's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-prison",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "blackrose-prison"
+    },
+    {
+      "id": "quartermaster-sedd",
+      "actor": "legionary",
+      "name": "Sedd",
+      "title": "Quartermaster",
+      "race": "imperial",
+      "class": "quartermaster",
+      "faction": "ninth_cohort",
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "stormhold",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "bridge-duty",
+        "home-leave"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Stores gate. If you are not carrying a chit you are carrying an excuse."
+      },
+      "post": {
+        "settlement": "stormhold",
+        "at_building": "stormhold-archive",
+        "at_building_name": "The Cohort Archive",
+        "pos": [
+          2136.12,
+          141.12,
+          729.87
+        ],
+        "yaw": 229,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from stormhold-archive's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "stormhold-inn-pass",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "stormhold-inn-pass",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "stormhold-inn-pass"
+    },
+    {
+      "id": "harbourmistress-tesh",
+      "actor": "clerk",
+      "name": "Tesh",
+      "title": "Harbourmistress",
+      "race": "imperial",
+      "class": "harbourmistress",
+      "faction": "the_wet_ledger",
+      "reaction_group": "RG-LEDGER",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-customs",
+      "disposition": 45,
+      "topics": [
+        "the-provincial-office",
+        "the-tides"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Everything on this wharf is declared. That is not the same as everything being true."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2800.35,
+          0.37,
+          5028.79
+        ],
+        "yaw": 90,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from lilmoth-customs's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "lilmoth-customs"
+    },
+    {
+      "id": "cutter-neeth",
+      "actor": "merchant",
+      "name": "Neeth",
+      "race": "saxhleel",
+      "class": "sap-cutter",
+      "faction": "the_ixtu_vakh",
+      "reaction_group": "RG-VAKH",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 42,
+      "topics": [
+        "the-draught",
+        "the-surcharge"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Up the outside stair. The room over the sap-house, and do not touch the phials on the sill."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2287.05,
+          27.22,
+          2837.29
+        ],
+        "yaw": 21,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-hollow-bole"
+    },
+    {
+      "id": "factor-belliene",
+      "actor": "clerk",
+      "name": "Belliene",
+      "title": "Factor",
+      "race": "breton",
+      "class": "factor",
+      "faction": "the_wet_ledger",
+      "reaction_group": "RG-LEDGER",
+      "settlement": "gideon",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-fee",
+        "tidewrack"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "The counting floor is above the toll gate, which tells you everything about the arithmetic."
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          402.53,
+          2.72,
+          2907.02
+        ],
+        "yaw": 258,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-grange's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
+    },
+    {
+      "id": "npc-porter-eeja",
+      "actor": "townsman",
+      "name": "Eeja",
+      "race": "saxhleel",
+      "class": "porter",
+      "faction": "the_dockhands",
+      "reaction_group": "RG-TOWN",
+      "settlement": "gideon",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-boards",
+        "what-the-warmbloods-ask"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Eleven gold a week and the crane takes a finger off a man every winter."
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-court",
+        "at_building_name": "The County Court",
+        "pos": [
+          452.97,
+          2.72,
+          2920.83
+        ],
+        "yaw": 60,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-court's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
+    },
+    {
+      "id": "speaker-teel-ashaan",
+      "actor": "rootkeeper",
+      "name": "Teel-Ashaan",
+      "title": "Speaker",
+      "race": "saxhleel",
+      "class": "speaker",
+      "faction": "the_xul_aneekh",
+      "reaction_group": "RG-DEEP",
+      "settlement": null,
+      "interior": null,
+      "disposition": 50,
+      "topics": [
+        "hist-debt",
+        "what-the-sap-says"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You walked a day east on the root track to be told a number. Sit where the water is shallow."
+      },
+      "post": {
+        "site": "rootlands-hollow",
+        "pos": [
+          4.2,
+          0,
+          1.6
+        ],
+        "yaw": 200,
+        "note": "Not a townsperson. This person is at a named site their own quests declare; see game/data/states/rootlands-hollow.json."
+      }
+    },
+    {
+      "id": "shipwright-oleen",
+      "actor": "townsman",
+      "name": "Oleen",
+      "race": "nord",
+      "class": "shipwright",
+      "faction": null,
+      "reaction_group": "RG-TOWN",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-yard",
+      "disposition": 40,
+      "topics": [
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "They seized the hull and left the yard the debt. That is the whole of it."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2798.95,
+          7.37,
+          5035.19
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from lilmoth-yard's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-yard",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "lilmoth-yard"
+    },
+    {
+      "id": "fence-ashul",
+      "actor": "merchant",
+      "name": "Ashul",
+      "race": "saxhleel",
+      "class": "fence",
+      "faction": null,
+      "reaction_group": "RG-OUTLAW",
+      "settlement": "gideon",
+      "interior": "gideon-lowmarket",
+      "disposition": 40,
+      "topics": [
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Low market. Nothing here has a provenance and nothing here has a warranty."
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.87,
+          2.72,
+          2905.86
+        ],
+        "yaw": 240,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-lowmarket's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-lowmarket"
+    },
+    {
+      "id": "widow-ineel",
+      "actor": "mudborn",
+      "name": "Ineel",
+      "race": "saxhleel",
+      "class": "net-mender",
+      "faction": null,
+      "reaction_group": "RG-DEEP",
+      "settlement": "thorn",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-drowned-kin",
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The stilts hold. It is the wreck under them that does not."
+      },
+      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn.",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-apothecary",
+        "at_building_name": "The Needle Apothecary",
+        "pos": [
+          3827.63,
+          13.31,
+          869.71
+        ],
+        "yaw": 39,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from thorn-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "thorn-hall"
+    },
+    {
+      "id": "rootkeeper-jeen",
+      "actor": "rootkeeper",
+      "name": "Jeen",
+      "title": "Rootkeeper",
+      "race": "saxhleel",
+      "class": "rootkeeper",
+      "faction": "the_rootkeepers",
+      "reaction_group": "RG-ROOT",
+      "settlement": "helstrom",
+      "interior": "helstrom-undertemple",
+      "disposition": 45,
+      "topics": [
+        "root-water",
+        "hist-sap"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The shelf is older than the temple over it and it is counted every year without fail."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2297.75,
+          27.22,
+          2779.03
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-undertemple's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-undertemple",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-undertemple"
+    },
+    {
+      "id": "xul-aneekh-speaker",
+      "actor": "rootkeeper",
+      "name": "The Speaker at the Hollow",
+      "race": "saxhleel",
+      "class": "speaker",
+      "faction": "the_xul_aneekh",
+      "reaction_group": "RG-DEEP",
+      "settlement": null,
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "the-hatch-name-list",
+        "hist-debt"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The conclave sits when the water is low. You have come at the water being low."
+      },
+      "post": {
+        "site": "rootlands-hollow",
+        "pos": [
+          -3.4,
+          0,
+          3.1
+        ],
+        "yaw": 150,
+        "note": "Not a townsperson. This person is at a named site their own quests declare; see game/data/states/rootlands-hollow.json."
+      }
+    },
+    {
+      "id": "scribe-hulen",
+      "actor": "clerk",
+      "name": "Hulen",
+      "title": "Scribe",
+      "race": "breton",
+      "class": "scribe",
+      "faction": null,
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "stormhold",
+      "interior": "stormhold-archive",
+      "disposition": 40,
+      "topics": [
+        "the-provincial-office",
+        "the-fee"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Quietly. The floor above is the Assize and the floor below is damp."
+      },
+      "post": {
+        "settlement": "stormhold",
+        "at_building": "stormhold-archive",
+        "at_building_name": "The Cohort Archive",
+        "pos": [
+          2137.06,
+          141.12,
+          729.02
+        ],
+        "yaw": 229,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from stormhold-archive's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "stormhold-archive",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "stormhold-inn-pass",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "stormhold-archive"
+    },
+    {
+      "id": "assizer-corvo",
+      "actor": "legionary",
+      "name": "Corvo",
+      "title": "Assizer",
+      "race": "imperial",
+      "class": "assizer",
+      "faction": "the_imperial_assize",
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "gideon",
+      "interior": "gideon-court",
+      "disposition": 45,
+      "topics": [
+        "citizenship",
+        "contraband"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "A witness is a person who will still say it tomorrow. Are you a witness?"
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-court",
+        "at_building_name": "The County Court",
+        "pos": [
+          452.77,
+          2.72,
+          2921.27
+        ],
+        "yaw": 60,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-court's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-court",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-court"
+    },
+    {
+      "id": "herbwife-ossa",
+      "actor": "merchant",
+      "name": "Ossa",
+      "race": "saxhleel",
+      "class": "herbwife",
+      "faction": null,
+      "reaction_group": "RG-DEEP",
+      "settlement": "thorn",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-draught",
+        "the-market"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Rot house is the third stilt along. Do not breathe through your mouth in it."
+      },
+      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn.",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-apothecary",
+        "at_building_name": "The Needle Apothecary",
+        "pos": [
+          3826.89,
+          13.31,
+          869.83
+        ],
+        "yaw": 39,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from thorn-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "thorn-hall"
+    },
+    {
+      "id": "innkeeper-veth",
+      "actor": "merchant",
+      "name": "Veth",
+      "race": "imperial",
+      "class": "innkeeper",
+      "faction": null,
+      "reaction_group": "RG-TOWN",
+      "settlement": "blackrose",
+      "interior": "blackrose-inn",
+      "disposition": 45,
+      "topics": [
+        "boots",
+        "the-market"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "Two brothers, one bed, and neither of them has paid. Sit anywhere but there."
+      },
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-inn",
+        "at_building_name": "The Visitors’ House",
+        "pos": [
+          1863.74,
+          2.68,
+          4454.67
+        ],
+        "yaw": 276,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-inn's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "blackrose-inn"
+    },
+    {
+      "id": "potter-mek",
+      "actor": "merchant",
+      "name": "Mek",
+      "race": "saxhleel",
+      "class": "potter",
+      "faction": null,
+      "reaction_group": "RG-DEEP",
+      "settlement": "gideon",
+      "interior": null,
+      "disposition": 40,
+      "topics": [
+        "the-surcharge",
+        "why-anyone-comes-here"
+      ],
+      "services": [
+        "barter"
+      ],
+      "lines": {
+        "greeting": "The kiln draws wrong since the flues cracked and everything comes out the colour of ash."
+      },
+      "settlement_note": "W1-GIVER-PRESENCE: Q-MAG-26 declares this person at gideon-lowmarket; the record carried settlement:null, which RumourBook and RoadBook both read as \"answers nothing\".",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.94,
+          2.72,
+          2906.08
+        ],
+        "yaw": 240,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-lowmarket's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
+    }
+  ],
+  "giver_posts_note": "Some records in this file carry a `post` block and a `schedule` written by tools/world/build-giver-posts.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
+}

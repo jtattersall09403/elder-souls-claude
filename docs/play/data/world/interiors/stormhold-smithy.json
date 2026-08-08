@@ -1,0 +1,202 @@
+{
+  "schema": "elder-souls/interior@1",
+  "id": "stormhold-smithy",
+  "name": "The Muster Forge",
+  "settlement": "stormhold",
+  "cell_kind": "named",
+  "interior_kind": "shop",
+  "service": "smith",
+  "faction": null,
+  "exterior_door": [
+    2167.5,
+    141.12,
+    731
+  ],
+  "continuity": {
+    "building": "stormhold-smithy",
+    "building_offset_m": [
+      -4,
+      0,
+      -30
+    ],
+    "building_yaw_deg": 0,
+    "exterior_footprint_m": [
+      12.4,
+      14.4
+    ],
+    "entry_side": "south",
+    "interior_spawn": [
+      0,
+      0,
+      6
+    ],
+    "exterior_spawn": [
+      2167.5,
+      141.12,
+      732.8
+    ]
+  },
+  "bounds_m": {
+    "x": [
+      -6.2,
+      6.2
+    ],
+    "y": [
+      0,
+      3.2
+    ],
+    "z": [
+      -7.2,
+      7.2
+    ]
+  },
+  "floor_area_m2": 178.6,
+  "light": {
+    "kind": "lamp",
+    "pos": [
+      0,
+      0.6,
+      2.88
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.2
+  },
+  "lights": [
+    {
+      "id": "stormhold.warder6.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "stormhold.warder6.r1.lamp0",
+      "pos": [
+        2.8,
+        1.6,
+        0
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "stormhold.warder6.r1.lamp1",
+      "pos": [
+        0.9000000000000004,
+        1.6,
+        0.09999999999999964
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "stormhold.warder6.r1.lamp2",
+      "pos": [
+        -1,
+        1.6,
+        -0.20000000000000018
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "stormhold.smith13.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "stormhold.smith13.r0.lamp0",
+      "pos": [
+        -1.5,
+        1.6,
+        2.5
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "stormhold.smith13.r0.lamp1",
+      "pos": [
+        0.3999999999999999,
+        1.6,
+        2.4000000000000004
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    }
+  ],
+  "props": [
+    "counter_long",
+    "shelf_stack",
+    "scale_brass",
+    "crate_sealed",
+    "ledger_stand",
+    "coin_tray",
+    "sack_row",
+    "hook_rail",
+    "lamp_hanging",
+    "stool_high",
+    "strongbox",
+    "sample_board",
+    "measure_jug",
+    "sweep_broom",
+    "sto_legion_block",
+    "sto_bloom_course",
+    "sto_grid_barrack",
+    "sto_wall_lean"
+  ],
+  "property_zones": [
+    "stormhold.warder6.r1",
+    "stormhold.smith13.r0"
+  ],
+  "containers": [
+    "stormhold.smith13.r0.0"
+  ],
+  "unique_item": {
+    "id": "stormhold-smithy-unique",
+    "name": "a legion blade with the stamp filed off",
+    "unique": true,
+    "takeable": true,
+    "owner": "npc:stormhold-warder-6"
+  },
+  "readable": [
+    {
+      "id": "stormhold-smithy-readable",
+      "title": "On Filing Stamps"
+    },
+    {
+      "id": "the-door-that-walks",
+      "title": "The Door That Walks",
+      "book": "the-door-that-walks"
+    },
+    {
+      "id": "the-fen-zweihander-and-why-it-wins",
+      "title": "Why the fen lads beat the Chorrol man",
+      "book": "the-fen-zweihander-and-why-it-wins"
+    },
+    {
+      "id": "on-the-bog-iron-mace",
+      "title": "On bog-iron, and the heads cast from it",
+      "book": "on-the-bog-iron-mace"
+    }
+  ],
+  "inhabitants": [],
+  "anchor": "interior_firelit",
+  "open_h": 8,
+  "close_h": 19
+}

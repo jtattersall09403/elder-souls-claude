@@ -1,0 +1,197 @@
+{
+  "schema": "elder-souls/dialogue-topics@2",
+  "group": "registered-disputes",
+  "owner": "W1-23. The province arguing with itself, on the record.",
+  "key_legend_ref": "topics/00-roots.json §key_legend",
+  "note": "Every info here carries `cf` (a registered dispute in game/data/lore/canon.json) and `pos` (which side of it the line takes), and game/src/world/canon.js#allows offers it ONLY to a speaker the register says holds that side. So these are not extra lines: they are the register's holders made audible. Ask two people the same word and the province disagrees with itself in front of you, and nothing corrects either of them — RI-LOR06 §1.2. Strike a holder out of the register and the line stops being offered; that is the perturbation this file exists to make visible.",
+  "consumed_by": "game/src/character/converse.js#infoFor via CanonRegistry.allows()",
+  "topics": [
+    {
+      "id": "the-marsh-burial",
+      "infos": [
+        {
+          "a": "clerk",
+          "cf": "CF-D001",
+          "pos": "A",
+          "x": "You put a body in the water and the water takes it apart. I've read the Office's own physician on it and he's blunt: what goes in doesn't come out, and nothing of the person is kept anywhere. They'll tell you otherwise at the wells. Have you been told otherwise at a well?"
+        }
+      ]
+    },
+    {
+      "id": "the-thinning",
+      "infos": [
+        {
+          "a": "deep-elder",
+          "cf": "CF-D006",
+          "pos": "A",
+          "x": "This one will say it plainly and once. The wells are short because the root under them is being taken and sold in pieces, and the pieces go out through the coast houses, and every gem that leaves is a length of root that will not carry again. You may write that down."
+        },
+        {
+          "a": "clerk",
+          "cf": "CF-D006",
+          "pos": "B",
+          "x": "The Ledger commissioned a survey and I've read it. Too many cuts, too close together, over too few seasons — no mystery in it at all. Wound a thing often enough and it stops giving. Ask the cutters how many routes ran the Helstrom shelf ten years ago and how many run it now."
+        },
+        {
+          "a": "mudborn",
+          "cf": "CF-D006",
+          "pos": "C",
+          "x": "The Court keeps the burial ledgers and the burial ledgers are where it shows first, dry-one, and I have been told this by a sexton who was drinking. The ground is not giving back what it used to. The Court will not say why, and I have stopped asking, because the third time you ask they stop drinking with you."
+        }
+      ]
+    },
+    {
+      "id": "the-cutters-terms",
+      "note": "W1-DLG-SHADOWS. The sapcutter (CF-D017 pos A) info carries `d:20`, added for the same reason as reading-the-count's note in this file: it tied on specificity against 50-mainline.json's ungated sapcutter info for this id ('The yards want the leases read...') and, loading second (50-mainline.json < 70-disputes.json), was permanently unreachable regardless of context. `d:20` makes the dispute stance reachable once earned rather than silently dead.",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "cf": "CF-D017",
+          "pos": "A",
+          "d": 20,
+          "x": "Friend, this one was taught the depth and this one was taught the season, and this one keeps both. What the buyer does after is between the buyer and his own tree. Show this one the clause that says otherwise and this one will read it."
+        },
+        {
+          "a": "rootkeeper",
+          "cf": "CF-D017",
+          "pos": "B",
+          "x": "The old terms say depth and season and they say nothing at all about selling, supplicant, and the man who wrote that down calls the silence a permission. It is not a permission. It is four hundred years of the sentence never being needed, and he has read the gap in it as a door."
+        }
+      ]
+    },
+    {
+      "id": "the-imperial-claim",
+      "infos": [
+        {
+          "a": "merchant",
+          "cf": "CF-D010",
+          "pos": "A",
+          "x": "The Empire doesn't go inland because it doesn't want to, and it says so in the address they hand out at the market — go and read it! There's no shame in the thing. A house doesn't garrison its own garden."
+        }
+      ]
+    },
+    {
+      "id": "the-weeping-ford",
+      "infos": [
+        {
+          "a": "legionary",
+          "cf": "CF-D011",
+          "pos": "A",
+          "x": "Flood surge. Two hundred in, forty-nine out. It's in the Short Account and every man at the schools gets a copy, and I've read the paragraph more times than I've read anything."
+        },
+        {
+          "a": "fisher",
+          "cf": "CF-D011",
+          "pos": "C",
+          "x": "The gates were opened. My people opened them and we've never once denied it. But fight them? There were thirty of us at the weirs and two hundred of them with iron on. What do you think a fight would have looked like?"
+        }
+      ]
+    },
+    {
+      "id": "what-people-say-happened",
+      "infos": [
+        {
+          "a": "outlaw",
+          "cf": "CF-D011",
+          "pos": "D",
+          "x": "There's a song with names in it. Not weir people either — nine of them, and the record has none of them, and the depots won't have it sung in a yard. Ask yourself why a depot cares what a song says about an accident."
+        }
+      ]
+    },
+    {
+      "id": "slavery",
+      "infos": [
+        {
+          "a": "clerk",
+          "cf": "CF-D008",
+          "pos": "A",
+          "x": "No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself."
+        },
+        {
+          "a": "dres-factor",
+          "cf": "CF-D008",
+          "pos": "B",
+          "x": "The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you."
+        },
+        {
+          "a": "sapcutter",
+          "cf": "CF-D028",
+          "pos": "A",
+          "x": "The roll does not come off. I have watched it move from a mother to her daughter, and nothing on the paper says different."
+        },
+        {
+          "a": "outlaw",
+          "cf": "CF-D028",
+          "pos": "B",
+          "x": "It came off a man on the number-four gang, once, eleven winters back, bought clear for silver that took his whole house to raise. Bought is not free. It is also not never."
+        },
+        {
+          "cf": "CF-D008",
+          "pos": "B",
+          "x": "There's a column for it in the Wet Ledger, and everyone who signs a manifest here has seen it. The polite word is not the one used at the yard.",
+          "a": "merchant"
+        },
+        {
+          "cf": "CF-D008",
+          "pos": "A",
+          "x": "It's against the law here, full stop. Whatever happens on the water answers to a different law, not this one."
+        }
+      ]
+    },
+    {
+      "id": "the-xanmeers",
+      "infos": [
+        {
+          "a": "archivist",
+          "cf": "CF-D015",
+          "pos": "A",
+          "x": "Solid, all the way through. The survey measured eleven of them with one rod and found no chamber in any, and what the guides sell as a chamber is a fall of the upper courses with a door cut into it by a guide's grandfather.",
+          "cell": "blackrose"
+        },
+        {
+          "a": "merchant",
+          "cf": "CF-D015",
+          "pos": "B",
+          "x": "I've stood inside one! Twelve paces across, dry as a barn, and I'll not be told it was a hole in a heap of rubble by a man who walked round the outside with a stick."
+        }
+      ]
+    },
+    {
+      "id": "reading-the-count",
+      "note": "W1-DLG-SHADOWS. The archivist (CF-D018 pos B) info carries `d:20`, added so it stops tying against 50-mainline.json's ungated archivist info for this same id ('Hosk-Vei can read the Count...') — same actor, neither side previously carried a requires/cell/d, so `infoFor()`'s score was an exact tie and Map iteration order (50-mainline.json loads before 70-disputes.json) made the dispute stance permanently unreachable from this archivist regardless of context, defeating RI-LOR06's requirement that a registered dispute be heard from a real, qualified speaker. `d:20` makes the two deterministic instead of order-dependent: the practical fact answers below that trust threshold, the archivist's dispute position once the player has earned it.",
+      "infos": [
+        {
+          "a": "archivist",
+          "cf": "CF-D018",
+          "pos": "B",
+          "d": 20,
+          "x": "They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the object was, which is the wrong order of operations and produced the right number anyway. A boundary stone marks one place. These count."
+        },
+        {
+          "a": "archivist",
+          "cf": "CF-D018",
+          "pos": "A",
+          "x": "Boundary stones. The Assize has taken them as boundary stones in evidence twice. And a stone the court has read as a boundary is a boundary, whatever it was cut for. Would you argue that in front of a notary?",
+          "cell": "blackrose"
+        }
+      ]
+    },
+    {
+      "id": "the-count-itself",
+      "infos": [
+        {
+          "a": "mudborn",
+          "cf": "CF-D013",
+          "pos": "B",
+          "x": "A return of four is what a return is now, dry-one, and two of them drew together on the fourth day and the sixth and got the same, and they set it against the standing measure twice each because they did not believe it either."
+        },
+        {
+          "a": "archivist",
+          "cf": "CF-D013",
+          "pos": "A",
+          "x": "The measure has not moved. The sixth volume's disputed leaves are a copying error and the archive entered a note saying so at the time, and the note is still there, and no sexton at Soulrest has ever read it."
+        }
+      ]
+    }
+  ]
+}

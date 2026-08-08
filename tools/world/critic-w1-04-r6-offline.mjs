@@ -190,6 +190,9 @@ function slabGeometry(plan) {
               observed_m: +alongNormal.toFixed(4),
               lateral_m: +lateral.toFixed(4),
               isolation_m: +iso.toFixed(3),
+              // THE LAW THE FIX ACTUALLY RESTS ON, measured separately from the law the round's
+              // PROSE states: wherever the body comes to rest, is it exactly `r` from a slab?
+              rest_clearance_m: +EX.horizontalClearance(shapes, p[0], p[2]).toFixed(4),
               clean: iso > 3,
             });
           }
@@ -212,6 +215,23 @@ function slabGeometry(plan) {
     })),
     examples_wrong: wrong.slice(0, 8),
   };
+  // The SECOND law, and the one the fix rests on: the body comes to rest exactly `r` from a slab,
+  // wherever "there" turns out to be. Judged over ALL cases, isolated or not.
+  {
+    const settled = preds.filter((p) => p.rest_clearance_m > 0);
+    const holds = settled.filter((p) => Math.abs(p.rest_clearance_m - p.r) <= 0.01);
+    A.fixed_point_law = {
+      what: 'wherever the solver leaves the body, is the horizontal clearance exactly the body radius?',
+      cases: preds.length, cases_that_ended_outside_every_slab: settled.length,
+      rest_clearance_equals_r_within_0_01: holds.length,
+      by_radius: [0.16, 0.32, 0.48, 0.64].map((r) => {
+        const g = settled.filter((p) => p.r === r);
+        return { r, n: g.length, mean_rest_clearance_m: g.length ? +(g.reduce((a, p) => a + p.rest_clearance_m, 0) / g.length).toFixed(4) : null, within_0_01_of_r: g.filter((p) => Math.abs(p.rest_clearance_m - r) <= 0.01).length };
+      }),
+      still_inside_a_slab_after_the_resolve: preds.length - settled.length,
+    };
+    if (preds.length - settled.length) out.findings.push(`A: ${preds.length - settled.length} of ${preds.length} bodies are STILL inside a slab after resolveSphere()`);
+  }
   if (!clean.length) out.probe_failures.push('A: no clean prediction case at all — the probe measured nothing');
   if (wrong.length) out.findings.push(`A: ${wrong.length} of ${clean.length} isolated-wall cases do NOT land where the arithmetic predicts`);
 
@@ -261,15 +281,26 @@ function slabGeometry(plan) {
       const rec = r5.I[b.interior];
       const sp = rec && rec.continuity && rec.continuity.exterior_spawn;
       if (!sp) continue;
-      const row = { town: plan.id, interior: b.interior, start_clearance_m: +EX.horizontalClearance(shapes, sp[0], sp[2]).toFixed(4), arms: {} };
+      const row = {
+        town: plan.id, interior: b.interior,
+        start_clearance_m: +EX.horizontalClearance(shapes, sp[0], sp[2]).toFixed(4),
+        start_inside: EX.insideBuilding(plan, sp[0], sp[2], 0),
+        arms: {},
+      };
       for (const r of [0.16, 0.32, 0.48]) {
         const cell = new COL.CollisionCell('slide', shapes, {});
-        const p = restPoint(cell, sp[0], sp[2], r, 6);
-        row.arms[r] = {
-          slide_m: +Math.hypot(p[0] - sp[0], p[2] - sp[2]).toFixed(4),
-          end_clearance_m: +EX.horizontalClearance(shapes, p[0], p[2]).toFixed(4),
-          ends_inside: EX.insideBuilding(plan, p[0], p[2], 0),
-        };
+        // ONE call is one FRAME. `stepWorldCollision()` runs every fixed step and re-reads the
+        // body's position, so the honest offline emulation of "1 / 30 / 120 / 600 fixed steps"
+        // is 1 / 30 / 120 / 600 calls, not one call with more iterations.
+        const p = [sp[0], HEAD_Y, sp[2]];
+        const at = {};
+        for (let f = 1; f <= 600; f++) {
+          cell.resolveSphere(p, r, 6);
+          if (f === 1 || f === 30 || f === 120 || f === 600) {
+            at[f] = { slide_m: +Math.hypot(p[0] - sp[0], p[2] - sp[2]).toFixed(4), clearance_m: +EX.horizontalClearance(shapes, p[0], p[2]).toFixed(4), inside: EX.insideBuilding(plan, p[0], p[2], 0) };
+          }
+        }
+        row.arms[r] = { at, slide_m: at[1].slide_m, end_clearance_m: at[1].clearance_m, ends_inside: at[1].inside };
       }
       slides.push(row);
     }
@@ -284,7 +315,30 @@ function slabGeometry(plan) {
     end_clearance_equals_r_within_0_01: moved.filter((s) => Math.abs(s.arms[0.32].end_clearance_m - 0.32) <= 0.01).length,
     mean_slide_by_radius: [0.16, 0.32, 0.48].map((r) => ({ r, moved: slides.filter((s) => s.arms[r].slide_m > 0.001).length, mean_slide_m: +(slides.reduce((a, s) => a + s.arms[r].slide_m, 0) / slides.length).toFixed(4) })),
     end_inside_a_building_by_radius: [0.16, 0.32, 0.48].map((r) => ({ r, n: slides.filter((s) => s.arms[r].ends_inside).length })),
-    rows: slides.filter((s) => s.arms[0.32].slide_m > 0.001).map((s) => ({ interior: s.interior, start_clearance_m: s.start_clearance_m, slide_016: s.arms[0.16].slide_m, slide_032: s.arms[0.32].slide_m, slide_048: s.arms[0.48].slide_m, ends_inside_032: s.arms[0.32].ends_inside })),
+    started_inside_a_footprint: slides.filter((s) => s.start_inside).length,
+    // The round-5 verdict's own table, offline, and then the SAME table with the body radius
+    // changed. If the body radius is the cause, the count must move with it.
+    inside_a_building_at_1_30_120_600_by_radius: [0.16, 0.32, 0.48].map((r) => ({
+      r,
+      inside: [1, 30, 120, 600].map((f) => slides.filter((s) => s.arms[r].at[f].inside).length),
+      mean_slide_m: [1, 30, 120, 600].map((f) => +(slides.reduce((a, s) => a + s.arms[r].at[f].slide_m, 0) / slides.length).toFixed(3)),
+      worst_slide_m: [1, 30, 120, 600].map((f) => +Math.max(...slides.map((s) => s.arms[r].at[f].slide_m)).toFixed(2)),
+    })),
+    // The subset the round's arithmetic is actually about: doorsteps that were placed INSIDE a
+    // wall slab. `slide = SHELL_WALL_T/2 + r` is a claim about these, and it is testable by
+    // varying r. Frame 1 is the instant the round-5 verdict's "moved" column was taken at.
+    doorsteps_inside_a_wall_slab: slides.filter((s) => s.start_clearance_m === 0).length,
+    doorsteps_within_0_50m_of_a_slab_but_not_in_one: slides.filter((s) => s.start_clearance_m > 0 && s.start_clearance_m < 0.5).length,
+    slide_at_frame_1_for_doorsteps_inside_a_slab: [0.16, 0.32, 0.48].map((r) => {
+      const g = slides.filter((s) => s.start_clearance_m === 0);
+      return { r, n: g.length, predicted_m: +(EX.SHELL_WALL_T / 2 + r).toFixed(3), observed_mean_m: +(g.reduce((a, s) => a + s.arms[r].at[1].slide_m, 0) / g.length).toFixed(3), observed_min_m: +Math.min(...g.map((s) => s.arms[r].at[1].slide_m)).toFixed(3), observed_max_m: +Math.max(...g.map((s) => s.arms[r].at[1].slide_m)).toFixed(3) };
+    }),
+    rows: slides.filter((s) => s.arms[0.32].at[600].slide_m > 0.001).map((s) => ({
+      interior: s.interior, start_clearance_m: s.start_clearance_m,
+      f1: [s.arms[0.16].at[1].slide_m, s.arms[0.32].at[1].slide_m, s.arms[0.48].at[1].slide_m],
+      f600: [s.arms[0.16].at[600].slide_m, s.arms[0.32].at[600].slide_m, s.arms[0.48].at[600].slide_m],
+      inside_at_600: [s.arms[0.16].at[600].inside, s.arms[0.32].at[600].inside, s.arms[0.48].at[600].inside],
+    })),
   };
   out.A = A;
 }
@@ -305,9 +359,13 @@ function slabGeometry(plan) {
       try { g = EX.buildBuilding(b, plan.id).group; } catch (e) { out.probe_failures.push(`B: buildBuilding(${b.id}) threw: ${e.message}`); continue; }
       if (!g || typeof g.traverse !== 'function') { out.probe_failures.push(`B: buildBuilding(${b.id}) returned no group`); continue; }
       const drawn = [];
+      let lintels = 0;
       g.traverse((m) => {
         if (m.name !== 'shellwall' || !m.geometry || !m.geometry.parameters) return;
         const par = m.geometry.parameters;
+        // The LINTEL over the doorway is named `shellwall` too (exterior.js:1228) and is not a
+        // wall a body meets: it starts at DOOR_H. Only full-height slabs are compared.
+        if (Math.abs(par.height - b.height_m) > 1e-6) { lintels++; return; }
         drawn.push({ c: [m.position.x, m.position.z], h: [par.width / 2, par.depth / 2] });
       });
       const mine = shapes.filter((s) => s.id && s.id.startsWith(`${b.id}:`));
@@ -324,7 +382,7 @@ function slabGeometry(plan) {
       const solidOnly = solidsLocal.filter((o) => !dset.has(key(o)));
       const drawnOnly = drawn.filter((o) => !sset.has(key(o)));
       rows.push({
-        building: b.id, town: plan.id, enterable: !!b.enterable,
+        building: b.id, town: plan.id, enterable: !!b.enterable, lintels_excluded: lintels,
         drawn_shellwall_slabs: drawn.length, collision_slabs: solidsLocal.length,
         collision_slabs_with_no_identical_drawn_slab: solidOnly.map((o) => o.id),
         drawn_slabs_with_no_identical_collision_slab: drawnOnly.length,

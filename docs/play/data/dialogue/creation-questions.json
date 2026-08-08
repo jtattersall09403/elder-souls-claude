@@ -1,0 +1,663 @@
+{
+  "schema": "elder-souls/creation-questions@1",
+  "id": "creation-questions",
+  "owner": "W1-07 — character creation",
+  "source": "corpus/22-character/RI-CHR01-character-creation.md §4 route C; purity rule from RI-JRN01 M7",
+  "provenance": "constructed. Q3, Q6, Q9 and Q11 are transcribed verbatim from RI-CHR01 §4, which prints them in full as the reference artifact. The other eight are authored to the same rules.",
+  "asked_by": "warden-scribe-tuleeh-ma",
+  "asked_at": "writ-house",
+  "purity_rule": "No question or answer text may contain any of the 19 skill names, any of the 10 attribute names, the tokens `skill`, `+`, `%`, or any digit. Quantities are written as words. Enforced by tools/analysis/creation-audit.mjs --section questionnaire.",
+  "count": 12,
+  "asked_per_character": 10,
+  "selection": {
+    "rule": "score(q) = (q.upbringing_affinity includes the character's upbringing ? 3 : 0) + (q.race_affinity includes the character's race ? 2 : 0). The two lowest-scoring questions are not asked; ties are broken by the higher question index being dropped first. Deterministic, no RNG — the questionnaire a Saxhleel raised in the interior is asked is not the questionnaire a foreign-born Dunmer is asked.",
+    "asked": 10
+  },
+  "scoring": {
+    "weights": "Each answer weights three skills by +1.",
+    "primaries": "The three highest-weighted skills become primaries (set to 25).",
+    "secondaries": "The next two become secondaries (set to 15).",
+    "favoured_attributes": "The two most-weighted governing attributes become the favoured pair (+4 each).",
+    "neglected_attributes": "The two least-weighted governing attributes become the neglected pair (-4 each). This clause is W1-07's completion of RI-CHR01 §4 route C, which names the favoured pair and is silent on the neglected pair; without it the questionnaire route would violate the sum-zero invariant of RI-CHR01 §2. Ties are broken by the attribute order in progression/attributes.json.",
+    "tie_break": "Skill ties are broken by the skill order in progression/skills.json, which is RI-PRG03 §1's order.",
+    "named_class_echo": "If the resulting five-skill set exactly matches a named class, the Warden-Scribe says the name aloud. That is the moment the route is for.",
+    "nearest_profession": "Exact identity is a measure-zero event: C(19,3)×C(16,2) = 116,280 possible five-skill shapes and 14 of them are named, so a route scored on exact identity alone reaches a named class in principle and never in play (measured over 41,943,040 routes: 11 of 14 reachable; 0 of 1,600 random plays matched). The Warden-Scribe is a clerk with fourteen words and a tally sheet, and RI-CHR01 §4's own shipped line says what she does with them: 'at the end of it I will have a word for you, and it will be a better word than the one you would have picked.' So when the shape is not exactly a profession she writes the NEAREST profession and the character takes it — which is what makes RI-CHR01 §4's title, 'three routes to the same object', literally true.",
+    "nearest_profession_rule": "fit(c) = Σ over c's five skills of (3 if the class sets it to 25, else 2) × (w[s] − E[s]), where w[s] is the number of chosen answers weighting skill s and E[s] is the number expected under uniform answering over the ten questions THIS character was asked (Σ over all their answers weighting s, divided by four). Subtracting chance is load-bearing: the raw dot product measures how common a class's skills are in the questionnaire rather than what the player chose, and reaches only five of the fourteen classes over the whole route product, against fourteen for the corrected score. Ties go to the earlier class in progression/classes.json. fit is rounded to a tenth so float ordering cannot make two identical answer sets disagree.",
+    "nearest_profession_floor": 4,
+    "nearest_profession_floor_note": "Units are answers-above-chance. Below this the Warden-Scribe says she has no word for it and the character keeps the derived shape as a custom profession. Measured over 4,000 random plays the fit percentiles are p1 3.0 / p5 4.75 / p10 5.75 / p50 9.75, so a floor of four leaves a real unnamed band rather than naming everybody. READ AT RUNTIME by character/questionnaire.js professionFloor(): move this number and the outcome moves."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "index": 1,
+      "upbringing_affinity": [
+        "interior",
+        "foreign-born"
+      ],
+      "race_affinity": [
+        "dunmer",
+        "nord",
+        "redguard"
+      ],
+      "world_fact": "The Dres mark is on the toll houses as well as on the ships.",
+      "text": "The salt-road out of the Hills is the only dry way north for a month. There is a house at the crossing that takes a toll, and the men in it wear a mark you have seen on the sides of ships. What do you do?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Pay, and count what they take.",
+          "weights": [
+            "mercantile",
+            "security",
+            "speechcraft"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Go around, through the standing water, at night.",
+          "weights": [
+            "sneak",
+            "claw-fang",
+            "survival"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Wait for a larger party and walk in the middle of it.",
+          "weights": [
+            "shieldcraft",
+            "veiling",
+            "polearms"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Take the house.",
+          "weights": [
+            "axes-maces",
+            "polearms",
+            "greatweapons"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "index": 2,
+      "upbringing_affinity": [
+        "interior"
+      ],
+      "race_affinity": [
+        "saxhleel",
+        "naga"
+      ],
+      "world_fact": "The wells are going grey, and the keepers stay with them.",
+      "text": "A well you drank at as a child is grey to the rim, and the keeper is still sitting beside it, and has been for some days. Do you go to him?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Sit down beside them and stay until one of you speaks.",
+          "weights": [
+            "root-speech",
+            "warding",
+            "speechcraft"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Go down into the well and cut out whatever is fouling it.",
+          "weights": [
+            "security",
+            "alchemy",
+            "blades"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Cut a channel from the live water two ridges over.",
+          "weights": [
+            "survival",
+            "axes-maces",
+            "root-speech"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Take what can be carried from the keeper's things and walk on.",
+          "weights": [
+            "sneak",
+            "mercantile",
+            "marksman"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "index": 3,
+      "verbatim_from": "RI-CHR01 §4",
+      "upbringing_affinity": [
+        "lukiul",
+        "blackrose"
+      ],
+      "race_affinity": [
+        "saxhleel",
+        "naga",
+        "dunmer"
+      ],
+      "world_fact": "Slavery is current, not historical.",
+      "text": "A tithe-barge has grounded on the flats and the crew have gone for help. In the hold there is salt, and rope, and a man in a collar who says he was put there yesterday. The tide turns in an hour. What comes off the barge with you?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Cut the collar. It is one cut.",
+          "weights": [
+            "security",
+            "sneak",
+            "speechcraft"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Carry what will sell and go. He was in the hold when you found him.",
+          "weights": [
+            "mercantile",
+            "athletics",
+            "survival"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Wait for the crew and put the question to them in front of witnesses.",
+          "weights": [
+            "speechcraft",
+            "mercantile",
+            "warding"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Break the hold's ribs so the tide takes the salt as well as the barge.",
+          "weights": [
+            "axes-maces",
+            "greatweapons",
+            "acrobatics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "index": 4,
+      "upbringing_affinity": [
+        "blackrose"
+      ],
+      "race_affinity": [
+        "imperial",
+        "breton",
+        "khajiit"
+      ],
+      "world_fact": "Blackrose is a town before it is a prison, and its gate runs on a list.",
+      "text": "The wall at Blackrose has a gate and the gate has a list, and your name isn't on it. And the man who keeps the list is asleep in the sun. How do you get through?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Write yourself onto it.",
+          "weights": [
+            "security",
+            "veiling",
+            "mercantile"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Wake him and ask what it would take.",
+          "weights": [
+            "speechcraft",
+            "mercantile",
+            "warding"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Go over the wall where the buttress is broken.",
+          "weights": [
+            "acrobatics",
+            "athletics",
+            "claw-fang"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Sit where he will see you when he wakes, and be the first thing he deals with.",
+          "weights": [
+            "speechcraft",
+            "greatweapons",
+            "survival"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "index": 5,
+      "upbringing_affinity": [
+        "foreign-born",
+        "interior"
+      ],
+      "race_affinity": [
+        "bosmer",
+        "orsimer",
+        "khajiit"
+      ],
+      "world_fact": "The xanmeers predate the Empire's name for the coast, and the water is opening them.",
+      "text": "Water has opened a hole into a xanmeer that was sealed before the Empire had a name for this coast. It is a long drop and the air coming up is old. Do you go down?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Rope, torch, down.",
+          "weights": [
+            "acrobatics",
+            "claw-fang",
+            "marksman"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Take a reading of the air and the stone first, and go tomorrow.",
+          "weights": [
+            "alchemy",
+            "survival",
+            "sorcery"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Tell a rootkeeper before anyone else hears of it.",
+          "weights": [
+            "root-speech",
+            "speechcraft",
+            "veiling"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Break the hole wider so a cart can be got down.",
+          "weights": [
+            "greatweapons",
+            "axes-maces",
+            "athletics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "index": 6,
+      "verbatim_from": "RI-CHR01 §4",
+      "upbringing_affinity": [
+        "interior"
+      ],
+      "race_affinity": [
+        "saxhleel",
+        "naga"
+      ],
+      "world_fact": "The roots are failing and the burial they are owed is failing with them.",
+      "text": "Your kin has been dead four days and the roots here are grey and will not drink her. The nearest living well is two days' walk and she will not last it. What do you do with her?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Walk. Carry her.",
+          "weights": [
+            "athletics",
+            "survival",
+            "root-speech"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Cut a new well. You know how. It is not permitted.",
+          "weights": [
+            "alchemy",
+            "security",
+            "root-speech"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Burn her, and let the Drowned Court argue about it.",
+          "weights": [
+            "sorcery",
+            "speechcraft",
+            "warding"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Sit with her until it is finished either way.",
+          "weights": [
+            "warding",
+            "veiling",
+            "survival"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "index": 7,
+      "upbringing_affinity": [
+        "interior",
+        "lukiul"
+      ],
+      "race_affinity": [
+        "naga",
+        "saxhleel",
+        "redguard"
+      ],
+      "world_fact": "The river-crews hold the narrows and take a share, and everyone knows it.",
+      "text": "A river-crew has both banks of the narrows and wants a share of what you are carrying, and their leader is looking at your hands rather than your face. What does he see you do next?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Give a share and make it look like more than it is.",
+          "weights": [
+            "mercantile",
+            "veiling",
+            "speechcraft"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Meet the leader's eye and let them decide.",
+          "weights": [
+            "claw-fang",
+            "shieldcraft",
+            "speechcraft"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Swim the narrows below the crossing with the load on your back.",
+          "weights": [
+            "athletics",
+            "survival",
+            "acrobatics"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Put the first of them in the water.",
+          "weights": [
+            "claw-fang",
+            "polearms",
+            "blades"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "index": 8,
+      "upbringing_affinity": [
+        "lukiul",
+        "foreign-born"
+      ],
+      "race_affinity": [
+        "bosmer",
+        "nord",
+        "orsimer",
+        "imperial"
+      ],
+      "world_fact": "The Blackwood Company is recruiting in Lilmoth, early, with clean boots and a long contract.",
+      "text": "A recruiter with clean boots is buying drinks in Lilmoth and says there's work in Blackwood for anyone who can hold a line. The coin is real. But the contract is long. Do you take his drink?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Sign, and read it after.",
+          "weights": [
+            "blades",
+            "greatweapons",
+            "mercantile"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Read it, then argue two clauses, then sign.",
+          "weights": [
+            "mercantile",
+            "speechcraft",
+            "security"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Drink with him all evening and sign nothing.",
+          "weights": [
+            "speechcraft",
+            "veiling",
+            "sorcery"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Follow him back to whoever pays him.",
+          "weights": [
+            "sneak",
+            "marksman",
+            "polearms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "index": 9,
+      "verbatim_from": "RI-CHR01 §4",
+      "upbringing_affinity": [
+        "lukiul",
+        "blackrose",
+        "foreign-born"
+      ],
+      "race_affinity": [
+        "imperial",
+        "breton"
+      ],
+      "world_fact": "The Empire is illiterate in its own province.",
+      "text": "A Legion clerk in Gideon has your name on a list and cannot read the hand it is written in. He asks you what it says. What do you tell him?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Read it to him correctly.",
+          "weights": [
+            "speechcraft",
+            "mercantile",
+            "warding"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Read it to him incorrectly.",
+          "weights": [
+            "speechcraft",
+            "sneak",
+            "veiling"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Take the list.",
+          "weights": [
+            "sneak",
+            "security",
+            "acrobatics"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Tell him you cannot read either, and watch what he does.",
+          "weights": [
+            "veiling",
+            "marksman",
+            "survival"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "index": 10,
+      "upbringing_affinity": [
+        "interior"
+      ],
+      "race_affinity": [
+        "saxhleel"
+      ],
+      "world_fact": "Eggs are moved, and the water is warm and rising where it should not be.",
+      "text": "There's an egg in the shallows that shouldn't be where it is, and the pool it belongs to is a day behind you. And the water here is warm and rising. Do you turn back?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Carry it back.",
+          "weights": [
+            "root-speech",
+            "athletics",
+            "survival"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Build it a bank here and hope.",
+          "weights": [
+            "survival",
+            "alchemy",
+            "root-speech"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Find who moved it.",
+          "weights": [
+            "sneak",
+            "security",
+            "marksman"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Leave it. The marsh moved it and the marsh may have meant to.",
+          "weights": [
+            "warding",
+            "veiling",
+            "sorcery"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "index": 11,
+      "verbatim_from": "RI-CHR01 §4",
+      "upbringing_affinity": [
+        "interior",
+        "lukiul",
+        "foreign-born",
+        "blackrose"
+      ],
+      "race_affinity": [],
+      "world_fact": "Nothing. It is the one question that is only about you.",
+      "text": "Three of you are on a rope over a channel and the rope is failing. The one below you is heavier and is holding a child. What do your hands do?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Climb over them both, fast.",
+          "weights": [
+            "acrobatics",
+            "athletics",
+            "sneak"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "Take the child up and then go back down.",
+          "weights": [
+            "athletics",
+            "shieldcraft",
+            "root-speech"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Brace the rope with your own body and shout for the bank.",
+          "weights": [
+            "shieldcraft",
+            "survival",
+            "speechcraft"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Cut above yourself so the drop is shorter for everyone.",
+          "weights": [
+            "blades",
+            "acrobatics",
+            "alchemy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "index": 12,
+      "upbringing_affinity": [
+        "lukiul",
+        "blackrose"
+      ],
+      "race_affinity": [
+        "imperial",
+        "breton",
+        "dunmer",
+        "khajiit"
+      ],
+      "world_fact": "The tax barges run the Gideon bar, and they come apart on it.",
+      "text": "A tax barge has come apart on the bar outside Gideon and the crew are in the water and so is the strongbox, and both are drifting the same way. Which do you swim for?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "The crew.",
+          "weights": [
+            "athletics",
+            "axes-maces",
+            "survival"
+          ]
+        },
+        {
+          "id": "b",
+          "text": "The box.",
+          "weights": [
+            "mercantile",
+            "security",
+            "blades"
+          ]
+        },
+        {
+          "id": "c",
+          "text": "Neither. Stand on the bar and mark where both go.",
+          "weights": [
+            "marksman",
+            "veiling",
+            "sorcery"
+          ]
+        },
+        {
+          "id": "d",
+          "text": "Put a line on the box and let the crew pull themselves along it.",
+          "weights": [
+            "polearms",
+            "athletics",
+            "shieldcraft"
+          ]
+        }
+      ]
+    }
+  ]
+}

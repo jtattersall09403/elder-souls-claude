@@ -1,0 +1,12991 @@
+{
+ "schema": "elder-souls/roads@1",
+ "generator": "tools/world/build-roads.mjs",
+ "note": "The Rootway. Endpoints, class and path length are RI-WLD01 §4; the ROUTE between them is A* over the built terrain, so the road goes round the ridge and crosses at the narrows. Each leg carries its own elevation profile and the game blends the ground to it, which is what makes a causeway a causeway instead of a decal on a marsh.",
+ "settlement_join": {
+  "performed": true,
+  "rule": "roads yield; buildings never move (ARBITRATION S28)",
+  "reads": "game/src/render/exterior.js planSettlement(), over game/data/world/settlements/*.json and game/data/world/interiors/*.json — the same function game/src/world/province.js builds the collision walls from",
+  "footprints": "the union of planSettlement(doc, interiors) and planSettlement(doc, {}) — they differ for 114 of 202 buildings and the game uses the former",
+  "clearance_bar_m": 1.1,
+  "preferred_clearance_m": 3.2,
+  "grid_m": 1,
+  "buildings_considered": 202,
+  "worst_clearance_m": 1.1,
+  "violations": 0,
+  "gates": [
+   {
+    "settlement": "Thorn",
+    "x": 3817.08,
+    "z": 849.44,
+    "moved_m": 10,
+    "town": "thorn"
+   }
+  ]
+ },
+ "speeds_mps": {
+  "walk": 2,
+  "jog": 3.2,
+  "sprint": 5,
+  "swim": 1.1,
+  "tide_wade": 1.3
+ },
+ "legs": [
+  {
+   "id": "stormhold-thorn",
+   "from": "Stormhold",
+   "to": "Thorn",
+   "class": "causeway",
+   "tide_gated": false,
+   "straight_m": 1651,
+   "declared_path_m": 2229,
+   "built_path_m": 2229,
+   "declared_walk_min": 18.6,
+   "built_walk_min": 18.58,
+   "sinuosity_built": 1.35,
+   "routing": "detour w=23.99 + sinuosity 117 m | detour w=0.26 + sinuosity 144 m",
+   "max_grade": 0.4,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [
+    {
+     "i": 13,
+     "from_m": 227,
+     "to_m": 239,
+     "grade": 0.137,
+     "deg": 7.8,
+     "natural_grade": 0.146,
+     "class": "switchback"
+    },
+    {
+     "i": 14,
+     "from_m": 239,
+     "to_m": 251,
+     "grade": 0.148,
+     "deg": 8.4,
+     "natural_grade": 0.068,
+     "class": "switchback"
+    },
+    {
+     "i": 15,
+     "from_m": 251,
+     "to_m": 263,
+     "grade": 0.153,
+     "deg": 8.7,
+     "natural_grade": 0.161,
+     "class": "switchback"
+    },
+    {
+     "i": 16,
+     "from_m": 263,
+     "to_m": 275,
+     "grade": 0.121,
+     "deg": 6.9,
+     "natural_grade": 0.161,
+     "class": "switchback"
+    },
+    {
+     "i": 17,
+     "from_m": 275,
+     "to_m": 287,
+     "grade": 0.13,
+     "deg": 7.4,
+     "natural_grade": 0.103,
+     "class": "switchback"
+    },
+    {
+     "i": 24,
+     "from_m": 359,
+     "to_m": 371,
+     "grade": 0.123,
+     "deg": 7,
+     "natural_grade": 0.107,
+     "class": "switchback"
+    },
+    {
+     "i": 25,
+     "from_m": 371,
+     "to_m": 383,
+     "grade": 0.136,
+     "deg": 7.7,
+     "natural_grade": 0.05,
+     "class": "switchback"
+    },
+    {
+     "i": 31,
+     "from_m": 443,
+     "to_m": 455,
+     "grade": 0.136,
+     "deg": 7.8,
+     "natural_grade": 0.06,
+     "class": "switchback"
+    },
+    {
+     "i": 32,
+     "from_m": 455,
+     "to_m": 467,
+     "grade": 0.214,
+     "deg": 12.1,
+     "natural_grade": 0.246,
+     "class": "switchback"
+    },
+    {
+     "i": 33,
+     "from_m": 467,
+     "to_m": 478,
+     "grade": 0.212,
+     "deg": 12,
+     "natural_grade": 0.22,
+     "class": "switchback"
+    },
+    {
+     "i": 34,
+     "from_m": 478,
+     "to_m": 490,
+     "grade": 0.21,
+     "deg": 11.9,
+     "natural_grade": 0.169,
+     "class": "switchback"
+    },
+    {
+     "i": 39,
+     "from_m": 538,
+     "to_m": 550,
+     "grade": 0.126,
+     "deg": 7.2,
+     "natural_grade": 0.051,
+     "class": "switchback"
+    },
+    {
+     "i": 43,
+     "from_m": 586,
+     "to_m": 598,
+     "grade": 0.159,
+     "deg": 9,
+     "natural_grade": 0.011,
+     "class": "switchback"
+    },
+    {
+     "i": 44,
+     "from_m": 598,
+     "to_m": 610,
+     "grade": 0.159,
+     "deg": 9,
+     "natural_grade": 0.065,
+     "class": "switchback"
+    },
+    {
+     "i": 50,
+     "from_m": 669,
+     "to_m": 681,
+     "grade": 0.4,
+     "deg": 21.8,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 51,
+     "from_m": 681,
+     "to_m": 693,
+     "grade": 0.37,
+     "deg": 20.3,
+     "natural_grade": 0.033,
+     "class": "stair"
+    },
+    {
+     "i": 52,
+     "from_m": 693,
+     "to_m": 705,
+     "grade": 0.271,
+     "deg": 15.1,
+     "natural_grade": 0.271,
+     "class": "stair"
+    },
+    {
+     "i": 53,
+     "from_m": 705,
+     "to_m": 718,
+     "grade": 0.207,
+     "deg": 11.7,
+     "natural_grade": 0.207,
+     "class": "switchback"
+    },
+    {
+     "i": 54,
+     "from_m": 718,
+     "to_m": 729,
+     "grade": 0.4,
+     "deg": 21.8,
+     "natural_grade": 0.4,
+     "class": "stair"
+    },
+    {
+     "i": 55,
+     "from_m": 729,
+     "to_m": 741,
+     "grade": 0.315,
+     "deg": 17.5,
+     "natural_grade": 0.315,
+     "class": "stair"
+    },
+    {
+     "i": 56,
+     "from_m": 741,
+     "to_m": 753,
+     "grade": 0.332,
+     "deg": 18.4,
+     "natural_grade": 0.372,
+     "class": "stair"
+    },
+    {
+     "i": 61,
+     "from_m": 801,
+     "to_m": 813,
+     "grade": 0.351,
+     "deg": 19.3,
+     "natural_grade": 0.351,
+     "class": "stair"
+    },
+    {
+     "i": 62,
+     "from_m": 813,
+     "to_m": 823,
+     "grade": 0.346,
+     "deg": 19.1,
+     "natural_grade": 0.346,
+     "class": "stair"
+    },
+    {
+     "i": 65,
+     "from_m": 847,
+     "to_m": 859,
+     "grade": 0.124,
+     "deg": 7.1,
+     "natural_grade": 0.128,
+     "class": "switchback"
+    },
+    {
+     "i": 66,
+     "from_m": 859,
+     "to_m": 871,
+     "grade": 0.139,
+     "deg": 7.9,
+     "natural_grade": 0.12,
+     "class": "switchback"
+    },
+    {
+     "i": 69,
+     "from_m": 895,
+     "to_m": 907,
+     "grade": 0.175,
+     "deg": 9.9,
+     "natural_grade": 0.072,
+     "class": "switchback"
+    },
+    {
+     "i": 74,
+     "from_m": 955,
+     "to_m": 967,
+     "grade": 0.222,
+     "deg": 12.5,
+     "natural_grade": 0.298,
+     "class": "stair"
+    },
+    {
+     "i": 75,
+     "from_m": 967,
+     "to_m": 978,
+     "grade": 0.223,
+     "deg": 12.6,
+     "natural_grade": 0.146,
+     "class": "stair"
+    },
+    {
+     "i": 76,
+     "from_m": 978,
+     "to_m": 990,
+     "grade": 0.22,
+     "deg": 12.4,
+     "natural_grade": 0.275,
+     "class": "stair"
+    },
+    {
+     "i": 77,
+     "from_m": 990,
+     "to_m": 1002,
+     "grade": 0.224,
+     "deg": 12.6,
+     "natural_grade": 0.17,
+     "class": "stair"
+    },
+    {
+     "i": 78,
+     "from_m": 1002,
+     "to_m": 1014,
+     "grade": 0.121,
+     "deg": 6.9,
+     "natural_grade": 0.245,
+     "class": "switchback"
+    },
+    {
+     "i": 79,
+     "from_m": 1014,
+     "to_m": 1026,
+     "grade": 0.298,
+     "deg": 16.6,
+     "natural_grade": 0.21,
+     "class": "stair"
+    },
+    {
+     "i": 80,
+     "from_m": 1026,
+     "to_m": 1038,
+     "grade": 0.147,
+     "deg": 8.4,
+     "natural_grade": 0.204,
+     "class": "switchback"
+    },
+    {
+     "i": 93,
+     "from_m": 1181,
+     "to_m": 1193,
+     "grade": 0.125,
+     "deg": 7.1,
+     "natural_grade": 0.12,
+     "class": "switchback"
+    },
+    {
+     "i": 94,
+     "from_m": 1193,
+     "to_m": 1205,
+     "grade": 0.141,
+     "deg": 8,
+     "natural_grade": 0.144,
+     "class": "switchback"
+    },
+    {
+     "i": 95,
+     "from_m": 1205,
+     "to_m": 1217,
+     "grade": 0.15,
+     "deg": 8.5,
+     "natural_grade": 0.136,
+     "class": "switchback"
+    },
+    {
+     "i": 103,
+     "from_m": 1301,
+     "to_m": 1313,
+     "grade": 0.17,
+     "deg": 9.7,
+     "natural_grade": 0.078,
+     "class": "switchback"
+    }
+   ],
+   "grade_class_m": {
+    "carriageway": 1788,
+    "switchback": 288,
+    "stair": 153
+   },
+   "max_cut_m": 3,
+   "max_fill_m": 8.79,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [
+    {
+     "from_i": 43,
+     "to_i": 49,
+     "from_m": 598,
+     "to_m": 669,
+     "length_m": 72,
+     "max_height_m": 8.8,
+     "kind": "causeway over water"
+    },
+    {
+     "from_i": 100,
+     "to_i": 107,
+     "from_m": 1277,
+     "to_m": 1359,
+     "length_m": 82,
+     "max_height_m": 6,
+     "kind": "causeway over water"
+    }
+   ],
+   "deck_span_m": 154,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.16,
+    "violations": 0,
+    "pre_join_m": 2223.6,
+    "join_delta_m": 5.4,
+    "length_correction": {
+     "corrected_m": -4,
+     "spans": 1,
+     "wanted_m": -4,
+     "leg": "stormhold-thorn",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "stormhold",
+      "ok": true,
+      "points": 5,
+      "buildings": 33,
+      "before_m": 131.9,
+      "after_m": 131.5,
+      "delta_m": -0.4
+     },
+     {
+      "town": "thorn",
+      "ok": true,
+      "points": 3,
+      "buildings": 15,
+      "before_m": 107.5,
+      "after_m": 117.4,
+      "delta_m": 9.8
+     }
+    ],
+    "road_anchor": [
+     {
+      "settlement": "Thorn",
+      "x": 3817.08,
+      "z": 849.44,
+      "moved_m": 10,
+      "town": "thorn"
+     }
+    ]
+   },
+   "waypoints": [
+    "Ixtaxh-Tzil"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
+   "points": [
+    [
+     2171.5,
+     761,
+     141.05
+    ],
+    [
+     2184.5,
+     767,
+     141.05
+    ],
+    [
+     2204.5,
+     764,
+     141.05
+    ],
+    [
+     2214.5,
+     759,
+     141.05
+    ],
+    [
+     2298.25,
+     775.95,
+     141.03
+    ],
+    [
+     2309.43,
+     771.65,
+     140.94
+    ],
+    [
+     2320.59,
+     767.28,
+     140.69
+    ],
+    [
+     2331.72,
+     762.84,
+     140.22
+    ],
+    [
+     2343.05,
+     758.92,
+     139.5
+    ],
+    [
+     2354.5,
+     755.44,
+     138.56
+    ],
+    [
+     2366.2,
+     752.82,
+     137.41
+    ],
+    [
+     2378.09,
+     751.44,
+     136.09
+    ],
+    [
+     2390.05,
+     750.85,
+     134.66
+    ],
+    [
+     2402.02,
+     751.43,
+     133.02
+    ],
+    [
+     2413.93,
+     752.75,
+     131.25
+    ],
+    [
+     2425.81,
+     754.35,
+     129.41
+    ],
+    [
+     2437.68,
+     756.05,
+     127.96
+    ],
+    [
+     2449.61,
+     757.13,
+     126.4
+    ],
+    [
+     2461.57,
+     757.58,
+     125.8
+    ],
+    [
+     2473.52,
+     756.63,
+     125.71
+    ],
+    [
+     2485.2,
+     754.11,
+     125.36
+    ],
+    [
+     2496.67,
+     750.7,
+     125.13
+    ],
+    [
+     2507.58,
+     745.75,
+     124.39
+    ],
+    [
+     2518.31,
+     740.44,
+     123.25
+    ],
+    [
+     2528.79,
+     734.63,
+     121.78
+    ],
+    [
+     2539.28,
+     728.83,
+     120.15
+    ],
+    [
+     2549.77,
+     723.04,
+     119.29
+    ],
+    [
+     2560.4,
+     717.52,
+     118.33
+    ],
+    [
+     2571.24,
+     712.4,
+     117.17
+    ],
+    [
+     2582.22,
+     707.64,
+     115.93
+    ],
+    [
+     2593.55,
+     703.75,
+     114.56
+    ],
+    [
+     2605.06,
+     700.57,
+     112.94
+    ],
+    [
+     2616.94,
+     698.97,
+     110.37
+    ],
+    [
+     2628.73,
+     699.76,
+     107.87
+    ],
+    [
+     2640.39,
+     702.41,
+     105.36
+    ],
+    [
+     2649.97,
+     709.61,
+     104.63
+    ],
+    [
+     2658.37,
+     717.89,
+     103.6
+    ],
+    [
+     2664.87,
+     727.95,
+     102.4
+    ],
+    [
+     2670.37,
+     738.48,
+     101.03
+    ],
+    [
+     2674.19,
+     749.82,
+     99.52
+    ],
+    [
+     2678.01,
+     761.15,
+     99.78
+    ],
+    [
+     2679.77,
+     772.97,
+     99.64
+    ],
+    [
+     2681.43,
+     784.8,
+     100.11
+    ],
+    [
+     2683.08,
+     796.65,
+     102.01
+    ],
+    [
+     2684.66,
+     808.49,
+     103.91
+    ],
+    [
+     2686.57,
+     820.53,
+     103.92
+    ],
+    [
+     2687.19,
+     832.51,
+     103.92
+    ],
+    [
+     2687.58,
+     844.39,
+     103.84
+    ],
+    [
+     2686.37,
+     856.31,
+     103.55
+    ],
+    [
+     2683.45,
+     867.6,
+     103.39
+    ],
+    [
+     2680.72,
+     879.22,
+     98.61
+    ],
+    [
+     2678.09,
+     890.85,
+     94.2
+    ],
+    [
+     2679.5,
+     902.72,
+     90.97
+    ],
+    [
+     2680.89,
+     915.18,
+     88.37
+    ],
+    [
+     2689.12,
+     922.98,
+     83.83
+    ],
+    [
+     2699.05,
+     929.11,
+     80.16
+    ],
+    [
+     2710.89,
+     930.99,
+     76.18
+    ],
+    [
+     2722.73,
+     932.88,
+     75.98
+    ],
+    [
+     2734.35,
+     936.43,
+     75.58
+    ],
+    [
+     2745.95,
+     938.82,
+     74.81
+    ],
+    [
+     2756.04,
+     944.91,
+     73.73
+    ],
+    [
+     2765.51,
+     952.25,
+     69.53
+    ],
+    [
+     2775.46,
+     955.53,
+     65.91
+    ],
+    [
+     2786.38,
+     950.6,
+     66.31
+    ],
+    [
+     2797.3,
+     945.67,
+     65.95
+    ],
+    [
+     2807.07,
+     938.82,
+     64.47
+    ],
+    [
+     2816.56,
+     931.51,
+     62.8
+    ],
+    [
+     2825.58,
+     923.69,
+     62.73
+    ],
+    [
+     2833.83,
+     915.01,
+     61.81
+    ],
+    [
+     2842.01,
+     906.27,
+     59.71
+    ],
+    [
+     2849.69,
+     897.08,
+     58.68
+    ],
+    [
+     2857.42,
+     887.95,
+     57.56
+    ],
+    [
+     2865.58,
+     879.18,
+     56.72
+    ],
+    [
+     2874.33,
+     871.07,
+     55.63
+    ],
+    [
+     2883.96,
+     863.95,
+     52.97
+    ],
+    [
+     2894.95,
+     859.31,
+     50.31
+    ],
+    [
+     2906.46,
+     856.41,
+     47.7
+    ],
+    [
+     2918.42,
+     855.57,
+     45.01
+    ],
+    [
+     2930.18,
+     857.73,
+     43.56
+    ],
+    [
+     2941.48,
+     861.44,
+     40.02
+    ],
+    [
+     2952.19,
+     866.79,
+     38.26
+    ],
+    [
+     2961.42,
+     874.42,
+     38.26
+    ],
+    [
+     2969.35,
+     883.32,
+     37.05
+    ],
+    [
+     2975.91,
+     893.27,
+     35.93
+    ],
+    [
+     2981.13,
+     904.02,
+     34.93
+    ],
+    [
+     2985.16,
+     915.28,
+     34.93
+    ],
+    [
+     2988.08,
+     926.88,
+     34.93
+    ],
+    [
+     2993.92,
+     937.2,
+     34.93
+    ],
+    [
+     3001.2,
+     946.62,
+     34.92
+    ],
+    [
+     3009.98,
+     954.77,
+     34.83
+    ],
+    [
+     3020.31,
+     960.74,
+     34.48
+    ],
+    [
+     3031.33,
+     965.25,
+     33.69
+    ],
+    [
+     3042.94,
+     968.23,
+     32.46
+    ],
+    [
+     3054.87,
+     969.35,
+     30.97
+    ],
+    [
+     3066.85,
+     969.82,
+     29.28
+    ],
+    [
+     3078.83,
+     970.07,
+     27.48
+    ],
+    [
+     3090.82,
+     970.4,
+     26.95
+    ],
+    [
+     3102.79,
+     971.04,
+     26.52
+    ],
+    [
+     3114.53,
+     974.01,
+     26.14
+    ],
+    [
+     3126.34,
+     975.03,
+     26.14
+    ],
+    [
+     3138.33,
+     975.33,
+     26.06
+    ],
+    [
+     3149.34,
+     971.36,
+     26.06
+    ],
+    [
+     3160.3,
+     965.82,
+     25.64
+    ],
+    [
+     3171.09,
+     960.7,
+     23.61
+    ],
+    [
+     3180.8,
+     953.68,
+     23.67
+    ],
+    [
+     3191.88,
+     951.3,
+     23.67
+    ],
+    [
+     3203.23,
+     950.93,
+     23.31
+    ],
+    [
+     3207.95,
+     940.52,
+     22.94
+    ],
+    [
+     3212.62,
+     928.93,
+     22.36
+    ],
+    [
+     3217.64,
+     918.15,
+     21.71
+    ],
+    [
+     3226.19,
+     909.77,
+     20.28
+    ],
+    [
+     3234.75,
+     901.39,
+     18.84
+    ],
+    [
+     3243.86,
+     893.62,
+     17.4
+    ],
+    [
+     3253.02,
+     885.9,
+     15.97
+    ],
+    [
+     3263.04,
+     879.37,
+     15.53
+    ],
+    [
+     3273.24,
+     873.08,
+     14.87
+    ],
+    [
+     3284.79,
+     869.92,
+     15.02
+    ],
+    [
+     3296.4,
+     869.29,
+     15.04
+    ],
+    [
+     3308.05,
+     872.12,
+     14.88
+    ],
+    [
+     3317.21,
+     879.78,
+     14.56
+    ],
+    [
+     3325.87,
+     887.99,
+     14.19
+    ],
+    [
+     3332.95,
+     897.64,
+     14.23
+    ],
+    [
+     3340.03,
+     907.3,
+     14.88
+    ],
+    [
+     3346.68,
+     917.25,
+     15.31
+    ],
+    [
+     3353.28,
+     927.24,
+     15.89
+    ],
+    [
+     3359.88,
+     937.23,
+     16.18
+    ],
+    [
+     3366.8,
+     946.99,
+     16.1
+    ],
+    [
+     3373.75,
+     956.74,
+     15.73
+    ],
+    [
+     3380.7,
+     966.49,
+     15.96
+    ],
+    [
+     3387.9,
+     976.05,
+     16.2
+    ],
+    [
+     3395.28,
+     985.49,
+     16.24
+    ],
+    [
+     3402.65,
+     994.92,
+     16
+    ],
+    [
+     3410.04,
+     1004.35,
+     15.63
+    ],
+    [
+     3417.49,
+     1013.72,
+     15.75
+    ],
+    [
+     3424.95,
+     1023.09,
+     16.01
+    ],
+    [
+     3432.4,
+     1032.46,
+     16.13
+    ],
+    [
+     3439.78,
+     1041.89,
+     16.15
+    ],
+    [
+     3447.15,
+     1051.33,
+     16.4
+    ],
+    [
+     3455.01,
+     1060.35,
+     16.55
+    ],
+    [
+     3463.31,
+     1068.97,
+     16.57
+    ],
+    [
+     3474.27,
+     1073.14,
+     16.44
+    ],
+    [
+     3485.28,
+     1070.84,
+     16.23
+    ],
+    [
+     3495.64,
+     1064.98,
+     16.96
+    ],
+    [
+     3503.98,
+     1056.38,
+     17.06
+    ],
+    [
+     3512.31,
+     1047.78,
+     16.32
+    ],
+    [
+     3518.92,
+     1037.82,
+     15.05
+    ],
+    [
+     3525.46,
+     1027.79,
+     14.26
+    ],
+    [
+     3531.59,
+     1017.55,
+     14.13
+    ],
+    [
+     3536.53,
+     1006.66,
+     13.46
+    ],
+    [
+     3541.47,
+     995.76,
+     13.5
+    ],
+    [
+     3546.05,
+     984.72,
+     13.56
+    ],
+    [
+     3549.94,
+     973.42,
+     13.37
+    ],
+    [
+     3553.83,
+     962.11,
+     12.91
+    ],
+    [
+     3557.79,
+     950.83,
+     12.31
+    ],
+    [
+     3561.84,
+     939.57,
+     12.31
+    ],
+    [
+     3565.89,
+     928.32,
+     12.23
+    ],
+    [
+     3571.5,
+     917.76,
+     11.99
+    ],
+    [
+     3577.23,
+     907.26,
+     12.08
+    ],
+    [
+     3584.85,
+     898.15,
+     11.95
+    ],
+    [
+     3593.27,
+     889.64,
+     11.66
+    ],
+    [
+     3603.64,
+     883.89,
+     11.28
+    ],
+    [
+     3614.65,
+     879.35,
+     11.32
+    ],
+    [
+     3626.59,
+     878.29,
+     11.46
+    ],
+    [
+     3638.46,
+     878.99,
+     11.41
+    ],
+    [
+     3650.26,
+     881.05,
+     11.52
+    ],
+    [
+     3661.73,
+     884.56,
+     12.16
+    ],
+    [
+     3673.19,
+     888.07,
+     12.59
+    ],
+    [
+     3684.66,
+     891.55,
+     12.76
+    ],
+    [
+     3696.45,
+     893.74,
+     12.81
+    ],
+    [
+     3708.36,
+     894.42,
+     13.03
+    ],
+    [
+     3720.23,
+     893.36,
+     13.18
+    ],
+    [
+     3809.87,
+     839.44,
+     13.24
+    ],
+    [
+     3817.08,
+     849.44,
+     13.28
+    ]
+   ]
+  },
+  {
+   "id": "stormhold-helstrom",
+   "from": "Stormhold",
+   "to": "Helstrom",
+   "class": "river road",
+   "tide_gated": false,
+   "straight_m": 2015,
+   "declared_path_m": 2921,
+   "built_path_m": 2827.9,
+   "declared_walk_min": 24.3,
+   "built_walk_min": 23.57,
+   "sinuosity_built": 1.404,
+   "routing": "detour w=23.99 + sinuosity 46 m | detour w=23.99 + sinuosity 89+69 m | detour w=1.41 + sinuosity 69 m",
+   "max_grade": 0.45,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [
+    {
+     "i": 23,
+     "from_m": 371,
+     "to_m": 383,
+     "grade": 0.278,
+     "deg": 15.5,
+     "natural_grade": 0.278,
+     "class": "stair"
+    },
+    {
+     "i": 24,
+     "from_m": 383,
+     "to_m": 395,
+     "grade": 0.209,
+     "deg": 11.8,
+     "natural_grade": 0.209,
+     "class": "switchback"
+    },
+    {
+     "i": 25,
+     "from_m": 395,
+     "to_m": 407,
+     "grade": 0.179,
+     "deg": 10.2,
+     "natural_grade": 0.08,
+     "class": "switchback"
+    },
+    {
+     "i": 26,
+     "from_m": 407,
+     "to_m": 420,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.314,
+     "class": "stair"
+    },
+    {
+     "i": 27,
+     "from_m": 420,
+     "to_m": 430,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.481,
+     "class": "stair"
+    },
+    {
+     "i": 28,
+     "from_m": 430,
+     "to_m": 443,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.579,
+     "class": "stair"
+    },
+    {
+     "i": 29,
+     "from_m": 443,
+     "to_m": 455,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.462,
+     "class": "stair"
+    },
+    {
+     "i": 30,
+     "from_m": 455,
+     "to_m": 466,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.524,
+     "class": "stair"
+    },
+    {
+     "i": 34,
+     "from_m": 500,
+     "to_m": 513,
+     "grade": 0.385,
+     "deg": 21,
+     "natural_grade": 0.063,
+     "class": "stair"
+    },
+    {
+     "i": 35,
+     "from_m": 513,
+     "to_m": 523,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.843,
+     "class": "stair"
+    },
+    {
+     "i": 36,
+     "from_m": 523,
+     "to_m": 535,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.619,
+     "class": "stair"
+    },
+    {
+     "i": 37,
+     "from_m": 535,
+     "to_m": 547,
+     "grade": 0.424,
+     "deg": 23,
+     "natural_grade": 0.172,
+     "class": "stair"
+    },
+    {
+     "i": 38,
+     "from_m": 547,
+     "to_m": 553,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.03,
+     "class": "stair"
+    },
+    {
+     "i": 39,
+     "from_m": 553,
+     "to_m": 565,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 40,
+     "from_m": 565,
+     "to_m": 578,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.007,
+     "class": "stair"
+    },
+    {
+     "i": 41,
+     "from_m": 578,
+     "to_m": 592,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.745,
+     "class": "stair"
+    },
+    {
+     "i": 42,
+     "from_m": 592,
+     "to_m": 604,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.766,
+     "class": "stair"
+    },
+    {
+     "i": 43,
+     "from_m": 604,
+     "to_m": 614,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.652,
+     "class": "stair"
+    },
+    {
+     "i": 44,
+     "from_m": 614,
+     "to_m": 626,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.348,
+     "class": "stair"
+    },
+    {
+     "i": 45,
+     "from_m": 626,
+     "to_m": 638,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.132,
+     "class": "stair"
+    },
+    {
+     "i": 48,
+     "from_m": 662,
+     "to_m": 674,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.034,
+     "class": "stair"
+    },
+    {
+     "i": 49,
+     "from_m": 674,
+     "to_m": 686,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.046,
+     "class": "stair"
+    },
+    {
+     "i": 51,
+     "from_m": 698,
+     "to_m": 709,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.352,
+     "class": "stair"
+    },
+    {
+     "i": 52,
+     "from_m": 709,
+     "to_m": 719,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.288,
+     "class": "stair"
+    },
+    {
+     "i": 53,
+     "from_m": 719,
+     "to_m": 731,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.318,
+     "class": "stair"
+    },
+    {
+     "i": 54,
+     "from_m": 731,
+     "to_m": 743,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.908,
+     "class": "stair"
+    },
+    {
+     "i": 55,
+     "from_m": 743,
+     "to_m": 755,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.724,
+     "class": "stair"
+    },
+    {
+     "i": 56,
+     "from_m": 755,
+     "to_m": 767,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.716,
+     "class": "stair"
+    },
+    {
+     "i": 57,
+     "from_m": 767,
+     "to_m": 779,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.747,
+     "class": "stair"
+    },
+    {
+     "i": 58,
+     "from_m": 779,
+     "to_m": 791,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.637,
+     "class": "stair"
+    },
+    {
+     "i": 59,
+     "from_m": 791,
+     "to_m": 803,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.6,
+     "class": "stair"
+    },
+    {
+     "i": 60,
+     "from_m": 803,
+     "to_m": 815,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.7,
+     "class": "stair"
+    },
+    {
+     "i": 61,
+     "from_m": 815,
+     "to_m": 827,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.675,
+     "class": "stair"
+    },
+    {
+     "i": 62,
+     "from_m": 827,
+     "to_m": 839,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.477,
+     "class": "stair"
+    },
+    {
+     "i": 63,
+     "from_m": 839,
+     "to_m": 851,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.709,
+     "class": "stair"
+    },
+    {
+     "i": 64,
+     "from_m": 851,
+     "to_m": 863,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.813,
+     "class": "stair"
+    },
+    {
+     "i": 65,
+     "from_m": 863,
+     "to_m": 875,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.561,
+     "class": "stair"
+    },
+    {
+     "i": 66,
+     "from_m": 875,
+     "to_m": 887,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.475,
+     "class": "stair"
+    },
+    {
+     "i": 67,
+     "from_m": 887,
+     "to_m": 899,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.493,
+     "class": "stair"
+    },
+    {
+     "i": 68,
+     "from_m": 899,
+     "to_m": 914,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.563,
+     "class": "stair"
+    },
+    {
+     "i": 69,
+     "from_m": 914,
+     "to_m": 929,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.393,
+     "class": "stair"
+    },
+    {
+     "i": 70,
+     "from_m": 929,
+     "to_m": 942,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.365,
+     "class": "stair"
+    },
+    {
+     "i": 71,
+     "from_m": 942,
+     "to_m": 955,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.034,
+     "class": "stair"
+    },
+    {
+     "i": 72,
+     "from_m": 955,
+     "to_m": 968,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 73,
+     "from_m": 968,
+     "to_m": 982,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 74,
+     "from_m": 982,
+     "to_m": 995,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 75,
+     "from_m": 995,
+     "to_m": 1005,
+     "grade": 0.393,
+     "deg": 21.5,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 76,
+     "from_m": 1005,
+     "to_m": 1014,
+     "grade": 0.365,
+     "deg": 20.1,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 77,
+     "from_m": 1014,
+     "to_m": 1024,
+     "grade": 0.392,
+     "deg": 21.4,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 78,
+     "from_m": 1024,
+     "to_m": 1034,
+     "grade": 0.447,
+     "deg": 24.1,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 79,
+     "from_m": 1034,
+     "to_m": 1043,
+     "grade": 0.276,
+     "deg": 15.4,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 80,
+     "from_m": 1043,
+     "to_m": 1055,
+     "grade": 0.189,
+     "deg": 10.7,
+     "natural_grade": 0.004,
+     "class": "switchback"
+    },
+    {
+     "i": 81,
+     "from_m": 1055,
+     "to_m": 1071,
+     "grade": 0.141,
+     "deg": 8,
+     "natural_grade": 0.095,
+     "class": "switchback"
+    },
+    {
+     "i": 82,
+     "from_m": 1071,
+     "to_m": 1085,
+     "grade": 0.337,
+     "deg": 18.6,
+     "natural_grade": 0.337,
+     "class": "stair"
+    },
+    {
+     "i": 83,
+     "from_m": 1085,
+     "to_m": 1097,
+     "grade": 0.392,
+     "deg": 21.4,
+     "natural_grade": 0.392,
+     "class": "stair"
+    },
+    {
+     "i": 84,
+     "from_m": 1097,
+     "to_m": 1109,
+     "grade": 0.447,
+     "deg": 24.1,
+     "natural_grade": 0.447,
+     "class": "stair"
+    },
+    {
+     "i": 85,
+     "from_m": 1109,
+     "to_m": 1121,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.468,
+     "class": "stair"
+    },
+    {
+     "i": 86,
+     "from_m": 1121,
+     "to_m": 1139,
+     "grade": 0.383,
+     "deg": 20.9,
+     "natural_grade": 0.37,
+     "class": "stair"
+    },
+    {
+     "i": 87,
+     "from_m": 1139,
+     "to_m": 1154,
+     "grade": 0.371,
+     "deg": 20.4,
+     "natural_grade": 0.371,
+     "class": "stair"
+    },
+    {
+     "i": 88,
+     "from_m": 1154,
+     "to_m": 1168,
+     "grade": 0.201,
+     "deg": 11.4,
+     "natural_grade": 0.201,
+     "class": "switchback"
+    },
+    {
+     "i": 89,
+     "from_m": 1168,
+     "to_m": 1182,
+     "grade": 0.204,
+     "deg": 11.5,
+     "natural_grade": 0.353,
+     "class": "switchback"
+    },
+    {
+     "i": 90,
+     "from_m": 1182,
+     "to_m": 1196,
+     "grade": 0.168,
+     "deg": 9.5,
+     "natural_grade": 0.049,
+     "class": "switchback"
+    },
+    {
+     "i": 91,
+     "from_m": 1196,
+     "to_m": 1210,
+     "grade": 0.165,
+     "deg": 9.4,
+     "natural_grade": 0.161,
+     "class": "switchback"
+    },
+    {
+     "i": 105,
+     "from_m": 1368,
+     "to_m": 1372,
+     "grade": 0.15,
+     "deg": 8.5,
+     "natural_grade": 0.527,
+     "class": "switchback"
+    },
+    {
+     "i": 108,
+     "from_m": 1392,
+     "to_m": 1402,
+     "grade": 0.167,
+     "deg": 9.5,
+     "natural_grade": 0.106,
+     "class": "switchback"
+    },
+    {
+     "i": 109,
+     "from_m": 1402,
+     "to_m": 1413,
+     "grade": 0.187,
+     "deg": 10.6,
+     "natural_grade": 0.187,
+     "class": "switchback"
+    },
+    {
+     "i": 110,
+     "from_m": 1413,
+     "to_m": 1424,
+     "grade": 0.184,
+     "deg": 10.4,
+     "natural_grade": 0.125,
+     "class": "switchback"
+    },
+    {
+     "i": 111,
+     "from_m": 1424,
+     "to_m": 1435,
+     "grade": 0.23,
+     "deg": 12.9,
+     "natural_grade": 0.354,
+     "class": "stair"
+    },
+    {
+     "i": 112,
+     "from_m": 1435,
+     "to_m": 1447,
+     "grade": 0.317,
+     "deg": 17.6,
+     "natural_grade": 0.317,
+     "class": "stair"
+    },
+    {
+     "i": 113,
+     "from_m": 1447,
+     "to_m": 1459,
+     "grade": 0.385,
+     "deg": 21.1,
+     "natural_grade": 0.385,
+     "class": "stair"
+    },
+    {
+     "i": 114,
+     "from_m": 1459,
+     "to_m": 1471,
+     "grade": 0.166,
+     "deg": 9.4,
+     "natural_grade": 0.15,
+     "class": "switchback"
+    },
+    {
+     "i": 115,
+     "from_m": 1471,
+     "to_m": 1483,
+     "grade": 0.379,
+     "deg": 20.7,
+     "natural_grade": 0.342,
+     "class": "stair"
+    },
+    {
+     "i": 116,
+     "from_m": 1483,
+     "to_m": 1495,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.502,
+     "class": "stair"
+    },
+    {
+     "i": 117,
+     "from_m": 1495,
+     "to_m": 1508,
+     "grade": 0.386,
+     "deg": 21.1,
+     "natural_grade": 0.386,
+     "class": "stair"
+    },
+    {
+     "i": 120,
+     "from_m": 1534,
+     "to_m": 1548,
+     "grade": 0.2,
+     "deg": 11.3,
+     "natural_grade": 0.335,
+     "class": "switchback"
+    },
+    {
+     "i": 121,
+     "from_m": 1548,
+     "to_m": 1561,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.596,
+     "class": "stair"
+    },
+    {
+     "i": 122,
+     "from_m": 1561,
+     "to_m": 1579,
+     "grade": 0.167,
+     "deg": 9.5,
+     "natural_grade": 0.057,
+     "class": "switchback"
+    },
+    {
+     "i": 123,
+     "from_m": 1579,
+     "to_m": 1593,
+     "grade": 0.263,
+     "deg": 14.7,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 124,
+     "from_m": 1593,
+     "to_m": 1597,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 1.849,
+     "class": "stair"
+    },
+    {
+     "i": 127,
+     "from_m": 1648,
+     "to_m": 1649,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 3.713,
+     "class": "stair"
+    },
+    {
+     "i": 128,
+     "from_m": 1649,
+     "to_m": 1665,
+     "grade": 0.183,
+     "deg": 10.4,
+     "natural_grade": 0.013,
+     "class": "switchback"
+    },
+    {
+     "i": 129,
+     "from_m": 1665,
+     "to_m": 1669,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.743,
+     "class": "stair"
+    },
+    {
+     "i": 130,
+     "from_m": 1669,
+     "to_m": 1684,
+     "grade": 0.223,
+     "deg": 12.6,
+     "natural_grade": 0.223,
+     "class": "stair"
+    },
+    {
+     "i": 135,
+     "from_m": 1741,
+     "to_m": 1748,
+     "grade": 0.154,
+     "deg": 8.8,
+     "natural_grade": 0.029,
+     "class": "switchback"
+    },
+    {
+     "i": 136,
+     "from_m": 1748,
+     "to_m": 1759,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.582,
+     "class": "stair"
+    },
+    {
+     "i": 137,
+     "from_m": 1759,
+     "to_m": 1771,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.533,
+     "class": "stair"
+    },
+    {
+     "i": 138,
+     "from_m": 1771,
+     "to_m": 1783,
+     "grade": 0.401,
+     "deg": 21.9,
+     "natural_grade": 0.225,
+     "class": "stair"
+    },
+    {
+     "i": 139,
+     "from_m": 1783,
+     "to_m": 1795,
+     "grade": 0.4,
+     "deg": 21.8,
+     "natural_grade": 0.479,
+     "class": "stair"
+    },
+    {
+     "i": 140,
+     "from_m": 1795,
+     "to_m": 1807,
+     "grade": 0.307,
+     "deg": 17.1,
+     "natural_grade": 0.524,
+     "class": "stair"
+    },
+    {
+     "i": 141,
+     "from_m": 1807,
+     "to_m": 1819,
+     "grade": 0.259,
+     "deg": 14.5,
+     "natural_grade": 0.248,
+     "class": "stair"
+    },
+    {
+     "i": 142,
+     "from_m": 1819,
+     "to_m": 1831,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.44,
+     "class": "stair"
+    },
+    {
+     "i": 143,
+     "from_m": 1831,
+     "to_m": 1843,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.471,
+     "class": "stair"
+    },
+    {
+     "i": 144,
+     "from_m": 1843,
+     "to_m": 1855,
+     "grade": 0.312,
+     "deg": 17.3,
+     "natural_grade": 0.195,
+     "class": "stair"
+    },
+    {
+     "i": 145,
+     "from_m": 1855,
+     "to_m": 1867,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.567,
+     "class": "stair"
+    },
+    {
+     "i": 146,
+     "from_m": 1867,
+     "to_m": 1879,
+     "grade": 0.25,
+     "deg": 14,
+     "natural_grade": 0.25,
+     "class": "stair"
+    },
+    {
+     "i": 147,
+     "from_m": 1879,
+     "to_m": 1891,
+     "grade": 0.265,
+     "deg": 14.8,
+     "natural_grade": 0.265,
+     "class": "stair"
+    },
+    {
+     "i": 148,
+     "from_m": 1891,
+     "to_m": 1903,
+     "grade": 0.193,
+     "deg": 10.9,
+     "natural_grade": 0.193,
+     "class": "switchback"
+    },
+    {
+     "i": 149,
+     "from_m": 1903,
+     "to_m": 1915,
+     "grade": 0.137,
+     "deg": 7.8,
+     "natural_grade": 0.137,
+     "class": "switchback"
+    },
+    {
+     "i": 150,
+     "from_m": 1915,
+     "to_m": 1927,
+     "grade": 0.156,
+     "deg": 8.9,
+     "natural_grade": 0.156,
+     "class": "switchback"
+    },
+    {
+     "i": 162,
+     "from_m": 2051,
+     "to_m": 2063,
+     "grade": 0.317,
+     "deg": 17.6,
+     "natural_grade": 0.317,
+     "class": "stair"
+    },
+    {
+     "i": 163,
+     "from_m": 2063,
+     "to_m": 2075,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.869,
+     "class": "stair"
+    },
+    {
+     "i": 164,
+     "from_m": 2075,
+     "to_m": 2087,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 1.308,
+     "class": "stair"
+    },
+    {
+     "i": 165,
+     "from_m": 2087,
+     "to_m": 2099,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 1.326,
+     "class": "stair"
+    },
+    {
+     "i": 166,
+     "from_m": 2099,
+     "to_m": 2111,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 1.156,
+     "class": "stair"
+    },
+    {
+     "i": 167,
+     "from_m": 2111,
+     "to_m": 2124,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.614,
+     "class": "stair"
+    },
+    {
+     "i": 168,
+     "from_m": 2124,
+     "to_m": 2136,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.586,
+     "class": "stair"
+    },
+    {
+     "i": 169,
+     "from_m": 2136,
+     "to_m": 2148,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.358,
+     "class": "stair"
+    },
+    {
+     "i": 170,
+     "from_m": 2148,
+     "to_m": 2160,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.424,
+     "class": "stair"
+    },
+    {
+     "i": 171,
+     "from_m": 2160,
+     "to_m": 2172,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.443,
+     "class": "stair"
+    },
+    {
+     "i": 172,
+     "from_m": 2172,
+     "to_m": 2184,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.365,
+     "class": "stair"
+    },
+    {
+     "i": 173,
+     "from_m": 2184,
+     "to_m": 2197,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.388,
+     "class": "stair"
+    },
+    {
+     "i": 174,
+     "from_m": 2197,
+     "to_m": 2209,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.226,
+     "class": "stair"
+    },
+    {
+     "i": 175,
+     "from_m": 2209,
+     "to_m": 2221,
+     "grade": 0.443,
+     "deg": 23.9,
+     "natural_grade": 0.235,
+     "class": "stair"
+    },
+    {
+     "i": 176,
+     "from_m": 2221,
+     "to_m": 2234,
+     "grade": 0.443,
+     "deg": 23.9,
+     "natural_grade": 0.223,
+     "class": "stair"
+    },
+    {
+     "i": 177,
+     "from_m": 2234,
+     "to_m": 2246,
+     "grade": 0.443,
+     "deg": 23.9,
+     "natural_grade": 0.298,
+     "class": "stair"
+    },
+    {
+     "i": 178,
+     "from_m": 2246,
+     "to_m": 2259,
+     "grade": 0.388,
+     "deg": 21.2,
+     "natural_grade": 0.021,
+     "class": "stair"
+    },
+    {
+     "i": 179,
+     "from_m": 2259,
+     "to_m": 2271,
+     "grade": 0.388,
+     "deg": 21.2,
+     "natural_grade": 0.071,
+     "class": "stair"
+    },
+    {
+     "i": 180,
+     "from_m": 2271,
+     "to_m": 2283,
+     "grade": 0.298,
+     "deg": 16.6,
+     "natural_grade": 0.213,
+     "class": "stair"
+    },
+    {
+     "i": 181,
+     "from_m": 2283,
+     "to_m": 2295,
+     "grade": 0.298,
+     "deg": 16.6,
+     "natural_grade": 0.033,
+     "class": "stair"
+    },
+    {
+     "i": 182,
+     "from_m": 2295,
+     "to_m": 2307,
+     "grade": 0.298,
+     "deg": 16.6,
+     "natural_grade": 0,
+     "class": "stair"
+    },
+    {
+     "i": 183,
+     "from_m": 2307,
+     "to_m": 2319,
+     "grade": 0.298,
+     "deg": 16.6,
+     "natural_grade": 0.073,
+     "class": "stair"
+    },
+    {
+     "i": 184,
+     "from_m": 2319,
+     "to_m": 2331,
+     "grade": 0.213,
+     "deg": 12,
+     "natural_grade": 0.051,
+     "class": "switchback"
+    },
+    {
+     "i": 185,
+     "from_m": 2331,
+     "to_m": 2343,
+     "grade": 0.213,
+     "deg": 12,
+     "natural_grade": 0.002,
+     "class": "switchback"
+    },
+    {
+     "i": 190,
+     "from_m": 2391,
+     "to_m": 2402,
+     "grade": 0.136,
+     "deg": 7.8,
+     "natural_grade": 0.043,
+     "class": "switchback"
+    },
+    {
+     "i": 191,
+     "from_m": 2402,
+     "to_m": 2413,
+     "grade": 0.152,
+     "deg": 8.7,
+     "natural_grade": 0.128,
+     "class": "switchback"
+    },
+    {
+     "i": 192,
+     "from_m": 2413,
+     "to_m": 2425,
+     "grade": 0.221,
+     "deg": 12.4,
+     "natural_grade": 0.239,
+     "class": "stair"
+    }
+   ],
+   "grade_class_m": {
+    "carriageway": 1327,
+    "switchback": 292,
+    "stair": 1209
+   },
+   "max_cut_m": 3,
+   "max_fill_m": 50.59,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [
+    {
+     "from_i": 26,
+     "to_i": 29,
+     "from_m": 420,
+     "to_m": 455,
+     "length_m": 36,
+     "max_height_m": 5.8,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 34,
+     "to_i": 36,
+     "from_m": 513,
+     "to_m": 535,
+     "length_m": 22,
+     "max_height_m": 9,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 38,
+     "to_i": 77,
+     "from_m": 553,
+     "to_m": 1024,
+     "length_m": 471,
+     "max_height_m": 50.6,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 83,
+     "to_i": 86,
+     "from_m": 1097,
+     "to_m": 1139,
+     "length_m": 43,
+     "max_height_m": 4.9,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 120,
+     "to_i": 121,
+     "from_m": 1548,
+     "to_m": 1561,
+     "length_m": 13,
+     "max_height_m": 5,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 135,
+     "to_i": 140,
+     "from_m": 1748,
+     "to_m": 1807,
+     "length_m": 59,
+     "max_height_m": 7,
+     "kind": "causeway over water"
+    },
+    {
+     "from_i": 162,
+     "to_i": 183,
+     "from_m": 2063,
+     "to_m": 2319,
+     "length_m": 257,
+     "max_height_m": 41.2,
+     "kind": "viaduct"
+    }
+   ],
+   "deck_span_m": 900,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.15,
+    "violations": 0,
+    "pre_join_m": 2875.7,
+    "join_delta_m": -47.8,
+    "length_correction": {
+     "corrected_m": 45.6,
+     "spans": 1,
+     "wanted_m": 45.6,
+     "leg": "stormhold-helstrom",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "stormhold",
+      "ok": true,
+      "points": 3,
+      "buildings": 33,
+      "before_m": 131.1,
+      "after_m": 131.3,
+      "delta_m": 0.2
+     },
+     {
+      "town": "helstrom",
+      "ok": true,
+      "points": 4,
+      "buildings": 40,
+      "before_m": 136.9,
+      "after_m": 136.5,
+      "delta_m": -0.4
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Nine-Mud",
+    "The Weeping Ford"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       103,
+       107
+      ],
+      "approach_m": 5.59,
+      "junction": [
+       2393,
+       1746.8
+      ],
+      "points_removed": 4,
+      "loop_m": 40.7
+     },
+     {
+      "between_i": [
+       122,
+       127
+      ],
+      "approach_m": 4.69,
+      "junction": [
+       2279.3,
+       1860.1
+      ],
+      "points_removed": 5,
+      "loop_m": 42.3
+     },
+     {
+      "between_i": [
+       127,
+       130
+      ],
+      "approach_m": 6.63,
+      "junction": [
+       2276.9,
+       1917.6
+      ],
+      "points_removed": 3,
+      "loop_m": 10.2
+     }
+    ],
+    "delta_m": -93.1
+   },
+   "points": [
+    [
+     2171.5,
+     761,
+     141.05
+    ],
+    [
+     2196.5,
+     817,
+     141.05
+    ],
+    [
+     2244.13,
+     868.31,
+     141.05
+    ],
+    [
+     2249.9,
+     878.76,
+     141.07
+    ],
+    [
+     2254.9,
+     889.63,
+     141.24
+    ],
+    [
+     2258.61,
+     900.99,
+     141.49
+    ],
+    [
+     2261.61,
+     912.55,
+     141.76
+    ],
+    [
+     2263.94,
+     924.28,
+     141.98
+    ],
+    [
+     2265.19,
+     936.17,
+     142.4
+    ],
+    [
+     2265.97,
+     948.11,
+     142.78
+    ],
+    [
+     2266.3,
+     960.07,
+     143.11
+    ],
+    [
+     2265.95,
+     972.04,
+     144.01
+    ],
+    [
+     2265.31,
+     984.01,
+     144.87
+    ],
+    [
+     2264.4,
+     995.96,
+     145.63
+    ],
+    [
+     2263.06,
+     1007.88,
+     146.21
+    ],
+    [
+     2261.48,
+     1019.77,
+     147.37
+    ],
+    [
+     2259.66,
+     1031.64,
+     148.35
+    ],
+    [
+     2257.45,
+     1043.44,
+     149.09
+    ],
+    [
+     2254.85,
+     1055.16,
+     149.72
+    ],
+    [
+     2251.93,
+     1066.82,
+     150.77
+    ],
+    [
+     2248.58,
+     1078.37,
+     151.29
+    ],
+    [
+     2244.79,
+     1089.78,
+     152.7
+    ],
+    [
+     2240.75,
+     1101.11,
+     153.88
+    ],
+    [
+     2236.35,
+     1112.31,
+     157.23
+    ],
+    [
+     2231.64,
+     1123.38,
+     159.74
+    ],
+    [
+     2226.73,
+     1134.39,
+     161.9
+    ],
+    [
+     2221.01,
+     1145.45,
+     167.5
+    ],
+    [
+     2211.74,
+     1151.05,
+     172.38
+    ],
+    [
+     2199.86,
+     1146.46,
+     178.11
+    ],
+    [
+     2188.18,
+     1143.7,
+     183.51
+    ],
+    [
+     2178.18,
+     1146.8,
+     188.22
+    ],
+    [
+     2172.1,
+     1155.84,
+     188.56
+    ],
+    [
+     2173.74,
+     1166.77,
+     188.78
+    ],
+    [
+     2179.6,
+     1177.48,
+     187.49
+    ],
+    [
+     2183.33,
+     1190.35,
+     192.65
+    ],
+    [
+     2173.26,
+     1189.47,
+     197.19
+    ],
+    [
+     2161.79,
+     1185.94,
+     202.59
+    ],
+    [
+     2150.32,
+     1182.42,
+     207.68
+    ],
+    [
+     2146.19,
+     1186.87,
+     210.41
+    ],
+    [
+     2148.76,
+     1198.59,
+     215.81
+    ],
+    [
+     2152.23,
+     1211.24,
+     221.71
+    ],
+    [
+     2138.88,
+     1208.7,
+     227.83
+    ],
+    [
+     2126.94,
+     1207.53,
+     233.23
+    ],
+    [
+     2117.84,
+     1212.57,
+     237.91
+    ],
+    [
+     2111.16,
+     1222.52,
+     243.3
+    ],
+    [
+     2105.58,
+     1233.14,
+     248.7
+    ],
+    [
+     2101.7,
+     1244.47,
+     248.7
+    ],
+    [
+     2099.78,
+     1256.24,
+     248.7
+    ],
+    [
+     2100.4,
+     1268.1,
+     243.35
+    ],
+    [
+     2103.99,
+     1279.43,
+     248.7
+    ],
+    [
+     2109.49,
+     1290.03,
+     248.7
+    ],
+    [
+     2113.83,
+     1300.56,
+     243.57
+    ],
+    [
+     2122.05,
+     1304.79,
+     239.42
+    ],
+    [
+     2133.9,
+     1305.46,
+     234.08
+    ],
+    [
+     2145.1,
+     1309.76,
+     228.68
+    ],
+    [
+     2156.57,
+     1313.27,
+     223.28
+    ],
+    [
+     2168.11,
+     1316.56,
+     217.88
+    ],
+    [
+     2179.68,
+     1319.76,
+     212.48
+    ],
+    [
+     2191.21,
+     1323.07,
+     207.08
+    ],
+    [
+     2202.68,
+     1326.6,
+     201.68
+    ],
+    [
+     2214.09,
+     1330.31,
+     196.28
+    ],
+    [
+     2225.43,
+     1334.24,
+     190.88
+    ],
+    [
+     2236.59,
+     1338.65,
+     185.48
+    ],
+    [
+     2247.53,
+     1343.57,
+     180.08
+    ],
+    [
+     2258.17,
+     1349.08,
+     174.69
+    ],
+    [
+     2269.61,
+     1353.7,
+     169.13
+    ],
+    [
+     2277.53,
+     1363.15,
+     163.59
+    ],
+    [
+     2286.95,
+     1370.58,
+     158.19
+    ],
+    [
+     2301.61,
+     1374.3,
+     151.38
+    ],
+    [
+     2308.01,
+     1387.02,
+     144.97
+    ],
+    [
+     2311.65,
+     1399.86,
+     138.97
+    ],
+    [
+     2313.43,
+     1412.95,
+     133.02
+    ],
+    [
+     2313.41,
+     1426.18,
+     127.07
+    ],
+    [
+     2311.71,
+     1439.26,
+     121.13
+    ],
+    [
+     2308.65,
+     1451.92,
+     115.27
+    ],
+    [
+     2305.28,
+     1461.92,
+     111.12
+    ],
+    [
+     2305.65,
+     1471,
+     107.81
+    ],
+    [
+     2307.36,
+     1481.05,
+     103.81
+    ],
+    [
+     2310.15,
+     1490.24,
+     99.52
+    ],
+    [
+     2314.83,
+     1498.16,
+     96.98
+    ],
+    [
+     2322.59,
+     1507.16,
+     94.73
+    ],
+    [
+     2321.59,
+     1523.37,
+     92.44
+    ],
+    [
+     2317.85,
+     1536.86,
+     87.73
+    ],
+    [
+     2328.29,
+     1540.99,
+     83.33
+    ],
+    [
+     2339.86,
+     1544.17,
+     77.97
+    ],
+    [
+     2352.76,
+     1543.97,
+     72.17
+    ],
+    [
+     2370.29,
+     1540.51,
+     65.33
+    ],
+    [
+     2381.44,
+     1550.67,
+     59.73
+    ],
+    [
+     2389.93,
+     1561.35,
+     57
+    ],
+    [
+     2397.56,
+     1572.91,
+     54.17
+    ],
+    [
+     2403.11,
+     1586.12,
+     51.76
+    ],
+    [
+     2406.45,
+     1599.36,
+     49.51
+    ],
+    [
+     2408.29,
+     1613.16,
+     49.15
+    ],
+    [
+     2407.6,
+     1626.56,
+     48.63
+    ],
+    [
+     2406.38,
+     1638.97,
+     48.96
+    ],
+    [
+     2404.45,
+     1651.97,
+     48.87
+    ],
+    [
+     2400.47,
+     1664.77,
+     49.6
+    ],
+    [
+     2394.53,
+     1677.78,
+     51.14
+    ],
+    [
+     2385.49,
+     1686.61,
+     52.2
+    ],
+    [
+     2381.14,
+     1692.65,
+     52.62
+    ],
+    [
+     2382.04,
+     1702.46,
+     52.43
+    ],
+    [
+     2382.94,
+     1714.48,
+     51.79
+    ],
+    [
+     2383.76,
+     1726.38,
+     50.83
+    ],
+    [
+     2384.79,
+     1736.93,
+     49.7
+    ],
+    [
+     2393,
+     1746.8,
+     49.37
+    ],
+    [
+     2390.02,
+     1749.36,
+     48.78
+    ],
+    [
+     2396.09,
+     1759.71,
+     48.78
+    ],
+    [
+     2392.6,
+     1767.59,
+     48.33
+    ],
+    [
+     2386.31,
+     1774.91,
+     49.94
+    ],
+    [
+     2377.67,
+     1781.4,
+     51.96
+    ],
+    [
+     2368.43,
+     1787.26,
+     53.97
+    ],
+    [
+     2358.12,
+     1792.12,
+     56.59
+    ],
+    [
+     2347.47,
+     1797.26,
+     60.34
+    ],
+    [
+     2336.74,
+     1802.01,
+     64.86
+    ],
+    [
+     2325.75,
+     1806.81,
+     66.85
+    ],
+    [
+     2314.54,
+     1811.86,
+     71.5
+    ],
+    [
+     2303.54,
+     1817.27,
+     77.02
+    ],
+    [
+     2292.26,
+     1822.94,
+     81.89
+    ],
+    [
+     2281.31,
+     1829.5,
+     81.99
+    ],
+    [
+     2293.46,
+     1835.91,
+     81.45
+    ],
+    [
+     2304.35,
+     1844.61,
+     78.66
+    ],
+    [
+     2292.02,
+     1848.07,
+     84.42
+    ],
+    [
+     2274.17,
+     1847,
+     87.41
+    ],
+    [
+     2279.27,
+     1860.12,
+     91.11
+    ],
+    [
+     2276.63,
+     1863.2,
+     92.94
+    ],
+    [
+     2257.23,
+     1883.11,
+     93.12
+    ],
+    [
+     2268.75,
+     1903.2,
+     92.22
+    ],
+    [
+     2269.02,
+     1904.31,
+     91.71
+    ],
+    [
+     2276.86,
+     1917.58,
+     88.88
+    ],
+    [
+     2275.58,
+     1921.2,
+     90.61
+    ],
+    [
+     2262.93,
+     1930.51,
+     94.12
+    ],
+    [
+     2253.94,
+     1947.29,
+     96.1
+    ],
+    [
+     2253.99,
+     1963,
+     96.58
+    ],
+    [
+     2254.57,
+     1973.81,
+     96.95
+    ],
+    [
+     2253.43,
+     1984.41,
+     96.95
+    ],
+    [
+     2255.81,
+     1991.31,
+     98.08
+    ],
+    [
+     2252.06,
+     2002.2,
+     103.26
+    ],
+    [
+     2241.46,
+     2007.13,
+     108.52
+    ],
+    [
+     2233.37,
+     2015.99,
+     113.34
+    ],
+    [
+     2225.18,
+     2024.75,
+     118.14
+    ],
+    [
+     2216.97,
+     2033.51,
+     121.82
+    ],
+    [
+     2208.8,
+     2042.29,
+     124.93
+    ],
+    [
+     2200.82,
+     2051.26,
+     130.33
+    ],
+    [
+     2193.03,
+     2060.38,
+     135.73
+    ],
+    [
+     2185.49,
+     2069.72,
+     139.48
+    ],
+    [
+     2178.46,
+     2079.44,
+     144.88
+    ],
+    [
+     2171.79,
+     2089.41,
+     147.88
+    ],
+    [
+     2165.51,
+     2099.63,
+     151.06
+    ],
+    [
+     2159.88,
+     2110.23,
+     153.38
+    ],
+    [
+     2154.62,
+     2121.01,
+     155.02
+    ],
+    [
+     2151.1,
+     2132.6,
+     156.91
+    ],
+    [
+     2146.73,
+     2143.71,
+     158.19
+    ],
+    [
+     2143.04,
+     2154.95,
+     158.45
+    ],
+    [
+     2140.21,
+     2166.36,
+     158.45
+    ],
+    [
+     2138.08,
+     2177.97,
+     158.45
+    ],
+    [
+     2136.43,
+     2189.75,
+     158.45
+    ],
+    [
+     2134.83,
+     2200.08,
+     158.45
+    ],
+    [
+     2137.88,
+     2203.22,
+     158.45
+    ],
+    [
+     2148.54,
+     2204.55,
+     158.45
+    ],
+    [
+     2160.92,
+     2207.14,
+     158.45
+    ],
+    [
+     2172.54,
+     2212.15,
+     158.45
+    ],
+    [
+     2180.55,
+     2222.84,
+     158.42
+    ],
+    [
+     2191.24,
+     2228.29,
+     154.62
+    ],
+    [
+     2201.45,
+     2234.57,
+     149.22
+    ],
+    [
+     2211.31,
+     2241.39,
+     143.83
+    ],
+    [
+     2220.79,
+     2248.75,
+     138.43
+    ],
+    [
+     2231.84,
+     2253.32,
+     133.05
+    ],
+    [
+     2244.95,
+     2253.54,
+     127.15
+    ],
+    [
+     2255.71,
+     2259.16,
+     121.68
+    ],
+    [
+     2265.35,
+     2266.69,
+     116.18
+    ],
+    [
+     2277.01,
+     2270.07,
+     110.72
+    ],
+    [
+     2287.8,
+     2275.37,
+     105.3
+    ],
+    [
+     2298.5,
+     2281.04,
+     99.86
+    ],
+    [
+     2309.24,
+     2287.06,
+     94.32
+    ],
+    [
+     2319.15,
+     2294.6,
+     88.71
+    ],
+    [
+     2328.02,
+     2303.15,
+     83.26
+    ],
+    [
+     2335.99,
+     2312.91,
+     77.68
+    ],
+    [
+     2341.09,
+     2324.36,
+     72.13
+    ],
+    [
+     2344.99,
+     2335.96,
+     67.38
+    ],
+    [
+     2347.26,
+     2348.04,
+     62.6
+    ],
+    [
+     2348.42,
+     2360.13,
+     58.98
+    ],
+    [
+     2348.83,
+     2372.25,
+     55.37
+    ],
+    [
+     2348.64,
+     2384.33,
+     51.77
+    ],
+    [
+     2348.01,
+     2396.37,
+     48.17
+    ],
+    [
+     2347.19,
+     2408.37,
+     45.61
+    ],
+    [
+     2346.11,
+     2420.34,
+     43.05
+    ],
+    [
+     2345.1,
+     2432.29,
+     42.7
+    ],
+    [
+     2344.17,
+     2444.2,
+     42.05
+    ],
+    [
+     2344.07,
+     2456.05,
+     41.06
+    ],
+    [
+     2345.29,
+     2467.54,
+     39.8
+    ],
+    [
+     2350.16,
+     2477.63,
+     38.27
+    ],
+    [
+     2359.29,
+     2484.5,
+     36.53
+    ],
+    [
+     2370.25,
+     2488.81,
+     33.94
+    ],
+    [
+     2381.58,
+     2492.65,
+     34.12
+    ],
+    [
+     2392.99,
+     2496.52,
+     33.69
+    ],
+    [
+     2404.11,
+     2501.3,
+     32.66
+    ],
+    [
+     2414.88,
+     2506.82,
+     31.27
+    ],
+    [
+     2424.84,
+     2513.87,
+     30.08
+    ],
+    [
+     2433.67,
+     2522.13,
+     29.49
+    ],
+    [
+     2441.08,
+     2531.95,
+     28.8
+    ],
+    [
+     2446.02,
+     2542.98,
+     28.08
+    ],
+    [
+     2449.36,
+     2554.88,
+     27.38
+    ],
+    [
+     2448.67,
+     2567.1,
+     27.76
+    ],
+    [
+     2446.45,
+     2579.07,
+     27.85
+    ],
+    [
+     2441.06,
+     2590.14,
+     27.74
+    ],
+    [
+     2434.09,
+     2600.02,
+     27.5
+    ],
+    [
+     2426.08,
+     2609.14,
+     27.14
+    ],
+    [
+     2417.08,
+     2617.21,
+     27.28
+    ],
+    [
+     2408.04,
+     2625.11,
+     27.34
+    ],
+    [
+     2398.98,
+     2632.94,
+     27.35
+    ],
+    [
+     2390.3,
+     2641.17,
+     27.32
+    ],
+    [
+     2382.02,
+     2649.8,
+     27.27
+    ],
+    [
+     2374.08,
+     2658.75,
+     27.22
+    ],
+    [
+     2366.62,
+     2668.13,
+     27.2
+    ],
+    [
+     2359.29,
+     2677.66,
+     27.2
+    ],
+    [
+     2279.5,
+     2755.53,
+     27.2
+    ],
+    [
+     2268.5,
+     2764.53,
+     27.2
+    ],
+    [
+     2262.5,
+     2773.5,
+     27.2
+    ]
+   ]
+  },
+  {
+   "id": "helstrom-archon",
+   "from": "Helstrom",
+   "to": "Archon",
+   "class": "stone road",
+   "tide_gated": false,
+   "straight_m": 1849,
+   "declared_path_m": 2589,
+   "built_path_m": 2570.7,
+   "declared_walk_min": 21.6,
+   "built_walk_min": 21.42,
+   "sinuosity_built": 1.39,
+   "routing": "detour w=0.47 + sinuosity 19+8 m | detour w=23.99 + sinuosity 93+12 m | detour w=23.99 + sinuosity 82 m",
+   "max_grade": 0.107,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [],
+   "grade_class_m": {
+    "carriageway": 2571,
+    "switchback": 0,
+    "stair": 0
+   },
+   "max_cut_m": 2.47,
+   "max_fill_m": 3.01,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [],
+   "deck_span_m": 0,
+   "half_width_m": 3.6,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.15,
+    "violations": 0,
+    "pre_join_m": 2549.5,
+    "join_delta_m": 21.1,
+    "length_correction": {
+     "corrected_m": 0,
+     "spans": 1,
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "helstrom",
+      "ok": true,
+      "points": 6,
+      "buildings": 40,
+      "before_m": 155.7,
+      "after_m": 199,
+      "delta_m": 43.2
+     },
+     {
+      "town": "archon",
+      "ok": true,
+      "points": 2,
+      "buildings": 22,
+      "before_m": 115.8,
+      "after_m": 112.5,
+      "delta_m": -3.3
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Xal-Ithix",
+    "Kiln Camp"
+   ],
+   "self_clearance": {
+    "min_clear_m": 8.74,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       134,
+       137
+      ],
+      "approach_m": 7.71,
+      "junction": [
+       3242.2,
+       3559.4
+      ],
+      "points_removed": 3,
+      "loop_m": 18.8
+     }
+    ],
+    "delta_m": -18.8
+   },
+   "points": [
+    [
+     2262.5,
+     2773.5,
+     27.2
+    ],
+    [
+     2277.02,
+     2756.5,
+     27.2
+    ],
+    [
+     2311.02,
+     2778.5,
+     27.2
+    ],
+    [
+     2321.02,
+     2792.5,
+     27.2
+    ],
+    [
+     2329.02,
+     2810.5,
+     27.2
+    ],
+    [
+     2305.21,
+     2906.81,
+     27.19
+    ],
+    [
+     2314.35,
+     2914.58,
+     27.14
+    ],
+    [
+     2323.7,
+     2922.1,
+     27
+    ],
+    [
+     2333.44,
+     2929.11,
+     26.73
+    ],
+    [
+     2343.61,
+     2935.46,
+     26.33
+    ],
+    [
+     2354.13,
+     2941.19,
+     25.81
+    ],
+    [
+     2365.1,
+     2946.06,
+     25.22
+    ],
+    [
+     2376.55,
+     2949.62,
+     24.59
+    ],
+    [
+     2388.22,
+     2952.33,
+     24.21
+    ],
+    [
+     2400.06,
+     2954.29,
+     23.62
+    ],
+    [
+     2412,
+     2955.48,
+     22.83
+    ],
+    [
+     2423.97,
+     2956.21,
+     21.79
+    ],
+    [
+     2435.96,
+     2956.76,
+     20.58
+    ],
+    [
+     2447.95,
+     2957.19,
+     19.42
+    ],
+    [
+     2459.94,
+     2957.73,
+     18.14
+    ],
+    [
+     2471.91,
+     2958.46,
+     17.16
+    ],
+    [
+     2483.87,
+     2959.46,
+     15.96
+    ],
+    [
+     2495.75,
+     2961.14,
+     15.76
+    ],
+    [
+     2507.54,
+     2963.35,
+     15.41
+    ],
+    [
+     2519.2,
+     2966.15,
+     14.96
+    ],
+    [
+     2530.54,
+     2970.08,
+     14.27
+    ],
+    [
+     2541.64,
+     2974.61,
+     13.33
+    ],
+    [
+     2552.53,
+     2979.65,
+     12.33
+    ],
+    [
+     2563.21,
+     2985.11,
+     12.05
+    ],
+    [
+     2573.9,
+     2990.57,
+     11.66
+    ],
+    [
+     2583.8,
+     2997.16,
+     11.65
+    ],
+    [
+     2592.6,
+     3005.32,
+     11.31
+    ],
+    [
+     2603.65,
+     3009.96,
+     10.89
+    ],
+    [
+     2615.08,
+     3010.85,
+     10.48
+    ],
+    [
+     2626.56,
+     3009.57,
+     10.14
+    ],
+    [
+     2636.2,
+     3016.72,
+     9.7
+    ],
+    [
+     2647.36,
+     3016.71,
+     9.2
+    ],
+    [
+     2659.09,
+     3016.36,
+     8.85
+    ],
+    [
+     2670.86,
+     3018.64,
+     8.46
+    ],
+    [
+     2682.74,
+     3020.34,
+     8.05
+    ],
+    [
+     2692.22,
+     3014.77,
+     7.71
+    ],
+    [
+     2702.37,
+     3011.87,
+     7.32
+    ],
+    [
+     2713.76,
+     3012.97,
+     7.32
+    ],
+    [
+     2722.96,
+     3005.26,
+     7.06
+    ],
+    [
+     2733.6,
+     3001.69,
+     7.02
+    ],
+    [
+     2745.51,
+     3001.78,
+     6.79
+    ],
+    [
+     2754.89,
+     2994.31,
+     6.28
+    ],
+    [
+     2765.7,
+     2990.69,
+     6.24
+    ],
+    [
+     2777.69,
+     2990.34,
+     6.22
+    ],
+    [
+     2789.69,
+     2990.04,
+     5.94
+    ],
+    [
+     2801.64,
+     2989.1,
+     5.67
+    ],
+    [
+     2813.55,
+     2988.44,
+     5.45
+    ],
+    [
+     2825.31,
+     2990.78,
+     5.21
+    ],
+    [
+     2837.06,
+     2989.94,
+     4.94
+    ],
+    [
+     2848.74,
+     2988.26,
+     4.73
+    ],
+    [
+     2860.12,
+     2992.08,
+     4.54
+    ],
+    [
+     2871.67,
+     2992.11,
+     4.22
+    ],
+    [
+     2883.38,
+     2989.82,
+     4.09
+    ],
+    [
+     2895.34,
+     2990.86,
+     3.89
+    ],
+    [
+     2907.11,
+     2993.01,
+     3.14
+    ],
+    [
+     2918.63,
+     2996.26,
+     2.68
+    ],
+    [
+     2929.77,
+     3000.72,
+     2.6
+    ],
+    [
+     2939.94,
+     3007.09,
+     2.6
+    ],
+    [
+     2949.24,
+     3014.63,
+     2.6
+    ],
+    [
+     2955.11,
+     3024.27,
+     2.52
+    ],
+    [
+     2956.79,
+     3036.15,
+     2.64
+    ],
+    [
+     2963.44,
+     3045.8,
+     2.64
+    ],
+    [
+     2972.92,
+     3052.81,
+     2.38
+    ],
+    [
+     2983.52,
+     3058.42,
+     2.5
+    ],
+    [
+     2989.45,
+     3068.85,
+     2.5
+    ],
+    [
+     2994.84,
+     3079.56,
+     2.11
+    ],
+    [
+     2999.77,
+     3090.5,
+     1.94
+    ],
+    [
+     3004.28,
+     3101.62,
+     2.07
+    ],
+    [
+     3006.44,
+     3113.38,
+     2.19
+    ],
+    [
+     3007.83,
+     3125.3,
+     2.26
+    ],
+    [
+     3008.72,
+     3137.26,
+     2.26
+    ],
+    [
+     3008.32,
+     3149.25,
+     2.26
+    ],
+    [
+     3007.07,
+     3161.17,
+     2.23
+    ],
+    [
+     3005.07,
+     3172.99,
+     2.11
+    ],
+    [
+     3002.23,
+     3184.65,
+     1.93
+    ],
+    [
+     2998.52,
+     3196.06,
+     2.07
+    ],
+    [
+     2994.34,
+     3207.3,
+     2.28
+    ],
+    [
+     2989.75,
+     3218.39,
+     2.28
+    ],
+    [
+     2984.78,
+     3229.31,
+     2.28
+    ],
+    [
+     2979.64,
+     3240.15,
+     2.28
+    ],
+    [
+     2974.43,
+     3250.96,
+     2.28
+    ],
+    [
+     2969.21,
+     3261.77,
+     2.28
+    ],
+    [
+     2964.09,
+     3272.62,
+     2.28
+    ],
+    [
+     2959.58,
+     3283.73,
+     2.28
+    ],
+    [
+     2955.31,
+     3294.94,
+     2.43
+    ],
+    [
+     2950.63,
+     3305.99,
+     2.6
+    ],
+    [
+     2946.56,
+     3317.28,
+     2.7
+    ],
+    [
+     2942.99,
+     3328.73,
+     2.74
+    ],
+    [
+     2939.83,
+     3340.3,
+     2.76
+    ],
+    [
+     2942.23,
+     3349.23,
+     2.77
+    ],
+    [
+     2953.34,
+     3353.78,
+     2.77
+    ],
+    [
+     2965.19,
+     3355.47,
+     2.74
+    ],
+    [
+     2977.14,
+     3356.07,
+     2.66
+    ],
+    [
+     2989.14,
+     3355.71,
+     2.53
+    ],
+    [
+     3001.14,
+     3355.63,
+     2.53
+    ],
+    [
+     3013.04,
+     3356.69,
+     2.46
+    ],
+    [
+     3024.83,
+     3358.86,
+     2.28
+    ],
+    [
+     3035.77,
+     3363.79,
+     2.28
+    ],
+    [
+     3044.2,
+     3371.4,
+     2.28
+    ],
+    [
+     3049.79,
+     3382.02,
+     2.28
+    ],
+    [
+     3059.01,
+     3389.34,
+     2.28
+    ],
+    [
+     3068.91,
+     3396.11,
+     2.28
+    ],
+    [
+     3078.59,
+     3403.2,
+     2.28
+    ],
+    [
+     3088.17,
+     3410.43,
+     2.28
+    ],
+    [
+     3096.91,
+     3418.57,
+     2.28
+    ],
+    [
+     3104.94,
+     3427.49,
+     2.28
+    ],
+    [
+     3114.36,
+     3427.8,
+     2.28
+    ],
+    [
+     3124.79,
+     3421.87,
+     2.28
+    ],
+    [
+     3135.22,
+     3415.93,
+     2.28
+    ],
+    [
+     3145.65,
+     3409.99,
+     2.28
+    ],
+    [
+     3157,
+     3406.23,
+     2.28
+    ],
+    [
+     3164.53,
+     3411.69,
+     2.28
+    ],
+    [
+     3165.43,
+     3423.52,
+     2.28
+    ],
+    [
+     3165.57,
+     3435.52,
+     2.28
+    ],
+    [
+     3166.24,
+     3447.37,
+     2.28
+    ],
+    [
+     3172.43,
+     3457.65,
+     2.26
+    ],
+    [
+     3178.33,
+     3468.08,
+     2.24
+    ],
+    [
+     3183.04,
+     3479.11,
+     2.23
+    ],
+    [
+     3187.71,
+     3490.16,
+     2.22
+    ],
+    [
+     3191.08,
+     3501.68,
+     2.2
+    ],
+    [
+     3194.45,
+     3513.2,
+     2.2
+    ],
+    [
+     3198.15,
+     3524.51,
+     2.2
+    ],
+    [
+     3206.88,
+     3532.75,
+     2.19
+    ],
+    [
+     3215.66,
+     3531,
+     2.18
+    ],
+    [
+     3224.49,
+     3522.87,
+     2.14
+    ],
+    [
+     3233.32,
+     3514.74,
+     2.08
+    ],
+    [
+     3239.53,
+     3512.37,
+     2.02
+    ],
+    [
+     3239.23,
+     3524.36,
+     2.06
+    ],
+    [
+     3238.92,
+     3536.36,
+     2.12
+    ],
+    [
+     3238.62,
+     3548.35,
+     2.16
+    ],
+    [
+     3242.19,
+     3559.42,
+     2.16
+    ],
+    [
+     3253.04,
+     3549.77,
+     2.14
+    ],
+    [
+     3260.04,
+     3540.03,
+     2.04
+    ],
+    [
+     3269.03,
+     3532.13,
+     1.95
+    ],
+    [
+     3278.25,
+     3524.45,
+     1.87
+    ],
+    [
+     3288.02,
+     3517.6,
+     1.81
+    ],
+    [
+     3298.68,
+     3512.1,
+     1.8
+    ],
+    [
+     3309.76,
+     3507.65,
+     1.8
+    ],
+    [
+     3321.33,
+     3504.46,
+     1.8
+    ],
+    [
+     3330.44,
+     3496.97,
+     1.81
+    ],
+    [
+     3339.05,
+     3488.62,
+     1.81
+    ],
+    [
+     3349.7,
+     3489.45,
+     1.81
+    ],
+    [
+     3361.15,
+     3492.92,
+     1.81
+    ],
+    [
+     3373.08,
+     3494.21,
+     1.81
+    ],
+    [
+     3384.4,
+     3497.9,
+     1.85
+    ],
+    [
+     3395.59,
+     3502.17,
+     1.89
+    ],
+    [
+     3407.31,
+     3504.71,
+     1.91
+    ],
+    [
+     3418.98,
+     3507.51,
+     1.91
+    ],
+    [
+     3430.63,
+     3510.39,
+     2.18
+    ],
+    [
+     3442.37,
+     3512.87,
+     2.36
+    ],
+    [
+     3453.95,
+     3515.99,
+     2.47
+    ],
+    [
+     3465.23,
+     3519.97,
+     2.51
+    ],
+    [
+     3476.02,
+     3525.23,
+     2.53
+    ],
+    [
+     3485.85,
+     3532.11,
+     2.54
+    ],
+    [
+     3495.45,
+     3539.3,
+     2.54
+    ],
+    [
+     3504.85,
+     3546.74,
+     2.54
+    ],
+    [
+     3513.43,
+     3555.14,
+     2.52
+    ],
+    [
+     3522,
+     3563.53,
+     2.48
+    ],
+    [
+     3530.75,
+     3571.69,
+     2.41
+    ],
+    [
+     3541.41,
+     3577.21,
+     2.38
+    ],
+    [
+     3552.65,
+     3580.97,
+     2.43
+    ],
+    [
+     3564.48,
+     3583,
+     2.52
+    ],
+    [
+     3575.01,
+     3588.21,
+     2.61
+    ],
+    [
+     3585.17,
+     3594.47,
+     2.65
+    ],
+    [
+     3596.61,
+     3598.11,
+     2.66
+    ],
+    [
+     3600.43,
+     3605.96,
+     2.69
+    ],
+    [
+     3597.45,
+     3617.59,
+     2.72
+    ],
+    [
+     3594.47,
+     3629.21,
+     2.73
+    ],
+    [
+     3591.91,
+     3640.93,
+     2.81
+    ],
+    [
+     3589.66,
+     3652.71,
+     2.82
+    ],
+    [
+     3587.41,
+     3664.5,
+     2.78
+    ],
+    [
+     3585.44,
+     3676.34,
+     2.81
+    ],
+    [
+     3583.59,
+     3688.19,
+     2.81
+    ],
+    [
+     3581.73,
+     3700.05,
+     2.81
+    ],
+    [
+     3580.9,
+     3712,
+     2.8
+    ],
+    [
+     3580.55,
+     3723.99,
+     2.8
+    ],
+    [
+     3580.19,
+     3735.99,
+     2.84
+    ],
+    [
+     3591.2,
+     3738.07,
+     2.95
+    ],
+    [
+     3603,
+     3738.65,
+     3.05
+    ],
+    [
+     3613.64,
+     3733.1,
+     3.09
+    ],
+    [
+     3624.29,
+     3727.56,
+     3.15
+    ],
+    [
+     3634.93,
+     3722.02,
+     3.24
+    ],
+    [
+     3645.35,
+     3716.07,
+     3.3
+    ],
+    [
+     3655.75,
+     3710.08,
+     3.35
+    ],
+    [
+     3666.15,
+     3704.09,
+     3.35
+    ],
+    [
+     3677.02,
+     3699.21,
+     3.36
+    ],
+    [
+     3688.55,
+     3695.91,
+     3.33
+    ],
+    [
+     3700.09,
+     3692.61,
+     3.24
+    ],
+    [
+     3710.88,
+     3696.91,
+     3.18
+    ],
+    [
+     3719.86,
+     3703.92,
+     3.27
+    ],
+    [
+     3724.23,
+     3715.1,
+     3.33
+    ],
+    [
+     3728.16,
+     3726.43,
+     3.38
+    ],
+    [
+     3785,
+     3823.5,
+     3.42
+    ]
+   ]
+  },
+  {
+   "id": "helstrom-blackrose",
+   "from": "Helstrom",
+   "to": "Blackrose",
+   "class": "marsh trail",
+   "tide_gated": false,
+   "straight_m": 1714,
+   "declared_path_m": 2485,
+   "built_path_m": 2419.8,
+   "declared_walk_min": 20.7,
+   "built_walk_min": 20.16,
+   "sinuosity_built": 1.412,
+   "routing": "detour w=23.99 + sinuosity 98 m | detour w=23.99 + sinuosity 87 m | detour w=23.99 + sinuosity 67 m",
+   "max_grade": 0.124,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [
+    {
+     "i": 23,
+     "from_m": 370,
+     "to_m": 381,
+     "grade": 0.124,
+     "deg": 7.1,
+     "natural_grade": 0.061,
+     "class": "switchback"
+    },
+    {
+     "i": 29,
+     "from_m": 431,
+     "to_m": 441,
+     "grade": 0.124,
+     "deg": 7.1,
+     "natural_grade": 0.111,
+     "class": "switchback"
+    }
+   ],
+   "grade_class_m": {
+    "carriageway": 2399,
+    "switchback": 20,
+    "stair": 0
+   },
+   "max_cut_m": 2.03,
+   "max_fill_m": 2.72,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [],
+   "deck_span_m": 0,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.11,
+    "violations": 0,
+    "pre_join_m": 2465,
+    "join_delta_m": -45.2,
+    "length_correction": {
+     "corrected_m": -84,
+     "spans": 1,
+     "wanted_m": -78.6,
+     "leg": "helstrom-blackrose",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "helstrom",
+      "ok": true,
+      "points": 9,
+      "buildings": 40,
+      "before_m": 155.4,
+      "after_m": 253.8,
+      "delta_m": 98.3
+     },
+     {
+      "town": "blackrose",
+      "ok": true,
+      "points": 3,
+      "buildings": 22,
+      "before_m": 94.8,
+      "after_m": 95.1,
+      "delta_m": 0.3
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Sunken Barrow",
+    "Mudwater Landing"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       62,
+       66
+      ],
+      "approach_m": 1.34,
+      "junction": [
+       2087.8,
+       3342
+      ],
+      "points_removed": 4,
+      "loop_m": 38.7
+     },
+     {
+      "between_i": [
+       76,
+       79
+      ],
+      "approach_m": 7.03,
+      "junction": [
+       2141.9,
+       3480.1
+      ],
+      "points_removed": 3,
+      "loop_m": 15.1
+     },
+     {
+      "between_i": [
+       126,
+       129
+      ],
+      "approach_m": 3.32,
+      "junction": [
+       1964.2,
+       3847.5
+      ],
+      "points_removed": 3,
+      "loop_m": 6.1
+     }
+    ],
+    "delta_m": -59.8
+   },
+   "points": [
+    [
+     2262.5,
+     2773.5,
+     27.2
+    ],
+    [
+     2264.02,
+     2749.5,
+     27.2
+    ],
+    [
+     2248.02,
+     2743.5,
+     27.2
+    ],
+    [
+     2239.02,
+     2737.5,
+     27.2
+    ],
+    [
+     2228.02,
+     2739.5,
+     27.2
+    ],
+    [
+     2203.02,
+     2725.5,
+     27.2
+    ],
+    [
+     2194.02,
+     2743.5,
+     27.2
+    ],
+    [
+     2186.02,
+     2779.5,
+     27.2
+    ],
+    [
+     2179.75,
+     2849.51,
+     27.2
+    ],
+    [
+     2179.44,
+     2860.32,
+     27.2
+    ],
+    [
+     2179.1,
+     2871.14,
+     27.2
+    ],
+    [
+     2178.57,
+     2881.95,
+     27.19
+    ],
+    [
+     2177.8,
+     2892.76,
+     27.17
+    ],
+    [
+     2176.61,
+     2903.54,
+     27.08
+    ],
+    [
+     2175.08,
+     2914.28,
+     26.88
+    ],
+    [
+     2173.38,
+     2925,
+     26.53
+    ],
+    [
+     2171.57,
+     2935.71,
+     26.01
+    ],
+    [
+     2169.96,
+     2946.44,
+     25.29
+    ],
+    [
+     2168.69,
+     2957.21,
+     24.34
+    ],
+    [
+     2167.8,
+     2968.01,
+     23.22
+    ],
+    [
+     2168.14,
+     2978.78,
+     22
+    ],
+    [
+     2169.36,
+     2989.35,
+     20.76
+    ],
+    [
+     2171.43,
+     2999.7,
+     19.58
+    ],
+    [
+     2174.94,
+     3009.37,
+     18.3
+    ],
+    [
+     2178.99,
+     3018.66,
+     17.42
+    ],
+    [
+     2183.47,
+     3027.62,
+     17.2
+    ],
+    [
+     2188.14,
+     3036.43,
+     16.77
+    ],
+    [
+     2192.75,
+     3045.27,
+     16.03
+    ],
+    [
+     2196.89,
+     3054.52,
+     14.95
+    ],
+    [
+     2200.75,
+     3063.93,
+     13.68
+    ],
+    [
+     2203.77,
+     3073.89,
+     12.91
+    ],
+    [
+     2204.9,
+     3084.09,
+     11.87
+    ],
+    [
+     2202.76,
+     3094.73,
+     10.7
+    ],
+    [
+     2201.41,
+     3105.49,
+     10.18
+    ],
+    [
+     2200.54,
+     3116.28,
+     9.83
+    ],
+    [
+     2200.45,
+     3127.08,
+     9.4
+    ],
+    [
+     2218.19,
+     3180.45,
+     9.38
+    ],
+    [
+     2190.42,
+     3144.9,
+     8.68
+    ],
+    [
+     2205.5,
+     3206.2,
+     8.64
+    ],
+    [
+     2181.66,
+     3174.21,
+     7.72
+    ],
+    [
+     2166.38,
+     3158.22,
+     7.8
+    ],
+    [
+     2158.28,
+     3162.48,
+     7.56
+    ],
+    [
+     2157.06,
+     3173.04,
+     7.1
+    ],
+    [
+     2152.47,
+     3181.17,
+     6.75
+    ],
+    [
+     2144.78,
+     3187.01,
+     6.66
+    ],
+    [
+     2137.09,
+     3192.88,
+     6.4
+    ],
+    [
+     2129.6,
+     3199.22,
+     6.13
+    ],
+    [
+     2122.12,
+     3205.56,
+     5.85
+    ],
+    [
+     2114.92,
+     3212.43,
+     5.39
+    ],
+    [
+     2107.96,
+     3219.73,
+     5.22
+    ],
+    [
+     2101.15,
+     3227.23,
+     4.89
+    ],
+    [
+     2095.03,
+     3235.61,
+     4.89
+    ],
+    [
+     2089.04,
+     3244.09,
+     4.93
+    ],
+    [
+     2084.18,
+     3253.56,
+     4.82
+    ],
+    [
+     2084.49,
+     3261.37,
+     4.56
+    ],
+    [
+     2091.19,
+     3267.16,
+     4.27
+    ],
+    [
+     2096.57,
+     3277.64,
+     4.26
+    ],
+    [
+     2104.57,
+     3278.73,
+     4.19
+    ],
+    [
+     2111.26,
+     3284.51,
+     4.19
+    ],
+    [
+     2117.95,
+     3290.3,
+     4.11
+    ],
+    [
+     2116.65,
+     3298.43,
+     4.08
+    ],
+    [
+     2111.16,
+     3307.09,
+     4.06
+    ],
+    [
+     2100.33,
+     3340.86,
+     4.04
+    ],
+    [
+     2087.81,
+     3342.05,
+     4.04
+    ],
+    [
+     2087.2,
+     3341.77,
+     4.1
+    ],
+    [
+     2087.51,
+     3357.98,
+     4.13
+    ],
+    [
+     2090.66,
+     3362.59,
+     4.24
+    ],
+    [
+     2094.02,
+     3372.36,
+     4.24
+    ],
+    [
+     2097.45,
+     3382.08,
+     4.3
+    ],
+    [
+     2101.21,
+     3391.59,
+     4.44
+    ],
+    [
+     2105.09,
+     3401.02,
+     4.47
+    ],
+    [
+     2109.21,
+     3410.28,
+     4.56
+    ],
+    [
+     2111.71,
+     3420.37,
+     4.56
+    ],
+    [
+     2113.5,
+     3430.83,
+     4.73
+    ],
+    [
+     2115.35,
+     3441.26,
+     4.85
+    ],
+    [
+     2123.79,
+     3458.32,
+     4.88
+    ],
+    [
+     2124.53,
+     3458.14,
+     4.94
+    ],
+    [
+     2133.2,
+     3469.12,
+     4.97
+    ],
+    [
+     2141.87,
+     3480.11,
+     4.97
+    ],
+    [
+     2147.63,
+     3489.28,
+     4.96
+    ],
+    [
+     2153.4,
+     3498.44,
+     4.93
+    ],
+    [
+     2154.28,
+     3503.29,
+     4.88
+    ],
+    [
+     2154.75,
+     3507.58,
+     4.88
+    ],
+    [
+     2160.64,
+     3514.95,
+     4.89
+    ],
+    [
+     2166.65,
+     3522.12,
+     4.78
+    ],
+    [
+     2165.59,
+     3530.14,
+     4.99
+    ],
+    [
+     2166.22,
+     3542.07,
+     5.18
+    ],
+    [
+     2154.98,
+     3548.33,
+     5.21
+    ],
+    [
+     2156.63,
+     3561.46,
+     5.26
+    ],
+    [
+     2152.52,
+     3571.56,
+     5.39
+    ],
+    [
+     2143.08,
+     3578.28,
+     5.4
+    ],
+    [
+     2137.13,
+     3586.66,
+     5.67
+    ],
+    [
+     2132.13,
+     3595.54,
+     5.88
+    ],
+    [
+     2130.01,
+     3606.18,
+     6.18
+    ],
+    [
+     2124.56,
+     3614.66,
+     6.19
+    ],
+    [
+     2118.25,
+     3622.7,
+     5.96
+    ],
+    [
+     2113.54,
+     3632.26,
+     5.62
+    ],
+    [
+     2107.89,
+     3641.04,
+     5.57
+    ],
+    [
+     2101.93,
+     3649.59,
+     5.27
+    ],
+    [
+     2096.38,
+     3658.51,
+     4.82
+    ],
+    [
+     2091.55,
+     3667.97,
+     4.83
+    ],
+    [
+     2087.26,
+     3677.76,
+     5.52
+    ],
+    [
+     2084.05,
+     3688.09,
+     5.99
+    ],
+    [
+     2081.6,
+     3698.62,
+     6.26
+    ],
+    [
+     2079.7,
+     3709.31,
+     6.25
+    ],
+    [
+     2078.79,
+     3720.11,
+     6.04
+    ],
+    [
+     2078.1,
+     3730.92,
+     5.73
+    ],
+    [
+     2077.7,
+     3741.73,
+     5.83
+    ],
+    [
+     2070.02,
+     3746.65,
+     5.8
+    ],
+    [
+     2064.68,
+     3752.62,
+     5.72
+    ],
+    [
+     2067.6,
+     3762.62,
+     5.52
+    ],
+    [
+     2069.11,
+     3772.11,
+     5.11
+    ],
+    [
+     2061.53,
+     3778.24,
+     4.68
+    ],
+    [
+     2054.13,
+     3784.71,
+     4.11
+    ],
+    [
+     2047.14,
+     3791.96,
+     4.24
+    ],
+    [
+     2039.53,
+     3797.5,
+     4.36
+    ],
+    [
+     2031.41,
+     3801.62,
+     4.7
+    ],
+    [
+     2023.28,
+     3805.56,
+     5.03
+    ],
+    [
+     2015.1,
+     3808.24,
+     5.57
+    ],
+    [
+     2006.93,
+     3810.93,
+     5.89
+    ],
+    [
+     1998.82,
+     3813.09,
+     5.88
+    ],
+    [
+     1990.76,
+     3814.85,
+     5.65
+    ],
+    [
+     1982.71,
+     3816.58,
+     6.08
+    ],
+    [
+     1965.81,
+     3818.4,
+     6.09
+    ],
+    [
+     1966.95,
+     3819.56,
+     6.09
+    ],
+    [
+     1969.24,
+     3829.84,
+     6.08
+    ],
+    [
+     1965.73,
+     3839.85,
+     6.08
+    ],
+    [
+     1964.2,
+     3847.45,
+     6.05
+    ],
+    [
+     1956.45,
+     3845.35,
+     6.16
+    ],
+    [
+     1950.37,
+     3843.21,
+     6.18
+    ],
+    [
+     1946.99,
+     3845.44,
+     6.18
+    ],
+    [
+     1941.14,
+     3849.27,
+     6.28
+    ],
+    [
+     1929.02,
+     3847.21,
+     6.28
+    ],
+    [
+     1931.21,
+     3858.61,
+     6.22
+    ],
+    [
+     1951.83,
+     3887.77,
+     5.95
+    ],
+    [
+     1952.06,
+     3898.55,
+     5.12
+    ],
+    [
+     1945.26,
+     3899.41,
+     4.98
+    ],
+    [
+     1942.01,
+     3900.93,
+     5.01
+    ],
+    [
+     1936.04,
+     3901.57,
+     5.01
+    ],
+    [
+     1932.55,
+     3911.78,
+     4.98
+    ],
+    [
+     1929.81,
+     3922.2,
+     4.71
+    ],
+    [
+     1928.3,
+     3932.95,
+     4.77
+    ],
+    [
+     1906.03,
+     3924.29,
+     4.77
+    ],
+    [
+     1922.52,
+     3950.79,
+     4.74
+    ],
+    [
+     1914.16,
+     3954.58,
+     4.2
+    ],
+    [
+     1925.75,
+     3976.13,
+     4.16
+    ],
+    [
+     1923.88,
+     3986.79,
+     3.76
+    ],
+    [
+     1912.47,
+     3990.79,
+     3.64
+    ],
+    [
+     1917.35,
+     4007.39,
+     3.62
+    ],
+    [
+     1911.48,
+     4015.95,
+     3.42
+    ],
+    [
+     1900.93,
+     4021.35,
+     3.36
+    ],
+    [
+     1908.18,
+     4034.72,
+     3.3
+    ],
+    [
+     1907.59,
+     4045.1,
+     3.12
+    ],
+    [
+     1905.12,
+     4055.54,
+     3.04
+    ],
+    [
+     1908.45,
+     4065.32,
+     2.91
+    ],
+    [
+     1911.26,
+     4075.36,
+     2.64
+    ],
+    [
+     1913.85,
+     4085.52,
+     2.65
+    ],
+    [
+     1916.69,
+     4095.56,
+     2.66
+    ],
+    [
+     1919.62,
+     4105.56,
+     2.66
+    ],
+    [
+     1922.37,
+     4115.64,
+     2.66
+    ],
+    [
+     1924.91,
+     4125.82,
+     2.66
+    ],
+    [
+     1927.19,
+     4136.11,
+     2.66
+    ],
+    [
+     1931.7,
+     4145,
+     2.65
+    ],
+    [
+     1935.53,
+     4154.41,
+     2.62
+    ],
+    [
+     1938.79,
+     4164.23,
+     2.51
+    ],
+    [
+     1942.08,
+     4174.04,
+     2.31
+    ],
+    [
+     1946.6,
+     4182.94,
+     2.08
+    ],
+    [
+     1951.16,
+     4191.83,
+     2.26
+    ],
+    [
+     1955.18,
+     4201.17,
+     2.26
+    ],
+    [
+     1957.68,
+     4210.85,
+     2.26
+    ],
+    [
+     1955.8,
+     4221.54,
+     2.31
+    ],
+    [
+     1951.42,
+     4224.88,
+     2.28
+    ],
+    [
+     1942.33,
+     4225.52,
+     2.3
+    ],
+    [
+     1931.19,
+     4227.03,
+     2.31
+    ],
+    [
+     1919.5,
+     4229.59,
+     2.31
+    ],
+    [
+     1919.38,
+     4251.45,
+     2.31
+    ],
+    [
+     1911.33,
+     4256.01,
+     2.3
+    ],
+    [
+     1903.41,
+     4261.05,
+     2.39
+    ],
+    [
+     1895.73,
+     4266.91,
+     2.37
+    ],
+    [
+     1888.04,
+     4272.78,
+     2.37
+    ],
+    [
+     1887.26,
+     4282.55,
+     2.36
+    ],
+    [
+     1888.6,
+     4292.94,
+     2.37
+    ],
+    [
+     1894.09,
+     4300.86,
+     2.3
+    ],
+    [
+     1899.58,
+     4308.78,
+     2.39
+    ],
+    [
+     1905.07,
+     4316.7,
+     2.49
+    ],
+    [
+     1910.92,
+     4324.13,
+     2.55
+    ],
+    [
+     1916.82,
+     4331.47,
+     2.57
+    ],
+    [
+     1922.73,
+     4338.82,
+     2.58
+    ],
+    [
+     1927.46,
+     4347.41,
+     2.59
+    ],
+    [
+     1931.47,
+     4356.74,
+     2.59
+    ],
+    [
+     1929.79,
+     4366.86,
+     2.59
+    ],
+    [
+     1926.27,
+     4377.03,
+     2.59
+    ],
+    [
+     1921.91,
+     4386.82,
+     2.59
+    ],
+    [
+     1914.5,
+     4443.03,
+     2.59
+    ],
+    [
+     1905.5,
+     4450,
+     2.59
+    ]
+   ]
+  },
+  {
+   "id": "helstrom-gideon",
+   "from": "Helstrom",
+   "to": "Gideon",
+   "class": "Imperial road",
+   "tide_gated": false,
+   "straight_m": 1829,
+   "declared_path_m": 2378,
+   "built_path_m": 2431.7,
+   "declared_walk_min": 19.8,
+   "built_walk_min": 20.26,
+   "sinuosity_built": 1.33,
+   "routing": "detour w=4.72 + sinuosity 4 m | detour w=0.53 + sinuosity 33 m | detour w=0.09 + sinuosity 54 m",
+   "max_grade": 0.45,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [
+    {
+     "i": 14,
+     "from_m": 304,
+     "to_m": 316,
+     "grade": 0.134,
+     "deg": 7.6,
+     "natural_grade": 0.113,
+     "class": "switchback"
+    },
+    {
+     "i": 15,
+     "from_m": 316,
+     "to_m": 328,
+     "grade": 0.146,
+     "deg": 8.3,
+     "natural_grade": 0.159,
+     "class": "switchback"
+    },
+    {
+     "i": 16,
+     "from_m": 328,
+     "to_m": 340,
+     "grade": 0.151,
+     "deg": 8.6,
+     "natural_grade": 0.148,
+     "class": "switchback"
+    },
+    {
+     "i": 24,
+     "from_m": 424,
+     "to_m": 436,
+     "grade": 0.125,
+     "deg": 7.1,
+     "natural_grade": 0.1,
+     "class": "switchback"
+    },
+    {
+     "i": 47,
+     "from_m": 700,
+     "to_m": 712,
+     "grade": 0.163,
+     "deg": 9.2,
+     "natural_grade": 0.074,
+     "class": "switchback"
+    },
+    {
+     "i": 48,
+     "from_m": 712,
+     "to_m": 724,
+     "grade": 0.138,
+     "deg": 7.8,
+     "natural_grade": 0.182,
+     "class": "switchback"
+    },
+    {
+     "i": 49,
+     "from_m": 724,
+     "to_m": 736,
+     "grade": 0.125,
+     "deg": 7.1,
+     "natural_grade": 0.004,
+     "class": "switchback"
+    },
+    {
+     "i": 50,
+     "from_m": 736,
+     "to_m": 748,
+     "grade": 0.146,
+     "deg": 8.3,
+     "natural_grade": 0.2,
+     "class": "switchback"
+    },
+    {
+     "i": 51,
+     "from_m": 748,
+     "to_m": 760,
+     "grade": 0.132,
+     "deg": 7.5,
+     "natural_grade": 0.136,
+     "class": "switchback"
+    },
+    {
+     "i": 52,
+     "from_m": 760,
+     "to_m": 772,
+     "grade": 0.363,
+     "deg": 20,
+     "natural_grade": 0.175,
+     "class": "stair"
+    },
+    {
+     "i": 53,
+     "from_m": 772,
+     "to_m": 784,
+     "grade": 0.197,
+     "deg": 11.1,
+     "natural_grade": 0.304,
+     "class": "switchback"
+    },
+    {
+     "i": 54,
+     "from_m": 784,
+     "to_m": 796,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.501,
+     "class": "stair"
+    },
+    {
+     "i": 55,
+     "from_m": 796,
+     "to_m": 808,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.586,
+     "class": "stair"
+    },
+    {
+     "i": 56,
+     "from_m": 808,
+     "to_m": 820,
+     "grade": 0.347,
+     "deg": 19.1,
+     "natural_grade": 0.347,
+     "class": "stair"
+    },
+    {
+     "i": 57,
+     "from_m": 820,
+     "to_m": 832,
+     "grade": 0.227,
+     "deg": 12.8,
+     "natural_grade": 0.227,
+     "class": "stair"
+    },
+    {
+     "i": 58,
+     "from_m": 832,
+     "to_m": 844,
+     "grade": 0.144,
+     "deg": 8.2,
+     "natural_grade": 0.039,
+     "class": "switchback"
+    },
+    {
+     "i": 68,
+     "from_m": 951,
+     "to_m": 963,
+     "grade": 0.354,
+     "deg": 19.5,
+     "natural_grade": 0.354,
+     "class": "stair"
+    },
+    {
+     "i": 69,
+     "from_m": 963,
+     "to_m": 975,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.594,
+     "class": "stair"
+    },
+    {
+     "i": 70,
+     "from_m": 975,
+     "to_m": 987,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.776,
+     "class": "stair"
+    },
+    {
+     "i": 71,
+     "from_m": 987,
+     "to_m": 999,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.649,
+     "class": "stair"
+    },
+    {
+     "i": 72,
+     "from_m": 999,
+     "to_m": 1011,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.315,
+     "class": "stair"
+    },
+    {
+     "i": 73,
+     "from_m": 1011,
+     "to_m": 1023,
+     "grade": 0.424,
+     "deg": 23,
+     "natural_grade": 0.081,
+     "class": "stair"
+    },
+    {
+     "i": 74,
+     "from_m": 1023,
+     "to_m": 1035,
+     "grade": 0.172,
+     "deg": 9.7,
+     "natural_grade": 0.122,
+     "class": "switchback"
+    },
+    {
+     "i": 75,
+     "from_m": 1035,
+     "to_m": 1047,
+     "grade": 0.168,
+     "deg": 9.5,
+     "natural_grade": 0.144,
+     "class": "switchback"
+    }
+   ],
+   "grade_class_m": {
+    "carriageway": 2144,
+    "switchback": 156,
+    "stair": 132
+   },
+   "max_cut_m": 3,
+   "max_fill_m": 10.59,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [
+    {
+     "from_i": 52,
+     "to_i": 55,
+     "from_m": 772,
+     "to_m": 808,
+     "length_m": 36,
+     "max_height_m": 5.2,
+     "kind": "causeway over water"
+    },
+    {
+     "from_i": 68,
+     "to_i": 72,
+     "from_m": 963,
+     "to_m": 1011,
+     "length_m": 48,
+     "max_height_m": 10.6,
+     "kind": "causeway over water"
+    }
+   ],
+   "deck_span_m": 84,
+   "half_width_m": 3.6,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.11,
+    "violations": 0,
+    "pre_join_m": 2368.4,
+    "join_delta_m": 63.4,
+    "length_correction": {
+     "corrected_m": 0,
+     "spans": 0,
+     "abandoned": true
+    },
+    "recuts": [
+     {
+      "town": "helstrom",
+      "ok": true,
+      "points": 6,
+      "buildings": 40,
+      "before_m": 144,
+      "after_m": 207.9,
+      "delta_m": 63.9
+     },
+     {
+      "town": "gideon",
+      "ok": true,
+      "points": 2,
+      "buildings": 22,
+      "before_m": 121.9,
+      "after_m": 121.4,
+      "delta_m": -0.5
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Rootway Post",
+    "Tenmarch Bridge"
+   ],
+   "self_clearance": {
+    "min_clear_m": 8.74,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
+   "points": [
+    [
+     2262.5,
+     2773.5,
+     27.2
+    ],
+    [
+     2263.81,
+     2751.38,
+     27.2
+    ],
+    [
+     2237.81,
+     2737.38,
+     27.2
+    ],
+    [
+     2231.81,
+     2739.38,
+     27.2
+    ],
+    [
+     2202.81,
+     2726.38,
+     27.2
+    ],
+    [
+     2127.81,
+     2817.56,
+     27.19
+    ],
+    [
+     2117.26,
+     2823.26,
+     27.15
+    ],
+    [
+     2106.91,
+     2829.33,
+     27.02
+    ],
+    [
+     2096.81,
+     2835.8,
+     26.75
+    ],
+    [
+     2087.18,
+     2842.96,
+     26.29
+    ],
+    [
+     2077.82,
+     2850.46,
+     25.73
+    ],
+    [
+     2068.69,
+     2858.25,
+     25.09
+    ],
+    [
+     2059.83,
+     2866.34,
+     24.15
+    ],
+    [
+     2051.11,
+     2874.58,
+     22.83
+    ],
+    [
+     2042.48,
+     2882.92,
+     21.23
+    ],
+    [
+     2033.95,
+     2891.37,
+     19.47
+    ],
+    [
+     2025.49,
+     2899.87,
+     17.66
+    ],
+    [
+     2017.06,
+     2908.42,
+     16.64
+    ],
+    [
+     2008.7,
+     2917.02,
+     15.6
+    ],
+    [
+     2000.36,
+     2925.66,
+     14.5
+    ],
+    [
+     1992.05,
+     2934.3,
+     13.27
+    ],
+    [
+     1983.72,
+     2942.94,
+     12.7
+    ],
+    [
+     1975.3,
+     2951.5,
+     12.16
+    ],
+    [
+     1966.77,
+     2959.93,
+     10.98
+    ],
+    [
+     1957.97,
+     2968.1,
+     9.48
+    ],
+    [
+     1948.66,
+     2975.65,
+     9.39
+    ],
+    [
+     1938.8,
+     2982.43,
+     8.86
+    ],
+    [
+     1928.22,
+     2988.03,
+     8.01
+    ],
+    [
+     1916.79,
+     2991.66,
+     7.1
+    ],
+    [
+     1904.82,
+     2992.33,
+     7.03
+    ],
+    [
+     1893.26,
+     2989.59,
+     6.82
+    ],
+    [
+     1881.89,
+     2985.76,
+     6.62
+    ],
+    [
+     1870.82,
+     2981.22,
+     6.48
+    ],
+    [
+     1860.22,
+     2975.6,
+     6.55
+    ],
+    [
+     1850.22,
+     2968.96,
+     6.69
+    ],
+    [
+     1840.36,
+     2962.13,
+     6.69
+    ],
+    [
+     1830.55,
+     2955.21,
+     7.47
+    ],
+    [
+     1820.76,
+     2948.28,
+     7.79
+    ],
+    [
+     1810.91,
+     2941.42,
+     7.61
+    ],
+    [
+     1801.06,
+     2934.56,
+     7.37
+    ],
+    [
+     1791.23,
+     2927.69,
+     8
+    ],
+    [
+     1781.52,
+     2920.64,
+     8.55
+    ],
+    [
+     1772.01,
+     2913.33,
+     9.25
+    ],
+    [
+     1762.71,
+     2905.75,
+     10.51
+    ],
+    [
+     1753.74,
+     2897.77,
+     11.24
+    ],
+    [
+     1745.24,
+     2889.31,
+     11.68
+    ],
+    [
+     1737.09,
+     2880.51,
+     12.34
+    ],
+    [
+     1729.33,
+     2871.36,
+     14.29
+    ],
+    [
+     1722.23,
+     2861.68,
+     15.94
+    ],
+    [
+     1715.49,
+     2851.76,
+     17.44
+    ],
+    [
+     1709.07,
+     2841.63,
+     19.19
+    ],
+    [
+     1702.99,
+     2831.28,
+     20.77
+    ],
+    [
+     1697.21,
+     2820.76,
+     25.13
+    ],
+    [
+     1691.25,
+     2810.35,
+     27.49
+    ],
+    [
+     1684.87,
+     2800.19,
+     32.89
+    ],
+    [
+     1678.4,
+     2790.08,
+     38.29
+    ],
+    [
+     1671.29,
+     2780.44,
+     42.45
+    ],
+    [
+     1663.6,
+     2771.24,
+     45.17
+    ],
+    [
+     1655.41,
+     2762.47,
+     46.9
+    ],
+    [
+     1646.5,
+     2754.43,
+     47.9
+    ],
+    [
+     1637.18,
+     2746.89,
+     48.36
+    ],
+    [
+     1627.52,
+     2739.77,
+     48.54
+    ],
+    [
+     1617.64,
+     2732.96,
+     48.57
+    ],
+    [
+     1615.82,
+     2744.4,
+     48.32
+    ],
+    [
+     1614.46,
+     2756.32,
+     47.51
+    ],
+    [
+     1613.36,
+     2768.27,
+     46.29
+    ],
+    [
+     1612.48,
+     2780.24,
+     45.64
+    ],
+    [
+     1610.95,
+     2792.13,
+     44.93
+    ],
+    [
+     1608.77,
+     2803.92,
+     40.69
+    ],
+    [
+     1605.86,
+     2815.57,
+     35.29
+    ],
+    [
+     1603.47,
+     2827.32,
+     29.89
+    ],
+    [
+     1600.39,
+     2838.8,
+     24.54
+    ],
+    [
+     1594.66,
+     2849.34,
+     19.14
+    ],
+    [
+     1588.11,
+     2859.39,
+     14.05
+    ],
+    [
+     1580.91,
+     2868.96,
+     12
+    ],
+    [
+     1573,
+     2877.98,
+     9.98
+    ],
+    [
+     1564.57,
+     2886.52,
+     9.45
+    ],
+    [
+     1555.95,
+     2894.87,
+     8.72
+    ],
+    [
+     1547.16,
+     2903.03,
+     7.6
+    ],
+    [
+     1538.07,
+     2910.87,
+     6.29
+    ],
+    [
+     1528.63,
+     2918.26,
+     5.94
+    ],
+    [
+     1518.76,
+     2925.06,
+     5.49
+    ],
+    [
+     1508.27,
+     2930.88,
+     5.14
+    ],
+    [
+     1497.04,
+     2935.04,
+     4.43
+    ],
+    [
+     1485.47,
+     2938.07,
+     3.7
+    ],
+    [
+     1473.61,
+     2939.87,
+     4.1
+    ],
+    [
+     1461.62,
+     2939.9,
+     4.46
+    ],
+    [
+     1449.69,
+     2938.94,
+     4.85
+    ],
+    [
+     1437.87,
+     2936.93,
+     5.09
+    ],
+    [
+     1426.49,
+     2933.14,
+     5.21
+    ],
+    [
+     1415.65,
+     2928.09,
+     5.23
+    ],
+    [
+     1405.29,
+     2922.08,
+     5.17
+    ],
+    [
+     1396.11,
+     2914.35,
+     5.04
+    ],
+    [
+     1387.84,
+     2905.73,
+     4.88
+    ],
+    [
+     1380.32,
+     2896.38,
+     5.31
+    ],
+    [
+     1373.73,
+     2886.35,
+     5.92
+    ],
+    [
+     1367.78,
+     2875.97,
+     6.34
+    ],
+    [
+     1362.65,
+     2865.12,
+     7.37
+    ],
+    [
+     1356.47,
+     2854.85,
+     7.86
+    ],
+    [
+     1349.64,
+     2845.03,
+     8.56
+    ],
+    [
+     1341.33,
+     2836.38,
+     8.58
+    ],
+    [
+     1331.83,
+     2829.22,
+     8.92
+    ],
+    [
+     1321.46,
+     2823.2,
+     9.13
+    ],
+    [
+     1309.9,
+     2820.24,
+     9.2
+    ],
+    [
+     1298.14,
+     2818.13,
+     9.06
+    ],
+    [
+     1286.23,
+     2819.56,
+     8.79
+    ],
+    [
+     1274.62,
+     2822.11,
+     8.19
+    ],
+    [
+     1263.62,
+     2826.9,
+     8.15
+    ],
+    [
+     1254.31,
+     2834.15,
+     7.36
+    ],
+    [
+     1245.91,
+     2842.72,
+     6.52
+    ],
+    [
+     1235.81,
+     2849.16,
+     5.76
+    ],
+    [
+     1226.27,
+     2856.34,
+     5.2
+    ],
+    [
+     1217.44,
+     2864.47,
+     4.41
+    ],
+    [
+     1207.93,
+     2871.78,
+     4
+    ],
+    [
+     1197.85,
+     2878.23,
+     3.69
+    ],
+    [
+     1187.22,
+     2883.77,
+     3.18
+    ],
+    [
+     1175.86,
+     2887.61,
+     3.15
+    ],
+    [
+     1164.17,
+     2890.2,
+     3.06
+    ],
+    [
+     1152.31,
+     2891.88,
+     2.91
+    ],
+    [
+     1140.32,
+     2892.44,
+     2.73
+    ],
+    [
+     1128.32,
+     2892.45,
+     2.61
+    ],
+    [
+     1116.32,
+     2892.25,
+     2.58
+    ],
+    [
+     1104.33,
+     2892.02,
+     2.63
+    ],
+    [
+     1092.33,
+     2892.26,
+     2.54
+    ],
+    [
+     1080.37,
+     2893.01,
+     2.41
+    ],
+    [
+     1068.46,
+     2894.48,
+     2.41
+    ],
+    [
+     1056.78,
+     2897.24,
+     2.7
+    ],
+    [
+     1045.38,
+     2900.91,
+     2.78
+    ],
+    [
+     1034.3,
+     2905.47,
+     2.76
+    ],
+    [
+     1023.58,
+     2910.88,
+     2.77
+    ],
+    [
+     1013.24,
+     2916.95,
+     2.78
+    ],
+    [
+     1003.07,
+     2923.34,
+     2.79
+    ],
+    [
+     992.96,
+     2929.79,
+     2.79
+    ],
+    [
+     982.92,
+     2926.23,
+     2.79
+    ],
+    [
+     972.96,
+     2919.54,
+     2.79
+    ],
+    [
+     963.12,
+     2912.67,
+     2.77
+    ],
+    [
+     953.5,
+     2905.5,
+     2.7
+    ],
+    [
+     943.92,
+     2898.28,
+     2.52
+    ],
+    [
+     934.31,
+     2891.09,
+     2.27
+    ],
+    [
+     924.2,
+     2884.63,
+     2.29
+    ],
+    [
+     913.64,
+     2879.01,
+     2.3
+    ],
+    [
+     902.57,
+     2874.4,
+     2.48
+    ],
+    [
+     890.86,
+     2871.77,
+     2.56
+    ],
+    [
+     879,
+     2870.1,
+     2.57
+    ],
+    [
+     867.05,
+     2869.03,
+     2.55
+    ],
+    [
+     855.09,
+     2868.06,
+     2.36
+    ],
+    [
+     843.37,
+     2865.6,
+     2.7
+    ],
+    [
+     832.3,
+     2861.35,
+     2.67
+    ],
+    [
+     822.05,
+     2855.09,
+     2.43
+    ],
+    [
+     814.48,
+     2845.8,
+     2.46
+    ],
+    [
+     807.93,
+     2835.86,
+     2.5
+    ],
+    [
+     803.03,
+     2824.9,
+     2.51
+    ],
+    [
+     795.96,
+     2815.54,
+     2.53
+    ],
+    [
+     787.82,
+     2807.13,
+     2.6
+    ],
+    [
+     786.55,
+     2795.2,
+     2.7
+    ],
+    [
+     785.28,
+     2783.27,
+     2.76
+    ],
+    [
+     782.29,
+     2772.64,
+     2.84
+    ],
+    [
+     771.12,
+     2768.25,
+     3
+    ],
+    [
+     761.51,
+     2761.62,
+     3.05
+    ],
+    [
+     753.52,
+     2752.67,
+     3.05
+    ],
+    [
+     745.06,
+     2744.92,
+     3.22
+    ],
+    [
+     733.11,
+     2746.09,
+     3.25
+    ],
+    [
+     722.35,
+     2748.86,
+     3.25
+    ],
+    [
+     717.69,
+     2759.92,
+     3.16
+    ],
+    [
+     713.02,
+     2770.98,
+     2.94
+    ],
+    [
+     708.36,
+     2782.04,
+     2.78
+    ],
+    [
+     697.9,
+     2784.43,
+     2.67
+    ],
+    [
+     687.33,
+     2787.57,
+     2.64
+    ],
+    [
+     679.62,
+     2796.77,
+     2.59
+    ],
+    [
+     671.97,
+     2806.02,
+     2.53
+    ],
+    [
+     664.36,
+     2815.29,
+     2.5
+    ],
+    [
+     655.82,
+     2823.7,
+     2.46
+    ],
+    [
+     646.69,
+     2831.37,
+     2.43
+    ],
+    [
+     635.98,
+     2836.79,
+     2.45
+    ],
+    [
+     624.43,
+     2839.71,
+     2.36
+    ],
+    [
+     612.55,
+     2841.14,
+     2.26
+    ],
+    [
+     600.56,
+     2841.38,
+     2.44
+    ],
+    [
+     588.56,
+     2841.24,
+     2.52
+    ],
+    [
+     576.57,
+     2841.51,
+     2.55
+    ],
+    [
+     564.6,
+     2842.33,
+     2.68
+    ],
+    [
+     552.84,
+     2844.68,
+     2.74
+    ],
+    [
+     541.43,
+     2848.31,
+     2.74
+    ],
+    [
+     439,
+     2913.5,
+     2.71
+    ]
+   ]
+  },
+  {
+   "id": "gideon-soulrest",
+   "from": "Gideon",
+   "to": "Soulrest",
+   "class": "coast road",
+   "tide_gated": false,
+   "straight_m": 1971,
+   "declared_path_m": 2562,
+   "built_path_m": 2568.5,
+   "declared_walk_min": 21.4,
+   "built_walk_min": 21.4,
+   "sinuosity_built": 1.303,
+   "routing": "detour w=23.99 + sinuosity 34 m | detour w=23.99 + sinuosity 49 m | detour w=0.28 + sinuosity 15 m",
+   "max_grade": 0.078,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [],
+   "grade_class_m": {
+    "carriageway": 2569,
+    "switchback": 0,
+    "stair": 0
+   },
+   "max_cut_m": 2.91,
+   "max_fill_m": 2.58,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [],
+   "deck_span_m": 0,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.14,
+    "violations": 0,
+    "pre_join_m": 2538.7,
+    "join_delta_m": 29.8,
+    "length_correction": {
+     "corrected_m": 33.4,
+     "spans": 1,
+     "wanted_m": 26.9,
+     "leg": "gideon-soulrest",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "gideon",
+      "ok": true,
+      "points": 3,
+      "buildings": 22,
+      "before_m": 143.6,
+      "after_m": 141.8,
+      "delta_m": -1.8
+     },
+     {
+      "town": "soulrest",
+      "ok": true,
+      "points": 4,
+      "buildings": 15,
+      "before_m": 107.9,
+      "after_m": 106.2,
+      "delta_m": -1.8
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Hollow-Reeds",
+    "Bone Ladder"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
+   "points": [
+    [
+     439,
+     2913.5,
+     2.71
+    ],
+    [
+     347.83,
+     2916.66,
+     2.69
+    ],
+    [
+     308.74,
+     2948.79,
+     2.63
+    ],
+    [
+     303.25,
+     2959.52,
+     2.52
+    ],
+    [
+     300.13,
+     2971.16,
+     2.51
+    ],
+    [
+     298.9,
+     2983.1,
+     2.46
+    ],
+    [
+     299.19,
+     2995.1,
+     2.32
+    ],
+    [
+     300.71,
+     3007.03,
+     2.12
+    ],
+    [
+     303.13,
+     3018.8,
+     2.06
+    ],
+    [
+     306.05,
+     3030.45,
+     2.06
+    ],
+    [
+     309.01,
+     3042.08,
+     2.09
+    ],
+    [
+     311.91,
+     3053.72,
+     2.06
+    ],
+    [
+     314.57,
+     3065.42,
+     2.09
+    ],
+    [
+     316.69,
+     3077.22,
+     2.09
+    ],
+    [
+     318.2,
+     3089.12,
+     2.39
+    ],
+    [
+     318.91,
+     3101.09,
+     2.34
+    ],
+    [
+     318.64,
+     3113.1,
+     2.1
+    ],
+    [
+     317.38,
+     3125.06,
+     2.28
+    ],
+    [
+     315.44,
+     3136.91,
+     2.39
+    ],
+    [
+     313.66,
+     3148.75,
+     2.41
+    ],
+    [
+     312.51,
+     3160.63,
+     2.27
+    ],
+    [
+     312.47,
+     3172.5,
+     2.06
+    ],
+    [
+     314,
+     3184.26,
+     2.17
+    ],
+    [
+     317.27,
+     3195.68,
+     2.16
+    ],
+    [
+     321.5,
+     3207.14,
+     2.05
+    ],
+    [
+     319.19,
+     3218.82,
+     2.01
+    ],
+    [
+     318.75,
+     3230.63,
+     1.99
+    ],
+    [
+     319.27,
+     3242,
+     1.97
+    ],
+    [
+     327.48,
+     3249.96,
+     1.96
+    ],
+    [
+     335.05,
+     3259.26,
+     1.96
+    ],
+    [
+     335.39,
+     3271.76,
+     2.04
+    ],
+    [
+     334.65,
+     3283.82,
+     1.79
+    ],
+    [
+     333.27,
+     3295.81,
+     2.35
+    ],
+    [
+     331.2,
+     3307.68,
+     2.4
+    ],
+    [
+     328.93,
+     3319.47,
+     2.15
+    ],
+    [
+     326.66,
+     3331.24,
+     2.15
+    ],
+    [
+     324.57,
+     3343.03,
+     2.01
+    ],
+    [
+     322.9,
+     3354.87,
+     1.67
+    ],
+    [
+     321.57,
+     3366.74,
+     1.67
+    ],
+    [
+     320.99,
+     3378.65,
+     1.65
+    ],
+    [
+     321.35,
+     3390.55,
+     1.92
+    ],
+    [
+     322.61,
+     3402.22,
+     1.96
+    ],
+    [
+     326.49,
+     3413.46,
+     1.96
+    ],
+    [
+     331.45,
+     3424.44,
+     1.96
+    ],
+    [
+     334.66,
+     3435.56,
+     1.99
+    ],
+    [
+     345.23,
+     3438.97,
+     1.98
+    ],
+    [
+     356.96,
+     3442.08,
+     1.99
+    ],
+    [
+     367.25,
+     3448.44,
+     1.99
+    ],
+    [
+     377.92,
+     3453.41,
+     1.98
+    ],
+    [
+     389.79,
+     3457.49,
+     1.99
+    ],
+    [
+     394.48,
+     3468.78,
+     1.99
+    ],
+    [
+     401.31,
+     3475.37,
+     1.96
+    ],
+    [
+     412.93,
+     3477.33,
+     1.96
+    ],
+    [
+     422.15,
+     3484.34,
+     1.96
+    ],
+    [
+     430.27,
+     3493.16,
+     1.94
+    ],
+    [
+     440.19,
+     3500.39,
+     1.91
+    ],
+    [
+     448.47,
+     3508.75,
+     1.88
+    ],
+    [
+     456.67,
+     3517.37,
+     1.85
+    ],
+    [
+     463.95,
+     3527.2,
+     1.83
+    ],
+    [
+     472.9,
+     3535.22,
+     1.79
+    ],
+    [
+     480.93,
+     3544.16,
+     1.77
+    ],
+    [
+     488.72,
+     3553.29,
+     1.48
+    ],
+    [
+     495.71,
+     3563.02,
+     1.4
+    ],
+    [
+     502.44,
+     3572.95,
+     1.64
+    ],
+    [
+     513.7,
+     3580.55,
+     1.65
+    ],
+    [
+     519.76,
+     3591.93,
+     1.65
+    ],
+    [
+     523.86,
+     3603.1,
+     1.63
+    ],
+    [
+     528.2,
+     3613.81,
+     1.55
+    ],
+    [
+     533.2,
+     3623.81,
+     1.55
+    ],
+    [
+     539.25,
+     3632.99,
+     1.55
+    ],
+    [
+     546.41,
+     3641.54,
+     1.55
+    ],
+    [
+     554.44,
+     3649.78,
+     1.55
+    ],
+    [
+     562.92,
+     3657.99,
+     1.55
+    ],
+    [
+     571.65,
+     3666.37,
+     1.54
+    ],
+    [
+     580.29,
+     3675.31,
+     1.53
+    ],
+    [
+     588.56,
+     3685.08,
+     1.52
+    ],
+    [
+     596,
+     3696.4,
+     1.52
+    ],
+    [
+     593.07,
+     3711.67,
+     1.51
+    ],
+    [
+     591.99,
+     3723.85,
+     1.44
+    ],
+    [
+     593.27,
+     3735.76,
+     1.39
+    ],
+    [
+     599.53,
+     3748.25,
+     1.35
+    ],
+    [
+     594,
+     3760.19,
+     1.34
+    ],
+    [
+     593.39,
+     3773.22,
+     1.25
+    ],
+    [
+     588.75,
+     3784.87,
+     1.22
+    ],
+    [
+     581.66,
+     3795.18,
+     1.18
+    ],
+    [
+     570.99,
+     3802.9,
+     1.11
+    ],
+    [
+     568.93,
+     3815.54,
+     1.04
+    ],
+    [
+     558.39,
+     3823.32,
+     1.01
+    ],
+    [
+     552.99,
+     3834,
+     0.89
+    ],
+    [
+     548.76,
+     3845.23,
+     0.82
+    ],
+    [
+     545.83,
+     3856.86,
+     0.93
+    ],
+    [
+     543.87,
+     3868.68,
+     0.93
+    ],
+    [
+     542.82,
+     3880.62,
+     0.92
+    ],
+    [
+     542.62,
+     3892.62,
+     0.92
+    ],
+    [
+     545.4,
+     3904.35,
+     0.94
+    ],
+    [
+     548.36,
+     3916.04,
+     0.98
+    ],
+    [
+     552.3,
+     3927.95,
+     1.02
+    ],
+    [
+     560.08,
+     3937.96,
+     1.15
+    ],
+    [
+     566.18,
+     3945.06,
+     1.08
+    ],
+    [
+     563.54,
+     3952.97,
+     1.08
+    ],
+    [
+     559.08,
+     3958.34,
+     1.07
+    ],
+    [
+     548.5,
+     3959.01,
+     1.04
+    ],
+    [
+     532.93,
+     3966.2,
+     1
+    ],
+    [
+     531.68,
+     3981.65,
+     0.96
+    ],
+    [
+     529.31,
+     3987.22,
+     0.96
+    ],
+    [
+     524.16,
+     3990.83,
+     0.94
+    ],
+    [
+     514.63,
+     3991.72,
+     0.97
+    ],
+    [
+     498.21,
+     3996.54,
+     0.94
+    ],
+    [
+     490,
+     4009.56,
+     0.82
+    ],
+    [
+     487.7,
+     4021.16,
+     0.8
+    ],
+    [
+     482.97,
+     4033.72,
+     0.8
+    ],
+    [
+     477.7,
+     4048.42,
+     0.88
+    ],
+    [
+     491.27,
+     4054.92,
+     0.89
+    ],
+    [
+     485.63,
+     4065.51,
+     0.89
+    ],
+    [
+     487.16,
+     4078.33,
+     0.93
+    ],
+    [
+     499.47,
+     4083.38,
+     0.97
+    ],
+    [
+     500.32,
+     4095.35,
+     1.02
+    ],
+    [
+     500.46,
+     4107.34,
+     1.04
+    ],
+    [
+     495.42,
+     4117.55,
+     1.04
+    ],
+    [
+     488.38,
+     4127.14,
+     1.03
+    ],
+    [
+     483.68,
+     4138.69,
+     1
+    ],
+    [
+     477.55,
+     4151.15,
+     0.97
+    ],
+    [
+     478.35,
+     4155.48,
+     1
+    ],
+    [
+     477.25,
+     4168.01,
+     1
+    ],
+    [
+     480.85,
+     4178.25,
+     1.31
+    ],
+    [
+     493.52,
+     4181.91,
+     1.39
+    ],
+    [
+     498.88,
+     4189.78,
+     1.41
+    ],
+    [
+     487.88,
+     4201.08,
+     1.46
+    ],
+    [
+     494.64,
+     4213.5,
+     1.56
+    ],
+    [
+     497.29,
+     4224.17,
+     1.62
+    ],
+    [
+     496.14,
+     4234.25,
+     1.71
+    ],
+    [
+     491.43,
+     4244.89,
+     1.77
+    ],
+    [
+     489.75,
+     4257.89,
+     1.87
+    ],
+    [
+     492.85,
+     4269.91,
+     1.98
+    ],
+    [
+     499.99,
+     4279.59,
+     1.98
+    ],
+    [
+     501.42,
+     4290.65,
+     2.38
+    ],
+    [
+     502.19,
+     4302.62,
+     2.44
+    ],
+    [
+     504.13,
+     4314.47,
+     2.27
+    ],
+    [
+     507.75,
+     4325.84,
+     2.41
+    ],
+    [
+     512.43,
+     4336.8,
+     2.52
+    ],
+    [
+     521.8,
+     4344.23,
+     2.71
+    ],
+    [
+     531.64,
+     4350.7,
+     2.9
+    ],
+    [
+     542.02,
+     4356.26,
+     3.11
+    ],
+    [
+     552.87,
+     4360.54,
+     3.2
+    ],
+    [
+     564.31,
+     4363.61,
+     3.2
+    ],
+    [
+     575.85,
+     4366.65,
+     3.12
+    ],
+    [
+     587.44,
+     4369.29,
+     3.33
+    ],
+    [
+     599.11,
+     4371.57,
+     3.45
+    ],
+    [
+     610.84,
+     4373.47,
+     3.51
+    ],
+    [
+     622.64,
+     4375.01,
+     3.53
+    ],
+    [
+     636.39,
+     4377.1,
+     3.54
+    ],
+    [
+     634.85,
+     4388.54,
+     3.54
+    ],
+    [
+     627.06,
+     4398.29,
+     3.54
+    ],
+    [
+     619.48,
+     4407.6,
+     3.54
+    ],
+    [
+     611.91,
+     4416.89,
+     3.54
+    ],
+    [
+     604.39,
+     4426.2,
+     3.6
+    ],
+    [
+     597.07,
+     4435.59,
+     3.58
+    ],
+    [
+     590.25,
+     4445.29,
+     3.48
+    ],
+    [
+     583.89,
+     4455.3,
+     3.61
+    ],
+    [
+     578.09,
+     4465.6,
+     3.66
+    ],
+    [
+     573.22,
+     4476.42,
+     3.7
+    ],
+    [
+     568.65,
+     4487.46,
+     3.72
+    ],
+    [
+     564.24,
+     4498.62,
+     3.58
+    ],
+    [
+     559.65,
+     4509.79,
+     4.04
+    ],
+    [
+     554.33,
+     4520.65,
+     4.31
+    ],
+    [
+     548.37,
+     4531.16,
+     4.49
+    ],
+    [
+     541.62,
+     4541.24,
+     4.53
+    ],
+    [
+     533.83,
+     4550.51,
+     4.41
+    ],
+    [
+     525.67,
+     4559.36,
+     4.22
+    ],
+    [
+     517.2,
+     4567.89,
+     4.11
+    ],
+    [
+     508.72,
+     4576.35,
+     3.82
+    ],
+    [
+     500.73,
+     4585.22,
+     4.36
+    ],
+    [
+     493.25,
+     4594.47,
+     4.68
+    ],
+    [
+     487.03,
+     4604.61,
+     4.8
+    ],
+    [
+     482.07,
+     4615.38,
+     4.77
+    ],
+    [
+     478.06,
+     4626.55,
+     4.33
+    ],
+    [
+     476.01,
+     4638.25,
+     3.62
+    ],
+    [
+     475.1,
+     4650.1,
+     4.55
+    ],
+    [
+     475.14,
+     4662,
+     5.06
+    ],
+    [
+     476.71,
+     4673.82,
+     5.11
+    ],
+    [
+     478.79,
+     4685.58,
+     4.92
+    ],
+    [
+     481.33,
+     4697.28,
+     5.68
+    ],
+    [
+     484.21,
+     4708.92,
+     6.12
+    ],
+    [
+     486.99,
+     4720.6,
+     6.37
+    ],
+    [
+     489.63,
+     4732.33,
+     6.85
+    ],
+    [
+     491.73,
+     4744.18,
+     7.06
+    ],
+    [
+     493.47,
+     4756.08,
+     7.13
+    ],
+    [
+     494.77,
+     4768.04,
+     7.28
+    ],
+    [
+     495.64,
+     4780.03,
+     7.42
+    ],
+    [
+     496.51,
+     4791.99,
+     7.67
+    ],
+    [
+     497.49,
+     4803.92,
+     7.79
+    ],
+    [
+     499.29,
+     4815.73,
+     7.81
+    ],
+    [
+     502.19,
+     4827.3,
+     7.8
+    ],
+    [
+     506.23,
+     4838.51,
+     7.95
+    ],
+    [
+     511.49,
+     4849.24,
+     8.04
+    ],
+    [
+     518.39,
+     4858.91,
+     8.1
+    ],
+    [
+     594.38,
+     4856.04,
+     8.12
+    ],
+    [
+     606.38,
+     4860.04,
+     8.13
+    ],
+    [
+     610.5,
+     4877,
+     8.13
+    ]
+   ]
+  },
+  {
+   "id": "soulrest-blackrose",
+   "from": "Soulrest",
+   "to": "Blackrose",
+   "class": "rootland track",
+   "tide_gated": false,
+   "straight_m": 1364,
+   "declared_path_m": 1841,
+   "built_path_m": 1771.6,
+   "declared_walk_min": 15.3,
+   "built_walk_min": 14.76,
+   "sinuosity_built": 1.299,
+   "routing": "detour w=1.39 + sinuosity 107 m | detour w=23.99 + sinuosity 134+73 m",
+   "max_grade": 0.12,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [],
+   "grade_class_m": {
+    "carriageway": 1772,
+    "switchback": 0,
+    "stair": 0
+   },
+   "max_cut_m": 1.27,
+   "max_fill_m": 5.31,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [
+    {
+     "from_i": 71,
+     "to_i": 74,
+     "from_m": 905,
+     "to_m": 941,
+     "length_m": 36,
+     "max_height_m": 5.3,
+     "kind": "causeway over water"
+    }
+   ],
+   "deck_span_m": 36,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.15,
+    "violations": 0,
+    "pre_join_m": 1806.7,
+    "join_delta_m": -35.2,
+    "length_correction": {
+     "corrected_m": -3.3,
+     "spans": 1,
+     "wanted_m": -3.3,
+     "leg": "soulrest-blackrose",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "soulrest",
+      "ok": true,
+      "points": 4,
+      "buildings": 15,
+      "before_m": 94.7,
+      "after_m": 95.4,
+      "delta_m": 0.7
+     },
+     {
+      "town": "blackrose",
+      "ok": true,
+      "points": 6,
+      "buildings": 22,
+      "before_m": 123.7,
+      "after_m": 160.6,
+      "delta_m": 36.9
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Salt-Egg Camp"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       87,
+       90
+      ],
+      "approach_m": 3.9,
+      "junction": [
+       1391.9,
+       4470.4
+      ],
+      "points_removed": 3,
+      "loop_m": 21.9
+     },
+     {
+      "between_i": [
+       87,
+       90
+      ],
+      "approach_m": 7.23,
+      "junction": [
+       1392.9,
+       4466.9
+      ],
+      "points_removed": 3,
+      "loop_m": 8
+     },
+     {
+      "between_i": [
+       105,
+       108
+      ],
+      "approach_m": 5.48,
+      "junction": [
+       1569.9,
+       4554.8
+      ],
+      "points_removed": 3,
+      "loop_m": 20.6
+     },
+     {
+      "between_i": [
+       105,
+       108
+      ],
+      "approach_m": 2.07,
+      "junction": [
+       1570.4,
+       4553.9
+      ],
+      "points_removed": 3,
+      "loop_m": 19
+     }
+    ],
+    "delta_m": -69.4
+   },
+   "points": [
+    [
+     610.5,
+     4877,
+     8.13
+    ],
+    [
+     621.5,
+     4865.45,
+     8.13
+    ],
+    [
+     656.5,
+     4864.45,
+     8.13
+    ],
+    [
+     687.26,
+     4832.57,
+     8.13
+    ],
+    [
+     692.16,
+     4821.65,
+     8.12
+    ],
+    [
+     697.15,
+     4810.77,
+     8.09
+    ],
+    [
+     702.59,
+     4800.1,
+     8.07
+    ],
+    [
+     709.44,
+     4790.34,
+     7.95
+    ],
+    [
+     717.36,
+     4781.43,
+     7.81
+    ],
+    [
+     727.06,
+     4774.39,
+     8.08
+    ],
+    [
+     737.67,
+     4768.91,
+     8.47
+    ],
+    [
+     748.57,
+     4763.9,
+     8.72
+    ],
+    [
+     759.48,
+     4758.95,
+     8.86
+    ],
+    [
+     769.21,
+     4751.98,
+     8.83
+    ],
+    [
+     777.25,
+     4743.37,
+     8.68
+    ],
+    [
+     783.67,
+     4733.25,
+     8.48
+    ],
+    [
+     786.87,
+     4721.75,
+     8.7
+    ],
+    [
+     789.7,
+     4710.13,
+     8.69
+    ],
+    [
+     790.69,
+     4698.21,
+     8.51
+    ],
+    [
+     791.69,
+     4686.29,
+     8.24
+    ],
+    [
+     792.42,
+     4674.35,
+     8.28
+    ],
+    [
+     793.15,
+     4662.41,
+     8.12
+    ],
+    [
+     796.02,
+     4650.83,
+     8.24
+    ],
+    [
+     799.36,
+     4639.36,
+     8.44
+    ],
+    [
+     808.46,
+     4631.55,
+     8.59
+    ],
+    [
+     818.49,
+     4626.08,
+     8.55
+    ],
+    [
+     830.46,
+     4625.43,
+     8.43
+    ],
+    [
+     842.29,
+     4625.6,
+     8.51
+    ],
+    [
+     853.37,
+     4630.16,
+     8.42
+    ],
+    [
+     864.44,
+     4634.72,
+     8.73
+    ],
+    [
+     875,
+     4640.12,
+     9.03
+    ],
+    [
+     884.1,
+     4647.9,
+     9.3
+    ],
+    [
+     893.2,
+     4655.68,
+     9.41
+    ],
+    [
+     902.29,
+     4663.46,
+     9.34
+    ],
+    [
+     909.88,
+     4672.68,
+     8.99
+    ],
+    [
+     917.27,
+     4682.08,
+     8.51
+    ],
+    [
+     924.66,
+     4691.48,
+     8.86
+    ],
+    [
+     931.97,
+     4700.96,
+     9.17
+    ],
+    [
+     939.17,
+     4710.51,
+     9.61
+    ],
+    [
+     946.37,
+     4720.06,
+     9.87
+    ],
+    [
+     954.75,
+     4728.47,
+     9.95
+    ],
+    [
+     964.07,
+     4735.99,
+     9.75
+    ],
+    [
+     974.41,
+     4740.83,
+     9.36
+    ],
+    [
+     986.38,
+     4741.4,
+     9.67
+    ],
+    [
+     996.3,
+     4735.76,
+     9.7
+    ],
+    [
+     1005.57,
+     4728.16,
+     9.52
+    ],
+    [
+     1011.18,
+     4717.58,
+     9.82
+    ],
+    [
+     1016.78,
+     4707,
+     9.9
+    ],
+    [
+     1021.33,
+     4695.93,
+     9.79
+    ],
+    [
+     1025.67,
+     4684.77,
+     9.57
+    ],
+    [
+     1030.43,
+     4673.8,
+     9.26
+    ],
+    [
+     1035.69,
+     4663.04,
+     8.83
+    ],
+    [
+     1041.49,
+     4652.63,
+     8.77
+    ],
+    [
+     1049.19,
+     4643.44,
+     8.58
+    ],
+    [
+     1057.73,
+     4635.28,
+     8.25
+    ],
+    [
+     1068.18,
+     4629.4,
+     8.37
+    ],
+    [
+     1079.64,
+     4626.51,
+     8.3
+    ],
+    [
+     1091.53,
+     4625.52,
+     8.05
+    ],
+    [
+     1103.48,
+     4626.49,
+     7.73
+    ],
+    [
+     1115.39,
+     4627.83,
+     7.43
+    ],
+    [
+     1127.33,
+     4628.64,
+     7.43
+    ],
+    [
+     1139.3,
+     4628.49,
+     7.43
+    ],
+    [
+     1151.21,
+     4627.16,
+     7.43
+    ],
+    [
+     1163.06,
+     4625.37,
+     7.43
+    ],
+    [
+     1174.56,
+     4622,
+     7.43
+    ],
+    [
+     1185.45,
+     4617.2,
+     7.43
+    ],
+    [
+     1195.59,
+     4610.86,
+     7.43
+    ],
+    [
+     1204.04,
+     4602.37,
+     8.24
+    ],
+    [
+     1214.25,
+     4596.64,
+     8.24
+    ],
+    [
+     1224.37,
+     4591.26,
+     8.23
+    ],
+    [
+     1228.02,
+     4579.83,
+     8.18
+    ],
+    [
+     1230.97,
+     4568.62,
+     8.13
+    ],
+    [
+     1232.85,
+     4556.81,
+     8.09
+    ],
+    [
+     1238.26,
+     4546.48,
+     7.98
+    ],
+    [
+     1245.54,
+     4536.98,
+     6.55
+    ],
+    [
+     1254.57,
+     4529.09,
+     5.11
+    ],
+    [
+     1264.31,
+     4522.26,
+     3.68
+    ],
+    [
+     1274.99,
+     4516.81,
+     4.04
+    ],
+    [
+     1286.69,
+     4514.3,
+     4.65
+    ],
+    [
+     1298.57,
+     4512.89,
+     5.32
+    ],
+    [
+     1310.47,
+     4512.69,
+     6.54
+    ],
+    [
+     1322.13,
+     4515.48,
+     6.54
+    ],
+    [
+     1333.03,
+     4514.36,
+     6.4
+    ],
+    [
+     1342.82,
+     4507.44,
+     6.1
+    ],
+    [
+     1352.58,
+     4500.48,
+     5.11
+    ],
+    [
+     1361.43,
+     4492.41,
+     5.03
+    ],
+    [
+     1370.29,
+     4484.34,
+     5.03
+    ],
+    [
+     1380.26,
+     4477.8,
+     4.24
+    ],
+    [
+     1392.94,
+     4466.9,
+     3.97
+    ],
+    [
+     1402.48,
+     4466,
+     3.52
+    ],
+    [
+     1414.11,
+     4467.39,
+     3.61
+    ],
+    [
+     1425.97,
+     4465.67,
+     4.33
+    ],
+    [
+     1437.6,
+     4463.37,
+     4.33
+    ],
+    [
+     1449.47,
+     4461.65,
+     4.33
+    ],
+    [
+     1459.62,
+     4464.76,
+     4.19
+    ],
+    [
+     1465.91,
+     4474.29,
+     4.09
+    ],
+    [
+     1472.6,
+     4484.7,
+     4.09
+    ],
+    [
+     1479.34,
+     4494.66,
+     4.06
+    ],
+    [
+     1489.73,
+     4500.62,
+     4.02
+    ],
+    [
+     1499.88,
+     4506.27,
+     3.9
+    ],
+    [
+     1510.28,
+     4512.27,
+     3.8
+    ],
+    [
+     1520.48,
+     4519.07,
+     3.71
+    ],
+    [
+     1529.52,
+     4526.92,
+     3.66
+    ],
+    [
+     1538.56,
+     4534.76,
+     3.61
+    ],
+    [
+     1547.8,
+     4542.3,
+     3.59
+    ],
+    [
+     1558.74,
+     4547.16,
+     3.5
+    ],
+    [
+     1570.44,
+     4553.89,
+     3.42
+    ],
+    [
+     1580.31,
+     4545.55,
+     3.32
+    ],
+    [
+     1586.66,
+     4535.62,
+     3.23
+    ],
+    [
+     1593.73,
+     4525.71,
+     3.16
+    ],
+    [
+     1600.45,
+     4515.79,
+     3.09
+    ],
+    [
+     1608.38,
+     4506.83,
+     3.04
+    ],
+    [
+     1616.51,
+     4498.03,
+     2.99
+    ],
+    [
+     1624.64,
+     4489.23,
+     2.94
+    ],
+    [
+     1631.72,
+     4479.59,
+     2.91
+    ],
+    [
+     1638.02,
+     4469.45,
+     2.88
+    ],
+    [
+     1645.14,
+     4459.74,
+     2.85
+    ],
+    [
+     1653.5,
+     4451.55,
+     2.8
+    ],
+    [
+     1663.65,
+     4444.82,
+     2.75
+    ],
+    [
+     1674.41,
+     4440.89,
+     2.72
+    ],
+    [
+     1685.25,
+     4438.38,
+     2.67
+    ],
+    [
+     1692.45,
+     4428.8,
+     2.63
+    ],
+    [
+     1700.19,
+     4419.96,
+     2.59
+    ],
+    [
+     1711.09,
+     4415.6,
+     2.57
+    ],
+    [
+     1722.79,
+     4411.95,
+     2.52
+    ],
+    [
+     1734.46,
+     4412.42,
+     2.5
+    ],
+    [
+     1746.27,
+     4414.47,
+     2.49
+    ],
+    [
+     1757.49,
+     4418.49,
+     2.23
+    ],
+    [
+     1768.44,
+     4423.32,
+     2.4
+    ],
+    [
+     1778.72,
+     4429.46,
+     2.49
+    ],
+    [
+     1788.94,
+     4435.71,
+     2.54
+    ],
+    [
+     1874.6,
+     4473.53,
+     2.57
+    ],
+    [
+     1907.6,
+     4471.53,
+     2.58
+    ],
+    [
+     1916.6,
+     4453.53,
+     2.59
+    ],
+    [
+     1911.6,
+     4448.53,
+     2.59
+    ],
+    [
+     1905.5,
+     4450,
+     2.59
+    ]
+   ]
+  },
+  {
+   "id": "blackrose-lilmoth",
+   "from": "Blackrose",
+   "to": "Lilmoth",
+   "class": "stilt causeway",
+   "tide_gated": false,
+   "straight_m": 1037,
+   "declared_path_m": 1503,
+   "built_path_m": 1480.8,
+   "declared_walk_min": 12.5,
+   "built_walk_min": 12.34,
+   "sinuosity_built": 1.428,
+   "routing": "detour w=23.99 + sinuosity 169 m | detour w=0.01 + sinuosity 121+62 m",
+   "max_grade": 0.033,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [],
+   "grade_class_m": {
+    "carriageway": 1481,
+    "switchback": 0,
+    "stair": 0
+   },
+   "max_cut_m": 1.03,
+   "max_fill_m": 14.28,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [
+    {
+     "from_i": 41,
+     "to_i": 45,
+     "from_m": 549,
+     "to_m": 597,
+     "length_m": 48,
+     "max_height_m": 3.7,
+     "kind": "causeway over water"
+    },
+    {
+     "from_i": 63,
+     "to_i": 97,
+     "from_m": 802,
+     "to_m": 1210,
+     "length_m": 408,
+     "max_height_m": 14.3,
+     "kind": "causeway over water"
+    }
+   ],
+   "deck_span_m": 456,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.12,
+    "violations": 0,
+    "pre_join_m": 1480.4,
+    "join_delta_m": 0.4,
+    "length_correction": {
+     "corrected_m": -6.3,
+     "spans": 1,
+     "wanted_m": -6.3,
+     "leg": "blackrose-lilmoth",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "blackrose",
+      "ok": true,
+      "points": 4,
+      "buildings": 22,
+      "before_m": 95.7,
+      "after_m": 102.9,
+      "delta_m": 7.2
+     },
+     {
+      "town": "lilmoth",
+      "ok": true,
+      "points": 6,
+      "buildings": 33,
+      "before_m": 121.3,
+      "after_m": 143.1,
+      "delta_m": 21.8
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Stilt-Row"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       23,
+       26
+      ],
+      "approach_m": 3.81,
+      "junction": [
+       2130.6,
+       4543.2
+      ],
+      "points_removed": 3,
+      "loop_m": 22.2
+     }
+    ],
+    "delta_m": -22.2
+   },
+   "points": [
+    [
+     1905.5,
+     4450,
+     2.59
+    ],
+    [
+     1916.5,
+     4451,
+     2.59
+    ],
+    [
+     1917.5,
+     4517,
+     2.59
+    ],
+    [
+     1937.47,
+     4533.07,
+     2.59
+    ],
+    [
+     1948.3,
+     4538.15,
+     2.59
+    ],
+    [
+     1959.19,
+     4543.08,
+     2.57
+    ],
+    [
+     1970.13,
+     4547.89,
+     2.54
+    ],
+    [
+     1980.81,
+     4553.26,
+     2.48
+    ],
+    [
+     1991.04,
+     4559.34,
+     2.38
+    ],
+    [
+     2000.2,
+     4567.01,
+     2.25
+    ],
+    [
+     2006.93,
+     4576.88,
+     2.53
+    ],
+    [
+     2013.18,
+     4587.05,
+     2.48
+    ],
+    [
+     2020.2,
+     4596.64,
+     2.5
+    ],
+    [
+     2028.59,
+     4605.03,
+     2.5
+    ],
+    [
+     2039.82,
+     4609.11,
+     2.61
+    ],
+    [
+     2051.42,
+     4609.35,
+     2.52
+    ],
+    [
+     2063.21,
+     4607.54,
+     2.52
+    ],
+    [
+     2073.93,
+     4602.58,
+     2.54
+    ],
+    [
+     2084.45,
+     4597.01,
+     2.46
+    ],
+    [
+     2094.11,
+     4590.26,
+     2.43
+    ],
+    [
+     2103.49,
+     4581.95,
+     2.42
+    ],
+    [
+     2111.48,
+     4574.09,
+     2.42
+    ],
+    [
+     2118.14,
+     4564.25,
+     2.41
+    ],
+    [
+     2124.13,
+     4554.17,
+     2.39
+    ],
+    [
+     2130.58,
+     4543.21,
+     2.39
+    ],
+    [
+     2133.11,
+     4548.51,
+     2.39
+    ],
+    [
+     2134.86,
+     4560.56,
+     2.46
+    ],
+    [
+     2140.81,
+     4570.86,
+     2.44
+    ],
+    [
+     2147.01,
+     4581.07,
+     2.43
+    ],
+    [
+     2152.29,
+     4591.75,
+     2.46
+    ],
+    [
+     2157.36,
+     4601.96,
+     2.45
+    ],
+    [
+     2162.17,
+     4612.95,
+     2.46
+    ],
+    [
+     2166.84,
+     4624.47,
+     2.46
+    ],
+    [
+     2171.8,
+     4634.93,
+     2.5
+    ],
+    [
+     2177.96,
+     4644.61,
+     2.5
+    ],
+    [
+     2189.67,
+     4647.25,
+     2.5
+    ],
+    [
+     2201.57,
+     4647.61,
+     2.5
+    ],
+    [
+     2213.25,
+     4648.54,
+     2.5
+    ],
+    [
+     2225.31,
+     4650.02,
+     2.5
+    ],
+    [
+     2236.65,
+     4653.94,
+     2.5
+    ],
+    [
+     2246.96,
+     4660.06,
+     2.5
+    ],
+    [
+     2256.17,
+     4667.66,
+     2.5
+    ],
+    [
+     2264.19,
+     4676.51,
+     2.5
+    ],
+    [
+     2270.95,
+     4686.41,
+     2.5
+    ],
+    [
+     2275.98,
+     4697.3,
+     2.5
+    ],
+    [
+     2279.61,
+     4708.71,
+     2.53
+    ],
+    [
+     2282.15,
+     4720.41,
+     2.58
+    ],
+    [
+     2283.67,
+     4732.31,
+     2.6
+    ],
+    [
+     2283.89,
+     4744.31,
+     2.6
+    ],
+    [
+     2285.55,
+     4756.15,
+     2.6
+    ],
+    [
+     2288.47,
+     4767.45,
+     2.6
+    ],
+    [
+     2292.91,
+     4778.53,
+     2.69
+    ],
+    [
+     2289.8,
+     4789.06,
+     2.92
+    ],
+    [
+     2284.42,
+     4799.6,
+     3.06
+    ],
+    [
+     2280.1,
+     4810.6,
+     3.11
+    ],
+    [
+     2277.13,
+     4822.1,
+     3.14
+    ],
+    [
+     2278.84,
+     4826.33,
+     3.15
+    ],
+    [
+     2287.74,
+     4818.47,
+     3.14
+    ],
+    [
+     2294.91,
+     4809.08,
+     3.11
+    ],
+    [
+     2301.18,
+     4799.08,
+     2.99
+    ],
+    [
+     2306.48,
+     4788.5,
+     2.81
+    ],
+    [
+     2316.34,
+     4782.64,
+     2.6
+    ],
+    [
+     2326.11,
+     4776.91,
+     2.59
+    ],
+    [
+     2335.36,
+     4769.26,
+     2.56
+    ],
+    [
+     2345.15,
+     4762.33,
+     2.48
+    ],
+    [
+     2355.37,
+     4756.08,
+     2.34
+    ],
+    [
+     2366.04,
+     4750.6,
+     2.29
+    ],
+    [
+     2377.35,
+     4746.59,
+     2.2
+    ],
+    [
+     2388.91,
+     4743.44,
+     1.87
+    ],
+    [
+     2400.67,
+     4741.08,
+     1.91
+    ],
+    [
+     2412.58,
+     4739.62,
+     1.93
+    ],
+    [
+     2424.54,
+     4738.71,
+     1.94
+    ],
+    [
+     2436.52,
+     4738.11,
+     1.94
+    ],
+    [
+     2448.52,
+     4737.8,
+     1.95
+    ],
+    [
+     2460.52,
+     4737.65,
+     1.95
+    ],
+    [
+     2472.52,
+     4737.56,
+     1.95
+    ],
+    [
+     2484.52,
+     4737.52,
+     1.94
+    ],
+    [
+     2496.52,
+     4737.51,
+     2.07
+    ],
+    [
+     2508.52,
+     4737.52,
+     2.14
+    ],
+    [
+     2520.52,
+     4737.54,
+     2.18
+    ],
+    [
+     2532.52,
+     4737.6,
+     2.2
+    ],
+    [
+     2544.51,
+     4737.71,
+     2.2
+    ],
+    [
+     2556.51,
+     4737.92,
+     2.2
+    ],
+    [
+     2568.5,
+     4738.38,
+     2.2
+    ],
+    [
+     2580.48,
+     4739.1,
+     2.2
+    ],
+    [
+     2592.43,
+     4740.2,
+     2.2
+    ],
+    [
+     2604.26,
+     4742.19,
+     2.2
+    ],
+    [
+     2615.91,
+     4744.96,
+     2.17
+    ],
+    [
+     2627.32,
+     4748.64,
+     2.13
+    ],
+    [
+     2638.15,
+     4753.8,
+     2.07
+    ],
+    [
+     2648.15,
+     4760.38,
+     1.98
+    ],
+    [
+     2657.3,
+     4768.08,
+     1.86
+    ],
+    [
+     2665.51,
+     4776.8,
+     1.66
+    ],
+    [
+     2672.48,
+     4786.57,
+     1.62
+    ],
+    [
+     2678.42,
+     4796.98,
+     1.22
+    ],
+    [
+     2683.68,
+     4807.76,
+     1.45
+    ],
+    [
+     2688.38,
+     4818.8,
+     1.67
+    ],
+    [
+     2692.51,
+     4830.06,
+     1.91
+    ],
+    [
+     2701.94,
+     4835.42,
+     1.96
+    ],
+    [
+     2713.59,
+     4838.3,
+     2.03
+    ],
+    [
+     2723.89,
+     4844.36,
+     2.11
+    ],
+    [
+     2734.54,
+     4849.79,
+     2.11
+    ],
+    [
+     2742.92,
+     4857.4,
+     2.3
+    ],
+    [
+     2747.97,
+     4868.22,
+     2.3
+    ],
+    [
+     2751.48,
+     4879.38,
+     2.35
+    ],
+    [
+     2751.73,
+     4891.28,
+     2.52
+    ],
+    [
+     2750.67,
+     4903,
+     2.61
+    ],
+    [
+     2747.4,
+     4914.41,
+     2.66
+    ],
+    [
+     2742.93,
+     4925.35,
+     2.67
+    ],
+    [
+     2730.83,
+     5014.2,
+     2.68
+    ],
+    [
+     2733.83,
+     5027.2,
+     2.68
+    ],
+    [
+     2749.83,
+     5036.2,
+     2.68
+    ],
+    [
+     2764.83,
+     5032.2,
+     2.68
+    ],
+    [
+     2766.5,
+     5027.5,
+     2.68
+    ]
+   ]
+  },
+  {
+   "id": "archon-thorn",
+   "from": "Archon",
+   "to": "Thorn",
+   "class": "Clay Moor track",
+   "tide_gated": false,
+   "straight_m": 2965,
+   "declared_path_m": 4299,
+   "built_path_m": 4244.2,
+   "declared_walk_min": 35.8,
+   "built_walk_min": 35.37,
+   "sinuosity_built": 1.432,
+   "routing": "detour w=23.99 + sinuosity 14 m | detour w=1.68 + sinuosity 80+26+56 m | detour w=23.99 + sinuosity 179 m",
+   "max_grade": 0.45,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [
+    {
+     "i": 279,
+     "from_m": 3426,
+     "to_m": 3438,
+     "grade": 0.126,
+     "deg": 7.2,
+     "natural_grade": 0.041,
+     "class": "switchback"
+    },
+    {
+     "i": 280,
+     "from_m": 3438,
+     "to_m": 3450,
+     "grade": 0.263,
+     "deg": 14.7,
+     "natural_grade": 0.263,
+     "class": "stair"
+    },
+    {
+     "i": 281,
+     "from_m": 3450,
+     "to_m": 3459,
+     "grade": 0.449,
+     "deg": 24.2,
+     "natural_grade": 0.449,
+     "class": "stair"
+    },
+    {
+     "i": 282,
+     "from_m": 3459,
+     "to_m": 3471,
+     "grade": 0.142,
+     "deg": 8.1,
+     "natural_grade": 0.142,
+     "class": "switchback"
+    },
+    {
+     "i": 284,
+     "from_m": 3481,
+     "to_m": 3494,
+     "grade": 0.323,
+     "deg": 17.9,
+     "natural_grade": 0.323,
+     "class": "stair"
+    },
+    {
+     "i": 285,
+     "from_m": 3494,
+     "to_m": 3506,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.523,
+     "class": "stair"
+    },
+    {
+     "i": 286,
+     "from_m": 3506,
+     "to_m": 3518,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.512,
+     "class": "stair"
+    },
+    {
+     "i": 287,
+     "from_m": 3518,
+     "to_m": 3530,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.378,
+     "class": "stair"
+    },
+    {
+     "i": 288,
+     "from_m": 3530,
+     "to_m": 3542,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.625,
+     "class": "stair"
+    },
+    {
+     "i": 289,
+     "from_m": 3542,
+     "to_m": 3553,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.601,
+     "class": "stair"
+    },
+    {
+     "i": 290,
+     "from_m": 3553,
+     "to_m": 3565,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.285,
+     "class": "stair"
+    },
+    {
+     "i": 291,
+     "from_m": 3565,
+     "to_m": 3577,
+     "grade": 0.209,
+     "deg": 11.8,
+     "natural_grade": 0.108,
+     "class": "switchback"
+    },
+    {
+     "i": 295,
+     "from_m": 3612,
+     "to_m": 3623,
+     "grade": 0.157,
+     "deg": 8.9,
+     "natural_grade": 0.113,
+     "class": "switchback"
+    },
+    {
+     "i": 296,
+     "from_m": 3623,
+     "to_m": 3634,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.111,
+     "class": "stair"
+    },
+    {
+     "i": 297,
+     "from_m": 3634,
+     "to_m": 3646,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.682,
+     "class": "stair"
+    },
+    {
+     "i": 298,
+     "from_m": 3646,
+     "to_m": 3658,
+     "grade": 0.45,
+     "deg": 24.2,
+     "natural_grade": 0.734,
+     "class": "stair"
+    },
+    {
+     "i": 299,
+     "from_m": 3658,
+     "to_m": 3670,
+     "grade": 0.244,
+     "deg": 13.7,
+     "natural_grade": 0.244,
+     "class": "stair"
+    },
+    {
+     "i": 300,
+     "from_m": 3670,
+     "to_m": 3682,
+     "grade": 0.41,
+     "deg": 22.3,
+     "natural_grade": 0.41,
+     "class": "stair"
+    },
+    {
+     "i": 301,
+     "from_m": 3682,
+     "to_m": 3693,
+     "grade": 0.432,
+     "deg": 23.4,
+     "natural_grade": 0.432,
+     "class": "stair"
+    },
+    {
+     "i": 302,
+     "from_m": 3693,
+     "to_m": 3705,
+     "grade": 0.421,
+     "deg": 22.8,
+     "natural_grade": 0.421,
+     "class": "stair"
+    },
+    {
+     "i": 303,
+     "from_m": 3705,
+     "to_m": 3717,
+     "grade": 0.333,
+     "deg": 18.4,
+     "natural_grade": 0.333,
+     "class": "stair"
+    },
+    {
+     "i": 304,
+     "from_m": 3717,
+     "to_m": 3729,
+     "grade": 0.156,
+     "deg": 8.8,
+     "natural_grade": 0.156,
+     "class": "switchback"
+    },
+    {
+     "i": 305,
+     "from_m": 3729,
+     "to_m": 3741,
+     "grade": 0.155,
+     "deg": 8.8,
+     "natural_grade": 0.131,
+     "class": "switchback"
+    }
+   ],
+   "grade_class_m": {
+    "carriageway": 3974,
+    "switchback": 70,
+    "stair": 200
+   },
+   "max_cut_m": 3,
+   "max_fill_m": 9.62,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [
+    {
+     "from_i": 284,
+     "to_i": 289,
+     "from_m": 3494,
+     "to_m": 3553,
+     "length_m": 60,
+     "max_height_m": 8.2,
+     "kind": "viaduct"
+    },
+    {
+     "from_i": 296,
+     "to_i": 298,
+     "from_m": 3634,
+     "to_m": 3658,
+     "length_m": 24,
+     "max_height_m": 9.6,
+     "kind": "viaduct"
+    }
+   ],
+   "deck_span_m": 84,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.33,
+    "violations": 0,
+    "pre_join_m": 4220.7,
+    "join_delta_m": 23.5,
+    "length_correction": {
+     "corrected_m": 70.7,
+     "spans": 1,
+     "wanted_m": 70.7,
+     "leg": "archon-thorn",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "archon",
+      "ok": true,
+      "points": 2,
+      "buildings": 22,
+      "before_m": 96,
+      "after_m": 95.8,
+      "delta_m": -0.2
+     },
+     {
+      "town": "thorn",
+      "ok": true,
+      "points": 5,
+      "buildings": 15,
+      "before_m": 122.5,
+      "after_m": 130.3,
+      "delta_m": 7.8
+     }
+    ],
+    "road_anchor": [
+     {
+      "settlement": "Thorn",
+      "x": 3817.08,
+      "z": 849.44,
+      "moved_m": 10,
+      "town": "thorn"
+     }
+    ]
+   },
+   "waypoints": [
+    "Clayfast",
+    "The Red Wells"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [
+     {
+      "between_i": [
+       179,
+       182
+      ],
+      "approach_m": 0.01,
+      "junction": [
+       4175.7,
+       2268
+      ],
+      "points_removed": 3,
+      "loop_m": 12.3
+     },
+     {
+      "between_i": [
+       183,
+       186
+      ],
+      "approach_m": 6.34,
+      "junction": [
+       4226.4,
+       2248.2
+      ],
+      "points_removed": 3,
+      "loop_m": 23.6
+     },
+     {
+      "between_i": [
+       205,
+       208
+      ],
+      "approach_m": 4.66,
+      "junction": [
+       4129,
+       2046.8
+      ],
+      "points_removed": 3,
+      "loop_m": 18.8
+     }
+    ],
+    "delta_m": -54.8
+   },
+   "points": [
+    [
+     3785,
+     3823.5,
+     3.42
+    ],
+    [
+     3861.63,
+     3765.98,
+     3.42
+    ],
+    [
+     3870.43,
+     3757.8,
+     3.84
+    ],
+    [
+     3879,
+     3749.39,
+     3.95
+    ],
+    [
+     3887.36,
+     3740.78,
+     3.98
+    ],
+    [
+     3895.53,
+     3731.98,
+     3.98
+    ],
+    [
+     3903.27,
+     3722.77,
+     3.97
+    ],
+    [
+     3909.43,
+     3712.52,
+     3.96
+    ],
+    [
+     3914.98,
+     3701.89,
+     3.96
+    ],
+    [
+     3922.04,
+     3692.19,
+     3.94
+    ],
+    [
+     3927.09,
+     3681.37,
+     3.91
+    ],
+    [
+     3930.96,
+     3670.05,
+     3.89
+    ],
+    [
+     3932.93,
+     3658.2,
+     3.89
+    ],
+    [
+     3935.47,
+     3646.47,
+     3.89
+    ],
+    [
+     3937.91,
+     3634.72,
+     3.89
+    ],
+    [
+     3940.3,
+     3622.96,
+     3.91
+    ],
+    [
+     3943.19,
+     3611.33,
+     3.93
+    ],
+    [
+     3946.79,
+     3599.92,
+     3.94
+    ],
+    [
+     3950.84,
+     3588.63,
+     3.94
+    ],
+    [
+     3955.83,
+     3577.72,
+     3.95
+    ],
+    [
+     3960.61,
+     3566.72,
+     3.95
+    ],
+    [
+     3966.02,
+     3556.03,
+     3.95
+    ],
+    [
+     3972.03,
+     3545.64,
+     3.96
+    ],
+    [
+     3978.03,
+     3535.25,
+     4.01
+    ],
+    [
+     3983.82,
+     3524.74,
+     4.04
+    ],
+    [
+     3989.55,
+     3514.2,
+     4.09
+    ],
+    [
+     3994.67,
+     3503.34,
+     4.14
+    ],
+    [
+     4000.52,
+     3492.86,
+     4.23
+    ],
+    [
+     4005.09,
+     3481.78,
+     4.35
+    ],
+    [
+     4009.92,
+     3470.8,
+     4.47
+    ],
+    [
+     4013.97,
+     3459.5,
+     4.56
+    ],
+    [
+     4018.59,
+     3448.39,
+     4.69
+    ],
+    [
+     4024.26,
+     3437.79,
+     4.85
+    ],
+    [
+     4031.19,
+     3427.94,
+     5.01
+    ],
+    [
+     4037.96,
+     3418.04,
+     5.19
+    ],
+    [
+     4045.17,
+     3408.45,
+     5.39
+    ],
+    [
+     4052.52,
+     3398.97,
+     5.6
+    ],
+    [
+     4058.69,
+     3388.6,
+     5.82
+    ],
+    [
+     4066.06,
+     3379.1,
+     6.05
+    ],
+    [
+     4073.49,
+     3369.69,
+     6.14
+    ],
+    [
+     4080.68,
+     3360.13,
+     6.14
+    ],
+    [
+     4087.42,
+     3350.26,
+     6.3
+    ],
+    [
+     4093.77,
+     3340.15,
+     6.51
+    ],
+    [
+     4099.69,
+     3329.8,
+     6.73
+    ],
+    [
+     4105.99,
+     3319.56,
+     6.94
+    ],
+    [
+     4112.1,
+     3309.32,
+     7.14
+    ],
+    [
+     4119.8,
+     3300.64,
+     7.31
+    ],
+    [
+     4119.71,
+     3288.52,
+     7.46
+    ],
+    [
+     4123.29,
+     3276.96,
+     7.59
+    ],
+    [
+     4127.48,
+     3265.84,
+     7.71
+    ],
+    [
+     4133.44,
+     3255.43,
+     7.74
+    ],
+    [
+     4126.82,
+     3245.29,
+     7.78
+    ],
+    [
+     4123.6,
+     3233.83,
+     7.84
+    ],
+    [
+     4127.01,
+     3221.94,
+     7.88
+    ],
+    [
+     4125.29,
+     3210.1,
+     8.45
+    ],
+    [
+     4124.71,
+     3198.19,
+     8.45
+    ],
+    [
+     4120.54,
+     3186.8,
+     8.45
+    ],
+    [
+     4118.98,
+     3174.59,
+     8.54
+    ],
+    [
+     4123.06,
+     3163.23,
+     8.58
+    ],
+    [
+     4125.29,
+     3152.18,
+     8.58
+    ],
+    [
+     4118.44,
+     3142.33,
+     8.58
+    ],
+    [
+     4114.9,
+     3131.17,
+     8.09
+    ],
+    [
+     4115.48,
+     3119,
+     8.21
+    ],
+    [
+     4117.44,
+     3107.01,
+     8.71
+    ],
+    [
+     4121.22,
+     3095.49,
+     8.74
+    ],
+    [
+     4126.08,
+     3084.44,
+     8.81
+    ],
+    [
+     4131.83,
+     3073.83,
+     8.86
+    ],
+    [
+     4138.21,
+     3063.63,
+     8.98
+    ],
+    [
+     4144.55,
+     3053.49,
+     9.18
+    ],
+    [
+     4150.92,
+     3043.37,
+     9.28
+    ],
+    [
+     4154.91,
+     3032.16,
+     9.39
+    ],
+    [
+     4154.16,
+     3020.18,
+     9.48
+    ],
+    [
+     4158.07,
+     3009.31,
+     9.48
+    ],
+    [
+     4162.56,
+     2999.1,
+     9.75
+    ],
+    [
+     4161.03,
+     2987.58,
+     9.7
+    ],
+    [
+     4156.45,
+     2976.76,
+     9.7
+    ],
+    [
+     4150.02,
+     2966.94,
+     9.66
+    ],
+    [
+     4142.13,
+     2958.16,
+     9.64
+    ],
+    [
+     4133.09,
+     2951.06,
+     9.49
+    ],
+    [
+     4121.87,
+     2947.35,
+     9.4
+    ],
+    [
+     4115.97,
+     2937.92,
+     9.26
+    ],
+    [
+     4109.36,
+     2928.29,
+     9.28
+    ],
+    [
+     4101.65,
+     2919.24,
+     9.09
+    ],
+    [
+     4093.95,
+     2910.62,
+     9.04
+    ],
+    [
+     4084.04,
+     2904.18,
+     8.89
+    ],
+    [
+     4078.54,
+     2894.53,
+     8.84
+    ],
+    [
+     4072.23,
+     2885.23,
+     8.84
+    ],
+    [
+     4063.11,
+     2878.26,
+     8.77
+    ],
+    [
+     4053.44,
+     2871.22,
+     8.68
+    ],
+    [
+     4041.64,
+     2868.71,
+     8.76
+    ],
+    [
+     4030.27,
+     2865.38,
+     8.61
+    ],
+    [
+     4018.67,
+     2862.72,
+     8.29
+    ],
+    [
+     4006.92,
+     2860.38,
+     7.87
+    ],
+    [
+     3995.15,
+     2857.9,
+     7.87
+    ],
+    [
+     3984.05,
+     2852.62,
+     7.69
+    ],
+    [
+     3971.66,
+     2853.04,
+     7.55
+    ],
+    [
+     3960.63,
+     2847.38,
+     7.34
+    ],
+    [
+     3948.17,
+     2847.88,
+     7.28
+    ],
+    [
+     3936.43,
+     2845.25,
+     7.04
+    ],
+    [
+     3924.68,
+     2842.44,
+     6.88
+    ],
+    [
+     3912.98,
+     2839.33,
+     6.57
+    ],
+    [
+     3901.31,
+     2835.85,
+     6.71
+    ],
+    [
+     3889.79,
+     2831.73,
+     6.6
+    ],
+    [
+     3878.55,
+     2827,
+     6.6
+    ],
+    [
+     3867.51,
+     2821.99,
+     6.6
+    ],
+    [
+     3856.68,
+     2816.79,
+     6.6
+    ],
+    [
+     3845.92,
+     2811.82,
+     6.6
+    ],
+    [
+     3835.06,
+     2807.36,
+     6.71
+    ],
+    [
+     3824.1,
+     2803.48,
+     6.65
+    ],
+    [
+     3812.99,
+     2800.44,
+     6.3
+    ],
+    [
+     3801.61,
+     2798.38,
+     6.51
+    ],
+    [
+     3790.03,
+     2796.88,
+     6.54
+    ],
+    [
+     3778.39,
+     2795.91,
+     6.5
+    ],
+    [
+     3766.63,
+     2795.48,
+     6.5
+    ],
+    [
+     3754.76,
+     2795.3,
+     6.26
+    ],
+    [
+     3742.84,
+     2795.27,
+     6.26
+    ],
+    [
+     3730.88,
+     2795.34,
+     6.26
+    ],
+    [
+     3711.77,
+     2790.84,
+     6.26
+    ],
+    [
+     3727.86,
+     2777.18,
+     6.26
+    ],
+    [
+     3739.09,
+     2774.07,
+     6.26
+    ],
+    [
+     3749.9,
+     2770.5,
+     6.64
+    ],
+    [
+     3760.17,
+     2766,
+     6.78
+    ],
+    [
+     3770.07,
+     2760.54,
+     6.94
+    ],
+    [
+     3779.7,
+     2754.42,
+     7.09
+    ],
+    [
+     3788.9,
+     2747.69,
+     7.26
+    ],
+    [
+     3797.78,
+     2740.26,
+     7.36
+    ],
+    [
+     3806.57,
+     2732.49,
+     7.96
+    ],
+    [
+     3815.12,
+     2724.49,
+     8.51
+    ],
+    [
+     3823.45,
+     2716.18,
+     8.81
+    ],
+    [
+     3831.71,
+     2707.7,
+     8.85
+    ],
+    [
+     3839.8,
+     2699.1,
+     8.7
+    ],
+    [
+     3847.73,
+     2690.29,
+     9.14
+    ],
+    [
+     3855.66,
+     2681.38,
+     9.4
+    ],
+    [
+     3863.58,
+     2672.38,
+     9.25
+    ],
+    [
+     3871.58,
+     2663.37,
+     8.77
+    ],
+    [
+     3879.69,
+     2654.43,
+     9.78
+    ],
+    [
+     3887.89,
+     2645.57,
+     10.47
+    ],
+    [
+     3896.14,
+     2636.81,
+     10.74
+    ],
+    [
+     3904.09,
+     2628.43,
+     10.74
+    ],
+    [
+     3910.92,
+     2619.5,
+     11.09
+    ],
+    [
+     3918.24,
+     2608.84,
+     11.15
+    ],
+    [
+     3928.12,
+     2600.88,
+     10.99
+    ],
+    [
+     3935.83,
+     2592.88,
+     10.86
+    ],
+    [
+     3943.25,
+     2583.9,
+     10.71
+    ],
+    [
+     3950.72,
+     2574.57,
+     10.73
+    ],
+    [
+     3958.27,
+     2565.21,
+     11.11
+    ],
+    [
+     3965.92,
+     2555.84,
+     11.1
+    ],
+    [
+     3973.83,
+     2546.63,
+     11.8
+    ],
+    [
+     3981.94,
+     2537.63,
+     12.3
+    ],
+    [
+     3990.19,
+     2528.77,
+     12.63
+    ],
+    [
+     3998.61,
+     2520.15,
+     13.16
+    ],
+    [
+     4006.95,
+     2511.55,
+     13.22
+    ],
+    [
+     4015.17,
+     2502.95,
+     12.85
+    ],
+    [
+     4022.99,
+     2494.03,
+     12.3
+    ],
+    [
+     4030.52,
+     2484.78,
+     12.24
+    ],
+    [
+     4037.86,
+     2475.79,
+     12.44
+    ],
+    [
+     4041.68,
+     2466.46,
+     12.7
+    ],
+    [
+     4041.8,
+     2467.02,
+     12.74
+    ],
+    [
+     4037.38,
+     2459.06,
+     12.65
+    ],
+    [
+     4044.56,
+     2448.86,
+     12.67
+    ],
+    [
+     4050.78,
+     2438.62,
+     12.8
+    ],
+    [
+     4059.31,
+     2437.05,
+     12.87
+    ],
+    [
+     4063.09,
+     2427.43,
+     13
+    ],
+    [
+     4064.49,
+     2415.61,
+     13.09
+    ],
+    [
+     4066.83,
+     2404.15,
+     13.09
+    ],
+    [
+     4072.45,
+     2394.56,
+     13.43
+    ],
+    [
+     4077.12,
+     2383.51,
+     13.38
+    ],
+    [
+     4088.7,
+     2378.12,
+     13.42
+    ],
+    [
+     4097.4,
+     2369.31,
+     13.48
+    ],
+    [
+     4104.83,
+     2359.81,
+     13.51
+    ],
+    [
+     4112.77,
+     2351.28,
+     13.61
+    ],
+    [
+     4120.97,
+     2343.23,
+     13.59
+    ],
+    [
+     4130.28,
+     2336.25,
+     13.78
+    ],
+    [
+     4140.49,
+     2328.15,
+     13.8
+    ],
+    [
+     4147.36,
+     2318.3,
+     13.68
+    ],
+    [
+     4153.27,
+     2311.09,
+     13.68
+    ],
+    [
+     4161.48,
+     2301.75,
+     13.65
+    ],
+    [
+     4176.36,
+     2303.19,
+     13.69
+    ],
+    [
+     4171.77,
+     2290.46,
+     13.81
+    ],
+    [
+     4177.42,
+     2276.81,
+     13.83
+    ],
+    [
+     4175.7,
+     2267.96,
+     13.87
+    ],
+    [
+     4187.73,
+     2267.23,
+     13.84
+    ],
+    [
+     4199.68,
+     2269.28,
+     13.83
+    ],
+    [
+     4213.8,
+     2269.77,
+     13.74
+    ],
+    [
+     4220.12,
+     2258.99,
+     13.77
+    ],
+    [
+     4226.45,
+     2248.22,
+     13.76
+    ],
+    [
+     4226.91,
+     2244.55,
+     13.88
+    ],
+    [
+     4239.26,
+     2226.13,
+     13.96
+    ],
+    [
+     4229.09,
+     2213.46,
+     14.1
+    ],
+    [
+     4215.52,
+     2208.03,
+     14.21
+    ],
+    [
+     4213.51,
+     2196.2,
+     14.24
+    ],
+    [
+     4224.95,
+     2185.52,
+     14.32
+    ],
+    [
+     4228.12,
+     2177.14,
+     14.51
+    ],
+    [
+     4227.51,
+     2160.68,
+     14.57
+    ],
+    [
+     4224.58,
+     2144.82,
+     15.18
+    ],
+    [
+     4218.66,
+     2134.61,
+     15.51
+    ],
+    [
+     4213.07,
+     2124.97,
+     15.58
+    ],
+    [
+     4208.46,
+     2114.01,
+     15.58
+    ],
+    [
+     4200.93,
+     2101.1,
+     15.94
+    ],
+    [
+     4189.31,
+     2091.49,
+     16.23
+    ],
+    [
+     4178.43,
+     2084.52,
+     16.33
+    ],
+    [
+     4167.49,
+     2078.17,
+     16.96
+    ],
+    [
+     4156.46,
+     2072.7,
+     17.27
+    ],
+    [
+     4146.11,
+     2067.42,
+     17.55
+    ],
+    [
+     4134.47,
+     2065.94,
+     17.69
+    ],
+    [
+     4132.31,
+     2058.69,
+     17.72
+    ],
+    [
+     4128.98,
+     2046.77,
+     18.38
+    ],
+    [
+     4130.75,
+     2033.28,
+     18.72
+    ],
+    [
+     4134.07,
+     2021.75,
+     19.18
+    ],
+    [
+     4130.59,
+     2006.89,
+     19.59
+    ],
+    [
+     4121.4,
+     1999.6,
+     19.94
+    ],
+    [
+     4116.13,
+     1985.64,
+     20.43
+    ],
+    [
+     4108.01,
+     1981.48,
+     20.5
+    ],
+    [
+     4107.75,
+     1977.37,
+     20.88
+    ],
+    [
+     4101.9,
+     1965.35,
+     21.01
+    ],
+    [
+     4095.85,
+     1954.11,
+     21.01
+    ],
+    [
+     4087.96,
+     1944.33,
+     21.25
+    ],
+    [
+     4079.78,
+     1935.16,
+     21.19
+    ],
+    [
+     4071.24,
+     1926.34,
+     21
+    ],
+    [
+     4062.34,
+     1918,
+     22
+    ],
+    [
+     4053.4,
+     1909.88,
+     22.69
+    ],
+    [
+     4044.41,
+     1901.88,
+     22.96
+    ],
+    [
+     4035.49,
+     1893.92,
+     22.96
+    ],
+    [
+     4026.73,
+     1885.81,
+     24.25
+    ],
+    [
+     4018.18,
+     1877.58,
+     25.31
+    ],
+    [
+     4010.11,
+     1868.91,
+     26.14
+    ],
+    [
+     4002.39,
+     1859.87,
+     26.73
+    ],
+    [
+     3994.99,
+     1850.54,
+     26.94
+    ],
+    [
+     3988.02,
+     1840.86,
+     26.9
+    ],
+    [
+     3981.19,
+     1831.01,
+     26.94
+    ],
+    [
+     3974.4,
+     1821.11,
+     26.86
+    ],
+    [
+     3967.56,
+     1811.22,
+     27.95
+    ],
+    [
+     3960.51,
+     1801.49,
+     28.76
+    ],
+    [
+     3953.27,
+     1791.9,
+     29.26
+    ],
+    [
+     3945.81,
+     1782.5,
+     29.48
+    ],
+    [
+     3938.01,
+     1773.41,
+     29.57
+    ],
+    [
+     3929.64,
+     1764.89,
+     29.6
+    ],
+    [
+     3920.37,
+     1757.48,
+     29.61
+    ],
+    [
+     3909.64,
+     1750.6,
+     29.62
+    ],
+    [
+     3915.83,
+     1741.17,
+     29.62
+    ],
+    [
+     3924.12,
+     1732.39,
+     29.62
+    ],
+    [
+     3932.14,
+     1723.54,
+     29.62
+    ],
+    [
+     3939.77,
+     1714.39,
+     29.64
+    ],
+    [
+     3947.04,
+     1704.97,
+     29.66
+    ],
+    [
+     3953.78,
+     1695.23,
+     29.63
+    ],
+    [
+     3959.79,
+     1685.15,
+     29.89
+    ],
+    [
+     3964.38,
+     1674.45,
+     30.47
+    ],
+    [
+     3967.42,
+     1663.3,
+     30.61
+    ],
+    [
+     3968.73,
+     1651.9,
+     30.44
+    ],
+    [
+     3968.22,
+     1640.49,
+     30.4
+    ],
+    [
+     3965.75,
+     1629.39,
+     30.23
+    ],
+    [
+     3960.77,
+     1619.13,
+     30.41
+    ],
+    [
+     3954.38,
+     1609.52,
+     30.94
+    ],
+    [
+     3946.98,
+     1600.52,
+     31.4
+    ],
+    [
+     3938.56,
+     1592.23,
+     31.63
+    ],
+    [
+     3929.99,
+     1583.84,
+     31.64
+    ],
+    [
+     3921.31,
+     1575.36,
+     31.57
+    ],
+    [
+     3913.33,
+     1566.19,
+     31.43
+    ],
+    [
+     3905.52,
+     1556.71,
+     31.07
+    ],
+    [
+     3899.14,
+     1546.23,
+     30.55
+    ],
+    [
+     3893.2,
+     1535.45,
+     30.22
+    ],
+    [
+     3888.92,
+     1523.92,
+     29.68
+    ],
+    [
+     3885.59,
+     1512.04,
+     29.62
+    ],
+    [
+     3883.91,
+     1499.84,
+     29.39
+    ],
+    [
+     3883.85,
+     1487.36,
+     30.27
+    ],
+    [
+     3886.07,
+     1475.22,
+     30.77
+    ],
+    [
+     3890.29,
+     1463.19,
+     30.74
+    ],
+    [
+     3898.48,
+     1453.55,
+     30.35
+    ],
+    [
+     3907.97,
+     1445.6,
+     30.69
+    ],
+    [
+     3918.97,
+     1439.94,
+     30.73
+    ],
+    [
+     3929.99,
+     1434.95,
+     30.61
+    ],
+    [
+     3941.1,
+     1430.4,
+     31
+    ],
+    [
+     3951.96,
+     1425.56,
+     31.22
+    ],
+    [
+     3962.6,
+     1420.13,
+     31.32
+    ],
+    [
+     3973.2,
+     1414.72,
+     31.09
+    ],
+    [
+     3983.23,
+     1408.44,
+     30.73
+    ],
+    [
+     3993.06,
+     1401.64,
+     31.12
+    ],
+    [
+     4002.87,
+     1394.84,
+     30.95
+    ],
+    [
+     4012.21,
+     1387.49,
+     30
+    ],
+    [
+     4021.2,
+     1379.62,
+     28.48
+    ],
+    [
+     4030.1,
+     1371.83,
+     25.37
+    ],
+    [
+     4035.88,
+     1364.26,
+     21.09
+    ],
+    [
+     4031.04,
+     1353.5,
+     19.42
+    ],
+    [
+     4035.22,
+     1344.09,
+     18.38
+    ],
+    [
+     4046.4,
+     1338.65,
+     14.36
+    ],
+    [
+     4055.85,
+     1331.14,
+     8.93
+    ],
+    [
+     4066.69,
+     1325.82,
+     3.5
+    ],
+    [
+     4076.83,
+     1319.41,
+     -1.9
+    ],
+    [
+     4086.24,
+     1312.13,
+     -7.25
+    ],
+    [
+     4093.99,
+     1303.43,
+     -12.49
+    ],
+    [
+     4101.16,
+     1293.89,
+     -17.86
+    ],
+    [
+     4107.94,
+     1284.1,
+     -20.35
+    ],
+    [
+     4113.67,
+     1273.68,
+     -20.64
+    ],
+    [
+     4118.09,
+     1262.87,
+     -20.96
+    ],
+    [
+     4119.25,
+     1251.87,
+     -20.52
+    ],
+    [
+     4111.86,
+     1244.04,
+     -18.82
+    ],
+    [
+     4100.78,
+     1240.53,
+     -13.59
+    ],
+    [
+     4088.92,
+     1239.76,
+     -8.24
+    ],
+    [
+     4077,
+     1238.1,
+     -2.83
+    ],
+    [
+     4065.02,
+     1237.33,
+     0.1
+    ],
+    [
+     4055.39,
+     1230.89,
+     4.85
+    ],
+    [
+     4045.29,
+     1225.09,
+     9.87
+    ],
+    [
+     4034.15,
+     1220.83,
+     14.9
+    ],
+    [
+     4022.92,
+     1216.53,
+     18.9
+    ],
+    [
+     4011.92,
+     1211.67,
+     20.77
+    ],
+    [
+     4001.03,
+     1206.62,
+     22.63
+    ],
+    [
+     3990.13,
+     1201.57,
+     23.58
+    ],
+    [
+     3979.39,
+     1196.16,
+     23.87
+    ],
+    [
+     3968.76,
+     1190.58,
+     24.46
+    ],
+    [
+     3958.13,
+     1184.99,
+     24.67
+    ],
+    [
+     3947.62,
+     1179.16,
+     24.4
+    ],
+    [
+     3937.23,
+     1173.15,
+     23.86
+    ],
+    [
+     3926.83,
+     1167.13,
+     23.17
+    ],
+    [
+     3916.58,
+     1160.87,
+     22.27
+    ],
+    [
+     3906.39,
+     1154.51,
+     21.23
+    ],
+    [
+     3896.26,
+     1148.06,
+     20.44
+    ],
+    [
+     3886.26,
+     1141.37,
+     20.22
+    ],
+    [
+     3876.46,
+     1134.41,
+     20.65
+    ],
+    [
+     3866.91,
+     1126.91,
+     20.61
+    ],
+    [
+     3859.52,
+     1117.07,
+     19.97
+    ],
+    [
+     3856.59,
+     1105.15,
+     19.05
+    ],
+    [
+     3856.2,
+     1093.05,
+     18.69
+    ],
+    [
+     3856.7,
+     1081.03,
+     18.3
+    ],
+    [
+     3857.89,
+     1069.02,
+     17.93
+    ],
+    [
+     3860.36,
+     1057.24,
+     17.28
+    ],
+    [
+     3863.42,
+     1045.57,
+     16.51
+    ],
+    [
+     3867.96,
+     1034.44,
+     16.41
+    ],
+    [
+     3873.33,
+     1023.64,
+     15.93
+    ],
+    [
+     3879.84,
+     1013.54,
+     16.21
+    ],
+    [
+     3886.86,
+     1003.79,
+     16.35
+    ],
+    [
+     3893.96,
+     994.14,
+     16.36
+    ],
+    [
+     3900.04,
+     983.9,
+     16.25
+    ],
+    [
+     3904.32,
+     972.88,
+     15.83
+    ],
+    [
+     3905.82,
+     961.17,
+     15.15
+    ],
+    [
+     3904.15,
+     949.43,
+     14.38
+    ],
+    [
+     3899.85,
+     938.3,
+     14.38
+    ],
+    [
+     3894.04,
+     927.82,
+     14.11
+    ],
+    [
+     3842.08,
+     842.44,
+     13.85
+    ],
+    [
+     3827.08,
+     840.44,
+     13.28
+    ],
+    [
+     3817.08,
+     845.44,
+     13.28
+    ],
+    [
+     3817.08,
+     849.44,
+     13.28
+    ]
+   ]
+  },
+  {
+   "id": "lilmoth-archon",
+   "from": "Lilmoth",
+   "to": "Archon",
+   "class": "tideway (tide-gated)",
+   "tide_gated": true,
+   "straight_m": 1577,
+   "declared_path_m": 2523,
+   "built_path_m": 2523,
+   "declared_walk_min": 21,
+   "built_walk_min": 21.02,
+   "sinuosity_built": 1.6,
+   "routing": "detour w=23.99 + sinuosity 132 m | detour w=23.99 + sinuosity 223 m",
+   "max_grade": 0.064,
+   "grade_bar": 0.12,
+   "stair_grade_bar": 0.45,
+   "grade_exceptions": [],
+   "max_cut_m": 0,
+   "max_fill_m": 0,
+   "cut_sampled_at_m": 3,
+   "deck_spans": [],
+   "deck_span_m": 0,
+   "half_width_m": 3,
+   "settlement_join": {
+    "clearance_bar_m": 1.1,
+    "worst_clearance_m": 1.1,
+    "violations": 0,
+    "pre_join_m": 2515.3,
+    "join_delta_m": 7.7,
+    "length_correction": {
+     "corrected_m": -15.4,
+     "spans": 1,
+     "wanted_m": -15.4,
+     "leg": "lilmoth-archon",
+     "share": 1,
+     "attempts": 1
+    },
+    "recuts": [
+     {
+      "town": "lilmoth",
+      "ok": true,
+      "points": 5,
+      "buildings": 33,
+      "before_m": 130.1,
+      "after_m": 155,
+      "delta_m": 24.8
+     },
+     {
+      "town": "archon",
+      "ok": true,
+      "points": 3,
+      "buildings": 22,
+      "before_m": 116.5,
+      "after_m": 114.7,
+      "delta_m": -1.7
+     }
+    ],
+    "road_anchor": []
+   },
+   "waypoints": [
+    "Tideway Shrine"
+   ],
+   "self_clearance": {
+    "min_clear_m": 7.45,
+    "enabled": true,
+    "spliced": [],
+    "delta_m": 0
+   },
+   "points": [
+    [
+     2766.5,
+     5027.5,
+     1.83
+    ],
+    [
+     2780.5,
+     5018.5,
+     1.83
+    ],
+    [
+     2793.5,
+     5003.5,
+     1.83
+    ],
+    [
+     2801.5,
+     5005.5,
+     1.83
+    ],
+    [
+     2843.03,
+     5106.23,
+     1.83
+    ],
+    [
+     2853.48,
+     5101.1,
+     1.83
+    ],
+    [
+     2861.55,
+     5092.28,
+     1.83
+    ],
+    [
+     2866.9,
+     5081.78,
+     1.83
+    ],
+    [
+     2870.57,
+     5070.46,
+     1.83
+    ],
+    [
+     2872.64,
+     5058.7,
+     1.83
+    ],
+    [
+     2874.15,
+     5046.85,
+     1.83
+    ],
+    [
+     2875.67,
+     5035.01,
+     1.83
+    ],
+    [
+     2877.35,
+     5023.19,
+     1.83
+    ],
+    [
+     2879.73,
+     5011.48,
+     1.83
+    ],
+    [
+     2882.62,
+     4999.9,
+     1.83
+    ],
+    [
+     2885.95,
+     4988.43,
+     1.83
+    ],
+    [
+     2889.57,
+     4977.04,
+     1.83
+    ],
+    [
+     2893.12,
+     4965.63,
+     1.82
+    ],
+    [
+     2896,
+     4954.04,
+     1.78
+    ],
+    [
+     2898.07,
+     4942.29,
+     1.71
+    ],
+    [
+     2899.29,
+     4930.42,
+     1.57
+    ],
+    [
+     2899.65,
+     4918.5,
+     1.29
+    ],
+    [
+     2899.18,
+     4906.58,
+     1.11
+    ],
+    [
+     2898.06,
+     4894.7,
+     0.82
+    ],
+    [
+     2896.83,
+     4882.84,
+     0.7
+    ],
+    [
+     2895.55,
+     4870.98,
+     0.45
+    ],
+    [
+     2906.44,
+     4868.05,
+     0.17
+    ],
+    [
+     2918.2,
+     4865.63,
+     -0.06
+    ],
+    [
+     2926.39,
+     4857.96,
+     -0.08
+    ],
+    [
+     2933.26,
+     4848.14,
+     0.18
+    ],
+    [
+     2940.73,
+     4838.75,
+     0.53
+    ],
+    [
+     2948.88,
+     4829.94,
+     0.61
+    ],
+    [
+     2950.41,
+     4820.07,
+     0.64
+    ],
+    [
+     2945.49,
+     4809.12,
+     0.65
+    ],
+    [
+     2940.58,
+     4798.18,
+     0.65
+    ],
+    [
+     2935.66,
+     4787.23,
+     0.65
+    ],
+    [
+     2931.14,
+     4776.6,
+     0.65
+    ],
+    [
+     2927.13,
+     4764.9,
+     0.65
+    ],
+    [
+     2925.03,
+     4753.63,
+     0.65
+    ],
+    [
+     2922.43,
+     4742,
+     0.65
+    ],
+    [
+     2919.83,
+     4730.37,
+     0.65
+    ],
+    [
+     2924.23,
+     4720.65,
+     0.65
+    ],
+    [
+     2932.45,
+     4711.97,
+     0.65
+    ],
+    [
+     2942.99,
+     4706.43,
+     1.27
+    ],
+    [
+     2954.24,
+     4703.14,
+     0.67
+    ],
+    [
+     2966.13,
+     4702.25,
+     0.67
+    ],
+    [
+     2977.87,
+     4704.14,
+     0.68
+    ],
+    [
+     2989.58,
+     4706.31,
+     0.69
+    ],
+    [
+     3001.11,
+     4709.28,
+     0.72
+    ],
+    [
+     3012.63,
+     4712.25,
+     0.76
+    ],
+    [
+     3024.14,
+     4715.3,
+     0.75
+    ],
+    [
+     3035.65,
+     4718.34,
+     0.74
+    ],
+    [
+     3047.17,
+     4721.32,
+     0.72
+    ],
+    [
+     3058.73,
+     4724.19,
+     0.71
+    ],
+    [
+     3070.28,
+     4727.06,
+     0.7
+    ],
+    [
+     3081.88,
+     4729.74,
+     1.16
+    ],
+    [
+     3093.51,
+     4732.31,
+     0.7
+    ],
+    [
+     3105.13,
+     4734.88,
+     0.73
+    ],
+    [
+     3116.85,
+     4736.99,
+     0.74
+    ],
+    [
+     3128.59,
+     4739.02,
+     0.69
+    ],
+    [
+     3140.35,
+     4740.83,
+     0.66
+    ],
+    [
+     3152.23,
+     4741.79,
+     0.66
+    ],
+    [
+     3164.11,
+     4742.76,
+     0.65
+    ],
+    [
+     3175.99,
+     4742.06,
+     0.89
+    ],
+    [
+     3187.87,
+     4741.01,
+     0.73
+    ],
+    [
+     3199.2,
+     4737.54,
+     0.65
+    ],
+    [
+     3210.34,
+     4733.23,
+     0.65
+    ],
+    [
+     3214.65,
+     4722.66,
+     0.65
+    ],
+    [
+     3217.95,
+     4711.18,
+     0.65
+    ],
+    [
+     3223.45,
+     4700.63,
+     0.65
+    ],
+    [
+     3230.45,
+     4691.31,
+     0.65
+    ],
+    [
+     3231.03,
+     4679.75,
+     0.65
+    ],
+    [
+     3229.86,
+     4667.8,
+     0.65
+    ],
+    [
+     3227.8,
+     4655.02,
+     0.65
+    ],
+    [
+     3224.75,
+     4643.5,
+     0.65
+    ],
+    [
+     3221.7,
+     4631.98,
+     0.65
+    ],
+    [
+     3220.43,
+     4620.36,
+     0.65
+    ],
+    [
+     3222.34,
+     4608.57,
+     0.65
+    ],
+    [
+     3222.06,
+     4596.87,
+     0.65
+    ],
+    [
+     3219.36,
+     4585.26,
+     0.65
+    ],
+    [
+     3214.07,
+     4574.75,
+     0.65
+    ],
+    [
+     3207.56,
+     4564.82,
+     0.65
+    ],
+    [
+     3199.19,
+     4556.39,
+     0.65
+    ],
+    [
+     3191.59,
+     4547.33,
+     0.67
+    ],
+    [
+     3184.99,
+     4537.45,
+     0.67
+    ],
+    [
+     3181.96,
+     4525.92,
+     0.72
+    ],
+    [
+     3181.67,
+     4514.11,
+     0.76
+    ],
+    [
+     3183.84,
+     4502.45,
+     0.77
+    ],
+    [
+     3187.8,
+     4491.2,
+     0.76
+    ],
+    [
+     3192.51,
+     4480.21,
+     0.79
+    ],
+    [
+     3197.03,
+     4469.15,
+     0.83
+    ],
+    [
+     3200.94,
+     4457.86,
+     0.87
+    ],
+    [
+     3203.82,
+     4446.27,
+     1.02
+    ],
+    [
+     3206.03,
+     4434.54,
+     1.32
+    ],
+    [
+     3207.61,
+     4422.71,
+     1.75
+    ],
+    [
+     3208.5,
+     4410.81,
+     1.86
+    ],
+    [
+     3208.66,
+     4398.88,
+     1.87
+    ],
+    [
+     3208.42,
+     4386.95,
+     1.87
+    ],
+    [
+     3208.04,
+     4375.02,
+     1.87
+    ],
+    [
+     3212.13,
+     4365.62,
+     1.87
+    ],
+    [
+     3222.56,
+     4359.79,
+     1.87
+    ],
+    [
+     3230.82,
+     4351.27,
+     1.87
+    ],
+    [
+     3237.85,
+     4341.7,
+     1.87
+    ],
+    [
+     3243.33,
+     4331.08,
+     1.75
+    ],
+    [
+     3248.08,
+     4320.12,
+     1.52
+    ],
+    [
+     3252.71,
+     4309.11,
+     1.3
+    ],
+    [
+     3257.94,
+     4298.36,
+     1.01
+    ],
+    [
+     3264.14,
+     4288.2,
+     1.53
+    ],
+    [
+     3271.24,
+     4278.58,
+     0.96
+    ],
+    [
+     3280.34,
+     4270.85,
+     0.96
+    ],
+    [
+     3290.1,
+     4264.03,
+     0.96
+    ],
+    [
+     3300.54,
+     4258.23,
+     1.23
+    ],
+    [
+     3311.21,
+     4252.85,
+     0.96
+    ],
+    [
+     3321.35,
+     4246.62,
+     0.96
+    ],
+    [
+     3330.68,
+     4239.25,
+     1.04
+    ],
+    [
+     3337.07,
+     4229.15,
+     0.96
+    ],
+    [
+     3340.88,
+     4218.05,
+     1
+    ],
+    [
+     3343.02,
+     4206.3,
+     0.96
+    ],
+    [
+     3342.9,
+     4194.42,
+     0.96
+    ],
+    [
+     3342.22,
+     4182.5,
+     0.99
+    ],
+    [
+     3341.03,
+     4170.65,
+     0.89
+    ],
+    [
+     3339.36,
+     4158.84,
+     0.86
+    ],
+    [
+     3337.68,
+     4147.03,
+     0.86
+    ],
+    [
+     3336.48,
+     4135.16,
+     0.86
+    ],
+    [
+     3335.39,
+     4123.28,
+     0.86
+    ],
+    [
+     3334.32,
+     4111.41,
+     0.87
+    ],
+    [
+     3335.36,
+     4099.51,
+     0.86
+    ],
+    [
+     3336.39,
+     4087.62,
+     0.86
+    ],
+    [
+     3339.43,
+     4076.29,
+     0.82
+    ],
+    [
+     3344.81,
+     4065.61,
+     0.8
+    ],
+    [
+     3352.99,
+     4058.16,
+     0.82
+    ],
+    [
+     3364.29,
+     4054.31,
+     0.86
+    ],
+    [
+     3375.44,
+     4056.9,
+     0.86
+    ],
+    [
+     3386.54,
+     4061.17,
+     1.06
+    ],
+    [
+     3397.23,
+     4066.22,
+     1.08
+    ],
+    [
+     3407.08,
+     4072.85,
+     0.86
+    ],
+    [
+     3416.92,
+     4079.49,
+     0.86
+    ],
+    [
+     3426.77,
+     4086.13,
+     1.33
+    ],
+    [
+     3436.55,
+     4092.87,
+     0.86
+    ],
+    [
+     3446.26,
+     4099.7,
+     0.86
+    ],
+    [
+     3455.97,
+     4106.53,
+     0.86
+    ],
+    [
+     3465.69,
+     4113.36,
+     0.85
+    ],
+    [
+     3475.4,
+     4120.18,
+     0.81
+    ],
+    [
+     3485.35,
+     4126.66,
+     0.77
+    ],
+    [
+     3495.44,
+     4132.94,
+     0.96
+    ],
+    [
+     3505.52,
+     4139.22,
+     0.84
+    ],
+    [
+     3515.6,
+     4145.5,
+     0.97
+    ],
+    [
+     3525.69,
+     4151.78,
+     0.93
+    ],
+    [
+     3535.83,
+     4157.95,
+     1.34
+    ],
+    [
+     3546.46,
+     4163.28,
+     0.92
+    ],
+    [
+     3557.08,
+     4168.61,
+     0.65
+    ],
+    [
+     3567.71,
+     4173.93,
+     0.67
+    ],
+    [
+     3578.33,
+     4179.26,
+     0.71
+    ],
+    [
+     3588.96,
+     4184.59,
+     0.75
+    ],
+    [
+     3591.76,
+     4179.4,
+     0.75
+    ],
+    [
+     3589.68,
+     4167.66,
+     0.75
+    ],
+    [
+     3587.6,
+     4155.92,
+     0.75
+    ],
+    [
+     3593.12,
+     4152.17,
+     0.75
+    ],
+    [
+     3604.72,
+     4154.84,
+     0.75
+    ],
+    [
+     3616.32,
+     4157.5,
+     0.77
+    ],
+    [
+     3627.93,
+     4160.17,
+     0.81
+    ],
+    [
+     3632.77,
+     4154.54,
+     0.83
+    ],
+    [
+     3632.49,
+     4142.61,
+     0.83
+    ],
+    [
+     3634.78,
+     4133.83,
+     0.84
+    ],
+    [
+     3646.38,
+     4136.49,
+     0.85
+    ],
+    [
+     3657.99,
+     4139.16,
+     0.85
+    ],
+    [
+     3669.59,
+     4141.82,
+     0.87
+    ],
+    [
+     3681.19,
+     4144.49,
+     0.9
+    ],
+    [
+     3678.01,
+     4133.03,
+     0.91
+    ],
+    [
+     3674.8,
+     4121.56,
+     0.9
+    ],
+    [
+     3679.52,
+     4111.84,
+     0.83
+    ],
+    [
+     3679.2,
+     4102.5,
+     0.87
+    ],
+    [
+     3672.2,
+     4092.89,
+     0.88
+    ],
+    [
+     3665.2,
+     4083.28,
+     0.89
+    ],
+    [
+     3658.2,
+     4073.66,
+     0.92
+    ],
+    [
+     3651.42,
+     4063.91,
+     0.95
+    ],
+    [
+     3645.2,
+     4053.77,
+     1.23
+    ],
+    [
+     3638.98,
+     4043.63,
+     1.04
+    ],
+    [
+     3632.76,
+     4033.48,
+     1.09
+    ],
+    [
+     3626.6,
+     4023.32,
+     1.15
+    ],
+    [
+     3621.69,
+     4012.47,
+     1.45
+    ],
+    [
+     3616.78,
+     4001.62,
+     1.22
+    ],
+    [
+     3611.87,
+     3990.78,
+     1.98
+    ],
+    [
+     3607.64,
+     3979.69,
+     1.54
+    ],
+    [
+     3604.77,
+     3968.12,
+     1.77
+    ],
+    [
+     3601.9,
+     3956.55,
+     1.62
+    ],
+    [
+     3600.79,
+     3944.82,
+     1.7
+    ],
+    [
+     3601.63,
+     3932.92,
+     2.1
+    ],
+    [
+     3605.17,
+     3921.93,
+     1.49
+    ],
+    [
+     3611.85,
+     3912.01,
+     1.56
+    ],
+    [
+     3622.06,
+     3906.01,
+     1.65
+    ],
+    [
+     3632.92,
+     3901.19,
+     2
+    ],
+    [
+     3644.41,
+     3897.97,
+     2.39
+    ],
+    [
+     3655.95,
+     3894.91,
+     2.53
+    ],
+    [
+     3667.52,
+     3891.96,
+     2.58
+    ],
+    [
+     3678.77,
+     3887.96,
+     2.57
+    ],
+    [
+     3689.75,
+     3883.37,
+     2.56
+    ],
+    [
+     3774.86,
+     3824.5,
+     2.57
+    ],
+    [
+     3785,
+     3823.5,
+     2.57
+    ]
+   ]
+  }
+ ],
+ "waystations": [
+  {
+   "id": "way-stormhold-thorn-0",
+   "name": "Legion Milepost (Stormhold–Thorn)",
+   "leg": "stormhold-thorn",
+   "region": "salt-hills",
+   "x": 2674.19,
+   "z": 749.82,
+   "y": 99.52,
+   "at_m": 548,
+   "of_m": 2229
+  },
+  {
+   "id": "way-stormhold-thorn-1",
+   "name": "Ash Shelter (Stormhold–Thorn)",
+   "leg": "stormhold-thorn",
+   "region": "thornmarsh",
+   "x": 3439.78,
+   "z": 1041.89,
+   "y": 16.15,
+   "at_m": 1699,
+   "of_m": 2229
+  },
+  {
+   "id": "way-helstrom-archon-2",
+   "name": "Corpse-Lily Shrine (Helstrom–Archon)",
+   "leg": "helstrom-archon",
+   "region": "deep-marshes",
+   "x": 2713.76,
+   "z": 3012.97,
+   "y": 7.32,
+   "at_m": 633,
+   "of_m": 2571
+  },
+  {
+   "id": "way-helstrom-blackrose-3",
+   "name": "Welkynd Shrine (Helstrom–Blackrose)",
+   "leg": "helstrom-blackrose",
+   "region": "blackwood",
+   "x": 2205.5,
+   "z": 3206.2,
+   "y": 8.64,
+   "at_m": 624,
+   "of_m": 2420
+  },
+  {
+   "id": "way-archon-thorn-4",
+   "name": "Corpse-Lily Shrine (Archon–Thorn)",
+   "leg": "archon-thorn",
+   "region": "deep-marshes",
+   "x": 4127.01,
+   "z": 3221.94,
+   "y": 7.88,
+   "at_m": 710,
+   "of_m": 4244
+  },
+  {
+   "id": "way-archon-thorn-5",
+   "name": "Lichen Post (Archon–Thorn)",
+   "leg": "archon-thorn",
+   "region": "crimson-coast",
+   "x": 4175.7,
+   "z": 2267.96,
+   "y": 13.87,
+   "at_m": 2226,
+   "of_m": 4244
+  },
+  {
+   "id": "way-archon-thorn-6",
+   "name": "Fired-Cold Well (Archon–Thorn)",
+   "leg": "archon-thorn",
+   "region": "clay-moor",
+   "x": 4119.25,
+   "z": 1251.87,
+   "y": -20.52,
+   "at_m": 3610,
+   "of_m": 4244
+  },
+  {
+   "id": "way-lilmoth-archon-7",
+   "name": "Tide-Pole Post (Lilmoth–Archon)",
+   "leg": "lilmoth-archon",
+   "region": "eastern-rootlands",
+   "x": 2966.13,
+   "z": 4702.25,
+   "y": 0.67,
+   "at_m": 627,
+   "of_m": 2523
+  },
+  {
+   "id": "way-lilmoth-archon-8",
+   "name": "Stilt-Rest (Lilmoth–Archon)",
+   "leg": "lilmoth-archon",
+   "region": "eastern-rootlands",
+   "x": 3591.76,
+   "z": 4179.4,
+   "y": 0.75,
+   "at_m": 1926,
+   "of_m": 2523
+  }
+ ],
+ "named_routes": {
+  "crossing": {
+   "settlements": [
+    "Stormhold",
+    "Helstrom",
+    "Blackrose",
+    "Lilmoth"
+   ],
+   "legs": [
+    "stormhold-helstrom",
+    "helstrom-blackrose",
+    "blackrose-lilmoth"
+   ],
+   "metres": 6728.5,
+   "walk_min": 56.07,
+   "jog_min": 35.04,
+   "note": "RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps."
+  },
+  "long_way": {
+   "settlements": [
+    "Thorn",
+    "Stormhold",
+    "Helstrom",
+    "Blackrose",
+    "Soulrest"
+   ],
+   "legs": [
+    "stormhold-thorn",
+    "stormhold-helstrom",
+    "helstrom-blackrose",
+    "soulrest-blackrose"
+   ],
+   "metres": 9248.3,
+   "walk_min": 77.07,
+   "jog_min": 48.17,
+   "note": "RI-WLD01 §5 THE LONG WAY — Thorn to Soulrest."
+  }
+ },
+ "total_trunk_m": 25067.2
+}

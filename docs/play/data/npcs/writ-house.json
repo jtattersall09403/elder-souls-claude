@@ -1,0 +1,83 @@
+{
+  "schema": "elder-souls/npcs@1",
+  "group": "writ-house",
+  "owner": "W1-07 — character creation",
+  "source": "RI-JRN01 §C O6/O7 (every character-defining input is answered to a named NPC in a named interior); RI-CHR01 §1",
+  "npcs": [
+    {
+      "id": "jeeh-ei",
+      "actor": "villager",
+      "name": "Jeeh-Ei",
+      "race": "saxhleel",
+      "class": "egg-tender",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "tidewrack",
+      "interior": "barge-hold",
+      "disposition": 55,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "barge-hold" }],
+      "topics": ["the-hold", "the-writ-house", "your-hatch-name", "what-they-take-off-you"],
+      "services": [],
+      "role": "asks input 1 (hatch-name), in the hold, before the player has a race, a name, a class or a sheet",
+      "sick": true,
+      "lines": {
+        "greeting": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow.",
+        "the_hold": "Two days from Gideon, one more to the mouth. You slept through the worst of it, which is the only good thing about the way you sleep.",
+        "your_hatch_name": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+        "on_refusal": "No. That is right. I should not have asked and you should not have said. I will remember that you did not.",
+        "on_answer": "%HatchName. I will not say it again where they can hear it, and neither will you, and one day somebody will say it to you and you will know what they are."
+      }
+    },
+    {
+      "id": "warden-scribe-tuleeh-ma",
+      "actor": "clerk",
+      "name": "Tuleeh-Ma",
+      "title": "Warden-Scribe",
+      "race": "saxhleel",
+      "class": "ledger-hand",
+      "faction": "provincial-office",
+      "reaction_group": "RG-LEDGER",
+      "settlement": "tidewrack",
+      "interior": "writ-house",
+      "disposition": 45,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "writ-house" }],
+      "topics": ["the-writ", "the-writ-house", "tidewrack", "the-provincial-office", "the-tides", "my-work", "the-list", "lukiul"],
+      "services": ["writ-issue", "writ-amendment"],
+      "role": "asks inputs 2-8. Every character-defining field in the game is set by answering this woman.",
+      "lines": {
+        "greeting": "Stand where the light is. I have to be able to see you to write you down.",
+        "my_work": "Eleven years. Before that I was on the other side of the desk, which is a thing I say to about one person a month and never twice to the same one.",
+        "lukiul": "Yes. I know what the word means and I know who says it about me. They are not wrong, they are just not paying my rent.",
+        "the_list": "There is always a list. The list is not the problem. What is written next to the names on the list is the problem.",
+        "the_writ": "It is a reed-case, it is stamped, and it is the only thing in this province that says you are a person rather than a shape somebody saw. Do not lose it and do not sell it, and if you do sell it, sell it to somebody who will not be back."
+      }
+    },
+    {
+      "id": "clerk-avelia-doren",
+      "actor": "clerk",
+      "name": "Avelia Doren",
+      "title": "Provincial Clerk",
+      "race": "imperial",
+      "class": "ledger-hand",
+      "faction": "provincial-office",
+      "reaction_group": "RG-EMPIRE",
+      "settlement": "tidewrack",
+      "interior": "writ-house",
+      "disposition": 40,
+      "schedule": [{ "from": "08:00", "to": "18:00", "at": "writ-house" }],
+      "topics": ["the-provincial-office", "writ-amendment", "the-fee"],
+      "services": ["writ-amendment"],
+      "role": "the ONE reversible creation field: a given-name amendment, 250 g, once, ever (RI-CHR01 §7)",
+      "service_terms": { "id": "writ-amendment", "field": "given_name", "cost_gold": 250, "uses_per_save": 1 },
+      "lines": {
+        "greeting": "If it is an amendment, it is two hundred and fifty and it is once. If it is anything else, the Warden-Scribe is at the desk behind you.",
+        "on_amend": "Struck through, not erased. The old name stays legible under the line, because the Office does not pretend things did not happen. People who knew you before will go on using it, and I would not correct them.",
+        "on_second_attempt": "No. You have had your amendment. A writ with two strikes through the name is not a writ, it is a story, and I do not issue those."
+      }
+    }
+  ],
+  "declared_incomplete": {
+    "owner": "wave-1 piece W1-04 (settlement population)",
+    "missing": ["the rest of Tidewrack's inhabitants"]
+  }
+}

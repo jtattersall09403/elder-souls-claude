@@ -703,14 +703,43 @@ Round 3's own headline finding — two tools reading `r.frame` while every shipp
 there were. There were two more, both in tools R1 *and* R2 accepted, and one of them promotes a
 hedged confidence-0.7 verdict to 1.0 with corroborating evidence the trace does not contain.
 
-The R1 list below is kept because parts of it are still open.
+The R1 list below **is now fully audited and none of it is open.** AUDIT-R1-LIST checked all five
+bullets on 2026-08-08 at `bea2684` — ran each tool, ran each self-test, and read R2/R3/R4 for a
+later verdict. **Five of five are dead: four fixed or superseded, one already struck.** The preamble
+sentence above ("kept because parts of it are still open") was the load-bearing lie: it is what let
+a dispatch be spent on the gamepad bullet, which was stale by two rounds. Every bullet below is
+struck **in place with its history**, because a struck bullet that says why is worth more than a
+clean list. `node tools/dispatch-staleness.mjs` now re-checks the mechanical part of this file in
+under a second; run it before you dispatch anything off it.
 
-- **`build-viability.mjs`** — first. It buys a false pass on the exact axis it was written to
+- ~~**`build-viability.mjs`** — first. It buys a false pass on the exact axis it was written to
   unblock, while its self-test reports 8/8. Two permissive substitutions: it prints "no region
   declares a tier" when `regions.json` declares `danger_tier` 1–5 on all thirteen and the engine
   consumes it; and **0 of 41 quest givers resolve to a reaction group**, so the permanent
   race-and-upbringing bar cannot fire at all. Two character dimensions stay `corpus_debt` until this
-  is right.
+  is right.~~
+  **STRUCK 2026-08-08 by AUDIT-R1-LIST. SUPERSEDED — the tool this bullet names no longer exists.**
+  `tools/analysis/build-viability.mjs` was `git mv`d to **`tools/analysis/impossibility-screen.mjs`**
+  by `W1-VIABILITY-SPLIT` after five straight rejections (TOOL-COVERAGE-R1…R4), and split against
+  `tools/quests/viability-walk.mjs` — the screen may report *impossible* or *unmeasurable* and is
+  fenced in code from ever reporting that a build is playable. Both R1 sub-claims are dead on
+  today's tree, measured not assumed:
+  `node tools/analysis/impossibility-screen.mjs --signature saxhleel/fighter/given/interior --explain`
+  prints **`giver census: 91/91 quest givers resolve to a reaction group (0 no NPC record, 0 record
+  without reaction_group)`** where R1 said 0 of 41; and the artifact carries
+  `tier5.tier5_regions = ["deep-marshes","stone-wastes"]` with `tier5_survivable` actually decided,
+  where R1 said it printed "no region declares a tier". `--self-test-fence` is **14/14** (ten
+  falsifications go red, four controls stay green). The *open* work is not this bullet — it is
+  TOOL-COVERAGE-R4 rebuild items 1, 4, 5, 6, 7, 9, which the screen prints on every run under
+  `KNOWN_SCREEN_LIMITS`, and its own `--self-test` at 49/51.
+  **A correction I owe, because I made the error this project keeps warning about:** I first read
+  the disappearance of `build-viability.mjs` at `7cf1c58` as rule 17's `git add -A` sweep, and was
+  **wrong**. `git log --follow` shows a `D` because the rename landed across commits, but the new
+  file's own header names the split and `W1-VIABILITY-SPLIT.json` records the `git mv`. Read the
+  successor before you diagnose a sweep. The blob is identical either way: `git show
+  b96de7c:tools/analysis/build-viability.mjs | git hash-object --stdin` is `e3d6790e…`, exactly the
+  hash TOOL-COVERAGE-R4 measured, so nothing was lost.
+  Evidence: `orchestration/status/AUDIT-R1-LIST.json`, `orchestration/status/W1-VIABILITY-SPLIT.json`.
 - ~~**`gamepad-shim.mjs`** — does not run, 3/3 crash. This is the GameSir path the owner tests on.~~
   **STRUCK 2026-08-08 by W1-GAMEPAD. This line was stale by two rounds and it cost a dispatch.**
   It is R1's finding, kept in a list whose own preamble says "parts of it are still open" — this
@@ -723,9 +752,78 @@ The R1 list below is kept because parts of it are still open.
   `navigator.getGamepads()` seam — RI-JRN01 §0.1(a) struck the shim for the reachability legs
   **deliberately** and kept it for the descriptor leg. Two instruments, two seams, both alive.
   Evidence: `orchestration/status/W1-GAMEPAD.json`, `reports/w1-gamepad/`.
-- **`journey-run.mjs`** — `--sample-quests` and `--stratified` are inert while the leg reports `ok`.
-- **`cadence.mjs`** — its exclusion list is not the shipped action set.
-- **`competence.mjs`** — the gear clause cannot fail.
+- ~~**`journey-run.mjs`** — `--sample-quests` and `--stratified` are inert while the leg reports `ok`.~~
+  **STRUCK 2026-08-08 by AUDIT-R1-LIST. FIXED — and it was already accepted in R2, one round after
+  this bullet was written.** TOOL-COVERAGE-**R2** §9 says *"ACCEPT. The R1 defect is genuinely
+  repaired"*. Re-measured at `bea2684`, both flags doing real work:
+  `node tools/journey/journey-run.mjs --journey jrn07-quest --profile headless-small
+  --sample-quests 3 --seed 4711` drew **`[Q-LEDG-14, Q-ASSZ-06, Q-MAIN-14]`**; the same command with
+  `--stratified --seed 99` drew one quest per stratum from live predicates with real candidate
+  counts **Q1:32, Q2:33, Q3:2, Q4:9, Q5:0**. `m_quest_sample_complete` reports **`unmeasurable`**
+  naming Q5 and its reason — never `ok` — and the run exits 1. R3's *separate* `r.frame` rebuild
+  (§3) is discharged too: all eleven `R4:` frame-dialect assertions in the self-test pass.
+  **Bonus, and it belongs to whoever owns RI-JRN07:** R2's Referral 1 called strata Q2 and Q5 a
+  genuine content gap at 0 candidates each. **Q2 now has 33. Q5 is still 0.** Half that referral is
+  closed and nothing had said so.
+- ~~**`cadence.mjs`** — its exclusion list is not the shipped action set.~~
+  **STRUCK 2026-08-08 by AUDIT-R1-LIST. FIXED — repaired in R2, hardened again in a round-4 pass.**
+  `node tools/journey/cadence.mjs --self-test` → **PASS 21/21, exit 0** at `bea2684`. The battery
+  now asserts the exact opposite of this bullet, in both directions: *"the classification is TOTAL
+  over the shipped closed action set"* (all 16 shipped actions in exactly one class, so none can
+  fall through to "counts by name"), *"an action outside the closed set makes C1 UNMEASURABLE,
+  never a pass"*, and a control proving corroborated actions **do** still count, so it is not a
+  blanket refusal. Its `R4:` rows also verify all 8 `FLAG_FIELDS` are written by the shipped corpus
+  (192 881 records over 67 artifacts) and go red on the five fields R3 caught.
+- ~~**`competence.mjs`** — the gear clause cannot fail.~~
+  **STRUCK 2026-08-08 by AUDIT-R1-LIST. FIXED — and TOOL-COVERAGE-R3 line 369 already said so:
+  "Accept", 13/13.** `node tools/journey/competence.mjs --self-test` → **PASS 13/13, exit 0** at
+  `bea2684`. The clause now has both arms, which is precisely what "cannot fail" denied: **RED** — a
+  weapon and burden change between the two encounters VOIDS the comparison
+  (`wpn-iron-longsword → wpn-ebony-greatsword`, `equip_load_pct 41 → 63`); **GREEN** — an unchanged
+  kit proceeds with no blockers. It also holds the line against the opposite defect R2 charged
+  ("the clause now cannot *pass*"): a two-hand stance change is reported and does **not** void,
+  because a clause that voided on stance would void every real fight.
+
+**NEW, found by this audit, and not a member of the R1 list — do not confuse the two.**
+
+- **`journey-run.mjs --self-test` is FAIL 21/22 at `bea2684`, on a row no R1…R4 round names.**
+  `node tools/journey/journey-run.mjs --self-test` → `FAIL (21/22)`; the failing row is
+  **`accessor empty before any surface — pre-surface text array has 3 entries via
+  __HARNESS.getRenderedText(), open=false`**. I probed the register directly rather than guessing:
+  the three entries are **HUD** text at frame 0 — `surface:"menus"`, `kind:"vector"`, `clipped:false`
+  — reading `"5"` (flask count), `"LIGHT"` (roll class) and `"Spark-Da…"` (attuned spell).
+  **RULING (rule 0 — decided, recorded, not parked): the accessor is correct and the ASSERTION is
+  stale.** The test equates *"no surface is open"* with *"nothing has been painted"*, and the HUD
+  now paints on frame 0. The right repair is to scope the assertion to the surfaces it is about
+  (`dialogue`, `title`) rather than to weaken it, since its stated purpose — *"if it is non-empty
+  here, it is returning something other than what was drawn and every later grep is void"* — is
+  still worth having. **Reversible if:** the three entries turn out to be painted by something other
+  than `ui/hud.js` — then the accessor really is leaking and this row is a true positive. I did not
+  make the repair: `tools/journey/journey-run.mjs` is not mine, and rule 22 forbids me grading the
+  fix I would have written.
+
+### And two more stale claims, elsewhere in THIS file, found in 110 ms
+
+`node tools/dispatch-staleness.mjs` re-runs the mechanically checkable claims in this document. On
+its first run it reported **two stale claims outside the R1 list**. Both sections belong to other
+live pieces, so this is a pointer, not an edit — whoever owns them should strike them the way the
+bullets above are struck:
+
+<!-- dispatch-staleness: quoted -->
+1. **§2b "The Act V conversation nobody wrote" is no longer true.** It says
+   `game/data/dialogue/topics/main-quest-argument.json` **does not exist** and calls it *"the single
+   largest remaining gap in the main quest"*. **The file is on disk: 42 208 bytes, 12 topics,
+   `hand_authored: true`, `do_not_regenerate: true`, every info tagged `quest: "Q-MAIN-26"`.** The
+   twelve-topic conversation was written. Somebody could be dispatched to write it again tomorrow —
+   which is the gamepad failure exactly, in the same file, one section away. W1-17's to strike.
+<!-- dispatch-staleness: quoted -->
+2. **§R still names `tools/analysis/build-viability.mjs`**, the path its own ruling caused to be
+   renamed to `tools/analysis/impossibility-screen.mjs`. Harmless to a careful reader and a dead
+   link to everyone else.
+
+One claim it checked came back **LIVE** and should stay: §S3's `reports/W1-MASS-RECONCILIATION.md`
+really is absent. That is the half of the job people forget — an auditor that only ever finds fault
+is as useless as one that never does.
 
 ## 1b. Race does not affect whether a quest is offered to you
 

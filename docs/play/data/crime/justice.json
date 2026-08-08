@@ -1,0 +1,168 @@
+{
+  "schema": "elder-souls/crime-justice@1",
+  "id": "justice",
+  "source": "RI-CRM01 §2 §3 §4 §5 §6 §9. Race terms are NOT restated here — they are read from game/data/progression/race-reactions.json §guards, which W1-07 owns.",
+
+  "witness": {
+    "predicate": [
+      "npc.alive",
+      "npc.civ_state advanced to CHALLENGE or ALARM this frame due to the crime's contextWeight",
+      "line of sight from npc eye node to player chest node at crime_frame",
+      "V >= 0.10",
+      "dist <= 1.4 * R(npc)"
+    ],
+    "V_min": 0.10,
+    "R_multiplier": 1.4,
+    "identified_at_V": 0.30,
+    "guard_V_min": 0.05,
+    "guards_always_full_witnesses": true,
+    "hearing_only": { "event": "death", "radius_m": 20, "bounty_multiplier": 0.4, "identified": false },
+    "never_witnesses": ["animal", "mount", "hostile_enemy", "corpse"],
+    "record_fields": ["eid", "crime_id", "frame_seen", "identified", "reported"],
+    "unidentified_effect": "bounty lands as 'person or persons unknown'; guards do not approach you for it, but it counts toward the settlement's alarm state and toward RI-STL01 §7's S-4 zone memory."
+  },
+
+  "report_chain": {
+    "principle": "A crime does not create a bounty. A REPORT does.",
+    "routes": [
+      { "id": "shout",         "condition": "witness within 25 m of any guard, LOS or through <= 1 wall", "latency_s": 1.2,   "guard_range_m": 25 },
+      { "id": "run_to_guard",  "condition": "witness paths to nearest guard within 400 m",                "latency_s": null,  "guard_range_m": 400, "run_speed_mps": 3.4, "typical_s": [6, 90] },
+      { "id": "guard_witness", "condition": "the guard is the witness",                                   "latency_s": 0.0 },
+      { "id": "delayed",       "condition": "no guard within 400 m",                                      "latency_s": null,  "max_hours": 24, "note": "reports at their next contact with a guard" },
+      { "id": "never",         "condition": "witness dies, is calmed, is bribed, or the crime was in the Interior jurisdiction", "latency_s": null }
+    ],
+    "fleeing_witness": "While reported == false the witness stops their schedule, faces you or the nearest exit, and RUNS. A fleeing witness is legible from across a street, and that legibility is what makes the next thirty seconds a decision.",
+    "responses": [
+      { "id": "let_go",   "requirement": null,                                                                     "effect": "bounty applies at full",       "cost": "gold" },
+      { "id": "talk_down","requirement": "reach them, disposition >= 40 after fDispStealing, Speechcraft attempt",  "effect": "witness un-flags; permanent +1 to their knows-something-about-you counter", "cost": "a persuasion attempt, retryable only once per witness", "keeps_die": true, "die_reason": "S21 — persuasion's failure is permanent (disposition is lost)" },
+      { "id": "bribe",    "requirement": "reach them, gold >= 2 * the bounty they would cause",                     "effect": "witness un-flags",             "cost": "double the bounty, but no bounty, no guard, no faction hit", "multiplier": 2.0 },
+      { "id": "kill",     "requirement": null,                                                                     "effect": "see S10 clause",               "cost": "see S10 clause" }
+    ],
+    "bribe_note": "The bribe is deliberately MORE expensive than the bounty. Paying 2x is only worth it when the bounty is not the real cost — a Legion officer near an expulsion threshold, a faction watching, a player who cannot afford to be KNOWN."
+  },
+
+  "s10_witness_murder": {
+    "ruling": "Seam S10 says you can kill anyone. A crime system that treats witness-murder as an exploit to be patched is fighting its own ruling. So it is supported, it works, and it is PRICED.",
+    "suppressed_bounty_applied": false,
+    "suppressed_bounty_multiplier_if_killing_witnessed": 2.0,
+    "new_bounty_only_if_witnessed_or_discovered": true,
+    "named_victim_permanent": true,
+    "faction_consequences_fire_regardless_of_witnesses": true,
+    "corpse_becomes_evidence": true,
+    "design_intent": "Killing a witness in an empty room, hiding the body, and walking away WORKS, completely, with zero bounty. That is not a bug. What it costs you: a named person is permanently gone from the world along with their quests, their shop, their dialogue and whatever they knew; four of nine factions keep a roll and will notice a member missing; and you have created a corpse which somebody will find.",
+    "required_content": { "npc_lines_on_settlement_deaths": 6, "quest_stages_on_death_count": 2, "death_count_trigger": 3 }
+  },
+
+  "corpse_evidence": {
+    "discovery_radius_m": 12,
+    "discovery_V_min": 0.15,
+    "unknown_bounty_named_victim": 500,
+    "decay_hours_interior": 72,
+    "decay_hours_outdoor": 12,
+    "death_flag_expires": false,
+    "drag_speed_mps": 0.6,
+    "drag_context_weight": 3.50,
+    "disposal": ["water", "the 82 caves"],
+    "drowned_court_sells_death_count": true
+  },
+
+  "guard_ladder": [
+    { "band": 1, "condition": "0 < bounty < arrestThreshold",                 "behaviour": "greeting_only", "greeting": "I know your face.", "topics_refused": 2, "price_surcharge_pct": 8, "arrest": false, "draws_weapon": false },
+    { "band": 2, "condition": "arrestThreshold <= bounty < attackThreshold",  "behaviour": "arrest_dialogue", "arrest": true, "draws_weapon": false, "approach_sheathed": true, "follow_s": 45 },
+    { "band": 3, "condition": "bounty >= attackThreshold",                    "behaviour": "attack_on_sight", "arrest": false, "draws_weapon": true, "parley": "surrender", "parley_routes_to": "serve" }
+  ],
+  "guard_ladder_overrides": [
+    { "where": "legion_fort", "rule": "arrest on sight regardless of threshold" },
+    { "where": "provincial_office", "rule": "arrest on sight regardless of threshold" }
+  ],
+  "attack_threshold_multiplier": 4,
+  "guards_level_scale": false,
+
+  "arrest": {
+    "shape": "a dedicated RI-DLG04-shaped dialogue with three topics and no timer. NOT a menu overlay.",
+    "answers": [
+      { "id": "pay",    "text": "I'll pay.",     "requirement": "gold >= bounty", "bounty_after": 0, "confiscates_stolen": true, "gold_delta": "-bounty", "guard_disposition": 5, "time_passes": false },
+      { "id": "resist", "text": "I'll not.",     "requirement": null,             "bounty_delta": 500, "guard_aggro": true, "aggro_radius_m": 40, "aggro_within_frames_f60": 30, "note": "The Souls fight begins and this item's authority ends until it resolves." },
+      { "id": "serve",  "text": "Take me in.",   "requirement": null,             "bounty_after": 0, "confiscates_stolen": true, "time_passes": true, "routes_to": "jail" }
+    ],
+    "insufficient_gold": {
+      "topic_present": true,
+      "refused_in_dialogue": true,
+      "refusal_names_shortfall": true,
+      "line": "You're {shortfall} short, and I can count. Choose again.",
+      "rule": "It is NEVER hidden — a greyed-out option that does not explain itself is a UI failure, not a design one."
+    },
+    "escape_hatches": [
+      { "id": "faction_invocation", "requirement": "rank >= 4 in a faction with standing in that jurisdiction", "effect": "the guard defers", "uses_per_faction_per_playthrough": 3, "cost": "1 rank-progress per use" },
+      { "id": "speechcraft", "requirement": "Speechcraft >= 60 and disposition >= 55", "effect": "reduce the bounty by 40%, not clear it", "reduction": 0.40, "retryable": false, "keeps_die": true, "die_reason": "S21 — a persuasion attempt whose failure is permanent" }
+    ]
+  },
+
+  "jail": {
+    "days_formula": "clamp( ceil(bounty / 100), 1, 90 )",
+    "days_min": 1,
+    "days_max": 90,
+    "deterministic": true,
+    "die": false,
+    "die_reason": "S21 makes a random skill loss DEFENSIBLE (jail is not retryable) — but 'you lose your best social skill' is a punishment a player can understand, resent and plan around, and 'you lost a point of something' is noise. RI-CRM01 §6 rules for legibility.",
+    "loss": {
+      "levels_per_days": [1, 2],
+      "taken_from": "your HIGHEST skill among the six you cannot practise in a cell",
+      "cell_blocked_skills": ["athletics", "acrobatics", "mercantile", "speechcraft", "marksman", "survival"],
+      "tie_break": "the skill list order in RI-PRG03 §1",
+      "floor": 5
+    },
+    "gain": [
+      { "skill": "sneak", "levels_per_days": [1, 3] },
+      { "skill": "security", "levels_per_days": [1, 4] }
+    ],
+    "gain_note": "Prison teaches exactly two things and this is not a joke — it is the mechanism by which a jail sentence is a CHARACTER EVENT rather than a fine.",
+    "not_touched": ["attributes", "souls", "level", "equipment", "journal", "quest_state"],
+    "confiscated": ["all stolen_from items", "lockpicks", "probes"],
+    "returned_at_the_gate": ["weapons", "armour"],
+    "time": "the world clock advances the full sentence. QUEST TIMERS RUN.",
+    "quests_with_timers_short_enough": 6,
+    "release_location": { "imperial_sentence_days_gte": 20, "prison": "blackrose-prison", "released_at": "blackrose", "distance_from_lilmoth_m": 1503 },
+    "worked": [
+      { "bounty": 150,  "days": 2 },
+      { "bounty": 1000, "days": 10, "note": "one murder" },
+      { "bounty": 2500, "days": 25, "note": "killing a guard" },
+      { "bounty": 9000, "days": 90, "note": "cap" }
+    ]
+  },
+
+  "persistence_s6": [
+    { "state": "bounty (all three jurisdictions)", "survives_death": true,  "rule": "Bounty is world state under S6. Dying does not pay it, reduce it, or hide it." },
+    { "state": "blood-price",                      "survives_death": true },
+    { "state": "witness records with reported == false", "survives_death": true, "rule": "A witness who was running to a guard when you died is still running. The report lands while you are at the well." },
+    { "state": "stolen_from on carried items",     "survives_death": true,  "rule": "Items are not dropped on death; only souls are (S6)" },
+    { "state": "corpse death_flags",               "survives_death": true },
+    { "state": "zone alert (RI-STL01 S-4)",        "survives_death": true,  "rule": "and its 180 s timer keeps running" },
+    { "state": "guard AGGRO at the moment of death", "survives_death": false, "rule": "resets to the ladder; the bounty that made them hostile is intact, so they will do it again" },
+    { "state": "souls carried",                    "survives_death": false, "rule": "S6, dropped at the bloom" }
+  ],
+  "die_in_arrest_wakes_in_jail": {
+    "condition": "player dies while an arresting guard is in the arrest interaction or in AGGRO from an arrest, AND the killing blow came from a guard",
+    "effect": "you do NOT respawn at your sapwell. You wake in JAIL, sentence already begun.",
+    "note": "Souls' death rule and Morrowind's justice system meet here and neither loses: it is still a death, it still costs your souls, and the world still did the thing the world does."
+  },
+
+  "mid_fight_accrual": {
+    "enabled": true,
+    "rule": "ARBITRATION §1 as amended: crime, witnesses, bounty and faction standing all keep accruing mid-fight. The world does not pause because you drew a weapon.",
+    "batching_banned": true,
+    "batching_note": "Queueing crime events during COMBAT and flushing them when the encounter volume clears is invisible in every test except one — the player kills a bystander, keeps fighting, and the writ that should already be void is still honoured for the rest of the fight. bounty_change must fire on the frame the crime happened."
+  },
+
+  "faction_reactions": [
+    { "faction": "ninth-cohort", "reacts_to": "any imperial bounty",          "threshold": 300,  "consequence": "rank progress frozen", "flag": "faction.ninth-cohort.frozen" },
+    { "faction": "ninth-cohort", "reacts_to": "any imperial bounty",          "threshold": 1200, "consequence": "expulsion", "flag": "faction.ninth-cohort.expelled" },
+    { "faction": "ninth-cohort", "reacts_to": "murder of a Legion soldier",   "threshold": 1,    "consequence": "immediate expulsion, permanent", "flag": "faction.ninth-cohort.expelled" },
+    { "faction": "wet-ledger",   "reacts_to": "theft from a Ledger member or warehouse", "threshold": 1, "consequence": "-2 ranks", "flag": "faction.wet-ledger.demoted" },
+    { "faction": "wet-ledger",   "reacts_to": "any imperial bounty",          "threshold": 2500, "consequence": "expulsion", "line": "You have become expensive.", "flag": "faction.wet-ledger.expelled" },
+    { "faction": "drowned-court","reacts_to": "death_flag count in a settlement you were in", "threshold": 5, "consequence": "not expulsion - they raise their prices and start asking you questions they already know the answers to", "flag": "faction.drowned-court.suspicious" },
+    { "faction": "xul-aneekh",   "reacts_to": "any imperial bounty",          "threshold": 1,    "consequence": "+2 disposition per 500 g of Imperial bounty, capped +12", "disposition_per_gold": 0.004, "disposition_step_gold": 500, "disposition_step": 2, "disposition_cap": 12, "flag": "faction.xul-aneekh.regard" }
+  ],
+  "factions_not_tracking_imperial_crime": ["sap-cutters", "blackwood-company", "dres", "rootkeepers", "shadowscales"],
+  "ar3_note": "The Deep-Kin row is the item's AR-3 contribution: an Imperial bounty makes an entire region's population like you more, which changes hostile_below_disposition checks, which changes which war-brood camps open hostile — a crime committed in Gideon changing a fight in the Stone Forest."
+}

@@ -1,0 +1,417 @@
+{
+  "schema": "elder-souls/input-profiles@1",
+  "id": "input-profiles",
+  "owner": "W1-08 (desktop path + action set) / W1-29 (gamepad + touch profile data)",
+  "binding_sources": [
+    "corpus/88-journeys/RI-JRN03-desktop-controls.md \u00a7A/\u00a7B/\u00a7E \u2014 the closed action set, the default desktop binding, the rebinding model",
+    "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md \u00a7C/\u00a7D/\u00a7G \u2014 the two pad profiles, analog handling, the touch layout",
+    "corpus/20-camera/RI-CAM02 \u00a7A/\u00a7C \u2014 the stick response curve and the movement gait bands"
+  ],
+  "action_set": [
+    "light",
+    "heavy",
+    "roll",
+    "block",
+    "parry",
+    "sprint",
+    "jump",
+    "use_item",
+    "interact",
+    "lock_on",
+    "two_hand",
+    "swap_right",
+    "swap_left",
+    "menu",
+    "crouch",
+    "spell_cycle"
+  ],
+  "action_set_note": "RI-JRN03 \u00a7A names fourteen. `crouch` (AM-W1-15-01, RI-STL01's blocking dependency) and `spell_cycle` (AM-W1-14-02, RI-MAG01 \u00a7C) were added to HARNESS.md \u00a74 by amendment. RI-JRN04 G1 requires every action of the closed set bound in BOTH pad profiles, so all sixteen are bound below.",
+  "held_only": [
+    "block",
+    "sprint"
+  ],
+  "desktop": {
+    "owner": "RI-JRN03 \u00a7B, normative table, transcribed with its three collision rulings applied",
+    "collision_rulings": [
+      "block wins Mouse2 -> heavy = KeyR",
+      "roll wins Space -> jump = KeyX",
+      "parry wins Mouse1 -> lock_on = Tab, with Tab's focus behaviour suppressed"
+    ],
+    "bindings": {
+      "light": [
+        "Mouse0",
+        null
+      ],
+      "block": [
+        "Mouse2",
+        "KeyF"
+      ],
+      "parry": [
+        "Mouse1",
+        "KeyV"
+      ],
+      "heavy": [
+        "KeyR",
+        "Mouse3"
+      ],
+      "roll": [
+        "Space",
+        "Mouse4"
+      ],
+      "sprint": [
+        "ShiftLeft",
+        null
+      ],
+      "jump": [
+        "KeyX",
+        null
+      ],
+      "interact": [
+        "KeyE",
+        "Enter"
+      ],
+      "use_item": [
+        "Digit1",
+        null
+      ],
+      "lock_on": [
+        "Tab",
+        "Mouse1Hold12"
+      ],
+      "two_hand": [
+        "KeyG",
+        null
+      ],
+      "swap_right": [
+        "Digit3",
+        "WheelUp"
+      ],
+      "swap_left": [
+        "Digit4",
+        "WheelDown"
+      ],
+      "menu": [
+        "Escape",
+        "KeyM"
+      ],
+      "crouch": [
+        "KeyC",
+        "KeyZ"
+      ],
+      "spell_cycle": [
+        "KeyT",
+        "Digit2"
+      ]
+    },
+    "spell_cycle_note": "MOVED from KeyR to KeyT. KeyR is `heavy`'s normative primary (RI-JRN03 \u00a7B) and the two collided: buildControlMap() resolves a collision by insertion order, so spell_cycle silently took KeyR and the heavy attack was unreachable on the key the item names. KeyT and Digit2 were both unbound; neither is in RESERVED (Ctrl+KeyT is reserved, bare KeyT is not).",
+    "move": {
+      "forward": [
+        "KeyW",
+        "ArrowUp"
+      ],
+      "back": [
+        "KeyS",
+        "ArrowDown"
+      ],
+      "left": [
+        "KeyA",
+        "ArrowLeft"
+      ],
+      "right": [
+        "KeyD",
+        "ArrowRight"
+      ]
+    },
+    "hold_gate_frames": {
+      "two_hand": 12,
+      "lock_on_secondary": 12
+    },
+    "look": {
+      "deg_per_px_yaw": 0.12,
+      "deg_per_px_pitch": 0.1,
+      "exponent": 1.0,
+      "note": "RI-JRN03 PL8: no additional acceleration, one linear scalar plus an optional exponent defaulting to 1.0. Rates from RI-CAM02 \u00a7A."
+    }
+  },
+  "reserved_controls": [
+    "Ctrl+KeyW",
+    "Ctrl+KeyR",
+    "Ctrl+KeyT",
+    "Ctrl+KeyN",
+    "Ctrl+Shift+KeyI",
+    "F5",
+    "F11",
+    "F12",
+    "AltLeft+F4"
+  ],
+  "reserved_control_refusal": "The bindings hold. That hand belongs to the window, not to you.",
+  "reserved_pad_index": 16,
+  "reserved_pad_index_refusal": "That one answers to the machine before it answers to you.",
+  "pad_profiles": {
+    "souls-default": {
+      "label": "souls-default",
+      "owner": "RI-JRN04 \u00a7C, transcribed",
+      "selected_when": "pointer: fine (a desktop-class pointing device is present)",
+      "buttons": {
+        "interact": 0,
+        "roll": 1,
+        "use_item": 2,
+        "spell_cycle": 3,
+        "block": 4,
+        "light": 5,
+        "parry": 6,
+        "heavy": 7,
+        "menu": 9,
+        "jump": 10,
+        "lock_on": 11,
+        "swap_left": 14,
+        "swap_right": 15
+      },
+      "hold_gate": {
+        "1": {
+          "tap": "roll",
+          "hold": "sprint",
+          "frames": 12
+        },
+        "3": {
+          "tap": "spell_cycle",
+          "hold": "two_hand",
+          "frames": 12
+        },
+        "10": {
+          "tap": "jump",
+          "hold": "crouch",
+          "frames": 12
+        }
+      },
+      "analog_buttons": {
+        "6": "parry",
+        "7": "heavy"
+      },
+      "charge_button": 7,
+      "reserved": {
+        "8": "journal",
+        "12": "quickslot_up",
+        "13": "quickslot_down"
+      },
+      "unbound_always": [
+        16
+      ],
+      "axes": {
+        "move_x": 0,
+        "move_y": 1,
+        "look_x": 2,
+        "look_y": 3
+      },
+      "hold_gate_note": "RI-JRN04 \u00a7C gives index 1 the tap/hold roll/sprint discriminator and index 3 a hold gate for two_hand. The two amendment verbs need pad controls and \u00a7C's table predates them: `spell_cycle` takes index 3's tap (a stray tap cycles a free 0-stamina 0-focus spell instead of changing stance mid-fight, which is the exact rationale \u00a7C gives for gating index 3 at all) and `crouch` takes index 10's hold (tap stays `jump`, \u00a7C's Souls-canonical placement). No listed action is shadowed by a reserved function, which is the direction RI-JRN04 \u00a7C's reservation rule protects."
+    },
+    "souls-handheld": {
+      "label": "souls-handheld",
+      "owner": "RI-JRN04 \u00a7C, second table",
+      "selected_when": "pointer: coarse AND hover: none (a phone; clicking a small Hall stick on a clamped telescopic pad is unreliable and physically moves the phone)",
+      "buttons": {
+        "jump": 0,
+        "roll": 1,
+        "use_item": 2,
+        "interact": 3,
+        "block": 4,
+        "light": 5,
+        "parry": 6,
+        "heavy": 7,
+        "lock_on": 11,
+        "menu": 9,
+        "swap_left": 14,
+        "swap_right": 15,
+        "spell_cycle": 12,
+        "crouch": 13
+      },
+      "hold_gate": {
+        "1": {
+          "tap": "roll",
+          "hold": "sprint",
+          "frames": 12
+        },
+        "3": {
+          "tap": "interact",
+          "hold": "two_hand",
+          "frames": 12
+        }
+      },
+      "secondary": {
+        "interact": 10,
+        "lock_on": 8
+      },
+      "analog_buttons": {
+        "6": "parry",
+        "7": "heavy"
+      },
+      "charge_button": 7,
+      "reserved": {},
+      "unbound_always": [
+        16
+      ],
+      "axes": {
+        "move_x": 0,
+        "move_y": 1,
+        "look_x": 2,
+        "look_y": 3
+      },
+      "hold_gate_note": "\u00a7C's handheld table moves interact to Y-tap and jump to A, keeps L3 as a retained interact secondary and duplicates lock_on onto Back(8). That leaves index 3's hold for two_hand and no home for spell_cycle or crouch, so they take D-pad up/down. The quick-slot cycle reserved on 12/13 in souls-default is dropped here: it is not in the closed action set and a listed action outranks it."
+    }
+  },
+  "default_pad_profile": "souls-default",
+  "analog": {
+    "owner": "RI-JRN04 \u00a7D",
+    "left_stick": {
+      "inner_deadzone": 0.15,
+      "outer_saturation": 0.92,
+      "rescale": "m' = clamp((m - inner) / (outer - inner), 0, 1)",
+      "curve": "linear",
+      "walk_run_threshold": 0.55,
+      "deadzone_conflict_note": "RI-JRN04 \u00a7D binds the inner deadzone at 0.14; RI-CAM02 \u00a7C binds 'idle (deadzone)' at <= 0.15 and its M1 hard-FAILs any yaw at m <= 0.15. 0.15 is used because it satisfies both: RI-JRN04 M-P6 asks only that output magnitude be 0 BELOW 0.14, which 0.15 gives. The outer saturation 0.92 is RI-JRN04's; RI-CAM02 states none. The 0.55 walk/run boundary is stated identically by both and is applied to the RESCALED magnitude, which is what RI-CAM02 \u00a7C's preamble means by 'the post-deadzone movement-stick vector'. Recorded as corpus debt: RI-JRN04 \u00a7D should cite RI-CAM02 rather than restate a different number."
+    },
+    "right_stick": {
+      "inner_deadzone": 0.15,
+      "outer_saturation": 0.95,
+      "curve_exponent": 2.0,
+      "deg_per_frame_yaw_at_full": 3.0,
+      "deg_per_frame_pitch_at_full": 2.0,
+      "invert_pitch_default": false,
+      "deadzone_conflict_note": "RI-JRN04 \u00a7D binds the right-stick inner deadzone at 0.10 and the curve at m'^2.0. RI-CAM02 \u00a7A binds 0.15/0.95/^2.0 fully, including the rescale band; RI-JRN04's row gives an inner deadzone but no outer and no rescale band for this stick, and RI-JRN04's own header cedes camera behaviour to RI-CAM02. The exponent, which is the part RI-JRN04 \u00a7D calls 'the curve', agrees. RI-CAM02's fully specified band is used and RI-JRN04 M-P8's threshold (monotonic, matches sign*m'^2 within 5%) is met against the same m' the build computes. Recorded as corpus debt."
+    },
+    "trigger": {
+      "t_fire": 0.35,
+      "t_release": 0.2,
+      "t_full": 0.85,
+      "rest_tolerance": 0.05,
+      "autozero_frames": 30,
+      "note": "RI-JRN04 G0: `.value` is read for indices 6 and 7 and the game applies its own thresholds. `.pressed` is a UA-determined boolean whose threshold differs between browsers and reading it on a trigger is a defect. Hysteresis (fire 0.35, release 0.20) is mandatory: a single threshold on a Hall trigger double-fires."
+    },
+    "drift_guard": {
+      "band_width": 0.03,
+      "frames": 600
+    },
+    "poll": "navigator.getGamepads() once per requestAnimationFrame; the returned objects are snapshots, never cached references"
+  },
+  "touch": {
+    "owner": "RI-JRN04 \u00a7G",
+    "stick": {
+      "region": "left half",
+      "floating": true,
+      "max_radius_css_px": 90,
+      "note": "T2: the stick originates wherever the thumb lands. A fixed rosette fails the moment the phone is a different size."
+    },
+    "camera": {
+      "region": "right half",
+      "deg_per_css_px_yaw": 0.28,
+      "deg_per_css_px_pitch": 0.22
+    },
+    "min_target_css_px": 44,
+    "min_gap_css_px": 8,
+    "hide_after_ms_when_pad_active": 2000,
+    "buttons": [
+      {
+        "action": "roll",
+        "cx": -171,
+        "cy": -48,
+        "r": 24,
+        "hold_gate": {
+          "tap": "roll",
+          "hold": "sprint",
+          "frames": 12
+        }
+      },
+      {
+        "action": "block",
+        "cx": -151,
+        "cy": -105,
+        "r": 24,
+        "held": true
+      },
+      {
+        "action": "light",
+        "cx": -107,
+        "cy": -148,
+        "r": 24
+      },
+      {
+        "action": "interact",
+        "cx": -49,
+        "cy": -166,
+        "r": 24
+      },
+      {
+        "action": "jump",
+        "cx": -235,
+        "cy": -54,
+        "r": 24
+      },
+      {
+        "action": "parry",
+        "cx": -205,
+        "cy": -140,
+        "r": 24
+      },
+      {
+        "action": "heavy",
+        "cx": -140,
+        "cy": -203,
+        "r": 24
+      },
+      {
+        "action": "use_item",
+        "cx": -54,
+        "cy": -230,
+        "r": 24
+      },
+      {
+        "action": "crouch",
+        "cx": -299,
+        "cy": -61,
+        "r": 22
+      },
+      {
+        "action": "lock_on",
+        "cx": -58,
+        "cy": -293,
+        "r": 22
+      }
+    ],
+    "drawer": {
+      "cx": -360,
+      "cy": -232,
+      "r": 24,
+      "petal_radius": 78,
+      "petal_r": 26,
+      "actions": [
+        "two_hand",
+        "swap_left",
+        "swap_right",
+        "spell_cycle",
+        "menu"
+      ],
+      "note": "T1 permits swap_left/swap_right/two_hand/menu behind ONE drawer control; the other ten are direct. spell_cycle joins them because it is an amendment verb outside RI-JRN04's ten-direct count."
+    },
+    "coords_note": "cx/cy are CSS px offsets from the bottom-right of the SAFE AREA, negative-left / negative-up, so the whole arc moves with env(safe-area-inset-*) and never enters an inset (H3/T8).",
+    "layout_note": "Three arcs about a thumb pivot 40 px in from the safe-area corner: ring 1 (r=132) carries the four verbs a Souls player uses every second \u2014 roll/sprint, block, light, interact; ring 2 (r=196) jump, parry, heavy, use_item; ring 3 (r=260) crouch and lock_on. Radii and angles are chosen so that every target is 44+ CSS px across with 8+ px between neighbours (H11) and every one sits inside the safe area of an 844x390 landscape phone with a 44 px cutout inset (H3/T8). The arithmetic is asserted at construction in game/src/input/touch.js, so a layout edit that violates H11 fails the boot rather than reaching a player's thumb."
+  },
+  "mobile": {
+    "owner": "RI-JRN04 \u00a7F",
+    "orientation": "landscape",
+    "viewport_units": "dvh",
+    "min_text_css_px": 18,
+    "wake_lock": true,
+    "suppress": [
+      "pinch-zoom",
+      "double-tap-zoom",
+      "pull-to-refresh",
+      "text-selection",
+      "long-press-callout"
+    ],
+    "device_class_queries": {
+      "coarse": "(pointer: coarse)",
+      "no_hover": "(hover: none)"
+    },
+    "device_class_note": "H2/L1: device class comes from the pointer/hover media queries and NEVER from the gamepad list, because a pad is absent from getGamepads() until its first button press and the player is holding it."
+  }
+}

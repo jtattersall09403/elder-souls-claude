@@ -1,0 +1,1479 @@
+{
+  "schema": "elder-souls/npc-group@1",
+  "group": "pop-thorn",
+  "id": "pop-thorn",
+  "settlement": "thorn",
+  "generated_by": "tools/world/build-population.mjs",
+  "source": "the household roster in game/data/world/property/thorn.json — these are the people who already owned the objects",
+  "npcs": [
+    {
+      "id": "thorn-factor-0",
+      "name": "Uxithtei",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "thorn",
+      "quarter": "rotted-hall",
+      "household": "thorn-factor-0",
+      "role": "head",
+      "disposition": 33,
+      "interior": "thorn-house-0",
+      "home_interior": "thorn-house-0",
+      "work_interior": "thorn-house-0",
+      "owns_zones": [
+        "thorn.factor0.r0",
+        "thorn.factor0.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "thorn-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "thorn-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "thorn-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-apothecary",
+        "at_building_name": "The Needle Apothecary",
+        "pos": [
+          3826.73,
+          13.31,
+          871.63
+        ],
+        "yaw": 39,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-priest-1",
+      "name": "Shekhei",
+      "race": "argonian",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-priest-1",
+      "role": "head",
+      "disposition": 51,
+      "interior": "thorn-hall",
+      "home_interior": "thorn-hall",
+      "work_interior": "thorn-hall",
+      "owns_zones": [
+        "thorn.priest1.r0",
+        "thorn.priest1.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "thorn-hall",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "thorn-hall",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3842.47,
+          13.31,
+          872.54
+        ],
+        "yaw": 64,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-priest-2",
+      "name": "Ma'shanji",
+      "race": "khajiit",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "thorn",
+      "quarter": "sapwell",
+      "household": "thorn-priest-2",
+      "role": "head",
+      "disposition": 53,
+      "interior": "thorn-trader",
+      "home_interior": "thorn-trader",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.priest2.r0",
+        "thorn.priest2.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-inn",
+        "at_building_name": "The Needle and Charter",
+        "pos": [
+          3839.49,
+          13.31,
+          857.51
+        ],
+        "yaw": 90,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-weaver-3",
+      "name": "Kuxeech",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "rotted-hall",
+      "household": "thorn-weaver-3",
+      "role": "head",
+      "disposition": 44,
+      "interior": "thorn-sapwell",
+      "home_interior": "thorn-sapwell",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.weaver3.r0",
+        "thorn.weaver3.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3843.9,
+          13.31,
+          866.92
+        ],
+        "yaw": 64,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-smith-4",
+      "name": "Kuteekh",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-smith-4",
+      "role": "head",
+      "disposition": 36,
+      "interior": "thorn-hall",
+      "home_interior": "thorn-hall",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.smith4.r0",
+        "thorn.smith4.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-inn",
+        "at_building_name": "The Needle and Charter",
+        "pos": [
+          3838.97,
+          13.31,
+          856.16
+        ],
+        "yaw": 90,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-weaver-5",
+      "name": "S'dashi",
+      "race": "khajiit",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "sapwell",
+      "household": "thorn-weaver-5",
+      "role": "head",
+      "disposition": 48,
+      "interior": "thorn-trader",
+      "home_interior": "thorn-trader",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.weaver5.r0",
+        "thorn.weaver5.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3844.65,
+          13.31,
+          868.26
+        ],
+        "yaw": 64,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-cook-6",
+      "name": "Tlaka-Mota",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "rotted-hall",
+      "household": "thorn-cook-6",
+      "role": "head",
+      "disposition": 48,
+      "interior": "thorn-sapwell",
+      "home_interior": "thorn-sapwell",
+      "work_interior": "thorn-inn",
+      "owns_zones": [
+        "thorn.cook6.r0",
+        "thorn.cook6.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "thorn-inn",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "thorn-inn",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3844.49,
+          13.31,
+          867.11
+        ],
+        "yaw": 64,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-cook-7",
+      "name": "Nuvakh",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-cook-7",
+      "role": "head",
+      "disposition": 45,
+      "interior": "thorn-hall",
+      "home_interior": "thorn-hall",
+      "work_interior": "thorn-inn",
+      "owns_zones": [
+        "thorn.cook7.r0",
+        "thorn.cook7.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "04:00",
+          "to": "08:00",
+          "at": "thorn-inn",
+          "activity": "work"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "thorn-inn",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "thorn-inn",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "04:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-hall",
+        "at_building_name": "The Rotted Hall",
+        "pos": [
+          3820,
+          13.31,
+          859
+        ],
+        "yaw": 0,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-hall's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-smith-8",
+      "name": "Xan-Jel",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "sapwell",
+      "household": "thorn-smith-8",
+      "role": "head",
+      "disposition": 41,
+      "interior": "thorn-trader",
+      "home_interior": "thorn-trader",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.smith8.r0",
+        "thorn.smith8.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3844.19,
+          13.31,
+          869.45
+        ],
+        "yaw": 64,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-smith-9",
+      "name": "Xanxthari",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "rotted-hall",
+      "household": "thorn-smith-9",
+      "role": "head",
+      "disposition": 36,
+      "interior": "thorn-sapwell",
+      "home_interior": "thorn-sapwell",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.smith9.r0",
+        "thorn.smith9.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3843.81,
+          13.31,
+          870.72
+        ],
+        "yaw": 64,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-legionary-10",
+      "name": "Carries-Nets",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-legionary-10",
+      "role": "head",
+      "disposition": 27,
+      "interior": "thorn-hall",
+      "home_interior": "thorn-hall",
+      "work_interior": "thorn-hall",
+      "owns_zones": [
+        "thorn.legionary10.r0",
+        "thorn.legionary10.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "thorn-hall",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "thorn-hall",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "19:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-inn",
+        "at_building_name": "The Needle and Charter",
+        "pos": [
+          3839.47,
+          13.31,
+          859.92
+        ],
+        "yaw": 90,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-apothecary-11",
+      "name": "Ma'nirra",
+      "race": "khajiit",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "sapwell",
+      "household": "thorn-apothecary-11",
+      "role": "head",
+      "disposition": 49,
+      "interior": "thorn-trader",
+      "home_interior": "thorn-trader",
+      "work_interior": "thorn-trader",
+      "owns_zones": [
+        "thorn.apothecary11.r0",
+        "thorn.apothecary11.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3842.89,
+          13.31,
+          869.97
+        ],
+        "yaw": 64,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-keeper-hall",
+      "name": "Jul-Ojel",
+      "title": "Steward",
+      "race": "argonian",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-keeper-hall",
+      "role": "keeper",
+      "disposition": 34,
+      "interior": "thorn-hall",
+      "home_interior": "thorn-hall",
+      "work_interior": "thorn-hall",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "thorn-hall",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "thorn-hall",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-hall",
+        "at_building_name": "The Rotted Hall",
+        "pos": [
+          3820,
+          13.31,
+          859
+        ],
+        "yaw": 0,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-hall's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-keeper-inn",
+      "name": "Neekh-Muul",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-keeper-inn",
+      "role": "keeper",
+      "disposition": 57,
+      "interior": "thorn-inn",
+      "home_interior": "thorn-inn",
+      "work_interior": "thorn-inn",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "10:00",
+          "at": "thorn-inn",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "work"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-gate",
+        "at_building_name": "The Thorn Gate",
+        "pos": [
+          3809.78,
+          13.31,
+          867.59
+        ],
+        "yaw": 321,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-gate's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-keeper-trader",
+      "name": "Xanxul",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": "wet-ledger",
+      "settlement": "thorn",
+      "quarter": "sapwell",
+      "household": "thorn-keeper-trader",
+      "role": "keeper",
+      "disposition": 44,
+      "interior": "thorn-trader",
+      "home_interior": "thorn-trader",
+      "work_interior": "thorn-trader",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "thorn-trader",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "thorn-trader",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-hall",
+        "at_building_name": "The Rotted Hall",
+        "pos": [
+          3820,
+          13.31,
+          859
+        ],
+        "yaw": 0,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-hall's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-keeper-apothecary",
+      "name": "Falura Deep-Root",
+      "title": "Apothecary",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "thorn",
+      "quarter": "rotted-hall",
+      "household": "thorn-keeper-apothecary",
+      "role": "keeper",
+      "disposition": 50,
+      "interior": "thorn-apothecary",
+      "home_interior": "thorn-apothecary",
+      "work_interior": "thorn-apothecary",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "thorn-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "thorn-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "thorn-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "thorn-inn",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-apothecary",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-trader",
+        "at_building_name": "The Boards",
+        "pos": [
+          3844.4,
+          13.31,
+          869.49
+        ],
+        "yaw": 64,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-trader's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-keeper-sapwell",
+      "name": "Dro'kamma",
+      "title": "Rootkeeper",
+      "race": "khajiit",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-keeper-sapwell",
+      "role": "keeper",
+      "disposition": 54,
+      "interior": "thorn-sapwell",
+      "home_interior": "thorn-sapwell",
+      "work_interior": "thorn-sapwell",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "thorn-sapwell",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "thorn-sapwell",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "17:00",
+          "at": "thorn-sapwell",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "20:00",
+          "at": "thorn-sapwell",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "thorn-sapwell",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-sapwell",
+        "at_building_name": "The Thorn Sapwell",
+        "pos": [
+          3823.42,
+          13.31,
+          878.87
+        ],
+        "yaw": 13,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-sapwell's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "thorn-keeper-rootpost",
+      "name": "Rajvakh",
+      "title": "Postmaster",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "thorn",
+      "quarter": "the-boards",
+      "household": "thorn-keeper-rootpost",
+      "role": "keeper",
+      "disposition": 56,
+      "interior": "thorn-rootpost",
+      "home_interior": "thorn-rootpost",
+      "work_interior": "thorn-rootpost",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "thorn-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "thorn-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "thorn-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "19:00",
+          "at": "thorn-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "thorn-rootpost",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "thorn",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-inn",
+        "at_building_name": "The Needle and Charter",
+        "pos": [
+          3839.56,
+          13.31,
+          860.82
+        ],
+        "yaw": 90,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from thorn-inn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    }
+  ],
+  "street_life_note": "Some records in this file carry a `post` block and outdoor `at: null` schedule rows written by tools/world/build-street-life.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
+}
