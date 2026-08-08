@@ -44,5 +44,7 @@
   "finished_at": "2026-08-08T06:35:00Z",
   "verdict": "FAIL 4/10 (min over the four items measured), gate 7.0",
   "single_biggest_gap": "GAP-W1-magic-bolt-cannot-lead-a-body-that-walks \u2014 0 damage from all five damage effects against a body walking laterally at 14 m, full damage still and full damage retreating, full damage at 6 m.",
-  "contention": "node tools/contention.mjs --gate returned GO before every run; no WAIT was proceeded past. One browser for the first four arms; two overlapping for the last three against a ceiling of six. No timing figure is published."
+  "contention": "node tools/contention.mjs --gate returned GO before every run; no WAIT was proceeded past. One browser for the first four arms; two overlapping for the last three against a ceiling of six. No timing figure is published.",
+  "commit": "f39eb60",
+  "carried_in_my_commit": "reports/blog-feed.jsonl is a shared append-only file, so `git commit --only` on it takes the whole working-tree file. Five other agents' lines were sitting in it unwritten when I appended mine and are carried under my message in f39eb60, unaltered (check-append-only passed): critic-w1-04-r4 'The towns got roofs...', and four blog-2026-08-08-e posts (character creation, the province walk, the sabotage-control facility, the interface edges). I tried to amend the message to name them and a neighbour committed first (da73579), so amending was no longer safe. Recorded here instead. The four generated files in the commit (docs/index.html, docs/progress.html, docs/status.json, orchestration/INDEX.md) are the pre-commit hook's own, per rule 17."
 }
