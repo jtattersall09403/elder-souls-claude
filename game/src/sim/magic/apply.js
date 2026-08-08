@@ -947,27 +947,42 @@ function h_demoralise(M, frame, rec, target) {
   // The leash is a distance FROM THE CASTER, so it is measured from where the caster is, not
   // from where the target happens to be standing when the spell lands.
   const leash = clamp(rec.magnitude * perPoint, leashMin, leashMax);
+  // W1-14 r4 — `__breakFleeMotion` WAS A PARTIAL TEARDOWN, and rule 6 names that failure exactly.
+  // It switched off the flee LOOP in `MagicSystem.step` and left these four writes standing, so
+  // `b.fleeLeashM` — `clamp(magnitude x 0.9, 6, 45)`, a pure function of the dial — was still
+  // published through `statusReport()`. A dial census run with `--break=fleeblind` therefore
+  // still read `demoralise`'s magnitude as COUPLED with the motion gone: the two arms differed
+  // in nothing the instrument could see, which is a control that cannot go red. Round 3's
+  // ACTUAL pre-fix behaviour was `fleeingUntil` written and nothing else, so that is what the
+  // teardown restores — the writes below are the fix and the break removes them.
+  const teardown = !!M._fleeDisabled;
   if (b) {
     b.fleeingUntil = frame + rec.remaining_f;
     b.aggro = false;
     b.yielded = true;                            // it is not swinging at you on its way out
     b.move = null;
     b.hitboxActive = false;
-    b.fleeSpeedMps = speed;
-    b.fleeLeashM = r2(leash);
-    b.fleeDistM = 0;
-    b.fleeArrived = false;
+    if (!teardown) {
+      b.fleeSpeedMps = speed;
+      b.fleeLeashM = r2(leash);
+      b.fleeDistM = 0;
+      b.fleeArrived = false;
+    }
   }
   if (c) { c.alert = 0; c.alertState = 'SEARCH'; c.fleeing = true; }
   rec._undo = () => {
     if (b) { b.fleeingUntil = 0; b.yielded = false; b.fleeSpeedMps = 0; b.fleeLeashM = 0; b.fleeArrived = false; }
     if (c) c.fleeing = false;
   };
+  // The number leaves through the event stream and the `moved()` detail as well as through the
+  // body, so the teardown has to close all three doors or a probe reading events would still see
+  // the dial. `null` rather than 0: a suppressed reading is not a measured zero.
+  const pub = teardown ? null : r2(leash);
   M._emit(frame, 'fight_ended', { by: 'demoralise', target: b ? b.id : null, deaths: 0,
-                                  flee_leash_m: r2(leash), flee_speed_mps: speed });
+                                  flee_leash_m: pub, flee_speed_mps: teardown ? null : speed });
   M.raiseFlag(frame, 'fight_ended:demoralise');
   return moved('alert_state + in_combat + the body\'s own position', before, controlCensus(b, c),
-    { deaths: 0, flee_leash_m: r2(leash), flee_speed_mps: speed, magnitude: r2(rec.magnitude) });
+    { deaths: 0, flee_leash_m: pub, flee_speed_mps: teardown ? null : speed, magnitude: r2(rec.magnitude) });
 }
 
 function h_frenzy(M, frame, rec, target) {

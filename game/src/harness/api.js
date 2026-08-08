@@ -30,6 +30,9 @@ import { drawText as drawGlyphText, faceOf } from '../ui/glyphs.js';
 // declaration rather than a second list that could drift from it.
 import { HANDLERS as MAGIC_HANDLERS, DAMAGE_EFFECTS as MAGIC_DAMAGE_EFFECTS } from '../sim/magic/apply.js';
 import { mitigate } from '../combat/resolve.js';
+// W1-14 round 4: the delete-the-fix switch for the shared-statblock weapon copy. See
+// `__breakSummonAlias` below and `combat/enemy.js` §buildEnemyMoves.
+import { __setWeaponAliasing, __weaponAliasing } from '../combat/enemy.js';
 import { mirror as mirrorView } from '../sim/combat-bridge.js';
 import { mergeConsequences } from '../sim/quest/machine.js';
 
@@ -1556,6 +1559,42 @@ export function installHarness(engine, bootPromise) {
      * standing exactly where it was and indistinguishable from `calm_beast`.
      */
     __breakFleeMotion() { engine.magic._fleeDisabled = true; return true; },
+
+    /**
+     * W1-14 round 4 DELETE-THE-FIX #1 — the shared statblock.
+     *
+     * Restores `combat/enemy.js`'s pre-round-4 aliasing: `moves._weapon` becomes the statblock's
+     * OWN object again, so `bindHandler`'s `attack_rating` scaling compounds across casts and
+     * leaks into every later body of that kind. Six identical `bind_lesser` casts must go from
+     * one distinct attack rating to six (191, 424, 941, 2089, 4638, 10296 at magnitude 40).
+     *
+     * A body already on the floor keeps the table it was built with, so this must be armed
+     * before the first summon of the arm — and, because the statblock object itself is what gets
+     * scaled under the break, the arm has to run in its own page. `w1-14-r4-summon.mjs` does
+     * both and says so.
+     */
+    __breakSummonAlias(on) { return __setWeaponAliasing(on === undefined ? true : !!on); },
+    /** Read-only: is the aliasing sabotage armed? So a report cannot mislabel its own arms. */
+    __weaponAliasingArmed() { return __weaponAliasing(); },
+
+    /**
+     * W1-14 round 4 DELETE-THE-FIX #2 — the touch applicator.
+     *
+     * Restores the pre-round-4 volume loop, which had no per-target dedupe, so a `touch` spell
+     * applies once per active frame of its cast class (4 at CANTRIP, 5 at LIGHT, 7 at HEAVY)
+     * instead of once. `damage_health` at magnitude 20 must go from 44 damage back to 176/220/308.
+     */
+    __breakTouchDedupe(on) { engine.magic._volumeDedupeDisabled = on === undefined ? true : !!on; return engine.magic._volumeDedupeDisabled; },
+
+    /**
+     * W1-14 round 4 DELETE-THE-FIX #3 — the door into spellmaking.
+     *
+     * Shuts the commission counter without removing the seven spellwrights, the topic or the
+     * screen, so the control arm is "the player walks to the right person, in the right town,
+     * raises the right subject, and cannot commission anything" rather than "the NPC is not
+     * there". Those are different world-states and only the first one tests the door.
+     */
+    __breakCommissionCounter(on) { engine._commissionDisabled = on === undefined ? true : !!on; return !!engine._commissionDisabled; },
 
     /**
      * W1-16 round 2 DELETE-THE-FIX, as a first-class control arm rather than a `git stash`.

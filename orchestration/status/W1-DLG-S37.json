@@ -1,23 +1,130 @@
 {
   "task_id": "W1-DLG-S37",
+  "title": "Land ARBITRATION S37 — infoFor() becomes first-match-wins, and the merge order becomes declared",
   "role": "builder",
-  "state": "starting",
+  "state": "done",
   "started_at": "2026-08-08",
-  "ruling": "RI-DLG01 §A governs; engine yields. infoFor() becomes first-match-wins in authored file order; scoring deleted, not re-weighted. Topic-file merge order declared in a manifest.",
-  "next_step": "read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention gates",
-  "files_claimed": [
+  "base_commit": "dd63f6c",
+  "measured_at": "dea6517 and later (the tree moved under me — see tree_drift)",
+  "ruling": "corpus/00-doctrine/ARBITRATION.md S37. RI-DLG01 §A governs; the engine yields. Not mine to revisit.",
+  "next_step": "critic round; then the two hand-offs below (stale instruments; the manifest reorder question)",
+
+  "acceptance": {
+    "gate": "node tools/dialogue/arbiter-order-divergence.mjs --gate",
+    "before": "GATE FAIL — 58 resolutions, 37 speaker/topic pairs, 8 topics, exit 1 (reproduced the ruling exactly at session start)",
+    "after": "GATE PASS — first admissible info in authored order on all 42,456 resolutions, exit 0",
+    "self_test_before": "4/4 arms as predicted, exit 0. baseline divergence 1,906,688 / 1,460,324,864 — the ruling's number, reproduced",
+    "self_test_after": "4/4 arms pass, exit 0. ARM 4a now reports the shipped reader agreeing (0 mismatches), which is the documented post-landing behaviour",
+    "sabotage_arm": "reference rule replaced by the shipped rule on a SCRATCH COPY (tools/dialogue/arbiter-* never edited): ARM 2 FAILED, exit 2. Watched going red before I trusted it."
+  },
+
+  "what_i_changed": {
+    "1_selection_rule": "game/src/character/converse.js infoFor(): scoring DELETED (not re-weighted) — `best = info; break;`. The 8/2/4/(1+d/100)/0.5 weights, `bestScore`, and the whole scoring rationale comment are gone. infoAllowed(), the npc-own-line short-circuit, the canon register, the cell prefix match, the actor filter and the entire return literal including `to` are untouched, per the ruling: those are FILTERS, only the CHOICE was in dispute.",
+    "2_declared_merge_order": "game/data/dialogue/topics/_manifest.json — the declared order of all 21 topic files, keyed on the per-file `group`. buildTopicIndex() orders docs by it and by nothing else, so every consumer (engine, gate, census, lint) resolves against one sequence. Registered in game/data/index.json so the engine loads it too.",
+    "3_fail_closed": "A topic file whose `group` is not in the manifest is an ERROR, and a corpus doc list with no manifest is an ERROR. A hand-built fixture with no `group` anywhere passes through untouched, so bare unit tests are unaffected (RULES 13 — deliberately narrow).",
+    "4_order_infos": "tools/dialogue/order-infos.mjs — header rewritten (its stated rationale was written on the losing side and was false as of S37), and `--verify-inert` IMPLEMENTED. It was cited in that header as the proof the reordering was inert and it did not exist anywhere in the file."
+  },
+
+  "the_finding_worth_reading": {
+    "what": "S37 says the merge order was inherited from readdirSync().sort(). It was worse than that: it was inherited from TWO different sorts that disagreed with each other.",
+    "detail": "Every tool built its doc list with readdirSync().sort() — by FILENAME. The engine built its with Object.keys(out.topics).sort() (game/src/engine.js loadData), keyed on `doc.id || basename`. Three of the 21 topic files carry a top-level `id` (06-opening-roots, 45-speaker-coverage, main-quest-argument), so each sat in a different position in the running game than in every instrument pointed at it. 36 of the 92 multi-file topic ids involve one of those three.",
+    "measured": "node tools/dialogue/s37-merge-order-consume.mjs --pre <pre-manifest reader>. Before the manifest: 5,760 of 2,414,880 answers differ in 9 topics between the engine's arrival order and the tools'. After: 0 in 0 topics, and still 0 from a deliberately reversed arrival order.",
+    "example": "soulrest-customs-clerk on `background` said one thing in the game and a different thing in every measurement of the game.",
+    "why_it_matters": "Under the scoring reader this was survivable because order only broke ties. Under first-match-wins the order IS the algorithm, so the shipped game and its own gate were resolving two different corpora."
+  },
+
+  "consumption_RI_MTH07": {
+    "model": "game/data/dialogue/topics/_manifest.json",
+    "world_side_consumer": "Engine.conversationSay() -> character/converse.js infoFor() over buildTopicIndex(this.data.character.topicDocs)",
+    "tool": "node tools/dialogue/s37-merge-order-consume.mjs --pre <path>",
+    "arms": "ARM 1 shipped reader: arrival order inert (0 / 2,414,880, twice). ARM 2 CONTROL, pre-manifest reader: 5,760 differ (engine vs tool order) and 15,460 differ (reversed vs tool order) — WATCHED GOING RED. ARM 3 fail-closed: unlisted file rejected, missing manifest rejected, hand-built fixture still loads.",
+    "result": "exit 0"
+  },
+
+  "delete_the_fix": {
+    "shape": "2x2 — selection rule x declared merge order. Not an inert fix and not two-guards-for-one-defect: the SELECTION RULE moves both numbers on its own, and the manifest moves neither through this instrument (by design — it ratifies the order the tools already used; its effect is on the ENGINE's arrival order, which the gate does not exercise and which the consumption tool above measures separately).",
+    "arms": {
+      "A_scoring_readdir": "gate FAIL 48 (27 pairs, 7 topics); 8 unhearable",
+      "B_scoring_manifest": "gate FAIL 48 (27 pairs, 7 topics); 8 unhearable",
+      "C_firstmatch_readdir": "gate PASS; 13 unhearable",
+      "D_firstmatch_manifest_SHIPPED": "gate PASS; 13 unhearable"
+    },
+    "control_watched_red": "YES — arms A and B both fail the gate. The teardown was verified to actually differ from the shipped file (byte compare + anchor assertion) before it was trusted, so it is not an inert control.",
+    "teardown_location": "scratch copies outside the repo. tools/dialogue/arbiter-* was never edited."
+  },
+
+  "unhearable_infos": {
+    "instrument": "node tools/dialogue/s37-unhearable.mjs — NEW, and it CALLS infoFor() rather than modelling it",
+    "before_scoring": 8,
+    "after_first_match": 13,
+    "delta": "+5",
+    "ruling_predicted": "+6 (8 -> 14) at 63f41ef",
+    "why_5_not_6": "tree drift, not a discrepancy. W1-17-r2 landed 105 INFOs given a body, 20 re-homed, and cut `res`/`q`; speakers went 347 -> 369. Both of my ends are measured with the same instrument on the same tree, so the +5 is internally consistent. The arbiter's own section E independently reports 8 -> 13 on today's tree, so two instruments agree.",
+    "the_five": [
+      "reading-the-count#3   {a:archivist, d:20}      [registered-disputes]",
+      "reading-the-count#4   {a:archivist, cell:blackrose} [registered-disputes]",
+      "the-cutters-terms#3   {a:sapcutter, d:20}      [registered-disputes]",
+      "the-witness#3         {a:clerk, cell:gideon, d:20} [utility-and-standalone]",
+      "the-xanmeers#3        {a:archivist, cell:blackrose} [registered-disputes]"
+    ],
+    "diagnosis": "ALL FIVE are shadowed ACROSS THE MERGE BOUNDARY, not inside a file. In every case a broader same-actor entry in an EARLIER file (50-mainline, 50-factions, 10-global) precedes a more specific entry (`d`, `cell`) in a LATER file (70-disputes, 55-utility). Within each file the order is correct — the corpus is at order-infos' fixed point. order-infos.mjs sorts WITHIN a topic record and structurally cannot see cross-file shadowing, which is where 100% of the remaining §D violations now live.",
+    "corroboration": "tools/dialogue/shadow-audit.mjs independently reports 5 shadows 'audited against the shipped reader; 5 genuinely unreachable'. tools/dialogue/build-graph.mjs reports 5 unreachable INFOs. I do NOT claim build-graph's delta as mine — I have no clean before for it.",
+    "not_repaired": "Deliberately. The ruling prices this cost and says the repair is to reorder the files, and S37 'WHAT THIS DOES NOT DECIDE' item 7 leaves which answer is better to whoever reorders. I landed the cost and named it rather than hiding it."
+  },
+
+  "order_infos_verdict": {
+    "question_asked": "is the authored order order-infos --write produced actually better?",
+    "answer": "Within a file: yes, and it is now verifiable for the first time. Across files: the tool has no opinion at all, and that is where every remaining defect is.",
+    "re_run": "node tools/dialogue/order-infos.mjs reports 0 topic(s) across 0 file(s) out of 353 multi-info topics — the corpus is already at the tool's fixed point from an earlier --write, so --write is a no-op today. I did NOT run --write; there was nothing for it to do.",
+    "the_control_is_no_longer_vacuous": "--verify-inert (implemented this round): 0 of 2,414,880 answers change. --verify-inert --break: 33,030 of 2,414,880 change across 36 topics. Under the old rule authored order decided 0.018% of resolutions in ONE topic, so this measurement could not have come out any other way; it can now.",
+    "the_86_5_percent": "The 86.5%-already-sorted / 13.5%-not figures are from 63f41ef, BEFORE order-infos --write ran. The 13.5% were rewritten then. I cannot cleanly re-judge 'better' against the pre-tool corpus because that corpus also predates W1-17-r2's 125 content changes, and comparing across both would conflate ordering with content. Said plainly rather than fudged."
+  },
+
+  "hand_offs": [
+    {
+      "id": "stale-instruments",
+      "what": "Two dialogue instruments MODEL the deleted scoring rule instead of calling the reader, and are now measuring an algorithm that does not exist.",
+      "detail": "tools/dialogue/critic-reach.mjs hard-codes the 8/2/4/d/0.5 weights at its line 111 and sorts by them at 133. Its output is byte-identical before and after this change (6 unhearable, causes reading 'always outscored' — nothing is outscored by anything now). tools/dialogue/critic-semantics.mjs does the same at its line 81 and now FAILS with 206 divergences, comparing two MODELS while never touching infoFor().",
+      "why_i_did_not_fix_them": "Not my files. W1-17-r2 owns both, has finished, and its published 136 -> 6 headline is measured with critic-reach — repairing it would retroactively move another piece's number, and RULES 22/25 say I do not grade that work. Reported, not touched.",
+      "note": "This is exactly what the W1-17 round-1 critic predicted: 'every instrument in this round was built on the losing side of that disagreement.'"
+    },
+    {
+      "id": "main-quest-argument-vs-50-mainline",
+      "what": "Now that the merge order is declared, the W1-17 round-1 hard fail is a one-line fix — promote main-quest-argument above 50-mainline in the manifest. Recorded as an open question IN the manifest, not taken.",
+      "quantified": "Separately measured: promoting 70-disputes and 55-utility above 50-factions/50-mainline takes unhearable 13 -> 10. It rescues 4 of the 5 newly-dead, creates a new one (the-witness#5), and does not fix the-xanmeers#3. A real lever, not a free one — which is why it is an authoring judgement and not mine."
+    }
+  ],
+
+  "what_i_did_not_do": [
+    "Did NOT run order-infos --write: the corpus is already at its fixed point and there was nothing to write.",
+    "Did NOT repair the 5 newly-unhearable INFOs. The ruling prices them as the accepted cost and leaves the authoring judgement open.",
+    "Did NOT touch tools/dialogue/arbiter-* — the instruments I am measured by. The sabotage arm ran on a scratch copy.",
+    "Did NOT fix critic-reach.mjs or critic-semantics.mjs (see hand-offs).",
+    "Did NOT edit game/src/engine.js. Its Object.keys(out.topics).sort() is now harmless because buildTopicIndex normalises, but the misleading line is still there and is not in my declared files.",
+    "Did NOT investigate tools/lore/canon-consumption.mjs's 1 failing arm ('2 unresolved' in the register). It fails identically for reasons in W1-23 territory and I did not establish a before/after for it.",
+    "NO BROWSER AT ALL. tools/contention.mjs --gate returned exit 3 (5 browser instances, load 4.28/core) at the start and I never ran one. The figure in docs/shots/ was rendered pixel-by-pixel with pngjs, offline.",
+    "Did NOT re-derive the ruling's headline numbers — I re-ran the gate as instructed and reproduced 58/42,456 and 1,906,688/1,460,324,864 exactly before changing anything."
+  ],
+
+  "tree_drift": "A dozen agents are live and the tree moved under me repeatedly. Two consequences worth recording. (1) The gate baseline moved 58 -> 48 mismatches for the SCORING reader between my first run and my 2x2; arms A and B are identical (48/48), which proves the shift was other agents' corpus edits and not my manifest. (2) tools/bank.mjs committed my converse.js MID-EDIT at bf4ec20, in a state with `bestScore` removed from the declaration but still referenced in the loop, so HEAD carried a converse.js that threw ReferenceError for anyone importing it. Confirmed by running it. My working tree was always correct; I committed promptly to repair HEAD. Not a neighbour's fault and not mine — it is RULES 17's documented bank behaviour, recorded so the next agent who sees a broken HEAD knows what it was.",
+
+  "gates_green_after": ["check-data", "check-content", "check-dialogue-topics", "check-quests", "check-prose"],
+  "consumers_swept": "13 buildTopicIndex consumers run after arming the fail-closed assertion (consume, root-coverage, critic-semantics, build-graph, critic-reach, answer-census, shadow-audit, critic-field-census, order-infos, critic-w1-07-r3b, canon-consumption, topic-supply-audit, tribe-census). NONE is broken by the manifest assertion. One WAS, during the change — check-dialogue-topics filters docs on Array.isArray(doc.topics) and dropped the manifest, after which buildTopicIndex fail-closed and took the gate down. Fixed by giving the manifest an empty `topics: []`, which neutralises that whole class of filter. RULES 13, learned the hard way and written into the manifest so it is not relearned.",
+
+  "files_touched": [
     "game/src/character/converse.js",
-    "game/data/dialogue/topic-manifest.json",
+    "game/data/dialogue/topics/_manifest.json",
+    "game/data/index.json",
     "tools/dialogue/order-infos.mjs",
+    "tools/dialogue/s37-unhearable.mjs",
+    "tools/dialogue/s37-merge-order-consume.mjs",
     "orchestration/status/W1-DLG-S37.json",
+    "reports/w1-dlg-s37/",
+    "docs/shots/2026-08-08-w1-dlg-s37-the-reader-stopped-scoring.png",
     "reports/blog-feed.jsonl"
   ],
-  "files_touched": [
-    "orchestration/status/W1-DLG-S37.json"
-  ],
-  "do_not_touch": [
-    "tools/dialogue/arbiter-order-divergence.mjs",
-    "tools/dialogue/arbiter-reference-reader.mjs"
-  ],
-  "notes": []
+  "files_claimed": [],
+  "redundant_with": ["W1-17-r2"],
+  "note_on_overlap": "W1-17-r2 claimed game/data/dialogue/ and tools/dialogue/ as whole directories and touched game/data/index.json. It reached state=done and released its claims (files_claimed: []) before I wrote to any of them. Declared redundant_with rather than left to read as a collision, per RULES 16. The split is clean and was checked, not assumed: W1-17-r2's do_not_touch names 'first-match-wins / ordering — arbiter S37 is ruling', and its residue of 6 'always outscored' INFOs is explicitly S37-dependent and handed to me. I add no NPC records and re-home nothing; it changed no ordering code. Ran node tools/ownership.mjs --for game/data/dialogue/ before touching anything.",
+  "contention": "node tools/contention.mjs --gate exit 3 (WAIT) at start — 5 browser instances, load 4.28 over 4 cores. Honoured: no browser was launched at any point. All work is offline text, data and pngjs."
 }

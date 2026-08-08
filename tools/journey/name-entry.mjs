@@ -79,6 +79,17 @@ const predict = (name) => [...name].filter((ch) => !shadowed(ch)).join('');
 
 const ARM_A = 'Hio-Junnilo';           // h i o j u n l — every character unbound
 const ARM_B = 'Silt-Under-Salt';       // the name the round-1 and round-2 probes used
+// ARM C, added by W1-26 r3 as the acceptance the round was dispatched against: EVERY LETTER OF
+// THE ALPHABET, twice a space and a hyphen, in one 31-character name. Arm B is the historical
+// measurement and has to keep being taken; arm C is the one that cannot be passed by unshadowing
+// thirteen letters and leaving the fourteenth. Verified below to cover a-z rather than trusted.
+const ARM_C = 'Jekq-Vozbnu Twylfax Grimchopeds';
+{
+  const have = new Set([...ARM_C.toLowerCase()].filter((c) => c >= 'a' && c <= 'z'));
+  const missing = [...'abcdefghijklmnopqrstuvwxyz'].filter((c) => !have.has(c));
+  if (missing.length) { console.error(`ARM_C is not a pangram — missing ${missing.join('')}`); process.exit(2); }
+  if (!ARM_C.includes(' ')) { console.error('ARM_C must contain a space: Space is bound to `roll`'); process.exit(2); }
+}
 
 const out = {
   schema: 'elder-souls/name-entry@1',
@@ -88,7 +99,7 @@ const out = {
   question: 'Does the hatch-name a player types on a keyboard reach the census intact?',
   method_deviation: 'the node is reached through censusBegin/censusEnter; every keystroke measured is a real DOM key event into input/real.js with the engine in play-instrumented mode',
   bindings: { bound_letters: boundLetters, bound_digits: boundDigits, space_bound: spaceBound, interact_letters: commitLetters },
-  predicted: { [ARM_A]: predict(ARM_A), [ARM_B]: predict(ARM_B) },
+  predicted: { [ARM_A]: predict(ARM_A), [ARM_B]: predict(ARM_B), [ARM_C]: predict(ARM_C) },
   arms: [],
   passes: [], failures: [],
 };
@@ -116,7 +127,7 @@ try {
   }
   await h.page.evaluate(() => window.__HARNESS.setRenderRate && window.__HARNESS.setRenderRate(0));
 
-  for (const name of [ARM_A, ARM_B]) {
+  for (const name of [ARM_A, ARM_B, ARM_C]) {
     // A fresh scene per arm, so the two differ only in which keys were pressed.
     const opened = await h.page.evaluate((race) => {
       window.__HARNESS.censusBegin({ race });
@@ -159,6 +170,13 @@ try {
     pass('N2', `a name containing bound letters round-trips verbatim (${JSON.stringify(b.name)})`, { got: b.got });
   } else {
     fail('N2', `a name containing bound letters is recorded as ${JSON.stringify(b.got)} — ${b.committed_early ? 'and the scene committed it mid-word' : 'characters are silently dropped'}`, { arm: b, predicted: b.predicted, prediction_held: b.got === b.predicted });
+  }
+  const c = out.arms[2];
+  if (c && c.verbatim) {
+    pass('N3', `every letter of the alphabet round-trips verbatim (${JSON.stringify(c.name)})`, { got: c.got });
+  } else if (c) {
+    const lost = [...new Set([...c.name.toLowerCase()].filter((ch) => /[a-z]/.test(ch) && !String(c.got || '').toLowerCase().includes(ch)))];
+    fail('N3', `a name using every letter came back as ${JSON.stringify(c.got)} — ${lost.length} letter(s) never reached the field: ${lost.join(' ')}`, { arm: c, letters_lost: lost });
   }
   out.prediction_held = b.got === b.predicted;
   if (out.prediction_held) say(`  the prediction made from game/data/input/profiles.json alone holds character for character.`);

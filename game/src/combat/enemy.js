@@ -41,10 +41,42 @@ const SHAPE_OF_ARCHETYPE = {
   slam: 'smash', crit_thrust: 'thrust', grab: 'grab', lash: 'lash', spin: 'spin',
 };
 
-/** Build an enemy's move table from its statblock's declared attacks. */
+/**
+ * DELETE-THE-FIX SWITCH for the copy below (RULES.md #6). `true` restores the pre-round-4
+ * aliasing exactly — `_weapon` is the statblock's own object — so the control arm can be run in
+ * the same browser as the treatment arm rather than by stashing a file on a tree twenty-odd
+ * agents are writing to. Set ONLY by `H.__breakSummonAlias()`; nothing in the game reads it and
+ * nothing else writes it. A body already built keeps whatever it was built with, so the arm has
+ * to be armed before the summon is cast — which is what the probe does.
+ */
+let WEAPON_ALIASING = false;
+export function __setWeaponAliasing(on) { WEAPON_ALIASING = !!on; return WEAPON_ALIASING; }
+export function __weaponAliasing() { return WEAPON_ALIASING; }
+
+/**
+ * Build an enemy's move table from its statblock's declared attacks.
+ *
+ * W1-14 round 4. `_weapon` IS A PER-BODY COPY, and the copy is the whole of this comment.
+ *
+ * `CombatSystem.spawnEnemy` passes `stat.weapon` — the object `loadData()` parsed ONCE out of
+ * `game/data/combat/enemies/<id>.json` and hands to every body of that kind for the rest of the
+ * session. This line used to store that object by reference, and `sim/magic/apply.js`'s
+ * `bindHandler` scales `moves._weapon.attack_rating` in place when a summon is bound. The two
+ * together made a summon's strength PERMANENT AND GLOBAL: six identical casts of one commissioned
+ * `bind_lesser` at magnitude 40 (`power` 2.22) measured 191, 424, 941, 2089, 4638, 10296 —
+ * `drowned_lesser.json`'s own declared 86 multiplied by 2.22 six times — and the statblock never
+ * came back. `hp_max` was constant throughout, because `hpMax` is rebuilt from `stat.hp` on every
+ * spawn, and `hp_max` was the field round 3's AR-1 arm checked, which is why twenty identical
+ * casts had looked identical.
+ *
+ * `combat/moves.js` (§wpn, line ~105) has always copied for the player's roster path and says so
+ * in its own comment; this is the same copy on the path enemies actually take. Copy here rather
+ * than in `bindHandler`, because the aliasing is a property of how a body is built and any future
+ * per-body weapon write — a curse, a corrosion, a broken haft — would have the same defect.
+ */
 export function buildEnemyMoves(stat, data, weapon) {
   const arch = data.clips.archetypes;
-  const out = { _weapon: weapon, _movesetId: `enemy:${stat.id}`, _classKey: stat.id };
+  const out = { _weapon: WEAPON_ALIASING ? weapon : { ...weapon }, _movesetId: `enemy:${stat.id}`, _classKey: stat.id };
   for (const id of Object.keys(stat.attacks || {})) {
     const a = stat.attacks[id];
     const total = a.startup + a.active + a.recovery;

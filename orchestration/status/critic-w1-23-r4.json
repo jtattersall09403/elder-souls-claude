@@ -5,8 +5,12 @@
   "round": 4,
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G",
-  "files_touched": [],
+  "next_step": "E blind attribution test, then one browser session for A (walk to books, press interact, screenshot an open book)",
+  "files_touched": [
+    "orchestration/status/critic-w1-23-r4.json",
+    "tools/lore/critic-w1-23-r4-band.mjs",
+    "tools/lore/critic-w1-23-r4-lor04-lib.mjs"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-23-r4.md",
     "corpus/90-verdicts/wave1/W1-23-r4.json",
@@ -15,5 +19,18 @@
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "notes": "contention --gate reported WAIT at start (4 instances, load 4.60/core over 4.0 ceiling). Doing offline work first."
+  "notes": "contention --gate reported WAIT at start (4 instances, load 4.60/core over 4.0 ceiling). Doing offline work first.",
+  "findings_so_far": [
+    "REPRODUCED: reach 19/19 BOTH, 163/163 texts referenced, self-test 14/14. place-library --check exit 0; the 3 same-room pairs verified pre-existing at e97347f (soulrest-court-steps), not this table.",
+    "REPRODUCED: lor04-validate before/after arms exactly; hand-authored arm byte-identical across arms (77/44/4.5%/22.73%/12.12%) which proves no hand name was touched.",
+    "RENAMES ARE REAL: 521 of 692 people actually renamed between 97bb918 and HEAD; 0 people moved between pop-*.json and authored files, so nothing was reclassified.",
+    "NEW DEFECT: tools/lore/lor04-validate.mjs has NO main guard. Importing it runs the whole validation and exits the importer (exit 1) - the same defect this round found and fixed in place-library.mjs, left in the round other new tool.",
+    "BAND IS NOT STUCK: repairing exactly the 8 names the tool blames lifts it 0 -> 3 (ladder 6), and an apostrophe puts it back to 0 by a different clause. Instrument: tools/lore/critic-w1-23-r4-band.mjs",
+    "x-DENSITY: shipped Jel carries x at 39-42%; the attested 324-name Jel corpus carries it at 14.8%. RI-LOR04 comparison-method 5 demands >=40%, so the item contradicts its own attested table and the round followed the item.",
+    "SEMANTICS: jelCompoundCandidates() is an unfiltered 75x74 root cross-product, so 8 villagers are named on lukiul (a slur), jel (the language), naga, saxhleel (the autonym) and hist.",
+    "B ARM D never presses the button: runLegs() bails at the missing prop, so \"the press opens nothing\" is unearned; and arm C pass predicate is !opened, which does not require the prop to be present.",
+    "CONSUMPTION report is stamped e00e6fe and 11 of the 110 placements landed after it."
+  ],
+  "contention": "gate returned WAIT at start; all work so far is offline. Browser work still to do.",
+  "accidental_touch": "ran tools/uesp/mine-argonian-names.mjs with no args, which rewrote corpus/60-lore/data/argonian-names.json; reverted immediately with git checkout --, tree clean for that path."
 }

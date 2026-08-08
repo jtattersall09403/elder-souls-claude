@@ -812,3 +812,10 @@ export { paletteFor };
 export const SHAPES = B;
 /** box / cyl / ico / part — the four primitives every mesh in this file is assembled from. */
 export const PRIMS = { box, cyl, ico, part, hashStr };
+/**
+ * The whole prop table, id -> [class, builder]. Exported for ONE reason: `buildInterior` catches
+ * a throwing builder and silently substitutes a crate, so no build record can tell you which
+ * builders throw. A probe that can call them one at a time can (round 3's verdict §5(b): 34
+ * instances across 22 rooms were drawing a crate and being counted as built).
+ */
+export const PROPS_TABLE = PROPS;

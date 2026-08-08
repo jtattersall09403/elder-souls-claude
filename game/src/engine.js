@@ -9129,6 +9129,13 @@ export class Engine {
         poise_health: b.poiseHealth, poise_health_max: b.poiseHealthMax,
         stamina: b.stamina, stamina_max: b.staminaMax,
         guard: b.guardRaised, dead: b.dead, yielded: b.yielded,
+        // W1-14 r4. The number a summon's magnitude actually buys, and the number a shared
+        // statblock leaks. `bindHandler` scales `moves._weapon.attack_rating`; until this line
+        // the only field a probe could see was `hp_max`, which is rebuilt from `stat.hp` on every
+        // spawn and is therefore constant WHETHER OR NOT the weapon is aliased. Twenty identical
+        // casts looked identical for three rounds for exactly that reason. `resolve.js:230`
+        // multiplies this by the move's motion value, so it is what a swing is worth.
+        attack_rating: b.moves && b.moves._weapon ? b.moves._weapon.attack_rating : null,
         parley: b.parley ? { grounds: b.parley.grounds, faction: b.parley.faction, rank_required: b.parley.rank_required, gold_price: b.parley.gold_price, true_name_topic: b.parley.true_name_topic } : null,
         dist_m: c.distTo(b), bearing_deg: c.bearingFromPlayer(b),
       })),

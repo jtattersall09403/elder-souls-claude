@@ -80,6 +80,18 @@ git add orchestration/INDEX.md 2>/dev/null || true
 node tools/publish.mjs >/dev/null 2>&1 || true
 git add docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
 
+# The chart font sheared every glyph — 23 characters authored, indexed on a stride of 5 — so each
+# missing character pulled every row below it one pixel left. A sheared `2` is nearer a sound `8`
+# than a sound `2`; published numbers could have been read as different numbers. It survived because
+# nothing threw and a sheared glyph is still a picture of a letter.
+#
+# It was fixed once, in tools/lib/chart-font.mjs. This names anything still carrying the old table.
+# WARNING, NOT BLOCKING: five tools still carry it and four of them belong to live pieces, so
+# arming this would block their owners' commits over a defect they inherited (rule 13). Two of those
+# five were written on the day of the fix, by pasting the broken table in again — which is the whole
+# argument for printing it here, where the next author sees it before they paste.
+node tools/lib/chart-font.mjs --audit-tree 2>/dev/null || true
+
 git diff --cached --name-only --diff-filter=ACMR \
   | grep -Eq '^(corpus/.*RI-.*\.md|corpus/00-doctrine/(subsystems|constants)\.json|tools/corpus-index\.mjs)$' \
   || exit 0

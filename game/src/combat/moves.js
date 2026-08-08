@@ -104,7 +104,12 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   // A COPY: the weapon block is cached per weapon id inside the library, and
   // sim/magic/apply.js's bound-weapon buff writes `moves._weapon.attack_rating` in place. Handing
   // out the cached object would make a temporary enchantment permanent and global.
-  const wpn = roster ? { ...lib.weaponFor(moveset.weapon_id) } : moveset.weapon;
+  // W1-14 r4: the non-roster branch used to hand out `moveset.weapon` BY REFERENCE, which is the
+  // same defect `combat/enemy.js` had — `h_bound_weapon` writes `_weapon.attack_rating` in place,
+  // so a bound-weapon buff on a spine moveset would have edited the loaded document. The spine
+  // path is not reachable from the shipping roster today; copying both branches means it cannot
+  // become reachable and bring the defect back with it.
+  const wpn = roster ? { ...lib.weaponFor(moveset.weapon_id) } : { ...moveset.weapon };
   const classKey = roster ? wpn.class_key : moveset.class_key;
   const out = {};
   const socketA = wpn.socket_a_dist_m;

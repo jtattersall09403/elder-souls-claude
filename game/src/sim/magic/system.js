@@ -842,6 +842,23 @@ export class MagicSystem {
       let touched = false;
       for (const t of targets) {
         if (t.dead) continue;
+        // ONE APPLICATION PER TARGET PER PIECE OF GEOMETRY (W1-14 r4). The projectile loop
+        // fifty lines above has always had this line — `if (t.dead || p.hits.includes(t.id))` —
+        // and the volume loop did not, while `_spawnContact` sets `ticksEveryF: 1` and an active
+        // window of the cast class's own `active` frames. So a `touch` spell re-applied itself
+        // on EVERY active frame: `damage_health` at magnitude 20, declared output 40, measured
+        // 4 applications / 176 damage at CANTRIP, 5 / 220 at LIGHT and 7 / 308 at HEAVY against
+        // 1 / 44 at `target` — 7.7x its own declared output at the range `focusBase()` charges
+        // the CHEAPEST `range_mult` for (0.85 against 1.00). Both censuses prefer `touch`
+        // (`rangeFor`'s order), so a large part of the catalogue was measured through it.
+        //
+        // The `hits` array already existed on the volume record and was already pushed to; it
+        // was written and never read, which is this project's most familiar shape. Reading it is
+        // the whole fix. It is deliberately per-VOLUME and not per-frame: an `area` volume is
+        // `active_f: 6, ticks_every_f: 12` (`_geometryFor`) and therefore ticks exactly once
+        // already, so no area spell's behaviour changes by a single hit point — verified across
+        // all 72 shipped spells, whose only volume geometry is that one shape.
+        if (!this._volumeDedupeDisabled && v.hits.includes(t.id)) continue;
         const dx = t.pos[0] - v.centre[0], dz = t.pos[2] - v.centre[2];
         if (dx * dx + dz * dz <= (v.r + 0.45) * (v.r + 0.45)) {
           v.hits.push(t.id);

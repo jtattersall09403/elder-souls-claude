@@ -409,16 +409,21 @@ export function buildBuilding(b, town) {
   // A wall is not a face of a solid box: it is a slab, and the entry wall is TWO slabs with a
   // lintel over the gap. That is what makes a door a hole you can see through the shape of and
   // what lets the collision set below have the same hole in it.
+  // Every slab this closure adds is named `shellwall`, and nothing else in the building is. That
+  // name is the only way an instrument can ask "how big is the outside" without the roof
+  // overhang, the plinth and a kit mesh parked a metre off the gable inflating the answer —
+  // which is exactly the question RI-WLD13 N1 asks. See `tools/world/w1-04-r4-join.mjs`.
+  const named = (m) => { m.name = 'shellwall'; return m; };
   const wall = (cx, cz, sw, sd, mine) => {
-    if (!mine || !b.enterable) { part(g, box(sw, h, sd, P.wall), cx, h / 2, cz); return; }
+    if (!mine || !b.enterable) { part(g, named(box(sw, h, sd, P.wall)), cx, h / 2, cz); return; }
     const along = sw > sd;
     const span = along ? sw : sd;
     const seg = Math.max(0.4, (span - DOOR_W) / 2);
     for (const s of [-1, 1]) {
       const off = s * (DOOR_W / 2 + seg / 2);
-      part(g, box(along ? seg : sw, h, along ? sd : seg, P.wall), cx + (along ? off : 0), h / 2, cz + (along ? 0 : off));
+      part(g, named(box(along ? seg : sw, h, along ? sd : seg, P.wall)), cx + (along ? off : 0), h / 2, cz + (along ? 0 : off));
     }
-    part(g, box(along ? DOOR_W : sw, Math.max(0.2, h - DOOR_H), along ? sd : DOOR_W, P.wall), cx, DOOR_H + Math.max(0.2, h - DOOR_H) / 2, cz);
+    part(g, named(box(along ? DOOR_W : sw, Math.max(0.2, h - DOOR_H), along ? sd : DOOR_W, P.wall)), cx, DOOR_H + Math.max(0.2, h - DOOR_H) / 2, cz);
     part(g, box(along ? DOOR_W + 0.5 : sd + 0.2, 0.24, along ? sd + 0.2 : DOOR_W + 0.5, P.wood), cx, DOOR_H, cz);
     // The leaf, half open, so a door reads as a door from across the street.
     const leaf = box(DOOR_W * 0.9, DOOR_H - 0.15, 0.12, P.wood);

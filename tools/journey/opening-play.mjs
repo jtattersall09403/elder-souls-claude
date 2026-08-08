@@ -561,7 +561,13 @@ async function walkTo(handle, target, advance, pos) {
       if (!held.length) held.push(KEY.fwd);
     }
     for (const k of held) await handle.page.keyboard.down(k);
-    await advance(Math.max(12, Math.min(120, Math.round(d * 20))), 120000);
+    // W1-26 r3: carry what the WORLD did while the key was held. "moved 0.000 m" says nothing
+    // about why — a body pressed into a crate and a simulation that is not advancing at all
+    // produce the identical number, and the r2 run of this probe reported twenty zeroes with no
+    // way to tell which it had seen. `frames_advanced: 0` is a frozen world and is not a pin.
+    const adv = await advance(Math.max(12, Math.min(120, Math.round(d * 20))), 120000);
+    steps[steps.length - 1].frames_advanced = adv.advanced;
+    steps[steps.length - 1].advance_ms = adv.ms;
     for (const k of held) await handle.page.keyboard.up(k);
     await advance(3, 10000);
   }
@@ -573,5 +579,10 @@ async function walkTo(handle, target, advance, pos) {
     final_dist: Number(Math.hypot(target[0] - p[0], target[2] - p[2]).toFixed(3)),
     final_pos: p.map((v) => Number(v.toFixed(3))),
     reached: Math.hypot(target[0] - p[0], target[2] - p[2]) <= 1.5,
+    // The distinction the r2 run of this probe could not make. A walk that moved nothing across
+    // a world that advanced no frames is a STOPPED WORLD, and calling it geometry sends the next
+    // builder to look at the crates.
+    frames_advanced_total: steps.reduce((a, s) => a + (s.frames_advanced || 0), 0),
+    world_was_running: steps.some((s) => (s.frames_advanced || 0) > 0),
   };
 }
