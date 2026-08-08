@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e37d327`: 543 tools, 153 reference
-items, 35 pieces in flight.
+so it cannot drift. Generated at `e8ccf31`: 545 tools, 153 reference
+items, 34 pieces in flight.
 
-Its purpose is to stop 35+ concurrent agents each paying separately to discover the
+Its purpose is to stop 34+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -162,7 +162,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 12
+### `tools/dialogue/` — 13
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
@@ -176,6 +176,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
 - `tools/dialogue/shadow-audit.mjs` — IS THE SHADOWED LINE DEAD, OR IS THE LINT WRONG ABOUT IT?
 - `tools/dialogue/voice-metrics.mjs` — DOES AN ORDINATOR SOUND LIKE A BEGGAR?
+- `tools/dialogue/w1-17-shot.mjs` — THE PICTURE FOR W1-17: how many things there are to ask about, and how many of them anybody can reach — before this round and after it.
 
 ### `tools/economy/` — 2
 
@@ -561,7 +562,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 94
+### `tools/world/` — 95
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -643,6 +644,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/travel-audit.mjs` — **no header comment**
 - `tools/world/w1-01-r3-probe.mjs` — **no header comment**
 - `tools/world/w1-01-r4-consumption.mjs` — **no header comment**
+- `tools/world/w1-01-r4-crossing-chart.mjs` — THE PICTURE FOR W1-01 ROUND 4: the road out of the capital goes through somebody's house.
 - `tools/world/w1-01-r4-shots.mjs` — Round-4 eye-height comparison shots: one frame per region at a fixed, seeded ground point, so the ground skin and the near-field prop disc can be looked at rath
 - `tools/world/w1-04-consumption.mjs` — **no header comment**
 - `tools/world/w1-04-interior-sweep.mjs` — **no header comment**
@@ -836,7 +838,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-12` | done | none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A | `orchestration/status/critic-w1-12.json` `corpus/90-verdicts/wave1/W1-12-r1.md` `corpus/90-verdicts/wave1/W1-12-r1.json` `tools/combat/critic-w1-12-census.mjs` `tools/combat/critic-w1-12-s22.mjs` `tools/combat/critic-w1-12-chart.mjs` |
 | `W1-01-r4` | building | Crossing arms B (solids off) and C (solids off + deck clamp off) are running in ONE backgr | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` |
 | `W1-17` | building | voice-metrics.mjs (named by game/data/dialogue/speakers.json, absent from the tree — RULES | `orchestration/status/W1-17.json` `game/data/dialogue/topics/` `game/data/dialogue/rumours.json` `game/src/sim/quest/topic-supply.js` `tools/dialogue/order-infos.mjs` `tools/dialogue/answer-census.mjs` |
-| `critic-w1-souls` | writing-verdict | offline arms A/B/C/E first (no browser), then contention --gate, then D (CONSUMPTION) + de | `orchestration/status/critic-w1-souls.json` `corpus/90-verdicts/wave1/W1-SOULS-r1.md` `tools/progression/critic-souls-r1.mjs` |
 | `W1-READABLES-r2` | in_progress | browser proof of the mark reader, then the mainline chain numbers | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/data/world/readables/site-marks.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
 | `W1-16` | building | none -- complete. See notes_for_successor for what is left open. | `orchestration/status/W1-16.json` `game/src/engine.js` `game/src/harness/api.js` `game/src/sim/stealth/system.js` `corpus/20-progression/GAP-W1-skill-and-attribute-scaling-never-reaches-damage.md` `docs/shots/` |

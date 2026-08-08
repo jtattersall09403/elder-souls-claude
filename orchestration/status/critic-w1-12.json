@@ -57,7 +57,8 @@
     "reports/w1-12-critic/speed.json",
     "reports/w1-12-critic/s22.json",
     "docs/shots/2026-08-08-w1-12-critic-the-frames-m3-never-counted.png",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "reports/w1-12-critic/EVIDENCE.md"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-12-r1.md",
@@ -65,7 +66,8 @@
     "orchestration/status/critic-w1-12.json",
     "tools/combat/critic-",
     "reports/w1-12-critic/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "reports/w1-12-critic/EVIDENCE.md"
   ],
   "redundant_with": [
     "W1-12"
@@ -81,5 +83,6 @@
     "A two-sided census perturbation. Mine is x2 only, which is a no-op on a threshold that is already satisfied; six of the 29 no-consumer leaves carry that caveat and are discounted in the headline of 23.",
     "RI-AI05's placement, mix and soul-yield legs. Only the archetype-distinctness leg was measured, because it is the one this piece's own output decides."
   ],
-  "environment_note": "The box ran out of disk mid-run: 27 MB free on a 252 GB volume, from other sessions' scratch trees under /tmp/claude-0/.../scratchpad (r3 2.9G, stage 1.3G, shadowB 996M, pinned 874M, tree-head 853M). I deleted only my own scratch. It cost one tool invocation and no measurement, but a later agent may hit it harder."
+  "environment_note": "The box ran out of disk mid-run: 27 MB free on a 252 GB volume, from other sessions' scratch trees under /tmp/claude-0/.../scratchpad (r3 2.9G, stage 1.3G, shadowB 996M, pinned 874M, tree-head 853M). I deleted only my own scratch. It cost one tool invocation and no measurement, but a later agent may hit it harder.",
+  "commit": "The verdict, both instruments, the chart tool, the picture, this status file and the blog line were swept into e8ccf31 by the W1-04-r3 agent's `git add -A` while I was writing the evidence digest — RULES 17's exact warning, and that agent recorded the sweep in its own commit message. The content is correct and complete in e8ccf31; nothing of mine was lost and nothing of mine was half-written when it landed. reports/w1-12-critic/EVIDENCE.md is committed separately by me afterwards. The nine .json artifacts under reports/w1-12-critic/ are unversioned by reports/.gitignore's own rule (machine artifacts are reproducible from the tool that made them); EVIDENCE.md carries every table they hold, with the command that regenerates each one, in the .md form that gitignore keeps."
 }
