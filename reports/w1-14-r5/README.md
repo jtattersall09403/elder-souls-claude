@@ -256,11 +256,28 @@ which *"attaches numbers and says nothing"*. It attaches `e.text`. **It does not
 exactly as there is none for `INPUT_DROPPED`. Both refusals were on events and neither reached a
 person; the fence was held up as the example and was equally mute.
 
-**Read at the draw call, not at the model.** `getUIState()` does not publish the toast at all —
-it is built inside `ui/system.js`'s HUD model and only leaves through `fillText`. The first
-version of this arm read `getUIState().toast` under `setRenderRate(0)` and reported the fix and
-the teardown as identical, which is an inert control (RULES.md #6's second shape) produced by a
-wrong reader rather than by a wrong fix.
+**Measured at the draw call, both arms:**
+
+| arm | combat bus | on the screen |
+|---|---|---|
+| **fixed** | `INPUT_DROPPED reason: no_focus` | `"Not enough Focus for r5 over-reservoir. It asks 417; you hold 105."` |
+| `__breakRefusalVoice` | `INPUT_DROPPED reason: no_focus` — **identical** | `[]` |
+
+The trace does not move between the arms and the screen does. That is the two halves separated by
+measurement rather than by argument.
+
+**Two wrong readers on the way here, and both produced an INERT CONTROL** (RULES.md #6's second
+shape) rather than a wrong fix — worth writing down because both are traps for anybody measuring a
+HUD in this build:
+
+1. `getUIState()` **does not publish the toast at all**. It is built inside `ui/system.js`'s HUD
+   model and only ever leaves through `fillText`. Reading `getUIState().toast` returns `undefined`
+   for a line that is on the screen — verified by raising one with `H.uiToast('CONTROL LINE')` and
+   finding it in `getRenderedText()` and nowhere in `getUIState()`.
+2. `render/text-register.js` **accumulates**. `getRenderedText()` returns every string drawn since
+   the register was cleared, not the last frame's — so the BROKEN arm, run second, found the FIXED
+   arm's own line still sitting in it and both arms reported speaking. `{ since }` is the
+   register's own cursor and it is what the arm uses now.
 
 ---
 

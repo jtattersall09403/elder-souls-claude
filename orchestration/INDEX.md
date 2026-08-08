@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e75e3eb`: 704 tools, 153 reference
+so it cannot drift. Generated at `1d6578a`: 705 tools, 153 reference
 items, 58 pieces in flight.
 
 Its purpose is to stop 58+ concurrent agents each paying separately to discover the
@@ -713,7 +713,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 131
+### `tools/world/` — 132
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -782,6 +782,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r4-shots.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-offline.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r5-shots.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing-consumption.mjs` — **no header comment**
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
@@ -848,7 +849,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **166 tools have no header comment**, so nobody can tell what they do without
+> **167 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
