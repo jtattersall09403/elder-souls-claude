@@ -498,6 +498,16 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
   // them false, and each arm is measured separately.
   const DO_DOORSTEP = O.doorstep !== false;
   const DO_LAMPS = O.lamps !== false;
+  /**
+   * ROUND 6's OWN SWITCH, so rule 6 can delete THIS round's change rather than round 5's.
+   *
+   * `doorstep: false` cuts the whole derivation and returns the world round 4 shipped — a useful
+   * control, but not a control for anything round 6 did, because round 5's leg was already there
+   * and already passing its own number. `r6: false` keeps round 5's derivation exactly and removes
+   * only what this round added: the standability predicate, the door-table predicate, the door
+   * slide, the entry-side rotation, and the ring start at 0.5 m instead of 1.5 m.
+   */
+  const R6 = O.r6 !== false;
   // `docs` — the settlement documents themselves, so the door can be moved in the ONE place
   // `sim/settlement.js SettlementSystem` reads it from. Optional: a caller that only wants the
   // room sizes (every pre-round-5 tool) passes two arguments and gets round 4's behaviour for the
@@ -592,7 +602,7 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
       // onto entry walls moved doors TOWARDS each other, four pairs of Blackrose doors ended up
       // 1.00 m apart, and re-entry went from 108/5/2 to 96/10/9. A door that opens the wrong
       // building is worse than a door that opens the building you are standing in.
-      if (DO_DOORSTEP && cont && Array.isArray(cont.exterior_spawn)) {
+      if (DO_DOORSTEP && cont) {
         const raw = rawById.get(b.id) || null;
         if (raw && raw.door && !raw.door_declared) raw.door_declared = raw.door.slice();
         // Reset the slide and the entry side before every derivation so this stays idempotent: a
@@ -601,7 +611,22 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
         b.door_along_m = 0;
         if (cont.entry_side !== undefined && cont.entry_side_declared === undefined) cont.entry_side_declared = cont.entry_side;
         if (cont.entry_side_declared !== undefined) { cont.entry_side = cont.entry_side_declared; b.entry_side = cont.entry_side_declared; }
-        if (!cont.exterior_spawn_declared) cont.exterior_spawn_declared = cont.exterior_spawn.slice();
+        // ROUND 6: THIS DERIVATION IS THE ONLY AUTHOR OF THE DOORSTEP.
+        //
+        // `tools/world/build-settlements.mjs` used to emit `exterior_spawn` as `door + 1.8 m in +z`
+        // off the CENTRE door — the exact defect this derivation exists to correct — so the project
+        // held two disagreeing definitions of one value with only the derived one under test. That
+        // is the shape this project has found five times (two soul ledgers, `magic.gold`, a gold
+        // write bypassing its setter, `door_declared` aliasing the live door two hundred lines
+        // above). The generator's version is gone; this one has to be able to author from nothing,
+        // so the record no longer has to declare a doorstep at all. When it does, that value is
+        // still the stash the Y is taken from and still what a cut arm restores.
+        if (!cont.exterior_spawn_declared) {
+          cont.exterior_spawn_declared = Array.isArray(cont.exterior_spawn)
+            ? cont.exterior_spawn.slice()
+            : [b.x, (raw && raw.door_declared && raw.door_declared[1]) || (b.y || 0), b.z];
+        }
+        if (!Array.isArray(cont.exterior_spawn)) cont.exterior_spawn = cont.exterior_spawn_declared.slice();
         doorstepQueue.push({ b, rec, cont, raw });
       }
 
@@ -671,7 +696,7 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
       /** The ring of candidate doorsteps in front of a door, nearest first. */
       const ring = function* (dp, nrm) {
         for (const frontOnly of [true, false]) {
-          for (let rr = DOORSTEP_MIN_OUT_M; rr <= DOORSTEP_RING_MAX_M + 1e-9; rr += 0.25) {
+          for (let rr = (R6 ? DOORSTEP_MIN_OUT_M : DOORSTEP_OUT_M); rr <= DOORSTEP_RING_MAX_M + 1e-9; rr += 0.25) {
             for (let ai = 0; ai < 72; ai++) {
               const step = Math.ceil(ai / 2) * (Math.PI / 36) * (ai % 2 ? 1 : -1);
               const dx = nrm[0] * Math.cos(step) - nrm[1] * Math.sin(step);
@@ -760,8 +785,11 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
             return null;
           };
           const mine = rawById.get(b.id) || null;
-          let hit = pick((x, z) => standable(x, z) && nearestDoor(x, z) === mine);
-          if (!hit) hit = pick(standable);
+          let hit = null;
+          if (R6) {
+            hit = pick((x, z) => standable(x, z) && nearestDoor(x, z) === mine);
+            if (!hit) hit = pick(standable);
+          }
           if (!hit) hit = pick((x, z) => !insideBuilding(plan, x, z, 0));
           let picked, unresolved = false;
           if (hit) {
@@ -797,7 +825,7 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
         // The solids are rebuilt every iteration because sliding a door moves a doorway HOLE, and
         // the hole is the one part of a wall a body can be pushed through.
         solids = settlementSolids(plan, plan.pos ? plan.pos[0] : 0, plan.pos ? plan.pos[2] : 0, 1e9, null);
-        if (iter >= 4) break;
+        if (iter >= 4 || !R6) break;
         const res = derive(false);
         const broken = res.filter((r) => r.cls !== 'own');
         if (!broken.length) break;
@@ -942,7 +970,7 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
       // section is about.
       const solids = settlementSolids(plan, plan.pos ? plan.pos[0] : 0, plan.pos ? plan.pos[2] : 0, 1e9, null);
       const need = BODY_RADIUS_M + BODY_CLEAR_EPS_M;
-      const standable = (x, z) => !insideBuilding(plan, x, z, 0) && horizontalClearance(solids, x, z) >= need;
+      const standable = (x, z) => !insideBuilding(plan, x, z, 0) && (!R6 || horizontalClearance(solids, x, z) >= need);
       if (standable(s0[0], s0[2])) { cont.exterior_spawn = s0.slice(); continue; }
       let picked = null;
       for (let rr = 0.5; rr <= DOORSTEP_RING_MAX_M && !picked; rr += 0.25) {

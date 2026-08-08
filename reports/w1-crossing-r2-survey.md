@@ -147,3 +147,123 @@ the twenty-two walks of §3, and `W1-05`'s journey (§6).
 ---
 
 *(§3 onwards land as the browser sweep completes — this file is written incrementally on purpose)*
+
+## 3. The second cause, which round 1 did not find — and which is not the road
+
+With the overpass removed, `stormhold-helstrom` **still did not walk backwards.** Forwards 2,784.9 m
+and arrives; backwards 3,393.7 m of a 2,827.9 m leg and never arrives, pinned at **(2298.8,
+1842.7)** with `onRoad` true, `onDeck` true, the slope gate never firing, 0 water, 0 teleports, and
+a longest stall of 701 frames against a 900-frame abort. Not drowning, not falling, not blocked by a
+slope — the gate and the slide are both skipped outright when `onRoad` is true (`sim/traversal.js`
+§3 and §6).
+
+### 3.1 The steering is innocent, and I proved it rather than assuming it
+
+`tools/world/w1-crossing-r2-pursue-sim.mjs` transcribes `Engine._pursue` verbatim and drives a
+**kinematic point** — 2 m/s straight at whatever target the loop returns, with no terrain, no
+collision, no gravity, no parapet, no slope gate and no signature landform. If the walk fails there
+it is the pursuit loop, because there is nothing else left.
+
+**All ten legs arrive in both directions.** `stormhold-helstrom` reverse: 2,782.5 m. The largest
+cursor jump anywhere in the network is 2 segments. `_pursue` is acquitted.
+
+### 3.2 What was holding the body: the railing, standing between it and its own road
+
+The leg hairpins at point 120 and the **13 m viaduct on segment 120–121 begins at the apex**. Near
+any corner the two limbs are within a slab's width of each other — that is true of every corner, at
+every turn angle, and no road geometry fixes it. So the deck's slab lies over the earth approach,
+and a body on the approach is `onDeckAt` true at **t = 0.37** of the deck segment: neither end of
+the chain. `clampToDeck`'s last test asks *"is the destination beyond a chain END?"*, the answer is
+no, and every step the body takes toward its own road is read as a step over the **side** and put
+back.
+
+Measured one metre off the slab edge: the carriageway continues at **80.07** against a deck at
+**80.83**. A **0.76 m kerb**, with `onRoadAt` true. That is not a fall off a viaduct; it is stepping
+down a kerb onto the road, and the railing has no business there.
+
+**The fix, in `field.clampToDeck`, deliberately narrow, both halves load-bearing:** let the body go
+if the destination is `onRoadAt` **and** the drop to `naturalHeightAt` (terrain + sites + road
+corridor, **no slab**, no signature landform) is at most `PARAPET_KERB_M`.
+
+### 3.3 The constant is 4 m and it was 1 m first, because the first value was not enough
+
+At `PARAPET_KERB_M = 1.0` — chosen against `traversal.json`'s `step_up_m` 0.55 and the 0.35 m
+airborne threshold — the body was released at the 13 m viaduct and **then pinned 700 m earlier**, at
+(2181.0, 1186.8), against the 22 m viaduct on segments 34–36, whose slab overhangs its own approach
+by **3.12 m**. Same defect, bigger drop. The game's own answer to *"is a 3 m step down a fall"* is
+no: `fall.safe_m` is **4**. So the constant is `fall.safe_m`, it is named and commented as such, and
+the failed first value is recorded in the source rather than quietly replaced.
+
+**This is only safe because of the other half of the fix.** A 4 m exemption would open the railing
+over a road below — except that a slab may no longer stand over a foreign carriageway at all (§1),
+and the overpass census reports **0 offences in 25,071 samples**.
+
+### 3.4 The teardown, with the control watched red
+
+`tools/world/w1-crossing-r2-parapet-trap.mjs`, offline. It sweeps every leg centreline **and ±1, ±2,
+±3 m laterally**, offering a one-frame step along the road in each direction, and counts the places
+where the railing refuses a step onto carriageway within a kerb of the deck.
+
+| arm | traps at 1 m | traps at 4 m |
+|---|---|---|
+| **round-1 parapet** (`tools/world/clamp-before-r2.js` — everything round 1 shipped, without this round's exemption) | **9** | **17** |
+| round-0 parapet (`old-clamp-345dcca.js`, an independent second control) | 9 | 17 |
+| **shipped** | **0** | **0** |
+
+And the railing still works, which is the control for *"did the fix just delete the parapet"*:
+**1,700 of 1,720 straight-over-the-side pushes are still refused, worst drop saved 52.9 m.**
+
+**My first cut of this tool reported zero traps on both arms and zero railing refusals.** It sampled
+the centreline only — the trapped body was **1.97 m off it** — and pushed sideways one eighth of a
+metre, which never leaves a 3.5 m slab. A probe that cannot fail is worse than no probe, and this
+one could not fail in exactly the place it was written for. Both defects are recorded in the tool's
+own comments rather than quietly fixed.
+
+---
+
+## 5. The tautology, replaced — and a number nobody had
+
+Round 1 §B2 is right and it is still right at this tree: **25,071 of 25,071 centreline samples are
+exempt from the slope gate via `onRoadAt`, 100.0000%.** `climb_over_limit` on a centreline is
+structurally zero for any road, any terrain, any commit. The replacement is the critic's own lateral
+sweep, re-taken here, with its **structure-free control column** so the slab artefact is not
+published as terrain:
+
+| lateral offset | gated | refused >40° | worst | **structure-free legs: refused** | **worst** |
+|---|---|---|---|---|---|
+| 0–3 m | 0 | 0 | — | 0 | — |
+| 3.45 m | 17,316 | 9 | 58.61° | **0 / 6,726** | 29.21° |
+| **3.5 m** | 37,151 | 740 | 88.31° | **0 / 14,220** | **32.76°** |
+| 4 m | 39,055 | 1,124 | 88.27° | **4 / 14,414** | 41.89° |
+| 5 m | 49,144 | 1,323 | 88.22° | 41 / 19,621 | 54.75° |
+| 6 m | 49,271 | 692 | 88.21° | 45 / 19,691 | 59.87° |
+
+The 88° figures are the slab artefact and are labelled as such. On ground with no structures near
+it the gate refuses **nothing at all out to 3.5 m** and starts at 4 m.
+
+### 5.1 And the thing rule 8 says to do to a gate: ask it in both directions
+
+`tools/world/w1-crossing-r2-bothways-gate.mjs`. The gate **is not symmetric** — it returns 0 unless
+the step climbs (`if (!(yA > y0)) return 0`), so a 45% descent northbound is a 45% climb southbound.
+Every "worst gradient" figure this project has published is a *longitudinal* gradient off
+`roads.json`'s own point elevations; it is not the quantity the gate reads, which is `heightAt` —
+slabs, site pads and signature landform included — through the secant over 1.5 m.
+
+Swept along every centreline at 0.5 m, in both directions:
+
+| | count |
+|---|---|
+| samples | 50,140 |
+| would refuse walking **forwards** | **102** |
+| would refuse walking **backwards** | **186** |
+| **refused in one direction only** | **288 — every single one** |
+
+worst 62.92° on `stormhold-helstrom` at (2150.9, 1206.4). **Not one of the 288 refuses both ways.**
+
+**Read this correctly, and it is a counterfactual, not a defect.** The carriageway exemption is
+above these lines in `traversal.js`, so none of the 288 bites a body on the road. What the number
+is, is the **size of the thing the exemption is carrying** — and the fact that it is 100%
+one-directional is the cleanest statement of rule 8 this round produced: a quantity that is zero one
+way and 62.92° the other, sampled one way, reads as zero. The three-arm self-test (built road /
+every `deck_span` removed / no roads at all — 78 refusals on the bare hillside, worst 57.3°) proves
+the sweep is measuring the road and not the mountain.

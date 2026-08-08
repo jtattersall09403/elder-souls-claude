@@ -500,10 +500,25 @@ for (const s of SETTLEMENTS) {
         building_yaw_deg: b.yaw_deg,
         exterior_footprint_m: [+(X * 2).toFixed(2), +(Z * 2).toFixed(2)],
         entry_side: 'south',
-        // Where you stand when you come in, and where you stand when you come out. The same
-        // door from both sides.
+        // Where you stand when you come in. Where you stand when you come OUT is NOT here:
+        //
+        // W1-04 ROUND 6 — ONE DEFINITION OF THE DOORSTEP.
+        // This line used to read
+        //     exterior_spawn: [b.door[0], b.door[1], b.door[2] + 1.8]
+        // — the doorstep as 1.8 m north of the door — and `b.door` is the building's CENTRE here,
+        // so it authored a doorstep in the middle of the house. Round 5 corrected that at runtime
+        // in `game/src/render/exterior.js#applyInteriorBounds()`, which derives the doorstep
+        // against the drawn footprints, the collision wall slabs and the town's door table, and
+        // left this line in place. The round-5 verdict called that out as blocking for the next
+        // round: two disagreeing definitions of one value, with only the derived one under test
+        // and the untested one writing the file.
+        //
+        // So the generator no longer authors a doorstep at all. `applyInteriorBounds()` is the sole
+        // author: it creates `continuity.exterior_spawn` when the record does not declare one, and
+        // `world/province.js#setSettlements()` runs it at boot before anything reads it.
+        // `tools/world/w1-04-r6-census.mjs` measures the same numbers with the field stripped as
+        // with it present, which is the check that this deletion changed nothing.
         interior_spawn: [0, 0, +(Z - 1.2).toFixed(2)],
-        exterior_spawn: [+b.door[0].toFixed(2), +b.door[1].toFixed(2), +(b.door[2] + 1.8).toFixed(2)],
       },
       bounds_m: { x: [+(-X).toFixed(2), +X.toFixed(2)], y: [0, +Y.toFixed(2)], z: [+(-Z).toFixed(2), +Z.toFixed(2)] },
       floor_area_m2: +(4 * X * Z).toFixed(1),

@@ -1,0 +1,351 @@
+{
+  "commit": "b4fbd5b",
+  "self_break": false,
+  "arm": {
+    "no_join": true
+  },
+  "findings": [
+    "applyInteriorBounds() counted undefined orphans; there are 3",
+    "113 doorstep(s) inside a footprint, 0 inside a wall slab"
+  ],
+  "mirrors": {
+    "body_radius_m": {
+      "in_render": 0.32,
+      "in_sim": 0.32,
+      "agree": true
+    },
+    "door_reach_m": {
+      "in_render": 2.6,
+      "in_sim": 2.6,
+      "agree": true
+    }
+  },
+  "E": {
+    "what": "which interior records can this loop reach at all — the general form of RULES rule 11",
+    "interior_records": 115,
+    "reached_by_this_census": 115,
+    "in_a_settlement_plan": 112,
+    "orphans": [
+      {
+        "interior": "barge-hold",
+        "settlement": "tidewrack",
+        "has_settlement_document": false,
+        "why": "its declared settlement is not one of the eight documents"
+      },
+      {
+        "interior": "thorn-house-0",
+        "settlement": "thorn",
+        "has_settlement_document": true,
+        "why": "no building row in its town names this interior"
+      },
+      {
+        "interior": "writ-house",
+        "settlement": "tidewrack",
+        "has_settlement_document": false,
+        "why": "its declared settlement is not one of the eight documents"
+      }
+    ],
+    "join_pass_reported": {}
+  },
+  "S": {
+    "what": "is the point leaveInterior() puts the body on a FIXED POINT of the collision solver",
+    "predicate": "insideBuilding() === null AND CollisionCell.distance(x, y+0.90, z) >= BODY_RADIUS_M (0.32)",
+    "tested": 113,
+    "untestable_no_settlement_document": 2,
+    "inside_a_footprint": 113,
+    "in_a_wall_slab": 0,
+    "horizontal_vs_cell_disagreements": 0,
+    "rows": [
+      {
+        "interior": "archon-apothecary",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-apothecary"
+      },
+      {
+        "interior": "archon-guild-office",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-guild-office"
+      },
+      {
+        "interior": "archon-house-0",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-house-0"
+      },
+      {
+        "interior": "archon-house-1",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-house-1"
+      },
+      {
+        "interior": "archon-house-2",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-house-2"
+      },
+      {
+        "interior": "archon-inn",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-inn"
+      },
+      {
+        "interior": "archon-kiln-house",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-kiln-house"
+      },
+      {
+        "interior": "archon-market",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-market"
+      },
+      {
+        "interior": "archon-rootpost",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-rootpost"
+      },
+      {
+        "interior": "archon-shrine",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-shrine"
+      },
+      {
+        "interior": "archon-vat-house",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-vat-house"
+      },
+      {
+        "interior": "archon-ward",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "archon-inn"
+      },
+      {
+        "interior": "barge-hold",
+        "verdict": "no settlement document — untestable",
+        "settlement": "tidewrack"
+      },
+      {
+        "interior": "blackrose-clerk",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-clerk"
+      },
+      {
+        "interior": "blackrose-house-0",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-house-0"
+      },
+      {
+        "interior": "blackrose-house-1",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-house-1"
+      },
+      {
+        "interior": "blackrose-house-2",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-house-2"
+      },
+      {
+        "interior": "blackrose-inn",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-inn"
+      },
+      {
+        "interior": "blackrose-market",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-market"
+      },
+      {
+        "interior": "blackrose-pawn",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-pawn"
+      },
+      {
+        "interior": "blackrose-prison",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-prison"
+      },
+      {
+        "interior": "blackrose-rootpost",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-rootpost"
+      },
+      {
+        "interior": "blackrose-shrine",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-shrine"
+      },
+      {
+        "interior": "blackrose-smithy",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-smithy"
+      },
+      {
+        "interior": "blackrose-warders-hall",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "blackrose-warders-hall"
+      },
+      {
+        "interior": "gideon-apothecary",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-apothecary"
+      },
+      {
+        "interior": "gideon-chapel",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-lowmarket"
+      },
+      {
+        "interior": "gideon-court",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-court"
+      },
+      {
+        "interior": "gideon-grange",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-grange"
+      },
+      {
+        "interior": "gideon-house-0",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-house-0"
+      },
+      {
+        "interior": "gideon-house-1",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-house-1"
+      },
+      {
+        "interior": "gideon-inn",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-inn"
+      },
+      {
+        "interior": "gideon-lowmarket",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-lowmarket"
+      },
+      {
+        "interior": "gideon-rootpost",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-rootpost"
+      },
+      {
+        "interior": "gideon-shrine",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-shrine"
+      },
+      {
+        "interior": "gideon-smithy",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-smithy"
+      },
+      {
+        "interior": "gideon-tollhouse",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "gideon-tollhouse"
+      },
+      {
+        "interior": "helstrom-apothecary",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "helstrom-apothecary"
+      },
+      {
+        "interior": "helstrom-archive",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "helstrom-archive"
+      },
+      {
+        "interior": "helstrom-deep-market",
+        "verdict": "INSIDE A FOOTPRINT",
+        "building": "helstrom-deep-market"
+      }
+    ]
+  },
+  "R": {
+    "what": "pressing interact on the doorstep — which interior does doorAt() hand to useDoor()",
+    "records": 115,
+    "back_in_the_room_you_left": 108,
+    "into_a_different_building": 5,
+    "into_nothing": 2,
+    "rows": [
+      {
+        "interior": "barge-hold",
+        "opens": null,
+        "why": "no settlement document"
+      },
+      {
+        "interior": "blackrose-house-0",
+        "opens": "blackrose-house-1",
+        "dist_m": 0.8
+      },
+      {
+        "interior": "blackrose-inn",
+        "opens": "blackrose-warders-hall",
+        "dist_m": 0.8
+      },
+      {
+        "interior": "blackrose-market",
+        "opens": "blackrose-smithy",
+        "dist_m": 0.8
+      },
+      {
+        "interior": "blackrose-rootpost",
+        "opens": "blackrose-clerk",
+        "dist_m": 0.8
+      },
+      {
+        "interior": "thorn-house-0",
+        "opens": "thorn-gate",
+        "dist_m": 1.8
+      },
+      {
+        "interior": "writ-house",
+        "opens": null,
+        "why": "no settlement document"
+      }
+    ]
+  },
+  "probe": {
+    "rooms_with_meshes": 115,
+    "rooms_with_zero_meshes": 0,
+    "zero_mesh_rooms": [],
+    "meshes_traversed": 15383,
+    "assertion": "a room that traverses zero meshes is a PROBE FAILURE, not a clean result"
+  },
+  "P": {
+    "tolerance_m": 0.6,
+    "predicate_this_round_publishes": "OVERHANG",
+    "why": "RI-WLD13 N1 is footprint containment; the failure it exists to catch is inside geometry that does not fit inside the building. CLEARANCE scores a mesh 1.9 m through a wall as zero, so it cannot see that failure. The item states no per-mesh bar — the 0.6 m predicate is this piece's own instrument — and this round names which one it is using rather than describing one and computing the other.",
+    "overhang": {
+      "meshes": 61,
+      "rooms": 49,
+      "by_label": {
+        "prop:arc_clay_dome": 24,
+        "prop:gid_square_arcade": 3,
+        "prop:hel_shell_roof": 26,
+        "prop:tho_lean_to": 8
+      },
+      "worst": {
+        "room": "helstrom-warders",
+        "label": "prop:hel_shell_roof",
+        "cls": "prop",
+        "out_m": 0.95
+      }
+    },
+    "clearance": {
+      "meshes": 0,
+      "rooms": 0,
+      "by_label": {},
+      "worst": null
+    }
+  },
+  "L": {
+    "what": "authored lights[].pos outside their own room bounds_m — the positions render/interior.js draws and sim/stealth/system.js#syncInteriorLights() feeds the detection model",
+    "lamps_outside_their_room": 0,
+    "rooms": 0,
+    "hearths": 0,
+    "worst": null
+  },
+  "join": {
+    "doors_slid_along_wall": 0,
+    "entry_sides_rotated": 0,
+    "rotated": []
+  }
+}

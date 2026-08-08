@@ -195,6 +195,20 @@ right now). Between these two you should not need to go looking for anything.
     exits non-zero. See `orchestration/TOOL-LOOP.md`.
 25. **Do not judge a blind pack you built.** Two comparisons here were voided for it, and a third
     turned out to be asking a provenance question when the item specifies a quality one.
+
+    **And a pack must contain the artifact under test.** An audio pack was built as a single JSON
+    file of numeric feature vectors — no sound. Its judge said so in its first paragraph: *"Any
+    downstream sentence saying a judge listened to this game's ambience would be false."* It then
+    scored 26/26 and showed **all 26 answers are reproducible by a five-line script with no domain
+    knowledge** — a Euclidean distance over the feature vector, thresholded at a value sitting
+    inside a gap it had described before opening the reveal. A pack of features tests the features.
+    Ship the thing itself: the recording, the text, the picture.
+
+    **The pack must also be able to express the question the item asks.** That same pack asked
+    SAME/DIFFERENT while the item asks which is better, and in 13 of 26 trials both recordings were
+    the same place — so "which is better" was undefined and **no quality verdict could be derived
+    from it at all**. The judge answered the pack's question rather than the dispatch's, and said
+    why. Check that alignment before you spend a judge.
 26. **Report what you could not do as plainly as what you did.** A blocked task honestly reported
     is a result; a silent failure is not. Say under what load every timing figure was taken, or
     publish no timing figure.

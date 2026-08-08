@@ -4,23 +4,26 @@
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
   "commit_at_start": "52cffa1",
-  "next_step": "Shim is healthy: do NOT manufacture a defect (brief scope note, rule 0). Spend budget on (a) full opening on pad alone, (b) six screens open+close on pad with a red control, (c) stick response curve at >=5 deflections over multiple instants, (d) close F3 direction gap, (e) delete the stale NEXT-DISPATCH bullet.",
+  "next_step": "Apply the engine.js:707 fix (move_deadzone 0.15 -> 0), delete-the-fix, run the opening leg, run the shim direction hardening, publish.",
   "findings": [
     "F1 (SETTLED, the brief's central question): the NEXT-DISPATCH note `gamepad-shim.mjs \u2014 does not run, 3/3 crash` is STALE BY TWO ROUNDS. TOOL-COVERAGE-R1 said 3/3 crash; R2 recorded 'gamepad-shim runs (8/8, was 3/3 crash)'; R3 line 370 says **Accept, 12/12**. I ran `node tools/journey/gamepad-shim.mjs --self-test` at 52cffa1: PASS 12/12, exit 0. The note sits under a NEXT-DISPATCH heading that says 'The R1 list below is kept because parts of it are still open' \u2014 this bullet is not one of the open parts.",
     "F2: there is no contradiction with the W1-21-r2 critic. The critic used `__HARNESS.gamepad()` (RealInput.pushGamepadState -> pollGamepad). The shim injects one layer higher, at navigator.getGamepads(). RI-JRN01 \u00a70.1(a) STRUCK the shim reference for reachability legs deliberately and kept it for the descriptor leg. Two instruments, two seams, both alive. Neither is stale.",
-    "F3 (a real, already-identified, uncharged gap I intend to close): TOOL-COVERAGE-R3 line 370 notes the shim's entity-side check is `dist(p0,p1)` \u2014 a SCALAR. A router with inverted axes, or one that walks a fixed heading regardless of stick direction, passes both the green arm and the red control. That is rule 4 territory and it is in my remit."
+    "F3 (a real, already-identified, uncharged gap I intend to close): TOOL-COVERAGE-R3 line 370 notes the shim's entity-side check is `dist(p0,p1)` \u2014 a SCALAR. A router with inverted axes, or one that walks a fixed heading regardless of stick direction, passes both the green arm and the red control. That is rule 4 territory and it is in my remit.",
+    "F4 (NEW, MEASURED, the round's headline): A SECOND DEADZONE. `input/gamepad.js shapeMoveStick()` removes the documented 0.15 inner deadzone and RESCALES the remainder onto [0,1] \u2014 its own comment says the rescale exists 'so there is no dead step at the deadzone edge'. `combat/player.js:994` then applies `locomotion.move_deadzone: 0.15` (declared at engine.js:707) A SECOND TIME to that already-rescaled magnitude. Measured at 52cffa1 on one body in one browser, matched arms: SHIPPED, the body does not move until stick deflection 0.27 (predicted 0.2655 by double application); with move_deadzone set to 0 live, the same body moves at 0.16 and three previously dead deflections come alive (0.16 -> 0.047 m/s, 0.20 -> 0.236, 0.25 -> 0.472). 15% of the live stick range is dead. Only an ANALOGUE device can reach the branch: real.js _pushMove() normalises the keyboard to magnitude 1, and touch.js pre-shapes exactly as the pad does \u2014 so the pad and the touchscreen are the only two devices affected, which is why a keyboard-driven project never saw it."
   ],
   "files_touched": [
     "orchestration/status/W1-GAMEPAD.json"
   ],
   "files_claimed": [
-    "orchestration/status/W1-GAMEPAD.json",
-    "tools/journey/gamepad-shim.mjs",
-    "tools/gamepad/",
-    "reports/w1-gamepad/",
     "docs/shots/",
+    "game/src/engine.js",
+    "orchestration/NEXT-DISPATCH.md",
+    "orchestration/status/W1-GAMEPAD.json",
     "reports/blog-feed.jsonl",
-    "orchestration/NEXT-DISPATCH.md"
+    "reports/w1-gamepad/",
+    "tools/gamepad/",
+    "tools/gamepad/pad-run.mjs",
+    "tools/journey/gamepad-shim.mjs"
   ],
   "not_done": [],
   "contention_note": "node tools/contention.mjs --gate returned GO (2 browser instances, load 2.20/core vs 4.0 ceiling) at start. One browser per instrument, killed by pid. Never pkill."

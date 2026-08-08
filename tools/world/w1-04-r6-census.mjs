@@ -55,10 +55,30 @@ function load(dir) {
 
 const S = load('game/data/world/settlements');
 const I = load('game/data/world/interiors');
-const plans = Object.keys(S).sort().map((id) => EX.planSettlement(S[id], I));
-const join = EX.applyInteriorBounds(plans, I, Object.values(S), {});
+// ---- THE GENERATOR'S SECOND DEFINITION, PROVED GONE -------------------------------------------
+// `--strip-declared-doorstep` deletes `continuity.exterior_spawn` from every record before the
+// derivation runs, which is the world `tools/world/build-settlements.mjs` now generates: it no
+// longer authors a doorstep. If this arm's S and R sections match the shipped arm's, the field the
+// generator used to write was contributing nothing but a second opinion, and deleting it is safe.
+if (has('--strip-declared-doorstep')) {
+  for (const id of Object.keys(I)) {
+    const c = I[id].continuity;
+    if (c) delete c.exterior_spawn;
+  }
+}
 
-const out = { commit: null, self_break: SELF_BREAK, findings: [] };
+const plans = Object.keys(S).sort().map((id) => EX.planSettlement(S[id], I));
+// The delete-the-fix arms, cut through `applyInteriorBounds()`'s own switches rather than by
+// editing a copy of the file, so the arm that runs is the shipped code path with one branch
+// disabled and not a fork of it. `--r5-doorstep` is the control that matters for THIS round: it
+// keeps round 5's derivation entire and removes only what round 6 added.
+const opts = {};
+if (has('--no-doorstep')) opts.doorstep = false;
+if (has('--no-lamp-clamp')) opts.lamps = false;
+if (has('--r5-doorstep')) opts.r6 = false;
+const join = has('--no-join') ? { note: 'the whole join was not run' } : EX.applyInteriorBounds(plans, I, Object.values(S), opts);
+
+const out = { commit: null, self_break: SELF_BREAK, arm: { ...opts, no_join: has('--no-join') }, findings: [] };
 try {
   out.commit = (await import('node:child_process')).execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim();
 } catch { /* not a git tree */ }

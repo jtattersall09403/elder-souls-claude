@@ -704,7 +704,32 @@ export class Engine {
         turn_rate_stationary_dps: 480,
         turn_in_place_threshold_deg: 100,
         turn_in_place_frames: 18,
-        move_deadzone: 0.15,
+        // W1-GAMEPAD — WAS 0.15, AND IT WAS A SECOND DEADZONE ON AN ALREADY-DEADZONED STICK.
+        //
+        // `combat/player.js:994` reads this and idles the body at `mag <= move_deadzone`. By the
+        // time `mag` reaches that line the movement stick has ALREADY been through
+        // `input/gamepad.js shapeMoveStick()` (or `input/touch.js`, which is the same maths),
+        // which removes RI-JRN04 §D's 0.15 inner deadzone and RESCALES what is left onto [0,1] —
+        // and the whole point of that rescale, in shapeMoveStick's own words, is "so there is no
+        // dead step at the deadzone edge". Applying 0.15 again to the rescaled value put the dead
+        // step straight back, one rescale further out.
+        //
+        // Measured, one body, one browser, matched arms (reports/w1-gamepad/pad-run.json,
+        // tools/gamepad/pad-run.mjs C7): with 0.15 here the body did not move until the stick was
+        // at 0.27 of full deflection — not the documented 0.15, and within rounding of the
+        // 0.15 + 0.15*(0.92-0.15) = 0.2655 that double application predicts. Fifteen per cent of
+        // the live stick range was dead, and the first deflection that did anything jumped
+        // straight to 0.57 m/s rather than easing in.
+        //
+        // ONLY AN ANALOGUE DEVICE COULD REACH IT, which is why it survived: `input/real.js
+        // _pushMove()` normalises the keyboard to magnitude 1, so the keyboard never enters this
+        // branch at all. The pad and the touchscreen were the only two devices affected.
+        //
+        // The guard is kept and set to 0 rather than deleted: the deadzone belongs to the device
+        // layer (RI-JRN04 §D, RI-CAM02 §C) and both analogue producers implement it there, but if
+        // a future producer ever hands this line a RAW stick magnitude, this is where it would be
+        // caught, and a live literal is easier to find than a deleted branch.
+        move_deadzone: 0,
         walk_run_threshold: 0.55,
       },
     };
