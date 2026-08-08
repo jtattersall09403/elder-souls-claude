@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `121a19b`: 737 tools, 153 reference
+so it cannot drift. Generated at `a7a5bbf`: 739 tools, 153 reference
 items, 67 pieces in flight.
 
 Its purpose is to stop 67+ concurrent agents each paying separately to discover the
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 36
+### `tools/` — 35
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -87,7 +87,6 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
 - `tools/souls-consumption-ledger.mjs` — WHICH LEDGER DOES A KILL CONSULT?
 - `tools/tmp-bootpub.mjs` — **no header comment**
-- `tools/tmp-w1-touch-spike.mjs` — **no header comment**
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
@@ -190,11 +189,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/capture/settle-shapes.mjs` — **no header comment**
 - `tools/capture/settle.mjs` — the anti-loophole half of S34, and the thing that makes placed captures safe.
 
-### `tools/combat/` — 3
+### `tools/combat/` — 4
 
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
 - `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
+- `tools/combat/w1-12-r2-probe.mjs` — W1-12 ROUND 2 — the builder's instrument.
 
 ### `tools/composition/` — 3
 
@@ -275,7 +275,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 232
+### `tools/harness/` — 233
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -477,6 +477,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
+- `tools/harness/w1-15-r4-lights.mjs` — DOES THE ROOM THE PLAYER SEES AGREE WITH THE ROOM THE GAME SIMULATES?
 - `tools/harness/w1-16-r3-chart.mjs` — THE PICTURE FOR W1-16 ROUND 3: the sword in your hand used to weigh nothing.
 - `tools/harness/w1-16-r3-live.mjs` — W1-16 ROUND 3, the stepping half.
 - `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
@@ -737,7 +738,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 149
+### `tools/world/` — 150
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -771,6 +772,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-deploy-gate-fixture.mjs` — run tools/check-shipped-files.mjs against a real repository that really has an untracked module, and against seven shapes that must NOT trip it.
 - `tools/world/critic-deploy-probe.mjs` — the browser half of the deploy-instrument critique.
 - `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
+- `tools/world/critic-deploy-tmp-diag.mjs` — **no header comment**
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
 - `tools/world/critic-locomotion-probe.mjs` — **no header comment**
 - `tools/world/critic-population-r1-diag.mjs` — **no header comment**
@@ -1064,10 +1066,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-15-r4` | ? | survey engine.fenceQuote, zone data shape, justice/state.js, search.js coverVolumes | — |
-| `W1-12-r2` | building | read spec W1-12-r1.md, ai.json, enemy AI source | `orchestration/status/W1-12-r2.json` |
+| `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
+| `W1-15-r4` | ? | update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4- | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
+| `W1-TOUCH` | measuring | finish the six-profile opening sweep, run the differential, publish docs/play/, blog line, | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `critic-w1-deploy` | running | read RULES.md (done), INDEX.md, then the four subjects | `orchestration/status/critic-w1-deploy.json` |
-| `W1-TOUCH` | building | write tools/touch/touch-run.mjs; legs opening/reach/float/curve/gate/differential | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |
 | `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |

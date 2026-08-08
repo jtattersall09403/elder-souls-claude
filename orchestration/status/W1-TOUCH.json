@@ -1,31 +1,78 @@
 {
   "task_id": "W1-TOUCH",
-  "state": "building",
-  "headline": "The brief's premise is STALE: touch IS wired (main.js -> engine.js -> input/real.js:19 -> touch.js) and real CDP touch events reach it at HEAD. The work is now proving a phone can PLAY.",
+  "state": "measuring",
+  "headline": "The brief's premise is STALE — touch was already wired and real touch events already reached it. Nobody had ever put a finger on the glass and measured, and doing so found two real defects: T5 was two implementations of one rule, and T8's second clause (controls must not overlap the dialogue surface) was never enforced and was violated on 7 of 11 controls.",
   "started": "2026-08-08",
   "commit_at_start": "9a3e1a7",
-  "next_step": "write tools/touch/touch-run.mjs; legs opening/reach/float/curve/gate/differential",
+  "report": "reports/w1-touch-survey.md",
+  "instrument": "tools/touch/touch-run.mjs",
+  "next_step": "finish the six-profile opening sweep, run the differential, publish docs/play/, blog line, commit",
   "findings": [
-    "F1 (CORRECTS THE DISPATCH). `game/src/main.js` does not import touch.js and never needed to. The chain is main.js -> Engine (engine.js:57 imports RealInput) -> input/real.js:19 `import { TouchInput }` -> constructed at real.js:73, attached by `applyDeviceClass('handheld')` at real.js:405, ticked inside the FIXED STEP by sim/step.js:69 -> real.js:466. `git log -S 'import { TouchInput }'` dates the import to 6eb8f04. Grepping main.js for 'touch' proves nothing about whether touch is wired.",
-    "F2 (MEASURED, not argued). A phone-shaped Playwright context (844x390, dpr 3, hasTouch, isMobile, webdriver spoofed false) boots into mode 'play' with an empty query string, reports deviceClass 'handheld', touchState().shown === true, 11 controls laid out, 0 inset violations. A REAL CDP `Input.dispatchTouchEvent` at (200,300) opens a floating stick with origin exactly (200,300); a touchMove to (260,260) gives stick {x:0.667,y:0.444}; touchEnd clears it. Screenshot shows the arc drawn on the title screen.",
-    "F3. docs/play/ is IN SYNC with game/ (`node tools/publish-game.mjs --check` -> 710 files match), so the published copy the owner's phone loads has the same touch path. The 'phone gets no controls at all' symptom is not reproducible at 9a3e1a7.",
-    "F4 (REAL, and fixed by me). T5 was kept by TWO copies of one line: gamepad.js `_applyButtons` and touch.js `tick` each computed `(frame - pressFrame + 1) >= (gate.frames || 12)`. RULES 10. Extracted to `game/src/input/hold-gate.js`; both now call `shouldPromote()`. To be proved by breaking that one file on a copy of the tree and watching BOTH arms go red together."
+    "F1 (CORRECTS THE DISPATCH). `game/src/main.js` does not import touch.js and never needed to. The chain is main.js -> Engine (engine.js:57 imports RealInput) -> input/real.js:19 `import { TouchInput }` -> constructed at real.js:73, attached by `applyDeviceClass('handheld')` at real.js:405, ticked INSIDE THE FIXED STEP by sim/step.js:69 -> real.js:466. `git log -S 'import { TouchInput }'` dates the import to 6eb8f04. Grepping the entry point for a subsystem's name proves nothing about whether it is wired.",
+    "F2 (MEASURED). A phone-shaped Playwright context (844x390, dpr 3, hasTouch, isMobile, webdriver spoofed false) loading game/index.html with NO query string boots into mode 'play', deviceClass 'handheld' (from the media queries, never a UA string), touchState().shown true, 11 controls laid out, 0 inset violations. A real CDP Input.dispatchTouchEvent at (200,300) opens a floating stick whose origin is exactly (200,300).",
+    "F3. docs/play/ is IN SYNC with game/ (publish-game --check: 710 files match), so the published copy the owner's phone loads has the same touch path. The dispatch's symptom is not reproducible at 9a3e1a7.",
+    "F4 (DEFECT, FIXED). T5 was kept by TWO copies of one line — gamepad.js `_applyButtons` and touch.js `tick` each computed `(frame - pressFrame + 1) >= (gate.frames || 12)`. RULES 10. The off-by-one that arithmetic carries was fixed on the pad path by the pad round and nothing would have made touch follow. Extracted to `game/src/input/hold-gate.js`; both callers now call `shouldPromote()`. PROVED two ways: `--serve-patched` changes ONE LINE of hold-gate.js on a copy of the tree and BOTH arms go red together (touch boundary 4 f, pad 4 f); `--break-gate` perturbs the DATA row instead and only TOUCH goes red (pad still 12 f). One code change breaks both, one data change breaks one.",
+    "F5 (DEFECT, FIXED — the round's headline). RI-JRN04 T8 has two clauses and only the first was enforced. `ui/system.js` carried a comment saying 'T8 is upheld by construction' which is true of the safe-area clause and was never true of 'never overlap the dialogue or journal surfaces'. Measured at 844x390 with `hold.hatch-name` open: SEVEN of eleven drawn controls (roll, block, light, jump, parry, heavy, crouch) sat on the dialogue panel's rectangle and covered the right-hand column of the name ledger. A player choosing their hatch-name could not read half the names. Fixed by RULING R2 below; after the fix 0 of 2 drawn controls overlap and the panel stops at 659 px. Delete-the-fix (--break-overlap, both halves at once) reproduces 7 of 11 exactly.",
+    "F6 (MEASURED, answers a question the dispatch asked directly). W1-GAMEPAD's move_deadzone fix DOES cover the touch path, and it is now measured there rather than inferred from a shared code comment. Shipped, the touch stick is alive from deflection 0.16 (14 px of thumb travel); with combat/player.js move_deadzone restored to 0.15 the same finger is dead until 0.30. The exact boundary predicted by double application is 0.15 + 0.15*(0.92-0.15) = 0.2655, which is the 0.27 the pad round measured.",
+    "F7 (INSTRUMENT, RULES 6). The first run of the deadzone control produced two byte-identical arms: `loadState()` rebuilds `engine.combat.d` from the data, so a deadzone written once before the sweep was silently reverted by the first row — an INERT CONTROL, both arms the positive arm. The check reported it as 'either touch never reached that branch, or the control is inert' rather than publishing a null result. The deadzone is now written after every load and read back, and the readback is in the artifact.",
+    "F8 (INSTRUMENT, RULES 4). The first run of the reach leg reported 0/16. `InputPipeline.edges` is a ring that truncates itself at 64 entries inside `latchForStep`, so slicing it by a remembered index silently loses edges, and the record's field is `e.button`, not `e.action`. A probe reporting 0 for that reason is indistinguishable from a build with no touch input at all."
   ],
+  "results": {
+    "T1_actions_reached_on_touch": "16 / 16, counted from InputPipeline.edges — 10 direct, 5 behind the ONE drawer, sprint from the roll control held past the 12-frame gate. Drawer opened and closed by real touch.",
+    "T2_floating_stick": "three drags from (90,300) (300,200) (60,70) — each became the stick centre exactly, and the same finger displacement walked 3.200 / 3.200 / 3.200 m (spread 0.00%). Teardown --break-fixed-stick: 2.000 / 3.200 / 3.200 m, spread 37.5%.",
+    "T4_curve": "linear and graded from deflection 0.16 (0.047 m/s) to 0.55 (1.889 m/s), then the walk/run gait change to 3.200 m/s at 0.60. Fourteen deflections, each sampled at 30/60/90 frames.",
+    "T5_discriminator": "touch and pad give the identical verdict at 4/8/11/12/13/20 frames — roll at <= 11, sprint from 12 — measured on both paths in one page against one implementation.",
+    "T8_overlap": "0 of 2 drawn controls touch the dialogue panel after the fix; 7 of 11 before it.",
+    "T9_multitouch": "four simultaneous real touches all registered: stick + camera + button + button."
+  },
   "rulings": [
     {
       "id": "R1",
       "question": "What does touch do for name entry, given a full-screen keyboard panel is forbidden by RI-JRN01 O8?",
       "decision": "REUSE THE PAD'S ANSWER UNCHANGED — pick from the ledger. No touch-specific code at all.",
-      "why": "character/scene.js `_nameOptions()` already turns every text node (hold.hatch-name, writ.given-name, writ.class-custom-name) into a pick list, and `CensusSurface.step(input)` moves the caret on `input.moveY` and commits on `pressedName('interact')`. Both are DEVICE-NEUTRAL action-layer reads. The touch stick writes moveY through `pipe.setMove` and the arc's `interact` button writes the edge. So the ledger is reachable on touch with zero new code, and the semantics a player learns on a pad transfer exactly, which is T5's whole argument applied to a menu.",
+      "why": "character/scene.js `_nameOptions()` already turns every text node into a pick list, and `CensusSurface.step(input)` moves the caret on `input.moveY` and commits on `pressedName('interact')`. Both are DEVICE-NEUTRAL action-layer reads. The touch stick writes moveY through `pipe.setMove` and the arc's `interact` button writes the edge, so the ledger is reachable on touch with zero new code. An OS keyboard would also cover the entire lower half of a landscape phone, which is where the controls are.",
       "rule": "RULES 0 — decided and recorded, not asked",
-      "reversible_if": "play-testing shows players want a name the ledger does not carry. Then the owed thing is an INLINE (never full-screen, O8) character wheel driven by the same moveY/interact pair — not an OS keyboard, which would also cover the whole lower half of a landscape phone with the controls on it."
+      "made_measured_by": "the check moves the caret TWO ROWS DOWN on the stick first, records which name that lands on, and only then taps interact. It committed hatchName = 'Counts-The-Drowned' — the third row, not the default highlight. A ledger that did not commit would stall at hold.hatch-name forever and T-NAME would go red.",
+      "reversible_if": "play-testing shows players want a name the ledger does not carry — then an O8-compatible INLINE (never full-screen) character wheel driven by the same moveY/interact pair is owed. Never an OS keyboard."
+    },
+    {
+      "id": "R2",
+      "question": "T8 clause 2 is violated — the arc sits on the dialogue panel. Reduce the arc, or shrink the panel?",
+      "decision": "BOTH, and gated on the overlay actually being drawn. While a talking surface is open the arc reduces to exactly the verbs that surface consumes ('interact', 'block'), and the dialogue panel's right edge is pulled in to clear whatever is still drawn.",
+      "why": "S35 already had the mechanism for the READING screens and told it to the INPUT model rather than filtering in the renderer, because layout() feeds the hit test as well as the drawing. A conversation is the mirror case: two verbs ARE live and eight are swallowed. Reducing alone leaves `block` on the panel; shrinking alone would leave the panel at 45% of the frame. The drawer goes with the rest — S35 kept it because a player who opens the map and cannot close it is trapped, and nobody is trapped in a conversation.",
+      "rule": "RULES 0 — decided and recorded, not asked",
+      "safety": "UILayer.touchClearRightX is null on every desktop frame, so a keyboard player's panel geometry is byte-identical; there is a 45%-of-frame floor so a badly-placed arc can shrink the reading surface but never collapse it.",
+      "reversible_if": "a critic finds a talking surface whose verb set is larger than ['interact','block'] — a shop, a barter screen, anything wanting use_item. Then the keep-list should come FROM the surface rather than be a literal in Engine._touchTalkSuppression(). That is the right eventual shape and it is not built because nothing in the tree needs it yet."
     }
+  ],
+  "teardowns_watched_going_red": [
+    "--break-deaf (pointerdown/pointermove swallowed in the capture phase): EVERY touch leg goes red — the title will not navigate, the walk moves 0 m, the tap does not open the scene. This is the control on the one claim everything rests on.",
+    "--break-fixed-stick: the stick origin pinned to a rosette — same finger displacement gives 0.467/0.619/0.977 stick and a 37.5% walk spread.",
+    "--serve-patched: ONE line of game/src/input/hold-gate.js changed on a copy of the tree — BOTH the touch arm and the pad arm go red together.",
+    "--break-gate: the touch DATA row changed instead — only the touch arm goes red, the pad stays at 12 f.",
+    "--break-overlap: both halves of the T8 fix deleted on the live page — 7 of 11 controls back on the panel, named.",
+    "curve arm B: move_deadzone restored to 0.15 AFTER EVERY loadState with the readback asserted — three previously live deflections go dead (0.16/0.20/0.25 -> 0.000 m/s)."
+  ],
+  "source_changes": [
+    "game/src/input/hold-gate.js (NEW) — the tap/hold discriminator, one implementation",
+    "game/src/input/gamepad.js — import + one call replacing the inline expression",
+    "game/src/input/touch.js — import + one call; `keepOnly` field and its use in layout()",
+    "game/src/engine.js — `_touchTalkSuppression()`, sets `t.keepOnly` and `renderer.ui.setTouchClearRight()`, reports `reduced_to_by_talking`",
+    "game/src/render/ui.js — `setTouchClearRight()` and the panel's right edge"
   ],
   "files_touched": [
     "orchestration/status/W1-TOUCH.json",
     "game/src/input/hold-gate.js",
     "game/src/input/gamepad.js",
-    "game/src/input/touch.js"
+    "game/src/input/touch.js",
+    "game/src/engine.js",
+    "game/src/render/ui.js",
+    "tools/touch/touch-run.mjs",
+    "reports/w1-touch-survey.md",
+    "docs/shots/2026-08-08-w1-touch-before-the-thumb-ring-covered-half-the-name-ledger.png",
+    "docs/shots/2026-08-08-w1-touch-phone-844x390-01-in-the-hold.png",
+    "docs/shots/2026-08-08-w1-touch-phone-844x390-02-the-scene.png",
+    "docs/shots/2026-08-08-w1-touch-phone-844x390-03-the-desk.png"
   ],
   "files_claimed": [
     "tools/touch/",
@@ -34,7 +81,16 @@
     "reports/blog-feed.jsonl",
     "docs/play/"
   ],
-  "overlap_note": "game/src/input/gamepad.js was last edited by W1-GAMEPAD, whose status file reads state 'done'. My edit there is two lines: an import and one call replacing an inline expression, in the block its own F-notes describe. Nothing else in that file is touched.",
-  "contention_note": "node tools/contention.mjs --gate returned GO (1 browser instance, load 0.52/core) at start.",
-  "not_done": []
+  "overlap_note": "game/src/input/gamepad.js was last edited by W1-GAMEPAD, whose status file reads state 'done'; my edit there is an import and one call in the block its own F-notes describe. game/src/engine.js and game/src/render/ui.js are shared files — my engine edit is one new method plus three lines inside `_touchOverlayModel()`, and my render/ui.js edit is one new setter plus the panel's right-edge expression, which is a no-op unless a touch arc is on the glass.",
+  "contention_note": "node tools/contention.mjs --gate returned GO before every browser run (1-2 instances, load 0.5-1.0 per core against a 4.0 ceiling). One browser per tool invocation, closed by the tool. Never pkill.",
+  "not_done": [
+    "NO FIGHT WAS MEASURED ON TOUCH. Every verb a fight needs is reachable (T1 16/16) and the roll/sprint discriminator is the pad's to the frame, but nobody has swung, rolled and blocked against a live enemy with a finger. The claim 'a phone can play a Souls-shaped fight' is NOT established by this round and must not be read out of it. RI-JRN04 T10's 'one complete quest' is likewise unmeasured.",
+    "T3 (camera drag with §D's curve applied to drag velocity) is exercised — the camera pointer role registers and multi-touch counts it — but the CURVE on the drag is not measured. RI-JRN04 M-P8's degrees-per-fixed-step check has not been run on the touch path. The pad round did not measure its right stick either, so nobody has measured camera response on any analogue device.",
+    "T6 (charged heavy thresholded on hold duration) is NOT MEASURED, and my first reading of it was wrong so the correction is recorded here. `TouchInput.tick` sets `pipe.chargeIntent = 1` whenever `heavy` is held with no duration test, which looks like a missing threshold — but `chargeIntent` DEFAULTS to 1 for every digital control (pipeline.js:62; only a pad ever lowers it), and the duration threshold lives in `combat/player.js _chargeTick`, which promotes r2 -> r2.charged only if `heavy` is still held at frame 9 of the move. So T6 is implemented, in the combat layer, and I did not put a finger on it. Nobody has.",
+    "T7/M-P22 (controls vanish within 2 s of the last touch while a pad is active, and return on touch) is not measured. The machinery is there (`hideAfterFrames`, `setPadActive`) and untested by me.",
+    "H3/T8 clause ONE is only measured with ZERO insets. `insetViolations` is 0 in every profile, but no run sets M-P17's {top:0, right:44, bottom:21, left:44} cutout — the harness supports it via setViewport and I did not use it, because the opening legs deliberately take no viewport override at all.",
+    "The tablet portrait profile (820x1180) gets a rotate state because `deviceClass` is 'handheld' for any coarse-pointer no-hover device. Whether a TABLET should be told to rotate is a design question I did not rule on.",
+    "No real device. Everything is headless Chromium with hasTouch/isMobile and SwiftShader. Frame budgets (RI-PLT01/02 at the phone profile, M-P25) are untouched by this round.",
+    "DECLARED CONSEQUENCE OF RULING R2, not measured: with the arc reduced to ['interact','block'] while somebody is talking, the drawer goes too — and `menu` lives in the drawer. So on touch there is no way to open the pause menu MID-CONVERSATION. I judged that acceptable because a conversation always ends on `interact` and the census steps back on `block`, so nobody is trapped, which is the test S35 set. I did not measure whether the menu is even consumable during a conversation (`UISystem.step()` swallows the action set while a surface is up), and I should have. If it is, the keep-list owes a third entry."
+  ]
 }
