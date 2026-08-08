@@ -106,7 +106,31 @@
     "verify-live-site (716 files, live)": "3 NOT retrievable — all three staged-not-committed, see P11. Plus a drift on index.html, which is mine: I have edited game/index.html and not yet committed it.",
     "verify-links (live)": "game OK (1 internal link). landing OK (3 internal, 1 off-site). blog BROKEN — 12 images 404 (reports/wld12-blind/f12..f23.png). No off-prefix href anywhere, so the Pages root-publish switch did NOT break a relative path, which was the thing the brief expected to be broken.",
     "verify-links (local, same tree)": "PASS before the untracked check was added, FAIL after it — 12 UNTRACKED. That pair is the whole point: the local check and the live check disagreed on the same tree, for exactly the reason black screen #1 happened.",
-    "verify-playable (live)": "see reports/playability/live.json and the SLOW-vs-BLANK note in P9/P10."
+    "verify-playable (live) — THE HEADLINE": {
+      "what_it_means": "A real browser executed the DEPLOYED bytes and the published game is not black. Two phone shapes completed the opening on real touch events with no keyboard at all.",
+      "commit_of_the_deployed_bytes": "the live site as of 2026-08-08 ~11:00; instrument at f71088d",
+      "load_when_taken": "11.8 rising to ~20 over 4 cores, on a box running other agents' browsers. Rule 26: every boot figure below is under that load and is not a claim about a phone's own speed.",
+      "rows": {
+        "phone-small-portrait 360x740 @3x": "PLAYS — boot 58 s, 91.8% of the frame lit across 100% of the screen, picture moving, OPENING COMPLETED ON TOUCH IN 35.8 s",
+        "phone-large-landscape 932x430 @3x": "PLAYS — boot 56 s, 95.3% lit across 100% of the screen, picture moving, OPENING COMPLETED ON TOUCH IN 38.0 s",
+        "desktop-1440 1440x900": "drew 95.0% across 100% of the screen and moved — the row failed only because MY keyboard leg pressed Enter once and gave up. Fixed: the leg now tries the keys the README documents (Enter, E, Space) and reports which one worked, because 'only one of the two documented keys starts the game' is itself a finding.",
+        "tablet-landscape": "in flight when this was written"
+      },
+      "artifact": "reports/playability/live.json",
+      "pictures": [
+        "docs/shots/2026-08-08-playability-the-published-link-playing-on-a-phone-in-the-barge-hold.png — the deployed game, on a large phone in landscape, in the barge hold, eleven touch controls drawn, the woman on the other bench",
+        "docs/shots/2026-08-08-playability-the-live-game-on-a-phone-a-503-reported-as-a-missing-file.png — the same link, minutes earlier, refusing to start because of P10"
+      ]
+    }
+  },
+
+  "defect_P12": {
+    "id": "P12",
+    "where": "tools/world/verify-playable.mjs — a coupling that commit a52113c would have broken silently",
+    "what": "the pixel reading was gl.readPixels on the game's own canvas, which only works while the renderer sets preserveDrawingBuffer. a52113c turned that off for players — correctly, a second full-size buffer with antialias is a known way to lose a phone's GL context — and this tool runs as a PERSON on purpose (webdriver spoofed false, so main.js takes the real resize path). From that commit onward it would have read all-zero from a game drawing perfectly and reported a black screen forever.",
+    "fixed": true,
+    "fix": "two layers. First a guard: it asks getContextAttributes and, if the buffer is not preserved, reports UNMEASURED with the reason instead of reporting black — a silent false negative turned into a loud one. Then the real fix: the measurement now comes from a SCREENSHOT, drawn into a 2-D canvas in the page and reduced on the same grid. That is the composited page, which is what the question was always about, it includes HTML overlays like the boot notice, nothing inside the page can flatter it, and it has no relationship to the WebGL context at all. The GL read remains as a fallback and the run says which it used.",
+    "caught_by": "watching a neighbour's commit go past in `pgrep -a git` while waiting for the index lock. It was not caught by any check."
   },
 
   "rule_4_sabotages": [
