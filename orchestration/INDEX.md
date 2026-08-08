@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `402d01a`: 601 tools, 153 reference
+so it cannot drift. Generated at `c483325`: 601 tools, 153 reference
 items, 45 pieces in flight.
 
 Its purpose is to stop 45+ concurrent agents each paying separately to discover the
@@ -913,9 +913,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `critic-w1-14-r3` | running | finish parts H/C/D, then A and F; write verdict md+json; blog line; commit | `orchestration/status/critic-w1-14-r3.json` `tools/harness/critic-w1-14-r3.mjs` `reports/critic-w1-14-r3/` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
-| `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `W1-SAVE-AI` | in_progress | land the fix in save/fight.js + combat/ai.js + combat/enemy.js, then verify in one browser | `orchestration/status/W1-SAVE-AI.json` |
 | `W1-16-r3` | building | implement _handWeight() in engine.js; route right/left equips through setLoadout; seed _eq | `orchestration/status/W1-16-r3.json` |
 | `W1-17-r2` | building | res consumption arm; voice-metrics second_regex; orphans bucket; S37 invariance tool; blog | `orchestration/status/W1-17-r2.json` `tools/dialogue/answer-census.mjs` `tools/dialogue/critic-reach.mjs` `tools/dialogue/rehome-actors.mjs` `tools/dialogue/w1-17-r2-deletefix.mjs` `game/data/npcs/pop-trades.json` |
