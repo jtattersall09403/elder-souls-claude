@@ -73,6 +73,34 @@ const say = (s) => process.stdout.write(s + '\n');
 //            town, entities in the arena. Not the value. An arena with no bodies in it makes
 //            every alert_state comparison vacuously equal, and that is a VACUOUS verdict here,
 //            never a demonstration and never a paper cell.
+
+// ---------------------------------------------------------------------------------------------
+// THE ALERT OBSERVABLE, READ FROM THE ACCESSOR THAT ACTUALLY CARRIES IT.
+//
+// The first live run of this file put six cells at INERT and four at VACUOUS, and it was WRONG
+// about how it got there. `listEntities()` returns `{eid, kind, archetype, pos, hp}` and carries
+// NO `alert_state` and NO `side` (game/src/engine.js:8764). Every probe reading
+// `e.alert_state || e.alert || '?'` was therefore comparing the string `?` against the string
+// `?` in both arms — an INERT verdict manufactured by the instrument, not observed in the build.
+// That is the exact defect this whole piece exists to catch, and it caught itself.
+//
+// `alert_state` lives on `getEncounterState(id).members[]` and nowhere else, and it needs a real
+// encounter: `spawnEncounter(id, x, z)` from `game/data/world/encounters.json`. So every
+// alert-based probe now spawns one, and `support` is the number of MEMBERS the encounter
+// actually produced — which is what makes an empty arena VACUOUS rather than a pass.
+const ALERT_HELPER = `
+  function alertArena(H, encId) {
+    var sp = null;
+    try { sp = H.spawnEncounter(encId, 12, 0); } catch (e) { return { members: [], error: String(e && e.message || e) }; }
+    var st = null;
+    try { st = H.getEncounterState(encId); } catch (e) { return { members: [], error: String(e && e.message || e) }; }
+    return { members: (st && st.members) || [], spawned: sp && sp.eids ? sp.eids.length : 0 };
+  }
+  function alertValue(m) {
+    return m.map(function (x) { return x.eid + ':' + x.alert_state + ':' + (x.aggroed ? 'A' : '-'); }).sort();
+  }
+`;
+
 const PROBES = [
   {
     cell: 'TOD->ROS', tier_claimed: 'mechanical',
@@ -106,19 +134,16 @@ const PROBES = [
     cell: 'SPL->ROS', tier_claimed: 'mechanical',
     mechanism: 'Calm / Paralyse / Command remove an enemy from an encounter without killing it',
     observable: 'enemy leaves AGGRO with no death event; or never enters it',
-    scenario: 'arena_flat',
+    scenario: 'arena_flat', encounter: 'wl-slitherfang-lone',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      const before = H.listEntities();
-      const foes = before.filter((e) => e.side === 'E' || e.kind === 'enemy');
-      if (foes.length) H.aggro(foes[0].eid !== undefined ? foes[0].eid : foes[0].id);
-      if (set) { try { H.learnSpell('calm_beast'); } catch (e) { /* the shelf may not carry it */ } try { H.castNow('calm_beast'); } catch (e) { /* recorded by the value */ } }
+      const a = alertArena(H, 'wl-slitherfang-lone');
+      for (const m of a.members) { try { H.aggro(m.eid); } catch (e) { /* */ } }
+      if (set) { try { H.learnSpell('calm_beast'); } catch (e) { /* */ } try { H.castNow('calm_beast'); } catch (e) { /* */ } }
       H.stepFrames(180);
-      const after = H.listEntities().filter((e) => e.side === 'E' || e.kind === 'enemy');
-      return {
-        value: after.map((e) => `${e.eid || e.id}:${e.alert_state || e.alert || '?'}`).sort(),
-        support: after.length,
-      };
+      const m = alertArena(H, 'wl-slitherfang-lone').members;
+      const use = m.length ? m : a.members;
+      return { value: alertValue(use), support: use.length, detail: { spawn_error: a.error || null } };
     },
   },
   {
@@ -132,7 +157,7 @@ const PROBES = [
       if (set) { try { H.addWitness && H.addWitness({}); } catch (e) { /* */ } try { H.commitCrime({ kind: 'assault', witnessed: true }); } catch (e) { /* */ } }
       H.stepFrames(240);
       const ents = H.listEntities();
-      const guards = ents.filter((e) => /guard|legion|ordinator/i.test(String(e.type || e.kind || e.eid || e.id || '')));
+      const guards = ents.filter((e) => /guard|legion|ordinator/i.test(String(e.archetype || e.eid || '')));
       return { value: { guards: guards.length, total: ents.length }, support: Math.max(n0, ents.length) };
     },
   },
@@ -141,30 +166,37 @@ const PROBES = [
     mechanism: 'THE DISGUISE. Wearing a faction’s armour changes patrol aggro — the most legible seam crossing in the game',
     observable: 'alert_state differs by worn item id, same patrol, same seed',
     scenario: 'default',
+    encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      if (set) { const inv = H.getInventory(); const armour = inv.find((i) => /armour|cuirass|hauberk|uniform/i.test(i.id)); if (armour) { try { H.equipItem(armour.id); } catch (e) { /* */ } } }
+      if (set) { const inv = H.getInventory(); const armour = inv.find((i) => /armour|cuirass|hauberk|uniform|legion/i.test(i.id)); if (armour) { try { H.equipItem(armour.id); } catch (e) { /* */ } } }
+      const a = alertArena(H, 'wl-legion-picket');
       H.stepFrames(180);
-      const ents = H.listEntities();
-      return { value: ents.map((e) => `${e.eid || e.id}:${e.alert_state || e.alert || '?'}`).sort(), support: ents.length };
+      const b = alertArena(H, 'wl-legion-picket');
+      const m = b.members.length ? b.members : a.members;
+      return { value: alertValue(m), support: m.length, detail: { spawn_error: a.error || b.error || null } };
     },
   },
   {
     cell: 'DIS->BOS', tier_claimed: 'mechanical',
     mechanism: 'The S13 parley threshold on a humanoid boss is a disposition gate',
     observable: 'parley event fires only above the threshold',
-    scenario: 'arena_flat',
+    scenario: 'arena_flat', encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      const ents = H.listEntities().filter((e) => e.side === 'E' || e.kind === 'enemy');
-      const id = ents.length ? (ents[0].eid !== undefined ? ents[0].eid : ents[0].id) : null;
-      if (id !== null) { try { H.setDisposition(id, set ? 95 : 5); } catch (e) { /* */ } }
+      const a = alertArena(H, 'wl-legion-picket');
+      for (const m of a.members) { try { H.setDisposition(m.eid, set ? 95 : 5); } catch (e) { /* */ } }
       H.traceStart && H.traceStart();
-      H.stepFrames(120);
+      H.stepFrames(180);
       const drained = H.traceDrain ? H.traceDrain() : [];
       const evs = [];
       for (const r of drained || []) for (const e of (r.events || [])) evs.push(e.type);
-      return { value: { parley: evs.filter((t) => t === 'parley').length, events: evs.length }, support: ents.length };
+      const st = alertArena(H, 'wl-legion-picket');
+      return {
+        value: { parley_accept: evs.filter((t) => t === 'parley_accept').length, parley_refuse: evs.filter((t) => t === 'parley_refuse').length, alert: alertValue(st.members.length ? st.members : a.members) },
+        support: (st.members.length ? st.members : a.members).length,
+        detail: { spawn_error: a.error || null, event_types: [...new Set(evs)] },
+      };
     },
   },
   {
@@ -172,14 +204,15 @@ const PROBES = [
     mechanism: 'A cleared road changes traversal safety and is recorded as a world flag',
     observable: 'world flag set; TRANSIT hazard rate drops',
     scenario: 'default',
+    encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      const ents = H.listEntities().filter((e) => e.side === 'E' || e.kind === 'enemy');
-      if (set) for (const e of ents) { try { H.killEntity(e.eid !== undefined ? e.eid : e.id); } catch (err) { /* */ } }
-      H.stepFrames(120);
+      const a = alertArena(H, 'wl-legion-picket');
+      if (set) for (const m of a.members) { try { H.killEntity(m.eid); } catch (err) { /* */ } }
+      H.stepFrames(180);
       const q = H.getQuestState ? H.getQuestState() : null;
       const flags = (q && q.flags) || {};
-      return { value: Object.keys(flags).filter((k) => flags[k]).sort(), support: ents.length };
+      return { value: Object.keys(flags).filter((k) => flags[k]).sort(), support: a.members.length, detail: { spawn_error: a.error || null } };
     },
   },
   {
@@ -187,14 +220,15 @@ const PROBES = [
     mechanism: 'Killing the thing that was eating the village raises disposition across the settlement',
     observable: 'disposition delta for >= 5 NPCs',
     scenario: 'default',
+    encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      const ents = H.listEntities().filter((e) => e.side === 'E' || e.kind === 'enemy');
-      if (set) for (const e of ents) { try { H.killEntity(e.eid !== undefined ? e.eid : e.id); } catch (err) { /* */ } }
-      H.stepFrames(120);
+      const a = alertArena(H, 'wl-legion-picket');
+      if (set) for (const m of a.members) { try { H.killEntity(m.eid); } catch (err) { /* */ } }
+      H.stepFrames(180);
       const d = H.getDispositions ? H.getDispositions() : {};
       const keys = Object.keys(d || {}).sort();
-      return { value: keys.map((k) => `${k}:${d[k]}`), support: keys.length };
+      return { value: keys.map((k) => `${k}:${d[k]}`), support: Math.min(keys.length, a.members.length || 0) || a.members.length, detail: { npcs: keys.length, encounter_members: a.members.length, spawn_error: a.error || null } };
     },
   },
   {
@@ -202,13 +236,16 @@ const PROBES = [
     mechanism: 'Salt-storms hide enemies (RI-WLD05 #28): visibility to 15 m, so the roster you can SEE changes',
     observable: 'in_sight_cone / detection distance differs by weather state',
     scenario: 'default',
+    encounter: 'wl-fen-sentry',
     fork: ({ set }) => {
       const H = window.__HARNESS;
       try { H.setWeather(set ? 'salt_storm' : 'clear'); } catch (e) { /* */ }
-      H.stepFrames(120);
-      const ents = H.listEntities();
-      const seen = ents.map((e) => { try { return `${e.eid || e.id}:${H.losBetween ? !!H.losBetween('player', e.eid || e.id) : '?'}`; } catch (err) { return `${e.eid || e.id}:err`; } });
-      return { value: seen.sort(), support: ents.length };
+      const a = alertArena(H, 'wl-fen-sentry');
+      H.stepFrames(180);
+      const m = alertArena(H, 'wl-fen-sentry').members;
+      const use = m.length ? m : a.members;
+      const seen = use.map((x) => { let l = '?'; try { l = H.losBetween ? String(!!H.losBetween('player', x.eid)) : '?'; } catch (e) { l = 'err'; } return x.eid + ':' + x.alert_state + ':' + x.dist_m + ':' + l; });
+      return { value: seen.sort(), support: use.length, detail: { spawn_error: a.error || null } };
     },
   },
   {
@@ -216,14 +253,16 @@ const PROBES = [
     mechanism: 'Rank >= 3 in a faction makes its outposts non-hostile; rank >= 2 in its rival makes its patrols hostile on sight',
     observable: 'enemies[].alert_state differs between a rank-0 and rank-3 fork on the same patrol, same seed',
     scenario: 'default',
+    encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
       const st = H.getFactionStanding ? H.getFactionStanding() : {};
       const fid = Object.keys(st || {})[0] || 'the_drowned_court';
       try { H.setFactionStanding(fid, set ? 3 : 0); } catch (e) { /* */ }
+      const a = alertArena(H, 'wl-legion-picket');
       H.stepFrames(180);
-      const ents = H.listEntities();
-      return { value: ents.map((e) => `${e.eid || e.id}:${e.alert_state || e.alert || '?'}`).sort(), support: ents.length };
+      const m = alertArena(H, 'wl-legion-picket').members.length ? alertArena(H, 'wl-legion-picket').members : a.members;
+      return { value: alertValue(m), support: m.length, detail: { spawn_error: a.error || null } };
     },
   },
 ];
@@ -263,7 +302,7 @@ function fakeWorld(mode) {
     getDispositions: () => (mode === 'empty' ? {} : { n1: live && dead.size ? 60 : 40, n2: 40, n3: 40, n4: 40, n5: 40 }),
     killEntity(id) { dead.add(id); },
     getQuestState: () => ({ flags: mode === 'empty' ? {} : (live && dead.size ? { road_cleared: true } : { seen: true }) }),
-    traceStart() {}, traceDrain: () => (mode === 'empty' ? [] : [{ events: (live && Object.values(disp).some((v) => v > 50)) ? [{ type: 'parley' }] : [{ type: 'hit' }] }]),
+    traceStart() {}, traceDrain: () => (mode === 'empty' ? [] : [{ events: (live && Object.values(disp).some((v) => v > 50)) ? [{ type: 'parley_accept' }] : [{ type: 'parley_refuse' }] }]),
     losBetween: (a, b) => !(live && weather === 'salt_storm'),
     getStateHash: () => `${hour}|${weather}|${rank}|${worn}|${crime}|${[...dead].join(',')}`,
   };
@@ -275,6 +314,10 @@ async function selfTest() {
   let ok = true;
   for (const p of PROBES) {
     const row = [];
+    // The fake world has to expose the same two page-side helpers the live path injects, or the
+    // self-test would be exercising a different probe body than the browser runs.
+    globalThis.alertArena = (H, id) => { const e = H.listEntities().filter((x) => x.kind === 'enemy'); return { members: e.map((x) => ({ eid: x.eid, alert_state: x.alert_state, aggroed: false, dist_m: 5 })), spawned: e.length }; };
+    globalThis.alertValue = (m) => m.map((x) => x.eid + ':' + x.alert_state + ':-').sort();
     for (const mode of ['live', 'paper', 'empty']) {
       const r = await runControl({
         id: `${p.cell}/${mode}`, what: p.mechanism, metric: p.observable,
@@ -333,13 +376,13 @@ async function live({ cellsPath, outPath, seed }) {
         factors: [{ id: 'source_state', what: `${p.cell.split('->')[0]} state set at the fork` }],
         measure: async (broken) => {
           const set = broken.length === 0;
-          return page.evaluate(async ({ src, scenario, seed, set }) => {
+          return page.evaluate(async ({ src, helper, scenario, seed, set }) => {
             const H = window.__HARNESS;
             H.setSeed(seed); H.loadState(scenario); H.setRenderRate(0);
             // eslint-disable-next-line no-new-func
-            const fn = new Function('return (' + src + ')')();
+            const fn = new Function(helper + '; return (' + src + ')')();
             try { return fn({ set }); } catch (e) { return { value: { error: String(e && e.message || e) }, support: 0 }; }
-          }, { src: p.fork.toString(), scenario: p.scenario, seed, set });
+          }, { src: p.fork.toString(), helper: ALERT_HELPER, scenario: p.scenario, seed, set });
         },
       });
       r.cell = p.cell;
@@ -413,7 +456,22 @@ async function main() {
   say(`matrix-probe — ${PROBES.length} cells, one browser, seed ${seed}.`);
   let out;
   try { out = await live({ cellsPath, outPath, seed }); }
-  catch (e) { say('matrix-probe: ' + ((e && e.stack) || e)); process.exit(7); }
+  catch (e) {
+    // A run that could not happen must leave a record saying so, or the next reader finds a
+    // stale matrix.json from an earlier run and reads it as this commit's answer (RULES #12).
+    const why = String((e && e.message) || e);
+    say('matrix-probe: ' + why.split('\n')[0]);
+    fs.mkdirSync(path.dirname(outPath), { recursive: true });
+    fs.writeFileSync(outPath, JSON.stringify({
+      schema: 'elder-souls/cmp01-matrix@1', at: new Date().toISOString(), seed, ran: false,
+      why: 'the browser could not be driven', error: why,
+      note: 'RI-CMP01 hard fail 5: the probe harness could not run => unmeasurable => 0, fail-closed. ' +
+        'Nothing in this file is demonstrated.',
+      results: [], roll_up: rollUp([], cells),
+    }, null, 2) + '\n');
+    say(`wrote ${path.relative(REPO, outPath)} with ran:false`);
+    process.exit(7);
+  }
   const roll = rollUp(out.results, cells);
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify({

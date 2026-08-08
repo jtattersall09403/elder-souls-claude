@@ -1,7 +1,7 @@
 {
   "task_id": "W1-25",
   "piece": "The experience instrument and the seam crossings",
-  "state": "building",
+  "state": "done",
   "started_at": "2026-08-08T00:00:00Z",
   "subsystem_paths": [
     "experience.memory.anecdote",
@@ -86,9 +86,12 @@
     "HEADLINE FINDING: the only recorded session on this tree - reports/sessions/exp-w1-opening/trace.jsonl, 36,000 frames, ten simulated minutes, 82 MB - contains ZERO events. The three journey traces carry FIVE events each across 3,780 frames, all boot-time input plumbing. verified_anecdotes_per_hour is 0 by construction on every trace this project has ever recorded; RI-EXP02 hard fail 1 is < 1.5 and makes the wave DEAD.",
     "SAB-P RAN AND SEPARATED. anecdote-verify.mjs implements RI-EXP02 \u00a7E (locate/resolve/class/score, verified minus unverified so silence is cheaper than invention) and step 6's MANDATORY sabotage control, as a real data filter through lib/sabotage.mjs: every journal entry, dialogue info and book passage cut to its own first sentence. 720 tellable passages -> 153, a drop of 78.75% against a required 50%. Verdict OK. Measured on the CONTENT CENSUS, not on a playthrough, and labelled so.",
     "event-histogram.mjs (RI-EXP03 \u00a7B): on the same trace, 100% IDLE, H = 0 bits, unclassified_fraction 1.0 -> VOID, hard fail 7. A-EXP2 is 0 of 10 names present in game/src/sim/events.js, so READ/TRADE/CRAFT/MENU/TRAVEL_NODE are unmeasurable and collapse into IDLE exactly as the item says they must. Self-test 5/5.",
-    "The trace also carries no road-membership field, so TRANSIT and EXPLORE cannot be separated at all; reported as an absence rather than guessed."
+    "The trace also carries no road-membership field, so TRANSIT and EXPLORE cannot be separated at all; reported as an absence rather than guessed.",
+    "MATRIX-PROBE, LIVE, ATTEMPT 1: ran in one browser (contention gate open), 10 cells, 6 INERT / 4 VACUOUS, 0 demonstrated crossings. THAT RUN IS VOID AND THE FAULT IS MINE. listEntities() returns {eid,kind,archetype,pos,hp} (engine.js:8764) and carries NO alert_state and NO side, so every alert-based probe compared '?' against '?' in both arms - an INERT verdict manufactured by the instrument. The piece caught itself with its own rule.",
+    "MATRIX-PROBE ATTEMPT 2: every alert probe rewritten onto getEncounterState(id).members[].alert_state, the only accessor in the build that carries it, with a real spawnEncounter() from game/data/world/encounters.json behind it. Self-test still 10/10 x 3 worlds. IT COULD NOT RUN: THE TREE DOES NOT BOOT AT HEAD. node tools/boot-check.mjs exits 12 - 'canon register: 2 unresolved reference(s) in game/data/lore/canon.json ... CF-D015/A: topic the-xanmeers has no info written for actor notary'. That is RULES #13, a fail-closed assertion landed ahead of its data, and it blocks EVERY browser measurement on this box. W1-25 has touched no file under game/.",
+    "matrix.json records ran:false. ZERO seam crossings demonstrated against a W1 floor of 4; RI-CMP01 hard fails 1 and 2 both fire."
   ],
-  "next_step": "Retry tools/composition/matrix-probe.mjs when contention drops below the gate (last three checks: exit 3 at 5.5-6.3 load per core). Everything else offline is done.",
+  "next_step": "Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree does not boot and nothing in the project can take a browser measurement until it does. Then: node tools/composition/matrix-probe.mjs (10 cells, one browser, ~2 min) is ready to run and is the only thing between this piece and a real crossing number.",
   "not_done": [
     "matrix-probe.mjs LIVE A/B fork run - built and self-tested (10 probes x 3 fake worlds) but never run in a browser. Contention gate refused four times. Zero seam crossings are DEMONSTRATED; RI-CMP01 W1 floor is 4 and hard fail 5 (unmeasurable => 0) applies.",
     "RI-EXP02's real instrument: no playthrough chain, no 500-word baton bottleneck, no isolated M3 recalling agent, so verified_anecdotes_per_hour, the class floors T1-T5, arose_fraction, generic_fraction, confabulation_rate and mean_hops_survived are all UNMEASURED. recall-run.mjs is NOT built. The prompt is committed at corpus/95-experience/prompts/recall.md; nothing has ever been asked it.",
@@ -98,5 +101,6 @@
     "RI-EXP06 Step 1 as the item means it: no probe PERFORMS its breakage in a running build. Every row is static_absence_of_closure and says so.",
     "RI-EXP06 Step 4's playthrough cross-check (works_isolated_fails_in_chain) - null, no chain.",
     "CONSUMPTION (RI-MTH07): I ship two models, corpus/95-experience/RI-CMP01.cells.json and RI-EXP06.probes.json. Both are INSTRUMENT data, not world models, and NOTHING IN THE RUNNING GAME READS EITHER. Their consumers are tools (matrix-probe.mjs, breakage-probe.mjs) and both are demonstrated by perturbation in the self-tests. I did not ship a world-side model, so the world-side consumption demonstration does not apply - stated here rather than papered over."
-  ]
+  ],
+  "contention_note": "Ran tools/contention.mjs --gate before every browser attempt. It refused four times (5-6.3 load per core against a 4.0 ceiling); I did the offline work and came back. It opened twice and I used one browser each time, kept for the whole run."
 }

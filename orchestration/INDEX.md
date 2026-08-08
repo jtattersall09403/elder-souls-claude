@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `34d1387`: 596 tools, 153 reference
+so it cannot drift. Generated at `63f41ef`: 600 tools, 153 reference
 items, 46 pieces in flight.
 
 Its purpose is to stop 46+ concurrent agents each paying separately to discover the
@@ -191,10 +191,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 19
+### `tools/dialogue/` — 21
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/arbiter-order-divergence.mjs` — ARBITRATION S37 — the instrument.
+- `tools/dialogue/arbiter-reference-reader.mjs` — ARBITRATION S37 — the reference reader.
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
 - `tools/dialogue/consume.mjs` — CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
 - `tools/dialogue/critic-field-census.mjs` — critic-w1-17 instrument 1 — an INDEPENDENT census of every filter field authored on every info in game/data/dialogue/topics/**, written without reading build-gr
@@ -211,6 +212,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
 - `tools/dialogue/shadow-audit.mjs` — IS THE SHADOWED LINE DEAD, OR IS THE LINT WRONG ABOUT IT?
 - `tools/dialogue/voice-metrics.mjs` — DOES AN ORDINATOR SOUND LIKE A BEGGAR?
+- `tools/dialogue/w1-17-r2-deletefix.mjs` — RULES 6, run as a 2x2, with the control arm watched going red.
 - `tools/dialogue/w1-17-shot.mjs` — THE PICTURE FOR W1-17: how many things there are to ask about, and how many of them anybody can reach — before this round and after it.
 
 ### `tools/economy/` — 3
@@ -476,7 +478,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 14
+### `tools/lore/` — 15
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -491,6 +493,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/lor04-validate.mjs` — **no header comment**
 - `tools/lore/name-rosters.mjs` — **no header comment**
+- `tools/lore/place-library.mjs` — **no header comment**
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
 
 ### `tools/metrics/` — 6
@@ -536,7 +539,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 36
+### `tools/quests/` — 37
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -551,6 +554,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G: the shared 5x5 chart font.
 - `tools/quests/critic-readable-slots-and-marks.mjs` — W1-READABLES r2 critic, attack F.
 - `tools/quests/critic-unrouted-census.mjs` — W1-READABLES r2 critic, attack E.
+- `tools/quests/critic-w1-readables-chart.mjs` — the picture for the W1-READABLES round-2 verdict (rule 27).
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
 - `tools/quests/faction-probe.mjs` — the CONSUMPTION probe for the faction questlines (RI-MTH07, ARBITRATION §3).
@@ -734,7 +738,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **132 tools have no header comment**, so nobody can tell what they do without
+> **133 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -908,11 +912,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
 | `W1-16-r3` | starting | read RULES, INDEX, verdict W1-16-r2.md, status W1-16.json; run ownership + contention | `orchestration/status/W1-16-r3.json` |
 | `W1-SAVE-AI` | in_progress | read RULES/INDEX/NEXT-DISPATCH Q0, then save/fight.js + save/state.js | `orchestration/status/W1-SAVE-AI.json` |
 | `W1-23-r4` | building | part 2 — make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement mach | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `game/data/npcs/` `game/data/world/property/` |
 | `W1-ROAD-JOIN` | ? | consumption probe, then the body walk on THE CROSSING | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
-| `W1-25` | building | Retry tools/composition/matrix-probe.mjs when contention drops below the gate (last three  | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r3` | writing the verdict | done — verdict, JSON, shot and blog line written and committed with git commit --only | `orchestration/status/critic-w1-15-r3.json` `tools/stealth/critic-w1-15-r3.mjs` `tools/stealth/critic-w1-15-r3-live.mjs` `tools/stealth/critic-w1-15-r3-dtf2x2.mjs` `reports/w1-15/critic-r3.json` `reports/w1-15/critic-r3-live.json` |
 | `W1-17-r2` | building | write game/data/npcs/pop-trades.json (22 bodies) + index.json entry; then re-home 17 job-n | `orchestration/status/W1-17-r2.json` `tools/dialogue/answer-census.mjs` `reports/w1-17-r2/answers-fixture10.json` |
 | `critic-w1-readables` | running | browser: attack D (CONSUMPTION re-run + delete-the-fix teardown bite) and F (slot allocato | `orchestration/status/critic-w1-readables.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |

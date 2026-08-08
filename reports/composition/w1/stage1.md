@@ -1,6 +1,6 @@
-# The seam-crossing matrix — W1-25 stage 1, at 69e6ffa
+# The seam-crossing matrix — W1-25, at 63f41ef
 
-## What the item declares, recounted from its own grid
+## Stage 1 — what the item declares, recounted from its own grid
 ```
 RI-CMP01.cells.json  <- corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md
   342 off-diagonal cells · 206 non-none (60.2% declared coverage)
@@ -11,21 +11,21 @@ RI-CMP01.cells.json  <- corpus/95-experience/RI-CMP01-cross-system-payoff-matrix
 wrote corpus/95-experience/RI-CMP01.cells.json
 ```
 
-## What the shipped data claims (stage 1 — NOT a demonstration)
+## Stage 1 — what the shipped data claims (NOT a demonstration)
 ```
-matrix-scan  563 data files -> 30 cells with at least one data-path claim
+matrix-scan  564 data files -> 30 cells with at least one data-path claim
   4 of 41 declared seam-crossing cells have any data behind them at all
   QST->JRN     1005 claim(s)  mechanical  12 file(s)
   QST->WLD      963 claim(s)  structural  11 file(s)
-  DIS->QST      466 claim(s)  structural  27 file(s)
+  DIS->QST      488 claim(s)  structural  28 file(s)
   LOR->QST      342 claim(s)  structural  12 file(s)
-  DIS->LOR      324 claim(s)  mechanical  13 file(s)
+  DIS->LOR      325 claim(s)  mechanical  13 file(s)
   TOD->SCH      309 claim(s)  structural  14 file(s)
   QST->FAC      285 claim(s)  structural  11 file(s)
   QST->DIS      252 claim(s)  mechanical  11 file(s)
   SKL->QST      212 claim(s)  structural  12 file(s)
+  DIS->GLD      175 claim(s)  structural  14 file(s)
   QST->LOR      169 claim(s)  mechanical  6 file(s)
-  DIS->GLD      169 claim(s)  structural  13 file(s)
   SKL->SPL       72 claim(s)  mechanical  1 file(s)
   GLD->SPL       72 claim(s)  mechanical  1 file(s)
   FAC->QST       66 claim(s)  structural  7 file(s)
@@ -50,3 +50,34 @@ matrix-scan  563 data files -> 30 cells with at least one data-path claim
 wrote reports/composition/w1/claims.json
 STAGE 1 ONLY. None of this is demonstrated. See matrix-probe.mjs.
 ```
+
+## Stage 2 — the A/B forks. TWO ATTEMPTS, NEITHER USABLE. Stated plainly.
+
+ATTEMPT 1 ran in one browser and returned 6 INERT / 4 VACUOUS, 0 demonstrated crossings.
+**That run is void and the fault is mine, not the build's.** `listEntities()` returns
+`{eid, kind, archetype, pos, hp}` (game/src/engine.js:8764) and carries no `alert_state`
+and no `side`. Every alert-based probe was comparing the string `?` against the string `?`
+in both arms — an INERT verdict manufactured by the instrument. It is the exact defect this
+piece exists to catch, and the piece caught itself. Log:
+`reports/runs/_raw/node-tools-composition-matrix-probe.mjs---cells-corpus-95-ex-6819911623120.log`
+
+ATTEMPT 2, with every probe moved onto `getEncounterState(id).members[].alert_state` — the
+only accessor in the build that carries it — and a real `spawnEncounter()` behind it, could
+not run: **the tree does not boot at HEAD.** `node tools/boot-check.mjs` exits 12 for every
+agent on this box:
+
+```
+[harness] ERROR: harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.
+  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).
+  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`
+  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`
+    at Engine._installCanon (http://127.0.0.1:46007/game/src/engine.js:2523:13)
+    at Engine._boot (http://127.0.0.1:46007/game/src/engine.js:580:10)
+```
+
+That is RULES.md #13 — a fail-closed assertion landed ahead of the data it demands. It is
+not this piece's change; W1-25 has touched no file under `game/`.
+
+So ZERO seam crossings are demonstrated. RI-CMP01 W1 floor is 4, hard fail 1 is "fewer than
+4 demonstrated seam-crossing cells" and hard fail 2 is "zero demonstrated F->W". Both fire.
+matrix.json records `ran: false`.
