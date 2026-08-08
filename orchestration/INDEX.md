@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `7bdc979`: 690 tools, 153 reference
-items, 57 pieces in flight.
+so it cannot drift. Generated at `92b1860`: 690 tools, 153 reference
+items, 56 pieces in flight.
 
-Its purpose is to stop 57+ concurrent agents each paying separately to discover the
+Its purpose is to stop 56+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1008,12 +1008,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-14-r5` | starting | read INDEX.md, verdict W1-14-r4.md, ownership | — |
+| `W1-14-r5` | building | implement the lead in sim/magic/system.js | `orchestration/status/W1-14-r5.json` |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |
 | `critic-w1-crossing` | walked-it | kill-probe (A), regain rebuild (D), null replacement (E), deletefix reversed (C), reverse+ | `orchestration/status/critic-w1-crossing.json` `tools/world/critic-crossing-walk.mjs` `tools/world/critic-crossing-grade.mjs` `tools/world/critic-crossing-probe.mjs` `docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png` `reports/critic-w1-crossing/` |
 | `critic-w1-26-r3` | running | finish A7/H/D runs, run jrn09-exchange + name-entry, write verdict | `orchestration/status/critic-w1-26-r3.json` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` `tools/journey/critic-w1-26-r3-input.mjs` `tools/journey/critic-w1-26-r3-consume.mjs` `docs/shots/2026-08-08-w1-26-r3-critic-01-the-title-play-sh-serves.png` |
 | `W1-25-r2` | done | a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that | `orchestration/status/W1-25-r2.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `tools/experience/sabotage-corpus.mjs` `tools/experience/w1-25-r2-active-fixture.mjs` |
-| `critic-w1-04-r4` | IN_PROGRESS | Live sections L2/L6/L4/L5/L1 running; then L3 (115-room live sweep) in its own invocation; | `orchestration/status/critic-w1-04-r4.json` `tools/world/critic-w1-04-r4-offline.mjs` `tools/world/critic-w1-04-r4-live.mjs` `reports/critic-w1-04-r4/offline.json` |
 | `W1-21-r3` | done | critic | `docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-map-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png` |
 | `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |
 | `critic-w1-25` | done | Round 2 on W1-25: fix the four cascade defects in lib/sabotage.mjs against the acceptance  | `corpus/90-verdicts/wave1/W1-25-r1.md` `corpus/90-verdicts/wave1/W1-25-r1.json` `orchestration/status/critic-w1-25.json` `tools/experience/critic-w1-25.mjs` `tools/experience/critic-w1-25-chart.mjs` `reports/experience/critic-w1-25.json` |

@@ -1,18 +1,28 @@
 {
   "task_id": "critic-w1-04-r4",
   "role": "critic",
-  "state": "IN_PROGRESS",
+  "state": "COMPLETE",
   "started": "2026-08-08T05:17:00Z",
+  "finished_at": "2026-08-08T07:35:00Z",
   "piece": "W1-04 round 4 - settlements, interiors and the people in them",
+  "verdict": "FAIL 4.7 / 10 against a gate of 7.0",
   "grading": "corpus/90-verdicts/wave1/W1-04-r4.md",
-  "gate": 7.0,
   "base_commit": "3ee6ada",
-  "next_step": "Live sections L2/L6/L4/L5/L1 running; then L3 (115-room live sweep) in its own invocation; then screenshots; then write the verdict.",
+  "next_step": "For the round-5 builder: close GAP-W1-the-door-puts-you-inside-the-building (re-derive buildings[].door onto the entry wall and exterior_spawn outside it; assert it in tools/check-building-fits-room.mjs). Then GAP-W1-the-join-left-the-lamps-behind (clamp lights[] in applyInteriorBounds() the way interior_spawn is already clamped). Then fix w1-04-consumption.mjs 10a so it reads the street at the door being tested, and RUN IT. RI-WLD03 M13 needs its own dispatch to an agent who authored neither the geometry nor the pack.",
   "files_touched": [
+    "corpus/90-verdicts/wave1/W1-04-r4.md",
+    "corpus/90-verdicts/wave1/W1-04-r4.json",
     "orchestration/status/critic-w1-04-r4.json",
     "tools/world/critic-w1-04-r4-offline.mjs",
     "tools/world/critic-w1-04-r4-live.mjs",
-    "reports/critic-w1-04-r4/offline.json"
+    "tools/world/critic-w1-04-r4-shots.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-08-w1-04-r4-critic-archon-roofs-now-close-the-boxes.png",
+    "docs/shots/2026-08-08-w1-04-r4-critic-vp04-new-pose.png",
+    "docs/shots/2026-08-08-w1-04-r4-critic-walking-out-leaves-you-inside-the-building.png",
+    "docs/shots/2026-08-08-w1-04-r4-critic-the-same-doorstep-looking-back.png",
+    "docs/shots/2026-08-08-w1-04-r4-critic-archon-street-and-no-street.png",
+    "docs/shots/2026-08-08-w1-04-r4-critic-blackrose-the-terraced-street.png"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-04-r4.md",
@@ -20,29 +30,44 @@
     "orchestration/status/critic-w1-04-r4.json",
     "tools/world/critic-w1-04-r4-offline.mjs",
     "tools/world/critic-w1-04-r4-live.mjs",
+    "tools/world/critic-w1-04-r4-shots.mjs",
     "reports/critic-w1-04-r4/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
   "redundant_with": ["W1-04-r4"],
-  "overlap_notes": "I grade W1-04-r4. Overlap on docs/shots/ and reports/blog-feed.jsonl is by design; the feed is append-only and I append one line. I write no game/ source.",
+  "overlap_notes": "I grade W1-04-r4. Overlap on docs/shots/ and reports/blog-feed.jsonl is the project's whole method and is shared by every live piece; the feed is append-only and I appended one line and edited nobody else's. I wrote no game/ source.",
+  "artifacts_dir": "reports/critic-w1-04-r4/",
   "findings": {
-    "AGGREGATION_FAILS": "tools/world/w1-04-consumption.mjs, run end to end (RULES.md rule 9), exits 1: 19/20 CONSUMED. The one DEAD row is 10a, which the builder edited: exterior_restored_on_exit reads 105 in the live arm against a pass condition of 115. The builder shipped without running it.",
-    "LAMPS_OUTSIDE": "55 authored lamps in 19 of the 41 shrunk rooms now stand outside their own room's bounds (12 are non-snuffable hearths; worst 2.33 m outside). 0 in rooms the join did not shrink, so the join caused all of them. applyInteriorBounds() clamps continuity.interior_spawn and does not touch lights[]; buildInterior() and sim/stealth/system.js#syncInteriorLights() both place them at the record's verbatim pos.",
-    "MESHES_OUTSIDE": "292 built meshes in 63 rooms stand more than 0.6 m outside their own room's bounds — 179 light fittings and 113 props. 218 of them, across 26 rooms, are in the 41 rooms the join shrank.",
-    "DOORSTEP_INSIDE_THE_BUILDING": "buildings[].door sits at the building CENTRE on 112 of 112 (max door-to-centre distance 0.00 m), and all 112 declared continuity.exterior_spawn points fall inside their own building's wall box. Round 4 is the round that put a covering roof on that box. Being verified live via buildingAt().",
-    "PROPS_ITEMS_NPCS": "Of the dispatch's three specifics: unique items follow the shrink (0 of 115 outside); NPC interior anchors follow it (anchorFor reads bounds_m, the 1.2 m inset never collapses, smallest joined room 4.34 x 10.94 m); props do NOT entirely (113 prop meshes outside by >0.6 m).",
-    "CONFIRMED_JOIN": "41 -> 0 reproduces independently; worst area ratio 1.0887 by bounds; 41 rooms limited, worst archon-market keeping 0.1714.",
-    "CONFIRMED_ROOFS": "0 of 202 by my own 8x8 downward raycast above half wall height; the instrument goes red (201 of 202) when every mesh above half height is scaled 0.7 in plan.",
-    "CONFIRMED_TAUTOLOGY": "bounds_m equals continuity.exterior_footprint_m on 115 of 115 records, so any N1 ratio dividing one by the other is 1.000 by construction. True — but first stated by the round-3 critic, not by this round.",
-    "CONFIRMED_NULLING_GONE": "api.js __w1_04_perturbSettlement no longer nulls _townCell; it clears _townSolids and calls _settleSettlementSolids(), which owns the handle.",
-    "DEEP_OVERLAPS_BOUNDARY": "The shipped tool reports 12; the identical formula without its +1e-6 epsilon reports 14 (lilmoth 3 not 2, stormhold 1 not 0). Two pairs sit exactly on the 45% line.",
-    "MY_OWN_PROBE_DEFECT": "My first offline census called buildInterior(rec) instead of buildInterior(root, rec) and traversed 0 meshes in 115 of 115 rooms while reporting a clean '0 props outside'. Caught by rule 4, fixed, and an explicit vacuity assertion added."
+    "AGGREGATION_FAILS_AND_WHY": "tools/world/w1-04-consumption.mjs, run end to end (RULES.md rule 9), exits 1: 19/20 CONSUMED, one DEAD. The DEAD row is 10a, the check the builder edited: exterior_restored_on_exit reads 105 against a pass condition of 115. ATTRIBUTED door by door: the check takes the street signature BEFORE opening the door - i.e. wherever the previous door's exit left the body - and requires it back after leaving THIS door, so it fails at every town boundary. 4 of 4 failures in my 32-door replication are settlement changes, all with room_was_drawn true and room_differs_from_street true. The BUILD is fine; the CHECK is mis-specified, and its author has never seen its output.",
+    "DOORSTEP_INSIDE_THE_BUILDING": "THE BIGGEST GAP. buildings[].door sits at the building CENTRE on 112 of 112 (max door-to-centre distance 0.00 m); every declared continuity.exterior_spawn falls inside its own building's wall box; live, through exitInterior() and buildingAt(), 39 of 40 doors tested leave the player inside the building they just left, 35 by more than a metre. Round 4's correct roof fix closes the lid. Photographed.",
+    "LAMPS_OUTSIDE": "55 authored lamps in 19 of the 41 shrunk rooms now stand outside their own room's bounds; 12 are non-snuffable hearths; worst 2.33 m out; 0 in any room the join did not shrink. buildInterior() and sim/stealth/system.js#syncInteriorLights() both place them at the record's verbatim pos, so the Souls-side detection model reads lights that are outside the rooms they light. applyInteriorBounds() already clamps continuity.interior_spawn for exactly this reason.",
+    "MESHES_OUTSIDE": "292 built meshes in 63 rooms stand more than 0.6 m outside their own room's bounds - 179 light fittings and 113 props. 218 across 26 rooms are in the 41 rooms the join shrank; 74 across 37 rooms are pre-existing slot looseness.",
+    "SIGNATURE_SURVIVES": "getDrawnSignature() passed every degenerate case. Live: empty scene 0 meshes / hash of nothing; the same room at 0/2/60/600 fixed steps = ONE hash (the pixel sweep gave 8 of 8 distinct after 2 steps in this same room); two camera poses = 1; positive control separates street/room/other room 3 of 3. Offline algebra: same content twice = 1, root moved 4 km = 1, children reordered = 1, mesh removed changes it, 1 cm move changes it, name change changes it. Scope limits: it counts meshes that are visible:false, and it is blind to lighting and to non-colour material properties - both conservative for a distinctness claim.",
+    "OFFLINE_EQUALS_LIVE": "The builder's own stated open question is CLOSED: archon-apothecary is cc6a50ac / 114 meshes offline and cc6a50ac / 114 meshes live; blackrose-inn is 33400225 both sides. The offline room is the room the player is standing in, so the offline 115-room count is admissible evidence about the drawn world.",
+    "CONFIRMED_JOIN": "41 -> 0 reproduces independently in bare Node; worst area ratio 1.0887; 41 rooms limited; worst archon-market keeping 0.1714.",
+    "CONFIRMED_ROOFS": "0 of 202 by my own 8x8 downward raycast above half wall height, worst coverage 1.000; the instrument goes red at 201 of 202 when every mesh above half height is scaled 0.7 in plan (rule 4).",
+    "CONFIRMED_BY_REFERENCE": "sim/npc.js#anchorFor() reads d.bounds_m and applyInteriorBounds() mutates the same objects; the 1.2 m inset never exceeds a half-extent (smallest joined room 4.34 x 10.94 m, 0 of 115 collapse). Unique items follow the shrink 115 of 115.",
+    "CONFIRMED_NULLING_GONE": "api.js __w1_04_perturbSettlement no longer nulls _townCell behind _settleSettlementSolids()'s back.",
+    "TAUTOLOGY_TRUE_BUT_NOT_NEW": "bounds_m equals continuity.exterior_footprint_m on 115 of 115, so any N1 ratio dividing one by the other is 1.000 by construction. True - and first stated by the round-3 critic. Round 4's contribution is measuring it off the built scene graph so the ratio can fail, which is the harder half.",
+    "DEEP_OVERLAPS_BOUNDARY": "The shipped tool reports 12; the identical formula without its +1e-6 epsilon reports 14. Two pairs sit exactly on the 45% line.",
+    "SMALLEST_ROOM_SPAN": "The 2x2 table's 4.64 m is the built shell's outer extent; bounds_m - what npc.js, the spawn clamp and every prop slot are placed against - is 4.34 m (MIN_ENTERABLE_SPAN_M 5.0 minus ROOM_INSET_M 0.66) in eight rooms. Both right, different quantities."
   },
-  "method_deviations": [
-    "node tools/contention.mjs --gate returned GO at every check I made.",
-    "I killed my own stalled live run with `pkill -f headless_shell`, which is not scoped to my process and may have killed a neighbour's browser. That was careless and is reported rather than hidden (rule 26). Browsers were running again within 30 s. Every later kill is by my own PID.",
-    "My first live instrument ran all 115 doors inside one page.evaluate with no intermediate write and outlived its wrapper — the same wall the builder reported. Restructured to chunk and save per chunk (rule 2).",
+  "not_done_stated_plainly": [
+    "The uncapped 115-room LIVE distinctness sweep. I ran 32 doors live for the L1 attribution and 40 for L6; my first attempt at the full 115 died inside one page.evaluate exactly as the builder's did. Mitigated rather than excused: the offline and live signatures are byte-identical for the same room, so the offline 115 is evidence about the drawn world.",
+    "The formal L5 degradation check (delete getDrawnSignature and watch 10a go DEAD). The browser hung on the section before it and I killed it. The code path is unambiguous by reading and I state it in the verdict as a reading, not a measurement.",
+    "RI-WLD03 M13, the blind top-down layout test - rule 25 binds me exactly as it bound the builder, because I took the top-down capture M13 needs. Three rounds have now deferred it for the same correct reason; it needs its own dispatch.",
+    "inCoverFraction on both arms of the town collision set - untouched for a third round, and more urgent now that 19 rooms' lamp positions are wrong.",
+    "The observed-theft branch - untouched for a third round.",
+    "Two pictures: a clean street-level shot of the Blackrose terraces (my surveyed standing points controlled for building walls and not for canopy props) and the inside of archon-market (refused three times by the capture daemon's settle gate on interior ambient motion).",
     "No timing figure is published anywhere in this verdict (rule 26)."
+  ],
+  "method_deviations": [
+    "node tools/contention.mjs --gate returned GO at every check I made. One browser for the live arm, launched once and kept; all pictures went through the pooled capture daemon and launched nothing.",
+    "I killed my own stalled live run with `pkill -f headless_shell`, which is not scoped to my process and may have taken a neighbour's browser with it. Careless, reported rather than hidden (rule 26). Browsers were running again within thirty seconds; every later kill was by my own PID.",
+    "My first live instrument ran all 115 doors inside one page.evaluate with no intermediate write and outlived its wrapper - the same wall the builder reported. Restructured to chunk in eights and save after each chunk (rule 2), which is the only reason the L1 attribution survived.",
+    "MY OWN PROBE DEFECTS, all three reported in the verdict: (1) my first offline census called buildInterior(rec) instead of buildInterior(root, rec), traversed 0 meshes in 115 of 115 rooms and reported a clean 'nothing outside the room'; rule 4 caught it and the fixed run gives the opposite answer. (2) I read whereAmI().door instead of .door_in_reach and briefly had 'you cannot get back in', which I do not claim. (3) My 'people in the room' arm recorded npcs_in_sim: 0 and proves nothing about moving bodies.",
+    "I did not re-run the builder's own probes except once - w1-04-r3-exterior.mjs --offline - deliberately, to compare its residual_deep_overlaps with my own formula, which is how the epsilon surfaced.",
+    "I did not edit game/."
   ]
 }
