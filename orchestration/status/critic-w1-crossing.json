@@ -19,12 +19,18 @@
     "corpus/90-verdicts/wave1/W1-CROSSING-r1.md",
     "corpus/90-verdicts/wave1/W1-CROSSING-r1.json",
     "orchestration/status/critic-w1-crossing.json",
-    "tools/world/critic-crossing-",
-    "docs/shots/",
+    "tools/world/critic-crossing-walk.mjs",
+    "tools/world/critic-crossing-grade.mjs",
+    "tools/world/critic-crossing-probe.mjs",
+    "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
     "reports/blog-feed.jsonl"
   ],
   "redundant_with": [
-    "w1-road-join"
+    "W1-CROSSING",
+    "critic-w1-25",
+    "critic-w1-26-r3",
+    "critic-w1-readables",
+    "judge-prose-r4"
   ],
   "notes": [],
   "headline": "INDEPENDENTLY WALKED: 6,646.7 m, 199,433 frames, 55.398 in-world min, arrived at Lilmoth (2765.6, 5028.8) — identical to the published figures to the decimal, with the critic own per-frame counter agreeing (walked 6646.7, naive 6646.7, max step 0.295 m, 0 teleports).",
@@ -43,5 +49,6 @@
     "K11 RI-WLD01 M4 (leg-time, +-20%) passes on a walked body: -3.0%, -5.6%, -1.7%. RI-WLD01 M2 step 4 (the JOG, pass 33-41 min) has never been run by anyone; running it.",
     "K12 THE 116.7 m RESPAWN. Death at 799 m places the body 116.7 m from the crossing destination, so under the old accounting dying completes the crossing.",
     "K13 the join is FRESH at HEAD: road-through-building.mjs 0 of 10, 0 offences. boot-check and check-data green."
-  ]
+  ],
+  "overlap_declared": "reports/blog-feed.jsonl is APPEND-ONLY and every finishing piece adds one line to it (rule 27); I appended and did not edit, and node tools/check-append-only.mjs is green. I narrowed my docs/shots/ claim to the single file I wrote so the directory-wide claim stops reading as a collision with the other critics in flight."
 }

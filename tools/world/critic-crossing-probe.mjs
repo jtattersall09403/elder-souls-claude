@@ -241,7 +241,12 @@ try {
         const roads = JSON.parse(JSON.stringify(E.data.roads));
         if (mut) {
           const leg = roads.legs.find((l) => l.id === mut.leg);
-          const c = Math.floor(leg.points.length / 2), half = 8;
+          // THE BUMP MUST BE SOMEWHERE THE BODY ACTUALLY WALKS. My first cut put it at the leg's
+          // MIDPOINT — 1,450 m in — and then compared 14,000-frame walks that cover 466 m, so the
+          // positive arm read 0.000 m and `N2-POSITIVE-BITES` failed. That is rule 4 working on the
+          // critic's own instrument: a probe whose positive arm has never been seen to move is not
+          // a probe. The bump now sits at 12% of the leg, inside the walked window.
+          const c = Math.max(9, Math.floor(leg.points.length * 0.12)), half = 8;
           for (let k = -half; k <= half; k++) {
             const i = c + k; if (i < 1 || i >= leg.points.length - 1) continue;
             const w = 0.5 * (1 + Math.cos(Math.PI * k / half));       // raised cosine: the ends stay attached

@@ -1,0 +1,652 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-CROSSING",
+  "piece_title": "The crossing — pure-pursuit steering against the road, the deck parapet, the teleport exclusion in path_m, and the premise correction that replaced the \"57.5 degree skirt\" with a 471 m viaduct (round 1)",
+  "subsystem_paths": [
+    "world.traversal.roads",
+    "world.traversal.time",
+    "world.traversal.locomotion"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "critic-w1-crossing",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "context": "Fresh context. No part of W1-CROSSING, W1-ROAD-JOIN, W1-01-r4 or W1-05 was written by me. I wrote three instruments of my own under tools/world/critic-crossing-* and judged on those: a walker with its own per-frame distance accumulator hung off Engine._afterStep (so the distance is not read off the instrument under test), an offline grade/vacuity/stall-site audit sampled straight off game/src/world/field.js, and a three-mode probe (regain, null, deletefix).",
+    "load_declaration": "node tools/contention.mjs --gate returned exit 3 (WAIT) at 05:44 and 05:46 (load 4.23-4.85 per core against a 4.0 ceiling). I DID NOT PROCEED. I did offline work until the gate returned exit 0 (GO, 1.92 per core) at 05:49 and started the crossing walk then; the gate was GO at every later check. One browser at a time, never concurrent, chained sequentially. NO TIMING OR PERFORMANCE FIGURE IS PUBLISHED ANYWHERE IN THIS VERDICT: every number here is a distance in metres, a frame count, an in-world minute (frames/3600), an angle, a count or a boolean, and none of them move with load. Wall-clock durations are recorded inside the run artifacts for reproduction only and are not quoted as results.",
+    "environment_note": "The tree was clean at 2fe47f5 for the whole run except for my own declared files. I edited nothing under game/.",
+    "method_deviations": [
+      "tools/world/critic-crossing-walk.mjs — my own walker. It uses the shipped walkRoute/walkPath verbs (they are what is under test) but installs an INDEPENDENT per-frame accumulator on Engine._afterStep that re-derives walked distance from the capsule's own position deltas, keeps the unbounded 'naive' sum as well, and logs every step over 1 m. --kill-at-m forces a death mid-walk so the teleport-exclusion branch can be watched taking. --steer/--clamp/--no-deck install pre-fix code or delete the structure model, each proven to have taken before the arm reports.",
+      "tools/world/critic-crossing-grade.mjs — offline. Re-derives the worst longitudinal road gradient from roads.json by its own arithmetic, measures whether the centreline slope-gate counter CAN be non-zero, sweeps the gate laterally across the carriageway with a structure-free control, audits the published stall coordinate against the declared spans, and recounts G3/G4. --self-test bends a leg and requires the report to go red (24.27 -> 89.17 deg).",
+      "tools/world/critic-crossing-probe.mjs — --regain rebuilds C5-REGAIN as 20 independent trials; --null replaces C2-NULL-IS-SILENT's inherited bar with a measured noise floor; --deletefix re-runs the 2x2 with the arm order REVERSED and the world re-seeded before every arm."
+    ],
+    "finished_at": "2026-08-08T07:05:00Z"
+  },
+  "build": {
+    "commit_sha": "2fe47f5",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true,
+    "note": "Dirty only with my own declared critic files. Gates green at HEAD: boot-check PASS, check-data PASS, road-through-building 0 of 10 legs blocked and 0 named-route offences (so W1-ROAD-JOIN handoff H4's staleness trap has not re-sprung since the builder regenerated roads.json)."
+  },
+  "headline": "I WALKED IT, AND THE NUMBERS ARE RIGHT TO THE DECIMAL. 6,646.7 m, 199,433 frames, 55.398 in-world minutes, mean 1.9991 m/s, 0.063% of 33,238 samples under 1.6 m/s, worst deviation 1.39 m, zero frames off the road, zero teleports, ending at (2765.6, 5028.8) — reproduced independently with a second per-frame counter whose UNBOUNDED sum is also 6,646.7 m and whose largest single-frame step in 199,432 frames is 0.295 m, so the zero is zero because nothing jumped. The teleport exclusion was watched catching a real 3,856.1 m respawn. BUT: walkPath was never fixed and the round says it was; the crossing does not walk backwards (STUCK at 5,072.3 m against a bridge deck laid across its own switchback); and one of the three supports the premise correction rests on is a counter that is 100% exempt by construction.",
+  "reference_items": [
+    {
+      "id": "RI-WLD01",
+      "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+      "side": "morrowind",
+      "kind": "number",
+      "measured": "full",
+      "native_scale": "M1-M5 gates; M2 pass 52-65 min and 6,300-7,600 m, M2 step 4 pass 33-41 min at the jog, M3 pass <=8% of samples under 1.6 m/s and mean 2.0 +- 0.05, M4 pass every leg within +-20% of the tabled walk minutes",
+      "native_score": 8,
+      "native_max": 10,
+      "native_verdict": "Every M2/M3/M4 bar passes on a body I walked myself, including M2 step 4 (the jog) which nobody in this project had ever run. The item is scored 8 rather than 10 because the same route walked in the OTHER direction does not complete.",
+      "score_0_10": 8,
+      "justification": "THE CROSSING, walked end to end by the critic at HEAD: 6,646.7 m, 199,433 frames, 55.398 in-world minutes, mean 1.9991 m/s, 0.063% of 33,238 samples under 1.6 m/s, worst deviation from the road 1.39 m of a 6 m carriageway, zero frames off the road, zero teleports, ending at (2765.6, 5028.8). Reproduced with a SECOND per-frame counter installed on Engine._afterStep, whose unbounded naive sum is also 6,646.7 m and whose largest single-frame step in 199,432 frames is 0.295 m — so the zero is zero because nothing jumped, not because jumps stopped being counted. M2 52-65 -> 55.398. M2 6,300-7,600 -> 6,646.7. M2 step 4 33-41 -> 34.622 at the jog (6,645.9 m, 124,639 frames, mean 3.2000 m/s). M3 <=8% -> 0.063%; mean 2.0+-0.05 -> 1.9991. M4 +-20% -> -3.0%, -5.6%, -1.7% per leg. The hour comes from distance.",
+      "why_not_ten": "The route is walkable in one direction only. Reversed (Lilmoth -> Stormhold) the body walks 5,072.3 m of 6,903.6 m and then stops dead — 900 consecutive frames under 1 cm — at (2278.6, 1859.2), 0.62 m from the centreline, where a declared 17 m / 8 m viaduct on stormhold-helstrom points 129-131 lays its 3.5 m deck slab across the LOWER limb of the same switchback (points 126 and 131 are 5.74 m apart horizontally and 7.51 m vertically). heightAt then steps the carriageway up 5.75 m and back down 7.5 m over ten metres, inside a declared span GAP. A scale item whose headline is \"about an hour on foot\" cannot score above 8 while the hour only runs one way.",
+      "evidence": [
+        "reports/critic-w1-crossing/walk-crossing.json",
+        "reports/critic-w1-crossing/walk-crossing-jog.json",
+        "reports/critic-w1-crossing/walk-crossing-reverse.json",
+        "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png"
+      ],
+      "checks": [
+        {
+          "id": "X1",
+          "what": "walk THE CROSSING end to end as a body, with settlement collision on, and report distance, frames and in-world time",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "ARRIVED. 6,646.7 m / 199,433 frames / 55.398 min, identical to the builder’s published figures to the decimal, taken with an independent tool and an independent per-frame counter.",
+          "evidence": [
+            "reports/critic-w1-crossing/walk-crossing.json"
+          ]
+        },
+        {
+          "id": "X2",
+          "what": "M2 step 4 — the same route at the jog, pass 33-41 min. NEVER RUN BY ANYBODY.",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "ARRIVED. 6,645.9 m / 124,639 frames / 34.622 min, mean 3.2000 m/s, 0 frames off the road, 0 teleports. -3.7% against RI-WLD01’s declared 35.96 jog minutes. The distance agrees with the walk to 0.8 m over 6.6 km.",
+          "evidence": [
+            "reports/critic-w1-crossing/walk-crossing-jog.json"
+          ]
+        },
+        {
+          "id": "X3",
+          "what": "M4 leg-time audit on a WALKED body (the item asks for it; nobody had done it on a body)",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "stormhold-helstrom 23.574 vs tabled 24.3 (-3.0%); helstrom-blackrose 19.539 vs 20.7 (-5.6%); blackrose-lilmoth 12.284 vs 12.5 (-1.7%). Bar is +-20%.",
+          "evidence": [
+            "reports/critic-w1-crossing/walk-crossing.json"
+          ]
+        },
+        {
+          "id": "X4",
+          "what": "rule 8 — does the route survive being varied? backwards, at the jog, at night in a storm, encumbered",
+          "result": "fail",
+          "hard_fail": false,
+          "observed": "THREE OF FOUR SURVIVE, ONE DOES NOT. Jog arrives. Night+storm+OVERLADEN walks at 1.5724 m/s with worst deviation 1.39 m and zero frames off the road. soulrest-blackrose arrives in BOTH directions. But THE CROSSING reversed is STUCK at 5,072.3 m — see why_not_ten.",
+          "evidence": [
+            "reports/critic-w1-crossing/walk-crossing-reverse.json",
+            "reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json",
+            "reports/critic-w1-crossing/walk-leg-soulrest-blackrose-reverse.json"
+          ]
+        },
+        {
+          "id": "X5",
+          "what": "is the distance honest — does path_m exclude metres the world MOVED the body?",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "YES for walkRoute, and I watched it bite: killed at 799 m, the province respawned the body 3,856.1 m away, path_m went 799.0 -> 814.0 with teleports 1 and teleported_m 3,856.1, while my own unbounded counter read 4,670.1 m. The respawn point is 116.7 m from the crossing destination, so an unexcluded teleport would report an arrival for a body that died on the first leg.",
+          "evidence": [
+            "reports/critic-w1-crossing/kill-probe.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "RI-WLD07",
+      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "measured": "partial",
+      "native_scale": "§4 verticality: what the road is asked to climb, and whether a body that leaves it can return",
+      "native_score": 6,
+      "native_max": 10,
+      "native_verdict": "The road itself is comfortably inside the walkable limit and always was. Its SHOULDER is not, and the piece correctly leaves that open.",
+      "score_0_10": 6,
+      "justification": "Recomputed independently from roads.json and field.js: the worst longitudinal road gradient anywhere in the province is 24.27 deg on stormhold-helstrom against a 40 deg walkable limit — identical to the builder’s figure, from my own arithmetic. The published stall at (2153.7, 1197.8) is 4.97 m off the centreline and 15.61 m BELOW the deck, inside the declared 471 m / 50.6 m viaduct, with onDeckAt and onRoadAt both false: it fell off a bridge. The disowned 57.5/61.09/64.6 deg readings reproduce as field.slopeAt() artefacts — 61.10 deg at r=5 and 73.55 deg at r=2.5 at the stall, against 1.09 deg on a leg with no structures at all. THERE IS NO SKIRT and the premise correction is right.",
+      "why_not_ten": "Two things. (a) One of the three supports the correction rests on cannot fail: \"the slope gate refuses zero samples of any centreline\" is structurally zero, because traversal.js exempts a body when onRoadAt() is true and 25,390 of 25,390 centreline samples are exempt (100.0000%). Rule 4, and it has propagated into the §P.4 gate paragraph. (b) The shoulder is genuinely un-regainable in places: G3-REGAIN 63 and G4-NO-FALL 488 both reproduce EXACTLY, and my replacement lateral sweep — restricted to the four legs with zero deck_spans so no slab edge can inflate it — refuses 0 of 14,253 samples at 3.5 m off the centreline and 4 of 14,473 at 4 m, rising to 41 of 19,712 at 5 m.",
+      "evidence": [
+        "reports/critic-w1-crossing/grade.json",
+        "reports/critic-w1-crossing/regain.json",
+        "reports/critic-w1-crossing/roads-sg060.json"
+      ],
+      "checks": [
+        {
+          "id": "Y1",
+          "what": "is there a 57.5 deg skirt on the Valus Ridge?",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "NO. Worst longitudinal road gradient in the province 24.27 deg (limit 40). The stall is 4.97 m off the centreline and 15.61 m below the deck of a declared 471 m viaduct standing 50.6 m up. slopeAt reproduces 61.10 deg there and 1.09 deg on a structure-free leg. Two agents and one orchestrator brief asserted the skirt; all three were wrong.",
+          "evidence": [
+            "reports/critic-w1-crossing/grade.json"
+          ]
+        },
+        {
+          "id": "Y2",
+          "what": "can the \"zero slope-gate refusals on the centreline\" counter ever be non-zero?",
+          "result": "fail",
+          "hard_fail": false,
+          "observed": "NO. 25,390 of 25,390 centreline samples across all ten legs are exempt from the slope gate via onRoadAt(), which returns true within half_width x 1.15 of the centreline. The counter is a restatement of the exemption, not a measurement of the province. Replacement supplied and it bites.",
+          "evidence": [
+            "reports/critic-w1-crossing/grade.json"
+          ]
+        },
+        {
+          "id": "Y3",
+          "what": "G3-REGAIN and G4-NO-FALL, recounted independently",
+          "result": "fail",
+          "hard_fail": false,
+          "observed": "63 and 488, EXACTLY reproducing the builder, including 59 of the 63 on stormhold-helstrom. Correctly reported as open. Confirmed from a walked body: 2 of 20 independent 25 m shoves on LEVEL ground do not come back.",
+          "evidence": [
+            "reports/critic-w1-crossing/grade.json",
+            "reports/critic-w1-crossing/regain.json"
+          ]
+        },
+        {
+          "id": "Y4",
+          "what": "the --stair-grade sweep, reproduced by re-running the generator rather than reading the sweep file",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "0.45 -> 0.60 takes the network from 1,732 m of deck span to 1,431 m and the tallest structure from 50.6 m to 32.7 m, with the trunk network (25,385.3 m) and THE CROSSING (6,903.6 m) UNCHANGED — zero length cost — and the worst road gradient 24.27 -> 31.13 deg. REFERRED as a design question, not decided here.",
+          "evidence": [
+            "reports/critic-w1-crossing/roads-sg060.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "measured": "full",
+      "native_scale": "binary per model: name the world-side consumer and demonstrate it by perturbing the model and watching an entity change behaviour",
+      "native_score": 7,
+      "native_max": 10,
+      "native_verdict": "Both shipped models are genuinely consumed, and a third (burden) falls out of my own perturbation. The shipped C2-NULL bar is broken and its author says so.",
+      "score_0_10": 7,
+      "justification": "The road centreline is read by engine._pursue() and the structures by field.clampToDeck()/onDeckAt()/heightAt(); both are demonstrated by perturbation. My own third perturbation: setBurden(0.9) puts the body in OVERLADEN with move_mult_applied 0.72 and the walked mean speed drops 1.9991 -> 1.5724 m/s over 160,001 stepping frames, so the burden model is read too.",
+      "why_not_ten": "C2-NULL-IS-SILENT as shipped prints PASS against a bar of 6,193 m, because max(0.5, noise_floor x 1.5) read its floor from an arm the builder had already invalidated. It flagged this red in its own survey rather than presenting it as a result, which is the right behaviour and the reason this is a 7 and not lower. My replacement measures the floor instead of inheriting it — and its own first cut failed (the road bump sat 1,450 m into a 466 m walk, so the POSITIVE arm read 0.000 m), which is recorded rather than quietly fixed.",
+      "evidence": [
+        "reports/critic-w1-crossing/null.json",
+        "reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json",
+        "reports/critic-w1-crossing/deletefix.json"
+      ],
+      "checks": [
+        {
+          "id": "Z1",
+          "what": "is the road centreline read by the body?",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "Yes — engine._pursue() computes the body’s projection onto roads.json legs[].points every frame and steers from it; deleting or moving those points moves the body. Demonstrated by the builder (15.65 m for a 25 m bump) and by the delete-the-fix grid, where replacing _pursue collapses the walk from 1,779.2 m to 550.1 m.",
+          "evidence": [
+            "reports/critic-w1-crossing/deletefix.json"
+          ]
+        },
+        {
+          "id": "Z2",
+          "what": "is the C2-NULL bar honest?",
+          "result": "fail",
+          "hard_fail": false,
+          "observed": "NO, and the builder says so. Bar 6,193 m from an invalidated noise-floor arm. Replaced with a measured floor: the same walk run twice with nothing changed, compared track-against-track at the same frame.",
+          "evidence": [
+            "reports/critic-w1-crossing/null.json"
+          ]
+        },
+        {
+          "id": "Z3",
+          "what": "CRITIC’S OWN PERTURBATION — is the burden model read by a walking body?",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "YES. setBurden(0.9) -> tier OVERLADEN, move_mult_applied 0.72, burden_source \"pinned by setBurden()\"; the walked mean speed over 160,001 stepping frames is 1.5724 m/s against 1.9991 unencumbered, and the body still holds the road to 1.39 m with zero frames off it. NOTE FOR WHOEVER OWNS IT: NEXT-DISPATCH §Q1 says setBurden \"has been inert on any stepping run\". On this stepping run it is not. Recorded, not adjudicated — it is not my piece.",
+          "evidence": [
+            "reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json"
+          ]
+        }
+      ],
+      "axis_note": "SCORING.md §1.1 min-over-axes note: Z2 is a FAIL on the shipped C2-NULL-IS-SILENT *bar*, not on a consumption AXIS. The axes RI-MTH07 scores are the MODELS — road centreline (Z1 pass), structures (CONSUME-STRUCTURE pass) and burden (Z3 pass) — each of which is demonstrated by perturbation with a consumer named in shipped code. Z2 is a defect in one CHECK that was supposed to guard the road axis, and the road axis is carried instead by the 550.1 m / 1,779.2 m separation in the re-seeded delete-the-fix grid and by my replacement measured noise floor. So no axis is unmeasurable, and the min over the three model axes is 7 — held down by the fact that a green check with a 6,193 m bar shipped at all."
+    }
+  ],
+  "measurements": {
+    "crossing_walked_by_the_critic": {
+      "arrived": true,
+      "distance_m": 6646.7,
+      "frames": 199433,
+      "in_world_minutes": 55.398,
+      "mean_speed_mps": 1.9991,
+      "frac_samples_below_1_6": 0.00063,
+      "speed_samples": 33238,
+      "worst_off_path_m": 1.39,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "end": [
+        2765.6,
+        5028.8
+      ],
+      "hp_pinned": true,
+      "province_damage_absorbed_hp": 1060.5,
+      "critic_independent_counter": {
+        "walked_m": 6646.7,
+        "naive_unbounded_sum_m": 6646.7,
+        "max_single_frame_step_m": 0.295,
+        "frames": 199432,
+        "net_displacement_m": 4308.9
+      },
+      "artifact": "reports/critic-w1-crossing/walk-crossing.json"
+    },
+    "RI_WLD01_bars": {
+      "M2_TIME_52_65_min": "55.398 PASS",
+      "M2_DISTANCE_6300_7600_m": "6,646.7 PASS",
+      "M2_step4_JOG_33_41_min": "34.622 PASS — NEVER RUN BY ANYBODY BEFORE THIS VERDICT",
+      "M3_SPEED_HONESTY_le_8pct": "0.063% PASS",
+      "M3_MEAN_SPEED_2.0_pm_0.05": "1.9991 PASS",
+      "M4_LEG_TIMES_pm_20pct": "stormhold-helstrom -3.0%, helstrom-blackrose -5.6%, blackrose-lilmoth -1.7% — all PASS, and never run on a walked body before"
+    },
+    "kill_probe_rule_4": {
+      "killed_at_m": 799,
+      "respawn_discontinuity_m": 3856.1,
+      "engine_path_m_before_after": [
+        799,
+        814
+      ],
+      "engine_teleports": 1,
+      "critic_walked_m_after": 814,
+      "critic_naive_sum_m_after": 4670.1,
+      "respawn_point_to_crossing_destination_m": 116.7,
+      "verdict": "THE EXCLUSION BITES AND I WATCHED IT BITE"
+    },
+    "premise": {
+      "worst_longitudinal_road_gradient_deg": 24.27,
+      "worst_leg": "stormhold-helstrom",
+      "walkable_limit_deg": 40,
+      "stall_lateral_m": 4.97,
+      "stall_below_deck_m": 15.61,
+      "stall_inside_declared_span": "471 m viaduct, 50.6 m tall",
+      "slopeAt_at_the_stall_r5_deg": 61.1,
+      "slopeAt_at_the_stall_r2_5_deg": 73.55,
+      "slopeAt_on_a_structure_free_leg_deg": 1.09,
+      "centreline_samples": 25390,
+      "centreline_exempt_from_the_slope_gate_pct": 100,
+      "verdict": "NO SKIRT. It fell off a viaduct. But 'zero slope-gate refusals on the centreline' is a tautology, not a measurement."
+    },
+    "reverse_crossing": {
+      "state": "stuck",
+      "walked_m": 5072.3,
+      "declared_route_m": 6903.6,
+      "frames": 153121,
+      "stuck_frames": 900,
+      "end": [
+        2278.6,
+        1859.2
+      ],
+      "short_of_target_m": 1103.46,
+      "worst_off_path_m": 1.35,
+      "teleports": 0,
+      "cause": "stormhold-helstrom points 126 and 131 are 5.74 m apart horizontally and 7.51 m apart vertically; points 129-131 are a declared 17 m / 8 m viaduct whose 3.5 m deck slab is laid across the lower limb of the same switchback. onDeckAt returns a 7.42 m-clearance deck ON the carriageway at 1,635 m, inside a declared span GAP, so heightAt steps the ground up 5.75 m and back down 7.5 m over ten metres of road."
+    },
+    "deletefix_2x2_reversed_and_reseeded": {
+      "OLD_OLD": {
+        "path_m": 550.1,
+        "end": [
+          2153.7,
+          1197.8
+        ],
+        "ran": "FIRST, from a re-seeded world"
+      },
+      "OLD_NEW": {
+        "path_m": 550.1,
+        "end": [
+          2153.7,
+          1197.8
+        ]
+      },
+      "NEW_OLD": {
+        "path_m": 1779.2,
+        "end": [
+          2568.6,
+          4735
+        ]
+      },
+      "NEW_NEW": {
+        "path_m": 1779.2,
+        "end": [
+          2568.6,
+          4735
+        ]
+      },
+      "builder_arms": {
+        "NEW_NEW": 1327.3,
+        "NEW_OLD": 1333,
+        "OLD_NEW": 390.1,
+        "OLD_OLD": 550.1
+      },
+      "verdict": "The teardown reproduces the published 550.1 m at (2153.7, 1197.8) EXACTLY, running FIRST from a clean world — so it is not an order or shared-state artefact. But the parapet arms are BYTE-IDENTICAL here, three of the builder's four cells do not reproduce, and crossing-deletefix.mjs's HP pin writes only sim.player.hp (not combat.player.hp), so both its NEW arms carry a death and a ~3.4 km respawn."
+    },
+    "regain_20_independent_trials": {
+      "NEW_steering": {
+        "regained": 15,
+        "of": 20,
+        "median_frames_to_regain": 649,
+        "walked_m": 1095.7
+      },
+      "OLD_steering": {
+        "regained": 16,
+        "of": 20,
+        "median_frames_to_regain": 786,
+        "walked_m": 868.8
+      },
+      "verdict": "THE COUNT IS DELIVERED AND IT IS STILL AN INERT CONTROL — for a better reason than the builder's. Single-shove recovery is not the failure mode the fix addresses. 3 of the 5 NEW failures are bodies shoved 35-39 m DOWN off a viaduct (a fall, not steering); 2 are genuine regain failures on level ground.",
+      "orbit_signature_does_not_reproduce": "the builder's 7,966.3 m vs 788.0 m becomes 868.8 m vs 1,095.7 m over independent trials — the orbit is a property of the situation (a body under a viaduct), not of the steering"
+    },
+    "soulrest_blackrose_the_drowning_leg": {
+      "forward": {
+        "path_m": 1765.6,
+        "arrived": true,
+        "worst_off_path_m": 1.31,
+        "off_path_frames": 0,
+        "deepest_water_m": 0
+      },
+      "reverse": {
+        "path_m": 1765.7,
+        "arrived": true,
+        "worst_off_path_m": 1.37,
+        "off_path_frames": 0,
+        "deepest_water_m": 0
+      },
+      "history": "W1-05 had a body run 6,459 m of an 1,841 m leg and finish in 18 m of sea; W1-ROAD-JOIN r1 §E found blackrose->soulrest STILL failing at 6,268.7 m and assigned the direction asymmetry to this piece.",
+      "verdict": "CLOSED IN BOTH DIRECTIONS. W1-05's reachability proof is unblocked on this leg."
+    },
+    "open_counts_recomputed": {
+      "G3_REGAIN": {
+        "builder": 63,
+        "critic": 63
+      },
+      "G4_NO_FALL": {
+        "builder": 488,
+        "critic": 488
+      },
+      "G5_PARAPET": {
+        "builder": "93 of 3500",
+        "critic": "NOT REBUILT — taken on the builder's word"
+      }
+    },
+    "stair_grade_referral": {
+      "shipped_0_45": {
+        "deck_span_m": 1732,
+        "tallest_structure_m": 50.6,
+        "trunk_m": 25385.3,
+        "crossing_m": 6903.6,
+        "worst_road_gradient_deg": 24.27
+      },
+      "swept_0_60": {
+        "deck_span_m": 1431,
+        "tallest_structure_m": 32.7,
+        "trunk_m": 25385.3,
+        "crossing_m": 6903.6,
+        "worst_road_gradient_deg": 31.13
+      },
+      "length_cost": "ZERO — the horizontal route does not move",
+      "referral": "Is a 31 deg road a road? A sustained one-in-six ramp, steeper than any road surface in the province, in exchange for 301 m less viaduct and 17.9 m less fall height. RI-WLD01's owner decides. THIS VERDICT DOES NOT."
+    },
+    "rule_8_variations": {
+      "jog": {
+        "arrived": true,
+        "path_m": 6645.9,
+        "minutes": 34.622,
+        "mean_speed_mps": 3.2,
+        "off_path_frames": 0
+      },
+      "reverse": "STUCK at 5,072.3 m — see reverse_crossing",
+      "soulrest_leg_both_directions": "both arrived",
+      "night_storm_overladen": {
+        "mean_speed_mps": 1.5261,
+        "worst_off_path_m": 1.22,
+        "burden_tier": "OVERLADEN",
+        "move_mult_applied": 0.72,
+        "note": "the route survives the variation; and setBurden IS live on this stepping run, which NEXT-DISPATCH Q1 says it is not — recorded, not adjudicated, it is not my piece"
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "path": "reports/critic-w1-crossing/walk-crossing.json",
+      "kind": "trace",
+      "produced_by": "node tools/run.mjs critic-crossing-fwd -- node tools/world/critic-crossing-walk.mjs --route crossing --survive --budget-min 28 --chunk 20000 --shot docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png --out reports/critic-w1-crossing/walk-crossing.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-crossing-reverse.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --reverse --survive --budget-min 20 --out reports/critic-w1-crossing/walk-crossing-reverse.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-crossing-jog.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --speed jog --survive --budget-min 20 --out reports/critic-w1-crossing/walk-crossing-jog.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --survive --time 2 --weather storm --burden 0.9 --budget-min 22 --out reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-leg-soulrest-blackrose.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --leg soulrest-blackrose --survive --budget-min 8 --out reports/critic-w1-crossing/walk-leg-soulrest-blackrose.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-leg-soulrest-blackrose-reverse.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --leg soulrest-blackrose --reverse --survive --budget-min 8 --out reports/critic-w1-crossing/walk-leg-soulrest-blackrose-reverse.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/kill-probe.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --kill-at-m 400 --budget-min 6 --chunk 12000 --out reports/critic-w1-crossing/kill-probe.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/grade.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-crossing-grade.mjs --self-test"
+    },
+    {
+      "path": "reports/critic-w1-crossing/regain.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-crossing-probe.mjs --regain --trials 20 --offset 25 --trial-frames 3000 --out reports/critic-w1-crossing/regain.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/null.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-crossing-probe.mjs --null --out reports/critic-w1-crossing/null.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/deletefix.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-crossing-probe.mjs --deletefix --frames 60000 --out reports/critic-w1-crossing/deletefix.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/roads-sg060.json",
+      "kind": "report",
+      "produced_by": "node tools/world/build-roads.mjs --stair-grade 0.60 --out reports/critic-w1-crossing/roads-sg060.json"
+    },
+    {
+      "path": "docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --survive --shot docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
+      "resolution": "960x540",
+      "camera_pose": "the shipped third-person follow camera on the walking body at the end of THE CROSSING, (2765.6, 5028.8) at the Lilmoth harbour steps — no posed camera, no override; this is what the walker saw when it arrived"
+    }
+  ],
+  "blind_comparisons": [],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "independently_measured": false,
+      "checks": [
+        {
+          "id": "AR1-NA",
+          "what": "Souls mechanics leaking into the world model",
+          "result": "pass",
+          "observed": "Not applicable. The piece touches locomotion steering, a deck clamp, a distance accumulator and a road generator. No combat mechanic, no soul award, no level curve. The HP pin is declared probe instrumentation confined to tools/."
+        }
+      ],
+      "not_applicable_reason": "Not applicable, audited rather than waived: this piece ships locomotion steering (engine._pursue), a deck clamp (field.clampToDeck), a distance accumulator (walkRoute/walkPath) and a road generator (build-roads.mjs). None of them is reachable from inside a fight, none awards or spends souls, and none touches the level curve. The only Souls-side object anywhere near it is the HP pin, which is declared probe instrumentation living in tools/ and never in game/."
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "independently_measured": false,
+      "checks": [
+        {
+          "id": "AR2-NA",
+          "what": "Morrowind mechanics leaking into the fight",
+          "result": "pass",
+          "observed": "Not applicable. Nothing this piece ships is reachable from inside a fight."
+        }
+      ],
+      "not_applicable_reason": "Not applicable, audited rather than waived: nothing this piece ships is called from combat. I grepped the changed surface — walkRoute, walkPath, _pursue, clampToDeck, _deckY, onDeckAt — and none of them is invoked by game/src/combat/*; the capsule is moved by combat/player.js, which this piece deliberately does not touch (that is the point of the method: the walk is driven through queueInputs, not by teleporting the capsule)."
+    },
+    "ar3": {
+      "status": "pass",
+      "independently_measured": true,
+      "seam_sterile": true,
+      "checks": [
+        {
+          "id": "AR3-STERILE",
+          "what": "does this piece create an interaction crossing the Souls/Morrowind seam?",
+          "result": "pass",
+          "observed": "No, and legitimately. Pure-pursuit steering over a road network is world traversal on the Morrowind side with no Souls-side counterpart to interact with. Recorded per ARBITRATION §3 rather than penalised; RI-CMP01’s project floor governs."
+        }
+      ]
+    },
+    "consumption": {
+      "status": "pass",
+      "independently_measured": true,
+      "checks": [
+        {
+          "id": "CONSUME-ROAD",
+          "what": "the road centreline is read by the player capsule",
+          "result": "pass",
+          "observed": "engine._pursue() projects the body onto roads.json legs[].points every frame; replacing _pursue with the pre-fix loop takes the walk from 1,779.2 m to 550.1 m at a re-seeded, order-reversed 2x2."
+        },
+        {
+          "id": "CONSUME-STRUCTURE",
+          "what": "the deck_spans are read by the player capsule",
+          "result": "pass",
+          "observed": "field.clampToDeck()/onDeckAt()/heightAt() resolve the slab; the builder’s C3 reaches 3.35 m with the spans declared and 11.04 m (21.94 m below the deck) with them deleted. My own reverse-jam diagnosis is the same coupling seen as a defect: onDeckAt returns a 7.42 m-clearance deck ON the carriageway at 1,635 m of stormhold-helstrom because the upper limb of a switchback lays its slab across the lower one."
+        },
+        {
+          "id": "CONSUME-BURDEN",
+          "what": "CRITIC’S OWN: the burden model is read by a walking body",
+          "result": "pass",
+          "observed": "setBurden(0.9) -> OVERLADEN, move_mult 0.72, walked mean 1.9991 -> 1.5724 m/s over 160,001 stepping frames."
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 6,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "Below bar on two short, specific, closable items — and the headline is verified",
+    "confidence": "high",
+    "axes": {
+      "the_crossing_walked": 9,
+      "honesty_and_self_report": 9,
+      "open_gaps_and_the_referral": 9,
+      "premise_correction": 7,
+      "delete_the_fix": 7,
+      "regain": 7,
+      "consumption": 7,
+      "instrument_claims_match_the_code": 6,
+      "robustness_rule_8": 6
+    },
+    "aggregation_note": "min over nine axes. The two 6s are the FAIL. (a) Finding F7 and survey §2c state that walkRoute AND walkPath exclude teleports from path_m; walkPath does not — it still accumulates the per-frame step with no upper bound and returns no teleports field, and it is the verb tools/world/w1-01-r4-soulrest-leg.mjs uses, the tool W1-05 is being sent to re-run. (b) The route was tested forwards only, at noon, once; reversed it jams at 5,072.3 m. Everything else in this piece is strong: the headline reproduces to the decimal under an independent counter, the teardown reproduces the published coordinate running FIRST from a clean world, the premise correction is right, four instrument flaws were self-reported and two checks refused rather than published, and the four-session drowning blocker on soulrest-blackrose is closed in both directions."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "walkPath() still counts teleports as walked distance while finding F7 and survey §2c both state it does not — a false statement about shipped code, in the piece's own headline finding, in the verb that carries the drowning and reachability evidence.",
+    "The crossing does not walk backwards: STUCK after 900 consecutive sub-centimetre frames at 5,072.3 m of 6,903.6 m, 0.62 m from the centreline, where a 17 m viaduct deck is laid 5.74 m across and 7.51 m above the lower limb of its own switchback. Rule 8 — the fixture was a single forward walk.",
+    "One of the three supports the premise correction rests on — 'the slope gate refuses zero samples of any centreline' — is structurally zero: 25,390 of 25,390 centreline samples are exempt from the gate via onRoadAt(). Rule 4. It has propagated into the §P.4 gate paragraph.",
+    "crossing-deletefix.mjs's HP pin writes only sim.player.hp, so both its NEW arms carry a death and a ~3.4 km respawn; three of its four cells do not reproduce when the world is re-seeded between arms, including the 6 m gap it uses to argue the parapet is not load-bearing."
+  ],
+  "P4_recommendation": {
+    "should_P4_stand_as_MET": true,
+    "on_what_evidence": "An independent critic walked Stormhold to Lilmoth end to end at HEAD: 6,646.7 m, 199,433 frames, 55.398 in-world minutes, settlement collision ON, mean 1.9991 m/s, 0.063% of 33,238 samples under 1.6 m/s, worst deviation 1.39 m of a 6 m carriageway, zero frames off the road, zero teleports — with the zero cross-checked against an unbounded counter and against a deliberately forced respawn that the exclusion caught. RI-WLD01 M2 (both bars and the never-before-run jog), M3 and M4 all pass.",
+    "amendments_the_paragraph_needs": [
+      "State hp_pinned: true. The body that walked it was immortal. That is a legitimate measurement condition (RI-WLD01 M2 step 1 says 'combat disabled', and the builder declares it in the artifact and its survey) but §P.4 does not say so, and unpinned the body dies at 1,276.8 m to regional hazards.",
+      "State that it is forwards-only. Backwards the same route jams at 5,072.3 m.",
+      "Add that the province's respawn lands 116.7 m from the crossing's destination, so any measurement of this route that does not exclude teleports will report an arrival for a body that died on the first leg.",
+      "Drop 'the slope gate refuses zero samples of any centreline' — it is a tautology, not evidence. Replace it with the lateral sweep: on structure-free legs the gate refuses 0 of 14,253 samples at 3.5 m off the centreline and 4 of 14,473 at 4 m."
+    ],
+    "do_not_gate_the_README_on": "the reverse jam — but dispatch it, because it is 1.6 km into the first leg of the canonical route and a player walking home from Lilmoth will meet it."
+  },
+  "biggest_gap": {
+    "gap_id": "GAP-W1-walkpath-absorbs-teleports",
+    "subsystem_path": "world.traversal.locomotion",
+    "severity": "major",
+    "what": "engine.walkPath() still adds a teleport to path_m — it accumulates the per-frame planar step with no upper bound and returns no teleports / teleported_m field — while the round’s own headline finding F7 and survey §2c both state that \"walkRoute AND walkPath now record those separately and EXCLUDE them from path_m\".",
+    "why_it_matters": "This is the exact defect the round is famous for, left live in the other half of the pair, and it is a false statement about shipped code in the piece’s own findings. walkPath is the verb tools/world/w1-01-r4-soulrest-leg.mjs drives — the tool this verdict’s own §D tells W1-05 to re-run to close a four-session blocker — and it is what scale-audit-style reachability walks use. The round’s most-quoted sentence, \"every path_m this project published before may contain them\", now reads as fully retired when it is only half retired. The stakes are concrete: my kill probe shows the province respawns a dead body 116.7 m from the crossing’s destination, so an unexcluded teleport turns a death on the first leg into a reported arrival, and turns 814 m of walking into 4,670 m.",
+    "evidence": [
+      "reports/critic-w1-crossing/kill-probe.json",
+      "reports/critic-w1-crossing/walk-leg-soulrest-blackrose.json",
+      "reports/critic-w1-crossing/walk-crossing.json"
+    ],
+    "remedy": {
+      "action": "Port the six lines already written in walkRoute into walkPath: hold out any per-frame step over 1 m from `dist`, record it in a jumps array with its endpoints and HP, and return teleports / teleported_m / teleport_log. Then correct finding F7 and reports/w1-crossing-survey.md §2c to say what the code does.",
+      "acceptance": "A walk driven through walkPath that is killed mid-route reports teleports >= 1 and a path_m that rises by less than 20 m across the respawn, while an unbounded control counter over the same frames rises by the full respawn distance (3,000 m+). Re-run tools/world/w1-01-r4-soulrest-leg.mjs afterwards and confirm every published path_m for that leg carries teleports: 0.",
+      "targets": [
+        "game/src/engine.js",
+        "tools/world/w1-01-r4-soulrest-leg.mjs",
+        "reports/w1-crossing-survey.md",
+        "orchestration/status/W1-CROSSING.json"
+      ]
+    }
+  },
+  "round_2_scope": [
+    "Port the teleport exclusion from walkRoute into walkPath (six lines already written) and correct F7 / survey §2c.",
+    "Adjudicate the reverse jam: stormhold-helstrom points 126/131, a 17 m viaduct deck laid across the lower limb of its own switchback, producing a 5.75 m step up and a 7.5 m step down on the carriageway at 1,635 m.",
+    "Replace the vacuous centreline slope-gate counter with the lateral sweep, and correct the §P.4 paragraph that cites it.",
+    "Strengthen crossing-deletefix.mjs's HP pin to the one crossing-body.mjs uses and re-run the grid re-seeded; do not quote its per-arm numbers until then."
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": true,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "blind_done_where_required is true vacuously: this piece ships no blind pack and none is required for a locomotion/geometry measurement (rule 25 not engaged). ran_every_assigned_method is true for the eight attacks in my brief (A-H); I did NOT rebuild G5-PARAPET’s 93-of-3,500 clampToDeck census and I take that one open count on the builder’s word, and I did not run tools/run-all.mjs — I ran boot-check, check-data and road-through-building, all green.",
+    "what_i_could_not_do": [
+      "I did not rebuild G5-PARAPET's 93-of-3,500 census; it is the one open count I take on the builder's word.",
+      "I did not re-measure the 133.8 ms worst frame, and I publish no timing or performance figure anywhere (rule 26).",
+      "I did not run tools/run-all.mjs (rule 9's aggregation). I ran boot-check, check-data and road-through-building — all green.",
+      "No blind pack exists for this piece, so rule 25 is not engaged."
+    ],
+    "my_own_instrument_failures_found_and_reported": [
+      "My first --null cut put the road bump at the perturbed leg's MIDPOINT (1,450 m in) and compared 14,000-frame walks that cover 466 m, so the POSITIVE arm read 0.000 m and N2-POSITIVE-BITES went red. A probe whose positive arm has never been seen to move is not a probe. Fixed to 12% of the leg and the failure is recorded in the tool's own comment.",
+      "My first lateral slope sweep reported an 88.31 deg shoulder — which is the SAME slabedge artefact the builder was criticised for, arriving from the other direction. I added a structure-free-legs control column before publishing anything from it.",
+      "My --regain rebuild produces an INERT CONTROL too (15/20 vs 16/20). I am reporting that as the result rather than presenting the 15 as evidence for the fix.",
+      "critic-crossing-probe.mjs inherits the same weak HP pin as crossing-deletefix.mjs (sim.player.hp only), so my NEW deletefix arms also carry a death. I say so rather than quoting them as clean."
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "fidelity_refs": [],
+    "art_refs": [],
+    "note": "This piece is a locomotion and geometry measurement. Nothing in it is judged by how it looks; the one screenshot is rule-27 evidence of arrival, not a fidelity comparison."
+  }
+}
