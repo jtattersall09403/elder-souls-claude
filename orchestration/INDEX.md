@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b4fbd5b`: 716 tools, 153 reference
+so it cannot drift. Generated at `afe605c`: 717 tools, 153 reference
 items, 60 pieces in flight.
 
 Its purpose is to stop 60+ concurrent agents each paying separately to discover the
@@ -722,7 +722,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 140
+### `tools/world/` — 141
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -850,6 +850,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/w1-04-r5-shot.mjs` — **no header comment**
 - `tools/world/w1-04-r6-census.mjs` — W1-04 ROUND 6 — THE OFFLINE CENSUS, ENUMERATED FROM THE INTERIORS.
+- `tools/world/w1-04-r6-chart.mjs` — THE PICTURE FOR W1-04 ROUND 6: what happens after you walk out of the door and keep standing there.
 - `tools/world/w1-04-r6-deletefix.mjs` — **no header comment**
 - `tools/world/w1-04-r6-live.mjs` — **no header comment**
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
@@ -1040,12 +1041,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `judge-w1-22-r3` | ? | commit answers, then open reveal and score | `reports/packs/w1-22-r3-hard-judgement.md` `orchestration/status/judge-w1-22-r3.json` |
+| `judge-w1-22-r3` | ? | none - complete | `reports/packs/w1-22-r3-hard-judgement.md` `orchestration/status/judge-w1-22-r3.json` `reports/blog-feed.jsonl` |
+| `W1-26-r4` | measuring | finish the P9 red-team and the two journey-run still-window arms, then blog line + commit | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `critic-w1-22-r2` | done | DONE. Verdict written and validated; blog line appended; committing declared files with gi | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/blog-feed.jsonl` `reports/content-stats.json` |
 | `W1-GAMEPAD` | running | Shim is healthy: do NOT manufacture a defect (brief scope note, rule 0). Spend budget on ( | `orchestration/status/W1-GAMEPAD.json` |
 | `W1-04-r6` | building | boot-check, then rewrite tools/check-building-fits-room.mjs to enumerate from interiors, t | `orchestration/status/W1-04-r6.json` `game/src/render/exterior.js` |
 | `W1-CROSSING-r2` | in-progress | Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/posit | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` `tools/world/w1-crossing-r2-pursue-sim.mjs` `tools/world/w1-crossing-r2-parapet-trap.mjs` |
-| `W1-26-r4` | building | run tools/w1-26-r4/w1-26-r4-verify.mjs in a browser (gate GO), then blog line + shot + com | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `W1-14-r5` | done | commit; nothing outstanding | `docs/shots/2026-08-08-w1-14-r5-the-bolt-goes-where-the-body-is-going.png` `game/data/magic/cast-classes.json` `game/data/npcs/spellwrights.json` `game/src/combat/player.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `critic-w1-26-r3` | done | none — verdict written. A second critic should reproduce tools/harness/jrn09-exchange.mjs; | `orchestration/status/critic-w1-26-r3.json` `corpus/90-verdicts/wave1/W1-26-r3.md` `corpus/90-verdicts/wave1/W1-26-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-26-r3/` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |

@@ -288,4 +288,193 @@ in this report.** It should not be scored under RI-MTH03.
 
 ## 4. Reveal and score
 
-*(filled in below after the key was opened)*
+Reveal opened after §0–§3 were written to disk **and committed** at `afe605c`, with the pre-reveal
+`answers_sha256 = 2f80d9b25554004879f2f21eaceea2e6253f393e14cc62dc94f46880d93e8fa0` recorded in the
+commit message. The claim "answers before key" is checkable from git, not from my word.
+
+### 4.1 Raw tally
+
+**26 / 26.** No misses.
+
+| Stratum | Definition (from `mapping.json`) | Score |
+|---|---|---|
+| `reroll` | SAME — one region, two capture seeds | 8/8 |
+| `tod` | SAME — one region, day against night | 5/5 |
+| `near` | DIFFERENT — two regions sharing an RI-AUD03 §C key triple | 9/9 |
+| `far` | DIFFERENT — two regions from different triples (positive control) | 4/4 |
+
+Confidence calibration: high 17/17, medium-high 4/4, medium 5/5. My stated uncertainty carried no
+information — every trial I flagged as shaky (T01, T09, T20, T22, T24) was correct. That is not a
+compliment to my calibration; it means the pack had no trials near its own decision boundary.
+
+### 4.2 Which trials I got wrong, and why
+
+**None.** So the useful version of this section is the inverse: **which trials I got right without
+judging anything.**
+
+- **T08 and T22 I did not independently judge.** I answered them "identical pair to T05 / T20 with
+  the sides swapped", which is what they are. Two of my 26 answers are recognition, not
+  discrimination. My honest self-report is **24 independent judgements, 24 correct.**
+- **All 26 are reproducible by a five-line script with no domain knowledge whatsoever.** I checked
+  this after the reveal: a plain Euclidean distance over `(stereo/10, p95, iqr, 3×silence_ratio,
+  crest/10, six band RMS values)`, thresholded at 1.47, scores **26/26**. Nothing in that vector
+  knows what a swamp is, what Argonia is, or what good ambience sounds like. The threshold sits in
+  the middle of the 1.52→2.13 gap I described in §2 before the reveal, so the gap was real and it
+  was doing all the work.
+- `stereo_correlation` gap alone scores **20/26**, matching my pre-reveal estimate of 20/26 in §3.3
+  and close to the builder's own `stereo_gap: 0.808`. In 7 of the 13 SAME trials the two recordings
+  have *bit-identical* stereo correlation.
+
+So the honest reading of 26/26 is not "the judge discriminated well". It is **"the pack is a
+distance-threshold exercise and I applied a distance threshold."**
+
+### 4.3 Trials I believe are mislabelled — argued from the recordings
+
+This is the substantive finding, and it survives independent of anything about me.
+
+**Seven recordings in this pack carry two contradictory `tod` labels for the same region and the same
+seed index, while being byte-identical.** I established recording identity by SHA-256 over the
+serialised feature object *before* opening the key (§3.2, committed at `afe605c`), so this is a join
+between an independent identity map and the reveal, not a story fitted afterwards.
+
+| Recording | Labelled in the key as | And also as |
+|---|---|---|
+| R06 | `crimson-coast/day/0` (T03) | `crimson-coast/night/0` (T04, T07, T25) |
+| R09 | `deep-marshes/day/0` (T08) | `deep-marshes/night/0` (T05) |
+| R10 | `eastern-rootlands/day/0` (T06) | `eastern-rootlands/night/0` (T11, T15) |
+| R11 | `valus-ridge/day/1` (T06) | `valus-ridge/night/1` (T13, T16) |
+| R14 | `thornmarsh/day/1` (T21) | `thornmarsh/night/1` (T10) |
+| R16 | `stone-wastes/day/0` (T13) | `stone-wastes/night/0` (T21, T24) |
+| R24 | `clay-moor/day/0` (T20) | `clay-moor/night/0` (T22, T23) |
+
+No label maps to two different vectors — the region and seed fields are perfectly consistent. **Only
+`tod` conflicts.** That rules out a shuffling bug in the mapping and points at one of two things,
+both of which matter:
+
+1. **The ambience system produces byte-identical output for day and night in these seven captures.**
+   The `tod` parameter is being passed and is changing nothing. That is a rule-5 shape: a parameter
+   with no consumer. It would also explain the leak audit's own `tod_predicts_class_accuracy: 0.577`
+   — time of day is near-useless as a predictor because for over half the captures it is not a real
+   variable.
+2. Or the capture harness stamped `tod` from a field it never actually applied.
+
+I cannot distinguish these two from inside the pack, and I am saying so rather than picking the more
+dramatic one.
+
+**Post-reveal cross-check, declared as such.** After scoring, I read `reports/blog-feed.jsonl` and
+found that the W1-22 round-2 critic — the same agent that built this pack — had *already published*
+this exact finding: *"nine of the thirteen regions sound EXACTLY the same at night as during the day
+— not similar, identical to the last decimal place — though the design says night must be a different
+set of sounds."* My seven are a subset of that nine (the pack only samples some region×tod
+combinations), reached independently from byte hashes with the key closed, so the two results
+corroborate each other.
+
+That corroboration makes the pack's defect sharper, not softer. **The builder knew, before building
+this pack, that day and night are byte-identical for most regions — and then built a five-trial
+`tod` stratum defined as "one region, day against night" on top of it.** Four of those five trials
+cannot test what the stratum says it tests, because the day/night difference the stratum is named
+after does not exist in the audio. This was knowable at build time from the builder's own published
+finding.
+
+Either way the consequence for the pack is the same, and it is specific:
+
+**The `tod` stratum is largely fictional.** It has five members (T05, T16, T17, T20, T24), and:
+
+- **T05 and T08 contain the same two vectors** (R08, R09), sides swapped. T05 is filed as `tod`
+  (deep-marshes day/1 vs night/0); T08 is filed as `reroll` (deep-marshes day/0 vs day/1). **One
+  observation, counted twice, in two different strata**, once as evidence about time-of-day handling
+  and once as evidence about seed rerolls.
+- **T20 and T22 are the same pair** (R23, R24), sides swapped. T20 is filed as `tod` (clay-moor
+  night/1 vs day/0); T22 as `reroll` (clay-moor night/0 vs night/1). Same double-count.
+- **T16 and T24** each contain a vector whose `tod` label is contradicted elsewhere in the key
+  (R11 and R16 respectively), so the day/night contrast they claim to test is not present in the
+  audio.
+- **T17 is the only member of the `tod` stratum with no label conflict.** Its `blackwood/night/1`
+  vector (R20) is labelled identically in T26.
+
+So the pack advertises 5 time-of-day trials and has **1** that is what it says it is. And the pack
+advertises 26 trials but contains **24 distinct pairs**.
+
+The builder's leak audit reports `"identical_pairs": []`. That check evidently asked *"is A identical
+to B within a trial?"* — for which the answer is correctly no — and never asked *"is trial X
+identical to trial Y?"*, for which the answer is yes, twice. That is the precise gap in the audit,
+and it is the same gap that produced the strata double-count.
+
+A smaller one worth recording: **28 distinct recordings fill 52 slots**, with seven hubs reused three
+or four times each (R06, R07, R09, R10, R11, R16, R24). The trials are therefore not independent —
+the answers are determined by clustering 28 vectors, not by 26 separate judgements. A judge who
+correctly places the seven hubs has settled 22 of the 52 slots.
+
+### 4.4 Is the pack a good instrument?
+
+**It is not a third voided pack, and I want to be careful not to score a cheap hit by calling it
+one.** The two prior voids were provenance leaks — `[REDACTED]` marks and byte length let a judge
+answer without listening. I checked both classes here from the bytes and they are genuinely dead:
+all 52 recordings serialise to exactly 6981 bytes, all 43,888 values are exactly 5 characters, key
+order and array shapes are uniform, there are no name fields, and side asymmetry on every scalar is
+9–15 out of 26. **The fixed-width dB encoding is a real fix and it works.** The builder set out to
+kill the byte-length channel and killed it. Credit where it is due.
+
+But "no tell" is not the same as "good instrument", and this pack fails on three separate axes.
+
+**(a) It cannot answer the question I was dispatched to ask.** I was sent to judge which of A and B
+is the better Black Marsh ambience. The pack asks SAME/DIFFERENT and contains no ours/reference axis.
+In 13 of 26 trials both recordings are the *same place*, so "which is better" is undefined. **No
+quality verdict for W1-22 can be derived from this pack**, and if one is reported as though it were,
+that is the rule-25 failure mode in its third form.
+
+**(b) As a discrimination instrument, its effective N is much smaller than 26.** 24 distinct pairs,
+of which the answers are determined by clustering 28 vectors with 7 reused hubs. A 26/26 is not 26
+bits of evidence.
+
+**(c) A and B *are* separable by something other than judgement — just not by a provenance
+artifact.** A single Euclidean distance over eleven summary numbers recovers the whole key. The
+builder's own audit saw this (`spectrogram_distance: 0.923`) and filed it as *"the pack's difficulty,
+not a leak"*. **I disagree with that framing, and this is my main disagreement with the build.** The
+pack's question is *"are these two recordings the same place?"*, which is definitionally a distance
+question; a distance metric answering it is not a measure of difficulty, it is the question restated.
+The builder has produced an instrument whose task is solved by the metric the instrument is made of.
+Making the pack "harder" by removing loudness, tone colour and drift narrowed *which* distance works;
+it did not make the task require judgement. Nothing I did in §1 required knowing that this is a game,
+let alone a swamp.
+
+**What the pack does measure, and measure well.** Strip the framing and there is a real result here:
+**once loudness, absolute spectrum and slow drift are removed, the game's 13 regions remain separable
+by temporal behaviour and stereo width with a clean bimodal gap and no overlap** — 26/26 with a
+threshold, and my per-trial clustering closed transitively over 26 constraints and 28 nodes without a
+single contradiction. That is a strong, publishable finding and it is consistent with the 92% figure
+I was given. The regions genuinely do sound like different somewheres. On the dispatch's own first
+criterion — *"Morrowind's regions are distinguishable with your eyes shut"* — this pack is evidence
+that they are.
+
+**Recommendation.** Report this as `RI-AUD03` region-separability evidence at **N=24, not 26**, with
+the `tod` stratum reported as **n=1 usable, not 5**. Do not report it as a judgement of ambience
+quality, because it is not one. Before a round 4:
+
+1. Fix the seven day/night byte-identical captures, or establish that `tod` has no consumer for
+   those regions and record *that* as the finding — it is more valuable than the pack.
+2. De-duplicate T05/T08 and T20/T22, and stop one pair of vectors being counted in two strata.
+3. Draw each trial from disjoint captures, or state openly that trials are non-independent.
+4. Jitter `stereo_correlation` per take by more than its within-place spread, or drop it — at
+   present it is quantised to 0.1, near-constant within a place, and functions as an ID number
+   spelled in decibels.
+5. If W1-22 needs a *quality* verdict, that needs a different pack with an ours/reference axis and
+   audio a judge can actually hear.
+
+### 4.5 What I could not do (rule 26)
+
+- **I did not listen to anything.** There is no audio in this pack. I judged 28 numeric feature
+  vectors by statistics. Any downstream claim that "a judge listened to the ambience and preferred X"
+  is not supported by this document.
+- **I could not judge the question I was dispatched to judge** — quality — because the artifact does
+  not express it. I answered the pack's question instead and flagged the mismatch in §0a rather than
+  producing a quality verdict the evidence cannot carry.
+- **I could not write one answer before opening the next trial** as the dispatch's method specified,
+  because all 26 trials are in one JSON file. I wrote all 26 before opening the key, and committed
+  them, which preserves the guarantee that matters.
+- **I could not distinguish "the ambience system ignores time of day" from "the capture harness
+  mislabelled `tod`"** from inside the pack. §4.3 states both and picks neither.
+- **Two of my 26 answers (T08, T22) were recognition, not judgement.** Counted honestly, 24/24.
+- I did not open the reveal early and was not tempted to; the temptation this pack offers is
+  different and I named it in §0b.
+

@@ -1,11 +1,11 @@
 {
   "task_id": "judge-w1-22-r3",
   "role": "blind-judge",
-  "status": "answers_written_pre_reveal",
+  "status": "done",
   "started_at": "2026-08-08T00:00:00Z",
   "pack": "reports/packs/w1-22-r3-hard",
-  "reveal_opened": false,
-  "next_step": "commit answers, then open reveal and score",
+  "reveal_opened": true,
+  "next_step": "none - complete",
   "notes": [
     "Rule 25 clear: I did not build this pack.",
     "DISCREPANCY FOUND BEFORE ANY ANALYSIS: dispatch asked for a QUALITY judgement (which of A/B is the better Black Marsh ambience). The pack's own PROMPT.md asks a SAME/DIFFERENT identity question and states there is no ours/reference distinction per trial. These are different questions. Recording this now so it cannot be read as a post-hoc excuse.",
@@ -13,12 +13,33 @@
   ],
   "files_touched": [
     "reports/packs/w1-22-r3-hard-judgement.md",
-    "orchestration/status/judge-w1-22-r3.json"
-  ],
-  "files_claimed": [
-    "reports/packs/w1-22-r3-hard-judgement.md",
     "orchestration/status/judge-w1-22-r3.json",
     "reports/blog-feed.jsonl"
   ],
-  "answers_sha256": "2f80d9b25554004879f2f21eaceea2e6253f393e14cc62dc94f46880d93e8fa0"
+  "files_claimed": [],
+  "answers_sha256": "2f80d9b25554004879f2f21eaceea2e6253f393e14cc62dc94f46880d93e8fa0",
+  "reveal_opened_after_commit": "afe605c",
+  "score": "26/26",
+  "independent_judgements": "24/24 (T08 and T22 were recognition of duplicated pairs, not fresh judgement)",
+  "by_stratum": {
+    "reroll": "8/8",
+    "tod": "5/5",
+    "near": "9/9",
+    "far": "4/4"
+  },
+  "judged_by": "numeric feature vectors only - the pack contains no audio",
+  "verdict_on_instrument": "not voided for a provenance tell (byte length, widths, shapes, names all verified clean), but NOT a good instrument: effective N is 24 not 26, the tod stratum has 1 usable member not 5, trials are non-independent (28 recordings across 52 slots, 7 hubs), and a single Euclidean distance over 11 summary numbers reproduces the whole key 26/26 with no domain knowledge",
+  "dispatch_mismatch": "dispatch asked a QUALITY question (better Black Marsh ambience); the pack asks SAME/DIFFERENT identity and has no ours/reference axis. No quality verdict for W1-22 can be derived from this pack.",
+  "key_findings": [
+    "7 recordings carry contradictory day/night labels for the same region+seed while being byte-identical; corroborates the round-2 critic's published 'nine of thirteen regions identical at night' finding, reached independently from byte hashes with the key closed",
+    "T05/T08 are the same pair sides-swapped filed under two different strata (tod and reroll); likewise T20/T22 - one observation counted twice in two buckets",
+    "builder's leak-audit 'identical_pairs: []' checked A-vs-B within a trial, never trial-vs-trial",
+    "positive finding: with loudness, tone colour and drift removed, the 13 regions separate with a clean bimodal gap (1.52 -> 2.13) and zero transitive contradictions over 26 constraints"
+  ],
+  "could_not_do": [
+    "did not listen - no audio exists in the pack",
+    "could not answer the dispatched quality question - artifact cannot express it",
+    "could not write one answer per trial before opening the next - all 26 trials are in one JSON file",
+    "could not distinguish 'tod has no consumer' from 'harness mislabelled tod' from inside the pack"
+  ]
 }
