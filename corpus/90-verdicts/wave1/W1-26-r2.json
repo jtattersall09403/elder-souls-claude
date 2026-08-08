@@ -1,0 +1,764 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-26-r2",
+  "piece_title": "The opening, as a played scene — played through real input, from the title to the desk",
+  "subsystem_paths": [
+    "journey.firstlaunch.flow",
+    "journey.chargen.diegesis",
+    "journey.onboarding.explanation",
+    "journey.opening.exchange",
+    "journey.opening.legibility",
+    "experience.opening.hook",
+    "experience.opening.beats"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-26-r2-3c19",
+    "role": "critic.journeys",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T01:48:58Z",
+    "finished_at": "2026-08-08T02:53:01Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "402d01a22f58a8793b1680ac088ce03161dc56d6",
+    "branch": "main",
+    "harness_commands": [
+      {
+        "command": "node tools/boot-check.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "PASS — the engine constructed and the harness answers"
+      },
+      {
+        "command": "node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240 --json reports/journeys/w1-26-r2-play.json",
+        "exit_code": 0,
+        "stdout_artifact": "reports/journeys/w1-26-r2-play.json"
+      },
+      {
+        "command": "node tools/journey/census-newgame.mjs",
+        "exit_code": 1,
+        "stdout_artifact": "reports/journeys/w1-26-r2-census-newgame.json"
+      },
+      {
+        "command": "node tools/journey/name-entry.mjs --json reports/journeys/w1-26-r2-name-entry.json",
+        "exit_code": 1,
+        "stdout_artifact": "reports/journeys/w1-26-r2-name-entry.json"
+      },
+      {
+        "command": "node tools/harness/jrn09-exchange.mjs --json reports/journeys/w1-26-r2-jrn09.json",
+        "exit_code": 1,
+        "stdout_artifact": "reports/journeys/w1-26-r2-jrn09.json"
+      },
+      {
+        "command": "node tools/harness/w1-26-opening.mjs --json reports/journeys/w1-26-r2-critic-opening.json",
+        "exit_code": 0,
+        "stdout_artifact": "reports/journeys/w1-26-r2-critic-opening.json"
+      },
+      {
+        "command": "node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 --profile headless-small --input-mode real --trace-events --out reports/journeys/w1-26-r2-jrn01",
+        "exit_code": 1,
+        "stdout_artifact": "reports/journeys/w1-26-r2-jrn01/journey.json"
+      }
+    ],
+    "depends_on": [
+      "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+      "corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md",
+      "corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md",
+      "corpus/22-character/RI-CHR01-character-creation.md"
+    ],
+    "notes": "The shared working tree is dirty and moving: fourteen agents were writing during this run and it stopped booting twice mid-session (game/data/lore/canon.json with 2 unresolved held_by references, then a missing npcs/pop-trades.json). Every number here was taken while boot-check PASSed, on HEAD 402d01a plus whatever other agents had uncommitted at that minute."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "This journey is judged on what reached the frame as text and on whether inputs were taken, not on how the frame looks. The four screenshots are evidence of arrival (ARBITRATION S34(b)) and of the presence or absence of drawn strings; no visual-quality claim is made from them."
+  },
+  "reference_items": [
+    {
+      "id": "RI-JRN09",
+      "path": "corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-100 weighted-sum (M1 45 / M2 30 / M3 20 / M4 5), then hard-fail cap",
+      "native_score": 92,
+      "native_max": 100,
+      "native_verdict": "Meets the bar (>= 90) on the weighted sum — and HF1 fires and caps the item at 2.",
+      "score_0_10": 2,
+      "measured": "full",
+      "hard_fails": [
+        "RI-JRN09/HF1-dtr-zero-at-hold.out"
+      ],
+      "checks": [
+        {
+          "id": "M1-DTR_q",
+          "result": "pass",
+          "value": "1.0000",
+          "threshold": "= 1.00",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ]
+        },
+        {
+          "id": "M1-DTR_scene",
+          "result": "pass",
+          "value": "0.9820",
+          "threshold": ">= 0.90",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ],
+          "note": "The builder's status records 1.0000 from this same tool. At HEAD it is 0.9820 and HF1 fires."
+        },
+        {
+          "id": "M1-HF1",
+          "result": "fail",
+          "value": "DTR 0.000 at hold.out (0 drawn of 2 computed)",
+          "threshold": "no node class below 0.50",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ],
+          "note": "hold.out is the hand-back node the O6 fix created: the commit that answers the hatch-name closes the surface, so Jeeh-Ei's own line is never drawn anywhere and her reply to the name you typed is drawn one node later in the Writ House above a different speaker. Fires on the per-node reading (round 1's precedent in this piece) and on the node-kind reading (the two paused/auto nodes aggregate to 0/2)."
+        },
+        {
+          "id": "M2-AC",
+          "result": "pass",
+          "value": "6 of 7",
+          "threshold": ">= 6 of 7",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ],
+          "note": "The item's one declared judgement call: the seven quotes are NOT seven templates. The upbringing replies and the per-race misread correction are responsive writing. Two points off because race's evidence row reads 'Observed as: Saxhleel', closer to a label than a line, and because the hatch-name consumption is drawn in the wrong room."
+        },
+        {
+          "id": "M3-NAMED",
+          "result": "pass",
+          "value": "14 of 14 distinct; naming line drawn 232/232 (100%); NAMED_rate 96.67%; histogram 597/595/590/618, max deviation 3.00%",
+          "threshold": ">= 10 of 14 and 100% drawn",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ]
+        },
+        {
+          "id": "M4-citations",
+          "result": "pass",
+          "value": "T_control deferred to RI-PLT03 P1; RI-EXP01's N_found/T_lie/T_refusal/N_odd named as blocked",
+          "threshold": "cited or the debt named",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-26-r2.md"
+          ]
+        }
+      ],
+      "how_we_lose_hits": [
+        "orphan text — a string authored, computed, carried through the model, exposed through the harness, and never drawn (hold.out, both strings)"
+      ],
+      "evidence": [
+        "reports/journeys/w1-26-r2-jrn09.json",
+        "corpus/90-verdicts/wave1/W1-26-r2.md"
+      ],
+      "why_not_ten": "HF1. One node draws nothing, and the two strings it drops are Jeeh-Ei's own line and her reply to the name the player just typed — the build's only instance of MW/EXCHANGE row 1.",
+      "path_to_ten": "Keep the dialogue surface up for Jeeh-Ei's reply at hold.out, then hand the body back. That one change takes this item from 2 to 8 with no other work.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-JRN01",
+      "path": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-100 weighted, scored on the runnable fraction per §0.1(b); runnable = 79 this round (Diegesis 35, Flow M1+M2 12, Restraint 20, M13 reachability 7, M20 5)",
+      "native_score": 61,
+      "native_max": 79,
+      "native_verdict": "0.772 of runnable — 'below bar, named remedy required' band, ceiling 6. HF5 caps it at 2.",
+      "score_0_10": 2,
+      "measured": "partial",
+      "hard_fails": [
+        "RI-JRN01/HF5-journey-completes-on-no-modality"
+      ],
+      "checks": [
+        {
+          "id": "M1-surfaces-to-control",
+          "result": "pass",
+          "value": "0 full-viewport UI states with no world behind, against <= 2",
+          "threshold": "<= 2",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn01/journey.json"
+          ],
+          "note": "OFF corpus_debt for the first time — A-JRN1 (tools/journey/journey-run.mjs) exists and was run with --input-mode real."
+        },
+        {
+          "id": "M2-unskippable",
+          "result": "pass",
+          "value": "1 surface, 0 over 30 frames, 0 ignoring input; the census dismisses in 1 frame",
+          "threshold": "0 surfaces over 30 frames",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn01/journey.json"
+          ],
+          "note": "Also off corpus_debt for the first time."
+        },
+        {
+          "id": "M4-clause1",
+          "result": "pass",
+          "value": "61.5 s available play before the first character-defining question; a 60 s wander of 122.24 m during which the scene never asked",
+          "threshold": ">= 60 s",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json"
+          ],
+          "note": "THE ITEM'S OWN DRIVER DISAGREES: journey-run.mjs reports m4_clause1 as 'N/A — no character-field-writing event in the trace', because its census walk opens with censusBegin({}) and dies at writ.race-observed inside a bare `catch { break; }`. Two instruments, 61.5 s against N/A, and the negative one is right about the player."
+        },
+        {
+          "id": "M5-creation-diegesis",
+          "result": "pass",
+          "value": "world rendered behind every creation input; largest single colour bucket 0.1417 of frame from a pixel readback of my own captures; panel area 0.2126-0.3822 against the 0.55 ceiling",
+          "threshold": "100% world visible, opaque UI <= 0.55, 0 frames uniform >= 90%",
+          "evidence": [
+            "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png",
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ],
+          "note": "12 of 15. The >= 90% uniform clause I measured from pixels myself. The panel-area figure is the build's own geometry and I did NOT reproduce it by readback; round 1 found the independent readback running ~0.15 higher, which would put 0.3822 at ~0.53 and inside the ceiling by 0.02."
+        },
+        {
+          "id": "M6-named-interlocutor",
+          "result": "pass",
+          "value": "100% — jeeh-ei and warden-scribe-tuleeh-ma, both with a name, a settlement and >= 3 topics (18 offered by the scribe)",
+          "threshold": "100%",
+          "evidence": [
+            "reports/journeys/w1-26-r2-play.json"
+          ]
+        },
+        {
+          "id": "M7-class-routes",
+          "result": "pass",
+          "value": "3 routes; questionnaire mandatory with 10 questions; 0 stat tokens",
+          "threshold": ">= 3 routes, >= 8 questions, 0 stat tokens",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ]
+        },
+        {
+          "id": "M8-carried-object",
+          "result": "fail",
+          "value": "the writ is built, correct, drawn and openable via use_item — and no player can reach it, because creation cannot be completed",
+          "threshold": "present, correct and drawn",
+          "evidence": [
+            "reports/journeys/w1-26-r2-census-newgame.json"
+          ],
+          "note": "2 of 5. Scored as object-built yes, object-delivered no. Same root cause as the biggest gap; not an independent failure."
+        },
+        {
+          "id": "M9-instruction-budget",
+          "result": "pass",
+          "value": "0 hits and 0 imperative hits over 4 distinct non-dialogue strings ('5','LIGHT','Spark-Da…','A tithe-gourd, empty'); domain_complete true; surfaces_blind []",
+          "threshold": "0 hits, through a demonstrated non-empty accessor",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json",
+            "reports/journeys/w1-26-r2-jrn01/journey.json"
+          ],
+          "note": "9 of 10. One point off for writ.stamp's added teaching clause — an explanation of the game's central verb that M9's domain definition ('outside a dialogue surface') structurally cannot see. Restraint is the block that owns 'the game explains nothing it should not'."
+        },
+        {
+          "id": "M10-inscriptions",
+          "result": "fail",
+          "value": "0 entities of kind `inscription` and 0 site_marks in barge-hold.json and writ-house.json",
+          "threshold": "<= 6 and >= 1, 100% placed within 8 m of first use",
+          "evidence": [
+            "game/data/world/interiors/barge-hold.json",
+            "game/data/world/interiors/writ-house.json"
+          ],
+          "note": "MEASURED, not omitted (round 1 left this unmeasured). The DS/OPEN #4 mechanism is absent from the opening. The barge hold already ships a prop called `tally_scratch`: the fiction is authored and the mechanism is not attached to it."
+        },
+        {
+          "id": "M11-marker-sweep",
+          "result": "pass",
+          "value": "0 markers, arrows, minimaps or compasses in any frame of the played run",
+          "threshold": "0",
+          "evidence": [
+            "docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png",
+            "reports/journeys/w1-26-r2-play.json"
+          ]
+        },
+        {
+          "id": "M13-modality-parity",
+          "result": "fail",
+          "value": "the journey completes on 0 of 4 modalities; and the build's O17 evidence drives the TITLE for two inputs, not the journey",
+          "threshold": "4/4 complete",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json",
+            "reports/journeys/w1-26-r2-census-newgame.json"
+          ],
+          "note": "HF5. Two independent reasons: creation cannot be completed on any device (the biggest gap), and separately nobody has ever run the four legs over the journey M13 describes — the recorded 4/4 is {before_selected:'continue', after_selected:'new', shown_after:false}, which is the title surface."
+        },
+        {
+          "id": "M15-chosen-one",
+          "result": "pass",
+          "value": "0 prophecy hits over 25 distinct strings through the same named accessor",
+          "threshold": "0",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json"
+          ]
+        },
+        {
+          "id": "M20-title-surface",
+          "result": "pass",
+          "value": "title reached from a fresh profile with a save in IndexedDB; option_ids exactly the O3 five; Continue focused and it loaded the save; the title yielded to the world",
+          "threshold": "present, O3-conformant, Continue works",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json",
+            "docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png"
+          ],
+          "note": "HF9 stays closed. Independently confirmed through real input in play mode with no flags: all 5 rows drawn, navigated and committed by key alone."
+        },
+        {
+          "id": "M3/M12/M14/M16-M19/blind-pair",
+          "result": "not_run",
+          "not_run_reason": "corpus_debt, RI-MTH06. journey-run's jrn01-opening ledger does not carry M3, M12 or M14, and the isolated naive-agent channel does not exist. Weight removed from numerator and denominator per §0.1(b).",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn01/journey.json"
+          ]
+        }
+      ],
+      "how_we_lose_hits": [
+        "#15 the instrument is blind and the grep comes back clean — journey-run.mjs, the driver this item names, reproduces the player's defect and swallows it in a bare `catch { break; }`",
+        "#5 control arrives after definition — REPAIRED this round, measured at 61.5 s against O6's 60"
+      ],
+      "evidence": [
+        "reports/journeys/w1-26-r2-critic-opening.json",
+        "reports/journeys/w1-26-r2-jrn01/journey.json",
+        "reports/journeys/w1-26-r2-play.json",
+        "reports/journeys/w1-26-r2-census-newgame.json"
+      ],
+      "why_not_ten": "The journey cannot be completed by a player on any input device, and the opening ships no in-world inscription.",
+      "path_to_ten": "Observe the player's own body's race when `New` begins the scene; then run M13's four legs over the whole journey rather than over the title; then attach a readable inscription to the barge hold's existing `tally_scratch` prop.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-EXP01",
+      "path": "corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted (beats 30 / ordering 10 / discovery 15 / lethality 10 / strangeness 10 / society 15 / verbs 10)",
+      "native_score": 0,
+      "native_max": 100,
+      "native_verdict": "unmeasurable => 0, fail-closed (CRITIC-DOCTRINE §7.3). Hard fails 2, 3 and 4 deliberately NOT fired.",
+      "score_0_10": 0,
+      "measured": "partial",
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "B01",
+          "result": "pass",
+          "value": "the hold of the tithe-barge, a sick fellow prisoner asks your hatch-name, no cutscene, no camera fly-through — hit, and hit by playing it",
+          "threshold": "t 0:00",
+          "evidence": [
+            "reports/journeys/w1-26-r2-play.json",
+            "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png"
+          ]
+        },
+        {
+          "id": "B02-B18",
+          "result": "fail",
+          "value": "unreachable by any player at this build — creation soft-locks at writ.race-observed, and the Writ House door is held until you are written down",
+          "threshold": "18/18 inside tolerance",
+          "evidence": [
+            "reports/journeys/w1-26-r2-census-newgame.json"
+          ],
+          "note": "This is a change from round 1's reading: the zero is no longer only about a missing driver. B02 onward cannot be reached through input."
+        },
+        {
+          "id": "tutorial_text_chars",
+          "result": "pass",
+          "value": "0 instruction-like strings of 33 distinct drawn across the played opening",
+          "threshold": "<= 1500",
+          "evidence": [
+            "reports/journeys/w1-26-r2-play.json"
+          ]
+        },
+        {
+          "id": "T_found/N_found/T_death/T_odd/N_odd/beats_hit",
+          "result": "not_run",
+          "not_run_reason": "require a driven, isolated hour. isolation-check's own self-test rules an inbox containing the item VOID by construction; I have read the whole item and both builders' notes, so I am disqualified from being the driving agent, exactly as round 1's critic and both builders were. The missing input is a dispatchable agent role at isolation `enforced` that nothing in orchestration/ can create.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-26-r2.md"
+          ]
+        },
+        {
+          "id": "T_lie/V_taught/N_persons + 5 others",
+          "result": "not_applicable",
+          "not_run_reason": "8 of the 15 derived targets are not computable from a trace at all and the artifact says so in each one's own `why` field: T_lie is deferred by the item's own text to a verification stage step 3 does not describe, V_taught needs the ops log, N_persons needs a dialogue-data relation.",
+          "evidence": [
+            "orchestration/status/W1-26.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "reports/journeys/w1-26-r2-play.json",
+        "reports/journeys/w1-26-r2-census-newgame.json"
+      ],
+      "why_not_ten": "The item has still never been scored on a driven, isolated hour, and at this build the hour cannot get past B01 by playing.",
+      "path_to_ten": "Fix creation so the hour is playable, then dispatch an agent at isolation `enforced` whose inbox is section C only. Both, in that order.",
+      "ten_by_wave": 3
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "reports/journeys/w1-26-r2-play.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240"
+    },
+    {
+      "path": "reports/journeys/w1-26-r2-census-newgame.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/census-newgame.mjs"
+    },
+    {
+      "path": "reports/journeys/w1-26-r2-name-entry.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/name-entry.mjs"
+    },
+    {
+      "path": "reports/journeys/w1-26-r2-jrn09.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/jrn09-exchange.mjs"
+    },
+    {
+      "path": "reports/journeys/w1-26-r2-critic-opening.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/w1-26-opening.mjs"
+    },
+    {
+      "path": "reports/journeys/w1-26-r2-jrn01/journey.json",
+      "kind": "trace",
+      "produced_by": "node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 --profile headless-small --input-mode real --trace-events"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png",
+      "kind": "screenshot",
+      "produced_by": "opening-play.mjs, play mode, no flags — the title at first launch",
+      "resolution": "640x360",
+      "camera_pose": "the game's own title camera, unposed — no camera override was set; play mode, first launch, default weather/time",
+      "note": "Evidence of ARRIVAL, not of appearance: nothing in this frame was placed. ARBITRATION S34(b)."
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png",
+      "kind": "screenshot",
+      "produced_by": "opening-play.mjs — the barge hold after `New`, walked to, not placed",
+      "resolution": "640x360",
+      "camera_pose": "the game's own third-person follow camera behind the player body, unposed; the body walked to this spot from the spawn",
+      "note": "Evidence of ARRIVAL, not of appearance: nothing in this frame was placed. ARBITRATION S34(b)."
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png",
+      "kind": "screenshot",
+      "produced_by": "opening-play.mjs — the first exchange, opened by pressing interact beside Jeeh-Ei",
+      "resolution": "640x360",
+      "camera_pose": "the game's own dialogue camera, unposed; the body walked to Jeeh-Ei and pressed interact",
+      "note": "Evidence of ARRIVAL, not of appearance: nothing in this frame was placed. ARBITRATION S34(b)."
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-26-r2-04-jeeh-ei-after-the-hatch-name.png",
+      "kind": "screenshot",
+      "produced_by": "opening-play.mjs — Jeeh-Ei in the barge hold after the hatch-name was answered by keyboard. NOT the desk: the walker never reached the companionway, and the file is named for what it shows.",
+      "resolution": "640x360",
+      "camera_pose": "the game's own third-person follow camera, unposed; after the hatch-name was answered by keyboard",
+      "note": "Evidence of ARRIVAL, not of appearance: nothing in this frame was placed. ARBITRATION S34(b)."
+    },
+    {
+      "path": "game/data/world/interiors/barge-hold.json",
+      "kind": "negative-evidence",
+      "produced_by": "M10: 0 entities of kind `inscription`, and a prop named `tally_scratch` with no readable text"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-26-r2.md",
+      "kind": "report",
+      "produced_by": "this verdict's prose, which carries the quoted lines, the per-check arithmetic and the §P paragraph"
+    },
+    {
+      "path": "game/data/world/interiors/writ-house.json",
+      "kind": "negative-evidence",
+      "produced_by": "M10: 0 entities of kind `inscription` and 0 site_marks"
+    },
+    {
+      "path": "game/data/dialogue/topics/writ-house.json",
+      "kind": "text-excerpt",
+      "produced_by": "the creation graph — 22 nodes, 72 authored strings; source of the quoted lines and of writ.stamp's added teaching clause"
+    },
+    {
+      "path": "orchestration/status/W1-26.json",
+      "kind": "log",
+      "produced_by": "the round-1 builder's account, cited for the 8-of-15 non-computable RI-EXP01 targets"
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "Character creation is a scene in a room with a named person and the world rendered behind it. Seven of RI-CHR01 §1's eight inputs are asked in fiction; zero are a menu on a void.",
+          "evidence": [
+            "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png"
+          ]
+        },
+        {
+          "id": "A2",
+          "result": "pass",
+          "observed": "The questionnaire is prose about a house at a crossing and a grounded tithe-barge, with 0 stat tokens.",
+          "evidence": [
+            "reports/journeys/w1-26-r2-jrn09.json"
+          ]
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "0 markers, arrows, compasses or minimaps in any frame of the played opening.",
+          "evidence": [
+            "reports/journeys/w1-26-r2-play.json"
+          ]
+        },
+        {
+          "id": "B2",
+          "result": "pass",
+          "observed": "0 imperative second-person instructions drawn: 33 distinct strings across the whole played opening, 0 instruction-like; M9 0 hits over its 4-string domain. Round 1's HF3 ('Take A tithe-gourd, empty') is closed.",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "pass",
+          "observed": "0 prophecy vocabulary over 25 distinct strings.",
+          "evidence": [
+            "reports/journeys/w1-26-r2-critic-opening.json"
+          ]
+        },
+        {
+          "id": "B4",
+          "result": "fail",
+          "observed": "writ.stamp gained a clause this round — 'Past it, no one tells you a thing you have not asked for. So ask them what they do, and what is being said here.' It is diegetic, well written and spoken by a character, and it is still the game explaining its central verb, on the one path this piece owns that says the world does not explain itself. Recorded as a named blemish, not as a hard fail: HF3 is about pop-ups and banners and this is neither.",
+          "evidence": [
+            "game/data/dialogue/topics/writ-house.json"
+          ]
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 1.3,
+    "pass_threshold": 7.0,
+    "aggregation": "mean",
+    "band_label": "Placeholder",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "Overall 1.3 (mean of RI-JRN09 2, RI-JRN01 2, RI-EXP01 0) against a wave-1 gate of 7.0. The min over the three gates is 0; mean is reported as the headline only so the number stays comparable with round 1's 1.3, and both readings are FAIL.",
+    "IT IS THE SAME 1.3 AS ROUND 1 AND IT DOES NOT MEAN THE SAME THING. RI-JRN09 went from native 55 to 92 and RI-JRN01 from 0.582 to 0.772 of runnable. Three caps moved onto three new defects; two of the three are one-line repairs.",
+    "BLOCKING: creation cannot be completed by a player. Engine._titleApply('new') calls censusBegin({}) with no race; Census.observe() is the only setter and nothing on the play path calls it; the census throws at writ.race-observed, the throw is caught, and the player reads 'race must be observed before the scene reaches the desk' in the dialogue panel with no way forward.",
+    "BLOCKING: the name a player types is not the name recorded. input/real.js consults the move map and the control map before onTextChar, so 14 of 26 letters, digits 1-4 and Space never reach the text field, and KeyE (interact) COMMITS the node mid-word. Predicted character-for-character from game/data/input/profiles.json and confirmed live: 'Silt-Under-Salt' -> 'il-Un'.",
+    "BLOCKING (RI-JRN09 HF1): DTR 0.000 at hold.out. Jeeh-Ei's own line is never drawn anywhere and her reply to the name the player just typed is drawn one node later in the Writ House above a different speaker.",
+    "HF5 (RI-JRN01 M13): the journey completes on 0 of 4 input modalities, and separately the build's recorded O17 4/4 is two button presses on the title surface, not the journey the check describes.",
+    "RI-EXP01 unmeasurable => 0, fail-closed. Hard fails 2, 3 and 4 are literally satisfied by the numbers and are deliberately NOT fired: firing them makes the whole wave DEAD under PLAYTHROUGH-CRITIC §2 on an artifact of who ran the session. Round 1 declined for the same reason and was right.",
+    "CREDIT, measured not assumed: round 1's single biggest gap is CLOSED (the register now sees the vector glyph path; M9 searches 4 real strings instead of 0); HF3 is closed; the touch leg is closed; and O6 — the item's own How-we-lose #5 and the whole Morrowind comparison — is repaired and measures 61.5 s against a 60 s bar."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-26-creation-cannot-be-completed-from-the-title",
+    "subsystem_path": "journey.firstlaunch.flow",
+    "severity": "blocking",
+    "what": "Engine._titleApply('new') — the row the title's `New` commits to — calls censusBegin({}) with no options. Census.spec.race is set by exactly one function, Census.observe(race), called from exactly one place: censusBegin, when opts.race is present. So on the player's path race is never observed, and Census.answer() at writ.race-observed throws 'race must be observed before the scene reaches the desk'. _censusApplyPending() catches it, emits census_refused and draws the reason on the surface, so the player is left in front of the Warden-Scribe reading an engine error string as dialogue, with no way forward and no way out of the room (the Writ House door is held until you are written down).",
+    "why_it_matters": "Every number this piece has ever published — DTR 0.982, AC 6 of 7, NAMED 14 of 14, the writ carried out, 61.5 s of body before the first question — was taken on a scene that only the harness can open, because the harness supplies the one creation input the player never gives. NEXT-DISPATCH §P calls this piece the binding gate for handing the owner a playable build; a person who clones this repo, serves it and presses New cannot make a character or reach the world. The corpus's own driver reproduces the defect and cannot see it: journey-run.mjs opens with censusBegin({}) too and walks the scene inside `catch { break; }`, so it reports M4 clause 1 as 'N/A — no character-field-writing event in the trace' instead of as a failure.",
+    "evidence": [
+      "reports/journeys/w1-26-r2-census-newgame.json",
+      "reports/journeys/w1-26-r2-jrn01/journey.json",
+      "corpus/90-verdicts/wave1/W1-26-r2.md"
+    ],
+    "remedy": {
+      "action": "Observe the race of the body the player is actually in at the moment `New` begins the scene. RI-CHR01 §1 row 2 is explicit that race is observed and never asked, so the value must come from the body — which means the choice of that body is W1-07's and must exist before this can be done honestly. A hardcoded default would satisfy the acceptance test below and betray the item, so the acceptance names that too. Separately, replace journey-run.mjs's bare `catch { break; }` at the census walk with a recorded failure, so the driver can never again report an absence as N/A.",
+      "targets": [
+        "game/src/engine.js (_titleApply / censusBegin)",
+        "game/src/character/census.js",
+        "tools/journey/journey-run.mjs"
+      ],
+      "acceptance": "node tools/journey/census-newgame.mjs exits 0 with player_can_finish_creation true; AND node tools/journey/opening-play.mjs reaches P10 with the census past writ.race-observed, driven only through real DOM input from the title, with zero census_refused events in the run; AND the race the character ends up with is one the player chose or the body already had, not a constant in the source.",
+      "owner_piece": "W1-26"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "GAP-W1-26-the-name-you-type-is-not-the-name-recorded (blocking, journey.opening.exchange). input/real.js handles keydown as move map, then control map, then text — so A C D E F G M R S T V W X Z, digits 1-4 and Space never reach the text field, and KeyE is `interact`, which commits the node mid-word. Two arms: 'Hio-Junnilo' (no bound characters) round-trips verbatim; 'Silt-Under-Salt' comes back 'il-Un' with an early commit. The prediction was made from the bindings data before the browser was opened and held character for character. Acceptance: node tools/journey/name-entry.mjs exits 0 with both arms verbatim, including a name containing E, S, A and a space.",
+      "severity": "blocking"
+    },
+    {
+      "what": "GAP-W1-26-orphan-reply-at-the-hand-back-node (blocking, journey.opening.legibility). RI-JRN09 HF1. Acceptance: jrn09-exchange.mjs exits 0 with no HF1, DTR(hold.out) >= 0.90, and Jeeh-Ei's reply to the hatch-name drawn in the barge hold with her as the attributed speaker.",
+      "severity": "blocking"
+    },
+    {
+      "what": "The HUD — a health bar, a stamina bar, a purse reading 5, the stance readout LIGHT and the equipped spell 'Spark-Da…' — is painted on the TITLE SCREEN at first launch, before any character exists, and stays up through the barge hold. Not a marker, so not HF4, but a first-launch title showing a stranger's health bar is a journey.firstlaunch.flow defect and this piece owns that path. Visible in docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png.",
+      "severity": "minor"
+    },
+    {
+      "what": "'Spark-Da…' — the equipped-spell field truncates its own content with an ellipsis on the HUD at 640x360. journey.opening.legibility.",
+      "severity": "minor"
+    },
+    {
+      "what": "M10: the opening ships zero in-world inscriptions, and the barge hold already has a prop named `tally_scratch`. The DS/OPEN #4 mechanism has its fiction authored and nothing attached to it — the cheapest 4 points in RI-JRN01.",
+      "severity": "major"
+    },
+    {
+      "what": "There is no README.md at the repo root and no start/serve script in package.json, so NEXT-DISPATCH §P gate item 1's 'one command' does not exist. A person must know to serve the tree over http:// themselves; file:// cannot work, because the entry is an ES module and game/data is fetched.",
+      "severity": "major"
+    },
+    {
+      "what": "Play mode delivered 1.52 sim fps at the title and 2.91 in world at 640x360 under loadavg 19.9-25.6 on four cores with three to four other agents' browsers resident. Reported as a CONDITION on every number in this verdict and explicitly NOT as a claim about the build's frame rate on a machine with a GPU. It is why O6's 60 s was taken on the piece's own probe rather than in my real-input run.",
+      "severity": "minor"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+      "status": "closed",
+      "evidence": [
+        "reports/journeys/w1-26-r2-critic-opening.json"
+      ],
+      "measured_value": "M9 domain 4 distinct non-dialogue strings (was 0 searched, reported as a pass); roster declared[dialogue,title,menus], instrumented all three, blind[]; M15 25 distinct; 0 hits each",
+      "acceptance_restated": "Round 1 asked for set equality against UISurface.elements[].text with clip flags, M9/M15 returning 0 hits over it, and a self-falsification drawing a sentinel through glyphs.drawText(). text-register.js now installs ctx.__esNoteText and glyphs.drawText() reports every stroked run; domain_complete is true and surfaces_blind is empty. I could not re-run the --red-team=plant arm: the shared tree stopped booting at that moment on another agent's canon.json, so the self-falsification leg is verified from the builder's recorded run and not from mine, and I say so rather than implying I re-ran it."
+    },
+    {
+      "gap_id": "RI-JRN01/HF3-imperative-on-the-hud",
+      "status": "closed",
+      "evidence": [
+        "reports/journeys/w1-26-r2-play.json",
+        "reports/journeys/w1-26-r2-critic-opening.json"
+      ],
+      "measured_value": "0 imperative hits; 33 distinct strings drawn across the played opening, none instruction-like",
+      "acceptance_restated": "_interactPrompt() names the object and carries the verb as a field."
+    },
+    {
+      "gap_id": "RI-JRN01/HF5-touch-leg-unmeasurable-round-1",
+      "status": "superseded",
+      "evidence": [
+        "reports/journeys/w1-26-r2-critic-opening.json"
+      ],
+      "measured_value": "O17 touch passes on the title; but HF5 now fires for a different and larger reason — the journey completes on 0 of 4 modalities",
+      "acceptance_restated": "Round 1's specific defect (probes asking TouchInput.layout() for a .buttons field it does not have) is fixed. The hard fail is not cleared, because M13's threshold is the journey and the evidence covers the title."
+    },
+    {
+      "gap_id": "RI-JRN01/O6-control-precedes-definition",
+      "status": "closed",
+      "evidence": [
+        "reports/journeys/w1-26-r2-critic-opening.json",
+        "reports/journeys/w1-26-r2-play.json"
+      ],
+      "measured_value": "61.5 s available play before the first character-defining question (bar 60); 60 s wander of 122.24 m with the scene never asking; independently, 12.80 m walked through real DOM input with nothing asked and no field written",
+      "acceptance_restated": "Round 1 measured -0.65 s and then undefined, with 60 frames of forward input moving 0.0000 m. The hold now opens at hold.come-to, paused, resume_by 'talk'. This is the item's How-we-lose #5 and the whole Morrowind comparison, and it is repaired."
+    }
+  ],
+  "corpus_extended": [],
+  "method_deviations": [
+    {
+      "ref_item": "RI-JRN01",
+      "deviation": "I wrote three instruments of my own — tools/journey/opening-play.mjs, census-newgame.mjs and name-entry.mjs — and used them alongside the item's named tools rather than instead of them.",
+      "why": "Rule 24 / TOOL-LOOP: RI-JRN01 O6, O7, O17 and RI-CHR01 §1 all describe a player doing things, and every probe in the tree drives the scene through __HARNESS mutators. No tool existed that boots the game the way a human's browser boots it and dispatches real DOM input. The two blocking defects in this verdict are both invisible to every harness-driven probe and were found in the first ten minutes of running one that is not."
+    },
+    {
+      "ref_item": "RI-JRN01",
+      "deviation": "opening-play.mjs forces navigator.webdriver false and passes NO query string, rather than using ?mode=play.",
+      "why": "main.js selects harness mode from navigator.webdriver, which Playwright sets. Forcing it false removes the automation tell and leaves the game untouched; passing ?mode=play would be a flag, and NEXT-DISPATCH §P gate item 1 says 'no flags'."
+    },
+    {
+      "ref_item": "RI-JRN01",
+      "deviation": "name-entry.mjs reaches hold.hatch-name through censusBegin/censusEnter and only the KEYSTROKES are real input.",
+      "why": "Reaching the node is not what that tool measures and a real-input approach costs eight minutes per arm on this box. Stated in the tool's header and in its artifact rather than buried."
+    },
+    {
+      "ref_item": "RI-JRN01",
+      "deviation": "M5's panel-area fraction is cited from the build's own geometry; I measured only the >= 90%-uniform clause from pixels.",
+      "why": "Budget. Round 1 found the independent readback running ~0.15 above the build's self-report, which would put the measured 0.3822 at ~0.53 against a 0.55 ceiling. I docked M5 three points rather than pass a number I did not take."
+    },
+    {
+      "ref_item": "RI-EXP01",
+      "deviation": "Scored unmeasurable => 0 without running a 60-minute driven session, and hard fails 2, 3 and 4 not fired despite being literally satisfied.",
+      "why": "isolation-check's own self-test rules an inbox containing the item VOID by construction, so I am disqualified from being the driving agent. Firing 2/3/4 on an undriven hour makes the whole wave DEAD under PLAYTHROUGH-CRITIC §2 on an artifact of who ran the session — which is measuring the toolchain, the error BAR-CRITIQUE-W1-07-R1 §R1 was written to end."
+    },
+    {
+      "ref_item": "RI-JRN09",
+      "deviation": "HF1 read per node (hold.out = 0.000) as well as per node kind (the two paused/auto nodes aggregate to 0 drawn of 2 computed).",
+      "why": "Round 1 established the per-node reading in this piece's own history with the argument that a threshold cannot be read one way to clear it and another way to clear it again. I checked HF1 fires under both readings before applying the one that costs the build."
+    }
+  ],
+  "arbitration_questions": [
+    "RI-JRN09 M1's hard fail is 'DTR < 0.50 on any node class' and the item defines DTR at three granularities without defining 'node class'. Round 1 filed this and it is still open. It now decides a second verdict: hold.out is 0.000 per node AND 0.000 as a class, so it does not change this outcome, but the next build that lands a 0.4 on one node and 0.6 on its class will turn on it.",
+    "RI-JRN01 M13/HF5 says the journey must be completable on four modalities. When the journey is incompletable for a reason that has nothing to do with input modality, does HF5 fire? I ruled that it does, on M13's literal text ('any run that cannot complete'), and I note that the same root cause then caps two items. A ruling that HF5 is modality-specific would move RI-JRN01 from 2 to its band ceiling of 6 and would not change the piece's status."
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "_titleApply / censusBegin / _censusStep / _censusApplyPending / _censusTypeChar / loadData — read only AFTER census-newgame.mjs and opening-play.mjs had demonstrated the scene stopping at writ.race-observed."
+    },
+    {
+      "path": "game/src/character/census.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "observe/state/answer/typeChar — read after the walker demonstrated the stop, to name the one setter."
+    },
+    {
+      "path": "game/src/character/scene.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "CensusSurface.update/step/typeChar — read after the recorded name came back corrupted."
+    },
+    {
+      "path": "game/src/input/real.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "attach()'s keydown ordering — read after the live run recorded 'il-Un-l' for 'Silt-Under-Salt'; the ordering then PREDICTED that string from the bindings data and the prediction was re-confirmed live."
+    },
+    {
+      "path": "game/src/render/title.js",
+      "purpose": "locate-harness",
+      "note": "to find which actions the title surface reads, so the play probe could drive it with the right keys."
+    },
+    {
+      "path": "game/src/render/text-register.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read to confirm the mechanism of round 1's closed gap after w1-26-opening.mjs reported surfaces_blind []."
+    },
+    {
+      "path": "game/src/main.js",
+      "purpose": "locate-harness",
+      "note": "mode selection from navigator.webdriver — needed to boot the game the way a human's browser boots it."
+    },
+    {
+      "path": "game/data/dialogue/topics/writ-house.json",
+      "purpose": "quote-written-content",
+      "note": "the 22 nodes and 72 authored strings quoted in §5 and §6."
+    },
+    {
+      "path": "game/data/input/profiles.json",
+      "purpose": "locate-harness",
+      "note": "the desktop binding table, from which the shadowed characters were derived before the browser was opened."
+    },
+    {
+      "path": "game/data/world/interiors/barge-hold.json",
+      "purpose": "quote-written-content",
+      "note": "M10: the prop list, including `tally_scratch`."
+    },
+    {
+      "path": "tools/journey/journey-run.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "the census walk at line 955 and its bare catch/break — read after the tool reported m4_clause1 N/A on a build measuring 61.5 s."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and named rather than glossed: RI-EXP01's driven hour was not run (no isolated agent can exist for it and I am disqualified); RI-JRN01 M3, M12, M14 and M16-M19 were not run (corpus_debt, RI-MTH06); M5's panel-area readback was not reproduced; the mouse+keyboard modality leg over the journey was not run (pointer lock in headless); and the w1-26-opening --red-team=plant self-falsification could not be re-run because the shared tree stopped booting at that moment. Every one of those is scored 0 or excluded from the denominator with the reason stated, and none is scored as a pass. I also record that my own first two probe drafts were wrong — a register watermark taken after boot had already painted the title, and a P10 that passed on a walker which never left the barge hold — and both are fixed in the shipped tools."
+  },
+  "notes": "Contention: node tools/contention.mjs --gate returned WAIT for the entire session (3-4 browser instances, load 19-25 over 4 cores against a 4.0/core ceiling). I proceeded and say so per rule 21: this piece is NEXT-DISPATCH §P's binding gate and its headline question cannot be answered by the pooled capture daemon, which places bodies and does not play them. One browser at a time, never two of mine concurrently."
+}

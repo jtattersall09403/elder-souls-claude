@@ -444,7 +444,7 @@ try {
     return evs.filter((e) => e.type === 'census_refused').slice(-3);
   }).catch(() => []);
   out.checks.census_refused_events = censusEvents;
-  await shot('04-at-the-desk');
+  await shot('04-jeeh-ei-or-the-desk');
   if (!stuck) {
     pass('P10', `the scene moved past the desk to '${last.node}'`, { presses, race: last.race });
   } else {
