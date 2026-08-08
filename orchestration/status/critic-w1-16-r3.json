@@ -2,16 +2,25 @@
   "task_id": "critic-w1-16-r3",
   "role": "critic",
   "piece": "W1-16 round 3 — progression and encumbrance",
-  "state": "running",
-  "started_at": "2026-08-08T00:00:00Z",
-  "git_at_measure": "2032744",
-  "next_step": "run tools/harness/critic-w1-16-r3-live.mjs (one browser), then write the verdict",
-  "contention": "GO at start (2 instances, 2.97/core). WAIT before the stepping half (5 instances, 4.27/core against a 4.0 ceiling). The whole offline half was done first. If the gate is still WAIT when the stepping half runs I will PROCEED PAST EXIT 3 and this is that declaration (rule 21): every figure I take is an f@60 frame count, metres of capsule travel over a declared f@60 count, a kilogram or a percentage — all load-independent by construction (S22). One browser, launched once, kept for the whole run. No wall-clock timing figure appears anywhere in my verdict.",
+  "state": "complete",
+  "verdict": "FAIL — 2/10 min-over-axes against a wave-1 gate of 7.0. Reference-item weighted mean 5.0, published alongside.",
+  "started_at": "2026-08-08T03:05:00Z",
+  "finished_at": "2026-08-08T04:10:00Z",
+  "git_at_measure": "2032744 (working tree dirty with neighbours' in-flight work; nothing under game/src/combat/, game/src/save/ or game/data/combat/ moved during my stepping runs)",
+  "next_step": "none — verdict published at corpus/90-verdicts/wave1/W1-16-r3.md and .json (verdict-validate: OK).",
+  "contention": "GO at start (2 instances, 2.97/core). The ENTIRE offline half was done first. The gate returned exit 3 (WAIT — 5 instances, 4.27/core against a 4.0 ceiling) before the stepping half and I PROCEEDED PAST IT, which rule 21 permits provided it is declared; this is that declaration and it was written before the browser was launched. Reason: every figure I publish is an f@60 frame count, metres of capsule travel over a DECLARED f@60 count, a kilogram or a percentage — all load-independent by construction (S22). Two browsers total, strictly sequential, never two at once: the first ran controls/clamp/pin/bow, the second re-took antimerge/overloaded/pinfight after a module-scope const turned out not to be visible inside page.evaluate. The illustrative image is a chart drawn from the report JSONs with no browser at all. No timing figure appears anywhere in the verdict.",
   "files_touched": [
     "orchestration/status/critic-w1-16-r3.json",
+    "corpus/90-verdicts/wave1/W1-16-r3.md",
+    "corpus/90-verdicts/wave1/W1-16-r3.json",
     "tools/harness/critic-w1-16-r3-offline.mjs",
     "tools/harness/critic-w1-16-r3-live.mjs",
-    "reports/w1-16/critic-r3-offline.json"
+    "tools/harness/critic-w1-16-r3-chart.mjs",
+    "reports/w1-16/critic-r3-offline.json",
+    "reports/w1-16/critic-r3-live.json",
+    "reports/w1-16/critic-r3-live-2.json",
+    "docs/shots/2026-08-08-critic-w1-16-r3-save-the-fight-and-your-dodge-gets-shorter.png",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-16-r3.md",
@@ -19,20 +28,43 @@
     "orchestration/status/critic-w1-16-r3.json",
     "tools/harness/critic-w1-16-r3-offline.mjs",
     "tools/harness/critic-w1-16-r3-live.mjs",
+    "tools/harness/critic-w1-16-r3-chart.mjs",
     "reports/w1-16/critic-r3-offline.json",
     "reports/w1-16/critic-r3-live.json",
-    "docs/shots/",
+    "reports/w1-16/critic-r3-live-2.json",
+    "docs/shots/2026-08-08-critic-w1-16-r3-save-the-fight-and-your-dodge-gets-shorter.png",
     "reports/blog-feed.jsonl"
   ],
   "redundant_with": ["W1-16-r3"],
-  "redundant_note": "docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces; reports/w1-16/ is the piece's own report directory and I write only critic-r3-* files in it. I edit no game/ source.",
-  "findings_so_far": [
-    "OFFLINE HALF COMPLETE — tools/harness/critic-w1-16-r3-offline.mjs, six checks, all six PASS on HEAD and all six go RED under --selftest.",
-    "X1 ADJUDICATES C5: round 3 is RIGHT that C5 cannot pass as written and WRONG about why. `_buildCombat` assigns `_equipLoadBase` unconditionally one statement after `createPlayer` (engine.js:1104, not inside an `if`), so C5's `_equipLoadBase: null` at first engagement is now UNREACHABLE in the shipped engine — a stale fixture, not an unpassable check. Repaired: seeded as the engine seeds it the arm PASSES (14 -> 4 -> 14); null-seeded, the SAME arm still FAILS (14 -> 14 -> 24, ten points wrong and stuck). The claim that 'only the construction site holds the missing information' is false: storing the spell offset in its own field makes the producer idempotent and needs no delta origin anywhere.",
-    "X1 SECONDARY: the seed is `b.equipLoadPct` at createPlayer, which for an unpinned state is the hardcoded 24.0 and NOT the equipment base the source comment claims. The first engagement is still an assignment; it is a correct one only because prev === pct at that instant.",
-    "X2 ADJUDICATES C7: round 3 is RIGHT. carried.json fills one of RI-PRG07 §2's four terms (armour); weapon weight is in weapons/classes.json and shield weight in weapons/offhand.json + combat/stamina.json. C7 sums a third of the formula. BUT the round still owed the tier a number and did not give one: RI-PRG07 §4 declares weights for the same objects that are heavier at EVERY comparable row (greatshield 18 vs shipped 12, kite 9 vs 5, buckler 4 vs 1.5, straight sword 6 vs 4). At §4's own weights the heaviest legal set is 119 kg = OVERLOADED on both low sheets. The tier is not unreachable in the corpus; it is short 15.21 kg of CONTENT at the base sheet.",
-    "X4 CENSUS MISS FOUND: RI-PRG07 §2's FOURTH TERM, talismans, appears in game/src only inside two comments quoting §2. No slot, no weight column, no reader — and it is not even declared `null` in getBurden()'s consumer table the way fall_damage_mult is. The build ships catalysts as first-class objects (game/data/magic/cast-classes.json `catalysts`, engine `setCatalyst`, `loadout.catalyst`) and RI-PRG07 §4 prices a talisman/catalyst at 3 kg.",
-    "X5: the hist-sap-bow refusal reaches a probe and not a player. Nothing under game/src/ui or game/src/render reads `equip_end` or `.refused`; the shipped player-visible channel (engine.uiToast, ui/hud.js E11) exists and is not called. From the chair: press interact on the Sapwood bow and nothing happens at all.",
-    "X6 NEW DEFECT: RI-PRG07 §3 reads 'weight of ALL carried items, EQUIPPED OR NOT'. `_recomputeBurden()` sums sim.inventory only, and round 3 moved the hands OUT of the inventory sum and INTO the equip term — so an ultra greatsword and a Naga tower are 33 kg to the roll and 0 kg to burden. The same maul also has two weights at once: 11.5 kg in carried.json and 16 kg as GHM in weapons/classes.json."
+  "redundant_note": "I edited NO file under game/. docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces. reports/w1-16/ is W1-16's own report directory and I wrote only critic-r3-* files in it; I re-ran the round-2 critic's tools/harness/critic-w1-16-offline.mjs UNMODIFIED, which rewrites reports/w1-16/critic-offline.json — declared here rather than left to read as a collision.",
+  "findings": [
+    "BIGGEST GAP — GAP-W1-16-a-save-and-a-reload-change-your-roll-class, BLOCKING. On arena_duel and arena_flat, both of which DECLARE loadout.equip_load_pct (round 3's own stated reason the W1-09/10/11 calibration is safe), wearing a shell-scale-hauberk and legion-greaves and calling saveRoundTrip() moves 24.000000% LIGHT / 26 i-frames / 22 recovery / 52 total f@60 to 33.424658% MEDIUM / 22 / 34 / 60. _restoreFightFromSave clears _equipLoadPinned and save/fight.js writes an equip_load_pct nothing ever reads back (RULES #7 verbatim). ROUND 3'S OWN __breakW116('hands') SWITCH IS THE COUNTERFACTUAL: with the hands term cut the same save lands at 20.410959%, still LIGHT, still 26 i-frames. Round 3's D4 check exists to catch exactly this and loads 49 states without saving one.",
+    "ATTACK A — VERIFIED, and the general question answered NO. All seven __breakW116 arms set, then a scenario boundary crossed, then the flag read back at the carrier its own off-branch reads: all seven still in force. Six ride engine._w116Break, which no rebuild touches. `oversprint` alone rides combat.d.__w116_oversprint and is re-published at engine.js:1039 and harness/api.js:1597; `new CombatSystem(` appears once in engine.js and that line follows it. No other arm has the shape. The `sprint` arm's behavioural halves differ in both orders (cut 6.120 m held vs 3.917 m up; fix 3.917 vs 3.917).",
+    "ATTACK A, WHAT I COULD NOT DO: the `travel` arm was not exercised behaviourally. Its read site is boardTravel()'s bt.travel_time and all 68 shipped services refuse purchase under S7's walked-it-once gate, so the ride the multiplier scales never starts. Arm survives the boundary; whether it bites is round 2's result, not mine. Axis A scored 9 not 10 for this.",
+    "ATTACK B — the anti-merge holds and the brief's converse is WRONG per the item. 460 kg in the pack moves burden 0.000000 -> 2.520548 IMMOBILE and leaves the roll byte-identical (26 / 22 / 52 f@60, LIGHT). Five pieces worn: 36.027397% MEDIUM, 22 / 34 / 60. Worn weight moving burden as well as the roll is CORRECT: RI-PRG07 §3 reads 'weight of ALL carried items, EQUIPPED OR NOT'. The real §3 violation is the opposite one and round 3 created it — the hands are in the equip ratio and in NEITHER burden term. Measured: ultra greatsword + Naga tower moves equip load 13.013699 -> 45.205480 and leaves burden at 0.000000 with carried_weight 0.0 kg. The same maul is 11.5 kg to §3 and 16 kg to §2 at the same time.",
+    "ATTACK C, C5 — round 3's CONCLUSION UPHELD, its REASONING REJECTED. _buildCombat assigns _equipLoadBase unconditionally at engine.js:1104, one statement after createPlayer and not inside an `if`, so C5's null state is unreachable: C5 is a STALE FIXTURE, not an unpassable check. Repaired and kept able to fail — seeded as the engine seeds it the arm runs 14 -> 4 -> 14 (pass); null-seeded, C5's own fixture, it runs 14 -> 14 -> 24 (fail). The claim that 'only the construction site holds the missing information' is false: storing the spell offset in its own field makes the producer idempotent and needs no delta origin. Also: engine.js:1099 calls the seed 'provably the bare equipment base' and it is the hardcoded 24.0.",
+    "ATTACK C, C7 — UPHELD. RI-PRG07 §2 names four terms and carried.json fills one; weapon weight is in weapons/classes.json and shield weight in weapons/offhand.json + combat/stamina.json. C7 sums a third of the formula. But the round still owed the tier a number and did not give one — see attack D.",
+    "ATTACK D — the restraint is RIGHT and the tier now has an acceptance number in three forms. (1) OVERLOADED IS REACHABLE IN THE RUNNING GAME WITH NOTHING INVENTED: dress in everything the game declares (49.8 kg of 73 = 68.219178% MEDIUM) and cast the shipped Burden -> 125.330289% OVERLOADED, at which the held sprint button covers 5.440 m for 0 stamina over 120 f@60 against 8.500 m for 18 at MEDIUM on the same fixture. (2) By dressing alone the shortfall is exactly 15.21 kg at the base sheet, 23.21 at the default sheet, 92.71 at the Shell-Warden's. (3) At RI-PRG07 §4's OWN weights the heaviest legal set is 119 kg and OVERLOADED on both low sheets.",
+    "ATTACK D, ADJACENT: the shipped weights contradict RI-PRG07 §4 at EVERY comparable row — greatshield 12 vs 18, kite 5 vs 9, buckler 1.5 vs 4, straight sword 4 vs 6, dagger 1 vs 2, halberd 9 vs 12, greatsword 12 vs 14. Round 2's remedy asked for §4's numbers; round 3 used the registries and invented nothing, which is right, but nobody has ruled which is authoritative. Filed under corpus_extended.",
+    "ATTACK E — the Feather/Burden claim reproduces AND the clamp defect is worse than reported. Burden: 68.219178 -> 125.330289, offset +57.111111 exactly, survives the next engagement. THE CLAMP, measured to its consequence live for the first time: Feather at 13.013699% LIGHT / 26 i-frames clamps to 0 on cast and, once the 30 s runs out, leaves the character at 42.833333% MEDIUM / 22 i-frames. A spell whose purpose is to make you lighter leaves you a roll tier heavier, permanently. _recomputeEquipLoad() carries the same clamp at engine.js:3980.",
+    "ATTACK E, THE NAME FINDING IS REAL AND REUSABLE: the four schools are sorcery / root_speech / warding / veiling; setMagicSkills echoes any key you give it, so {alteration:100} reads as a success and casts nothing. It cost the round-2 critic its budget.",
+    "ATTACK F — THE CENSUS MISS: RI-PRG07 §2's FOURTH TERM, `talismans`, appears in game/src only inside two comments quoting §2. No slot, no weight column, no reader — and unlike fall_damage_mult it is not even declared null in getBurden()'s consumer table, so the census does not count it. Not hypothetical content: the build ships catalysts as first-class objects (magic/cast-classes.json `catalysts`, MagicSystem.setCatalyst, loadout.catalyst), §4 prices one at 3 kg, and S19 makes two-handing one a combat stance. The four round 3 declares (burden.fatigue/sneak/jump, equip_load.fall_damage_mult) all reproduce.",
+    "ATTACK G — the refusal is CORRECT and INVISIBLE. Across the press: equip load 13.013699% before and after, weapon ssw_garrison_sword before and after, inventory slot null, HUD toast null, anything_the_player_could_see_changed FALSE. The reason is on the equip_end event and nothing under game/src/ui or game/src/render reads equip_end or .refused; engine.uiToast() drives ui/hud.js's E11 element and is not called. The reason is also a raw exception listing 87 internal weapon ids and must not be piped verbatim.",
+    "ATTACK H — the pin ladder RE-TAKEN with hostiles present on all ten paths (E1 on arena_duel, 55 named actors on default), nothing despawned, and NO PATH THREW. W1-SAVE-AI's fix confirmed from outside its own piece. What the emptied world was hiding is not the AI: round 2 measured the pin on `default`, which does not pin. arena_duel and arena_flat do, and that is the biggest gap above. Also found: Engine.snapshot() and restoreState() are not a pair — snapshot() returns a trace record and restoreState(blob) calls loadState(blob), which throws.",
+    "INSTRUMENTS: tools/harness/critic-w1-16-r3-offline.mjs is six checks, all six PASS on HEAD and all six go RED under --selftest. tools/harness/critic-w1-16-r3-live.mjs is seven stepping probes, exits non-zero on any uncoupled probe. I also ran my predecessor's tools/harness/critic-w1-16-offline.mjs UNMODIFIED on HEAD: C1-C4, C6 and C9 PASS (C6 is the round-2 verdict's own named acceptance and it now passes), C5 and C7 FAIL and are adjudicated, C8 fails by construction."
+  ],
+  "gates_at_measure": {
+    "boot-check": "PASS",
+    "check-data": "GREEN",
+    "check-content": "GREEN",
+    "check-quests": "GREEN",
+    "run-all": "NOT RUN — the gate was at or over its per-core ceiling for most of the window and run-all launches many browsers."
+  },
+  "notes_for_successor": [
+    "1. THE FIX IS THREE LINES AND A TEST. save/fight.js must persist `equip_load_pinned` beside `equip_load_pct`; _restoreFightFromSave must restore both and seed _equipLoadBase from the restored value the way _buildCombat does at engine.js:1104; and w1-16-r3-live.mjs --probe states must SAVE AND RELOAD each state, not only load it. Acceptance is `node tools/harness/critic-w1-16-r3-live.mjs --probe pinfight` reporting an empty states_whose_ROLL_TIER_changes_across_a_save_and_reload with the __breakW116('hands') counterfactual row still present and still unchanged.",
+    "2. sim/magic/apply.js's clamp and engine.js:3980's clamp are ONE defect with ONE clean repair: give the equip-load effect its own offset field instead of mutating combat.player.equipLoadPct. That removes the clamp asymmetry AND the delta-origin state (_equipLoadBase) at the same time, and makes the producer idempotent.",
+    "3. The four magic schools are sorcery / root_speech / warding / veiling. setMagicSkills accepts and echoes any key, so a wrong name reads as a success. This has now cost two critics time; it is in the verdict so it stops costing.",
+    "4. OVERLOADED is reachable TODAY via the shipped Burden spell — you do not need armour content to measure the tier. Armour content is still wanted for the DRESSING route and the shortfall is exactly 15.21 kg at the base sheet. Whoever authors it should first get a ruling on RI-PRG07 §4 vs the shipped registries, which disagree at every comparable row.",
+    "5. Round 2's notes still stand: GAP-W1-skill-and-attribute-scaling-never-reaches-damage is still the biggest thing in this area, and setWorldKnowledge({gold}) still writes only combat.world.gold."
   ]
 }

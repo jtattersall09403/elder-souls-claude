@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bda8677`: 651 tools, 153 reference
+so it cannot drift. Generated at `60b86ad`: 654 tools, 153 reference
 items, 52 pieces in flight.
 
 Its purpose is to stop 52+ concurrent agents each paying separately to discover the
@@ -256,7 +256,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 214
+### `tools/harness/` — 215
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -438,6 +438,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-summon.mjs` — CONSUMPTION (RI-MTH07 §B) for the summon magnitude dial, and AR-1.
 - `tools/harness/w1-14-r3-vfx.mjs` — RI-MAG05, the two findings the round-2 verdict could see in the picture.
 - `tools/harness/w1-14-r3-wards.mjs` — the three round-2 findings that are not the skill register.
+- `tools/harness/w1-14-r4-commission.mjs` — CAN A PLAYER WALK TO SOMEBODY AND HAVE A SPELL MADE?
 - `tools/harness/w1-14-r4-summon.mjs` — SIX IDENTICAL CASTS, AND WHAT THEY LEAVE BEHIND.
 - `tools/harness/w1-14-r4-touch.mjs` — HOW MANY TIMES DOES ONE CAST LAND?
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
@@ -676,7 +677,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 112
+### `tools/world/` — 114
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -737,10 +738,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r3a.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r3b.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
+- `tools/world/crossing-deletefix.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
 - `tools/world/locomotion-audit.mjs` — **no header comment**
+- `tools/world/old-clamp-345dcca.js` — THE PRE-W1-CROSSING PARAPET, verbatim from game/src/world/field.js at commit 345dcca, turned into a function expression so the delete-the-fix arm can install it
 - `tools/world/opacity-consumption.mjs` — is `game/data/world/opacity.json` READ by the running world?
 - `tools/world/opacity-reseal.py` — **no header comment**
 - `tools/world/opacity-resolve.mjs` — does the opacity register point at anything?
@@ -792,7 +795,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **147 tools have no header comment**, so nobody can tell what they do without
+> **148 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -966,6 +969,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-CHARTFONT-r2` | ? | none — see handoffs. | `orchestration/status/W1-CHARTFONT-r2.json` `tools/analysis/w1-15-r3-chart.mjs` `tools/harness/w1-16-r3-chart.mjs` `tools/world/road-join-chart.mjs` `tools/world/w1-01-r4-crossing-chart.mjs` `tools/audio/critic-w1-22-r2-chart.mjs` |
 | `W1-CROSSING` | in_progress | browser: walk THE CROSSING end to end with the steering fix in; then delete-the-fix, consu | `orchestration/status/W1-CROSSING.json` `tools/world/road-grade.mjs` `tools/world/crossing-body.mjs` `game/src/engine.js` `game/src/world/field.js` `tools/world/build-roads.mjs` |
 | `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `W1-21-r3` | in_progress | offline: add sample counts + EMPTY grading to all 15 checks; markers derived; withdraw NO_ | `orchestration/status/W1-21-r3.json` |
@@ -975,7 +979,6 @@ work is the difference between resuming and starting over.
 | `critic-road-join` | ? | B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F w | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `critic-w1-map-r2` | running | screenshots (docs/shots), then write the verdict | `orchestration/status/critic-w1-map-r2.json` `tools/harness/critic-map-r2.mjs` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
-| `W1-CHARTFONT-r2` | ? | read reports/w1-chartfont-damage.md and orchestration/status/W1-CHARTFONT.json; run --audi | `orchestration/status/W1-CHARTFONT-r2.json` |
 | `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
