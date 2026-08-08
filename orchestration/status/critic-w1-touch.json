@@ -2,10 +2,10 @@
   "task_id": "critic-w1-touch",
   "role": "critic",
   "piece": "W1-TOUCH — touch input",
-  "state": "measuring — fight leg done, roll/sprint gate under investigation",
+  "state": "done",
   "head_commit": "fa964554de40783866f1696b2514593fc6aff4e2",
   "serve_note": "Every browser number is taken against a PRISTINE `git archive HEAD` export in the scratchpad, not the working tree. At the time of measuring, a neighbour's STAGED, uncommitted quest data (game/data/quests/faction-joining-wave1.json + hooks.json) made `QuestBook` throw inside `Engine._boot`, so every page served from the working tree was a black screen. RULES 12/13.",
-  "next_step": "settle whether arm B's sprint promotion is a real gate defect or CDP latency; then the differential (keyboard + pad openings), then write the verdict",
+  "next_step": "none — verdict written and committed. Round 2 inherits three written-but-unrun legs: critic-fight.mjs --leg menu|insets|portrait.",
   "findings_so_far": [
     "A0 CONFIRMED. The dispatch's correction is right and the round is right: main.js:11 -> engine.js:57/481 -> input/real.js:19 `import { TouchInput }` -> constructed real.js:73 -> attached by applyDeviceClass('handheld') real.js:405 -> ticked INSIDE the fixed step at sim/step.js:69. `git log -S` dates the import to 6eb8f04. A phone-shaped context boots mode 'play', deviceClass 'handheld', 11 controls. Verified independently.",
     "A1 (ATTACK A, FINDING). `game/src/ui/system.js:647` STILL says 'T8 is upheld by construction' at HEAD, verbatim and unchanged — `git log -S` shows the touch round never touched that line, and it is not in the round's own `source_changes`. Meanwhile `game/src/input/touch.js:128` describes it in the PAST TENSE ('ui/system.js HAD a comment claiming...'). The exact false claim the round's headline finding was about is still on disk, telling the next reader the same untrue thing.",
@@ -23,14 +23,21 @@
     "ATTACK G index.html's failure diagnostics"
   ],
   "files_touched": [
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
+    "corpus/90-verdicts/wave1/W1-TOUCH-r1.json",
     "orchestration/status/critic-w1-touch.json",
     "tools/touch/critic-fight.mjs",
     "tools/touch/critic-fight-diag.mjs",
     "tools/touch/critic-title-probe.mjs",
     "tools/touch/critic-block-roll.mjs",
     "tools/touch/critic-roll-matrix.mjs",
+    "tools/touch/critic-gate-wallclock.mjs",
+    "tools/touch/critic-consumption.mjs",
+    "tools/touch/critic-differential.mjs",
     "docs/shots/2026-08-08-critic-touch-fight-01-the-sentry-aggroed.png",
-    "docs/shots/2026-08-08-critic-touch-fight-02-after-the-exchange.png"
+    "docs/shots/2026-08-08-critic-touch-fight-02-after-the-exchange.png",
+    "docs/shots/2026-08-08-critic-touch-a-phone-fought-a-sentry-with-a-thumb.png",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
@@ -40,7 +47,24 @@
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-TOUCH"],
+  "redundant_with": [
+    "W1-TOUCH"
+  ],
   "contention_note": "Gate returned WAIT (4.3-5.8 load/core) at the start; offline work was done first. Most browser runs were taken at 2.5-4.9 load/core. ONE browser instance per tool invocation, closed by the tool. Never pkill.",
-  "contention_overrun_declared": "RULES 21 — I PROCEEDED PAST EXIT 3 for two runs and am saying so. `touch-run.mjs --leg differential` (attack C) and `critic-consumption.mjs` (CONSUMPTION, mandatory under ARBITRATION §3) were started with the box at 7 browser instances and 5.7 load/core, over both ceilings. Reason: CONSUMPTION is fail-closed and cannot be skipped, and the differential is the round's own unmeasured acceptance. Consequence, stated so nobody reads these as clean: the differential leg has been running for ~25 minutes on the KEYBOARD opening alone, which is the same starvation the round reported when its own two runs died at 4.2 load/core. Any timing figure from either run is void; only their pass/fail outcomes are used, and the frame-rate figures in the verdict are stamped with the load they were taken at."
+  "contention_overrun_declared": "RULES 21 — I PROCEEDED PAST EXIT 3 for two runs and am saying so. `touch-run.mjs --leg differential` (attack C) and `critic-consumption.mjs` (CONSUMPTION, mandatory under ARBITRATION §3) were started with the box at 7 browser instances and 5.7 load/core, over both ceilings. Reason: CONSUMPTION is fail-closed and cannot be skipped, and the differential is the round's own unmeasured acceptance. Consequence, stated so nobody reads these as clean: the differential leg has been running for ~25 minutes on the KEYBOARD opening alone, which is the same starvation the round reported when its own two runs died at 4.2 load/core. Any timing figure from either run is void; only their pass/fail outcomes are used, and the frame-rate figures in the verdict are stamped with the load they were taken at.",
+  "verdict": {
+    "result": "FAIL",
+    "score": 6,
+    "gate": 7.0,
+    "binding_axis": "coverage_of_RI_JRN04_G",
+    "md": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
+    "json": "corpus/90-verdicts/wave1/W1-TOUCH-r1.json"
+  },
+  "consumption": "PASS — all four models of profiles.json touch coupled to a finger being accepted or refused; null control inert. Verdict §11.",
+  "killed_my_own_processes": "RULES 21 — `touch-run.mjs --leg differential` and its `opening-play.mjs` child starved 22 minutes at 5.0-5.7 load/core. Killed BY PID (22905, 22930, 23302, 23307), all my own children. Never pkill, never a neighbour.",
+  "unrun_legs_left_for_round_2": [
+    "critic-fight.mjs --leg menu (RULING R2 menu consequence)",
+    "critic-fight.mjs --leg insets (T8 clause 1 under M-P17 cutout)",
+    "critic-fight.mjs --leg portrait"
+  ]
 }

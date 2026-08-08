@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bd37462`: 764 tools, 153 reference
+so it cannot drift. Generated at `2c8db52`: 766 tools, 153 reference
 items, 72 pieces in flight.
 
 Its purpose is to stop 72+ concurrent agents each paying separately to discover the
@@ -615,9 +615,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/playability/` — 2
+### `tools/playability/` — 3
 
 - `tools/playability/live-mirror.mjs` — put a real browser in front of the REAL deployed site.
+- `tools/playability/standing-check.mjs` — THE one command.
 - `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
 
 ### `tools/progression/` — 6
@@ -707,10 +708,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
-### `tools/touch/` — 8
+### `tools/touch/` — 9
 
 - `tools/touch/critic-block-roll.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-consumption.mjs` — W1-TOUCH critic.
+- `tools/touch/critic-differential.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-fight-diag.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-fight.mjs` — ================================================================================================= critic-fight.mjs — W1-TOUCH critic round 1.
 - `tools/touch/critic-gate-wallclock.mjs` — W1-TOUCH critic.
@@ -1100,9 +1102,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
+| `PLAYABILITY` | measuring | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
-| `PLAYABILITY` | measuring | finish the local and live runs at all eight shapes with --play; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
-| `critic-w1-touch` | measuring — fight leg done, roll/sprint gate under investigation | settle whether arm B's sprint promotion is a real gate defect or CDP latency; then the dif | `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` `tools/touch/critic-block-roll.mjs` `tools/touch/critic-roll-matrix.mjs` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-27` | done |  | `orchestration/status/W1-27.json` `tools/coherence/w1-27-coherence.mjs` `tools/coherence/w1-27-loot-consumption.mjs` `tools/coherence/w1-27-chart.mjs` `tools/world/build-property.mjs` `reports/w1-27/RULING.md` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |

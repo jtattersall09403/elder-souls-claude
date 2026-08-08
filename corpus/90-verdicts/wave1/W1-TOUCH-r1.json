@@ -154,6 +154,12 @@
     {
       "id": "E3",
       "what": "My first roll check called `backstep` a failure. A dodge with no direction IS a backstep in both source games; the check was wrong, not the build."
+    },
+    {
+      "id": "E4",
+      "what": "The second half of my own tools/touch/critic-differential.mjs is a BROKEN PROBE and its verdict line 'ACCEPTANCE 6 FAILS' is wrong and must be ignored. It dismisses the title with `Space`, which IS the roll binding, so the dismissal press and the roll press are the same key; and its sample windows overlap the previous action's recovery. It reported ['r1.1'] and ['guardbreak'] for a 'Space roll' — both ATTACK moves, neither a roll — which is the signature of reading the wrong window rather than of a build that cannot roll.",
+      "kept_not_deleted": "The defect is documented at the top of the file rather than deleted, because a critic that hides its own broken arm is doing the thing this project keeps catching other people doing.",
+      "where_the_real_evidence_is": "critic-roll-matrix.mjs arm D (pure desktop, KeyW + Space -> move `roll`, states ROLL_STARTUP/ROLL_IFRAME/ROLL_RECOVER, stamina 103.3 -> 82.8) and critic-block-roll.mjs (KeyF held -> guardRaised 9/15, state BLOCK_HOLD). The GEOMETRY half of critic-differential.mjs is sound and is what the verdict cites."
     }
   ],
   "what_should_be_copied_from_this_round": [
@@ -173,7 +179,9 @@
   "not_done": [
     "No real device. Attack G is analysis and a named hypothesis, not a measurement.",
     "F3's roll asymmetry is a differential, not a mechanism — it is not isolated from the frame rate in F5.",
-    "T10's 'one complete quest on touch only' is unmeasured by the round and by me. So are T3's camera curve and T7/M-P22 — the round declared all three.",
+    "RULING R2's declared menu consequence is STILL UNMEASURED. `critic-fight.mjs --leg menu` is written and committed and was never run on a quiet box — I ran out of machine, not out of instrument. Same for `--leg insets` (T8 clause 1 under M-P17's real cutout) and `--leg portrait`.",
+    "THE PAD is unmeasured by the round and by me — acceptance 6's pad half has no number from anyone.",
+    "T10's 'one complete quest on touch only' is unmeasured by the round and by me. So are T3's camera curve and T7/M-P22.",
     "The tablet's landscape opening is still unmeasured.",
     "Every timing figure is under fleet load on SwiftShader and is stamped as such."
   ],
@@ -190,7 +198,8 @@
     "tools/touch/critic-consumption.mjs",
     "docs/shots/2026-08-08-critic-touch-fight-01-the-sentry-aggroed.png",
     "docs/shots/2026-08-08-critic-touch-fight-02-after-the-exchange.png",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "tools/touch/critic-differential.mjs"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-TOUCH-r1.md",
@@ -244,5 +253,52 @@
       "result": "light@(737,242), walked 0.193 m, camera -28 deg, swung true — identical to baseline on every observable",
       "inert_as_required": true
     }
+  },
+  "attack_C_acceptance_6": {
+    "the_rounds_words": "the desktop path is untouched by argument (touchClearRightX is null on every desktop frame), which is an argument, not a measurement",
+    "what_happened_to_the_rounds_own_leg": "I started `touch-run.mjs --leg differential` and it STARVED for twenty-two minutes without emitting a single line at 5.0-5.7 load per core — the same starvation the round reported for its own two runs. I killed my own child processes BY PID (never pkill) and took the measurement a cheaper and more direct way.",
+    "method": "A desktop-shaped context on the SHIPPED tree against a desktop-shaped context on a tree with BOTH halves of RULING R2 deleted (input/touch.js `keep`, render/ui.js setTouchClearRight). This is simultaneously the differential and a delete-the-fix (RULES 6); both halves are deleted at once because RULES 6's fourth shape means deleting either alone can move nothing.",
+    "result": "MEASURED AND HELD",
+    "fields_compared": [
+      {
+        "field": "deviceClass",
+        "shipped": "desktop",
+        "r2_deleted": "desktop",
+        "identical": true
+      },
+      {
+        "field": "touch.enabled",
+        "shipped": false,
+        "r2_deleted": false,
+        "identical": true
+      },
+      {
+        "field": "touch overlay shown",
+        "shipped": false,
+        "r2_deleted": false,
+        "identical": true
+      },
+      {
+        "field": "touch controls drawn",
+        "shipped": 11,
+        "r2_deleted": 11,
+        "identical": true
+      },
+      {
+        "field": "touchClearRightX at boot",
+        "shipped": null,
+        "r2_deleted": null,
+        "identical": true
+      },
+      {
+        "field": "touchClearRightX after play",
+        "shipped": null,
+        "r2_deleted": null,
+        "identical": true
+      }
+    ],
+    "reading": "Every field RULING R2 could have reached on a desktop frame is byte-identical whether the fix is present or deleted. The round's argument was correct; it is no longer only an argument.",
+    "artifact": "reports/critic-w1-touch/critic-differential.json",
+    "still_unmeasured": "THE PAD. Neither the round nor I have measured the gamepad opening on today's tree."
   }
 }

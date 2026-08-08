@@ -226,10 +226,51 @@ applied in `--leg insets` and the arc is audited against it.
 
 **RULING R2's own declared consequence** — *"the drawer goes with the arc, so `menu` is unreachable
 mid-conversation on touch"* — is the thing the round ruled and then did not measure, and it flagged
-that itself. `--leg menu` measures both halves: that the menu really does leave the glass, and,
-more importantly, that R2's safety argument (*"nobody is trapped — `interact` ends it and `block`
-steps back"*) survives contact with a finger. **A player who cannot reach the menu during a
-conversation and cannot end the conversation is a player who cannot quit the game.**
+that itself. **It remains unmeasured; I ran out of box before I ran out of instrument**
+(`critic-fight.mjs --leg menu` and `--leg insets` are written and committed, and neither has been
+run on a quiet machine). **A player who cannot reach the menu during a conversation and cannot end
+the conversation is a player who cannot quit the game**, and that is still nobody's measurement.
+Round 2 gets a working fixture for it and no excuse.
+
+### 6.1 ATTACK C — acceptance 6, now with a number
+
+The round's own words: *"the desktop path is untouched by argument (`touchClearRightX` is null on
+every desktop frame), **which is an argument, not a measurement**."*
+
+Its `--leg differential` re-runs the whole keyboard and pad openings, which is the right shape and
+costs two full playthroughs. **I started it and it starved for twenty-two minutes without emitting
+a single line** at 5.0–5.7 load per core — the same starvation the round reported for its own two
+runs. I killed my own child processes by pid (never `pkill`) and took the measurement a cheaper and
+more direct way, which is also a **delete-the-fix** (RULES 6): a desktop-shaped context on the
+shipped tree, against a desktop-shaped context on a tree with **both halves of RULING R2 deleted**.
+
+| field | shipped | R2 deleted | |
+|---|---|---|---|
+| `deviceClass` | `desktop` | `desktop` | identical |
+| `touch.enabled` | `false` | `false` | identical |
+| touch overlay shown | `false` | `false` | identical |
+| touch controls drawn | 11 | 11 | identical |
+| **`touchClearRightX` at boot** | **`null`** | **`null`** | identical |
+| **`touchClearRightX` after play** | **`null`** | **`null`** | identical |
+
+**Acceptance 6's geometry half is now measured and it holds.** Every field RULING R2 could have
+reached on a desktop frame is byte-identical whether the fix is present or deleted. The round's
+argument was correct; it is no longer only an argument.
+
+**The other half of my own tool is broken and I am saying so.** `critic-differential.mjs` also
+tries to prove the desktop still *plays*, and that arm is a bad probe: it dismisses the title with
+`Space`, which **is** the roll binding, so the dismissal press and the roll press are the same key;
+and its sample windows overlap the previous action's recovery. It reported `["r1.1"]` and
+`["guardbreak"]` for a "Space roll" — both **attack** moves, neither a roll — which is the
+signature of reading the wrong window, not of a build that cannot roll. **Its verdict line says
+"ACCEPTANCE 6 FAILS" and that line is wrong; ignore it.** The defect is documented at the top of
+the file rather than deleted.
+
+**The evidence that the keyboard still fights is real and was taken earlier, properly sequenced:**
+`critic-roll-matrix.mjs` arm D — pure desktop, `KeyW` to run and `Space` to roll → move `roll`,
+states `ROLL_STARTUP`/`ROLL_IFRAME`/`ROLL_RECOVER`, stamina 103.3 → 82.8 — and
+`critic-block-roll.mjs`, `KeyF` held → `guardRaised` on 9 of 15 samples, state `BLOCK_HOLD`.
+**The pad is still unmeasured by anyone**, by the round and by me.
 
 ---
 
@@ -308,11 +349,20 @@ Not a courtesy paragraph; these are specific and rare.
 - **No real device**, so §7 is analysis and a hypothesis, not a measurement.
 - **The roll asymmetry in §2 is not isolated** from the frame rate in §4. I have the differential,
   not the mechanism.
+- **RULING R2's declared menu consequence is still unmeasured.** `critic-fight.mjs --leg menu` is
+  written and committed and never ran on a quiet box. Same for `--leg insets` (T8 clause 1 under
+  M-P17's real cutout) and `--leg portrait`. **I ran out of machine, not out of instrument** — the
+  box sat at 5–6 browsers and 5.0–5.7 load per core for most of this round, and my own differential
+  starved for twenty-two minutes inside that. Round 2 inherits working fixtures for all three.
+- **The pad has no number from anyone.** Acceptance 6's pad half is unmeasured by the round and by
+  me; §6.1 closes only the keyboard and geometry halves.
 - **T10's "one complete quest on touch only"** is unmeasured by the round and by me. So is **T3's
   camera curve** (`M-P8` degrees per fixed step) and **T7/M-P22** (controls hiding when a pad is
   active) — the round declared all three.
-- **The three-landscape-profile coverage the round declared** is not widened by me beyond what §6
-  reports; the tablet's landscape opening is still unmeasured.
+- **The three-landscape-profile coverage the round declared** is not widened by me; the tablet's
+  landscape opening is still unmeasured.
+- **The second half of my own `critic-differential.mjs` is a broken probe** and its verdict line is
+  wrong — §6.1 says exactly how and where the real evidence is instead.
 - Every timing figure is under fleet load on SwiftShader, stamped in §4 and in each artifact.
 
 ---
@@ -388,5 +438,16 @@ block publishes is read by something a player can feel.
 | `critic-block-roll.mjs` | — | block PASS 20/25; directed roll → the §2 finding |
 | `critic-roll-matrix.mjs` | 4 arms | the §2 asymmetry |
 | `critic-gate-wallclock.mjs` | sweep | the §3 frames-vs-milliseconds finding |
-| `critic-consumption.mjs` | §11 | see §11 |
-| `touch-run.mjs` | `differential` | ATTACK C — the round's own unmeasured acceptance |
+| `critic-consumption.mjs` | four models + null | **CONSUMPTION PASS**, no orphans — §11 |
+| `critic-differential.mjs` | desktop vs R2-deleted | geometry half **sound** (§6.1); "does it play" half **broken, documented in the file** |
+| `touch-run.mjs` | `differential` | **starved 22 min, killed by pid** — replaced by §6.1 |
+| `critic-fight.mjs` | `menu`, `insets`, `portrait` | **written, committed, never run** — no quiet box (§9) |
+
+**Reproduce any of it:**
+
+```
+ES_SERVE_ROOT=<a git-archive HEAD export> node tools/touch/critic-fight.mjs --leg fight
+ES_SERVE_ROOT=...                          node tools/touch/critic-roll-matrix.mjs
+ES_SERVE_ROOT=...                          node tools/touch/critic-gate-wallclock.mjs
+ES_SERVE_ROOT=...                          node tools/touch/critic-consumption.mjs
+```
