@@ -160,15 +160,42 @@
               "decay_s": 0.7
             },
             "gain_db": -12
+          },
+          "when": {
+            "tod": "day"
+          }
+        },
+        {
+          "id": "mud_settle",
+          "classes": [
+            "earth"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.4,
+            0.4
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 190,
+              "q": 0.9
+            },
+            "env": {
+              "attack_s": 0.35,
+              "decay_s": 1.6
+            },
+            "gain_db": -12
+          },
+          "when": {
+            "tod": "night"
           }
         }
       ],
-      "event_gain_db": 13.51,
-      "night_interval_s": [
-        36,
-        40
-      ],
-      "night_interval_reason": "RI-AUD03 \u00a7B: \"NO birds. L3 is near-empty by design.\" R5 is answered here by taking away rather than adding \u2014 the Deep Marshes are emptier at night, not busier. The band stays inside \u00a7A's 8\u201340 s."
+      "event_gain_db": 13.51
     },
     "L4": {
       "id": "l4_breathing_not_yours",
@@ -219,5 +246,5 @@
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -3.68,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
-  "r5_night_selection": "Day: still water, gas release every 30\u201340 s. Night: sub-surface gas floor, and the L3 clock slows to 36\u201340 s. The region gets quieter at night; that is the selection."
+  "r5_night_selection": "Day: still water, gas rising off warm water every 30-40 s. Night: a sub-surface gas floor and the mud closing again over where it left. Same density either way - RI-AUD03 SB writes this L3 as \"near-empty by design\", so R5 is answered by SWAPPING the event, never by adding one."
 }

@@ -542,6 +542,9 @@ try {
       say(`  TEARDOWN --break-dir: move_x ${r.before}->${r.after}, move_y ${r2.before}->${r2.after} (the two stick axes are swapped under the router)`);
     }
 
+    const shippedAtLegStart = await h.page.evaluate(() => window.__ENGINE.combat.d.locomotion.move_deadzone);
+    say(`     locomotion.move_deadzone as this tree ships it: ${shippedAtLegStart}`);
+
     const DEFLECTIONS = [0.05, 0.10, 0.14, 0.16, 0.20, 0.25, 0.27, 0.30, 0.40, 0.45, 0.55, 0.70, 0.85, 0.92, 1.00];
     const SEGMENTS = [30, 30, 60];        // RULES 8: three consecutive windows inside one hold
     const BEARINGS = [{ name: 'forward', deg: 0 }, { name: 'right-45', deg: 45 }, { name: 'left-90', deg: -90 }];
@@ -724,8 +727,15 @@ try {
     const fwdFixed = fixedRows.filter((r) => r.bearing === 'forward');
     const firstLiveFixed = fwdFixed.find((r) => r.steady_m_per_s > 0.01);
     out.second_deadzone.first_deflection_that_moves_with_it_removed = firstLiveFixed ? firstLiveFixed.deflection : null;
-    // Restore the shipped value before anything else runs against this browser.
-    await h.page.evaluate(() => { window.__ENGINE.combat.d.locomotion.move_deadzone = 0.15; });
+    // Restore the value THE TREE SHIPS, captured before the arms ran — never a literal.
+    // This line used to read `= 0.15` because that is what the tree shipped when it was written.
+    // The moment engine.js was fixed to 0, that literal stopped being a restore and became a
+    // corruption: it left `move_deadzone` at the OLD value for every leg that ran after the curve,
+    // and C7 duly reported `move_deadzone=0.15` on a tree that ships 0. A teardown that does not
+    // put back exactly what it found is an instrument that edits the thing it measures.
+    await h.page.evaluate((v) => { window.__ENGINE.combat.d.locomotion.move_deadzone = v; }, shippedAtLegStart);
+    const restored = await h.page.evaluate(() => window.__ENGINE.combat.d.locomotion.move_deadzone);
+    if (restored !== shippedAtLegStart) fail('C0', `the curve leg did not put move_deadzone back: found ${shippedAtLegStart}, left ${restored}`, {});
 
     const gainedRows = fwd.map((r) => {
       const f = fwdFixed.find((x) => x.deflection === r.deflection);
@@ -735,7 +745,7 @@ try {
     const recovered = gainedRows.filter((g) => g.shipped_m_per_s <= 0.01 && g.deadzone_zero_m_per_s > 0.01 && g.deflection > 0.15);
     say('     ARM COMPARISON (forward bearing):');
     for (const g of gainedRows) say(`        stick ${g.deflection.toFixed(2)}   shipped ${g.shipped_m_per_s.toFixed(3)} m/s   move_deadzone=0 ${String(g.deadzone_zero_m_per_s).padStart(6)} m/s`);
-    const shippedDeadzone = await h.page.evaluate(() => window.__ENGINE.combat.d.locomotion.move_deadzone);
+    const shippedDeadzone = shippedAtLegStart;
     out.second_deadzone.shipped_move_deadzone = shippedDeadzone;
     if (shippedDeadzone === 0 && firstLive && firstLive.deflection <= 0.20 && recovered.length === 0) {
       pass('C7', `NO SECOND DEADZONE. \`locomotion.move_deadzone\` is ${shippedDeadzone} on this tree, so the body starts moving at deflection ${firstLive.deflection} — the documented ${ls.inner} edge — and setting it to 0 explicitly changes nothing (${recovered.length} rows recovered), which is the arms being identical because the fix is already in. With the old 0.15 the first live deflection was 0.27, one rescale further out than the item says; that A/B is in tools/gamepad/deadzone-deletefix.mjs, run on a live body with the old value put back.`, out.second_deadzone);

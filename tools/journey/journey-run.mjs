@@ -1005,6 +1005,7 @@ async function driveBeats(handle, o) {
   // proves so is `--still-fire-a-field`, which asks the harness to open the census in the middle
   // of the window; the assertion must go red under it or it is not an assertion.
   const stillFrames = Number.isFinite(o.stillFrames) ? o.stillFrames : 3600;
+  let teardownTrace = null;
   if (stillFrames > 0) {
     const stillFrom = await frameNow();
     // Chunked so a browser under load is never asked for 3600 frames in one round trip, and so a
@@ -1026,9 +1027,25 @@ async function driveBeats(handle, o) {
         //
         // It now walks to the first field-writing node and answers it, which is the one thing
         // that emits `creation_field` (`Engine.censusAnswer` -> `before.sets`).
-        await handle.hOpt('censusBegin', {});
-        await handle.hOpt('censusEnter', 'talk');       // hold.come-to -> hold.hatch-name
-        await handle.hOpt('censusAnswer', 'Teardown-Name');
+        //
+        // It now walks to the first field-writing node and answers it, stepping BETWEEN the
+        // calls — `censusBegin` places the scene and `_censusApplyPending` runs in `_afterStep`,
+        // so three harness calls back to back inside one gap between chunks is not the same
+        // sequence a player produces — and it RECORDS what each call did, so the next reader can
+        // see whether the sabotage landed instead of inferring it from the row staying green.
+        teardownTrace = { steps: [] };
+        try {
+          teardownTrace.began = await handle.hOpt('censusBegin', {});
+          await handle.h('stepFrames', 4);
+          teardownTrace.entered = await handle.hOpt('censusEnter', 'talk');
+          await handle.h('stepFrames', 4);
+          teardownTrace.node_before_answer = ((await handle.hOpt('getCensusState')) || {}).node;
+          teardownTrace.answered = await handle.hOpt('censusAnswer', 'Teardown-Name');
+          await handle.h('stepFrames', 4);
+          teardownTrace.node_after_answer = ((await handle.hOpt('getCensusState')) || {}).node;
+        } catch (err) {
+          teardownTrace.threw = String(err && err.message || err);
+        }
       }
     }
     const stillTo = await frameNow();
@@ -1042,6 +1059,7 @@ async function driveBeats(handle, o) {
       // frames above, except under `--still-fire-a-field`, which says so in `teardown`.
       inputs_dispatched: 0,
       teardown: !!o.stillFireAField,
+      teardown_trace: teardownTrace,
     };
     window.seconds_still = Number.isFinite(window.frames_advanced) ? +(window.frames_advanced / 60).toFixed(2) : null;
     await record('still_window', { from: stillFrom, to: stillTo, frames: window.frames_advanced });
