@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6ccfb51`: 697 tools, 153 reference
-items, 57 pieces in flight.
+so it cannot drift. Generated at `2e740f3`: 700 tools, 153 reference
+items, 56 pieces in flight.
 
-Its purpose is to stop 57+ concurrent agents each paying separately to discover the
+Its purpose is to stop 56+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -262,7 +262,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
 - `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
 
-### `tools/harness/` — 230
+### `tools/harness/` — 231
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -459,6 +459,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r5-diag.mjs` — ONE BOLT, FRAME BY FRAME.
 - `tools/harness/w1-14-r5-enchant.mjs` — I WALKED TO AN ENCHANTER, SPENT A SOUL, AND KILLED SOMETHING WITH IT.
 - `tools/harness/w1-14-r5-lead.mjs` — CAN A BOLT HIT A BODY THAT WALKS?
+- `tools/harness/w1-14-r5-world.mjs` — THREE THINGS THE ROUND-4 VERDICT LEFT ON THE FLOOR, EACH WITH BOTH ARMS.
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
@@ -711,7 +712,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 126
+### `tools/world/` — 128
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -830,10 +831,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r4-shots.mjs` — W1-04 round 4 — THE TWO PICTURES.
 - `tools/world/w1-04-r4-vp04.mjs` — W1-04 round 4 — WHERE VP04 SHOULD STAND.
 - `tools/world/w1-04-r5-census.mjs` — **no header comment**
+- `tools/world/w1-04-r5-deletefix.mjs` — **no header comment**
 - `tools/world/w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/w1-04-r5-shot.mjs` — **no header comment**
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
+- `tools/world/w1-crossing-r2-overpass.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
 - `tools/world/waylamp-probe.mjs` — **no header comment**
 - `tools/world/wld-borders-shots.mjs` — W1-02 — the three pictures.
@@ -841,7 +844,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **161 tools have no header comment**, so nobody can tell what they do without
+> **163 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1015,9 +1018,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-CROSSING-r2` | in-progress | Read RULES/INDEX/NEXT-DISPATCH P.4+Q14, verdict W1-CROSSING-r1, status W1-05. | `orchestration/status/W1-CROSSING-r2.json` |
-| `W1-04-r5` | building | fix w1-04-consumption.mjs check 10a (street signature taken before the door), run the aggr | `orchestration/status/W1-04-r5.json` `tools/world/w1-04-r5-census.mjs` `game/src/render/exterior.js` `game/src/render/interior.js` `game/src/world/province.js` `reports/w1-04-r5/census.json` |
-| `W1-14-r5` | building | implement the lead in sim/magic/system.js | `orchestration/status/W1-14-r5.json` |
+| `W1-CROSSING-r2` | in-progress | Install new roads.json, regenerate derived data, then walk every leg BOTH ways in one brow | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/build-roads.mjs` |
+| `W1-14-r5` | building | verify the derived turn rates against AP-M3 and the dodge arm; then water/purse/refusal pr | `orchestration/status/W1-14-r5.json` `game/src/sim/magic/system.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/combat-bridge.js` `game/src/combat/player.js` `game/src/sim/traversal.js` |
 | `critic-w1-14-r4` | done | commit; hand to W1-14 round 5 | `corpus/90-verdicts/wave1/W1-14-r4.md` `corpus/90-verdicts/wave1/W1-14-r4.json` `orchestration/status/critic-w1-14-r4.json` `tools/harness/critic-w1-14-r4-ground.mjs` `tools/harness/critic-w1-14-r4-summon.mjs` `tools/harness/critic-w1-14-r4-touch.mjs` |
 | `critic-w1-26-r3` | running | finish A7/H/D runs, run jrn09-exchange + name-entry, write verdict | `orchestration/status/critic-w1-26-r3.json` `tools/journey/critic-w1-26-r3-asaperson.mjs` `tools/journey/critic-w1-26-r3-leak.mjs` `tools/journey/critic-w1-26-r3-input.mjs` `tools/journey/critic-w1-26-r3-consume.mjs` `docs/shots/2026-08-08-w1-26-r3-critic-01-the-title-play-sh-serves.png` |
 | `W1-25-r2` | done | a critic with fresh context; then RI-EXP02's recall protocol, which is the only thing that | `orchestration/status/W1-25-r2.json` `tools/experience/lib/sabotage.mjs` `tools/experience/sabotage.mjs` `tools/experience/sabotage-cases.mjs` `tools/experience/sabotage-corpus.mjs` `tools/experience/w1-25-r2-active-fixture.mjs` |

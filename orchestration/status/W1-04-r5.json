@@ -1,39 +1,112 @@
 {
   "task_id": "W1-04-r5",
   "role": "builder",
-  "piece": "W1-04 round 5 — settlements, interiors and the people in them",
-  "state": "building",
+  "piece": "W1-04 round 5 \u2014 settlements, interiors and the people in them",
+  "state": "complete",
   "head_at_start": "bf039f1",
   "spec": "corpus/90-verdicts/wave1/W1-04-r4.md (FAIL 4.7/10)",
-  "contention": "node tools/contention.mjs --gate = GO (1 browser instance, load 0.63/core) at start.",
+  "contention": "node tools/contention.mjs --gate returned GO at every check. One browser per live run, launched once and kept; the pictures went through the pooled capture daemon and launched nothing. I killed my own first live run BY PID (3394/3396/3403) to restart it with setRenderRate(0) -- never pkill -f headless_shell.",
   "done_so_far": [
-    "tools/world/w1-04-r5-census.mjs — the offline instrument. Builds all 115 rooms with the CORRECT buildInterior(root, rec) signature and FAILS if any room traverses 0 meshes (--self-break watched go red: 115/115 rooms read nothing and it reports PROBE FAILURE).",
+    "tools/world/w1-04-r5-census.mjs \u2014 the offline instrument. Builds all 115 rooms with the CORRECT buildInterior(root, rec) signature and FAILS if any room traverses 0 meshes (--self-break watched go red: 115/115 rooms read nothing and it reports PROBE FAILURE).",
     "BASELINE at bf039f1: doorsteps inside a drawn building 112/112 (103 inside their own), doors at building centre 112/112, lamps outside their room 74 in 19 rooms (31 hearth entries), meshes >0.6 m outside 192 in 28 rooms (153 light fittings, 39 props).",
     "FIX leg 1 (the doorstep) in game/src/render/exterior.js: new entryOutwardWorld()/doorPointWorld(); applyInteriorBounds(plans, interiors, docs, opts) now moves buildings[].door onto the entry wall of the DRAWN building (in place, through the settlement document, because SettlementSystem's door-reach table holds that array) and re-derives continuity.exterior_spawn as the nearest standable point outside every footprint, stashed as *_declared so it stays idempotent and reversible.",
-    "FIX leg 2 (the lamps) in the same function: lights[].pos clamped into the room that now exists, hearths at a 1.15 m inset (a hearth is a 1.1 m stone ring), lamps at 0.35 m, stashed as rec.lights_declared. NOT a fork of the stealth model — sim/stealth/system.js is untouched and reads the corrected record.",
+    "FIX leg 2 (the lamps) in the same function: lights[].pos clamped into the room that now exists, hearths at a 1.15 m inset (a hearth is a 1.1 m stone ring), lamps at 0.35 m, stashed as rec.lights_declared. NOT a fork of the stealth model \u2014 sim/stealth/system.js is untouched and reads the corrected record.",
     "FIX leg 3 (the props) in game/src/render/interior.js: stair_narrow and ladder_steep ran their treads along local -z, i.e. backwards through the wall they lean on.",
     "AFTER: doorsteps inside a building 0/112, lamps outside 0, meshes >0.6 m outside 0. boot-check PASS."
   ],
-  "next_step": "fix w1-04-consumption.mjs check 10a (street signature taken before the door), run the aggregation end to end, live one-frame-after-the-door sweep over >=40 doors with a control, screenshot, check-building-fits-room assertion, delete-the-fix, CONSUMPTION.",
+  "next_step": "a fresh-context critic",
   "files_touched": [
     "orchestration/status/W1-04-r5.json",
-    "tools/world/w1-04-r5-census.mjs",
     "game/src/render/exterior.js",
     "game/src/render/interior.js",
     "game/src/world/province.js",
-    "reports/w1-04-r5/census.json"
-  ],
-  "files_claimed": [
+    "tools/world/w1-04-r5-census.mjs",
     "tools/world/w1-04-r5-live.mjs",
     "tools/world/w1-04-r5-deletefix.mjs",
     "tools/world/w1-04-r5-shot.mjs",
     "tools/world/w1-04-consumption.mjs",
     "tools/check-building-fits-room.mjs",
-    "reports/w1-04-r5/",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "reports/w1-04-r5/census.json",
+    "reports/w1-04-r5/live.json",
+    "reports/w1-04-r5/consumption.json",
+    "reports/w1-04-r5/deletefix.json",
+    "reports/w1-04-r5/shots.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-08-w1-04-r5-walking-out-now-leaves-you-outside.png",
+    "docs/shots/2026-08-08-w1-04-r5-the-same-doorstep-facing-away.png",
+    "docs/shots/2026-08-08-w1-04-r5-blackrose-house-1-lamps-back-inside.png"
   ],
+  "files_claimed": [],
   "redundant_with": [],
-  "ownership_notes": "game/src/render/interior.js is declared by W1-READABLES and W1-READABLES-r2, both [done]; my edit is two prop builders and touches nothing they own. game/src/world/province.js is claimed by W1-ROAD-JOIN [?]; my edit is one argument on one line. I did NOT touch tools/world/build-settlements.mjs or game/data/world/{settlements,interiors}/ — all three are claimed by W1-15-r3 [building] — so the whole fix is in the runtime derivation and no data file is regenerated.",
-  "not_done_yet": []
+  "ownership_notes": "game/src/render/interior.js is declared by W1-READABLES and W1-READABLES-r2, both [done]; my edit is two prop builders and touches nothing they own. game/src/world/province.js is claimed by W1-ROAD-JOIN [?]; my edit is one argument on one line. I did NOT touch tools/world/build-settlements.mjs or game/data/world/{settlements,interiors}/ \u2014 all three are claimed by W1-15-r3 [building] \u2014 so the whole fix is in the runtime derivation and no data file is regenerated.",
+  "not_done_yet": [],
+  "head_at_finish": "2e740f3",
+  "stamp_note": "Every number below was taken at HEAD 2e740f3 with this round\u2019s edits in the working tree (rule 12).",
+  "acceptance": {
+    "a body that leaves a building stands outside it, one frame after the door, over >=40 doors with a control": {
+      "tool": "tools/world/w1-04-r5-live.mjs (one browser, launched once and kept, chunked in eights with a write after every chunk)",
+      "measured": "115 doors. SHIPPED: 0 of 115 bodies inside a building one frame after exitInterior(). CONTROL (this round's doorstep derivation undone on the live records from the *_declared stashes): 113 of 115 inside a building, 103 of them inside the building they had just left.",
+      "how_it_is_measured": "enter, step 2, exitInterior(), step ONE fixed frame, then whereAmI().pos and buildingAt(). A position read off the running world after physics, not a property of the record.",
+      "artifact": "reports/w1-04-r5/live.json"
+    },
+    "0 lamps outside their walls, with the stealth model reading the corrected positions": {
+      "offline": "tools/world/w1-04-r5-census.mjs L: 74 authored lamp entries in 19 rooms outside their room before, 0 after (31 hearth entries -> 0).",
+      "at_the_model": "w1-04-consumption.mjs row 10f walks all 115 rooms and reads sim/stealth/system.js's OWN source list (lightSourceCensus()): 695 detection sources, 0 outside their room. With the declared lamp positions restored on the live records, the same sweep reads 55 outside, worst 2.33 m -- the round-4 verdict's number, reproduced at the consumer.",
+      "not_a_fork": "game/src/sim/stealth/system.js is UNTOUCHED. The clamp is in the interior record, which syncInteriorLights() already reads by reference; W1-15-r3 owns that model and this round does not fork it."
+    },
+    "the consumption aggregation run end to end and green for the right reason": {
+      "before": "exit 1, 19/20, row 10a DEAD -- it took the street signature BEFORE opening the door, i.e. wherever the previous door's exit left the body, so ten town-boundary crossings compared Helstrom's street with Archon's.",
+      "fix": "10a now establishes the street AT the door under test (enter, exit, read) and only then takes the measured visit.",
+      "after": "exit 0, 23/23 CONSUMED, 9 paths, 0 skipped. Row 10a: exterior_restored_on_exit == entered == 115, and the cut arm still reads drawn_agrees 0 / exterior_restored 0.",
+      "artifact": "reports/w1-04-r5/consumption.json"
+    },
+    "the prop count reduced, with the residual stated": {
+      "definition": "a built mesh whose world bounding box reaches more than 0.6 m outside its own room's bounds_m, measured on the tree buildInterior(root, rec) actually builds.",
+      "before": "192 meshes in 28 rooms -- 153 light fittings and 39 props.",
+      "after": "0. The 153 fittings went with the lamp clamp; the 39 were all prop:stair_narrow, in 13 inns and halls, whose treads ran along local -z, i.e. backwards through the wall the slot leans on. ladder_steep had the same sign error and is fixed with it.",
+      "residual_stated": "0 under this definition. My count is NOT the round-4 verdict's 292 in 63 rooms and I did not reconcile them: the verdict does not state its tolerance or whether it measured centres or boxes, and I measured mine and published the definition instead of guessing at theirs. A critic should treat 192 -> 0 as the claim, under the definition above."
+    }
+  },
+  "also_fixed": [
+    "buildings[].door was the building CENTRE on 112 of 112. It is now a point on the entry wall of the DRAWN building, written in place through the settlement document because SettlementSystem's door-reach table (built in its own constructor, before setSettlements ever runs) holds that array itself. Live: the door is back in reach from the doorstep on 106 of 115.",
+    "A blind spot in every census this piece has had, found by the live sweep and not by any offline tool: three interior records name a continuity.building no settlement document contains (thorn-house-0, barge-hold, writ-house). A probe that walks PLAN buildings cannot see them. thorn-house-0's declared doorstep stood inside thorn-gate; the census reported a clean 0 of 112 while the body was under a roof. Both the census and applyInteriorBounds() now handle the orphans, and the census says out loud that it used to be blind to them."
+  ],
+  "rule_6_delete_the_fix": {
+    "tool": "tools/world/w1-04-r5-deletefix.mjs -- a 2x2 over the shipped code path's own switches, not a fork of the file",
+    "table": "A shipped: 0 doorsteps in a building / 0 lamps out / 0 meshes out. B doorstep cut: 113 / 0 / 0. C lamp clamp cut: 0 / 74 / 153. D both cut: 113 / 74 / 153. E whole join cut: 113 / 0 / 0.",
+    "shape": "TWO INDEPENDENT FIXES, not two guards for one defect and not an inert fix. Each leg alone moves its own number and only its own number.",
+    "teardowns_watched_going_red": [
+      "the live control (113 of 115 bodies indoors with the derivation undone)",
+      "check-building-fits-room.mjs --self-break, now with TWO red arms: the bounds join cut (112 of 112 buildings fail) and ONLY the doorstep derivation cut (112 of 112 doorsteps inside a building)",
+      "w1-04-r5-census.mjs --self-break, which calls buildInterior(rec) instead of buildInterior(root, rec) on purpose: 115 of 115 rooms read nothing and it reports PROBE FAILURE rather than a clean pass. This is the exact failure the round-4 critic reported making.",
+      "w1-04-consumption.mjs row 10f's before-arm (55 detection sources outside their room)"
+    ]
+  },
+  "gates_run": [
+    "boot-check PASS",
+    "check-data rc 0",
+    "check-souls-world rc 0 (310 rows agree)",
+    "check-quests rc 0",
+    "check-content rc 0",
+    "check-building-fits-room rc 0 and --self-break rc 0",
+    "check-append-only rc 0",
+    "w1-04-consumption 23/23 rc 0"
+  ],
+  "what_i_did_not_do": [
+    "I did not regenerate any DATA. tools/world/build-settlements.mjs and game/data/world/{settlements,interiors}/ are all claimed by W1-15-r3 [building], so the whole fix is in the runtime derivation (applyInteriorBounds), stashed and reversible, exactly as the bounds join already was. The shipped JSON still declares a centre door and an indoor doorstep; the derivation corrects both before anything reads them. A successor with those files free should push the derived values into the data too.",
+    "11 of 113 doorsteps are further than DOOR_REACH_M (2.6 m) from their own door and are published as a residual on every census run. These are the deep-overlap buildings whose entry wall is buried inside a neighbour -- the piece's oldest open gap, which the round-4 verdict says is correctly NOT fixed by moving buildings. You step out, you take a step back, you are at the door. It is not a defect this round created: the round-4 doorsteps were in reach because they were in the middle of the house.",
+    "The uncapped live 115-room distinctness sweep. Still not taken. I did not rebuild the distinctness measure and I did not re-measure it -- the round-4 critic proved it survives every degenerate case and proved the offline signature byte-identical to the live one, and re-running a critic's surviving instrument is not evidence.",
+    "inCoverFraction on both arms, the observed-theft branch, and RI-WLD03 M13 -- untouched for a fourth round, as in round 4.",
+    "A picture of the inside of archon-market. The capture daemon's settle gate refused it four times (G3a/G3b, ambient motion in an interior), which is the same refusal the round-4 critic reported. I photographed blackrose-house-1 instead -- the room with the worst lamp displacement, 2.33 m.",
+    "A picture taken from a camera standing exactly ON the doorstep looking back. The settle gate refused it repeatedly (content still arriving: streaming town geometry and walking people in frame) and I would not soften the threshold to get it. The shot that shipped is 6 m back and 3.2 m up looking at the same wall, and the claim says so.",
+    "I did not re-run the round-4 builder's or critic's own probes."
+  ],
+  "ruling_to_lift": "VP04. The round-4 critic verified independently that the new pose [3859, _, 860] returns null from insideBuilding() with the nearest building edge about 12 m away. THE ROUND-1 RULING AGAINST CITING A VP04 CAPTURE AS EVIDENCE OF A SETTLEMENT SHOULD NOW BE LIFTED. I did not re-measure it and I am not claiming to have; I am recording, as the dispatch asked, that the piece agrees it should be lifted.",
+  "confirmed_by_the_round_4_critic_and_not_re_measured_here": [
+    "roofs 0 of 202 with a demonstrated red arm at 201/202",
+    "the join 41 -> 0",
+    "'by reference' is true",
+    "the api.js nulling pattern is gone",
+    "the distinctness measure, including the offline/live byte-identity of archon-apothecary cc6a50ac/114"
+  ]
 }
