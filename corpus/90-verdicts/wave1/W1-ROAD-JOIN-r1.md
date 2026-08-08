@@ -305,7 +305,8 @@ and is the whole reason it can go stale — the road carries the answer, not the
 | `RI-WLD01` §4/§5 — the road network as shipped | **5** | M1–M5 all pass and the crossing is 57.59 min, but the artefact runs through five buildings on three legs and `THE CROSSING` is offended at 5,610 m. The defect the piece exists to remove is present at HEAD. |
 | `ARBITRATION` S28 compliance | **7** | (a) 57.59 min inside 52–65 and (b) worst leg 2.26% inside 5% both hold. (c) holds in fact but was never run by the piece, and the slope histogram it mandates hides an unreported 39.66° → 40.41° regression. |
 | Instrument integrity | **5** | The acceptance number rests on a check that sees roughly half the game's blocked samples, and on a `--self-test` that is broken and was left broken. The union claim means the blindness did not produce a false green *at the time* — that is the only reason this is not lower. |
-| CONSUMPTION `RI-MTH07` | **9** | Six independent arms, a byte-identical null, a teardown seen to go red, and coupling demonstrated in a second town. |
+| The W1-05 soulrest handoff | **6** | The conclusion is right and I have now supported it. The evidence originally offered was four byte-identical arms taken on a tree where the join had already cleared every building off that leg — a control with nothing to switch off. |
+| CONSUMPTION `RI-MTH07` | **8** | Six independent arms, a byte-identical null, a teardown seen to go red, and coupling demonstrated in a second town. |
 
 **min over axes = 5.** Below the wave-1 gate of 7.0. **FAIL.**
 

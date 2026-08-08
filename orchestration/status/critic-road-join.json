@@ -2,9 +2,9 @@
  "task_id": "critic-road-join",
  "role": "critic",
  "piece": "W1-ROAD-JOIN",
- "status": "in_progress",
+ "status": "done",
  "started_at": "2026-08-08T03:40:00Z",
- "next_step": "awaiting soulrest 4-arm walk (120k frames x4, one browser); then verdict json + blog + commit",
+ "next_step": "none — verdict, tools, report, picture and blog line are on disk and committed",
  "headline": "THE JOIN IS STALE ON THE SHIPPED TREE. The builder's 0/10 was TRUE at 322f708 and is FALSE at HEAD: 3 of 10 legs and 5 named-route offences, including THE CROSSING at 5,610 m in Blackrose. Cause is not data - it is planSettlement() itself (per-axis shrink + MIN_ENTERABLE_SPAN_M, banked 03:39:45 in 0dc0703). 54 exteriors grew, +1,846 m2. Handoff H4 named the DATA staleness door; this is the GENERATOR door and it was already open 24 minutes after the join was cut.",
  "findings": [
   {
@@ -34,6 +34,14 @@
   {
    "id": "C7",
    "text": "My own consumption, 6 arms: R-REMEDY rebuild at HEAD -> 0 of 10 (the mechanism is sound, the artefact is stale); R-DETERM byte-identical; TEARDOWN --no-join 10 of 10 / 267 samples with a distinct hash (I watched my own control go red, rule 6); P-BLACKROSE bites 19 samples from 11 and follows to 0 with the road moving 5.5 m in a town the builder never perturbed; NULL-NOREAD byte-identical roads.json; NULL-REVERSED the x6 grow SURVIVED the shrink pass at HEAD, so the per-axis shrink is more permissive than the one the builder measured against."
+  },
+  {
+   "id": "C8",
+   "text": "ATTACK E resolved. The builder's walls_change_the_answer:false came from FOUR BYTE-IDENTICAL ARMS on a tree where the join had cleared soulrest-blackrose entirely (0 of 10 at 322f708) - a control with nothing to switch off, which is RULES rule 6's inert-control shape. I re-ran the same tool unmodified at HEAD, where blackrose-rootpost IS back on the leg: A 3473.3 m vs B 3469.8 m, stopping 2.0 m apart, so the control BITES, and the answer is still false. any_arm_drowned:false and arm A now ARRIVES (3473 m of an 1841 m leg, hp 27) where the builder's ran 6459.8 m and did not - that improvement is almost certainly W1-CROSSING's in-flight field.js/steering work and I do NOT claim it for the join. W1-05 may stop testing walls, on this evidence."
+  },
+  {
+   "id": "C9",
+   "text": "ATTACK F NOT DONE, declared. I did not walk THE CROSSING end to end: gate exit 3 for the second half of the run, W1-CROSSING is driving that exact walk right now with an uncommitted field.js deck change in the tree, and the walk cannot complete on this artefact anyway (pinned at 550 m, and a second wall at 5,610 m). Nobody has still walked it. Substitute taken: the running engine's province.buildingAt() plus signed clearance to real settlementSolids() boxes at PLAYER_RADIUS_M."
   }
  ],
  "files_touched": [
@@ -51,7 +59,10 @@
   "reports/critic-road-join/road-water-after.json",
   "reports/critic-road-join/scale-audit.json",
   "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md",
-  "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png"
+  "docs/shots/2026-08-08-critic-road-join-the-walls-moved-out-from-under-the-road.png",
+  "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
+  "reports/critic-road-join/soulrest-leg-at-HEAD.json",
+  "reports/blog-feed.jsonl"
  ],
  "files_claimed": [
   "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md",
@@ -67,5 +78,10 @@
  "redundant_with": [
   "W1-CROSSING"
  ],
- "contention": "gate exit 0 at start and for the in-game probe run; exit 3 at 03:55 when I started the soulrest walk and I PROCEEDED, ONE browser, never concurrent, per rule 21; exit 3 again at 04:15. No frame-time figure is published anywhere in this verdict - every number is a count, a distance, a hash or an angle."
+ "contention": "gate exit 0 at start and for the in-game probe run; exit 3 at 03:55 when I started the soulrest walk and I PROCEEDED, ONE browser, never concurrent, per rule 21; exit 3 again at 04:15. No frame-time figure is published anywhere in this verdict - every number is a count, a distance, a hash or an angle.",
+ "finished_at": "2026-08-08T04:35:00Z",
+ "score": 5,
+ "gate": 7,
+ "verdict": "FAIL",
+ "biggest_gap": "GAP-W1-road-join-has-no-gate"
 }
