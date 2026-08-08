@@ -1,43 +1,49 @@
 {
   "task_id": "P10-loader-retry",
   "role": "builder — the data loader had no retry; a 503 on any of 569 files killed boot and was reported as 'A file the game needs is missing'",
-  "state": "measuring",
+  "state": "done",
   "commit_at_start": "3d4c88d",
-  "headline": "The loader now retries 5xx/408/429 and network errors with bounded backoff, NEVER retries a 404, and every failure message names the status, the URL and the attempt count. tools/playability/loader-retry.mjs --self-test is the instrument: six arms including a delete-the-fix null control and a control-sanity arm.",
+  "headline": "The loader now retries 5xx/408/429 and network errors with bounded backoff, NEVER retries a 404, and every failure names the status, the URL and the attempt count. tools/playability/loader-retry.mjs --self-test is the instrument: 8/8 arms, including a delete-the-fix null control, a control-sanity arm, and two sabotages that force the checks to go red for the wrong behaviour.",
   "what_changed": {
-    "game/src/engine.js": "loadData()/fetchJson rewritten as a bounded retry ladder. LOAD_RETRY = 4 attempts, backoff 250/750/1750 ms with +-40% jitter, whole-load sleep budget 12000 ms, whole-load ceiling 24 retries. CAP ON ADDED BOOT LATENCY: at most 12 s of sleeping across the entire load plus the round-trip cost of at most 24 extra requests; a healthy boot sleeps zero. Deliberately no per-request timeout (a 17 MB world on a slow phone is a long healthy download) — stated, not hidden. Every attempt/wait/recovery is recorded on globalThis.__ES_LOAD_RETRIES so the retry is watchable.",
-    "game/index.html": "the boot notice no longer calls a 5xx a missing file. 5xx/408/429 report as weather in the progress line ('The server refused N requests (503 on ...). Nothing is missing — the game is asking again.') and set window.__BOOT_TRANSIENT; anything else, 404 above all, stays loud immediately. When the retries are exhausted the loader's own rejection lands on the glass with the status, the URL and the attempt count, plus the device line. deviceLine() gained a 'load' field summarising __ES_LOAD_RETRIES.",
-    "tools/playability/loader-retry.mjs": "NEW. Fault-injecting static server over the real repo + real Chromium. --self-test runs six arms."
+    "game/src/engine.js": "loadData()/fetchJson rewritten as a bounded retry ladder. LOAD_RETRY = 4 attempts, backoff 250/750/1750 ms with +-40% jitter, whole-load sleep budget 12000 ms, whole-load ceiling 24 retries. CAP ON ADDED BOOT LATENCY: at most 12 s of sleeping across the entire load plus the round-trip cost of at most 24 extra requests; a healthy boot sleeps zero. Retryable = status >= 500, 408, 429, or fetch rejecting (network/TLS). Everything else, 404 above all, fails on the first response. Deliberately NO per-request timeout — a 17 MB world on a slow phone is a long healthy download and a timeout tuned here would abort it; that leaves a genuinely hung socket hanging, as before, and the comment says so rather than pretending otherwise. Every attempt/wait/recovery is recorded on globalThis.__ES_LOAD_RETRIES so the retry is watchable from Node, from the boot notice and from a bug report.",
+    "game/index.html": "the boot notice no longer calls a 5xx a missing file. 5xx/408/429 report as weather in the progress line ('The server refused N requests (503 on ...). Nothing is missing — the game is asking again.') and set window.__BOOT_TRANSIENT; anything else stays loud immediately with the device line. When the retries are exhausted the loader's rejection lands on the glass through the existing ready() path, carrying the status, the URL and the attempt count, and the notice does not hide. deviceLine() gained a 'load' field summarising __ES_LOAD_RETRIES (requests, retries, ms waiting, where it gave up, last status+file).",
+    "tools/playability/loader-retry.mjs": "NEW. A fault-injecting static server over the real repo plus real Chromium. --self-test runs all eight arms in one line. Exports deleteTheFix/sabotageRetry404/sabotageNoticeLie so a successor can reuse the controls."
   },
-  "arms": {
-    "clean": "no faults -> boots (baseline: proves the fixture, so a red arm is the fault and not the fixture)",
-    "flaky": "503 on the first 2 requests for world/hazards.json, 200 after -> boots; exactly 3 requests for that path; loader logs recovery on attempt 3; notice never said 'missing'",
-    "persistent": "503 for ever -> gives up after 4 attempts; text names 503, the file and '4 attempts'; device line present; notice does not hide",
-    "notfound": "404 for ever -> exactly 1 request (a 404 is never retried); text names 404 and says the file is genuinely not published",
-    "null-control": "flaky's faults with the retry stripped from the SERVED engine.js (disk untouched) -> MUST FAIL with the pre-fix 'data file missing' message",
-    "control-sane": "no faults, retry stripped -> MUST BOOT, otherwise the null control only proves the strip broke the file"
+  "measured": {
+    "at": "2026-08-08T11:47Z",
+    "commit_of_run": "77439c0 (working tree; engine.js/index.html changes uncommitted at run time, committed immediately after)",
+    "result": "8/8 arms landed where they must",
+    "report": "reports/playability/loader-retry.json",
+    "arms": [
+      {"arm": "clean", "expect": "boots", "got": "booted — the fixture serves the real game, so a red arm below is the fault and not the fixture"},
+      {"arm": "flaky", "expect": "503 on the first 2 requests for world/hazards.json then 200 -> boots anyway", "got": "booted. Exactly 3 requests for /game/data/world/hazards.json. __ES_LOAD_RETRIES {attempts:571, retries:2, sleptMs:780} with a recovered-on-attempt-3 event. __BOOT_TRANSIENT.count=2. No failure diagnostic raised and the notice never said 'missing' — it said 'The server refused 2 requests (503 on data/world/hazards.json). Nothing is missing — the game is asking again.'"},
+      {"arm": "persistent", "expect": "503 for ever -> gives up truthfully", "got": "4 requests, then: 'data file UNAVAILABLE: world/hazards.json — HTTP 503 on http://127.0.0.1:43705/game/data/world/hazards.json, unchanged after 4 attempts spanning 1946 ms of waiting; gave up at 4 attempts. The file is NOT missing — the server would not serve it.' Device line present (canvas/vp/mem/cores/webgl2/...); notice did not hide"},
+      {"arm": "notfound", "expect": "404 for ever -> exactly 1 request", "got": "1 request, 0 retries: 'data file MISSING: world/hazards.json — HTTP 404 on <url>, after 1 attempt. A 404 is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.'"},
+      {"arm": "null-control", "expect": "RED — flaky's faults with the retry stripped from the served engine.js", "got": "RED as required: 1 request, boot failed with the pre-fix message verbatim, 'data file missing: world/hazards.json (503)'. The old bug came back."},
+      {"arm": "control-sane", "expect": "GREEN — stripped engine, no faults", "got": "booted. So arm 5 going red is the missing retry and not a broken strip."},
+      {"arm": "instrument-404", "expect": "arm 4's no-retry check must go RED under a sabotage that retries 404s", "got": "RED for the named reason: 'a 404 was requested 4 times — a 404 must never be retried'"},
+      {"arm": "instrument-lie", "expect": "arm 2's truthfulness check must go RED with the original lie restored in the notice", "got": "RED for the named reason: the notice showed 'A file the game needs is missing. 503 on data/world/hazards.json' on a boot that then succeeded"}
+    ]
   },
-  "measurements": [
-    {
-      "at": "2026-08-08T11:32Z",
-      "commit": "77439c0",
-      "arm": "flaky",
-      "result": "PASS — booted through two injected 503s; 3 requests for /game/data/world/hazards.json; __ES_LOAD_RETRIES {attempts:571, retries:2, sleptMs:780}; recovery event on attempt 3; __BOOT_TRANSIENT.count=2; no failure diagnostic raised",
-      "note": "this run happened by accident (importing the module ran main()); the module now only runs main when it is the entry point"
-    }
+  "found_while_building": "The instrument-lie arm first went red for the WRONG reason — arm 2's checks ran in an order that tripped the transient-count assertion before the truthfulness assertion, so the sabotage proved only that something changed. That is the shape rule 6 warns about (a control that looks like a result). Arm 2's checks were reordered to put the two lie assertions first and the sabotage now bites the intended check by name; both instrument arms assert WHICH check went red, not merely that one did.",
+  "aggregation": "node tools/harness/boot-check.mjs PASS. node tools/harness/lint-determinism.mjs 0 errors, 5 informational (the new Math.random for jitter is one of them, on a non-simulation path — it runs before installGuards() and nothing it produces can reach a traced value).",
+  "contention": "node tools/contention.mjs --gate returned exit 3 (load 4.0-4.8 per core, 2-3 browser instances) before every browser run here. I proceeded, per rule 21's escape clause, and am saying so: this measures boot-time correctness, not timing or pixels. Every assertion is a request count, a status code or a string; the only contention-sensitive number in the report is elapsed_ms and nothing is asserted on it.",
+  "could_not_do": [
+    "This was measured against a LOCAL fault server, not against GitHub Pages. Chromium in this container cannot TLS-handshake through the egress proxy (see orchestration/status/PLAYABILITY.json, constraint_item_1), so no browser here can reach the live host. The retry ladder is therefore proven against a server that behaves like Pages' CDN on the axis that matters (status codes and their timing) and not against Pages itself. The standing playability agent's next live run is what closes that gap.",
+    "No per-request timeout was added, so a socket that accepts the connection and never answers still hangs the boot for ever. That is a real remaining defect of the same family; it is named in the engine.js comment rather than quietly fixed, because any timeout short enough to help here is short enough to abort a legitimate slow download on the device this whole piece is written for.",
+    "The 429 path is retried on the same ladder as 5xx and ignores Retry-After. Pages does not rate-limit static assets in practice, so this is untested rather than wrong."
   ],
-  "contention": "node tools/contention.mjs --gate returned exit 3 (load 4.0-4.8 per core, 2-3 browser instances) before both browser runs. I proceeded anyway, per rule 21's escape clause, and am saying so here: this is a boot-time correctness measurement (does the game come up), not a timing or pixel measurement, so contention changes elapsed_ms and nothing that is asserted on. Every assertion is a request count, a status code or a string.",
-  "next_step": "run the full six-arm --self-test, screenshot the persistent-503 notice, blog line, commit",
+  "next_step": "none — piece complete. A critic should attack the instrument first: the honest attack is whether the two sabotage arms could pass while the underlying checks are inert, and whether a 4-attempt ladder is enough for the failure Pages actually produces.",
   "files_touched": [
     "game/src/engine.js",
     "game/index.html",
     "tools/playability/loader-retry.mjs",
+    "reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)",
+    "docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png",
+    "reports/blog-feed.jsonl",
     "orchestration/status/P10-loader-retry.json"
   ],
-  "files_claimed": [
-    "reports/playability/loader-retry.json",
-    "docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png",
-    "reports/blog-feed.jsonl"
-  ],
-  "could_not_do": []
+  "files_claimed": [],
+  "redundant_with": ["PLAYABILITY"],
+  "overlap_note": "tools/playability/ is claimed wholesale by the standing PLAYABILITY agent, which is who found this defect and who will re-run this tool against the live site. The new file is additive and touches none of theirs; declared here so it is not read as a collision."
 }
