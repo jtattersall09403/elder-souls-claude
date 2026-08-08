@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3d4c88d`: 766 tools, 153 reference
+so it cannot drift. Generated at `6bb9003`: 767 tools, 153 reference
 items, 78 pieces in flight.
 
 Its purpose is to stop 78+ concurrent agents each paying separately to discover the
@@ -708,7 +708,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
-### `tools/touch/` — 9
+### `tools/touch/` — 10
 
 - `tools/touch/critic-block-roll.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-consumption.mjs` — W1-TOUCH critic.
@@ -718,6 +718,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/touch/critic-gate-wallclock.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-roll-matrix.mjs` — W1-TOUCH critic.
 - `tools/touch/critic-title-probe.mjs` — W1-TOUCH critic.
+- `tools/touch/r2-framerate.mjs` — W1-TOUCH round 2, work item A.
 - `tools/touch/touch-run.mjs` — CAN A PHONE PLAY THIS?
 
 ### `tools/uesp/` — 8
@@ -1102,13 +1103,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLAYABILITY` | measuring (successor 2) | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `P10-loader-retry` | starting | read loadData in game/src/engine.js and the boot notice in game/index.html | — |
 | `judge-prose-r4-m5` | researching | Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal. | `orchestration/status/judge-prose-r4-m5.json` |
 | `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
 | `critic-w1-attr-scale` | running | read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure | — |
 | `W1-TOUCH-r2` | starting | read ARBITRATION.md, W1-TOUCH.json, critic-w1-touch.json, then the touch/step source | — |
-| `PLAYABILITY` | measuring | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `plan-w1-hud-toast` | running | read game/src/ui/hud.js, W1-20 probe/verdict, reference items; write plan | — |
 | `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
