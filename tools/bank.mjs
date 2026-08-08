@@ -18,8 +18,9 @@
 // Anything after the headline that is not a flag is appended as the message body, before the
 // generated attribution block.
 import { execFileSync } from 'node:child_process';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
@@ -111,11 +112,27 @@ if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
 // about a millisecond per file, and it un-stages the offender rather than refusing the whole bank,
 // because the other forty files still need saving.
 {
+  // Only files that ALREADY PARSE IN HEAD. The risk this guards is a regression — a working file
+  // caught mid-edit, which is what happened to `converse.js` and left HEAD throwing on import for
+  // every agent that pulled. A *new* file that does not parse cannot regress anything, and refusing
+  // it is a false positive with a real cost: it refused `clamp-before-r2.js`, which is a bare
+  // function expression saved verbatim from an old commit so a delete-the-fix arm can install it on
+  // a live object. That is a legitimate artifact, deliberately not a module, and un-staging it
+  // forever would have quietly kept a control out of the tree.
+  const parsesInHead = (rel) => {
+    try {
+      const src = execFileSync('git', ['show', `HEAD:${rel}`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, stdio: ['pipe', 'pipe', 'ignore'] });
+      const tmp = join(tmpdir(), `bank-head-${rel.replace(/[^a-z0-9]/gi, '_')}`);
+      writeFileSync(tmp, src);
+      try { execFileSync('node', ['--check', tmp], { stdio: 'pipe' }); return true; }
+      finally { try { rmSync(tmp); } catch { } }
+    } catch { return false; }        // not in HEAD, or did not parse there either
+  };
   const risky = staged.filter(p => /\.(mjs|cjs|js)$/.test(p) && existsSync(join(ROOT, p)));
   const broken = [];
   for (const p of risky) {
     try { execFileSync('node', ['--check', join(ROOT, p)], { stdio: 'pipe' }); }
-    catch { broken.push(p); }
+    catch { if (parsesInHead(p)) broken.push(p); }
   }
   if (broken.length) {
     console.log(`bank: ${broken.length} staged file(s) do not parse — un-staging them rather than committing a broken tree:`);
