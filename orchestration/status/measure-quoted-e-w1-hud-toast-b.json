@@ -1,0 +1,20 @@
+{
+  "task_id": "measure-quoted-e-w1-hud-toast-b",
+  "role": "measurement (text-only, no browser, no build)",
+  "piece": "W1-HUD-TOAST / Piece B (W1-INSTRUMENT-COUPLING)",
+  "state": "running",
+  "started": "2026-08-08",
+  "dispatch_condition_being_closed": "Plan critic exchange 1: 'Piece B must not be dispatched until its first measurement — the quoted-E fraction over the 133 — is taken.'",
+  "deliverable": "orchestration/plans/W1-HUD-TOAST.md — a MEASUREMENT section written where the critic's dispatch condition sits",
+  "files_touched": [
+    "orchestration/status/measure-quoted-e-w1-hud-toast-b.json"
+  ],
+  "files_claimed": [
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/plan-critic-w1-hud-toast.json"
+  ],
+  "redundant_with": ["plan-critic-w1-hud-toast", "plan-w1-hud-toast"],
+  "overlap_note": "Closes the plan critic's own dispatch condition in the same plan file. No game/ or tools/ source touched.",
+  "no_browser_launched": true,
+  "next_step": "Re-derive 786/244/459/133/326, then measure the quoted-E fraction over the 133."
+}

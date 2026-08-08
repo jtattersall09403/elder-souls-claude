@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `daede51`: 782 tools, 153 reference
-items, 90 pieces in flight.
+so it cannot drift. Generated at `f38e362`: 786 tools, 153 reference
+items, 93 pieces in flight.
 
-Its purpose is to stop 90+ concurrent agents each paying separately to discover the
+Its purpose is to stop 93+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 34
+### `tools/` — 35
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -72,6 +72,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-souls-world.mjs` — the two soul ledgers must agree — the world's cached roll-up against the statblocks that pay.
 - `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
 - `tools/corpus-index.mjs` — **no header comment**
+- `tools/cost-report.mjs` — The cost programme, drawn on the page the owner actually opens (COST.md §6).
 - `tools/dispatch-staleness.mjs` — re-run the MECHANICALLY CHECKABLE claims in a dispatch file and report which ones no longer hold.
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
 - `tools/gap-ledger.mjs` — **no header comment**
@@ -608,7 +609,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/metrics/self-test.mjs` — prove the fidelity instrument can FAIL.
 - `tools/metrics/ui-metrics.mjs` — RI-UIX06 §D (F17), §E (F18) and §F (F19).
 
-### `tools/platform/` — 10
+### `tools/platform/` — 11
 
 - `tools/platform/alloc-probe.mjs` — `RI-PLT01` M4 / P4: bytes allocated per fixed simulation step.
 - `tools/platform/calibrate.mjs` — `RI-PLT01` §A rule S*: the machine CPU index that makes a sim-time budget comparable across machines.
@@ -620,6 +621,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-probe.mjs` — the Tier-S half of RI-PLT01, and only that half.
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
+- `tools/platform/timefidelity.mjs` — RI-PLT01 M16 (Tier-S).
 
 ### `tools/playability/` — 6
 
@@ -716,11 +718,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-24-audit.mjs` — THE PROTOCOL, RUN AGAINST NUMBERS THIS PROJECT HAS ALREADY PUBLISHED.
 - `tools/render/w1-24-shot.mjs` — the picture.
 
-### `tools/stealth/` — 4
+### `tools/stealth/` — 5
 
 - `tools/stealth/critic-w1-15-r3-dtf2x2.mjs` — the 2x2 that RULES.md rule 6 (rewritten this session) asks for and that the round's own delete-the-fix did not run.
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
+- `tools/stealth/critic-w1-15-r4-live.mjs` — W1-15 ROUND 4 CRITIC — THE TWO THINGS THAT NEED A REAL BROWSER.
 - `tools/stealth/critic-w1-15-r4.mjs` — W1-15 ROUND 4 — THE CRITIC'S OWN INSTRUMENT.
 
 ### `tools/touch/` — 10
@@ -790,7 +793,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 150
+### `tools/world/` — 151
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -824,6 +827,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-deploy-gate-fixture.mjs` — run tools/check-shipped-files.mjs against a real repository that really has an untracked module, and against seven shapes that must NOT trip it.
 - `tools/world/critic-deploy-night-notice.mjs` — does the boot notice's own "is anything drawn?" test call a working night scene undrawn, and refuse to get out of the player's way?
 - `tools/world/critic-deploy-probe.mjs` — the browser half of the deploy-instrument critique.
+- `tools/world/critic-deploy-r2-imgref-fixture.mjs` — run tools/playability/check-image-refs.mjs against real repositories that really have a broken published reference, and against ones that do not.
 - `tools/world/critic-deploy-requested-files.mjs` — every file the running game actually asks for must be in git.
 - `tools/world/critic-deploy-scan-coverage.mjs` — what does tools/check-shipped-files.mjs's regex NOT see?
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
@@ -1118,6 +1122,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-HUD-TOAST-A` | starting | Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text | `orchestration/status/W1-HUD-TOAST-A.json` |
+| `PLAN-COST-EXPERIMENTS` | running | Read COST.md, research report, PLAN-LOOP.md, RULES.md; survey instruments; write orchestra | `orchestration/status/PLAN-COST-EXPERIMENTS.json` |
+| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
+| `W1-12-r2-critic` | running | browser M1/M2; then teardown-arm audit; then consumption perturbation of the 39 | `orchestration/status/W1-12-r2-critic.json` |
+| `measure-quoted-e-w1-hud-toast-b` | running | Re-derive 786/244/459/133/326, then measure the quoted-E fraction over the 133. | `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
 | `S39-falsifier` | designing | Build tools/input/arbiter-clock-s39.mjs: (A) capture arm, real DOM presses 20/60/120/250/5 | `orchestration/status/S39-falsifier.json` |
 | `blog-table-fix` | running | implement table parsing in md() in tools/blog.mjs | `orchestration/status/blog-table-fix.json` |
 | `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
@@ -1128,12 +1137,10 @@ work is the difference between resuming and starting over.
 | `critic-w1-20` | running | read round report + RI-QST01; build wrap-break instrument for ui/hud.js; sweep tree for se | — |
 | `PLT01-STEPRATE` | running | state acceptance numbers in the item BEFORE measuring; then build tools/platform/timefidel | `orchestration/status/PLT01-STEPRATE.json` |
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
-| `W1-12-r2-critic` | running | read ai.js closure rule; verify B-arm frame trace; then browser M1/M2 | `orchestration/status/W1-12-r2-critic.json` |
 | `critic-w1-15-r4` | ? | read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a fram | `orchestration/status/critic-w1-15-r4.json` |
 | `GATE-BLAST-RADIUS` | in_progress | checked orchestration/status/ for a predecessor status file on this exact task and found n | — |
 | `COST-INSTRUMENT-plan` | running | verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-IN | `orchestration/status/COST-INSTRUMENT-plan.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
-| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
 | `critic-w1-attr-scale` | running | write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md | `orchestration/status/critic-w1-attr-scale.json` |
 | `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |

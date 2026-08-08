@@ -6,7 +6,7 @@
   "state": "running",
   "started": "2026-08-08",
   "resumed_by": "successor after predecessor killed by usage limit",
-  "next_step": "read ai.js closure rule; verify B-arm frame trace; then browser M1/M2",
+  "next_step": "browser M1/M2; then teardown-arm audit; then consumption perturbation of the 39",
   "files_touched": [
     "orchestration/status/W1-12-r2-critic.json"
   ],
@@ -20,13 +20,18 @@
   "progress": {
     "read_rules": true,
     "read_survey": true,
-    "read_r1_verdict": false,
-    "push1_closure_frametrace": false,
+    "read_r1_verdict": true,
+    "push1_closure_frametrace": true,
     "push2_M1_M2": false,
     "push3_teardown_arms": false,
     "push4_consumption_39": false,
     "push5_S22_contrary": false
   },
   "notes": "Predecessor status showed only next_step=read; no partial artifacts found on disk or in git. Restarting the analysis but reusing nothing that was never written.",
-  "contention_at_start": "GO \u2014 1 browser instance, load 0.57/core. The box is quiet NOW; M1/M2 browser work is available to me and was not to the round."
+  "contention_at_start": "GO \u2014 1 browser instance, load 0.57/core. The box is quiet NOW; M1/M2 browser work is available to me and was not to the round.",
+  "findings_so_far": [
+    "F1 HARD FAIL: on RI-AI01 M3's OWN fixture (stationary player, 60 s, never attacks) min_dist_dwell is 0.44 (inf_trash), 0.36-0.39 (beast), 0.42-0.44 (five others) -- over the 0.35 chase-bot HARD FAIL that VOIDS the piece. The round scored 0.2521 on the r1 critic's LISSAJOUS fixture (player drifting at ~1.6 m/s peak), which is not the item's fixture. Same enemy trajectory in r1 and r2 (spacing_variance identical to 4 dp); only the RECOVER relabel exposes it. 6 of 7 statblocks fail; only cst_sap_speaker (0.30-0.33) is clear. Rises with duration: 0.3807 at 1800 f, 0.4373 at 3600, 0.4399 at 5400.",
+    "F2 push-1 VERDICT: the round's rejection of the r1 closure remedy SURVIVES my independent 2x2 (predicate {closure,recession} x placement {APPROACH-only, +CIRCLE}). closure+CIRCLE-half still never reaches the strike band (min gap 2.72 m, 0 frames in strike) vs recession 1.61 m / 294 frames. My instrument reproduces the round's headline (1.612/294/385) and its arm E (1.795/28) independently.",
+    "F3 ai.json documents the REJECTED design: _closure_rule and _closure_rule_two_zones describe closure-gating with two leaves rush_when_closure_below_mps and chase_when_gap_opening_above_mps 'both 0.8 m/s ... separate leaves'. NEITHER LEAF EXISTS in the file. Shipped code uses one leaf walk_in_min_closure_mps=0.5 and the SAME predicate in both zones (ai.js:612 and :623). check-ai-units.mjs passes because it only enumerates leaves that exist."
+  ]
 }

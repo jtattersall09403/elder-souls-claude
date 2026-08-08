@@ -22,7 +22,7 @@
 // moves with `env(safe-area-inset-*)` and can never enter an inset (H3/T8).
 'use strict';
 
-import { shouldPromote } from './hold-gate.js';
+import { shouldPromote, framesHeld } from './hold-gate.js';
 
 export class TouchInput {
   /**
@@ -39,11 +39,21 @@ export class TouchInput {
     this.enabled = false;
     this.attached = false;
     this.visible = true;
-    // T7's 2 s is expressed in FIXED SIM FRAMES, not wall-clock ms: HARNESS.md §8 D1-D3 forbid
-    // a `performance.now()` read inside the fixed step, and the guard is armed, so a ms clock
-    // here takes the whole run down with a DETERMINISM VIOLATION. 2 s = 120 f@60.
+    // T7 / M-P22 — S39 FIGURE 15, and the one entry on S39's list that is a DISPLAY rule rather
+    // than an input one. The item asks for "gone within 2 s of last touch"; both endpoints (the
+    // last touch, and now) are the hand's, so under S39 this is category (b) and is stamped in
+    // ms. It is evaluated in `pollVisibility(nowMs)` from OUTSIDE the fixed step for exactly the
+    // reason the old comment here gave — HARNESS.md §8 D1-D3 forbid a wall read inside the step
+    // — which is why the answer is to move the read out, not to count the wrong thing.
+    //
+    // What the old frame count cost: `hideAfterFrames = 120` f@60 is 2.000 s only while the
+    // world runs at wall-clock speed. At the 11.6 steps/s the round-1 critic measured, the
+    // controls stayed up for 10.3 s against an item that says 2. Kept as a field because the
+    // harness path still counts frames (and must, or M-P22 stops being executable by hand).
     this.lastTouchFrame = -1e9;
-    this.hideAfterFrames = Math.round((profiles.touch.hide_after_ms_when_pad_active || 2000) * 60 / 1000);
+    this.lastTouchMs = -1e9;
+    this.hideAfterMs = Number(profiles.touch.hide_after_ms_when_pad_active) || 2000;   // ms
+    this.hideAfterFrames = Math.round(this.hideAfterMs * 60 / 1000);                   // f@60
     this.padActive = false;
     this.insets = { top: 0, right: 0, bottom: 0, left: 0 };
     this.viewport = { w: 844, h: 390, dpr: 1 };
@@ -56,6 +66,12 @@ export class TouchInput {
     this.held = new Map();          // action -> {downFrame, gate}
     this._handlers = [];
     this.frame = () => 0;
+    /**
+     * S39's `inputNow()`, injected by `RealInput`: ms, from `event.timeStamp` in mode `play` and
+     * from `frame * STEP_MS` in `harness`/`play-instrumented`. Every duration in this file that
+     * has BOTH endpoints in the player's hand is measured with it, and nothing else.
+     */
+    this.now = () => 0;
     this.onActivity = null;
     this._assertLayout();
   }
@@ -185,9 +201,12 @@ export class TouchInput {
     this.attached = true;
     const on = (t, type, fn, opts) => { t.addEventListener(type, fn, opts); this._handlers.push([t, type, fn, opts]); };
     const opt = { passive: false };
-    on(this.canvas, 'pointerdown', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') { e.preventDefault(); this.down(e.pointerId, e.clientX, e.clientY); } }, opt);
-    on(window, 'pointermove', (e) => { if (this.pointers.has(e.pointerId)) { e.preventDefault(); this.move(e.pointerId, e.clientX, e.clientY); } }, opt);
-    const up = (e) => { if (this.pointers.has(e.pointerId)) { e.preventDefault(); this.up(e.pointerId); } };
+    // S39: the event is passed through, not dropped. `down`/`move`/`up` stamp from `e.timeStamp`
+    // — the moment the input OCCURRED — and never from a clock read when the handler RAN. A
+    // starved rAF is exactly when those two differ, and it is the case this whole change is about.
+    on(this.canvas, 'pointerdown', (e) => { if (e.pointerType === 'touch' || e.pointerType === 'pen') { e.preventDefault(); this.down(e.pointerId, e.clientX, e.clientY, e); } }, opt);
+    on(window, 'pointermove', (e) => { if (this.pointers.has(e.pointerId)) { e.preventDefault(); this.move(e.pointerId, e.clientX, e.clientY, e); } }, opt);
+    const up = (e) => { if (this.pointers.has(e.pointerId)) { e.preventDefault(); this.up(e.pointerId, e); } };
     on(window, 'pointerup', up, opt);
     on(window, 'pointercancel', up, opt);
     // H5: the callout, the selection and the double-tap zoom, all suppressed on the canvas.
@@ -207,16 +226,22 @@ export class TouchInput {
 
   // ---- the pointer model. Every pointer is tracked; none is "the" pointer. T9 -------------
 
-  down(id, x, y) {
+  down(id, x, y, event) {
+    const tDown = this.now(event);                 // ms — S39, stamped at the boundary
     this.lastTouchFrame = this.frame();
+    this.lastTouchMs = tDown;
     this.visible = true;
     this.onActivity && this.onActivity('touch');
     const hit = this._hitButton(x, y);
     if (hit) {
-      this.pointers.set(id, { role: 'button', action: hit.action, control: hit, downFrame: this.frame() });
+      this.pointers.set(id, { role: 'button', action: hit.action, control: hit, downFrame: this.frame(), tDown });
       if (hit.drawer) { this.drawerOpen = !this.drawerOpen; return 'drawer'; }
-      if (hit.gate) { this.held.set(hit.action, { gateFrom: this.frame(), gate: hit.gate, promoted: false }); return 'gate'; }
-      this.held.set(hit.action, { downFrame: this.frame() });
+      // `gateFrom` (f@60) is kept ALONGSIDE `tDown` (ms) and is now diagnostic only: it is what
+      // the harness and the tools print, and it is what made the pre-S39 defect invisible —
+      // `gateFrom` and the release frame were both read at DOM-event time, so in play mode with
+      // a starved rAF the difference between them was zero however long the finger stayed down.
+      if (hit.gate) { this.held.set(hit.action, { gateFrom: this.frame(), tDown, gate: hit.gate, promoted: false }); return 'gate'; }
+      this.held.set(hit.action, { downFrame: this.frame(), tDown });
       this.pipe.edgeDown(hit.action);
       if (hit.fromDrawer) this.drawerOpen = false;
       return 'press';
@@ -231,10 +256,11 @@ export class TouchInput {
     return 'camera';
   }
 
-  move(id, x, y) {
+  move(id, x, y, event) {
     const p = this.pointers.get(id);
     if (!p) return;
     this.lastTouchFrame = this.frame();
+    this.lastTouchMs = this.now(event);
     if (p.role === 'stick') {
       const R = this.cfg.stick.max_radius_css_px;
       let dx = (x - this.stick.ox) / R;
@@ -253,19 +279,35 @@ export class TouchInput {
     }
   }
 
-  up(id) {
+  up(id, event) {
     const p = this.pointers.get(id);
     if (!p) return;
+    const tUp = this.now(event);                   // ms — S39, stamped at the boundary
     this.pointers.delete(id);
     this.lastTouchFrame = this.frame();
+    this.lastTouchMs = tUp;
     if (p.role === 'stick') { this.stick.active = false; this.stick.x = 0; this.stick.y = 0; this.pipe.setMove(0, 0); return; }
     if (p.role === 'button' && p.action && !p.control.drawer) {
       const h = this.held.get(p.action);
       this.held.delete(p.action);
       if (h && h.gate) {
-        // T5: the SAME 12-frame discriminator the pad uses, so muscle memory transfers.
-        if (h.promoted) this.pipe.edgeUp(h.gate.hold);
-        else { this.pipe.edgeDown(h.gate.tap); this.pipe.edgeUp(h.gate.tap); }
+        // T5: the SAME 12 f@60 discriminator the pad uses, so muscle memory transfers.
+        //
+        // S39, AND THIS LINE IS THE HEADLINE FIX. The release re-asks the question in ms rather
+        // than trusting `h.promoted` alone. `h.promoted` is set by `pollHolds`, which runs once
+        // per rAF in play mode — so a press that begins and ends BETWEEN two rAF ticks was
+        // never seen by the poll at all and used to come out as a tap no matter how long the
+        // finger stayed down. That is the measured 5-of-5-rolled inversion: at 2.32 rAF Hz a
+        // 500 ms press fits entirely inside one rAF gap.
+        h.framesHeld = framesHeld(h.tDown, tUp);   // f@60, published for the harness and tools
+        const hold = h.promoted || shouldPromote(h.tDown, tUp, h.gate);
+        if (hold) {
+          // Never both, never neither (M-P5). If the poll never got to promote it, the down
+          // edge is emitted here so the hold action still HAPPENS — briefly, which is the
+          // truthful rendering of "the world was too slow to notice while you held it".
+          if (!h.promoted) this.pipe.edgeDown(h.gate.hold);
+          this.pipe.edgeUp(h.gate.hold);
+        } else { this.pipe.edgeDown(h.gate.tap); this.pipe.edgeUp(h.gate.tap); }
       } else {
         this.pipe.edgeUp(p.action);
       }

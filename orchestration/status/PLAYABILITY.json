@@ -227,6 +227,18 @@
     "status": "measuring now"
   },
   "P11_resolved": "YES. game/src/sim/quest/refusal.js and game/data/dialogue/faction-refusals.json are both in HEAD (3d4c88d). game/src/__gatecheck.js is gone from disk and from the index, and nothing anywhere imports it - it was another agent's gate-falsification fixture. P11 is closed.",
+  "successor_run_3": {
+    "started": "2026-08-08T12:13Z",
+    "commit_at_start": "dd889d5",
+    "state": "running",
+    "resumed_per_rule_3": "read this file and README.md before doing anything; P10-loader-retry confirmed done+verified+pushed (7db8368, ancestor of origin/main), P13 fix confirmed already present in game/index.html working tree (painted() reads inside rAF, rare, evidence-based) though not yet independently re-verified by me",
+    "job_1_six_sabotage_matrix": {
+      "command": "node tools/run.mjs -- node tools/world/verify-playable.mjs --self-test --local --cap-ms 150000 --profiles desktop-1440,phone-small-portrait",
+      "log": "reports/runs/_raw/node-tools-world-verify-playable.mjs---self-test---local---c-41318558110084.log",
+      "control_arm_result": "RED, but for LOAD, not for a real defect: 'the boot promise had not resolved after 151s at load 2.24 ... this is STILL LOADING, not a black screen'. A SECOND agent (pid 13232, task reports/w1-deploy-r2/selftest-local.json) independently launched the identical verify-playable --self-test --local at the same time, undeclared to me, and load climbed from 2.24 to 13.57 (3.39/core) while my control was waiting to boot. Recorded per rule 26: do not read this control failure as P13 regressing.",
+      "next": "let the 6 sabotage arms finish (they fail fast and are far less load-sensitive since they need not succeed), then re-run the CONTROL ALONE once contention drops, to pair a genuinely green control with these six red arms rather than reporting a false regression."
+    }
+  },
   "live_links_http": {
     "game": "200 19965b",
     "landing": "200 2657b",

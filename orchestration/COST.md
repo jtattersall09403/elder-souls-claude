@@ -124,6 +124,49 @@ hypothesis to be measured; none is a decision.**
 6. **Orchestrator cost.** The orchestrator is itself one of the most expensive agents in the fleet.
    It is in scope. Nothing here exempts it.
 
+## 4a. External evidence, gathered — hypotheses with citations, not results
+
+Full report: `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md`. Every figure below is **someone else's
+measurement under someone else's conditions**, and is a hypothesis until it survives our numbers.
+
+- **Cache prices are exact, not estimated**: cache read **0.1×** input, 5-minute write **1.25×**,
+  1-hour write **2×**; invalidation cascades tools → system → messages, with a 20-block lookback.
+- **The finding that indicts the orchestrator specifically**: *concurrent requests cannot hit each
+  other's cache until the first has begun streaming.* This box dispatches **5–8 agents in a single
+  block, all sharing a prefix** — so on shared tokens the fleet may be paying 1.25× writes N times
+  where it could pay one write and N−1 reads at 0.1×. See the ruling below.
+- **Routing/cascades**: RouteLLM 35–85% cost reduction at ~95% quality; RLM-Cascade **45.8%** on an
+  actual Claude Code workload at quality parity. Independent support for lever 1.
+- **Context pruning + summarisation**: tokens **−63%** *and* task completion **71% → 91.6%** — the
+  rare case where cost and quality move together, and therefore the one to test hardest for being
+  too good to be true.
+- **Criteria injection for judges: +13.5pp accuracy, near zero cost.** This is the only lever found
+  that **increases rigour per token** rather than trading against it, so it is the one most aligned
+  with §5 and should be tried on critics early.
+- **Rejected, and why** — reported because a research pass that returns only good news is not
+  research: distilled judge models and cascades inside a critic's run/no-run decision (both cut
+  verification, forbidden by §5); Batch API (trades speed for cost, forbidden by §5); LLMLingua
+  compression (unmatched domain, new dependency, in tension with our exact-number rules);
+  Agent-Omit (needs fine-tuning). Plus a standing caution that multi-agent gains often fail to hold
+  under matched compute budgets.
+- **Not read first-hand**: `anthropic.com`, `simonwillison.net` and `khaledzaky.com` were
+  unreachable from this container even via `curl`, so several vendor claims are at one remove from
+  search snippets. Flagged rather than laundered into fact.
+
+### Ruling C1 — burst dispatch is staggered, and it is measured retrospectively *(reversible)*
+
+The orchestrator dispatches the first agent of a burst alone, then the remainder once its prefix is
+warm. **This is adopted before the instrument exists, which normally this document forbids** — the
+justification is narrow and it is a sequencing argument, not an exception to "measure, don't guess":
+**the baseline is already banked.** The transcript records `cache_creation_input_tokens` and
+`cache_read_input_tokens` per request with timestamps, so every burst already dispatched is a
+recorded control, and the before/after is measurable retrospectively the moment `tools/cost.mjs`
+lands. Adopting now costs one extra tool round per burst and destroys no measurement.
+
+**Reversal**: stop staggering — one line of orchestrator behaviour, no code. **Tripwire**: if the
+retrospective measurement shows no improvement in the cache-read fraction on shared prefixes, it is
+reverted and recorded as a failed hypothesis, with the number.
+
 ## 5. What this programme may never do
 
 - **Never cut a critic.** The separate-critic rule is where the quality lives; a build with no critic

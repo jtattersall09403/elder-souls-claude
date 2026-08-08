@@ -160,7 +160,7 @@ function md(src) {
         li++;
         rows.push(splitTableRow(lines[li]));
       }
-      out += renderTable(header, aligns, rows);
+      out += renderTable(header, aligns, rows, inline);
       continue;
     }
     // Blockquotes are buffered exactly like paragraphs. They used to emit one <p> per source
@@ -240,7 +240,39 @@ function stamp(iso) {
   return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`;
 }
 
+// ---------- leaked/mangled markdown detector ----------
+// The renderer's actual defect was never "no tables" by itself — it was that an unsupported (or
+// half-supported) construct reaches the published page with no signal that anything went wrong.
+// A dropped table is at least visible as a wall of pipes; a MANGLED one — or a footnote marker, or
+// an <img> whose src swallowed its own title attribute, or a link whose URL lost its closing paren
+// — reads as normal prose to anyone who isn't diffing against the source. This scans rendered HTML
+// for the signatures of each known gap so a run can say so, instead of staying quiet. It is run
+// against every post during a normal build (a warning, not a failure — rule 13: this file is a
+// generator, not a fail-closed check) and against fixed fixtures by --self-test (an assertion).
+function stripPre(html) { return html.replace(/<pre>[\s\S]*?<\/pre>/g, ''); }
+function detectMarkdownLeakage(html) {
+  const scan = stripPre(html);
+  const found = [];
+  // a paragraph carrying two-or-more literal pipes is what an unparsed table row looks like once
+  // it falls through to plain text — this is the regression guard for the exact original bug.
+  for (const m of scan.match(/<p>[^<]*\|[^<]*\|[^<]*<\/p>/g) || [])
+    found.push({ kind: 'table-leak', snippet: m.slice(0, 140) });
+  // footnote syntax (`[^id]`) has no handler at all; it passes through as literal brackets.
+  for (const m of scan.match(/\[\^[^\]\s]+\]/g) || [])
+    found.push({ kind: 'footnote-marker', snippet: m });
+  // `![alt](src "title")` — the image regex's `[^)]+` swallows the quoted title into `src`, which
+  // `esc()` then turns into a literal `&quot;` sitting inside the attribute value.
+  for (const m of scan.match(/<img[^>]*&quot;[^>]*>/g) || [])
+    found.push({ kind: 'mangled-image-title', snippet: m.slice(0, 140) });
+  // `[text](http://x/a(b))` — the link regex's `[^)]+` stops at the URL's own first `)`, so the
+  // rendered link's href is truncated and the source's closing paren is stranded right after </a>.
+  for (const m of scan.match(/<\/a>\)/g) || [])
+    found.push({ kind: 'broken-link-parens', snippet: m });
+  return found;
+}
+
 // ---------- gather ----------
+function build() {
 const posts = [];
 if (existsSync(P('docs', 'blog'))) {
   for (const f of readdirSync(P('docs', 'blog')).filter(f => f.endsWith('.md'))) {
@@ -392,4 +424,109 @@ mkdirSync(P('docs'), { recursive: true });
 writeFileSync(P('docs', 'index.html'), html);
 // GitHub Pages: don't run Jekyll over our files (it would skip _-prefixed paths)
 writeFileSync(P('docs', '.nojekyll'), '');
-console.log(`blog: ${posts.length} post(s), status ${st.verdicts ?? 0} verdict(s) -> docs/index.html`);
+
+// Sweep every rendered post for the gap signatures above. Non-fatal (this is a generator, not a
+// pre-commit check — rule 13) but printed loudly: silence is the defect this exists to end.
+let leakCount = 0;
+for (const p of posts) {
+  const found = detectMarkdownLeakage(p.html);
+  if (found.length) {
+    leakCount += found.length;
+    console.warn(`blog: LEAK in ${p.slug}.md — ${found.map(f => f.kind).join(', ')}`);
+    for (const f of found) console.warn(`  [${f.kind}] ${f.snippet}`);
+  }
+}
+console.log(`blog: ${posts.length} post(s), status ${st.verdicts ?? 0} verdict(s), ${leakCount} leak(s) -> docs/index.html`);
+return { posts, leakCount };
+}
+
+// ---------- self-test ----------
+// Two fixtures, one detector, and they must disagree: the supported-construct document renders
+// clean (detectMarkdownLeakage finds nothing), and the unsupported-construct document is caught
+// by name, not silently accepted. If either fixture stopped disagreeing with the other — the
+// gap doc came back clean, or the clean doc started tripping the detector — that is exactly the
+// silent-failure mode this file exists to end, and --self-test must go red, not green.
+function selfTest() {
+  let pass = true;
+  const check = (label, ok, detail) => {
+    pass = pass && ok;
+    console.log(`  [${ok ? 'PASS' : 'FAIL'}] ${label}${detail ? ' — ' + detail : ''}`);
+  };
+
+  console.log('ARM A — supported constructs (must render correctly, zero leaks detected)');
+  const supportedSrc = [
+    '# Heading',
+    '',
+    'A **bold** word, an *italic* word, `inline code`, a [link](http://example.com/x) and a',
+    'paragraph that hard-wraps',
+    'onto a second line.',
+    '',
+    '> A blockquote',
+    '> that wraps too.',
+    '',
+    '- one',
+    '- two',
+    '  still two, indented continuation',
+    '',
+    '```js',
+    'const x = 1;',
+    '```',
+    '',
+    '![An image](../shots/x.png)',
+    '',
+    '| left | center | right | code |',
+    '|:---|:---:|---:|---|',
+    '| a | b | c | `x|y` |',
+    '| escaped \\| pipe | plain | 3 | none |',
+  ].join('\n');
+  const armAHtml = md(supportedSrc);
+  check('heading renders', /<h2>Heading<\/h2>/.test(armAHtml));
+  check('bold renders', /<strong>bold<\/strong>/.test(armAHtml));
+  check('italic renders', /<em>italic<\/em>/.test(armAHtml));
+  check('inline code renders', /<code>inline code<\/code>/.test(armAHtml));
+  check('link renders', /<a href="http:\/\/example\.com\/x">link<\/a>/.test(armAHtml));
+  check('hard-wrapped paragraph joins onto one line', /paragraph that hard-wraps onto a second line\./.test(armAHtml));
+  check('blockquote renders and joins its wrapped line', /<blockquote>[\s\S]*A blockquote that wraps too\.[\s\S]*<\/blockquote>/.test(armAHtml));
+  check('list renders with wrapped continuation joined', /<li>one<\/li>/.test(armAHtml) && /<li>two still two, indented continuation<\/li>/.test(armAHtml));
+  check('fenced code renders', /<pre><code>const x = 1;/.test(armAHtml));
+  check('image renders as figure', /<figure><img src="shots\/x\.png" alt="An image"/.test(armAHtml));
+  check('table wrapper + table present', /<div class="tblwrap"><table>/.test(armAHtml));
+  check('table alignment: left/center/right on <th>', /<th style="text-align:left">left<\/th>/.test(armAHtml)
+    && /<th style="text-align:center">center<\/th>/.test(armAHtml)
+    && /<th style="text-align:right">right<\/th>/.test(armAHtml));
+  check('table default (unaligned) column has no style attr', /<th>code<\/th>/.test(armAHtml));
+  check('table has exactly 2 body rows', (armAHtml.match(/<tbody>[\s\S]*<\/tbody>/)[0].match(/<tr>/g) || []).length === 2);
+  check('pipe inside a code span in a cell does NOT split the cell', /<code>x\|y<\/code>/.test(armAHtml));
+  check('escaped pipe in a cell renders as a literal pipe, one cell', /<td>escaped \| pipe<\/td>/.test(armAHtml));
+  const armALeaks = detectMarkdownLeakage(armAHtml);
+  check('detector finds zero leaks in a clean, fully-supported document', armALeaks.length === 0,
+    armALeaks.length ? JSON.stringify(armALeaks) : undefined);
+
+  console.log('ARM B — unsupported constructs (must be REPORTED, not silently passed through)');
+  const gapSrc = [
+    'A footnote reference[^1] that the renderer has no handler for.',
+    '',
+    '[^1]: The definition, also unhandled.',
+    '',
+    '![alt text](../shots/x.png "a title the renderer was not written for")',
+    '',
+    'A link to [somewhere](http://example.com/wiki/Foo_(disambiguation)) with parens in the URL.',
+  ].join('\n');
+  const armBHtml = md(gapSrc);
+  const armBLeaks = detectMarkdownLeakage(armBHtml);
+  const kinds = armBLeaks.map(f => f.kind);
+  check('footnote marker is reported, not silently dropped', kinds.includes('footnote-marker'));
+  check('image title mangling is reported, not silently dropped', kinds.includes('mangled-image-title'));
+  check('link with parens in URL is reported, not silently dropped', kinds.includes('broken-link-parens'));
+  check('arm B is non-empty overall (the two arms genuinely disagree)', armBLeaks.length > 0 && armALeaks.length === 0);
+
+  console.log(pass ? 'SELF-TEST: PASS' : 'SELF-TEST: FAIL');
+  return pass;
+}
+
+// ---------- CLI ----------
+if (process.argv.includes('--self-test')) {
+  process.exit(selfTest() ? 0 : 1);
+} else {
+  build();
+}
