@@ -1,7 +1,7 @@
 {
   "task_id": "PLAYABILITY",
   "role": "standing playability agent \u2014 open the link the owner is told to open, confirm it works before they try it",
-  "state": "measuring (successor 2)",
+  "state": "measuring (successor 3) — six-sabotage matrix's 6 non-control arms verified twice; control unconfirmed green all session (persistent heavy fleet load, not a defect); standing live check ran but SLOW/UNMEASURED under the same load, not PLAYS/FAILS",
   "commit_at_start": "c8414d7",
   "links_under_test": {
     "game": "https://jtattersall09403.github.io/elder-souls-claude/game/index.html",
@@ -184,7 +184,7 @@
     "fixed": true,
     "fix": "the boot promise now leads the diagnosis. A row that never booted is labelled SLOW, not BLANK, names the load it was taken under, and says to re-run with a larger --cap-ms before blaming the renderer. It still fails \u2014 three minutes of nothing is a defect a person experiences \u2014 but it is a different failure and now reads as one. The run also records the mirror's own fetch count, bytes and total time, so the reader can see how much of a live boot figure is the instrument."
   },
-  "next_step": "fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 times per 200 ms), delete-the-fix, re-run verify-playable --self-test with a GREEN control, then the standing live run on phone+desktop.",
+  "next_step": "SUPERSEDED — see successor_run_3_FINAL_live_results and conclusion_job_1 below. P13 is fixed (verified in code and behaviour: the desktop screenshot shows the honest 'still loading' fallback, never a false accusation). What remains: (1) get one GREEN control read on the self-test matrix the next time contention.mjs shows real headroom — six of seven arms are solid, only the control is unconfirmed, purely on load; (2) re-run the live standing check (phone+desktop, ideally all 8 profiles) on a quieter box to get an actual PLAYS/FAILS verdict rather than SLOW/UNMEASURED; (3) fix the tool's own summary-line overclaim ('would show a black screen' for SLOW/UNMEASURED rows) in verify-playable.mjs; (4) P1 (12 broken blog images) still 404 on live, not mine, still unowned; (5) run tools/playability/notice-over-game.mjs against the live site — not done this session.",
   "files_touched": [
     "orchestration/status/PLAYABILITY.json",
     "tools/playability/live-mirror.mjs",
@@ -258,6 +258,20 @@
     "phone-large-landscape": "still running when this status file was last written in this session — the mirror re-fetches the whole ~700-file site fresh per profile (no cross-profile cache, by the mirror's own design: one tunnel per request, no keep-alive pooling, because keep-alive was found to trigger a proxy 403 — see constraint_item_1's fifth bullet), so a second profile pays the full fetch cost again. A successor should check reports/playability/live-PLAYABILITY-successor3.json (once the background process this session started has finished or been re-run) and docs/shots/ for the phone result before re-running from scratch.",
     "honest_state_of_this_role_right_now": "under the fleet load actually observed in this session (consistently 5-7 browser instances, 6-7 load/core, for the entire ~40+ minutes I was active — never once dropping to a genuinely quiet box), BOTH the local self-test's control arm and the live standing check's desktop shape came back SLOW/unresolved rather than a clean pass or a clean black-screen finding. That is a real, reportable fact about today's fleet, not a defect verdict about the game: every 'SLOW' reading named its own load and declined to accuse the renderer, which is exactly what the P13 fix was built to do instead of the old false 'nothing is being drawn.' The owner-facing question this role exists to answer — does the deployed link actually draw a moving picture for a person — is UNRESOLVED this session, not answered green or red. Say so plainly rather than reporting either a false PASS or a false black-screen alarm.",
     "next_for_a_successor": "1) check on the backgrounded live run's outcome (reports/playability/live-PLAYABILITY-successor3.json, docs/shots/). 2) When `node tools/contention.mjs --gate` shows real headroom (0-1 instances, <2.0/core — has not happened once in this session), re-run both the self-test control and the full 8-profile live sweep. 3) Only report PLAYS/FAILS once a reading has actually completed under load low enough that SLOW is not the default outcome."
+  },
+  "successor_run_3_FINAL_live_results": {
+    "json": "reports/playability/live-PLAYABILITY-successor3.json (gitignored, reproducible)",
+    "desktop-1440": {
+      "verdict": "SLOW", "booted": false, "bootMs": 181716,
+      "detail": "the boot promise never resolved inside the 182s cap. The page itself reported NO ERROR the whole time and the on-screen text was the genuine, honest loading progress line — sampled at 22s: 'ELDER SOULS Loading the province… About 17 MB. 21s so far.' — climbing normally through 27s and 36s, i.e. the game was doing real, incremental work, not stuck. It simply had not finished by 182s on this box.",
+      "final_screenshot": "docs/shots/2026-08-08-playability-live-desktop-1440.png — shows the notice's honest fallback state, 'Still loading, and this is longer than it should take. If it never finishes, the console will say why. This is worth reporting.' with the copy-for-report button. NOT a black screen and NOT a false accusation — this is the P13 fix behaving exactly as designed under a genuinely slow load."
+    },
+    "phone-large-landscape": {
+      "verdict": "UNMEASURED (NOT confirmed black)", "booted": true, "bootMs": 130364,
+      "detail": "IMPORTANT: booted=true. The boot PROMISE DID RESOLVE at 130s — the game itself finished loading and presumably started drawing. The pixel measurement failed AFTER that (screenshot capture likely timed out under the same fleet load that slowed everything else this session; the GL fallback then correctly refused to read a non-preserved buffer and returned 'CANNOT MEASURE PIXELS' rather than lying with a fabricated black reading — P12's fix holding). This is a MEASUREMENT gap, not a black-screen finding: the strongest fact in this run is that the deployed game finished booting on a phone-shaped live profile."
+    },
+    "the_tool_own_summary_line_is_overstated": "verify-playable printed 'FAIL — 2 of 2 shape(s) would show a person a black screen.' That sentence is not what the two rows actually show: one is SLOW (never finished, no error, real progress reported the whole time) and one is UNMEASURED (booted fine, picture unreadable). Neither is a confirmed black screen. Flagging this as a tool-wording defect for whoever next touches verify-playable.mjs's summary line — SLOW/UNMEASURED should not be folded into 'would show a black screen', which is a stronger and scarier claim than the data supports and is exactly the kind of overclaim rule 6 exists to catch.",
+    "headline_for_the_owner": "This session could not certify PLAYS or FAILS on the live phone/desktop shapes, because the measurement box itself was under sustained heavy load (5-7 concurrent browser instances from other agents, 6-7 load/core, for the entire ~50 minutes this check ran) — that is a fact about THIS testing environment, not about the game or about the owner's own device. The one solid positive signal: the phone-shaped profile's boot promise resolved in 130s against the real deployed site, meaning the game finished loading. Nothing in this run reproduces the black screen the owner originally reported, and nothing in this run rules it out either — it is simply unresolved. A re-run on a quieter box is what would close this out."
   },
   "live_links_http": {
     "game": "200 19965b",

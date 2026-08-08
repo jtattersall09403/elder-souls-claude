@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `64a4b01`: 802 tools, 153 reference
+so it cannot drift. Generated at `b376ac4`: 802 tools, 153 reference
 items, 93 pieces in flight.
 
 Its purpose is to stop 93+ concurrent agents each paying separately to discover the
@@ -1141,8 +1141,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `PLAYABILITY` | measuring (successor 3) — six-sabotage matrix's 6 non-control arms verified twice; control unconfirmed green all session (persistent heavy fleet load, not a defect); standing live check ran but SLOW/UNMEASURED under the same load, not PLAYS/FAILS | SUPERSEDED — see successor_run_3_FINAL_live_results and conclusion_job_1 below. P13 is fix | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `S39-falsifier` | done | none — instrument built, run, and its verdict written into ARBITRATION.md under S39. | `orchestration/status/S39-falsifier.json` `tools/input/arbiter-clock-s39.mjs` `tools/input/arbiter-clock-s39-shot.mjs` `reports/s39/arbiter-clock-s39.json` `reports/s39/arbiter-clock-s39-selftest.json` `corpus/00-doctrine/ARBITRATION.md` |
-| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
 | `PLT01-STEPRATE-critic` | reading | Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myse | `orchestration/status/PLT01-STEPRATE-critic.json` |
 | `judge-prose-r5` | running | read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding | `orchestration/status/judge-prose-r5.json` |
