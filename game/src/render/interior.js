@@ -571,6 +571,37 @@ export function buildInterior(root, rec) {
       obj.rotation.y = ((h >>> (i % 10)) % 12) * 0.523;
     }
     obj.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
+    // ---- W1-04 ROUND 6: A PROP IS NOT WIDER THAN THE ROOM IT IS IN ----------------------------
+    //
+    // `wallSlots()` insets a wall slot by a FIXED 0.55 m, which is right for a shelf and wrong for
+    // an architectural kit mesh. `hel_shell_roof` is a 1.5 m radius shell; placed at 0.55 m from
+    // the wall it reaches 0.95 m past the room — which is 0.29 m past the OUTSIDE face of the
+    // building's own wall, because the room is the footprint less `ROOM_INSET_M`. Measured at
+    // HEAD: 61 meshes in 49 rooms more than 0.6 m outside their room, four kit meshes between
+    // them (`arc_clay_dome` 24, `hel_shell_roof` 26, `tho_lean_to` 8, `gid_square_arcade` 3), worst
+    // 0.95 m — and 0.95 = 1.5 − 0.55 exactly, which is what made it a diagnosis rather than a
+    // guess. The round-5 census reported 0 for the same rooms because its code measured CLEARANCE
+    // (is the whole box outside the room) while its prose described OVERHANG (does the box reach
+    // outside the room); the round-5 verdict settled that the disagreement is the predicate and not
+    // the tolerance.
+    //
+    // The inset is now the prop's OWN half-extent rather than a constant. Measured after
+    // placement and rotation, because a 2.4 m lean-to turned 90° is a different width.
+    {
+      obj.updateWorldMatrix(true, true);
+      const bb = new THREE.Box3().setFromObject(obj);
+      if (Number.isFinite(bb.min.x) && Number.isFinite(bb.max.x)) {
+        const dx = Math.max(bx[0] - bb.min.x, 0) - Math.max(bb.max.x - bx[1], 0);
+        const dz = Math.max(bz[0] - bb.min.z, 0) - Math.max(bb.max.z - bz[1], 0);
+        // Only pull INWARD: a prop wider than the room cannot be made to fit and pushing it back
+        // and forth between two walls would move it every frame the room was rebuilt. It is
+        // centred instead, and the census still reports it.
+        if (bb.max.x - bb.min.x <= bx[1] - bx[0]) obj.position.x += dx;
+        else obj.position.x = (bx[0] + bx[1]) / 2 - (bb.min.x + bb.max.x) / 2 + obj.position.x;
+        if (bb.max.z - bb.min.z <= bz[1] - bz[0]) obj.position.z += dz;
+        else obj.position.z = (bz[0] + bz[1]) / 2 - (bb.min.z + bb.max.z) / 2 + obj.position.z;
+      }
+    }
     root.add(obj);
     summary.props_built++;
     ci++;

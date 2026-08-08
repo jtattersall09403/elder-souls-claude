@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `aedc327`: 717 tools, 153 reference
+so it cannot drift. Generated at `e185094`: 718 tools, 153 reference
 items, 61 pieces in flight.
 
 Its purpose is to stop 61+ concurrent agents each paying separately to discover the
@@ -262,8 +262,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
 - `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
 
-### `tools/gamepad/` — 1
+### `tools/gamepad/` — 2
 
+- `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
 ### `tools/harness/` — 232
