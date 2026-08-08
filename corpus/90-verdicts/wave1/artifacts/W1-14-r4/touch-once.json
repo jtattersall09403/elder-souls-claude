@@ -1,0 +1,400 @@
+{
+  "schema": "elder-souls/critic-w1-14-r4-touch@1",
+  "commit": "ec0b76783ea4bcd0a8fac6f6ceb6a14964c4afcb",
+  "arms": {
+    "fixed": {
+      "broken": false,
+      "rows": [
+        {
+          "cls": "CANTRIP",
+          "range": "touch",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "CANTRIP",
+          "range": "target",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "CANTRIP",
+          "range": "projectile",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "LIGHT",
+          "range": "touch",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "LIGHT",
+          "range": "target",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "LIGHT",
+          "range": "projectile",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "HEAVY",
+          "range": "touch",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "HEAVY",
+          "range": "target",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "HEAVY",
+          "range": "projectile",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        }
+      ],
+      "area": {
+        "radius_m": 8,
+        "geometry": {
+          "kind": "volume",
+          "shape": "sphere",
+          "radius_m": 8,
+          "active_f": 6,
+          "ticks_every_f": 12,
+          "decal_lead_f": 20,
+          "placement": "resolved_world_point"
+        },
+        "applied": 4,
+        "hp_before": [
+          260,
+          260,
+          260,
+          260
+        ],
+        "hp_after": [
+          174,
+          174,
+          174,
+          174
+        ],
+        "damage": [
+          86,
+          86,
+          86,
+          86
+        ]
+      },
+      "volume_geometries": {
+        "active_f=6 ticks_every_f=12": 6
+      }
+    },
+    "broken": {
+      "broken": true,
+      "rows": [
+        {
+          "cls": "CANTRIP",
+          "range": "touch",
+          "applied": 4,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 68,
+          "damage": 192
+        },
+        {
+          "cls": "CANTRIP",
+          "range": "target",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "CANTRIP",
+          "range": "projectile",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "LIGHT",
+          "range": "touch",
+          "applied": 5,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 20,
+          "damage": 240
+        },
+        {
+          "cls": "LIGHT",
+          "range": "target",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "LIGHT",
+          "range": "projectile",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "HEAVY",
+          "range": "touch",
+          "applied": 6,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 0,
+          "damage": 260
+        },
+        {
+          "cls": "HEAVY",
+          "range": "target",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        },
+        {
+          "cls": "HEAVY",
+          "range": "projectile",
+          "applied": 1,
+          "event_kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "effect_apply",
+            "spell_impact"
+          ],
+          "hp_before": 260,
+          "hp_after": 212,
+          "damage": 48
+        }
+      ],
+      "area": {
+        "radius_m": 8,
+        "geometry": {
+          "kind": "volume",
+          "shape": "sphere",
+          "radius_m": 8,
+          "active_f": 6,
+          "ticks_every_f": 12,
+          "decal_lead_f": 20,
+          "placement": "resolved_world_point"
+        },
+        "applied": 4,
+        "hp_before": [
+          260,
+          260,
+          260,
+          260
+        ],
+        "hp_after": [
+          174,
+          174,
+          174,
+          174
+        ],
+        "damage": [
+          86,
+          86,
+          86,
+          86
+        ]
+      },
+      "volume_geometries": {
+        "active_f=6 ticks_every_f=12": 6
+      }
+    }
+  },
+  "rows_moved_by_teardown": [
+    {
+      "key": "CANTRIP/touch",
+      "fixed": [
+        1,
+        48
+      ],
+      "broken": [
+        4,
+        192
+      ]
+    },
+    {
+      "key": "LIGHT/touch",
+      "fixed": [
+        1,
+        48
+      ],
+      "broken": [
+        5,
+        240
+      ]
+    },
+    {
+      "key": "HEAVY/touch",
+      "fixed": [
+        1,
+        48
+      ],
+      "broken": [
+        6,
+        260
+      ]
+    }
+  ],
+  "rows_unmoved": [
+    "CANTRIP/target",
+    "CANTRIP/projectile",
+    "LIGHT/target",
+    "LIGHT/projectile",
+    "HEAVY/target",
+    "HEAVY/projectile"
+  ],
+  "control_is_live": true,
+  "pass": true,
+  "failures": []
+}

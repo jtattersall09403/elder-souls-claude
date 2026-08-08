@@ -1,0 +1,273 @@
+{
+  "schema": "elder-souls/critic-w1-14-r4-commission@1",
+  "commit": "c5ed8ac5198a6a483a293cc2f588a95c4220609b",
+  "self_censor": {
+    "banned": 5,
+    "named_in_this_file": []
+  },
+  "walk": {
+    "town": "town-lilmoth",
+    "wright": "spellwright-lilmoth",
+    "people_present": 55,
+    "eid": "spellwright-lilmoth",
+    "name": "Tsona-Ixtu",
+    "from": [
+      2800.05,
+      2.68,
+      5030.6
+    ],
+    "npc_pos": [
+      2798.2,
+      2.68,
+      5036.6
+    ],
+    "walk": {
+      "reason": null,
+      "walked_m": null,
+      "frames": 100
+    },
+    "to": [
+      2799.01,
+      2.68,
+      5033.73
+    ],
+    "gap_m": 2.99,
+    "walked_on_foot_m": 3.29,
+    "frames_walked": 100
+  },
+  "commission": {
+    "town": "town-gideon",
+    "wright": "spellwright-gideon",
+    "steps": [
+      "commission.effect.add",
+      "commission.page",
+      "commission.effect.damage_health",
+      "commission.back",
+      "commission.effect.add",
+      "commission.page",
+      "commission.page",
+      "commission.effect.feather",
+      "commission.term.magnitude",
+      "commission.step.min",
+      "commission.back",
+      "commission.back",
+      "commission.range",
+      "commission.class",
+      "commission.class",
+      "commission.class",
+      "commission.confirm",
+      "commission.effect.add",
+      "commission.page",
+      "commission.page",
+      "commission.effect.fire_damage",
+      "commission.back",
+      "commission.effect.add",
+      "commission.page",
+      "commission.effect.demoralise",
+      "commission.term.magnitude",
+      "commission.step.min",
+      "commission.back",
+      "commission.back",
+      "commission.confirm",
+      "commission.effect.add",
+      "commission.page",
+      "commission.page",
+      "commission.page",
+      "commission.effect.frost_damage",
+      "commission.back",
+      "commission.effect.add",
+      "commission.page",
+      "commission.page",
+      "commission.page",
+      "commission.page",
+      "commission.effect.night_eye",
+      "commission.back",
+      "commission.effect.add",
+      "commission.effect.burden",
+      "commission.term.magnitude",
+      "commission.step.min",
+      "commission.back",
+      "commission.back",
+      "commission.class",
+      "commission.confirm"
+    ],
+    "gap_m": 36.15,
+    "talk": {
+      "ok": true,
+      "topics": [
+        "enchanting",
+        "spellmaking",
+        "the road to Helstrom",
+        "the road to Soulrest",
+        "latest rumors"
+      ]
+    },
+    "opened_counter": true,
+    "opening_line": "Then we begin at the beginning: what should it do? Not what it should be called. What it should do.",
+    "counter_rows": [
+      "what it should do",
+      "nothing today"
+    ],
+    "rows_drawn": [
+      "what it should do",
+      "nothing today"
+    ],
+    "drawn_sample": [
+      "5",
+      "LIGHT",
+      "Spark-Da…",
+      "SPELLWRIGHT NELOTH SEDRAN",
+      "GIDEON",
+      "You have come up the river to have a thing made that nobody has made. Good. Half of what walks in here wants a spell that already exists.",
+      "Then we begin at the beginning: what should it do? Not what it should be called. What it should do.",
+      "— what it should do",
+      "  nothing today"
+    ],
+    "made": [
+      {
+        "tuple": {
+          "effect": "damage_health",
+          "extra": [
+            "feather"
+          ],
+          "terms": {
+            "magnitude": "min"
+          },
+          "range": "touch",
+          "class": "CANTRIP"
+        },
+        "quote_gold": 171,
+        "quote_focus": 1,
+        "quote_refused": false,
+        "quote_gate": null,
+        "line": "damage health 1; feather 1. 1 Focus. 171 gold, and you have 4000000.",
+        "committed": true,
+        "spell_id": "custom_1_damage_health_and_feathe",
+        "gold_before": 4000000,
+        "gold_after": 3999829,
+        "gold_delta": 171,
+        "last_refusal": null,
+        "custom_spell_count": 1,
+        "signature": {
+          "cls": "CANTRIP",
+          "range": "touch",
+          "effects": "damage_health+feather"
+        },
+        "in_spells_json": false,
+        "shipped_with_same_effects": []
+      },
+      {
+        "tuple": {
+          "effect": "fire_damage",
+          "extra": [
+            "demoralise"
+          ],
+          "terms": {
+            "magnitude": "min"
+          },
+          "range": "target",
+          "class": "LIGHT"
+        },
+        "quote_gold": 171,
+        "quote_focus": 2,
+        "quote_refused": false,
+        "quote_gate": null,
+        "line": "fire damage 1; demoralise 1. 2 Focus. 171 gold, and you have 3999829.",
+        "committed": true,
+        "spell_id": "custom_2_fire_damage_and_demorali",
+        "gold_before": 3999829,
+        "gold_after": 3999658,
+        "gold_delta": 171,
+        "last_refusal": null,
+        "custom_spell_count": 2,
+        "signature": {
+          "cls": "LIGHT",
+          "range": "target",
+          "effects": "demoralise+fire_damage"
+        },
+        "in_spells_json": false,
+        "shipped_with_same_effects": []
+      },
+      {
+        "tuple": {
+          "effect": "frost_damage",
+          "extra": [
+            "night_eye",
+            "burden"
+          ],
+          "terms": {
+            "magnitude": "min"
+          },
+          "range": "target",
+          "class": "HEAVY"
+        },
+        "quote_gold": 193,
+        "quote_focus": 4,
+        "quote_refused": false,
+        "quote_gate": null,
+        "line": "frost damage 1; night eye 1; burden 1. 4 Focus. 193 gold, and you have 3999658.",
+        "committed": true,
+        "spell_id": "custom_3_frost_damage_and_night_e",
+        "gold_before": 3999658,
+        "gold_after": 3999465,
+        "gold_delta": 193,
+        "last_refusal": null,
+        "custom_spell_count": 3,
+        "signature": {
+          "cls": "HEAVY",
+          "range": "target",
+          "effects": "burden+frost_damage+night_eye"
+        },
+        "in_spells_json": false,
+        "shipped_with_same_effects": []
+      }
+    ],
+    "gold_start": 4000000,
+    "gold_end": 3999465,
+    "gold_spent": 535,
+    "quotes_sum": 535,
+    "save_has_all": true,
+    "save_gold": 3999465,
+    "cast": {
+      "spell": "custom_2_fire_damage_and_demorali",
+      "hp_before": 260,
+      "hp_after": 258,
+      "damage": 2,
+      "hits": 0,
+      "cast_start": 1,
+      "drops": []
+    }
+  },
+  "controls": {
+    "enchanter": {
+      "name": "Vitellia Carinus",
+      "counter_opened": false,
+      "text": "I do not write spells. I put them into objects, which is a different trade and a better-paid one. If you want a spell made, that is Lilmoth, or Gideon, or Helstrom. Helstrom is nearest from here and the road is not the worst of them.",
+      "raw_keys": [
+        "open",
+        "npc",
+        "name",
+        "title",
+        "greeting",
+        "greeting_cell",
+        "greeting_key",
+        "said",
+        "said_topic",
+        "said_cell",
+        "said_source",
+        "said_route",
+        "said_from",
+        "topics",
+        "selected"
+      ],
+      "commission_state": null
+    },
+    "door_removed": {
+      "counter_opened": false,
+      "still_answers": true,
+      "text": "Slate. Say what it should do, how far it should reach and how hard you want it to bite, and I will price it while you talk."
+    }
+  },
+  "pass": true,
+  "failures": []
+}

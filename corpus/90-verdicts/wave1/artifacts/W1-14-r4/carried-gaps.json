@@ -1,0 +1,503 @@
+{
+  "schema": "elder-souls/critic-w1-14-r4-carried@1",
+  "commit": "ec0b76783ea4bcd0a8fac6f6ceb6a14964c4afcb",
+  "drag": {
+    "fixed_y": [
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68
+    ],
+    "broken_y": [
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68,
+      2.68
+    ],
+    "sampled_every_f": 10
+  },
+  "purse": {
+    "before": {
+      "getGold": 500000,
+      "magic_gold": null
+    },
+    "quote_gold": 2145,
+    "refused": false,
+    "after": {
+      "getGold": 497855,
+      "quote": 2145
+    },
+    "spent": 2145,
+    "spend_equals_quote": true,
+    "save_gold": 497855,
+    "after_restore": {
+      "getGold": 497855,
+      "second_commission_refused": false,
+      "second_commission_gate": null,
+      "second_commission_reason": null,
+      "gold_after_second": 495710
+    }
+  },
+  "duration": [
+    {
+      "D": 0,
+      "hp_curve": [
+        260,
+        260,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "total": 43,
+      "steps": 1,
+      "applications": 0
+    },
+    {
+      "D": 5,
+      "hp_curve": [
+        260,
+        260,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "total": 43,
+      "steps": 1,
+      "applications": 0
+    },
+    {
+      "D": 30,
+      "hp_curve": [
+        260,
+        260,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "total": 43,
+      "steps": 1,
+      "applications": 0
+    }
+  ],
+  "moving_target": {
+    "stationary": {
+      "damage_health": {
+        "hp_before": 260,
+        "hp_after": 212,
+        "damage": 48,
+        "moved_m": null,
+        "hits": 0
+      },
+      "fire_damage": {
+        "hp_before": 260,
+        "hp_after": 217,
+        "damage": 43,
+        "moved_m": null,
+        "hits": 0
+      },
+      "frost_damage": {
+        "hp_before": 260,
+        "hp_after": 219,
+        "damage": 41,
+        "moved_m": null,
+        "hits": 0
+      },
+      "shock_damage": {
+        "hp_before": 260,
+        "hp_after": 217,
+        "damage": 43,
+        "moved_m": null,
+        "hits": 0
+      },
+      "poison_damage": {
+        "hp_before": 260,
+        "hp_after": 231,
+        "damage": 29,
+        "moved_m": null,
+        "hits": 0
+      }
+    },
+    "moving": {
+      "damage_health": {
+        "hp_before": 260,
+        "hp_after": 212,
+        "damage": 48,
+        "moved_m": null,
+        "hits": 0
+      },
+      "fire_damage": {
+        "hp_before": 260,
+        "hp_after": 217,
+        "damage": 43,
+        "moved_m": null,
+        "hits": 0
+      },
+      "frost_damage": {
+        "hp_before": 260,
+        "hp_after": 219,
+        "damage": 41,
+        "moved_m": null,
+        "hits": 0
+      },
+      "shock_damage": {
+        "hp_before": 260,
+        "hp_after": 217,
+        "damage": 43,
+        "moved_m": null,
+        "hits": 0
+      },
+      "poison_damage": {
+        "hp_before": 260,
+        "hp_after": 231,
+        "damage": 29,
+        "moved_m": null,
+        "hits": 0
+      }
+    }
+  },
+  "summon_side": {
+    "spawned": true,
+    "body_row": {
+      "id": "e0",
+      "statblock": "drowned_lesser",
+      "state": "IDLE",
+      "anim": "e_idle",
+      "anim_frame": 3,
+      "move": null,
+      "hp": 622,
+      "hp_max": 622,
+      "poise_health": 20,
+      "poise_health_max": 20,
+      "stamina": 239,
+      "stamina_max": 239,
+      "guard": false,
+      "dead": false,
+      "yielded": false,
+      "attack_rating": 206,
+      "parley": null,
+      "dist_m": 2.396998,
+      "bearing_deg": 0
+    },
+    "entity_row": {
+      "eid": "e0",
+      "kind": "enemy",
+      "archetype": "INFANTRY",
+      "pos": [
+        0,
+        0,
+        2.551
+      ],
+      "hp": 622
+    },
+    "body_keys": [
+      "id",
+      "statblock",
+      "state",
+      "anim",
+      "anim_frame",
+      "move",
+      "hp",
+      "hp_max",
+      "poise_health",
+      "poise_health_max",
+      "stamina",
+      "stamina_max",
+      "guard",
+      "dead",
+      "yielded",
+      "attack_rating",
+      "parley",
+      "dist_m",
+      "bearing_deg"
+    ],
+    "entity_keys": [
+      "eid",
+      "kind",
+      "archetype",
+      "pos",
+      "hp"
+    ],
+    "declares_side": false,
+    "kind": "enemy",
+    "summon_register": [
+      {
+        "eid": "e0",
+        "kind": "lesser",
+        "archetype": "drowned_lesser",
+        "power": 2.391,
+        "hp": 622,
+        "attack_rating": 206,
+        "unfold_f": 40,
+        "expires_f": 3626
+      }
+    ]
+  },
+  "over_reservoir": {
+    "quote": {
+      "refused": false,
+      "notes": [],
+      "effects": [
+        {
+          "effect": "bind_greater",
+          "magnitude": 90,
+          "duration_s": 60,
+          "area_r_m": 0
+        }
+      ],
+      "range": "self",
+      "class": "LIGHT",
+      "schools": [
+        "sorcery"
+      ],
+      "focus_base": 150,
+      "band_tier": 5,
+      "tier": 5,
+      "skill_req": 85,
+      "focus_cost": 112,
+      "gold": 40268,
+      "castable_now": true,
+      "attunable_now": true,
+      "over_reservoir": false
+    },
+    "refused": false,
+    "focus_max": 124,
+    "focus": 124,
+    "focus_cost": 112,
+    "over_reservoir": false,
+    "quote_says_refused": false,
+    "events": [],
+    "drops": [
+      {
+        "reason": "no_focus",
+        "spell": "custom_1_critic_over"
+      }
+    ],
+    "focus_after": 105
+  },
+  "frenzy": {
+    "hp_before": [
+      260,
+      260
+    ],
+    "hp_after": [
+      260,
+      260
+    ],
+    "status": [
+      {
+        "id": "P",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "wards": {
+          "disease": 1,
+          "fire": 1,
+          "frost": 1,
+          "magic": 1,
+          "physical": 1,
+          "poison": 1,
+          "shock": 1
+        },
+        "shield_flat": 0,
+        "armour_rating": 0,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "fleeing": false,
+        "flee_leash_m": 0,
+        "flee_dist_m": 0,
+        "flee_arrived": false,
+        "hp": 300.68,
+        "hp_max": 620,
+        "stamina": 120,
+        "stamina_max": 120,
+        "poise_health": 37.27,
+        "poise_health_max": 48,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT"
+      },
+      {
+        "id": "e0",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "wards": {
+          "disease": 1,
+          "fire": 1,
+          "frost": 1,
+          "magic": 1,
+          "physical": 1,
+          "poison": 1,
+          "shock": 1
+        },
+        "shield_flat": 0,
+        "armour_rating": 12,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": "e1",
+        "fleeing": false,
+        "flee_leash_m": 0,
+        "flee_dist_m": 0,
+        "flee_arrived": false,
+        "hp": 260,
+        "hp_max": 260,
+        "stamina": 100,
+        "stamina_max": 100,
+        "poise_health": 20,
+        "poise_health_max": 20,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      },
+      {
+        "id": "e1",
+        "buildup": {},
+        "procs": {},
+        "paralysed": false,
+        "wards": {
+          "disease": 1,
+          "fire": 1,
+          "frost": 1,
+          "magic": 1,
+          "physical": 1,
+          "poison": 1,
+          "shock": 1
+        },
+        "shield_flat": 0,
+        "armour_rating": 12,
+        "ward_charges": 0,
+        "yielded": false,
+        "silenced": false,
+        "frenzy_target": null,
+        "fleeing": false,
+        "flee_leash_m": 0,
+        "flee_dist_m": 0,
+        "flee_arrived": false,
+        "hp": 260,
+        "hp_max": 260,
+        "stamina": 100,
+        "stamina_max": 100,
+        "poise_health": 20,
+        "poise_health_max": 20,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "equip_load_pct": 50,
+        "roll_class": "trash"
+      }
+    ]
+  },
+  "stormhold": {
+    "y": 141.0586,
+    "airborne": false,
+    "events": [
+      "cast_start",
+      "focus_spend",
+      "cast_release"
+    ],
+    "drops": []
+  }
+}

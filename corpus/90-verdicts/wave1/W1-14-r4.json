@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-14-r4",
+  "piece_title": "Magic: casting, effects and utility (seam S19) \u2014 round 4",
+  "subsystem_paths": [
+    "magic.casting.frames",
+    "magic.casting.resource",
+    "magic.casting.geometry",
+    "magic.effects.catalogue",
+    "magic.effects.utility",
+    "magic.gating.skills",
+    "magic.spellmaking"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-14-r4",
+    "role": "critic.magic",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T05:09:33Z",
+    "finished_at": "2026-08-08T06:35:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "9fadada",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "note": "The tree BOOTS at HEAD this round \u2014 `node tools/boot-check.mjs` PASSes at 9fadada \u2014 which is a change from round 3, where Engine._installCanon threw and every number was taken against a pin at 34d1387. Every number in this verdict is measured against the working tree at 9fadada with no pin and no stash. 9fadada is an orchestrator bank commit carrying the W1-14 r4 work of 4d9ae24; the magic sources are byte-identical between the two. Every report this verdict cites is committed under corpus/90-verdicts/wave1/artifacts/W1-14-r4/, because reports/ is gitignored in this tree and an evidence path that is not in the repository is not evidence.",
+    "harness_commands": [
+      {
+        "command": "node tools/boot-check.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-ground.mjs   # 49 named states x 2 arms, the real cast button, plus a walked body and a swimmer",
+        "seed": 11,
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-summon.mjs   # the alias fix read twice, by the reported field and by the damage an ordinary hostile does",
+        "seed": 4242,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-touch.mjs    # the 3x3 census plus an AREA width arm plus the volume-geometry survey",
+        "seed": 909,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-commission.mjs  # the RI-MAG03 M1 acceptance: walk, talk, buy a spell that is not in spells.json",
+        "seed": 77,
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-carried.mjs  # the purse, the save round trip, duration, opts.side, the reservoir, frenzy, Stormhold",
+        "seed": 5,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-motion.mjs   # a target driven in a straight line at a stated speed; the drag; the refusal on both streams",
+        "seed": 31,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r3.mjs --parts=A --out reports/critic-w1-14-r4   # the PREVIOUS critic's own null, re-run unchanged at HEAD",
+        "seed": 4242,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/w1-14-r3-dials.mjs --out reports/critic-w1-14-r4   # the POSITIVE dial arm the round did not publish at its own commit",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/harness/critic-w1-14-r4-shot.mjs     # the counter, photographed off the draw call",
+        "seed": 77,
+        "exit_code": 0
+      }
+    ],
+    "depends_on": [
+      "game/src/sim/magic/**",
+      "game/src/sim/combat-bridge.js",
+      "game/src/combat/enemy.js",
+      "game/src/combat/system.js",
+      "game/src/combat/resolve.js",
+      "game/src/engine.js",
+      "game/src/save/state.js",
+      "game/data/magic/**",
+      "game/data/npcs/spellwrights.json",
+      "game/data/states/**"
+    ],
+    "depends_on_note": "combat/enemy.js, combat/system.js and combat/resolve.js belong to W1-09/W1-12 and save/state.js to W1-13; they are named because this round's fixes and this verdict's independent damage route run through them."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "fidelity_refs": [],
+    "art_refs": [],
+    "note": "One screenshot was taken (docs/shots/2026-08-08-critic-w1-14-r4-the-counter-where-you-invent-a-spell.png) and it is EVIDENCE THAT A SURFACE IS DRAWN, not a visual judgement. RI-MAG05 was not re-measured and no art or fidelity claim is made anywhere in this verdict."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MAG01",
+      "path": "corpus/25-magic/RI-MAG01-combat-casting.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "0-100 weighted sum over M1-M8",
+      "native_score": 55,
+      "native_max": 100,
+      "native_verdict": "we lose (<70): a projectile does not connect with a body walking laterally past ~6 m",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/motion.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/ground-plane.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/touch-once.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/carried-gaps.json"
+      ],
+      "checks": [
+        {
+          "id": "no-spell-could-be-cast-outside-an-arena",
+          "result": "pass",
+          "observed": "FIXED. 9 of 9 land states where the body settles (cam_boardwalk, default, town-archon, town-blackrose, town-gideon, town-helstrom, town-lilmoth, town-soulrest, town-stormhold, town-thorn) cast with the fix; under H.__breakGroundPlane every one is refused INPUT_DROPPED reason:airborne. 26 of the 49 named states in game/data/states put the player at exactly y=0, which is why four rounds of arena measurement never saw it. A body that WALKED 6.48 m in Lilmoth also casts (rule 8)."
+        },
+        {
+          "id": "bolt-connects-with-a-body-that-walks-sideways",
+          "result": "fail",
+          "observed": "damage_health/fire_damage/frost_damage/shock_damage/poison_damage, magnitude 20, LIGHT/projectile, target driven in a straight line by setEntityPos over 200 f@60. Still at 14 m: 48/43/41/43/29. Walking sideways 5 m at 6 m range: 48/43/41/43/29. Walking sideways 5 m at 14 m range: 0/0/0/0/0. Jogging sideways 10 m at 14 m: 0 on all five. RETREATING 10 m along the bolt's own axis at 14 m: 48/43/41/43/29. The bolt is not failing to reach or on speed; it is failing to steer, and cast-classes.json's LIGHT tracking_cutoff 0.35 is the first suspect (60 deg/s over 0.9 s is 54 deg of authority against a 20 deg offset)."
+        },
+        {
+          "id": "touch-range-applies-once-per-cast",
+          "result": "pass",
+          "observed": "FIXED. All nine class x range rows read applied 1 / damage 48. Under H.__breakTouchDedupe: touch 4/192 (CANTRIP), 5/240 (LIGHT), 6/260 (HEAVY, the body dies at 260 before a 7th tick lands), with target and projectile unchanged at 1/48 in all three classes."
+        },
+        {
+          "id": "over-reservoir-cast-is-a-silent-drop",
+          "result": "partial",
+          "observed": "ROUND 3 IS HALF WRONG AND ROUND 4 CARRIED IT FORWARD UNCHECKED. A commissioned three-effect RITUAL quotes focus_cost 417 against focus_max 124 with over_reservoir:true; pressing cast gives an EMPTY magic stream (what round 3 saw, because magicEventsDrain does not carry combat events) AND, on the combat bus, INPUT_DROPPED button:cast reason:no_focus with have/need attached. Not silent to the trace. Silent to the PLAYER: unlike S29's travel fence, which attaches e.text and speaks, the reservoir refusal attaches numbers and says nothing. The commission counter itself does warn in prose."
+        },
+        {
+          "id": "a-swimming-body-cannot-cast-and-is-told-nothing",
+          "result": "fail",
+          "observed": "NEW. 13 of 49 named states put the player in deep water. At vista_primary the body is at y=-1.404 in SWIM, the sea floor is at -41.148, and magic.airborne is TRUE - groundInActiveCell returns the sea bed, so a swimmer is 40 m airborne by the magic system's reckoning. The cast press produces no event on EITHER stream: no cast_start, no INPUT_DROPPED, nothing."
+        },
+        {
+          "id": "AR-1-determinism",
+          "result": "pass",
+          "observed": "Six identical casts of one commissioned summon give one attack_rating (206) and one hp_max; nine class x range rows give one damage value; the strafe table is deterministic zeroes rather than intermittent misses, which is the signature of geometry rather than dice. Round 3's seven-perturbation Morrowind battery was NOT re-run and is carried, not restated."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "A projectile spell misses any body walking laterally at 14 m - 0 damage on all five damage effects, deterministically - while the same body retreating ten metres along the bolt's axis takes full damage. RI-MAG01 exists so that casting is a Souls action, and Souls enemies circle. The frame data, the commitment model, the resource model and the determinism would carry a 7 on their own, and this one failure is a first-minute deficit that keeps the item in its own 'we lose' band.",
+      "path_to_ten": "Emit a miss record (reuse spell_hit with miss:true - the vocabulary is closed) carrying the target's position at spawn, at cutoff and at expiry plus the closest approach in metres, so the fix is chosen by measurement rather than by guess; then LEAD the target - aim where the body will be when the bolt arrives and stop steering - rather than raising turn_rate_dps or removing tracking_cutoff, either of which would break RI-CMB01's dodge contract. Acceptance: 40 cells (5 effects x 2 ranges x 4 target velocities) all delivering, closest approach <= the class radius_m, a dodge still returning 0 in all 40, and a --break=nolead arm that reddens the eight lateral cells at 14 m and only those.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-MAG02",
+      "path": "corpus/25-magic/RI-MAG02-effect-catalogue.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 5,
+      "native_max": 10,
+      "native_verdict": "the archetype leak is gone; duration is still a lease on nothing for the effects a player notices first",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/summon-alias.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/carried-gaps.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/touch-once.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/dials.json"
+      ],
+      "checks": [
+        {
+          "id": "summon-scaling-does-not-mutate-the-shared-statblock",
+          "result": "pass",
+          "observed": "FIXED, and graded on a route round 4 did not add. A plain drowned_lesser reads 86 BEFORE any cast and 86 after six identical binds; drowned_greater reads 168 and 168. Under H.__breakSummonAlias the six casts read 206, 493, 1179, 2819, 6740, 16115 and the plain body afterwards reads 16115; bind_greater leaks the same way into the SECOND archetype, 168 -> 31415, which the round did not measure. Independent route: the ordinary hostile takes 131.67 hp off the player over 600 f@60 with the fix (0 deaths) and all 620 without it (1 death), computed by combat/resolve.js from moves._weapon.attack_rating, a reader that predates this round."
+        },
+        {
+          "id": "no-other-spawned-body-shares-a-mutable-statblock-object",
+          "result": "pass",
+          "observed": "AUDITED. combat/system.js spawnEnemy hands out stat.weapon (now copied on both branches), stat.parley, stat.material_by_region and the shared shield row, and hands stat itself to EnemyController. A grep for a two-level assignment through any of the other three returns nothing across game/src/. The only writers to _weapon.attack_rating are bindHandler (apply.js:878) and h_bound_weapon (apply.js:910), both now behind a copy. Residual, not charged: h_bound_weapon's _undo restores prev, so two overlapping bound-weapon leases would restore the first value twice; nothing shipped can stack them."
+        },
+        {
+          "id": "duration-is-read-on-the-four-damage-effects",
+          "result": "fail",
+          "observed": "fire_damage magnitude 20 at D in {0,5,30} s against one stationary body, hp sampled every 20 f@60 for 600 f@60: total 43 / 43 / 43 with ONE downward step in all three. Round 3's acceptance criterion 2 (total(D)/total(0) = D) still reads 1.00. Independently, the dial census at HEAD reports duration_blind = fire_damage, frost_damage, poison_damage, restore_health, hist_sight, paralyse. AND THE SAME DEFECT EXISTS AT A SECOND GEOMETRY: every volume in the build is active_f 6 / ticks_every_f 12 (6 shipped spells, all identical), so no volume has ever ticked twice and duration_s on an AREA spell decides nothing either."
+        },
+        {
+          "id": "area-dial-is-read",
+          "result": "pass",
+          "observed": "Carried from round 3 and re-confirmed incidentally: a commissioned fire_damage at the effect's own maximum radius (8 m) reaches all four bodies placed around the volume's centre for 86 each, identically in both arms of the touch teardown."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "duration_s is one of the three dials Morrowind's spell tuple is made of, it is declared on 37 of 55 effects, and on the four damage effects and restore_health it decides only how long an unread row sits in a list - measured as three byte-identical hp curves at 0, 5 and 30 seconds. The player is charged for it by focusBase()'s 0.7*D^0.95 and 0.55*M^0.80*D^0.45 terms and receives nothing. The archetype leak that dropped this item to 5 in round 3 is genuinely fixed.",
+      "path_to_ten": "Round 3 section 8's acceptance is already written and is still right: for fire_damage, frost_damage, poison_damage and restore_health at durations 0/5/30 s, total(D)/total(0) must equal D within 1 hp, the hp curve must be a staircase of D steps 60 f@60 apart, M.active must carry the row for exactly D*60 frames, and a --break=notick arm must redden all four. Add the area case, because a volume that ticks once makes duration dead at that geometry too.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-MAG03",
+      "path": "corpus/25-magic/RI-MAG03-spellmaking-enchanting.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 5,
+      "native_max": 10,
+      "native_verdict": "spellmaking is reachable, priced, saved and good; enchanting has no world-side surface at all",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/commission-walk.json",
+        "docs/shots/2026-08-08-critic-w1-14-r4-the-counter-where-you-invent-a-spell.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/carried-gaps.json"
+      ],
+      "checks": [
+        {
+          "id": "RI-MAG03-M1-a-critic-buys-a-spell-that-is-not-in-spells-json",
+          "result": "pass",
+          "observed": "DONE, by a probe that reads its own bytes and refuses to run if it names makeSpell, quoteSpell, enchantQuote, enchanterOpen or __ENGINE, and at a DIFFERENT spellwright (Gideon, Neloth Sedran) from the one the round measured. Walked 3.29 m on foot in 100 f@60 to 2.99 m from the Lilmoth spellwright; talkTo offers enchanting/spellmaking/two roads/rumours; conversationSay('spellmaking') opens the counter. Three tuples commissioned, each ABSENT from spells.json by effect-set + range + class comparison against every shipped spell: damage_health+feather CANTRIP/touch 171 g, fire_damage+demoralise LIGHT/target 171 g, frost_damage+night_eye+burden HEAVY/target 193 g. Gold 4,000,000 -> 3,999,465; spent 535 = the sum of the three quotes exactly; saveState() carries the purse and all three ids."
+        },
+        {
+          "id": "the-counter-is-actually-drawn",
+          "result": "pass",
+          "observed": "getRenderedText(), which hooks fillText, returns at Gideon: 'SPELLWRIGHT NELOTH SEDRAN', 'GIDEON', the greeting, the spellmaking line and both counter rows ('- what it should do', '  nothing today'). The round's claim that the counter is not a new UI mode because it borrows the conversation surface is tested at the draw call and holds."
+        },
+        {
+          "id": "the-door-has-a-live-teardown-and-a-live-negative",
+          "result": "pass",
+          "observed": "Under H.__breakCommissionCounter the Lilmoth spellwright opens NO counter and STILL ANSWERS the subject with her own line - the control is 'the right person in the right town on the right subject, and no door'. The Stormhold enchanter opens no counter and refuses by name: 'I do not write spells... that is Lilmoth, or Gideon, or Helstrom. Helstrom is nearest from here and the road is not the worst of them.'"
+        },
+        {
+          "id": "enchanting-has-a-world-side-consumer",
+          "result": "fail",
+          "observed": "enchantQuote has exactly one caller in the whole build and it is game/src/harness/api.js:1434; enchanterOpen the same at api.js:2015. No dialogue topic, no UI mode, no NPC record and nothing in engine.js reaches either. All seven people advertise the service and answer on the subject with prices and ceilings, and nothing behind any of those sentences opens. Under ARBITRATION section 3 that is unmeasurable => 0. The round declares this in the data (spellwrights.json declared_incomplete) rather than claiming it."
+        },
+        {
+          "id": "makeSpell-spends-a-mirror",
+          "result": "pass",
+          "observed": "FIXED. getGold() 500,000 -> 497,855 against a quote of 2,145 - the spend is the quote exactly; saveState().progression.gold carries 497,855; setting the purse to 1 and restoring the save returns 497,855 and a second commission is not refused. Residual: save/state.js:592 writes sim.progression.gold directly rather than through _setGold, which is the rule-7 shape; I could not produce a stale mirror from it because a load rebuilds the fight and bindWorld re-seeds magic.gold at engine.js:1105, so it is masked rather than correct. harness/api.js:2635 (factionReadmit) is the same shape a third time and syncs only magic.gold."
+        },
+        {
+          "id": "spellmaking-is-a-topic-list-and-not-a-vendor-grid",
+          "result": "pass",
+          "observed": "The counter replaces conversation.list/said/sel and is drawn by buildConversationModel(), walked by _conversationStep()'s d-pad and picked by the same interact press as a topic. Its rows are prose ('what it should do', 'how strong', 'how it should reach - at what you are looking at', 'have it made', 'nothing today'). The currency is gold; the word souls appears nowhere on the commission path. Three rumours in rumours.json point at the spellwrights with no marker. This is remedy point 2 satisfied better than remedy point 3 would have satisfied it, and the round declares the deviation itself."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "Half the item has no world-side surface. Spellmaking is now genuinely reachable, correctly priced, saved, cast and well written - on its own axis it would carry a 7. Enchanting is exactly where round 3 found it: seven people advertise it, enchantQuote has one caller and it is the harness. A strict min-over-axes reading of this item's own aggregation would floor it at 0 on that axis; I have not applied that, because the round built and DECLARED rather than built and claimed, and scoring an honest half-delivery identically to no delivery teaches the wrong lesson. If round 5 does not close it, it should be floored there. Two smaller things also hold it down: the four spellwrights keep no hours (schedule at:null all day, so they are furniture rather than people with lives), and a commissioned spell cannot be named by the player, which is half the pleasure of Morrowind's original system.",
+      "path_to_ten": "Build the enchanting counter on the spellmaking counter's own template - a second CommissionCounter-shaped class behind the `enchanting` topic, reading enchantQuote for the shelf, the point ceiling, the gem grade and the gold multiplier that enchant-services.json already prices per person. Give the four spellwrights hours so a player can arrive when the slate is cold. Add a name row to the counter that takes a short authored list rather than free text, so the made spell is the player's.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-MAG06",
+      "path": "corpus/25-magic/RI-MAG06-effect-behaviour-census.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 6,
+      "native_max": 10,
+      "native_verdict": "the instrument is trustworthy for the first time; what it reports is still mostly blind dials",
+      "score_0_10": 6,
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/dials.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r4/critic-w1-14-r3.json",
+        "reports/w1-14-r4/dials-break-nulldial.json",
+        "reports/w1-14-r4/dials-break-fleeblind.json"
+      ],
+      "checks": [
+        {
+          "id": "the-comparator-has-a-real-null",
+          "result": "pass",
+          "observed": "VERIFIED, by running the arm the round did not publish. At 9fadada the UNBROKEN dial census reports magnitude 33 COUPLED / 15 BLIND, duration 31 / 6, area 10 / 2; --break=nulldial reports 0 COUPLED and 48/37/12 BLIND. 74 dials that read COUPLED when the arms genuinely differ read BLIND when they do not. That is the statement --break=nocast could never make (every row exits at NOT_DELIVERED before readDial()), and the round's relabelling of nocast as a DELIVERY-GATE control is honest and correct."
+        },
+        {
+          "id": "fleeblind-was-a-partial-teardown-and-is-now-a-full-one",
+          "result": "pass",
+          "observed": "Re-running the ROUND-3 CRITIC's own instrument unchanged at HEAD: demoralise magnitude break=none -> COUPLED (2 paths), break=fleeblind -> BLIND (0 paths). In round 3 it could not go blind, because __breakFleeMotion disabled the flee loop and left h_demoralise's fleeLeashM = clamp(magnitude*0.9, 6, 45) publishing through statusReport(). apply.js now suppresses those writes and the event payload under the break."
+        },
+        {
+          "id": "the-previous-critics-null-was-not-clean-and-the-alias-fix-is-why",
+          "result": "pass",
+          "observed": "ADJUDICATED IN THE BUILDER'S FAVOUR, on the critic's own tool rather than on a re-implementation. Round 3 part A reported 4 clean null rows, 6 not delivered and 2 NOT clean - bind_lesser and bind_greater, differing at world.summons.json. The same tool at 9fadada: 6 clean, 0 noise rows, both binds now BLIND(clean null). The mechanism is exactly as claimed: the summons register carries attack_rating (apply.js:886) and the alias grew it between two identical casts. A builder correcting its critic's control is the oldest move there is; this one is falsifiable and it was falsified in the direction the builder predicted."
+        },
+        {
+          "id": "the-teardown-is-the-same-width-as-the-fix",
+          "result": "pass",
+          "observed": "MEASURED RATHER THAN ACCEPTED, because a teardown that breaks more than its fix repairs makes an inert fix look live. Six of nine census rows are byte-identical between the arms and the three that move are exactly the three touch rows. An AREA arm at the effect's own maximum radius (8 m, four bodies) is byte-identical in both arms: [86,86,86,86] vs [86,86,86,86]. Across all shipped spells there are six with volume geometry and every one is active_f 6 / ticks_every_f 12, so no volume in the build has ever ticked twice and the dedupe cannot change one."
+        },
+        {
+          "id": "the-round-published-controls-without-a-treatment-arm",
+          "result": "fail",
+          "observed": "reports/w1-14-r4/ contains four teardown arms and NO unbroken run. 'coupled 0' is only meaningful against a same-commit positive run, and the round compares it implicitly against a round-3 baseline taken before three fixes that change what the world looks like after a cast. I ran the missing arm and it agrees with round 3, so the conclusion survives - but publishing four control arms and no treatment arm is the same shape as publishing a treatment arm and no control."
+        },
+        {
+          "id": "the-census-has-a-world-side-only-signature",
+          "result": "fail",
+          "observed": "Carried from round 3 section 2 and untouched: 12 of the surviving COUPLED readings differ only under world.*, which is getMagicWorld() - the magic module's own bookkeeping, excluded by name under the round-2 verdict's M7. The census v2 already computes the M7-strict variant; the dials probe still does not report it."
+        }
+      ],
+      "hard_fails": [],
+      "why_not_ten": "The instrument is now genuinely controlled - a real null, both partial teardowns repaired, and a positive arm that agrees - and what it reports is that 33 of 48 magnitude dials, 31 of 37 duration dials and 10 of 12 area dials are coupled, with 12 of the couplings being magic writing to its own notebook and 6 duration dials blind on the effects a player notices first. A trustworthy instrument reporting a thin result is a 6, not a 4 and not a 7.",
+      "path_to_ten": "Report the three M7-strict signatures the census v2 already computes, so a world.*-only coupling is not counted as a world-side reader; publish the positive arm alongside the four controls in the same directory; and close the duration dials, which is RI-MAG02's path_to_ten and would move 6 of this item's blind rows on its own.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-MAG04",
+      "path": "corpus/25-magic/RI-MAG04-magic-as-quest-solution.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "not re-measured this round",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "evidence": [],
+      "checks": [],
+      "hard_fails": [],
+      "why_not_ten": "Not re-measured by this critic. SCORING.md 1.1 fixes an unmeasured axis at 0 fail-closed. Excluded from the headline, because a critic should not floor a piece on work it chose not to redo.",
+      "path_to_ten": "Re-measure against the item's own scenarios; the ground-plane fix means a quest-solving spell can now be cast in the province at all, which is a precondition this item has never had.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-MAG05",
+      "path": "corpus/25-magic/RI-MAG05-magic-vfx.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "carried at crit-w1-14-r3-9f2c's HARD FAIL on a forbidden anchor; not retired by anybody",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "evidence": [],
+      "checks": [],
+      "hard_fails": [
+        "crit-w1-14-r3-9f2c's hard fail on a forbidden anchor stands and has not been retired. If it stands, the piece is 0 regardless of every other number in this verdict."
+      ],
+      "why_not_ten": "Not re-measured, and carrying a live hard fail from a superseded verdict that nobody has retired.",
+      "path_to_ten": "Re-measure RI-MAG05 against current-generation references (ARBITRATION section 4 bifurcation), and either retire the hard fail with evidence or record it as standing.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "magic slice not re-measured this round",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "evidence": [],
+      "checks": [],
+      "hard_fails": [],
+      "why_not_ten": "Not re-measured by this critic; 0 fail-closed and excluded from the headline.",
+      "path_to_ten": "Re-run the skill arm (w1-14-r3-skill.mjs and its two break arms) at this commit.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-QST05",
+      "path": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "min-over-axes 0-10",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "magic slice not re-measured this round",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "evidence": [],
+      "checks": [],
+      "hard_fails": [],
+      "why_not_ten": "Not re-measured by this critic; 0 fail-closed and excluded from the headline.",
+      "path_to_ten": "Re-measure the magic slice of non-combat resolution now that demoralise, calm_beast and the commission door all exist in the world.",
+      "ten_by_wave": 2
+    }
+  ],
+  "arbitration": {
+    "ar1_souls_leakage": {
+      "result": "pass",
+      "note": "Nothing rolls. Six identical casts of one commissioned summon give one attack_rating (206) and one hp_max; nine class x range rows give one damage value; the strafe table is deterministic zeroes rather than intermittent misses, which is the signature of geometry rather than dice. The attack_rating leak under the break arm is deterministic and perfectly path-dependent and is recorded as state leakage rather than as an AR-1 failure, following round 3 and S26. Round 3's seven-perturbation Morrowind battery (clock, calendar, disposition, bounty, weather, seed) was NOT re-run and is carried."
+    },
+    "ar2_morrowind_leakage": {
+      "result": "pass",
+      "note": "RE-RUN this round, which round 3 could not do because there was nothing new to test. The round's one new player-facing surface is exactly where a Souls convention would have arrived. It is not a vendor grid: it replaces conversation.list/said/sel, is drawn by buildConversationModel() with the speaker's name and town above it, is walked by the same d-pad and picked by the same interact press as a topic, and its rows are prose rather than field labels. The currency is gold, not souls, and the word souls appears nowhere on the commission path (S15 holds). Lore arrives through people talking - three rumours point at the spellwrights with no marker - rather than through item descriptions. No objective marker, no warp, no procedural loot."
+    },
+    "ar3_seam": {
+      "result": "not_sterile",
+      "seam_sterile": false,
+      "note": "A spell invented in a Morrowind conversation, priced by a Morrowind skill gate, bought with Morrowind gold, cast into a Souls fight - done in one run of the commission probe. The Stone Wastes recluse is gated behind mag_recluse_introduction, so a quest resolution changes what a player can build. demoralise and calm_beast continue to end a fight by emptying the room, carried from round 3 and not re-measured."
+    },
+    "consumption": {
+      "result": "mixed",
+      "note": "Three of six models have a demonstrated world-side consumer and three do not, and the three that do not are named with the measurement that shows it. DEMONSTRATED: the summon's scaling law, whose consumer is an ORDINARY HOSTILE's damage output (131.67 hp with the fix, 620 and a death without) rather than the caster's own summon, which is a better arm than the round-3 one it replaces; the spellmaking model, whose consumer is a person in a town, a topic, a counter on the screen, a purse and a save, with __breakCommissionCounter removing the door and leaving the person; and the ground plane, whose consumer is the cast input gate itself, demonstrated in 9 towns. NOT DEMONSTRATED: the enchanting model (enchantQuote has one caller and it is api.js), duration_s on the damage effects (three byte-identical hp curves), and frenzy's hostileTo (1,200 f@60, zero hp moved)."
+    }
+  },
+  "single_biggest_gap": {
+    "id": "GAP-W1-magic-bolt-cannot-lead-a-body-that-walks",
+    "statement": "Every projectile spell in the game misses a target moving laterally at walking pace at normal engagement range. Five damage effects, 14 m, a 5 m sideways walk: 0 damage, all five, deterministically - against 48/43/41/43/29 for the same body standing still and 48/43/41/43/29 for the same body retreating ten metres along the bolt's own axis. Inside 6 m the same walk is hit for full damage.",
+    "why_biggest": "It is not that magic is weak; it is that offensive magic does not function against anything that behaves like a Souls enemy, and Souls enemies circle. Every other thing this round built - a spellwright you walk to, a counter drawn on a real screen, a purse that really moves, a spell nobody wrote, a ground plane that finally lets you cast outdoors - delivers the player to the moment where they throw the thing they invented at something, and the thing they invented misses. It has been named for two rounds.",
+    "remedy": "1. Instrument the miss first: reuse spell_hit with miss:true (the event vocabulary is closed, RULES.md 15) carrying the target's position at spawn, at cutoff and at expiry plus the closest approach in metres - if that is 0.6 m the fix is the hit radius and if it is 4 m the fix is the steering. 2. Look at tracking_cutoff first (LIGHT 0.35, HEAVY 0.3 in cast-classes.json): the near-range row lands and the far-range row does not, which is a homing window closing before the flight ends rather than a turn rate that is too low. 3. Fix it by LEAD, not by homing harder - aim where the body will be when the bolt arrives and then stop steering - because a bolt that steers to impact cannot be dodged and min_dodge_window_f: 20 becomes a lie.",
+    "acceptance": "For each of damage_health, fire_damage, frost_damage, shock_damage, poison_damage at magnitude 20, LIGHT/projectile, against one body at 6 m and at 14 m, driven in a straight line by setEntityPos at 0 m/s, 1.5 m/s lateral, 3 m/s lateral and 3 m/s along the axis, over 200 f@60: (1) all 40 cells deliver non-zero damage and the damage is the same number in every cell; (2) the miss instrumentation reports closest approach <= the class's radius_m in every delivering cell; (3) a body that rolls on the frame the bolt is min_dodge_window_f away takes 0 in all 40 cells - a fix that passes 1 and 2 while failing 3 is an AR-1 problem, not a win; (4) --break=nolead reddens the eight lateral cells at 14 m and only those. Today's reading against (1) is 8 of 40 cells at zero, and all eight are the lateral ones beyond 6 m."
+  },
+  "secondary_gaps": [
+    "Duration buys nothing on fire_damage, frost_damage, poison_damage and restore_health (three byte-identical hp curves at 0/5/30 s), and the same defect exists at the area geometry because no volume in the build ever ticks twice.",
+    "The enchanting counter does not exist: enchantQuote has one caller and it is the harness, while seven people advertise the service.",
+    "A swimming body cannot cast and is told nothing: groundInActiveCell returns the sea bed, so magic.airborne is true 40 m below the surface, and the press produces no event on either stream.",
+    "engine.spawn still drops opts.side - a bind_lesser summon's entity record is eid/kind/archetype/pos/hp with kind 'enemy', so no summon has a side to fight on.",
+    "A reservoir refusal is instrumented and not spoken: INPUT_DROPPED carries have and need where S29's travel fence carries text.",
+    "frenzy writes frenzy_target and nothing reads it: 1,200 f@60 with two bodies 0.7 m apart and neither loses a hit point.",
+    "The dial census still has no world-side-only signature, so 12 COUPLED readings are magic writing to its own notebook.",
+    "Four teardown arms were published without the positive arm at the same commit.",
+    "INSTRUMENT HAZARD, not this piece's: loadState into a town immediately after another town leaves the body at the PREVIOUS cell's ground for one load (town-lilmoth reads y=0.2495 airborne:true, then y=2.68 airborne:false on a second load of the same state). Every sweeping probe in the tree is exposed to it."
+  ],
+  "what_i_could_not_do": [
+    "My first state sweep measured the load order rather than the towns and I nearly published it; both arms load each state twice now.",
+    "Ten frames of settle was not enough and cost me a wrong reading of Stormhold, which spawns at y=150.95 and lands at 141.06.",
+    "My first moving-target arm was vacuous - getCombatState().enemies[] carries no position, so it could not show the target had moved - and is replaced rather than deleted.",
+    "My first commission run commissioned a spell that already existed (fire_damage HEAVY/area_at_range) and my own assertion caught it; single-effect commissions can reproduce a shipped signature.",
+    "I counted spell_hit off the magic stream in the first touch run; it is a combat-bus event. The applications column is effect_apply, which is on the magic stream, and the damage column was unaffected.",
+    "RI-MAG04, RI-MAG05, RI-PRG03 and RI-QST05 were not re-measured and sit at 0 fail-closed. RI-MAG05's hard fail has not been retired.",
+    "I did not re-run the census, the wards arm, the skill arm or the VFX arm, and I did not independently re-derive focus_base against RI-MAG02 section D - the round claims it and I did not check it.",
+    "I could not show the enchanting half failing, because there is nothing to press.",
+    "I did not re-measure W1-04's Lilmoth reachability finding; my own walk went to the quay-side post the round chose because of it, and arrived."
+  ],
+  "contention": {
+    "gate_command": "node tools/contention.mjs --gate",
+    "result": "GO before every run; no WAIT was ever proceeded past",
+    "browsers": "One browser at a time for the first four arms; the last three overlapped two browser instances against a ceiling of six, which the gate reported as GO with room for two to four more.",
+    "timing_figures_published": 0,
+    "note": "Every number published in this verdict is a hit point, a frame count, an event count, a metre, a gold price or a boolean, and none of them moves with load. No timing figure is published anywhere."
+  },
+  "files_touched": [
+    "corpus/90-verdicts/wave1/W1-14-r4.md",
+    "corpus/90-verdicts/wave1/W1-14-r4.json",
+    "orchestration/status/critic-w1-14-r4.json",
+    "tools/harness/critic-w1-14-r4-ground.mjs",
+    "tools/harness/critic-w1-14-r4-summon.mjs",
+    "tools/harness/critic-w1-14-r4-touch.mjs",
+    "tools/harness/critic-w1-14-r4-commission.mjs",
+    "tools/harness/critic-w1-14-r4-carried.mjs",
+    "tools/harness/critic-w1-14-r4-motion.mjs",
+    "tools/harness/critic-w1-14-r4-shot.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r4/",
+    "docs/shots/2026-08-08-critic-w1-14-r4-the-counter-where-you-invent-a-spell.png",
+    "reports/blog-feed.jsonl",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r4/"
+  ],
+  "files_claimed": [],
+  "redundant_with": [
+    "W1-14-r4",
+    "W1-14-r3",
+    "critic-w1-14-r3"
+  ]
+}

@@ -9,6 +9,7 @@
 // described as a screen.
 //
 // Steps the simulation and walks a body, so it launches its own browser (rule 20).
+import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, log, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
@@ -54,13 +55,15 @@ try {
     H.stepFrames(2);
     H.renderFrame();
     const t = H.getRenderedText();
+    const png = await H.screenshot();
     return {
+      png,
       walk_arrived: !!(walk && walk.arrived), gap_m: gap, walked_frames: walk ? walk.frames : null,
       drawn: (t.distinct || []).slice(0, 30),
       counter: H.commissionState() ? H.commissionState().options.map((o) => o.text) : null,
     };
   });
-  await handle.page.screenshot({ path: path.resolve(out) });
+  fs.writeFileSync(path.resolve(out), Buffer.from(String(info.png).replace(/^data:image\/png;base64,/, ''), 'base64'));
 } finally {
   await handle.close();
 }

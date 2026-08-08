@@ -1,0 +1,114 @@
+{
+  "schema": "elder-souls/critic-w1-14-r4-summon@1",
+  "commit": "ec0b76783ea4bcd0a8fac6f6ceb6a14964c4afcb",
+  "casts": 6,
+  "arms": {
+    "fixed": {
+      "broken": false,
+      "baseline": {
+        "drowned_lesser": 86,
+        "drowned_greater": 168
+      },
+      "per_effect": {
+        "bind_lesser": {
+          "archetype": "drowned_lesser",
+          "spell": "custom_1_critic_r4_bind_lesser",
+          "ratings": [
+            206,
+            206,
+            206,
+            206,
+            206,
+            206
+          ],
+          "distinct": [
+            206
+          ],
+          "plain_after": 86,
+          "baseline": 86
+        },
+        "bind_greater": {
+          "archetype": "drowned_greater",
+          "spell": "custom_2_critic_r4_bind_greater",
+          "ratings": [
+            402,
+            402,
+            402,
+            402,
+            402,
+            402
+          ],
+          "distinct": [
+            402
+          ],
+          "plain_after": 168,
+          "baseline": 168
+        }
+      },
+      "player_hp0": 620,
+      "player_hp_min": 488.33,
+      "worst_wound": 131.67,
+      "deaths": 0
+    },
+    "broken": {
+      "broken": true,
+      "baseline": {
+        "drowned_lesser": 86,
+        "drowned_greater": 168
+      },
+      "per_effect": {
+        "bind_lesser": {
+          "archetype": "drowned_lesser",
+          "spell": "custom_1_critic_r4_bind_lesser",
+          "ratings": [
+            206,
+            493,
+            1179,
+            2819,
+            6740,
+            16115
+          ],
+          "distinct": [
+            206,
+            493,
+            1179,
+            2819,
+            6740,
+            16115
+          ],
+          "plain_after": 16115,
+          "baseline": 86
+        },
+        "bind_greater": {
+          "archetype": "drowned_greater",
+          "spell": "custom_2_critic_r4_bind_greater",
+          "ratings": [
+            402,
+            961,
+            2298,
+            5495,
+            13139,
+            31415
+          ],
+          "distinct": [
+            402,
+            961,
+            2298,
+            5495,
+            13139,
+            31415
+          ],
+          "plain_after": 31415,
+          "baseline": 168
+        }
+      },
+      "player_hp0": 620,
+      "player_hp_min": 0,
+      "worst_wound": 620,
+      "deaths": 1
+    }
+  },
+  "control_is_live": true,
+  "pass": true,
+  "failures": []
+}

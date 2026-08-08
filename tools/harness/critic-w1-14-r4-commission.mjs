@@ -246,7 +246,11 @@ const COMMISSION = (page, town, wrightId, tuples) => page.evaluate(async ({ TOWN
       ? H.getCombatState().player.yaw : 0) * Math.PI / 180;
     const sp = H.spawn('drowned_lesser', pp[0] + Math.sin(yaw) * 6.0, pp[2] + Math.cos(yaw) * 6.0);
     const tid = sp && sp.eid ? sp.eid : sp;
-    H.stepFrames(4);
+    // LOCK ON, so the caster is facing the target. RI-MAG01 §C latches aim at frame 1 off the
+    // body's yaw; a body that has just walked across a town is facing wherever the walk left it,
+    // and a bolt thrown at the back of the caster's head is a fixture, not a finding.
+    try { H.lockOn(tid); } catch (e) { /* no lock available */ }
+    H.stepFrames(30);
     const hp0 = (H.getCombatState().enemies.find((e) => e.id === tid) || {}).hp;
     H.magicEventsDrain();
     const pc = H.pressCast(200);

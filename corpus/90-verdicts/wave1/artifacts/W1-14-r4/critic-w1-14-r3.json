@@ -1,0 +1,309 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3@1",
+  "harness_version": 2,
+  "parts": [
+    "A"
+  ],
+  "notes": [],
+  "A": {
+    "design": "two arms, identical dial settings, same seed — every ACTIVE row must read BLIND",
+    "rows": [
+      {
+        "effect": "fire_damage",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "damage_health",
+        "range": "target",
+        "mag": 40,
+        "dur": 0,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "restore_health",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "paralyse",
+        "range": "target",
+        "mag": 20,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "calm_beast",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "demoralise",
+        "range": "target",
+        "mag": 34,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      },
+      {
+        "effect": "bind_lesser",
+        "range": "self",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "bind_greater",
+        "range": "self",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "shield",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "feather",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 0,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "shatter",
+        "range": "target",
+        "mag": 40,
+        "dur": 0,
+        "area": 4,
+        "delivered": [
+          1,
+          1
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "BLIND(clean null)"
+      },
+      {
+        "effect": "silence",
+        "range": "target",
+        "mag": 40,
+        "dur": 20,
+        "area": 4,
+        "delivered": [
+          0,
+          0
+        ],
+        "refused": [
+          null,
+          null
+        ],
+        "null_differing": [],
+        "null_verdict": "NOT_DELIVERED"
+      }
+    ],
+    "null_noise_rows": [],
+    "positive": [
+      {
+        "effect": "bind_lesser",
+        "break": "none",
+        "lo": 1,
+        "hi": 90,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "enemies.json",
+          "entities.json",
+          "status.json",
+          "world.summons.json"
+        ],
+        "verdict": "COUPLED"
+      },
+      {
+        "effect": "bind_lesser",
+        "break": "bindblind",
+        "lo": 1,
+        "hi": 90,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [],
+        "verdict": "BLIND"
+      },
+      {
+        "effect": "bind_greater",
+        "break": "none",
+        "lo": 1,
+        "hi": 45,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "enemies.json",
+          "entities.json",
+          "status.json",
+          "world.summons.json"
+        ],
+        "verdict": "COUPLED"
+      },
+      {
+        "effect": "bind_greater",
+        "break": "bindblind",
+        "lo": 1,
+        "hi": 45,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [],
+        "verdict": "BLIND"
+      },
+      {
+        "effect": "demoralise",
+        "break": "none",
+        "lo": 1,
+        "hi": 34,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [
+          "entities.json",
+          "status.json"
+        ],
+        "verdict": "COUPLED"
+      },
+      {
+        "effect": "demoralise",
+        "break": "fleeblind",
+        "lo": 1,
+        "hi": 34,
+        "delivered": [
+          1,
+          1
+        ],
+        "differing": [],
+        "verdict": "BLIND"
+      }
+    ],
+    "break_hooks_present": {
+      "bindblind": true,
+      "fleeblind": true
+    }
+  }
+}

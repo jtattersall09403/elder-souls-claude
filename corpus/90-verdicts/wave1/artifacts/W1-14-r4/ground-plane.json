@@ -1,0 +1,602 @@
+{
+  "schema": "elder-souls/critic-w1-14-r4-ground@1",
+  "commit": "ec0b76783ea4bcd0a8fac6f6ceb6a14964c4afcb",
+  "states_swept": 49,
+  "above_zero": 23,
+  "at_zero": 26,
+  "at_zero_states": [
+    "arena_champion",
+    "arena_duel",
+    "arena_flat",
+    "arena_probe",
+    "barge-hold",
+    "cam_boss_arena",
+    "cam_cistern",
+    "cam_collision_rig",
+    "cam_flat_plain",
+    "cam_mangrove",
+    "cam_pinch",
+    "cam_stair",
+    "dungeon_primary",
+    "helstrom-market",
+    "interior_firelit",
+    "rootlands-well-graph",
+    "stormhold-street",
+    "sv5-journal-bloodstain",
+    "thorn-hall",
+    "ui-journal",
+    "wpn-dummy-arena",
+    "wpn-loadout-o1_sword_shield",
+    "wpn-loadout-o2_dual",
+    "wpn-loadout-o3_twohand",
+    "wpn-material-range",
+    "writ-house"
+  ],
+  "table": [
+    {
+      "state": "arena_champion",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "arena_duel",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "arena_flat",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "arena_probe",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "barge-hold",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_boardwalk",
+      "y": 0.85,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_boss_arena",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_cistern",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_collision_rig",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_flat_plain",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_mangrove",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_pinch",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "cam_stair",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "default",
+      "y": 2.68,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "dungeon_primary",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "endgame-200q",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "helstrom-market",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "interior_firelit",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "material_showcase",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "npc_showcase",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "rootlands-hollow",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "rootlands-well-graph",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "settlement_primary_street",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "showcase_patch",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "soulrest-quay",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "stone-wastes-count",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "stormhold-street",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "sv1-midquest",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "sv5-journal-bloodstain",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "swamp_canopy",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "thorn-hall",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "town-archon",
+      "y": 3.42,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "town-blackrose",
+      "y": 2.59,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "town-gideon",
+      "y": 2.71,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "town-helstrom",
+      "y": 27.2,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "town-lilmoth",
+      "y": 2.68,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "town-soulrest",
+      "y": 8.13,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "town-stormhold",
+      "y": 150.9486,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "town-thorn",
+      "y": 13.28,
+      "above_zero": true,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [
+        "airborne"
+      ],
+      "fixed_error": null
+    },
+    {
+      "state": "ui-journal",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "vista_primary",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "water_shallows",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "wld-dres-raid-road",
+      "y": -1.404,
+      "above_zero": true,
+      "fixed_cast": 0,
+      "fixed_drop": [],
+      "broken_cast": 0,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "wpn-dummy-arena",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "wpn-loadout-o1_sword_shield",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "wpn-loadout-o2_dual",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "wpn-loadout-o3_twohand",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "wpn-material-range",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    },
+    {
+      "state": "writ-house",
+      "y": 0,
+      "above_zero": false,
+      "fixed_cast": 1,
+      "fixed_drop": [],
+      "broken_cast": 1,
+      "broken_drop": [],
+      "fixed_error": null
+    }
+  ],
+  "moving": {
+    "fixed": {
+      "broken": false,
+      "from": [
+        2800.05,
+        5030.6
+      ],
+      "to": [
+        2793.67,
+        5029.49
+      ],
+      "walked_m": 6.48,
+      "y": 2.68,
+      "airborne": false,
+      "cast_start": 1,
+      "dropped": 0,
+      "drop_reasons": []
+    },
+    "broken": {
+      "broken": true,
+      "from": [
+        2800.05,
+        5030.6
+      ],
+      "to": [
+        2793.67,
+        5029.49
+      ],
+      "walked_m": 6.48,
+      "y": 2.68,
+      "airborne": true,
+      "cast_start": 0,
+      "dropped": 1,
+      "drop_reasons": [
+        "airborne"
+      ]
+    }
+  },
+  "water": {
+    "pos": [
+      0,
+      -1.404,
+      0
+    ],
+    "water_depth_m": 41.148,
+    "water_band": "W5",
+    "ground_y": -41.148,
+    "pos_y_m": -1.404,
+    "airborne": true,
+    "player_state": "SWIM",
+    "magic_events": [],
+    "drops": []
+  },
+  "control_is_live": false,
+  "pass": false,
+  "failures": [
+    "FIXED arm cast in only 9 of 23 above-zero states: endgame-200q, material_showcase, npc_showcase, rootlands-hollow, settlement_primary_street, showcase_patch, soulrest-quay, stone-wastes-count, sv1-midquest, swamp_canopy, town-stormhold, vista_primary, water_shallows, wld-dres-raid-road",
+    "INERT CONTROL: the BROKEN arm was NOT refused as 'airborne' in 15 of 23 above-zero states"
+  ]
+}

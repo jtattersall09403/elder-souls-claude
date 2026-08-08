@@ -3,10 +3,12 @@
   "role": "critic",
   "piece": "W1-14",
   "round": 4,
-  "state": "running",
+  "state": "done",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "write verdict md+json, shot, blog line, commit",
+  "next_step": "commit; hand to W1-14 round 5",
   "files_touched": [
+    "corpus/90-verdicts/wave1/W1-14-r4.md",
+    "corpus/90-verdicts/wave1/W1-14-r4.json",
     "orchestration/status/critic-w1-14-r4.json",
     "tools/harness/critic-w1-14-r4-ground.mjs",
     "tools/harness/critic-w1-14-r4-summon.mjs",
@@ -16,17 +18,11 @@
     "tools/harness/critic-w1-14-r4-motion.mjs",
     "tools/harness/critic-w1-14-r4-shot.mjs",
     "reports/critic-w1-14-r4/",
-    "corpus/90-verdicts/wave1/W1-14-r4.md"
+    "docs/shots/2026-08-08-critic-w1-14-r4-the-counter-where-you-invent-a-spell.png",
+    "reports/blog-feed.jsonl",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r4/"
   ],
-  "files_claimed": [
-    "corpus/90-verdicts/wave1/W1-14-r4.md",
-    "corpus/90-verdicts/wave1/W1-14-r4.json",
-    "orchestration/status/critic-w1-14-r4.json",
-    "tools/harness/critic-w1-14-r4-",
-    "reports/critic-w1-14-r4/",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
-  ],
+  "files_claimed": [],
   "redundant_with": [
     "W1-14-r4"
   ],
@@ -44,5 +40,9 @@
     "DURATION still dead: fire_damage at D=0/5/30 gives total 43 with one step on all three.",
     "engine.spawn still drops opts.side: summon entity keys are eid,kind,archetype,pos,hp and kind is enemy.",
     "frenzy_target is written (e0 -> e1) and neither body loses a hit point in 1200 f@60."
-  ]
+  ],
+  "finished_at": "2026-08-08T06:35:00Z",
+  "verdict": "FAIL 4/10 (min over the four items measured), gate 7.0",
+  "single_biggest_gap": "GAP-W1-magic-bolt-cannot-lead-a-body-that-walks \u2014 0 damage from all five damage effects against a body walking laterally at 14 m, full damage still and full damage retreating, full damage at 6 m.",
+  "contention": "node tools/contention.mjs --gate returned GO before every run; no WAIT was proceeded past. One browser for the first four arms; two overlapping for the last three against a ceiling of six. No timing figure is published."
 }
