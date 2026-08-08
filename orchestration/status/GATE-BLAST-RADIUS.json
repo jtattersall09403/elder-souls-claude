@@ -1,0 +1,14 @@
+{
+  "task_id": "GATE-BLAST-RADIUS",
+  "role": "builder — fix the fail-closed pre-commit gate that stops every other agent on the box (rule 13 violation, admitted twice)",
+  "state": "in_progress",
+  "commit_at_start": "9063779",
+  "next_step": "checked orchestration/status/ for a predecessor status file on this exact task and found none (searched by keyword across all status files, checked recent mtimes, checked git log and NEXT-DISPATCH.md) -- treating as a fresh start, NOT a restart of finished work. Proceeding to: (1) read tools/ownership.mjs and tools/harness/boot-check.mjs, (2) redesign check-shipped-files.mjs to be advisory at commit time / blocking at push time (tools/bank.mjs) with the narrow self-staged exception, (3) sweep .githooks/ and tools/harness/ for the same fail-closed-on-a-neighbour's-work shape and name every instance, (4) extend --self-test with two arms that genuinely disagree (self-introduced vs neighbour's missing module), (5) bank and push.",
+  "files_touched": [],
+  "files_claimed": [
+    "tools/check-shipped-files.mjs",
+    "tools/bank.mjs",
+    ".githooks/pre-commit"
+  ],
+  "notes": "No predecessor status file exists for this task under any name I could find (grepped for check-shipped-files, fail-closed, fourteen consecutive, advisory, blast radius, gate-fix across orchestration/status/*.json; checked mtimes; checked git log). The dispatch says a predecessor established the repro and was killed by a usage limit -- if that work is real it may be unsaved (rule 1 violation by that predecessor, or it never got past investigation). Reproducing from scratch rather than guessing at unsaved state."
+}

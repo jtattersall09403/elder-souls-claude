@@ -5,8 +5,11 @@
   "round": "W1-12 round 2",
   "state": "running",
   "started": "2026-08-08",
-  "next_step": "read RULES, CLAUDE.md, r1 verdict, reports/w1-12-r2/survey.md, status/W1-12-r2.json",
-  "files_touched": ["orchestration/status/W1-12-r2-critic.json"],
+  "resumed_by": "successor after predecessor killed by usage limit",
+  "next_step": "read ai.js closure rule; verify B-arm frame trace; then browser M1/M2",
+  "files_touched": [
+    "orchestration/status/W1-12-r2-critic.json"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-12-r2.md",
     "corpus/90-verdicts/wave1/W1-12-r2.json",
@@ -14,5 +17,16 @@
     "docs/shots/"
   ],
   "redundant_with": [],
-  "notes": "Fresh-context critic. Four push points: (1) verify rejection of r1 closure remedy from frame trace, (2) measure M1/M2 if browser available, (3) audit delete-the-fix arms for flattering metrics, (4) perturb sample of 39 unconsumed leaves. Plus review S22 ruling contrary case."
+  "progress": {
+    "read_rules": true,
+    "read_survey": true,
+    "read_r1_verdict": false,
+    "push1_closure_frametrace": false,
+    "push2_M1_M2": false,
+    "push3_teardown_arms": false,
+    "push4_consumption_39": false,
+    "push5_S22_contrary": false
+  },
+  "notes": "Predecessor status showed only next_step=read; no partial artifacts found on disk or in git. Restarting the analysis but reusing nothing that was never written.",
+  "contention_at_start": "GO \u2014 1 browser instance, load 0.57/core. The box is quiet NOW; M1/M2 browser work is available to me and was not to the round."
 }

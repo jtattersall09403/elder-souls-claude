@@ -1,0 +1,18 @@
+{
+  "task_id": "critic-w1-15-r4",
+  "role": "critic",
+  "piece": "W1-15 round 4 critic — interior lighting, stealth, fencing, crime",
+  "status": "in_progress",
+  "started_at": "2026-08-08",
+  "spec": "corpus/90-verdicts/wave1/W1-15-r3.md + orchestration/status/W1-15-r4.json",
+  "next_step": "read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a frame-time number, re-run 2x2, perturb census",
+  "redundant_with": ["W1-15-r4"],
+  "files_touched": ["orchestration/status/critic-w1-15-r4.json"],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md",
+    "corpus/90-verdicts/wave1/W1-15-r4.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "findings": [],
+  "could_not_do": []
+}

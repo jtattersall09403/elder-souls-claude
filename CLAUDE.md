@@ -49,6 +49,22 @@ fight** — frames, stamina, hitboxes, animation, enemy behaviour. **Morrowind w
    zero. A fix is not a fix until it has been deleted on a copy and the old number has come back.
 4. **Report what you could not do as plainly as what you did.**
 
+## The second standing goal: a quarter of the cost, none of the quality
+
+`orchestration/COST.md` is binding and runs **in parallel with the build**, through the same
+gauntlet — plan → plan critic → build → build critic, no agent grading its own saving. The bar:
+**model spend per hour of runtime down to 25% of baseline**, with four guards that must hold
+together — cost, **parallelism ≥ 12**, quality (verdict scores and critic find-rate), and rigour (the
+five non-negotiables still run). *"I don't want to save cost by running more slowly or performing
+worse. I want to increase efficiency."*
+
+Two things make this real rather than aspirational. **Measure, never guess** — the session transcript
+under `/root/.claude/projects/` carries per-request model, timestamp and token counts by class, and
+it is the ground truth. **Reversibility is a hard requirement**: every change lands with a before, a
+named one-step reversal that has actually been executed on a copy, an after, and a tripwire. The
+largest known lever is that the fleet is essentially all Opus — 3,230 Opus requests against 29
+Sonnet — while the model-choice policy that would fix it has been written down and never applied.
+
 ## Running the fleet
 
 `orchestration/TICK.md` is the loop: measure contention, bank, top up. **Never fewer than 12 agents

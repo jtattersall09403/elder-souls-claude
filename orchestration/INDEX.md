@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `7db8368`: 781 tools, 153 reference
-items, 84 pieces in flight.
+so it cannot drift. Generated at `9063779`: 781 tools, 153 reference
+items, 88 pieces in flight.
 
-Its purpose is to stop 84+ concurrent agents each paying separately to discover the
+Its purpose is to stop 88+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1118,6 +1118,11 @@ work is the difference between resuming and starting over.
 | piece | state | next step | files |
 |---|---|---|---|
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
+| `W1-12-r2-critic` | running | read ai.js closure rule; verify B-arm frame trace; then browser M1/M2 | `orchestration/status/W1-12-r2-critic.json` |
+| `critic-w1-15-r4` | ? | read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a fram | `orchestration/status/critic-w1-15-r4.json` |
+| `GATE-BLAST-RADIUS` | in_progress | checked orchestration/status/ for a predecessor status file on this exact task and found n | — |
+| `RESEARCH-COSTEXT01` | running | run WebSearch queries per category, log sources found, then write reports/cost/RESEARCH-RE | `orchestration/status/RESEARCH-COSTEXT01.json` |
+| `COST-INSTRUMENT-plan` | running | verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-IN | `orchestration/status/COST-INSTRUMENT-plan.json` |
 | `W1-PROSE-TICS-r4-instrument` | ? | read RI-MTH03 + JUDGEMENT, then design leak fix | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `PLT01-STEPRATE` | running | read S39, NEXT-DISPATCH U, RI-PLT01, loop.js | `orchestration/status/PLT01-STEPRATE.json` |
@@ -1129,7 +1134,6 @@ work is the difference between resuming and starting over.
 | `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `W1-TOUCH-r2` | in_progress | offline while the box is over its ceiling: item C (the 'by construction' comments) and rea | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `broken-blog-images-fix` | ? | none -- banked and pushed | `tools/progress.mjs` `docs/progress.html` `docs/index.html` `tools/playability/check-image-refs.mjs` `orchestration/NEXT-DISPATCH.md` |
-| `W1-12-r2-critic` | running | read RULES, CLAUDE.md, r1 verdict, reports/w1-12-r2/survey.md, status/W1-12-r2.json | `orchestration/status/W1-12-r2-critic.json` |
 | `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |

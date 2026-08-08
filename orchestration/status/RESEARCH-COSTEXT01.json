@@ -1,0 +1,12 @@
+{
+  "task_id": "RESEARCH-COSTEXT01",
+  "role": "research agent (external evidence for COST.md programme)",
+  "piece": "COST-RESEARCH",
+  "state": "running",
+  "started": "2026-08-08",
+  "goal": "Search online for techniques with published evidence for reducing token cost in orchestrator+subagent workflows (prompt caching, model routing/cascades, context management, critic/verification loop cost). Produce testable hypotheses ranked by expected size x ease of testing.",
+  "next_step": "run WebSearch queries per category, log sources found, then write reports/cost/RESEARCH-RESEARCH-COSTEXT01.md",
+  "files_touched": ["orchestration/status/RESEARCH-COSTEXT01.json"],
+  "files_claimed": ["reports/cost/RESEARCH-RESEARCH-COSTEXT01.md"],
+  "notes": "Research only. No repo behaviour changes, no builds, no policy edits. Does not write to orchestration/plans or orchestration/NEXT-DISPATCH.md."
+}

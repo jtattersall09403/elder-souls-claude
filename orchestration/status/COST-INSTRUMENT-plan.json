@@ -1,0 +1,12 @@
+{
+  "task_id": "COST-INSTRUMENT-plan",
+  "role": "plan agent (PLAN-LOOP.md)",
+  "piece": "COST-INSTRUMENT",
+  "state": "running",
+  "started": "2026-08-08",
+  "goal": "Plan for the cost instrument: C/H measurement, baseline, guards G0-G3, experiment protocol, external research.",
+  "next_step": "verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-INSTRUMENT.md",
+  "files_touched": ["orchestration/status/COST-INSTRUMENT-plan.json"],
+  "files_claimed": ["orchestration/plans/COST-INSTRUMENT.md"],
+  "notes": "Plan only. Does not build tools/cost.mjs."
+}
