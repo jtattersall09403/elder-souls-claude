@@ -1,0 +1,22 @@
+{
+  "task_id": "critic-w1-14-r4",
+  "role": "critic",
+  "piece": "W1-14",
+  "round": 4,
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "next_step": "read RULES, INDEX, ARBITRATION S22, W1-14-r3 verdict, W1-14-r4 status",
+  "files_touched": [
+    "orchestration/status/critic-w1-14-r4.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-14-r4.md",
+    "corpus/90-verdicts/wave1/W1-14-r4.json",
+    "orchestration/status/critic-w1-14-r4.json",
+    "tools/harness/critic-w1-14-r4-",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-14-r4"],
+  "notes": "Critic with fresh context. Gate 7.0, score min-over-axes."
+}

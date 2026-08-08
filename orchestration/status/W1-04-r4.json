@@ -1,10 +1,10 @@
 {
   "task_id": "W1-04-r4",
-  "state": "fixes landed and committed by the bank sweep; S3/S4 of the live arm being re-taken",
+  "state": "COMPLETE",
   "started": "2026-08-08",
   "commit_at_start": "9e962a4",
   "piece": "W1-04 round 4 - settlements, interiors and the people in them",
-  "next_step": "land S3/S4, then commit status + blog + reports",
+  "next_step": "For a critic: node tools/world/w1-04-r4-join.mjs (offline, ~15 s, includes the 2x2 delete-the-fix, the roof raycast and the distinctness floors); node tools/check-building-fits-room.mjs --self-break --verbose; node tools/world/w1-04-r4-live.mjs --only S1,S2 (the live join and its control); --only S5 --rooms 24 (the null control the pixel sweep fails). tools/world/w1-04-consumption.mjs was EDITED AND NOT RE-RUN \u2014 run it first.",
   "files_touched": [
     "docs/shots/2026-08-08-w1-04-r4-blackrose-inn-outside-now-contains-inside.png",
     "docs/shots/2026-08-08-w1-04-r4-helstrom-roofs-now-cover-the-buildings.png",
@@ -14,8 +14,10 @@
     "game/src/world/province.js",
     "orchestration/status/W1-04-r4.json",
     "reports/blog-feed.jsonl",
+    "reports/w1-04-r4-survey.md",
     "reports/w1-04-r4/join.json",
     "reports/w1-04-r4/live-S1-S2.json",
+    "reports/w1-04-r4/live-S3-S4.json",
     "reports/w1-04-r4/live-and-shots.json",
     "reports/w1-04-r4/live.json",
     "reports/w1-04-r4/vp04-survey.json",
@@ -71,12 +73,31 @@
     "check": "tools/check-building-fits-room.mjs, wired into tools/check-data.mjs; --self-break shows 112 of 112 failing with the join removed",
     "gates": "node tools/harness/boot-check.mjs PASS; node tools/check-data.mjs PASS",
     "live_S1": "112 enterable buildings read off the RUNNING engine: 0 draw an exterior smaller than their own room; 0 records the engine failed to join; worst live area ratio 1.0887",
-    "live_S2_control": "the join cut in the live page: 112 of 112 fail (worst 0.2116); re-running the engine's own setSettlements() restores 0 of 112. The control has a demonstrated failure mode."
+    "live_S2_control": "the join cut in the live page: 112 of 112 fail (worst 0.2116); re-running the engine's own setSettlements() restores 0 of 112. The control has a demonstrated failure mode.",
+    "live_S3_S4_S5": {
+      "S3 floor": "same room read twice across two fixed steps = 1 distinct; leave and re-enter = 1 distinct",
+      "S3 rooms": "40 of 40 distinct (capped: the 115-room sweep outlived its wrapper timeout under load)",
+      "S3 n2 correction": "pointing 40 records at one record's CONTENTS gives 40 distinct, and that is correct, not a failure: buildInterior seeds prop placement off hashStr(rec.id). The offline arm builds the same record OBJECT and returns 1.",
+      "S4": "emptying the room's group: build record still says 114 meshes, the scene read says 0 and the hash becomes the hash of nothing; restoring returns the original hash",
+      "S5 null control": "room builder cut to a no-op \u2014 1 distinct signature over 23 doors on the generic interior cell, where the pixel sweep returns one image per door. barge-hold is a hand-built named cell the cut does not touch and is reported separately."
+    }
   },
   "method_deviations": [
     "node tools/contention.mjs --gate returned GO at the start of the run and WAIT (exit 3) later, at 2 browser instances and load 5.59 per core against a ceiling of 4.0. RULES.md rule 21 permits proceeding if it is declared: I did, ONCE, with ONE browser (tools/world/w1-04-r4-live.mjs) kept for the whole run, because the capture daemon's query path is a read-only whitelist and every section of the live arm mutates the world. The two pictures go through the pooled daemon and launch nothing.",
     "NO TIMING FIGURE is published anywhere in this piece (rule 26).",
     "game/src/render/exterior.js was undeclared by any live piece when I started; I declared it before writing (rule 16). It carries the shrink pass, which is where the round-3 verdict's blocking gap lives."
   ],
-  "commit_note": "My source and tool changes were swept into commit a2031bb ('The engine and every instrument measuring it disagreed about 5,760 answers') by another agent's commit taking the whole index, exactly as RULES.md rule 17 describes. The content landed correctly and I have not unpicked it (rule 17's own instruction). Everything after that point I commit myself with --only."
+  "commit_note": "My source and tool changes were swept into commit a2031bb ('The engine and every instrument measuring it disagreed about 5,760 answers') by another agent's commit taking the whole index, exactly as RULES.md rule 17 describes. The content landed correctly and I have not unpicked it (rule 17's own instruction). Everything after that point I commit myself with --only.",
+  "not_done_stated_plainly": [
+    "tools/world/w1-04-consumption.mjs was EDITED (its vacuous exterior_restored_on_exit check replaced with one that reads the scene and can fail) and NOT RE-RUN. The aggregation (RULES.md rule 9) has not been run end to end on this tree. The new check degrades to FAIL, not to PASS, if the verb it needs is absent \u2014 the safe direction \u2014 but it is unverified.",
+    "The live distinctness sweep is capped at 40 rooms (S5 at 24). Round 2's '92 distinct signatures over 115' is re-taken offline at 115 and live at 40, not live at 115.",
+    "The 12 residual deep overlaps and the three townspeople standing in solid masonry are NOT fixed. The remedy is in the settlement data (buildings[].offset_m re-derived with RI-WLD03 R4's legibility rule); this round deliberately moved no building.",
+    "41 rooms are now smaller than their record declares, worst archon-market keeping 17.1% of its declared area. That is the town plan's conflict made visible rather than hidden, and it is the honest cost of the fix.",
+    "inCoverFraction on both arms of the town collision set \u2014 still open from round 3.",
+    "The observed-theft branch (owner present and watching) \u2014 still open from round 3.",
+    "RI-WLD03 M13, the blind top-down layout test \u2014 not run; rule 25 forbids me judging a pack I built.",
+    "No street surface, no paving, no yard, no market stall. Unchanged from round 3.",
+    "No timing figure is published anywhere in this piece (rule 26).",
+    "I did not verify that a live signature equals the offline signature for the same room; the two traversals start from different roots and I did not prove they agree."
+  ]
 }

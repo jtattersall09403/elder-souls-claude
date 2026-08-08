@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-25-r2",
+  "state": "building",
+  "started": "2026-08-08",
+  "summary": "Round 2 of the sabotage control facility. Fixing the facility's own defect: support optional and defaulting to OK; two unnamed failure shapes; three taxonomy collisions; gitignored replay corpus; self-test coverage. Then seam-crossing undercount and the still-target fixture.",
+  "next_step": "read RULES/INDEX/verdict, run contention gate, inventory tools/experience",
+  "files_touched": ["orchestration/status/W1-25-r2.json"],
+  "files_claimed": [
+    "tools/experience/lib/sabotage.mjs",
+    "tools/experience/",
+    "tools/composition/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "notes": []
+}

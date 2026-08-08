@@ -1,0 +1,19 @@
+{
+  "task_id": "critic-w1-26-r3",
+  "role": "critic",
+  "piece": "W1-26 round 3",
+  "state": "running",
+  "started_at": "2026-08-08T05:08:00Z",
+  "next_step": "read INDEX, NEXT-DISPATCH P, W1-26-r2 verdict, W1-26-r3 status; then run opening-play.mjs to completion",
+  "files_touched": [],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-26-r3.md",
+    "corpus/90-verdicts/wave1/W1-26-r3.json",
+    "orchestration/status/critic-w1-26-r3.json",
+    "tools/journey/critic-*",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-26-r3"],
+  "contention_at_start": "GO — 1 browser instance, load 7.04/4 cores = 1.76 per core"
+}

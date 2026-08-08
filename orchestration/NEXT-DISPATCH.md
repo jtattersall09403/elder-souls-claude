@@ -186,6 +186,21 @@ between the instruments and the game rather than inside either. Closed by
 `game/data/dialogue/topics/_manifest.json`; 0 differing, and still 0 from a reversed arrival order.
 **If your piece loads a directory and sorts it, check the engine sorts it the same way.**
 
+**Q12. No spell could be cast anywhere in the province, and four rounds of magic never noticed.**
+`MagicSystem.stepFall` ran as `M.stepFall(frame, M.groundY || 0)`, and `M.groundY` is written
+**only** by `beginLevitation` — so the world's ground plane was zero. Lilmoth's quay is 2.68 m up
+and Stormhold's street is 141.12. Standing perfectly still, `magic.airborne` was permanently true
+and `castDropReason` returned `'airborne'`: input dropped, no `cast_start`, no Focus spent. **Four
+rounds of magic were measured in arenas whose floor happens to be zero.** Found by a builder who
+was not asked to look, fixed by asking `Engine.groundInActiveCell`, control restores the refusal.
+If your piece asks whether a body is airborne, grounded, falling or standing, check which zero it
+is comparing against.
+
+**Q13. `makeSpell` spent `magic.gold`, which is a mirror.** `getGold()` and the save never moved,
+so every price this system charged was charged against a number nothing else reads. Spending routes
+through `Engine._setGold` now. Same shape as the two soul ledgers: a second copy of a value, with
+one writer and no reader in common.
+
 **Q10. `path_m` counted teleports as walked distance.** A 3,484.9 m respawn made a 1,277 m walk
 report 4,812 m. It is excluded and reported separately now, but in the finder's own words: **every
 `path_m` this project published before may contain them.** If your piece quotes a walked distance,

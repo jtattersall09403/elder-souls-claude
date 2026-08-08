@@ -2,9 +2,9 @@
   "task_id": "W1-21-r3",
   "role": "builder",
   "piece": "W1-21 round 3 \u2014 controls and interface",
-  "state": "in_progress",
+  "state": "done",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "remaining detectors in flight; then sample table, blog line, commit",
+  "next_step": "critic",
   "files_touched": [
     "orchestration/status/W1-21-r3.json",
     "tools/lib/graded.mjs",
@@ -115,10 +115,25 @@
       "result": "FD6 IS A HARD FAIL. Worst edge deviation 58.291 dE2000 against RI-UIX06 \u00a7Scoring's pass bar of 3 and hard-fail bar of >8. It is not one outlier pixel: 14 of 14 captures are over 8, and 31,322 of 98,659 graded edge pixels (31.7%) are over 3 with 9,711 (9.8%) over 8. Under \u00a7Scoring that caps RI-UIX06 FIDELITY at 2. The round-2 luma figure on this capture set is 151 (round 1: 114, round 2: 99.9 on a different set) and is still reported beside it so the record lines up. FD8 now PASSES with the map declaration withdrawn: the map produced 659 and 2,113 stem samples in the two configurations, exactly as the critic said. Native 7/8, 0 not graded.",
       "artifact": "reports/runs/W1-21-R3-UI-METRICS/ui-metrics.json, reports/runs/W1-21-R3-UI-METRICS/sample-table.md",
       "load": "ONE browser per capture configuration, 2 sequentially. REDUCED FROM ROUND 2'S 28 CAPTURES TO 14: --scales 1920x1080 only, both DPRs, declared here rather than implied. 1280x720 was dropped because the box was at its contention ceiling all session; 1920x1080@1 and @2 carry round 2's worst FD6 captures and its FD2 headline."
+    },
+    {
+      "what": "THE PUBLISHED SAMPLE TABLE \u2014 all 25 graded checks, real runs, per screen and per check",
+      "commit": "37bbb6f + working tree",
+      "tool": "node tools/ui/w1-21-r3-sample-table.mjs",
+      "result": "25 graded checks from 6 of 6 detectors, every one carrying a sample count. 21 PASS, 2 FAIL, 1 EMPTY, 1 PARTIAL. FD6 FAIL (hard fail, 58.291 dE2000 over 98,659 graded edge pixels). K1 FAIL (10 F6 hits in a NEIGHBOUR's file, 370,723 JSON nodes over 567 files). U5 EMPTY \u2014 no hit landed in 180 frames, so there is no post-hit frame to grade; round 2 graded that frame anyway and published 66 false positives from it. K2 PARTIAL \u2014 9 of 10 viewpoints; ui_combat_neutral still dies on the pre-existing aggro() throw, so it is not a pass and says so.",
+      "artifact": "reports/w1-21-r3/sample-table.md (tracked; reports/runs/ is gitignored)"
     }
   ],
   "method_deviations": [
     "contention --gate returned WAIT (exit 3) for the whole session; the box carried 4-5 browser instances and load 16-21 on 4 cores. I polled the gate for 5 minutes and then PROCEEDED PAST THE WAIT for the single browser run, per rule 21's 'if you proceed past exit 3 anyway, that is allowed \u2014 say in your status file that you did and why'. Reason: every remaining acceptance item (markers derived, CONSUMPTION, FD6's real dE, the six screens) needs a running game. ONE browser, kept for the whole of w1-21-r3-browser.mjs.",
     "NO TIMING FIGURE IS PUBLISHED BY THIS PIECE. Every number is a count, a boolean, a pixel difference or a colour distance."
+  ],
+  "not_done": [
+    "ui-forbidden U5's DIGIT CALIBRATION. The round-2 verdict named three defects in that probe. Defect 1 (the drawing buffer was 1920x1080 while the regions were computed in 1280x720) is FIXED \u2014 setDevicePixelRatio(1) is now called before any pixel is read and the artifact records buffer 1280x720 vs viewport 1280x720. Defect 2 (grading a frame where hit_frame is null) is FIXED \u2014 U5 now reports EMPTY. Defect 3, the hand-written glyph band, is NOT FIXED: with the buffer pinned 1:1 the probe still finds 114 digit-shaped blobs over six enemy regions, so the 1.5x offset was not the cause of the false positives and the band still describes a lit helmet crest as well as a numeral. U5 refuses to grade rather than reporting them, which is the honest state, not a fixed one.",
+    "RI-UIX06 M-F19.2 (the 50%-opacity composite check) is still not implemented. FD6's \u00a7Scoring row covers M-F19.1-2 and this tool measures only M-F19.1. Named so the next round does not have to rediscover it.",
+    "1280x720 capture configurations were NOT re-run for ui-metrics (14 captures rather than round 2's 28). Contention; declared under method_deviations.",
+    "tools/analysis/journal-ui.mjs JU8 still implements the pre-S35 clause (round-2 verdict \u00a77.2). Not in my brief and not touched.",
+    "The residual forged-FOOTPRINT hole is with an arbiter and was left alone as instructed. NOTE: HEAD moved during this round and now carries 9cd4bfa, 'S38: the map owes soundness of its derivation, not authenticity of the save', which appears to be that ruling. I did not read it into this round's work.",
+    "K1 is RED AT HEAD on game/data/world/readables/site-marks.json \u2014 10 F6 hits on a file W1-READABLES-r2 landed. Not written by me and not mine to except; reported and continued, per the brief's named hazard."
   ]
 }

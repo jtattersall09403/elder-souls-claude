@@ -205,7 +205,12 @@ try {
     };
   }, ROOM_CAP);
   out.sections.S3_distinctness = s3;
-  const floorOk = s3.n0_same_room_two_steps.distinct === 1 && s3.n1_left_and_re_entered.distinct === 1 && s3.n2_null_control_one_record.distinct === 1;
+  // n2 is NOT part of the floor. Pointing 40 records at one record's contents does not build 40
+  // identical rooms: `buildInterior` seeds prop placement off `hashStr(rec.id)`, so the rooms
+  // genuinely differ and a measure of the room is right to say 40. The real null control — the one
+  // the pixel sweep fails — is S5, where the room builder itself is cut.
+  s3.n2_is_not_a_null_control = 'buildInterior seeds prop placement off hashStr(rec.id) (interior.js:455), so identical CONTENTS under different ids are different rooms. See S5 for the null control that is one, and w1-04-r4-join.mjs n1 for the offline arm that builds the same record OBJECT and returns 1.';
+  const floorOk = s3.n0_same_room_two_steps.distinct === 1 && s3.n1_left_and_re_entered.distinct === 1;
   s3.floor_ok = floorOk;
   if (!floorOk) out.failures.push('S3: the distinctness measure failed its own noise floor — it is not measuring the room');
   console.log(`S3  floor: n0 ${s3.n0_same_room_two_steps.distinct}, n1 ${s3.n1_left_and_re_entered.distinct}, n2 null control ${s3.n2_null_control_one_record.distinct} of ${s3.n2_null_control_one_record.rooms} (all must be 1)`);
@@ -234,6 +239,66 @@ try {
   if (s4.after.scene_meshes !== 0) out.failures.push('S4: emptying the room left the scene signature reporting meshes — the new verb is not a scene read either');
   if (s4.after.hash === s4.before.hash) out.failures.push('S4: the signature did not change when the room was emptied');
   console.log(`S4  emptied the room's group: build record still says ${s4.after.build_record_meshes} meshes; the scene read says ${s4.after.scene_meshes} (was ${s4.before.scene_meshes}); restored ${s4.restored.scene_meshes}`);
+  save();
+  }
+  if (want('S5')) {
+  // ---- S5: THE NULL CONTROL, DONE PROPERLY ----------------------------------------------------
+  //
+  // S3's n2 arm pointed every record at ONE record's contents and got 40 distinct rooms out of 40,
+  // and that is not the instrument failing — it is the arm being mis-specified. `buildInterior`
+  // seeds prop placement off `hashStr(rec.id)` (`interior.js:455`), so two rooms with byte-identical
+  // contents and different ids are genuinely different rooms and the signature is right to say so.
+  // The offline arm in `w1-04-r4-join.mjs` collapses to 1 because it builds the same record OBJECT,
+  // id included.
+  //
+  // So the live null control is the one the pixel sweep already has and already failed: cut the
+  // room builder to a no-op, exactly as `w1-04-interior-sweep.mjs` does, and walk the same doors.
+  // Every door then shows the same unchanged cell. The pixel sweep returned 115 DISTINCT IMAGES in
+  // this arm. A measure of the room must return 1.
+  const s5 = await B.page.evaluate((CAP) => {
+    const H = window.__HARNESS, E = window.__ENGINE;
+    const ids = H.listInteriors().map((i) => i.id).slice(0, CAP || 20);
+    const saved = E.renderer.setInteriorRecord.bind(E.renderer);
+    E.renderer.setInteriorRecord = () => null;
+    const seen = [], rows = [];
+    try {
+      for (const id of ids) {
+        try {
+          if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(1); }
+          const r = H.enterInterior(id);
+          if (!r || !r.entered) continue;
+          H.stepFrames(2);
+          const g = H.getDrawnSignature();
+          seen.push(g.hash);
+          rows.push({ id, hash: g.hash, cell: g.cell, visible: g.visible_cells, meshes: g.meshes });
+        } catch { /* refused */ }
+      }
+    } finally {
+      E.renderer.setInteriorRecord = saved;
+      try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* outside */ }
+      H.stepFrames(2);
+    }
+    // PARTITION BY CELL, and this is a correction to the criterion rather than to the result.
+    // `cellFor()` folds 110 of the 115 interiors onto the one generic `interior` cell; the other
+    // five — `barge-hold`, `writ-house`, `helstrom-market`, `stormhold-street`, `rootlands-well` —
+    // are W1-07's hand-built cells with names of their own, and cutting `setInteriorRecord` does
+    // not touch them. A door that opens on a different cell is not part of "these are all the same
+    // room", so counting it as a failure of the null control would be the round-2 mistake of
+    // scoring five hand-built cells as misses in a check about the generic one.
+    const generic = rows.filter((r) => r.cell === 'interior');
+    const named = rows.filter((r) => r.cell !== 'interior');
+    return {
+      arm: 'room builder cut to a no-op — the pixel sweep returns one distinct image per door in this arm',
+      rooms: seen.length, distinct: new Set(seen).size,
+      doors_on_the_generic_interior_cell: generic.length,
+      distinct_on_the_generic_cell: new Set(generic.map((r) => r.hash)).size,
+      doors_on_their_own_named_cell: named.map((r) => `${r.id}:${r.cell}`),
+      rows,
+    };
+  }, ROOM_CAP);
+  out.sections.S5_null_control_room_builder_cut = s5;
+  if (s5.distinct_on_the_generic_cell !== 1) out.failures.push(`S5: the null control returned ${s5.distinct_on_the_generic_cell} distinct signatures over ${s5.doors_on_the_generic_interior_cell} doors that are all the same emptied room — the measure does not survive a null control`);
+  console.log(`S5  room builder cut: ${s5.distinct_on_the_generic_cell} distinct signature(s) over ${s5.doors_on_the_generic_interior_cell} doors on the generic interior cell (must be 1; the pixel sweep returns one per door). Doors on their own named cell, not part of the arm: ${JSON.stringify(s5.doors_on_their_own_named_cell)}`);
   save();
   }
 } catch (e) {

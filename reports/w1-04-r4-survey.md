@@ -116,20 +116,52 @@ cross-room number and exits 21.
 **(b) The replacement is a geometry signature, and it publishes its floor before its number.**
 `__HARNESS.getDrawnSignature()` walks the visible cells' `Object3D` trees and folds a **sorted**
 hash over geometry type, geometry parameters, material colour and the transform relative to the
-cell root. Nothing in that advances on its own. Offline (`w1-04-r4-join.mjs`, all 115 records):
+cell root. Nothing in that advances on its own.
+
+Offline (`w1-04-r4-join.mjs`, all 115 records, the builders called directly):
 
 | arm | must be | measured |
 |---|---|---|
 | n0 — the same room built twice | 1 | **1** |
-| n1 — the null control: 115 doors, one record | 1 | **1** |
+| n1 — the null control: 115 doors, one record **object** | 1 | **1** |
 | n2 — the 115 shipped records | the number | **115 distinct, largest identical group 1** |
 
-n1 is the arm the pixel sweep failed.
+Live, through the door, in the running game (`w1-04-r4-live.mjs` S3 and S5):
+
+| arm | must be | measured |
+|---|---|---|
+| n0 — one unchanged room, read twice with **two fixed steps between** | 1 | **1** |
+| n1 — leave the room and come back to it | 1 | **1** |
+| **S5 — the null control: the room builder cut to a no-op, the pixel sweep's own arm** | 1 | **1 over 23 doors** |
+| n3 — the rooms (capped at 40, see §8) | the number | **40 distinct of 40** |
+
+**S5 is the crux and it is the arm the pixel sweep fails.** With `setInteriorRecord` stubbed out,
+every door opens on the same unchanged cell; the pixel hash returns *one distinct image per door*
+there, and the geometry signature returns **one, full stop**. Two frames apart in an unchanged
+room, the pixel hash also changes; the signature does not.
+
+**One correction to my own arm, reported because it looked like a failure and was not.** S3's n2
+arm pointed 40 records at one record's *contents* and got 40 distinct signatures. That is not the
+instrument reading the clock: `buildInterior` seeds prop placement off `hashStr(rec.id)`
+(`interior.js:455`), so identical contents under different ids are genuinely different rooms and a
+measure of the room is right to say 40. The offline n1 builds the same record **object**, id
+included, and collapses to 1. S5 is the null control that is one, and it was re-specified rather
+than re-interpreted. A first pass at S5 read **2 of 20**, and the outlier was `barge-hold` — one of
+W1-07's five hand-built cells with a name of its own, which cutting the generic room builder does
+not touch. The criterion now partitions by cell and says so, rather than scoring a different cell
+as a failure of this one.
 
 **(c) `interior.meshes` is a build record, and round 2's "92 distinct scene-graph signatures" was
-hashed from it.** `getDrawnSignature()` is the scene read that replaces it; S4 of the live arm
-empties the room's group behind the world's back and requires the new verb to go to zero while
-the old block goes on reporting a room that is not there.
+hashed from it.** S4 of the live arm empties the room's group behind the world's back:
+
+| | build record (`getDrawnInterior().interior.meshes`) | scene read (`getDrawnSignature()`) |
+|---|---|---|
+| room built | 114 | 114 meshes, hash `cc6a50ac` |
+| **group emptied** | **still 114** | **0 meshes**, hash `811c9dc5` (the hash of nothing) |
+| put back | 114 | 114, `cc6a50ac` again |
+
+The build record cannot see the room disappear. The new verb can, which is what makes it a
+replacement rather than a second name for the same number.
 
 ## 6. Also fixed, from the verdict's list
 
@@ -185,9 +217,15 @@ the old block goes on reporting a room that is not there.
   not to *pass*, if the verb it needs is missing, which is the safe direction — but it is
   unverified and a critic should run it first.
 * **The live distinctness sweep is capped.** The full 115-room S3 outlived its wrapper's timeout
-  under a loaded box and was re-taken at 40 rooms. The offline arm covers all 115 with the
-  identical algorithm, and I have **not** claimed that a live signature equals the offline one for
-  the same room — the two traversals start from different roots and I did not prove they agree.
+  under a loaded box and was re-taken at **40 rooms** (S5 at 24). The offline arm covers all 115
+  with the identical algorithm, and I have **not** claimed that a live signature equals the offline
+  one for the same room — the two traversals start from different roots and I did not prove they
+  agree. **Round 2's "92 distinct signatures over 115" is therefore not re-taken at 115 live**; it
+  is re-taken offline at 115 (115 distinct) and live at 40 (40 distinct), and the instrument that
+  produced the original number is shown to be blind to an emptied room.
+* **The S1/S2 and S3/S4/S5 sections were run in three separate browser sessions**, not one, because
+  the first wrapper timed out mid-S3. Each section re-boots the game and re-derives its own state;
+  none of them inherits another's.
 * **`inCoverFraction` on both arms** of the town collision set — still open from round 3.
 * **The observed-theft branch** (owner present and watching) — still open from round 3.
 * **RI-WLD03 M13**, the blind top-down layout test — still not run, and rule 25 forbids me judging
