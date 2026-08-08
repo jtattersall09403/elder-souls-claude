@@ -297,11 +297,25 @@ export class EnemyController {
       // RI-AI02's tracking cutoff, same schedule as the player's soft lock: an enemy that
       // lookAt()s the player every frame makes spacing meaningless and the fight unfair.
       if (b.move.kind === 'attack' && ctx.player) {
+        // ---- W1-12 round 2, rule 10: these two rates USED TO BE THE LITERALS 180 and 45.
+        // RI-AI01 §F defers the windup band to RI-AI02's tracking table — "≤ 120 °/s, cut to 0"
+        // — and `game/data/combat/ai.json` §movement declares 120 / 45 / 0, so the build had two
+        // owners for one number and the code's was 1.5× the data's. The data wins. Nothing
+        // observable moved when this changed, because the shipped roster's largest measured
+        // windup yaw rate is far below either ceiling; it is a LEGALITY BOUND, it is now the
+        // declared one, and `tools/combat/w1-12-r2-probe.mjs --mode=yaw` asserts observed ≤
+        // declared rather than pretending the trace moved.
+        const M = (this.d.ai && this.d.ai.movement) || {};
         const nf = b.animFrame + 1;
-        if (nf > 1 && nf <= 0.40 * b.move.startup) this._steer(ctx.player, 180);
-        else if (nf <= 0.80 * b.move.startup) this._steer(ctx.player, 45);
+        if (nf > 1 && nf <= 0.40 * b.move.startup) this._steer(ctx.player, M.max_yaw_rate_windup_dps ?? 180);
+        else if (nf <= 0.80 * b.move.startup) this._steer(ctx.player, M.max_yaw_rate_late_windup_dps ?? 45);
       }
       b.advance(frame);
+      // ---- T15. The swing has been advanced, so `animFrame` is current: if it has left the
+      // active window the AI's leaf becomes RECOVER. This is a RENAME, not a decision — see
+      // SoulsAI.noteAttackPhase. `SoulsAI.step()` is still unreachable for the whole clip, which
+      // is what makes an enemy attack uncancellable and the recovery a real punish window.
+      if (this.ai) this.ai.noteAttackPhase(frame, b);
     } else {
       this._idleBehaviour(frame, ctx);
     }

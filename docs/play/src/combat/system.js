@@ -415,6 +415,11 @@ export class CombatSystem {
         // verdict: an enemy that ignores a heal is the single most exploitable thing a
         // Souls-like can ship.
         if (b.move.kind === 'heal' || b.move.kind === 'item') return 'HEAL';
+        // RI-AI01 T18's trigger, added in W1-12 round 2. A shield-bearing archetype raises its
+        // guard when it sees the player WIND UP, and nothing in the build reported that phase.
+        // Additive on purpose: `punish_read.trigger_player_states` is ["HEAL","ITEM",
+        // "LONG_RECOVERY"], so this string cannot reach PUNISH_READ and T22 is unchanged.
+        if (b.move.kind === 'attack' && b.animFrame <= b.move.startup) return 'ATTACK_WINDUP';
         // RI-AI01 T22's third trigger. A "long recovery" is one the player cannot cancel and
         // that lasts longer than the enemy needs to cross the PUNISH_READ band — anything with
         // a recovery of half a second or more qualifies, which is every heavy and every

@@ -681,9 +681,38 @@ export class SoulsAI {
     return true;
   }
 
+  /**
+   * T15. THE STATE ROUND 1 DID NOT HAVE, and the reason its M3 passed.
+   *
+   * RI-AI01 §D T15 says an attack whose phase leaves `active` transitions COMMIT → RECOVER, and
+   * M3 computes `min_dist_dwell` over frames "while `state != COMMIT`". Round 1 labelled the
+   * WHOLE swing COMMIT — startup, active and recovery — so every recovery frame dropped out of
+   * M3's denominator. On the round-1 fixture and seed that is 623 of 736 recovery frames spent
+   * inside the enemy's own 0.85·Ω strike band, invisible to the metric written to detect exactly
+   * that: dwell reads 0.0414 as round 1 scored it and 0.2521 with the state the item requires.
+   *
+   * THIS CHANGES NO BEHAVIOUR AND MUST NOT. It is called from `EnemyController.step()` on frames
+   * the body is mid-attack — frames on which `SoulsAI.step()` is deliberately never called — and
+   * it does exactly one thing: rename the leaf. No movement, no yaw, no decision, no early
+   * retire. The commitment property the round-1 critic measured (47 of 47 swings ran to their
+   * full declared clip with 0.00 °/s of yaw after startup, zero frames in which the enemy could
+   * change its mind) is a property of `if (b.move)` in the controller and is untouched by this.
+   *
+   * @param {object} b the body, already advanced for this frame.
+   */
+  noteAttackPhase(frame, b) {
+    if (!b.move || b.move.kind !== 'attack') return;
+    if (this.state !== 'COMMIT') return;
+    if (b.animFrame > b.move.startup + b.move.active) this._enter('RECOVER', frame);
+  }
+
   /** T15/T16: the attack has ended. Token goes back, cooldown starts, back to CIRCLE. */
   onMoveEnded(frame, ctx) {
-    if (this.state !== 'COMMIT') return;
+    // RECOVER is accepted here as well as COMMIT: as of round 2 a swing that reaches its
+    // recovery frames is labelled RECOVER (T15), and the retire arrives while it is. Reading
+    // only COMMIT here would have left the token held forever and starved the whole group —
+    // the most expensive way this change could have gone wrong, and the reason it is stated.
+    if (this.state !== 'COMMIT' && this.state !== 'RECOVER') return;
     this._releaseToken(ctx);
     const [lo, hi] = this.cfg.commit.token_cooldown_f;
     this.cooldownUntil = frame + lo + this._draw(ctx, hi - lo);
@@ -724,7 +753,12 @@ export class SoulsAI {
     const peers = ctx.aiPeers ? ctx.aiPeers(key) : [this];
     const n = peers.length;
     if (peers.some((a) => a.stat.tier === 'elite') && n > 1) return this.cfg.commit.tokens_when_elite_present;
-    if (n >= 5 && peers.every((a) => a.A.leash_tier === 'trash' && a.omega <= 1.8)) {
+    // §E's 5+ SWARM row. The bound used to be a literal `a.omega <= 1.8` here while the roster's
+    // smallest reach is 2.0, so no group of shipped enemies could ever satisfy it and
+    // `swarm_tokens_at_5_plus` was unreachable by construction — a parameter guarded by a number
+    // that contradicted it. The bound is now the declared leaf.
+    if (n >= 5 && peers.every((a) => a.A.leash_tier === 'trash'
+        && a.omega <= this.cfg.commit.swarm_max_omega_m)) {
       return this.cfg.commit.swarm_tokens_at_5_plus;
     }
     for (const row of this.cfg.commit.tokens_by_group) if (n <= row.max_size) return row.tokens;
