@@ -94,9 +94,16 @@ known to be broken, and what is simply not built yet — and tell them.
    Two numbers nobody had: a **jog** is 34.622 min (RI-WLD01 M2 step 4, never run by anybody), and
    **overladen in a storm at 02:00 still arrives**, at 71.591 min.
 
-   Residual: a 133.8 ms worst frame, unmeasured since. `--stair-grade 0.60` referred with numbers
-   (span 1,732 → 1,431 m, tallest fill 50.6 → 32.7 m, zero length cost, worst grade 24.27 → 31.13°)
-   — nobody has ruled whether a 31° road is a road.
+   Residual: a 133.8 ms worst frame, unmeasured since.
+
+   **`--stair-grade 0.60` — RULED, and reversible.** The numbers: span 1,732 → 1,431 m, tallest fill
+   50.6 → 32.7 m, **zero length cost**, worst grade 24.27 → 31.13°. **Do not land it.** A 31° road
+   is not a road — it is a staircase, and Morrowind's roads are roads; the whole point of "about an
+   hour on foot" is that walking it feels like walking, not climbing. Trading a 471 m viaduct for a
+   1-in-1.7 gradient buys nothing a player will notice and costs the thing they will. The viaducts
+   stay. **Reverse this if** a walk over the stair-graded route measures *faster or equal* in
+   in-world minutes AND the body never leaves the deck — in which case the grade is not costing
+   anyone anything and the simpler geometry wins.
 
 5. **A fight is survivable and a level is spendable.** The hearth opens; **souls have no source**,
    so the loop does not close yet. Dispatched.
@@ -143,11 +150,17 @@ statblocks were re-anchored.
 
 So `report.souls` is 16,335 → **10,679** and `crossing.level_if_fully_cleared` is **5 → 3**.
 
-**That last number is a design question and the builder correctly declined to answer it.** 3 is what
-the shipped statblocks and curve have paid since `e97347f`; 5 was only ever the cache saying so.
-Nothing was re-tuned to produce it. If the crossing should buy level 5, the lever is RI-PRG06 or the
-population density — **not** the reconciliation, and not a value edited to make a headline agree with
-a stale file. Left for the souls piece's round 4 and its critic.
+**That last number is a design question and the builder correctly declined to answer it. RULED, and
+reversible.** 3 is what the shipped statblocks and curve have paid since `e97347f`; 5 was only ever
+the cache saying so, and nothing was re-tuned to produce 3.
+
+**Level 3 stands.** One leg of a province that takes an hour to cross should not buy a third of the
+way to the level cap, and Souls' whole shape is that a level is expensive early. If the crossing
+bought 5, a player who walked it first would arrive at the second region over-levelled for it, which
+is the failure mode Morrowind's open world has and Souls' does not — and this game is Souls inside
+the fight. **Reverse this if** a critic measures the first region's encounters as *unsurvivable* at
+level 3 with the shipped weapons; the lever then is RI-PRG06 or the population density, never the
+reconciliation and never a value edited to agree with a stale file.
 
 **Two stale totals are now named by number** in `orchestration/INDEX.md` under *"Numbers you must not
 read off a status file"*: **16,335** and **21,664**. The orchestrator handed both to agents as fact,

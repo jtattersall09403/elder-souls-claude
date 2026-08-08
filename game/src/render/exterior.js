@@ -248,9 +248,51 @@ const ROOM_INSET_M = 0.66;
  * depend on `sim/`; the census asserts the two agree.
  */
 const DOORSTEP_OUT_M = 1.5;
+/**
+ * ROUND 6. The ring search now starts HERE, not at `DOORSTEP_OUT_M`.
+ *
+ * 1.5 m was round 5's guess at "far enough out to clear the wall slab and the roof overhang". The
+ * standability predicate below measures that instead of guessing it, so the guess is no longer
+ * load-bearing — and starting at 1.5 m actively cost re-entry: four pairs of Blackrose doors are
+ * 1.00 m apart, and at 1.5 m out from one of them the OTHER one is nearer. Starting at 0.5 m lets
+ * the search find the point on your own doorstep, which is where a doorstep is.
+ */
+const DOORSTEP_MIN_OUT_M = 0.5;
 const DOORSTEP_MAX_OUT_M = 8.0;
 const DOORSTEP_RING_MAX_M = 24.0;
-const DOOR_REACH_M = 2.6;
+export const DOOR_REACH_M = 2.6;
+
+/* ---- ROUND 6: STANDING STILL --------------------------------------------------------------------
+ *
+ * Round 5 derived the doorstep as "the nearest point OUTSIDE EVERY FOOTPRINT", measured it one
+ * fixed frame after the door, and got 0 of 115 bodies indoors. At 30, 120 and 600 frames the same
+ * 115 doors give 8, 10 and 10. The round-5 verdict is right about what happens and did not say
+ * why; this is why, and it is arithmetic, not drift.
+ *
+ * `insideBuilding()` tests the FOOTPRINT. The thing the body is actually solved against is
+ * `settlementSolids()`, whose wall slabs are `SHELL_WALL_T` thick and centred ON the footprint
+ * edge — so a slab reaches `SHELL_WALL_T / 2` = 0.18 m OUTSIDE the footprint. And the body is a
+ * sphere of `BODY_RADIUS_M` = 0.32 m, depenetrated by `sim/world-collision.js#stepWorldCollision()`
+ * through `CollisionCell.resolveSphere()`, which pushes until `distance >= r`. So a point that
+ * clears the footprint by less than 0.50 m is a point the solver MOVES — down the steepest-ascent
+ * gradient, which between two close buildings points at the neighbour, and through a doorway gap
+ * if one is behind it. That is the 0.50–0.61 m slides in the verdict's table, and the 8.85 m one is
+ * the same push finding the door it just came out of.
+ *
+ * The predicate the derivation needs is therefore not "outside the footprint" but **"a fixed point
+ * of the collision solver"**: `horizontal distance to the nearest wall slab >= BODY_RADIUS_M`.
+ * A point that satisfies it is a point `resolveSphere()` returns unchanged, at frame 1 and at
+ * frame 600, because the solver is not a simulation with state — it is a function of position.
+ *
+ * `BODY_RADIUS_M` and `DOOR_REACH_M` are both MIRRORS of numbers that live in `sim/`
+ * (`world-collision.js#PLAYER_RADIUS_M`, `settlement.js#DOOR_REACH_M`), duplicated for the reason
+ * stated above — `render/` must not depend on `sim/` — and **checked, not trusted**:
+ * `tools/check-building-fits-room.mjs` imports all four and exits non-zero if any mirror has
+ * drifted from its source. An unchecked copy is the shape this project has now found five times.
+ */
+export const BODY_RADIUS_M = 0.32;
+/** The margin above the body radius. The solver stops at `d >= r`; this keeps float noise out. */
+const BODY_CLEAR_EPS_M = 0.05;
 /** How far inside its own wall a lamp's CENTRE is kept. A hearth is a 1.1 m stone ring. */
 const HEARTH_INSET_M = 1.15;
 const LAMP_INSET_M = 0.35;
@@ -322,7 +364,15 @@ export function planSettlement(rec, interiors) {
       // door onto the entry wall and writes it back through this object AND through the settlement
       // document, so every side derived from a door must be derived from this field and not from
       // the live one. Prefer a stash the join has already made over the raw field.
-      door_declared: b.door_declared || b.door || (it ? it.exterior_door : null) || null,
+      //
+      // ROUND 6: `.slice()`, and it is not cosmetic. Without it this field is the SAME ARRAY as the
+      // settlement document's `b.door`, which `applyInteriorBounds()` mutates ELEMENT BY ELEMENT
+      // (it has to — `SettlementSystem`'s reach table holds that array). So "what the record said
+      // before the join touched it" became "what the join last wrote", and `entrySideLocal()`'s
+      // fallback — which reads exactly this field, with a comment saying the answer must not
+      // depend on how many times the derivation has run — derived the entry side from a door the
+      // derivation had already moved. Found by a counter that read 0 doors moved after moving 112.
+      door_declared: (b.door_declared || b.door || (it ? it.exterior_door : null) || null) ? (b.door_declared || b.door || it.exterior_door).slice() : null,
       seal_state: b.seal_state || null,
       interior_kit: innerKit,
       exterior_kit: extKit,
@@ -467,12 +517,21 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
     // Round 5.
     doors_moved: 0, doorsteps_moved: 0, doorsteps_unresolved: 0, doorsteps_out_of_reach: 0,
     lamps: 0, lamps_moved: 0, unresolved: [],
+    // Round 6. Every doorstep now lands in exactly one of these four buckets and they sum to the
+    // number of doorsteps derived, so a regression cannot hide inside an aggregate.
+    doorsteps_standable_own_door: 0,   // clear of every wall slab AND its own door is the nearest
+    doorsteps_standable_other_door: 0, // clear, but some other building's door is nearer
+    doorsteps_standable_no_door: 0,    // clear, but no door at all within DOOR_REACH_M
+    doorsteps_not_standable: 0,        // no clear point anywhere on the ring — the solver will move it
+    not_standable: [], other_door: [],
   };
   const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
   for (const plan of plans || []) {
     const doc = byDoc.get(plan.id) || null;
     const rawById = new Map();
     for (const r of (doc && doc.buildings) || []) if (r && r.id) rawById.set(r.id, r);
+    /** ROUND 6: filled by the loop below, drained by the second pass under it. */
+    const doorstepQueue = [];
     for (const b of plan.buildings) {
       const rec = b.interior ? I[b.interior] : null;
       if (!rec || !rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) continue;
@@ -524,68 +583,26 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
       // It is the same shape as the `interior_spawn` clamp above and for the same reason, pointed
       // the other way: stashed once, always re-derived from the stash, so it is idempotent and
       // reversible.
+      //
+      // ROUND 6 SPLIT THIS IN TWO. Only the DOOR moves here. The DOORSTEP is derived in a second
+      // pass below, after every door in this settlement has moved, because the doorstep now has to
+      // satisfy a predicate over the whole door table — "the nearest door to this point is MY
+      // door" — and a table that is half-moved answers that question wrong for every building the
+      // loop has not reached yet. The round-5 verdict measured the consequence: 112 doors moved
+      // onto entry walls moved doors TOWARDS each other, four pairs of Blackrose doors ended up
+      // 1.00 m apart, and re-entry went from 108/5/2 to 96/10/9. A door that opens the wrong
+      // building is worse than a door that opens the building you are standing in.
       if (DO_DOORSTEP && cont && Array.isArray(cont.exterior_spawn)) {
         const raw = rawById.get(b.id) || null;
         if (raw && raw.door && !raw.door_declared) raw.door_declared = raw.door.slice();
-        const dp = doorPointWorld(b);
-        const doorY = (b.door_declared && b.door_declared[1]) || (raw && raw.door_declared && raw.door_declared[1]) || cont.exterior_spawn[1] || 0;
-        const newDoor = [+dp[0].toFixed(3), doorY, +dp[1].toFixed(3)];
-        if (!b.door || b.door[0] !== newDoor[0] || b.door[2] !== newDoor[2]) out.doors_moved++;
-        b.door = newDoor;
-        // IN PLACE, ELEMENT BY ELEMENT. `SettlementSystem`'s door table is built in its constructor
-        // — before `setSettlements()` ever runs — and each row holds `door: b.door`, the array
-        // itself. Assigning a new array here would leave the reach table pointing at the old one
-        // and the door would still be in the middle of the house for everything the sim does.
-        if (raw && Array.isArray(raw.door)) { raw.door[0] = newDoor[0]; raw.door[1] = newDoor[1]; raw.door[2] = newDoor[2]; }
-        else if (raw) raw.door = newDoor.slice();
-
+        // Reset the slide and the entry side before every derivation so this stays idempotent: a
+        // second call must choose from the same starting state as the first, not from its own
+        // answer. `entry_side_declared` is the stash, written once, read forever after.
+        b.door_along_m = 0;
+        if (cont.entry_side !== undefined && cont.entry_side_declared === undefined) cont.entry_side_declared = cont.entry_side;
+        if (cont.entry_side_declared !== undefined) { cont.entry_side = cont.entry_side_declared; b.entry_side = cont.entry_side_declared; }
         if (!cont.exterior_spawn_declared) cont.exterior_spawn_declared = cont.exterior_spawn.slice();
-        const nrm = entryOutwardWorld(b);
-        const tan = [-nrm[1], nrm[0]];
-        // Candidates, nearest first. The tangential slide comes before the outward push because a
-        // doorstep 1.5 m out and 1.2 m sideways is still 1.92 m from the door and still in reach,
-        // while a doorstep pushed 4 m out is not — and a doorstep you cannot get back in through
-        // is the same defect wearing the other sign.
-        // NEAREST STANDABLE POINT TO THE DOOR, searched outward. Two passes: first the half-plane
-        // in FRONT of the door, which is where a doorstep belongs, then the whole ring — because
-        // seven buildings in this province have their entry wall buried inside a neighbour (the
-        // deep-overlap gap the round-4 verdict calls the piece's oldest, and which is not fixed by
-        // moving a building to satisfy a probe). For those, "the nearest point outside every
-        // footprint" is the best answer available and the count of them is published.
-        let picked = null, inReach = true, bestR = Infinity;
-        for (const frontOnly of [true, false]) {
-          for (let rr = DOORSTEP_OUT_M; rr <= DOORSTEP_RING_MAX_M + 1e-9; rr += 0.25) {
-            let found = null;
-            for (let ai = 0; ai < 72; ai++) {
-              // Sweep outward from the wall normal in alternating directions, so the first hit at a
-              // given radius is the one closest to straight out of the door.
-              const step = Math.ceil(ai / 2) * (Math.PI / 36) * (ai % 2 ? 1 : -1);
-              const dx = nrm[0] * Math.cos(step) - nrm[1] * Math.sin(step);
-              const dz = nrm[0] * Math.sin(step) + nrm[1] * Math.cos(step);
-              if (frontOnly && (dx * nrm[0] + dz * nrm[1]) <= 0.05) continue;
-              const x = dp[0] + dx * rr, z = dp[1] + dz * rr;
-              if (insideBuilding(plan, x, z, 0)) continue;
-              found = [x, z];
-              break;
-            }
-            if (found) { bestR = rr; picked = [+found[0].toFixed(3), cont.exterior_spawn_declared[1], +found[1].toFixed(3)]; break; }
-          }
-          if (picked) break;
-        }
-        if (picked) inReach = bestR <= DOOR_REACH_M;
-        if (!picked) {
-          // Nowhere outside every footprint within reach of this door. Say so, loudly, rather than
-          // silently leaving the body under the roof: the last resort is still on the wall's normal
-          // and still outside this building, and the count is published.
-          const x = dp[0] + nrm[0] * DOORSTEP_MAX_OUT_M, z = dp[1] + nrm[1] * DOORSTEP_MAX_OUT_M;
-          picked = [+x.toFixed(3), cont.exterior_spawn_declared[1], +z.toFixed(3)];
-          inReach = false;
-          out.doorsteps_unresolved++;
-          out.unresolved.push({ building: b.id, interior: rec.id, settlement: plan.id });
-        }
-        if (!inReach) out.doorsteps_out_of_reach++;
-        if (picked[0] !== cont.exterior_spawn[0] || picked[2] !== cont.exterior_spawn[2]) out.doorsteps_moved++;
-        cont.exterior_spawn = picked;
+        doorstepQueue.push({ b, rec, cont, raw });
       }
 
       // ---- ROUND 5, LEG 2: THE LAMPS ------------------------------------------------------------
@@ -628,6 +645,208 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
       out.limited.push({ id: rec.id, building: b.id, declared_m: [+decW.toFixed(2), +decD.toFixed(2)], room_m: [+W.toFixed(2), +D.toFixed(2)], area_kept: frac });
       if (!out.worst || frac < out.worst.area_kept) out.worst = out.limited[out.limited.length - 1];
     }
+
+    // ---- ROUND 6, SECOND PASS: THE DOORSTEP, AGAINST THE SOLVER AND AGAINST THE DOOR TABLE ------
+    //
+    // Every door in this settlement has now moved, so both of the things a doorstep has to satisfy
+    // can finally be asked:
+    //
+    //   1. **Will the body STAY here?** `standable()` — the point is outside every footprint AND
+    //      at least `BODY_RADIUS_M` clear of every wall slab, which is the exact condition
+    //      `CollisionCell.resolveSphere()` leaves a body alone under. Round 5 asked only the first
+    //      half and the solver moved ten bodies indoors between frame 1 and frame 30.
+    //   2. **Does the door in reach OPEN THIS BUILDING?** `nearestDoor()` reimplements
+    //      `sim/settlement.js#doorAt()`'s rule — nearest row within `DOOR_REACH_M`, ties to the
+    //      first — over the settlement document's own rows, which is the array `SettlementSystem`
+    //      holds. Round 5 asked neither half and made re-entry worse.
+    //
+    // The search order is the same ring as round 5's — outward from the wall normal, nearest
+    // first, front half-plane before the whole circle — because a doorstep belongs in front of its
+    // own door. What changed is the accept test, and the fallback ladder underneath it, which is
+    // ordered by which failure a player actually meets: standing inside a wall (the solver teleports
+    // you) is worse than reaching the wrong door (you open the wrong room), which is worse than
+    // reaching no door (you take a step and try again). Every rung is counted separately.
+    if (DO_DOORSTEP && doorstepQueue.length) {
+      const need = BODY_RADIUS_M + BODY_CLEAR_EPS_M;
+      /** The ring of candidate doorsteps in front of a door, nearest first. */
+      const ring = function* (dp, nrm) {
+        for (const frontOnly of [true, false]) {
+          for (let rr = DOORSTEP_MIN_OUT_M; rr <= DOORSTEP_RING_MAX_M + 1e-9; rr += 0.25) {
+            for (let ai = 0; ai < 72; ai++) {
+              const step = Math.ceil(ai / 2) * (Math.PI / 36) * (ai % 2 ? 1 : -1);
+              const dx = nrm[0] * Math.cos(step) - nrm[1] * Math.sin(step);
+              const dz = nrm[0] * Math.sin(step) + nrm[1] * Math.cos(step);
+              if (frontOnly && (dx * nrm[0] + dz * nrm[1]) <= 0.05) continue;
+              yield [dp[0] + dx * rr, dp[1] + dz * rr, rr];
+            }
+          }
+        }
+      };
+
+      // ---- THE DOOR MOVES ALONG ITS OWN WALL TOO ------------------------------------------------
+      //
+      // Round 5 cut every door at the middle of its entry wall and then looked for a doorstep. In
+      // the five towns whose plan overlaps its buildings, the middle of the wall is inside the
+      // neighbour, and the nearest standable point is 3 to 13 m away — outside `DOOR_REACH_M`, so
+      // pressing `interact` on the doorstep did nothing at all on fifteen doors. Four more pairs
+      // of Blackrose doors ended up 1.00 m apart, close enough that the neighbour's door is the
+      // one your hand finds.
+      //
+      // So the door moves too, ALONG the wall the record declares, never off it: the entry side,
+      // the door bearing and the interior's matching doorway are all unchanged. `u = 0` — the
+      // middle of the wall — is tried first and kept whenever it works, so this is a no-op on the
+      // doors that were already fine. The doorway hole in the drawn wall and the doorway hole in
+      // the collision wall both follow `doorAlongLocal(b)`, so the door you can see is still the
+      // door you can open.
+
+      // Write every door in this settlement into the plan AND into the settlement document,
+      // ELEMENT BY ELEMENT: `SettlementSystem`'s door table is built in its constructor — before
+      // `setSettlements()` ever runs — and each row holds `door: b.door`, the array itself.
+      // Assigning a new array would leave the reach table pointing at the old one and the door
+      // would still be in the middle of the house for everything the sim does.
+      const writeDoors = () => {
+        for (const job of doorstepQueue) {
+          const { b, cont, raw } = job;
+          const dp = doorPointWorld(b);
+          const doorY = (b.door_declared && b.door_declared[1]) || (raw && raw.door_declared && raw.door_declared[1]) || cont.exterior_spawn[1] || 0;
+          const newDoor = [+dp[0].toFixed(3), doorY, +dp[1].toFixed(3)];
+          b.door = newDoor;
+          if (raw && Array.isArray(raw.door)) { raw.door[0] = newDoor[0]; raw.door[1] = newDoor[1]; raw.door[2] = newDoor[2]; }
+          else if (raw) raw.door = newDoor.slice();
+          job.dp = [dp[0], dp[1]];
+        }
+      };
+      const doorRows = [];
+      for (const r of (doc && doc.buildings) || []) {
+        // The SAME filter `SettlementSystem`'s constructor uses to build the reach table. If that
+        // filter changes and this one does not, `w1-04-r6-census.mjs` D reports the divergence as a
+        // door count mismatch rather than as ten silently wrong rooms.
+        if (r && r.kind === 'interior' && r.door) doorRows.push(r);
+      }
+      const nearestDoor = (x, z) => {
+        let best = null, bd = Infinity;
+        for (const r of doorRows) {
+          const d = Math.hypot(r.door[0] - x, r.door[2] - z);
+          if (d <= DOOR_REACH_M && d < bd) { bd = d; best = r; }
+        }
+        return best;
+      };
+
+      // ---- PASS B: THE DOORSTEP, and a bounded repair loop around it -----------------------------
+      //
+      // Pass A cannot fix the four pairs of Blackrose doors 1.00 m apart, and must not try: "whose
+      // door is nearest" is a question about the whole table, so answering it inside an
+      // order-independent pass would make each building's door depend on which buildings the loop
+      // had already reached. It is answered here instead, by deriving every doorstep, then sliding
+      // the doors of the buildings that came out wrong and deriving again.
+      //
+      // The loop is bounded at four iterations and stops as soon as a sweep slides nothing, so it
+      // terminates whatever the plan looks like. It is deterministic — the repair order is the
+      // queue's order, which is the plan's, which is the document's. And it is honest: the
+      // published counters come from the FINAL derivation, re-classified from scratch, so a repair
+      // that broke a neighbour shows up as a neighbour that is broken.
+      let solids = null;
+      const derive = (commit) => {
+        const res = [];
+        for (const job of doorstepQueue) {
+          const { b, rec, cont, dp } = job;
+          const nrm = entryOutwardWorld(b);
+          const standable = (x, z) => !insideBuilding(plan, x, z, 0) && horizontalClearance(solids, x, z) >= need;
+          // Rung 0 is the whole predicate; rung 1 drops the "my door is nearest" clause; rung 2
+          // drops standability as well and is the round-5 behaviour. `pick()` runs the identical
+          // ring for each, so the three answers are comparable and the counts below are honest.
+          const pick = (accept) => {
+            for (const [x, z, rr] of ring(dp, nrm)) if (accept(x, z)) return [x, z, rr];
+            return null;
+          };
+          const mine = rawById.get(b.id) || null;
+          let hit = pick((x, z) => standable(x, z) && nearestDoor(x, z) === mine);
+          if (!hit) hit = pick(standable);
+          if (!hit) hit = pick((x, z) => !insideBuilding(plan, x, z, 0));
+          let picked, unresolved = false;
+          if (hit) {
+            picked = [+hit[0].toFixed(3), cont.exterior_spawn_declared[1], +hit[1].toFixed(3)];
+          } else {
+            // Nowhere on the ring at all. Say so, loudly, rather than silently leaving the body
+            // under the roof: the last resort is on the wall's normal and outside this building.
+            const x = dp[0] + nrm[0] * DOORSTEP_MAX_OUT_M, z = dp[1] + nrm[1] * DOORSTEP_MAX_OUT_M;
+            picked = [+x.toFixed(3), cont.exterior_spawn_declared[1], +z.toFixed(3)];
+            unresolved = true;
+          }
+          // Classify the POINT THAT WAS WRITTEN, not the rung it was found on — a rung-1 pick may
+          // still happen to have its own door nearest at the point chosen, and reporting the rung
+          // would over-count the defect.
+          const nd = nearestDoor(picked[0], picked[2]);
+          const cls = !standable(picked[0], picked[2]) ? 'not_standable' : nd === mine ? 'own' : nd ? 'other' : 'none';
+          res.push({ job, picked, cls, nd, unresolved });
+          if (!commit) continue;
+          if (unresolved) { out.doorsteps_unresolved++; out.unresolved.push({ building: b.id, interior: rec.id, settlement: plan.id }); }
+          if (cls === 'not_standable') { out.doorsteps_not_standable++; out.not_standable.push({ building: b.id, interior: rec.id, settlement: plan.id }); }
+          else if (cls === 'own') out.doorsteps_standable_own_door++;
+          else if (cls === 'other') { out.doorsteps_standable_other_door++; out.other_door.push({ building: b.id, interior: rec.id, opens: nd.interior || nd.id, settlement: plan.id }); }
+          else out.doorsteps_standable_no_door++;
+          if (nd !== mine) out.doorsteps_out_of_reach++;
+          if (picked[0] !== cont.exterior_spawn[0] || picked[2] !== cont.exterior_spawn[2]) out.doorsteps_moved++;
+          cont.exterior_spawn = picked;
+        }
+        return res;
+      };
+
+      for (let iter = 0; ; iter++) {
+        writeDoors();
+        // The solids are rebuilt every iteration because sliding a door moves a doorway HOLE, and
+        // the hole is the one part of a wall a body can be pushed through.
+        solids = settlementSolids(plan, plan.pos ? plan.pos[0] : 0, plan.pos ? plan.pos[2] : 0, 1e9, null);
+        if (iter >= 4) break;
+        const res = derive(false);
+        const broken = res.filter((r) => r.cls !== 'own');
+        if (!broken.length) break;
+        let slid = false;
+        for (const r of broken) {
+          const b = r.job.b;
+          const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+          const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+          const side = entrySideLocal(b);
+          const span = (side === '+x' || side === '-x') ? d : w;
+          const lim = Math.max(0, span / 2 - DOOR_W / 2 - 0.2);
+          const nrm = entryOutwardWorld(b);
+          const mineRow = rawById.get(b.id) || null;
+          const was = b.door_along_m;
+          let found = null;
+          for (let k = 0; k <= Math.ceil(lim / 0.25) && found === null; k++) {
+            for (const sgn of (k === 0 ? [1] : [-1, 1])) {
+              const u = Math.min(lim, k * 0.25) * sgn;
+              b.door_along_m = u;
+              const dp = doorPointWorld(b);
+              for (const [x, z, rr] of ring(dp, nrm)) {
+                if (rr > DOOR_REACH_M) break;
+                if (insideBuilding(plan, x, z, 0)) continue;
+                if (horizontalClearance(solids, x, z) < need) continue;
+                // Own door nearest, judged against every OTHER row at its current position.
+                let mineWins = true;
+                for (const o of doorRows) {
+                  if (o === mineRow) continue;
+                  if (Math.hypot(o.door[0] - x, o.door[2] - z) < rr) { mineWins = false; break; }
+                }
+                if (!mineWins) continue;
+                found = u; break;
+              }
+              if (found !== null) break;
+            }
+          }
+          b.door_along_m = found === null ? was : found;
+          if (found !== null && found !== was) slid = true;
+        }
+        if (!slid) break;
+      }
+      for (const job of doorstepQueue) if (job.b.door_along_m) out.doors_slid_along_wall = (out.doors_slid_along_wall || 0) + 1;
+      for (const job of doorstepQueue) {
+        const b = job.b, raw = job.raw;
+        const dcl = (b.door_declared) || (raw && raw.door_declared) || null;
+        if (!dcl || !b.door || b.door[0] !== dcl[0] || b.door[2] !== dcl[2]) out.doors_moved++;
+      }
+      derive(true);
+    }
   }
   // ---- ROUND 5: THE ORPHANS, and why they were invisible ---------------------------------------
   //
@@ -640,28 +859,65 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
   //
   // There is no wall to derive a doorstep from, so this does the one thing that is still true:
   // pushes the declared point out of whatever building it is standing in.
+  //
+  // ---- ROUND 6: AND THE PASS FOR THE ORPHANS HAD THE SAME BLINDNESS IT WAS WRITTEN TO CURE -----
+  //
+  // Round 5's version read `const plan = planFor.get(rec.settlement); if (!plan) continue;` — with
+  // the `continue` ABOVE its own counter. `barge-hold` and `writ-house` both declare
+  // `settlement: "tidewrack"`, and `tidewrack` is not one of the eight settlement documents, so the
+  // pass that exists to handle the three orphans silently skipped two of them AND its own count
+  // could not say so. Downstream, no offline loop in this piece reached them, including the
+  // fail-closed check the round shipped to catch exactly this class of defect.
+  //
+  // The rule the round-5 verdict draws out of it, and it is the general form of rule 11: the
+  // question is not "is this field read" but **"which records can this loop reach at all"**. So the
+  // counting is now unconditional and enumeration starts from the INTERIORS. A record this pass
+  // cannot act on is reported by id, not skipped.
   if (DO_DOORSTEP) {
     const planFor = new Map();
     for (const plan of plans || []) planFor.set(plan.id, plan);
     const claimed = new Set();
     for (const plan of plans || []) for (const b of plan.buildings) if (b.interior) claimed.add(b.interior);
+    out.interiors_total = Object.keys(I).length;
+    out.interiors_in_a_plan = claimed.size;
+    out.orphans = 0;
+    out.orphans_without_a_settlement_document = 0;
+    out.orphans_without_an_exterior_spawn = 0;
+    out.orphan_ids = [];
+    out.orphans_unreachable = [];
     for (const id of Object.keys(I)) {
       const rec = I[id];
       if (!rec || claimed.has(id)) continue;
+      // THE COUNTER IS ABOVE EVERY `continue` FROM HERE DOWN. That is the whole fix.
+      out.orphans++;
+      out.orphan_ids.push(id);
       const cont = rec.continuity;
-      if (!cont || !Array.isArray(cont.exterior_spawn)) continue;
+      if (!cont || !Array.isArray(cont.exterior_spawn)) {
+        out.orphans_without_an_exterior_spawn++;
+        out.orphans_unreachable.push({ interior: id, settlement: rec.settlement || null, why: 'no continuity.exterior_spawn' });
+        continue;
+      }
       const plan = planFor.get(rec.settlement);
-      if (!plan) continue;
-      out.orphans = (out.orphans || 0) + 1;
+      if (!plan) {
+        out.orphans_without_a_settlement_document++;
+        out.orphans_unreachable.push({ interior: id, settlement: rec.settlement || null, why: 'no settlement document — nothing to test the doorstep against' });
+        continue;
+      }
       if (!cont.exterior_spawn_declared) cont.exterior_spawn_declared = cont.exterior_spawn.slice();
       const s0 = cont.exterior_spawn_declared;
-      if (!insideBuilding(plan, s0[0], s0[2], 0)) { cont.exterior_spawn = s0.slice(); continue; }
+      // ROUND 6: the orphans get the SAME standability predicate the walled buildings get. They
+      // happened to be fine under the footprint-only test, and "happened to be fine" is what this
+      // section is about.
+      const solids = settlementSolids(plan, plan.pos ? plan.pos[0] : 0, plan.pos ? plan.pos[2] : 0, 1e9, null);
+      const need = BODY_RADIUS_M + BODY_CLEAR_EPS_M;
+      const standable = (x, z) => !insideBuilding(plan, x, z, 0) && horizontalClearance(solids, x, z) >= need;
+      if (standable(s0[0], s0[2])) { cont.exterior_spawn = s0.slice(); continue; }
       let picked = null;
       for (let rr = 0.5; rr <= DOORSTEP_RING_MAX_M && !picked; rr += 0.25) {
         for (let ai = 0; ai < 72; ai++) {
           const a = ai * (Math.PI / 36);
           const x = s0[0] + Math.cos(a) * rr, z = s0[2] + Math.sin(a) * rr;
-          if (insideBuilding(plan, x, z, 0)) continue;
+          if (!standable(x, z)) continue;
           picked = [+x.toFixed(3), s0[1], +z.toFixed(3)];
           break;
         }
@@ -728,17 +984,51 @@ export function entryOutwardWorld(b) {
 }
 
 /**
+ * ROUND 6. How far ALONG its own entry wall the doorway is cut, in metres, in the building's local
+ * frame, positive towards local +x on a `±z` wall and towards local +z on a `±x` wall.
+ *
+ * WHY IT IS NOT ALWAYS ZERO. Round 5 cut every door at the middle of the entry wall, and in the
+ * five towns whose plan places buildings closer together than their footprints are wide, the
+ * middle of the entry wall is buried inside the neighbour. Fifteen doors then had no point within
+ * `DOOR_REACH_M` where a body could stand at all — press `interact` on the doorstep and nothing
+ * happens — and eight more had a neighbour's door nearer than their own.
+ *
+ * A door is cut where you can walk up to it. `applyInteriorBounds()` slides it along the wall the
+ * record already declares — the entry SIDE never changes, so `continuity.entry_side`, RI-WLD13
+ * N2's door bearing and the interior's matching doorway are all untouched — until there is
+ * somewhere outside to stand. The offset is clamped so the doorway stays wholly within its wall.
+ *
+ * ONE VALUE, THREE READERS: this function, `buildBuilding()`'s wall closure (the drawn gap and the
+ * leaf) and `settlementSolids()` (the collision gap). A door you can interact with that is not
+ * where the hole is would be the same defect this piece has been fixing all round, wearing a
+ * different hat.
+ */
+export function doorAlongLocal(b) {
+  const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+  const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+  const side = entrySideLocal(b);
+  const span = (side === '+x' || side === '-x') ? d : w;
+  const lim = Math.max(0, span / 2 - DOOR_W / 2 - 0.2);
+  const u = +(b.door_along_m || 0);
+  return u < -lim ? -lim : u > lim ? lim : u;
+}
+
+/**
  * The world point at the middle of the doorway — ON the entry wall of the DRAWN building.
  *
  * Round 4 and everything before it had `buildings[].door` at the building's centre on 112 of 112,
- * which is how a doorstep 1.8 m from "the door" ended up under the roof.
+ * which is how a doorstep 1.8 m from "the door" ended up under the roof. Round 6 adds the slide
+ * along the wall — see `doorAlongLocal()`.
  */
 export function doorPointWorld(b) {
   const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
   const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
   const side = entrySideLocal(b);
-  const lx = (side === '+x' ? 1 : side === '-x' ? -1 : 0) * (w / 2);
-  const lz = (side === '+z' ? 1 : side === '-z' ? -1 : 0) * (d / 2);
+  const along = doorAlongLocal(b);
+  const alongX = (side === '+z' || side === '-z') ? along : 0;
+  const alongZ = (side === '+x' || side === '-x') ? along : 0;
+  const lx = (side === '+x' ? 1 : side === '-x' ? -1 : 0) * (w / 2) + alongX;
+  const lz = (side === '+z' ? 1 : side === '-z' ? -1 : 0) * (d / 2) + alongZ;
   const yaw = (b.yaw_deg || 0) * Math.PI / 180;
   const c = Math.cos(yaw), s = Math.sin(yaw);
   return [b.x + lx * c + lz * s, b.z - lx * s + lz * c];
@@ -746,6 +1036,29 @@ export function doorPointWorld(b) {
 
 const DOOR_W = 1.8;
 const DOOR_H = 2.3;
+
+/**
+ * ROUND 6. The two wall segments either side of the doorway, as `{len, c}` in the wall's own
+ * along-axis, for a doorway whose centre is at `u`.
+ *
+ * ONE definition, read by the DRAWN wall in `buildBuilding()` and by the COLLISION wall in
+ * `settlementSolids()` — which is the whole point of it existing. Both used to compute the split
+ * themselves from a doorway pinned to the wall's centre; two copies of an arithmetic that now has
+ * a parameter in it is how the hole you can see stops being the hole you can walk through.
+ *
+ * At `u = 0` it returns exactly what both call sites computed before, to the last bit:
+ * `c = ∓(span + DOOR_W) / 4`, `len = (span − DOOR_W) / 2`.
+ *
+ * `minLen` preserves each call site's own floor on a segment it would otherwise draw as a sliver.
+ */
+export function doorwaySegments(span, u, minLen) {
+  const a0 = -span / 2, a1 = u - DOOR_W / 2;
+  const b0 = u + DOOR_W / 2, b1 = span / 2;
+  return [
+    { len: Math.max(minLen, a1 - a0), c: (a0 + a1) / 2 },
+    { len: Math.max(minLen, b1 - b0), c: (b0 + b1) / 2 },
+  ];
+}
 const WALL_T = SHELL_WALL_T;
 
 /**
@@ -844,17 +1157,20 @@ export function buildBuilding(b, town) {
     if (!mine || !b.enterable) { part(g, named(box(sw, h, sd, P.wall)), cx, h / 2, cz); return; }
     const along = sw > sd;
     const span = along ? sw : sd;
-    const seg = Math.max(0.4, (span - DOOR_W) / 2);
-    for (const s of [-1, 1]) {
-      const off = s * (DOOR_W / 2 + seg / 2);
-      part(g, named(box(along ? seg : sw, h, along ? sd : seg, P.wall)), cx + (along ? off : 0), h / 2, cz + (along ? 0 : off));
+    // ROUND 6: the doorway is cut at `u` along the wall, not always at its middle. `u` is 0 for
+    // every building whose entry wall is not buried in its neighbour, so this is byte-identical to
+    // round 5 on 90 of 112 and moves the hole to where the door is on the rest.
+    const u = doorAlongLocal(b);
+    for (const seg of doorwaySegments(span, u, 0.4)) {
+      part(g, named(box(along ? seg.len : sw, h, along ? sd : seg.len, P.wall)), cx + (along ? seg.c : 0), h / 2, cz + (along ? 0 : seg.c));
     }
-    part(g, named(box(along ? DOOR_W : sw, Math.max(0.2, h - DOOR_H), along ? sd : DOOR_W, P.wall)), cx, DOOR_H + Math.max(0.2, h - DOOR_H) / 2, cz);
-    part(g, box(along ? DOOR_W + 0.5 : sd + 0.2, 0.24, along ? sd + 0.2 : DOOR_W + 0.5, P.wood), cx, DOOR_H, cz);
+    const ux = along ? u : 0, uz = along ? 0 : u;
+    part(g, named(box(along ? DOOR_W : sw, Math.max(0.2, h - DOOR_H), along ? sd : DOOR_W, P.wall)), cx + ux, DOOR_H + Math.max(0.2, h - DOOR_H) / 2, cz + uz);
+    part(g, box(along ? DOOR_W + 0.5 : sd + 0.2, 0.24, along ? sd + 0.2 : DOOR_W + 0.5, P.wood), cx + ux, DOOR_H, cz + uz);
     // The leaf, half open, so a door reads as a door from across the street.
     const leaf = box(DOOR_W * 0.9, DOOR_H - 0.15, 0.12, P.wood);
     leaf.name = `door:${b.id}`;
-    const lx = cx + (along ? 0 : Math.sign(cx) * 0.4), lz = cz + (along ? Math.sign(cz) * 0.4 : 0);
+    const lx = cx + ux + (along ? 0 : Math.sign(cx) * 0.4), lz = cz + uz + (along ? Math.sign(cz) * 0.4 : 0);
     part(g, leaf, lx, (DOOR_H - 0.15) / 2, lz, along ? 0.5 : Math.PI / 2 + 0.5);
     summary.doorway = true;
   };
@@ -1028,17 +1344,63 @@ export function settlementSolids(plan, x, z, radius, groundY) {
     };
     for (const W of walls) {
       if (!(b.enterable && W.side === side)) { push(W.cx, W.cz, W.hx, W.hz, `${b.id}:${W.side}`); continue; }
-      // The entry wall, in two pieces with a doorway between them.
+      // The entry wall, in two pieces with a doorway between them — at `doorAlongLocal(b)` along
+      // the wall, the SAME offset `buildBuilding()` cuts the drawn hole at (round 6).
       const span = W.along ? w : d;
-      const seg = Math.max(0.3, (span - DOOR_W) / 2);
-      for (const sgn of [-1, 1]) {
-        const off = sgn * (DOOR_W / 2 + seg / 2);
-        if (W.along) push(W.cx + off, W.cz, seg / 2, W.hz, `${b.id}:${W.side}${sgn > 0 ? '+' : '-'}`);
-        else push(W.cx, W.cz + off, W.hx, seg / 2, `${b.id}:${W.side}${sgn > 0 ? '+' : '-'}`);
+      const segs = doorwaySegments(span, doorAlongLocal(b), 0.3);
+      for (let si = 0; si < 2; si++) {
+        const seg = segs[si], sgn = si === 0 ? -1 : 1;
+        if (W.along) push(W.cx + seg.c, W.cz, seg.len / 2, W.hz, `${b.id}:${W.side}${sgn > 0 ? '+' : '-'}`);
+        else push(W.cx, W.cz + seg.c, W.hx, seg.len / 2, `${b.id}:${W.side}${sgn > 0 ? '+' : '-'}`);
       }
     }
   }
   return shapes;
+}
+
+/**
+ * ROUND 6. How far, HORIZONTALLY, is this point from the nearest wall slab in `shapes`?
+ *
+ * WHY THIS AND NOT `CollisionCell.distance()`. The answer has to be the one the solver gives, and
+ * the solver is `sim/collision.js`, which `render/` must not import (see the note at
+ * `BODY_RADIUS_M`). But the *geometry* is not duplicated: `shapes` is the list
+ * `settlementSolids()` returns, the same array `Engine._syncTownCell()` hands to the
+ * `CollisionCell` the body is actually resolved against, so a change to a wall changes both
+ * answers at once. What is restated here is one line of arithmetic — the exterior distance to an
+ * oriented box — and it is restated in TWO dimensions on purpose:
+ *
+ *   * `settlementSolids()` boxes span `[base, base + height]` in Y and the body stands on the
+ *     ground at the bottom of that span, so the horizontal distance IS the 3-D distance for a
+ *     standing body, without this function having to know the town's terrain height. Deriving the
+ *     doorstep against a guessed ground Y is how you get a number that is right offline and wrong
+ *     in the world.
+ *   * it is conservative in the safe direction: 2-D distance <= 3-D distance, so a point this
+ *     function calls clear is clear for the solver too, never the other way round.
+ *
+ * `tools/world/w1-04-r6-census.mjs` C checks this function against a real `CollisionCell` over
+ * every candidate it accepts, so the restatement is verified rather than asserted.
+ *
+ * @param {Array} shapes  as returned by `settlementSolids()`
+ * @returns {number} metres to the nearest slab; 0 inside one
+ */
+export function horizontalClearance(shapes, x, z) {
+  let best = Infinity;
+  for (let i = 0; i < shapes.length; i++) {
+    const s = shapes[i];
+    const yaw = (s.yaw_deg || 0) * Math.PI / 180;
+    const cy = Math.cos(yaw), sy = Math.sin(yaw);
+    const rx = x - s.c[0], rz = z - s.c[2];
+    // The same local frame `sim/collision.js` `shapeDistance()` case 0 uses.
+    const lx = rx * cy - rz * sy;
+    const lz = rx * sy + rz * cy;
+    const ax = Math.abs(lx) - s.h[0];
+    const az = Math.abs(lz) - s.h[2];
+    let d;
+    if (ax <= 0 && az <= 0) d = 0;
+    else { const qx = ax > 0 ? ax : 0, qz = az > 0 ? az : 0; d = Math.sqrt(qx * qx + qz * qz); }
+    if (d < best) { best = d; if (best <= 0) return 0; }
+  }
+  return best === Infinity ? Infinity : best;
 }
 
 /** Is this world point inside a building's footprint? Used to audit where people are standing. */

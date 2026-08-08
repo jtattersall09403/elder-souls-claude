@@ -231,6 +231,39 @@ export const DECLARED_WAYFINDING = [
 
 const DECLARED = new Set(DECLARED_WAYFINDING.map((d) => d.sentence));
 
+const norm = (s) => String(s).replace(/\s+/g, ' ').trim();
+
+/**
+ * Is this fired sentence one of the declared ones?
+ *
+ * MEASURED, AND THIS IS WHY IT IS NOT `Set.has()`. The first run of the rewritten P9 against the
+ * real opening came back with one undeclared sentence:
+ *
+ *   "When they have finished writing you down, this is where I will be, if I am"
+ *
+ * against a declared entry ending "…if I am anywhere." **The drawn row is not the authored
+ * line.** `render/text-register.js` records what went through the draw call, and the dialogue
+ * surface wraps its vellum panel, so a long sentence reaches the frame as a row that stops
+ * mid-clause. An exact-string list would therefore be red on the shipped build for a reason that
+ * has nothing to do with signposting, and — worse — would go green again the moment somebody
+ * changed the panel width.
+ *
+ * So a hit is declared when the drawn fragment is a PREFIX of a declared sentence, or a declared
+ * sentence is a prefix of it. Wrapping only ever truncates; it never invents. A different
+ * sentence that merely starts the same way is still a different sentence and still goes red,
+ * because the prefix has to run to the end of one side or the other.
+ */
+function isDeclared(sentence, declared) {
+  const s = norm(sentence);
+  if (declared.has(sentence) || declared.has(s)) return { declared: true, how: 'exact' };
+  for (const d of declared) {
+    const n = norm(d);
+    if (n.startsWith(s)) return { declared: true, how: 'drawn row wrapped: the frame carries a prefix of the declared sentence', of: d };
+    if (s.startsWith(n)) return { declared: true, how: 'the drawn row carries the declared sentence and continues', of: d };
+  }
+  return { declared: false, how: null };
+}
+
 /** Surfaces a person can speak through. Wayfinding anywhere else is the WORLD talking. */
 export const SPEAKING_SURFACES = ['dialogue'];
 
@@ -256,8 +289,9 @@ export function judge(entries, opts = {}) {
     const ih = instructionHits(text);
     if (ih.length) instruction.push({ text, surface, hits: ih });
     for (const w of wayfindingHits(text)) {
-      const row = { text, surface, ...w };
-      if (!declared.has(w.sentence)) wayfinding_undeclared.push(row);
+      const d = isDeclared(w.sentence, declared);
+      const row = { text, surface, ...w, matched_declared: d.declared ? d : null };
+      if (!d.declared) wayfinding_undeclared.push(row);
       else if (SPEAKING_SURFACES.indexOf(surface) < 0 && surface !== 'unknown') wayfinding_offstage.push(row);
       else wayfinding_declared.push(row);
     }
@@ -371,6 +405,20 @@ if (isMain && process.argv.includes('--self-test')) {
   const offstage = judge(shipped.map((s) => ({ ...s, surface: 'menus' })));
   check('declared/red-offstage', !offstage.ok,
     `and RED again when the SAME sentences are drawn on 'menus', where nobody is speaking (${offstage.wayfinding_offstage.length})`);
+
+  say('');
+  say('  E. the drawn row is not the authored line — the dialogue panel WRAPS.');
+  // The exact fragment the first real run of the rewritten P9 came back with.
+  const wrapped = 'The light up there is bad, but it is light. When they have finished writing you down, this is where I will be, if I am';
+  const wv = judge([{ text: wrapped, surface: 'dialogue' }]);
+  check('wrapped/accepted', wv.ok,
+    wv.ok ? 'a row cut mid-clause by the panel still matches its declared sentence by prefix'
+      : `still red: ${JSON.stringify(wv.wayfinding_undeclared.map((w) => w.sentence))}`);
+  // And the prefix tolerance must not become a wildcard. A DIFFERENT sentence that merely starts
+  // the same way is still undeclared.
+  const impostor = 'When they have finished writing you down, this is where I will be, if I am not up the ladder waiting for you.';
+  check('wrapped/not-a-wildcard', !judge([{ text: impostor, surface: 'dialogue' }]).ok,
+    'a longer sentence that merely SHARES a prefix is still red — prefix matching runs to the end of one side');
 
   say('');
   say(`  ${failed ? failed + ' FAILURE(S)' : 'all fixtures on the expected side'}`);

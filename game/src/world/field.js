@@ -17,12 +17,23 @@ import { SkinField } from './groundskin.js';
 
 /**
  * How far below a deck the CARRIAGEWAY may be and still count as the road rather than as air, for
- * the purpose of `clampToDeck` letting a body off the side. See the long note in that function:
- * `traversal.json` gives `step_up_m` 0.55, an airborne threshold of 0.35 and `fall.safe_m` 4, so a
- * metre is a kerb by all three and a viaduct is not. Made a named constant rather than a literal
- * because it is the one number in this file a reader will want to argue with.
+ * the purpose of `clampToDeck` letting a body off the side. See the long note in that function.
+ *
+ * The number is `traversal.json fall.safe_m` — **the drop that costs nothing**. It is written here
+ * as a literal because `field.js` is constructed from terrain/regions/water and has never been
+ * given the traversal config; if that changes this should read it. 4 m was not the first value
+ * tried. At 1.0 m — chosen against `step_up_m` 0.55 and the 0.35 m airborne threshold — the body
+ * was released at the 13 m viaduct on `stormhold-helstrom` (a 0.76 m kerb) and then pinned 700 m
+ * earlier at the 22 m viaduct, whose slab overhangs its own approach by **3.12 m**. Both are the
+ * same defect and only the second one is a drop worth arguing about, and the game's own answer to
+ * "is a 3 m step down a fall" is no: `fall.safe_m` is 4.
+ *
+ * This is only safe because of the OTHER half of the round-2 fix. A slab may not stand over a
+ * carriageway that belongs to a different stretch of road — `tools/world/build-roads.mjs`
+ * `selfClearance()` enforces it and `tools/world/w1-crossing-r2-overpass.mjs` reports 0 offences
+ * in 25,071 samples. Without that, a 4 m exemption would open the railing over a road below.
  */
-const PARAPET_KERB_M = 1.0;
+const PARAPET_KERB_M = 4.0;
 
 const BANDS = [
   { id: 'W0', name: 'DRY', min: 0.00 },
@@ -500,10 +511,9 @@ export class WorldField {
     //   * `onRoadAt(x, z)` — the destination is CARRIAGEWAY. Off the side of the 471 m viaduct on
     //     the Valus Ridge there is no road at all, so this is false and the parapet holds.
     //   * the drop to the ROAD SURFACE WITHOUT THE DECK (`naturalHeightAt`: terrain, sites and the
-    //     road corridor, no slab, no signature landform) is under `PARAPET_KERB_M`. Against the
-    //     game's own numbers: `traversal.json step_up_m` is 0.55, the body goes airborne at 0.35
-    //     above the ground, and `fall.safe_m` is 4 — so a metre is a kerb by every one of them,
-    //     and a viaduct standing 5 m or 50 m proud is not.
+    //     road corridor, no slab, no signature landform) is at most `PARAPET_KERB_M` — the game's
+    //     own `fall.safe_m`, the drop that costs nothing. See that constant for why it is 4 and
+    //     not 1, and for the second trap that found out.
     // Where a slab really is laid over a lower carriageway — the overpass this round removed from
     // `roads.json` — the drop is 6.99 m and this exemption does NOT fire, so the two fixes do not
     // cover for one another.

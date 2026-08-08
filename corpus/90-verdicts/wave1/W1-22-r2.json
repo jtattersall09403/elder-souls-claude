@@ -11,7 +11,7 @@
     "role": "critic.audio",
     "model": "claude-opus-5",
     "started_at": "2026-08-07T22:00:00Z",
-    "finished_at": "2026-08-08T02:26:40Z",
+    "finished_at": "2026-08-08T07:46:12Z",
     "conflict_of_interest": false,
     "saw_builder_notes_before_blind": true,
     "note": "Successor generation 2. Two predecessors were killed by container restarts. This verdict continues from the next_step left on disk and re-verified rather than inherited every number it repeats; where it relies on a predecessor's measurement it says so and names it."
@@ -242,7 +242,29 @@
       "what": "The pack builder and its leak audit."
     }
   ],
-  "blind": [],
+  "blind": [
+    {
+      "ref_item": "RI-AUD03",
+      "status": "not_possible",
+      "why_not_possible": "Spawning a fresh judge requires create_session, which is approval-gated in this session and returned 'MCP error -32003: MCP tool call requires approval'. Same missing channel round 1 reported. The pack is BUILT, leak-audited and UNJUDGED, ready for the first judge that can be spawned.",
+      "question": "Are these two 60-second recordings from the same place in a game world, or different places? Answer SAME or DIFFERENT. (RI-AUD03 B2's question, written before the pack was built.)",
+      "pack": "reports/packs/w1-22-r3-hard",
+      "reveal": "reports/packs/w1-22-r3-hard.reveal",
+      "leak_audit": {
+        "n": 26,
+        "n_same": 13,
+        "n_different": 13,
+        "chance_baseline": 0.5,
+        "serialised_length_recovers": 0.5,
+        "all_recordings_same_serialised_size": true,
+        "tod_predicts_class": 0.577,
+        "sides_swapped": "14/26",
+        "identical_pairs": 0,
+        "content_difficulty_spectrogram_distance": 0.923
+      },
+      "note": "Supersedes reports/w1-22-critic/r2/pack, which was audited BEFORE a judge was spent on it and found to leak three ways: serialised byte length recovered 0.769 of the key against a 0.500 baseline, no DIFFERENT trial mixed day and night so 'the sides differ in time of day' implied SAME with certainty, and sides were never swapped. Rule 25: built by this critic, judged by nobody."
+    }
+  ],
   "arbitration": {
     "ar1_souls_leakage": {
       "result": "pass",

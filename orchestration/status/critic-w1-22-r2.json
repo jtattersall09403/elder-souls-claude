@@ -3,14 +3,18 @@
   "role": "critic",
   "item": "W1-22",
   "round": 3,
-  "state": "running",
+  "state": "done",
   "started_at": "2026-08-07",
-  "next_step": "SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 25); then finalise verdict JSON (critic.finished_at), verdict-validate, blog line, commit with git commit --only.",
+  "next_step": "DONE. Verdict written and validated; blog line appended; committing declared files with git commit --only.",
   "files_touched": [
     "corpus/90-verdicts/wave1/W1-22-r2.json",
     "corpus/90-verdicts/wave1/W1-22-r2.md",
     "docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png",
     "orchestration/status/critic-w1-22-r2.json",
+    "reports/blog-feed.jsonl",
+    "reports/content-stats.json",
+    "reports/packs/w1-22-r3-hard.reveal/",
+    "reports/packs/w1-22-r3-hard/",
     "reports/w1-22-critic/r2/",
     "reports/w1-22-critic/r2/bands.json",
     "reports/w1-22-critic/r2/critic-probe-r2-successor.json",
@@ -50,7 +54,11 @@
     "SUCCESSOR-2 / REFUSAL FALSIFIED IN THE BROWSER. ambience-onsets.mjs's mute guard, run four ways: at the SHIPPED 4 s fixture full=0, muted(real mute)=0, muted(NO-OP mute)=0 -> the guard passes for BOTH, so it cannot distinguish a working mute from one that does nothing. At 60 s: full=3, muted(real)=0, muted(no-op)=3 -> passes real, REFUSES no-op. So the refusal is a genuine reachable state, and it is unreachable for the reason it exists at the fixture that ships. The guard is not broken; its fixture is. Remedy: assert full.fired > 0 and size the fixture to the longest interval band.",
     "SUCCESSOR-2 / CONSUMPTION MEASURED, ADMISSIBLE. 89 entities, player walking, same seed, 6 state-hash samples per arm. Perturbing the ambience model on 177 fields (every level_db -60, every event_gain_db 0, every event list emptied, emitters removed, bed_gain_db -60) leaves EVERY state hash, entity position and alert value IDENTICAL to the null arm. The positive control -- the stealth detection sound-radius table x8, 21 fields -- diverges at the first sample. The null arm re-run AFTER the destructive arm reproduces the first null exactly, so the in-place restore is sound and the null result is not a teardown artefact. RULING: the model IS consumed on the AUDIO path (AmbienceDriver stepped from _afterStep; 413 real events measured out of the render) but has NO entity-side consumer -> seam_sterile: true, reported under AR-3 rather than scored 0 under a clause written for a different failure. The builder's spectral_distance evidence does NOT stand as a consumption demonstration: it measures the audio model with the audio model.",
     "SUCCESSOR-2 / SHIPPED GATES AT HEAD 5d88b7e, 180 s: O1_events_are_audible FAILS (detect_ratio 0.656; salt-hills/day, salt-hills/night and market/night detect ZERO onsets), O2_events_change_the_dynamics FAILS (11 bed/tod rows below the 3 dB bar), O3_level_in_band PASSES with zero failures while 54 of 413 events sit outside the band. Two of the three standing gates are red on the tree as shipped.",
-    "SUCCESSOR-2 / R5 VIOLATED FOR 9 OF 13 REGIONS, verified independently at HEAD from a fresh 180 s render: every measured quantity and every event is IDENTICAL day vs night for clay-moor, crimson-coast, deep-marshes, eastern-rootlands, hive, salt-hills, stone-wastes, thornmarsh, valus-ridge. RI-AUD03 R5 says 'Night is a different L2/L4 selection, not a filter'; in those nine it is not a filter either, it is nothing. Reproduces the predecessor's byte-level digest result from a different tool."
+    "SUCCESSOR-2 / R5 VIOLATED FOR 9 OF 13 REGIONS, verified independently at HEAD from a fresh 180 s render: every measured quantity and every event is IDENTICAL day vs night for clay-moor, crimson-coast, deep-marshes, eastern-rootlands, hive, salt-hills, stone-wastes, thornmarsh, valus-ridge. RI-AUD03 R5 says 'Night is a different L2/L4 selection, not a filter'; in those nine it is not a filter either, it is nothing. Reproduces the predecessor's byte-level digest result from a different tool.",
+    "SUCCESSOR-2 / REBUILT PACK IS CLEAN ON EVERY TELL. reports/packs/w1-22-r3-hard, 26 trials, 13 SAME / 13 DIFFERENT, chance 0.500. Serialised byte length now recovers 0.500 (exactly chance; was 0.769) and every recording serialises to an identical 6981 bytes. Time of day predicts the class at 0.577 (was effectively 1.000). Sides swapped on 14 of 26 (was 0). No A==B, no region/tod/stratum strings in trials.json, uniform array shapes and value widths, reveal in a SIBLING directory.",
+    "SUCCESSOR-2 / I CORRECTED MY OWN LEAK BAR AFTER SEEING A NUMBER, and say so: the audit first REJECTED the pack on spectrogram_distance 0.923 against a 0.70 bar I had set over all six features. That bar was wrong. A leak is information that is NOT about the sound (byte length, tod, side assignment); crest, stereo correlation, p95, iqr and spectrogram distance ARE the sound and gating them would reject a pack for the regions being distinguishable, which is the question B2 exists to ask. Tool now gates the artefact feature and REPORTS the content features as pack difficulty. The 0.923 is itself a positive finding: with loudness, tone colour and slow drift removed, temporal behaviour alone still separates the regions 92% of the time -- the event layer now carries region identity, which is exactly what the B2 judge said was missing.",
+    "SUCCESSOR-2 / BLOCKED, REPORTED PLAINLY (rule 26): could not get the pack answered. create_session is approval-gated in this session and returned 'MCP error -32003: MCP tool call requires approval'. Same missing fresh-judge channel round 1 reported for B1/B2/B3. Pack is BUILT, LEAK-AUDITED and UNJUDGED. B2 scored not_run; the round-1 32/32 is cited nowhere.",
+    "SUCCESSOR-2 / SCORE: min-over-axes 4.0 against a 7.0 gate -> FAIL. RI-AUD03 native 2 of 6 (B4 pass re-run by me, B6 pass on the builder's G7; B5 NOT passed as written because ambience-render G4 substitutes a different quantity by its own admission; B1/B2/B3 not run for want of judges). RI-MTH07 5 -- not zeroed, because the model IS consumed on the audio path and 'an entity changes behaviour' is the wrong test for a subsystem whose output is sound; marked down for the builder's circular evidence and for seam sterility."
   ],
   "notes": [
     "Contention: loadavg 13-19 on 4 cores, 18-30 headless_shell, throughout. Every figure is a byte comparison, a digest, a level or a count. No wall-clock figure quoted.",

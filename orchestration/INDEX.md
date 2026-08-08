@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a2bfe4c`: 712 tools, 153 reference
-items, 58 pieces in flight.
+so it cannot drift. Generated at `52cffa1`: 712 tools, 153 reference
+items, 59 pieces in flight.
 
-Its purpose is to stop 58+ concurrent agents each paying separately to discover the
+Its purpose is to stop 59+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1033,6 +1033,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-GAMEPAD` | running | Read RULES, INDEX, W1-21-r2 verdict, NEXT-DISPATCH; run ownership + contention gates; dete | `orchestration/status/W1-GAMEPAD.json` |
+| `critic-w1-22-r2` | done | DONE. Verdict written and validated; blog line appended; committing declared files with gi | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/blog-feed.jsonl` `reports/content-stats.json` |
 | `W1-04-r6` | starting | read verdict corpus/90-verdicts/wave1/W1-04-r5.md, run ownership, run contention gate | `orchestration/status/W1-04-r6.json` |
 | `W1-CROSSING-r2` | in-progress | Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/posit | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` `tools/world/w1-crossing-r2-pursue-sim.mjs` `tools/world/w1-crossing-r2-parapet-trap.mjs` |
 | `W1-26-r4` | building | run tools/w1-26-r4/w1-26-r4-verify.mjs in a browser (gate GO), then blog line + shot + com | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
@@ -1059,7 +1061,6 @@ work is the difference between resuming and starting over.
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
-| `critic-w1-22-r2` | running | SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 2 | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` |
 | `critic-w1-17` | done | Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-w | `orchestration/status/critic-w1-17.json` `corpus/90-verdicts/wave1/W1-17-r1.md` `corpus/90-verdicts/wave1/W1-17-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-r1/` `tools/dialogue/critic-field-census.mjs` `tools/dialogue/critic-semantics.mjs` |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |

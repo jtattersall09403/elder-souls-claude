@@ -8,6 +8,22 @@ the evidence to work out the rule; the rule is here and it is complete.
 Read next: `orchestration/INDEX.md` (generated — tools, items, gates, harness verbs, who owns what
 right now). Between these two you should not need to go looking for anything.
 
+## Rule 0 — never wait for the owner
+
+0. **Decide, record, proceed. Never block on the project owner.** They have said twice that they
+   miss notifications and that nothing is to be gated on them. So: no `AskUserQuestion`, no tool
+   that raises an approval prompt (if one says "requires approval", treat the capability as absent
+   — the prompt went somewhere nobody is reading), and no work parked pending an answer.
+
+   **A design question is not an excuse to stop.** Rule it in writing with the numbers, in
+   `orchestration/NEXT-DISPATCH.md` or as an `ARBITRATION.md` S-ruling, and mark it **reversible** —
+   name the evidence that would overturn it. An arbiter agent needs no approval and is the right
+   instrument for anything genuinely contested. When you are torn between two answers and both are
+   cheap, build both and measure.
+
+   The owner overrules by reading, not by being asked. That is how the map exists: S30 said there
+   would be none, they read a blog post, and S35 replaced it.
+
 ## Survive
 
 1. **Write your status file first, before you read anything**, at `orchestration/status/<task>.json`,

@@ -62,6 +62,9 @@ const USAGE = `w1-crossing-r2-legs.mjs — every leg both ways, one browser.
   --weather <w>      setWeather before each walk
   --burden <n>       setBurden before each walk
   --roads <file>     install a DIFFERENT roads.json into the live field before walking
+  --clamp before-r2  install the pre-round-2 parapet (the delete-the-fix arm)
+  --trace <n>        record position + traversal flags every n frames
+  --shot <png>       pose the camera at --shot-at and screenshot after the walks
   --max-frames <n>   ceiling per walk                 (default 400000)
   --legs-only        skip the two crossing walks
   --crossing-only    only the two crossing walks
@@ -167,6 +170,22 @@ try {
         self_clear_spliced: r.legs.reduce((n, l) => n + ((l.self_clearance && l.self_clearance.spliced) || []).length, 0) };
     }, roads);
     log(`roads override installed: ${JSON.stringify(doc.roads_install)}`);
+  }
+  // ---- the parapet teardown arm ---------------------------------------------------------------
+  // `--clamp before-r2` installs `tools/world/clamp-before-r2.js` — everything round 1 shipped,
+  // without round 2's "the parapet may not stand between a body and its own road" exemption — on
+  // the live field. The install is VERIFIED and the run refuses to report an arm that did not
+  // take, because a teardown that silently did nothing is a second copy of the experiment.
+  if (args.clamp) {
+    const src = fs.readFileSync(path.join(REPO_ROOT, `tools/world/clamp-${String(args.clamp)}.js`), 'utf8');
+    doc.clamp_arm = await handle.page.evaluate((code) => {
+      const E = window.__ENGINE;
+      // eslint-disable-next-line no-eval
+      E.field.clampToDeck = eval(`(${code.slice(code.indexOf('function (px'))})`).bind(E.field);
+      return { clamp_is: /PARAPET_KERB_M|its own road/.test(String(E.field.clampToDeck)) ? 'SHIPPED' : 'PRE-R2' };
+    }, src);
+    if (doc.clamp_arm.clamp_is !== 'PRE-R2') throw new Error(`the parapet teardown did not take: ${JSON.stringify(doc.clamp_arm)}`);
+    log(`parapet arm installed: ${JSON.stringify(doc.clamp_arm)}`);
   }
   const roads = await handle.page.evaluate(() => window.__ENGINE.data.roads);
 
