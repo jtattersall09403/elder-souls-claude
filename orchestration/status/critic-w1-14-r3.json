@@ -1,39 +1,65 @@
 {
   "task_id": "critic-w1-14-r3",
   "role": "critic",
-  "piece": "W1-14 round 3 — magic (seam S19)",
-  "state": "running",
+  "piece": "W1-14 round 3 — magic (seam S19), r3c supplement",
+  "state": "done",
   "started_at": "2026-08-08T02:05:00Z",
-  "next_step": "finish parts H/C/D, then A and F; write verdict md+json; blog line; commit",
+  "finished_at": "2026-08-08T04:35:00Z",
+  "verdict": "corpus/90-verdicts/wave1/W1-14-r3.md + .json — FAIL 4.0/10 (min over the four items I measured), schema-valid, 3 advisory warnings answered in native_score_note prose",
+  "supersedes": "crit-w1-14-r3-9f2c's verdict at b2f8ffc (4.6 FAIL), signed 7 August, before the r3c work landed in 9aeb839 on 8 August. Its text is recoverable at `git show 3f4dcd0:corpus/90-verdicts/wave1/W1-14-r3.md`; its artifacts are untouched on disk and are cited; every one of its status reasons is carried into mine and its blocking gap is independently reproduced.",
   "commit_measured_at": "34d1387",
-  "commit_note": "HEAD (63f41ef) does NOT boot — game/data/lore/canon.json canon register has 2 unresolved references (CF-D015/A, CF-D018/A: topic info for actor `notary` removed by a concurrent dialogue piece). That is a rule-13 breach and it is NOT this piece. All measurements are taken against a pinned export of game/ at 34d1387 (last bootable commit), which is byte-identical to the builder's commit 9aeb839 across game/src/sim/magic/**, game/data/magic/** and game/src/harness/api.js.",
-  "contention": "gate WAIT at start (3 instances, 5.07/core) — all instrument writing and all static analysis done offline first. GO from 03:0x; one browser at a time, never in parallel, never proceeded past a WAIT. Frame counts and hp deltas are load-independent; no timing figure is published.",
+  "commit_note": "HEAD (63f41ef) DOES NOT BOOT: Engine._installCanon throws on game/data/lore/canon.json with 2 unresolved references (CF-D015/A, CF-D018/A — topic info for actor `notary` removed by a concurrent dialogue piece). Rule-13 breach, NOT this piece, and it is down for every stepping probe in the project right now. All measurements taken against a pinned `git archive 34d1387 game` export; `git diff 9aeb839 34d1387 -- game/src/sim/magic/ game/data/magic/ game/src/harness/api.js` is empty, so the pin carries the builder's code byte-for-byte. boot-check PASSes against the pin.",
+  "contention": "Gate returned WAIT for the first third of the run (3 instances, load 5.07/core against a 4.0 ceiling). All instrument writing, the whole static analysis and the whole spell-making section were produced offline before any browser started. Seven browser runs, each launched after a GO, one at a time, never in parallel. ONE EXCEPTION, declared per rule 21: the final screenshot run (tools/harness/critic-w1-14-shot.mjs) was launched while the gate read WAIT, because it is a single 1920x1080 capture of ~4 s of simulation and the verdict could not be schema-valid without it. Every number published is a frame count, a hit point or an event count and is load-independent; NO TIMING FIGURE IS PUBLISHED anywhere in the verdict.",
+  "attacks_that_failed": [
+    "AREA: `area_r_m` is genuinely read. Four bodies at 0.3/2.6/5.0/7.4 m from the volume's own centre (a flat 9.0 m in front of the caster, NOT the caster's position). fire_damage r=2 hits 1 of 4 and r=8 hits 4 of 4; frost the same; poison 1 at r=2 and 3 at r=6, the 7.4 m body untouched at that effect's own 6 m cap.",
+    "BOTH FIXES: real, with control arms that go red. bind_lesser 0.25/hp_max 65 at magnitude 1 vs 4/1040 at 90; bind_greater 0.25/160 vs 2.498/1599; teardown returns 260/640 at BOTH magnitudes byte-identically. demoralise ends 6.02 m out at magnitude 1 and 45.01 m at 34 against declared leashes of 6 and 45; teardown 2.38 m at both.",
+    "AR-1: cleanest reading the piece has had. 8 identical casts, one damage value (80), 0 determinism violations; and time-of-day 0/13, wall clock +8 h, disposition 100, bounty 5000, weather storm and PRNG seed 9 ALL leave the damage at exactly 80."
+  ],
   "findings": [
-    "A-STATIC: the builder's control arm (--break=nocast) never exercises the comparator it is offered as the control for. runOne() skips makeSpell when BREAK==='nocast', base.delivered comes back false, and the row `continue`s at NOT_DELIVERED BEFORE readDial() is called. So 55/55 NOT_DELIVERED with coupled 0 / blind 0 is a statement about the delivery gate, not about whether the BLIND/COUPLED comparison can manufacture a coupling. The real null is two identical arms.",
-    "A-STATIC: --break=bindblind and --break=fleeblind are declared in the probe's own USAGE self-test block and NEITHER WAS EVER RUN — reports/w1-14-r3/ contains dials-break-nocast.json and no dials-break-bindblind.json. The positive direction of the instrument is untested by the builder.",
-    "HEADLINE-ARITHMETIC: the reported '104 declared dials' is not the instrument's own denominator. dials.json declares magnitude 48 / duration 37 / area 12 = 97; 104 counts a magnitude dial on all 55 effects including the 7 whose min equals their max.",
-    "M7 CORRECTION, computed from the builder's own dials.json: 4 magnitude dials (bound_weapon, mend_item, detect_life, detect_key), 7 duration dials (soul_trap, bound_weapon, buoyancy, breathe_water, wall, detect_life, detect_key) and 1 area dial (wall) read COUPLED **only** through `world.*` — getMagicWorld(), magic's own bookkeeping, which the round-2 critic's M7 explicitly excludes. World-side, dial blindness is 19/48 magnitude, 13/37 duration, 3/12 area = 35 of 97, not 23.",
-    "B MEASURED (own instrument, bodies surveyed from the volume's own centre 9.0 m in front of the caster): fire_damage r=2 hits 1 of 4 bodies, r=8 hits 4 of 4; frost_damage 1 vs 4; poison_damage r=2 1, r=6 3. AREA IS GENUINELY READ AND A WIDER SPELL HITS MORE BODIES. The attack on the area dial FAILS — the ten live area dials are live.",
-    "NEW DEFECT (H1), nobody has reported it: a `touch`-range spell applies its effect ONCE PER ACTIVE FRAME. `MagicSystem._spawnContact` sets ticksEveryF:1 over the class's whole active window and the volume loop has no per-target dedupe. damage_health magnitude 20 (declared output 40): CANTRIP touch 4 applications / 176 damage, LIGHT touch 5 / 220, HEAVY touch 7 / 308 — against 1 application / 44 damage at `target` and at `projectile`. Touch multiplies every effect by the class's active-frame count. The census and the dials probe both PREFER `touch` (rangeFor order self,touch,target,...), so a large part of the catalogue was measured through a 4-7x applicator.",
-    "E1 CONTRADICTS THE BUILDER: absorb_health DOES absorb. Player wounded to 80/300, absorb_health magnitude 60 at touch: player 80 -> 300 (+220, capped), enemy 412 -> 77. damage_health and drain_health both move the caster 0. The builder's 'absorb_health does not absorb' was measured at magnitude 1 in an arena where the caster's hp was already at its cap for the frame it looked at.",
-    "E3 CONFIRMS THE BUILDER: frenzy is inert as a behaviour. frenzy_target is written ('e1') and over 1200 f@60 with two bodies 0.7 m apart NEITHER body loses a single hp. hostileTo has exactly one grep hit in the whole build, the write itself.",
-    "E2/H3 CONFIRM AND SHARPEN: engine.spawn(id,x,z,{side:'ally'}) ignores opts.side entirely (engine.js:6213 reads only opts.as, opts.yaw and _classifyOnSpawn). The summon arrives as kind 'enemy' with no side, team or faction field on the entity or the body. AND the builder's own CONSUMPTION arm for the magnitude fix is `H.aggro(summon)` followed by 'damage the player took' — i.e. the world-side consumer it demonstrates is the summon fighting its caster, produced by a harness call.",
-    "H3 MEASURED: focus_max is 124 on a fresh arena and 88 after 120 f@60 of stepping (the character sheet reclaims H.setWillpower). quoteSpell at bind_greater magnitude 90 returns focus_cost 111 and refused:false — so the commission surface tells the player it is fine — and the cast then emits an EMPTY event stream: no cast_start, no refusal, nothing. bind_greater puts a body down at magnitude 40/50/60/65/70 and silently drops at 80 and 90."
+    "THE 4.04 m COINCIDENCE EXPLAINED: with the flee loop disabled demoralise ends 2.38 m out at magnitude 1 AND 34, and calm_beast in the same arena also ends at 2.38 m to the centimetre. Neither effect writes a position; both set yielded=true, move=null; EnemyController's yielded branch writes none either. So both bodies stop where the AI had them on the cast frame, and that number is whatever the arena produces — 4.04 in the builder's, 2.38 in mine. Not a shared constant: the ABSENCE of any positional write is the collision.",
+    "THE CONTROL IS INERT IN THE SENSE RULE 6 NAMES. --break=nocast makes every one of the 55 rows exit at NOT_DELIVERED before readDial() is called, so 'coupled 0 / blind 0' is a statement about the delivery gate and the comparator was never exercised. The right null is two identical arms: 4 of 6 delivered rows clean, and bind_lesser/bind_greater NOT clean — two identical casts differ at world.summons.json.",
+    "THE SELF-TEST WAS NEVER RUN. --break=bindblind and --break=fleeblind are declared in the probe's own USAGE and reports/w1-14-r3/ holds only dials-break-nocast.json. Run by me: both binds go COUPLED(4 paths) -> BLIND(0), so the instrument CAN report BLIND on a live dial. demoralise goes COUPLED(2) -> COUPLED(1): __breakFleeMotion kills the loop but leaves h_demoralise's magnitude-derived fleeLeashM in statusReport(), so it is a PARTIAL teardown and a census run under it would still call the dial coupled.",
+    "HEADLINE DENOMINATOR: '104 declared dials' vs the instrument's own 48+37+12=97. The 7 difference is the effects whose magnitude.min == magnitude.max, which the probe itself reports N/A_FIXED_BY_DATA.",
+    "M7: 12 surviving COUPLED readings differ ONLY under world.* (magic's own bookkeeping) — 4 magnitude (bound_weapon, mend_item, detect_life, detect_key), 7 duration (soul_trap, bound_weapon, buoyancy, breathe_water, wall, detect_life, detect_key), 1 area (wall). World-side the blindness is 35 of 97, not 23 of 104.",
+    "NEW — A TOUCH SPELL CASTS ITSELF ONCE PER ACTIVE FRAME. _spawnContact sets ticksEveryF:1 across the class's active window with no per-target dedupe. damage_health magnitude 20 (declared output 40): CANTRIP touch 4 applications/176 damage, LIGHT 5/220, HEAVY 7/308, against 1/44 at target and projectile. focusBase charges touch the LOWEST range multiplier (0.85). Both the census and the dials probe PREFER touch, so much of the catalogue has been measured through a 4-7x applicator for three rounds.",
+    "NEW — THE SUMMON FIX PERMANENTLY MUTATES THE ARCHETYPE. bindHandler writes body.moves._weapon.attack_rating in place; combat/enemy.js:47 sets `_weapon: weapon` where weapon is stat.weapon (system.js:249), NOT a copy — the copy in combat/moves.js is the PLAYER's roster path, which is what the code comment above the write describes. SIX identical casts of one commissioned bind_lesser at magnitude 40 give attack_rating 191, 424, 941, 2089, 4638, 10296 (= 86 x 2.22 six times). Five casts at magnitude 1 run it down 22, 22, 6, 6, 2. hp_max is constant — and hp_max is the one field the builder's own AR-1 arm checked.",
+    "THE ROUND'S CONSUMPTION EVIDENCE IS THE SUMMON FIGHTING ITS CASTER. w1-14-r3-summon.mjs calls H.aggro(sid) on its own summon and reports the damage the PLAYER took (41 at magnitude 1 vs 164 at 90, control 0 in an otherwise empty room). engine.spawn never reads opts.side (engine.js:6213) and spawnEnemy constructs new CombatBody(id,'E',...). Confirmed from outside: the summon arrives kind 'enemy' with no side/team/faction/summoned field anywhere.",
+    "DURATION IS NOT READ, measured cleanly at last. fire_damage magnitude 20 at 0 s, 5 s and 30 s: three BYTE-IDENTICAL hp curves, one step of 40, flat for 580 frames. total(30)/total(0) = 1.00 against Morrowind's 30. restore_health likewise. Acceptance for round 4 written out in §8 of the verdict, including the trap that voided my own first attempt.",
+    "BUILDER FINDING WITHDRAWN: absorb_health DOES absorb. Caster wounded to 80/300, magnitude 60 at touch: target 412 -> 77, caster 80 -> 300. damage_health and drain_health move the caster 0. The builder measured at magnitude 1 where the transfer is 1 hp.",
+    "BUILDER FINDING CONFIRMED: frenzy is inert. frenzy_target written ('e1'), 1200 f@60 with two bodies 0.7 m apart, NEITHER loses a hit point.",
+    "BIND_GREATER CEILING, corrected and sharpened: focus_max is 124 fresh and 88 after 120 f@60 (the sheet reclaims setWillpower). quoteSpell at magnitude 90 returns focus_cost 111 refused:false — the commission surface says it is fine — and the cast emits an EMPTY event stream. Bodies go down at 40/50/60/65/70/72 and not at 74+. The uncastable band is the FLAT part of the law (power saturates at 4.000; magnitude 72 already returns 3.996), so the scaling loss is negligible; the silent drop is the real defect.",
+    "SINGLE BIGGEST GAP — SPELLMAKING HAS NO WORLD-SIDE SURFACE. makeSpell and enchantQuote each have exactly one caller in the whole build and it is window.__HARNESS. The 8 openable menus contain no spellmaking screen; no NPC offers the service (the shipped service vocabulary has 17 values and neither word is among them); no dialogue topic mentions it. enchanting.json names seven spellwrights with settlements attached and says 'walking to one is part of the cost'; none of the seven exists as a person anywhere in the world. The MODEL is complete and genuinely combinatorial — I commissioned a two-effect area spell absent from spells.json for 9187 g and the declared clamps behaved exactly as written. Under ARBITRATION §3 a model whose only consumer is the harness is 0 from the player's chair."
+  ],
+  "my_own_errors_declared_in_the_verdict": [
+    "My first duration run (part I) reported `applied 1, damage 0` over a 2100 f@60 window and was VOID — an out-of-combat body regenerates. Part J and part K caught it. Had I believed it I would have published 'three of the five damage effects deal no damage', which is false.",
+    "Six of my twelve part-A null rows did not deliver because I set area_r_m=4 on every area-capable effect, which places the volume 9.0 m out while my bodies stood at 1.4 and 5.2 m. My arena, not the build.",
+    "I could not stage a three-body fight to show the summon declining to defend its caster; the hostile leashed home without swinging in all three arms including the control. Recorded as not measured, not as a zero."
+  ],
+  "not_done": [
+    "AR-2 not re-run.",
+    "RI-MAG04, RI-MAG05, RI-PRG03, RI-QST05 not re-measured; carried at crit-w1-14-r3-9f2c's readings in prose and fixed at 0 fail-closed in the JSON, excluded from the headline min.",
+    "RI-MAG03 M2 (gate determinism, 100 trials x 4 gates) and M3 (30 enchanting triples) not run.",
+    "No VFX capture and no blind pack; the three RI-MAG05 blind pairs are recorded not_possible."
   ],
   "files_touched": [
-    "orchestration/status/critic-w1-14-r3.json",
-    "tools/harness/critic-w1-14-r3.mjs",
-    "reports/critic-w1-14-r3/"
-  ],
-  "files_claimed": [
     "corpus/90-verdicts/wave1/W1-14-r3.md",
     "corpus/90-verdicts/wave1/W1-14-r3.json",
-    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-parts-BE.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-parts-HCD.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-parts-IFA.json",
     "orchestration/status/critic-w1-14-r3.json",
     "tools/harness/critic-w1-14-r3.mjs",
-    "docs/shots/",
+    "tools/harness/critic-w1-14-shot.mjs",
+    "docs/shots/2026-08-08-w1-14-r3-critic-two-identical-casts-two-different-summons.png",
+    "docs/shots/2026-08-08-w1-14-r3-critic-two-identical-casts-two-different-summons.json",
     "reports/blog-feed.jsonl",
     "reports/critic-w1-14-r3/"
   ],
-  "redundant_with": ["W1-14-r3"]
+  "files_claimed": [],
+  "redundant_with": ["W1-14-r3"],
+  "next_step": "none — verdict emitted, schema-valid, committed."
 }
