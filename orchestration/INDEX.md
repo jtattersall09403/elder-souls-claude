@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `cca44e0`: 769 tools, 153 reference
+so it cannot drift. Generated at `2d40c02`: 769 tools, 153 reference
 items, 77 pieces in flight.
 
 Its purpose is to stop 77+ concurrent agents each paying separately to discover the
@@ -1105,11 +1105,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `judge-prose-r4-m5` | researching | Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal. | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `PLAYABILITY` | measuring (successor 2) | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
 | `P10-loader-retry` | starting | read loadData in game/src/engine.js and the boot notice in game/index.html | — |
-| `judge-prose-r4-m5` | researching | Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal. | `orchestration/status/judge-prose-r4-m5.json` |
 | `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
 | `critic-w1-attr-scale` | running | read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure | — |
 | `W1-TOUCH-r2` | starting | read ARBITRATION.md, W1-TOUCH.json, critic-w1-touch.json, then the touch/step source | — |

@@ -5,7 +5,7 @@ Every number below is fixed-step geometry, a state count or a trace hash from th
 modules stepped in bare Node (`tools/lib/combat-node.mjs`). **No timing figure appears anywhere in
 this document**, so contention cannot move any of it (RULES 26).
 
-Instruments: `tools/combat/w1-12-r2-probe.mjs` (`--mode=chase|census|yaw|states`),
+Instruments: `tools/combat/w1-12-r2-probe.mjs` (`--mode=chase|census|rescue|yaw|states`),
 `tools/combat/w1-12-r2-teardown.mjs`, `tools/combat/w1-12-r2-chart.mjs`,
 `tools/combat/check-ai-units.mjs`. The round-1 critic's own tool
 (`tools/combat/critic-w1-12-census.mjs`) is untouched and was re-run at every step.
@@ -88,21 +88,29 @@ Seven fighting statblocks × seven player behaviours × four start ranges (4, 8,
 |---|---|---|---|---|---|---|---|---|---|---|
 | `inf_trash` | INFANTRY | 2.4 | 2.04 | 4/4 0.69–0.71 | **3/4** 1.59–3.06 | 2/4 1.82–12.10 | 0/4 6.55–22.55 | 4/4 1.60–1.61 | 4/4 1.72–1.81 | 4/4 1.80–1.88 |
 | `guard_legion` | TURTLE | 2.4 | 2.04 | 4/4 0.71–0.76 | 3/4 1.75–5.13 | 1/4 1.94–15.43 | 0/4 6.56–22.55 | 4/4 1.75–1.77 | 4/4 1.81–1.94 | 3/4 1.93–2.73 |
-| `drowned_lesser` | AMBUSHER | 2.4 | 2.04 | 4/4 0.68–0.75 | **4/4** 1.47–1.93 | 2/4 1.73–10.30 | 0/4 6.55–22.55 | 4/4 1.47–1.49 | 4/4 1.66–1.73 | 4/4 1.83–1.86 |
+| `drowned_lesser` | AMBUSHER | 2.4 | 2.04 | 4/4 0.68–0.75 | 3/4 1.48–9.13 | 1/4 1.73–14.63 | 0/4 6.55–22.55 | 3/4 1.48–6.02 | 4/4 1.66–1.74 | 3/4 1.83–7.05 |
 | `drowned_greater` | POISE_MONSTER | 2.4 | 2.04 | 4/4 0.73–0.78 | 3/4 1.85–7.96 | **0/4** 3.96–19.95 | 0/4 6.56–22.56 | 4/4 1.84–1.86 | 4/4 1.91–1.98 | 0/4 2.26–5.18 |
 | `beast_slitherfang` | BEAST | 2.0 | 1.70 | 4/4 0.08 | 2/4 0.92–6.45 | 3/4 1.38–8.10 | 0/4 3.46–19.44 | 4/4 0.86–1.60 | 4/4 1.03–1.36 | 4/4 0.38–1.58 |
 | `champion_hist_marked` | ELITE | 2.9 | 2.465 | 4/4 0.72–0.77 | **4/4** 1.98 | **4/4** 2.22 | 0/4 6.53–22.55 | 4/4 1.98 | 4/4 1.69–2.20 | 4/4 1.92–2.33 |
 | `cst_sap_speaker` | CASTER | 2.0 | 1.70 | 4/4 0.05–0.08 | **4/4** 1.65 | 3/4 1.65–4.20 | 0/4 6.56–22.56 | 4/4 1.65 | 4/4 1.54–1.65 | 4/4 1.65–1.66 |
 
-Round 1's whole row for `walk` was **0/4, min gap 8.14 m, RUSH never entered**. It is now 23 of 28
-cells. `entered_RUSH` is true on every statblock at every fleeing speed.
+Round 1's whole row for `walk` was **0/4, min gap 8.14 m, RUSH never entered**; it is now 22 of 28
+cells, and **58 of the 84 fleeing-player rows (walk, jog, back away) reach the strike band** where
+round 1 reached it in none. `entered_RUSH` is true on every statblock at every fleeing speed.
+
+This table is the version taken AFTER the leash fix in §7 (`drowned_lesser` is a real AMBUSHER at
+20 m, so it gives up on a jogging player at 4.64 m rather than following to 1.73 m). The earlier
+numbers are in the git history of this file, not silently overwritten.
 
 **What the table says that is a designed limit and not a defect.** `sprint` is 0/28 on purpose —
 *an enemy you cannot outrun at a sprint is a different game*, and the piece's brief says so.
 `drowned_greater` (POISE_MONSTER, sprint 3.4) cannot catch a 3.2 m/s jog: it gains 0.2 m/s and
 runs out of leash first. `guard_legion` (TURTLE, sprint 4.0) catches a jogger only from 4 m,
-because closing 11 m at 0.8 m/s takes 55 m of travel against a 32 m leash. Both are the archetype
-choosing what it is. The arithmetic is published rather than tuned away.
+because closing 11 m at 0.8 m/s takes 55 m of travel against a 32 m leash. `drowned_lesser`
+(AMBUSHER) is the fastest thing in the roster and still loses a jogger from 8 m, because its leash
+is 20 m and it stops chasing first. Three different archetypes failing the same cell for three
+different reasons is the point of having archetypes. The arithmetic is published rather than tuned
+away.
 
 ### The second half of rule 8 — one instant is a still target in time
 
@@ -190,7 +198,7 @@ re-derived:
 | `perception.suspicious_at` / `aggro_at` / `decay_per_s` | 3 | **removed.** `game/data/stealth/detection.json` owns them and `sim/stealth/system.js:347/385/392/397` reads them. Two copies of one model with no check they agree — rule 10 resolved by deletion, not by a checker. |
 | `punish_read.react_within_f` | 1 | **moved out of the game data** into `tools/harness/ai-probe.mjs` as `PUNISH_REACT_WITHIN_F`. It is a probe's PASS threshold; a scoring bar living in the data file the thing under test reads is a bar anyone can move to pass. |
 | `leash.no_los_seconds`, `leash.dist_multiple_of_sight` | 2 | **wired.** `noLosSinceF` was never assigned. `ai.js` now reads `percept_los` off the sim entity through `ctx.entityOf` — the same handle the token arbitrator already used, which `engine.js:1098` wires to `sim.findEntity`, and the same field `sim/stealth/system.js:403` writes. No second LOS model. Demonstrated by the `nolos` census fixture. |
-| `leash.hard_m.ambusher`, `.boss` | 2 | **wired and now selected.** Tier resolution is `boss:true → boss`, else statblock `tier` naming a row, else the archetype's `leash_tier`. `drowned_lesser` is AMBUSHER (20 m); both `boss:true` statblocks leash at `boss`. |
+| `leash.hard_m.ambusher`, `.boss` | 2 | **wired and now selected.** Tier resolution is *the more specific tier wins, and `trash` is never specific*: `boss:true → boss`; else a statblock `tier` naming a non-trash row; else the archetype's `leash_tier` if not trash; else trash. `drowned_lesser` is AMBUSHER (20 m); both `boss:true` statblocks leash at 120 m. Round 2's first ordering got this wrong and the consumption census caught it — see §7. |
 | `leash.hard_m.elite` | 1 | **wired, unselected.** A tier-elite non-boss body gets 45 m; both tier-elite statblocks in the roster also declare `boss: true`, and boss wins. Reported as reachable-by-code / unselected-by-roster, in `declared_incomplete`, rather than claimed as consumed. |
 | `perception.search_to_leash_frames` | 1 | **wired.** T06: 12.0 s in SEARCH with no re-acquire → LEASH_RETURN. |
 | `perception.suspicious_min_dwell_f` | 1 | **wired.** T03/T04's minimum dwell before SUSPICIOUS may fall back to IDLE. |
@@ -235,9 +243,61 @@ reports all three against the live tree's own baseline.
 
 ---
 
-## 7. CONSUMPTION and delete-the-fix
+## 7. CONSUMPTION (ARBITRATION §3 / RI-MTH07)
 
-See §8 of the status file for the census result and `reports/w1-12-r2/census.json`.
+`--mode=census` perturbs every numeric and boolean leaf of `ai.json`'s behaviour tables one at a
+time and hashes the enemy's whole per-frame trace, over six fixtures — duel, flee, group-of-five,
+heal, **no-line-of-sight** and **block**. The last two did not exist in round 1 and are the reason
+four leaves have a reader at all. `--mode=rescue` then re-tests every leaf the census could not
+move, against a fixture built to reach the state that leaf governs and with a **two-sided**
+perturbation (×2, ×0.5, 0, +1000) — because *a ×2 perturbation cannot move a threshold that is
+already satisfied*, which is the caveat the round-1 critic named and could not settle.
+
+| | leaves |
+|---|---|
+| behaviour leaves in `ai.json` | **99** |
+| demonstrated world-side consumer (43 census + 17 rescue) | **60** |
+| archetype rows for archetypes `_archetypes_absent` declares unrealised | 20 |
+| **no demonstrated consumer** | **19** |
+
+**Controls behave and the tool exits non-zero if either does not.** `circle.preferred_band_multiple`
+must move the trace and does; `archetype.DUELIST.walk_mps` — a row no shipped body selects — must
+not and does not.
+
+The 19, every one accounted for rather than listed:
+
+- **14 — `archetype.{INFANTRY,TURTLE,POISE_MONSTER,AMBUSHER,CASTER,ELITE,BEAST}.{omega_m,
+  sight_r_m}`.** Shadowed by the statblock, which is declared behaviour: `ai.json` §archetype
+  `_columns` says *"where a statblock declares its own `reach_m` or `sight_radius_m` the STATBLOCK
+  WINS"*, and all seven do. Correct, and not a finding.
+- **1 — `movement.max_yaw_rate_active_dps` (0).** Architecturally satisfied: `combat/enemy.js`
+  never calls `_steer` after startup, so there is no code path for a ceiling on active frames to
+  clamp. It has a reader in the instrument (`--mode=yaw` asserts observed ≤ declared and goes red
+  when it is lowered) and none in the game. Kept, because deleting it deletes the statement of the
+  rule; recorded here as read-by-the-check-only.
+- **1 — `leash.hard_m.elite` (45).** Reachable by code, unselected by roster: both tier-elite
+  statblocks also declare `boss: true`. In `declared_incomplete`.
+- **3 genuinely unverified, with the reason for each.** `perception.suspicious_min_dwell_f` — the
+  fixtures drive SUSPICIOUS→SEARCH, not SUSPICIOUS→IDLE, which is the transition it gates; the
+  reader is at `ai.js` in the non-AGGRO branch and I did not build a fixture that exercises it.
+  `commit.tokens_by_group[1].tokens` (groups of 3–4) — my group fixtures are 5 bodies, so they take
+  the `max_size: 99` row. `commit.swarm_max_omega_m` — **and this one is a real finding**: the
+  swarm branch returns `swarm_tokens_at_5_plus` = 3 and the row it would otherwise fall through to
+  (`max_size: 99`) also returns 3, so the branch cannot be observed from a trace whatever the bound
+  is. Two numbers that must differ for the rule to mean anything, and they do not.
+
+**The census earned its keep by finding a defect in this round's own work.** `leash.hard_m.ambusher`
+came back with no reader on a fixture built to exercise exactly that leaf. The cause was my first
+tier-resolution order — `boss → statblock tier → archetype` — under which every trash statblock's
+`tier: "trash"` is a valid row here and therefore shadowed the archetype, so `drowned_lesser` (an
+AMBUSHER whose whole identity is a 20 m leash) leashed at 32 m like everything else. The order is
+now *the more specific tier wins, and `trash` is never specific*. After the fix the leaf is
+rescued, and `drowned_lesser` gives up a jogging player at 4.64 m instead of following to 1.73 m —
+which is the archetype choosing what it is.
+
+Artifacts: `reports/w1-12-r2/census.json`, `rescue.json`.
+
+## 7b. Delete-the-fix
 
 `node tools/combat/w1-12-r2-teardown.mjs` → `reports/w1-12-r2/teardown.json`. Six arms on scratch
 copies of the tree; nothing is ever edited in the repository, so no neighbour's `git add -A` can

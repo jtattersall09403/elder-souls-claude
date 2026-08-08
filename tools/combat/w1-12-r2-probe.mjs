@@ -660,7 +660,7 @@ function main() {
     fs.writeFileSync(path.join(OUT, 'rescue.json'), JSON.stringify({ ...stamp, fixtures: Object.keys(RESCUE_FX), candidates: cands.length, rescued: res.length - dead.length, still_no_consumer: dead.map((r) => r.path), results: res }, null, 2));
     console.log(`re-tested ${cands.length} leaves over ${Object.keys(RESCUE_FX).length} purpose-built fixtures, two-sided perturbation`);
     console.log(`  RESCUED (a fixture that reaches the state moves the trace): ${res.length - dead.length}`);
-    for (const r of res.filter((x) => x.consumed)) console.log(`    ok   ${r.path.padEnd(38)} moved in ${Object.keys(r.moved).join(',')} at ${JSON.stringify(Object.values(r.moved)[0].variant)}`);
+    for (const r of res.filter((x) => x.consumed)) console.log(`    ok   ${r.path.padEnd(38)} moved: fixture ${r.moved.fixture} / ${r.moved.statblock} at ${JSON.stringify(r.moved.variant)}`);
     console.log(`  STILL NO CONSUMER: ${dead.length}`);
     for (const r of dead) console.log(`    dead ${r.path} = ${JSON.stringify(r.value)}`);
     return;

@@ -1,19 +1,32 @@
 {
   "task_id": "W1-12-r2",
-  "state": "building",
+  "state": "done",
   "started": "2026-08-08",
   "base_commit": "09e11d0",
-  "headline": "Enemy behaviour round 2. The closure rule (an enemy that wants you can reach you), RECOVER, seven distinct behaviours, dead parameters wired or removed, S22 units.",
-  "next_step": "write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, delete-the-fix, screenshot, report, commit",
-  "done": [
-    "closure rule: TARGET RECESSION, not closure. inf_trash vs a walking player min gap 8.138 -> 1.612 m; RUSH entered on every statblock at every speed",
-    "measured and REJECTED the round-1 verdict's own proposed remedy (gate on closure): closure is a property of the pair and the enemy's own sprint restores it, so the rule switches itself off — 37-frame RUSH/APPROACH oscillation, trace published",
-    "found and fixed a sample-window contiguity defect that improved a number the wrong way (rule 6, third shape): the window spanned frames the AI is not stepped, inflating recession 3x and making every enemy a chase-bot (M3 dwell 0.2521 -> 0.2980, two statblocks over the 0.35 HARD FAIL)",
-    "RECOVER (T15) implemented; M3 dwell now 0.2521 on inf_trash, exactly the critic's predicted honest number, and both readings of M3 now agree",
-    "behaviour_archetype table: 7 distinct behaviour shapes over 7 fighting statblocks (was 4, with 4 bit-identical)",
-    "BLOCK_HOLD (T18) and DISENGAGE (T24) implemented; prefers_band and blocks now have readers",
-    "leash tier resolved from statblock boss/tier; noLosSinceF assigned from the one LOS model; swarm omega bound declared; SEARCH->LEASH_RETURN and suspicious dwell wired; cone_deg and 3 duplicate perception constants removed; react_within_f moved to the probe",
-    "S22: ruled RI-AI01's bare `f` is f@60 from three internal seconds/frame pairs; units block added"
+  "headline": "Enemy behaviour round 2. An enemy that wants you can reach you: closest approach to a walking player 8.14 m -> 1.61 m, 0 -> 294 frames inside its own strike band. RECOVER implemented (dwell 0.0414 -> 0.2521, the critic's predicted number). Seven fighting statblocks, seven distinct behaviours, from four (four of them bit-identical). 60 of 99 leaves have a demonstrated consumer.",
+  "report": "reports/w1-12-r2/survey.md",
+  "next_step": "none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers.",
+  "results": {
+    "closure_rule": "gate on TARGET RECESSION, not on distance and not on closure. inf_trash vs a walking player: min gap 9.11 -> 1.61 m, frames inside strike 0 -> 294, RUSH frames 35 -> 385, same tree same process one leaf apart.",
+    "rule_8": "196 runs: 7 statblocks x 7 player behaviours (stand/walk/jog/sprint/strafe/circle/back away) x 4 ranges x 1800 f@60, every number reported at f 300/600/1200/1800. 58 of 84 fleeing rows reach the strike band; round 1 reached it in none.",
+    "variety": "distinct behaviour signatures over the 7 fighting statblocks: 4 -> 7. The bit-identical group (sha1 1edb362ea24dde99) is gone. AI states reachable 9 -> 11 of 17.",
+    "recover": "T15 implemented. min_dist_dwell 0.0414 -> 0.2521 on the round-1 fixture and seed; deleting it returns 0.0414 exactly. RI-AI01 M3 2/2 -> 1/2, not tuned back.",
+    "dead_parameters": "19 leaves removed or moved out of the game data (12 cone_deg, 3 duplicated perception constants, 1 probe threshold, 3 replaced); 10 leaves and 2 archetype columns wired; 1 wired-but-unselected and declared.",
+    "consumption": "99 leaves, 60 with a demonstrated world-side consumer over 6 census fixtures + 6 purpose-built rescue fixtures with two-sided perturbation, 20 declared-unrealised archetype rows, 19 unconsumed of which 14 are declared statblock-shadowed. Both controls behave; the tool exits non-zero if either does not.",
+    "s22": "ruled RI-AI01's bare `f` is f@60 from three of the item's own seconds/frame pairs (720f=12.0s, 90f=1.5s, 36f=0.6s) against one contrary pair; reversible, filed against the corpus. units block + tools/combat/check-ai-units.mjs with a self-test.",
+    "delete_the_fix": "six arms, reports/w1-12-r2/teardown.json. Every control moved. The delete-the-behaviour arm still collapses every enemy to a turning statue (0 moving frames, 0 commits, one state).",
+    "defects_found_in_my_own_work": [
+      "an inert fix that IMPROVED the headline while breaking M3 (rule 6 third shape): the recession window spanned frames the AI is not stepped; two statblocks went over the 0.35 chase-bot HARD FAIL while the headline looked better",
+      "the first leash tier ordering let a statblock `tier: trash` shadow the archetype's AMBUSHER, so drowned_lesser leashed at 32 m; found by my own consumption census reporting leash.hard_m.ambusher unread",
+      "blockUntil/disengageUntil were absolute frames missing from AI_FRAME_STAMPS — a load would have left an enemy holding its shield forever"
+    ]
+  },
+  "not_done": [
+    "NO BROWSER. tools/contention.mjs --gate returned GO once at the start and WAIT on every poll after (7 instances, load 29.1 over 4 cores = 7.28/core). RI-AI01 M1 and M2 are therefore still not independently measured, and I did NOT adopt the round-1 builder's browser numbers as mine. The brief said the box was quiet and told me to take them; it was not, and I did not.",
+    "LONG_RECOVERY punish (critic §5) left open: 7/12 against M9's 80% bar, cause already measured as `the enemy was already committed at trial start`, which is correct Souls behaviour. The remedy is an item-level argument about M9's bar, not a code change.",
+    "no blind pair (RI-AI01 specifies one; round 1 did not build one either)",
+    "3 leaves genuinely unverified by perturbation with the reason named for each; one of them (commit.swarm_max_omega_m) exposed a real finding — swarm_tokens_at_5_plus is 3 and the row it falls through to is also 3, so the branch cannot be observed whatever the bound",
+    "the first census at 1200/900-frame fixtures did not finish in 50 minutes under a box at 7.28 load per core and was killed; fixtures were cut to 600/400 f@60 and that budget choice is stated in the tool"
   ],
   "files_touched": [
     "orchestration/status/W1-12-r2.json",
@@ -21,19 +34,20 @@
     "game/src/combat/ai.js",
     "game/src/combat/enemy.js",
     "game/src/combat/system.js",
-    "tools/harness/ai-probe.mjs"
-  ],
-  "files_claimed": [
+    "tools/harness/ai-probe.mjs",
     "tools/combat/w1-12-r2-probe.mjs",
+    "tools/combat/w1-12-r2-teardown.mjs",
+    "tools/combat/w1-12-r2-chart.mjs",
     "tools/combat/check-ai-units.mjs",
-    "reports/w1-12-r2/",
+    "reports/w1-12-r2/survey.md",
     "docs/shots/2026-08-08-w1-12-r2-an-enemy-catching-a-walking-player.png",
     "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": ["W1-12"],
   "notes": [
-    "successor to W1-12 (state `done`) against verdict corpus/90-verdicts/wave1/W1-12-r1.md (FAIL 3/10). W1-12's own files_touched overlap is deliberate: this is round 2 of the same piece.",
-    "contention gate GO throughout; browser work still to do",
-    "reports/blog-feed.jsonl is append-only"
+    "successor to W1-12 (state `done`); the file overlap with it is deliberate — this is round 2 of the same piece against corpus/90-verdicts/wave1/W1-12-r1.md.",
+    "reports/w1-12-r2/*.json are untracked by reports/.gitignore, which is the project convention; survey.md carries every number.",
+    "npm run gate passed on this tree at 09:57; a later STALE corpus INDEX.md is a neighbour's edit to corpus/80-methods/cc-scan.mjs, 0 errors, regenerated by the pre-commit hook."
   ]
 }
