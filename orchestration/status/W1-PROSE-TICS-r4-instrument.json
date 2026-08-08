@@ -1,29 +1,62 @@
 {
   "task_id": "W1-PROSE-TICS-r4-instrument",
   "title": "Repair the blind-pack masking instrument (redaction-token-count leak)",
-  "status": "in_progress",
+  "status": "done",
   "started": "2026-08-08",
-  "successor_note": "Predecessor was killed at the reading stage and left nothing on disk but this file. Resumed from scratch after reading RULES.md, RI-MTH03, JUDGEMENT-judge-prose-r4-m5.md and tools/prose/build-r2-packs.mjs.",
-  "next_step": "write tools/blind/leakcheck.mjs (battery + gate + self-test), then tools/blind/mask-text.mjs (renaming masker), then rewire the builder",
-  "decisions": [
-    "RULING-1 (reversible): replace redaction with RE-NAMING. No [NAME-n] token exists in the artifact, so the count channel is removed rather than balanced. Cost accepted: the text is altered, not merely redacted.",
-    "RULING-2 (reversible): pairing is matched on proper-noun DENSITY as well as word count, with a hard tolerance; a trial with no partner inside tolerance is dropped rather than shipped.",
-    "RULING-3: r4 is closed as superseded rather than patched. Three judges have read it and it contains a plaintext answer key; a re-judged pack is a different object. A clean r5 is built by the fixed builder.",
-    "RULING-4: chance baseline is 1-in-8 (3 effective trials, one per register), not 1-in-270."
+  "finished": "2026-08-08",
+  "successor_note": "Predecessor was killed at the reading stage and left nothing on disk but this status file. Resumed from RULES.md, RI-MTH03, JUDGEMENT-judge-prose-r4-m5.md and the builder.",
+  "next_step": "Dispatch a fresh judge to reports/packs/prose-tics-r5 (NOT the builder of the prose, NOT me — rule 25). RI-MTH03 M6 (fresh agent asked 'what is the tell?') is still owed for this wave; the gate does not retire it.",
+
+  "what_was_built": [
+    "tools/blind/leakcheck.mjs — 40-discriminator battery + fail-closed gate + structural checks + --self-test. RI-MTH03 M1a.",
+    "tools/blind/mask-text.mjs — renaming masker (no redaction marker exists to count) + --self-test.",
+    "tools/prose/build-r2-packs.mjs — rewired: renaming, density/char/sign-balanced pairing, two answer axes, answers outside the pack, correct reveal pointer, baseline stated, gate called fail-closed.",
+    "reports/packs/prose-tics-r5{,.reveal,.answers} — a clean pack, gate exit 0.",
+    "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md — §B.1 (a redaction token is itself a signal), §C.1 (two answer axes; answers outside the pack), §E.1 (effective baseline), M1a, three new scoring rows, a new hard fail, How-we-lose 4a.",
+    "SUPERSEDED.md for prose-tics-r2, -r3 (amended), -r4."
   ],
-  "files_touched": ["orchestration/status/W1-PROSE-TICS-r4-instrument.json"],
-  "files_claimed": [
+
+  "measurements": {
+    "r4_gate": "exit 4. 12 LEAK channels, 2 WATCH, 26 at chance. redaction_tokens/redaction_density/paren_density/mean_line_len/chars 15/15; mean_word_len/digit_ratio/uppercase_ratio/allcaps_words/mid_sentence_capitals/capital_density 14/15; redaction_distinct 13/14. words 6/11 (chance — r4's word matching worked). Saved at reports/packs/prose-tics-r4.reveal/leakcheck.json.",
+    "r5_gate": "exit 0. 0 LEAK, 7 WATCH, 33 at chance. All redaction rules 0/0 (no marker exists). chars 8/15, mid_sentence_capitals 5/9, capital_density and words fell out of WATCH once pairing balanced the SIGN as well as the magnitude.",
+    "r5_watch_band": "sd_sentence_words 13/15, apostrophe_density 13/15, contraction_density 13/15, sentences 12/15, mean_sentence_words 12/15, mean_word_len 12/15, long_word_ratio 12/15. Seven is above the ~2 expected by chance; all are style statistics. Recorded as RI-MTH03 'how we lose' #4 (a legitimate finding about our prose) and NOT waived.",
+    "self_test_null": "60 synthetic null packs, 0 raised a LEAK, 41 WATCH flags over 2400 rule-evaluations. Two earlier versions of classify() were discarded because this measurement put them at 35%.",
+    "self_test_arms": "16 injected channels, 16 caught; each with the injection removed the flag disappears (delete-the-fix on the fixture) and the arms' verdicts differ."
+  },
+
+  "rulings": [
+    "RULING-1 (reversible): RE-NAME rather than redact. Cost accepted: the artifact is altered, not merely redacted, so naming craft is unjudgeable. Rejected: token-count padding (falsifies the artifact), fixed mask budget (destroys referent information), single [NAME] token (loses referent identity and does not close the count). Overturned by: a measured channel renaming opens that redaction did not.",
+    "RULING-2 (reversible): pairing bounds the MAGNITUDE and alternates the SIGN of words/chars/name-density. Cost accepted: selection bias — the pack samples the band where the two corpora are mechanically comparable, and its verdict does not generalise to the name-saturated end of the reference corpus. Overturned by: a register where the overlap band is too thin to fill (journal is closest: 84 of 147 of our passages have a legal partner).",
+    "RULING-3: chance baseline is 1-in-8 (3 effective trials, one per register), not 1-in-270 or 1-in-32768. Stated in prompt, README, corpus item and dispatch.",
+    "RULING-4: r2, r3 and r4 are CLOSED as superseded. A re-judged pack is a different object; r4 contains its own answer key in fifteen files.",
+    "RULING-5: r4's PROV scores are void (a shell rule scores the same 15/15). r4's QUAL results survive only as NON-BLIND expert preference and must be re-taken on r5. The M5 findings (one narrator's idiolect across nine passages; no bad writers in our corpus) survive in full."
+  ],
+
+  "could_not_do": [
+    "I did not re-judge any prose and must not — I built r5, and rule 25 forbids judging a pack you built.",
+    "The gate cannot prove blindness, only the absence of the channels somebody thought of. Both of this item's leaks were found by a JUDGE, not a builder. RI-MTH03 M6 remains owed.",
+    "Seven held-out style channels sit in the WATCH band on r5. They do not survive correction for the battery size, but seven is above chance expectation and I have not closed them. Closing them would mean pairing on sentence rhythm too, which buys more selection bias — I chose to report rather than to over-fit the gate.",
+    "The pairing statistics are optimised against rules the gate also measures. That is Goodhart and it is declared: leakcheck prints them in a separate `matched` block and the summary never conflates them with the held-out block. A pass on a matched rule is not evidence.",
+    "I did not run tools/prose/tic-detector.mjs cross-document variance work that the r4 judge asked for (measure voice variance ACROSS our documents, not tics within one). That is a prose-builder job, not an instrument job, and it is left in NEXT-DISPATCH.",
+    "No browser was used and none was needed."
+  ],
+
+  "files_touched": [
+    "orchestration/status/W1-PROSE-TICS-r4-instrument.json",
     "tools/blind/leakcheck.mjs",
     "tools/blind/mask-text.mjs",
     "tools/prose/build-r2-packs.mjs",
     "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md",
-    "reports/packs/prose-tics-r4/SUPERSEDED.md",
     "reports/packs/prose-tics-r2/SUPERSEDED.md",
     "reports/packs/prose-tics-r3/SUPERSEDED.md",
+    "reports/packs/prose-tics-r4/SUPERSEDED.md",
+    "reports/packs/prose-tics-r4.reveal/leakcheck.json",
     "reports/packs/prose-tics-r5/",
     "reports/packs/prose-tics-r5.reveal/",
+    "reports/packs/prose-tics-r5.answers/",
     "orchestration/NEXT-DISPATCH.md",
     "reports/blog-feed.jsonl"
   ],
-  "notes": "Instrument repair only. Do NOT re-judge prose."
+  "files_claimed": [],
+  "notes": "Instrument repair only. No prose was re-judged. reports/packs/prose-tics-r4/ is left byte-untouched apart from the added SUPERSEDED.md — the three judgements and fifteen answer.md files are the record and were not moved or deleted."
 }
