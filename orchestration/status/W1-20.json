@@ -158,5 +158,7 @@
     "check-content": "PASS",
     "check-prose": "67 regressions, the same count as before this piece. faction-joining-wave1.json is NOT in the list: 0 stings, 0 tics, contractions in band. It is the only faction quest file in the tree that is clean.",
     "check-shipped-files": "reports game/src/__ghost.js missing, imported by game/src/__gatecheck.js — ANOTHER AGENT’S staged gate-falsification fixture, not mine and not touched."
-  }
+  },
+  "commit_attribution": "MY COMMIT NEVER RAN AND THE WORK IS ALL AT HEAD ANYWAY. `git commit --only <19 declared paths>` lost twenty-five races for `.git/index.lock` over about two minutes, and by the time it got in, every one of my paths had already been carried by somebody else: `a52113c` (\"preserveDrawingBuffer was a test requirement shipping to every player\") took eighteen of them and the orchestrator bank `8ab4bb9` took `reports/w1-20-faction-joining.md`. RULES rule 17 covers exactly this — \"if your work is banked while you wait, verify the content landed and move on; do not unpick it\" — so I verified rather than reverting. At HEAD: the four quests are present, ui/hud.js carries the wrap, the report is 202 lines, the blog line is in blog-feed.jsonl, and boot-check / check-data / check-quests / check-append-only all pass. Nothing of mine is dirty in the working tree. The consequence is attribution only: this piece has no commit under its own message. The message I would have used is at reports/w1-20-faction-joining.md, which carries the same numbers.",
+  "pushed": "Not pushed by me. One unpushed commit at the time I finished (9c08032, PLAYABILITY) and it is not mine to push under my name; the orchestrator pushes after the bank."
 }
