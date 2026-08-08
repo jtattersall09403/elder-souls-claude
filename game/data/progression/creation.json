@@ -5,6 +5,11 @@
   "source": "corpus/22-character/RI-CHR01-character-creation.md §1-§7; presentation contract RI-JRN01 §C O6-O10",
   "provenance": "constructed",
   "place": { "interior": "writ-house", "settlement": "tidewrack", "name": "The Writ House at Tidewrack" },
+  "starting_body": {
+    "note": "THE BODY THE PLAYER WAKES UP IN, before anything defines them. RI-JRN01 O6 requires a controllable body before a character exists, and RI-CHR01 §1 row 2 says race is OBSERVED rather than asked — so something has to decide what the Warden-Scribe is looking at, and it cannot be the question she never asks. Until W1-26 r3 nothing did: `Engine._titleApply('new')` called `censusBegin({})`, `Census.observe()` was reached from nowhere on the play path, and the scene threw at `writ.race-observed` in front of the desk with the door held shut. This row is that decision, in data, so it is one line to change and one line to read. `Engine._boot` writes it to `sim.identity.race` — the live field the dialogue offer gates and the disposition matrix already read — and `Engine.bodyRace()` reads it back at the desk. CHOOSING it is W1-07's, and when a chooser exists it writes the same field; nothing in the engine changes.",
+    "race": "saxhleel",
+    "why_this_race": "You are coming up the river on a tithe-barge into Black Marsh, in irons, two days out of Gideon. Saxhleel is the province's own people and the only starting body that needs no explanation for being on that boat. It is a default in the sense that a starting sword is a default, not in the sense of a value nobody chose."
+  },
   "diegesis": {
     "full_screen_panels": 0,
     "world_rendered_behind": true,

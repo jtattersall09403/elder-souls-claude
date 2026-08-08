@@ -3,7 +3,7 @@
   "title": "Join road generation and settlement planting so roads do not terminate in walls",
   "status": "reported",
   "started_at": "2026-08-08T02:08:46Z",
-  "updated_at": "2026-08-08T03:13:13.203Z",
+  "updated_at": "2026-08-08T03:28:25.298Z",
   "owner": "builder",
   "decision": {
     "which_side_yields": "ROADS. Routing consumes the settlement plan; buildings never move.",
@@ -99,5 +99,6 @@
       "title": "The join is build-time, so it can go stale",
       "detail": "If anyone edits game/data/world/settlements/*.json or an interior s continuity.exterior_footprint_m without re-running node tools/world/build-roads.mjs, a house can land back on the road. node tools/world/road-through-building.mjs is the check and it is cheap and offline; it belongs in the gate list in INDEX.md. I did not add it there because that table is generated and the gate set is not mine to change."
     }
-  ]
+  ],
+  "w1_05_soulrest_leg": "PARTIAL RESULT, arms A and B landed (C and D still walking). The tree boot was fixed by its owner at ~03:2xZ so this became possible. WITH THE JOIN IN, WALLS ON AND WALLS OFF ARE NOW IDENTICAL: both arms travel 6459.8 m of an 1841 m leg and stop at exactly (1744.1, 4876) on DRY ground (depth 0 m, band W1) at hp 7. Before the join, walls-on stopped the body after 11.6 m and walls-off ran 6458 m and ended in 18 m of sea. So (a) the wall WAS the walls-on stall and it is gone, (b) the walls are now exonerated as a cause of anything on this leg - taking them out changes nothing at all, and (c) what is left is not a drowning: the body ends on dry ground, having orbited a waypoint it cannot reach. W1-05 should re-read its hypothesis against this. reports/w1-road-join/soulrest-leg-after-join.json"
 }

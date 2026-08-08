@@ -453,6 +453,15 @@ export class Census {
     }
     this.resumedBy = by || want;
     this.paused = false;
+    // WHAT WAS SAID IN THE HOLD WAS SAID IN THE HOLD.
+    //
+    // `spoken` is "what the speaker has said since the last thing you were asked", and it is
+    // drawn above the current line. It survived the hand-back, so Jeeh-Ei's reply to the
+    // hatch-name — which she says in the barge hold, at `hold.out` — was carried through this
+    // function and drawn a room later above the Warden-Scribe's line, attributed to a woman who
+    // is no longer in the room (W1-26 r2 §4). The hand-back node draws it now, in the hold, from
+    // her; carrying it further would draw it twice and the second time in the wrong mouth.
+    this.spoken = [];
     this.nodeId = (n && n.resume) || 'writ.enter';
     this._autoAdvance();
     return this.state();

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f291b01`: 620 tools, 153 reference
-items, 45 pieces in flight.
+so it cannot drift. Generated at `eef3327`: 620 tools, 153 reference
+items, 48 pieces in flight.
 
-Its purpose is to stop 45+ concurrent agents each paying separately to discover the
+Its purpose is to stop 48+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -211,7 +211,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/gen-greetings.mjs` — build game/data/dialogue/greetings.json from the authored stems below.
 - `tools/dialogue/mk-asking-around.mjs` — AUTHORING TOOL — the connective tissue of the topic graph.
 - `tools/dialogue/mk-rumours.mjs` — AUTHORING TOOL — what a town is saying this week.
-- `tools/dialogue/order-infos.mjs` — Put every topic's INFOs into the order the shipping reader already resolves them in.
+- `tools/dialogue/order-infos.mjs` — Put every topic's INFOs into the order the reader resolves them in — which, since ARBITRATION S37, is simply the order they are written in.
 - `tools/dialogue/rehome-actors.mjs` — W1-17 round 2.
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
 - `tools/dialogue/s37-merge-order-consume.mjs` — CONSUMPTION (RI-MTH07) for the declared topic-file merge order.
@@ -932,11 +932,14 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-16-r3` | running | read RULES/INDEX/ARBITRATION/spec/producer status; then attacks A-H | `orchestration/status/critic-w1-16-r3.json` |
+| `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
+| `W1-14-r4` | building | read RULES/INDEX/ARBITRATION, then ownership --for on target files | `orchestration/status/W1-14-r4.json` |
+| `critic-w1-map-r2` | running | read INDEX.md, ARBITRATION.md S35, W1-MAP-r1.md, status files | `orchestration/status/critic-w1-map-r2.json` |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `critic-w1-23-r4` | running | read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G | — |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
-| `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |
 | `W1-26-r3` | ? | run the three probes RED before changing anything | `orchestration/status/W1-26-r3.json` |
 | `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |

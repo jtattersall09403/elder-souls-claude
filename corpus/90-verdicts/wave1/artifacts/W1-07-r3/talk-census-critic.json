@@ -1,7 +1,7 @@
 {
-  "npcs": 336,
+  "npcs": 369,
   "races": 10,
-  "pairs": 3360,
+  "pairs": 3690,
   "mute": [
     {
       "npc": "ku-vastei-ixakh",
@@ -146,69 +146,69 @@
   ],
   "by_race": {
     "saxhleel": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "naga": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "imperial": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "nord": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "breton": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "redguard": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "khajiit": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "orsimer": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "bosmer": {
-      "total": 508,
+      "total": 618,
       "mute_npcs": 2
     },
     "dunmer": {
-      "total": 507,
+      "total": 617,
       "mute_npcs": 2
     }
   },
   "by_place": {
     "gideon": {
-      "npcs": 41,
+      "npcs": 47,
       "worst": "saxhleel",
-      "worst_topics": 53,
+      "worst_topics": 72,
       "best": "bosmer",
-      "best_topics": 53,
+      "best_topics": 72,
       "silent_races": []
     },
     "blackrose": {
-      "npcs": 34,
+      "npcs": 37,
       "worst": "saxhleel",
-      "worst_topics": 50,
+      "worst_topics": 61,
       "best": "bosmer",
-      "best_topics": 50,
+      "best_topics": 61,
       "silent_races": []
     },
     "helstrom": {
-      "npcs": 58,
+      "npcs": 65,
       "worst": "dunmer",
-      "worst_topics": 92,
+      "worst_topics": 115,
       "best": "bosmer",
-      "best_topics": 93,
+      "best_topics": 116,
       "silent_races": []
     },
     "faction-givers.json": {
@@ -231,51 +231,51 @@
       ]
     },
     "soulrest": {
-      "npcs": 29,
+      "npcs": 31,
       "worst": "saxhleel",
-      "worst_topics": 58,
+      "worst_topics": 65,
       "best": "bosmer",
-      "best_topics": 58,
+      "best_topics": 65,
       "silent_races": []
     },
     "mainline.json": {
       "npcs": 9,
       "worst": "saxhleel",
-      "worst_topics": 25,
+      "worst_topics": 19,
       "best": "bosmer",
-      "best_topics": 25,
+      "best_topics": 19,
       "silent_races": []
     },
     "archon": {
-      "npcs": 34,
+      "npcs": 38,
       "worst": "saxhleel",
-      "worst_topics": 42,
+      "worst_topics": 49,
       "best": "bosmer",
-      "best_topics": 42,
+      "best_topics": 49,
       "silent_races": []
     },
     "thorn": {
-      "npcs": 23,
+      "npcs": 27,
       "worst": "saxhleel",
-      "worst_topics": 32,
+      "worst_topics": 46,
       "best": "bosmer",
-      "best_topics": 32,
+      "best_topics": 46,
       "silent_races": []
     },
     "stormhold": {
-      "npcs": 49,
+      "npcs": 52,
       "worst": "saxhleel",
-      "worst_topics": 64,
+      "worst_topics": 73,
       "best": "bosmer",
-      "best_topics": 64,
+      "best_topics": 73,
       "silent_races": []
     },
     "lilmoth": {
-      "npcs": 50,
+      "npcs": 54,
       "worst": "saxhleel",
-      "worst_topics": 60,
+      "worst_topics": 86,
       "best": "bosmer",
-      "best_topics": 60,
+      "best_topics": 86,
       "silent_races": []
     },
     "named-states.json": {
@@ -304,14 +304,14 @@
     }
   },
   "direction": {
-    "pairs": 719,
-    "answered_all": 507,
-    "subtractive": 212,
-    "single_race": 211,
+    "pairs": 819,
+    "answered_all": 617,
+    "subtractive": 202,
+    "single_race": 201,
     "hist": {
-      "0": 211,
+      "0": 201,
       "9": 1,
-      "10": 507
+      "10": 617
     },
     "examples": [
       {
@@ -377,6 +377,30 @@
       {
         "npc": "ku-vastei-ixakh",
         "topic": "the-consensus",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "the chain on the wall",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "the three things I checked myself",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "the ninth clause of the Drowned Tally",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "what does the marsh owe you",
         "answered_for": 0,
         "races": []
       },
@@ -589,24 +613,6 @@
         "races": []
       },
       {
-        "npc": "blackrose-smith-12",
-        "topic": "blackrose",
-        "answered_for": 0,
-        "races": []
-      },
-      {
-        "npc": "blackrose-weaver-13",
-        "topic": "blackrose",
-        "answered_for": 0,
-        "races": []
-      },
-      {
-        "npc": "blackrose-trader-0-partner0",
-        "topic": "blackrose",
-        "answered_for": 0,
-        "races": []
-      },
-      {
         "npc": "blackrose-publican-1-elder0",
         "topic": "blackrose",
         "answered_for": 0,
@@ -655,12 +661,6 @@
         "races": []
       },
       {
-        "npc": "blackrose-keeper-smithy",
-        "topic": "blackrose",
-        "answered_for": 0,
-        "races": []
-      },
-      {
         "npc": "blackrose-keeper-pawn",
         "topic": "blackrose",
         "answered_for": 0,
@@ -688,14 +688,14 @@
   },
   "depth": {
     "best": "saxhleel",
-    "best_total": 508,
+    "best_total": 618,
     "worst": "dunmer",
-    "worst_total": 507,
+    "worst_total": 617,
     "ratio": 0.998
   },
   "answer_variation": {
-    "varying": 82,
-    "constant": 637,
+    "varying": 81,
+    "constant": 738,
     "examples": [
       {
         "npc": "gideon-quay-porter",

@@ -31,6 +31,8 @@
     "to every other file's, and the loader makes you make it."
   ],
   "key": "`group` -- the per-file tag buildTopicIndex() already stamps onto every info as `from`. Matched on that, not on the filename, so renaming a file cannot silently change answers.",
+  "topics": [],
+  "why_topics_is_empty": "This file declares no dialogue. The empty array is load-bearing anyway: several readers in this tree select topic docs with `.filter(d => Array.isArray(d.topics))` (tools/check-dialogue-topics.mjs does), and a manifest without the key is silently dropped by them -- after which buildTopicIndex() sees grouped docs with no manifest and fail-closes, taking a gate every agent runs down with it. That happened once, during the change that added this file. Keep the key.",
   "order_rationale": [
     "This list is the FILENAME order the corpus already had, ratified rather than reinvented.",
     "Two reasons, and the second is the one that matters:",

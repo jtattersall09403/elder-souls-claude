@@ -96,6 +96,7 @@ export class RealInput {
      */
     this.textFocus = null;
     this.textCharsTaken = 0;     // A-JRN6 observation only; nothing reads it as a control
+    this._textConsumed = new Set();   // codes whose keydown became a character, not a button
     this.firstGestureDone = false;
   }
 
@@ -239,11 +240,15 @@ export class RealInput {
       //   * it does not add an action. HARNESS.md §4's set stays closed and O17 still holds —
       //     the node is completable on a stick and two buttons without this path ever running.
       if (this.onTextChar && this.textFocus && this.textFocus()) {
-        if (e.key === 'Backspace') { this.onTextChar('\b'); this.textCharsTaken++; return; }
-        if (e.key && e.key.length === 1 && /[\p{L}\p{N}\-' .]/u.test(e.key)) {
-          this.onTextChar(e.key); this.textCharsTaken++;
-          return;
-        }
+        const takeAsText = (ch) => {
+          this.onTextChar(ch); this.textCharsTaken++;
+          // KB7's rule applied to this route: a press that never became a button press must not
+          // produce a release either, or `keyup` below would hand the pipeline an `edgeUp` for
+          // an action nothing pressed — `roll` released by typing a space in a name.
+          this._textConsumed.add(e.code);
+        };
+        if (e.key === 'Backspace') { takeAsText('\b'); return; }
+        if (e.key && e.key.length === 1 && /[\p{L}\p{N}\-' .]/u.test(e.key)) { takeAsText(e.key); return; }
       }
       const dir = this.moveCodes[e.code];
       if (dir) { this.moveDirs[dir] = true; this._pushMove(); return; }
@@ -259,6 +264,7 @@ export class RealInput {
     });
 
     on(window, 'keyup', (e) => {
+      if (this._textConsumed.delete(e.code)) return;   // it was a character, not a button
       const dir = this.moveCodes[e.code];
       if (dir) { this.moveDirs[dir] = false; this._pushMove(); return; }
       this._up(e.code);
@@ -497,6 +503,7 @@ export class RealInput {
   }
 
   _releaseEverything() {
+    this._textConsumed.clear();
     this.moveDirs.forward = this.moveDirs.back = this.moveDirs.left = this.moveDirs.right = false;
     for (const k of Object.keys(this._holds)) delete this._holds[k];
     this.touch.releaseAll();
@@ -530,6 +537,11 @@ export class RealInput {
     return {
       pointerLocked: this.pointerLocked,
       hasFocus: this.hasFocus,
+      // Whether a text field currently owns the keyboard, and how many characters have gone to
+      // one. Observation, not control — A-JRN6. `text_focused false` in the world is the
+      // assertion that this route is not swallowing anybody's movement keys.
+      textFocused: !!(this.onTextChar && this.textFocus && this.textFocus()),
+      textCharsTaken: this.textCharsTaken,
       activeDevice: this.activeDevice,
       deviceClass: this.viewport.deviceClass,
       menuOpen: this.menuOpen,

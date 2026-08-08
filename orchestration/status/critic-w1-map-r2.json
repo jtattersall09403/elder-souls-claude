@@ -1,0 +1,26 @@
+{
+  "task_id": "critic-w1-map-r2",
+  "role": "critic",
+  "item": "W1-MAP",
+  "round": 2,
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "summary": "Re-take of W1-MAP-r1 C2/D1/D2/D3 after the save/fight.js SoulsAI serialisation defect was fixed; plus forged-save attack, quest->map API grep, unrendered-vs-greyed check, hover names, play-and-screenshot, consumption (RI-MTH07).",
+  "next_step": "read INDEX.md, ARBITRATION.md S35, W1-MAP-r1.md, status files",
+  "files_touched": [
+    "orchestration/status/critic-w1-map-r2.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-MAP-r2.md",
+    "corpus/90-verdicts/wave1/W1-MAP-r2.json",
+    "orchestration/status/critic-w1-map-r2.json",
+    "tools/map/critic-",
+    "tools/harness/critic-map-",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["critic-w1-map"],
+  "notes": [
+    "contention --gate returned GO (3 instances, room for 3 more) at start."
+  ]
+}

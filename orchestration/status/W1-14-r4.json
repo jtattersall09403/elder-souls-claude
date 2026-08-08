@@ -1,0 +1,26 @@
+{
+  "task_id": "W1-14-r4",
+  "piece": "W1-14 round 4 — magic",
+  "state": "building",
+  "started": "2026-08-08",
+  "spec": "corpus/90-verdicts/wave1/W1-14-r3.md",
+  "next_step": "read RULES/INDEX/ARBITRATION, then ownership --for on target files",
+  "objectives": [
+    {"id": "O1", "what": "summon fix mutates shared statblock (combat/enemy.js:47 hands stat.weapon by reference) — six identical summons must give six identical attack ratings", "state": "todo"},
+    {"id": "O2", "what": "touch spell applies once per cast, not once per active frame; re-check censuses that ranked ranges", "state": "todo"},
+    {"id": "O3", "what": "--break arms (nocast/bindblind/fleeblind) must each break what they name and be run+published; nocast exits before readDial(), fleeblind is a partial teardown", "state": "todo"},
+    {"id": "O4", "what": "GAP-W1-magic-spellmaking-has-no-world-side-surface: seven spellwrights as people in the world, commission a spell by talking to one", "state": "todo"},
+    {"id": "O5", "what": "CONSUMPTION arm (avoid engine.spawn dropping opts.side — NEXT-DISPATCH.md Q4)", "state": "todo"},
+    {"id": "O6", "what": "delete-the-fix per rule 6, with non-inert controls", "state": "todo"}
+  ],
+  "do_not_undo": [
+    "area is genuinely read (fire_damage 1/4 bodies at r=2, 4/4 at r=8)",
+    "both round-3 fixes real with live controls",
+    "duration measured clean",
+    "AR-1 passes at strongest yet (8 identical casts, one value, invariant to tod/wallclock/disposition/bounty/weather/seed)",
+    "absorb_health DOES absorb (round-3 finding retracted by critic)"
+  ],
+  "files_touched": ["orchestration/status/W1-14-r4.json"],
+  "files_claimed": [],
+  "notes": ["contention --gate at start: GO (3 instances, room for 3 more)"]
+}

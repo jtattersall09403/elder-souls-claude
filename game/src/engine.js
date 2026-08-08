@@ -581,6 +581,15 @@ export class Engine {
     this._installCanon();
     this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
+    // W1-26 r3: tell the DEVICE layer when a text field has the keyboard, so it can route a
+    // letter to the field instead of to the button that letter is bound to. Without this the
+    // input layer has no way to know, and fourteen of the twenty-six letters never arrived.
+    this.real.textFocus = () => this._censusTakesText();
+    // The body the player wakes up in, out of data rather than out of a literal here. See
+    // `bodyRace()` and `game/data/progression/creation.json` `starting_body`. Written BEFORE
+    // `applyNamedState`, so a named state (`--state "race=dunmer"`) still overrides it and the
+    // three-run race comparisons RI-CHR02 method 8 asks for are unaffected.
+    this._applyStartingBody();
     this.applyNamedState(opts.state || 'default');
     this._travelInit();
     this.loadState_.phase = 'ready';
@@ -1859,6 +1868,21 @@ export class Engine {
    * a loud, already-instrumented failure, and is safer than handing `Census.state()` an id with
    * no authored misread line for it to draw.
    */
+  /**
+   * Put the starting body's race on the live sim, from `creation.json` `starting_body`.
+   *
+   * Called once at boot, before any named state is applied, so it is the floor and never the
+   * ceiling: anything that writes `sim.identity.race` afterwards — a named state, a load, or
+   * whatever W1-07 eventually puts in front of the title — wins, and `bodyRace()` reads
+   * whatever is there at the moment the scribe looks up rather than what was there at boot.
+   */
+  _applyStartingBody() {
+    const body = (this.chData && this.chData.creation && this.chData.creation.starting_body) || null;
+    if (!body || !body.race) return null;
+    this.sim.identity.race = body.race;
+    return body.race;
+  }
+
   bodyRace() {
     const id = this.sim && this.sim.identity ? this.sim.identity.race : null;
     if (!id) return null;
@@ -3204,6 +3228,20 @@ export class Engine {
       }
       this._censusSync();
     }
+  }
+
+  /**
+   * Is a text field open and taking characters right now?
+   *
+   * The single predicate behind `RealInput.textFocus`. It is exactly the test `_censusTypeChar`
+   * already made before accepting a character — the knowledge existed, it was just made one
+   * layer too late to route the keystroke. Answering it here rather than in the input layer
+   * keeps `input/real.js` a device layer that owns no semantics.
+   */
+  _censusTakesText() {
+    if (!this.censusSurface || !this.censusSurface.takesInput) return false;
+    const st = this.census.state();
+    return !!(st && st.input && st.input.kind === 'text');
   }
 
   /** Keyboard text entry. Not a button, so not part of HARNESS.md §4's closed action set. */

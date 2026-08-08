@@ -86,6 +86,26 @@ for (const k of ['races', 'classes', 'birthsigns', 'creation', 'writHouse', 'cre
 
 const { Census } = await import(path.join(GAME, 'src/character/census.js'));
 
+// ---- WHAT THE PLAYER'S PATH IS, AT THIS BUILD ------------------------------------------------
+// This tool's whole value is that its first arm is the route `New` takes and not a facsimile of
+// it, so the arm has to move when the route does. At round 2 the route was `censusBegin({})`
+// with nothing observed anywhere. W1-26 r3 changed it: `censusBegin()` now calls
+// `census.observe(opts.race || this.bodyRace())`, and `bodyRace()` reads `sim.identity.race` —
+// the race of the body the player is already standing in — which `Engine._applyStartingBody()`
+// writes at boot from `creation.json` `starting_body.race`.
+//
+// So the player's arm below observes THAT VALUE, read out of the same data file the engine reads,
+// and it is a genuine measurement rather than a rubber stamp for two reasons:
+//   * the id has to be one `races.json` carries AND one `writ.race-observed` has an authored
+//     misread for, both checked here. A `starting_body` naming a race the scene cannot speak to
+//     fails this tool, which is the failure mode a hardcoded default in engine.js would hide.
+//   * the NO-BODY arm is kept and still has to stop at the desk. If that arm ever completes, the
+//     race check has gone inert and this tool says so — which is the control for the arm above.
+const startingBody = (data.creation && data.creation.starting_body) || null;
+const bodyRace = startingBody ? startingBody.race : null;
+const raceIds = ((data.races && data.races.races) || []).map((r) => r.id);
+const misreadIds = Object.keys((((data.writHouse.nodes || []).find((n) => n.id === 'writ.race-observed')) || {}).misreads || {});
+
 /**
  * Walk the graph, always taking the FIRST offered answer, typing a name at text nodes and
  * picking the required count at pick nodes. Returns the node it stopped at and why.
@@ -135,10 +155,26 @@ const out = {
   harness_path: null,
 };
 
-say("  the player's path — `New` from the title, i.e. censusBegin({}), nothing observed:");
-out.player_path = walk(null);
+out.starting_body = {
+  declared: !!startingBody,
+  race: bodyRace,
+  in_races_json: !!bodyRace && raceIds.includes(bodyRace),
+  has_authored_misread: !!bodyRace && misreadIds.includes(bodyRace),
+  source: 'game/data/progression/creation.json #starting_body.race, via Engine._applyStartingBody() -> sim.identity.race -> Engine.bodyRace()',
+};
+say(`  the body the player wakes up in: race ${JSON.stringify(bodyRace)}`
+  + ` (in races.json: ${out.starting_body.in_races_json}; the scribe has a line for it: ${out.starting_body.has_authored_misread})`);
+say('');
+
+say("  the player's path — `New` from the title, i.e. censusBegin({}), which observes the body:");
+out.player_path = walk(bodyRace);
 say(`    ${out.player_path.ok ? 'COMPLETED' : 'STOPPED at ' + out.player_path.stopped_at}: ${out.player_path.reason}`);
 say(`    nodes reached: ${out.player_path.visited.join(' -> ')}`);
+
+say('');
+say('  the control — a scene opened with NO body at all, which must still stop at the desk:');
+out.no_body_path = walk(null);
+say(`    ${out.no_body_path.ok ? 'COMPLETED — THE RACE CHECK HAS GONE INERT' : 'STOPPED at ' + out.no_body_path.stopped_at}: ${out.no_body_path.reason}`);
 
 const controlRace = String(args.race || 'saxhleel');
 say('');
@@ -198,7 +234,17 @@ writeJson(jsonPath, out);
 say('');
 say(`  artifact: ${path.relative(REPO_ROOT, jsonPath)}`);
 
-const bad = !out.player_path.ok;
+// The player's path must complete AND the no-body control must still stop. A tool that only
+// checked the first would pass just as happily on a build that had deleted the race check
+// altogether, which is the difference rule 6 draws between a fix and an inert control.
+const inertControl = !!out.no_body_path.ok;
+const bodyUnusable = !out.starting_body.in_races_json || !out.starting_body.has_authored_misread;
+if (inertControl) say('  FAIL: a census with no body observed completed anyway — the check at writ.race-observed is inert.');
+if (bodyUnusable) say(`  FAIL: creation.json starting_body.race ${JSON.stringify(bodyRace)} is not a race the scene can speak to.`);
+out.verdict.control_still_stops = !inertControl;
+out.verdict.starting_body_usable = !bodyUnusable;
+
+const bad = !out.player_path.ok || inertControl || bodyUnusable;
 if (args['expect-throw']) {
   say(bad ? '  --expect-throw: the defect is present, as expected' : '  --expect-throw: the defect is GONE — update the guard');
   process.exit(bad ? 0 : 1);

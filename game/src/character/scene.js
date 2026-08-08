@@ -300,7 +300,32 @@ export function buildCensusModel(data, state, surface, npcRecord) {
   // a screenshot rather than by any measurement in this round, and it would have been an
   // instruction leak (`RI-JRN01` M9, AR-2) as well as simply embarrassing. `awaiting` belongs in
   // `getCensusState()`, where a probe reads it; it must never reach a draw call.
-  if (state.paused) return null;
+  //
+  // WHAT THAT ARGUMENT ACTUALLY LICENSES IS "no panel when NOBODY IS TALKING", and this
+  // function tested `paused` instead — which is a different thing, and W1-26 r2 §4 is the bill.
+  // There are two paused nodes. `hold.come-to` genuinely has nothing to say: no `line`, no
+  // `spoken`, and it must stay silent. `hold.out` has TWO authored strings on it at the moment
+  // it pauses — Jeeh-Ei's own send-off, and her reply to the hatch-name you have just typed,
+  // which is the build's only instance of *"Jiub repeats it and remarks on it"*, the one beat
+  // `MW/EXCHANGE` row 1 is about. Both were computed and neither was drawn: the send-off is a
+  // node `line` that is never carried forward, so it reached the frame **nowhere**, and the
+  // reply survived in `spoken` only to be drawn one node later, in the Writ House, above the
+  // Warden-Scribe's line, attributed to a woman who is no longer in the room. `DTR(hold.out)`
+  // = 0.000 and `RI-JRN09` HF1 fires on it, capping a native 92 at 2.
+  //
+  // So the test is what is being SAID, not what the graph is waiting for. A paused node with
+  // nothing on it draws nothing, exactly as before. A paused node with a line on it keeps the
+  // vellum up while the player gets off the bunk and walks out — which is what the surface's
+  // own `sync()` says it does ("at `hold.out` the census hands control back and Jeeh-Ei's last
+  // line stays on the vellum while you get up off the bunk and walk out"), and could not,
+  // because this line threw the model away first. `takesInput` is already false at a paused
+  // node, so the panel takes no buttons and cannot block the walk.
+  //
+  // `awaiting` is still never in the model, and that is what the paragraph above was defending.
+  const pausedSilent = state.paused
+    && !String(state.line || '').trim()
+    && !(Array.isArray(state.spoken) && state.spoken.some((s) => s && String(s.line || '').trim()));
+  if (pausedSilent) return null;
   const place = CENSUS_PLACES[placeOfNode(state)] || CENSUS_PLACES['writ-house'];
   const kind = state.input ? state.input.kind : null;
   const asking = kind === 'questionnaire' && state.question && state.question.text;
