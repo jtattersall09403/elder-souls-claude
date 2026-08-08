@@ -6,21 +6,32 @@
   "started_at": "2026-08-08T00:00:00Z",
   "next_step": "critic",
   "files_touched": [
+    "docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png",
+    "docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png",
+    "docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png",
+    "docs/shots/2026-08-08-w1-21-r3-the-map-screen.png",
+    "docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png",
+    "docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png",
+    "game/src/sim/discovery.js",
+    "game/src/ui/system.js",
     "orchestration/status/W1-21-r3.json",
-    "tools/lib/graded.mjs",
-    "tools/lib/colour.mjs",
-    "tools/metrics/ui-metrics.mjs",
-    "tools/analysis/ui-forbidden.mjs",
-    "tools/analysis/ui-layer.mjs",
+    "reports/blog-feed.jsonl",
+    "reports/w1-21-r3/browser.json",
+    "reports/w1-21-r3/empty-teardown.json",
+    "reports/w1-21-r3/mutator-test.json",
+    "reports/w1-21-r3/sample-table.md",
     "tools/analysis/marker-diff.mjs",
     "tools/analysis/marker-scan.mjs",
     "tools/analysis/ui-census.mjs",
-    "game/src/sim/discovery.js",
-    "tools/ui/w1-21-r3-mutator-test.mjs",
-    "tools/ui/w1-21-r3-empty.mjs",
+    "tools/analysis/ui-forbidden.mjs",
+    "tools/analysis/ui-layer.mjs",
+    "tools/lib/colour.mjs",
+    "tools/lib/graded.mjs",
+    "tools/metrics/ui-metrics.mjs",
     "tools/ui/w1-21-r3-browser.mjs",
-    "tools/ui/w1-21-r3-sample-table.mjs",
-    "game/src/ui/system.js"
+    "tools/ui/w1-21-r3-empty.mjs",
+    "tools/ui/w1-21-r3-mutator-test.mjs",
+    "tools/ui/w1-21-r3-sample-table.mjs"
   ],
   "files_claimed": [
     "tools/analysis/ui-forbidden.mjs",
@@ -135,5 +146,6 @@
     "tools/analysis/journal-ui.mjs JU8 still implements the pre-S35 clause (round-2 verdict \u00a77.2). Not in my brief and not touched.",
     "The residual forged-FOOTPRINT hole is with an arbiter and was left alone as instructed. NOTE: HEAD moved during this round and now carries 9cd4bfa, 'S38: the map owes soundness of its derivation, not authenticity of the save', which appears to be that ruling. I did not read it into this round's work.",
     "K1 is RED AT HEAD on game/data/world/readables/site-marks.json \u2014 10 F6 hits on a file W1-READABLES-r2 landed. Not written by me and not mine to except; reported and continued, per the brief's named hazard."
-  ]
+  ],
+  "commit_note": "RULES 17. My `git commit --only` lost 30 straight races for .git/index.lock (retried with backoff rather than blocking, as the rule says). While I retried, three neighbouring commits and one bank carried this round's files at HEAD under their own messages: 021e803 has tools/lib/graded.mjs and the tool edits, 9cd4bfa has game/src/ui/system.js and game/src/sim/discovery.js, 9fadada has reports/w1-21-r3/ and the blog line. Content verified at HEAD \u2014 markerCensus x4 in system.js, classifyGetter x2 in discovery.js, de2000 x19 in ui-metrics.mjs, blog-feed's last line task=W1-21-r3 \u2014 and the working tree is clean against it. Not unpicked, per the rule. This commit is the attribution."
 }

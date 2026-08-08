@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9fadada`: 669 tools, 153 reference
+so it cannot drift. Generated at `250d0c8`: 669 tools, 153 reference
 items, 54 pieces in flight.
 
 Its purpose is to stop 54+ concurrent agents each paying separately to discover the
@@ -987,9 +987,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-21-r3` | done | critic | `docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-levelup-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-map-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-sheet-screen.png` `docs/shots/2026-08-08-w1-21-r3-the-spells-screen.png` |
 | `critic-w1-14-r4` | running | read RULES, INDEX, ARBITRATION S22, W1-14-r3 verdict, W1-14-r4 status | `orchestration/status/critic-w1-14-r4.json` |
 | `W1-25-r2` | building | read RULES/INDEX/verdict, run contention gate, inventory tools/experience | `orchestration/status/W1-25-r2.json` |
-| `W1-21-r3` | done | critic | `orchestration/status/W1-21-r3.json` `tools/lib/graded.mjs` `tools/lib/colour.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/ui-layer.mjs` |
 | `critic-w1-26-r3` | running | read INDEX, NEXT-DISPATCH P, W1-26-r2 verdict, W1-26-r3 status; then run opening-play.mjs  | — |
 | `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |
 | `critic-w1-25` | done | Round 2 on W1-25: fix the four cascade defects in lib/sabotage.mjs against the acceptance  | `corpus/90-verdicts/wave1/W1-25-r1.md` `corpus/90-verdicts/wave1/W1-25-r1.json` `orchestration/status/critic-w1-25.json` `tools/experience/critic-w1-25.mjs` `tools/experience/critic-w1-25-chart.mjs` `reports/experience/critic-w1-25.json` |
