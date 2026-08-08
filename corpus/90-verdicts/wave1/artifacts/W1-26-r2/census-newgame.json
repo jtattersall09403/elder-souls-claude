@@ -1,0 +1,102 @@
+{
+  "schema": "elder-souls/census-newgame@1",
+  "piece": "W1-26",
+  "role": "critic round 2",
+  "items": [
+    "RI-JRN01",
+    "RI-CHR01"
+  ],
+  "question": "Engine._titleApply('new') calls censusBegin({}) with no race. Can that scene be finished?",
+  "player_path": {
+    "ok": false,
+    "stopped_at": "writ.race-observed",
+    "visited": [
+      "hold.hatch-name",
+      "writ.race-observed"
+    ],
+    "reason": "census: race must be observed before the scene reaches the desk",
+    "kind": "throw",
+    "input_kind": "observed"
+  },
+  "harness_path": {
+    "ok": true,
+    "stopped_at": null,
+    "visited": [
+      "hold.hatch-name",
+      "writ.race-observed",
+      "writ.sex",
+      "writ.upbringing",
+      "writ.given-name",
+      "writ.class-routes",
+      "writ.class-named",
+      "writ.class-verdict",
+      "writ.birthsign",
+      "writ.stamp"
+    ],
+    "reason": "the scene completed",
+    "writ": {
+      "id": "stamped-writ",
+      "name": "Reed-case writ, stamped",
+      "readable": true,
+      "text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Silt-Under-Salt\nAlso called: Silt-Under-Salt\nObserved as: Saxhleel\nRaised at: black water, no bottom\nTrade declared: Salt-Blade\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Male.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-SAX-FIG\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+    },
+    "character": {
+      "race": "saxhleel"
+    }
+  },
+  "consumption": {
+    "model": "Census.spec.race, set only by Census.observe()",
+    "world_side_consumer": "Census.answer() at writ.race-observed, which composes the scribe's misread line and gates every later node; downstream, composeCharacter() -> the writ -> what NPCs say",
+    "arms": [
+      {
+        "observed_race": null,
+        "completed": false,
+        "stopped_at": "writ.race-observed",
+        "reason": "census: race must be observed before the scene reaches the desk"
+      },
+      {
+        "observed_race": "dunmer",
+        "completed": true,
+        "stopped_at": null,
+        "reason": null
+      },
+      {
+        "observed_race": "khajiit",
+        "completed": true,
+        "stopped_at": null,
+        "reason": null
+      },
+      {
+        "observed_race": "saxhleel",
+        "completed": true,
+        "stopped_at": null,
+        "reason": null
+      }
+    ],
+    "null_control": {
+      "same_outcome": true,
+      "a": "writ.race-observed",
+      "b": "writ.race-observed"
+    },
+    "coupling": 1,
+    "delete_the_fix": {
+      "with_remedy": {
+        "observed": "saxhleel",
+        "completed": true
+      },
+      "without_remedy": {
+        "observed": null,
+        "completed": false,
+        "stopped_at": "writ.race-observed"
+      },
+      "two_arms_differ": true
+    }
+  },
+  "verdict": {
+    "player_can_finish_creation": false,
+    "harness_can_finish_creation": true,
+    "differ": true,
+    "note": "the two paths differ by one field. Every probe in the tree supplies `race` through the harness; the title's `New` does not, and the scene throws at the node that reads it.",
+    "acceptance_for_round_3": "Engine._titleApply('new') reaches writ.stamp with a composed character, driven only through real input from the title, and `node tools/journey/census-newgame.mjs` exits 0 with player_can_finish_creation true. The race the player ends up with must itself be something the player chose or the body already had — supplying a hardcoded default would satisfy this tool and fail RI-CHR01 §1 row 2."
+  }
+}

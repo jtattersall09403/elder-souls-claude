@@ -1,0 +1,423 @@
+{
+  "schema": "elder-souls/w1-26-opening@1",
+  "item": "RI-JRN01",
+  "piece": "W1-26",
+  "checks": {
+    "fresh_profile": {
+      "fresh_browser_context": true,
+      "storage_seeded_by": "writeSave(\"slot-a\") then page.reload()",
+      "slots": [
+        "slot-a"
+      ]
+    },
+    "m20": {
+      "present": true,
+      "shown_at_boot_in_harness_mode": false,
+      "raised_by": "titleShow()",
+      "option_ids": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "o3_expected": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "selected_id": "continue",
+      "save_count": 1,
+      "continue_available": true,
+      "unskippable_ms": 0,
+      "world_behind": true,
+      "drawn_strings": [
+        "ELDER SOULS",
+        "ARGONIA",
+        "— Continue",
+        "  New",
+        "  Load",
+        "  Settings",
+        "  Quit to menu",
+        "Nameless"
+      ]
+    },
+    "m20_continue": {
+      "result": {
+        "id": "continue",
+        "slot": "slot-a",
+        "loaded": true,
+        "ok": true,
+        "gen": 1,
+        "degraded": false
+      },
+      "hash_before": "13ef1df9593bb2334d2cc65110e2a1c8a41f71135b50a4165ace9d0d2d2115fd",
+      "hash_after": "c02cab887ea2b05930639b1a980e1c000c44bbd4c7d5884e6d80c3d6110a297f",
+      "title_shown_after": false
+    },
+    "accessor": {
+      "dom_inner_text_len": 0,
+      "dom_child_count": 2,
+      "accessor": "window.__HARNESS.getRenderedText()",
+      "source": "the draw call — CanvasRenderingContext2D.fillText/strokeText, and ui/glyphs.js drawText() through the register's per-context hook (game/src/render/text-register.js)",
+      "surfaces": [
+        "dialogue",
+        "title",
+        "menus"
+      ],
+      "declared": [
+        "dialogue",
+        "title",
+        "menus"
+      ],
+      "blind": [],
+      "complete": true,
+      "draw_paths": {
+        "dialogue": [
+          "fillText",
+          "strokeText",
+          "glyphs.drawText"
+        ],
+        "title": [
+          "fillText",
+          "strokeText",
+          "glyphs.drawText"
+        ],
+        "menus": [
+          "fillText",
+          "strokeText",
+          "glyphs.drawText"
+        ]
+      },
+      "sentinels": {
+        "surface": "menus",
+        "vector": {
+          "path": "ui/glyphs.js drawText() — stroked quadratic paths",
+          "text": "W1-26-OPENING-VECTOR",
+          "seen": true,
+          "entry": {
+            "surface": "menus",
+            "kind": "vector",
+            "text": "W1-26-OPENING-VECTOR"
+          }
+        },
+        "fill": {
+          "path": "CanvasRenderingContext2D.fillText",
+          "text": "W1-26-OPENING-FILLTEXT",
+          "seen": true,
+          "entry": {
+            "surface": "menus",
+            "kind": "fill",
+            "text": "W1-26-OPENING-FILLTEXT"
+          }
+        },
+        "rows": [
+          {
+            "surface": "menus",
+            "kind": "vector",
+            "text": "W1-26-OPENING-VECTOR"
+          },
+          {
+            "surface": "menus",
+            "kind": "fill",
+            "text": "W1-26-OPENING-FILLTEXT"
+          }
+        ],
+        "both_seen": true
+      },
+      "distinct": [
+        "5",
+        "LIGHT",
+        "Spark-Da…",
+        "A tithe-gourd, empty"
+      ],
+      "summary": {
+        "total": 4,
+        "dropped": 0,
+        "cap": 40000,
+        "surfaces": {
+          "menus": {
+            "entries": 4,
+            "drawn": 4,
+            "clipped": 0,
+            "distinct_drawn": 4
+          }
+        }
+      }
+    },
+    "m9": {
+      "instrument": "__HARNESS.getRenderedText({notSurface:[\"dialogue\"]})",
+      "surfaces_searched": [
+        "title",
+        "menus"
+      ],
+      "surfaces_blind": [],
+      "domain_complete": true,
+      "distinct_searched": 4,
+      "strings_searched": [
+        "5",
+        "LIGHT",
+        "Spark-Da…",
+        "A tithe-gourd, empty"
+      ],
+      "hits": [],
+      "imperative_hits": []
+    },
+    "m15": {
+      "instrument": "__HARNESS.getRenderedText()",
+      "domain_complete": true,
+      "distinct_searched": 25,
+      "hits": []
+    },
+    "orphan_text": {
+      "clipped_entries": []
+    },
+    "scene_walk": {
+      "nodes": [
+        "hold.hatch-name",
+        "writ.race-observed",
+        "THREW at writ.race-observed: census: race must be observed before the scene reaches the desk"
+      ]
+    },
+    "dtr": {
+      "accessor_used": "__HARNESS.getRenderedText() — the register, fed by fillText and clip-aware",
+      "accessor_compared_against": "__HARNESS.getUIState().text — the layout's own array, which cannot see a clipped line",
+      "dtr_scene_register": 1,
+      "dtr_scene_layout": 0,
+      "questionnaire_nodes": [],
+      "worst_node": {
+        "node": "hold.hatch-name",
+        "kind": "text",
+        "authored": 15,
+        "drawn_register": 15,
+        "drawn_layout": 0,
+        "dtr_register": 1,
+        "dtr_layout": 0,
+        "undrawn": [],
+        "clipped_here": 0
+      },
+      "nodes": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "authored": 15,
+          "drawn_register": 15,
+          "drawn_layout": 0,
+          "dtr_register": 1,
+          "dtr_layout": 0,
+          "undrawn": [],
+          "clipped_here": 0
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "authored": 2,
+          "drawn_register": 2,
+          "drawn_layout": 0,
+          "dtr_register": 1,
+          "dtr_layout": 0,
+          "undrawn": [],
+          "clipped_here": 0
+        },
+        {
+          "node": "writ.race-observed",
+          "threw": "census: race must be observed before the scene reaches the desk"
+        }
+      ],
+      "layout_overclaims_at": []
+    },
+    "m4_clause1": {
+      "first_input_frame": 35,
+      "first_control_frame": 36,
+      "first_field_frame": 3726,
+      "first_field_node": "hold.hatch-name",
+      "available_play_s_before_first_field": 61.5,
+      "fixed_step_hz": 60,
+      "frame": 3734,
+      "wander": {
+        "samples": [
+          {
+            "at_s": 10,
+            "moved_m": 2.037,
+            "node": "hold.come-to",
+            "paused": true,
+            "takes_input": false
+          },
+          {
+            "at_s": 20,
+            "moved_m": 2.037,
+            "node": "hold.come-to",
+            "paused": true,
+            "takes_input": false
+          },
+          {
+            "at_s": 30,
+            "moved_m": 2.037,
+            "node": "hold.come-to",
+            "paused": true,
+            "takes_input": false
+          },
+          {
+            "at_s": 40,
+            "moved_m": 2.037,
+            "node": "hold.come-to",
+            "paused": true,
+            "takes_input": false
+          },
+          {
+            "at_s": 50,
+            "moved_m": 2.037,
+            "node": "hold.come-to",
+            "paused": true,
+            "takes_input": false
+          },
+          {
+            "at_s": 60,
+            "moved_m": 2.037,
+            "node": "hold.come-to",
+            "paused": true,
+            "takes_input": false
+          }
+        ],
+        "asked_during_window_at": null,
+        "frozen_at": null,
+        "distance_m": 122.24,
+        "survived_s": 60,
+        "threshold_s": 60
+      },
+      "moved_m": 3.2,
+      "census_node_at_start": "hold.come-to",
+      "census_node_after_talking": "hold.hatch-name",
+      "census_takes_input_at_start": true,
+      "opened_paused": true,
+      "forward_input_frames": 60,
+      "threshold_s": 60
+    },
+    "o17_parity": {
+      "keyboard": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": false,
+        "inputs": 2,
+        "inputs_taken": 1
+      },
+      "mouse+keyboard": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": false,
+        "inputs": 2,
+        "inputs_taken": 2
+      },
+      "gamepad": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": true,
+        "inputs": 2,
+        "inputs_taken": 2
+      },
+      "touch": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": false,
+        "inputs": 2,
+        "inputs_taken": 3,
+        "controls": 11,
+        "stick_from": [
+          422,
+          670
+        ],
+        "layout_interact": {
+          "action": "interact",
+          "x": 1871,
+          "y": 914,
+          "r": 24,
+          "held": false,
+          "gate": null,
+          "down": false
+        }
+      }
+    },
+    "consumption_k1": {
+      "model": "the save store (game/src/save/store.js, IndexedDB) — the one model the title surface reads",
+      "observable": "the strings the title DREW, read through the rendered-text register (frame-side, not a getTitleState() return value)",
+      "with_save": {
+        "drawn": [
+          "ELDER SOULS",
+          "ARGONIA",
+          "— Continue",
+          "  New",
+          "  Load",
+          "  Settings",
+          "  Quit to menu",
+          "Nameless"
+        ],
+        "continue_enabled": true
+      },
+      "null_control_stable": true,
+      "without_save": {
+        "drawn": [
+          "ELDER SOULS",
+          "ARGONIA",
+          "  Continue",
+          "— New",
+          "  Load",
+          "  Settings",
+          "  Quit to menu",
+          "No life recorded in this province."
+        ],
+        "continue_enabled": false
+      },
+      "restored": {
+        "drawn": [
+          "ELDER SOULS",
+          "ARGONIA",
+          "— Continue",
+          "  New",
+          "  Load",
+          "  Settings",
+          "  Quit to menu",
+          "Nameless"
+        ],
+        "continue_enabled": true
+      },
+      "coupling": 1
+    },
+    "instrument_falsification": {
+      "before": 8,
+      "after": 0,
+      "restored": 8
+    }
+  },
+  "hard_fails": [],
+  "failures": [],
+  "passes": [
+    "a title surface exists",
+    "M20: the option set is exactly O3's five",
+    "M20/O3: `Continue` is focused by default when a save exists",
+    "M20: the title drew 8 distinct strings",
+    "M20: `Continue` loaded the save",
+    "M20: the title yields to the world on `Continue`",
+    "§0.1(a): accessor `window.__HARNESS.getRenderedText()` demonstrated non-empty — 4 distinct strings on a frame known to carry text",
+    "M9: 0 hits over 4 distinct non-dialogue strings on [\"title\",\"menus\"], through a demonstrated accessor",
+    "M15: 0 hits over 25 distinct strings",
+    "no orphan text: every string handed to a draw call landed inside its clip",
+    "M1: DTR_scene = 1 through the draw call (RI-JRN09 wants >= 0.90)",
+    "M1: worst node is 'hold.hatch-name' at DTR 1 (HF1 fires below 0.50)",
+    "M1: the layout accessor and the draw-call accessor agree — no node claims a string it clipped away",
+    "M4: `first_input` fired at frame 35 — the A-JRN7 event that had never been emitted",
+    "M4 clause 1: 61.5 s of available play before the first character-defining question (O6 wants >= 60)",
+    "O6: 60 s of real wandering (122.24 m walked and turned) and the scene never asked — it waits to be asked",
+    "O17 keyboard: the title responded (continue -> new, shown=false)",
+    "O17 mouse+keyboard: the title responded (continue -> new, shown=false)",
+    "O17 gamepad: the title responded (continue -> new, shown=true)",
+    "O17 touch: the title responded (continue -> new, shown=false)",
+    "K1 null control: perturb nothing, observe nothing",
+    "K1 CONSUMPTION: the save store changes what the player can see and what they can activate",
+    "K1 delete-the-fix: removing the save removes the row, restoring it brings it back",
+    "K2: the register goes red when the surface stops drawing (8 -> 0 -> 8)"
+  ],
+  "page_errors": [],
+  "verdict": "PASS"
+}

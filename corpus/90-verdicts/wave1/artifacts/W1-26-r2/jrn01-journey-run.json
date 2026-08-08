@@ -1,0 +1,465 @@
+{
+  "schema": "elder-souls/journey-run@1",
+  "tool": "tools/journey/journey-run.mjs",
+  "amendment": "A-JRN1",
+  "run_id": "20260808T024657Z-jrn01-opening-s4711-75dfee",
+  "journey": "jrn01-opening",
+  "item": "RI-JRN01",
+  "title": "first launch to first choice",
+  "seed": 4711,
+  "profile": "headless-small",
+  "profile_realised": {
+    "width": 320,
+    "height": 240,
+    "dpr": 1,
+    "pointer": "fine",
+    "touch": false
+  },
+  "input_mode": "real",
+  "args": [
+    "--journey",
+    "jrn01-opening",
+    "--seed",
+    "4711",
+    "--profile",
+    "headless-small",
+    "--input-mode",
+    "real",
+    "--trace-events",
+    "--out",
+    "reports/journeys/w1-26-r2-jrn01"
+  ],
+  "url": "http://127.0.0.1:37057/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 561
+  },
+  "capability_report": {
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "implemented": [
+      "fixed 60 Hz simulation decoupled from render (HARNESS.md R2/R3)",
+      "seeded PRNG with a runtime guard that throws on Math.random/Date.now/performance.now/new Date inside a step",
+      "the elder-souls/trace@1 record, including the camera channel RI-CAM02/RI-CAM06 need",
+      "the 15-button closed action set (14 from W1-00 + `crouch` from W1-15/AM-W1-15-01), the scripted path, the real desktop path, the 8 f@60 single-slot buffer",
+      "IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation",
+      "deterministic sky, sun and named weather; the nine viewpoint anchors",
+      "the game/data/** layout of HARNESS.md §5 with a generated index.json",
+      "W1-07: character creation as a scene — 10 attributes, 19 skills, 10 races, 9 birthsigns, 14 classes plus the custom route, the 12-question route, the 12x10 reaction matrix, the price surcharge, the guard law-factor table and the race-conditioned encounter opening",
+      "W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)",
+      "W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window",
+      "W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule",
+      "W1-09: RI-CMB03 stamina, block, guard break and RI-CMB09 exhaustion, symmetric for enemies",
+      "W1-09: RI-CMB05 poise, stagger, hyperarmour, backstab, parry and riposte",
+      "W1-09: RI-CMB06 lock-on with target-relative directional roll and soft-lock steering",
+      "W1-09: RI-CMB08 healing with animation commitment and finite charges",
+      "W1-09: es-combat-trace/1 (RI-CMB07 §A) as a second stream, and the S13 parley"
+    ],
+    "not_implemented": [
+      {
+        "what": "enemy DECISION-MAKING (approach, circle, commit, attack token, punish reads, leash)",
+        "owner": "RI-AI01..07 / wave-1 piece W1-12",
+        "surfaced_as": "enemy statblocks declare ai='scripted'; actions come from the scenario file on declared frames, which is the RI-CMB07 M1 Mode-A instrument. spawn() throws for any archetype declaring behaviour this build cannot run. RI-CMB07 M2 (Mode-B free play against real AI) is therefore NOT measurable in this piece and scores 0, fail-closed."
+      },
+      {
+        "what": "mid-animation combat state across a save/load",
+        "owner": "W1-09, declared limitation",
+        "surfaced_as": "sim/combat-bridge.js header. The combat bodies are the authority and sim.player is a view; a save taken on frame 12 of a roll restores a standing character at the roll position. Correct under seam S6 (you save by resting) and true of both source games, but stated rather than discovered."
+      },
+      {
+        "what": "weapon movesets beyond the 7-class spine, and attack ratings",
+        "owner": "RI-WPN01..06 / wave-1 piece W1-10",
+        "surfaced_as": "movesets/*.json weapon.attack_rating_provenance marks all seven AR values PROVISIONAL; only the straight sword is pinned (to the RI-CMB07 exemplar HIT of 118 at motion value 1.00)."
+      },
+      {
+        "what": "hitstop, mass and impact feel",
+        "owner": "RI-WPN05 / RI-AUD01 / wave-1 piece W1-11",
+        "surfaced_as": "hitstop_frames is read from the moveset and applied, but the camera, audio and animation consequences are W1-11."
+      },
+      {
+        "what": "a quest runtime",
+        "owner": "wave-1 pieces W1-14..W1-16",
+        "surfaced_as": "getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist"
+      },
+      {
+        "what": "dialogue, topics, journal writing at runtime",
+        "owner": "wave-1 pieces W1-11..W1-13",
+        "surfaced_as": "data files exist and are analysable; getDialogueState() (A-JRN13) is absent"
+      },
+      {
+        "what": "the province: 13 regions, 8 settlements, 250 interiors, roads",
+        "owner": "wave-1 pieces W1-01..W1-05",
+        "surfaced_as": "getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement"
+      },
+      {
+        "what": "combat FOLEY (footsteps, cloth, armour rattle)",
+        "owner": "RI-AUD01 §D / no wave-1 owner",
+        "surfaced_as": "the §D sparseness budget counts non-combat voices and there are none, so the exploration mix is silence rather than a bed at -26..-22 LUFS-S. §D is a budget approached only from below and RI-AUD01 says so"
+      },
+      {
+        "what": "music (audio.music.policy)",
+        "owner": "RI-AUD04 / no wave-1 owner",
+        "surfaced_as": "no music bus, no music. RI-AUD04 unmeasurable, 0 fail-closed"
+      },
+      {
+        "what": "voice (audio.voice.policy)",
+        "owner": "RI-AUD05 / no wave-1 owner",
+        "surfaced_as": "no voice bus. RI-AUD05 unmeasurable, 0 fail-closed"
+      },
+      {
+        "what": "settlement ambience beds (RI-WLD08 §6 wants >=8)",
+        "owner": "W1-22 / W1-01..W1-05",
+        "surfaced_as": "two settlement beds exist (market, street) because Engine.cellFor() returns exactly two settlement cells in this build. Eight would mean authoring beds for six settlements the world does not have; ambience-census C14 warns rather than fails, so the gap is charged where it lives"
+      },
+      {
+        "what": "positional ambient emitters per km2 (RI-WLD08 §6 wants >=25)",
+        "owner": "W1-22, outstanding",
+        "surfaced_as": "four R7 emitters in the province (bell buoy, hide-drum, legion horn, kiln). They now SOUND — round 1 computed their pan and gain every frame and scheduled no audio at all — but four is not twenty-five per km2, and the shortfall is data authoring rather than a missing mechanism"
+      },
+      {
+        "what": "boss-arena ambience (cell `arena`)",
+        "owner": "W1-22 / RI-AUD01",
+        "surfaced_as": "getAmbienceState().suppressed names the cell. Deliberate: an arena's sound belongs to the combat mix, and RI-AUD03 is a REGIONAL identity item. Reported rather than filled with a bed nobody specified"
+      },
+      {
+        "what": "heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 (viewport/orientation/safe-area) landed with W1-08/W1-29; A-JRN12 (keyboard layout) is driven runner-side through CDP by tools/journey/journey-run.mjs",
+        "owner": "runner-side or later pieces",
+        "surfaced_as": "the methods are absent rather than present-and-lying"
+      },
+      {
+        "what": "Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)",
+        "owner": "attested real hardware",
+        "surfaced_as": "getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all"
+      }
+    ],
+    "harness_amendments_implemented": [
+      "A-JRN1 (partial: play-instrumented mode, no UI-text stream)",
+      "A-JRN3",
+      "A-JRN5 (partial: Tier-S fields only)",
+      "A-JRN6",
+      "A-JRN7",
+      "A-JRN8",
+      "A-JRN10",
+      "A-JRN11",
+      "A-JRN15 (partial)",
+      "A-JRN2 (gamepad, W1-29)",
+      "A-JRN4 (viewport/orientation/safe-area, W1-29)",
+      "A-JRN12 (runner-side via CDP Input.dispatchKeyEvent, W1-08)"
+    ],
+    "harness_amendments_absent": [
+      "A-JRN9",
+      "A-JRN13",
+      "A-JRN14"
+    ]
+  },
+  "git": {
+    "commit": "b13724d832db064e6ae3f8e2d5cab86ec9fa6aa2",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "data": {
+    "files": 566,
+    "sha256": "b29502b3ba16b11c6250e7fb6fc1b9856282956c2e45b045a4e9061aee9e424f"
+  },
+  "started_at": "2026-08-08T02:46:57.961Z",
+  "ended_at": "2026-08-08T02:47:18.197Z",
+  "wall_ms": 20236,
+  "page_errors": [],
+  "beats": [
+    {
+      "kind": "journey_start",
+      "frame": 5,
+      "journey": "jrn01-opening"
+    },
+    {
+      "kind": "first_input",
+      "frame": 65,
+      "device": "keyboard",
+      "via": "page.keyboard"
+    },
+    {
+      "kind": "first_control",
+      "frame": 200,
+      "moved": true,
+      "pos_before": [
+        2766.5,
+        2.68,
+        5011
+      ],
+      "pos_after": [
+        2766.5,
+        2.68,
+        5013.24
+      ],
+      "arm_press_release_then_step": {
+        "pos_before": [
+          2766.5,
+          2.68,
+          5011
+        ],
+        "pos_after": [
+          2766.5,
+          2.68,
+          5011
+        ],
+        "moved": false
+      },
+      "arm_held_across_the_stepped_frames": {
+        "pos_before": [
+          2766.5,
+          2.68,
+          5011
+        ],
+        "pos_after": [
+          2766.5,
+          2.68,
+          5013.24
+        ],
+        "moved": true
+      },
+      "arms_differ": true
+    },
+    {
+      "kind": "surface_enter",
+      "frame": 200,
+      "surface": "census",
+      "speaker": "jeeh-ei",
+      "place": "barge-hold"
+    },
+    {
+      "kind": "surface_exit",
+      "frame": 201,
+      "surface": "census",
+      "still_open": false
+    },
+    {
+      "kind": "journey_end",
+      "frame": 201,
+      "frames_stepped": 3600
+    }
+  ],
+  "trace_records": 201,
+  "ui_text_frames": 5,
+  "surfaces": 1,
+  "driver_events": [],
+  "instruments": [
+    {
+      "id": "profile",
+      "what": "viewport/dpr/pointer realised",
+      "status": "measured",
+      "value": {
+        "profile": "headless-small",
+        "width": 320,
+        "height": 240,
+        "dpr": 1,
+        "pointer": "fine",
+        "touch": false,
+        "note": "dpr and pointer are set on the browser context at launch; viewport is set here. A-JRN4 is declared absent in the engine and is supplied runner-side."
+      }
+    },
+    {
+      "id": "input_mode",
+      "what": "real input path attached",
+      "status": "measured",
+      "value": {
+        "mode": "play-instrumented",
+        "result": "play-instrumented"
+      }
+    },
+    {
+      "id": "world_runs_boot",
+      "what": "the world advances at 'boot'",
+      "status": "measured",
+      "value": {
+        "ok": true,
+        "site": "boot",
+        "ui_mode_on_entry": "world",
+        "ui_mode_after_close": "world",
+        "screen_was_open": false,
+        "frame_before": 0,
+        "frame_after": 5,
+        "advanced": 5,
+        "frames_requested": 5,
+        "why": null
+      }
+    },
+    {
+      "id": "world_runs_before_first_control",
+      "what": "the world advances at 'before_first_control'",
+      "status": "measured",
+      "value": {
+        "ok": true,
+        "site": "before_first_control",
+        "ui_mode_on_entry": "world",
+        "ui_mode_after_close": "world",
+        "screen_was_open": false,
+        "frame_before": 65,
+        "frame_after": 70,
+        "advanced": 5,
+        "frames_requested": 5,
+        "why": null
+      }
+    },
+    {
+      "id": "control_observed",
+      "what": "the player body responded to a movement input",
+      "status": "measured",
+      "value": {
+        "input_mode": "real",
+        "moved": true,
+        "moved_m_press_release_then_step": 0,
+        "moved_m_held_across_the_stepped_frames": 2.24,
+        "arm_that_moved_the_body": "held across the stepped frames",
+        "arms_differ": true,
+        "world_was_running": true,
+        "pass": true,
+        "note": "Two arms on purpose. `realKey(page, code, char, {delay})` presses, waits WALL-clock milliseconds and releases, so the old single arm held the key across zero STEPPED frames and the body was asked to walk with nothing down. The round-3 aggregation read that as \"the BUILD refusing the input\" — the gate had correctly ruled out a frozen world, which left the build as the only remaining suspect and it was the wrong one."
+      }
+    },
+    {
+      "id": "first_input",
+      "what": "first_input event",
+      "status": "measured",
+      "value": {
+        "source": "trace",
+        "frame": 66
+      }
+    },
+    {
+      "id": "first_control",
+      "what": "first_control event",
+      "status": "measured",
+      "value": {
+        "source": "trace",
+        "frame": 141
+      }
+    },
+    {
+      "id": "m4_clause1",
+      "what": "control precedes definition",
+      "status": "unmeasurable",
+      "why": "no character-field-writing event in the trace",
+      "owner": "A-JRN1/A-JRN7"
+    },
+    {
+      "id": "ui_text_accessor",
+      "what": "rendered-text accessor demonstrated live",
+      "status": "measured",
+      "value": {
+        "accessor": "__HARNESS.getRenderedText()",
+        "accessor_strength": "fillText-level, clip-aware",
+        "frames_sampled": 5,
+        "frames_with_text": 5,
+        "example": [
+          "5",
+          "LIGHT",
+          "Spark-Da…"
+        ],
+        "dom_inner_text_len": 0,
+        "note": "document.body.innerText is EMPTY — the canvas accessor is the only enumerable rendered-text surface, which is why M9/M15 may not be greped from the DOM."
+      }
+    },
+    {
+      "id": "m9_instruction_budget",
+      "what": "instruction tokens outside dialogue/journal/book surfaces",
+      "status": "measured",
+      "value": {
+        "frames_outside_surface": 5,
+        "hits": 0,
+        "examples": [],
+        "threshold": 0,
+        "caveat": null
+      }
+    },
+    {
+      "id": "m15_chosen_one",
+      "what": "prophecy vocabulary in rendered text",
+      "status": "measured",
+      "value": {
+        "hits": 0,
+        "examples": [],
+        "threshold": 0
+      }
+    },
+    {
+      "id": "m2_unskippable",
+      "what": "frames from a real input to the surface being gone",
+      "status": "measured",
+      "value": {
+        "surfaces": 1,
+        "over_30_frames": 0,
+        "ignored_input_entirely": 0,
+        "detail": [
+          {
+            "id": "census",
+            "first_rendered_frame": 200,
+            "frames_to_dismiss": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "m1_surfaces_to_control",
+      "what": "distinct full-viewport surfaces before first_control",
+      "status": "measured",
+      "value": {
+        "count": 0,
+        "threshold": 2,
+        "hard_fail_at": 4
+      }
+    },
+    {
+      "id": "amendment_A-JRN13",
+      "what": "checks depending on A-JRN13",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN13 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "amendment_A-JRN14",
+      "what": "checks depending on A-JRN14",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN14 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "amendment_A-JRN9",
+      "what": "checks depending on A-JRN9",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN9 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "world_runs_legs_jrn01-opening",
+      "what": "the world advances at 'legs_jrn01-opening'",
+      "status": "measured",
+      "value": {
+        "ok": true,
+        "site": "legs_jrn01-opening",
+        "ui_mode_on_entry": "inventory",
+        "ui_mode_after_close": "world",
+        "screen_was_open": true,
+        "frame_before": 201,
+        "frame_after": 206,
+        "advanced": 5,
+        "frames_requested": 5,
+        "why": null
+      }
+    }
+  ],
+  "ok": false,
+  "artifacts": {
+    "trace": "trace.jsonl",
+    "ui_text": "ui-text.jsonl",
+    "surfaces": "surfaces.json",
+    "shots": []
+  }
+}

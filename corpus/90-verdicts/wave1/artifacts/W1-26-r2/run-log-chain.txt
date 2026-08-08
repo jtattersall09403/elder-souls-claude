@@ -1,0 +1,75 @@
+=== name-entry ===
+  bindings shadow 14 of 26 letters: A C D E F G M R S T V W X Z
+  digits 1 2 3 4; space bound to a button: true
+  'interact' (which COMMITS the node) is on: E
+  predicted from the data alone: "Hio-Junnilo" -> "Hio-Junnilo"
+                                 "Silt-Under-Salt" -> "il-Un-l"
+
+  typed "Hio-Junnilo" -> recorded "Hio-Junnilo"
+  typed "Silt-Under-Salt" -> recorded "il-Un"  (the scene COMMITTED mid-word and moved to hold.out)
+  PASS N1  a name of unbound characters round-trips verbatim ("Hio-Junnilo")
+  FAIL N2  a name containing bound letters is recorded as "il-Un" — and the scene committed it mid-word
+
+  1 pass · 1 fail
+  artifact: reports/journeys/w1-26-r2-name-entry.json
+EXIT_NAME=1
+=== w1-26-opening (gap closure, M20/M9/M15/O17) ===
+T — M20/HF9: the title surface
+  pass  a title surface exists
+  pass  M20: the option set is exactly O3's five
+  pass  M20/O3: `Continue` is focused by default when a save exists
+  pass  M20: the title drew 8 distinct strings
+  pass  M20: `Continue` loaded the save
+  pass  M20: the title yields to the world on `Continue`
+A — the rendered-text accessor (RI-JRN01 §0.1(a))
+  pass  §0.1(a): accessor `window.__HARNESS.getRenderedText()` demonstrated non-empty — 4 distinct strings on a frame known to carry text
+        (for contrast, document.body.innerText is 0 chars — the instrument RI-MTH06 §B warns about)
+  pass  M9: 0 hits over 4 distinct non-dialogue strings on ["title","menus"], through a demonstrated accessor
+  pass  M15: 0 hits over 25 distinct strings
+  pass  no orphan text: every string handed to a draw call landed inside its clip
+D — RI-JRN09 M1: DTR through the draw call
+  pass  M1: DTR_scene = 1 through the draw call (RI-JRN09 wants >= 0.90)
+  pass  M1: worst node is 'hold.hatch-name' at DTR 1 (HF1 fires below 0.50)
+  pass  M1: the layout accessor and the draw-call accessor agree — no node claims a string it clipped away
+C — O6 / M4 clause 1: control before definition
+  pass  M4: `first_input` fired at frame 35 — the A-JRN7 event that had never been emitted
+  pass  M4 clause 1: 61.5 s of available play before the first character-defining question (O6 wants >= 60)
+  pass  O6: 60 s of real wandering (122.24 m walked and turned) and the scene never asked — it waits to be asked
+R — O17: the title on four input devices
+  pass  O17 keyboard: the title responded (continue -> new, shown=false)
+  pass  O17 mouse+keyboard: the title responded (continue -> new, shown=false)
+  pass  O17 gamepad: the title responded (continue -> new, shown=true)
+  pass  O17 touch: the title responded (continue -> new, shown=false)
+K1 — CONSUMPTION: the save store reaches the frame (RI-MTH07 §B)
+  pass  K1 null control: perturb nothing, observe nothing
+  pass  K1 CONSUMPTION: the save store changes what the player can see and what they can activate
+  pass  K1 delete-the-fix: removing the save removes the row, restoring it brings it back
+K2 — the register, broken on purpose
+  pass  K2: the register goes red when the surface stops drawing (8 -> 0 -> 8)
+
+w1-26-opening: 24 pass, 0 fail, 0 hard fail -> PASS
+[harness] wrote reports/journeys/w1-26-r2-critic-opening.json
+EXIT_OPENING=0
+=== w1-26-opening --red-team=plant ===
+[harness] ERROR: harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.
+  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).
+  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`
+  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`
+    at Engine._installCanon (http://127.0.0.1:44849/game/src/engine.js:2523:13)
+    at Engine._boot (http://127.0.0.1:44849/game/src/engine.js:580:10)
+    at async Object.ready (http://127.0.0.1:44849/game/src/harness/api.js:45:21)
+    at async <anonymous>:316:30
+{"ok":false,"error":"harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.\n  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).\n  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`\n  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`\n    at Engine._installCanon (http://127.0.0.1:44849/game/src/engine.js:2523:13)\n    at Engine._boot (http://127.0.0.1:44849/game/src/engine.js:580:10)\n    at async Object.ready (http://127.0.0.1:44849/game/src/harness/api.js:45:21)\n    at async <anonymous>:316:30","exit":12}
+EXIT_RED=12
+=== journey-run jrn01-opening (A-JRN1, real input) ===
+[harness] ERROR: harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.
+  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).
+  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`
+  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`
+    at Engine._installCanon (http://127.0.0.1:34535/game/src/engine.js:2523:13)
+    at Engine._boot (http://127.0.0.1:34535/game/src/engine.js:580:10)
+    at async Object.ready (http://127.0.0.1:34535/game/src/harness/api.js:45:21)
+    at async <anonymous>:316:30
+{"ok":false,"error":"harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.\n  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).\n  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`\n  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`\n    at Engine._installCanon (http://127.0.0.1:34535/game/src/engine.js:2523:13)\n    at Engine._boot (http://127.0.0.1:34535/game/src/engine.js:580:10)\n    at async Object.ready (http://127.0.0.1:34535/game/src/harness/api.js:45:21)\n    at async <anonymous>:316:30","exit":12}
+EXIT_JRN01=12
+CHAIN DONE

@@ -31,34 +31,34 @@
         "stdout_artifact": "PASS — the engine constructed and the harness answers"
       },
       {
-        "command": "node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240 --json reports/journeys/w1-26-r2-play.json",
+        "command": "node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240 --json corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json",
         "exit_code": 0,
-        "stdout_artifact": "reports/journeys/w1-26-r2-play.json"
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json"
       },
       {
         "command": "node tools/journey/census-newgame.mjs",
         "exit_code": 1,
-        "stdout_artifact": "reports/journeys/w1-26-r2-census-newgame.json"
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json"
       },
       {
-        "command": "node tools/journey/name-entry.mjs --json reports/journeys/w1-26-r2-name-entry.json",
+        "command": "node tools/journey/name-entry.mjs --json corpus/90-verdicts/wave1/artifacts/W1-26-r2/name-entry.json",
         "exit_code": 1,
-        "stdout_artifact": "reports/journeys/w1-26-r2-name-entry.json"
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/name-entry.json"
       },
       {
-        "command": "node tools/harness/jrn09-exchange.mjs --json reports/journeys/w1-26-r2-jrn09.json",
+        "command": "node tools/harness/jrn09-exchange.mjs --json corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json",
         "exit_code": 1,
-        "stdout_artifact": "reports/journeys/w1-26-r2-jrn09.json"
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
       },
       {
-        "command": "node tools/harness/w1-26-opening.mjs --json reports/journeys/w1-26-r2-critic-opening.json",
+        "command": "node tools/harness/w1-26-opening.mjs --json corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
         "exit_code": 0,
-        "stdout_artifact": "reports/journeys/w1-26-r2-critic-opening.json"
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
       },
       {
         "command": "node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 --profile headless-small --input-mode real --trace-events --out reports/journeys/w1-26-r2-jrn01",
         "exit_code": 1,
-        "stdout_artifact": "reports/journeys/w1-26-r2-jrn01/journey.json"
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json"
       }
     ],
     "depends_on": [
@@ -96,7 +96,7 @@
           "value": "1.0000",
           "threshold": "= 1.00",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ]
         },
         {
@@ -105,7 +105,7 @@
           "value": "0.9820",
           "threshold": ">= 0.90",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ],
           "note": "The builder's status records 1.0000 from this same tool. At HEAD it is 0.9820 and HF1 fires."
         },
@@ -115,7 +115,7 @@
           "value": "DTR 0.000 at hold.out (0 drawn of 2 computed)",
           "threshold": "no node class below 0.50",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ],
           "note": "hold.out is the hand-back node the O6 fix created: the commit that answers the hatch-name closes the surface, so Jeeh-Ei's own line is never drawn anywhere and her reply to the name you typed is drawn one node later in the Writ House above a different speaker. Fires on the per-node reading (round 1's precedent in this piece) and on the node-kind reading (the two paused/auto nodes aggregate to 0/2)."
         },
@@ -125,7 +125,7 @@
           "value": "6 of 7",
           "threshold": ">= 6 of 7",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ],
           "note": "The item's one declared judgement call: the seven quotes are NOT seven templates. The upbringing replies and the per-race misread correction are responsive writing. Two points off because race's evidence row reads 'Observed as: Saxhleel', closer to a label than a line, and because the hatch-name consumption is drawn in the wrong room."
         },
@@ -135,7 +135,7 @@
           "value": "14 of 14 distinct; naming line drawn 232/232 (100%); NAMED_rate 96.67%; histogram 597/595/590/618, max deviation 3.00%",
           "threshold": ">= 10 of 14 and 100% drawn",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ]
         },
         {
@@ -152,7 +152,7 @@
         "orphan text — a string authored, computed, carried through the model, exposed through the harness, and never drawn (hold.out, both strings)"
       ],
       "evidence": [
-        "reports/journeys/w1-26-r2-jrn09.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json",
         "corpus/90-verdicts/wave1/W1-26-r2.md"
       ],
       "why_not_ten": "HF1. One node draws nothing, and the two strings it drops are Jeeh-Ei's own line and her reply to the name the player just typed — the build's only instance of MW/EXCHANGE row 1.",
@@ -180,7 +180,7 @@
           "value": "0 full-viewport UI states with no world behind, against <= 2",
           "threshold": "<= 2",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn01/journey.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json"
           ],
           "note": "OFF corpus_debt for the first time — A-JRN1 (tools/journey/journey-run.mjs) exists and was run with --input-mode real."
         },
@@ -190,7 +190,7 @@
           "value": "1 surface, 0 over 30 frames, 0 ignoring input; the census dismisses in 1 frame",
           "threshold": "0 surfaces over 30 frames",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn01/journey.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json"
           ],
           "note": "Also off corpus_debt for the first time."
         },
@@ -200,7 +200,7 @@
           "value": "61.5 s available play before the first character-defining question; a 60 s wander of 122.24 m during which the scene never asked",
           "threshold": ">= 60 s",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
           ],
           "note": "THE ITEM'S OWN DRIVER DISAGREES: journey-run.mjs reports m4_clause1 as 'N/A — no character-field-writing event in the trace', because its census walk opens with censusBegin({}) and dies at writ.race-observed inside a bare `catch { break; }`. Two instruments, 61.5 s against N/A, and the negative one is right about the player."
         },
@@ -211,7 +211,7 @@
           "threshold": "100% world visible, opaque UI <= 0.55, 0 frames uniform >= 90%",
           "evidence": [
             "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png",
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ],
           "note": "12 of 15. The >= 90% uniform clause I measured from pixels myself. The panel-area figure is the build's own geometry and I did NOT reproduce it by readback; round 1 found the independent readback running ~0.15 higher, which would put 0.3822 at ~0.53 and inside the ceiling by 0.02."
         },
@@ -221,7 +221,7 @@
           "value": "100% — jeeh-ei and warden-scribe-tuleeh-ma, both with a name, a settlement and >= 3 topics (18 offered by the scribe)",
           "threshold": "100%",
           "evidence": [
-            "reports/journeys/w1-26-r2-play.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json"
           ]
         },
         {
@@ -230,7 +230,7 @@
           "value": "3 routes; questionnaire mandatory with 10 questions; 0 stat tokens",
           "threshold": ">= 3 routes, >= 8 questions, 0 stat tokens",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ]
         },
         {
@@ -239,7 +239,7 @@
           "value": "the writ is built, correct, drawn and openable via use_item — and no player can reach it, because creation cannot be completed",
           "threshold": "present, correct and drawn",
           "evidence": [
-            "reports/journeys/w1-26-r2-census-newgame.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json"
           ],
           "note": "2 of 5. Scored as object-built yes, object-delivered no. Same root cause as the biggest gap; not an independent failure."
         },
@@ -249,8 +249,8 @@
           "value": "0 hits and 0 imperative hits over 4 distinct non-dialogue strings ('5','LIGHT','Spark-Da…','A tithe-gourd, empty'); domain_complete true; surfaces_blind []",
           "threshold": "0 hits, through a demonstrated non-empty accessor",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json",
-            "reports/journeys/w1-26-r2-jrn01/journey.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json"
           ],
           "note": "9 of 10. One point off for writ.stamp's added teaching clause — an explanation of the game's central verb that M9's domain definition ('outside a dialogue surface') structurally cannot see. Restraint is the block that owns 'the game explains nothing it should not'."
         },
@@ -272,7 +272,7 @@
           "threshold": "0",
           "evidence": [
             "docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png",
-            "reports/journeys/w1-26-r2-play.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json"
           ]
         },
         {
@@ -281,8 +281,8 @@
           "value": "the journey completes on 0 of 4 modalities; and the build's O17 evidence drives the TITLE for two inputs, not the journey",
           "threshold": "4/4 complete",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json",
-            "reports/journeys/w1-26-r2-census-newgame.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json"
           ],
           "note": "HF5. Two independent reasons: creation cannot be completed on any device (the biggest gap), and separately nobody has ever run the four legs over the journey M13 describes — the recorded 4/4 is {before_selected:'continue', after_selected:'new', shown_after:false}, which is the title surface."
         },
@@ -292,7 +292,7 @@
           "value": "0 prophecy hits over 25 distinct strings through the same named accessor",
           "threshold": "0",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
           ]
         },
         {
@@ -301,7 +301,7 @@
           "value": "title reached from a fresh profile with a save in IndexedDB; option_ids exactly the O3 five; Continue focused and it loaded the save; the title yielded to the world",
           "threshold": "present, O3-conformant, Continue works",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
             "docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png"
           ],
           "note": "HF9 stays closed. Independently confirmed through real input in play mode with no flags: all 5 rows drawn, navigated and committed by key alone."
@@ -311,7 +311,7 @@
           "result": "not_run",
           "not_run_reason": "corpus_debt, RI-MTH06. journey-run's jrn01-opening ledger does not carry M3, M12 or M14, and the isolated naive-agent channel does not exist. Weight removed from numerator and denominator per §0.1(b).",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn01/journey.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json"
           ]
         }
       ],
@@ -320,10 +320,10 @@
         "#5 control arrives after definition — REPAIRED this round, measured at 61.5 s against O6's 60"
       ],
       "evidence": [
-        "reports/journeys/w1-26-r2-critic-opening.json",
-        "reports/journeys/w1-26-r2-jrn01/journey.json",
-        "reports/journeys/w1-26-r2-play.json",
-        "reports/journeys/w1-26-r2-census-newgame.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json"
       ],
       "why_not_ten": "The journey cannot be completed by a player on any input device, and the opening ships no in-world inscription.",
       "path_to_ten": "Observe the player's own body's race when `New` begins the scene; then run M13's four legs over the whole journey rather than over the title; then attach a readable inscription to the barge hold's existing `tally_scratch` prop.",
@@ -348,7 +348,7 @@
           "value": "the hold of the tithe-barge, a sick fellow prisoner asks your hatch-name, no cutscene, no camera fly-through — hit, and hit by playing it",
           "threshold": "t 0:00",
           "evidence": [
-            "reports/journeys/w1-26-r2-play.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json",
             "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png"
           ]
         },
@@ -358,7 +358,7 @@
           "value": "unreachable by any player at this build — creation soft-locks at writ.race-observed, and the Writ House door is held until you are written down",
           "threshold": "18/18 inside tolerance",
           "evidence": [
-            "reports/journeys/w1-26-r2-census-newgame.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json"
           ],
           "note": "This is a change from round 1's reading: the zero is no longer only about a missing driver. B02 onward cannot be reached through input."
         },
@@ -368,7 +368,7 @@
           "value": "0 instruction-like strings of 33 distinct drawn across the played opening",
           "threshold": "<= 1500",
           "evidence": [
-            "reports/journeys/w1-26-r2-play.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json"
           ]
         },
         {
@@ -389,8 +389,8 @@
         }
       ],
       "evidence": [
-        "reports/journeys/w1-26-r2-play.json",
-        "reports/journeys/w1-26-r2-census-newgame.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json"
       ],
       "why_not_ten": "The item has still never been scored on a driven, isolated hour, and at this build the hour cannot get past B01 by playing.",
       "path_to_ten": "Fix creation so the hour is playable, then dispatch an agent at isolation `enforced` whose inbox is section C only. Both, in that order.",
@@ -399,34 +399,40 @@
   ],
   "artifacts": [
     {
-      "path": "reports/journeys/w1-26-r2-play.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json",
       "kind": "report",
-      "produced_by": "node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240"
+      "produced_by": "node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240",
+      "note": "Copied out of reports/journeys/, which is gitignored (reports/.gitignore), so the evidence this verdict cites is in the tree rather than only on the box that ran it."
     },
     {
-      "path": "reports/journeys/w1-26-r2-census-newgame.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json",
       "kind": "report",
-      "produced_by": "node tools/journey/census-newgame.mjs"
+      "produced_by": "node tools/journey/census-newgame.mjs",
+      "note": "Copied out of reports/journeys/, which is gitignored (reports/.gitignore), so the evidence this verdict cites is in the tree rather than only on the box that ran it."
     },
     {
-      "path": "reports/journeys/w1-26-r2-name-entry.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/name-entry.json",
       "kind": "report",
-      "produced_by": "node tools/journey/name-entry.mjs"
+      "produced_by": "node tools/journey/name-entry.mjs",
+      "note": "Copied out of reports/journeys/, which is gitignored (reports/.gitignore), so the evidence this verdict cites is in the tree rather than only on the box that ran it."
     },
     {
-      "path": "reports/journeys/w1-26-r2-jrn09.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json",
       "kind": "report",
-      "produced_by": "node tools/harness/jrn09-exchange.mjs"
+      "produced_by": "node tools/harness/jrn09-exchange.mjs",
+      "note": "Copied out of reports/journeys/, which is gitignored (reports/.gitignore), so the evidence this verdict cites is in the tree rather than only on the box that ran it."
     },
     {
-      "path": "reports/journeys/w1-26-r2-critic-opening.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
       "kind": "report",
-      "produced_by": "node tools/harness/w1-26-opening.mjs"
+      "produced_by": "node tools/harness/w1-26-opening.mjs",
+      "note": "Copied out of reports/journeys/, which is gitignored (reports/.gitignore), so the evidence this verdict cites is in the tree rather than only on the box that ran it."
     },
     {
-      "path": "reports/journeys/w1-26-r2-jrn01/journey.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json",
       "kind": "trace",
-      "produced_by": "node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 --profile headless-small --input-mode real --trace-events"
+      "produced_by": "node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 --profile headless-small --input-mode real --trace-events",
+      "note": "Copied out of reports/journeys/, which is gitignored (reports/.gitignore), so the evidence this verdict cites is in the tree rather than only on the box that ran it."
     },
     {
       "path": "docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png",
@@ -484,6 +490,16 @@
       "path": "orchestration/status/W1-26.json",
       "kind": "log",
       "produced_by": "the round-1 builder's account, cited for the 8-of-15 non-computable RI-EXP01 targets"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/run-log-chain.txt",
+      "kind": "log",
+      "produced_by": "stdout of name-entry.mjs, w1-26-opening.mjs and journey-run.mjs, in run order"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r2/run-log-opening-play.txt",
+      "kind": "log",
+      "produced_by": "stdout of node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240"
     }
   ],
   "arbitration": {
@@ -503,7 +519,7 @@
           "result": "pass",
           "observed": "The questionnaire is prose about a house at a crossing and a grounded tithe-barge, with 0 stat tokens.",
           "evidence": [
-            "reports/journeys/w1-26-r2-jrn09.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn09-exchange.json"
           ]
         }
       ]
@@ -516,7 +532,7 @@
           "result": "pass",
           "observed": "0 markers, arrows, compasses or minimaps in any frame of the played opening.",
           "evidence": [
-            "reports/journeys/w1-26-r2-play.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json"
           ]
         },
         {
@@ -524,7 +540,7 @@
           "result": "pass",
           "observed": "0 imperative second-person instructions drawn: 33 distinct strings across the whole played opening, 0 instruction-like; M9 0 hits over its 4-string domain. Round 1's HF3 ('Take A tithe-gourd, empty') is closed.",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
           ]
         },
         {
@@ -532,7 +548,7 @@
           "result": "pass",
           "observed": "0 prophecy vocabulary over 25 distinct strings.",
           "evidence": [
-            "reports/journeys/w1-26-r2-critic-opening.json"
+            "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
           ]
         },
         {
@@ -571,8 +587,8 @@
     "what": "Engine._titleApply('new') — the row the title's `New` commits to — calls censusBegin({}) with no options. Census.spec.race is set by exactly one function, Census.observe(race), called from exactly one place: censusBegin, when opts.race is present. So on the player's path race is never observed, and Census.answer() at writ.race-observed throws 'race must be observed before the scene reaches the desk'. _censusApplyPending() catches it, emits census_refused and draws the reason on the surface, so the player is left in front of the Warden-Scribe reading an engine error string as dialogue, with no way forward and no way out of the room (the Writ House door is held until you are written down).",
     "why_it_matters": "Every number this piece has ever published — DTR 0.982, AC 6 of 7, NAMED 14 of 14, the writ carried out, 61.5 s of body before the first question — was taken on a scene that only the harness can open, because the harness supplies the one creation input the player never gives. NEXT-DISPATCH §P calls this piece the binding gate for handing the owner a playable build; a person who clones this repo, serves it and presses New cannot make a character or reach the world. The corpus's own driver reproduces the defect and cannot see it: journey-run.mjs opens with censusBegin({}) too and walks the scene inside `catch { break; }`, so it reports M4 clause 1 as 'N/A — no character-field-writing event in the trace' instead of as a failure.",
     "evidence": [
-      "reports/journeys/w1-26-r2-census-newgame.json",
-      "reports/journeys/w1-26-r2-jrn01/journey.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r2/census-newgame.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r2/jrn01-journey-run.json",
       "corpus/90-verdicts/wave1/W1-26-r2.md"
     ],
     "remedy": {
@@ -621,7 +637,7 @@
       "gap_id": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
       "status": "closed",
       "evidence": [
-        "reports/journeys/w1-26-r2-critic-opening.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
       ],
       "measured_value": "M9 domain 4 distinct non-dialogue strings (was 0 searched, reported as a pass); roster declared[dialogue,title,menus], instrumented all three, blind[]; M15 25 distinct; 0 hits each",
       "acceptance_restated": "Round 1 asked for set equality against UISurface.elements[].text with clip flags, M9/M15 returning 0 hits over it, and a self-falsification drawing a sentinel through glyphs.drawText(). text-register.js now installs ctx.__esNoteText and glyphs.drawText() reports every stroked run; domain_complete is true and surfaces_blind is empty. I could not re-run the --red-team=plant arm: the shared tree stopped booting at that moment on another agent's canon.json, so the self-falsification leg is verified from the builder's recorded run and not from mine, and I say so rather than implying I re-ran it."
@@ -630,8 +646,8 @@
       "gap_id": "RI-JRN01/HF3-imperative-on-the-hud",
       "status": "closed",
       "evidence": [
-        "reports/journeys/w1-26-r2-play.json",
-        "reports/journeys/w1-26-r2-critic-opening.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
       ],
       "measured_value": "0 imperative hits; 33 distinct strings drawn across the played opening, none instruction-like",
       "acceptance_restated": "_interactPrompt() names the object and carries the verb as a field."
@@ -640,7 +656,7 @@
       "gap_id": "RI-JRN01/HF5-touch-leg-unmeasurable-round-1",
       "status": "superseded",
       "evidence": [
-        "reports/journeys/w1-26-r2-critic-opening.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json"
       ],
       "measured_value": "O17 touch passes on the title; but HF5 now fires for a different and larger reason — the journey completes on 0 of 4 modalities",
       "acceptance_restated": "Round 1's specific defect (probes asking TouchInput.layout() for a .buttons field it does not have) is fixed. The hard fail is not cleared, because M13's threshold is the journey and the evidence covers the title."
@@ -649,8 +665,8 @@
       "gap_id": "RI-JRN01/O6-control-precedes-definition",
       "status": "closed",
       "evidence": [
-        "reports/journeys/w1-26-r2-critic-opening.json",
-        "reports/journeys/w1-26-r2-play.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/w1-26-opening.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r2/play.json"
       ],
       "measured_value": "61.5 s available play before the first character-defining question (bar 60); 60 s wander of 122.24 m with the scene never asking; independently, 12.80 m walked through real DOM input with nothing asked and no field written",
       "acceptance_restated": "Round 1 measured -0.65 s and then undefined, with 60 frames of forward input moving 0.0000 m. The hold now opens at hold.come-to, paused, resume_by 'talk'. This is the item's How-we-lose #5 and the whole Morrowind comparison, and it is repaired."

@@ -1,0 +1,446 @@
+{
+  "item": "RI-JRN09",
+  "runs": 240,
+  "m1": {
+    "accessor": "getCensusState().surface.rendered_text (UILayer.metrics().text — the fillText array)",
+    "nodes": [
+      {
+        "node": "hold.come-to",
+        "kind": null,
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [],
+        "computed": 0,
+        "drawn_count": 0,
+        "opaque_area_frac": 0,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 0
+      },
+      {
+        "node": "hold.hatch-name",
+        "kind": "text",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [
+          {
+            "from": "hold.wake",
+            "line": "You're awake. Good. They don't like waking you at the desk, it makes the writing slow."
+          }
+        ],
+        "computed": 15,
+        "drawn_count": 15,
+        "opaque_area_frac": 0.3822,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 17
+      },
+      {
+        "node": "hold.out",
+        "kind": null,
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [
+          {
+            "from": "hold.hatch-name",
+            "line": "Silence-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are."
+          }
+        ],
+        "computed": 2,
+        "drawn_count": 0,
+        "opaque_area_frac": 0,
+        "dtr": 0,
+        "missed": [
+          {
+            "kind": "line",
+            "s": "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am "
+          },
+          {
+            "kind": "spoken",
+            "s": "Silence-Under-Salt. I will not say it again where they can hear it, and neither will you, and one da"
+          }
+        ],
+        "drawn_rows": 0
+      },
+      {
+        "node": "writ.race-observed",
+        "kind": "observed",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [
+          {
+            "from": "hold.hatch-name",
+            "line": "Silence-Under-Salt. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are."
+          },
+          {
+            "from": "writ.enter",
+            "line": "Stand where the light is. I have to be able to see you to write you down."
+          }
+        ],
+        "computed": 4,
+        "drawn_count": 4,
+        "opaque_area_frac": 0.2356,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 7
+      },
+      {
+        "node": "writ.sex",
+        "kind": "choice",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [],
+        "computed": 4,
+        "drawn_count": 4,
+        "opaque_area_frac": 0.2474,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 7
+      },
+      {
+        "node": "writ.upbringing",
+        "kind": "choice",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.2496,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 7
+      },
+      {
+        "node": "writ.given-name",
+        "kind": "text",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [
+          {
+            "from": "writ.upbringing",
+            "line": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors."
+          }
+        ],
+        "computed": 10,
+        "drawn_count": 10,
+        "opaque_area_frac": 0.38,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 12
+      },
+      {
+        "node": "writ.class-routes",
+        "kind": "choice",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [
+          {
+            "from": "writ.given-name",
+            "line": "Silence-Under-Salt. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line."
+          }
+        ],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.2489,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 7
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q1",
+        "question_text": "The salt-road out of the Hills is the only dry way north for a month. There is a house at the crossing that takes a toll, and the men in it wear a mark you have seen on the sides of ships. What do you do?",
+        "spoken": [],
+        "computed": 6,
+        "drawn_count": 6,
+        "opaque_area_frac": 0.3548,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 10
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q2",
+        "question_text": "A well you drank at as a child is grey to the rim, and the keeper is still sitting beside it, and has been for some days. Do you go to him?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q3",
+        "question_text": "A tithe-barge has grounded on the flats and the crew have gone for help. In the hold there is salt, and rope, and a man in a collar who says he was put there yesterday. The tide turns in an hour. What comes off the barge with you?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q4",
+        "question_text": "The wall at Blackrose has a gate and the gate has a list, and your name isn't on it. And the man who keeps the list is asleep in the sun. How do you get through?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q5",
+        "question_text": "Water has opened a hole into a xanmeer that was sealed before the Empire had a name for this coast. It is a long drop and the air coming up is old. Do you go down?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q6",
+        "question_text": "Your kin has been dead four days and the roots here are grey and will not drink her. The nearest living well is two days' walk and she will not last it. What do you do with her?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q7",
+        "question_text": "A river-crew has both banks of the narrows and wants a share of what you are carrying, and their leader is looking at your hands rather than your face. What does he see you do next?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q8",
+        "question_text": "A recruiter with clean boots is buying drinks in Lilmoth and says there's work in Blackwood for anyone who can hold a line. The coin is real. But the contract is long. Do you take his drink?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q10",
+        "question_text": "There's an egg in the shallows that shouldn't be where it is, and the pool it belongs to is a day behind you. And the water here is warm and rising. Do you turn back?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-questions",
+        "kind": "questionnaire",
+        "questionnaire": true,
+        "question_id": "q11",
+        "question_text": "Three of you are on a rope over a channel and the rope is failing. The one below you is heavier and is holding a child. What do your hands do?",
+        "spoken": [],
+        "computed": 5,
+        "drawn_count": 5,
+        "opaque_area_frac": 0.28,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 8
+      },
+      {
+        "node": "writ.class-verdict",
+        "kind": "choice",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [],
+        "computed": 2,
+        "drawn_count": 2,
+        "opaque_area_frac": 0.2126,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 6
+      },
+      {
+        "node": "writ.birthsign",
+        "kind": "choice",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [],
+        "computed": 10,
+        "drawn_count": 10,
+        "opaque_area_frac": 0.3822,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 12
+      },
+      {
+        "node": "writ.stamp",
+        "kind": "choice",
+        "questionnaire": false,
+        "question_id": null,
+        "question_text": null,
+        "spoken": [
+          {
+            "from": "writ.birthsign",
+            "line": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+          }
+        ],
+        "computed": 3,
+        "drawn_count": 3,
+        "opaque_area_frac": 0.3689,
+        "dtr": 1,
+        "missed": [],
+        "drawn_rows": 16
+      }
+    ],
+    "dtr_q": 1,
+    "dtr_scene": 0.982,
+    "distinct_question_texts": 10,
+    "question_nodes": 10,
+    "question_text_drawn_at": 10,
+    "strings_computed": 111,
+    "strings_drawn": 109,
+    "opaque_area_frac_max": 0.3822,
+    "opaque_area_frac_min": 0.2126
+  },
+  "m2": {
+    "of": 7,
+    "consumed": 6,
+    "fields": [
+      {
+        "field": "hatch_name",
+        "value": "Silence-Under-Salt",
+        "drawn_evidence": "Silence-Under-Salt"
+      },
+      {
+        "field": "given_name",
+        "value": "Silence-Under-Salt",
+        "drawn_evidence": "Silence-Under-Salt"
+      },
+      {
+        "field": "race",
+        "value": "saxhleel",
+        "drawn_evidence": "Observed as: Saxhleel"
+      },
+      {
+        "field": "upbringing",
+        "value": "interior",
+        "drawn_evidence": "Black water, no bottom."
+      },
+      {
+        "field": "birthsign",
+        "value": "raj-xul",
+        "drawn_evidence": "The Full Root"
+      },
+      {
+        "field": "class",
+        "value": "xanmeer-delver",
+        "drawn_evidence": "Xanmeer-Delver. Not to the letter — none are, and the ones who are worry me — but of the words I am allowed to write,"
+      },
+      {
+        "field": "route",
+        "value": "questionnaire",
+        "drawn_evidence": null
+      }
+    ],
+    "exempt": [
+      "sex (RI-CHR01 §2 — zero mechanical terms by design)"
+    ]
+  },
+  "m3": {
+    "completions": 240,
+    "per_pair": 6,
+    "histogram": {
+      "a": 597,
+      "b": 595,
+      "c": 590,
+      "d": 618
+    },
+    "histogram_max_deviation": 0.03,
+    "named_distinct": 14,
+    "named_rate": 0.9667,
+    "naming_line_drawn": 232,
+    "naming_line_missing": 0,
+    "by_class": {
+      "ledger-hand": 31,
+      "hollow-hunter": 26,
+      "reed-walker": 24,
+      "net-cutter": 22,
+      "marsh-knight": 21,
+      "wet-foot": 20,
+      "salt-blade": 15,
+      "tide-caller": 15,
+      "bone-setter": 15,
+      "sap-reader": 12,
+      "deelith": 10,
+      "egg-tender": 10,
+      "xanmeer-delver": 6,
+      "root-speaker": 5
+    }
+  },
+  "m4": {
+    "T_control": {
+      "value": null,
+      "blocked_on": "RI-PLT03 P1 — not measured by this probe; the piece must cite it separately"
+    },
+    "RI_EXP01": {
+      "blocked_on": "RI-MTH06 — tools/experience/session-run.mjs, beat-extract.mjs, beat-diff.mjs, beats-from-md.mjs and isolation-check.mjs are all phantom; RI-EXP01 has never been run on any build"
+    }
+  },
+  "hard_fails": [
+    {
+      "id": "HF1",
+      "why": "DTR 0.000 at hold.out — the scene computed twice what it showed"
+    }
+  ],
+  "failures": []
+}

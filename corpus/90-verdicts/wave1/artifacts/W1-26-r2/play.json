@@ -1,0 +1,567 @@
+{
+  "schema": "elder-souls/opening-play@1",
+  "piece": "W1-26",
+  "role": "critic round 2",
+  "items": [
+    "RI-JRN01",
+    "RI-JRN09"
+  ],
+  "red_team": null,
+  "drive": "real DOM input only — page.keyboard / page.mouse. No __HARNESS mutator is called.",
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "conditions": {
+    "loadavg_at_start": [
+      23.54,
+      24.77,
+      23.41
+    ],
+    "url": "http://127.0.0.1:41287/game/index.html",
+    "commit": "6ff493f",
+    "fps_note": "rAF-driven play mode, headless SwiftShader, under the stated load, on a box shared with other agents' browsers. An upper bound on badness, not a machine spec.",
+    "fps_at_title": {
+      "sim_fps": 1.52,
+      "frames": 20,
+      "ms": 13174,
+      "loadavg": [
+        22.74,
+        24.5,
+        23.36
+      ]
+    },
+    "fps_in_world": {
+      "sim_fps": 2.91,
+      "frames": 35,
+      "ms": 12013,
+      "loadavg": [
+        23.2,
+        23.65,
+        23.18
+      ]
+    },
+    "loadavg_at_end": [
+      17.72,
+      22.24,
+      22.91
+    ],
+    "page_errors": []
+  },
+  "checks": {
+    "boot": {
+      "mode": "play",
+      "search": "",
+      "webdriver": false
+    },
+    "P1": {
+      "ok": true,
+      "what": "play mode reached with no query string",
+      "mode": "play",
+      "search": "",
+      "webdriver": false
+    },
+    "title_state": {
+      "present": true,
+      "shown": true,
+      "page": "root",
+      "options": [
+        {
+          "id": "continue",
+          "label": "Continue",
+          "enabled": false
+        },
+        {
+          "id": "new",
+          "label": "New",
+          "enabled": true
+        },
+        {
+          "id": "load",
+          "label": "Load",
+          "enabled": false
+        },
+        {
+          "id": "settings",
+          "label": "Settings",
+          "enabled": true
+        },
+        {
+          "id": "quit-to-menu",
+          "label": "Quit to menu",
+          "enabled": false
+        }
+      ],
+      "option_ids": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "selected_index": 1,
+      "selected_id": "new",
+      "saves": [],
+      "save_count": 0,
+      "continue_available": false,
+      "in_session": false,
+      "inputs_taken": 0,
+      "first_gesture_at_input": null,
+      "shown_at_frame": 0,
+      "dismissed_by": null,
+      "look_sensitivity_scale": 1,
+      "unskippable_ms": 0,
+      "world_behind": true
+    },
+    "title_drawn_strings": [
+      "5",
+      "LIGHT",
+      "Spark-Da…",
+      "ELDER SOULS",
+      "ARGONIA",
+      "  Continue",
+      "— New",
+      "  Load",
+      "  Settings",
+      "  Quit to menu",
+      "No life recorded in this province."
+    ],
+    "P2": {
+      "ok": true,
+      "what": "title shown and all 5 rows drawn",
+      "rows": [
+        "Continue",
+        "New",
+        "Load",
+        "Settings",
+        "Quit to menu"
+      ],
+      "distinct_strings": 11
+    },
+    "title_nav": {
+      "before": "new",
+      "after_down": "settings",
+      "after_up": "new"
+    },
+    "title_after_enter": {
+      "shown": false,
+      "dismissed_by": "new",
+      "in_session": true,
+      "inputs_taken": 1
+    },
+    "P3": {
+      "ok": true,
+      "what": "title navigated and committed by key alone (dismissed_by 'new')",
+      "before": "new",
+      "after_down": "settings",
+      "after_up": "new"
+    },
+    "world": {
+      "cell": "barge_hold",
+      "interior": "barge-hold",
+      "pos": [
+        0.3,
+        0,
+        -1.2
+      ],
+      "npcs": [
+        {
+          "name": "Jeeh-Ei",
+          "pos": [
+            -2.115128,
+            0,
+            3.741686
+          ]
+        }
+      ],
+      "props": [
+        "A tithe-gourd, empty",
+        "A knife somebody did not find"
+      ]
+    },
+    "P4": {
+      "ok": true,
+      "what": "a body stands in 'barge-hold' with 1 person(s) present",
+      "interior": "barge-hold",
+      "npcs": [
+        "Jeeh-Ei"
+      ]
+    },
+    "census_at_open": {
+      "census_present": true,
+      "paused": true,
+      "node": "hold.come-to",
+      "resume_by": "talk",
+      "takes_input": false,
+      "field_written": null
+    },
+    "locomotion": {
+      "from": [
+        0.3,
+        0,
+        -1.2
+      ],
+      "to": [
+        -1.70232,
+        0,
+        11.44248
+      ],
+      "metres": 12.8001,
+      "frames": 240,
+      "seconds_of_play": 4,
+      "wall_ms": 77974
+    },
+    "P5": {
+      "ok": true,
+      "what": "held movement keys moved the body 12.80 m over 240 frames",
+      "from": [
+        0.3,
+        0,
+        -1.2
+      ],
+      "to": [
+        -1.70232,
+        0,
+        11.44248
+      ],
+      "metres": 12.8001,
+      "frames": 240,
+      "seconds_of_play": 4,
+      "wall_ms": 77974
+    },
+    "census_after_wander": {
+      "paused": true,
+      "node": "hold.come-to",
+      "takes_input": false,
+      "fields": []
+    },
+    "available_play_s_before_first_question": 4,
+    "P6": {
+      "ok": true,
+      "what": "4 s of play and 12.8 m walked with nothing asked and no field written",
+      "node": "hold.come-to",
+      "o6_threshold_s": 60,
+      "reached_s": 4,
+      "met": false
+    },
+    "speaker": {
+      "name": "Jeeh-Ei",
+      "pos": [
+        -2.115128,
+        0,
+        3.741686
+      ]
+    },
+    "approach": {
+      "steps": [
+        {
+          "dist": 7.712,
+          "pos": [
+            -1.702,
+            0,
+            11.442
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 1.689,
+          "pos": [
+            -0.601,
+            0,
+            4.489
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 0.562,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        }
+      ],
+      "final_dist": 0.562,
+      "final_pos": [
+        -2.445,
+        0,
+        4.197
+      ]
+    },
+    "census_after_reach": {
+      "node": "hold.hatch-name",
+      "takes_input": true,
+      "paused": false,
+      "question": null,
+      "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "options": []
+    },
+    "P7": {
+      "ok": true,
+      "what": "pressing interact beside Jeeh-Ei opened the scene at 'hold.hatch-name'",
+      "node": "hold.hatch-name",
+      "takes_input": true,
+      "paused": false,
+      "question": null,
+      "line": "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "options": []
+    },
+    "answer": {
+      "input_kind": "text",
+      "typed": "Silt-Under-Salt",
+      "before_node": "hold.hatch-name",
+      "after_node": "hold.out",
+      "spec_changed": [
+        {
+          "field": "hatchName",
+          "from": "",
+          "to": "il-Un-l"
+        }
+      ],
+      "spoken_back": [
+        "il-Un-l. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are."
+      ]
+    },
+    "P8": {
+      "ok": true,
+      "what": "an answer given by key alone was written down (hold.hatch-name -> hold.out; hatchName=\"il-Un-l\")",
+      "input_kind": "text",
+      "typed": "Silt-Under-Salt",
+      "before_node": "hold.hatch-name",
+      "after_node": "hold.out",
+      "spec_changed": [
+        {
+          "field": "hatchName",
+          "from": "",
+          "to": "il-Un-l"
+        }
+      ],
+      "spoken_back": [
+        "il-Un-l. I will not say it again where they can hear it, and neither will you, and one day a stranger will say it to you and you will know what they are."
+      ]
+    },
+    "walk_out": {
+      "steps": [
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        },
+        {
+          "dist": 2.573,
+          "pos": [
+            -2.445,
+            0,
+            4.197
+          ],
+          "camera_yaw": 351
+        }
+      ],
+      "final_dist": 2.573,
+      "final_pos": [
+        -2.445,
+        0,
+        4.197
+      ]
+    },
+    "after_companionway": {
+      "node": "hold.out",
+      "paused": true,
+      "place": "barge-hold",
+      "takes_input": false,
+      "refusal": null,
+      "interior": "barge-hold"
+    },
+    "desk_presses": [
+      {
+        "press": 1,
+        "node": "hold.out",
+        "takes_input": false,
+        "refusal": null,
+        "race": null
+      }
+    ],
+    "census_refused_events": [],
+    "P10": {
+      "ok": true,
+      "what": "the scene moved past the desk to 'hold.out'",
+      "presses": [
+        {
+          "press": 1,
+          "node": "hold.out",
+          "takes_input": false,
+          "refusal": null,
+          "race": null
+        }
+      ],
+      "race": null
+    },
+    "explanation": {
+      "distinct_strings_drawn": 33,
+      "instruction_like": [],
+      "count": 0,
+      "patterns": {
+        "imperative": "/^(press|hold|tap|click|use|push|move|walk|go|take|open|close|talk|speak|look|aim|pick|select|choose|enter|swipe|drag|attack|block|dodge|roll|equip|find|head|return|follow|try|now|you must|you should|you can|to \\w+,)\\b/i",
+        "explains": "/\\b(tutorial|controls?:|hint|objective|press [a-z0-9]+ to|hold [a-z0-9]+ to|use the \\w+ to|this is your)\\b/i"
+      }
+    },
+    "P9": {
+      "ok": true,
+      "what": "33 distinct strings drawn across the whole opening, none of them an instruction",
+      "distinct": 33
+    }
+  },
+  "shots": [
+    "docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png",
+    "docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png",
+    "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png",
+    "docs/shots/2026-08-08-w1-26-r2-04-at-the-desk.png"
+  ],
+  "passes": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8",
+    "P10",
+    "P9"
+  ],
+  "failures": [],
+  "all_drawn_strings": [
+    "5",
+    "LIGHT",
+    "Spark-Da…",
+    "ELDER SOULS",
+    "ARGONIA",
+    "  Continue",
+    "— New",
+    "  Load",
+    "  Settings",
+    "  Quit to menu",
+    "No life recorded in this province.",
+    "JEEH-EI",
+    "THE HOLD, TWO DAYS OUT OF GIDEON   ·   1 of 13",
+    "You're awake. Good. They don't like waking you at the desk, it makes the writing slow.",
+    "They will take the other one off you at the writ house. Tell me the one they cannot.",
+    "— Silence-Under-Salt",
+    "  Waits-For-The-Second-Tide",
+    "  Counts-The-Drowned",
+    "  Small-Root-Deep-Water",
+    "  Hears-The-Barge-Coming",
+    "  Does-Not-Answer-Twice",
+    "  Walks-Where-It-Is-Dry",
+    "  Keeps-The-Egg-Warm",
+    "  Three-Names-One-Mouth",
+    "  Sees-The-Ledger-Burning",
+    "Jeeh-Ei",
+    "THE HOLD, TWO DAYS OUT OF GIDEON",
+    "Sit on the boards. That's what they're for. You're a long way from wherever that is.",
+    "— the hold",
+    "  your hatch name",
+    "  latest rumors",
+    "Two days from Gideon, one more to the mouth. You slept through the worst of it, which is the only good thing",
+    "about the way you sleep."
+  ],
+  "summary": {
+    "pass": 10,
+    "fail": 0
+  }
+}

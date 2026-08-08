@@ -1,0 +1,247 @@
+{
+  "schema": "elder-souls/name-entry@1",
+  "piece": "W1-26",
+  "role": "critic round 2",
+  "items": [
+    "RI-JRN09",
+    "RI-CHR01"
+  ],
+  "question": "Does the hatch-name a player types on a keyboard reach the census intact?",
+  "method_deviation": "the node is reached through censusBegin/censusEnter; every keystroke measured is a real DOM key event into input/real.js with the engine in play-instrumented mode",
+  "bindings": {
+    "bound_letters": [
+      "A",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "M",
+      "R",
+      "S",
+      "T",
+      "V",
+      "W",
+      "X",
+      "Z"
+    ],
+    "bound_digits": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "space_bound": true,
+    "interact_letters": [
+      "E"
+    ]
+  },
+  "predicted": {
+    "Hio-Junnilo": "Hio-Junnilo",
+    "Silt-Under-Salt": "il-Un-l"
+  },
+  "arms": [
+    {
+      "name": "Hio-Junnilo",
+      "opened_at": "hold.hatch-name",
+      "predicted": "Hio-Junnilo",
+      "got": "Hio-Junnilo",
+      "verbatim": true,
+      "committed_early": false,
+      "committed_at_node": "hold.hatch-name",
+      "per_char": [
+        {
+          "pressed": "H",
+          "typed_after": "H",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "i",
+          "typed_after": "Hi",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "o",
+          "typed_after": "Hio",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "-",
+          "typed_after": "Hio-",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "J",
+          "typed_after": "Hio-J",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "u",
+          "typed_after": "Hio-Ju",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "n",
+          "typed_after": "Hio-Jun",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "n",
+          "typed_after": "Hio-Junn",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "i",
+          "typed_after": "Hio-Junni",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "l",
+          "typed_after": "Hio-Junnil",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "o",
+          "typed_after": "Hio-Junnilo",
+          "node": "hold.hatch-name"
+        }
+      ]
+    },
+    {
+      "name": "Silt-Under-Salt",
+      "opened_at": "hold.hatch-name",
+      "predicted": "il-Un-l",
+      "got": "il-Un",
+      "verbatim": false,
+      "committed_early": true,
+      "committed_at_node": "hold.out",
+      "per_char": [
+        {
+          "pressed": "S",
+          "typed_after": "",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "i",
+          "typed_after": "i",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "l",
+          "typed_after": "il",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "t",
+          "typed_after": "il",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "-",
+          "typed_after": "il-",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "U",
+          "typed_after": "il-U",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "n",
+          "typed_after": "il-Un",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "d",
+          "typed_after": "il-Un",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "e",
+          "typed_after": "",
+          "node": "hold.out"
+        }
+      ]
+    }
+  ],
+  "passes": [
+    "N1"
+  ],
+  "failures": [
+    "N2"
+  ],
+  "mode": "play-instrumented",
+  "N1": {
+    "ok": true,
+    "got": "Hio-Junnilo"
+  },
+  "N2": {
+    "ok": false,
+    "arm": {
+      "name": "Silt-Under-Salt",
+      "opened_at": "hold.hatch-name",
+      "predicted": "il-Un-l",
+      "got": "il-Un",
+      "verbatim": false,
+      "committed_early": true,
+      "committed_at_node": "hold.out",
+      "per_char": [
+        {
+          "pressed": "S",
+          "typed_after": "",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "i",
+          "typed_after": "i",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "l",
+          "typed_after": "il",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "t",
+          "typed_after": "il",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "-",
+          "typed_after": "il-",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "U",
+          "typed_after": "il-U",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "n",
+          "typed_after": "il-Un",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "d",
+          "typed_after": "il-Un",
+          "node": "hold.hatch-name"
+        },
+        {
+          "pressed": "e",
+          "typed_after": "",
+          "node": "hold.out"
+        }
+      ]
+    },
+    "predicted": "il-Un-l",
+    "prediction_held": false
+  },
+  "prediction_held": false,
+  "conditions": {
+    "loadavg": [
+      12.53,
+      19.59,
+      21.93
+    ]
+  }
+}

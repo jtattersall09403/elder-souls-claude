@@ -1,0 +1,28 @@
+  PASS P1  play mode reached with no query string
+  [fps at_title] 1.52 sim fps at 640x360, loadavg [22.74,24.5,23.36]
+  PASS P2  title shown and all 5 rows drawn
+  [shot] docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png
+  PASS P3  title navigated and committed by key alone (dismissed_by 'new')
+  PASS P4  a body stands in 'barge-hold' with 1 person(s) present
+  [shot] docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png
+  [fps in_world] 2.91 sim fps at 640x360, loadavg [23.2,23.65,23.18]
+  PASS P5  held movement keys moved the body 12.80 m over 240 frames
+  PASS P6  4 s of play and 12.8 m walked with nothing asked and no field written
+  PASS P7  pressing interact beside Jeeh-Ei opened the scene at 'hold.hatch-name'
+  [shot] docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png
+  PASS P8  an answer given by key alone was written down (hold.hatch-name -> hold.out; hatchName="il-Un-l")
+  [shot] docs/shots/2026-08-08-w1-26-r2-04-at-the-desk.png
+  PASS P10  the scene moved past the desk to 'hold.out'
+  PASS P9  33 distinct strings drawn across the whole opening, none of them an instruction
+
+  10 pass · 0 fail
+  artifact: reports/journeys/w1-26-r2-play.json
+  shot: docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png
+  shot: docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png
+  shot: docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png
+  shot: docs/shots/2026-08-08-w1-26-r2-04-at-the-desk.png
+
+[run] node tools/journey/opening-play.mjs --width 640 --height 360 --wander-frames 240 --json reports/journeys/w1-26-r2-play.json
+[run] exit 0 · 23 line(s) · 23 shown (2 matched a failure shape)
+[run] full output: reports/runs/_raw/node-tools-journey-opening-play.mjs---width-640---height-360-6151477983900.log
+EXIT=0
