@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-GAMEPAD",
+  "title": "The gamepad path: end-to-end play on a pad alone, stick response curve, shim lives or dies",
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "commit_at_start": "PENDING",
+  "next_step": "Read RULES, INDEX, W1-21-r2 verdict, NEXT-DISPATCH; run ownership + contention gates; determine whether gamepad-shim.mjs is stale or genuinely broken.",
+  "findings": [],
+  "files_touched": ["orchestration/status/W1-GAMEPAD.json"],
+  "files_claimed": [
+    "orchestration/status/W1-GAMEPAD.json",
+    "tools/gamepad-shim.mjs",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "not_done": []
+}

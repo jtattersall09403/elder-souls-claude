@@ -803,43 +803,75 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
         if (!broken.length) break;
         let slid = false;
         for (const r of broken) {
-          const b = r.job.b;
-          const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
-          const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
-          const side = entrySideLocal(b);
-          const span = (side === '+x' || side === '-x') ? d : w;
-          const lim = Math.max(0, span / 2 - DOOR_W / 2 - 0.2);
-          const nrm = entryOutwardWorld(b);
+          const b = r.job.b, cont = r.job.cont;
           const mineRow = rawById.get(b.id) || null;
-          const was = b.door_along_m;
+          const wasU = b.door_along_m, wasSide = b.entry_side;
+          // THE SEARCH SPACE IS (which wall, where along it), and the declared wall comes first.
+          //
+          // Five buildings — thorn-hall, thorn-inn, gideon-tollhouse, soulrest-grey-hist,
+          // soulrest-boneyard — have their whole declared entry wall inside a neighbour, so no
+          // offset along it has anywhere to stand at all: their own door is 7 to 13 m from the
+          // nearest standable point, well outside `DOOR_REACH_M`, and pressing `interact` on the
+          // doorstep does nothing. Sliding cannot fix that; only a different wall can.
+          //
+          // Rotating the entry side is safe HERE and would not be anywhere else, because the
+          // interior's own doorway is drawn from `continuity.entry_side` (`render/interior.js:478`)
+          // and this writes that same field. Both ends of the door move together, so RI-WLD13 N2 —
+          // "the bearing measured outside and the bearing measured inside are equal" — still holds
+          // by construction. The declared side is always tried first and kept when it works.
+          const sides = [wasSide || 'south'];
+          for (const s of ['south', 'north', 'east', 'west']) if (s !== sides[0]) sides.push(s);
           let found = null;
-          for (let k = 0; k <= Math.ceil(lim / 0.25) && found === null; k++) {
-            for (const sgn of (k === 0 ? [1] : [-1, 1])) {
-              const u = Math.min(lim, k * 0.25) * sgn;
-              b.door_along_m = u;
-              const dp = doorPointWorld(b);
-              for (const [x, z, rr] of ring(dp, nrm)) {
-                if (rr > DOOR_REACH_M) break;
-                if (insideBuilding(plan, x, z, 0)) continue;
-                if (horizontalClearance(solids, x, z) < need) continue;
-                // Own door nearest, judged against every OTHER row at its current position.
-                let mineWins = true;
-                for (const o of doorRows) {
-                  if (o === mineRow) continue;
-                  if (Math.hypot(o.door[0] - x, o.door[2] - z) < rr) { mineWins = false; break; }
+          for (const side of sides) {
+            b.entry_side = side;
+            const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+            const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+            const ls = entrySideLocal(b);
+            const span = (ls === '+x' || ls === '-x') ? d : w;
+            const lim = Math.max(0, span / 2 - DOOR_W / 2 - 0.2);
+            const nrm = entryOutwardWorld(b);
+            for (let k = 0; k <= Math.ceil(lim / 0.25) && found === null; k++) {
+              for (const sgn of (k === 0 ? [1] : [-1, 1])) {
+                const u = Math.min(lim, k * 0.25) * sgn;
+                b.door_along_m = u;
+                const dp = doorPointWorld(b);
+                for (const [x, z, rr] of ring(dp, nrm)) {
+                  if (rr > DOOR_REACH_M) break;
+                  if (insideBuilding(plan, x, z, 0)) continue;
+                  if (horizontalClearance(solids, x, z) < need) continue;
+                  // Own door nearest, judged against every OTHER row at its current position.
+                  let mineWins = true;
+                  for (const o of doorRows) {
+                    if (o === mineRow) continue;
+                    if (Math.hypot(o.door[0] - x, o.door[2] - z) < rr) { mineWins = false; break; }
+                  }
+                  if (!mineWins) continue;
+                  found = { u, side }; break;
                 }
-                if (!mineWins) continue;
-                found = u; break;
+                if (found) break;
               }
-              if (found !== null) break;
             }
+            if (found) break;
           }
-          b.door_along_m = found === null ? was : found;
-          if (found !== null && found !== was) slid = true;
+          b.entry_side = found ? found.side : wasSide;
+          b.door_along_m = found ? found.u : wasU;
+          if (found && (found.u !== wasU || found.side !== wasSide)) {
+            slid = true;
+            // The interior's doorway follows. `continuity.entry_side` is the field both renderers
+            // read, so writing it here is what keeps the two ends of the door on the same wall.
+            if (cont && found.side !== cont.entry_side) cont.entry_side = found.side;
+          }
         }
         if (!slid) break;
       }
-      for (const job of doorstepQueue) if (job.b.door_along_m) out.doors_slid_along_wall = (out.doors_slid_along_wall || 0) + 1;
+      for (const job of doorstepQueue) {
+        if (job.b.door_along_m) out.doors_slid_along_wall = (out.doors_slid_along_wall || 0) + 1;
+        const dcl = job.cont && job.cont.entry_side_declared;
+        if (dcl !== undefined && job.b.entry_side !== dcl) {
+          out.entry_sides_rotated = (out.entry_sides_rotated || 0) + 1;
+          (out.rotated = out.rotated || []).push({ building: job.b.id, interior: job.rec.id, from: dcl, to: job.b.entry_side });
+        }
+      }
       for (const job of doorstepQueue) {
         const b = job.b, raw = job.raw;
         const dcl = (b.door_declared) || (raw && raw.door_declared) || null;
