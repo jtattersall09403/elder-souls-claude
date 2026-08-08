@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `dd889d5`: 781 tools, 153 reference
+so it cannot drift. Generated at `c5292f7`: 781 tools, 153 reference
 items, 89 pieces in flight.
 
 Its purpose is to stop 89+ concurrent agents each paying separately to discover the
@@ -1117,6 +1117,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-PROSE-TICS-r4-instrument` | ? | write tools/blind/leakcheck.mjs (battery + gate + self-test), then tools/blind/mask-text.m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
+| `critic-w1-deploy-r2` | running (successor 2 — predecessor killed by usage limit with no artifacts on disk) | read all six subjects; then break each on purpose | `orchestration/status/critic-w1-deploy-r2.json` |
 | `COST-DASHBOARD` | running | agree/declare the ledger data contract, write it into COST.md §6, build tools/cost-report. | `orchestration/status/COST-DASHBOARD.json` |
 | `critic-w1-20` | running | read round report + RI-QST01; build wrap-break instrument for ui/hud.js; sweep tree for se | — |
 | `PLT01-STEPRATE` | running | state acceptance numbers in the item BEFORE measuring; then build tools/platform/timefidel | `orchestration/status/PLT01-STEPRATE.json` |
@@ -1126,9 +1128,7 @@ work is the difference between resuming and starting over.
 | `GATE-BLAST-RADIUS` | in_progress | checked orchestration/status/ for a predecessor status file on this exact task and found n | — |
 | `RESEARCH-COSTEXT01` | running | run WebSearch queries per category, log sources found, then write reports/cost/RESEARCH-RE | `orchestration/status/RESEARCH-COSTEXT01.json` |
 | `COST-INSTRUMENT-plan` | running | verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-IN | `orchestration/status/COST-INSTRUMENT-plan.json` |
-| `W1-PROSE-TICS-r4-instrument` | ? | read RI-MTH03 + JUDGEMENT, then design leak fix | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
-| `critic-w1-deploy-r2` | running | verify the landings from git log; check ownership of verify-playable.mjs before touching i | `orchestration/status/critic-w1-deploy-r2.json` |
 | `S39-falsifier` | starting | Read ARBITRATION.md S39 verbatim, NEXT-DISPATCH.md section U, loop.js, hold-gate.js, input | `orchestration/status/S39-falsifier.json` |
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |

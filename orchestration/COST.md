@@ -132,9 +132,84 @@ is a check that does not exist.
 
 **The data contract, so this does not become two implementations of one system (rule 10).** The
 instrument is the only thing that computes cost. It writes a machine-readable ledger — path and
-schema fixed by the `COST-INSTRUMENT` piece and recorded here once landed — and **the dashboard
-renders that file and computes nothing of its own.** A dashboard that recalculates cost is a second
-implementation, and this build has already had a good detection model and a broken one at once.
+schema fixed below — and **the dashboard renders that file and computes nothing of its own.** A
+dashboard that recalculates cost is a second implementation, and this build has already had a good
+detection model and a broken one at once.
+
+### 6.1 The ledger contract — `docs/data/cost-ledger.json`
+
+**Declared by `COST-DASHBOARD` on 2026-08-08 because the instrument had not landed yet and a written
+contract either side can read beats two agents guessing. Reversible:** the instrument owns cost and
+may change any of this by editing this section and saying so — the renderer follows the file, not the
+other way round. What would overturn it: a field the instrument cannot honestly produce, or one the
+transcript does not carry. Renderer: `tools/cost-report.mjs`; worked example with known numbers:
+`tools/cost-fixture.json` (the `--self-test` fixture, and the shape to copy).
+
+- **Path: `docs/data/cost-ledger.json`.** Under `docs/` so the raw numbers are fetchable on the
+  published site beside the page that draws them, the same way `docs/status.json` already is;
+  committed, so the page regenerates identically from any checkout.
+- **Writer: the instrument, and nothing else.** The renderer never writes it and never derives a
+  dollar figure. Anything the ledger does not state is drawn as `—`, never inferred: the renderer
+  will not divide, sum or rescale money, so **every number the page shows must appear in the file.**
+- **Refresh: every bank.** `tools/publish.mjs` calls `tools/cost-refresh.mjs`, which runs the
+  instrument (`tools/cost.mjs`, if present) with a timeout and **never blocks the commit** (rule 13).
+  On failure it writes `docs/data/cost-ledger.error.json` (`{ "at": ISO, "message": str }`) and the
+  page reports the failure with the timestamp of the last good reading, rather than serving an old
+  number as current.
+
+```jsonc
+{
+  "schema": "elder-souls/cost-ledger@1",
+  "generated_at": "2026-08-08T11:02:00Z",   // when the instrument last ran; drives the stale banner
+  "generator": "tools/cost.mjs",
+  "commit": "abc1234",                       // rule 12: every number is a claim about a commit
+  "source": "/root/.claude/projects/.../*.jsonl",
+  "stale_after_minutes": 45,                 // older than this and the page says STALE (default 45)
+  "window": { "from": ISO, "to": ISO, "hours": 62.4 },  // what the totals cover
+  "prices": { "note": "usd per Mtok", "claude-opus-5": { "input": 15, "cache_write": 18.75,
+              "cache_read": 1.5, "output": 75 } },      // published so a reader can audit the money
+  "headline": {                              // the top of the page. Every field pre-computed.
+    "spend_to_date_usd": 1234.56,
+    "burn_usd_per_hour": 42.1,               // current burn, over burn_window_hours
+    "burn_window_hours": 1.0,
+    "ch_usd_per_hour": 42.1,                 // C/H, the headline metric
+    "ch_pct_of_baseline": 52.3,              // null if no baseline yet — never inferred by the page
+    "usd_per_agent_hour": 3.21,              // the diagnostic that proves efficiency, not idling
+    "usd_per_agent_hour_pct_of_baseline": 71.0
+  },
+  "baseline": { "usd_per_hour": 80.5, "usd_per_agent_hour": 4.5, "from": ISO, "to": ISO,
+                "commit": "def5678" },
+  "target": { "fraction_of_baseline": 0.25, "usd_per_hour": 20.1 },  // the 25% bar, as a level
+  "series": [                                // EVERY measurement. The owner asked for many dots.
+    { "t": ISO, "usd_per_hour": 61.2, "usd_per_agent_hour": 4.4, "mean_agents": 13.9,
+      "commit": "abc1234", "window_hours": 0.5, "note": "" }
+  ],
+  "by_model": [ { "model": "claude-opus-5", "usd": 1180.2, "requests": 3230,
+                  "tokens": { "input": n, "cache_write": n, "cache_read": n, "output": n } } ],
+  "by_token_class": [ { "class": "input|cache_write|cache_read|output", "usd": n, "tokens": n } ],
+  "guards": {                                // G1-G3, beside the cost and never on another page
+    "g1_parallelism": { "mean_agents": 13.9, "floor": 12, "status": "ok|breach", "window_hours": 1 },
+    "g2_quality": { "mean_verdict_score": 7.4, "baseline_mean_verdict_score": 7.1,
+                    "critic_find_rate": 3.2, "baseline_critic_find_rate": 3.0, "status": "ok" },
+    "g3_rigour": { "counts": { "separate_critic": n, "delete_the_fix": n, "consumption": n,
+                   "self_test": n, "arms_disagree": n }, "baseline_counts": { ... },
+                   "status": "ok" }
+  },
+  "changes": [                               // including the reversed ones
+    { "id": "CH-01", "title": "Sonnet for landed-plan builds", "landed": ISO, "commit": "abc1234",
+      "state": "kept|reversed|trial",
+      "before": { "usd_per_hour": 61.2, "usd_per_agent_hour": 4.4 },
+      "after":  { "usd_per_hour": 44.0, "usd_per_agent_hour": 3.9 },
+      "delta_pct": -28.1,                    // instrument's number; the page never computes it
+      "reversal": "git revert abc1234", "reversal_executed": true,
+      "tripwire": "mean agents < 12 over 30 min",
+      "outcome": "one line on what happened, and why it was reversed if it was" }
+  ]
+}
+```
+
+Every block is optional; the renderer draws what is present and says plainly what is missing. `status`
+fields are the instrument's verdict, not the page's — the page colours by them and never re-judges.
 
 **What the dashboard must show**, because a cost chart without its guards invites exactly the
 misreading the programme exists to prevent:

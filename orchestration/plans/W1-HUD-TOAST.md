@@ -497,6 +497,118 @@ enumeration rather than a count.
 
 ---
 
+## Exchange 1, completed after an interruption
+
+**The first critic pass was killed by the weekly usage limit with its verdict written and three
+things open.** This is the *same* exchange finished, not a second one — the loop is still bounded at
+two, and exchange 2 remains an edit. Everything below is static, at `9063779`. Three of the four
+additions are measurements the first pass named and did not take; the fourth is a defect in the
+first pass's own ruled resolution.
+
+### BLOCKING-6. A2a's resolution names a harness call that cannot draw the toast.
+
+BLOCKING-1 replaces A2 with `cut_px` against "the same rows at the same positions" drawn through
+`__HARNESS.drawOnMenus()`. **That function takes one argument and hardcodes everything the
+comparison depends on** (`game/src/harness/api.js:939-949`):
+
+```js
+drawOnMenus(text) {
+  ...
+  drawGlyphText(ctx, s, 20, 120, faceOf('bone'), 16, '#fff');
+```
+
+Position `(20,120)`, face **`bone`**, colour `#fff` — while the toast draws in face **`ink`** at the
+panel's centre. A reference draw at a different position, in a different typeface, cannot be
+differenced against the element render to yield "ink present in the clip-free render and absent in
+the element render". All three existing callers (`tools/harness/w1-26-r2-scene.mjs:594`,
+`tools/harness/w1-26-opening.mjs:220`) pass text only, because their question is *did the register
+see the string*, not *where did the glyphs land*. A1's resolution was checked against its
+instrument; A2a's was not, which is the same class of error as BLOCKING-3 committed by the critic
+rather than the plan.
+
+*Resolution, ruled.* Extend the signature additively —
+`drawOnMenus(text, { x, y, face, size, color } = {})`, defaulting to today's five values so the
+three existing callers are untouched — and **declare `game/src/harness/api.js` as a touched file**.
+The plan's §7 item 6 declares W1-21 and BLOCKING-3 adds W1-26; this adds a third owner. If the
+extension is refused, A2a dies with it and A2b plus A1 carry Piece A alone — say so in the brief
+rather than discovering it at build time.
+
+### BLOCKING-5, revised on measurement. The re-scope is right and the plan's reason for it is false.
+
+The plan offered `P_cited` because it is *"smaller, enumerable from the verdicts"*. The first critic
+pass accepted the direction on better grounds and set a reversibility condition on the **floor**
+(*"`P_cited` coming out under ~8 members"*). Nobody counted. Counted now, at `9063779`, over
+`corpus/90-verdicts/wave1/` (145 files, 71 verdict JSONs):
+
+| set | members | how |
+|---|---|---|
+| `tools/**/*.mjs` on disk | **786** | `find` |
+| **P** — declares a perturbation | **244** | mentions `self-test`/`__break`/`teardown`/`deletefix` |
+| **P_cited** — path appears in a wave-1 verdict, file exists | **459** | 471 distinct paths cited, 12 no longer on disk |
+| **P_cited ∩ P** — cited *and* perturbable | **133** | the intersection |
+| cited, no declared perturbation | **326** | **71% of the cited set** |
+
+**The premise is false in the direction nobody guarded.** `P_cited` is **459**, nearly **twice** P's
+244 — the re-scope makes the population *larger*, not smaller, and the reversibility condition was
+written on the tail that was never at risk. The plan's own upper bound ("the union is under ~200")
+is also low: it is 244.
+
+**What survives, and it is the part that matters.** The harm argument (rule 5: scope by what makes a
+tool *dangerous*, not by what makes it *testable*) is untouched by this. But the operative population
+is neither parent set — it is the **intersection, 133 tools that are both cited and perturbable**.
+That is a real denominator, smaller than either, enumerable today, and it is the only set on which a
+dynamic YD test can both matter and run.
+
+**And the plan's feared degeneration is now measured rather than feared.** §8 worried *"if most of P
+turns out OPAQUE"*. On the cited set it is not a worry: **326 of 459 (71%) declare no perturbation at
+all**, so they are OPAQUE by construction before a single tool is executed. A build agent would have
+spent hours arriving at that number. It is the plan loop's whole thesis, and it is why B1b must be
+reported with its denominator and never graded.
+
+**Reason 2 of the first pass is materially weakened and must not be leaned on.** It claimed a cited
+verdict *"quotes the number it believed, in prose, in a file the tool did not write"*, supplying an
+independent `E`. Measured: of **520** verdict-prose lines citing a tool path, **49 (~9%)** also carry
+a unit-bearing number on that line; the structured route is worse still — `gates_run` holds **7 rows
+across all 71 verdict JSONs**, of which **2** carry both a tool and a number. Line-adjacency is a
+crude proxy and a number may sit a paragraph away, so this is a bound, not a verdict. But the claim
+"the verdict supplies a second independent E" is an assumption with ~9% line-level support, not an
+established property. *Ruled:* keep reason 1 (harm), demote reason 2 to a **hypothesis the builder
+measures first** — on the 133, count how many verdicts quote a checkable number for the tool they
+cite — and publish that fraction **before** running any perturbation. If it lands under ~25%, the YD
+test has no second source on most of its population and B collapses toward B2's four instances,
+which is precisely the outcome §8 feared, reached by a different road.
+
+*Revised reversibility:* overturned if the quoted-`E` fraction on the 133 exceeds ~50% (reason 2
+revives and `P_cited ∩ P` can widen toward 459), **or** if it falls under ~25% (B1 is not gradeable
+and the piece reduces to B2 + B1b reported).
+
+### CARRIED-6, closed: `sabotage.mjs` has no expected-side slot, and the ruling survives anyway.
+
+The first pass left this open as the stated reversibility condition of ruling **S-PLAN-HUD-B** and it
+is decidable from the file. `runControl`'s `measure()` returns `{ value, support, detail? }` and each
+arm is stored as `{ arm, broken, value, support, support_declared, detail, error, canon,
+measured_nothing }` (`tools/experience/lib/sabotage.mjs:333-360`). **There is no expected-side value
+anywhere in the arm model.** The three near-misses are not it:
+
+- `spec.expect` (`:320`) is *"a VERDICT this case is expected to produce"* — an expected
+  classification, not an expected number.
+- `spec.margin` / `spec.direction` declare a *relation between arms*, not a yardstick.
+- `spec.detail` is free-form and passes through untouched — a caller could stash `E` there, and that
+  is exactly the loose convention whose round-1 equivalent (an optional `support`) is the defect this
+  module was rebuilt to prevent. The file's own doctrine settles it: *"SUPPORT IS MANDATORY, AND ITS
+  ABSENCE IS A VERDICT — not a throw"* (`:71`).
+
+*Ruled: S-PLAN-HUD-B stands* — `COUPLED_YARDSTICK` is a verdict on this facility, not a new tool —
+**and the plan must price the contract change it silently assumed.** It requires a new sibling to
+`support` on the `measure()` return (absent-is-a-verdict, per the module's own doctrine), a change to
+`validateSpec`, an entry in `VERDICT`, and an exit code: `EXIT_FOR` uses 0,2–7,10,11 with 8 and 9
+reserved to the CLI, so `COUPLED_YARDSTICK` is **12**. The blast radius is bounded and small —
+**9 files reference `runControl`**, 8 excluding the library — which is why the ruling holds rather
+than splitting into a sibling module. It is the **tenth** verdict, not the sixth as the plan's §3
+says; correct that line too.
+
+---
+
 ## Model split — upheld, with one condition
 
 | piece | plan | critic |
@@ -509,6 +621,60 @@ here and that no build should be its first job. The split's practical half (A ne
 hour, B needs none until its shortlist, so they must not queue behind each other) is sound and is
 the strongest argument for splitting at all.
 
+### The routing rule this ruling generalises to, because `COST.md` will reuse it
+
+`orchestration/COST.md` §4 makes model mix *"the largest single lever and it has barely been
+pulled"* — **3,230 Opus requests against 29 Sonnet**, against a policy written in `PLAN-LOOP.md` and
+almost never applied. So this ruling is not about one piece, and it should be stated as the rule it
+implies rather than as a preference about A and B.
+
+**The rule: route on whether the acceptance is *decidable without judgement at the time the agent
+writes it*, not on how hard the subject sounds.** Piece A is a harder *engineering* job than Piece B
+— it needs a browser, frame pairs, a clip-free reference draw, a halo tolerance — and it is the
+Sonnet job, because after BLOCKING-1/-3/-6 land, every number it must produce has a predicate, an
+instrument by path, and a threshold it cannot argue with. Piece B is mostly `grep` and bookkeeping
+and it is the Opus job, because its central act is *choosing the population*, and this document just
+demonstrated why: two successive readers accepted "smaller, enumerable from the verdicts" without
+counting, and the count reversed it. **Difficulty is not the axis. Discretion is.**
+
+Two corollaries this piece supports, both stated as reusable and both cheap to test:
+
+1. **A plan that has been through this loop is itself a routing lever, and that is the largest
+   uncosted saving in `COST.md`.** The middle row of PLAN-LOOP's table requires *a landed plan, an
+   existing instrument, a machine-checkable acceptance* — three conditions that a plan-critic
+   exchange is precisely the thing that manufactures. Before this exchange, Piece A had a predicate
+   that measured the wrong side of the defect (BLOCKING-1) and a gating query over an empty set
+   (BLOCKING-2); it was not a Sonnet job, because a Sonnet agent following it would have had to
+   redesign the measurement. **The plan loop does not merely save a build round — it converts Opus
+   builds into Sonnet builds**, and at 3,230-vs-29 that is the larger of the two effects and nobody
+   has costed it. Recommend `COST.md` §4 lever 1 and lever 4 be measured as one coupled lever, not
+   two independent ones.
+2. **Critics stay Opus, unconditionally, and this exchange is the evidence.** Every finding that
+   changed the plan — the clip, the empty-set surface name, the false "smaller" premise, the missing
+   `E` slot, the hardcoded reference draw — came from *disbelieving a plausible sentence and going to
+   the file*. `COST.md` §5 already forbids cutting a critic; this says the cheaper form of that cut
+   (keeping the critic, downgrading it) is the same cut.
+
+**What would change this ruling.** Stated so a successor overturns it with evidence, not argument:
+
+- **Sonnet on A produces a build critic's round-2 finding that is a *measurement-design* error**
+  (not a coding error) → the "decidable without judgement" line is drawn in the wrong place, and
+  the browser-bearing half of a piece goes Opus regardless of how machine-checkable it reads.
+- **Sonnet on A lands clean** → the rule is confirmed on its first real trial and the same test
+  should immediately be run on a second piece with a landed plan, because n=1.
+- **Opus on B produces a population it did not enumerate and commit**, or reports B1 without the
+  quoted-`E` fraction → the failure the split was designed to prevent happened anyway, the model was
+  not the operative variable, and the lever is smaller than `COST.md` §4 ranks it.
+- **The measured cost of A (Sonnet) is not materially below a comparable Opus build** → routing is
+  not the lever; look at cache economics (`COST.md` §4 lever 2) instead. This needs the per-model,
+  per-token-class figures `COST.md` §2 names as ground truth, and **it must be measured on this
+  piece rather than assumed** — the plan loop's own estimate was already wrong and low once.
+
+One thing this ruling does **not** license: Haiku. Nothing here has trialled it, and `COST.md` §4
+lever 1 and PLAN-LOOP both say the same thing — one mechanical task, measured, before it is trusted.
+Piece B's static half looks like that task and **is not**, because its output is a population
+definition that a later ruling rests on.
+
 ---
 
 ## What I could not do
@@ -519,8 +685,20 @@ the strongest argument for splitting at all.
   2113 `name` fields, 870.0 px widest equip refusal). Those are the plan's numbers at `6bb9003` and
   the plan already tells the builder to re-derive them; re-deriving them here would have duplicated
   that work without checking anything the build will not check.
-- **I did not verify `sabotage.mjs`'s arm model** can carry an expected-side value — see CARRIED-6.
-  That is the open condition on ruling S-PLAN-HUD-B and I am leaving it open rather than guessing.
+- ~~**I did not verify `sabotage.mjs`'s arm model** can carry an expected-side value — see CARRIED-6.~~
+  **Closed in the completion pass above:** it cannot; the ruling survives with a priced contract
+  change. CARRIED-6 is discharged and is no longer a carried risk.
+- **I did not measure the quoted-`E` fraction properly.** The ~9% in revised BLOCKING-5 is
+  line-adjacency in verdict prose — a number a paragraph away from its tool path is missed. It is an
+  upper-bound-shaped proxy and it is written into the brief as the builder's *first* measurement,
+  not as a finding. I state it because a 9% proxy and a 90% proxy would justify different pieces,
+  and this one is closer to the first.
+- **The 786/244/459/133 counts are `grep`-and-`find` set arithmetic**, so `P`'s membership inherits
+  exactly the mentions-vs-members weakness the plan named in §8. The intersection is the *ceiling* of
+  the gradeable population, never its floor; the builder still publishes the enumeration.
+- **I did not open the W1-04, W1-25 or compliance-report records** (unchanged from the first pass),
+  so BLOCKING-4 remains argued from the plan's own population definition rather than from the four
+  instances.
 - **I did not confirm the four historical positives are re-seedable.** I checked that
   `tools/quests/faction-joining-probe.mjs`, `reports/w1-20/instrument-test.json` and
   `tools/dialogue/w1-17-r2-deletefix.mjs` exist; I did not open the W1-04, W1-25 or compliance-report
@@ -531,10 +709,22 @@ the strongest argument for splitting at all.
 
 ---
 
-# VERDICT: **BLOCKED pending items 1, 2, 3, 4, 5.**
+# VERDICT: **BLOCKED pending items 1, 2, 3, 4, 5, 6.**
 
-All five are text edits and every one has a ruled resolution written above, so exchange 2 is an
-edit rather than an argument, and no third exchange is needed. **BLOCKING-1 is the one that
-matters**: without it a build agent spends an hour of the box's only scarce resource on a control
-that returns zero on both arms, and reports it as a pass — in the piece written to sweep for
-exactly that.
+All six are text edits and every one has a ruled resolution written above, so exchange 2 is an edit
+rather than an argument, and no third exchange is needed. Of the eight CARRIED risks, **CARRIED-6 is
+discharged** (closed in the completion pass); seven carry into the build briefs as declared risks.
+
+**BLOCKING-1 is still the one that matters**: without it a build agent spends an hour of the box's
+only scarce resource on a control that returns zero on both arms, and reports it as a pass — in the
+piece written to sweep for exactly that. **BLOCKING-5 is the one that changed most**: the re-scope
+the plan proposed is right, its stated reason is false — `P_cited` is **459** against P's **244**,
+so the "smaller" premise is backwards — and the operative population is the intersection, **133**.
+**BLOCKING-6 is the one this critic owes**, because it is a defect in the first pass's own ruled
+resolution: A2a was written against a harness call that draws a different typeface in a different
+place, which is BLOCKING-3's error committed by the critic instead of the plan.
+
+**Dispatch condition, ruled and reversible.** Piece A may be briefed to Sonnet the moment
+BLOCKING-1, -3 and -6 are folded in; **Piece B must not be dispatched until its first measurement —
+the quoted-`E` fraction over the 133 — is taken**, because that number decides whether B1 is
+gradeable at all, and it needs no browser and no build agent.
