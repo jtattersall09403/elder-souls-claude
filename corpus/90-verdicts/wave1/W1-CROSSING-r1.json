@@ -190,7 +190,8 @@
       "evidence": [
         "reports/critic-w1-crossing/null.json",
         "reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json",
-        "reports/critic-w1-crossing/deletefix.json"
+        "reports/critic-w1-crossing/deletefix.json",
+        "reports/critic-w1-crossing/walk-crossing-reverse-NODECK.json"
       ],
       "checks": [
         {
@@ -221,6 +222,16 @@
           "observed": "YES. setBurden(0.9) -> tier OVERLADEN, move_mult_applied 0.72, burden_source \"pinned by setBurden()\"; the walked mean speed over 160,001 stepping frames is 1.5724 m/s against 1.9991 unencumbered, and the body still holds the road to 1.39 m with zero frames off it. NOTE FOR WHOEVER OWNS IT: NEXT-DISPATCH §Q1 says setBurden \"has been inert on any stepping run\". On this stepping run it is not. Recorded, not adjudicated — it is not my piece.",
           "evidence": [
             "reports/critic-w1-crossing/walk-crossing-night-storm-encumbered.json"
+          ]
+        },
+        {
+          "id": "Z4",
+          "what": "CRITIC OWN PERTURBATION — delete the structure model entirely and watch the body change behaviour",
+          "result": "pass",
+          "hard_fail": false,
+          "observed": "Deleting all 17 deck_spans (install verified: spans_left 0) takes the reverse crossing from 5,072.3 m with a 900-frame stuck run to 6,237.8 m with an 18-frame one — 1,165 m further and 882 fewer stuck frames. The structures are read by the body, hard.",
+          "evidence": [
+            "reports/critic-w1-crossing/walk-crossing-reverse-NODECK.json"
           ]
         }
       ],
@@ -430,8 +441,10 @@
     "null_replacement": {
       "measured_noise_floor_m": 0,
       "null_arm_m": 0,
-      "positive_arm": "NOT RE-TAKEN — my first cut put the road bump 1,450 m into a 466 m walk so it read 0.000 m and N2-POSITIVE-BITES went red; the fix (bump at 12% of the leg) was written but the browser budget went to the reverse-jam arms. Declared, not filled in.",
-      "finding": "RE-SEEDED, THE WALK IS BIT-DETERMINISTIC: 14,000 frames, two runs, zero divergence at every frame. So the correct bar for a null on this fixture is 0.000 m, not max(0.5, floor x 1.5) and certainly not the shipped 6,193 m — and the null clears the strictest possible bar exactly.",
+      "positive_arm_m": 30.599,
+      "checks": "N0-FLOOR-IS-MEASURED PASS, N1-NULL-IS-SILENT PASS (0.000 against 0.000), N2-POSITIVE-BITES PASS (30.599 m), N3-SEPARATION PASS",
+      "finding": "RE-SEEDED, THE WALK IS BIT-DETERMINISTIC: 14,000 frames, two runs, zero divergence at every frame. So the correct bar for a null on this fixture is 0.000 m — not max(0.5, floor x 1.5) and certainly not the shipped 6,193 m — and the null clears the strictest possible bar exactly while the positive arm moves the body 30.599 m. The bar went from 6,193 m to 0.000 m and the separation from 22x to unbounded.",
+      "my_own_first_cut_failed": "The bump sat at the perturbed legs MIDPOINT (1,450 m in) and the walks covered 466 m, so the POSITIVE arm read 0.000 m and N2 went red. Fixed to 12% of the leg; the failure is recorded in the tools own comment rather than quietly patched.",
       "artifact": "reports/critic-w1-crossing/null.json"
     },
     "reverse_jam_arms": {
@@ -441,7 +454,7 @@
           2278.6,
           1859.2
         ],
-        "stuck_frames": 900
+        "longest_stuck_frames": 900
       },
       "pre_fix_clampToDeck": {
         "walked_m": 5072.3,
@@ -449,11 +462,21 @@
           2278.6,
           1859.2
         ],
-        "stuck_frames": 900,
+        "longest_stuck_frames": 900,
         "install_verified": "clamp_is: OLD, 17 spans still declared"
       },
-      "no_deck": "DID NOT FINISH INSIDE MY BROWSER BUDGET — reported rather than filled in",
-      "verdict": "THE PARAPET IS EXONERATED AS THE CAUSE — byte-identical arms. The blocker is heightAt/onDeckAt resolving the wrong limb of the switchback, which clampToDeck never touches. A third independent confirmation that the parapet fix is not load-bearing for this route."
+      "no_deck": {
+        "walked_m": 6237.8,
+        "end": [
+          2226.5,
+          1134.6
+        ],
+        "longest_stuck_frames": 18,
+        "short_of_target_m": 377.59,
+        "install_verified": "spans_removed: 17, spans_left: 0",
+        "note": "stopped on the 187,200-frame ceiling, not on anything blocking it"
+      },
+      "verdict": "THE PARAPET IS EXONERATED (byte-identical arms) AND THE DECK IS THE BLOCKER. Deleting every deck_span takes the reverse body 1,165 m further and collapses its longest stuck run from 900 frames to 18. The blocker is heightAt/onDeckAt resolving the upper limbs slab over the lower limb of the switchback — not clampToDeck and not the steering. This is also the cleanest CONSUMPTION arm in the verdict for the structure model."
     }
   },
   "artifacts": [
@@ -523,6 +546,16 @@
       "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --survive --shot docs/shots/2026-08-08-critic-w1-crossing-lilmoth-from-the-road.png",
       "resolution": "960x540",
       "camera_pose": "the shipped third-person follow camera on the walking body at the end of THE CROSSING, (2765.6, 5028.8) at the Lilmoth harbour steps — no posed camera, no override; this is what the walker saw when it arrived"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-crossing-reverse-OLDCLAMP.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --reverse --survive --clamp old --budget-min 12 --out reports/critic-w1-crossing/walk-crossing-reverse-OLDCLAMP.json"
+    },
+    {
+      "path": "reports/critic-w1-crossing/walk-crossing-reverse-NODECK.json",
+      "kind": "trace",
+      "produced_by": "node tools/world/critic-crossing-walk.mjs --route crossing --reverse --survive --no-deck --budget-min 12 --out reports/critic-w1-crossing/walk-crossing-reverse-NODECK.json"
     }
   ],
   "blind_comparisons": [],
@@ -580,7 +613,7 @@
           "id": "CONSUME-STRUCTURE",
           "what": "the deck_spans are read by the player capsule",
           "result": "pass",
-          "observed": "field.clampToDeck()/onDeckAt()/heightAt() resolve the slab; the builder’s C3 reaches 3.35 m with the spans declared and 11.04 m (21.94 m below the deck) with them deleted. My own reverse-jam diagnosis is the same coupling seen as a defect: onDeckAt returns a 7.42 m-clearance deck ON the carriageway at 1,635 m of stormhold-helstrom because the upper limb of a switchback lays its slab across the lower one."
+          "observed": "field.clampToDeck()/onDeckAt()/heightAt() resolve the slab; the builder’s C3 reaches 3.35 m with the spans declared and 11.04 m (21.94 m below the deck) with them deleted. My own reverse-jam diagnosis is the same coupling seen as a defect: onDeckAt returns a 7.42 m-clearance deck ON the carriageway at 1,635 m of stormhold-helstrom because the upper limb of a switchback lays its slab across the lower one. AND, as a direct teardown: deleting all 17 deck_spans takes the reverse crossing from 5,072.3 m with a 900-frame stuck run to 6,237.8 m with an 18-frame one."
         },
         {
           "id": "CONSUME-BURDEN",
@@ -654,8 +687,7 @@
     "Port the teleport exclusion from walkRoute into walkPath (six lines already written) and correct F7 / survey §2c.",
     "Adjudicate the reverse jam: stormhold-helstrom points 126/131, a 17 m viaduct deck laid across the lower limb of its own switchback, producing a 5.75 m step up and a 7.5 m step down on the carriageway at 1,635 m.",
     "Replace the vacuous centreline slope-gate counter with the lateral sweep, and correct the §P.4 paragraph that cites it.",
-    "Strengthen crossing-deletefix.mjs's HP pin to the one crossing-body.mjs uses and re-run the grid re-seeded; do not quote its per-arm numbers until then.",
-    "Re-take the POSITIVE arm of the replacement C2-NULL with the corrected bump position, against the measured 0.000 m floor."
+    "Strengthen crossing-deletefix.mjs's HP pin to the one crossing-body.mjs uses and re-run the grid re-seeded; do not quote its per-arm numbers until then."
   ],
   "self_audit": {
     "judged_output_not_source": true,
@@ -670,9 +702,7 @@
       "I did not rebuild G5-PARAPET's 93-of-3,500 census; it is the one open count I take on the builder's word.",
       "I did not re-measure the 133.8 ms worst frame, and I publish no timing or performance figure anywhere (rule 26).",
       "I did not run tools/run-all.mjs (rule 9's aggregation). I ran boot-check, check-data and road-through-building — all green.",
-      "No blind pack exists for this piece, so rule 25 is not engaged.",
-      "The POSITIVE arm of my replacement C2-NULL was not re-taken after I found and fixed my own bug in it (the bump sat 1,450 m into a 466 m walk). The floor and the null arm are measured; the positive arm is a round-2 item. The road-is-read coupling is independently established by the delete-the-fix grid (1,779.2 m -> 550.1 m when _pursue alone is replaced).",
-      "The --no-deck reverse arm was still walking when my browser budget ran out. The parapet arm already answers the question it was queued for."
+      "No blind pack exists for this piece, so rule 25 is not engaged."
     ],
     "my_own_instrument_failures_found_and_reported": [
       "My first --null cut put the road bump at the perturbed leg's MIDPOINT (1,450 m in) and compared 14,000-frame walks that cover 466 m, so the POSITIVE arm read 0.000 m and N2-POSITIVE-BITES went red. A probe whose positive arm has never been seen to move is not a probe. Fixed to 12% of the leg and the failure is recorded in the tool's own comment.",

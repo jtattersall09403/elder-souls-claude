@@ -351,7 +351,7 @@ the positive arm against the same baseline.
 |---|---|
 | **REPEAT** — the same walk, nothing changed | **0.000 m** |
 | **NULL** — move `lilmoth-archon` 25 m, a leg the crossing does not use | **0.000 m** |
-| P1 — move `stormhold-helstrom`, the leg it does use | **not re-taken — see below** |
+| **P1** — move `stormhold-helstrom` 25 m, the leg it does use | **30.599 m** |
 
 **The floor is exactly zero, and that is the finding.** Re-seeded (`setSeed`, `loadState`,
 `setTide`, `setTimeOfDay`) the walk is **bit-deterministic**: 14,000 frames, two runs, zero
@@ -360,12 +360,10 @@ divergence at every frame. So the correct bar for a null on this fixture is not 
 far stronger `C2` than the one shipped, and it is available for free once the floor is measured
 instead of inherited.
 
-**What I have not re-taken, and I am saying so rather than filling the cell.** My first `P1` cut was
-broken (below), and by the time I had fixed it my browser budget was spent on the reverse-jam arms.
-So the **positive** arm of my replacement is not re-run here. It does not change the conclusion —
-the road-is-read coupling is independently established by §C's grid, where replacing `_pursue`
-alone moves the walk from 1,779.2 m to 550.1 m — but the replacement `C2` is only two-thirds
-delivered and the third arm is a round-2 item.
+All four checks pass: `N0-FLOOR-IS-MEASURED`, `N1-NULL-IS-SILENT` (0.000 against 0.000),
+`N2-POSITIVE-BITES` (30.599 m) and `N3-SEPARATION`. **The bar went from 6,193 m to 0.000 m and the
+separation from 22× to unbounded** — the null is silent to the bit and the positive arm moves the
+body thirty metres. This is what `C2` should have been.
 
 **And my first cut of it failed, which is the point of running it.** I put the road bump at the
 perturbed leg's **midpoint** — 1,450 m in — and then compared 14,000-frame walks, which cover 466 m.
@@ -522,15 +520,21 @@ Two models ship here and I perturbed both, on top of the builder's own arms.
 |---|---|---|---|---|
 | shipped | — | 5,072.3 m | (2278.6, 1859.2) | 900 |
 | **`--clamp old`** (pre-fix `clampToDeck` from `345dcca`) | `clamp_is: "OLD"`, 17 spans still declared | **5,072.3 m** | **(2278.6, 1859.2)** | **900** |
-| `--no-deck` (every `deck_span` deleted, `spans_removed: 17`, `spans_left: 0`) | verified installed | **did not finish inside my budget** | — | — |
+| **`--no-deck`** (every `deck_span` deleted) | `spans_removed: 17`, `spans_left: 0` | **6,237.8 m** | (2226.5, 1134.6) — **377.6 m from the target** | **18** |
 
-**The parapet is exonerated as the cause** — byte-identical arms — which is what I set out to test
-and is a third independent confirmation that `clampToDeck` is not load-bearing for this route. The
-`--no-deck` arm was still walking when my browser budget ran out; **I am reporting that rather than
-filling the cell**, because a body with every bridge in the province deleted is walking over open
-ravines and its run time is not comparable. The jam's mechanism is already established by direct
-measurement of the field (§G2) and by the parapet arm being inert; the `--no-deck` arm would have
-been confirmation, not the evidence.
+**Two clean results, in opposite directions.**
+
+- **The parapet is exonerated** — byte-identical arms. A third independent confirmation that
+  `clampToDeck` is not load-bearing for this route (§C3 is the other two).
+- **Delete the deck slabs and the jam clears.** The `--no-deck` body walks straight past 1,633 m,
+  gets **1,165 m further** than the shipped arm, and its longest stuck run collapses from **900
+  frames to 18**. It stops only because it hit my frame ceiling (187,200) 377.6 m short, not
+  because anything blocked it.
+
+So the blocker is the **deck geometry** — `heightAt` / `onDeckAt` resolving the upper limb's slab
+over the lower limb of the switchback — and not the parapet and not the steering. That is also the
+cleanest CONSUMPTION arm in this verdict for the structure model: delete the model and the body's
+behaviour changes by 1,165 m and 882 stuck frames.
 
 ---
 
@@ -600,7 +604,7 @@ and a player walking home from Lilmoth will meet it.**
 | premise correction (acceptance 1) | **7** | right on substance from an independent direction — but one of the three supports §P.4 cites is a counter that is structurally zero |
 | delete-the-fix (acceptance 5) | **7** | the teardown reproduces 550.1 m at (2153.7, 1197.8) running *first* from a re-seeded world; three of four cells do not reproduce and the grid's HP pin does not hold |
 | regain (acceptance 2) | **7** | correctly declared NOT MET; I built the 20-independent-trial version and it is *still* an inert control — 15/20 against 16/20 — and the 7,966.3 m orbit figure does not reproduce |
-| CONSUMPTION (acceptance 4) | **7** | both models genuinely consumed; the shipped C2 bar is broken and the builder says so; replaced here |
+| CONSUMPTION (acceptance 4) | **7** | both models genuinely consumed, and I added a third (burden) and a hard teardown (delete all 17 `deck_spans` → the reverse body goes 1,165 m further and its stuck run collapses 900 → 18 frames). The shipped C2 bar is broken and the builder says so; my replacement passes all four checks with a **0.000 m** floor and a 30.599 m positive arm |
 | **instrument claims match the code** | **6** | F7/§2c state `walkPath` excludes teleports. **It does not.** The verb carrying the drowning and reachability evidence still adds a respawn to `path_m` |
 | **robustness (rule 8)** | **6** | the route was tested in one direction, at one time of day, once. Reversed, it jams at 5,072.3 m on a bridge deck laid across the carriageway |
 
@@ -627,7 +631,8 @@ next.
 ## What I could not do
 
 - I did not rebuild **`G5-PARAPET`**'s 93-of-3,500 census; it is the one open count I take on the
-  builder's word.
+  builder's word. (Its subject, `clampToDeck`, is however shown inert for this route in three
+  separate arms — §C3 twice and §G7 once.)
 - I did not re-measure the **133.8 ms worst frame**. No timing or performance figure appears
   anywhere in this verdict, deliberately (rule 26).
 - I did not run **`tools/run-all.mjs`** (rule 9's aggregation). I ran `boot-check`, `check-data` and
