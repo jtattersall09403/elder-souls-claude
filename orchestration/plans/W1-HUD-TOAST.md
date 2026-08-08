@@ -19,6 +19,31 @@ nothing was re-argued, and BLOCKING-6 was independently re-verified against
 its first measurement (the quoted-`E` fraction over the 133) is a separate agent's job and this
 build does not open `tools/experience/lib/sabotage.mjs`.
 
+**BUILD-TIME DEVIATION, reported per PLAN-LOOP's own rule ("a plan defect found at build time is
+written back into the plan file").** §3's instrument table and §5 step 3 both say to "generalise
+the `getUIState()` fit block" — i.e. edit `ui/system.js`'s `toast.fits`/`overflow_px` block
+(:1154-1170) into a per-element loop. **The build agent did not do this, and chose not to, for a
+reason the plan did not consider:** that block runs synchronously inside `state()`, which
+`getUIState()` calls after `build()` has already painted the frame — there is no `since`-mark
+taken before `build()` runs, so a register read *inside* `state()` cannot tell "this build's
+entries for element X" apart from a stale entry left by an earlier build of the same element,
+without either (a) requiring every caller of `getUIState()` to have already cleared the register
+immediately beforehand (a silent precondition nothing enforces), or (b) `state()` clearing the
+register itself, which would make `getUIState()` **destructive** to read — a second caller in the
+same frame would find it empty. Both are worse than the alternative: **the register-backed,
+per-element fit check (A1) lives in `tools/analysis/ui-census.mjs`, the instrument BLOCKING-2
+already commits it to**, which is free to run the correct protocol per string (`renderedTextClear`
+→ force a rebuild via `uiToast()` → read `getRenderedText({surface:'menus', owner:<id>})`) because
+it, unlike `getUIState()`, is not a general-purpose accessor other code calls incidentally.
+`ui/system.js`'s existing `toast.fits` block is **untouched** — it was already rect-derived, not
+`maxW`-derived (W1-20's own fix), so it was not the coupled-yardstick shape and there was nothing
+in it to repair. `game/src/render/text-register.js` and `game/src/ui/surface.js` gained an
+additive **owning-element id** on each register entry (`surface.js el()` sets `ctx.__esOwnerId`
+for the duration of one element's draw callback; the register reads it back), which is what makes
+the per-element register read in `ui-census.mjs` possible at all — this is the "generalisation"
+the plan asked for, moved one layer down from where it was specified. Declared here rather than
+silently substituted.
+
 ---
 
 ## 0. What is actually broken

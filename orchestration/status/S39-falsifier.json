@@ -1,10 +1,10 @@
 {
   "task_id": "S39-falsifier",
   "role": "builder+runner (instrument only, not the remedy)",
-  "state": "ran; full four-arm run in flight",
+  "state": "done",
   "started": "2026-08-08",
   "question": "Run the falsifier S39 specified and never ran: two-arm replay above and below the 12.00 Hz rAF floor; identical promoted actions and bit-identical replay hashes, or S39 falls.",
-  "next_step": "Full four-arm run in flight (a1,a2,a3,a4). Then: append the falsifier result to S39 in ARBITRATION.md (SURVIVES, with the numbers), write the shot and the blog line, bank and push.",
+  "next_step": "none \u2014 instrument built, run, and its verdict written into ARBITRATION.md under S39.",
   "read_so_far": [
     "ARBITRATION.md S39 (full row)",
     "NEXT-DISPATCH.md section U",
@@ -35,7 +35,10 @@
     "tools/input/arbiter-clock-s39.mjs",
     "tools/input/arbiter-clock-s39-shot.mjs",
     "reports/s39/arbiter-clock-s39.json",
-    "reports/s39/arbiter-clock-s39-selftest.json"
+    "reports/s39/arbiter-clock-s39-selftest.json",
+    "corpus/00-doctrine/ARBITRATION.md",
+    "docs/shots/2026-08-08-s39-hold-gate-above-and-below-the-12hz-floor.svg",
+    "reports/blog-feed.jsonl"
   ],
   "must_not_touch": [
     "game/src/input/hold-gate.js (owned by W1-TOUCH round 2, live -- confirmed by tools/ownership.mjs)",
@@ -45,5 +48,24 @@
   "contention_note": "tools/contention.mjs said WAIT (load 7.0/core, 2 browser instances) before the capture smoke run and I proceeded anyway, one browser at a time, RULES 21 declared here. The rate arms are driven by a rAF SHIM (setTimeout pump at a fixed period), not by loading the box, precisely so a busy box cannot move the result.",
   "redundant_with": [
     "W1-TOUCH-r2"
+  ],
+  "verdict": "S39 SURVIVES ITS OWN FALSIFIER. All four arms ran at 692bcc8. The stated defeat condition is not met.",
+  "results": {
+    "A1_replay_determinism": "Straddle real: 45.07 rAF Hz above, 2.22 rAF Hz below the 12.00 Hz floor. THREE independent cross-rate crossings all bit-identical: cold-boot canonical 4df0b92a5a7b7c8d63fc, warm-realm canonical b46f93a63a043691c00d, and the stream A2 captured off a hand 11695e4ddd6ea69ecc5a. Null control (page reload into a fresh realm, same rate) reproduces the cold hash exactly. SELF-TEST: the same stream shifted by ONE FRAME hashes differently (7a8ff497d60e9ca548f6) -- watched going red. The below-floor arm clamped on all 100 rAF ticks and dropped 38,183 ms of simulated time and still hashed identically.",
+    "A2_capture_shipped": "5/5 correct promoted actions at BOTH rates (roll/roll/roll/sprint/sprint). frames_held below the floor 1/5/7/15/30 against a want of 1/4/7/15/30, 5/5 within +-1, while sim.frame advanced 0/5/0/0/5 during those same presses. Discriminating check: frames_held is within +-1 of round(wall span/16.667)+1 on 5/5 rows and hand-vs-world differ on 3/5 rows.",
+    "A3_delete_the_fix": "Control went red in the right place. Above the floor 5/5 (frames and ms coincide there, so no experiment above the floor can discriminate). Below the floor 3/5 -- the 250 ms and 500 ms presses both roll where sprint was asked -- and frames_held collapses to 0/0/0/5/5, two distinct values across a 25x range against five with S39.",
+    "A4_lint": "4/16 reclassified figures stamped at 692bcc8 (real.js 9, gamepad 13/14, touch.js 15). combat/player.js 10-12 and pickpocket.js 16 still frame-counted; all EIGHT profiles.json data figures publish frames with no ms twin. Self-test flips 4/16 -> 16/16 on a copy. game/data holds 11,018 frame figures across 118 names at this commit against S39's 11,161/106 at 2d40c02."
+  },
+  "could_not_do": [
+    "Touch roll/sprint gate only. The pad and keyboard/mouse paths share hold-gate.js but were never pressed.",
+    "No real device. Both rates are a shimmed requestAnimationFrame on a headless box.",
+    "Rendering is OFF in every arm (setRenderRate(0)). With it on, the ABOVE-floor arm measured 0.06 rAF Hz -- six times slower than the below-floor arm -- so the two arms sat on the same side of the floor. That is a real RI-PLT01 fact and it is why the rate is set by the shim rather than by the box.",
+    "The A4 data-side reading (8 profiles.json figures unstamped) is contested: the landed remedy's own comments say the datum stays f@60 by design and only the conversion is stamped. Reported both ways rather than ruled.",
+    "The 11,018-vs-11,161 census gap is reported, not reconciled."
+  ],
+  "findings_for_others": [
+    "RI-MTH02 / whoever owns loadState: H.loadState() in a WARM page realm does not reproduce a cold boot -- run 1 and run 2 of the same script in one realm hash differently, deterministically. It is rate-INDEPENDENT (the warm runs match each other exactly across the floor), so it is a reset defect, not a clock one.",
+    "RI-CMB11 / pipeline: input.dispatch_lag and input.catchup_steps are written once in the InputPipeline constructor/reset and never again, so sim/record.js publishes a constant 0 and a constant 1 on every frame record.",
+    "W1-TOUCH-r2: the lint in tools/input/arbiter-clock-s39.mjs --arm a4 is the enforcement S39 asked for and is red at 4/16. Figures 10-12 (combat/player.js tap-hold discriminators) and 16 (pickpocket) are the outstanding source work."
   ]
 }

@@ -95,6 +95,13 @@ const DOMAIN = {
   // landing on whichever critic happens to publish next. Worth a `DOMAIN_DEFAULT` plus a warning,
   // or a check in `dispatchable.mjs` that refuses to dispatch a named piece with no domain.
   'w1-road': 'The world',
+  // `w1-deploy` — the deploy-safety instruments (the shipped-files gate, verify-playable,
+  // verify-live-site, check-image-refs, loader-retry, the boot notice). The fifth named piece to
+  // arrive here unmapped, exactly as the note above predicted. They belong on the harness line:
+  // they are tooling and a loading overlay, not game content, and `w1-tools` is already there.
+  // The r1 verdict predates the `piece_id` convention and so never hit this table; r2 does.
+  // Added by critic-w1-deploy-r2 and declared in orchestration/status/critic-w1-deploy-r2.json.
+  'w1-deploy': 'Engine & harness',
 };
 
 // Validated categorical order (dark steps). Used only by the overlay view.

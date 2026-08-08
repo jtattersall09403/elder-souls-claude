@@ -747,6 +747,24 @@ const FIXTURE_INERT = {
   measurements: { arms: { with_fix: 442141, without_fix: 442141 } },
 };
 
+/**
+ * Delete the residue, keep every word. The verdict's identity survives, its prose survives in a
+ * flat `notes` array, and everything that carries a re-derivable trace of an act — commands, exit
+ * codes, artifacts, arms, consumers — is gone. This is the teardown for arm E.
+ */
+export function stripToWords(v) {
+  const notes = [];
+  walk(v, (n) => { if (typeof n === 'string' && n.length > 3) notes.push(n); });
+  return {
+    schema_version: v.schema_version,
+    piece_id: v.piece_id,
+    wave: v.wave,
+    critic: { run_id: v.critic?.run_id, conflict_of_interest: v.critic?.conflict_of_interest },
+    build: { commit_sha: v.build?.commit_sha },     // no harness_commands, no exit codes
+    notes,                                          // every word the verdict contained
+  };
+}
+
 function selfTest() {
   const fileIndex = buildFileIndex();
   const results = [];
@@ -780,13 +798,32 @@ function selfTest() {
   check('D2 corpus: not every verdict counts every act', ITEMS.some((i) => t.counts[i] < rows.length), true);
   check('D3 corpus: the word tier is non-empty (words without deeds exist)', ITEMS.some((i) => t.word_only[i] > 0), true);
 
-  // ARM E — the real historical verdict that says the words without the deed.
-  // Found by sweeping wave 1 for a verdict whose prose carries a non-negotiable's phrase while its
-  // structure carries no residue of the act. Asserted by name so that if the corpus changes under
-  // us, this arm reports the change instead of silently passing.
-  const realWord = rows.find((r) => r.items.delete_the_fix.tier === 'word');
-  check('E1 a real verdict says "delete-the-fix" and shows no arms', !!realWord, true);
-  if (realWord) results[results.length - 1].detail = realWord.path || realWord.prose_path;
+  // ARM E — THE ARM THAT MATTERS, built from real historical data rather than a fixture.
+  //
+  // The brief asked for a word-without-deed arm taken from a real verdict that says the words and
+  // did not do the work. I looked and I could not honestly produce one, and that is worth saying:
+  // the nearest candidate, W1-02-r1, carries "delete-the-fix" in its prose and scores `word` here —
+  // but its `build.harness_commands` shows `node /scratch/c-evt.mjs --drop-vocab (delete-the-fix
+  // arm)`. THE DEED WAS DONE. The instrument was written to a scratch directory that no longer
+  // exists, so the residue is gone and this tool cannot see it. That is an UNDER-COUNT, not a lie,
+  // and calling it a dishonest verdict would have been a fabricated accusation.
+  //
+  // So the arm is built the honest way instead: take a real verdict this tool COUNTS, delete its
+  // residue while keeping every word, and require the count to collapse. Same piece, same prose,
+  // one thing removed — a delete-the-fix performed on a verdict. If stripping the evidence does not
+  // change the score, the recogniser is reading the words after all, and the tool is worthless.
+  const donor = rows.find((r) => r.items.delete_the_fix.tier === 'act' && r.items.consumption.tier === 'act' && r.path);
+  check('E0 a real verdict in the corpus counts two acts (the donor exists)', !!donor, true);
+  if (donor) {
+    const full = JSON.parse(readFileSync(join(ROOT, donor.path), 'utf8'));
+    const stripped = stripToWords(full);
+    const s = scoreVerdict({ json: stripped, jsonPath: null, prose: readFileSync(join(ROOT, donor.prose_path), 'utf8'), fileIndex });
+    check('E1 residue stripped, words kept: delete_the_fix stops counting', s.items.delete_the_fix.tier === 'act', false);
+    check('E2 residue stripped, words kept: consumption stops counting', s.items.consumption.tier === 'act', false);
+    check('E3 residue stripped: the PHRASES are still there (this is a word arm, not an empty one)',
+      PHRASE.delete_the_fix.test(allText(stripped)) && PHRASE.consumption.test(allText(stripped)), true);
+    results[results.length - 3].detail = `donor ${donor.path}`;
+  }
 
   const failed = results.filter((r) => !r.pass);
   for (const r of results) console.log(`${r.pass ? 'PASS' : 'FAIL'}  ${r.name}${r.pass ? '' : `  (got ${JSON.stringify(r.got)}, want ${JSON.stringify(r.want)})`}${r.detail ? `  — ${r.detail}` : ''}`);

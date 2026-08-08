@@ -1,0 +1,399 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-20",
+ "piece_title": "The faction skeleton — joining, ranks, refusals",
+ "round": 1,
+ "subsystem_paths": [
+  "quests.faction.joining",
+  "quests.faction.rankgating",
+  "quests.faction.escalation",
+  "progression.faction.rank"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "critic-w1-20",
+  "role": "critic.quests",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-08T11:00:00Z",
+  "finished_at": "2026-08-08T13:05:00Z",
+  "conflict_of_interest": false,
+  "wrote_what_it_judges": false,
+  "saw_builder_notes_before_measuring": true,
+  "successor_note": "Successor to a round-1 critic run killed by a usage limit. Its status file said next_step was 'run critic instrument 1', but two complete instruments (critic-w1-20-play.mjs, critic-w1-20-ledgers.mjs) were already committed on disk. Per RULES 3 they were RE-RUN, not rebuilt. One of its four recorded findings — L4, 'the rank nobody writes' — is CORRECTED here as an inert control rather than carried forward."
+ },
+ "build": {
+  "commit_sha": "d98ca28",
+  "commit": "d98ca28",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true,
+  "dirty_note": "A dozen agents commit concurrently. The joining headline was reproduced at fb2cb09 and the wrap arms were taken in a DETACHED WORKTREE at fb2cb09, so the break tests are against a frozen tree and not a moving one. No faction data file, faction-gates.json, sanction.json, sim/quest/**, sim/dialogue/disposition.js, sim/stealth/theft.js or ui/hud.js was dirty in the live tree at any measurement.",
+  "boot_check_before": "PASS",
+  "boot_check_after": "PASS",
+  "contention": "node tools/contention.mjs --gate returned GO (1 browser instance, load 2.24/4 cores) before every browser run except one, which returned exit 3; I did the static sweep and the data work instead and returned when it cleared. One browser at a time, launched and closed by tools/lib/browser.mjs. NO TIMING FIGURE IS PUBLISHED ANYWHERE in this verdict: every number is a count, a pixel width, a rank or a boolean.",
+  "disk_note": "/ was at 100% (131 MB free) and `git worktree add` FAILED OUTRIGHT with 'No space left on device'. Reclaimed 2.3 GB by deleting three scratch trees more than two hours stale (headboot 03:17, head-tree 10:13, teardown 10:06) and left everything from the previous 45 minutes untouched. scratchpad/wt-hud is a LIVE registered worktree at a73eee2 (W1-HUD-TOAST) and was not touched.",
+  "depends_on": [
+   "corpus/30-quests/RI-QST01-faction-escalation-shape.md",
+   "corpus/30-quests/RI-QST03-faction-gating.md",
+   "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "game/data/**",
+   "game/src/**",
+   "tools/lib/browser.mjs",
+   "tools/lib/cli.mjs",
+   "tools/quests/faction-joining-probe.mjs",
+   "tools/quests/critic-w1-20-play.mjs",
+   "tools/quests/critic-w1-20-ledgers.mjs",
+   "tools/quests/critic-w1-20-reach.mjs",
+   "tools/quests/critic-w1-20-wraptest.mjs"
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "A data, text and measurement piece. The one pixel measurement here — the toast fit — is a legibility fact (does the sentence land inside the parchment), not an art-direction judgement, and is measured in pixels against a declared rectangle rather than compared to a reference image."
+ },
+ "reference_items": [
+  {
+   "id": "RI-QST01",
+   "path": "corpus/30-quests/RI-QST01-faction-escalation-shape.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "Quantitative targets table plus a hard-fail list; 'We lose = score < 6, or any hard fail.'",
+   "native_score": 3,
+   "native_max": 10,
+   "native_verdict": "TWO HARD FAILS. Five of eight lines fail the volume clause and the_dockhands fails the honesty clause. The model behind the ladders is excellent and almost entirely unpopulated.",
+   "score_0_10": 3.5,
+   "measured": "full",
+   "hard_fails": [
+    "Volume: RI-QST01 fails a line with total < 18, any empty rank band, or mean quests/rank < 2.0. Measured over game/data/quests/**: the_dockhands 4 (0.50), the_rootkeepers 3 (0.38), the_drowned_court 2 (0.25), the_ixtu_vakh 2 (0.25), deep_kin 1 (0.12). Five of eight lines, each with six or seven EMPTY rank bands. Only the three W1-FACTIONS lines pass at 18 (2.25).",
+    "Honesty: 'Any faction line where every quest is honest (deceit == null throughout) -> fail.' the_dockhands has 4 category=faction quests and deceit == null on every one."
+   ],
+   "evidence": [
+    "reports/critic-w1-20-faction-skeleton.md §5",
+    "static census over game/data/quests/*.json cross-referenced against the 8 ladders in game/data/quests/faction-gates.json"
+   ],
+   "why_not_ten": "The four lines this round opened are one quest deep each against the carried lines' eighteen. The round PREDICTED this precisely and ruled it (S-W1-20-C, width before depth in wave 1). The prediction is accurate and the ruling is defensible; the hard fail is still a hard fail, and RI-QST01 is the item this piece is judged by.",
+   "path_to_ten": "Quests at ranks 1-7 on the four new lines rather than a second quest at rank 1; at least one deceit != null quest at rank <= 3 on the_dockhands per Table B; faction-discipline.json rows for the four new lines."
+  },
+  {
+   "id": "RI-QST03",
+   "path": "corpus/30-quests/RI-QST03-faction-gating.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "§B per-quest reputation delta band +4..+10; §C exclusivity groups with escape hatches.",
+   "native_score": 5,
+   "native_max": 10,
+   "native_verdict": "Exclusivity is the best-working part of the whole faction system and is measured through play. The per-quest reputation cap is breached 2x on all four new quests, and the round's report states the wrong number and reasons from it.",
+   "score_0_10": 4.0,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "QST03-B-reputation-delta",
+     "result": "fail",
+     "target": "+4..+10 per quest",
+     "observed": "20 per joining quest, measured through play (critic-w1-20-ledgers.mjs L2: reputation_from_one_joining_quest = 20). All four quests declare faction_reputation 10 at QUEST level and 10 again on EVERY resolution; mergeConsequences() sums them."
+    },
+    {
+     "id": "QST03-C-exclusivity",
+     "result": "pass",
+     "observed": "Measured through play (L5): joining the Drowned Court sets rivalry_locked [the_imperial_assize]; questOpen on Q-ASSZ-00 then returns 'The Imperial Assize will not deal with you: you are The Drowned Court; assizer-corvo disposition 26.5/30'. both_memberships_held false. faction-gates.json also carries enemy_pairs and EARNED rivalries with named escape hatches."
+    },
+    {
+     "id": "QST03-ladder-dimensions",
+     "result": "pass",
+     "observed": "All 8 ladders gate each rank on reputation AND an attribute AND skill_1 AND skill_2 AND a world_state (7/7/6/3 of 8 ranks non-null respectively), with favoured_attributes and favoured_skills per line."
+    }
+   ],
+   "evidence": [
+    "reports/critic-w1-20-faction-skeleton.md §5 and §6",
+    "reports/critic-w1-20/ledgers.json L2, L5"
+   ],
+   "why_not_ten": "The cap breach is real and reproducible, and the report builds its 'the Drowned Court still cannot reach Q-SOUL-02' argument on the wrong figure."
+  },
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "side": "neutral",
+   "kind": "structure",
+   "native_scale": "For every model shipped, name the world-side consumer by path and demonstrate it by perturbing the model and watching an entity change behaviour.",
+   "native_score": 7,
+   "native_max": 10,
+   "native_verdict": "Better than the round claimed. Rank reaches six consumers, five outside quest gating, all demonstrated by perturbation with a positive control that had to move first. Held down because two of the six are models with no world-side caller at all, and five of seven joinable lines have no hall.",
+   "score_0_10": 6.5,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "MTH07-dialogue",
+     "result": "pass",
+     "observed": "sim/dialogue/disposition.js factionTerm -> (fDispFactionRankMult*rank + base) * mod * reaction. Ranks 0-7: the_wet_ledger disposition 44->65 (faction term 6->27), the_drowned_court 59->90.5 (9->40.5), the_rootkeepers 82->100 clamped (12->54)."
+    },
+    {
+     "id": "MTH07-theft",
+     "result": "pass",
+     "observed": "sim/stealth/theft.js:26 — an object owned by a faction you hold rank >= 2 in stops being theft. Measured true->false on the two lines that own a hall."
+    },
+    {
+     "id": "MTH07-trespass",
+     "result": "pass",
+     "observed": "sim/stealth/theft.js:74 — a faction_interior zone is a trespass iff rank < 1. Measured true->false on lilmoth.factor0.r0 and lilmoth.priest6.r0."
+    },
+    {
+     "id": "MTH07-guard",
+     "result": "pass",
+     "observed": "The round's own C1, independently reproduced: warbrood shift 0->4->8 (wet_ledger), 8->10->16 (court), 16->22->34 (rootkeepers)."
+    },
+    {
+     "id": "MTH07-price",
+     "result": "fail",
+     "observed": "The quote moves with rank (122->110, 113->94, 99->89) ONLY because I handed it a disposition. `priceQuote` has exactly one caller in game/src — Engine.getPriceQuote() — and that is reached only from the harness. No shop, barter or parley path prices anything with it; combat/parley.js uses a flat cfg.gold_price. The world never asks."
+    },
+    {
+     "id": "MTH07-arrest",
+     "result": "fail",
+     "observed": "sim/crime/justice.js:70 adds a faction_invocation arrest topic at rank >= 4, and it does appear. But Engine.arrestTopics() takes factionRank as an ARGUMENT and never reads sim.stealth.p.standings, and has no world-side caller either — it is reached only from the harness."
+    },
+    {
+     "id": "MTH07-hall-census",
+     "result": "fail",
+     "observed": "Only two of eight laddered factions own a faction_interior anywhere in the populated world: wet-ledger (18 zones) and drowned-court (14). the_rootkeepers, the_dockhands, the_ixtu_vakh, the_xul_aneekh and the_imperial_assize have none, so theft and trespass are dead consumers for five of the seven joinable lines — including three of W1-20's own four."
+    },
+    {
+     "id": "MTH07-positive-control",
+     "result": "pass",
+     "observed": "critic-w1-20-reach.mjs refuses to publish any row unless the guard law factor moved first. It FAILED on my first run (getGuardTerms(race) is the race table and carries no faction term) and the tool correctly suppressed all other findings until the readout was fixed."
+    }
+   ],
+   "evidence": [
+    "reports/critic-w1-20/reach.json",
+    "reports/critic-w1-20-faction-skeleton.md §4"
+   ],
+   "why_not_ten": "Two of the six consumers are models the running world never calls, and the round's own CONSUMPTION section counts factionRefusal() and the offer gate as consumers when both ARE quest gating — so it claimed three and demonstrated one outside the gate."
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "reports/critic-w1-20-faction-skeleton.md",
+   "kind": "report",
+   "produced_by": "written by me; every number in it is transcribed from the JSON artifacts below",
+   "source": "mine"
+  },
+  {
+   "path": "reports/critic-w1-20/wrap-A0-clean.json",
+   "kind": "report",
+   "produced_by": "node tools/quests/critic-w1-20-wraptest.mjs --entry <worktree>/game/index.html --label A0-clean (mine)",
+   "source": "mine",
+   "note": "GREEN 7/7. hud.js meta.widest_px and the text register's own per-draw-call advance width agree to within 1 px on all seven lines — the precondition for the break arms meaning anything."
+  },
+  {
+   "path": "reports/critic-w1-20/wrap-B1-maxW-broken.json",
+   "kind": "negative-evidence",
+   "produced_by": "same tool, with `const maxW = 99999 * s;` in game/src/ui/hud.js inside a detached worktree at fb2cb09 (mine)",
+   "source": "mine",
+   "note": "RED 0/7, overflow 97.7-423.4 px. NOT REPRODUCIBLE from the tool alone — it needs the break. THE ROUND'S REPAIR HOLDS."
+  },
+  {
+   "path": "reports/critic-w1-20/wrap-B2-failopen.json",
+   "kind": "negative-evidence",
+   "produced_by": "same tool, with maxW broken AND `widest_px` deleted from hud.js's meta object (mine)",
+   "source": "mine",
+   "note": "The shipped `fits` reports TRUE on all seven lines while all seven run 203-423 px off the paper. NOT REPRODUCIBLE from the tool alone."
+  },
+  {
+   "path": "reports/critic-w1-20/joining-under-break2.json",
+   "kind": "negative-evidence",
+   "produced_by": "node tools/quests/faction-joining-probe.mjs --entry <break-2 worktree>/game/index.html (the ROUND'S OWN probe, unmodified)",
+   "source": "the round's, run by me",
+   "note": "EXIT 0. Summary byte-identical to the clean run including problems: [] and refusals_spoken_and_drawn_on_screen: 7."
+  },
+  {
+   "path": "reports/critic-w1-20/reach.json",
+   "kind": "report",
+   "produced_by": "node tools/quests/critic-w1-20-reach.mjs (mine)",
+   "source": "mine",
+   "note": "Rank 0-7 x three lines x six consumers, positive control green."
+  },
+  {
+   "path": "reports/critic-w1-20/selfref-sweep.json",
+   "kind": "report",
+   "produced_by": "node <scratchpad>/selfref-critic-w1-20.mjs --json (mine)",
+   "source": "mine",
+   "note": "932 files, 291,481 lines; 385 form-1 and 42 form-2 hits with the verdict-producing subset marked."
+  },
+  {
+   "path": "reports/critic-w1-20/play.json",
+   "kind": "report",
+   "produced_by": "node tools/quests/critic-w1-20-play.mjs (my predecessor's tool, re-run by me)",
+   "source": "predecessor's",
+   "note": "6 findings, exit 1: the deep_kin double ladder and three recruiters not reachable on foot."
+  },
+  {
+   "path": "reports/critic-w1-20/ledgers.json",
+   "kind": "report",
+   "produced_by": "node tools/quests/critic-w1-20-ledgers.mjs (my predecessor's tool, re-run by me)",
+   "source": "predecessor's",
+   "note": "4 findings, exit 1: the double ledger, the 20-not-10 reputation, and two recruiters unreachable from all four bearings. Its L4 is CORRECTED in this verdict as an inert control."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "observed": "Nothing in this piece touches frames, hitboxes, stamina, poise or animation. The four new quests add no violent resolution; every resolution is work, carriage or a conversation."
+    },
+    {
+     "id": "A2",
+     "result": "pass",
+     "observed": "No level scaling anywhere in the faction path. Rank is derived from reputation, attributes, skills and world flags — never from character level."
+    },
+    {
+     "id": "A3",
+     "result": "pass",
+     "observed": "The rank -> warbrood_disposition_shift crossing changes a number the law reads and leaves archetypes, statblocks and movesets identical, which is the round's own claim and I did not find it false."
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "pass",
+     "observed": "Souls are levelling only. No faction quest, gate, refusal or rank in this piece reads or writes soulsHeld; the four new quests pay reputation, gold-free, and grant no souls."
+    },
+    {
+     "id": "B2",
+     "result": "pass",
+     "observed": "Readmission in faction-discipline.json is priced in GOLD (price_gold 1200) and reputation, not souls."
+    },
+    {
+     "id": "B3",
+     "result": "pass",
+     "observed": "grep over game/data/quests/faction-joining-wave1.json: zero mentions of souls."
+    }
+   ]
+  },
+  "ar3": {
+   "seam_sterile": false,
+   "crossings": [
+    "A faction rank changes what counts as theft and where the player may walk (sim/stealth/theft.js), measured by perturbation on the two lines that own a hall.",
+    "A faction rank changes a guard's law factor and the war-brood disposition shift (sanction.json faction_law_factor), reproduced independently of the round."
+   ],
+   "justification": "Both are measured in the running world by perturbing the rank and reading an entity's behaviour, not read from source. Neither touches a frame, a hitbox or a statblock, so both are legal crossings under AR-3 rather than AR-1 violations."
+  },
+  "consumption": {
+   "pass": true,
+   "values_declared": 8,
+   "values_with_a_demonstrated_consumer": 6,
+   "note": "Eight laddered rank values; six consumers demonstrated by perturbation with a positive control that had to move first (dialogue disposition, theft classification, trespass, arrest topic, price quote, guard law factor). TWO of the six are models with NO world-side caller — priceQuote and arrestTopics are reached only from the harness — and the theft/trespass pair is dead for five of the seven joinable lines because they own no interior anywhere in the world."
+  }
+ },
+ "score": {
+  "overall_0_10": 3.5,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "FAIL against the wave-1 gate of 7.0 — the best faction MODEL in the project, on ladders that are seven-eighths empty",
+  "confidence": "high",
+  "confidence_note": "Every figure is a count, a pixel width, a rank or a boolean, and none is a timing measurement, so the box's load does not touch any of them. The break arms were taken in a frozen detached worktree. The headline was reproduced cold before anything was judged.",
+  "weights": {
+   "note": "min-over-axes. RI-QST01's own scoring section is a hard-fail gate ('We lose = score < 6, or any hard fail'), so min is the item's construction rather than my preference. No axis is averaged away."
+  },
+  "axes": {
+   "joining_width": 6.5,
+   "refusal_as_voice": 7.5,
+   "instrument_integrity": 5.5,
+   "consumption_rimth07": 6.5,
+   "reputation_arithmetic_riqst03": 4.0,
+   "faction_texture_escalation_riqst01": 3.5
+  }
+ },
+ "status": "FAIL",
+ "status_reasons": "Two RI-QST01 hard fails (volume on five of eight lines; honesty on the_dockhands) and an RI-QST03 §B cap breach on all four authored quests. The item's own rule is 'We lose = score < 6, or any hard fail'. min-over-axes is 3.5 against a wave-1 gate of 7.0. AR-1 and AR-2 both pass and the piece has a buildable remedy, so this is FAIL and not VOID.",
+ "hard_fails": [
+  "RI-QST01 volume: five of eight faction lines carry fewer than 18 quests, have six or seven empty rank bands, and score mean quests/rank between 0.12 and 0.50 against a floor of 2.0.",
+  "RI-QST01 honesty: the_dockhands has four category=faction quests and deceit == null on every one.",
+  "RI-QST03 §B: all four authored joining quests pay 20 reputation against a stated per-quest band of +4..+10, because quest-level and resolution-level faction_reputation are both 10 and are summed by mergeConsequences()."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-faction-ladders-are-doors-onto-empty-corridors",
+  "subsystem_path": "quests.faction.escalation",
+  "severity": "blocking",
+  "what": "Eight eight-rank ladders exist and are richly specified — every rank gates on reputation, an attribute, two skills and a world state. Three lines carry 18 quests each; the other five carry 1, 2, 2, 3 and 4, giving mean quests-per-rank of 0.12 to 0.50 against RI-QST01's floor of 2.0, with six or seven EMPTY rank bands per line. the_dockhands additionally has four faction quests and not one with deceit != null. The four lines this round opened have no expulsion, no readmission, and — for three of the four — no interior anywhere in the populated world, so a rank in them changes nothing about property or trespass.",
+  "why_it_matters": "You join the Rootkeepers by counting a well, and the Rootkeepers never ask you for anything again.",
+  "evidence": [
+   "Static census over game/data/quests/*.json against the 8 ladders in faction-gates.json: imperial_assize 18 (2.25), wet_ledger 18 (2.25), xul_aneekh 18 (2.25), dockhands 4 (0.50, 0 deceit), rootkeepers 3 (0.38), drowned_court 2 (0.25), ixtu_vakh 2 (0.25), deep_kin 1 (0.12).",
+   "game/data/progression/faction-discipline.json carries expulsion and readmission for exactly three factions: the_wet_ledger, the_imperial_assize, the_xul_aneekh.",
+   "faction_interior census over game/data/world/property/*.json: wet-ledger 18 zones, drowned-court 14, every other faction ZERO.",
+   "reports/critic-w1-20/reach.json — the_rootkeepers scores null on both theft and trespass because no hall exists to test."
+  ],
+  "remedy": "Author quests at ranks 1-7 on the four new lines rather than a second quest at rank 1; give the_dockhands at least one deceit != null quest at rank <= 3 per RI-QST01 Table B; add faction-discipline.json rows (expulsion flags + readmission price, reputation floor and offering NPC) for the four new lines; and place a faction_interior for at least the Rootkeepers and the Dockhands so their ranks reach the property and trespass consumers that already exist and already work."
+ },
+ "secondary_observations": [
+  "THE WRAP REPAIR HOLDS AND THE SAME SHAPE SURVIVES ONE LAYER DOWN. Breaking maxW to 99999 turns all seven refusals red (97.7-423.4 px off a 400 px panel) and an independent yardstick — the text register's own per-draw-call advance width, which hud.js does not publish — agrees to within 1 px. But ui/system.js:1167 reads `fits: (m.widest_px || 0) <= t.rect[2] + 0.5`: the COMPARISON moved out of hud.js, the MEASUREMENT did not. Delete widest_px from hud.js's meta and `fits` reports true on all seven lines while all seven overflow, and the round's own probe exits 0 with a byte-identical summary.",
+  "TWO ERRORS OF FACT IN THE ROUND'S REPORT. (1) One joining quest pays 20 reputation, not the 10 the report states twice and reasons from. (2) deep_kin is not one body under two ids: joining the Xul-Aneekh through play leaves deep_kin at null and derived rank 0 while the_xul_aneekh reaches reputation 46, and the two ladders carry different rank names — so the sentence the world tells the player, 'It is the same people and the same door', is false of the running world.",
+  "TWO OF THE FOUR NEW RECRUITERS CANNOT BE REACHED ON FOOT. Four approach bearings each: undertaker-vaskh arrives from all four (1.57 m), rootkeeper-jeen from one (1.58 m), cutter-neeth from none (best 5.86 m short), npc-porter-eeja from none (best 31.97 m short). travelToGiver() says all four stand in the world; two of them cannot be walked to.",
+  "I CORRECT MY OWN PREDECESSOR. Its L4 concluded rank reaches no dialogue consumer from 93 -> 93 after poking the stored rank 0 -> 1. Engine._questFactionsView() folds the derived rank in as Math.max(stored, highestQualifying()), and the derived rank was ALREADY 1, so the poke moved no number. That was an inert control — the same failure the round itself was caught by. Driven properly, dialogue disposition moves 44->65, 59->90.5 and 82->100 across ranks 0-7.",
+  "THE DISPATCH'S PREMISE ABOUT THE REFUSAL IS WRONG AND I RULE AGAINST IT. My brief says a refusal that states no threshold is worse than one that does. The refusals DO state the threshold ('The slate has 0 beside your name and a Leaf has 10'). The round's phrase 'it states no threshold' means the JSON hardcodes no number — every figure is filled from FactionGates.evaluate() at speak time, so the prose cannot drift from the ladder. That is the best single decision in the piece. REVERSIBLE if someone shows a spoken refusal that omits the number a player needs; I checked seven and all seven carry it.",
+  "SWEEP FOR THE SAME SHAPE, 932 files / 291,481 lines under game/src and tools. FOUND: ui/system.js:1167 (confirmed by break); NINE rows in tools/analysis/audio-budget.mjs (B6, C-D2, C-D3, V1-V6) that go green if audioStats() stops publishing a field — RULES rule 4's 'passing against an empty register', pre-armed in nine places; tools/quests/critic-faction-r2.mjs:352. PARTIAL: tools/harness/mag-probe.mjs:597, which reconciles arithmetic but cannot catch a wrong focus_base. CLEARED: marker-diff.mjs:332 (fails closed), ui-census.mjs:431 (expected transcribed independently from RI-PRG01's cubic — the pattern to copy), cam-probe.mjs:1035 (bars from the item), 22 remaining form-2 hits (runtime logic not checks), and every before/after and armA/armB form-1 comparison.",
+  "ONLY 3 OF 6 AUTHORED REFUSAL KINDS WERE HEARD. faction-refusals.json authors reputation, attribute, skill_1, skill_2, world_state and welcome for each of seven lines. A rank x reputation sweep reaches reputation, skill_1 and welcome only; the other three need skills and attributes raised first, which this census did not do. Reported as a floor, not as 'unreachable'."
+ ],
+ "path_to_ten": "Wave 2 owes this subsystem quests, not systems. The ladders, the exclusivity graph, the discipline model and the refusal voice are already better than the content standing on them. Fill ranks 1-7 on the four new lines, give the_dockhands a deceitful quest at rank <= 3, extend faction-discipline.json to all seven joinable lines, place halls for the five factions that have none, split the double faction_reputation so a joining quest pays 10 and not 20, and either give deep_kin its own line or make its two standing rows one.",
+ "arbitration_questions": [
+  {
+   "id": "AQ-W1-20-A",
+   "question": "Should a check ever be allowed to compute its measured value from the subject under test, when the comparison has been moved elsewhere? W1-20's repair moved the comparison to ui/system.js and left the measurement in ui/hud.js behind a `|| 0` default, which fails open. The same construction appears in nine audio-budget rows. A project rule — 'a yardstick must be produced by something other than the subject' — would catch all eleven at once.",
+   "why_it_matters": "This is the second time in one piece that a green check was published over a broken subject, and the sweep says the shape is in the tree in at least eleven more places."
+  }
+ ],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "ref_item": "RI-MTH07",
+   "deviation": "Built a new instrument, tools/quests/critic-w1-20-reach.mjs, because no tool in the tree perturbs a faction rank and reads the non-quest consumers. Declared under RULES 24.",
+   "why": "The dispatch asks specifically whether rank reaches prices, dialogue, who greets you and who attacks you, and the round's CONSUMPTION section answers none of those four.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-MTH07",
+   "deviation": "Built tools/quests/critic-w1-20-wraptest.mjs, a second toast-fit instrument that does not import the round's probe and re-measures every drawn row from render/text-register.js's own per-draw-call advance width.",
+   "why": "The round's repaired check still reads a number hud.js publishes. An independent yardstick was the only way to tell a real repair from a second inert control.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-QST01",
+   "deviation": "Re-ran my predecessor's two committed instruments (critic-w1-20-play.mjs, critic-w1-20-ledgers.mjs) rather than rebuilding them, per RULES 3.",
+   "why": "They were complete and on disk. Their findings are reported, and one of them (L4) is corrected rather than carried forward.",
+   "affects_scores": true
+  }
+ ],
+ "unmeasured": [
+  "The three refusal kinds (attribute, skill_2, world_state) that need skills and attributes raised before they surface. The census swept rank x reputation only.",
+  "WHY cutter-neeth and npc-porter-eeja cannot be walked to. Measured that the walker stops short from all four bearings; not diagnosed as geometry, a door or the walker.",
+  "Whether deep_kin should be deleted. Measured that its exemption sentence is false of the running world; deleting the id still orphans another piece's Q-MAG-07, so the ruling stands until that is resolved.",
+  "The four new lines' behaviour after expulsion, because faction-discipline.json has no rows for them to be expelled by."
+ ],
+ "blind_comparisons": [],
+ "self_audit": {
+  "did_i_find_a_gap": true,
+  "gaps_found": 11,
+  "hard_fails_found": 3,
+  "did_i_run_the_aggregation": true,
+  "aggregation_note": "Re-ran the round's own probe cold before judging anything (RULES 9) rather than reading its report, and re-ran both of my predecessor's instruments end to end.",
+  "did_my_instrument_go_red": true,
+  "instrument_falsification": "THREE separate falsifications, all reported. (1) critic-w1-20-wraptest.mjs: broke maxW to 99999 in a detached worktree and watched 7/7 go red with two independent yardsticks agreeing to within 1 px — the round's repair verified rather than believed. (2) A SECOND break (maxW broken AND widest_px dropped from meta) found the residual fail-open, and I confirmed it by running the ROUND'S OWN probe against that tree and watching it exit 0 with a byte-identical summary. (3) critic-w1-20-reach.mjs carries a positive control that must move before any other row may be read, and IT FAILED ON MY FIRST RUN — getGuardTerms(race) is the race table and carries no faction term — so the tool suppressed all eleven of its findings until I fixed the readout. All three are in the verdict.",
+  "did_i_judge_something_i_built": false,
+  "did_i_commit": true,
+  "commit_note": "My brief instructed me to commit and to check tools/bank.mjs's own exit code rather than a pipeline's. Committed only my own declared paths with `git commit --only`, per RULES 17.",
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": true,
+  "blind_done_where_required": true,
+  "blind_done_where_required_note": "None of RI-QST01, RI-QST03 or RI-MTH07 specifies a blind pair. No blind comparison was required and none was built, so RULES 25 does not bite.",
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "The uncomfortable part of this verdict is that the piece did what it was told and still fails. The round PREDICTED the RI-QST01 volume failure precisely, ruled it in writing (S-W1-20-C), and named it in its own 'what this piece did NOT do'. I have scored it as a hard fail anyway, because RI-QST01 is the item and 'nothing counts because someone says so' cuts both ways: a ruling does not retire a measurement. The number to argue with is 3.5 on the escalation axis, and the argument to make is that wave-1 width was worth more than wave-1 depth — which is a scope question for the orchestrator, not a measurement question for me. I also CORRECTED my own predecessor's L4 rather than inheriting it, and I state plainly that my brief's premise about the refusal was wrong."
+ },
+ "notes": "Coordination: node tools/ownership.mjs --for game/src/ui/hud.js reports nobody live has declared it, but `git worktree list` shows a live detached worktree at a73eee2 under scratchpad/wt-hud — that is W1-HUD-TOAST, mid-flight on the same file. I did NOT touch the live tree's hud.js; every break was applied inside my own throwaway worktree at fb2cb09 and reverted. W1-HUD-TOAST's measured 58 of 75 strings (77%) overflowing that channel is consistent with everything here: my long-case fixture is truncated with an ellipsis at 3 lines even on the repaired build, so the wrap fixes the OVERFLOW and converts part of the problem into silent truncation. That is a better failure and it is still a failure, and it is theirs to finish."
+}

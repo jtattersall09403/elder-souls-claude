@@ -1,0 +1,50 @@
+round-2 successor re-measurement, HEAD 3675320, 2026-08-08T12:51:52Z
+
+$ node tools/quests/attr-scale-audit.mjs --self-test
+attr-scale-audit --self-test: 21/21 rules go red on their own violation.
+exit=0
+
+$ node tools/quests/critic-attr-scale-dtf.mjs --self-test
+critic-attr-scale-dtf --self-test: 4/4
+exit=0
+
+$ node tools/quests/critic-attr-scale-dtf.mjs
+critic-attr-scale-dtf — delete-the-fix against e7ed252^ (17 quest files), sheet p10.
+reports/faction-signature-sweep.json is GITIGNORED: every ceiling below is a claim about a file the commit does not contain.
+
+resolutions reverted 42  (key renames 11, demand cells 53)
+
+CURRENT    defects=  0  ladder_inversions=0  nonviolent 370/370 = 100%  shut_by_defect=0  quest-level 124/124
+REVERTED   defects= 23  ladder_inversions=1  nonviolent 347/370 = 93.8%  shut_by_defect=19  quest-level 123/124
+
+defect bands after revert: {"no_such_skill":11,"unreachable":3,"no_reserve":9}
+
+THE RESERVE, MEASURED. The tool subtracts 2 from a ceiling that now includes a bought
+stream. This is the margin that survives if the bought stream is not spent on that attribute:
+  attribute      hard cap   ceiling w/o bought   margin    specialist cap   p10 w/o bought   margin
+  agility           49                 49        0               45               45        0
+  endurance         18                 18        0               15               15        0
+  hist-bond         16                 16        0               16               16        0
+  intellect         23                 23        0               18               18        0
+  luck              12                 12        0               11               11        0
+  personality       22                 22        0               18               18        0
+  speed             18                 18        0               16               16        0
+  strength          28                 28        0               23               23        0
+  vigour            16                 16        0               12               12        0
+  willpower         23                 23        0               22               22        0
+
+INJECTION SWEEP — a personality demand walked up through the bands on Q-BLAK-01 res_hold:
+  personality  16 -> specialist   defect=false  auditor exit 0
+  personality  18 -> specialist   defect=false  auditor exit 0
+  personality  20 -> dedicated    defect=false  auditor exit 0
+  personality  21 -> dedicated    defect=false  auditor exit 0
+  personality  22 -> dedicated    defect=false  auditor exit 0
+  personality  23 -> no_reserve   defect=true  auditor exit 1
+  personality  24 -> no_reserve   defect=true  auditor exit 1
+  personality  25 -> max_only     defect=true  auditor exit 1
+  personality  32 -> max_only     defect=true  auditor exit 1
+  personality  34 -> unreachable  defect=true  auditor exit 1
+  personality  99 -> unreachable  defect=true  auditor exit 1
+
+THE FIX REPRODUCES: the control arm is genuinely different from the positive arm.
+exit=0

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `09a5b80`: 801 tools, 153 reference
+so it cannot drift. Generated at `64a4b01`: 802 tools, 153 reference
 items, 93 pieces in flight.
 
 Its purpose is to stop 93+ concurrent agents each paying separately to discover the
@@ -664,7 +664,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 46
+### `tools/quests/` — 47
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -682,6 +682,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G: the shared 5x5 chart font.
 - `tools/quests/critic-readable-slots-and-marks.mjs` — W1-READABLES r2 critic, attack F.
 - `tools/quests/critic-unrouted-census.mjs` — W1-READABLES r2 critic, attack E.
+- `tools/quests/critic-w1-20-census.mjs` — the W1-20 critic's static census.
 - `tools/quests/critic-w1-20-ledgers.mjs` — the W1-20 round-1 critic's SECOND instrument.
 - `tools/quests/critic-w1-20-play.mjs` — THE W1-20 ROUND-1 CRITIC'S OWN INSTRUMENT.
 - `tools/quests/critic-w1-20-reach.mjs` — the W1-20 critic's THIRD instrument.
@@ -1140,6 +1141,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `S39-falsifier` | done | none — instrument built, run, and its verdict written into ARBITRATION.md under S39. | `orchestration/status/S39-falsifier.json` `tools/input/arbiter-clock-s39.mjs` `tools/input/arbiter-clock-s39-shot.mjs` `reports/s39/arbiter-clock-s39.json` `reports/s39/arbiter-clock-s39-selftest.json` `corpus/00-doctrine/ARBITRATION.md` |
+| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
 | `PLT01-STEPRATE-critic` | reading | Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myse | `orchestration/status/PLT01-STEPRATE-critic.json` |
 | `judge-prose-r5` | running | read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding | `orchestration/status/judge-prose-r5.json` |
@@ -1148,8 +1151,6 @@ work is the difference between resuming and starting over.
 | `PLAN-COST-EXPERIMENTS-critic` | in_progress | Write BLOCKING/CARRIED critique into orchestration/plans/COST-EXPERIMENTS.md, state verdic | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` |
 | `measure-own-e-w1-hud-toast-b` | running | 1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify th | — |
 | `W1-12-r2-critic` | done | none — verdict published. Hand to the orchestrator. | `orchestration/status/W1-12-r2-critic.json` `corpus/90-verdicts/wave1/W1-12-r2.md` `corpus/90-verdicts/wave1/W1-12-r2.json` `corpus/90-verdicts/GAP-LEDGER.json` `corpus/90-verdicts/GAP-LEDGER.md` `tools/combat/critic-w1-12-r2-m3-chart.mjs` |
-| `S39-falsifier` | ran; full four-arm run in flight | Full four-arm run in flight (a1,a2,a3,a4). Then: append the falsifier result to S39 in ARB | `orchestration/status/S39-falsifier.json` `tools/input/arbiter-clock-s39.mjs` `tools/input/arbiter-clock-s39-shot.mjs` `reports/s39/arbiter-clock-s39.json` `reports/s39/arbiter-clock-s39-selftest.json` |
-| `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `W1-PROSE-TICS-r4-instrument` | ? | Dispatch a fresh judge to reports/packs/prose-tics-r5 (NOT the builder of the prose, NOT m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` `tools/blind/leakcheck.mjs` `tools/blind/mask-text.mjs` `tools/prose/build-r2-packs.mjs` `corpus/80-methods/RI-MTH03-blind-comparison-protocol.md` `reports/packs/prose-tics-r2/SUPERSEDED.md` |
 | `critic-w1-20` | running | write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank | `orchestration/status/critic-w1-20.json` `tools/quests/critic-w1-20-reach.mjs` |
 | `critic-w1-attr-scale` | running | SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usag | `orchestration/status/critic-w1-attr-scale.json` |
