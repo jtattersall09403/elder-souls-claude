@@ -5,32 +5,77 @@
   "round": 4,
   "state": "building",
   "started_at": "2026-08-08",
-  "brief": "W1-23 round 4 — the library, its names, and whether anything in the world can reach it. Fix the Argonian name generator (55.8% hyphenated-English vs attested 11%), make the library reachable (3 of 19 contradiction pairs both-side reachable), fill the taxa shortfall where honest, and build the RI-LOR04 validator rule 24 demands.",
+  "brief": "W1-23 round 4 \u2014 the library, its names, and whether anything in the world can reach it. Fix the Argonian name generator (55.8% hyphenated-English vs attested 11%), make the library reachable (3 of 19 contradiction pairs both-side reachable), fill the taxa shortfall where honest, and build the RI-LOR04 validator rule 24 demands.",
   "headline": "WIP",
-  "next_step": "baseline taken; find the roster generator",
+  "next_step": "part 2 \u2014 make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement machinery",
   "baseline": {
     "commit": "69e6ffa3df9d156b5ce648c48b220794e4a61f6d",
     "tool": "tools/lore/critic-w1-23-r3-reach.mjs",
     "self_test": "14/14 PASS re-run before use",
-    "A_pairs_both": 3, "A_pairs_one": 1, "A_pairs_neither": 15,
-    "texts_reachable": 53, "texts_total": 152,
-    "B_disputes_inert": 12, "B_disputes_moved": 16,
-    "C_argonian_named": 217, "C_descriptive": 121, "C_descriptive_share": 0.558,
-    "C_reused_names": 43, "C_unarticled_of": 18
+    "A_pairs_both": 3,
+    "A_pairs_one": 1,
+    "A_pairs_neither": 15,
+    "texts_reachable": 53,
+    "texts_total": 152,
+    "B_disputes_inert": 12,
+    "B_disputes_moved": 16,
+    "C_argonian_named": 217,
+    "C_descriptive": 121,
+    "C_descriptive_share": 0.558,
+    "C_reused_names": 43,
+    "C_unarticled_of": 18
   },
-  "files_touched": ["orchestration/status/W1-23-r4.json"],
-  "files_claimed": [
+  "files_touched": [
+    "orchestration/status/W1-23-r4.json",
+    "tools/lore/lib/namegen.mjs",
+    "tools/lore/name-rosters.mjs",
     "tools/lore/lor04-validate.mjs",
-    "tools/lore/place-library.mjs",
-    "game/data/world/interiors/",
     "game/data/npcs/",
-    "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "game/data/world/property/",
+    "game/data/world/settlements/",
+    "game/data/world/interiors/"
   ],
-  "redundant_with": ["W1-READABLES-r2", "W1-READABLES", "W1-LIBRARY-r2", "W1-23-r2"],
+  "files_claimed": [
+    "tools/lore/place-library.mjs",
+    "game/data/books/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/",
+    "reports/w1-23-r4/"
+  ],
+  "redundant_with": [
+    "W1-READABLES-r2",
+    "W1-READABLES",
+    "W1-LIBRARY-r2",
+    "W1-23-r2"
+  ],
   "notes": [
     "Status written FIRST per rule 1, before reading anything.",
     "Baseline taken from the critic's own instrument after re-running its --self-test (14/14).",
-    "HEAD moved between `git rev-parse` (3707850) and the tool's own stamp (69e6ffa) — a dozen agents are committing. Every number is stamped by the tool that took it (rule 12)."
-  ]
+    "HEAD moved between `git rev-parse` (3707850) and the tool's own stamp (69e6ffa) \u2014 a dozen agents are committing. Every number is stamped by the tool that took it (rule 12)."
+  ],
+  "naming_done": {
+    "tools": [
+      "tools/lore/lib/namegen.mjs",
+      "tools/lore/name-rosters.mjs",
+      "tools/lore/lor04-validate.mjs"
+    ],
+    "critic_instrument_before_at_69e6ffa": {
+      "argonian_named": 217,
+      "descriptive": 121,
+      "share": 0.558,
+      "reused": 43,
+      "unarticled": 18
+    },
+    "critic_instrument_after": "re-measure at the end",
+    "lor04_validate_after": {
+      "descriptive_share_all": 0.091,
+      "generated_only": 0.102,
+      "attested": 0.11,
+      "generated_violation_rate": 0.0185,
+      "generated_unknown": 0.0,
+      "hand_violation_rate": 0.2273,
+      "hand_unknown": 0.1212
+    },
+    "generated_hand_line": "258 generated / 101 hand-authored, criterion <GIVEN> <EPITHET> [of <slug>] read out of tools/world/build-property.mjs at run time"
+  }
 }

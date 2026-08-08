@@ -1,29 +1,94 @@
 {
   "task_id": "W1-17-r2",
-  "title": "W1-17 round 2 — dialogue: make what exists reachable and correct",
+  "title": "W1-17 round 2 \u2014 dialogue: make what exists reachable and correct",
   "state": "building",
   "started_at": "2026-08-08",
   "base_commit": "64dd5f9",
   "brief": "corpus/90-verdicts/wave1/W1-17-r1.md (FAIL 5.0/10). Do NOT rewrite prose, do NOT add volume.",
-  "next_step": "read RULES/INDEX/verdict/r1 status; then reproduce the 133 unhearable count from a tool",
+  "next_step": "write game/data/npcs/pop-trades.json (22 bodies) + index.json entry; then re-home 17 job-named infos; then res/voice-metrics/orphans",
   "objectives": [
-    {"id": "A", "what": "133 unhearable infos -> triage each (body / re-home / cut), report split", "state": "todo"},
-    {"id": "B", "what": "res has no reader: wire or cut, add consume.mjs arm either way", "state": "todo"},
-    {"id": "C", "what": "voice-metrics.mjs missing second_regex; republish BOTH archetype tic numbers", "state": "todo"},
-    {"id": "D", "what": "orphans: 0 should be 23 - report in the bucket the item names", "state": "todo"},
-    {"id": "E", "what": "raceTerm() throws - fix before census/shadow-audit/consume run", "state": "todo"},
-    {"id": "F", "what": "sapcutter/legionary 'indistinguishable' is a metric defect (RI-DLG06 B has no mood axis)", "state": "todo"},
-    {"id": "G", "what": "CONSUMPTION RI-MTH07 + delete-the-fix per amended rule 6 with a control watched go red", "state": "todo"}
+    {
+      "id": "A",
+      "what": "133 unhearable infos -> triage each (body / re-home / cut), report split",
+      "state": "todo"
+    },
+    {
+      "id": "B",
+      "what": "res has no reader: wire or cut, add consume.mjs arm either way",
+      "state": "todo"
+    },
+    {
+      "id": "C",
+      "what": "voice-metrics.mjs missing second_regex; republish BOTH archetype tic numbers",
+      "state": "todo"
+    },
+    {
+      "id": "D",
+      "what": "orphans: 0 should be 23 - report in the bucket the item names",
+      "state": "todo"
+    },
+    {
+      "id": "E",
+      "what": "raceTerm() throws - fix before census/shadow-audit/consume run",
+      "state": "done",
+      "result": "answer-census.mjs PLAYERS rebuilt: 4 impossible characters -> 10 constructible ones. assertPlayersAreConstructible() added and WATCHED GO RED."
+    },
+    {
+      "id": "F",
+      "what": "sapcutter/legionary 'indistinguishable' is a metric defect (RI-DLG06 B has no mood axis)",
+      "state": "todo"
+    },
+    {
+      "id": "G",
+      "what": "CONSUMPTION RI-MTH07 + delete-the-fix per amended rule 6 with a control watched go red",
+      "state": "todo"
+    }
   ],
-  "do_not_touch": ["first-match-wins / ordering — arbiter S37 is ruling", "tools/dialogue/arbiter-*"],
-  "files_touched": ["orchestration/status/W1-17-r2.json"],
+  "do_not_touch": [
+    "first-match-wins / ordering \u2014 arbiter S37 is ruling",
+    "tools/dialogue/arbiter-*"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-17-r2.json",
+    "tools/dialogue/answer-census.mjs",
+    "reports/w1-17-r2/answers-fixture10.json"
+  ],
   "files_claimed": [
     "game/data/dialogue/",
     "game/src/sim/dialogue/",
     "tools/dialogue/",
     "reports/w1-17-r2/",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/",
+    "game/data/npcs/pop-trades.json",
+    "game/data/index.json"
   ],
-  "notes": []
+  "notes": [],
+  "baseline": {
+    "commit": "64dd5f9 (working tree)",
+    "tool": "node tools/dialogue/critic-reach.mjs",
+    "unhearable_infos": 133,
+    "of_total": 1280,
+    "buckets": {
+      "no_such_actor": 40,
+      "no_actor_in_that_town": 90,
+      "always_outscored": 3
+    },
+    "census_answers_old_fixture": 75948,
+    "census_answers_new_fixture": 186357,
+    "gates_all_green_before": [
+      "check-data",
+      "check-content",
+      "check-quests",
+      "check-prose",
+      "check-dialogue-topics",
+      "check-souls-world"
+    ]
+  },
+  "s37": "NOT LANDED. corpus/00-doctrine/ARBITRATION.md tops out at S36; orchestration/status/arbiter-dlg-s37.json state=starting. I touch no ordering code and depend on neither algorithm; 130 of the 133 are excluded by SPEAKER-side gates (a, cell) which both algorithms evaluate identically as admissibility, so only the 3 \"always outscored\" are S37-dependent. Measured, not asserted \u2014 see reports/w1-17-r2/.",
+  "contention": "node tools/contention.mjs --gate exit 3 (5 browser instances, load 6.30/core). NO BROWSER RUN AT ALL. This is a text+data piece.",
+  "note_on_shared_files": "game/data/npcs/pop-trades.json is a NEW file I create, chosen deliberately so I do not edit the pop-*.json files W1-23-r4 has claimed (game/data/npcs/). game/data/index.json needs one additive entry or the engine will not load the file (populateSettlement reads this.data.npcs, which is built from index.json \u2014 a file the tools see and the engine does not would be a NEW dead model, which is the defect I am here to fix). Declared per rule 16. I do not touch game/src/character/converse.js: it is not mine and it is the file S37 is ruling on.",
+  "redundant_with": [
+    "W1-23-r4"
+  ]
 }

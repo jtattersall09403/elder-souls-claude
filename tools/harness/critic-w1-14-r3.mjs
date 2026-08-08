@@ -1,0 +1,509 @@
+#!/usr/bin/env node
+// critic-w1-14-r3.mjs — the critic's own instrument for W1-14 round 3 (magic, seam S19).
+//
+// It exists to attack the round's headline instrument (`tools/harness/w1-14-r3-dials.mjs`) and
+// its two fixes, and it deliberately does NOT import a line of it. Seven independent parts, one
+// browser, one report.
+//
+//  A  THE COMPARATOR'S OWN NULL.  The builder's control arm is `--break=nocast`, and every row
+//     under it exits at `NOT_DELIVERED` BEFORE `readDial()` is ever called — so it tests the
+//     delivery gate and never once exercises the BLIND/COUPLED comparison it is offered as the
+//     control for. The real null for a comparator is TWO IDENTICAL ARMS: cast the same spell
+//     twice, at the same dial settings, and demand BLIND on every row. Anything that comes back
+//     COUPLED there is arena noise the builder's 33/31/10 COUPLED readings are also carrying.
+//     A2/A3 are the positive direction: take a dial confirmed live and remove its reader
+//     (`__breakBindMagnitude`, `__breakFleeMotion`), and demand the comparator says BLIND.
+//
+//  B  AREA ON THE GROUND.  `area_r_m` was pinned at 0 for the whole previous history of this
+//     piece, so the ten "live" area dials have never been measured against a second radius by
+//     anything except the report under test. Bodies at surveyed distances from the volume's own
+//     centre; count how many took damage at r=2 and at r=8. A wider spell must hit more bodies.
+//
+//  C  THE TWO FIXES, both arms.  Summon strength against magnitude; flee distance against
+//     magnitude; and the same pair with the reader removed.
+//
+//  D  DURATION ON A DAMAGE EFFECT.  "Fire Damage 10 pts for 5 s" is 50 damage in Morrowind.
+//     Total damage at duration 1 s and at duration 30 s, same magnitude, same arena.
+//
+//  E  THE FOUR THINGS THE ROUND FOUND AND DID NOT TOUCH.  absorb_health's caster; the summon's
+//     side; frenzy's target; bind_greater's focus ceiling.
+//
+//  F  AR-1.  Determinism across repeated casts, and whether the clock, the weather, disposition
+//     or a bounty can reach a damage number.
+//
+//  G  SPELL-MAKING.  Can the dials be combined into one spell at all, and is there any surface
+//     other than the harness that reaches `makeSpell`.
+//
+// USAGE  node tools/harness/critic-w1-14-r3.mjs [--out <dir>] [--parts=A,B,C,D,E,F,G]
+import path from 'node:path';
+import { parseArgs, wantsHelp, usage, log, writeJson, ensureDir } from '../lib/cli.mjs';
+import { launchGame } from '../lib/browser.mjs';
+
+const USAGE = `critic-w1-14-r3.mjs — independent critic instrument for W1-14 r3
+  --out <dir>    report dir (default reports/critic-w1-14-r3)
+  --parts=A,B,C  restrict to named parts (default all)
+`;
+const args = parseArgs();
+if (wantsHelp(args)) usage(USAGE);
+const outDir = args.out ? path.resolve(String(args.out)) : path.resolve('reports/critic-w1-14-r3');
+ensureDir(outDir);
+const parts = args.parts ? String(args.parts).split(',').map((s) => s.trim().toUpperCase()) : ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+const handle = await launchGame(args);
+let report;
+try {
+  report = await handle.page.evaluate(async ({ PARTS }) => {
+    const H = window.__HARNESS;
+    await H.ready();
+    const D = H.getMagicData();
+    const out = { schema: 'elder-souls/critic-w1-14-r3@1', harness_version: H.version, parts: PARTS, notes: [] };
+    const r2 = (v) => Math.round(v * 100) / 100;
+    const r3 = (v) => Math.round(v * 1000) / 1000;
+
+    // ------------------------------------------------------------------ the arena
+    // Deliberately NOT the builder's arena verbatim; the bodies are placed by this file for the
+    // question each part asks, and every part states where they stand.
+    const baseArena = (opts = {}) => {
+      H.setSeed(opts.seed === undefined ? 4242 : opts.seed);
+      H.loadState('arena_flat');
+      H.setRenderRate(0);
+      H.resetMagicWorld();
+      H.setCharacter({ race: 'breton', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
+      for (let i = 0; i < 700; i++) {
+        for (const sk of ['sorcery', 'root-speech', 'warding', 'veiling']) H.grantSkillUse('cast_effective', { cost: 40, spell_skill: sk });
+        H.hearthRest();
+      }
+      H.setWillpower(99);
+      H.setCatalyst('great_staff');
+      H.setEquipLoad(50);
+      H.setGold(2000000);
+      H.hearthRest();
+      for (const s of D.spells.spells) H.learnSpell(s.id);
+      H.clearProps();
+      H.magicEventsDrain();
+    };
+
+    const enemies = () => H.getCombatState().enemies;
+    const bodyById = (id) => enemies().find((e) => e.id === id) || null;
+    const playerHp = () => H.getPlayerStats().hp;
+    const dist = (a, b) => Math.hypot(a[0] - b[0], a[2] - b[2]);
+
+    /** Cast one commissioned spell and step. Returns the magic event stream and refusals. */
+    const castSpell = (spec, name, frames) => {
+      const mk = H.makeSpell(spec, name);
+      if (mk.refused) return { refused: mk.reason || mk.gate || 'refused', quote: mk.quote || null };
+      H.setAttuned([mk.spell.id]);
+      H.stepFrames(2);
+      H.magicEventsDrain();
+      H.queueInputs([{ f: 2, press: ['light'] }, { f: 4, release: ['light'] }]);
+      H.stepFrames(frames);
+      const ev = H.magicEventsDrain();
+      return {
+        refused: null, spell: mk.spell.id, focus_cost: mk.spell.focus_cost || (mk.quote && mk.quote.focus_cost) || null,
+        kinds: [...new Set(ev.map((e) => e.kind))],
+        applied: ev.filter((e) => e.kind === 'effect_apply').length,
+        events: ev,
+      };
+    };
+
+    // =================================================================== PART A
+    // The comparator's null and its positive direction.
+    if (PARTS.includes('A')) {
+      const A = { design: 'two arms, identical dial settings, same seed — every ACTIVE row must read BLIND', rows: [] };
+      // The snapshot: the same mechanical flatten the builder uses, re-implemented here so the
+      // two are not the same code with two names. Deliberately narrower — the registers a spell
+      // can move that a critic can name — because a wider snapshot only makes a null EASIER to
+      // pass and this part is trying to make it fail.
+      const flat = (o, p, acc) => {
+        if (o === null || o === undefined) { acc[p] = null; return acc; }
+        if (Array.isArray(o)) { acc[p + '.len'] = o.length; acc[p + '.json'] = JSON.stringify(o); return acc; }
+        if (typeof o === 'object') { for (const k of Object.keys(o).sort()) flat(o[k], p ? p + '.' + k : k, acc); return acc; }
+        acc[p] = o; return acc;
+      };
+      const snap = () => {
+        const a = {};
+        const ps = H.getPlayerStats();
+        flat({ hp: ps.hp, hp_max: ps.hp_max, pos: ps.pos.map(r3), in_combat: ps.in_combat }, 'player', a);
+        a['enemies.json'] = JSON.stringify(enemies().map((e) => ({ id: e.id, hp: r2(e.hp), hp_max: r2(e.hp_max), state: e.state, dead: e.dead, yielded: e.yielded })));
+        a['entities.json'] = JSON.stringify(H.listEntities().map((e) => ({ eid: e.eid, hp: e.hp, pos: (e.pos || []).map(r3) })));
+        flat(H.getMagicWorld(), 'world', a);
+        flat(H.getStatusState(), 'status', a);
+        flat(H.getWorldRegisters(), 'sim_world', a);
+        flat(H.getQuestState().dispositions, 'disp', a);
+        return a;
+      };
+      const differing = (x, y) => Object.keys({ ...x, ...y }).filter((k) => JSON.stringify(x[k]) !== JSON.stringify(y[k])).sort();
+
+      // Twelve effects spanning every shape the catalogue has: damage, heal, control, summon,
+      // ward, world verb, buff. Enough to make a null meaningful without paying for 55.
+      const SET = ['fire_damage', 'damage_health', 'restore_health', 'paralyse', 'calm_beast',
+        'demoralise', 'bind_lesser', 'bind_greater', 'shield', 'feather', 'shatter', 'silence'];
+
+      const runArm = (eid, mag, dur, area, range, breakMode) => {
+        baseArena();
+        H.damagePlayer(220, { stagger: false });
+        const e0 = H.spawn('inf_trash', 0, 1.4);
+        const e1 = H.spawn('inf_trash', 2.6, 5.2);
+        H.aggro(e0); H.aggro(e1); H.lockOn(e0);
+        for (const x of enemies()) H.damageEnemy(x.id, 120);
+        if (breakMode === 'bindblind' && H.__breakBindMagnitude) H.__breakBindMagnitude();
+        if (breakMode === 'fleeblind' && H.__breakFleeMotion) H.__breakFleeMotion();
+        const spec = { class: 'LIGHT', range, effects: [{ effect: eid, magnitude: mag, duration_s: dur, area_r_m: area }] };
+        const c = castSpell(spec, `critA_${eid}_${mag}_${dur}_${area}_${breakMode || 'none'}`, 240);
+        return { cast: c, after: snap() };
+      };
+
+      for (const id of SET) {
+        const e = D.effects.effects.find((x) => x.id === id);
+        const range = e.ranges.includes('target') ? 'target' : e.ranges[0];
+        const mag = e.magnitude.max > 40 ? 40 : e.magnitude.max;
+        const dur = e.duration.allowed ? Math.min(20, e.duration.max_s) : 0;
+        const area = e.area.allowed ? Math.min(4, e.area.max_r_m) : 0;
+        const a1 = runArm(id, mag, dur, area, range, null);
+        const a2 = runArm(id, mag, dur, area, range, null);
+        const row = { effect: id, range, mag, dur, area,
+          delivered: [a1.cast.applied, a2.cast.applied],
+          refused: [a1.cast.refused, a2.cast.refused] };
+        const diff = differing(a1.after, a2.after);
+        row.null_differing = diff;
+        row.null_verdict = a1.cast.refused || a2.cast.refused ? 'NOT_CASTABLE'
+          : (!a1.cast.applied ? 'NOT_DELIVERED' : (diff.length === 0 ? 'BLIND(clean null)' : 'COUPLED(NOISE)'));
+        A.rows.push(row);
+      }
+      A.null_noise_rows = A.rows.filter((r) => r.null_verdict === 'COUPLED(NOISE)').map((r) => ({ effect: r.effect, paths: r.null_differing }));
+
+      // A2/A3 — the POSITIVE direction. A dial confirmed live, with its reader removed.
+      A.positive = [];
+      const magPair = (id, lo, hi, range, dur, breakMode) => {
+        const a = runArm(id, lo, dur, 0, range, breakMode);
+        const b = runArm(id, hi, dur, 0, range, breakMode);
+        return { effect: id, break: breakMode || 'none', lo, hi,
+          delivered: [a.cast.applied, b.cast.applied],
+          differing: differing(a.after, b.after),
+          verdict: differing(a.after, b.after).length ? 'COUPLED' : 'BLIND' };
+      };
+      A.positive.push(magPair('bind_lesser', 1, 90, 'target', 60, null));
+      A.positive.push(magPair('bind_lesser', 1, 90, 'target', 60, 'bindblind'));
+      A.positive.push(magPair('bind_greater', 1, 45, 'target', 60, null));
+      A.positive.push(magPair('bind_greater', 1, 45, 'target', 60, 'bindblind'));
+      A.positive.push(magPair('demoralise', 1, 34, 'target', 30, null));
+      A.positive.push(magPair('demoralise', 1, 34, 'target', 30, 'fleeblind'));
+      A.break_hooks_present = { bindblind: !!H.__breakBindMagnitude, fleeblind: !!H.__breakFleeMotion };
+      out.A = A;
+    }
+
+    // =================================================================== PART B
+    // Area on the ground. `_geometryFor` gives a `volume` of radius max(area,1); `_spawnVolume`
+    // puts its centre a flat 9.0 m in front of the caster for a `resolved_world_point`
+    // placement. So the survey is taken from THAT point, not from the caster.
+    if (PARTS.includes('B')) {
+      const B = { design: 'volume centre is 9.0 m in front of the caster (system.js _spawnVolume dist); bodies surveyed from there', runs: [] };
+      // Bodies at 0.3, 2.6, 5.0 and 7.4 m from (0, 9) along +z, i.e. planar distance from the
+      // burst centre. r=2 (+0.45 slop) should reach one; r=8 should reach all four.
+      const OFFS = [0.3, 2.6, 5.0, 7.4];
+      const runArea = (effect, radius, magnitude) => {
+        baseArena();
+        const ids = [];
+        for (const o of OFFS) ids.push(H.spawn('inf_trash', 0, 9.0 + o));
+        for (const id of ids) H.damageEnemy(id, 100);   // a wound, so restore_health has work
+        const before = Object.fromEntries(ids.map((id) => [id, bodyById(id) ? r2(bodyById(id).hp) : null]));
+        const c = castSpell({ class: 'LIGHT', range: 'area_at_range',
+          effects: [{ effect, magnitude, duration_s: 0, area_r_m: radius }] }, `critB_${effect}_${radius}`, 200);
+        const after = Object.fromEntries(ids.map((id) => [id, bodyById(id) ? r2(bodyById(id).hp) : null]));
+        const moved = ids.filter((id) => before[id] !== after[id]);
+        return { effect, radius_r_m: radius, magnitude, refused: c.refused, applied: c.applied,
+          geometry_radius_m: Math.max(radius, 1),
+          bodies_at_m: OFFS, hp_before: before, hp_after: after,
+          bodies_hit: moved.length, hit_ids: moved };
+      };
+      for (const rad of [2, 8]) B.runs.push(runArea('fire_damage', rad, 60));
+      for (const rad of [2, 8]) B.runs.push(runArea('frost_damage', rad, 60));
+      for (const rad of [2, 6]) B.runs.push(runArea('poison_damage', rad, 60));
+      // A CONTROL FOR THE CONTROL: same effect, same radius twice. Must hit the same count.
+      B.repeat_null = [runArea('fire_damage', 8, 60), runArea('fire_damage', 8, 60)];
+      out.B = B;
+    }
+
+    // =================================================================== PART C
+    // The two fixes, both arms, on the ground.
+    if (PARTS.includes('C')) {
+      const C = { summon: [], flee: [], calm_reference: null };
+      const summonRun = (effect, magnitude, breakMode) => {
+        baseArena();
+        if (breakMode === 'bindblind' && H.__breakBindMagnitude) H.__breakBindMagnitude();
+        const hp0 = playerHp();
+        const c = castSpell({ class: 'LIGHT', range: 'target',
+          effects: [{ effect, magnitude, duration_s: 60, area_r_m: 0 }] }, `critC_${effect}_${magnitude}_${breakMode || 'none'}`, 30);
+        const ent = H.listEntities().filter((e) => e.kind !== 'object' && e.eid !== 'player');
+        const w = H.getMagicWorld();
+        const sm = w.summons[0] || null;
+        const b = sm ? bodyById(sm.eid) : null;
+        // 600 f@60 with the player NOT attacking and NOTHING ELSE IN THE ROOM.
+        H.stepFrames(600);
+        const hp1 = playerHp();
+        return { effect, magnitude, break: breakMode || 'none', refused: c.refused, applied: c.applied,
+          focus_cost: c.focus_cost,
+          summon: sm ? { eid: sm.eid, power: sm.power, hp: sm.hp, attack_rating: sm.attack_rating, archetype: sm.archetype } : null,
+          body_hp_max: b ? r2(b.hp_max) : null, body_state_at_cast: b ? b.state : null,
+          bodies_in_room: ent.length, body_ids: ent.map((e) => e.eid),
+          player_hp_start: r2(hp0), player_hp_end_600f: r2(hp1), player_damage_taken_600f: r2(hp0 - hp1) };
+      };
+      for (const m of [1, 90]) C.summon.push(summonRun('bind_lesser', m, null));
+      for (const m of [1, 90]) C.summon.push(summonRun('bind_lesser', m, 'bindblind'));
+      for (const m of [1, 45]) C.summon.push(summonRun('bind_greater', m, null));
+      for (const m of [1, 45]) C.summon.push(summonRun('bind_greater', m, 'bindblind'));
+
+      const fleeRun = (effect, magnitude, breakMode) => {
+        baseArena();
+        if (breakMode === 'fleeblind' && H.__breakFleeMotion) H.__breakFleeMotion();
+        const e0 = H.spawn('inf_trash', 0, 4.0);
+        H.aggro(e0); H.lockOn(e0);
+        H.stepFrames(30);
+        const caster0 = H.getPlayerStats().pos.slice();
+        const b0 = bodyById(e0);
+        const d0 = b0 ? dist(b0.pos, caster0) : null;
+        const c = castSpell({ class: 'LIGHT', range: 'target',
+          effects: [{ effect, magnitude, duration_s: 30, area_r_m: 0 }] }, `critC_${effect}_${magnitude}_${breakMode || 'none'}`, 900);
+        const b1 = bodyById(e0);
+        const caster1 = H.getPlayerStats().pos.slice();
+        const fe = c.events ? c.events.filter((e) => e.kind === 'fight_ended') : [];
+        return { effect, magnitude, break: breakMode || 'none', refused: c.refused, applied: c.applied,
+          declared_leash_m: fe.length ? fe[0].flee_leash_m : null,
+          declared_speed_mps: fe.length ? fe[0].flee_speed_mps : null,
+          dist_at_cast_m: d0 === null ? null : r2(d0),
+          dist_after_900f_m: b1 ? r2(dist(b1.pos, caster1)) : null,
+          target_pos: b1 ? b1.pos.map(r2) : null, caster_pos: caster1.map(r2),
+          yielded: b1 ? b1.yielded : null, dead: b1 ? b1.dead : null };
+      };
+      for (const m of [1, 34]) C.flee.push(fleeRun('demoralise', m, null));
+      for (const m of [1, 34]) C.flee.push(fleeRun('demoralise', m, 'fleeblind'));
+      // WHY 4.04 m: the number the pre-fix demoralise and calm_beast both land on. Measure
+      // calm_beast in the SAME arena so the coincidence can be explained rather than noted.
+      C.calm_reference = [fleeRun('calm_beast', 1, null), fleeRun('calm_beast', 90, null)];
+      out.C = C;
+    }
+
+    // =================================================================== PART D
+    // Duration on a damage effect. Morrowind: "N pts for M s" is N per second for M seconds.
+    if (PARTS.includes('D')) {
+      const Dp = { design: 'same magnitude, same target, duration 1 s vs the effect maximum; total damage compared', rows: [] };
+      const durRun = (effect, magnitude, dur, frames) => {
+        baseArena();
+        const e0 = H.spawn('inf_trash', 0, 3.0);
+        H.aggro(e0);
+        H.lockOn(e0);
+        H.stepFrames(20);
+        const b0 = bodyById(e0);
+        const hp0 = b0 ? r2(b0.hp) : null;
+        const c = castSpell({ class: 'LIGHT', range: 'target',
+          effects: [{ effect, magnitude, duration_s: dur, area_r_m: 0 }] }, `critD_${effect}_${dur}`, frames);
+        const b1 = bodyById(e0);
+        const hp1 = b1 ? r2(b1.hp) : null;
+        return { effect, magnitude, duration_s: dur, frames, refused: c.refused, applied: c.applied,
+          hp_before: hp0, hp_after: hp1, damage_total: hp0 !== null && hp1 !== null ? r2(hp0 - hp1) : null,
+          morrowind_expected_if_per_second: r2(magnitude * (D.effects.effects.find((x) => x.id === effect).magnitude.output_per_point || 1) * dur) };
+      };
+      for (const e of ['fire_damage', 'frost_damage', 'poison_damage']) {
+        Dp.rows.push(durRun(e, 20, 1, 2100));
+        Dp.rows.push(durRun(e, 20, 30, 2100));
+      }
+      Dp.rows.push(durRun('restore_health', 20, 1, 2100));
+      Dp.rows.push(durRun('restore_health', 20, 30, 2100));
+      out.D = Dp;
+    }
+
+    // =================================================================== PART E
+    if (PARTS.includes('E')) {
+      const E = {};
+      // E1 — absorb_health. Does the CASTER gain what the target loses?
+      const absorbRun = (effect, magnitude) => {
+        baseArena();
+        H.damagePlayer(220, { stagger: false });
+        const e0 = H.spawn('inf_trash', 0, 2.0);
+        H.aggro(e0); H.lockOn(e0);
+        H.stepFrames(20);
+        const php0 = r2(playerHp());
+        const b0 = bodyById(e0); const ehp0 = b0 ? r2(b0.hp) : null;
+        const c = castSpell({ class: 'LIGHT', range: 'touch',
+          effects: [{ effect, magnitude, duration_s: 0, area_r_m: 0 }] }, `critE_${effect}_${magnitude}`, 180);
+        const b1 = bodyById(e0);
+        return { effect, magnitude, refused: c.refused, applied: c.applied,
+          player_hp: [php0, r2(playerHp())], player_delta: r2(playerHp() - php0),
+          enemy_hp: [ehp0, b1 ? r2(b1.hp) : null], enemy_delta: b1 && ehp0 !== null ? r2(b1.hp - ehp0) : null };
+      };
+      E.absorb = [absorbRun('absorb_health', 60), absorbRun('damage_health', 60), absorbRun('drain_health', 60)];
+
+      // E2 — the summon's side. `engine.spawn` takes `{side:'ally'}` and `_classifyOnSpawn`
+      // decides; `CombatSystem.spawnEnemy` is what actually makes the body. Read the body's own
+      // team fields, and then let the summon and the caster stand in an empty room.
+      baseArena();
+      const c2 = castSpell({ class: 'LIGHT', range: 'target',
+        effects: [{ effect: 'bind_lesser', magnitude: 40, duration_s: 60, area_r_m: 0 }] }, 'critE_side', 30);
+      const w2 = H.getMagicWorld();
+      const sid = w2.summons[0] ? w2.summons[0].eid : null;
+      const sb = sid ? bodyById(sid) : null;
+      const ent2 = H.listEntities().filter((e) => e.kind !== 'object');
+      const hpA = r2(playerHp());
+      H.stepFrames(900);
+      const hpB = r2(playerHp());
+      E.summon_side = {
+        refused: c2.refused, summon_eid: sid,
+        entity_record: ent2.map((e) => ({ eid: e.eid, kind: e.kind, side: e.side === undefined ? '(absent)' : e.side, faction: e.faction === undefined ? '(absent)' : e.faction, summoned: e.summoned === undefined ? '(absent)' : e.summoned })),
+        body_fields: sb ? Object.fromEntries(Object.entries(sb).filter(([k]) => /side|team|faction|ally|hostile|summon/i.test(k))) : null,
+        bodies_in_room: ent2.length,
+        player_hp_before_900f: hpA, player_hp_after_900f: hpB, player_damage_from_own_summon: r2(hpA - hpB),
+        summon_state: sid && bodyById(sid) ? bodyById(sid).state : null,
+      };
+
+      // E3 — frenzy. Two bodies. Does the frenzied one damage the other?
+      baseArena();
+      const f0 = H.spawn('inf_trash', 0, 3.0);
+      const f1 = H.spawn('inf_trash', 1.2, 3.4);
+      H.aggro(f0); H.lockOn(f0);
+      H.stepFrames(20);
+      const fhp = { [f0]: r2(bodyById(f0).hp), [f1]: r2(bodyById(f1).hp) };
+      const c3 = castSpell({ class: 'LIGHT', range: 'target',
+        effects: [{ effect: 'frenzy', magnitude: 34, duration_s: 60, area_r_m: 0 }] }, 'critE_frenzy', 30);
+      const st3 = H.getStatusState();
+      H.stepFrames(1200);
+      E.frenzy = {
+        refused: c3.refused, applied: c3.applied,
+        frenzy_target_declared: (st3.bodies || st3 || []).length ? JSON.stringify(st3).match(/"frenzy_target":"[^"]*"/g) : null,
+        hp_before: fhp,
+        hp_after: { [f0]: bodyById(f0) ? r2(bodyById(f0).hp) : null, [f1]: bodyById(f1) ? r2(bodyById(f1).hp) : null },
+        other_body_damaged: bodyById(f1) ? r2(fhp[f1] - bodyById(f1).hp) : null,
+        frenzied_body_damaged: bodyById(f0) ? r2(fhp[f0] - bodyById(f0).hp) : null,
+      };
+
+      // E4 — bind_greater's ceiling. Where does the dial stop being castable?
+      baseArena();
+      const fmax = H.getMagicState().focus_max;
+      const ladder = [];
+      for (const m of [1, 10, 20, 30, 40, 45, 50, 60, 70, 80, 90]) {
+        const q = H.quoteSpell({ class: 'LIGHT', range: 'target', effects: [{ effect: 'bind_greater', magnitude: m, duration_s: 60, area_r_m: 0 }] });
+        ladder.push({ magnitude: m, refused: !!q.refused, reason: q.reason || null, focus_base: q.focus_base, focus_cost: q.focus_cost, tier: q.tier, skill_req: q.skill_req, affordable: !q.refused && q.focus_cost <= fmax });
+      }
+      // and the same for the CHEAPEST class the game has, to see if any carrier reaches the top.
+      const cheap = [];
+      for (const cls of ['CANTRIP', 'LIGHT', 'HEAVY', 'GREAT', 'RITUAL']) {
+        const q = H.quoteSpell({ class: cls, range: 'target', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] });
+        cheap.push({ class: cls, refused: !!q.refused, focus_cost: q.focus_cost, affordable: !q.refused && q.focus_cost <= fmax });
+      }
+      // and at the SHORTEST legal duration, which is the other lever a player has.
+      const shortDur = [];
+      for (const d of [1, 5, 10, 60]) {
+        const q = H.quoteSpell({ class: 'CANTRIP', range: 'target', effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: d, area_r_m: 0 }] });
+        shortDur.push({ duration_s: d, class: 'CANTRIP', refused: !!q.refused, focus_cost: q.focus_cost, affordable: !q.refused && q.focus_cost <= fmax });
+      }
+      E.bind_greater_ceiling = { focus_max: fmax, ladder, by_class_at_mag90: cheap, cantrip_by_duration_at_mag90: shortDur };
+      // What actually happens at the unaffordable setting — a refusal, or silence?
+      baseArena();
+      const c4 = castSpell({ class: 'LIGHT', range: 'target',
+        effects: [{ effect: 'bind_greater', magnitude: 90, duration_s: 60, area_r_m: 0 }] }, 'critE_over', 120);
+      E.bind_greater_over_reservoir = { refused: c4.refused, kinds: c4.kinds || null, applied: c4.applied === undefined ? null : c4.applied, focus_max: fmax };
+      out.E = E;
+    }
+
+    // =================================================================== PART F  (AR-1)
+    if (PARTS.includes('F')) {
+      const F = {};
+      const damageRun = (mut) => {
+        baseArena();
+        if (mut) mut();
+        const e0 = H.spawn('inf_trash', 0, 3.0);
+        H.aggro(e0); H.lockOn(e0);
+        H.stepFrames(20);
+        const hp0 = r2(bodyById(e0).hp);
+        const before = H.getDeterminismReport();
+        const c = castSpell({ class: 'LIGHT', range: 'target',
+          effects: [{ effect: 'fire_damage', magnitude: 40, duration_s: 0, area_r_m: 0 }] }, `critF_${Math.random()}`, 240);
+        const after = H.getDeterminismReport();
+        const b1 = bodyById(e0);
+        const cs = H.getCombatState();
+        return { damage: b1 ? r2(hp0 - b1.hp) : null, applied: c.applied, refused: c.refused,
+          det_violations: after.violations === undefined ? (after.violation_count || 0) : (Array.isArray(after.violations) ? after.violations.length : after.violations),
+          rng_draws_delta: (after.rng && before.rng) ? after.rng.draws - before.rng.draws : null,
+          frames: c.events ? (c.events.find((e) => e.kind === 'cast_start') || {}) : null,
+          player_state: cs.player ? cs.player.state : null };
+      };
+      // 8 identical casts.
+      F.identical = [];
+      for (let i = 0; i < 8; i++) F.identical.push(damageRun(null));
+      F.identical_damage_set = [...new Set(F.identical.map((x) => x.damage))];
+      // Morrowind quantities that must NOT reach a damage number.
+      F.perturbations = [
+        { name: 'baseline', ...damageRun(null) },
+        { name: 'time_of_day_0', ...damageRun(() => H.setTimeOfDay(0)) },
+        { name: 'time_of_day_13', ...damageRun(() => H.setTimeOfDay(13)) },
+        { name: 'wall_clock_+8h', ...damageRun(() => H.advanceWallClock(8 * 3600 * 1000)) },
+        { name: 'disposition_100', ...damageRun(() => { try { H.setDisposition('e0', 100); } catch (e) { /* no such npc in arena */ } }) },
+        { name: 'bounty_5000', ...damageRun(() => { try { H.setBounty(5000); } catch (e) { /* */ } }) },
+        { name: 'weather_storm', ...damageRun(() => { try { H.setWeather('storm'); } catch (e) { /* */ } }) },
+        { name: 'seed_9', ...damageRun(() => H.setSeed(9)) },
+      ];
+      F.perturbation_damage_set = [...new Set(F.perturbations.map((p) => p.damage))];
+      out.F = F;
+    }
+
+    // =================================================================== PART G  (spell-making)
+    if (PARTS.includes('G')) {
+      const G = {};
+      baseArena();
+      // Can a player build a spell out of all three dials at once, plus range and class?
+      const spec = { class: 'HEAVY', range: 'area_at_range', effects: [
+        { effect: 'fire_damage', magnitude: 25, duration_s: 6, area_r_m: 5 },
+        { effect: 'demoralise', magnitude: 20, duration_s: 10, area_r_m: 5 },
+      ] };
+      const q = H.quoteSpell(spec);
+      G.multi_effect_quote = { refused: !!q.refused, reason: q.reason || null, focus_base: q.focus_base, focus_cost: q.focus_cost, tier: q.tier, gold: q.gold, effects: q.effects };
+      const mk = H.makeSpell(spec, 'A critic\'s own spell');
+      G.multi_effect_made = { refused: !!mk.refused, id: mk.spell ? mk.spell.id : null, geometry: mk.spell ? mk.spell.geometry : null };
+      // The clamp/force behaviour enchanting.json declares.
+      const over = H.quoteSpell({ class: 'LIGHT', range: 'target', effects: [{ effect: 'damage_health', magnitude: 999, duration_s: 40, area_r_m: 9 }] });
+      G.clamping = { refused: !!over.refused, effects: over.effects };
+      // Is there any surface other than the harness? The menus the player can open, and whether
+      // any of them is a spell-making screen.
+      G.menus = H.listMenus();
+      G.ui_modes = (() => { try { return H.getUIState().modes || null; } catch (e) { return null; } })();
+      G.custom_spells_in_save = (() => {
+        const s = H.saveState();
+        const blob = JSON.stringify(s);
+        return { has_custom_spells_key: /custom_spells/.test(blob), count: (s.magic && s.magic.custom_spells) ? s.magic.custom_spells.length : null };
+      })();
+      out.G = G;
+    }
+
+    return out;
+  }, { PARTS: parts });
+} finally {
+  await handle.close();
+}
+
+const p = path.join(outDir, 'critic-w1-14-r3.json');
+writeJson(p, report);
+
+if (report.A) {
+  log(`A  null (identical arms): ${report.A.rows.filter((r) => r.null_verdict.startsWith('BLIND')).length}/${report.A.rows.length} clean; NOISE rows ${report.A.null_noise_rows.length}`);
+  for (const r of report.A.null_noise_rows) log(`   NOISE ${r.effect}: ${r.paths.slice(0, 6).join(', ')}`);
+  for (const p2 of report.A.positive) log(`   positive ${p2.effect} break=${p2.break} lo=${p2.lo} hi=${p2.hi} -> ${p2.verdict} (${p2.differing.length} paths)`);
+}
+if (report.B) for (const r of report.B.runs) log(`B  ${r.effect} r=${r.radius_r_m} -> bodies hit ${r.bodies_hit}/4  applied=${r.applied}`);
+if (report.C) {
+  for (const s of report.C.summon) log(`C  ${s.effect} mag ${s.magnitude} break=${s.break} -> hp_max ${s.body_hp_max} power ${s.summon && s.summon.power} | player took ${s.player_damage_taken_600f} from ${s.bodies_in_room} body(ies)`);
+  for (const f of report.C.flee) log(`C  ${f.effect} mag ${f.magnitude} break=${f.break} -> ended ${f.dist_after_900f_m} m out (leash ${f.declared_leash_m})`);
+  for (const f of report.C.calm_reference) log(`C  calm_beast mag ${f.magnitude} -> ended ${f.dist_after_900f_m} m out`);
+}
+if (report.D) for (const r of report.D.rows) log(`D  ${r.effect} dur ${r.duration_s}s -> total damage ${r.damage_total} (Morrowind per-second would be ${r.morrowind_expected_if_per_second})`);
+if (report.E) {
+  for (const a of report.E.absorb) log(`E1 ${a.effect}: player ${a.player_delta >= 0 ? '+' : ''}${a.player_delta}, enemy ${a.enemy_delta}`);
+  log(`E2 summon side: ${JSON.stringify(report.E.summon_side.entity_record)} | player took ${report.E.summon_side.player_damage_from_own_summon} from its own summon in 900 f@60`);
+  log(`E3 frenzy: other body damaged ${report.E.frenzy.other_body_damaged}, frenzied body damaged ${report.E.frenzy.frenzied_body_damaged}`);
+  log(`E4 focus_max ${report.E.bind_greater_ceiling.focus_max}; affordable magnitudes: ${report.E.bind_greater_ceiling.ladder.filter((x) => x.affordable).map((x) => x.magnitude).join(',')}`);
+}
+if (report.F) {
+  log(`F  identical casts damage set: ${JSON.stringify(report.F.identical_damage_set)}; perturbation damage set: ${JSON.stringify(report.F.perturbation_damage_set)}`);
+}
+if (report.G) {
+  log(`G  multi-dial spell made: ${!report.G.multi_effect_made.refused} (${report.G.multi_effect_made.id}); menus: ${report.G.menus.join(', ')}`);
+}
+console.log(p);

@@ -56,6 +56,12 @@ const ARGV = process.argv.slice(2);
 const GATE = ARGV.includes('--gate');
 const SELFTEST = ARGV.includes('--self-test');
 const JSONOUT = (() => { const i = ARGV.indexOf('--json'); return i >= 0 ? ARGV[i + 1] : null; })();
+// `--assume-first-match` models the engine AFTER a builder implements S37: it flattens the
+// specificity weights so `infoFor()`'s choice degenerates to "first admissible entry". It exists
+// so the gate can be shown to go GREEN as well as red — a gate nobody has seen pass is not a
+// gate. It does NOT change the engine; it changes this tool's model of the engine, and a builder
+// who has actually landed the change should see the same result without the flag.
+const ASSUME_FM = ARGV.includes('--assume-first-match');
 
 // ---------------------------------------------------------------------------------------------
 // The two selection rules. `candidates()` is a verbatim re-derivation of infoFor()'s admissible
@@ -73,7 +79,9 @@ function inCell(npc, cell) {
   return false;
 }
 // The shipped weights, lifted from converse.js:283-284. Kept as data so --self-test can move them.
-const W = { actor: 8, cell: 2, requires: 4, forbids: 0.5, dBase: 1, dSlope: 1 };
+const W = ASSUME_FM
+  ? { actor: 0, cell: 0, requires: 0, forbids: 0, dBase: 0, dSlope: 0 }
+  : { actor: 8, cell: 2, requires: 4, forbids: 0.5, dBase: 1, dSlope: 1 };
 function scoreOf(info, matchesActor) {
   const dScore = info.d != null ? W.dBase + Math.min(1, Number(info.d) / 100) * W.dSlope : 0;
   return (matchesActor ? W.actor : 0) + (info.cell ? W.cell : 0) + (info.requires ? W.requires : 0)
@@ -216,6 +224,7 @@ function analyse(docs, npcs, players) {
             scored: String(t.infos[best].x || '').slice(0, 130),
             ordered: String(t.infos[first].x || '').slice(0, 130),
             scored_from: t.infos[best].from || null, ordered_from: t.infos[first].from || null,
+            _orderedFull: t.infos[first].x,
           });
         }
       }
@@ -361,12 +370,15 @@ function gitSha() {
 //                            degenerates to "first admissible entry" and MUST agree with
 //                            RI-DLG01 §A on every resolution. If divergence is not 0, this tool
 //                            is not comparing the two rules; it is comparing something else.
-//   ARM 2 (must go RED)    — restore the weights and corrupt one topic by moving its
-//                            highest-scoring info to the front of the authored order. Under
-//                            first-match-wins that changes the answer; under scoring it does
-//                            not. Divergence must FALL, and must fall by a predicted amount.
-//                            A comparator whose number does not move when the corpus moves is
-//                            reading a constant.
+//   ARM 2 (must go RED)    — restore the weights and reverse every topic's info list. Under
+//                            RI-DLG01 §A that changes which entry wins in every multi-info
+//                            topic; under the shipped rule it changes almost nothing. So
+//                            divergence MUST move, and move a lot. A comparator whose number
+//                            does not move when authored order moves is not reading order.
+//   ARM 3 (must go RED)    — delete, from one genuinely divergent topic, the info that
+//                            first-match-wins selects. Both rules must then agree there, so the
+//                            divergent (speaker, topic) pair count MUST fall. A comparator that
+//                            cannot see a repair cannot certify one.
 // ---------------------------------------------------------------------------------------------
 function selfTest() {
   const docs = loadTopicDocs();
@@ -386,28 +398,38 @@ function selfTest() {
   if (flat.diverged === 0) console.log(`ARM 1 (weights zeroed => shipped rule IS first-match-wins): divergence ${flat.diverged}  OK`);
   else { console.log(`ARM 1 FAILED: divergence ${flat.diverged}, expected 0 — the comparator cannot see agreement.`); bad++; }
 
-  // ARM 2 — hoist the winner in one divergent topic and confirm the count drops.
-  if (!base.examples.length) { console.log('ARM 2 SKIPPED: no divergence in the tree to repair.'); }
+  // ARM 2 — reverse authored order everywhere. Guaranteed constructible; must move the number.
+  {
+    const docs2 = JSON.parse(JSON.stringify(docs));
+    let touched = 0;
+    for (const doc of docs2) { (doc.topics || []).forEach((t) => { if (t && Array.isArray(t.infos) && t.infos.length > 1) { t.infos.reverse(); touched++; } }); (doc.topics || []).reverse(); }
+    const after = analyse(docs2, npcs, players);
+    if (after.diverged !== base.diverged) console.log(`ARM 2 (authored order reversed in ${touched} topic records): divergence ${base.diverged} -> ${after.diverged}  OK — the tool reads authored order.`);
+    else { console.log(`ARM 2 FAILED: divergence unchanged at ${base.diverged} after reversing every info list. The tool is not reading order.`); bad++; }
+  }
+
+  // ARM 3 — repair one divergent topic by deleting the entry first-match-wins would pick.
+  if (!base.examples.length) { console.log('ARM 3 SKIPPED: no divergence in the tree to repair.'); }
   else {
-    const target = base.examples[0].topic;
-    const docs2 = JSON.parse(JSON.stringify(docs, (k, v) => v));
-    let moved = false;
-    for (const doc of docs2) for (const t of (doc.topics || [])) {
-      if (!t || topicKey(t.id) !== topicKey(target) || !Array.isArray(t.infos) || t.infos.length < 2) continue;
-      let bi = 0, bs = -Infinity;
-      t.infos.forEach((info, i) => { const s = scoreOf(info, !!info.a); if (s > bs) { bs = s; bi = i; } });
-      if (bi > 0) { const [x] = t.infos.splice(bi, 1); t.infos.unshift(x); moved = true; }
+    const ex = base.examples[0];
+    const docs3 = JSON.parse(JSON.stringify(docs));
+    let removed = 0;
+    for (const doc of docs3) for (const t of (doc.topics || [])) {
+      if (!t || typeof t.id !== 'string' || topicKey(t.id) !== topicKey(ex.topic) || !Array.isArray(t.infos)) continue;
+      const before = t.infos.length;
+      t.infos = t.infos.filter((i) => i.x !== ex._orderedFull);
+      removed += before - t.infos.length;
     }
-    if (!moved) console.log('ARM 2 SKIPPED: could not construct the perturbation.');
+    if (!removed) { console.log('ARM 3 FAILED: could not construct the repair.'); bad++; }
     else {
-      const after = analyse(docs2, npcs, players);
-      if (after.diverged < base.diverged) console.log(`ARM 2 (hoist the winner in "${target}"): divergence ${base.diverged} -> ${after.diverged}  OK — the number moves when the corpus moves.`);
-      else { console.log(`ARM 2 FAILED: divergence ${base.diverged} -> ${after.diverged}; expected a fall. The tool is reading a constant.`); bad++; }
+      const after = analyse(docs3, npcs, players);
+      if (after.divergentPairs.size < base.divergentPairs.size) console.log(`ARM 3 (delete the first-match entry in "${ex.topic}", ${removed} info(s)): divergent pairs ${base.divergentPairs.size} -> ${after.divergentPairs.size}  OK — the tool can see a repair.`);
+      else { console.log(`ARM 3 FAILED: divergent pairs ${base.divergentPairs.size} -> ${after.divergentPairs.size}; expected a fall.`); bad++; }
     }
   }
 
   if (bad) { console.log(`\nSELF-TEST FAILED (${bad} arm(s)). This instrument is not trustworthy.`); process.exit(2); }
-  console.log('\nSELF-TEST PASSED — both arms behaved as predicted.');
+  console.log('\nSELF-TEST PASSED — all three arms behaved as predicted.');
   process.exit(0);
 }
 

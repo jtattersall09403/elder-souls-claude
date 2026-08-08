@@ -2,19 +2,71 @@
   "task_id": "critic-w1-15-r3",
   "role": "critic",
   "piece": "W1-15 round 3 — stealth, crime and justice",
-  "state": "running",
-  "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G",
-  "contention_gate": "exit 3 at start; offline work first",
-  "files_touched": ["orchestration/status/critic-w1-15-r3.json"],
+  "state": "writing the verdict",
+  "started_at": "2026-08-08T02:12:00Z",
+  "head_at_start": "4b48955",
+  "head_at_measurement": "9126e02 — every OFFLINE number was re-run at this sha after the tree moved under the run (W1-ROAD-JOIN regenerated interiors/ and property/ mid-run); all reproduced identically. The LIVE numbers were taken between 4b48955 and 9126e02, on a tree whose game/src/sim/stealth, game/src/engine.js, game/src/render/interior.js and game/data/{stealth,crime} were untouched across that range (git diff --stat is empty for those paths).",
+  "contention": "node tools/contention.mjs --gate was exit 3 for the ENTIRE run (3-6 browser instances against a ceiling of 6; load 5.15-7.23 per core against a ceiling of 4.0). ALL of arms A-E were measured OFFLINE with no browser, first, per rule 21. I then PROCEEDED PAST exit 3 and took ONE browser at a time for the three things that genuinely need one — the live re-measurement, the delete-the-fix re-run, and the 2x2 — declared here per rule 21. NO TIMING FIGURE IS PUBLISHED: every number is a frame count, a source count, a gold value or a model value, all load-independent.",
+  "verdict": "FAIL — 0.0 / 10 min-over-axes (2.7 mean, published alongside for comparability with round 2's 3.0, which used mean). The scale changed between rounds; 3.0 -> 0.0 is NOT a regression signal.",
+  "what_i_checked": {
+    "A_one_list_read_twice": "CONFIRMED at the record level and REFUTED at the policy level. engine.js:4533 hands render/interior.js exactly the object sim/stealth/system.js:943 reads — sim/settlement.js:66 interior(id) returns this.interiors[String(id)], one reference, no copy. But the two files then disagree about which lamps are LIT: the renderer caps at LIT_CAP=5 (77/115 interiors are over it, max 14) and invents a fail-open hearth when a room declares none (11/115). Measured: 1,659 of 22,751 indoor floor cells (7.29%) disagree about whether a player standing there is in shadow; 1,584 of them are DRAWN LIT and SIMULATED BLACK. Control with the cap and the fail-open removed: 0 disagreeing cells.",
+    "B_dark_witness": "REAL BUT INCONSEQUENTIAL. The 118 g reproduces exactly as Math.round(294 x 0.4). A continuous sweep of V over 0.000-1.300 in 0.005 steps yields exactly THREE outcomes and TWO edges (V=0.10 witness, V=0.30 identified) — a step, not a slope, and the sweep is shown able to see a slope (a deliberately continuous grader gives 200 edges on the same sweep). `identified` has exactly ONE decision-changing reader in game/src: crime/state.js:154's partial multiplier. stepGuards() computes its band from crime.bounty.imperial alone. justice.json's own unidentified_effect promises 'guards do not approach you for it' and NOTHING implements that.",
+    "C_fence": "CONFIRMED, quantified, and the builder's version slightly OVERCLAIMED. Engine.fenceQuote() passes { npcById: () => null, dispositionBetween: () => 0 }. Live: npc:archon-legionary-13 of archon, sold to fence.archon.salvage (archon's own fence) — buys=true at 15 g, identical to the clean-item control at 15 g, and out-of-town fences pay MORE (16, 17, 17 g). 4 of 4 willBuy() refusals unreachable for the 1,787 npc:-owned objects (91.6%). But the settlement:/faction: refusals DO fire for the other 163, which the round's 'all 1,878 objects' misses. Control separates: the same call with a real npcById returns {buys:false, reason:'same_settlement'}.",
+    "D_trespass": "CONFIRMED. Zero assignments to p.zone anywhere in game/src, including the harness. 233 authored property zones in 7 classes sit behind a producer that does not exist. Live: inside archon-apothecary, p.zone is null.",
+    "E_consumption": "116/983 verified by re-running the round's own tool; its --selftest is real and passes. FOUND ONE IT MISSED, and it is not a spare parameter: the census's denominator is SEVEN files and W1-15 owns EIGHT — game/data/stealth/search.json is absent. All 28 of its parameters are 'read by name', which is precisely rule 11's failure mode running in the direction nobody checks: sim/stealth/search.js:85 reads s1.max_cover_volumes to slice a list that is ALWAYS EMPTY, because StealthCrime.coverVolumes has exactly one producer in game/src and it is the harness verb Engine.addCoverVolume() — the SAME defect shape this round fixed for LightField.addSource(), one module over, untouched. Measured live: 0 cover volumes in the world and 0 inside a furnished interior.",
+    "F_delete_the_fix": "RE-RUN INDEPENDENTLY, 5/5 reproduces. The teardown BITES: the without-fix arm returns 0 world sources and L flat at 0.7500 (spread 0) at noon / 0.0900 at 03:00. The stager throws unless each cut string occurs exactly once, and all three still do. AND I RAN THE 2x2 THE ROUND DID NOT: the lamp fix has two edit sites and nobody had crossed them. Result: NEITHER an inert fix NOR two-guards-for-one-defect — two independent sites, each individually sufficient. The finding it exposes is that arm 01 (lamps kept, old ambient restored) reads L flat at 1.0000, spread 0. THE LAMPS ALONE DO NOT MAKE THE ROOM DISCRIMINATE; the 0.75 -> 0.04 ambient drop does. The round's single 3-line arm could not have shown that.",
+    "G_process_incidents": "The shipped tree DOES contain what the round says. Live: E._propertyHas is a function, a furnished prop carries property_instance 'archon-apothecary-unique', and every headline reproduces exactly — 0 world sources outside -> 8 inside archon-apothecary, ambient 0.04, L spread 0.7012 identical at noon and 03:00, and snuffing world:archon.factor9.r0.lamp1 takes L 1.0000 -> 0.5360. Re-measured, not re-read. 06fbd05 does carry six files the round did not author; nothing is lost, and it is why rule 17 now says --only."
+  },
+  "biggest_gap": "GAP-W1-the-fence-buys-your-victims-own-furniture",
+  "instruments_written": [
+    "tools/stealth/critic-w1-15-r3.mjs — offline; lights/ident/fence/zone/census, --selftest 5/5 with every arm perturbed on purpose",
+    "tools/stealth/critic-w1-15-r3-live.mjs — the live arm, one browser, 4/8 (the 4 FAILs are the findings)",
+    "tools/stealth/critic-w1-15-r3-dtf2x2.mjs — the rule-6 2x2 the round did not run, 4/4"
+  ],
+  "commands": [
+    "node tools/stealth/critic-w1-15-r3.mjs --selftest",
+    "node tools/stealth/critic-w1-15-r3.mjs --stamp 9126e02 --json reports/w1-15/critic-r3.json",
+    "node tools/stealth/critic-w1-15-r3-live.mjs --json reports/w1-15/critic-r3-live.json",
+    "node tools/stealth/critic-w1-15-r3-dtf2x2.mjs --json reports/w1-15/critic-r3-dtf2x2.json",
+    "node tools/harness/w1-15-r3-deletefix.mjs --json reports/w1-15/critic-r3-deletefix.json",
+    "node tools/analysis/w1-15-consumption.mjs --selftest",
+    "node tools/analysis/crime-audit.mjs",
+    "node tools/check-data.mjs"
+  ],
+  "could_not_do": [
+    "The round's own next_step items — a live loadState(blob) round trip asserting civilians/searches/pending are empty, and a live answerArrest('pay') asserting sim.progression.gold decreases — were NOT driven. They belong to the round BEFORE this one (defects A and B of the predecessor run) and the browser budget went to the five arms this brief names. Still open, still worth a successor's time.",
+    "tools/run-all.mjs and the full tools/harness/stl-live.mjs 29-assertion suite were not run: both launch many browsers and the gate was exit 3 throughout. The offline gates were run individually and are green (check-data 561 files, crime-audit 41/41).",
+    "No blind comparison: this piece's axis is not-visual (unchanged from rounds 1 and 2)."
+  ],
+  "files_touched": [
+    "orchestration/status/critic-w1-15-r3.json",
+    "tools/stealth/critic-w1-15-r3.mjs",
+    "tools/stealth/critic-w1-15-r3-live.mjs",
+    "tools/stealth/critic-w1-15-r3-dtf2x2.mjs",
+    "reports/w1-15/critic-r3.json",
+    "reports/w1-15/critic-r3-live.json",
+    "reports/w1-15/critic-r3-dtf2x2.json",
+    "reports/w1-15/critic-r3-deletefix.json",
+    "docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png",
+    "corpus/90-verdicts/wave1/W1-15-r3.md",
+    "corpus/90-verdicts/wave1/W1-15-r3.json",
+    "reports/blog-feed.jsonl"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-15-r3.md",
     "corpus/90-verdicts/wave1/W1-15-r3.json",
     "orchestration/status/critic-w1-15-r3.json",
-    "tools/stealth/critic-",
-    "docs/shots/",
+    "tools/stealth/critic-w1-15-r3.mjs",
+    "tools/stealth/critic-w1-15-r3-live.mjs",
+    "tools/stealth/critic-w1-15-r3-dtf2x2.mjs",
+    "reports/w1-15/critic-r3.json",
+    "reports/w1-15/critic-r3-live.json",
+    "reports/w1-15/critic-r3-dtf2x2.json",
+    "reports/w1-15/critic-r3-deletefix.json",
+    "docs/shots/2026-08-08-critic-w1-15-r3-a-room-with-no-lamps-drawn-lit.png",
     "reports/blog-feed.jsonl"
   ],
   "redundant_with": ["W1-15-r3"],
-  "notes": []
+  "ownership_note": "reports/blog-feed.jsonl and docs/shots/ overlap with ~30 live pieces by design (rule 27 requires both of every agent). reports/w1-15/ is declared by W1-15-r3; my four files there are all named critic-* and collide with none of its. Declared redundant_with W1-15-r3 per rule 16 — I am the critic of that piece and reading its outputs is the job.",
+  "next_step": "done — verdict, JSON, shot and blog line written and committed with git commit --only"
 }

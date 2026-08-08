@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f89a60c`: 593 tools, 153 reference
-items, 44 pieces in flight.
+so it cannot drift. Generated at `4a17ec3`: 595 tools, 153 reference
+items, 46 pieces in flight.
 
-Its purpose is to stop 44+ concurrent agents each paying separately to discover the
+Its purpose is to stop 46+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -535,7 +535,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 35
+### `tools/quests/` — 36
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -548,6 +548,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-faction-r2.mjs` — the round-2 critic's own instrument for W1-FACTIONS.
 - `tools/quests/critic-giver-presence.mjs` — written for the W1-19 round-2 VERDICT.
 - `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G: the shared 5x5 chart font.
+- `tools/quests/critic-readable-slots-and-marks.mjs` — W1-READABLES r2 critic, attack F.
 - `tools/quests/critic-unrouted-census.mjs` — W1-READABLES r2 critic, attack E.
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
@@ -628,7 +629,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 99
+### `tools/world/` — 100
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -700,6 +701,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/reachability-walk.mjs` — **no header comment**
 - `tools/world/region-axes.mjs` — **no header comment**
 - `tools/world/region-dispersion.mjs` — **no header comment**
+- `tools/world/road-join-consumption.mjs` — **no header comment**
 - `tools/world/road-join-deletefix.mjs` — **no header comment**
 - `tools/world/road-through-building.mjs` — **no header comment**
 - `tools/world/road-water-audit.mjs` — **no header comment**
@@ -731,7 +733,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **131 tools have no header comment**, so nobody can tell what they do without
+> **132 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -905,6 +907,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-16-r3` | starting | read RULES, INDEX, verdict W1-16-r2.md, status W1-16.json; run ownership + contention | `orchestration/status/W1-16-r3.json` |
+| `W1-SAVE-AI` | in_progress | read RULES/INDEX/NEXT-DISPATCH Q0, then save/fight.js + save/state.js | `orchestration/status/W1-SAVE-AI.json` |
 | `W1-23-r4` | building | part 2 — make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement mach | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `game/data/npcs/` `game/data/world/property/` |
 | `W1-ROAD-JOIN` | ? | consumption probe, then the body walk on THE CROSSING | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-25` | building | Retry tools/composition/matrix-probe.mjs when contention drops below the gate (last three  | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |

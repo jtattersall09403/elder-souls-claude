@@ -111,8 +111,17 @@ export function validated(names, extraArgs = []) {
   }
   fs.unlinkSync(tmp);
   const j = JSON.parse(out);
-  return j.results.filter((r) => !r.violations.length).map((r) => r.name);
+  return j.results.filter((r) => !r.violations.length).map((r) => ({ name: r.name, culture: r.culture }));
 }
+
+/**
+ * A coined name that PASSES a forced `--culture jel` check but does not FREELY classify as jel is
+ * a name the province's own validator cannot place, and RI-LOR04 §Scoring counts an unclassifiable
+ * name as a hard failure ("a name belonging to no culture is a name someone typed"). So the pool
+ * is filtered twice: once on violations, once on free classification. `Anketh` and `Vasteiei` both
+ * survived the first filter and were dropped by the second.
+ */
+function jelOnly(rows) { return rows.filter((r) => r.culture === 'jel').map((r) => r.name); }
 
 /**
  * RI-LOR04 comparison method §5: of Jel-classified names, >=40% must contain `x` and >=20% a
@@ -129,8 +138,8 @@ function soundFirst(pool) {
 
 export function buildPools() {
   return {
-    jelSingle: soundFirst(validated(jelSingleCandidates(), ['--culture', 'jel'])),
-    jelCompound: soundFirst(validated(jelCompoundCandidates())),
+    jelSingle: soundFirst(jelOnly(validated(jelSingleCandidates()))),
+    jelCompound: soundFirst(jelOnly(validated(jelCompoundCandidates()))),
     // RI-LOR04 §4: word count 2 x31, 3 x6 in the attested corpus, "the mode is 2". The pool is
     // composed at that ratio so the shipped roster inherits it rather than averaging the two.
     descriptive: (() => {
@@ -139,13 +148,27 @@ export function buildPools() {
       const three = all.filter((n) => n.split('-').length === 3);
       return two.concat(three.slice(0, Math.round(two.length * 6 / 31)));
     })(),
-    imperial: CULTURE_STOCK.imperial(),
-    dunmer: CULTURE_STOCK.dunmer(),
-    khajiit: CULTURE_STOCK.khajiit(),
+    // The other cultures go through the SAME two filters as the Jel pool. `Bevene Beleth` and
+    // `Yakum Vorin` both passed the violation check and then classified `unknown`, which
+    // RI-LOR04 §Scoring calls "a name someone typed" and hard-fails at >2%. Nord, Breton and
+    // Kothringi have no row in the classifier at all, so they cannot be filtered this way and
+    // are shipped from the authored stock with that stated.
+    imperial: cultureOnly(validated(CULTURE_STOCK.imperial()), 'imperial'),
+    dunmer: cultureOnly(validated(CULTURE_STOCK.dunmer()), 'dunmer'),
+    khajiit: cultureOnly(validated(CULTURE_STOCK.khajiit()), 'khajiit'),
     nord: CULTURE_STOCK.nord(),
     breton: CULTURE_STOCK.breton(),
     kothringi: CULTURE_STOCK.kothringi(),
   };
+}
+
+function cultureOnly(rows, culture) {
+  const kept = rows.filter((r) => r.culture === culture).map((r) => r.name);
+  if (!kept.length) {
+    console.error(`FATAL: no ${culture} candidate survives its own validator. Refusing to ship unvalidated stock.`);
+    process.exit(2);
+  }
+  return kept;
 }
 
 // ---------------------------------------------------------------- the roster
@@ -153,15 +176,48 @@ export function buildPools() {
 function npcFiles() { return fs.readdirSync(R('game/data/npcs')).filter((f) => f.endsWith('.json')); }
 function propertyFiles() { return fs.readdirSync(R('game/data/world/property')).filter((f) => f.endsWith('.json')); }
 
-function loadPeople(isGenerated) {
+/**
+ * WHICH IDS WERE GENERATED, taken at a BASELINE revision rather than at HEAD.
+ *
+ * Once this tool has run, no name on the tree matches the `GIVEN x EPITHET` template any more, so
+ * `isGenerated` correctly reports zero and the tool becomes unable to re-run itself. That is not a
+ * hypothetical: the orchestrator banked a half-finished pass at 9126e02 while this was being
+ * written. `--baseline <rev>` reads the rosters out of git at <rev>, draws the generated/
+ * hand-authored line THERE, and renames those ids on the tree as it stands now. It is also what
+ * makes the delete-the-fix arm possible, because the same call restores the old names.
+ */
+function baselineNames(rev) {
+  const out = new Map();
+  const ls = (d) => execFileSync('git', ['ls-tree', '--name-only', `${rev}`, d],
+    { cwd: ROOT, encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+  const show = (f) => JSON.parse(execFileSync('git', ['show', `${rev}:${f}`],
+    { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+  for (const f of ls('game/data/npcs/')) {
+    if (!f.endsWith('.json')) continue;
+    for (const n of (show(f).npcs || [])) if (n.id && n.name) out.set(n.id, n.name);
+  }
+  // The 101 household residents who are in no `pop-*.json` file at all still own objects, and
+  // their names are read by the theft and ownership layers. They are in property only.
+  for (const f of ls('game/data/world/property/')) {
+    if (!f.endsWith('.json')) continue;
+    for (const h of (show(f).households || [])) for (const r of (h.residents || [])) {
+      const id = String(r.npc || '').replace(/^npc:/, '');
+      if (id && r.name && !out.has(id)) out.set(id, r.name);
+    }
+  }
+  return out;
+}
+
+function loadPeople(isGenerated, baseline = null) {
   const people = [];
   const byId = new Map();
+  const wasGenerated = (id, name) => (baseline ? isGenerated(baseline.get(id) || '') : isGenerated(name));
   for (const f of npcFiles()) {
     const j = readJSON(`game/data/npcs/${f}`);
     for (const n of (j.npcs || [])) {
       if (!n.id || !n.name) continue;
       byId.set(n.id, n);
-      if (isGenerated(n.name)) people.push({ key: n.id, race: n.race, old: n.name, file: f });
+      if (wasGenerated(n.id, n.name)) people.push({ key: n.id, race: n.race, old: n.name, file: f });
     }
   }
   // Property carries 101 residents that are in no `pop-*.json` file at all. They own objects and
@@ -175,7 +231,7 @@ function loadPeople(isGenerated) {
       const headRace = byId.get(headId)?.race || 'argonian';
       for (const r of (h.residents || [])) {
         const id = String(r.npc || '').replace(/^npc:/, '');
-        if (!id || byId.has(id) || !isGenerated(r.name)) continue;
+        if (!id || byId.has(id) || !wasGenerated(id, r.name)) continue;
         if (people.some((p) => p.key === id)) continue;
         people.push({ key: id, race: headRace, old: r.name, file: `property/${f}` });
       }
@@ -314,12 +370,13 @@ function rewriteHouseLabels(oldByInterior, nameFor) {
   return { touched, unresolved };
 }
 
-function ownersByInterior(isGenerated) {
+function ownersByInterior(isGenerated, baseline = null) {
   const m = new Map();
   for (const f of npcFiles()) {
     for (const n of (readJSON(`game/data/npcs/${f}`).npcs || [])) {
       const id = n.home_interior || n.interior;
-      if (!id || !n.name || !isGenerated(n.name)) continue;
+      const nm = baseline ? (baseline.get(n.id) || '') : n.name;
+      if (!id || !nm || !isGenerated(nm)) continue;
       // Household heads only: `<settlement>-<trade>-<n>` with no role suffix. A lodger does not
       // get the house named after them.
       if (!/^[a-z]+-[a-z]+-\d+$/.test(n.id)) continue;
@@ -349,8 +406,12 @@ function main(argv) {
   }
   const before = distribution(allNames, allRaces);
 
-  const people = loadPeople(isGenerated);
-  const hand = allNames.filter((n) => !isGenerated(n)).length;
+  const baseRev = (() => { const i = argv.indexOf('--baseline'); return i >= 0 ? argv[i + 1] : null; })();
+  const baseline = baseRev ? baselineNames(baseRev) : null;
+  if (baseline) console.log(`baseline: the generated/hand-authored line is drawn at ${baseRev} (${baseline.size} roster names)`);
+  const people = loadPeople(isGenerated, baseline);
+  const renamingIds = new Set(people.map((p) => p.key));
+  const hand = allNames.length - people.filter((p) => p.file && !p.file.startsWith('property/')).length;
   console.log(`generated/hand-authored line: ${allNames.length - hand} generated, ${hand} hand-authored`);
   console.log(`  criterion: <GIVEN> <EPITHET> [of <slug>], both arrays read out of tools/world/build-property.mjs`);
   console.log(`people to rename: ${people.length} (${people.filter((p) => cultureForRace(p.race) === 'argonian').length} Argonian)`);
@@ -389,7 +450,7 @@ function main(argv) {
     return 0;
   }
 
-  const owners = ownersByInterior(isGenerated);
+  const owners = ownersByInterior(isGenerated, baseline);
   const touched = rewrite(nameFor);
   const labels = rewriteHouseLabels(owners, nameFor);
   for (const [p, n] of [...touched, ...labels.touched]) console.log(`  ${p}  ${n} field(s)`);

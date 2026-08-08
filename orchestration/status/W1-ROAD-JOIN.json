@@ -3,7 +3,7 @@
   "title": "Join road generation and settlement planting so roads do not terminate in walls",
   "status": "building",
   "started_at": "2026-08-08T02:08:46Z",
-  "updated_at": "2026-08-08T02:35:00Z",
+  "updated_at": "2026-08-08T02:37:53.564Z",
   "owner": "builder",
   "decision": {
     "which_side_yields": "ROADS. Routing consumes the settlement plan; buildings never move.",
@@ -41,16 +41,26 @@
   ],
   "files_touched": [
     "orchestration/status/W1-ROAD-JOIN.json",
-    "reports/w1-road-join/baseline.json"
+    "reports/w1-road-join/baseline.json",
+    "tools/world/build-roads.mjs",
+    "game/data/world/roads.json",
+    "tools/world/road-join-deletefix.mjs",
+    "reports/w1-road-join/after.json",
+    "reports/w1-road-join/deletefix.json",
+    "reports/w1-road-join/roads-BEFORE-join.json",
+    "reports/w1-road-join/roads-join-try3.json"
   ],
   "acceptance": {
-    "1_road_through_building_zero_of_ten": "pending",
+    "1_road_through_building_zero_of_ten": "PASS — 0 of 10 legs blocked, 0 named-route offences (reports/w1-road-join/after.json)",
     "2_body_walks_THE_CROSSING": "pending",
-    "3_delete_the_fix_control": "pending",
+    "3_delete_the_fix_control": "PASS — 3 arms, all with distinct roads.json; off-flag and off-git (69e6ffa) both return 10/10 and 16 offences (reports/w1-road-join/deletefix.json)",
     "4_consumption_RI_MTH07": "pending",
-    "5_leg_length_table": "pending"
+    "5_leg_length_table": "built — see reports/w1-road-join/leg-lengths.json (pending)"
   },
   "contention": "node tools/contention.mjs --gate returned exit 3 at 02:09Z (6 browser instances, load 6.30/core). All offline work is being done first; the body walk waits for the gate or is declared as taken over the ceiling.",
-  "next_step": "probe the settlement geometry, then implement the thread in build-roads.mjs",
-  "notes": []
+  "next_step": "consumption probe, then the body walk on THE CROSSING",
+  "notes": [
+    "The road-through-building --self-test now FAILS, and correctly so: its positive arm A was the shipped defect (stormhold-scribe across stormhold-helstrom). With the join in, arm A is clean, so the self-test as written cannot pass on a fixed tree. Its own error message anticipates this (\"retarget this test\"). I have NOT edited it (it is W1-01-r4s file and the brief says do not rebuild it); tools/world/road-join-consumption.mjs re-runs the same flag/clear/everything-else-identical logic against a building that IS on the new road, which is the retargeted arm A.",
+    "RULE 17 IN THE WILD: eight successive orchestrator banks (git add -A) between 02:17Z and 02:31Z committed tools/world/build-roads.mjs and game/data/world/roads.json MID-EDIT under other agents messages. git log -- <path> therefore names commits that already carry half of this change; the delete-the-fix base had to be found by grepping every recent commit for the task id. Base is 69e6ffa (02:15:23Z), the last revision with no W1-ROAD-JOIN marker."
+  ]
 }

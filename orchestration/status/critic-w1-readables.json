@@ -1,21 +1,38 @@
 {
   "task_id": "critic-w1-readables",
   "role": "critic",
-  "piece": "W1-READABLES-r2 — quest reveals and the documents that carry them",
+  "piece": "W1-READABLES-r2 — the quest reveals and the documents that carry them",
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION §3, then builder status files",
-  "contention_note": "gate returned WAIT at start (6 instances, load 6.84/core). Doing all text-only work first; will re-gate before launching ONE browser.",
+  "commit_under_test": "64dd5f9",
+  "next_step": "browser: attack D (CONSUMPTION re-run + delete-the-fix teardown bite) and F (slot allocator, marks-after-reset). Then write the verdict.",
+  "contention_note": "gate returned WAIT (exit 3) at start (6 instances, 6.84/core) and again at 5 instances / 6.52 per core. ALL text and headless work was done first and cost no browser. Attacks A, B, C(partly), E and G were completed with zero browser instances.",
   "files_touched": [
-    "orchestration/status/critic-w1-readables.json"
+    "orchestration/status/critic-w1-readables.json",
+    "tools/quests/critic-glyph-audit.mjs",
+    "tools/quests/critic-unrouted-census.mjs",
+    "tools/quests/critic-chain-headless.mjs"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-READABLES-r2.md",
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json",
     "orchestration/status/critic-w1-readables.json",
-    "tools/quests/critic-",
+    "tools/quests/critic-glyph-audit.mjs",
+    "tools/quests/critic-unrouted-census.mjs",
+    "tools/quests/critic-chain-headless.mjs",
+    "tools/quests/critic-marks-after-reset.mjs",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "findings": []
+  "redundant_with": ["W1-READABLES-r2", "W1-18-r2", "W1-19-r3"],
+  "findings_so_far": [
+    "E VERIFIED, WITH A CORRECTION. critic-unrouted-census.mjs recomputes 121 demanded / 100 routed / 21 unrouted and 12 unwritten document rows independently of the builder's tool — exact match. BUT the builder's list of 11 missing NPCs is wrong in composition: it names npc-ineel-sa, npc-widow-tesla-vor and npc-river-band-elder, none of which appears in any unrouted DEMANDED person row, and omits npc-fourth-day-boatman, npc-high-hollow-speaker and npc-uneel-vaakh-sister, which are the actual blockers. A next round writing the cast list from the status file would build three people who unblock nothing and miss three who do.",
+    "E REFINED. 7 of the 9 eavesdrop rows name NPCs that already exist; only captain-oreem and rootkeeper-under-the-temple are missing. The corpse row's NPC exists. So the eavesdrop bucket is 7 rows of pure reader work and 2 of reader+record.",
+    "G IS BIGGER AND DIFFERENT FROM WHAT WAS REPORTED. The font is not '23 read as 35 with the tail undefined'. It is a 25-character 5x5 bitmap with TWO CHARACTERS DELETED FROM THE MIDDLE, which shears every row below each deletion one pixel left — proved constructively by reconstructing each shipped glyph from the builder's own re-authored digits by deleting two characters at a found pair of positions. And it is in NINE chart tools, not one; every one of them carries all ten digits.",
+    "B ANSWERED. `H.questNote` does not appear in `document-route-world.mjs` at all, so the 5/10/28 headline never touched it — the brief's premise applies only to mainline-chain-floor's 0/40. Independently, critic-chain-headless run under mainline-chain-floor's grant regime (bootstrap topic only, AddTopic graph carries the rest) is byte-identical with and without the questNote hand-feed in all four arms.",
+    "B SIDE-FINDING. `tools/quests/viability-walk.mjs` DENIES questNote by name — 'the walk asserting the thing it is supposed to be measuring' — while its sibling mainline-chain-floor calls it unconditionally. The two instruments disagree about the same verb.",
+    "C ANSWERED WITHOUT WIDENING SOMEONE ELSE'S FENCE. critic-chain-headless plays the same 32 quests through the real QuestEngine and gate.js with no browser: neither 5 of 32 stopping at Q-MAIN-06 on rev_the_curve_predates, reading_only 10 of 32 stopping at Q-MAIN-11 on rev_the_rhythm — both EXACT reproductions of the builder's arms on an instrument the builder did not write. reading_and_looking is 18 not 28, and the gap is my instrument's: it passes `gates=null` so faction rank is unrepresentable and Q-MAIN-19 is resolved in the browser by res_cutters_rank, a faction-rank resolution needing no reveal.",
+    "C ATTRIBUTION. Of the 28 steps the builder's best arm completed, 12 needed no reveal at all, 5 were carried by a document, 5 by a mark, 5 by W1-18's person channel and 1 by the hook table. So 10 of 28 are this piece's, and they are the ones that move the wall.",
+    "C DELETE-THE-FIX, INDEPENDENT. --falsify no-books takes reading_only 10 -> 5 and reading_and_looking 18 -> 5; --falsify no-router takes reading_and_looking 18 -> 10 with the document half intact. The two halves are separable and both bite."
+  ]
 }

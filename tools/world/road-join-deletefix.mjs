@@ -76,10 +76,24 @@ function run(cmd, args, cwd) {
  */
 function arm(name, gen, extraArgs) {
   const roadsOut = path.join('reports', `roads-${name}.json`);
+  const live = path.join(SCRATCH, 'game/data/world/roads.json');
+  // The PRE-CHANGE generator has no `--out`: it was added by the same change this tool is
+  // deleting. It ignores the flag and writes straight to game/data/world/roads.json, so that file
+  // is stamped before the build and the arm falls back to it — having first checked the build
+  // actually rewrote it, so a generator that silently did nothing cannot pass as a control.
+  const stamp = fs.existsSync(live) ? sha(live) : null;
+  fs.rmSync(path.join(SCRATCH, roadsOut), { force: true });
   const build = run('node', [gen, '--out', roadsOut, ...(extraArgs || [])], SCRATCH);
-  const built = path.join(SCRATCH, roadsOut);
-  if (!fs.existsSync(built)) return { arm: name, error: 'generator produced no roads.json', build_exit: build.code, build_tail: build.out.slice(-2000) };
-  fs.copyFileSync(built, path.join(SCRATCH, 'game/data/world/roads.json'));
+  let built = path.join(SCRATCH, roadsOut);
+  if (!fs.existsSync(built)) {
+    if (!fs.existsSync(live) || sha(live) === stamp) {
+      return { arm: name, error: 'generator produced no roads.json and did not rewrite the live one', build_exit: build.code, build_tail: build.out.slice(-3000) };
+    }
+    built = live;
+    fs.copyFileSync(live, path.join(SCRATCH, roadsOut));
+    built = path.join(SCRATCH, roadsOut);
+  }
+  fs.copyFileSync(built, live);
   const installed_sha = sha(path.join(SCRATCH, 'game/data/world/roads.json'));
   const rep = path.join('reports', `rtb-${name}.json`);
   const check = run('node', ['tools/world/road-through-building.mjs', '--out', rep], SCRATCH);
@@ -108,7 +122,13 @@ fs.writeFileSync(beforePath, before);
 // `git show HEAD:` on a tree where the change is not yet committed gives the pre-change file. If
 // the change IS committed, HEAD is the joined file and this arm would be a duplicate of ON — which
 // would be an inert control. Detect that here rather than reporting a false negative.
-const beforeHasJoin = /THE JOIN|threadSettlements/.test(before);
+//
+// `--base` MUST be a commit from before the change. That is not the same as HEAD~1 on this tree:
+// the orchestrator banks with `git add -A`, and while this join was being written EIGHT successive
+// banks committed the file mid-edit under other agents' messages. `git log -- <path>` therefore
+// names commits that already carry half of it. The marker below is the change's own task id, which
+// no pre-change revision can contain, so the base is verified rather than assumed.
+const beforeHasJoin = /W1-ROAD-JOIN/.test(before);
 
 log(`delete-the-fix on the roads/settlements join`);
 log(`  scratch ${SCRATCH}`);

@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-SAVE-AI",
+  "title": "save/fight.js serialises live SoulsAI as plain object; boot-check blind to it",
+  "state": "in_progress",
+  "started": "2026-08-08",
+  "next_step": "read RULES/INDEX/NEXT-DISPATCH Q0, then save/fight.js + save/state.js",
+  "files_touched": [
+    "orchestration/status/W1-SAVE-AI.json"
+  ],
+  "files_claimed": [
+    "game/src/save/fight.js",
+    "game/src/save/state.js",
+    "tools/harness/boot-check.mjs",
+    "tools/check-data.mjs",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": []
+}

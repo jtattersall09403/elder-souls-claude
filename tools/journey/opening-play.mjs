@@ -515,27 +515,54 @@ process.exit(exitCode);
 async function walkTo(handle, target, advance, pos) {
   const steps = [];
   const KEY = { fwd: 'KeyW', back: 'KeyS', left: 'KeyA', right: 'KeyD' };
-  for (let i = 0; i < 12; i++) {
+  // The eight directions a keyboard can produce, for the unstick sweep below.
+  const SWEEP = [
+    [KEY.fwd], [KEY.fwd, KEY.right], [KEY.right], [KEY.back, KEY.right],
+    [KEY.back], [KEY.back, KEY.left], [KEY.left], [KEY.fwd, KEY.left],
+  ];
+  let stuckFor = 0, sweepAt = 0;
+  for (let i = 0; i < 20; i++) {
     const st = await handle.page.evaluate(() => ({
       p: window.__ENGINE.sim.player.pos.slice(),
       cy: window.__ENGINE.sim.camera.yaw,
     }));
     const dx = target[0] - st.p[0], dz = target[2] - st.p[2];
     const d = Math.hypot(dx, dz);
-    steps.push({ dist: Number(d.toFixed(3)), pos: st.p.map((v) => Number(v.toFixed(3))), camera_yaw: st.cy });
+    const prev = steps.length ? steps[steps.length - 1].pos : null;
+    const movedSinceLast = prev ? Math.hypot(st.p[0] - prev[0], st.p[2] - prev[2]) : Infinity;
+    steps.push({ dist: Number(d.toFixed(3)), pos: st.p.map((v) => Number(v.toFixed(3))), camera_yaw: st.cy, moved_since_last: Number(movedSinceLast.toFixed(3)) });
     if (d <= 1.5) break;
-    const cy = st.cy * Math.PI / 180;
-    const mx = dx * Math.cos(cy) - dz * Math.sin(cy);   // right component
-    const my = dx * Math.sin(cy) + dz * Math.cos(cy);   // forward component
-    const held = [];
-    if (my > d * 0.35) held.push(KEY.fwd); else if (my < -d * 0.35) held.push(KEY.back);
-    if (mx > d * 0.35) held.push(KEY.right); else if (mx < -d * 0.35) held.push(KEY.left);
-    if (!held.length) held.push(KEY.fwd);
+    let held;
+    if (movedSinceLast < 0.05) {
+      // PINNED. A body pressed into a crate does not move on the one axis that points at the
+      // target, and a walker that keeps pressing the same key measures the crate. Sweep the
+      // other seven directions before concluding anything — the round-2 draft of this probe did
+      // NOT do this, held `KeyD` twelve times against the same wall, and reported a false pass.
+      stuckFor++;
+      held = SWEEP[sweepAt % SWEEP.length];
+      sweepAt++;
+    } else {
+      stuckFor = 0; sweepAt = 0;
+      const cy = st.cy * Math.PI / 180;
+      const mx = dx * Math.cos(cy) - dz * Math.sin(cy);   // right component
+      const my = dx * Math.sin(cy) + dz * Math.cos(cy);   // forward component
+      held = [];
+      if (my > d * 0.35) held.push(KEY.fwd); else if (my < -d * 0.35) held.push(KEY.back);
+      if (mx > d * 0.35) held.push(KEY.right); else if (mx < -d * 0.35) held.push(KEY.left);
+      if (!held.length) held.push(KEY.fwd);
+    }
     for (const k of held) await handle.page.keyboard.down(k);
-    await advance(Math.max(10, Math.min(150, Math.round(d * 20))), 120000);
+    await advance(Math.max(12, Math.min(120, Math.round(d * 20))), 120000);
     for (const k of held) await handle.page.keyboard.up(k);
     await advance(3, 10000);
   }
   const p = await pos();
-  return { steps, final_dist: Number(Math.hypot(target[0] - p[0], target[2] - p[2]).toFixed(3)), final_pos: p.map((v) => Number(v.toFixed(3))) };
+  const totalMoved = steps.length > 1 ? steps.reduce((a, s, i) => a + (i ? s.moved_since_last : 0), 0) : 0;
+  return {
+    steps, iterations: steps.length,
+    total_moved_m: Number(totalMoved.toFixed(3)),
+    final_dist: Number(Math.hypot(target[0] - p[0], target[2] - p[2]).toFixed(3)),
+    final_pos: p.map((v) => Number(v.toFixed(3))),
+    reached: Math.hypot(target[0] - p[0], target[2] - p[2]) <= 1.5,
+  };
 }

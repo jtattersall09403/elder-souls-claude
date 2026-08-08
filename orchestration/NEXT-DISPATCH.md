@@ -132,6 +132,14 @@ casualty** and there may be others. Rule 10 exists for exactly this shape (two i
 one system, one good and one broken, live at the same time). If your piece denies, gates or
 throttles an action, check which of the two paths actually carries it.
 
+**Q0. FLEET HAZARD — a save/load with a hostile present kills every stepping probe, silently.**
+`save/fight.js`'s `SKIP` list omits `ai`, so `saveActor(ctl)` serialises the live `SoulsAI` as a
+plain object. After any round trip with a hostile in the world, the next fixed step throws
+`this.ai.step is not a function` — **and `boot-check` stays green, because boot does not step.**
+That is rule 13's exact failure mode: not one agent's problem, everyone's. `saveRoundTrip()` also
+reports `hash_equal:false`. Found by the W1-16 critic, in someone else's file. **Dispatched.** If a
+stepping probe of yours has been dying after a load, this is why, and your figures from it are void.
+
 **Q4. `engine.spawn` ignores `opts.side`, so a summoned creature spawns hostile and fights its own
 caster.** Found by W1-14 r3, which did not touch it because it lives in W1-12/W1-03 files.
 `frenzy`'s `hostileTo` has no reader anywhere either. Any measurement of a summon's usefulness taken

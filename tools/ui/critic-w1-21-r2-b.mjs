@@ -83,13 +83,13 @@ const WALK = `() => {
   step(4);
   // The body must stand in REAL PLACES: field.sites carries each site's own centre, which is the
   // middle of the pad r_flat measures. pois.json positions are waystations and discover nothing.
-  const sites = (eng.field.sites || []).slice(0, 7);
+  const sites = (eng.field.sites || []).slice(0, 5);
   const reached = [], refused = [];
   for (const s of sites) {
-    try { H.teleport(s.x, s.z); clearHostiles(); step(20); reached.push(s.id); }
+    try { H.teleport(s.x, s.z); clearHostiles(); step(10); reached.push(s.id); }
     catch (e) { refused.push({ id: s.id, error: String(e && e.message || e).slice(0, 120) }); }
   }
-  clearHostiles(); step(20);
+  clearHostiles(); step(8);
   const m = H.mapState();
   return {
     reached, refused, neighbour_throws: notes,
@@ -98,6 +98,26 @@ const WALK = `() => {
     places: m.places.slice(), revealed: m.revealed_cells, total: m.total_cells,
     blob: H.saveState(),
   };
+}`;
+
+/**
+ * Restore the walked body from the honest blob instead of walking again.
+ *
+ * The walk costs ~40 minutes of renderer CPU on this box (five teleports, each streaming a
+ * province tile ring). My first version called it four times and I killed the run at 43 minutes
+ * having produced nothing — recorded rather than deleted. Replaying the blob goes through
+ * `Discovery.restore()`, which is the code path under test and whose whole design claim is that
+ * the map is a pure function of the footprint, so this is not a shortcut past the measurement:
+ * every pass below that needs a non-empty map gets one THROUGH the mechanism it is judging, and
+ * C3/C3b independently confirm that the replay reproduces the walked map exactly.
+ */
+const REPLAY = `(blob) => {
+  const H = window.__HARNESS;
+  try { H.closeMenu(); } catch (e) { /* */ }
+  H.loadState(blob);
+  for (let i = 0; i < 6; i++) { try { H.stepFrames(1); } catch (e) { /* neighbour */ } }
+  const m = H.mapState();
+  return { places: m.places.slice(), place_count: m.place_count, revealed: m.revealed_cells };
 }`;
 
 const h = await launchGame({ width: W, height: H, timeout: 300000 });
@@ -206,7 +226,8 @@ try {
   // =========================================================================================
   // D — EVERY WRITE TO THE DISCOVERY OBJECT
   // =========================================================================================
-  await h.page.evaluate(eval(`(${WALK})`));      // a non-empty map, so a wipe is visible
+  const replayD = await h.page.evaluate(eval(`(${REPLAY})`), honest.blob);   // non-empty map
+  out.data.replay_for_D = replayD;
   const census = await h.page.evaluate(() => {
     const d = window.__ENGINE.sim.discovery;
     const proto = Object.getPrototypeOf(d);
@@ -278,7 +299,8 @@ try {
   // =========================================================================================
   // E — AR-2 ON THE DRAWN MAP
   // =========================================================================================
-  await h.page.evaluate(eval(`(${WALK})`));
+  const replayE = await h.page.evaluate(eval(`(${REPLAY})`), honest.blob);
+  out.data.replay_for_E = replayE;
   await h.h('openMenu', 'map'); await h.h('stepFrames', 3);
   const uiMap = await h.h('getUIState');
   const vis = uiMap.elements.filter((e) => e.visible);
@@ -325,29 +347,24 @@ try {
   // =========================================================================================
   // F — CONSUMPTION (RI-MTH07 / ARBITRATION §3)
   // =========================================================================================
-  const consume = await h.page.evaluate(() => {
+  const consume = await h.page.evaluate((blob) => {
     const H = window.__HARNESS, eng = window.__ENGINE;
     const step = (n) => { for (let i = 0; i < n; i++) { try { H.stepFrames(1); } catch (e) { /* */ } } };
     try { H.closeMenu(); } catch (e) { /* */ }
-    H.loadState('default'); step(4);
-    try { H.exitInterior(); } catch (e) { /* */ }
-    step(4);
-    const sites = (eng.field.sites || []).slice(0, 7);
-    try { H.teleport(sites[0].x, sites[0].z); } catch (e) { /* */ }
-    step(20);
+    H.loadState(blob); step(6);
     const a = { places: H.mapState().place_count, revealed: H.mapState().revealed_cells };
-    return { sites: sites.map((s) => s.id), a };
-  });
+    return { sites: (eng.field.sites || []).slice(5, 7).map((s) => s.id), a };
+  }, honest.blob);
   await h.h('openMenu', 'map'); await h.h('stepFrames', 3);
   const shotA = decode(await h.h('screenshot'));
   const more = await h.page.evaluate(() => {
     const H = window.__HARNESS, eng = window.__ENGINE;
     const step = (n) => { for (let i = 0; i < n; i++) { try { H.stepFrames(1); } catch (e) { /* */ } } };
     H.closeMenu(); step(2);
-    for (const s of (eng.field.sites || []).slice(1, 5)) {
-      try { H.teleport(s.x, s.z); step(20); } catch (e) { /* */ }
+    for (const s of (eng.field.sites || []).slice(5, 7)) {
+      try { H.teleport(s.x, s.z); step(10); } catch (e) { /* */ }
     }
-    step(10);
+    step(6);
     H.openMenu('map'); step(3);
     return { places: H.mapState().place_count, revealed: H.mapState().revealed_cells };
   });
@@ -367,10 +384,10 @@ try {
     const step = (n) => { for (let i = 0; i < n; i++) { try { H.stepFrames(1); } catch (e) { /* */ } } };
     H.closeMenu(); step(2);
     eng.sim.discovery.suspend();
-    for (const s of (eng.field.sites || []).slice(5, 7)) {
-      try { H.teleport(s.x, s.z); step(20); } catch (e) { /* */ }
+    for (const s of (eng.field.sites || []).slice(7, 9)) {
+      try { H.teleport(s.x, s.z); step(10); } catch (e) { /* */ }
     }
-    step(10);
+    step(6);
     H.openMenu('map'); step(3);
     const r = { places: H.mapState().place_count, revealed: H.mapState().revealed_cells, suspended: H.mapState().suspended };
     eng.sim.discovery.resume();
@@ -404,7 +421,7 @@ try {
   // =========================================================================================
   // G — THE SIX SCREENS, PHOTOGRAPHED
   // =========================================================================================
-  await h.page.evaluate(eval(`(${WALK})`));
+  await h.page.evaluate(eval(`(${REPLAY})`), honest.blob);
   await h.h('setAtHearth', true); await h.h('stepFrames', 2);
   const SIX = ['inventory', 'journal', 'sheet', 'spells', 'map', 'levelup'];
   const stamp = '2026-08-08-w1-21-r2-critic';
