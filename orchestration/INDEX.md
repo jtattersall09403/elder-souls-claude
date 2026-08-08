@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `7b7ce4a`: 669 tools, 153 reference
+so it cannot drift. Generated at `e3a5011`: 669 tools, 153 reference
 items, 52 pieces in flight.
 
 Its purpose is to stop 52+ concurrent agents each paying separately to discover the
@@ -987,8 +987,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |
 | `W1-21-r3` | in_progress | remaining detectors in flight; then sample table, blog line, commit | `orchestration/status/W1-21-r3.json` `tools/lib/graded.mjs` `tools/lib/colour.mjs` `tools/metrics/ui-metrics.mjs` `tools/analysis/ui-forbidden.mjs` `tools/analysis/ui-layer.mjs` |
-| `W1-14-r4` | measuring | await nulldial/nocast dial arms, then blog line + commit | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` |
 | `critic-w1-25` | done | Round 2 on W1-25: fix the four cascade defects in lib/sabotage.mjs against the acceptance  | `corpus/90-verdicts/wave1/W1-25-r1.md` `corpus/90-verdicts/wave1/W1-25-r1.json` `orchestration/status/critic-w1-25.json` `tools/experience/critic-w1-25.mjs` `tools/experience/critic-w1-25-chart.mjs` `reports/experience/critic-w1-25.json` |
 | `critic-road-join` | ? | none — verdict, tools, report, picture and blog line are on disk and committed | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
 | `W1-26-r3` | ? | none — handing to a critic | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |

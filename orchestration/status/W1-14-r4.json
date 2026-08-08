@@ -1,10 +1,10 @@
 {
   "task_id": "W1-14-r4",
   "piece": "W1-14 round 4 — magic",
-  "state": "measuring",
+  "state": "done",
   "started": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-14-r3.md",
-  "next_step": "await nulldial/nocast dial arms, then blog line + commit",
+  "next_step": "hand to a critic. See the not_done note.",
   "objectives": [
     {
       "id": "O1",
@@ -22,7 +22,7 @@
       "id": "O3",
       "what": "--break arms (nocast/bindblind/fleeblind) must each break what they name and be run+published; nocast exits before readDial(), fleeblind is a partial teardown",
       "state": "done",
-      "result": "All four arms run and published under reports/w1-14-r4/. bindblind: bind_lesser + bind_greater magnitude COUPLED -> BLIND, self-test PASS. fleeblind: demoralise magnitude COUPLED -> BLIND — it could NOT before, because __breakFleeMotion left h_demoralise's `fleeLeashM = clamp(magnitude*0.9, 6, 45)` writes standing and statusReport() published a pure function of the dial; apply.js now suppresses those four writes (and the event payload) under the break. NEW ARM `--break=nulldial`: the comparator's real null — every knock-down arm casts the BASE tuple, so two identical arms must read BLIND on every separable dial. nocast is KEPT but relabelled in its own report as controlling the DELIVERY GATE only, because it exits at NOT_DELIVERED before readDial() is reached. `--assert` turns each arm's expectation into an exit code."
+      "result": "ALL FOUR ARMS RUN, PUBLISHED under reports/w1-14-r4/, and each asserts its own expectation with `--assert`. (1) bindblind: bind_lesser + bind_greater magnitude COUPLED -> BLIND. PASS. (2) fleeblind: demoralise magnitude COUPLED -> BLIND. It COULD NOT go red before this round — __breakFleeMotion disabled the flee loop in MagicSystem.step and left h_demoralise's `fleeLeashM = clamp(magnitude*0.9, 6, 45)` writes standing, so statusReport() still published a pure function of the dial. apply.js now suppresses those four writes AND the event payload under the break, so all three doors the number could leave by are shut. PASS. (3) NEW ARM --break=nulldial, the comparator's actual null and the thing round 3 did not have: every knock-down arm casts the BASE tuple, so two identical casts differ in nothing and every separable dial must read BLIND. FULL RUN, 55 rows: 55 ACTIVE, 0 INERT, 0 NOT_DELIVERED, and magnitude 48/48 BLIND, duration 37/37 BLIND, area 12/12 BLIND — coupled 0 on all three. NO COUPLED READING THIS INSTRUMENT PRODUCES IS ARENA NOISE. Note that the round-3 critic's own two-identical-casts null was NOT clean: bind_lesser and bind_greater differed at world.summons.json. That was the aliasing defect in O1, and fixing it is what makes this null clean. (4) nocast: kept, run (55/55 NOT_DELIVERED, 0 ACTIVE, coupled 0 on all three) and RELABELLED in its own report — `this_arm_controls: 'the DELIVERY GATE only — every row exits at NOT_DELIVERED before readDial() is reached. The comparator control is --break=nulldial.'` It is a real control for a real thing and it is no longer offered as the control for the comparator."
     },
     {
       "id": "O4",
@@ -60,6 +60,7 @@
     "docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png",
     "game/data/dialogue/rumours.json",
     "game/data/index.json",
+    "game/data/magic/enchanting.json",
     "game/data/npcs/spellwrights.json",
     "game/src/combat/enemy.js",
     "game/src/combat/moves.js",
@@ -88,13 +89,146 @@
     "A SECOND PLACEMENT FINDING. Lilmoth's authored posts use y = 0.37 and y = 7.37, which are the stilt town's two deck levels, while the heightfield at the quay is 2.68. A person authored at 0.37 stands 2.3 m under the street. I authored the Lilmoth spellwright at the heightfield value and left the other 45 records alone.",
     "THE PICTURE IS TAKEN AT GIDEON AND THE REASON IS LIGHT. Three takes at Lilmoth and one at Helstrom came back as black rectangles with a health bar on them, correctly: the clock reads 11:00 in `high_clear` and those two towns are under a deck and under a canopy respectively. The commission in the picture is made at Gideon's counter, on foot, and the cast is on open ground outside the town — the teleport for those last metres is declared in the tool's header, and the WALKED claim is made by the commission probe, which arrives 1.6 m from the Lilmoth spellwright and fails if it does not.",
     "NOT DONE, PLAINLY. (1) THE ENCHANTING COUNTER IS NOT BUILT. `enchantQuote` still has exactly one caller and it is the harness; all seven people advertise the service and answer on the subject, and that is all. Half of the round-3 gap statement is therefore still open and I am not claiming it. (2) No `spellmaking` mode was added to `ui/system.js`'s OPENABLE list (remedy point 3): the counter reuses the conversation surface instead, which I argue is the better reading of remedy point 2 — 'the entry point is Morrowind's (a topic list) and not Souls' (a vendor grid)' — but it is a deviation from the written remedy and it is a deviation, not a completion. (3) The four spellwrights keep no hours: their schedule is `at: null` all day. (4) The remaining round-3 gaps are untouched and were not in my brief: duration is still not read on the four effects it matters for (§8), a spell still does not connect with a MOVING body (§7), `engine.spawn` still drops `opts.side` (§6), a cast over the Focus reservoir is still a silent drop (§9), `frenzy` still writes a target nothing reads, and the dial census still has no world-side-only signature (§2, the 12 `world.*`-only COUPLED readings). (5) I did not re-measure RI-MAG04, RI-MAG05, RI-PRG03 or RI-QST05.",
-    "A DOUBLE-GRAVITY HAZARD I DID NOT CLOSE. `sim/traversal.js` and `MagicSystem.stepFall` are two independent gravity implementations over the same body. With the ground plane fixed, the magic one returns on its first line for a body that is standing, which is the common case and the one that mattered; during a genuine fall in the province both still run. Before this round the magic one pulled every body in the world toward y = 0 on every frame, so this is strictly better and still not right."
+    "A DOUBLE-GRAVITY HAZARD I DID NOT CLOSE. `sim/traversal.js` and `MagicSystem.stepFall` are two independent gravity implementations over the same body. With the ground plane fixed, the magic one returns on its first line for a body that is standing, which is the common case and the one that mattered; during a genuine fall in the province both still run. Before this round the magic one pulled every body in the world toward y = 0 on every frame, so this is strictly better and still not right.",
+    "REDUNDANT_WITH is long and every entry is one of four shared files, not a competing hypothesis: `reports/blog-feed.jsonl` and `docs/shots/` (which every piece in the wave writes one line and one picture to), `game/src/engine.js` and `game/src/harness/api.js` (which most of the wave touches additively), plus `game/data/index.json` and `game/data/dialogue/rumours.json`. The only genuine continuation is W1-14-r3 and its critic: this is the same piece, one round on, on the same files."
   ],
   "start_commit": "aa542ec",
   "redundant_with": [
+    "W1-01-r4",
     "W1-03",
+    "W1-04-r4",
+    "W1-06",
+    "W1-06-r2",
+    "W1-06-r3",
     "W1-12",
+    "W1-13-r3",
+    "W1-14-r3",
+    "W1-15-r3",
+    "W1-17",
+    "W1-17-r2",
+    "W1-18-r2",
+    "W1-19-r3",
+    "W1-21-r2",
+    "W1-21-r3",
+    "W1-23-r2",
+    "W1-23-r4",
+    "W1-25",
+    "W1-26-r3",
+    "W1-CHARTFONT",
+    "W1-CHARTFONT-r2",
+    "W1-DLG-S37",
+    "W1-READABLES",
     "W1-READABLES-r2",
-    "W1-23-r4"
-  ]
+    "W1-ROAD-JOIN",
+    "W1-VIABILITY-SPLIT",
+    "arbiter-dlg-s37",
+    "arbiter-map-s38",
+    "arbiter-wpn-s36",
+    "critic-road-join",
+    "critic-w1-03",
+    "critic-w1-12",
+    "critic-w1-13-r3",
+    "critic-w1-14-r3",
+    "critic-w1-17",
+    "critic-w1-17-act5",
+    "critic-w1-21-r2",
+    "critic-w1-22-r2",
+    "critic-w1-23-r3",
+    "critic-w1-23-r4",
+    "critic-w1-25",
+    "critic-w1-readables",
+    "judge-prose-r4"
+  ],
+  "commit_under_test": "(this commit)",
+  "measurements": {
+    "summon_alias": {
+      "tool": "tools/harness/w1-14-r4-summon.mjs",
+      "report": "reports/w1-14-r4/summon-alias.json",
+      "fixed": {
+        "attack_ratings": [
+          191,
+          191,
+          191,
+          191,
+          191,
+          191
+        ],
+        "hp_max": [
+          577,
+          577,
+          577,
+          577,
+          577,
+          577
+        ],
+        "plain_body_after": 86,
+        "player_worst_wound": 227.04,
+        "player_deaths": 0
+      },
+      "broken": {
+        "attack_ratings": [
+          191,
+          424,
+          941,
+          2089,
+          4638,
+          10296
+        ],
+        "plain_body_after": 10296,
+        "player_worst_wound": 300,
+        "player_deaths": 1
+      }
+    },
+    "touch_applies_once": {
+      "tool": "tools/harness/w1-14-r4-touch.mjs",
+      "report": "reports/w1-14-r4/touch-applies-once.json",
+      "fixed": "all 9 rows applied 1, damage 44",
+      "broken": {
+        "CANTRIP_touch": [
+          4,
+          176
+        ],
+        "LIGHT_touch": [
+          5,
+          220
+        ],
+        "HEAVY_touch": [
+          7,
+          308
+        ],
+        "target_and_projectile": "unchanged at 1 / 44"
+      }
+    },
+    "dial_self_tests": {
+      "tool": "tools/harness/w1-14-r3-dials.mjs",
+      "bindblind": "bind_lesser + bind_greater magnitude BLIND — PASS",
+      "fleeblind": "demoralise magnitude BLIND — PASS (was impossible before this round)",
+      "nulldial": "55 rows, 55 ACTIVE, magnitude 48/48 BLIND, duration 37/37 BLIND, area 12/12 BLIND, coupled 0 — PASS",
+      "nocast": "55/55 NOT_DELIVERED, 0 ACTIVE, coupled 0 — PASS, and relabelled as a DELIVERY-GATE control"
+    },
+    "commission_through_play": {
+      "tool": "tools/harness/w1-14-r4-commission.mjs",
+      "report": "reports/w1-14-r4/commission-through-play.json",
+      "walk": "152 f@60 through Lilmoth, arrived, standing 1.6 m from the spellwright",
+      "topics_offered": [
+        "enchanting",
+        "spellmaking",
+        "the road to Archon",
+        "the road to Blackrose",
+        "latest rumors"
+      ],
+      "commissioned": "19 of 20; the 20th (six effects) refused on effect_count and states the skill it needs",
+      "focus_base": "every row equal to RI-MAG02 §D recomputed independently in the tool",
+      "gold": "purse moves by exactly the quote on all 19 rows and by nothing else",
+      "save": "all 19 in saveState()",
+      "cast": "the commissioned spell cast in the same street: 412 -> 366 hp, applied once",
+      "controls": {
+        "A_door_removed": "no counter, person still answers",
+        "B_wrong_person": "no counter",
+        "C_enchanter_not_spellwright": "no counter, refusal line names the towns that do the work",
+        "D_quest_gate": "no counter (recluse, mag_recluse_introduction unset)",
+        "E_ground_plane": "fix present -> ACTION_START CAST; ground plane restored to 0 -> INPUT_DROPPED reason:airborne"
+      }
+    }
+  }
 }
