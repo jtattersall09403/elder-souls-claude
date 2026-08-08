@@ -180,12 +180,13 @@ export function loadLedger({ root = ROOT, now = Date.now(), ledgerPath = LEDGER_
       model: str(m?.model) || `(unnamed model ${i})`,
       usd: num(m?.usd, `by_model[${i}].usd`),
       requests: num(m?.requests, `by_model[${i}].requests`),
-      tokens: m?.tokens && typeof m.tokens === 'object' ? {
-        input: num(m.tokens.input, `by_model[${i}].tokens.input`),
-        cache_write: num(m.tokens.cache_write, `by_model[${i}].tokens.cache_write`),
-        cache_read: num(m.tokens.cache_read, `by_model[${i}].tokens.cache_read`),
-        output: num(m.tokens.output, `by_model[${i}].tokens.output`),
-      } : null,
+      // Read whatever classes the ledger names rather than four fixed keys. The contract was
+      // amended from four token classes to five (a 5-minute cache write is 1.25x base input, a
+      // 1-hour write is 2x, and both occur here) and a renderer with the class list hard-wired
+      // would have silently dropped the new one — the exact failure the split exists to expose.
+      tokens: m?.tokens && typeof m.tokens === 'object'
+        ? Object.fromEntries(Object.keys(m.tokens).map(k => [k, num(m.tokens[k], `by_model[${i}].tokens.${k}`)]))
+        : null,
     })),
     byClass: arr(raw.by_token_class).map((c, i) => ({
       cls: str(c?.class) || `(unnamed class ${i})`,
@@ -193,25 +194,67 @@ export function loadLedger({ root = ROOT, now = Date.now(), ledgerPath = LEDGER_
       tokens: num(c?.tokens, `by_token_class[${i}].tokens`),
     })),
     guards: {
+      // G1 publishes TWO honest readings that disagree, and the contract requires both on the page:
+      // mean_agents counts agents that issued a request in the hour; mean_agents_present counts
+      // agents alive between their first and last request. A >20% divergence means agents are
+      // alive and idle, which is a cost finding in its own right, so the flag is drawn, not hidden.
       g1: g.g1_parallelism && typeof g.g1_parallelism === 'object' ? {
         agents: num(g.g1_parallelism.mean_agents, 'guards.g1_parallelism.mean_agents'),
+        present: num(g.g1_parallelism.mean_agents_present, 'guards.g1_parallelism.mean_agents_present'),
+        divergence: g.g1_parallelism.divergence_flag === true,
         floor: num(g.g1_parallelism.floor, 'guards.g1_parallelism.floor'),
         status: str(g.g1_parallelism.status),
         windowHours: num(g.g1_parallelism.window_hours, 'guards.g1_parallelism.window_hours'),
       } : null,
+      // G2 is one-sided and low-powered and says so on the page. The structural alarm is a
+      // find-rate of ZERO (rule 23), which is what a context-cutting change produces; the windowed
+      // mean score is a tripwire, never proof, and must never be drawn as proof.
       g2: g.g2_quality && typeof g.g2_quality === 'object' ? {
         score: num(g.g2_quality.mean_verdict_score, 'guards.g2_quality.mean_verdict_score'),
         scoreBase: num(g.g2_quality.baseline_mean_verdict_score, 'guards.g2_quality.baseline_mean_verdict_score'),
+        n: num(g.g2_quality.n, 'guards.g2_quality.n'),
+        power: str(g.g2_quality.power),
         find: num(g.g2_quality.critic_find_rate, 'guards.g2_quality.critic_find_rate'),
         findBase: num(g.g2_quality.baseline_critic_find_rate, 'guards.g2_quality.baseline_critic_find_rate'),
+        regrade: g.g2_quality.regrade && typeof g.g2_quality.regrade === 'object' ? {
+          piece: str(g.g2_quality.regrade.piece),
+          known: num(g.g2_quality.regrade.known_findings, 'guards.g2_quality.regrade.known_findings'),
+          recovered: num(g.g2_quality.regrade.recovered, 'guards.g2_quality.regrade.recovered'),
+        } : null,
         status: str(g.g2_quality.status),
       } : null,
+      // G3: four of the five non-negotiables are not honestly measurable today and ship as null
+      // with a stated reason. The page must show "1 of 5 measured", never a green 5/5 — a guard
+      // measurable only by grepping for its own name is gameable by the process it constrains.
       g3: g.g3_rigour && typeof g.g3_rigour === 'object' ? {
         counts: g.g3_rigour.counts && typeof g.g3_rigour.counts === 'object' ? g.g3_rigour.counts : null,
         base: g.g3_rigour.baseline_counts && typeof g.g3_rigour.baseline_counts === 'object' ? g.g3_rigour.baseline_counts : null,
+        unmeasured: arr(g.g3_rigour.unmeasured).filter(x => typeof x === 'string'),
+        unmeasuredReason: str(g.g3_rigour.unmeasured_reason),
         status: str(g.g3_rigour.status),
       } : null,
     },
+    // Blocks added to the contract by the instrument on 2026-08-08.
+    comparableKey: str(raw.comparable_key),
+    coverage: raw.coverage && typeof raw.coverage === 'object' ? {
+      filesTotal: num(raw.coverage.files_total, 'coverage.files_total'),
+      filesRead: num(raw.coverage.files_read, 'coverage.files_read'),
+      bytesRead: num(raw.coverage.bytes_read, 'coverage.bytes_read'),
+      complete: raw.coverage.complete === true,
+      stated: typeof raw.coverage.complete === 'boolean',
+    } : null,
+    drivers: raw.drivers && typeof raw.drivers === 'object' ? {
+      requests: num(raw.drivers.requests, 'drivers.requests'),
+      meanContext: num(raw.drivers.mean_context_tokens, 'drivers.mean_context_tokens'),
+      pie: num(raw.drivers.pie_tokens, 'drivers.pie_tokens'),
+      perAgentHour: num(raw.drivers.requests_per_agent_hour, 'drivers.requests_per_agent_hour'),
+    } : null,
+    denominator: raw.denominator && typeof raw.denominator === 'object' ? {
+      definition: str(raw.denominator.definition),
+      active: num(raw.denominator.active_hours, 'denominator.active_hours'),
+      agentHours: num(raw.denominator.agent_hours, 'denominator.agent_hours'),
+      span: num(raw.denominator.span_hours, 'denominator.span_hours'),
+    } : null,
     changes: arr(raw.changes).map((c, i) => ({
       id: str(c?.id) || `#${i + 1}`, title: str(c?.title) || '(untitled change)',
       landed: str(c?.landed), commit: str(c?.commit),
@@ -242,10 +285,15 @@ const C = {
   pah: '#d95926',       // slot 2 — cost per agent-hour
   agents: '#199e70',    // slot 3 — parallelism (a guard, drawn on the same x as the cost)
   extra: '#c98500',     // slot 4 — fourth bar category
+  fifth: '#d55181',     // slot 5 — fifth bar category (the second cache-write class)
   target: '#7d9a5a', baseline: '#9a8f79', grid: '#332d24', ink: '#e8ddc8', dim: '#9a8f79',
   surface: '#1b1813', good: '#7d9a5a', warn: '#c8a253', bad: '#b4553f',
 };
-const BAR_COLOURS = [C.ch, C.pah, C.agents, C.extra];
+// Five slots, because the contract now carries five token classes. Validated as a set against this
+// page's surface, not eyeballed:
+//   validate_palette.js "#3987e5,#d95926,#199e70,#c98500,#d55181" --mode dark --surface "#1b1813"
+//   -> all pass; worst adjacent CVD dE 8.4, normal-vision 19.3, all >= 3:1.
+const BAR_COLOURS = [C.ch, C.pah, C.agents, C.extra, C.fifth];
 
 const svgEl = (tag, attrs, inner = '') =>
   `<${tag} ${Object.entries(attrs).map(([k, v]) => `${k}="${esc(v)}"`).join(' ')}${inner ? `>${inner}</${tag}>` : '/>'}`;
@@ -368,12 +416,30 @@ export function renderCost(load) {
   const spendCaveat = ledger.window.complete ? ''
     : `<div class="cost-caveat">This is <b>not</b> the whole project: the ledger does not declare <code>window.complete</code>, so the total above covers only the window named below. Earlier spend is not included.</div>`;
 
+  // Coverage. The source is hundreds of transcript files and reading only the top-level glob
+  // under-reports by roughly ten times while looking entirely plausible — so a partial read is
+  // called out above the number, not beneath it. The contract requires every headline field to be
+  // null when coverage.complete is false, which is what makes the dashes appear.
+  const cov = ledger.coverage;
+  const coverageBlock = !cov ? ''
+    : cov.complete
+      ? `<div class="cost-caveat cost-caveat-ok">Read <b>${cov.filesRead === null ? DASH : cov.filesRead.toLocaleString('en-US')}</b> of ${cov.filesTotal === null ? DASH : cov.filesTotal.toLocaleString('en-US')} transcript files${cov.bytesRead === null ? '' : ` (${(cov.bytesRead / 1e9).toFixed(2)} GB)`} &mdash; complete.</div>`
+      : `<div class="cost-caveat"><b>PARTIAL READ.</b> Only ${cov.filesRead === null ? DASH : cov.filesRead.toLocaleString('en-US')} of ${cov.filesTotal === null ? DASH : cov.filesTotal.toLocaleString('en-US')} transcript files were read${cov.stated ? '' : ', and the ledger does not state whether the read was complete'}. Every headline figure is withheld rather than shown low: an under-count reads as good news, which is the direction that hides a problem.</div>`;
+
+  // Which denominator produced "per hour". Idle hours are excluded on purpose — with a wall-clock
+  // denominator, switching the fleet off improves the metric, which is the one outcome the owner
+  // explicitly forbade. Publishing the choice beside the number keeps it auditable.
+  const den = ledger.denominator;
+  const denLine = !den ? '' : `<div class="cost-hero-s" style="margin-top:8px">Per hour of <b>${esc(den.definition || 'unstated')}</b>: ${n1(den.active)} active h of ${n1(den.span)} elapsed &middot; ${n1(den.agentHours)} agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>`;
+
   const hero = `<div class="cost-hero">
   <div class="cost-hero-main">
     <div class="cost-hero-l">${spendLabel}</div>
     <div class="cost-hero-n">${usd(ledger.headline.spend)}</div>
     <div class="cost-hero-s">${windowLine}</div>
+    ${denLine}
     ${spendCaveat}
+    ${coverageBlock}
   </div>
   <div class="cost-hero-side">
     <div class="cost-tile"><div class="cost-tile-v">${usdShort(ledger.headline.burn)}<span class="cost-per">/h</span></div>
@@ -391,36 +457,50 @@ export function renderCost(load) {
   // --- the guards, in the same panel as the cost. COST.md §5: "a cost number published without
   //     G1-G3 beside it is not a result", so they are not separable by layout either.
   const g = ledger.guards;
-  const nonNeg = g.g3?.counts ? Object.values(g.g3.counts).filter(v => typeof v === 'number').length : 0;
-  const nonNegTotal = g.g3?.counts ? Object.keys(g.g3.counts).length : 5;
+  // G3: measured means a number is present. Four of the five ship as null with a stated reason, so
+  // "1 of 5 measured" is the honest headline — never a green 5/5 over four blanks.
+  const g3counts = g.g3?.counts ? Object.entries(g.g3.counts) : [];
+  const g3measured = g3counts.filter(([, v]) => typeof v === 'number').length;
+  const g3total = g3counts.length || 5;
+  const findZero = g.g2 && g.g2.find === 0;   // rule 23: the structural alarm, not the mean score.
+
   const guards = `<div class="cost-guards">
   <div class="cost-guards-h">The guards. <span class="dimtext">A cost figure published without these is not a result &mdash; C/H alone is gamed by running fewer agents.</span></div>
   <div class="cost-tiles">
     ${guardTile({
       label: 'G1 &mdash; mean concurrent agents',
       value: g.g1 ? n1(g.g1.agents) : DASH,
-      sub: g.g1 ? `floor ${g.g1.floor === null ? '12' : n1(g.g1.floor)}${g.g1.windowHours !== null ? ` &middot; over ${n1(g.g1.windowHours)} h` : ''}` : 'not in the ledger',
+      sub: g.g1
+        ? `floor ${g.g1.floor === null ? '12' : n1(g.g1.floor)}${g.g1.windowHours !== null ? ` &middot; over ${n1(g.g1.windowHours)} h` : ''}` +
+          `${g.g1.present === null ? '' : `<br>${n1(g.g1.present)} alive on the second reading${g.g1.divergence ? ' &mdash; <b>they disagree by more than 20%, so agents are alive and idle</b>' : ''}`}`
+        : 'not in the ledger',
       status: g.g1?.status,
     })}
     ${guardTile({
-      label: 'G2 &mdash; verdict score',
+      label: 'G2a &mdash; verdict score <span class="cost-weak">tripwire, low power</span>',
       value: g.g2 ? n1(g.g2.score) : DASH,
-      sub: g.g2 ? `baseline ${n1(g.g2.scoreBase)} / 10` : 'not in the ledger',
+      sub: g.g2
+        ? `baseline ${n1(g.g2.scoreBase)} / 10${g.g2.n === null ? '' : ` &middot; n=${n1(g.g2.n)}`}${g.g2.power ? ` &middot; power ${esc(g.g2.power)}` : ''}<br>One-sided and under-powered: it cannot prove quality held, only shout if it falls.`
+        : 'not in the ledger',
       status: g.g2?.status,
     })}
     ${guardTile({
       label: 'G2 &mdash; critic find-rate',
       value: g.g2 ? n1(g.g2.find) : DASH,
-      sub: g.g2 ? `baseline ${n1(g.g2.findBase)} findings per critic` : 'not in the ledger',
-      status: g.g2?.status,
+      sub: g.g2
+        ? `baseline ${n1(g.g2.findBase)} findings per critic${findZero ? '<br><b>ZERO &mdash; a critic that cannot find a gap has failed (rule 23). This is the shape a context-cutting change produces.</b>' : ''}` +
+          `${g.g2.regrade ? `<br>G2b re-grade on <code>${esc(g.g2.regrade.piece || '?')}</code>: ${n1(g.g2.regrade.recovered)} of ${n1(g.g2.regrade.known)} known findings recovered` : '<br>G2b controlled re-grade: not run yet'}`
+        : 'not in the ledger',
+      status: findZero ? 'bad' : g.g2?.status,
     })}
     ${guardTile({
       label: 'G3 &mdash; the five non-negotiables',
-      value: g.g3?.counts ? `${nonNeg}/${nonNegTotal}` : DASH,
-      sub: g.g3?.counts
-        ? Object.entries(g.g3.counts).map(([k, v]) => `${esc(k.replace(/_/g, ' '))} ${typeof v === 'number' ? v : '?'}${g.g3.base && typeof g.g3.base[k] === 'number' ? ` (was ${g.g3.base[k]})` : ''}`).join(' &middot; ')
+      value: g3counts.length ? `${g3measured}/${g3total} <span class="cost-weak">measured</span>` : DASH,
+      sub: g3counts.length
+        ? g3counts.map(([k, v]) => `${esc(k.replace(/_/g, ' '))} ${typeof v === 'number' ? v : '<span class="warn">unmeasured</span>'}${g.g3.base && typeof g.g3.base[k] === 'number' ? ` (was ${g.g3.base[k]})` : ''}`).join(' &middot; ') +
+          (g.g3.unmeasuredReason ? `<br><b>${g.g3.unmeasured.length} of ${g3total} are not honestly measurable yet</b> &mdash; ${esc(g.g3.unmeasuredReason)}.` : '')
         : 'not in the ledger',
-      status: g.g3?.status,
+      status: g.g3?.status === 'partial' ? 'warn' : g.g3?.status,
     })}
   </div>
 </div>`;
@@ -463,12 +543,26 @@ ${ledger.series.slice().reverse().map(p => `<tr><td>${esc(when(p.t) || p.t)}</td
     note: 'Routing is the largest single lever: 3,230 Opus requests against 29 Sonnet when the programme opened.',
     rows: ledger.byModel.map(m => ({
       label: m.model, value: m.usd, display: usd(m.usd),
-      sub: `${m.requests === null ? DASH : m.requests.toLocaleString('en-US')} requests${m.tokens ? ` · in ${tok(m.tokens.input)} / write ${tok(m.tokens.cache_write)} / read ${tok(m.tokens.cache_read)} / out ${tok(m.tokens.output)}` : ''}`,
+      // Whatever classes the ledger names, in its order. Nothing is hard-wired here: the class list
+      // has already changed once under this renderer, from four to five.
+      sub: `${m.requests === null ? DASH : m.requests.toLocaleString('en-US')} distinct requests${m.tokens ? ' · ' + Object.entries(m.tokens).map(([k, v]) => `${k.replace(/_/g, ' ')} ${tok(v)}`).join(' / ') : ''}`,
     })),
   });
+  // WHY the cost is what it is. Cost here is context volume × request count, not verbosity, and a
+  // page that shows only the total never says so — every lever lives in the why.
+  const d = ledger.drivers;
+  const driverPanel = !d ? '' : `<div class="cost-panel"><h3>What drives it</h3>
+<div class="cost-note">Cost is context volume multiplied by request count, not how much anything writes. These four numbers are where the levers act.</div>
+<div class="cost-tiles">
+  <div class="cost-tile"><div class="cost-tile-v">${d.requests === null ? DASH : d.requests.toLocaleString('en-US')}</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">${tok(d.meanContext)}</div><div class="cost-tile-l">Mean context per request</div><div class="cost-tile-s">what every request pays to re-read</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">${tok(d.pie)}</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">${n1(d.perAgentHour)}</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
+</div></div>`;
+
   const classBars = barPanel({
     title: 'Cost by token class',
-    note: 'Input, cache write, cache read and output are four different prices. A single total hides cache economics entirely.',
+    note: 'Input, two kinds of cache write (5-minute and 1-hour, billed differently), cache read and output are five different prices. A single total hides cache economics entirely.',
     rows: ledger.byClass.map(c => ({
       label: c.cls.replace(/_/g, ' '), value: c.usd, display: usd(c.usd),
       sub: `${tok(c.tokens)} tokens`,
@@ -494,10 +588,21 @@ ${ledger.changes.length ? ledger.changes.map(c => `<tr>
   const problemBlock = problems.length ? `<div class="cost-problems"><b>${problems.length} problem${problems.length === 1 ? '' : 's'} in the ledger</b> &mdash; each of these renders as ${DASH} above rather than as a number:
     <ul>${problems.slice(0, 12).map(p => `<li>${esc(p)}</li>`).join('')}</ul>${problems.length > 12 ? `<div class="rem">and ${problems.length - 12} more.</div>` : ''}</div>` : '';
 
-  const foot = `<div class="cost-foot">Rendered from <code>${esc(LEDGER_PATH)}</code>${ledger.generator ? ` written by <code>${esc(ledger.generator)}</code>` : ''}${ledger.source ? ` from <code>${esc(ledger.source)}</code>` : ''}.
-    This page computes no cost: every figure above is a field in that file (contract: <code>orchestration/COST.md</code> §6.1).</div>`;
+  // The price table, published so a reader can audit the money rather than take it on trust. The
+  // page prints it; it never multiplies by it.
+  const prices = ledger.prices;
+  const pricesEffective = prices && typeof prices.effective === 'string' ? prices.effective : null;
+  const pricesLine = !prices ? '' : Object.entries(prices)
+    .filter(([k, v]) => v && typeof v === 'object')
+    .map(([model, tbl]) => `${model} ${Object.entries(tbl).map(([k, v]) => `${k.replace(/_/g, ' ')} $${v}`).join(' / ')} per Mtok`)
+    .join(' · ');
 
-  return `<section class="cost">${head}${hero}${guards}${problemBlock}${charts}<div class="cost-two">${modelBars}${classBars}</div>${changes}${foot}</section>`;
+  const foot = `<div class="cost-foot">Rendered from <code>${esc(LEDGER_PATH)}</code>${ledger.generator ? ` written by <code>${esc(ledger.generator)}</code>` : ''}${ledger.source ? ` from <code>${esc(ledger.source)}</code>` : ''}.
+    This page computes no cost: every figure above is a field in that file (contract: <code>orchestration/COST.md</code> §6.1).
+    ${ledger.comparableKey ? `Comparability key <code>${esc(ledger.comparableKey)}</code> &mdash; two readings are comparable only if this matches; the page reports it and never infers it.` : ''}
+    ${prices ? `Priced from the table published in the ledger${pricesEffective ? `, effective ${esc(pricesEffective)}` : ''}: ${esc(pricesLine)}` : ''}</div>`;
+
+  return `<section class="cost">${head}${hero}${guards}${problemBlock}${charts}<div class="cost-two">${modelBars}${classBars}</div>${driverPanel}${changes}${foot}</section>`;
 }
 
 /**
@@ -544,6 +649,8 @@ export const COST_CSS = `
 .cost-guards-h{font-size:11px;color:var(--ink);margin-bottom:11px;letter-spacing:.04em}
 .cost-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
 .cost-guard .cost-tile-s{word-break:break-word}
+.cost-weak{font-size:9px;color:var(--dim);letter-spacing:.06em}
+.cost-caveat-ok{color:var(--dim);border-top-color:var(--line)}
 .cost-panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin-bottom:14px}
 .cost-panel h3{margin:0 0 10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-weight:600}
 .cost-unit{color:var(--dim);text-transform:none;letter-spacing:0;font-weight:400}

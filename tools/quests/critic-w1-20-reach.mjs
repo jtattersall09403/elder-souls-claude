@@ -64,7 +64,7 @@ const OUT = args.out ? String(args.out) : path.join(ROOT, 'reports', 'critic-w1-
 // laddered factions own a `faction_interior` anywhere in the populated world, so for the other
 // six there is no R3 consumer to demonstrate and this tool says so rather than scoring a zero.
 const LINES = [
-  { faction: 'the_wet_ledger', standing: 'wet-ledger', npc: 'harbourmaster-sedh', zone: 'lilmoth.factor0.r0' },
+  { faction: 'the_wet_ledger', standing: 'wet-ledger', npc: 'harbourmaster-cuiro-vaneth', zone: 'lilmoth.factor0.r0' },
   { faction: 'the_drowned_court', standing: 'drowned-court', npc: 'undertaker-vaskh', zone: 'lilmoth.priest6.r0' },
   { faction: 'the_rootkeepers', standing: 'rootkeepers', npc: 'rootkeeper-jeen', zone: null },
 ];
@@ -135,7 +135,7 @@ const report = await page.evaluate(async ({ LINES }) => {
           const objs = H.listOwnedObjects(L.zone) || [];
           row.owned_objects = objs.length;
           const o = objs[0];
-          if (o) { const th = H.theftCheck ? H.theftCheck(o.id) : null; row.theft = th ? th.theft : null; row.theft_scope = th ? th.scope : null; row.theft_why = th ? th.why : null; }
+          if (o) { const th = H.takeObject(o.instance || o.id, { dryRun: true }); row.theft = th ? (th.theft ?? null) : null; row.theft_scope = th ? (th.scope ?? null) : null; row.theft_why = th ? (th.why ?? null) : null; }
         } catch (e) { row.theft_error = String(e).slice(0, 140); }
       }
 
@@ -152,7 +152,7 @@ const report = await page.evaluate(async ({ LINES }) => {
       // disposition the dialogue system just computed, so that if rank reaches disposition it
       // reaches the quote too — which is the most generous reading available to the build.
       try {
-        const p = H.getPriceQuote({ base_price: 100, disposition: row.disposition });
+        const p = H.getPriceQuote({ group: 'RG-LUKIUL', base_price: 100, disposition: row.disposition });
         row.price = p ? (p.buy ?? p.buy_price ?? p.price ?? null) : null;
         row.price_keys = p ? Object.keys(p) : null;
       } catch (e) { row.price_error = String(e).slice(0, 140); }
@@ -161,8 +161,8 @@ const report = await page.evaluate(async ({ LINES }) => {
       // POSITIVE CONTROL: if this does not move either, the fault is my harness driving and not
       // the build's model, and no other row here may be read as a finding.
       try {
-        const g = H.getGuardTerms('saxhleel');
-        row.warbrood_shift = g ? (g.warbrood_disposition_shift ?? g.warbroodDispositionShift ?? null) : null;
+        const g = H.warbroodShift();
+        row.warbrood_shift = (g && typeof g === 'object') ? (g.shift ?? g.value ?? JSON.stringify(g)) : g;
       } catch (e) { row.guard_error = String(e).slice(0, 140); }
 
       rows.push(row);

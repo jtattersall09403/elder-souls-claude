@@ -32,5 +32,6 @@
     "THE SEAM ATTACK COMES BACK CLEAN. Attributes are read out of combat by named consumers: game/src/sim/quest/machine.js:231 (resolution gates AND the derived faction rank ladder), game/src/engine.js:2984 (_talkPersuader), game/src/character/reaction.js:83-116 (buy/sell multiplier), game/src/sim/hazards.js:297 (disease drain), game/src/sim/magic/apply.js:199-226 (restore/fortify). Perturbation moves the gate: personality 10 -> 31 changes Q-BLAK-01 res_hold's refusal. The MIRROR failure is the live one and is already filed as GAP-W1-skill-and-attribute-scaling-never-reaches-damage: attributes reach NOTHING inside the fight.",
     "CHECK-QUESTS WIRING FIRES AND EXITS 0. Reintroduced personality 45 and `scribing` 35: both printed with bands and ceilings, plus the non-violent consequence; process exit 0. Correct per rule 13 but it is a warning, so nothing stops the next author."
   ],
-  "next_step": "write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md+json, validate, regenerate ledger, publish, bank, push"
+  "next_step": "SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usage limit mid-verdict). On disk already: both critic tools, all 10 artifacts, the chart tool, and the complete W1-ATTR-SCALE-r1.md. Missing: the schema-valid .json, ledger regen, publish, bank, push. Successor is re-verifying the three load-bearing numbers before signing the .json rather than transcribing them, then finishing the pipeline.",
+  "successor_log": []
 }

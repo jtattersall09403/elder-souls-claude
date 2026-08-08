@@ -1,0 +1,664 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-15",
+ "piece_title": "Stealth, theft, crime and justice \u2014 round 4",
+ "subsystem_paths": [
+  "stealth.detection.model",
+  "stealth.sneak.state",
+  "stealth.npc.search",
+  "stealth.trespass.zones",
+  "stealth.theft.ownership",
+  "stealth.fence.economy",
+  "crime.witness.model",
+  "crime.guard.response",
+  "crime.bounty.schedule",
+  "crime.persistence.death"
+ ],
+ "wave": 1,
+ "round": 4,
+ "critic": {
+  "run_id": "crit-w1-15-r4-3c19",
+  "role": "critic.stealth-crime",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-08T12:05:00Z",
+  "finished_at": "2026-08-08T13:20:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true,
+  "instrument_independence": "Every figure in \u00a7\u00a71-3 and \u00a7\u00a75-7 came from tools/stealth/critic-w1-15-r4.mjs and two staged experiments written by this critic (a renderer-side cut of the shared lighting module, and an inert syncCoverVolumes()). The aperture rule was RE-IMPLEMENTED from RI-WLD13 N4 rather than imported, so the re-derivation of DAYLIGHT_K is a check and not an echo. The round's own tools/harness/w1-15-r4-deletefix.mjs WAS re-run, as a re-run of its own claim rather than as a source of a new number, and it reproduced. tools/harness/w1-15-r4-lights.mjs was read but produced no figure quoted here."
+ },
+ "build": {
+  "commit_sha": "9063779",
+  "branch": "main",
+  "boot": "node tools/check-data.mjs exit 0; node tools/analysis/crime-audit.mjs 41/41; node tools/analysis/w1-15-consumption.mjs exit 0; tools/stealth/critic-w1-15-r4.mjs --selftest 5/5",
+  "harness_commands": [
+   {
+    "command": "node tools/stealth/critic-w1-15-r4.mjs --selftest",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/stealth/critic-w1-15-r4.mjs --apertures --disagree --places --saturation --edge --hour 12 --json reports/w1-15/critic-r4.json",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/harness/w1-15-r4-deletefix.mjs (re-run of the round's own 2x2)",
+    "seed": "n/a",
+    "exit_code": 0
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "fidelity_refs": [],
+  "art_refs": [],
+  "note": "Unchanged from rounds 1-3. Every claim in this verdict is a count, a light value, a gold value or a distance in metres. No appearance judgement is made and neither visual axis is engaged."
+ },
+ "reference_items": [
+  {
+   "id": "RI-STL01",
+   "path": "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
+   "side": "neutral",
+   "kind": "number",
+   "native_scale": "min-over-axes across 10 axes; failure threshold: any axis below 6; OPENER-PURITY, BOSS-BYPASS and NO-METER binary",
+   "native_score": "5 / 10 \u2014 min-over-axes. Light plumbing 9 (both halves verified to read one module, from BOTH sides). Zone 8 and search 8 \u2014 round 3's two zeros, both now produced in the fixed step. Light CALIBRATION 5: a third renderer decides two rooms' lamps, and 71.8% of indoor floor cells are clamped at L=1.0000.",
+   "native_max": 10,
+   "native_verdict": "Below bar \u2014 named remedy required",
+   "score_0_10": 5,
+   "measured": "full",
+   "evidence": [
+    "reports/w1-15/critic-r4.json",
+    "tools/stealth/critic-w1-15-r4.mjs"
+   ],
+   "checks": [
+    {
+     "id": "M-lit-set-shared",
+     "result": "pass",
+     "value": "0 disagreeing cells of 16,996; r3-policy control 1,291",
+     "threshold": "0"
+    },
+    {
+     "id": "M-renderer-side-cut",
+     "result": "pass",
+     "value": "cut render/interior.js's read: 706 -> 500 point lights, 0 -> 94 cells; uncut control 0",
+     "threshold": "the cut must bite"
+    },
+    {
+     "id": "M-third-site",
+     "result": "fail",
+     "value": "writ-house 47/108 cells drawn lit and simulated dark; barge-hold brightest sources 3.80 m apart",
+     "threshold": "one policy, all cells"
+    },
+    {
+     "id": "M-light-discriminates",
+     "result": "fail",
+     "value": "12,210 of 16,996 indoor cells at L=1.0000 at noon clear (r3: 11,800); 10 rooms entirely flat",
+     "threshold": "the light term must decide whether you can be seen"
+    },
+    {
+     "id": "M-zone-producer",
+     "result": "pass",
+     "value": "syncPlayerZone() at sim/stealth/system.js:188, driven from sim/step.js:168",
+     "threshold": "a world-side writer"
+    },
+    {
+     "id": "M-cover-producer",
+     "result": "pass",
+     "value": "syncCoverVolumes() at sim/stealth/system.js:189, same step",
+     "threshold": "a world-side producer"
+    }
+   ]
+  },
+  {
+   "id": "RI-STL02",
+   "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "min-over-axes; fencing, ownership, locks",
+   "native_score": "7 / 10. Fencing 7 \u2014 round 3's acceptance number (>= 1,787 of 1,950 refusable) is met at 1,787/1,787 with a clean 0 control, and the economy still has an out. Ownership 7, unchanged.",
+   "native_max": 10,
+   "native_verdict": "At bar",
+   "score_0_10": 7,
+   "measured": "full",
+   "justification": "Driven through the shipped sim/stealth/theft.js#willBuy() against the shipped data with npcById and dispositionBetween reconstructed from game/data rather than from the engine: 1,787 of 1,787 npc-owned property objects are refused by at least one fence (same_settlement 1,331, friend_of_the_owner 378, same_faction 78); the round-3 stub world returns 0 of 1,787 on the identical loop; and 5 to 8 of the 9 fences still buy every object, so theft has geography without becoming unplayable. Artifact: the run recorded in this verdict's \u00a76 and reproducible from tools/stealth/critic-w1-15-r4.mjs's sibling script in the artifacts list.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md"
+   ],
+   "checks": [
+    {
+     "id": "M-fence-refuses-by-name",
+     "result": "pass",
+     "value": "1787/1787",
+     "threshold": ">= 1787"
+    },
+    {
+     "id": "M-fence-control",
+     "result": "pass",
+     "value": "0/1787 under the round-3 stub",
+     "threshold": "0"
+    },
+    {
+     "id": "M-economy-has-an-out",
+     "result": "pass",
+     "value": "5-8 of 9 fences buy; 0 objects nobody will buy",
+     "threshold": "> 0 buyers per object"
+    }
+   ]
+  },
+  {
+   "id": "RI-CRM01",
+   "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "min-over-axes; witness predicate, attribution, guard response, bounty schedule",
+   "native_score": "5 / 10. Witness predicate 8. Attribution 7 \u2014 attributedIn() is real, and the alarm and zone-memory promises justice.json made in round 3 are now kept. Guard response 5: a fourth consumer of the RAW bounty total survives in dialogue, and the guard AI still cannot swing (owed by W1-12).",
+   "native_max": 10,
+   "native_verdict": "Below bar \u2014 named remedy required",
+   "score_0_10": 5,
+   "measured": "full",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md"
+   ],
+   "checks": [
+    {
+     "id": "M-unidentified-is-a-kind",
+     "result": "marginal",
+     "value": "true of guardBandNow(); false of dialogue \u2014 engine.js:9074 sums every jurisdiction and disposition.js:313 applies -0.02 * total, so 680 g unattributed costs -13.6 disposition province-wide",
+     "threshold": "no world reaction to an unattributed bounty"
+    },
+    {
+     "id": "M-guard-can-act",
+     "result": "fail",
+     "value": "combat/enemy.js still only scripts ai === 'scripted'",
+     "threshold": "a guard that can arrest or attack",
+     "hard_fail": false
+    }
+   ]
+  },
+  {
+   "id": "RI-CRM02",
+   "path": "corpus/23-stealth-crime/RI-CRM02-faction-crime-and-writs.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "min-over-axes; sanctioning authorities, writs, jurisdictional partiality, rank-changes-guard",
+   "native_score": "2 / 10 \u2014 unchanged, and untouched for three rounds.",
+   "native_max": 10,
+   "native_verdict": "Far below bar",
+   "score_0_10": 2,
+   "measured": "partial",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md"
+   ],
+   "checks": [
+    {
+     "id": "M-writs-exist-in-the-world",
+     "result": "fail",
+     "value": "CrimeWorld.writs is initialised at sim/crime/state.js:54, serialised at 373 and deserialised at 394, and pushed to NOWHERE in game/src",
+     "threshold": "a world-side producer"
+    }
+   ]
+  },
+  {
+   "id": "RI-QST05",
+   "path": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "verb census over the shipped quest tree",
+   "native_score": "3 / 10 \u2014 untouched this round; inherited from the round-3 verdict and not re-measured.",
+   "native_max": 10,
+   "native_verdict": "Far below bar",
+   "score_0_10": 3,
+   "measured": "partial",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r3.md"
+   ],
+   "checks": [
+    {
+     "id": "M-not-re-measured",
+     "result": "unmeasurable",
+     "value": "inherited from round 3",
+     "threshold": "n/a"
+    }
+   ]
+  },
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "side": "neutral",
+   "kind": "structure",
+   "native_scale": "CONSUMPTION: name the world-side consumer and demonstrate it by perturbation",
+   "native_score": "6 / 10. The models are consumed and I verified the two round 3 graded 0. The census hole is closed and the 2x2 was run. But the VACUITY guard cannot go red on an inert producer, both rule-6 shape labels are wrong against rule 6's own text, and the round's own reversible ruling has an unmeasured reversal condition.",
+   "native_max": 10,
+   "native_verdict": "Below bar \u2014 named remedy required",
+   "score_0_10": 6,
+   "measured": "full",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md",
+    "tools/analysis/w1-15-consumption.mjs"
+   ],
+   "checks": [
+    {
+     "id": "M-census-covers-its-directory",
+     "result": "pass",
+     "value": "8 files discovered from disk and asserted against a declared set; 1,031 parameters",
+     "threshold": "no file missing"
+    },
+    {
+     "id": "M-vacuity-guard-can-fail",
+     "result": "fail",
+     "value": "a staged syncCoverVolumes() that keeps its name and its call site and returns [] leaves all six VACUITY rows PASS and the tool exit 0",
+     "threshold": "the guard must go red on an inert producer",
+     "hard_fail": false
+    },
+    {
+     "id": "M-rule6-shape-named-correctly",
+     "result": "fail",
+     "value": "disagreement measurement reported as 'two independent sites' when only site A bites (B is 0->0); eleven-rooms measurement reported as 'two guards for one defect' when both bite alone (0.1676 -> 0.1102 and -> 0.0974), which rule 6 defines as the opposite shape",
+     "threshold": "rule 6: say which shape you have"
+    },
+    {
+     "id": "M-reversal-condition-measured",
+     "result": "unmeasurable",
+     "value": "LIT_CAP deleted, reversible against 'a measured frame-time regression'; the round published no timing figure and this critic's own attempt was killed by its timeout at load 7.54/core",
+     "threshold": "a frame-time number under a stated load"
+    }
+   ]
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-STL01",
+   "status": "not_possible",
+   "not_possible_reason": "The piece's bifurcation axis is not-visual, unchanged from rounds 1-3. Every claim advanced this round is a number; there is no appearance judgement to make blind."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1-no-dice-entered-the-fight",
+     "result": "pass",
+     "observed": "interiorAmbientL() is arithmetic over a pane count; litLights() is a dedupe; syncPlayerZone() is a bounds test with a deterministic tie-break ordered by authored context_weight, then floor area, then id; coverSpots() is a grid. No RNG is drawn anywhere on the paths this round added.",
+     "evidence": [
+      "game/src/world/interior-lighting.js",
+      "game/src/sim/stealth/system.js"
+     ]
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1-no-procedural-content-where-morrowind-authors",
+     "result": "pass",
+     "observed": "coverSpots() DERIVES hiding places from a placement grid rather than from authored volumes, which is procedural \u2014 but it is procedural geometry describing furniture render/interior.js draws on the same grid, imported from the same module, and it yields nothing a player collects, rolls for or loots. Correct side of the line. Round 3's build-time hash pricing of 72 unique items is unchanged and remains a content debt.",
+     "evidence": [
+      "game/src/world/interior-lighting.js"
+     ]
+    }
+   ]
+  }
+ },
+ "world_coupling": [
+  {
+   "model": "the lit set (world/interior-lighting.js#litLights)",
+   "consumer": "render/interior.js:650 -> PointLight, and sim/stealth/system.js:1049 -> LightField.addSource -> p.L -> V -> e.alert",
+   "coupling": 1,
+   "evidence": "0 disagreeing cells of 16,996; cutting the RENDERER's read takes point lights 706 -> 500 and disagreement 0 -> 94"
+  },
+  {
+   "model": "the derived interior ambient (interiorAmbientL)",
+   "consumer": "sim/stealth/system.js:232-233 -> light.defaultAmbient",
+   "coupling": 1,
+   "evidence": "delete-the-fix site B: shop ambient at full sun 0.104 -> 0.040; the eleven rooms' worst floor 0.1676 -> 0.0974"
+  },
+  {
+   "model": "p.zone (233 authored property zones)",
+   "consumer": "sim/stealth/system.js:188 syncPlayerZone(), in the fixed step driven by sim/step.js:168",
+   "coupling": 1,
+   "evidence": "round 3 had zero writers anywhere in game/src; the round's own live run walked the body in and out of thorn.apothecary11.r0"
+  },
+  {
+   "model": "StealthCrime.coverVolumes (S-1's plausible set)",
+   "consumer": "sim/stealth/system.js:189 syncCoverVolumes(), same step",
+   "coupling": 1,
+   "evidence": "21 world cover volumes in thorn-inn; search plan 3 legs / 660 f with them and 0 legs / 120 f without"
+  },
+  {
+   "model": "render/places.js's private point lights for 5 named cells",
+   "consumer": "NOTHING in the simulation \u2014 the stealth model lights writ-house and barge-hold from world/interior-lighting.js instead",
+   "coupling": 0,
+   "evidence": "writ-house 2 drawn point lights + 1 DirectionalLight vs 1 simulated synthesized hearth 5.22 m away; 47 of 108 floor cells drawn lit and simulated dark"
+  }
+ ],
+ "score": {
+  "overall_0_10": 2,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "The largest single-round gain W1-15 has recorded, and the minimum is carried by an item the round did not touch",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "min-over-axes is 2.0 against a wave-1 gate of 7.0, carried by RI-CRM02 (faction crime and writs), untouched for three rounds \u2014 crime.writs is initialised, serialised and deserialised and pushed to nowhere in game/src.",
+  "The round's own headline claim, that only render/interior.js and sim/stealth/system.js decide what a room is lit by, is false: render/places.js draws writ-house and barge-hold \u2014 the game's opening two rooms \u2014 from its own private lamps, and writ-house disagrees with its own simulation over 47 of 108 floor cells.",
+  "The light term is clamped at L = 1.0000 over 12,210 of 16,996 indoor floor cells at noon clear, so over roughly seven-tenths of the province's indoor floor it decides nothing. Standing rather than new: round 3 measured 11,800."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale",
+  "subsystem_path": "stealth.detection.model",
+  "what": "On the round's own 16,996-cell chest-height grid over all 115 interiors, 12,210 cells (71.8%) read L = 1.0000 at noon clear and 10 rooms are entirely flat at 1.0000. Under round 3's flat 0.04 ambient the same lamps give 11,800 (69.4%) and 7 flat rooms, so this is a standing defect of the LAMP SCALE and not a regression introduced by this round's ambient \u2014 the derived ambient costs 2.4 percentage points at noon clear and 0.3 at 03:00. The round measured the same defect at ROOM granularity and published it as '11 of 115 rooms are flat at noon', which is the same fact one order of magnitude too small. The four-arm comparison: round 3's flat 0.04 gives 69.4% and 7 flat rooms, round 4 derived at noon clear 71.8% and 10, at noon overcast 71.1% and 10, at 03:00 overcast 69.7% and 7, and the round-3 critic's arm-01 control at 0.75 gives 94.4% and 63. archon-apothecary is 50 of 50 cells at L = 1.0000 with an ambient of 0.2264 in a 9.83 x 4.98 m room with 8 lamps.",
+  "why_it_matters": "RI-STL01 \u00a73's bar is that light decides whether you can be seen, and over seven-tenths of the province's indoor floor a player standing anywhere reads the same maximum L, so there is nowhere indoors to hide.",
+  "evidence": [
+   "reports/w1-15/critic-r4.json",
+   "tools/stealth/critic-w1-15-r4.mjs",
+   "game/data/stealth/detection.json",
+   "corpus/90-verdicts/wave1/W1-15-r4.md"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Re-derive authored_intensity_to_L_scale and reach_m in game/data/stealth/detection.json on the JOINED corpus, exactly as this round re-derived window_daylight_k. RI-STL01 \u00a73's 'within 4 m of a flame' (L 0.60) and '4-9 m from a flame' (L 0.25) rows were transcribed against rooms that applyInteriorBounds() now shrinks to a fifth of their declared area, so the same scale that reads 0.60 at 4 m in a 13.6 x 15.6 m shop saturates a 9.83 x 4.98 m one. Then add the SATURATED-CELL FRACTION to tools/harness/w1-15-r4-lights.mjs's discrimination table beside mean_spread, because a room with one dark corner and forty-nine clamped cells currently scores as discriminating.",
+   "acceptance": "On the same 16,996-cell chest-height grid over all 115 joined interiors, fewer than 40% of cells read L >= 0.9999 at noon clear, and no more than 3 rooms are entirely flat \u2014 against 71.8% and 10 today. The delete-the-fix control must bring 71.8% back.",
+   "targets": [
+    "game/data/stealth/detection.json",
+    "game/src/sim/stealth/light.js",
+    "tools/harness/w1-15-r4-lights.mjs"
+   ]
+  }
+ },
+ "other_gaps": [
+  {
+   "gap_id": "GAP-W1-a-third-file-decides-what-the-first-two-rooms-are-lit-by",
+   "subsystem_path": "stealth.detection.model",
+   "severity": "blocking",
+   "what": "engine.js#cellFor() at 5394-5398 routes barge-hold, writ-house, helstrom-market, stormhold-street and rootlands-well to render/places.js, which builds point lights from its own private lamp() helper with hardcoded Three.js intensities and never imports world/interior-lighting.js. barge-hold and writ-house ARE records in game/data/world/interiors/, so syncInteriorLights() lights them from the shared policy while the player looks at a room that policy has never seen. writ-house: 2 drawn point lights plus a DirectionalLight the file calls 'the only daylight in the room', against 1 simulated synthesized fail-open hearth 5.22 m away, and 47 of 108 floor cells (43.5%) drawn lit and simulated dark. barge-hold: 2 drawn at hardcoded positions against the record's own 3, brightest sources 3.80 m apart, and the drawn hold is 7 x 12 m against the record's 7 x 16 m. These are the first two rooms of the game (engine.js:3420). writ-house is also on this round's own list of eleven rooms the shared fail-open is rescuing \u2014 and it is the one of the eleven that does not get it.",
+   "remedy": "Either route those two ids through render/interior.js, or have render/places.js build its lamps from litLights(rec) and its window from windowPlan(rec). Then add all five cellFor() ids to tools/harness/w1-15-r4-lights.mjs's denominator so the next round cannot miss them."
+  },
+  {
+   "gap_id": "GAP-W1-the-vacuity-guard-cannot-see-an-inert-producer",
+   "subsystem_path": "crime.persistence.death",
+   "severity": "major",
+   "what": "tools/analysis/w1-15-consumption.mjs's VACUITY section names, for six parameters, the world-side producer that must fill the collection their reader indexes, and exits 1 if it is missing. readersOf(producer) is a NAME SEARCH over game/src outside harness/. On a staged copy where syncCoverVolumes() still exists, is still called from the fixed step, and returns an empty list, all six rows PASS and the tool exits 0 \u2014 against a world in exactly the state the round-3 critic graded 0. The tool's --control falsifier only ever tests an ABSENT NAME, never an INERT PRODUCER, which is RULES.md 6's 'inert control'.",
+   "remedy": "Make the guard read the collection rather than the producer's name: import the sim, run one fixed step in a fixture interior, and assert the collection is non-empty. The tool already has the browser-free machinery to do it; the check is three lines and a fixture record."
+  },
+  {
+   "gap_id": "GAP-W1-an-unattributed-bounty-still-costs-you-every-conversation",
+   "subsystem_path": "crime.guard.response",
+   "severity": "major",
+   "what": "This round found Engine.getGuardBand() was a second implementation of the guard ladder reading the raw bounty total, and fixed it to read attributedIn(). engine.js:9074 (_questPlayerView) sums Object.values(crime.bounty) with no unattributed subtraction and feeds it, through dlgMovableTerms at engine.js:9020 and _talkPersuader at engine.js:2987, to disposition.js:313 \u2014 `const bountyTerm = -G.fDispCrimeMod * Number(player.bounty || 0)` with fDispCrimeMod = 0.02. The round's own D4 scenario, 680 g across four unidentified reports at guard band 0, therefore costs -13.6 disposition with every person in the province. justice.json's promise is scoped to guards and the guards are correct, so this is not a broken promise; it is the same rule-10 shape one module over, unlooked-for.",
+   "remedy": "Give CrimeWorld a single attributedTotal() and route _questPlayerView, the HUD field at engine.js:4129 and getSanctionState's deepKinRegard/factionConsequences through it, so there is one definition of 'what the world can pin on you' rather than four."
+  },
+  {
+   "gap_id": "GAP-W1-the-canopy-day-clamp-can-never-fire",
+   "subsystem_path": "stealth.detection.model",
+   "severity": "minor",
+   "what": "interiorAmbientL() clamps at CANOPY_DAY_L and reports clamped: true 'so a census can count how many rooms are sitting on the ceiling'. Because DAYLIGHT_K is pinned so the brightest room reads exactly 0.30 at sky 1.0, raw > ceiling is unreachable: 0 of 115 rooms can set that flag on the shipped corpus. It is a guard for a future join, which the header says, but it is currently a flag that cannot be raised and a reader should not mistake 'no rooms clamped' for evidence.",
+   "remedy": "Either say so at the field, or pin k on a percentile of the aperture distribution rather than the maximum, which makes the clamp a live invariant instead of a dormant one."
+  }
+ ],
+ "cross_piece_debts": [
+  {
+   "owed_by": "W1-12 (enemy behaviour) and whoever owns combat/parley.js",
+   "what": "Round 2's GAP-W1-crime-enforcement-is-a-free-win. combat/enemy.js still only scripts ai === 'scripted', so a guard at band 3 draws a weapon it cannot swing. RI-CRM01's guard-response axis cannot exceed 5 until this lands, and it is not W1-15's to fix.",
+   "blocking": true
+  },
+  {
+   "owed_by": "W1-01 / W1-03 / W1-12",
+   "what": "RI-STL01 \u00a79's bypass census (13 overworld routes, 8 dungeons, 82 caves) needs a province that does not exist. It is RI-STL01's true minimum and is NOT charged against W1-15's own axes here, following the round-3 verdict.",
+   "blocking": true
+  },
+  {
+   "owed_by": "W1-20",
+   "what": "game/src/sim/quest/refusal.js and game/data/dialogue/faction-refusals.json are untracked in-flight work, and check-shipped-files refuses every agent's commit until they land. The round-4 builder recorded fourteen refused commits and had to let the orchestrator's bank carry its work, splitting its attribution across bank messages. Not a measurement problem, but it is costing every piece on the tree its authorship.",
+   "blocking": false
+  }
+ ],
+ "amendments_assessed": [],
+ "regression_check": {
+  "verdict": "CLEAN on everything re-measured. No round-3 pass has regressed. Two findings are STANDING defects rather than regressions and are labelled as such: the light saturation (69.4% in round 3, 71.8% now) and render/places.js's private lighting, which predates this round entirely.",
+  "rows": [
+   {
+    "what": "drawn-vs-simulated disagreement over the province's indoor floor",
+    "round_3": "1,659 declared / 1,291 joined",
+    "round_4": "0 of 16,996, on this critic's own instrument"
+   },
+   {
+    "what": "npc-owned property objects refusable by a fence",
+    "round_3": "0 of 1,950",
+    "round_4": "1,787 of 1,787, control 0"
+   },
+   {
+    "what": "p.zone writers in game/src",
+    "round_3": "0",
+    "round_4": "1, in the fixed step"
+   },
+   {
+    "what": "coverVolumes producers outside the harness",
+    "round_3": "0",
+    "round_4": "1, in the fixed step"
+   },
+   {
+    "what": "indoor floor cells at L = 1.0000, noon",
+    "round_3": "11,800 of 16,996 (69.4%)",
+    "round_4": "12,210 (71.8%) \u2014 a standing defect of the lamp scale, made 2.4 points worse by the derived ambient and published by the round at room granularity"
+   }
+  ]
+ },
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-the-fence-buys-your-victims-own-furniture",
+   "detail": "CLOSED. Round 3's biggest gap and its stated acceptance number (>= 1,787 of 1,950 refusable) is met at 1,787 of 1,787, verified on an independent reconstruction of npcById/dispositionBetween, with the round-3 stub returning 0 on the identical loop. The economy is not broken the other way: 5 to 8 of 9 fences still buy every object.",
+   "status": "closed",
+   "closed_by_builder_of_fix": false,
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md",
+    "game/src/sim/stealth/system.js"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-cover-volumes-are-hand-fed-like-the-lamps-were",
+   "detail": "CLOSED as a model. syncCoverVolumes() runs in the fixed step at sim/stealth/system.js:189. The GUARD the round built to prove it stays closed does not work (see GAP-W1-the-vacuity-guard-cannot-see-an-inert-producer), which is scored on RI-MTH07 and not against the fix.",
+   "status": "partially-closed",
+   "closed_by_builder_of_fix": false,
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md",
+    "game/src/sim/stealth/system.js"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-trespass-has-no-zone-producer",
+   "detail": "CLOSED. syncPlayerZone() at sim/stealth/system.js:188, walked rather than asserted by the round's own live run. The strictest-zone-wins tie-break is a design ruling the round published and marked reversible against disjoint authored bounds; I agree with it and would not overturn it.",
+   "status": "closed",
+   "closed_by_builder_of_fix": false,
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-15-r4.md",
+    "game/src/sim/stealth/system.js"
+   ]
+  }
+ ],
+ "corpus_extended": [
+  {
+   "id": "RI-STL01",
+   "path": "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
+   "area": "stealth.detection.model",
+   "reason": "method_gap",
+   "note": "\u00a73's light table gives L for 'a torchlit interior' and 'unlit' and says nothing about how many lamps a room may hold before the sum of them saturates. Two rounds have now calibrated a scale against its two torchlit rows and neither could see that 69-72% of the province's indoor floor sits at the top of the resulting scale, because the item offers no per-CELL discrimination requirement \u2014 only per-room language. The item needs a stated floor: what fraction of an interior's floor must be below flame_near for the room to count as lit rather than washed out.",
+   "index_regenerated": false
+  }
+ ],
+ "method_deviations": [
+  {
+   "what": "The LIT_CAP frame-time measurement",
+   "why": "The round deleted LIT_CAP and marked the deletion reversible against 'a measured frame-time regression attributable to >5 point lights in one room', then published no timing figure. I built the instrument (thorn-hall at 5, 14 and a 40-lamp control, interleaved A-B-A so box drift is visible) and the first run was killed by its own 900 s timeout at load 7.54 per core. Whether the second run returned is recorded in the verdict's \u00a710 and in this file's notes."
+  },
+  {
+   "what": "RI-QST05 was not re-measured",
+   "why": "Untouched by this round; the score is inherited from round 3 and labelled 'partial'. It is the weakest number in the table and is named as such."
+  },
+  {
+   "what": "RI-CRM02 was spot-checked, not re-measured",
+   "why": "One check (crime.writs has no producer anywhere in game/src) rather than the item's full method. It is enough to confirm the round-3 score is not merely inherited, and not enough to move it."
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  {
+   "path": "game/src/world/interior-lighting.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/render/interior.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/render/places.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/render/exterior.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/stealth/system.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/stealth/light.js",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/src/sim/dialogue/disposition.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/crime/state.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/analysis/w1-15-consumption.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/harness/w1-15-r4-deletefix.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and deliberately so. (1) The brief's item 3 asked for a frame-time number or a plain statement that the ruling stands unmeasured; the first attempt was killed by its own timeout at load 7.54 per core and the outcome of the retry is recorded in \u00a710. (2) RI-QST05 was not re-measured and its 3 is inherited. (3) RI-CRM02 rests on one spot-check. (4) tools/run-all.mjs and the 29-assertion stl-live.mjs were not run \u2014 both launch many browsers and the box was over its instance ceiling for most of this run. Everything in \u00a7\u00a71-7 was taken offline, with no browser, before any browser work began."
+ },
+ "artifacts": [
+  {
+   "path": "tools/stealth/critic-w1-15-r4.mjs",
+   "kind": "log",
+   "produced_by": "node tools/stealth/critic-w1-15-r4.mjs --apertures --disagree --places --saturation --edge --hour 12 --json reports/w1-15/critic-r4.json",
+   "seed": null,
+   "note": "The critic's offline instrument. --selftest is 5/5 and each arm is broken on purpose: the RE-IMPLEMENTED pane rule must reproduce the shipped DAYLIGHT_K on the joined corpus AND must NOT on the declared one (or the join is doing nothing), the grid must be shown able to see a disagreement, and the places arm must find point lights the shared policy did not author."
+  },
+  {
+   "path": "reports/w1-15/critic-r4.json",
+   "kind": "report",
+   "produced_by": "the command above",
+   "seed": null,
+   "note": "apertures, the 16,996-cell disagreement grid (0), the five places.js cells, and the saturation table."
+  },
+  {
+   "path": "tools/stealth/critic-w1-15-r4-live.mjs",
+   "kind": "perf",
+   "produced_by": "node tools/stealth/critic-w1-15-r4-live.mjs --renders 40 --json reports/w1-15/critic-r4-live.json",
+   "seed": 1337,
+   "note": "One browser, kept. Arm A is the LIT_CAP frame-time number the round's own reversal condition needs, with a 40-lamp control that must be slower than 5 or the instrument cannot see point-light cost at all. Arm B walks the player into writ-house, barge-hold and thorn-hall and reads which cell the renderer drew against what the stealth system thinks is lighting it."
+  },
+  {
+   "path": "reports/w1-15/r4-deletefix.json",
+   "kind": "report",
+   "produced_by": "node tools/harness/w1-15-r4-deletefix.mjs (re-run by this critic)",
+   "seed": null,
+   "note": "The round's own 2x2. Re-run and reproduced; the shape LABELS are wrong and the numbers are right. Cited as negative evidence for RI-MTH07's rule-6 check."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/W1-15-r4.md",
+   "kind": "text-excerpt",
+   "produced_by": "this critic",
+   "seed": null,
+   "note": "The verdict text, including the two staged experiments whose scripts live in this session's scratchpad rather than in the tree: the renderer-side cut of the shared lighting module (uncut control 0 cells, cut 94 cells and 706 -> 500 point lights) and the inert syncCoverVolumes() that the VACUITY guard cannot see."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/W1-15-r3.md",
+   "kind": "text-excerpt",
+   "produced_by": "the round-3 verdict, this round's spec",
+   "seed": null,
+   "note": "the predecessor verdict, read as the spec for round 4 and cited where a round-3 figure is compared with a round-4 one"
+  },
+  {
+   "path": "tools/analysis/w1-15-consumption.mjs",
+   "kind": "log",
+   "produced_by": "node tools/analysis/w1-15-consumption.mjs (re-run by this critic, exit 0) and again on a staged copy whose syncCoverVolumes() returns []",
+   "seed": null,
+   "note": "the round's census. Re-run clean on the shipped tree; the staged inert-producer arm leaves all six VACUITY rows PASS and the tool exit 0, which is the negative evidence for RI-MTH07's rule-4 check"
+  },
+  {
+   "path": "game/src/world/interior-lighting.js",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "the module under test \u2014 the lit set, the window aperture, DAYLIGHT_K and the shared fail-open"
+  },
+  {
+   "path": "game/src/sim/stealth/system.js",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "syncInteriorLights, interiorAmbientNow, syncPlayerZone, syncCoverVolumes and guardBandNow, all in the fixed step"
+  },
+  {
+   "path": "game/data/stealth/detection.json",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "authored_intensity_to_L_scale 9.3275, reach_m {flame 9, hearth 18} and window_daylight_k 2.535 \u2014 the three constants the saturation gap turns on"
+  },
+  {
+   "path": "game/src/render/places.js",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "the third lighting site: buildWritHouse and buildBargeHold build their own PointLights from a private lamp() helper and never import world/interior-lighting.js"
+  },
+  {
+   "path": "game/src/engine.js",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "cellFor() at 5394-5398 routes five ids away from render/interior.js; _questPlayerView() at 9074 sums every bounty jurisdiction with no unattributed subtraction"
+  },
+  {
+   "path": "game/src/sim/dialogue/disposition.js",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "line 313: the raw bounty total reaches every NPC's disposition at -0.02 per gold"
+  },
+  {
+   "path": "game/src/sim/crime/state.js",
+   "kind": "text-excerpt",
+   "produced_by": "read at 9063779",
+   "seed": null,
+   "note": "attributedIn()/unattributedIn() are real; crime.writs is initialised, serialised and deserialised and pushed to nowhere"
+  }
+ ],
+ "notes": "The frame-time figure for the LIT_CAP ruling is the one thing this verdict set out to take and could not take cleanly. See \u00a710 and method_deviations."
+}

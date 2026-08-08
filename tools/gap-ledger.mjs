@@ -97,6 +97,15 @@ for (const v of verdicts) {
 
 // ------------------------------------------------------------- apply closures
 for (const v of verdicts) {
+  // `gap_closure` is an ARRAY in the schema. Two shipped verdicts carry an object there
+  // (W1-13-r2, W1-FACTIONS-r2) and this loop used to die on them with a bare TypeError from
+  // node's iterator protocol — no filename, no gap id, and the whole ledger unregenerated for
+  // everyone. Name the offender and keep going, so one malformed verdict costs its own closures
+  // rather than the ledger. Found by the W1-12-r2 critic, whose own file is not one of them.
+  if (v.gap_closure !== undefined && v.gap_closure !== null && !Array.isArray(v.gap_closure)) {
+    warnings.push(`${v._file}: gap_closure is ${Array.isArray(v.gap_closure) ? 'an array' : typeof v.gap_closure} where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.`);
+    continue;
+  }
   for (const c of v.gap_closure || []) {
     const e = ledger.get(c.gap_id);
     if (!e) { warnings.push(`${v._file}: gap_closure references unknown gap_id ${c.gap_id}.`); continue; }

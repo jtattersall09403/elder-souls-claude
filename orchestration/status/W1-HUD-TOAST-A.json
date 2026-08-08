@@ -2,7 +2,7 @@
   "task_id": "W1-HUD-TOAST-A",
   "role": "builder",
   "piece": "W1-HUD-TOAST-A (the HUD fit)",
-  "state": "starting",
+  "state": "code-landed-awaiting-browser-measurement",
   "started": "2026-08-08",
   "plan": "orchestration/plans/W1-HUD-TOAST.md",
   "plan_status": "orchestration/status/plan-w1-hud-toast.json",
@@ -19,15 +19,30 @@
     "reports/w1-hud-toast-a/"
   ],
   "files_touched": [
-    "orchestration/status/W1-HUD-TOAST-A.json"
+    "orchestration/status/W1-HUD-TOAST-A.json",
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "game/src/ui/hud.js",
+    "game/src/ui/type.js",
+    "game/src/ui/surface.js",
+    "game/src/render/text-register.js",
+    "game/src/harness/api.js",
+    "tools/analysis/hud-toast-corpus.mjs",
+    "tools/analysis/ui-census.mjs",
+    "reports/w1-hud-toast-a/corpus.json"
   ],
   "must_not_touch": [
     "orchestration/plans/W1-HUD-TOAST.md Piece B section (do not dispatch/build B)",
     "tools/experience/lib/sabotage.mjs (Piece B's COUPLED_YARDSTICK verdict)"
   ],
-  "next_step": "Verify BLOCKING-6 myself against game/src/harness/api.js (done: confirmed drawOnMenus(text) hardcodes (20,120)/bone/16/#fff at lines 939-949, three callers pass text only). Fold BLOCKING-1/3/6 resolutions into the plan file. Then build: corpus enumeration, wrap swap to type.wrap()+ellipsise(), generalise the getUIState() fit block via text-register owner ids, A1/A2a/A2b into ui-census.mjs with --self-test, extend harness drawOnMenus additively, null-control worktree, blog line.",
+  "next_step": "Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ellipsise() (CARRIED-1/2 closed, unit-verified in node); hud.prompt now ellipsised (census found 130/1309 reachable names over its 169px budget, so the plan's conditional 'wrap only if census shows overflow' fired); hud.boss left untouched (0/22 over budget, so-said per the plan); text-register.js extended with an owning-element id (surface.js el() sets it, additive, default null); harness/api.js drawOnMenus() extended additively per BLOCKING-6 (self-verified against source before relying on it); ui-census.mjs got A1 (pure-function, self-tested red/green with NO browser) + A2a/A2b/A3 behind --hud-toast (needs a browser). tools/analysis/hud-toast-corpus.mjs re-derives the toast-channel population independently (rule 18): 395 distinct strings (vs the plan's 75 -- different, wider population definition, documented in the file's header), 61% over the 376px single-run budget. BLOCKED on contention (exit 3, 6/6 browser instances) for the --hud-toast browser pass (A2a/A2b screenshots + A1 over the population) and the null-control worktree run. Retry contention, run `node tools/analysis/ui-census.mjs --hud-toast`, then the null-control arm, then bank+push.",
   "verified_myself": [
-    "BLOCKING-6: game/src/harness/api.js:939-949 drawOnMenus(text) calls drawGlyphText(ctx, s, 20, 120, faceOf('bone'), 16, '#fff'); all three existing callers (w1-08-r2-probe.mjs, w1-26-opening.mjs, w1-26-r2-scene.mjs) pass text only. Confirmed additive extension is safe."
+    "BLOCKING-6: game/src/harness/api.js:939-949 drawOnMenus(text) calls drawGlyphText(ctx, s, 20, 120, faceOf('bone'), 16, '#fff'); all three existing callers (w1-08-r2-probe.mjs, w1-26-opening.mjs, w1-26-r2-scene.mjs) pass text only. Confirmed additive extension is safe.",
+    "CARRIED-1 (over-wide single word) and CARRIED-2 (blank paragraph row) closed and verified directly in node against game/src/ui/type.js -- every row stays <= 376px including the forced 3rd-row ellipsis and the single-overlong-word case.",
+    "A1's own overflow arithmetic (tools/analysis/ui-census.mjs computeA1): --self-test passes with entries inside/outside a synthetic rect; DELIBERATELY BROKE it (set overX=0) and confirmed the self-test goes red (exit 1) before restoring, per RULES rule 4."
   ],
-  "least_sure_of": []
+  "least_sure_of": [
+    "A2a's full-frame pixel diff (no rect-band restriction) relies on the two screenshots being IDENTICAL except for the intentional drawOnMenus overlay -- true only if no other frame-dependent draw happens between them (no stepFrames, same sim.frame, uiBuild(false) no-op via the per-frame build cache documented at system.js:601). Not yet run against the real browser to confirm.",
+    "hud-toast-corpus.mjs's population (395 strings) is NOT the plan's 75 -- re-derived independently per rule 18 rather than trust the prior recipe, enumerating every (faction,rank,term) combination with a template rather than only realistic rank-appropriate refusals. A wider, more literal reading of 'every uiToast() caller'; both numbers are reported rather than forcing a match.",
+    "other_populations (prompt/boss/slot-label) in hud-toast-corpus.mjs walks game/data/world + npcs for prop/NPC 'name' fields as a proxy for _interactPrompt()'s reachable population -- not a literal simulation walk. slot-label's 70/119 'over budget' figure is measured against the RAW name width, not the ALREADY-TRUNCATED (char-slice(0,8)+ellipsis) text hud.js's quickslot code actually draws -- it does NOT describe a live defect and must not be read as one."
+  ]
 }

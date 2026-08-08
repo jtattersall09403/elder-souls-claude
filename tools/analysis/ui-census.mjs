@@ -277,8 +277,6 @@ async function runHudToastCensus(push) {
       pass: () => a3Fail.length === 0,
       detail: `${a3Fail.length} of ${a3Results.length} lost text silently`,
     });
-
-    function push(id, what, spec) { out.checks.push(...grader().push(id, what, spec) ? [] : []); }
   } finally {
     await h.close();
   }
@@ -287,10 +285,7 @@ async function runHudToastCensus(push) {
 
 if (args['hud-toast']) {
   const G = grader();
-  const push = (id, what, spec) => G.push(id, what, spec);
-  // reassign the local `push` used inside runHudToastCensus's closure via a module-level ref
-  globalThis.__hudToastPush = push;
-  const out = await runHudToastCensus();
+  const out = await runHudToastCensus((id, what, spec) => G.push(id, what, spec));
   out.checks = G.checks;
   out.ok = out.checks.every((c) => c.status === 'PASS');
   out.sample_table = sampleTable(out.checks, { tool: 'ui-census.mjs --hud-toast' });

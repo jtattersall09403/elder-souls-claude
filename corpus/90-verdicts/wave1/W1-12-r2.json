@@ -1,0 +1,572 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-12-r2",
+  "piece_title": "Enemy AI, pursuit, variety and recovery \u2014 round 2 critique",
+  "subsystem_paths": [
+    "combat.enemy.statemachine",
+    "combat.enemy.movement",
+    "combat.enemy.perception",
+    "combat.enemy.leash",
+    "combat.encounter.grouping"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-12-r2-3c19",
+    "role": "critic.combat",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T11:20:00Z",
+    "finished_at": "2026-08-08T14:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "9063779",
+    "branch": "main"
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any artifact was opened. This piece is a state machine and a parameter table; there is no art-direction or fidelity claim in it. The one image in this verdict is a bar chart of a computed metric, drawn in bare Node by my own tool, not a rendered frame. No visual reference of either era is cited anywhere."
+  },
+  "reference_items": [
+    {
+      "id": "RI-AI01",
+      "path": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md",
+      "side": "souls",
+      "kind": "structure",
+      "native_scale": "M1-M9, each 0/1/2, max 18, with five hard fails independent of total",
+      "native_score": "15/18 with the M3 chase-bot hard fail TRIGGERED",
+      "native_max": 18,
+      "native_verdict": "The item's ladder maps 15/18 to about 6.7, but its ## Scoring section says a hard fail is independent of the total and voids the piece. M3's chase-bot clause (min_dist_dwell > 0.35) fires on six of the seven fighting statblocks when M3 is run on the fixture M3 itself specifies \u2014 'aggro one enemy, then hold position and never attack for 60 s'. Round 2 published 0.2521 from the round-1 critic's moving fixture instead and scored M3 = 1/2.",
+      "score_0_10": 2,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M1",
+          "result": "marginal",
+          "value": 1,
+          "threshold": "acquisition at 0.9R/0 deg in EVERY trial; rear never; 1.5R never; not a circle",
+          "evidence": [
+            "reports/w1-12-r2-critic/ai-browser.json"
+          ],
+          "note": "Measured in the browser at contention exit 0. Rear 180 never acquires and 1.5R never acquires \u2014 both PASS clauses met, and the acquisition set is not a circle, so this is not proximity aggro in a cone costume. But 0.9R at bearing 0 NEVER acquires: only the 0.5R ring does, on two of seven bearings, so the effective acquisition radius is half the declared 16 m. One of three PASS clauses fails."
+        },
+        {
+          "id": "M2",
+          "result": "pass",
+          "value": 244,
+          "threshold": "median SUSPICIOUS dwell >= 20 f; IDLE->AGGRO jumps <= 10%",
+          "evidence": [
+            "reports/w1-12-r2-critic/ai-browser.json"
+          ],
+          "note": "Median SUSPICIOUS dwell 244 f, jump fraction 0. Non-vacuous: the meter is filled by sim/stealth/system.js, not by the probe."
+        },
+        {
+          "id": "M3",
+          "result": "fail",
+          "value": 0.4373,
+          "threshold": "PASS <= 0.10, chase-bot HARD FAIL > 0.35",
+          "hard_fail": true,
+          "evidence": [
+            "docs/shots/2026-08-08-w1-12-r2-critic-m3-on-the-fixture-the-item-specifies.png",
+            "tools/combat/critic-w1-12-r2-m3-chart.mjs"
+          ],
+          "note": "On the item's own fixture (stationary player, 60 s, never attacks): inf_trash 0.4373, guard_legion 0.4260, drowned_lesser 0.4358, drowned_greater 0.4221, beast_slitherfang 0.3765, champion_hist_marked 0.4320, cst_sap_speaker 0.3183. Six of seven over 0.35. Rises with duration at every start range (inf_trash at 6 m: 0.3807 / 0.4373 / 0.4399 at 1800 / 3600 / 5400 f). spacing_variance 1.09 m and state_entropy 2.31 bits both PASS, so the band logic exists \u2014 the dwell is attack recovery with 0.6-1.2 m of forward root motion, 85% of it inside 0.85*omega."
+        },
+        {
+          "id": "M4",
+          "result": "pass",
+          "value": 0.1724,
+          "threshold": "inter-COMMIT CoV >= 0.12 or HARD FAIL",
+          "evidence": [
+            "reports/w1-12/ai-probe-souls-inf_trash.json"
+          ]
+        },
+        {
+          "id": "M5",
+          "result": "pass",
+          "value": 0.263,
+          "threshold": "released-feint ratio in [0.15, 0.45]",
+          "evidence": [
+            "reports/w1-12/ai-probe-souls-inf_trash.json"
+          ]
+        },
+        {
+          "id": "M6",
+          "result": "pass",
+          "value": "LEASH_RETURN at f121, anchor at f265, healed en route false",
+          "threshold": "enters within 8.0 s, reaches 1.5 m of anchor, no heal en route, never invulnerable",
+          "evidence": [
+            "reports/w1-12/ai-probe-souls-inf_trash.json"
+          ],
+          "note": "Round 1 scored this 1 because T25's no-LOS clause was dead code and elite/ambusher/boss tiers were unreachable. Round 2 wired noLosSinceF through percept_los and fixed tier resolution; both leaves are now rescued by perturbation."
+        },
+        {
+          "id": "M7",
+          "result": "pass",
+          "value": 0.0,
+          "threshold": "yaw_rate_dps == 0 on every active/recovery frame, tolerance 2",
+          "hard_fail": true,
+          "evidence": [
+            "reports/w1-12/ai-probe-souls-inf_trash.json"
+          ],
+          "note": "0.00 deg/s over 922 committed frames. The gate exists and did not fire."
+        },
+        {
+          "id": "M8",
+          "result": "pass",
+          "value": "p99 concurrent COMMIT 2, mean 0.66",
+          "threshold": "p99 <= 2, mean >= 0.6, no frozen queue",
+          "evidence": [
+            "reports/w1-12/ai-probe-souls-inf_trash.json"
+          ]
+        },
+        {
+          "id": "M9",
+          "result": "pass",
+          "value": "PUNISH_READ 0 f after the drink began",
+          "threshold": ">= 80% of trials within 12 f",
+          "evidence": [
+            "reports/w1-12/ai-probe-souls-inf_trash.json"
+          ],
+          "note": "The heal trigger passes everywhere. LONG_RECOVERY, a trigger the file declares, was measured at 7/12 by round 1 and re-measured by nobody since."
+        }
+      ],
+      "hard_fails": [
+        "M3"
+      ],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "docs/shots/2026-08-08-w1-12-r2-critic-m3-on-the-fixture-the-item-specifies.png",
+        "reports/w1-12-r2-critic/ai-browser.json",
+        "reports/w1-12/ai-probe-souls-inf_trash.json",
+        "reports/w1-12-r2-critic/consumption.json",
+        "reports/w1-12-r2/teardown.json",
+        "corpus/90-verdicts/wave1/W1-12-r2.md"
+      ],
+      "justification": "score_0_10 is 2, below 7, so no >=7 justification is owed. The 2 rather than a 0 records that eight of the nine checks pass or are marginal on measurements I took myself, that the delete-the-behaviour arm still collapses every enemy to a turning statue, and that the failing check fails on a metric whose denominator both round-1 and round-2 filed as defective. It is not a 6.7 because RI-AI01's ## Scoring section places a triggered hard fail outside the ladder.",
+      "why_not_ten": "M3's chase-bot hard fail is triggered on six of seven fighting statblocks on the fixture the item itself prescribes, and M1's 0.9R/0-degree acquisition clause never fires in the shipping game \u2014 the enemy's effective acquisition radius is half its declared sight radius.",
+      "path_to_ten": "Re-space during RECOVER rather than only after it, so the enemy is not parked inside its own strike band for 85% of its recovery frames, and re-check on the item's own fixture at three durations and four start ranges. Separately, either raise the perception fill rate or lower the declared sight radius so acquisition at 0.9R occurs within the item's 3 s hold. Then build the blind pair the item specifies and that three rounds have skipped.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-AI05",
+      "path": "corpus/10-combat/RI-AI05-roster-archetypes.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "weighted sum over the item's checks, each 0/1/2, max 44",
+      "native_score": 8,
+      "native_max": 44,
+      "native_verdict": "Only the archetype-distinctness leg was measured, which is the leg this piece's own output decides. Round 1's bit-identical group is gone: the four INFANTRY statblocks that hashed to 1edb362ea24dde99 now produce four different flee signatures (min gaps 1.612 / 1.782 / 1.712 / 1.859 m), and all seven fighting statblocks are distinct. The roster now realises 7 of the item's 10 archetypes against a bar of >= 8 \u2014 inherited from the statblock directory this piece does not own, and loudly declared in ai.json._archetypes_absent.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "justification": "Below 7, so no >=7 justification is owed. Up from round 1's 2 because the distinctness leg went from an outright fail (pairwise behavioural distance 0 on four of seven) to a clean pass on all seven, verified on my own flee driver as well as the round's variety hash.",
+      "why_not_ten": "The placement, pacing and encounter-composition legs were not measured, and the roster realises 7 of 10 archetypes against a bar of >= 8, with no BOSS behaviour at all \u2014 only a boss leash.",
+      "path_to_ten": "The missing archetypes are content for the statblock directory W1-03 owns; the behavioural half is now built, so adding DUELIST, RANGED, SWARM and GANK_DUO statblocks selects rows that already exist. Then measure the placement and pacing legs, which need a populated world and were out of scope for both rounds.",
+      "ten_by_wave": 3,
+      "evidence": [
+        "reports/w1-12-r2/teardown.json",
+        "corpus/90-verdicts/wave1/W1-12-r2.md"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/shots/2026-08-08-w1-12-r2-critic-m3-on-the-fixture-the-item-specifies.png",
+      "kind": "graph",
+      "produced_by": "node tools/combat/critic-w1-12-r2-m3-chart.mjs",
+      "seed": 1337,
+      "camera_pose": "not a rendered frame \u2014 a bar chart of min_dist_dwell over the seven fighting statblocks on two fixtures, 3600 f@60 each, drawn in bare Node with no browser and no engine",
+      "note": "Bars are RI-AI01 M3's own fixture (player holds position). Ticks are the fixture round 2 published. The red line is the item's 0.35 chase-bot hard fail."
+    },
+    {
+      "path": "reports/w1-12-r2-critic/ai-browser.json",
+      "kind": "trace",
+      "produced_by": "node tools/harness/ai-browser.mjs --probe all --out reports/w1-12-r2-critic/ai-browser.json",
+      "seed": 1337,
+      "note": "The browser leg the round could not run. b2 = RI-AI01 M1, b3 = M2, b4 = the wilderness sight-cone gate from three bearings, b5 = a live world-side consumption ablation with a restore check. contention --gate returned exit 0 (1 instance, load 0.57 per core) immediately before launch."
+    },
+    {
+      "path": "reports/w1-12-r2-critic/consumption.json",
+      "kind": "trace",
+      "produced_by": "node tools/combat/critic-w1-12-r2-consume.mjs",
+      "seed": 1337,
+      "note": "Two-sided perturbation of every contested leaf against a fixture built to reach the state that leaf governs, including 2-, 3- and 4-body groups the round's five-body fixtures cannot select. Both of the round's own controls asserted; exits non-zero if either misbehaves."
+    },
+    {
+      "path": "reports/w1-12/ai-probe-souls-inf_trash.json",
+      "kind": "trace",
+      "produced_by": "node tools/harness/ai-probe.mjs (re-run on the judged tree; the tool names its own output file per statblock and ignores --out)",
+      "seed": 1337,
+      "note": "Re-run of the piece's own probe on the judged tree. M1 and M2 are scored fail-closed 0 there by design; they are replaced in this verdict by the browser numbers."
+    },
+    {
+      "path": "reports/w1-12-r2/teardown.json",
+      "kind": "trace",
+      "produced_by": "node tools/combat/w1-12-r2-teardown.mjs (the round's own artifact, re-read not re-run)",
+      "seed": 1337,
+      "note": "Cited for the per-statblock columns the round's own summary does not print: arms B, E and B+E are byte-identical to base for beast_slitherfang on all four published metrics."
+    },
+    {
+      "path": "reports/w1-12-r2/rescue.json",
+      "kind": "trace",
+      "produced_by": "node tools/combat/w1-12-r2-probe.mjs --mode=rescue (the round's own artifact, re-read not re-run)",
+      "seed": 1337,
+      "note": "candidates 36, rescued 11, still_no_consumer 25 \u2014 against a survey that reports 17 rescued and 19 unconsumed."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-12-r2.md",
+      "kind": "report",
+      "produced_by": "this critic",
+      "seed": null
+    },
+    {
+      "path": "tools/combat/critic-w1-12-r2-m3-chart.mjs",
+      "kind": "log",
+      "produced_by": "this critic \u2014 the instrument that draws the M3 chart and exits 1 if the two fixtures produce identical numbers",
+      "seed": 1337
+    },
+    {
+      "path": "game/data/combat/ai.json",
+      "kind": "text-excerpt",
+      "produced_by": "the piece under test \u2014 quoted in \u00a77 for two shipped prose notes that describe the design the round rejected and name two leaves that do not exist",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-12-r1.md",
+      "kind": "report",
+      "produced_by": "the round-1 critic \u2014 cited for the rulings and measurements this verdict carries forward or contests",
+      "seed": null
+    },
+    {
+      "path": "reports/w1-12-r2/chase.json",
+      "kind": "trace",
+      "produced_by": "node tools/combat/w1-12-r2-probe.mjs --mode=chase (the round's own artifact, re-read not re-run)",
+      "seed": 1337
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-AI01",
+      "status": "not_possible",
+      "not_possible_reason": "RI-AI01 declares blind_pair: yes and specifies two anonymised 60 s dist_m + state series, ours against a reference generated from its own \u00a7C/\u00a7D tables. No round has built one \u2014 not round 1, not round 2, and not this critic. RULES 25 is not breached because I judged no pack, but the blind evidence is absent for the third round running and is named as a secondary observation rather than quietly omitted."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "game/src/combat/ai.js and game/src/combat/enemy.js contain zero occurrences of Math.random, disposition, faction, bounty, level, Date.now, performance.now or any weather term. Grepped directly, both files, this tree.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-12-r2.md"
+          ]
+        },
+        {
+          "id": "A2",
+          "result": "pass",
+          "observed": "All six PRNG draws in ai.js (lines 496, 664, 712, 713, 714, 733, 786) go through _draw(ctx, n), which reads the simulation's single counted global core/rng.js instance. Exactly the draws RI-AI01 asks for: T05 roar length, token cooldown, T11 strafe reseed and direction, radial sign, and move selection from a range-gated eligible pool.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-12-r2.md"
+          ]
+        },
+        {
+          "id": "A3",
+          "result": "pass",
+          "observed": "The behaviour_archetype table this round added maps a statblock id to a Souls-side archetype name and changes gait, leash tier, whether the body blocks and whether it backs off. It touches no hp, poise, damage, armour, frame data, moveset, reach or sight radius \u2014 the statblock still wins on both of the latter.",
+          "evidence": [
+            "game/data/combat/ai.json"
+          ]
+        },
+        {
+          "id": "A4",
+          "result": "pass",
+          "observed": "The one Morrowind path into the aggro latch (character/encounter.js hostile_below_disposition -> ctl.alertState = AGGRO) is untouched by this round. Round 1's ruling stands and I do not reopen it: the disposition term is binary, decides WHETHER a party opens hostile, and never modulates aggro_at_m or any frame, band, poise, speed or damage value.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-12-r1.md"
+          ]
+        }
+      ]
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "W1-12 round 2 adds no Morrowind-side surface for a Souls convention to contaminate. It edits one data file and three combat modules, all inside the fight, and adds no marker, warp, procedural loot, soul purchase or item-description lore vector.",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "not_applicable",
+          "observed": "No world-facing surface added or changed by this round."
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "weights": {
+      "A_s22_discipline": 1,
+      "B_ar1": 1,
+      "C_consumption": 1,
+      "D_closing_on_a_fleeing_player": 1,
+      "E_spacing_loop_M3": 1,
+      "F_delete_the_fix": 1,
+      "G_variety": 1,
+      "H_self_description": 1
+    },
+    "axes": {
+      "A_s22_discipline": 7,
+      "B_ar1": 8,
+      "C_consumption": 5,
+      "D_closing_on_a_fleeing_player": 7,
+      "E_spacing_loop_M3": 2,
+      "F_delete_the_fix": 5,
+      "G_variety": 7,
+      "H_self_description": 4
+    },
+    "band_label": "Much better work than round 1 on every axis that measures work, failing outright on the one gate round 1 could not see: round 2 built the RECOVER state that exposes M3's true number, then measured that number on a kinder fixture than the item specifies and reported it as a pass-with-a-note",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "hard_fail:RI-AI01/M3 \u2014 min_dist_dwell 0.3765-0.4373 against a chase-bot hard fail of 0.35, on six of the seven fighting statblocks, measured on the fixture RI-AI01 M3 itself specifies (stationary player, 60 s, never attacks). Robust across four start ranges and three durations, and rising with duration at every range.",
+    "2/10 min-over-axes against a 7.0 wave-1 gate. The reference-item weighted mean is 2.5 (RI-AI01 2.0 x 0.75 + RI-AI05 4.0 x 0.25) and is published so the aggregation is not a hidden choice.",
+    "NOT A REGRESSION FROM ROUND 1, and the orchestrator should not read 2 < 3 as one. The enemy's trajectory on this fixture is identical to round 1's to four decimal places (spacing_variance 1.0914 m, mean_dist 2.213 m); round 1 scored 0.1256 only because it labelled the recovery frames COMMIT and M3's denominator excludes COMMIT. Round 2 built the state that makes its own defect visible. Every axis that measures work went up: S22 5->7, consumption 4->5, closing on a fleeing player 3->7, variety 3->7.",
+    "No AR-1 failure. AR-2 not applicable \u2014 no Morrowind-side surface is touched.",
+    "The round's rejection of the round-1 verdict's own remedy (gate on closure) is UPHELD on my independent 2x2 plus a hysteresis arm the round did not build. Closure with the CIRCLE half present still never enters the strike band (2.72 m, 0 frames), and closure in any form doubles the chase-bot metric on a stationary player (0.4373 -> 0.7448). The builder was right to overrule its critic; its published proof was the weaker half of its case.",
+    "RI-AI01 M1 and M2, which the round declined to take and declined to adopt from round 1, are now measured in the browser: M1 = 1 (0.9R at bearing 0 never acquires), M2 = 2 (median SUSPICIOUS dwell 244 f). The refusal was correct in principle and vindicated in fact."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-12-m3-chase-bot-dwell-on-the-items-own-fixture",
+    "subsystem_path": "combat.enemy.statemachine",
+    "severity": "blocking",
+    "what": "On RI-AI01 M3's own fixture \u2014 one enemy aggroed, the player holding position and never attacking for 60 s \u2014 min_dist_dwell is 0.3183 to 0.4373 across the fighting roster against a PASS of 0.10 and a chase-bot HARD FAIL of 0.35 that six of the seven statblocks cross. The round published 0.2521 from the round-1 critic's moving fixture and scored M3 = 1/2. The cause is measured: on a passive player the enemy is in COMMIT or RECOVER for 1,896 of 3,600 frames, every attack carries 0.6-1.2 m of forward root motion, and the AI cannot steer during the swing, so it ends each attack inside its own strike band and stays there for the whole recovery (85% of recovery frames inside 0.85*omega). The number rises with duration at every start range: 0.3807 / 0.4373 / 0.4399 at 1800 / 3600 / 5400 frames from 6 m.",
+    "why_it_matters": "The player learns the rhythm of the approach before they learn the moveset, and an enemy that spends 44% of its non-swinging time inside its own reach against someone who is not even fighting back has no DANCE band from the player's chair, whatever the trace calls the states.",
+    "evidence": [
+      "docs/shots/2026-08-08-w1-12-r2-critic-m3-on-the-fixture-the-item-specifies.png",
+      "reports/w1-12/ai-probe-souls-inf_trash.json",
+      "corpus/90-verdicts/wave1/W1-12-r2.md"
+    ],
+    "remedy": {
+      "action": "In game/src/combat/ai.js, re-space during RECOVER rather than only after it. REPOSITION already runs a sprint back-off toward circle.preferred_band_multiple; RECOVER currently only renames the leaf. The root motion is the body's and must NOT be cancelled \u2014 the commitment property (47/47 swings to full clip, zero frames in which the enemy can change its mind) is the best thing in this subsystem and must survive untouched \u2014 but the frames after hit_active ends are steerable in principle and are 85%-inside-band in practice. Declare the back-off's start frame as a leaf of game/data/combat/ai.json so the consumption census can see it. Separately, and outside this piece's files, RI-AI01 M3's denominator should be changed from 'while state != COMMIT' to 'while the enemy is in the startup or active frames of an attack', as the round-1 critic proposed in its \u00a714.3 and this round endorsed; until that moves, the item as written is the bar.",
+      "targets": [
+        "game/src/combat/ai.js",
+        "game/data/combat/ai.json",
+        "corpus/10-combat/RI-AI01-aggro-approach-spacing.md"
+      ],
+      "acceptance": "node tools/combat/critic-w1-12-r2-m3-chart.mjs shows min_dist_dwell <= 0.35 for EVERY fighting statblock on the item's own fixture at 1800, 3600 and 5400 frames and at start ranges 3, 6, 10 and 15 m \u2014 AND node tools/combat/w1-12-r2-teardown.mjs shows flee_frames_inside_strike no lower than round 2's base row for any statblock (inf_trash 294, guard_legion 214, drowned_lesser 320, drowned_greater 107, champion_hist_marked 752, cst_sap_speaker 13 from 12 m). The second half is not optional: M3 can be passed by making the enemy timid, and that would undo the one thing round 2 got right.",
+      "ref_item": "RI-AI01",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The closure rule is structurally switched off for BEAST and SWARM. The threshold is derived rather than tuned \u2014 (walk - r) < walk_in_min_closure_mps \u2014 so it fires only when the target recedes faster than walk - 0.5. BEAST walks 2.6, needing r > 2.1, and a player walking away recedes at 2.0. Measured on the shipped tree, beast_slitherfang from 12 m reaches the strike band at player speeds 1.6, 2.2, 2.6 and 3.2 m/s and NOT at 2.0 \u2014 min gap 3.235 m, 0 frames in strike. A hole in the middle of the range sitting exactly on the speed the player spends most of the game at, and it is round 1's 'the enemy does worse against a walking player than a jogging one' surviving one archetype over. Remedy: floor the threshold at the player's own walk, or make walk_in_min_closure_mps per-archetype and say so.",
+      "evidence": [
+        "reports/w1-12-r2/teardown.json",
+        "corpus/90-verdicts/wave1/W1-12-r2.md"
+      ],
+      "subsystem_path": "combat.enemy.movement"
+    },
+    {
+      "what": "Every control assertion in tools/combat/w1-12-r2-teardown.mjs (lines 232-247) tests inf_trash and nothing else, except arms A and D which are roster-wide. Arm B \u2014 the deletion of the round's entire headline \u2014 is byte-identical to base for beast_slitherfang on all four published metrics (min gap 3.235, 0 strike frames from 12 m, 81 from 4 m, dwell 0.1887), and arm E is inert for beast_slitherfang and cst_sap_speaker, while the tool prints 'all four controls moved. No arm is inert.' The round audited arm E for exactly this shape on inf_trash and did not apply the lesson across the roster it had already measured. Assert the controls per statblock.",
+      "evidence": [
+        "reports/w1-12-r2/teardown.json",
+        "tools/combat/w1-12-r2-teardown.mjs"
+      ],
+      "subsystem_path": "combat.enemy.movement"
+    },
+    {
+      "what": "No teardown arm deletes REPOSITION. Round 1's arm B measured that block as the one carrying M3 across its own line (0.041 -> 0.107 on the builder's fixture) and flagged it as fixture-dominated. Round 2 rebuilt the state machine around it and did not re-run the ablation.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-12-r1.md"
+      ],
+      "subsystem_path": "combat.enemy.statemachine"
+    },
+    {
+      "what": "game/data/combat/ai.json documents the design the round rejected. \u00a7movement._closure_rule and ._closure_rule_two_zones describe closure-gating and name two leaves \u2014 rush_when_closure_below_mps and chase_when_gap_opening_above_mps \u2014 as 'separate leaves', 'both 0.8 m/s'. Neither exists in the file; grep across the repo finds them only in the round-1 verdict that proposed them and in these two notes. What ships is one leaf, walk_in_min_closure_mps: 0.5, and the SAME predicate at both the APPROACH site (ai.js:612) and the CIRCLE site (ai.js:623), so the 'stricter question' the note describes for the inner zone is not asked anywhere. check-ai-units.mjs passes because it enumerates leaves that exist and cannot see two that do not. This is the file a round-3 builder reads first.",
+      "evidence": [
+        "game/data/combat/ai.json",
+        "game/src/combat/ai.js"
+      ],
+      "subsystem_path": "combat.enemy.movement"
+    },
+    {
+      "what": "The published consumption figure is not the one in the artifacts under it. The survey and the status file say '60 of 99 leaves have a demonstrated consumer'; census.json says consumed 43 and rescue.json says rescued 11, which is 54. The survey accounts for 19 unconsumed where rescue.json's still_no_consumer lists 25; the six unaccounted are commit.tokens_by_group[0].max_size, [0].tokens, [1].max_size, [2].max_size, [2].tokens and leash.return_heal_seconds \u2014 the last a leaf round 1's census had already rescued. Perturbed on purpose-built 2-, 3- and 4-body group fixtures with two-sided perturbation, eight of the twenty-five come back consumed, so the substantive count is 62 of 99: better than claimed, by a route the round did not take.",
+      "evidence": [
+        "reports/w1-12-r2/census.json",
+        "reports/w1-12-r2/rescue.json",
+        "reports/w1-12-r2-critic/consumption.json"
+      ],
+      "subsystem_path": "combat.encounter.grouping"
+    },
+    {
+      "what": "The round's own 'real finding' about commit.swarm_max_omega_m \u2014 that it cannot be observed because the swarm branch returns swarm_tokens_at_5_plus = 3 and the row it falls through to also returns 3 \u2014 is CONFIRMED independently: the leaf is silent in swarm5, swarm6 and group5 under two-sided perturbation (x2, x0.5, 0, +1000). swarm_tokens_at_5_plus itself IS consumed (it moves at := 0 and := 9) and the round's own census.json already marks it so; the unobservable thing is the bound, not the count. Remedy: set the fallthrough row's tokens to a value that differs from the swarm branch's, or delete one of the two.",
+      "evidence": [
+        "reports/w1-12-r2-critic/consumption.json",
+        "reports/w1-12-r2/census.json"
+      ],
+      "subsystem_path": "combat.encounter.grouping"
+    },
+    {
+      "what": "RI-AI01 M1's acquisition radius in the shipping game is half the declared sight radius. inf_trash declares 16 m; 0.9R (14.4 m) never acquires at any bearing within the item's 3 s hold, and only the 0.5R ring (8 m) does, on two of seven bearings. The alert meter reaches SUSPICIOUS at 0.9R and sits there for the whole hold. Either the fill rates in game/data/stealth/detection.json or the declared sight radius is wrong \u2014 RI-AI01 \u00a7B's '50/s at 1.0*R' should reach 100 well inside 3 s at 0.9R.",
+      "evidence": [
+        "reports/w1-12-r2-critic/ai-browser.json"
+      ],
+      "subsystem_path": "combat.enemy.perception"
+    },
+    {
+      "what": "Two M1 instruments disagree about bearing 0. tools/harness/ai-browser.mjs records no acquisition at bearing 0 / 0.5R but does at 30 and 60 degrees; tools/combat/critic-w1-12-r2-m12.mjs records acquisition at bearing 0 / 0.5R at f79. Different facing conventions and different world lighting. They agree on the clause that decides the score (0.9R at bearing 0 never acquires in either), so M1 = 1 either way, but nobody should quote a per-bearing acquisition radius off either file until this is settled.",
+      "evidence": [
+        "reports/w1-12-r2-critic/ai-browser.json",
+        "reports/w1-12-r2-critic/m1-m2.json"
+      ],
+      "subsystem_path": "combat.enemy.perception"
+    },
+    {
+      "what": "An arm I discarded rather than published, recorded so a successor does not re-derive it. My predecessor's reports/w1-12-r2-critic/closure-vs-recession.json carries an arm clFull that is byte-identical to base on six of seven statblocks across both fixtures. Its predicate computes |enemy_now - player_old| - |enemy_now - player_now|, which cancels the enemy's own motion and is therefore target recession again under another name \u2014 rule 6's second shape, an inert control. The arms in \u00a72 of this verdict are built on a real distance window and do differ.",
+      "evidence": [
+        "reports/w1-12-r2-critic/closure-vs-recession.json",
+        "tools/combat/critic-w1-12-r2-closure.mjs"
+      ],
+      "subsystem_path": "combat.enemy.movement"
+    },
+    {
+      "what": "Closure-gating with hysteresis, which nobody has tried, DOES catch the walking player: a 30 f minimum RUSH dwell gives min gap 0.900 m and 144 frames inside the strike band, better than the shipped rule's 1.612 m. It is still the wrong answer, and the reason is not the one the round published: closure is ~0 against a player who is standing still, so it fires on RI-AI01 M3's own fixture and takes min_dist_dwell from 0.4373 to 0.7064. Recorded because the round's stated proof (oscillation) is curable and its unstated one (it fires on a stationary player) is not.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-12-r2.md"
+      ],
+      "subsystem_path": "combat.enemy.movement"
+    },
+    {
+      "what": "LONG_RECOVERY punish remains measured only by round 1 (7/12 against M9's own 80% bar, on the four INFANTRY statblocks). Round 2 named it and left it; I did not re-run it. The round's argument that a swinging enemy cannot punish is correct Souls behaviour and the remedy is an item-level change to what counts as a trial, not a code change.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-12-r1.md"
+      ],
+      "subsystem_path": "combat.enemy.punish"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-12-approach-cannot-close-on-a-walking-player",
+      "status": "partially-closed",
+      "measured_value": "inf_trash min gap 8.14 m and 0 frames inside the strike band -> 1.612 m and 294 frames; entered_RUSH true on every statblock at every fleeing speed; 6 of 7 statblocks reach the strike band against a walking player",
+      "acceptance_restated": "The round-1 acceptance was: for every statblock in the fighting roster and for player speeds 2.0 and 3.2 m/s, entered_RUSH true and min_gap_m <= 0.85*omega, while the 5.0 m/s row still shows the enemy losing ground; and the two new leaves must appear in the census's consumed list.",
+      "evidence": [
+        "reports/w1-12-r2/teardown.json",
+        "reports/w1-12-r2/chase.json",
+        "corpus/90-verdicts/wave1/W1-12-r2.md"
+      ],
+      "closed_by_builder_of_fix": false,
+      "note": "PARTIALLY closed, and the residue is specific rather than general. Reproduced independently on my own driver to three decimals. It fails the acceptance in two places: beast_slitherfang never reaches the strike band at the 2.0 m/s walk (min gap 3.235 m, 0 frames) because its archetype walk of 2.6 puts the derived threshold above the player's recession, and inf_trash does not reach it at 3.2 m/s from 12 m (4.098 m). The 5.0 m/s clause holds \u2014 0 of 28 cells, by design. The two new leaves are in the consumed list; the two the data file's prose NAMES do not exist (see secondary observations)."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "what": "RI-AI01 M3's denominator is a property of a build's state naming rather than of the fight, and it has now decided a verdict. The identical trajectory scores 0.1256 when the recovery frames are labelled COMMIT (round 1) and 0.4373 when they are labelled RECOVER (round 2), and the chase-bot hard fail fires on one and not the other.",
+      "where": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md ## Comparison method, M3",
+      "why": "Round 1's critic filed this as \u00a714.3 and proposed the wording; round 2 endorsed it and correctly declined to fix an item that is not its file; nothing moved, and the second round in a row has now been scored against a metric both rounds agree is mis-specified. Proposed replacement for 'while state != COMMIT': 'while the enemy is in the startup or active frames of an attack'.",
+      "id": "RI-AI01",
+      "path": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md",
+      "reason": "sharper_discriminator",
+      "index_regenerated": false
+    },
+    {
+      "what": "RI-AI01 M3's fixture and RULES 8 are in tension and the item should say which wins. M3 says 'hold position and never attack for 60 s'; RULES 8 says a still target hides every steering defect. Here the still target is the HARSHER fixture, so nobody was hiding behind it \u2014 but two rounds have now published M3 against a moving fixture of their own invention without either declaring it as a method deviation.",
+      "where": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md ## Comparison method, M3, against orchestration/RULES.md rule 8",
+      "why": "A check whose fixture two consecutive rounds silently replaced is a check that will be replaced again. The item should either bless a declared moving fixture with named amplitudes and speeds, or state that the hold-position run is normative and that any moving run is supplementary.",
+      "id": "RI-AI01",
+      "path": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md",
+      "reason": "method_gap",
+      "index_regenerated": false
+    },
+    {
+      "what": "RI-AI01 T01 and T03's min-dwell columns disagree with their own conditions \u2014 60 f against '2.0 s +/-0.5' implies 30 Hz, and 90 f against '2.0 s' implies 45 Hz \u2014 while \u00a7A declares a 60 Hz fixed step in its first sentence. Both are authoring defects, and T01 has now been cited as evidence in an S22 ruling that it does not in fact support.",
+      "where": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md \u00a7D, rows T01 and T03, against \u00a7A",
+      "why": "S22 says a bare frame count is a defect. RI-AI01 was not in REBASE-S22-REPORT.md \u00a7Job 1 and still has not been rebased, so its ~20 bare f figures rest on an inference. The inference is right \u2014 \u00a7A declares the item's own clock before it uses a single f \u2014 but the item should say so in the table rather than leaving a builder to derive it from two rows that agree and one that does not.",
+      "id": "RI-AI01",
+      "path": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md",
+      "reason": "corpus_hole",
+      "index_regenerated": false
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-AI01",
+      "what": "Ran RI-AI01 M3 on the fixture the item specifies (stationary player, 60 s) rather than on the fixture round 2 published (the round-1 critic's Lissajous drift, peak ~1.6 m/s).",
+      "deviation": "None from the item \u2014 this is a deviation from the ROUND, not from the item, and it is named here because it is the difference the verdict turns on.",
+      "why": "The item's M3 says 'hold position and never attack for 60 s' and its hard-fail threshold is defined against that fixture. Neither round ran it. I validated the instrument against the round's fixture first, reproducing its seven published min_dist_dwell figures to five decimals, before running the item's.",
+      "impact": "Decisive. 0.2521 -> 0.4373 for inf_trash, and the chase-bot hard fail fires on six of seven statblocks.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-AI01",
+      "what": "Wrote my own instruments rather than re-running only the round's.",
+      "deviation": "tools/combat/critic-w1-12-r2-m3-chart.mjs is mine; tools/combat/critic-w1-12-r2-closure.mjs, -consume.mjs and -m12.mjs are my predecessor's on this same task; the four closure arms in \u00a72 are mine, patched onto scratch copies.",
+      "why": "RULES 22/23 and CRITIC-DOCTRINE: a probe that calls a function measures the function. Every one of my tools can fail \u2014 the M3 chart exits 1 if the two fixtures produce identical numbers, and the consumption tool exits 1 if either of the round's two controls misbehaves.",
+      "impact": "None adverse. Where my numbers and the round's overlap they agree exactly (min gap 1.612, 294 strike frames, 385 RUSH frames; the seven M3 dwells to five decimals; arm E at 1.795 / 28).",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-AI01",
+      "what": "M1 and M2 were measured in the browser; the round could not run one and did not adopt round 1's numbers.",
+      "deviation": "I ran tools/harness/ai-browser.mjs --probe all after contention --gate returned exit 0 (1 instance, load 0.57 per core).",
+      "why": "The round's refusal was correct in principle \u2014 it had no browser, and adopting numbers it had not taken would have been a claim it could not support. The box was quiet when I ran, so the two checks that were fail-closed 0 for both rounds are now measured.",
+      "impact": "M1 = 1 and M2 = 2, which confirms round 1's accepted values rather than overturning them, and lifts the RI-AI01 native total from 13/18 to 15/18 before the hard fail is applied.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-AI01",
+      "what": "I did not re-derive the round's --mode=states count (11 of 17 reachable) or its yaw-ceiling sweep, and I re-read rather than re-ran teardown.json, census.json and rescue.json.",
+      "deviation": "Accepted from the round's artifacts.",
+      "why": "Budget. The four things I was sent to press \u2014 the closure ruling, M1/M2, the teardown arms and the consumption count \u2014 took the run.",
+      "impact": "Stated so nobody reads this verdict as having checked them. The teardown and rescue artifacts I cite are used for columns the round printed and did not summarise, which is a reading of its data rather than a claim about its tool.",
+      "affects_scores": false
+    }
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    {
+      "path": "game/src/combat/ai.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read after the 2x2 arms measured the difference, to name the two call sites of _targetIsLeaving (612 and 623) and to confirm the shipped predicate is the derived (walk - r) rule and not the closure rule its own data file describes."
+    },
+    {
+      "path": "game/data/combat/ai.json",
+      "purpose": "quote-written-content",
+      "note": "The two movement notes quoted in \u00a77 are written content shipped in a data file, and the finding is that they describe a design that was rejected and name two leaves that do not exist."
+    },
+    {
+      "path": "tools/combat/w1-12-r2-teardown.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read lines 228-250 after the per-statblock columns of its own output showed arm B inert for beast_slitherfang, to establish that every control assertion tests inf_trash alone."
+    },
+    {
+      "path": "tools/combat/w1-12-r2-probe.mjs",
+      "purpose": "locate-harness",
+      "note": "To find the census and rescue fixture definitions and confirm that the group fixture is five bodies, which is why the 2- and 3-4 body token rows could not be reached."
+    },
+    {
+      "path": "tools/lib/combat-node.mjs",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "game/src/combat/resolve.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Line 192 confirms guardRaised && shield, so the BLOCK_HOLD claim this round corrected from round 1 is true."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and blind_done_where_required is FALSE. RI-AI01 specifies a blind pair (two anonymised 60 s dist_m + state series, ours against a reference generated from its own \u00a7C/\u00a7D tables); no round has built one and neither did I, so the blind evidence is absent for the third round running. I also did not re-derive the round's reachable-states count or its yaw-ceiling sweep, and I did not re-measure the LONG_RECOVERY punish leg; all three are named in method_deviations. Everything else in RI-AI01's ## Comparison method was run: M1 and M2 in the browser, M3 on the item's own fixture across four start ranges and three durations, and M4-M9 through the piece's probe on the judged tree."
+  },
+  "notes": "Written by a successor. A predecessor on this task was killed by the weekly usage limit mid-run and left three tools and two artifacts on disk (reports/w1-12-r2-critic/m1-m2.json, closure-vs-recession.json). I re-derived independently every claim I publish; the one arm I could not reproduce \u2014 clFull, byte-identical to its control on six of seven statblocks \u2014 is discarded in the verdict's \u00a73 with the reason, rather than carried forward. The predecessor's consumption tool I did re-run, with its controls asserted, and its results are in reports/w1-12-r2-critic/consumption.json. No timing figure appears anywhere in this verdict, so contention cannot move any of it (RULES 26)."
+}

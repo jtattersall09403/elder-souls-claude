@@ -88,5 +88,11 @@
     "MAX_CATCHUP — R3 fixes it at 5 and it is a binding number in a reference item, not a knob this piece may turn. Whether 5 is right is R3's question and is still open.",
     "game/src/input/hold-gate.js — owned by W1-TOUCH round 2."
   ],
-  "next_step": "A critic with fresh context should judge §C.5 (RULES 22). The two things to attack: whether P13's 0.67/0.92 really follow from C.1's fps floors, and whether M16's synthetic rAF is a fair model of a browser's — a real rAF jitters and mine does not."
+  "banked": {
+    "commit": "04569c7",
+    "pushed": true,
+    "files": 10,
+    "note": "git commit --only over my seven declared paths; the other three are the pre-commit hook's own generated files (RULES 17), not a sweep. Index lock was held by a live neighbour (GATE-BLAST-RADIUS) for two backoff rounds; retried per RULES 17 rather than waiting. tools/bank.mjs then reported 'nothing added to commit' — the tree was already clean, other agents having committed — and was lock-blocked on later attempts; my own work was already committed and pushed, so nothing of mine is unbanked. Re-verified: M16 still exit 0 PASS at HEAD after the tree moved."
+  },
+  "next_step": "A critic with fresh context should judge §C.5 (RULES 22). The three things to attack: (1) whether P13's 0.67/0.92 really follow from C.1's fps floors, or whether I have smuggled in a new bar under the cover of an old one; (2) whether M16's synthetic rAF is a fair model of a browser's — a real rAF jitters and mine does not, and jitter around the 12.00 Hz floor is exactly where the behaviour is knife-edge; (3) whether carving M16's 3 points out of M9/M7/M8 weakened a check that was load-bearing."
 }
