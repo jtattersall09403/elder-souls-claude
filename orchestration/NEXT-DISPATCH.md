@@ -19,6 +19,14 @@ known to be broken, and what is simply not built yet — and tell them.
    project. This is the binding one.
 3. **The controls are drawn.** W1-08/W1-29 found them "correctly laid out and drawn nowhere". A
    player who cannot see the controls has not been given a game.
+
+   **The doors are now real, measured by the W1-21 r2 critic** — all six screens open and close
+   under real Playwright key presses in `play-instrumented` and under a real gamepad, not injected
+   action names: `KeyM`, `Digit3` ×1–5, `Escape` out of each, pad button 9 then 15. Controls-first
+   verified (an unbound `KeyQ` moves nothing), reproduced twice, re-stamped at a later HEAD. That
+   is the half of this item about *reaching* the screens; whether what is on them is drawn well is
+   still open, and **FD6 has been red across two rounds** (114, now 99.9, all 28 captures over) with
+   no verdict ever naming it.
 4. **You can walk between regions and the ground is there.** ~~Met~~ **NOT MET — retracted.** The
    streaming half is real (6,615 m walked with zero samples missing ground, a 133.8 ms worst frame
    as the residual). But W1-01 r4 put a *body* on THE CROSSING — Stormhold to Lilmoth, 6,816 m,

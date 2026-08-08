@@ -225,7 +225,7 @@ const PROPS = {
   crate_sealed: ['floor', (P) => { const g = new THREE.Group(); part(g, box(0.7, 0.6, 0.7, P.wood), 0, 0.3, 0); part(g, box(0.74, 0.05, 0.74, P.wood), 0, 0.6, 0); return g; }],
   sack_row: ['floor', (P) => B.sack(P)],
   floor_basket: ['floor', (P) => B.basket(P)],
-  barrel_row: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) g.add(Object.assign(B.barrel(P), { position: new THREE.Vector3((i - 1) * 0.72, 0, (i % 2) * 0.1) })); return g; }],
+  barrel_row: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const bl = B.barrel(P); bl.position.set((i - 1) * 0.72, 0, (i % 2) * 0.1); g.add(bl); }; return g; }],
   hook_rail: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.6, 0.08, 0.08, P.wood), 0, 1.75, 0); for (let i = 0; i < 5; i++) part(g, cyl(0.02, 0.02, 0.16, 4, P.metal), -0.64 + i * 0.32, 1.65, 0); return g; }],
   key_rail: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.9, 0.07, 0.05, P.wood), 0, 1.6, 0); for (let i = 0; i < 6; i++) part(g, box(0.03, 0.12, 0.02, P.metal), -0.36 + i * 0.145, 1.5, 0.03); return g; }],
   stool_high: ['floor', (P) => B.stool(P, 0.72)],
@@ -269,7 +269,7 @@ const PROPS = {
   rope_coil: ['floor', (P) => { const g = new THREE.Group(); const r = new THREE.Mesh(new THREE.TorusGeometry(0.26, 0.05, 4, 10), P.cloth); r.rotation.x = Math.PI / 2; part(g, r, 0, 0.06, 0); return g; }],
   // ---- tavern --------------------------------------------------------------------------------
   bar_long: ['wall', (P) => { const g = new THREE.Group(); part(g, box(3.4, 0.14, 0.8, P.wood), 0, 1.05, 0); part(g, box(3.3, 1.0, 0.6, P.wood), 0, 0.5, -0.05); return g; }],
-  bench_pair: ['centre', (P) => { const g = new THREE.Group(); for (const sz of [-0.75, 0.75]) g.add(Object.assign(B.bench(P, 1.7), { position: new THREE.Vector3(0, 0, sz) })); return g; }],
+  bench_pair: ['centre', (P) => { const g = new THREE.Group(); for (const sz of [-0.75, 0.75]) { const bn = B.bench(P, 1.7); bn.position.set(0, 0, sz); g.add(bn); }; return g; }],
   bench_row: ['wall', (P) => B.bench(P, 2.2)],
   bench_wait: ['wall', (P) => B.bench(P, 1.9)],
   bench_stone: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.8, 0.44, 0.44, P.stone), 0, 0.22, 0); return g; }],
@@ -371,7 +371,7 @@ const KIT = {
   bla_fortress_wall: ['arch', (P) => { const g = new THREE.Group(); for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) part(g, box(1.0, 0.62, 0.6, P.stone), (c - 1) * 1.05 + (r % 2) * 0.3, 0.34 + r * 0.66, 0); return g; }],
   bla_furred_parapet: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 5; i++) { part(g, box(0.42, 0.5, 0.4, P.stone), (i - 2) * 0.62, 2.3, 0); const m = ico(0.2, 0, P.accent); m.scale.set(1, 0.4, 1); part(g, m, (i - 2) * 0.62, 2.56, 0); } return g; }],
   bla_corridor_gate: ['arch', (P) => { const g = new THREE.Group(); for (const sx of [-0.9, 0.9]) part(g, box(0.36, 2.8, 0.5, P.stone), sx, 1.4, 0); part(g, box(2.2, 0.4, 0.5, P.stone), 0, 2.9, 0); for (let i = 0; i < 5; i++) part(g, cyl(0.04, 0.04, 1.0, 4, P.metal), -0.6 + i * 0.3, 2.3, 0); return g; }],
-  bla_prison_block: ['arch', (P) => { const g = new THREE.Group(); part(g, box(2.2, 2.6, 0.4, P.stone), 0, 1.3, 0); g.add(Object.assign(B.grate(P), { position: new THREE.Vector3(0, 0, 0.2) })); return g; }],
+  bla_prison_block: ['arch', (P) => { const g = new THREE.Group(); part(g, box(2.2, 2.6, 0.4, P.stone), 0, 1.3, 0); { const gr = B.grate(P); gr.position.set(0, 0, 0.2); g.add(gr); }; return g; }],
   // Gideon: Imperial timber frame, tile roof, a market cross and an arcaded square.
   gid_timber_frame: ['arch', (P) => { const g = new THREE.Group(); part(g, box(2.8, 2.6, 0.14, P.wall), 0, 1.3, 0); for (const sx of [-1.3, 0, 1.3]) part(g, box(0.16, 2.6, 0.2, P.wood), sx, 1.3, 0.06); part(g, box(2.8, 0.16, 0.2, P.wood), 0, 1.3, 0.06); const d = box(2.9, 0.16, 0.2, P.wood); d.rotation.z = 0.72; part(g, d, -0.65, 1.9, 0.06); return g; }],
   gid_tile_roof: ['arch', (P) => { const g = new THREE.Group(); for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) { const t = box(0.44, 0.06, 0.3, P.roof); t.rotation.x = 0.34; part(g, t, (c - 2.5) * 0.46, 2.5 + r * 0.16, r * 0.28); } return g; }],
@@ -533,8 +533,15 @@ export function buildInterior(root, rec) {
     const entryDef = PROPS[id];
     const cls = entryDef ? entryDef[0] : 'floor';
     let obj;
-    try { obj = entryDef ? entryDef[1](P) : fallbackProp(P, id); } catch { obj = fallbackProp(P, id); }
-    if (!entryDef) summary.props_fallback++;
+    // A BUILDER THAT THREW USED TO BE COUNTED AS BUILT. The catch below has always substituted a
+    // crate, but `props_fallback` was incremented only in the `!entryDef` arm — so 34 instances
+    // across 22 rooms drew a generic crate while the summary called them their declared mesh, and
+    // no build record could see it (round-3 verdict §5(b)). A prop that threw is a fallback and
+    // is now counted as one, by name, so the next one to break is visible the day it breaks.
+    let threw = null;
+    try { obj = entryDef ? entryDef[1](P) : fallbackProp(P, id); } catch (e) { obj = fallbackProp(P, id); threw = String((e && e.message) || e); }
+    if (!entryDef || threw) summary.props_fallback++;
+    if (threw) (summary.props_threw || (summary.props_threw = [])).push({ id, error: threw });
     if (KIT[id]) summary.kit_meshes++;
     obj.name = `prop:${id}`;
     if (cls === 'wall' || cls === 'arch') {

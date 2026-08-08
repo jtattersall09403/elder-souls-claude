@@ -1020,7 +1020,7 @@ async function driveBeats(handle, o) {
       // A paused node is the scene handing the body back. Release it on the act the node says
       // it is waiting for, exactly as `Engine._censusStep` does when the player performs it.
       if (st.paused) {
-        try { await handle.h('censusEnter', st.resume_by || 'walk'); } catch (e) {
+        try { await handle.h('censusEnter', st.resume_by || 'walk'); await handle.h('stepFrames', 2); } catch (e) {
           censusWalk.stopped_by = 'censusEnter threw';
           censusWalk.throw_at = st.node || null;
           censusWalk.throw_reason = String(e && e.message || e);
@@ -1042,6 +1042,15 @@ async function driveBeats(handle, o) {
 
       try {
         await handle.h('censusAnswer', answer);
+        // STEP A FRAME, OR THE EVENT NEVER REACHES THE TRACE.
+        //
+        // `Engine.censusAnswer()` emits `creation_field` onto the bus, and the bus is drained
+        // into a frame record by `_afterStep()`. A walk that answers every node back to back
+        // without advancing the simulation emits all seven and records none of them — which is
+        // why `m4_clause1` still read "no character-field-writing event in the trace" on the
+        // first run after this loop was repaired, on a build that had just written seven fields.
+        // The measurement M4 clause 1 makes is about FRAMES; the walk has to spend some.
+        await handle.h('stepFrames', 2);
       } catch (e) {
         // NOT SWALLOWED. The scene refusing an answer on the walk that a player takes is the
         // single most important thing this driver can find, and it used to be the one thing it

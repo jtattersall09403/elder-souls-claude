@@ -712,7 +712,7 @@ const CLEAR_M = 0.40;          // deck stands this far above the highest water i
 const MAX_CUT_M = 3.0;         // a road cutting. Deeper than this is a trench, and trenches fill
 const DECK_M = 3.0;            // fill above this is emitted as a causeway/bridge span — a STRUCTURE
 const MAX_GRADE = 0.12;        // the trunk bar: 6.8 degrees. A silt-strider analogue climbs this
-const STAIR_GRADE = 0.45;      // the declared exception, on ground that is itself this steep
+const STAIR_GRADE = Number(argOf('--stair-grade', '0.45'));   // the declared exception, on ground that is itself this steep
 // 0.45 is 24.2 degrees. It is a cut stair or a switchback, not a carriageway, and every segment
 // that uses it is emitted in `grade_exceptions` with its class and the natural grade that
 // justified it. The ceiling is deliberately below `traversal.json slope.max_walkable_deg` (40 deg)

@@ -138,13 +138,88 @@ function footprintOf(root, filter) {
 }
 
 /* ================================================================================================
+ * ROUND 3'S SHRINK, RE-CREATED VERBATIM.
+ *
+ * The round-4 fix is TWO changes, and RULES.md rule 6 says which of the three shapes that is:
+ * not an inert fix and not an inert control, but TWO GUARDS FOR ONE DEFECT — deleting either one
+ * alone leaves the number moved, and only deleting both brings the old world back. Reporting that
+ * honestly means running it as a 2x2, so this function is round 3's uniform shrink pass copied
+ * out of `exterior.js@c36653e` and re-applied over a round-4 plan. It overwrites `shrink` and
+ * `drawn_footprint_m` and nothing else.
+ * ==============================================================================================*/
+function r3Shrink(plan) {
+  const MAX_OVERLAP_FRAC = 0.45, FLOOR = 0.24, MIN_FOOTPRINT_M = 3.4;
+  const list = plan.buildings;
+  for (const b of list) b.shrink = 1;
+  const sorted = list.slice().sort((a, c) => (a.id < c.id ? -1 : a.id > c.id ? 1 : 0));
+  for (let pass = 0; pass < 8; pass++) {
+    const next = sorted.map((b) => b.shrink);
+    let touched = 0;
+    for (let i = 0; i < sorted.length; i++) {
+      for (let j = i + 1; j < sorted.length; j++) {
+        const a = sorted[i], c = sorted[j];
+        const aw = a.footprint_m[0] * a.shrink, ad = a.footprint_m[1] * a.shrink;
+        const cw = c.footprint_m[0] * c.shrink, cd = c.footprint_m[1] * c.shrink;
+        const Dx = Math.abs(a.x - c.x), Dz = Math.abs(a.z - c.z);
+        const Sx = (aw + cw) / 2, Sz = (ad + cd) / 2;
+        const limX = Math.min(aw, cw) * MAX_OVERLAP_FRAC, limZ = Math.min(ad, cd) * MAX_OVERLAP_FRAC;
+        if (Sx - Dx <= limX || Sz - Dz <= limZ) continue;
+        const tx = Sx - limX > 1e-6 ? Dx / (Sx - limX) : 1;
+        const tz = Sz - limZ > 1e-6 ? Dz / (Sz - limZ) : 1;
+        const t = Math.min(1, Math.max(tx, tz));
+        if (t >= 0.999) continue;
+        next[i] = Math.min(next[i], Math.max(FLOOR, a.shrink * t));
+        next[j] = Math.min(next[j], Math.max(FLOOR, c.shrink * t));
+        touched++;
+      }
+    }
+    for (let i = 0; i < sorted.length; i++) sorted[i].shrink = next[i];
+    if (!touched) break;
+  }
+  for (const b of list) {
+    const need = Math.min(1, Math.max(MIN_FOOTPRINT_M / b.footprint_m[0], MIN_FOOTPRINT_M / b.footprint_m[1]));
+    b.shrink = +Math.max(need, Math.max(0.24, b.shrink)).toFixed(4);
+    b.drawn_footprint_m = [+(b.footprint_m[0] * b.shrink).toFixed(2), +(b.footprint_m[1] * b.shrink).toFixed(2)];
+    b.shrink_m = [b.shrink, b.shrink];
+    // The room the plan can afford, re-derived from round 3's footprint by the SAME rule
+    // `planSettlement` uses, so that the "uniform shrink, join kept" cell of the 2x2 is a real
+    // cell and not a second copy of "both deleted". (Round 3 itself had no such field: its room
+    // was always the declared footprint, which is the cell below it.)
+    b.interior_bounds_m = null;
+    if (b.enterable && b.interior && b.declared_footprint_m) {
+      const dw = b.declared_footprint_m[0], dd = b.declared_footprint_m[1];
+      const rw = Math.min(dw, +(b.drawn_footprint_m[0] - 0.66).toFixed(2));
+      const rd = Math.min(dd, +(b.drawn_footprint_m[1] - 0.66).toFixed(2));
+      if (rw < dw - 0.01 || rd < dd - 0.01) b.interior_bounds_m = [Math.max(2.0, rw), Math.max(2.0, rd)];
+    }
+  }
+  return plan;
+}
+
+/** Undo `applyInteriorBounds` on every record, so the next arm starts from the shipped data. */
+function restoreRecords(I) {
+  for (const rec of Object.values(I)) {
+    if (rec.bounds_m_declared) { rec.bounds_m = { x: rec.bounds_m_declared.x.slice(), y: rec.bounds_m_declared.y.slice(), z: rec.bounds_m_declared.z.slice() }; delete rec.bounds_m_declared; }
+    if (rec.continuity && rec.continuity.interior_spawn_declared) { rec.continuity.interior_spawn = rec.continuity.interior_spawn_declared.slice(); delete rec.continuity.interior_spawn_declared; }
+  }
+}
+
+/* ================================================================================================
  * SECTION 1 — the join.
  * ==============================================================================================*/
 
-async function sectionJoin(THREE, EX, IN, S, I) {
+async function sectionJoin(THREE, EX, IN, S, I, opts = {}) {
   const rows = [];
-  for (const sid of Object.keys(S).sort()) {
-    const plan = EX.planSettlement(S[sid], I);
+  // THE SAME JOIN THE RUNNING GAME PERFORMS, and by the same call: `province.setSettlements()`
+  // plans every settlement and then hands the plans and the interior records to
+  // `applyInteriorBounds`. If that call is removed from `province.js`, this tool still passes —
+  // which is why the delete-the-fix arm (`--no-join`) cuts it HERE as well, and why the live arm
+  // asks the running game rather than this process.
+  const plans = Object.keys(S).sort().map((sid) => EX.planSettlement(S[sid], I));
+  if (opts.r3shrink || has('--r3-shrink')) plans.forEach(r3Shrink);
+  const join = (opts.nojoin || has('--no-join')) ? { skipped: true } : EX.applyInteriorBounds(plans, I);
+  for (const plan of plans) {
+    const sid = plan.id;
     for (const b of plan.buildings) {
       if (!b.enterable || !b.interior) continue;
       const rec = I[b.interior];
@@ -179,6 +254,7 @@ async function sectionJoin(THREE, EX, IN, S, I) {
   const bad = rows.filter((r) => r.error || !(r.fits_x && r.fits_z));
   bad.sort((a, c) => (a.area_ratio || 0) - (c.area_ratio || 0));
   return {
+    join_applied: join,
     enterable_measured: rows.length,
     outside_smaller_than_inside: bad.length,
     worst_area_ratio: bad.length ? bad[0].area_ratio : (rows.length ? Math.min(...rows.map((r) => r.area_ratio)) : null),
@@ -316,10 +392,36 @@ async function main() {
   const IN = await import(path.join(ROOT, 'game/src/render/interior.js'));
   const { S, I } = loadData();
 
+  // ---- THE 2x2 --------------------------------------------------------------------------------
+  // Rule 6, run as two guards for one defect. Each cell rebuilds every plan and every room from
+  // the shipped data, with the records restored in between so no arm inherits another's.
+  const matrix = [];
+  for (const cell of [
+    { arm: 'shipped (per-axis shrink + join)', r3shrink: false, nojoin: false },
+    { arm: 'join deleted, per-axis shrink kept', r3shrink: false, nojoin: true },
+    { arm: "round 3's uniform shrink, join kept", r3shrink: true, nojoin: false },
+    { arm: 'BOTH deleted — this is round 3', r3shrink: true, nojoin: true },
+  ]) {
+    restoreRecords(I);
+    const j = await sectionJoin(THREE, EX, IN, S, I, cell);
+    matrix.push({
+      arm: cell.arm,
+      outside_smaller_than_inside: j.outside_smaller_than_inside,
+      worst_area_ratio: j.worst_area_ratio,
+      worst_id: j.worst_id,
+      rooms_limited_by_the_plan: j.join_applied && j.join_applied.rooms_limited_by_the_plan,
+      worst_room_area_kept: j.join_applied && j.join_applied.worst ? j.join_applied.worst.area_kept : null,
+      worst_room: j.join_applied && j.join_applied.worst ? j.join_applied.worst.id : null,
+      smallest_room_m: j.rows.length ? Math.min(...j.rows.map((r) => Math.min(r.inside_m[0], r.inside_m[1]))) : null,
+    });
+  }
+  restoreRecords(I);
+
   const report = {
     tool: 'tools/world/w1-04-r4-join.mjs',
     commit: process.env.W1_04_COMMIT || null,
     when: new Date().toISOString(),
+    delete_the_fix_2x2: matrix,
     join: await sectionJoin(THREE, EX, IN, S, I),
     distinct: await sectionDistinct(THREE, IN, I),
     props: await sectionThrowingProps(THREE, IN, I),
@@ -341,6 +443,7 @@ async function main() {
   const out = path.join(OUT_DIR, 'join.json');
   fs.writeFileSync(out, JSON.stringify(report, null, 2));
 
+  for (const m of report.delete_the_fix_2x2) console.log(`2x2      ${m.arm.padEnd(38)} outside<inside ${String(m.outside_smaller_than_inside).padStart(3)}   worst out/in ${String(m.worst_area_ratio).padEnd(7)} smallest room span ${m.smallest_room_m} m   worst room keeps ${m.worst_room_area_kept}`);
   console.log(`JOIN     enterable measured ${report.join.enterable_measured}   OUTSIDE SMALLER THAN INSIDE ${report.join.outside_smaller_than_inside}   worst ${report.join.worst_id} ${report.join.worst_area_ratio}   median ${report.join.median_area_ratio}`);
   console.log(`DISTINCT n0 same room twice ${report.distinct.n0_same_room_twice.distinct} (must be 1)   n1 null control ${report.distinct.n1_null_control_every_door_same_record.distinct} (must be 1)   n2 shipped ${report.distinct.n2_shipped.distinct} of ${report.distinct.n2_shipped.rooms}, largest identical group ${report.distinct.n2_shipped.largest_identical_group}`);
   console.log(`PROPS    ${JSON.stringify(report.props.suspects)}`);

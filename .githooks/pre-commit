@@ -85,11 +85,31 @@ git add docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
 # than a sound `2`; published numbers could have been read as different numbers. It survived because
 # nothing threw and a sheared glyph is still a picture of a letter.
 #
-# It was fixed once, in tools/lib/chart-font.mjs. This names anything still carrying the old table.
-# WARNING, NOT BLOCKING: five tools still carry it and four of them belong to live pieces, so
-# arming this would block their owners' commits over a defect they inherited (rule 13). Two of those
-# five were written on the day of the fix, by pasting the broken table in again — which is the whole
-# argument for printing it here, where the next author sees it before they paste.
+# It was fixed once, in tools/lib/chart-font.mjs. All thirteen tools now import it and the tree
+# carries no sheared table at all, so this is ARMED (W1-CHARTFONT-r2). It was a warning until then
+# for rule 13's reason: five tools still carried the table and four belonged to live pieces, so
+# arming it would have blocked their owners over a defect they inherited. Two of those five were
+# written ON THE DAY OF THE FIX by pasting the broken table in again. It spread while it was being
+# fixed, twice, and that is what this gate exists to stop happening a third time.
+#
+# BLOCKING, over the STAGED BLOBS OF THIS COMMIT — not over the whole tree. The gate must catch the
+# author who pastes the table back, and staged scope catches exactly that: the paste cannot reach a
+# commit, including `tools/bank.mjs`'s `git add -A` bank, without tripping it. A whole-tree hard gate
+# would instead deadlock every agent on the box over a neighbour's uncommitted scratch file, which is
+# the failure mode rule 13 is about. The tree-wide sweep still runs below, as a warning, so drift is
+# visible to whoever is committing.
+#
+# `node tools/lib/chart-font.mjs --audit-selftest` proves this detector goes red where it must
+# (rule 4): it runs the same detection over the archived pre-fix table and over the fixed one, and
+# requires the first to trip and the second not to.
+node tools/lib/chart-font.mjs --audit-staged || {
+  echo ""
+  echo "pre-commit: BLOCKED. A file in this commit carries the sheared chart glyph table."
+  echo "pre-commit: See the adoption snippet above. Do not retype the missing characters;"
+  echo "pre-commit: import tools/lib/chart-font.mjs, which throws on a row of the wrong width."
+  echo ""
+  exit 3
+}
 node tools/lib/chart-font.mjs --audit-tree 2>/dev/null || true
 
 git diff --cached --name-only --diff-filter=ACMR \

@@ -34,12 +34,12 @@ import { launchGame, requireMethods } from '../lib/browser.mjs';
 
 const USAGE = `
 critic-w1-16-r3-live.mjs — W1-16 round-3 critic's stepping probes.
-  --probe <names|all>   controls antimerge overloaded clamp pin bow
+  --probe <names|all>   controls antimerge overloaded clamp pin pinfight bow
   --out <path>          default reports/w1-16/critic-r3-live.json
 `;
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
-const ALL = ['controls', 'antimerge', 'overloaded', 'clamp', 'pin', 'bow'];
+const ALL = ['controls', 'antimerge', 'overloaded', 'clamp', 'pin', 'pinfight', 'bow'];
 const run = String(args.probe || 'all') === 'all' ? ALL : String(args.probe).split(',');
 
 const handle = await launchGame(args);
@@ -158,6 +158,7 @@ const PROBES = {
   // =========================================================================================
   antimerge() {
     const H = window.__HARNESS;
+    const WEARABLES = ['shell-scale-hauberk', 'legion-greaves', 'rootweave-cowl', 'wet-season-boots', 'silt-strider-silk-sash'];
     const cs = () => H.getCombatState();
     const rollOnce = () => {
       H.queueInputs([{ f: 0, move: [0, 1] }, { f: 1, press: ['roll'] }, { f: 3, release: ['roll'] }]);
@@ -244,6 +245,7 @@ const PROBES = {
   // =========================================================================================
   overloaded() {
     const H = window.__HARNESS;
+    const WEARABLES = ['shell-scale-hauberk', 'legion-greaves', 'rootweave-cowl', 'wet-season-boots', 'silt-strider-silk-sash'];
     const cs = () => H.getCombatState();
     const walk = (frames, sprint) => {
       const p0 = H.getPlayerStats().pos.slice();
@@ -407,7 +409,6 @@ const PROBES = {
       await path_(state, 'saveRoundTrip()', () => { const r = H.saveRoundTrip(); return { hash_equal: r.equal }; });
       await path_(state, 'writeSave() -> readSave()', async () => { await H.writeSave('critic-w116-r3'); return await H.readSave('critic-w116-r3'); });
       await path_(state, 'exportSave() -> importSave()', async () => { const blob = await H.exportSave(); return await H.importSave(blob); });
-      await path_(state, 'snapshot() -> restoreState()', () => { const s = H.snapshot(); return H.restoreState(s); });
     }
     const withHostile = rows.filter((r) => r.state === 'arena_duel');
     return {
@@ -418,6 +419,74 @@ const PROBES = {
       producer_still_running_on_every_path: rows.every((r) => r.err || (r.live && r.live.producer_still_running)),
       coupled: rows.filter((r) => !r.err).length > 0
         && rows.every((r) => r.err || ((r.live && r.live.producer_still_running) && !/pinned/.test(r.source_after || ''))),
+    };
+  },
+
+  // =========================================================================================
+  // K7 — WHAT A SAVE AND A RELOAD DO TO A PINNED FIGHT.
+  //
+  // Round 3's whole safety argument is: "24 of the 49 named states DECLARE `loadout.equip_load_pct`
+  // ... so every TTK, hitstop and exemplar number W1-09/10/11 measured is untouched, byte for
+  // byte." That is true at load. `_restoreFightFromSave` CLEARS the pin — the round-2 critic
+  // verified the clear and scored it 8/10 as a good thing — so after a save and a reload the
+  // producer engages and answers a DIFFERENT number in a PINNED calibration state.
+  //
+  // Before round 3 the derived answer was the clothing sum alone and stayed inside LIGHT, so the
+  // clear was invisible. The `hands` arm is run as the counterfactual: it is round 3's own
+  // delete-the-fix switch, and with it cut the same save and the same reload do not cross a cliff.
+  // =========================================================================================
+  pinfight() {
+    const H = window.__HARNESS;
+    const cs = () => H.getCombatState();
+    const rollOnce = () => {
+      H.queueInputs([{ f: 0, move: [0, 1] }, { f: 1, press: ['roll'] }, { f: 3, release: ['roll'] }]);
+      H.stepFrames(2);
+      const iv = []; let f = 1, total = null;
+      while (f < 400) { const c = cs(); if (c.player.invuln) iv.push(c.player.anim_frame); H.stepFrames(1); f++; if (!cs().player.move) { total = f - 1; break; } }
+      return { iframes_f60: iv.length, recovery_f60: total !== null && iv.length ? total - iv[iv.length - 1] : total,
+        total_f60: total, tier: cs().player.tier };
+    };
+    const read = () => {
+      const b = H.getBurden().equip_load;
+      return { pct: b.pct, tier: b.tier, source: b.source, equipped_kg: b.equipped_weight,
+        hands_kg: b.hands ? b.hands.total : null, cap_kg: b.equip_load_max };
+    };
+    const arm = (state, dress, broken) => {
+      H.__breakW116(broken);
+      H.setSeed(1337); H.loadState(state); H.stepFrames(8);
+      for (const it of dress) {
+        const q = cs().player.pos;
+        H.spawnProp({ eid: `k7-${it}`, name: it, item: it, pos: [q[0], q[1], q[2]] });
+        H.takeProp(`k7-${it}`); H.equipItem(it); H.stepFrames(40);
+      }
+      H.stepFrames(6);
+      const before = Object.assign(read(), rollOnce());
+      const rt = H.saveRoundTrip();
+      H.stepFrames(6);
+      const after = Object.assign(read(), rollOnce());
+      H.__breakW116(null);
+      return { state, dressed_with: dress, broken: broken || 'none', hash_equal: rt.equal,
+        before, after,
+        equip_load_moved_across_the_save: before.pct !== after.pct,
+        ROLL_TIER_CHANGED_ACROSS_THE_SAVE: before.tier !== after.tier,
+        iframes_lost: before.iframes_f60 - after.iframes_f60 };
+    };
+    const rows = [
+      arm('arena_duel', [], null),
+      arm('arena_duel', ['shell-scale-hauberk', 'legion-greaves'], null),
+      // THE COUNTERFACTUAL. Round 3's own `hands` switch, cut: the pin still clears, but the
+      // derived answer is the pre-round-3 clothing sum and stays inside LIGHT.
+      arm('arena_duel', ['shell-scale-hauberk', 'legion-greaves'], 'hands'),
+      arm('arena_flat', ['shell-scale-hauberk', 'legion-greaves'], null),
+    ];
+    const changed = rows.filter((r) => r.ROLL_TIER_CHANGED_ACROSS_THE_SAVE);
+    return {
+      rows,
+      states_whose_ROLL_TIER_changes_across_a_save_and_reload: changed.map((r) => `${r.state} (+${r.dressed_with.length} worn)`),
+      the_hands_term_is_what_crosses_the_cliff:
+        rows[1].ROLL_TIER_CHANGED_ACROSS_THE_SAVE === true && rows[2].ROLL_TIER_CHANGED_ACROSS_THE_SAVE === false,
+      // This probe PASSES when it finds the change. `coupled` is the finding, not the health.
+      coupled: changed.length > 0,
     };
   },
 

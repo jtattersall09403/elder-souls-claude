@@ -2884,6 +2884,7 @@ export class Engine {
     if (wright.quest_gated && !this.sim.quest.flags[wright.quest_gated]) return false;
     this.commission = new CommissionCounter(this.magic, n, wright, {
       gold: () => this._gold(),
+      opening: () => (rec.lines && rec.lines[SPELLMAKING_TOPIC]) || `${wright.name}. Nothing on the slate yet.`,
       emit: (kind, detail) => {
         // `spell_made` is already in the closed event vocabulary (`sim/events.js`); a new name
         // would throw inside the fixed step and kill every stepping probe in the project
@@ -7959,6 +7960,84 @@ export class Engine {
    * Returns per-segment progress plus a stuck census: a frame in which the capsule moved less than
    * 1 cm while a full stick was held is a frame the flood fill cannot see.
    */
+  /**
+   * PURE PURSUIT, AGAINST THE PATH RATHER THAN AGAINST THE NEXT WAYPOINT.
+   *
+   * ================================================================================================
+   * W1-CROSSING. THIS IS THE "A BODY THAT LEAVES THE ROAD CANNOT GET BACK ON" DEFECT (join H1).
+   * ================================================================================================
+   *
+   * Both walkers used to steer like this:
+   *
+   *     while (idx < n && dist(body, pts[idx]) < lookahead) idx++;    // advance on PROXIMITY
+   *     steer at pts[idx];
+   *
+   * The waypoint index only ever advances when the body gets within `lookahead` of the waypoint,
+   * and the body always steers *straight at that one point*. Both halves are defects, and between
+   * them they account for every failed reachability walk this project has published:
+   *
+   *   1. **It cannot recover.** Displace the body — a boulder, a wall, a slope slide, a fall off a
+   *      viaduct — and it does not come back to the road. It puts its head down and beelines at a
+   *      waypoint that is now across country. If anything at all stands between it and that point
+   *      it slides along the obstacle and orbits, forever, because nothing in the loop is a
+   *      function of *the road*: `soulrest-blackrose` is 1,841 m long and the body walked 6,459 m
+   *      of it and finished in 16 m of sea. That leg's ground is innocent — this instrument's own
+   *      census gives it a worst regain angle of 11.5 deg, no falls and no slope-gate refusals —
+   *      so the wander was never the province. It was this loop.
+   *   2. **It cuts corners.** Aiming 4.5 m ahead across a bend on a road whose points are 12 m
+   *      apart takes the body off the carriageway by design. On the 471 m viaduct that stands 50.6
+   *      m above the Valus Ridge, off the carriageway is off the *bridge*.
+   *
+   * So the target is now computed from the body's PROJECTION ONTO THE PATH: find the nearest point
+   * on the polyline (searching forward only, within a 150 m window, so a road that doubles back
+   * cannot teleport the target backwards), then take the point `forward` metres further along the
+   * polyline. `forward` shrinks as the body's lateral error grows — at 4.5 m off the road the
+   * target is the road itself, so a displaced body's first move is *back onto it*, and once it is
+   * back the target slides ahead again and it resumes. The road is the thing being followed, which
+   * is what "follow the road" has to mean.
+   *
+   * @returns {{seg:number, u:number, off_m:number, target:number[], remaining_m:number, done:boolean}}
+   */
+  _pursue(pts, st, lookahead, arrive) {
+    const px = this.sim.player.pos[0], pz = this.sim.player.pos[2];
+    const n = pts.length - 1;
+    let bestSeg = Math.min(st.seg, n - 1), bestU = 0, bestD = Infinity, span = 0;
+    for (let j = Math.min(st.seg, n - 1); j < n; j++) {
+      const ax = pts[j][0], az = pts[j][1];
+      const dx = pts[j + 1][0] - ax, dz = pts[j + 1][1] - az;
+      const L2 = dx * dx + dz * dz || 1;
+      const u = Math.max(0, Math.min(1, ((px - ax) * dx + (pz - az) * dz) / L2));
+      const d = Math.hypot(px - (ax + dx * u), pz - (az + dz * u));
+      if (d < bestD) { bestD = d; bestSeg = j; bestU = u; }
+      span += Math.sqrt(L2);
+      if (span > 150) break;                       // the search window, not the path
+    }
+    st.seg = bestSeg;                              // monotonic: the walk never un-walks a segment
+    // How much road is left in front of the projection — the honest "remaining", and the arrival
+    // test, both of which used to be a waypoint count.
+    let remaining = 0;
+    {
+      const ax = pts[bestSeg][0], az = pts[bestSeg][1];
+      remaining += Math.hypot(pts[bestSeg + 1][0] - ax, pts[bestSeg + 1][1] - az) * (1 - bestU);
+      for (let j = bestSeg + 1; j < n; j++) remaining += Math.hypot(pts[j + 1][0] - pts[j][0], pts[j + 1][1] - pts[j][1]);
+    }
+    // The lookahead is spent on GETTING BACK first and on PROGRESS second.
+    let forward = Math.max(1.0, lookahead - bestD);
+    let seg = bestSeg, u = bestU;
+    while (forward > 0 && seg < n) {
+      const L = Math.hypot(pts[seg + 1][0] - pts[seg][0], pts[seg + 1][1] - pts[seg][1]) || 1;
+      const room = L * (1 - u);
+      if (room >= forward) { u += forward / L; forward = 0; break; }
+      forward -= room; seg++; u = 0;
+    }
+    if (seg >= n) { seg = n - 1; u = 1; }
+    const tx = pts[seg][0] + (pts[seg + 1][0] - pts[seg][0]) * u;
+    const tz = pts[seg][1] + (pts[seg + 1][1] - pts[seg][1]) * u;
+    const endD = Math.hypot(px - pts[n][0], pz - pts[n][1]);
+    return { seg: bestSeg, u: bestU, off_m: bestD, target: [tx, tz], tag: pts[bestSeg][2],
+      remaining_m: remaining, done: remaining <= arrive && endD <= Math.max(arrive, lookahead) };
+  }
+
   walkPath(points, opts = {}) {
     const o = Object.assign({ speed: 'walk', maxFrames: 400000, lookahead_m: 4.5, arrive_m: 3.0, stuckAbort: 900, miredAbort: 36000 }, opts);
     if (!this.field) throw new Error('walkPath: no province is loaded');
@@ -7967,15 +8046,22 @@ export class Engine {
     const p = this.sim.player;
     this.teleport(points[0][0], points[0][1]);
     p.pos[1] = this.field.heightAt(points[0][0], points[0][1]);
-    let idx = 1, frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0;
+    const st = { seg: 0 };
+    let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0;
+    let worstOff = 0, offRoadFrames = 0, regains = 0, off = false;
     const visited = new Set([this.field.regionAt(p.pos[0], p.pos[2]).id]);
     const deepest = { depth_m: 0, at: null };
     while (frames < o.maxFrames) {
-      while (idx < points.length - 1 && Math.hypot(p.pos[0] - points[idx][0], p.pos[2] - points[idx][1]) < o.lookahead_m) idx++;
-      const t = points[idx];
+      const pur = this._pursue(points, st, o.lookahead_m, o.arrive_m);
+      // WHAT "IT GOT BACK ON" MEANS, COUNTED. Off is more than the carriageway's half-width from
+      // the centreline; a regain is a body that was off and is now back inside it. Both are
+      // reported, because "the body recovered" is a claim and a claim needs a count.
+      if (pur.off_m > worstOff) worstOff = pur.off_m;
+      if (pur.off_m > 3.5) { offRoadFrames++; off = true; } else if (off) { off = false; regains++; }
+      const t = pur.target;
       const dx = t[0] - p.pos[0], dz = t[1] - p.pos[2];
       const d = Math.hypot(dx, dz);
-      if (idx >= points.length - 1 && d < o.arrive_m) break;
+      if (pur.done) break;
       const b = Math.atan2(dx, dz);
       const cy = this.sim.camera.yaw * Math.PI / 180;
       this.input.reset(this.sim.frame);
@@ -8019,6 +8105,11 @@ export class Engine {
       offset_m: +Math.hypot(end[0] - target[0], end[1] - target[1]).toFixed(2),
       longest_stuck_frames: worstStuck, mired_frames: miredFrames, regions_entered: [...visited].sort(),
       deepest_water_on_the_walk: deepest,
+      // H1: how far the body ever strayed from the line it was following, how long it spent off it,
+      // and how many times it got back on. A walk that never leaves the road reports 0 regains
+      // because it never needed one; a walk that leaves and never returns reports 0 as well, so
+      // read it beside `worst_off_path_m` and `off_path_frames`, never alone.
+      worst_off_path_m: +worstOff.toFixed(2), off_path_frames: offRoadFrames, regains: regains + (off ? 0 : 0),
     };
   }
 
@@ -8038,8 +8129,9 @@ export class Engine {
         for (let k = (pts.length ? 1 : 0); k < p.length; k++) pts.push([p[k][0], p[k][1], leg.id]);
       }
       this._walk = {
-        route: o.route, speed: o.speed, pts, idx: 1, frames: 0, dist: 0,
+        route: o.route, speed: o.speed, pts, idx: 1, seg: 0, frames: 0, dist: 0,
         samples: [], legFrames: new Map(), regions: [], lastRegion: null,
+        worstOff: 0, offFrames: 0, regains: 0, off: false, offLog: [],
         startedFrame: this.sim.frame, done: false,
       };
       this.teleport(pts[0][0], pts[0][1]);
@@ -8054,12 +8146,21 @@ export class Engine {
     const p = this.sim.player;
     let n = 0;
     while (n < o.chunkFrames && !w.done) {
-      // advance the target along the spline
-      while (w.idx < w.pts.length - 1 && Math.hypot(p.pos[0] - w.pts[w.idx][0], p.pos[2] - w.pts[w.idx][1]) < o.lookahead_m) w.idx++;
-      const t = w.pts[w.idx];
+      // The target is the body's PROJECTION ONTO THE ROAD, pushed forward — see `_pursue`. The old
+      // "advance the waypoint when you get near it, then beeline at it" loop is the reason a body
+      // that left the road never came back, and the reason this walk cut corners off a 50 m viaduct.
+      const pur = this._pursue(w.pts, w, o.lookahead_m, 1.5);
+      w.idx = Math.min(w.seg + 1, w.pts.length - 1);
+      if (pur.off_m > w.worstOff) w.worstOff = pur.off_m;
+      if (pur.off_m > 3.5) {
+        w.offFrames++;
+        if (!w.off && w.offLog.length < 40) w.offLog.push({ left_at_m: +w.dist.toFixed(1), pos: [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)] });
+        w.off = true;
+      } else if (w.off) { w.off = false; w.regains++; if (w.offLog.length) w.offLog[w.offLog.length - 1].regained_at_m = +w.dist.toFixed(1); }
+      const t = pur.target;
       const dx = t[0] - p.pos[0], dz = t[1] - p.pos[2];
       const d = Math.hypot(dx, dz);
-      if (w.idx >= w.pts.length - 1 && d < 1.5) { w.done = true; break; }
+      if (pur.done) { w.done = true; break; }
       const b = Math.atan2(dx, dz);
       const cy = this.sim.camera.yaw * Math.PI / 180;
       this.input.reset(this.sim.frame);
@@ -8070,7 +8171,9 @@ export class Engine {
       const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
       w.dist += step;
       w.frames++; n++;
-      w.legFrames.set(t[2], (w.legFrames.get(t[2]) || 0) + 1);
+      // The leg the body is ON, which is the leg its PROJECTION sits on — not the leg of whatever
+      // point it happened to be aiming at, which on a lookahead can already be the next leg.
+      w.legFrames.set(pur.tag, (w.legFrames.get(pur.tag) || 0) + 1);
       if (w.frames % o.sampleEvery === 0) w.samples.push(+(step * 60).toFixed(4));
       const reg = this.field.regionAt(p.pos[0], p.pos[2]).id;
       if (reg !== w.lastRegion) { w.regions.push({ region: reg, frame: w.frames, m: +w.dist.toFixed(1) }); w.lastRegion = reg; }
@@ -8098,6 +8201,9 @@ export class Engine {
       leg_minutes: Object.fromEntries([...w.legFrames].map(([k, v]) => [k, +(v / 3600).toFixed(3)])),
       region_sequence: w.regions,
       remaining_points: w.pts.length - w.idx,
+      // H1, counted. See walkPath's note: read the three together, never `regains` alone.
+      worst_off_path_m: +w.worstOff.toFixed(2), off_path_frames: w.offFrames, regains: w.regains,
+      off_path_events: w.offLog,
     };
   }
 

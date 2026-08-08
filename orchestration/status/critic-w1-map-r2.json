@@ -4,23 +4,52 @@
   "item": "W1-MAP",
   "round": 2,
   "state": "running",
+  "commit": "f291b01",
   "started_at": "2026-08-08T00:00:00Z",
-  "summary": "Re-take of W1-MAP-r1 C2/D1/D2/D3 after the save/fight.js SoulsAI serialisation defect was fixed; plus forged-save attack, quest->map API grep, unrendered-vs-greyed check, hover names, play-and-screenshot, consumption (RI-MTH07).",
-  "next_step": "read INDEX.md, ARBITRATION.md S35, W1-MAP-r1.md, status files",
+  "summary": "Re-take of W1-MAP-r1 C2/D1/D2/D3 after W1-SAVE-AI fixed the save/fight.js SoulsAI serialisation defect; plus a harder forged-save attack (through the player-facing sealed save file), the quest->map API surface executed, unrendered-at-the-renderer, hover names, play-and-screenshot, and CONSUMPTION.",
+  "next_step": "screenshots (docs/shots), then write the verdict",
   "files_touched": [
-    "orchestration/status/critic-w1-map-r2.json"
+    "orchestration/status/critic-w1-map-r2.json",
+    "tools/harness/critic-map-r2.mjs"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-MAP-r2.md",
     "corpus/90-verdicts/wave1/W1-MAP-r2.json",
     "orchestration/status/critic-w1-map-r2.json",
-    "tools/map/critic-",
-    "tools/harness/critic-map-",
+    "tools/harness/critic-map-r2.mjs",
+    "tools/harness/critic-map-r2-shots.mjs",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["critic-w1-map"],
+  "redundant_with": ["critic-w1-map", "W1-MAP", "W1-21-r2"],
+  "headline": "26/40 at f291b01. C2, D1, D2, D3 ALL REPRODUCE AS PASSES in both a clean arm and a hostiles-present arm — the save defect never made them failures, and the round-1 verdict never filed them as such. The forged-save hole is WIDER than round 1 recorded: it also works through the player-facing sealed save file, and it survives 180 fixed steps with hostiles on the floor.",
+  "findings": [
+    "PREMISE VERIFIED (P1): at f291b01 a save/load with 3 hostiles present keeps a live SoulsAI (ctor SoulsAI -> SoulsAI, 3 -> 3 live) and 60 fixed steps run with 0 faults. The W1-SAVE-AI fix holds.",
+    "CONTROL VERIFIED (P3, rule 6): replacing a live ctl.ai with a plain object makes my fault detector fire with the exact pre-fix message 'this.ai.step is not a function'. Every '0 faults' figure below is from a detector that has been watched going red.",
+    "THE BRIEF'S PREMISE IS OVERSTATED, and the source it comes from says so. W1-SAVE-AI.json:91 says 'The critic caught the misattribution, but C2/D1/D2/D3 are worth re-taking'. W1-MAP-r1.md's own table lists C2/D1/D2/D3 as PASSES, and its §9 records that they first appeared as failures and that C0/D0 preconditions stopped them being filed. No false finding was ever published.",
+    "RE-TAKE RESULT: C2, D1, D2, D3 all PASS, identically, in a clean arm and in an arm with 3 live hostile AIs on the floor (R-agree). 0 step faults in each arm, frames advanced in each arm, 2106 vs 2115 cells drawn. The findings are properties of the map, not of the save.",
+    "A9 — THE FORGED SAVE IS WORSE THAN ROUND 1 RECORDED. Round 1 handed a forged object to loadState(). A9 writes a real save container with the game's OWN save/exchange.js exportSave() (which computes the sha-256 the reader verifies) and reads it back through importSave(): 124,898 sealed bytes ACCEPTED, place_count 42/42, revealed 42,846/42,846, 42 squares drawn. The player-facing route is open.",
+    "A12a/A12b — the seal is an INTEGRITY check, not an AUTHENTICITY check. Editing sealed bytes is refused ('the seal does not match'). Resealing the forgery with the game's own writer is ACCEPTED. An unkeyed sha-256 stops corruption, not a forger.",
+    "A10 — the forgery is NOT an artefact of the broken load. After importing it, 2 hostiles spawned and 180 fixed steps ran with 0 faults and the map stayed at 42/42 places, 42,846/42,846 cells. A round-1 forged-save pass could have been a load that died; this one is not.",
+    "A11 — THE HOLE IS OPEN AND THE REPORT IS CLOSED. On the fully forged state every published compliance number reads clean: places_drawn 42 == places_discovered 42, markers 0, routes 0, numerals 0, travel 0, quest_bearing 0, dropped_on_load 0. Nothing the build publishes distinguishes a forged map from an honest one.",
+    "A5 — the signal already exists and is thrown away. Discovery.restore() computes dropped, phantom_cells, missing_cells, claimed_places, derived_places, stood_cells, legacy. save/state.js:676 keeps only .dropped; mapState() publishes only dropped_on_load. Published footprint-audit fields: NONE. This is round 1's remedy 1, not done.",
+    "Q1/Q2 — sim.discovery is still writable:true configurable:true and questEngine.sim === sim. Installing a substitute model through the object the quest machine itself holds draws 3 squares.",
+    "Q3 — THE BACK DOOR THE BRIEF NAMES IS OPEN. window.__ENGINE.sim.discovery = <forged> draws 2 squares, and getCapabilityReport() does not mention __ENGINE at all, so capability prohibitions do not cover it.",
+    "Q4 PASSES: no method ON the model accepts a place. 13 attempts, 0 succeeded, requested place absent, place list unchanged.",
+    "STATIC HALF OF C: nothing under game/src/sim/quest/ reaches a map module. grep for map|discovery|__ENGINE|reveal|marker|Discovery over all 8 files returns only quest-internal reveal() (a know: flag), Array.prototype.map, and one S35 comment. The reachable route is the writable slot, not a call.",
+    "U1/U2/U3 — undiscovered is genuinely UNRENDERED. Empty map: 1 distinct colour over 345,071 px, drawn_cells 0, and per-channel range [0,0,0] — a drawn-then-masked province cannot produce that. screens/map.js:103 is `if (!m.seen(cx,rz)) continue;`, so the geometry is never in the scene.",
+    "E3/E4/E5/E6 — hover names hold. Being told about a place through questEngine.learnFrom('place'), setWorldKnowledge and learnTopic changes nothing. One square per place, unique. The name is that place's own pois.json name. markers/routes/numerals/travel/quest_bearing all 0 and the map is not reachable from the journal.",
+    "G2 — CONSUMPTION FAILS. World hash (discovery blob excluded) is c23bbb77:52365 in both arms; ablating the model entirely changes nothing in the running world. The only consumer is the map's own draw call.",
+    "THREE OF MY OWN CHECKS WERE WRONG AND WERE REPAIRED BEFORE FILING. (1) E3 read placeCount 0 -> 1 after the 'tell' attempts, which reads exactly like a build defect; it was my baseline, taken before the first step, and the default start position is inside LILMOTH's own pad. (2) E5 asserted the hover name must be 'Thorn'; the naming element names places[placeIdx], which is the first place found, i.e. Lilmoth. (3) Q4 saw the place list move because tryPlaceMapMarker ends by calling d.observe(4600,5200) to show surplus arguments are ignored, and observe() records the cell the body is in. (4) A12 originally PASSED by matching the substring 'signature' in the save manifest, which is regionSignature/focusSignature — an inert check that passed for the wrong reason. All four repaired and documented in the tool."
+  ],
+  "self_tests": {
+    "unrendered": "SELF-TEST OK — turned U1,U2,U3 red",
+    "standing": "SELF-TEST OK — turned R-D1-clean,R-D1-hostile red",
+    "consumer": "SELF-TEST OK — turned G2 GREEN (opposite polarity: G2's pass condition is 'nothing happened')"
+  },
   "notes": [
-    "contention --gate returned GO (3 instances, room for 3 more) at start."
+    "contention --gate returned GO before every browser run (3 instances then room for 5). One browser per tool run, kept for the whole run; my measurements step the simulation so rule 20 requires my own browser rather than tools/capture/.",
+    "No file under game/ was edited.",
+    "Every number is a count, a boolean or a pixel colour. No timing figure appears in this verdict."
   ]
 }

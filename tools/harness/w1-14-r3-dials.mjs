@@ -49,15 +49,34 @@
 //     `projectile` (`MagicSystem._geometryFor`). Both arms are volumes; only the radius differs.
 //     A second body stands 4.6 m from the first, inside the wide radius and outside the narrow.
 //
-// SELF-TEST (rule 4 — a probe that cannot fail is worse than no probe):
-//   --break=bindblind   restores the pre-fix summon handler, which ignored `rec.magnitude`.
-//                       `bind_lesser`/`bind_greater` must go COUPLED -> MAGNITUDE_BLIND.
-//   --break=nocast      the treatment arms do not cast. EVERY row must come back INERT and
-//                       `coupled` must be 0 on all three dials. This is the control arm proving
-//                       it can refuse: if a row still reads COUPLED with nothing cast, the
-//                       coupling this probe reports is arena noise and not the spell.
+// SELF-TEST (rule 4 — a probe that cannot fail is worse than no probe). **REWRITTEN IN ROUND 4,
+// and the reason is RULES.md #6's second shape.** The round-3 verdict §2 found that the declared
+// self-test had never been run and that one of its arms could not have said anything:
 //
-// USAGE  node tools/harness/w1-14-r3-dials.mjs [--out <dir>] [--break=<mode>] [--only=a,b,c]
+//   * `--break=nocast` skips the cast in EVERY arm, so `base.delivered` is false and all 55 rows
+//     hit `if (!base.delivered) { row.verdict = 'NOT_DELIVERED'; continue; }` **before
+//     `readDial()` is ever called**. "55/55 NOT_DELIVERED with coupled 0" is a statement that the
+//     DELIVERY GATE works — which it does — and says nothing about whether the BLIND/COUPLED
+//     comparison can manufacture a coupling out of arena noise, because that comparison never
+//     ran. It is kept, because a delivery control is worth having, and it is now LABELLED as
+//     what it is instead of standing in for the comparator's control.
+//   * `--break=nulldial` is the comparator's control and is new in round 4. Every knock-down arm
+//     casts the BASE TUPLE — two identical arms, same seed, same arena, differing in nothing.
+//     Every ACTIVE row must therefore read BLIND on every separable dial. Any row that comes back
+//     COUPLED under this is a row whose "coupling" is arena noise, and the tool names it.
+//   * `--break=bindblind` restores the pre-fix summon handler, which ignored `rec.magnitude`.
+//     `bind_lesser`/`bind_greater` must go COUPLED -> BLIND.
+//   * `--break=fleeblind` restores round 3's `demoralise`. THE HOOK ITSELF WAS A PARTIAL TEARDOWN
+//     until round 4: it disabled the flee loop in `MagicSystem.step` and left `h_demoralise`'s
+//     `b.fleeLeashM = clamp(magnitude x 0.9, 6, 45)` standing, so a pure function of the dial was
+//     still published through `statusReport()` and `demoralise` stayed COUPLED with the motion
+//     gone. `sim/magic/apply.js` now suppresses those four writes under the break, so the arm can
+//     go red. `demoralise` must go COUPLED -> BLIND.
+//
+// `--assert` turns each arm's expectation into an exit code, so "the control was run" and "the
+// control went red" are the same claim rather than two.
+//
+// USAGE  node tools/harness/w1-14-r3-dials.mjs [--out <dir>] [--break=<mode>] [--only=a,b,c] [--assert]
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, log, writeJson, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
@@ -65,8 +84,11 @@ import { launchGame } from '../lib/browser.mjs';
 const USAGE = `w1-14-r3-dials.mjs — magnitude / duration / area consumption census (RI-MTH07 §B, RI-MAG02 §E)
 
   --out <dir>     report directory (default reports/w1-14-r3)
-  --break=<mode>  bindblind | nocast   deliberate sabotage, so the instrument can be watched red
+  --break=<mode>  nulldial | bindblind | fleeblind | nocast — deliberate sabotage, so the
+                  instrument can be watched red. See the SELF-TEST block in the header for what
+                  each one breaks and what it must therefore do to the numbers.
   --only=a,b,c    restrict to named effect ids (for iteration; the headline needs all 55)
+  --assert        exit non-zero unless the arm broke what it names
 `;
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);

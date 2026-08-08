@@ -2338,6 +2338,69 @@ export function installHarness(engine, bootPromise) {
       };
     },
     /**
+     * W1-04 r4 — THE SIGNATURE OF WHAT IS ACTUALLY ON THE SCREEN.
+     *
+     * TWO THINGS IN THIS PIECE HAVE BEEN MEASURED WITH INSTRUMENTS THAT COULD NOT SEE THE ROOM,
+     * and this verb exists to replace both of them.
+     *
+     *  1. `getDrawnInterior().interior.meshes` is a BUILD RECORD. It is whatever
+     *     `buildInterior()` returned when the room was last built; the round-3 critic emptied the
+     *     room's group behind the world's back and the verb went on reporting 127 meshes of a
+     *     room that was no longer there. Round 2's headline "92 distinct scene-graph signatures"
+     *     was computed by hashing that block, so it is a hash of build records wearing the words
+     *     "scene graph".
+     *  2. Both pixel-hash acceptance criteria in this piece return the same number in the live
+     *     arm and in the arm with the subject deleted — the round-3 critic measured 8 of 8
+     *     distinct images in ONE UNCHANGED ROOM after two fixed steps, and 8 of 8 in an 8-town
+     *     control that drew zero buildings. A pixel hash over this renderer counts the frame.
+     *
+     * So this walks the `Object3D` tree of the cells that are VISIBLE right now and folds a
+     * sorted hash over every mesh in it: geometry type, geometry parameters, material colour and
+     * the transform RELATIVE TO THE CELL ROOT. Nothing in that advances on its own — no clock,
+     * no frame counter, no particle seed, no traversal order — so the same room read twice
+     * returns the same string, and an emptied group returns the hash of nothing. A probe that
+     * wants to know whether two rooms differ can ask this; a probe that pins its camera and
+     * hashes pixels is asking the clock.
+     *
+     * The identical algorithm is implemented offline in `tools/world/w1-04-r4-join.mjs`, and the
+     * two are compared id by id, which is how we know the room built in Node is the room the
+     * player is standing in.
+     */
+    getDrawnSignature() {
+      const r = engine.renderer;
+      if (!r || !r.cells) return { cell: null, hash: null, meshes: 0, error: 'no renderer' };
+      const visible = Object.keys(r.cells).filter((k) => r.cells[k].visible);
+      const out = { cell: r.cell, visible_cells: visible, interior_id: r.interiorId || null, per_cell: {}, meshes: 0, triangles: 0, hash: null };
+      const fold = (s) => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); };
+      const all = [];
+      for (const name of visible) {
+        const root = r.cells[name];
+        root.updateMatrixWorld(true);
+        const inv = root.matrixWorld.clone().invert();
+        const keys = [];
+        let tris = 0;
+        root.traverse((m) => {
+          if (!m.isMesh || !m.geometry) return;
+          const g = m.geometry, p = g.parameters || {};
+          const par = Object.keys(p).sort().map((k) => `${k}=${typeof p[k] === 'number' ? p[k].toFixed(3) : p[k]}`).join(',');
+          const col = m.material && m.material.color ? m.material.color.getHexString() : '-';
+          const rel = inv.clone().multiply(m.matrixWorld);
+          const mx = Array.from(rel.elements).map((n) => n.toFixed(3)).join(',');
+          keys.push(`${g.type || '?'}|${par}|${col}|${mx}|${(m.name || '').replace(/[0-9]+$/, '')}`);
+          const gg = m.geometry;
+          tris += gg.index ? gg.index.count / 3 : (gg.attributes && gg.attributes.position ? gg.attributes.position.count / 3 : 0);
+        });
+        keys.sort();
+        out.per_cell[name] = { hash: fold(keys.join('\n')), meshes: keys.length, triangles: Math.round(tris) };
+        out.meshes += keys.length;
+        out.triangles += Math.round(tris);
+        all.push(...keys);
+      }
+      all.sort();
+      out.hash = fold(all.join('\n'));
+      return out;
+    },
+    /**
      * W1-04 r3 / RI-WLD03 R5 — THE TOWN FROM THE STREET, READ OFF THE RENDERER.
      *
      * Deliberately a scene-graph TRAVERSAL and not a sum over `settlement.buildings`: the whole
@@ -2350,17 +2413,40 @@ export function installHarness(engine, bootPromise) {
       if (!pv) return { present: false, buildings: 0, settlements: [] };
       return { present: true, ...pv.drawnBuildings(), stats: pv.stats() };
     },
-    /** The control arm: cut the draw call, drop the tiles, and re-request. RULES.md #6. */
-    __w1_04_drawBuildings(on) {
+    /**
+     * The control arm: take the town away and re-request. RULES.md #6.
+     *
+     * WHAT THIS USED TO BE, AND WHY IT CHANGED. Until round 4 this cut the DRAW CALL only. The
+     * round-3 critic ran it and measured the consequence: doors drawing the right cell 20/20 ->
+     * 0/20, buildings in the scene graph 15 -> 0, and live collision shapes **67 in both arms**.
+     * `settlementSolidsNear()` builds the wall set from `settlementPlans` and not from the scene
+     * graph, so cutting the draw call leaves 67 invisible solid slabs standing in the street —
+     * and any measurement that reached for this switch meaning "no buildings here" was wrong
+     * about half the town. The two derivations from one plan are good design; a control arm that
+     * silently cuts one of them is not.
+     *
+     * So the default now cuts BOTH: nothing drawn and nothing solid. `{ visual_only: true }`
+     * keeps the old behaviour for the arm it is actually right for — photographing a street with
+     * the buildings removed — and the return value now carries `collision_shapes` in both cases,
+     * so a caller can see which world it is standing in rather than assume.
+     */
+    __w1_04_drawBuildings(on, opts) {
       const pv = engine.renderer && engine.renderer.province;
       if (!pv) return null;
+      const visualOnly = !!(opts && opts.visual_only);
       pv.drawBuildings = !!on;
       for (const [k, t] of [...pv.tiles]) pv._release(k, t);
       pv.queue.length = 0;
       pv.buildingsDrawn = 0;
       const p = engine.sim.player.pos;
       pv.request(p[0], p[2]); pv.drain();
-      return pv.stats();
+      if (!visualOnly) {
+        engine._townSolidsOff = !on;
+        engine._townSolids = null;
+        engine._settleSettlementSolids();
+      }
+      const solids = engine.settlementSolidsReport();
+      return { ...pv.stats(), visual_only: visualOnly, collision_shapes: solids ? solids.shapes : null, cell_id: solids ? solids.cell_id : null };
     },
     /** Replace a settlement's plan at runtime — the RI-MTH07 perturbation handle. */
     __w1_04_perturbSettlement(doc, interiors) {
@@ -2370,7 +2456,16 @@ export function installHarness(engine, bootPromise) {
       pv.setSettlements(docs, interiors || engine.data.interiors || {});
       const p = engine.sim.player.pos;
       pv.request(p[0], p[2]); pv.drain();
-      engine._townSolids = null; engine._townCell = null;
+      // THE TWO LINES THAT USED TO BE HERE WERE THE ONES THAT VOIDED A 15-WALK MEASUREMENT.
+      // `engine._townSolids = null; engine._townCell = null;` is the exact pattern that made
+      // `__w1_04_townSolids`'s control arm inert in round 3: `_settleSettlementSolids()`'s
+      // off-branch is `if (this._townCell && this.sim.cell === this._townCell)`, so a nulled
+      // handle leaves the old wall set installed in `sim.cell` and both arms run the walls-on
+      // arm. Here it happened not to bite, because the `{x: NaN}` sentinel forced a rebuild on
+      // the next step — luck, in the same file, one verb below the fix. The method clears and
+      // rebuilds its own handle; call it instead of reaching past it.
+      engine._townSolids = null;
+      engine._settleSettlementSolids();
       return pv.stats();
     },
     /** The plan as READ (not as drawn), so a probe can diff the two. */

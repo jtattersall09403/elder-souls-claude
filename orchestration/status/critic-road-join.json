@@ -3,16 +3,42 @@
   "role": "critic",
   "piece": "W1-ROAD-JOIN",
   "status": "in_progress",
-  "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION S28/NEXT-DISPATCH W/W1-ROAD-JOIN.json",
-  "files_touched": ["orchestration/status/critic-road-join.json"],
+  "started_at": "2026-08-08T03:40:00Z",
+  "next_step": "B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F walk; G own consumption",
+  "headline": "THE JOIN IS STALE ON THE SHIPPED TREE. The builder's 0/10 was TRUE at 322f708 and is FALSE at HEAD: 3 of 10 legs and 5 named-route offences, including THE CROSSING at 5,610 m in Blackrose. Cause is not data - it is planSettlement() itself (per-axis shrink + MIN_ENTERABLE_SPAN_M, banked 03:39:45 in 0dc0703). 54 exteriors grew, +1,846 m2. Handoff H4 named the DATA staleness door; this is the GENERATOR door and it was already open 24 minutes after the join was cut.",
+  "findings": [
+    {
+      "id": "C1",
+      "text": "In-game measurement (tools/world/critic-road-join-ingame.mjs) reads plans off the RUNNING engine and asks province.buildingAt(): 3 of 10 legs inside a game footprint, 13 samples; crossing 11, long_way 10. Slab clearance against real settlementSolids() wall boxes with PLAYER_RADIUS_M=0.32: 16 samples with less than body radius, worst -0.132 m."
+    },
+    {
+      "id": "C2",
+      "text": "Staleness bisected with roads.json held FIXED and planSettlement swapped by revision (tools/world/critic-road-join-stale.mjs): 322f708 0/10, 345dcca 0/10, 0dc0703 3/10, HEAD 3/10. The builder's number was honest when taken."
+    },
+    {
+      "id": "C3",
+      "text": "F1/H2 confirmed at HEAD: the offline check sees 7 blocked samples and 4 buildings; the game sees 13 samples and 5 buildings - blackrose-house-1 is invisible to the check entirely."
+    }
+  ],
+  "files_touched": [
+    "orchestration/status/critic-road-join.json",
+    "tools/world/critic-road-join-ingame.mjs",
+    "tools/world/critic-road-join-stale.mjs",
+    "reports/critic-road-join/ingame.json",
+    "reports/critic-road-join/stale.json",
+    "reports/critic-road-join/offline-recheck.json"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.md",
     "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
     "orchestration/status/critic-road-join.json",
-    "tools/world/critic-",
+    "tools/world/critic-road-join-ingame.mjs",
+    "tools/world/critic-road-join-stale.mjs",
+    "tools/world/critic-road-join-walk.mjs",
+    "reports/critic-road-join/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "notes": "contention gate exit 0 (GO) at start"
+  "redundant_with": ["W1-CROSSING"],
+  "contention": "gate exit 0 at start; exit 3 at the in-game run and I PROCEEDED, one browser, never concurrent, per rule 21. No frame-time figure published."
 }

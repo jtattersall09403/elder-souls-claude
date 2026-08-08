@@ -176,7 +176,10 @@ export class CommissionCounter {
     if (this.note) return this.note;
     if (this.view === 'effects') return 'The book of what you know how to ask for.';
     if (!this.draft.terms.length) {
-      return `${this.wright.name}. Nothing on the slate yet. Say what it should do and I will price it.`;
+      // The person's own sentence, out of their record, exactly as every other thing anybody
+      // says in this build comes out of theirs. The `enchanting.json` row's name is the
+      // fallback for a spellwright whose record forgot to write one.
+      return this.hooks.opening ? this.hooks.opening() : `${this.wright.name}. Nothing on the slate yet.`;
     }
     const q = this.quote();
     const terms = this.draft.terms.map((t) => {

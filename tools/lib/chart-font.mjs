@@ -26,9 +26,12 @@
 // pre-shear table, not a new font, and `--provenance` prints which glyphs are which. Digits are
 // the set already blessed and shipped in `tools/quests/reveal-route-chart.mjs`.
 //
-//   node tools/lib/chart-font.mjs --self-test   # renders known strings, and PROVES it goes red
-//                                               # on the pre-fix 23-character table
-//   node tools/lib/chart-font.mjs --audit-tree  # any tool still carrying a local sheared table
+//   node tools/lib/chart-font.mjs --self-test     # renders known strings, and PROVES it goes red
+//                                                 # on the pre-fix 23-character table
+//   node tools/lib/chart-font.mjs --audit-tree    # any tool still carrying a local sheared table
+//   node tools/lib/chart-font.mjs --audit-staged  # the same, over the STAGED blobs of this commit;
+//                                                 # this is the armed pre-commit gate
+//   node tools/lib/chart-font.mjs --audit-selftest# stages nothing: proves the audit can go red
 //   node tools/lib/chart-font.mjs --render "28 OF 32"
 //   node tools/lib/chart-font.mjs --provenance
 
@@ -289,6 +292,69 @@ if (isMain) {
     console.log();
   }
 
+  // ONE definition of "this file carries the sheared table", used by --audit-tree, by
+  // --audit-staged (the armed gate) and by --audit-selftest. A second copy of this regex living in
+  // .githooks/pre-commit would be exactly the mistake this whole module exists to stop.
+  const SHEARED_LITERAL = /['"][01]{23}['"]/g;
+  const shearedHits = (src) => (src.match(SHEARED_LITERAL) || []).length;
+
+  if (has('--audit-staged')) {
+    const fs = await import('node:fs');
+    const { execFileSync } = await import('node:child_process');
+    const git = (args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 1 << 28 });
+    let names = [];
+    try {
+      names = git(['diff', '--cached', '--name-only', '--diff-filter=ACMR'])
+        .split('\n').map((s) => s.trim()).filter((s) => /\.(mjs|js)$/.test(s));
+    } catch {
+      console.log('  chart-font --audit-staged: not a git repo / no index — nothing to check.');
+      names = [];
+    }
+    // Read the STAGED blob, not the working tree: the commit records what is in the index, and on
+    // this tree those can differ (a neighbour stages, an author keeps editing).
+    const offenders = [];
+    for (const p of names) {
+      if (p === 'tools/lib/chart-font.mjs') continue; // this file archives the table on purpose
+      let src = '';
+      try { src = git(['show', `:${p}`]); } catch { try { src = fs.readFileSync(p, 'utf8'); } catch { continue; } }
+      const n = shearedHits(src);
+      if (n) offenders.push([p, n]);
+    }
+    if (offenders.length) {
+      console.error('\n  SHEARED CHART FONT IN THIS COMMIT.\n');
+      for (const [p, n] of offenders) console.error(`    ${p.padEnd(48)} ${n} sheared glyph literal(s)`);
+      console.error(`
+  These are 23-character glyph strings indexed on a stride of 5. Every row below each missing
+  character is pulled one pixel LEFT, so three or four of the five rows are wrong per glyph. A
+  sheared "2" is nearer a sound "8" than a sound "2", and a sheared "8" is nearer a "6" — a number
+  in a published figure can be read as a DIFFERENT number. It is not cosmetic and nothing throws.
+
+  Do not retype the two missing characters. Delete the table and the text() under it, then:
+
+      import { makeText } from '<rel>/lib/chart-font.mjs';
+      const text = makeText(rect);          // rect(x, y, w, h, r, g, b) — identical signature
+`);
+      process.exit(3);
+    }
+    if (names.length) console.log(`  chart-font: ${names.length} staged JS file(s), no sheared glyph table. OK`);
+  }
+
+  // Rule 4: an audit that has never been seen to go red is not a gate. This runs the SAME
+  // offender-detection over a string that is the shipped sheared table, and over the fixed one,
+  // and requires the first to trip and the second not to. It stages nothing and writes nothing.
+  if (has('--audit-selftest')) {
+    const sheared = Object.entries(SHEARED_FONT).map(([k, v]) => `  ${JSON.stringify(k)}: '${v}',`).join('\n');
+    const sound = Object.entries(compile(ROWS)).map(([k, v]) => `  ${JSON.stringify(k)}: '${v}',`).join('\n');
+    const nBad = shearedHits(`const FONT = {\n${sheared}\n};`);
+    const nGood = shearedHits(`const FONT = {\n${sound}\n};`);
+    console.log('\nchart-font --audit-selftest\n');
+    console.log(`  [${nBad > 0 ? 'PASS' : 'FAIL'}] the detector TRIPS on the pre-fix table (${nBad} literal(s) found)`);
+    console.log(`  [${nGood === 0 ? 'PASS' : 'FAIL'}] the detector is SILENT on the fixed table (${nGood} literal(s) found)`);
+    const ok = nBad > 0 && nGood === 0;
+    console.log(`\n  audit-selftest ${ok ? 'PASS' : 'FAIL'}\n`);
+    if (!ok) process.exit(1);
+  }
+
   if (has('--audit-tree')) {
     const fs = await import('node:fs');
     const path = await import('node:path');
@@ -304,8 +370,7 @@ if (isMain) {
     const offenders = [];
     for (const p of walk(path.join(root, 'tools'))) {
       if (p.endsWith('tools/lib/chart-font.mjs')) continue;
-      const src = fs.readFileSync(p, 'utf8');
-      const hits = (src.match(/['"][01]{23}['"]/g) || []).length;
+      const hits = shearedHits(fs.readFileSync(p, 'utf8'));
       if (hits) offenders.push([path.relative(root, p), hits]);
     }
     console.log('\n  files still carrying 23-character (sheared) glyph literals:');
@@ -340,7 +405,8 @@ if (isMain) {
     process.exit(ok ? 0 : 1);
   }
 
-  if (!has('--self-test') && !has('--render') && !has('--audit-tree') && !has('--provenance')) {
-    console.log('usage: node tools/lib/chart-font.mjs [--self-test] [--audit-tree] [--render "TEXT"] [--provenance]');
+  if (!['--self-test', '--render', '--audit-tree', '--audit-staged', '--audit-selftest', '--provenance'].some(has)) {
+    console.log('usage: node tools/lib/chart-font.mjs [--self-test] [--audit-tree] [--audit-staged]');
+    console.log('                                     [--audit-selftest] [--render "TEXT"] [--provenance]');
   }
 }

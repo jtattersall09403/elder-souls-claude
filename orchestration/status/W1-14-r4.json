@@ -4,14 +4,39 @@
   "state": "building",
   "started": "2026-08-08",
   "spec": "corpus/90-verdicts/wave1/W1-14-r3.md",
-  "next_step": "read RULES/INDEX/ARBITRATION, then ownership --for on target files",
+  "next_step": "objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission door",
   "objectives": [
-    {"id": "O1", "what": "summon fix mutates shared statblock (combat/enemy.js:47 hands stat.weapon by reference) — six identical summons must give six identical attack ratings", "state": "todo"},
-    {"id": "O2", "what": "touch spell applies once per cast, not once per active frame; re-check censuses that ranked ranges", "state": "todo"},
-    {"id": "O3", "what": "--break arms (nocast/bindblind/fleeblind) must each break what they name and be run+published; nocast exits before readDial(), fleeblind is a partial teardown", "state": "todo"},
-    {"id": "O4", "what": "GAP-W1-magic-spellmaking-has-no-world-side-surface: seven spellwrights as people in the world, commission a spell by talking to one", "state": "todo"},
-    {"id": "O5", "what": "CONSUMPTION arm (avoid engine.spawn dropping opts.side — NEXT-DISPATCH.md Q4)", "state": "todo"},
-    {"id": "O6", "what": "delete-the-fix per rule 6, with non-inert controls", "state": "todo"}
+    {
+      "id": "O1",
+      "what": "summon fix mutates shared statblock (combat/enemy.js:47 hands stat.weapon by reference) — six identical summons must give six identical attack ratings",
+      "state": "done",
+      "result": "FIXED arm: 6 identical casts -> attack_rating 191 x6, hp_max 577 x6; a plain drowned_lesser spawned afterwards reads the statblock's declared 86 and wounds the player 227.04 over 600 f@60 with 0 deaths. BROKEN arm (H.__breakSummonAlias, own page): 191, 424, 941, 2089, 4638, 10296 — the critic's numbers reproduced exactly — the plain body reads 10296 and KILLS the player (1 death). The leak into ordinary bodies was inferred from source by the critic; it is now measured from outside the build. Fix: combat/enemy.js buildEnemyMoves `_weapon: { ...weapon }` (+ combat/moves.js non-roster branch), attack_rating added to getCombatState().enemies[]."
+    },
+    {
+      "id": "O2",
+      "what": "touch spell applies once per cast, not once per active frame; re-check censuses that ranked ranges",
+      "state": "todo"
+    },
+    {
+      "id": "O3",
+      "what": "--break arms (nocast/bindblind/fleeblind) must each break what they name and be run+published; nocast exits before readDial(), fleeblind is a partial teardown",
+      "state": "todo"
+    },
+    {
+      "id": "O4",
+      "what": "GAP-W1-magic-spellmaking-has-no-world-side-surface: seven spellwrights as people in the world, commission a spell by talking to one",
+      "state": "todo"
+    },
+    {
+      "id": "O5",
+      "what": "CONSUMPTION arm (avoid engine.spawn dropping opts.side — NEXT-DISPATCH.md Q4)",
+      "state": "todo"
+    },
+    {
+      "id": "O6",
+      "what": "delete-the-fix per rule 6, with non-inert controls",
+      "state": "todo"
+    }
   ],
   "do_not_undo": [
     "area is genuinely read (fire_damage 1/4 bodies at r=2, 4/4 at r=8)",
@@ -20,7 +45,31 @@
     "AR-1 passes at strongest yet (8 identical casts, one value, invariant to tod/wallclock/disposition/bounty/weather/seed)",
     "absorb_health DOES absorb (round-3 finding retracted by critic)"
   ],
-  "files_touched": ["orchestration/status/W1-14-r4.json"],
-  "files_claimed": [],
-  "notes": ["contention --gate at start: GO (3 instances, room for 3 more)"]
+  "files_touched": [
+    "orchestration/status/W1-14-r4.json",
+    "game/src/combat/enemy.js",
+    "game/src/combat/moves.js",
+    "game/src/engine.js",
+    "game/src/sim/magic/system.js",
+    "game/src/sim/magic/apply.js",
+    "game/src/sim/magic/commission.js",
+    "game/src/sim/events.js",
+    "game/src/harness/api.js",
+    "game/data/npcs/spellwrights.json",
+    "game/data/index.json",
+    "tools/harness/w1-14-r4-summon.mjs"
+  ],
+  "files_claimed": [
+    "tools/harness/w1-14-r4-touch.mjs",
+    "tools/harness/w1-14-r4-commission.mjs",
+    "tools/harness/w1-14-r3-dials.mjs",
+    "game/data/dialogue/rumours.json",
+    "reports/w1-14-r4/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": [
+    "contention --gate at start: GO (3 instances, room for 3 more)"
+  ],
+  "start_commit": "aa542ec"
 }

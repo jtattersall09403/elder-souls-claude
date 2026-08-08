@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a2031bb`: 641 tools, 153 reference
-items, 52 pieces in flight.
+so it cannot drift. Generated at `37bbb6f`: 646 tools, 153 reference
+items, 54 pieces in flight.
 
-Its purpose is to stop 52+ concurrent agents each paying separately to discover the
+Its purpose is to stop 54+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -53,12 +53,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 29
+### `tools/` — 30
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
 - `tools/boot-check.mjs` — A forwarding shim, because agents keep writing `tools/boot-check.mjs` and the real file is `tools/harness/boot-check.mjs`.
+- `tools/check-building-fits-room.mjs` — A BUILDING'S OUTSIDE MUST CONTAIN ITS INSIDE.
 - `tools/check-content.mjs` — Hand-authored content must not vanish when a generator re-runs.
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
 - `tools/check-dialogue-topics.mjs` — A duplicate topic id across game/data/dialogue/topics/**/*.json is a defect that nothing currently detects.
@@ -85,7 +86,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
 
-### `tools/analysis/` — 46
+### `tools/analysis/` — 47
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -132,6 +133,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 - `tools/analysis/w1-15-r3-chart.mjs` — THE PICTURE FOR W1-15 ROUND 3: the light in one room, before and after it was told about the lamps.
 - `tools/analysis/w1-chartfont-deletefix.mjs` — RULE 6 for the shared chart font, both halves of it.
+- `tools/analysis/w1-chartfont-shot-sweep.mjs` — SWEEP docs/shots/ FOR FIGURES DRAWN WITH THE SHEARED CHART FONT — by reading the PIXELS.
 - `tools/analysis/w1-chartfont-shot.mjs` — the rule-27 picture for W1-CHARTFONT: the same strings drawn with the pre-fix table and with the fixed one, side by side, at the size a chart actually uses them
 
 ### `tools/audio/` — 8
@@ -254,7 +256,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 213
+### `tools/harness/` — 214
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -437,6 +439,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-vfx.mjs` — RI-MAG05, the two findings the round-2 verdict could see in the picture.
 - `tools/harness/w1-14-r3-wards.mjs` — the three round-2 findings that are not the skill register.
 - `tools/harness/w1-14-r4-summon.mjs` — SIX IDENTICAL CASTS, AND WHAT THEY LEAVE BEHIND.
+- `tools/harness/w1-14-r4-touch.mjs` — HOW MANY TIMES DOES ONE CAST LAND?
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
@@ -671,7 +674,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 107
+### `tools/world/` — 109
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -730,6 +733,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r2b.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r3a.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r3b.mjs` — **no header comment**
+- `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
@@ -773,6 +777,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-04-r3-consume.mjs` — W1-04 round 3 — THE CONSUMPTION CHECK, and the picture.
 - `tools/world/w1-04-r3-exterior.mjs` — W1-04 round 3 — THE EXTERIOR HALF, MEASURED.
 - `tools/world/w1-04-r4-join.mjs` — W1-04 round 4 — THE JOIN: can a building's outside contain its inside?
+- `tools/world/w1-04-r4-vp04.mjs` — W1-04 round 4 — WHERE VP04 SHOULD STAND.
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/w1-04-unique-item-probe.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
@@ -782,7 +787,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **145 tools have no header comment**, so nobody can tell what they do without
+> **146 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -956,6 +961,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-21-r3` | in_progress | offline: add sample counts + EMPTY grading to all 15 checks; markers derived; withdraw NO_ | `orchestration/status/W1-21-r3.json` |
+| `arbiter-map-s38` | started | Read ARBITRATION.md in full, S35 text, W1-21-r2.md section C. | — |
+| `W1-14-r4` | building | objective 2 (touch apply-once), then 3 (break arms), then 4 measurement of the commission  | `orchestration/status/W1-14-r4.json` `game/src/combat/enemy.js` `game/src/combat/moves.js` `game/src/engine.js` `game/src/sim/magic/system.js` `game/src/sim/magic/apply.js` |
 | `critic-w1-21-r2` | done | orchestrator. Three arbitration questions are filed in the verdict JSON and need a ruling: | `corpus/90-verdicts/wave1/W1-21-r2.md` `corpus/90-verdicts/wave1/W1-21-r2.json` `orchestration/status/critic-w1-21-r2.json` `tools/ui/critic-w1-21-r2-a.mjs` `tools/ui/critic-w1-21-r2-b.mjs` `tools/ui/critic-w1-21-r2-consume.mjs` |
 | `W1-26-r3` | ? | opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit | `orchestration/status/W1-26-r3.json` `play.sh` `tools/play.mjs` `game/src/sim/state.js` `game/src/engine.js` `game/src/character/census.js` |
 | `critic-road-join` | ? | B self-test adjudication; C perturbation-reversal sweep; D ridge argument; E soulrest; F w | `orchestration/status/critic-road-join.json` `tools/world/critic-road-join-ingame.mjs` `tools/world/critic-road-join-stale.mjs` `reports/critic-road-join/ingame.json` `reports/critic-road-join/stale.json` `reports/critic-road-join/offline-recheck.json` |
@@ -968,7 +976,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-23-r4` | running | E blind attribution test, then one browser session for A (walk to books, press interact, s | `orchestration/status/critic-w1-23-r4.json` `tools/lore/critic-w1-23-r4-band.mjs` `tools/lore/critic-w1-23-r4-lor04-lib.mjs` |
 | `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
-| `W1-14-r4` | building | read RULES/INDEX/ARBITRATION, then ownership --for on target files | `orchestration/status/W1-14-r4.json` |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |

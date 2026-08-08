@@ -14,7 +14,7 @@
     "E. tools/journey/journey-run.mjs `catch { break; }` \u2014 the driver reproduces the player's defect and swallows the proof.",
     "F. ./play.sh \u2014 does not exist at the root despite the brief. Write it."
   ],
-  "next_step": "run jrn09-exchange (HF1) and opening-play (P10) on the fixed tree",
+  "next_step": "opening-play P10 (running), then A-JRN1 journey-run, then shot + blog + commit",
   "contention_note": "tools/contention.mjs --gate returned WAIT at start (4 browser instances, load 5.10/core vs a 4.0 ceiling). Node-side work first; browser runs one at a time, and if I proceed past exit 3 it is recorded here.",
   "files_touched": [
     "orchestration/status/W1-26-r3.json",
@@ -50,7 +50,9 @@
     "docs/shots/"
   ],
   "notes": [
-    "engine.js has 8 live declarers (most [done]); edits there are minimal and additive."
+    "engine.js has 8 live declarers (most [done]); edits there are minimal and additive.",
+    "journey-run --self-test fails 13/14 on 'accessor empty before any surface' (3 HUD strings). Verified NOT mine: identical failure at e00e6fe in a clean worktree. It is the HUD-on-the-title-screen defect the r2 verdict named in its own section 6.",
+    "tools/bank.mjs committed my in-flight play.sh, tools/play.mjs and game/src changes under its own message before I committed. Expected per rule 17."
   ],
   "results": {
     "RED baseline at e00e6fe": {
@@ -61,7 +63,9 @@
     "after the fix": {
       "census-newgame": "exit 0 \u2014 player path completes; no-body control still stops; 7-arm consumption",
       "name-entry": "exit 0 \u2014 N1/N2/N3 pass; all 26 letters + space + hyphen verbatim",
-      "hold-walkout": "the hold is walkable and the (-1.342,3.862) corner is NOT a trap (7 distinct destinations over 8 directions)"
+      "hold-walkout": "the hold is walkable and the (-1.342,3.862) corner is NOT a trap (7 distinct destinations over 8 directions)",
+      "jrn09-exchange": "ALL PASS \u2014 DTR_scene 0.9820 -> 1.0000, DTR(hold.out) 0.000 -> 1.000, no HF1. worst node DTR across the whole scene = 1.0",
+      "w1-26-r3-verify": "12 pass / 0 fail. CONSUMPTION coupling 1 (4 bodies -> 4 distinct drawn sentences AND 4 distinct writs). All four teardowns watched go red: A4 the desk throws again, B3 the engine string reaches a drawn row again, C2 the name comes back empty, D3 hold.out drops to 0 drawn rows."
     }
   },
   "findings": [

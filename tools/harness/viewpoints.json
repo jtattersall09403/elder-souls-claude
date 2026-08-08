@@ -1,6 +1,6 @@
 {
   "$schema": "elder-souls/viewpoints@1",
-  "note": "Canonical viewpoints. Binding on the world builder: every slot below MUST resolve to a real, framed shot. Anchors are registered by the game via __HARNESS.listAnchors(); explicit poses are the fallback so the set works before anchors exist. Changing a pose invalidates cross-wave comparison — amend, never edit in place.",
+  "note": "Canonical viewpoints. Binding on the world builder: every slot below MUST resolve to a real, framed shot. Anchors are registered by the game via __HARNESS.listAnchors(); explicit poses are the fallback so the set works before anchors exist. Changing a pose invalidates cross-wave comparison \u2014 amend, never edit in place.",
   "capture": {
     "width": 1920,
     "height": 1080,
@@ -99,17 +99,17 @@
       "id": "VP04-settlement-street",
       "anchor": "town-thorn",
       "purpose": "art-direction",
-      "note": "Eye-height street view in the flagship settlement: architecture legibility, prop density, NPC placement. W1-GIVER-PRESENCE: this pointed at `settlement_primary_street` with a camera hardcoded at [4,1.7,-6] — the WORLD ORIGIN — while Thorn stands at [3820,13.31,859], so the one viewpoint named for settlements rendered empty terrain and sky and was cited as evidence of a settlement. Repointed at `town-thorn`, which stands in the town and populates it from its own records.",
+      "note": "Eye-height street view in the flagship settlement: architecture legibility, prop density, NPC placement. W1-GIVER-PRESENCE: this pointed at `settlement_primary_street` with a camera hardcoded at [4,1.7,-6] \u2014 the WORLD ORIGIN \u2014 while Thorn stands at [3820,13.31,859], so the one viewpoint named for settlements rendered empty terrain and sky and was cited as evidence of a settlement. Repointed at `town-thorn`, which stands in the town and populates it from its own records. W1-04 r4: MOVED, and this is the second time this viewpoint has had to be moved for the same reason \u2014 it was a pose chosen before the thing it photographs existed. The round-3 critic photographed the declared pose [3825.5, 15.1, 879] with Thorn's 15 buildings in the scene graph and got a near-black frame: exterior.js#insideBuilding puts that point inside thorn-sapwell's footprint, so the viewpoint named for streets was standing in a shopfront. The new pose is surveyed, not guessed, by tools/world/w1-04-r4-vp04.mjs against the SAME planSettlement() the renderer builds from: [3859, _, 860] is 9.6 m clear of every wall in the drawn plan and has all 15 of Thorn's buildings inside a 60-degree cone toward the town centre, nearest facade 20.4 m. Cross-wave comparisons that cite the old pose must say so; the old pose is preserved in this note for exactly that reason.",
       "camera": {
         "pos": [
-          3825.5,
-          15.1,
-          879
+          3859.0,
+          15.0,
+          860.0
         ],
         "look": [
-          3820.5,
-          14,
-          864
+          3820.0,
+          14.2,
+          859.0
         ],
         "fov": 60
       },
@@ -361,7 +361,7 @@
       "id": "VP13-spell-release-combat",
       "anchor": "arena_primary",
       "purpose": "fidelity",
-      "note": "RI-MAG05 §B3 requests this viewpoint BY NAME: the HEAVY release frame (startup+1), gameplay camera transform, HUD off, fixed weather and time of day. M2 (local RMS contrast on a 256 px crop centred on the spell core), M5 (spectral slope on the smoke/spore crop), M8 (the flat-shading delta against the same viewpoint with no spell active) and M9 (tonemap response on the core) are all measured here, and so are VFX-SOFT and VFX-LIT.",
+      "note": "RI-MAG05 \u00a7B3 requests this viewpoint BY NAME: the HEAVY release frame (startup+1), gameplay camera transform, HUD off, fixed weather and time of day. M2 (local RMS contrast on a 256 px crop centred on the spell core), M5 (spectral slope on the smoke/spore crop), M8 (the flat-shading delta against the same viewpoint with no spell active) and M9 (tonemap response on the core) are all measured here, and so are VFX-SOFT and VFX-LIT.",
       "camera": {
         "pos": [
           3.2,

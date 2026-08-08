@@ -1,19 +1,48 @@
 {
   "task_id": "W1-04-r4",
-  "state": "starting",
+  "state": "building \u2014 offline half green",
   "started": "2026-08-08",
   "commit_at_start": "9e962a4",
   "piece": "W1-04 round 4 - settlements, interiors and the people in them",
-  "next_step": "read INDEX.md and corpus/90-verdicts/wave1/W1-04-r3.md",
-  "files_touched": ["orchestration/status/W1-04-r4.json"],
+  "next_step": "delete-the-fix arms, then one browser run for the live arm + two pictures",
+  "files_touched": [
+    "orchestration/status/W1-04-r4.json",
+    "tools/world/w1-04-r4-join.mjs",
+    "game/src/render/exterior.js",
+    "game/src/render/interior.js",
+    "game/src/world/province.js",
+    "reports/w1-04-r4/join.json"
+  ],
   "files_claimed": [
     "game/src/world/province.js",
     "game/src/render/interior.js",
-    "tools/world/w1-04-*",
+    "game/src/render/exterior.js",
+    "game/src/harness/api.js",
+    "tools/world/w1-04-r4-*",
+    "tools/check-data.mjs",
+    "tools/harness/viewpoints.json",
     "reports/w1-04-r4/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
   "artifacts_dir": "reports/w1-04-r4/",
-  "notes": []
+  "notes": [],
+  "base_commit": "9e962a4",
+  "overlap_notes": "game/src/render/exterior.js was undeclared by any live piece and carries the shrink pass, which is where the round-3 verdict's blocking gap lives; declared here per rule 16. game/src/harness/api.js is touched by two DONE pieces (W1-13-r3, W1-14-r3); my edits are confined to the three __w1_04_* verbs. province.js is also claimed by W1-ROAD-JOIN \u2014 my edit there is 2 lines inside setSettlements() and one import.",
+  "redundant_with": [
+    "W1-ROAD-JOIN",
+    "W1-01-r4"
+  ],
+  "artifacts": {
+    "offline": "reports/w1-04-r4/join.json",
+    "tool": "tools/world/w1-04-r4-join.mjs"
+  },
+  "results_so_far": {
+    "join_before_9e962a4": "41 of 112 enterable buildings drew an exterior smaller than their own room; worst blackrose-inn area ratio 0.0725 (measured off the built scene graph, reproducing the r3 verdict's 41 / 6.3%)",
+    "join_after": "0 of 112; worst area ratio 1.095; median 1.126",
+    "roofs_before": "62 of 202 roofs do not cover their building by raycast (archon 22, helstrom 40); worst coverage 0.75",
+    "roofs_after": "0 of 202; worst coverage 1.000",
+    "distinctness": "geometry-signature measure passes its own floor: same room twice = 1 distinct, null control (115 doors, one record) = 1 distinct; shipped 115 of 115 distinct",
+    "object_assign": "3 sites fixed; all three builders now build (9/6/9 meshes) instead of throwing"
+  }
 }

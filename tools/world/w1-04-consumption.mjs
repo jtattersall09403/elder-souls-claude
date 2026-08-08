@@ -558,6 +558,9 @@ try {
           try {
             // Always start outside, through the door verb rather than by hand.
             if (H.whereAmI().interior) { H.exitInterior(); step(1); }
+            // THE STREET, AS A SCENE SIGNATURE, BEFORE THE DOOR IS TOUCHED. See the
+            // `exteriorRestored` line below for why this replaced a check that could not fail.
+            const sigStreet = H.getDrawnSignature ? H.getDrawnSignature().hash : null;
             const r = H.enterInterior(id);
             step(2);
             if (!r || !r.entered) { refused++; continue; }
@@ -572,9 +575,26 @@ try {
             // in the probe wearing the costume of a defect in the build.
             const roomOk = d.env_cell !== 'interior' || d.interior_id === id;
             if (d.agrees && roomOk) agreed++; else if (misses.length < 5) misses.push({ id, drawn: d.drawn_cell, want: d.env_cell, room: d.interior_id });
+            const sigRoom = H.getDrawnSignature ? H.getDrawnSignature().hash : null;
             // And leaving must put the street back. The round-1 build left the ROOM on screen.
+            //
+            // THIS CHECK USED TO BE `if (drawn().agrees) exteriorRestored++` AND IT COULD NOT
+            // FAIL. Outside an interior, `env` says province and the province is what is drawn on
+            // every build this piece has ever had — including the broken one — so `agrees` was
+            // trivially true and round 2's headline "115 of 115 restored the exterior" was
+            // vacuous. The round-3 critic reproduced it in both arms: 12 live, 12 cut.
+            //
+            // Three conditions now, all read off the SCENE and not off `env`, and the first of
+            // them is the one that makes the control arm go red: a door that never drew a room
+            // cannot restore the exterior by leaving one.
+            //   * the room was actually drawn on entry;
+            //   * the scene CHANGED when the door was used — the room's signature is not the
+            //     street's;
+            //   * the scene came BACK — the signature after leaving is the street's again.
             H.exitInterior(); step(2);
-            if (drawn().agrees) exteriorRestored++;
+            const sigBack = H.getDrawnSignature ? H.getDrawnSignature().hash : null;
+            const roomWasDrawn = d.agrees && roomOk;
+            if (roomWasDrawn && sigRoom && sigStreet && sigRoom !== sigStreet && sigBack === sigStreet) exteriorRestored++;
           } catch (e) { errored++; }
         }
         return { label, total: ids.length, entered, refused, errored, drawn_agrees: agreed, exterior_restored_on_exit: exteriorRestored, misses };
