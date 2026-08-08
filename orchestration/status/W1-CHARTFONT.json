@@ -5,7 +5,6 @@
   "commit_measured_at": "322f708",
   "summary": "The shared chart glyph table is a 5x5 (25-character) bitmap that was authored at 23 characters and indexed with stride 5. Width and stride disagree, so each missing character is a mid-string deletion that shears every row below it one pixel left — three or four of five rows wrong per glyph, on letters as well as digits. Fixed once, in a new shared module, authored as validated five-character rows so the defect class cannot recur silently. Nine tools cleared, four handed off, six published figures regenerated, eight more named for their owners.",
   "next_step": "Handoffs below. Nothing outstanding for this task.",
-
   "the_defect": {
     "where_it_was": "a copy-pasted FONT literal inside each chart tool — there was no shared place, which is why one defect became eleven",
     "mechanism": "glyph strings 23 chars, renderer indexes bits[j * 5 + i]. Not a truncated tail: the two absent characters are deletions from the middle, so every row below each cut is pulled one pixel LEFT. The first report of this said 'the last two pixels of the fifth row are undefined' and 'on letters it is invisible'; both halves are false and the critic was right on both.",
@@ -13,7 +12,6 @@
     "the_fix": "tools/lib/chart-font.mjs — the one shared font. Glyphs are five explicit five-character rows compiled to bit strings at load; compile() throws if any row is not 5 wide or any glyph is not 5 rows. Retyping the two characters back in eleven places would have fixed the instance; this fixes the class.",
     "provenance": "35 of 52 glyphs are a provable two-character-deletion restoration of the shipped sheared string — i.e. a reconstruction of the pre-shear table, not a new font. 17 were re-authored because no admissible restoration was legible. `node tools/lib/chart-font.mjs --provenance` recomputes the split from the archived table rather than trusting the list."
   },
-
   "the_nine_tools": {
     "_note": "the critic's nine are the tools whose DIGITS were sheared. reveal-route-chart is a tenth carrying the same sheared table in its 37 LETTERS (its digits had been patched under a round flag) — it is the tool that drew the BOOK/POOK picture.",
     "fixed_and_verified": [
@@ -28,7 +26,6 @@
     ],
     "verified_how": "each renders through `makeText(rect)` from the shared module and nothing else; `node tools/lib/chart-font.mjs --audit-tree` no longer names any of them; `node tools/quests/critic-glyph-audit.mjs` (the critic's own instrument, not mine) now reports 2 of 11 sheared instead of 9 of 11, and the 2 are exactly the two I was not allowed to touch."
   },
-
   "handoffs_i_did_not_edit": {
     "_why": "ownership.mjs --for says each of these is claimed by a live piece, and the brief is explicit that a chart tool edited under a running agent corrupts its figures differently. The fix is in the shared module; each of these is a one-line adoption.",
     "_the_change": "delete the local `const FONT = { ... }` and the `function text(...)` under it, then add `import { makeText } from '<rel>/lib/chart-font.mjs';` and `const text = makeText(rect);`. Signature is identical, so no call site changes.",
@@ -38,33 +35,30 @@
     "tools/harness/w1-16-r3-chart.mjs": "W1-16-r3 (file undeclared but the piece is live) — ALSO WRITTEN TODAY the same way. 2026-08-08-w1-16-r3-the-sword-in-your-hand-used-to-weigh-nothing.png is already wrong.",
     "_finding": "two of the four are new. The table is still spreading by copy-paste while this was being fixed, which is the argument for the shared module over eleven retypes."
   },
-
   "not_a_defect": {
     "tools/audio/critic-w1-22-r2-chart.mjs": "has a 3-entry GLYPH object at 23 chars, but it is dead — never referenced. The chart draws from a separate column-major font and is sound. Reported so the next --audit-tree reader does not chase it.",
     "tools/dialogue/w1-17-shot.mjs": "the only tool that always had a sound font (a genuine 5x7 at 35 chars).",
     "tools/quests/critic-w1-readables-chart.mjs": "reads the sound font off w1-17-shot.mjs at run time and throws if it does not parse."
   },
-
   "the_test": {
     "where": "node tools/lib/chart-font.mjs --self-test",
     "what_it_does": "renders '28 OF 32' (the reported symptom, digits) and 'BOOK' (the symptom the report missed, letters) through the same indexing the PNG path uses and compares to expected pixels written out by hand from the row table — not captured from the renderer, or it would only assert the code equals itself. It also asserts every glyph is exactly 25 characters.",
     "proof_it_can_fail": "the SAME assertions are run against the archived pre-fix table in the same process and are REQUIRED to go red. On the current tree that control produces 62 failures — 53 glyphs of the wrong width, 4 bad rows in '28 OF 32', 5 in 'BOOK' — and the self-test fails if that control ever comes back clean.",
     "also": "node tools/lib/chart-font.mjs --audit-tree walks tools/ and exits 3 naming any file still carrying 23-character glyph literals. That is what caught the two chart tools written today."
   },
-
   "delete_the_fix": {
     "tool": "node tools/analysis/w1-chartfont-deletefix.mjs",
-    "report": "reports/w1-chartfont/deletefix.json",
+    "report": "reports/w1-chartfont/deletefix.json (regenerable, and correctly gitignored — re-run the tool)",
     "teardown": "CHART_FONT_BROKEN=1 restores the pre-fix table for the whole process. An env switch and not an edit, deliberately: rule 17 warns that a delete-the-fix which edits a shared file on this tree can have its broken state staged by a neighbour's `git add -A`.",
     "result": "teardown bites (the two arms' font tables hash differently, checked in a child process on the table itself, not inferred from a picture). 5 usable cases, all 5 moved by the fix. 4 of 4 landable cases LANDED — the broken arm reproduces the archived pre-fix PNG BYTE FOR BYTE. That byte-identity is the load-bearing evidence: those bytes were written by the pre-fix code before this piece existed, so an arm that silently ran the fixed table could not possibly reproduce them.",
     "which_shape_is_this": "a single guard, not two, and not an inert fix. Removing the one change returns the one old number.",
     "control_watched_failing": "node tools/analysis/w1-chartfont-deletefix.mjs --prove-can-fail --only w1-13-r4 runs BOTH arms broken, which is an inert teardown by construction. It reports 'INERT FIX — the two arms are identical' and exits 1. The same case without the flag reports all three assertions PASS and exits 0. I have watched this harness go red.",
     "one_case_excluded": "tools/analysis/w1-12-chart.mjs — its broken arm does not reproduce the archived hash and two fixed runs minutes apart differ from each other, because enemy statblocks are being edited by live pieces right now. The harness reports it as DATA DRIFTED and refuses to use it as evidence either way, which is the honest answer.",
-    "one_case_not_landable": "the reveal-route figure. Its archived bytes came from a THIRD table — W1-READABLES-r2 patched the ten digits to 25 characters under its own round flag and left the 37 letters sheared, which is exactly why that picture had right numbers and spelled BOOK as POOK. Neither arm here is that hybrid, so the case proves FIX MOVES IT and nothing about landing. Stated in the tool rather than papered over."
+    "one_case_not_landable": "the reveal-route figure. Its archived bytes came from a THIRD table — W1-READABLES-r2 patched the ten digits to 25 characters under its own round flag and left the 37 letters sheared, which is exactly why that picture had right numbers and spelled BOOK as POOK. Neither arm here is that hybrid, so the case proves FIX MOVES IT and nothing about landing. Stated in the tool rather than papered over.",
+    "baseline": "reports/w1-chartfont/prefix-baseline.json — the sha256 of each figure AS PUBLISHED, before this piece. Named a baseline on purpose: reports/.gitignore keeps baselines because their whole value is being the OLD value, and these cannot be regenerated at all — the code that produced those bytes is gone from the tree."
   },
-
   "damage": {
-    "full_list": "reports/w1-chartfont/damage.json — 15 figures, each with owner, tool, whether NUMBERS or only words are wrong, and status.",
+    "full_list": "reports/w1-chartfont-damage.md — 15 figures with owner, tool, whether NUMBERS or only words are wrong, and status; plus the per-digit table and the one-line adoption for the four handoffs. Written as .md deliberately: reports/.gitignore drops .json run artifacts and keeps written reports.",
     "per_digit": "a sheared 2 is closer to a sound 8 than to a sound 2, and a sheared 8 is closer to a sound 6. The other eight digits are visibly damaged (up to 4 of 5 rows) but remain nearest themselves. So any published figure containing a 2 or an 8 could have been READ AS A DIFFERENT NUMBER, not merely as an ugly one.",
     "regenerated_by_me": [
       "docs/shots/2026-08-08-w1-readables-r2-the-marks-and-the-ledgers-that-now-exist.png  (the one the critic caught: BOOK/POOK, BY CHANNEL/PY CHANNEL)",
@@ -86,7 +80,6 @@
       "docs/shots/2026-08-08-w1-16-r3-the-sword-in-your-hand-used-to-weigh-nothing.png (W1-16-r3, tool still sheared)"
     ]
   },
-
   "what_i_did_not_do": [
     "I did not fix the four chart tools claimed by live pieces (w1-15-r3, w1-01-r4-crossing, road-join, w1-16-r3). Their figures are still wrong. The one-line change is written out under `handoffs_i_did_not_edit`.",
     "I regenerated the two W1-22 ambience figures, saw their DATA had moved since publication, and RESTORED the originals from backup rather than silently restate another round's finding under my commit. Their tools are fixed; only their owners should redraw them.",
@@ -96,7 +89,6 @@
     "I did not re-run the project-wide gates (boot-check, check-data, publish). Nothing here touches game/ or game/data/; the pre-commit hook runs what it runs.",
     "17 of 52 glyphs are re-authored rather than restored, so those shapes are my judgement of what the letter should look like, not a recovery of what the author drew. --provenance names every one."
   ],
-
   "files_touched": [
     "orchestration/status/W1-CHARTFONT.json",
     "tools/lib/chart-font.mjs",
@@ -110,9 +102,7 @@
     "tools/analysis/w1-13-r4-chart.mjs",
     "tools/analysis/ambience-determinism-chart.mjs",
     "tools/analysis/ambience-onsets-chart.mjs",
-    "reports/w1-chartfont/prefix-hashes.json",
     "reports/w1-chartfont/deletefix.json",
-    "reports/w1-chartfont/damage.json",
     "reports/blog-feed.jsonl",
     "docs/shots/2026-08-08-w1-chartfont-the-charts-were-spelling-numbers-wrong.png",
     "docs/shots/2026-08-08-w1-readables-r2-the-marks-and-the-ledgers-that-now-exist.png",
@@ -120,7 +110,9 @@
     "docs/shots/2026-08-08-w1-souls-r3-critic-two-guards-and-neither-one-alone.png",
     "docs/shots/2026-08-08-w1-12-critic-the-frames-m3-never-counted.png",
     "docs/shots/2026-08-07-w1-13-r4-dying-must-not-change-the-price.png",
-    "docs/shots/2026-08-07-w1-12-where-an-enemy-stands-while-you-fight-it.png"
+    "docs/shots/2026-08-07-w1-12-where-an-enemy-stands-while-you-fight-it.png",
+    "reports/w1-chartfont/prefix-baseline.json",
+    "reports/w1-chartfont-damage.md"
   ],
   "files_claimed": [],
   "redundant_with": []

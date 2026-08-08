@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9e962a4`: 620 tools, 153 reference
+so it cannot drift. Generated at `aa542ec`: 624 tools, 153 reference
 items, 49 pieces in flight.
 
 Its purpose is to stop 49+ concurrent agents each paying separately to discover the
@@ -254,7 +254,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 206
+### `tools/harness/` — 207
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -275,6 +275,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/cmb-probe.mjs` — the W1-09 instrument.
 - `tools/harness/cmb-reach.mjs` — MINIMUM REACHING DISTANCE, measured directly, at contact range.
 - `tools/harness/cmb-tipspeed.mjs` — RI-CMB04 §B's `peak_tip_speed_mps` column, measured on EVERY clip the game can play, on EVERY frame of it.
+- `tools/harness/critic-map-r2.mjs` — the W1-MAP ROUND-2 critic's instrument.
 - `tools/harness/critic-w1-07-r2a.mjs` — CRITIC instrument, W1-07 round 2, pass A.
 - `tools/harness/critic-w1-07-r2b.mjs` — CRITIC instrument, W1-07 round 2, pass B: CONSUMPTION (RI-MTH07).
 - `tools/harness/critic-w1-07-r2c.mjs` — CRITIC instrument, W1-07 round 2, pass C.
@@ -492,7 +493,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 18
+### `tools/lore/` — 20
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
@@ -504,6 +505,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/critic-w1-23-r1.mjs` — CRITIC instrument, W1-23 round 1.
 - `tools/lore/critic-w1-23-r3-reach.mjs` — **no header comment**
 - `tools/lore/critic-w1-23-r3.mjs` — CRITIC instrument, W1-23 round 3 — the LIBRARY half.
+- `tools/lore/critic-w1-23-r4-band.mjs` — **no header comment**
+- `tools/lore/critic-w1-23-r4-lor04-lib.mjs` — **no header comment**
 - `tools/lore/lib/namegen.mjs` — the province's ONE name generator, per culture.
 - `tools/lore/lor04-validate.mjs` — **no header comment**
 - `tools/lore/mk-short-measures.mjs` — **no header comment**
@@ -629,6 +632,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
+
+### `tools/w1-26-r3/` — 1
+
+- `tools/w1-26-r3/hold-walkout.mjs` — can the body walk out of the barge hold?
 
 ### `tools/weapons/` — 19
 
@@ -758,7 +765,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **136 tools have no header comment**, so nobody can tell what they do without
+> **138 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -932,13 +939,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
+| `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-04-r4` | starting | read INDEX.md and corpus/90-verdicts/wave1/W1-04-r3.md | `orchestration/status/W1-04-r4.json` |
 | `critic-w1-16-r3` | running | read RULES/INDEX/ARBITRATION/spec/producer status; then attacks A-H | `orchestration/status/critic-w1-16-r3.json` |
-| `W1-ROAD-JOIN` | ? | hand on: (a) the Valus Ridge skirt defect below, (b) the soulrest-blackrose leg, which cou | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` `tools/world/build-roads.mjs` `game/data/world/roads.json` `tools/world/road-join-deletefix.mjs` `reports/w1-road-join/after.json` |
 | `W1-14-r4` | building | read RULES/INDEX/ARBITRATION, then ownership --for on target files | `orchestration/status/W1-14-r4.json` |
 | `critic-w1-map-r2` | running | read INDEX.md, ARBITRATION.md S35, W1-MAP-r1.md, status files | `orchestration/status/critic-w1-map-r2.json` |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
-| `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `critic-w1-23-r4` | running | read RULES/INDEX/ARBITRATION/W1-23-r3 verdict + r4 status; then attack A-G | — |
 | `W1-17-r2` | done | critic round 2 | `orchestration/status/W1-17-r2.json` `game/data/npcs/pop-trades.json` `game/data/index.json` `game/data/dialogue/speakers.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `W1-23-r4` | done | hand to a critic. See not_done. | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `tools/lore/place-library.mjs` `tools/lore/mk-short-measures.mjs` |

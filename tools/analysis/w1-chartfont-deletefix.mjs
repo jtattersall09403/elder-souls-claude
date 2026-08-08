@@ -25,6 +25,11 @@
 //                        table really is being drawn with. It also proves the tool's DATA has not
 //                        drifted, so the regenerated figure is a font change and nothing else.
 //
+// The archived hashes live in `reports/w1-chartfont/prefix-baseline.json`. It is named a BASELINE
+// on purpose: reports/.gitignore drops regenerable run artifacts but keeps baselines, because a
+// baseline's whole value is being the OLD value. These hashes cannot be regenerated at all — the
+// code that produced those bytes no longer exists in the tree.
+//
 // A figure whose broken arm does NOT match its archived hash is reported as DATA DRIFTED and is
 // NOT used as evidence either way — it means the underlying report changed since publication and
 // this tool cannot separate the font change from the data change.
@@ -45,7 +50,7 @@ const has = (f) => argv.includes(f);
 const argOf = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
 const sha = (b) => createHash('sha256').update(b).digest('hex');
 
-const PREFIX = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/w1-chartfont/prefix-hashes.json'), 'utf8'));
+const PREFIX = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/w1-chartfont/prefix-baseline.json'), 'utf8'));
 
 // tool, how it takes an output path (`flag` = `--out <p>`, `positional` = argv[2]), the published
 // figure it owns, and — where the archived bytes were NOT drawn with the plain pre-fix table —
