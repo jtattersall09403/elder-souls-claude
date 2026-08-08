@@ -657,7 +657,7 @@ export function buildInterior(root, rec, opts) {
     summary.lamps_built++;
     const colour = L.hearth ? 0xffa050 : 0xffc890;
     const pl = new THREE.PointLight(colour, L.intensity * (L.hearth ? 22 : 9), L.hearth ? 22 : 11, 2);
-    pl.position.set(L.render_pos[0], L.render_pos[1], L.render_pos[2]);
+    pl.position.set(L.emit_pos[0], L.emit_pos[1], L.emit_pos[2]);
     if (L.shadow) { pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004; }
     root.add(pl);
   }

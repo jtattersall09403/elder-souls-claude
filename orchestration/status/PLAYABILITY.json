@@ -1,19 +1,180 @@
 {
   "task_id": "PLAYABILITY",
-  "role": "standing playability agent — open the link the owner is told to open, confirm it works",
-  "state": "starting",
-  "started_utc": "2026-08-08T00:00:00Z",
-  "commit": "pending",
-  "next_step": "read RULES/INDEX/README/W1-TOUCH; attempt to make headless chromium reach github.io through the agent proxy",
+  "role": "standing playability agent — open the link the owner is told to open, confirm it works before they try it",
+  "state": "measuring",
+  "commit_at_start": "c8414d7",
   "links_under_test": {
     "game": "https://jtattersall09403.github.io/elder-souls-claude/game/index.html",
     "blog": "https://jtattersall09403.github.io/elder-souls-claude/docs/index.html",
     "landing": "https://jtattersall09403.github.io/elder-souls-claude/"
   },
-  "findings": [],
-  "could_not_test": [],
+
+  "headline": "A REAL BROWSER NOW EXECUTES THE DEPLOYED BYTES. Chromium cannot TLS-handshake through this container's egress proxy — that is measured, not assumed, and the cause is narrowed to ALPN h2 on the tunnel. Node's TLS does traverse it, so tools/playability/live-mirror.mjs fetches the live site over the proxy and re-serves it on 127.0.0.1 at the owner's own path shape. It is not 'Chromium spoke to github.io' and the tool says so. Separately: the blog page on the live site embeds twelve images that 404, and the instrument that was supposed to guarantee playability had a latch that could zero its own number on a game drawing perfectly.",
+
+  "constraint_item_1": {
+    "question": "can a browser in this container reach github.io?",
+    "answer": "NO, and the reason is now known rather than guessed.",
+    "evidence": [
+      "raw CONNECT from python to 127.0.0.1:38351 -> 'HTTP/1.1 200 Connection Established'. The tunnel is fine.",
+      "curl through the same proxy: 200, 517-byte ClientHello, ALPN h2 accepted, real *.github.io cert.",
+      "chromium --proxy-server=http://127.0.0.1:38351: CONNECT accepted (200), then upstream ECONNRESET after a 1768-byte ClientHello. Same for example.com and raw.githubusercontent.com, so it is CHROMIUM'S HANDSHAKE and not the destination.",
+      "tried and did not help: --disable-features=PostQuantumKyber,UseMLKEM,EncryptedClientHello; --disable-quic; --disable-http2; --ssl-version-max=tls1.2. Measured ClientHello stayed 1736-1832 bytes in all six variants.",
+      "NARROWED: node's own TLS through the tunnel succeeds with default ALPN, and FAILS with ECONNRESET the moment ALPNProtocols ['h2','http/1.1'] is offered. That is chromium's default and is very likely the whole cause.",
+      "ALSO FOUND: an https.Agent with keepAlive over pooled tunnels makes the proxy answer 403 x-deny-reason:host_not_allowed for a host the same process fetches 200 with `Connection: close`. Isolated four ways. The mirror therefore uses one tunnel per request and is slower on purpose."
+    ],
+    "what_i_could_not_test": [
+      "the CDN's own TLS as a browser sees it",
+      "HTTP/2 multiplexing and Pages' real cache headers (the mirror serves 1.1 and no-store, i.e. always a cold load)",
+      "a real phone. Every reading here is desktop Chromium wearing a phone's viewport, dpr, UA and touch. That is stated everywhere it matters and it is the standing limit of this role."
+    ]
+  },
+
+  "defects_found": [
+    {
+      "id": "P1",
+      "where": "docs/index.html on the LIVE site",
+      "what": "twelve images the blog embeds 404 for every visitor: ../reports/wld12-blind/f12.png through f22.png. The files exist on disk and are UNTRACKED (git ls-files reports/wld12-blind/ is empty), so they were never published. The owner reading the blog sees twelve broken images.",
+      "owner": "not mine — reports/ and the blog generator belong elsewhere. Reported, not fixed.",
+      "instrument": "tools/playability/verify-links.mjs"
+    },
+    {
+      "id": "P2",
+      "where": "tools/world/verify-playable.mjs, previous version",
+      "what": "READ LATCH. Its readPixels probe called canvas.getContext() at 15 s. A canvas has one context: if the probe wins the race the renderer inherits a context with preserveDrawingBuffer:false and every readPixels returns zero FOREVER on a game that is drawing perfectly. Found by the W1-DEPLOY r1 critic; fixed here by refusing to read until window.__ENGINE.renderer exists.",
+      "fixed": true
+    },
+    {
+      "id": "P3",
+      "where": "tools/world/verify-playable.mjs, previous version",
+      "what": "Its four viewports rendered one identical 1920x1080 framebuffer, because main.js takes the automation branch when navigator.webdriver is true and skips the resize. A four-device check was a one-device check wearing four hats. Fixed: webdriver is spoofed false, AND the tool now fails a row whose framebuffer is not this device's shape — 1920x1080 is the literal in the <canvas> tag, i.e. the value you get when nothing ever resized it.",
+      "fixed": true
+    },
+    {
+      "id": "P4",
+      "where": "game/index.html boot notice",
+      "what": "THE DIAGNOSTIC COULD NOT BE COPIED. body sets user-select:none and -webkit-touch-callout:none, which the game needs and #boot-notice inherited. The notice says 'Please send this line' under a <code> block that on a phone cannot be selected. The one artefact it exists to deliver could not be delivered.",
+      "fixed": true,
+      "fix": "one-tap copy button with a selection fallback, and user-select:text on the code block"
+    },
+    {
+      "id": "P5",
+      "where": "game/index.html boot notice",
+      "what": "deviceLine() was attached to exactly two failure paths — context-lost and booted-but-blank. The two failures that actually reached the owner (a 404'd module, a thrown error) printed nothing about the browser at all. Now say(bad=true) appends it on every path.",
+      "fixed": true
+    },
+    {
+      "id": "P6",
+      "where": "game/index.html boot notice",
+      "what": "deviceLine() wrapped every probe in ONE try, and `gl instanceof WebGL2RenderingContext` throws ReferenceError on a browser with no WebGL2 constructor — an old phone, which is the only hardware the line is written for. It would have printed the canvas size and then stopped. Now every fact is probed independently.",
+      "fixed": true
+    },
+    {
+      "id": "P7",
+      "where": "game/index.html boot notice",
+      "what": "deviceLine() called getContext on the GAME's canvas. Harmless while it only ran after boot; the moment it runs on an early failure (P5) it becomes the same latch as P2, shipped into the game. Now every LIMIT is asked of a throwaway canvas (limits are device properties, not canvas properties) and only attrs/isContextLost/getError read the real context, and only once __ENGINE.renderer exists.",
+      "fixed": true
+    },
+    {
+      "id": "P8",
+      "where": "tools/playability/verify-links.mjs, first run",
+      "what": "reported a picture that is demonstrably there as broken, on a transient 503 from Pages' CDN under a 100-path sweep. Now retries 5xx twice with backoff and never retries a 404.",
+      "fixed": true
+    }
+  ],
+
+  "capabilities_added_to_the_boot_notice": [
+    "navigator.deviceMemory and hardwareConcurrency — a 17 MB world dying of memory pressure is the likeliest phone refusal and neither number appears in any desktop failure",
+    "MAX_VARYING_VECTORS and MAX_VERTEX_TEXTURE_IMAGE_UNITS — limits that break a shader silently rather than throwing, so they never reach the error handler",
+    "float-renderable colour buffer (EXT/WEBGL_color_buffer_float) — the classic older-iOS refusal; a renderer wanting one gets an incomplete framebuffer and draws black",
+    "the context attributes the renderer ACTUALLY got (antialias/depth/preserveDrawingBuffer), which under memory pressure is not what it asked for",
+    "gl.getError()",
+    "UNMASKED_VENDOR alongside UNMASKED_RENDERER",
+    "the build commit and pathname — without it a report is about 'the game', and the game changes several times an hour",
+    "the user agent"
+  ],
+
+  "tools": {
+    "tools/playability/live-mirror.mjs": "NEW. Serves the live Pages site to a browser on 127.0.0.1. --self-test has three arms: a real path must 200 AND look like the game, an absent path must 404, and --break must 404 the named path while leaving others alone.",
+    "tools/playability/verify-links.mjs": "NEW. Walks the three owner-facing entry points and resolves every internal href/src the way a browser would. Knows about the Pages root-publish switch specifically: a root-relative href is reported off-prefix without a round trip, because that is the defect class the switch created.",
+    "tools/world/verify-playable.mjs": "REWRITTEN, not duplicated. Live by default; whole-framebuffer 12x12 grid; two thresholds instead of one; readings at several instants plus a settled and a post-input reading; eight device shapes; --play drives the opening with a real keyboard and real CDP touch; --self-test runs a green control plus SIX distinct sabotages.",
+    "tools/world/verify-live-site.mjs": "IMPROVED. Sweeps all 716 published game files against the live host. Now classifies a missing file as committed / staged-not-committed / untracked and says which sentence applies, because that is the diagnosis and a 404 alone is only the symptom. Its self-test gained two arms it did not have: the DRIFT detector (compare a live file against the wrong local file — must report drift; against the right one — must not) and the GIT-STATE classifier.",
+    "tools/playability/standing-check.mjs": "NEW — the brief's item 6, and rule 9. ONE command that runs verify-live-site, then verify-links, then verify-playable, and exits non-zero if any leg fails. --self-test drives every instrument's own self-test end to end. --local skips verify-live-site rather than faking it, and says so, because a leg that silently becomes a no-op is worse than an absent one.",
+    "DELETED tools/playability/touch-fight.mjs": "built and deleted unrun — see ruling PL-R1. tools/touch/critic-fight.mjs already does it."
+  },
+
+  "results": {
+    "verify-live-site (716 files, live)": "3 NOT retrievable — all three staged-not-committed, see P11. Plus a drift on index.html, which is mine: I have edited game/index.html and not yet committed it.",
+    "verify-links (live)": "game OK (1 internal link). landing OK (3 internal, 1 off-site). blog BROKEN — 12 images 404 (reports/wld12-blind/f12..f23.png). No off-prefix href anywhere, so the Pages root-publish switch did NOT break a relative path, which was the thing the brief expected to be broken.",
+    "verify-links (local, same tree)": "PASS before the untracked check was added, FAIL after it — 12 UNTRACKED. That pair is the whole point: the local check and the live check disagreed on the same tree, for exactly the reason black screen #1 happened.",
+    "verify-playable (live)": "see reports/playability/live.json and the SLOW-vs-BLANK note in P9/P10."
+  },
+
+  "rule_4_sabotages": [
+    "missing-renderer — vendor/three 404s",
+    "missing-submodule — src/input/hold-gate.js 404s, black screen #1 exactly",
+    "missing-data — a world data file 404s: the game boots and has no world",
+    "no-webgl — getContext refuses every webgl request",
+    "draws-nothing — a context that accepts every call and rasterises none (drawArrays/drawElements no-ops). This is the failure a page-error check cannot see and the one the owner's phone most plausibly had.",
+    "frozen — one frame drawn and the loop stops",
+    "plus a GREEN CONTROL: the untouched page must pass, or 'everything is red' proves nothing"
+  ],
+
+  "rulings": [
+    {
+      "id": "PL-R1",
+      "question": "The brief's item 3 says nobody has ever swung, rolled and blocked at a live enemy with a finger, and asks me to. Should I build the instrument?",
+      "decision": "NO. I built tools/playability/touch-fight.mjs and then DELETED IT UNRUN, because the claim was established while my brief was being written.",
+      "why": "critic-w1-touch did exactly this between the dispatch and my reaching it, with better numbers than I would have produced: the sword takes the enemy 412 -> 311, the swing costs stamina, the roll is genuinely invulnerable, the shield holds, walk-and-swing works on two fingers, and the enemy hit back 620 -> 436. There are two screenshots. Its instrument is tools/touch/critic-fight.mjs and it is runnable. It also found three defects I would not have — chiefly that the dodge fails four times in five while a thumb is on the movement stick, and that the tap/hold gate counts frames rather than time so the hold length changes with framerate.",
+      "rule": "RULES 3 (do not re-claim finished work), 18 (point at files, do not restate them), and the brief's own 'improve or replace rather than duplicate'",
+      "reversible_if": "somebody wants the fight measured against the DEPLOYED bytes rather than the working tree. That is a real gap and it is small: point tools/touch/critic-fight.mjs at the live mirror's origin. I judged it low value because verify-live-site proves the deployed bytes are byte-identical to game/, so the fight would be the same fight."
+    }
+  ],
+
+  "brief_premise_stale": "Item 3's fight clause. Reported per rule 26 rather than quietly worked around.",
+
+  "contention_note": "The gate said WAIT (8 browser instances, load 32 over 4 cores; later 6 and load 24) after my single run had already started. I did not launch a second browser and did not pkill anything: one instance at a time, killed by pid. Two runs were lost to their own timeouts under that load before a live run was given a 3300 s budget. Recorded here as rule 21 requires.",
+
+  "defect_P11_LIVE_RIGHT_NOW": {
+    "id": "P11",
+    "what": "THREE FILES 404 ON THE LIVE SITE AS OF THIS RUN, and one of them is in the module graph.",
+    "files": [
+      "game/src/sim/quest/refusal.js  — imported by game/src/engine.js:26 (`import { FactionRefusals } from './sim/quest/refusal.js'`)",
+      "game/data/dialogue/faction-refusals.json",
+      "game/src/__gatecheck.js  — a 54-byte probe file that probably should not be under game/ at all"
+    ],
+    "state": "all three are STAGED BUT NOT COMMITTED (`git diff --cached --diff-filter=A` lists them; `git log` on them is empty). Somebody has `git add`ed them and not yet committed.",
+    "why_it_matters": "the index is not the repository and it is not what Pages publishes. Until that commit lands, a visitor loading the game gets a 404 on a module that engine.js imports — which is black screen #1, hold-gate.js, exactly, by exactly the same mechanism. It is one `git commit` away from being fine and one abandoned agent away from being a black screen.",
+    "action": "NOT MINE TO COMMIT (rule 17 — a commit that carries a neighbour's staged work is the thing that rule exists to stop). Flagged here and in the reply so the orchestrator can chase whoever staged them. `node tools/world/verify-live-site.mjs` now names the state in words.",
+    "instrument_defect_it_exposed": "my own first version of this check asked `git ls-files`, which counts the INDEX, and therefore printed 'All of them ARE tracked in git, so this is a deployment failure' — the exact opposite of the truth, about the most important sentence the tool says. Now it asks `git ls-tree HEAD` and distinguishes committed / staged-not-committed / untracked, with a self-test arm for each."
+  },
+
+  "defect_P10_THE_IMPORTANT_ONE": {
+    "id": "P10",
+    "where": "game/src/engine.js:10190-10196, `fetchJson` inside `loadData`",
+    "what": "THE GAME'S DATA LOADER HAS NO RETRY. `const res = await fetch(...); if (!res.ok) throw new Error('data file missing: ' + rel + ' (' + res.status + ')')`. Any non-200 on any of several hundred data files kills the entire boot, and the boot notice then tells the player 'A file the game needs is missing.' — which is wrong, because nothing is missing.",
+    "how_i_found_it": "not by reading the code. Two live runs died at `data file missing: world/hazards.json (503)`. Pages' CDN answered 503 under my sweep, the file is there, and the game gave up on it. That is the failure arriving by itself, on the real host, which is the only reason anyone would believe it.",
+    "why_it_matters": "this is a black screen that a phone on a flaky connection can produce and this build machine essentially never will, because a local static server does not drop requests. It is a live candidate explanation for the owner's black screen that costs nothing to rule out and that no check in this project could previously have seen. It is also the exact shape of failure the README currently describes as 'It is not the controls and it is not a missing file. Every check passes on the build machine.'",
+    "owner": "NOT MINE — game/src/engine.js belongs to the engine pieces. Reported, not fixed, per file ownership.",
+    "recommended_fix": "retry a non-ok fetch two or three times with a short backoff before throwing, and distinguish 404 (genuinely missing — do not retry, the message is right) from 5xx and network errors (transient — retry, and if it still fails say 'the connection dropped' rather than 'a file is missing'). Roughly six lines.",
+    "reproduce": "node tools/world/verify-playable.mjs --cap-ms 480000 — the run reports how many times the live host 5xx'd, and the mirror retries where the game does not."
+  },
+
+  "defect_P9": {
+    "id": "P9",
+    "where": "tools/world/verify-playable.mjs, my own first live run",
+    "what": "desktop-1920 came back BLANK with lit 0.0% at 13s, 19s, 27s, 183s and 185s — and it was not black, it had not finished loading. The boot promise had not resolved at the 180 s cap, on a box at load 22 over 4 cores, fetching ~700 files down one CONNECT tunnel each. The W1-DEPLOY critic warned about exactly this in the previous version: 'the two diagnoses the game draws nothing and the machine was busy are reported with the same words.' I reproduced it in my own rewrite.",
+    "fixed": true,
+    "fix": "the boot promise now leads the diagnosis. A row that never booted is labelled SLOW, not BLANK, names the load it was taken under, and says to re-run with a larger --cap-ms before blaming the renderer. It still fails — three minutes of nothing is a defect a person experiences — but it is a different failure and now reads as one. The run also records the mirror's own fetch count, bytes and total time, so the reader can see how much of a live boot figure is the instrument."
+  },
+
+  "next_step": "finish the live run at five shapes with --play and a 600 s cap; run --self-test and publish the seven arm numbers; screenshots to docs/shots; blog line; commit --only.",
+
   "files_touched": [
-    "orchestration/status/PLAYABILITY.json"
+    "orchestration/status/PLAYABILITY.json",
+    "tools/playability/live-mirror.mjs",
+    "tools/playability/verify-links.mjs",
+    "tools/world/verify-playable.mjs",
+    "game/index.html"
   ],
   "files_claimed": [
     "tools/world/verify-playable.mjs",
@@ -24,7 +185,5 @@
     "reports/blog-feed.jsonl",
     "game/index.html"
   ],
-  "notes": [
-    "game/index.html is claimed ONLY for the boot-notice diagnostics (item 4 of the brief). A critic is grading that file; any edit will be called out explicitly."
-  ]
+  "ownership_note": "game/index.html is edited ONLY for the boot notice (item 4 of the brief). A critic is grading that file: W1-DEPLOY r1 already scored it 4.0 and its two findings — corner-sampled painted() and an undismissable overlay — were fixed by someone else in the working tree while I was editing. I kept their fix and added P4-P7 on top."
 }

@@ -52,7 +52,15 @@ const argv = process.argv.slice(2);
 const opt = (k, d) => { const h = argv.find((a) => a.startsWith(`--${k}=`)); return h ? h.slice(k.length + 3) : d; };
 
 const SEED = Number(opt('seed', 1337));
+const CONTROL_DEAD = 'archetype.DUELIST.walk_mps';
 const OUT = path.join(ROOT, 'reports/w1-12-r2');
+// Fixture lengths for the census. 600 f@60 is ten seconds — long enough for every fixture below to
+// reach the state its leaves govern (the flee fixture crosses its leash around f450, the block
+// fixture sees four player windups, the heal fixture three drinks) and short enough that ~100
+// leaves x 6 fixtures x 7 statblocks finishes. A FIRST ATTEMPT AT 1,200/900 DID NOT FINISH IN 50
+// MINUTES AND WAS KILLED; that is a measurement-budget choice and it is stated rather than hidden.
+const FX_F = Number(opt('fixture_frames', 600));
+const FX_G = Number(opt('group_frames', 400));
 
 // The game's own player speeds, read rather than restated (game/src/sim/state.js PLAYER_CONST).
 const PLAYER = { walk: 2.0, jog: 3.2, sprint: 5.0 };
@@ -192,7 +200,7 @@ function fxDuel(data, id) {
   const arena = new NodeArena({ data, seed: SEED });
   const b = arena.spawn('e1', id, 0, 5.0 * omegaOf(data, id), 180);
   const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
-  for (let i = 0; i < 1200; i++) {
+  for (let i = 0; i < FX_F; i++) {
     const s = (i / 60) * 1.6; const t = (s / 40) * Math.PI * 2;
     p.pos[0] = 8 * Math.sin(t); p.pos[2] = 4 * Math.sin(2 * t);
     ctl.alert = 100; ctl.alertState = 'AGGRO'; arena.step(); rows.push(snap(ctl, b));
@@ -204,7 +212,7 @@ function fxFlee(data, id) {
   const arena = new NodeArena({ data, seed: SEED });
   const b = arena.spawn('e1', id, 0, 12, 180);
   const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
-  for (let i = 0; i < 1200; i++) {
+  for (let i = 0; i < FX_F; i++) {
     p.pos[0] = 0; p.pos[2] = -(i / 60) * PLAYER.walk;
     ctl.alert = 100; ctl.alertState = 'AGGRO'; arena.step(); rows.push(snap(ctl, b));
   }
@@ -218,7 +226,7 @@ function fxGroup(data, id) {
   const bodies = ids.map((k, n) => arena.spawn(k, id, Math.cos(n * 1.3) * 5, Math.sin(n * 1.3) * 5, 0));
   const ctls = ids.map((k) => arena.cs.enemies.get(k));
   const p = arena.player; const rows = [];
-  for (let i = 0; i < 900; i++) {
+  for (let i = 0; i < FX_G; i++) {
     const s = (i / 60) * 1.6; const t = (s / 40) * Math.PI * 2;
     p.pos[0] = 8 * Math.sin(t); p.pos[2] = 4 * Math.sin(2 * t);
     for (const c of ctls) { c.alert = 100; c.alertState = 'AGGRO'; }
@@ -238,7 +246,7 @@ function fxHeal(data, id) {
   const arena = new NodeArena({ data, seed: SEED });
   const b = arena.spawn('e1', id, 0, 5.0 * omegaOf(data, id), 180);
   const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
-  for (let i = 0; i < 900; i++) {
+  for (let i = 0; i < FX_F; i++) {
     ctl.alert = 100; ctl.alertState = 'AGGRO';
     if (i % 200 === 0 && p.moves.heal && !p.move) p.begin(p.moves.heal, arena.frame, {});
     arena.step(); rows.push(snap(ctl, b));
@@ -260,7 +268,7 @@ function fxNoLos(data, id) {
   const arena = new NodeArena({ data, seed: SEED, entityOf: () => ent });
   const b = arena.spawn('e1', id, 0, 6.0, 180);
   const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
-  for (let i = 0; i < 900; i++) {
+  for (let i = 0; i < FX_F; i++) {
     // The player walks away and is lost from sight at f120 — beyond 1.6·R and with no LOS, T25's
     // second clause should send the enemy home.
     p.pos[0] = 0; p.pos[2] = -(i / 60) * PLAYER.jog;
@@ -278,7 +286,7 @@ function fxBlock(data, id) {
   const heavy = Object.keys(p.moves)
     .filter((k) => !k.startsWith('_') && p.moves[k] && p.moves[k].kind === 'attack')
     .sort((a, c) => (p.moves[c].startup || 0) - (p.moves[a].startup || 0))[0];
-  for (let i = 0; i < 900; i++) {
+  for (let i = 0; i < FX_F; i++) {
     ctl.alert = 100; ctl.alertState = 'AGGRO';
     if (i % 150 === 0 && heavy && !p.move) p.begin(p.moves[heavy], arena.frame, {});
     arena.step(); rows.push(snap(ctl, b));
@@ -315,8 +323,17 @@ function census(data, roster) {
     const moved = {};
     const nv = perturb(leaf);
     if (nv === null) continue;
+    // An archetype row no shipped body selects is inert ON PURPOSE — ai.json declares every one of
+    // them in `_archetypes_absent` — so running 42 fixtures against it buys nothing but minutes.
+    // Marked declared-inert WITHOUT measuring. THE ONE EXCEPTION IS THE MUST-NOT-MOVE CONTROL,
+    // which is measured precisely so the instrument's own falsifiability is not assumed away by
+    // the same shortcut.
+    if (isUnselectedArchetype(leaf.path) && leaf.path !== CONTROL_DEAD) {
+      results.push({ path: leaf.path, value: leaf.value, perturbed_to: nv, consumed: false, moved_in: [], unselected_archetype_row: true, measured: false });
+      continue;
+    }
     for (const fx of Object.keys(FIXTURES)) {
-      for (const id of roster) {
+      for (const id of (fx === 'group' ? roster.slice(0, 2) : roster)) {
         const d2 = loadCombatData();
         setIn(d2.ai, leaf.path, nv);
         let h;
@@ -329,10 +346,159 @@ function census(data, roster) {
       consumed: Object.keys(moved).length > 0,
       moved_in: Object.keys(moved),
       unselected_archetype_row: isUnselectedArchetype(leaf.path),
+      measured: true,
     });
   }
   return { base, results };
 }
+
+// ---------------------------------------------------------------------------------------------
+// RESCUE — the fair half of the census, and the half a builder is most tempted to skip.
+//
+// The six-fixture census reports 36 leaves as inert. Most of those are the INSTRUMENT'S fault and
+// calling them dead parameters would be a finding I should be embarrassed by. Three reasons, each
+// of which this pass removes:
+//
+//   1. A x2 PERTURBATION CANNOT MOVE A THRESHOLD THAT IS ALREADY SATISFIED. `block.
+//      enter_band_multiple` is 1.4 and the block fixture stands the enemy at 1.2*omega: doubling
+//      it to 2.8 leaves the condition true, so the trace does not move and the leaf looks dead.
+//      The round-1 critic named this against `punish_read.band_multiple` and could not settle it.
+//      Every leaf here is perturbed TWO-SIDED — x2 and x0.5, plus 0 and a large value for a
+//      threshold — so a bound can be pushed off the behaviour in whichever direction is live.
+//   2. A 600-FRAME FIXTURE CANNOT REACH A 720-FRAME TIMER. `perception.search_to_leash_frames`
+//      is 12.0 s and no census fixture is that long.
+//   3. A FIXTURE THAT PINS `alertState` TO AGGRO CANNOT EXERCISE THE ALERT LADDER, and one whose
+//      player jogs away trips the DISTANCE leash long before the no-line-of-sight clause.
+//
+// Each leaf below gets a fixture built to reach the state it governs, and is only reported as
+// having no consumer if it survives that too.
+// ---------------------------------------------------------------------------------------------
+function rescueVariants(v) {
+  if (typeof v === 'boolean') return [!v];
+  if (Array.isArray(v)) return [v.map((x) => x * 2), v.map((x) => x * 0.5), v.map(() => 0)];
+  return [v * 2, v * 0.5, 0, v + 1000];
+}
+
+/** Long enough for T06's 12.0 s SEARCH timer, and the alert ladder is DRIVEN rather than pinned. */
+function fxLadder(data, id) {
+  const arena = new NodeArena({ data, seed: SEED });
+  const b = arena.spawn('e1', id, 0, 4.0, 180);
+  const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
+  for (let i = 0; i < 1500; i++) {
+    // AGGRO for a second, then the meter falls to SEARCH and stays there: T06 must fire at
+    // f = (aggro end) + 720, and `suspicious_min_dwell_f` governs the fall to IDLE after that.
+    if (i < 60) { ctl.alert = 100; ctl.alertState = 'AGGRO'; }
+    else if (i < 90) { ctl.alert = 60; ctl.alertState = 'SUSPICIOUS'; }
+    else { ctl.alert = 40; ctl.alertState = i > 1400 ? 'IDLE' : 'SEARCH'; }
+    p.pos[0] = 0; p.pos[2] = 0;
+    arena.step(); rows.push(snap(ctl, b));
+  }
+  return rows;
+}
+/** LOS lost while the player STANDS just outside 1.6*R, so the distance leash cannot pre-empt T25. */
+function fxLosOnly(data, id) {
+  const ent = { encounterId: 'w1-12-r2-losonly', percept_los: true };
+  const arena = new NodeArena({ data, seed: SEED, entityOf: () => ent });
+  const s = data._enemies[id];
+  const R = s.sight_radius_m || 16;
+  const b = arena.spawn('e1', id, 0, 2.0, 180);
+  const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
+  for (let i = 0; i < 1500; i++) {
+    // The player sits at 1.7*R — outside `dist_multiple_of_sight` (1.6) but only 27 m or so from
+    // the enemy's anchor, well inside the 32 m trash leash, so the ONLY route to LEASH_RETURN is
+    // T25's no-LOS clause. Anchor distance is checked in the assertion below.
+    p.pos[0] = 0; p.pos[2] = -1.7 * R;
+    ent.percept_los = i < 60;
+    ctl.alert = 100; ctl.alertState = 'AGGRO';
+    arena.step(); rows.push(snap(ctl, b));
+  }
+  return rows;
+}
+/** A long chase that really reaches the leash, so `hard_m.*` can be pushed either way. */
+function fxLeash(data, id) {
+  const arena = new NodeArena({ data, seed: SEED });
+  const b = arena.spawn('e1', id, 0, 6, 180);
+  const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
+  for (let i = 0; i < 1500; i++) {
+    p.pos[0] = 0; p.pos[2] = -(i / 60) * PLAYER.jog;
+    ctl.alert = 100; ctl.alertState = 'AGGRO';
+    arena.step(); rows.push(snap(ctl, b));
+  }
+  return rows;
+}
+/** Five bodies pressed onto one player for long enough that the token queue actually binds. */
+function fxSwarm(data, id) {
+  const arena = new NodeArena({ data, seed: SEED });
+  arena.cs.entityOf = () => ({ encounterId: 'w1-12-r2-swarm' });
+  const ids = ['s0', 's1', 's2', 's3', 's4'];
+  const bodies = ids.map((k, n) => arena.spawn(k, id, Math.cos(n * 1.26) * 3, Math.sin(n * 1.26) * 3, 0));
+  const ctls = ids.map((k) => arena.cs.enemies.get(k));
+  const p = arena.player; const rows = [];
+  for (let i = 0; i < 900; i++) {
+    p.pos[0] = 0.8 * Math.sin(i / 90); p.pos[2] = 0.8 * Math.cos(i / 70);
+    for (const c of ctls) { c.alert = 100; c.alertState = 'AGGRO'; }
+    arena.step();
+    rows.push({
+      s: ctls.map((c) => (c.ai ? c.ai.state : '?')).join('/'),
+      x: bodies[0].pos[0], z: bodies[2].pos[2], yaw: bodies[4].yaw,
+      mv: bodies.map((bb) => (bb.move ? bb.move.id : '-')).join(','),
+      tok: ctls.filter((c) => c.ai && c.ai.token).length,
+      g: bodies.some((bb) => bb.guardRaised), hp: bodies[1].hp,
+    });
+  }
+  return rows;
+}
+/** The block fixture, but the enemy stands FAR OUT so the band threshold is not pre-satisfied. */
+function fxBlockFar(data, id) {
+  const arena = new NodeArena({ data, seed: SEED });
+  const b = arena.spawn('e1', id, 0, 2.0 * omegaOf(data, id), 180);
+  const ctl = arena.cs.enemies.get('e1'); const p = arena.player; const rows = [];
+  const heavy = Object.keys(p.moves)
+    .filter((k) => !k.startsWith('_') && p.moves[k] && p.moves[k].kind === 'attack')
+    .sort((a, c) => (p.moves[c].startup || 0) - (p.moves[a].startup || 0))[0];
+  for (let i = 0; i < 900; i++) {
+    ctl.alert = 100; ctl.alertState = 'AGGRO';
+    if (i % 120 === 0 && heavy && !p.move) p.begin(p.moves[heavy], arena.frame, {});
+    arena.step(); rows.push(snap(ctl, b));
+  }
+  return rows;
+}
+
+const RESCUE_FX = {
+  ladder: { fn: fxLadder, ids: ['inf_trash', 'guard_legion'] },
+  losonly: { fn: fxLosOnly, ids: ['inf_trash', 'drowned_lesser'] },
+  leash: { fn: fxLeash, ids: ['inf_trash', 'drowned_lesser', 'champion_hist_marked', 'cst_sap_speaker'] },
+  swarm: { fn: fxSwarm, ids: ['beast_slitherfang', 'inf_trash'] },
+  blockfar: { fn: fxBlockFar, ids: ['guard_legion'] },
+  duel: { fn: fxDuel, ids: ['inf_trash', 'guard_legion', 'cst_sap_speaker'] },
+};
+
+function rescue(data, paths) {
+  const base = {};
+  for (const [fx, cfg] of Object.entries(RESCUE_FX)) {
+    base[fx] = {};
+    for (const id of cfg.ids) base[fx][id] = hash(cfg.fn(loadCombatData(), id));
+  }
+  const out = [];
+  for (const p of paths) {
+    const cur = getIn(loadCombatData().ai, p);
+    const moved = {};
+    outer:
+    for (const variant of rescueVariants(cur)) {
+      for (const [fx, cfg] of Object.entries(RESCUE_FX)) {
+        for (const id of cfg.ids) {
+          const d2 = loadCombatData();
+          setIn(d2.ai, p, variant);
+          let h; try { h = hash(cfg.fn(d2, id)); } catch (e) { h = `throw:${e.message.slice(0, 30)}`; }
+          if (h !== base[fx][id]) { moved[fx] = { variant, id }; break outer; }
+        }
+      }
+    }
+    out.push({ path: p, value: cur, consumed: Object.keys(moved).length > 0, moved });
+  }
+  return out;
+}
+function getIn(o, p) { return segs(p).reduce((a, k) => a[k], o); }
 
 // ---------------------------------------------------------------------------------------------
 function ang180(d) { d %= 360; if (d > 180) d -= 360; if (d < -180) d += 360; return d; }
@@ -417,7 +583,7 @@ function main() {
     const inert = results.filter((r) => !r.consumed && !r.unselected_archetype_row);
     const declaredInert = results.filter((r) => !r.consumed && r.unselected_archetype_row);
     const ctlLive = results.find((r) => r.path === 'circle.preferred_band_multiple');
-    const ctlDead = results.find((r) => r.path === 'archetype.DUELIST.walk_mps');
+    const ctlDead = results.find((r) => r.path === CONTROL_DEAD);
     fs.writeFileSync(path.join(OUT, 'census.json'), JSON.stringify({
       ...stamp, fixtures: Object.keys(FIXTURES), roster,
       total_leaves: results.length,
@@ -460,7 +626,21 @@ function main() {
     return;
   }
 
-  console.error(`unknown --mode=${mode}. Modes: chase, census, yaw, states.`);
+  if (mode === 'rescue') {
+    const prev = JSON.parse(fs.readFileSync(path.join(OUT, 'census.json'), 'utf8'));
+    const cands = prev.inert_and_not_declared;
+    const res = rescue(data, cands);
+    const dead = res.filter((r) => !r.consumed);
+    fs.writeFileSync(path.join(OUT, 'rescue.json'), JSON.stringify({ ...stamp, fixtures: Object.keys(RESCUE_FX), candidates: cands.length, rescued: res.length - dead.length, still_no_consumer: dead.map((r) => r.path), results: res }, null, 2));
+    console.log(`re-tested ${cands.length} leaves over ${Object.keys(RESCUE_FX).length} purpose-built fixtures, two-sided perturbation`);
+    console.log(`  RESCUED (a fixture that reaches the state moves the trace): ${res.length - dead.length}`);
+    for (const r of res.filter((x) => x.consumed)) console.log(`    ok   ${r.path.padEnd(38)} moved in ${Object.keys(r.moved).join(',')} at ${JSON.stringify(Object.values(r.moved)[0].variant)}`);
+    console.log(`  STILL NO CONSUMER: ${dead.length}`);
+    for (const r of dead) console.log(`    dead ${r.path} = ${JSON.stringify(r.value)}`);
+    return;
+  }
+
+  console.error(`unknown --mode=${mode}. Modes: chase, census, rescue, yaw, states.`);
   process.exit(2);
 }
 

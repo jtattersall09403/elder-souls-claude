@@ -2030,6 +2030,23 @@ export function installHarness(engine, bootPromise) {
      * ARBITRATION §3's "a correct, instrumented model that nothing in the running world reads".
      * `QuestEngine.context()` is now that reader; this is how a probe sees what it decided.
      */
+    /**
+     * W1-20, RI-QST03 §C. What the recruiter SAYS when a rank is refused, and what the player
+     * would see on the HUD when they said it. `rank` defaults to the next one up.
+     */
+    factionRefusal(factionId, rank) { return engine.factionRefusal(String(factionId), rank === undefined ? undefined : Number(rank)); },
+    /** Every faction this build can refuse in words, and the three it refuses as not-joinable. */
+    factionRefusalCensus() {
+      const r = engine.factionRefusals;
+      if (!r) return { _declared_incomplete: 'no refusal voice' };
+      return { speaks_for: r.ids(), not_joinable: Object.keys(r.notJoinable || {}).filter((k) => !k.startsWith('_')), spoken: r.spoken };
+    },
+    /**
+     * DELETE-THE-FIX control. Mutes the voice and nothing else: the gate still evaluates, the
+     * terms still come back, `open()` still refuses, and the player is told nothing — which is
+     * the world exactly as it stood before this piece.
+     */
+    __breakFactionRefusalVoice(on) { return engine.__breakFactionRefusalVoice(on === undefined ? true : !!on); },
     factionGates() {
       if (!engine.factionGates) return { _declared_incomplete: 'no faction gates' };
       const g = engine.factionGates;

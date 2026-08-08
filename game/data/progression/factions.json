@@ -1,10 +1,47 @@
 {
   "schema": "elder-souls/factions@1",
-  "provenance": "Owned by RI-QST03. Wave-1 container; ranks are the structure, not the content.",
+  "id": "factions",
+  "provenance": "Owned by RI-QST03. Wave-0 container; ranks are the structure, not the content.",
+  "is_the_ladder_of_record": false,
+  "ladder_of_record": "game/data/quests/faction-gates.json",
+  "w1_20_note": [
+    "THIS FILE IS NOT THE ROSTER AND SAYS SO NOW. It shipped as a wave-0 skeleton with two",
+    "bodies and three ranks each while the running game had eight eight-rank ladders in",
+    "quests/faction-gates.json, and the only place in the tree that recorded the fact was a",
+    "comment in tools/lib/gamedata.mjs. dialogue/faction-reactions.json names W1-20 as the",
+    "roster's owner, so the correction belongs here.",
+    "",
+    "It is DECLARED rather than rewritten, deliberately. Promoting this file into a second full",
+    "roster would put a ninth and tenth statement of the same facts in the build, and two ladders",
+    "for one body is a defect this project has already paid for twice (deep_kin / the_xul_aneekh,",
+    "and `intelligence` surviving in three ladders because the attribute list was restated). The",
+    "reader is tools/lib/gamedata.mjs loadFactions(), which returns this object under `.skeleton`",
+    "and the real ladders under `.ladders`. That is a TOOLS-side reader and not a world-side one,",
+    "and this note says so rather than claiming a consumption it does not have.",
+    "",
+    "The two bodies below are correct and are both NON-JOINABLE, for the reasons in",
+    "corpus/30-quests/FACTION-ROSTER-DESIGN.md §2 (House Dres is weather, not a career) and §3",
+    "(the Shadowscales are a service you send for, not a guild you climb). Their ranks stay",
+    "because a Dres factor and a ku-vastei each HAVE a rank and the player must be able to read",
+    "one off a person."
+  ],
+  "joinable_bodies": {
+    "_note": "The seven careers, and the quest that is each one's door. Measured through play by tools/quests/faction-joining-probe.mjs, not asserted here.",
+    "the_wet_ledger": "Q-LEDG-00",
+    "the_imperial_assize": "Q-ASSZ-00",
+    "the_xul_aneekh": "Q-XULA-00",
+    "the_rootkeepers": "Q-ROOT-00",
+    "the_ixtu_vakh": "Q-VAKH-00",
+    "the_drowned_court": "Q-CORT-00",
+    "the_dockhands": "Q-DOCK-00"
+  },
   "factions": [
     {
       "id": "house-dres",
       "name": "House Dres",
+      "joinable": false,
+      "kind": "weather",
+      "why_not_joinable": "FACTION-ROSTER-DESIGN.md §2. Dres has no province-side institution to climb; its factors are foreign and in Argonia on sufferance. It is the substrate three other ladders are built on and the antagonist of two.",
       "ranks": [
         "Hireling",
         "Retainer",
@@ -17,6 +54,9 @@
     {
       "id": "shadowscale-order",
       "name": "The Shadowscale Order",
+      "joinable": false,
+      "kind": "service",
+      "why_not_joinable": "FACTION-ROSTER-DESIGN.md §3 and RI-CRM02 §1 row 3. A ku-vastei is an arbiter you send for and pay, not a ladder. These ranks describe the person you are talking to.",
       "ranks": [
         "Unblooded",
         "Hatchling",

@@ -15,6 +15,11 @@ import { REVISION } from '../vendor/three/three.module.js';
 const params = new URLSearchParams(location.search);
 const automated = params.get('harness') === '1' || navigator.webdriver === true;
 const mode = params.get('mode') || (automated ? 'harness' : 'play');
+// The renderer reads this before it constructs its GL context, to decide whether to keep a second
+// full-size copy of the framebuffer for `__HARNESS.screenshot()`. It must be set BEFORE the Engine
+// is built, and it must not be a module import, because `render/renderer.js` is constructed deep
+// inside the engine and has no other way to know who is looking.
+globalThis.__ES_AUTOMATED = automated;
 const stateName = params.get('state') || 'default';
 
 window.__ES_THREE = REVISION;

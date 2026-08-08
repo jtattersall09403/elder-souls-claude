@@ -69,6 +69,14 @@
     <div class="bn-title">Elder Souls</div>
     <div class="bn-line" id="bn-line">Loading the province…</div>
     <div class="bn-sub" id="bn-sub">About 17 MB. The first load is the slow one.</div>
+    <!-- The notice's whole purpose is to get a line of text off somebody's phone and into a
+         message. `body` sets `user-select:none` and `-webkit-touch-callout:none` — which the
+         game needs and this panel must not inherit — so on a phone the diagnostic could be read
+         and not copied. A button that does it in one tap is the fix; the manual fallback is the
+         selectable <code> block, re-enabled below. -->
+    <div class="bn-actions" id="bn-actions" hidden>
+      <button type="button" id="bn-copy">Copy this for the report</button>
+    </div>
   </div>
 </div>
 <style>
@@ -82,23 +90,67 @@
   .bn-sub{margin-top:12px;font-size:14px;color:#7d7259}
   .bn-bad .bn-line{color:#d98a6a}
   #boot-notice code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
-    color:#9a8f79;word-break:break-all}
+    color:#9a8f79;word-break:break-all;
+    /* Selectable, against the body's blanket `user-select:none`. A diagnostic nobody can copy
+       off the glass is not a diagnostic. */
+    user-select:text;-webkit-user-select:text;-webkit-touch-callout:default}
+  .bn-actions{margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .bn-actions button{font:inherit;font-size:15px;padding:11px 18px;border-radius:8px;
+    border:1px solid #4a4133;background:#12161c;color:#d8cdb2;cursor:pointer;
+    /* 44 px is the smallest thing a thumb hits reliably; these are the only two controls on a
+       screen whose reason for existing is that nothing else is working. */
+    min-height:44px;min-width:44px}
+  .bn-actions button:active{background:#1c222b}
 </style>
 <script>
 (function () {
   var el = document.getElementById('boot-notice');
   var line = document.getElementById('bn-line');
   var sub = document.getElementById('bn-sub');
+  var actions = document.getElementById('bn-actions');
+  var copyBtn = document.getElementById('bn-copy');
   if (!el) return;
   var done = false;
 
+  // EVERY failure gets the device line, not just two of them. The first black screen was a 404
+  // and the second was a thrown error, and neither of those paths printed a single fact about
+  // the browser it happened in — which are the two failures where knowing the browser is the
+  // whole diagnosis. `say(..., bad=true)` now appends it unconditionally.
   function say(msg, detail, bad) {
     if (done) return;
     line.textContent = msg;
-    sub.innerHTML = detail || '';
+    var body = detail || '';
+    if (bad) {
+      var d = deviceLine();
+      body += '<br><br><b>Please send this line:</b><br><code id="bn-code">' + d + '</code>';
+      window.__BOOT_DIAGNOSTIC = msg + ' :: ' + String(detail || '').replace(/<[^>]*>/g, ' ') + ' :: ' + d;
+      if (actions) actions.hidden = false;
+    }
+    sub.innerHTML = body;
     el.className = bad ? 'bn-bad' : '';
   }
   function hide() { done = true; el.className = 'gone'; }
+
+  if (copyBtn) copyBtn.addEventListener('click', function () {
+    var text = window.__BOOT_DIAGNOSTIC || deviceLine();
+    var ok = function () { copyBtn.textContent = 'Copied — paste it into the report'; };
+    // `navigator.clipboard` needs a secure context and a user gesture; both hold here, but a
+    // phone browser may still refuse, so there is a selection fallback that never can.
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(ok, selectFallback);
+      } else selectFallback();
+    } catch (e) { selectFallback(); }
+    function selectFallback() {
+      var code = document.getElementById('bn-code');
+      if (!code) return;
+      try {
+        var r = document.createRange(); r.selectNodeContents(code);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        copyBtn.textContent = 'Selected — hold and choose Copy';
+      } catch (e2) { copyBtn.textContent = 'Copy failed — please screenshot this'; }
+    }
+  });
 
   // WebGL first, because a phone that refuses it will never draw a frame no matter how long you
   // wait, and "keep waiting" is the wrong thing to tell someone in that case.
@@ -166,12 +218,20 @@
     try {
       var gl = c.getContext('webgl2') || c.getContext('webgl');
       if (!gl) return false;
-      var w = Math.min(c.width, 64), h = Math.min(c.height, 64);
-      var buf = new Uint8Array(w * h * 4);
-      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, buf);
-      var lit = 0;
-      for (var i = 0; i < buf.length; i += 4) if (buf[i] > 8 || buf[i + 1] > 8 || buf[i + 2] > 8) lit++;
-      return lit > (w * h) * 0.01;
+      // Sample a GRID ACROSS THE WHOLE FRAME, not the bottom-left corner. The first version read
+      // `readPixels(0, 0, 64, 64)`, which is 1.2% of the picture and is floor in most scenes: its
+      // critic measured a drawn dungeon at 33.35% of the frame lit and 0.02% in that corner, so
+      // the notice never hid and left an undismissable overlay over a working game. A corner is
+      // not a picture.
+      var STEP = 24, lit = 0, seen = 0, row = new Uint8Array(4);
+      for (var y = 4; y < c.height; y += STEP) {
+        for (var x = 4; x < c.width; x += STEP) {
+          gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, row);
+          seen++;
+          if (row[0] > 8 || row[1] > 8 || row[2] > 8) lit++;
+        }
+      }
+      return seen > 0 && lit > seen * 0.01;
     } catch (e) { return false; }
   }
 
@@ -179,21 +239,63 @@
   // readable in a screenshot on a small screen.
   function deviceLine() {
     var bits = [];
+    // Build it a fact at a time and never let one bad probe cost the rest of the line. The old
+    // version wrapped the whole thing in one try, and `gl instanceof WebGL2RenderingContext`
+    // throws a ReferenceError on a browser with no WebGL2 constructor — an OLD PHONE, which is
+    // the exact device this line is written for. It would have printed the canvas size and then
+    // nothing at all, on the only hardware where the rest of it matters.
+    function add(label, fn) { try { var v = fn(); if (v !== null && v !== undefined && v !== '') bits.push(label ? label + ' ' + v : String(v)); } catch (e) { bits.push((label || 'probe') + ' ?'); } }
+    var c = document.querySelector('canvas');
+    add('', function () { return 'canvas ' + (c ? c.width + 'x' + c.height + ' css ' + c.clientWidth + 'x' + c.clientHeight : 'none'); });
+    add('vp', function () { return window.innerWidth + 'x' + window.innerHeight + '@' + (window.devicePixelRatio || 1); });
+    // What the DEVICE has, which is the usual reason a phone refuses a 17 MB world: it runs out
+    // of memory building it and the tab is killed or the context is lost. Neither number is on
+    // any desktop failure and both are on most phone ones.
+    add('mem', function () { return navigator.deviceMemory ? navigator.deviceMemory + 'GB' : null; });
+    add('cores', function () { return navigator.hardwareConcurrency || null; });
+    // THE PROBE MUST NOT TAKE THE GAME'S CONTEXT. A canvas has exactly one context, and this
+    // line is now printed on failures that happen BEFORE the renderer has made its own — a 404
+    // at one second, say. Calling `getContext` on the real canvas then would hand the renderer
+    // our context, created with the default `preserveDrawingBuffer: false`, and every readPixels
+    // after it — including `painted()` above — would return zeros on a game that draws perfectly.
+    // The instrument that grades this page had the identical latch and its critic caught it.
+    //
+    // So: every LIMIT is asked of a throwaway canvas, because limits are properties of the
+    // device and not of the canvas. Only the two facts that are genuinely about the game's own
+    // context — what attributes it got, and whether it has been lost — read the real one, and
+    // only once the renderer has demonstrably made it.
+    var gl = null, real = null;
     try {
-      var c = document.querySelector('canvas');
-      bits.push('canvas ' + (c ? c.width + 'x' + c.height + ' css ' + c.clientWidth + 'x' + c.clientHeight : 'none'));
-      bits.push('vp ' + window.innerWidth + 'x' + window.innerHeight + '@' + (window.devicePixelRatio || 1));
-      var gl = c && (c.getContext('webgl2') || c.getContext('webgl'));
-      if (!gl) { bits.push('NO GL CONTEXT'); }
-      else {
-        bits.push(gl instanceof WebGL2RenderingContext ? 'webgl2' : 'webgl1');
-        bits.push('maxTex ' + gl.getParameter(gl.MAX_TEXTURE_SIZE));
-        bits.push('maxRB ' + gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
-        var dbg = gl.getExtension('WEBGL_debug_renderer_info');
-        if (dbg) bits.push(String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)).slice(0, 60));
-        if (gl.isContextLost && gl.isContextLost()) bits.push('CONTEXT LOST');
-      }
-    } catch (e) { bits.push('probe threw: ' + String(e && e.message || e).slice(0, 60)); }
+      var probe = document.createElement('canvas');
+      gl = probe.getContext('webgl2') || probe.getContext('webgl');
+    } catch (e) { /* reported as NO GL CONTEXT below */ }
+    try { if (c && window.__ENGINE && window.__ENGINE.renderer) real = c.getContext('webgl2') || c.getContext('webgl'); } catch (e) { /* optional */ }
+    if (!gl) { bits.push('NO GL CONTEXT'); }
+    else {
+      add('', function () { return (typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext) ? 'webgl2' : 'webgl1'; });
+      add('maxTex', function () { return gl.getParameter(gl.MAX_TEXTURE_SIZE); });
+      add('maxRB', function () { return gl.getParameter(gl.MAX_RENDERBUFFER_SIZE); });
+      // Two limits that silently break a shader rather than throwing, so they never reach the
+      // error handler and would otherwise be invisible in a report.
+      add('varyings', function () { return gl.getParameter(gl.MAX_VARYING_VECTORS); });
+      add('vtex', function () { return gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS); });
+      // A float-renderable colour buffer is the classic thing an older iOS device will not give
+      // you, and a renderer that wants one gets an incomplete framebuffer and draws black.
+      add('float-rt', function () { return (gl.getExtension('EXT_color_buffer_float') || gl.getExtension('WEBGL_color_buffer_float')) ? 'yes' : 'NO'; });
+      // What the renderer actually got, which is not always what it asked for: a browser under
+      // memory pressure hands back a context with antialias or depth quietly dropped.
+      add('', function () { var d = gl.getExtension('WEBGL_debug_renderer_info'); return d ? String(gl.getParameter(d.UNMASKED_VENDOR_WEBGL)).slice(0, 24) + '/' + String(gl.getParameter(d.UNMASKED_RENDERER_WEBGL)).slice(0, 56) : null; });
+    }
+    if (!real) { bits.push('game-ctx not-yet'); }
+    else {
+      add('attrs', function () { var a = real.getContextAttributes(); return a ? ('aa=' + (a.antialias ? 1 : 0) + ' depth=' + (a.depth ? 1 : 0) + ' pdb=' + (a.preserveDrawingBuffer ? 1 : 0) + (a.failIfMajorPerformanceCaveat ? ' caveat-strict' : '')) : null; });
+      add('glErr', function () { var e = real.getError(); return e ? '0x' + e.toString(16) : null; });
+      add('', function () { return (real.isContextLost && real.isContextLost()) ? 'CONTEXT LOST' : null; });
+    }
+    // Which build they are looking at. Without it a report is about "the game", and the game
+    // changes several times an hour.
+    add('build', function () { return (window.__ES_COMMIT || '?') + ' ' + location.pathname; });
+    add('ua', function () { return navigator.userAgent.slice(0, 90); });
     return bits.join(' · ');
   }
 
@@ -203,8 +305,7 @@
   if (cv) cv.addEventListener('webglcontextlost', function (ev) {
     ev.preventDefault();
     say('The browser took the 3D context away.',
-        'This usually means the page asked for more graphics memory than the device would give it. ' +
-        '<b>Please send this line:</b><br><code>' + deviceLine() + '</code>', true);
+        'This usually means the page asked for more graphics memory than the device would give it.', true);
   });
 
   var booted = false;
@@ -226,13 +327,17 @@
     if (painted()) { clearInterval(poll); clearInterval(tick); hide(); return; }
     // Booted but nothing on the screen. Give the first frame a moment, then say what is true.
     sinceBoot += 0.2;
+    // Hard ceiling. Whatever the pixel read says, an overlay that cannot be dismissed is worse
+    // than a wrong diagnosis: if the world booted and twenty seconds have passed, get out of the
+    // player's way and let them look at whatever is there.
+    if (sinceBoot > 20) { clearInterval(poll); clearInterval(tick); hide(); return; }
     if (sinceBoot > 6) {
       // Print what the device says about itself. A phone-only failure cannot be reproduced on the
       // build machine — desktop Chromium at a phone-sized viewport is not a phone — so the only
       // way anyone learns why is if the phone says so on its own screen.
       say('The world loaded, but nothing is being drawn.',
           'The game built itself and the screen stayed black, so this is the renderer rather than a ' +
-          'missing file. <b>Please send this line:</b><br><code>' + deviceLine() + '</code>', true);
+          'missing file.', true);
     }
   }, 200);
 })();

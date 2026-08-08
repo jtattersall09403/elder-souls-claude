@@ -152,8 +152,54 @@ subject that should have been red.
 ## 3. The protocol run against numbers this project has already published
 
 `node tools/render/w1-24-audit.mjs` — see `reports/w1-24/published-claims-audit.json`.
+One browser, launched once and kept (rule 21), closed by handle. **Taken under fleet load** — 3–6
+browser instances and 2.6–4.1 per core throughout (rule 26: say under what load every timing figure
+was taken).
 
-*(Results table filled from the run — see §3.1 below.)*
+### 3.1 Results
+
+| | The published claim | Verdict | What the reading found |
+|---|---|---|---|
+| **C** | *"a canvas exists, with non-zero dimensions, and no page errors"* — the boot-liveness shape | **FAILS — `PASSES_ON_DEGENERATE`** | and it holds **three** failures at once |
+| **D** | *"58.291 dE2000 against a hard-fail bar of 8"* (`W1-21-r3` FD6) | **`DEGENERATE_NOT_GRADEABLE`** | Q1–Q4 all survive; Q5 is unanswerable from the record |
+| **B** | *"115 rooms read, 100 distinct"* (`W1-04-r5`) | **partially survives** | Q1, Q2 and Q5 survive; Q3 was lost to a teardown of my own |
+| **A** | *"8 distinct images at 8 town centres"* (`W1-04-r2` acceptance 3) | see §3.2 | |
+
+**C is the result this piece exists for, and it is live, on the running build.**
+
+```
+degenerate: every canvas in the document cleared to black AFTER the renderer has drawn
+            value 1, support 1, in_band TRUE     <- the check says the game is rendering
+clock     : t0 = 1, t120 = 1, other subject = 1  <- BLIND_TO_SUBJECT
+null      : INERT — "no arm produced a different value from any other (1, 2 arms).
+                     Breaking `render` changed nothing."
+ALSO HELD : PASSES_ON_DEGENERATE, BLIND_TO_SUBJECT, NULL_CONTROL_FAILED
+```
+
+That check **cannot say no**, **cannot see its own subject**, and **nothing it reports depends on
+the renderer having drawn**. Three independent failures in one three-clause assertion, and every
+one of them is reproducible in about four seconds. It was used as evidence that the build was
+rendering while the owner was looking at a black screen.
+
+**D survives everything the published record can answer.** The clock arm holds (58.291 at t0 and
+t1), the subject arm moves (58.291 vs the round-2 figure of 151), the units conform (`dE2000`
+against a `dE2000` band — the exact thing round 2 got wrong), and the null control is `OK`:
+*"breaking `colourspace` moved it from 58.291 to 151, over 98,659 graded edge pixels."* Only Q5 is
+unanswered, because a degenerate subject for FD6 would need a capture set with known-bad fringing
+and the round-3 captures are run artifacts `reports/.gitignore` deliberately does not track. The
+nearest thing available — a capture set with zero graded edge pixels — is **FD6's own documented
+empty-set hole**, and it produces no samples, so it demonstrates nothing. The reading says so
+instead of awarding a pass.
+
+**B's shape is right and its published number is not what a bounded re-take gives.** Over the
+first 24 authored interiors: **24 distinct scene-graph signatures at t0, 24 at t+240** (the clock
+arm holds), **1** for the same interior entered 24 times (the subject arm moves), and the
+degenerate arm — every signature replaced by a constant, which is the shape a build-record read
+has — returns 1 and is out of band. The claim is declared `IN_THE_SCENE` off `SCENE_GRAPH`, which
+is admissible; the same number declared `ON_SCREEN` would have been refused at Q1. Its null control
+errored because the browser was torn down mid-arm by a wrapper timeout I set. **That is my
+harness's failure, not a finding about the claim, and it is recorded as such rather than
+reported as a result.**
 
 ---
 

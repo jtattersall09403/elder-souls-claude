@@ -58,7 +58,23 @@ function importsOf(file) {
 }
 
 const isTracked = tracked();
-const jsFiles = walk(GAME).filter((f) => /\.m?js$/.test(f));
+// Only scan files that are TRACKED or STAGED. The first version scanned every `.js` under
+// `game/`, so a neighbour's untracked scratch file could fail this gate — and this gate is
+// blocking, so that stopped every agent on the box and `tools/bank.mjs` with them. Its critic
+// measured it firing on 4 of 6 otherwise-sound trees. Rule 13: a fail-closed assertion that fires
+// on somebody else's work is not one agent's problem, it is everyone's.
+const stagedNow = (() => {
+  try {
+    return new Set(execFileSync('git', ['diff', '--cached', '--name-only'], { cwd: ROOT, encoding: 'utf8' })
+      .split('\n').filter(Boolean));
+  } catch { return new Set(); }
+})();
+const jsFiles = walk(GAME)
+  .filter((f) => /\.m?js$/.test(f))
+  .filter((f) => {
+    const rel = relative(ROOT, f).split('\\').join('/');
+    return isTracked.has(rel) || stagedNow.has(rel);
+  });
 const problems = [];
 
 for (const file of jsFiles) {

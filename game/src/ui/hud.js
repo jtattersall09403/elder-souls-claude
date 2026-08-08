@@ -247,14 +247,56 @@ export function drawHUD(S, m) {
   // ---- E11 toast. Never during a fight (RI-UIX01 §C counts it separately and §C fails a
   // build showing one in an active fight), and never carrying quest state (RI-UIX04 Q11).
   if (m.toast && !m.inCombat) {
+    // W1-20: THE TOAST WRAPS NOW, and it did not before.
+    //
+    // The panel is 400 units wide and the line was drawn centred on it in one run with no
+    // wrapping and no truncation, so any string wider than the parchment spilled out of both
+    // ends of it. Measured on the shipped renderer at 1920x1080: a 115-character sentence
+    // measures 676 px against a 400 px panel, and `getRenderedText()` reports it `clipped:
+    // false` — because nothing clipped it. It simply ran off the paper at both ends, and from
+    // the chair that is a sentence with its first four words and its last five missing.
+    //
+    // Found while photographing a faction refusal, which is the longest thing this channel has
+    // ever been asked to carry, but it is not a faction defect: every equip refusal
+    // (`_sayEquip`) and every cast refusal in the build goes through the same element. A short
+    // toast is unaffected — one line, same rect, same coverage — so this is additive.
+    const f = faceOf('ink'), sz = 16 * s;
+    const maxW = (L.toastW - 24) * s;
+    const words = String(m.toast.text).split(/\s+/).filter(Boolean);
+    const rows = [];
+    let cur = '';
+    for (const w of words) {
+      const next = cur ? `${cur} ${w}` : w;
+      if (cur && measure(next, f, sz) > maxW) { rows.push(cur); cur = w; } else cur = next;
+    }
+    if (cur) rows.push(cur);
+    // Three lines is the ceiling. RI-UIX04 Q11 keeps this channel small on purpose, and a toast
+    // that grows without bound is a quest log wearing a parchment. A fourth line is dropped and
+    // the third gets an ellipsis, so the overflow is visible rather than silent.
+    if (rows.length > 3) { rows.length = 3; rows[2] = `${rows[2]}…`; }
+    const lineH = 20 * s;
+    const h = Math.max(L.toastH * s, rows.length * lineH + 20 * s);
+    const widest = rows.reduce((a, t) => Math.max(a, measure(t, f, sz)), 0);
     S.el({
       id: 'hud.toast', kind: 'toast',
-      rect: [(W - L.toastW * s) / 2, L.toastY * s, L.toastW * s, L.toastH * s],
+      rect: [(W - L.toastW * s) / 2, L.toastY * s, L.toastW * s, h],
       text: m.toast.text, opacity: 0.92,
+      // The measurement that was missing. `render/text-register.js` records the draw CALL, so a
+      // run that ran off both ends of the paper came back `clipped: false` and every probe in the
+      // tree read it as legible. These three numbers are the fit itself, so a check can assert
+      // `widest <= max_w` and a broken wrap goes red in a tool rather than in a screenshot.
+      // The RAW measurement only. `fits` is deliberately NOT computed here: the first version
+      // judged the fit against `maxW`, the same variable the wrapper uses, so breaking the
+      // wrapper moved the yardstick with it and the check stayed green on a line that ran 823 px
+      // across a 400 px panel. ui/system.js now derives `fits` from the element's own RECT,
+      // which the wrapper does not set.
+      meta: { rows: rows.slice(), row_count: rows.length, widest_px: +widest.toFixed(1), wrap_budget: +maxW.toFixed(1), truncated: rows.length === 3 && rows[2].endsWith('…') },
     }, (c, r) => {
       panel(c, 'parchment', r[0], r[1], r[2], r[3], s, 4242, 0.86);
-      const f = faceOf('ink'), sz = 16 * s;
-      drawText(c, m.toast.text, r[0] + r[2] / 2 - measure(m.toast.text, f, sz) / 2, r[1] + r[3] * 0.62, f, sz, C('ink'));
+      const top = r[1] + (r[3] - rows.length * lineH) / 2 + lineH * 0.72;
+      for (let i = 0; i < rows.length; i++) {
+        drawText(c, rows[i], r[0] + r[2] / 2 - measure(rows[i], f, sz) / 2, top + i * lineH, f, sz, C('ink'));
+      }
     });
   }
 

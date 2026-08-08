@@ -410,6 +410,78 @@
           "cell": "dungeon"
         }
       ]
+    },
+    {
+      "id": "player_back_closeup",
+      "anchor": "arena_flat",
+      "purpose": "fidelity",
+      "note": "THE BACK IS THE FRONT. Seam S18 puts the camera behind the character 100% of the time, so the back of the head, the back of the armour, the backs of the legs and the hanging scabbard get more screen-time than any other surface in the game. RI-CAM07 M1, added by amendment (HARNESS.md §6: viewpoints may be ADDED; poses are append-only and nothing above this entry was touched). RI-CAM07's Comparison method M1 opens by instructing that these two slots be added, and until they existed M1, M2 and M4 were unrunnable by construction — the item's own harness-dependency note scores them 0, fail-closed. Pose per §B: arm 2.5 m, pitch −10°, look at mid-torso. The declared pos/look assume the player standing at the arena_flat origin with yaw 0 (forward = +Z), which the setup teleport establishes; tools/render/cam07-back.mjs computes the equivalent pose from the live rig when the player is elsewhere and is the canonical capture tool for these two.",
+      "camera": {
+        "pos": [
+          0,
+          1.484,
+          -2.462
+        ],
+        "look": [
+          0,
+          1.05,
+          0
+        ],
+        "fov": 40
+      },
+      "world": {
+        "timeOfDay": 12,
+        "weather": "clear"
+      },
+      "setup": [
+        {
+          "op": "teleport",
+          "x": 0,
+          "z": 0
+        }
+      ],
+      "metrics": [
+        "edgeDensity",
+        "fftHighBand",
+        "rmsContrast",
+        "flatShading"
+      ]
+    },
+    {
+      "id": "player_front_closeup",
+      "anchor": "arena_flat",
+      "purpose": "fidelity",
+      "note": "The same pose orbited 180°. It exists ONLY as §B1's denominator: §B1 is a PARITY test (HFR_back ≥ 0.85 × HFR_front), so the front capture is a reference for the back and is not itself a subject. RI-CAM07 M1, added by amendment (HARNESS.md §6: viewpoints may be ADDED; poses are append-only and nothing above this entry was touched). RI-CAM07's Comparison method M1 opens by instructing that these two slots be added, and until they existed M1, M2 and M4 were unrunnable by construction — the item's own harness-dependency note scores them 0, fail-closed. Pose per §B: arm 2.5 m, pitch −10°, look at mid-torso. The declared pos/look assume the player standing at the arena_flat origin with yaw 0 (forward = +Z), which the setup teleport establishes; tools/render/cam07-back.mjs computes the equivalent pose from the live rig when the player is elsewhere and is the canonical capture tool for these two.",
+      "camera": {
+        "pos": [
+          0,
+          1.484,
+          2.462
+        ],
+        "look": [
+          0,
+          1.05,
+          0
+        ],
+        "fov": 40
+      },
+      "world": {
+        "timeOfDay": 12,
+        "weather": "clear"
+      },
+      "setup": [
+        {
+          "op": "teleport",
+          "x": 0,
+          "z": 0
+        }
+      ],
+      "metrics": [
+        "edgeDensity",
+        "fftHighBand",
+        "rmsContrast",
+        "flatShading"
+      ]
     }
   ]
 }

@@ -23,6 +23,7 @@ import { EnchantCounter, enchanterOf, ENCHANTING_TOPIC } from './sim/magic/encha
 // magic" a measurement rather than a claim.
 import { QuestBook } from './sim/quest/defs.js';
 import { FactionGates } from './sim/quest/gate.js';
+import { FactionRefusals } from './sim/quest/refusal.js';
 import { QuestEngine } from './sim/quest/machine.js';
 import { Journal } from './sim/quest/journal.js';
 // W1-21 — the interface. The system owns the mode, the focus and the pause rule; the surface
@@ -549,6 +550,17 @@ export class Engine {
     this.questBook = new QuestBook(this.data.quests);
     this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
+    // W1-20. The recruiters' words. `FactionGates.evaluate()` has always computed the whole
+    // four-part statement with the player's own numbers in it and `QuestEngine.open()` has always
+    // refused on it — and what came back was `the_drowned_court rank 0/2`, a debug string with
+    // semicolons in it. RI-QST03 §C requires the refusal to be spoken. Installed on the quest
+    // engine so that a refusal REACHED FROM PLAY carries the line, not only one asked for by a
+    // probe; `refusal.js` never states a threshold, so the ladder stays the only source of them.
+    this.factionRefusals = new FactionRefusals(
+      this.data.factionRefusals,
+      ((this.data.progression && this.data.progression.skills) || {}).skills || [],
+    );
+    this.questEngine.refusalVoice = (factionId, evaluation) => this._speakFactionRefusal(factionId, evaluation);
     // W1-07 round 4: the race/upbringing/faction term on the offer gate. Installed before the
     // first seed so no window exists in which a gate is evaluated on the raw register.
     this.questEngine.dispositionModel = this._questDispositionModel();
@@ -5045,6 +5057,58 @@ export class Engine {
       : `You cannot get a grip on the ${String(name).toLowerCase()}. It is not made for your hands.`;
     ev.said = line;
     return this.uiToast(line, 150);
+  }
+
+  /**
+   * THE REFUSAL, SPOKEN. W1-20, RI-QST03 §C.
+   *
+   * `FactionGates.evaluate()` returns the four-part statement with the player's numbers in it and
+   * has done since W1-FACTIONS. Nothing said it out loud. `QuestEngine.open()` refused a
+   * rank-gated quest with `c.why.join('; ')` — `the_drowned_court rank 0/2` — and no surface in
+   * `game/src/ui/` or `game/src/render/` renders a `reason` string from `open()`. From the chair,
+   * a faction you have not earned was a quest that did not appear and a person who said nothing.
+   *
+   * The toast is the same channel `_sayEquip` uses and for the same reason: `ui/hud.js`'s E11
+   * element is the only shipped player-visible text surface, and a refusal a player cannot
+   * perceive is a silent failure rather than a policy.
+   *
+   * DELETE-THE-FIX arm — `__breakFactionRefusalVoice()` — restores exactly the world before this
+   * method: the numbers are still computed, `open()` still refuses, `evaluate()` still returns
+   * every term, and NOTHING IS SAID. The control is a real one because the two arms differ only
+   * in whether a person hears anything; the gate itself is untouched by it, which is the point.
+   *
+   * @param {string} factionId
+   * @param {number} [rank]  the rank being asked for. Defaults to the next one up from the
+   *   player's current standing, because "why can I not have the next rank" is the question a
+   *   player actually asks.
+   */
+  factionRefusal(factionId, rank) {
+    if (!this.factionRefusals || !this.factionGates) return { said: null, faction: factionId, _declared_incomplete: 'no faction gates or refusal voice' };
+    const ctx = this.questEngine ? this.questEngine.context() : {};
+    let want = rank;
+    if (want == null) {
+      const have = Number((ctx.ranks || {})[factionId]) || 0;
+      want = Math.min(7, have + 1);
+    }
+    let ev = null;
+    try { ev = this.factionGates.evaluate(factionId, Math.max(0, Math.min(7, Number(want) || 0)), ctx); }
+    catch { ev = null; }   // a faction with no ladder — refusal.js answers that in words too
+    return this._speakFactionRefusal(factionId, ev);
+  }
+
+  /** The half that actually reaches a person. Separated so `open()` can call it on its own gate. */
+  _speakFactionRefusal(factionId, evaluation) {
+    const out = this.factionRefusals.speak(factionId, evaluation);
+    if (this._factionRefusalMute) return { ...out, said: null, toast: null, muted: true };
+    const toast = out.said ? this.uiToast(out.said, 240) : null;
+    return { ...out, toast };
+  }
+
+  /** DELETE-THE-FIX control for the refusal voice. The gate is untouched; only the speech stops. */
+  __breakFactionRefusalVoice(on) {
+    this._factionRefusalMute = on === undefined ? true : !!on;
+    if (this._factionRefusalMute) this.uiToast(null);
+    return { muted: this._factionRefusalMute };
   }
 
   /** Taking a held object off puts the scenario's own declared weapon or shield back in the hand. */
@@ -10268,6 +10332,12 @@ async function loadData(onBytes) {
     // never made it onto the quest path.
     else if (entry.path === 'dialogue/persuasion-gmst.json') out.persuasionGmst = doc;
     else if (entry.path === 'dialogue/faction-reactions.json') out.factionReactions = doc;
+    // W1-20. The recruiters' words for a refusal gate.js already computed. It MUST have a branch
+    // here for the reason the two lines above record: `dialogue/faction-reactions.json` itself
+    // spent a whole round fetched, counted in the byte total, and dropped on the floor.
+    // Consumed by `Engine.factionRefusal()` via `sim/quest/refusal.js`, and reached from play
+    // through `QuestEngine.open()`'s rank-gate refusal path.
+    else if (entry.path === 'dialogue/faction-refusals.json') out.factionRefusals = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
     else if (entry.path === 'dialogue/creation-questions.json') out.creationQuestions = doc;

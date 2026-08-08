@@ -1151,6 +1151,23 @@ export class UISystem {
       surfaces: els.length ? 1 : 0,
       full_screen_panels: els.filter((e) => e.kind === 'panel' && e.rect[2] * e.rect[3] > 0.9 * S.W * S.H).length,
       hud_elements: hud.filter((e) => e.visible).length,
+      // W1-20. The toast, with its fit. Reported so a probe can assert that the words on the
+      // parchment are ALL of the words: the register in render/text-register.js records the draw
+      // call and cannot see a run that overflowed the panel it was centred on.
+      toast: (() => {
+        const t = els.find((e) => e.id === 'hud.toast');
+        if (!t) return null;
+        const m = t.meta || {};
+        // The fit, judged against the DECLARED RECTANGLE and nothing the drawing code chose.
+        // A wrapper that stops wrapping cannot move this number, which is the whole point of
+        // computing it here instead of there.
+        return {
+          text: t.text, ...m,
+          panel_w: +t.rect[2].toFixed(1), panel_h: +t.rect[3].toFixed(1),
+          fits: (m.widest_px || 0) <= t.rect[2] + 0.5,
+          overflow_px: +Math.max(0, (m.widest_px || 0) - t.rect[2]).toFixed(1),
+        };
+      })(),
       // The same derivation, over the WHOLE screen rather than the map's own elements. Round 2's
       // verdict: "The identical field is typed again at the top level of `getUIState()`." It was.
       ...markerCensus(els, ctx, 'screen'),

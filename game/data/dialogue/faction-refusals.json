@@ -1,0 +1,105 @@
+{
+  "schema": "elder-souls/faction-refusals@1",
+  "id": "faction-refusals",
+  "owner": "W1-20 — the faction skeleton",
+  "corpus_item": "RI-QST03 §C ('lockout must be LEGIBLE: a locked faction's members still speak one line explaining why they will not deal with the player') and §B ('explain() renders it as numbers the player can read BEFORE they fail')",
+  "provenance": "constructed",
+  "why": [
+    "game/src/sim/quest/gate.js already computes the whole four-part statement with the player's",
+    "own numbers in it, and QuestEngine.open() already refuses on it. What it returned was",
+    "`the_drowned_court rank 0/2` — a debug string, joined with semicolons, which is a greyed-out",
+    "row wearing a sentence's clothes. RI-QST03 scores that as silent lockout in both directions.",
+    "",
+    "So the numbers stay exactly where they are — this file NEVER states a threshold — and the",
+    "recruiter is given words to put them in. `{need}` and `{have}` are filled from",
+    "FactionGates.evaluate(), which reads faction-gates.json. If a rank demand changes, every line",
+    "here changes with it and none of them has to be edited. A line that restated a number would",
+    "be a second ladder, and this project has already shipped two ladders for one body.",
+    "",
+    "Order of speaking is fixed and is the order gate.js emits the terms: reputation first",
+    "(they do not know you), then attribute (you are not made for it), then the two skills (you",
+    "cannot do the work), then world state (the thing has not happened yet). A recruiter says ONE",
+    "of these — the first unmet — because a person who lists four reasons is reading a form."
+  ],
+  "placeholders": {
+    "{need}": "the number the rank demands, from faction-gates.json",
+    "{have}": "the number the player has now",
+    "{skill}": "the display name of the favoured skill the player is closest on",
+    "{skills}": "the faction's favoured skills, as a spoken list",
+    "{attr}": "the display name of the favoured attribute the player is best in",
+    "{rank}": "the name of the rank being refused",
+    "{short}": "need minus have"
+  },
+  "factions": {
+    "the_rootkeepers": {
+      "speaker_note": "Jeen at the Helstrom undertemple. A keeper does not recruit; she gives you something to count and you either counted it or you did not.",
+      "reputation": "The slate has {have} beside your name and a Leaf has {need}. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+      "attribute": "{attr} of {have}. A keeper stands in cold water for a whole day and writes the same number three times to be sure of it, and you would be asleep by the second. Come back at {need}.",
+      "skill_1": "You have {skill} at {have} and the work wants {need}. I'm not being unkind. A well you count badly is worse to me than a well nobody counted, because I would believe you.",
+      "skill_2": "One hand is enough for a Leaf and you don't have the second yet. {skill} at {have}, and {need} before I put you on anything that matters.",
+      "world_state": "Not until {rank} has something to keep, and it hasn't. You know that as well as I do.",
+      "welcome": "You're on the slate. That's the whole ceremony, and it's the only thing the Rootkeepers own."
+    },
+    "the_ixtu_vakh": {
+      "speaker_note": "Neeth over the sap-house. The cutters are hated and well paid and he assumes you already know both.",
+      "reputation": "I've heard your name {have} times and I want {need}. Nobody starts here. Go and be useful where somebody's watching.",
+      "attribute": "{attr} at {have}? The east track is four days of wet ground and a keeper on the end of it. Bring me {need} and we'll talk.",
+      "skill_1": "{skill} at {have}. The road wants {need} and the road doesn't care that you'd like the money. I've buried two who thought otherwise.",
+      "skill_2": "You can carry, I'll grant you that. The second thing — {skill}, {have}, and I want {need} — is what gets you back again.",
+      "world_state": "{rank} isn't mine to hand out. That's the well's business, and the well hasn't said.",
+      "welcome": "You're written down. There's no oath and no drink. The list is the list."
+    },
+    "the_drowned_court": {
+      "speaker_note": "Vaskh in the burning yard. Everything he says is levelled by the fact that he does this all day.",
+      "reputation": "The tally has you at {have}. Knee-Deep is {need}. You'll get there or you won't, and either way the bay keeps sending them.",
+      "attribute": "{attr} at {have}. A man goes into the water after a body and comes back with it, or he goes in and we fetch two. {need}, and not before.",
+      "skill_1": "{skill} at {have}, and the Court asks {need}. It isn't a test. It's the number at which people stop drowning next to me.",
+      "skill_2": "You can lift. The other half is reading what a body has to say, and {skill} at {have} reads nothing. {need}.",
+      "world_state": "{rank} is a chair, and the chair is occupied. Ask me again when it isn't.",
+      "welcome": "You're in the tally. Everyone gets in it eventually. You've just done it standing up."
+    },
+    "the_dockhands": {
+      "speaker_note": "Eeja at the foot of the crane. There is no institution here at all; there is a board with chalk on it.",
+      "reputation": "The board doesn't know you. {have} against {need}, and the hands put the names up, not me.",
+      "attribute": "{attr} at {have} and the crate is the crate. Eleven gold a week and the crane takes a finger off a man every winter. {need}, or the winter takes yours.",
+      "skill_1": "{skill} at {have}. The board rate is for {need}, and if I chalk you up under it the four who carry your end will rub it off by noon.",
+      "skill_2": "You'll do for the lifting. {skill} at {have} is the bit that keeps you off the wrong side of the crane, and I want {need}.",
+      "world_state": "{rank} goes to whoever the hands say, when they say it. I don't hold that chalk.",
+      "welcome": "Your name's on the board. It stays there until the rain gets in or the hands rub it off."
+    },
+    "the_wet_ledger": {
+      "speaker_note": "Belliene on the counting floor. She prices the refusal the way she prices everything.",
+      "reputation": "The margin has your name in it {have} times and the next line wants {need}. The Ledger remembers people by the margin. Give it more to remember.",
+      "attribute": "{attr} at {have}. It's a long road to Archon and the fords are the fords. {need}.",
+      "skill_1": "{skill} at {have}, and I need {need}. I'm not asking you to be clever. I'm asking you to be the sort of clever that doesn't leave a paper trail.",
+      "skill_2": "The second column is short. {skill} at {have}, {need} wanted, and the difference is what the Ledger pays for.",
+      "world_state": "{rank} sits at the table and the table is full. Something has to move first, and it won't be me.",
+      "welcome": "Your name's in the margin. That's how the Ledger remembers people."
+    },
+    "the_imperial_assize": {
+      "speaker_note": "The Assize is a court and it refuses in the passive, because a court is never the one refusing.",
+      "reputation": "The roll records {have} against your name and the grade requires {need}. Applications are considered when the roll supports them.",
+      "attribute": "{attr} is entered at {have} and the grade is set at {need}. The Office does not vary an entry on request.",
+      "skill_1": "{skill} stands at {have}. The schedule for this grade is {need}. You may sit it again when you have the difference.",
+      "skill_2": "A second competence is required and yours is entered at {have} against {need}. The clerk will note the application and the shortfall.",
+      "world_state": "{rank} is filled by vacancy, not by application. There is no vacancy.",
+      "welcome": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds."
+    },
+    "the_xul_aneekh": {
+      "speaker_note": "The hollow speaks in the plural and does not explain itself twice.",
+      "reputation": "You are {have} to the hollow and the name you are asking for is {need}. Names are not given. They are noticed.",
+      "attribute": "{attr}, {have}. The deep marsh does not adjust itself to a person. {need}.",
+      "skill_1": "{skill} at {have}. We ask {need} of anyone who walks where you are asking to walk, and the ones who went short are still out there.",
+      "skill_2": "The second thing is thin. {skill} at {have}, and {need} before the hollow hears you.",
+      "world_state": "{rank} is a thing the hollow decides, and the hollow has not spoken.",
+      "welcome": "The hollow has a name for you now. You will not like all of what comes with it."
+    }
+  },
+  "unknown_faction": "I don't speak for them and neither does anyone you'll meet on this road.",
+  "not_joinable": {
+    "house_dres": "House Dres does not take Argonians and does not take you. They buy; they do not hire.",
+    "shadowscale_order": "The ku-vastei are not a guild. You do not join one. You send for one, and you pay, and you had better be sure.",
+    "deep_kin": "That is the hollow's own name for itself. It is the same people and the same door.",
+    "_note": "RI-QST03 §C: a lockout must be legible. These three carry ladders or ids in the build and are joinable by nobody, and FACTION-ROSTER-DESIGN.md §2/§3 gives the reason for each. A player who asks gets the reason rather than silence."
+  }
+}

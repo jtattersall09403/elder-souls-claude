@@ -144,7 +144,7 @@ function simArmR3(rec) {
 
 /** The simulation's answer, shipped. */
 function simArm(rec) {
-  return litLights(rec).map((L) => ({ pos: L.pos, authored: L.intensity, hearth: L.hearth }));
+  return litLights(rec).map((L) => ({ pos: L.emit_pos, authored: L.intensity, hearth: L.hearth }));
 }
 
 // ---- THE FIELD, the simulation's own, on BOTH arms so the only variable is which lamps are lit --

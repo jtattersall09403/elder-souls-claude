@@ -1048,7 +1048,10 @@ export class StealthCrime {
       const sid = `world:${L.id}`;
       if (this.light.sources.some((s) => s.id === sid)) continue;
       this.light.addSource({
-        id: sid, pos: L.pos, intensity: L.intensity * scale,
+        // `emit_pos`, not `pos`: a hearth's light comes from above its fuel and the renderer has
+        // always lifted its PointLight by 0.5 m. Reading `pos` here left one floor cell in
+        // gideon-house-0 drawn lit and simulated dark — the last disagreeing cell of the 1,659.
+        id: sid, pos: L.emit_pos, intensity: L.intensity * scale,
         snuffable: L.snuffable, zone: null, world: true, kind: L.kind,
         authored_intensity: L.intensity,
         reach_m: L.hearth ? cfg.reach_m.hearth : cfg.reach_m.flame,

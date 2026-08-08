@@ -43,10 +43,22 @@ const RACE_TINT = {
 export class Renderer {
   constructor(canvas, seed) {
     this.canvas = canvas;
+    // `preserveDrawingBuffer` exists ONLY so `__HARNESS.screenshot()` can read the buffer back —
+    // a test requirement, and until now it shipped to every player. It makes the browser keep a
+    // second full-size copy of the framebuffer, and combined with `antialias` on a 1920x1080
+    // canvas that is a well-known way to be refused or lose the context on a memory-constrained
+    // phone. The owner's phone showed a black screen; the W1-TOUCH critic named this exact
+    // combination as its testable hypothesis for why.
+    //
+    // So it is on for the harness and off for a person. `__ES_AUTOMATED` is set by `main.js`
+    // before the engine is constructed; a screenshot taken without it would come back blank, and
+    // the harness sets it, so nothing that takes screenshots loses them.
+    const automated = typeof globalThis !== 'undefined' && globalThis.__ES_AUTOMATED === true;
     this.three = new THREE.WebGLRenderer({
       canvas, antialias: true, alpha: false, powerPreference: 'high-performance',
-      preserveDrawingBuffer: true,     // so __HARNESS.screenshot() can read the buffer back
+      preserveDrawingBuffer: automated,
     });
+    this.preserveDrawingBuffer = automated;
     this.three.setPixelRatio(1);
     this.three.shadowMap.enabled = true;
     this.three.shadowMap.type = THREE.PCFSoftShadowMap;

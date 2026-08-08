@@ -115,6 +115,19 @@ Its two hard-won constraints, so a successor does not rediscover them:
   self-test caught node's `fetch` being 403'd on its first run.
 - **A desktop browser at a phone-sized viewport is not a phone.** Say which you tested.
 
+## 2d. Every piece plans before it builds
+
+`orchestration/PLAN-LOOP.md` is the protocol and the evidence behind it. In short: a **plan agent**
+and a **plan critic** argue in text — no browser, bounded at two exchanges — before any build agent
+is dispatched. The plan critic marks each item BLOCKING or CARRIED; blocking is resolved, carried
+becomes a declared risk in the build brief.
+
+A plan is not approved until it names **the acceptance number with its predicate and units**, **the
+null control that must come out worse**, and **which existing instrument it reuses, by path**.
+
+Dispatch order for a new round is therefore: plan → plan critic → build → build critic. The first
+two are cheap and need no browser, so **the whole wave can plan in parallel while builds queue.**
+
 ## 3. Top up, in this order of preference
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the

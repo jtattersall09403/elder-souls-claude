@@ -125,7 +125,15 @@ export const MAX_APERTURE_RATIO = 0.102565;
 /** (0.30 - 0.04) / 0.102565 = 2.5350. Two rows of the corpus's own light table and one measurement. */
 export const DAYLIGHT_K = (CANOPY_DAY_L - UNLIT_L) / MAX_APERTURE_RATIO;
 
-/** A hearth is the room's fire; a lamp is a fitting on a wall. The 2:1 both readers already used. */
+/**
+ * A HEARTH EMITS FROM ABOVE ITS FUEL, and this used to be the last thing the two halves disagreed
+ * about. `render/interior.js` placed a hearth's `PointLight` 0.5 m above the authored `pos` (the
+ * flame, not the hearthstone) while `syncInteriorLights()` added its source AT the authored pos —
+ * a 0.5 m offset that survived every other fix in this round and left exactly **one** floor cell in
+ * `gideon-house-0` drawn lit and simulated dark. One cell out of 22,751 is not a player-visible
+ * defect, and it is precisely the kind of residue that grows back: `emit_pos` below is now the one
+ * position BOTH readers light from, and `fitting_pos` is where the mesh stands.
+ */
 export const HEARTH_LIFT_Y_M = 0.5;
 
 const DEFAULT_BOUNDS = { x: [-6, 6], y: [0, 3.2], z: [-9, 9] };
@@ -160,8 +168,9 @@ export function dedupedLights(rec) {
  * THE LIT SET. Every entry in this list illuminates, in the renderer and in the simulation, and
  * nothing outside it does. Returns, per lamp:
  *
- *   id, kind, hearth, pos [x,y,z], intensity (the AUTHORING weight), snuffable, synthesized,
- *   shadow (true for at most one lamp per room), render_pos (pos, with a hearth's lift applied)
+ *   id, kind, hearth, pos (the authored point), emit_pos (where the light comes FROM — `pos` with a
+ *   hearth's lift applied, and the position both readers use), fitting_pos (where the mesh stands),
+ *   intensity (the AUTHORING weight), snuffable, synthesized, shadow (at most one lamp per room)
  *
  * `intensity` stays the authoring weight both readers already scale by their own factor — the
  * renderer x9 / x22 into Three.js units, the simulation x`authored_intensity_to_L_scale` into an
@@ -180,7 +189,7 @@ export function litLights(rec) {
       kind: L.kind || 'lamp',
       hearth,
       pos,
-      render_pos: [pos[0], pos[1] + (hearth ? HEARTH_LIFT_Y_M : 0), pos[2]],
+      emit_pos: [pos[0], pos[1] + (hearth ? HEARTH_LIFT_Y_M : 0), pos[2]],
       fitting_pos: [pos[0], hearth ? b.y[0] : Math.max(b.y[0], pos[1] - 0.56), pos[2]],
       intensity: Number(L.intensity === undefined ? 0.55 : L.intensity),
       snuffable: !!L.snuffable,
@@ -204,7 +213,7 @@ export function litLights(rec) {
     kind: 'hearth',
     hearth: true,
     pos,
-    render_pos: [pos[0], pos[1] + HEARTH_LIFT_Y_M, pos[2]],
+    emit_pos: [pos[0], pos[1] + HEARTH_LIFT_Y_M, pos[2]],
     fitting_pos: [pos[0], b.y[0], pos[2]],
     intensity: 0.9,
     snuffable: false,

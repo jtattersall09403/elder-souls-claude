@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2c8db52`: 766 tools, 153 reference
-items, 72 pieces in flight.
+so it cannot drift. Generated at `f71088d`: 766 tools, 153 reference
+items, 71 pieces in flight.
 
-Its purpose is to stop 72+ concurrent agents each paying separately to discover the
+Its purpose is to stop 71+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1102,13 +1102,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `PLAYABILITY` | measuring | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
+| `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-27` | done |  | `orchestration/status/W1-27.json` `tools/coherence/w1-27-coherence.mjs` `tools/coherence/w1-27-loot-consumption.mjs` `tools/coherence/w1-27-chart.mjs` `tools/world/build-property.mjs` `reports/w1-27/RULING.md` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
-| `W1-20` | building | refusals in voice (faction-refusals.json + Engine.factionRefusal) then the probe | `orchestration/status/W1-20.json` `game/data/quests/faction-joining-wave1.json` `game/data/quests/hooks.json` `game/data/crime/sanction.json` `game/src/sim/crime/sanction.js` `game/data/index.json` |
 | `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |

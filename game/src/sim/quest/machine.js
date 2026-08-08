@@ -492,7 +492,19 @@ export class QuestEngine {
     }
     const ctx = this.context();
     const c = canOffer(def, ctx, this.gates);
-    if (!c.offerable) return { ok: false, reason: c.why.join('; '), gate: c.gate };
+    if (!c.offerable) {
+      // W1-20, RI-QST03 §C. The refusal is spoken by the person refusing, not returned as a
+      // semicolon-joined debug string. `c.gate` is the four-part evaluation gate.js has always
+      // produced; `refusalVoice` (installed by the Engine) turns it into the recruiter's own
+      // words and puts them on the shipped toast channel. It is installed rather than imported so
+      // that a QuestEngine built without an Engine — every quest tool in tools/quests/ — still
+      // refuses exactly as before and simply says nothing.
+      let said = null;
+      if (c.gate && this.refusalVoice) {
+        try { said = this.refusalVoice(def.rank_gate.faction, c.gate); } catch { said = null; }
+      }
+      return { ok: false, reason: c.why.join('; '), gate: c.gate, said: (said && said.said) || null, voice: said || null };
+    }
     this.rec(id, true).opened = true;
     const first = (def.journal || []).filter((e) => e.state === 'active' && e.index >= 10).map((e) => e.index).sort((a, b) => a - b)[0];
     if (first == null) throw new Error(`${id}: no active journal entry at index >= 10 to open with (RI-QST04 §B)`);
