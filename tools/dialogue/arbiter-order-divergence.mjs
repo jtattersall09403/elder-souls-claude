@@ -18,14 +18,16 @@
 // WHAT IT MEASURES, and why it is not `critic-semantics.mjs` again.
 //
 //   1. DIVERGENCE, exactly, over a player space read out of the corpus rather than assumed.
-//      `critic-semantics.mjs` inherits `answer-census.mjs PLAYERS` — four characters whose
-//      upbringings (`marsh`/`town`/`legion`/`coast`) are not in the canonical roster and make
-//      `character/reaction.js raceTerm()` throw, six of ten races untested, and no disposition
-//      above 70 so the seven `d:80` infos are invisible. Its 52/75,948 is a floor taken over
-//      impossible people. This tool enumerates every race, every canonical upbringing, one
-//      representative disposition per authored `d` threshold, and every subset of the authored
-//      knowledge flags — exactly, by grouping identical admissibility masks rather than by
-//      iterating 71,680 players against 347 speakers.
+//      `critic-semantics.mjs` inherits `answer-census.mjs PLAYERS`, and when W1-17-r1 published
+//      52/75,948 that fixture was four characters whose upbringings (`marsh`/`town`/`legion`/
+//      `coast`) are not in the canonical roster and make `character/reaction.js raceTerm()`
+//      throw, with six of ten races untested and no disposition above 70, so the seven `d:80`
+//      infos were invisible to it. (The fixture was repaired at `9aeb839`, after that verdict;
+//      it is ten canonical characters now, and section B below reports whatever is on disk.)
+//      A fixture is still a sample. This tool enumerates every race, every canonical upbringing,
+//      one representative disposition per authored `d` threshold, and every subset of the
+//      authored knowledge flags — exactly, by grouping identical admissibility masks rather
+//      than by iterating 71,680 players against 347 speakers.
 //
 //   2. ORDER-DEPENDENCE. Under `RI-DLG01` §A authored order decides *every* resolution; under
 //      the shipped rule it decides only ties. The tool reports the tie mass, and separately
@@ -121,13 +123,14 @@ function enumeratePlayers(axes) {
 // so we compute each once, dedupe with a multiplicity, and cross the two small sets. That is
 // exact, and it is what makes a 71,680-player space affordable at all.
 // ---------------------------------------------------------------------------------------------
-function analyse(docs, npcs, players, { orderPermuted = false } = {}) {
+function analyse(docs, npcs, players) {
   const idx = buildTopicIndex(docs);
   const topicIds = [...new Set(docs.flatMap((d) => (d.topics || []).filter((t) => t && typeof t.id === 'string').map((t) => t.id)))].sort();
 
   let resolutions = 0, diverged = 0, ties = 0, orderSensitive = 0;
   const divergentPairs = new Set();      // "<topic>|<speaker>" — measure-free: order/weight independent
   const divergentTopics = new Set();
+  const tieTopics = new Set(), orderSensitiveTopics = new Set();
   const examples = [];
   const heardScore = new Set(), heardOrder = new Set();
   const infoTotal = new Set();
@@ -137,11 +140,14 @@ function analyse(docs, npcs, players, { orderPermuted = false } = {}) {
     const t = idx.get(topicKey(tid));
     if (!t) continue;
     const n = t.infos.length;
-    if (n === 0 || n > 30) continue;   // >30 would overflow the bitmask; none exist, asserted below
+    if (n === 0) continue;
+    if (n > 30) throw new Error(`topic ${t.id} has ${n} infos; the bitmask holds 30. Widen it rather than skipping.`);
 
-    // Reordered view, used to answer "would a permutation of authored order move any answer?".
+    // Authored order, and one permutation of it. The permutation is how we answer the question
+    // `order-infos --write` was supposed to answer and could not: under the rule that actually
+    // runs, does authored order decide anything at all?
     const perm = t.infos.map((_, i) => i);
-    if (orderPermuted) perm.reverse();
+    const permRev = perm.slice().reverse();
 
     // --- player-side masks, deduped
     const pMask = new Map();  // mask -> count
@@ -189,10 +195,16 @@ function analyse(docs, npcs, players, { orderPermuted = false } = {}) {
           if (sc[i] > bestScore) { bestScore = sc[i]; best = i; nTop = 1; }
           else if (sc[i] === bestScore) nTop++;
         }
+        // the same shipped rule, over a REVERSED authored order. If this differs, authored order
+        // is load-bearing for the running engine at this resolution; if it never differs, a tool
+        // that only reorders infos cannot change one answer, whatever it does.
+        let bestRev = -1, bestRevScore = -Infinity;
+        for (const i of permRev) if (m & (1 << i)) if (sc[i] > bestRevScore) { bestRevScore = sc[i]; bestRev = i; }
         // RI-DLG01 §A rule: the first admissible entry in authored order, full stop
         let first = -1;
         for (const i of perm) if (m & (1 << i)) { first = i; break; }
-        if (nTop > 1) ties += weight;
+        if (nTop > 1) { ties += weight; tieTopics.add(t.id); }
+        if (t.infos[best].x !== t.infos[bestRev].x) { orderSensitive += weight; orderSensitiveTopics.add(t.id); }
         heardScore.add(`${t.id}#${best}`);
         heardOrder.add(`${t.id}#${first}`);
         if (t.infos[best].x !== t.infos[first].x) {

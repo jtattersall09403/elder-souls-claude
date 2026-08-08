@@ -4,20 +4,41 @@
   "piece": "W1-26",
   "round": 2,
   "state": "running",
-  "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only",
+  "started_at": "2026-08-08T01:48:58Z",
+  "build_commit": "d30a3de",
+  "next_step": "finish the live P10 confirmation of the race soft-lock; run journey-run.mjs for RI-JRN01; state RI-EXP01's unmeasurable points; write the verdict",
   "files_touched": [
-    "orchestration/status/critic-w1-26.json"
+    "orchestration/status/critic-w1-26.json",
+    "tools/journey/opening-play.mjs",
+    "tools/journey/census-newgame.mjs",
+    "reports/journeys/w1-26-r2-play.json",
+    "reports/journeys/w1-26-r2-jrn09.json",
+    "reports/journeys/w1-26-r2-census-newgame.json",
+    "docs/shots/2026-08-08-w1-26-r2-01-title-first-launch.png",
+    "docs/shots/2026-08-08-w1-26-r2-02-hold-first-frame.png",
+    "docs/shots/2026-08-08-w1-26-r2-03-first-exchange.png"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-26-r2.md",
     "corpus/90-verdicts/wave1/W1-26-r2.json",
     "orchestration/status/critic-w1-26.json",
-    "tools/journey/",
+    "tools/journey/opening-play.mjs",
+    "tools/journey/census-newgame.mjs",
+    "reports/journeys/w1-26-r2-play.json",
+    "reports/journeys/w1-26-r2-jrn09.json",
+    "reports/journeys/w1-26-r2-census-newgame.json",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "notes": [
-    "contention --gate returned WAIT at start (3 browser instances, load 4.83/core vs ceiling 4.0). Will prefer tools/capture pooled daemon; if I launch a browser I will say so here."
+  "redundant_with": ["W1-26-r2"],
+  "contention": "Proceeded past `contention.mjs --gate` exit 3, and saying so per rule 21. The gate reported WAIT for the whole session (3-4 browser instances, load 19-25 over 4 cores against a 4.0/core ceiling). This piece is NEXT-DISPATCH.md §P's binding gate and its headline question cannot be answered without stepping the simulation through real input, which the pooled capture daemon cannot do (it places, it does not play). ONE browser at a time, 640x360, never two of mine concurrently.",
+  "findings": [
+    "MEASURED, and it is the round's headline: the opening CANNOT BE FINISHED by a player. `Engine._titleApply('new')` — the path the title's `New` row takes — calls `censusBegin({})` with no options. `Census.spec.race` is only ever set by `census.observe(race)`, which is only ever called from `censusBegin` when `opts.race` is present. At `writ.race-observed` the census throws `race must be observed before the scene reaches the desk`. Every probe in the tree opens the scene with `censusBegin({race:'...'})`; the player's path supplies nothing. Proved node-side with tools/journey/census-newgame.mjs: the player's walk stops at writ.race-observed, the harness's walk completes, and the two differ by exactly one field.",
+    "The throw is CAUGHT by `_censusApplyPending()` and shown to the player as the scribe's refusal (`census_refused`), so this is a SOFT-LOCK with an engine error string presented as dialogue, not a crash.",
+    "RAN THE ITEM'S OWN TOOL (RI-JRN09 is runnable today by design): tools/harness/jrn09-exchange.mjs at HEAD d30a3de exits 1 with HARD FAIL HF1 — DTR 0.000 at hold.out. DTR_q 1.0000, DTR_scene 0.9820, AC 6 of 7, NAMED_distinct 14 of 14, naming line drawn 232/232. The builder's status records DTR_scene 1.0000 from the same tool; at HEAD it is 0.9820 with HF1 firing.",
+    "THE CAUSE, and it is the O6 fix eating the best line in the barge hold: `hold.out` is the second hand-back node (`resume_by: 'walk'`). The commit that answers the hatch-name closes the surface and hands control back, so the two strings the model computes at that node are drawn zero times — Jeeh-Ei's own line ('Go up. The light is bad but it is light...') is NEVER drawn anywhere, and her reply to the name you just typed ('Silence-Under-Salt. I will not say it again where they can hear it...') is carried forward and drawn one node later, in the WRIT HOUSE, above a different speaker. That reply is the build's only instance of MW/EXCHANGE row 1, 'Jiub repeats it and remarks on it'.",
+    "PLAYED IT, through real DOM input only, in play mode with no query string (tools/journey/opening-play.mjs): 9 of 9 — title drawn and driven by key, `New` puts a body in the barge hold with Jeeh-Ei present, held movement keys move the body 12.80 m, nothing asks anything while you walk, pressing `interact` beside her opens the scene at hold.hatch-name, and a typed hatch-name is taken. The opening IS playable up to the companionway.",
+    "CONDITIONS: play mode delivered 1.53 sim fps at the title and 3.30 sim fps in world at 640x360 under loadavg 19.9-25.6 on 4 cores with 3-4 other agents' browsers resident. Reported as a condition, not as a build number: a 60 s real-input wander was not affordable, so O6's threshold was verified structurally plus 4 s empirically and is NOT claimed as met through real input.",
+    "The r2 builder ADDED a tutorial sentence to writ.stamp (commit e7ed252 vs its parent): 'Past it, no one tells you a thing you have not asked for. So ask them what they do, and what is being said here.' It is diegetic and well written and it is still the game explaining its central verb, on the one path this piece owns that says the world does not explain itself."
   ]
 }

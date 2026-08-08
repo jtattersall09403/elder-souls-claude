@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9aeb839`: 584 tools, 153 reference
+so it cannot drift. Generated at `6ff493f`: 586 tools, 153 reference
 items, 44 pieces in flight.
 
 Its purpose is to stop 44+ concurrent agents each paying separately to discover the
@@ -577,8 +577,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/stealth/` — 2
+### `tools/stealth/` — 3
 
+- `tools/stealth/critic-w1-15-r3-dtf2x2.mjs` — the 2x2 that RULES.md rule 6 (rewritten this session) asks for and that the round's own delete-the-fix did not run.
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
@@ -620,7 +621,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 98
+### `tools/world/` — 99
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -692,6 +693,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/reachability-walk.mjs` — **no header comment**
 - `tools/world/region-axes.mjs` — **no header comment**
 - `tools/world/region-dispersion.mjs` — **no header comment**
+- `tools/world/road-join-deletefix.mjs` — **no header comment**
 - `tools/world/road-through-building.mjs` — **no header comment**
 - `tools/world/road-water-audit.mjs` — **no header comment**
 - `tools/world/scale-audit.mjs` — **no header comment**
@@ -722,7 +724,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **129 tools have no header comment**, so nobody can tell what they do without
+> **130 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -896,6 +898,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-14-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then attack A-G | `orchestration/status/critic-w1-14-r3.json` |
+| `critic-w1-26` | running | finish the live P10 confirmation of the race soft-lock; run journey-run.mjs for RI-JRN01;  | `orchestration/status/critic-w1-26.json` `tools/journey/opening-play.mjs` `tools/journey/census-newgame.mjs` `reports/journeys/w1-26-r2-play.json` `reports/journeys/w1-26-r2-jrn09.json` `reports/journeys/w1-26-r2-census-newgame.json` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2: pack rendering to reports/packs/w1-22-r3-hard; then spawn FRESH judge (rule 2 | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/w1-22-critic/r2/` `reports/w1-22-critic/r2/bands.json` |
 | `W1-17-r2` | building | read RULES/INDEX/verdict/r1 status; then reproduce the 133 unhearable count from a tool | `orchestration/status/W1-17-r2.json` |
@@ -910,8 +914,6 @@ work is the difference between resuming and starting over.
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
-| `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
-| `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/world/property/archon.json` `game/data/world/property/blackrose.json` |
 | `W1-17` | partial | (1) the twelve RI-DLG06 misses voice-metrics.mjs now reports — mudborn and legionary have  | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` `game/data/dialogue/topics/10-global.json` `game/data/dialogue/topics/20-tier-a.json` |
 | `critic-w1-12` | done | none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A | `orchestration/status/critic-w1-12.json` `corpus/90-verdicts/wave1/W1-12-r1.md` `corpus/90-verdicts/wave1/W1-12-r1.json` `tools/combat/critic-w1-12-census.mjs` `tools/combat/critic-w1-12-s22.mjs` `tools/combat/critic-w1-12-chart.mjs` |

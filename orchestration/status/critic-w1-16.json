@@ -1,20 +1,74 @@
 {
   "task_id": "critic-w1-16",
   "role": "critic",
-  "piece": "W1-16 round 2 — progression and encumbrance",
-  "started_at": "2026-08-08T00:00:00Z",
-  "state": "reading",
-  "next_step": "read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G",
-  "notes": [
-    "contention --gate returned WAIT at start (9 instances, load 4.70/core). Doing offline work first."
+  "piece": "W1-16 round 2 — progression and encumbrance (never judged before)",
+  "started_at": "2026-08-08T01:55:00Z",
+  "finished_at": "2026-08-08T02:40:00Z",
+  "state": "complete",
+  "verdict": "FAIL, 3/10 min-over-axes against a 7.0 wave-1 gate",
+  "git_at_start": "5d88b7e",
+  "git_at_measure": "5d88b7e (working tree dirty throughout; 13 agents in flight)",
+  "next_step": "none — verdict filed at corpus/90-verdicts/wave1/W1-16-r2.md/.json",
+
+  "contention": "node tools/contention.mjs --gate returned exit 3 (WAIT) at the start (9 instances, load 4.70/core) and again at the end. I did the whole offline half first (a Node-side instrument against the real Engine.prototype methods, no browser). The gate returned exit 0 (GO — 5 instances, load 3.96/core) before any stepping work, and ONE browser was launched and kept for the whole stepping run, relaunched between probe batches by tools/lib/browser.mjs but never two at once. The screenshot went through the pooled capture daemon (tools/capture/), not a browser of my own. NO TIMING FIGURE APPEARS IN THE VERDICT: every number in it is a fixed-step f@60 frame count, a kilogram, a percentage or a metre covered over a declared frame count, none of which contention can move.",
+
+  "reproduced": [
+    "THE ROUND'S CENTRAL CLAIM, CONFIRMED. __breakW116('producer,slots') restores the pre-round world exactly: equipLoadPct sits at the hardcoded 24.0 with 28.3 kg of armour on, and the roll is 26 i-frames / 22 recovery / 52 total / LIGHT before and after. With the fix the same armour gives 38.767123% / MEDIUM / 22 / 34 / 60. Run in BOTH orders (cut-first and fix-first); identical both ways.",
+    "THE ANTI-MERGE CHECK, CONFIRMED INDEPENDENTLY (item B). 460 kg of mauls in the pack: burden 0 -> 2.520548 (IMMOBILE), equip load 0.00% unchanged, roll byte-identical at 26 i-frames / window [5,30] / 22 recovery / 52 total / LIGHT. Offline, against the shipped methods: the two divisors differ by exactly 2.5x and doubling the pack moves burden and leaves the equip ratio bit-identical.",
+    "THE LADDER, CONFIRMED BY ROLLING (item A). 13 loads at 15 / 29.99 / 30.00 / 30.01 / 50 / 69.99 / 70.00 / 70.01 / 85 / 99.99 / 100.00 / 100.01 / 120. Every row matches RI-CMB01 §B to the frame; exactly three cliffs, at 30.00->30.01, 70.00->70.01, 100.00->100.01; i-frames one contiguous run in every tier; every row exactly 2 x its t@30 reference; every roll.json ms column is the 60 Hz reading, not the 30 Hz one.",
+    "THE PIN (item D). All four load paths verified — named state, saveRoundTrip(), writeSave()->readSave(), exportSave()->importSave(). Every one leaves the producer running: undressing after the load moves 20.410959% -> 7.945206%.",
+    "setBurden's PIN (item G/Q1). Set 0.95, stepped 180 f@60, still 0.95, source 'pinned by setBurden()'.",
+    "SPRINT DENIAL OUTLIVES THE PRESS FRAME (item G/Q2). Button held from before the transition: unburdened 11.667 m after it, overladen 5.398 m."
   ],
-  "files_touched": ["orchestration/status/critic-w1-16.json"],
+
+  "gaps_found": [
+    "BIGGEST GAP — the producer cannot see the thing in your hands. RI-PRG07 §2's formula is 'weight of equipped WEAPONS, SHIELDS, armour, talismans / maxLoad'; _recomputeEquipLoad() sums sim.inventory rows carrying a `slot` and nothing else. Measured live: a character holding ssw_garrison_sword + marsh_oak_medium reads 0.00%; setLoadout({weapon:'ultra-greatsword'}) — equip_weight 20, the heaviest class the game declares — leaves the ratio at 15.753425%, unchanged to six decimals. weapons/classes.json ships an equip_weight column on all 15 classes and NOTHING in game/src reads it.",
+    "TWO PARALLEL EQUIP MODELS (RULES #10). Equipping a bog-iron-maul lands it in the inventory `right` slot and adds 11.5 kg to the ratio, and leaves combat.player.weapon at ssw_garrison_sword. The hand that is weighed and the hand that swings are different objects. Same shape the round found for sprint and missed for the weapon.",
+    "MEDIUM IS ALSO UNREACHABLE BY DRESSING (sharpens item C). The heaviest legal object in every wearable slot — chest 9.1 + legs 5.8 + head 0.6 + feet 1.1 + waist 0.2 — is 16.8 kg = 23.01% of the base sheet: LIGHT. carried.json declares only five wearable slots, no shield row and no talisman. Three of RI-CMB01's four tiers are reachable only through a harness pin.",
+    "CENSUS INCOMPLETE (item E). Two parameters the 26-row census does not enumerate, both on the equip-load side it reported as fully coupled: (1) weapons/classes.json equip_weight, 15 rows, no reader; (2) RI-CMB01 §B's 'OVERLOADED additionally forbids sprinting' — measured absent, 10.000 m and 18 stamina over 120 f@60 holding sprint at LIGHT, HEAVY and OVERLOADED alike, against 6.400 m with the button up. The jump-attack half of the same sentence does have a reader.",
+    "THE FEATHER CLAIM IS FALSE. _recomputeEquipLoad()'s own header says it 'applies its result as a DELTA rather than an assignment, so the feather effect's own additive offset survives untouched'. On the FIRST engagement after a scenario boundary _equipLoadBase is null, so `prev` is read off the body — which already carries the offset — and the delta collapses to an assignment. Demonstrated offline against the real Engine.prototype method: a -10 offset is destroyed by the first equip, and the spell's own _undo then subtracts it again, leaving the load 10 points wrong permanently. 21 of the 49 shipped named states begin with nothing equipped and are therefore exposed. NOT demonstrated live: attunement refused ('not_attuned') on both states I tried even with WILLPOWER 70 and every magic skill at 100, and I ran out of budget before chasing the attunement gate. Reported as offline-only.",
+    "CROSS-PIECE, NOT W1-16's: save/fight.js's SKIP set does not list `ai`, so saveActor(ctl) serialises the live SoulsAI as a plain object and loadActor assigns it back over the instance. After any save/load with a hostile on the floor the first fixed step throws `this.ai.step is not a function`. Measured on arena_duel via saveRoundTrip(). It kills every stepping probe after a load while boot-check stays green. Also: saveRoundTrip() reports hash_equal:false on every state I tried."
+  ],
+
+  "method_deviations": [
+    "Wrote my own instruments rather than only re-running the builder's, per RULES #22/#23. Both are in the tree and both go red on demand: tools/harness/critic-w1-16-offline.mjs --selftest fails all nine checks, and tools/harness/critic-w1-16-live.mjs exits non-zero on any uncoupled probe.",
+    "I ALMOST SHIPPED A VACUOUS ARM. The first version of the pin probe called engine.readSave()/writeSave() synchronously; both are async (IndexedDB), so the probe read the world back before the load had run and recorded a pass for a load that never happened — the same inert-control shape this project has shipped three times. Caught because two OTHER arms on the same run threw and that one did not. The arm is async now and reports what each verb returned.",
+    "RI-CMB01 M2 (the i-frame hit-offset sweep), M3 (root motion) and M4 (uncancellability) were NOT re-measured. They belong to W1-09/W1-10 and are not what this progression round changed; I verified the SHAPE the rules demand (combat/actor.js:201 is `f >= m.iframes[0] && f <= m.iframes[1]`, a frame window evaluated every fixed step, not a flag or a timer) and the i-frame run's contiguity at all four tiers.",
+    "RI-PRG07 method 7 (Shell-Warden viability, 200 boss sims in plate) is recorded UNMEASURABLE and excluded from the min rather than scored 0: no legal character can wear the loadout it names, so the method cannot be run by any wave until item content exists.",
+    "I ran git commit as my dispatch instructed, which departs from RULES #28's older reading and follows its current one: `git commit --only <declared paths>`, after `node tools/ownership.mjs --staged critic-w1-16`."
+  ],
+
+  "gates_run": "boot-check, check-data, check-content, check-quests — all green at 5d88b7e. The builder's own probe re-run for census+separation: 26 parameters / 4 unread / exit 12, reproduced exactly.",
+
+  "files_touched": [
+    "orchestration/status/critic-w1-16.json",
+    "corpus/90-verdicts/wave1/W1-16-r2.md",
+    "corpus/90-verdicts/wave1/W1-16-r2.json",
+    "tools/harness/critic-w1-16-offline.mjs",
+    "tools/harness/critic-w1-16-live.mjs",
+    "reports/w1-16/critic-offline.json",
+    "reports/w1-16/critic-live.json",
+    "reports/w1-16/critic-live2.json",
+    "reports/w1-16/critic-live3.json",
+    "reports/w1-16/critic-live-pin.json",
+    "reports/w1-16/critic-live-spell.json",
+    "reports/w1-16/critic-repro-builder.json",
+    "docs/shots/2026-08-08-critic-w1-16-r2-greatshield-and-ultra-greatsword-weigh-nothing.png",
+    "reports/blog-feed.jsonl"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-16-r2.md",
     "corpus/90-verdicts/wave1/W1-16-r2.json",
     "orchestration/status/critic-w1-16.json",
-    "tools/harness/critic-w1-16-*",
+    "tools/harness/critic-w1-16-offline.mjs",
+    "tools/harness/critic-w1-16-live.mjs",
+    "reports/w1-16/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-16"],
+  "redundant_note": "reports/w1-16/ is the builder's directory and I write only files prefixed `critic-` inside it; docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces every piece writes. I edited NO file under game/.",
+  "notes": [
+    "No game/ source was edited. Every claim in the verdict is a measurement I took, not a source read, except where the verdict says otherwise in as many words."
   ]
 }

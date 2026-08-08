@@ -132,6 +132,19 @@ casualty** and there may be others. Rule 10 exists for exactly this shape (two i
 one system, one good and one broken, live at the same time). If your piece denies, gates or
 throttles an action, check which of the two paths actually carries it.
 
+**Q4. `engine.spawn` ignores `opts.side`, so a summoned creature spawns hostile and fights its own
+caster.** Found by W1-14 r3, which did not touch it because it lives in W1-12/W1-03 files.
+`frenzy`'s `hostileTo` has no reader anywhere either. Any measurement of a summon's usefulness taken
+before this is fixed is a measurement of a spell that attacks you.
+
+**Q5. The magic census had been turning one dial of three.** `duration_s` was pinned at 20 and
+`area_r_m` at **0** on all 55 rows, so two of the three dials Morrowind's spell system is built out
+of had never been perturbed by anything in this project. 104 dials are declared; 23 are still dead
+after round 3, and the six duration-blind ones are the real gap — "Fire Damage 10 pts for 5 s"
+should tick per second, and duration currently only sets how long an unread lease row sits in
+`M.active`. If your piece quotes a magic number taken from the old census, it was taken with two
+dials held still.
+
 **Q3, related and not yet acted on.** `combat.player.equipLoadPct` — the input to RI-CMB01's whole
 roll ladder — had no producer at all until this round: three writers, one of them a hardcoded
 `24.0`. Any roll measurement taken against a load tier before this round was taken against 24%

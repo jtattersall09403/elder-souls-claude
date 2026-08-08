@@ -48,14 +48,23 @@ const has = (f) => argv.includes(f);
 const argOf = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
 const falsify = argOf('--falsify');
 const WITH_NOTE = has('--questnote');
+// The purse. `mainline-chain-floor.mjs` declares 2500 and buys gates with it; the browser chain
+// arm inherits whatever the named state and the rewards leave in the character's hand. A headless
+// sim has neither, so a resolution priced in gold is unreachable here and this tool under-claims
+// unless a purse is named. Held constant across all four arms.
+const PURSE = argOf('--purse') == null ? 0 : Number(argOf('--purse'));
 
 // RULE 4 / RI-MTH07. This tool must not be able to hand the character a `know:` flag. Asserted
 // against its own bytes, the way the builder's browser tools assert against theirs.
 {
   const self = fs.readFileSync(url.fileURLToPath(import.meta.url), 'utf8');
-  const body = self.split('// ---- PROHIBITION CHECK ENDS')[1] || '';
-  for (const bad of ['.reveal(', '.setFlag(', 'setWorldKnowledge', 'questReveal']) {
-    if (body.includes(bad)) { console.error(`critic-chain-headless: this tool names ${bad}; that is the hand-feed it exists to avoid.`); process.exit(2); }
+  // The marker is assembled rather than written out, so that this block's own mention of it does
+  // not become the split point and hand the check its own source to scan.
+  const parts = self.split('// ---- PROHIBITION' + ' CHECK ENDS');
+  const body = parts[parts.length - 1] || '';
+  // Call-shaped only: the report below NAMES these verbs in a string, which is not calling them.
+  for (const bad of [/\bqe\s*\.\s*reveal\s*\(/, /\bqe\s*\.\s*setFlag\s*\(/, /\bsetWorldKnowledge\s*\(/, /\bquestReveal\s*\(/, /\bqe\s*\.\s*takeBranch\s*\(/]) {
+    if (bad.test(body)) { console.error(`critic-chain-headless: this tool calls ${bad}; that is the hand-feed it exists to avoid.`); process.exit(2); }
   }
 }
 // ---- PROHIBITION CHECK ENDS
@@ -104,16 +113,18 @@ const markIds = new Set((marksDoc.marks || []).filter((m) => m && m.id && m.at &
 
 const freshSim = () => ({
   frame: 0, env: { dayCount: 0, region: 'test' }, world: { npcsDead: [] }, inventory: [],
-  progression: { attributes: {}, skills: {} }, magic: null,
+  progression: { attributes: {}, skills: {}, gold: PURSE }, magic: null,
   quest: { quests: {}, flags: {}, journal: [], topicsKnown: [], completed: [], factions: {}, dispositions: {}, booksRead: [] },
 });
 
 const book = new QuestBook(allDefs);
 const routeIndex = buildRevealRoutes(allDefs);
 
-const ORDER = mainline
-  ? [...mainline.acts.flatMap((a) => a.quests), ...mainline.aftermath.quests].filter((id) => defById.has(id))
-  : [...defById.keys()].filter((k) => /^Q-MAIN-\d+$/.test(k)).sort((a, b) => Number(a.slice(7)) - Number(b.slice(7)));
+// Every Q-MAIN-nn in numeric order — the SAME set `document-route-world --chain` walks, so its
+// "of 32" and this tool's "of 32" are the same denominator. `mainline.json`'s acts+aftermath is
+// 29 and would have quietly made the two numbers incomparable.
+void mainline;
+const ORDER = [...defById.keys()].filter((k) => /^Q-MAIN-\d+$/.test(k)).sort((a, b) => Number(a.slice(7)) - Number(b.slice(7)));
 
 // What a quest's demanded reveals name, split by what a body would have to do about it.
 const needsOf = (def) => {
@@ -139,18 +150,32 @@ const playArm = (mode) => {
   qe.bookKnowledge = falsify === 'no-books' ? new Map() : bookKnowledgeIndex();
   qe.revealRoutes = falsify === 'no-router' ? new Map() : routeIndex;
   const done = [], read = [], looked = [];
-  let stop = null, topicsGranted = 0;
+  let stop = null, topicsGranted = 0, dispGranted = 0;
   for (const qid of ORDER) {
     const def = defById.get(qid);
     let o = qe.open(qid);
-    if (!(o && o.ok)) {
+    // ---- THE OFFER GATE IS NOT UNDER TEST, and it is opened in EVERY arm identically.
+    // Two refusals are answered and no third:
+    //   * a topic the character has not heard — granted, exactly as `document-route-world
+    //     --chain` grants it, because whether THIS character would be offered the quest is
+    //     mainline-findability's question;
+    //   * a standing the character has not earned. A headless sim has no disposition model at
+    //     all, so every giver reads 0; the browser tools get theirs from the world (and
+    //     `mainline-chain-floor` buys the rest with a purse and six persuasion attempts). Rather
+    //     than pretend, the giver's own `disposition_min` is granted verbatim when the gate names
+    //     it. This is a GRANT and it is why this tool's number is an upper bound on the gate side.
+    for (let pass = 0; pass < 3 && !(o && o.ok); pass++) {
       const why = String((o && (o.reason || (o.why || []).join('; '))) || '');
-      const m = why.match(/topic "([^"]+)"/g) || [];
-      const wanted = [def.opens_by && def.opens_by.topic, ...((def.opens_by && def.opens_by.prerequisite_topics) || [])].filter(Boolean);
-      if (m.length || /topic/.test(why)) {
-        for (const t of wanted) if (!sim.quest.topicsKnown.includes(t)) { sim.quest.topicsKnown.push(t); topicsGranted++; }
-        o = qe.open(qid);
+      let moved = false;
+      if (/topic/.test(why)) {
+        for (const t of [def.opens_by && def.opens_by.topic, ...((def.opens_by && def.opens_by.prerequisite_topics) || [])].filter(Boolean)) {
+          if (!sim.quest.topicsKnown.includes(t)) { sim.quest.topicsKnown.push(t); topicsGranted++; moved = true; }
+        }
       }
+      const dm = why.match(/(\S+) disposition (-?\d+)\/(-?\d+)/);
+      if (dm) { sim.quest.dispositions[dm[1]] = Number(dm[3]); dispGranted++; moved = true; }
+      if (!moved) break;
+      o = qe.open(qid);
     }
     if (!(o && o.ok)) { stop = { quest: qid, phase: 'offer', why: String((o && (o.reason || (o.why || []).join('; ')))) }; break; }
     const need = needsOf(def);
@@ -165,7 +190,7 @@ const playArm = (mode) => {
     if (!(res && res.ok)) { stop = { quest: qid, phase: 'resolve', why: String(res && (res.reason || (res.why || []).join('; '))) }; break; }
     done.push(`${qid}/${pick.id}`);
   }
-  return { completed: done.length, of: ORDER.length, chain: done, documents_read: read.length, marks_looked_at: looked.length, topics_granted: topicsGranted, stopped_at: stop };
+  return { completed: done.length, of: ORDER.length, chain: done, documents_read: read.length, marks_looked_at: looked.length, topics_granted: topicsGranted, dispositions_granted: dispGranted, stopped_at: stop };
 };
 
 const MODES = ['neither', 'reading_only', 'looking_only', 'reading_and_looking'];
@@ -194,8 +219,9 @@ const report = {
   commit: (() => { try { return execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch { return null; } })(),
   taken_at: new Date().toISOString(),
   questnote_hand_feed: WITH_NOTE,
+  purse: PURSE,
   falsify: falsify || null,
-  declared_grants: ['the opening topic when the offer gate names one', "learnFrom('person') for every person source (held constant in all arms)"],
+  declared_grants: ["the opening topic when the offer gate names one", "the giver disposition_min when the offer gate names it", "learnFrom(person) for every person source (held constant in all arms)"],
   prohibited: ['reveal()', 'setFlag()', 'setWorldKnowledge'],
   limits: 'gate-side only: no body, no presses, presenceMode=off. The world-side proof is mark-route-world / document-route-world.',
   arms,
@@ -204,7 +230,7 @@ const report = {
 if (has('--json')) console.log(JSON.stringify(report, null, 2));
 else {
   console.log(`\ncritic-chain-headless — the main line through the real QuestEngine, no browser`);
-  console.log(`  commit ${report.commit}   questNote hand-feed: ${WITH_NOTE ? 'ON' : 'off'}${falsify ? `   --falsify ${falsify}` : ''}\n`);
+  console.log(`  commit ${report.commit}   questNote hand-feed: ${WITH_NOTE ? 'ON' : 'off'}   purse ${PURSE}g${falsify ? `   --falsify ${falsify}` : ''}\n`);
   for (const m of MODES) {
     const v = arms[m];
     console.log(`  ${m.padEnd(20)} ${String(v.completed).padStart(2)} of ${v.of}`);
