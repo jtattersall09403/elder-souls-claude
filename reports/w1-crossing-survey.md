@@ -212,26 +212,38 @@ with a count."** The fixed walker does not leave the road on its own (1.39 m wor
 and resumes the walk for 4,000 frames each time; a regain is the engine's own counter — back inside
 3.5 m of the road it was following — not this file's opinion.
 
-**With the fix in: 2 recovered of 10 shoves — and the split is entirely by terrain.**
+**The result, and it is a FAILED check — `C5-REGAIN` is red in the artifact and it should be.**
 
-| shove | where | regained |
-|---|---|---|
-| 1 | (2204.6, 862.5), the flat out of Stormhold | **yes** |
-| 2 | (2232.7, 1039.5), still on the flat | **yes** |
-| 3 | (2173.5, 1163.3), the foot of the Valus Ridge climb | no |
-| 4–10 | all from (2198.5, 1158.8), 39.71 m off, on the ridge skirt | no |
+| | recovered | walked over the ten trials | route points left |
+|---|---|---|---|
+| fixed steering | 2 of 10 | 788.0 m | 505 |
+| pre-fix steering (control) | 2 of 10 | **7,966.3 m** | 502 |
 
-Read this beside §7's `G3-REGAIN`, because it is the same finding arriving from the other
-direction: **on ground the offline census clears, a shoved body walks back onto the road; on the
-Valus Ridge skirt, which the census flags 59 times, it cannot.** The steering fix restores the
-*intent* to return; it cannot make a 70° cut-slope climbable, and it was never going to.
+**Two of ten in both arms. As written, this probe is an INERT CONTROL** — rule 6's second shape,
+and I am naming it rather than presenting the 2 as a pass. The reason is visible in the per-shove
+log: both arms recover both shoves that land on flat ground out of Stormhold, both fail on the
+third, which lands on the Valus Ridge, and from then on the body makes no route progress at all, so
+**shoves 4–10 re-shove one stuck body instead of running seven more trials.** The probe only ever
+had two independent trials and both were on terrain where both steerings work. It cannot tell the
+arms apart and it is not evidence for the fix.
 
-**This probe's own defect, which I am reporting rather than rounding off.** Shoves 4–10 are not
-independent trials: once the body was stuck at (2198.5, 1158.8) it made no route progress, so every
-later shove started from the same place and re-measured the same failure. The honest count is
-**2 of 3 independent trials, and the one that failed failed on the terrain §7 says it should**. A
-correct version of this probe re-places the body on the road after a failed trial so the ten are
-ten. It is a fifteen-minute fix and I did not have the browser budget left; a critic should take it.
+What the same run *does* discriminate, and it is the drowning signature exactly: over the identical
+ten shoves the fixed body walked **788.0 m** and the pre-fix body walked **7,966.3 m** — ten times
+the distance for one route point less of progress. That is the orbit that put 6,459 m on an 1,841 m
+leg, reproduced on demand.
+
+The evidence that the steering fix works is therefore §5's 2×2 (550.1 m against 1,333.0 m, with the
+teardown reproducing the published number and coordinate) and §3's completed crossing (**zero**
+frames off the road over 6.6 km) — **not this probe.** A correct version re-places the body on the
+road after a failed trial so that ten shoves are ten trials, and spaces them over terrain the
+census clears. It is a short fix and I did not have the browser budget left; a critic should take
+it.
+
+**`C2-NULL-IS-SILENT` prints PASS and you should not believe it as printed.** Its bar is
+`max(0.5, noise_floor × 1.5)`, and the noise floor it read was the invalid 4,128.93 m arm below —
+so the bar was 6,193 m and 0.72 m cleared it trivially. The comparison that actually carries C2 is
+0.72 m against 15.65 m in adjacent arms. A green check with a broken bar is the exact failure this
+project keeps finding, and I built one.
 
 **A defect in my own first run, reported rather than buried.** Run 1 put the arms in sequence
 without resetting the body, and the province's hazard attrition carried across them: by the fourth

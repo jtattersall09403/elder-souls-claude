@@ -136,20 +136,21 @@
   "consumption_RI_MTH07": {
     "artifact": "reports/w1-crossing/consumption.json",
     "C1_road_is_read": "moving 17 points of stormhold-helstrom 25 m sideways moved the walking body 15.65 m (track vs track at the same frame). PASS.",
-    "C2_null": "moving a leg the crossing does not use moved the body 0.72 m. The intended noise-floor arm is INVALID in this run (see the flaw below); C2 currently rests on the 22x separation, not on a measured floor.",
+    "C2_null": "PRINTS PASS AND SHOULD NOT BE BELIEVED AS PRINTED. Its bar is max(0.5, noise_floor x 1.5) and the noise floor it read was the invalid 4,128.93 m arm, so the bar was 6,193 m. The comparison that actually carries C2 is 0.72 m against 15.65 m in adjacent arms. I built a green check with a broken bar and am saying so.",
     "C3_bridge_is_read": "a sideways push on the 471 m viaduct is held at 3.35 m from the centreline with the eight spans declared, and reaches 11.04 m \u2014 21.94 m below the deck \u2014 with deck_spans deleted. PASS.",
     "C4_reversible": "restoring the model restores 3.35 m exactly. PASS.",
-    "C5_regain": "a body put 25 m off the road recovered 2 of 10 shoves \u2014 2 of 2 on flat ground and 0 on the Valus Ridge skirt, which is G3-REGAIN arriving from the other direction. Shoves 4-10 were not independent (the body was stuck in one place), so the honest count is 2 of 3 independent trials.",
+    "C5_regain": "FAILED, and correctly. 2 of 10 with the fix in and 2 of 10 with the pre-fix steering restored \u2014 an INERT CONTROL (rule 6's second shape), because both arms recover the two shoves that land on flat ground, both fail on the third, which lands on the Valus Ridge, and the body then makes no route progress so shoves 4-10 re-shove one stuck body. Only two independent trials, both on terrain where both steerings work. NOT evidence for the fix. What the same run does discriminate: over the identical ten shoves the fixed body walked 788.0 m and the pre-fix body walked 7,966.3 m for one route point less of progress \u2014 the orbit that put 6,459 m on an 1,841 m leg, reproduced on demand.",
     "my_own_flaws_found_and_reported": [
       "Run 1 threw: OLD_PURSUE was referenced in the regain arm and never declared in that file.",
       "Run 1 measured P1 by END POSITION, which reads 2.15 m for a 25 m perturbation because a bump that returns to the original line moves the body in the MIDDLE. Now measured track-against-track at the same frame: 15.65 m.",
       "The arms were not independent: hazard attrition carried across them, so by the fourth 400 m walk the body had died and the 'repeat with nothing changed' arm read 4,128.93 m. The tool now pins HP identically in every arm; the shipped artifact's REPEAT arm is invalid and labelled so.",
-      "P3's shoves 4-10 re-measure one stuck body rather than ten trials."
+      "P3's shoves 4-10 re-measure one stuck body rather than ten trials.",
+      "C5-REGAIN as written is an inert control and C2-NULL-IS-SILENT as written has a bar wide enough to pass anything. Both are red-flagged in reports/w1-crossing-survey.md S6 rather than presented as results."
     ]
   },
   "acceptance": {
     "1_worst_grade_every_leg_under_the_limit": "MET, and it was met before I touched anything: worst road gradient 24.27 deg against 40, zero slope-gate refusals on any centreline. The premise that a 57.5 deg road needed fixing was wrong; the number was a slopeAt() reading beside a viaduct.",
-    "2_body_that_leaves_the_road_regains_it": "PARTIALLY MET. 2 of 2 independent trials on ground the census clears; 0 on the Valus Ridge skirt, which the census flags. Over the completed crossing the body spent ZERO frames off the road.",
+    "2_body_that_leaves_the_road_regains_it": "NOT MET AS A COUNT. My regain probe is an inert control (2 of 10 in both arms) and I am not presenting its 2 as a pass. What IS established: over the completed 6,646.7 m crossing the body spent ZERO frames more than 3.5 m from the road; the delete-the-fix 2x2 separates the steerings 550.1 m against 1,333.0 m with the teardown reproducing the published coordinate exactly; and over ten identical shoves the pre-fix steering walked 7,966.3 m to the fixed steering's 788.0 m for the same zero progress. A correct regain count is the one thing this piece owes and did not deliver.",
     "3_completed_crossing_with_three_numbers": "MET. 6,646.7 m, 199,433 frames, 55.398 in-world minutes.",
     "4_consumption": "MET for both models, with four self-reported flaws in my own instrument.",
     "5_delete_the_fix": "MET, run as a 2x2, teardown watched going red and reproducing the published 550.1 m at (2153.7, 1197.8) exactly."
