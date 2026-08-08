@@ -69,14 +69,15 @@ const RUN = (page) => page.evaluate(async () => {
   // the arm reads a number that is this person's rather than the model's default.
   H.setSeed(7); H.loadState('town-blackrose'); H.stepFrames(4); H.loadState('town-blackrose');
   H.setRenderRate(0); H.stepFrames(30);
-  const people = H.listNpcs ? H.listNpcs() : [];
-  const target = people.find((p) => p.id === 'enchanter-blackrose' || /enchanter/.test(String(p.id)));
+  const people = H.listNPCs();
+  const target = people.find((p) => p.eid === 'enchanter-blackrose' || p.id === 'enchanter-blackrose')
+    || people.find((p) => /enchanter/.test(String(p.eid || p.id)));
   out.walk = { town: 'town-blackrose', found: !!target, npc: target ? target.eid : null, name: target ? target.name : null };
   if (!target) return { ...out, fatal: 'no enchanter is standing in Blackrose' };
-  const p0 = H.getPlayerPos ? H.getPlayerPos() : null;
+  const p0 = H.getPlayerStats().pos.slice();
   let walked = null;
-  try { walked = H.walkPath([[target.pos[0], target.pos[2]]], 400); } catch (e) { walked = { error: String(e && e.message) }; }
-  const p1 = H.getPlayerPos ? H.getPlayerPos() : null;
+  try { walked = H.walkPath([[p0[0], p0[2]], [target.pos[0], target.pos[2]]], { speed: 'walk', arrive_m: 1.6 }); } catch (e) { walked = { error: String(e && e.message) }; }
+  const p1 = H.getPlayerStats().pos.slice();
   out.walk.from = p0; out.walk.to = p1;
   out.walk.covered_m = p0 && p1 ? r2(Math.hypot(p1[0] - p0[0], p1[2] - p0[2])) : null;
   out.walk.stopped_short_m = p1 ? r2(Math.hypot(p1[0] - target.pos[0], p1[2] - target.pos[2])) : null;

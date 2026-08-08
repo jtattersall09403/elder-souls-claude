@@ -30,19 +30,26 @@ const specs = [
   {
     name: '2026-08-08-w1-04-r5-walking-out-now-leaves-you-outside',
     claim: 'archon-guild-office, photographed where the body stands one frame after exitInterior(): outside the building, looking back at the wall it came out of. Round 4 photographed this door from inside the room.',
+    // `place` is NOT a coordinate this tool chose. It is the position `tools/world/w1-04-r5-live.mjs`
+    // measured for this door in the shipped arm — `whereAmI().pos` one frame after `exitInterior()`
+    // — and the `ops` drive the same door so the body is genuinely standing here rather than
+    // teleported here. The camera pose in this daemon is built from `place`, so both are needed.
+    place: { x: 3785, z: 3798.8 },
     ops: LEAVE('archon-guild-office'),
     pose: { yaw_deg: 180, pitch_deg: 2, eye_m: 1.7, fov: 85 }, time: 12,
   },
   {
     name: '2026-08-08-w1-04-r5-the-same-doorstep-facing-away',
     claim: 'The same doorstep of archon-guild-office, turned 180 degrees: open town rather than the far wall of a room.',
+    place: { x: 3785, z: 3798.8 },
     ops: LEAVE('archon-guild-office'),
     pose: { yaw_deg: 0, pitch_deg: 2, eye_m: 1.7, fov: 85 }, time: 12,
   },
   {
-    name: '2026-08-08-w1-04-r5-archon-market-inside-after-the-lamp-clamp',
-    claim: 'archon-market from inside, after the lamp clamp: its hearth and lamps are inside these walls. Before this round four of its nine distinct lamps stood outside them.',
-    ops: [['enterInterior', 'archon-market'], ['stepFrames', 240]],
+    name: '2026-08-08-w1-04-r5-blackrose-house-1-lamps-back-inside',
+    claim: 'blackrose-house-1 from inside, after the lamp clamp. Round 4 left six of its eight distinct lamps outside these walls, worst 2.33 m out, and the detection model was reading those positions.',
+    place: { x: 1857.5, z: 4484 },
+    ops: [['enterInterior', 'blackrose-house-1'], ['stepFrames', 90]],
     pose: { yaw_deg: 0, pitch_deg: 0, eye_m: 1.6, fov: 80 }, time: 11,
   },
 ];
