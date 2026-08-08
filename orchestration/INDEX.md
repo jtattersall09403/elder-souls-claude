@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6c54c3b`: 628 tools, 153 reference
+so it cannot drift. Generated at `2032744`: 630 tools, 153 reference
 items, 52 pieces in flight.
 
 Its purpose is to stop 52+ concurrent agents each paying separately to discover the
@@ -254,7 +254,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 208
+### `tools/harness/` — 209
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -364,6 +364,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
 - `tools/harness/critic-w1-16-live.mjs` — W1-16 ROUND-2 CRITIC's stepping instrument.
 - `tools/harness/critic-w1-16-offline.mjs` — W1-16 ROUND-2 CRITIC's own instrument.
+- `tools/harness/critic-w1-16-r3-live.mjs` — W1-16 ROUND-3 CRITIC's stepping instrument.
 - `tools/harness/critic-w1-16-r3-offline.mjs` — W1-16 ROUND-3 CRITIC.
 - `tools/harness/critic-w1-21-r1-shots.mjs` — the W1-21 critic's picture, taken through `tools/capture/`.
 - `tools/harness/critic-w1-21-r1.mjs` — the W1-21 round-1 CRITIC's own instrument.
@@ -630,11 +631,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 3
+### `tools/ui/` — 4
 
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
+- `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
 
 ### `tools/w1-26-r3/` — 1
 

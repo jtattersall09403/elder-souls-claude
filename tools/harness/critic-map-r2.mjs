@@ -538,10 +538,17 @@ async function run(h, brk) {
       q3err !== null || q3 <= 0, 'refused or inert');
 
     // Q4 — the honest half: the model's OWN surface really does refuse to name a place.
-    // The comparison is BEFORE-vs-AFTER, not "zero". My first version asserted `placeCount === 0`
-    // and went red at 1 — because the default start position is inside Lilmoth's own pad, so the
-    // body legitimately stands in a place before anything is attempted. A fixture that mistakes
-    // the spawn point for an attack is how a false finding gets filed.
+    // The comparison is BEFORE-vs-AFTER, not "zero", AND the baseline is taken after stepping.
+    // Two repairs, both of them fixture bugs of mine rather than findings about the build:
+    //   * `placeCount === 0` went red at 1 because the default start position is inside LILMOTH'S
+    //     own pad — the body legitimately stands in a place before anything is attempted.
+    //   * `tryPlaceMapMarker` ends by calling `d.observe(4600, 5200)` to show that surplus
+    //     arguments are ignored. `observe()` then records THE CELL THE BODY IS IN. On a model I
+    //     had just cleared with `restore(null)` and not stepped, that legitimately added Lilmoth,
+    //     which reads exactly like "the marker call worked" and is the opposite of it.
+    // What Q4 must assert is the real property: the REQUESTED place never appears, and nothing
+    // appears that the body is not standing in.
+    step(4);
     const q4Before = sim.discovery.places().slice();
     const marker = H.tryPlaceMapMarker ? H.tryPlaceMapMarker('blackrose') : null;
     const markerWorked = marker && Array.isArray(marker.attempts)
@@ -549,8 +556,9 @@ async function run(h, brk) {
       : [];
     const q4After = sim.discovery.places().slice();
     A('Q4', 'no method ON the model accepts a place — tryPlaceMapMarker tries them all',
-      `attempts=${marker && marker.attempts ? marker.attempts.length : 0}, succeeded=${markerWorked.length}, places [${q4Before.join(',') || 'none'}] -> [${q4After.join(',') || 'none'}]`,
-      markerWorked.length === 0 && q4After.join(',') === q4Before.join(','), 'every attempt refused, the place list unchanged');
+      `attempts=${marker && marker.attempts ? marker.attempts.length : 0}, succeeded=${markerWorked.length}, requested "blackrose" discovered_after=${marker ? marker.discovered_after : 'n/a'}, places [${q4Before.join(',') || 'none'}] -> [${q4After.join(',') || 'none'}]`,
+      markerWorked.length === 0 && q4After.join(',') === q4Before.join(',') && !(marker && marker.discovered_after),
+      'every attempt refused, the requested place absent, the place list unchanged');
 
     // =========================================================================================
     // U — UNDISCOVERED IS UNRENDERED, AT THE RENDERER

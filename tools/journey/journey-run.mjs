@@ -972,25 +972,99 @@ async function driveBeats(handle, o) {
     // RI-JRN09 ES-LEGIBLE/1 evidence and the RI-CHR01 §CONSUMPTION "orphan text" instrument:
     // a question carried in getCensusState() and never drawn is invisible here as a node whose
     // getUIState().text does not contain the question.
+    // THIS LOOP REPRODUCED THE PLAYER'S DEFECT AND THEN SWALLOWED THE PROOF OF IT.
+    //
+    // W1-26 r2 §8 found it, and it is the reason this driver reported `m4_clause1` as
+    // `[N/A] control precedes definition — no character-field-writing event in the trace` on a
+    // build where the piece's own probe measured the same interval at 61.5 s. Three separate
+    // faults, all in five lines:
+    //
+    //   1. `if (!st.question) break;` — `st.question` exists ONLY at the ten questionnaire
+    //      nodes. The census opens on `hold.come-to`, which is a paused hand-back with no
+    //      question at all, so this loop broke on its FIRST iteration of every run it has ever
+    //      made. Nothing was ever walked, no `creation_field` was ever emitted, and the absence
+    //      was reported as an N/A rather than as the zero it was.
+    //   2. it never released the two paused nodes, so even a loop that got past (1) would stop
+    //      at the hand-back.
+    //   3. `catch { break; }` — a bare swallow on the one call that throws when the scene is
+    //      broken. At r2 the census threw `race must be observed before the scene reaches the
+    //      desk` here, on the player's own path, and this line ate it silently.
+    //
+    // It now walks every node kind, releases a paused node on the act the node itself names,
+    // and RECORDS a throw as a measured failure before it stops. `RI-JRN01` How-we-lose #15 is
+    // "the instrument is blind and the grep comes back clean"; this was it, in the file built
+    // to end it.
+    const censusWalk = { nodes: 0, fields: [], stopped_by: null, throw_at: null, throw_reason: null };
     for (let node = 0; node < 40; node++) {
       const st = await handle.hOpt('getCensusState');
-      if (!st || st.done || !st.question) break;
+      if (!st || st.done) { censusWalk.stopped_by = 'the scene completed'; break; }
       const drawn = await sampleUIText(handle);
-      const qText = (st.question && st.question.text) || '';
       const drawnJoined = drawn.text.join(' ');
+      const qText = (st.question && st.question.text) || '';
+      const asked = qText || st.line || '';
       await record('census_node', {
         node,
+        node_id: st.node || null,
         speaker: st.speaker || null,
         place: st.place || st.place_name || null,
-        question_in_state: qText.slice(0, 200),
-        question_reaches_frame: !!(qText && drawnJoined.includes(qText.slice(0, Math.min(40, qText.length)))),
-        options_in_state: (st.question.options || st.options || []).map((x) => (typeof x === 'string' ? x : x.text)).slice(0, 8),
+        input_kind: st.input ? st.input.kind : null,
+        paused: !!st.paused,
+        question_in_state: asked.slice(0, 200),
+        question_reaches_frame: !!(asked && drawnJoined.includes(asked.slice(0, Math.min(40, asked.length)))),
+        options_in_state: ((st.input && st.input.options) || st.options || []).map((x) => (typeof x === 'string' ? x : x.text)).slice(0, 8),
         drawn_text: drawn.text.slice(0, 12),
       });
-      const opts = st.question.options || st.options || [];
-      const answer = opts.length ? (typeof opts[0] === 'string' ? opts[0] : (opts[0].value ?? opts[0].id ?? 0)) : 0;
-      try { await handle.h('censusAnswer', answer); } catch { break; }
+      censusWalk.nodes++;
+      if (st.sets) censusWalk.fields.push(st.sets);
+
+      // A paused node is the scene handing the body back. Release it on the act the node says
+      // it is waiting for, exactly as `Engine._censusStep` does when the player performs it.
+      if (st.paused) {
+        try { await handle.h('censusEnter', st.resume_by || 'walk'); } catch (e) {
+          censusWalk.stopped_by = 'censusEnter threw';
+          censusWalk.throw_at = st.node || null;
+          censusWalk.throw_reason = String(e && e.message || e);
+          break;
+        }
+        await o.onUISample(`census-node-${node}`);
+        continue;
+      }
+      if (!st.input) { censusWalk.stopped_by = `node ${st.node} takes no input and is not paused — the graph is stuck`; break; }
+
+      // A legal answer for whatever kind of node this is. The questionnaire is only one of six.
+      const inp = st.input;
+      const opts = (inp.options || []).map((x) => (typeof x === 'string' ? { id: x } : x));
+      let answer;
+      if (inp.kind === 'text') answer = 'Silence-Under-Salt';
+      else if (inp.kind === 'observed') answer = 'correct';
+      else if (inp.kind === 'pick') answer = opts.slice(0, inp.count || 2).map((x) => x.id);
+      else answer = opts.length ? (opts[0].value ?? opts[0].id ?? 0) : null;
+
+      try {
+        await handle.h('censusAnswer', answer);
+      } catch (e) {
+        // NOT SWALLOWED. The scene refusing an answer on the walk that a player takes is the
+        // single most important thing this driver can find, and it used to be the one thing it
+        // could not report.
+        censusWalk.stopped_by = 'censusAnswer threw';
+        censusWalk.throw_at = st.node || null;
+        censusWalk.throw_reason = String(e && e.message || e);
+        await record('census_refused', { node: st.node || null, value: answer, reason: censusWalk.throw_reason });
+        break;
+      }
       await o.onUISample(`census-node-${node}`);
+    }
+    surface.census_walk = censusWalk;
+    await record('census_walk', censusWalk);
+    if (censusWalk.throw_at) {
+      led.fail('census_walk', 'the creation scene can be walked to the end',
+        `the scene threw at '${censusWalk.throw_at}': ${censusWalk.throw_reason}. ${censusWalk.nodes} node(s) reached, `
+        + `field(s) written: ${censusWalk.fields.join(', ') || 'none'}.`,
+        'the build');
+    } else {
+      led.ok('census_walk', 'the creation scene walked to the end', {
+        nodes: censusWalk.nodes, fields_written: censusWalk.fields, stopped_by: censusWalk.stopped_by,
+      });
     }
 
     // Dismiss with a real input and time it. This is M2's measurement, and it needs a REAL

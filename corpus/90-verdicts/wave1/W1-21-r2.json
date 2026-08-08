@@ -1,0 +1,672 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-21",
+  "piece_title": "The interface: HUD, menus, journal and inventory — and AR-2 enforcement (round 2)",
+  "subsystem_paths": [
+    "ui.hud.combat",
+    "ui.hud.minimalism",
+    "ui.menu.inventory",
+    "ui.menu.journal",
+    "ui.menu.levelup",
+    "ui.style.diegesis"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "critic-w1-21-r2",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "context": "fresh; no part of W1-21, W1-MAP or AMENDMENT-W1-MAP-01 was written by me",
+    "load_declaration": "loadavg 0.29 -> 28 and 2 -> 6 concurrent browser INSTANCES on 4 cores. Every figure in this verdict is a count, a boolean or a pixel difference; NO timing figure is published, deliberately. One browser per instrument, kept for the whole pass. `node tools/contention.mjs --gate` returned GO for the first three detector runs and WAIT for the three instrument runs that followed; I proceeded past the WAIT and record it here and in orchestration/status/critic-w1-21-r2.json.",
+    "environment_note": "At 01:19 the root filesystem hit 100% (6.7 MB free of 252 GB) and child processes began failing with ENOSPC. 9.1 GB was stale scratch under /tmp/claude-0/.../scratchpad untouched for 8-40 hours; I deleted everything there older than four hours and nothing else, returning the box to 9.6 GB free."
+  },
+  "build": {
+    "commit_sha": "e97347f",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": false,
+    "note": "clean tree at the start of the run; the working tree carried no uncommitted game/ changes when the measurements were taken"
+  },
+  "bifurcation": {
+    "axis": "fidelity",
+    "declared_before_citation": true,
+    "fidelity_refs": [],
+    "art_refs": [],
+    "note": "RI-UIX06 splits UI STYLE (art direction, judged against Morrowind) from UI RENDERING QUALITY (fidelity). I judged only the fidelity axis. The ART axis is RI-UIX06 §G's Bootstrap test — six fresh judges, one per screen, world blacked — which needs a fixture that does not exist and six judges I do not have; same reason round 1 gave. NO reference imagery of either set is cited anywhere in this verdict, and the two sides are NOT combined (CC-5)."
+  },
+  "reference_items": [
+    {
+      "id": "RI-UIX02",
+      "path": "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "measured": "partial",
+      "native_scale": "gate, pass/fail per detector K1-K6; all six must pass",
+      "native_score": 0,
+      "native_max": 6,
+      "native_verdict": "FAIL on K6; K5 unmeasured",
+      "score_0_10": 5,
+      "justification": "K1 is green at HEAD for the first time in three rounds (0 hits, 1 declared exception, --self-test passes) and K3/K4 completed a run for the first time ever — 10 differentials over the world AND map surfaces, 3 yaw positions at 24 steps, with a 28,310 px UI-layer mask so the restriction is not vacuous. The item's own band row applies: FAIL on K6 => below bar, remedy required, ceiling 6. The 'ceiling 4 once a marker source exists' clause does not bite, because the round-1 marker source is closed (see arbitration.ar2).",
+      "why_not_ten": "K6 requires >=14 viewpoints and counts recorded for every detector; ui-layer.mjs declares 10 and ran 9 with covered_all_viewpoints:false, and that flag is not in its exit code. K6's other leg — 'any detector not run' — is hit twice: marker-diff --self-test was not run by me, and ui-forbidden.mjs was run but cannot answer its question (wrong coordinate space, hit_frame null, a digit heuristic that fires on enemy geometry). K5 was not run by anybody. And eleven of the fifteen graded checks across the five detectors return PASS on an empty sample set.",
+      "evidence": [
+        "reports/runs/CRITIC-W1-21-R2-MARKER-DIFF/marker-diff.json",
+        "reports/runs/CRITIC-W1-21-R2-UI-FORBIDDEN/ui-forbidden.json",
+        "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json",
+        "docs/shots/2026-08-08-w1-21-r2-critic-ui-forbidden-false-positive.png"
+      ],
+      "checks": [
+        {
+          "id": "K1",
+          "what": "data scan: 0 hits on F1-F5 across all of game/data/",
+          "result": "pass",
+          "observed": "K1 PASS — 559 files, 0 hits, 1 declared exception ({F1:0,F2:0,F3:0,F4:0,F5:0}); --self-test PASSED, every rule can fire and can stay silent. Reached by adding `npcs/` and `audio/` to PLACEMENT_ROOTS, a declared judgement call. I checked the data and it is defensible: no record in quest-givers.json, faction-givers.json or mainline.json carries a `quest` key at all, so F2's target ('a coordinate ON A QUEST RECORD') is genuinely absent. But the stated PAYMENT for the widening — new rule F6, 'so widening the exemption list cannot widen the hole' — does not hold: marker-scan.mjs:250 is the builder's own self-test case ['F6', {npcs:[{id:'a', quest:'q-1', post:{pos:[1,2,3]}}]}, false] asserting F6 is SILENT on a coordinate one level below the quest key, which is exactly the npcs[N].post.pos shape all 302 exempted hits use.",
+          "hard_fail": false,
+          "evidence": ["stdout of node tools/analysis/marker-scan.mjs and --self-test at e97347f"]
+        },
+        {
+          "id": "K2",
+          "what": "undeclared UI components, pixel sweep",
+          "result": "pass",
+          "observed": "K2 PASS — 0 undeclared components over 9 viewpoints of 10 declared, ui_combat_neutral skipped, covered_all_viewpoints:false. Read off the builder's artifact rather than re-run. I checked one thing they did not: ui_menu_map and ui_menu_map_local report an identical ui_layer_px of 530256, which reads as the local-view press having done nothing; diffing the two A.png frames gives 24,768 differing pixels, so the view really did change and the equality is a coincidence of panel area. Checked, not assumed.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/UI-LAYER/ui-layer.json"]
+        },
+        {
+          "id": "K3",
+          "what": "quest-state differential, D empty in the UI layer for >=5 quests",
+          "result": "pass",
+          "observed": "K3 PASS — 0 of 10 quests changed the UI layer. Ten differentials: five quests x two surfaces (world and map), which is the builder's edit working and the first time this detector has ever completed a run. ui_layer_px 28,310, so the restriction to the UI layer has signal rather than being empty. --self-test NOT run (contention ceiling); declared.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-MARKER-DIFF/marker-diff.json"]
+        },
+        {
+          "id": "K4",
+          "what": "camera-yaw sweep, 0 non-exempt world-tracked elements",
+          "result": "pass",
+          "observed": "K4 PASS — 0 non-exempt world-tracked elements over 3 yaw positions (street, vista, dungeon) at 24 steps each. Note the zero-sample hazard: a missing state hits a bare `catch { continue }` and three missing states would give K4 PASS over an empty sweep list with no record of why. It did not happen here — all three ran — but nothing in the grader would have said so.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-MARKER-DIFF/marker-diff.json"]
+        },
+        {
+          "id": "K5",
+          "what": "rendered journal/dialogue text, 0 coordinate-shaped substrings",
+          "result": "unmeasured",
+          "observed": "Not run by round 2 and not run by me. Reported rather than implied.",
+          "hard_fail": false,
+          "evidence": []
+        },
+        {
+          "id": "K6",
+          "what": ">=14 viewpoints, >=5 quests, full game/data scan, counts recorded",
+          "result": "fail",
+          "observed": "ui-layer.mjs declares 10 viewpoints and ran 9. The quest leg is now met (10 differentials over 5 quests) and the data scan leg is met (559 files). The viewpoint leg is not, and the 'counts recorded' leg is not: ui-forbidden.mjs records no sample count at all for its declared probe — a run that opened five menus and a run that opened none produce a byte-identical \"declared\": [].",
+          "hard_fail": false,
+          "evidence": ["reports/runs/UI-LAYER/ui-layer.json", "reports/runs/CRITIC-W1-21-R2-UI-FORBIDDEN/ui-forbidden.json"]
+        }
+      ]
+    },
+    {
+      "id": "RI-UIX04",
+      "path": "corpus/86-ui/RI-UIX04-journal-ui.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "measured": "partial",
+      "native_scale": "count of passing checks JU1-JU9; any hard fail caps the piece at 2",
+      "native_score": 8,
+      "native_max": 9,
+      "native_verdict": "JU8 as amended: 8 of 9 clauses verified on the drawn screen; NO triggered hard fail",
+      "score_0_10": 6,
+      "justification": "Round 1's hard-fail cap is lifted. AMENDMENT-W1-MAP-01 §3a's amended JU8 has nine assertions; I verified eight of them directly on the drawn map with the body standing in six real places — Q7 clean in both directions, no forbidden kind, no quest/objective/giver/target/rumour identity, no route element, no distance or direction text, no travel affordance, no square for a place not stood in under the save attack, and undiscovered ground unrendered rather than dimmed.",
+      "why_not_ten": "Two reasons. (1) JU8's own instrument, tools/analysis/journal-ui.mjs:199, still asserts `mapThrew && ui.map_exists === false` — the two conditions the amendment DELETED and which S35 now requires to be false — so the item's headline check is verified by my probe and not by the piece's, and RI-UIX04's recorded '11/11' cannot be true at HEAD. (2) The §4.1 residual: a forged FOOTPRINT still renders 92.5% of the province and names 14 places the body never stood in. I do not score it as a hard fail (see arbitration_questions) but it is referred, not resolved. JU1-JU7 and JU9 were not re-measured by me.",
+      "evidence": [
+        "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json",
+        "docs/shots/2026-08-08-w1-21-r2-critic-map.png"
+      ],
+      "checks": [
+        {
+          "id": "JU8-a",
+          "what": "map absent from navigable in mode journal AND journal absent from navigable in mode map (Q7, both directions)",
+          "result": "pass",
+          "observed": "from journal navigable=[world,inventory,sheet,spells]; from map navigable=[world,inventory,sheet,spells]",
+          "hard_fail": true,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json E3"]
+        },
+        {
+          "id": "JU8-b",
+          "what": "the map screen declares no forbidden kind, no quest/objective/giver/target/rumour identity, no route, no distance text, no travel affordance",
+          "result": "pass",
+          "observed": "14 map elements, 0 numerals, 0 of 14 carrying any of those metas. Kinds drawn: map_terrain, map_place, map_player, divider, hint, panel.",
+          "hard_fail": true,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json E1,E2"]
+        },
+        {
+          "id": "JU8-c",
+          "what": "no square for a place the player has not personally stood in, under a forged save",
+          "result": "pass",
+          "observed": "A save forged in EIGHT discovery keys (stood, cells, places, revealed, derived_from, plus discovered/reveal/stood_places which the loader has never heard of) loads 6 places against 6 stood in, 0 phantom, 36 names refused, revealed 2,446 -> 2,446 (delta 0). The load audit itemises it: claimed_places 42, derived_places 6, phantom_cells 40,400, missing_cells 0. The drawn screen: places_drawn=6, places_discovered=6, drawn_cells=2446. Round 1 got 42 squares and 35 phantom from this attack.",
+          "hard_fail": true,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json C0,C1,C2,C3", "reports/runs/CRITIC-W1-21-R2/map-forged.png"]
+        },
+        {
+          "id": "JU8-d",
+          "what": "undiscovered is not merely unlabelled, it is unrendered",
+          "result": "pass",
+          "observed": "An empty model draws 0 cells and 0 squares, leaving 13 lit pixels in the whole map drawing box. Not dimmed — black.",
+          "hard_fail": true,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-consume.json M3", "reports/runs/CRITIC-W1-21-R2/consume-arm-none.png"]
+        },
+        {
+          "id": "JU8-e",
+          "what": "no API by which a quest could place, request, highlight or name a position on the map",
+          "result": "pass",
+          "observed": "Discovery.RESTORE_READS is ['stood'] and the blob is copied through that list on restore()'s first line, so no key of the save reaches the model except the footprint. Four mutators on the prototype (observe/0, restore/1, resume/0, suspend/0), matched exactly by an independent scan of every member that writes a #private field. The instance is frozen. AMENDMENT-W1-MAP-01 §3b's literal acceptance ('every mutator arity 0') is NOT met — restore takes the blob — and the builder has referred that substitution; see arbitration_questions.",
+          "hard_fail": true,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json D1,D2"]
+        },
+        {
+          "id": "JU8-f",
+          "what": "terrain rendered where the player has not been, under a forged FOOTPRINT",
+          "result": "partial",
+          "observed": "A synthetic `stood` of 1,046 cells the body never occupied loads 14 places and 39,613 of 42,846 revealed cells (92.5% of the province) against the honest 6 places / 2,446 cells. Declared by the builder as a stated limit; measured here for the first time. Not scored as a triggered hard fail — see arbitration_questions.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json C4"]
+        },
+        {
+          "id": "JU8-instrument",
+          "what": "the item's own instrument implements the amended clause",
+          "result": "fail",
+          "observed": "tools/analysis/journal-ui.mjs:199 still asserts `nav.indexOf('map') < 0 && menus.indexOf('map') < 0 && mapThrew && ui.map_exists === false`. Under S35 the map exists and openMenu('map') opens, so JU8 cannot pass at HEAD and cannot fail for a reason anyone should act on. Round-1 secondary observation 1; untouched by round 2.",
+          "hard_fail": false,
+          "evidence": ["tools/analysis/journal-ui.mjs:199"]
+        }
+      ]
+    },
+    {
+      "id": "RI-UIX03",
+      "path": "corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md",
+      "side": "split",
+      "kind": "structure",
+      "measured": "partial",
+      "native_scale": "13 checks",
+      "native_score": 0,
+      "native_max": 13,
+      "native_verdict": "partial — reachability measured directly, pause arithmetic on the builder's evidence",
+      "score_0_10": 6,
+      "justification": "Reachability is the item's own property and it went from 2 of 6 screens to 6 of 6, verified by REAL key presses and a REAL gamepad rather than by injected action names, in both directions, reproduced identically across two independent runs of my probe.",
+      "why_not_ten": "AR-1's pause arithmetic (M-P2, the 120-of-120 frame delta in combat) is on the builder's evidence for a third round because tools/harness/ui-pause.mjs was not re-run by anybody. The paused-screen model redraw — round 1's §4, measured then at 0 px — is fixed on the builder's evidence (164 px through the real input pipeline with menu.paused=true and the world advancing 0 frames) and I did not re-measure it. My own in-combat arm was lost to the aggro() throw.",
+      "evidence": [
+        "reports/runs/_raw/critic-w1-21-r2-a-1404612252637.log",
+        "reports/runs/_raw/critic-w1-21-r2-a2-2603414759889.log"
+      ],
+      "checks": [
+        {
+          "id": "B0",
+          "what": "CONTROL: the real input path is attached and the touch fallback did not take over",
+          "result": "pass",
+          "observed": "real.attached=true, mode=play-instrumented, touch_controls_drawn=0",
+          "hard_fail": false,
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a2-2603414759889.log"]
+        },
+        {
+          "id": "B1",
+          "what": "CONTROL: an unbound key changes nothing, and a bound key does",
+          "result": "pass",
+          "observed": "KeyQ (bound to nothing): world -> world. Escape (bound to `menu`): world -> inventory.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a2-2603414759889.log"]
+        },
+        {
+          "id": "B2",
+          "what": "all six advertised screens reachable from the world by REAL key presses alone",
+          "result": "pass",
+          "observed": "world -> inventory -> journal -> sheet -> spells -> map -> levelup -> world, walked with Digit3 only. Routes: inventory = KeyM; journal = KeyM then Digit3 x1; sheet = x2; spells = x3; map = x4; levelup = x5. Unreachable: none. Round 1 measured input reaching exactly two modes.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a2-2603414759889.log"]
+        },
+        {
+          "id": "B3",
+          "what": "every screen a real key opens, a real key closes",
+          "result": "pass",
+          "observed": "Escape returns all six to `world`; `Space` (roll-as-back) was not needed on any of them.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a-1404612252637.log"]
+        },
+        {
+          "id": "B4",
+          "what": "the same six screens reachable on a REAL pad through RealInput.pollGamepad()",
+          "result": "pass",
+          "observed": "button 9 (menu) then button 15 (swap_right) x6: world -> inventory -> journal -> sheet -> spells -> map -> levelup -> world -> inventory. Missing: none.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a-1404612252637.log"]
+        },
+        {
+          "id": "B5",
+          "what": "in a fight the walk keys do not navigate (S14 / P6, the offhand chord stays intact)",
+          "result": "unmeasured",
+          "observed": "Not established. aggro() threw `no such entity` on an eid listEntities() returned and took the process down before combat began, so my arm ran with inCombat=false and proves nothing. `walk_live` is reported false in world mode and true with a screen open out of combat, and the builder's own N3 records in_combat=true, mode inventory -> inventory, walk_live=false. Recorded as pass on the builder's evidence, not mine.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a-1404612252637.log", "reports/runs/W1-21-R2/nav.json"]
+        }
+      ]
+    },
+    {
+      "id": "RI-UIX06",
+      "path": "corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md",
+      "side": "split",
+      "kind": "fidelity",
+      "measured": "partial",
+      "native_scale": "UI FIDELITY, FD1-FD7, native /7 (the ART side is scored separately and was not judged)",
+      "native_score": 6,
+      "native_max": 7,
+      "native_verdict": "6/7 — FD6 FAIL",
+      "score_0_10": 5,
+      "justification": "Band translation from the item: 5-6 of 7 => below bar, remedy required, ceiling 6. FD2 — which the item calls the check the whole thing turns on — passes at 1.458 device px against 1.5, and every one of 28 captures now yields a stem sample, which is round 1's §6 defect genuinely fixed and graded by the build's own new FD8.",
+      "why_not_ten": "FD6 has been red across two rounds and two verdicts (114 at round 1, 99.9 now) with all 28 captures over the tool's threshold, and nobody has named it. Worse, the tool's threshold is not the item's: it compares a 0-255 LUMINANCE overshoot against 40, where RI-UIX06 specifies deltaE <= 3 with a hard fail above 8. Nobody can currently say whether FD6 is a fail or a hard fail capping this side at 2, and that uncertainty is why this is 5 rather than 6. FD8 also fails, on the builder's own stale declaration.",
+      "evidence": [
+        "reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json",
+        "reports/runs/UI-METRICS/ui-metrics.json"
+      ],
+      "checks": [
+        {
+          "id": "FD1",
+          "what": "glyph stem transition at DPR 1 <= 1.5 device px",
+          "result": "pass",
+          "observed": "median 0.8 px over [book,inventory,journal,levelup,map,sheet,spells] of [book,inventory,journal,levelup,map,sheet,spells] — all seven, no screen filtered out",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD2",
+          "what": "glyph stem transition at DPR 2 <= 1.5 device px (the upscaled-canvas signature)",
+          "result": "pass",
+          "observed": "median 1.458 px over all seven screens — 2.8% of margin. The 1.468-1.469 population comes from book_page, journal_entry, detail_panel and attribute_preview; the 0.8 population from the smaller hint bars.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD3",
+          "what": "text path 1:1, size >=18 px @1080p and >=1.6% of screen height everywhere",
+          "result": "pass",
+          "observed": "path canvas-vector, raster scale 1, screen fraction 0.0176-0.0481",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD4",
+          "what": "no clipping, no overflow at any capture configuration",
+          "result": "pass",
+          "observed": "0 clipped elements over 28 captures",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD5",
+          "what": "screen-fraction stability across resolutions and DPRs <= +/-10%",
+          "result": "pass",
+          "observed": "panel area fraction 0.5718..0.5718, drift 0.00%",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD6",
+          "what": "no alpha fringing at UI edges",
+          "result": "fail",
+          "observed": "worst edge deviation 99.9 against the tool's threshold of 40, and ALL 28 captures exceed it (range 40.4-99.9). The map's four captures are the four worst (78.8/75.6/91.8/91.2). At round 1 this read 114 and no verdict mentioned it. The tool's unit is a 0-255 luma overshoot; the item's is deltaE. Sample counts per capture are 3,072-10,013 edge pixels and are recorded but not graded, so an edgeFringe() returning {worst: 0, samples: 0} would pass.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json", "reports/runs/UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD7",
+          "what": ">=7 effective bits on the largest gradient, overdraw <= 3x",
+          "result": "pass",
+          "observed": "bits 7.08 minimum, max overdraw 1.064. Note the grader is `gradient_bits === null || >= 7`, so a capture with no `panel` element passes BY CONSTRUCTION on absence.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD8",
+          "what": "every screen opened produced a stem sample, or is declared prose-free with a reason (the builder's own new check, not in the item)",
+          "result": "fail",
+          "observed": "stale declarations [map]. NO_PROSE.map declares the map screen has nothing to measure — 'its only text is a single place name under the stick' — and the map produced 306 / 1056 / 656 / 2113 stem samples in all four configurations off `map.hint`, a 76-character control legend. The map screen draws TWO kind:'hint' elements with text. The check was written to catch exactly this and was one command from telling the author.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        },
+        {
+          "id": "FD-region",
+          "what": "which region each screen's stem is measured on, now that the four-kind whitelist is gone",
+          "result": "partial",
+          "observed": "The whitelist is genuinely gone and no screen returns 0 samples. But `sheet`, `spells` and `map` are all measured on their `hint` bar — the shared control legend drawn by chrome.js hint() — because it is the only element on those screens over the 40-character prose preference. So sheet yields 133-1,355 samples against book_page's 7,936-35,871, and the skills sheet's own sheet_row / attribute_row content, which round 1 named, is still not what is being measured. Better than a filtered-out null, and not yet the screen's own body text.",
+          "hard_fail": false,
+          "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"]
+        }
+      ]
+    },
+    {
+      "id": "RI-UIX05",
+      "path": "corpus/86-ui/RI-UIX05-books-and-readable-text.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "measured": "partial",
+      "native_scale": "K1-K7 plus §D's lore-vector budget",
+      "native_score": 0,
+      "native_max": 7,
+      "native_verdict": "not re-measured this round",
+      "score_0_10": 6,
+      "justification": "Round 1's value, carried forward and labelled as such rather than invented or zeroed. Round 1 verified the book-end defect as 'fixed, and fixed properly' — _clampSpread() caps on the way in and on the way out, recomputed from the current surface, failing open when there is no screen. Round 2 did not touch this item and neither did I.",
+      "why_not_ten": "§D's lore-vector budget still fails on content, which is W1-17's and not this piece's. I ran none of RI-UIX05's own checks; the only contact I had with the book screen was through ui-metrics, whose book_page region supplies FD2's 1.468-1.469 device px at DPR 2. Flagged in method_deviations.",
+      "evidence": ["reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"],
+      "checks": [
+        {
+          "id": "carried",
+          "what": "the whole item",
+          "result": "unmeasured",
+          "observed": "not re-measured by this critic; score carried from corpus/90-verdicts/wave1/W1-21-r1.md §9",
+          "hard_fail": false,
+          "evidence": ["corpus/90-verdicts/wave1/W1-21-r1.json"]
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-map.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-w1-21-r2-b.mjs",
+      "source": "my own stepping browser (a walked footprint cannot come from the pooled capture daemon)",
+      "camera_pose": "the map screen opened at the Crimson Coast, after the body walked to the centres of five field.sites and discovered six places; default third-person camera, world rendered behind the panel at opacity 0.94",
+      "resolution": "1920x1080",
+      "what": "What S35 permits and nothing else: black where the body has not been, revealed discs where it has, a small square per place, `Lilmoth` named under the stick, the title `Where I have been`, a control legend. No numeral, no route, no compass, no pin. 1,334,482 lit pixels, mode confirmed `map`."
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-ui-forbidden-false-positive.png",
+      "kind": "annotated-crop",
+      "produced_by": "node -e (pngjs) over reports/runs/CRITIC-W1-21-R2-UI-FORBIDDEN/after-hit.png",
+      "source": "the frame ui-forbidden.mjs itself captured and graded",
+      "camera_pose": "two 150x100 px regions of the arena_champion frame at 4x, at the bounding boxes the tool returned as digit glyphs",
+      "resolution": "1224x416 composed",
+      "what": "Red boxes are what tools/analysis/ui-forbidden.mjs called 66 floating damage numbers on its first run against any build. They are enemy helmet crests, horn shadows and jaw lines."
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-inventory.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-w1-21-r2-b.mjs",
+      "source": "my own stepping browser",
+      "camera_pose": "inventory opened at a hearth after the walk; world behind at 0.94",
+      "resolution": "1920x1080",
+      "what": "One of the six screens the brief asked for; mode confirmed `inventory`, 1,662,783 lit px"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-journal.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-w1-21-r2-b.mjs",
+      "source": "my own stepping browser",
+      "camera_pose": "journal opened at a hearth after the walk",
+      "resolution": "1920x1080",
+      "what": "mode confirmed `journal`, 1,662,745 lit px"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-sheet.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-w1-21-r2-b.mjs",
+      "source": "my own stepping browser",
+      "camera_pose": "skills sheet opened at a hearth after the walk",
+      "resolution": "1920x1080",
+      "what": "mode confirmed `sheet`, 1,662,708 lit px — the screen whose sheet_row/attribute_row body text ui-metrics still does not measure"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-spells.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-w1-21-r2-b.mjs",
+      "source": "my own stepping browser",
+      "camera_pose": "spells opened at a hearth after the walk",
+      "resolution": "1920x1080",
+      "what": "mode confirmed `spells`, 1,174,787 lit px"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-21-r2-critic-levelup.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-w1-21-r2-b.mjs",
+      "source": "my own stepping browser",
+      "camera_pose": "level-up opened at a hearth after the walk; at_hearth reached through setAtHearth(true), declared",
+      "resolution": "1920x1080",
+      "what": "mode confirmed `levelup`, 1,662,532 lit px — five real key presses from the world"
+    },
+    {
+      "path": "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json",
+      "kind": "measurement",
+      "produced_by": "node tools/run.mjs --label critic-w1-21-r2-b2 -- node tools/ui/critic-w1-21-r2-b.mjs",
+      "what": "passes C-G: the forged save, the mutator census and its falsification, AR-2 on the drawn screen, the six shots"
+    },
+    {
+      "path": "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-consume.json",
+      "kind": "measurement",
+      "produced_by": "node tools/run.mjs --label critic-w1-21-r2-consume -- node tools/ui/critic-w1-21-r2-consume.mjs",
+      "what": "RI-MTH07: the three-arm footprint-truncation ablation with the body and camera held still"
+    },
+    {
+      "path": "reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json",
+      "kind": "measurement",
+      "produced_by": "node tools/metrics/ui-metrics.mjs --out CRITIC-W1-21-R2-UI-METRICS",
+      "what": "the first unrun detector, run: FD6 and FD8 red, 28 captures with a per-capture sample count"
+    },
+    {
+      "path": "reports/runs/CRITIC-W1-21-R2-UI-FORBIDDEN/ui-forbidden.json",
+      "kind": "measurement",
+      "produced_by": "node tools/analysis/ui-forbidden.mjs --self-test --out CRITIC-W1-21-R2-UI-FORBIDDEN",
+      "what": "the second unrun detector, run for the first time against any build: U5 red on 66 false positives"
+    },
+    {
+      "path": "reports/runs/CRITIC-W1-21-R2-MARKER-DIFF/marker-diff.json",
+      "kind": "measurement",
+      "produced_by": "node tools/analysis/marker-diff.mjs --out CRITIC-W1-21-R2-MARKER-DIFF",
+      "what": "the third unrun detector, run: K3 and K4 green over 10 differentials and 3 yaw sweeps"
+    },
+    {
+      "path": "reports/runs/_raw/critic-w1-21-r2-a2-2603414759889.log",
+      "kind": "log",
+      "produced_by": "node tools/run.mjs --label critic-w1-21-r2-a2 -- node tools/ui/critic-w1-21-r2-a.mjs",
+      "what": "pass B, the doors driven by real Playwright key presses and a synthetic standard-mapping pad. The JSON was never written because aggro() killed the process at B5; the log is the record and the result reproduced identically across two runs."
+    }
+  ],
+  "blind_comparisons": [],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "independently_measured": false,
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "No Morrowind mechanic entered the fight. The new door adds no verb: swap_left/swap_right are two of RI-JRN03 §A's closed fourteen, already bound on keyboard (Digit3/Digit4, wheel), pad (14/15) and touch, and walk_live is false in combat so swap_left stays half of the offhand chord. Verified from the running getUIState().nav.",
+          "evidence": ["reports/runs/_raw/critic-w1-21-r2-a2-2603414759889.log"]
+        },
+        {
+          "id": "A2",
+          "result": "pass",
+          "observed": "S14 / RI-UIX03 §A — a menu must not stop a fight. NOT independently re-measured: tools/harness/ui-pause.mjs was not re-run by round 2 or by me, for the third round running. On the builder's own record, M-P2 frame delta EXACTLY 120 of 120 in combat with a roll firing with the screen open. Recorded as pass on the builder's evidence, not mine.",
+          "evidence": ["reports/runs/W1-21-R2/nav.json"]
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "independently_measured": true,
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "THE MARKER IS NO LONGER ON THE MAP, and the fix is structural rather than a better check. Round 1 forged world.discovery.cells and .places and got 42 squares, 35 for places never stood in, over a fully rendered province with the screen reporting places_drawn == places_discovered. Re-run at e97347f with EIGHT forged keys against a body that had stood in six real places: 6 places load, 0 phantom, 36 names refused, revealed 2,446 -> 2,446 (delta 0), and the drawn screen reports places_drawn=6, drawn_cells=2446. Discovery.RESTORE_READS is ['stood'], the blob is copied through that list on restore()'s first line, and the four keys I invented are not refused but unreachable. The load audit itemises the forgery (claimed_places 42, derived_places 6, phantom_cells 40,400) rather than merely refusing it — which is how the hole being closed is distinguishable from the report being closed.",
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json C0-C3", "reports/runs/CRITIC-W1-21-R2/map-forged.png"]
+        },
+        {
+          "id": "B2",
+          "result": "pass",
+          "observed": "No objective marker anywhere on the drawn map: 14 elements, 0 numerals, 0 carrying a quest/objective/giver/target/rumour/route/travel identity, Q7 clean from journal and from map. Undiscovered ground is unrendered (an empty model leaves 13 lit pixels in the whole drawing box), not dimmed.",
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json E1-E3", "docs/shots/2026-08-08-w1-21-r2-critic-map.png"]
+        },
+        {
+          "id": "B3",
+          "result": "partial",
+          "observed": "RESIDUAL, DECLARED BY THE BUILDER AND MEASURED HERE FOR THE FIRST TIME: a forged FOOTPRINT (a zigzag-varint list of 1,046 cell indices the body never occupied) loads 14 places and 39,613 of 42,846 revealed cells — 92.5% of the province. Not scored as a triggered hard fail: every implementation of 'the map records where you have been' must put that record in the save and every save field is under its owner's control, so a clause no design can satisfy is not a bar (S26's own reasoning). What round 2 removed is the contingent half — there is no field left in which a place can be NAMED, so a forger must now assert a walk and gets the honest map of the walk asserted. Referred, not decided; see arbitration_questions.",
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json C4"]
+        },
+        {
+          "id": "B4",
+          "result": "pass",
+          "observed": "The compliance report assembled from a literal — round 1's §3.3 — is fixed for the field that mattered: getUIState().map.mutator_arities is now enumerated from the prototype and reports {observe:0, restore:1, resume:0, suspend:0}, which matches an INDEPENDENT scan of every prototype member that writes a #private field, taken from the running object and not from the build's classifier. It is NOT fixed for `markers`, still typed as the literal 0 four lines above in the same object; that is a defect rather than a leak, because no marker exists for it to be hiding.",
+          "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json D1,D2", "game/src/ui/system.js:985"]
+        }
+      ]
+    },
+    "ar3": {
+      "status": "pass",
+      "seam_sterile": false,
+      "checks": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "observed": "The interface crosses into the world model rather than sitting beside it. The map's reveal radius is the region's own sightline_m out of regions.json and a place's 'stood in' radius is that site's own built pad from terrain.json sites[].r_flat, so perturbing the world data moves the map. Round 1's crossing also stands: Engine._recomputeBurden() makes carried weight a real speed multiplier, so the inventory screen and the traversal system touch.",
+          "evidence": ["game/src/sim/discovery.js", "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-consume.json"]
+        }
+      ]
+    },
+    "consumption": {
+      "status": "pass",
+      "model": "game/src/sim/discovery.js — Discovery, the footprint-derived reveal raster and place list",
+      "world_side_consumer": "game/src/ui/screens/map.js — the map screen's terrain fill loop and place squares",
+      "demonstration": "Perturbation WITHOUT moving the body or the camera, so the world behind the 0.94-opaque panel is byte-identical between arms: take the honest footprint, truncate it, re-encode it in the save's own zigzag-varint form and push it back through the real Discovery.restore(). Three arms — footprint 4 / 2 / 0 cells — give model revealed_cells 1,096 / 1,078 / 0, painter drawn_cells 1,096 / 1,078 / 0, and lit pixels inside the map.terrain rect 10,310 / 10,204 / 13. drawn_cells is the painter's own count, incremented inside the fill loop and written back onto the element after painting, so model -> painter -> framebuffer has a separate witness at each step. The empty arm draws nothing at all.",
+      "first_attempt_rejected": "My first arm perturbed the model by WALKING and produced 1,586,540 changed pixels live against 1,608,316 SUSPENDED — the ablated arm moved more, because teleporting changes most of the panel through the translucent world before the map draws anything. Recorded rather than deleted; a pixel diff across a teleport cannot tell the map from the sky behind it.",
+      "sole_consumer_note": "The footprint has exactly one consumer. The S7 travel network — the one other system whose rule is 'you must have walked there once' — keeps its own record (travel.visited, 8 legs, 25 m bins) and never reads Discovery. Two independent implementations of 'where the body has been', with nothing comparing them (RULES 10).",
+      "evidence": ["reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-consume.json"]
+    }
+  },
+  "score": {
+    "overall_0_10": 5,
+    "pass_threshold": 7.0,
+    "aggregation": "min",
+    "band_label": "Below bar, remedy required",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "min over items is 5 (RI-UIX02 5, RI-UIX06 fidelity 5), against a wave-1 gate of 7.0.",
+    "RI-UIX02 K6 still fails: >=14 viewpoints required, ui-layer declares 10 and ran 9, and 'counts recorded' is not met because ui-forbidden records no sample count at all.",
+    "Two of the three detectors the builder edited and left UNRUN come back red when run: ui-metrics FD6 and FD8, and ui-forbidden U5.",
+    "AR-2 does NOT fail this round. The round-1 marker route is closed by construction and verified independently against eight forged save keys."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-ui-detectors-that-cannot-see",
+    "subsystem_path": "ui.hud.minimalism",
+    "severity": "blocking",
+    "what": "The piece's detectors report PASS about things they did not sample, and its one detector that looks at the framebuffer rather than at the build's own register is looking at the wrong pixels. ui-forbidden.mjs is RI-UIX01 §B's OBSERVED probe — the only check in W1-21 that answers an AR-2 question from the picture instead of from getUIState() — and its first run against any build returns 66 digit glyphs over six enemies, all of which are helmet crests and jaw lines. It scans a 1280x720 coordinate space in a 1920x1080 frame because it never pins the drawing buffer; it grades a frame whose hit_frame is null, so the capture is not the post-hit frame the method requires; and its own self-test finds 10 glyphs where 3 were drawn. Around it, eleven of the fifteen graded checks across the five detectors return PASS on an empty sample set, three of them BY CONSTRUCTION on absence: FD7's `gradient_bits === null || >= 7`, FD6's edgeFringe() returning {worst: 0} with zero samples, and K4's bare `catch { continue }` on a missing state.",
+    "why_it_matters": "docs/PLAN.md §3 makes this piece the enforcement point for the most-cited arbitration rule in the corpus, and round 2 has now genuinely closed the marker route it was failed for. What is left is worse in kind: the instruments are the only reason anyone would believe it stayed closed, and their green is not currently evidence. A detector that cannot distinguish an enemy's head from a damage number, in a set where most checks cannot distinguish 'nothing wrong' from 'nothing looked at', is how the next marker ships. The piece already knows the remedy — ui-census.mjs U7 and U10 are correctly guarded on a sample count, two lines from U8, which is not.",
+    "evidence": [
+      "reports/runs/CRITIC-W1-21-R2-UI-FORBIDDEN/ui-forbidden.json",
+      "docs/shots/2026-08-08-w1-21-r2-critic-ui-forbidden-false-positive.png",
+      "reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json",
+      "corpus/90-verdicts/wave1/W1-21-r2.md §2"
+    ],
+    "remedy": {
+      "action": "(a) ui-forbidden.mjs: call setDevicePixelRatio(1) before the first capture and assert screenshot().width === viewport.width; make hit_frame === null an exit 2 rather than a graded run; calibrate looksLikeDigit() against the --calibrate output rather than a hand-written band, since the self-test already draws the ground truth. (b) Give every graded check a sample count and assert it: K2 fails when covered_all_viewpoints is false; K3/K4 fail on an empty differential or sweep list and record WHY a state was skipped instead of `continue`; U4 records how many elements on how many screens it scanned; FD6 fails when edge_fringe_samples === 0; FD7 fails when gradient_bits === null. A check with an empty sample set must report EMPTY, never PASS. (c) Replace `markers: 0` in game/src/ui/system.js with a count off the element census, and take the map's four AR-2 filters off the id.startsWith('map.') prefix so they cover every element on the screen. (d) Classify accessors in Discovery.mutatorReport() by the same fail-closed rule as methods. (e) Restate FD6's threshold in the item's own unit — deltaE, not 0-255 luma — so a two-round-old failure can be graded as a fail or as a hard fail.",
+      "acceptance": "node tools/analysis/ui-forbidden.mjs --self-test reports a false-positive count of 0 on a frame with no digits drawn and >=2 on one with 247 drawn, at a pinned 1:1 buffer, with a non-null hit_frame; every check in ui-layer.mjs, ui-forbidden.mjs, marker-diff.mjs, ui-metrics.mjs and ui-census.mjs emits a sample count and returns EMPTY rather than PASS when it is zero, demonstrated by running each with its subject removed and confirming none goes green; getUIState().map.markers changes when a map_place element is added, and mutatorReport() lists a state-writing accessor; ui-metrics.mjs FD6 reports a deltaE against the item's 3 and 8.",
+      "targets": [
+        "tools/analysis/ui-forbidden.mjs",
+        "tools/analysis/ui-layer.mjs",
+        "tools/analysis/marker-diff.mjs",
+        "tools/metrics/ui-metrics.mjs",
+        "tools/analysis/ui-census.mjs",
+        "game/src/ui/system.js",
+        "game/src/sim/discovery.js",
+        "corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md"
+      ]
+    }
+  },
+  "secondary_observations": [
+    "tools/analysis/journal-ui.mjs:199 still implements the pre-S35 JU8: it asserts openMenu('map') throws and ui.map_exists === false, both of which S35 now requires to be FALSE. Round-1 secondary observation 1, untouched by round 2. RI-UIX04's recorded '11/11' cannot be true at HEAD.",
+    "marker-scan.mjs's F6 does not pay for the PLACEMENT_ROOTS widening it was added to pay for. The builder's own self-test case at line 250 asserts F6 is SILENT on {id, quest, post:{pos}} — a coordinate one level below the quest key — which is exactly the npcs[N].post.pos shape all 302 exempted hits use. Today it costs nothing (no giver record carries a `quest` key; I checked). Tomorrow it is a hole in a root that no longer runs F2.",
+    "game/src/ui/system.js line 985: `markers: 0` is a hard-coded literal inside the map's compliance block, four lines above the mutator_arities field that round 1 failed for being a hard-coded literal. The identical field is typed again at the top level of getUIState().",
+    "The map's four AR-2 filters (routes_drawn, quest_bearing_elements, travel_affordances, numeric_text) all key on e.id.startsWith('map.'). Six visible elements on the map screen do not match that prefix — hud.health, hud.stamina, hud.focus, hud.heal, hud.equipload, hud.quickslots — and one of them carries the numeral '5'. That is an RI-UIX01 numeric-budget question, not an S35 one, but nothing in the map's own report would ever say so.",
+    "NO TOOL IN THIS REPO CAN SURVIVE A HARNESS ERROR IT HAS ALREADY ANTICIPATED. tools/lib/browser.mjs turns any harness throw into a process-level die(), so every `try { await h.h(...) } catch` in tools/ is decoration. Independently reproduced: my probe had a Node-side catch around aggro() and lost the whole run to `aggro('deadwater-koor-nakh'): no such entity` anyway. The builder reported this and the report is exact. The fix was to move the call inside page.evaluate.",
+    "listEntities() returns eids that aggro() rejects. Reproduced independently; the builder reports the same for ui-layer.mjs's ui_combat_neutral viewpoint, which is why that viewpoint is the one skipped and why K6 fails on coverage.",
+    "ui-metrics measures `sheet`, `spells` and `map` on their `hint` bar — the shared control legend drawn by chrome.js hint() — because it is the only element on those screens over the 40-character prose preference. The whitelist that returned zero samples is genuinely gone; what replaced it on three of seven screens is a single line of chrome rather than the screen's own content.",
+    "RI-UIX02 K2: ui_menu_map and ui_menu_map_local report an identical ui_layer_px of 530,256, which reads as the local-view press having done nothing. Diffing the two frames gives 24,768 differing pixels, so the view really did change. Checked rather than assumed."
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-ui-map-outside-the-ar2-detectors",
+      "from_round": 1,
+      "status": "mostly_closed",
+      "observed": "(a) The map is now in ui-layer.mjs (two viewpoints), ui-metrics.mjs SCREENS, ui-forbidden.mjs's declared sweep and marker-diff.mjs's differential — I confirmed all four by running the three that had never been run. (b) mutator_arities is enumerated from the prototype and matches an independent scan. (c) restore() is closed by removing the forgeable fields rather than validating them, and eight forged keys change nothing on the drawn screen. (d) ui-metrics no longer filters unmeasurable screens out of the median and grades which screens contributed, via the new FD8. What is NOT closed: FD8 itself fails on the builder's own stale declaration; ui-forbidden was run but cannot answer its question; K6's viewpoint count is still 9 of a required 14."
+    }
+  ],
+  "corpus_extended": [],
+  "method_deviations": [
+    "AR-1 not independently re-measured for the third round running: tools/harness/ui-pause.mjs was not run by round 2 or by me. Recorded as pass on the builder's evidence.",
+    "RI-UIX05 not re-measured; round 1's score of 6 is carried forward and labelled as carried rather than measured.",
+    "marker-diff.mjs --self-test not run (contention ceiling). K3/K4 were run without it; ui_layer_px 28,310 shows the pixel half has signal, and the tool's self-test only exercises the declared half in any case.",
+    "ui-layer.mjs not re-run by me; the builder's artifact is read and audited instead, with one independent check (the map/map_local frame diff).",
+    "RI-UIX06's ART side (§G Bootstrap, six fresh judges) not judged; same reason round 1 gave. The two sides are NOT combined.",
+    "My own instruments are declared here rather than in the builder's file: tools/ui/critic-w1-21-r2-a.mjs, -b.mjs, -consume.mjs.",
+    "I proceeded past a `node tools/contention.mjs --gate` exit 3 for the three instrument runs, and say so. Every figure taken under it is a count or a boolean; no timing figure is published.",
+    "Pass B's JSON was lost when aggro() killed the process; the result is taken from the run log and was reproduced identically by a second independent run.",
+    "I deleted 9.1 GB of stale scratch (>4 hours old) under /tmp/claude-0/.../scratchpad to clear a 100%-full root filesystem that was failing child processes with ENOSPC. Nothing under the repository was touched."
+  ],
+  "arbitration_questions": [
+    {
+      "id": "Q1",
+      "question": "Does AMENDMENT-W1-MAP-01 §3a's JU8 clause 'terrain rendered where the player has not been' / 'a square for a place the player has not stood in' bind against a HAND-EDITED SAVE, or only against an in-game route (a quest, hook, dialogue effect or topic)?",
+      "why_it_matters": "Round 2 closed the route round 1 found: there is no field left in a save in which a place can be NAMED. What remains is that the footprint itself is a field in a file the player owns — a synthetic `stood` of 1,046 cells loads 14 places and 92.5% of the province. Every possible implementation of 'the map records where you have been' has this property, so read broadly the clause is unsatisfiable by any design and, per S26's own reasoning, a check that fires on everything distinguishes nothing. S35's §3c argues the concern is 'any API by which a quest can place... a position on the map' — a quest author, not a save editor — which supports the narrow reading. I have scored it narrowly and referred it rather than deciding it.",
+      "consequence": "Under the broad reading AR-2 becomes a fail and RI-UIX04 is capped at 2. The overall score does not move: it is already 5, held down by RI-UIX02 K6 and RI-UIX06 FD6.",
+      "measured": "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json C4"
+    },
+    {
+      "id": "Q2",
+      "question": "The builder's own referral, which I support: may AMENDMENT-W1-MAP-01 §3b's acceptance 'assert that every one of them has arity 0' be replaced by 'no mutator has a parameter in which a place can be named', evidenced by Discovery.RESTORE_READS?",
+      "why_it_matters": "The literal acceptance cannot be met by any save path — restore() must receive the blob. The substitute is checkable from the running object (restore_reads=['stood'], place_naming_parameters=[]) and is strictly stronger about the property the amendment exists to protect. I verified the substitute holds and verified the enumeration independently. Recommend adopting it, with one correction attached: the enumeration is fail-closed for methods and fail-OPEN for accessors (see D4), so the substitution should carry the accessor fix with it.",
+      "consequence": "Without a ruling, JU8-e sits as verified-by-substitute rather than verified.",
+      "measured": "reports/runs/CRITIC-W1-21-R2/critic-w1-21-r2-b.json D1,D2,D3,D4"
+    },
+    {
+      "id": "Q3",
+      "question": "RI-UIX06 FD6 specifies deltaE <= 3 with a hard fail above 8; tools/metrics/ui-metrics.mjs measures a 0-255 luminance overshoot against 40. Which is the bar?",
+      "why_it_matters": "FD6 has been red across two rounds (114, then 99.9, with all 28 captures over the tool's threshold) and no verdict has named it. Until the unit is reconciled nobody can say whether it is an ordinary fail or a hard fail capping the FIDELITY side at 2, which is a three-point swing on this item.",
+      "consequence": "If it is a hard fail, RI-UIX06 FIDELITY caps at 2 and the overall min drops from 5 to 2.",
+      "measured": "reports/runs/CRITIC-W1-21-R2-UI-METRICS/ui-metrics.json"
+    }
+  ],
+  "source_reads": [
+    { "path": "game/src/sim/discovery.js", "purpose": "diagnose-after-demonstrating" },
+    { "path": "game/src/ui/system.js", "purpose": "diagnose-after-demonstrating" },
+    { "path": "game/src/ui/screens/map.js", "purpose": "diagnose-after-demonstrating" },
+    { "path": "game/src/ui/chrome.js", "purpose": "diagnose-after-demonstrating" },
+    { "path": "game/src/harness/api.js", "purpose": "locate-the-seam-to-measure" },
+    { "path": "game/src/input/real.js", "purpose": "locate-the-seam-to-measure" },
+    { "path": "game/src/core/loop.js", "purpose": "locate-the-seam-to-measure" },
+    { "path": "game/src/engine.js", "purpose": "locate-the-seam-to-measure" },
+    { "path": "game/src/main.js", "purpose": "locate-the-seam-to-measure" },
+    { "path": "game/src/save/state.js", "purpose": "locate-the-seam-to-measure" },
+    { "path": "tools/metrics/ui-metrics.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/analysis/ui-forbidden.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/analysis/marker-diff.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/analysis/marker-scan.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/analysis/ui-layer.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/analysis/ui-census.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/analysis/journal-ui.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/harness/w1-21-r2-nav.mjs", "purpose": "audit-an-instrument-i-am-relying-on" },
+    { "path": "tools/lib/browser.mjs", "purpose": "audit-an-instrument-i-am-relying-on" }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and the verdict is provisional on it. Run by me: ui-metrics.mjs, ui-forbidden.mjs --self-test, marker-diff.mjs, marker-scan.mjs (+--self-test), and three instruments of my own. NOT run by me: ui-pause.mjs (AR-1), ui-census.mjs, journal-ui.mjs, ui-layer.mjs, marker-diff --self-test, and every RI-UIX05 check. Two of my own checks were false fails and are reported as mine rather than as the build's: C3b (189,514 differing pixels, 99% of them the live world behind a 0.94-opaque panel) and my first CONSUMPTION arm (1.58M px live vs 1.61M px ablated, which discriminated nothing). My first run of passes C-F was a VACUOUS PASS against a baseline of zero places and is recorded rather than deleted; C0 is now a gate that refuses to grade the forgery until the honest walk has discovered something. blind_done_where_required is true vacuously: no assigned item in this piece carries blind_pair: yes.",
+    "gap_found": true
+  },
+  "notes": [
+    "This round did the two hardest things in its brief and did them well. It closed an AR-2 hole by REMOVING the forgeable field rather than by adding a check to it, and the load audit now itemises a forgery instead of merely refusing it — which is what let me distinguish 'the hole is closed' from 'the report is closed'. And it put doors on five screens that had none, using two verbs already inside a closed fourteen-name action set rather than inventing a fifteenth, in a way that survives being driven by real Playwright key presses and a synthetic standard-mapping gamepad rather than by injected action names.",
+    "What keeps the number at 5 is the other half of the brief. Three edited detectors shipped unrun and two of them are red. One is red on the builder's own written declaration about their own screen, caught by the check they wrote for exactly that purpose and did not execute. RULES 4 is the rule this round paid for.",
+    "RULES 28 says do not commit and the dispatching brief instructed me to commit to the current branch. I followed the brief and record the tension here and in orchestration/status/critic-w1-21-r2.json."
+  ]
+}

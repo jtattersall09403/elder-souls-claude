@@ -71,10 +71,13 @@ function png(path) {
   writeFileSync(path, Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
     chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw, { level: 9 })), chunk('IEND', Buffer.alloc(0))]));
 }
-// 5x7 bitmap font, enough for a title and axis labels.
-const GLYPH = {
-  A: '01100100101111010011001', B: '11100101011100101011110', C: '0111010001100001000101110'.slice(0, 23),
-};
+// This tool draws from the COLUMN-MAJOR 5x8 font below, which is sound and is not the table that
+// sheared every other chart in the tree. It also carried a dead three-entry copy of that sheared
+// 23-character row-major table — never referenced, never drawn — which `node tools/lib/chart-font.mjs
+// --audit-tree` (rightly) named. Deleted: a dead copy of a defect is still a copy of a defect, and
+// it is the thing the next person pastes. The live font is deliberately NOT rewired to
+// tools/lib/chart-font.mjs: it is a different, working typeface, and swapping it would change this
+// critic's published figure for no correctness reason.
 const FONT = {
   // Each entry is a COLUMN and each bit a row, so a dash is one bit set across all five columns.
   ' ': [0, 0, 0, 0, 0], '-': [0x10, 0x10, 0x10, 0x10, 0x10], '.': [0, 0x80, 0, 0, 0], ':': [0, 0x44, 0, 0, 0],

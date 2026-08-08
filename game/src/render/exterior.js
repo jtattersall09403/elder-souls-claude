@@ -189,6 +189,47 @@ const DEFAULT_MASS = KIND_MASS.dwelling;
 /** How much of the smaller building another may cover before both are shrunk. */
 const MAX_OVERLAP_FRAC = 0.45;
 
+/* ------------------------------------------------------------------------------------------------
+ * THE JOIN — round 4. Why the numbers below exist.
+ *
+ * Round 3 shrank 54 of 202 exteriors to keep buildings out of one another, and left every
+ * interior at its DECLARED footprint. The round-3 verdict measured what that did:
+ *
+ *   "41 of 112 enterable buildings now draw an exterior smaller than their own interior.
+ *    blackrose-inn is a 3.4 m shed over a 13.6 m hall — 6.3% of the area."
+ *
+ * There are only two levers — the size of the outside and the size of the inside — and the
+ * positions may not move, because they are RI-WLD03 R4's legibility proof. So both levers move,
+ * and this is the order they move in:
+ *
+ *   1. THE SHRINK IS PER AXIS. It was one scalar applied to both, which is why a plan that is
+ *      tight along one street cost a building 94% of its area: resolving a 2.8 m gap in x by
+ *      scaling BOTH axes to 0.25 throws away the whole of z for nothing. Resolving it in x alone
+ *      turns a 13.6 x 15.6 m hall into a 3.4 x 15.6 m terrace — which is what a dense town
+ *      actually looks like, and Blackrose's own plan comment says "Blackrose is corridors".
+ *   2. AN ENTERABLE BUILDING HAS A FLOOR THE PLAN MAY NOT PUSH IT UNDER. A door you can walk
+ *      through and a room you can turn round in need about six metres; below that the shrink
+ *      stops and the buildings terrace through one another, which is reported as
+ *      `deep_overlaps` rather than hidden. A dollhouse with a door is worse than two buildings
+ *      that touch.
+ *   3. THE ROOM IS SIZED TO THE BUILDING THAT CONTAINS IT — `interior_bounds_m`, below, and
+ *      applied to the record by `world/province.js#setSettlements()`. It is NEVER GROWN: a
+ *      building drawn at its declared footprint keeps exactly the room its record declares, so
+ *      this cannot turn a settlement into identical boxes. It only ever takes back the space the
+ *      plan cannot afford, and `province.js` publishes how many rooms it took it from.
+ * ----------------------------------------------------------------------------------------------*/
+
+/** No enterable building is drawn narrower than this on either axis. A room, not a dollhouse. */
+const MIN_ENTERABLE_SPAN_M = 6.0;
+/** Everything else — a lean-to, a kiln, a gallows — may go this small. */
+const MIN_FOOTPRINT_M = 3.4;
+/**
+ * The room's outer wall face sits on the inside face of the exterior wall. The exterior wall is
+ * `WALL_T` thick and centred on the footprint edge; the interior wall is 0.3 thick and centred on
+ * the `bounds_m` edge. So a room fits when `bounds + 0.3 <= footprint - WALL_T`.
+ */
+const ROOM_INSET_M = 0.66;
+
 /**
  * Read a settlement record and its interiors into a list of placed, sized buildings.
  *
@@ -197,6 +238,9 @@ const MAX_OVERLAP_FRAC = 0.45;
  * @param {object} rec  a `game/data/world/settlements/<id>.json` document
  * @param {object} interiors  `{ [interiorId]: interiorRecord }`
  */
+/** The footprint the building's own interior record declares, or null. */
+function declaredOf(b) { return b.declared_footprint_m || null; }
+
 export function planSettlement(rec, interiors) {
   const I = interiors || {};
   const kitIds = (rec.architecture_kit && rec.architecture_kit.meshes) || [];
@@ -256,50 +300,76 @@ export function planSettlement(rec, interiors) {
     });
   }
 
-  // ---- the shrink ---------------------------------------------------------------------------
+  // ---- the shrink, per axis -------------------------------------------------------------------
   // Positions are RI-WLD03 R4's spatial proof of the town's power reading and are NEVER moved.
   // Only sizes are touched, only where one building would otherwise swallow another's centre,
-  // and both parties shrink so no single id is privileged. Four deterministic passes, sorted by
+  // and both parties shrink so no single id is privileged. Eight deterministic passes, sorted by
   // id, is enough for every plan in the tree and is bounded rather than a convergence loop.
+  //
+  // WHAT CHANGED IN ROUND 4: the factor is applied to ONE AXIS, not to both. A pair that is too
+  // close along x is separated by narrowing both buildings in x; their depth is untouched. The
+  // arithmetic is the same — scaling both widths by `t` scales the separation requirement and
+  // the overlap allowance by `t` together, so `t <= Dx / (Sx - limX)` still solves it exactly —
+  // but the area a building loses goes from `t²` to `t`. Blackrose's inn was 6% of its declared
+  // area under the old rule and is a full-depth terrace under this one.
   const sorted = list.slice().sort((a, c) => (a.id < c.id ? -1 : a.id > c.id ? 1 : 0));
-  const FLOOR = 0.24;
+  for (const b of sorted) b.shrink_m = [1, 1];
+  const spanFloor = (b) => (b.enterable ? MIN_ENTERABLE_SPAN_M : MIN_FOOTPRINT_M);
   for (let pass = 0; pass < 8; pass++) {
-    const next = sorted.map((b) => b.shrink);
+    const nx = sorted.map((b) => b.shrink_m[0]);
+    const nz = sorted.map((b) => b.shrink_m[1]);
     let touched = 0;
     for (let i = 0; i < sorted.length; i++) {
       for (let j = i + 1; j < sorted.length; j++) {
         const a = sorted[i], c = sorted[j];
-        const aw = a.footprint_m[0] * a.shrink, ad = a.footprint_m[1] * a.shrink;
-        const cw = c.footprint_m[0] * c.shrink, cd = c.footprint_m[1] * c.shrink;
+        const aw = a.footprint_m[0] * a.shrink_m[0], ad = a.footprint_m[1] * a.shrink_m[1];
+        const cw = c.footprint_m[0] * c.shrink_m[0], cd = c.footprint_m[1] * c.shrink_m[1];
         const Dx = Math.abs(a.x - c.x), Dz = Math.abs(a.z - c.z);
         const Sx = (aw + cw) / 2, Sz = (ad + cd) / 2;
         const limX = Math.min(aw, cw) * MAX_OVERLAP_FRAC, limZ = Math.min(ad, cd) * MAX_OVERLAP_FRAC;
         if (Sx - Dx <= limX || Sz - Dz <= limZ) continue;      // clear, or terraced but not swallowed
-        // The uniform factor t applied to BOTH that puts the shallower axis back on its limit.
-        // `t*S - D <= t*lim` solves to `t <= D / (S - lim)`; satisfying EITHER axis is enough,
-        // so take the larger of the two and shrink as little as the plan allows.
-        const tx = Sx - limX > 1e-6 ? Dx / (Sx - limX) : 1;
-        const tz = Sz - limZ > 1e-6 ? Dz / (Sz - limZ) : 1;
-        const t = Math.min(1, Math.max(tx, tz));
+        const tx = Sx - limX > 1e-6 ? Math.min(1, Dx / (Sx - limX)) : 1;
+        const tz = Sz - limZ > 1e-6 ? Math.min(1, Dz / (Sz - limZ)) : 1;
+        // Resolve on the axis that costs the pair least — the larger factor is the smaller cut —
+        // and do NOT touch the other one.
+        const ax = tx >= tz ? 0 : 1;
+        const t = ax === 0 ? tx : tz;
         if (t >= 0.999) continue;
-        next[i] = Math.min(next[i], Math.max(FLOOR, a.shrink * t));
-        next[j] = Math.min(next[j], Math.max(FLOOR, c.shrink * t));
+        const arr = ax === 0 ? nx : nz;
+        const cur = (b) => b.shrink_m[ax];
+        // The floor is in metres and belongs to the building, not to the pair: an enterable
+        // building stops at MIN_ENTERABLE_SPAN_M and the pair terraces instead.
+        const fa = Math.min(1, spanFloor(a) / a.footprint_m[ax]);
+        const fc = Math.min(1, spanFloor(c) / c.footprint_m[ax]);
+        arr[i] = Math.min(arr[i], Math.max(fa, cur(a) * t));
+        arr[j] = Math.min(arr[j], Math.max(fc, cur(c) * t));
         touched++;
       }
     }
-    for (let i = 0; i < sorted.length; i++) sorted[i].shrink = next[i];
+    for (let i = 0; i < sorted.length; i++) sorted[i].shrink_m = [nx[i], nz[i]];
     if (!touched) break;
   }
-  // A floor in METRES as well as in ratio: a plan that packs its buildings 1.0 m apart (Blackrose
-  // is authored that way) would otherwise shrink them to dollhouses. Below MIN_FOOTPRINT_M the
-  // shrink stops and the buildings terrace through one another, which is reported rather than
-  // hidden — see `deep_overlaps` in the exterior summary.
-  const MIN_FOOTPRINT_M = 3.4;
   for (const b of list) {
-    const need = Math.min(1, Math.max(MIN_FOOTPRINT_M / b.footprint_m[0], MIN_FOOTPRINT_M / b.footprint_m[1]));
-    b.shrink = +Math.max(need, Math.max(0.24, b.shrink)).toFixed(4);
-    b.drawn_footprint_m = [+(b.footprint_m[0] * b.shrink).toFixed(2), +(b.footprint_m[1] * b.shrink).toFixed(2)];
-    b.at_declared_footprint = b.footprint_source === 'declared' && b.shrink > 0.999;
+    const fx = Math.min(1, spanFloor(b) / b.footprint_m[0]);
+    const fz = Math.min(1, spanFloor(b) / b.footprint_m[1]);
+    const sx = +Math.max(fx, b.shrink_m[0]).toFixed(4);
+    const sz = +Math.max(fz, b.shrink_m[1]).toFixed(4);
+    b.shrink_m = [sx, sz];
+    // `shrink` is kept as the AREA factor, which is what every existing probe and report reads it
+    // as, and is now the product of the two axes rather than one number squared.
+    b.shrink = +(sx * sz).toFixed(4);
+    b.drawn_footprint_m = [+(b.footprint_m[0] * sx).toFixed(2), +(b.footprint_m[1] * sz).toFixed(2)];
+    b.at_declared_footprint = b.footprint_source === 'declared' && sx > 0.999 && sz > 0.999;
+    // THE ROOM THE PLAN CAN AFFORD — the third lever, and the only one that touches the inside.
+    // Never larger than the record declares; smaller exactly where the building is. `null` when
+    // nothing needs to change, so a probe can count the rooms this piece had to take space from.
+    b.interior_bounds_m = null;
+    if (b.enterable && b.interior && declaredOf(b)) {
+      const dw = declaredOf(b)[0], dd = declaredOf(b)[1];
+      const rw = Math.min(dw, +(b.drawn_footprint_m[0] - ROOM_INSET_M).toFixed(2));
+      const rd = Math.min(dd, +(b.drawn_footprint_m[1] - ROOM_INSET_M).toFixed(2));
+      if (rw < dw - 0.01 || rd < dd - 0.01) b.interior_bounds_m = [Math.max(2.0, rw), Math.max(2.0, rd)];
+    }
   }
 
   return {
@@ -349,19 +419,42 @@ const DOOR_W = 1.8;
 const DOOR_H = 2.3;
 const WALL_T = 0.36;
 
+/**
+ * A four-sided hipped roof that COVERS a w x d rectangle, corners included.
+ *
+ * A cone with four radial segments is a square pyramid whose base vertices point along the axes;
+ * rotating it 45 degrees puts them at the corners, and scaling x and z by the footprint makes the
+ * four base edges lie exactly on the four walls. Every point over the plan is under it.
+ *
+ * WHY IT EXISTS. Round 3 gave Archon a clay dome and Helstrom a grown shell, both ellipsoids
+ * scaled to the footprint — and an ellipsoid inscribed in a rectangle leaves the four corners
+ * open to the sky. The round-3 critic photographed it from above and wrote it down as *"every
+ * building in the frame is an open-topped olive tray with an egg-shaped dome sitting loose inside
+ * it"*. A bounding box cannot see that defect; `tools/world/w1-04-r4-join.mjs` raycasts for it.
+ * The dome stays — it is the silhouette you read Archon by — and now it sits ON a roof.
+ */
+function hipRoof(P, w, d, rise, mat, overhang = 0.5) {
+  const c = cyl(0.001, Math.SQRT1_2, rise, 4, mat);
+  c.rotation.y = Math.PI / 4;
+  c.scale.set(w + overhang, 1, d + overhang);
+  return c;
+}
+
 /** The roof each town builds, because the roofline is what you read a town by at 200 m. */
 function roofFor(town, P, w, d, h, hash) {
   const g = new THREE.Group();
   g.name = 'roof';
-  if (town === 'archon') {                      // kiln-fired clay dome
+  if (town === 'archon') {                      // kiln-fired clay dome, on a clay hip
+    part(g, hipRoof(P, w, d, Math.min(w, d) * 0.22, P.roof), 0, h + Math.min(w, d) * 0.11, 0);
     const dome = ico(Math.min(w, d) * 0.62, 1, P.roof);
     dome.scale.set(w / (Math.min(w, d) * 1.24), 0.52, d / (Math.min(w, d) * 1.24));
-    part(g, dome, 0, h, 0);
-    part(g, cyl(Math.min(w, d) * 0.2, Math.min(w, d) * 0.26, 0.5, 9, P.stone), 0, h + Math.min(w, d) * 0.3, 0);
-  } else if (town === 'helstrom') {             // grown shell
+    part(g, dome, 0, h + Math.min(w, d) * 0.16, 0);
+    part(g, cyl(Math.min(w, d) * 0.2, Math.min(w, d) * 0.26, 0.5, 9, P.stone), 0, h + Math.min(w, d) * 0.46, 0);
+  } else if (town === 'helstrom') {             // grown shell over a lashed deck
+    part(g, hipRoof(P, w, d, Math.min(w, d) * 0.16, P.wood, 0.7), 0, h + Math.min(w, d) * 0.08, 0);
     const sh = ico(Math.min(w, d) * 0.72, 1, P.roof);
     sh.scale.set(w / (Math.min(w, d) * 1.44), 0.4, d / (Math.min(w, d) * 1.44));
-    part(g, sh, 0, h + 0.2, 0);
+    part(g, sh, 0, h + 0.2 + Math.min(w, d) * 0.12, 0);
     for (let i = 0; i < 4; i++) { const a = i * 1.571; const r = cyl(0.14, 0.3, h * 0.8, 5, P.wood); r.rotation.z = Math.cos(a) * 0.3; r.rotation.x = Math.sin(a) * 0.3; part(g, r, Math.cos(a) * w * 0.42, h * 0.6, Math.sin(a) * d * 0.42); }
   } else if (town === 'stormhold') {            // legion slab, flat, and a bloom course under it
     part(g, box(w + 0.6, 0.4, d + 0.6, P.roof), 0, h + 0.2, 0);

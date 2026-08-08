@@ -1085,6 +1085,14 @@ export class Engine {
       magicWorld: this.data.magic.wards,
     });
     this.magic.gold = this.sim.progression.gold || 0;
+    // W1-14 r4 — ONE PURSE. `MagicSystem.makeSpell` did `this.gold -= q.gold`, and `magic.gold`
+    // is a MIRROR: `_setGold()` is the one writer every other purse in the build agrees on
+    // (`sim.progression.gold`, `combat.world.gold`, `sim.stealth.p.gold`), and it overwrites the
+    // mirror on its next call. So a commissioned spell was paid for out of a copy — `getGold()`
+    // did not move, the save did not move, and the next `setGold`/`hearthRest`/fence payment put
+    // the money back. This is W1-16's finding one system along and the same fix: the model keeps
+    // its own field for arithmetic, and the SPEND goes through the engine's purse.
+    this.magic._spendGold = (g) => this._setGold(this._gold() - Number(g || 0));
     if (loadout.willpower !== undefined) this.magic.setWillpower(loadout.willpower);
     if (loadout.catalyst) this.magic.setCatalyst(loadout.catalyst);
     if (loadout.attuned) this.magic.setAttuned(loadout.attuned);
