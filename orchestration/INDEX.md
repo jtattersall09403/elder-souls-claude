@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `24a82aa`: 570 tools, 153 reference
-items, 41 pieces in flight.
+so it cannot drift. Generated at `3707850`: 571 tools, 153 reference
+items, 42 pieces in flight.
 
-Its purpose is to stop 41+ concurrent agents each paying separately to discover the
+Its purpose is to stop 42+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -180,9 +180,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
 
-### `tools/composition/` — 2
+### `tools/composition/` — 3
 
 - `tools/composition/cells-from-md.mjs` — the living artifact RI-CMP01 names, generated from the item itself.
+- `tools/composition/matrix-probe.mjs` — RI-CMP01 Comparison method, Stage 2.
 - `tools/composition/matrix-scan.mjs` — RI-CMP01 Comparison method, Stage 1: the claimed edge list.
 
 ### `tools/corpus/` — 1
@@ -879,6 +880,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-23-r4` | ? |  | — |
 | `W1-ROAD-JOIN` | ? | probe the settlement geometry, then implement the thread in build-roads.mjs | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` |
 | `critic-w1-17` | done | Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-w | `orchestration/status/critic-w1-17.json` `corpus/90-verdicts/wave1/W1-17-r1.md` `corpus/90-verdicts/wave1/W1-17-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-r1/` `tools/dialogue/critic-field-census.mjs` `tools/dialogue/critic-semantics.mjs` |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |

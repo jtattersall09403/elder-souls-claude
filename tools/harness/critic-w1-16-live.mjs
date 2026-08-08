@@ -37,7 +37,7 @@ critic-w1-16-live.mjs — W1-16 round-2 critic's stepping probes.
 `;
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
-const ALL = ['separation', 'ladder', 'parallel', 'pin', 'deletefix', 'burden'];
+const ALL = ['separation', 'ladder', 'parallel', 'pin', 'deletefix', 'burden', 'spell', 'oversprint'];
 const run = String(args.probe || 'all') === 'all' ? ALL : String(args.probe).split(',');
 
 const handle = await launchGame(args);
@@ -380,6 +380,115 @@ const PROBES = {
       fix_arm_slots: fixAfter.after.equipped_rows,
       coupled: cutFirst.roll_moved === false && fixAfter.roll_moved === true
         && fixFirst.roll_moved === true && cutAfter.roll_moved === false,
+    };
+  },
+
+  // =========================================================================================
+  // L7 — THE SPELL THE PRODUCER EATS.
+  //
+  // `_recomputeEquipLoad()`'s own header claims it "applies its result as a DELTA rather than an
+  // assignment, so the feather effect's own additive offset survives untouched. An assignment
+  // here would have silently deleted a spell." On the FIRST engagement after a scenario boundary
+  // `_equipLoadBase` is null, so `prev` is read off the BODY — which already carries the spell's
+  // offset — and the delta collapses to an assignment. `game/data/magic/spells.json` ships
+  // Feather (magnitude 30) and Burden (magnitude 40); both are larger than the 30-point LIGHT
+  // band, so either one decides a roll tier on its own.
+  // =========================================================================================
+  spell() {
+    const H = window.__HARNESS;
+    const E = window.__ENGINE;
+    const cs = () => H.getCombatState();
+
+    // Which shipped states begin with NOTHING equipped? Those are the ones where the producer
+    // has not engaged and the first equip is an assignment.
+    const states = Object.keys((E && E.data && E.data.states) || {});
+    const byState = [];
+    for (const s of states) {
+      try {
+        H.setSeed(1337); H.loadState(s); H.stepFrames(8);
+        const b = H.getBurden().equip_load;
+        byState.push({ state: s, source: b.source, pct: b.pct });
+      } catch (e) { byState.push({ state: s, err: String(e && e.message || e) }); }
+    }
+    const notEngaged = byState.filter((r) => r.source && /nothing is equipped yet/.test(r.source));
+
+    // The demonstration, on a state the producer has not engaged in.
+    const demo = (stateName) => {
+      const out = { state: stateName };
+      try {
+        H.setSeed(1337); H.loadState(stateName); H.stepFrames(8);
+        out.source_at_start = H.getBurden().equip_load.source;
+        out.pct_at_start = H.getBurden().equip_load.pct;
+        // Cast the shipped Burden spell (+40 points of equip load, 20 s).
+        try { H.learnSpell('burden'); } catch (e) { /* may already be known */ }
+        try { H.setAttuned(['burden']); } catch (e) { /* not required by castNow */ }
+        out.cast = H.castNow('burden');
+        H.stepFrames(2);
+        out.pct_after_cast = H.getBurden().equip_load.pct;
+        out.tier_after_cast = H.getBurden().equip_load.tier;
+        // Now put ONE piece of armour on — the producer's first engagement in this scenario.
+        const q = cs().player.pos;
+        H.spawnProp({ eid: 'cw-spell', name: 'shell-scale-hauberk', item: 'shell-scale-hauberk', pos: [q[0], q[1], q[2]] });
+        H.takeProp('cw-spell'); H.equipItem('shell-scale-hauberk'); H.stepFrames(40);
+        const b = H.getBurden().equip_load;
+        out.equipped_weight = b.equipped_weight;
+        out.equip_load_max = b.equip_load_max;
+        out.pct_after_equip = b.pct;
+        out.pct_expected_after_equip = +((b.equipped_weight / b.equip_load_max) * 100 + 40).toFixed(6);
+        out.the_spell_survived_the_equip = Math.abs(out.pct_after_equip - out.pct_expected_after_equip) < 1e-3;
+        // Let the spell run out (20 s = 1200 f@60) and read the load the armour alone should give.
+        H.stepFrames(1400);
+        const c = H.getBurden().equip_load;
+        out.pct_after_expiry = c.pct;
+        out.tier_after_expiry = c.tier;
+        out.pct_expected_after_expiry = +((b.equipped_weight / b.equip_load_max) * 100).toFixed(6);
+        out.tier_expected_after_expiry = c.boundaries_pct
+          ? (out.pct_expected_after_expiry <= 30 ? 'LIGHT' : out.pct_expected_after_expiry <= 70 ? 'MEDIUM' : 'HEAVY') : null;
+        out.load_correct_after_expiry = Math.abs(out.pct_after_expiry - out.pct_expected_after_expiry) < 1e-3;
+      } catch (e) { out.err = String(e && e.message || e); }
+      return out;
+    };
+
+    const rows = [];
+    if (notEngaged.length) rows.push(demo(notEngaged[0].state));
+    // And the control: a state where the producer HAS engaged before the cast. The delta
+    // arithmetic is correct there, which is why this defect is invisible on `default`.
+    rows.push(demo('default'));
+
+    return {
+      states_examined: byState.length,
+      states_that_begin_with_nothing_equipped: notEngaged.map((r) => r.state),
+      demonstrations: rows,
+      claim_in_the_source: '_recomputeEquipLoad(): "applies its result as a DELTA ... so the feather effect\'s own additive offset survives untouched"',
+      coupled: rows.every((r) => r.err || (r.the_spell_survived_the_equip && r.load_correct_after_expiry)),
+    };
+  },
+
+  // =========================================================================================
+  // L8 — RI-CMB01 §B: "`OVERLOADED` additionally forbids sprinting and jump-attacks."
+  // The jump-attack half has a reader (combat/moveset.js: roll_tier === 'OVERLOADED' -> null).
+  // The sprint half is not in the builder's census at all. This asks the entity.
+  // =========================================================================================
+  oversprint() {
+    const H = window.__HARNESS;
+    const runAt = (pct) => {
+      H.setSeed(1337); H.loadState('arena_flat'); H.setEquipLoad(pct); H.stepFrames(8);
+      const p0 = H.getPlayerStats().pos.slice();
+      H.queueInputs([{ f: 0, move: [0, 1] }, { f: 0, press: ['sprint'] }]);
+      H.stepFrames(120);
+      const p1 = H.getPlayerStats().pos.slice();
+      return { pct, tier: H.getCombatState().player.tier,
+        metres_over_120_f60: +Math.hypot(p1[0] - p0[0], p1[2] - p0[2]).toFixed(3) };
+    };
+    const light = runAt(15);
+    const over = runAt(120);
+    const heavy = runAt(85);
+    return {
+      rows: [light, heavy, over],
+      ri_cmb01_b: 'OVERLOADED additionally forbids sprinting and jump-attacks.',
+      jump_attack_half_has_a_reader: 'combat/moveset.js — ctx.roll_tier === "OVERLOADED" -> { slot: null, reason: "overloaded" }',
+      overloaded_sprint_is_denied: over.metres_over_120_f60 < light.metres_over_120_f60 * 0.85,
+      coupled: over.metres_over_120_f60 < light.metres_over_120_f60 * 0.85,
     };
   },
 

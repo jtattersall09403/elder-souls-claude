@@ -26,7 +26,8 @@
     "NUMBERS THAT DO NOT REPRODUCE AS PUBLISHED, all minor against a very honest baseline: (1) Lilmoth's rumour pool is 24 -> 26 -> 28 -> 28 -> 30 with exactly the four flags named, not 24 -> 26 -> 28 -> 29 -> 32; folding in act_two_closed and act_three_closed gives 24 -> 26 -> 29 -> 30 -> 32, so the measurement omits two flags it depended on (RULES 12). (2) check-dialogue-topics warnings are 30, not 32 — the status file says both. (3) 'All 17 new warnings are the cell ladder' is 18 of 19; the exception is soulrest/rootkeeper, a disposition ladder (d:30 vs d:20) rather than a cell one. No shared gate was weakened; I checked.",
     "RumourBook.for() CONSUMPTION independently reproduced by perturbation rather than by reading the diff: stripping every knows gate flattens Lilmoth to 36 across all five act states while the shipped file moves 24 -> 30, and every one of the nine settlements moves. This was a real nineteenth dead model caught before it shipped and is the strongest single thing in the round.",
     "W1-09 CONFLICT CONFIRMED UNCHANGED: game/data/combat/parley.json is total_f 78 / stamina 0 against RI-DLG09's 102 f@60 / stamina 20 on f13 / arm 1-12 free-cancel / 5 routes. Scored 0 in its own reference-item row and DELIBERATELY EXCLUDED from the min-over-axes: W1-09 owns the file and the builder declared the conflict rather than editing a neighbour's file. Filed as a cross-piece debt for an arbiter.",
-    "RULE 4 COMPLIANCE: all four critic instruments have --break arms and all four were run. critic-field-census --break re-spells requires.race as `r` and exits 1. critic-semantics --break compares the shipped rule to itself and gets 0 divergence. critic-reach --break forces every player gate true and the 'always outscored' bucket goes 3 -> 96 (the count goes UP, not down, and the tool's own header explains why). critic-figures --break separates a 100%-figure corpus from a 0%-figure one."
+    "RULE 4 COMPLIANCE: all four critic instruments have --break arms and all four were run. critic-field-census --break re-spells requires.race as `r` and exits 1. critic-semantics --break compares the shipped rule to itself and gets 0 divergence. critic-reach --break forces every player gate true and the 'always outscored' bucket goes 3 -> 96 (the count goes UP, not down, and the tool's own header explains why). critic-figures --break separates a 100%-figure corpus from a 0%-figure one.",
+    "RULES 17, OBSERVED IN THE WILD DURING THIS RUN: `node tools/ownership.mjs --staged critic-w1-17` reported 21 staged paths declared by twelve other live pieces, so I committed by explicit pathspec rather than committing the index. Before that commit landed, a neighbour’s own `git add -A` had already swept my verdict, my nine artifacts and this status file into 24a82aa. Both halves of rule 17 fired in one run: the check saved twelve neighbours from me, and nothing saved me from the thirteenth. The content is intact and verified byte-identical; only the attribution is wrong."
   ],
   "next_step": "Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-wins or the item is amended to the scoring rule — every instrument in round 1 was built on the losing side of that disagreement; (2) close the actor roster so critic-reach's 'no such actor' bucket is 0; (3) give `res` a reader; (4) make voice-metrics read second_regex and the lexicon rules and re-report the miss list. An arbiter owes a ruling on RI-DLG09 vs W1-09.",
   "files_touched": [
@@ -47,8 +48,8 @@
   "shot": "None. This is a text audit, contention was at ceiling and I launched no browser; the round's illustrative image is the builder's own docs/shots/2026-08-08-w1-17-topic-graph-and-the-acts.png. Reported rather than faked (RULES 26).",
   "headline_numbers": {
     "verdict": "FAIL",
-    "score": 5.0,
-    "gate": 7.0,
+    "score": 5,
+    "gate": 7,
     "aggregation": "min-over-axes",
     "axes": {
       "prose_as_written": 8,
@@ -70,7 +71,15 @@
     "first_match_vs_scoring_divergences": 52,
     "echo_direction_per_10k_treewide": 1.23,
     "echo_direction_morrowind_reference": 1.08,
-    "fields_with_no_reader": ["res", "f"],
+    "fields_with_no_reader": [
+      "res",
+      "f"
+    ],
     "check_dialogue_topics_warnings": 30
+  },
+  "commits": {
+    "verdict_md_json_status_artifacts": "24a82aa — NOT MINE. A neighbouring agent ran `git add -A` while I was writing my commit message and swept corpus/90-verdicts/wave1/W1-17-r1.{md,json}, all nine files under artifacts/W1-17-r1/ and this status file into its own commit, under the message “Two ledgers disagreed by 53% and nothing in the tree read both”. Content verified byte-identical to my final versions and the verdict still validates from HEAD; nothing was lost, only attribution. This is the exact failure RULES 17 was rewritten for, recorded here rather than silently, as 6c979e3 did for an earlier instance.",
+    "instruments": "c36653e / 173ee86 — the orchestrator’s own bank commits, which took tools/dialogue/critic-{field-census,semantics,reach,figures}.mjs mid-run. Legitimate banking, named as such.",
+    "mine": "3707850 — my own pathspec-limited commit. By the time it ran, everything it named had already been carried by 24a82aa, so it landed only the blog-feed line and the pre-commit hook’s regenerated docs/ and INDEX.md."
   }
 }

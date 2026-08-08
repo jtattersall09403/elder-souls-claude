@@ -154,8 +154,36 @@ try {
   // ------------------------------------------------------------------ P2: CONSUMPTION ---------
   // One scenario, run three times from the same seed. The player WALKS and a guard is present,
   // so perception, motion and alert are all live and any consumer of the bed would have to show.
+  // A pristine deep copy of both perturbable models, taken once. Each arm restores from it IN
+  // PLACE before perturbing, so the arms cannot contaminate each other and no page reload is
+  // needed — reloading loses the loaded data and `reset()` then throws in `applyNamedState`.
+  await page.evaluate(() => {
+    const E = window.__ENGINE;
+    const det = E.sim && E.sim.stealth && E.sim.stealth.d && E.sim.stealth.d.detection;
+    window.__PRISTINE = {
+      ambience: JSON.parse(JSON.stringify(E.data.ambience || {})),
+      detection: det ? JSON.parse(JSON.stringify(det)) : null,
+    };
+    // Walks pristine -> live assigning primitives and array lengths, never replacing an object,
+    // because the AmbienceDriver holds references to the very bed objects being restored.
+    window.__restoreInPlace = function restore(src, dst) {
+      if (!src || !dst || typeof src !== 'object' || typeof dst !== 'object') return;
+      if (Array.isArray(src) && Array.isArray(dst)) dst.length = src.length;
+      for (const k of Object.keys(src)) {
+        const s = src[k];
+        if (s && typeof s === 'object') {
+          if (!dst[k] || typeof dst[k] !== 'object') dst[k] = Array.isArray(s) ? [] : {};
+          restore(s, dst[k]);
+        } else dst[k] = s;
+      }
+    };
+  });
+
   const scenario = async (perturb) => page.evaluate(async (mode) => {
     const H = window.__HARNESS, E = window.__ENGINE;
+    const det = E.sim && E.sim.stealth && E.sim.stealth.d && E.sim.stealth.d.detection;
+    window.__restoreInPlace(window.__PRISTINE.ambience, E.data.ambience);
+    if (det && window.__PRISTINE.detection) window.__restoreInPlace(window.__PRISTINE.detection, det);
     H.reset({ seed: 0xa3b1 });
     // Rebuild the perturbable models from a deep copy each run so arms cannot contaminate.
     const applied = { mode, changes: 0, note: null };
@@ -231,11 +259,10 @@ try {
 
   const nullArm = await scenario('null');
   const ambArm = await scenario('ambience');
-  // Reload the page between the destructive arms so the control starts from clean data.
-  // A full `load` reload times out on a box at 4+ per core; `domcontentloaded` plus an explicit
-  // wait for the two globals is the same guarantee without waiting on subresources.
-  await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 });
-  await page.waitForFunction(() => !!(window.__HARNESS && window.__ENGINE), null, { timeout: 180000 });
+  // No reload between the destructive arms: every arm restores both models in place from the
+  // pristine snapshot before it perturbs. `nullArm2` is run AFTER the ambience arm precisely so
+  // that a failure of that restoration would show up as `reproducible: false` and make the whole
+  // reading inadmissible, rather than passing silently.
   const nullArm2 = await scenario('null');
   const ctlArm = await scenario('control');
 

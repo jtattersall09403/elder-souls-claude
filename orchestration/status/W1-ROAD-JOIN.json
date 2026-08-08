@@ -1,14 +1,48 @@
 {
   "task_id": "W1-ROAD-JOIN",
   "title": "Join road generation and settlement planting so roads do not terminate in walls",
-  "status": "started",
+  "status": "building",
   "started_at": "2026-08-08T02:08:46Z",
-  "updated_at": "2026-08-08T02:08:46Z",
+  "updated_at": "2026-08-08T02:35:00Z",
   "owner": "builder",
-  "summary": "Roads (tools/world/build-roads.mjs) and settlements (planSettlement) are generated independently; nothing joins them. 10/10 built legs blocked per tools/world/road-through-building.mjs. THE CROSSING stops a body at 39 m against a stormhold wall.",
-  "phase": "reading rules/index/dispatch",
-  "files_claimed": [],
-  "files_touched": [],
+  "decision": {
+    "which_side_yields": "ROADS. Routing consumes the settlement plan; buildings never move.",
+    "why": [
+      "ARBITRATION S28 already ruled the axis: 'settlement positions are authoritative and immovable, but the route between any two of them may be re-cut freely'. That is binding and it names roads as the yielding side.",
+      "planSettlement()'s own contract says positions are RI-WLD03 R4's spatial proof of the town's power reading and are NEVER moved. Moving a building changes what the town means.",
+      "tools/world/build-settlements.mjs is claimed by another live piece (W1-15-r3 lineage); tools/world/build-roads.mjs is not.",
+      "Buildings-avoid-roads would have to run inside planSettlement(), a PURE runtime function, which would then need the road network at plan time - a heavier coupling than a build-time generator reading a data file."
+    ],
+    "shape": "Not a detour around towns. A local lateral THREAD: the finished leg polyline is pushed the minimum distance needed to leave every building footprint, so the road runs BETWEEN the houses and becomes a street inside the town. Length change is metres, not kilometres."
+  },
+  "baseline_at_start": {
+    "commit": "see reports/w1-road-join/baseline.json",
+    "named_route_offences": 16,
+    "legs_blocked": "10 of 10",
+    "self_test": "PASS"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "the acceptance instrument under-reports",
+      "text": "tools/world/road-through-building.mjs calls planSettlement(doc, {}) - it passes an EMPTY interiors map. The running game calls setSettlements(docs, this.data.interiors) with all 115 interiors. 114 of 202 buildings get a DIFFERENT footprint between the two, and the game's is often bigger: stormhold-scribe is 10.0x11.5 m to the check and 12.4x14.4 m to the body. A road cleared against the check's footprints is not necessarily cleared against the body's walls. My join therefore clears the UNION of both footprints, which makes the instrument's number sound rather than optimistic. I have NOT modified the instrument (it belongs to W1-01-r4 and the brief says do not rebuild it)."
+    }
+  ],
+  "files_claimed": [
+    "tools/world/build-roads.mjs",
+    "game/src/world/province.js",
+    "game/data/world/roads.json",
+    "tools/world/road-join-consumption.mjs",
+    "tools/world/road-join-deletefix.mjs",
+    "reports/w1-road-join/",
+    "orchestration/status/W1-ROAD-JOIN.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-ROAD-JOIN.json",
+    "reports/w1-road-join/baseline.json"
+  ],
   "acceptance": {
     "1_road_through_building_zero_of_ten": "pending",
     "2_body_walks_THE_CROSSING": "pending",
@@ -16,5 +50,7 @@
     "4_consumption_RI_MTH07": "pending",
     "5_leg_length_table": "pending"
   },
+  "contention": "node tools/contention.mjs --gate returned exit 3 at 02:09Z (6 browser instances, load 6.30/core). All offline work is being done first; the body walk waits for the gate or is declared as taken over the ceiling.",
+  "next_step": "probe the settlement geometry, then implement the thread in build-roads.mjs",
   "notes": []
 }
