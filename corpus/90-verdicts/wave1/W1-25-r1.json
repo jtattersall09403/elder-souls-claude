@@ -1,0 +1,502 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-25",
+  "piece_title": "The experience instrument and the seam crossings",
+  "subsystem_paths": [
+    "experience.memory.anecdote",
+    "experience.memory.recall",
+    "experience.permissiveness.register",
+    "experience.permissiveness.durability",
+    "experience.session.shape",
+    "composition.seam.crossings",
+    "composition.matrix.coverage"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-25-r1-sabotage-facility-8b14",
+    "role": "critic.experience",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-08T04:05:00Z",
+    "finished_at": "2026-08-08T04:52:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "fdef3d6e2e141c1a09c0d5276d2421b790580a45",
+    "branch": "main",
+    "note": "HEAD boots: node tools/boot-check.mjs exits 0. The boot blocker the builder recorded (canon register, 2 unresolved references) is gone at this commit, so matrix-probe.mjs is now blocked only by contention.",
+    "harness_commands": [
+      "node tools/experience/sabotage.mjs --self-test --cases",
+      "node tools/experience/critic-w1-25.mjs --out reports/experience/critic-w1-25.json",
+      "node tools/experience/critic-w1-25-chart.mjs",
+      "node tools/boot-check.mjs",
+      "node tools/contention.mjs --gate"
+    ],
+    "contention_note": "tools/contention.mjs --gate returned exit 3 at the start of this run (12 browser instances, load 7.08/core against a 4.0 ceiling) and exit 3 again at 04:40 (5 instances, 6.21/core). NO BROWSER WAS LAUNCHED BY THIS CRITIC. Every measurement in this verdict is offline: replays of artifacts on disk, static recounts over game/data, and event censuses over recorded traces. No timing figure is published (RULES #26)."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "No visual claim is made or judged. This piece ships instruments and reports; its one image is a chart of numbers read from an artifact, not a render, and it is offered as such."
+  },
+  "reference_items": [
+    {
+      "id": "RI-CMP01",
+      "path": "corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "matrix score and the §H floors",
+      "native_score": 0,
+      "native_max": 297,
+      "native_verdict": "any floor missed - loses outright, then capped at 2 by four hard fails",
+      "score_0_10": 2,
+      "justification": "Hard fails 1, 2, 5 and 6 all fire. Zero demonstrated seam crossings against a wave-1 floor of 4; zero demonstrated F->W cells; the probe harness never ran (reports/composition/w1/matrix.json records ran:false, demonstrated_crossings:0); and coverage is reported from matrix-scan.mjs with no probe stage, which hard fail 6 scores 0 for every cell regardless of the data. The tool says so in its own output.",
+      "measured": "partial",
+      "evidence": [
+        "reports/experience/critic-w1-25.json",
+        "reports/composition/w1/matrix.json",
+        "reports/composition/w1/claims.json",
+        "game/data/world/encounters.json",
+        "tools/quests/encounter-seam-probe.mjs",
+        "docs/shots/2026-08-08-critic-w1-25-one-integer-decides-the-verdict.png"
+      ],
+      "checks": [
+        {
+          "id": "D-recount",
+          "result": "fail",
+          "observed": "4 declared crossings reported as having no data of any kind are data-backed; all four in one unscanned file. My teardown: the same key search for a field that does not exist in that file returns 0, so the four hits are four real fields."
+        },
+        {
+          "id": "D-what-counts-as-a-demonstration",
+          "result": "fail",
+          "observed": "matrix-scan accepts a JSON pointer existing in a data file. RI-CMP01 requires the crossing demonstrated firing in a trace. The tool prints this limitation itself: 'Nothing in this file is a demonstration.'"
+        },
+        {
+          "id": "D-existing-probes-uncited",
+          "result": "fail",
+          "observed": "tools/quests/encounter-seam-probe.mjs, critic-ar3-endtoend.mjs, faction-seam-probe.mjs, tools/world/crossing-consumption.mjs and crossing-deletefix.mjs are all on the tree. None is cited. encounter-seam-probe.mjs was written by W1-19 round 2 specifically to demonstrate QST->ROS after a seam_sterile verdict."
+        },
+        {
+          "id": "D-shape-of-the-absence",
+          "result": "note",
+          "observed": "Every one of the 37 no-data crossings has ROS or BOS as source or target. The publishable finding is that the enemy roster and the bosses are the seam-dead systems, not a count."
+        }
+      ],
+      "hard_fails": [
+        "1 - fewer than 4 demonstrated seam-crossing cells (0)",
+        "2 - zero demonstrated F->W cells",
+        "5 - the probe harness could not run (matrix-probe.mjs never touched a browser)",
+        "6 - claims demonstrated by static analysis only"
+      ],
+      "why_not_ten": "Nothing is demonstrated. The offline half is well built and self-tested (cells-from-md recounts every declared total independently and goes red on four mutations of a copy of the item), and its one published number is an undercount produced by a source-side-only pattern table.",
+      "path_to_ten": "Run matrix-probe.mjs (ready, ten cells, one browser, the boot blocker is gone). Add target-side patterns to matrix-scan. Inventory the existing seam probes so a demonstrated crossing cannot be reported as absent.",
+      "measured_detail": "matrix.json ran:false, demonstrated_live_cells 0, demonstrated_crossings 0, matrix_score 0. claims.json: 564 files read, 30 cells with a data claim, 4 of 41 declared crossings claimed, 37 with none. Recounted independently: at least 8 of 41 are data-backed. QST->ROS (members[].absent_when_flag 'the_sixty_are_protected'), WLD->ROS (same field), DIS->ROS (hostile_below_disposition 15) and LOR->ROS (parley.true_name_topic x2) all sit in game/data/world/encounters.json, which produced ZERO of the tool's 30 claims because every one of matrix-scan.mjs's 56 patterns is rooted in the source system's directory and these four are declared on the target's."
+    },
+    {
+      "id": "RI-EXP02",
+      "path": "corpus/95-experience/RI-EXP02-anecdote-census.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "verified_anecdotes_per_hour and the class floors",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "hard fail 1 - below 1.5, wave DEAD",
+      "score_0_10": 2,
+      "calibrated": false,
+      "justification": "verified_anecdotes_per_hour is unmeasurable and therefore 0 against a floor of 1.5 (hard fail 1); every class floor is at zero (hard fail 2); M3 isolation is not enforced or attested because no recall chain exists (hard fail 4); no batons were run and recall-run.mjs is not built (hard fail 6). I decline to declare VOID under hard fail 5 - the SAB-P data filter was built and DID separate at 78.75% against a required 50%, so the instrument is not broken; what is missing is anything to run it on. VOID exists so a broken instrument cannot produce a score, and that is not this. calibrated:false per the item's own clause.",
+      "measured": "partial",
+      "evidence": [
+        "reports/experience/critic-w1-25.json",
+        "reports/sessions/exp-w1-opening/trace.jsonl",
+        "reports/experience/w1/anecdote-and-shape.md",
+        "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl"
+      ],
+      "checks": [
+        {
+          "id": "E1-zero-event-session",
+          "result": "confirmed",
+          "observed": "36,000 frames, events:[] on every record."
+        },
+        {
+          "id": "E2-the-generalisation",
+          "result": "fail",
+          "observed": "'0 by construction on every trace this project has ever recorded' is false. 77 traces carry 5,267 events; 34 carry more than five; 30 of those predate the piece's own anecdote report. The top five are W1-09's RI-CMB07 combat exemplars at 493-553 events over 24-28 kinds, including hit, stagger, whiff, guard_up, block_success, death, lock_break and detect."
+        },
+        {
+          "id": "E3-fault-location",
+          "result": "pass",
+          "observed": "NOT the recorder (the same writer emits 553 events in an exemplar) and NOT the vocabulary (179 names in game/src/sim/events.js, every consequence name present, so RULES #15 does not bite). It is the session fixture: a ten-minute run that never fights, talks, takes, writes or dies. RULES #8."
+        },
+        {
+          "id": "SAB-P-scope",
+          "result": "partial",
+          "observed": "The filter half ran and separated. The control half - two matched segments, blind A/B, margin on verified anecdotes/hour - did not, and cannot until a chain exists."
+        }
+      ],
+      "hard_fails": [
+        "1 - verified_anecdotes_per_hour unmeasurable => 0, below 1.5",
+        "2 - every class floor at zero",
+        "4 - M3 isolation not enforced or attested",
+        "6 - no batons; recall-run.mjs not built"
+      ],
+      "why_not_ten": "No playthrough chain exists, so the item's whole battery is unmeasured. The SAB-P data filter is a genuine first and is the piece's best single contribution to the corpus.",
+      "path_to_ten": "Point anecdote-trace.mjs at reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl today - it has a death, six staggers, a guard break and a block success in 9,000 frames, and will score near zero on proper-noun and locatable because it is a nameless arena, which is the finding the item wants. Then build recall-run.mjs and the baton bottleneck.",
+      "measured_detail": "reports/sessions/exp-w1-opening/trace.jsonl: 36,000 frames, 79 MB, ZERO events - independently confirmed. Journey traces carry 5 events each, all boot plumbing. SAB-P as run: 720 tellable passages -> 153, -78.75%, verdict OK - but measured on the CONTENT CENSUS, not on two matched 90-minute playthrough segments labelled A/B by coin flip, and not on verified_anecdotes_per_hour, which is what §Step 6 specifies. The builder labelled this caveat itself."
+    },
+    {
+      "id": "RI-EXP03",
+      "path": "corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "session shape histogram, sag contract, session beats",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "VOID (hard fail 8) with hard fail 7 also firing",
+      "score_0_10": 2,
+      "justification": "Hard fail 7 fires outright: the histogram is 100% IDLE, H = 0 bits, unclassified_fraction 1.0, and A-EXP2 is absent so READ/TRADE/CRAFT/MENU/TRAVEL_NODE collapse into IDLE exactly as the item says they must - unmeasurable => 0, fail-closed. Hard fail 8 also fires: SAB-E (encounters cloned) was never built, and the item makes that VOID rather than a low score. Recorded as a 2 with the VOID trigger named so the piece is not scored as if the control merely underperformed.",
+      "measured": "partial",
+      "evidence": [
+        "reports/experience/critic-w1-25.json",
+        "reports/experience/w1/anecdote-and-shape.md"
+      ],
+      "checks": [
+        {
+          "id": "EXP03-histogram",
+          "result": "fail",
+          "observed": "unclassified_fraction 1.0 against a bar of 0.05."
+        },
+        {
+          "id": "EXP03-SAB-E",
+          "result": "fail",
+          "observed": "not built. Confirmed: no tool on the tree clones encounters."
+        },
+        {
+          "id": "EXP03-tools-absent",
+          "result": "fail",
+          "observed": "sag-fit.mjs, shape-check.mjs, session-beats.mjs, classes-from-md.mjs all ABSENT."
+        }
+      ],
+      "hard_fails": [
+        "7 - histogram unclassified_fraction 1.0 and A-EXP2 absent",
+        "8 - SAB-E not run => VOID"
+      ],
+      "why_not_ten": "At FRAGMENT tier the sag contract is unmeasurable by the item's own tier scaling and there is no chain to fit it to; the histogram that could be produced measured one activity.",
+      "path_to_ten": "The same exemplar traces that unblock RI-EXP02 give this item a non-degenerate histogram. Build SAB-E.",
+      "measured_detail": "event-histogram.mjs on the only session trace: 100% IDLE, H = 0 bits, unclassified_fraction 1.0, VOID. The trace carries no road-membership field so TRANSIT and EXPLORE cannot be separated at all - reported by the builder as an absence rather than guessed, which is correct. sag-fit.mjs, shape-check.mjs, session-beats.mjs and classes-from-md.mjs confirmed absent from the tree."
+    },
+    {
+      "id": "RI-EXP06",
+      "path": "corpus/95-experience/RI-EXP06-permissiveness-budget.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "the permissiveness register and its probe bars",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "capped at 2 by hard fail 6",
+      "score_0_10": 2,
+      "justification": "Every bar but one clears: live_entries 15 (floor 12), systemic_passing 7 (floor >2), permanent_passing 2 (floor >0), regressions 0 with the regression path demonstrated live (--demo-regression=B-12 flips B-12 pass->fail, the diff returns REGRESSION and exits 2). Hard fail 6 nevertheless fires: RI-EXP06 Step 1 defines a probe as a harness scenario with a seed and an input script that ASSERTS THE BREAKAGE SUCCEEDS, and no probe performed a breakage. The baseline reports probes_run_fraction 1 while its own evidence_caveat says 'This run does not perform any breakage ... it is weaker than a demonstration. Do not report it as one.' probes_run is 0 by the item's letter. This is the strongest of the four items and the cap is the cap.",
+      "measured": "partial",
+      "evidence": [
+        "reports/experience/breakage-register-baseline.json",
+        "reports/experience/w1/permissiveness.md",
+        "corpus/95-experience/RI-EXP06.probes.json"
+      ],
+      "checks": [
+        {
+          "id": "EXP06-probes-run",
+          "result": "fail",
+          "observed": "0 probes performed a breakage; the metric reports 1.0 under a definition the file's own caveat disavows."
+        },
+        {
+          "id": "EXP06-durability",
+          "result": "pass",
+          "observed": "the regression detector is real and was shown going red: --demo-regression=B-12 injects an is_quest_item sell block in memory only, B-12 goes pass->fail, the diff returns REGRESSION and exit 2."
+        },
+        {
+          "id": "EXP06-false-positives",
+          "result": "pass",
+          "observed": "The first run produced three false CLOSED verdicts and the builder found and reported all three itself, including a 'boss' id regex matching drowned_greater on the letters 'great'. That is the instrument being run against itself properly."
+        },
+        {
+          "id": "EXP06-pbrule-scoping",
+          "result": "not-charged",
+          "observed": "pbrule_violations 136 would fire hard fail 5 read literally, but §431 scopes the audit to items changed or added in the wave and 136 is the corpus-wide backlog. Raised as an amendment question rather than charged."
+        }
+      ],
+      "hard_fails": [
+        "6 - probes_run < 0.80 under the item's own Step 1 definition of a probe"
+      ],
+      "why_not_ten": "The register is real, the durability contract is real and demonstrated, and not one row performs the breakage it describes. An absence of closure is a regression detector; the item asks for a breakage.",
+      "path_to_ten": "Convert the highest-value entries to real harness scenarios that perform the breakage and assert it succeeded, starting with B-05 (the severance path, the item's load-bearing entry).",
+      "measured_detail": "reports/experience/breakage-register-baseline.json: evidence_class 'static_absence_of_closure' (16 occurrences), live_entries 15, probes_passing 13, systemic_passing 7, permanent_passing 2, regressions 0, unmeasurable B-07 and B-10. pbrule-audit: 136 of 145 items carry anti-exploit language in a scoring context, 0 carry a preserves: line."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tools/experience/critic-w1-25.mjs",
+      "kind": "report",
+      "produced_by": "this critic",
+      "note": "Five sections, 30 checks, all behaving as declared, every section carrying a teardown that was RUN and watched go red (RULES #6). Imports the subject only through its published entry points; writes nothing under game/ and does not touch lib/sabotage.mjs."
+    },
+    {
+      "path": "reports/experience/critic-w1-25.json",
+      "kind": "report",
+      "produced_by": "node tools/experience/critic-w1-25.mjs --out reports/experience/critic-w1-25.json",
+      "note": "Every number cited in this verdict."
+    },
+    {
+      "path": "tools/experience/critic-w1-25-chart.mjs",
+      "kind": "report",
+      "produced_by": "this critic",
+      "note": "Raw PNG, no dependencies; reads reports/experience/critic-w1-25.json and refuses with exit 8 if it is absent."
+    },
+    {
+      "path": "docs/shots/2026-08-08-critic-w1-25-one-integer-decides-the-verdict.png",
+      "kind": "graph",
+      "produced_by": "node tools/experience/critic-w1-25-chart.mjs",
+      "note": "NOT a game screenshot and not offered as one. The same control from the same two artifacts producing three different verdicts, plus the four crossings the scanner missed."
+    },
+    {
+      "path": "reports/w1-14-r3/dials.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/w1-14-r3-dials.mjs (the W1-14-r3 BUILDER's)",
+      "note": "summary.magnitude_coupled 33, summary.active 55. Untracked - excluded by reports/.gitignore."
+    },
+    {
+      "path": "reports/w1-14-r3/dials-break-nocast.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/w1-14-r3-dials.mjs --break=nocast (the W1-14-r3 BUILDER's)",
+      "note": "summary.magnitude_coupled 0, summary.active 0. Untracked."
+    },
+    {
+      "path": "reports/composition/w1/matrix.json",
+      "kind": "report",
+      "produced_by": "node tools/composition/matrix-probe.mjs (the W1-25 BUILDER's)",
+      "note": "records ran:false, demonstrated_crossings 0."
+    },
+    {
+      "path": "reports/composition/w1/claims.json",
+      "kind": "report",
+      "produced_by": "node tools/composition/matrix-scan.mjs (the W1-25 BUILDER's)",
+      "note": "564 files read, 30 claimed cells, 4 of 41 crossings claimed."
+    },
+    {
+      "path": "game/data/world/encounters.json",
+      "kind": "report",
+      "produced_by": "the W1-19 round-2 builder",
+      "note": "Read by this critic to recount the crossing claim. Carries absent_when_flag, hostile_below_disposition and parley.true_name_topic."
+    },
+    {
+      "path": "tools/quests/encounter-seam-probe.mjs",
+      "kind": "report",
+      "produced_by": "the W1-19 round-2 successor (gen 3)",
+      "note": "A CONSUMPTION probe for QST->ROS already on the tree and uncited by W1-25."
+    },
+    {
+      "path": "reports/sessions/exp-w1-opening/trace.jsonl",
+      "kind": "trace",
+      "produced_by": "node tools/experience/session-run.mjs (another piece)",
+      "note": "36,000 frames, 79 MB, zero events. Untracked."
+    },
+    {
+      "path": "reports/experience/w1/anecdote-and-shape.md",
+      "kind": "report",
+      "produced_by": "the W1-25 BUILDER",
+      "note": "The piece's own anecdote and session-shape report."
+    },
+    {
+      "path": "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl",
+      "kind": "trace",
+      "produced_by": "the W1-09 builder",
+      "note": "8,945 frames, 530 events, 28 kinds. The counter-example to \"zero events on every trace\". Untracked."
+    },
+    {
+      "path": "reports/experience/breakage-register-baseline.json",
+      "kind": "report",
+      "produced_by": "node tools/experience/breakage-probe.mjs (the W1-25 BUILDER's)",
+      "note": "evidence_class static_absence_of_closure. TRACKED - the gitignore baseline exemption covers it."
+    },
+    {
+      "path": "reports/experience/w1/permissiveness.md",
+      "kind": "report",
+      "produced_by": "the W1-25 BUILDER",
+      "note": "pbrule audit: 136 violations corpus-wide."
+    },
+    {
+      "path": "corpus/95-experience/RI-EXP06.probes.json",
+      "kind": "report",
+      "produced_by": "node tools/experience/probes-from-md.mjs (the W1-25 BUILDER's)",
+      "note": "15 entries generated from the register."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-14-r3.json",
+      "kind": "report",
+      "produced_by": "the W1-14-r3 critic",
+      "note": "Carries the gap `inert_control:RI-MAG06` this critic replays through the facility."
+    },
+    {
+      "path": "tools/experience/lib/sabotage.mjs",
+      "kind": "report",
+      "produced_by": "the W1-25 BUILDER",
+      "note": "THE SUBJECT. Read only, never edited. Cited for the verdict cascade (lines 269-303) and the support filter (line 232)."
+    },
+    {
+      "path": "reports/experience/critic-w1-25.md",
+      "kind": "report",
+      "produced_by": "node tools/experience/critic-w1-25.mjs, rendered to markdown",
+      "note": "A TRACKED twin of reports/experience/critic-w1-25.json, which reports/.gitignore excludes. Written because this verdict's own §C finding is that evidence living only on one container is not evidence; !**/*.md is the exemption the gitignore already grants. Practising what §C preaches."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-EXP02",
+      "status": "not_possible",
+      "not_possible_reason": "Step 5's blind pair (20 of our anecdotes against 20 constructed reference anecdotes) was never built, and no anecdotes exist to put in it. RULES #25 would in any case forbid me judging a pack I constructed."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "This piece ships no game mechanic and touched no file under game/. Confirmed against orchestration/status/W1-25.json files_touched: every path is under tools/, corpus/95-experience/, reports/ or docs/shots/.",
+      "checks": []
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "Same reason as AR-1.",
+      "checks": []
+    },
+    "ar3": {
+      "seam_sterile": true,
+      "justification": "Legitimately internal: an instrument that measures the seam creates none, and ARBITRATION §3 expressly allows this provided it is reported. It is reported here, and the irony is load-bearing rather than decorative - the piece that owns the project's seam-crossing floor demonstrated zero crossings, and its own scanner reported four real, data-backed crossings as absent, one of which was built specifically to answer a previous seam_sterile verdict."
+    },
+    "consumption": {
+      "status": "accepted_with_a_transferred_failure",
+      "models_shipped": [
+        "corpus/95-experience/RI-CMP01.cells.json",
+        "corpus/95-experience/RI-EXP06.probes.json"
+      ],
+      "ruling": "ACCEPTED for this piece, decided rather than applied mechanically. RI-MTH07 exists for a specific harm - a WORLD model the running world never reads, so that from the player's chair a correct model and a missing one are the same thing. Instrument data has no player-facing surface to be dead in. Both artifacts are generated from corpus items and consumed by tools, and both consumptions are demonstrated by perturbation: cells-from-md --self-test mutates a copy of the item four ways and requires the generator to go red (4/4), probes-from-md likewise (4/4). Scoring these 0 would assert the instrument does not work, which is false, and the builder declared the situation rather than papering over it.",
+      "transferred_failure": "The rule's SPIRIT transfers exactly and it fails. For an instrument piece the prior question is 'is any of it plugged in?'. Every importer of tools/experience/lib/sabotage.mjs across tools/ and game/ is W1-25's own: matrix-probe.mjs, breakage-probe.mjs, anecdote-verify.mjs, sabotage.mjs, sabotage-cases.mjs. Zero adopters outside the piece. matrix-probe.mjs has never touched a browser; breakage-probe.mjs performs no breakage. A general facility with no caller outside the piece that wrote it is a library, not an instrument - the same failure the piece exists to name, one level up."
+    }
+  },
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "The best instrument in this corpus, pointed at nothing. Four items, four hard fails, no crossing demonstrated, no anecdote measured, no breakage performed. 2.0 is the minimum over RI-CMP01 (2), RI-EXP02 (2), RI-EXP03 (2) and RI-EXP06 (2), each capped by its own hard fails. The band understates the craft and states the outcome correctly: what exists is scaffolding of unusually high quality with nothing yet standing on it."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "overall 2.0 below the wave-1 gate of 7.0",
+    "RI-CMP01 hard fails 1, 2, 5 and 6",
+    "RI-EXP02 hard fails 1, 2, 4 and 6",
+    "RI-EXP03 hard fails 7 and 8 (8 is the item's VOID trigger, recorded)",
+    "RI-EXP06 hard fail 6"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-25-the-control-facility-has-an-optional-control",
+    "subsystem_path": "experience.permissiveness.register",
+    "severity": "blocking",
+    "what": "The sabotage facility fails when its arms agree, and whether it can SEE that they agree is delegated to `support` - a caller-supplied field that is optional, undefined by default, unvalidated, and whose two honest readings give opposite verdicts on the strongest real inert control on this tree. W1-14-r3's shipped `--break=nocast`, which a human critic ruled inert, comes back OK when support is 'effects examined' (55/55), VACUOUS when it is 'effects delivered' (55/0), and OK again when the caller omits support entirely. Four further holes in the same cascade: two arms whose value is `undefined` canonicalise to agreement and return INERT (a confident claim about a measurement that never happened - I hit this by accident on my first run, against a real artifact); MASKED is last in the cascade and is shadowed by any unmet margin or wrong direction; armsAgree is decided on intact-vs-all-broken alone, so a control with a demonstrably live factor is reported INERT under cancellation while the same record lists that factor as moving it; and the documented obligation on the `supportArms:'intact'` escape hatch (a caller 'must say why, in support_note') is enforced nowhere and support_note is not even copied onto the result, so the canonical W1-13 failure passes with a one-key spec change.",
+    "why_it_matters": "This piece exists to make the project's most common failure detectable, and PLAYTHROUGH-CRITIC §10 names 'the control is never run' as the most likely failure in the corpus. Every one of the five holes above is that same failure occurring inside the facility built to catch it. Worse for adoption: the facility is meant to be used by other pieces, and the first thing a new caller writes is measure(). Two of the three ways a careful engineer would fill in `support` cause the facility to pass an inert control, and the third - omitting it - is the default.",
+    "evidence": [
+      "reports/experience/critic-w1-25.json",
+      "reports/experience/critic-w1-25.json",
+      "tools/experience/lib/sabotage.mjs",
+      "corpus/90-verdicts/wave1/W1-14-r3.json",
+      "docs/shots/2026-08-08-critic-w1-25-one-integer-decides-the-verdict.png"
+    ],
+    "remedy": {
+      "action": "Four changes, all in tools/experience/lib/sabotage.mjs. (1) MAKE SUPPORT MANDATORY: runControl already throws on a spec with no factors ('a control with no factors is not a control'); throw the same way when any arm returns no finite support - a control that cannot say what it ranged over is not a control. Amend the docstring's 'the number of units the measurement ranged over' to 'units that REACHED THE COMPARATOR', which is the single word separating A1 from A2. (2) ADD `NO_MEASUREMENT`: when every arm's value canonicalises to 'null', say that instead of INERT - the same argument the file already makes for VACUOUS. (3) ADD `SHORT_CIRCUIT` for the fourth failure shape, fired when the broken arm's support collapses relative to the intact arm's; both numbers are already on every arm record. (4) FIX THE CASCADE: hoist `masked` above the margin and direction tests, make armsAgree read `distinct_values === 1` (computed one line above), and throw when supportArms:'intact' arrives with no support_note, carrying that note onto the result so a report can list every control that opted out.",
+      "targets": [
+        "tools/experience/lib/sabotage.mjs",
+        "tools/experience/sabotage.mjs"
+      ],
+      "acceptance": "Re-run `node tools/experience/critic-w1-25.mjs --a --b` against the amended facility. A1 and A3 must become ERROR or NO_MEASUREMENT rather than OK; A4 must become NO_MEASUREMENT; B-COLLIDE-1 must become MASKED; B-COLLIDE-2 must stop being INERT; B-COLLIDE-4 must throw. `--self-test` 6/6, the three existing facility breaks and `--cases` 8/8 must all still pass, and a FOURTH facility break `--break=support-optional` must be added and shown going red. The acceptance harness is already on the tree and does not need writing.",
+      "ref_item": "RI-EXP06"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The '4 of 41 crossings' number must be corrected before anyone cites it again: at least 8 of 41 are data-backed. Four target-side patterns against game/data/world/encounters.json closes half the error, and the tool then needs an inventory of every tools/**/*seam*.mjs and crossing*.mjs on the tree so a crossing another piece has already DEMONSTRATED cannot be reported as having no data. Fourteen pieces are currently condemned by this number.",
+      "evidence": "reports/experience/critic-w1-25.json sections.D; game/data/world/encounters.json; tools/quests/encounter-seam-probe.mjs",
+      "subsystem_path": "composition.matrix.coverage"
+    },
+    {
+      "what": "The eight-case replay corpus is real and corroborated by tracked verdicts, and all nine artifacts it rests on are excluded by reports/.gitignore. On a fresh clone --cases reports ABSENT and exits 8. The gitignore's stated reason - 'reproducible by re-running the tool that made them' - is false for exactly these files: the pre-fix __w1_04_townSolids and the two deleted souls guards do not exist at HEAD. The same file already carries the exemption and the argument for it (!**/*baseline*.json).",
+      "evidence": "reports/experience/critic-w1-25.json sections.C; reports/.gitignore",
+      "subsystem_path": "experience.permissiveness.durability"
+    },
+    {
+      "what": "The cheapest real number in the piece: point anecdote-trace.mjs at reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl. 9,000 frames with a death, six staggers, a guard break and a block success. It will score near zero on proper-noun and locatable because it is a nameless arena, and that is the finding RI-EXP02 wants.",
+      "evidence": "reports/experience/critic-w1-25.json sections.E",
+      "subsystem_path": "experience.memory.anecdote"
+    },
+    {
+      "what": "matrix-probe.mjs can run now. The boot blocker the builder recorded (canon register, 2 unresolved references) is gone - node tools/boot-check.mjs exits 0 at fdef3d6. Ten cells, one browser, roughly two minutes, and it is the only thing between this piece and a real crossing number.",
+      "evidence": "node tools/boot-check.mjs exit 0; orchestration/status/W1-25.json next_step",
+      "subsystem_path": "composition.seam.crossings"
+    },
+    {
+      "what": "Belongs to the harness rather than to this piece, but somebody should own it: 275 of 553 events in an RI-CMB07 exemplar are {type, f, mirrors:'UPPERCASE'} stubs carrying no payload. The closed HARNESS.md §5 vocabulary is satisfied by empty shells over a parallel uppercase vocabulary that carries the data - RULES #10's two parallel implementations, living in the trace format.",
+      "evidence": "reports/experience/critic-w1-25.json sections.E check E4",
+      "subsystem_path": "experience.session.shape"
+    }
+  ],
+  "gap_closure": [],
+  "corpus_extended": [],
+  "method_deviations": [
+    "NO BROWSER WAS LAUNCHED. tools/contention.mjs --gate returned exit 3 at the start of this run (12 instances, 7.08 per core against a 4.0 ceiling) and exit 3 again at 04:40 (5 instances, 6.21 per core). I honoured it, did the offline work, and did not proceed past it. Consequence, stated rather than scoped around: I did not run matrix-probe.mjs live, so I have not independently demonstrated any seam crossing either - my §D finding is that the DATA and a purpose-built PROBE exist for four crossings the tool reported as having nothing, not that those crossings fire. No timing figure appears anywhere in this verdict (RULES #26).",
+    "RULES #25: I did not construct or judge a blind pack. RI-EXP02 step 5's pack does not exist and there are no anecdotes to put in one.",
+    "I declined to declare RI-EXP02 VOID under its hard fail 5 despite SAB-P not having run as the item defines it, and said why in the verdict body rather than applying the clause mechanically. Recorded here so the next round can overrule me on the record.",
+    "I declined to fire RI-EXP06 hard fail 5 on pbrule_violations=136 because §431 scopes that audit to items changed in the wave and 136 is the corpus-wide backlog. Raised as an amendment question instead."
+  ],
+  "arbitration_questions": [
+    "RI-EXP06 hard fail 5 reads `pbrule_violations >= 2` with no scope, while §431 scopes the audit to RI-*.md changed or added in the wave. At 136 backlog violations the difference is the item passing or hard-failing and it should not turn on a reading. Which is binding?",
+    "ARBITRATION §3's CONSUMPTION clause is written for world models. Does an instrument piece discharge it by demonstrating tool-side consumption under perturbation (as W1-25 did), or does the clause simply not apply? This verdict rules the former and adds a transferred test - does anything outside the piece import the facility - which W1-25 fails. That transferred test is not in the doctrine and probably should be."
+  ],
+  "source_reads": [
+    {
+      "path": "tools/experience/lib/sabotage.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only. Never edited. The cascade order (lines 269-303) and the `a.support !== null` filter (line 232) are quoted in the verdict because the exact text is load-bearing. ORIGINAL PURPOSE NOTE: the subject; read to locate the verdict cascade and the support filter"
+    },
+    {
+      "path": "tools/experience/sabotage-cases.mjs",
+      "purpose": "locate-harness",
+      "note": "They do. artifact() refuses an absent file rather than passing. ORIGINAL PURPOSE NOTE: to check the eight cases replay artifacts rather than hand-entered numbers"
+    },
+    {
+      "path": "tools/composition/matrix-scan.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "All 56 patterns root in the source system's directory. ORIGINAL PURPOSE NOTE: to see what the tool accepts as a demonstration and why encounters.json produced no claims"
+    },
+    {
+      "path": "game/data/world/encounters.json",
+      "purpose": "quote-written-content",
+      "note": "Read only. ORIGINAL PURPOSE NOTE: independent recount of the crossing claim"
+    },
+    {
+      "path": "game/src/sim/events.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only. It is not - 179 names, every consequence name present. ORIGINAL PURPOSE NOTE: to test whether the closed vocabulary (RULES #15) is the cause of the zero-event traces"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-14-r3.json",
+      "purpose": "quote-written-content",
+      "note": "gap `inert_control:RI-MAG06`. ORIGINAL PURPOSE NOTE: the inert control this critic replays through the facility"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and named: the contention gate refused twice and I launched no browser, so the live matrix-probe run that would demonstrate a crossing was not performed by me either. blind_done_where_required is false because RI-EXP02's pack does not exist. TWO OF MY OWN DECLARED EXPECTATIONS MISSED ON THE FIRST RUN AND BOTH ARE RECORDED RATHER THAN QUIETLY FIXED: (1) section A read `magnitude_coupled` off the top level of the artifact instead of off `.summary`, so both arms measured `undefined` and the facility returned INERT on a comparison of two nothings - I kept that as check A4 and it became a finding, because it is the piece's own failure mode reproduced by a typo; (2) I declared five event-bearing traces and there are 34, which strengthened rather than weakened the finding and is recorded as measured. Every section of tools/experience/critic-w1-25.mjs carries a teardown that was RUN and watched go red per RULES #6 - A2-teardown, A4-teardown, B-COLLIDE-1/2/4-teardown and D-teardown - because a critic instrument that has never been seen to fail is a second copy of the builder's experiment. I wrote no file under game/ and did not edit tools/experience/lib/sabotage.mjs, the subject.",
+    "escalation": "Not needed. The gap is blocking on its face and the piece's own headline number is wrong."
+  },
+  "notes": "This is the fairest FAIL I know how to write. The builder shipped the single most rigorous instrument in this corpus - a general facility that fails when its arms agree, replays three real historical inert controls from the artifacts that produced them, goes red when broken three ways on purpose, and reports its own voided run, its own three false positives and its own unbuilt tools without being asked. It also shipped a headline crossing number that is wrong, an overstated claim about the traces, and a facility whose own control against the project's most common failure is an optional field. Both halves are true and the score reflects the second because that is what the items measure. Nothing here should be read as a reason to build the next instrument less carefully; it is a reason to run this one. SOURCE READS (CRITIC-DOCTRINE §1.1, labelled here as required): every source read in this verdict is either `diagnose-after-demonstrating` — the cascade in lib/sabotage.mjs and the pattern table in matrix-scan.mjs were read only AFTER the behaviour was demonstrated from output by tools/experience/critic-w1-25.mjs, and events.js only after the zero-event trace was counted — or `quote-written-content`, for the four data fields in game/data/world/encounters.json which ARE the artifact, or `locate-harness` for sabotage-cases.mjs. No score in this verdict rests on a source-code claim without a corresponding output artifact."
+}

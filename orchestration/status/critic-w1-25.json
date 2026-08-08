@@ -2,19 +2,59 @@
   "task_id": "critic-w1-25",
   "role": "critic",
   "subject": "W1-25",
-  "state": "running",
-  "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION/PLAN W1-25/RI items/status W1-25",
-  "contention_gate": "WAIT at start (12 browser instances, load 7.08/core, ceilings 6 and 4.0). Offline work first.",
-  "files_touched": [
-    "orchestration/status/critic-w1-25.json"
+  "state": "done",
+  "started_at": "2026-08-08T04:05:00Z",
+  "finished_at": "2026-08-08T04:55:00Z",
+  "verdict": "FAIL 2.0/10 (min over axes; gate 7.0)",
+  "verdict_files": [
+    "corpus/90-verdicts/wave1/W1-25-r1.md",
+    "corpus/90-verdicts/wave1/W1-25-r1.json"
   ],
-  "files_claimed": [
+  "commit_measured_at": "fdef3d6e2e141c1a09c0d5276d2421b790580a45",
+  "contention_note": "node tools/contention.mjs --gate returned exit 3 twice (12 instances / 7.08 per core at 04:05; 5 instances / 6.21 per core at 04:40). I HONOURED IT AND LAUNCHED NO BROWSER. Every measurement in this verdict is offline: replays of artifacts on disk, static recounts over game/data, event censuses over recorded traces. Consequence stated rather than scoped around: I did not run matrix-probe.mjs either, so I have demonstrated no seam crossing myself - my finding is that the DATA and a purpose-built PROBE exist for four crossings the piece's tool reported as having nothing. No timing figure appears in the verdict (RULES #26).",
+  "files_touched": [
     "corpus/90-verdicts/wave1/W1-25-r1.md",
     "corpus/90-verdicts/wave1/W1-25-r1.json",
     "orchestration/status/critic-w1-25.json",
-    "tools/experience/critic-",
+    "tools/experience/critic-w1-25.mjs",
+    "tools/experience/critic-w1-25-chart.mjs",
+    "reports/experience/critic-w1-25.json",
+    "docs/shots/2026-08-08-critic-w1-25-one-integer-decides-the-verdict.png",
     "reports/blog-feed.jsonl"
   ],
-  "notes": []
+  "files_claimed": [],
+  "redundant_with": [],
+  "did_not_edit": [
+    "tools/experience/lib/sabotage.mjs (THE SUBJECT - read only)",
+    "game/ (nothing under it, at all)",
+    "tools/composition/ (the subject's)"
+  ],
+  "findings": [
+    "GRADED THE FACILITY BY USING IT. Took W1-14-r3's shipped --break=nocast - a control its builder declared working and a human critic ruled inert - and replayed it through lib/sabotage.mjs from the builder's own two artifacts. THE VERDICT IS A FUNCTION OF ONE CALLER-SUPPLIED INTEGER: support='effects examined' (55/55) -> OK, the inert control passes; support='effects delivered' (55/0) -> VACUOUS, caught; support omitted -> OK, and support is OPTIONAL so this is the default. My teardown run and watched go red: forge the control arm's support to 55 and VACUOUS flips to OK.",
+    "A FOURTH FAILURE SHAPE WITH NO NAME IN THE TAXONOMY: the teardown short-circuits UPSTREAM of the mechanism under test, so the arms differ loudly and the difference is about the short-circuit. Not arms-agree, not no-single-factor-effect, not empty-population.",
+    "A FIFTH, FOUND BY ACCIDENT WHILE GRADING AND KEPT AS CHECK A4: my first run read the artifact's top level instead of .summary, so BOTH ARMS MEASURED undefined. canon() maps undefined/null/missing all to 'null', the arms 'agree', and the facility returned INERT - a confident claim about a measurement that never happened. The piece's own flagship failure, produced by a typo, inside the tool built to prevent it.",
+    "THE FIVE VERDICTS ARE SEPARABLE ON THEIR OWN CASES AND THREE COLLIDE UNDER PRESSURE. MASKED is last in the cascade so any unmet margin shadows it (masked defect + 50% margin -> UNDERPOWERED; drop the margin and it is MASKED). armsAgree compares intact vs all-broken alone, so under cancellation the facility reports INERT while its own record lists the live factor. The documented obligation on supportArms:'intact' (a caller 'must say why, in support_note') is enforced nowhere and support_note is not even copied onto the result - the canonical W1-13 failure passes with a one-key spec change.",
+    "--cases 8/8 IS REAL. Every number is corroborated by a TRACKED verdict another agent wrote: 252/342 in W1-SOULS-r3.json, 67->0 in W1-04-r3.md, roster_n 0 in W1-13-r4.md. Not a transcription. BUT all nine artifacts it replays are excluded by reports/.gitignore's `*`; on a fresh clone --cases reports ABSENT and exits 8. The gitignore's stated reason ('reproducible by re-running the tool') is false for exactly these files - the pre-fix __w1_04_townSolids and the two deleted souls guards do not exist at HEAD.",
+    "ADDED THE FOURTH HISTORICAL CASE: w1-14-r3.NOCAST, from disk, reads VACUOUS. The only one of the four where the verdict turns on a judgement the facility cannot make for itself.",
+    "THE '4 OF 41 CROSSINGS' NUMBER IS WRONG, AND WRONG IN THE DIRECTION THAT CONDEMNS FOURTEEN OTHER PIECES. At least 8 of 41 are data-backed. QST->ROS (members[].absent_when_flag 'the_sixty_are_protected'), WLD->ROS (same field), DIS->ROS (hostile_below_disposition 15) and LOR->ROS (parley.true_name_topic x2, 'the-sallow-wife' and 'the-twin-lamps') all sit in game/data/world/encounters.json, which produced ZERO of matrix-scan's 30 claims out of 564 files read, because every one of its 56 patterns is rooted in the SOURCE system's directory and these four are declared on the TARGET's. Two of them are ARBITRATION AR-3's own worked examples. QST->ROS was built deliberately by W1-19 round 2 to answer a seam_sterile verdict and has a purpose-written CONSUMPTION probe on the tree (tools/quests/encounter-seam-probe.mjs), uncited.",
+    "WHAT THE PIECE SHOULD HAVE PUBLISHED INSTEAD: every one of the 37 no-data crossings has ROS or BOS as source or target. The finding is not a count - the enemy roster and the bosses are the seam-dead systems and everything else touches something. That survives the scanner being wrong about any individual cell.",
+    "THE ZERO-EVENT SESSION: narrow claims TRUE (36,000 frames, 79 MB, zero events; journey traces 5 boot events each), generalisation FALSE. 77 traces carry 5,267 events; 34 carry more than five; 30 of those predate the piece's own anecdote report. The top five are W1-09's RI-CMB07 combat exemplars at 493-553 events over 24-28 kinds including hit, stagger, block_success and death.",
+    "FAULT LOCATED against the three candidates: NOT the recorder (same writer emits 553 events in an exemplar), NOT the vocabulary (179 names in events.js, every consequence name present, RULES #15 does not bite), THE FIXTURE - a ten-minute session that never fights, talks, takes, writes or dies. RULES #8, 82 MB of it.",
+    "INCIDENTAL, belongs to the harness: 275 of 553 events in an exemplar are {type,f,mirrors:'UPPERCASE'} stubs with no payload. The closed HARNESS.md §5 vocabulary is satisfied by empty shells over a parallel uppercase vocabulary that carries the data - RULES #10 in the trace format.",
+    "CONSUMPTION DECIDED, NOT APPLIED MECHANICALLY: ACCEPTED for this piece. RI-MTH07 exists for a WORLD model the world never reads; instrument data has no player-facing surface to be dead in, and both shipped models have tool-side consumers demonstrated by perturbation (4/4 each). BUT the spirit transfers and fails: every importer of lib/sabotage.mjs is W1-25's own. Zero adopters outside the piece.",
+    "F, EACH CHECKED: void first matrix run CONFIRMED; boot blocker GONE (node tools/boot-check.mjs exits 0 at fdef3d6, so matrix-probe.mjs is now blocked only by contention); zero crossings demonstrated CONFIRMED; five named tools CONFIRMED ABSENT; RI-EXP06 rows CONFIRMED static (16 occurrences). On that last one the builder is more honest than its own metric: the baseline reports probes_run_fraction 1 while its own evidence_caveat says the run performs no breakage - probes_run is 0 by the item's Step 1 and hard fail 6 fires.",
+    "SAB-P: the FILTER half ran and separated (720 -> 153, -78.75% against 50%) and building it is a real first. The CONTROL half - two matched 90-minute segments, blind A/B, margin on verified_anecdotes_per_hour - did not, and the quantity it needs cannot be measured on this tree. I DECLINED to declare RI-EXP02 VOID and said why on the record: VOID is for a broken instrument, and this instrument is sound with nothing to run it on."
+  ],
+  "score": {
+    "RI-CMP01": 2,
+    "RI-EXP02": 2,
+    "RI-EXP03": 2,
+    "RI-EXP06": 2,
+    "overall": 2.0,
+    "aggregation": "min-over-axes",
+    "gate": 7.0
+  },
+  "biggest_gap": "GAP-W1-25-the-control-facility-has-an-optional-control — the sabotage facility fails when its arms agree, and whether it can SEE that they agree is delegated to an optional, unvalidated, undefined-by-default caller field. Remedy is four changes in one file and the acceptance harness (tools/experience/critic-w1-25.mjs --a --b) is already on the tree.",
+  "self_check": "30/30 checks in tools/experience/critic-w1-25.mjs behaved as declared. Every section carries a teardown that was RUN and watched go red (RULES #6): A2-teardown, A4-teardown, B-COLLIDE-1/2/4-teardown, D-teardown. Two of my own first-run expectations MISSED and both are recorded rather than quietly fixed — one became finding A4.",
+  "next_step": "Round 2 on W1-25: fix the four cascade defects in lib/sabotage.mjs against the acceptance in the verdict; add the four target-side patterns to matrix-scan.mjs and correct the 4/41 number before anyone cites it again; track the nine replay artifacts; and run matrix-probe.mjs, which is now blocked only by contention."
 }
