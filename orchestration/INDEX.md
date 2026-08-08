@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `fb2cb09`: 781 tools, 153 reference
-items, 89 pieces in flight.
+so it cannot drift. Generated at `6dece5e`: 782 tools, 153 reference
+items, 90 pieces in flight.
 
-Its purpose is to stop 89+ concurrent agents each paying separately to discover the
+Its purpose is to stop 90+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -716,11 +716,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-24-audit.mjs` — THE PROTOCOL, RUN AGAINST NUMBERS THIS PROJECT HAS ALREADY PUBLISHED.
 - `tools/render/w1-24-shot.mjs` — the picture.
 
-### `tools/stealth/` — 3
+### `tools/stealth/` — 4
 
 - `tools/stealth/critic-w1-15-r3-dtf2x2.mjs` — the 2x2 that RULES.md rule 6 (rewritten this session) asks for and that the round's own delete-the-fix did not run.
 - `tools/stealth/critic-w1-15-r3-live.mjs` — the W1-15 round-3 critic's live arm.
 - `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
+- `tools/stealth/critic-w1-15-r4.mjs` — W1-15 ROUND 4 — THE CRITIC'S OWN INSTRUMENT.
 
 ### `tools/touch/` — 10
 
@@ -1117,6 +1118,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `S39-falsifier` | designing | Build tools/input/arbiter-clock-s39.mjs: (A) capture arm, real DOM presses 20/60/120/250/5 | `orchestration/status/S39-falsifier.json` |
+| `blog-table-fix` | running | implement table parsing in md() in tools/blog.mjs | `orchestration/status/blog-table-fix.json` |
+| `RESEARCH-COSTEXT01` | done | done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section  | `orchestration/status/RESEARCH-COSTEXT01.json` `reports/cost/RESEARCH-RESEARCH-COSTEXT01.md` |
 | `W1-TOUCH-r2` | in_progress | Read RI-JRN04 M-P5, guards.js, loop.js modes, touch-run.mjs --leg gate. Then implement inp | `orchestration/status/W1-TOUCH-r2.json` `tools/touch/r2-framerate.mjs` `reports/w1-touch-r2/framerate.json` |
 | `W1-PROSE-TICS-r4-instrument` | ? | write tools/blind/leakcheck.mjs (battery + gate + self-test), then tools/blind/mask-text.m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` |
 | `critic-w1-deploy-r2` | running (successor 2 — predecessor killed by usage limit with no artifacts on disk) | read all six subjects; then break each on purpose | `orchestration/status/critic-w1-deploy-r2.json` |
@@ -1127,10 +1131,8 @@ work is the difference between resuming and starting over.
 | `W1-12-r2-critic` | running | read ai.js closure rule; verify B-arm frame trace; then browser M1/M2 | `orchestration/status/W1-12-r2-critic.json` |
 | `critic-w1-15-r4` | ? | read r3 verdict + r4 report; then verify unified lighting policy, re-derive k, take a fram | `orchestration/status/critic-w1-15-r4.json` |
 | `GATE-BLAST-RADIUS` | in_progress | checked orchestration/status/ for a predecessor status file on this exact task and found n | — |
-| `RESEARCH-COSTEXT01` | running | run WebSearch queries per category, log sources found, then write reports/cost/RESEARCH-RE | `orchestration/status/RESEARCH-COSTEXT01.json` |
 | `COST-INSTRUMENT-plan` | running | verify transcript jsonl shape; inventory existing tools; write orchestration/plans/COST-IN | `orchestration/status/COST-INSTRUMENT-plan.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
-| `S39-falsifier` | starting | Read ARBITRATION.md S39 verbatim, NEXT-DISPATCH.md section U, loop.js, hold-gate.js, input | `orchestration/status/S39-falsifier.json` |
 | `PLAYABILITY` | measuring (successor 2) | fix P13 in game/index.html (painted() must not readPixels a non-preserved buffer 2280 time | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
 | `critic-w1-attr-scale` | running | write tools/quests/critic-attr-scale-{dtf,souls}.mjs, dump artifacts, write the verdict md | `orchestration/status/critic-w1-attr-scale.json` |

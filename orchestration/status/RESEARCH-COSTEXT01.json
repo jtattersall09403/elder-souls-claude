@@ -2,11 +2,12 @@
   "task_id": "RESEARCH-COSTEXT01",
   "role": "research agent (external evidence for COST.md programme)",
   "piece": "COST-RESEARCH",
-  "state": "running",
+  "state": "done",
   "started": "2026-08-08",
+  "finished": "2026-08-08",
   "goal": "Search online for techniques with published evidence for reducing token cost in orchestrator+subagent workflows (prompt caching, model routing/cascades, context management, critic/verification loop cost). Produce testable hypotheses ranked by expected size x ease of testing.",
-  "next_step": "run WebSearch queries per category, log sources found, then write reports/cost/RESEARCH-RESEARCH-COSTEXT01.md",
-  "files_touched": ["orchestration/status/RESEARCH-COSTEXT01.json"],
-  "files_claimed": ["reports/cost/RESEARCH-RESEARCH-COSTEXT01.md"],
-  "notes": "Research only. No repo behaviour changes, no builds, no policy edits. Does not write to orchestration/plans or orchestration/NEXT-DISPATCH.md."
+  "next_step": "done - handed to plan/build loop; see reports/cost/RESEARCH-RESEARCH-COSTEXT01.md section 6-7 for ranked queue",
+  "files_touched": ["orchestration/status/RESEARCH-COSTEXT01.json", "reports/cost/RESEARCH-RESEARCH-COSTEXT01.md"],
+  "files_claimed": [],
+  "notes": "Research only, no repo behaviour changed. 5 hypotheses ranked (model routing per PLAN-LOOP.md policy; context pruning per arXiv 2606.10209; cache pre-warm before burst dispatch; critic criteria-injection audit per arXiv 2604.13717; compaction on non-critic long turns, sequenced last). 6 techniques found and explicitly rejected with reasons, 3 of them because they would cut verification or trade speed for cost (COST.md S5 forbids both) - see report S5. Could not reach anthropic.com or simonwillison.net/khaledzaky.com directly (EGRESS_BLOCKED / 403); Anthropic engineering-blog claims are reported at one remove via WebSearch snippets, flagged in report S0. arxiv.org reachable via curl with browser UA."
 }
