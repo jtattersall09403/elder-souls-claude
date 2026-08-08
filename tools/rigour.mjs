@@ -186,10 +186,19 @@ export function findIdenticalArms(root) {
 // A phrase cannot name a file that exists. (It can name someone ELSE'S file without running it,
 // which is why `--verify` exists and why this route is called strong, not proof.)
 
-/** Every string anywhere that invokes a repo script matching `pattern`, with any exit code beside it. */
+// A command string only counts from a position whose FIELD NAME asserts that it was executed.
+// Arm E of the self-test caught this: strip a verdict's residue into a flat `notes` array and the
+// same command text is still there, so a recogniser that reads any string counts a sentence that
+// merely quotes a command. `gates_run`, `harness_commands`, `produced_by` are claims of execution;
+// a paragraph is not. This distinction is the whole difference between counting acts and words.
+const EXECUTION_POSITION = /^(rigour|build\.harness_commands|artifacts|gates_run|self_tests|harness_commands|commands_run|runs)\b/;
+const EXECUTION_KEY = /^(command|cmd|produced_by|ran|invocation|invoked|harness|gate)$/i;
+
+/** Every string in an EXECUTION POSITION that invokes a repo script matching `pattern`. */
 function findRunOfScript(v, pattern) {
   const rows = [];
   walk(v, (n, path, key, parent) => {
+    if (!EXECUTION_POSITION.test(path) && !EXECUTION_KEY.test(key) && !(typeof key === 'string' && SELFTEST_FLAG.test(key))) return;
     const s = typeof n === 'string' ? n : (typeof key === 'string' && /^node |\.mjs/.test(key) ? key : null);
     if (!s) return;
     const script = resolveCommand(s);
@@ -263,6 +272,9 @@ function findTeardownMechanism(v) {
     // as an executed reversal credited two verdicts with a delete-the-fix that had not happened.
     // Exactly the act/word confusion this tool exists to remove, one level up.
     if (/^(biggest_gap|other_gaps|rulings|gap_closure)\b/.test(path) || /remedy|acceptance|next_round|recommend/i.test(path)) return;
+    // Same rule as findRunOfScript: a mechanism must sit where the schema says "I ran this", or in
+    // a field whose name is itself a teardown. Loose prose naming a flag is a description of one.
+    if (!EXECUTION_POSITION.test(path) && !EXECUTION_KEY.test(key) && !/teardown|delete.?the.?fix|deletefix|rule_?6|ablation|null_control|reversal|arms?$/i.test(key)) return;
     push(n, path || key);
   });
   // Executable mechanisms first, so the strongest evidence is the one reported.
@@ -312,7 +324,10 @@ function findSelfTests(v) {
   // The ad-hoc spellings: `self_tests: { "<command>": "<result>" }` and friends.
   walk(v, (n, path, key, parent) => {
     if (path.startsWith('build.harness_commands') || path.startsWith('artifacts')) return;
-    if (typeof n === 'string' && SELFTEST_FLAG.test(key)) consider(key, null, path, n);
+    // `self_tests: { "<command with --break>": "<what it did>" }` — the key is the invocation.
+    if (typeof n === 'string' && SELFTEST_FLAG.test(key)) { consider(key, null, path, n); return; }
+    // Otherwise the same execution-position rule: a command quoted in prose is a word.
+    if (!EXECUTION_POSITION.test(path) && !EXECUTION_KEY.test(key)) return;
     if (typeof n === 'string' && SELFTEST_FLAG.test(n) && parent && !Array.isArray(parent)) {
       consider(n, typeof parent.exit_code === 'number' ? parent.exit_code : null, path, parent.result || parent.note || parent.observed);
     }
@@ -492,7 +507,7 @@ function judgeSeparateCritic(v, verdictPath) {
 
 const PHRASE = {
   delete_the_fix: /delete[-\s]?the[-\s]?fix|deleted the fix|teardown|delete-the-fix/i,
-  consumption: /\bCONSUMPTION\b|RI-MTH07/,
+  consumption: /\bconsumption\b|\bconsumed\b|RI-MTH07/i,
   self_test: /self[-\s]?test/i,
   arms_disagree: /arms? (that )?(genuinely )?(dis)?agree|went red|watched red/i,
   read_the_file: /read the (actual )?file|source_reads|read the source/i,
@@ -505,7 +520,13 @@ export function scoreVerdict({ json, jsonPath, prose, fileIndex }) {
   const v = json;
   const commit = v?.build?.commit_sha || null;
   const text = [prose || '', allText(v || {})].join('\n');
-  const out = { piece_id: v?.piece_id || (jsonPath ? basename(jsonPath, '.json') : '?'), path: jsonPath ? rel(jsonPath) : null, commit, items: {} };
+  const out = {
+    piece_id: v?.piece_id || (jsonPath ? basename(jsonPath, '.json') : '?'),
+    path: jsonPath ? rel(jsonPath) : null,
+    commit,
+    finished_at: v?.critic?.finished_at || v?.critic?.started_at || null,
+    items: {},
+  };
 
   const say = (item, tier, evidence) => { out.items[item] = { tier, evidence: evidence || [] }; };
   const wordTier = (item) => (PHRASE[item].test(text) ? 'word' : 'absent');
@@ -568,7 +589,10 @@ export function scoreVerdict({ json, jsonPath, prose, fileIndex }) {
 
   // 6 — read the file
   {
-    const cites = findVerifiedCitations(text, commit, fileIndex);
+    // The forward block states citations directly; they are verified exactly as prose ones are,
+    // by going to the file at the judged commit. A declared citation is not a believed one.
+    const declared = (v?.rigour?.read_the_file || []).map((c) => `\`${c.path}:${c.line}\` \`${String(c.quote || '').slice(0, 110)}\``).join('\n');
+    const cites = findVerifiedCitations([declared, text].join('\n'), commit, fileIndex);
     const verified = cites.filter((c) => c.status === 'quote-verified');
     const inRange = cites.filter((c) => c.status === 'line-in-range');
     const mismatch = cites.filter((c) => c.status === 'quote-mismatch');
@@ -619,6 +643,7 @@ export function sweep({ verify = false } = {}) {
     const r = scoreVerdict({ json, jsonPath: f.json, prose, fileIndex });
     r.wave = f.wave;
     r.has_structured_json = !!json;
+    r.declares_rigour_block = !!(json && json.rigour);
     r.prose_path = rel(f.prose);
     if (!r.commit) r.commit = null;
     if (verify && json) {
@@ -662,7 +687,12 @@ function buildLedger(rows, { verified = false } = {}) {
     commit: head ? head.trim().slice(0, 7) : null,
     // What this measures, in one line, because a guard nobody can read is how a programme loses it.
     measures: 'the five non-negotiables of COST.md §1, counted as ACTS (an observable the act produced) rather than as WORDS (the phrase in prose)',
-    population: { verdicts: rows.length, with_structured_json: rows.filter((r) => r.has_structured_json).length, source: 'corpus/90-verdicts/<wave>/*.json + .md' },
+    population: {
+      verdicts: rows.length,
+      with_structured_json: rows.filter((r) => r.has_structured_json).length,
+      declaring_rigour_block: rows.filter((r) => r.declares_rigour_block).length,
+      source: 'corpus/90-verdicts/<wave>/*.json + .md',
+    },
     tiers: {
       act: 'an observable the act itself produced, re-derived here from the verdict and the repo. COUNTED.',
       claim: 'a self-report — a boolean or a status with no numbers behind it. Published, NOT counted.',
@@ -688,8 +718,56 @@ function buildLedger(rows, { verified = false } = {}) {
       'No instrument here can detect a FABRICATED pair of arms. It can only detect their absence. Rigour ultimately rests on the honesty of the numbers a critic writes down.',
       'Backfilled counts read ~200 ad-hoc key spellings and will under-count acts that were recorded in prose only. An under-count is the safe direction for a guard; it is never inflated to compensate.',
       'A verdict predating the rigour block is scored by recognisers, not by its own declaration. Forward verdicts carrying `rigour` are scored from it directly and are strictly more reliable.',
+      'THE UNDER-COUNT IS DEMONSTRABLE, AND THIS IS THE WORKED CASE. W1-02-r1 scores `word` for delete-the-fix, yet its build.harness_commands reads `node /scratch/c-evt.mjs --drop-vocab   (delete-the-fix arm)`. The deed was done; the instrument was written to a scratch directory that no longer exists, so no residue survives and nothing here can see it. Treat low historical counts as "the residue did not survive", never as "the work was not done".',
+      'A raw COUNT rises simply because verdicts accumulate, so a guard read off counts alone always looks like it is improving. Read `rate` (acts per verdict) and the daily `series`; the counts are published beside them for auditing, not for trending.',
     ],
     status: 'measured',
+
+    // ── Normalised, because a count that grows with the corpus is not a guard. ──
+    rate: Object.fromEntries(ITEMS.map((i) => [i, rows.length ? Number((t.counts[i] / rows.length).toFixed(3)) : null])),
+
+    // ── The comparable historical series, backfilled from `critic.finished_at`. ──
+    // This is what "the score compares over time" means for G3: acts per verdict, by day, for every
+    // verdict whose critic stamped a time. Verdicts with no stamp are counted in `undated` and
+    // excluded from the series rather than dropped silently or placed at day zero — an unplaced
+    // point drawn at the start of the project is a defect this corpus has already paid for.
+    series: (() => {
+      const byDay = {};
+      let undated = 0;
+      for (const r of rows) {
+        const d = r.finished_at ? String(r.finished_at).slice(0, 10) : null;
+        if (!d) { undated++; continue; }
+        byDay[d] ||= { t: d, verdicts: 0, counts: Object.fromEntries(ITEMS.map((i) => [i, 0])) };
+        byDay[d].verdicts++;
+        for (const it of ITEMS) if (r.items[it]?.tier === 'act') byDay[d].counts[it]++;
+      }
+      const out = Object.values(byDay).sort((a, b) => a.t.localeCompare(b.t));
+      for (const row of out) row.rate = Object.fromEntries(ITEMS.map((i) => [i, Number((row.counts[i] / row.verdicts).toFixed(3))]));
+      if (undated) out.undated_verdicts = undated;
+      return out;
+    })(),
+
+    // ── The block the cost ledger renders verbatim (COST.md §6.1 `guards.g3_rigour`). ──
+    // Shaped so tools/cost.mjs can splice it in with no interpretation of its own: the instrument
+    // owns cost, this owns rigour, and neither re-derives the other (rule 10). `unmeasured` is now
+    // EMPTY — all five are measured — but `weak_measurement` is not, and the page must draw that
+    // distinction rather than colouring five ticks green.
+    g3_rigour: {
+      counts: t.counts,
+      rate: Object.fromEntries(ITEMS.map((i) => [i, rows.length ? Number((t.counts[i] / rows.length).toFixed(3)) : null])),
+      n_verdicts: rows.length,
+      claimed_only: t.claimed_only,
+      word_only: t.word_only,
+      unmeasured: [],
+      unmeasured_reason: null,
+      weak_measurement: ['separate_critic'],
+      measured_as: 'acts, not words — see tools/rigour.mjs and corpus/00-doctrine/RIGOUR-BLOCK.md',
+      baseline_counts: t.counts,
+      baseline_rate: Object.fromEntries(ITEMS.map((i) => [i, rows.length ? Number((t.counts[i] / rows.length).toFixed(3)) : null])),
+      baseline_taken_at: new Date().toISOString(),
+      baseline_note: 'The baseline starts today, on a full backfill of every verdict in the corpus. There is no honest hour-by-hour retrospective: verdicts carry a critic timestamp but the fleet-hours they belong to are not recorded in them, so a per-hour history would have to be invented. A baseline that only starts today is still a baseline.',
+      status: 'ok',
+    },
   };
 }
 
@@ -765,6 +843,31 @@ export function stripToWords(v) {
   };
 }
 
+// The forward block, used correctly — and the same block filled in with things that are not true.
+// Arm F is what stops the new schema becoming a tickbox: every field in it is CHECKED, so a
+// verdict that declares the block and names a consumer that does not exist, or two arms that are
+// identical, scores exactly what it deserves, which is nothing.
+const FIXTURE_BLOCK_GOOD = {
+  piece_id: 'FIXTURE-BLOCK-GOOD',
+  critic: { run_id: 'crit-block-good', conflict_of_interest: false },
+  build: { commit_sha: 'HEAD' },
+  rigour: {
+    delete_the_fix: { teardown: 'node tools/rigour.mjs --self-break', with_fix: 0, without_fix: 112, artifact: 'tools/rigour.mjs' },
+    consumption: { consumer: 'game/src/engine.js', perturbation: 'the curve is multiplied by four in the loaded model', shipped: 3, perturbed: 11 },
+    self_test: { command: 'node tools/rigour.mjs --self-test', exit_code: 0, red_arm: { command: 'node tools/rigour.mjs --self-break', exit_code: 3 } },
+  },
+};
+const FIXTURE_BLOCK_HOLLOW = {
+  piece_id: 'FIXTURE-BLOCK-HOLLOW',
+  critic: { run_id: 'crit-block-hollow', conflict_of_interest: false },
+  build: { commit_sha: 'HEAD' },
+  rigour: {
+    delete_the_fix: { teardown: 'node tools/does-not-exist.mjs --self-break', with_fix: 42, without_fix: 42 },
+    consumption: { consumer: 'game/src/sim/nothing-here.js', perturbation: 'I perturbed it', shipped: 7, perturbed: 7 },
+    self_test: { command: 'node tools/also-not-here.mjs --self-test', exit_code: 0 },
+  },
+};
+
 function selfTest() {
   const fileIndex = buildFileIndex();
   const results = [];
@@ -798,6 +901,18 @@ function selfTest() {
   check('D2 corpus: not every verdict counts every act', ITEMS.some((i) => t.counts[i] < rows.length), true);
   check('D3 corpus: the word tier is non-empty (words without deeds exist)', ITEMS.some((i) => t.word_only[i] > 0), true);
 
+  // ARM F — the forward `rigour` block. Declared correctly it counts; declared hollow it does not.
+  {
+    const good = scoreVerdict({ json: FIXTURE_BLOCK_GOOD, jsonPath: null, prose: '', fileIndex });
+    const hollow = scoreVerdict({ json: FIXTURE_BLOCK_HOLLOW, jsonPath: null, prose: '', fileIndex });
+    check('F1 block: a correctly evidenced rigour block counts delete_the_fix', good.items.delete_the_fix.tier, 'act');
+    check('F2 block: a correctly evidenced rigour block counts consumption', good.items.consumption.tier, 'act');
+    check('F3 block: a correctly evidenced rigour block counts self_test', good.items.self_test.tier, 'act');
+    check('F4 hollow block: identical arms + missing script does NOT count delete_the_fix', hollow.items.delete_the_fix.tier === 'act', false);
+    check('F5 hollow block: a consumer that does not exist does NOT count', hollow.items.consumption.tier === 'act', false);
+    check('F6 hollow block: a self-test naming a missing script does NOT count', hollow.items.self_test.tier === 'act', false);
+  }
+
   // ARM E — THE ARM THAT MATTERS, built from real historical data rather than a fixture.
   //
   // The brief asked for a word-without-deed arm taken from a real verdict that says the words and
@@ -822,7 +937,7 @@ function selfTest() {
     check('E2 residue stripped, words kept: consumption stops counting', s.items.consumption.tier === 'act', false);
     check('E3 residue stripped: the PHRASES are still there (this is a word arm, not an empty one)',
       PHRASE.delete_the_fix.test(allText(stripped)) && PHRASE.consumption.test(allText(stripped)), true);
-    results[results.length - 3].detail = `donor ${donor.path}`;
+    results.find((r) => r.name.startsWith('E1')).detail = `donor ${donor.path}`;
   }
 
   const failed = results.filter((r) => !r.pass);

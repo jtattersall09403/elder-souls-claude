@@ -98,8 +98,17 @@ export function drawTouchOverlay(S, m) {
   const sx = S.W / vw, sy = S.H / vh;
   // ONE scale for the arc, and it is anchored at the SAFE-AREA CORNER rather than at the
   // frame's origin. `TouchInput.layout()` expresses every control as an offset from the bottom
-  // right of the safe area — that is what makes H3/T8 true by construction — so the drawing has
-  // to reproduce the same anchor. Scaling x and y independently would preserve the anchor and
+  // right of the safe area — that is what keeps H3/T8 clause 1 true — so the drawing has to
+  // reproduce the same anchor. That used to read "true by construction", which is the same
+  // half-truth `ui/system.js` was carrying and the round-1 critic's §5 named both of them: it is
+  // a claim about clause ONE only (clause 2, never overlap the dialogue surface, is a deletable
+  // filter — see `ui/system.js`), and until this round it had only ever been measured against an
+  // inset of ZERO. It is now measured against RI-JRN04 M-P17's real {0,44,21,44} cutout, 11 of 11
+  // controls clear, with a null control that reddens at 3 of 11 the moment `_origin()` is
+  // re-anchored off the safe area — `tools/touch/critic-fight.mjs --leg insets`. THE ANCHOR IS
+  // THE MECHANISM, so the line below is the thing that teardown breaks.
+  //
+  // Scaling x and y independently would preserve the anchor and
   // shear the arc whenever the drawing buffer's aspect differs from the logical viewport's,
   // which is every harness capture and every phone whose URL bar is halfway collapsed; the
   // controls would then be ellipses drawn away from their own circular hit boxes, and the

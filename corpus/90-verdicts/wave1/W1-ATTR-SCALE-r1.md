@@ -1,6 +1,9 @@
 # W1-ATTR-SCALE — round 1 verdict
 
-**Status: FAIL, 3.0 / 10** (min-over-axes, wave-1 gate 7.0). Critic: fresh context, wrote none of
+**Status: FAIL, 0.0 / 10, fail-closed** (min-over-axes, wave-1 gate 7.0) — *the draft of this verdict
+said 3.0; the round-2 successor overturned it and the reasoning is in
+[the scoring section](#the-round-2-successor-overturned-the-drafts-30-here-is-why-and-what-would-reverse-it)*.
+Critic: fresh context, wrote none of
 the work under judgement. Build: measured at HEAD `6bb9003`, **re-verified at HEAD `692bcc8`**,
 branch `claude/morrowind-souls-threejs-game-mou39v`.
 
@@ -326,14 +329,38 @@ tracked.
 | **G. Non-violent floor as reported** | **5** | Right denominator, right warning about the insensitive one; wrong label — "MEETS the 45% bar" from a stat-only predicate. |
 | **H. Morrowind-side world coupling** | **8** | Five named out-of-combat consumers, perturbation moves the gate. The seam attack fails to land. |
 
-**min = 0 (axis F).** I am not scoring the piece 0. Axis F is a *claim*, not a subsystem, and the
-subsystem it justifies survives its own delete-the-fix. Per this project's own precedent for a
-correct fix with a wrong warrant, the overall is set at **3.0** — the min over the axes that
-describe the shipped artefact (D and E at 3), with F recorded as fail-closed and named as the
-biggest gap. A future round that re-derives the bands with a live souls economy can move D, E and F
-together; nothing else needs redoing.
+**min = 0 (axis F).**
 
-**Gate: 7.0. FAIL.**
+### The round-2 successor overturned the draft's 3.0. Here is why, and what would reverse it.
+
+The draft argued the overall down to **3.0**: axis F is a *claim*, not a subsystem, the subsystem it
+justifies survives its own delete-the-fix, and this project has precedent for a correct fix with a
+wrong warrant. That reasoning is sympathetic and I think it is wrong, for a reason the project's own
+tooling stated when the verdict was validated:
+
+> `warn  RI-MTH07: 1 hard-fail gate(s) are UNGATED — the check exists and is marked hard_fail but
+> reports 'unmeasurable', so no instrument could fire it. That is not a pass. SCORING.md:
+> unmeasurable scores 0 fail-closed.`
+
+`RI-MTH07` aggregates **min-over-axes**, and its coupling axis is not merely failed — it is
+**ungated**. Trial C could not have returned a bad number, because it never ran. Scoring that 3.0
+is exactly the move the min-over-axes rule exists to prevent: letting seven working axes carry one
+that was never measured. So the item is **0, fail-closed**, and the verdict is **0.0**.
+
+**What 0.0 does not mean.** It is not a judgement that the work is worthless, and no one should read
+it that way. The 42-resolution fix is real, is wider than its brief, and survives an independent
+delete-the-fix on a tree that has moved under it — 0 → 23 defects, 0 → 1 ladder inversion,
+370 → 347 reachable, 19 resolutions shut *by a defect*. Axes A and H score 8. The 0 records one
+thing precisely: **the gate that was supposed to establish this piece's load-bearing premise had no
+instrument that could have fired, and the premise turns out to be false on HEAD.**
+
+**Reversible, and here is the evidence that reverses it.** Fix trial C — `eid` not `id`, filter
+`kind === 'enemy'`, step before killing, fail on a thrown kill, flip under `--after` — and the
+coupling axis becomes *gated*. It then returns a real number, and RI-MTH07 is scored on that number
+rather than fail-closed. If the re-derived ceilings leave the 42 demands where they are, this piece
+goes to roughly its axis-A score in one round without a single data edit. Nothing else needs redoing.
+
+**Gate: 7.0. FAIL at 0.0, fail-closed.**
 
 ---
 

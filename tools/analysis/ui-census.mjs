@@ -159,7 +159,13 @@ async function runHudToastCensus(push) {
   const sample = pickA2Sample(corpus);            // A2a/A2b's 8, always the FULL corpus's picks
 
   log(`hud-toast: launching browser (${width}x${height}, corpus ${corpus.length}, population ${population.length})...`);
-  const h = await launchGame({ width, height, timeout: 300000 });
+  // `--entry`/`--url` passthrough (additive — omitted, this is the shipped game/index.html) is
+  // how the plan §2 null control points this SAME instrument at a scratch worktree with hud.js's
+  // E11 block reverted, without touching the live tree any other agent's browser might be reading.
+  const launchOpts = { width, height, timeout: 300000 };
+  if (args.entry) launchOpts.entry = String(args.entry);
+  if (args.url) launchOpts.url = String(args.url);
+  const h = await launchGame(launchOpts);
   log('hud-toast: browser up, loading ui-journal...');
   const out = { schema: 'elder-souls/hud-toast-a@1', item: 'W1-HUD-TOAST-A', at: new Date().toISOString(),
     corpus_size: corpus.length, population_run: population.length, budget_px, checks: [] };
@@ -208,10 +214,15 @@ async function runHudToastCensus(push) {
       const shotA = decodePng(await h.h('screenshot'));
       const mark = (await h.h('getRenderedText', { surface: 'menus' })).next_index;
       // The clip-free reference: SAME rows, SAME x/y (read back off the element's own entries,
-      // BLOCKING-6), SAME face/size/colour, drawn UNCLIPPED directly onto the same base frame —
-      // additive ink only, so any pixel that changes is ink the clip removed.
+      // BLOCKING-6), SAME face/size/colour/ALPHA, drawn UNCLIPPED directly onto the same base
+      // frame — additive ink only, so any pixel that changes is ink the clip removed. `alpha`
+      // matters: `el()` composites the toast's ink at its own declared `opacity` (0.92), and a
+      // reference drawn at the default alpha of 1 reads as "changed" almost everywhere it
+      // overlaps the original, not just where clipping actually removed something (found by
+      // running this and reading the numbers — see the note on `drawOnMenus` in harness/api.js).
+      const toastAlpha = el.opacity === undefined ? 1 : el.opacity;
       for (const row of rowsReg.entries) {
-        await h.h('drawOnMenus', row.text, { x: row.x, y: row.y, face: 'ink', size: 16, color: INK_HEX });
+        await h.h('drawOnMenus', row.text, { x: row.x, y: row.y, face: 'ink', size: 16, color: INK_HEX, alpha: toastAlpha });
       }
       const refCheck = await h.h('getRenderedText', { surface: 'menus', since: mark });
       const shotB = decodePng(await h.h('screenshot'));

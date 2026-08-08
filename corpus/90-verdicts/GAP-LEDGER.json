@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-08T12:50:46Z",
+  "generated": "2026-08-08T12:59:04Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 74,
+  "verdicts_read": 76,
   "counts": {
-    "total": 69,
-    "open": 68,
+    "total": 71,
+    "open": 70,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -68,6 +68,9 @@
     "dialogue.topics.filtering": [
       "GAP-W1-act5-argument-entry-shadowed"
     ],
+    "progression.level.attributes": [
+      "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy"
+    ],
     "combat.frames.timing": [
       "GAP-W1-combat-exemplar-has-no-danger"
     ],
@@ -84,6 +87,9 @@
     "combat.hitbox.sweep": [
       "GAP-W1-enemy-attacks-cannot-reach-contact-range",
       "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
+    ],
+    "quests.faction.escalation": [
+      "GAP-W1-faction-ladders-are-doors-onto-empty-corridors"
     ],
     "progression.bonfire.function": [
       "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist"
@@ -1028,6 +1034,50 @@
       "age_waves": 0
     },
     {
+      "gap_id": "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy",
+      "subsystem_path": "progression.level.attributes",
+      "opened_wave": 1,
+      "opened_by": "critic-w1-attr-scale",
+      "opened_in": "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json",
+      "piece_id": "w1-attr-scale-r1",
+      "severity": "major",
+      "what": "The 42 rescaled attribute and skill demands were fitted to a ceiling of creation + earned skill growth only, on the piece's stated premise that souls are never awarded and the bought attribute stream is therefore unfundable. Souls ARE awarded — 42 per infantry body, 10 real kills for 378 souls on HEAD with a red control that went red — so the true ceiling is higher and rises further as the enemy roster is populated (9 hand-placed enemies today against RI-PRG06 §7's planning figure of ~1,230). The ceilings themselves are read at run time from reports/faction-signature-sweep.json, which is gitignored and in no commit; it moved 29 minutes after the fix landed, and as a result the published headline '28 defects -> 0' re-measures as 23 -> 0. With the sweep's bought_points term folded in, the tool's RESERVE = 2 buys exactly ZERO margin against the earned-only ceiling for all ten attributes.",
+      "why_it_matters": "Either the rank-8 social endings of three faction lines become free the moment the enemy roster lands, or they stay unreachable — and nothing in the build can currently tell which.",
+      "remedy": {
+        "action": "1. Make reports/faction-signature-sweep.json a tracked artifact — drop the entry at reports/.gitignore:3 or move the file to game/data/progression/ — so every ceiling becomes a claim about a commit (rule 12). 2. Replace the sweep's bought_points derivation, currently a JSON census of game/data/combat/enemies x encounters.json, with a MEASURED figure taken from the running world by tools/quests/critic-attr-scale-souls.mjs arm 2: kill N bodies, read soulsHeld, run it through game/data/progression/levels.json. 3. Fix trial C of tools/quests/attr-scale-consumption.mjs — use `eid` not `id`, filter `kind === 'enemy'`, step the world before killing so SoulsSystem.step has SEEN the alive->dead transition, and make the predicate fail on a thrown kill rather than pass on one — then flip it under --after like the other seven trials. 4. Re-run attr-scale-audit --sheet p10 against the corrected sweep and rescale whatever the bands then say, in BOTH directions; the tool already reports `vacuous` for a demand everybody meets.",
+        "targets": [
+          "reports/.gitignore",
+          "reports/faction-signature-sweep.json",
+          "tools/quests/attr-scale-consumption.mjs",
+          "tools/quests/attr-scale-audit.mjs",
+          "game/data/quests/"
+        ],
+        "acceptance": "tools/quests/critic-attr-scale-souls.mjs exits 0 (i.e. the piece's claim holds after the economy is re-derived) OR the sweep's bought_points equals the measured award divided through levels.json to within one point; AND tools/quests/critic-attr-scale-dtf.mjs reports a non-zero margin_at_hard_cap for every one of the ten attributes, where it currently reports 0 for all ten.",
+        "ref_item": "RI-MTH07",
+        "estimated_size": "M"
+      },
+      "remedy_action": "1. Make reports/faction-signature-sweep.json a tracked artifact — drop the entry at reports/.gitignore:3 or move the file to game/data/progression/ — so every ceiling becomes a claim about a commit (rule 12). 2. Replace the sweep's bought_points derivation, currently a JSON census of game/data/combat/enemies x encounters.json, with a MEASURED figure taken from the running world by tools/quests/critic-attr-scale-souls.mjs arm 2: kill N bodies, read soulsHeld, run it through game/data/progression/levels.json. 3. Fix trial C of tools/quests/attr-scale-consumption.mjs — use `eid` not `id`, filter `kind === 'enemy'`, step the world before killing so SoulsSystem.step has SEEN the alive->dead transition, and make the predicate fail on a thrown kill rather than pass on one — then flip it under --after like the other seven trials. 4. Re-run attr-scale-audit --sheet p10 against the corrected sweep and rescale whatever the bands then say, in BOTH directions; the tool already reports `vacuous` for a demand everybody meets.",
+      "remedy_acceptance": "tools/quests/critic-attr-scale-souls.mjs exits 0 (i.e. the piece's claim holds after the economy is re-derived) OR the sweep's bought_points equals the measured award divided through levels.json to within one point; AND tools/quests/critic-attr-scale-dtf.mjs reports a non-zero margin_at_hard_cap for every one of the ten attributes, where it currently reports 0 for all ten.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
       "gap_id": "GAP-W1-audio-emitter-consumption",
       "subsystem_path": "audio.ambience.region",
       "opened_wave": 1,
@@ -1225,7 +1275,7 @@
       "remedy_action": "Three changes, smallest first. (1) Give verify-playable a sampling mode that does not screenshot inside the wait loop — read the DOM only until `__HARNESS.ready()` resolves, then take one screenshot — so its control can go green and its six sabotages mean something; and stop the boot notice's 20 s ceiling from hiding the `bn-bad` state (shrink it to a dismissible corner banner instead), since two instruments read that state as the page's own verdict. (2) Point verify-live-site's staleness check at HEAD (`git show HEAD:game/<rel>`) rather than `readFileSync(game/<rel>)`, widen it from 2 files to index.html + data/index.json + every .js under src/ and vendor/, and give it and check-image-refs the 5xx retry that verify-links.mjs already has. (3) Wire tools/playability/standing-check.mjs into tools/bank.mjs as a non-blocking post-push follow-up, and add check-image-refs and loader-retry to it. Then, and only then, add the missing class: one instrument that loads the deployed page twice with the cache warm between visits.",
       "remedy_acceptance": "`node tools/world/verify-playable.mjs --self-test` exits 0 with the control GREEN and all six sabotages red, at a contention of at least 4.0 per core; `critic-deploy-r2-notice.mjs --notice` shows the AS SHIPPED arm still displaying `bn-bad` at 45 s; `critic-deploy-r2-drift.mjs --n 60` reports the same drift count against the working tree and against HEAD (i.e. the check is pointed at HEAD), with at least 140 of 715 files hashed; and `grep -rn standing-check tools/bank.mjs` returns a call site.",
       "evidence": [
-        "reports/w1-deploy-r2/selftest-local.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-deploy-r2/verify-playable-selftest-local.json",
         "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-as-shipped.png",
         "docs/shots/2026-08-08-critic-deploy-r2-the-notice-erases-its-own-diagnosis-ceiling-deleted.png",
         "tools/world/critic-deploy-r2-drift.mjs",
@@ -1316,6 +1366,45 @@
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-faction-ladders-are-doors-onto-empty-corridors",
+      "subsystem_path": "quests.faction.escalation",
+      "opened_wave": 1,
+      "opened_by": "critic-w1-20",
+      "opened_in": "corpus/90-verdicts/wave1/W1-20-r1.json",
+      "piece_id": "W1-20",
+      "severity": "blocking",
+      "what": "Eight eight-rank ladders exist and are richly specified — every rank gates on reputation, an attribute, two skills and a world state. Three lines carry 18 quests each; the other five carry 1, 2, 2, 3 and 4, giving mean quests-per-rank of 0.12 to 0.50 against RI-QST01's floor of 2.0, with six or seven EMPTY rank bands per line. the_dockhands additionally has four faction quests and not one with deceit != null. The four lines this round opened have no expulsion, no readmission, and — for three of the four — no interior anywhere in the populated world, so a rank in them changes nothing about property or trespass. Measured per line (critic-w1-20-census.mjs): imperial_assize 18 quests / 2.25 per rank / 0 empty bands, wet_ledger 18 / 2.25 / 0, xul_aneekh 18 / 2.25 / 0, dockhands 4 / 0.50 / 7 empty bands / 0 deceit, rootkeepers 3 / 0.38 / 7, drowned_court 2 / 0.25 / 6, ixtu_vakh 2 / 0.25 / 6, deep_kin 1 / 0.13 / 7. faction_interior zones: wet-ledger 18, drowned-court 14, and ZERO for the other six ladders. Expulsion and readmission exist for exactly three lines. reach.json scores the_rootkeepers null on both theft and trespass because no hall exists in the world to test against.",
+      "why_it_matters": "You join the Rootkeepers by counting a well, and the Rootkeepers never ask you for anything again.",
+      "remedy": {
+        "action": "Author quests at ranks 1-7 on the four lines this round opened, rather than a second quest at rank 1; give the_dockhands at least one quest with deceit != null at rank <= 3 per RI-QST01 Table B; add faction-discipline.json rows (expulsion flags plus readmission price_gold, reputation_floor and offered_by) for the_rootkeepers, the_dockhands, the_drowned_court and the_ixtu_vakh; place a faction_interior zone for at least the Rootkeepers and the Dockhands in game/data/world/property/**; and split the doubled faction_reputation in faction-joining-wave1.json so a joining quest pays 10 rather than 20.",
+        "acceptance": "`node tools/quests/critic-w1-20-census.mjs` exits 0 — which requires every line at >= 18 faction quests, mean >= 2.0 quests per rank, zero empty rank bands, no line with deceit == null throughout, and earnable reputation within 1.6x of the rank-7 requirement of 112 on all seven joinable lines (today: 1.86x to 9.23x). And `node tools/quests/critic-w1-20-reach.mjs` reports a non-null theft and trespass readout for every joinable line, instead of null on five of seven.",
+        "targets": [
+          "game/data/quests/faction-joining-wave1.json",
+          "game/data/progression/faction-discipline.json",
+          "game/data/world/property/",
+          "game/data/quests/"
+        ]
+      },
+      "remedy_action": "Author quests at ranks 1-7 on the four lines this round opened, rather than a second quest at rank 1; give the_dockhands at least one quest with deceit != null at rank <= 3 per RI-QST01 Table B; add faction-discipline.json rows (expulsion flags plus readmission price_gold, reputation_floor and offered_by) for the_rootkeepers, the_dockhands, the_drowned_court and the_ixtu_vakh; place a faction_interior zone for at least the Rootkeepers and the Dockhands in game/data/world/property/**; and split the doubled faction_reputation in faction-joining-wave1.json so a joining quest pays 10 rather than 20.",
+      "remedy_acceptance": "`node tools/quests/critic-w1-20-census.mjs` exits 0 — which requires every line at >= 18 faction quests, mean >= 2.0 quests per rank, zero empty rank bands, no line with deceit == null throughout, and earnable reputation within 1.6x of the rank-7 requirement of 112 on all seven joinable lines (today: 1.86x to 9.23x). And `node tools/quests/critic-w1-20-reach.mjs` reports a non-null theft and trespass readout for every joinable line, instead of null on five of seven.",
+      "evidence": [
+        "reports/critic-w1-20/census.json",
+        "reports/critic-w1-20/reach.json",
+        "reports/critic-w1-20-faction-skeleton.md"
       ],
       "status": "open",
       "assigned_to_wave": 2,

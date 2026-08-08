@@ -944,8 +944,18 @@ export function installHarness(engine, bootPromise) {
      * different position cannot be differenced against an element drawn in face `ink`, centred on
      * its panel. `opts` is additive — every existing call (`text` only) gets exactly today's five
      * defaults and is unaffected.
+     *
+     * `opts.alpha` (additive, default 1 — unchanged for every existing caller) is the second half
+     * of BLOCKING-6's fix, found only by RUNNING A2a and reading the actual `cut_px` numbers
+     * rather than trusting the mechanism: `UISurface.el()` sets `ctx.globalAlpha` to the
+     * element's own declared `opacity` before calling its draw callback (`surface.js:215`), and
+     * the toast declares `opacity: 0.92`. A reference draw at the default `globalAlpha` of 1
+     * strokes every glyph MORE OPAQUE than the element's own (92%-alpha) ink, so nearly the whole
+     * glyph area reads as "changed" — a false large `cut_px` on strings that are not clipped at
+     * all, uncorrelated with row width (measured: 494-765px of "cut" ink on the narrowest,
+     * plainly-fitting sample, "Press E to open" among them). Pass the element's own `opacity`.
      * @param {string} text
-     * @param {{x?:number, y?:number, face?:string, size?:number, color?:string}} [opts]
+     * @param {{x?:number, y?:number, face?:string, size?:number, color?:string, alpha?:number}} [opts]
      */
     drawOnMenus(text, opts) {
       const s = String(text);
@@ -958,11 +968,13 @@ export function installHarness(engine, bootPromise) {
       const face = faceOf(o.face === undefined ? 'bone' : String(o.face));
       const size = o.size === undefined ? 16 : Number(o.size);
       const color = o.color === undefined ? '#fff' : String(o.color);
+      const alpha = o.alpha === undefined ? 1 : Number(o.alpha);
       ctx.save();
+      ctx.globalAlpha = alpha;
       drawGlyphText(ctx, s, x, y, face, size, color);
       ctx.restore();
       const rows = reg.all({ since: mark });
-      return { text: s, seen: rows.some((e) => e.text === s), surface: 'menus', entries: rows.length, x, y, face: o.face === undefined ? 'bone' : String(o.face), size, color };
+      return { text: s, seen: rows.some((e) => e.text === s), surface: 'menus', entries: rows.length, x, y, face: o.face === undefined ? 'bone' : String(o.face), size, color, alpha };
     },
 
     drawSentinels(tag) {

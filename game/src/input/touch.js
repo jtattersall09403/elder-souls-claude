@@ -144,7 +144,14 @@ export class TouchInput {
    * rectangle and covered the right-hand column of the name ledger — a player choosing a name
    * could not read half the names on offer. T8 says the controls "never overlap the dialogue or
    * journal surfaces"; `ui/system.js` had a comment claiming T8 was "upheld by construction",
-   * which is true of the inset clause and was never true of this one.
+   * which is true of the inset clause and was never true of this one. That sentence survived
+   * round 1 at HEAD — this file described its removal in the past tense while it was still on
+   * disk, which the round-1 critic's §5 caught — and it is now gone, replaced in `ui/system.js`
+   * by the measurement it was standing in for: the arc reduces from 11 controls to 2 while a
+   * surface takes input (`tools/touch/critic-fight.mjs --leg menu`), and 11 of 11 stay clear of
+   * M-P17's real {0,44,21,44} cutout against a null control that reddens at 3 of 11 (`--leg
+   * insets`). `keepOnly` below is what upholds this clause, and being deletable is the point:
+   * a rule that cannot be deleted cannot be shown to be doing anything.
    *
    * `keepOnly` is an array of action names, or null for the whole arc. Set every frame by
    * `Engine._touchOverlayModel()`, for the same reason `suppressToDrawer` is: `layout()` is read

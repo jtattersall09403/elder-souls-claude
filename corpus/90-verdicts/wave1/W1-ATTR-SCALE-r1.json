@@ -1,0 +1,517 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-attr-scale-r1",
+ "piece_title": "W1-ATTR-SCALE round 1 — the attribute-scale sweep: a real 42-resolution fix resting on a root-cause claim that is false on HEAD",
+ "subsystem_paths": [
+  "progression.level.attributes",
+  "combat.damage.scaling",
+  "progression.skill.gating",
+  "quests.faction.rankgating",
+  "progression.souls.economy"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "critic-w1-attr-scale",
+  "role": "critic.progression",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-08T11:20:00Z",
+  "finished_at": "2026-08-08T13:40:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "692bcc8",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "harness_commands": [
+   {
+    "command": "node tools/quests/attr-scale-audit.mjs --self-test",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-selftest.txt"
+   },
+   {
+    "command": "node tools/quests/attr-scale-audit.mjs --sheet p10",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-p10.txt"
+   },
+   {
+    "command": "node tools/quests/attr-scale-audit.mjs --sheet median",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-median.txt"
+   },
+   {
+    "command": "node tools/quests/critic-attr-scale-dtf.mjs --self-test",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf-selftest.txt"
+   },
+   {
+    "command": "node tools/quests/critic-attr-scale-dtf.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt"
+   },
+   {
+    "command": "node tools/quests/critic-attr-scale-souls.mjs",
+    "exit_code": 1,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt"
+   },
+   {
+    "command": "node tools/check-quests.mjs (with two defects reinjected into Q-BLAK-01)",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/check-quests-injected.txt"
+   },
+   {
+    "command": "round-2 successor re-run of the self-test, --sheet p10 and the full delete-the-fix on HEAD 692bcc8",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt"
+   },
+   {
+    "command": "node tools/verdict-validate.mjs against 7 single-clause mutations of W1-SOULS-r3.json plus a `none` control",
+    "exit_code": 0,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/verdict-validate-mutations.txt"
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "A numbers piece over quest data and attribute ceilings. It ships no rendered output. The one image is a chart drawn offline from the probe's own JSON and is evidence about souls awards, not about pixels."
+ },
+ "reference_items": [
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "side": "neutral",
+   "kind": "structure",
+   "native_scale": "five axes (consumer named, coupling measured, hand-feed audit, instrumentation honesty, harness fidelity), each 0/6/10, min-over-axes. Failure threshold: any coupling == 0 on a model the piece's own reference items require to act.",
+   "native_score": 0,
+   "native_max": 10,
+   "native_verdict": "0 fail-closed — min-over-axes with an UNGATED coupling axis. The trial that carries the piece's premise had no instrument that could have failed.",
+   "score_0_10": 0,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "consumer-named",
+     "result": "pass",
+     "value": "5 out-of-combat consumers named by path",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt"
+     ],
+     "note": "quest/machine.js:231 (resolution gates + derived faction rank ladder), engine.js:2984 _talkPersuader, character/reaction.js:83-116 (buy/sell multiplier), sim/hazards.js:297 (disease drain), sim/magic/apply.js:199-226 (restore/fortify). Perturbation moves the world: personality 10 -> 31 changes Q-BLAK-01 res_hold's refusal string."
+    },
+    {
+     "id": "coupling-measured-trials-A-B",
+     "result": "pass",
+     "value": "coupling > 0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-after.json"
+     ],
+     "note": "Trials A and B are sound and genuinely coupled; --after flips them, so neither half passes alone."
+    },
+    {
+     "id": "coupling-measured-trial-C-souls",
+     "result": "unmeasurable",
+     "hard_fail": true,
+     "value": "no kill ever occurred",
+     "threshold": "coupling > 0",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-after.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt"
+     ],
+     "note": "UNGATED, not triggered: the trial that is supposed to establish the souls coupling has no working instrument, so no value of the coupling could have failed it. listEntities() rows carry `eid`, never `id`; `e.id !== 'player'` filters nothing and `H.killEntity(e.id)` throws every time. The builder's own shipped artifacts record five {\"error\":\"killEntity('undefined'): no such body\"} entries in BOTH arms. The verdict predicate `D.kills.every(k => k.error || k.souls_after === k.souls_before)` scores a thrown kill as a pass, and trial C is not flipped by --after, so it passes identically in both modes and would have passed forever."
+    },
+    {
+     "id": "instrumentation-honesty",
+     "result": "fail",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json"
+     ],
+     "note": "The status file's finding 41 reads 'spawned dres-raid-party, killed 5 of 6 entities, stepped 60 frames each. soulsHeld 0 -> 0'. Nothing was killed. The printed line 'over 5 kill(s) of 42 entities' is counting five exceptions, and '42 entities' is the unfiltered row count (36 rows at boot in the re-run, 0 of them enemies)."
+    },
+    {
+     "id": "harness-fidelity-verify",
+     "result": "fail",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt"
+     ],
+     "note": "No VERIFY replay existed for the consumption probe. The critic's replacement, tools/quests/critic-attr-scale-souls.mjs, supplies one and carries its own red control (sim.souls.enabled = false: 3 further kills, 0 awarded)."
+    }
+   ],
+   "how_we_lose_hits": [
+    "a model whose only reader is the trace or a probe",
+    "a teardown that does nothing, so both arms are the positive arm"
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-after.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt"
+   ],
+   "why_not_ten": "The one trial that establishes the piece's load-bearing premise — that killing awards no souls, so the bought attribute stream cannot be funded — killed nothing in either arm, and its predicate treats a thrown kill as a pass. Re-run with the key the harness actually returns (`eid`), 10 real kills awarded 378 souls with a red control that went red. The premise is false on HEAD.",
+   "path_to_ten": "Fix trial C: filter on `kind === 'enemy'`, use `eid`, step the world before killing (SoulsSystem.step pays only a transition it has SEEN, so spawn-then-kill-in-one-evaluate under-reads even with the right key), and make the predicate FAIL on a thrown kill rather than pass on one. Then flip it under --after like the other seven trials, so neither arm can pass alone.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-PRG02",
+   "path": "corpus/20-progression/RI-PRG02-stat-sheet.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "six axes (completeness, breadth, curves, grades, two streams, six characters), each 0/6/10, min-over-axes over measurable axes. Failure threshold: any axis below 6.",
+   "native_score": 0,
+   "native_max": 10,
+   "native_verdict": "0 fail-closed on the two-streams axis as the piece CALIBRATED it — not a finding against RI-PRG02's stat sheet, which has both streams",
+   "score_0_10": 0,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "breadth",
+     "result": "pass",
+     "value": "5 named out-of-fight consumers; attributes govern quests, ranks, persuasion, prices and disease",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt"
+     ],
+     "note": "This is the axis the dispatch brief flagged as the likely failure — 'a piece that made attributes purely a damage multiplier has failed the Morrowind half'. The seam attack does not land: this piece does the opposite. RI-PRG02's own 10-band asks for >=8 attributes with out-of-fight effects."
+    },
+    {
+     "id": "two-streams",
+     "result": "fail",
+     "value": "the piece asserts the bought stream has no source; 10 kills awarded 378 souls",
+     "threshold": "earned fraction 0.19-0.31",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt",
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json"
+     ],
+     "note": "The 42 rescaled demands were fitted to a ceiling of creation + earned only, on the stated premise that the bought stream is 'DEAD IN THE SHIPPED BUILD' and 'UNFUNDABLE'. game/src/sim/souls.js:321 awards 42 souls per infantry body on the alive->dead transition. In fairness: W1-SOULS wired the award path at 16:41 on 7 Aug and W1-ATTR-SCALE landed at 16:12, so the claim may have been true when written — but trial C could not have told the difference then either. SCOPE: this scores the piece's CALIBRATION, not RI-PRG02's stat sheet. The build itself has both streams and that axis passes on the build; what fails is that 42 shipped demands were fitted to a ceiling derived from only one of them."
+    },
+    {
+     "id": "grades-reach-damage",
+     "result": "not_applicable",
+     "value": "scalingBonus() and effectiveGrade() are called from nowhere but their own definitions",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt"
+     ],
+     "note": "NOT CHARGED and NOT SCORED against this piece — the unbuilt Souls half is already filed as GAP-W1-skill-and-attribute-scaling-never-reaches-damage, and this piece did not build the stat sheet. Recorded only because the round-2 successor corrected the draft's overclaim that attributes reach nothing inside the fight: they DO reach the fight through the pools (vigour->hp_max, endurance->stamina_max+regen, strength->equip_load_max, willpower->focus_max+spell_slots), and willpower reaches spell DAMAGE via engine.js:1581 -> MagicSystem.wil -> outputOf() -> combat-bridge.js:92. What is dead is WEAPON damage: inside game/src/combat/ the only attribute read of any kind is endurance -> staminaMaxFor()."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt"
+   ],
+   "why_not_ten": "Every ceiling the piece fitted to is derived from reports/faction-signature-sweep.json, which is gitignored (reports/.gitignore:3) and therefore in no commit; and the sweep moved 29 minutes after the fix landed, when W1-SOULS added a bought_points term that raised every reachable_ceiling by 2. Measured consequence: the published headline '28 defects -> 0' does not reproduce. An independent revert of the same 42 resolutions gives 23 -> 0. With bought_points folded in, the tool's RESERVE = 2 now buys ZERO margin against the earned-only ceiling for all ten attributes.",
+   "path_to_ten": "Make reports/faction-signature-sweep.json a tracked artifact (drop the ignore or move it to game/data/progression/), then replace its bought_points derivation — currently a JSON census of game/data/combat/enemies x encounters.json — with a MEASURED figure from a running world, and rescale in both directions against the corrected sweep.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-QST05",
+   "path": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "banded 0-10 on PACIFIST-ALL / NONVIOLENT-OPTION / verb spread / gating / per-faction spread, with hard fails at PACIFIST-ALL < 30% and VERB-SPREAD > 40%",
+   "native_score": 5,
+   "native_max": 10,
+   "native_verdict": "Mid band — the denominator is right and the label is wrong",
+   "score_0_10": 5,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "resolution-level-denominator",
+     "result": "pass",
+     "value": "370 non-violent resolutions tracked, not just 124 quests",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-p10.txt"
+     ],
+     "note": "The builder identified and reported that the QUEST-level rate is insensitive — it does not move until the last talk route on a quest is shut — and made the resolution-level rate the headline. That judgement is correct and is the piece's best methodological call."
+    },
+    {
+     "id": "bar-label",
+     "result": "fail",
+     "value": "'124/124 = 100.0% MEETS the 45% bar' printed from a stat-only predicate",
+     "threshold": ">= 45%",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-p10.txt"
+     ],
+     "note": "audit()'s `reachable` predicate looks at attribute and skill demands ONLY. knowledge, requires_knowing, disposition, items, gold and faction_rank are collected for the vacuity test and never consulted for reachability. The builder's own probe output shows a resolution counted 'reachable' that the engine refuses with 'you do not know rev_destinations | you do not know rev_meno'. 'No out-of-scale stat demand' is a useful number; it is not ARBITRATION's non-combat bar."
+    },
+    {
+     "id": "pacifist-all-dependency",
+     "result": "not_applicable",
+     "note": "RI-QST05's wave-0 amendment makes PACIFIST-ALL unmeasurable without a working stealth and crime system. This piece does not claim PACIFIST-ALL; it claims stat-reachability of authored non-violent resolutions. Scored on what it claims."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-p10.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-median.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt"
+   ],
+   "why_not_ten": "The tool prints that it MEETS ARBITRATION's non-combat bar on the strength of a predicate that only knows about attribute and skill demands, so a resolution gated behind knowledge the player cannot obtain counts as reachable. W1-19-r2's critic separately measured that 0 of 35 quests behind that round's headline had a giver standing anywhere in the world.",
+   "path_to_ten": "Either extend the reachability predicate to consult knowledge, requires_knowing, disposition, items, gold and faction_rank, or relabel the printed line to what it actually measures — 'no out-of-scale stat demand on any authored non-violent resolution' — and stop citing the 45% bar from it.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-selftest.txt",
+   "kind": "log",
+   "produced_by": "node tools/quests/attr-scale-audit.mjs --self-test"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-p10.txt",
+   "kind": "report",
+   "produced_by": "node tools/quests/attr-scale-audit.mjs --sheet p10"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-median.txt",
+   "kind": "report",
+   "produced_by": "node tools/quests/attr-scale-audit.mjs --sheet median"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt",
+   "kind": "report",
+   "produced_by": "node tools/quests/critic-attr-scale-dtf.mjs — delete-the-fix, reverting all 42 resolutions to their pre-fix values in memory against e7ed252^"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf-selftest.txt",
+   "kind": "log",
+   "produced_by": "node tools/quests/critic-attr-scale-dtf.mjs --self-test"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt",
+   "kind": "negative-evidence",
+   "produced_by": "node tools/quests/critic-attr-scale-souls.mjs — re-runs the piece's trial C with `eid`, in three arms including a sim.souls.enabled = false red control"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json",
+   "kind": "trace",
+   "produced_by": "node tools/quests/critic-attr-scale-souls.mjs"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json",
+   "kind": "negative-evidence",
+   "produced_by": "the BUILDER's own shipped reports/attr-scale-consumption-before.json, copied verbatim — it records five killEntity('undefined') errors",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-after.json",
+   "kind": "negative-evidence",
+   "produced_by": "the BUILDER's own shipped reports/attr-scale-consumption-after.json, copied verbatim — same five errors, so trial C is not flipped by --after",
+   "source": "ours"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/check-quests-injected.txt",
+   "kind": "log",
+   "produced_by": "node tools/check-quests.mjs with personality 45 and `scribing` 35 reinjected into Q-BLAK-01 — both printed, exit 0"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt",
+   "kind": "report",
+   "produced_by": "round-2 successor: re-ran attr-scale-audit --self-test, --sheet p10, critic-attr-scale-dtf --self-test and critic-attr-scale-dtf on HEAD 692bcc8"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/verdict-validate-mutations.txt",
+   "kind": "negative-evidence",
+   "produced_by": "node tools/verdict-validate.mjs over 7 single-clause mutations of W1-SOULS-r3.json plus a `none` control, sha256 printed per row to prove each mutant differs"
+  },
+  {
+   "path": "docs/shots/2026-08-08-w1-attr-scale-the-five-kills-that-never-happened.png",
+   "kind": "graph",
+   "produced_by": "node tools/quests/critic-attr-scale-chart.mjs — drawn offline from souls-award.json and the builder's two consumption reports",
+   "camera_pose": "not applicable — an offline chart, not a rendered scene"
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "not_applicable_reason": "AR-1 probes the Souls half inside the fight — frames, i-frames, to-hit rolls, stamina, hitboxes. This piece touches none of them: it changes quest resolution requirement numbers in game/data/quests/** and adds an offline validator. It adds zero violent resolutions and no combat code.",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "not_applicable",
+     "observed": "No to-hit roll, no dice and no hit resolution anywhere in the piece's diff. The 42 edits are integers in requires.attributes and requires.skills."
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B12",
+     "result": "pass",
+     "observed": "The piece's whole effect is to restore non-violent exits, not remove them. Delete-the-fix measures the counterfactual directly: reverting all 42 resolutions shuts 23 authored non-violent resolutions for every character forever (370/370 -> 347/370), 19 of them shut BY a defect, and turns one quest violent-only. The fix moves the world in AR-2's direction.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt",
+      "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt"
+     ]
+    },
+    {
+     "id": "B1",
+     "result": "not_applicable",
+     "observed": "No HUD, marker or compass surface is touched."
+    }
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 0.0,
+  "pass_threshold": 7.0,
+  "aggregation": "min",
+  "band_label": "0.0 fail-closed against the wave-1 gate of 7.0, by min-over-axes over an UNGATED CONSUMPTION check — NOT a judgement that the work is worthless. The 42-resolution data fix is real, wide and survives its own delete-the-fix (0 -> 23 defects, 370 -> 347 reachable on revert). The 0 records that the gate which was supposed to establish the piece's load-bearing premise had no instrument that could have fired, and the premise is false on HEAD.",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "consumption_gate_ungated:RI-MTH07/coupling-measured-trial-C-souls",
+  "fail_closed_zero_on_ungated_gate",
+  "stated_root_cause_false_on_head",
+  "published_headline_does_not_reproduce",
+  "load_bearing_input_untracked",
+  "overall_below_threshold"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy",
+  "subsystem_path": "progression.level.attributes",
+  "what": "The 42 rescaled attribute and skill demands were fitted to a ceiling of creation + earned skill growth only, on the piece's stated premise that souls are never awarded and the bought attribute stream is therefore unfundable. Souls ARE awarded — 42 per infantry body, 10 real kills for 378 souls on HEAD with a red control that went red — so the true ceiling is higher and rises further as the enemy roster is populated (9 hand-placed enemies today against RI-PRG06 §7's planning figure of ~1,230). The ceilings themselves are read at run time from reports/faction-signature-sweep.json, which is gitignored and in no commit; it moved 29 minutes after the fix landed, and as a result the published headline '28 defects -> 0' re-measures as 23 -> 0. With the sweep's bought_points term folded in, the tool's RESERVE = 2 buys exactly ZERO margin against the earned-only ceiling for all ten attributes.",
+  "why_it_matters": "Either the rank-8 social endings of three faction lines become free the moment the enemy roster lands, or they stay unreachable — and nothing in the build can currently tell which.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.txt",
+   "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/souls-award.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt",
+   "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt",
+   "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json"
+  ],
+  "severity": "major",
+  "remedy": {
+   "action": "1. Make reports/faction-signature-sweep.json a tracked artifact — drop the entry at reports/.gitignore:3 or move the file to game/data/progression/ — so every ceiling becomes a claim about a commit (rule 12). 2. Replace the sweep's bought_points derivation, currently a JSON census of game/data/combat/enemies x encounters.json, with a MEASURED figure taken from the running world by tools/quests/critic-attr-scale-souls.mjs arm 2: kill N bodies, read soulsHeld, run it through game/data/progression/levels.json. 3. Fix trial C of tools/quests/attr-scale-consumption.mjs — use `eid` not `id`, filter `kind === 'enemy'`, step the world before killing so SoulsSystem.step has SEEN the alive->dead transition, and make the predicate fail on a thrown kill rather than pass on one — then flip it under --after like the other seven trials. 4. Re-run attr-scale-audit --sheet p10 against the corrected sweep and rescale whatever the bands then say, in BOTH directions; the tool already reports `vacuous` for a demand everybody meets.",
+   "targets": [
+    "reports/.gitignore",
+    "reports/faction-signature-sweep.json",
+    "tools/quests/attr-scale-consumption.mjs",
+    "tools/quests/attr-scale-audit.mjs",
+    "game/data/quests/"
+   ],
+   "acceptance": "tools/quests/critic-attr-scale-souls.mjs exits 0 (i.e. the piece's claim holds after the economy is re-derived) OR the sweep's bought_points equals the measured award divided through levels.json to within one point; AND tools/quests/critic-attr-scale-dtf.mjs reports a non-zero margin_at_hard_cap for every one of the ten attributes, where it currently reports 0 for all ten.",
+   "ref_item": "RI-MTH07",
+   "estimated_size": "M"
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "A3 in --after mode cannot fail. The probe sets `root-speech` to 100, then sets the misspelt `root_speech` to 100 WITHOUT resetting the correctly-spelt key first, and setSkills merges — so at the moment A3 reads the gate the real skill is still 100 and the floor is satisfied either way. Both disjuncts of the --after predicate hold unconditionally on fixed data. The claim A3 asserts is true; A3 is not the thing that established it. Reset root-speech to 5 before poking the misspelt key and it becomes a real check.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-after.json"
+   ],
+   "subsystem_path": "progression.skill.gating"
+  },
+  {
+   "what": "The round-2 successor corrected its own predecessor's Finding 7. The draft said attributes 'reach nothing inside the fight'; that is false. Four attributes reach combat through the pools on a live path (applyDerivedPools -> derivePools): vigour -> hp_max, endurance -> stamina_max and regen, strength -> equip_load_max, willpower -> focus_max and spell_slots. Willpower additionally reaches spell DAMAGE — engine.js:1581 feeds pools.from.willpower into MagicSystem.setWillpower, and combat-bridge.js:92 computes dmg from M.outputOf(effect, magnitude, M.wil). What is genuinely dead is WEAPON damage: inside game/src/combat/ the only attribute read of any kind is endurance -> staminaMaxFor(), and scalingBonus()/effectiveGrade() are called from nowhere but their own definitions.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt"
+   ],
+   "subsystem_path": "combat.damage.scaling"
+  },
+  {
+   "what": "Two scaling curves exist and the one that runs is not the one the corpus authored, while its own docstring claims otherwise. magic/system.js:1503 documents 'output = M x output_per_point x (1 + gradeCoeff x scalingBonus(stat))' and then computes (attrValue - 10) / 90 with a hard-coded 0.55 in place of gradeCoeff — a value that is not any entry in GRADE_COEFF (S 1.00 / A 0.80 / B 0.62 / C 0.46 / D 0.32 / E 0.18). Measured against its own stated formula the shipped multiplier is 16-19% low across the mid-range (willpower 30: 1.1222 vs 1.3410 = 0.837; willpower 40: 0.806) and converges at both endpoints, which is precisely the shape an endpoint test cannot see. NOT charged against this piece.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/r2-remeasure.txt"
+   ],
+   "subsystem_path": "combat.damage.scaling"
+  },
+  {
+   "what": "tools/verdict-validate.mjs does not enforce most of its own schema. Mutation-tested with a `none` control and sha256 per row: dropping biggest_gap, emptying artifacts, dropping self_audit, and conflict_of_interest=true with status PASS are all caught (exit 1). But piece_id set to 'NOT A Valid Slug!!' against its pattern, score.overall_0_10 = 99 against maximum 10, and an invented key inside `score` against additionalProperties:false all PASS. So it checks top-level `required` and the two allOf conditionals, and ignores pattern, minimum/maximum and additionalProperties. W1-SOULS-r3.json already carries score.axes and score.confidence_note, which the schema forbids, and the gate reports OK. 'Schema-valid' is therefore a weaker claim than it reads.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/verdict-validate-mutations.txt"
+   ],
+   "subsystem_path": "progression.level.attributes"
+  },
+  {
+   "what": "The first draft of that mutation table was itself an inert control, and it is recorded because it is the exact failure this verdict fails the builder for. A shell-escaping bug meant the mutation name reached Node as a literal string, no mutation was ever applied, and all seven rows returned 'exit 0 — MISSED', which read as a devastating finding and was a broken instrument measuring nothing. Caught only because the result contradicted a hand run from minutes earlier. The published table now prints a sha256 per row and carries a `none` arm that must validate clean.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/verdict-validate-mutations.txt"
+   ],
+   "subsystem_path": "progression.level.attributes"
+  },
+  {
+   "what": "attr-scale-audit prints '124 quests, 177 resolutions'. 177 is the count of resolutions carrying at least one stat demand (byResolution.size), not the resolution count — the same report's non-violent block counts 370. A mislabel, not a defect.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/audit-p10.txt"
+   ],
+   "subsystem_path": "progression.skill.gating"
+  },
+  {
+   "what": "The consumption probe hard-codes personality 31 as 'reachable_ceiling.from_max, the best of 240 sheets'. The sweep now says 33. A written-down ceiling inside the probe is precisely what the auditor's own design forbids everywhere else.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/builder-consumption-before.json"
+   ],
+   "subsystem_path": "progression.level.attributes"
+  },
+  {
+   "what": "check-quests fires correctly and exits 0. Reinjecting personality 45 and `scribing` 35 prints both defects with their bands and measured ceilings plus the non-violent consequence, and the process exits 0. Correct under rule 13 — no fail-closed assertion landed ahead of its data — but the next author to type `personality 40` is warned, not stopped. Worth promoting once the sweep is tracked.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/check-quests-injected.txt"
+   ],
+   "subsystem_path": "progression.skill.gating"
+  },
+  {
+   "what": "The builder's honesty is above the bar this project normally sees and should be said plainly: it named 14 of the 42 reverted edits as ladder-inversion fixes rather than defects, refusing to bank 42 defect fixes when only 28 were defects; it caught and reported a hole in its own self-test through mutation testing; it ruled the seven `skill: 0` demands NOT a defect with a self-test case on each side of the line; and it recorded the file contention with W1-FACTIONS-r2. None of that is why this verdict fails. It fails on one probe that could not fail.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-ATTR-SCALE/dtf.txt"
+   ],
+   "subsystem_path": "progression.level.attributes"
+  }
+ ],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "ref_item": "RI-MTH07",
+   "deviation": "The souls-award measurement (10 real kills, 378 souls, red control clean) was taken by this critic run's predecessor at HEAD 6bb9003 and is NOT re-observed by the signing critic. node tools/contention.mjs --gate returned exit 3 twice during the round-2 session (5 instances / 6.04 per core, then 6 instances / 6.72 per core, against ceilings of 6 and 4.0), and the predecessor had already proceeded past exit 3 twice for this same figure.",
+   "why": "git diff 6bb9003..692bcc8 touches none of game/src/sim/souls.js, game/src/character/derive.js, game/src/sim/magic/system.js or game/data/quests/ — the award path and the judged data are byte-identical between the two commits — so a seventh browser on a saturated box would have re-derived a number that could not have moved. Every OTHER number in this verdict was re-run by the signing critic on HEAD 692bcc8 and is recorded in r2-remeasure.txt. Stated per rule 26 rather than left implicit.",
+   "affects_scores": false
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  {
+   "path": "game/src/engine.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "listEntities() row shape (eid, never id) after the probe's kills were observed to throw; and the setWillpower call sites after the magic coupling was observed."
+  },
+  {
+   "path": "tools/quests/attr-scale-consumption.mjs",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read only after the builder's own shipped artifacts were seen to contain five killEntity errors."
+  },
+  {
+   "path": "game/src/sim/souls.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read to locate the award site after 10 kills were measured to award 378 souls."
+  },
+  {
+   "path": "game/src/character/derive.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read to compare the authored scaling ramp against the one magic actually runs, after grep showed scalingBonus uncalled."
+  },
+  {
+   "path": "game/src/sim/magic/system.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read to trace attrValue back to the character sheet after the docstring/implementation mismatch was noticed."
+  },
+  {
+   "path": "corpus/00-doctrine/verdict.schema.json",
+   "purpose": "locate-harness",
+   "note": "Read to hand-check this verdict against the clauses tools/verdict-validate.mjs does not enforce."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": true,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "No blind pair is required: this is a numbers piece with no visual or textual artifact to pair, so blind_done_where_required is vacuously true and blind_comparisons is absent. One deviation is declared in method_deviations: the souls-award figure is the predecessor's measurement, carried forward on a code-diff argument rather than re-observed, because the contention gate returned exit 3 twice. Every other number was re-run by the signing critic on HEAD 692bcc8. This verdict was hand-checked against corpus/00-doctrine/verdict.schema.json for pattern, range and additionalProperties compliance, because tools/verdict-validate.mjs was measured this round NOT to enforce any of the three."
+ },
+ "notes": "SCORING, min over axes, no averaging — the axis table the schema's `score` object has no field for.\n\n| Axis | Score | Why |\n|---|---:|---|\n| A. The defect class was found and fixed | 8 | 42 resolutions; independent revert reproduces 0 -> 23 defects, 0 -> 1 ladder inversion, 370 -> 347 reachable. Wider than the brief (11 dead keys, not 2). |\n| B. The classifier is honest in both directions | 7 | The `skill: 0` ruling is right and has a self-test on each side of the line; bands recomputed at run time; exit 2 with no sweep. |\n| C. The instrument can go red | 6 | Auditor self-test 21/21, and the builder's own mutation testing found a hole it then closed. But A3-after cannot fail, and the mutations never touched trial C. |\n| D. CONSUMPTION (RI-MTH07 / ARBITRATION §3) | 3 | Trials A and B are sound and genuinely coupled. Trial C measured nothing, is not flipped by --after, and is the one every band depends on. |\n| E. Reproducibility of the published numbers | 3 | '28 defects -> 0' re-measures as 23 -> 0. The load-bearing input is gitignored. |\n| F. The stated root cause | 0 | 'The bought attribute stream is dead / unfundable' is false on HEAD: 10 kills, 378 souls, red control clean. Fail-closed. |\n| G. Non-violent floor as reported | 5 | Right denominator, right warning about the insensitive one; wrong label — 'MEETS the 45% bar' from a stat-only predicate. |\n| H. Morrowind-side world coupling | 8 | Five named out-of-combat consumers, perturbation moves the gate. The dispatch brief's seam attack fails to land. |\n\nmin = 0 at axis F, and the verdict is 0.0 FAIL-CLOSED.\n\nThe draft of this verdict argued the overall down to 3.0 — axis F is a CLAIM, not a subsystem, and the subsystem it justifies survives its own delete-the-fix. The round-2 successor OVERTURNED that. RI-MTH07 aggregates min-over-axes and its coupling axis is not merely failed, it is UNGATED: trial C could not have returned a bad number because it never ran. Scoring that 3.0 is precisely the move min-over-axes exists to prevent — letting seven working axes carry one that was never measured. SCORING.md fixes an unmeasurable axis at 0 fail-closed, and tools/verdict-validate.mjs said so when this file was validated.\n\nWHAT 0.0 DOES NOT MEAN: it is not a judgement that the work is worthless. The 42-resolution fix is real, wider than its brief, and survives an independent delete-the-fix on a tree that has moved under it (0 -> 23 defects, 0 -> 1 ladder inversion, 370 -> 347 reachable, 19 shut BY a defect). Axes A and H score 8. The 0 records one thing precisely: the gate that was supposed to establish this piece's load-bearing premise had no instrument that could have fired, and the premise is false on HEAD.\n\nREVERSIBLE, and the evidence that reverses it: fix trial C (eid not id, filter kind === 'enemy', step before killing, fail on a thrown kill, flip under --after) and the coupling axis becomes GATED. RI-MTH07 is then scored on a real number rather than fail-closed, and if the re-derived ceilings leave the 42 demands where they are, this piece reaches roughly its axis-A score in one round without a single data edit.\n\nThe dispatch brief predicted the failure would be a piece that made attributes a pure damage multiplier. It is the opposite: this piece is almost entirely Morrowind-side, five out-of-combat consumers deep, and the Souls half of attribute scaling is the half that does not exist."
+}
