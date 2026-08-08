@@ -60,6 +60,11 @@
     "reports/critic-w1-14-r3/"
   ],
   "files_claimed": [],
-  "redundant_with": ["W1-14-r3"],
-  "next_step": "none — verdict emitted, schema-valid, committed."
+  "redundant_with": [
+    "W1-14-r3"
+  ],
+  "next_step": "none — verdict emitted, schema-valid, committed.",
+  "commit": "dea6517",
+  "commit_hazard_reported": "`git commit --only` with my seven paths named produced an 11-file commit. FOUR of the extras are the pre-commit hook's own regeneration of my change (docs/index.html 6 lines, docs/progress.html 8, docs/status.json 2, orchestration/INDEX.md 2 — the site and the index picking up this verdict and this blog line); ownership.mjs --staged had flagged three of them as claimed by arbiter-wpn-s36, and they were already staged before I ran. THREE OTHER PIECES' BLOG LINES also landed under my message — W1-16-r3, W1-SAVE-AI and W1-CHARTFONT appended to reports/blog-feed.jsonl between my write and my commit, which is unavoidable on a shared append-only file that every finishing agent must touch. Nothing is lost; it is all committed, but it is under my message and not its authors'. Rule 17's addendum covers the mechanism; the blog feed is a second instance of it that the rule does not name, and it will happen to every agent that finishes in a busy minute. Worth someone deciding whether the blog line should be one file per piece.",
+  "index_lock": "hit on every attempt for ~4 minutes; committed on retry 6 of a 10-attempt loop that checked the exit code rather than a pipe."
 }

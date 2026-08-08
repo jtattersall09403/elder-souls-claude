@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `dea6517`: 619 tools, 153 reference
+so it cannot drift. Generated at `97db149`: 620 tools, 153 reference
 items, 45 pieces in flight.
 
 Its purpose is to stop 45+ concurrent agents each paying separately to discover the
@@ -195,7 +195,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 24
+### `tools/dialogue/` — 25
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/arbiter-order-divergence.mjs` — ARBITRATION S37 — the instrument.
@@ -214,6 +214,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/order-infos.mjs` — Put every topic's INFOs into the order the shipping reader already resolves them in.
 - `tools/dialogue/rehome-actors.mjs` — W1-17 round 2.
 - `tools/dialogue/root-coverage.mjs` — can the province answer the nine words the player is given?
+- `tools/dialogue/s37-merge-order-consume.mjs` — CONSUMPTION (RI-MTH07) for the declared topic-file merge order.
 - `tools/dialogue/s37-unhearable.mjs` — which INFOs can no player hear from any speaker, under the reader that ACTUALLY RUNS.
 - `tools/dialogue/shadow-audit.mjs` — IS THE SHADOWED LINE DEAD, OR IS THE LINT WRONG ABOUT IT?
 - `tools/dialogue/voice-metrics.mjs` — DOES AN ORDINATOR SOUND LIKE A BEGGAR?
