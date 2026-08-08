@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1b70d4d`: 568 tools, 153 reference
-items, 38 pieces in flight.
+so it cannot drift. Generated at `2ff7041`: 568 tools, 153 reference
+items, 39 pieces in flight.
 
-Its purpose is to stop 38+ concurrent agents each paying separately to discover the
+Its purpose is to stop 39+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -877,6 +877,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-ROAD-JOIN` | ? |  | — |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |

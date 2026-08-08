@@ -12,6 +12,35 @@ Every number below is a **count, a boolean or a frame count**. The box carried 1
 `headless_shell` processes at loadavg 12–22 on four cores for the whole run. **No wall-clock
 timing is claimed anywhere in this verdict** (RULES 26).
 
+> ### ERRATUM, added 2026-08-08 by `W1-SOULS-LEDGER` at `9288ebf` — the soul figures only
+>
+> **Nothing this critic wrote was wrong when it was written, and nothing below has been altered.**
+> This banner exists because the numbers it names are still being read as current, and they are not.
+>
+> Every **soul** figure in this verdict was read from `game/data/world/population-posts.json`'s
+> cached roll-up, which was true at `28909e1` and went stale four hours later: W1-SOULS round 3
+> re-derived seven statblocks at `0c8acfa`/`e97347f` and nobody re-ran the world's generator.
+> `W1-SOULS-r3.md` §2.1 found the drift; the cache has now been regenerated. At `9288ebf` the same
+> 144 posts and the same 267 bodies are worth:
+>
+> | this verdict says | the statblocks pay today |
+> |---|---|
+> | §1 / §7 — 16,335 souls in the whole exterior placement | **10,679** |
+> | §5 — "16,335 souls is **level 16**", 2.15% of the L82 budget | **10,679 = level 13**, 1.41% |
+> | §6.1 — the crossing's 38 bodies are worth 2,149 souls = **level 5** | **1,404 souls = level 3** |
+>
+> The **body counts, densities, bands, placement and every non-soul finding in this verdict are
+> untouched by this** — the regeneration moved no post, changed no template and changed no body
+> count. The soul figures are the only thing that moved, and they moved because the price of an
+> enemy changed, not because this critic mis-measured.
+>
+> `node tools/check-souls-world.mjs --totals` answers this in one line, at any commit, and
+> `tools/check-data.mjs` now fails when the two ledgers disagree, so this cannot silently recur.
+> Evidence: `reports/w1-souls-ledger/RECONCILIATION.md` (every corrected row, with the arms).
+>
+> The **companion `W1-POPULATION-r1.json` has deliberately not been edited.** It is a machine-read
+> record of a measurement at a commit and rewriting its numbers would falsify that record.
+
 ---
 
 ## 1. What is not in dispute

@@ -76,7 +76,8 @@ const items = itemFiles.map(f => {
 // ---- gates ---------------------------------------------------------------------------------
 const gates = [
   ['node tools/boot-check.mjs', 'does the engine construct AND draw a frame'],
-  ['node tools/check-data.mjs', 'every file in game/data/index.json exists; NPC settlements resolve'],
+  ['node tools/check-data.mjs', 'every file in game/data/index.json exists; NPC settlements resolve; **the two soul ledgers agree**'],
+  ['node tools/check-souls-world.mjs', "the world's cached soul roll-up (`population-posts.json`) equals what the statblocks pay, row by row. `--totals` prints the current figure in one line"],
   ['node tools/check-quests.mjs', 'hooks and entry topics name quests and journal entries that exist'],
   ['node tools/check-content.mjs', 'no quest resolution has disappeared'],
   ['node tools/check-prose.mjs', 'questions, exclamations, punchline rate, tic list'],
@@ -143,6 +144,21 @@ ${gates.map(([c, w]) => `| \`${c}\` | ${w} |`).join('\n')}
 \`tools/boot-check.mjs\` is a forwarding shim; the real file is \`tools/harness/boot-check.mjs\`.
 Both work. Note that \`node … 2>&1 | tail -1 ; echo exit=$?\` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
+
+## Numbers you must not read off a status file
+
+A status file records what was true at the commit it was written at. Twice in one day an
+orchestrator handed an agent a soul total it had read off one (**16,335**, then **21,664**) and both
+were stale — the second by a third. **Ask the tree, it costs one command:**
+
+| question | the one line that answers it |
+|---|---|
+| what is the placed world worth in souls, and what level does the crossing buy? | \`node tools/check-souls-world.mjs --totals\` |
+| have the two soul ledgers drifted apart again? | same command — it exits non-zero and names the stale one |
+| what is one enemy worth? | \`node -p "require('./game/data/combat/enemies/inf_trash.json').souls"\` — the statblock is the ledger a kill actually reads (\`game/src/sim/souls.js\` \`awardFor()\`) |
+
+\`game/data/world/population-posts.json\` is a **generated cache**, not a source. Never hand-edit it;
+re-run \`node tools/world/build-population.mjs --write\`.
 
 ## The harness
 
