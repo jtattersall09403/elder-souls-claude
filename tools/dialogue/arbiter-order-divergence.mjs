@@ -218,14 +218,13 @@ function analyse(docs, npcs, players) {
             scored_from: t.infos[best].from || null, ordered_from: t.infos[first].from || null,
           });
         }
-        // order-sensitivity of the SHIPPED rule: does authored order decide anything here?
-        if (nTop > 1) orderSensitive += weight;
       }
     }
   }
   const deadScore = [...infoTotal].filter((k) => !heardScore.has(k)).length;
   const deadOrder = [...infoTotal].filter((k) => !heardOrder.has(k)).length;
-  return { resolutions, diverged, ties, orderSensitive, divergentPairs, divergentTopics, examples,
+  return { resolutions, diverged, ties, orderSensitive, tieTopics, orderSensitiveTopics,
+    divergentPairs, divergentTopics, examples,
     infos: infoTotal.size, deadScore, deadOrder, topics: topicIds.length };
 }
 
@@ -266,11 +265,10 @@ function run() {
 
   const full = analyse(docs, npcs, players);
   const census = analyse(docs, npcs, CENSUS_PLAYERS);
-  const permuted = analyse(docs, npcs, players, { orderPermuted: true });
   const merge = mergeCensus(docs);
 
   const out = {
-    commit: (() => { try { return require_sha(); } catch { return null; } })(),
+    commit: gitSha(),
     player_space: {
       canonical: { races: axes.races.length, upbringings: axes.upbringings.length,
         dispositions: axes.dispositions, knowledge_flags: axes.flags.length,
@@ -284,14 +282,15 @@ function run() {
       dead_infos_under_scoring: full.deadScore, dead_infos_under_first_match: full.deadOrder,
     },
     census_space: {
+      fixture_size: CENSUS_PLAYERS.length,
       resolutions: census.resolutions, diverged: census.diverged, ties: census.ties,
       divergent_speaker_topic_pairs: census.divergentPairs.size,
     },
     authored_order: {
-      resolutions_decided_by_order_under_shipped_rule: full.ties,
-      answers_moved_by_reversing_authored_order_under_shipped_rule:
-        Math.abs(permuted.diverged - full.diverged) + 0,   // reported separately below
-      permuted_diverged: permuted.diverged,
+      resolutions_tied_under_shipped_rule: full.ties,
+      tie_topics: [...full.tieTopics],
+      answers_moved_by_reversing_authored_order_under_shipped_rule: full.orderSensitive,
+      order_sensitive_topics: [...full.orderSensitiveTopics],
     },
     merge: merge,
     infos: full.infos, topics: full.topics, speakers: npcs.length,
@@ -310,15 +309,17 @@ function run() {
   console.log(`   (speaker, topic) pairs where they can disagree            ${full.divergentPairs.size}   <- measure-free`);
   console.log(`   distinct topics affected                                  ${full.divergentTopics.size}`);
   console.log('');
-  console.log('B. THE SAME, over answer-census.mjs PLAYERS (the fixture every W1-17 instrument used)');
+  console.log(`B. THE SAME, over answer-census.mjs PLAYERS (${CENSUS_PLAYERS.length} characters — the fixture W1-17's instruments use)`);
   console.log(`   resolutions                                               ${census.resolutions.toLocaleString()}`);
   console.log(`   disagreements                                             ${census.diverged.toLocaleString()}  (${(100 * census.diverged / Math.max(1, census.resolutions)).toFixed(3)}%)`);
   console.log(`   (speaker, topic) pairs                                    ${census.divergentPairs.size}`);
   console.log('');
   console.log('C. DOES AUTHORED ORDER DECIDE ANYTHING UNDER THE SHIPPED RULE?');
-  console.log(`   resolutions decided by a TIE (i.e. by authored order)     ${full.ties.toLocaleString()}  (${(100 * full.ties / Math.max(1, full.resolutions)).toFixed(3)}%)`);
-  console.log(`   -> if this is 0, any tool that only reorders infos cannot change one answer,`);
-  console.log(`      and "0 answers changed" is arithmetic, not a control (RULES 6).`);
+  console.log(`   resolutions where the top score TIES                      ${full.ties.toLocaleString()}  (${(100 * full.ties / Math.max(1, full.resolutions)).toFixed(3)}%)  in ${full.tieTopics.size} topic(s)`);
+  console.log(`   answers that MOVE if authored order is reversed           ${full.orderSensitive.toLocaleString()}  (${(100 * full.orderSensitive / Math.max(1, full.resolutions)).toFixed(3)}%)  in ${full.orderSensitiveTopics.size} topic(s)`);
+  if (full.orderSensitiveTopics.size) console.log(`     ${[...full.orderSensitiveTopics].join(', ')}`);
+  console.log(`   -> this second row is the honest control for any tool that only REORDERS infos.`);
+  console.log(`      Near zero means "0 answers changed" is arithmetic, not evidence (RULES 6).`);
   console.log('');
   console.log('D. IS AUTHORED ORDER AUTHORED? (buildTopicIndex merges same-id topics across files)');
   console.log(`   topic ids declared in >1 file                             ${merge.multi} of ${merge.topics}`);
@@ -339,13 +340,18 @@ function run() {
     console.log('');
   }
 
+  console.log(`measured at commit ${out.commit} (RULES 12 — a number is a claim about a commit)`);
   if (JSONOUT) { fs.mkdirSync(path.dirname(path.resolve(ROOT, JSONOUT)), { recursive: true }); fs.writeFileSync(path.resolve(ROOT, JSONOUT), JSON.stringify(out, null, 2)); console.log(`json -> ${JSONOUT}`); }
 
-  return { full, census, permuted, merge, axes, players };
+  return { full, census, merge, axes, players };
 }
 
-function require_sha() {
-  return String(fs.readFileSync(path.join(ROOT, '.git/HEAD'), 'utf8')).trim();
+function gitSha() {
+  try {
+    const head = String(fs.readFileSync(path.join(ROOT, '.git/HEAD'), 'utf8')).trim();
+    if (head.startsWith('ref: ')) return String(fs.readFileSync(path.join(ROOT, '.git', head.slice(5)), 'utf8')).trim().slice(0, 7);
+    return head.slice(0, 7);
+  } catch { return null; }
 }
 
 // ---------------------------------------------------------------------------------------------

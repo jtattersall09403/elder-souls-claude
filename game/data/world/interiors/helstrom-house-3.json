@@ -1,181 +1,181 @@
 {
- "schema": "elder-souls/interior@1",
- "id": "helstrom-house-3",
- "name": "Veek Dark-Water's house",
- "settlement": "helstrom",
- "cell_kind": "named",
- "interior_kind": "dwelling",
- "service": null,
- "faction": null,
- "exterior_door": [
-  2231.71,
-  27.22,
-  2787.93
- ],
- "continuity": {
-  "building": "helstrom-house-3",
-  "building_offset_m": [
-   -30.79,
-   0,
-   14.43
+  "schema": "elder-souls/interior@1",
+  "id": "helstrom-house-3",
+  "name": "Halgrid's house",
+  "settlement": "helstrom",
+  "cell_kind": "named",
+  "interior_kind": "dwelling",
+  "service": null,
+  "faction": null,
+  "exterior_door": [
+    2231.71,
+    27.22,
+    2787.93
   ],
-  "building_yaw_deg": 115.1,
-  "exterior_footprint_m": [
-   12.4,
-   14.4
+  "continuity": {
+    "building": "helstrom-house-3",
+    "building_offset_m": [
+      -30.79,
+      0,
+      14.43
+    ],
+    "building_yaw_deg": 115.1,
+    "exterior_footprint_m": [
+      12.4,
+      14.4
+    ],
+    "entry_side": "south",
+    "interior_spawn": [
+      0,
+      0,
+      6
+    ],
+    "exterior_spawn": [
+      2231.71,
+      27.22,
+      2789.73
+    ]
+  },
+  "bounds_m": {
+    "x": [
+      -6.2,
+      6.2
+    ],
+    "y": [
+      0,
+      3.2
+    ],
+    "z": [
+      -7.2,
+      7.2
+    ]
+  },
+  "floor_area_m2": 178.6,
+  "light": {
+    "kind": "lamp",
+    "pos": [
+      0,
+      0.6,
+      2.88
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.2
+  },
+  "lights": [
+    {
+      "id": "helstrom.fisher3.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "helstrom.fisher3.r0.lamp0",
+      "pos": [
+        -2.8,
+        1.6,
+        -2.8
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "helstrom.fisher3.r0.lamp1",
+      "pos": [
+        2.3,
+        1.6,
+        -2.7
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "helstrom.fisher3.r0.lamp2",
+      "pos": [
+        0.3999999999999999,
+        1.6,
+        -3
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "helstrom.fisher3.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "helstrom.fisher3.r1.lamp0",
+      "pos": [
+        1.0999999999999996,
+        1.6,
+        -4.3
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "helstrom.fisher3.r1.lamp1",
+      "pos": [
+        3,
+        1.6,
+        -4.4
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    }
   ],
-  "entry_side": "south",
-  "interior_spawn": [
-   0,
-   0,
-   6
+  "props": [
+    "reed_mat",
+    "sleeping_shelf",
+    "clay_hearth",
+    "cook_pot",
+    "wall_peg",
+    "water_butt",
+    "stool_low",
+    "chest_small",
+    "hanging_bundle",
+    "oil_lamp",
+    "floor_basket",
+    "child_toy",
+    "washing_line",
+    "bone_comb",
+    "hel_bole_arch",
+    "hel_grown_wall_a",
+    "hel_grown_wall_b",
+    "hel_shell_roof"
   ],
-  "exterior_spawn": [
-   2231.71,
-   27.22,
-   2789.73
-  ]
- },
- "bounds_m": {
-  "x": [
-   -6.2,
-   6.2
+  "property_zones": [
+    "helstrom.fisher3.r0",
+    "helstrom.fisher3.r1"
   ],
-  "y": [
-   0,
-   3.2
+  "containers": [
+    "helstrom.fisher3.r0.0",
+    "helstrom.fisher3.r0.4",
+    "helstrom.fisher3.r1.1",
+    "helstrom.fisher3.r1.5"
   ],
-  "z": [
-   -7.2,
-   7.2
-  ]
- },
- "floor_area_m2": 178.6,
- "light": {
-  "kind": "lamp",
-  "pos": [
-   0,
-   0.6,
-   2.88
+  "unique_item": null,
+  "readable": null,
+  "inhabitants": [
+    "helstrom-fisher-3"
   ],
-  "colour_hex": "#ffb066",
-  "intensity": 2.2
- },
- "lights": [
-  {
-   "id": "helstrom.fisher3.r0.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "helstrom.fisher3.r0.lamp0",
-   "pos": [
-    -2.8,
-    1.6,
-    -2.8
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "helstrom.fisher3.r0.lamp1",
-   "pos": [
-    2.3,
-    1.6,
-    -2.7
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "helstrom.fisher3.r0.lamp2",
-   "pos": [
-    0.3999999999999999,
-    1.6,
-    -3
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "helstrom.fisher3.r1.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "helstrom.fisher3.r1.lamp0",
-   "pos": [
-    1.0999999999999996,
-    1.6,
-    -4.3
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "helstrom.fisher3.r1.lamp1",
-   "pos": [
-    3,
-    1.6,
-    -4.4
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  }
- ],
- "props": [
-  "reed_mat",
-  "sleeping_shelf",
-  "clay_hearth",
-  "cook_pot",
-  "wall_peg",
-  "water_butt",
-  "stool_low",
-  "chest_small",
-  "hanging_bundle",
-  "oil_lamp",
-  "floor_basket",
-  "child_toy",
-  "washing_line",
-  "bone_comb",
-  "hel_bole_arch",
-  "hel_grown_wall_a",
-  "hel_grown_wall_b",
-  "hel_shell_roof"
- ],
- "property_zones": [
-  "helstrom.fisher3.r0",
-  "helstrom.fisher3.r1"
- ],
- "containers": [
-  "helstrom.fisher3.r0.0",
-  "helstrom.fisher3.r0.4",
-  "helstrom.fisher3.r1.1",
-  "helstrom.fisher3.r1.5"
- ],
- "unique_item": null,
- "readable": null,
- "inhabitants": [
-  "helstrom-fisher-3"
- ],
- "anchor": "interior_firelit",
- "open_h": 0,
- "close_h": 24
+  "anchor": "interior_firelit",
+  "open_h": 0,
+  "close_h": 24
 }

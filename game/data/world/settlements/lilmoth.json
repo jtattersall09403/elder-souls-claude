@@ -1,759 +1,759 @@
 {
- "schema": "elder-souls/settlement@2",
- "id": "lilmoth",
- "name": "Lilmoth",
- "tier": "city",
- "region": "western-rootlands",
- "pos": [
-  2766.5,
-  2.77,
-  5027.5
- ],
- "radius_m": 78,
- "identity": "The great rotting port. Shipping, smuggling, moon-sugar transhipment, the egg black market. Tension: the city sinks a hand’s width a year and the Imperial families will not say so.",
- "power_reading": "The rich live LOW in wet stone because status is masonry; the poor live DRY above them. The social order is upside down and visible from the harbour.",
- "layout": {
-  "plan": "stacked",
-  "proof": "Every Imperial stone building has a negative Y and every Argonian stilt house a positive one, over the same X/Z footprint. A stripped top-down shows two towns at the same address; the elevation column is the whole argument."
- },
- "architecture_kit": {
-  "material_rule": "Two cities stacked. Imperial colonial stone sunk to its first-floor windows below the tideline; Argonian stilt-slum of reed and salvage built on top of the drowned storeys. Wet stone below, dry reed above.",
-  "silhouette": "the drowned window — an Imperial upper-storey window at ankle height, still shuttered",
-  "meshes": [
-   "lil_sunk_facade",
-   "lil_drowned_window",
-   "lil_stilt_platform",
-   "lil_reed_shack",
-   "lil_salvage_stair",
-   "lil_wet_arcade",
-   "lil_tide_mark",
-   "lil_pile_cluster",
-   "lil_customs_hall",
-   "lil_boom_chain"
-  ]
- },
- "quarters": [
-  "rot-quarter",
-  "stilt-town",
-  "the-landing"
- ],
- "targets": {
-  "buildings": 28,
-  "named_interiors": 18,
-  "enterable_pct": 64,
-  "named_npcs": 30,
-  "scheduled_npc_pct": 72,
-  "shops": 5,
-  "taverns": 2,
-  "temple_shrine": 1,
-  "guild_halls": 3,
-  "trainers": 3,
-  "quest_givers": 7,
-  "rumour_variants": 11,
-  "bonfire": 1,
-  "road_gates": 3,
-  "unique_architecture_kit": "required",
-  "souls_loop_dungeon_attached": 1
- },
- "counts": {
-  "buildings": 33,
-  "interior": 18,
-  "sealed_with_reason": 5,
-  "structure": 10,
-  "named_interiors": 18,
-  "enterable_pct": 78.3,
-  "property_zones": 28,
-  "shops": 6,
-  "taverns": 2,
-  "temple_shrine": 2,
-  "guild_halls": 2,
-  "road_gates": 3
- },
- "services": {
-  "boatwright": [
-   "lilmoth-yard"
-  ],
-  "trader": [
-   "lilmoth-market"
-  ],
-  "smith": [
-   "lilmoth-smithy"
-  ],
-  "alchemist": [
-   "lilmoth-apothecary"
-  ],
-  "bookseller": [
-   "lilmoth-scribe"
-  ],
-  "fence": [
-   "lilmoth-pawn"
-  ],
-  "inn": [
-   "lilmoth-inn-drowned",
-   "lilmoth-inn-stilt"
-  ],
-  "bonfire": [
-   "lilmoth-shrine"
-  ],
-  "healer": [
-   "lilmoth-healer"
-  ],
-  "travel": [
-   "lilmoth-rootpost"
-  ]
- },
- "buildings": [
-  {
-   "id": "lilmoth-customs",
-   "name": "The Customs Hall",
-   "kind": "interior",
-   "building_kind": "guild",
-   "interior": "lilmoth-customs",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    32,
-    -2.4,
-    0
-   ],
-   "yaw_deg": 90,
-   "door": [
-    2798.5,
-    0.37,
+  "schema": "elder-souls/settlement@2",
+  "id": "lilmoth",
+  "name": "Lilmoth",
+  "tier": "city",
+  "region": "western-rootlands",
+  "pos": [
+    2766.5,
+    2.77,
     5027.5
-   ],
-   "service": null,
-   "faction": "the-imperial-assize"
+  ],
+  "radius_m": 78,
+  "identity": "The great rotting port. Shipping, smuggling, moon-sugar transhipment, the egg black market. Tension: the city sinks a hand’s width a year and the Imperial families will not say so.",
+  "power_reading": "The rich live LOW in wet stone because status is masonry; the poor live DRY above them. The social order is upside down and visible from the harbour.",
+  "layout": {
+    "plan": "stacked",
+    "proof": "Every Imperial stone building has a negative Y and every Argonian stilt house a positive one, over the same X/Z footprint. A stripped top-down shows two towns at the same address; the elevation column is the whole argument."
   },
-  {
-   "id": "lilmoth-yard",
-   "name": "The Wet Yard",
-   "kind": "interior",
-   "building_kind": "shop",
-   "interior": "lilmoth-yard",
-   "enterable": true,
-   "quarter": "the-landing",
-   "offset_m": [
-    30.44,
-    4.6,
-    5.87
-   ],
-   "yaw_deg": 180,
-   "door": [
-    2796.94,
-    7.37,
-    5033.37
-   ],
-   "service": "boatwright",
-   "faction": null
+  "architecture_kit": {
+    "material_rule": "Two cities stacked. Imperial colonial stone sunk to its first-floor windows below the tideline; Argonian stilt-slum of reed and salvage built on top of the drowned storeys. Wet stone below, dry reed above.",
+    "silhouette": "the drowned window — an Imperial upper-storey window at ankle height, still shuttered",
+    "meshes": [
+      "lil_sunk_facade",
+      "lil_drowned_window",
+      "lil_stilt_platform",
+      "lil_reed_shack",
+      "lil_salvage_stair",
+      "lil_wet_arcade",
+      "lil_tide_mark",
+      "lil_pile_cluster",
+      "lil_customs_hall",
+      "lil_boom_chain"
+    ]
   },
-  {
-   "id": "lilmoth-ledger-house",
-   "name": "The Ledger House",
-   "kind": "interior",
-   "building_kind": "guild",
-   "interior": "lilmoth-ledger-house",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    27.85,
-    -2.4,
-    11.15
-   ],
-   "yaw_deg": 270,
-   "door": [
-    2794.35,
-    0.37,
-    5038.65
-   ],
-   "service": null,
-   "faction": "wet-ledger"
+  "quarters": [
+    "rot-quarter",
+    "stilt-town",
+    "the-landing"
+  ],
+  "targets": {
+    "buildings": 28,
+    "named_interiors": 18,
+    "enterable_pct": 64,
+    "named_npcs": 30,
+    "scheduled_npc_pct": 72,
+    "shops": 5,
+    "taverns": 2,
+    "temple_shrine": 1,
+    "guild_halls": 3,
+    "trainers": 3,
+    "quest_givers": 7,
+    "rumour_variants": 11,
+    "bonfire": 1,
+    "road_gates": 3,
+    "unique_architecture_kit": "required",
+    "souls_loop_dungeon_attached": 1
   },
-  {
-   "id": "lilmoth-market",
-   "name": "The Sunk Market",
-   "kind": "interior",
-   "building_kind": "shop",
-   "interior": "lilmoth-market",
-   "enterable": true,
-   "quarter": "the-landing",
-   "offset_m": [
-    24.4,
-    4.6,
-    15.68
-   ],
-   "yaw_deg": 0,
-   "door": [
-    2790.9,
-    7.37,
-    5043.18
-   ],
-   "service": "trader",
-   "faction": null
+  "counts": {
+    "buildings": 33,
+    "interior": 18,
+    "sealed_with_reason": 5,
+    "structure": 10,
+    "named_interiors": 18,
+    "enterable_pct": 78.3,
+    "property_zones": 28,
+    "shops": 6,
+    "taverns": 2,
+    "temple_shrine": 2,
+    "guild_halls": 2,
+    "road_gates": 3
   },
-  {
-   "id": "lilmoth-smithy",
-   "name": "The Tidewater Forge",
-   "kind": "interior",
-   "building_kind": "shop",
-   "interior": "lilmoth-smithy",
-   "enterable": true,
-   "quarter": "the-landing",
-   "offset_m": [
-    26.05,
-    -2.4,
-    24.84
-   ],
-   "yaw_deg": 90,
-   "door": [
-    2792.55,
-    0.37,
-    5052.34
-   ],
-   "service": "smith",
-   "faction": null
+  "services": {
+    "boatwright": [
+      "lilmoth-yard"
+    ],
+    "trader": [
+      "lilmoth-market"
+    ],
+    "smith": [
+      "lilmoth-smithy"
+    ],
+    "alchemist": [
+      "lilmoth-apothecary"
+    ],
+    "bookseller": [
+      "lilmoth-scribe"
+    ],
+    "fence": [
+      "lilmoth-pawn"
+    ],
+    "inn": [
+      "lilmoth-inn-drowned",
+      "lilmoth-inn-stilt"
+    ],
+    "bonfire": [
+      "lilmoth-shrine"
+    ],
+    "healer": [
+      "lilmoth-healer"
+    ],
+    "travel": [
+      "lilmoth-rootpost"
+    ]
   },
-  {
-   "id": "lilmoth-apothecary",
-   "name": "The Rot-Quarter Apothecary",
-   "kind": "interior",
-   "building_kind": "shop",
-   "interior": "lilmoth-apothecary",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    20.3,
-    4.6,
-    28.51
-   ],
-   "yaw_deg": 180,
-   "door": [
-    2786.8,
-    7.37,
-    5056.01
-   ],
-   "service": "alchemist",
-   "faction": null
-  },
-  {
-   "id": "lilmoth-scribe",
-   "name": "The Scribe's Stair",
-   "kind": "interior",
-   "building_kind": "shop",
-   "interior": "lilmoth-scribe",
-   "enterable": true,
-   "quarter": "the-landing",
-   "offset_m": [
-    14.12,
-    -2.4,
-    30.93
-   ],
-   "yaw_deg": 270,
-   "door": [
-    2780.62,
-    0.37,
-    5058.43
-   ],
-   "service": "bookseller",
-   "faction": null
-  },
-  {
-   "id": "lilmoth-pawn",
-   "name": "The Low Pawn",
-   "kind": "interior",
-   "building_kind": "shop",
-   "interior": "lilmoth-pawn",
-   "enterable": true,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    7.78,
-    4.6,
-    32.07
-   ],
-   "yaw_deg": 0,
-   "door": [
-    2774.28,
-    7.37,
-    5059.57
-   ],
-   "service": "fence",
-   "faction": "wet-ledger"
-  },
-  {
-   "id": "lilmoth-inn-drowned",
-   "name": "The Drowned Bell",
-   "kind": "interior",
-   "building_kind": "tavern",
-   "interior": "lilmoth-inn-drowned",
-   "enterable": true,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    1.9,
-    -2.4,
-    39.95
-   ],
-   "yaw_deg": 90,
-   "door": [
-    2768.4,
-    0.37,
-    5067.45
-   ],
-   "service": "inn",
-   "faction": null
-  },
-  {
-   "id": "lilmoth-inn-stilt",
-   "name": "The Stilt Rest",
-   "kind": "interior",
-   "building_kind": "tavern",
-   "interior": "lilmoth-inn-stilt",
-   "enterable": true,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    -5.55,
-    4.6,
-    38.6
-   ],
-   "yaw_deg": 180,
-   "door": [
-    2760.95,
-    7.37,
-    5066.1
-   ],
-   "service": "inn",
-   "faction": null
-  },
-  {
-   "id": "lilmoth-shrine",
-   "name": "The Tideline Hist-Shrine",
-   "kind": "interior",
-   "building_kind": "shrine",
-   "interior": "lilmoth-shrine",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    -12.1,
-    -2.4,
-    34.97
-   ],
-   "yaw_deg": 0,
-   "door": [
-    2754.4,
-    0.37,
-    5062.47
-   ],
-   "service": "bonfire",
-   "faction": "rootkeepers"
-  },
-  {
-   "id": "lilmoth-healer",
-   "name": "The Wet Ward",
-   "kind": "interior",
-   "building_kind": "temple",
-   "interior": "lilmoth-healer",
-   "enterable": true,
-   "quarter": "the-landing",
-   "offset_m": [
-    -19,
-    4.6,
-    32.91
-   ],
-   "yaw_deg": 270,
-   "door": [
-    2747.5,
-    7.37,
-    5060.41
-   ],
-   "service": "healer",
-   "faction": "drowned-court"
-  },
-  {
-   "id": "lilmoth-rootpost",
-   "name": "The Landing Rootpost",
-   "kind": "interior",
-   "building_kind": "travel",
-   "interior": "lilmoth-rootpost",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    -25.54,
-    -2.4,
-    29.47
-   ],
-   "yaw_deg": 180,
-   "door": [
-    2740.96,
-    0.37,
-    5056.97
-   ],
-   "service": "travel",
-   "faction": "rootkeepers"
-  },
-  {
-   "id": "lilmoth-house-0",
-   "name": "Ranaso Wet-Foot's house",
-   "kind": "interior",
-   "building_kind": "dwelling",
-   "interior": "lilmoth-house-0",
-   "enterable": true,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    -31.44,
-    4.6,
-    24.73
-   ],
-   "yaw_deg": 90,
-   "door": [
-    2735.06,
-    7.37,
-    5052.23
-   ],
-   "service": null,
-   "faction": "wet-ledger"
-  },
-  {
-   "id": "lilmoth-house-1",
-   "name": "Three-Knives Two-Skins's house",
-   "kind": "interior",
-   "building_kind": "dwelling",
-   "interior": "lilmoth-house-1",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    -36.44,
-    -2.4,
-    18.79
-   ],
-   "yaw_deg": 0,
-   "door": [
-    2730.06,
-    0.37,
-    5046.29
-   ],
-   "service": null,
-   "faction": null
-  },
-  {
-   "id": "lilmoth-house-2",
-   "name": "Okan Sings-At-Dusk's house",
-   "kind": "interior",
-   "building_kind": "dwelling",
-   "interior": "lilmoth-house-2",
-   "enterable": true,
-   "quarter": "the-landing",
-   "offset_m": [
-    -40.3,
-    4.6,
-    11.83
-   ],
-   "yaw_deg": 270,
-   "door": [
-    2726.2,
-    7.37,
-    5039.33
-   ],
-   "service": null,
-   "faction": null
-  },
-  {
-   "id": "lilmoth-house-3",
-   "name": "Waits-For-Salt the Shorter's house",
-   "kind": "interior",
-   "building_kind": "dwelling",
-   "interior": "lilmoth-house-3",
-   "enterable": true,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    -42.81,
-    -2.4,
-    4.09
-   ],
-   "yaw_deg": 180,
-   "door": [
-    2723.69,
-    0.37,
-    5031.59
-   ],
-   "service": null,
-   "faction": null
-  },
-  {
-   "id": "lilmoth-house-4",
-   "name": "Ocheeva of the Boards's house",
-   "kind": "interior",
-   "building_kind": "dwelling",
-   "interior": "lilmoth-house-4",
-   "enterable": true,
-   "quarter": "stilt-town",
-   "offset_m": [
-    -13.94,
-    4.6,
-    -1.33
-   ],
-   "yaw_deg": 90,
-   "door": [
-    2752.56,
-    7.37,
-    5026.17
-   ],
-   "service": null,
-   "faction": "wet-ledger"
-  },
-  {
-   "id": "lilmoth-first-storey",
-   "name": "The First Storey of the Varo House",
-   "kind": "sealed-with-reason",
-   "building_kind": "sealed",
-   "enterable": false,
-   "quarter": "the-landing",
-   "offset_m": [
-    -27.83,
-    -2.4,
-    -8.17
-   ],
-   "yaw_deg": 0,
-   "seal_state": "visible",
-   "reason": "it is under water; the family still pays the rates on it and will not say why",
-   "told_by_trade": "factor"
-  },
-  {
-   "id": "lilmoth-boom-house",
-   "name": "The Boom House",
-   "kind": "sealed-with-reason",
-   "building_kind": "sealed",
-   "enterable": false,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    -26.67,
-    4.6,
-    -13.75
-   ],
-   "yaw_deg": 270,
-   "seal_state": "visible",
-   "reason": "the harbour chain snapped and took the wall with it",
-   "told_by_trade": "boatwright"
-  },
-  {
-   "id": "lilmoth-plague-stair",
-   "name": "The Plague Stair",
-   "kind": "sealed-with-reason",
-   "building_kind": "sealed",
-   "enterable": false,
-   "quarter": "stilt-town",
-   "offset_m": [
-    -28.3,
-    -2.4,
-    -22.25
-   ],
-   "yaw_deg": 270,
-   "seal_state": "visible",
-   "reason": "sealed during the last swamp-fever season and never reopened, because reopening it would require admitting there was a season",
-   "told_by_trade": "apothecary"
-  },
-  {
-   "id": "lilmoth-sugar-cellar",
-   "name": "The Sugar Cellar",
-   "kind": "sealed-with-reason",
-   "building_kind": "sealed",
-   "enterable": false,
-   "quarter": "the-landing",
-   "offset_m": [
-    -22.92,
-    4.6,
-    -26.45
-   ],
-   "yaw_deg": 0,
-   "seal_state": "visible",
-   "reason": "the Assize bricked it up with the contraband still inside rather than transport it",
-   "told_by_trade": "legionary"
-  },
-  {
-   "id": "lilmoth-collapsed-arcade",
-   "name": "The Collapsed Arcade",
-   "kind": "sealed-with-reason",
-   "building_kind": "sealed",
-   "enterable": false,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    -19,
-    -2.4,
-    -32.91
-   ],
-   "yaw_deg": 90,
-   "seal_state": "visible",
-   "reason": "the piles rotted through in one night and the arcade knelt",
-   "told_by_trade": "trader"
-  },
-  {
-   "id": "lilmoth-struct-the-boom-chain",
-   "name": "The Boom Chain",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "stilt-town",
-   "offset_m": [
-    -12.1,
-    4.6,
-    -34.97
-   ],
-   "yaw_deg": 180,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-landing-quay",
-   "name": "The Landing Quay",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "the-landing",
-   "offset_m": [
-    -4.55,
-    -2.4,
-    -31.67
-   ],
-   "yaw_deg": 270,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-tide-mark-wall",
-   "name": "The Tide Mark Wall",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "the-landing",
-   "offset_m": [
-    1.48,
-    4.6,
-    -30.96
-   ],
-   "yaw_deg": 0,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-pile-field",
-   "name": "The Pile Field",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "stilt-town",
-   "offset_m": [
-    8.02,
-    -2.4,
-    -33.04
-   ],
-   "yaw_deg": 90,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-sunk-arcade",
-   "name": "The Sunk Arcade",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "the-landing",
-   "offset_m": [
-    13.71,
-    4.6,
-    -30.02
-   ],
-   "yaw_deg": 180,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-sea-stair",
-   "name": "The Sea Stair",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "stilt-town",
-   "offset_m": [
-    8.12,
-    -2.4,
-    -11.4
-   ],
-   "yaw_deg": 270,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-cistern-cap",
-   "name": "The Cistern Cap",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "rot-quarter",
-   "offset_m": [
-    31.12,
-    4.6,
-    -29.67
-   ],
-   "yaw_deg": 0,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-old-mole",
-   "name": "The Old Mole",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "stilt-town",
-   "offset_m": [
-    29.44,
-    -2.4,
-    -18.92
-   ],
-   "yaw_deg": 180,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-fish-racks",
-   "name": "The Fish Racks",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "the-landing",
-   "offset_m": [
-    33.42,
-    4.6,
-    -13.38
-   ],
-   "yaw_deg": 90,
-   "residential_props": false
-  },
-  {
-   "id": "lilmoth-struct-the-customs-bollards",
-   "name": "The Customs Bollards",
-   "kind": "structure",
-   "building_kind": "structure",
-   "enterable": false,
-   "quarter": "stilt-town",
-   "offset_m": [
-    32.4,
-    -2.4,
-    -6.25
-   ],
-   "yaw_deg": 0,
-   "residential_props": false
-  }
- ],
- "interiors": [
-  "lilmoth-customs",
-  "lilmoth-yard",
-  "lilmoth-ledger-house",
-  "lilmoth-market",
-  "lilmoth-smithy",
-  "lilmoth-apothecary",
-  "lilmoth-scribe",
-  "lilmoth-pawn",
-  "lilmoth-inn-drowned",
-  "lilmoth-inn-stilt",
-  "lilmoth-shrine",
-  "lilmoth-healer",
-  "lilmoth-rootpost",
-  "lilmoth-house-0",
-  "lilmoth-house-1",
-  "lilmoth-house-2",
-  "lilmoth-house-3",
-  "lilmoth-house-4"
- ],
- "generated_by": "tools/world/build-settlements.mjs"
+  "buildings": [
+    {
+      "id": "lilmoth-customs",
+      "name": "The Customs Hall",
+      "kind": "interior",
+      "building_kind": "guild",
+      "interior": "lilmoth-customs",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        32,
+        -2.4,
+        0
+      ],
+      "yaw_deg": 90,
+      "door": [
+        2798.5,
+        0.37,
+        5027.5
+      ],
+      "service": null,
+      "faction": "the-imperial-assize"
+    },
+    {
+      "id": "lilmoth-yard",
+      "name": "The Wet Yard",
+      "kind": "interior",
+      "building_kind": "shop",
+      "interior": "lilmoth-yard",
+      "enterable": true,
+      "quarter": "the-landing",
+      "offset_m": [
+        30.44,
+        4.6,
+        5.87
+      ],
+      "yaw_deg": 180,
+      "door": [
+        2796.94,
+        7.37,
+        5033.37
+      ],
+      "service": "boatwright",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-ledger-house",
+      "name": "The Ledger House",
+      "kind": "interior",
+      "building_kind": "guild",
+      "interior": "lilmoth-ledger-house",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        27.85,
+        -2.4,
+        11.15
+      ],
+      "yaw_deg": 270,
+      "door": [
+        2794.35,
+        0.37,
+        5038.65
+      ],
+      "service": null,
+      "faction": "wet-ledger"
+    },
+    {
+      "id": "lilmoth-market",
+      "name": "The Sunk Market",
+      "kind": "interior",
+      "building_kind": "shop",
+      "interior": "lilmoth-market",
+      "enterable": true,
+      "quarter": "the-landing",
+      "offset_m": [
+        24.4,
+        4.6,
+        15.68
+      ],
+      "yaw_deg": 0,
+      "door": [
+        2790.9,
+        7.37,
+        5043.18
+      ],
+      "service": "trader",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-smithy",
+      "name": "The Tidewater Forge",
+      "kind": "interior",
+      "building_kind": "shop",
+      "interior": "lilmoth-smithy",
+      "enterable": true,
+      "quarter": "the-landing",
+      "offset_m": [
+        26.05,
+        -2.4,
+        24.84
+      ],
+      "yaw_deg": 90,
+      "door": [
+        2792.55,
+        0.37,
+        5052.34
+      ],
+      "service": "smith",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-apothecary",
+      "name": "The Rot-Quarter Apothecary",
+      "kind": "interior",
+      "building_kind": "shop",
+      "interior": "lilmoth-apothecary",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        20.3,
+        4.6,
+        28.51
+      ],
+      "yaw_deg": 180,
+      "door": [
+        2786.8,
+        7.37,
+        5056.01
+      ],
+      "service": "alchemist",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-scribe",
+      "name": "The Scribe's Stair",
+      "kind": "interior",
+      "building_kind": "shop",
+      "interior": "lilmoth-scribe",
+      "enterable": true,
+      "quarter": "the-landing",
+      "offset_m": [
+        14.12,
+        -2.4,
+        30.93
+      ],
+      "yaw_deg": 270,
+      "door": [
+        2780.62,
+        0.37,
+        5058.43
+      ],
+      "service": "bookseller",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-pawn",
+      "name": "The Low Pawn",
+      "kind": "interior",
+      "building_kind": "shop",
+      "interior": "lilmoth-pawn",
+      "enterable": true,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        7.78,
+        4.6,
+        32.07
+      ],
+      "yaw_deg": 0,
+      "door": [
+        2774.28,
+        7.37,
+        5059.57
+      ],
+      "service": "fence",
+      "faction": "wet-ledger"
+    },
+    {
+      "id": "lilmoth-inn-drowned",
+      "name": "The Drowned Bell",
+      "kind": "interior",
+      "building_kind": "tavern",
+      "interior": "lilmoth-inn-drowned",
+      "enterable": true,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        1.9,
+        -2.4,
+        39.95
+      ],
+      "yaw_deg": 90,
+      "door": [
+        2768.4,
+        0.37,
+        5067.45
+      ],
+      "service": "inn",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-inn-stilt",
+      "name": "The Stilt Rest",
+      "kind": "interior",
+      "building_kind": "tavern",
+      "interior": "lilmoth-inn-stilt",
+      "enterable": true,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        -5.55,
+        4.6,
+        38.6
+      ],
+      "yaw_deg": 180,
+      "door": [
+        2760.95,
+        7.37,
+        5066.1
+      ],
+      "service": "inn",
+      "faction": null
+    },
+    {
+      "id": "lilmoth-shrine",
+      "name": "The Tideline Hist-Shrine",
+      "kind": "interior",
+      "building_kind": "shrine",
+      "interior": "lilmoth-shrine",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        -12.1,
+        -2.4,
+        34.97
+      ],
+      "yaw_deg": 0,
+      "door": [
+        2754.4,
+        0.37,
+        5062.47
+      ],
+      "service": "bonfire",
+      "faction": "rootkeepers"
+    },
+    {
+      "id": "lilmoth-healer",
+      "name": "The Wet Ward",
+      "kind": "interior",
+      "building_kind": "temple",
+      "interior": "lilmoth-healer",
+      "enterable": true,
+      "quarter": "the-landing",
+      "offset_m": [
+        -19,
+        4.6,
+        32.91
+      ],
+      "yaw_deg": 270,
+      "door": [
+        2747.5,
+        7.37,
+        5060.41
+      ],
+      "service": "healer",
+      "faction": "drowned-court"
+    },
+    {
+      "id": "lilmoth-rootpost",
+      "name": "The Landing Rootpost",
+      "kind": "interior",
+      "building_kind": "travel",
+      "interior": "lilmoth-rootpost",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        -25.54,
+        -2.4,
+        29.47
+      ],
+      "yaw_deg": 180,
+      "door": [
+        2740.96,
+        0.37,
+        5056.97
+      ],
+      "service": "travel",
+      "faction": "rootkeepers"
+    },
+    {
+      "id": "lilmoth-house-0",
+      "name": "Kaal-Xal's house",
+      "kind": "interior",
+      "building_kind": "dwelling",
+      "interior": "lilmoth-house-0",
+      "enterable": true,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        -31.44,
+        4.6,
+        24.73
+      ],
+      "yaw_deg": 90,
+      "door": [
+        2735.06,
+        7.37,
+        5052.23
+      ],
+      "service": null,
+      "faction": "wet-ledger"
+    },
+    {
+      "id": "lilmoth-house-1",
+      "name": "Listens-Fever's house",
+      "kind": "interior",
+      "building_kind": "dwelling",
+      "interior": "lilmoth-house-1",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        -36.44,
+        -2.4,
+        18.79
+      ],
+      "yaw_deg": 0,
+      "door": [
+        2730.06,
+        0.37,
+        5046.29
+      ],
+      "service": null,
+      "faction": null
+    },
+    {
+      "id": "lilmoth-house-2",
+      "name": "Shueel's house",
+      "kind": "interior",
+      "building_kind": "dwelling",
+      "interior": "lilmoth-house-2",
+      "enterable": true,
+      "quarter": "the-landing",
+      "offset_m": [
+        -40.3,
+        4.6,
+        11.83
+      ],
+      "yaw_deg": 270,
+      "door": [
+        2726.2,
+        7.37,
+        5039.33
+      ],
+      "service": null,
+      "faction": null
+    },
+    {
+      "id": "lilmoth-house-3",
+      "name": "Sethan Vorin's house",
+      "kind": "interior",
+      "building_kind": "dwelling",
+      "interior": "lilmoth-house-3",
+      "enterable": true,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        -42.81,
+        -2.4,
+        4.09
+      ],
+      "yaw_deg": 180,
+      "door": [
+        2723.69,
+        0.37,
+        5031.59
+      ],
+      "service": null,
+      "faction": null
+    },
+    {
+      "id": "lilmoth-house-4",
+      "name": "Ixbeeko's house",
+      "kind": "interior",
+      "building_kind": "dwelling",
+      "interior": "lilmoth-house-4",
+      "enterable": true,
+      "quarter": "stilt-town",
+      "offset_m": [
+        -13.94,
+        4.6,
+        -1.33
+      ],
+      "yaw_deg": 90,
+      "door": [
+        2752.56,
+        7.37,
+        5026.17
+      ],
+      "service": null,
+      "faction": "wet-ledger"
+    },
+    {
+      "id": "lilmoth-first-storey",
+      "name": "The First Storey of the Varo House",
+      "kind": "sealed-with-reason",
+      "building_kind": "sealed",
+      "enterable": false,
+      "quarter": "the-landing",
+      "offset_m": [
+        -27.83,
+        -2.4,
+        -8.17
+      ],
+      "yaw_deg": 0,
+      "seal_state": "visible",
+      "reason": "it is under water; the family still pays the rates on it and will not say why",
+      "told_by_trade": "factor"
+    },
+    {
+      "id": "lilmoth-boom-house",
+      "name": "The Boom House",
+      "kind": "sealed-with-reason",
+      "building_kind": "sealed",
+      "enterable": false,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        -26.67,
+        4.6,
+        -13.75
+      ],
+      "yaw_deg": 270,
+      "seal_state": "visible",
+      "reason": "the harbour chain snapped and took the wall with it",
+      "told_by_trade": "boatwright"
+    },
+    {
+      "id": "lilmoth-plague-stair",
+      "name": "The Plague Stair",
+      "kind": "sealed-with-reason",
+      "building_kind": "sealed",
+      "enterable": false,
+      "quarter": "stilt-town",
+      "offset_m": [
+        -28.3,
+        -2.4,
+        -22.25
+      ],
+      "yaw_deg": 270,
+      "seal_state": "visible",
+      "reason": "sealed during the last swamp-fever season and never reopened, because reopening it would require admitting there was a season",
+      "told_by_trade": "apothecary"
+    },
+    {
+      "id": "lilmoth-sugar-cellar",
+      "name": "The Sugar Cellar",
+      "kind": "sealed-with-reason",
+      "building_kind": "sealed",
+      "enterable": false,
+      "quarter": "the-landing",
+      "offset_m": [
+        -22.92,
+        4.6,
+        -26.45
+      ],
+      "yaw_deg": 0,
+      "seal_state": "visible",
+      "reason": "the Assize bricked it up with the contraband still inside rather than transport it",
+      "told_by_trade": "legionary"
+    },
+    {
+      "id": "lilmoth-collapsed-arcade",
+      "name": "The Collapsed Arcade",
+      "kind": "sealed-with-reason",
+      "building_kind": "sealed",
+      "enterable": false,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        -19,
+        -2.4,
+        -32.91
+      ],
+      "yaw_deg": 90,
+      "seal_state": "visible",
+      "reason": "the piles rotted through in one night and the arcade knelt",
+      "told_by_trade": "trader"
+    },
+    {
+      "id": "lilmoth-struct-the-boom-chain",
+      "name": "The Boom Chain",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "stilt-town",
+      "offset_m": [
+        -12.1,
+        4.6,
+        -34.97
+      ],
+      "yaw_deg": 180,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-landing-quay",
+      "name": "The Landing Quay",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "the-landing",
+      "offset_m": [
+        -4.55,
+        -2.4,
+        -31.67
+      ],
+      "yaw_deg": 270,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-tide-mark-wall",
+      "name": "The Tide Mark Wall",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "the-landing",
+      "offset_m": [
+        1.48,
+        4.6,
+        -30.96
+      ],
+      "yaw_deg": 0,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-pile-field",
+      "name": "The Pile Field",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "stilt-town",
+      "offset_m": [
+        8.02,
+        -2.4,
+        -33.04
+      ],
+      "yaw_deg": 90,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-sunk-arcade",
+      "name": "The Sunk Arcade",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "the-landing",
+      "offset_m": [
+        13.71,
+        4.6,
+        -30.02
+      ],
+      "yaw_deg": 180,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-sea-stair",
+      "name": "The Sea Stair",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "stilt-town",
+      "offset_m": [
+        8.12,
+        -2.4,
+        -11.4
+      ],
+      "yaw_deg": 270,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-cistern-cap",
+      "name": "The Cistern Cap",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "rot-quarter",
+      "offset_m": [
+        31.12,
+        4.6,
+        -29.67
+      ],
+      "yaw_deg": 0,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-old-mole",
+      "name": "The Old Mole",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "stilt-town",
+      "offset_m": [
+        29.44,
+        -2.4,
+        -18.92
+      ],
+      "yaw_deg": 180,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-fish-racks",
+      "name": "The Fish Racks",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "the-landing",
+      "offset_m": [
+        33.42,
+        4.6,
+        -13.38
+      ],
+      "yaw_deg": 90,
+      "residential_props": false
+    },
+    {
+      "id": "lilmoth-struct-the-customs-bollards",
+      "name": "The Customs Bollards",
+      "kind": "structure",
+      "building_kind": "structure",
+      "enterable": false,
+      "quarter": "stilt-town",
+      "offset_m": [
+        32.4,
+        -2.4,
+        -6.25
+      ],
+      "yaw_deg": 0,
+      "residential_props": false
+    }
+  ],
+  "interiors": [
+    "lilmoth-customs",
+    "lilmoth-yard",
+    "lilmoth-ledger-house",
+    "lilmoth-market",
+    "lilmoth-smithy",
+    "lilmoth-apothecary",
+    "lilmoth-scribe",
+    "lilmoth-pawn",
+    "lilmoth-inn-drowned",
+    "lilmoth-inn-stilt",
+    "lilmoth-shrine",
+    "lilmoth-healer",
+    "lilmoth-rootpost",
+    "lilmoth-house-0",
+    "lilmoth-house-1",
+    "lilmoth-house-2",
+    "lilmoth-house-3",
+    "lilmoth-house-4"
+  ],
+  "generated_by": "tools/world/build-settlements.mjs"
 }

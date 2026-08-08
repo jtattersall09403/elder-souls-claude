@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6ff493f`: 586 tools, 153 reference
+so it cannot drift. Generated at `97bb918`: 587 tools, 153 reference
 items, 44 pieces in flight.
 
 Its purpose is to stop 44+ concurrent agents each paying separately to discover the
@@ -218,9 +218,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 18
+### `tools/experience/` — 19
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
+- `tools/experience/anecdote-trace.mjs` — `experience.memory.anecdote`.
 - `tools/experience/beat-diff.mjs` — RI-EXP01 steps 3 and 5: diff an observed beat log against the beat sheet.
 - `tools/experience/beat-extract.mjs` — RI-EXP01 step 2: scan a session trace for the beat signatures.
 - `tools/experience/beats-from-md.mjs` — RI-EXP01 §D (prose) -> RI-EXP01.beats.json (machine-readable).
@@ -898,6 +899,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-readables` | running | browser: attack D (CONSUMPTION re-run + delete-the-fix teardown bite) and F (slot allocato | `orchestration/status/critic-w1-readables.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `critic-w1-14-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then attack A-G | `orchestration/status/critic-w1-14-r3.json` |
 | `critic-w1-26` | running | finish the live P10 confirmation of the race soft-lock; run journey-run.mjs for RI-JRN01;  | `orchestration/status/critic-w1-26.json` `tools/journey/opening-play.mjs` `tools/journey/census-newgame.mjs` `reports/journeys/w1-26-r2-play.json` `reports/journeys/w1-26-r2-jrn09.json` `reports/journeys/w1-26-r2-census-newgame.json` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
@@ -910,7 +912,6 @@ work is the difference between resuming and starting over.
 | `W1-ROAD-JOIN` | ? | probe the settlement geometry, then implement the thread in build-roads.mjs | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G | `orchestration/status/critic-w1-15-r3.json` |
-| `critic-w1-readables` | running | read RULES/INDEX/ARBITRATION §3, then builder status files | `orchestration/status/critic-w1-readables.json` |
 | `W1-01-r4` | partial | Someone must own the ROADS-vs-SETTLEMENTS JOIN: node tools/world/road-through-building.mjs | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `W1-READABLES-r2` | done | hand to a critic. NOT DONE and not faked: 21 demanded reveals still have no route and NONE | `orchestration/status/W1-READABLES-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/world/readables/site-marks.json` `game/data/books/the-papers-in-evidence.json` |
 | `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |

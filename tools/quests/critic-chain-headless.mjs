@@ -53,6 +53,14 @@ const WITH_NOTE = has('--questnote');
 // sim has neither, so a resolution priced in gold is unreachable here and this tool under-claims
 // unless a purse is named. Held constant across all four arms.
 const PURSE = argOf('--purse') == null ? 0 : Number(argOf('--purse'));
+// ---- ATTACK B, THE PART A BROWSER WOULD OTHERWISE BE NEEDED FOR.
+// `mainline-chain-floor.mjs` grants NO topic — the whole point of that instrument is that every
+// keyword has to arrive through `hooks.json`'s forward AddTopic edges. Under `--no-topic-grant`
+// this tool behaves the same way, which is the only condition in which the unconditional
+// `H.questNote()` at its line 262 can matter: `entry_topics` maps 121 journal indices to topics,
+// and `Q-MAIN-05#30 -> the-cutting-yard` is the very topic `Q-MAIN-06` opens on. So the 2x2 of
+// {topic grant on/off} x {questNote on/off} says whether that call is carrying the chain.
+const NO_TOPIC_GRANT = has('--no-topic-grant');
 
 // RULE 4 / RI-MTH07. This tool must not be able to hand the character a `know:` flag. Asserted
 // against its own bytes, the way the builder's browser tools assert against theirs.
@@ -109,7 +117,8 @@ const bookKnowledgeIndex = () => {
 // knowledge_key -> book id, so "read the document this reveal names" is a lookup and not a guess.
 const bookForKey = new Map();
 for (const doc of booksDocs) { const list = Array.isArray(doc.books) ? doc.books : (doc.id ? [doc] : []); for (const b of list) if (b.knowledge_key) bookForKey.set(b.knowledge_key, b.id); }
-const markIds = new Set((marksDoc.marks || []).filter((m) => m && m.id && m.at && (m.at.interior || m.at.world)).map((m) => m.id));
+const markIds = falsify === 'no-marks' ? new Set()
+  : new Set((marksDoc.marks || []).filter((m) => m && m.id && m.at && (m.at.interior || m.at.world)).map((m) => m.id));
 
 const freshSim = () => ({
   frame: 0, env: { dayCount: 0, region: 'test' }, world: { npcsDead: [] }, inventory: [],
@@ -167,7 +176,8 @@ const playArm = (mode) => {
     for (let pass = 0; pass < 3 && !(o && o.ok); pass++) {
       const why = String((o && (o.reason || (o.why || []).join('; '))) || '');
       let moved = false;
-      if (/topic/.test(why)) {
+      const firstStep = qid === ORDER[0];
+      if (/topic/.test(why) && (!NO_TOPIC_GRANT || firstStep)) {
         for (const t of [def.opens_by && def.opens_by.topic, ...((def.opens_by && def.opens_by.prerequisite_topics) || [])].filter(Boolean)) {
           if (!sim.quest.topicsKnown.includes(t)) { sim.quest.topicsKnown.push(t); topicsGranted++; moved = true; }
         }
@@ -220,6 +230,7 @@ const report = {
   taken_at: new Date().toISOString(),
   questnote_hand_feed: WITH_NOTE,
   purse: PURSE,
+  topic_grant: !NO_TOPIC_GRANT,
   falsify: falsify || null,
   declared_grants: ["the opening topic when the offer gate names one", "the giver disposition_min when the offer gate names it", "learnFrom(person) for every person source (held constant in all arms)"],
   prohibited: ['reveal()', 'setFlag()', 'setWorldKnowledge'],
@@ -230,7 +241,7 @@ const report = {
 if (has('--json')) console.log(JSON.stringify(report, null, 2));
 else {
   console.log(`\ncritic-chain-headless — the main line through the real QuestEngine, no browser`);
-  console.log(`  commit ${report.commit}   questNote hand-feed: ${WITH_NOTE ? 'ON' : 'off'}   purse ${PURSE}g${falsify ? `   --falsify ${falsify}` : ''}\n`);
+  console.log(`  commit ${report.commit}   questNote hand-feed: ${WITH_NOTE ? 'ON' : 'off'}   purse ${PURSE}g   topic grant: ${NO_TOPIC_GRANT ? 'OFF' : 'on'}${falsify ? `   --falsify ${falsify}` : ''}\n`);
   for (const m of MODES) {
     const v = arms[m];
     console.log(`  ${m.padEnd(20)} ${String(v.completed).padStart(2)} of ${v.of}`);

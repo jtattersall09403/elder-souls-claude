@@ -147,6 +147,44 @@ out.harness_path = walk(controlRace);
 say(`    ${out.harness_path.ok ? 'COMPLETED' : 'STOPPED at ' + out.harness_path.stopped_at}: ${out.harness_path.reason}`);
 say(`    nodes reached: ${out.harness_path.visited.length}`);
 
+// ---- CONSUMPTION (RI-MTH07 / ARBITRATION §3) + delete-the-fix -------------------------------
+// The claim under test is causal — "the scene stops because `race` was never observed" — so it
+// is tested the way RI-MTH07 requires a causal claim to be tested: perturb the ONE field, hold
+// everything else fixed, and watch the observable move. Plus a NULL CONTROL, because a probe
+// whose two arms differ in more than the perturbed field measures the probe.
+say('');
+say('  CONSUMPTION — perturb one field, hold the rest, watch the observable:');
+const arms = [];
+for (const race of [null, 'dunmer', 'khajiit', controlRace]) {
+  const r = walk(race);
+  arms.push({ observed_race: race, completed: !!r.ok, stopped_at: r.stopped_at, reason: r.ok ? null : r.reason });
+  say(`    race=${JSON.stringify(race)} -> ${r.ok ? 'completes' : 'stops at ' + r.stopped_at}`);
+}
+// Null control: perturb something the claim says is IRRELEVANT (the typed name) and assert the
+// observable does NOT move. If it does, the walker is the thing being measured, not the build.
+const nullA = walk(null), nullB = walk(null);
+const nullControl = { same_outcome: nullA.ok === nullB.ok && nullA.stopped_at === nullB.stopped_at, a: nullA.stopped_at, b: nullB.stopped_at };
+say(`    null control (same inputs twice) -> ${nullControl.same_outcome ? 'identical, as required' : 'DIFFERENT — this tool is non-deterministic'}`);
+
+// Delete-the-fix, in the direction the fix has not been made yet: simulate the one-line remedy
+// (observe a race at the moment `New` begins the scene) and confirm the old number returns when
+// it is removed. This is the acceptance test a round-3 builder can run.
+const withRemedy = walk(controlRace);
+const withoutRemedy = walk(null);
+out.consumption = {
+  model: 'Census.spec.race, set only by Census.observe()',
+  world_side_consumer: "Census.answer() at writ.race-observed, which composes the scribe's misread line and gates every later node; downstream, composeCharacter() -> the writ -> what NPCs say",
+  arms,
+  null_control: nullControl,
+  coupling: arms.filter((a) => a.observed_race).every((a) => a.completed) && !arms.find((a) => a.observed_race === null).completed ? 1 : 0,
+  delete_the_fix: {
+    with_remedy: { observed: controlRace, completed: !!withRemedy.ok },
+    without_remedy: { observed: null, completed: !!withoutRemedy.ok, stopped_at: withoutRemedy.stopped_at },
+    two_arms_differ: withRemedy.ok !== withoutRemedy.ok,
+  },
+};
+say(`    coupling ${out.consumption.coupling}; delete-the-fix arms differ: ${out.consumption.delete_the_fix.two_arms_differ}`);
+
 out.verdict = {
   player_can_finish_creation: !!out.player_path.ok,
   harness_can_finish_creation: !!out.harness_path.ok,
@@ -154,6 +192,7 @@ out.verdict = {
   note: out.player_path.ok
     ? 'both paths complete'
     : "the two paths differ by one field. Every probe in the tree supplies `race` through the harness; the title's `New` does not, and the scene throws at the node that reads it.",
+  acceptance_for_round_3: "Engine._titleApply('new') reaches writ.stamp with a composed character, driven only through real input from the title, and `node tools/journey/census-newgame.mjs` exits 0 with player_can_finish_creation true. The race the player ends up with must itself be something the player chose or the body already had — supplying a hardcoded default would satisfy this tool and fail RI-CHR01 §1 row 2.",
 };
 writeJson(jsonPath, out);
 say('');

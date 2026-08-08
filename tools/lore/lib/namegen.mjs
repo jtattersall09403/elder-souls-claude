@@ -187,7 +187,7 @@ export const ATTESTED_DESCRIPTIVE_SHARE = 0.11;
  * @param pools   { jelSingle, jelCompound, descriptive }  — validated candidate lists
  * @returns Map key -> name
  */
-export function assign(people, pools) {
+export function assign(people, pools, reserved = []) {
   // Sort by key so the descriptive slice is a property of the roster and not of file order.
   const sorted = people.slice().sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
   const argonians = sorted.filter((p) => cultureForRace(p.race) === 'argonian');
@@ -197,7 +197,9 @@ export function assign(people, pools) {
   const order = argonians.map((p) => ({ p, r: mix(`${p.key}:descriptive`) })).sort((a, b) => a.r - b.r);
   const descriptiveKeys = new Set(order.slice(0, nDesc).map((o) => o.p.key));
 
-  const taken = new Set();
+  // Names already borne by somebody this tool must not rename — the hand-authored cast. A coined
+  // villager called Hosk-Vei is the same collision as a reused generated name, from the other end.
+  const taken = new Set(reserved);
   const out = new Map();
   const take = (pool, key) => {
     if (!pool || !pool.length) return null;

@@ -1,180 +1,180 @@
 {
- "schema": "elder-souls/interior@1",
- "id": "lilmoth-house-1",
- "name": "Three-Knives Two-Skins's house",
- "settlement": "lilmoth",
- "cell_kind": "named",
- "interior_kind": "dwelling",
- "service": null,
- "faction": null,
- "exterior_door": [
-  2730.06,
-  0.37,
-  5046.29
- ],
- "continuity": {
-  "building": "lilmoth-house-1",
-  "building_offset_m": [
-   -36.44,
-   -2.4,
-   18.79
+  "schema": "elder-souls/interior@1",
+  "id": "lilmoth-house-1",
+  "name": "Listens-Fever's house",
+  "settlement": "lilmoth",
+  "cell_kind": "named",
+  "interior_kind": "dwelling",
+  "service": null,
+  "faction": null,
+  "exterior_door": [
+    2730.06,
+    0.37,
+    5046.29
   ],
-  "building_yaw_deg": 0,
-  "exterior_footprint_m": [
-   12.4,
-   14.4
+  "continuity": {
+    "building": "lilmoth-house-1",
+    "building_offset_m": [
+      -36.44,
+      -2.4,
+      18.79
+    ],
+    "building_yaw_deg": 0,
+    "exterior_footprint_m": [
+      12.4,
+      14.4
+    ],
+    "entry_side": "south",
+    "interior_spawn": [
+      0,
+      0,
+      6
+    ],
+    "exterior_spawn": [
+      2730.06,
+      0.37,
+      5048.09
+    ]
+  },
+  "bounds_m": {
+    "x": [
+      -6.2,
+      6.2
+    ],
+    "y": [
+      0,
+      3.2
+    ],
+    "z": [
+      -7.2,
+      7.2
+    ]
+  },
+  "floor_area_m2": 178.6,
+  "light": {
+    "kind": "lamp",
+    "pos": [
+      0,
+      0.6,
+      2.88
+    ],
+    "colour_hex": "#ffb066",
+    "intensity": 2.2
+  },
+  "lights": [
+    {
+      "id": "lilmoth.cook1.r0.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "lilmoth.cook1.r0.lamp0",
+      "pos": [
+        -2.8,
+        1.6,
+        0.5999999999999996
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "lilmoth.cook1.r0.lamp1",
+      "pos": [
+        2.3,
+        1.6,
+        0.7000000000000002
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "lilmoth.cook1.r0.lamp2",
+      "pos": [
+        1,
+        1.6,
+        0.7999999999999998
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "lilmoth.cook1.r1.hearth",
+      "pos": [
+        0,
+        0.7,
+        3.4
+      ],
+      "intensity": 0.9,
+      "snuffable": false,
+      "kind": "hearth"
+    },
+    {
+      "id": "lilmoth.cook1.r1.lamp0",
+      "pos": [
+        2.3,
+        1.6,
+        -0.8999999999999999
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    },
+    {
+      "id": "lilmoth.cook1.r1.lamp1",
+      "pos": [
+        -2.8,
+        1.6,
+        -1
+      ],
+      "intensity": 0.55,
+      "snuffable": true,
+      "kind": "oil-lamp"
+    }
   ],
-  "entry_side": "south",
-  "interior_spawn": [
-   0,
-   0,
-   6
+  "props": [
+    "reed_mat",
+    "sleeping_shelf",
+    "clay_hearth",
+    "cook_pot",
+    "wall_peg",
+    "water_butt",
+    "stool_low",
+    "chest_small",
+    "hanging_bundle",
+    "oil_lamp",
+    "floor_basket",
+    "child_toy",
+    "washing_line",
+    "bone_comb",
+    "lil_sunk_facade",
+    "lil_drowned_window",
+    "lil_stilt_platform",
+    "lil_reed_shack"
   ],
-  "exterior_spawn": [
-   2730.06,
-   0.37,
-   5048.09
-  ]
- },
- "bounds_m": {
-  "x": [
-   -6.2,
-   6.2
+  "property_zones": [
+    "lilmoth.cook1.r0",
+    "lilmoth.cook1.r1"
   ],
-  "y": [
-   0,
-   3.2
+  "containers": [
+    "lilmoth.cook1.r0.1",
+    "lilmoth.cook1.r0.3",
+    "lilmoth.cook1.r0.5"
   ],
-  "z": [
-   -7.2,
-   7.2
-  ]
- },
- "floor_area_m2": 178.6,
- "light": {
-  "kind": "lamp",
-  "pos": [
-   0,
-   0.6,
-   2.88
+  "unique_item": null,
+  "readable": null,
+  "inhabitants": [
+    "lilmoth-cook-1"
   ],
-  "colour_hex": "#ffb066",
-  "intensity": 2.2
- },
- "lights": [
-  {
-   "id": "lilmoth.cook1.r0.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "lilmoth.cook1.r0.lamp0",
-   "pos": [
-    -2.8,
-    1.6,
-    0.5999999999999996
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "lilmoth.cook1.r0.lamp1",
-   "pos": [
-    2.3,
-    1.6,
-    0.7000000000000002
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "lilmoth.cook1.r0.lamp2",
-   "pos": [
-    1,
-    1.6,
-    0.7999999999999998
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "lilmoth.cook1.r1.hearth",
-   "pos": [
-    0,
-    0.7,
-    3.4
-   ],
-   "intensity": 0.9,
-   "snuffable": false,
-   "kind": "hearth"
-  },
-  {
-   "id": "lilmoth.cook1.r1.lamp0",
-   "pos": [
-    2.3,
-    1.6,
-    -0.8999999999999999
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  },
-  {
-   "id": "lilmoth.cook1.r1.lamp1",
-   "pos": [
-    -2.8,
-    1.6,
-    -1
-   ],
-   "intensity": 0.55,
-   "snuffable": true,
-   "kind": "oil-lamp"
-  }
- ],
- "props": [
-  "reed_mat",
-  "sleeping_shelf",
-  "clay_hearth",
-  "cook_pot",
-  "wall_peg",
-  "water_butt",
-  "stool_low",
-  "chest_small",
-  "hanging_bundle",
-  "oil_lamp",
-  "floor_basket",
-  "child_toy",
-  "washing_line",
-  "bone_comb",
-  "lil_sunk_facade",
-  "lil_drowned_window",
-  "lil_stilt_platform",
-  "lil_reed_shack"
- ],
- "property_zones": [
-  "lilmoth.cook1.r0",
-  "lilmoth.cook1.r1"
- ],
- "containers": [
-  "lilmoth.cook1.r0.1",
-  "lilmoth.cook1.r0.3",
-  "lilmoth.cook1.r0.5"
- ],
- "unique_item": null,
- "readable": null,
- "inhabitants": [
-  "lilmoth-cook-1"
- ],
- "anchor": "interior_firelit",
- "open_h": 0,
- "close_h": 24
+  "anchor": "interior_firelit",
+  "open_h": 0,
+  "close_h": 24
 }

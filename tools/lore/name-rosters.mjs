@@ -67,7 +67,11 @@ export function generatorStock(src) {
 export function makeIsGenerated({ GIVEN, EPITHET }) {
   return function isGenerated(name) {
     if (!name || typeof name !== 'string') return false;
-    const core = name.replace(/ of [a-z].*$/, '').trim();
+    // Strip ONLY the trailing template slug — ` of old quay`, all lowercase to the end of the
+    // string. `Ocheeva of the Boards` must keep its epithet, because `of the Boards` IS the
+    // epithet; an earlier version of this line used ` of [a-z].*$` and ate it, which let
+    // `Keeps-Her-Own of the Boards of prison gate` read as hand-authored and survive the rename.
+    const core = name.replace(/ of [a-z]+( [a-z]+)*$/, '').trim();
     for (const e of EPITHET) {
       if (!core.endsWith(` ${e}`)) continue;
       const given = core.slice(0, core.length - e.length - 1);
@@ -198,7 +202,7 @@ export function distribution(names, races) {
     argonian++;
     seen.set(n, (seen.get(n) || 0) + 1);
     if (/ of (?!the )[a-z]/.test(n)) unarticled++;
-    const core = n.replace(/ of .*$/, '');
+    const core = n.replace(/ of [a-z]+( [a-z]+)*$/, '');
     if (HYPH_ENGLISH.test(core)) descriptive++;
     if (CROSS.test(core)) crossCulture++;
   }
@@ -357,7 +361,16 @@ function main(argv) {
   console.log(`pools (validated by corpus/80-methods/jel-phonotactics.py --mode coinage): `
     + `jel-single ${pools.jelSingle.length}, jel-compound ${pools.jelCompound.length}, descriptive ${pools.descriptive.length}`);
 
-  const nameFor = assign(people, pools);
+  // Every name already on the tree that this tool is NOT renaming is reserved, so a coined name
+  // can never collide with the hand-authored cast.
+  const renaming = new Set(people.map((p) => p.key));
+  const reserved = [];
+  for (const f of npcFiles()) {
+    for (const n of (readJSON(`game/data/npcs/${f}`).npcs || [])) {
+      if (n.name && !renaming.has(n.id)) reserved.push(n.name);
+    }
+  }
+  const nameFor = assign(people, pools, reserved);
   const projected = allNames.map((n, i) => {
     const p = people.find((q) => q.old === n);
     return p && nameFor.has(p.key) ? nameFor.get(p.key) : n;
