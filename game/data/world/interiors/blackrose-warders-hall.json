@@ -225,10 +225,17 @@
   "takeable": true,
   "owner": "npc:blackrose-rootkeeper-4"
  },
- "readable": {
-  "id": "blackrose-warders-hall-readable",
-  "title": "Warder Standing Orders"
- },
+ "readable": [
+  {
+   "id": "blackrose-warders-hall-readable",
+   "title": "Warder Standing Orders"
+  },
+  {
+   "id": "the-prefect-commission",
+   "title": "The commission of the Prefect, with the schedule of terms",
+   "book": "the-prefect-commission"
+  }
+ ],
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,

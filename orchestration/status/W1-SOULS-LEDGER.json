@@ -1,0 +1,25 @@
+{
+ "task_id": "W1-SOULS-LEDGER",
+ "role": "builder",
+ "started_at": "2026-08-08T00:00:00Z",
+ "state": "building",
+ "piece": "Reconcile the two soul ledgers (population-posts.json cache vs statblocks) that disagree by 53%.",
+ "next_step": "Confirm statblocks are truth; diff regenerated population-posts vs cached; build tools/check-souls-world.mjs",
+ "files_touched": [
+  "orchestration/status/W1-SOULS-LEDGER.json"
+ ],
+ "files_claimed": [
+  "tools/check-souls-world.mjs",
+  "tools/souls-total.mjs",
+  "game/data/world/population-posts.json",
+  "tools/check-data.mjs",
+  "orchestration/INDEX.md",
+  "reports/blog-feed.jsonl",
+  "reports/w1-souls-ledger/",
+  "docs/shots/"
+ ],
+ "notes": [
+  "W1-POPULATION status claims population-posts.json was reconciled at e54a18a; build-population.mjs --check reports DRIFT today, so the round-3 re-anchor outran that regeneration."
+ ],
+ "contention": "node tools/contention.mjs --gate read WAIT (5 instances, 5.11/core) at start. This piece is data-side; no browser needed for the ledger arithmetic. Any browser leg will be re-gated."
+}

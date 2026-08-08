@@ -9,6 +9,25 @@
       "settlement": "gideon",
       "infos": [
         {
+          "a": "rootkeeper",
+          "cell": "gideon",
+          "d": 25,
+          "x": "There is a well under the chapel and the chapel knows, and it has been the most useful arrangement in this province for forty years and neither institution has ever put it in writing.",
+          "to": [
+            "the-chapel-of-akatosh",
+            "the-vestry-well"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "cell": "gideon",
+          "d": 10,
+          "x": "They're kind here in the way that people are kind when they have enough, dry-one. It's real kindness and it's also the cheapest kind there is. I would still rather be here than anywhere.",
+          "to": [
+            "the-chapel-of-akatosh"
+          ]
+        },
+        {
           "a": "archivist",
           "cell": "gideon",
           "x": "Gideon is what the Empire believed the whole province would become: a grid of tilled fields, a timber trade, a chapel with a bell, and an annexe of the Provincial Office that answers letters. It is entirely successful and it is nine miles across and there is nothing else like it anywhere in Argonia.",
@@ -27,31 +46,12 @@
           ]
         },
         {
-          "a": "rootkeeper",
-          "cell": "gideon",
-          "d": 25,
-          "x": "There is a well under the chapel and the chapel knows, and it has been the most useful arrangement in this province for forty years and neither institution has ever put it in writing.",
-          "to": [
-            "the-chapel-of-akatosh",
-            "the-vestry-well"
-          ]
-        },
-        {
           "a": "sapcutter",
           "cell": "gideon",
           "x": "Good road, good coin, dull town. Friend, this one sells everything here and drinks somewhere else. What are you selling?",
           "to": [
             "the-cart-roads",
             "the-timber-yards"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "cell": "gideon",
-          "d": 10,
-          "x": "They're kind here in the way that people are kind when they have enough, dry-one. It's real kindness and it's also the cheapest kind there is. I would still rather be here than anywhere.",
-          "to": [
-            "the-chapel-of-akatosh"
           ]
         }
       ]
@@ -98,6 +98,13 @@
       "settlement": "gideon",
       "infos": [
         {
+          "a": "mudborn",
+          "cell": "gideon",
+          "d": 10,
+          "x": "There is work in the fields at the cut and at the sowing and none in between, dry-one, so the town is full twice a year and the rest of the time it is very carefully empty.",
+          "to": []
+        },
+        {
           "a": "archivist",
           "cell": "gideon",
           "x": "Surveyed in square plots on the Cyrodiilic pattern. It works here and it works nowhere else in the province. The reason it works is the one fact about Gideon no local will say out loud: the ground was cleared of something before the plots were pegged.",
@@ -105,13 +112,6 @@
             "the-cleared-ground",
             "blackwood"
           ]
-        },
-        {
-          "a": "mudborn",
-          "cell": "gideon",
-          "d": 10,
-          "x": "There is work in the fields at the cut and at the sowing and none in between, dry-one, so the town is full twice a year and the rest of the time it is very carefully empty.",
-          "to": []
         }
       ]
     },
@@ -171,6 +171,15 @@
       "settlement": "gideon",
       "infos": [
         {
+          "a": "mudborn",
+          "cell": "gideon",
+          "d": 10,
+          "x": "He'll feed you without making you sit through anything first, dry-one. It sounds like a small thing. It's the only reason I've ever gone back to a chapel twice.",
+          "to": [
+            "the-chapel-of-akatosh"
+          ]
+        },
+        {
           "a": "archivist",
           "cell": "gideon",
           "x": "The chapel priest, twenty-two years in post. He is the only Imperial cleric in the province whose parish rolls and whose tithe rolls contain the same names. I have not decided whether that is a moral achievement or an accounting one.",
@@ -178,15 +187,6 @@
             "the-chapel-of-akatosh",
             "the-tithe-roll",
             "the-vestry-well"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "cell": "gideon",
-          "d": 10,
-          "x": "He'll feed you without making you sit through anything first, dry-one. It sounds like a small thing. It's the only reason I've ever gone back to a chapel twice.",
-          "to": [
-            "the-chapel-of-akatosh"
           ]
         }
       ]
@@ -218,6 +218,26 @@
       "settlement": "archon",
       "infos": [
         {
+          "a": "rootkeeper",
+          "cell": "archon",
+          "d": 25,
+          "x": "The lichen is taken from the rock and nothing is returned to the rock, supplicant, and the keepers have argued for two generations about whether stone is owed anything, and the argument has not been settled and the harvest has not stopped.",
+          "to": [
+            "the-covenant",
+            "the-tide-lichen"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "cell": "archon",
+          "d": 10,
+          "x": "It is the easiest town in the province to get work in and the hardest to leave with a body that still works, dry-one, and all who arrive say they will do one season.",
+          "to": [
+            "the-dye-yards",
+            "the-vat-cough"
+          ]
+        },
+        {
           "a": "sapcutter",
           "cell": "archon",
           "x": "Dye town. Everything smells. Everything sells. Friend, the coast is red four months a year and so are all the hands in it. Have you been in the season?",
@@ -236,31 +256,11 @@
           ]
         },
         {
-          "a": "mudborn",
-          "cell": "archon",
-          "d": 10,
-          "x": "It is the easiest town in the province to get work in and the hardest to leave with a body that still works, dry-one, and all who arrive say they will do one season.",
-          "to": [
-            "the-dye-yards",
-            "the-vat-cough"
-          ]
-        },
-        {
           "a": "legionary",
           "cell": "archon",
           "x": "Militia town. No cohort here. Twelve men and a sergeant. It is enough. Just.",
           "to": [
             "the-militia"
-          ]
-        },
-        {
-          "a": "rootkeeper",
-          "cell": "archon",
-          "d": 25,
-          "x": "The lichen is taken from the rock and nothing is returned to the rock, supplicant, and the keepers have argued for two generations about whether stone is owed anything, and the argument has not been settled and the harvest has not stopped.",
-          "to": [
-            "the-covenant",
-            "the-tide-lichen"
           ]
         }
       ]
@@ -414,6 +414,25 @@
       "settlement": "blackrose",
       "infos": [
         {
+          "a": "rootkeeper",
+          "cell": "blackrose",
+          "d": 25,
+          "x": "There are men in there who were given to wells, supplicant, and the wells are still owed the tending they are not doing, and the order has petitioned four times and has been answered once and the answer was a form.",
+          "to": [
+            "blackrose-prison",
+            "the-petition"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "cell": "blackrose",
+          "d": 10,
+          "x": "Half the people here have kin inside and the other half turn the key on them, dry-one, and they all drink in the same two rooms afterwards, and I have never worked out how they manage it.",
+          "to": [
+            "blackrose-prison"
+          ]
+        },
+        {
           "a": "legionary",
           "cell": "blackrose",
           "x": "Prison town. The prison came first. Everything else feeds it. Bread, boots, coal, guards.",
@@ -432,30 +451,11 @@
           ]
         },
         {
-          "a": "mudborn",
-          "cell": "blackrose",
-          "d": 10,
-          "x": "Half the people here have kin inside and the other half turn the key on them, dry-one, and they all drink in the same two rooms afterwards, and I have never worked out how they manage it.",
-          "to": [
-            "blackrose-prison"
-          ]
-        },
-        {
           "a": "sapcutter",
           "cell": "blackrose",
           "x": "One buyer. Fixed price. Friend, this one hates this town. Why are you here?",
           "to": [
             "the-one-customer"
-          ]
-        },
-        {
-          "a": "rootkeeper",
-          "cell": "blackrose",
-          "d": 25,
-          "x": "There are men in there who were given to wells, supplicant, and the wells are still owed the tending they are not doing, and the order has petitioned four times and has been answered once and the answer was a form.",
-          "to": [
-            "blackrose-prison",
-            "the-petition"
           ]
         }
       ]
@@ -480,21 +480,21 @@
       "settlement": "blackrose",
       "infos": [
         {
-          "a": "archivist",
-          "cell": "blackrose",
-          "x": "The victualling contract is renewed annually by the warden and has been held by the same three families since the prison opened. Whether that is continuity or capture depends on how much of the correspondence one has read. I have read all of it.",
-          "to": [
-            "the-warden",
-            "blackrose-prison"
-          ]
-        },
-        {
           "a": "sapcutter",
           "cell": "blackrose",
           "d": 20,
           "x": "Three families. One contract. Friend, and all three sit on the town council.",
           "to": [
             "the-warden"
+          ]
+        },
+        {
+          "a": "archivist",
+          "cell": "blackrose",
+          "x": "The victualling contract is renewed annually by the warden and has been held by the same three families since the prison opened. Whether that is continuity or capture depends on how much of the correspondence one has read. I have read all of it.",
+          "to": [
+            "the-warden",
+            "blackrose-prison"
           ]
         }
       ]
@@ -504,21 +504,21 @@
       "settlement": "blackrose",
       "infos": [
         {
-          "a": "legionary",
-          "cell": "blackrose",
-          "x": "Warden Sallus. Twenty years. Never leaves the walls. Runs a clean house, they say.",
-          "to": [
-            "blackrose-prison",
-            "the-one-customer"
-          ]
-        },
-        {
           "a": "mudborn",
           "cell": "blackrose",
           "d": 10,
           "x": "He walks the town on the first of the month with no guard at all, dry-one, and they all nod, and I have never once seen a soul speak to him.",
           "to": [
             "blackrose-prison"
+          ]
+        },
+        {
+          "a": "legionary",
+          "cell": "blackrose",
+          "x": "Warden Sallus. Twenty years. Never leaves the walls. Runs a clean house, they say.",
+          "to": [
+            "blackrose-prison",
+            "the-one-customer"
           ]
         }
       ]

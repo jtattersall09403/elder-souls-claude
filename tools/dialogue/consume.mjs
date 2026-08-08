@@ -1,0 +1,220 @@
+// CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
+//
+//   node tools/dialogue/consume.mjs
+//
+// The rule this project keeps paying for: *for every model you ship, name the world-side consumer
+// and demonstrate it by perturbing the model and watching an entity change behaviour.* Eighteen
+// subsystems here have shipped a correct, instrumented model that nothing in the running world
+// reads, and a sibling piece shipped 186 authored rows naming who reveals a quest with zero
+// readers in `game/src`. So every field W1-17 authors is listed below with the shipped source
+// that reads it, and then each one is BROKEN and a named person is watched changing what they say.
+//
+// THE READERS, field by field, all in `game/src/character/converse.js` unless stated:
+//
+//   x            infoFor() -> `text`, returned through Conversation.say() to
+//                Engine.conversationSay() (game/src/engine.js:2486) — the words on the screen.
+//   a            infoFor() `matchesActor`; an info tagged for somebody else's mouth is skipped.
+//   cell         infoFor() `inCell(npc, info.cell)` — Morrowind filter field 6, the SPEAKER's
+//                place, plus 2 points of specificity.
+//   d            infoAllowed() `Number(disposition) < Number(info.d)` and the `dScore` term.
+//   requires.*   infoAllowed() race / upbringing whitelists and `knows` / `knows_all`.
+//   forbids.*    infoAllowed() blacklists.
+//   to           Engine.conversationSay() -> learnTopics(sim.quest.topicsKnown, [topic, ...to])
+//                (game/src/sim/quest/topic-supply.js:200) and questEngine.noteTopicLearned().
+//                Morrowind's AddTopic, and the main quest's whole bootstrap.
+//   id / root    buildTopicIndex() and topicsFor(), called from engine.js:2198.
+//
+// WHAT IS RUN. The shipped modules are imported and called directly. `infoFor()` and
+// `buildTopicIndex()` are the exact functions `Engine.conversationSay()` calls, and
+// `learnTopics()` is the exact function it hands the `to` list to. There is no second
+// implementation here: a re-implementation would be measuring itself (RULES §10).
+//
+// WHAT THIS DOES NOT COVER, said plainly: these arms prove the reader changes its answer, not
+// that the answer reaches a pixel. The browser half is `tools/harness/chr-talk-probe.mjs`.
+'use strict';
+import path from 'node:path';
+import url from 'node:url';
+import { buildTopicIndex, infoFor } from '../../game/src/character/converse.js';
+import { learnTopics } from '../../game/src/sim/quest/topic-supply.js';
+import { loadTopicDocs, loadNpcs } from './answer-census.mjs';
+
+const clone = (x) => JSON.parse(JSON.stringify(x));
+const P = (over = {}) => ({ race: 'saxhleel', upbringing: 'marsh', disposition: 60, knows: new Set(), ...over });
+
+const npcs = loadNpcs();
+const find = (pred) => npcs.find(pred);
+const say = (docs, npc, topic, player) => {
+  const r = infoFor(buildTopicIndex(docs), topic, npc, player);
+  return r ? { text: r.text, cell: r.cell, actor: r.actor, from: r.from, to: r.to } : null;
+};
+const short = (t) => (t == null ? '(nothing — this person has no answer)'
+  : Array.isArray(t) ? (t.length ? t.join(', ') : '(no topics)') : `"${String(t).slice(0, 100)}…"`);
+
+let fails = 0;
+function arm(name, { field, reader, before, after, mustDiffer = true }) {
+  const changed = JSON.stringify(before.value) !== JSON.stringify(after.value);
+  const ok = changed === mustDiffer;
+  if (!ok) fails++;
+  console.log(`\n${ok ? 'PASS' : 'FAIL'}  ${name}`);
+  console.log(`      field   ${field}`);
+  console.log(`      reader  ${reader}`);
+  console.log(`      ${before.label}`);
+  console.log(`          ${short(before.value)}`);
+  console.log(`      ${after.label}`);
+  console.log(`          ${short(after.value)}`);
+  if (!ok) console.log(`      ^ expected the answer to ${mustDiffer ? 'CHANGE' : 'HOLD'} and it did not.`);
+}
+
+const base = loadTopicDocs();
+const mine = () => clone(base);
+function editInfo(docs, topicId, pred, fn) {
+  for (const doc of docs) for (const t of doc.topics || []) if (t.id === topicId) for (const i of t.infos || []) if (pred(i)) fn(i);
+  return docs;
+}
+
+console.log('CONSUMPTION — game/data/dialogue/topics/** against its shipped readers');
+console.log(`roster: ${npcs.length} people from game/data/npcs/**`);
+
+// ---- 1. `x` — the words themselves -----------------------------------------------------------
+{
+  const npc = find((n) => n.actor === 'villager' && n.settlement === 'lilmoth');
+  const b = say(base, npc, 'lilmoth', P());
+  const d = editInfo(mine(), 'lilmoth', (i) => i.a === 'villager' && i.cell === 'lilmoth', (i) => { i.x = 'PERTURBED: the lamps were sold last winter.'; });
+  arm('the text a person speaks', {
+    field: '`x` on topics/05-asking-around.json#lilmoth',
+    reader: 'infoFor() -> Conversation.say() -> Engine.conversationSay() (engine.js:2486)',
+    before: { label: `${npc.name} (${npc.id}) asked about "lilmoth":`, value: b && b.text },
+    after: { label: 'after rewriting that one string:', value: (say(d, npc, 'lilmoth', P()) || {}).text },
+  });
+}
+
+// ---- 2. `a` — whose mouth it is written for ---------------------------------------------------
+{
+  const npc = find((n) => n.actor === 'villager' && n.settlement === 'lilmoth');
+  const b = say(base, npc, 'lilmoth', P());
+  const d = editInfo(mine(), 'lilmoth', (i) => i.a === 'villager' && i.cell === 'lilmoth', (i) => { i.a = 'innkeeper'; });
+  arm('the actor gate', {
+    field: '`a` (Morrowind filter field 3, Class)',
+    reader: 'infoFor() `matchesActor` — an info written for another actor is skipped outright',
+    before: { label: `${npc.name} is a villager and the info says villager:`, value: b && b.text },
+    after: { label: 'after retagging that info to `innkeeper`, the same villager says:', value: (say(d, npc, 'lilmoth', P()) || {}).text },
+  });
+}
+
+// ---- 3. `cell` — where the answer was written for ---------------------------------------------
+{
+  const here = find((n) => n.actor === 'merchant' && n.settlement === 'stormhold');
+  const there = find((n) => n.actor === 'merchant' && n.settlement === 'gideon');
+  arm('the place gate — one actor, one word, two towns', {
+    field: '`cell` (Morrowind filter field 6, the SPEAKER\'s place)',
+    reader: 'infoFor() `inCell(npc, info.cell)` plus 2 points of specificity score',
+    before: { label: `${here.name}, a merchant standing in Stormhold, asked about "stormhold":`, value: (say(base, here, 'stormhold', P()) || {}).text },
+    after: { label: `${there.name}, a merchant standing in Gideon, asked the same word:`, value: (say(base, there, 'stormhold', P()) || {}).text },
+  });
+}
+
+// ---- 4. `d` — the disposition bar --------------------------------------------------------------
+{
+  const npc = find((n) => n.actor === 'rootkeeper' && n.settlement === 'thorn');
+  arm('the disposition bar', {
+    field: '`d` on topics/05-asking-around.json#the-covenant (d:30)',
+    reader: 'infoAllowed() `Number(disposition) < Number(info.d)` -> false (converse.js:139)',
+    before: { label: `${npc.name} to a Saxhleel they think well of (disposition 60):`, value: (say(base, npc, 'the-covenant', P({ disposition: 60 })) || {}).text },
+    after: { label: 'the same word put by the same person at disposition 10:', value: (say(base, npc, 'the-covenant', P({ disposition: 10 })) || {}).text },
+  });
+}
+
+// ---- 5. `requires.race` — who is asking --------------------------------------------------------
+{
+  const npc = find((n) => n.actor === 'townsman' && n.settlement === 'gideon');
+  arm('the race gate — two players, one speaker, one word', {
+    field: '`requires.race` on topics/05-asking-around.json#the-lukiul',
+    reader: 'infoAllowed() race whitelist (converse.js:127)',
+    before: { label: `${npc.name} answering a Saxhleel:`, value: (say(base, npc, 'the-lukiul', P({ race: 'saxhleel' })) || {}).text },
+    after: { label: 'the same person answering a Dunmer:', value: (say(base, npc, 'the-lukiul', P({ race: 'dunmer' })) || {}).text },
+  });
+}
+
+// ---- 6. `to` — AddTopic, and what the player walks away holding ---------------------------------
+{
+  const npc = find((n) => n.actor === 'legionary' && n.settlement === 'stormhold');
+  const run = (docs) => {
+    const r = say(docs, npc, 'the-cart-roads', P());
+    const known = ['the-cart-roads'];
+    learnTopics(known, ['the-cart-roads', ...((r && r.to) || [])]);   // exactly what conversationSay() does
+    return known.slice(1).sort();
+  };
+  const d = editInfo(mine(), 'the-cart-roads', (i) => i.a === 'legionary' && i.cell === 'stormhold', (i) => { i.to = []; });
+  arm('AddTopic — the words the player leaves the conversation holding', {
+    field: '`to` on topics/05-asking-around.json#the-cart-roads',
+    reader: 'Engine.conversationSay() -> learnTopics(sim.quest.topicsKnown, [topic, ...info.to]) (engine.js:2504, topic-supply.js:200)',
+    before: { label: `after asking ${npc.name} about the cart roads, topicsKnown gains:`, value: run(base) },
+    after: { label: 'with that one `to` list emptied, the same question yields:', value: run(d) },
+  });
+}
+
+// ---- 7. DELETE-THE-FIX (RULES §6) — take this round's whole file away ---------------------------
+{
+  const npc = find((n) => n.actor === 'legionary' && n.settlement === 'stormhold');
+  const without = base.filter((d) => d.group !== 'asking-around');
+  arm('delete-the-fix: remove 05-asking-around.json entirely', {
+    field: 'the whole file this round authored',
+    reader: 'buildTopicIndex() over game/data/dialogue/topics/**',
+    before: { label: `${npc.name} asked about "the-north-wall" with the file present:`, value: (say(base, npc, 'the-north-wall', P()) || {}).text },
+    after: { label: 'with the file removed:', value: (say(without, npc, 'the-north-wall', P()) || {}).text },
+  });
+}
+
+// ---- 8. The cell ladder, every pair of it --------------------------------------------------------
+// `check-dialogue-topics.mjs` warns that where two files declare one topic id and a player can
+// reach both, "infoFor()'s specificity score, not authorial intent, decides which one they hear."
+// This round added 17 such pairs deliberately: the new info carries `a` AND `cell`, the record it
+// merges with carries `a` alone, so the new one strictly dominates in its own town and loses
+// everywhere else. That is a claim, so it is checked on every info rather than asserted.
+{
+  // A line is DEAD when no player at all hears it, not when the first player tried does not.
+  // The first draft of this arm asked one Saxhleel and reported six failures; four were real —
+  // `the-provincial-office` and `the-tides` both carry clerk and fisher infos gated on
+  // `requires.race` whose whitelists between them cover all ten races, and a race gate outscores
+  // a cell gate 12 to 10, so those four lines were unspeakable by anybody and were re-homed
+  // before shipping. The other two were the probe's fault: they are heard, by the races the
+  // race-gated infos do not claim. So the sweep is over every race the corpus gates on and four
+  // dispositions, which is the same definition `tools/dialogue/shadow-audit.mjs` uses.
+  const RACES = ['saxhleel', 'naga', 'dunmer', 'imperial', 'nord', 'breton', 'redguard', 'khajiit', 'orsimer', 'bosmer'];
+  const DISP = [0, 25, 60, 90];
+  const idx = buildTopicIndex(base);
+  const hears = (npc, topicId, text) => {
+    for (const race of RACES) for (const disposition of DISP) {
+      const r = infoFor(idx, topicId, npc, { race, upbringing: 'town', disposition, knows: new Set() });
+      if (r && r.text === text) return `${race}/d${disposition}`;
+    }
+    return null;
+  };
+  const asking = base.find((d) => d.group === 'asking-around');
+  let checked = 0, wrong = 0;
+  for (const t of asking.topics) {
+    for (const info of t.infos) {
+      if (!info.a || !info.cell) continue;
+      const inTown = find((n) => n.actor === info.a && n.settlement === info.cell);
+      const away = find((n) => n.actor === info.a && n.settlement && n.settlement !== info.cell);
+      if (!inTown) { console.log(`\n  ! no ${info.a} lives in ${info.cell} — that info can never be heard`); wrong++; continue; }
+      checked++;
+      if (!hears(inTown, t.id, info.x)) {
+        wrong++;
+        console.log(`\n  ! DEAD  ${t.id} / ${info.a}@${info.cell}: no player of any race at any disposition hears this line`);
+        continue;
+      }
+      if (away && hears(away, t.id, info.x)) {
+        wrong++;
+        console.log(`\n  ! LEAK  ${t.id}: a ${info.a} in ${away.settlement} says the ${info.cell} line`);
+      }
+    }
+  }
+  console.log(`\n${wrong === 0 ? 'PASS' : 'FAIL'}  the cell ladder — ${checked} authored (actor, town) infos, each reachable by`);
+  console.log(`      some player from that actor in that town, and by no speaker of that actor elsewhere.`);
+  console.log(`      ${wrong} exception(s).`);
+  if (wrong) fails++;
+}
+
+console.log(`\n${fails === 0 ? 'ALL ARMS PASS' : `${fails} ARM(S) FAILED`} — every field named above has a reader that changed its answer when the field moved.`);
+process.exit(fails ? 1 : 0);

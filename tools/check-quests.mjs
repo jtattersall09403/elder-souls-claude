@@ -282,6 +282,56 @@ function checkAgainst(hooksDoc, book) {
   }
 }
 
+// ---- W1-READABLES round 2: an `environment` reveal whose mark is not an object ---------------
+// `deceit.revealed_by[].channel === 'environment'` says the truth is learned by looking at a
+// thing that is there, and `.source` names the thing. `game/data/world/readables/site-marks.json`
+// is where the thing is, and `Engine._takePropPending()` reads it. Three ways for the row to be
+// a route to nothing: no mark of that id, a mark that names no place, or a mark placed inside a
+// room where a player cannot press it — within 4 m of `continuity.interior_spawn` the way out
+// takes `interact` first and the press walks you through the door instead of at the mark.
+//
+// FAIL-CLOSED, unlike the document warning above, and the difference is rule 13 and not taste:
+// every one of the 27 `environment` rows on this tree has a mark and every mark is placed, so
+// this is silent on the shipped tree today. Its document neighbour cannot say that — twelve
+// undemanded document rows are still unwritten — which is why that one warns and this one stops
+// the commit. Proved red by `--self-test` and by deleting a mark on a copy of the tree.
+{
+  const marksPath = join(ROOT, 'game', 'data', 'world', 'readables', 'site-marks.json');
+  const marks = new Map();
+  if (existsSync(marksPath)) for (const m of (readJSON(marksPath).marks || [])) if (m.id) marks.set(m.id, m);
+  const rooms = new Map();
+  const idir2 = join(ROOT, 'game', 'data', 'world', 'interiors');
+  if (existsSync(idir2)) {
+    for (const f of readdirSync(idir2).filter((x) => x.endsWith('.json'))) {
+      const rec = readJSON(join(idir2, f));
+      if (rec.id) rooms.set(rec.id, rec);
+    }
+  }
+  for (const [id, q] of quests) {
+    for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
+      if (rev.channel !== 'environment' || !rev.source) continue;
+      const where = `${sourceOf.get(id)}: ${id}.${rev.id} (environment)`;
+      const m = marks.get(rev.source);
+      if (!m) { problems.push(`${where} names ${JSON.stringify(rev.source)}, which is not a mark in game/data/world/readables/site-marks.json — there is nothing in the world to look at.`); continue; }
+      const at = m.at || {};
+      if (Array.isArray(at.world) && at.world.length === 2 && at.world.every((n) => Number.isFinite(n))) continue;
+      if (!at.interior) { problems.push(`${where}: mark ${m.id} names neither at.world nor at.interior, so it stands nowhere.`); continue; }
+      const rec = rooms.get(at.interior);
+      if (!rec) { problems.push(`${where}: mark ${m.id} is placed in ${at.interior}, which is not a room in game/data/world/interiors/.`); continue; }
+      const p = m.pos || [];
+      const b = rec.bounds_m || { x: [-5, 5], z: [-5, 5] };
+      const sp = (rec.continuity || {}).interior_spawn || [0, 0, 0];
+      if (!(p.length === 3 && p[0] > b.x[0] + 0.6 && p[0] < b.x[1] - 0.6 && p[2] > b.z[0] + 0.6 && p[2] < b.z[1] - 0.6)) {
+        problems.push(`${where}: mark ${m.id} at ${JSON.stringify(p)} is outside ${at.interior}'s bounds, or on the wall ring where the documents are drawn.`);
+        continue;
+      }
+      if (Math.hypot(p[0] - sp[0], p[2] - sp[2]) < 4.0) {
+        problems.push(`${where}: mark ${m.id} at ${JSON.stringify(p)} is within 4 m of ${at.interior}'s doorway — sim/settlement.js takes interact for the way out first and the press can never reach it.`);
+      }
+    }
+  }
+}
+
 // ---- report ------------------------------------------------------------------------------
 if (problems.length) {
   console.error(`check-quests: ${problems.length} problem(s) across ${quests.size} quests:`);

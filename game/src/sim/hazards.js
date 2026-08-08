@@ -120,6 +120,16 @@ export class Hazards {
     this.active = new Map();          // hazard id -> { since, told, damageFrom }
     this.spent = new Set();           // TRAP/KILL ids that have fired and not yet been left
     this.told = new Map();            // hazard id -> frame the tell fired
+    // W1-01 round 4. `row.fired` was read off `this.active.get(id)`, and a TRAP or a KILL is
+    // DELETED from `active` on the same frame it fires (see the `spent` line at the end of
+    // `_update`). So the report said `fired: false` for every trap in the province from the
+    // instant it fired onward — including a comb collapse that had just taken 99.2 HP off the
+    // body one frame earlier. Six of the nineteen hazards are TRAP or KILL and the world's own
+    // report was structurally incapable of ever saying any of them went off.
+    //
+    // `history` is the record rather than the arming state: id -> what actually happened to the
+    // body. It is what `row.fired` now reads, and it survives the volume disarming.
+    this.history = new Map();         // hazard id -> { fired_at, outcome, damage_dealt, fires }
     this.events = [];
     this.lastReport = [];
   }
@@ -307,12 +317,18 @@ export class Hazards {
             e.outcome = h.damage.kind;
           }
           this.events.push({ kind: 'fired', id: h.id, at: f, outcome: e.outcome });
+          const hi = this.history.get(h.id) || { fired_at: f, outcome: e.outcome, damage_dealt: 0, fires: 0 };
+          hi.fired_at = hi.fires === 0 ? f : hi.fired_at;
+          hi.last_fired_at = f; hi.outcome = e.outcome; hi.fires++;
+          this.history.set(h.id, hi);
         }
         const dmg = this._damageThisFrame(h, p);
         if (dmg > 0) {
           if (combatBody) { combatBody.hp = Math.max(0, combatBody.hp - dmg); p.hp = combatBody.hp; }
           else p.hp = Math.max(0, p.hp - dmg);
           cur.dealt += dmg; cur.ticks++;
+          const hd = this.history.get(h.id);
+          if (hd) hd.damage_dealt = +(hd.damage_dealt + dmg).toFixed(3);
           // One event per second of attrition rather than per frame: a trace with 3,600 identical
           // records per minute is not evidence, it is noise.
           if (cur.ticks % 60 === 1 || h.damage.kind !== 'pct_max_hp_per_s') {
@@ -355,9 +371,17 @@ export class Hazards {
       row.class = h.class; row.region = ctx.region; row.inside = inside;
       row.approach_m = Number.isFinite(approach) ? +approach.toFixed(1) : null;
       row.told_at_frame = this.told.has(h.id) ? this.told.get(h.id) : null;
-      row.first_damage_frame = cur ? cur.damageFrom : null;
-      row.damage_dealt = cur ? +cur.dealt.toFixed(2) : 0;
-      row.fired = !!(cur && cur.fired);
+      const hist = this.history.get(h.id) || null;
+      row.first_damage_frame = cur ? cur.damageFrom : (hist ? hist.fired_at : null);
+      row.damage_dealt = cur ? +cur.dealt.toFixed(2) : 0;   // this entry, unchanged
+      row.damage_total = hist ? hist.damage_dealt : 0;      // every entry, survives disarming
+      // Has this hazard ever gone off on this body, not "is its volume armed right now".
+      row.fired = !!(hist || (cur && cur.fired));
+      row.armed = !!(cur && cur.fired);
+      row.spent = this.spent.has(h.id);
+      row.fired_at_frame = hist ? hist.fired_at : null;
+      row.fires = hist ? hist.fires : 0;
+      row.outcome = hist ? hist.outcome : null;
       row.sheltered = !!(SHELTER[h.id] && SHELTER[h.id](ctx, this.sig, this.field));
       row.declared = h.damage;
       row.suppressed_by = suppressed;

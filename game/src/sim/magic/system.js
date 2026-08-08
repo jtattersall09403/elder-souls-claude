@@ -874,10 +874,54 @@ export class MagicSystem {
     // --- S11 buildup meters: integer decay per frame, and proc timers that end.
     this.stepStatus(frame, targets);
 
+    // --- A ROUTED BODY RUNS. This loop is `demoralise`'s missing reader.
+    //
+    // Round 3 shipped `b.fleeingUntil` and `c.fleeing` written by `h_demoralise` and read by
+    // NOTHING — one grep hit each in the whole build, the write itself. So `demoralise` and
+    // `calm_beast` set the same two fields (`aggro=false`, `yielded=true`), the enemy stepper's
+    // yielded branch stood both bodies still in an IDLE pose, and the two effects were one verb
+    // wearing two names. That is why they were the last colliding pair in the round-3 census.
+    //
+    // The effect's own catalogue ruling is unambiguous: "Drives a target to FLEE (RI-AI01's
+    // leash behaviour, forced). It does NOT delete the enemy, does not despawn it, and does not
+    // grant its sap-debt." So the body MOVES, away from the caster, for the effect's duration or
+    // until it has put its authored leash distance between you — and `demoralise`'s magnitude,
+    // which was also unread, is what buys that distance.
+    //
+    // WHY THIS LIVES HERE AND NOT IN THE ENEMY AI. `combat.step()` runs immediately before this
+    // (sim/combat-bridge.js), so a write here is the frame's last word on the body's position,
+    // and `sim.entities` is mirrored from the bodies AFTER this returns. Magic already owns one
+    // locomotion mode on the same terms (`_beginLevitation`). `yielded` stays true, which is
+    // what keeps the routed body from swinging at you on its way out, and the yielded branch of
+    // `EnemyController.step` writes no position — so the two are not fighting over the body.
+    if (!this._fleeDisabled) {
+      const caster = this.w && this.w.combat ? this.w.combat.player : null;
+      for (const t of targets) {
+        if (!t.fleeingUntil || frame >= t.fleeingUntil || t.dead || !caster) continue;
+        const dx = t.pos[0] - caster.pos[0];
+        const dz = t.pos[2] - caster.pos[2];
+        const d = Math.hypot(dx, dz);
+        const leash = t.fleeLeashM || 0;
+        if (d >= leash) { t.fleeArrived = true; continue; }   // far enough; it stops running
+        const spd = (t.fleeSpeedMps || 0) / 60;               // metres per fixed step, integer frames
+        const ux = d > 1e-6 ? dx / d : Math.sin(t.yaw * Math.PI / 180);
+        const uz = d > 1e-6 ? dz / d : Math.cos(t.yaw * Math.PI / 180);
+        t.pos[0] += ux * spd;
+        t.pos[2] += uz * spd;
+        t.yaw = (Math.atan2(ux, uz) * 180 / Math.PI + 360) % 360;
+        t.fleeDistM = (t.fleeDistM || 0) + spd;
+        t.hitboxActive = false;
+        if (t.poseLocomotion) t.poseLocomotion('RUN', frame);
+      }
+    }
+
     // --- control verbs whose duration has run out on the target rather than on us.
     for (const t of targets) {
       if (t.calmedUntil && frame >= t.calmedUntil) { t.calmedUntil = 0; t.yielded = false; }
-      if (t.fleeingUntil && frame >= t.fleeingUntil) { t.fleeingUntil = 0; t.yielded = false; }
+      if (t.fleeingUntil && frame >= t.fleeingUntil) {
+        t.fleeingUntil = 0; t.yielded = false;
+        t.fleeSpeedMps = 0; t.fleeLeashM = 0; t.fleeArrived = false;
+      }
       if (t.charmedUntil && frame >= t.charmedUntil) { t.charmedUntil = 0; t.yielded = false; }
       if (t.frenziedUntil && frame >= t.frenziedUntil) { t.frenziedUntil = 0; t.frenzyTarget = null; }
       if (t.silencedUntil && frame >= t.silencedUntil) { t.silencedUntil = 0; t.silenced = false; }
@@ -1735,6 +1779,13 @@ export class MagicSystem {
         armour_rating: round2(b.armourRating === undefined ? 0 : b.armourRating),
         ward_charges: b.wardCharges || 0,
         yielded: !!b.yielded, silenced: !!b.silenced, frenzy_target: b.frenzyTarget || null,
+        // `demoralise`'s flee lease, so a reader can tell a routed body from a calmed one
+        // without inferring it from two position samples. The DURABLE observable is still the
+        // body's own position — this is magic's bookkeeping and M7 excludes it from a verb
+        // census on purpose.
+        fleeing: !!(b.fleeingUntil && b.fleeingUntil > 0),
+        flee_leash_m: round2(b.fleeLeashM || 0), flee_dist_m: round2(b.fleeDistM || 0),
+        flee_arrived: !!b.fleeArrived,
         hp: round2(b.hp), hp_max: round2(b.hpMax),
         // The consuming systems the four previously-unread procs write into, so the paired read
         // RI-MAG06 M2 requires is one call rather than four.

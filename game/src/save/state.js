@@ -95,6 +95,7 @@ export function buildSave(sim, build) {
       // forty-four objects reloaded unburdened.
       carried_weight: r6(p.carriedWeight || 0),
       burden_ratio: r6(p.burdenRatio || 0),
+      equipped_weight: r6(p.equippedWeight || 0),
     },
     inventory: sim.inventory.map((i) => ({
       id: i.id, count: i.count, condition: r6(i.condition), charge: r6(i.charge),
@@ -606,6 +607,7 @@ export function applySave(sim, blob, moves, statFor) {
   p.rollClass = blob.character.roll_class;
   p.carriedWeight = blob.character.carried_weight;
   p.burdenRatio = blob.character.burden_ratio;
+  p.equippedWeight = blob.character.equipped_weight === undefined ? 0 : blob.character.equipped_weight;
 
   sim.inventory = blob.inventory.map((i) => ({
     id: i.id, count: i.count, condition: i.condition, charge: i.charge,

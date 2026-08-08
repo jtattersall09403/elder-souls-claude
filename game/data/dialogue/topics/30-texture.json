@@ -76,19 +76,19 @@
       "id": "the-wamasu",
       "infos": [
         {
-          "a": "sapcutter",
-          "x": "Long. Slow. Then not slow. Friend, it carries lightning in the skin. Have you seen one?",
-          "to": [
-            "the-marsh-creatures",
-            "the-swamp-wyrm"
-          ]
-        },
-        {
           "a": "rootkeeper",
           "d": 25,
           "x": "It is not hunted and it is not driven off, supplicant, it is walked around, and a village that cannot walk around a wamasu has built itself in the wrong place.",
           "to": [
             "the-covenant"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Long. Slow. Then not slow. Friend, it carries lightning in the skin. Have you seen one?",
+          "to": [
+            "the-marsh-creatures",
+            "the-swamp-wyrm"
           ]
         }
       ]
@@ -110,16 +110,16 @@
       "id": "the-hackwing",
       "infos": [
         {
-          "a": "legionary",
-          "x": "Carrion bird. Follows the column. Bad omen, the men say. It is just a bird.",
+          "a": "mudborn",
+          "d": 10,
+          "x": "They come down on the boards for anything left out, dry-one, and they aren't frightened of a person at all. I've had one take bread out of my hand.",
           "to": [
             "the-marsh-creatures"
           ]
         },
         {
-          "a": "mudborn",
-          "d": 10,
-          "x": "They come down on the boards for anything left out, dry-one, and they aren't frightened of a person at all. I've had one take bread out of my hand.",
+          "a": "legionary",
+          "x": "Carrion bird. Follows the column. Bad omen, the men say. It is just a bird.",
           "to": [
             "the-marsh-creatures"
           ]
@@ -593,21 +593,21 @@
       "id": "the-hearths",
       "infos": [
         {
-          "a": "mudborn",
-          "d": 10,
-          "x": "There are fires that never go out at the crossings, and any traveller may sit at one, dry-one. No one owns them. No one tends them. And they haven't gone out in my lifetime. I've decided not to think about it too hard.",
-          "to": [
-            "the-boards",
-            "the-cart-roads"
-          ]
-        },
-        {
           "a": "rootkeeper",
           "d": 30,
           "x": "They are older than the roads they are on and the roads were laid to reach them, supplicant, whatever the survey says about the order of it.",
           "to": [
             "the-unfinished-survey",
             "the-covenant"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 10,
+          "x": "There are fires that never go out at the crossings, and any traveller may sit at one, dry-one. No one owns them. No one tends them. And they haven't gone out in my lifetime. I've decided not to think about it too hard.",
+          "to": [
+            "the-boards",
+            "the-cart-roads"
           ]
         }
       ]
@@ -651,20 +651,20 @@
       "id": "the-lukiul",
       "infos": [
         {
+          "a": "mudborn",
+          "d": 10,
+          "x": "I've been called it, and I've called other people it, dry-one. The second time was worse. And I haven't done it since.",
+          "to": [
+            "the-outlander-question"
+          ]
+        },
+        {
           "a": "archivist",
           "x": "The word is generally translated assimilated and is more nearly rendered salted, and it is applied by interior Argonians to coastal ones with a precision and a cruelty that the Imperial ear entirely fails to register.",
           "to": [
             "the-outlander-question",
             "the-deep-kin",
             "jel"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "d": 10,
-          "x": "I've been called it, and I've called other people it, dry-one. The second time was worse. And I haven't done it since.",
-          "to": [
-            "the-outlander-question"
           ]
         }
       ]
@@ -696,20 +696,20 @@
       "id": "the-naga-bands",
       "infos": [
         {
-          "a": "legionary",
-          "x": "River crews. Coast raiders. Not our jurisdiction and not their law either. Keep off the water after dark!",
-          "to": [
-            "the-deep-marshes",
-            "the-marauders-coast"
-          ]
-        },
-        {
           "a": "rootkeeper",
           "d": 30,
           "x": "They keep the covenant differently and they keep it, and the coast calls them animals for the difference, and the coast has forgotten which of the two of us was here when the other arrived.",
           "to": [
             "the-covenant",
             "the-deep-kin"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "River crews. Coast raiders. Not our jurisdiction and not their law either. Keep off the water after dark!",
+          "to": [
+            "the-deep-marshes",
+            "the-marauders-coast"
           ]
         }
       ]
@@ -853,19 +853,19 @@
       "id": "the-curfew",
       "infos": [
         {
-          "a": "legionary",
-          "x": "Fourth bell in the garrison towns. Off the street. No exceptions, citizen — move along!",
-          "to": [
-            "the-night-watch",
-            "the-sanction"
-          ]
-        },
-        {
           "a": "mudborn",
           "d": 10,
           "x": "A curfew's a law about beds, dry-one, and it's enforced hardest on the people who haven't got one. I've stopped asking whether that is an accident.",
           "to": [
             "the-night-watch"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "Fourth bell in the garrison towns. Off the street. No exceptions, citizen — move along!",
+          "to": [
+            "the-night-watch",
+            "the-sanction"
           ]
         }
       ]

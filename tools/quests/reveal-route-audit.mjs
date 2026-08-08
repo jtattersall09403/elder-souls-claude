@@ -229,6 +229,77 @@ function documentRoute(d) {
   return { via: exists && placed, exists, placed };
 }
 
+// ------------------------------------------------- route table 4: marks (W1-READABLES round 2)
+//
+// `Engine._takePropPending()` -> `QuestEngine.learnFrom('place', <mark id>)`. The `environment`
+// channel's 27 rows each named a place, a station or a mark, and not one was an object anywhere
+// in `game/data/` — three of them were not ids at all but sentences. `game/data/world/readables/
+// site-marks.json` is the object.
+//
+// The test has the same two halves as a document's, and for the same reason: a mark that is
+// written down and stands nowhere is exactly as unreachable as a mark that was never written.
+//
+//   1. the source id is a record in `site-marks.json`, so `learnFrom('place', id)` has rows to
+//      offer when the prop is reached for;
+//   2. THE MARK IS SOMEWHERE A PLAYER CAN STAND — either `at.interior` names a room in
+//      `game/data/world/interiors/**`, which `_furnishInterior()` spawns it into, or `at.world`
+//      is a pair of province coordinates, which `_ensureProvinceMarks()` spawns onto the
+//      heightfield. A record with neither is data, not a place.
+//
+// The indoor half also asserts the placement RULE, because the last round found the failure the
+// hard way in a browser: `sim/settlement.js` takes `interact` for the way out within 2.6 m of
+// `continuity.interior_spawn` and runs BEFORE the engine's prop reach, so a mark drawn beside
+// the doorway can never be looked at — press the button and you walk out of the room instead.
+const markIds = new Map();
+const markPlaced = new Set();
+const markProblems = [];
+try {
+  const doc = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/world/readables/site-marks.json'), 'utf8'));
+  const interiorRec = new Map();
+  const idir = path.join(ROOT, 'game/data/world/interiors');
+  for (const f of fs.readdirSync(idir).filter((x) => x.endsWith('.json'))) {
+    const rec = JSON.parse(fs.readFileSync(path.join(idir, f), 'utf8'));
+    if (rec.id) interiorRec.set(rec.id, rec);
+  }
+  for (const m of (doc.marks || [])) {
+    if (!m.id) continue;
+    markIds.set(m.id, m);
+    const at = m.at || {};
+    if (Array.isArray(at.world) && at.world.length === 2 && at.world.every(Number.isFinite)) {
+      markPlaced.add(m.id);
+    } else if (at.interior) {
+      const rec = interiorRec.get(at.interior);
+      if (!rec) { markProblems.push(`${m.id}: at.interior ${at.interior} is not a room`); continue; }
+      const p = m.pos || [];
+      const b = rec.bounds_m || { x: [-5, 5], z: [-5, 5] };
+      const sp = (rec.continuity || {}).interior_spawn || [0, 0, 0];
+      const inside = p.length === 3 && p[0] > b.x[0] + 0.6 && p[0] < b.x[1] - 0.6 && p[2] > b.z[0] + 0.6 && p[2] < b.z[1] - 0.6;
+      const doorClear = Math.hypot(p[0] - sp[0], p[2] - sp[2]) >= 4.0;
+      if (!inside) { markProblems.push(`${m.id}: pos ${JSON.stringify(p)} is outside ${at.interior}'s bounds (or on its wall ring)`); continue; }
+      if (!doorClear) { markProblems.push(`${m.id}: pos ${JSON.stringify(p)} is within 4 m of ${at.interior}'s doorway — the way out eats the press`); continue; }
+      markPlaced.add(m.id);
+    } else {
+      markProblems.push(`${m.id}: names neither at.world nor at.interior`);
+    }
+  }
+} catch { /* no marks file — every environment row stays unrouted, which is the pre-round state */ }
+
+// --falsify unmark: forget every placement. If the environment channel does not go red, the
+// placement half of this test is decoration.
+if (FALSIFY === 'unmark') {
+  const n = markPlaced.size;
+  markPlaced.clear();
+  console.log(`[falsify unmark] forgot ${n} mark placement(s); every environment route must go red`);
+}
+
+/** Both halves: the mark exists, and it stands somewhere a player can stand. */
+function markRoute(d) {
+  if (!d || CHANNEL_READERS[d.channel] !== 'place' || !d.source) return { via: false, exists: false, placed: false };
+  const exists = markIds.has(d.source);
+  const placed = exists && markPlaced.has(d.source);
+  return { via: exists && placed, exists, placed };
+}
+
 // ---------------------------------------------------------------- A. the census
 const rows = [];
 for (const { file, q } of quests) {
@@ -241,8 +312,10 @@ for (const { file, q } of quests) {
     const viaHook = hookRouted.has(`${q.id}|${revId}`);
     const doc = documentRoute(d);
     const viaBook = doc.via;
+    const mark = markRoute(d);
+    const viaMark = mark.via;
     const viaPerson = personRouted.has(`${q.id}|${revId}`);
-    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, doc_exists: doc.exists, doc_placed: doc.placed, routed: viaHook || viaBook || viaPerson });
+    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, via_mark: viaMark, doc_exists: doc.exists, doc_placed: doc.placed, mark_exists: mark.exists, mark_placed: mark.placed, routed: viaHook || viaBook || viaPerson || viaMark });
   }
 }
 const unrouted = rows.filter((r) => !r.routed);
@@ -505,6 +578,79 @@ people.call_site = {
   note: 'static assertion; the world-side proof is a browser run under reports/runs/W1-18-R2/',
 };
 
+// ------------------------------------------------- E. the mark channel, end to end
+//
+// W1-READABLES round 2. Section D's question, asked of `environment`: look at the thing the
+// quest file names, and watch the gate stop refusing.
+//
+// THE ACT IS `learnFrom('place', <mark id>)`, which is the exact call `Engine._takePropPending()`
+// makes when a player presses `interact` at a mark, and the only thing it does with the result.
+// The same three non-vacuity rules as section D: a leg is RUN only if the gate refused BY NAME
+// before the act, a leg that ran and learned nothing is a FAILURE, and `--falsify no-router`
+// inverts the verdict so a run where legs still pass is the failure.
+//
+// The placement half is NOT re-asked here — section A already scores a mark that stands nowhere
+// as unrouted, and `--falsify unmark` moves that number. This section is about the reading.
+const marksChannel = { cases: [], ok: false };
+for (const def of allDefs) {
+  const markRows = ((def.deceit && def.deceit.revealed_by) || []).filter((r) => CHANNEL_READERS[r.channel] === 'place' && markIds.has(r.source));
+  if (!markRows.length) continue;
+  const demanded = new Set();
+  for (const r of (def.resolutions || [])) for (const k of (r.requires_knowing || [])) demanded.add(k);
+  const sources = [...new Set(markRows.map((r) => r.source))].sort();
+  const sim = freshSim();
+  const qe = new QuestEngine(book, null, hooksDoc, sim);
+  qe.presenceMode = 'off';
+  qe.revealRoutes = NO_ROUTER ? new Map() : routeIndex;
+  qe.rec(def.id, true).opened = true;
+  let crossedPonr = false;
+  if (markRows.some((r) => r.before_point_of_no_return === false)) {
+    const p = (raisedByConsequence.get('point_of_no_return_crossed') || [])[0];
+    if (p) {
+      const pDef = book.get(p.quest);
+      qe.rec(p.quest, true).opened = true;
+      qe._applyConsequences(pDef, (pDef.resolutions || []).find((r) => r.id === p.res));
+      crossedPonr = !!sim.quest.flags['point_of_no_return_crossed'];
+    }
+  }
+  const targets = (def.resolutions || []).filter((r) => (r.requires_knowing || []).some((k) => markRows.some((m) => m.id === k)));
+  const namesBefore = (r) => (canResolveD(r, qe.context()).why || []).filter((w) => markRows.some((m) => w.includes(m.id)));
+  const before = targets.reduce((n, r) => n + namesBefore(r).length, 0);
+  const sample = targets.map((r) => namesBefore(r)).find((w) => w.length) || [];
+  let learned = 0; const refusals = [];
+  for (const s of sources) {
+    const r = qe.learnFrom('place', s);
+    learned += r.learned.length;
+    for (const x of r.refused) if (x.quest === def.id) refusals.push(`${x.reveal}: ${x.why}`);
+  }
+  const after = targets.reduce((n, r) => n + namesBefore(r).length, 0);
+  const ran = before > 0;
+  marksChannel.cases.push({
+    quest: def.id, sources, reveals: markRows.map((r) => r.id),
+    demanded_by_a_resolution: markRows.filter((r) => demanded.has(r.id)).map((r) => r.id),
+    learned, refusals, crossed_ponr: crossedPonr,
+    refusals_before: before, refusals_after: after,
+    sample_refusal: sample[0] || null,
+    leg_ran: ran,
+    passed: ran && learned > 0 && after === 0,
+  });
+}
+const marksRun = marksChannel.cases.filter((c) => c.leg_ran);
+marksChannel.legs_run = marksRun.length;
+marksChannel.legs_total = marksChannel.cases.length;
+marksChannel.not_run = marksChannel.cases.filter((c) => !c.leg_ran).map((c) => c.quest);
+marksChannel.ok = marksRun.length > 0 && marksRun.every((c) => c.passed);
+// The call site, the same static assertion section D makes about `talkTo`, and labelled the same
+// way. The WORLD-side proof — a browser, a body in a room, a press on the interact button — is
+// under `reports/runs/W1-READABLES-R2/`.
+const takeBody = (engineSrc.split(/\n {2}_takePropPending\(\) \{\n/)[1] || '').split(/\n {2}\}\n/)[0];
+marksChannel.call_site = {
+  where: 'game/src/engine.js#_takePropPending()',
+  calls_learn_from: /questEngine\.learnFrom\(\s*'place'/.test(takeBody),
+  spawns_marks: /_ensureProvinceMarks\(\)/.test(engineSrc) && /_siteMarksIn\('interior'/.test(engineSrc),
+  note: 'static assertion; the world-side proof is a browser run under reports/runs/W1-READABLES-R2/',
+};
+
 // ---------------------------------------------------------------- report
 const report = {
   schema: 'elder-souls/reveal-route-audit@1',
@@ -523,6 +669,7 @@ const report = {
   coupling,
   end_to_end: e2e,
   people_channel: people,
+  mark_channel: marksChannel,
   person_routes_with_no_such_npc: personSourceMissing,
   unrouted_rows: unrouted,
 };
@@ -552,6 +699,20 @@ else {
   for (const r of noPlace) console.log(`         ${r.quest.padEnd(12)} ${r.reveal.padEnd(26)} ${r.source}`);
   console.log(`       no document of that id anywhere in game/data/books/** . ${noText.length}`);
   for (const r of noText) console.log(`         ${r.quest.padEnd(12)} ${r.reveal.padEnd(26)} ${r.source}`);
+  // W1-READABLES round 2 section A.3 — the same census for the marks.
+  const markRows = rows.filter((r) => CHANNEL_READERS[r.channel] === 'place');
+  const noMark = markRows.filter((r) => !r.mark_exists);
+  const noStand = markRows.filter((r) => r.mark_exists && !r.mark_placed);
+  console.log(`\n     environment channel, demanded rows ...................... ${markRows.length}`);
+  console.log(`       a mark that exists AND stands somewhere reachable ..... ${markRows.filter((r) => r.routed).length}`);
+  console.log(`       named a mark that stands nowhere ...................... ${noStand.length}`);
+  for (const r of noStand) console.log(`         ${r.quest.padEnd(12)} ${r.reveal.padEnd(26)} ${r.source}`);
+  console.log(`       no mark of that id in world/readables/site-marks.json . ${noMark.length}`);
+  for (const r of noMark) console.log(`         ${r.quest.padEnd(12)} ${r.reveal.padEnd(26)} ${r.source}`);
+  if (markProblems.length) {
+    console.log(`       marks REJECTED by the placement rule .................. ${markProblems.length}`);
+    for (const m of markProblems) console.log(`         ${m}`);
+  }
   console.log(`\n     quests with EVERY resolution blocked ........ ${blockedQuests.length}`);
   for (const b of blockedQuests) console.log(`       ${b.id.padEnd(12)} ${b.resolutions} resolutions, 0 reachable   [${b.file}]`);
   console.log(`\n  B. coupling test — does a PLAYED world_flag reach the hook table?`);
@@ -606,6 +767,19 @@ else {
   }
 }
 
+if (!JSON_OUT) {
+  console.log(`\n  E. the environment channel — look at the mark the file names, does the gate stop refusing?`);
+  console.log(`     quests with an environment reveal whose mark exists ... ${marksChannel.legs_total}`);
+  console.log(`     legs RUN (the gate refused by name before the act) .... ${marksChannel.legs_run}`);
+  for (const c of marksChannel.cases.filter((x) => x.leg_ran)) {
+    console.log(`       ${c.quest.padEnd(11)} look at ${c.sources.join(', ').padEnd(46)} refusals ${c.refusals_before} -> ${c.refusals_after}  ${c.passed ? 'PASS' : 'FAIL'}`);
+  }
+  if (marksChannel.not_run.length) console.log(`     not run (no resolution names the reveal): ${marksChannel.not_run.length} — ${marksChannel.not_run.slice(0, 8).join(', ')}${marksChannel.not_run.length > 8 ? ' …' : ''}`);
+  console.log(`     Engine._takePropPending() calls learnFrom('place') ..... ${marksChannel.call_site.calls_learn_from}  (static; browser proof under reports/runs/W1-READABLES-R2/)`);
+  console.log(`     the engine spawns marks into rooms and the province .... ${marksChannel.call_site.spawns_marks}`);
+  console.log(`     every run leg passes ................................... ${marksChannel.ok}`);
+}
+
 const outDir = path.join(ROOT, 'reports/runs/W1-19-R3');
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, 'reveal-route-audit.json'), JSON.stringify(report, null, 2));
@@ -614,5 +788,7 @@ console.log(`\nwrote reports/runs/W1-19-R3/reveal-route-audit.json`);
 // `--falsify no-router` INVERTS the verdict for section D: the arm is a success when every leg
 // goes red, so a run that still passes there is the failure.
 const ok = report.unrouted === 0 && coupling.coupled && e2e.ok
-  && (NO_ROUTER ? peopleRun.every((c) => !c.passed) : (people.ok && people.call_site.calls_learn_from));
+  && (NO_ROUTER ? peopleRun.every((c) => !c.passed) : (people.ok && people.call_site.calls_learn_from))
+  && (NO_ROUTER ? marksRun.every((c) => !c.passed)
+    : (marksChannel.ok && marksChannel.call_site.calls_learn_from && marksChannel.call_site.spawns_marks));
 process.exit(ok ? 0 : 1);

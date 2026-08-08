@@ -45,17 +45,17 @@
       "note": "W1-DLG-SHADOWS. The sapcutter (CF-D017 pos A) info carries `d:20`, added for the same reason as reading-the-count's note in this file: it tied on specificity against 50-mainline.json's ungated sapcutter info for this id ('The yards want the leases read...') and, loading second (50-mainline.json < 70-disputes.json), was permanently unreachable regardless of context. `d:20` makes the dispute stance reachable once earned rather than silently dead.",
       "infos": [
         {
-          "a": "rootkeeper",
-          "cf": "CF-D017",
-          "pos": "B",
-          "x": "The old terms say depth and season and they say nothing at all about selling, supplicant, and the man who wrote that down calls the silence a permission. It is not a permission. It is four hundred years of the sentence never being needed, and he has read the gap in it as a door."
-        },
-        {
           "a": "sapcutter",
           "cf": "CF-D017",
           "pos": "A",
           "d": 20,
           "x": "Friend, this one was taught the depth and this one was taught the season, and this one keeps both. What the buyer does after is between the buyer and his own tree. Show this one the clause that says otherwise and this one will read it."
+        },
+        {
+          "a": "rootkeeper",
+          "cf": "CF-D017",
+          "pos": "B",
+          "x": "The old terms say depth and season and they say nothing at all about selling, supplicant, and the man who wrote that down calls the silence a permission. It is not a permission. It is four hundred years of the sentence never being needed, and he has read the gap in it as a door."
         }
       ]
     },
@@ -114,16 +114,6 @@
           "x": "The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you."
         },
         {
-          "cf": "CF-D008",
-          "pos": "A",
-          "x": "It's against the law here, full stop. Whatever happens on the water answers to a different law, not this one."
-        },
-        {
-          "cf": "CF-D008",
-          "pos": "B",
-          "x": "There's a column for it in the Wet Ledger, and everyone who signs a manifest here has seen it. The polite word is not the one used at the yard."
-        },
-        {
           "a": "sapcutter",
           "cf": "CF-D028",
           "pos": "A",
@@ -134,6 +124,17 @@
           "cf": "CF-D028",
           "pos": "B",
           "x": "It came off a man on the number-four gang, once, eleven winters back, bought clear for silver that took his whole house to raise. Bought is not free. It is also not never."
+        },
+        {
+          "cf": "CF-D008",
+          "pos": "B",
+          "x": "There's a column for it in the Wet Ledger, and everyone who signs a manifest here has seen it. The polite word is not the one used at the yard.",
+          "a": "merchant"
+        },
+        {
+          "cf": "CF-D008",
+          "pos": "A",
+          "x": "It's against the law here, full stop. Whatever happens on the water answers to a different law, not this one."
         }
       ]
     },
@@ -159,17 +160,17 @@
       "note": "W1-DLG-SHADOWS. The archivist (CF-D018 pos B) info carries `d:20`, added so it stops tying against 50-mainline.json's ungated archivist info for this same id ('Hosk-Vei can read the Count...') — same actor, neither side previously carried a requires/cell/d, so `infoFor()`'s score was an exact tie and Map iteration order (50-mainline.json loads before 70-disputes.json) made the dispute stance permanently unreachable from this archivist regardless of context, defeating RI-LOR06's requirement that a registered dispute be heard from a real, qualified speaker. `d:20` makes the two deterministic instead of order-dependent: the practical fact answers below that trust threshold, the archivist's dispute position once the player has earned it.",
       "infos": [
         {
-          "a": "notary",
-          "cf": "CF-D018",
-          "pos": "A",
-          "x": "Boundary stones. The Assize has taken them as boundary stones in evidence twice. And a stone the court has read as a boundary is a boundary, whatever it was cut for. Would you argue that in front of a notary?"
-        },
-        {
           "a": "archivist",
           "cf": "CF-D018",
           "pos": "B",
           "d": 20,
           "x": "They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the object was, which is the wrong order of operations and produced the right number anyway. A boundary stone marks one place. These count."
+        },
+        {
+          "a": "notary",
+          "cf": "CF-D018",
+          "pos": "A",
+          "x": "Boundary stones. The Assize has taken them as boundary stones in evidence twice. And a stone the court has read as a boundary is a boundary, whatever it was cut for. Would you argue that in front of a notary?"
         }
       ]
     },

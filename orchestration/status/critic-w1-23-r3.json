@@ -1,0 +1,22 @@
+{
+  "task_id": "critic-w1-23-r3",
+  "title": "CRITIC round 3 — W1-23: lore, the library, and the province's canon",
+  "status": "in_progress",
+  "started": "2026-08-08",
+  "restarted": "2026-08-08 — previous attempt died on an infrastructure error; this run starts clean and re-derives every number rather than inheriting it",
+  "commit": "6c979e36bdf411b8dd665fa49d1e753cc4eeeae3",
+  "method": "TEXT task. No browser unless CONSUMPTION genuinely needs one (RULES #21 gate first). Every figure taken by running the shipped engine modules (converse.js, world/canon.js) against game/data, plus a fresh instrument.",
+  "next_step": "A: count texts with a tool + read >=8 end to end, judge prose with quotes. B: prose-tic count. C: contradiction pairs. D: CONSUMPTION perturbation against today's dialogue tree (468 topics / 1283 infos). E: blind pack check for the redaction tell that voided r4.",
+  "files_touched": [
+    "orchestration/status/critic-w1-23-r3.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-23-r3.md",
+    "corpus/90-verdicts/wave1/W1-23-r3.json",
+    "tools/lore/critic-w1-23-r3.mjs",
+    "tools/lore/critic-w1-23-r3-prose.mjs",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-23-r2", "W1-23-r1"],
+  "notes": "Prior attempt left a 429-line tools/lore/critic-w1-23-r3.mjs on disk. Treated as untrusted draft: re-read and re-verified before any number from it is used."
+}

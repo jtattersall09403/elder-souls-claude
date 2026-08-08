@@ -10,6 +10,15 @@
       "settlement": "thorn",
       "infos": [
         {
+          "a": "mudborn",
+          "cell": "thorn",
+          "d": 10,
+          "x": "It is the poorest place I have ever begged in and the only one where a woman came out of a hall to give me something, dry-one, and it was fish, and it was all they had.",
+          "to": [
+            "the-rotted-hall"
+          ]
+        },
+        {
           "a": "legionary",
           "cell": "thorn",
           "x": "Eleven households and a hall. The king is real. The charter is real. And don't laugh in front of him.",
@@ -36,15 +45,6 @@
           "to": [
             "the-needle-forest",
             "the-tenth"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "cell": "thorn",
-          "d": 10,
-          "x": "It is the poorest place I have ever begged in and the only one where a woman came out of a hall to give me something, dry-one, and it was fish, and it was all they had.",
-          "to": [
-            "the-rotted-hall"
           ]
         }
       ]
@@ -78,6 +78,15 @@
       "actor_topic": true,
       "infos": [
         {
+          "a": "mudborn",
+          "cell": "thorn",
+          "d": 10,
+          "x": "He knows every person in this place by the name their mother used, dry-one. A king doesn't do that. A man with eleven households left does.",
+          "to": [
+            "the-tenth"
+          ]
+        },
+        {
           "a": "archivist",
           "cell": "thorn",
           "x": "The king, and the title is not a courtesy: the instrument is in the annexe at Gideon and it is valid, and he can recite the clause that makes it so, and he will, at length, and he is correct.",
@@ -94,15 +103,6 @@
           "to": [
             "the-drowning-at-the-ford"
           ]
-        },
-        {
-          "a": "mudborn",
-          "cell": "thorn",
-          "d": 10,
-          "x": "He knows every person in this place by the name their mother used, dry-one. A king doesn't do that. A man with eleven households left does.",
-          "to": [
-            "the-tenth"
-          ]
         }
       ]
     },
@@ -111,6 +111,15 @@
       "settlement": "thorn",
       "infos": [
         {
+          "a": "magister",
+          "d": 20,
+          "x": "If a column had been lost at that ford, provincial, House Dres would have a record of it. House Dres has a record of it.",
+          "to": [
+            "house-dres",
+            "the-arnesian-war"
+          ]
+        },
+        {
           "a": "archivist",
           "cell": "thorn",
           "x": "The king's ancestors are said to have drowned a Dres column at the ford in the Arnesian War, and the account is unattested in any Imperial source and is contradicted by none, and the ford is exactly where it would have had to be.",
@@ -118,15 +127,6 @@
             "the-arnesian-war",
             "the-weeping-ford",
             "house-dres"
-          ]
-        },
-        {
-          "a": "magister",
-          "d": 20,
-          "x": "If a column had been lost at that ford, provincial, House Dres would have a record of it. House Dres has a record of it.",
-          "to": [
-            "house-dres",
-            "the-arnesian-war"
           ]
         }
       ]
@@ -152,20 +152,20 @@
       "actor_topic": true,
       "infos": [
         {
-          "a": "legionary",
-          "cell": "thorn",
-          "x": "The warden. Not ours. Not the king's either, whatever he says. She keeps the path through the needles.",
-          "to": [
-            "the-needle-forest",
-            "the-one-path"
-          ]
-        },
-        {
           "a": "mudborn",
           "cell": "thorn",
           "d": 10,
           "x": "She walks the path every day whether there's traffic on it or not, dry-one. I asked her why once, and she said a path you don't walk stops being one.",
           "to": [
+            "the-one-path"
+          ]
+        },
+        {
+          "a": "legionary",
+          "cell": "thorn",
+          "x": "The warden. Not ours. Not the king's either, whatever he says. She keeps the path through the needles.",
+          "to": [
+            "the-needle-forest",
             "the-one-path"
           ]
         }
@@ -233,6 +233,17 @@
       "settlement": "soulrest",
       "infos": [
         {
+          "a": "rootkeeper",
+          "cell": "soulrest",
+          "d": 20,
+          "x": "The well stopped in my mother's time and the tending did not, supplicant. There is no need to look for another explanation of this village. There is not another one.",
+          "to": [
+            "the-dead-well",
+            "the-covenant",
+            "the-tide-turn-walk"
+          ]
+        },
+        {
           "a": "mudborn",
           "cell": "soulrest",
           "d": 10,
@@ -253,17 +264,6 @@
           ]
         },
         {
-          "a": "rootkeeper",
-          "cell": "soulrest",
-          "d": 20,
-          "x": "The well stopped in my mother's time and the tending did not, supplicant. There is no need to look for another explanation of this village. There is not another one.",
-          "to": [
-            "the-dead-well",
-            "the-covenant",
-            "the-tide-turn-walk"
-          ]
-        },
-        {
           "a": "sapcutter",
           "cell": "soulrest",
           "x": "Salt, bone, nothing. Friend, this one comes twice a year out of habit. What brings you?",
@@ -279,20 +279,20 @@
       "settlement": "soulrest",
       "infos": [
         {
-          "a": "sapcutter",
-          "cell": "soulrest",
-          "x": "Cut squares in the flat. Sun does the rest. Friend, it's the only wage here. Are you looking for one?",
-          "to": [
-            "the-silted-bay"
-          ]
-        },
-        {
           "a": "mudborn",
           "cell": "soulrest",
           "d": 10,
           "x": "It's honest work in that you can't be cheated about how much salt there is, dry-one. And it's dishonest work in that the factor sets the price, and there's one factor.",
           "to": [
             "the-quiet-ledgerman"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "cell": "soulrest",
+          "x": "Cut squares in the flat. Sun does the rest. Friend, it's the only wage here. Are you looking for one?",
+          "to": [
+            "the-silted-bay"
           ]
         }
       ]
@@ -317,16 +317,6 @@
       "settlement": "soulrest",
       "infos": [
         {
-          "a": "sapcutter",
-          "cell": "soulrest",
-          "d": 20,
-          "x": "They dig the old ground for bone and it sells. Friend, don't ask whose. And don't buy any!",
-          "to": [
-            "the-organ-market",
-            "the-old-ground"
-          ]
-        },
-        {
           "a": "rootkeeper",
           "cell": "soulrest",
           "d": 30,
@@ -334,6 +324,16 @@
           "to": [
             "the-old-ground",
             "the-blood-price"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "cell": "soulrest",
+          "d": 20,
+          "x": "They dig the old ground for bone and it sells. Friend, don't ask whose. And don't buy any!",
+          "to": [
+            "the-organ-market",
+            "the-old-ground"
           ]
         }
       ]
@@ -360,16 +360,6 @@
       "settlement": "soulrest",
       "infos": [
         {
-          "a": "mudborn",
-          "cell": "soulrest",
-          "d": 10,
-          "x": "Every one of them walks down at the turn and stands at the dead well and walks back, dry-one, and it is the most frightening thing I have seen in this province and there is nothing frightening in it at all.",
-          "to": [
-            "the-dead-well",
-            "the-old-ground"
-          ]
-        },
-        {
           "a": "rootkeeper",
           "cell": "soulrest",
           "d": 25,
@@ -377,6 +367,16 @@
           "to": [
             "the-covenant",
             "the-dead-well"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "cell": "soulrest",
+          "d": 10,
+          "x": "Every one of them walks down at the turn and stands at the dead well and walks back, dry-one, and it is the most frightening thing I have seen in this province and there is nothing frightening in it at all.",
+          "to": [
+            "the-dead-well",
+            "the-old-ground"
           ]
         }
       ]

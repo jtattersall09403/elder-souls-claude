@@ -31,6 +31,15 @@
       "note": "jeeh-ei, in the barge hold, before the player has a name. The one topic answered by somebody with nothing to gain from answering.",
       "infos": [
         {
+          "a": "dockhand",
+          "d": 20,
+          "x": "The hold of a writ barge. It is not a prison, they will tell you, because a prison would want a charge written down. It is a room that goes where the Office sends it.",
+          "to": [
+            "the-writ-house",
+            "the-provincial-office"
+          ]
+        },
+        {
           "a": "villager",
           "cell": "barge-hold",
           "requires": {
@@ -55,15 +64,6 @@
           ]
         },
         {
-          "a": "dockhand",
-          "d": 20,
-          "x": "The hold of a writ barge. It is not a prison, they will tell you, because a prison would want a charge written down. It is a room that goes where the Office sends it.",
-          "to": [
-            "the-writ-house",
-            "the-provincial-office"
-          ]
-        },
-        {
           "a": "townsman",
           "x": "The hold is where they keep people who are being moved rather than held. There is a difference on the paper and there is no difference in the room.",
           "to": [
@@ -76,6 +76,15 @@
       "id": "your-hatch-name",
       "note": "jeeh-ei. RI-CHR02's naming question, asked by a person instead of by a menu.",
       "infos": [
+        {
+          "a": "clerk",
+          "d": 30,
+          "x": "The Office calls it a preferred appellation. There is a column for it on the intake sheet and the column is four characters wide. Mine does not fit in four characters. Does yours?",
+          "to": [
+            "the-hatch-name-list",
+            "the-writ-house"
+          ]
+        },
         {
           "a": "villager",
           "requires": {
@@ -105,15 +114,6 @@
           ]
         },
         {
-          "a": "clerk",
-          "d": 30,
-          "x": "The Office calls it a preferred appellation. There is a column for it on the intake sheet and the column is four characters wide. Mine does not fit in four characters. Does yours?",
-          "to": [
-            "the-hatch-name-list",
-            "the-writ-house"
-          ]
-        },
-        {
           "a": "townsman",
           "x": "A hatch-name. What the Saxhleel are called by their own before anyone writes anything down. Ask one of them and you will be told; ask a scribe and you will be told what it costs to change it.",
           "to": [
@@ -128,20 +128,20 @@
       "infos": [
         {
           "a": "clerk",
-          "cell": "writ-house",
-          "x": "This one? This one is yours. A writ of works: it says the Provincial Office has an interest in your labour, and that the interest is satisfied at a date the writ does not name. Four lines, and one of them is a date, and the date is blank. Have you read it yourself yet?",
-          "to": [
-            "the-writ-of-passage",
-            "what-we-do-with-the-writs"
-          ]
-        },
-        {
-          "a": "clerk",
           "d": 35,
           "x": "You want to know whether it's lawful. It is lawful. Everything difficult about it is lawful. The part that isn't lawful is that the amendment book has been open at the same page for two years and no one has signed the other side of it.",
           "to": [
             "writ-amendment",
             "the-provincial-office"
+          ]
+        },
+        {
+          "a": "clerk",
+          "cell": "writ-house",
+          "x": "This one? This one is yours. A writ of works: it says the Provincial Office has an interest in your labour, and that the interest is satisfied at a date the writ does not name. Four lines, and one of them is a date, and the date is blank. Have you read it yourself yet?",
+          "to": [
+            "the-writ-of-passage",
+            "what-we-do-with-the-writs"
           ]
         },
         {
@@ -167,6 +167,15 @@
       "note": "warden-scribe-tuleeh-ma. A Saxhleel clerk filling in writs for Saxhleel, which is the whole character in one topic.",
       "infos": [
         {
+          "a": "notary",
+          "d": 25,
+          "x": "Tuleeh-Ma keeps the Tidewrack intake. Cleanest hand in the province, and the only one who files the returns on the day they happen. The Office has never once looked at his books. He wants them looked at.",
+          "to": [
+            "the-list",
+            "the-provincial-office"
+          ]
+        },
+        {
           "a": "clerk",
           "cell": "writ-house",
           "requires": {
@@ -191,15 +200,6 @@
           ]
         },
         {
-          "a": "notary",
-          "d": 25,
-          "x": "Tuleeh-Ma keeps the Tidewrack intake. Cleanest hand in the province, and the only one who files the returns on the day they happen. The Office has never once looked at his books. He wants them looked at.",
-          "to": [
-            "the-list",
-            "the-provincial-office"
-          ]
-        },
-        {
           "a": "townsman",
           "x": "He writes down who comes off the barges. Someone has to. And if you'd rather it were no one at all, go and stand at Tidewrack for a morning and see what that looks like.",
           "to": [
@@ -212,15 +212,6 @@
       "id": "the-list",
       "note": "warden-scribe-tuleeh-ma. The intake roll — and the thing `the-shadowscale-list` is quietly not.",
       "infos": [
-        {
-          "a": "clerk",
-          "cell": "writ-house",
-          "x": "The intake roll. Every body off every barge, in the order they came up the stair, with the name they gave and the name the Office assigned beside it. Two columns, and it is the second one that follows you. I read it out at the top of the hour and you answer to whichever one I say.",
-          "to": [
-            "the-hatch-name-list",
-            "what-we-do-with-the-writs"
-          ]
-        },
         {
           "a": "clerk",
           "d": 40,
@@ -239,6 +230,15 @@
           ]
         },
         {
+          "a": "clerk",
+          "cell": "writ-house",
+          "x": "The intake roll. Every body off every barge, in the order they came up the stair, with the name they gave and the name the Office assigned beside it. Two columns, and it is the second one that follows you. I read it out at the top of the hour and you answer to whichever one I say.",
+          "to": [
+            "the-hatch-name-list",
+            "what-we-do-with-the-writs"
+          ]
+        },
+        {
           "a": "townsman",
           "x": "The intake list at Tidewrack. If your name is on it you came off a barge, and if you came off a barge there is a writ somewhere with your labour on it.",
           "to": [
@@ -252,6 +252,14 @@
       "id": "lukiul",
       "note": "warden-scribe-tuleeh-ma. The word for an Argonian raised among the Empire, said by one to a stranger. Ungated last row keeps it answerable to anyone who has heard it.",
       "infos": [
+        {
+          "a": "deep-elder",
+          "d": 30,
+          "x": "Lukiul. Tame. It is not a curse and I will not pretend it is a kindness. It means the ones who came back speaking the other language and could not say why the wells matter.",
+          "to": [
+            "the-lukiul-problem"
+          ]
+        },
         {
           "a": "clerk",
           "requires": {
@@ -278,14 +286,6 @@
           "to": [
             "the-lukiul-question",
             "the-lukiul"
-          ]
-        },
-        {
-          "a": "deep-elder",
-          "d": 30,
-          "x": "Lukiul. Tame. It is not a curse and I will not pretend it is a kindness. It means the ones who came back speaking the other language and could not say why the wells matter.",
-          "to": [
-            "the-lukiul-problem"
           ]
         },
         {

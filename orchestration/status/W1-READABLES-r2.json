@@ -1,0 +1,55 @@
+{
+  "task_id": "W1-READABLES-r2",
+  "role": "builder",
+  "item": "W1-READABLES",
+  "round": 2,
+  "state": "in_progress",
+  "started_at": "2026-08-08",
+  "brief": "Successor to W1-READABLES (killed mid-run by a container restart). The 73 quest reveals with no route. Build the missing sources — ledgers, letters, environment reveals — and route them through the existing reveal reader. Q-MAIN-06 must unblock.",
+  "headline": "WIP",
+  "next_step": "browser proof of the mark reader, then the mainline chain numbers",
+  "files_touched": [
+    "orchestration/status/W1-READABLES-r2.json",
+    "game/src/sim/quest/reveal-routes.js",
+    "game/src/engine.js",
+    "game/data/world/readables/site-marks.json",
+    "game/data/index.json",
+    "game/data/quests/blackmarsh-coast.json",
+    "game/data/quests/blackmarsh-core.json",
+    "game/data/quests/mainline-act1.json",
+    "game/data/quests/faction-wet-ledger.json",
+    "game/data/quests/faction-xul-aneekh.json",
+    "tools/quests/reveal-route-audit.mjs",
+    "game/data/books/the-papers-in-evidence.json",
+    "tools/readables/mk-papers.mjs",
+    "tools/check-quests.mjs",
+    "game/data/world/interiors/",
+    "reports/runs/W1-19-R3/reveal-route-audit.json"
+  ],
+  "files_claimed": [
+    "game/data/world/readables/",
+    "game/data/books/the-papers-in-evidence.json",
+    "game/data/world/places.json",
+    "game/src/sim/quest/reveal-routes.js",
+    "tools/quests/reveal-route-audit.mjs",
+    "reports/runs/W1-READABLES-R2/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "redundant_with": [
+    "W1-READABLES",
+    "W1-18-r2",
+    "W1-19-r3",
+    "W1-LIBRARY-r2"
+  ],
+  "notes": [
+    "SUCCESSOR. Predecessor W1-READABLES is `done` on disk with 58/121 routed; it wrote 9 documents and routed the document channels through `Engine._bookKnowledgeIndex()`. It did NOT write the remaining 24 document sources and did NOT build any environment reader. That is this round.",
+    "BEFORE, at e97347f: reveal-route-audit section A = 58 of 121 routed; environment 0 of 18 demanded; quests with EVERY resolution blocked 2 (Q-MAIN-11, Q-MAIN-15).",
+    "MARKS LANDED. 25 site marks in game/data/world/readables/site-marks.json; environment now 16 of 16 demanded routed (16 not 18 because Q-MAIN-05 rev_the_ink and Q-LEDG-11 rev_lamp were amended off the environment channel onto book/letter — both are papers and the tell is on the paper). Section A 58 -> 74. Quests with every resolution blocked 2 -> 0.",
+    "DOCUMENTS LANDED. 26 documents, 9,769 words, written by tools/readables/mk-papers.mjs and placed in 12 rooms by the same file. reveal-route-audit section A: 58 -> 100 of 121. ledger 9 -> 28 of 28, letter 1 -> 7 of 7, book 5 -> 6 of 6, environment 0 -> 16 of 16. Document rows with no text: 26 -> 0 demanded (12 undemanded rows remain unwritten and check-quests names them).",
+    "SECTION E, new: the environment channel played through a real QuestEngine. 15 legs run (the gate refused by name before the act), 15 pass, 0 fail. --falsify no-router takes 15/15 to 0/15.",
+    "NEW CONTENT CHECK, armed FAIL-CLOSED after the data existed (rule 13): check-quests now fails the commit on an environment reveal whose mark is missing, stands nowhere, is outside its room bounds, or is within 4 m of the room doorway. Silent on the shipped tree; proved red two ways on a copy at scratchpad/fx.",
+    "CONTENTION: the box went over its ceiling (exit 3) partway through. Offline work done first per rule 21."
+  ],
+  "start_commit": "e97347f"
+}

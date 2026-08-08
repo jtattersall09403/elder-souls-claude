@@ -25,6 +25,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 import { launchGame } from '../lib/browser.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -105,8 +106,15 @@ try {
 
 const tested = rows.filter((r) => r.on_deck_at_start);
 const leaked = tested.filter((r) => !r.held);
+const git = (() => {
+  try {
+    const q = (c) => execSync(c, { cwd: ROOT }).toString().trim();
+    return { commit: q('git rev-parse HEAD'), branch: q('git rev-parse --abbrev-ref HEAD'), dirty: q('git status --porcelain').length > 0 };
+  } catch { return null; }
+})();
 const doc = {
-  schema: 'w1-01/parapet@1',
+  schema: 'w1-01/parapet@2',
+  measured_at: new Date().toISOString(), git,
   method: 'stick held fully perpendicular to the deck bearing for ' + FRAMES + ' frames (' + (FRAMES / 60).toFixed(0)
     + ' s, ~' + (FRAMES / 60 * 2).toFixed(0) + ' m of push at walk speed) at the midpoint of every declared deck span, both sides',
   clamp_disabled: NOCLAMP,

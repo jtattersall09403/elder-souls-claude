@@ -225,10 +225,22 @@
   "takeable": true,
   "owner": "npc:blackrose-legionary-3"
  },
- "readable": {
-  "id": "blackrose-prison-readable",
-  "title": "The Chain On The Wall"
- },
+ "readable": [
+  {
+   "id": "blackrose-prison-readable",
+   "title": "The Chain On The Wall"
+  },
+  {
+   "id": "the-lease-register-third-hand",
+   "title": "The lease register, reconciled, third hand throughout",
+   "book": "the-lease-register-third-hand"
+  },
+  {
+   "id": "the-damp-four",
+   "title": "Four returns of the Prefect’s floor, water-marked, unbound",
+   "book": "the-damp-four"
+  }
+ ],
  "inhabitants": [],
  "anchor": "interior_cold",
  "open_h": 8,

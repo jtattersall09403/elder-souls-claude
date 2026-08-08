@@ -87,6 +87,18 @@
 export const CHANNEL_READERS = {
   talk_to_target: 'person',
   rival_npc: 'person',
+  // W1-READABLES round 2. `environment` says the source of the truth is a thing in the world,
+  // and until this round every one of its 27 rows named a place, a station or a mark that was
+  // not an object anywhere in the build. `game/data/world/readables/site-marks.json` is the
+  // object: a mark with a position, standing in a room or on the ground of the province, spawned
+  // through `Engine.spawnProp()` exactly as an inscription is. `Engine._takePropPending()` calls
+  // `learnFrom('place', mark.id)` when a player reaches for one.
+  //
+  // The kind is `place` rather than `mark` because what the quest files name is a PLACE — the
+  // shaft under the rib, the sixth intake, the post nobody stands on — and the mark is the thing
+  // there that carries the fact. A second mark at the same place would be a second route to the
+  // same reveal, which is a property worth keeping.
+  environment: 'place',
 };
 
 /**

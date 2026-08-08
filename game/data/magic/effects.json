@@ -533,10 +533,24 @@
    "governing_attribute": "INTELLECT",
    "weight": 2.4,
    "magnitude": {
-    "unit": "second",
+    "unit": "power",
     "min": 1,
     "max": 90,
     "output_per_point": 1.0
+   },
+   "summon": {
+    "archetype": "drowned_lesser",
+    "reference_magnitude": 20,
+    "scale_min": 0.25,
+    "scale_max": 4,
+    "exclusive": false,
+    "scales": [
+     "hp",
+     "stamina_max",
+     "armour_poise",
+     "attack_rating"
+    ],
+    "note": "MAGNITUDE IS THE THING'S STRENGTH, not a second duration. Round 3 shipped this dial declared and unread: a 1-point call and a 90-point call put the identical 260 hp body on the floor while focusBase() charged for the difference. power = clamp(magnitude / reference_magnitude, scale_min, scale_max), and sim/magic/apply.js bindHandler applies it to the spawned body. Nothing here touches a frame, a hitbox or a to-hit test (ARBITRATION S22 / AR-1): magnitude buys a BIGGER thing, never a faster one and never a chance."
    },
    "duration": {
     "allowed": true,
@@ -558,7 +572,7 @@
    "changes_traversal": false,
    "changes_quest_resolution": false,
    "status_buildup": null,
-   "notes": "A marsh thing unfolds out of the water. Never a portal flash. Ally obeys RI-AI01; counts toward encounter grouping.",
+   "notes": "A marsh thing unfolds out of the water. Never a portal flash. Ally obeys RI-AI01; counts toward encounter grouping. Magnitude is how strong the thing is; duration is how long it stays.",
    "reference_cost": {
     "at_magnitude": 20,
     "duration_s": 30,
@@ -573,10 +587,24 @@
    "governing_attribute": "INTELLECT",
    "weight": 4.2,
    "magnitude": {
-    "unit": "second",
+    "unit": "power",
     "min": 1,
     "max": 90,
     "output_per_point": 1.0
+   },
+   "summon": {
+    "archetype": "drowned_greater",
+    "reference_magnitude": 20,
+    "scale_min": 0.25,
+    "scale_max": 4,
+    "exclusive": true,
+    "scales": [
+     "hp",
+     "stamina_max",
+     "armour_poise",
+     "attack_rating"
+    ],
+    "note": "Same dial as bind_lesser on a heavier body (640 hp against 260). exclusive:true is this effect's own catalogue note - \"One at a time, game-wide. A second cast dismisses the first\" - which was written down for two rounds and read by nothing; bindHandler now despawns the standing greater summon and emits summon_dismissed."
    },
    "duration": {
     "allowed": true,
@@ -598,7 +626,7 @@
    "changes_traversal": false,
    "changes_quest_resolution": false,
    "status_buildup": null,
-   "notes": "One at a time, game-wide. A second cast dismisses the first.",
+   "notes": "One at a time, game-wide. A second cast dismisses the first - enforced in sim/magic/apply.js bindHandler via summon.exclusive. Magnitude is how strong the thing is; duration is how long it stays.",
    "reference_cost": {
     "at_magnitude": 20,
     "duration_s": 30,
@@ -2386,6 +2414,13 @@
     "min": 1,
     "max": 34,
     "output_per_point": 3.0
+   },
+   "flee": {
+    "speed_mps": 4.2,
+    "leash_m_per_point": 0.9,
+    "leash_min_m": 6,
+    "leash_max_m": 45,
+    "note": "THE READER IS MagicSystem.step's flee loop. Round 3 wrote b.fleeingUntil and c.fleeing and read neither anywhere in the build, so a demoralised body stood still in an IDLE pose and demoralise was calm_beast under another name - the last colliding pair in the census. leash_m = clamp(magnitude * leash_m_per_point, min, max) is also the reader for demoralise's magnitude dial, which was declared 1..34 at 3 points each, priced by focusBase(), and unread. speed_mps is a CONSTANT and is deliberately not scaled by magnitude: a spell's strength may buy distance, never a motion speed inside the fight (S22 / AR-1)."
    },
    "duration": {
     "allowed": true,

@@ -188,10 +188,17 @@
   "takeable": true,
   "owner": "npc:stormhold-publican-5"
  },
- "readable": {
-  "id": "stormhold-praetorium-readable",
-  "title": "Requests, Unanswered"
- },
+ "readable": [
+  {
+   "id": "stormhold-praetorium-readable",
+   "title": "Requests, Unanswered"
+  },
+  {
+   "id": "the-fourth-writ",
+   "title": "The fourth writ, and the three before it",
+   "book": "the-fourth-writ"
+  }
+ ],
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,

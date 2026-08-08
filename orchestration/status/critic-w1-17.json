@@ -1,0 +1,20 @@
+{
+  "task_id": "critic-w1-17",
+  "brief": "CRITIC round 1 over W1-17 — dialogue (topic graph, rumours, voice, CONSUMPTION)",
+  "state": "starting",
+  "started_at": "2026-08-08",
+  "measured_at_commit": "6c979e3 (working tree — W1-17 is uncommitted)",
+  "files_touched": [
+    "orchestration/status/critic-w1-17.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md",
+    "corpus/90-verdicts/wave1/W1-17-r1.json",
+    "tools/dialogue/critic-*",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": [],
+  "contention": "node tools/contention.mjs --gate returned exit 3 (5 browser instances, load 4.80/core). This is a text-only audit; I ran NO browser.",
+  "findings": [],
+  "next_step": "read ARBITRATION §3, RI-DLG items, INDEX; then reproduce build-graph, the filt() race claim, order-infos inertness, RumourBook perturbation; then READ THE PROSE."
+}

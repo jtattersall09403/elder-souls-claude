@@ -1,0 +1,48 @@
+{
+  "task_id": "critic-w1-21-r2",
+  "role": "critic",
+  "item": "W1-21",
+  "round": 2,
+  "state": "in_progress",
+  "started_at": "2026-08-08",
+  "base_commit": "e97347f",
+  "spec": "corpus/90-verdicts/wave1/W1-21-r1.md",
+  "title": "CRITIC — W1-21 round 2: controls and interface",
+  "next_step": "finish the three unrun-detector runs; run tools/ui/critic-w1-21-r2-a.mjs (B..G) when the contention gate goes GO; write the verdict",
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-21-r2.md",
+    "corpus/90-verdicts/wave1/W1-21-r2.json",
+    "orchestration/status/critic-w1-21-r2.json",
+    "tools/ui/critic-w1-21-r2-a.mjs",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/critic-w1-21-r2.json",
+    "tools/ui/critic-w1-21-r2-a.mjs"
+  ],
+  "redundant_with": ["W1-21-r2"],
+  "measured": [
+    {
+      "what": "the three detectors the builder edited and left UNRUN — launched first, as the brief requires",
+      "commit": "e97347f",
+      "tool": "tools/metrics/ui-metrics.mjs, tools/analysis/marker-diff.mjs, tools/analysis/ui-forbidden.mjs --self-test",
+      "result": "IN FLIGHT. ui-metrics interim: `map` produces 306 samples at 1280x720@1 and 1056 at @2 off a `hint` element — but the builder DECLARED `map` in NO_PROSE. FD8's own stale-declaration leg should therefore go red on the screen the round exists to add.",
+      "artifact": "reports/runs/CRITIC-W1-21-R2-UI-METRICS/, -MARKER-DIFF/, -UI-FORBIDDEN/",
+      "load": "3 of my browsers plus neighbours; 4-5 instances, loadavg 17-26 on 4 cores. Counts and booleans only; NO TIMING FIGURE IS PUBLISHED BY THIS VERDICT."
+    },
+    {
+      "what": "RI-UIX02 K1 (marker-scan) at HEAD, and its self-test",
+      "commit": "e97347f",
+      "tool": "tools/analysis/marker-scan.mjs",
+      "result": "K1 PASS — 0 hits, 1 declared exception. --self-test PASSED. But F6, the rule the widened PLACEMENT_ROOTS was 'paid for' with, is asserted BY THE BUILDER'S OWN SELF-TEST to be silent on `{id, quest, post:{pos}}` — the exact nesting the 302 exempted hits use.",
+      "artifact": "stdout",
+      "load": "node only, no browser"
+    }
+  ],
+  "not_done": [],
+  "notes": [
+    "Critic. Fresh context. No part of W1-21 round 2 built by me.",
+    "RULES 28 says do not commit; the dispatching brief instructs me to commit to the current branch. Following the brief and recording the tension here."
+  ]
+}

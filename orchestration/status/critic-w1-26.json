@@ -1,0 +1,23 @@
+{
+  "task_id": "critic-w1-26",
+  "role": "critic",
+  "piece": "W1-26",
+  "round": 2,
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "next_step": "read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only",
+  "files_touched": [
+    "orchestration/status/critic-w1-26.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-26-r2.md",
+    "corpus/90-verdicts/wave1/W1-26-r2.json",
+    "orchestration/status/critic-w1-26.json",
+    "tools/journey/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": [
+    "contention --gate returned WAIT at start (3 browser instances, load 4.83/core vs ceiling 4.0). Will prefer tools/capture pooled daemon; if I launch a browser I will say so here."
+  ]
+}

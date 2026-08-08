@@ -32,15 +32,6 @@
       "root": true,
       "infos": [
         {
-          "a": "legionary",
-          "f": "ninth-cohort",
-          "x": "Mine? Watch the wall. Count the boats. Write down what came off them. Half of it is lies. All of it goes in the manifest. Yours, citizen, I could not say.",
-          "to": [
-            "the-ninth-cohort",
-            "the-manifest"
-          ]
-        },
-        {
           "a": "rootkeeper",
           "f": "rootkeepers",
           "d": 30,
@@ -61,6 +52,23 @@
           ]
         },
         {
+          "a": "mudborn",
+          "d": 15,
+          "x": "I have no duties, dry-one, that is rather the difficulty with me, and if I had one I would keep it very carefully and not let it be known I had it, in case they took it back off me for a younger man.",
+          "to": [
+            "the-boards"
+          ]
+        },
+        {
+          "a": "legionary",
+          "f": "ninth-cohort",
+          "x": "Mine? Watch the wall. Count the boats. Write down what came off them. Half of it is lies. All of it goes in the manifest. Yours, citizen, I could not say.",
+          "to": [
+            "the-ninth-cohort",
+            "the-manifest"
+          ]
+        },
+        {
           "a": "sapcutter",
           "x": "This one buys. This one sells. Cart in the morning, cart at night. And it has been the same cart for nine years, friend.",
           "to": [
@@ -75,14 +83,6 @@
             "the-provincial-office",
             "the-catalogue"
           ]
-        },
-        {
-          "a": "mudborn",
-          "d": 15,
-          "x": "I have no duties, dry-one, that is rather the difficulty with me, and if I had one I would keep it very carefully and not let it be known I had it, in case they took it back off me for a younger man.",
-          "to": [
-            "the-boards"
-          ]
         }
       ]
     },
@@ -92,11 +92,12 @@
       "root": true,
       "infos": [
         {
-          "a": "archivist",
-          "x": "Yours or mine? Mine is a chapel school in Cyrodiil and twenty-one years of other people's paperwork, which is a background in the sense that a wall is a view. Yours the Office will have written down somewhere, and it will be wrong in one particular, and you will never find out which.",
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "I was hatched at the third well and I was given to it before I was named. It is done less now than it was done then. The not-doing of it is one of the reasons the sap runs thin.",
           "to": [
-            "the-provincial-office",
-            "the-charter"
+            "the-sapwells",
+            "the-naming"
           ]
         },
         {
@@ -108,12 +109,11 @@
           ]
         },
         {
-          "a": "rootkeeper",
-          "d": 30,
-          "x": "I was hatched at the third well and I was given to it before I was named. It is done less now than it was done then. The not-doing of it is one of the reasons the sap runs thin.",
+          "a": "archivist",
+          "x": "Yours or mine? Mine is a chapel school in Cyrodiil and twenty-one years of other people's paperwork, which is a background in the sense that a wall is a view. Yours the Office will have written down somewhere, and it will be wrong in one particular, and you will never find out which.",
           "to": [
-            "the-sapwells",
-            "the-naming"
+            "the-provincial-office",
+            "the-charter"
           ]
         },
         {
@@ -138,6 +138,26 @@
       "root": true,
       "infos": [
         {
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "d": 25,
+          "x": "Helstrom is not laid out, supplicant, it is grown, and a place in it is described by which root you are under rather than which street you are on, so tell me what you are looking for and I will tell you which root.",
+          "to": [
+            "helstrom",
+            "the-great-hist"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "cell": "soulrest",
+          "d": 15,
+          "x": "There is not much of Soulrest left to be specific about, dry-one, but if you want the salt pans they are south past the dead well, and if you want the dead well it is where they are all standing about not looking at it.",
+          "to": [
+            "soulrest",
+            "the-dead-well"
+          ]
+        },
+        {
           "a": "legionary",
           "cell": "stormhold",
           "x": "Name it and I will point. Stormhold is four streets and a wall. You cannot get lost. People do.",
@@ -152,16 +172,6 @@
           "to": [
             "lilmoth",
             "the-drowned-quarter"
-          ]
-        },
-        {
-          "a": "rootkeeper",
-          "cell": "helstrom",
-          "d": 25,
-          "x": "Helstrom is not laid out, supplicant, it is grown, and a place in it is described by which root you are under rather than which street you are on, so tell me what you are looking for and I will tell you which root.",
-          "to": [
-            "helstrom",
-            "the-great-hist"
           ]
         },
         {
@@ -192,16 +202,6 @@
           ]
         },
         {
-          "a": "mudborn",
-          "cell": "soulrest",
-          "d": 15,
-          "x": "There is not much of Soulrest left to be specific about, dry-one, but if you want the salt pans they are south past the dead well, and if you want the dead well it is where they are all standing about not looking at it.",
-          "to": [
-            "soulrest",
-            "the-dead-well"
-          ]
-        },
-        {
           "a": "legionary",
           "cell": "thorn",
           "x": "The hall. The gate. The needle-forest. Walk the boards, citizen. Not the ground.",
@@ -225,6 +225,32 @@
       "root": true,
       "infos": [
         {
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "d": 25,
+          "x": "Every person in Helstrom is written on the root they were given to, supplicant, so a name is not enough here and never has been; bring me the name and the well and I will bring you the person.",
+          "to": [
+            "the-naming",
+            "the-great-hist"
+          ]
+        },
+        {
+          "a": "magister",
+          "d": 20,
+          "x": "If the person is worth knowing, provincial, I already correspond with them. If they are not, I would not waste your time or, more to the point, mine.",
+          "to": [
+            "house-dres"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 15,
+          "x": "I know most people by their boots, dry-one. It isn't as useless as you think. A man who's had the same boots resoled four times is a man who's staying, and a man with new ones has just been paid for something.",
+          "to": [
+            "the-boards"
+          ]
+        },
+        {
           "a": "sapcutter",
           "cell": "lilmoth",
           "x": "This one knows every buyer. Friend, say a name. If they sell, this one knows them twice.",
@@ -243,38 +269,12 @@
           ]
         },
         {
-          "a": "rootkeeper",
-          "cell": "helstrom",
-          "d": 25,
-          "x": "Every person in Helstrom is written on the root they were given to, supplicant, so a name is not enough here and never has been; bring me the name and the well and I will bring you the person.",
-          "to": [
-            "the-naming",
-            "the-great-hist"
-          ]
-        },
-        {
           "a": "archivist",
           "cell": "gideon",
           "x": "The chapel keeps a roll of the tithed and the Office keeps a roll of the taxed, and the interesting people in Gideon are on precisely one of the two. Give me a name and I will tell you which of the two rolls it is on. That will tell you rather more than the name did.",
           "to": [
             "gideon",
             "the-tithe-roll"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "d": 15,
-          "x": "I know most people by their boots, dry-one. It isn't as useless as you think. A man who's had the same boots resoled four times is a man who's staying, and a man with new ones has just been paid for something.",
-          "to": [
-            "the-boards"
-          ]
-        },
-        {
-          "a": "magister",
-          "d": 20,
-          "x": "If the person is worth knowing, provincial, I already correspond with them. If they are not, I would not waste your time or, more to the point, mine.",
-          "to": [
-            "house-dres"
           ]
         }
       ]
@@ -285,13 +285,13 @@
       "root": true,
       "infos": [
         {
-          "a": "legionary",
-          "cell": "stormhold",
-          "x": "Cohort quartermaster for arms. Ledger house for coin. Physician on the wall street. Nothing here is cheap, citizen.",
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "d": 30,
+          "x": "What is given at the well is not a service and is not paid for, supplicant, and if you have come to buy healing you have come to the wrong root and should be told so before you are embarrassed in front of people.",
           "to": [
-            "stormhold",
-            "the-wet-ledger",
-            "the-quartermaster"
+            "the-sapwells",
+            "the-covenant"
           ]
         },
         {
@@ -305,13 +305,22 @@
           ]
         },
         {
-          "a": "rootkeeper",
-          "cell": "helstrom",
-          "d": 30,
-          "x": "What is given at the well is not a service and is not paid for, supplicant, and if you have come to buy healing you have come to the wrong root and should be told so before you are embarrassed in front of people.",
+          "a": "mudborn",
+          "cell": "soulrest",
+          "d": 10,
+          "x": "Soulrest has a salt factor and a woman who sets bones, dry-one. The salt factor won't see you and the bone-setter will. Between them, there's nothing else this place can still do for a person.",
           "to": [
-            "the-sapwells",
-            "the-covenant"
+            "soulrest"
+          ]
+        },
+        {
+          "a": "legionary",
+          "cell": "stormhold",
+          "x": "Cohort quartermaster for arms. Ledger house for coin. Physician on the wall street. Nothing here is cheap, citizen.",
+          "to": [
+            "stormhold",
+            "the-wet-ledger",
+            "the-quartermaster"
           ]
         },
         {
@@ -321,15 +330,6 @@
           "to": [
             "gideon",
             "the-provincial-office"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "cell": "soulrest",
-          "d": 10,
-          "x": "Soulrest has a salt factor and a woman who sets bones, dry-one. The salt factor won't see you and the bone-setter will. Between them, there's nothing else this place can still do for a person.",
-          "to": [
-            "soulrest"
           ]
         },
         {
@@ -346,29 +346,6 @@
       "name": "my trade",
       "root": true,
       "infos": [
-        {
-          "a": "sapcutter",
-          "x": "Sap. Salt. Dye. Whatever weighs less than it sells for. This one does not ask where a bundle slept.",
-          "to": [
-            "the-sap-cutters",
-            "hist-sap"
-          ]
-        },
-        {
-          "a": "archivist",
-          "x": "Records, which is not a trade so much as an accusation people make about me. In practice it is reconciliation: two documents about the same barge, disagreeing, and a decision about which of them the Empire will believe for the next thirty years.",
-          "to": [
-            "the-catalogue",
-            "the-manifest"
-          ]
-        },
-        {
-          "a": "legionary",
-          "x": "Soldiering. Nine years of it here. The trade is standing still. Everything else is training.",
-          "to": [
-            "the-ninth-cohort"
-          ]
-        },
         {
           "a": "rootkeeper",
           "d": 25,
@@ -392,6 +369,29 @@
           "to": [
             "the-boards"
           ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Sap. Salt. Dye. Whatever weighs less than it sells for. This one does not ask where a bundle slept.",
+          "to": [
+            "the-sap-cutters",
+            "hist-sap"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "Records, which is not a trade so much as an accusation people make about me. In practice it is reconciliation: two documents about the same barge, disagreeing, and a decision about which of them the Empire will believe for the next thirty years.",
+          "to": [
+            "the-catalogue",
+            "the-manifest"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "Soldiering. Nine years of it here. The trade is standing still. Everything else is training.",
+          "to": [
+            "the-ninth-cohort"
+          ]
         }
       ]
     },
@@ -400,24 +400,6 @@
       "name": "little advice",
       "root": true,
       "infos": [
-        {
-          "a": "legionary",
-          "cell": "stormhold",
-          "x": "Do not draw in the street. Do not argue with a writ. Pay the gate fee. It is smaller than the fine.",
-          "to": [
-            "stormhold",
-            "the-gate-fee"
-          ]
-        },
-        {
-          "a": "sapcutter",
-          "cell": "lilmoth",
-          "x": "Lilmoth advice? Never take the low stair at high water. Friend, this one has seen it close.",
-          "to": [
-            "lilmoth",
-            "tide-law"
-          ]
-        },
         {
           "a": "mudborn",
           "cell": "archon",
@@ -438,19 +420,37 @@
           ]
         },
         {
-          "a": "archivist",
-          "x": "Carry a written thing with a seal on it. It need not be relevant. The Cohort is generally unable to read the interior dialect of Imperial legal hand, and the assumption that a sealed document must be important survives contact with the evidence remarkably well.",
-          "to": [
-            "the-charter",
-            "the-ninth-cohort"
-          ]
-        },
-        {
           "a": "magister",
           "d": 20,
           "x": "Should you wish to survive the interior, provincial, do not accept water. Everything else you will work out or you will not.",
           "to": [
             "the-deep-marshes"
+          ]
+        },
+        {
+          "a": "legionary",
+          "cell": "stormhold",
+          "x": "Do not draw in the street. Do not argue with a writ. Pay the gate fee. It is smaller than the fine.",
+          "to": [
+            "stormhold",
+            "the-gate-fee"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "cell": "lilmoth",
+          "x": "Lilmoth advice? Never take the low stair at high water. Friend, this one has seen it close.",
+          "to": [
+            "lilmoth",
+            "tide-law"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "Carry a written thing with a seal on it. It need not be relevant. The Cohort is generally unable to read the interior dialect of Imperial legal hand, and the assumption that a sealed document must be important survives contact with the evidence remarkably well.",
+          "to": [
+            "the-charter",
+            "the-ninth-cohort"
           ]
         },
         {

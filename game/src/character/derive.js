@@ -99,9 +99,33 @@ export function spellSlotsFor(wil) {
   return n;
 }
 
-/** STRENGTH → max equip load. RI-PRG02 §1: the one uncapped return. */
-export function equipLoadMaxFor(str) {
-  return round1(40 + clamp(str, 1, 99) * 2.2);
+/**
+ * STRENGTH and ENDURANCE → max equip load. RI-PRG07 §1, verbatim:
+ *
+ *     maxLoad = 45 + 1.50 x STRENGTH + 0.50 x ENDURANCE
+ *
+ * W1-16 round 2. This read `40 + 2.2 x STRENGTH` and its comment cited RI-PRG02 §1 for it.
+ * RI-PRG02 does not state a curve — its row 3 says "**Max equip load** (RI-PRG07)", i.e. it
+ * defers — so the shipped formula matched no item in the corpus and had no provenance. It is
+ * not a seam and there is nothing to re-litigate: RI-PRG07 §1 is the only statement of this
+ * number and this is now it.
+ *
+ * Two things were wrong, and the second is the one that mattered:
+ *   * The §1 grid missed by up to 13% against a bar of 3% (method 1) — 161 against 142.5 at
+ *     the Shell-Warden's STR 55 / END 30, and the item's own uncapped-return assertion
+ *     (`maxLoad(STR 99) − maxLoad(STR 60) == 1.50 x 39`) read 85.8 instead of 58.5.
+ *   * **ENDURANCE was not in it at all.** The item's reason for the term is one sentence —
+ *     "ENDURANCE contributes a minor term so that a stamina build is not weightless" — and
+ *     with the term missing, ENDURANCE was a stat with no path to carrying capacity whatever.
+ *     That is an unread parameter, not a tuning disagreement.
+ *
+ * DECLARED CONSEQUENCE: `Engine._equipLoadMax()` divides BOTH ratios by this, so every burden
+ * ratio computed from a real pack moves with it (at the 10/10 sheet, 62 → 65, so the ratio
+ * falls about 4.6%). Nothing pinned moves: `setBurden()` and `setEquipLoad()` set the ratio
+ * directly and are what every existing probe uses.
+ */
+export function equipLoadMaxFor(str, end) {
+  return round1(45 + clamp(str, 1, 99) * 1.5 + clamp(end === undefined ? 10 : end, 1, 99) * 0.5);
 }
 
 /** RI-PRG02 §4's scaling ramp, so damage reads the sheet the same way HP does. */
@@ -157,7 +181,7 @@ export function derivePools(attributes) {
     stamina_regen_per_frame: round4(staminaRegenPerSecond(end) / 60),
     focus_max: focusMaxFor(wil),
     spell_slots: spellSlotsFor(wil),
-    equip_load_max: equipLoadMaxFor(str),
+    equip_load_max: equipLoadMaxFor(str, end),
     from: { vigour: vig, endurance: end, willpower: wil, strength: str },
   };
 }

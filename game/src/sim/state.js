@@ -98,6 +98,10 @@ export function makePlayer() {
     // field as lost by a save that never had it. Carried by save/state.js `character`.
     carriedWeight: 0,
     burdenRatio: 0,
+    // RI-PRG07 §2's OTHER sum, and it is deliberately not the same one: burden divides ALL
+    // carried weight by maxLoad x 2.5, equip load divides only what is WORN by maxLoad. Both
+    // are declared here, both are saved, for the reason the comment above gives.
+    equippedWeight: 0,
     // ---- the traversal VIEW (RI-WLD10 / S25) ---------------------------------------------
     // `Engine.stepOnce()` copies all seven off `this.traversal` every step so the frame record
     // and the input gate can read them. None was declared here, so they came into existence on

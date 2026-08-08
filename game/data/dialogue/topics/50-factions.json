@@ -158,14 +158,6 @@
       "id": "the-wharf-debt",
       "infos": [
         {
-          "a": "townsman",
-          "cell": "gideon",
-          "x": "The wharf is owed. It's been owed since before my hatching. Every season the Ledger writes the debt forward, the men who carry the crates get eleven gold, and the men who write it down get the rest.",
-          "to": [
-            "the-quiet-partner"
-          ]
-        },
-        {
           "a": "clerk",
           "cell": "gideon",
           "d": 40,
@@ -173,6 +165,14 @@
           "to": [
             "the-quiet-partner",
             "the-second-set-of-weights"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "The wharf is owed. It's been owed since before my hatching. Every season the Ledger writes the debt forward, the men who carry the crates get eleven gold, and the men who write it down get the rest.",
+          "to": [
+            "the-quiet-partner"
           ]
         },
         {
@@ -198,16 +198,16 @@
           ]
         },
         {
-          "a": "outlaw",
-          "x": "I've fenced for the Ledger fifteen years and I've never met the quiet partner. I've twice been told to stop asking, in words that weren't friendly.",
+          "a": "merchant",
+          "cell": "lilmoth",
+          "x": "Lilmoth pays a quiet partner too. Different chair, same silence. Tesh signs for it and doesn't look at what she's signing.",
           "to": [
             "the-water-call"
           ]
         },
         {
-          "a": "merchant",
-          "cell": "lilmoth",
-          "x": "Lilmoth pays a quiet partner too. Different chair, same silence. Tesh signs for it and doesn't look at what she's signing.",
+          "a": "outlaw",
+          "x": "I've fenced for the Ledger fifteen years and I've never met the quiet partner. I've twice been told to stop asking, in words that weren't friendly.",
           "to": [
             "the-water-call"
           ]
@@ -217,6 +217,16 @@
     {
       "id": "the-water-call",
       "infos": [
+        {
+          "a": "clerk",
+          "cell": "archon",
+          "d": 40,
+          "x": "I write the water-call in the bond book as a call for water. What is in the hold when it leaves is a question for the harbour, and the harbour has never once asked it.",
+          "to": [
+            "the-archon-question",
+            "the-quiet-partner"
+          ]
+        },
         {
           "a": "fisher",
           "cell": "archon",
@@ -232,16 +242,6 @@
           "x": "Water is a right of the sea. No charter in the Empire denies a ship water. You will find the law on it goes no further than that.",
           "to": [
             "the-archon-question"
-          ]
-        },
-        {
-          "a": "clerk",
-          "cell": "archon",
-          "d": 40,
-          "x": "I write the water-call in the bond book as a call for water. What is in the hold when it leaves is a question for the harbour, and the harbour has never once asked it.",
-          "to": [
-            "the-archon-question",
-            "the-quiet-partner"
           ]
         },
         {
@@ -362,19 +362,19 @@
           ]
         },
         {
-          "a": "legionary",
-          "x": "Cohort holds the wall, Assize holds the pen. Do you know which of the two has ever lost an argument?",
-          "to": [
-            "the-toll-book"
-          ]
-        },
-        {
           "a": "townsman",
           "cell": "gideon",
           "x": "You can be robbed in Gideon and get a hearing for it. That's more than they manage in Lilmoth. Whether the hearing goes your way is written down in a book you aren't allowed to read.",
           "to": [
             "the-toll-book",
             "the-struck-off-notary"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "Cohort holds the wall, Assize holds the pen. Do you know which of the two has ever lost an argument?",
+          "to": [
+            "the-toll-book"
           ]
         }
       ]
@@ -592,16 +592,16 @@
           ]
         },
         {
-          "a": "mudborn",
-          "x": "The Deep-Kin do not have a hall, dry-one. They have a hollow, a day east on the root track. You do not visit it. You are brought.",
+          "a": "merchant",
+          "cell": "helstrom",
+          "x": "Everyone in this town knows where it is and not one of us will walk you there. Work out what that costs and then double it!",
           "to": [
             "the-root-track"
           ]
         },
         {
-          "a": "merchant",
-          "cell": "helstrom",
-          "x": "Everyone in this town knows where it is and not one of us will walk you there. Work out what that costs and then double it!",
+          "a": "mudborn",
+          "x": "The Deep-Kin do not have a hall, dry-one. They have a hollow, a day east on the root track. You do not visit it. You are brought.",
           "to": [
             "the-root-track"
           ]
@@ -612,19 +612,19 @@
       "id": "the-root-track",
       "infos": [
         {
-          "a": "rootkeeper",
-          "x": "The track is not cut. It is agreed. Where the roots have agreed to lie flat you may walk. Everywhere else you should not.",
-          "to": [
-            "the-cut-roots",
-            "the-lukiul-question"
-          ]
-        },
-        {
           "a": "fisher",
           "cell": "helstrom",
           "x": "Follow the black water east until the trees stop being separate trees. Then keep the sound of the water on the same side of you the whole way. And don't put your hand on anything.",
           "to": [
             "the-hollow-that-eats"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "The track is not cut. It is agreed. Where the roots have agreed to lie flat you may walk. Everywhere else you should not.",
+          "to": [
+            "the-cut-roots",
+            "the-lukiul-question"
           ]
         },
         {

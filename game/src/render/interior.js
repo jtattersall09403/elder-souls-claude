@@ -681,6 +681,32 @@ export function buildInterior(root, rec) {
     ? wSlots.filter((s) => Math.hypot(s.x - spawnPt[0], s.z - spawnPt[2]) > 3.8)
     : wSlots;
   const rSlots = readSlots.length ? readSlots : wSlots;
+  // TWO BOOKS MUST NOT BE THE SAME PLACE TO STAND. W1-READABLES round 2, and this is a defect the
+  // browser found rather than a tidiness: the stride `(wi + 3 + ri * 2) % rSlots.length` WRAPS,
+  // so a room with more documents than half its wall ring puts two of them within a metre of each
+  // other — and `Engine._reachPrompt` and the interact reach both take the NEAREST prop. Standing
+  // a metre from the tenth volume of the Tally in the Court archive and pressing the button
+  // opened the Blackrose lease stubs instead, because the archive went from twelve documents to
+  // fifteen when this round placed the shortfall series and the chapter room's Recension in it.
+  //
+  // So the slots are CHOSEN rather than indexed: walk the ring in the same stride, take a slot
+  // only if it is at least `MIN_SEP_M` from every slot already taken, and if the ring runs out,
+  // fall back to clear floor at the same separation. A room that still cannot fit them all keeps
+  // the old wrapping behaviour for the remainder, which is a crowded shelf and not a crash.
+  const MIN_SEP_M = 2.6;
+  const taken = [];
+  const farEnough = (s) => taken.every((t) => Math.hypot(t.x - s.x, t.z - s.z) >= MIN_SEP_M);
+  const spare = (spawnPt
+    ? floorSlots(bx, bz, 2.6).filter((s) => Math.hypot(s.x - spawnPt[0], s.z - spawnPt[2]) > 3.8)
+    : floorSlots(bx, bz, 2.6));
+  const slotFor = (ri) => {
+    for (let k = 0; k < rSlots.length; k++) {
+      const s = rSlots[(wi + 3 + ri * 2 + k) % rSlots.length];
+      if (farEnough(s)) { taken.push(s); return s; }
+    }
+    for (const s of spare) if (farEnough(s)) { taken.push(s); return s; }
+    return rSlots[(wi + 3 + ri * 2) % rSlots.length];
+  };
   for (let ri = 0; ri < readables.length; ri++) {
     const r = readables[ri];
     if (!r) continue;
@@ -690,7 +716,7 @@ export function buildInterior(root, rec) {
     part(g, bk, 0, 0.04, 0);
     // Successive documents take successive wall slots, so two books in one room are two places
     // to stand rather than one mesh inside another.
-    const s = rSlots[(wi + 3 + ri * 2) % rSlots.length];
+    const s = slotFor(ri);
     const px = s.x + Math.cos(s.yaw) * 0.25, pz = s.z + Math.sin(s.yaw) * 0.25;
     g.position.set(px, by[0] + 1.06, pz);
     root.add(g);

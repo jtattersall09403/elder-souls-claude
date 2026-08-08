@@ -4549,7 +4549,7 @@ export class Engine {
     // OUTSIDE the streaming branch above, deliberately: that branch is guarded on
     // `this.renderer.province`, which is null in the harness's headless renderer, and a mark that
     // only exists when the tile streamer is attached is a mark no probe can ever stand at.
-    if (cell === 'province') this._ensureProvinceMarks();
+    if (cell === 'province') this._ensureProvinceMarks(); else this._clearProvinceMarks();
     this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
     this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
   }
@@ -4690,11 +4690,17 @@ export class Engine {
    * by a terrain regeneration.
    */
   _ensureProvinceMarks() {
-    if (this._provinceMarksDone) return 0;
+    // THE DONE-FLAG IS NOT ENOUGH ON ITS OWN, and finding out why cost this round an hour in a
+    // browser. `applyNamedState()` — which is what the harness's `reset()` calls — runs
+    // `sim.reset()`, which replaces the props array wholesale, and then `_applyCell()`. A flag
+    // set before that boundary is a flag that says the marks are standing in a world where they
+    // are not. So the flag is only trusted while at least one mark is actually in `sim.props`.
+    if (this._provinceMarksDone && this.sim.props.some((p) => p.site_mark)) return 0;
     const doc = this.data && this.data.siteMarks;
     if (!doc || !Array.isArray(doc.marks)) return 0;
     let n = 0;
     const failed = [];
+    const mine = [];
     for (const m of doc.marks) {
       if (!m.at || !Array.isArray(m.at.world)) continue;
       const [x, z] = m.at.world;
@@ -4706,11 +4712,28 @@ export class Engine {
       let y = 0;
       try { y = this.groundInActiveCell(x, z); }
       catch (e) { failed.push({ mark: m.id, why: String((e && e.message) || e) }); }
-      n += this._spawnMark(m, [x, y + Number(m.height_m == null ? 0.9 : m.height_m), z]).length;
+      for (const eid of this._spawnMark(m, [x, y + Number(m.height_m == null ? 0.9 : m.height_m), z])) { mine.push(eid); n++; }
     }
     this._provinceMarksDone = true;
+    this._provinceMarkEids = mine;
     this._provinceMarkFailures = failed;
     return n;
+  }
+
+  /**
+   * Take the province's marks off the world when the world stops being the province. Without
+   * this the eleven chalked jambs of Stormhold are standing in the Helstrom undertemple, because
+   * a prop lives in `sim.props` and `sim.props` does not know what a cell is. Only the eids this
+   * engine spawned are removed, for the same reason `_furnishInterior` says so.
+   */
+  _clearProvinceMarks() {
+    const mine = this._provinceMarkEids || [];
+    if (!mine.length) return 0;
+    const dead = new Set(mine);
+    for (let i = this.sim.props.length - 1; i >= 0; i--) if (dead.has(this.sim.props[i].eid)) this.sim.props.splice(i, 1);
+    this._provinceMarkEids = [];
+    this._provinceMarksDone = false;
+    return dead.size;
   }
 
   _syncCell() {
@@ -4721,7 +4744,8 @@ export class Engine {
     // world under it: `applyNamedState()` calls `_applyCell()` and THEN `clearProps()`, so a
     // reset leaves the province drawn, the key unchanged, and nothing standing on the ground.
     // The flag makes this a single boolean test on every other frame.
-    if (cell === 'province' && !this._provinceMarksDone) this._ensureProvinceMarks();
+    if (cell === 'province') { if (!this._provinceMarksDone) this._ensureProvinceMarks(); }
+    else if (this._provinceMarkEids && this._provinceMarkEids.length) this._clearProvinceMarks();
     if (!this._cellDirty && key === this._drawnCellKey) return false;
     this._applyCell();
     return true;

@@ -43,21 +43,21 @@
       "note": "Opens Q-SOUL-02 (undertaker-vaskh, the burning yard behind the Soulrest customs post). Prerequisite topic `the-drowned-court` already has a body in 50-mainline.json.",
       "infos": [
         {
-          "a": "clerk",
-          "cell": "soulrest",
-          "x": "The yard keeps its own count and the Court keeps its count, and for two years now the two have not been the same number. Vaskh burns them and writes down what she burns. She is behind the customs post at Soulrest if you want to see the book.",
-          "to": [
-            "the-drowned-court",
-            "the-burning-yard"
-          ]
-        },
-        {
           "a": "mudborn",
           "cell": "soulrest",
           "d": 20,
           "x": "You want to know what the yard says? The yard says it has burned more than the book admits. That is not a mistake, dry-one. A mistake happens once.",
           "to": [
             "the-drowned-court"
+          ]
+        },
+        {
+          "a": "clerk",
+          "cell": "soulrest",
+          "x": "The yard keeps its own count and the Court keeps its count, and for two years now the two have not been the same number. Vaskh burns them and writes down what she burns. She is behind the customs post at Soulrest if you want to see the book.",
+          "to": [
+            "the-drowned-court",
+            "the-burning-yard"
           ]
         },
         {
@@ -103,17 +103,17 @@
       "note": "Q-BLAK-01's prerequisite topic. The number is the count the lease register cannot account for.",
       "infos": [
         {
-          "a": "clerk",
-          "cell": "blackrose",
-          "x": "Four hundred and eleven is the difference between the men the lease register sent out and the men any employer in this province admits to having had. It is too large to be an error in the arithmetic. I have asked the customs house twice and had no answer.",
+          "a": "mudborn",
+          "d": 30,
+          "x": "Four hundred and eleven. Say it slowly and it is a number. Say it in front of someone from Blackrose and watch what their hands do.",
           "to": [
             "the-labour-lease"
           ]
         },
         {
-          "a": "mudborn",
-          "d": 30,
-          "x": "Four hundred and eleven. Say it slowly and it is a number. Say it in front of someone from Blackrose and watch what their hands do.",
+          "a": "clerk",
+          "cell": "blackrose",
+          "x": "Four hundred and eleven is the difference between the men the lease register sent out and the men any employer in this province admits to having had. It is too large to be an error in the arithmetic. I have asked the customs house twice and had no answer.",
           "to": [
             "the-labour-lease"
           ]
@@ -653,6 +653,12 @@
       "note": "Opens Q-MAG-15 (rootkeeper-jeen, the Helstrom undertemple).",
       "infos": [
         {
+          "a": "mudborn",
+          "d": 20,
+          "x": "You are asking me to count my own. I will tell you this much and no more: the hollow is not one room and what is in the second one is not what is in the first.",
+          "to": []
+        },
+        {
           "a": "rootkeeper",
           "cell": "helstrom",
           "x": "Jeen wants a number: how many are living in the hollow under the east root. Those who go in come back. They do not come back with a number, and none of them can say why not.",
@@ -660,12 +666,6 @@
             "the-upper-shelf",
             "helstrom"
           ]
-        },
-        {
-          "a": "mudborn",
-          "d": 20,
-          "x": "You are asking me to count my own. I will tell you this much and no more: the hollow is not one room and what is in the second one is not what is in the first.",
-          "to": []
         },
         {
           "a": "townsman",
@@ -811,19 +811,19 @@
       "note": "Opens Q-MAG-23 (herbwife-ossa, the Thornmarsh stilts).",
       "infos": [
         {
+          "a": "mudborn",
+          "d": 20,
+          "x": "He is not stopped. He is waiting. There is a difference and you will only see it if you stay in the room longer than is comfortable.",
+          "to": [
+            "the-deep-marsh"
+          ]
+        },
+        {
           "a": "healer",
           "cell": "thorn",
           "x": "A hunter walked back out of the deep marsh standing up and hasn't moved since. He's warm. He's breathing. He's looking at us, and Ossa won't say he's alive and won't say the other thing either.",
           "to": [
             "the-rot-house",
-            "the-deep-marsh"
-          ]
-        },
-        {
-          "a": "mudborn",
-          "d": 20,
-          "x": "He is not stopped. He is waiting. There is a difference and you will only see it if you stay in the room longer than is comfortable.",
-          "to": [
             "the-deep-marsh"
           ]
         },

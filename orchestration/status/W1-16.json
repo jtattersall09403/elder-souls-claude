@@ -3,7 +3,9 @@
   "brief": "Progression: souls, levels, skills, encumbrance, gold (game/src). Never dispatched before this run.",
   "started": "2026-08-07",
   "state": "complete",
-  "git_at_start": { "commit": "48f6ec9" },
+  "git_at_start": {
+    "commit": "48f6ec9"
+  },
   "contention_at_start": {
     "headless_shell": 18,
     "loadavg": "15.49 10.96 10.59"
@@ -21,9 +23,29 @@
     "progression.merchant.barter",
     "progression.build.identity"
   ],
-  "judged_by": ["RI-AI05","RI-CHR01","RI-CHR02","RI-CHR03","RI-DLG04","RI-LOR05","RI-PRG01","RI-PRG02","RI-PRG03","RI-PRG05","RI-PRG06","RI-PRG07","RI-QST03","RI-QST08","RI-STL01","RI-STL02","RI-TRV01","RI-TRV02","RI-UIX03"],
+  "judged_by": [
+    "RI-AI05",
+    "RI-CHR01",
+    "RI-CHR02",
+    "RI-CHR03",
+    "RI-DLG04",
+    "RI-LOR05",
+    "RI-PRG01",
+    "RI-PRG02",
+    "RI-PRG03",
+    "RI-PRG05",
+    "RI-PRG06",
+    "RI-PRG07",
+    "RI-QST03",
+    "RI-QST08",
+    "RI-STL01",
+    "RI-STL02",
+    "RI-TRV01",
+    "RI-TRV02",
+    "RI-UIX03"
+  ],
   "notes_on_scope": "progression.souls.economy (RI-PRG06) has already been through three rounds under a separate task id (W1-SOULS r1/r2/r3, orchestration/status/W1-SOULS-r3.json, complete before this dispatch) -- not redone here, only spot-checked for regression (see findings). Everything else in the ten paths had never been dispatched under any task id.",
-  "next_step": "none -- complete. See notes_for_successor for what is left open.",
+  "next_step": "none for round 2. See round2.notes_for_successor.",
   "files_touched": [
     "orchestration/status/W1-16.json",
     "game/src/engine.js",
@@ -54,5 +76,404 @@
     "SOULS ECONOMY (progression.souls.economy) spot check, not a re-audit: `orchestration/status/W1-SOULS-r3.json` (complete before this dispatch) reports 7/7 CONSUMPTION models coupled, the corpus check (`tools/check-souls-corpus.mjs`) at 0 drift, and the census scale premise asserted. Did not re-run its tools (would need a browser slot better spent on this piece's own untested fixes under heavy contention); no evidence of regression found while reading the surrounding gold/skill code this round.",
     "PROBE, LIVE, RULE 21 IN PRACTICE: a dedicated `tools/lib/browser.mjs` launchGame() (my own fresh Chromium) was tried first and never got past `chromium.launch()` in over 9 minutes under 18-42 concurrent headless_shell / loadavg 14-25 -- killed rather than kept fighting the contention. Switched to the SHARED capture daemon (`tools/capture/`, already running, `isServing()` true) exactly as RULES #20 prescribes: one `capture({state:'default', ops:[['setGold',777]], menu:{name:'inventory'}, ui:true, evidence_of:'menu'})` call rendered in a warm, pooled browser in well under a minute. The resulting screenshot (docs/shots/2026-08-07-w1-16-one-purse-777-gold-drawn.png) shows the inventory panel's bottom-left corner reading '777 gold' after `setGold(777)` -- the exact live, rendered, entity-side proof RI-MTH07 CONSUMPTION asks for, and the exact reading that used to be permanently '0' per the brief. Lesson for the next piece under this load: do not fight for a private browser: the pooled capture daemon answers in seconds when a fresh launch cannot get scheduled at all."
   ],
-  "notes_for_successor": "1. GAP-W1-skill-and-attribute-scaling-never-reaches-damage (see the GAP file) is the big one: skill and attribute scaling never reach weapon damage. Needs W1-09/W1-10 present to touch weapon data and re-verify calibration. 2. equipLoadPct (RI-CMB01's i-frame/roll-tier input) has no live producer -- only setEquipLoad()/defaults/spell effects touch it. Wiring it to carried or equipped weight needs a decision about whether this game has an 'equipped armour' slot at all (it currently does not; only the weapon 'right' slot exists) and needs coordination with whoever owns combat calibration, for the same reason as finding 1. 3. RI-PRG01 (soul cost curve) and the rest of progression.souls.economy were not re-audited this round -- W1-SOULS r1-r3 already covered it; a future critic should read those status files rather than starting fresh. 4. `Engine.setWorldKnowledge({gold})` (a parley-scenario harness verb, 'AR-3: this is the world reaching into the fight') still writes ONLY `combat.world.gold` and was deliberately left alone -- it reads as an intentional scenario-only override analogous to setStealthState, not a live game-state leak, but if a real (non-scenario) code path ever calls it, it would reopen a version of the gold-purse defect. Worth a second look if AR-3 parley content grows."
+  "notes_for_successor": "1. GAP-W1-skill-and-attribute-scaling-never-reaches-damage (see the GAP file) is the big one: skill and attribute scaling never reach weapon damage. Needs W1-09/W1-10 present to touch weapon data and re-verify calibration. 2. equipLoadPct (RI-CMB01's i-frame/roll-tier input) has no live producer -- only setEquipLoad()/defaults/spell effects touch it. Wiring it to carried or equipped weight needs a decision about whether this game has an 'equipped armour' slot at all (it currently does not; only the weapon 'right' slot exists) and needs coordination with whoever owns combat calibration, for the same reason as finding 1. 3. RI-PRG01 (soul cost curve) and the rest of progression.souls.economy were not re-audited this round -- W1-SOULS r1-r3 already covered it; a future critic should read those status files rather than starting fresh. 4. `Engine.setWorldKnowledge({gold})` (a parley-scenario harness verb, 'AR-3: this is the world reaching into the fight') still writes ONLY `combat.world.gold` and was deliberately left alone -- it reads as an intentional scenario-only override analogous to setStealthState, not a live game-state leak, but if a real (non-scenario) code path ever calls it, it would reopen a version of the gold-purse defect. Worth a second look if AR-3 parley content grows.",
+  "round": 2,
+  "round2": {
+    "started": "2026-08-08",
+    "successor_of": "round 1 (state complete). Round 1 explicitly did NOT measure encumbrance -> roll/stamina/travel; see round-1 notes_for_successor #2. This round takes that up.",
+    "brief": "Progression and encumbrance. Levelling is Souls-shaped (souls buy levels at a bonfire-equivalent; gold is money). Encumbrance is Morrowind-shaped outside the fight (ARBITRATION S23 / RI-PRG07) and Souls-shaped inside it (RI-CMB01). S22 units mandatory: f@60 / t@30.",
+    "must_land": [
+      "1. i-frame window + recovery in f@60 per encumbrance tier, with the t@30 reference and the conversion stated",
+      "2. stamina recovery vs encumbrance, and travel-on-the-road vs encumbrance, both measured",
+      "3. CONSUMPTION: named world-side consumer per progression/encumbrance parameter, demonstrated by perturbation; count the unread ones",
+      "4. delete-the-fix on the two most load-bearing claims",
+      "5. no hard-coded level cap, no tuning to a round number"
+    ],
+    "next_step": "none — round 2 complete.",
+    "contention_at_start": "3 browser instances, 18 processes, load 7.96/4 cores = 1.99 per core. gate = GO (room for 3 more).",
+    "git_at_start": "e97347f",
+    "files_touched": [
+      "orchestration/status/W1-16.json",
+      "game/src/engine.js",
+      "game/src/harness/api.js",
+      "game/src/character/derive.js",
+      "game/src/combat/player.js",
+      "game/src/sim/state.js",
+      "game/src/save/state.js",
+      "tools/harness/prg-encumbrance.mjs",
+      "reports/w1-16/prg-encumbrance.json",
+      "reports/w1-16/prg-road.json",
+      "reports/w1-16/cmb-roll-crosscheck.json",
+      "docs/shots/2026-08-08-w1-16-r2-armour-worn-equip-load-crosses-the-medium-cliff.png",
+      "reports/blog-feed.jsonl"
+    ],
+    "files_claimed": [
+      "orchestration/status/W1-16.json",
+      "game/src/engine.js",
+      "game/src/harness/api.js",
+      "game/src/character/derive.js",
+      "game/src/combat/player.js",
+      "game/src/sim/state.js",
+      "game/src/save/state.js",
+      "tools/harness/prg-encumbrance.mjs",
+      "reports/w1-16/prg-encumbrance.json",
+      "reports/w1-16/prg-road.json",
+      "reports/w1-16/cmb-roll-crosscheck.json",
+      "docs/shots/2026-08-08-w1-16-r2-armour-worn-equip-load-crosses-the-medium-cliff.png",
+      "reports/blog-feed.jsonl"
+    ],
+    "redundant_with": [
+      "W1-03",
+      "W1-04-r3",
+      "W1-06-r3",
+      "W1-12",
+      "W1-15-r3"
+    ],
+    "redundant_note": "game/src/engine.js is this build's shared spine and six-plus live pieces declare it; ownership.mjs --conflicts reports 318 undeclared overlaps tree-wide, so the overlap is the project norm rather than a collision. game/src/combat/player.js is declared by W1-03 (water traversal) and my one-line change there fixes W1-03's own water sprint-denial as well as carrying mine — see finding on the two locomotion implementations. docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces.",
+    "state": "complete",
+    "git_at_measure": "d30a3de (working tree dirty; 29 files moving under me from concurrent pieces throughout)",
+    "contention_throughout": "The gate (node tools/contention.mjs --gate) said GO once at the start and WAIT for most of the run: 3-5 browser instances and load 5.0-7.0 per core against a 4.0-per-core ceiling. I did the whole offline half first (four fixes, a curve correction and a 22-assertion offline unit check against the real Engine.prototype methods). I then PROCEEDED PAST EXIT 3 for the stepping probes, which rule 21 permits provided it is declared: this is that declaration. Reason: every arm of this piece needs a stepped simulation (i-frame windows, stamina slopes, metres walked, frames of journey), the instance count was 3-5 against a ceiling of 6, and the pooled capture daemon cannot step. Browsers were launched STRICTLY SEQUENTIALLY, never two at once, and the screenshot went through the pooled daemon (tools/capture/) rather than a sixth browser. Every timing figure below is a frame count from a fixed 60 Hz step and is therefore load-independent by construction; the only wall-clock numbers in this record are probe durations, which were taken under that load.",
+    "headline_numbers": {
+      "unit_note": "Every frame figure is f@60 — frames of our fixed 60 Hz simulation step. The RI-CMB01 §B reference beside it is the S22-rebased figure. CONVERSION: f@60 = 2 x t@30, because Souls community frame data (DS1, DS3, Elden Ring alike) is quoted in 1/30 s ticks and our step is 1/60 s (ARBITRATION seam S22). A bare frame count is a defect.",
+      "measured_at": "d30a3de",
+      "roll_ladder_measured_in_the_running_game": {
+        "source": "reports/w1-16/cmb-roll-crosscheck.json (tools/harness/cmb-probe.mjs --probe roll, the project's existing instrument, not a second copy)",
+        "LIGHT": {
+          "startup_f60": 4,
+          "iframe_window_f60": [
+            5,
+            30
+          ],
+          "iframes_f60": 26,
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "stamina": 22,
+          "reference_t30": {
+            "iframes": 13,
+            "recovery": 11,
+            "total": 26
+          }
+        },
+        "MEDIUM": {
+          "startup_f60": 4,
+          "iframe_window_f60": [
+            5,
+            26
+          ],
+          "iframes_f60": 22,
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "stamina": 26,
+          "reference_t30": {
+            "iframes": 11,
+            "recovery": 17,
+            "total": 30
+          }
+        },
+        "HEAVY": {
+          "startup_f60": 6,
+          "iframe_window_f60": [
+            7,
+            16
+          ],
+          "iframes_f60": 10,
+          "recovery_f60": 72,
+          "total_f60": 88,
+          "stamina": 34,
+          "reference_t30": {
+            "iframes": 5,
+            "recovery": 36,
+            "total": 44
+          }
+        },
+        "OVERLOADED": {
+          "startup_f60": null,
+          "iframes_f60": 0,
+          "recovery_f60": 120,
+          "total_f60": 120,
+          "stamina": 40,
+          "reference_t30": {
+            "iframes": 0,
+            "total": 60
+          }
+        },
+        "backstep_f60": {
+          "LIGHT": {
+            "iframes": 8,
+            "window": [
+              5,
+              12
+            ],
+            "total": 42
+          },
+          "MEDIUM": {
+            "iframes": 8,
+            "window": [
+              5,
+              12
+            ],
+            "total": 42
+          },
+          "HEAVY": {
+            "iframes": 0,
+            "total": 60
+          },
+          "OVERLOADED": {
+            "iframes": 0,
+            "total": 80
+          }
+        },
+        "every_row_matches_RI_CMB01_B": true,
+        "iframes_are_one_contiguous_run_not_a_flag": true,
+        "cliffs": "swept 29 -> 100.01 in the shipped instrument: the i-frame count changes at exactly 30.00->30.01 (26 -> 22) and 70.00->70.01 (22 -> 10) and 100.00->100.01 (10 -> 0), and nowhere else. No interpolation anywhere in a band (RI-CMB01 M5)."
+      },
+      "encumbrance_moves_the_roll_from_the_world": {
+        "source": "reports/w1-16/prg-encumbrance.json probes.equipload",
+        "arm_A_nothing_worn": {
+          "equipped_weight_kg": 0,
+          "equip_load_max_kg": 73,
+          "equip_load_pct": 0,
+          "tier": "LIGHT",
+          "iframes_f60": 26,
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "roll_stamina": 22
+        },
+        "arm_B_six_pieces_worn": {
+          "equipped": [
+            "shell-scale-hauberk@chest",
+            "legion-greaves@legs",
+            "rootweave-cowl@head",
+            "wet-season-boots@feet",
+            "silt-strider-silk-sash@waist",
+            "bog-iron-maul@right"
+          ],
+          "equipped_weight_kg": 28.3,
+          "equip_load_max_kg": 73,
+          "equip_load_pct": 38.767123,
+          "tier": "MEDIUM",
+          "iframes_f60": 22,
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "roll_stamina": 26
+        },
+        "equipped_through_the_real_inventory_cursor": "yes — a separate arm opens the pack, moves the cursor onto the row, presses interact, closes the pack and lets the 30-frame equip commitment run. Landed in slot chest."
+      },
+      "stamina_recovery_by_tier": {
+        "source": "reports/w1-16/prg-encumbrance.json probes.regen — measured as a SLOPE over real frames, not read off the constant",
+        "unit": "stamina per f@60",
+        "LIGHT": {
+          "roll_cost": 22,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_f60": 0.75,
+          "multiplier": 1
+        },
+        "MEDIUM": {
+          "roll_cost": 26,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_f60": 0.75,
+          "multiplier": 1
+        },
+        "HEAVY": {
+          "roll_cost": 34,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_f60": 0.6,
+          "multiplier": 0.8
+        },
+        "OVERLOADED": {
+          "roll_cost": 40,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_f60": 0.45,
+          "multiplier": 0.6
+        },
+        "declared": "stamina.json regen.per_frame 0.75, multipliers equip_load_over_70pct 0.8 / overloaded 0.6, delay 42 f@60. Observed matches on every row.",
+        "unit_warning": "RI-CMB03 is DELIBERATELY EXCLUDED from the S22 rebase (orchestrator ruling R1): its 42 f@60 pause was derived from a figure denominated in SECONDS (0.70 s) and was already correct at 60 Hz. It must NOT be doubled. Regen first shows on the 43rd frame, which is what was measured on all four rows."
+      },
+      "travel_on_the_road_by_burden": {
+        "source": "reports/w1-16/prg-encumbrance.json probes.travel — the same service, the same fare, three burdens",
+        "service": "svc-005-rootway-the-weeping-ford-helstrom, 881.4 m",
+        "UNBURDENED": {
+          "burden_ratio": 0.1,
+          "travel_time_mult": 1,
+          "ride_frames_f60": 7555,
+          "world_minutes": 40.2,
+          "fare_gold": 10
+        },
+        "LADEN": {
+          "burden_ratio": 0.75,
+          "travel_time_mult": 1.12,
+          "ride_frames_f60": 8461,
+          "world_minutes": 45.024,
+          "fare_gold": 10
+        },
+        "OVERLADEN": {
+          "burden_ratio": 0.95,
+          "travel_time_mult": 1.35,
+          "ride_frames_f60": 10199,
+          "world_minutes": 54.27,
+          "fare_gold": 10
+        },
+        "note": "The fare does not move — the tariff is RI-PRG05's and weight does not change what a ticket costs. What moves is the journey: 2644 more f@60 (44 s of real play) and 14.07 more world minutes for the same barge."
+      },
+      "walking_and_sprinting_by_burden": {
+        "source": "reports/w1-16/prg-road.json probes.road — metres covered over 180 f@60, first run discarded as a warm-up artefact",
+        "UNBURDENED": {
+          "move_mult": 1,
+          "walk_m": 8.64,
+          "sprint_m": 13.5
+        },
+        "LADEN": {
+          "move_mult": 0.9,
+          "walk_m": 7.776,
+          "sprint_m": 12.15
+        },
+        "OVERLADEN": {
+          "move_mult": 0.72,
+          "walk_m": 6.221,
+          "sprint_m": 6.221
+        },
+        "sprint_is_denied_not_slowed_at_OVERLADEN": true,
+        "ar1_guard": "PASS, and tested rather than assumed: with a real hostile woken (E1) and in_combat true, move_mult_applied 1.00, sprint true, fatigue_drain_mult 1.00, sneak_detection_mult 1.00, travel_time_mult 1.00. RI-PRG07 §3 makes any burden effect inside COMBAT an automatic fail of the piece."
+      },
+      "the_two_ratios_stay_separate": {
+        "source": "reports/w1-16/prg-encumbrance.json probes.separation — RI-PRG07 method 3, the anti-merge check",
+        "empty_pack": {
+          "carried_weight": 0,
+          "burden_ratio": 0,
+          "equip_load_pct": 0,
+          "iframes_f60": 26,
+          "total_f60": 52,
+          "tier": "LIGHT"
+        },
+        "four_hundred_and_sixty_kg_in_the_pack": {
+          "carried_weight": 460,
+          "burden_ratio": 2.520548,
+          "burden_tier": "IMMOBILE",
+          "equip_load_pct": 0,
+          "iframes_f60": 26,
+          "total_f60": 52,
+          "tier": "LIGHT"
+        },
+        "verdict": "burden moved, equip load did not, and the roll is byte-identical. A bag full of loot does not touch the dodge, which is RI-PRG07's \"How we lose\" #1 and an AR-1 automatic fail if it ever does."
+      },
+      "delete_the_fix": {
+        "source": "reports/w1-16/prg-encumbrance.json probes.deletefix, via the __breakW116() control arms",
+        "claim_A_armour_changes_the_roll": {
+          "with_fix": {
+            "iframes_f60": [
+              26,
+              22
+            ],
+            "recovery_f60": [
+              22,
+              34
+            ],
+            "equip_load_pct": [
+              0,
+              38.767123
+            ]
+          },
+          "fix_deleted": {
+            "iframes_f60": [
+              26,
+              26
+            ],
+            "recovery_f60": [
+              22,
+              22
+            ],
+            "equip_load_pct": [
+              24,
+              24
+            ]
+          },
+          "old_number_returns": true,
+          "arms_genuinely_differ": true
+        },
+        "claim_B_burden_changes_the_journey": {
+          "with_fix": {
+            "frames_f60": [
+              7555,
+              10199
+            ],
+            "world_minutes": [
+              40.2,
+              54.27
+            ]
+          },
+          "fix_deleted": {
+            "frames_f60": [
+              7555,
+              7555
+            ],
+            "world_minutes": [
+              40.2,
+              40.2
+            ]
+          },
+          "old_number_returns": true,
+          "arms_genuinely_differ": true
+        }
+      },
+      "consumption_census": {
+        "source": "reports/w1-16/prg-encumbrance.json probes.census, and getBurden() now returns the same table live",
+        "parameters_enumerated": 26,
+        "with_a_named_world_side_consumer": 22,
+        "with_no_reader_at_all": 4,
+        "unread": [
+          "burden.fatigue (RI-PRG07 §3 Fatigue drain x1.40 / x2.20)",
+          "burden.sneak (Sneak detection radius x1.15 / x1.50)",
+          "burden.jump (-25% height / none)",
+          "equip_load.fall_damage_mult (RI-PRG07 §2, x0.80 / x1.00 / x1.40 / x2.00)"
+        ],
+        "coupled_this_round": [
+          "equip_load.equipLoadPct (the INPUT — had NO producer before this round)",
+          "burden.travel_time",
+          "burden.sprint"
+        ],
+        "already_coupled_before_this_round": [
+          "equip_load roll iframes/recovery/total/stamina/distance/anim_speed via combat/moves.js equipTier()",
+          "equip_load regen multipliers via combat/rules.js regenStamina()",
+          "burden.move via engine._burdenMult() -> sim/traversal.js",
+          "burden.burdenRatio via engine._recomputeBurden()"
+        ]
+      }
+    },
+    "did_not_do": [
+      "Did not fix the four unread parameters (burden.fatigue, burden.sneak, burden.jump, equip_load.fall_damage_mult) — reasons per parameter in the findings; all four sit in files a sibling piece is live in.",
+      "Did not re-audit progression.souls.economy / RI-PRG01. Round 1 spot-checked it and W1-SOULS r1-r3 covered it; a sibling critic is re-grading the curve right now.",
+      "Did not add plate, shields or heavier armour to game/data/items/carried.json to make the HEAVY and OVERLOADED tiers reachable. That is a content decision and inventing weights to land on a tier is tuning to a target.",
+      "Did not run the full run-all.mjs aggregation (RULES #9). The gate was at or over its ceiling for most of the run and run-all launches many browsers; I ran the four offline gates (boot-check, check-data, check-content, check-quests) and corpus-index instead, all green, plus the existing cmb-probe roll instrument as an independent cross-check of my own roll numbers.",
+      "Did not measure the fall-damage or jump columns at all — they have no reader, so there is nothing to measure yet.",
+      "Did not put an equip-load or roll-tier readout on the inventory screen. The screen shows the BURDEN bar (28.3 / 183, UNBURDENED) and no equip-load percentage; RI-CMB01 §B asks for a menu readout that changes colour at the fat-roll threshold, and the HUD has an equip_load element but the pack screen does not. That is RI-UIX03 territory and is left named, not built."
+    ],
+    "notes_for_successor": "1. FOUR UNREAD PARAMETERS remain, each a one-line coupling for a round with the owning piece present: burden.fatigue -> sim/dialogue/disposition.js fatigueTerm (the model is already there and already consumed for disposition; only the DRAIN from weight is missing), burden.sneak -> the stealth detection radius, burden.jump -> combat/player.js jump apex, equip_load.fall_damage_mult -> sim/traversal.js fall damage. 2. THE FAT-ROLL TIER HAS NO CONTENT. HEAVY and OVERLOADED are implemented and measured exactly and no character can dress into them, because carried.json ships no plate and no shields. Whoever owns item content should read RI-PRG07 §4 and §5 before adding any. 3. setBurden() was inert on every stepping run before this commit — treat any burden number in an older status file as suspect and re-take it. 4. Round 1 note 1 still stands and is still the biggest thing in this area: GAP-W1-skill-and-attribute-scaling-never-reaches-damage. Untouched again this round for the same reason. 5. Round 1 note 4 (setWorldKnowledge({gold}) writing only combat.world.gold) also still stands."
+  },
+  "round2_findings": [
+    "BUILT (load-bearing #1): Engine._recomputeEquipLoad() — the producer combat.player.equipLoadPct never had. Round 1 characterised this gap and declined to close it; this round closes it the way RI-PRG07 §2 says to (EQUIPPED weight / equip_load_max), NOT the way round 1 proposed (all carried weight, mirroring _recomputeBurden) — that patch would have merged the two ratios, which is RI-PRG07 How-we-lose #1 and an AR-1 automatic fail.",
+    "BUILT: _finishEquipCommit() now routes an item to its DECLARED slot. It could only ever fill 'right', so equipping the chitin cuirass that game/data/items/carried.json already ships (slot: chest) put armour in your sword hand. Nine armour/clothing rows carry a slot; none of them could be worn.",
+    "BUILT (load-bearing #2): RI-PRG07 §3 travel_time reaches boardTravel() — ride frames AND the world clock scale with the burden tier.",
+    "BUILT: RI-PRG07 §3 sprint prohibition reaches sim.player.denySprint, which sim/player.js already gates the sprint bit on. Guarded by _burdenTierNow() so it is exactly inert inside a fight (AR-1).",
+    "BUILT: character/derive.js equipLoadMaxFor was \"40 + 2.2 * STR\", cited in its own comment to RI-PRG02 §1 — which states no curve at all (its row 3 reads \"Max equip load (RI-PRG07)\", i.e. it defers). The shipped formula matched no item in the corpus and had no provenance. Two defects: it missed RI-PRG07 §1's published grid by up to 13% against a 3% bar (161 against 142.5 at the Shell-Warden's STR 55 / END 30, and the uncapped-return assertion maxLoad(99)-maxLoad(60) == 1.50*39 read 85.8 instead of 58.5), and it dropped ENDURANCE entirely — so the item's sentence \"ENDURANCE contributes a minor term so that a stamina build is not weightless\" described a term that was not in the code, and ENDURANCE had no path to carrying capacity at all. Corrected to RI-PRG07 §1 verbatim: 45 + 1.50*STR + 0.50*END. All 8 published grid cells now reproduce to 0.00% and the uncapped assertion is exact at 58.5.",
+    "NOT TOUCHED, deliberately: the souls cost curve. RI-PRG01 ships cost(n) = round(0.015n^3 + 2.00n^2 + 55n + 300) with a 139-row table and NO level cap — engine.soulsToNextLevel() falls through to the formula past the table, and grep finds no level_cap/maxLevel/MAX_LEVEL anywhere in game/src or game/data. The JSONs max_level: 140 is the table extent, and its own softcap_note says \"No cap on level\". A sibling critic is re-grading this; nothing here was tuned toward it.",
+    "BUILT: __breakW116(producer|slots|travel|sprint) — the delete-the-fix control arms, as a permanent harness switch rather than a git stash. RULES #17 warns a stash on a shared tree can be staged by a neighbour git add -A, and git status showed 29 files moving under me from concurrent pieces while I worked, so a stash was the wrong instrument today. Each arm restores the exact pre-round-2 behaviour and the probe runs both arms in one browser.",
+    "THE OFFLINE UNIT CHECK WENT RED ON A REAL DEFECT BEFORE THE BROWSER (RULES #4). My first _recomputeEquipLoad divided equipped weight by _equipLoadMax(), which is derivePools().equip_load_max * 2.5 — the burden divisor, headroom and all. That is exactly the ratio-merge the whole round exists to prevent: it divides the roll ratio by 2.5, so 26.4 kg of worn armour read 16.25% instead of 40.62% and the LIGHT->MEDIUM cliff was never crossed. Fixed by giving the two divisors two names: _equipCapacity() is RI-PRG07 §1s bare maxLoad and is what §2s equip ratio divides by; _equipLoadMax() is that times 2.5 and is BURDENs alone (§3).",
+    "MEASURED OFFLINE, and it is a content finding, not a tuning one: with the corrected divisor the heaviest set the shipped 44-item shelf can WEAR is 28.3 kg (bog-iron-maul 11.5 + shell-scale-hauberk 9.1 + legion-greaves 5.8 + rootweave-cowl 0.6 + wet-season-boots 1.1 + sash 0.2). At the base sheet (STR 10 / END 10, maxLoad 65) that is 43.5% — MEDIUM. HEAVY needs 45.5 kg equipped and OVERLOADED needs 65. So the fat-roll tier and the stumble are UNREACHABLE from equipment in the shipped content: game/data/items/carried.json ships no plate set (RI-PRG07 §4 declares one at 78) and no shield of any kind, and RI-PRG07 §5s Shell-Warden build assumes 126 kg equipped. Reported rather than fixed — inventing item weights to make a tier reachable is tuning to a target, which this dispatch forbids.",
+    "MEASURED, THE HEADLINE: the RI-CMB01 §B roll ladder is implemented exactly, and after this round the world can reach it. Every row of the shipped instrument (tools/harness/cmb-probe.mjs --probe roll) matches §B to the frame: LIGHT startup 4, i-frames f5-f30 (26 f@60), recovery 22 f@60, total 52 f@60, 22 stamina; MEDIUM 4 / f5-f26 (22) / 34 / 60 / 26; HEAVY 6 / f7-f16 (10) / 72 / 88 / 34; OVERLOADED 0 i-frames, 120 f@60 stumble, 40 stamina. Backstep 8 f@60 of i-frames at LIGHT and MEDIUM, 0 at HEAVY and OVERLOADED. The i-frames are ONE contiguous run in every tier, not a flag with a timer. The cliffs are exactly at 30.00->30.01, 70.00->70.01 and 100.00->100.01 with no interpolation anywhere in a band. THE CONVERSION, stated rather than assumed: these are f@60 and the Souls reference is t@30 — DS3 13 t@30 = 433 ms = our 26 f@60; f@60 = 2 x t@30 (ARBITRATION S22).",
+    "MEASURED: encumbrance now moves that roll FROM THE WORLD, which is what round 1 could not say. Nothing worn: 0.00% of a 73 kg capacity, LIGHT, 26 i-frames, 22 f@60 recovery, 22 stamina. Six pieces of armour picked up off the ground and put on (shell-scale hauberk 9.1 + legion greaves 5.8 + rootweave cowl 0.6 + wet-season boots 1.1 + Dres silk sash 0.2 + bog-iron maul 11.5 = 28.3 kg): 38.77%, MEDIUM, 22 i-frames, 34 f@60 recovery, 26 stamina. A separate arm does the same through the ACTUAL inventory cursor — open the pack, move the cursor onto the row, press interact, close, let the 30-frame equip commitment run — and the cuirass lands in the chest slot. Before this round none of that was possible: the engine could only fill the right hand.",
+    "MEASURED: stamina recovery by tier, as a slope over real frames rather than read off the constant. 0.75 stamina per f@60 at LIGHT and MEDIUM, 0.60 at HEAVY (x0.80), 0.45 at OVERLOADED (x0.60) — matching stamina.json on every row. Regen first shows on the 43rd frame after a spend in all four tiers, i.e. the delay is 42 f@60. UNIT NOTE, and it is the one place in this area where doubling would be wrong: RI-CMB03 is deliberately EXCLUDED from the S22 rebase because its 42-frame pause was derived from 0.70 s and was already right at 60 Hz.",
+    "MEASURED: encumbrance changes travel on the road, and this round is the first time it did. Same service (881.4 m rootway), same fare (10 gold), three burdens: UNBURDENED 7555 f@60 and 40.20 world minutes; LADEN 8461 f@60 and 45.02 minutes (x1.12); OVERLADEN 10199 f@60 and 54.27 minutes (x1.35). The fare does not move, deliberately — the tariff is RI-PRG05s and weight does not change what a ticket costs. And on foot over 180 f@60: 8.640 m unburdened, 7.776 m laden (x0.90), 6.221 m overladen (x0.72), with the OVERLADEN sprint arm covering 6.221 m — identical to its walk, so sprint is DENIED rather than quietly slowed, which is the distinction S25 insists on.",
+    "AR-1 GUARD TESTED, NOT ASSUMED: RI-PRG07 §3 makes any burden effect inside COMBAT an automatic fail of the piece. With burden pinned at 0.95 and a real hostile woken (entity E1, in_combat true), every column reads its Unburdened value: move_mult_applied 1.00, sprint true, fatigue_drain_mult 1.00, sneak_detection_mult 1.00, travel_time_mult 1.00. The probe reports `tested: true` separately from `passes`, because a guard that never entered a fight has not been tested and must not read as a pass — the first version of this arm called aggro() with a bad argument and would have recorded a pass on an exception.",
+    "ANTI-MERGE CHECK (RI-PRG07 method 3): 460 kg of mauls in the pack moved the burden ratio from 0 to 2.52 (IMMOBILE) and left the equip load at 0.00% and the roll byte-identical at 26 i-frames / 52 f@60 / LIGHT. This is the check that fails the day somebody simplifies the two ratios into one, and it is the reason _recomputeEquipLoad() reads `slot` and divides by _equipCapacity() rather than mirroring _recomputeBurden().",
+    "DELETE-THE-FIX, on the two most load-bearing claims, run as a control arm in the same browser rather than a git stash. Claim A (armour changes the roll): with the fix, 26 -> 22 i-frames and 22 -> 34 f@60 recovery; with __breakW116(\"producer,slots\") the roll is 26 -> 26 and 22 -> 22 and the equip load sits at the old hardcoded 24.0 in both halves. Claim B (burden changes the journey): with the fix 7555 -> 10199 f@60 and 40.20 -> 54.27 minutes; with __breakW116(\"travel\") 7555 -> 7555 and 40.20 -> 40.20. Both arms genuinely differ and the old number returns in both. Rule 17 is why this is a switch and not a stash: git status showed 29 files moving under me from concurrent pieces for the whole run, and a stash on that tree is a neighbour git add -A away from being staged.",
+    "THE INSTRUMENT WENT RED THREE TIMES BEFORE THE MEASUREMENT WAS TRUSTWORTHY, which is the only reason any of these numbers are worth reading. (1) The offline unit check caught _recomputeEquipLoad dividing by the BURDEN divisor (maxLoad x 2.5) instead of maxLoad, which read 28.3 kg as 16.2% instead of 38.8% and never crossed the cliff — the exact ratio-merge the round exists to prevent, committed by me, in the method whose own comment warns against it. (2) The first delete-the-fix run reported the cut arm as inert because a concurrent writer had reverted my engine.js hooks while leaving the api.js verb in place: __breakW116 set a flag nothing read, so \"the fix deleted\" and \"the fix present\" measured the same code. Caught only because deletefix reported coupled=false. (3) The first road run measured UNBURDENED three times at three different burdens.",
+    "DEFECT FOUND AND FIXED, and it invalidates other people numbers: setBurden() — which IS RI-PRG07 method 5 own sweep instrument — had been silently inert on any stepping run since _recomputeBurden() landed. The verb wrote sim.player.burdenRatio and _recomputeBurden() overwrote it from the real (usually empty) pack on the very next step. My own road probe set 0.95, stepped 180 frames and measured UNBURDENED three times without noticing. Fixed with the same pin discipline as setEquipLoad(); the pin is reported in getBurden().equip_load.burden_source so it is visible in the return value and not only in the code. ANY burden figure taken from a stepping run between _recomputeBurden() landing and this commit is suspect.",
+    "DEFECT FOUND AND FIXED, two parallel implementations of one system (RULES #10 verbatim): sprint denial. combat/player.js reads b.worldDeny.sprint at _tryStart() — the PRESS gate — and the locomotion decision at line 961 (`wantSprint`) did not read it at all. So a denial only ever refused the frame the button went down on: a player already sprinting when they waded past knee depth kept sprinting, and a player holding the button through the transition was never asked again. That is W1-03s water denial, not mine, and it was expiring after one frame. One line at the place locomotion is actually decided now serves both the water clause and RI-PRG07 §3s Overladen sprint prohibition, through the same field and the same producer.",
+    "CONSUMPTION CENSUS, the count the dispatch asked for: 26 parameters enumerated across both encumbrance models and the progression sheet; 22 have a named world-side consumer; FOUR HAVE NO READER AT ALL. They are burden.fatigue (RI-PRG07 §3s x1.40 / x2.20 Fatigue drain), burden.sneak (detection radius x1.15 / x1.50), burden.jump (-25% height / none) and equip_load.fall_damage_mult (RI-PRG07 §2s x0.80 / x1.00 / x1.40 / x2.00). Three of this rounds four builds were themselves closures of exactly this defect: equipLoadPct had no producer, travel_time had no reader, sprint had no reader. getBurden() now returns the census live as `burden_consumers` and `equip_load_consumers`, with a literal null where there is none, so the next reader does not have to take my word for it. The probe exits NON-ZERO while any null remains, which is why tools/harness/prg-encumbrance.mjs --probe all reports exit 12: the census is telling the truth, not failing.",
+    "NOT FIXED, deliberately, and each for a stated reason. (a) burden.fatigue: a Fatigue model does exist — sim/dialogue/disposition.js fatigueTerm() consumes actor.fatigue/fatigueMax for RI-DLG04s disposition arithmetic, which is seam S4 working — but nothing drains fatigue from carried weight, and the drain would land in a sibling live pieces dialogue files. (b) burden.sneak: the detection radius is the stealth subsystems, and a sibling is on enemy behaviour this wave. (c) burden.jump: jump exists (combat/player.js BIT.jump, apex_m) and the height modifier would touch W1-09s calibrated jump arc. (d) equip_load.fall_damage_mult: fall damage exists in sim/traversal.js and the multiplier would touch W1-03s water and fall calibration. All four are named, live, one-line couplings for a round that has the owning pieces present.",
+    "CONTENT FINDING, reported rather than tuned: the fat-roll tier is UNREACHABLE from equipment in the shipped content. With the corrected capacity curve, the heaviest set the 44-item shelf in game/data/items/carried.json can WEAR is 28.3 kg. At the base sheet that is 38.8% — MEDIUM. HEAVY needs more than 70% and OVERLOADED more than 100%, which at a 73 kg capacity is 51.1 kg and 73 kg of worn equipment. carried.json ships no plate set (RI-PRG07 §4 declares one at 78), no greatshield (18), no shield of any kind, and RI-PRG07 §5s Shell-Warden build assumes 126 kg equipped. So RI-CMB01s HEAVY and OVERLOADED rows are implemented, measurable and correct, and no legal character can currently get into them by dressing. I did not invent item weights to make a tier reachable — that is tuning to a target, which this dispatch forbids and which is how the 30% breakpoint would drift.",
+    "NOT TOUCHED, deliberately: the souls curve and the level cap. RI-PRG01 ships cost(n) = round(0.015n^3 + 2.00n^2 + 55n + 300); engine.soulsToNextLevel() reads the 139-row table and falls through to the formula past it; grep finds no level_cap, levelCap, maxLevel or MAX_LEVEL anywhere in game/src or game/data. The JSONs max_level: 140 is the extent of the shipped table and its own softcap_note reads \"No cap on level\". A sibling critic is re-grading this and nothing here was moved toward it. Levelling remains Souls-shaped and correctly so: _spendSouls() debits progression.soulsHeld and nothing else, gold is never touched on that path, and the screen is reached at a hearth (S14/S15).",
+    "DOCTRINE, checked rather than assumed. S23 already rules this seam and I did not re-litigate it: RI-CMB01 owns everything the tier does inside the fight (boundaries, i-frames, distance, recovery), RI-PRG07 owns encumbrance outside it and may keep finer granularity provided it has no in-fight effect. Both halves are now implemented on that split and both are measured above. Levelling stayed Souls-shaped (souls buy levels at a hearth; gold is money and is not on that path). Encumbrance is Morrowind-shaped outside the fight (a continuous ratio over the whole pack, feeding speed, sprint and travel time) and Souls-shaped inside it (four discrete tiers over WORN weight only, feeding i-frames, recovery, roll stamina and regen), and the AR-1 guard between them is tested.",
+    "AR-3, seam crossing: this piece is NOT sterile. Two interactions cross the boundary in both directions. Outward: what you pick up in the Morrowind half decides how many frames you are invulnerable for in the Souls half — armour weight to equip ratio to roll tier to i-frame window. Inward: nothing you carry may touch the fight, and the AR-1 guard that enforces it is measured, not asserted. The travel coupling is a third: a Morrowind logistics decision (how much loot to haul) is paid for in world time on a Morrowind fast-travel network that S7 explicitly protects."
+  ]
 }

@@ -778,25 +778,103 @@ function h_wall(M, frame, rec) {
 
 // ---- summons and bound gear -------------------------------------------------------------------
 
-function bindHandler(kind, archetype) {
+/**
+ * THE SUMMON'S STRENGTH IS ITS MAGNITUDE, AND THE BODY IS WHERE THAT NUMBER IS READ.
+ *
+ * Round 3 shipped this handler magnitude-blind: `rec.magnitude` was never mentioned in it, so a
+ * 90-point Call the Deep and a 1-point Call the Deep put the *identical* body on the floor. That
+ * is the failure shape this project has now found in eighteen-plus subsystems — an authored model
+ * (`effects.json` declares `magnitude 1..90` on both binds) with no reader — and it is worse here
+ * than most, because `focusBase()` CHARGES for the magnitude. The player was paying for a dial
+ * connected to nothing.
+ *
+ * `power` is the scale factor, and it is authored in `effects.json` under `summon`, not here:
+ * the archetype, the reference magnitude the effect's own `reference_cost` is quoted at, and the
+ * clamps. The handler is the reader; the catalogue is the model. Four fields of the body carry
+ * it, and each is read by a different system, so this is not one number written four times:
+ *
+ *   `hpMax`/`hp`      resolve.js's damage accumulator — how long the thing survives
+ *   `armourPoise`     the poise system — whether a swing staggers it
+ *   `staminaMax`      its own attack economy
+ *   `attack_rating`   resolve.js:230 `computeDamage(...)` — how hard it hits
+ *
+ * A summon is a BODY IN A FIGHT (S22, ARBITRATION §1: inside the fight, Souls wins), so nothing
+ * here touches a frame number, a hitbox or a to-hit test. Magnitude buys a bigger thing; it never
+ * buys a faster one and it never buys a chance.
+ */
+function summonPower(M, rec) {
+  const e = M.effects[rec.effect] || {};
+  const s = e.summon || {};
+  // The probe's self-test switch (`H.__breakBindMagnitude()`), and nothing else sets it. It
+  // restores exactly the round-3 behaviour this function was written to end: the dial is read,
+  // the answer is thrown away, every call puts the same body down. A dial census that cannot be
+  // made to report BLIND has not established that BLIND means anything.
+  if (M._bindMagnitudeBlind) return { spec: s, power: 1 };
+  const ref = s.reference_magnitude || 20;
+  const lo = s.scale_min === undefined ? 0.25 : s.scale_min;
+  const hi = s.scale_max === undefined ? 4 : s.scale_max;
+  return { spec: s, power: Math.round(clamp(rec.magnitude / ref, lo, hi) * 1000) / 1000 };
+}
+
+function bindHandler(kind, fallbackArchetype) {
   return (M, frame, rec) => {
     const before = { entities: M.w && M.w.sim ? M.w.sim.entities.length : 0, summons: M.summons.length };
     const b = self(M);
+    const { spec, power } = summonPower(M, rec);
+    const archetype = spec.archetype || fallbackArchetype;
     let eid = null;
+    let body = null;
+    // EXCLUSIVITY, authored on the effect and until now written down and never enforced:
+    // `bind_greater`'s own catalogue note reads "One at a time, game-wide. A second cast
+    // dismisses the first." Nothing read it, so two Deep-Drowned stood side by side.
+    const dismissed = [];
+    if (spec.exclusive) {
+      for (const s of M.summons.slice()) {
+        if (s.kind !== kind) continue;
+        dismissed.push(s.eid);
+        const j = M.summons.indexOf(s);
+        if (j >= 0) M.summons.splice(j, 1);
+        if (s.eid && M.w && M.w.engine) { try { M.w.engine.despawn(s.eid); } catch (err) { /* already gone */ } }
+      }
+      if (dismissed.length) M._emit(frame, 'summon_dismissed', { effect: rec.effect, eids: dismissed, why: 'exclusive' });
+    }
     if (M.w && M.w.engine && b) {
       const rad = b.yaw * Math.PI / 180;
       // L3: it hauls itself out. `unfold_f` is carried on the summon record so the renderer and
       // a critic read the same number; the entity exists from frame 1 either way.
       eid = M.w.engine.spawn(archetype, r3(b.pos[0] + Math.sin(rad) * 2.5), r3(b.pos[2] + Math.cos(rad) * 2.5), { side: 'ally', summoned: true });
       if (eid && eid.eid) eid = eid.eid;
-      M.summons.push({ eid, kind, unfold_f: 40, expires_f: frame + rec.remaining_f });
+      body = M.w.combat ? M.w.combat.bodyOf(eid) : null;
+      if (body) {
+        body.hpMax = Math.max(1, Math.round(body.hpMax * power));
+        body.hp = body.hpMax;
+        body.staminaMax = Math.max(1, Math.round(body.staminaMax * power));
+        body.stamina = body.staminaMax;
+        body.armourPoise = Math.max(0, Math.round(body.armourPoise * power));
+        // `moves._weapon` is a per-body COPY (combat/moves.js §wpn) — scaling it here scales
+        // this summon and nothing else in the game.
+        if (body.moves && body.moves._weapon) body.moves._weapon.attack_rating = Math.max(1, Math.round(body.moves._weapon.attack_rating * power));
+        // The sim entity is re-synced from the body every frame (sim/combat-bridge.js:247) but
+        // `hpMax` is not among the mirrored fields, and a probe that snapshots before the first
+        // step would read the unscaled number. Write both now.
+        const se = M.w.sim ? M.w.sim.findEntity(eid) : null;
+        if (se) { se.hp = body.hp; se.hpMax = body.hpMax; }
+      }
+      M.summons.push({ eid, kind, archetype, power, hp: body ? body.hpMax : null,
+                       attack_rating: body && body.moves && body.moves._weapon ? body.moves._weapon.attack_rating : null,
+                       unfold_f: 40, expires_f: frame + rec.remaining_f });
     }
     rec._undo = () => {
       const i = M.summons.findIndex((s) => s.eid === eid);
       if (i >= 0) M.summons.splice(i, 1);
       if (eid && M.w && M.w.engine) { try { M.w.engine.despawn(eid); } catch (e) { /* already gone */ } }
     };
-    return moved('listEntities() + summon register', before, { entities: M.w && M.w.sim ? M.w.sim.entities.length : 0, summons: M.summons.length }, { eid, archetype, unfold_f: 40 });
+    return moved('listEntities() + summon register', before,
+      { entities: M.w && M.w.sim ? M.w.sim.entities.length : 0, summons: M.summons.length },
+      { eid, archetype, unfold_f: 40, magnitude: r2(rec.magnitude), power,
+        hp: body ? body.hpMax : null,
+        attack_rating: body && body.moves && body.moves._weapon ? body.moves._weapon.attack_rating : null,
+        dismissed });
   };
 }
 
@@ -841,22 +919,55 @@ function h_calm_beast(M, frame, rec, target) {
   return moved('alert_state + in_combat', before, controlCensus(b, c), { deaths: 0 });
 }
 
+/**
+ * CALM STOPS THE FIGHT; COLD WATER ENDS IT BY EMPTYING THE ROOM.
+ *
+ * These two effects were indistinguishable for three rounds and the census caught it: both set
+ * `aggro=false, yielded=true` and nothing else, so both left the target standing exactly where
+ * it was, and a player could not tell Stillness from Cold Water by looking. The split is the one
+ * Morrowind draws and this effect's own ruling already states: Calm stops the fight, Demoralise
+ * makes the target RUN.
+ *
+ * The distance it runs is `demoralise`'s magnitude, which was the other half of the same defect
+ * — `magnitude` was declared 1..34 at 3 points each, priced by `focusBase()`, and read by nothing
+ * in the handler. `flee` is authored on the effect in `effects.json`; the reader is the flee loop
+ * in `MagicSystem.step`. Speed is a constant per effect and NOT scaled by magnitude: how fast a
+ * frightened thing runs is not something a spell's strength should buy, and a magnitude that
+ * bought speed would be a magnitude that changed a frame-rate-visible motion inside the fight.
+ */
 function h_demoralise(M, frame, rec, target) {
   const b = target;
   const c = ctlOf(M, b);
   const before = controlCensus(b, c);
+  const spec = (M.effects.demoralise && M.effects.demoralise.flee) || {};
+  const speed = spec.speed_mps === undefined ? 4.2 : spec.speed_mps;
+  const perPoint = spec.leash_m_per_point === undefined ? 0.9 : spec.leash_m_per_point;
+  const leashMin = spec.leash_min_m === undefined ? 6 : spec.leash_min_m;
+  const leashMax = spec.leash_max_m === undefined ? 45 : spec.leash_max_m;
+  // The leash is a distance FROM THE CASTER, so it is measured from where the caster is, not
+  // from where the target happens to be standing when the spell lands.
+  const leash = clamp(rec.magnitude * perPoint, leashMin, leashMax);
   if (b) {
     b.fleeingUntil = frame + rec.remaining_f;
     b.aggro = false;
-    b.yielded = true;
+    b.yielded = true;                            // it is not swinging at you on its way out
     b.move = null;
     b.hitboxActive = false;
+    b.fleeSpeedMps = speed;
+    b.fleeLeashM = r2(leash);
+    b.fleeDistM = 0;
+    b.fleeArrived = false;
   }
   if (c) { c.alert = 0; c.alertState = 'SEARCH'; c.fleeing = true; }
-  rec._undo = () => { if (b) { b.fleeingUntil = 0; b.yielded = false; } if (c) c.fleeing = false; };
-  M._emit(frame, 'fight_ended', { by: 'demoralise', target: b ? b.id : null, deaths: 0 });
+  rec._undo = () => {
+    if (b) { b.fleeingUntil = 0; b.yielded = false; b.fleeSpeedMps = 0; b.fleeLeashM = 0; b.fleeArrived = false; }
+    if (c) c.fleeing = false;
+  };
+  M._emit(frame, 'fight_ended', { by: 'demoralise', target: b ? b.id : null, deaths: 0,
+                                  flee_leash_m: r2(leash), flee_speed_mps: speed });
   M.raiseFlag(frame, 'fight_ended:demoralise');
-  return moved('alert_state + in_combat', before, controlCensus(b, c), { deaths: 0 });
+  return moved('alert_state + in_combat + the body\'s own position', before, controlCensus(b, c),
+    { deaths: 0, flee_leash_m: r2(leash), flee_speed_mps: speed, magnitude: r2(rec.magnitude) });
 }
 
 function h_frenzy(M, frame, rec, target) {

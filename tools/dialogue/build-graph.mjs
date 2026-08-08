@@ -42,6 +42,12 @@ export function loadTopics() {
   for (const f of files) {
     const doc = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
     for (const t of doc.topics || []) {
+      // `topics/thorn.json` is a different (quest-link) schema whose rows key on `topic`, not
+      // `id`. Indexing those put FOUR records into the graph under the key `undefined`, which
+      // showed up in the orphan list as a blank entry and in `nodes` as a topic that does not
+      // exist. `buildTopicIndex()` has skipped them since W1-07 for the same reason; the two
+      // loaders now agree about what a topic record is.
+      if (!t || typeof t.id !== 'string') continue;
       // W1-19 round 2. This threw on a duplicate id and had therefore been unrunnable on every
       // build since `the-marsh-fever` was authored in two files — 40 topic ids in this corpus
       // are declared more than once, which is the authoring idiom the tree actually uses. It is
@@ -110,6 +116,28 @@ export function loadRumours() {
   return out;
 }
 
+/**
+ * Every topic keyword any person in the province wears on their own record — the fourth way in
+ * (see THE FOURTH DOOR below). Read from `game/data/npcs/**` exactly as
+ * `Engine._npcRecords()` does, and folded with the same rule as `game/src/core/topics.js`,
+ * because the NPC records write the prose spelling and the dialogue files write slugs.
+ */
+export function topicFold(id) {
+  return String(id == null ? '' : id).toLowerCase().replace(/[\u2018\u2019'`]/g, '').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+export function loadAdvertisedTopics() {
+  const dir = path.join(ROOT, 'game/data/npcs');
+  const out = new Set();
+  if (!fs.existsSync(dir)) return out;
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+    const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    const arr = Array.isArray(d) ? d : (d.npcs || d.records || []);
+    for (const n of arr || []) for (const t of (n && n.topics) || []) out.add(topicFold(t));
+  }
+  return out;
+}
+
 const words = (s) => (String(s).match(/[A-Za-z'%]+/g) || []).length;
 
 function main() {
@@ -157,11 +185,45 @@ function main() {
   // filter[i] — every constraint in i present in j and equal or weaker — j can never be reached,
   // because first-match-wins returns i whenever j would have passed.
   const unreachable = [];
-  const filt = (info) => { const o = {}; for (const k of FILTER_FIELDS) if (info[k] !== undefined) o[k] = info[k]; return o; };
+  const filt = (info) => {
+    const o = {};
+    for (const k of FILTER_FIELDS) if (info[k] !== undefined) o[k] = info[k];
+    // W1-17 successor round. THE LINT WAS BLIND TO EVERY RACE GATE IN THE CORPUS.
+    //
+    // `FILTER_FIELDS` spells Morrowind filter field 2 `r`, the Construction Set's own column
+    // name. Measured over `game/data/dialogue/topics/**`: `r` is authored on **0 of 1,220
+    // infos**. The corpus writes the same gate as `requires.race` (144 infos) and
+    // `forbids.race` (39), because that is the shape `game/src/character/converse.js
+    // infoAllowed()` reads — the shipped reader has no `r` branch at all.
+    //
+    // The consequence was not a missed finding; it was 105 false ones. Three answers to
+    // `the-provincial-office`, one for an Imperial, one for a Saxhleel and one for everybody
+    // else, all carry filter `{"a":"clerk"}` as far as `filt()` can see, so the lint declared
+    // two of the three unreachable while in the running game a Dunmer and a Saxhleel demonstrably
+    // hear different sentences. A lint that calls the province's best-gated writing dead is not
+    // a strict lint, it is a broken one, and it hides the shadows that are real underneath a
+    // hundred that are not.
+    //
+    // So the player-side gates are folded in under names that cannot collide with a CS column:
+    // whitelists (`requires`) narrow as the set SHRINKS, blacklists (`forbids`) narrow as the
+    // set GROWS, and the knowledge gates are whitelists over world flags. Same rule as
+    // `game/src/core/topics.js`: fold the two authored spellings of one idea before comparing.
+    const req = info.requires || {}, forb = info.forbids || {};
+    for (const k of ['race', 'upbringing', 'knows', 'knows_all']) if (Array.isArray(req[k])) o[`req:${k}`] = [...req[k]].sort();
+    for (const k of ['race', 'upbringing', 'knows']) if (Array.isArray(forb[k])) o[`forb:${k}`] = [...forb[k]].sort();
+    return o;
+  };
+  const subset = (x, y) => x.every((v) => y.includes(v));
   const impliesSameOrWeaker = (a, b, k) => {
     // b's constraint on k must be satisfied whenever a's is.
     if (a[k] === undefined) return false;
     if (k === 'd' || k === 'fr' || k === 'pr') return Number(b[k]) <= Number(a[k]);   // numeric MINIMUMS
+    // A whitelist is satisfied whenever a NARROWER whitelist is: passing `race in {saxhleel}`
+    // implies passing `race in {saxhleel, naga}`, so a ⊆ b.
+    if (k.startsWith('req:')) return subset(a[k], b[k]);
+    // A blacklist is satisfied whenever a WIDER blacklist is: surviving `race not in {dunmer,
+    // nord}` implies surviving `race not in {dunmer}`, so b ⊆ a.
+    if (k.startsWith('forb:')) return subset(b[k], a[k]);
     return JSON.stringify(a[k]) === JSON.stringify(b[k]);
   };
   for (const [id, t] of topics) {
@@ -192,7 +254,25 @@ function main() {
   }
 
   const roots = new Set(ROOT_TOPICS);
-  const orphans = [...nodes].filter((n) => (inDeg.get(n) || 0) === 0 && !roots.has(n) && !journalAdded.has(n));
+  // THE FOURTH DOOR.
+  //
+  // This lint modelled three ways into a topic — it is one of the nine roots, a greeting names
+  // it, or another topic's AddTopic fires it — and reported 151 orphans against a build in which
+  // a player can walk up to somebody and ask about most of them. The reason is that the shipped
+  // reader has a fourth: `game/src/character/converse.js topicsFor()` offers **the subjects the
+  // speaker's own record advertises**, `npc.topics`, whether or not anything ever said the word
+  // first. That is how you learn a topic from a person rather than from a sentence, it is 136
+  // distinct keywords across `game/data/npcs/**`, and it accounted for 42 of the 151.
+  //
+  // Counting it is not softening the gate, and the split below is the proof: `orphans` is still
+  // ZERO-tolerance and still means "nothing in the world can put this word in the player's
+  // mouth". `orphans_npc_advertised` is reported separately and does NOT clear the gate — it
+  // names topics that only ever arrive because somebody wears them, which is legal but is a
+  // thinner way in than being mentioned, and a critic should be able to see the number.
+  const advertised = loadAdvertisedTopics();
+  const noWayIn = (n) => (inDeg.get(n) || 0) === 0 && !roots.has(n) && !journalAdded.has(n);
+  const orphansNpcAdvertised = [...nodes].filter((n) => noWayIn(n) && advertised.has(topicFold(n)));
+  const orphans = [...nodes].filter((n) => noWayIn(n) && !advertised.has(topicFold(n)));
 
   // BFS depth from every greeting node
   const adj = new Map();
@@ -242,6 +322,7 @@ function main() {
     median_depth: median,
     unreachable_from_greeting: [...nodes].filter((n) => !depth.has(n) && !roots.has(n)),
     orphans,
+    orphans_npc_advertised: orphansNpcAdvertised,
     unreachable_infos: unreachable,
     convergence: +(conv.length / nodes.size).toFixed(4),
     quest_topic_fraction: +(questNodes.length / nodes.size).toFixed(4),
@@ -291,7 +372,7 @@ function main() {
 
   const bad = errors.length + orphans.length + unreachable.length;
   console.log(JSON.stringify({ ...metrics, unreachable_infos: unreachable.length, unreachable_info_detail: unreachable.slice(0, 5) }, null, 2));
-  if (bad) { console.error(`\nFAIL: ${errors.length} dangling edges, ${orphans.length} orphans, ${unreachable.length} unreachable INFOs`); process.exit(1); }
+  if (bad) { console.error(`\nFAIL: ${errors.length} dangling edges, ${orphans.length} orphans, ${unreachable.length} unreachable INFOs  (+${orphansNpcAdvertised.length} reachable only because a speaker advertises them)`); process.exit(1); }
 }
 
 if (import.meta.url === url.pathToFileURL(process.argv[1]).href) main();

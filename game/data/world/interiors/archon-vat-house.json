@@ -206,10 +206,17 @@
   "takeable": true,
   "owner": "npc:archon-priest-3"
  },
- "readable": {
-  "id": "archon-vat-house-readable",
-  "title": "On Boiling Lichen"
- },
+ "readable": [
+  {
+   "id": "archon-vat-house-readable",
+   "title": "On Boiling Lichen"
+  },
+  {
+   "id": "the-guild-denial",
+   "title": "A reply from the Dyers’ and Salters’ hall at Archon",
+   "book": "the-guild-denial"
+  }
+ ],
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,

@@ -230,10 +230,27 @@
   "takeable": true,
   "owner": "npc:gideon-trader-2"
  },
- "readable": {
-  "id": "gideon-court-readable",
-  "title": "The Hiring List"
- },
+ "readable": [
+  {
+   "id": "gideon-court-readable",
+   "title": "The Hiring List"
+  },
+  {
+   "id": "the-blackrose-lease-roll",
+   "title": "The lease roll, with the renewal clause, Assize copy",
+   "book": "the-blackrose-lease-roll"
+  },
+  {
+   "id": "the-legates-seal-register",
+   "title": "The register of the Legate’s seal",
+   "book": "the-legates-seal-register"
+  },
+  {
+   "id": "the-declaration-drafts",
+   "title": "Drafts of the court’s declarations, dated at the head",
+   "book": "the-declaration-drafts"
+  }
+ ],
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,

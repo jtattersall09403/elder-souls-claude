@@ -164,10 +164,17 @@
   "takeable": true,
   "owner": "npc:stormhold-publican-5"
  },
- "readable": {
-  "id": "stormhold-archive-readable",
-  "title": "The Cohorts Stormhold Does Not Have"
- },
+ "readable": [
+  {
+   "id": "stormhold-archive-readable",
+   "title": "The Cohorts Stormhold Does Not Have"
+  },
+  {
+   "id": "the-stormhold-transfer-file",
+   "title": "The transfer file, garrison archive, Stormhold",
+   "book": "the-stormhold-transfer-file"
+  }
+ ],
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,

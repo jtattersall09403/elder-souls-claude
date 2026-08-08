@@ -958,7 +958,18 @@ export class PlayerController {
       const locked = ctx.lockedBody;
       const dir = this.lock.resolveDirection(b, locked, mx, my, ctx.cameraYawDeg, false);
       // RI-CMB09 §4: EXHAUSTED is walk-only. Sprint is denied and jog is denied.
-      const wantSprint = (input.held & BIT.sprint) !== 0 && !b.exhausted && b.stamina > 0;
+      //
+      // W1-16 round 2 added `!b.worldDeny.sprint`, and it closes a hole wider than the clause
+      // that motivated it. `worldDeny` was read at `_tryStart()` — the PRESS gate — and nowhere
+      // else, so a sprint denial only ever refused the frame the button went down on. A player
+      // who was already sprinting when they waded past knee depth kept sprinting, and a player
+      // holding the button through the transition was never asked again. S25's whole point is
+      // that a denied action is legible and a silently degraded one is not; a denial that
+      // expires after one frame is neither. Same field, same producer, read where locomotion is
+      // actually decided. RI-PRG07 §3's Overladen `sprint: no` arrives through the same channel
+      // (engine -> `p.denySprint` -> `b.worldDeny.sprint`) and is guarded to be inert in a fight.
+      const wantSprint = (input.held & BIT.sprint) !== 0 && !b.exhausted && b.stamina > 0
+        && !(b.worldDeny && b.worldDeny.sprint);
       let mps;
       if (wantSprint) {
         mps = this.d.locomotion.sprint_mps;

@@ -139,6 +139,24 @@ export class RumourBook {
   /** Every rumour this character could hear in this settlement, in authored order. */
   for(settlement, player = {}) {
     const race = player.race, up = player.upbringing;
+    // W1-17 successor round. THE ACT GATE AND THE PLAYER'S OWN DEEDS.
+    //
+    // RI-DLG03 §C requires that a Tier A settlement's rumour pool change across the acts (>=12
+    // entries act-gated, >=2 post-resolution) and that >=3 report the player's own past actions.
+    // Every one of those is a condition on what the world knows, and this filter read race and
+    // upbringing only — so a rumour authored with an act gate would have been the nineteenth
+    // model in this repo that nothing reads, and the town would have said the same eight things
+    // from the first hour to the last.
+    //
+    // `player.knows` is ALREADY here: `Engine._talkPlayer()` rebuilds it live from
+    // `sim.quest.flags` on every call and `engine.js rumourFor()` passes that object straight
+    // in. Nothing new had to be plumbed; the reader simply never looked. Semantics are copied
+    // from `character/converse.js infoAllowed()` deliberately, down to the fail-closed branch —
+    // `knows` is ANY-of, `knows_all` is ALL-of, and a gate whose evidence is missing CLOSES,
+    // because an unverifiable requirement that passes is the "the gate is decorative" failure
+    // RI-JRN07 M-Q14 makes a hard fail. A caller who passes no `knows` (a bare unit test) sees
+    // exactly the old behaviour for every rumour that carries no knowledge gate.
+    const knows = player.knows;
     return this.rows.filter((r) => {
       if (settlement && r.settlement && r.settlement !== settlement) return false;
       if (!settlement && r.settlement) return false;
@@ -147,6 +165,13 @@ export class RumourBook {
       if (req && Array.isArray(req.upbringing) && req.upbringing.indexOf(up) < 0) return false;
       if (forb && Array.isArray(forb.race) && forb.race.indexOf(race) >= 0) return false;
       if (forb && Array.isArray(forb.upbringing) && forb.upbringing.indexOf(up) >= 0) return false;
+      if (knows) {
+        if (req && Array.isArray(req.knows) && !req.knows.some((k) => knows.has(k))) return false;
+        if (req && Array.isArray(req.knows_all) && !req.knows_all.every((k) => knows.has(k))) return false;
+        if (forb && Array.isArray(forb.knows) && forb.knows.some((k) => knows.has(k))) return false;
+      } else if (req && (Array.isArray(req.knows) || Array.isArray(req.knows_all))) {
+        return false;
+      }
       return true;
     });
   }
