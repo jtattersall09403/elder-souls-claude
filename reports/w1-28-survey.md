@@ -136,6 +136,22 @@ encounter will read a perfectly learnable enemy as unlearnable.
 **What this does not claim.** Not that a human got better. That *this build contains a fight that
 can be learned*. Strictly weaker than §C's claim, and the strongest the build supports.
 
+## 4b. The gap numbers inherit F2 — do not read them as C1/C2
+
+At the 18.3-minute checkpoint: **3 131 m walked, 8 verbs, `combat_fraction` (driver-side) 0.223,
+`gap_max` 496 s, `gap_p95` 477 s, and only 3 of 135 dispatched actions corroborated.**
+
+`gap_max` and `gap_p95` **must not be read as C1/C2 verdicts.** C1 counts an input only when the
+trace corroborates one of its five world-facts within a second — and per §2 the trace cannot see
+fifteen of the sixteen buttons. The gap statistic is measuring the instrument's blindness, not the
+hour's emptiness. **C1 and C2 are unmeasurable on this build until `input_action` reaches the live
+combat path.**
+
+`combat_fraction` does **not** inherit F2 — it is computed from entity proximity, not from inputs.
+At 0.223 it sits **inside C5's 0.12–0.30 band**, which is the first evidence anywhere that this
+hour is neither the walking simulator of How-we-lose #1 nor the arena of #2. Driver-side and at
+tick resolution; `cadence.mjs` owns the trace-side figure.
+
 ## 5. What was not done
 
 - **The 60-minute run did not finish.** It reached 9.0 simulated minutes and was still running at

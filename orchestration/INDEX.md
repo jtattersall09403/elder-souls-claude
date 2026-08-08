@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `dbc0b4b`: 765 tools, 153 reference
+so it cannot drift. Generated at `bd37462`: 764 tools, 153 reference
 items, 72 pieces in flight.
 
 Its purpose is to stop 72+ concurrent agents each paying separately to discover the
@@ -615,10 +615,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/playability/` — 3
+### `tools/playability/` — 2
 
 - `tools/playability/live-mirror.mjs` — put a real browser in front of the REAL deployed site.
-- `tools/playability/touch-fight.mjs` — can a finger fight?
 - `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
 
 ### `tools/progression/` — 6
@@ -1101,8 +1100,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `PLAYABILITY` | measuring | finish the local and live runs at all eight shapes with --play; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
+| `PLAYABILITY` | measuring | finish the local and live runs at all eight shapes with --play; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `critic-w1-touch` | measuring — fight leg done, roll/sprint gate under investigation | settle whether arm B's sprint promotion is a real gate defect or CDP latency; then the dif | `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` `tools/touch/critic-block-roll.mjs` `tools/touch/critic-roll-matrix.mjs` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-27` | done |  | `orchestration/status/W1-27.json` `tools/coherence/w1-27-coherence.mjs` `tools/coherence/w1-27-loot-consumption.mjs` `tools/coherence/w1-27-chart.mjs` `tools/world/build-property.mjs` `reports/w1-27/RULING.md` |

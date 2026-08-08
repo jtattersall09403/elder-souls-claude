@@ -65,5 +65,20 @@
     "The blind pair RI-JRN02 requires (our timeline vs Morrowind/Dark Souls, coin-flipped) was NOT built. Rule 25 forbids me judging one I built anyway.",
     "input.discoverability is CITED, NOT SCORED \u2014 the declared W1-28 <-> W1-08 seam."
   ],
-  "seam_W1_28_W1_08": "RI-JRN02 judges input.discoverability, which is W1-08's. Cited, not scored, per CORPUS-CONTRACT \u00a74 rule 1. One thing found here that W1-08 should have: RI-JRN02 V2 says no verb may be introduced by text, and M-I3 checks the 30 s of UI text before each verb's first use. This piece could not run it. The coupling debt is that W1-28 can produce the first-use minutes and W1-08 owns the text stream they must be checked against, and neither piece alone closes HF2."
+  "seam_W1_28_W1_08": "RI-JRN02 judges input.discoverability, which is W1-08's. Cited, not scored, per CORPUS-CONTRACT \u00a74 rule 1. One thing found here that W1-08 should have: RI-JRN02 V2 says no verb may be introduced by text, and M-I3 checks the 30 s of UI text before each verb's first use. This piece could not run it. The coupling debt is that W1-28 can produce the first-use minutes and W1-08 owns the text stream they must be checked against, and neither piece alone closes HF2.",
+  "hour_run_checkpoints": {
+    "18.3_min": {
+      "walked_m": 3131,
+      "V_exercised": "7/14",
+      "verbs": 8,
+      "acquisition": "sprint@0.03 interact@0.73 read@0.73 light@1.52 roll@3.0 lock_on@7.37 use_item@8.38 jump@15.5",
+      "combat_fraction_driver_side": 0.223,
+      "traversal_fraction_driver_side": 0.029,
+      "gap_max_s": 496,
+      "gap_p95_s": 476.65,
+      "corroborated_state_changing_inputs": 3
+    },
+    "note": "The run was still going at hand-off. Re-read reports/w1-28/hour/hour.json for the latest."
+  },
+  "caveat_the_gap_numbers_inherit_F2": "gap_max 496 s and gap_p95 477 s must NOT be read as C1/C2 verdicts, and the reason is F2. C1 counts an input only when the trace CORROBORATES one of its five world-facts within a second, and the trace cannot see fifteen of the sixteen buttons \u2014 so only 3 of 135 dispatched actions could be corroborated at all. The gap statistic is therefore measuring the instrument's blindness, not the hour's emptiness. C1/C2 are UNMEASURABLE on this build until `input_action` reaches the live combat path, and that is the honest reading. By contrast combat_fraction 0.223 is computed from entity proximity, not from inputs, so it does NOT inherit F2 \u2014 and it sits inside C5's 0.12-0.30 band, which is the first evidence anywhere that this hour is neither the walking simulator nor the arena of How-we-lose #1 and #2."
 }
