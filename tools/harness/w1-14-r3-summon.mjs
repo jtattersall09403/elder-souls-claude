@@ -106,7 +106,17 @@ try {
       H.stepFrames(70);
       const ev = H.magicEventsDrain();
       const ap = ev.find((x) => x.kind === 'effect_apply' && x.effect === effect);
-      return { spell: mk.spell.id, applied: !!ap, record: ap || null, duration_s: d,
+      // THE SUMMON REGISTER, not the event. `applyEffects` emits only consumer/before/after/
+      // changed, so the handler's own `power` / `hp` / `attack_rating` never reach the event
+      // stream — the first run of this file read them as `undefined` and reported a model with
+      // no numbers in it. `getMagicWorld().summons` is where the handler wrote them.
+      const w = H.getMagicWorld();
+      const reg = (w.summons || []).slice(-1)[0] || null;
+      return { spell: mk.spell.id, applied: !!ap, record: ap || null, duration_s: d, register: reg,
+               event_kinds: [...new Set(ev.map((x) => x.kind))],
+               refusals: ev.filter((x) => /refus|denied|dropped|abort/i.test(String(x.kind)))
+                 .map((x) => ({ kind: x.kind, reason: x.reason || x.gate || null, need: x.need, had: x.had })),
+               quote: H.quoteSpell(spec()),
                // `effect_apply` carries only consumer/before/after/changed — the handler's extra
                // fields are dropped by `applyEffects`. `fight_ended` is where `demoralise` puts
                // its leash, so a reader that wants the MODEL's own number reads that event.
@@ -133,7 +143,16 @@ try {
         if (cast.refused) return { refused: cast.refused };
         const bs = bodies();
         sid = bs.length ? bs[bs.length - 1].id : null;
-        if (sid) { H.aggro(sid); if (playerAttacks) H.lockOn(sid); }
+        // A CATALYST IN THE HAND MAKES `light` A CAST, NOT A SWING. The arena equips
+        // `great_staff` because casting requires one, and the first run of this file then held
+        // `light` down for 600 f@60 calling it "the player attacking" while the player recast
+        // the same summon spell — which is why the summon's hp curve was flat at 1040 for the
+        // whole run and the defence arm measured nothing. Staff down, attunement cleared, and
+        // only then is `light` a weapon.
+        if (sid) {
+          H.aggro(sid);
+          if (playerAttacks) { H.setAttuned([]); H.setCatalyst(null); H.lockOn(sid); }
+        }
       } else {
         H.stepFrames(70);       // the same 70 f the cast consumes, so the arms line up in time
       }
@@ -156,7 +175,13 @@ try {
         effect, magnitude, player_attacks: playerAttacks,
         // WHAT THE MODEL SAYS — the handler's own census record, for cross-checking against
         // what the body then did. A model that reports a scale it did not apply is caught here.
-        model: cast && cast.record ? { power: cast.record.power, hp: cast.record.hp, attack_rating: cast.record.attack_rating, magnitude: cast.record.magnitude } : null,
+        model: cast && cast.register ? { power: cast.register.power, hp: cast.register.hp, attack_rating: cast.register.attack_rating,
+                                         archetype: cast.register.archetype, magnitude: cast.record ? cast.record.magnitude : null } : null,
+        cast_duration_s: cast ? cast.duration_s : null,
+        cast_applied: cast ? cast.applied : null,
+        cast_event_kinds: cast ? cast.event_kinds : null,
+        cast_refusals: cast ? cast.refusals : null,
+        cast_quote: cast && !cast.applied ? cast.quote : null,
         summon_id: sid,
         summon_hp_max: summon0 ? summon0.hp_max : null,
         player_hp_start: Math.round(p0.hp), player_hp_end: Math.round(pEnd.hp),

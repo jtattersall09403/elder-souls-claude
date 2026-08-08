@@ -2,11 +2,17 @@
   "task_id": "critic-w1-04-r3",
   "role": "critic",
   "piece": "W1-04",
-  "grading": ["W1-04-r2 (interiors)", "W1-04-r3 (exteriors)"],
+  "grading": [
+    "W1-04-r2 (interiors)",
+    "W1-04-r3 (exteriors)"
+  ],
   "state": "running",
   "started_at": "2026-08-08T00:00:00Z",
-  "next_step": "read RULES/INDEX/ARBITRATION/spec/both builder status files",
-  "files_touched": [],
+  "next_step": "run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms",
+  "files_touched": [
+    "orchestration/status/critic-w1-04-r3.json",
+    "tools/world/critic-w1-04-r3a.mjs"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-04-r3.md",
     "corpus/90-verdicts/wave1/W1-04-r3.json",
@@ -15,5 +21,13 @@
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "notes": "Grading two rounds at once. Attack order A-F from brief."
+  "notes": "Grading two rounds at once. Attack order A-F from brief.",
+  "contention_decision": "node tools/contention.mjs --gate returned exit 3 twice. The INSTANCE ceiling \u2014 the thing a browser actually contends for \u2014 was NOT breached (4 of 6); only the per-core load average, at 4.12 against a 4.0 ceiling. I PROCEEDED PAST IT, as rule 21 permits, with ONE browser launched once and kept for every section. NO TIMING FIGURE IS PUBLISHED ANYWHERE IN THIS VERDICT (rule 26).",
+  "found_so_far": [
+    "corpus/90-verdicts/wave1/W1-04-r2.md ALREADY EXISTS (FAIL 4.4/10). The brief says neither round has been judged; round 2 has.",
+    "reports/w1-04-interior-sweep.json LANDED (after the r2 verdict was filed): live 115 distinct images AND control 115. Its own failure line: \"the control is not worse: this sweep is not measuring the room.\"",
+    "reports/critic-w1-04-r2a.json LANDED: verb_noticed_the_empty_room false; unique items 11 taken, theft_true 0, crime_filed 0.",
+    "Object.assign(group,{position}) THROWS against the vendored three r180 (position writable:false). 34 instances across 22 rooms, counted as built.",
+    "0 of 83 declared unique_item ids appear in game/data/world/property/*.json zone contents."
+  ]
 }

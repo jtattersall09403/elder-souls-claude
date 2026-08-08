@@ -55,6 +55,30 @@ zero samples with no ground. Delete-the-fix returns 0 tiles built and ring 0/25.
 critic has been asked whether that boundary is fair or a handoff of the actual defect.
 
 
+## Q. Two defects found by W1-16 r2 that invalidate OTHER pieces' numbers — read before you re-measure
+
+Filed by the progression builder, not by the pieces they damage. Neither is a gap in W1-16; both
+are reasons a number somewhere else is wrong, and they are here so nobody re-derives them.
+
+**Q1. `setBurden()` has been inert on any stepping run** since `_recomputeBurden()` landed. The verb
+wrote the value and the next frame overwrote it, so a probe that set a burden, stepped, and measured
+was measuring the default. **Any burden figure taken from a stepping run before commit `c36653e` is
+suspect** — including figures already published in verdicts and status files. If your piece quotes
+one, re-take it or mark it. The pinned-scenario path is the pattern that works: pin, and clear the
+pin on the load path, because `save/fight.js` always writes a number so every load would otherwise
+read as a pin (RULES rule 7).
+
+**Q2. There are two parallel sprint implementations.** `worldDeny.sprint` was read at the press gate
+only, so a denial that should persist expired after one frame — **W1-03's water denial is the known
+casualty** and there may be others. Rule 10 exists for exactly this shape (two implementations of
+one system, one good and one broken, live at the same time). If your piece denies, gates or
+throttles an action, check which of the two paths actually carries it.
+
+**Q3, related and not yet acted on.** `combat.player.equipLoadPct` — the input to RI-CMB01's whole
+roll ladder — had no producer at all until this round: three writers, one of them a hardcoded
+`24.0`. Any roll measurement taken against a load tier before this round was taken against 24%
+regardless of what the player was wearing.
+
 ## R. Orchestrator ruling: stop rebuilding build-viability, and stop granting
 
 `tools/analysis/build-viability.mjs` has now been rejected **five times**, and the round-4 tool

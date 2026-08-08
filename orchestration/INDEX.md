@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `173ee86`: 551 tools, 153 reference
-items, 38 pieces in flight.
+so it cannot drift. Generated at `5d88b7e`: 556 tools, 153 reference
+items, 39 pieces in flight.
 
-Its purpose is to stop 38+ concurrent agents each paying separately to discover the
+Its purpose is to stop 39+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -37,8 +37,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 25
+### `tools/` — 27
 
+- `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
 - `tools/boot-check.mjs` — A forwarding shim, because agents keep writing `tools/boot-check.mjs` and the real file is `tools/harness/boot-check.mjs`.
@@ -61,6 +62,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
+- `tools/souls-consumption-ledger.mjs` — WHICH LEDGER DOES A KILL CONSULT?
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
@@ -112,9 +114,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
 - `tools/analysis/w1-15-r3-chart.mjs` — THE PICTURE FOR W1-15 ROUND 3: the light in one room, before and after it was told about the lamps.
 
-### `tools/audio/` — 4
+### `tools/audio/` — 5
 
 - `tools/audio/critic-m6-fixture-sweep.mjs` — is RI-AUD01 M6's PASS a property of the PANNER or of the FIXTURE?
+- `tools/audio/critic-w1-22-r2-bands.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
 - `tools/audio/impact-browser.mjs` — the BROWSER half of `audio.combat.impact` (W1-11).
 - `tools/audio/impact-probe.mjs` — drive `aud-impact-matrix` and write the run artifacts RI-AUD01's Comparison method reads.
 - `tools/audio/make-impact-classes.mjs` — Authoring tool for `game/data/audio/impact/classes.json` — RI-AUD01 §A/§C, W1-11.
@@ -163,12 +166,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/corpus/dump-journal.mjs` — the journal as text, for the greps that three items depend on.
 
-### `tools/dialogue/` — 15
+### `tools/dialogue/` — 16
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/build-graph.mjs` — RI-DLG01 Comparison method, steps 1, 2 and 4 — dump the graph, compute the topology, and run the unreachable-INFO lint.
 - `tools/dialogue/consume.mjs` — CONSUMPTION — RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3.
 - `tools/dialogue/critic-field-census.mjs` — critic-w1-17 instrument 1 — an INDEPENDENT census of every filter field authored on every info in game/data/dialogue/topics/**, written without reading build-gr
+- `tools/dialogue/critic-reach.mjs` — critic-w1-17 instrument 3 — CAN ANY PLAYER, ANYWHERE, EVER HEAR THIS LINE?
 - `tools/dialogue/critic-semantics.mjs` — critic-w1-17 instrument 2 — FIRST-MATCH-WINS versus THE SHIPPED SCORING READER.
 - `tools/dialogue/disposition-oracle.py` — **no header comment**
 - `tools/dialogue/dump-engine-disposition.mjs` — RI-DLG04 step 1, our side: feed the oracle's cases through the SHIPPING engine module and emit the same four columns.
@@ -566,7 +570,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 97
+### `tools/world/` — 98
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -620,6 +624,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r2-shot.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r2a.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r2b.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r3a.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
@@ -667,7 +672,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **126 tools have no header comment**, so nobody can tell what they do without
+> **127 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -841,13 +846,14 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-04-r3` | running | run critic-w1-04-r3a.mjs (one browser, all sections), then delete-the-fix arms | `orchestration/status/critic-w1-04-r3.json` `tools/world/critic-w1-04-r3a.mjs` |
+| `critic-w1-16` | reading | read RULES/INDEX/ARBITRATION S22, builder status W1-16.json, then reproduce A-G | `orchestration/status/critic-w1-16.json` |
+| `W1-SOULS-LEDGER` | building | CONSUMPTION in the running engine, then downstream figures, INDEX gate row, blog line, com | `orchestration/status/W1-SOULS-LEDGER.json` `tools/check-souls-world.mjs` `tools/check-data.mjs` `game/data/world/population-posts.json` |
 | `W1-25` | building | Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (t | `orchestration/status/W1-25.json` |
 | `W1-01-r4` | building | hazard-fire is running (reports/w1-01-r4/hazard-fire.json). After it, ONE browser at a tim | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` `orchestration/status/W1-01-r4.json` `tools/world/crossing.mjs` |
 | `critic-w1-26` | running | read RULES/INDEX/PLAN/r1-verdict/builder-status; then play the opening through input only | `orchestration/status/critic-w1-26.json` |
-| `W1-SOULS-LEDGER` | building | Confirm statblocks are truth; diff regenerated population-posts vs cached; build tools/che | `orchestration/status/W1-SOULS-LEDGER.json` |
 | `critic-w1-22-r2` | running | SUCCESSOR-2 resuming at predecessor next_step: (a) detector refusal + AMENDMENT item A ari | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
 | `W1-14-r3` | building | BLOCKED ON CONTENTION: 5-6 browser instances and load 6.5-6.7 per core against a 4.0 ceili | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/src/sim/magic/cost.js` `game/data/magic/effects.json` `game/data/magic/spells.json` `game/data/magic/wards.json` |
-| `critic-w1-04-r3` | running | read RULES/INDEX/ARBITRATION/spec/both builder status files | — |
 | `critic-w1-17` | starting | read ARBITRATION §3, RI-DLG items, INDEX; then reproduce build-graph, the filt() race clai | `orchestration/status/critic-w1-17.json` |
 | `critic-w1-23-r3` | ? | A: count texts with a tool + read >=8 end to end, judge prose with quotes. B: prose-tic co | `orchestration/status/critic-w1-23-r3.json` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/world/property/archon.json` `game/data/world/property/blackrose.json` |

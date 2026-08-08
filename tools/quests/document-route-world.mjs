@@ -134,6 +134,10 @@ for (const f of fs.readdirSync(QDIR).filter((x) => x.endsWith('.json'))) {
       marks: ((q.deceit && q.deceit.revealed_by) || [])
         .filter((rev) => rev.channel === 'environment' && demanded.has(rev.id) && marks.has(rev.source))
         .map((rev) => ({ reveal: rev.id, mark: rev.source })),
+      // and the people its resolutions demand, through the route W1-18 round 2 built.
+      people: [...new Set(((q.deceit && q.deceit.revealed_by) || [])
+        .filter((rev) => (rev.channel === 'talk_to_target' || rev.channel === 'rival_npc') && demanded.has(rev.id))
+        .map((rev) => rev.source))],
     });
   }
 }
@@ -175,7 +179,7 @@ const aside = [];
 try {
   await requireMethods(handle, ['reset', 'setRenderRate', 'travelToGiver', 'enterInterior', 'listEntities',
     'teleport', 'exitInterior', 'queueInputs', 'stepFrames', 'getUIState', 'closeMenu', 'getQuestState',
-    'questOpen', 'questResolutions', 'learnTopic', 'whereAmI', 'getConversationState', 'conversationClose', 'listNPCs']);
+    'questOpen', 'questResolutions', 'learnTopic', 'whereAmI', 'talkTo', 'getConversationState', 'conversationClose', 'listNPCs']);
 
   /** The refusals of every resolution of this quest that name this reveal, by name. */
   const refusalsNaming = async (quest, reveal) => {
@@ -264,6 +268,23 @@ try {
           o = await handle.h('questOpen', qid);
         }
         if (!(o && o.ok)) { stop = { quest: qid, phase: 'offer', why: o && o.reason }; break; }
+        // TALKING IS ALLOWED IN EVERY ARM, and it is held constant on purpose. W1-18 round 2
+        // routed the two person channels and a player walks up to people; an arm that forbade it
+        // would be measuring the absence of a reader this project already built. Holding it
+        // constant is also what keeps the `neither` arm honest: it still stops at Q-MAIN-06,
+        // whose two reveals are both ledgers, so the stop is the document channel and not a
+        // conversation nobody was allowed to have.
+        if (d.people.length) {
+          // `talkTo` THROWS on somebody who is not in the world, and the harness turns a throw
+          // into a process exit, so presence is asked first — which is also the honest test:
+          // a source who is nowhere is a route nobody can walk, and the audit counts it unrouted.
+          const here = new Set(((await handle.h('listNPCs')) || []).map((n) => n.eid || n.id));
+          for (const person of d.people) {
+            if (!here.has(person)) continue;
+            await handle.h('talkTo', person);
+            await handle.h('conversationClose');
+          }
+        }
         if (mayRead) {
           for (const doc of d.docs) {
             const pl = placement.get(doc.book);
@@ -316,7 +337,7 @@ try {
       }
       arms[mode] = { completed: done.length, of: order.length, chain: done, documents_read: readHere, marks_looked_at: lookedHere, stopped_at: stop };
     }
-    const out2 = args.out ? String(args.out) : path.join(ROOT, 'reports/runs/W1-READABLES/document-route-chain.json');
+    const out2 = args.out ? String(args.out) : path.join(ROOT, 'reports/runs/W1-READABLES-R2/document-route-chain.json');
     ensureDir(path.dirname(out2));
     writeJson(out2, { tool: 'document-route-world --chain', taken_at: new Date().toISOString(), arms });
     console.log('\ndocument-route-world --chain — how far does the main line go?\n');
