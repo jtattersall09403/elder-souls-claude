@@ -46,6 +46,45 @@ if (missing.length) {
 console.log(`check-data: ${refs.length} indexed data files, all present.`);
 
 // ---------------------------------------------------------------------------
+// The two soul ledgers must agree.
+//
+// `game/data/combat/enemies/*.json` `souls` is what a kill actually pays —
+// `game/src/sim/souls.js awardFor()` reads it and nothing else. `game/data/world/
+// population-posts.json` caches a precomputed roll-up of the same quantity, which
+// `game/src/world/population.js report()` publishes as `souls_total`. On 2026-08-08 the
+// first was re-anchored and the second was not regenerated, so the world published 16,335
+// souls where the statblocks paid 10,679 — +53% on every derived row, and a crossing
+// headline of "level 5" for a road that pays level 3 — for a whole day, because NOTHING IN
+// THE TREE READ BOTH FILES. (`W1-SOULS-r3.md` §2.1.)
+//
+// It runs here rather than in a constructor (RULES 14) and here rather than in its own
+// forgettable command, because `.githooks/pre-commit` already runs check-data on every
+// commit that touches `game/data/` — which is every commit that can cause the drift.
+// Armed only after the regeneration that made it silent (RULES 13).
+//
+// Standalone, with the row-by-row detail and the falsifiability arm:
+//   node tools/check-souls-world.mjs [--verbose] [--json <path>] [--self-break]
+// And the one line that answers "what is the world worth today":
+//   node tools/check-souls-world.mjs --totals
+{
+  const souls = join(ROOT, 'tools', 'check-souls-world.mjs');
+  if (existsSync(souls)) {
+    const { spawnSync } = await import('node:child_process');
+    const r = spawnSync(process.execPath, [souls], { encoding: 'utf8' });
+    process.stdout.write(r.stdout || '');
+    if (r.status !== 0) {
+      process.stderr.write(r.stderr || '');
+      console.error('\ncheck-data: the world\'s cached soul totals do not match the statblocks that pay.');
+      console.error('Regenerate the cache — never hand-edit it:  node tools/world/build-population.mjs --write');
+      process.exit(1);
+    }
+  } else {
+    console.error('check-data: tools/check-souls-world.mjs is missing — the soul-ledger reconciliation is NOT running.');
+    process.exit(1);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // An NPC's `settlement` must be a place the world can answer for.
 //
 // This exists because NPC records kept acquiring settlement strings that are not

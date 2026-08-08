@@ -1,7 +1,7 @@
 {
   "task_id": "W1-25",
   "piece": "The experience instrument and the seam crossings",
-  "state": "started",
+  "state": "building",
   "started_at": "2026-08-08T00:00:00Z",
   "subsystem_paths": [
     "experience.memory.anecdote",
@@ -12,8 +12,33 @@
     "composition.seam.crossings",
     "composition.matrix.coverage"
   ],
-  "files_claimed": [],
-  "files_touched": [],
-  "progress": ["Status file written first per rule 1. Now reading RULES.md, INDEX.md, PLAN.md W1-25, RI-CMP01/EXP02/EXP03/EXP06."],
+  "judged_by": ["RI-CMP01", "RI-EXP02", "RI-EXP03", "RI-EXP06"],
+  "files_claimed": [
+    "tools/composition/",
+    "tools/experience/sabotage.mjs",
+    "tools/experience/lib/sabotage.mjs",
+    "tools/experience/anecdote-trace.mjs",
+    "tools/experience/anecdote-verify.mjs",
+    "tools/experience/recall-run.mjs",
+    "tools/experience/probes-from-md.mjs",
+    "tools/experience/breakage-probe.mjs",
+    "tools/experience/pbrule-audit.mjs",
+    "tools/experience/session-shape.mjs",
+    "corpus/95-experience/RI-CMP01.cells.json",
+    "corpus/95-experience/RI-EXP06.probes.json",
+    "corpus/95-experience/prompts/",
+    "reports/composition/",
+    "reports/experience/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/",
+    "orchestration/status/W1-25.json"
+  ],
+  "files_touched": ["orchestration/status/W1-25.json"],
+  "progress": [
+    "Read RULES.md, INDEX.md, PLAN.md W1-25, RI-CMP01, RI-EXP02, RI-EXP06.",
+    "CONFIRMED ABSENT (rule 24 - must build): tools/composition/ entire directory, corpus/95-experience/RI-CMP01.cells.json, corpus/95-experience/RI-EXP06.probes.json, reports/composition/.",
+    "Existing tools/experience/ has 12 files (beat-*, ending-*, isolation-check, log-lint, ponr-probe, session-run, aftermath-diff, lib/). anecdote-verify.mjs, recall-run.mjs, breakage-probe.mjs, pbrule-audit.mjs, probes-from-md.mjs, matrix-scan.mjs, matrix-probe.mjs, cells-from-md.mjs ALL ABSENT."
+  ],
+  "next_step": "Read RI-EXP03 + PLAYTHROUGH-CRITIC 4.5/10; then build tools/experience/lib/sabotage.mjs (the general control facility) first, since everything else is judged through it.",
   "not_done": ["everything - just started"]
 }

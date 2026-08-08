@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `c36653e`: 550 tools, 153 reference
+so it cannot drift. Generated at `173ee86`: 551 tools, 153 reference
 items, 38 pieces in flight.
 
 Its purpose is to stop 38+ concurrent agents each paying separately to discover the
@@ -539,9 +539,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 1
+### `tools/ui/` — 2
 
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
+- `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 
 ### `tools/weapons/` — 19
 
