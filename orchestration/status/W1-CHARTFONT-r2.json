@@ -1,13 +1,12 @@
 {
   "task_id": "W1-CHARTFONT-r2",
   "role": "builder",
-  "status": "in_progress",
+  "status": "done",
   "started_at": "2026-08-08",
   "successor_of": "W1-CHARTFONT (orchestration/status/W1-CHARTFONT.json, reports/w1-chartfont-damage.md)",
   "summary": "The last five chart tools carrying the sheared 23-character glyph table are wired to tools/lib/chart-font.mjs. --audit-tree goes 5 files / 207 literals -> 0 / 0. The pre-commit gate is ARMED (blocking, staged scope) and has been watched blocking a paste and passing a wired tool. Three of the four figures were regenerated; the fourth is handed back to its live owner because its data moved.",
-  "next_step": "none — see handoffs.",
+  "next_step": "none — handoffs below. W1-18-r2, W1-19-r3, W1-READABLES, W1-22-r2, W1-22-r3 and W1-01-r4 each own one still-sheared published figure; all six tools are clean, so each is one command.",
   "commit_measured_at": "a2031bb",
-
   "audit_tree_before": {
     "exit": 3,
     "files": 5,
@@ -20,8 +19,12 @@
       "tools/audio/critic-w1-22-r2-chart.mjs": 2
     }
   },
-  "audit_tree_after": { "exit": 0, "files": 0, "literals": 0, "output": "none" },
-
+  "audit_tree_after": {
+    "exit": 0,
+    "files": 0,
+    "literals": 0,
+    "output": "none"
+  },
   "the_five": {
     "tools/analysis/w1-15-r3-chart.mjs": "WIRED. Local FONT + text() deleted, `import { makeText } from '../lib/chart-font.mjs'; const text = makeText(rect);`. Header corrected — it claimed the font came from w1-13-r4-chart.mjs.",
     "tools/harness/w1-16-r3-chart.mjs": "WIRED, same one-line adoption.",
@@ -29,7 +32,6 @@
     "tools/world/w1-01-r4-crossing-chart.mjs": "WIRED, same.",
     "tools/audio/critic-w1-22-r2-chart.mjs": "DEAD TABLE DELETED, live font deliberately left alone. The predecessor was right that its 3-entry 23-char GLYPH object is never referenced — I re-checked and the identifier occurs exactly once in the file, at its own declaration. This tool draws from a separate COLUMN-MAJOR 5x8 font that is sound. Deleting the dead copy is what silences the audit; rewiring the live font would change a running critic's published figure for no correctness reason, so I did not. Proof it is inert: regenerating the figure after the deletion reproduces the published PNG with an IDENTICAL sha256 (cf37ebb76ddc39c6...)."
   },
-
   "figures": {
     "method": "For each figure, run the tool in the CHART_FONT_BROKEN=1 arm and diff it against the published PNG pixel by pixel. If the broken arm reproduces the archive, the ONLY thing that changed is the font and the figure is safe to redraw. If it does not, the data has moved and it is not mine to restate. This is the predecessor's method and the brief's instruction.",
     "regenerated": {
@@ -43,7 +45,6 @@
     },
     "precedent_followed": "W1-CHARTFONT regenerated the two W1-22 ambience figures, saw the data had changed, and restored the originals rather than silently restate another round's finding under its own name. The crossing figure is that case exactly."
   },
-
   "the_gate": {
     "state": "ARMED — blocking.",
     "where": ".githooks/pre-commit",
@@ -52,20 +53,34 @@
     "one_definition": "the regex for a sheared literal now lives once, in chart-font.mjs, shared by --audit-tree, --audit-staged and --audit-selftest. A second copy of it in the hook would have been this piece's own mistake repeated.",
     "watched_going_red": "end-to-end in a throwaway git repo (never the shared index), with the real hook script and the real tool: (1) a chart tool carrying the sheared table, staged -> BLOCKED, commit refused, nothing landed; (2) the same tool wired to the shared module -> passes, commit lands; (3) `git add -A` with a sheared file present, i.e. the bank's own route -> BLOCKED. Plus `--audit-selftest`, which requires the detector to trip on the archived pre-fix table and stay silent on the fixed one."
   },
-
   "self_test": {
     "command": "node tools/lib/chart-font.mjs --self-test",
     "result": "PASS, both halves. The shipped table renders '28 OF 32' and 'BOOK' correctly against hand-written expected pixels; the SAME assertions run against the archived pre-fix table produce exactly 62 failures — 53 glyphs of the wrong width, 4 bad rows in '28 OF 32', 5 bad rows in 'BOOK' — which is the figure the predecessor recorded, unchanged. The control fails on digits AND on letters, and the self-test fails itself if that control ever comes back clean.",
     "also_still_green": "--provenance (36 restored / 17 re-authored, no drift warning; the count moved 35->36 and 52->53 glyphs only because I did not change the table — see not_done)."
   },
-
   "the_sweep": {
     "why": "The predecessor's damage list came from tool output paths and owners' status files and said so: it never looked at the images. This looks at the images.",
     "tool": "tools/analysis/w1-chartfont-shot-sweep.mjs — decodes every PNG in docs/shots/ (all five PNG filters, colour type 2 and 6) and asks the pixels which glyph table drew them.",
     "it_can_fail": "--self-test renders a known string through each table and requires the classifier to name the right one, and a flat image to be classified as neither.",
-    "the_first_version_was_worthless_and_that_is_recorded_in_the_tool": "counting every matching 5x5 block passed the self-test and then called all four KNOWN-SHEARED figures 'sound', because axis rules and bar edges produce tens of thousands of accidental punctuation matches (46,539 on one figure) that swamp ~700 real glyphs. Fixed by counting only alphanumerics inside runs of >=3 glyph cells sharing one baseline, one ink colour and one paper colour, and by deciding on the sheared RATIO rather than raw counts — because a sheared glyph often equals some OTHER sound glyph, which is the defect itself. Calibrated against eight images with known labels: sheared 0.91-1.00, sound 0.00."
+    "the_first_version_was_worthless_and_that_is_recorded_in_the_tool": "counting every matching 5x5 block passed the self-test and then called all four KNOWN-SHEARED figures 'sound', because axis rules and bar edges produce tens of thousands of accidental punctuation matches (46,539 on one figure) that swamp ~700 real glyphs. Fixed by counting only alphanumerics inside runs of >=3 glyph cells sharing one baseline, one ink colour and one paper colour, and by deciding on the sheared RATIO rather than raw counts — because a sheared glyph often equals some OTHER sound glyph, which is the defect itself. Calibrated against eight images with known labels: sheared 0.91-1.00, sound 0.00.",
+    "result": {
+      "swept": "169 PNG(s) in docs/shots/",
+      "breakdown": "28 drawn with the FIXED chart font, 7 with the SHEARED one, 9 too little text to call, 0 undecodable, 125 not chart-font figures at all.",
+      "headline": "IT FOUND NOTHING THE PROVENANCE LIST HAD MISSED. Every figure it names was already named in reports/w1-chartfont-damage.md, and the three I regenerated now read 'sound' with zero sheared hits. The predecessor flagged its own list as possibly incomplete because it had never looked at the images; the images say it was complete. That converts 'we think we found them all' into a measurement.",
+      "still_sheared_all_six_have_wrong_NUMBERS_not_just_words": {
+        "_why": "every one shows a sheared 2 AND a sheared 8 in its glyph set — the two digits that read as a different digit.",
+        "docs/shots/2026-08-07-w1-18-r2-talking-to-the-person-who-knew.png": "W1-18-r2 — reveal-route-chart is fixed; owner reruns --round w1-18-r2",
+        "docs/shots/2026-08-07-w1-19-r3-the-reveals-no-play-produces.png": "W1-19-r3 — same, --round w1-19-r3",
+        "docs/shots/2026-08-07-w1-readables-the-ledger-on-the-shelf-in-the-archive.png": "W1-READABLES — same, --round w1-readables",
+        "docs/shots/2026-08-07-w1-22-r2-ambience-events-below-the-bed.png": "W1-22-r2 — tool fixed, data has moved since publication",
+        "docs/shots/2026-08-07-w1-22-r3-ambience-renders-the-same-twice.png": "W1-22-r3 — same",
+        "docs/shots/2026-08-08-w1-01-r4-the-road-out-of-the-capital-goes-through-a-house.png": "W1-01-r4 — tool fixed BY ME this round; data has moved, see figures.left_alone"
+      },
+      "correctly_detected_and_not_damage": "docs/shots/2026-08-08-w1-chartfont-the-charts-were-spelling-numbers-wrong.png — W1-CHARTFONT's own illustrative picture, which draws both tables side by side on purpose. The sheared glyphs in it are the point of it.",
+      "one_false_positive_found_and_fixed_rather_than_shipped": "An earlier cut also flagged docs/shots/2026-08-08-w1-dlg-s37-the-reader-stopped-scoring.png at ratio 0.10. It is NOT sheared — it is drawn in this project's other font, a genuine 5x7 at 35 chars, and sampling a 5x7 glyph through a 5x5 window throws off junk matches in both tables. The tell was in the data: all 47 of its sheared hits were TWO shapes ('7' and 'A') repeated, while every genuinely sheared figure shows 27-30 DISTINCT sheared glyphs because a real caption uses the whole alphabet. The verdict rule now requires a broad alphabet as well as a high ratio. I checked that 5x7 font's table directly before concluding: 46 glyphs, every one exactly 35 characters, no defect."
+    },
+    "performance_note": "The first working version was correct but spent all its time in the garbage collector — a 25-character string plus a 25-element array allocated per pixel per scale, ~9M allocations per image, and 164 images had not finished in ten minutes. Rewritten to compare 25-bit integers against a packed Int32Array. Same algorithm; equivalence checked by reproducing the string version's counts EXACTLY on seven known-label images (656/6, 840/36, 1147/111, 578/0, 662, 876, 1258). 3m23s for the whole directory."
   },
-
   "ownership": {
     "checked": "node tools/ownership.mjs --for on all five before editing.",
     "live_owners_i_edited_under": {
@@ -79,7 +94,6 @@
     },
     "justification": "the brief's standing rule: a chart tool is a reporting artifact, not the piece's measurement, so the bar for touching it is lower than for game/src. Every edit is the same one-line adoption with an identical call signature, and every figure I redrew is proven to differ from its published form in text pixels only."
   },
-
   "files_touched": [
     "orchestration/status/W1-CHARTFONT-r2.json",
     "tools/analysis/w1-15-r3-chart.mjs",
@@ -94,19 +108,24 @@
     "docs/shots/2026-08-08-w1-16-r3-the-sword-in-your-hand-used-to-weigh-nothing.png",
     "docs/shots/2026-08-08-w1-road-join-the-road-now-goes-between-the-houses.png",
     "reports/w1-chartfont-r2.md",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "reports/w1-chartfont-r2/shot-sweep.json (gitignored run artifact — regenerate with the tool)"
   ],
   "files_claimed": [
     "reports/w1-chartfont-r2/shot-sweep.json"
   ],
-  "redundant_with": ["W1-15-r3", "W1-01-r4", "critic-w1-22-r2"],
+  "redundant_with": [
+    "W1-15-r3",
+    "W1-01-r4",
+    "critic-w1-22-r2"
+  ],
   "overlap_declared": "W1-15-r3, W1-01-r4 and critic-w1-22-r2 each declare one of my five chart tools. The overlap is deliberate and narrow — I am removing an inherited defect from a reporting artifact, not touching any measurement — and is declared here rather than left to read as a collision (rule 16).",
-
   "handoffs": {
     "W1-01-r4": "docs/shots/2026-08-08-w1-01-r4-the-road-out-of-the-capital-goes-through-a-house.png still carries sheared digits AND is now a picture of a pre-join world. Your tool is clean: `node tools/world/w1-01-r4-crossing-chart.mjs` redraws it at HEAD. Decide whether the figure should show the crossing at 6816 m (your finding) or 6911.4 m (the world after W1-ROAD-JOIN); it cannot honestly show both.",
-    "everyone": "the pre-commit gate is armed. If you are writing a chart tool, `import { makeText } from '<rel>/lib/chart-font.mjs'; const text = makeText(rect);` — do not paste a table."
+    "everyone": "the pre-commit gate is armed. If you are writing a chart tool, `import { makeText } from '<rel>/lib/chart-font.mjs'; const text = makeText(rect);` — do not paste a table.",
+    "W1-18-r2 / W1-19-r3 / W1-READABLES": "your published figure still has sheared DIGITS (a sheared 2 reads as an 8). tools/quests/reveal-route-chart.mjs is fixed — rerun it with your own --round flag.",
+    "W1-22-r2 / W1-22-r3": "same, and your data has ALSO moved since publication, so redraw deliberately rather than blindly. W1-CHARTFONT tried and restored the originals rather than restate your finding for you."
   },
-
   "not_done": [
     "I did NOT add the apostrophe glyph to tools/lib/chart-font.mjs, and three figures render ROOM'S / VERDICT'S with a blank where the apostrophe should be. road-join-chart's local table was the only one of the five that had the glyph, and the shared module does not. It is unchanged behaviour, not a regression — the other four never had it either. I could restore it provably (the pre-fix string reduces to a clean two-character deletion), but adding a glyph means adding it to SHEARED_FONT too, and that changes what the CHART_FONT_BROKEN arm draws — which would invalidate the byte-identity delete-the-fix evidence the predecessor's rule-6 result rests on. Not worth a cosmetic gain. Named here so the next author decides deliberately.",
     "I did NOT rewire tools/audio/critic-w1-22-r2-chart.mjs's live column-major font to the shared module. It is a different, working typeface and swapping it would change a running critic's published figure for no correctness reason. Only the dead sheared copy was deleted.",
@@ -116,5 +135,6 @@
     "I did NOT re-run the project-wide gates (boot-check, check-data, publish). Nothing here touches game/ or game/data/; the pre-commit hook runs what it runs.",
     "INCIDENT, self-reported: while clearing a stray output directory I ran `rm -rf` on a path that turned out to contain tracked files (tmp/cmp01-selftest/, tmp/exp06-selftest/, tmp/j.json — nine files belonging to other pieces). I noticed immediately in git status and restored all nine with `git checkout -- tmp/` before anything was staged or committed. They were unmodified in the working tree, so the restore is exact and nothing was lost. Recorded because a silent near-miss is worth less than a stated one.",
     "My five wiring edits were banked into commit a2031bb by another agent's `git add -A` while I was measuring. Per rule 17 I verified the content landed correctly rather than unpicking it: all five import the shared module and carry zero sheared literals in HEAD, with no working-tree drift."
-  ]
+  ],
+  "corroboration": "node tools/quests/critic-glyph-audit.mjs — the CRITIC's own instrument, which I did not write and did not touch — now reports '0 of 11 chart tool(s) draw numbers from a sheared font'. It read 9 of 11 before W1-CHARTFONT and 2 of 11 after it. Sixteen chart tools now import the shared module, two of them (tools/harness/critic-w1-16-r3-chart.mjs, tools/lore/w1-23-r4-chart.mjs) written by other agents after the fix and adopting it without being asked."
 }

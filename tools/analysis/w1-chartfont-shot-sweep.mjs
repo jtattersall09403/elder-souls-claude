@@ -145,7 +145,9 @@ export function classify(img, scales = [1, 2, 3]) {
 
   const sound = new Map(), sheared = new Map();
   let runs = 0, cellsSeen = 0;
-  const inkedRun = new Int32Array(64);   // reused per run; no allocation in the loop
+  // Reused per run so the hot loop allocates nothing. Sized to the widest possible run
+  // (a full-width line of glyphs) so nothing is ever silently truncated.
+  const inkedRun = new Int32Array(Math.ceil(W / ADVANCE_MULT) + 4);
 
   for (const s of scales) {
     const adv = ADVANCE_MULT * s;
@@ -198,12 +200,12 @@ export function classify(img, scales = [1, 2, 3]) {
             if (m < 0) break;                    // an unexpected colour ends the run
             if (m !== 0 && !KNOWN(m)) break;      // an unknown shape ends it; a blank is a space
             nCells++;
-            if (m !== 0) { if (nInk < inkedRun.length) tmp.push(m); nInk++; }
+            if (m !== 0) { tmp.push(m); nInk++; }
           }
           if (nInk >= 3 && nInk > bestN) {
             bestN = nInk; bestCells = nCells;
             for (let i = 0; i < tmp.length; i++) inkedRun[i] = tmp[i];
-            inkedRun[tmp.length] = -1;
+            if (tmp.length < inkedRun.length) inkedRun[tmp.length] = -1;
           }
         }
         if (!bestN) continue;
@@ -232,14 +234,32 @@ export function classify(img, scales = [1, 2, 3]) {
   // Two orders of magnitude apart, so the cut sits at 0.05 with room either side.
   const total = nS + nX;
   const ratio = total ? nX / total : 0;
+  const distinctX = sheared.size;
+
+  // TWO conditions, and the second was added because the first alone produced a false positive.
+  //
+  // (a) the RATIO, not the counts: a sheared glyph frequently EQUALS some other sound glyph — that
+  //     is the defect itself — so a sheared figure still scores plenty of sound-only hits.
+  // (b) a BROAD ALPHABET of sheared shapes. Figures drawn in a font that is neither of these two
+  //     tables (this project also has a genuine 5x7 font at 35 chars) get sampled through a 5x5
+  //     window and throw off junk matches in both tables. `2026-08-08-w1-dlg-s37-the-reader-stopped-
+  //     scoring.png` is drawn in that 5x7 font and scored 47 sheared hits at ratio 0.10 — but all 47
+  //     were TWO shapes, '7' and 'A', repeated. Every genuinely sheared figure in docs/shots/ shows
+  //     27 to 30 DISTINCT sheared glyphs, because a real caption uses the whole alphabet. One or two
+  //     shapes repeated is a coincidence; twenty-eight is a font.
+  //
+  // Calibrated on eight images with known labels (four archived pre-fix figures and their
+  // regenerated counterparts): sheared ratio 0.91-1.00 with 27-30 distinct shapes, versus sound
+  // ratio 0.00. The cuts sit at 0.05 and 5, with two orders of magnitude of room on the first.
   let verdict = 'not-a-chart-font-figure';
-  if (total >= 20) verdict = ratio >= 0.05 ? 'SHEARED' : 'sound';
+  if (total >= 20) verdict = (ratio >= 0.05 && distinctX >= 5) ? 'SHEARED' : 'sound';
   else if (total >= 6) verdict = 'weak-signal';
   return {
     verdict,
     sound_hits: nS,
     sheared_hits: nX,
     sheared_ratio: Number(ratio.toFixed(4)),
+    distinct_sheared_glyphs: distinctX,
     runs,
     glyph_cells: cellsSeen,
     sound_glyphs: [...sound.keys()].sort().join(''),

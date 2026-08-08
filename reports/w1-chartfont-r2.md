@@ -216,7 +216,47 @@ Results are in `reports/w1-chartfont-r2/shot-sweep.json` and summarised in §6 b
 
 ## 6. What the sweep found
 
-See `reports/w1-chartfont-r2/shot-sweep.json` for the full per-image table.
+**169 PNGs swept. 28 drawn with the fixed font, 7 with the sheared one, 9 too little text to call,
+0 undecodable, 125 not chart-font figures at all.** Full per-image table in
+`reports/w1-chartfont-r2/shot-sweep.json` (regenerable, and correctly gitignored — re-run the tool).
+
+### Still sheared, with owner, and whether the NUMBERS are wrong
+
+Every one of these shows a sheared **2** and a sheared **8** in its glyph set. Those are the two
+that read as a *different digit* — a sheared 2 is nearer a sound 8, a sheared 8 nearer a 6. So on
+all six of these it is the numbers, not just the words.
+
+| figure | owner | tool | numbers or words | why it is still wrong |
+|---|---|---|---|---|
+| `2026-08-07-w1-18-r2-talking-to-the-person-who-knew.png` | W1-18-r2 | `reveal-route-chart` (fixed) | **NUMBERS** + words | owner reruns `--round w1-18-r2` |
+| `2026-08-07-w1-19-r3-the-reveals-no-play-produces.png` | W1-19-r3 | `reveal-route-chart` (fixed) | **NUMBERS** + words | owner reruns `--round w1-19-r3` |
+| `2026-08-07-w1-readables-the-ledger-on-the-shelf-in-the-archive.png` | W1-READABLES | `reveal-route-chart` (fixed) | **NUMBERS** + words | owner reruns `--round w1-readables` |
+| `2026-08-07-w1-22-r2-ambience-events-below-the-bed.png` | W1-22-r2 | `ambience-onsets-chart` (fixed) | **NUMBERS** + words | tool fixed but its **data has moved**; W1-CHARTFONT redrew it, saw the points shift, and restored the original |
+| `2026-08-07-w1-22-r3-ambience-renders-the-same-twice.png` | W1-22-r3 | `ambience-determinism-chart` (fixed) | **NUMBERS** + words | same |
+| `2026-08-08-w1-01-r4-the-road-out-of-the-capital-goes-through-a-house.png` | W1-01-r4 | `w1-01-r4-crossing-chart` (**fixed this round**) | **NUMBERS** + words | data moved — §2 |
+
+The seventh, `2026-08-08-w1-chartfont-the-charts-were-spelling-numbers-wrong.png`, is **correctly
+detected and is not damage**: it is W1-CHARTFONT's own illustrative picture, which draws the same
+strings through both tables side by side on purpose. The sheared glyphs in it are the point of it.
+
+### The headline result of the sweep
+
+**It found nothing the provenance list had missed.** Every figure it names was already named by
+`reports/w1-chartfont-damage.md`, and the three I regenerated this round now read `sound` (662, 876
+and 1,258 fixed-font glyph hits, zero sheared). The predecessor flagged its own list as possibly
+incomplete because it had never looked at the images; the images now say it was complete. That is
+worth more than the list itself, because it converts "we think we found them all" into a measurement.
+
+### One false positive, found and fixed rather than shipped
+
+An earlier cut of the classifier also flagged `2026-08-08-w1-dlg-s37-the-reader-stopped-scoring.png`
+at ratio 0.10. It is **not** sheared: it is drawn in this project's *other* font, a genuine 5×7 at
+35 characters, and sampling a 5×7 glyph through a 5×5 window throws off junk matches in both tables.
+The tell is in the data: all 47 of its sheared hits were **two shapes**, `7` and `A`, repeated —
+while every genuinely sheared figure shows **27 to 30 distinct** sheared glyphs, because a real
+caption uses the whole alphabet. The verdict rule now requires a broad alphabet as well as a high
+ratio, which drops that figure to `sound` and leaves all six real ones flagged. I checked the 5×7
+font's table directly before concluding: 46 glyphs, every one exactly 35 characters, no defect.
 
 ---
 
