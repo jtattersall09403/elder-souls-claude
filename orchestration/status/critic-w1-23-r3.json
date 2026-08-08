@@ -29,5 +29,6 @@
     "node tools/lore/critic-w1-23-r3.mjs --self-test": "PASS 19/19",
     "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-23-r3.json": "OK, 0 warnings"
   },
-  "no_browser": "TEXT task. No browser launched and no screenshot taken; rule 27 image deliberately skipped and reported rather than faked. CONSUMPTION did not need one — the perturbation runs the shipped converse.js and world/canon.js against game/data directly."
+  "no_browser": "TEXT task. No browser launched and no screenshot taken; rule 27 image deliberately skipped and reported rather than faked. CONSUMPTION did not need one — the perturbation runs the shipped converse.js and world/canon.js against game/data directly.",
+  "commit_attribution": "RULES #17, recorded rather than left to read as someone else's work. My three declared paths (W1-23-r3.md, W1-23-r3.json, critic-w1-23-r3.json) were staged by me and then swept into a NEIGHBOUR's commit 067ba53 before my own commit ran; content verified byte-identical to disk by sha256 and the committed verdict re-validates OK. My instrument tools/lore/critic-w1-23-r3-reach.mjs was banked by the orchestrator at 0f5f456 and my reports/blog-feed.jsonl line by 3463e06. Nothing of mine is missing; none of it carries my message. Going the other way, I found 28 paths belonging to other live pieces staged in the index mid-run and unstaged them rather than commit them under my name; their working trees were left untouched."
 }
