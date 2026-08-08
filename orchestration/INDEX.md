@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a7a5bbf`: 739 tools, 153 reference
+so it cannot drift. Generated at `d6265a8`: 742 tools, 153 reference
 items, 67 pieces in flight.
 
 Its purpose is to stop 67+ concurrent agents each paying separately to discover the
@@ -189,11 +189,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/capture/settle-shapes.mjs` — **no header comment**
 - `tools/capture/settle.mjs` — the anti-loophole half of S34, and the thing that makes placed captures safe.
 
-### `tools/combat/` — 4
+### `tools/combat/` — 6
 
+- `tools/combat/check-ai-units.mjs` — S22 for game/data/combat/ai.json — a CHECK, not a constructor (RULES 14).
 - `tools/combat/critic-w1-12-census.mjs` — W1-12 ROUND-1 CRITIC — the instrument the verdict is decided on.
 - `tools/combat/critic-w1-12-chart.mjs` — W1-12 ROUND-1 CRITIC — the picture.
 - `tools/combat/critic-w1-12-s22.mjs` — W1-12 ROUND-1 CRITIC — the S22 unit audit, as a tool rather than as an assertion.
+- `tools/combat/w1-12-r2-chart.mjs` — W1-12 ROUND 2 — the picture, and the delete-the-fix control, in one run.
 - `tools/combat/w1-12-r2-probe.mjs` — W1-12 ROUND 2 — the builder's instrument.
 
 ### `tools/composition/` — 3
@@ -275,7 +277,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 233
+### `tools/harness/` — 234
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -478,6 +480,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
 - `tools/harness/w1-15-r4-lights.mjs` — DOES THE ROOM THE PLAYER SEES AGREE WITH THE ROOM THE GAME SIMULATES?
+- `tools/harness/w1-15-r4-live.mjs` — W1-15 round 4, asked of the RUNNING game, in ONE browser.
 - `tools/harness/w1-16-r3-chart.mjs` — THE PICTURE FOR W1-16 ROUND 3: the sword in your hand used to weigh nothing.
 - `tools/harness/w1-16-r3-live.mjs` — W1-16 ROUND 3, the stepping half.
 - `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
@@ -1066,9 +1069,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-TOUCH` | measured — two runs still in flight | Two runs were still going when this was written, on a box at 4.2 load per core (the ceilin | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `W1-12-r2` | building | write tools/combat/w1-12-r2-probe.mjs (chase table, census, yaw), check-ai-units.mjs, dele | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
 | `W1-15-r4` | ? | update tools/analysis/w1-15-consumption.mjs for search.json; write tools/harness/w1-15-r4- | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
-| `W1-TOUCH` | measuring | finish the six-profile opening sweep, run the differential, publish docs/play/, blog line, | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` `game/src/engine.js` `game/src/render/ui.js` |
 | `critic-w1-deploy` | running | read RULES.md (done), INDEX.md, then the four subjects | `orchestration/status/critic-w1-deploy.json` |
 | `AUDIT-R1-LIST` | running | write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mj | `orchestration/status/AUDIT-R1-LIST.json` |
 | `critic-w1-26-r4` | running | read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json | — |

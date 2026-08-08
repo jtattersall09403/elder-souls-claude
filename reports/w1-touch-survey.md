@@ -79,6 +79,29 @@ Every leg is: land a finger, drag it, lift it, via `Input.dispatchTouchEvent`.
 Results are in `reports/w1-touch/touch-run-opening.json`, check ids `T-TITLE/…`, `T-WALK/…`,
 `T-TALK/…`, `T-NAME/…`, `T-OPEN/…`, one set per profile.
 
+**What was actually measured, and what was not (RULES 26).** The reference phone (844×390 @3×)
+completed the whole opening, all six checks green, and its three screenshots are committed:
+
+```
+PASS T-TITLE  one flick down moved 'new' -> 'settings', one flick up returned; committed by a tap
+PASS T-WALK   walked 4.8 m to Jeeh-Ei on the floating stick alone, final distance 0.7 m
+PASS T-TALK   a tap on 'interact' beside her opened the scene at 'hold.hatch-name'
+PASS T8-OVERLAP  0 of 2 drawn controls touch the dialogue panel (see §7)
+PASS T-NAME   hatchName = "Counts-The-Drowned", the third row, picked on the stick
+PASS T-OPEN   title -> New -> 4.8 m -> talked -> a name -> out of the hold -> 'writ.sex'
+```
+
+The **small phone (667×375)** and the **large phone (932×430)** also ran to the desk — their
+`01-in-the-hold`, `02-the-scene` and `03-the-desk` screenshots are in `docs/shots/`. The
+**tablet (1180×820)** reached the conversation and the **two portrait profiles had not started**
+when this round ended: the box went to **4.2 load per core against a 4.0 ceiling** with five
+other agents' browsers on it, and the rAF-driven walk legs crawl under that. So:
+
+> **The six-profile claim in this section's heading is the instrument's coverage, not this
+> round's evidence. Three landscape phone profiles completed; the tablet and both portrait
+> profiles are UNMEASURED.** Re-run `node tools/touch/touch-run.mjs --leg opening` on a quiet
+> box. Nothing in §2–§9 depends on them.
+
 **Portrait** is measured as its own thing, not skipped: held in portrait a handheld device gets
 `Viewport.rotateState()` — *"The map lies the long way."* — and the check requires that it appears,
 that a **real** `setViewportSize` rotation clears it with no reload, and that the controls relay
@@ -338,6 +361,15 @@ nothing in the tree needs it yet.
 * `node tools/gamepad/pad-run.mjs --leg opening` — the pad opening.
 
 Both must exit 0. Results in `reports/w1-touch/touch-run-differential.json`, check `T-DIFF`.
+
+**NOT COMPLETED IN THIS ROUND.** The differential was still inside `opening-play.mjs` when the
+round ended, on the same 4.2-load box. It is the one acceptance leg with no number against it,
+and it should be the first thing a successor runs. What *is* known: `node tools/boot-check.mjs`,
+`node tools/check-data.mjs` and `node tools/check-content.mjs` all pass on the changed tree, and
+`node tools/world/verify-published-game.mjs` passes — *"docs/play serves a live page from a
+subdirectory"*. The argument that the desktop path is untouched is in §7 (`touchClearRightX` is
+null on every desktop frame) and it is an **argument, not a measurement**, which is exactly the
+distinction this project exists to keep.
 
 ---
 

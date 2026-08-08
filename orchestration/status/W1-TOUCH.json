@@ -1,12 +1,12 @@
 {
   "task_id": "W1-TOUCH",
-  "state": "measuring",
+  "state": "measured — two runs still in flight",
   "headline": "The brief's premise is STALE — touch was already wired and real touch events already reached it. Nobody had ever put a finger on the glass and measured, and doing so found two real defects: T5 was two implementations of one rule, and T8's second clause (controls must not overlap the dialogue surface) was never enforced and was violated on 7 of 11 controls.",
   "started": "2026-08-08",
   "commit_at_start": "9a3e1a7",
   "report": "reports/w1-touch-survey.md",
   "instrument": "tools/touch/touch-run.mjs",
-  "next_step": "finish the six-profile opening sweep, run the differential, publish docs/play/, blog line, commit",
+  "next_step": "Two runs were still going when this was written, on a box at 4.2 load per core (the ceiling is 4.0): (a) `node tools/touch/touch-run.mjs --leg opening` across all six viewport profiles — the small phone, the reference phone and the large phone all completed and their screenshots are in docs/shots/; the tablet reached the conversation and the two portrait profiles had not started. (b) `node tools/touch/touch-run.mjs --leg differential`. A successor should re-run both and read reports/w1-touch/touch-run-opening.json and touch-run-differential.json. Nothing about the findings depends on them: the reference-phone opening completed all six checks on its own and is committed with its screenshots.",
   "findings": [
     "F1 (CORRECTS THE DISPATCH). `game/src/main.js` does not import touch.js and never needed to. The chain is main.js -> Engine (engine.js:57 imports RealInput) -> input/real.js:19 `import { TouchInput }` -> constructed at real.js:73, attached by `applyDeviceClass('handheld')` at real.js:405, ticked INSIDE THE FIXED STEP by sim/step.js:69 -> real.js:466. `git log -S 'import { TouchInput }'` dates the import to 6eb8f04. Grepping the entry point for a subsystem's name proves nothing about whether it is wired.",
     "F2 (MEASURED). A phone-shaped Playwright context (844x390, dpr 3, hasTouch, isMobile, webdriver spoofed false) loading game/index.html with NO query string boots into mode 'play', deviceClass 'handheld' (from the media queries, never a UA string), touchState().shown true, 11 controls laid out, 0 inset violations. A real CDP Input.dispatchTouchEvent at (200,300) opens a floating stick whose origin is exactly (200,300).",
