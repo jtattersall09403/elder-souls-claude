@@ -1012,6 +1012,30 @@ async function driveBeats(handle, o) {
     // half-completed window still reports the frames it really advanced rather than the frames it
     // asked for. A window that did not advance is `unmeasurable`, never a pass.
     const CHUNK = 600;
+    // WATCHED ENTITY-SIDE, AND NOT ONLY THROUGH THE TRACE (rule 7: audit the running world).
+    //
+    // MEASURED. The first working version of the teardown below drove the scene to
+    // `hold.hatch-name` and answered it — `node_before_answer: "hold.hatch-name"`,
+    // `node_after_answer: "hold.out"`, so a character field WAS written inside the window — and
+    // `creation_field` never appeared in the trace at that frame. `EventBus` is a per-frame pool
+    // that is cleared each step, and an event emitted BETWEEN stepped frames can be cleared
+    // before any record snapshots it. So a trace-only reader can watch a field be written and
+    // see nothing, and the row would have shipped a green control it had never seen fail.
+    //
+    // The census state is therefore sampled directly after every chunk. `census_open` and
+    // `character_written` are read off the running world and cannot be lost to frame timing.
+    const observed = [];
+    const observe = async (phase) => {
+      const st = (await handle.hOpt('getCensusState')) || null;
+      observed.push({
+        phase, frame: await frameNow(),
+        census_open: !!(st && st.surface && (st.surface.drawn || st.surface.takes_input)),
+        census_node: st ? st.node : null,
+        census_done: !!(st && st.done),
+        character_written: !!(st && (st.race_observed || st.done)),
+      });
+    };
+    await observe('window-open');
     for (let done = 0; done < stillFrames; done += CHUNK) {
       await handle.h('stepFrames', Math.min(CHUNK, stillFrames - done));
       if (o.stillFireAField && done === 0) {
@@ -1024,9 +1048,6 @@ async function driveBeats(handle, o) {
         // when the node it lands on is not paused. So the sabotage opened a scene that asked
         // nothing and wrote nothing, and both arms were the positive arm: rule 6's inert control,
         // exactly the shape W1-04's wall-collision control had.
-        //
-        // It now walks to the first field-writing node and answers it, which is the one thing
-        // that emits `creation_field` (`Engine.censusAnswer` -> `before.sets`).
         //
         // It now walks to the first field-writing node and answers it, stepping BETWEEN the
         // calls — `censusBegin` places the scene and `_censusApplyPending` runs in `_afterStep`,
@@ -1047,6 +1068,7 @@ async function driveBeats(handle, o) {
           teardownTrace.threw = String(err && err.message || err);
         }
       }
+      await observe('after-chunk');
     }
     const stillTo = await frameNow();
     const window = {
@@ -1060,6 +1082,7 @@ async function driveBeats(handle, o) {
       inputs_dispatched: 0,
       teardown: !!o.stillFireAField,
       teardown_trace: teardownTrace,
+      observed,
     };
     window.seconds_still = Number.isFinite(window.frames_advanced) ? +(window.frames_advanced / 60).toFixed(2) : null;
     await record('still_window', { from: stillFrom, to: stillTo, frames: window.frames_advanced });
@@ -1528,7 +1551,14 @@ export function m4StillClause1(traceRecords, window, thresholdS = 60) {
       else if (e.type === 'dialogue_open' && e.scene === 'census') defining.push({ frame: f, event: 'dialogue_open(census)' });
     }
   }
+  // THE SECOND READER, and it is the one that cannot be lost to frame timing. `EventBus` is a
+  // per-frame pool cleared each step, so an event emitted BETWEEN stepped frames can vanish
+  // before any trace record snapshots it — measured, with a field demonstrably written inside the
+  // window and no `creation_field` in the trace at that frame. A row that only read the trace
+  // would have shipped a control it had never seen go red.
+  const asked = (window.observed || []).filter((s) => s && (s.census_open || s.character_written));
   const longEnough = seconds >= thresholdS;
+  const quiet = defining.length === 0 && asked.length === 0;
   return { status: 'measured', value: {
     seconds_still: +seconds.toFixed(2),
     threshold_s: thresholdS,
@@ -1536,14 +1566,23 @@ export function m4StillClause1(traceRecords, window, thresholdS = 60) {
     inputs_dispatched: window.inputs_dispatched,
     from_frame: window.from_frame, to_frame: window.to_frame,
     field_writing_events: defining,
+    asked_while_still: asked,
+    samples_taken: (window.observed || []).length,
     teardown: !!window.teardown,
-    pass: longEnough && defining.length === 0,
+    // What the sabotage actually DID, when there was one. Rule 6: an inert control and a genuine
+    // negative result look identical from the outside, so the control has to show its working.
+    teardown_trace: window.teardown ? (window.teardown_trace || null) : undefined,
+    pass: longEnough && quiet,
     why: !longEnough
       ? `the still window was only ${seconds.toFixed(2)} s of simulated time, short of the ${thresholdS} s bar`
       : defining.length
         ? `${defining.length} character-field-writing event(s) fired while the driver pressed nothing: `
           + defining.map((d) => `${d.event}@${d.frame}`).join(', ')
-        : `${seconds.toFixed(2)} s of simulated time with nothing dispatched, and the build asked nothing`,
+        : asked.length
+          ? `the creation scene was OPEN or a character field was written while the driver pressed `
+            + `nothing, seen entity-side at ${asked.map((s) => `${s.census_node}@${s.frame}`).join(', ')}`
+          : `${seconds.toFixed(2)} s of simulated time with nothing dispatched, ${(window.observed || []).length} `
+            + 'entity-side samples of the creation scene, and the build asked nothing',
   } };
 }
 
@@ -1634,7 +1673,8 @@ async function selfTest() {
   // R4-5 (W1-26 r4). THE STILL-DRIVER BOUND, and both of its arms. `m4StillClause1` is the row
   // that replaces the driver-paced interval, and a row that can only pass is not a row.
   {
-    const still = { from_frame: 200, to_frame: 3800, frames_advanced: 3600, frames_requested: 3600, inputs_dispatched: 0, teardown: false };
+    const still = { from_frame: 200, to_frame: 3800, frames_advanced: 3600, frames_requested: 3600, inputs_dispatched: 0, teardown: false,
+      observed: [{ phase: 'window-open', frame: 200, census_open: false, census_node: null, character_written: false }] };
     const quiet = [
       { f: 121, events: [{ f: 121, type: 'first_control', device: 'keyboard' }] },
       { f: 900, events: [{ f: 900, type: 'step' }] },
@@ -1672,6 +1712,18 @@ async function selfTest() {
     ok('R4: a window shorter than the bar is a FAIL, not a quiet pass',
       m4StillClause1(quiet, { ...still, frames_advanced: 600, to_frame: 800 }, 60).value.pass === false,
       '10 s of stillness does not clear a 60 s bar');
+
+    // THE SECOND READER. Measured in a browser: a character field was written inside the window
+    // (`hold.hatch-name` -> `hold.out`) and `creation_field` NEVER APPEARED IN THE TRACE at that
+    // frame, because `EventBus` is a per-frame pool cleared each step and the emit happened
+    // between stepped frames. A trace-only row would have shipped a green control.
+    const sawItOpen = { ...still, observed: still.observed.concat([
+      { phase: 'after-chunk', frame: 812, census_open: true, census_node: 'hold.out', character_written: true },
+    ]) };
+    const e2 = m4StillClause1(quiet, sawItOpen, 60);
+    ok('R4: still-driver — the scene being OPEN entity-side turns the row red even with an EMPTY trace',
+      e2.value.pass === false && e2.value.asked_while_still.length === 1 && e2.value.field_writing_events.length === 0,
+      e2.value.why);
   }
 
   // The browser half. If the engine cannot boot — which happens on this tree while other agents

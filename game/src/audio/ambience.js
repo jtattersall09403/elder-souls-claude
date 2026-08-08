@@ -48,11 +48,25 @@ function matches(when, env) {
  * reproducible cannot be captured into a blind pack twice and compared.
  */
 export class LayerClock {
-  constructor(layer, rng, key) {
+  constructor(layer, rng, key, env = null) {
     this.layer = layer;
     this.rng = rng;
     this.key = key;
-    this.next = layer ? this._draw(0) : Infinity;
+    // ROUND 3 — THE FIRST DRAW HAS TO KNOW WHAT TIME IT IS, and until now it did not.
+    //
+    // `_draw` was called here with no `env`, so `_band()` fell through to `interval_s` and
+    // `night_interval_s` could not reach the FIRST event of a bed. Every event after it was
+    // scheduled correctly, which is why this survived: over 180 s the mistake is one interval in
+    // eight and the median comes out right. Over the 20 s clip RI-AUD03 §C actually specifies,
+    // the first event is usually the ONLY event — so for the clip the item is scored on,
+    // `night_interval_s` was inert.
+    //
+    // Measured, not argued: the Stone Forest has shipped `night_interval_s: [8,16]` against a day
+    // band of [9,32] since round 2, and day-vs-night moved its unit-normalised spectrum by 0.0157
+    // — under this round's 0.02 floor. The Stone Wastes rendered day and night BYTE-IDENTICAL at
+    // 30 s with a night band of [10,22] and a day band of [14,40], because the single draw that
+    // decided the clip was made before anyone asked what time it was.
+    this.next = layer ? this._draw(0, env) : Infinity;
   }
 
   _band(env) {
@@ -233,9 +247,12 @@ export class AmbienceDriver {
     let h = this.seed >>> 0;
     for (let i = 0; i < bed.id.length; i++) h = (Math.imul(h ^ bed.id.charCodeAt(i), 0x01000193)) >>> 0;
     this.rng = new Rng(h);
+    // `this.lastEnv` is the environment of the frame that triggered the rebuild, so the first
+    // draw is made against the time of day the player actually walked in at.
+    const env = this.lastEnv || { tod: 'day', weather: 'clear' };
     this.clocks = {
-      L3: new LayerClock(bed.layers.L3, this.rng, 'L3'),
-      L4: new LayerClock(bed.layers.L4, this.rng, 'L4'),
+      L3: new LayerClock(bed.layers.L3, this.rng, 'L3', env),
+      L4: new LayerClock(bed.layers.L4, this.rng, 'L4', env),
     };
     this.emitterClocks = (bed.emitters || EMPTY).map(
       (e) => (emitterMode(e) === 'strike' ? emitterClock(e, this.rng) : null));
@@ -293,7 +310,8 @@ export class AmbienceDriver {
           level_db: layer.level_db || 0,
         });
         if (this.ctx && this.live) {
-          buildGrain(this.ctx, { ...ev, level_db: (layer.level_db || 0) + eventTrimDb(layer) + bedTrimDb(bed) },
+          buildGrain(this.ctx, { ...ev, level_db: (layer.level_db || 0) + eventTrimDb(layer)
+                                                   + eventGrainTrimDb(ev) + bedTrimDb(bed) },
                      this.live.mix, this.rng, this.ctx.currentTime + Math.max(0, at - this.t), pan);
         }
       }
@@ -565,6 +583,25 @@ export function emitterRng(seedBase, i) {
 export function eventTrimDb(layer) { return layer && layer.event_gain_db ? layer.event_gain_db : 0; }
 
 /**
+ * The PER-EVENT corrective trim. ROUND 3 — this is the shape the defect actually had.
+ *
+ * `eventTrimDb` above is ONE NUMBER PER LAYER, and §A's "Level (rel. bed)" column is a claim about
+ * EVENTS. The round-2 critic put it exactly: "The statistic, the gate and the fix are all the same
+ * shape, and none of them can see an individual event." A single per-layer trim can slide a whole
+ * layer up or down; it cannot, in principle, lift an event that is quieter than its layer-mates,
+ * because it moves that event and its layer-mates together. So 54 of 413 measured events sat
+ * outside the band and 33 of them were buried under the bed they were supposed to punctuate —
+ * including Blackwood's `distant_axe`, which that bed's OWN `brief` field advertises, rendering
+ * 23 dB under it.
+ *
+ * `trim_db` is the missing degree of freedom: one number per event, summed with the layer's trim.
+ * `ambience-onsets.mjs --calibrate` solves for it from the rendered level of that event alone.
+ *
+ * Zero when absent, so a bed that has never been calibrated sounds exactly as it did.
+ */
+export function eventGrainTrimDb(ev) { return ev && ev.trim_db ? ev.trim_db : 0; }
+
+/**
  * The live graph for every CONTINUOUS R7 emitter in a bed — one per emitter slot, `null` for the
  * strike emitters so the array indexes 1:1 with `bed.emitters` and the driver can address it by
  * position without a lookup on the hot path.
@@ -682,14 +719,15 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
   buildBedContinuous(ctx, bed, mix, new Rng(h ^ 0x51ed), env, 0, 0, opts.listener || null, muted);
 
   const rng = new Rng(h);
-  const clocks = { L3: new LayerClock(bed.layers.L3, rng, 'L3'), L4: new LayerClock(bed.layers.L4, rng, 'L4') };
+  const clocks = { L3: new LayerClock(bed.layers.L3, rng, 'L3', env),
+                   L4: new LayerClock(bed.layers.L4, rng, 'L4', env) };
   const fired = [];
   for (const key of ['L3', 'L4']) {
     if (muted.has(key)) continue;
     for (const { at, ev } of clocks[key].due(0, seconds, env)) {
       const pan = ev.pan ? ev.pan[0] + rng.next() * (ev.pan[1] - ev.pan[0]) : 0;
       buildGrain(ctx, { ...ev, level_db: (bed.layers[key].level_db || 0) + eventTrimDb(bed.layers[key])
-                                         + bedTrimDb(bed) }, mix, rng, at, pan);
+                                         + eventGrainTrimDb(ev) + bedTrimDb(bed) }, mix, rng, at, pan);
       fired.push({ layer: key, id: ev.id, at_s: Math.round(at * 100) / 100, pan: Math.round(pan * 100) / 100 });
     }
   }

@@ -103,6 +103,14 @@ const SABOTAGE = args.sabotage || null;
  * `--sabotage trimshift` below now makes that failure a check instead of an accident.
  */
 const EVENT_MUTE = ['L3', 'L4', 'R7_strike'];
+/**
+ * The bed the mute control is proved on, and how much longer than its own slowest clock the
+ * fixture runs. Blackwood because it is the densest bed in the province and therefore the one
+ * most likely to fire inside a bounded fixture; 1.2x because a band's upper bound is the LONGEST
+ * a draw can be, so a fixture exactly that long can still come back empty on an unlucky seed.
+ */
+const FIXTURE_REGION = 'blackwood';
+const FIXTURE_MARGIN = 1.2;
 /** How far `--sabotage trimshift` moves every event trim, and how far the answer may miss by. */
 const TRIMSHIFT_DB = Number(args.trimshift || -6);
 const TRIMSHIFT_TOL_DB = 2;
@@ -405,17 +413,70 @@ try {
   // The `mute` option is what makes the bed subtractable. If the engine on this tree does not
   // honour it, every number below would silently become a measurement of the full mix minus
   // itself — zero — and the tool would report a confident, meaningless red. Check it first.
-  const muteWorks = await page.evaluate(async (mute) => {
+  //
+  // ROUND 3 — THE GUARD WAS UNREACHABLE FOR THE REASON IT EXISTS, and both halves of that were
+  // wrong. The round-2 critic ran this call four ways and published the table:
+  //
+  //   fixture   full.fired   muted, real mute   muted, NO-OP mute   guard passes real / no-op
+  //   4 s       0            0                  0                   true / true   <- cannot tell them apart
+  //   60 s      3            0                  3                   true / false  <- refuses, as designed
+  //
+  //   1. IT ONLY CHECKED ONE ARM. `muted !== 0` says the muted arm fired nothing. It never said
+  //      the UNMUTED arm fired anything — and 0 vs 0 is not a control, it is two empty buckets.
+  //   2. ITS FIXTURE WAS 4 SECONDS. Blackwood's L3 band is [8, 24] s, so four seconds is shorter
+  //      than the shortest interval in the province: no bed can schedule an event inside it
+  //      whatever `mute` does. A working mute and a mute that does nothing at all produced the
+  //      same verdict, so the guard could not be failed by the defect it exists to catch.
+  //
+  // The fixture length is now COMPUTED FROM THE BED'S OWN DATA rather than typed here, so that
+  // widening an interval band widens the fixture with it and this cannot silently rot back. It is
+  // the largest interval upper bound the fixture bed declares across L3, L4 and their night bands.
+  const fixtureBed = JSON.parse(readFileSync(join(AMB, `${FIXTURE_REGION}.json`), 'utf8'));
+  const fixtureSeconds = (() => {
+    let hi = 0;
+    for (const L of ['L3', 'L4']) {
+      const layer = fixtureBed.layers && fixtureBed.layers[L];
+      if (!layer) continue;
+      for (const band of [layer.interval_s, layer.night_interval_s]) {
+        if (Array.isArray(band) && band[1] > hi) hi = band[1];
+      }
+    }
+    return Math.ceil(hi * FIXTURE_MARGIN);
+  })();
+  const muteWorks = await page.evaluate(async ({ mute, region, seconds }) => {
     const E = window.__ENGINE;
-    const a = await E.ambienceCapture({ region: 'blackwood', seconds: 4, sampleRate: 8000, tod: 'day' });
-    const b = await E.ambienceCapture({ region: 'blackwood', seconds: 4, sampleRate: 8000, tod: 'day',
-                                        mute });
-    return { full: (a.fired || []).length, muted: (b.fired || []).length, ok: a.ok && b.ok };
-  }, EVENT_MUTE);
+    const a = await E.ambienceCapture({ region, seconds, sampleRate: 8000, tod: 'day' });
+    const b = await E.ambienceCapture({ region, seconds, sampleRate: 8000, tod: 'day', mute });
+    // THE NO-OP ARM. `mute` with layer names that mute nothing — the exact defect the guard exists
+    // to catch, run deliberately every time so the guard's discrimination is demonstrated on this
+    // tree rather than asserted about it. A real mute must take this arm's fired count to zero and
+    // leave the no-op arm's count untouched. Rule 4: a probe that cannot fail is worse than none.
+    const c = await E.ambienceCapture({ region, seconds, sampleRate: 8000, tod: 'day',
+                                        mute: ['L9_does_not_exist', 'nothing'] });
+    return { region, seconds, full: (a.fired || []).length, muted: (b.fired || []).length,
+             muted_noop: (c.fired || []).length, ok: a.ok && b.ok && c.ok };
+  }, { mute: EVENT_MUTE, region: FIXTURE_REGION, seconds: fixtureSeconds });
   out.mute_supported = muteWorks;
-  if (!muteWorks.ok || muteWorks.muted !== 0) {
-    console.error('ambience-onsets: ambienceCapture({mute}) is not honoured by this build — '
-      + JSON.stringify(muteWorks) + '. Every subtraction below would be vacuous. Refusing to report.');
+  out.mute_supported.fixture_note = `${fixtureSeconds} s = ${FIXTURE_MARGIN}x the longest interval `
+    + `upper bound ${FIXTURE_REGION} declares. The shipped fixture was 4 s, shorter than the `
+    + 'shortest interval band in the province, so both arms were empty and the guard could not '
+    + 'be failed by a mute that did nothing.';
+  // Three conditions now, and the first two are the ones that were missing.
+  const guardFails = [];
+  if (!muteWorks.ok) guardFails.push('a capture failed outright');
+  if (!(muteWorks.full > 0)) {
+    guardFails.push(`the UNMUTED arm fired ${muteWorks.full} events in ${fixtureSeconds} s. `
+      + 'With nothing to mute, "the muted arm fired nothing" is vacuous.');
+  }
+  if (muteWorks.muted !== 0) guardFails.push(`the muted arm still fired ${muteWorks.muted} events`);
+  if (muteWorks.muted_noop !== muteWorks.full) {
+    guardFails.push(`the NO-OP mute changed the fired count (${muteWorks.full} -> `
+      + `${muteWorks.muted_noop}). Muting names that name nothing must change nothing; if it does, `
+      + '`mute` is not doing what its name says and the subtraction below is not a subtraction.');
+  }
+  if (guardFails.length) {
+    console.error('ambience-onsets: the mute control did not hold — ' + guardFails.join(' | ')
+      + '. Every subtraction below would be vacuous. Refusing to report.');
     process.exit(2);
   }
 
@@ -603,35 +664,86 @@ try {
   // stone-forest L4 at -10.15). A province median is exactly the statistic that lets a loud bed
   // and a quiet bed cancel into a green, and §A's band is written per layer of a region, not over
   // an average of thirteen. Gating the average was measuring the wrong thing.
+  // ROUND 3 — O3 NOW GRADES EVENTS, BECAUSE §A'S BAND IS A CLAIM ABOUT EVENTS.
+  //
+  // Round 2 moved this gate from a province median to a per-bed-per-layer median, which was a real
+  // improvement and still the wrong shape. The round-2 critic measured what the median was hiding:
+  // **54 of 413 events outside the band, 33 of them BURIED below the floor, inside 11 of 33
+  // bed/layer pairs whose median passes.** Blackwood's `distant_axe` — a sound that bed's own
+  // `brief` field advertises — rendered 23 dB under the bed while its layer median was green.
+  //
+  // A median cannot see an individual event, and neither could the fix: `event_gain_db` is one
+  // number per LAYER while `synth.gain_db` varies per EVENT. The statistic, the gate and the trim
+  // were all the same shape. `trim_db` (per event, in the bed data) is the new degree of freedom
+  // and this gate is what makes it necessary: every measured event, one at a time, in band.
+  //
+  // The per-bed medians are still reported — they are the continuity with round 2's number and
+  // they are how you see a whole layer sliding — but they are no longer what passes or fails.
   const bandFails = [];
   const perBed = {};
+  const perEvent = {};
+  let evTotal = 0, evOut = 0, evBuried = 0, evShouting = 0;
+  const medianPassHoldingOutOfBand = new Set();
   for (const [id, rec] of Object.entries(out.regions)) {
     for (const layer of Object.keys(BANDS)) {
       const xs = [];
+      const byId = {};
       for (const t of Object.values(rec.tod)) {
         if (t.error) continue;
-        for (const e of t._all || t.events || []) if (e.layer === layer) xs.push(e.rel_db);
+        for (const e of t._all || t.events || []) {
+          if (e.layer !== layer) continue;
+          xs.push(e.rel_db);
+          (byId[e.id] = byId[e.id] || []).push(e.rel_db);
+        }
       }
       if (!xs.length) continue;
       const m = +median(xs).toFixed(2);
       const [lo, hi] = BANDS[layer];
-      (perBed[id] = perBed[id] || {})[layer] = { n: xs.length, median_rel_db: m };
-      if (m < lo - TOL_DB || m > hi + TOL_DB) {
-        bandFails.push(`${id}/${layer}: ${m} dB outside ${lo}..${hi} +/-${TOL_DB}`);
+      const loT = lo - TOL_DB, hiT = hi + TOL_DB;
+      (perBed[id] = perBed[id] || {})[layer] = { n: xs.length, median_rel_db: m,
+                                                 median_in_band: m >= loT && m <= hiT };
+      let anyOut = false;
+      for (const [eid, vs] of Object.entries(byId)) {
+        const em = +median(vs).toFixed(2);
+        const outLo = vs.filter((v) => v < loT).length;
+        const outHi = vs.filter((v) => v > hiT).length;
+        evTotal += vs.length; evOut += outLo + outHi; evBuried += outLo; evShouting += outHi;
+        (perEvent[id] = perEvent[id] || {})[`${layer}/${eid}`] = {
+          n: vs.length, median_rel_db: em,
+          min_rel_db: +Math.min(...vs).toFixed(2), max_rel_db: +Math.max(...vs).toFixed(2),
+          outside: outLo + outHi, buried: outLo, shouting: outHi,
+        };
+        if (outLo + outHi) {
+          anyOut = true;
+          bandFails.push(`${id}/${layer}/${eid}: ${outLo + outHi} of ${vs.length} occurrence(s) `
+            + `outside ${lo}..${hi} +/-${TOL_DB} (median ${em} dB, worst `
+            + `${outLo ? Math.min(...vs).toFixed(2) : Math.max(...vs).toFixed(2)} dB)`);
+        }
       }
+      if (anyOut && m >= loT && m <= hiT) medianPassHoldingOutOfBand.add(`${id}/${layer}`);
     }
   }
-  if (!Object.keys(perBed).length) bandFails.push('no events measured anywhere');
+  if (!evTotal) bandFails.push('no events measured anywhere');
   out.gates.O3_level_in_band = {
     pass: bandFails.length === 0,
-    per_bed: perBed,
+    graded: 'every measured event occurrence, individually',
+    events_measured: evTotal,
+    events_outside_band: evOut,
+    events_buried: evBuried,
+    events_shouting: evShouting,
+    bed_layer_pairs_whose_median_passes_while_holding_an_out_of_band_event:
+      [...medianPassHoldingOutOfBand].sort(),
+    per_bed_median: perBed,
+    per_event: perEvent,
     province_median: Object.fromEntries(Object.entries(relByLayer).map(([k, xs]) =>
       [k, xs.length ? { n: xs.length, median_rel_db: +median(xs).toFixed(2) } : null])),
-    failures: bandFails,
-    what: 'EVERY bed\'s measured event level, per layer, sits inside RI-AUD03 §A\'s own bands '
-      + `(L3 -6..+2, L4 -4..+4) within the declared +/-${TOL_DB} dB tolerance. Checked per bed `
-      + 'rather than over a province median, because an average lets a loud bed and a quiet bed '
-      + 'cancel into a green.',
+    failures: bandFails.slice(0, 60),
+    failures_total: bandFails.length,
+    what: 'EVERY MEASURED EVENT, one at a time, sits inside RI-AUD03 §A\'s own bands '
+      + `(L3 -6..+2, L4 -4..+4) within the declared +/-${TOL_DB} dB tolerance. Round 2 graded a `
+      + 'per-bed-per-layer MEDIAN and passed while 54 of 413 events sat outside the band and 33 '
+      + 'were buried, in 11 of 33 bed/layer pairs whose median was green. §A\'s "Level (rel. bed)" '
+      + 'column is a claim about events, so the gate is now the same shape as the claim.',
   };
 
   // O4 — the tracking control. Only computed under `--sabotage trimshift`; see the note above.

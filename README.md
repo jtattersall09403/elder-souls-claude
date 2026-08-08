@@ -51,6 +51,11 @@ from anything slowing you down.
 
 - **The opening has not been graded since it was fixed.** A fresh critic is owed one, and until
   then the claim that it plays as a scene is the builder's, not a judge's.
+- **A gamepad works, and is ungraded.** The whole opening plays on a pad alone — title, New, walk
+  to the woman on the other bench, ten census questions, a name, out into the world — with not one
+  keyboard event dispatched anywhere. All six screens open and close on it. If you have a pad, use
+  it. (Name entry picks from a ledger rather than an on-screen keyboard, because a full-screen
+  panel is forbidden by the opening's own rules; say if that annoys you and it can change.)
 - Doors now work and are **ungraded**: 115 of them, 0 bodies inside a building at 1, 30, 120 and
   600 frames after you step out, and re-entry takes you back into the room you left 112 times out
   of 115. A critic is checking it. Two rounds ago every door was recorded at its building's centre

@@ -3,16 +3,18 @@
   "role": "builder",
   "item": "W1-26 (the opening)",
   "spec": "corpus/90-verdicts/wave1/W1-26-r3.md",
-  "state": "measuring",
+  "state": "done",
   "started_at": "2026-08-08",
-  "next_step": "finish the P9 red-team and the two journey-run still-window arms, then blog line + commit",
+  "next_step": "none — handing to a critic",
   "measurements": {
     "commit_measured": "6b869cc (the bank that carried the engine/system/data edits)",
     "w1-26-r4-verify": "14 pass / 0 fail — reports/w1-26-r4/verify.json. A0 shipped body silent; A1 altmer, A2 zzz-not-a-race, A3 argonian all fail at observation naming the id with 0 nodes reached (was 11); A4 getCensusState still readable and names the fault; A5 DELETE-THE-FIX WENT RED (r3's expression restored -> silent null, scene opens, walks 4 nodes, stops at writ.race-observed); B1 0 HUD strings at title, B2 teardown red (3 strings back); C1 4/4 distinct drawn scenes, C2 4/4 distinct disposition vectors, C4 teardown red (pinned bodyRace collapses 4 arms to 1); D1 teaching clause gone, D2 9 root topics still granted, D3 9 never named on any frame and 'background' asked and answered anyway.",
     "opening-play": "10 pass / 0 fail with the rewritten P9 — reports/w1-26-r4/opening-play.json. 42 distinct strings; 0 instruction; 2 wayfinding sentences, both declared, both on the dialogue surface. 2.03 sim fps at title / 7.5 in world, 960x540, loadavg 4.5-5.7 on 4 cores (rule 26).",
     "signposting --self-test": "new check RED on 7/7 of the r3 verdict's polite forms (round 3's regex: 1/7) and on the writ.stamp teaching clause; GREEN on 10 negatives including 'Do not lose it.'; declared list proved load-bearing in both directions and red when the same sentences are drawn off a dialogue surface.",
-    "journey-run --self-test": "20/21. The one failure ('accessor empty before any surface', 3 HUD strings) is pre-existing and is the HUD-in-world case, not the title case; it was 13/14 before I added 7 rows.",
-    "repo gates": "boot-check exit 0; check-content / check-prose / check-data exit 0; npm gate:strict exit 0; metrics self-test exit 0."
+    "journey-run --self-test": "21/22 (was 13/14 before I added 8 rows). The one failure, 'accessor empty before any surface' (3 HUD strings), is the HUD-in-WORLD case and is pre-existing; the title case is fixed and proved by verify.json B1/B2.",
+    "repo gates": "boot-check exit 0; check-content / check-prose / check-data exit 0; npm gate:strict exit 0; metrics self-test exit 0.",
+    "journey-run still-window, BOTH ARMS": "ARM A (shipped): m4_clause1 PASS — 60.00 s of simulated time from first control, 0 inputs dispatched, 7 entity-side samples of the creation scene, nothing asked. ARM B (--still-fire-a-field): m4_clause1 FAIL — 'the creation scene was OPEN or a character field was written while the driver pressed nothing, seen entity-side at hold.out@812, @1412, @2012, @2612, @3212, @3812'. The two arms genuinely differ.",
+    "opening-play --red-team=plant": "9 pass / 1 fail; signature P9 WENT RED as required, 0 collateral. The rewritten P9 can still fail."
   },
   "found_and_fixed_in_my_own_instrument": "The first real run of the rewritten P9 was RED on the shipped build with one undeclared sentence — because the dialogue panel WRAPS and the drawn row is cut mid-clause, so the frame's text is not the authored text. An exact-string declared list would have been red for a reason that has nothing to do with signposting and green again on any panel-width change. Declared matching is now prefix-tolerant in both directions, with a fixture proving it is not a wildcard.",
   "contention": "gate exit 3 (WAIT) at start — all source work done offline first; re-gated GO (2 instances, 1.11/core) before browser work. One browser, kept.",
@@ -35,17 +37,33 @@
     "game/data/dialogue/topics/writ-house.json",
     "tools/journey/signposting.mjs",
     "tools/journey/opening-play.mjs",
-    "tools/journey/journey-run.mjs"
-  ],
-  "files_claimed": [
-    "tools/w1-26-r4/",
+    "tools/journey/journey-run.mjs",
+    "tools/w1-26-r4/w1-26-r4-verify.mjs",
     "reports/w1-26-r4/",
-    "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/2026-08-08-w1-26-opening-play-01-title-first-launch.png",
+    "docs/shots/2026-08-08-w1-26-opening-play-02-hold-first-frame.png",
+    "docs/shots/2026-08-08-w1-26-opening-play-03-first-exchange.png",
+    "docs/shots/2026-08-08-w1-26-opening-play-04-jeeh-ei-or-the-desk.png",
+    "docs/shots/2026-08-08-w1-26-r4-the-title-screen-stops-showing-a-strangers-health-bar.png",
+    "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": [],
   "notes": [
     "game/src/engine.js is touched by a dozen live pieces; edits are confined to bodyRace/_bodyRaceRaw, the censusBegin comment, getCensusState's body_race rows and one _uiCtx field.",
     "reports/blog-feed.jsonl is append-only."
+  ],
+  "two_inert_controls_i_found_in_my_own_teardown": [
+    "1. `--still-fire-a-field` first called `censusBegin({})` alone. The row stayed green, arm for arm identical to the untorn run, because the opening STARTS PAUSED at `hold.come-to` and `censusBegin` emits `dialogue_open` only on an unpaused node. Both arms were the positive arm — rule 6's inert control, the shape W1-04's wall-collision control had.",
+    "2. Fixed to drive to `hold.hatch-name` and answer it, the sabotage demonstrably wrote a field (`node_before_answer: hold.hatch-name` -> `node_after_answer: hold.out`) and the row STILL stayed green: `creation_field` never reached the trace at that frame. `sim/events.js EventBus` is a per-frame pool cleared each step, so an event emitted BETWEEN stepped frames can be cleared before any record snapshots it. A trace-only row would have shipped a control it had never seen go red. `m4StillClause1` now reads the running world as well (`asked_while_still`), which is what makes ARM B red."
+  ],
+  "not_done": [
+    "jrn09-exchange.mjs — NOT re-run. The r3 critic flagged loudly that it did not re-run it and that another critic should; it is not mine and I did not touch it.",
+    "RI-JRN01 M13's other three modality legs (G1) — still 1 of 4. Not attempted.",
+    "RI-EXP01 beat extraction (G2) — not attempted.",
+    "M10 inscriptions (G4) — not attempted.",
+    "The one authored refusal line applied at every node (r3 verdict §2 residual 1) — not touched.",
+    "`writ.stamp`'s 'The door behind me is the one you want.' is DECLARED, not cut. It is signposting and I say so in the declared list; the r3 critic's single recorded hesitation was at `hold.out`, eleven nodes earlier. It is the weakest entry on the list and the first thing a future round should argue with.",
+    "opening-play's default --json path is still reports/journeys/w1-26-r2-play.json. Only the SHOT names (the thing that overwrote a critic's cited evidence) were made round-neutral."
   ]
 }

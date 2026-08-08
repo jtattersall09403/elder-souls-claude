@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `561b8db`: 719 tools, 153 reference
-items, 61 pieces in flight.
+so it cannot drift. Generated at `99a630c`: 720 tools, 153 reference
+items, 62 pieces in flight.
 
-Its purpose is to stop 61+ concurrent agents each paying separately to discover the
+Its purpose is to stop 62+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -724,7 +724,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 141
+### `tools/world/` — 142
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -796,6 +796,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r5-live.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-offline.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r5-shots.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r6-offline.mjs` — **no header comment**
 - `tools/world/crossing-body.mjs` — **no header comment**
 - `tools/world/crossing-consumption.mjs` — **no header comment**
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
@@ -869,7 +870,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **172 tools have no header comment**, so nobody can tell what they do without
+> **173 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1043,11 +1044,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `AUDIT-R1-LIST` | running | read NEXT-DISPATCH.md R1 list, enumerate the four remaining bullets | — |
+| `W1-26-r4` | done | none — handing to a critic | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `W1-GAMEPAD` | done | none — handing to a critic | `orchestration/status/W1-GAMEPAD.json` `tools/gamepad/pad-run.mjs` `tools/gamepad/deadzone-deletefix.mjs` `tools/journey/gamepad-shim.mjs` `game/src/engine.js` `orchestration/NEXT-DISPATCH.md` |
 | `W1-22-r3` | building | P2 per-event gain in band + P3 hive bar + P4 refusal guard fixture | `orchestration/status/W1-22-r3.json` `tools/audio/w1-22-r3-daynight.mjs` `game/src/audio/ambience.js` `game/data/audio/ambience/clay-moor.json` `game/data/audio/ambience/crimson-coast.json` `game/data/audio/ambience/deep-marshes.json` |
 | `critic-w1-04-r6` | running | read RULES, INDEX, ARBITRATION s3, W1-04-r5 verdict, builder status | — |
 | `judge-w1-22-r3` | ? | none - complete | `reports/packs/w1-22-r3-hard-judgement.md` `orchestration/status/judge-w1-22-r3.json` `reports/blog-feed.jsonl` |
-| `W1-26-r4` | measuring | finish the P9 red-team and the two journey-run still-window arms, then blog line + commit | `orchestration/status/W1-26-r4.json` `game/src/engine.js` `game/src/ui/system.js` `game/data/dialogue/topics/writ-house.json` `tools/journey/signposting.mjs` `tools/journey/opening-play.mjs` |
 | `critic-w1-22-r2` | done | DONE. Verdict written and validated; blog line appended; committing declared files with gi | `corpus/90-verdicts/wave1/W1-22-r2.json` `corpus/90-verdicts/wave1/W1-22-r2.md` `docs/shots/2026-08-08-w1-22-r3-every-event-against-the-band.png` `orchestration/status/critic-w1-22-r2.json` `reports/blog-feed.jsonl` `reports/content-stats.json` |
 | `W1-CROSSING-r2` | in-progress | Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/posit | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` `tools/world/w1-crossing-r2-pursue-sim.mjs` `tools/world/w1-crossing-r2-parapet-trap.mjs` |
 | `W1-14-r5` | done | commit; nothing outstanding | `docs/shots/2026-08-08-w1-14-r5-the-bolt-goes-where-the-body-is-going.png` `game/data/magic/cast-classes.json` `game/data/npcs/spellwrights.json` `game/src/combat/player.js` `game/src/engine.js` `game/src/harness/api.js` |
