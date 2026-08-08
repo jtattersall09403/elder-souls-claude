@@ -1,14 +1,15 @@
 {
   "schema_version": 1,
   "piece_id": "W1-READABLES-r2",
-  "piece_title": "The quest reveals and the documents that carry them — round 2 critique",
+  "piece_title": "The quest reveals and the documents that carry them \u2014 round 2 critique",
   "subsystem_paths": [
-    "world.quest.reveal_routing",
-    "world.quest.journal",
-    "world.readables.placement",
-    "books.content",
-    "method.consumption",
-    "method.instrumentation"
+    "quests.structure.deceit",
+    "quests.resolution.noncombat",
+    "journal.entry.voice",
+    "lore.book.structure",
+    "lore.book.unreliability",
+    "ui.menu.books",
+    "quests.discovery.hooks"
   ],
   "wave": 1,
   "critic": {
@@ -16,7 +17,7 @@
     "role": "critic.quests",
     "model": "claude-opus-5",
     "started_at": "2026-08-08T01:55:00Z",
-    "finished_at": "2026-08-08T02:48:51.240Z",
+    "finished_at": "2026-08-08T02:50:01Z",
     "conflict_of_interest": false,
     "saw_builder_notes_before_blind": true
   },
@@ -30,7 +31,7 @@
       "why": "Thirteen agents are writing. The census and headless chain arms were taken at 64dd5f9/6ff493f/9aeb839 and re-checked; the two browser runs are stamped in their own reports under reports/runs/CRITIC-W1-READABLES/ and the scratchpad.",
       "cut_arm": "a copy of game/ under the critic scratchpad with the mark branch of Engine._takePropPending() made dead (); every other byte identical, and the shared tree index confirmed clean of game/src/engine.js before and after"
     },
-    "note": "ONE browser at a time. tools/contention.mjs --gate returned WAIT (exit 3) twice; I proceeded for the two mark-route-world runs at load 6.19-6.52 per core against a ceiling of 4.0 and 4-5 instances against 6, and say so per rule 21. NO TIMING FIGURE APPEARS IN THIS VERDICT — every number is a count or a boolean. I edited nothing under game/ and nothing in the authored text.",
+    "note": "ONE browser at a time. tools/contention.mjs --gate returned WAIT (exit 3) twice; I proceeded for the two mark-route-world runs at load 6.19-6.52 per core against a ceiling of 4.0 and 4-5 instances against 6, and say so per rule 21. NO TIMING FIGURE APPEARS IN THIS VERDICT \u2014 every number is a count or a boolean. I edited nothing under game/ and nothing in the authored text.",
     "harness_commands": [
       {
         "command": "node tools/quests/critic-unrouted-census.mjs --self-test",
@@ -122,14 +123,15 @@
       "measured": "full",
       "evidence": [
         "game/data/books/the-papers-in-evidence.json",
-        "corpus/90-verdicts/wave1/W1-READABLES-r2.md#a-the-prose"
+        "corpus/90-verdicts/wave1/W1-READABLES-r2.md",
+        "corpus/60-lore/RI-LOR03-in-world-book-structure.md"
       ]
     },
     {
       "id": "RI-MTH07",
       "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
-      "side": "method",
-      "kind": "method",
+      "side": "neutral",
+      "kind": "structure",
       "score_0_10": 8,
       "native_verdict": "The world-side consumer is named and demonstrated. Re-run independently: 4 legs pass, and the same legs go 0 of 3 with the mark branch of _takePropPending() dead on a copy. The teardown bites and the arms differ on the primary observable in every leg; the off-branch does not read a handle the teardown nulled, so this is not the W1-04 inert-control shape.",
       "native_scale": "perturb the model and watch an entity change behaviour",
@@ -138,8 +140,9 @@
       "measured": "full",
       "evidence": [
         "tools/quests/mark-route-world.mjs",
-        "corpus/90-verdicts/wave1/W1-READABLES-r2.md#d-consumption-and-delete-the-fix"
-      ]
+        "corpus/90-verdicts/wave1/W1-READABLES-r2.md"
+      ],
+      "justification": "Proved by tools/quests/mark-route-world.mjs re-run by the critic: 4 legs run and 4 pass at 64dd5f9, and the same four go 0 of 3 against a critic-owned copy of game/ with the mark branch of _takePropPending() made dead. The teardown was checked against rule 6: in both arms the prop is found and stood at 0.9 m and the screen stays world, so the off-branch is not reading a handle the teardown nulled."
     },
     {
       "id": "RI-QST04",
@@ -171,7 +174,8 @@
       "evidence": [
         "tools/quests/critic-chain-headless.mjs",
         "reports/runs/W1-READABLES-R2/document-route-chain.json"
-      ]
+      ],
+      "justification": "Proved by tools/quests/critic-chain-headless.mjs, an instrument the builder did not write: the neither arm returns 5 of 32 stopping at Q-MAIN-06 on rev_the_curve_predates and the reading_only arm 10 of 32 stopping at Q-MAIN-11 on rev_the_rhythm, both exact reproductions. reports/runs/W1-READABLES-R2/document-route-chain.json supplies the 28-step chain whose attribution is published in the verdict."
     },
     {
       "id": "RI-UIX05",
@@ -187,7 +191,8 @@
       "evidence": [
         "tools/quests/critic-readable-slots-and-marks.mjs",
         "reports/runs/CRITIC-W1-READABLES/slots-and-marks.json"
-      ]
+      ],
+      "justification": "Proved by reports/runs/CRITIC-W1-READABLES/slots-and-marks.json: all 83 interiors carrying a readable have their closest pair at or above 2.6 m, 14 presses in the busiest room opened 14 distinct documents with no collision, and 36 marks stood in the province after each of six consecutive resets and after a room round trip."
     }
   ],
   "blind_comparisons": [
@@ -213,7 +218,7 @@
         }
       ],
       "evidence": [
-        "corpus/90-verdicts/wave1/W1-READABLES-r2.md#c-the-fence"
+        "corpus/90-verdicts/wave1/W1-READABLES-r2.md"
       ]
     },
     "ar3": {
@@ -248,7 +253,7 @@
         },
         {
           "model": "deceit.revealed_by[].journal on the environment channel",
-          "consumer": "NONE — no index authored for any mark row",
+          "consumer": "NONE \u2014 no index authored for any mark row",
           "demonstrated": "journal [10] -> [10] on all 4 browser legs",
           "verdict": "fail"
         }
@@ -258,7 +263,7 @@
   "score": {
     "overall_0_10": 6.5,
     "pass_threshold": 7,
-    "aggregation": "min-over-axes",
+    "aggregation": "min",
     "note": "A near miss on a strong round. The mechanism, the content, the consumption proof and the delete-the-fix all hold and reproduce on instruments the builder did not write. It fails on two things one sitting closes: a hand-off list built from the wrong query, and a reporting defect found, half-diagnosed and never scoped.",
     "aggregation_note": "Six axes, each scored on its own evidence, minimum taken as the brief directs. books.content 6.5, world.quest.reveal_routing 6.5, world.quest.chain_reach 8.0, method.consumption 8.0, world.readables.placement 8.0, method.instrumentation 6.5."
   },
@@ -268,11 +273,11 @@
     "The environment channel writes a know: flag and no journal entry. Looking at a mark teaches the character a fact the journal never records, on all 4 browser legs, which is half of what this item brief asked for.",
     "The chart-font defect was reported with the wrong mechanism (a mid-string deletion that shears every row below it, not a truncated tail) and was never scoped: the same table is in nine chart tools, all of which draw digits. The claim that the shear is invisible on letters is falsified by the round own published picture, in which BOOK reads as POOK.",
     "The 26 documents carry four countable signatures against RI-LOR03 measured reference, and one document (the-unsealed-chits) hands the reader the inference its own three rows of figures exist to produce, in a voice belonging to nobody in the document.",
-    "The readable slot separation in the busiest room is exactly 2.6 m — satisfied, not asserted. A sixteenth document reintroduces the defect with no check to catch it."
+    "The readable slot separation in the busiest room is exactly 2.6 m \u2014 satisfied, not asserted. A sixteenth document reintroduces the defect with no check to catch it."
   ],
   "biggest_gap": {
-    "gap_id": "GAP-W1-READABLES-the-mark-teaches-nothing-to-the-journal",
-    "subsystem_path": "world.quest.journal",
+    "gap_id": "GAP-W1-mark-teaches-nothing-to-the-journal",
+    "subsystem_path": "journal.entry.voice",
     "severity": "blocking",
     "what": "Looking at a mark writes a know: flag and no journal entry. journal [10] -> [10] on all four browser legs, before and after. The person channel writes both (37 entries from play); the environment channel writes one.",
     "why_it_matters": "ARBITRATION 1 gives Morrowind the journal, and the doctrine is a numbered, dated, first-person-authored record of what the character came to know. A character who walks to the flooding road, watches it fill and can now argue res_walk_it, with a journal saying nothing happened between opening the quest and finishing it, has a knowledge model the journal cannot corroborate. It is also an unexplained difference between the two channels this project has now built.",
@@ -297,8 +302,8 @@
   },
   "other_gaps": [
     {
-      "gap_id": "GAP-W1-READABLES-the-handoff-list-names-the-wrong-people",
-      "subsystem_path": "world.quest.reveal_routing",
+      "gap_id": "GAP-W1-handoff-list-names-the-wrong-people",
+      "subsystem_path": "quests.structure.deceit",
       "severity": "blocking",
       "what": "Three of the eleven named missing NPCs are not blockers; three blockers are unnamed. Taken from the audit 15-row print rather than filtered to the demanded set.",
       "remedy": {
@@ -313,7 +318,7 @@
     },
     {
       "gap_id": "GAP-W1-chart-font-sheared-in-nine-tools",
-      "subsystem_path": "method.instrumentation",
+      "subsystem_path": "quests.data.schema",
       "severity": "blocking",
       "what": "Nine chart tools share a 5x5 font whose glyphs each have two characters deleted mid-string, shearing every row below the cut. All ten digits in all nine are affected, and the letters change identity (B drawn as P).",
       "remedy": {
@@ -328,9 +333,9 @@
       ]
     },
     {
-      "gap_id": "GAP-W1-READABLES-slot-separation-is-satisfied-not-asserted",
-      "subsystem_path": "world.readables.placement",
-      "severity": "moderate",
+      "gap_id": "GAP-W1-slot-separation-is-satisfied-not-asserted",
+      "subsystem_path": "ui.menu.books",
+      "severity": "major",
       "what": "soulrest-court-steps sits at exactly 2.6 m with 15 documents. A sixteenth breaks it again and nothing checks.",
       "remedy": {
         "action": "Assert the 2.6 m minimum in check-quests.",
@@ -344,8 +349,8 @@
     },
     {
       "gap_id": "GAP-W1-prose-numeral-tic-ungated-on-four",
-      "subsystem_path": "books.content",
-      "severity": "moderate",
+      "subsystem_path": "lore.book.structure",
+      "severity": "major",
       "what": "four/fourth in 76.9%/61.5% of the 26 documents and eleven in 30.8% against RI-LOR03 measured Morrowind figure of 2.9%. check-prose reports no tic because its numeral rule was narrowed to eleven before a noun of degree and never covered four.",
       "remedy": {
         "action": "Gate on the numeral distribution rather than one narrowed pattern, with the reference published.",
@@ -360,8 +365,8 @@
     },
     {
       "gap_id": "GAP-W1-questnote-denied-by-one-tool-called-by-its-sibling",
-      "subsystem_path": "method.instrumentation",
-      "severity": "cosmetic",
+      "subsystem_path": "quests.discovery.hooks",
+      "severity": "minor",
       "what": "viability-walk.mjs lists questNote in DENIED_VERBS as the walk asserting the thing it is supposed to be measuring; mainline-chain-floor.mjs:262 calls it unconditionally. Measured to change nothing, but the two instruments disagree in writing.",
       "remedy": {
         "action": "Put it behind a flag with a comment, as questReveal already is.",
@@ -404,68 +409,122 @@
     },
     {
       "path": "tools/quests/mainline-chain-floor.mjs",
-      "purpose": "attack-B-the-questNote-hand-feed"
+      "purpose": "diagnose-after-demonstrating"
     },
     {
       "path": "tools/quests/document-route-world.mjs",
-      "purpose": "attack-B-and-C-instrument-independence"
+      "purpose": "diagnose-after-demonstrating"
     },
     {
       "path": "tools/quests/viability-walk.mjs",
-      "purpose": "attack-C-the-allow-list"
+      "purpose": "diagnose-after-demonstrating"
     },
     {
       "path": "game/data/books/the-papers-in-evidence.json",
-      "purpose": "attack-A-read-the-prose"
+      "purpose": "quote-written-content"
     }
   ],
   "artifacts": [
     {
-      "path": "tools/quests/critic-unrouted-census.mjs",
-      "kind": "tool",
-      "produced_by": "critic",
-      "source": "critic own"
-    },
-    {
-      "path": "tools/quests/critic-chain-headless.mjs",
-      "kind": "tool",
-      "produced_by": "critic",
-      "source": "critic own"
-    },
-    {
-      "path": "tools/quests/critic-glyph-audit.mjs",
-      "kind": "tool",
-      "produced_by": "critic",
-      "source": "critic own"
-    },
-    {
-      "path": "tools/quests/critic-readable-slots-and-marks.mjs",
-      "kind": "tool",
-      "produced_by": "critic",
-      "source": "critic own"
-    },
-    {
-      "path": "tools/quests/critic-w1-readables-chart.mjs",
-      "kind": "tool",
-      "produced_by": "critic",
-      "source": "critic own"
-    },
-    {
       "path": "reports/runs/CRITIC-W1-READABLES/slots-and-marks.json",
       "kind": "report",
-      "produced_by": "critic browser run",
-      "source": "critic own"
+      "produced_by": "tools/quests/critic-readable-slots-and-marks.mjs \u2014 critic browser run over all 83 interiors carrying a readable, 15 presses in the busiest, and 9 mark counts across six resets and a room round trip",
+      "source": "critic's own"
     },
     {
       "path": "docs/shots/2026-08-08-critic-w1-readables-r2-what-carried-the-chain.png",
-      "kind": "image",
-      "produced_by": "critic",
-      "source": "critic own"
+      "kind": "graph",
+      "produced_by": "tools/quests/critic-w1-readables-chart.mjs \u2014 drawn with the sound 5x7 font from w1-17-shot.mjs rather than the sheared table nine chart tools share",
+      "source": "critic's own"
+    },
+    {
+      "path": "docs/shots/2026-08-08-w1-readables-r2-the-marks-and-the-ledgers-that-now-exist.png",
+      "kind": "graph",
+      "produced_by": "the builder's own rule-27 picture \u2014 cited as negative evidence: its digits are correct and its letters are sheared, BOOK reading as POOK",
+      "source": "builder's"
+    },
+    {
+      "path": "game/data/books/the-papers-in-evidence.json",
+      "kind": "text-excerpt",
+      "produced_by": "the round's authored prose \u2014 26 documents, 9,769 words, read end to end and quoted in the verdict",
+      "source": "builder's"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-READABLES-r2.md",
+      "kind": "report",
+      "produced_by": "this critique \u2014 the quoted prose judgements, the chain table and the acceptance numbers",
+      "source": "critic's own"
+    },
+    {
+      "path": "tools/quests/critic-unrouted-census.mjs",
+      "kind": "report",
+      "produced_by": "critic \u2014 recomputes the 121/100/21 census and the missing-NPC list from game/data and game/src alone, with a self-test",
+      "source": "critic's own"
+    },
+    {
+      "path": "tools/quests/critic-chain-headless.mjs",
+      "kind": "report",
+      "produced_by": "critic \u2014 plays the 32 mainline quests through the real QuestEngine and gate.js with no browser, four arms plus a questNote hand-feed switch and three falsification arms",
+      "source": "critic's own"
+    },
+    {
+      "path": "tools/quests/critic-glyph-audit.mjs",
+      "kind": "report",
+      "produced_by": "critic \u2014 reconstructs each shipped glyph from the sound digits by finding the deleted character pair, across every chart tool in the tree",
+      "source": "critic's own"
+    },
+    {
+      "path": "tools/quests/critic-readable-slots-and-marks.mjs",
+      "kind": "report",
+      "produced_by": "critic \u2014 the browser instrument behind slots-and-marks.json",
+      "source": "critic's own"
+    },
+    {
+      "path": "tools/quests/critic-w1-readables-chart.mjs",
+      "kind": "report",
+      "produced_by": "critic \u2014 the chart tool behind the verdict picture",
+      "source": "critic's own"
+    },
+    {
+      "path": "tools/quests/mark-route-world.mjs",
+      "kind": "report",
+      "produced_by": "the builder's CONSUMPTION instrument, re-run by the critic at 64dd5f9 and again against a critic-owned copy of game/ with the mark branch dead",
+      "source": "builder's"
+    },
+    {
+      "path": "reports/runs/W1-READABLES-R2/document-route-chain.json",
+      "kind": "report",
+      "produced_by": "the builder's --chain run; read by the critic to attribute the 28 completed steps to what carried each one",
+      "source": "builder's"
+    },
+    {
+      "path": "orchestration/status/W1-READABLES-r2.json",
+      "kind": "report",
+      "produced_by": "the builder's own account of the round",
+      "source": "builder's"
+    },
+    {
+      "path": "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
+      "kind": "report",
+      "produced_by": "the reference item, whose measured numeral distribution the prose is judged against",
+      "source": "corpus"
+    },
+    {
+      "path": "tools/quests/mainline-chain-floor.mjs",
+      "kind": "report",
+      "produced_by": "the instrument the brief names; read for the questNote call at line 262",
+      "source": "builder's"
+    },
+    {
+      "path": "tools/quests/viability-walk.mjs",
+      "kind": "report",
+      "produced_by": "the sibling walk, whose DENIED_VERBS names questNote",
+      "source": "builder's"
     }
   ],
   "gap_closure": [
     {
-      "gap_id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
+      "gap_id": "GAP-W1-library-has-no-reader-on-the-world-side",
       "status": "closed",
       "note": "Extended from books to ledgers and letters: 41 of 41 demanded document rows are written and placed, and the browser press opens the right one in 14 of 14 tries in the busiest room.",
       "evidence": [
@@ -473,7 +532,7 @@
       ]
     },
     {
-      "gap_id": "GAP-W1-18-the-environment-channel-has-no-object",
+      "gap_id": "GAP-W1-environment-channel-has-no-object",
       "status": "closed",
       "note": "25 marks exist as props with positions; 16 of 16 demanded environment rows route, and the delete-the-fix takes the browser legs 4 of 4 to 0 of 3.",
       "evidence": [
@@ -488,6 +547,7 @@
     "named_exactly_one_gap": true,
     "remedy_is_buildable": true,
     "no_banned_reasoning_used": true,
-    "self_audit_note": "Two false entries, both stated in the verdict. ran_every_assigned_method is false because I did not re-run mainline-chain-floor 40 signatures with questNote removed: the contention gate returned WAIT twice and the browser budget went to attacks D and F, which cannot be done any other way. The question is answered on a headless instrument under the same grant regime, which is corroboration and not proof for that tool. blind_done_where_required is false because no blind pack exists for this piece and rule 25 forbids me building and judging my own; the prose is judged on the measured signatures RI-LOR03 itself publishes. I also report that my own headless reading_and_looking arm is 18 rather than 28 because it passes gates=null and cannot represent faction rank, and I did not publish 18 as a correction to the builder 28."
+    "self_audit_note": "Two false entries, both stated in the verdict. ran_every_assigned_method is false because I did not re-run mainline-chain-floor 40 signatures with questNote removed: the contention gate returned WAIT twice and the browser budget went to attacks D and F, which cannot be done any other way. The question is answered on a headless instrument under the same grant regime, which is corroboration and not proof for that tool. blind_done_where_required is false because no blind pack exists for this piece and rule 25 forbids me building and judging my own; the prose is judged on the measured signatures RI-LOR03 itself publishes. I also report that my own headless reading_and_looking arm is 18 rather than 28 because it passes gates=null and cannot represent faction rank, and I did not publish 18 as a correction to the builder 28.",
+    "escalation_ladder_used_if_gap_seemed_small": true
   }
 }
